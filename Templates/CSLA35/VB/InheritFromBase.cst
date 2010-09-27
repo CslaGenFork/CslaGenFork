@@ -1,0 +1,144 @@
+<%@ CodeTemplate Inherits="VbCslaTemplateHelper" Language="VB" TargetLanguage="VB" Description="Generates a CSLA Inherited Object." %>
+<%@ Property Name="Info" Type="CslaObjectInfo" Optional="False" Category="Business Object" Description="Definition of the CSLA object to inherit from." %>
+<%@ Property Name="ActiveObjects" Type="System.Boolean" Default="false" Category="Options" Description="If true, base class is generated as ActiveObjects" %>
+
+<%@ Assembly Name="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator.Metadata" %>
+<%@ Import Namespace="CslaGenerator.Util" %>
+
+<% If ActiveObjects Then %>Imports ActiveObjects<% End If %>
+<!-- #include file="Header.inc" -->
+
+<% If Info.ObjectNamespace.Trim.Length > 0 Then %>Namespace <%=Info.ObjectNamespace%><% End If %>
+	Public Class <%= Info.ObjectName %> 
+
+		<% If ActiveObjects Then %>
+		<% If Info.ObjectType = CslaObjectType.ReadOnlyCollection Or Info.ObjectType = CslaObjectType.ReadOnlyObject Then %>
+		#Region " ISubscriber interface (overriden)"
+		<% If Info.ObjectType = CslaObjectType.ReadOnlyCollection Then 
+				Dim childInfo As CslaObjectInfo = FindChildInfo(Info, Info.ItemType)
+		%>
+		
+	''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	'''''' This is just an example of what an OnChannelNotification sub should look like
+	''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+    ' Protected Overrides Sub OnChannelNotification(ByVal sender As Observer.IPublisher, ByVal ChannelName As String, ByVal e As Observer.ObserverEvent)
+        ' Select Case e.Name
+            ' Case BusinessEvents.Added
+                ' Dim obj As ObjectType = DirectCast(e.Value, ObjectType) ''replace ObjectType by the object you are listening
+                ' If Not obj Is Nothing Then
+                    ' Dim info As New <%=Info.ItemType%>
+                    ' info.ExtractInfo(obj)
+		    ' IsReadOnly = False
+                    ' Add(info)
+		    ' IsReadOnly = True
+                    ' Notify(BusinessEvents.Added, info)
+                ' End If
+            ' Case BusinessEvents.Updated
+                ' Dim obj As ObjectType = DirectCast(e.Value, ObjectType) ''replace ObjectType by the object you are listening
+                ' If Not obj Is Nothing Then
+                    ' Dim info As <%=Info.ItemType%>
+                    ' For i As Integer = 0 To Me.Count - 1
+                        ' info = Me(i)
+                        ' If info.ObjectTypeID.Equals(obj.ObjectTypeID) Then
+                            ' info.ExtractInfo(obj)
+                            ' Notify(BusinessEvents.Updated, info)
+                            ' ResetItem(i)
+                            ' Exit For
+                        ' End If
+                    ' Next
+                ' End If
+            ' Case BusinessEvents.Deleted
+                ' Dim ID As Guid = DirectCast(e.Value, Guid)
+                ' Dim info As <%=Info.ItemType%>
+                ' For i As Integer = Me.Count - 1 To 0 Step -1
+                    ' info = Me(i)
+                    ' If info.ObjectTypeID = ID Then
+                        ' IsReadOnly = False
+			' Remove(info)
+			' IsReadOnly = True
+                        ' Notify(BusinessEvents.Deleted, info)
+                        ' Exit For
+                    ' End If
+                ' Next
+        ' End Select
+    ' End Sub
+	<% End If %>		
+	<% If Info.ObjectType = CslaObjectType.ReadOnlyObject Then %>
+    ' Friend Sub ExtractInfo(ByVal obj As ObjectType)
+		<% For Each prop As ValueProperty In Info.GetAllValueProperties() %>
+		<% If PropertyMode = CslaPropertyMode.Standard Then %>
+		'<%=FormatFieldName(prop.Name)%><% If prop.PropertyType = TypeCodeEx.SmartDate Then %>.Text<% End If %>  = obj.<%=FormatPascal(prop.Name)%> 
+		<% Else 
+			If prop.PropertyType = TypeCodeEx.SmartDate Then %>
+		'LoadPropertyConvert(Of SmartDate, String)(<%=FormatPascal(prop.Name)%>Property<% If PropertyMode = CslaPropertyMode.ManagedBackingField Then %>, <%=FormatFieldName(prop.Name)%><% End If %>, obj.<%=FormatPascal(prop.Name)%>)	
+		<% 	Else %>
+		'LoadProperty(<%=FormatPascal(prop.Name)%>Property<% If PropertyMode = CslaPropertyMode.ManagedBackingField Then %>, <%=FormatFieldName(prop.Name)%><% End If %>, obj.<%=FormatPascal(prop.Name)%>)
+		<%	End If
+		End If 
+		Next %>
+    ' End Sub
+	<% End If %>		
+#End Region
+		
+		<% End If %>	
+		<% End If %>		
+	
+#Region " Events "
+
+	<%If Info.ObjectType = CslaObjectType.EditableRoot Or Info.ObjectType = CslaObjectType.EditableChild Or Info.ObjectType = CslaObjectType.EditableSwitchable Then %>
+	'Private Sub OnCreate(ByVal args As DataPortalHookArgs)
+	'End Sub
+	<% End If %>
+	<% If Info.ObjectType.ToString().IndexOf("Collection") = -1 And Info.ObjectType <> CslaObjectType.NameValueList Then %>
+	'Private Sub OnFetchRead(ByVal args As DataPortalHookArgs)
+	'End Sub
+	<% End If %>
+	<% If Info.HasGetCriteria Then %>
+    'Private Sub OnFetchPre(ByVal args As DataPortalHookArgs)
+    'End Sub
+    'Private Sub OnFetchPost(ByVal args As DataPortalHookArgs)
+    'End Sub
+    <%
+    End If
+    If Info.ObjectType <> CslaObjectType.ReadOnlyObject And Info.ObjectType <> CslaObjectType.NameValueList And Info.ObjectType.ToString().IndexOf("Collection") = -1 Then 
+    %>
+	'Private Sub OnUpdatePre(ByVal args As DataPortalHookArgs)
+	'End Sub
+	'Private Sub OnUpdatePost(ByVal args As DataPortalHookArgs)
+	'End Sub
+	'Private Sub OnInsertPre(ByVal args As DataPortalHookArgs)
+	'End Sub
+	'Private Sub OnInsertPost(ByVal args As DataPortalHookArgs)
+	'End Sub
+	'Private Sub OnDeletePre(ByVal args As DataPortalHookArgs)
+	'End Sub
+	'Private Sub OnDeletePost(ByVal args As DataPortalHookArgs)
+	'End Sub
+	<% End If %>
+	<% If Info.ObjectType = CslaObjectType.EditableChildCollection Then %>
+	'Private Sub OnUpdatePre(ByVal args As DataPortalHookArgs)
+	'End Sub
+	'Private Sub OnUpdatePost(ByVal args As DataPortalHookArgs)
+	'End Sub
+	<%
+	End If 
+	Dim hasRules As Boolean = False
+	For Each prop As ValueProperty In Info.ValueProperties 
+		If prop.Rules.Count > 0 Then 
+			hasRules = True
+			Exit For
+		End If
+	Next
+	If hasRules Then
+	%>
+	'Private Sub OnAddCustomBusinessRules()
+	'End Sub
+	<% End If %>
+	
+#End Region
+
+	End Class
+
+<% If Info.ObjectNamespace.Trim.Length > 0 Then %>End Namespace<% End If %>

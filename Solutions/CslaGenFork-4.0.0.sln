@@ -1,0 +1,42 @@
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B8958294-73AB-4364-9131-EB6C2C051CD4}"
+	ProjectSection(SolutionItems) = preProject
+		OldStuff\Help.htm = OldStuff\Help.htm
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CslaGenFork", "CslaGenFork\CslaGenFork.csproj", "{117ED001-9979-478E-B8EB-1CD1CF7FA1B8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBSchemaInfo", "DBSchemaInfo\DBSchemaInfo.csproj", "{4C1DAB30-AB30-48F9-BC13-8E8577AB57B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{96877C6B-1DB8-4091-A3A4-3FDF074DBB71}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "CslaGenForkSetup", "CslaGenForkSetup\CslaGenForkSetup.vdproj", "{7100A6CC-1ECF-45D4-AB2A-94AD08AF137D}"
+EndProject
+Global
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{117ED001-9979-478E-B8EB-1CD1CF7FA1B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{117ED001-9979-478E-B8EB-1CD1CF7FA1B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{117ED001-9979-478E-B8EB-1CD1CF7FA1B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{117ED001-9979-478E-B8EB-1CD1CF7FA1B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C1DAB30-AB30-48F9-BC13-8E8577AB57B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C1DAB30-AB30-48F9-BC13-8E8577AB57B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C1DAB30-AB30-48F9-BC13-8E8577AB57B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96877C6B-1DB8-4091-A3A4-3FDF074DBB71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96877C6B-1DB8-4091-A3A4-3FDF074DBB71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96877C6B-1DB8-4091-A3A4-3FDF074DBB71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7100A6CC-1ECF-45D4-AB2A-94AD08AF137D}.Debug|Any CPU.ActiveCfg = Debug
+		{7100A6CC-1ECF-45D4-AB2A-94AD08AF137D}.Release|Any CPU.ActiveCfg = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,41 @@
+<%@ CodeTemplate Inherits="CslaTemplateHelper" Language="C#" TargetLanguage="C#" Description="Generates a CSLA ReadOnly Collection."%>
+<%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the ReadOnlyCollection object to create." %>
+
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Assembly Name="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator.Metadata" %>
+<%@ Import Namespace="CslaGenerator.Util" %>
+<%@ Import Namespace="System.Text" %>
+
+<% bool first = true; %>
+<!-- #include file="Header.inc" -->
+using CSLA;
+using CSLA.Data;
+using System.Data;
+using System.Data.SqlClient;
+using System;
+<%= GetUsingStatementsString(Info) %>
+namespace <%=Info.ObjectNamespace%>
+{
+	<!-- #include file="XmlComment.inc" -->
+	<%= "\r\n" %>	[Serializable]
+	public abstract class <%=Info.ObjectName%>Base : ReadOnlyCollectionBase
+	{
+		<!-- #include file="CollectionBusinessProps.inc" -->
+		
+		<!-- #include file="Contains.inc" -->
+		
+		<!-- #include file="FindMethods.inc" -->
+		<%= "\r\n" %>		#region Shared Methods
+		<!-- #include file="CollectionGetObject.inc" -->
+		<%= "\r\n" %>		#endregion
+		<!-- #include file="Constructor.inc" -->
+
+		<!-- #include file="Criteria.inc" -->
+		<%= "\r\n" %>		#region Data Access
+		<!-- #include file="CollectionDataPortalFetch.inc" -->
+		<%= "\r\n" %>		#endregion
+		
+	}
+}

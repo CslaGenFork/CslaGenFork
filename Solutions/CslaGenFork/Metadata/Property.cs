@@ -1,0 +1,164 @@
+using System;
+using System.Collections;
+using System.ComponentModel;
+using System.Drawing.Design;
+using System.IO;
+using System.Xml.Serialization;
+using CslaGenerator.Design;
+
+namespace CslaGenerator.Metadata
+{
+	/// <summary>
+	/// Summary description for Property.
+	/// </summary>
+	[Serializable]
+    [DefaultProperty("Name")]
+	public class Property : ICloneable
+	{
+		private string _name = String.Empty;
+		private TypeCodeEx _propertyType = TypeCodeEx.Empty;
+		private bool _readOnly;
+		private string _summary = String.Empty;		
+		private string _remarks = String.Empty;
+		protected string _parameterName = String.Empty;
+        private bool _nullable;
+
+		public Property()
+		{
+		}
+
+		public Property(Property prop)
+		{
+			this.Clone(prop);
+		}
+
+		public Property(string name, TypeCodeEx type)
+		{
+			_name = name;
+			_propertyType = type;
+		}
+
+		public Property(string name, TypeCodeEx type, string parameterName)
+		{
+			_name = name;
+			_propertyType = type;
+			_parameterName = parameterName;
+		}
+
+        [Category("Database Related")]
+        [Description("The stored procedure parameter name.")]
+        public virtual string ParameterName
+        {
+            get
+            {
+                if (_parameterName.Equals(string.Empty))
+                    return _name;
+                return _parameterName;
+            }
+            set { _parameterName = value; }
+        }
+
+        [Category("Definition")]
+        [Description("The property name.")]
+        public virtual string Name
+		{
+			get { return _name; }
+			set { _name = value; }
+		}
+
+		[Category("Definition")]
+        [Description("The property Type.")]
+        public virtual TypeCodeEx PropertyType
+		{
+			get { return _propertyType; }
+			set { _propertyType = value; }
+		}
+
+		[Category("Definition")]
+        [Description("This is a description.")]
+		public virtual bool ReadOnly
+		{
+			get { return _readOnly; }
+			set { _readOnly = value; }
+		}
+
+        [Category("Definition")]
+        [Description("Whether this property can have a null value. The following types aren't nullable: \"String \", \"ByteArray \", \"SmartDate \", \"DBNull \", \"Object\" and \"Empty\".")]
+        public virtual bool Nullable
+        {
+            get { return _nullable; }
+            set { _nullable = value; }
+        }
+
+        [Category("Documentation")]
+		[Editor(typeof(XmlCommentEditor), typeof(UITypeEditor))]
+        [Description("Summary of the property.")]
+        public virtual string Summary
+		{
+			get { return _summary; }
+			set
+			{
+                value = value.Trim().Replace("  ", " ").Replace("\n\n", "\n").Replace("\n", "\r\n");
+			    _summary = value;
+			}
+		}
+
+		[Category("Documentation")]
+		[Editor(typeof(XmlCommentEditor), typeof(UITypeEditor))]
+        [Description("Remarks of the property.")]
+        public virtual string Remarks
+		{
+			get { return _remarks; }
+			set
+			{
+                value = value.Trim().Replace("  ", " ").Replace("\n\n", "\n").Replace("\n", "\r\n");
+			    _remarks = value;
+			}
+		}
+
+		public override bool Equals(object item)
+		{			
+			if (!item.GetType().Equals(this.GetType()))
+				return false;
+
+			if (CaseInsensitiveComparer.Default.Compare(_name, ((Property)item).Name) == 0)
+				return true;
+			else
+				return false;
+		}
+
+		public override int GetHashCode()
+		{
+			return _name.GetHashCode();
+		}
+
+        protected void ResetProperties(DbBindColumn dbc)
+        {
+            if (dbc != null && dbc.Column != null)
+            {
+                _name = dbc.ColumnName;
+                _parameterName = dbc.ColumnName;
+                _propertyType = Util.TypeHelper.GetTypeCodeEx(dbc.Column.ManagedType);
+            }
+        }
+
+		public virtual object Clone()
+		{
+			MemoryStream buffer = new MemoryStream();
+			XmlSerializer ser = new XmlSerializer(typeof(Property));
+			ser.Serialize(buffer, this);
+			buffer.Position = 0;
+			return ser.Deserialize(buffer);
+		}
+
+		public virtual void Clone(Property prop)
+		{
+			this.Name=prop.Name;
+			this.ParameterName=prop.ParameterName;
+			this.PropertyType=prop.PropertyType;
+			this.ReadOnly=prop.ReadOnly;
+			this.Remarks=prop.Remarks;
+			this.Summary=prop.Summary;
+		}
+	}
+}

@@ -1,0 +1,894 @@
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="CslaGenerator" %>
+<%@ Assembly Name="System.Windows.Forms" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="CslaGenerator.Metadata" %>
+<%@ Import Namespace="CslaGenerator.Util" %>
+<%@ Import Namespace="System.Windows.Forms" %>
+<%@ Import Namespace="System.Text" %>
+
+using System;
+using NUnit.Framework;
+using System.Data.SqlClient;
+using System.Configuration;
+using System.EnterpriseServices;
+using <%=Info.ObjectNamespace%>;
+
+
+namespace <%=Info.ObjectNamespace%>.UnitTest
+{
+	public abstract class <%=Info.ObjectName%>TestBase 
+	{
+		#region Constructor
+		public <%=Info.ObjectName%>TestBase()
+		{
+			//this.Init();
+		}
+		#endregion
+		
+		#region Criteria
+		<% foreach (Criteria crit in Info.CriteriaObjects) { %>
+		
+		[Serializable]
+		protected class <%=crit.Name%> : CSLA.CriteriaBase
+		{
+			public bool IsChild;
+			<% foreach (Property prop in crit.Properties) {%>
+			public <%=prop.PropertyType.ToString()%> <%=FormatPascal(prop.Name)%>;
+			<% } %>
+			
+			public <%=crit.Name%>(bool isChild) : base(typeof(<%=Info.ObjectName%>))
+			{
+				this.IsChild = isChild;
+			}
+		}
+		<% } %>
+		#endregion
+		
+		#region Properties
+		<%=Info.ObjectName%> _item;
+		<%
+		foreach (Parameter param in GetCriterias(Info)) //Info.GetObjectParameters) 
+		{%>
+		private <%=param.Property.PropertyType.ToString()%> <%=FormatFieldName(param.Property.Name)%>;
+		<%
+		}%>
+		
+		public <%=Info.ObjectName%> CurrentItem
+		{
+			get { return _item; }
+		}
+		<%
+		foreach (Parameter param in GetCriterias(Info)) //Info.GetObjectParameters) 
+		{%>
+		public <%=param.Property.PropertyType.ToString()%> <%=FormatPascal(param.Property.Name)%>
+		{
+			get { return <%=FormatFieldName(param.Property.Name)%>; }
+			set { <%=FormatFieldName(param.Property.Name)%> = value; }		
+		}		
+		
+		<%		
+		}%>
+		#endregion
+			
+		#region NUNit setup and TearDdown
+		[SetUp] 
+		public void Setup() 
+		{
+			ServiceConfig config = new ServiceConfig();
+			config.Transaction= TransactionOption.RequiresNew;
+			ServiceDomain.Enter(config);
+			Init();
+		}
+		
+		
+		public virtual void Init()
+		{
+			
+		}
+		
+		
+		[TearDown]
+		public void TearDownTest()
+		{
+			TearDown();
+			if(ContextUtil.IsInTransaction)
+			{
+				ContextUtil.SetAbort();
+			}        
+			ServiceDomain.Leave();
+		}
+		
+		
+		public virtual void TearDown()
+		{
+			
+		}
+		#endregion
+				
+		#region helpers
+		public enum Operation
+		{
+			Add,
+			Update,
+			Custom
+		}
+		
+		
+		protected virtual void ActionBeforeSave(<%= Info.ObjectName%> item, Operation operation)
+		{
+			
+		}
+		
+		
+		protected void Populate (<%= Info.ObjectName%> item, Operation operation)
+		{	
+			if (operation == Operation.Add)
+			{
+				<% 
+				string sProp = string.Empty;
+				string sValue = string.Empty;
+				foreach (ValueProperty prop in Info.GetAllValueProperties())
+				{
+					if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None && 
+					!(prop.DbBindColumn.IsPrimaryKey() && prop.DefaultValue.Length <= 0) && ! prop.ReadOnly) 
+					{
+						if (GetLanguageVariableType(prop.DbBindColumn.DataType) == "SmartDate")
+						{
+							sProp = FormatPascal(prop.Name) ;//+ ".DBValue";
+						}
+						//else if (GetLanguageVariableType(prop.DbBindColumn.DataType) == "Guid")
+						//	sProp = FormatFieldName(prop.Name) + " == Guid.Empty ? (object) DBNull.Value : " + FormatFieldName(prop.Name);
+						else
+						{
+							sProp = FormatPascal(prop.Name);
+						}
+						sValue = GetDataString(prop.DbBindColumn, true);
+				%>	 
+				item.<%= sProp %> = <%= sValue %>;
+				<%
+					} 
+				} %>
+			}
+			else
+			{
+				<% 
+				sProp = string.Empty;
+				sValue = string.Empty;
+				foreach (ValueProperty prop in Info.GetAllValueProperties())
+				{
+					if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None && 
+					   !(prop.DbBindColumn.IsPrimaryKey() && prop.DefaultValue.Length <= 0) && ! prop.ReadOnly) 
+					{
+						if (GetLanguageVariableType(prop.DbBindColumn.DataType) == "SmartDate")
+						{
+							sProp = FormatPascal(prop.Name);// + ".DBValue";
+						}
+						//else if (GetLanguageVariableType(prop.DbBindColumn.DataType) == "Guid")
+						//	sProp = FormatFieldName(prop.Name) + " == Guid.Empty ? (object) DBNull.Value : " + FormatFieldName(prop.Name);
+						else
+						{
+							sProp = FormatPascal(prop.Name);
+						}
+						sValue = GetDataString(prop.DbBindColumn, false);
+				%>	 
+				item.<%= sProp %> = <%= sValue %>;
+				<%
+					} 
+				} %>
+			
+			}
+			PopulateItem(item, operation);
+		}
+		
+		protected virtual void PopulateItem(<%= Info.ObjectName%> item, Operation operation)
+		{
+		
+		}
+		
+		
+		protected virtual <%= Info.ObjectName%> PopulateAndAddItem(<%= Info.ObjectName %> item)
+		{
+			Populate(item, Operation.Add);
+			ActionBeforeSave(item, Operation.Add);
+			return (<%=Info.ObjectName%>) item.Save();
+		}
+
+
+		public <%=Info.ObjectName%> AddItem(<%
+		bool first = true;
+		foreach (Parameter param in Info.NewObjectParameters) 
+		{
+			if (!first) { writer.Write(", "); }
+			else { first = false; }
+		%><%=param.Property.PropertyType.ToString()%> <%=FormatCamel(param.Property.Name)%><%}%>)
+		{
+			<%=Info.ObjectName%> item = <%=Info.ObjectName%>.New<%=Info.ObjectName%>(<%
+			first = true;
+			foreach (Parameter param in Info.NewObjectParameters) 
+			{
+				if (!first) { writer.Write(", "); }
+				else { first = false; }%><%=FormatPascal(param.Property.Name)%><%
+			}%>);
+			return PopulateAndAddItem(item);
+		}
+
+
+		protected virtual <%=Info.ObjectName%> GetItem(<%
+		first = true;
+		foreach (Parameter param in Info.GetObjectParameters) 
+		{
+			if (!first) { writer.Write(", "); }
+			else { first = false; }%><%=param.Property.PropertyType.ToString()%> <%=FormatCamel(param.Property.Name)%><%
+		}%>)
+		{
+			<%=Info.ObjectName%> item = AddItem(<%
+			first = true;
+			foreach (Parameter param in Info.NewObjectParameters) 
+			{
+				if (!first) { writer.Write(", "); }
+				else { first = false; }%><%=FormatPascal(param.Property.Name)%><%
+			}%>);
+			return <%=Info.ObjectName%>.Get<%=Info.ObjectName%>(<%
+			first = true;
+			foreach (Parameter param in Info.GetObjectParameters) 
+			{
+				if (!first) { writer.Write(", "); }
+				else { first = false; }%>item.<%=FormatPascal(param.Property.Name)%><%
+			}%>);
+		}
+
+
+		protected virtual <%=Info.ObjectName%> UpdateItem(out <%=Info.ObjectName%> item<%
+		foreach (Parameter param in Info.GetObjectParameters) 
+		{
+			writer.Write(", ");
+			%><%=param.Property.PropertyType.ToString()%> <%=FormatCamel(param.Property.Name)%><%
+		}%>)
+		{
+			item = AddItem(<%
+			first = true;
+			foreach (Parameter param in Info.NewObjectParameters) 
+			{
+				if (!first) { writer.Write(", "); }
+				else { first = false; }%><%=FormatPascal(param.Property.Name)%><%
+			}%>);
+			<%=Info.ObjectName%> item2 = <%=Info.ObjectName%>.Get<%=Info.ObjectName%>(<%
+			first = true;
+			foreach (Parameter param in Info.GetObjectParameters) 
+			{
+				if (!first) { writer.Write(", "); }
+				else { first = false; }%>item.<%=FormatPascal(param.Property.Name)%><%
+			}%>);
+			Populate(item, Operation.Update);
+			ActionBeforeSave(item, Operation.Update);
+            
+			return (<%=Info.ObjectName%>) item.Save();       			
+		}
+		
+		
+		protected <%=Info.ObjectName%> GetPopulatedNewItem(Operation operation)
+		{
+			<%=Info.ObjectName%> item = <%=Info.ObjectName%>.New<%=Info.ObjectName%>(<%
+			first = true;
+			foreach (Parameter param in Info.NewObjectParameters) 
+			{
+				if (!first) { writer.Write(", "); }
+				else { first = false; }
+			%><%=FormatPascal(param.Property.Name)%><%
+			}%>);
+			Populate(item, operation);
+			return item;
+		}
+		#endregion
+		
+		#region Tests
+		
+		[Test]
+		public virtual void Add()
+		{
+			_item = <%=Info.ObjectName%>.New<%=Info.ObjectName%>(<%
+			first = true;
+			foreach (Parameter param in Info.NewObjectParameters) 
+			{
+				if (!first) { writer.Write(", "); }
+				else { first = false; }
+			%><%=FormatPascal(param.Property.Name)%><%
+			}%>);
+			_item = PopulateAndAddItem(_item);	
+			_item = <%=Info.ObjectName%>.Get<%=Info.ObjectName%>(<%
+			first = true;
+			foreach (Parameter param in Info.GetObjectParameters) 
+			{
+				if (!first) { writer.Write(", "); }
+				else { first = false; }%>_item.<%=FormatPascal(param.Property.Name)%><%
+			}%>);	
+			<%=Info.ObjectName%> compareItem = GetPopulatedNewItem(Operation.Add);			
+			<%
+			foreach(ValueProperty prop in Info.GetAllValueProperties())
+			{
+				if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None && !(prop.DbBindColumn.IsPrimaryKey() && prop.DefaultValue.Length <= 0) && !prop.ReadOnly) 
+				{%>
+			Assert.AreEqual(_item.<%=FormatPascal(prop.Name)%> , compareItem.<%=FormatPascal(prop.Name)%>);
+			<%
+				} 
+			} %>   
+		}
+
+		[Test]
+		public virtual void Get()
+		{
+			_item = GetItem(<%
+			first = true;
+			foreach (Parameter param in Info.GetObjectParameters) 
+			{
+				if (!first) { writer.Write(", "); }
+				else { first = false; }%><%=FormatPascal(param.Property.Name)%><%
+			}%>);			
+			<%=Info.ObjectName%> compareItem = GetPopulatedNewItem(Operation.Add);
+			
+			<%
+			foreach(ValueProperty prop in Info.GetAllValueProperties())
+			{
+				if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None && !(prop.DbBindColumn.IsPrimaryKey() && prop.DefaultValue.Length <= 0) && !prop.ReadOnly) 
+				{%>
+			Assert.AreEqual(_item.<%=FormatPascal(prop.Name)%> , compareItem.<%=FormatPascal(prop.Name)%>);
+			<%
+				} 
+			} %>
+		}
+
+
+		[Test]
+		public virtual void Update()
+		{
+			_item = UpdateItem(out _item <%
+			foreach (Parameter param in Info.GetObjectParameters) 
+			{
+				writer.Write(", ");
+				%><%=FormatPascal(param.Property.Name)%><%
+			}%>);
+			<%=Info.ObjectName%> compareItem = GetPopulatedNewItem(Operation.Update);			
+			
+			<%
+			foreach(ValueProperty prop in Info.GetAllValueProperties())
+			{
+				if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None && !(prop.DbBindColumn.IsPrimaryKey() && prop.DefaultValue.Length <= 0) && !prop.ReadOnly) 
+				{%>
+			Assert.AreEqual(_item.<%=FormatPascal(prop.Name)%> , compareItem.<%=FormatPascal(prop.Name)%>);
+			<%
+				} 
+			} %>	
+		}
+
+
+		[Test]
+		public virtual void Delete()
+		{
+			<%=Info.ObjectName%> itemNew = AddItem(<%
+			first = true;
+			foreach (Parameter param in Info.NewObjectParameters) 
+			{	
+				if (first)
+				{
+					first= false;
+				}
+				else
+					writer.Write(", ");
+				%><%=FormatPascal(param.Property.Name)%><%
+			}%>);
+			<%=Info.ObjectName%>.Delete<%=Info.ObjectName%>(<%
+			first = true;
+			foreach (Parameter param in Info.DeleteObjectParameters) 
+			{
+				if (first)
+				{
+					first= false;
+				}
+				else
+					writer.Write(", ");
+				%>itemNew.<%=FormatPascal(param.Property.Name)%><%
+			}%>);
+			<%=Info.ObjectName%> _item = <%=Info.ObjectName%>.Get<%=Info.ObjectName%>(<%
+			first = true;
+			foreach (Parameter param in Info.GetObjectParameters) 
+			{
+				if (first)
+				{
+					first= false;
+				}
+				else
+					writer.Write(", ");
+				%>itemNew.<%=FormatPascal(param.Property.Name)%><%
+			}%>);
+			Assert.IsNull(_item);					
+		}
+		#endregion
+		
+		
+		<% foreach (ChildProperty childCol in Info.GetMyChildProperties()) {
+			CslaObjectInfo colType = FindChildInfo(Info, childCol.TypeName);
+			CslaObjectInfo childProp = FindChildInfo(Info, colType.ItemType);
+		%>	
+		#region <%=FormatPascal(childProp.ObjectName)%>
+		
+		protected void Populate<%=FormatPascal(childProp.ObjectName)%>(<%=FormatPascal(childProp.ObjectName)%> item, Operation operation)
+		{
+			if (operation == Operation.Add)
+			{
+				<% 
+				sProp = string.Empty;
+				sValue = string.Empty;
+				foreach (ValueProperty prop in childProp.GetAllValueProperties())
+				{
+					if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None && 
+					!(prop.DbBindColumn.IsPrimaryKey() && prop.DefaultValue.Length <= 0) && ! prop.ReadOnly) 
+					{
+						if (GetLanguageVariableType(prop.DbBindColumn.DataType) == "SmartDate")
+						{
+							sProp = FormatPascal(prop.Name) ;//+ ".DBValue";
+						}
+						//else if (GetLanguageVariableType(prop.DbBindColumn.DataType) == "Guid")
+						//	sProp = FormatFieldName(prop.Name) + " == Guid.Empty ? (object) DBNull.Value : " + FormatFieldName(prop.Name);
+						else
+						{
+							sProp = FormatPascal(prop.Name);
+						}
+						sValue = GetDataString(prop.DbBindColumn, true);
+				%>	 
+				item.<%= sProp %> = <%= sValue %>;
+				<%
+					} 
+				} %>
+			}
+			else
+			{
+				<% 
+				sProp = string.Empty;
+				sValue = string.Empty;
+				foreach (ValueProperty prop in childProp.GetAllValueProperties())
+				{
+					if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None && 
+					   !(prop.DbBindColumn.IsPrimaryKey() && prop.DefaultValue.Length <= 0) && ! prop.ReadOnly) 
+					{
+						if (GetLanguageVariableType(prop.DbBindColumn.DataType) == "SmartDate")
+						{
+							sProp = FormatPascal(prop.Name);// + ".DBValue";
+						}
+						//else if (GetLanguageVariableType(prop.DbBindColumn.DataType) == "Guid")
+						//	sProp = FormatFieldName(prop.Name) + " == Guid.Empty ? (object) DBNull.Value : " + FormatFieldName(prop.Name);
+						else
+						{
+							sProp = FormatPascal(prop.Name);
+						}
+						sValue = GetDataString(prop.DbBindColumn, false);
+				%>	 
+				item.<%= sProp %> = <%= sValue %>;
+				<%
+					} 
+				} %>
+			}
+			Populate<%=childProp.ObjectName%>Item(item, operation);		
+		}
+
+
+		protected virtual void Populate<%=childProp.ObjectName%>Item(<%=childProp.ObjectName%> item, Operation operation)
+		{
+		
+		}
+		
+		[Test]
+		public virtual void Add<%=FormatPascal(childProp.ObjectName)%>OnExistingItem()
+		{
+			<%=FormatPascal(Info.ObjectName)%> header = AddItem(<%
+			first = true;
+			foreach (Parameter param in Info.NewObjectParameters) 
+			{	
+				if (first)
+				{
+					first= false;
+				}
+				else
+					writer.Write(", ");
+				%><%=FormatPascal(param.Property.Name)%><%
+			}%>);
+			int count = header.<%=FormatPascal(childCol.Name)%>.Count;
+			<%=childProp.ObjectName%> detail = header.<%=FormatPascal(childCol.Name)%>.Add(<%
+			first = true;
+			foreach (Parameter param in childProp.NewObjectParameters) 
+			{	
+				if (first)
+				{
+					first= false;
+				}
+				else
+					writer.Write(", ");
+				%><%=GetParameterString("header", FormatPascal(param.Property.Name), Info)%><%
+			}%>);
+			Assert.AreEqual(header.<%=FormatPascal(childCol.Name)%>.Count, count + 1);
+			Populate<%=childProp.ObjectName%>(detail, Operation.Add);
+            <%=FormatPascal(Info.ObjectName)%> compareHeader = (<%=FormatPascal(Info.ObjectName)%>) header.Save();
+								
+			Assert.AreEqual(compareHeader.<%=FormatPascal(childCol.Name)%>.Count, count + 1);
+			
+			<%
+			foreach(ValueProperty prop in Info.GetAllValueProperties())
+			{
+				if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None && !(prop.DbBindColumn.IsPrimaryKey() && prop.DefaultValue.Length <= 0) && !prop.ReadOnly) 
+				{%>
+			Assert.AreEqual(header.<%=FormatPascal(prop.Name)%> , compareHeader.<%=FormatPascal(prop.Name)%>);
+			<%
+				} 
+			} %>
+			
+			<%=childProp.ObjectName%> compareDetail = compareHeader.<%=FormatPascal(childCol.Name)%>.GetById(<%
+			first = true;
+			foreach (Parameter param in childProp.GetObjectParameters) 
+			{	
+				if (first)
+				{
+					first= false;
+				}
+				else
+					writer.Write(", ");
+				%>detail.<%=FormatPascal(param.Property.Name)%><%
+			}%>);
+			Assert.IsTrue(compareDetail != null);
+			<%
+			foreach(ValueProperty prop in childProp.GetAllValueProperties())
+			{
+				if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None && !(prop.DbBindColumn.IsPrimaryKey() && prop.DefaultValue.Length <= 0) && !prop.ReadOnly) 
+				{%>
+			Assert.AreEqual(detail.<%=FormatPascal(prop.Name)%> , compareHeader.<%=FormatPascal(childCol.Name)%>[0].<%=FormatPascal(prop.Name)%>);
+			<%
+				} 
+			} %>
+		}
+		
+		[Test]
+		public virtual void Add<%=childProp.ObjectName%>OnNewItem()
+		{
+			<%=FormatPascal(Info.ObjectName)%> header = <%=FormatPascal(Info.ObjectName)%>.New<%=Info.ObjectName%>(<%
+			first = true;
+			foreach (Parameter param in Info.NewObjectParameters) 
+			{	
+				if (first)
+				{
+					first= false;
+				}
+				else
+					writer.Write(", ");
+				%><%=FormatPascal(param.Property.Name)%><%
+			}%>);
+
+			Assert.IsTrue(header.<%=FormatPascal(childCol.Name)%>.Count == 0);
+			<%=childProp.ObjectName%> detail = header.<%=FormatPascal(childCol.Name)%>.Add(<%
+			first = true;
+			foreach (Parameter param in childProp.NewObjectParameters) 
+			{	
+				if (first)
+				{
+					first= false;
+				}
+				else
+					writer.Write(", ");
+				%><%=GetParameterString("header", FormatPascal(param.Property.Name), Info)%><%
+			}%>);
+			Assert.IsTrue(header.<%=FormatPascal(childCol.Name)%>.Count == 1);
+			Populate<%=childProp.ObjectName%>(detail, Operation.Add);
+
+			header = PopulateAndAddItem(header);			
+			<%=FormatPascal(Info.ObjectName)%> compareHeader = (<%=FormatPascal(Info.ObjectName)%>) header.Save();
+								
+			Assert.IsTrue(compareHeader.<%=FormatPascal(childCol.Name)%>.Count == 1);
+			
+			<%
+			foreach(ValueProperty prop in Info.GetAllValueProperties())
+			{
+				if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None && !(prop.DbBindColumn.IsPrimaryKey() && prop.DefaultValue.Length <= 0) && !prop.ReadOnly) 
+				{%>
+			Assert.AreEqual(header.<%=FormatPascal(prop.Name)%> , compareHeader.<%=FormatPascal(prop.Name)%>);
+			<%
+				} 
+			} %>
+			
+			<%
+			foreach(ValueProperty prop in childProp.GetAllValueProperties())
+			{
+				if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None && !(prop.DbBindColumn.IsPrimaryKey() && prop.DefaultValue.Length <= 0) && !prop.ReadOnly) 
+				{%>
+			Assert.AreEqual(header.<%=FormatPascal(childCol.Name)%>[0].<%=FormatPascal(prop.Name)%> , compareHeader.<%=FormatPascal(childCol.Name)%>[0].<%=FormatPascal(prop.Name)%>);
+			<%
+				} 
+			} %>
+		}
+
+		
+		[Test]
+		public virtual void Update<%=childProp.ObjectName%>OnExistingItem()
+		{
+			<%=FormatPascal(Info.ObjectName)%> header = AddItem(<%
+			first = true;
+			foreach (Parameter param in Info.NewObjectParameters) 
+			{	
+				if (first)
+				{
+					first= false;
+				}
+				else
+					writer.Write(", ");
+				%><%=FormatPascal(param.Property.Name)%><%
+			}%>);
+			Assert.IsTrue(header.<%=FormatPascal(childCol.Name)%>.Count == 0);
+			<%=childProp.ObjectName%> detail = header.<%=FormatPascal(childCol.Name)%>.Add(<%
+			first = true;
+			foreach (Parameter param in childProp.NewObjectParameters) 
+			{	
+				if (first)
+				{
+					first= false;
+				}
+				else
+					writer.Write(", ");
+				%><%=FormatPascal(param.Property.Name)%><%
+			}%>);
+			Assert.IsTrue(header.<%=FormatPascal(childCol.Name)%>.Count == 1);
+			Populate<%=childProp.ObjectName%>(detail, Operation.Add);
+			header = (<%=FormatPascal(Info.ObjectName)%>) header.Save();
+			Assert.IsTrue(header.<%=FormatPascal(childCol.Name)%>.Count == 1);
+			
+			Populate<%=childProp.ObjectName%>(header.<%=FormatPascal(childCol.Name)%>[0], Operation.Update);
+
+			<%=FormatPascal(Info.ObjectName)%> compareHeader = (<%=FormatPascal(Info.ObjectName)%>) header.Save();
+								
+			Assert.IsTrue(compareHeader.<%=FormatPascal(childCol.Name)%>.Count == 1);
+			
+			
+			
+			<%
+			foreach(ValueProperty prop in Info.GetAllValueProperties())
+			{
+				if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None && !(prop.DbBindColumn.IsPrimaryKey() && prop.DefaultValue.Length <= 0) && !prop.ReadOnly) 
+				{%>
+			Assert.AreEqual(header.<%=FormatPascal(prop.Name)%> , compareHeader.<%=FormatPascal(prop.Name)%>);
+			<%
+				} 
+			} %>
+			
+			<%
+			foreach(ValueProperty prop in childProp.GetAllValueProperties())
+			{
+				if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None && !(prop.DbBindColumn.IsPrimaryKey() && prop.DefaultValue.Length <= 0) && !prop.ReadOnly) 
+				{%>
+			Assert.AreEqual(header.<%=FormatPascal(childCol.Name)%>[0].<%=FormatPascal(prop.Name)%> , compareHeader.<%=FormatPascal(childCol.Name)%>[0].<%=FormatPascal(prop.Name)%>);
+			<%
+				} 
+			} %>
+		}
+
+		
+		[Test]
+		[ExpectedException(typeof(System.NotSupportedException))]
+		public virtual void DirectDelete<%=childProp.ObjectName%>OnExistingItem()
+		{
+			<%=FormatPascal(Info.ObjectName)%> header = AddItem(<%
+			first = true;
+			foreach (Parameter param in Info.NewObjectParameters) 
+			{	
+				if (first)
+				{
+					first= false;
+				}
+				else
+					writer.Write(", ");
+				%><%=FormatPascal(param.Property.Name)%><%
+			}%>);
+			Assert.IsTrue(header.<%=FormatPascal(childCol.Name)%>.Count == 0);
+			<%=childProp.ObjectName%> detail = header.<%=FormatPascal(childCol.Name)%>.Add(<%
+			first = true;
+			foreach (Parameter param in childProp.NewObjectParameters) 
+			{	
+				if (first)
+				{
+					first= false;
+				}
+				else
+					writer.Write(", ");
+				%><%=FormatPascal(param.Property.Name)%><%
+			}%>);
+			Assert.IsTrue(header.<%=FormatPascal(childCol.Name)%>.Count == 1);
+			Populate<%=childProp.ObjectName%>(detail, Operation.Add);
+			header = (<%=FormatPascal(Info.ObjectName)%>) header.Save();
+			Assert.IsTrue(header.<%=FormatPascal(childCol.Name)%>.Count == 1);
+			
+			header.<%=FormatPascal(childCol.Name)%>[0].Delete();
+		}
+
+		
+		[Test]
+		public virtual void DeferedDelete<%=childProp.ObjectName%>OnExistingItem()
+		{
+			<%=FormatPascal(Info.ObjectName)%> header = AddItem(<%
+			first = true;
+			foreach (Parameter param in Info.NewObjectParameters) 
+			{	
+				if (first)
+				{
+					first= false;
+				}
+				else
+					writer.Write(", ");
+				%><%=FormatPascal(param.Property.Name)%><%
+			}%>);
+			Assert.IsTrue(header.<%=FormatPascal(childCol.Name)%>.Count == 0);
+			<%=childProp.ObjectName%> detail = header.<%=FormatPascal(childCol.Name)%>.Add(<%
+			first = true;
+			foreach (Parameter param in childProp.NewObjectParameters) 
+			{	
+				if (first)
+				{
+					first= false;
+				}
+				else
+					writer.Write(", ");
+				%><%=FormatPascal(param.Property.Name)%><%
+			}%>);
+			Assert.IsTrue(header.<%=FormatPascal(childCol.Name)%>.Count == 1);
+			Populate<%=childProp.ObjectName%>(detail, Operation.Add);
+			header = (<%=FormatPascal(Info.ObjectName)%>) header.Save();
+			Assert.IsTrue(header.<%=FormatPascal(childCol.Name)%>.Count == 1);
+			
+			header.<%=FormatPascal(childCol.Name)%>.Remove(header.<%=FormatPascal(childCol.Name)%>[0]);
+			<%=FormatPascal(Info.ObjectName)%> compareHeader = (<%=FormatPascal(Info.ObjectName)%>) header.Save();
+								
+			Assert.IsTrue(header.<%=FormatPascal(childCol.Name)%>.Count == 0);
+			
+			<%
+			foreach(ValueProperty prop in Info.GetAllValueProperties())
+			{
+				if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None && !(prop.DbBindColumn.IsPrimaryKey() && prop.DefaultValue.Length <= 0) && !prop.ReadOnly) 
+				{%>
+			Assert.AreEqual(header.<%=FormatPascal(prop.Name)%> , compareHeader.<%=FormatPascal(prop.Name)%>);
+			<%
+				} 
+			} %>
+		}
+		#endregion
+		<%} %>
+	}	
+}
+<script runat="template">
+private string GetParameterString(string instanceName, string parameterName, CslaObjectInfo itemInfo)
+{
+	foreach(ValueProperty prop in itemInfo.GetAllValueProperties())
+	{
+		if (prop.Name.Equals(parameterName))
+		{
+			return instanceName + "." + parameterName;	
+		}
+	}
+	return parameterName;
+}
+
+
+public string GetDataString(CslaGenerator.Metadata.DbBindColumn column, bool add)
+{
+	switch (column.DataType)
+	{
+				case DbType.Byte:
+				{
+					if (add)
+						return "byte.Parse(\"0\")";
+					else
+						return "byte.Parse(\"1\")";
+				}
+				case DbType.Int16:
+				case DbType.Int32:
+				case DbType.Int64:
+				{
+					if (add)
+						return "1";
+					else
+						return "2";
+				}
+				case DbType.AnsiStringFixedLength:
+				case DbType.AnsiString:
+				case DbType.String:
+				case DbType.StringFixedLength:
+				{
+					if (add)
+						return "\"A\"";
+					else
+						return "\"U\"";
+				}
+				case DbType.Boolean:
+				{
+					if (add)
+						return "false";
+					else
+						return "true";
+				}
+				case DbType.Guid:
+				{
+					if (add)
+						return "new Guid(\"{41C0BEEB-4D55-4700-B77E-1592B2613370}\")";
+					else
+						return "new Guid(\"{258950C4-D17C-409f-8E21-623E3F5A85DD}\")";
+				}
+				case DbType.Decimal:
+				case DbType.Currency:
+				{
+					if (add)
+						return "2";
+					else
+						return "1";
+				}				
+				case DbType.Single:
+				case DbType.Double:
+				{
+					if (add)
+						return "9/10f";
+					else
+						return "11/10f";
+				}				
+				case DbType.DateTime:
+				case DbType.Date:
+				{
+					if (add)
+						return "DateTime.Now.Date.ToString()";
+					else 
+						return "DateTime.Now.AddDays(-1).Date.ToString()";
+				}
+//				case DbType.Binary:
+//				{
+//					return "GetValue";
+//				}	
+				default:
+				{
+					return "";
+					//return "__SQL__" + dataType.ToString();
+				}
+	
+	}
+}
+
+public ParameterCollection GetCriterias(CslaObjectInfo info)
+{
+	ParameterCollection list = new ParameterCollection();
+	AddUniqueItems(Info.GetObjectParameters, list);
+	AddUniqueItems(Info.NewObjectParameters, list);
+	foreach (ChildProperty childCol in Info.GetMyChildProperties()) 
+	{
+		CslaObjectInfo colType = FindChildInfo(Info, childCol.TypeName);
+		CslaObjectInfo childProp = FindChildInfo(Info, colType.ItemType);			
+		AddUniqueItems(colType.GetObjectParameters, list);			
+		AddUniqueItems(childProp.GetObjectParameters, list);			
+		AddUniqueItems(colType.NewObjectParameters, list);			
+		AddUniqueItems(childProp.NewObjectParameters, list);
+	}
+	
+	return list;		
+}
+
+private void AddUniqueItems(ParameterCollection source, ParameterCollection target)
+{
+	bool found;
+	foreach (Parameter param in source) 
+	{
+		found = false;
+		foreach (Parameter item in target)
+		{
+			if (param.Property.Name == item.Property.Name)
+			{
+				found = true;
+				break;
+			}
+		}
+		
+		if (!found)
+		{
+			target.Add(param);	
+		}
+	}	
+}
+</script>
