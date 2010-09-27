@@ -1,0 +1,100 @@
+<%@ CodeTemplate Inherits="SprocTemplateHelper" Language="C#" TargetLanguage="T-SQL" Description="Generates a Select stored procedure." %>
+
+<%@ Assembly Name="DBSchemaInfo" %>
+<%@ Import Namespace="DBSchemaInfo.Base" %>
+<%@ Assembly Name="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator.Metadata" %>
+<%@ Import Namespace="CslaGenerator.Util" %>
+<%@ Assembly Name="System.Data"%>
+<%@ Import Namespace="System.Collections" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="System.Text" %>
+<%@ Assembly Name="System.Windows.Forms"%>
+<%@ Import Namespace="System.Windows.Forms"%>
+
+<%
+Init(Info);
+int propCount = 0;
+bool first = false;
+bool collType = IsCollectionType(Info.ObjectType);
+bool searchWhereClause = collType;
+%>
+/***** <%=Criteria.GetOptions.ProcedureName%> *****/
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[<%=Criteria.GetOptions.ProcedureName%>]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE [<%=Criteria.GetOptions.ProcedureName%>]
+GO
+
+CREATE PROCEDURE [<%=Criteria.GetOptions.ProcedureName%>]<%
+first = true;
+foreach (CriteriaProperty parm in Criteria.Properties)
+{
+    propCount++;
+    if (!first) { %>,<% } else { first = false; } 
+    %>
+    @<%=parm.ParameterName%> <%=GetDataTypeString(parm)%><%=collType ? " = NULL" : ""%><%
+}
+%>
+AS
+    BEGIN
+
+        SET NOCOUNT ON
+    <%
+if (collType && propCount > 0)
+{
+    %>
+
+        /* Search Variables */
+    <%
+    first = true;
+    foreach (Property parm in Criteria.Properties)
+    {
+        ValueProperty prop = GetValuePropertyByName(Info, parm.Name);
+        if (prop != null)
+        {
+            if (IsStringType(prop.DbBindColumn.DataType))
+            {
+                if (prop.DbBindColumn.DataType.ToString() == "StringFixedLength")
+                {
+                    %>
+        IF (@<%=parm.Name%> <> '')
+            SET @<%=parm.Name%> = RTRIM(@<%=parm.Name%>) + '%'
+        ELSE
+            SET @<%=parm.Name%> = '%'
+<%
+                }
+                else
+                {
+                    %>
+        IF (@<%=parm.Name%> <> '')
+            SET @<%=parm.Name%> = @<%=parm.Name%> + '%'
+        ELSE
+            SET @<%=parm.Name%> = '%'
+<% 
+                }
+            }
+        }
+    }
+}
+
+//Root Objects
+string getSelect = GetSelect(Info, Criteria, false, searchWhereClause);
+if (!string.IsNullOrEmpty(getSelect))
+{
+    %><%= getSelect %>
+<%
+}
+//Child Objects
+string getChildSelect = GetChildSelects(Info, Criteria, searchWhereClause);
+if (!string.IsNullOrEmpty(getChildSelect))
+{
+    %><%= getChildSelect %>
+<%
+}
+if (string.IsNullOrEmpty(getSelect) && string.IsNullOrEmpty(getChildSelect))
+{
+    Response.Write("\r\n");
+}
+%>
+
+    END
+GO

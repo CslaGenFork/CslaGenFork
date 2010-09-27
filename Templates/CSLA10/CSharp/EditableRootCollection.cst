@@ -1,0 +1,124 @@
+<%@ CodeTemplate Inherits="CslaTemplateHelper" Language="C#" TargetLanguage="C#" Description="Generates a CSLA Editable Root Collection."%>
+<%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the EditableRootCollection object to create." %>
+
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Assembly Name="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator.Metadata" %>
+<%@ Import Namespace="CslaGenerator.Util" %>
+<%@ Import Namespace="System.Text" %>
+
+<% bool first = true; %>
+<!-- #include file="Header.inc" -->
+using CSLA;
+using CSLA.Data;
+using System.Data;
+using System.Data.SqlClient;
+using System;
+<%= GetUsingStatementsString(Info) %>
+namespace <%=Info.ObjectNamespace%>
+{
+	<!-- #include file="XmlComment.inc" -->
+	<%= "\r\n" %>	[Serializable]
+	public abstract class <%=Info.ObjectName%>Base : BusinessCollectionBase
+	{
+		<!-- #include file="CollectionBusinessProps.inc" -->
+	
+		<!-- #include file="Contains.inc" -->
+		
+		<!-- #include file="FindMethods.inc" -->
+		<%= "\r\n" %>		#region Shared Methods
+		
+		/// <summary>
+		/// Factory method. Creates a new <see cref="<%=Info.ObjectName%>" /> collection.
+		/// </summary>
+		public static <%= Info.ObjectName %> New<%= Info.ObjectName %>()
+		{
+			<% if (Info.NewRoles != String.Empty) {
+				string[] newRoles = System.Text.RegularExpressions.Regex.Split(Info.NewRoles, ";");
+				first = true; %>
+			if (<% foreach (string role in newRoles) {
+					if (!first) { %> &&
+			    <% } else {
+						first = false;
+					} %>!System.Threading.Thread.CurrentPrincipal.IsInRole("<%=role%>")<%
+				   } %>) {
+					throw new System.Security.SecurityException("User not authorized to remove a <%=Info.ObjectName%>");
+			}
+			<% } %>
+			return(new <%= Info.ObjectName %>());
+		}
+		<!-- #include file="CollectionGetObject.inc" -->
+		
+		<!-- #include file="CollectionSave.inc" -->
+		<%= "\r\n" %>		#endregion
+		<!-- #include file="Constructor.inc" -->
+	
+		<!-- #include file="Criteria.inc" -->
+		<%= "\r\n" %>		#region Data Access
+		<!-- #include file="CollectionDataPortalFetch.inc" -->
+		<%= "\r\n" %>		/// <summary>
+		/// Save (delete, add, update) all child objects to database.
+		/// </summary>
+		protected override void DataPortal_Update()
+		{
+			<%if(Info.TransactionType == TransactionType.ADO) {%>
+			//Save data to DB
+			SqlConnection cn = new SqlConnection(DB("<%= Info.DbName %>"));
+			SqlCommand cmd = new SqlCommand();
+			SqlTransaction tr;
+			
+			try
+			{
+				cn.Open();
+				tr = cn.BeginTransaction();
+				try
+				{
+			<%} 
+			CslaObjectInfo childInfo3 = FindChildInfo(Info, Info.ItemType);
+			CslaObjectInfo childInfo2 = FindChildInfo(childInfo3, childInfo3.ParentType);%>			
+					// Loop through the deleted child objects and call their Update methods
+					foreach(<%= Info.ItemType %> child in deletedList)
+					{
+						child.Update(<%if(Info.TransactionType == TransactionType.ADO) {%>tr<%}%><%
+						if (childInfo2.ObjectType != CslaObjectType.EditableChildCollection && childInfo2.ObjectType != CslaObjectType.EditableRootCollection){
+						%>, null<%}%>);
+					}
+
+					// Now clear the deleted objects from the list
+					deletedList.Clear();
+
+					// Loop through the objects to add and update, calling the Update Method
+					foreach(<%= Info.ItemType %> child in List)
+					{
+						child.Update(<%if(Info.TransactionType == TransactionType.ADO) {%>tr<%}%><%
+						if (childInfo2.ObjectType != CslaObjectType.EditableChildCollection && childInfo2.ObjectType != CslaObjectType.EditableRootCollection){
+						%>, null<%}%>);
+					}
+				<%if(Info.TransactionType == TransactionType.ADO) {%>				
+					tr.Commit();
+				}              
+				catch
+				{
+				   tr.Rollback();
+				   throw;
+				}
+			}
+			finally
+			{
+				cn.Close();
+			}   
+			<%}%>
+		}
+
+		/// <summary>
+		/// Not implemented.
+		/// </summary>
+		protected override void DataPortal_Delete(object Criteria)
+		{
+		}
+		
+		#endregion
+		
+	}
+}

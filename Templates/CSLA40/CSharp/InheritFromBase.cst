@@ -1,0 +1,124 @@
+<%@ CodeTemplate Inherits="CslaTemplateHelper" Language="CSharp" TargetLanguage="CSharp" Description="Generates a CSLA Inherited Object." %>
+<%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the CSLA Object to inherit from." %>
+<%@ Property Name="ActiveObjects" Type="System.Boolean" Default="false" Category="Options" Description="if (true, base class is generated as ActiveObjects" %>
+
+<%@ Assembly Name="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator.Metadata" %>
+<%@ Import Namespace="CslaGenerator.Util" %>
+
+<%
+if (ActiveObjects)
+{
+%>using ActiveObjects;
+<%
+}
+    %><!-- #include file="Header.inc" -->
+<%
+if (Info.ObjectNamespace.IndexOf(CurrentUnit.GenerationParams.UtilitiesNamespace) != 0)
+{
+%>using <%= CurrentUnit.GenerationParams.UtilitiesNamespace %>;
+<%
+Response.Write(Environment.NewLine);
+}
+if (Info.ObjectNamespace.Length > 0)
+{
+%>namespace <%= Info.ObjectNamespace %>
+{
+<%
+}
+%>
+    public partial class <%= Info.ObjectName %>
+    {
+        <%
+        System.Collections.Generic.List<string> eventList = new System.Collections.Generic.List<string>();
+        if (Info.HasGetCriteria)
+            eventList.AddRange(new string[] {"FetchPre", "FetchPost"});
+        if (Info.ObjectType != CslaObjectType.ReadOnlyObject &&
+            Info.ObjectType != CslaObjectType.NameValueList &&
+            Info.ObjectType.ToString().IndexOf("Collection") == -1)
+        {
+            eventList.AddRange(new string[] {"UpdateStart", "UpdatePre", "UpdatePost", "InsertStart", "InsertPre", "InsertPost", "DeletePre", "DeletePost"});
+        }
+        if (Info.ObjectType.ToString().IndexOf("Collection") == -1 && Info.ObjectType != CslaObjectType.NameValueList)
+            eventList.Add("FetchRead");
+        if (Info.ObjectType == CslaObjectType.EditableRoot ||
+            Info.ObjectType == CslaObjectType.DynamicEditableRoot ||
+            Info.ObjectType == CslaObjectType.EditableChild ||
+            Info.ObjectType == CslaObjectType.EditableSwitchable)
+            eventList.Add("Create");
+        if (Info.ObjectType == CslaObjectType.EditableChildCollection)
+            eventList.AddRange(new string[] {"UpdateStart", "UpdatePre", "UpdatePost"});
+        if (eventList.Count > 0)
+        {
+            %>
+
+        #region Pseudo Event Handlers
+
+            <%
+            foreach (string strEvent in eventList)
+            {
+                %>
+        //partial void On<%= strEvent %>(DataPortalHookArgs e)
+        //{
+        //    throw new System.Exception("The method or operation is not implemented.");
+        //}
+
+                <%
+            }
+            %>
+        #endregion
+
+            <%
+        }
+        %>
+        <%
+        if (ActiveObjects)
+        {
+            %>
+            <%
+            if (Info.ObjectType == CslaObjectType.ReadOnlyCollection || Info.ObjectType == CslaObjectType.ReadOnlyObject)
+            {
+                %>
+        #region ISubscriber interface (overriden)
+                <%
+                if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
+                {
+                    CslaObjectInfo childInfo = FindChildInfo(Info, Info.ItemType);
+                }
+                %>
+                <%
+                if (Info.ObjectType == CslaObjectType.ReadOnlyObject)
+                {
+                    %>
+        //internal void ExtractInfo(ObjectType obj)
+        {
+                <%
+                foreach (ValueProperty prop in Info.GetAllValueProperties())
+                {
+                    %>
+            //this.<%= FormatProperty(prop.Name) %> = obj.<%= FormatProperty(prop.Name) %>;
+                    <%
+                }
+                %>
+        //}
+
+            <%
+            }
+            %>
+        #endregion
+            <%
+        }
+        %>
+    <%
+    }
+%>
+    }
+<%
+if (Info.ObjectNamespace.Length > 0)
+{
+    %>
+}
+    <%
+}
+%>
