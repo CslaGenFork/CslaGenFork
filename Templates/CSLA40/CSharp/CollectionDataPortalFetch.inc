@@ -2,9 +2,15 @@
 bool dependentAllowNew3 = false;
 if (!IsReadOnlyType(Info.ObjectType) && IsCollectionType(Info.ObjectType))
 {
-    CslaObjectInfo itemInfo3 = FindChildInfo(Info, Info.ItemType);
-    if (Info.AllowNew && itemInfo3.NewRoles.Trim() != String.Empty)
-        dependentAllowNew3 = true;
+        if ((CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
+            CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel) &&
+            (Info.GetRoles.Trim() != String.Empty) ||
+            (Info.DenyGetRoles.Trim() != String.Empty))
+        {
+            CslaObjectInfo itemInfo3 = FindChildInfo(Info, Info.ItemType);
+            if (Info.AllowNew && itemInfo3.NewRoles.Trim() != String.Empty)
+                dependentAllowNew3 = true;
+        }
 }
 if (!Info.UseCustomLoading)
 {
@@ -111,7 +117,7 @@ if (!Info.UseCustomLoading)
             Fetch(ds.Tables[0].Rows);
         }
 
-<!-- #include file="CreateRelations.inc" -->
+<!-- #include file="CreateRelations.inccs" -->
         <% } %>
     <% }
     bool isSwitchable = false;
@@ -148,8 +154,13 @@ if (!Info.UseCustomLoading)
             IsReadOnly = true;
             <%
             }
-            %>
+            if (dependentAllowNew3 || Info.AllowNew.ToString().ToLower() != "true")
+            {
+                %>
             AllowNew = <%= dependentAllowNew3 ? itemName2 + ".CanAddObject()" : Info.AllowNew.ToString().ToLower() %>;
+            <%
+            }
+            %>
             RaiseListChangedEvents = true;
         }
     <% } else { %>
@@ -180,8 +191,13 @@ if (!Info.UseCustomLoading)
             IsReadOnly = true;
             <%
             }
-            %>
+            if (dependentAllowNew3 || Info.AllowNew.ToString().ToLower() != "true")
+            {
+                %>
             AllowNew = <%= dependentAllowNew3 ? itemName2 + ".CanAddObject()" : Info.AllowNew.ToString().ToLower() %>;
+            <%
+            }
+            %>
             RaiseListChangedEvents = true;
         }
         <% if (Info.HasGetCriteria) { %>

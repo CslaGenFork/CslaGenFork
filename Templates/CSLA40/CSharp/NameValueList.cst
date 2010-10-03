@@ -26,20 +26,15 @@ if (nameProp == null || valueProp == null)
     Errors.Append("Missing name or value properties." + Environment.NewLine);
 else
 {
-    %><!-- #include file="Header.inc" -->
+    %><!-- #include file="Header.inccs" -->
 using System;
 using System.Data;
 using System.Data.SqlClient;
 <%
     if (ActiveObjects) { %>using ActiveObjects;<%  } else { %>using Csla;<% } %>
 using Csla.Data;
+<%= GetUsingStatementsString(Info) %>
 <%
-    if (Info.ObjectNamespace.IndexOf(CurrentUnit.GenerationParams.UtilitiesNamespace) != 0)
-    {
-%>using <%= CurrentUnit.GenerationParams.UtilitiesNamespace %>;
-<%
-    }
-    Response.Write(Environment.NewLine);
     if (Info.ObjectNamespace.Length > 0)
     {
 %>namespace <%= Info.ObjectNamespace %>
@@ -47,7 +42,7 @@ using Csla.Data;
     <%
     }
     %>
-<% bool? firstComment = null; %><!-- #include file="XmlComment.inc" -->
+<% bool? firstComment = null; %><!-- #include file="XmlComment.inccs" -->
     [Serializable]
     <%
     if (ActiveObjects && Info.SubscribeToChannel.Length > 0)
@@ -108,7 +103,10 @@ using Csla.Data;
         public static <%= Info.ObjectName %> Get<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>()
         {
             <%
-                if (Info.GetRoles.Trim() != string.Empty)
+                if ((CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
+                    CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel) &&
+                    (Info.GetRoles.Trim() != String.Empty) ||
+                    (Info.DenyGetRoles.Trim() != String.Empty))
                 {
                     %>
             if (!CanGetObject())
@@ -150,7 +148,7 @@ using Csla.Data;
     <%
     }
     %>
-<!-- #include file="SharedAuthorizationMethods.inc" -->
+<!-- #include file="SharedAuthorizationMethods.inccs" -->
 <%
     if (Info.GenerateDataAccessRegion)
     {
@@ -221,7 +219,7 @@ using Csla.Data;
         <%
         }
     %>
-<!-- #include file="Events.inc" -->
+<!-- #include file="Events.inccs" -->
 
 <%
     }

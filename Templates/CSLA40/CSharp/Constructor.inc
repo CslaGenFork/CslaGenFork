@@ -7,12 +7,22 @@ if (!IsReadOnlyType(Info.ObjectType) && IsCollectionType(Info.ObjectType))
 {
     CslaObjectInfo itemInfo2 = FindChildInfo(Info, Info.ItemType);
     itemName2 = itemInfo2.ObjectName;
-    if (Info.AllowNew && itemInfo2.NewRoles.Trim() != String.Empty)
-        dependentAllowNew2 = true;
-    if (Info.AllowEdit && itemInfo2.UpdateRoles.Trim() != String.Empty)
-        dependentAllowEdit2 = true;
-    if (Info.AllowRemove && itemInfo2.DeleteRoles.Trim() != String.Empty)
-        dependentAllowRemove2 = true;
+    if ((CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
+        CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel) &&
+        (Info.NewRoles.Trim() != String.Empty) ||
+        (Info.UpdateRoles.Trim() != String.Empty) ||
+        (Info.DeleteRoles.Trim() != String.Empty) ||
+        (Info.DenyNewRoles.Trim() != String.Empty) ||
+        (Info.DenyUpdateRoles.Trim() != String.Empty) ||
+        (Info.DenyDeleteRoles.Trim() != String.Empty))
+    {
+        if (Info.AllowNew && itemInfo2.NewRoles.Trim() != String.Empty)
+            dependentAllowNew2 = true;
+        if (Info.AllowEdit && itemInfo2.UpdateRoles.Trim() != String.Empty)
+            dependentAllowEdit2 = true;
+        if (Info.AllowRemove && itemInfo2.DeleteRoles.Trim() != String.Empty)
+            dependentAllowRemove2 = true;
+    }
 }
 %>
 

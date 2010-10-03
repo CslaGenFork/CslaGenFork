@@ -10,7 +10,7 @@
 if (CurrentUnit.GenerationParams.HeaderVerbosity != HeaderVerbosity.None)
 {
     %>
-<!-- #include file="HeaderVersion.inc" -->
+<!-- #include file="HeaderVersion.inccs" -->
 <%
     Response.Write(Environment.NewLine);
 }

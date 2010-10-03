@@ -10,11 +10,11 @@
 <%@ Import Namespace="CslaGenerator.Util" %>
 <%@ Import Namespace="System.Text" %>
 
-<!-- #include file="EditableChildValidate.inc" -->
+<!-- #include file="EditableChildValidate.inccs" -->
 <% if (Errors.Length == 0)
 {
     bool first = true;
-    %><!-- #include file="Header.inc" -->
+    %><!-- #include file="Header.inccs" -->
 using System;
 using System.Data;
 using System.Data.SqlClient;
@@ -36,7 +36,7 @@ using Csla.Data;
     <%
     }
     %>
-<% bool? firstComment = null; %><!-- #include file="XmlComment.inc" -->
+<% bool? firstComment = null; %><!-- #include file="XmlComment.inccs" -->
     <%
     if (GetAttributesString(Info.Attributes) != string.Empty)
     {
@@ -67,16 +67,16 @@ using Csla.Data;
     {
         %><% if (ActiveObjects) { %>Active<% } %>BusinessBase<%
     }
-        %><<%=Info.ObjectName%>><!-- #include file="Implements.inc" -->
+        %><<%=Info.ObjectName%>><!-- #include file="Implements.inccs" -->
     {
-<!-- #include file="StaticFields.inc" -->
-<!-- #include file="StateFields.inc" -->
+<!-- #include file="StaticFields.inccs" -->
+<!-- #include file="StateFields.inccs" -->
 
-<!-- #include file="BusinessProps.inc" -->
+<!-- #include file="BusinessProps.inccs" -->
 
-<!-- #include file="BusinessRules.inc" -->
+<!-- #include file="BusinessRules.inccs" -->
 
-        <!-- #include file="ObjectOverrides.inc" -->
+        <!-- #include file="ObjectOverrides.inccs" -->
     <%
     Response.Write(Environment.NewLine);
     %>
@@ -89,7 +89,7 @@ using Csla.Data;
             Warnings.Append("Make sure you specify a DB name." + Environment.NewLine) ;
         }
         %>
-        <!-- #include file="NewObject.inc" -->
+        <!-- #include file="NewObject.inccs" -->
 
         <%
         if (Info.DbName != String.Empty)
@@ -97,13 +97,13 @@ using Csla.Data;
             if (!Info.LazyLoad)
             {
                 %>
-        <!-- #include file="InternalGetObject.inc" -->
+        <!-- #include file="InternalGetObject.inccs" -->
                 <%
             }
             else
             {
                 %>
-        <!-- #include file="GetObject.inc" -->
+        <!-- #include file="GetObject.inccs" -->
                 <%
             }
         }
@@ -115,15 +115,15 @@ using Csla.Data;
         <%
     }
     %>
-<!-- #include file="Constructor.inc"  -->
+<!-- #include file="Constructor.inccs"  -->
 
-    <!-- #include file="Criteria.inc"  -->
+    <!-- #include file="Criteria.inccs"  -->
 
-<!-- #include file="SharedAuthorizationMethods.inc" -->
+<!-- #include file="SharedAuthorizationMethods.inccs" -->
     <%
     Response.Write(Environment.NewLine);
     %>
-<!-- #include file="ConvertProperties.inc" -->
+<!-- #include file="ConvertProperties.inccs" -->
 
     <%
     if (Info.DbName != String.Empty)
@@ -135,16 +135,16 @@ using Csla.Data;
             <%
             Response.Write(Environment.NewLine);
             %>
-        <!-- #include file="DataPortalCreate.inc"  -->
+        <!-- #include file="DataPortalCreate.inccs"  -->
 
-        <!-- #include file="DataPortalFetch.inc" -->
+        <!-- #include file="DataPortalFetch.inccs" -->
 
-        <!-- #include file="InternalUpdate.inc" -->
+        <!-- #include file="InternalUpdate.inccs" -->
             <%
             Response.Write(Environment.NewLine);
             %>
         #endregion
-<!-- #include file="Events.inc" -->
+<!-- #include file="Events.inccs" -->
 <%
         }
     }

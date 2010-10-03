@@ -108,8 +108,13 @@ if (!Info.UseCustomLoading)
                 {
                     %>
                 MarkOld();
+                <%
+                    if (Info.CheckRulesOnFetch)
+                    {
+                        %>
                 BusinessRules.CheckRules();
                 <%
+                    }
                 }
                 %>
             }
@@ -139,8 +144,13 @@ if (!Info.UseCustomLoading)
             {
                 %>
             MarkOld();
+            <%
+                if (Info.CheckRulesOnFetch)
+                {
+                    %>
             BusinessRules.CheckRules();
             <%
+                }
                 if (ActiveObjects)
                 {
                     %>
@@ -150,13 +160,13 @@ if (!Info.UseCustomLoading)
             }
             %>
         }
-<!-- #include file="CreateRelations.inc" -->
+<!-- #include file="CreateRelations.inccs" -->
         <%
         }
     }
 %>
 
-        <!-- #include file="InternalFetch.inc" -->
+        <!-- #include file="InternalFetch.inccs" -->
     <%
 }
 %>

@@ -110,10 +110,11 @@ foreach (Criteria c in Info.CriteriaObjects)
     %>var args = new DataPortalHookArgs(<%= c.Properties.Count > 0 ? "crit" : "" %>);
             OnCreate(args);
     <%
+    // this is DataPortal_Create; so always CheckRules except for ReadOnlyCollection
     if (Info.ObjectType != CslaObjectType.ReadOnlyCollection)
     {
         %>
-            this.BusinessRules.CheckRules();
+            BusinessRules.CheckRules();
             <%
     }
     %>

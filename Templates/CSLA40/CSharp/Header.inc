@@ -1,12 +1,12 @@
 <%
 if (CurrentUnit.GenerationParams.HeaderVerbosity != HeaderVerbosity.None)
 {
-    %><!-- #include file="HeaderVersion.inc" -->
+    %><!-- #include file="HeaderVersion.inccs" -->
 <%
     if (CurrentUnit.GenerationParams.HeaderVerbosity == HeaderVerbosity.Full)
     {
         %>
-<!-- #include file="HeaderBody.inc" -->
+<!-- #include file="HeaderBody.inccs" -->
 <%
     }
     Response.Write(Environment.NewLine);

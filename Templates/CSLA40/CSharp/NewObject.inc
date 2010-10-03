@@ -27,7 +27,10 @@ foreach (Criteria c in Info.CriteriaObjects)
         %>internal<% } else { %>public<% } %> static <%=Info.ObjectName%> New<%=Info.ObjectName%><%=c.CreateOptions.FactorySuffix%>(<%= strNewParams %>)
         {
             <%
-            if (Info.NewRoles != String.Empty)
+            if ((CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
+                CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel) &&
+                (Info.NewRoles.Trim() != String.Empty) ||
+                (Info.DenyNewRoles.Trim() != String.Empty))
             {
                 %>
             if (!CanAddObject())

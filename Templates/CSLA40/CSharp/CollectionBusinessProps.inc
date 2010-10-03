@@ -20,7 +20,7 @@ if (!IsReadOnlyType(itemInfo.ObjectType) &&
         public new void Add(<%= itemInfo.ObjectName %> item)
         {
             if (!AllowNew)
-                throw new System.Security.SecurityException("User not authorized to create <%= itemInfo.ObjectName %>.");
+                throw new System.Security.SecurityException("User not authorized to create a <%= itemInfo.ObjectName %>.");
 
             base.Add(item);
         }
@@ -39,7 +39,7 @@ if (!IsReadOnlyType(itemInfo.ObjectType) &&
         public new bool Remove(<%= itemInfo.ObjectName %> item)
         {
             if (!AllowRemove)
-                throw new System.Security.SecurityException("User not authorized to remove <%= itemInfo.ObjectName %>.");
+                throw new System.Security.SecurityException("User not authorized to remove a <%= itemInfo.ObjectName %>.");
 
             return base.Remove(item);
         }
