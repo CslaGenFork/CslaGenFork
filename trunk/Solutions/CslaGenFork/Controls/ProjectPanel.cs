@@ -575,13 +575,13 @@ namespace CslaGenerator.Controls
 
         public void AddToObjectRelationBuilder()
         {
-            MessageBox.Show("1) Select the Objetc Relation from a combo box" + Environment.NewLine +
-                "2) Confirm or change the relation type from a combo box or radio buttons" + Environment.NewLine +
-                "3) From a combo box, select the \"AS\" member according to 1) and 2):" + Environment.NewLine +
-                "\t- Main Entity" + Environment.NewLine +
-                "\t- Secondary Entity" + Environment.NewLine +
-                "\t- Main collection" + Environment.NewLine +
-                            "\t- Main item");
+            MessageBox.Show("1) Select the Objetc Relation from a combo box\r\n" +
+                            "2) Confirm or change the relation type from a combo box or radio buttons\r\n" +
+                            "3) From a combo box, select the \"AS\" member according to 1) and 2):\r\n" +
+                            "\t- Primary Entity\r\n" +
+                            "\t- Secondary Entity\r\n" +
+                            "\t- Primary collection\r\n" +
+                            "\t- Primary item", "CTP - Not implemented.");
         }
 
         public IEnumerable<CslaObjectInfo> GetSelectedObjects()

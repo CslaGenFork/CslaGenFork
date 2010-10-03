@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Drawing.Design;
 using System.IO;
 using System.Xml.Serialization;
+using CslaGenerator.Attributes;
 using CslaGenerator.Design;
 
 namespace CslaGenerator.Metadata
@@ -16,14 +17,17 @@ namespace CslaGenerator.Metadata
 		private string _sourcePropertyName = String.Empty;
 		private bool _isIdentity = false;
 
+        [Category("01. Definition")]
+        [Description("The property name.")]
         public override string Name
         {
             get { return base.Name; }
             set { base.Name = value; }
         }
 
-        [Category("Definition")]
+        [Category("01. Definition")]
         [Description("This is a description.")]
+        [UserFriendlyName("Source Property Name")]
         public string SourcePropertyName
         {
             get
@@ -36,8 +40,9 @@ namespace CslaGenerator.Metadata
             set { _sourcePropertyName = value; }
         }
 
-        [Category("Definition")]
+        [Category("01. Definition")]
         [Description("This is a description.")]
+        [UserFriendlyName("Is Identity")]
         public bool IsIdentity
         {
             get { return _isIdentity; }

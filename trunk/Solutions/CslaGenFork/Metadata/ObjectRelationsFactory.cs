@@ -305,6 +305,11 @@ namespace CslaGenerator.Metadata
 
         public static ITableInfo FindAssociativeTable(CslaObjectInfo main, CslaObjectInfo secondary)
         {
+            if (main == null)
+                return null;
+            if (secondary == null)
+                return null;
+
             var associativeTableCandidates = new List<string>();
             var mainPKInfos = new List<PrimaryKeyInfo>();
             var secondaryPKInfos = new List<PrimaryKeyInfo>();

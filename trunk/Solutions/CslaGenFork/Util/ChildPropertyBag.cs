@@ -12,280 +12,54 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing.Design;
 using System.Reflection;
 using CslaGenerator.Attributes;
-using System.Configuration;
 using CslaGenerator.Metadata;
-using System.Diagnostics;
 
 namespace CslaGenerator.Util
 {
-
-    #region PropertySpec class
-    /// <summary>
-    /// Summary description for PropertySpec.
-    /// </summary>
-    public class PropertySpec
-    {
-        private Attribute[] attributes;
-        private string name;
-        private string category;
-        private string description;
-        private object defaultValue;
-        private string type;
-        private string editor;
-        private string typeConverter;
-        private Type targetClass;
-        private object targetObject = null;
-        private string targetProperty = "";
-        private string helpTopic = "";
-        private bool isReadonly = false;
-        private bool isBrowsable = true;
-        private string designerTypename = "";
-        private bool isBindable = true;
-
-        //public PropertySpec(string name, object type, object typeconverter, string category, string description, object defaultValue, object tarObject, string tarProperty, string helptopic)
-        public PropertySpec(string name, string type, string category, string description, object defaultValue, string editor, string typeConverter, object tarObject, string tarProperty, string helptopic, bool isreadonly, bool isbrowsable, string designertypename, bool isbindable)
-        {
-            this.Name = name;
-            this.TypeName = type;
-            if (this.TypeName == "")
-                throw new Exception("Unable to determine PropertySpec type.");
-            this.category = category;
-            this.description = description;
-            this.defaultValue = defaultValue;
-            this.editor = editor;
-            this.typeConverter = typeConverter;
-            this.targetObject = tarObject;
-            this.targetProperty = tarProperty;
-            this.helpTopic = helptopic;
-            this.isReadonly = isreadonly;
-            this.isBrowsable = isbrowsable;
-            this.designerTypename = designertypename;
-            this.isBindable = isbindable;
-        }
-
-        #region properties
-        /// <summary>
-        /// Gets or sets a collection of additional Attributes for this property.  This can
-        /// be used to specify attributes beyond those supported intrinsically by the
-        /// PropertySpec class, such as ReadOnly and Browsable.
-        /// </summary>
-        public Attribute[] Attributes
-        {
-            get { return attributes; }
-            set { attributes = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the category name of this property.
-        /// </summary>
-        public string Category
-        {
-            get { return category; }
-            set { category = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the fully qualified name of the type converter
-        /// type for this property (as string).
-        /// </summary>
-        public string ConverterTypeName
-        {
-            get { return typeConverter; }
-            set { typeConverter = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the default value of this property.
-        /// </summary>
-        public object DefaultValue
-        {
-            get { return defaultValue; }
-            set { defaultValue = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the help text description of this property.
-        /// </summary>
-        public string Description
-        {
-            get { return description; }
-            set { description = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the fully qualified name of the editor type for
-        /// this property (as string).
-        /// </summary>
-        public string EditorTypeName
-        {
-            get { return editor; }
-            set { editor = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the name of this property.
-        /// </summary>
-        public string Name
-        {
-            get { return name; }
-            set { name = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the fully qualfied name of the type of this
-        /// property (as string).
-        /// </summary>
-        public string TypeName
-        {
-            get { return type; }
-            set { type = value; }
-        }
-        /// <summary>
-        /// Gets or sets the boolean flag indicating if this property
-        /// is readonly
-        /// </summary>
-        public bool ReadOnly
-        {
-            get { return isReadonly; }
-            set { isReadonly = value; }
-        }
-        /// <summary>
-        /// Gets or sets the boolean flag indicating if this property
-        /// is browsable (i.e. visible in PropertyGrid
-        /// </summary>
-        public bool Browsable
-        {
-            get { return isBrowsable; }
-            set { isBrowsable = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the boolean flag indicating if this property
-        /// is bindable
-        /// </summary>
-        public bool Bindable
-        {
-            get { return isBindable; }
-            set { isBindable = value; }
-        }
-        /// <summary>
-        /// Test
-        /// 
-        /// </summary>
-        public Type TargetClass
-        {
-            get { return targetClass; }
-            set { targetClass = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the target object which is the owner of the
-        /// properties displayed in the PropertyGrid
-        /// </summary>
-        public object TargetObject
-        {
-            get { return targetObject; }
-            set { targetObject = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the target property in the target object 
-        /// associated with the PropertyGrid item
-        /// </summary>
-        public string TargetProperty
-        {
-            get { return targetProperty; }
-            set { targetProperty = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the help topic key associated with this 
-        /// PropertyGrid item
-        /// </summary>
-        public string HelpTopic
-        {
-            get { return helpTopic; }
-            set { helpTopic = value; }
-        }
-
-    }
-
-        #endregion
-
-    /// <summary>
-    /// Provides data for the GetValue and SetValue events of the PropertyBag class.
-    /// </summary>
-    public class PropertySpecEventArgs : EventArgs
-    {
-        private PropertySpec property;
-        private object val;
-
-        /// <summary>
-        /// Initializes a new instance of the PropertySpecEventArgs class.
-        /// </summary>
-        /// <param name="property">The PropertySpec that represents the property whose
-        /// value is being requested or set.</param>
-        /// <param name="val">The current value of the property.</param>
-        public PropertySpecEventArgs(PropertySpec property, object val)
-        {
-            this.property = property;
-            this.val = val;
-        }
-
-        /// <summary>
-        /// Gets the PropertySpec that represents the property whose value is being
-        /// requested or set.
-        /// </summary>
-        public PropertySpec Property
-        {
-            get { return property; }
-        }
-
-        /// <summary>
-        /// Gets or sets the current value of the property.
-        /// </summary>
-        public object Value
-        {
-            get { return val; }
-            set { val = value; }
-        }
-    }
-
-    /// <summary>
-    /// Represents the method that will handle the GetValue and SetValue events of the
-    /// PropertyBag class.
-    /// </summary>
-    public delegate void PropertySpecEventHandler(object sender, PropertySpecEventArgs e);
-
-
-    #endregion
-
     /// <summary>
     /// Represents a collection of custom properties that can be selected into a
     /// PropertyGrid to provide functionality beyond that of the simple reflection
     /// normally used to query an object's properties.
     /// </summary>
-    public class PropertyBag : ICustomTypeDescriptor
+    public class ChildPropertyBag : ICustomTypeDescriptor
     {
         #region PropertySpecCollection class definition
+
         /// <summary>
         /// Encapsulates a collection of PropertySpec objects.
         /// </summary>
         [Serializable]
         public class PropertySpecCollection : IList
         {
-            private ArrayList innerArray;
+            private readonly ArrayList _innerArray;
 
             /// <summary>
             /// Initializes a new instance of the PropertySpecCollection class.
             /// </summary>
             public PropertySpecCollection()
             {
-                innerArray = new ArrayList();
+                _innerArray = new ArrayList();
             }
+
+            /// <summary>
+            /// Gets or sets the element at the specified index.
+            /// In C#, this property is the indexer for the PropertySpecCollection class.
+            /// </summary>
+            /// <param name="index">The zero-based index of the element to get or set.</param>
+            /// <value>
+            /// The element at the specified index.
+            /// </value>
+            public PropertySpec this[int index]
+            {
+                get { return (PropertySpec) _innerArray[index]; }
+                set { _innerArray[index] = value; }
+            }
+
+            #region IList Members
 
             /// <summary>
             /// Gets the number of elements in the PropertySpecCollection.
@@ -295,7 +69,7 @@ namespace CslaGenerator.Util
             /// </value>
             public int Count
             {
-                get { return innerArray.Count; }
+                get { return _innerArray.Count; }
             }
 
             /// <summary>
@@ -340,18 +114,32 @@ namespace CslaGenerator.Util
             }
 
             /// <summary>
-            /// Gets or sets the element at the specified index.
-            /// In C#, this property is the indexer for the PropertySpecCollection class.
+            /// Removes all elements from the PropertySpecCollection.
             /// </summary>
-            /// <param name="index">The zero-based index of the element to get or set.</param>
-            /// <value>
-            /// The element at the specified index.
-            /// </value>
-            public PropertySpec this[int index]
+            public void Clear()
             {
-                get { return (PropertySpec)innerArray[index]; }
-                set { innerArray[index] = value; }
+                _innerArray.Clear();
             }
+
+            /// <summary>
+            /// Returns an enumerator that can iterate through the PropertySpecCollection.
+            /// </summary>
+            /// <returns>An IEnumerator for the entire PropertySpecCollection.</returns>
+            public IEnumerator GetEnumerator()
+            {
+                return _innerArray.GetEnumerator();
+            }
+
+            /// <summary>
+            /// Removes the object at the specified index of the PropertySpecCollection.
+            /// </summary>
+            /// <param name="index">The zero-based index of the element to remove.</param>
+            public void RemoveAt(int index)
+            {
+                _innerArray.RemoveAt(index);
+            }
+
+            #endregion
 
             /// <summary>
             /// Adds a PropertySpec to the end of the PropertySpecCollection.
@@ -360,7 +148,7 @@ namespace CslaGenerator.Util
             /// <returns>The PropertySpecCollection index at which the value has been added.</returns>
             public int Add(PropertySpec value)
             {
-                int index = innerArray.Add(value);
+                int index = _innerArray.Add(value);
 
                 return index;
             }
@@ -372,15 +160,7 @@ namespace CslaGenerator.Util
             /// PropertySpecCollection.</param>
             public void AddRange(PropertySpec[] array)
             {
-                innerArray.AddRange(array);
-            }
-
-            /// <summary>
-            /// Removes all elements from the PropertySpecCollection.
-            /// </summary>
-            public void Clear()
-            {
-                innerArray.Clear();
+                _innerArray.AddRange(array);
             }
 
             /// <summary>
@@ -391,7 +171,7 @@ namespace CslaGenerator.Util
             /// <returns>true if item is found in the PropertySpecCollection; otherwise, false.</returns>
             public bool Contains(PropertySpec item)
             {
-                return innerArray.Contains(item);
+                return _innerArray.Contains(item);
             }
 
             /// <summary>
@@ -401,7 +181,7 @@ namespace CslaGenerator.Util
             /// <returns>true if item is found in the PropertySpecCollection; otherwise, false.</returns>
             public bool Contains(string name)
             {
-                foreach (PropertySpec spec in innerArray)
+                foreach (PropertySpec spec in _innerArray)
                     if (spec.Name == name)
                         return true;
 
@@ -416,7 +196,7 @@ namespace CslaGenerator.Util
             /// from PropertySpecCollection. The Array must have zero-based indexing.</param>
             public void CopyTo(PropertySpec[] array)
             {
-                innerArray.CopyTo(array);
+                _innerArray.CopyTo(array);
             }
 
             /// <summary>
@@ -427,16 +207,7 @@ namespace CslaGenerator.Util
             /// <param name="index">The zero-based index in array at which copying begins.</param>
             public void CopyTo(PropertySpec[] array, int index)
             {
-                innerArray.CopyTo(array, index);
-            }
-
-            /// <summary>
-            /// Returns an enumerator that can iterate through the PropertySpecCollection.
-            /// </summary>
-            /// <returns>An IEnumerator for the entire PropertySpecCollection.</returns>
-            public IEnumerator GetEnumerator()
-            {
-                return innerArray.GetEnumerator();
+                _innerArray.CopyTo(array, index);
             }
 
             /// <summary>
@@ -448,7 +219,7 @@ namespace CslaGenerator.Util
             /// if found; otherwise, -1.</returns>
             public int IndexOf(PropertySpec value)
             {
-                return innerArray.IndexOf(value);
+                return _innerArray.IndexOf(value);
             }
 
             /// <summary>
@@ -462,7 +233,7 @@ namespace CslaGenerator.Util
             {
                 int i = 0;
 
-                foreach (PropertySpec spec in innerArray)
+                foreach (PropertySpec spec in _innerArray)
                 {
                     //if (spec.Name == name)
                     if (spec.TargetProperty == name)
@@ -481,7 +252,7 @@ namespace CslaGenerator.Util
             /// <param name="value">The PropertySpec to insert.</param>
             public void Insert(int index, PropertySpec value)
             {
-                innerArray.Insert(index, value);
+                _innerArray.Insert(index, value);
             }
 
             /// <summary>
@@ -490,7 +261,7 @@ namespace CslaGenerator.Util
             /// <param name="obj">The PropertySpec to remove from the PropertySpecCollection.</param>
             public void Remove(PropertySpec obj)
             {
-                innerArray.Remove(obj);
+                _innerArray.Remove(obj);
             }
 
             /// <summary>
@@ -504,30 +275,22 @@ namespace CslaGenerator.Util
             }
 
             /// <summary>
-            /// Removes the object at the specified index of the PropertySpecCollection.
-            /// </summary>
-            /// <param name="index">The zero-based index of the element to remove.</param>
-            public void RemoveAt(int index)
-            {
-                innerArray.RemoveAt(index);
-            }
-
-            /// <summary>
             /// Copies the elements of the PropertySpecCollection to a new PropertySpec array.
             /// </summary>
             /// <returns>A PropertySpec array containing copies of the elements of the PropertySpecCollection.</returns>
             public PropertySpec[] ToArray()
             {
-                return (PropertySpec[])innerArray.ToArray(typeof(PropertySpec));
+                return (PropertySpec[]) _innerArray.ToArray(typeof (PropertySpec));
             }
 
             #region Explicit interface implementations for ICollection and IList
+
             /// <summary>
             /// This member supports the .NET Framework infrastructure and is not intended to be used directly from your code.
             /// </summary>
             void ICollection.CopyTo(Array array, int index)
             {
-                CopyTo((PropertySpec[])array, index);
+                CopyTo((PropertySpec[]) array, index);
             }
 
             /// <summary>
@@ -535,7 +298,7 @@ namespace CslaGenerator.Util
             /// </summary>
             int IList.Add(object value)
             {
-                return Add((PropertySpec)value);
+                return Add((PropertySpec) value);
             }
 
             /// <summary>
@@ -543,7 +306,7 @@ namespace CslaGenerator.Util
             /// </summary>
             bool IList.Contains(object obj)
             {
-                return Contains((PropertySpec)obj);
+                return Contains((PropertySpec) obj);
             }
 
             /// <summary>
@@ -551,14 +314,8 @@ namespace CslaGenerator.Util
             /// </summary>
             object IList.this[int index]
             {
-                get
-                {
-                    return ((PropertySpecCollection)this)[index];
-                }
-                set
-                {
-                    ((PropertySpecCollection)this)[index] = (PropertySpec)value;
-                }
+                get { return this[index]; }
+                set { this[index] = (PropertySpec) value; }
             }
 
             /// <summary>
@@ -566,7 +323,7 @@ namespace CslaGenerator.Util
             /// </summary>
             int IList.IndexOf(object obj)
             {
-                return IndexOf((PropertySpec)obj);
+                return IndexOf((PropertySpec) obj);
             }
 
             /// <summary>
@@ -574,7 +331,7 @@ namespace CslaGenerator.Util
             /// </summary>
             void IList.Insert(int index, object value)
             {
-                Insert(index, (PropertySpec)value);
+                Insert(index, (PropertySpec) value);
             }
 
             /// <summary>
@@ -582,29 +339,32 @@ namespace CslaGenerator.Util
             /// </summary>
             void IList.Remove(object value)
             {
-                Remove((PropertySpec)value);
+                Remove((PropertySpec) value);
             }
+
             #endregion
         }
+
         #endregion
 
         #region PropertySpecDescriptor class definition
+
         private class PropertySpecDescriptor : PropertyDescriptor
         {
-            private PropertyBag bag;
-            private PropertySpec item;
+            private readonly ChildPropertyBag _bag;
+            private readonly PropertySpec _item;
 
-            public PropertySpecDescriptor(PropertySpec item, PropertyBag bag, string name, Attribute[] attrs)
+            public PropertySpecDescriptor(PropertySpec item, ChildPropertyBag bag, string name, Attribute[] attrs)
                 :
-            base(name, attrs)
+                    base(name, attrs)
             {
-                this.bag = bag;
-                this.item = item;
+                _bag = bag;
+                _item = item;
             }
 
             public override Type ComponentType
             {
-                get { return item.GetType(); }
+                get { return _item.GetType(); }
             }
 
             public override bool IsReadOnly
@@ -614,15 +374,15 @@ namespace CslaGenerator.Util
 
             public override Type PropertyType
             {
-                get { return Type.GetType(item.TypeName); }
+                get { return Type.GetType(_item.TypeName); }
             }
 
             public override bool CanResetValue(object component)
             {
-                if (item.DefaultValue == null)
+                if (_item.DefaultValue == null)
                     return false;
-                else
-                    return !this.GetValue(component).Equals(item.DefaultValue);
+
+                return !GetValue(component).Equals(_item.DefaultValue);
             }
 
             public override object GetValue(object component)
@@ -630,14 +390,14 @@ namespace CslaGenerator.Util
                 // Have the property bag raise an event to get the current value
                 // of the property.
 
-                PropertySpecEventArgs e = new PropertySpecEventArgs(item, null);
-                bag.OnGetValue(e);
+                var e = new PropertySpecEventArgs(_item, null);
+                _bag.OnGetValue(e);
                 return e.Value;
             }
 
             public override void ResetValue(object component)
             {
-                SetValue(component, item.DefaultValue);
+                SetValue(component, _item.DefaultValue);
             }
 
             public override void SetValue(object component, object value)
@@ -645,94 +405,78 @@ namespace CslaGenerator.Util
                 // Have the property bag raise an event to set the current value
                 // of the property.
 
-                PropertySpecEventArgs e = new PropertySpecEventArgs(item, value);
-                bag.OnSetValue(e);
+                var e = new PropertySpecEventArgs(_item, value);
+                _bag.OnSetValue(e);
             }
 
             public override bool ShouldSerializeValue(object component)
             {
-                object val = this.GetValue(component);
+                object val = GetValue(component);
 
-                if (item.DefaultValue == null && val == null)
+                if (_item.DefaultValue == null && val == null)
                     return false;
-                else
-                    return !val.Equals(item.DefaultValue);
+
+                return !val.Equals(_item.DefaultValue);
             }
         }
+
         #endregion
 
-        #region properties and events
-        private string defaultProperty;
-        private PropertySpecCollection properties;
-        private CslaObjectInfo[] mSelectedObject;
-        private PropertyContext propertyContext;
+        #region Properties and Events
+
+        private readonly PropertySpecCollection _properties;
+        private string _defaultProperty;
+        private ChildProperty[] _selectedObject;
+
         /// <summary>
-        /// Initializes a new instance of the PropertyBag class.
+        /// Initializes a new instance of the PlainPropertyBag class.
         /// </summary>
-        public PropertyBag()
+        public ChildPropertyBag()
         {
-            defaultProperty = null;
-            properties = new PropertySpecCollection();
+            _defaultProperty = null;
+            _properties = new PropertySpecCollection();
         }
 
-        public PropertyBag(CslaObjectInfo obj)
-            : this(new CslaObjectInfo[] { obj })
-        { }
-        public PropertyBag(CslaObjectInfo[] obj)
+        public ChildPropertyBag(ChildProperty obj) : this(new[] {obj})
         {
-            defaultProperty = null;
-            properties = new PropertySpecCollection();
-            mSelectedObject = obj;
+        }
+
+        public ChildPropertyBag(ChildProperty[] obj)
+        {
+            _defaultProperty = "Name";
+            _properties = new PropertySpecCollection();
+            _selectedObject = obj;
             InitPropertyBag();
         }
-        public PropertyBag(CslaObjectInfo obj, PropertyContext context)
-            : this(new CslaObjectInfo[] { obj }, context)
-        { }
-        public PropertyBag(CslaObjectInfo[] obj, PropertyContext context)
-        {
-            defaultProperty = "ObjectName";
-            properties = new PropertySpecCollection();
-            mSelectedObject = obj;
-            propertyContext = context;
-            InitPropertyBag();
-        }
+
         /// <summary>
         /// Gets or sets the name of the default property in the collection.
         /// </summary>
         public string DefaultProperty
         {
-            get { return defaultProperty; }
-            set { defaultProperty = value; }
+            get { return _defaultProperty; }
+            set { _defaultProperty = value; }
         }
+
         /// <summary>
         /// Gets or sets the name of the default property in the collection.
         /// </summary>
-        public CslaObjectInfo[] SelectedObject
+        public ChildProperty[] SelectedObject
         {
-            get { return mSelectedObject; }
+            get { return _selectedObject; }
             set
             {
-                mSelectedObject = value;
+                _selectedObject = value;
                 InitPropertyBag();
             }
         }
+
         /// <summary>
-        /// Gets or sets the property context.
-        /// </summary>
-        public PropertyContext PropertyContext
-        {
-            get { return propertyContext; }
-            set
-            {
-                propertyContext = value;
-            }
-        }
-        /// <summary>
-        /// Gets the collection of properties contained within this PropertyBag.
+        /// Gets the collection of properties contained within this PlainPropertyBag.
         /// </summary>
         public PropertySpecCollection Properties
         {
-            get { return properties; }
+            get { return _properties; }
         }
 
         /// <summary>
@@ -753,8 +497,7 @@ namespace CslaGenerator.Util
         {
             if (e.Value != null)
                 GetValue(this, e);
-            e.Value = getProperty(e.Property.TargetObject, e.Property.TargetProperty, e.Property.DefaultValue);
-
+            e.Value = GetProperty(e.Property.TargetObject, e.Property.TargetProperty, e.Property.DefaultValue);
         }
 
         /// <summary>
@@ -765,8 +508,9 @@ namespace CslaGenerator.Util
         {
             if (SetValue != null)
                 SetValue(this, e);
-            setProperty(e.Property.TargetObject, e.Property.TargetProperty, e.Value);
+            SetProperty(e.Property.TargetObject, e.Property.TargetProperty, e.Value);
         }
+
         #endregion
 
         #region Initialize Propertybag
@@ -774,19 +518,18 @@ namespace CslaGenerator.Util
         private void InitPropertyBag()
         {
             PropertyInfo pi;
-            Type t = typeof(CslaObjectInfo);// mSelectedObject.GetType();
+            Type t = typeof (ChildProperty); // _selectedObject.GetType();
             PropertyInfo[] props = t.GetProperties();
             // Display information for all properties.
             for (int i = 0; i < props.Length; i++)
             {
-                pi = (PropertyInfo)props[i];
-                Object[] myAttributes = pi.GetCustomAttributes(true);
+                pi = props[i];
+                object[] myAttributes = pi.GetCustomAttributes(true);
                 string category = "";
                 string description = "";
                 bool isreadonly = false;
                 bool isbrowsable = true;
                 object defaultvalue = null;
-                string defaultproperty = "";
                 string userfriendlyname = "";
                 string typeconverter = "";
                 string designertypename = "";
@@ -795,80 +538,81 @@ namespace CslaGenerator.Util
                 string editor = "";
                 for (int n = 0; n < myAttributes.Length; n++)
                 {
-
-                    Attribute a = (Attribute)myAttributes[n];
+                    var a = (Attribute) myAttributes[n];
                     switch (a.GetType().ToString())
                     {
                         case "System.ComponentModel.CategoryAttribute":
-                            category = ((CategoryAttribute)a).Category;
+                            category = ((CategoryAttribute) a).Category;
                             break;
                         case "System.ComponentModel.DescriptionAttribute":
-                            description = ((DescriptionAttribute)a).Description;
+                            description = ((DescriptionAttribute) a).Description;
                             break;
                         case "System.ComponentModel.ReadOnlyAttribute":
-                            isreadonly = ((ReadOnlyAttribute)a).IsReadOnly;
+                            isreadonly = ((ReadOnlyAttribute) a).IsReadOnly;
                             break;
                         case "System.ComponentModel.BrowsableAttribute":
-                            isbrowsable = ((BrowsableAttribute)a).Browsable;
+                            isbrowsable = ((BrowsableAttribute) a).Browsable;
                             break;
                         case "System.ComponentModel.DefaultValueAttribute":
-                            defaultvalue = ((DefaultValueAttribute)a).Value;
-                            break;
-                        case "System.ComponentModel.DefaultPropertyAttribute":
-                            defaultproperty = ((DefaultPropertyAttribute)a).Name;
+                            defaultvalue = ((DefaultValueAttribute) a).Value;
                             break;
                         case "CslaGenerator.Attributes.UserFriendlyNameAttribute":
-                            userfriendlyname = ((UserFriendlyNameAttribute)a).UserFriendlyName;
+                            userfriendlyname = ((UserFriendlyNameAttribute) a).UserFriendlyName;
                             break;
                         case "CslaGenerator.Attributes.HelpTopicAttribute":
-                            helptopic = ((HelpTopicAttribute)a).HelpTopic;
+                            helptopic = ((HelpTopicAttribute) a).HelpTopic;
                             break;
                         case "System.ComponentModel.TypeConverterAttribute":
-                            typeconverter = ((TypeConverterAttribute)a).ConverterTypeName;
+                            typeconverter = ((TypeConverterAttribute) a).ConverterTypeName;
                             break;
                         case "System.ComponentModel.DesignerAttribute":
-                            designertypename = ((DesignerAttribute)a).DesignerTypeName;
+                            designertypename = ((DesignerAttribute) a).DesignerTypeName;
                             break;
                         case "System.ComponentModel.BindableAttribute":
-                            bindable = ((BindableAttribute)a).Bindable;
+                            bindable = ((BindableAttribute) a).Bindable;
                             break;
                         case "System.ComponentModel.EditorAttribute":
-                            editor = ((EditorAttribute)a).EditorTypeName;
+                            editor = ((EditorAttribute) a).EditorTypeName;
                             break;
                     }
                 }
                 userfriendlyname = userfriendlyname.Length > 0 ? userfriendlyname : pi.Name;
-                List<string> types = new List<string>();
-                foreach (CslaObjectInfo obj in mSelectedObject)
+                var types = new List<string>();
+                foreach (var obj in _selectedObject)
                 {
-                    if (!types.Contains(obj.ObjectType.ToString()))
-                        types.Add(obj.ObjectType.ToString());
+                    if (!types.Contains(obj.Name))
+                        types.Add(obj.Name);
                 }
                 // here get rid of ComponentName and Parent
-                bool IsValidProperty = (pi.Name != "Properties" && pi.Name != "ComponentName" && pi.Name != "Parent");
-                if (IsValidProperty && IsBrowsable(types.ToArray(), pi.Name))
+                bool isValidProperty = (pi.Name != "Properties" && pi.Name != "ComponentName" && pi.Name != "Parent");
+                if (isValidProperty && IsBrowsable(types.ToArray(), pi.Name))
                 {
                     // CR added missing parameters
-                    //this.Properties.Add(new PropertySpec(userfriendlyname,pi.PropertyType.AssemblyQualifiedName,category,description,defaultvalue, editor, typeconverter, mSelectedObject, pi.Name,helptopic));
-                    this.Properties.Add(new PropertySpec(userfriendlyname, pi.PropertyType.AssemblyQualifiedName, category, description, defaultvalue, editor, typeconverter, mSelectedObject, pi.Name, helptopic, isreadonly, isbrowsable, designertypename, bindable));
+                    //this.Properties.Add(new PropertySpec(userfriendlyname,pi.PropertyType.AssemblyQualifiedName,category,description,defaultvalue, editor, typeconverter, _selectedObject, pi.Name,helptopic));
+                    Properties.Add(new PropertySpec(userfriendlyname, pi.PropertyType.AssemblyQualifiedName, category,
+                                                    description, defaultvalue, editor, typeconverter, _selectedObject,
+                                                    pi.Name, helptopic, isreadonly, isbrowsable, designertypename,
+                                                    bindable));
                 }
             }
         }
+
         #endregion
 
-        Dictionary<string, PropertyInfo> propertyInfoCache = new Dictionary<string, PropertyInfo>();
-        PropertyInfo GetPropertyInfoCache(string propertyName)
+        private readonly Dictionary<string, PropertyInfo> propertyInfoCache = new Dictionary<string, PropertyInfo>();
+
+        private PropertyInfo GetPropertyInfoCache(string propertyName)
         {
             if (!propertyInfoCache.ContainsKey(propertyName))
             {
-                propertyInfoCache.Add(propertyName, typeof(CslaObjectInfo).GetProperty(propertyName));
+                propertyInfoCache.Add(propertyName, typeof (ChildProperty).GetProperty(propertyName));
             }
             return propertyInfoCache[propertyName];
         }
 
-        bool IsEnumerable(PropertyInfo prop)
+        private bool IsEnumerable(PropertyInfo prop)
         {
-            if (prop.PropertyType == typeof(string))
+            if (prop.PropertyType == typeof (string))
                 return false;
             Type[] interfaces = prop.PropertyType.GetInterfaces();
             foreach (Type typ in interfaces)
@@ -883,40 +627,18 @@ namespace CslaGenerator.Util
         {
             try
             {
-                // Use PropertyContext class to determine if the combination
-                // objectType + propertyName should be shown in propertygrid
-                // else defalut to true (show it)
-                // objectType + propertyName --> true | false
-                if (propertyContext != null)
-                {
-                    foreach (string typ in objectType)
-                    {
-                        if (!propertyContext.ShowProperty(typ, propertyName))
-                            return false;
-                        if (!GeneratorController.Current.CurrentUnit.GenerationParams.ActiveObjects &&
-                            (propertyName == "PublishToChannel" || propertyName == "SubscribeToChannel"))
-                            return false;
-                        if ((GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == Authorization.None ||
-                            GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == Authorization.PropertyLevel) &&
-                            (propertyName == "NewRoles" ||
-                             propertyName == "GetRoles" ||
-                             propertyName == "UpdateRoles" ||
-                             propertyName == "DeleteRoles" ||
-                             propertyName == "DenyNewRoles" ||
-                             propertyName == "DenyGetRoles" ||
-                             propertyName == "DenyUpdateRoles" ||
-                             propertyName == "DenyDeleteRoles"))
-                            return false;
-                        if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 &&
-                            (propertyName == "AddParentReference"))
-                            return false;
-                    }
-                    if (mSelectedObject.Length > 1 && IsEnumerable(GetPropertyInfoCache(propertyName)))
-                        return false;
-                    return true;
-                }
-                else
-                    return true;
+                if ((GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == Authorization.None ||
+                    GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == Authorization.ObjectLevel) &&
+                    (propertyName == "AllowReadRoles" ||
+                     propertyName == "AllowWriteRoles" ||
+                     propertyName == "DenyReadRoles" ||
+                     propertyName == "DenyWriteRoles"))
+                    return false;
+
+                if (_selectedObject.Length > 1 && IsEnumerable(GetPropertyInfoCache(propertyName)))
+                    return false;
+
+                return true;
             }
             catch //(Exception e)
             {
@@ -927,10 +649,9 @@ namespace CslaGenerator.Util
 
         #endregion
 
-        #region reflection functions
+        #region Reflection functions
 
-
-        private object getField(Type t, string name, object target)
+        private object GetField(Type t, string name, object target)
         {
             object obj = null;
             Type tx;
@@ -940,31 +661,31 @@ namespace CslaGenerator.Util
             fields = target.GetType().GetFields(BindingFlags.Public);
 
             tx = target.GetType();
-            obj = tx.InvokeMember(name, BindingFlags.Default | BindingFlags.GetField, null, target, new object[] { });
+            obj = tx.InvokeMember(name, BindingFlags.Default | BindingFlags.GetField, null, target, new object[] {});
             return obj;
         }
 
-        private object setField(Type t, string name, object value, object target)
+        private object SetField(Type t, string name, object value, object target)
         {
             object obj;
-            obj = t.InvokeMember(name, BindingFlags.Default | BindingFlags.SetField, null, target, new object[] { value });
+            obj = t.InvokeMember(name, BindingFlags.Default | BindingFlags.SetField, null, target, new[] {value});
             return obj;
         }
 
-        bool setProperty(object obj, string propertyName, object val)
+        private bool SetProperty(object obj, string propertyName, object val)
         {
             try
             {
                 // get a reference to the PropertyInfo, exit if no property with that 
                 // name
-                PropertyInfo pi = typeof(CslaObjectInfo).GetProperty(propertyName);
+                PropertyInfo pi = typeof (ChildProperty).GetProperty(propertyName);
 
                 if (pi == null)
                     return false;
                 // convert the value to the expected type
                 val = Convert.ChangeType(val, pi.PropertyType);
                 // attempt the assignment
-                foreach (CslaObjectInfo bo in (CslaObjectInfo[])obj)
+                foreach (ChildProperty bo in (ChildProperty[]) obj)
                     pi.SetValue(bo, val, null);
                 return true;
             }
@@ -973,17 +694,18 @@ namespace CslaGenerator.Util
                 return false;
             }
         }
-        object getProperty(object obj, string propertyName, object defaultValue)
+
+        private object GetProperty(object obj, string propertyName, object defaultValue)
         {
             try
             {
                 PropertyInfo pi = GetPropertyInfoCache(propertyName);
                 if (!(pi == null))
                 {
-                    CslaObjectInfo[] objs = (CslaObjectInfo[])obj;
-                    ArrayList valueList = new ArrayList();
-                    
-                    foreach (CslaObjectInfo bo in objs)
+                    var objs = (ChildProperty[]) obj;
+                    var valueList = new ArrayList();
+
+                    foreach (ChildProperty bo in objs)
                     {
                         object value = pi.GetValue(bo, null);
                         if (!valueList.Contains(value))
@@ -999,8 +721,6 @@ namespace CslaGenerator.Util
                             return string.Empty;
                     }
                 }
-
-
             }
             catch (Exception ex)
             {
@@ -1010,9 +730,11 @@ namespace CslaGenerator.Util
             // if property doesn't exist or throws
             return defaultValue;
         }
+
         #endregion
 
         #region ICustomTypeDescriptor explicit interface definitions
+
         // Most of the functions required by the ICustomTypeDescriptor are
         // merely pssed on to the default TypeDescriptor for this type,
         // which will do something appropriate.  The exceptions are noted
@@ -1051,16 +773,16 @@ namespace CslaGenerator.Util
             // returned instead.
 
             PropertySpec propertySpec = null;
-            if (defaultProperty != null)
+            if (_defaultProperty != null)
             {
-                int index = properties.IndexOf(defaultProperty);
-                propertySpec = properties[index];
+                int index = _properties.IndexOf(_defaultProperty);
+                propertySpec = _properties[index];
             }
 
             if (propertySpec != null)
                 return new PropertySpecDescriptor(propertySpec, this, propertySpec.Name, null);
-            else
-                return null;
+
+            return null;
         }
 
         object ICustomTypeDescriptor.GetEditor(Type editorBaseType)
@@ -1080,21 +802,21 @@ namespace CslaGenerator.Util
 
         PropertyDescriptorCollection ICustomTypeDescriptor.GetProperties()
         {
-            return ((ICustomTypeDescriptor)this).GetProperties(new Attribute[0]);
+            return ((ICustomTypeDescriptor) this).GetProperties(new Attribute[0]);
         }
 
         PropertyDescriptorCollection ICustomTypeDescriptor.GetProperties(Attribute[] attributes)
         {
             // Rather than passing this function on to the default TypeDescriptor,
-            // which would return the actual properties of PropertyBag, I construct
+            // which would return the actual properties of PlainPropertyBag, I construct
             // a list here that contains property descriptors for the elements of the
             // Properties list in the bag.
 
-            ArrayList props = new ArrayList();
+            var props = new ArrayList();
 
-            foreach (PropertySpec property in properties)
+            foreach (PropertySpec property in _properties)
             {
-                ArrayList attrs = new ArrayList();
+                var attrs = new ArrayList();
 
                 // If a category, description, editor, or type converter are specified
                 // in the PropertySpec, create attributes to define that relationship.
@@ -1105,7 +827,7 @@ namespace CslaGenerator.Util
                     attrs.Add(new DescriptionAttribute(property.Description));
 
                 if (property.EditorTypeName != null)
-                    attrs.Add(new EditorAttribute(property.EditorTypeName, typeof(UITypeEditor)));
+                    attrs.Add(new EditorAttribute(property.EditorTypeName, typeof (UITypeEditor)));
 
                 if (property.ConverterTypeName != null)
                     attrs.Add(new TypeConverterAttribute(property.ConverterTypeName));
@@ -1122,19 +844,19 @@ namespace CslaGenerator.Util
                 attrs.Add(new ReadOnlyAttribute(property.ReadOnly));
                 attrs.Add(new BindableAttribute(property.Bindable));
 
-                Attribute[] attrArray = (Attribute[])attrs.ToArray(typeof(Attribute));
+                var attrArray = (Attribute[]) attrs.ToArray(typeof (Attribute));
 
                 // Create a new property descriptor for the property item, and add
                 // it to the list.
-                PropertySpecDescriptor pd = new PropertySpecDescriptor(property,
-                    this, property.Name, attrArray);
+                var pd = new PropertySpecDescriptor(property,
+                                                    this, property.Name, attrArray);
                 props.Add(pd);
             }
 
             // Convert the list of PropertyDescriptors to a collection that the
             // ICustomTypeDescriptor can use, and return it.
-            PropertyDescriptor[] propArray = (PropertyDescriptor[])props.ToArray(
-            typeof(PropertyDescriptor));
+            var propArray = (PropertyDescriptor[]) props.ToArray(
+                typeof (PropertyDescriptor));
             return new PropertyDescriptorCollection(propArray);
         }
 
@@ -1142,8 +864,7 @@ namespace CslaGenerator.Util
         {
             return this;
         }
+
         #endregion
-
     }
-
 }

@@ -75,7 +75,35 @@ namespace CslaGenerator.Metadata
             get { return string.Empty; }
         }
 
-        [Category("Conversion")]
+        // Hide AllowReadRoles
+        [Browsable(false)]
+        public override string AllowReadRoles
+        {
+            get { return string.Empty; }
+        }
+
+        // Hide AllowWriteRoles
+        [Browsable(false)]
+        public override string AllowWriteRoles
+        {
+            get { return string.Empty; }
+        }
+
+        // Hide DenyReadRoles
+        [Browsable(false)]
+        public override string DenyReadRoles
+        {
+            get { return string.Empty; }
+        }
+
+        // Hide DenyWriteRoles
+        [Browsable(false)]
+        public override string DenyWriteRoles
+        {
+            get { return string.Empty; }
+        }
+
+        [Category("06. Conversion")]
         [Description("This is a description.")]
         public string BaseName
 		{
@@ -90,7 +118,7 @@ namespace CslaGenerator.Metadata
 
 		}
 
-        [Category("Conversion")]
+        [Category("06. Conversion")]
         [Description("This is a description.")]
         public string SourcePropertyName
 		{
@@ -109,7 +137,7 @@ namespace CslaGenerator.Metadata
             }
 		}
 
-        [Category("Conversion")]
+        [Category("06. Conversion")]
         [Description("This is a description.")]
         public string NVLConverter
         {

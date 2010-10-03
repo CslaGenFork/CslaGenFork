@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Drawing.Design;
 using System.IO;
 using System.Xml.Serialization;
+using CslaGenerator.Attributes;
 using CslaGenerator.Design;
 
 namespace CslaGenerator.Metadata
@@ -45,8 +46,9 @@ namespace CslaGenerator.Metadata
 			_parameterName = parameterName;
 		}
 
-        [Category("Database Related")]
+        [Category("00. Database")]
         [Description("The stored procedure parameter name.")]
+        [UserFriendlyName("Parameter Name")]
         public virtual string ParameterName
         {
             get
@@ -58,7 +60,7 @@ namespace CslaGenerator.Metadata
             set { _parameterName = value; }
         }
 
-        [Category("Definition")]
+        [Category("01. Definition")]
         [Description("The property name.")]
         public virtual string Name
 		{
@@ -66,23 +68,24 @@ namespace CslaGenerator.Metadata
 			set { _name = value; }
 		}
 
-		[Category("Definition")]
+		[Category("01. Definition")]
         [Description("The property Type.")]
+        [UserFriendlyName("Property Type")]
         public virtual TypeCodeEx PropertyType
 		{
 			get { return _propertyType; }
 			set { _propertyType = value; }
 		}
 
-		[Category("Definition")]
+		[Category("01. Definition")]
         [Description("This is a description.")]
-		public virtual bool ReadOnly
+        public virtual bool ReadOnly
 		{
 			get { return _readOnly; }
 			set { _readOnly = value; }
 		}
 
-        [Category("Definition")]
+        [Category("01. Definition")]
         [Description("Whether this property can have a null value. The following types aren't nullable: \"String \", \"ByteArray \", \"SmartDate \", \"DBNull \", \"Object\" and \"Empty\".")]
         public virtual bool Nullable
         {
@@ -90,7 +93,7 @@ namespace CslaGenerator.Metadata
             set { _nullable = value; }
         }
 
-        [Category("Documentation")]
+        [Category("04. Documentation")]
 		[Editor(typeof(XmlCommentEditor), typeof(UITypeEditor))]
         [Description("Summary of the property.")]
         public virtual string Summary
@@ -103,7 +106,7 @@ namespace CslaGenerator.Metadata
 			}
 		}
 
-		[Category("Documentation")]
+		[Category("04. Documentation")]
 		[Editor(typeof(XmlCommentEditor), typeof(UITypeEditor))]
         [Description("Remarks of the property.")]
         public virtual string Remarks

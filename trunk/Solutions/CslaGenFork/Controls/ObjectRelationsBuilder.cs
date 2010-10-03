@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using CslaGenerator.Metadata;
+using CslaGenerator.Util;
 
 namespace CslaGenerator.Controls
 {
@@ -524,18 +525,36 @@ namespace CslaGenerator.Controls
             {
                 case 0:
                     if (current != null)
+                    {
                         listEntities1.SelectedItem = current;
-                    PropertyGrid1.SelectedObject = current;
+                        PropertyGrid1.SelectedObject = new AssociativeEntityPropertyBag(current);
+                    }
+                    else
+                    {
+                        PropertyGrid1.SelectedObject = null;
+                    }
                     break;
                 case 1:
                     if (current != null)
+                    {
                         listEntities2.SelectedItem = current;
-                    PropertyGrid2.SelectedObject = current;
+                        PropertyGrid2.SelectedObject = new AssociativeEntityPropertyBag(current);
+                    }
+                    else
+                    {
+                        PropertyGrid2.SelectedObject = null;
+                    }
                     break;
                 default:
                     if (current != null)
+                    {
                         listEntities3.SelectedItem = current;
-                    PropertyGrid3.SelectedObject = current;
+                        PropertyGrid3.SelectedObject = new AssociativeEntityPropertyBag(current);
+                    }
+                    else
+                    {
+                        PropertyGrid3.SelectedObject = null;
+                    }
                     break;
             }
         }

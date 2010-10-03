@@ -9,7 +9,7 @@ namespace CslaGenerator.Metadata
         None,
         ObjectLevel,
         PropertyLevel,
-        ObjectAndPropertyLevels,
-        FullSupport
+        FullSupport,
+        Custom
     }
 }
