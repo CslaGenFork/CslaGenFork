@@ -58,7 +58,9 @@
     <GeneratedUIEnvironment>WinForms_WPF</GeneratedUIEnvironment>
     <UseChildDataPortal>true</UseChildDataPortal>
     <GenerateDatabaseClass>true</GenerateDatabaseClass>
+    <GenerateAuthorization>FullSupport</GenerateAuthorization>
     <HeaderVerbosity>None</HeaderVerbosity>
+    <UseBypassPropertyChecks>true</UseBypassPropertyChecks>
     <BaseFilenameSuffix>.Designer</BaseFilenameSuffix>
     <ExtendedFilenameSuffix />
     <ClassCommentFilenameSuffix />
@@ -67,7 +69,9 @@
     <UtilitiesFolder />
   </GenerationParams>
   <CslaObjects />
+  <AssociativeEntities />
   <ConnectionString />
   <ProjectName>Project</ProjectName>
   <TargetDirectory />
+  <FileVersion>4.0.0</FileVersion>
 </CslaGeneratorUnit>

@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.Xml.Serialization;
+using CslaGenerator.Attributes;
 using CslaGenerator.Design;
 
 namespace CslaGenerator.Metadata
@@ -71,18 +72,7 @@ namespace CslaGenerator.Metadata
             _DeleteOptions.ProcedureName = p.GetDeleteProcName(_Parent.ObjectName);
         }
 
-		[Category("Properties")]
-        [Editor(typeof(PropertyCollectionForm), typeof(UITypeEditor))]
-        [XmlArrayItem(
-          ElementName = "Property",
-          Type = typeof(CriteriaProperty))]
-        [Description("This is a description.")]
-        public CriteriaPropertyCollection Properties
-		{
-			get { return _properties; }
-		}
-
-		[Category("Definition")]
+		[Category("01. Definition")]
         [Description("This is a description.")]
         public string Name
 		{
@@ -90,9 +80,8 @@ namespace CslaGenerator.Metadata
 			set { _name = value; }
 		}
 
-
-
-
+        [Category("02. Criteria Options")]
+        [UserFriendlyName("Create Options")]
         public CriteriaUsageParameter CreateOptions
         {
             get
@@ -104,6 +93,9 @@ namespace CslaGenerator.Metadata
             	_CreateOptions = value;
             }
         }
+
+        [Category("02. Criteria Options")]
+        [UserFriendlyName("Get Options")]
         public CriteriaUsageParameter GetOptions
         {
             get
@@ -117,6 +109,9 @@ namespace CslaGenerator.Metadata
                 SetHandlers(_GetOptions);
             }
         }
+
+        [Category("02. Criteria Options")]
+        [UserFriendlyName("Delete Options")]
         public CriteriaUsageParameter DeleteOptions
         {
             get
@@ -131,5 +126,16 @@ namespace CslaGenerator.Metadata
             }
         }
 
-	}
+        [Category("03. Criteria Properties")]
+        [Editor(typeof(PropertyCollectionForm), typeof(UITypeEditor))]
+        [XmlArrayItem(
+          ElementName = "Property",
+          Type = typeof(CriteriaProperty))]
+        [Description("This is a description.")]
+        public CriteriaPropertyCollection Properties
+        {
+            get { return _properties; }
+        }
+
+    }
 }

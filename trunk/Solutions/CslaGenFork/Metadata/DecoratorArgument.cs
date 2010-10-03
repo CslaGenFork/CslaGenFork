@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
+using CslaGenerator.Attributes;
 
 namespace CslaGenerator.Metadata
 {
@@ -42,6 +43,7 @@ namespace CslaGenerator.Metadata
         }
         #endregion
 
+        [Category("01. Definition")]
         [Description("This is a description.")]
         public string Name
         {
@@ -52,6 +54,7 @@ namespace CslaGenerator.Metadata
             }
         }
 
+        [Category("01. Definition")]
         [Description("This is a description.")]
         public string Value
         {
@@ -62,7 +65,9 @@ namespace CslaGenerator.Metadata
             }
         }
 
+        [Category("01. Definition")]
         [Description("This is a description.")]
+        [UserFriendlyName("Value Type")]
         public TypeCodeEx ValueType
         {
             get

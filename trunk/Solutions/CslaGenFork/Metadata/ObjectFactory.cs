@@ -356,6 +356,16 @@ namespace CslaGenerator.Metadata
         /// Should be called after the object has all it's properties (if applicable).
         /// It creates the default criteria classes depending on the object type.
         /// </summary>
+        public void AddDefaultCriteriaAndParameters(CslaObjectInfo objectInfo)
+        {
+            _currentCslaObject = objectInfo;
+            AddDefaultCriteriaAndParameters();
+        }
+
+        /// <summary>
+        /// Should be called after the object has all it's properties (if applicable).
+        /// It creates the default criteria classes depending on the object type.
+        /// </summary>
         public void AddDefaultCriteriaAndParameters()
         {
             if (_currentCslaObject.CriteriaObjects.Count != 0)

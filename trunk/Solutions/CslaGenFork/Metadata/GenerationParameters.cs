@@ -26,6 +26,7 @@ namespace CslaGenerator.Metadata
         bool _generateDatabaseClass = true;
         Authorization _generateAuthorization = Authorization.FullSupport;
         HeaderVerbosity _headerVerbosity = HeaderVerbosity.Full;
+        bool _useBypassPropertyChecks = true;
         private string _baseFilenameSuffix = string.Empty;
         private string _extendedFilenameSuffix = string.Empty;
         private string _classCommentFilenameSuffix = string.Empty;
@@ -301,6 +302,21 @@ namespace CslaGenerator.Metadata
                 if (_headerVerbosity == value)
                     return;
                 _headerVerbosity = value;
+                OnPropertyChanged("");
+            }
+        }
+
+        public bool UseBypassPropertyChecks
+        {
+            get
+            {
+                return _useBypassPropertyChecks;
+            }
+            set
+            {
+                if (_useBypassPropertyChecks == value)
+                    return;
+                _useBypassPropertyChecks = value;
                 OnPropertyChanged("");
             }
         }

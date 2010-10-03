@@ -31,7 +31,6 @@ namespace CslaGenerator.Metadata
 		{
 		}
 
-		[Category("Definition")]
 		public ColumnOriginType ColumnOriginType
 		{
 			set { _columnOriginType = value; }

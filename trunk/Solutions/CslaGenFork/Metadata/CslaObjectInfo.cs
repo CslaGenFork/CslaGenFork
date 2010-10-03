@@ -84,6 +84,7 @@
             private bool _supportUpdateProperties = false;
             private bool _addParentReference = false;
             private bool _useCustomLoading = false;
+            private bool _checkRulesOnFetch = true;
             private bool _generateDataAccessRegion = true;
             private string _folder = String.Empty;
             private string[] _implements = new string[] { };
@@ -160,7 +161,7 @@
             }
 
             [Category("00. Generate Options")]
-            [Description("Whether or not to generate Dataportal_* methods. If False these methods are not generated so that you can create your custom data access region.")]
+            [Description("Whether or not to generate DataPortal_* methods. If False these methods are not generated so that you can create your custom data access region.")]
             [UserFriendlyName("Generate Data Access Region")]
             public bool GenerateDataAccessRegion
             {
@@ -169,7 +170,7 @@
             }
 
             [Category("00. Generate Options")]
-            [Description("Whether or not to generate Dataportal_Insert method. If False these method is not generated so that you can create your custom data access region.")]
+            [Description("Whether or not to generate DataPortal_Insert method. If False these method is not generated so that you can create your custom data access region.")]
             [UserFriendlyName("Generate Insert() Method")]
             public bool GenerateDataPortalInsert
             {
@@ -178,7 +179,7 @@
             }
 
             [Category("00. Generate Options")]
-            [Description("Whether or not to generate Dataportal_Update method. If False these method is not generated so that you can create your custom data access region.")]
+            [Description("Whether or not to generate DataPortal_Update method. If False these method is not generated so that you can create your custom data access region.")]
             [UserFriendlyName("Generate Update() Method")]
             public bool GenerateDataPortalUpdate
             {
@@ -208,15 +209,27 @@
             }
 
             /// <summary>
-            /// Whether or not to generate (Dataportal_)Fetch methods. If True these methods are not generated so that you can create a custom loading scheme.
+            /// Whether or not to generate (DataPortal_)Fetch methods. If True these methods are not generated so that you can create a custom loading scheme.
             /// </summary>
             [Category("00. Generate Options")]
-            [Description("Whether or not to generate (Dataportal_)Fetch methods. If True these methods are not generated so that you can create a custom loading scheme.")]
+            [Description("Whether or not to generate (DataPortal_)Fetch methods. If True these methods are not generated so that you can create a custom loading scheme.")]
             [UserFriendlyName("Use Custom Loading")]
             public bool UseCustomLoading
             {
                 get { return _useCustomLoading; }
                 set { _useCustomLoading = value; }
+            }
+
+            /// <summary>
+            /// Whether or not to check rules on (DataPortal_)Fetch methods. This invokes all business (validation) rules for the business type.
+            /// </summary>
+            [Category("00. Generate Options")]
+            [Description("Whether or not to check rules on (DataPortal_)Fetch methods. This invokes all business (validation) rules for the business type.")]
+            [UserFriendlyName("Check Rules On Fetch")]
+            public bool CheckRulesOnFetch
+            {
+                get { return _checkRulesOnFetch; }
+                set { _checkRulesOnFetch = value; }
             }
 
             [Category("00. Generate Options")]
@@ -227,7 +240,7 @@
                 get { return _supportUpdateProperties; }
                 set { _supportUpdateProperties = value; }
             }
-
+            
             #endregion
 
             #region 01. Common Options
@@ -1184,9 +1197,9 @@
 
             #endregion
 
-            #region 11. Active Objects Related
+            #region 11. Active Objects
 
-            [Category("11. Active Objects Related")]
+            [Category("11. Active Objects")]
             [Description("The channel you want to publish events to. Empty if you don't want to publish.")]
             [UserFriendlyName("Publish to channel")]
             public string PublishToChannel
@@ -1195,7 +1208,7 @@
                 set { _publishToChannel = value; }
             }
 
-            [Category("11. Active Objects Related")]
+            [Category("11. Active Objects")]
             [Description("The channel you want to subscribe to for events. Empty if you don't want to Subscribe to any channel.")]
             [UserFriendlyName("Subscribe to channel")]
             public string SubscribeToChannel

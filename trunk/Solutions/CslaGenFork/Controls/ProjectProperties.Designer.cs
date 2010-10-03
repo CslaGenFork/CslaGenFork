@@ -134,6 +134,7 @@ namespace CslaGenerator.Controls
             this.chkNullableSupport = new System.Windows.Forms.CheckBox();
             this.chkUseChildDataPortal = new System.Windows.Forms.CheckBox();
             this.chkActiveObjects = new System.Windows.Forms.CheckBox();
+            this.chkUseBypassPropertyChecks = new System.Windows.Forms.CheckBox();
             this.chkGenerateStoredProcedures = new System.Windows.Forms.CheckBox();
             this.chkSpOneFile = new System.Windows.Forms.CheckBox();
             this.chkGenerateDatabaseClass = new System.Windows.Forms.CheckBox();
@@ -175,6 +176,14 @@ namespace CslaGenerator.Controls
             ((System.ComponentModel.ISupportInitialize)(this.projectParametersBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.generationParametersBindingSource)).BeginInit();
             this.SuspendLayout();
+            // 
+            // toolTip1
+            // 
+            this.toolTip1.IsBalloon = true;
+            //this.toolTip1.AutomaticDelay = 500;//500
+            this.toolTip1.AutoPopDelay = 15000;//5000
+            //this.toolTip1.InitialDelay = 500;//500
+            //this.toolTip1.ReshowDelay = 100;//100
             // 
             // cmdImport
             // 
@@ -841,7 +850,8 @@ namespace CslaGenerator.Controls
             this.txtIDGuidDefaultValue.Name = "txtIDGuidDefaultValue";
             this.txtIDGuidDefaultValue.Size = new System.Drawing.Size(100, 20);
             this.txtIDGuidDefaultValue.TabIndex = 1;
-            this.toolTip1.SetToolTip(this.txtIDGuidDefaultValue, "Specify the value to be assigned on new object creation by DataPortal_Create.");
+            this.toolTip1.SetToolTip(this.txtIDGuidDefaultValue,
+                                     "Specify the value to be assigned on new object creation by DataPortal_Create.");
             // 
             // lblIDInt16DefaultValue
             // 
@@ -858,9 +868,10 @@ namespace CslaGenerator.Controls
             this.txtIDInt16DefaultValue.Name = "txtIDInt16DefaultValue";
             this.txtIDInt16DefaultValue.Size = new System.Drawing.Size(100, 20);
             this.txtIDInt16DefaultValue.TabIndex = 2;
-            this.toolTip1.SetToolTip(this.txtIDInt16DefaultValue, "Specify the value to be assigned on new object creation by DataPortal_Create." +
-                "\r\nUse case insensitive \"_lastID\" to generate the assignement:" +
-                "\r\nSystem.Threading.Interlocked.Decrement(ref _lastID)");
+            this.toolTip1.SetToolTip(this.txtIDInt16DefaultValue,
+                                     "Specify the value to be assigned on new object creation by DataPortal_Create." +
+                                     "\r\nUse case insensitive \"_lastID\" to generate the assignement:" +
+                                     "\r\nSystem.Threading.Interlocked.Decrement(ref _lastID)");
             // 
             // lblIDInt32DefaultValue
             // 
@@ -877,9 +888,10 @@ namespace CslaGenerator.Controls
             this.txtIDInt32DefaultValue.Name = "txtIDInt32DefaultValue";
             this.txtIDInt32DefaultValue.Size = new System.Drawing.Size(100, 20);
             this.txtIDInt32DefaultValue.TabIndex = 3;
-            this.toolTip1.SetToolTip(this.txtIDInt32DefaultValue, "Specify the value to be assigned on new object creation by DataPortal_Create." +
-                "\r\nUse case insensitive \"_lastID\" to generate the assignement:" +
-                "\r\nSystem.Threading.Interlocked.Decrement(ref _lastID)");
+            this.toolTip1.SetToolTip(this.txtIDInt32DefaultValue,
+                                     "Specify the value to be assigned on new object creation by DataPortal_Create." +
+                                     "\r\nUse case insensitive \"_lastID\" to generate the assignement:" +
+                                     "\r\nSystem.Threading.Interlocked.Decrement(ref _lastID)");
             // 
             // lblIDInt64DefaultValue
             // 
@@ -896,9 +908,10 @@ namespace CslaGenerator.Controls
             this.txtIDInt64DefaultValue.Name = "txtIDInt64DefaultValue";
             this.txtIDInt64DefaultValue.Size = new System.Drawing.Size(100, 20);
             this.txtIDInt64DefaultValue.TabIndex = 4;
-            this.toolTip1.SetToolTip(this.txtIDInt64DefaultValue, "Specify the value to be assigned on new object creation by DataPortal_Create." +
-                "\r\nUse case insensitive \"_lastID\" to generate the assignement:" +
-                "\r\nSystem.Threading.Interlocked.Decrement(ref _lastID)");
+            this.toolTip1.SetToolTip(this.txtIDInt64DefaultValue,
+                                     "Specify the value to be assigned on new object creation by DataPortal_Create." +
+                                     "\r\nUse case insensitive \"_lastID\" to generate the assignement:" +
+                                     "\r\nSystem.Threading.Interlocked.Decrement(ref _lastID)");
             // 
             // groupBoxOtherParameters
             // 
@@ -982,7 +995,8 @@ namespace CslaGenerator.Controls
             this.txtCreationDateColumn.Name = "txtCreationDateColumn";
             this.txtCreationDateColumn.Size = new System.Drawing.Size(100, 20);
             this.txtCreationDateColumn.TabIndex = 5;
-            this.toolTip1.SetToolTip(this.txtCreationDateColumn, "Specify the column name to be recognized as a \"creation date\" column.");
+            this.toolTip1.SetToolTip(this.txtCreationDateColumn,
+                                     "Specify the column name to be recognized as a \"creation date\" column.");
             // 
             // lblCreationUserColumn
             // 
@@ -999,7 +1013,8 @@ namespace CslaGenerator.Controls
             this.txtCreationUserColumn.Name = "txtCreationUserColumn";
             this.txtCreationUserColumn.Size = new System.Drawing.Size(100, 20);
             this.txtCreationUserColumn.TabIndex = 5;
-            this.toolTip1.SetToolTip(this.txtCreationUserColumn, "Specify the column name to be recognized as a \"creation user\" column.");
+            this.toolTip1.SetToolTip(this.txtCreationUserColumn,
+                                     "Specify the column name to be recognized as a \"creation user\" column.");
             // 
             // lblChangedDateColumn
             // 
@@ -1016,7 +1031,8 @@ namespace CslaGenerator.Controls
             this.txtChangedDateColumn.Name = "txtChangedDateColumn";
             this.txtChangedDateColumn.Size = new System.Drawing.Size(100, 20);
             this.txtChangedDateColumn.TabIndex = 5;
-            this.toolTip1.SetToolTip(this.txtChangedDateColumn, "Specify the column name to be recognized as a \"changed date\" column.");
+            this.toolTip1.SetToolTip(this.txtChangedDateColumn,
+                                     "Specify the column name to be recognized as a \"changed date\" column.");
             // 
             // lblChangedUserColumn
             // 
@@ -1033,7 +1049,8 @@ namespace CslaGenerator.Controls
             this.txtChangedUserColumn.Name = "txtChangedUserColumn";
             this.txtChangedUserColumn.Size = new System.Drawing.Size(100, 20);
             this.txtChangedUserColumn.TabIndex = 5;
-            this.toolTip1.SetToolTip(this.txtChangedUserColumn, "Specify the column name to be recognized as a \"changed user\" column.");
+            this.toolTip1.SetToolTip(this.txtChangedUserColumn,
+                                     "Specify the column name to be recognized as a \"changed user\" column.");
             // 
             // chkLogDateAndTime
             // 
@@ -1060,7 +1077,8 @@ namespace CslaGenerator.Controls
             this.txtGetUserMethod.Name = "txtGetUserMethod";
             this.txtGetUserMethod.Size = new System.Drawing.Size(223, 20);
             this.txtGetUserMethod.TabIndex = 5;
-            this.toolTip1.SetToolTip(this.txtGetUserMethod, "Specify the method to be used to get a user value (ID or name or whatever) for auditing purposes.");
+            this.toolTip1.SetToolTip(this.txtGetUserMethod,
+                                     "Specify the method to be used to get a user value (ID or name or whatever) for auditing purposes.");
             // 
             // tabGeneration
             // 
@@ -1080,6 +1098,7 @@ namespace CslaGenerator.Controls
             this.tabGeneration.Controls.Add(this.chkUseChildDataPortal);
             this.tabGeneration.Controls.Add(this.chkNullableSupport);
             this.tabGeneration.Controls.Add(this.chkActiveObjects);
+            this.tabGeneration.Controls.Add(this.chkUseBypassPropertyChecks);
             this.tabGeneration.Controls.Add(this.chkGenerateStoredProcedures);
             this.tabGeneration.Controls.Add(this.chkSpOneFile);
             this.tabGeneration.Controls.Add(this.chkGenerateDatabaseClass);
@@ -1102,7 +1121,8 @@ namespace CslaGenerator.Controls
             this.chkSaveGenerationGeneral.Size = new System.Drawing.Size(225, 21);
             this.chkSaveGenerationGeneral.TabIndex = 1;
             this.chkSaveGenerationGeneral.Text = "Save project before generating";
-            this.toolTip1.SetToolTip(this.chkSaveGenerationGeneral, "If checked, projects are silently saved before code generation.");
+            this.toolTip1.SetToolTip(this.chkSaveGenerationGeneral,
+                                     "If checked, projects are silently saved before code generation.");
             // 
             // lblTarget
             // 
@@ -1119,7 +1139,9 @@ namespace CslaGenerator.Controls
             this.cboTarget.Name = "cboTarget";
             this.cboTarget.Size = new System.Drawing.Size(118, 21);
             this.cboTarget.TabIndex = 2;
-            this.toolTip1.SetToolTip(this.cboTarget, "Select the target CSLA.NET framework version.\r\nUsing \"CSLA40\" hides \"Add Parent Reference\" property in Csla Object Info panel.");
+            this.toolTip1.SetToolTip(this.cboTarget,
+                                     "Select the target CSLA.NET framework version.\r\n" +
+                                     "Using \"CSLA40\" hides \"Add Parent Reference\" property in Csla Object Info panel.");
             // 
             // lblOutputLanguage
             // 
@@ -1136,8 +1158,9 @@ namespace CslaGenerator.Controls
             this.cboOutputLanguage.Name = "cboOutputLanguage";
             this.cboOutputLanguage.Size = new System.Drawing.Size(118, 21);
             this.cboOutputLanguage.TabIndex = 3;
-            this.toolTip1.SetToolTip(this.cboOutputLanguage, "Select the language for the generated code: C# or Visual Basic." +
-                "\r\nN.B. - JScript is deprecated since v.4.0.");
+            this.toolTip1.SetToolTip(this.cboOutputLanguage,
+                                     "Select the language for the generated code: C# or Visual Basic.\r\n" +
+                                     "\r\nN.B. - JScript is deprecated since v.4.0.");
             // 
             // lblUIEnvironment
             // 
@@ -1154,9 +1177,11 @@ namespace CslaGenerator.Controls
             this.cboUIEnvironment.Name = "cboUIEnvironment";
             this.cboUIEnvironment.Size = new System.Drawing.Size(118, 21);
             this.cboUIEnvironment.TabIndex = 5;
-            this.toolTip1.SetToolTip(this.cboUIEnvironment, "CSLA40 - Specify whether code must be generate for Windows Forms, WPF or both.\r\n" +
-                                                            "<WinForms_WPF> means \"Windows Forms first\" or \"defaults to Windows Forms\"." +
-                                                            "\r\nYou must use the \"WPF\" compiler directive to build the WPF version.");           // 
+            this.toolTip1.SetToolTip(this.cboUIEnvironment,
+                                     "CSLA40 - Specify whether code must be generate for Windows Forms, WPF or both.\r\n" +
+                                     "<WinForms_WPF> means \"Windows Forms first\" or \"defaults to Windows Forms.\r\n" +
+                                     "This will build BusinessBindingListBase usable on WinForms DataGridView.\r\n" +
+                                     "Use the \"WPF\" compiler directive to build BusinessListBase/ObservableCollection.");
             // 
             // lblGenerateAuthorization
             // 
@@ -1173,7 +1198,17 @@ namespace CslaGenerator.Controls
             this.cboGenerateAuthorization.Name = "cboGenerateAuthorization";
             this.cboGenerateAuthorization.Size = new System.Drawing.Size(118, 21);
             this.cboGenerateAuthorization.TabIndex = 5;
-            this.toolTip1.SetToolTip(this.cboGenerateAuthorization, "Authorization level to generate. Use \"None\" for custom inplementation or no implementation at all.\r\nIf \"None\" hides \"10. Authorization\" properties in Csla Object Info panel.");
+            this.toolTip1.SetToolTip(this.cboGenerateAuthorization,
+                                     "Authorization level to generate. Use \"None\" for no implementation at all.\r\n" +
+                                     "In Csla Object Info panel and in all value properties panels,\r\n" +
+                                     "the authz options will be shown or hidden according to this setting.\r\n" +
+                                     "\r\nN.B. - \"Custom\" shows all authz options because it generates\r\n" +
+                                     "Authorization code only for objects with at least one authz option filled.\r\n" +
+                                     "Authorization code is generated as follows:\r\n" +
+                                     "-  \"Can-\" methods are generated on the \".Designer\" file.\r\n" +
+                                     "- \"AddObjectAuthorizationRules()\" method is generated on the extended file.\r\n" +
+                                     "- until Rules 4 are implemented \"AddBusinessRules()\" method isn't generated.\r\n" +
+                                     "  So it's up to you to write this method on the extended file.");
             // 
             // lblHeaderVerbosity
             // 
@@ -1229,7 +1264,9 @@ namespace CslaGenerator.Controls
             this.chkUseChildDataPortal.Size = new System.Drawing.Size(216, 17);
             this.chkUseChildDataPortal.TabIndex = 10;
             this.chkUseChildDataPortal.Text = "Use child DataPortal methods";
-            this.toolTip1.SetToolTip(this.chkUseChildDataPortal, "If checked, child DataPortal methods are used. Otherwise standard DataPortal methods are generated.");
+            this.toolTip1.SetToolTip(this.chkUseChildDataPortal,
+                                     "If checked, child DataPortal methods are used.\r\n" +
+                                     "Otherwise standard DataPortal methods are generated.");
             //
             // chkActiveObjects
             // 
@@ -1239,7 +1276,23 @@ namespace CslaGenerator.Controls
             this.chkActiveObjects.Size = new System.Drawing.Size(216, 17);
             this.chkActiveObjects.TabIndex = 14;
             this.chkActiveObjects.Text = "Generate Active Objects code";
-            this.toolTip1.SetToolTip(this.chkActiveObjects, "If checked, outputs ActiveObjects code instead of plain CSLA.\r\nIf unchecked hides \"11. Active Objects Related\" properties in Csla Object Info panel.");
+            this.toolTip1.SetToolTip(this.chkActiveObjects,
+                                     "If checked, outputs ActiveObjects code instead of plain CSLA.\r\n" +
+                                     "If unchecked hides \"11. Active Objects\" properties in Csla Object Info panel.");
+            //
+            // chkUseBypassPropertyChecks
+            // 
+            this.chkUseBypassPropertyChecks.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "UseBypassPropertyChecks", true));
+            this.chkUseBypassPropertyChecks.Location = new System.Drawing.Point(255, 134);
+            this.chkUseBypassPropertyChecks.Name = "chkUseBypassPropertyChecks";
+            this.chkUseBypassPropertyChecks.Size = new System.Drawing.Size(260, 17);
+            this.chkUseBypassPropertyChecks.TabIndex = 14;
+            this.chkUseBypassPropertyChecks.Text = "Generate BypassPropertyChecks code blocks";
+            this.toolTip1.SetToolTip(this.chkUseBypassPropertyChecks,
+                                     "CTP - Not implemented.\r\n\r\n" +
+                                     "If checked, improves code readability by using BypassPropertyChecks blocks\r\n" +
+                                     "and assign values using .NET properties.\r\n" +
+                                     "Otherwise uses LoadProperty() to assign values.");
             //
             // chkGenerateStoredProcedures
             // 
@@ -1249,7 +1302,8 @@ namespace CslaGenerator.Controls
             this.chkGenerateStoredProcedures.Size = new System.Drawing.Size(216, 17);
             this.chkGenerateStoredProcedures.TabIndex = 7;
             this.chkGenerateStoredProcedures.Text = "Generate Stored Procedures";
-            this.toolTip1.SetToolTip(this.chkGenerateStoredProcedures, "If checked, generates stored procedures for the objects that can generate them.");
+            this.toolTip1.SetToolTip(this.chkGenerateStoredProcedures,
+                                     "If checked, generates stored procedures for the objects that can generate them.");
             // 
             // chkSpOneFile
             // 
@@ -1259,7 +1313,9 @@ namespace CslaGenerator.Controls
             this.chkSpOneFile.Size = new System.Drawing.Size(216, 17);
             this.chkSpOneFile.TabIndex = 9;
             this.chkSpOneFile.Text = "Generate only one SP file per object";
-            this.toolTip1.SetToolTip(this.chkSpOneFile, "If checked, creates only one file that contains all the generated stored procedures for the business object");
+            this.toolTip1.SetToolTip(this.chkSpOneFile,
+                                     "If checked, creates only one file that contains all the\r\n" +
+                                     "generated stored procedures for the business object");
             // 
             // chkGenerateDatabaseClass
             // 
@@ -1269,7 +1325,8 @@ namespace CslaGenerator.Controls
             this.chkGenerateDatabaseClass.Size = new System.Drawing.Size(216, 17);
             this.chkGenerateDatabaseClass.TabIndex = 11;
             this.chkGenerateDatabaseClass.Text = "Generate Database class";
-            this.toolTip1.SetToolTip(this.chkGenerateDatabaseClass, "If checked, generates a \"Database.cs\" or \"Database.vb\" file.");
+            this.toolTip1.SetToolTip(this.chkGenerateDatabaseClass,
+                                     "If checked, generates a \"Database.cs\" or \"Database.vb\" file.");
             // 
             // tabGenerationFiles
             // 
@@ -1324,8 +1381,9 @@ namespace CslaGenerator.Controls
             this.txtBaseFilenameSuffix.Name = "txtBaseFilenameSuffix";
             this.txtBaseFilenameSuffix.Size = new System.Drawing.Size(164, 17);
             this.txtBaseFilenameSuffix.TabIndex = 8;
-            this.toolTip1.SetToolTip(this.txtBaseFilenameSuffix, "If specified, base classes use \"<object><suffix>\" in file names instead of \"<object>Base\" file name." +
-                "\r\nN.B. - For generated filename compatibility with previous versions, use \".Designer\" suffix.");
+            this.toolTip1.SetToolTip(this.txtBaseFilenameSuffix,
+                                     "If specified, base classes use \"<object><suffix>\" in file names instead of \"<object>Base\" file name." +
+                                     "\r\nN.B. - For generated filename compatibility with previous versions, use \".Designer\" suffix.");
             // 
             // lblExtendedFilenameSuffix
             // 
@@ -1344,8 +1402,9 @@ namespace CslaGenerator.Controls
             this.txtExtendedFilenameSuffix.Name = "txtExtendedFilenameSuffix";
             this.txtExtendedFilenameSuffix.Size = new System.Drawing.Size(164, 17);
             this.txtExtendedFilenameSuffix.TabIndex = 8;
-            this.toolTip1.SetToolTip(this.txtExtendedFilenameSuffix, "If specified, extended classes use \"<object><suffix>\" in file names instead of \"<object>\" file name." +
-                "\r\nN.B. - For generated filename compatibility with previous versions, use an empty suffix.");
+            this.toolTip1.SetToolTip(this.txtExtendedFilenameSuffix,
+                                     "If specified, extended classes use \"<object><suffix>\" in file names instead of \"<object>\" file name." +
+                                     "\r\nN.B. - For generated filename compatibility with previous versions, use an empty suffix.");
             // 
             // lblClassCommentFilenameSuffix
             // 
@@ -1364,7 +1423,8 @@ namespace CslaGenerator.Controls
             this.txtClassCommentFilenameSuffix.Name = "txtClassCommentFilenameSuffix";
             this.txtClassCommentFilenameSuffix.Size = new System.Drawing.Size(164, 17);
             this.txtClassCommentFilenameSuffix.TabIndex = 8;
-            this.toolTip1.SetToolTip(this.txtClassCommentFilenameSuffix, "If specified, class comments are separated on its own file with file names \"<object><suffix>\". If blank, class comments are inserted on base class files.");
+            this.toolTip1.SetToolTip(this.txtClassCommentFilenameSuffix,
+                                     "If specified, class comments are separated on its own file with file names \"<object><suffix>\". If blank, class comments are inserted on base class files.");
             // 
             // chkBackupOldSource
             // 
@@ -1622,6 +1682,7 @@ namespace CslaGenerator.Controls
         private System.Windows.Forms.CheckBox chkNullableSupport;
         private System.Windows.Forms.CheckBox chkUseChildDataPortal;
         private System.Windows.Forms.CheckBox chkActiveObjects;
+        private System.Windows.Forms.CheckBox chkUseBypassPropertyChecks;
         private System.Windows.Forms.CheckBox chkGenerateStoredProcedures;
         private System.Windows.Forms.CheckBox chkSpOneFile;
         private System.Windows.Forms.CheckBox chkGenerateDatabaseClass;

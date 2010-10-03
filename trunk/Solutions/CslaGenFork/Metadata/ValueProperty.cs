@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Drawing.Design;
 using System.IO;
 using System.Xml.Serialization;
+using CslaGenerator.Attributes;
 using CslaGenerator.Design;
 
 namespace CslaGenerator.Metadata
@@ -69,12 +70,13 @@ namespace CslaGenerator.Metadata
 
         #region Properties
 
-        #region Database Related
+        #region 00. Database
 
-        [Category("Database Related")]
+        [Category("00. Database")]
         [Editor(typeof(DbBindColumnEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(DbBindColumnConverter))]
         [Description("The database column this property is bound to.")]
+        [UserFriendlyName("DB BindC olumn")]
         public virtual DbBindColumn DbBindColumn
         {
             get { return _dbBindColumn; }
@@ -85,7 +87,7 @@ namespace CslaGenerator.Metadata
             }
         }
 
-        [Category("Database Related")]
+        [Category("00. Database")]
         [Description("When \"PrimaryKey\" is set to \"Default\", this controls the data flow of the property. Using the legend \"C=Create\", \"R=Read\", \"U=Update\" and \"x=no op\", the rules are as follows:" +
             "\r\n\tReadWrite=CRU (full access)" +
             "\r\n\tReadOnly=xRx (can't write)" +
@@ -93,30 +95,34 @@ namespace CslaGenerator.Metadata
             "\r\n\tUpdateOnly=xRU (can't create)" +
             "\r\n\tCreateOnly=CRx (can't update)"+
             "")]
+        [UserFriendlyName("Data Access Behaviour")]
         public virtual DataAccessBehaviour DataAccess
         {
             get { return _dataAccess; }
             set { _dataAccess = value; }
         }
 
-        [Category("Database Related")]
+        [Category("00. Database")]
         [Description("The type of primary key or \"Default\" to none.")]
+        [UserFriendlyName("Primary Key")]
         public virtual UserDefinedKeyBehaviour PrimaryKey
 		{
 			get { return _primaryKey; }
 			set { _primaryKey = value; }
 		}
 
-        [Category("Database Related")]
+        [Category("00. Database")]
         [Description("Use this foreign key constraint to find the property value.")]
+        [UserFriendlyName("FK Constraint")]
         public virtual string FKConstraint
         {
             get { return _fkConstraint; }
             set { _fkConstraint = value; }
         }
 
-		[Category("Database Related")]
+        [Category("00. Database")]
         [Description("The stored procedure parameter name.")]
+        [UserFriendlyName("Parameter Name")]
         public override string ParameterName
 		{
 			get 
@@ -135,8 +141,10 @@ namespace CslaGenerator.Metadata
 
         #endregion
 
-        #region Definition
+        #region 01. Definition
 
+        [Category("01. Definition")]
+        [Description("The property name.")]
         public override string Name
         {
             get { return base.Name; }
@@ -151,8 +159,9 @@ namespace CslaGenerator.Metadata
             }
         }
 
-        [Category("Definition")]
+        [Category("01. Definition")]
         [Description("This is a description.")]
+        [UserFriendlyName("Friendly Name")]
         public string FriendlyName
         {
             get
@@ -170,51 +179,62 @@ namespace CslaGenerator.Metadata
             }
         }
 
+        [Category("01. Definition")]
+        [Description("The property Type.")]
+        [UserFriendlyName("Property Type")]
         public override TypeCodeEx PropertyType
         {
             get { return base.PropertyType; }
             set { base.PropertyType = value; }
         }
        
-        [Category("Definition")]
+        [Category("01. Definition")]
         [Description("Property Declaration Mode.")]
+        [UserFriendlyName("Declaration Mode")]
         public PropertyDeclaration DeclarationMode
         {
             get { return _declarationMode; }
             set { _declarationMode = value; }
         }
 
-        [Category("Definition")]
+        [Category("01. Definition")]
         [Description("Type of Backing Field of the Property.")]
+        [UserFriendlyName("Backing Field Type")]
         public TypeCodeEx BackingFieldType
         {
             get { return _backingFieldType; }
             set { _backingFieldType = value; }
         }
 
+        [Category("01. Definition")]
+        [Description("This is a description.")]
         public override bool ReadOnly
         {
             get { return base.ReadOnly; }
             set { base.ReadOnly = value; }
         }
 
+        [Category("01. Definition")]
+        [Description("Whether this property can have a null value. The following types aren't nullable: \"String \", \"ByteArray \", \"SmartDate \", \"DBNull \", \"Object\" and \"Empty\".")]
         public override bool Nullable
         {
             get { return base.Nullable; }
             set { base.Nullable = value; }
         }
 
-        [Category("Definition")]
+        [Category("01. Definition")]
         [Description("This is a description.")]
+        [UserFriendlyName("Default Value")]
         public virtual string DefaultValue
         {
             get { return _defaultValue; }
             set { _defaultValue = value; }
         }
 
-        [Category("Definition")]
+        [Category("01. Definition")]
         [Description("This is a description.")]
         [Editor(typeof(PropertyCollectionForm), typeof(UITypeEditor))]
+        [UserFriendlyName("Rule Collection")]
         public virtual RuleCollection Rules
         {
             get { return _rules; }
@@ -222,9 +242,9 @@ namespace CslaGenerator.Metadata
 
         #endregion
 
-        #region Definition (Advanced)
+        #region 02. Advanced
 
-        [Category("Definition (Advanced)")]
+        [Category("02. Advanced")]
         [Description("This is a description.")]
         public virtual string Implements
         {
@@ -236,7 +256,7 @@ namespace CslaGenerator.Metadata
             }
         }
 
-        [Category("Definition (Advanced)")]
+        [Category("02. Advanced")]
         [Description("This is a description.")]
         public virtual string[] Attributes
         {
@@ -250,10 +270,11 @@ namespace CslaGenerator.Metadata
 
         #endregion
 
-        #region Definition (Authorization)
+        #region 03. Authorization
 
-        [Category("Definition (Authorization)")]
+        [Category("03. Authorization")]
         [Description("Roles allowed to read the property. Multiple roles must be separated with ;")]
+        [UserFriendlyName("Allow Read Roles")]
         public virtual string AllowReadRoles
         {
             get { return _allowReadRoles; }
@@ -264,8 +285,9 @@ namespace CslaGenerator.Metadata
             }
         }
         
-        [Category("Definition (Authorization)")]
+        [Category("03. Authorization")]
         [Description("Roles allowed to write to the property. Multiple roles must be separated with ;")]
+        [UserFriendlyName("Allow Write Roles")]
         public virtual string AllowWriteRoles
         {
             get { return _allowWriteRoles; }
@@ -276,8 +298,9 @@ namespace CslaGenerator.Metadata
             }
         }
 
-        [Category("Definition (Authorization)")]
+        [Category("03. Authorization")]
         [Description("Roles denied to read the property. Multiple roles must be separated with ;")]
+        [UserFriendlyName("Deny Read Roles")]
         public virtual string DenyReadRoles
         {
             get { return _denyReadRoles; }
@@ -288,8 +311,9 @@ namespace CslaGenerator.Metadata
             }
         }
 
-        [Category("Definition (Authorization)")]
+        [Category("03. Authorization")]
         [Description("Roles denied to write to the property. Multiple roles must be separated with ;")]
+        [UserFriendlyName("Deny Write Roles")]
         public virtual string DenyWriteRoles
         {
             get { return _denyWriteRoles; }
@@ -302,25 +326,27 @@ namespace CslaGenerator.Metadata
 
         #endregion
 
-        #region Options
+        #region 05. Options
 
-        [Category("Options")]
+        [Category("05. Options")]
         [Description("Accessibility for the property as a whole.")]
+        [UserFriendlyName("Property Access.")]
         public PropertyAccess Access
         {
             get { return _access; }
             set { _access = value; }
         }
 
-        [Category("Options")]
+        [Category("05. Options")]
         [Description("Accessibility for property setter.\r\nDefaults to public.")]
+        [UserFriendlyName("Setter Accessib.")]
         public AccessorVisibility PropSetAccessibility
         {
             get { return _propSetAccessibility; }
             set { _propSetAccessibility = value; }
         }
 
-        [Category("Options")]
+        [Category("05. Options")]
         [Description("This is a description.")]
         public bool Undoable
         {
@@ -328,8 +354,9 @@ namespace CslaGenerator.Metadata
             set { _undoable = value; }
         }
 
-        [Category("Options")]
+        [Category("05. Options")]
         [Description("This is a description.")]
+        [UserFriendlyName("Mark Dirty On Change")]
         public bool MarkDirtyOnChange
 		{
 			get { return _markDirtyOnChange; }

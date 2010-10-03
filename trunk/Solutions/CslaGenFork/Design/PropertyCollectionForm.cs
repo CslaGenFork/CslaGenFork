@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
 using CslaGenerator.Metadata;
+using CslaGenerator.Util;
 
 namespace CslaGenerator.Design
 {
@@ -85,6 +86,7 @@ namespace CslaGenerator.Design
             if (fieldInfo != null)
             {
                 _propGrid = (PropertyGrid) fieldInfo.GetValue(_form);
+                //_propGrid.SelectedObject = new PlainPropertyBag(current);
 
                 if (_propGrid != null)
                 {
@@ -92,6 +94,7 @@ namespace CslaGenerator.Design
                     _propGrid.HelpVisible = true;
                     _propGrid.PropertySort = PropertySort.Categorized;
                     _propGrid.PropertySortChanged += OnSort;
+                    _propGrid.SelectedObjectsChanged += OnSelect;
 
                     /*//Get the property grid's type.
                     //This is a vsPropertyGrid located in System.Windows.Forms.Design
@@ -112,6 +115,86 @@ namespace CslaGenerator.Design
             return _form;
         }
 
+        public void OnSelect(object sender, EventArgs e)
+        {
+            _propGrid.SelectedObjectsChanged -= OnSelect;
+
+            if (_collectionType == typeof(ValueProperty))
+            {
+                var selectedObject = (ValueProperty)_propGrid.SelectedObject;
+                //Get the property grid's type.
+                //This is a vsPropertyGrid located in System.Windows.Forms.Design
+                var propertyInfo = _propGrid.GetType().GetProperty("SelectedObject", BindingFlags.Public | BindingFlags.Instance);
+                if (selectedObject != null)
+                    propertyInfo.SetValue(_propGrid, new ValuePropertyBag(selectedObject), null);
+            }
+            else if (_collectionType == typeof(ChildProperty))
+            {
+                var selectedObject = (ChildProperty)_propGrid.SelectedObject;
+                //Get the property grid's type.
+                //This is a vsPropertyGrid located in System.Windows.Forms.Design
+                var propertyInfo = _propGrid.GetType().GetProperty("SelectedObject", BindingFlags.Public | BindingFlags.Instance);
+                if (selectedObject != null)
+                    propertyInfo.SetValue(_propGrid, new ChildPropertyBag(selectedObject), null);
+            }
+            /*else if (_collectionType == typeof(Criteria))
+            {
+                var selectedObject = (Criteria)_propGrid.SelectedObject;
+                //Get the property grid's type.
+                //This is a vsPropertyGrid located in System.Windows.Forms.Design
+                var propertyInfo = _propGrid.GetType().GetProperty("SelectedObject", BindingFlags.Public | BindingFlags.Instance);
+                if (selectedObject != null)
+                    propertyInfo.SetValue(_propGrid, new CriteriaBag(selectedObject), null);
+            }*/
+            else if (_collectionType == typeof(CriteriaProperty))
+            {
+                var selectedObject = (CriteriaProperty)_propGrid.SelectedObject;
+                //Get the property grid's type.
+                //This is a vsPropertyGrid located in System.Windows.Forms.Design
+                var propertyInfo = _propGrid.GetType().GetProperty("SelectedObject", BindingFlags.Public | BindingFlags.Instance);
+                if (selectedObject != null)
+                    propertyInfo.SetValue(_propGrid, new CriteriaPropertyBag(selectedObject), null);
+            }
+            else if (_collectionType == typeof(ConvertValueProperty))
+            {
+                var selectedObject = (ConvertValueProperty) _propGrid.SelectedObject;
+                //Get the property grid's type.
+                //This is a vsPropertyGrid located in System.Windows.Forms.Design
+                var propertyInfo = _propGrid.GetType().GetProperty("SelectedObject", BindingFlags.Public | BindingFlags.Instance);
+                if (selectedObject != null)
+                    propertyInfo.SetValue(_propGrid, new ConvertValuePropertyBag(selectedObject), null);
+            }
+            else if (_collectionType == typeof(UpdateValueProperty))
+            {
+                var selectedObject = (UpdateValueProperty)_propGrid.SelectedObject;
+                //Get the property grid's type.
+                //This is a vsPropertyGrid located in System.Windows.Forms.Design
+                var propertyInfo = _propGrid.GetType().GetProperty("SelectedObject", BindingFlags.Public | BindingFlags.Instance);
+                if (selectedObject != null)
+                    propertyInfo.SetValue(_propGrid, new UpdateValuePropertyBag(selectedObject), null);
+            }
+            else if (_collectionType == typeof(Rule))
+            {
+                var selectedObject = (Rule)_propGrid.SelectedObject;
+                //Get the property grid's type.
+                //This is a vsPropertyGrid located in System.Windows.Forms.Design
+                var propertyInfo = _propGrid.GetType().GetProperty("SelectedObject", BindingFlags.Public | BindingFlags.Instance);
+                if (selectedObject != null)
+                    propertyInfo.SetValue(_propGrid, new RuleBag(selectedObject), null);
+            }
+            else if (_collectionType == typeof(DecoratorArgument))
+            {
+                var selectedObject = (DecoratorArgument)_propGrid.SelectedObject;
+                //Get the property grid's type.
+                //This is a vsPropertyGrid located in System.Windows.Forms.Design
+                var propertyInfo = _propGrid.GetType().GetProperty("SelectedObject", BindingFlags.Public | BindingFlags.Instance);
+                if (selectedObject != null)
+                    propertyInfo.SetValue(_propGrid, new DecoratorArgumentBag(selectedObject), null);
+            }
+
+            _propGrid.SelectedObjectsChanged += OnSelect;
+        }
+
         #endregion
 
         private void HandleFormCollectionType()
@@ -119,36 +202,42 @@ namespace CslaGenerator.Design
             switch (_form.Text)
             {
                 case "ValueProperty Collection Editor":
-                    _collectionType = typeof(ValueProperty);
-                    _form.Size = new Size(_form.Size.Width, 713);
+                    _collectionType = typeof (ValueProperty);
+                    if (GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == Authorization.None ||
+                        GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == Authorization.ObjectLevel)
+                        _form.Size = new Size(_form.Size.Width, 633);
+                    else
+                        _form.Size = new Size(_form.Size.Width, 713);
+                    if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40)
+                        _form.Size = new Size(_form.Size.Width, _form.Size.Height-16);
                     break;
                 case "ChildProperty Collection Editor":
-                    _collectionType = typeof(ChildProperty);
+                    _collectionType = typeof (ChildProperty);
                     _form.Size = new Size(_form.Size.Width, 473);
+                    break;
+                case "Criteria Collection Editor":
+                    _collectionType = typeof (Criteria);
+                    _form.Size = new Size(_form.Size.Width, 617);
+                    break;
+                case "CriteriaProperty Collection Editor":
+                    _collectionType = typeof (CriteriaProperty);
+                    _form.Size = new Size(_form.Size.Width, 393);
                     break;
                 case "ConvertValueProperty Collection Editor":
                     _collectionType = typeof(ConvertValueProperty);
                     _form.Size = new Size(_form.Size.Width, 553);
                     break;
-                case "Criteria Collection Editor":
-                    _collectionType = typeof(Criteria);
-                    _form.Size = new Size(_form.Size.Width, 617);
-                    break;
-                case "CriteriaProperty Collection Editor":
-                    _collectionType = typeof(CriteriaProperty);
-                    _form.Size = new Size(_form.Size.Width, 393);
-                    break;
                 case "UpdateValueProperty Collection Editor":
-                    _collectionType = typeof(UpdateValueProperty);
+                    _collectionType = typeof (UpdateValueProperty);
                     break;
                 case "Rule Collection Editor":
-                    _collectionType = typeof(Rule);
+                    _collectionType = typeof (Rule);
                     break;
                 case "DecoratorArgument Collection Editor":
-                    _collectionType = typeof(DecoratorArgument);
+                    _collectionType = typeof (DecoratorArgument);
                     break;
             }
-    
+
         }
 
         public void OnIndexChanged(object sender, EventArgs e)

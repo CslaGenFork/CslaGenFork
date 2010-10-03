@@ -664,7 +664,7 @@ namespace CslaGenerator.Controls
             obj.ParentType = parent;
             obj.ItemType = item;
             _currentUnit.CslaObjects.Add(obj);
-            _currentFactory.AddDefaultCriteriaAndParameters();
+            _currentFactory.AddDefaultCriteriaAndParameters(obj);
         }
 
         void NewNVL(string name)

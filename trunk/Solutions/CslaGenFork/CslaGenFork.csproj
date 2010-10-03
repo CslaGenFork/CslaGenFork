@@ -188,7 +188,6 @@
     <None Include="Resources\build.png" />
     <None Include="Resources\move down object.png" />
     <None Include="Resources\move up object.png" />
-    <None Include="Resources\Add New Relations Object.png" />
     <None Include="Resources\New Relations Object.png" />
     <None Include="Resources\Add To Relation.png" />
     <Content Include="Resources\build_all.png" />
@@ -231,10 +230,13 @@
     <Compile Include="Metadata\AssociativeEntity.cs" />
     <Compile Include="Metadata\ObjectRelationsFactory.cs" />
     <Compile Include="Metadata\PersistenceType.cs" />
+    <Compile Include="Metadata\UIEnvironment.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Util\ChildPropertyBag.cs" />
     <Compile Include="Util\ConfigTools.cs" />
     <Compile Include="Metadata\ConstructorVisibility.cs" />
     <Compile Include="Metadata\PropertyDeclaration.cs" />
-    <Compile Include="Metadata\UIEnvironment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -503,7 +505,14 @@
     <Compile Include="Templates\VB\VbCslaTemplateHelper.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Util\AssociativeEntityPropertyBag.cs" />
+    <Compile Include="Util\ConvertValuePropertyBag.cs" />
+    <Compile Include="Util\CriteriaPropertyBag.cs" />
+    <Compile Include="Util\DecoratorArgumentBag.cs" />
     <Compile Include="Util\ObjectCloner.cs" />
+    <Compile Include="Util\RuleBag.cs" />
+    <Compile Include="Util\UpdateValuePropertyBagBag.cs" />
+    <Compile Include="Util\ValuePropertyBag.cs" />
     <Compile Include="Util\PropertyBag.cs">
       <SubType>Code</SubType>
     </Compile>
