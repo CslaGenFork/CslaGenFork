@@ -7,7 +7,7 @@
 <%@ Import Namespace="CslaGenerator.Metadata" %>
 <%@ Import Namespace="CslaGenerator.Util" %>
 
-<!-- #include file="Header.inc" -->
+<!-- #include file="Header.inccs" -->
 <%= GetUsingStatementsString(Info) %>
 <%
 if (Info.ObjectNamespace.Length > 0)
@@ -17,7 +17,7 @@ if (Info.ObjectNamespace.Length > 0)
 <%
 }
 bool? firstComment = true;
-%><!-- #include file="XmlComment.inc" -->
+%><!-- #include file="XmlComment.inccs" -->
     public partial class <%= Info.ObjectName %>
     {
     }
