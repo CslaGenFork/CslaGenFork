@@ -124,7 +124,7 @@ if (Info.GenerateDataPortalInsert)
     %>
                     MarkOld();
                 }
-                <!-- #include file="UpdateChildProperties.inccs" -->
+                <!-- #include file="UpdateChildProperties.inc" -->
             }
         }
     <%
@@ -227,7 +227,7 @@ if (Info.GenerateDataPortalUpdate)
                     %>
                         MarkOld();
                     }
-                    <!-- #include file="UpdateChildProperties.inccs" -->
+                    <!-- #include file="UpdateChildProperties.inc" -->
                 }
             }
         }
@@ -236,7 +236,7 @@ if (Info.GenerateDataPortalUpdate)
 if (Info.GenerateDataPortalInsert || Info.GenerateDataPortalUpdate)
 {
     %>
-<!-- #include file="DoInsertUpdate.inccs" -->
+<!-- #include file="DoInsertUpdate.inc" -->
     <%
 }
 Response.Write(Environment.NewLine);

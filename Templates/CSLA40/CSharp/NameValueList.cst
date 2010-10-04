@@ -26,7 +26,7 @@ if (nameProp == null || valueProp == null)
     Errors.Append("Missing name or value properties." + Environment.NewLine);
 else
 {
-    %><!-- #include file="Header.inccs" -->
+    %><!-- #include file="Header.inc" -->
 using System;
 using System.Data;
 using System.Data.SqlClient;
@@ -42,7 +42,7 @@ using Csla.Data;
     <%
     }
     %>
-<% bool? firstComment = null; %><!-- #include file="XmlComment.inccs" -->
+<% bool? firstComment = null; %><!-- #include file="XmlComment.inc" -->
     [Serializable]
     <%
     if (ActiveObjects && Info.SubscribeToChannel.Length > 0)
@@ -148,7 +148,7 @@ using Csla.Data;
     <%
     }
     %>
-<!-- #include file="SharedAuthorizationMethods.inccs" -->
+<!-- #include file="SharedAuthorizationMethods.inc" -->
 <%
     if (Info.GenerateDataAccessRegion)
     {
@@ -219,7 +219,7 @@ using Csla.Data;
         <%
         }
     %>
-<!-- #include file="Events.inccs" -->
+<!-- #include file="Events.inc" -->
 
 <%
     }

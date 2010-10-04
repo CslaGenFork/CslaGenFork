@@ -112,7 +112,7 @@ if (Info.GenerateDataPortalInsert)
     string indent = "";
     %>
                 }
-                <!-- #include file="UpdateChildProperties.inccs" -->
+                <!-- #include file="UpdateChildProperties.inc" -->
                 <%
     if (Info.TransactionType == TransactionType.ADO && Info.PersistenceType == PersistenceType.SqlConnectionManager)
     {

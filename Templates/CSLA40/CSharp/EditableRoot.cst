@@ -12,12 +12,12 @@
 <%@ Import Namespace="System.Windows.Forms" %>
 <%@ Import Namespace="System.Text" %>
 
-<!-- #include file="EditableRootValidate.inccs" -->
+<!-- #include file="EditableRootValidate.inc" -->
 <%
 if (Errors.Length == 0)
 {
     bool first = true;
-    %><!-- #include file="Header.inccs" -->
+    %><!-- #include file="Header.inc" -->
 using System;
 using System.Data;
 using System.Data.SqlClient;
@@ -26,7 +26,7 @@ using Csla.Data;
 <%= GetUsingStatementsString(Info) %>
 <% if (Info.ObjectNamespace.Length > 0) { %>namespace <%= Info.ObjectNamespace %>
 {<% } %>
-<% bool? firstComment = null; %><!-- #include file="XmlComment.inccs" -->
+<% bool? firstComment = null; %><!-- #include file="XmlComment.inc" -->
     <% if (GetAttributesString(Info.Attributes) != string.Empty) { %>
     <%= GetAttributesString(Info.Attributes) %>
     <% } %>
@@ -39,16 +39,16 @@ using Csla.Data;
             %><%=Info.InheritedType.ObjectName%><%
          } else {
             %><% if (ActiveObjects) { %>Active<% } %>BusinessBase<<%=Info.ObjectName %>><%
-        } %><!-- #include file="Implements.inccs" -->
+        } %><!-- #include file="Implements.inc" -->
     {
-<!-- #include file="StaticFields.inccs" -->
-<!-- #include file="StateFields.inccs" -->
+<!-- #include file="StaticFields.inc" -->
+<!-- #include file="StateFields.inc" -->
 
-<!-- #include file="BusinessProps.inccs" -->
+<!-- #include file="BusinessProps.inc" -->
 
-<!-- #include file="BusinessRules.inccs" -->
+<!-- #include file="BusinessRules.inc" -->
 
-        <!-- #include file="ObjectOverrides.inccs" -->
+        <!-- #include file="ObjectOverrides.inc" -->
         <% Response.Write(Environment.NewLine); %>
         #region Factory Methods
     <% if (Info.GenerateFactoryMethods)
@@ -58,39 +58,39 @@ using Csla.Data;
                 Warnings.Append("Make sure you specify a DB name." + Environment.NewLine) ;
             }
     %>
-        <!-- #include file="NewObject.inccs" -->
+        <!-- #include file="NewObject.inc" -->
 
-        <!-- #include file="GetObject.inccs" -->
+        <!-- #include file="GetObject.inc" -->
 
-        <!-- #include file="DeleteObject.inccs" -->
+        <!-- #include file="DeleteObject.inc" -->
     <% } %>
-        <!-- #include file="Save.inccs" -->
+        <!-- #include file="Save.inc" -->
         <% Response.Write(Environment.NewLine); %>
         #endregion
-<!-- #include file="Constructor.inccs"  -->
+<!-- #include file="Constructor.inc"  -->
 
-        <!-- #include file="Criteria.inccs"  -->
+        <!-- #include file="Criteria.inc"  -->
 
-<!-- #include file="SharedAuthorizationMethods.inccs" -->
+<!-- #include file="SharedAuthorizationMethods.inc" -->
 <% Response.Write(Environment.NewLine); %>
-<!-- #include file="ConvertProperties.inccs" -->
+<!-- #include file="ConvertProperties.inc" -->
 <% if (Info.GenerateDataAccessRegion) { %>
         #region Data Access
 <% Response.Write(Environment.NewLine); %>
-        <!-- #include file="DataPortalCreate.inccs"  -->
+        <!-- #include file="DataPortalCreate.inc"  -->
 
-        <!-- #include file="DataPortalFetch.inccs"  -->
+        <!-- #include file="DataPortalFetch.inc"  -->
 
-        <!-- #include file="DataPortalInsert.inccs" -->
+        <!-- #include file="DataPortalInsert.inc" -->
 
-        <!-- #include file="DataPortalUpdate.inccs" -->
+        <!-- #include file="DataPortalUpdate.inc" -->
 
 <% if (Info.GenerateDataPortalInsert || Info.GenerateDataPortalUpdate) { %>
-<!-- #include file="DoInsertUpdate.inccs" -->
+<!-- #include file="DoInsertUpdate.inc" -->
 <% } %>
-        <!-- #include file="DataPortalDelete.inccs" -->
+        <!-- #include file="DataPortalDelete.inc" -->
         #endregion
-<!-- #include file="Events.inccs" -->
+<!-- #include file="Events.inc" -->
 
 <% } %>
 
