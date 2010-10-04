@@ -13,7 +13,7 @@ if (ActiveObjects)
 %>using ActiveObjects;
 <%
 }
-    %><!-- #include file="Header.inccs" -->
+    %><!-- #include file="Header.inc" -->
 <%
 if (Info.ObjectNamespace.IndexOf(CurrentUnit.GenerationParams.UtilitiesNamespace) != 0)
 {

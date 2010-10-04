@@ -10,12 +10,12 @@
 <%@ Import Namespace="CslaGenerator.Util" %>
 <%@ Import Namespace="System.Text" %>
 
-<!-- #include file="EditableChildCollectionValidate.inccs" -->
+<!-- #include file="EditableChildCollectionValidate.inc" -->
 <%
 if (Errors.Length == 0)
 {
     bool first = true;
-    %><!-- #include file="Header.inccs" -->
+    %><!-- #include file="Header.inc" -->
 using System;
 using System.Data;
 using System.Data.SqlClient;
@@ -25,7 +25,7 @@ using Csla;
 <%= GetUsingStatementsString(Info) %>
 <% if (Info.ObjectNamespace.Length > 0) { %>namespace <%= Info.ObjectNamespace %>
 {<% } %>
-<% bool? firstComment = null; %><!-- #include file="XmlComment.inccs" -->
+<% bool? firstComment = null; %><!-- #include file="XmlComment.inc" -->
     <% if (GetAttributesString(Info.Attributes) != string.Empty) { %>
     <%= GetAttributesString(Info.Attributes) %>
     <% } %>
@@ -41,7 +41,7 @@ else if (CurrentUnit.GenerationParams.GeneratedUIEnvironment == UIEnvironment.WP
             %><%=Info.InheritedType.ObjectName%><%
          } else {
             %><% if (ActiveObjects) { %>Active<% } %><%= BusinessListBaseHelper(true) %><%
-        } %><<%= Info.ObjectName %>, <%= Info.ItemType %>><!-- #include file="Implements.inccs" -->
+        } %><<%= Info.ObjectName %>, <%= Info.ItemType %>><!-- #include file="Implements.inc" -->
 <% if (CurrentUnit.GenerationParams.GeneratedUIEnvironment == UIEnvironment.WinForms_WPF || CurrentUnit.GenerationParams.GeneratedUIEnvironment == UIEnvironment.WPF_WinForms) { %>#else
     <% if (ActiveObjects) { %>[RegisterNotify("IsValid, IsDirty, BrokenRulesChanged")]
     <% if (Info.SubscribeToChannel.Length > 0) { %>[Subscribe("<%= Info.SubscribeToChannel %>")]<% } %>
@@ -52,13 +52,13 @@ else if (CurrentUnit.GenerationParams.GeneratedUIEnvironment == UIEnvironment.WP
             %><%=Info.InheritedType.ObjectName%><%
          } else {
             %><% if (ActiveObjects) { %>Active<% } %><%= BusinessListBaseHelper(false) %><%
-        } %><<%= Info.ObjectName %>, <%= Info.ItemType %>><!-- #include file="Implements.inccs" -->
+        } %><<%= Info.ObjectName %>, <%= Info.ItemType %>><!-- #include file="Implements.inc" -->
 <% if (CurrentUnit.GenerationParams.GeneratedUIEnvironment == UIEnvironment.WinForms_WPF || CurrentUnit.GenerationParams.GeneratedUIEnvironment == UIEnvironment.WPF_WinForms) { %>#endif<% }
             } %>
     {
-        <!-- #include file="CollectionBusinessProps.inccs" -->
+        <!-- #include file="CollectionBusinessProps.inc" -->
 
-<!-- #include file="FindMethods.inccs" -->
+<!-- #include file="FindMethods.inc" -->
 
         #region Factory Methods
     <%
@@ -92,25 +92,25 @@ else if (CurrentUnit.GenerationParams.GeneratedUIEnvironment == UIEnvironment.WP
             return DataPortal.Create<%= CurrentUnit.GenerationParams.UseChildDataPortal ? "Child" : "" %><<%= Info.ObjectName %>>();
         }
         <% if (!Info.LazyLoad) { %>
-        <!-- #include file="InternalGetObject.inccs" -->
+        <!-- #include file="InternalGetObject.inc" -->
         <%  } else { %>
-        <!-- #include file="GetObject.inccs" -->
+        <!-- #include file="GetObject.inc" -->
         <% } %>
     <% } %>
 
         #endregion
-<!-- #include file="SharedAuthorizationMethods.inccs" -->
+<!-- #include file="SharedAuthorizationMethods.inc" -->
 
-<!-- #include file="Constructor.inccs"  -->
+<!-- #include file="Constructor.inc"  -->
 
-        <!-- #include file="Criteria.inccs" -->
+        <!-- #include file="Criteria.inc" -->
 <%
 if (Info.GenerateDataAccessRegion)
 {
     %>
 
         #region Data Access
-        <!-- #include file="CollectionDataPortalFetch.inccs" -->
+        <!-- #include file="CollectionDataPortalFetch.inc" -->
 
         <%
     if (!CurrentUnit.GenerationParams.UseChildDataPortal)
@@ -167,7 +167,7 @@ if (Info.GenerateDataAccessRegion)
     }
         %>
         #endregion
-<!-- #include file="Events.inccs" -->
+<!-- #include file="Events.inc" -->
 
 <% } %>
 

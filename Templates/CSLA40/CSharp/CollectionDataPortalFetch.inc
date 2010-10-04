@@ -117,7 +117,7 @@ if (!Info.UseCustomLoading)
             Fetch(ds.Tables[0].Rows);
         }
 
-<!-- #include file="CreateRelations.inccs" -->
+<!-- #include file="CreateRelations.inc" -->
         <% } %>
     <% }
     bool isSwitchable = false;

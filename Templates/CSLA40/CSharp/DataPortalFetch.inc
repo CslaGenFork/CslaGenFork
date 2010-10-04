@@ -160,13 +160,13 @@ if (!Info.UseCustomLoading)
             }
             %>
         }
-<!-- #include file="CreateRelations.inccs" -->
+<!-- #include file="CreateRelations.inc" -->
         <%
         }
     }
 %>
 
-        <!-- #include file="InternalFetch.inccs" -->
+        <!-- #include file="InternalFetch.inc" -->
     <%
 }
 %>

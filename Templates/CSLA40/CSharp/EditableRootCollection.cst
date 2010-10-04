@@ -10,12 +10,12 @@
 <%@ Import Namespace="CslaGenerator.Util" %>
 <%@ Import Namespace="System.Text" %>
 
-<!-- #include file="EditableRootCollectionValidate.inccs" -->
+<!-- #include file="EditableRootCollectionValidate.inc" -->
 <%
 if (Errors.Length == 0)
 {
     bool first = true;
-    %><!-- #include file="Header.inccs" -->
+    %><!-- #include file="Header.inc" -->
 using System;
 using System.Data;
 using System.Data.SqlClient;
@@ -36,7 +36,7 @@ using Csla;
     <%
     }
     %>
-<% bool? firstComment = null; %><!-- #include file="XmlComment.inccs" -->
+<% bool? firstComment = null; %><!-- #include file="XmlComment.inc" -->
     <%
     if (GetAttributesString(Info.Attributes) != string.Empty)
     {
@@ -84,7 +84,7 @@ using Csla;
         %><%= BusinessListBaseHelper(true) %><%
     }
     %><<%= Info.ObjectName %>, <%= Info.ItemType %>>
-    <!-- #include file="Implements.inccs" -->
+    <!-- #include file="Implements.inc" -->
 <%
     if (CurrentUnit.GenerationParams.GeneratedUIEnvironment == UIEnvironment.WinForms_WPF ||
         CurrentUnit.GenerationParams.GeneratedUIEnvironment == UIEnvironment.WPF_WinForms)
@@ -117,7 +117,7 @@ using Csla;
             }
         %><%= BusinessListBaseHelper(false) %><%
         }
-    %><<%= Info.ObjectName %>, <%= Info.ItemType %>><!-- #include file="Implements.inccs" -->
+    %><<%= Info.ObjectName %>, <%= Info.ItemType %>><!-- #include file="Implements.inc" -->
 <%
         if (CurrentUnit.GenerationParams.GeneratedUIEnvironment == UIEnvironment.WinForms_WPF ||
             CurrentUnit.GenerationParams.GeneratedUIEnvironment == UIEnvironment.WPF_WinForms)
@@ -127,9 +127,9 @@ using Csla;
     }
 %>
     {
-        <!-- #include file="CollectionBusinessProps.inccs" -->
+        <!-- #include file="CollectionBusinessProps.inc" -->
 
-<!-- #include file="FindMethods.inccs" -->
+<!-- #include file="FindMethods.inc" -->
 
     <%
     if (Info.GenerateFactoryMethods)
@@ -162,26 +162,26 @@ using Csla;
             %>
             return DataPortal.Create<<%= Info.ObjectName %>>();
         }
-        <!-- #include file="GetObject.inccs" -->
+        <!-- #include file="GetObject.inc" -->
         <% Response.Write(Environment.NewLine); %>
         #endregion
         <%
     }
     %>
-        <!-- #include file="Save.inccs" -->
+        <!-- #include file="Save.inc" -->
 
-<!-- #include file="Constructor.inccs" -->
+<!-- #include file="Constructor.inc" -->
 
-        <!-- #include file="Criteria.inccs" -->
+        <!-- #include file="Criteria.inc" -->
 
-<!-- #include file="SharedAuthorizationMethods.inccs" -->
+<!-- #include file="SharedAuthorizationMethods.inc" -->
     <%
     if (Info.GenerateDataAccessRegion)
     {
         %>
 
         #region Data Access
-        <!-- #include file="CollectionDataPortalFetch.inccs" -->
+        <!-- #include file="CollectionDataPortalFetch.inc" -->
 
         /// <summary>
         /// Saves (delete, add, update) all child objects to database.
@@ -243,7 +243,7 @@ using Csla;
         }*/
 
         #endregion
-<!-- #include file="Events.inccs" -->
+<!-- #include file="Events.inc" -->
 
 <%
     }
