@@ -1,14 +1,7 @@
 <%
-if ((CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
-    CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel) &&
-    ((Info.NewRoles.Trim() != String.Empty) ||
-    (Info.GetRoles.Trim() != String.Empty) ||
-    (Info.UpdateRoles.Trim() != String.Empty) ||
-    (Info.DeleteRoles.Trim() != String.Empty) ||
-    (Info.DenyNewRoles.Trim() != String.Empty) ||
-    (Info.DenyGetRoles.Trim() != String.Empty) ||
-    (Info.DenyUpdateRoles.Trim() != String.Empty) ||
-    (Info.DenyDeleteRoles.Trim() != String.Empty)))
+if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
+    CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel &&
+    Info.GetRoles.Trim() != String.Empty)
 {
     %>
 
@@ -26,9 +19,16 @@ if ((CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
             <%
         if (Info.NewRoles.Trim() != String.Empty)
         {
+            string allowOrDeny = string.Empty;
+            string infoNewRoles = Info.NewRoles;
+            if (Info.NewRoles[0] == '!')
+            {
+                allowOrDeny = "Not";
+                infoNewRoles = infoNewRoles.Substring(1);
+            }
             %>
             BusinessRules.AddRule(typeof(<%= Info.ObjectName %>), new IsInRole(AuthorizationActions.CreateObject<%
-            String[] newRoles = System.Text.RegularExpressions.Regex.Split(Info.NewRoles, ";");
+            String[] newRoles = System.Text.RegularExpressions.Regex.Split(infoNewRoles, ";");
             foreach(String role in newRoles)
             {
                 %>, "<%= role.Trim() %>"<%
@@ -38,9 +38,16 @@ if ((CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
         }
         if (Info.GetRoles.Trim() != String.Empty)
         {
+            string allowOrDeny = string.Empty;
+            string infoGetRoles = Info.GetRoles;
+            if (Info.GetRoles[0] == '!')
+            {
+                allowOrDeny = "Not";
+                infoGetRoles = infoGetRoles.Substring(1);
+            }
             %>
             BusinessRules.AddRule(typeof(<%= Info.ObjectName %>), new IsInRole(AuthorizationActions.GetObject<%
-            String[] getRoles = System.Text.RegularExpressions.Regex.Split(Info.GetRoles, ";");
+            String[] getRoles = System.Text.RegularExpressions.Regex.Split(infoGetRoles, ";");
             foreach(String role in getRoles)
             {
                 %>, "<%= role.Trim() %>"<%
@@ -50,9 +57,16 @@ if ((CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
         }
         if (Info.UpdateRoles.Trim() != String.Empty)
         {
+            string allowOrDeny = string.Empty;
+            string infoUpdateRoles = Info.UpdateRoles;
+            if (Info.UpdateRoles[0] == '!')
+            {
+                allowOrDeny = "Not";
+                infoUpdateRoles = infoUpdateRoles.Substring(1);
+            }
             %>
-            BusinessRules.AddRule(typeof(<%= Info.ObjectName %>), new IsInRole(AuthorizationActions.EditObject<%
-            String[] updateRoles = System.Text.RegularExpressions.Regex.Split(Info.UpdateRoles, ";");
+            BusinessRules.AddRule(typeof(<%= Info.ObjectName %>), new Is<%= allowOrDeny %>InRole(AuthorizationActions.EditObject<%
+            String[] updateRoles = System.Text.RegularExpressions.Regex.Split(infoUpdateRoles, ";");
             foreach(String role in updateRoles)
             {
                 %>, "<%= role.Trim() %>"<%
@@ -62,58 +76,17 @@ if ((CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
         }
         if (Info.DeleteRoles.Trim() != String.Empty)
         {
+            string allowOrDeny = string.Empty;
+            string infoDeleteRoles = Info.DeleteRoles;
+            if (Info.DeleteRoles[0] == '!')
+            {
+                allowOrDeny = "Not";
+                infoDeleteRoles = infoDeleteRoles.Substring(1);
+            }
             %>
             BusinessRules.AddRule(typeof(<%= Info.ObjectName %>), new IsInRole(AuthorizationActions.DeleteObject<%
-            String[] deleteRoles = System.Text.RegularExpressions.Regex.Split(Info.DeleteRoles, ";");
+            String[] deleteRoles = System.Text.RegularExpressions.Regex.Split(infoDeleteRoles, ";");
             foreach(String role in deleteRoles)
-            {
-                %>, "<%= role.Trim() %>"<%
-            }
-            %>));
-            <%
-        }
-        if (Info.DenyNewRoles.Trim() != String.Empty)
-        {
-            %>
-            BusinessRules.AddRule(typeof(<%= Info.ObjectName %>), new IsNotInRole(AuthorizationActions.CreateObject<%
-            String[] denyNewRoles = System.Text.RegularExpressions.Regex.Split(Info.DenyNewRoles, ";");
-            foreach(String role in denyNewRoles)
-            {
-                %>, "<%= role.Trim() %>"<%
-            }
-            %>));
-            <%
-        }
-        if (Info.DenyGetRoles.Trim() != String.Empty)
-        {
-            %>
-            BusinessRules.AddRule(typeof(<%= Info.ObjectName %>), new IsNotInRole(AuthorizationActions.GetObject<%
-            String[] denyGetRoles = System.Text.RegularExpressions.Regex.Split(Info.DenyGetRoles, ";");
-            foreach(String role in denyGetRoles)
-            {
-                %>, "<%= role.Trim() %>"<%
-            }
-            %>));
-            <%
-        }
-        if (Info.DenyUpdateRoles.Trim() != String.Empty)
-        {
-            %>
-            BusinessRules.AddRule(typeof(<%= Info.ObjectName %>), new IsNotInRole(AuthorizationActions.EditObject<%
-            String[] denyUpdateRoles = System.Text.RegularExpressions.Regex.Split(Info.DenyUpdateRoles, ";");
-            foreach(String role in denyUpdateRoles)
-            {
-                %>, "<%= role.Trim() %>"<%
-            }
-            %>));
-            <%
-        }
-        if (Info.DenyDeleteRoles.Trim() != String.Empty)
-        {
-            %>
-            BusinessRules.AddRule(typeof(<%= Info.ObjectName %>), new IsNotInRole(AuthorizationActions.DeleteObject<%
-            String[] denyDeleteRoles = System.Text.RegularExpressions.Regex.Split(Info.DenyDeleteRoles, ";");
-            foreach(String role in denyDeleteRoles)
             {
                 %>, "<%= role.Trim() %>"<%
             }

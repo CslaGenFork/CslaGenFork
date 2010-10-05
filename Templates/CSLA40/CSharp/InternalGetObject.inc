@@ -8,10 +8,9 @@
         internal static <%= Info.ObjectName %> Get<%= Info.ObjectName %>(SafeDataReader dr)
         {
             <%
-                if ((CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
-                    CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel) &&
-                    (Info.GetRoles.Trim() != String.Empty) ||
-                    (Info.DenyGetRoles.Trim() != String.Empty))
+                if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
+                    CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel &&
+                    Info.GetRoles.Trim() != String.Empty)
                 {
                     %>
             if (!CanGetObject())
@@ -60,14 +59,13 @@
         internal static <%= Info.ObjectName %> Get<%= Info.ObjectName %>(DataRow<% if (IsCollectionType(Info.ObjectType)) { %>[]<% } %> dr)
         {
             <%
-                if ((CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
-                    CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel) &&
-                    (Info.NewRoles.Trim() != String.Empty) ||
-                    (Info.DenyNewRoles.Trim() != String.Empty))
+                if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
+                    CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel &&
+                    Info.GetRoles.Trim() != String.Empty)
                 {
                     %>
             if (!CanGetObject())
-                throw new System.Security.SecurityException("User not authorized to load a <%= Info.ObjectName %>.");
+                throw new System.Security.SecurityException("User not authorized to load a <%= Info.ObjectName %>.");bbb
 
             <%
                 }

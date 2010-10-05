@@ -95,26 +95,30 @@ if (!Info.UseCustomLoading)
         {
             using (var dr = new SafeDataReader(cmd.ExecuteReader()))
             {
-                dr.Read();
-                Fetch(dr);
-                <%
+                if (dr.Read())
+                {
+                    Fetch(dr);
+                    <%
                 if (LoadsChildren(Info))
                 {
                     %>
-                FetchChildren(dr);
-                <%
+                    FetchChildren(dr);
+                    <%
                 }
                 if (Info.ObjectType != CslaObjectType.ReadOnlyObject)
                 {
                     %>
-                MarkOld();
+                    MarkOld();
                 <%
-                    if (Info.CheckRulesOnFetch)
-                    {
-                        %>
+                }
+                %>
+                }
+                <%
+                if (Info.CheckRulesOnFetch)
+                {
+                    %>
                 BusinessRules.CheckRules();
                 <%
-                    }
                 }
                 %>
             }

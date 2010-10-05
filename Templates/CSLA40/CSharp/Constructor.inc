@@ -9,12 +9,9 @@ if (!IsReadOnlyType(Info.ObjectType) && IsCollectionType(Info.ObjectType))
     itemName2 = itemInfo2.ObjectName;
     if ((CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
         CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel) &&
-        (Info.NewRoles.Trim() != String.Empty) ||
+        ((Info.NewRoles.Trim() != String.Empty) ||
         (Info.UpdateRoles.Trim() != String.Empty) ||
-        (Info.DeleteRoles.Trim() != String.Empty) ||
-        (Info.DenyNewRoles.Trim() != String.Empty) ||
-        (Info.DenyUpdateRoles.Trim() != String.Empty) ||
-        (Info.DenyDeleteRoles.Trim() != String.Empty))
+        (Info.DeleteRoles.Trim() != String.Empty)))
     {
         if (Info.AllowNew && itemInfo2.NewRoles.Trim() != String.Empty)
             dependentAllowNew2 = true;

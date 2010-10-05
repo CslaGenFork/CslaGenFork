@@ -89,10 +89,9 @@ using Csla.Data;
         internal static <%= Info.ObjectName %> New<%= Info.ObjectName %><%=c.CreateOptions.FactorySuffix%>Child(<%=  strNewParams %>)
         {
         <%
-        if ((CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
-            CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel) &&
-            (Info.NewRoles.Trim() != String.Empty) ||
-            (Info.DenyNewRoles.Trim() != String.Empty))
+        if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
+            CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel &&
+            Info.GetRoles.Trim() != String.Empty)
         {
             %>
             if (!CanAddObject())
@@ -133,10 +132,9 @@ using Csla.Data;
         internal static <%= Info.ObjectName %> Get<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>Child(<%= strGetParams %>)
         {
             <%
-            if ((CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
-                CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel) &&
-                (Info.GetRoles.Trim() != String.Empty) ||
-                (Info.DenyGetRoles.Trim() != String.Empty))
+            if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
+                CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel &&
+                Info.GetRoles.Trim() != String.Empty)
             {
                 %>
             if (!CanGetObject())
