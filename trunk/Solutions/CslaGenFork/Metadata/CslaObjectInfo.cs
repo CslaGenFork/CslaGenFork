@@ -55,7 +55,6 @@
             private string _updaterType = String.Empty;
             private string _parentType = String.Empty;
             private string _fileName = String.Empty;
-            private string _nameValueTable = String.Empty;
             private string _nameColumn = String.Empty;
             private string _valueColumn = String.Empty;
             private bool _lazyLoad = false;
@@ -65,16 +64,9 @@
             private string _newRoles = String.Empty;
             private string _updateRoles = String.Empty;
             private string _deleteRoles = String.Empty;
-            private string _denyGetRoles = String.Empty;
-            private string _denyNewRoles = String.Empty;
-            private string _denyUpdateRoles = String.Empty;
-            private string _denyDeleteRoles = String.Empty;
             private bool _parentInsertOnly = false;
             private string _publishToChannel = String.Empty;
             private string _subscribeToChannel = String.Empty;
-            private string _newObjectCriteriaTypeName = string.Empty;
-            private string _getObjectCriteriaTypeName = string.Empty;
-            private string _deleteObjectCriteriaTypeName = string.Empty;
             private bool _allowNew = true;
             private bool _allowEdit = true;
             private bool _allowRemove = true;
@@ -1100,11 +1092,11 @@
             #region 10. Authorization
 
             /// <summary>
-            /// Roles allowed to create object. Multiple roles must be separated with ;.
+            /// Roles to create object. Multiple roles must be separated with ;.
             /// </summary>
             [Category("10. Authorization")]
-            [Description("Roles allowed to create object. Multiple roles must be separated with ;")]
-            [UserFriendlyName("Allow New Roles")]
+            [Description("Roles to create object. Multiple roles must be separated with \";\". Use no prefix to allow or use prefix \"!\" to deny.")]
+            [UserFriendlyName("New Roles")]
             public string NewRoles
             {
                 get { return _newRoles; }
@@ -1112,11 +1104,11 @@
             }
 
             /// <summary>
-            /// Roles allowed to retrieve object. Multiple roles must be separated with ;.
+            /// Roles to retrieve object. Multiple roles must be separated with ;.
             /// </summary>
             [Category("10. Authorization")]
-            [Description("Roles allowed to retrieve object. Multiple roles must be separated with ;")]
-            [UserFriendlyName("Allow Get Roles")]
+            [Description("Roles to retrieve object. Multiple roles must be separated with \";\". Use no prefix to allow or use prefix \"!\" to deny.")]
+            [UserFriendlyName("Get Roles")]
             public string GetRoles
             {
                 get { return _getRoles; }
@@ -1124,11 +1116,11 @@
             }
 
             /// <summary>
-            /// Roles allowed to update object. Multiple roles must be separated with ;.
+            /// Roles to update object. Multiple roles must be separated with ;.
             /// </summary>
             [Category("10. Authorization")]
-            [Description("Roles allowed to update object. Multiple roles must be separated with ;")]
-            [UserFriendlyName("Allow Update Roles")]
+            [Description("Roles to update object. Multiple roles must be separated with \";\". Use no prefix to allow or use prefix \"!\" to deny.")]
+            [UserFriendlyName("Update Roles")]
             public string UpdateRoles
             {
                 get { return _updateRoles; }
@@ -1136,63 +1128,15 @@
             }
 
             /// <summary>
-            /// Roles allowed to delete object. Multiple roles must be separated with ;.
+            /// Roles to delete object. Multiple roles must be separated with ;.
             /// </summary>
             [Category("10. Authorization")]
-            [Description("Roles allowed to delete object. Multiple roles must be separated with ;")]
-            [UserFriendlyName("Allow Delete Roles")]
+            [Description("Roles to delete object. Multiple roles must be separated with \";\". Use no prefix to allow or use prefix \"!\" to deny.")]
+            [UserFriendlyName("Delete Roles")]
             public string DeleteRoles
             {
                 get { return _deleteRoles; }
                 set { _deleteRoles = value; }
-            }
-
-            /// <summary>
-            /// Roles denied to create object. Multiple roles must be separated with ;.
-            /// </summary>
-            [Category("10. Authorization")]
-            [Description("Roles denied to create object. Multiple roles must be separated with ;")]
-            [UserFriendlyName("Deny New Roles")]
-            public string DenyNewRoles
-            {
-                get { return _denyNewRoles; }
-                set { _denyNewRoles = value; }
-            }
-
-            /// <summary>
-            /// Roles denied to retrieve object. Multiple roles must be separated with ;.
-            /// </summary>
-            [Category("10. Authorization")]
-            [Description("Roles denied to retrieve object. Multiple roles must be separated with ;")]
-            [UserFriendlyName("Deny Get Roles")]
-            public string DenyGetRoles
-            {
-                get { return _denyGetRoles; }
-                set { _denyGetRoles = value; }
-            }
-
-            /// <summary>
-            /// Roles denied to update object. Multiple roles must be separated with ;.
-            /// </summary>
-            [Category("10. Authorization")]
-            [Description("Roles denied to update object. Multiple roles must be separated with ;")]
-            [UserFriendlyName("Deny Update Roles")]
-            public string DenyUpdateRoles
-            {
-                get { return _denyUpdateRoles; }
-                set { _denyUpdateRoles = value; }
-            }
-
-            /// <summary>
-            /// Roles denied to delete object. Multiple roles must be separated with ;.
-            /// </summary>
-            [Category("10. Authorization")]
-            [Description("Roles denied to delete object. Multiple roles must be separated with ;")]
-            [UserFriendlyName("Deny Delete Roles")]
-            public string DenyDeleteRoles
-            {
-                get { return _denyDeleteRoles; }
-                set { _denyDeleteRoles = value; }
             }
 
             #endregion

@@ -485,11 +485,7 @@ namespace CslaGenerator.Util
                 ((info.NewRoles.Trim() != String.Empty) ||
                 (info.GetRoles.Trim() != String.Empty) ||
                 (info.UpdateRoles.Trim() != String.Empty) ||
-                (info.DeleteRoles.Trim() != String.Empty) ||
-                (info.DenyNewRoles.Trim() != String.Empty) ||
-                (info.DenyGetRoles.Trim() != String.Empty) ||
-                (info.DenyUpdateRoles.Trim() != String.Empty) ||
-                (info.DenyDeleteRoles.Trim() != String.Empty)))
+                (info.DeleteRoles.Trim() != String.Empty)))
             {
                 usingList.Add("Csla.Rules");
                 usingList.Add("Csla.Rules.CommonRules");

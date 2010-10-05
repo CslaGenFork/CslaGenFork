@@ -901,11 +901,7 @@ namespace CslaGenerator.Util
                             (propertyName == "NewRoles" ||
                              propertyName == "GetRoles" ||
                              propertyName == "UpdateRoles" ||
-                             propertyName == "DeleteRoles" ||
-                             propertyName == "DenyNewRoles" ||
-                             propertyName == "DenyGetRoles" ||
-                             propertyName == "DenyUpdateRoles" ||
-                             propertyName == "DenyDeleteRoles"))
+                             propertyName == "DeleteRoles"))
                             return false;
                         if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 &&
                             (propertyName == "AddParentReference"))
