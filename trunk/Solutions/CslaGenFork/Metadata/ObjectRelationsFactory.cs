@@ -205,7 +205,10 @@ namespace CslaGenerator.Metadata
 
             // populate collection item
             item.LazyLoad = _entity.MainLazyLoad;
-            item.ParentInsertOnly = false;
+            if(_entity.RelationType == ObjectRelationType.OneToMultiple)
+                item.ParentInsertOnly = true;
+            else
+                item.ParentInsertOnly = false;
             item.ParentProperties = _mainRootCriteriaProperties;
             item.ParentType = _entity.MainCollectionTypeName;
         }
