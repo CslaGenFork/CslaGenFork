@@ -27,17 +27,6 @@ foreach (Criteria c in Info.CriteriaObjects)
         %>internal<% } else { %>public<% } %> static <%=Info.ObjectName%> New<%=Info.ObjectName%><%=c.CreateOptions.FactorySuffix%>(<%= strNewParams %>)
         {
             <%
-            if ((CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
-                CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel) &&
-                (Info.NewRoles.Trim() != String.Empty) ||
-                (Info.DenyNewRoles.Trim() != String.Empty))
-            {
-                %>
-            if (!CanAddObject())
-                throw new System.Security.SecurityException("User not authorized to create a <%= Info.ObjectName %>.");
-
-            <%
-            }
             if (Info.ObjectType == CslaObjectType.EditableSwitchable)
             {
                 if (strNewCritParams.Length > 0)

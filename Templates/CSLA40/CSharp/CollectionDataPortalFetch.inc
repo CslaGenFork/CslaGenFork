@@ -2,10 +2,9 @@
 bool dependentAllowNew3 = false;
 if (!IsReadOnlyType(Info.ObjectType) && IsCollectionType(Info.ObjectType))
 {
-        if ((CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
-            CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel) &&
-            (Info.GetRoles.Trim() != String.Empty) ||
-            (Info.DenyGetRoles.Trim() != String.Empty))
+        if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
+            CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel &&
+            Info.GetRoles.Trim() != String.Empty)
         {
             CslaObjectInfo itemInfo3 = FindChildInfo(Info, Info.ItemType);
             if (Info.AllowNew && itemInfo3.NewRoles.Trim() != String.Empty)
@@ -133,7 +132,7 @@ if (!Info.UseCustomLoading)
         private void Fetch(SafeDataReader dr)
         {
             RaiseListChangedEvents = false;
-            AllowNew = true;
+            //AllowNew = true;
             <%
             if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
             {
@@ -157,7 +156,7 @@ if (!Info.UseCustomLoading)
             if (dependentAllowNew3 || Info.AllowNew.ToString().ToLower() != "true")
             {
                 %>
-            AllowNew = <%= dependentAllowNew3 ? itemName2 + ".CanAddObject()" : Info.AllowNew.ToString().ToLower() %>;
+            //AllowNew = <%= dependentAllowNew3 ? itemName2 + ".CanAddObject()" : Info.AllowNew.ToString().ToLower() %>;
             <%
             }
             %>
@@ -170,7 +169,7 @@ if (!Info.UseCustomLoading)
         private void Fetch(DataRow[] rows)
         {
             RaiseListChangedEvents = false;
-            AllowNew = true;
+            //AllowNew = true;
             <%
             if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
             {
@@ -194,7 +193,7 @@ if (!Info.UseCustomLoading)
             if (dependentAllowNew3 || Info.AllowNew.ToString().ToLower() != "true")
             {
                 %>
-            AllowNew = <%= dependentAllowNew3 ? itemName2 + ".CanAddObject()" : Info.AllowNew.ToString().ToLower() %>;
+            //AllowNew = <%= dependentAllowNew3 ? itemName2 + ".CanAddObject()" : Info.AllowNew.ToString().ToLower() %>;
             <%
             }
             %>

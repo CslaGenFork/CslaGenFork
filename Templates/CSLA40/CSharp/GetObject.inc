@@ -34,17 +34,6 @@ if (!Info.UseCustomLoading)
         public static <%= Info.ObjectName %> Get<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>(<%= strGetParams %>)
         {
             <%
-            if ((CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
-                CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel) &&
-                (Info.GetRoles.Trim() != String.Empty) ||
-                (Info.DenyGetRoles.Trim() != String.Empty))
-            {
-                %>
-            if (!CanGetObject())
-                throw new System.Security.SecurityException("User not authorized to load a <%= Info.ObjectName %>.");
-
-            <%
-            }
             if (Info.ObjectType == CslaObjectType.EditableSwitchable)
             {
                 strGetCritParams = "false, " + strGetCritParams;

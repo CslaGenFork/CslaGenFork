@@ -33,17 +33,6 @@ foreach (Criteria c in Info.CriteriaObjects)
         public static void Delete<%= Info.ObjectName %><%= c.DeleteOptions.FactorySuffix %>(<%= strDelParams %>)
         {
             <%
-            if ((CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
-                CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel) &&
-                (Info.DeleteRoles.Trim() != String.Empty) ||
-                (Info.DenyDeleteRoles.Trim() != String.Empty))
-            {
-                %>
-            if (!CanDeleteObject())
-                throw new System.Security.SecurityException("User not authorized to remove a <%= Info.ObjectName %>.");
-
-            <%
-            }
             if (Info.ObjectType == CslaObjectType.EditableSwitchable)
             {
                 if (!strDelCritParams.Equals(String.Empty))
