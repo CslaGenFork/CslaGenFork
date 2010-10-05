@@ -205,7 +205,7 @@ namespace CslaGenerator.Metadata
 
             // populate collection item
             item.LazyLoad = _entity.MainLazyLoad;
-            item.ParentInsertOnly = true;
+            item.ParentInsertOnly = false;
             item.ParentProperties = _mainRootCriteriaProperties;
             item.ParentType = _entity.MainCollectionTypeName;
         }
@@ -282,7 +282,7 @@ namespace CslaGenerator.Metadata
 
             // populate collection item
             item.LazyLoad = _entity.SecondaryLazyLoad;
-            item.ParentInsertOnly = true;
+            item.ParentInsertOnly = false;
             item.ParentProperties = _secondaryRootCriteriaProperties;
             item.ParentType = _entity.SecondaryCollectionTypeName;
         }
