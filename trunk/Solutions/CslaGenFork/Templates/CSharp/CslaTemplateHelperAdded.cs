@@ -677,9 +677,11 @@ namespace CslaGenerator.Util
 
             if (prop.DeclarationMode == PropertyDeclaration.AutoProperty)
             {
-                statement += String.Format("{0} = dr.{1}(\"{2}\"{3})",
+                statement += String.Format("{0} = {1} dr.{2}(\"{3}\"{4})",
                                            FormatProperty(prop.Name),
-                                           GetReaderMethod(GetDbType(prop.DbBindColumn), prop.PropertyType),
+                                           "(" + prop.PropertyType + ")",
+                                           //GetReaderMethod(GetDbType(prop.DbBindColumn), prop.PropertyType),
+                                           GetReaderMethod(GetDbType(prop.DbBindColumn), prop),
                                            prop.ParameterName,
                                            (prop.PropertyType == TypeCodeEx.SmartDate)
                                                ? ", true"
@@ -689,7 +691,8 @@ namespace CslaGenerator.Util
             {
                 statement += String.Format("LoadProperty({0}, dr.{1}(\"{2}\"{3}))",
                                            FormatPropertyInfoName(prop.Name),
-                                           GetReaderMethod(GetDbType(prop.DbBindColumn), prop.PropertyType),
+                                           //GetReaderMethod(GetDbType(prop.DbBindColumn), prop.PropertyType),
+                                           GetReaderMethod(GetDbType(prop.DbBindColumn), prop),
                                            prop.ParameterName,
                                            (prop.PropertyType == TypeCodeEx.SmartDate)
                                                ? ", true"

@@ -42,7 +42,7 @@ namespace CslaGenerator.Metadata
         /// </summary>
         /// <param name="stereotype">The candidate stereotype.</param>
         /// <returns>
-        /// 	<c>true</c> if the specified <paramref name="stereotype"/> is allowed to have no parent; otherwise, <c>false</c>.
+        ///     <c>true</c> if the specified <paramref name="stereotype"/> is allowed to have no parent; otherwise, <c>false</c>.
         /// </returns>
         /// <remarks>This is "ParentType1" - root stereotypes don't have a parent.</remarks>
         public static bool IsNoParentAllowed(CslaObjectType stereotype)
@@ -71,7 +71,7 @@ namespace CslaGenerator.Metadata
         /// <param name="parent">The parent candidate.</param>
         /// <param name="child">The child candidate.</param>
         /// <returns>
-        /// 	<c>true</c> if <paramref name="parent"/> is allowed on <paramref name="child"/> objects; otherwise, <c>false</c>.
+        ///     <c>true</c> if <paramref name="parent"/> is allowed on <paramref name="child"/> objects; otherwise, <c>false</c>.
         /// </returns>
         public static bool IsParentAllowed(CslaObjectType parent, CslaObjectType child)
         {
@@ -257,7 +257,7 @@ namespace CslaGenerator.Metadata
         /// <param name="parent">The parent candidate.</param>
         /// <param name="child">The child candidate.</param>
         /// <returns>
-        /// 	<c>true</c> if <paramref name="parent"/> can have the specified <paramref name="child"/>; otherwise, <c>false</c>.
+        ///     <c>true</c> if <paramref name="parent"/> can have the specified <paramref name="child"/>; otherwise, <c>false</c>.
         /// </returns>
         public static bool IsChildAllowed(CslaObjectType parent, CslaObjectType child)
         {

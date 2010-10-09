@@ -187,7 +187,7 @@ namespace CslaGenerator.Metadata
                 OnPropertyChanged("");
             }
         }
-        
+
         public CodeLanguage OutputLanguage
         {
             get
@@ -212,7 +212,7 @@ namespace CslaGenerator.Metadata
                     return;
                 _NullableSupport = value;
                 OnPropertyChanged("");
-                
+
             }
         }
 
@@ -278,7 +278,7 @@ namespace CslaGenerator.Metadata
 
         public Authorization GenerateAuthorization
         {
-            get 
+            get
             {
                 return _generateAuthorization;
             }
@@ -373,7 +373,7 @@ namespace CslaGenerator.Metadata
         /// Separate class comments in a folder.
         /// </summary>
         /// <value>
-        /// 	<c>true</c> if Separate class comments in a folder; otherwise, <c>false</c>.
+        ///     <c>true</c> if Separate class comments in a folder; otherwise, <c>false</c>.
         /// </value>
         public bool SeparateClassComment
         {
@@ -443,7 +443,7 @@ namespace CslaGenerator.Metadata
                 _Dirty = value;
             }
         }
-        
+
         #endregion
 
         internal GenerationParameters Clone()

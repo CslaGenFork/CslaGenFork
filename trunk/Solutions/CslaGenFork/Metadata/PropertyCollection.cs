@@ -18,36 +18,36 @@ namespace CslaGenerator.Metadata
     //    }
     //}
     /// <summary>
-    ///		A strongly-typed collection of <see cref="Property"/> objects.
+    ///        A strongly-typed collection of <see cref="Property"/> objects.
     /// </summary>
     [Serializable]
     public class PropertyCollection : ICollection, IList, IEnumerable, ICloneable
     {
         #region Interfaces
         /// <summary>
-        ///		Supports type-safe iteration over a <see cref="PropertyCollection"/>.
+        ///        Supports type-safe iteration over a <see cref="PropertyCollection"/>.
         /// </summary>
         public interface IPropertyCollectionEnumerator
         {
             /// <summary>
-            ///		Gets the current element in the collection.
+            ///        Gets the current element in the collection.
             /// </summary>
             Property Current { get;}
 
             /// <summary>
-            ///		Advances the enumerator to the next element in the collection.
+            ///        Advances the enumerator to the next element in the collection.
             /// </summary>
             /// <exception cref="InvalidOperationException">
-            ///		The collection was modified after the enumerator was created.
+            ///        The collection was modified after the enumerator was created.
             /// </exception>
             /// <returns>
-            ///		<c>true</c> if the enumerator was successfully advanced to the next element; 
-            ///		<c>false</c> if the enumerator has passed the end of the collection.
+            ///        <c>true</c> if the enumerator was successfully advanced to the next element;
+            ///        <c>false</c> if the enumerator has passed the end of the collection.
             /// </returns>
             bool MoveNext();
 
             /// <summary>
-            ///		Sets the enumerator to its initial position, before the first element in the collection.
+            ///        Sets the enumerator to its initial position, before the first element in the collection.
             /// </summary>
             void Reset();
         }
@@ -64,7 +64,7 @@ namespace CslaGenerator.Metadata
 
         #region Static Wrappers
         /// <summary>
-        ///		Creates a synchronized (thread-safe) wrapper for a 
+        ///        Creates a synchronized (thread-safe) wrapper for a
         ///     <c>PropertyCollection</c> instance.
         /// </summary>
         /// <returns>
@@ -78,7 +78,7 @@ namespace CslaGenerator.Metadata
         }
 
         /// <summary>
-        ///		Creates a read-only wrapper for a 
+        ///        Creates a read-only wrapper for a
         ///     <c>PropertyCollection</c> instance.
         /// </summary>
         /// <returns>
@@ -94,8 +94,8 @@ namespace CslaGenerator.Metadata
 
         #region Construction
         /// <summary>
-        ///		Initializes a new instance of the <c>PropertyCollection</c> class
-        ///		that is empty and has the default initial capacity.
+        ///        Initializes a new instance of the <c>PropertyCollection</c> class
+        ///        that is empty and has the default initial capacity.
         /// </summary>
         public PropertyCollection()
         {
@@ -103,20 +103,20 @@ namespace CslaGenerator.Metadata
         }
 
         /// <summary>
-        ///		Initializes a new instance of the <c>PropertyCollection</c> class
-        ///		that has the specified initial capacity.
+        ///        Initializes a new instance of the <c>PropertyCollection</c> class
+        ///        that has the specified initial capacity.
         /// </summary>
         /// <param name="capacity">
-        ///		The number of elements that the new <c>PropertyCollection</c> is initially capable of storing.
-        ///	</param>
+        ///        The number of elements that the new <c>PropertyCollection</c> is initially capable of storing.
+        ///    </param>
         public PropertyCollection(int capacity)
         {
             m_array = new Property[capacity];
         }
 
         /// <summary>
-        ///		Initializes a new instance of the <c>PropertyCollection</c> class
-        ///		that contains elements copied from the specified <c>PropertyCollection</c>.
+        ///        Initializes a new instance of the <c>PropertyCollection</c> class
+        ///        that contains elements copied from the specified <c>PropertyCollection</c>.
         /// </summary>
         /// <param name="c">The <c>PropertyCollection</c> whose elements are copied to the new collection.</param>
         public PropertyCollection(PropertyCollection c)
@@ -126,8 +126,8 @@ namespace CslaGenerator.Metadata
         }
 
         /// <summary>
-        ///		Initializes a new instance of the <c>PropertyCollection</c> class
-        ///		that contains elements copied from the specified <see cref="Property"/> array.
+        ///        Initializes a new instance of the <c>PropertyCollection</c> class
+        ///        that contains elements copied from the specified <see cref="Property"/> array.
         /// </summary>
         /// <param name="a">The <see cref="Property"/> array whose elements are copied to the new list.</param>
         public PropertyCollection(Property[] a)
@@ -149,7 +149,7 @@ namespace CslaGenerator.Metadata
 
         #region Operations (type-safe ICollection)
         /// <summary>
-        ///		Gets the number of elements actually contained in the <c>PropertyCollection</c>.
+        ///        Gets the number of elements actually contained in the <c>PropertyCollection</c>.
         /// </summary>
         public virtual int Count
         {
@@ -157,8 +157,8 @@ namespace CslaGenerator.Metadata
         }
 
         /// <summary>
-        ///		Copies the entire <c>PropertyCollection</c> to a one-dimensional
-        ///		<see cref="Property"/> array.
+        ///        Copies the entire <c>PropertyCollection</c> to a one-dimensional
+        ///        <see cref="Property"/> array.
         /// </summary>
         /// <param name="array">The one-dimensional <see cref="Property"/> array to copy to.</param>
         public virtual void CopyTo(Property[] array)
@@ -167,8 +167,8 @@ namespace CslaGenerator.Metadata
         }
 
         /// <summary>
-        ///		Copies the entire <c>PropertyCollection</c> to a one-dimensional
-        ///		<see cref="Property"/> array, starting at the specified index of the target array.
+        ///        Copies the entire <c>PropertyCollection</c> to a one-dimensional
+        ///        <see cref="Property"/> array, starting at the specified index of the target array.
         /// </summary>
         /// <param name="array">The one-dimensional <see cref="Property"/> array to copy to.</param>
         /// <param name="start">The zero-based index in <paramref name="array"/> at which copying begins.</param>
@@ -181,7 +181,7 @@ namespace CslaGenerator.Metadata
         }
 
         /// <summary>
-        ///		Gets a value indicating whether access to the collection is synchronized (thread-safe).
+        ///        Gets a value indicating whether access to the collection is synchronized (thread-safe).
         /// </summary>
         /// <returns>true if access to the ICollection is synchronized (thread-safe); otherwise, false.</returns>
         public virtual bool IsSynchronized
@@ -190,7 +190,7 @@ namespace CslaGenerator.Metadata
         }
 
         /// <summary>
-        ///		Gets an object that can be used to synchronize access to the collection.
+        ///        Gets an object that can be used to synchronize access to the collection.
         /// </summary>
         public virtual object SyncRoot
         {
@@ -200,13 +200,13 @@ namespace CslaGenerator.Metadata
 
         #region Operations (type-safe IList)
         /// <summary>
-        ///		Gets or sets the <see cref="Property"/> at the specified index.
+        ///        Gets or sets the <see cref="Property"/> at the specified index.
         /// </summary>
         /// <param name="index">The zero-based index of the element to get or set.</param>
         /// <exception cref="ArgumentOutOfRangeException">
-        ///		<para><paramref name="index"/> is less than zero</para>
-        ///		<para>-or-</para>
-        ///		<para><paramref name="index"/> is equal to or greater than <see cref="PropertyCollection.Count"/>.</para>
+        ///        <para><paramref name="index"/> is less than zero</para>
+        ///        <para>-or-</para>
+        ///        <para><paramref name="index"/> is equal to or greater than <see cref="PropertyCollection.Count"/>.</para>
         /// </exception>
         public virtual Property this[int index]
         {
@@ -224,7 +224,7 @@ namespace CslaGenerator.Metadata
         }
 
         /// <summary>
-        ///		Adds a <see cref="Property"/> to the end of the <c>PropertyCollection</c>.
+        ///        Adds a <see cref="Property"/> to the end of the <c>PropertyCollection</c>.
         /// </summary>
         /// <param name="item">The <see cref="Property"/> to be added to the end of the <c>PropertyCollection</c>.</param>
         /// <returns>The index at which the value has been added.</returns>
@@ -232,7 +232,7 @@ namespace CslaGenerator.Metadata
         {
             //This is done so that the collection stores Property Objects ONLY
             //and avoid saving a ValueProperty to the xml when there's no need.
-            
+
 
             if (m_count == m_array.Length)
                 EnsureCapacity(m_count + 1);
@@ -244,7 +244,7 @@ namespace CslaGenerator.Metadata
         }
 
         /// <summary>
-        ///		Removes all elements from the <c>PropertyCollection</c>.
+        ///        Removes all elements from the <c>PropertyCollection</c>.
         /// </summary>
         public virtual void Clear()
         {
@@ -254,7 +254,7 @@ namespace CslaGenerator.Metadata
         }
 
         /// <summary>
-        ///		Creates a shallow copy of the <see cref="PropertyCollection"/>.
+        ///        Creates a shallow copy of the <see cref="PropertyCollection"/>.
         /// </summary>
         public virtual object Clone()
         {
@@ -267,7 +267,7 @@ namespace CslaGenerator.Metadata
         }
 
         /// <summary>
-        ///		Determines whether a given <see cref="Property"/> is in the <c>PropertyCollection</c>.
+        ///        Determines whether a given <see cref="Property"/> is in the <c>PropertyCollection</c>.
         /// </summary>
         /// <param name="item">The <see cref="Property"/> to check for.</param>
         /// <returns><c>true</c> if <paramref name="item"/> is found in the <c>PropertyCollection</c>; otherwise, <c>false</c>.</returns>
@@ -280,7 +280,7 @@ namespace CslaGenerator.Metadata
         }
 
         /// <summary>
-        ///		Determines whether a given <see cref="Property"/> is in the <c>PropertyCollection</c>.
+        ///        Determines whether a given <see cref="Property"/> is in the <c>PropertyCollection</c>.
         /// </summary>
         /// <param name="name">The property name to check for.</param>
         /// <returns><c>true</c> if <paramref name="name"/> is found in the <c>PropertyCollection</c>; otherwise, <c>false</c>.</returns>
@@ -293,14 +293,14 @@ namespace CslaGenerator.Metadata
         }
 
         /// <summary>
-        ///		Returns the zero-based index of the first occurrence of a <see cref="Property"/>
-        ///		in the <c>PropertyCollection</c>.
+        ///        Returns the zero-based index of the first occurrence of a <see cref="Property"/>
+        ///        in the <c>PropertyCollection</c>.
         /// </summary>
         /// <param name="item">The <see cref="Property"/> to locate in the <c>PropertyCollection</c>.</param>
         /// <returns>
-        ///		The zero-based index of the first occurrence of <paramref name="item"/> 
-        ///		in the entire <c>PropertyCollection</c>, if found; otherwise, -1.
-        ///	</returns>
+        ///        The zero-based index of the first occurrence of <paramref name="item"/>
+        ///        in the entire <c>PropertyCollection</c>, if found; otherwise, -1.
+        ///    </returns>
         public virtual int IndexOf(Property item)
         {
             for (int i = 0; i != m_count; ++i)
@@ -310,14 +310,14 @@ namespace CslaGenerator.Metadata
         }
 
         /// <summary>
-        ///		Inserts an element into the <c>PropertyCollection</c> at the specified index.
+        ///        Inserts an element into the <c>PropertyCollection</c> at the specified index.
         /// </summary>
         /// <param name="index">The zero-based index at which <paramref name="item"/> should be inserted.</param>
         /// <param name="item">The <see cref="Property"/> to insert.</param>
         /// <exception cref="ArgumentOutOfRangeException">
-        ///		<para><paramref name="index"/> is less than zero</para>
-        ///		<para>-or-</para>
-        ///		<para><paramref name="index"/> is equal to or greater than <see cref="PropertyCollection.Count"/>.</para>
+        ///        <para><paramref name="index"/> is less than zero</para>
+        ///        <para>-or-</para>
+        ///        <para><paramref name="index"/> is equal to or greater than <see cref="PropertyCollection.Count"/>.</para>
         /// </exception>
         public virtual void Insert(int index, Property item)
         {
@@ -337,11 +337,11 @@ namespace CslaGenerator.Metadata
         }
 
         /// <summary>
-        ///		Removes the first occurrence of a specific <see cref="Property"/> from the <c>PropertyCollection</c>.
+        ///        Removes the first occurrence of a specific <see cref="Property"/> from the <c>PropertyCollection</c>.
         /// </summary>
         /// <param name="item">The <see cref="Property"/> to remove from the <c>PropertyCollection</c>.</param>
         /// <exception cref="ArgumentException">
-        ///		The specified <see cref="Property"/> was not found in the <c>PropertyCollection</c>.
+        ///        The specified <see cref="Property"/> was not found in the <c>PropertyCollection</c>.
         /// </exception>
         public virtual void Remove(Property item)
         {
@@ -354,13 +354,13 @@ namespace CslaGenerator.Metadata
         }
 
         /// <summary>
-        ///		Removes the element at the specified index of the <c>PropertyCollection</c>.
+        ///        Removes the element at the specified index of the <c>PropertyCollection</c>.
         /// </summary>
         /// <param name="index">The zero-based index of the element to remove.</param>
         /// <exception cref="ArgumentOutOfRangeException">
-        ///		<para><paramref name="index"/> is less than zero</para>
-        ///		<para>-or-</para>
-        ///		<para><paramref name="index"/> is equal to or greater than <see cref="PropertyCollection.Count"/>.</para>
+        ///        <para><paramref name="index"/> is less than zero</para>
+        ///        <para>-or-</para>
+        ///        <para><paramref name="index"/> is equal to or greater than <see cref="PropertyCollection.Count"/>.</para>
         /// </exception>
         public virtual void RemoveAt(int index)
         {
@@ -374,7 +374,7 @@ namespace CslaGenerator.Metadata
             }
 
             // We can't set the deleted entry equal to null, because it might be a value type.
-            // Instead, we'll create an empty single-element array of the right type and copy it 
+            // Instead, we'll create an empty single-element array of the right type and copy it
             // over the entry we want to erase.
             Property[] temp = new Property[1];
             Array.Copy(temp, 0, m_array, m_count, 1);
@@ -382,7 +382,7 @@ namespace CslaGenerator.Metadata
         }
 
         /// <summary>
-        ///		Gets a value indicating whether the collection has a fixed size.
+        ///        Gets a value indicating whether the collection has a fixed size.
         /// </summary>
         /// <value>true if the collection has a fixed size; otherwise, false. The default is false</value>
         public virtual bool IsFixedSize
@@ -391,7 +391,7 @@ namespace CslaGenerator.Metadata
         }
 
         /// <summary>
-        ///		gets a value indicating whether the <B>IList</B> is read-only.
+        ///        gets a value indicating whether the <B>IList</B> is read-only.
         /// </summary>
         /// <value>true if the collection is read-only; otherwise, false. The default is false</value>
         public virtual bool IsReadOnly
@@ -403,7 +403,7 @@ namespace CslaGenerator.Metadata
         #region Operations (type-safe IEnumerable)
 
         /// <summary>
-        ///		Returns an enumerator that can iterate through the <c>PropertyCollection</c>.
+        ///        Returns an enumerator that can iterate through the <c>PropertyCollection</c>.
         /// </summary>
         /// <returns>An <see cref="Enumerator"/> for the entire <c>PropertyCollection</c>.</returns>
         public virtual IPropertyCollectionEnumerator GetEnumerator()
@@ -415,7 +415,7 @@ namespace CslaGenerator.Metadata
         #region Public helpers (just to mimic some nice features of ArrayList)
 
         /// <summary>
-        ///		Gets or sets the number of elements the <c>PropertyCollection</c> can contain.
+        ///        Gets or sets the number of elements the <c>PropertyCollection</c> can contain.
         /// </summary>
         public virtual int Capacity
         {
@@ -443,7 +443,7 @@ namespace CslaGenerator.Metadata
         }
 
         /// <summary>
-        ///		Adds the elements of another <c>PropertyCollection</c> to the current <c>PropertyCollection</c>.
+        ///        Adds the elements of another <c>PropertyCollection</c> to the current <c>PropertyCollection</c>.
         /// </summary>
         /// <param name="x">The <c>PropertyCollection</c> whose elements should be added to the end of the current <c>PropertyCollection</c>.</param>
         /// <returns>The new <see cref="PropertyCollection.Count"/> of the <c>PropertyCollection</c>.</returns>
@@ -460,7 +460,7 @@ namespace CslaGenerator.Metadata
         }
 
         /// <summary>
-        ///		Adds the elements of a <see cref="Property"/> array to the current <c>PropertyCollection</c>.
+        ///        Adds the elements of a <see cref="Property"/> array to the current <c>PropertyCollection</c>.
         /// </summary>
         /// <param name="x">The <see cref="Property"/> array whose elements should be added to the end of the <c>PropertyCollection</c>.</param>
         /// <returns>The new <see cref="PropertyCollection.Count"/> of the <c>PropertyCollection</c>.</returns>
@@ -477,7 +477,7 @@ namespace CslaGenerator.Metadata
         }
 
         /// <summary>
-        ///		Sets the capacity to the actual number of elements.
+        ///        Sets the capacity to the actual number of elements.
         /// </summary>
         public virtual void TrimToSize()
         {
@@ -489,9 +489,9 @@ namespace CslaGenerator.Metadata
         #region Implementation (helpers)
 
         /// <exception cref="ArgumentOutOfRangeException">
-        ///		<para><paramref name="index"/> is less than zero</para>
-        ///		<para>-or-</para>
-        ///		<para><paramref name="index"/> is equal to or greater than <see cref="PropertyCollection.Count"/>.</para>
+        ///        <para><paramref name="index"/> is less than zero</para>
+        ///        <para>-or-</para>
+        ///        <para><paramref name="index"/> is equal to or greater than <see cref="PropertyCollection.Count"/>.</para>
         /// </exception>
         private void ValidateIndex(int i)
         {
@@ -499,9 +499,9 @@ namespace CslaGenerator.Metadata
         }
 
         /// <exception cref="ArgumentOutOfRangeException">
-        ///		<para><paramref name="index"/> is less than zero</para>
-        ///		<para>-or-</para>
-        ///		<para><paramref name="index"/> is equal to or greater than <see cref="PropertyCollection.Count"/>.</para>
+        ///        <para><paramref name="index"/> is less than zero</para>
+        ///        <para>-or-</para>
+        ///        <para><paramref name="index"/> is equal to or greater than <see cref="PropertyCollection.Count"/>.</para>
         /// </exception>
         private void ValidateIndex(int i, bool allowEqualEnd)
         {
@@ -581,7 +581,7 @@ namespace CslaGenerator.Metadata
 
         #region Nested enumerator class
         /// <summary>
-        ///		Supports simple iteration over a <see cref="PropertyCollection"/>.
+        ///        Supports simple iteration over a <see cref="PropertyCollection"/>.
         /// </summary>
         private class Enumerator : IEnumerator, IPropertyCollectionEnumerator
         {
@@ -596,7 +596,7 @@ namespace CslaGenerator.Metadata
             #region Construction
 
             /// <summary>
-            ///		Initializes a new instance of the <c>Enumerator</c> class.
+            ///        Initializes a new instance of the <c>Enumerator</c> class.
             /// </summary>
             /// <param name="tc"></param>
             internal Enumerator(PropertyCollection tc)
@@ -611,7 +611,7 @@ namespace CslaGenerator.Metadata
             #region Operations (type-safe IEnumerator)
 
             /// <summary>
-            ///		Gets the current element in the collection.
+            ///        Gets the current element in the collection.
             /// </summary>
             public Property Current
             {
@@ -619,14 +619,14 @@ namespace CslaGenerator.Metadata
             }
 
             /// <summary>
-            ///		Advances the enumerator to the next element in the collection.
+            ///        Advances the enumerator to the next element in the collection.
             /// </summary>
             /// <exception cref="InvalidOperationException">
-            ///		The collection was modified after the enumerator was created.
+            ///        The collection was modified after the enumerator was created.
             /// </exception>
             /// <returns>
-            ///		<c>true</c> if the enumerator was successfully advanced to the next element; 
-            ///		<c>false</c> if the enumerator has passed the end of the collection.
+            ///        <c>true</c> if the enumerator was successfully advanced to the next element;
+            ///        <c>false</c> if the enumerator has passed the end of the collection.
             /// </returns>
             public bool MoveNext()
             {
@@ -638,7 +638,7 @@ namespace CslaGenerator.Metadata
             }
 
             /// <summary>
-            ///		Sets the enumerator to its initial position, before the first element in the collection.
+            ///        Sets the enumerator to its initial position, before the first element in the collection.
             /// </summary>
             public void Reset()
             {

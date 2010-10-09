@@ -527,8 +527,7 @@ namespace CslaGenerator.Controls
                     if (current != null)
                     {
                         listEntities1.SelectedItem = current;
-                        //PropertyGrid1.SelectedObject = new AssociativeEntityPropertyBag(current);
-                        PropertyGrid1.SelectedObject = current;
+                        PropertyGrid1.SelectedObject = new AssociativeEntityPropertyBag(current);
                     }
                     else
                     {
@@ -539,8 +538,7 @@ namespace CslaGenerator.Controls
                     if (current != null)
                     {
                         listEntities2.SelectedItem = current;
-                        //PropertyGrid2.SelectedObject = new AssociativeEntityPropertyBag(current);
-                        PropertyGrid2.SelectedObject = current;
+                        PropertyGrid2.SelectedObject = new AssociativeEntityPropertyBag(current);
                     }
                     else
                     {
@@ -551,8 +549,7 @@ namespace CslaGenerator.Controls
                     if (current != null)
                     {
                         listEntities3.SelectedItem = current;
-                        //PropertyGrid3.SelectedObject = new AssociativeEntityPropertyBag(current);
-                        PropertyGrid3.SelectedObject = current;
+                        PropertyGrid3.SelectedObject = new AssociativeEntityPropertyBag(current);
                     }
                     else
                     {

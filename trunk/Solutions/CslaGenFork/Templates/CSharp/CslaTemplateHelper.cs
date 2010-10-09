@@ -182,7 +182,10 @@ namespace CslaGenerator.Util
             if (prop.DbBindColumn.ColumnOriginType == ColumnOriginType.None)
                 statement += GetReaderMethod(prop.PropertyType);
             else
-                statement += GetReaderMethod(GetDbType(prop.DbBindColumn), prop.PropertyType);
+            {
+                //statement += GetReaderMethod(GetDbType(prop.DbBindColumn), prop.PropertyType);
+                statement += GetReaderMethod(GetDbType(prop.DbBindColumn), prop);
+            }
 
             statement += "(\"" + prop.ParameterName + "\"";
 
@@ -271,6 +274,14 @@ namespace CslaGenerator.Util
                 return "bool";
 
             return type.ToString();
+        }
+
+        protected internal string GetReaderMethod(DbType dataType, Property prop)
+        {
+            if (prop.Nullable && TypeHelper.IsNullableType(prop.PropertyType))
+                return "GetValue";
+
+            return GetReaderMethod(dataType, prop.PropertyType);
         }
 
         protected internal string GetReaderMethod(DbType dataType, TypeCodeEx propertyType)

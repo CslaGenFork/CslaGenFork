@@ -8,14 +8,14 @@ using CslaGenerator.Design;
 
 namespace CslaGenerator.Metadata
 {
-	/// <summary>
-	/// Summary description for UpdateValueProperty.
-	/// </summary>
-	[Serializable]
-	public class UpdateValueProperty : Property
-	{
-		private string _sourcePropertyName = String.Empty;
-		private bool _isIdentity = false;
+    /// <summary>
+    /// Summary description for UpdateValueProperty.
+    /// </summary>
+    [Serializable]
+    public class UpdateValueProperty : Property
+    {
+        private string _sourcePropertyName = String.Empty;
+        private bool _isIdentity = false;
 
         [Category("01. Definition")]
         [Description("The property name.")]
@@ -64,11 +64,11 @@ namespace CslaGenerator.Metadata
         }
 
         // Hide PropertyType
-		[Browsable(false)]
-		public override TypeCodeEx PropertyType
-		{
-			get { return TypeCodeEx.Empty; }
-		}
+        [Browsable(false)]
+        public override TypeCodeEx PropertyType
+        {
+            get { return TypeCodeEx.Empty; }
+        }
 
         // Hide Summary
         [Browsable(false)]
@@ -84,14 +84,14 @@ namespace CslaGenerator.Metadata
             get { return string.Empty; }
         }
 
-		public override object Clone()
-		{
-			MemoryStream buffer = new MemoryStream();
-			XmlSerializer ser = new XmlSerializer(typeof(UpdateValueProperty));
-			ser.Serialize(buffer, this);
-			buffer.Position = 0;
-			return ser.Deserialize(buffer);
-		}
+        public override object Clone()
+        {
+            MemoryStream buffer = new MemoryStream();
+            XmlSerializer ser = new XmlSerializer(typeof(UpdateValueProperty));
+            ser.Serialize(buffer, this);
+            buffer.Position = 0;
+            return ser.Deserialize(buffer);
+        }
 
-	}
+    }
 }

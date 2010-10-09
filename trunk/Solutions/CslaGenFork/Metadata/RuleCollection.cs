@@ -4,9 +4,9 @@ using System.Xml.Serialization;
 
 namespace CslaGenerator.Metadata
 {
-	/// <summary>
-	///		A strongly-typed collection of <see cref="Rule"/> objects.
-	/// </summary>
+    /// <summary>
+    ///        A strongly-typed collection of <see cref="Rule"/> objects.
+    /// </summary>
     [Serializable]
     public class RuleCollection : System.Collections.Generic.List<Rule>
     {
@@ -15,29 +15,29 @@ namespace CslaGenerator.Metadata
     //{
     //    #region Interfaces
     //    /// <summary>
-    //    ///		Supports type-safe iteration over a <see cref="RuleCollection"/>.
+    //    ///        Supports type-safe iteration over a <see cref="RuleCollection"/>.
     //    /// </summary>
     //    public interface IRuleCollectionEnumerator
     //    {
     //        /// <summary>
-    //        ///		Gets the current element in the collection.
+    //        ///        Gets the current element in the collection.
     //        /// </summary>
     //        Rule Current {get;}
 
     //        /// <summary>
-    //        ///		Advances the enumerator to the next element in the collection.
+    //        ///        Advances the enumerator to the next element in the collection.
     //        /// </summary>
     //        /// <exception cref="InvalidOperationException">
-    //        ///		The collection was modified after the enumerator was created.
+    //        ///        The collection was modified after the enumerator was created.
     //        /// </exception>
     //        /// <returns>
-    //        ///		<c>true</c> if the enumerator was successfully advanced to the next element; 
-    //        ///		<c>false</c> if the enumerator has passed the end of the collection.
+    //        ///        <c>true</c> if the enumerator was successfully advanced to the next element;
+    //        ///        <c>false</c> if the enumerator has passed the end of the collection.
     //        /// </returns>
     //        bool MoveNext();
 
     //        /// <summary>
-    //        ///		Sets the enumerator to its initial position, before the first element in the collection.
+    //        ///        Sets the enumerator to its initial position, before the first element in the collection.
     //        /// </summary>
     //        void Reset();
     //    }
@@ -51,10 +51,10 @@ namespace CslaGenerator.Metadata
     //    [XmlIgnore]
     //    private int m_version = 0;
     //    #endregion
-	
+
     //    #region Static Wrappers
     //    /// <summary>
-    //    ///		Creates a synchronized (thread-safe) wrapper for a 
+    //    ///        Creates a synchronized (thread-safe) wrapper for a
     //    ///     <c>RuleCollection</c> instance.
     //    /// </summary>
     //    /// <returns>
@@ -66,9 +66,9 @@ namespace CslaGenerator.Metadata
     //            throw new ArgumentNullException("list");
     //        return new SyncRuleCollection(list);
     //    }
-		
+
     //    /// <summary>
-    //    ///		Creates a read-only wrapper for a 
+    //    ///        Creates a read-only wrapper for a
     //    ///     <c>RuleCollection</c> instance.
     //    /// </summary>
     //    /// <returns>
@@ -84,29 +84,29 @@ namespace CslaGenerator.Metadata
 
     //    #region Construction
     //    /// <summary>
-    //    ///		Initializes a new instance of the <c>RuleCollection</c> class
-    //    ///		that is empty and has the default initial capacity.
+    //    ///        Initializes a new instance of the <c>RuleCollection</c> class
+    //    ///        that is empty and has the default initial capacity.
     //    /// </summary>
     //    public RuleCollection()
     //    {
     //        m_array = new Rule[DEFAULT_CAPACITY];
     //    }
-		
+
     //    /// <summary>
-    //    ///		Initializes a new instance of the <c>RuleCollection</c> class
-    //    ///		that has the specified initial capacity.
+    //    ///        Initializes a new instance of the <c>RuleCollection</c> class
+    //    ///        that has the specified initial capacity.
     //    /// </summary>
     //    /// <param name="capacity">
-    //    ///		The number of elements that the new <c>RuleCollection</c> is initially capable of storing.
-    //    ///	</param>
+    //    ///        The number of elements that the new <c>RuleCollection</c> is initially capable of storing.
+    //    ///    </param>
     //    public RuleCollection(int capacity)
     //    {
     //        m_array = new Rule[capacity];
     //    }
 
     //    /// <summary>
-    //    ///		Initializes a new instance of the <c>RuleCollection</c> class
-    //    ///		that contains elements copied from the specified <c>RuleCollection</c>.
+    //    ///        Initializes a new instance of the <c>RuleCollection</c> class
+    //    ///        that contains elements copied from the specified <c>RuleCollection</c>.
     //    /// </summary>
     //    /// <param name="c">The <c>RuleCollection</c> whose elements are copied to the new collection.</param>
     //    public RuleCollection(RuleCollection c)
@@ -116,8 +116,8 @@ namespace CslaGenerator.Metadata
     //    }
 
     //    /// <summary>
-    //    ///		Initializes a new instance of the <c>RuleCollection</c> class
-    //    ///		that contains elements copied from the specified <see cref="Rule"/> array.
+    //    ///        Initializes a new instance of the <c>RuleCollection</c> class
+    //    ///        that contains elements copied from the specified <see cref="Rule"/> array.
     //    /// </summary>
     //    /// <param name="a">The <see cref="Rule"/> array whose elements are copied to the new list.</param>
     //    public RuleCollection(Rule[] a)
@@ -125,8 +125,8 @@ namespace CslaGenerator.Metadata
     //        m_array = new Rule[a.Length];
     //        AddRange(a);
     //    }
-		
-    //    protected enum Tag 
+
+    //    protected enum Tag
     //    {
     //        Default
     //    }
@@ -136,10 +136,10 @@ namespace CslaGenerator.Metadata
     //        m_array = null;
     //    }
     //    #endregion
-		
+
     //    #region Operations (type-safe ICollection)
     //    /// <summary>
-    //    ///		Gets the number of elements actually contained in the <c>RuleCollection</c>.
+    //    ///        Gets the number of elements actually contained in the <c>RuleCollection</c>.
     //    /// </summary>
     //    public virtual int Count
     //    {
@@ -147,8 +147,8 @@ namespace CslaGenerator.Metadata
     //    }
 
     //    /// <summary>
-    //    ///		Copies the entire <c>RuleCollection</c> to a one-dimensional
-    //    ///		<see cref="Rule"/> array.
+    //    ///        Copies the entire <c>RuleCollection</c> to a one-dimensional
+    //    ///        <see cref="Rule"/> array.
     //    /// </summary>
     //    /// <param name="array">The one-dimensional <see cref="Rule"/> array to copy to.</param>
     //    public virtual void CopyTo(Rule[] array)
@@ -157,8 +157,8 @@ namespace CslaGenerator.Metadata
     //    }
 
     //    /// <summary>
-    //    ///		Copies the entire <c>RuleCollection</c> to a one-dimensional
-    //    ///		<see cref="Rule"/> array, starting at the specified index of the target array.
+    //    ///        Copies the entire <c>RuleCollection</c> to a one-dimensional
+    //    ///        <see cref="Rule"/> array, starting at the specified index of the target array.
     //    /// </summary>
     //    /// <param name="array">The one-dimensional <see cref="Rule"/> array to copy to.</param>
     //    /// <param name="start">The zero-based index in <paramref name="array"/> at which copying begins.</param>
@@ -166,12 +166,12 @@ namespace CslaGenerator.Metadata
     //    {
     //        if (m_count > array.GetUpperBound(0) + 1 - start)
     //            throw new System.ArgumentException("Destination array was not long enough.");
-			
-    //        Array.Copy(m_array, 0, array, start, m_count); 
+
+    //        Array.Copy(m_array, 0, array, start, m_count);
     //    }
 
     //    /// <summary>
-    //    ///		Gets a value indicating whether access to the collection is synchronized (thread-safe).
+    //    ///        Gets a value indicating whether access to the collection is synchronized (thread-safe).
     //    /// </summary>
     //    /// <returns>true if access to the ICollection is synchronized (thread-safe); otherwise, false.</returns>
     //    public virtual bool IsSynchronized
@@ -180,41 +180,41 @@ namespace CslaGenerator.Metadata
     //    }
 
     //    /// <summary>
-    //    ///		Gets an object that can be used to synchronize access to the collection.
+    //    ///        Gets an object that can be used to synchronize access to the collection.
     //    /// </summary>
     //    public virtual object SyncRoot
     //    {
     //        get { return m_array.SyncRoot; }
     //    }
     //    #endregion
-		
+
     //    #region Operations (type-safe IList)
     //    /// <summary>
-    //    ///		Gets or sets the <see cref="Rule"/> at the specified index.
+    //    ///        Gets or sets the <see cref="Rule"/> at the specified index.
     //    /// </summary>
     //    /// <param name="index">The zero-based index of the element to get or set.</param>
     //    /// <exception cref="ArgumentOutOfRangeException">
-    //    ///		<para><paramref name="index"/> is less than zero</para>
-    //    ///		<para>-or-</para>
-    //    ///		<para><paramref name="index"/> is equal to or greater than <see cref="RuleCollection.Count"/>.</para>
+    //    ///        <para><paramref name="index"/> is less than zero</para>
+    //    ///        <para>-or-</para>
+    //    ///        <para><paramref name="index"/> is equal to or greater than <see cref="RuleCollection.Count"/>.</para>
     //    /// </exception>
     //    public virtual Rule this[int index]
     //    {
     //        get
     //        {
     //            ValidateIndex(index); // throws
-    //            return m_array[index]; 
+    //            return m_array[index];
     //        }
     //        set
     //        {
     //            ValidateIndex(index); // throws
-    //            ++m_version; 
-    //            m_array[index] = value; 
+    //            ++m_version;
+    //            m_array[index] = value;
     //        }
     //    }
 
     //    /// <summary>
-    //    ///		Adds a <see cref="Rule"/> to the end of the <c>RuleCollection</c>.
+    //    ///        Adds a <see cref="Rule"/> to the end of the <c>RuleCollection</c>.
     //    /// </summary>
     //    /// <param name="item">The <see cref="Rule"/> to be added to the end of the <c>RuleCollection</c>.</param>
     //    /// <returns>The index at which the value has been added.</returns>
@@ -228,9 +228,9 @@ namespace CslaGenerator.Metadata
 
     //        return m_count++;
     //    }
-		
+
     //    /// <summary>
-    //    ///		Removes all elements from the <c>RuleCollection</c>.
+    //    ///        Removes all elements from the <c>RuleCollection</c>.
     //    /// </summary>
     //    public virtual void Clear()
     //    {
@@ -238,9 +238,9 @@ namespace CslaGenerator.Metadata
     //        m_array = new Rule[DEFAULT_CAPACITY];
     //        m_count = 0;
     //    }
-		
+
     //    /// <summary>
-    //    ///		Creates a shallow copy of the <see cref="RuleCollection"/>.
+    //    ///        Creates a shallow copy of the <see cref="RuleCollection"/>.
     //    /// </summary>
     //    public virtual object Clone()
     //    {
@@ -253,7 +253,7 @@ namespace CslaGenerator.Metadata
     //    }
 
     //    /// <summary>
-    //    ///		Determines whether a given <see cref="Rule"/> is in the <c>RuleCollection</c>.
+    //    ///        Determines whether a given <see cref="Rule"/> is in the <c>RuleCollection</c>.
     //    /// </summary>
     //    /// <param name="item">The <see cref="Rule"/> to check for.</param>
     //    /// <returns><c>true</c> if <paramref name="item"/> is found in the <c>RuleCollection</c>; otherwise, <c>false</c>.</returns>
@@ -266,14 +266,14 @@ namespace CslaGenerator.Metadata
     //    }
 
     //    /// <summary>
-    //    ///		Returns the zero-based index of the first occurrence of a <see cref="Rule"/>
-    //    ///		in the <c>RuleCollection</c>.
+    //    ///        Returns the zero-based index of the first occurrence of a <see cref="Rule"/>
+    //    ///        in the <c>RuleCollection</c>.
     //    /// </summary>
     //    /// <param name="item">The <see cref="Rule"/> to locate in the <c>RuleCollection</c>.</param>
     //    /// <returns>
-    //    ///		The zero-based index of the first occurrence of <paramref name="item"/> 
-    //    ///		in the entire <c>RuleCollection</c>, if found; otherwise, -1.
-    //    ///	</returns>
+    //    ///        The zero-based index of the first occurrence of <paramref name="item"/>
+    //    ///        in the entire <c>RuleCollection</c>, if found; otherwise, -1.
+    //    ///    </returns>
     //    public virtual int IndexOf(Rule item)
     //    {
     //        for (int i=0; i != m_count; ++i)
@@ -283,19 +283,19 @@ namespace CslaGenerator.Metadata
     //    }
 
     //    /// <summary>
-    //    ///		Inserts an element into the <c>RuleCollection</c> at the specified index.
+    //    ///        Inserts an element into the <c>RuleCollection</c> at the specified index.
     //    /// </summary>
     //    /// <param name="index">The zero-based index at which <paramref name="item"/> should be inserted.</param>
     //    /// <param name="item">The <see cref="Rule"/> to insert.</param>
     //    /// <exception cref="ArgumentOutOfRangeException">
-    //    ///		<para><paramref name="index"/> is less than zero</para>
-    //    ///		<para>-or-</para>
-    //    ///		<para><paramref name="index"/> is equal to or greater than <see cref="RuleCollection.Count"/>.</para>
+    //    ///        <para><paramref name="index"/> is less than zero</para>
+    //    ///        <para>-or-</para>
+    //    ///        <para><paramref name="index"/> is equal to or greater than <see cref="RuleCollection.Count"/>.</para>
     //    /// </exception>
     //    public virtual void Insert(int index, Rule item)
     //    {
     //        ValidateIndex(index, true); // throws
-			
+
     //        if (m_count == m_array.Length)
     //            EnsureCapacity(m_count + 1);
 
@@ -310,44 +310,44 @@ namespace CslaGenerator.Metadata
     //    }
 
     //    /// <summary>
-    //    ///		Removes the first occurrence of a specific <see cref="Rule"/> from the <c>RuleCollection</c>.
+    //    ///        Removes the first occurrence of a specific <see cref="Rule"/> from the <c>RuleCollection</c>.
     //    /// </summary>
     //    /// <param name="item">The <see cref="Rule"/> to remove from the <c>RuleCollection</c>.</param>
     //    /// <exception cref="ArgumentException">
-    //    ///		The specified <see cref="Rule"/> was not found in the <c>RuleCollection</c>.
+    //    ///        The specified <see cref="Rule"/> was not found in the <c>RuleCollection</c>.
     //    /// </exception>
     //    public virtual void Remove(Rule item)
-    //    {		   
+    //    {
     //        int i = IndexOf(item);
     //        if (i < 0)
     //            throw new System.ArgumentException("Cannot remove the specified item because it was not found in the specified Collection.");
-			
+
     //        ++m_version;
     //        RemoveAt(i);
     //    }
 
     //    /// <summary>
-    //    ///		Removes the element at the specified index of the <c>RuleCollection</c>.
+    //    ///        Removes the element at the specified index of the <c>RuleCollection</c>.
     //    /// </summary>
     //    /// <param name="index">The zero-based index of the element to remove.</param>
     //    /// <exception cref="ArgumentOutOfRangeException">
-    //    ///		<para><paramref name="index"/> is less than zero</para>
-    //    ///		<para>-or-</para>
-    //    ///		<para><paramref name="index"/> is equal to or greater than <see cref="RuleCollection.Count"/>.</para>
+    //    ///        <para><paramref name="index"/> is less than zero</para>
+    //    ///        <para>-or-</para>
+    //    ///        <para><paramref name="index"/> is equal to or greater than <see cref="RuleCollection.Count"/>.</para>
     //    /// </exception>
     //    public virtual void RemoveAt(int index)
     //    {
     //        ValidateIndex(index); // throws
-			
+
     //        m_count--;
 
     //        if (index < m_count)
     //        {
     //            Array.Copy(m_array, index + 1, m_array, index, m_count - index);
     //        }
-			
+
     //        // We can't set the deleted entry equal to null, because it might be a value type.
-    //        // Instead, we'll create an empty single-element array of the right type and copy it 
+    //        // Instead, we'll create an empty single-element array of the right type and copy it
     //        // over the entry we want to erase.
     //        Rule[] temp = new Rule[1];
     //        Array.Copy(temp, 0, m_array, m_count, 1);
@@ -355,7 +355,7 @@ namespace CslaGenerator.Metadata
     //    }
 
     //    /// <summary>
-    //    ///		Gets a value indicating whether the collection has a fixed size.
+    //    ///        Gets a value indicating whether the collection has a fixed size.
     //    /// </summary>
     //    /// <value>true if the collection has a fixed size; otherwise, false. The default is false</value>
     //    public virtual bool IsFixedSize
@@ -364,7 +364,7 @@ namespace CslaGenerator.Metadata
     //    }
 
     //    /// <summary>
-    //    ///		gets a value indicating whether the <B>IList</B> is read-only.
+    //    ///        gets a value indicating whether the <B>IList</B> is read-only.
     //    /// </summary>
     //    /// <value>true if the collection is read-only; otherwise, false. The default is false</value>
     //    public virtual bool IsReadOnly
@@ -374,9 +374,9 @@ namespace CslaGenerator.Metadata
     //    #endregion
 
     //    #region Operations (type-safe IEnumerable)
-		
+
     //    /// <summary>
-    //    ///		Returns an enumerator that can iterate through the <c>RuleCollection</c>.
+    //    ///        Returns an enumerator that can iterate through the <c>RuleCollection</c>.
     //    /// </summary>
     //    /// <returns>An <see cref="Enumerator"/> for the entire <c>RuleCollection</c>.</returns>
     //    public virtual IRuleCollectionEnumerator GetEnumerator()
@@ -386,14 +386,14 @@ namespace CslaGenerator.Metadata
     //    #endregion
 
     //    #region Public helpers (just to mimic some nice features of ArrayList)
-		
+
     //    /// <summary>
-    //    ///		Gets or sets the number of elements the <c>RuleCollection</c> can contain.
+    //    ///        Gets or sets the number of elements the <c>RuleCollection</c> can contain.
     //    /// </summary>
     //    public virtual int Capacity
     //    {
     //        get { return m_array.Length; }
-			
+
     //        set
     //        {
     //            if (value < m_count)
@@ -416,7 +416,7 @@ namespace CslaGenerator.Metadata
     //    }
 
     //    /// <summary>
-    //    ///		Adds the elements of another <c>RuleCollection</c> to the current <c>RuleCollection</c>.
+    //    ///        Adds the elements of another <c>RuleCollection</c> to the current <c>RuleCollection</c>.
     //    /// </summary>
     //    /// <param name="x">The <c>RuleCollection</c> whose elements should be added to the end of the current <c>RuleCollection</c>.</param>
     //    /// <returns>The new <see cref="RuleCollection.Count"/> of the <c>RuleCollection</c>.</returns>
@@ -424,7 +424,7 @@ namespace CslaGenerator.Metadata
     //    {
     //        if (m_count + x.Count >= m_array.Length)
     //            EnsureCapacity(m_count + x.Count);
-			
+
     //        Array.Copy(x.m_array, 0, m_array, m_count, x.Count);
     //        m_count += x.Count;
     //        m_version++;
@@ -433,7 +433,7 @@ namespace CslaGenerator.Metadata
     //    }
 
     //    /// <summary>
-    //    ///		Adds the elements of a <see cref="Rule"/> array to the current <c>RuleCollection</c>.
+    //    ///        Adds the elements of a <see cref="Rule"/> array to the current <c>RuleCollection</c>.
     //    /// </summary>
     //    /// <param name="x">The <see cref="Rule"/> array whose elements should be added to the end of the <c>RuleCollection</c>.</param>
     //    /// <returns>The new <see cref="RuleCollection.Count"/> of the <c>RuleCollection</c>.</returns>
@@ -448,9 +448,9 @@ namespace CslaGenerator.Metadata
 
     //        return m_count;
     //    }
-		
+
     //    /// <summary>
-    //    ///		Sets the capacity to the actual number of elements.
+    //    ///        Sets the capacity to the actual number of elements.
     //    /// </summary>
     //    public virtual void TrimToSize()
     //    {
@@ -462,9 +462,9 @@ namespace CslaGenerator.Metadata
     //    #region Implementation (helpers)
 
     //    /// <exception cref="ArgumentOutOfRangeException">
-    //    ///		<para><paramref name="index"/> is less than zero</para>
-    //    ///		<para>-or-</para>
-    //    ///		<para><paramref name="index"/> is equal to or greater than <see cref="RuleCollection.Count"/>.</para>
+    //    ///        <para><paramref name="index"/> is less than zero</para>
+    //    ///        <para>-or-</para>
+    //    ///        <para><paramref name="index"/> is equal to or greater than <see cref="RuleCollection.Count"/>.</para>
     //    /// </exception>
     //    private void ValidateIndex(int i)
     //    {
@@ -472,9 +472,9 @@ namespace CslaGenerator.Metadata
     //    }
 
     //    /// <exception cref="ArgumentOutOfRangeException">
-    //    ///		<para><paramref name="index"/> is less than zero</para>
-    //    ///		<para>-or-</para>
-    //    ///		<para><paramref name="index"/> is equal to or greater than <see cref="RuleCollection.Count"/>.</para>
+    //    ///        <para><paramref name="index"/> is less than zero</para>
+    //    ///        <para>-or-</para>
+    //    ///        <para><paramref name="index"/> is equal to or greater than <see cref="RuleCollection.Count"/>.</para>
     //    /// </exception>
     //    private void ValidateIndex(int i, bool allowEqualEnd)
     //    {
@@ -493,7 +493,7 @@ namespace CslaGenerator.Metadata
     //    }
 
     //    #endregion
-		
+
     //    #region Implementation (ICollection)
 
     //    void ICollection.CopyTo(Array array, int start)
@@ -554,22 +554,22 @@ namespace CslaGenerator.Metadata
 
     //    #region Nested enumerator class
     //    /// <summary>
-    //    ///		Supports simple iteration over a <see cref="RuleCollection"/>.
+    //    ///        Supports simple iteration over a <see cref="RuleCollection"/>.
     //    /// </summary>
     //    private class Enumerator : IEnumerator, IRuleCollectionEnumerator
     //    {
     //        #region Implementation (data)
-			
+
     //        private RuleCollection m_collection;
     //        private int m_index;
     //        private int m_version;
-			
+
     //        #endregion
-		
+
     //        #region Construction
-			
+
     //        /// <summary>
-    //        ///		Initializes a new instance of the <c>Enumerator</c> class.
+    //        ///        Initializes a new instance of the <c>Enumerator</c> class.
     //        /// </summary>
     //        /// <param name="tc"></param>
     //        internal Enumerator(RuleCollection tc)
@@ -578,13 +578,13 @@ namespace CslaGenerator.Metadata
     //            m_index = -1;
     //            m_version = tc.m_version;
     //        }
-			
+
     //        #endregion
-	
+
     //        #region Operations (type-safe IEnumerator)
-			
+
     //        /// <summary>
-    //        ///		Gets the current element in the collection.
+    //        ///        Gets the current element in the collection.
     //        /// </summary>
     //        public Rule Current
     //        {
@@ -592,14 +592,14 @@ namespace CslaGenerator.Metadata
     //        }
 
     //        /// <summary>
-    //        ///		Advances the enumerator to the next element in the collection.
+    //        ///        Advances the enumerator to the next element in the collection.
     //        /// </summary>
     //        /// <exception cref="InvalidOperationException">
-    //        ///		The collection was modified after the enumerator was created.
+    //        ///        The collection was modified after the enumerator was created.
     //        /// </exception>
     //        /// <returns>
-    //        ///		<c>true</c> if the enumerator was successfully advanced to the next element; 
-    //        ///		<c>false</c> if the enumerator has passed the end of the collection.
+    //        ///        <c>true</c> if the enumerator was successfully advanced to the next element;
+    //        ///        <c>false</c> if the enumerator has passed the end of the collection.
     //        /// </returns>
     //        public bool MoveNext()
     //        {
@@ -611,25 +611,25 @@ namespace CslaGenerator.Metadata
     //        }
 
     //        /// <summary>
-    //        ///		Sets the enumerator to its initial position, before the first element in the collection.
+    //        ///        Sets the enumerator to its initial position, before the first element in the collection.
     //        /// </summary>
     //        public void Reset()
     //        {
     //            m_index = -1;
     //        }
     //        #endregion
-	
+
     //        #region Implementation (IEnumerator)
-			
+
     //        object IEnumerator.Current
     //        {
     //            get { return (object)(this.Current); }
     //        }
-			
+
     //        #endregion
     //    }
     //    #endregion
-		
+
     //    #region Nested Syncronized Wrapper class
     //    [Serializable]
     //        private class SyncRuleCollection : RuleCollection, System.Runtime.Serialization.IDeserializationCallback
@@ -648,14 +648,14 @@ namespace CslaGenerator.Metadata
     //            collection = list;
     //        }
     //        #endregion
-			
+
     //        #region IDeserializationCallback Members
     //        void System.Runtime.Serialization.IDeserializationCallback.OnDeserialization(object sender)
     //        {
     //            rwLock = new System.Threading.ReaderWriterLock();
     //        }
     //        #endregion
-			
+
     //        #region Type-safe ICollection
     //        public override void CopyTo(Rule[] array)
     //        {
@@ -684,7 +684,7 @@ namespace CslaGenerator.Metadata
     //                rwLock.ReleaseReaderLock();
     //            }
     //        }
-			
+
     //        public override int Count
     //        {
     //            get
@@ -700,7 +700,7 @@ namespace CslaGenerator.Metadata
     //                {
     //                    rwLock.ReleaseReaderLock();
     //                }
-					
+
     //                return count;
     //            }
     //        }
@@ -715,7 +715,7 @@ namespace CslaGenerator.Metadata
     //            get { return collection.SyncRoot; }
     //        }
     //        #endregion
-			
+
     //        #region Type-safe IList
     //        public override Rule this[int i]
     //        {
@@ -732,10 +732,10 @@ namespace CslaGenerator.Metadata
     //                {
     //                    rwLock.ReleaseReaderLock();
     //                }
-					
+
     //                return thisItem;
     //            }
-				
+
     //            set
     //            {
     //                rwLock.AcquireWriterLock(timeout);
@@ -767,7 +767,7 @@ namespace CslaGenerator.Metadata
 
     //            return result;
     //        }
-			
+
     //        public override void Clear()
     //        {
     //            rwLock.AcquireWriterLock(timeout);
@@ -831,7 +831,7 @@ namespace CslaGenerator.Metadata
     //        }
 
     //        public override void Remove(Rule x)
-    //        {           
+    //        {
     //            rwLock.AcquireWriterLock(timeout);
 
     //            try
@@ -857,7 +857,7 @@ namespace CslaGenerator.Metadata
     //                rwLock.ReleaseWriterLock();
     //            }
     //        }
-			
+
     //        public override bool IsFixedSize
     //        {
     //            get { return collection.IsFixedSize; }
@@ -908,7 +908,7 @@ namespace CslaGenerator.Metadata
 
     //                return result;
     //            }
-				
+
     //            set
     //            {
     //                rwLock.AcquireWriterLock(timeout);
@@ -974,7 +974,7 @@ namespace CslaGenerator.Metadata
     //            m_collection = list;
     //        }
     //        #endregion
-			
+
     //        #region Type-safe ICollection
     //        public override void CopyTo(Rule[] array)
     //        {
@@ -1000,7 +1000,7 @@ namespace CslaGenerator.Metadata
     //            get { return this.m_collection.SyncRoot; }
     //        }
     //        #endregion
-			
+
     //        #region Type-safe IList
     //        public override Rule this[int i]
     //        {
@@ -1012,7 +1012,7 @@ namespace CslaGenerator.Metadata
     //        {
     //            throw new NotSupportedException("This is a Read Only Collection and can not be modified");
     //        }
-			
+
     //        public override void Clear()
     //        {
     //            throw new NotSupportedException("This is a Read Only Collection and can not be modified");
@@ -1034,7 +1034,7 @@ namespace CslaGenerator.Metadata
     //        }
 
     //        public override void Remove(Rule x)
-    //        {           
+    //        {
     //            throw new NotSupportedException("This is a Read Only Collection and can not be modified");
     //        }
 
@@ -1042,7 +1042,7 @@ namespace CslaGenerator.Metadata
     //        {
     //            throw new NotSupportedException("This is a Read Only Collection and can not be modified");
     //        }
-			
+
     //        public override bool IsFixedSize
     //        {
     //            get {return true;}
@@ -1066,7 +1066,7 @@ namespace CslaGenerator.Metadata
     //        public override int Capacity
     //        {
     //            get { return m_collection.Capacity; }
-				
+
     //            set { throw new NotSupportedException("This is a Read Only Collection and can not be modified"); }
     //        }
 

@@ -9,33 +9,33 @@ using System.Collections;
 
 namespace CslaGenerator.Metadata
 {
-	/// <summary>
-	/// Summary description for DbBindColumn.
-	/// </summary>
-	[Serializable]
-	public class DbBindColumn : ICloneable
-	{
-		private ColumnOriginType _columnOriginType = ColumnOriginType.None;
+    /// <summary>
+    /// Summary description for DbBindColumn.
+    /// </summary>
+    [Serializable]
+    public class DbBindColumn : ICloneable
+    {
+        private ColumnOriginType _columnOriginType = ColumnOriginType.None;
 
 
-		// these fields used to serialize the column name so it can be loaded from a schema
-		private string _tableName = String.Empty;
-		private string _viewName = String.Empty;
-		private string _spName = String.Empty;
-		private int _spResultSetIndex = 0;
-		private string _columnName = String.Empty;
-		private DbType _dataType = DbType.String;
-		private string _nativeType = String.Empty;
+        // these fields used to serialize the column name so it can be loaded from a schema
+        private string _tableName = String.Empty;
+        private string _viewName = String.Empty;
+        private string _spName = String.Empty;
+        private int _spResultSetIndex = 0;
+        private string _columnName = String.Empty;
+        private DbType _dataType = DbType.String;
+        private string _nativeType = String.Empty;
 
-		public DbBindColumn()
-		{
-		}
+        public DbBindColumn()
+        {
+        }
 
-		public ColumnOriginType ColumnOriginType
-		{
-			set { _columnOriginType = value; }
-			get { return _columnOriginType; }
-		}
+        public ColumnOriginType ColumnOriginType
+        {
+            set { _columnOriginType = value; }
+            get { return _columnOriginType; }
+        }
 
 
         internal IColumnInfo Column
@@ -45,36 +45,36 @@ namespace CslaGenerator.Metadata
                 return _Column;
             }
         }
-        
-        
-		
-		public DbType DataType
-		{
-			get 
-			{
-				if (Column == null) { return _dataType; }
-				return Column.DbType;
-			}
-			set
-			{
-					_dataType = value;
-			}
-		}
 
-		
-		public string NativeType
-		{
-			get
-			{
-				if (Column == null) { return _nativeType; }
-				return Column.NativeTypeName;
-			}
-			set
-			{
-				if (value != null)
-					_nativeType = value;
-			}
-		}
+
+
+        public DbType DataType
+        {
+            get
+            {
+                if (Column == null) { return _dataType; }
+                return Column.DbType;
+            }
+            set
+            {
+                    _dataType = value;
+            }
+        }
+
+
+        public string NativeType
+        {
+            get
+            {
+                if (Column == null) { return _nativeType; }
+                return Column.NativeTypeName;
+            }
+            set
+            {
+                if (value != null)
+                    _nativeType = value;
+            }
+        }
 
         private long _Size;
         public long Size
@@ -90,57 +90,57 @@ namespace CslaGenerator.Metadata
             }
         }
 
-      
-		public int SpResultIndex
-		{
-			get { return _spResultSetIndex; }
-			set { _spResultSetIndex = value; }
-		}
-        
+
+        public int SpResultIndex
+        {
+            get { return _spResultSetIndex; }
+            set { _spResultSetIndex = value; }
+        }
+
         [Browsable(false)]
-		public string TableName
-		{
-			get { return _tableName; }
-			set 
+        public string TableName
+        {
+            get { return _tableName; }
+            set
             {
                 if (string.IsNullOrEmpty(_objectName) && !string.IsNullOrEmpty(value))
                     _objectName = value;
-                //_tableName = value; 
-                
+                //_tableName = value;
+
             }
-		}
+        }
 
         //[Obsolete("Use Object Name instead")]
         [Browsable(false)]
-		public string ViewName
-		{
-			get { return _viewName; }
-			set 
+        public string ViewName
+        {
+            get { return _viewName; }
+            set
             {
                 if (string.IsNullOrEmpty(_objectName) && !string.IsNullOrEmpty(value))
                     _objectName = value;
-                //_viewName = value; 
+                //_viewName = value;
             }
-		}
-        
+        }
+
         //[Obsolete("Use Object Name instead")]
         [Browsable(false)]
-		public string SpName
-		{
-			get { return _spName; }
-			set 
+        public string SpName
+        {
+            get { return _spName; }
+            set
             {
                 if (string.IsNullOrEmpty(_objectName) && !string.IsNullOrEmpty(value))
                     _objectName = value;
-                //_spName = value; 
+                //_spName = value;
             }
-		}
+        }
 
-		public string ColumnName
-		{
-			get { return _columnName; }
-			set { _columnName = value; }
-		}
+        public string ColumnName
+        {
+            get { return _columnName; }
+            set { _columnName = value; }
+        }
 
         private bool _IsPrimaryKey=false;
         public bool IsPrimaryKey
@@ -314,8 +314,8 @@ namespace CslaGenerator.Metadata
         }
 
 
-		public object Clone()
-		{
+        public object Clone()
+        {
             DbBindColumn clone = (DbBindColumn)Util.ObjectCloner.CloneShallow(this);
             clone.LoadColumn(_Catalog);
             return clone;
@@ -332,6 +332,6 @@ namespace CslaGenerator.Metadata
             //col._dataType = this._dataType;
             //col._nativeType = this._nativeType;
             //return col;
-		}
-	}
+        }
+    }
 }

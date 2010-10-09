@@ -9,7 +9,7 @@ using CslaGenerator.Util;
 namespace CslaGenerator.Design
 {
     /// <summary>
-    /// A custom collection editor that emulates the 
+    /// A custom collection editor that emulates the
     /// </summary>
     public class PropertyCollectionForm : CollectionEditor
     {
@@ -86,7 +86,6 @@ namespace CslaGenerator.Design
             if (fieldInfo != null)
             {
                 _propGrid = (PropertyGrid) fieldInfo.GetValue(_form);
-                //_propGrid.SelectedObject = new PlainPropertyBag(current);
 
                 if (_propGrid != null)
                 {

@@ -32,7 +32,7 @@ namespace CslaGenerator.Metadata
         /// </summary>
         /// <param name="name">The name of the decorator property</param>
         /// <param name="value">The value of the decorator property</param>
-        /// <param name="addQuotes">If True, wraps the value with quotes. Intended for string decorator values.</param> 
+        /// <param name="addQuotes">If True, wraps the value with quotes. Intended for string decorator values.</param>
         public DecoratorArgument(string name, string value, bool addQuotes)
         {
             _Name = name;

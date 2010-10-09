@@ -69,7 +69,7 @@ namespace CslaGenerator.Design
                 return (tree.SelectedNode == null || tree.SelectedNode == tree.Nodes[0] || ColumnInfo == null);
             }
         }
-        
+
 
         private bool FindNode(TreeNodeCollection nodes, IColumnInfo col)
         {
@@ -102,6 +102,6 @@ namespace CslaGenerator.Design
         {
             tree.Focus();
         }
-            
+
     }
 }

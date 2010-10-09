@@ -19,7 +19,7 @@ namespace CslaGenerator.Design
         public ParentTypeEditor()
         {
             lstProperties = new ListBox();
-            lstProperties.DoubleClick += new EventHandler(lstProperties_DoubleClick);
+            lstProperties.DoubleClick += lstProperties_DoubleClick;
             lstProperties.SelectionMode = SelectionMode.One;
         }
 
@@ -41,7 +41,7 @@ namespace CslaGenerator.Design
                         Type instanceType = null;
                         object objinfo = null;
                         TypeHelper.GetContextInstanceObject(context, ref objinfo, ref instanceType);
-                        CslaObjectInfo obj = (CslaObjectInfo)objinfo;
+                        CslaObjectInfo obj = (CslaObjectInfo) objinfo;
                         lstProperties.Items.Clear();
                         lstProperties.Items.Add("(None)");
                         foreach (CslaObjectInfo o in GeneratorController.Current.CurrentUnit.CslaObjects)
@@ -55,16 +55,18 @@ namespace CslaGenerator.Design
                             }
                         }
                         lstProperties.Sorted = true;
+
                         if (lstProperties.Items.Contains(obj.ParentType))
                             lstProperties.SelectedItem = obj.ParentType;
                         else
                             lstProperties.SelectedItem = "(None)";
+
                         editorService.DropDownControl(lstProperties);
                         if (lstProperties.SelectedIndex < 0 || lstProperties.SelectedItem.ToString() == "(None)")
                             return string.Empty;
-                        else
-                            return lstProperties.SelectedItem.ToString();
-                        
+
+                        return lstProperties.SelectedItem.ToString();
+
                     }
 
                 }
@@ -75,6 +77,6 @@ namespace CslaGenerator.Design
         public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
         {
             return UITypeEditorEditStyle.DropDown;
-        }        
+        }
     }
 }

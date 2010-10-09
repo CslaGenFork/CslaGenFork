@@ -429,7 +429,7 @@ namespace CslaGenerator.Util
         private CriteriaProperty[] _selectedObject;
 
         /// <summary>
-        /// Initializes a new instance of the PlainPropertyBag class.
+        /// Initializes a new instance of the CriteriaPropertyBag class.
         /// </summary>
         public CriteriaPropertyBag()
         {
@@ -472,7 +472,7 @@ namespace CslaGenerator.Util
         }
 
         /// <summary>
-        /// Gets the collection of properties contained within this PlainPropertyBag.
+        /// Gets the collection of properties contained within this CriteriaPropertyBag.
         /// </summary>
         public PropertySpecCollection Properties
         {
@@ -676,7 +676,7 @@ namespace CslaGenerator.Util
         {
             try
             {
-                // get a reference to the PropertyInfo, exit if no property with that 
+                // get a reference to the PropertyInfo, exit if no property with that
                 // name
                 PropertyInfo pi = typeof (CriteriaProperty).GetProperty(propertyName);
 
@@ -808,7 +808,7 @@ namespace CslaGenerator.Util
         PropertyDescriptorCollection ICustomTypeDescriptor.GetProperties(Attribute[] attributes)
         {
             // Rather than passing this function on to the default TypeDescriptor,
-            // which would return the actual properties of PlainPropertyBag, I construct
+            // which would return the actual properties of CriteriaPropertyBag, I construct
             // a list here that contains property descriptors for the elements of the
             // Properties list in the bag.
 

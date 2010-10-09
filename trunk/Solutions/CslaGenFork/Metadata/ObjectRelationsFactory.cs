@@ -81,7 +81,8 @@ namespace CslaGenerator.Metadata
 
         #region Private fields
 
-        private readonly ITableInfo _associatieveTable;
+        private readonly ITableInfo _associativeTable;
+        private readonly ITableInfo _associatedTable;
         private readonly CslaObjectInfoCollection _cslaObjects;
         private readonly CslaGeneratorUnit _currentUnit;
         private readonly IDataBaseObject _dbObject;
@@ -114,18 +115,35 @@ namespace CslaGenerator.Metadata
                 _secondaryObjectInfo = _cslaObjects.Find(_entity.SecondaryObject);
                 _secondaryRootCriteriaProperties = GetCriteriaProperties(_secondaryObjectInfo);
 
-                _associatieveTable = FindAssociativeTable(_mainObjectInfo, _secondaryObjectInfo);
+                _associativeTable = FindAssociativeTable(_mainObjectInfo, _secondaryObjectInfo);
 
                 _resultSet = new TableResultSet(
-                    _associatieveTable.ResultIndex,
-                    _associatieveTable.Columns,
-                    _associatieveTable.Type);
+                    _associativeTable.ResultIndex,
+                    _associativeTable.Columns,
+                    _associativeTable.Type);
 
                 _dbObject = new TableDataBaseObject(
-                    _associatieveTable.ObjectCatalog,
-                    _associatieveTable.ObjectName,
-                    _associatieveTable.ObjectSchema,
-                    _associatieveTable.Catalog);
+                    _associativeTable.ObjectCatalog,
+                    _associativeTable.ObjectName,
+                    _associativeTable.ObjectSchema,
+                    _associativeTable.Catalog);
+            }
+            else
+            {
+                var mainItemObjectInfo = _cslaObjects.Find(_entity.MainItemTypeName);
+
+                _associatedTable = FindAssociatedTable(_mainObjectInfo, mainItemObjectInfo);
+
+                _resultSet = new TableResultSet(
+                    _associatedTable.ResultIndex,
+                    _associatedTable.Columns,
+                    _associatedTable.Type);
+
+                _dbObject = new TableDataBaseObject(
+                    _associatedTable.ObjectCatalog,
+                    _associatedTable.ObjectName,
+                    _associatedTable.ObjectSchema,
+                    _associatedTable.Catalog);
             }
         }
 
@@ -317,6 +335,7 @@ namespace CslaGenerator.Metadata
             var mainPKInfos = new List<PrimaryKeyInfo>();
             var secondaryPKInfos = new List<PrimaryKeyInfo>();
 
+            // get all PK of main CslaObjectInfo
             foreach (var property in main.ValueProperties)
             {
                 if (property.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK ||
@@ -330,6 +349,7 @@ namespace CslaGenerator.Metadata
                 }
             }
 
+            // get all PK of secondary CslaObjectInfo
             foreach (var property in secondary.ValueProperties)
             {
                 if (property.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK ||
@@ -343,6 +363,7 @@ namespace CslaGenerator.Metadata
                 }
             }
 
+            // get FK tables from constraints with a PK that match main PKs
             foreach (var constraint in GeneratorController.Catalog.ForeignKeyConstraints)
             {
                 foreach (var pkInfo in mainPKInfos)
@@ -356,6 +377,8 @@ namespace CslaGenerator.Metadata
                 }
             }
 
+            // check FK tables with two constraints that match main PKs and secondary PKs
+            // and return the first matching table found
             foreach (var constraint in GeneratorController.Catalog.ForeignKeyConstraints)
             {
                 foreach (var pkInfo in secondaryPKInfos)
@@ -379,6 +402,78 @@ namespace CslaGenerator.Metadata
             return null;
         }
 
+        public static ITableInfo FindAssociatedTable(CslaObjectInfo main, CslaObjectInfo item)
+        {
+            if (main == null)
+                return null;
+            if (item == null)
+                return null;
+
+            var associatedConstraintCandidates = new List<IForeignKeyConstraint>();
+            var mainPKInfos = new List<PrimaryKeyInfo>();
+            var itemPKInfos = new List<PrimaryKeyInfo>();
+
+            // get all PK of main CslaObjectInfo
+            foreach (var property in main.ValueProperties)
+            {
+                if (property.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK ||
+                    property.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.UserProvidedPK)
+                {
+                    mainPKInfos.Add(new PrimaryKeyInfo
+                                        {
+                                            PKTable = property.DbBindColumn.ObjectName,
+                                            PKColumn = property.DbBindColumn.ColumnName
+                                        });
+                }
+            }
+
+            // get all PK of item CslaObjectInfo
+            foreach (var property in item.ValueProperties)
+            {
+                if (property.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK ||
+                    property.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.UserProvidedPK)
+                {
+                    itemPKInfos.Add(new PrimaryKeyInfo
+                    {
+                        PKTable = property.DbBindColumn.ObjectName,
+                        PKColumn = property.DbBindColumn.ColumnName
+                    });
+                }
+            }
+
+            // get constraint definitions with a PK that match main PKs
+            foreach (var constraint in GeneratorController.Catalog.ForeignKeyConstraints)
+            {
+                foreach (var pkInfo in mainPKInfos)
+                {
+                    if (pkInfo.PKTable == constraint.PKTable.ObjectName &&
+                        pkInfo.PKColumn == constraint.Columns[0].FKColumn.ColumnName &&
+                        constraint.Columns[0].PKColumn.IsPrimaryKey)
+                    {
+                        associatedConstraintCandidates.Add(constraint);
+                    }
+                }
+            }
+
+            // check constraints with an FK that matches item PKs tables
+            // and return the first table where found
+            foreach (var constraint in associatedConstraintCandidates)
+            {
+                foreach (var itempkInfo in itemPKInfos)
+                {
+                    if (itempkInfo.PKTable == constraint.ConstraintTable.ObjectName &&
+                        constraint.Columns[0].FKColumn.ColumnName == constraint.Columns[0].PKColumn.ColumnName &&
+                        constraint.Columns[0].PKColumn.IsPrimaryKey)
+                    {
+                        // return the first FK table common to both PK tables
+                        return constraint.ConstraintTable;
+                    }
+                }
+            }
+
+            return null;
+        }
+
         #endregion
 
         #region ValueProperty building
@@ -391,7 +486,7 @@ namespace CslaGenerator.Metadata
             {
                 var currentFactory = new ObjectFactory(_currentUnit, currentCslaObject);
 
-                currentFactory.AddProperties(currentCslaObject, _dbObject, _resultSet, selectedColumns, true);
+                currentFactory.AddProperties(currentCslaObject, _dbObject, _resultSet, selectedColumns, true, true);
             }
 
             var removeList = FindInvalidProperties(currentCslaObject, _mainRootCriteriaProperties);
@@ -437,13 +532,24 @@ namespace CslaGenerator.Metadata
                 return;
 
             var currentFactory = new ObjectFactory(_currentUnit, currentCslaObject);
-            currentFactory.AddProperties(currentCslaObject, _dbObject, _resultSet, selectedColumns, true);
+            currentFactory.AddProperties(currentCslaObject, _dbObject, _resultSet, selectedColumns, true, true);
         }
 
         private List<IColumnInfo> FilterOutSelectedColumns(CslaObjectInfo currentCslaObject, PropertyCollection rootCriteriaProperties)
         {
+            ColumnInfoCollection columnInfoCollection;
             var selectedColumns = new List<IColumnInfo>();
-            foreach (var column in _associatieveTable.Columns)
+            if (_entity.RelationType == ObjectRelationType.OneToMultiple)
+            {
+//                columnInfoCollection = currentCslaObject.ValueProperties[0].DbBindColumn.ResultSet.Columns;
+                columnInfoCollection = _associatedTable.Columns;
+            }
+            else
+            {
+                columnInfoCollection = _associativeTable.Columns;
+            }
+
+            foreach (var column in columnInfoCollection)
             {
                 var filter = false;
                 // filter out SoftDelete column
@@ -478,7 +584,7 @@ namespace CslaGenerator.Metadata
 
                 if (!filter)
                     selectedColumns.Add(column);
-            }
+            }//
             return selectedColumns;
         }
 

@@ -11,13 +11,13 @@ using DBSchemaInfo.Base;
 
 namespace CslaGenerator.Design
 {
-	public class DbBindColumnEditor : UITypeEditor
-	{
-		private IWindowsFormsEditorService editorService = null;
+    public class DbBindColumnEditor : UITypeEditor
+    {
+        private IWindowsFormsEditorService editorService = null;
 
         public DbBindColumnEditor()
-		{
-		}
+        {
+        }
 
 
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
@@ -34,7 +34,7 @@ namespace CslaGenerator.Design
                         object objinfo = null;
                         TypeHelper.GetContextInstanceObject(context, ref objinfo, ref instanceType);
 
-                        IBoundProperty obj = (IBoundProperty)objinfo;
+                        IBoundProperty obj = (IBoundProperty) objinfo;
 
                         DbBindColumnEditorForm frm = new DbBindColumnEditorForm();
                         frm.ColumnInfo = obj.DbBindColumn.Column;
@@ -63,10 +63,10 @@ namespace CslaGenerator.Design
             return value;
         }
 
-		public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context) 
-		{
-			return UITypeEditorEditStyle.Modal;
-		}
+        public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
+        {
+            return UITypeEditorEditStyle.Modal;
+        }
 
-	}
+    }
 }

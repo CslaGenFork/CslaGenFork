@@ -146,7 +146,7 @@ namespace CslaGenerator.Metadata
         public string MainItemTypeName { get; set; }
 
         [Category("03. Primary Entity Options")]
-        [Description("Whether or not this object should be \"lazy loaded\".  \"Lazy loading\" means the child " + 
+        [Description("Whether or not this object should be \"lazy loaded\".  \"Lazy loading\" means the child " +
             "objects are not loaded when the parent object is loaded and are only loaded when they are referenced.")]
         [UserFriendlyName("Primary LazyLoad")]
         public bool MainLazyLoad { get; set; }
@@ -210,7 +210,7 @@ namespace CslaGenerator.Metadata
         public string SecondaryItemTypeName { get; set; }
 
         [Category("05. Secondary Entity Options")]
-        [Description("Whether or not this object should be \"lazy loaded\".  \"Lazy loading\" means the child objects " + 
+        [Description("Whether or not this object should be \"lazy loaded\".  \"Lazy loading\" means the child objects " +
             "are not loaded when the parent object is loaded and are only loaded when they are referenced.")]
         [UserFriendlyName("Secondary Lazy Load")]
         public bool SecondaryLazyLoad { get; set; }
@@ -221,11 +221,11 @@ namespace CslaGenerator.Metadata
         public LoadingScheme SecondaryLoadingScheme { get; set; }
 
         [Category("05. Secondary Entity Options")]
-        [Description("The secondary entity's properties which are used in Update method, as parameters for " + 
+        [Description("The secondary entity's properties which are used in Update method, as parameters for " +
             "Stored Procedures. These will used as Criteria properties in the item object.")]
         [Editor(typeof (AssociativeEntityParameterCollectionEditor), typeof (UITypeEditor))]
         [TypeConverter(typeof (ParameterCollectionConverter))]
-        [UserFriendlyName("Secondary Load´Parameters")]
+        [UserFriendlyName("Secondary Load Parameters")]
         public ParameterCollection SecondaryLoadParameters { get; set; }
 
         #endregion
@@ -269,6 +269,7 @@ namespace CslaGenerator.Metadata
                 {
                     var factory = new ObjectRelationsFactory(Parent, this);
                     factory.BuildOneToMultipleObjects();
+                    factory.PopulateMainObject();
                 }
             }
             else

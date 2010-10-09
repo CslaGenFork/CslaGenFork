@@ -11,7 +11,9 @@ using CslaGenerator.Util;
 namespace CslaGenerator.Design
 {
     /// <summary>
-    /// Summary description for AssociativeEntityParameterCollectionEditor.
+    /// Summary description for AssociativeEntityParameterCollectionEditor. Used by
+    /// // MainLoadParameters = "Primary Load Parameters"
+    /// // SecondaryLoadParameters = "Secondary Load Parameters"
     /// </summary>
     public class AssociativeEntityParameterCollectionEditor : UITypeEditor
     {
@@ -22,9 +24,15 @@ namespace CslaGenerator.Design
         public AssociativeEntityParameterCollectionEditor()
         {
             lstParameters = new ListBox();
+            lstParameters.DoubleClick += lstProperties_DoubleClick;
             lstParameters.DisplayMember = "key";
             lstParameters.ValueMember = "value";
             lstParameters.SelectionMode = SelectionMode.MultiSimple;
+        }
+
+        void lstProperties_DoubleClick(object sender, EventArgs e)
+        {
+            editorService.CloseDropDown();
         }
 
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
@@ -34,19 +42,27 @@ namespace CslaGenerator.Design
                 editorService = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
                 if (editorService != null && context.Instance != null)
                 {
+                    // CR modifying to accomodate PropertyBag
                     Type instanceType = null;
                     object objinfo = null;
-                    TypeHelper.GetContextInstanceObject(context, ref objinfo, ref instanceType);
-                    var associativeEntity = (AssociativeEntity)objinfo;
-
+                    TypeHelper.GetAssociativeEntityContextInstanceObject(context, ref objinfo, ref instanceType);
+                    PropertyInfo propInfo;
+                    var associativeEntity = (AssociativeEntity) objinfo;
                     var cslaObject = string.Empty;
-                    if (context.PropertyDescriptor.DisplayName == "MainLoadParameters" && associativeEntity.MainObject != null)
+                    if (context.PropertyDescriptor.DisplayName == "Primary Load Parameters" && associativeEntity.MainObject != null)
+                    {
+                        propInfo = instanceType.GetProperty("MainLoadParameters");
                         cslaObject = associativeEntity.MainObject;
-                    else if (context.PropertyDescriptor.DisplayName == "SecondaryLoadParameters" && associativeEntity.SecondaryObject != null)
+                    }
+                    else
+                    {
+                        propInfo = instanceType.GetProperty("SecondaryLoadParameters");
                         cslaObject = associativeEntity.SecondaryObject;
-                    var aux = new CslaObjectInfoCollection();
-                    aux = GeneratorController.Current.GeneratorForm.ProjectPanel.Objects;
-                    _instance = aux.Find(cslaObject);
+                    }
+                    ParameterCollection paramColl = (ParameterCollection)propInfo.GetValue(objinfo, null);
+                    CslaObjectInfoCollection objectColl = new CslaObjectInfoCollection();
+                    objectColl = GeneratorController.Current.GeneratorForm.ProjectPanel.Objects;
+                    _instance = objectColl.Find(cslaObject);
 
                     /*if (instanceType != typeof(CslaObjectInfo))
                     {
@@ -68,6 +84,20 @@ namespace CslaGenerator.Design
                         foreach (Property prop in crit.Properties)
                         {
                             lstParameters.Items.Add(new DictionaryEntry(crit.Name + "." + prop.Name, new Parameter(crit, prop)));
+                        }
+                    }
+                    lstParameters.Sorted = true;
+
+                    foreach (Parameter param in paramColl)
+                    {
+                        var key = param.Criteria.Name + "." + param.Property.Name;
+                        for (var entry = 0; entry < lstParameters.Items.Count; entry++)
+                        {
+                            if (key == ((DictionaryEntry) lstParameters.Items[entry]).Key.ToString())
+                            {
+                                var val = (Parameter) ((DictionaryEntry) lstParameters.Items[entry]).Value;
+                                lstParameters.SelectedItems.Add(new DictionaryEntry(key, val));
+                            }
                         }
                     }
 

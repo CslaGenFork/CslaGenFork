@@ -35,13 +35,13 @@ namespace CslaGenerator.Design
                     // CR modifying to accomodate PropertyBag
                     Type instanceType = null;
                     object objinfo = null;
-                    TypeHelper.GetContextInstanceObject(context, ref objinfo, ref instanceType);
+                    TypeHelper.GetAssociativeEntityContextInstanceObject(context, ref objinfo, ref instanceType);
                     var associativeEntity = (AssociativeEntity) objinfo;
                     lstProperties.Items.Clear();
                     lstProperties.Items.Add("(None)");
-                    if (context.PropertyDescriptor.DisplayName == "MainObject" ||
-                        (context.PropertyDescriptor.DisplayName == "SecondaryObject" &&
-                        associativeEntity.RelationType ==ObjectRelationType.MultipleToMultiple))
+                    if (context.PropertyDescriptor.DisplayName == "Primary Object" ||
+                        (context.PropertyDescriptor.DisplayName == "Secondary Object" &&
+                        associativeEntity.RelationType == ObjectRelationType.MultipleToMultiple))
                     {
                         foreach (var obj in GeneratorController.Current.CurrentUnit.CslaObjects)
                         {
@@ -51,8 +51,8 @@ namespace CslaGenerator.Design
                             }
                         }
                     }
-                    if (context.PropertyDescriptor.DisplayName == "MainCollectionTypeName" ||
-                        (context.PropertyDescriptor.DisplayName == "SecondaryCollectionTypeName" &&
+                    if (context.PropertyDescriptor.DisplayName == "Primary Collection Type Name" ||
+                        (context.PropertyDescriptor.DisplayName == "Secondary Collection Type Name" &&
                         associativeEntity.RelationType == ObjectRelationType.MultipleToMultiple))
                     {
                         foreach (var obj in GeneratorController.Current.CurrentUnit.CslaObjects)
@@ -63,8 +63,8 @@ namespace CslaGenerator.Design
                             }
                         }
                     }
-                    if (context.PropertyDescriptor.DisplayName == "MainItemTypeName" ||
-                        (context.PropertyDescriptor.DisplayName == "SecondaryItemTypeName" &&
+                    if (context.PropertyDescriptor.DisplayName == "Primary Item Type Name" ||
+                        (context.PropertyDescriptor.DisplayName == "Secondary Item Type Name" &&
                         associativeEntity.RelationType == ObjectRelationType.MultipleToMultiple))
                     {
                         foreach (var obj in GeneratorController.Current.CurrentUnit.CslaObjects)
@@ -76,32 +76,33 @@ namespace CslaGenerator.Design
                         }
                     }
                     lstProperties.Sorted = true;
-                    if (context.PropertyDescriptor.DisplayName == "MainObject" && associativeEntity.MainObject != null)
+
+                    if (context.PropertyDescriptor.DisplayName == "Primary Object" && associativeEntity.MainObject != null)
                     {
                         if (lstProperties.Items.Contains(associativeEntity.MainObject))
                             lstProperties.SelectedItem = associativeEntity.MainObject;
                     }
-                    else if (context.PropertyDescriptor.DisplayName == "SecondaryObject" && associativeEntity.SecondaryObject != null)
+                    else if (context.PropertyDescriptor.DisplayName == "Secondary Object" && associativeEntity.SecondaryObject != null)
                     {
                         if (lstProperties.Items.Contains(associativeEntity.SecondaryObject))
                             lstProperties.SelectedItem = associativeEntity.SecondaryObject;
                     }
-                    else if (context.PropertyDescriptor.DisplayName == "MainCollectionTypeName" && associativeEntity.MainCollectionTypeName != null)
+                    else if (context.PropertyDescriptor.DisplayName == "Primary Collection Type Name" && associativeEntity.MainCollectionTypeName != null)
                     {
                         if (lstProperties.Items.Contains(associativeEntity.MainCollectionTypeName))
                             lstProperties.SelectedItem = associativeEntity.MainCollectionTypeName;
                     }
-                    else if (context.PropertyDescriptor.DisplayName == "SecondaryCollectionTypeName" && associativeEntity.SecondaryCollectionTypeName != null)
+                    else if (context.PropertyDescriptor.DisplayName == "Secondary Collection Type Name" && associativeEntity.SecondaryCollectionTypeName != null)
                     {
                         if (lstProperties.Items.Contains(associativeEntity.SecondaryCollectionTypeName))
                             lstProperties.SelectedItem = associativeEntity.SecondaryCollectionTypeName;
                     }
-                    else if (context.PropertyDescriptor.DisplayName == "MainItemTypeName" && associativeEntity.MainItemTypeName != null)
+                    else if (context.PropertyDescriptor.DisplayName == "Primary Item Type Name" && associativeEntity.MainItemTypeName != null)
                     {
                         if (lstProperties.Items.Contains(associativeEntity.MainItemTypeName))
                             lstProperties.SelectedItem = associativeEntity.MainItemTypeName;
                     }
-                    else if (context.PropertyDescriptor.DisplayName == "SecondaryItemTypeName" && associativeEntity.SecondaryItemTypeName != null)
+                    else if (context.PropertyDescriptor.DisplayName == "Secondary Item Type Name" && associativeEntity.SecondaryItemTypeName != null)
                     {
                         if (lstProperties.Items.Contains(associativeEntity.SecondaryItemTypeName))
                             lstProperties.SelectedItem = associativeEntity.SecondaryItemTypeName;
@@ -110,14 +111,13 @@ namespace CslaGenerator.Design
                     {
                         lstProperties.SelectedItem = "(None)";
                     }
+
                     editorService.DropDownControl(lstProperties);
                     if (lstProperties.SelectedIndex < 0 || lstProperties.SelectedItem.ToString() == "(None)")
                         return string.Empty;
 
                     return lstProperties.SelectedItem.ToString();
-
                 }
-
             }
             return value;
         }

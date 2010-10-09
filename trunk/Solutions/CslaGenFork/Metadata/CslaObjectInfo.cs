@@ -232,7 +232,7 @@
                 get { return _supportUpdateProperties; }
                 set { _supportUpdateProperties = value; }
             }
-            
+
             #endregion
 
             #region 01. Common Options
@@ -741,19 +741,6 @@
             #region 06. NameValueList Info
 
             /// <summary>
-            /// Name of the column that will be used as the name column in a NameValue List.
-            /// </summary>
-            [Category("06. NameValueList Info")]
-            [Description("Name of the column that will be used as the value column in a NameValue List.")]
-            [Editor(typeof(PropertyNameEditor), typeof(UITypeEditor))]
-            [UserFriendlyName("Value Column")]
-            public string NameColumn
-            {
-                get { return _nameColumn; }
-                set { _nameColumn = value; }
-            }
-
-            /// <summary>
             /// Name of the column that will be used as the value column in a NameValue List.
             /// </summary>
             [Category("06. NameValueList Info")]
@@ -767,11 +754,23 @@
             }
 
             /// <summary>
+            /// Name of the column that will be used as the name column in a NameValue List.
+            /// </summary>
+            [Category("06. NameValueList Info")]
+            [Description("Name of the column that will be used as the value column in a NameValue List.")]
+            [Editor(typeof(PropertyNameEditor), typeof(UITypeEditor))]
+            [UserFriendlyName("Value Column")]
+            public string NameColumn
+            {
+                get { return _nameColumn; }
+                set { _nameColumn = value; }
+            }
+
+            /// <summary>
             /// Whether to cache the results of the fetch operation for the name value list or not.
             /// </summary>
             [Category("06. NameValueList Info")]
             [Description("Whether to cache the results of the fetch operation for the name value list or not. This will also generate an InvalidateAll method to clear the cache.")]
-            [Editor(typeof(PropertyNameEditor), typeof(UITypeEditor))]
             [UserFriendlyName("Cache Results")]
             public bool CacheResults
             {

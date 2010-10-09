@@ -25,12 +25,12 @@
 //            lstTables.SelectedValueChanged += new EventHandler(lstTables_SelectedValueChanged);
 //        }
 
-//        public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value) 
+//        public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
 //        {
 //            if (provider != null)
 //            {
 //                editorService = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
-//                if (editorService != null) 
+//                if (editorService != null)
 //                {
 //                    DatabaseSchema schema = GeneratorController.Schema;
 //                    if (schema == null)
@@ -56,11 +56,11 @@
 //                    else { return null; }
 //                }
 //            }
-			
+
 //            return value;
 //        }
-		
-//        public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context) 
+
+//        public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
 //        {
 //            return UITypeEditorEditStyle.DropDown;
 //        }

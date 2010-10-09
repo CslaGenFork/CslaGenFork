@@ -90,6 +90,7 @@ namespace CslaGenerator.Controls
             this.lblBoolSoftDelete = new System.Windows.Forms.Label();
             this.txtBoolSoftDelete = new System.Windows.Forms.TextBox();
             this.chkIgnoreFilterWhenSoftDeleteIsParam = new System.Windows.Forms.CheckBox();
+            this.chkRemoveChildBeforeParent = new System.Windows.Forms.CheckBox();
             this.tabAdvanced = new System.Windows.Forms.TabPage();
             this.groupBoxPKDefaultValues = new System.Windows.Forms.GroupBox();
             this.lblIDGuidDefaultValue = new System.Windows.Forms.Label();
@@ -552,6 +553,7 @@ namespace CslaGenerator.Controls
             this.tabStoredProcs.Controls.Add(this.lblBoolSoftDelete);
             this.tabStoredProcs.Controls.Add(this.txtBoolSoftDelete);
             this.tabStoredProcs.Controls.Add(this.chkIgnoreFilterWhenSoftDeleteIsParam);
+            this.tabStoredProcs.Controls.Add(this.chkRemoveChildBeforeParent);
             this.tabStoredProcs.Location = new System.Drawing.Point(4, 22);
             this.tabStoredProcs.Name = "tabStoredProcs";
             this.tabStoredProcs.Size = new System.Drawing.Size(525, 329);
@@ -791,7 +793,8 @@ namespace CslaGenerator.Controls
             this.txtIntSoftDelete.Name = "txtIntSoftDelete";
             this.txtIntSoftDelete.Size = new System.Drawing.Size(130, 20);
             this.txtIntSoftDelete.TabIndex = 22;
-            this.toolTip1.SetToolTip(this.txtIntSoftDelete, "Specify the column name to be recognized as an \"integer\" soft delete column.");
+            this.toolTip1.SetToolTip(this.txtIntSoftDelete, "CTP - Not implemented.\r\n\r\n" + 
+                "Specify the column name to be recognized as an \"integer\" soft delete column.");
             // 
             // chkIgnoreFilterWhenSoftDeleteIsParam
             // 
@@ -805,6 +808,19 @@ namespace CslaGenerator.Controls
             this.chkIgnoreFilterWhenSoftDeleteIsParam.UseVisualStyleBackColor = true;
             this.toolTip1.SetToolTip(this.chkIgnoreFilterWhenSoftDeleteIsParam, "If checked, when the soft delete column is a ValueProperty," + 
                 "\r\nthe Stored Procedure won't filter out rows based on soft delete status.");
+            // 
+            // chkRemoveChildBeforeParent
+            // 
+            this.chkRemoveChildBeforeParent.AutoSize = true;
+            this.chkRemoveChildBeforeParent.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.projectParametersBindingSource, "SpRemoveChildBeforeParent", true));
+            this.chkRemoveChildBeforeParent.Location = new System.Drawing.Point(289, 132);
+            this.chkRemoveChildBeforeParent.Name = "chkRemoveChildBeforeParent";
+            this.chkRemoveChildBeforeParent.Size = new System.Drawing.Size(130, 20);
+            this.chkRemoveChildBeforeParent.TabIndex = 22;
+            this.chkRemoveChildBeforeParent.Text = "Remove all child before removing the parent";
+            this.chkRemoveChildBeforeParent.UseVisualStyleBackColor = true;
+            this.toolTip1.SetToolTip(this.chkRemoveChildBeforeParent, "If checked, the Stored Procedure will delete (or soft delete) all child rows\r\n"+
+                "before deleting (or soft deleting) the parent row.");
             // 
             // tabAdvanced
             // 
@@ -1637,6 +1653,7 @@ namespace CslaGenerator.Controls
         private System.Windows.Forms.Label lblIntSoftDelete;
         private System.Windows.Forms.TextBox txtIntSoftDelete;
         private System.Windows.Forms.CheckBox chkIgnoreFilterWhenSoftDeleteIsParam;
+        private System.Windows.Forms.CheckBox chkRemoveChildBeforeParent;
         private System.Windows.Forms.TabPage tabAdvanced;
         private System.Windows.Forms.GroupBox groupBoxPKDefaultValues;
         private System.Windows.Forms.Label lblIDGuidDefaultValue;
