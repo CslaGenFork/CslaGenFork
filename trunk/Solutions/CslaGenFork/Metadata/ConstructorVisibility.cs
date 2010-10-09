@@ -3,9 +3,9 @@
     public enum ConstructorVisibility
     {
         Default,
-		Private,
-		Protected,
-		ProtectedInternal,
-		Internal
+        Private,
+        Protected,
+        ProtectedInternal,
+        Internal
     }
 }

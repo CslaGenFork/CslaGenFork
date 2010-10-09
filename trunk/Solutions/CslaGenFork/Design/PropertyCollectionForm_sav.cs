@@ -9,7 +9,7 @@ using WeifenLuo.WinFormsUI.Docking;
 namespace CslaGenerator.Design
 {
     /// <summary>
-    /// A custom collection editor that emulates the 
+    /// A custom collection editor that emulates the
     /// </summary>
     public class PropertyCollectionForm : CollectionEditor, IDockedPropertyGrid
     {
@@ -24,17 +24,17 @@ namespace CslaGenerator.Design
         public void Activate()
         {
             _dockContent.Activate();
-        }               
+        }
 
         public void DockTo(DockPanel panel, DockStyle dockStyle)
         {
             _dockContent.DockTo(panel, dockStyle);
-        }               
+        }
 
         public void DockTo(DockPane paneTo, DockStyle dockStyle, int contentIndex)
         {
             _dockContent.DockTo(paneTo, dockStyle, contentIndex);
-        }               
+        }
 
         public void FloatAt(Rectangle floatWindowBounds)
         {
@@ -93,7 +93,7 @@ namespace CslaGenerator.Design
         {
             _dockContent.Show();
         }
-        
+
         public bool AllowEndUserDocking
         {
             set { _dockContent.AllowEndUserDocking = value; }
@@ -214,14 +214,14 @@ namespace CslaGenerator.Design
 
         public event EventHandler DockStateChanged;
 
-        #endregion        
+        #endregion
 
         private void InitializeComponent()
         {
             dockPanel1 = new DockPanel();
-            // 
+            //
             // dockPanel1
-            // 
+            //
             dockPanel1.ActiveAutoHideContent = null;
             dockPanel1.Font = new Font("Tahoma", 11F, FontStyle.Regular, GraphicsUnit.World);
             dockPanel1.Location = new Point(0, 63);
@@ -306,12 +306,12 @@ namespace CslaGenerator.Design
         public void OnFormShow(object sender, EventArgs e)
         {
             var maxHeight = Screen.PrimaryScreen.WorkingArea.Height;
-            
+
             if (_propGrid.SelectedObject == null)
                 return;
 
             var type = _propGrid.SelectedObject.GetType().ToString();
-            
+
             switch (type)
             {
                 case "CslaGenerator.Metadata.ValueProperty":

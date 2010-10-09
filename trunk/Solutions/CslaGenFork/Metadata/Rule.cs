@@ -7,39 +7,39 @@ using CslaGenerator.Design;
 
 namespace CslaGenerator.Metadata
 {
-	/// <summary>
-	/// Summary description for Rule.
-	/// </summary>
-	[Serializable]
-	public class Rule
-	{
-		private string _name = String.Empty;
-		private string _description = String.Empty;
+    /// <summary>
+    /// Summary description for Rule.
+    /// </summary>
+    [Serializable]
+    public class Rule
+    {
+        private string _name = String.Empty;
+        private string _description = String.Empty;
         private RuleDescriptionType _descriptionType = RuleDescriptionType.String;
-		private string _assertExpression = String.Empty;
+        private string _assertExpression = String.Empty;
         private RuleSeverity _severity = RuleSeverity.Error;
         private int _priority = 0;
         private ArgumentType _argumentType = ArgumentType.RuleArgs;
         private RuleMode _mode = RuleMode.Generated;
         private DecoratorArgumentCollection _decoratorArgs = new DecoratorArgumentCollection();
 
-	    [Category("01. Definition")]
+        [Category("01. Definition")]
         [Description("This is a description.")]
         public string Name
-		{
-			get { return _name; }
-			set { _name = value; }
-		}
+        {
+            get { return _name; }
+            set { _name = value; }
+        }
 
-		[Category("01. Definition")]
+        [Category("01. Definition")]
         [Description("This is a description.")]
         public string Description
-		{
-			get { return _description; }
-			set { _description = value; }
-		}
+        {
+            get { return _description; }
+            set { _description = value; }
+        }
 
-		[Category("01. Definition")]
+        [Category("01. Definition")]
         [Description("This is a description.")]
         [UserFriendlyName("Description Type")]
         public RuleDescriptionType DescriptionType
@@ -54,15 +54,15 @@ namespace CslaGenerator.Metadata
             }
         }
 
-		[Category("01. Definition")]
+        [Category("01. Definition")]
         [Editor(typeof(MultilineStringEditor), typeof(UITypeEditor))]
         [Description("This is a description.")]
         [UserFriendlyName("Assert Expression")]
         public string AssertExpression
-		{
-			get { return _assertExpression; }
-			set { _assertExpression = value; }
-		}
+        {
+            get { return _assertExpression; }
+            set { _assertExpression = value; }
+        }
 
         [Category("01. Definition")]
         [DefaultValue(RuleSeverity.Error)]
@@ -133,5 +133,5 @@ namespace CslaGenerator.Metadata
                 return _decoratorArgs;
             }
         }
-	}
+    }
 }

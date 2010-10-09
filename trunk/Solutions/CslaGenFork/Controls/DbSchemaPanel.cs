@@ -725,7 +725,7 @@ namespace CslaGenerator.Controls
 
             IDataBaseObject dbObject = GetCurrentDBObject();
             IResultSet resultSet = GetCurrentResultSet();
-            _currentFactory.AddProperties(_currentCslaObject, dbObject, resultSet, columns, true);
+            _currentFactory.AddProperties(_currentCslaObject, dbObject, resultSet, columns, true, false);
         }
 
         IResultSet GetCurrentResultSet()

@@ -5,12 +5,12 @@ using System.Xml.Serialization;
 
 namespace CslaGenerator.Metadata
 {
-	/// <summary>
-	/// Summary description for ConvertValueProperty.
-	/// </summary>
-	[Serializable]
-	public class ConvertValueProperty : ValueProperty
-	{
+    /// <summary>
+    /// Summary description for ConvertValueProperty.
+    /// </summary>
+    [Serializable]
+    public class ConvertValueProperty : ValueProperty
+    {
         private string _baseName = String.Empty;
         private string _sourcePropertyName = String.Empty;
         private string _nvlConverter = string.Empty;
@@ -106,7 +106,7 @@ namespace CslaGenerator.Metadata
         [Category("06. Conversion")]
         [Description("This is a description.")]
         public string BaseName
-		{
+        {
             get { return _baseName; }
             set
             {
@@ -116,12 +116,12 @@ namespace CslaGenerator.Metadata
                 _baseName = value;
             }
 
-		}
+        }
 
         [Category("06. Conversion")]
         [Description("This is a description.")]
         public string SourcePropertyName
-		{
+        {
             get
             {
                 if (string.IsNullOrEmpty(_sourcePropertyName) && !string.IsNullOrEmpty(_baseName))
@@ -135,7 +135,7 @@ namespace CslaGenerator.Metadata
                 else
                     _sourcePropertyName = string.Empty;
             }
-		}
+        }
 
         [Category("06. Conversion")]
         [Description("This is a description.")]
@@ -156,14 +156,14 @@ namespace CslaGenerator.Metadata
             }
         }
 
-		public override object Clone()
-		{
-			var buffer = new MemoryStream();
-			var ser = new XmlSerializer(typeof(ConvertValueProperty));
-			ser.Serialize(buffer, this);
-			buffer.Position = 0;
-			return ser.Deserialize(buffer);
-		}
+        public override object Clone()
+        {
+            var buffer = new MemoryStream();
+            var ser = new XmlSerializer(typeof(ConvertValueProperty));
+            ser.Serialize(buffer, this);
+            buffer.Position = 0;
+            return ser.Deserialize(buffer);
+        }
 
-	}
+    }
 }

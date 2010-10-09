@@ -8,49 +8,49 @@ using CslaGenerator.Design;
 
 namespace CslaGenerator.Metadata
 {
-	public class PropertyNameChangedEventArgs : EventArgs
-	{
-		public string OldName;
-		public string NewName;
+    public class PropertyNameChangedEventArgs : EventArgs
+    {
+        public string OldName;
+        public string NewName;
 
-		public PropertyNameChangedEventArgs(string oName, string nName)
-		{
-			OldName = oName;
-			NewName = nName;
-		}
-	}
+        public PropertyNameChangedEventArgs(string oName, string nName)
+        {
+            OldName = oName;
+            NewName = nName;
+        }
+    }
 
-	public delegate void PropertyNameChanged(ValueProperty sender, PropertyNameChangedEventArgs e);
+    public delegate void PropertyNameChanged(ValueProperty sender, PropertyNameChangedEventArgs e);
 
-	/// <summary>
-	/// Summary description for ValueProperty.
-	/// </summary>
-	[Serializable]
-	public class ValueProperty : Property, IBoundProperty
-	{
-		public enum DataAccessBehaviour
-		{
-			ReadWrite,
-			ReadOnly,
-			WriteOnly,
-			UpdateOnly,
-			CreateOnly 
-		}
+    /// <summary>
+    /// Summary description for ValueProperty.
+    /// </summary>
+    [Serializable]
+    public class ValueProperty : Property, IBoundProperty
+    {
+        public enum DataAccessBehaviour
+        {
+            ReadWrite,
+            ReadOnly,
+            WriteOnly,
+            UpdateOnly,
+            CreateOnly
+        }
 
-		public enum UserDefinedKeyBehaviour
-		{
-			Default,
-			UserProvidedPK, 
-			DBProvidedPK
+        public enum UserDefinedKeyBehaviour
+        {
+            Default,
+            UserProvidedPK,
+            DBProvidedPK
         }
 
         #region Private Fields
 
         private RuleCollection _rules = new RuleCollection();
-		private DbBindColumn _dbBindColumn = new DbBindColumn();
+        private DbBindColumn _dbBindColumn = new DbBindColumn();
         private string _fkConstraint = String.Empty;
         private bool _markDirtyOnChange = true;
-		private bool _undoable = true;
+        private bool _undoable = true;
         private string _defaultValue = string.Empty;
         private string _friendlyName = string.Empty;
         private PropertyDeclaration _declarationMode;
@@ -61,9 +61,9 @@ namespace CslaGenerator.Metadata
         private string _denyReadRoles = string.Empty;
         private string _denyWriteRoles = string.Empty;
         private PropertyAccess _access = PropertyAccess.IsPublic;
-		private DataAccessBehaviour _dataAccess = DataAccessBehaviour.ReadWrite;
-		private UserDefinedKeyBehaviour _primaryKey = UserDefinedKeyBehaviour.Default;
-		private AccessorVisibility _propSetAccessibility = AccessorVisibility.Default;
+        private DataAccessBehaviour _dataAccess = DataAccessBehaviour.ReadWrite;
+        private UserDefinedKeyBehaviour _primaryKey = UserDefinedKeyBehaviour.Default;
+        private AccessorVisibility _propSetAccessibility = AccessorVisibility.Default;
         private TypeCodeEx _backingFieldType = TypeCodeEx.Empty;
 
         #endregion
@@ -106,13 +106,14 @@ namespace CslaGenerator.Metadata
         [Description("The type of primary key or \"Default\" to none.")]
         [UserFriendlyName("Primary Key")]
         public virtual UserDefinedKeyBehaviour PrimaryKey
-		{
-			get { return _primaryKey; }
-			set { _primaryKey = value; }
-		}
+        {
+            get { return _primaryKey; }
+            set { _primaryKey = value; }
+        }
 
         [Category("00. Database")]
         [Description("Use this foreign key constraint to find the property value.")]
+        [Editor(typeof(FKConstraintEditor), typeof(UITypeEditor))]
         [UserFriendlyName("FK Constraint")]
         public virtual string FKConstraint
         {
@@ -124,9 +125,9 @@ namespace CslaGenerator.Metadata
         [Description("The stored procedure parameter name.")]
         [UserFriendlyName("Parameter Name")]
         public override string ParameterName
-		{
-			get 
-			{
+        {
+            get
+            {
                 if (base._parameterName.Equals(String.Empty))
                 {
                     if (!string.IsNullOrEmpty(DbBindColumn.ColumnName))
@@ -134,9 +135,9 @@ namespace CslaGenerator.Metadata
 
                     return Name;
                 }
-				return _parameterName;
-			}
-			set { _parameterName = value; }
+                return _parameterName;
+            }
+            set { _parameterName = value; }
         }
 
         #endregion
@@ -187,7 +188,7 @@ namespace CslaGenerator.Metadata
             get { return base.PropertyType; }
             set { base.PropertyType = value; }
         }
-       
+
         [Category("01. Definition")]
         [Description("Property Declaration Mode.")]
         [UserFriendlyName("Declaration Mode")]
@@ -264,7 +265,7 @@ namespace CslaGenerator.Metadata
             set
             {
                 if (value != null)
-                    _attributes = value; 
+                    _attributes = value;
             }
         }
 
@@ -284,7 +285,7 @@ namespace CslaGenerator.Metadata
                     _allowReadRoles = value;
             }
         }
-        
+
         [Category("03. Authorization")]
         [Description("Roles allowed to write to the property. Multiple roles must be separated with ;")]
         [UserFriendlyName("Allow Write Roles")]
@@ -358,9 +359,9 @@ namespace CslaGenerator.Metadata
         [Description("This is a description.")]
         [UserFriendlyName("Mark Dirty On Change")]
         public bool MarkDirtyOnChange
-		{
-			get { return _markDirtyOnChange; }
-			set { _markDirtyOnChange = value; }
+        {
+            get { return _markDirtyOnChange; }
+            set { _markDirtyOnChange = value; }
         }
 
         #endregion
@@ -382,25 +383,25 @@ namespace CslaGenerator.Metadata
         public event PropertyNameChanged Changed;
 
         public override object Clone()
-		{
-			var buffer = new MemoryStream();
-			var ser = new XmlSerializer(typeof(ValueProperty));
-			ser.Serialize(buffer, this);
-			buffer.Position = 0;
-			return ser.Deserialize(buffer);
-		}
+        {
+            var buffer = new MemoryStream();
+            var ser = new XmlSerializer(typeof(ValueProperty));
+            ser.Serialize(buffer, this);
+            buffer.Position = 0;
+            return ser.Deserialize(buffer);
+        }
 
-		internal void RetrieveSummaryFromColumnDefinition()
-		{
-			if (DbBindColumn.Column != null) 
-			{
+        internal void RetrieveSummaryFromColumnDefinition()
+        {
+            if (DbBindColumn.Column != null)
+            {
                 var prop = DbBindColumn.Column.ColumnDescription;
                 if (prop != null)
                     base.Summary = prop;
                 else
                     base.Summary = string.Empty;
-			}
-		}
+            }
+        }
 
-	}
+    }
 }

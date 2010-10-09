@@ -25,12 +25,12 @@
 //            lstCommandResults.SelectedValueChanged += new EventHandler(lstCommandResults_SelectedValueChanged);
 //        }
 
-//        public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value) 
+//        public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
 //        {
 //            if (provider != null)
 //            {
 //                editorService = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
-//                if (editorService != null) 
+//                if (editorService != null)
 //                {
 //                    DatabaseSchema schema = GeneratorController.Schema;
 //                    if (schema == null)
@@ -52,7 +52,7 @@
 //                        }
 //                    }
 //                    editorService.DropDownControl(lstCommandResults);
-					
+
 //                    if (lstCommandResults.SelectedItem != null)
 //                    {
 //                        return ((DictionaryEntry)lstCommandResults.SelectedItem).Value;
@@ -60,11 +60,11 @@
 //                    else { return null; }
 //                }
 //            }
-			
+
 //            return value;
 //        }
-		
-//        public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context) 
+
+//        public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
 //        {
 //            return UITypeEditorEditStyle.DropDown;
 //        }

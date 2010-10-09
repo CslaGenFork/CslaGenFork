@@ -8,7 +8,7 @@ using CslaGenerator.Design;
 
 namespace CslaGenerator.Metadata
 {
-    public class CriteriaProperty : Property, IBoundProperty 
+    public class CriteriaProperty : Property, IBoundProperty
     {
         public CriteriaProperty(Property p) : base(p)
         {

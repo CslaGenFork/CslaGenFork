@@ -7,24 +7,24 @@ using CslaGenerator.Design;
 
 namespace CslaGenerator.Metadata
 {
-	/// <summary>
-	/// Summary description for Criteria.
-	/// </summary>
-	[Serializable]
-	public class Criteria
-	{
-		private string _name = String.Empty;
+    /// <summary>
+    /// Summary description for Criteria.
+    /// </summary>
+    [Serializable]
+    public class Criteria
+    {
+        private string _name = String.Empty;
         private CriteriaPropertyCollection _properties = new CriteriaPropertyCollection();
         private CriteriaUsageParameter _CreateOptions = new CriteriaUsageParameter();
         private CriteriaUsageParameter _GetOptions = new CriteriaUsageParameter();
         private CriteriaUsageParameter _DeleteOptions = new CriteriaUsageParameter();
 
         private CslaObjectInfo _Parent;
-		public Criteria()
-		{
+        public Criteria()
+        {
             SetHandlers(_GetOptions);
             SetHandlers(_DeleteOptions);
-		}
+        }
 
         void SetHandlers(CriteriaUsageParameter p)
         {
@@ -41,11 +41,11 @@ namespace CslaGenerator.Metadata
 
         void SuffixChanged(object sender, EventArgs e)
         {
-            if (_Parent == null || 
-                GeneratorController.Current == null || 
-                GeneratorController.Current.CurrentUnit == null) 
-            { 
-                return; 
+            if (_Parent == null ||
+                GeneratorController.Current == null ||
+                GeneratorController.Current.CurrentUnit == null)
+            {
+                return;
             }
             ProjectParameters p = GeneratorController.Current.CurrentUnit.Params;
             if (ReferenceEquals(sender,_GetOptions))
@@ -72,13 +72,13 @@ namespace CslaGenerator.Metadata
             _DeleteOptions.ProcedureName = p.GetDeleteProcName(_Parent.ObjectName);
         }
 
-		[Category("01. Definition")]
+        [Category("01. Definition")]
         [Description("This is a description.")]
         public string Name
-		{
-			get { return _name; }
-			set { _name = value; }
-		}
+        {
+            get { return _name; }
+            set { _name = value; }
+        }
 
         [Category("02. Criteria Options")]
         [UserFriendlyName("Create Options")]
@@ -90,7 +90,7 @@ namespace CslaGenerator.Metadata
             }
             set
             {
-            	_CreateOptions = value;
+                _CreateOptions = value;
             }
         }
 
@@ -121,7 +121,7 @@ namespace CslaGenerator.Metadata
             set
             {
                 UnSetHandlers(_DeleteOptions);
-            	_DeleteOptions = value;
+                _DeleteOptions = value;
                 SetHandlers(_DeleteOptions);
             }
         }

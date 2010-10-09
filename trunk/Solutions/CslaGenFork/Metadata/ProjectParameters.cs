@@ -21,6 +21,7 @@ namespace CslaGenerator.Metadata
         string _spBoolSoftDeleteColumn = string.Empty;
         string _spIntSoftDeleteColumn = string.Empty;
         bool _spIgnoreFilterWhenSoftDeleteIsParam = true;
+        bool _spRemoveChildBeforeParent = true;
 
         #endregion
 
@@ -41,7 +42,7 @@ namespace CslaGenerator.Metadata
         private PropertyDeclaration _createReadOnlyObjectsPropertyMode = PropertyDeclaration.AutoProperty;
 
         #endregion
-        
+
         #region State Fields Advanced
 
         private string _idGuidDefaultValue = "Guid.NewGuid()";
@@ -237,6 +238,18 @@ namespace CslaGenerator.Metadata
                 if (_spIgnoreFilterWhenSoftDeleteIsParam == value)
                     return;
                 _spIgnoreFilterWhenSoftDeleteIsParam = value;
+                OnPropertyChanged("");
+            }
+        }
+
+        public bool SpRemoveChildBeforeParent
+        {
+            get { return _spRemoveChildBeforeParent; }
+            set
+            {
+                if (_spRemoveChildBeforeParent == value)
+                    return;
+                _spRemoveChildBeforeParent = value;
                 OnPropertyChanged("");
             }
         }

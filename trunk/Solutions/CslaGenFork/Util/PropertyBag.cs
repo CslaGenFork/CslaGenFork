@@ -173,7 +173,7 @@ namespace CslaGenerator.Util
         }
         /// <summary>
         /// Test
-        /// 
+        ///
         /// </summary>
         public Type TargetClass
         {
@@ -192,7 +192,7 @@ namespace CslaGenerator.Util
         }
 
         /// <summary>
-        /// Gets or sets the target property in the target object 
+        /// Gets or sets the target property in the target object
         /// associated with the PropertyGrid item
         /// </summary>
         public string TargetProperty
@@ -202,7 +202,7 @@ namespace CslaGenerator.Util
         }
 
         /// <summary>
-        /// Gets or sets the help topic key associated with this 
+        /// Gets or sets the help topic key associated with this
         /// PropertyGrid item
         /// </summary>
         public string HelpTopic
@@ -951,7 +951,7 @@ namespace CslaGenerator.Util
         {
             try
             {
-                // get a reference to the PropertyInfo, exit if no property with that 
+                // get a reference to the PropertyInfo, exit if no property with that
                 // name
                 PropertyInfo pi = typeof(CslaObjectInfo).GetProperty(propertyName);
 
@@ -978,7 +978,7 @@ namespace CslaGenerator.Util
                 {
                     CslaObjectInfo[] objs = (CslaObjectInfo[])obj;
                     ArrayList valueList = new ArrayList();
-                    
+
                     foreach (CslaObjectInfo bo in objs)
                     {
                         object value = pi.GetValue(bo, null);

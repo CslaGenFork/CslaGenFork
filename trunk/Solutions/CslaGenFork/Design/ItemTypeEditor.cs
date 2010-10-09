@@ -52,15 +52,17 @@ namespace CslaGenerator.Design
                             }
                         }
                         lstProperties.Sorted = true;
+
                         if (lstProperties.Items.Contains(obj.ItemType))
                             lstProperties.SelectedItem = obj.ItemType;
                         else
                             lstProperties.SelectedItem = "(None)";
+
                         editorService.DropDownControl(lstProperties);
                         if (lstProperties.SelectedIndex < 0 || lstProperties.SelectedItem.ToString() == "(None)")
                             return string.Empty;
-                        else
-                            return lstProperties.SelectedItem.ToString();
+
+                        return lstProperties.SelectedItem.ToString();
                     }
                 }
             }
@@ -70,6 +72,6 @@ namespace CslaGenerator.Design
         public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
         {
             return UITypeEditorEditStyle.DropDown;
-        }        
+        }
     }
 }

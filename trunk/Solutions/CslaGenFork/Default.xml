@@ -15,6 +15,7 @@
     <SpBoolSoftDeleteColumn>Active</SpBoolSoftDeleteColumn>
     <SpIntSoftDeleteColumn />
     <SpIgnoreFilterWhenSoftDeleteIsParam>true</SpIgnoreFilterWhenSoftDeleteIsParam>
+    <SpRemoveChildBeforeParent>true</SpRemoveChildBeforeParent>
     <DefaultTransactionType>ADO</DefaultTransactionType>
     <DefaultDataBase>MyDatabase</DefaultDataBase>
     <DefaultNamespace>MyBO</DefaultNamespace>

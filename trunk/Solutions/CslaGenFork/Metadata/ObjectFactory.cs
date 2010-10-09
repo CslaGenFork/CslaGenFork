@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Data;
 using System.Text;
+using System.Windows.Forms;
 using CslaGenerator.Controls;
 using CslaGenerator.Util;
 using DBSchemaInfo.Base;
@@ -43,7 +44,7 @@ namespace CslaGenerator.Metadata
         /// <param name="table"></param>
         public void AddProperties(ITableInfo table)
         {
-            AddProperties(table, table, table.Columns, false);
+            AddProperties(table, table, table.Columns, false, false);
         }
 
         /// <summary>
@@ -52,7 +53,7 @@ namespace CslaGenerator.Metadata
         /// <param name="view"></param>
         public void AddProperties(IViewInfo view)
         {
-            AddProperties(view, view, view.Columns,false);
+            AddProperties(view, view, view.Columns,false,false);
         }
 
         /// <summary>
@@ -62,7 +63,7 @@ namespace CslaGenerator.Metadata
         /// <param name="selectedColumns"></param>
         public void AddProperties(ITableInfo table, IList<IColumnInfo> selectedColumns)
         {
-            AddProperties(table, table, selectedColumns,false);
+            AddProperties(table, table, selectedColumns,false,false);
         }
 
         /// <summary>
@@ -72,7 +73,7 @@ namespace CslaGenerator.Metadata
         /// <param name="selectedColumns"></param>
         public void AddProperties(IViewInfo view, IList<IColumnInfo> selectedColumns)
         {
-            AddProperties(view, view, selectedColumns,false);
+            AddProperties(view, view, selectedColumns,false,false);
         }
 
         /// <summary>
@@ -83,10 +84,10 @@ namespace CslaGenerator.Metadata
         /// <param name="rs">The result set.</param>
         /// <param name="selectedColumns">The selected columns.</param>
         /// <param name="createDefaultCriteria">If true, it calls AddDefaultCriteriaAndParameters() automatically</param>
-        public void AddProperties(CslaObjectInfo currentCslaObject, IDataBaseObject obj, IResultSet rs, IList<IColumnInfo> selectedColumns, bool createDefaultCriteria)
+        public void AddProperties(CslaObjectInfo currentCslaObject, IDataBaseObject obj, IResultSet rs, IList<IColumnInfo> selectedColumns, bool createDefaultCriteria, bool askConfirmation)
         {
             _currentCslaObject = currentCslaObject;
-            AddProperties(obj, rs, selectedColumns, createDefaultCriteria);
+            AddProperties(obj, rs, selectedColumns, createDefaultCriteria, askConfirmation);
         }
 
         /// <summary>
@@ -96,12 +97,13 @@ namespace CslaGenerator.Metadata
         /// <param name="rs">The result set.</param>
         /// <param name="selectedColumns"></param>
         /// <param name="createDefaultCriteria">If true, it calls AddDefaultCriteriaAndParameters() automatically</param>
-        public void AddProperties(IDataBaseObject obj, IResultSet rs, IList<IColumnInfo> selectedColumns, bool createDefaultCriteria)
+        public void AddProperties(IDataBaseObject obj, IResultSet rs, IList<IColumnInfo> selectedColumns, bool createDefaultCriteria, bool askConfirmation)
         {
             if (_currentCslaObject == null || selectedColumns.Count == 0)
                 return;
 
-            StringCollection addedProps = new StringCollection();
+            var added = false;
+            List<ValueProperty> addedProps = new List<ValueProperty>();
             StringCollection notaddedProps = new StringCollection();
             ColumnOriginType origin = ColumnOriginType.Table;
             IColumnInfo col;
@@ -127,24 +129,54 @@ namespace CslaGenerator.Metadata
                 SetValuePropertyInfo(obj, rs, col, newProp);
                 if (newProp.DbBindColumn.ColumnOriginType != ColumnOriginType.Table)
                     origin = newProp.DbBindColumn.ColumnOriginType;
-                _currentCslaObject.ValueProperties.Add(newProp);
-                addedProps.Add(newProp.Name);
+                if(!askConfirmation)
+                {
+                    _currentCslaObject.ValueProperties.Add(newProp);
+                    added = true;
+                }
+                addedProps.Add(newProp);
             }
 
-            // Add Get-, New- and DeleteObjectCriteria and linked parameters 
+            if (addedProps.Count > 0 && askConfirmation)
+            {
+                var msg = new StringBuilder();
+                msg.Append(
+                    "The properties listed below are missing.\r\n\r\n" +
+                    "Do you want to add the following properties:" +
+                    Environment.NewLine);
+                foreach (var valueProperty in addedProps)
+                {
+                    msg.AppendFormat(" - {0}.{1}\r\n", _currentCslaObject.ObjectName, valueProperty.Name);
+                }
+
+                var response = MessageBox.Show(msg.ToString(),
+                                                        @"Missing ValueProperty found.",
+                                                        MessageBoxButtons.YesNo,
+                                                        MessageBoxIcon.Error);
+                if (response == DialogResult.Yes)
+                {
+                    foreach (var valueProperty in addedProps)
+                    {
+                        _currentCslaObject.ValueProperties.Add(valueProperty);
+                    }
+                    added = true;
+                }
+            }
+
+            // Add Get-, New- and DeleteObjectCriteria and linked parameters
             if (createDefaultCriteria)
             {
                 AddDefaultCriteriaAndParameters();
             }
 
-            // Display message to the user 
+            // Display message to the user
             StringBuilder sb = new StringBuilder();
-            if (addedProps.Count > 0)
+            if (addedProps.Count > 0 && added)
             {
                 sb.Append("Successfully added the following properties:" + Environment.NewLine);
-                foreach (string propName in addedProps)
+                foreach (var propName in addedProps)
                 {
-                    sb.AppendFormat("\t{0}.{1}\r\n", _currentCslaObject.ObjectName, propName);
+                    sb.AppendFormat("\t{0}.{1}\r\n", _currentCslaObject.ObjectName, propName.Name);
                 }
             }
 
@@ -163,7 +195,9 @@ namespace CslaGenerator.Metadata
                 sb.Append(Environment.NewLine);
                 sb.Append("Note: \"Generate stored procedures\" was set to false because the origins of the columns are not tables.");
             }
-            OutputWindow.Current.AddOutputInfo(sb.ToString());
+
+            if(sb.ToString().Length > 0)
+                OutputWindow.Current.AddOutputInfo(sb.ToString());
         }
 
         private bool PropertyExists(string name)
@@ -180,7 +214,7 @@ namespace CslaGenerator.Metadata
             {
                 return true;
             }
-            
+
             return false;
         }
 
@@ -260,7 +294,7 @@ namespace CslaGenerator.Metadata
                 {
                     destination.DefaultValue = _currentUnit.Params.LogDateAndTime
                                                    ? "DateTime.Now"
-                                                   : "DateTime.Today";                    
+                                                   : "DateTime.Today";
                 }
             }
             else if (_currentUnit.Params.CreationUserColumn == p.ColumnName)
@@ -298,8 +332,8 @@ namespace CslaGenerator.Metadata
                     destination.DefaultValue = _currentUnit.Params.GetUserMethod;
                 }
             }
-            else if (_currentUnit.Params.DatesDefaultStringWithTypeConversion && 
-                (destination.PropertyType == TypeCodeEx.SmartDate || 
+            else if (_currentUnit.Params.DatesDefaultStringWithTypeConversion &&
+                (destination.PropertyType == TypeCodeEx.SmartDate ||
                 destination.PropertyType == TypeCodeEx.DateTime))
             {
                 destination.BackingFieldType = destination.PropertyType;
@@ -322,9 +356,9 @@ namespace CslaGenerator.Metadata
 
         public static void SetDbBindColumn(IDataBaseObject obj, IResultSet rs, IColumnInfo p, DbBindColumn dbc)
         {
-        
+
             IStoredProcedureInfo sp = obj as IStoredProcedureInfo;
-            
+
             if (sp != null)
             {
                 obj = sp;
@@ -344,7 +378,7 @@ namespace CslaGenerator.Metadata
                     break;
             }
 
-            //dbc.ColumnOriginType= 
+            //dbc.ColumnOriginType=
             dbc.CatalogName = obj.ObjectCatalog;
             dbc.SchemaName = obj.ObjectSchema;
             dbc.ObjectName = obj.ObjectName;
@@ -390,7 +424,7 @@ namespace CslaGenerator.Metadata
             ValueProperty timeStampProperty = null;
             bool UseForCreate = false;
 
-            // retrieve all primary key and timestamp properties 
+            // retrieve all primary key and timestamp properties
             foreach (ValueProperty prop in _currentCslaObject.ValueProperties)
             {
                 if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
@@ -407,14 +441,14 @@ namespace CslaGenerator.Metadata
 
             if (primaryKeyProperties.Count > 0 || timeStampProperty != null)
             {
-                // Try to find default Criteria object 
+                // Try to find default Criteria object
                 Criteria defaultCriteria = _currentCslaObject.CriteriaObjects.Find("Criteria");
                 Criteria timestampCriteria = _currentCslaObject.CriteriaObjects.Find("CriteriaTS");
 
-                // If criteria objects are not set 
+                // If criteria objects are not set
                 if (_currentCslaObject.CriteriaObjects.Count == 0)
                 {
-                    // If default criteria doesn't exists, create a new criteria 
+                    // If default criteria doesn't exists, create a new criteria
                     if (defaultCriteria == null)
                     {
 
@@ -479,7 +513,7 @@ namespace CslaGenerator.Metadata
 
         public void AddPropertiesToCriteria(IEnumerable<ValueProperty> primaryKeyProperties, Criteria crit)
         {
-            // Add all primary key properties to critera if they dont already exist 
+            // Add all primary key properties to critera if they dont already exist
             foreach (ValueProperty col in primaryKeyProperties)
             {
                 if (!crit.Properties.Contains(col.Name))

@@ -679,7 +679,7 @@ namespace CslaGenerator.Util
         {
             try
             {
-                // get a reference to the PropertyInfo, exit if no property with that 
+                // get a reference to the PropertyInfo, exit if no property with that
                 // name
                 PropertyInfo pi = typeof (AssociativeEntity).GetProperty(propertyName);
 

@@ -8,19 +8,19 @@ using CslaGenerator.Design;
 
 namespace CslaGenerator.Metadata
 {
-	/// <summary>
-	/// Summary description for ChildProperty.
-	/// </summary>
-	[Serializable]
-	public class ChildProperty : Property
-	{
-		private LoadingScheme _loadingScheme = LoadingScheme.ParentLoad;
+    /// <summary>
+    /// Summary description for ChildProperty.
+    /// </summary>
+    [Serializable]
+    public class ChildProperty : Property
+    {
+        private LoadingScheme _loadingScheme = LoadingScheme.ParentLoad;
         private PropertyDeclaration _declarationMode;
-		private bool _lazyLoad;
-		private string _typeName = String.Empty;
-		private bool _undoable = true;
-		private ParameterCollection _loadParameters = new ParameterCollection();
-		private PropertyAccess _access = PropertyAccess.IsPublic;
+        private bool _lazyLoad;
+        private string _typeName = String.Empty;
+        private bool _undoable = true;
+        private ParameterCollection _loadParameters = new ParameterCollection();
+        private PropertyAccess _access = PropertyAccess.IsPublic;
 
         [Category("01. Definition")]
         [Description("The property name.")]
@@ -32,6 +32,7 @@ namespace CslaGenerator.Metadata
 
         [Category("01. Definition")]
         [Description("This is a description.")]
+        [Editor(typeof(ChildTypeEditor), typeof(UITypeEditor))]
         [UserFriendlyName("Type Name")]
         public string TypeName
         {
@@ -77,30 +78,30 @@ namespace CslaGenerator.Metadata
         [Description("This is a description.")]
         [UserFriendlyName("Loading Scheme")]
         public LoadingScheme LoadingScheme
-		{
-			get { return _loadingScheme; }
-			set { _loadingScheme = value; }
-		}
+        {
+            get { return _loadingScheme; }
+            set { _loadingScheme = value; }
+        }
 
-		[Category("05. Options")]
-		[Editor(typeof(ParameterCollectionEditor),typeof(UITypeEditor))]
-		[TypeConverter(typeof(ParameterCollectionConverter))]
+        [Category("05. Options")]
+        [Editor(typeof(ParameterCollectionEditor),typeof(UITypeEditor))]
+        [TypeConverter(typeof(ParameterCollectionConverter))]
         [Description("This is a description.")]
         [UserFriendlyName("Load Parameters")]
         public ParameterCollection LoadParameters
-		{
-			get { return _loadParameters; }
-			set { _loadParameters = value; }
-		}
+        {
+            get { return _loadParameters; }
+            set { _loadParameters = value; }
+        }
 
-		[Category("05. Options")]
+        [Category("05. Options")]
         [Description("Accessibility for the property as a whole.")]
         [UserFriendlyName("Property Access.")]
         public PropertyAccess Access
-		{
-			get { return _access; }
-			set { _access = value; }
-		}
+        {
+            get { return _access; }
+            set { _access = value; }
+        }
 
         [Category("05. Options")]
         [Description("This is a description.")]
@@ -118,13 +119,13 @@ namespace CslaGenerator.Metadata
         }
 
         public override object Clone()
-		{
-			var buffer = new MemoryStream();
-			var ser = new XmlSerializer(typeof(ChildProperty));
-			ser.Serialize(buffer, this);
-			buffer.Position = 0;
-			return ser.Deserialize(buffer);
-		}
+        {
+            var buffer = new MemoryStream();
+            var ser = new XmlSerializer(typeof(ChildProperty));
+            ser.Serialize(buffer, this);
+            buffer.Position = 0;
+            return ser.Deserialize(buffer);
+        }
 
-	}
+    }
 }
