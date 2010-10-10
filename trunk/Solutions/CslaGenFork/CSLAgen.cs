@@ -274,15 +274,14 @@ namespace CslaGenerator
             deleteObjectButton.Enabled = objectSelected;
             duplicateObjectButton.Enabled = objectSelected;
 
-            moveuUpObjectButton.Enabled = objectSelected &&
+            moveuUpObjectButton.Enabled = (objectSelected &&
                                           ProjectPanel.SortOptionsNone.Checked &&
-                                          ProjectPanel.ListObjects.SelectedIndices.Count == 1 &&
-                                          ProjectPanel.ListObjects.SelectedIndex > 0;
-            moveDownObjectButton.Enabled = objectSelected &&
+                                          ProjectPanel.ListObjects.SelectedIndex > 0) ||
+                                          ProjectPanel.ListObjects.SelectedIndices.Count > 1;
+            moveDownObjectButton.Enabled = (objectSelected &&
                                            ProjectPanel.SortOptionsNone.Checked &&
-                                           ProjectPanel.ListObjects.SelectedIndices.Count == 1 &&
-                                           ProjectPanel.ListObjects.SelectedIndex <
-                                           ProjectPanel.ListObjects.Items.Count - 1;
+                                           ProjectPanel.ListObjects.SelectedIndex < ProjectPanel.ListObjects.Items.Count - 1) ||
+                                           ProjectPanel.ListObjects.SelectedIndices.Count > 1;
 
             newObjectRelationButton.Enabled = objectSelected;
             addToObjectRelationButton.Enabled = objectSelected;

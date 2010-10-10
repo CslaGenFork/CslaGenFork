@@ -280,8 +280,12 @@ namespace CslaGenerator.Controls
             addToolStripMenuItem.Enabled = (_objects != null);
             deleteToolStripMenuItem.Enabled = (_objects != null && lstObjects.SelectedIndices.Count != 0);
             duplicateToolStripMenuItem.Enabled = (_objects != null && lstObjects.SelectedIndices.Count != 0);
-            moveUpToolStripMenuItem.Enabled = (_objects != null && optNone.Checked && lstObjects.SelectedIndices.Count == 1 && lstObjects.SelectedIndex > 0);
-            moveDownToolStripMenuItem.Enabled = (_objects != null && optNone.Checked && lstObjects.SelectedIndices.Count == 1 && lstObjects.SelectedIndex < _currentView.Count - 1);
+            moveUpToolStripMenuItem.Enabled = ((_objects != null && optNone.Checked &&
+                                                lstObjects.SelectedIndex > 0) ||
+                                               lstObjects.SelectedIndices.Count > 1);
+            moveDownToolStripMenuItem.Enabled = ((_objects != null && optNone.Checked &&
+                                                  lstObjects.SelectedIndex < _currentView.Count - 1) ||
+                                                 lstObjects.SelectedIndices.Count > 1);
             newObjectRelationToolStripMenuItem.Enabled = (_objects != null && lstObjects.SelectedIndices.Count != 0);
             addToObjectRelationToolStripMenuItem.Enabled = (_objects != null && lstObjects.SelectedIndices.Count != 0);
         }
@@ -512,12 +516,36 @@ namespace CslaGenerator.Controls
             _suspendListUpdates = true;
             DisableEventDrawItem();
 
-            var item = _currentView[lstObjects.SelectedIndex];
-            var idx = _objects.IndexOf(item);
-            if (idx > 0)
+            var hitTop = false;
+            var upperIdx = 0;
+
+            for (var selIdx = 0; selIdx < lstObjects.SelectedItems.Count; selIdx++)
             {
-                _objects.RemoveAt(idx);
-                _objects.Insert(idx - 1, item);
+                var item = (CslaObjectInfo) lstObjects.SelectedItems[selIdx];
+                var idx = _objects.IndexOf(item);
+
+                if (idx == 0)
+                    hitTop = true;
+
+                if (!hitTop)
+                {
+                    if (idx > 0)
+                    {
+                        _objects.RemoveAt(idx);
+                        _objects.Insert(idx - 1, item);
+                    }
+                }
+                else
+                {
+                    if (idx - 1 > upperIdx)
+                    {
+                        _objects.RemoveAt(idx);
+                        _objects.Insert(idx - 1, item);
+                        upperIdx = idx - 1;
+                    }
+                    else
+                        upperIdx = idx;
+                }
             }
 
             // Now filter and get ListBox updated
@@ -535,12 +563,36 @@ namespace CslaGenerator.Controls
             _suspendListUpdates = true;
             DisableEventDrawItem();
 
-            var item = _currentView[lstObjects.SelectedIndex];
-            var idx = _objects.IndexOf(item);
-            if (idx < _objects.Count - 1)
+            var hitBottom = false;
+            var lowerIdx = _objects.Count - 1;
+
+            for (var selIdx = lstObjects.SelectedItems.Count - 1; selIdx > -1; selIdx--)
             {
-                _objects.RemoveAt(idx);
-                _objects.Insert(idx + 1, item);
+                var item = (CslaObjectInfo) lstObjects.SelectedItems[selIdx];
+                var idx = _objects.IndexOf(item);
+
+                if (idx == _objects.Count - 1)
+                    hitBottom = true;
+
+                if (!hitBottom)
+                {
+                    if (idx < _objects.Count - 1)
+                    {
+                        _objects.RemoveAt(idx);
+                        _objects.Insert(idx + 1, item);
+                    }
+                }
+                else
+                {
+                    if (idx + 1 < lowerIdx)
+                    {
+                        _objects.RemoveAt(idx);
+                        _objects.Insert(idx + 1, item);
+                        lowerIdx = idx + 1;
+                    }
+                    else
+                        lowerIdx = idx;
+                }
             }
 
             // Now filter and get ListBox updated

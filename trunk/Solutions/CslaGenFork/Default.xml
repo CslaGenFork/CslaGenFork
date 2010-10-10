@@ -12,7 +12,7 @@
     <SpGetSuffix />
     <SpGeneralSuffix />
     <RegenSpNameOnObjectRename>true</RegenSpNameOnObjectRename>
-    <SpBoolSoftDeleteColumn>Active</SpBoolSoftDeleteColumn>
+    <SpBoolSoftDeleteColumn>IsActive</SpBoolSoftDeleteColumn>
     <SpIntSoftDeleteColumn />
     <SpIgnoreFilterWhenSoftDeleteIsParam>true</SpIgnoreFilterWhenSoftDeleteIsParam>
     <SpRemoveChildBeforeParent>true</SpRemoveChildBeforeParent>
