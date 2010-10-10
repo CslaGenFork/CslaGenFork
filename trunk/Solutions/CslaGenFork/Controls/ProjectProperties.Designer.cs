@@ -806,8 +806,9 @@ namespace CslaGenerator.Controls
             this.chkIgnoreFilterWhenSoftDeleteIsParam.TabIndex = 22;
             this.chkIgnoreFilterWhenSoftDeleteIsParam.Text = "Ignore filter when soft delete column is a ValueProperty";
             this.chkIgnoreFilterWhenSoftDeleteIsParam.UseVisualStyleBackColor = true;
-            this.toolTip1.SetToolTip(this.chkIgnoreFilterWhenSoftDeleteIsParam, "If checked, when the soft delete column is a ValueProperty," + 
-                "\r\nthe Stored Procedure won't filter out rows based on soft delete status.");
+            this.toolTip1.SetToolTip(this.chkIgnoreFilterWhenSoftDeleteIsParam,
+                                     "If checked, when the soft delete column is a ValueProperty," +
+                                     "\r\nthe Stored Procedure won't filter out rows based on soft delete status.");
             // 
             // chkRemoveChildBeforeParent
             // 
@@ -819,8 +820,10 @@ namespace CslaGenerator.Controls
             this.chkRemoveChildBeforeParent.TabIndex = 22;
             this.chkRemoveChildBeforeParent.Text = "Remove all child before removing the parent";
             this.chkRemoveChildBeforeParent.UseVisualStyleBackColor = true;
-            this.toolTip1.SetToolTip(this.chkRemoveChildBeforeParent, "If checked, the Stored Procedure will delete (or soft delete) all child rows\r\n"+
-                "before deleting (or soft deleting) the parent row.");
+            this.toolTip1.SetToolTip(this.chkRemoveChildBeforeParent,
+                                     "CTP - Not implemented.\r\n\r\n" +
+                                     "If checked, the Stored Procedure will delete (or soft delete) all child rows\r\n" +
+                                     "before deleting (or soft deleting) the parent row.");
             // 
             // tabAdvanced
             // 
