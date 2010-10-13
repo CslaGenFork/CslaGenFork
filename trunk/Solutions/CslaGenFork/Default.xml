@@ -22,6 +22,7 @@
     <DefaultFolder />
     <SmartDateDefault>true</SmartDateDefault>
     <AutoCriteria>true</AutoCriteria>
+    <AutoTimestampCriteria>false</AutoTimestampCriteria>
     <DatesDefaultStringWithTypeConversion>true</DatesDefaultStringWithTypeConversion>
     <CreateTimestampPropertyMode>NoProperty</CreateTimestampPropertyMode>
     <ReadOnlyObjectsCopyAuditing>false</ReadOnlyObjectsCopyAuditing>

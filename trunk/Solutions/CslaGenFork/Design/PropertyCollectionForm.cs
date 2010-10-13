@@ -212,7 +212,7 @@ namespace CslaGenerator.Design
                     break;
                 case "ChildProperty Collection Editor":
                     _collectionType = typeof (ChildProperty);
-                    _form.Size = new Size(_form.Size.Width, 473);
+                    _form.Size = new Size(_form.Size.Width, 489);
                     break;
                 case "Criteria Collection Editor":
                     _collectionType = typeof (Criteria);

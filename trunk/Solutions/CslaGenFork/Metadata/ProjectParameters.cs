@@ -35,6 +35,7 @@ namespace CslaGenerator.Metadata
         private string _defaultFolder = String.Empty;
         bool _smartDateDefault = true;
         private bool _autoCriteria = true;
+        private bool _autoTimestampCriteria = true;
         private bool _datesDefaultStringWithTypeConversion = true;
         private PropertyDeclaration _createTimestampPropertyMode = PropertyDeclaration.NoProperty;
         private bool _readOnlyObjectsCopyAuditing = false;
@@ -376,6 +377,21 @@ namespace CslaGenerator.Metadata
                 if (_autoCriteria == value)
                     return;
                 _autoCriteria = value;
+                OnPropertyChanged("");
+            }
+        }
+
+        public bool AutoTimestampCriteria
+        {
+            get
+            {
+                return _autoTimestampCriteria;
+            }
+            set
+            {
+                if (_autoTimestampCriteria == value)
+                    return;
+                _autoTimestampCriteria = value;
                 OnPropertyChanged("");
             }
         }
