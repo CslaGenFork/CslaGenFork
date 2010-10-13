@@ -45,8 +45,11 @@ if (!IsReadOnlyType(Info.ObjectType) && IsCollectionType(Info.ObjectType))
                 if (Info.ObjectType != CslaObjectType.EditableChildCollection) { %>
             RegisterAndSubscribe();
                 <% }
-            } %>
-            <% if (Info.ObjectType == CslaObjectType.EditableChild || Info.ObjectType == CslaObjectType.EditableChildCollection) { %>
+            }
+            // DataPortal_CreateChild already takes care of marking childs
+            // CurrentUnit.GenerationParams.UseChildDataPortal is enought to say when this happens
+            if (!CurrentUnit.GenerationParams.UseChildDataPortal &&
+                (Info.ObjectType == CslaObjectType.EditableChild || Info.ObjectType == CslaObjectType.EditableChildCollection)) { %>
 
             // show the framework that this is a child object
             MarkAsChild();

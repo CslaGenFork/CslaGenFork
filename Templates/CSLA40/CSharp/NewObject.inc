@@ -15,6 +15,23 @@ foreach (Criteria c in Info.CriteriaObjects)
             strNewParams += string.Concat(GetDataTypeGeneric(c.Properties[i], c.Properties[i].PropertyType), " ", FormatCamel(c.Properties[i].Name));
             strNewCritParams += FormatCamel(c.Properties[i].Name);
         }
+
+        if (Info.ObjectType == CslaObjectType.ReadOnlyCollection && Info.ParentType != String.Empty)
+        {
+            %>
+
+        /// <summary>
+        /// Factory method. New <see cref="<%=Info.ObjectName%>"/> empty collection is created.
+        /// </summary>
+        /// <returns>A reference to the created <see cref="<%=Info.ObjectName%>"/> collection.</returns>
+        internal static <%=Info.ObjectName%> New<%=Info.ObjectName%>()
+        {
+            return new <%=Info.ObjectName%>();
+        }
+        <%
+        }
+        else
+        {
         %>
 
         /// <summary>
@@ -22,9 +39,9 @@ foreach (Criteria c in Info.CriteriaObjects)
         /// </summary>
         /// <returns>A reference to the created <see cref="<%=Info.ObjectName%>"/> object.</returns>
         <%
-        if (Info.ObjectType == CslaObjectType.EditableChild)
-        {
-        %>internal<% } else { %>public<% } %> static <%=Info.ObjectName%> New<%=Info.ObjectName%><%=c.CreateOptions.FactorySuffix%>(<%= strNewParams %>)
+            if (Info.ObjectType == CslaObjectType.EditableChild)
+            {
+                %>internal<% } else { %>public<% } %> static <%=Info.ObjectName%> New<%=Info.ObjectName%><%=c.CreateOptions.FactorySuffix%>(<%= strNewParams %>)
         {
             <%
             if (Info.ObjectType == CslaObjectType.EditableSwitchable)
@@ -59,6 +76,7 @@ foreach (Criteria c in Info.CriteriaObjects)
             %>
         }
         <%
+        }
     }
 }
 %>

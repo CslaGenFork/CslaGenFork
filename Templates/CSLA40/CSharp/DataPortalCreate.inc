@@ -94,8 +94,6 @@ foreach (Criteria c in Info.CriteriaObjects)
             }
         }
     }
-    %>
-            <%
     foreach (ChildProperty childProp in Info.GetCollectionChildProperties())
     {
         CslaObjectInfo _child = FindChildInfo(Info, childProp.TypeName);
