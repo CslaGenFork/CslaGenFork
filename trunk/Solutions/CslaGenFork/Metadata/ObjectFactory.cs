@@ -489,7 +489,7 @@ namespace CslaGenerator.Metadata
                             AddPropertiesToCriteria(primaryKeyProperties, defaultCriteria);
 
 
-                            if (timeStampProperty != null && timestampCriteria == null)
+                            if (_currentUnit.Params.AutoTimestampCriteria && timeStampProperty != null && timestampCriteria == null)
                             {
                                 timestampCriteria = new Criteria(_currentCslaObject);
                                 timestampCriteria.Name = "CriteriaTS";

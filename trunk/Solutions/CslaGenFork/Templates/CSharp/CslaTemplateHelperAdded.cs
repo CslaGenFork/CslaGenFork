@@ -375,7 +375,7 @@ namespace CslaGenerator.Util
                         prop.TypeName,
                         FormatPropertyInfoName(prop.Name),
                         prop.Name,
-                        prop.Name,
+                        prop.FriendlyName,
                         GetRelationhipType(info, prop));
             }
 

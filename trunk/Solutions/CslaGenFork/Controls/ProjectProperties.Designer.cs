@@ -46,6 +46,7 @@ namespace CslaGenerator.Controls
             this.chkSmartDateDefault = new System.Windows.Forms.CheckBox();
             this.chkDatesDefaultStringWithTypeConversion = new System.Windows.Forms.CheckBox();
             this.chkAutoCriteria = new System.Windows.Forms.CheckBox();
+            this.chkAutoTimestampCriteria = new System.Windows.Forms.CheckBox();
             this.groupBoxReadOnlyObjects = new System.Windows.Forms.GroupBox();
             this.chkReadOnlyObjectsCopyAuditing = new System.Windows.Forms.CheckBox();
             this.chkReadOnlyObjectsCopyTimestamp = new System.Windows.Forms.CheckBox();
@@ -278,6 +279,7 @@ namespace CslaGenerator.Controls
             this.tabDefaultsGeneral.Controls.Add(this.chkSmartDateDefault);
             this.tabDefaultsGeneral.Controls.Add(this.chkDatesDefaultStringWithTypeConversion);
             this.tabDefaultsGeneral.Controls.Add(this.chkAutoCriteria);
+            this.tabDefaultsGeneral.Controls.Add(this.chkAutoTimestampCriteria);
             this.tabDefaultsGeneral.Controls.Add(this.groupBoxReadOnlyObjects);
             this.tabDefaultsGeneral.Controls.Add(this.lblCreateTimestampPropertyMode);
             this.tabDefaultsGeneral.Controls.Add(this.cboCreateTimestampPropertyMode);
@@ -384,6 +386,18 @@ namespace CslaGenerator.Controls
             this.chkAutoCriteria.Text = "Add a parameterless Get criteria to ReadOnlyCollection and NameValueList.";
             this.chkAutoCriteria.UseVisualStyleBackColor = true;
             this.toolTip1.SetToolTip(this.chkAutoCriteria, "If checked, ReadOnly Collections and Name Value Lists are created with a parameterless Get criteria.");
+            // 
+            // chkAutoTimestampCriteria
+            // 
+            this.chkAutoTimestampCriteria.AutoSize = true;
+            this.chkAutoTimestampCriteria.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.projectParametersBindingSource, "AutoTimestampCriteria", true));
+            this.chkAutoTimestampCriteria.Location = new System.Drawing.Point(15, 248);
+            this.chkAutoTimestampCriteria.Name = "chkAutoTimestampCriteria";
+            this.chkAutoTimestampCriteria.Size = new System.Drawing.Size(450, 17);
+            this.chkAutoTimestampCriteria.TabIndex = 7;
+            this.chkAutoTimestampCriteria.Text = "Add a Delete CriteriaTS whem DB type \"timestamp\" is found.";
+            this.chkAutoTimestampCriteria.UseVisualStyleBackColor = true;
+            this.toolTip1.SetToolTip(this.chkAutoCriteria, "If checked, whem DB type \"timestamp\" is found on EditableRoot, EditableChild and DynamicRoot objects are created with a Delete CriteriaTS.");
             // 
             // groupBoxReadOnlyObjects
             // 
@@ -1612,6 +1626,7 @@ namespace CslaGenerator.Controls
         private System.Windows.Forms.CheckBox chkSmartDateDefault;
         private System.Windows.Forms.CheckBox chkDatesDefaultStringWithTypeConversion;
         private System.Windows.Forms.CheckBox chkAutoCriteria;
+        private System.Windows.Forms.CheckBox chkAutoTimestampCriteria;
         private System.Windows.Forms.GroupBox groupBoxReadOnlyObjects;
         private System.Windows.Forms.CheckBox chkReadOnlyObjectsCopyAuditing;
         private System.Windows.Forms.CheckBox chkReadOnlyObjectsCopyTimestamp;

@@ -14,6 +14,7 @@ namespace CslaGenerator.Metadata
     [Serializable]
     public class ChildProperty : Property
     {
+        private string _friendlyName = String.Empty;
         private LoadingScheme _loadingScheme = LoadingScheme.ParentLoad;
         private PropertyDeclaration _declarationMode;
         private bool _lazyLoad;
@@ -28,6 +29,26 @@ namespace CslaGenerator.Metadata
         {
             get { return base.Name; }
             set { base.Name = value; }
+        }
+
+        [Category("01. Definition")]
+        [Description("This is a description.")]
+        [UserFriendlyName("Friendly Name")]
+        public string FriendlyName
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_friendlyName))
+                    return ValueProperty.SplitOnCaps(base.Name);
+                return _friendlyName;
+            }
+            set
+            {
+                if (value != null && !value.Equals(ValueProperty.SplitOnCaps(base.Name)))
+                    _friendlyName = value;
+                else
+                    _friendlyName = string.Empty;
+            }
         }
 
         [Category("01. Definition")]

@@ -65,6 +65,14 @@ namespace CslaGenerator.Controls
             this.MultipleToMultipleTab.SuspendLayout();
             this.SuspendLayout();
             // 
+            // toolTip1
+            // 
+            this.toolTip1.IsBalloon = true;
+            //this.toolTip1.AutomaticDelay = 500;//500
+            //this.toolTip1.AutoPopDelay = 15000;//5000
+            //this.toolTip1.InitialDelay = 500;//500
+            //this.toolTip1.ReshowDelay = 100;//100
+            // 
             // formPanel
             // 
             this.formPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
@@ -187,7 +195,8 @@ namespace CslaGenerator.Controls
             this.buildButton1.Name = "buildButton1";
             this.buildButton1.Size = new System.Drawing.Size(23, 23);
             this.buildButton1.TabIndex = 1;
-            this.toolTip1.SetToolTip(this.buildButton1, "Check and build the selected object relation. You will be asked to confirm the build.");
+            this.toolTip1.SetToolTip(this.buildButton1, "Check and build the selected object relation.\r\n" +
+                                                        "You will be asked to confirm the build.");
             this.buildButton1.UseVisualStyleBackColor = true;
             this.buildButton1.Click += new System.EventHandler(this.buildButton_Click);
             // 
@@ -200,7 +209,8 @@ namespace CslaGenerator.Controls
             this.buildAllButton1.Name = "buildAllButton1";
             this.buildAllButton1.Size = new System.Drawing.Size(23, 23);
             this.buildAllButton1.TabIndex = 1;
-            this.toolTip1.SetToolTip(this.buildAllButton1, "Check and build all object relations. You will be asked to confirm the build.");
+            this.toolTip1.SetToolTip(this.buildAllButton1, "Check and build all object relations.\r\n" +
+                                                           "You will be asked to confirm the build.");
             this.buildAllButton1.UseVisualStyleBackColor = true;
             this.buildAllButton1.Click += new System.EventHandler(this.buildAllButton_Click);
             // 
@@ -285,7 +295,8 @@ namespace CslaGenerator.Controls
             this.buildButton2.Name = "buildButton2";
             this.buildButton2.Size = new System.Drawing.Size(23, 23);
             this.buildButton2.TabIndex = 1;
-            this.toolTip1.SetToolTip(this.buildButton2, "Check and build the selected object relation. You will be asked to confirm the build.");
+            this.toolTip1.SetToolTip(this.buildButton2, "Check and build the selected object relation\r\n" +
+                                                        "You will be asked to confirm the build.");
             this.buildButton2.UseVisualStyleBackColor = true;
             this.buildButton2.Click += new System.EventHandler(this.buildButton_Click);
             // 
@@ -297,7 +308,8 @@ namespace CslaGenerator.Controls
             this.buildAllButton2.Name = "buildAllButton2";
             this.buildAllButton2.Size = new System.Drawing.Size(23, 23);
             this.buildAllButton2.TabIndex = 1;
-            this.toolTip1.SetToolTip(this.buildAllButton2, "Check and build all object relations. You will be asked to confirm the build.");
+            this.toolTip1.SetToolTip(this.buildAllButton2, "Check and build all object relations.\r\n" +
+                                                           "You will be asked to confirm the build.");
             this.buildAllButton2.UseVisualStyleBackColor = true;
             this.buildAllButton2.Click += new System.EventHandler(this.buildAllButton_Click);
             // 
@@ -382,7 +394,8 @@ namespace CslaGenerator.Controls
             this.buildButton3.Name = "buildButton3";
             this.buildButton3.Size = new System.Drawing.Size(23, 23);
             this.buildButton3.TabIndex = 1;
-            this.toolTip1.SetToolTip(this.buildButton3, "Check and build the selected object relation. You will be asked to confirm the build.");
+            this.toolTip1.SetToolTip(this.buildButton3, "Check and build the selected object relation\r\n" +
+                                                        "You will be asked to confirm the build.");
             this.buildButton3.UseVisualStyleBackColor = true;
             this.buildButton3.Click += new System.EventHandler(this.buildButton_Click);
             // 
@@ -394,7 +407,8 @@ namespace CslaGenerator.Controls
             this.buildAllButton3.Name = "buildAllButton3";
             this.buildAllButton3.Size = new System.Drawing.Size(23, 23);
             this.buildAllButton3.TabIndex = 1;
-            this.toolTip1.SetToolTip(this.buildAllButton3, "Check and build all object relations. You will be asked to confirm the build.");
+            this.toolTip1.SetToolTip(this.buildAllButton3, "Check and build all object relations\r\n" +
+                                                           "You will be asked to confirm the build.");
             this.buildAllButton3.UseVisualStyleBackColor = true;
             this.buildAllButton3.Click += new System.EventHandler(this.buildAllButton_Click);
             // 
