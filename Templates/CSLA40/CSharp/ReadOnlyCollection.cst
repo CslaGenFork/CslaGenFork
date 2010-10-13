@@ -42,6 +42,8 @@ using Csla.Data;
         }
     %>
         #region Factory Methods
+        <!-- #include file="NewObject.inc" -->
+
         <!-- #include file="GetObject.inc" -->
 
         <!-- #include file="InternalGetObject.inc" -->
