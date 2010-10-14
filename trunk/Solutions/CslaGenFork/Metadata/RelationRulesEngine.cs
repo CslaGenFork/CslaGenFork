@@ -415,6 +415,7 @@ namespace CslaGenerator.Metadata
         public static bool IsAllowedEntityObject(CslaObjectInfo objectInfo)
         {
             if (objectInfo.ObjectType == CslaObjectType.EditableRoot ||
+                objectInfo.ObjectType == CslaObjectType.DynamicEditableRoot ||
                 objectInfo.ObjectType == CslaObjectType.EditableChild ||
                 objectInfo.ObjectType == CslaObjectType.EditableSwitchable ||
                 objectInfo.ObjectType == CslaObjectType.ReadOnlyObject)
