@@ -835,9 +835,10 @@ namespace CslaGenerator.Controls
             this.chkRemoveChildBeforeParent.Text = "Remove all child before removing the parent";
             this.chkRemoveChildBeforeParent.UseVisualStyleBackColor = true;
             this.toolTip1.SetToolTip(this.chkRemoveChildBeforeParent,
-                                     "CTP - Not implemented.\r\n\r\n" +
                                      "If checked, the Stored Procedure will delete (or soft delete) all child rows\r\n" +
-                                     "before deleting (or soft deleting) the parent row.");
+                                     "before deleting (or soft deleting) the parent row." +
+                                     "\r\n\r\nCTP - Not implemented.\r\n" +
+                                     "If unchecked, the database child removal must be handle by an override to RemoveItem.");
             // 
             // tabAdvanced
             // 
