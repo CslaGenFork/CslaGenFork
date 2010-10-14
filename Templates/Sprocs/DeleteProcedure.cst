@@ -220,21 +220,54 @@ AS
             RAISERROR ('''<%=Info.ObjectName%>'' object was modified by another user.', 16, 1)
             RETURN
         END
-            <%
+        <%
+        }
+
+        if (Info.Parent.Params.SpRemoveChildBeforeParent)
+        {
+            foreach (ChildProperty childProp in Info.GetAllChildProperties())
+            {
+                CslaObjectInfo childCollInfo = FindChildInfo(Info, childProp.TypeName);
+                CslaObjectInfo childInfo = FindChildInfo(childCollInfo, childCollInfo.ItemType);
+                if (childInfo != null)
+                {
+                    List<IResultObject> childTables = GetTablesDelete(childInfo);
+                    SortTables(childTables);
+                    if (!UseBoolSoftDelete(childTables, false))
+                    {
+                        Response.Write("\r\n");
+                        %>
+        /* Delete child <%= childInfo.ObjectName %> from <%=childTables[0].ObjectName%> */
+        DELETE FROM [<%= childTables[0].ObjectName %>]
+        WHERE  <%= whereClause %>
+        <%
+                    }
+                    else
+                    {
+                        Response.Write("\r\n");
+                        %>
+        /* Mark child <%= childInfo.ObjectName %> as not active */
+        UPDATE [<%= childTables[0].ObjectName %>]
+        SET    [<%= childInfo.Parent.Params.SpBoolSoftDeleteColumn %>] = 'false'
+        WHERE  <%= whereClause %>
+        <%
+                    }
+                }
+            }
         }
 
         if (!UseBoolSoftDelete(tables, false))
         {
             Response.Write("\r\n");
             %>
-        /* Delete object from <%=tables[0].ObjectName%> */
+        /* Delete <%= Info.ObjectName %> object from <%=tables[0].ObjectName%> */
         DELETE FROM [<%= tables[0].ObjectName %>]
         WHERE  <%= whereClause %><%
         }
         else
         {
             %>
-        /* Mark object as not active */
+        /* Mark <%= Info.ObjectName %> object as not active */
         UPDATE [<%= tables[0].ObjectName %>]
         SET    [<%= Info.Parent.Params.SpBoolSoftDeleteColumn %>] = 'false'
         WHERE  <%= whereClause %><%
