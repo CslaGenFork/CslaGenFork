@@ -95,6 +95,7 @@ if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
         }
         %>
         }
+
         <%
     }
     if (Info.ObjectType != CslaObjectType.ReadOnlyCollection &&
@@ -102,7 +103,6 @@ if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
         Info.ObjectType != CslaObjectType.NameValueList)
     {
         %>
-
         /// <summary>
         /// Checks if the current user can create a new <%= Info.ObjectName %> object.
         /// </summary>
@@ -114,7 +114,7 @@ if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
 
         <%
     }
-%>
+        %>
         /// <summary>
         /// Checks if the current user can retrieve <%= Info.ObjectName %>'s properties.
         /// </summary>

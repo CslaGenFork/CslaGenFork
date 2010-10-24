@@ -27,6 +27,7 @@ namespace CslaGenerator.Templates
 		bool _abortRequested=false;
         int objSuccess = 0;
 	    bool _generateDatabaseClass = false;
+        TargetFramework _targetFramework;
         Dictionary<string, bool?> _fileSuccess = new Dictionary<string, bool?>();
         int objFailed = 0;
         int sprocSuccess = 0;
@@ -369,6 +370,7 @@ namespace CslaGenerator.Templates
             Controls.OutputWindow.Current.ClearOutput();
             Metadata.GenerationParameters generationParams = unit.GenerationParams;
             _generateDatabaseClass = generationParams.GenerateDatabaseClass;
+            _targetFramework = generationParams.TargetFramework;
             _abortRequested = false;
             _fullTemplatesPath = _templatesDirectory + generationParams.TargetFramework.ToString() + @"\";
             templates = new Hashtable();//to recompile templates in case they changed.
@@ -518,7 +520,7 @@ namespace CslaGenerator.Templates
                     if (crit.DeleteOptions.Procedure && !String.IsNullOrEmpty(crit.DeleteOptions.ProcedureName))
                         proc.AppendLine(GenerateProcedure(info, crit, "DeleteProcedure.cst", crit.DeleteOptions.ProcedureName));
                 }
-                if (info.ObjectType == CslaObjectType.EditableChild)
+                if (_targetFramework != TargetFramework.CSLA40 && info.ObjectType == CslaObjectType.EditableChild)
                 {
                     proc.AppendLine(GenerateProcedure(info, null, "DeleteProcedure.cst", info.DeleteProcedureName));
                 }
@@ -578,7 +580,7 @@ namespace CslaGenerator.Templates
                     WriteToFile(dir + @"\sprocs\" + crit.DeleteOptions.ProcedureName + ".sql", proc);
                 }
             }
-            if (info.ObjectType == CslaObjectType.EditableChild)
+            if (_targetFramework != TargetFramework.CSLA40 && info.ObjectType == CslaObjectType.EditableChild)
             {
                 string proc = GenerateProcedure(info, null, "DeleteProcedure.cst", info.DeleteProcedureName);
                 CheckDirectory(dir + @"\sprocs");

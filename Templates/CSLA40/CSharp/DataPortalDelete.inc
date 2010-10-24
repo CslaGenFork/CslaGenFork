@@ -94,27 +94,26 @@ foreach (Criteria c in Info.CriteriaObjects)
             %>
                     cmd.CommandType = CommandType.StoredProcedure;
                     <%
-            if (Info.PersistenceType == PersistenceType.SqlConnectionUnshared)
-            {
-                %>
-                    cn.Open();
-                    <%
-            }
             foreach (Property p in c.Properties)
             {
                 %>
                     <%
                 if (c.Properties.Count > 1)
                 {
-                    %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= GetParameterSet(p,true) %>);<%
+                    %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= GetParameterSet(p, true) %>);<%
                 }
                 else
                 {
                     %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", crit.Value);<%
                 }
             }
-            %>
-                    var args = new DataPortalHookArgs(cmd);
+            if (Info.PersistenceType == PersistenceType.SqlConnectionUnshared)
+            {
+                %>
+                    cn.Open();
+                    <%
+            }
+            %>var args = new DataPortalHookArgs(cmd);
                     OnDeletePre(args);
                     cmd.ExecuteNonQuery();
                     OnDeletePost(args);

@@ -92,16 +92,16 @@ namespace CslaGenerator.Util
         //[Browsable(false)]
         //public DatabaseSchema Schema1
         //{
-        //    get        //    {
+        //    get
+        //    {
         //        return _schema1;
         //    }
         //}
 
         public void Init(CslaObjectInfo info)
-
         {
             //_schema = GetSchema(info);
-                       _topLevelObject = info;
+            _topLevelObject = info;
         }
 
         public void StoreCorrelationNames(CslaObjectInfo info)
@@ -332,7 +332,7 @@ namespace CslaGenerator.Util
                 sb.Append(Environment.NewLine);
                 return sb.ToString();
             }
-            else if (tables.Count > 1)
+            if (tables.Count > 1)
             {
                 List<IResultObject> usedTables = new List<IResultObject>();
                 bool first = true;
@@ -403,7 +403,7 @@ namespace CslaGenerator.Util
                 sb.Append(Environment.NewLine);
                 return sb.ToString();
             }
-            else { return String.Empty; }
+            return String.Empty;
         }
 
         public string GetFromClauseFK(Criteria crit, CslaObjectInfo info, bool includeParentObjects)
@@ -484,7 +484,14 @@ namespace CslaGenerator.Util
             {
                 if (prop.DataAccess != ValueProperty.DataAccessBehaviour.WriteOnly)
                 {
-                    if (!first) { sb.Append("," + Environment.NewLine); }                    else { first = false; }
+                    if (!first)
+                    {
+                        sb.Append("," + Environment.NewLine);
+                    }
+                    else
+                    {
+                        first = false;
+                    }
                     sb.Append(Indent(3) + " ");
                     if (prop.DbBindColumn.DataType.ToString() == "StringFixedLength")
                     {

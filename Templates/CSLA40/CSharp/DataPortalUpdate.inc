@@ -64,6 +64,11 @@ if (Info.GenerateDataPortalUpdate)
             }
         }
     }
+    if (Info.PersistenceType == PersistenceType.SqlConnectionUnshared)
+    {
+        %>cn.Open();
+                        <%
+    }
     %>var args = new DataPortalHookArgs(cmd);
                         OnUpdateStart(args);
                         DoInsertUpdate(cmd);

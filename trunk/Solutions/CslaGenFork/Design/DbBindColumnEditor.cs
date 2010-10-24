@@ -19,7 +19,6 @@ namespace CslaGenerator.Design
         {
         }
 
-
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
             if (provider != null)
@@ -53,7 +52,7 @@ namespace CslaGenerator.Design
                         else if (newCol != null)
                         {
                             DbBindColumn newDbc = new DbBindColumn();
-                            CslaGenerator.Controls.DbSchemaPanel.SetDbBindColumn(selected.Parent, newCol, newDbc);
+                            Controls.DbSchemaPanel.SetDbBindColumn(selected.Parent, newCol, newDbc);
                             obj.DbBindColumn = newDbc;
                         }
 

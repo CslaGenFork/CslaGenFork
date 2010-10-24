@@ -23,6 +23,11 @@ namespace CslaGenerator.Metadata
         bool _spIgnoreFilterWhenSoftDeleteIsParam = true;
         bool _spRemoveChildBeforeParent = true;
 
+        private string _orbChildPropertySuffix = string.Empty;
+        private string _orbCollectionSuffix = string.Empty;
+        private string _orbSingleSPSuffix = string.Empty;
+        private bool _orbItemsUseSingleSP;
+
         #endregion
 
         #region State Fields New Object Defaults
@@ -58,226 +63,6 @@ namespace CslaGenerator.Metadata
         private string _changedUserColumn = string.Empty;
         private bool _logDateAndTime = true;
         private string _getUserMethod = string.Empty;
-
-        #endregion
-
-        #region Properties Stored Procedures
-
-        public string SpAddPrefix
-        {
-            get { return _spAddPrefix; }
-            set
-            {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
-                if (_spAddPrefix == value)
-                    return;
-                _spAddPrefix = value;
-                OnPropertyChanged("");
-            }
-        }
-
-        public string SpDeletePrefix
-        {
-            get { return _spDeletePrefix; }
-            set
-            {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
-                if (_spDeletePrefix == value)
-                    return;
-                _spDeletePrefix = value;
-                OnPropertyChanged("");
-            }
-        }
-
-        public string SpUpdatePrefix
-        {
-            get { return _spUpdatePrefix; }
-            set
-            {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
-                if (_spUpdatePrefix == value)
-                    return;
-                _spUpdatePrefix = value;
-                OnPropertyChanged("");
-            }
-        }
-
-        public string SpGetPrefix
-        {
-            get { return _spGetPrefix; }
-            set
-            {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
-                if (_spGetPrefix == value)
-                    return;
-                _spGetPrefix = value;
-                OnPropertyChanged("");
-            }
-        }
-
-        public string SpGeneralPrefix
-        {
-            get { return _spGeneralPrefix; }
-            set
-            {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
-                if (_spGeneralPrefix == value)
-                    return;
-                _spGeneralPrefix = value;
-                OnPropertyChanged("");
-            }
-        }
-
-        public string SpAddSuffix
-        {
-            get { return _spAddSuffix; }
-            set
-            {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
-                if (_spAddSuffix == value)
-                    return;
-                _spAddSuffix = value;
-                OnPropertyChanged("");
-            }
-        }
-
-        public string SpDeleteSuffix
-        {
-            get { return _spDeleteSuffix; }
-            set
-            {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
-                if (_spDeleteSuffix == value)
-                    return;
-                _spDeleteSuffix = value;
-                OnPropertyChanged("");
-            }
-        }
-
-        public string SpUpdateSuffix
-        {
-            get { return _spUpdateSuffix; }
-            set
-            {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
-                if (_spUpdateSuffix == value)
-                    return;
-                _spUpdateSuffix = value;
-                OnPropertyChanged("");
-            }
-        }
-
-        public string SpGetSuffix
-        {
-            get { return _spGetSuffix; }
-            set
-            {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
-                if (_spGetSuffix == value)
-                    return;
-                _spGetSuffix = value;
-                OnPropertyChanged("");
-            }
-        }
-
-        public string SpGeneralSuffix
-        {
-            get { return _spGeneralSuffix; }
-            set
-            {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
-                if (_spGeneralSuffix == value)
-                    return;
-                _spGeneralSuffix = value;
-                OnPropertyChanged("");
-            }
-        }
-
-        public bool RegenSpNameOnObjectRename
-        {
-            get { return _regenSpNameOnObjectRename; }
-            set
-            {
-                if (_regenSpNameOnObjectRename == value)
-                    return;
-                _regenSpNameOnObjectRename = value;
-                OnPropertyChanged("");
-            }
-        }
-
-        public string SpBoolSoftDeleteColumn
-        {
-            get { return _spBoolSoftDeleteColumn; }
-            set
-            {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
-                if (_spBoolSoftDeleteColumn == value)
-                    return;
-                _spBoolSoftDeleteColumn = value;
-                OnPropertyChanged("");
-            }
-        }
-
-        public string SpIntSoftDeleteColumn
-        {
-            get { return _spIntSoftDeleteColumn; }
-            set
-            {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
-                if (_spIntSoftDeleteColumn == value)
-                    return;
-                _spIntSoftDeleteColumn = value;
-                OnPropertyChanged("");
-            }
-        }
-
-        public bool SpIgnoreFilterWhenSoftDeleteIsParam
-        {
-            get { return _spIgnoreFilterWhenSoftDeleteIsParam; }
-            set
-            {
-                if (_spIgnoreFilterWhenSoftDeleteIsParam == value)
-                    return;
-                _spIgnoreFilterWhenSoftDeleteIsParam = value;
-                OnPropertyChanged("");
-            }
-        }
-
-        public bool SpRemoveChildBeforeParent
-        {
-            get { return _spRemoveChildBeforeParent; }
-            set
-            {
-                if (_spRemoveChildBeforeParent == value)
-                    return;
-                _spRemoveChildBeforeParent = value;
-                OnPropertyChanged("");
-            }
-        }
-
-        public string GetDeleteProcName(string name)
-        {
-            return string.Concat(_spGeneralPrefix, _spDeletePrefix,
-                name, _spDeleteSuffix, _spGeneralSuffix);
-        }
-
-        public string GetAddProcName(string name)
-        {
-            return string.Concat(_spGeneralPrefix, _spAddPrefix,
-                name, _spAddSuffix, _spGeneralSuffix);
-        }
-
-        public string GetGetProcName(string name)
-        {
-            return string.Concat(_spGeneralPrefix, _spGetPrefix,
-                name, _spGetSuffix, _spGeneralSuffix);
-        }
-
-        public string GetUpdateProcName(string name)
-        {
-            return string.Concat(_spGeneralPrefix, _spUpdatePrefix,
-                name, _spUpdateSuffix, _spGeneralSuffix);
-        }
 
         #endregion
 
@@ -500,6 +285,281 @@ namespace CslaGenerator.Metadata
                 _defaultDatabaseContextObject = value;
                 OnPropertyChanged("");
             }
+        }
+
+        #endregion
+
+        #region Object Relations Builder
+
+        public string ORBChildPropertySuffix
+        {
+            get { return _orbChildPropertySuffix; }
+            set
+            {
+                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                if (_orbChildPropertySuffix == value)
+                    return;
+                _orbChildPropertySuffix = value;
+                OnPropertyChanged("");
+            }
+        }
+
+        public string ORBCollectionSuffix
+        {
+            get { return _orbCollectionSuffix; }
+            set
+            {
+                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                if (_orbCollectionSuffix == value)
+                    return;
+                _orbCollectionSuffix = value;
+                OnPropertyChanged("");
+            }
+        }
+
+        public string ORBSingleSPSuffix
+        {
+            get { return _orbSingleSPSuffix; }
+            set
+            {
+                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                if (_orbSingleSPSuffix == value)
+                    return;
+                _orbSingleSPSuffix = value;
+                OnPropertyChanged("");
+            }
+        }
+
+        public bool ORBItemsUseSingleSP
+        {
+            get { return _orbItemsUseSingleSP; }
+            set
+            {
+                if (_orbItemsUseSingleSP == value)
+                    return;
+                _orbItemsUseSingleSP = value;
+                OnPropertyChanged("");
+            }
+        }
+
+        #endregion
+
+        #region Properties Stored Procedures
+
+        public string SpAddPrefix
+        {
+            get { return _spAddPrefix; }
+            set
+            {
+                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                if (_spAddPrefix == value)
+                    return;
+                _spAddPrefix = value;
+                OnPropertyChanged("");
+            }
+        }
+
+        public string SpDeletePrefix
+        {
+            get { return _spDeletePrefix; }
+            set
+            {
+                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                if (_spDeletePrefix == value)
+                    return;
+                _spDeletePrefix = value;
+                OnPropertyChanged("");
+            }
+        }
+
+        public string SpUpdatePrefix
+        {
+            get { return _spUpdatePrefix; }
+            set
+            {
+                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                if (_spUpdatePrefix == value)
+                    return;
+                _spUpdatePrefix = value;
+                OnPropertyChanged("");
+            }
+        }
+
+        public string SpGetPrefix
+        {
+            get { return _spGetPrefix; }
+            set
+            {
+                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                if (_spGetPrefix == value)
+                    return;
+                _spGetPrefix = value;
+                OnPropertyChanged("");
+            }
+        }
+
+        public string SpGeneralPrefix
+        {
+            get { return _spGeneralPrefix; }
+            set
+            {
+                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                if (_spGeneralPrefix == value)
+                    return;
+                _spGeneralPrefix = value;
+                OnPropertyChanged("");
+            }
+        }
+
+        public string SpAddSuffix
+        {
+            get { return _spAddSuffix; }
+            set
+            {
+                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                if (_spAddSuffix == value)
+                    return;
+                _spAddSuffix = value;
+                OnPropertyChanged("");
+            }
+        }
+
+        public string SpDeleteSuffix
+        {
+            get { return _spDeleteSuffix; }
+            set
+            {
+                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                if (_spDeleteSuffix == value)
+                    return;
+                _spDeleteSuffix = value;
+                OnPropertyChanged("");
+            }
+        }
+
+        public string SpUpdateSuffix
+        {
+            get { return _spUpdateSuffix; }
+            set
+            {
+                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                if (_spUpdateSuffix == value)
+                    return;
+                _spUpdateSuffix = value;
+                OnPropertyChanged("");
+            }
+        }
+
+        public string SpGetSuffix
+        {
+            get { return _spGetSuffix; }
+            set
+            {
+                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                if (_spGetSuffix == value)
+                    return;
+                _spGetSuffix = value;
+                OnPropertyChanged("");
+            }
+        }
+
+        public string SpGeneralSuffix
+        {
+            get { return _spGeneralSuffix; }
+            set
+            {
+                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                if (_spGeneralSuffix == value)
+                    return;
+                _spGeneralSuffix = value;
+                OnPropertyChanged("");
+            }
+        }
+
+        public bool RegenSpNameOnObjectRename
+        {
+            get { return _regenSpNameOnObjectRename; }
+            set
+            {
+                if (_regenSpNameOnObjectRename == value)
+                    return;
+                _regenSpNameOnObjectRename = value;
+                OnPropertyChanged("");
+            }
+        }
+
+        public string SpBoolSoftDeleteColumn
+        {
+            get { return _spBoolSoftDeleteColumn; }
+            set
+            {
+                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                if (_spBoolSoftDeleteColumn == value)
+                    return;
+                _spBoolSoftDeleteColumn = value;
+                OnPropertyChanged("");
+            }
+        }
+
+        public string SpIntSoftDeleteColumn
+        {
+            get { return _spIntSoftDeleteColumn; }
+            set
+            {
+                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                if (_spIntSoftDeleteColumn == value)
+                    return;
+                _spIntSoftDeleteColumn = value;
+                OnPropertyChanged("");
+            }
+        }
+
+        public bool SpIgnoreFilterWhenSoftDeleteIsParam
+        {
+            get { return _spIgnoreFilterWhenSoftDeleteIsParam; }
+            set
+            {
+                if (_spIgnoreFilterWhenSoftDeleteIsParam == value)
+                    return;
+                _spIgnoreFilterWhenSoftDeleteIsParam = value;
+                OnPropertyChanged("");
+            }
+        }
+
+        public bool SpRemoveChildBeforeParent
+        {
+            get { return _spRemoveChildBeforeParent; }
+            set
+            {
+                if (_spRemoveChildBeforeParent == value)
+                    return;
+                _spRemoveChildBeforeParent = value;
+                OnPropertyChanged("");
+            }
+        }
+
+        public string GetDeleteProcName(string name)
+        {
+            return string.Concat(_spGeneralPrefix, _spDeletePrefix,
+                name, _spDeleteSuffix, _spGeneralSuffix);
+        }
+
+        public string GetAddProcName(string name)
+        {
+            return string.Concat(_spGeneralPrefix, _spAddPrefix,
+                name, _spAddSuffix, _spGeneralSuffix);
+        }
+
+        public string GetGetProcName(string name)
+        {
+            return string.Concat(_spGeneralPrefix, _spGetPrefix,
+                name, _spGetSuffix, _spGeneralSuffix);
+        }
+
+        public string GetUpdateProcName(string name)
+        {
+            return string.Concat(_spGeneralPrefix, _spUpdatePrefix,
+                name, _spUpdateSuffix, _spGeneralSuffix);
         }
 
         #endregion

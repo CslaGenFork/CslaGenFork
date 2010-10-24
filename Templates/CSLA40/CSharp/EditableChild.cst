@@ -94,16 +94,20 @@ using Csla.Data;
         <%
         if (Info.DbName != String.Empty)
         {
-            if (!Info.LazyLoad)
+            CslaObjectInfo tmpInfo = Info.Parent.CslaObjects.Find(Info.ParentType);
+            bool isCollection = false;
+            if (tmpInfo != null)
+                isCollection = IsCollectionType(tmpInfo.ObjectType);
+            if (Info.LazyLoad && !isCollection)
             {
                 %>
-        <!-- #include file="InternalGetObject.inc" -->
+        <!-- #include file="GetObject.inc" -->
                 <%
             }
             else
             {
                 %>
-        <!-- #include file="GetObject.inc" -->
+        <!-- #include file="InternalGetObject.inc" -->
                 <%
             }
         }

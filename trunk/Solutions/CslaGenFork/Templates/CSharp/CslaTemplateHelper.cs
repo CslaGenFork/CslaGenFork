@@ -211,9 +211,21 @@ namespace CslaGenerator.Util
 
         public virtual string GetParameterSet(Property prop, bool criteria)
         {
+            return GetParameterSet(prop, criteria, false);
+        }
+
+        public virtual string GetParameterSet(Property prop, bool criteria, bool singleCriteria)
+        {
             bool nullable = AllowNull(prop);
             string propName;
-            propName = (criteria) ? "crit." + FormatPascal(prop.Name) : FormatFieldName(prop.Name);
+            if (singleCriteria)
+                propName = "crit.Value";
+            else if (criteria)
+                propName = "crit." + FormatPascal(prop.Name);
+            else
+                propName = FormatFieldName(prop.Name);
+
+            //propName = (criteria) ? "crit." + FormatPascal(prop.Name) : FormatFieldName(prop.Name);
 
             if (nullable && prop.PropertyType != TypeCodeEx.SmartDate)
             {

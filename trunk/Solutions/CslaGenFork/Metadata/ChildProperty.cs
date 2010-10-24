@@ -22,6 +22,7 @@ namespace CslaGenerator.Metadata
         private bool _undoable = true;
         private ParameterCollection _loadParameters = new ParameterCollection();
         private PropertyAccess _access = PropertyAccess.IsPublic;
+        private PropertyAccess _propertyInfoAccess = PropertyAccess.IsPublic;
 
         [Category("01. Definition")]
         [Description("The property name.")]
@@ -116,8 +117,8 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("05. Options")]
-        [Description("Accessibility for the property as a whole.")]
-        [UserFriendlyName("Property Access.")]
+        [Description("Accessibility for the property as a whole.\r\nDefaults to IsPublic.")]
+        [UserFriendlyName("Property Accessibility")]
         public PropertyAccess Access
         {
             get { return _access; }
@@ -125,7 +126,16 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("05. Options")]
-        [Description("This is a description.")]
+        [Description("Accessibility for the PropertyInfo.\r\nDefaults to IsPublic.")]
+        [UserFriendlyName("PropertyInfo Accessibility")]
+        public PropertyAccess PropertyInfoAccess
+        {
+            get { return _propertyInfoAccess; }
+            set { _propertyInfoAccess = value; }
+        }
+
+        [Category("05. Options")]
+        [Description("Setting to false will cause the n-level undo process to ignore that property's value.")]
         public bool Undoable
         {
             get { return _undoable; }

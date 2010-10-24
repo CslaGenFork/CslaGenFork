@@ -18,7 +18,7 @@ namespace CslaGenerator.Metadata
         private bool _isIdentity = false;
 
         [Category("01. Definition")]
-        [Description("The property name.")]
+        [Description("The property to be updated.")]
         public override string Name
         {
             get { return base.Name; }
@@ -26,7 +26,7 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Definition")]
-        [Description("This is a description.")]
+        [Description("The updater property. This must be combined with the \"Updater Type\" of the parent collection.")]
         [UserFriendlyName("Source Property Name")]
         public string SourcePropertyName
         {
@@ -41,7 +41,7 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Definition")]
-        [Description("This is a description.")]
+        [Description("Whether this property is an object identity..")]
         [UserFriendlyName("Is Identity")]
         public bool IsIdentity
         {
