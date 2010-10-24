@@ -904,7 +904,10 @@ namespace CslaGenerator.Util
                              propertyName == "DeleteRoles"))
                             return false;
                         if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 &&
-                            (propertyName == "AddParentReference"))
+                            (propertyName == "AddParentReference" ||
+                            propertyName == "HashcodeProperty" ||
+                            propertyName == "EqualsProperty" ||
+                            propertyName == "DeleteProcedureName"))
                             return false;
                     }
                     if (mSelectedObject.Length > 1 && IsEnumerable(GetPropertyInfoCache(propertyName)))

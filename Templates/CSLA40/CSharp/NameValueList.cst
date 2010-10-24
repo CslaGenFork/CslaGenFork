@@ -55,7 +55,7 @@ using Csla.Data;
 
         #region Constructors
 
-        <%= GetConstructorVisibility(Info) %> <%=Info.ObjectName%>()
+        <%= GetConstructorVisibility(Info) %> <%=Info.ObjectName %>()
         {
             // Prevent direct creation
         }
@@ -76,55 +76,6 @@ using Csla.Data;
                 %>
         private static <%= Info.ObjectName %> _list;
 
-        <%
-            }
-        Criteria c = Info.CriteriaObjects[0];
-            if (c.GetOptions.Factory)
-            {
-                %>
-        /// <summary>
-        /// Factory method. New <see cref="<%= Info.ObjectName %>"/> object is loaded from the database.
-        /// </summary>
-        /// <returns>A reference to the fetched <see cref="<%=Info.ObjectName%>"/> object.</returns>
-        <%
-                string strGetParams = string.Empty;
-                string strGetCritParams = string.Empty;
-                for (int i = 0; i < c.Properties.Count; i++)
-                {
-                    if (i > 0)
-                    {
-                        strGetParams += ", ";
-                        strGetCritParams += ", ";
-                    }
-                    strGetParams += string.Concat(GetDataTypeGeneric(c.Properties[i], c.Properties[i].PropertyType), " ", FormatCamel(c.Properties[i].Name));
-                    strGetCritParams += FormatCamel(c.Properties[i].Name);
-                }
-        %>
-        public static <%= Info.ObjectName %> Get<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>()
-        {
-            <%
-                if (Info.CacheResults)
-                {
-                    %>
-            if (_list == null)
-                _list = DataPortal.Fetch<<%= Info.ObjectName %>>();
-
-            return _list;
-            <%
-                }
-                else
-                {
-                    %>
-            return <% if (ActiveObjects) { %>ActiveObjects.<% } %>DataPortal.Fetch<<%= Info.ObjectName %>>(crit);
-            <%
-                }
-                %>
-        }
-        <%
-            }
-        }
-        %>
-
         /// <summary>
         /// Clears the in-memory <%= Info.ObjectName %> cache so it is reloaded on the next request.
         /// </summary>
@@ -133,10 +84,77 @@ using Csla.Data;
             _list = null;
         }
 
+        <%
+            }
+            foreach (Criteria c in Info.CriteriaObjects)
+            {
+                if (c.GetOptions.Factory)
+                {
+                    %>
+        /// <summary>
+        /// Factory method. New <see cref="<%= Info.ObjectName %>"/> object is loaded from the database.
+        /// </summary>
+        /// <returns>A reference to the fetched <see cref="<%=Info.ObjectName %>"/> object.</returns>
+        <%
+                    string strGetParams = string.Empty;
+                    string strGetCritParams = string.Empty;
+                    string crit = string.Empty;
+                    for (int i = 0; i < c.Properties.Count; i++)
+                    {
+                        if (string.IsNullOrEmpty(c.Properties[i].ParameterValue))
+                        {
+                            Errors.Append("Property: " + c.Properties[i].Name + " on criteria: " + c.Name + " must have a ParameterValue. Ignored." + Environment.NewLine);
+                            return;
+                        }
+                        else
+                        {
+                            c.Properties[i].ReadOnly = true;
+                        }
+                        if (i > 0)
+                        {
+                            strGetParams += ", ";
+                            strGetCritParams += ", ";
+                        }
+                        strGetParams += string.Concat(GetDataType(c.Properties[i]), " ", FormatCamel(c.Properties[i].Name));
+                        strGetCritParams += FormatCamel(c.Properties[i].Name);
+                    }
+                    if (c.Properties.Count > 1)
+                        crit = "new " + c.Name + "()";
+                    else if (c.Properties.Count > 0)
+                        crit = "new SingleCriteria<" + GetDataType(c.Properties[0]) + ">(" + c.Properties[0].ParameterValue + ")";
+        %>
+        public static <%= Info.ObjectName %> Get<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>()
+        {
+            <%
+                    if (Info.CacheResults)
+                    {
+                        %>
+            if (_list == null)
+                _list = <% if (ActiveObjects) { %>ActiveObjects.<% } %>DataPortal.Fetch<<%= Info.ObjectName %>>(<%= crit %>);
+
+            return _list;
+            <%
+                    }
+                    else
+                    {
+                        %>
+            return <% if (ActiveObjects) { %>ActiveObjects.<% } %>DataPortal.Fetch<<%= Info.ObjectName %>>(<%= crit %>);
+            <%
+                    }
+                    %>
+        }
+<%
+                }
+            }
+        }
+        %>
+
         #endregion
     <%
     }
-    %>
+        %>
+        <!-- #include file="Criteria.inc"  -->
+
 <!-- #include file="SharedAuthorizationMethods.inc" -->
 <%
     if (Info.GenerateDataAccessRegion)
@@ -148,35 +166,64 @@ using Csla.Data;
         #region Data Access
 
         <%
-            Criteria c = Info.CriteriaObjects[0];
-            if (c.GetOptions.DataPortal)
+            foreach (Criteria c in Info.CriteriaObjects)
             {
-                %>
+                if (c.GetOptions.DataPortal)
+                {
+                    %>
         /// <summary>
+        <%
+        if (c.Properties.Count > 1)
+        {
+            %>
+        /// Load <see cref="<%= Info.ObjectName %>"/> collection from the database, based on given criteria.
+        /// </summary>
+        /// <param name="crit">The fetch criteria.</param>
+        protected void DataPortal_Fetch(<%= c.Name %> crit)
+        <%
+        }
+        else if (c.Properties.Count > 0)
+        {
+            %>
+        /// Load <see cref="<%= Info.ObjectName %>"/> collection from the database, based on given criteria.
+        /// </summary>
+        /// <param name="crit">The fetch criteria.</param>
+        protected void DataPortal_Fetch(SingleCriteria<<%= GetDataType(c.Properties[0]) %>> crit)
+        <%
+        }
+        else
+        {
+            %>
         /// Load <see cref="<%= Info.ObjectName %>"/> collection from the database.
         /// </summary>
         protected void DataPortal_Fetch()
+        <%
+        }
+        %>
         {
             <%= GetConnection(Info, true) %>
             {
                 <%
-                if (string.IsNullOrEmpty(c.GetOptions.ProcedureName))
-                {
-                    Errors.Append("Criteria " + c.Name + " missing get procedure name." + Environment.NewLine);
-                }
-                %>
+        if (string.IsNullOrEmpty(c.GetOptions.ProcedureName))
+        {
+            Errors.Append("Criteria " + c.Name + " missing get procedure name." + Environment.NewLine);
+        }
+        %>
                 <%= GetCommand(Info, c.GetOptions.ProcedureName) %>
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     <%
-                if (Info.PersistenceType == PersistenceType.SqlConnectionUnshared)
-                {
-                    %>
-                    cn.Open();
+        foreach (CriteriaProperty prop in c.Properties)
+        {
+            %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(prop, true, c.Properties.Count < 2) %>);
                     <%
-                }
-                %>
-                    var args = new DataPortalHookArgs(cmd);
+        }
+        if (Info.PersistenceType == PersistenceType.SqlConnectionUnshared)
+        {
+            %>cn.Open();
+                    <%
+        }
+        %>var args = new DataPortalHookArgs(cmd);
                     OnFetchPre(args);
                     LoadCollection(cmd);
                     OnFetchPost(args);
@@ -185,6 +232,7 @@ using Csla.Data;
         }
 
         <%
+                }
             }
             %>
         private void LoadCollection(SqlCommand cmd)
@@ -196,8 +244,8 @@ using Csla.Data;
                 while (dr.Read())
                 {
                     Add(new NameValuePair(
-                        <%=String.Format(GetDataReaderStatement(valueProp))%>,
-                        <%=String.Format(GetDataReaderStatement(nameProp))%>));
+                        <%=String.Format(GetDataReaderStatement(valueProp)) %>,
+                        <%=String.Format(GetDataReaderStatement(nameProp)) %>));
                 }
                 IsReadOnly = true;
             }

@@ -630,7 +630,8 @@
             /// Prevents the parent property form participating in updates or deletes.
             /// </summary>
             [Category("04. Child Object Options")]
-            [Description("The parent only does inserts. Prevents the parent property from participating in updates or deletes.")]
+            [Description("The parent only does inserts. Prevents the parent property from participating in updates or deletes.\r\n"+
+                "Set it to true when the child has its own ID that is used on updates or deletes.")]
             [UserFriendlyName("Parent Insert Only")]
             public bool ParentInsertOnly
             {
@@ -688,7 +689,7 @@
             /// The type name of the object that will update this collection.
             /// </summary>
             [Category("05. Collection Options")]
-            [Description("The type name of the object that will update objects of this collection.")]
+            [Description("The type name of that will update the items of this collection.")]
             [UserFriendlyName("Updater Type")]
             [Editor(typeof(UpdaterTypeEditor), typeof(UITypeEditor))]
             public string UpdaterType

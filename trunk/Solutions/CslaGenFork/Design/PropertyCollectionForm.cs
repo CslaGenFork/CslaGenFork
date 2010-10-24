@@ -201,21 +201,24 @@ namespace CslaGenerator.Design
             switch (_form.Text)
             {
                 case "ValueProperty Collection Editor":
+                    _form.Size = new Size(570, _form.Size.Height);
                     _collectionType = typeof (ValueProperty);
                     if (GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == Authorization.None ||
                         GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == Authorization.ObjectLevel)
-                        _form.Size = new Size(_form.Size.Width, 633);
+                        _form.Size = new Size(_form.Size.Width, 649);
                     else
-                        _form.Size = new Size(_form.Size.Width, 713);
+                        _form.Size = new Size(_form.Size.Width, 729);
                     if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40)
                         _form.Size = new Size(_form.Size.Width, _form.Size.Height-16);
                     break;
                 case "ChildProperty Collection Editor":
-                    _collectionType = typeof (ChildProperty);
-                    _form.Size = new Size(_form.Size.Width, 489);
+                    _form.Size = new Size(570, _form.Size.Height);
+                    _collectionType = typeof(ChildProperty);
+                    _form.Size = new Size(_form.Size.Width, 505);
                     break;
                 case "Criteria Collection Editor":
-                    _collectionType = typeof (Criteria);
+                    _form.Size = new Size(550, _form.Size.Height); 
+                    _collectionType = typeof(Criteria);
                     _form.Size = new Size(_form.Size.Width, 617);
                     break;
                 case "CriteriaProperty Collection Editor":
@@ -223,10 +226,12 @@ namespace CslaGenerator.Design
                     _form.Size = new Size(_form.Size.Width, 393);
                     break;
                 case "ConvertValueProperty Collection Editor":
+                    _form.Size = new Size(570, _form.Size.Height);
                     _collectionType = typeof(ConvertValueProperty);
-                    _form.Size = new Size(_form.Size.Width, 553);
+                    _form.Size = new Size(_form.Size.Width, 585);
                     break;
                 case "UpdateValueProperty Collection Editor":
+                    _form.Size = new Size(555, _form.Size.Height);
                     _collectionType = typeof (UpdateValueProperty);
                     break;
                 case "Rule Collection Editor":

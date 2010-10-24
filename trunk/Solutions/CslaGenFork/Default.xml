@@ -1,6 +1,24 @@
 <?xml version="1.0"?>
 <CslaGeneratorUnit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Params>
+    <DefaultTransactionType>ADO</DefaultTransactionType>
+    <DefaultDataBase>MyDatabase</DefaultDataBase>
+    <DefaultNamespace>MyBO</DefaultNamespace>
+    <DefaultFolder />
+    <SmartDateDefault>true</SmartDateDefault>
+    <AutoCriteria>true</AutoCriteria>
+    <AutoTimestampCriteria>false</AutoTimestampCriteria>
+    <DatesDefaultStringWithTypeConversion>true</DatesDefaultStringWithTypeConversion>
+    <CreateTimestampPropertyMode>NoProperty</CreateTimestampPropertyMode>
+    <ReadOnlyObjectsCopyAuditing>false</ReadOnlyObjectsCopyAuditing>
+    <ReadOnlyObjectsCopyTimestamp>false</ReadOnlyObjectsCopyTimestamp>
+    <CreateReadOnlyObjectsPropertyMode>AutoProperty</CreateReadOnlyObjectsPropertyMode>
+    <DefaultPersistenceType>SqlConnectionManager</DefaultPersistenceType>
+    <DefaultDatabaseContextObject />
+    <ORBChildPropertySuffix>s</ORBChildPropertySuffix>
+    <ORBCollectionSuffix>Coll</ORBCollectionSuffix>
+    <ORBSingleSPSuffix>Relation</ORBSingleSPSuffix>
+    <ORBItemsUseSingleSP>false</ORBItemsUseSingleSP>
     <SpAddPrefix>Add</SpAddPrefix>
     <SpDeletePrefix>Delete</SpDeletePrefix>
     <SpUpdatePrefix>Update</SpUpdatePrefix>
@@ -16,20 +34,6 @@
     <SpIntSoftDeleteColumn />
     <SpIgnoreFilterWhenSoftDeleteIsParam>true</SpIgnoreFilterWhenSoftDeleteIsParam>
     <SpRemoveChildBeforeParent>true</SpRemoveChildBeforeParent>
-    <DefaultTransactionType>ADO</DefaultTransactionType>
-    <DefaultDataBase>MyDatabase</DefaultDataBase>
-    <DefaultNamespace>MyBO</DefaultNamespace>
-    <DefaultFolder />
-    <SmartDateDefault>true</SmartDateDefault>
-    <AutoCriteria>true</AutoCriteria>
-    <AutoTimestampCriteria>false</AutoTimestampCriteria>
-    <DatesDefaultStringWithTypeConversion>true</DatesDefaultStringWithTypeConversion>
-    <CreateTimestampPropertyMode>NoProperty</CreateTimestampPropertyMode>
-    <ReadOnlyObjectsCopyAuditing>false</ReadOnlyObjectsCopyAuditing>
-    <ReadOnlyObjectsCopyTimestamp>false</ReadOnlyObjectsCopyTimestamp>
-    <CreateReadOnlyObjectsPropertyMode>AutoProperty</CreateReadOnlyObjectsPropertyMode>
-    <DefaultPersistenceType>SqlConnectionManager</DefaultPersistenceType>
-    <DefaultDatabaseContextObject />
     <IDGuidDefaultValue>Guid.NewGuid()</IDGuidDefaultValue>
     <IDInt16DefaultValue>_lastID</IDInt16DefaultValue>
     <IDInt32DefaultValue>_lastID</IDInt32DefaultValue>

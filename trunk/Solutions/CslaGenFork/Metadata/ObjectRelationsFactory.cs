@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 using CslaGenerator.Controls;
+using CslaGenerator.Util;
 using DBSchemaInfo.Base;
 
 namespace CslaGenerator.Metadata
 {
     public class ObjectRelationsFactory
     {
+
         #region Nested type: PrimaryKeyInfo
 
         private class PrimaryKeyInfo
@@ -87,11 +89,13 @@ namespace CslaGenerator.Metadata
         private readonly CslaGeneratorUnit _currentUnit;
         private readonly IDataBaseObject _dbObject;
         private readonly AssociativeEntity _entity;
-        private readonly CslaObjectInfo _mainObjectInfo;
-        private readonly PropertyCollection _mainRootCriteriaProperties;
         private readonly IResultSet _resultSet;
-        private readonly CslaObjectInfo _secondaryObjectInfo;
-        private readonly PropertyCollection _secondaryRootCriteriaProperties;
+        public CslaObjectInfo MainObjectInfo;
+        public CriteriaPropertyCollection MainRootCriteriaProperties;
+        public CslaObjectInfo SecondaryObjectInfo;
+        public CriteriaPropertyCollection SecondaryRootCriteriaProperties;
+        public CslaObjectInfo FacadeObjectInfo;
+        public CriteriaPropertyCollection FacadeRootCriteriaProperties;
 
         #endregion
 
@@ -107,15 +111,15 @@ namespace CslaGenerator.Metadata
             _currentUnit = currentUnit;
             _cslaObjects = _currentUnit.CslaObjects;
             _entity = entity;
-            _mainObjectInfo = _cslaObjects.Find(_entity.MainObject);
-            _mainRootCriteriaProperties = GetCriteriaProperties(_mainObjectInfo);
+            MainObjectInfo = _cslaObjects.Find(_entity.MainObject);
+            MainRootCriteriaProperties = GetCriteriaProperties(MainObjectInfo);
 
             if (entity.RelationType == ObjectRelationType.MultipleToMultiple)
             {
-                _secondaryObjectInfo = _cslaObjects.Find(_entity.SecondaryObject);
-                _secondaryRootCriteriaProperties = GetCriteriaProperties(_secondaryObjectInfo);
+                SecondaryObjectInfo = _cslaObjects.Find(_entity.SecondaryObject);
+                SecondaryRootCriteriaProperties = GetCriteriaProperties(SecondaryObjectInfo);
 
-                _associativeTable = FindAssociativeTable(_mainObjectInfo, _secondaryObjectInfo);
+                _associativeTable = FindAssociativeTable(MainObjectInfo, SecondaryObjectInfo);
 
                 _resultSet = new TableResultSet(
                     _associativeTable.ResultIndex,
@@ -132,7 +136,7 @@ namespace CslaGenerator.Metadata
             {
                 var mainItemObjectInfo = _cslaObjects.Find(_entity.MainItemTypeName);
 
-                _associatedTable = FindAssociatedTable(_mainObjectInfo, mainItemObjectInfo);
+                _associatedTable = FindAssociatedTable(MainObjectInfo, mainItemObjectInfo);
 
                 _resultSet = new TableResultSet(
                     _associatedTable.ResultIndex,
@@ -151,178 +155,586 @@ namespace CslaGenerator.Metadata
 
         #region Object building
 
-        public void BuildOneToMultipleObjects()
+        public void BuildRelationObjects(AssociativeEntity.EntityFacade entity)
         {
             StringBuilder sb;
+            var isMultipleToMultiple = (_entity.RelationType == ObjectRelationType.MultipleToMultiple);
 
             // make property if needed
             ChildProperty child;
-            if (_mainObjectInfo.ChildCollectionProperties.Contains(_entity.MainPropertyName))
-                child = _mainObjectInfo.ChildCollectionProperties.Find(_entity.MainPropertyName);
+            if (FacadeObjectInfo.ChildCollectionProperties.Contains(entity.PropertyName))
+                child = FacadeObjectInfo.ChildCollectionProperties.Find(entity.PropertyName);
             else
             {
-                child = new ChildProperty {Name = _entity.MainPropertyName};
-                _mainObjectInfo.ChildCollectionProperties.Add(child);
+                child = new ChildProperty {Name = entity.PropertyName};
+                FacadeObjectInfo.ChildCollectionProperties.Add(child);
 
                 // display message to the user
                 sb = new StringBuilder();
                 sb.AppendFormat("Successfully added ChildProperty {0} to {1} object.",
-                                _entity.MainPropertyName,
-                                _mainObjectInfo.ObjectName);
+                                entity.PropertyName,
+                                FacadeObjectInfo.ObjectName);
                 OutputWindow.Current.AddOutputInfo(sb.ToString());
             }
-            child.ParameterName = _entity.MainPropertyName;
-            child.TypeName = _entity.MainCollectionTypeName;
+            child.ParameterName = entity.PropertyName;
+            child.TypeName = entity.CollectionTypeName;
             child.DeclarationMode = PropertyDeclaration.Managed;
             child.ReadOnly = true;
             child.Nullable = false;
-            child.LazyLoad = _entity.MainLazyLoad;
-            child.LoadingScheme = _entity.MainLoadingScheme;
-            child.LoadParameters = _entity.MainLoadParameters;
+            child.LazyLoad = entity.LazyLoad;
+            child.LoadingScheme = entity.LoadingScheme;
+            child.LoadParameters = entity.LoadParameters;
             child.Access = PropertyAccess.IsPublic;
             child.Undoable = true;
 
             // make collection if needed
-            var coll = _cslaObjects.Find(_entity.MainCollectionTypeName);
+            var coll = _cslaObjects.Find(entity.CollectionTypeName);
             if (coll == null)
             {
                 coll = new CslaObjectInfo(_currentUnit)
                            {
                                ObjectType = CslaObjectType.EditableChildCollection,
-                               ObjectName = _entity.MainCollectionTypeName
+                               ObjectName = entity.CollectionTypeName
                            };
                 _currentUnit.CslaObjects.Add(coll);
 
                 // display message to the user
                 sb = new StringBuilder();
-                sb.AppendFormat("Successfully added {0} collection object.", _entity.MainCollectionTypeName);
+                sb.AppendFormat("Successfully added {0} collection object.", entity.CollectionTypeName);
                 OutputWindow.Current.AddOutputInfo(sb.ToString());
             }
 
             // populate collection
-            coll.LazyLoad = _entity.MainLazyLoad;
-            coll.ParentProperties = _mainRootCriteriaProperties;
-            coll.ParentType = _entity.MainObject;
-            coll.ItemType = _entity.MainItemTypeName;
+            coll.LazyLoad = entity.LazyLoad;
+            coll.ParentType = entity.ObjectName;
+            coll.ParentProperties = BuildParentProperties(coll);
+            coll.ItemType = entity.ItemTypeName;
 
-            var item = _cslaObjects.Find(_entity.MainItemTypeName);
+            // handle collection criteria
+            BuildCollectionCriteriaGet(coll, FacadeRootCriteriaProperties);
+
+            /* handle item */
+            var item = _cslaObjects.Find(entity.ItemTypeName);
             if (item == null)
             {
                 item = new CslaObjectInfo(_currentUnit)
                            {
                                ObjectType = CslaObjectType.EditableChild,
-                               ObjectName = _entity.MainItemTypeName
+                               ObjectName = entity.ItemTypeName
                            };
                 _currentUnit.CslaObjects.Add(item);
 
                 // display message to the user
                 sb = new StringBuilder();
-                sb.AppendFormat("Successfully added {0} collection item object.", _entity.MainItemTypeName);
+                sb.AppendFormat("Successfully added {0} collection item object.", entity.ItemTypeName);
                 OutputWindow.Current.AddOutputInfo(sb.ToString());
             }
 
             // populate collection item
-            item.LazyLoad = _entity.MainLazyLoad;
-            if(_entity.RelationType == ObjectRelationType.OneToMultiple)
+            item.LazyLoad = entity.LazyLoad;
+            if (!isMultipleToMultiple)
                 item.ParentInsertOnly = true;
             else
                 item.ParentInsertOnly = false;
-            item.ParentProperties = _mainRootCriteriaProperties;
-            item.ParentType = _entity.MainCollectionTypeName;
-        }
+            item.ParentType = entity.CollectionTypeName;
+            item.ParentProperties = BuildParentProperties(item);
+            var suffix = string.Empty;
+            var objectName = entity.ItemTypeName;
+            if (isMultipleToMultiple && !item.LazyLoad && _entity.Parent.Params.ORBItemsUseSingleSP)
+            {
+                suffix = _entity.Parent.Params.ORBSingleSPSuffix;
+                objectName = _entity.MainItemTypeName;
+            }
+            item.InsertProcedureName = _entity.Parent.Params.GetAddProcName(objectName) + suffix;
+            item.UpdateProcedureName = _entity.Parent.Params.GetUpdateProcName(objectName) + suffix;
+            item.DeleteProcedureName = string.Empty;
 
-        public void BuildMultipleToMultipleObjects()
-        {
-            BuildOneToMultipleObjects();
-            StringBuilder sb;
-
-            ChildProperty child;
-            if (_secondaryObjectInfo.ChildCollectionProperties.Contains(_entity.SecondaryPropertyName))
-                child = _secondaryObjectInfo.ChildCollectionProperties.Find(_entity.SecondaryPropertyName);
+            // handle collection item CriteriaNew
+            if (!isMultipleToMultiple)
+            {
+                BuildCollectionItemCriteriaNew(item, null, null, false);
+            }
             else
             {
-                child = new ChildProperty {Name = _entity.SecondaryPropertyName};
-                _secondaryObjectInfo.ChildCollectionProperties.Add(child);
-
-                // display message to the user
-                sb = new StringBuilder();
-                sb.AppendFormat("Successfully added ChildProperty {0} to {1} object.",
-                                _entity.SecondaryPropertyName,
-                                _secondaryObjectInfo.ObjectName);
-                OutputWindow.Current.AddOutputInfo(sb.ToString());
+                if (FacadeObjectInfo == MainObjectInfo)
+                    BuildCollectionItemCriteriaNew(item, null, SecondaryObjectInfo, true);
+                else
+                    BuildCollectionItemCriteriaNew(item, null, MainObjectInfo, true);
             }
-            child.ParameterName = _entity.SecondaryPropertyName;
-            child.TypeName = _entity.SecondaryCollectionTypeName;
-            child.DeclarationMode = PropertyDeclaration.Managed;
-            child.ReadOnly = true;
-            child.Nullable = false;
-            child.LazyLoad = _entity.SecondaryLazyLoad;
-            child.LoadingScheme = _entity.SecondaryLoadingScheme;
-            child.LoadParameters = _entity.SecondaryLoadParameters;
-            child.Access = PropertyAccess.IsPublic;
-            child.Undoable = true;
 
-            // make collection if needed
-            var coll = _cslaObjects.Find(_entity.SecondaryCollectionTypeName);
-            if (coll == null)
+            // handle collection item Criteria
+            if (!isMultipleToMultiple)
             {
-                coll = new CslaObjectInfo(_currentUnit)
-                           {
-                               ObjectType = CslaObjectType.EditableChildCollection,
-                               ObjectName = _entity.SecondaryCollectionTypeName
-                           };
-                _currentUnit.CslaObjects.Add(coll);
-
-                // display message to the user
-                sb = new StringBuilder();
-                sb.AppendFormat("Successfully added {0} collection object.", _entity.SecondaryCollectionTypeName);
-                OutputWindow.Current.AddOutputInfo(sb.ToString());
+                BuildCollectionItemCriteria(item, null, null, false);
             }
-
-            // populate collection
-            coll.LazyLoad = _entity.SecondaryLazyLoad;
-            coll.ParentProperties = _secondaryRootCriteriaProperties;
-            coll.ParentType = _entity.SecondaryObject;
-            coll.ItemType = _entity.SecondaryItemTypeName;
-
-            var item = _cslaObjects.Find(_entity.SecondaryItemTypeName);
-            if (item == null)
+            else
             {
-                item = new CslaObjectInfo(_currentUnit)
-                           {
-                               ObjectType = CslaObjectType.EditableChild,
-                               ObjectName = _entity.SecondaryItemTypeName
-                           };
-                _currentUnit.CslaObjects.Add(item);
-
-                // display message to the user
-                sb = new StringBuilder();
-                sb.AppendFormat("Successfully added {0} collection item object.", _entity.SecondaryItemTypeName);
-                OutputWindow.Current.AddOutputInfo(sb.ToString());
+                if (FacadeObjectInfo == MainObjectInfo)
+                    BuildCollectionItemCriteria(item, MainObjectInfo, SecondaryObjectInfo, true);
+                else
+                    BuildCollectionItemCriteria(item, SecondaryObjectInfo, MainObjectInfo, true);
             }
-
-            // populate collection item
-            item.LazyLoad = _entity.SecondaryLazyLoad;
-            item.ParentInsertOnly = false;
-            item.ParentProperties = _secondaryRootCriteriaProperties;
-            item.ParentType = _entity.SecondaryCollectionTypeName;
         }
 
-        private static PropertyCollection GetCriteriaProperties(CslaObjectInfo objectInfo)
+        #region Collection CriteriaGet
+
+        private void BuildCollectionCriteriaGet(CslaObjectInfo info, CriteriaPropertyCollection rootCriteriaProperties)
         {
-            var secondaryCriteriaInfo = typeof (CslaObjectInfo).GetProperty("CriteriaObjects");
-            var secondaryCriteriaObjects = secondaryCriteriaInfo.GetValue(objectInfo, null);
-            var propertyCollection = new PropertyCollection();
-            foreach (var crit in (CriteriaCollection) secondaryCriteriaObjects)
+            StringBuilder sb;
+
+            // make collection criteria if needed
+            var collCriteria = info.CriteriaObjects;
+            Criteria criteria = null;
+            foreach (var crit in collCriteria)
+            {
+                if (CheckAndSetCollectionCriteriaGet(crit, info))
+                {
+                    criteria = crit;
+                    break;
+                }
+            }
+
+            if (criteria == null)
+            {
+                criteria = new Criteria();
+                criteria.Name = "CriteriaGet";
+                SetCollectionCriteriaGet(criteria, info);
+                info.CriteriaObjects.Add(criteria);
+
+                // display message to the user
+                sb = new StringBuilder();
+                sb.AppendFormat("Successfully added criteria CriteriaGet to {0} collection object.", info.ObjectName);
+                OutputWindow.Current.AddOutputInfo(sb.ToString());
+            }
+
+            if (criteria.Name != "CriteriaGet")
+                return;
+
+            if (criteria.Properties.Count > 0)
+            {
+                // clear CriteriaNew properties
+                criteria.Properties.RemoveRange(0, criteria.Properties.Count);
+
+                // display message to the user
+                sb = new StringBuilder();
+                sb.AppendFormat("Successfully removed all criteria properties of CriteriaGet on {0} collection object.", info.ObjectName);
+                OutputWindow.Current.AddOutputInfo(sb.ToString());
+            }
+
+            // populate collection criteria properties
+            var addedProps = new List<string>();
+            foreach (var criteriaProperty in rootCriteriaProperties)
+            {
+                if (criteria.Properties.IndexOf(criteriaProperty) == -1)
+                {
+                    criteria.Properties.Add(criteriaProperty);
+
+                    addedProps.Add(criteriaProperty.Name);
+                }
+            }
+
+            if (addedProps.Count > 0)
+            {
+                // display message to the user
+                sb = new StringBuilder();
+                sb.Append("Successfully added the following criteria properties:" + Environment.NewLine);
+                foreach (var propName in addedProps)
+                {
+                    sb.AppendFormat("\t{0}.CriteriaGet.{1}" + Environment.NewLine, info.ObjectName, propName);
+                }
+                OutputWindow.Current.AddOutputInfo(sb.ToString());
+            }
+        }
+
+        private bool CheckAndSetCollectionCriteriaGet(Criteria crit, CslaObjectInfo info)
+        {
+            if (crit.Name != "CriteriaGet")
+            {
+                if (crit.GetOptions.Factory)
+                {
+                    if (crit.GetOptions.Procedure || crit.GetOptions.DataPortal)
+                        return crit.GetOptions.ProcedureName != string.Empty;
+
+                    return true;
+                }
+            }
+            else
+            {
+                SetCollectionCriteriaGet(crit, info);
+                return true;
+            }
+            return false;
+        }
+
+        private void SetCollectionCriteriaGet(Criteria crit, CslaObjectInfo info)
+        {
+            if (crit.Name != "CriteriaGet")
+                crit.GetOptions.Factory = true;
+            else
+            {
+                crit.GetOptions.Factory = true;
+                crit.GetOptions.Procedure = true;
+                crit.GetOptions.DataPortal = true;
+                crit.GetOptions.RunLocal = false;
+                crit.GetOptions.ProcedureName = _entity.Parent.Params.GetGetProcName(info.ObjectName);
+            }
+        }
+
+        #endregion
+
+        #region Collection Item CriteriaNew
+
+        private void BuildCollectionItemCriteriaNew(CslaObjectInfo info, CslaObjectInfo myRootInfo, CslaObjectInfo otherRootInfo, bool isMultipleToMultiple)
+        {
+            StringBuilder sb;
+
+            // make collection ietm criteria if needed
+            var itemCriteria = info.CriteriaObjects;
+            Criteria criteria = null;
+            foreach (var crit in itemCriteria)
+            {
+                if (CheckCollectionItemCriteriaNew(crit))
+                {
+                    criteria = crit;
+                    break;
+                }
+            }
+
+            if (criteria == null)
+            {
+                criteria = new Criteria {Name = "CriteriaNew"};
+                SetCollectionItemCriteriaNew(criteria);
+                info.CriteriaObjects.Add(criteria);
+
+                // display message to the user
+                sb = new StringBuilder();
+                sb.AppendFormat("Successfully added criteria CriteriaNew to {0} item object.", info.ObjectName);
+                OutputWindow.Current.AddOutputInfo(sb.ToString());
+            }
+
+            if (criteria.Name != "CriteriaNew")
+                return;
+
+            if (criteria.Properties.Count > 0)
+            {
+                // clear CriteriaNew properties
+                criteria.Properties.RemoveRange(0, criteria.Properties.Count);
+
+                // display message to the user
+                sb = new StringBuilder();
+                sb.AppendFormat("Successfully removed all criteria properties of CriteriaNew on {0} item object.", info.ObjectName);
+                OutputWindow.Current.AddOutputInfo(sb.ToString());
+            }
+
+            // this is a 1 to N relation; no criteria properties needed
+            if (!isMultipleToMultiple)
+                return;
+
+            // populate collection criteria properties
+            var addedProps = AddCriteriaProperties(info, criteria, myRootInfo, otherRootInfo, true, true);
+
+            if (addedProps.Count > 0)
+            {
+                // display message to the user
+                sb = new StringBuilder();
+                sb.Append("Successfully added the following criteria properties:" + Environment.NewLine);
+                foreach (var propName in addedProps)
+                {
+                    sb.AppendFormat("\t{0}.CriteriaNew.{1}" + Environment.NewLine, info.ObjectName, propName);
+                }
+                OutputWindow.Current.AddOutputInfo(sb.ToString());
+            }
+        }
+
+        private static bool CheckCollectionItemCriteriaNew(Criteria crit)
+        {
+            if (crit.Name != "CriteriaNew")
+            {
+                if (crit.CreateOptions.Factory)
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                SetCollectionItemCriteriaNew(crit);
+                return true;
+            }
+            return false;
+        }
+
+        private static void SetCollectionItemCriteriaNew(Criteria crit)
+        {
+            if (crit.Name != "CriteriaNew")
+            {
+                crit.CreateOptions.Factory = true;
+            }
+            else
+            {
+                crit.CreateOptions.Factory = true;
+                crit.CreateOptions.Procedure = false;
+                crit.CreateOptions.DataPortal = true;
+                crit.CreateOptions.RunLocal = true;
+                crit.CreateOptions.ProcedureName = string.Empty;
+
+                crit.GetOptions.Factory = false;
+                crit.GetOptions.Procedure = false;
+                crit.GetOptions.DataPortal = false;
+                crit.GetOptions.RunLocal = false;
+                crit.GetOptions.ProcedureName = string.Empty;
+
+                crit.DeleteOptions.Factory = false;
+                crit.DeleteOptions.Procedure = false;
+                crit.DeleteOptions.DataPortal = false;
+                crit.DeleteOptions.RunLocal = false;
+                crit.DeleteOptions.ProcedureName = string.Empty;
+            }
+        }
+
+        #endregion
+
+        #region Collection Item Criteria
+
+        private void BuildCollectionItemCriteria(CslaObjectInfo info, CslaObjectInfo myRootInfo, CslaObjectInfo otherRootInfo, bool isMultipleToMultiple)
+        {
+            StringBuilder sb;
+
+            // make collection item criteria if needed
+            var itemCriteria = info.CriteriaObjects;
+            Criteria criteria = null;
+            foreach (var crit in itemCriteria)
+            {
+                if (CheckCollectionItemCriteria(crit, info, myRootInfo))
+                {
+                    criteria = crit;
+                    break;
+                }
+            }
+
+            if (criteria == null)
+            {
+                criteria = new Criteria();
+                criteria.Name = "Criteria";
+                SetCollectionItemCriteria(criteria, info, myRootInfo == MainObjectInfo);
+                info.CriteriaObjects.Add(criteria);
+
+                // display message to the user
+                sb = new StringBuilder();
+                sb.AppendFormat("Successfully added criteria Criteria to {0} item object.", info.ObjectName);
+                OutputWindow.Current.AddOutputInfo(sb.ToString());
+            }
+
+            if (criteria.Name != "Criteria")
+                return;
+
+            if (criteria.Properties.Count > 0)
+            {
+                // clear CriteriaNew properties
+                criteria.Properties.RemoveRange(0, criteria.Properties.Count);
+
+                // display message to the user
+                sb = new StringBuilder();
+                sb.AppendFormat("Successfully removed all criteria properties of Criteria on {0} item object.", info.ObjectName);
+                OutputWindow.Current.AddOutputInfo(sb.ToString());
+            }
+
+            // populate collection criteria properties
+            var addedProps = AddCriteriaProperties(info, criteria, myRootInfo, otherRootInfo, false, isMultipleToMultiple);
+
+            if (addedProps.Count > 0)
+            {
+                // display message to the user
+                sb = new StringBuilder();
+                sb.Append("Successfully added the following criteria properties:" + Environment.NewLine);
+                foreach (var propName in addedProps)
+                {
+                    sb.AppendFormat("\t{0}.Criteria.{1}" + Environment.NewLine, info.ObjectName, propName);
+                }
+                OutputWindow.Current.AddOutputInfo(sb.ToString());
+            }
+        }
+
+        private bool CheckCollectionItemCriteria(Criteria crit, CslaObjectInfo info, CslaObjectInfo myRootInfo)
+        {
+            if (crit.Name != "Criteria")
+            {
+                var accept = false;
+                if (crit.GetOptions.Factory)
+                {
+                    if (crit.GetOptions.Procedure || crit.GetOptions.DataPortal)
+                        accept = crit.GetOptions.ProcedureName != string.Empty;
+                    else
+                        accept = true;
+                }
+                if (crit.DeleteOptions.Factory)
+                {
+                    if (crit.DeleteOptions.Procedure || crit.DeleteOptions.DataPortal)
+                        accept = crit.DeleteOptions.ProcedureName != string.Empty;
+                    else
+                        accept = true;
+                }
+                if (!crit.GetOptions.Factory || !crit.DeleteOptions.Factory)
+                    accept = false;
+
+                return accept;
+            }
+
+            SetCollectionItemCriteria(crit, info, myRootInfo == MainObjectInfo);
+            return true;
+        }
+
+        private void SetCollectionItemCriteria(Criteria crit, CslaObjectInfo info, bool isMain)
+        {
+            if (crit.Name != "Criteria")
+            {
+                crit.GetOptions.Factory = true;
+                crit.DeleteOptions.Factory = true;
+            }
+            else
+            {
+                var useSameProcedure = _entity.RelationType == ObjectRelationType.MultipleToMultiple &&
+                                       !info.LazyLoad &&
+                                       _entity.Parent.Params.ORBItemsUseSingleSP;
+                var suffix = string.Empty;
+                var objectName = info.ObjectName;
+                if (useSameProcedure)
+                {
+                    suffix = _entity.Parent.Params.ORBSingleSPSuffix;
+                    objectName = _entity.MainItemTypeName;
+                }
+
+                crit.GetOptions.Factory = true;
+                crit.GetOptions.Procedure = !useSameProcedure || isMain;
+                crit.GetOptions.DataPortal = true;
+                crit.GetOptions.RunLocal = false;
+                crit.GetOptions.ProcedureName = _entity.Parent.Params.GetGetProcName(objectName) + suffix;
+
+                crit.DeleteOptions.Factory = true;
+                crit.DeleteOptions.Procedure = !useSameProcedure || isMain;
+                crit.DeleteOptions.DataPortal = true;
+                crit.DeleteOptions.RunLocal = false;
+                crit.DeleteOptions.ProcedureName = _entity.Parent.Params.GetDeleteProcName(objectName) + suffix;
+            }
+        }
+
+        #endregion
+
+        #region Criteria and Property helpers
+
+        private List<string> AddCriteriaProperties(CslaObjectInfo info, Criteria crit, CslaObjectInfo myRootInfo, CslaObjectInfo otherRootInfo, bool isGet, bool isMultipleToMultiple)
+        {
+            List<string> addedProperties = new List<string>();
+            List<ValueProperty> primaryKeyProperties = new List<ValueProperty>();
+
+            // use object ValueProperty instead of root's
+            if (!isMultipleToMultiple)
+                myRootInfo = info;
+
+            if (!isGet)
+            {
+                // retrieve own primary key properties
+                foreach (ValueProperty prop in myRootInfo.ValueProperties)
+                {
+                    if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
+                        primaryKeyProperties.Add(prop);
+                }
+            }
+
+            if (isMultipleToMultiple || isGet)
+            {
+                // retrieve related primary key properties
+                foreach (ValueProperty prop in otherRootInfo.ValueProperties)
+                {
+                    if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
+                        primaryKeyProperties.Add(prop);
+                }
+            }
+
+            foreach (ValueProperty rootProp in primaryKeyProperties)
+            {
+                ValueProperty prop = null;
+                if (isMultipleToMultiple)
+                    prop = GetRelatedValueProperty(rootProp);
+
+                if (prop == null)
+                    prop = rootProp;
+
+                if (!crit.Properties.Contains(prop.Name))
+                {
+                    CriteriaProperty p = new CriteriaProperty(prop.Name, prop.PropertyType);
+                    p.DbBindColumn = (DbBindColumn) prop.DbBindColumn.Clone();
+                    crit.Properties.Add(p);
+                    addedProperties.Add(prop.Name);
+                }
+            }
+
+            return addedProperties;
+        }
+
+        private ValueProperty GetRelatedValueProperty(ValueProperty prop)
+        {
+            foreach (var constraint in _associativeTable.Catalog.ForeignKeyConstraints)
+            {
+                if (constraint.ConstraintTable.ObjectName == _associativeTable.ObjectName)
+                {
+                    if (constraint.PKTable.ObjectName == prop.DbBindColumn.DatabaseObject.ObjectName)
+                    {
+                        if (constraint.Columns[0].PKColumn.ColumnName == prop.DbBindColumn.ColumnName)
+                        {
+                            IColumnInfo col = constraint.Columns[0].PKColumn;
+                            var info = new CslaObjectInfo();
+                            var newProp = new ValueProperty();
+                            newProp.Name = prop.Name;
+                            newProp.PropertyType = TypeHelper.GetTypeCodeEx(col.ManagedType);
+                            var currentFactory = new ObjectFactory(_currentUnit, info);
+                            currentFactory.SetValuePropertyInfo(_dbObject, _resultSet, col, newProp);
+                            return newProp;
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        private static CriteriaPropertyCollection GetCriteriaProperties(CslaObjectInfo objectInfo)
+        {
+            var criteriaInfo = typeof (CslaObjectInfo).GetProperty("CriteriaObjects");
+            var criteriaObjects = criteriaInfo.GetValue(objectInfo, null);
+            var criteriaPropertyCollection = new CriteriaPropertyCollection();
+            foreach (var crit in (CriteriaCollection) criteriaObjects)
             {
                 foreach (var prop in crit.Properties)
                 {
-                    propertyCollection.Add(prop);
+                    if(crit.GetOptions.Factory)
+                        criteriaPropertyCollection.Add(prop);
+                }
+            }
+
+            return criteriaPropertyCollection;
+        }
+
+        private static PropertyCollection BuildParentProperties(CslaObjectInfo info)
+        {
+            var propertyCollection = new PropertyCollection();
+
+            CslaObjectInfo parent = info.FindParent(info);
+            if (parent != null)
+            {
+                foreach (Property pvp in parent.ValueProperties)
+                {
+                    ValueProperty prop = parent.GetAllValueProperties().Find(pvp.Name);
+                    if (prop != null && prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
+                        propertyCollection.Add(prop);
                 }
             }
 
             return propertyCollection;
         }
+
+        #endregion
+
+        #region Table helpers
 
         public static ITableInfo FindAssociativeTable(CslaObjectInfo main, CslaObjectInfo secondary)
         {
@@ -427,6 +839,27 @@ namespace CslaGenerator.Metadata
                 }
             }
 
+            // if there is an explicit FK Constraint, use it (in fact use the first found that matches)
+            foreach (var property in item.ValueProperties)
+            {
+                if(property.FKConstraint != string.Empty)
+                {
+                    // check the FK Constraint exists on the catalog
+                    foreach (var constraint in GeneratorController.Catalog.ForeignKeyConstraints)
+                    {
+                        if(constraint.ConstraintName == property.FKConstraint)
+                        {
+                            // check the constraint's PK matches root's PK
+                            if(constraint.PKTable.ObjectName == mainPKInfos[0].PKTable &&
+                                constraint.Columns[0].PKColumn.ColumnName == mainPKInfos[0].PKColumn)
+                            {
+                                return constraint.ConstraintTable;
+                            }
+                        }
+                    }
+                }
+            }
+
             // get all PK of item CslaObjectInfo
             foreach (var property in item.ValueProperties)
             {
@@ -476,26 +909,27 @@ namespace CslaGenerator.Metadata
 
         #endregion
 
+        #endregion
+
         #region ValueProperty building
 
-        public void PopulateMainObject()
+        public void PopulateRelationObjects(string itemTypeName, CriteriaPropertyCollection rootCriteriaProperties)
         {
-            var currentCslaObject = _cslaObjects.Find(_entity.MainItemTypeName);
-            var selectedColumns = FilterOutSelectedColumns(currentCslaObject, _mainRootCriteriaProperties);
+            var currentCslaObject = _cslaObjects.Find(itemTypeName);
+            var selectedColumns = FilterOutSelectedColumns(currentCslaObject, rootCriteriaProperties);
             if (selectedColumns.Count > 0)
             {
                 var currentFactory = new ObjectFactory(_currentUnit, currentCslaObject);
-
                 currentFactory.AddProperties(currentCslaObject, _dbObject, _resultSet, selectedColumns, true, true);
             }
 
-            var removeList = FindInvalidProperties(currentCslaObject, _mainRootCriteriaProperties);
+            var removeList = FindInvalidProperties(currentCslaObject, BuildParentProperties(currentCslaObject));
             if (removeList.Count > 0)
             {
                 // ask user confirmation
                 var msg = new StringBuilder();
                 msg.Append(
-                    "The properties listed below are \"Parent Properties\" and should be removed.\r\n\r\n"+
+                    "The properties listed below are \"Parent Properties\" and should be removed.\r\n\r\n" +
                     "Do you want to remove the following properties:" +
                     Environment.NewLine);
                 foreach (var valueProperty in removeList)
@@ -524,24 +958,12 @@ namespace CslaGenerator.Metadata
             }
         }
 
-        public void PopulateSecondaryObject()
-        {
-            var currentCslaObject = _cslaObjects.Find(_entity.SecondaryItemTypeName);
-            var selectedColumns = FilterOutSelectedColumns(currentCslaObject, _secondaryRootCriteriaProperties);
-            if (selectedColumns.Count == 0)
-                return;
-
-            var currentFactory = new ObjectFactory(_currentUnit, currentCslaObject);
-            currentFactory.AddProperties(currentCslaObject, _dbObject, _resultSet, selectedColumns, true, true);
-        }
-
-        private List<IColumnInfo> FilterOutSelectedColumns(CslaObjectInfo currentCslaObject, PropertyCollection rootCriteriaProperties)
+        private List<IColumnInfo> FilterOutSelectedColumns(CslaObjectInfo currentCslaObject, CriteriaPropertyCollection rootCriteriaProperties)
         {
             ColumnInfoCollection columnInfoCollection;
             var selectedColumns = new List<IColumnInfo>();
             if (_entity.RelationType == ObjectRelationType.OneToMultiple)
             {
-//                columnInfoCollection = currentCslaObject.ValueProperties[0].DbBindColumn.ResultSet.Columns;
                 columnInfoCollection = _associatedTable.Columns;
             }
             else

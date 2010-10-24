@@ -69,9 +69,9 @@ namespace CslaGenerator.Metadata
                     entity.SecondaryLazyLoad = false;
 
                     entity.MainObject = mainObject.ObjectName;
-                    entity.MainPropertyName = secondaryObject.ObjectName + "s";
+                    entity.MainPropertyName = secondaryObject.ObjectName + entity.Parent.Params.ORBChildPropertySuffix;
                     entity.MainItemTypeName = mainObject.ObjectName + secondaryObject.ObjectName;
-                    entity.MainCollectionTypeName = entity.MainItemTypeName + "Coll";
+                    entity.MainCollectionTypeName = entity.MainItemTypeName + entity.Parent.Params.ORBCollectionSuffix;
 
                     var mainCriteriaInfo = typeof(CslaObjectInfo).GetProperty("CriteriaObjects");
                     var mainCriteriaObjects = mainCriteriaInfo.GetValue(mainObject, null);
@@ -86,9 +86,9 @@ namespace CslaGenerator.Metadata
                     entity.MainLoadParameters = mainParamCollection;
 
                     entity.SecondaryObject = secondaryObject.ObjectName;
-                    entity.SecondaryPropertyName = mainObject.ObjectName + "s";
+                    entity.SecondaryPropertyName = mainObject.ObjectName + entity.Parent.Params.ORBChildPropertySuffix;
                     entity.SecondaryItemTypeName = secondaryObject.ObjectName + mainObject.ObjectName;
-                    entity.SecondaryCollectionTypeName = entity.SecondaryItemTypeName + "Coll";
+                    entity.SecondaryCollectionTypeName = entity.SecondaryItemTypeName + entity.Parent.Params.ORBCollectionSuffix;
 
                     var secondaryCriteriaInfo = typeof(CslaObjectInfo).GetProperty("CriteriaObjects");
                     var secondaryCriteriaObjects = secondaryCriteriaInfo.GetValue(secondaryObject, null);

@@ -74,11 +74,18 @@ namespace CslaGenerator.Design
                                     {
                                         lstProperties.Items.Add(new DictionaryEntry(valueProps[i].Name,valueProps[i]));
                                     }
-                                    lstProperties.Sorted = true;
 
                                     foreach (var parentProp in propColl)
                                     {
-                                        lstProperties.SelectedItems.Add(new DictionaryEntry(parentProp.Name, parentProp));
+                                        var key = parentProp.Name;
+                                        for (var entry = 0; entry < lstProperties.Items.Count; entry++)
+                                        {
+                                            if (key == ((DictionaryEntry)lstProperties.Items[entry]).Key.ToString())
+                                            {
+                                                var val = (Property)((DictionaryEntry)lstProperties.Items[entry]).Value;
+                                                lstProperties.SelectedItems.Add(new DictionaryEntry(key, val));
+                                            }
+                                        }
                                     }
 
                                     lstProperties.SelectedIndexChanged += lstProperties_SelectedIndexChanged;
@@ -98,6 +105,11 @@ namespace CslaGenerator.Design
                                     return new PropertyCollection();
                                 }
                             }
+                        }
+                        else
+                        {
+                            lstProperties.Items.Clear();
+                            return new PropertyCollection();
                         }
                     }
                 }

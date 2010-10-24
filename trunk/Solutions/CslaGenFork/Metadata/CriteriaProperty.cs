@@ -30,7 +30,7 @@ namespace CslaGenerator.Metadata
 
         private DbBindColumn _dbBindColumn=new DbBindColumn();
         [Category("00. Database")]
-        [Editor(typeof(Design.DbBindColumnEditor), typeof(UITypeEditor))]
+        [Editor(typeof(DbBindColumnEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(DbBindColumnConverter))]
         [Description("The database column this property is bound to.")]
         [UserFriendlyName("DB Bind Column")]

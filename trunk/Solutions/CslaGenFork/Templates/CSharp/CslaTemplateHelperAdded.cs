@@ -326,9 +326,11 @@ namespace CslaGenerator.Util
                 prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion ||
                 prop.DeclarationMode == PropertyDeclaration.UnmanagedWithTypeConversion)
             {
+                 // "private static PropertyInfo<{0}> {1} = RegisterProperty<{0}>(p => p.{2}, \"{3}\"{4});",
                 response =
                     string.Format(
-                        "private static PropertyInfo<{0}> {1} = RegisterProperty<{0}>(p => p.{2}, \"{3}\"{4});",
+                        "{0} static PropertyInfo<{1}> {2} = RegisterProperty<{1}>(p => p.{3}, \"{4}\"{5});",
+                        Access.Convert(prop.PropertyInfoAccess),
                         (prop.DeclarationMode == PropertyDeclaration.Managed ||
                          prop.DeclarationMode == PropertyDeclaration.Unmanaged)
                             ? GetDataTypeGeneric(prop, prop.PropertyType)
@@ -369,9 +371,11 @@ namespace CslaGenerator.Util
                 prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion ||
                 prop.DeclarationMode == PropertyDeclaration.UnmanagedWithTypeConversion)
             {
+                 // "private static PropertyInfo<{0}> {1} = RegisterProperty<{0}>(p => p.{2}, \"{3}\"{4});",
                 response =
                     string.Format(
-                        "private static PropertyInfo<{0}> {1} = RegisterProperty<{0}>(p => p.{2}, \"{3}\"{4});",
+                        "{0} static PropertyInfo<{1}> {2} = RegisterProperty<{1}>(p => p.{3}, \"{4}\"{5});",
+                        Access.Convert(prop.PropertyInfoAccess),
                         prop.TypeName,
                         FormatPropertyInfoName(prop.Name),
                         prop.Name,
@@ -1191,10 +1195,7 @@ namespace CslaGenerator.Util
 
         public string GetCommand(CslaObjectInfo info, string commandText)
         {
-            if (info.PersistenceType == PersistenceType.SqlConnectionUnshared)
-                return "using (var cmd = new SqlCommand(\"" + commandText + "\", cn))";
-
-            return "using (var cmd = new SqlCommand(\"" + commandText + "\", ctx.Connection))";
+            return "using (var cmd = new SqlCommand(\"" + commandText + "\", " + LocalContextConnection(info) + "))";
         }
 
         public string LocalContextConnection(CslaObjectInfo info)
@@ -1298,32 +1299,13 @@ namespace CslaGenerator.Util
 
         public virtual string GetPropertyAccess(ValueProperty prop)
         {
-            return GetPropertyAccess(prop.Access.ToString());
+            return Access.Convert(prop.Access);
         }
 
         public virtual string GetPropertyAccess(ChildProperty prop)
         {
-            return GetPropertyAccess(prop.Access.ToString());
-        }
-
-        public virtual string GetPropertyAccess(string access)
-        {
-            switch (access)
-            {
-                case "IsPublic":
-                    return "public";
-                case "IsProtected":
-                    return "protected";
-                case "IsInternal":
-                    return "internal";
-                case "IsProtectedInternal":
-                    return "protected internal";
-                case "IsPrivate":
-                    return "private";
-                default:
-                    return "public";
-            }
-        }
+            return Access.Convert(prop.Access);
+        }        
 
         #region <remarks> helpers
 

@@ -10,6 +10,23 @@ else if (parentInfo.ObjectType == CslaObjectType.EditableRootCollection)
 else if (parentInfo.ObjectType == CslaObjectType.DynamicEditableRootCollection)
     parentType = "";
 
+// get the Delete Stored Procedure name from criteria
+string criteriaDeleteProcedureName = string.Empty;
+int deleteCount = 0;
+foreach (Criteria c in Info.CriteriaObjects)
+{
+    if (c.DeleteOptions.DataPortal)
+    {
+        deleteCount++;
+        //This is kind of weak, because this will generate only for the first delete criteria,
+        //but it's unlikely anyone will have more than one delete criteria.
+        if (deleteCount == 1)
+        {
+            criteriaDeleteProcedureName = c.DeleteOptions.ProcedureName;
+        }
+    }
+}
+
 if (Info.GenerateDataPortalInsert)
 {
     %>
@@ -30,14 +47,15 @@ if (Info.GenerateDataPortalInsert)
     }
     %>internal void <%= (Info.ObjectType == CslaObjectType.EditableChild && CurrentUnit.GenerationParams.UseChildDataPortal) ? "Child_" : "" %>Insert(<% if (parentType.Length > 0) { %><%= parentType %> parent<% } %>)
         {
-    <%
+            <%
     if (UseSimpleAuditTrail(Info))
     {
         %>
             SimpleAuditTrail();
             <%
     }
-            %><%= GetConnection(Info, false) %>
+            %>
+            <%= GetConnection(Info, false) %>
             {
                 <%
     if (string.IsNullOrEmpty(Info.InsertProcedureName))
@@ -62,15 +80,13 @@ if (Info.GenerateDataPortalInsert)
         {
             if (prop.PropertyType == TypeCodeEx.SmartDate)
             {
-                %>
-                    SmartDate l<%= prop.Name %> = new SmartDate(parent.<%= prop.Name %>);
+                %>SmartDate l<%= prop.Name %> = new SmartDate(parent.<%= prop.Name %>);
                     cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", l<%= prop.Name %>.DBValue);
                     <%
             }
             else
             {
-                %>
-                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", parent.<%= prop.Name %>);
+                %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", parent.<%= prop.Name %>);
                     <%
             }
         }
@@ -80,22 +96,25 @@ if (Info.GenerateDataPortalInsert)
         if (prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK ||
             prop.DataAccess == ValueProperty.DataAccessBehaviour.CreateOnly)
         {
-            %>
-                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %>)<%
+            %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %>)<%
             if (prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK)
             {
-                %>.Direction = ParameterDirection.Output;<%
+                %>.Direction = ParameterDirection.Output;
+                    <%
             }
             else
             {
-                %>;<%
+                %>;
+                    <%
             }
-            %>
-            <%
         }
     }
-    %>
-                    var args = new DataPortalHookArgs(cmd);
+    if (Info.PersistenceType == PersistenceType.SqlConnectionUnshared)
+    {
+        %>cn.Open();
+                    <%
+    }
+    %>var args = new DataPortalHookArgs(cmd);
                     OnInsertStart(args);
                     DoInsertUpdate(cmd);
                     OnInsertPre(args);
@@ -129,6 +148,7 @@ if (Info.GenerateDataPortalInsert)
         }
     <%
 }
+
 if (Info.GenerateDataPortalUpdate)
 {
 %>
@@ -182,15 +202,13 @@ if (Info.GenerateDataPortalUpdate)
                         {
                             if (prop.PropertyType == TypeCodeEx.SmartDate)
                             {
-                                %>
-                        SmartDate l<%=prop.Name%> = new SmartDate(parent.<%=prop.Name%>);
+                                %>SmartDate l<%=prop.Name%> = new SmartDate(parent.<%=prop.Name%>);
                         cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", l<%= prop.Name %>.DBValue);
                         <%
                             }
                             else
                             {
-                                %>
-                        cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", parent.<%= prop.Name %>);
+                                %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", parent.<%= prop.Name %>);
                         <%
                             }
                         }
@@ -201,13 +219,16 @@ if (Info.GenerateDataPortalUpdate)
                             prop.DataAccess == ValueProperty.DataAccessBehaviour.UpdateOnly ||
                             prop.DbBindColumn.NativeType == "timestamp")
                         {
-                            %>
-                        cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %>);
+                            %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %>);
                         <%
                         }
                     }
-            %>
-                        var args = new DataPortalHookArgs(cmd);
+                    if (Info.PersistenceType == PersistenceType.SqlConnectionUnshared)
+                    {
+                        %>cn.Open();
+                        <%
+                    }
+            %>var args = new DataPortalHookArgs(cmd);
                         OnUpdateStart(args);
                         DoInsertUpdate(cmd);
                         OnUpdatePre(args);
@@ -233,14 +254,18 @@ if (Info.GenerateDataPortalUpdate)
         }
     <%
 }
+
 if (Info.GenerateDataPortalInsert || Info.GenerateDataPortalUpdate)
 {
     %>
 <!-- #include file="DoInsertUpdate.inc" -->
     <%
 }
-Response.Write(Environment.NewLine);
-%>
+
+if (deleteCount == 1)
+{
+    Response.Write(Environment.NewLine);
+    %>
         /// <summary>
         /// Delete <see cref="<%=Info.ObjectName%>"/> object from database with or without transaction.
         /// </summary>
@@ -270,12 +295,12 @@ Response.Write(Environment.NewLine);
                 %><%= GetConnection(Info, false) %>
                 {
                     <%
-    if (string.IsNullOrEmpty(Info.DeleteProcedureName))
+    if (string.IsNullOrEmpty(criteriaDeleteProcedureName))
     {
         Errors.Append("Criteria " + Info.ObjectName + " missing delete procedure name." + Environment.NewLine);
     }
     %>
-                    <%= GetCommand(Info, Info.DeleteProcedureName) %>
+                    <%= GetCommand(Info, criteriaDeleteProcedureName) %>
                     {
                         <%
     if (Info.TransactionType == TransactionType.ADO && Info.PersistenceType == PersistenceType.SqlConnectionManager)
@@ -300,21 +325,23 @@ Response.Write(Environment.NewLine);
         {
             if (prop.PropertyType == TypeCodeEx.SmartDate)
             {
-                %>
-                    SmartDate l<%= prop.Name %> = new SmartDate(parent.<%= prop.Name %>);
-                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", l<%= prop.Name %>.DBValue);
-                    <%
+                %>SmartDate l<%= prop.Name %> = new SmartDate(parent.<%= prop.Name %>);
+                        cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", l<%= prop.Name %>.DBValue);
+                        <%
             }
             else
             {
-                %>
-                        cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", parent.<%= prop.Name %>);
+                %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", parent.<%= prop.Name %>);
                         <%
             }
         }
     }
-    %>
-                        var args = new DataPortalHookArgs(cmd);
+    if (Info.PersistenceType == PersistenceType.SqlConnectionUnshared)
+    {
+        %>cn.Open();
+                        <%
+    }
+    %>var args = new DataPortalHookArgs(cmd);
                         OnDeletePre(args);
                         cmd.ExecuteNonQuery();
                         OnDeletePost(args);
@@ -322,3 +349,6 @@ Response.Write(Environment.NewLine);
                 }
             }
         }
+        <%
+}
+%>

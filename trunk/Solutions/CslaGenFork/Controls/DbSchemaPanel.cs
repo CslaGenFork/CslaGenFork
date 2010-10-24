@@ -469,7 +469,7 @@ namespace CslaGenerator.Controls
                 foreach (ValueProperty p in parent.ValueProperties)
                     if (p.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
                         lst.Add(p);
-                foreach (ValueProperty p in lst)
+                foreach (Property p in lst)
                     _currentCslaObject.ParentProperties.Add(p);
                 ChildProperty col = new ChildProperty();
                 col.TypeName = collectionName;
@@ -478,6 +478,13 @@ namespace CslaGenerator.Controls
                 else
                     col.Name = collectionName;
                 col.ReadOnly = true;
+                foreach (var crit in parent.CriteriaObjects)
+                {
+                    foreach (var prop in crit.Properties)
+                    {
+                        col.LoadParameters.Add(new Parameter(crit, prop));
+                    }
+                }
                 parent.ChildCollectionProperties.Add(col);
             }
         }
@@ -698,6 +705,7 @@ namespace CslaGenerator.Controls
             obj.ObjectType = type;
             obj.ObjectName = ParseObjectName(name);
             obj.ParentType = parent;
+            obj.ParentInsertOnly = true;
             _currentUnit.CslaObjects.Add(obj);
             _currentCslaObject = obj;
         }

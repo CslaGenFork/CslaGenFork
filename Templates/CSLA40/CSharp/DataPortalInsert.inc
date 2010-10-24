@@ -51,13 +51,11 @@ if (Info.GenerateDataPortalInsert)
         {
             if (prop.DeclarationMode == PropertyDeclaration.Managed)
             {
-                %>
-                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetFieldReaderStatement(prop) %>)<%
+                %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetFieldReaderStatement(prop) %>)<%
             }
             else
             {
-                %>
-                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %>)<%
+                %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %>)<%
             }
             if (prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK)
             {
@@ -71,8 +69,12 @@ if (Info.GenerateDataPortalInsert)
                     <%
         }
     }
-    %>
-                    var args = new DataPortalHookArgs(cmd);
+    if (Info.PersistenceType == PersistenceType.SqlConnectionUnshared)
+    {
+        %>cn.Open();
+                    <%
+    }
+    %>var args = new DataPortalHookArgs(cmd);
                     OnInsertStart(args);
                     DoInsertUpdate(cmd);
                     OnInsertPre(args);

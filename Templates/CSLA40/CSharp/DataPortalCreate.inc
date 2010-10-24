@@ -80,8 +80,6 @@ foreach (Criteria c in Info.CriteriaObjects)
         if (valProps.Contains(p.Name))
         {
             ValueProperty prop = valProps.Find(p.Name);
-            %>
-            <%
             if (c.Properties.Count > 1)
             {
                 %><%= GetFieldLoaderStatement(prop, "crit." + FormatProperty(p.Name)) %>;
@@ -102,8 +100,6 @@ foreach (Criteria c in Info.CriteriaObjects)
             %><%= GetNewChildLoadStatement(childProp, true) %>;
             <%
         }
-        %>
-            <%
     }
     %>var args = new DataPortalHookArgs(<%= c.Properties.Count > 0 ? "crit" : "" %>);
             OnCreate(args);

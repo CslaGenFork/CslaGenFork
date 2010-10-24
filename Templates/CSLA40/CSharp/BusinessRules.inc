@@ -1,6 +1,5 @@
-
-        #region Business Rules
-<%    bool hasRules = false;
+<%
+bool hasRules = false;
     foreach (ValueProperty prop in Info.ValueProperties) {
         if (prop.Rules.Count > 0) {
             hasRules=true;
@@ -8,6 +7,8 @@
         }
     }
     if (hasRules) { %>
+
+        #region Business Rules
 
         private class <%=Info.ObjectName %>Rules
         {
@@ -63,6 +64,6 @@
     } %>
             onAddCustomBusinessRules();
         }
-    <% } %>
 
         #endregion
+    <% } %>

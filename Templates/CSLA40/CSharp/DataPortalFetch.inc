@@ -63,19 +63,21 @@ if (!Info.UseCustomLoading)
             {
                 if (c.Properties.Count > 1)
                 {
-                    %>
-                    cmd.Parameters.AddWithValue("@<%=p.ParameterName%>", <%= GetParameterSet(p,true) %>);
+                    %>cmd.Parameters.AddWithValue("@<%=p.ParameterName%>", <%= GetParameterSet(p, true) %>);
                     <%
                 }
                 else
                 {
-                    %>
-                    cmd.Parameters.AddWithValue("@<%=p.ParameterName%>", crit.Value);
+                    %>cmd.Parameters.AddWithValue("@<%=p.ParameterName%>", crit.Value);
                     <%
                 }
             }
-            %>
-                    var args = new DataPortalHookArgs(cmd<%= c.Properties.Count > 0 ? ", crit" : "" %>);
+            if (Info.PersistenceType == PersistenceType.SqlConnectionUnshared)
+            {
+                %>cn.Open();
+                    <%
+            }
+            %>var args = new DataPortalHookArgs(cmd<%= c.Properties.Count > 0 ? ", crit" : "" %>);
                     OnFetchPre(args);
                     Fetch(cmd);
                     OnFetchPost(args);

@@ -189,11 +189,15 @@ using Csla;
             <%= GetConnection(Info, false) %>
             {
                 <%
+        if (Info.PersistenceType == PersistenceType.SqlConnectionUnshared)
+        {
+            %>cn.Open();
+                <%
+        }
         if (CurrentUnit.GenerationParams.UseChildDataPortal)
         {
             %>base.DataPortal_Update();
-
-                <%
+<%
         }
         else
         {
@@ -210,14 +214,15 @@ using Csla;
                     else
                         child.Update();
                 }
-        <%
+                <%
         }
         if (Info.TransactionType == TransactionType.ADO && Info.PersistenceType == PersistenceType.SqlConnectionManager)
         {
-            %>ctx.Commit();
-            <%
+            %>
+                ctx.Commit();
+                <%
         }
-        %>
+%>
             }
         }
 

@@ -443,7 +443,7 @@ namespace CslaGenerator.Util
 
         public ConvertValuePropertyBag(ConvertValueProperty[] obj)
         {
-            _defaultProperty = "Name";
+            _defaultProperty = "BaseName";
             _properties = new PropertySpecCollection();
             _selectedObject = obj;
             InitPropertyBag();

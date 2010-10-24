@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using System.IO;
 using System.Xml.Serialization;
+using CslaGenerator.Attributes;
 
 namespace CslaGenerator.Metadata
 {
@@ -54,6 +55,30 @@ namespace CslaGenerator.Metadata
             get { return string.Empty; }
         }
 
+        [Category("00. Auto Fill Helper")]
+        [Description("The property Base Name used by automatic filling.")]
+        [UserFriendlyName("Base Name")]
+        public string BaseName
+        {
+            get { return _baseName; }
+            set
+            {
+                if (value != null && (base.Name.Equals(_baseName + "Name") || string.IsNullOrEmpty(base.Name)))
+                    base.Name = value + "Name";
+
+                _baseName = value;
+            }
+
+        }
+
+        [Category("01. Definition")]
+        [Description("The property that results from a conversion.\r\nAutomatic filling uses the Base Name.")]
+        public override string Name
+        {
+            get { return base.Name; }
+            set { base.Name = value; }
+        }
+
         // Hide ParameterName
         [Browsable(false)]
         public override string ParameterName
@@ -104,22 +129,8 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("06. Conversion")]
-        [Description("This is a description.")]
-        public string BaseName
-        {
-            get { return _baseName; }
-            set
-            {
-                if (value != null && (base.Name.Equals(_baseName + "Name") || string.IsNullOrEmpty(base.Name)))
-                    base.Name = value + "Name";
-
-                _baseName = value;
-            }
-
-        }
-
-        [Category("06. Conversion")]
-        [Description("This is a description.")]
+        [Description("The property that feeds the conversion (convert from).\r\nAutomatic filling uses the Base Name.")]
+        [UserFriendlyName("Source Property Name")]
         public string SourcePropertyName
         {
             get
@@ -138,7 +149,8 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("06. Conversion")]
-        [Description("This is a description.")]
+        [Description("The class that takes care of the conversion.\r\nAutomatic filling uses the Base Name.")]
+        [UserFriendlyName("NVL Converter Class")]
         public string NVLConverter
         {
             get

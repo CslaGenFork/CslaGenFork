@@ -64,6 +64,14 @@ namespace CslaGenerator.Controls
             this.cboPersistenceType = new System.Windows.Forms.ComboBox();
             this.lblDatabaseContextObject = new System.Windows.Forms.Label();
             this.txtDatabaseContextObject = new System.Windows.Forms.TextBox();
+            this.groupBoxObjectRelationsBuilder = new System.Windows.Forms.GroupBox();
+            this.lblChildPropertySuffix = new System.Windows.Forms.Label();
+            this.txtChildPropertySuffix = new System.Windows.Forms.TextBox();
+            this.lblCollectionSuffix = new System.Windows.Forms.Label();
+            this.lblSingleSPSuffix = new System.Windows.Forms.Label();
+            this.txtSingleSPSuffix = new System.Windows.Forms.TextBox();
+            this.txtCollectionSuffix = new System.Windows.Forms.TextBox();
+            this.chkItemsUseSingleSP = new System.Windows.Forms.CheckBox();
             this.tabStoredProcs = new System.Windows.Forms.TabPage();
             this.groupBoxPrefixSuffix = new System.Windows.Forms.GroupBox();
             this.lblGeneralSpPrefix = new System.Windows.Forms.Label();
@@ -170,6 +178,7 @@ namespace CslaGenerator.Controls
             this.tabGeneration.SuspendLayout();
             this.tabGenerationFiles.SuspendLayout();
             this.groupBoxReadOnlyObjects.SuspendLayout();
+            this.groupBoxObjectRelationsBuilder.SuspendLayout();
             this.groupBoxPrefixSuffix.SuspendLayout();
             this.groupBoxPKDefaultValues.SuspendLayout();
             this.groupBoxOtherParameters.SuspendLayout();
@@ -466,6 +475,7 @@ namespace CslaGenerator.Controls
             this.tabDefaultsDatabase.Controls.Add(this.cboPersistenceType);
             this.tabDefaultsDatabase.Controls.Add(this.lblDatabaseContextObject);
             this.tabDefaultsDatabase.Controls.Add(this.txtDatabaseContextObject);
+            this.tabDefaultsDatabase.Controls.Add(this.groupBoxObjectRelationsBuilder);
             this.tabDefaultsDatabase.Location = new System.Drawing.Point(4, 22);
             this.tabDefaultsDatabase.Name = "tabDefaultsDatabase";
             this.tabDefaultsDatabase.Size = new System.Drawing.Size(525, 329);
@@ -559,6 +569,87 @@ namespace CslaGenerator.Controls
             this.toolTip1.SetToolTip(this.txtDatabaseContextObject, "Specify the default database context object to be set on created objects."+
                 "\r\nThis is needed for LINQ to SQL and Entity Framework persistence.");
             // 
+            // groupBoxObjectRelationsBuilder
+            // 
+            this.groupBoxObjectRelationsBuilder.Controls.Add(this.lblChildPropertySuffix);
+            this.groupBoxObjectRelationsBuilder.Controls.Add(this.txtChildPropertySuffix);
+            this.groupBoxObjectRelationsBuilder.Controls.Add(this.lblCollectionSuffix);
+            this.groupBoxObjectRelationsBuilder.Controls.Add(this.txtCollectionSuffix);
+            this.groupBoxObjectRelationsBuilder.Controls.Add(this.lblSingleSPSuffix);
+            this.groupBoxObjectRelationsBuilder.Controls.Add(this.txtSingleSPSuffix);
+            this.groupBoxObjectRelationsBuilder.Controls.Add(this.chkItemsUseSingleSP);
+            this.groupBoxObjectRelationsBuilder.Location = new System.Drawing.Point(240, 46);
+            this.groupBoxObjectRelationsBuilder.Name = "groupBoxObjectRelationsBuilder";
+            this.groupBoxObjectRelationsBuilder.Size = new System.Drawing.Size(202, 178);
+            this.groupBoxObjectRelationsBuilder.TabIndex = 24;
+            this.groupBoxObjectRelationsBuilder.TabStop = false;
+            this.groupBoxObjectRelationsBuilder.Text = "Object Relations Builder";
+            // 
+            // lblChildPropertySuffix
+            // 
+            this.lblChildPropertySuffix.Location = new System.Drawing.Point(6, 20);
+            this.lblChildPropertySuffix.Name = "lblChildPropertySuffix";
+            this.lblChildPropertySuffix.Size = new System.Drawing.Size(110, 16);
+            this.lblChildPropertySuffix.TabIndex = 5;
+            this.lblChildPropertySuffix.Text = "Property Name suffix";
+            // 
+            // txtChildPropertySuffix
+            // 
+            this.txtChildPropertySuffix.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "ORBChildPropertySuffix", true));
+            this.txtChildPropertySuffix.Location = new System.Drawing.Point(6, 36);
+            this.txtChildPropertySuffix.Name = "txtChildPropertySuffix";
+            this.txtChildPropertySuffix.Size = new System.Drawing.Size(104, 20);
+            this.txtChildPropertySuffix.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.txtChildPropertySuffix, "Specify a suffix to be used on Primary and Secondary Property Name.");
+            // 
+            // lblCollectionSuffix
+            // 
+            this.lblCollectionSuffix.Location = new System.Drawing.Point(6, 64);
+            this.lblCollectionSuffix.Name = "lblCollectionSuffix";
+            this.lblCollectionSuffix.Size = new System.Drawing.Size(124, 16);
+            this.lblCollectionSuffix.TabIndex = 5;
+            this.lblCollectionSuffix.Text = "Collection Name suffix";
+            // 
+            // txtCollectionSuffix
+            // 
+            this.txtCollectionSuffix.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "ORBCollectionSuffix", true));
+            this.txtCollectionSuffix.Location = new System.Drawing.Point(6, 80);
+            this.txtCollectionSuffix.Name = "txtCollectionSuffix";
+            this.txtCollectionSuffix.Size = new System.Drawing.Size(104, 20);
+            this.txtCollectionSuffix.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.txtCollectionSuffix, "Specify a suffix to be used on Primary and Secondary Collection Type Name.");
+            // 
+            // lblSingleSPSuffix
+            // 
+            this.lblSingleSPSuffix.Location = new System.Drawing.Point(6, 108);
+            this.lblSingleSPSuffix.Name = "lblSingleSPSuffix";
+            this.lblSingleSPSuffix.Size = new System.Drawing.Size(104, 16);
+            this.lblSingleSPSuffix.TabIndex = 5;
+            this.lblSingleSPSuffix.Text = "Single SP suffix";
+            // 
+            // txtSingleSPSuffix
+            // 
+            this.txtSingleSPSuffix.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "ORBSingleSPSuffix", true));
+            this.txtSingleSPSuffix.Location = new System.Drawing.Point(6, 124);
+            this.txtSingleSPSuffix.Name = "txtSingleSPSuffix";
+            this.txtSingleSPSuffix.Size = new System.Drawing.Size(104, 20);
+            this.txtSingleSPSuffix.TabIndex = 1;
+            this.toolTip1.SetToolTip(this.txtSingleSPSuffix, "Specify a suffix to be used on single set of stored procedure's name.");
+            // 
+            // chkItemsUseSingleSP
+            // 
+            this.chkItemsUseSingleSP.AutoSize = false;
+            this.chkItemsUseSingleSP.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.projectParametersBindingSource, "ORBItemsUseSingleSP", true));
+            this.chkItemsUseSingleSP.Location = new System.Drawing.Point(6, 152);
+            this.chkItemsUseSingleSP.Name = "chkItemsUseSingleSP";
+            this.chkItemsUseSingleSP.Size = new System.Drawing.Size(193, 20);
+            this.chkItemsUseSingleSP.TabIndex = 22;
+            this.chkItemsUseSingleSP.Text = "Use single SP set for N to N items";
+            this.chkItemsUseSingleSP.UseVisualStyleBackColor = true;
+            this.toolTip1.SetToolTip(this.chkItemsUseSingleSP,
+                                     "If checked, on N to N relations, a single set of stored procedures is generated\r\n" +
+                                     "for relation items.");
+            // 
             // tabStoredProcs
             // 
             this.tabStoredProcs.Controls.Add(this.groupBoxPrefixSuffix);
@@ -574,7 +665,6 @@ namespace CslaGenerator.Controls
             this.tabStoredProcs.TabIndex = 0;
             this.tabStoredProcs.Text = "Stored Procedures";
             this.tabStoredProcs.UseVisualStyleBackColor = true;
-
             // 
             // groupBoxPrefixSuffix
             // 
@@ -1585,6 +1675,8 @@ namespace CslaGenerator.Controls
             this.tabDefaultsGeneral.PerformLayout();
             this.tabDefaultsDatabase.ResumeLayout(false);
             this.tabDefaultsDatabase.PerformLayout();
+            this.groupBoxObjectRelationsBuilder.ResumeLayout(false);
+            this.groupBoxObjectRelationsBuilder.PerformLayout();
             this.tabStoredProcs.ResumeLayout(false);
             this.tabStoredProcs.PerformLayout();
             this.groupBoxPrefixSuffix.ResumeLayout(false);
@@ -1645,6 +1737,14 @@ namespace CslaGenerator.Controls
         private System.Windows.Forms.ComboBox cboPersistenceType;
         private System.Windows.Forms.Label lblDatabaseContextObject;
         private System.Windows.Forms.TextBox txtDatabaseContextObject;
+        private System.Windows.Forms.GroupBox groupBoxObjectRelationsBuilder;
+        private System.Windows.Forms.Label lblChildPropertySuffix;
+        private System.Windows.Forms.TextBox txtChildPropertySuffix;
+        private System.Windows.Forms.Label lblCollectionSuffix;
+        private System.Windows.Forms.TextBox txtCollectionSuffix;
+        private System.Windows.Forms.Label lblSingleSPSuffix;
+        private System.Windows.Forms.TextBox txtSingleSPSuffix;
+        private System.Windows.Forms.CheckBox chkItemsUseSingleSP;
         private System.Windows.Forms.TabPage tabStoredProcs;
         private System.Windows.Forms.GroupBox groupBoxPrefixSuffix;
         private System.Windows.Forms.Label lblGeneralSpPrefix;
