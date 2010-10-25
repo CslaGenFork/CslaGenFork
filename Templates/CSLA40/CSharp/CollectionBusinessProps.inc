@@ -1,17 +1,32 @@
 <%
+bool useAuthz;
 CslaObjectInfo itemInfo = FindChildInfo(Info, Info.ItemType);
-if (!IsReadOnlyType(itemInfo.ObjectType) &&
+useAuthz = !IsReadOnlyType(itemInfo.ObjectType) &&
     ((itemInfo.DeleteRoles.Trim() != String.Empty) ||
-    (itemInfo.NewRoles.Trim() != String.Empty)))
+    (itemInfo.NewRoles.Trim() != String.Empty));
+
+bool needsBusiness = false;
+foreach (Criteria c in itemInfo.CriteriaObjects)
+{
+    if (c.CreateOptions.Factory || c.DeleteOptions.Factory)
+    {
+        needsBusiness = true;
+        break;
+    }
+}
+
+if (useAuthz || needsBusiness)
 {
     %>
 
-        #region Collection Add and Remove
-
+        #region Business Methods
         <%
+if (useAuthz)
+{
     if (itemInfo.NewRoles.Trim() != String.Empty)
     {
         %>
+
         /// <summary>
         /// Add new <see cref="<%= itemInfo.ObjectName %>"/> object to the <%= Info.ObjectName %> collection.
         /// </summary>
@@ -43,17 +58,13 @@ if (!IsReadOnlyType(itemInfo.ObjectType) &&
 
             return base.Remove(item);
         }
-
         <%
     }
-    %>
-        #endregion
-<%
 }
-%>
 
-        #region Business Properties and Methods
-<%
+if (useAuthz && !needsBusiness)
+    Response.Write("\r\n");
+
 foreach (Criteria c in itemInfo.CriteriaObjects)
 {
     if (c.CreateOptions.Factory)
@@ -84,8 +95,13 @@ foreach (Criteria c in itemInfo.CriteriaObjects)
         }
         %>
         /// <returns>The new <%= Info.ItemType %> object added to the collection.</returns>
-        /// <exception cref="System.Security.SecurityException">if the user isn't authorized to add items from the collection.</exception>
-        public <%= Info.ItemType %> Add(<%=prms%>)
+        <%
+        if (useAuthz)
+        {
+            %>/// <exception cref="System.Security.SecurityException">if the user isn't authorized to add items from the collection.</exception>
+        <%
+        }
+        %>public <%= Info.ItemType %> Add(<%=prms%>)
         {
         <%
         string newMethodName = "New" + Info.ItemType;
@@ -100,7 +116,68 @@ foreach (Criteria c in itemInfo.CriteriaObjects)
         }
         <%
     }
+
+    if (c.DeleteOptions.Factory)
+    {
+        %>
+
+        /// <summary>
+        /// Remove <see cref="<%= Info.ItemType %>"/> object from the <%=Info.ObjectName%> collection.
+        /// </summary>
+        <%
+        string prms = string.Empty;
+        string factoryParams = string.Empty;
+        string paramName = string.Empty;
+        string[] factoryParamsArray = new string[c.Properties.Count];
+        string[] paramNameArray = new string[c.Properties.Count];
+        for (int i = 0; i < c.Properties.Count; i++)
+        {
+            Property param = c.Properties[i];
+            prms += string.Concat(", ", GetDataTypeGeneric(param, param.PropertyType), " ", FormatCamel(param.Name));
+            factoryParams += string.Concat(", ", FormatCamel(param.Name));
+            factoryParamsArray[i] = FormatCamel(param.Name);
+            paramName += string.Concat(", ", param.Name);
+            paramNameArray[i] = param.Name;
+        }
+        if (factoryParams.Length > 1)
+        {
+            factoryParams = factoryParams.Substring(2);
+            prms = prms.Substring(2);
+            paramName = paramName.Substring(2);
+        }
+        for (int i = 0; i < c.Properties.Count; i++)
+        {
+            %>
+        /// <param name="<%= FormatCamel(c.Properties[i].Name) %>">The <%= FormatProperty(c.Properties[i].Name) %> of the object to be removed.</param>
+        <%
+        }
+        if (useAuthz)
+        {
+            %>/// <exception cref="System.Security.SecurityException">if the user isn't authorized to add items from the collection.</exception>
+        <%
+        }
+        %>public void Remove(<%= prms %>)
+        {
+            foreach (<%= Info.ItemType %> <%= FormatCamel(Info.ItemType) %> in this)
+            {
+                if (<%
+        for (int i = 0; i < c.Properties.Count; i++)
+        {
+            %><%= (i == 0) ? "" : " && " %><%= FormatCamel(Info.ItemType) %>.<%= paramNameArray[i] %> == <%= factoryParamsArray[i] %><%
+        }
+                    %>)
+                {
+                      Remove(<%= FormatCamel(Info.ItemType) %>);
+                      break;
+                }
+            }
+        }
+        <%
+    }
 }
 %>
 
         #endregion
+<%
+}
+%>
