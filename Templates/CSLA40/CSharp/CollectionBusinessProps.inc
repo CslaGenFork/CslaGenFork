@@ -14,7 +14,6 @@ foreach (Criteria c in itemInfo.CriteriaObjects)
         break;
     }
 }
-
 if (useAuthz || needsBusiness)
 {
     %>
