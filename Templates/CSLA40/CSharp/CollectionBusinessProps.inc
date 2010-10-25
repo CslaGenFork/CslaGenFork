@@ -19,7 +19,7 @@ if (!IsReadOnlyType(itemInfo.ObjectType) &&
         /// <exception cref="System.Security.SecurityException">if the user isn't authorized to add items to the collection.</exception>
         public new void Add(<%= itemInfo.ObjectName %> item)
         {
-            if (!AllowNew)
+            if (!CanGetObject())
                 throw new System.Security.SecurityException("User not authorized to create a <%= itemInfo.ObjectName %>.");
 
             base.Add(item);
@@ -38,7 +38,7 @@ if (!IsReadOnlyType(itemInfo.ObjectType) &&
         /// <exception cref="System.Security.SecurityException">if the user isn't authorized to remove items from the collection.</exception>
         public new bool Remove(<%= itemInfo.ObjectName %> item)
         {
-            if (!AllowRemove)
+            if (!CanDeleteObject())
                 throw new System.Security.SecurityException("User not authorized to remove a <%= itemInfo.ObjectName %>.");
 
             return base.Remove(item);
@@ -79,11 +79,12 @@ foreach (Criteria c in itemInfo.CriteriaObjects)
         for (int i = 0; i < c.Properties.Count; i++)
         {
             %>
-        /// <param name="<%= FormatCamel(c.Properties[i].Name) %>">The <%= FormatProperty(c.Properties[i].Name) %>.</param>
+        /// <param name="<%= FormatCamel(c.Properties[i].Name) %>">The <%= FormatProperty(c.Properties[i].Name) %> of the object to be added.</param>
         <%
         }
         %>
         /// <returns>The new <%= Info.ItemType %> object added to the collection.</returns>
+        /// <exception cref="System.Security.SecurityException">if the user isn't authorized to add items from the collection.</exception>
         public <%= Info.ItemType %> Add(<%=prms%>)
         {
         <%

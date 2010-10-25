@@ -48,6 +48,7 @@ if (!IsReadOnlyType(Info.ObjectType) && IsCollectionType(Info.ObjectType))
             }
             // DataPortal_CreateChild already takes care of marking childs
             // CurrentUnit.GenerationParams.UseChildDataPortal is enought to say when this happens
+            // except Get-(SafeDataReader dr) that bypass Child DataPortal methods
             if (!CurrentUnit.GenerationParams.UseChildDataPortal &&
                 (Info.ObjectType == CslaObjectType.EditableChild || Info.ObjectType == CslaObjectType.EditableChildCollection)) { %>
 

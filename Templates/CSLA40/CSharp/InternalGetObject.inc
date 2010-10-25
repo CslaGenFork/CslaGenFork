@@ -24,9 +24,16 @@ if (!Info.UseCustomLoading)
         }
         %><%= Info.ObjectName %> obj = new <%= Info.ObjectName %>();
             <%
-        if (Info.ObjectType == CslaObjectType.EditableSwitchable)
+        // DataPortal_CreateChild already takes care of marking childs
+        // CurrentUnit.GenerationParams.UseChildDataPortal is enought to say when this happens
+        // except Get-(SafeDataReader dr) that bypass Child DataPortal methods
+        if (Info.ObjectType == CslaObjectType.EditableSwitchable ||
+            (CurrentUnit.GenerationParams.UseChildDataPortal &&
+            (Info.ObjectType == CslaObjectType.EditableChild ||
+            Info.ObjectType == CslaObjectType.EditableChildCollection)))
         {
-            %>obj.MarkAsChild();
+            %>// show the framework that this is a child object
+            obj.MarkAsChild();
             <%
         }
         %>obj.Fetch(dr);
@@ -80,8 +87,15 @@ if (!Info.UseCustomLoading)
         }
         %><%= Info.ObjectName %> obj = new <%= Info.ObjectName %>();
             <%
-        if (Info.ObjectType == CslaObjectType.EditableSwitchable)
+        // DataPortal_CreateChild already takes care of marking childs
+        // CurrentUnit.GenerationParams.UseChildDataPortal is enought to say when this happens
+        // except Get-(SafeDataReader dr) that bypass Child DataPortal methods
+        if (Info.ObjectType == CslaObjectType.EditableSwitchable ||
+            (CurrentUnit.GenerationParams.UseChildDataPortal &&
+            (Info.ObjectType == CslaObjectType.EditableChild ||
+            Info.ObjectType == CslaObjectType.EditableChildCollection)))
         {
+            %>// show the framework that this is a child object
             %>obj.MarkAsChild();
             <%
         }
