@@ -1,6 +1,7 @@
 using System;
 using System.Data;
 using CslaGenerator.Metadata;
+using CslaGenerator.Util.PropertyBags;
 using System.ComponentModel;
 
 namespace CslaGenerator.Util

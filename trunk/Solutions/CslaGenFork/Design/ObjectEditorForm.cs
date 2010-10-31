@@ -4,7 +4,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
 using CslaGenerator.Metadata;
-using CslaGenerator.Util;
+using CslaGenerator.Util.PropertyBags;
 
 namespace CslaGenerator.Design
 {

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace CslaGenerator.Metadata
 {
@@ -10,9 +8,10 @@ namespace CslaGenerator.Metadata
         {
             Add(new DecoratorArgument(name, value));
         }
+
         public void Add(string name, string value, bool addQuotes)
         {
-            Add(new DecoratorArgument(name, value,addQuotes));
+            Add(new DecoratorArgument(name, value, addQuotes));
         }
     }
 }

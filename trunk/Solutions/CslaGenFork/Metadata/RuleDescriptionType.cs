@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CslaGenerator.Metadata
+﻿namespace CslaGenerator.Metadata
 {
     public enum RuleDescriptionType
     {

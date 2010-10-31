@@ -504,14 +504,23 @@ namespace CslaGenerator.Util
 
             if (CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 &&
                 (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
-                CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel) &&
-                ((info.NewRoles.Trim() != String.Empty) ||
-                (info.GetRoles.Trim() != String.Empty) ||
-                (info.UpdateRoles.Trim() != String.Empty) ||
-                (info.DeleteRoles.Trim() != String.Empty)))
+                CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel))
             {
-                usingList.Add("Csla.Rules");
-                usingList.Add("Csla.Rules.CommonRules");
+                CslaObjectInfo authzInfo = info;
+                if (IsCollectionType(info.ObjectType))
+                {
+                    authzInfo = FindChildInfo(info, info.ItemType);
+                }
+
+                if (authzInfo != null &&
+                    ((authzInfo.NewRoles.Trim() != String.Empty) ||
+                     (authzInfo.GetRoles.Trim() != String.Empty) ||
+                     (authzInfo.UpdateRoles.Trim() != String.Empty) ||
+                     (authzInfo.DeleteRoles.Trim() != String.Empty)))
+                {
+                    usingList.Add("Csla.Rules");
+                    usingList.Add("Csla.Rules.CommonRules");
+                }
             }
 
             if (info.ObjectNamespace.IndexOf(CurrentUnit.GenerationParams.UtilitiesNamespace) != 0)

@@ -1,14 +1,13 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
-using CslaGenerator.Metadata;
-//using SchemaExplorer;
-using DBSchemaInfo.Base;
 using CodeSmith.Engine;
+using CslaGenerator.Metadata;
+using DBSchemaInfo.Base;
+
 namespace CslaGenerator.Util
 {
     /// <summary>
@@ -16,70 +15,63 @@ namespace CslaGenerator.Util
     /// </summary>
     public class SprocTemplateHelper : CodeTemplate
     {
-        public SprocTemplateHelper()
-        {
-        }
+        #region Private fields
+
         private ICatalog _catalog = GeneratorController.Catalog;
+        private CslaObjectInfo _Info;
+        private bool _IncludeParentProperties = false;
+        private Criteria _Criteria = new Criteria();
+        private bool _CriteriaDefined = false;
+        private CslaObjectInfo _topLevelObject = null;
+
+        #endregion
+
+        #region Public fields
+
+        public List<DuplicateTables> correlationNames = new List<DuplicateTables>();
+
+        #endregion
+
+        #region Public Properties
+
         [Browsable(false)]
         public ICatalog Catalog
         {
-            get
-            {
-                return _catalog;
-            }
+            get { return _catalog; }
         }
-        private CslaObjectInfo _Info;
+
         public CslaObjectInfo Info
         {
-            get
-            {
-                return _Info;
-            }
-            set
-            {
-                _Info = value;
-            }
+            get { return _Info; }
+            set { _Info = value; }
         }
-        private bool _IncludeParentProperties=false;
+
         public bool IncludeParentProperties
         {
-            get
-            {
-                return _IncludeParentProperties;
-            }
-            set
-            {
-                _IncludeParentProperties = value;
-            }
+            get { return _IncludeParentProperties; }
+            set { _IncludeParentProperties = value; }
         }
 
-        private Criteria _Criteria=new Criteria();
-        private bool _CriteriaDefined = false;
         protected bool CriteriaDefined
         {
-            get
-            {
-                return _CriteriaDefined;
-            }
-
+            get { return _CriteriaDefined; }
         }
+
         public Criteria Criteria
         {
-            get
-            {
-                return _Criteria;
-            }
-            set
+            get { return _Criteria; }
+            set 
             {
                 _Criteria = value;
                 _CriteriaDefined = true;
             }
         }
 
-        //private DatabaseSchema _schema1 = null;
-        private CslaObjectInfo _topLevelObject = null;
+        #endregion
 
-        public struct duplicateTables
+        #region Public struct
+
+        public struct DuplicateTables
         {
             public string PropertyName;
             public string TableName;
@@ -87,28 +79,26 @@ namespace CslaGenerator.Util
             public int Order;
         }
 
-        public List<duplicateTables> correlationNames = new List<duplicateTables>();
+        #endregion
 
-        //[Browsable(false)]
-        //public DatabaseSchema Schema1
-        //{
-        //    get
-        //    {
-        //        return _schema1;
-        //    }
-        //}
+        #region Constructor
+
+        public SprocTemplateHelper()
+        {
+        }
+
+        #endregion
 
         public void Init(CslaObjectInfo info)
         {
-            //_schema = GetSchema(info);
             _topLevelObject = info;
         }
 
         public void StoreCorrelationNames(CslaObjectInfo info)
         {
             correlationNames.Clear();
-            duplicateTables readCorr;
-            duplicateTables writeCorr = new duplicateTables();
+            DuplicateTables readCorr;
+            DuplicateTables writeCorr = new DuplicateTables();
             ValuePropertyCollection vpc = new ValuePropertyCollection();
             vpc.AddRange(info.GetAllValueProperties());
             for (int vp = 0; vp < vpc.Count; vp++)
@@ -137,7 +127,7 @@ namespace CslaGenerator.Util
 
         public string GetCorrelationName(ValueProperty prop)
         {
-            foreach (duplicateTables correlationName in correlationNames)
+            foreach (DuplicateTables correlationName in correlationNames)
             {
                 if (correlationName.PropertyName == prop.Name)
                 {
@@ -214,21 +204,10 @@ namespace CslaGenerator.Util
             throw new ApplicationException("No column information for this criteria property: " + col.Name);
 
         }
+
         public string GetColumnString(DbBindColumn col)
         {
             return col.ColumnName;
-            //if (col.ColumnOriginType == ColumnOriginType.Table)
-            //{
-            //    return col.TableColumn.Name;
-            //}
-            //else if (col.ColumnOriginType == ColumnOriginType.View)
-            //{
-            //    return col.ViewColumn.Name;
-            //}
-            //else
-            //{
-            //    throw new Exception("Column value not set.");
-            //}
         }
 
         public string GetSelect(CslaObjectInfo info, Criteria crit, bool childSelect, bool searchWhereClause)
@@ -656,50 +635,7 @@ namespace CslaGenerator.Util
             return sb.ToString();
         }
 
-        //public string GetOrderByClause(CslaObjectInfo topInfo, Criteria crit, string currentObjName)
-        //{
-        //    StringBuilder sb = new StringBuilder();
-        //    sb.Append(Indent(2) + "ORDER BY"  + Environment.NewLine);
-        //    CslaObjectInfo info = null;
-        //    if (IsCollectionType(topInfo.ObjectType))
-        //    {
-        //        info = FindChildInfo(info,topInfo.ItemType);
-        //    }
-        //    else { info = topInfo; }
-        //    bool first = true;
-        //    foreach (Property parm in crit.Properties)
-        //    {
-        //        ValueProperty prop = GetValuePropertyByName(info, parm.Name);
-        //        if (prop != null)
-        //        {
-        //            if (!first) { sb.Append("," + Environment.NewLine); }
-        //            else { first = false; }
-        //            sb.Append(Indent(3) + " ");
-        //            sb.Append(GetAliasedFieldString(prop.DbBindColumn));
-        //        }
-        //    }
-        //    if (topInfo.ObjectName != currentObjName)
-        //    {
-        //        CslaObjectInfo childInfo = FindChildInfo(info,currentObjName);
-        //        if (IsCollectionType(childInfo.ObjectType))
-        //        {
-        //            childInfo = FindChildInfo(info,childInfo.ItemType);
-        //        }
-        //        foreach (Parameter parm in childInfo.GetObjectParameters)
-        //        {
-        //            ValueProperty prop = GetValuePropertyByName(childInfo, parm.Property.Name);
-        //            if (prop != null)
-        //            {
-        //                if (!first) { sb.Append("," + Environment.NewLine); }
-        //                else { first = false; }
-        //                sb.Append(Indent(3) + " ");
-        //                sb.Append(GetAliasedFieldString(prop.DbBindColumn));
-        //            }
-        //        }
-        //    }
-        //    return sb.ToString();
-
-        //}
+        #region Tables
 
         public List<IResultObject> GetTablesInsert(CslaObjectInfo info)
         {
@@ -966,34 +902,6 @@ namespace CslaGenerator.Util
             return false;
         }
 
-        //public void SortTables(TableSchemaCollection tables)
-        //{
-        //    //Sort collection so that tables that reference others come after reference tables
-        //    TableSchema table;
-        //    bool swapped = false;
-        //    int refIndex;
-        //    int tableIndex;
-        //    for (int i = 0; i < tables.Count; i++)
-        //    {
-        //        table = tables[i];
-        //        if (table.ForeignKeys.Count > 0)
-        //        {
-        //            for (int j = 0; j < table.ForeignKeys.Count; j++)
-        //            {
-        //                tableIndex = i;
-        //                refIndex = tables.IndexOf(table.ForeignKeys[j].ForeignKeyTable.Name);
-        //                if (refIndex > tableIndex)
-        //                {
-        //                    RemoveInsert( tables, refIndex, tableIndex);
-        //                    tableIndex++;
-        //                    swapped = true;
-        //                }
-        //            }
-        //        }
-        //    }
-        //    if (swapped) { SortTables(tables); }
-        //}
-
         public void CheckTableJoins(List<IResultObject> tables)
         {
             if (tables.Count < 2) { return; }
@@ -1014,24 +922,6 @@ namespace CslaGenerator.Util
             }
         }
 
-        //public void CheckTableJoins(TableSchemaCollection tables)
-        //{
-        //    if (tables.Count < 2) { return; }
-        //    TableSchemaCollection tablesMissingJoins = new TableSchemaCollection();
-        //    foreach (TableSchema t in tables)
-        //    {
-        //        if (!HasJoin(t, tables))
-        //        {
-        //            ((IList)tablesMissingJoins).Add(t);
-        //        }
-        //    }
-        //    if (tablesMissingJoins.Count > 0)
-        //    {
-        //        AddJoinTables(tables, tablesMissingJoins);
-        //    }
-        //}
-
-
         public void AddJoinTables(List<IResultObject> tables, List<IResultObject> tablesMissingJoins)
         {
             List<IResultObject> JoinTables = FindJoinTables(tables, tablesMissingJoins);
@@ -1044,19 +934,6 @@ namespace CslaGenerator.Util
                 }
             }
         }
-
-        //public void AddJoinTables(TableSchemaCollection tables, TableSchemaCollection tablesMissingJoins)
-        //{
-        //    TableSchemaCollection JoinTables = FindJoinTables(tables, tablesMissingJoins);
-
-        //    foreach(TableSchema t in JoinTables)
-        //    {
-        //        if (!tables.Contains(t.Name))
-        //        {
-        //            ((IList)tables).Add(t);
-        //        }
-        //    }
-        //}
 
         public List<IResultObject> FindJoinTables(List<IResultObject> tables, List<IResultObject> missingTables)
         {
@@ -1088,35 +965,6 @@ namespace CslaGenerator.Util
             return JoinTables;
         }
 
-        //public TableSchemaCollection FindJoinTables(TableSchemaCollection tables, TableSchemaCollection missingTables)
-        //{
-        //    TableSchemaCollection JoinTables = new TableSchemaCollection();
-        //    foreach(TableSchema t in Schema.Tables)
-        //    {
-        //        if (t.ForeignKeys.Count > 1)
-        //        {
-        //            int tableCount = 0;
-        //            int missingTableCount = 0;
-        //            foreach(TableKeySchema key in  t.ForeignKeys)
-        //            {
-        //                if (missingTables.Contains(key.PrimaryKeyTable))
-        //                {
-        //                    missingTableCount++;
-        //                }
-        //                else if (tables.Contains(key.PrimaryKeyTable))
-        //                {
-        //                    tableCount++;
-        //                }
-        //            }
-        //            if (missingTableCount > 1 || (tableCount > 0 && missingTableCount > 0))
-        //            {
-        //                ((IList)JoinTables).Add(t);
-        //            }
-        //        }
-        //    }
-        //    return JoinTables;
-        //}
-
         public bool HasJoin(IResultObject table, List<IResultObject> tables)
         {
             foreach (IForeignKeyConstraint key in Catalog.ForeignKeyConstraints.GetConstraintsFor(table))
@@ -1142,52 +990,9 @@ namespace CslaGenerator.Util
             return false;
         }
 
-        //public bool HasJoin(TableSchema table, TableSchemaCollection tables)
-        //{
-        //    foreach (TableKeySchema key in table.ForeignKeys)
-        //    {
-        //        if (tables.Contains(key.ForeignKeyTable.Name))
-        //        {
-        //            return true;
-        //        }
-        //    }
+        #endregion
 
-        //    foreach (TableSchema t in tables)
-        //    {
-        //        if (t.Name != table.Name)
-        //        {
-        //            foreach (TableKeySchema key in t.ForeignKeys)
-        //            {
-        //                if (key.PrimaryKeyTable.Name == table.Name)
-        //                {
-        //                    return true;
-        //                }
-        //            }
-        //        }
-        //    }
-        //    return false;
-        //}
-
-        //public DatabaseSchema GetSchema(CslaObjectInfo info)
-        //{
-        //    return new DatabaseSchema(new SqlSchemaProvider(), info.Parent.ConnectionString);
-        //}
-
-        //public void RemoveInsert(TableSchemaCollection tables, int outOf, int into)
-        //{
-        //    TableSchema temp;
-        //    temp = tables[outOf];
-        //    if (outOf > into)
-        //    {
-        //        ((IList)tables).RemoveAt(outOf);
-        //        ((IList)tables).Insert(into,temp);
-        //    }
-        //    else if (outOf < into)
-        //    {
-        //        ((IList)tables).Insert(into,temp);
-        //        ((IList)tables).RemoveAt(outOf);
-        //    }
-        //}
+        #region Helpers
 
         public CslaObjectInfo FindChildInfo(CslaObjectInfo info, string name)
         {
@@ -1262,7 +1067,6 @@ namespace CslaGenerator.Util
             MessageBox.Show(msg);
         }
 
-
         public string Indent(int len)
         {
             return new string(' ', len * 4);
@@ -1286,6 +1090,8 @@ namespace CslaGenerator.Util
             }
             return string.Empty;
         }
+
+        #endregion
 
         #region SoftDelete methods
 

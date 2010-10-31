@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using CslaGenerator.Metadata;
-using CslaGenerator.Util;
+using CslaGenerator.Util.PropertyBags;
 
 namespace CslaGenerator.Controls
 {

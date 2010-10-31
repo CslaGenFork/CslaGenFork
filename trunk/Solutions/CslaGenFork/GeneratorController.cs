@@ -11,6 +11,7 @@ using CslaGenerator.Controls;
 using CslaGenerator.Data;
 using CslaGenerator.Metadata;
 using CslaGenerator.Util;
+using CslaGenerator.Util.PropertyBags;
 using DBSchemaInfo.Base;
 
 namespace CslaGenerator

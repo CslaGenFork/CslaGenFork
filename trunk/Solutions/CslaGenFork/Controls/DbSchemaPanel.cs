@@ -26,7 +26,7 @@ namespace CslaGenerator.Controls
         private ObjectFactory _currentFactory = null;
         private string cn = "";
 
-        public DbSchemaPanel()
+        /*public DbSchemaPanel()
         {
             // This call is required by the Windows.Forms Form Designer.
             InitializeComponent();
@@ -35,7 +35,7 @@ namespace CslaGenerator.Controls
                 schemaImages.Images[i].Save(@"c:\SchemaImages\" + i.ToString());
             }
 
-        }
+        }*/
 
         public DbSchemaPanel(CslaGeneratorUnit cslagenunit, CslaObjectInfo cslaobject, string connection)
         {
@@ -480,9 +480,12 @@ namespace CslaGenerator.Controls
                 col.ReadOnly = true;
                 foreach (var crit in parent.CriteriaObjects)
                 {
-                    foreach (var prop in crit.Properties)
+                    if (crit.GetOptions.Factory || crit.GetOptions.AddRemove || crit.GetOptions.DataPortal)
                     {
-                        col.LoadParameters.Add(new Parameter(crit, prop));
+                        foreach (var prop in crit.Properties)
+                        {
+                            col.LoadParameters.Add(new Parameter(crit, prop));
+                        }
                     }
                 }
                 parent.ChildCollectionProperties.Add(col);

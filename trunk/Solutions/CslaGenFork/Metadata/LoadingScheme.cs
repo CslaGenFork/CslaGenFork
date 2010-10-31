@@ -1,5 +1,3 @@
-using System;
-
 namespace CslaGenerator.Metadata
 {
     /// <summary>
@@ -11,5 +9,4 @@ namespace CslaGenerator.Metadata
         SelfLoad,
         ParentLoad
     }
-
 }

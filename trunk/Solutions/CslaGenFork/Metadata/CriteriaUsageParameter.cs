@@ -1,111 +1,102 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.ComponentModel;
 using System.Globalization;
-using System.Xml.Serialization;
 
 namespace CslaGenerator.Metadata
 {
     [TypeConverterAttribute(typeof(CriteriaUsageParameterConverter))]
     public class CriteriaUsageParameter
     {
-        private bool _Procedure;
-        private bool _Factory;
-        private bool _DataPortal;
-        private bool _RunLocal;
-        private string _ProcedureName = String.Empty;
-        private string _FactorySuffix = String.Empty;
+        private bool _factory;
+        private bool _addRemove;
+        private bool _dataPortal;
+        private bool _runLocal;
+        private bool _procedure;
+        private string _procedureName = String.Empty;
+        private string _factorySuffix = String.Empty;
 
         public event EventHandler SuffixChanged;
 
         public void Enable()
         {
-            _Factory = true;
-            _Procedure = true;
-            _DataPortal = true;
+            _factory = true;
+            _procedure = true;
+            _dataPortal = true;
+        }
+
+        [Description("Defines whether you want to generate the factory method or not.")]
+        public bool Factory
+        {
+            get { return _factory; }
+            set
+            {
+                if (_factory == value)
+                    return;
+                _factory = value;
+            }
+        }
+
+        [Description("Defines whether you want to generate the collection Add/Remove method or not. This property is set on the collection item although the method is generated in the collection class.")]
+        public bool AddRemove
+        {
+            get { return _addRemove; }
+            set
+            {
+                if (_addRemove == value)
+                    return;
+                _addRemove = value;
+            }
+        }
+
+        [Description("Defines whether you want to generate the dataportal method or not.")]
+        public bool DataPortal
+        {
+            get { return _dataPortal; }
+            set { _dataPortal = value; }
+        }
+
+        [Description("Defines whether you want to generate the add a RunLocal() attribute to the dataportal method or not.")]
+        public bool RunLocal
+        {
+            get { return _runLocal; }
+            set { _runLocal = value; }
         }
 
         [Description("Defines whether you want to generate the stored procedure or not.")]
         public bool Procedure
         {
-            get
-            {
-                return _Procedure;
-            }
+            get { return _procedure; }
             set
             {
-                if (_Procedure == value)
+                if (_procedure == value)
                     return;
-                _Procedure = value;
+                _procedure = value;
                 if (value)
                     OnSuffixChanged();
             }
         }
-        [Description("Defines whether you want to generate the factory method or not.")]
-        public bool Factory
-        {
-            get
-            {
-                return _Factory;
-            }
-            set
-            {
-                if (_Factory == value)
-                    return;
-                _Factory = value;
-            }
-        }
-        [Description("Defines whether you want to generate the dataportal method or not.")]
-        public bool DataPortal
-        {
-            get
-            {
-                return _DataPortal;
-            }
-            set
-            {
-                _DataPortal = value;
-            }
-        }
-        [Description("Defines whether you want to generate the add a RunLocal() attribute to the dataportal method or not.")]
-        public bool RunLocal
-        {
-            get
-            {
-                return _RunLocal;
-            }
-            set
-            {
-                _RunLocal = value;
-            }
-        }
+
         [Description("Defines the name of the stored procedure.")]
         public string ProcedureName
         {
-            get
-            {
-                return _ProcedureName;
-            }
+            get { return _procedureName; }
             set
             {
-                if (_ProcedureName == value)
+                if (_procedureName == value)
                     return;
-                _ProcedureName = value;
+                _procedureName = value;
             }
         }
+
         [Description("When generating factory methods, they will be named [Get/Delete/Create] + ObjectName + Suffix. For instance for an object named Project and empty suffix: GetProject(). Sample with 'ByName': GetProjectByName().")]
         public string FactorySuffix
         {
-            get
-            {
-                return _FactorySuffix;
-            }
+            get { return _factorySuffix; }
             set
             {
-                if (!_FactorySuffix.Equals(value))
+                if (!_factorySuffix.Equals(value))
                 {
-                    _FactorySuffix = value;
+                    _factorySuffix = value;
                     OnSuffixChanged();
                 }
             }
@@ -118,11 +109,9 @@ namespace CslaGenerator.Metadata
         }
     }
 
-
     public class CriteriaUsageParameterConverter : ExpandableObjectConverter
     {
-        public override bool CanConvertTo(ITypeDescriptorContext context,
-                                      System.Type destinationType)
+        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
         {
             if (destinationType == typeof(CriteriaUsageParameter))
                 return true;
@@ -130,19 +119,14 @@ namespace CslaGenerator.Metadata
             return base.CanConvertTo(context, destinationType);
         }
 
-        public override object ConvertTo(ITypeDescriptorContext context,
-                               CultureInfo culture,
-                               object value,
-                               System.Type destinationType)
+        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
-            if (destinationType == typeof(System.String) &&
-                 value is CriteriaUsageParameter)
+            if (destinationType == typeof(String) && value is CriteriaUsageParameter)
             {
-
                 CriteriaUsageParameter so = (CriteriaUsageParameter)value;
-
                 return "Factory: " + so.Factory;
             }
+
             return base.ConvertTo(context, culture, value, destinationType);
         }
     }

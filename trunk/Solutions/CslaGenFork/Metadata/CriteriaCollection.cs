@@ -1,12 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Xml.Serialization;
-
 namespace CslaGenerator.Metadata
 {
-
     public class CriteriaCollection : System.ComponentModel.BindingList<Criteria>
     {
+        CslaObjectInfo _parent;
+
         public Criteria Find(string name)
         {
             foreach (Criteria c in this)
@@ -22,19 +19,15 @@ namespace CslaGenerator.Metadata
             return (Find(name) != null);
         }
 
-        CslaObjectInfo _Parent;
         internal void SetParent(CslaObjectInfo obj)
         {
-            _Parent = obj;
+            _parent = obj;
         }
 
         protected override void InsertItem(int index, Criteria item)
         {
-            item.SetParent(_Parent);
+            item.SetParent(_parent);
             base.InsertItem(index, item);
         }
-
-
     }
-
 }

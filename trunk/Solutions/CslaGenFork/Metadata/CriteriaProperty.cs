@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.ComponentModel;
 using System.Drawing.Design;
 using CslaGenerator.Attributes;
@@ -10,11 +7,14 @@ namespace CslaGenerator.Metadata
 {
     public class CriteriaProperty : Property, IBoundProperty
     {
-        public CriteriaProperty(Property p) : base(p)
+        private DbBindColumn _dbBindColumn = new DbBindColumn();
+
+        public CriteriaProperty()
         {
         }
 
-        public CriteriaProperty() : base()
+        public CriteriaProperty(Property p)
+            : base(p)
         {
         }
 
@@ -28,7 +28,6 @@ namespace CslaGenerator.Metadata
         {
         }
 
-        private DbBindColumn _dbBindColumn=new DbBindColumn();
         [Category("00. Database")]
         [Editor(typeof(DbBindColumnEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(DbBindColumnConverter))]
@@ -40,7 +39,7 @@ namespace CslaGenerator.Metadata
             set
             {
                 _dbBindColumn = value;
-                base.ResetProperties(value);
+                ResetProperties(value);
             }
         }
 

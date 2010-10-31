@@ -15,6 +15,8 @@ namespace CslaGenerator.Metadata
         CslaGeneratorUnit _currentUnit;
         CslaObjectInfo _currentCslaObject;
 
+        #region Constructors
+
         /// <summary>
         /// Initializes a new instance of the ObjectFactory class.
         /// </summary>
@@ -37,6 +39,10 @@ namespace CslaGenerator.Metadata
             _currentCslaObject = new CslaObjectInfo(_currentUnit);
             _currentCslaObject.ObjectType = type;
         }
+
+        #endregion
+
+        #region AddProperties overloads
 
         /// <summary>
         /// Adds all table columns to the current object.
@@ -199,6 +205,10 @@ namespace CslaGenerator.Metadata
             if(sb.ToString().Length > 0)
                 OutputWindow.Current.AddOutputInfo(sb.ToString());
         }
+
+        #endregion
+
+        #region ValueProperty & DbBindColumn
 
         private bool PropertyExists(string name)
         {
@@ -386,6 +396,10 @@ namespace CslaGenerator.Metadata
             dbc.LoadColumn(GeneratorController.Catalog);
         }
 
+        #endregion
+
+        #region Criteria
+
         /// <summary>
         /// Should be called after the object has all it's properties (if applicable).
         /// It creates the default criteria classes depending on the object type.
@@ -421,7 +435,7 @@ namespace CslaGenerator.Metadata
             }
 
             List<ValueProperty> primaryKeyProperties = new List<ValueProperty>();
-            ValueProperty timeStampProperty = null;
+            ValueProperty timestampProperty = null;
             bool UseForCreate = false;
 
             // retrieve all primary key and timestamp properties
@@ -435,11 +449,11 @@ namespace CslaGenerator.Metadata
                 }
                 else if (prop.DbBindColumn.NativeType == "timestamp")
                 {
-                    timeStampProperty = prop;
+                    timestampProperty = prop;
                 }
             }
 
-            if (primaryKeyProperties.Count > 0 || timeStampProperty != null)
+            if (primaryKeyProperties.Count > 0 || timestampProperty != null)
             {
                 // Try to find default Criteria object
                 Criteria defaultCriteria = _currentCslaObject.CriteriaObjects.Find("Criteria");
@@ -488,27 +502,34 @@ namespace CslaGenerator.Metadata
                             _currentCslaObject.CriteriaObjects.Add(defaultCriteria);
                             AddPropertiesToCriteria(primaryKeyProperties, defaultCriteria);
 
-
-                            if (_currentUnit.Params.AutoTimestampCriteria && timeStampProperty != null && timestampCriteria == null)
-                            {
-                                timestampCriteria = new Criteria(_currentCslaObject);
-                                timestampCriteria.Name = "CriteriaTS";
-                                foreach (CriteriaProperty p in defaultCriteria.Properties)
-                                {
-                                    CriteriaProperty newProp = (CriteriaProperty) ObjectCloner.CloneShallow(p);
-                                    newProp.DbBindColumn = (DbBindColumn) p.DbBindColumn.Clone();
-                                    timestampCriteria.Properties.Add(newProp);
-
-                                }
-                                AddPropertiesToCriteria(new ValueProperty[] {timeStampProperty}, timestampCriteria);
-                                timestampCriteria.DeleteOptions.Enable();
-                                timestampCriteria.SetSprocNames();
-                                _currentCslaObject.CriteriaObjects.Add(timestampCriteria);
-                            }
+                            if (_currentUnit.Params.AutoTimestampCriteria && timestampProperty != null && timestampCriteria == null)
+                                AddTimestampProperty(defaultCriteria, timestampProperty);
                         }
                     }
                 }
             }
+        }
+
+        private void AddDefaultCriteria()
+        {
+            
+        }
+
+        private void AddTimestampProperty(Criteria defaultCriteria, ValueProperty timeStampProperty)
+        {
+            var timestampCriteria = new Criteria(_currentCslaObject);
+            timestampCriteria.Name = "CriteriaTS";
+            foreach (CriteriaProperty p in defaultCriteria.Properties)
+            {
+                CriteriaProperty newProp = (CriteriaProperty)ObjectCloner.CloneShallow(p);
+                newProp.DbBindColumn = (DbBindColumn)p.DbBindColumn.Clone();
+                timestampCriteria.Properties.Add(newProp);
+
+            }
+            AddPropertiesToCriteria(new ValueProperty[] { timeStampProperty }, timestampCriteria);
+            timestampCriteria.DeleteOptions.Enable();
+            timestampCriteria.SetSprocNames();
+            _currentCslaObject.CriteriaObjects.Add(timestampCriteria);
         }
 
         public void AddPropertiesToCriteria(IEnumerable<ValueProperty> primaryKeyProperties, Criteria crit)
@@ -532,5 +553,7 @@ namespace CslaGenerator.Metadata
             c.GetOptions.Enable();
             return c;
         }
+
+        #endregion
     }
 }

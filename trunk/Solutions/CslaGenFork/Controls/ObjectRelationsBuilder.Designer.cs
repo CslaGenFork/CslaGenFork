@@ -308,7 +308,7 @@ namespace CslaGenerator.Controls
             this.buildAllButton2.Name = "buildAllButton2";
             this.buildAllButton2.Size = new System.Drawing.Size(23, 23);
             this.buildAllButton2.TabIndex = 1;
-            this.toolTip1.SetToolTip(this.buildAllButton2, "Check and build all object relations.\r\n" +
+            this.toolTip1.SetToolTip(this.buildAllButton2, "Check and build all 1 to N relations.\r\n" +
                                                            "You will be asked to confirm the build.");
             this.buildAllButton2.UseVisualStyleBackColor = true;
             this.buildAllButton2.Click += new System.EventHandler(this.buildAllButton_Click);
@@ -407,7 +407,7 @@ namespace CslaGenerator.Controls
             this.buildAllButton3.Name = "buildAllButton3";
             this.buildAllButton3.Size = new System.Drawing.Size(23, 23);
             this.buildAllButton3.TabIndex = 1;
-            this.toolTip1.SetToolTip(this.buildAllButton3, "Check and build all object relations\r\n" +
+            this.toolTip1.SetToolTip(this.buildAllButton3, "Check and build all N to N relations\r\n" +
                                                            "You will be asked to confirm the build.");
             this.buildAllButton3.UseVisualStyleBackColor = true;
             this.buildAllButton3.Click += new System.EventHandler(this.buildAllButton_Click);

@@ -108,7 +108,7 @@ namespace CslaGenerator.Metadata
         [Category("05. Options")]
         [Editor(typeof(ParameterCollectionEditor),typeof(UITypeEditor))]
         [TypeConverter(typeof(ParameterCollectionConverter))]
-        [Description("This is a description.")]
+        [Description("The parent properties that are used to load the child object.")]
         [UserFriendlyName("Load Parameters")]
         public ParameterCollection LoadParameters
         {
