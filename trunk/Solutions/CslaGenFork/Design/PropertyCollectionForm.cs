@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
 using CslaGenerator.Metadata;
-using CslaGenerator.Util;
+using CslaGenerator.Util.PropertyBags;
 
 namespace CslaGenerator.Design
 {
@@ -219,7 +219,7 @@ namespace CslaGenerator.Design
                 case "Criteria Collection Editor":
                     _form.Size = new Size(550, _form.Size.Height); 
                     _collectionType = typeof(Criteria);
-                    _form.Size = new Size(_form.Size.Width, 617);
+                    _form.Size = new Size(_form.Size.Width, 713);
                     break;
                 case "CriteriaProperty Collection Editor":
                     _collectionType = typeof (CriteriaProperty);

@@ -160,7 +160,7 @@ namespace CslaGenerator.Metadata
         public LoadingScheme MainLoadingScheme { get; set; }
 
         [Category("03. Primary Entity Options")]
-        [Description("The primary entity's properties which are used in Update method, as parameters for Stored Procedures. " +
+        [Description("The primary entity's properties which are used in Update method, as parameters for Stored Procedures, etc. " +
             "These will used as Criteria properties in the item object.")]
         [Editor(typeof(AssociativeEntityParameterCollectionEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(ParameterCollectionConverter))]

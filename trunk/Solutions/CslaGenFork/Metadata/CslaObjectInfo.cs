@@ -82,6 +82,7 @@
             private string[] _implements = new string[] { };
             private string[] _attributes = new string[] { };
             private string _classSummary = String.Empty;
+            private string _classRemarks = String.Empty;
             private string[] _namespaces = new string[] { };
             private bool _dataSetLoadingScheme = false;
             private bool _cacheResults = true;
@@ -307,7 +308,7 @@
             /// The class summary documentation for the object.
             /// </summary>
             [Category("01. Common Options")]
-            [Description("Class Summary documentation for the object. This shows on the first line, replacing the default object name.")]
+            [Description("Class Summary documentation for the object. This shows before the automatic Csla stereotype.")]
             [Editor(typeof(XmlCommentEditor), typeof(UITypeEditor))]
             [UserFriendlyName("Class Summary")]
             public string ClassSummary
@@ -317,6 +318,23 @@
                 {
                     value = value.Trim().Replace("  ", " ").Replace("\n\n", "\n").Replace("\n", "\r\n");
                     _classSummary = value;
+                }
+            }
+
+            /// <summary>
+            /// The class summary documentation for the object.
+            /// </summary>
+            [Category("01. Common Options")]
+            [Description("Class Remarks documentation for the object. This shows before the automatic remarks.")]
+            [Editor(typeof(XmlCommentEditor), typeof(UITypeEditor))]
+            [UserFriendlyName("Class Remarks")]
+            public string ClassRemarks
+            {
+                get { return _classRemarks; }
+                set
+                {
+                    value = value.Trim().Replace("  ", " ").Replace("\n\n", "\n").Replace("\n", "\r\n");
+                    _classRemarks = value;
                 }
             }
 

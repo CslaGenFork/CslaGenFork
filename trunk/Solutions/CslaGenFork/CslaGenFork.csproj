@@ -200,7 +200,7 @@
     <Content Include="StartPage\startpage.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Util\PropertyContext.xml">
+    <Content Include="Util\PropertyBags\PropertyContext.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Compile Include="AboutBox.cs">
@@ -237,7 +237,7 @@
     <Compile Include="Metadata\UIEnvironment.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Util\ChildPropertyBag.cs" />
+    <Compile Include="Util\PropertyBags\ChildPropertyBag.cs" />
     <Compile Include="Util\ConfigTools.cs" />
     <Compile Include="Metadata\ConstructorVisibility.cs" />
     <Compile Include="Metadata\PropertyDeclaration.cs" />
@@ -502,19 +502,19 @@
     <Compile Include="Templates\VB\VbCslaTemplateHelper.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Util\AssociativeEntityPropertyBag.cs" />
-    <Compile Include="Util\ConvertValuePropertyBag.cs" />
-    <Compile Include="Util\CriteriaPropertyBag.cs" />
-    <Compile Include="Util\DecoratorArgumentBag.cs" />
-    <Compile Include="Util\InheritedTypePropertyBag.cs" />
+    <Compile Include="Util\PropertyBags\AssociativeEntityPropertyBag.cs" />
+    <Compile Include="Util\PropertyBags\ConvertValuePropertyBag.cs" />
+    <Compile Include="Util\PropertyBags\CriteriaPropertyBag.cs" />
+    <Compile Include="Util\PropertyBags\DecoratorArgumentBag.cs" />
+    <Compile Include="Util\PropertyBags\InheritedTypePropertyBag.cs" />
     <Compile Include="Util\ObjectCloner.cs" />
-    <Compile Include="Util\RuleBag.cs" />
-    <Compile Include="Util\UpdateValuePropertyBagBag.cs" />
-    <Compile Include="Util\ValuePropertyBag.cs" />
-    <Compile Include="Util\PropertyBag.cs">
+    <Compile Include="Util\PropertyBags\RuleBag.cs" />
+    <Compile Include="Util\PropertyBags\UpdateValuePropertyBagBag.cs" />
+    <Compile Include="Util\PropertyBags\ValuePropertyBag.cs" />
+    <Compile Include="Util\PropertyBags\PropertyBag.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Util\PropertyContext.cs">
+    <Compile Include="Util\PropertyBags\PropertyContext.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Util\TreeNodeComparer.cs">

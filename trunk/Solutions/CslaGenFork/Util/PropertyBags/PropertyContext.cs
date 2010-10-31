@@ -6,7 +6,7 @@ using System.Xml;
 using System.Configuration;
 using System.Diagnostics;
 
-namespace CslaGenerator.Util
+namespace CslaGenerator.Util.PropertyBags
 {
 	/// <summary>
 	/// PropertyContext loads an xml file that contains the mappings

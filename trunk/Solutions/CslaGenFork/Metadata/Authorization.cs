@@ -1,5 +1,4 @@
-﻿
-namespace CslaGenerator.Metadata
+﻿namespace CslaGenerator.Metadata
 {
     /// <summary>
     /// Authorization to use in objects and properties.

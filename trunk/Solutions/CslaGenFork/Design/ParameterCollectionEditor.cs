@@ -63,9 +63,13 @@ namespace CslaGenerator.Design
                     lstParameters.Items.Clear();
                     foreach (Criteria crit in (CriteriaCollection)criteriaObjects)
                     {
-                        foreach(Property prop in crit.Properties)
+                        if (crit.GetOptions.Factory || crit.GetOptions.AddRemove || crit.GetOptions.DataPortal)
                         {
-                            lstParameters.Items.Add(new DictionaryEntry(crit.Name + "." + prop.Name, new Parameter(crit,prop)));
+                            foreach (Property prop in crit.Properties)
+                            {
+                                lstParameters.Items.Add(new DictionaryEntry(crit.Name + "." + prop.Name,
+                                                                            new Parameter(crit, prop)));
+                            }
                         }
                     }
                     lstParameters.Sorted = true;

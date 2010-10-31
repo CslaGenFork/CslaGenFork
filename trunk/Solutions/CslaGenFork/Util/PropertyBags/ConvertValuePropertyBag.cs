@@ -18,14 +18,14 @@ using System.Reflection;
 using CslaGenerator.Attributes;
 using CslaGenerator.Metadata;
 
-namespace CslaGenerator.Util
+namespace CslaGenerator.Util.PropertyBags
 {
     /// <summary>
     /// Represents a collection of custom properties that can be selected into a
     /// PropertyGrid to provide functionality beyond that of the simple reflection
     /// normally used to query an object's properties.
     /// </summary>
-    public class CriteriaPropertyBag : ICustomTypeDescriptor, IBoundProperty
+    public class ConvertValuePropertyBag : ICustomTypeDescriptor
     {
         #region PropertySpecCollection class definition
 
@@ -351,10 +351,10 @@ namespace CslaGenerator.Util
 
         private class PropertySpecDescriptor : PropertyDescriptor
         {
-            private readonly CriteriaPropertyBag _bag;
+            private readonly ConvertValuePropertyBag _bag;
             private readonly PropertySpec _item;
 
-            public PropertySpecDescriptor(PropertySpec item, CriteriaPropertyBag bag, string name, Attribute[] attrs)
+            public PropertySpecDescriptor(PropertySpec item, ConvertValuePropertyBag bag, string name, Attribute[] attrs)
                 :
                     base(name, attrs)
             {
@@ -426,24 +426,24 @@ namespace CslaGenerator.Util
 
         private readonly PropertySpecCollection _properties;
         private string _defaultProperty;
-        private CriteriaProperty[] _selectedObject;
+        private ConvertValueProperty[] _selectedObject;
 
         /// <summary>
-        /// Initializes a new instance of the CriteriaPropertyBag class.
+        /// Initializes a new instance of the ConvertValuePropertyBag class.
         /// </summary>
-        public CriteriaPropertyBag()
+        public ConvertValuePropertyBag()
         {
             _defaultProperty = null;
             _properties = new PropertySpecCollection();
         }
 
-        public CriteriaPropertyBag(CriteriaProperty obj) : this(new[] {obj})
+        public ConvertValuePropertyBag(ConvertValueProperty obj) : this(new[] {obj})
         {
         }
 
-        public CriteriaPropertyBag(CriteriaProperty[] obj)
+        public ConvertValuePropertyBag(ConvertValueProperty[] obj)
         {
-            _defaultProperty = "Name";
+            _defaultProperty = "BaseName";
             _properties = new PropertySpecCollection();
             _selectedObject = obj;
             InitPropertyBag();
@@ -461,7 +461,7 @@ namespace CslaGenerator.Util
         /// <summary>
         /// Gets or sets the name of the default property in the collection.
         /// </summary>
-        public CriteriaProperty[] SelectedObject
+        public ConvertValueProperty[] SelectedObject
         {
             get { return _selectedObject; }
             set
@@ -472,7 +472,7 @@ namespace CslaGenerator.Util
         }
 
         /// <summary>
-        /// Gets the collection of properties contained within this CriteriaPropertyBag.
+        /// Gets the collection of properties contained within this ConvertValuePropertyBag.
         /// </summary>
         public PropertySpecCollection Properties
         {
@@ -518,7 +518,7 @@ namespace CslaGenerator.Util
         private void InitPropertyBag()
         {
             PropertyInfo pi;
-            Type t = typeof (CriteriaProperty); // _selectedObject.GetType();
+            Type t = typeof (ConvertValueProperty); // _selectedObject.GetType();
             PropertyInfo[] props = t.GetProperties();
             // Display information for all properties.
             for (int i = 0; i < props.Length; i++)
@@ -605,7 +605,7 @@ namespace CslaGenerator.Util
         {
             if (!propertyInfoCache.ContainsKey(propertyName))
             {
-                propertyInfoCache.Add(propertyName, typeof (CriteriaProperty).GetProperty(propertyName));
+                propertyInfoCache.Add(propertyName, typeof (ConvertValueProperty).GetProperty(propertyName));
             }
             return propertyInfoCache[propertyName];
         }
@@ -628,7 +628,7 @@ namespace CslaGenerator.Util
             try
             {
                 if ((GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == Authorization.None ||
-                    GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == Authorization.ObjectLevel) &&
+                    GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization ==  Authorization.ObjectLevel) &&
                     (propertyName == "AllowReadRoles" ||
                      propertyName == "AllowWriteRoles" ||
                      propertyName == "DenyReadRoles" ||
@@ -678,14 +678,14 @@ namespace CslaGenerator.Util
             {
                 // get a reference to the PropertyInfo, exit if no property with that
                 // name
-                PropertyInfo pi = typeof (CriteriaProperty).GetProperty(propertyName);
+                PropertyInfo pi = typeof (ConvertValueProperty).GetProperty(propertyName);
 
                 if (pi == null)
                     return false;
                 // convert the value to the expected type
                 val = Convert.ChangeType(val, pi.PropertyType);
                 // attempt the assignment
-                foreach (CriteriaProperty bo in (CriteriaProperty[]) obj)
+                foreach (ConvertValueProperty bo in (ConvertValueProperty[]) obj)
                     pi.SetValue(bo, val, null);
                 return true;
             }
@@ -702,10 +702,10 @@ namespace CslaGenerator.Util
                 PropertyInfo pi = GetPropertyInfoCache(propertyName);
                 if (!(pi == null))
                 {
-                    var objs = (CriteriaProperty[]) obj;
+                    var objs = (ConvertValueProperty[]) obj;
                     var valueList = new ArrayList();
 
-                    foreach (CriteriaProperty bo in objs)
+                    foreach (ConvertValueProperty bo in objs)
                     {
                         object value = pi.GetValue(bo, null);
                         if (!valueList.Contains(value))
@@ -808,7 +808,7 @@ namespace CslaGenerator.Util
         PropertyDescriptorCollection ICustomTypeDescriptor.GetProperties(Attribute[] attributes)
         {
             // Rather than passing this function on to the default TypeDescriptor,
-            // which would return the actual properties of CriteriaPropertyBag, I construct
+            // which would return the actual properties of ConvertValuePropertyBag, I construct
             // a list here that contains property descriptors for the elements of the
             // Properties list in the bag.
 
@@ -866,17 +866,5 @@ namespace CslaGenerator.Util
         }
 
         #endregion
-
-        public DbBindColumn DbBindColumn
-        {
-            get
-            {
-                return _selectedObject[0].DbBindColumn;
-            }
-            set
-            {
-                _selectedObject[0].DbBindColumn = value;
-            }
-        }
     }
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CslaGenerator.Metadata
+﻿namespace CslaGenerator.Metadata
 {
     public enum TargetFramework
     {
@@ -11,5 +7,4 @@ namespace CslaGenerator.Metadata
         CSLA35,
         CSLA40
     }
-
 }

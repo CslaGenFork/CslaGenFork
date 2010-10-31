@@ -18,7 +18,7 @@ using System.Reflection;
 using CslaGenerator.Attributes;
 using CslaGenerator.Metadata;
 
-namespace CslaGenerator.Util
+namespace CslaGenerator.Util.PropertyBags
 {
     /// <summary>
     /// Represents a collection of custom properties that can be selected into a
