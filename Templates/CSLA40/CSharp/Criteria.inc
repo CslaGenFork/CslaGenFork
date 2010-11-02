@@ -1,17 +1,7 @@
 <%
 if (Info.CriteriaObjects.Count > 0)
 {
-    Boolean isCriteriaClassNeeded = false;
-    foreach (Criteria crit in Info.CriteriaObjects)
-    {
-        String strParams = String.Empty;
-        String strFieldAssignments = String.Empty;
-        if (crit.Properties.Count > 1)
-        {
-            isCriteriaClassNeeded = true;
-            break;
-        }
-    }
+    bool isCriteriaClassNeeded = IsCriteriaClassNeeded(Info);
 
     if (isCriteriaClassNeeded)
     {

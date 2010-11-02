@@ -46,9 +46,6 @@ using Csla.Data;
 
         <!-- #include file="ObjectOverrides.inc" -->
 
-<!-- #include file="Constructor.inc"  -->
-
-        <!-- #include file="Criteria.inc"  -->
         <% Response.Write(Environment.NewLine); %>
         #region Factory Methods
         <!-- #include file="InternalGetObject.inc" -->
@@ -56,6 +53,9 @@ using Csla.Data;
         <!-- #include file="GetObject.inc" -->
 <% Response.Write(Environment.NewLine); %>
         #endregion
+<!-- #include file="Constructor.inc"  -->
+
+        <!-- #include file="Criteria.inc"  -->
 <!-- #include file="SharedAuthorizationMethods.inc" -->
 <!-- #include file="UpdateProperties.inc" -->
 <% Response.Write(Environment.NewLine); %>

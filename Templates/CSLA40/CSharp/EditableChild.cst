@@ -144,9 +144,7 @@ using Csla.Data;
         <!-- #include file="DataPortalFetch.inc" -->
 
         <!-- #include file="InternalUpdate.inc" -->
-            <%
-            Response.Write(Environment.NewLine);
-            %>
+
         #endregion
 <!-- #include file="Events.inc" -->
 <%

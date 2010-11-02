@@ -13,7 +13,7 @@ if (!Info.UseCustomLoading)
         <%
             if (c.Properties.Count > 0)
             {
-        %>/// <param name="crit">The fetch criteria.</param>
+        %>/// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The fetch criteria.</param>
         <%
             }
             if (c.Properties.Count > 0 && c.GetOptions.RunLocal)
@@ -30,7 +30,7 @@ if (!Info.UseCustomLoading)
             }
             else if (c.Properties.Count > 0)
             {
-        %>protected void <%= (Info.ObjectType == CslaObjectType.EditableChild && CurrentUnit.GenerationParams.UseChildDataPortal) ? "Child_" : "DataPortal_" %>Fetch(SingleCriteria<<%= GetDataTypeGeneric(c.Properties[0], c.Properties[0].PropertyType) %>> crit)<%
+        %>protected void <%= (Info.ObjectType == CslaObjectType.EditableChild && CurrentUnit.GenerationParams.UseChildDataPortal) ? "Child_" : "DataPortal_" %>Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)<%
             }
             else
             {
@@ -68,7 +68,7 @@ if (!Info.UseCustomLoading)
                 }
                 else
                 {
-                    %>cmd.Parameters.AddWithValue("@<%=p.ParameterName%>", crit.Value);
+                    %>cmd.Parameters.AddWithValue("@<%=p.ParameterName%>", <%= AssignSingleCriteria(c, "crit") %>);
                     <%
                 }
             }
@@ -77,7 +77,16 @@ if (!Info.UseCustomLoading)
                 %>cn.Open();
                     <%
             }
-            %>var args = new DataPortalHookArgs(cmd<%= c.Properties.Count > 0 ? ", crit" : "" %>);
+            string hookArgs = string.Empty;
+            if (c.Properties.Count > 1)
+            {
+                hookArgs = ", crit";
+            }
+            else if (c.Properties.Count > 0)
+            {
+                hookArgs = ", " + HookSingleCriteria(c, "crit");
+            }
+            %>var args = new DataPortalHookArgs(cmd<%= hookArgs %>);
                     OnFetchPre(args);
                     Fetch(cmd);
                     OnFetchPost(args);

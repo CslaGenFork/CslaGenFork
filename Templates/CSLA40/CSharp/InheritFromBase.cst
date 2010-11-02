@@ -31,24 +31,7 @@ if (Info.ObjectNamespace.Length > 0)
     public partial class <%= Info.ObjectName %>
     {
         <%
-        System.Collections.Generic.List<string> eventList = new System.Collections.Generic.List<string>();
-        if (Info.HasGetCriteria)
-            eventList.AddRange(new string[] {"FetchPre", "FetchPost"});
-        if (Info.ObjectType != CslaObjectType.ReadOnlyObject &&
-            Info.ObjectType != CslaObjectType.NameValueList &&
-            Info.ObjectType.ToString().IndexOf("Collection") == -1)
-        {
-            eventList.AddRange(new string[] {"UpdateStart", "UpdatePre", "UpdatePost", "InsertStart", "InsertPre", "InsertPost", "DeletePre", "DeletePost"});
-        }
-        if (Info.ObjectType.ToString().IndexOf("Collection") == -1 && Info.ObjectType != CslaObjectType.NameValueList)
-            eventList.Add("FetchRead");
-        if (Info.ObjectType == CslaObjectType.EditableRoot ||
-            Info.ObjectType == CslaObjectType.DynamicEditableRoot ||
-            Info.ObjectType == CslaObjectType.EditableChild ||
-            Info.ObjectType == CslaObjectType.EditableSwitchable)
-            eventList.Add("Create");
-        if (Info.ObjectType == CslaObjectType.EditableChildCollection)
-            eventList.AddRange(new string[] {"UpdateStart", "UpdatePre", "UpdatePost"});
+        System.Collections.Generic.List<string> eventList = GetEventList(Info);
         if (eventList.Count > 0)
         {
             %>

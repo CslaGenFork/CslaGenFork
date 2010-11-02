@@ -4,35 +4,56 @@ foreach (Criteria c in Info.CriteriaObjects)
 {
     if (c.DeleteOptions.DataPortal)
     {
-        deleteCount++;
-        //This is kind of weak, because this will generate only for the first delete criteria,
-        //but it's unlikely anyone will have more than one delete criteria.
-        if (deleteCount == 1)
-        {
-            %>
+        %>
 
         /// <summary>
         /// Self delete the <see cref="<%=Info.ObjectName%>"/> object.
         /// </summary>
+        <%
+        string strGetCritParams = string.Empty;
+        bool firstParam = true;
+        bool isCriteriaClassNeeded = IsCriteriaClassNeeded(Info);
+        for (int i = 0; i < c.Properties.Count; i++)
+        {
+            if (firstParam)
+            {
+                firstParam = false;
+            }
+            else
+            {
+                strGetCritParams += ", ";
+            }
+            strGetCritParams += c.Properties[i].Name;
+        }
+        %>
         protected override void DataPortal_DeleteSelf()
         {
-            DataPortal_Delete(new SingleCriteria<<%= GetDataTypeGeneric(c.Properties[0], c.Properties[0].PropertyType) %>>(<%
-            if (Info.ObjectType == CslaObjectType.EditableSwitchable)
-            {
-                Response.Write("false, ");
-            }
-            for (int i = 0; i < c.Properties.Count; i++)
-            {
-                if (i > 0)
-                {
-                        %>, <%
-                }
-                    %><%= GetFieldReaderStatement(Info, c.Properties[0].Name) %><%
-            }
-            %>));
+            <%
+        if (Info.ObjectType == CslaObjectType.EditableSwitchable)
+        {
+            strGetCritParams = "false, " + strGetCritParams;
         }
+        if (c.Properties.Count > 1 || (Info.ObjectType == CslaObjectType.EditableSwitchable && c.Properties.Count == 1))
+        {
+            %>
+            DataPortal_Delete(new <%= c.Name %>(<%= strGetCritParams %>));
         <%
         }
+        else if (c.Properties.Count > 0)
+        {
+            %>
+            DataPortal_Delete(<%= SendSingleCriteria(c, strGetCritParams) %>);
+        <%
+        }
+        else
+        {
+            %>
+            DataPortal_Delete();
+        <%
+        }
+        %>
+        }
+        <%
         if (Info.ObjectType != CslaObjectType.DynamicEditableRoot)
         {
             %>
@@ -40,7 +61,7 @@ foreach (Criteria c in Info.CriteriaObjects)
         /// <summary>
         /// Delete the <see cref="<%=Info.ObjectName%>"/> object from database immediately.
         /// </summary>
-        /// <param name="crit">The delete criteria.</param>
+        /// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The delete criteria.</param>
         <%
             if (Info.TransactionType == TransactionType.EnterpriseServices)
             {
@@ -62,7 +83,7 @@ foreach (Criteria c in Info.CriteriaObjects)
             }
             else
             {
-        %>protected void DataPortal_Delete(SingleCriteria<<%= GetDataTypeGeneric(c.Properties[0], c.Properties[0].PropertyType) %>> crit)<%
+        %>protected void DataPortal_Delete(<%= ReceiveSingleCriteria(c, "crit") %>)<%
             }
             %>
         {
@@ -104,7 +125,8 @@ foreach (Criteria c in Info.CriteriaObjects)
                 }
                 else
                 {
-                    %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", crit.Value);<%
+                    %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= AssignSingleCriteria(c, "crit") %>);
+                    <%
                 }
             }
             if (Info.PersistenceType == PersistenceType.SqlConnectionUnshared)
@@ -113,7 +135,17 @@ foreach (Criteria c in Info.CriteriaObjects)
                     cn.Open();
                     <%
             }
-            %>var args = new DataPortalHookArgs(cmd);
+            string hookArgs = string.Empty;
+            if (c.Properties.Count > 1)
+            {
+                hookArgs = ", crit";
+            }
+            else if (c.Properties.Count > 0)
+            {
+                hookArgs = ", " + HookSingleCriteria(c, "crit");
+            }
+            %>
+                    var args = new DataPortalHookArgs(cmd<%= hookArgs %>);
                     OnDeletePre(args);
                     cmd.ExecuteNonQuery();
                     OnDeletePost(args);

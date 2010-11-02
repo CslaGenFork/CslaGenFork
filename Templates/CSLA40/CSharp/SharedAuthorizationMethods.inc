@@ -1,7 +1,17 @@
 <%
+CslaObjectInfo authzInfo2 = Info;
+if (IsCollectionType(Info.ObjectType))
+{
+    authzInfo2 = FindChildInfo(Info, Info.ItemType);
+    if (authzInfo2 == null)
+    {
+        Errors.Append("Collection " + Info.ObjectName + " missing Item Type." + Environment.NewLine);
+        return;
+    }
+}
 if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
     CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel &&
-    Info.GetRoles.Trim() != String.Empty)
+    authzInfo2.GetRoles.Trim() != String.Empty)
 {
     %>
 
@@ -17,11 +27,11 @@ if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
         protected static void AddObjectAuthorizationRules()
         {
             <%
-        if (Info.NewRoles.Trim() != String.Empty)
+        if (authzInfo2.NewRoles.Trim() != String.Empty)
         {
             string allowOrDeny = string.Empty;
-            string infoNewRoles = Info.NewRoles;
-            if (Info.NewRoles[0] == '!')
+            string infoNewRoles = authzInfo2.NewRoles;
+            if (authzInfo2.NewRoles[0] == '!')
             {
                 allowOrDeny = "Not";
                 infoNewRoles = infoNewRoles.Substring(1);
@@ -36,11 +46,11 @@ if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
             %>));
             <%
         }
-        if (Info.GetRoles.Trim() != String.Empty)
+        if (authzInfo2.GetRoles.Trim() != String.Empty)
         {
             string allowOrDeny = string.Empty;
-            string infoGetRoles = Info.GetRoles;
-            if (Info.GetRoles[0] == '!')
+            string infoGetRoles = authzInfo2.GetRoles;
+            if (authzInfo2.GetRoles[0] == '!')
             {
                 allowOrDeny = "Not";
                 infoGetRoles = infoGetRoles.Substring(1);
@@ -55,11 +65,11 @@ if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
             %>));
             <%
         }
-        if (Info.UpdateRoles.Trim() != String.Empty)
+        if (authzInfo2.UpdateRoles.Trim() != String.Empty)
         {
             string allowOrDeny = string.Empty;
-            string infoUpdateRoles = Info.UpdateRoles;
-            if (Info.UpdateRoles[0] == '!')
+            string infoUpdateRoles = authzInfo2.UpdateRoles;
+            if (authzInfo2.UpdateRoles[0] == '!')
             {
                 allowOrDeny = "Not";
                 infoUpdateRoles = infoUpdateRoles.Substring(1);
@@ -74,11 +84,11 @@ if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
             %>));
             <%
         }
-        if (Info.DeleteRoles.Trim() != String.Empty)
+        if (authzInfo2.DeleteRoles.Trim() != String.Empty)
         {
             string allowOrDeny = string.Empty;
-            string infoDeleteRoles = Info.DeleteRoles;
-            if (Info.DeleteRoles[0] == '!')
+            string infoDeleteRoles = authzInfo2.DeleteRoles;
+            if (authzInfo2.DeleteRoles[0] == '!')
             {
                 allowOrDeny = "Not";
                 infoDeleteRoles = infoDeleteRoles.Substring(1);
@@ -98,9 +108,9 @@ if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
 
         <%
     }
-    if (Info.ObjectType != CslaObjectType.ReadOnlyCollection &&
-        Info.ObjectType != CslaObjectType.ReadOnlyObject &&
-        Info.ObjectType != CslaObjectType.NameValueList)
+    if (authzInfo2.ObjectType != CslaObjectType.ReadOnlyCollection &&
+        authzInfo2.ObjectType != CslaObjectType.ReadOnlyObject &&
+        authzInfo2.ObjectType != CslaObjectType.NameValueList)
     {
         %>
         /// <summary>
@@ -124,9 +134,9 @@ if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
             return Csla.Rules.BusinessRules.HasPermission(Csla.Rules.AuthorizationActions.GetObject, typeof(<%= Info.ObjectName %>));
         }
         <%
-    if (Info.ObjectType != CslaObjectType.ReadOnlyCollection &&
-        Info.ObjectType != CslaObjectType.ReadOnlyObject &&
-        Info.ObjectType != CslaObjectType.NameValueList)
+    if (authzInfo2.ObjectType != CslaObjectType.ReadOnlyCollection &&
+        authzInfo2.ObjectType != CslaObjectType.ReadOnlyObject &&
+        authzInfo2.ObjectType != CslaObjectType.NameValueList)
     {
         %>
 
