@@ -77,23 +77,25 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Definition")]
-        [Description("The criteria name. This will be used as the nested class name.")]
+        [Description("The nested criteria class name. This will be generated when there is the need to pass more than one parameter to the DataPortal method.")]
         public string Name
         {
             get { return _name; }
             set { _name = value; }
         }
 
-        [Category("02. Criteria Options")]
+        [Category("02. Generation Options")]
         [UserFriendlyName("Create Options")]
+        [Description("Specifies what methods will be generated for new object creation.")]
         public CriteriaUsageParameter CreateOptions
         {
             get { return _createOptions; }
             set { _createOptions = value; }
         }
 
-        [Category("02. Criteria Options")]
+        [Category("02. Generation Options")]
         [UserFriendlyName("Get Options")]
+        [Description("Specifies what methods will be generated for fetching an existing object.")]
         public CriteriaUsageParameter GetOptions
         {
             get { return _getOptions; }
@@ -105,8 +107,9 @@ namespace CslaGenerator.Metadata
             }
         }
 
-        [Category("02. Criteria Options")]
+        [Category("02. Generation Options")]
         [UserFriendlyName("Delete Options")]
+        [Description("Specifies what methods will be generated for deleting an object.")]
         public CriteriaUsageParameter DeleteOptions
         {
             get { return _deleteOptions; }
@@ -121,7 +124,7 @@ namespace CslaGenerator.Metadata
         [Category("03. Criteria Properties")]
         [Editor(typeof(PropertyCollectionForm), typeof(UITypeEditor))]
         [XmlArrayItem(ElementName = "Property", Type = typeof(CriteriaProperty))]
-        [Description("Properties used by the criteria.")]
+        [Description("Properties used by the criteria. These will be the parameters to be passed to the DataPortal methods.")]
         [UserFriendlyName("Criteria Properties")]
         public CriteriaPropertyCollection Properties
         {
@@ -130,7 +133,7 @@ namespace CslaGenerator.Metadata
 
         [Category("04. Documentation")]
         [Editor(typeof(XmlCommentEditor), typeof(UITypeEditor))]
-        [Description("Summary of the criteria.")]
+        [Description("Summary of the criteria. This will be used to document the nested criteria class.")]
         public string Summary
         {
             get { return _summary; }
@@ -139,7 +142,7 @@ namespace CslaGenerator.Metadata
 
         [Category("04. Documentation")]
         [Editor(typeof(XmlCommentEditor), typeof(UITypeEditor))]
-        [Description("Remarks of the criteria.")]
+        [Description("Remarks of the criteria. This will be used to document the nested criteria class.")]
         public string Remarks
         {
             get { return _remarks; }

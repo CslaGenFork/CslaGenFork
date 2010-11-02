@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using CslaGenerator.Metadata;
 
 namespace CslaGenerator.Util
@@ -326,7 +327,7 @@ namespace CslaGenerator.Util
                 prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion ||
                 prop.DeclarationMode == PropertyDeclaration.UnmanagedWithTypeConversion)
             {
-                 // "private static PropertyInfo<{0}> {1} = RegisterProperty<{0}>(p => p.{2}, \"{3}\"{4});",
+                // "private static PropertyInfo<{0}> {1} = RegisterProperty<{0}>(p => p.{2}, \"{3}\"{4});",
                 response =
                     string.Format(
                         "{0} static PropertyInfo<{1}> {2} = RegisterProperty<{1}>(p => p.{3}, \"{4}\"{5});",
@@ -371,7 +372,7 @@ namespace CslaGenerator.Util
                 prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion ||
                 prop.DeclarationMode == PropertyDeclaration.UnmanagedWithTypeConversion)
             {
-                 // "private static PropertyInfo<{0}> {1} = RegisterProperty<{0}>(p => p.{2}, \"{3}\"{4});",
+                // "private static PropertyInfo<{0}> {1} = RegisterProperty<{0}>(p => p.{2}, \"{3}\"{4});",
                 response =
                     string.Format(
                         "{0} static PropertyInfo<{1}> {2} = RegisterProperty<{1}>(p => p.{3}, \"{4}\"{5});",
@@ -668,7 +669,7 @@ namespace CslaGenerator.Util
             }*/
 
             return "";
-//            return GetFieldReaderStatement(prop.SourceDeclarationMode, prop.SourcePropertyName);
+            //            return GetFieldReaderStatement(prop.SourceDeclarationMode, prop.SourcePropertyName);
         }
 
         #endregion
@@ -684,7 +685,7 @@ namespace CslaGenerator.Util
                 statement += String.Format("{0} = {1} dr.{2}(\"{3}\"{4})",
                                            FormatProperty(prop.Name),
                                            "(" + prop.PropertyType + ")",
-                                           //GetReaderMethod(GetDbType(prop.DbBindColumn), prop.PropertyType),
+                    //GetReaderMethod(GetDbType(prop.DbBindColumn), prop.PropertyType),
                                            GetReaderMethod(GetDbType(prop.DbBindColumn), prop),
                                            prop.ParameterName,
                                            (prop.PropertyType == TypeCodeEx.SmartDate)
@@ -695,7 +696,7 @@ namespace CslaGenerator.Util
             {
                 statement += String.Format("LoadProperty({0}, dr.{1}(\"{2}\"{3}))",
                                            FormatPropertyInfoName(prop.Name),
-                                           //GetReaderMethod(GetDbType(prop.DbBindColumn), prop.PropertyType),
+                    //GetReaderMethod(GetDbType(prop.DbBindColumn), prop.PropertyType),
                                            GetReaderMethod(GetDbType(prop.DbBindColumn), prop),
                                            prop.ParameterName,
                                            (prop.PropertyType == TypeCodeEx.SmartDate)
@@ -725,7 +726,7 @@ namespace CslaGenerator.Util
         /// <returns>The loader statemente on the form <code>_prop = value</code> or <code>LoadProperty(PropProperty, value)</code>.</returns>
         public string GetFieldLoaderStatement(CslaObjectInfo info, ValueProperty prop, string value)
         {
-//            if (CurrentUnit.GenerationParams.GeneratedUIEnvironment == UIEnvironment.WinForms_WPF)
+            //            if (CurrentUnit.GenerationParams.GeneratedUIEnvironment == UIEnvironment.WinForms_WPF)
             if (value.IndexOf("$") != 0)
                 return GetFieldLoaderStatement(prop, value);
 
@@ -1305,7 +1306,7 @@ namespace CslaGenerator.Util
         public virtual string GetPropertyAccess(ChildProperty prop)
         {
             return Access.Convert(prop.Access);
-        }        
+        }
 
         #region <remarks> helpers
 
@@ -1451,7 +1452,7 @@ namespace CslaGenerator.Util
                     ValueProperty prop = FindPrimaryKey(info);
                     if (prop != null)
                     {
-                        Cache.Add(new ObjectPK {Info = info, Property = prop});
+                        Cache.Add(new ObjectPK { Info = info, Property = prop });
                     }
                 }
             }
@@ -1495,6 +1496,122 @@ namespace CslaGenerator.Util
         }
 
         #endregion
+
+        #endregion
+
+        public List<string> GetEventList(CslaObjectInfo info)
+        {
+            var eventList = new List<string>();
+            if (info.HasGetCriteria ||
+                (info.ObjectType != CslaObjectType.ReadOnlyObject &&
+                info.ParentType != string.Empty &&
+                !info.LazyLoad))
+            {
+                eventList.AddRange(new[] { "FetchPre", "FetchPost" });
+            }
+            if (!IsReadOnlyType(info.ObjectType) &&
+                info.ObjectType != CslaObjectType.NameValueList &&
+                !IsCollectionType(info.ObjectType))
+            {
+                eventList.AddRange(new[] { "UpdateStart", "UpdatePre", "UpdatePost", "InsertStart", "InsertPre", "InsertPost", "DeletePre", "DeletePost" });
+            }
+            if (!IsCollectionType(info.ObjectType) &&
+                info.ObjectType != CslaObjectType.NameValueList)
+            {
+                eventList.Add("FetchRead");
+            }
+            if (info.ObjectType == CslaObjectType.EditableRoot ||
+                info.ObjectType == CslaObjectType.DynamicEditableRoot ||
+                info.ObjectType == CslaObjectType.EditableChild ||
+                info.ObjectType == CslaObjectType.EditableSwitchable)
+            {
+                eventList.Add("Create");
+            }
+            if (info.ObjectType == CslaObjectType.EditableChildCollection &&
+                !CurrentUnit.GenerationParams.UseChildDataPortal)
+            {
+                eventList.AddRange(new[] { "UpdateStart", "UpdatePre", "UpdatePost" });
+            }
+
+            return eventList;
+        }
+
+        #region Criteria and SingleCriteria support
+
+        // not very well done since it doesn't take care of multiple criteria use case
+        public bool IsCriteriaClassNeeded(CslaObjectInfo info)
+        {
+            foreach (Criteria crit in info.CriteriaObjects)
+            {
+                if (crit.Properties.Count > 1)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public string SendSingleCriteria(Criteria crit, string paramName)
+        {
+            var sb = new StringBuilder();
+
+            var param = GetDataTypeGeneric(crit.Properties[0], crit.Properties[0].PropertyType);
+            if (param == "Object" || param == "Empty" || CurrentUnit.GenerationParams.UseSingleCriteria)
+                sb.AppendFormat("new SingleCriteria<{0}>({1})", param, paramName);
+            else
+                sb.AppendFormat(paramName);
+
+            return sb.ToString();
+        }
+
+        public string ReceiveSingleCriteria(Criteria crit, string paramName)
+        {
+            var sb = new StringBuilder();
+
+            var param = GetDataTypeGeneric(crit.Properties[0], crit.Properties[0].PropertyType);
+            if (param == "Object" || param == "Empty" || CurrentUnit.GenerationParams.UseSingleCriteria)
+                sb.AppendFormat("SingleCriteria<{0}> {1}", param, paramName);
+            else
+            {
+                paramName = FormatCamel(crit.Properties[0].Name);
+                sb.AppendFormat("{0} {1}", param, paramName);
+            }
+
+            return sb.ToString();
+        }
+
+        public string AssignSingleCriteria(Criteria crit, string paramName)
+        {
+            var sb = new StringBuilder();
+
+            var param = GetDataTypeGeneric(crit.Properties[0], crit.Properties[0].PropertyType);
+            if (param == "Object" || param == "Empty" || CurrentUnit.GenerationParams.UseSingleCriteria)
+                sb.AppendFormat("{0}.Value", paramName);
+            else
+            {
+                paramName = FormatCamel(crit.Properties[0].Name);
+                sb.AppendFormat(paramName);
+            }
+
+            return sb.ToString();
+        }
+
+        public string HookSingleCriteria(Criteria crit, string paramName)
+        {
+            var sb = new StringBuilder();
+
+            var param = GetDataTypeGeneric(crit.Properties[0], crit.Properties[0].PropertyType);
+            if (param == "Object" || param == "Empty" || CurrentUnit.GenerationParams.UseSingleCriteria)
+                sb.AppendFormat(paramName);
+            else
+            {
+                paramName = FormatCamel(crit.Properties[0].Name);
+                sb.AppendFormat(paramName);
+            }
+
+            return sb.ToString();
+        }
 
         #endregion
 

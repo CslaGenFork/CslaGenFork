@@ -1,84 +1,72 @@
 using System;
-using CslaGenerator.Metadata;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using CodeSmith.Engine;
-using System.Collections;
-using System.Collections.Generic;
-using System.Drawing;
+using CslaGenerator.Metadata;
 using CslaGenerator.Util;
 
 namespace CslaGenerator.Templates
 {
-	/// <summary>
-	/// Descripción breve de Generate.
-	/// </summary>
-	public class CodeGenerator
-	{
-		public CodeGenerator(string targetDirectory, string templatesDirectory)// : this()
-		{
-			_targetDirectory = targetDirectory;
-            _templatesDirectory = templatesDirectory;
-		}
+    public class CodeGenerator
+    {
 
-        string _templatesDirectory = string.Empty;
-		string _fullTemplatesPath;
-		string _targetDirectory = string.Empty;
-		bool _abortRequested=false;
-        int objSuccess = 0;
-	    bool _generateDatabaseClass = false;
-        TargetFramework _targetFramework;
-        Dictionary<string, bool?> _fileSuccess = new Dictionary<string, bool?>();
-        int objFailed = 0;
-        int sprocSuccess = 0;
-        int sprocFailed = 0;
-		private Hashtable templates = new Hashtable();
+        #region Private Fields
 
+        private string _templatesDirectory = string.Empty;
+        private string _fullTemplatesPath;
+        private string _targetDirectory = string.Empty;
+        private bool _abortRequested = false;
+        private int objSuccess = 0;
+        private bool _generateDatabaseClass = false;
+        private TargetFramework _targetFramework;
+        private Dictionary<string, bool?> _fileSuccess = new Dictionary<string, bool?>();
+        private int objFailed = 0;
+        private int sprocSuccess = 0;
+        private int sprocFailed = 0;
+        private Hashtable templates = new Hashtable();
+
+        #endregion
 
         public string TargetDirectory
         {
-            get
-            {
-                return _targetDirectory;
-            }
-            set
-            {
-                _targetDirectory = value;
-            }
+            get { return _targetDirectory; }
+            set { _targetDirectory = value; }
         }
 
-		public void Abort()
-		{
-			_abortRequested=true;
-		}
-		public delegate void GenerationInformationDelegate(string e);
-		public event GenerationInformationDelegate GenerationInformation;
-		public event GenerationInformationDelegate Step;
-		public event EventHandler Finalized;
+        #region Events
 
-        void OnGenerationFileName(string e)
+        public delegate void GenerationInformationDelegate(string e);
+        public event GenerationInformationDelegate GenerationInformation;
+        public event GenerationInformationDelegate Step;
+        public event EventHandler Finalized;
+
+        private void OnGenerationFileName(string e)
         {
             if (GenerationInformation != null)
                 GenerationInformation(e);
             Controls.OutputWindow.Current.AddOutputInfo("\tFile: " + e);
         }
-        
-        void OnGenerationInformation(string e)
-		{
-			if (GenerationInformation != null)
-				GenerationInformation(e);
+
+        private void OnGenerationInformation(string e)
+        {
+            if (GenerationInformation != null)
+                GenerationInformation(e);
             Controls.OutputWindow.Current.AddOutputInfo(e, 1);
-		}
-		void OnStep(string objectName)
-		{
-			if (Step != null)
-				Step(objectName);
+        }
+
+        private void OnStep(string objectName)
+        {
+            if (Step != null)
+                Step(objectName);
             Controls.OutputWindow.Current.AddOutputInfo(String.Format("{0}:", objectName));
-		}
-		void OnFinalized()
-		{
-			if (Finalized != null)
-				Finalized(this,new EventArgs());
+        }
+
+        private void OnFinalized()
+        {
+            if (Finalized != null)
+                Finalized(this, new EventArgs());
             Controls.OutputWindow.Current.AddOutputInfo("Done");
 
             if (_generateDatabaseClass)
@@ -96,46 +84,65 @@ namespace CslaGenerator.Templates
 
             Controls.OutputWindow.Current.AddOutputInfo(String.Format("Classes: {0} generated. {1} failed.", (objFailed + objSuccess).ToString(), objFailed.ToString()));
             Controls.OutputWindow.Current.AddOutputInfo(String.Format("Stored Procs: {0} generated. {1} failed.", (sprocFailed + sprocSuccess).ToString(), sprocFailed.ToString()));
-		}
+        }
 
-		private void GenerateObject(CslaObjectInfo objInfo, CslaGeneratorUnit unit)
-		{
+        #endregion
+
+        #region Constructor
+
+        public CodeGenerator(string targetDirectory, string templatesDirectory)// : this()
+        {
+            _targetDirectory = targetDirectory;
+            _templatesDirectory = templatesDirectory;
+        }
+
+        #endregion
+
+        public void Abort()
+        {
+            _abortRequested = true;
+        }
+
+        #region Private code generatiom
+
+        private void GenerateObject(CslaObjectInfo objInfo, CslaGeneratorUnit unit)
+        {
             Metadata.GenerationParameters generationParams = unit.GenerationParams;
-			string fileName = GetBaseFileName(objInfo, false, generationParams.SeparateBaseClasses, generationParams.SeparateNamespaces, generationParams.BaseFilenameSuffix, generationParams.ExtendedFilenameSuffix, generationParams.ClassCommentFilenameSuffix, false, false);
+            string fileName = GetBaseFileName(objInfo, false, generationParams.SeparateBaseClasses, generationParams.SeparateNamespaces, generationParams.BaseFilenameSuffix, generationParams.ExtendedFilenameSuffix, generationParams.ClassCommentFilenameSuffix, false, false);
             string baseFileName = GetBaseFileName(objInfo, true, generationParams.SeparateBaseClasses, generationParams.SeparateNamespaces, generationParams.BaseFilenameSuffix, generationParams.ExtendedFilenameSuffix, generationParams.ClassCommentFilenameSuffix, false, false);
-		    string classCommentFileName = string.Empty;
+            string classCommentFileName = string.Empty;
             if (!string.IsNullOrEmpty(generationParams.ClassCommentFilenameSuffix))
                 classCommentFileName = GetBaseFileName(objInfo, false, generationParams.SeparateBaseClasses, generationParams.SeparateNamespaces, generationParams.BaseFilenameSuffix, generationParams.ExtendedFilenameSuffix, generationParams.ClassCommentFilenameSuffix, true, generationParams.SeparateClassComment);
-			FileStream fsBase = null;
-			StreamWriter swBase = null;
-			StreamWriter sw = null;
-			try 
-			{
-				string tPath = this._fullTemplatesPath + objInfo.OutputLanguage.ToString() + @"\" + GetTemplateName(objInfo);
-				CodeTemplate template = GetTemplate(objInfo, tPath);
-				if (template != null)
-				{
-					StringBuilder errorsOutput = new StringBuilder();
+            FileStream fsBase = null;
+            StreamWriter swBase = null;
+            StreamWriter sw = null;
+            try
+            {
+                string tPath = this._fullTemplatesPath + objInfo.OutputLanguage.ToString() + @"\" + GetTemplateName(objInfo);
+                CodeTemplate template = GetTemplate(objInfo, tPath);
+                if (template != null)
+                {
+                    StringBuilder errorsOutput = new StringBuilder();
                     StringBuilder warningsOutput = new StringBuilder();
-					template.SetProperty("ActiveObjects", generationParams.ActiveObjects);
-					template.SetProperty("Errors", errorsOutput);
+                    template.SetProperty("ActiveObjects", generationParams.ActiveObjects);
+                    template.SetProperty("Errors", errorsOutput);
                     template.SetProperty("Warnings", warningsOutput);
                     template.SetProperty("CurrentUnit", unit);
                     template.SetProperty("DataSetLoadingScheme", objInfo.DataSetLoadingScheme);
-					if (generationParams.BackupOldSource && File.Exists(baseFileName))
-					{
-						FileInfo oldFile = new FileInfo(baseFileName);
-						if (File.Exists(baseFileName + ".old"))
-						{
-							File.Delete(baseFileName + ".old");
-						}
-						oldFile.MoveTo(baseFileName + ".old");
-					}
-					fsBase = File.Open(baseFileName,FileMode.Create);
+                    if (generationParams.BackupOldSource && File.Exists(baseFileName))
+                    {
+                        FileInfo oldFile = new FileInfo(baseFileName);
+                        if (File.Exists(baseFileName + ".old"))
+                        {
+                            File.Delete(baseFileName + ".old");
+                        }
+                        oldFile.MoveTo(baseFileName + ".old");
+                    }
+                    fsBase = File.Open(baseFileName, FileMode.Create);
                     OnGenerationFileName(baseFileName);
-					swBase = new StreamWriter(fsBase);
-					template.Render(swBase);
-					errorsOutput = (StringBuilder)template.GetProperty("Errors");
+                    swBase = new StreamWriter(fsBase);
+                    template.Render(swBase);
+                    errorsOutput = (StringBuilder)template.GetProperty("Errors");
                     warningsOutput = (StringBuilder)template.GetProperty("Warnings");
                     if (errorsOutput.Length > 0)
                     {
@@ -152,74 +159,74 @@ namespace CslaGenerator.Templates
                         objSuccess++;
                         //OnGenerationInformation("Success");
                     }
-				}
-				GenerateInheritanceFile(fileName, objInfo, generationParams.ActiveObjects, unit);
+                }
+                GenerateInheritanceFile(fileName, objInfo, generationParams.ActiveObjects, unit);
                 if (!string.IsNullOrEmpty(generationParams.ClassCommentFilenameSuffix))
                     GenerateClassCommentFile(classCommentFileName, objInfo, generationParams.ActiveObjects, unit);
-			}
-			catch (Exception e)
-			{
+            }
+            catch (Exception e)
+            {
                 objFailed++;
-				ShowExceptionInformation(e);
-			}
-			finally
-			{
-				if (sw != null)
-				{
-					sw.Close();
-				}
-				if (swBase != null)
-				{
-					swBase.Close();
-				}
-			}
-		}
+                ShowExceptionInformation(e);
+            }
+            finally
+            {
+                if (sw != null)
+                {
+                    sw.Close();
+                }
+                if (swBase != null)
+                {
+                    swBase.Close();
+                }
+            }
+        }
 
-		void GenerateInheritanceFile(string fileName, CslaObjectInfo objInfo, bool activeObjects, CslaGeneratorUnit unit)
-		{
+        private void GenerateInheritanceFile(string fileName, CslaObjectInfo objInfo, bool activeObjects, CslaGeneratorUnit unit)
+        {
             GenerateAccessoryFile(fileName, "\\InheritFromBase.cst", objInfo, activeObjects, unit);
-		}
+        }
 
-        void GenerateClassCommentFile(string fileName, CslaObjectInfo objInfo, bool activeObjects, CslaGeneratorUnit unit)
-		{
-                GenerateAccessoryFile(fileName, "\\ClassComment.cst", objInfo, activeObjects, unit);
-		}
+        private void GenerateClassCommentFile(string fileName, CslaObjectInfo objInfo, bool activeObjects, CslaGeneratorUnit unit)
+        {
+            GenerateAccessoryFile(fileName, "\\ClassComment.cst", objInfo, activeObjects, unit);
+        }
 
-		void GenerateAccessoryFile(string fileName, string templateFile, CslaObjectInfo objInfo, bool activeObjects, CslaGeneratorUnit unit)
-		{
-			// Create Inheritance file if it does not exist
-			if (!File.Exists(fileName)) //&& objInfo.ObjectType != CslaObjectType.NameValueList)
-			{
-				
-				// string tPath = this._fullTemplatesPath + objInfo.OutputLanguage.ToString() + "\\InheritFromBase.cst";
+        private void GenerateAccessoryFile(string fileName, string templateFile, CslaObjectInfo objInfo, bool activeObjects, CslaGeneratorUnit unit)
+        {
+            // Create Inheritance file if it does not exist
+            if (!File.Exists(fileName)) //&& objInfo.ObjectType != CslaObjectType.NameValueList)
+            {
+
+                // string tPath = this._fullTemplatesPath + objInfo.OutputLanguage.ToString() + "\\InheritFromBase.cst";
                 string tPath = _fullTemplatesPath + objInfo.OutputLanguage + templateFile;
-				CodeTemplate template = GetTemplate(objInfo, tPath);
-				if (template != null)
-				{
+                CodeTemplate template = GetTemplate(objInfo, tPath);
+                if (template != null)
+                {
 
-					template.SetProperty("ActiveObjects", activeObjects);
+                    template.SetProperty("ActiveObjects", activeObjects);
                     template.SetProperty("CurrentUnit", unit);
-					FileStream fs = File.Open(fileName,FileMode.Create);
+                    FileStream fs = File.Open(fileName, FileMode.Create);
                     OnGenerationFileName(fileName);
-					StreamWriter sw = new StreamWriter(fs);
-					try
-					{
-						template.Render(sw);
-					}
-					catch (Exception e)
-					{
-						ShowExceptionInformation(e);
-					}
-					finally
-					{
-						sw.Close();
-					}
-				}
-			}
-		}
+                    StreamWriter sw = new StreamWriter(fs);
+                    try
+                    {
+                        template.Render(sw);
+                    }
+                    catch (Exception e)
+                    {
+                        ShowExceptionInformation(e);
+                    }
+                    finally
+                    {
+                        sw.Close();
+                    }
+                }
+            }
+        }
 
-        void GenerateUtilityFile(string utilityFilename, CslaObjectInfo objInfo, TargetFramework framework, CslaGeneratorUnit unit)
-		{
+        private void GenerateUtilityFile(string utilityFilename, CslaObjectInfo objInfo, TargetFramework framework, CslaGeneratorUnit unit)
+        {
             _fileSuccess.Add(utilityFilename, null);
 
             // only implement this for more recent frameworks);
@@ -239,7 +246,7 @@ namespace CslaGenerator.Templates
                 // output folder inside directory
                 fullFilename += unit.GenerationParams.UtilitiesFolder + @"\";
             }
-            
+
             CheckDirectory(fullFilename);
 
             // filename w/o extension
@@ -247,119 +254,117 @@ namespace CslaGenerator.Templates
 
             // extension
             if (objInfo.OutputLanguage == CodeLanguage.CSharp)
-                    fullFilename += ".cs";
-				else if (objInfo.OutputLanguage == CodeLanguage.VB)
-                    fullFilename += ".vb";
+                fullFilename += ".cs";
+            else if (objInfo.OutputLanguage == CodeLanguage.VB)
+                fullFilename += ".vb";
 
-           // Create utility class file if it does not exist
+            // Create utility class file if it does not exist
             if (!File.Exists(fullFilename))
-			{
-			    string tPath = _fullTemplatesPath + objInfo.OutputLanguage + "\\" + utilityFilename + ".cst";
-				CodeTemplate template = GetTemplate(objInfo, tPath);
-				if (template != null)
-				{
+            {
+                string tPath = _fullTemplatesPath + objInfo.OutputLanguage + "\\" + utilityFilename + ".cst";
+                CodeTemplate template = GetTemplate(objInfo, tPath);
+                if (template != null)
+                {
                     template.SetProperty("FileName", utilityFilename);
                     template.SetProperty("CurrentUnit", unit);
                     FileStream fs = File.Open(fullFilename, FileMode.Create);
-				    OnGenerationInformation(utilityFilename + " file:");
+                    OnGenerationInformation(utilityFilename + " file:");
                     OnGenerationFileName(fullFilename);
-					StreamWriter sw = new StreamWriter(fs);
-					try
-					{
-						template.Render(sw);
+                    StreamWriter sw = new StreamWriter(fs);
+                    try
+                    {
+                        template.Render(sw);
                         _fileSuccess[utilityFilename] = true;
-					}
-					catch (Exception e)
-					{
-						ShowExceptionInformation(e);
+                    }
+                    catch (Exception e)
+                    {
+                        ShowExceptionInformation(e);
                         _fileSuccess[utilityFilename] = false;
-					}
-					finally
-					{
-						sw.Close();
-					}
-				}
-			}
-		}
+                    }
+                    finally
+                    {
+                        sw.Close();
+                    }
+                }
+            }
+        }
 
-		CodeTemplate GetTemplate(CslaObjectInfo objInfo, string templatePath)
-		{
-			CodeTemplateCompiler compiler;
+        private CodeTemplate GetTemplate(CslaObjectInfo objInfo, string templatePath)
+        {
+            CodeTemplateCompiler compiler;
 
-			if (!templates.ContainsKey(templatePath))
-			{
+            if (!templates.ContainsKey(templatePath))
+            {
                 if (!File.Exists(templatePath))
                     throw new ApplicationException("The specified template could not be found: " + templatePath);
-				
-				compiler = new CodeTemplateCompiler(templatePath);
-				compiler.Compile();
-				templates.Add(templatePath,compiler);
 
-				StringBuilder sb = new StringBuilder();
-				for (int i = 0; i < compiler.Errors.Count; i++)
-				{
-					sb.Append(compiler.Errors[i].ToString());
-					sb.Append(Environment.NewLine);
-				}
-				if (compiler.Errors.Count>0)
-					throw new Exception(String.Format(
-						"Template {0} failed to compile. Objects of the same type will be ignored.", 
-						templatePath) + Environment.NewLine + sb.ToString());
-			}
-			else
-			{
-				compiler = (CodeTemplateCompiler)templates[templatePath];
-			}
-			if (compiler.Errors.Count > 0)
-				return null;
+                compiler = new CodeTemplateCompiler(templatePath);
+                compiler.Compile();
+                templates.Add(templatePath, compiler);
 
-			CodeTemplate template = compiler.CreateInstance();
-			template.SetProperty("Info",objInfo);
-			return template;
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < compiler.Errors.Count; i++)
+                {
+                    sb.Append(compiler.Errors[i].ToString());
+                    sb.Append(Environment.NewLine);
+                }
+                if (compiler.Errors.Count > 0)
+                    throw new Exception(String.Format(
+                        "Template {0} failed to compile. Objects of the same type will be ignored.",
+                        templatePath) + Environment.NewLine + sb.ToString());
+            }
+            else
+            {
+                compiler = (CodeTemplateCompiler)templates[templatePath];
+            }
+            if (compiler.Errors.Count > 0)
+                return null;
 
-		}
+            CodeTemplate template = compiler.CreateInstance();
+            template.SetProperty("Info", objInfo);
+            return template;
 
-		void ShowExceptionInformation(Exception e)
-		{
-			StringBuilder sb = new StringBuilder();
-			sb.Append("An error occurred while generating object:");
-			sb.Append(Environment.NewLine);
-			sb.Append(e.Message);
-			sb.Append(Environment.NewLine);
-			sb.Append(Environment.NewLine);
-			sb.Append("Stack Trace:");
-			sb.Append(Environment.NewLine);
-			sb.Append(e.StackTrace);
-			OnGenerationInformation(sb.ToString());
-		}
+        }
 
-		private void WriteToFile(string fileName, string data)
-		{
-			FileStream fs = null;
-			StreamWriter sw = null;
-			try
-			{
-				fs = File.Open(fileName,FileMode.Create);
+        private void ShowExceptionInformation(Exception e)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("An error occurred while generating object:");
+            sb.Append(Environment.NewLine);
+            sb.Append(e.Message);
+            sb.Append(Environment.NewLine);
+            sb.Append(Environment.NewLine);
+            sb.Append("Stack Trace:");
+            sb.Append(Environment.NewLine);
+            sb.Append(e.StackTrace);
+            OnGenerationInformation(sb.ToString());
+        }
+
+        private void WriteToFile(string fileName, string data)
+        {
+            FileStream fs = null;
+            StreamWriter sw = null;
+            try
+            {
+                fs = File.Open(fileName, FileMode.Create);
                 OnGenerationFileName(fileName);
-				sw = new StreamWriter(fs);
-				sw.Write(data);
-			}
-			catch (Exception e)
-			{
-				string errorDesc = String.Format("Error writing to file {0}: {1}",
-						fileName, e.Message);
+                sw = new StreamWriter(fs);
+                sw.Write(data);
+            }
+            catch (Exception e)
+            {
+                string errorDesc = String.Format("Error writing to file {0}: {1}",
+                        fileName, e.Message);
 
-				OnGenerationInformation(errorDesc);
-			}
-			finally
-			{
-				sw.Close();
-			}
-		}
+                OnGenerationInformation(errorDesc);
+            }
+            finally
+            {
+                sw.Close();
+            }
+        }
 
-
-
-        public void GenerateProject (CslaGeneratorUnit unit)
+        public void GenerateProject(CslaGeneratorUnit unit)
         {
             CslaTemplateHelper.PrimaryKeys.ClearCache();
             CslaObjectInfo objInfo = null;
@@ -385,7 +390,7 @@ namespace CslaGenerator.Templates
             {
                 if (info.Generate)
                 {
-                    if(objInfo == null)
+                    if (objInfo == null)
                         objInfo = info;
                     if (_abortRequested) break;
                     OnStep(info.ObjectName);
@@ -478,7 +483,9 @@ namespace CslaGenerator.Templates
             OnFinalized();
         }
 
-        #region Stored Procedures generation
+        #endregion
+
+        #region Private Stored Procedures generation
 
         private void GenerateAllSprocsFile(CslaObjectInfo info, string dir)
         {
@@ -532,11 +539,11 @@ namespace CslaGenerator.Templates
             }
         }
 
-		private void GenerateSelectProcedure(CslaObjectInfo info, string dir)
-		{
-			//make sure we don't generate selects when we don't need to.
-			if ( !((info.ObjectType == CslaObjectType.EditableChildCollection || info.ObjectType == CslaObjectType.EditableChild) && !info.LazyLoad))
-			{
+        private void GenerateSelectProcedure(CslaObjectInfo info, string dir)
+        {
+            //make sure we don't generate selects when we don't need to.
+            if (!((info.ObjectType == CslaObjectType.EditableChildCollection || info.ObjectType == CslaObjectType.EditableChild) && !info.LazyLoad))
+            {
                 foreach (Criteria crit in info.CriteriaObjects)
                 {
                     if (crit.GetOptions.Procedure && !String.IsNullOrEmpty(crit.GetOptions.ProcedureName))
@@ -546,31 +553,31 @@ namespace CslaGenerator.Templates
                         WriteToFile(dir + @"\sprocs\" + crit.GetOptions.ProcedureName + ".sql", proc);
                     }
                 }
-			}
-		}
+            }
+        }
 
-		private void GenerateInsertProcedure(CslaObjectInfo info, string dir)
-		{
-			if (info.InsertProcedureName != "")
-			{
-				string proc = GenerateProcedure(info, null, "InsertProcedure.cst", info.InsertProcedureName);
-				CheckDirectory(dir + @"\sprocs");
-				WriteToFile(dir + @"\sprocs\" + info.InsertProcedureName + ".sql",proc);
-			}
-		}
+        private void GenerateInsertProcedure(CslaObjectInfo info, string dir)
+        {
+            if (info.InsertProcedureName != "")
+            {
+                string proc = GenerateProcedure(info, null, "InsertProcedure.cst", info.InsertProcedureName);
+                CheckDirectory(dir + @"\sprocs");
+                WriteToFile(dir + @"\sprocs\" + info.InsertProcedureName + ".sql", proc);
+            }
+        }
 
-		private void GenerateUpdateProcedure(CslaObjectInfo info, string dir)
-		{
-			if (info.UpdateProcedureName != "")
-			{
-				string proc = GenerateProcedure(info, null, "UpdateProcedure.cst", info.UpdateProcedureName);
-				CheckDirectory(dir + @"\sprocs");
-				WriteToFile(dir + @"\sprocs\" + info.UpdateProcedureName + ".sql", proc);
-			}
-		}
+        private void GenerateUpdateProcedure(CslaObjectInfo info, string dir)
+        {
+            if (info.UpdateProcedureName != "")
+            {
+                string proc = GenerateProcedure(info, null, "UpdateProcedure.cst", info.UpdateProcedureName);
+                CheckDirectory(dir + @"\sprocs");
+                WriteToFile(dir + @"\sprocs\" + info.UpdateProcedureName + ".sql", proc);
+            }
+        }
 
-		private void GenerateDeleteProcedure(CslaObjectInfo info, string dir)
-		{
+        private void GenerateDeleteProcedure(CslaObjectInfo info, string dir)
+        {
             foreach (Criteria crit in info.CriteriaObjects)
             {
                 if (crit.DeleteOptions.Procedure && !String.IsNullOrEmpty(crit.DeleteOptions.ProcedureName))
@@ -586,63 +593,62 @@ namespace CslaGenerator.Templates
                 CheckDirectory(dir + @"\sprocs");
                 WriteToFile(dir + @"\sprocs\" + info.DeleteProcedureName + ".sql", proc);
             }
-		}
+        }
 
-
-		private string GenerateProcedure(CslaObjectInfo objInfo, Criteria crit, string templateName, string sprocName)
-		{
-			if (objInfo != null)
-			{
-				StringWriter sw = null;
-				try 
-				{
-					if (templateName != String.Empty)
-					{	
-						string path = _templatesDirectory + @"sprocs\" + templateName;
-						CodeTemplate template = GetTemplate(objInfo,path);
+        private string GenerateProcedure(CslaObjectInfo objInfo, Criteria crit, string templateName, string sprocName)
+        {
+            if (objInfo != null)
+            {
+                StringWriter sw = null;
+                try
+                {
+                    if (templateName != String.Empty)
+                    {
+                        string path = _templatesDirectory + @"sprocs\" + templateName;
+                        CodeTemplate template = GetTemplate(objInfo, path);
                         if (crit != null)
                             template.SetProperty("Criteria", crit);
                         template.SetProperty("IncludeParentProperties", objInfo.DataSetLoadingScheme);
-						if (template != null)
-						{
+                        if (template != null)
+                        {
                             //template.SetProperty("Catalog", _);
-							sw = new StringWriter();
-							template.Render(sw);
+                            sw = new StringWriter();
+                            template.Render(sw);
                             sprocSuccess++;
-							return sw.ToString();
-						}
-					}
-				}
-				catch (Exception e)
-				{
+                            return sw.ToString();
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
                     sprocFailed++;
-					throw(new Exception ("Error generating " + GetFileNameWithoutExtension(templateName) + ": " + sprocName, e));
-				} 
-				finally
-				{
-					if (sw != null)
-					{
-						sw.Close();
-					}
-				}
-			}
-			return String.Empty;
-		}
+                    throw (new Exception("Error generating " + GetFileNameWithoutExtension(templateName) + ": " + sprocName, e));
+                }
+                finally
+                {
+                    if (sw != null)
+                    {
+                        sw.Close();
+                    }
+                }
+            }
+            return String.Empty;
+        }
 
+        #endregion
 
-		#endregion
+        #region Private File / Directory related methods
 
-		#region File / Directory related functions
-		private void CheckDirectory(string dir)
-		{
-			if(!Directory.Exists(dir))
-			{
+        private void CheckDirectory(string dir)
+        {
+            if (!Directory.Exists(dir))
+            {
                 if (dir.StartsWith(@"\\"))
                 {
                     throw new ApplicationException("Illegal path: UNC paths are not supported.");
                 }
-				// Recursion 
-				// If this folder doesn't exists, check the parent folder
+                // Recursion 
+                // If this folder doesn't exists, check the parent folder
                 if (dir.EndsWith(@"\"))
                 {
                     dir = dir.Substring(0, dir.Length - 1);
@@ -650,35 +656,35 @@ namespace CslaGenerator.Templates
                 else if (dir.IndexOf(@"\") == -1)
                     throw new ApplicationException(String.Format("The output path could not be created. Check that the \"{0}\" unit exists.", dir));
 
-				CheckDirectory(dir.Substring(0, dir.LastIndexOf(@"\")));
-				Directory.CreateDirectory(dir);
-			}
-		}
+                CheckDirectory(dir.Substring(0, dir.LastIndexOf(@"\")));
+                Directory.CreateDirectory(dir);
+            }
+        }
 
         private string GetNamespaceDirectory(string targetDir, CslaObjectInfo info, bool isBaseClass, bool separateNamespaces, bool isClassComment)
-		{
-			if(targetDir.EndsWith(@"\") == false) { targetDir += @"\"; }
-	
-			if(separateNamespaces) 
-			{
-				string namespaceSubFolder = info.ObjectNamespace.Replace(".", @"\");
-		
-				targetDir += namespaceSubFolder;
-				if(targetDir.EndsWith(@"\") == false) { targetDir += @"\"; }
-				
-			}
+        {
+            if (targetDir.EndsWith(@"\") == false) { targetDir += @"\"; }
 
-			if (!info.Folder.Trim().Equals(String.Empty))
-				targetDir += info.Folder + @"\";
-			//if(baseClass && info.ObjectType != CslaObjectType.NameValueList) { targetDir += @"Base\"; }
+            if (separateNamespaces)
+            {
+                string namespaceSubFolder = info.ObjectNamespace.Replace(".", @"\");
+
+                targetDir += namespaceSubFolder;
+                if (targetDir.EndsWith(@"\") == false) { targetDir += @"\"; }
+
+            }
+
+            if (!info.Folder.Trim().Equals(String.Empty))
+                targetDir += info.Folder + @"\";
+            //if(baseClass && info.ObjectType != CslaObjectType.NameValueList) { targetDir += @"Base\"; }
             if (isBaseClass) { targetDir += @"Base\"; }
             if (isClassComment) { targetDir += @"Comment\"; }
-			CheckDirectory(targetDir);
-			return targetDir;
-		}
+            CheckDirectory(targetDir);
+            return targetDir;
+        }
 
         private string GetBaseFileName(CslaObjectInfo info, bool isBaseClass, bool separateBaseClasses, bool separateNamespaces, string baseFilenameSuffix, string extendedFilenameSuffix, string classCommentFilenameSuffix, bool isClassComment, bool separateClassComment)
-		{
+        {
             string fileNoExtension = GetFileNameWithoutExtension(info.FileName);
             if (isBaseClass)
             {
@@ -698,16 +704,16 @@ namespace CslaGenerator.Templates
                     fileNoExtension += extendedFilenameSuffix;
             }
 
-		    string fileExtension = GetFileExtension(info.FileName);
-			if (fileExtension == String.Empty)
-			{
-				if (info.OutputLanguage == CodeLanguage.CSharp) fileNoExtension += ".cs";
-				if (info.OutputLanguage == CodeLanguage.VB) fileNoExtension += ".vb";
-			}
-			else
-			{
-				fileNoExtension += fileExtension;
-			}
+            string fileExtension = GetFileExtension(info.FileName);
+            if (fileExtension == String.Empty)
+            {
+                if (info.OutputLanguage == CodeLanguage.CSharp) fileNoExtension += ".cs";
+                if (info.OutputLanguage == CodeLanguage.VB) fileNoExtension += ".vb";
+            }
+            else
+            {
+                fileNoExtension += fileExtension;
+            }
 
             return
                 (GetNamespaceDirectory(_targetDirectory, info,
@@ -715,37 +721,38 @@ namespace CslaGenerator.Templates
                     separateNamespaces,
                     isClassComment ? separateClassComment : false) +
                     fileNoExtension);
-		}
+        }
 
+        private string GetFileNameWithoutExtension(string fileName)
+        {
+            int index = fileName.LastIndexOf(".");
+            if (index >= 0)
+            {
+                return fileName.Substring(0, index);
+            }
+            return fileName;
+        }
 
-		private string GetFileNameWithoutExtension(string fileName)
-		{
-			int index = fileName.LastIndexOf(".");
-			if (index >= 0)
-			{
-				return fileName.Substring(0,index);
-			}
-			return fileName;
-		}
+        private string GetFileExtension(string fileName)
+        {
+            int index = fileName.LastIndexOf(".");
+            if (index >= 0)
+            {
+                return fileName.Substring(index + 1);
+            }
+            return String.Empty;
+        }
 
-		private string GetFileExtension(string fileName)
-		{
-			int index = fileName.LastIndexOf(".");
-			if (index >= 0)
-			{
-				return fileName.Substring(index+1);
-			}
-			return String.Empty;
-		}
-
-		private string GetTemplateName(CslaObjectInfo info)
-		{
+        private string GetTemplateName(CslaObjectInfo info)
+        {
             return GetTemplateName(info.ObjectType);
-		}
+        }
+
         private string GetTemplateName(CslaObjectType type)
         {
             return String.Format("{0}.cst", type.ToString());
         }
-		#endregion
-	}
+
+        #endregion
+    }
 }

@@ -27,6 +27,7 @@ namespace CslaGenerator.Metadata
         Authorization _generateAuthorization = Authorization.FullSupport;
         HeaderVerbosity _headerVerbosity = HeaderVerbosity.Full;
         bool _useBypassPropertyChecks = true;
+        bool _useSingleCriteria = false;
         private string _baseFilenameSuffix = string.Empty;
         private string _extendedFilenameSuffix = string.Empty;
         private string _classCommentFilenameSuffix = string.Empty;
@@ -321,6 +322,21 @@ namespace CslaGenerator.Metadata
             }
         }
 
+        public bool UseSingleCriteria
+        {
+            get
+            {
+                return _useSingleCriteria;
+            }
+            set
+            {
+                if (_useSingleCriteria == value)
+                    return;
+                _useSingleCriteria = value;
+                OnPropertyChanged("");
+            }
+        }
+
         public string BaseFilenameSuffix
         {
             get
@@ -433,7 +449,7 @@ namespace CslaGenerator.Metadata
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
-        private bool _Dirty=false;
+        private bool _Dirty = false;
         [Browsable(false)]
         internal bool Dirty
         {

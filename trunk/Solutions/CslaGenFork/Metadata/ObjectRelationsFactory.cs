@@ -285,6 +285,12 @@ namespace CslaGenerator.Metadata
 
         private void BuildCollectionCriteriaGet(CslaObjectInfo info, CriteriaPropertyCollection rootCriteriaProperties)
         {
+            if (!info.LazyLoad)
+            {
+                DeleteDefaultCollectionCriteria(info);
+                return;
+            }
+
             StringBuilder sb;
 
             // make collection criteria if needed
@@ -348,6 +354,35 @@ namespace CslaGenerator.Metadata
                     sb.AppendFormat("\t{0}.CriteriaGet.{1}" + Environment.NewLine, info.ObjectName, propName);
                 }
                 OutputWindow.Current.AddOutputInfo(sb.ToString());
+            }
+        }
+
+        private void DeleteDefaultCollectionCriteria(CslaObjectInfo info)
+        {
+            StringBuilder sb;
+
+            var collCriteria = info.CriteriaObjects;
+            foreach (var crit in collCriteria)
+            {
+                if (crit.Name != "CriteriaGet")
+                {
+                    if (crit.Properties.Count > 0)
+                    {
+                        // clear CriteriaGet properties
+                        crit.Properties.RemoveRange(0, crit.Properties.Count);
+
+                        // display message to the user
+                        sb = new StringBuilder();
+                        sb.AppendFormat("Not LazyLoad - successfully removed all criteria properties of CriteriaGet on {0} collection object.", info.ObjectName);
+                        OutputWindow.Current.AddOutputInfo(sb.ToString());
+                    }
+                }
+                collCriteria.Remove(crit);
+                // display message to the user
+                sb = new StringBuilder();
+                sb.AppendFormat("Not LazyLoad - successfully removed criteria CriteriaGet to {0} collection object.", info.ObjectName);
+                OutputWindow.Current.AddOutputInfo(sb.ToString());
+                break;
             }
         }
 

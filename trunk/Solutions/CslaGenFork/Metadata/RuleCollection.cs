@@ -1,14 +1,13 @@
 using System;
-using System.Collections;
-using System.Xml.Serialization;
+using System.Collections.Generic;
 
 namespace CslaGenerator.Metadata
 {
-    /// <summary>
-    ///        A strongly-typed collection of <see cref="Rule"/> objects.
+    /// <summary>        
+    /// A strongly-typed collection of <see cref="Rule"/> objects.
     /// </summary>
     [Serializable]
-    public class RuleCollection : System.Collections.Generic.List<Rule>
+    public class RuleCollection : List<Rule>
     {
     }
     //public class RuleCollection : ICollection, IList, IEnumerable, ICloneable

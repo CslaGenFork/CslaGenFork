@@ -145,6 +145,7 @@ namespace CslaGenerator.Controls
             this.chkUseChildDataPortal = new System.Windows.Forms.CheckBox();
             this.chkActiveObjects = new System.Windows.Forms.CheckBox();
             this.chkUseBypassPropertyChecks = new System.Windows.Forms.CheckBox();
+            this.chkUseSingleCriteria = new System.Windows.Forms.CheckBox();
             this.chkGenerateStoredProcedures = new System.Windows.Forms.CheckBox();
             this.chkSpOneFile = new System.Windows.Forms.CheckBox();
             this.chkGenerateDatabaseClass = new System.Windows.Forms.CheckBox();
@@ -1223,6 +1224,7 @@ namespace CslaGenerator.Controls
             this.tabGeneration.Controls.Add(this.chkNullableSupport);
             this.tabGeneration.Controls.Add(this.chkActiveObjects);
             this.tabGeneration.Controls.Add(this.chkUseBypassPropertyChecks);
+            this.tabGeneration.Controls.Add(this.chkUseSingleCriteria);
             this.tabGeneration.Controls.Add(this.chkGenerateStoredProcedures);
             this.tabGeneration.Controls.Add(this.chkSpOneFile);
             this.tabGeneration.Controls.Add(this.chkGenerateDatabaseClass);
@@ -1418,10 +1420,22 @@ namespace CslaGenerator.Controls
                                      "and assign values using .NET properties.\r\n" +
                                      "Otherwise uses LoadProperty() to assign values.");
             //
+            // chkUseSingleCriteria
+            // 
+            this.chkUseSingleCriteria.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "UseSingleCriteria", true));
+            this.chkUseSingleCriteria.Location = new System.Drawing.Point(255, 162);
+            this.chkUseSingleCriteria.Name = "chkUseSingleCriteria";
+            this.chkUseSingleCriteria.Size = new System.Drawing.Size(260, 17);
+            this.chkUseSingleCriteria.TabIndex = 14;
+            this.chkUseSingleCriteria.Text = "Generate SingleCriteria parameter passing";
+            this.toolTip1.SetToolTip(this.chkUseSingleCriteria,
+                                     "If unchecked, single native type parameter will be passed to DataPortal methods as native type.\r\n" +
+                                     "Otherwise generates SingleCriteria for single parameter passing to DataPortal methods.");
+            //
             // chkGenerateStoredProcedures
             // 
             this.chkGenerateStoredProcedures.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "GenerateSprocs", true));
-            this.chkGenerateStoredProcedures.Location = new System.Drawing.Point(255, 191);
+            this.chkGenerateStoredProcedures.Location = new System.Drawing.Point(15, 190);
             this.chkGenerateStoredProcedures.Name = "chkGenerateStoredProcedures";
             this.chkGenerateStoredProcedures.Size = new System.Drawing.Size(216, 17);
             this.chkGenerateStoredProcedures.TabIndex = 7;
@@ -1432,7 +1446,7 @@ namespace CslaGenerator.Controls
             // chkSpOneFile
             // 
             this.chkSpOneFile.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "OneSpFilePerObject", true));
-            this.chkSpOneFile.Location = new System.Drawing.Point(255, 218);
+            this.chkSpOneFile.Location = new System.Drawing.Point(15, 218);
             this.chkSpOneFile.Name = "chkSpOneFile";
             this.chkSpOneFile.Size = new System.Drawing.Size(216, 17);
             this.chkSpOneFile.TabIndex = 9;
@@ -1444,7 +1458,7 @@ namespace CslaGenerator.Controls
             // chkGenerateDatabaseClass
             // 
             this.chkGenerateDatabaseClass.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "GenerateDatabaseClass", true));
-            this.chkGenerateDatabaseClass.Location = new System.Drawing.Point(255, 246);
+            this.chkGenerateDatabaseClass.Location = new System.Drawing.Point(15, 246);
             this.chkGenerateDatabaseClass.Name = "chkGenerateDatabaseClass";
             this.chkGenerateDatabaseClass.Size = new System.Drawing.Size(216, 17);
             this.chkGenerateDatabaseClass.TabIndex = 11;
@@ -1819,6 +1833,7 @@ namespace CslaGenerator.Controls
         private System.Windows.Forms.CheckBox chkUseChildDataPortal;
         private System.Windows.Forms.CheckBox chkActiveObjects;
         private System.Windows.Forms.CheckBox chkUseBypassPropertyChecks;
+        private System.Windows.Forms.CheckBox chkUseSingleCriteria;
         private System.Windows.Forms.CheckBox chkGenerateStoredProcedures;
         private System.Windows.Forms.CheckBox chkSpOneFile;
         private System.Windows.Forms.CheckBox chkGenerateDatabaseClass;

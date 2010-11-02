@@ -18,7 +18,7 @@ using System.Reflection;
 using CslaGenerator.Attributes;
 using CslaGenerator.Metadata;
 
-namespace CslaGenerator.Util
+namespace CslaGenerator.Util.PropertyBags
 {
     /// <summary>
     /// Represents a collection of custom properties that can be selected into a
@@ -472,7 +472,7 @@ namespace CslaGenerator.Util
         }
 
         /// <summary>
-        /// Gets the collection of properties contained within this PlainPropertyBag.
+        /// Gets the collection of properties contained within this CriteriaBag.
         /// </summary>
         public PropertySpecCollection Properties
         {
@@ -810,7 +810,7 @@ namespace CslaGenerator.Util
         PropertyDescriptorCollection ICustomTypeDescriptor.GetProperties(Attribute[] attributes)
         {
             // Rather than passing this function on to the default TypeDescriptor,
-            // which would return the actual properties of PlainPropertyBag, I construct
+            // which would return the actual properties of CriteriaBag, I construct
             // a list here that contains property descriptors for the elements of the
             // Properties list in the bag.
 
