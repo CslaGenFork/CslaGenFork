@@ -67,6 +67,7 @@
     <GenerateAuthorization>FullSupport</GenerateAuthorization>
     <HeaderVerbosity>None</HeaderVerbosity>
     <UseBypassPropertyChecks>true</UseBypassPropertyChecks>
+    <UseSingleCriteria>false</UseSingleCriteria>
     <BaseFilenameSuffix>.Designer</BaseFilenameSuffix>
     <ExtendedFilenameSuffix />
     <ClassCommentFilenameSuffix />

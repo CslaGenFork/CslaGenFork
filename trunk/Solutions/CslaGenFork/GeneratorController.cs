@@ -16,9 +16,6 @@ using DBSchemaInfo.Base;
 
 namespace CslaGenerator
 {
-    /// <summary>
-    /// Summary description for GeneratorController.
-    /// </summary>
     public class GeneratorController : IDisposable
     {
         #region Private Fields
@@ -39,6 +36,7 @@ namespace CslaGenerator
         #endregion
 
         #region Constructors/Dispose
+
         public GeneratorController()
         {
             Init();
@@ -76,9 +74,11 @@ namespace CslaGenerator
                 }
             }
         }
+
         #endregion
 
-        #region Main
+        #region Main (application entry point)
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -96,9 +96,11 @@ namespace CslaGenerator
             controller.ProcessCommandLineArgs();
             Application.Run();
         }
+
         #endregion
 
         #region Public Properties
+
         public CslaGeneratorUnit CurrentUnit
         {
             get { return _currentUnit; }
@@ -120,6 +122,7 @@ namespace CslaGenerator
                 _currentPropertiesTab.Show(_frmGenerator.DockPanel);
             }
         }
+
         internal ProjectProperties ProjectPropertiesTab
         {
             get
@@ -148,7 +151,6 @@ namespace CslaGenerator
             }
         }
 
-        //public GeneratorForm GeneratorForm
         public CSLAgen GeneratorForm
         {
             get { return _frmGenerator; }
@@ -166,25 +168,16 @@ namespace CslaGenerator
         #endregion
 
         #region Internal Properties
+
         internal static ICatalog Catalog
         {
             get { return _catalog; }
             set { _catalog = value; }
         }
+
         internal static GeneratorController Current
         {
-            get
-            {
-                return _current;
-            }
-        }
-
-        #endregion
-
-        #region Event Handlers
-        private void GeneratorForm_Closing(object sender, CancelEventArgs e)
-        {
-            Application.Exit();
+            get { return _current; }
         }
 
         #endregion
@@ -203,19 +196,6 @@ namespace CslaGenerator
                 Cursor.Current = Cursors.Default;
             }
         }
-
-        private class CslaObjectInfoComparer : System.Collections.Generic.IComparer<CslaObjectInfo>
-        {
-            #region IComparer<CslaObjectInfo> Members
-
-            public int Compare(CslaObjectInfo x, CslaObjectInfo y)
-            {
-                return x.ObjectName.CompareTo(y.ObjectName);
-            }
-
-            #endregion
-        }
-
 
         public void Load(string fileName)
         {
@@ -264,13 +244,13 @@ namespace CslaGenerator
                 {
                     if (_frmGenerator.ProjectPanel.ListObjects.Items.Count > 0)
                     {
-                        _currentCslaObject = (CslaObjectInfo) _frmGenerator.ProjectPanel.ListObjects.Items[0];
-//                        _frmGenerator.PropertyGrid.SelectedObject = new PropertyBag(_currentCslaObject, _propertyContext);
+                        _currentCslaObject = (CslaObjectInfo)_frmGenerator.ProjectPanel.ListObjects.Items[0];
+                        //                        _frmGenerator.PropertyGrid.SelectedObject = new PropertyBag(_currentCslaObject, _propertyContext);
                     }
                     else
                     {
                         _currentCslaObject = null;
-//                        _frmGenerator.PropertyGrid.SelectedObject = null;
+                        //                        _frmGenerator.PropertyGrid.SelectedObject = null;
                     }
 
                     if (_dbSchemaPanel != null)
@@ -279,7 +259,7 @@ namespace CslaGenerator
                 else
                 {
                     _currentCslaObject = null;
-//                    _frmGenerator.PropertyGrid.SelectedObject = null;
+                    //                    _frmGenerator.PropertyGrid.SelectedObject = null;
                     if (_dbSchemaPanel != null)
                         _dbSchemaPanel.CslaObjectInfo = null;
                 }
@@ -311,7 +291,7 @@ namespace CslaGenerator
             }
         }
 
-        void CslaObjects_ListChanged(object sender, ListChangedEventArgs e)
+        private void CslaObjects_ListChanged(object sender, ListChangedEventArgs e)
         {
             if (e.ListChangedType == ListChangedType.ItemChanged)
             {
@@ -320,7 +300,7 @@ namespace CslaGenerator
             }
         }
 
-        void AssociativeEntities_ListChanged(object sender, ListChangedEventArgs e)
+        private void AssociativeEntities_ListChanged(object sender, ListChangedEventArgs e)
         {
             if (e.ListChangedType == ListChangedType.ItemChanged)
             {
@@ -371,14 +351,33 @@ namespace CslaGenerator
                 _currentFilePath = GetFilePath(fileName);
             }
         }
+
+        public string RetrieveFilename(string fileName)
+        {
+            int n = fileName.Length - 1;
+            int x = 0;
+            while (n >= 0)
+            {
+                x = x + 1;
+                if (fileName.Substring(n, 1) == @"\")
+                {
+                    return fileName.Substring(n + 1, x - 1);
+                }
+                n = n - 1;
+            }
+            return "";
+        }
+
         #endregion
 
         #region Private Methods
-        string GetFilePath(string fileName)
+
+        private string GetFilePath(string fileName)
         {
             System.IO.FileInfo fi = new System.IO.FileInfo(fileName);
             return fi.Directory.FullName;
         }
+
         private void BindControls()
         {
             if (_currentUnit != null)
@@ -441,6 +440,7 @@ namespace CslaGenerator
                 throw (e);
             }
         }
+
         private void EnableButtons()
         {
             //TODO: This needs to be applied to menu
@@ -471,21 +471,6 @@ namespace CslaGenerator
                 return fileName.Substring(index + 1);
             }
             return ".cs";
-        }
-        public string RetrieveFilename(string fileName)
-        {
-            int n = fileName.Length - 1;
-            int x = 0;
-            while (n >= 0)
-            {
-                x = x + 1;
-                if (fileName.Substring(n, 1) == @"\")
-                {
-                    return fileName.Substring(n + 1, x - 1);
-                }
-                n = n - 1;
-            }
-            return "";
         }
 
         private string GetTemplateName(CslaObjectInfo info)
@@ -518,6 +503,11 @@ namespace CslaGenerator
         #endregion
 
         #region Event Handlers
+
+        private void GeneratorForm_Closing(object sender, CancelEventArgs e)
+        {
+            Application.Exit();
+        }
 
         private void CslaObjectList_SelectedItemsChanged(object sender, EventArgs e)
         {
@@ -604,6 +594,22 @@ namespace CslaGenerator
                 TemplatesDirectory = tDir;
             }
         }
+
+        #region Nested CslaObjectInfoComparer
+
+        private class CslaObjectInfoComparer : IComparer<CslaObjectInfo>
+        {
+            #region IComparer<CslaObjectInfo> Members
+
+            public int Compare(CslaObjectInfo x, CslaObjectInfo y)
+            {
+                return x.ObjectName.CompareTo(y.ObjectName);
+            }
+
+            #endregion
+        }
+
+        #endregion
 
     }
 }

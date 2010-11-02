@@ -48,14 +48,14 @@ namespace CslaGenerator.Metadata
             }
         }
 
-        [Description("Defines whether you want to generate the dataportal method or not.")]
+        [Description("Defines whether you want to generate the DataPortal method or not. If set to false, the criteria nested class won't be generated.")]
         public bool DataPortal
         {
             get { return _dataPortal; }
             set { _dataPortal = value; }
         }
 
-        [Description("Defines whether you want to generate the add a RunLocal() attribute to the dataportal method or not.")]
+        [Description("Defines whether you want to add a RunLocal attribute to the DataPortal method or not.")]
         public bool RunLocal
         {
             get { return _runLocal; }
@@ -76,7 +76,7 @@ namespace CslaGenerator.Metadata
             }
         }
 
-        [Description("Defines the name of the stored procedure.")]
+        [Description("Defines the name of the stored procedure. This will be used for generating the DataPortal method and the stored procedure itself.")]
         public string ProcedureName
         {
             get { return _procedureName; }

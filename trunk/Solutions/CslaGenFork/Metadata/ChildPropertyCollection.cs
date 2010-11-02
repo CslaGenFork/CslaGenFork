@@ -1,10 +1,5 @@
-using System;
-using System.Collections;
-using System.Xml.Serialization;
-
 namespace CslaGenerator.Metadata
 {
-
     public class ChildPropertyCollection : System.Collections.Generic.List<ChildProperty>
     {
         public ChildProperty Find(string name)
