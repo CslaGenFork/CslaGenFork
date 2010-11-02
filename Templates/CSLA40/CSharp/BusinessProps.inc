@@ -10,6 +10,9 @@ foreach (ValueProperty prop in Info.AllValueProperties)
     if (!string.IsNullOrEmpty(statement))
     {
         Response.Write(Environment.NewLine); %>
+        /// <summary>
+        /// Maintains metadata about <see cref="<%= prop.Name %>"/> property.
+        /// </summary>
         <%= statement %><%
     }
     if (prop.DeclarationMode != PropertyDeclaration.NoProperty)
@@ -121,6 +124,9 @@ foreach (ChildProperty prop in Info.GetMyChildProperties())
     if (!string.IsNullOrEmpty(statement))
     {
         %>
+        /// <summary>
+        /// Maintains metadata about child <see cref="<%= prop.Name %>"/> property.
+        /// </summary>
         <%= statement + Environment.NewLine %><%
     }
     if (prop.Summary != String.Empty)
@@ -135,7 +141,7 @@ foreach (ChildProperty prop in Info.GetMyChildProperties())
     {
         %>
         /// <summary>
-        /// Gets the <%= CslaGenerator.Metadata.ValueProperty.SplitOnCaps(prop.Name) %> child property.
+        /// Gets the <%= CslaGenerator.Metadata.ValueProperty.SplitOnCaps(prop.Name) %> (child property).
         /// </summary>
         /// <value>The <%= CslaGenerator.Metadata.ValueProperty.SplitOnCaps(prop.Name) %>.</value>
         <%

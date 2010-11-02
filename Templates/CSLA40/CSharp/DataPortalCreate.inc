@@ -11,7 +11,7 @@ foreach (Criteria c in Info.CriteriaObjects)
         <%
         if (c.Properties.Count > 0)
         {
-        %>/// <param name="crit">The create criteria.</param><%
+        %>/// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The create criteria.</param><%
         }
         if (c.Properties.Count > 0 && c.CreateOptions.RunLocal)
         {
@@ -31,7 +31,7 @@ foreach (Criteria c in Info.CriteriaObjects)
         else if (c.Properties.Count > 0)
         {
             %>
-        protected void <%= (Info.ObjectType == CslaObjectType.EditableChild && CurrentUnit.GenerationParams.UseChildDataPortal) ? "Child_" : "DataPortal_" %>Create(SingleCriteria<<%= GetDataTypeGeneric(c.Properties[0], c.Properties[0].PropertyType) %>> crit)
+        protected void <%= (Info.ObjectType == CslaObjectType.EditableChild && CurrentUnit.GenerationParams.UseChildDataPortal) ? "Child_" : "DataPortal_" %>Create(<%= ReceiveSingleCriteria(c, "crit") %>)
             <%
         }
         else
@@ -87,7 +87,7 @@ foreach (Criteria c in Info.CriteriaObjects)
             }
             else
             {
-                %><%= GetFieldLoaderStatement(prop, "crit.Value") %>;
+                %><%= GetFieldLoaderStatement(prop, AssignSingleCriteria(c, "crit")) %>;
             <%
             }
         }
@@ -101,7 +101,16 @@ foreach (Criteria c in Info.CriteriaObjects)
             <%
         }
     }
-    %>var args = new DataPortalHookArgs(<%= c.Properties.Count > 0 ? "crit" : "" %>);
+    string hookArgs = string.Empty;
+    if (c.Properties.Count > 1)
+    {
+        hookArgs = "crit";
+    }
+    else if (c.Properties.Count > 0)
+    {
+        hookArgs = HookSingleCriteria(c, "crit");
+    }
+    %>var args = new DataPortalHookArgs(<%= hookArgs %>);
             OnCreate(args);
     <%
     // this is DataPortal_Create; so always CheckRules except for ReadOnlyCollection

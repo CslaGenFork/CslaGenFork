@@ -21,7 +21,7 @@ foreach (Criteria c in Info.CriteriaObjects)
             %>
 
         /// <summary>
-        /// Factory method. New <see cref="<%=Info.ObjectName%>"/> empty collection is created.
+        /// Factory method. Creates a new <see cref="<%=Info.ObjectName%>"/> collection.
         /// </summary>
         /// <returns>A reference to the created <see cref="<%=Info.ObjectName%>"/> collection.</returns>
         internal static <%=Info.ObjectName%> New<%=Info.ObjectName%>()
@@ -64,7 +64,7 @@ foreach (Criteria c in Info.CriteriaObjects)
                 else if (c.Properties.Count > 0)
                 {
                     %>
-            return <% if (ActiveObjects) { %>ActiveObjects.<% } %>DataPortal.Create<%= (Info.ObjectType == CslaObjectType.EditableChild && CurrentUnit.GenerationParams.UseChildDataPortal) ? "Child" : "" %><<%= Info.ObjectName %>>(new SingleCriteria<<%= GetDataTypeGeneric(c.Properties[0], c.Properties[0].PropertyType) %>>(<%= strNewCritParams %>));
+            return <% if (ActiveObjects) { %>ActiveObjects.<% } %>DataPortal.Create<%= (Info.ObjectType == CslaObjectType.EditableChild && CurrentUnit.GenerationParams.UseChildDataPortal) ? "Child" : "" %><<%= Info.ObjectName %>>(<%= SendSingleCriteria(c, strNewCritParams) %>);
                     <%
                 }
                 else

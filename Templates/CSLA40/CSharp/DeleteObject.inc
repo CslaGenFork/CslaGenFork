@@ -47,7 +47,7 @@ foreach (Criteria c in Info.CriteriaObjects)
             }
             else if (c.Properties.Count > 0)
             {
-                if (ActiveObjects) { %>ActiveObjects.<% } %>DataPortal.Delete<<%= Info.ObjectName %>>(new SingleCriteria<<%= GetDataTypeGeneric(c.Properties[0], c.Properties[0].PropertyType) %>>(<%=strDelCritParams %>));<%
+                if (ActiveObjects) { %>ActiveObjects.<% } %>DataPortal.Delete<<%= Info.ObjectName %>>(<%= SendSingleCriteria(c, strDelCritParams) %>);<%
             }
             else
             {

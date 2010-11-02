@@ -13,6 +13,8 @@ if (!Info.UseCustomLoading)
         <%
             string strGetParams = string.Empty;
             string strGetCritParams = string.Empty;
+            bool firstParam = true;
+            bool isCriteriaClassNeeded = IsCriteriaClassNeeded(Info);
             for (int i = 0; i < c.Properties.Count; i++)
             {
                 if (string.IsNullOrEmpty(c.Properties[i].ParameterValue))
@@ -20,13 +22,22 @@ if (!Info.UseCustomLoading)
                     %>
         /// <param name="<%= FormatCamel(c.Properties[i].Name) %>">The <%= FormatProperty(c.Properties[i].Name) %>.</param>
         <%
-                    if (i > 0)
+                    if (firstParam)
+                    {
+                        firstParam = false;
+                    }
+                    else
                     {
                         strGetParams += ", ";
                         strGetCritParams += ", ";
                     }
                     strGetParams += string.Concat(GetDataTypeGeneric(c.Properties[i], c.Properties[i].PropertyType), " ", FormatCamel(c.Properties[i].Name));
                     strGetCritParams += FormatCamel(c.Properties[i].Name);
+                }
+                else
+                {
+                    if (!isCriteriaClassNeeded)
+                        strGetCritParams += c.Properties[i].ParameterValue;
                 }
             }
             %>
@@ -38,7 +49,7 @@ if (!Info.UseCustomLoading)
             {
                 strGetCritParams = "false, " + strGetCritParams;
             }
-            if (c.Properties.Count > 1)
+            if (c.Properties.Count > 1 || (Info.ObjectType == CslaObjectType.EditableSwitchable && c.Properties.Count == 1))
             {
                 %>
             return <% if (ActiveObjects) { %>ActiveObjects.<% } %>DataPortal.Fetch<<%= Info.ObjectName %>>(new <%= c.Name %>(<%= strGetCritParams %>));
@@ -47,7 +58,7 @@ if (!Info.UseCustomLoading)
             else if (c.Properties.Count > 0)
             {
                 %>
-            return <% if (ActiveObjects) { %>ActiveObjects.<% } %>DataPortal.Fetch<<%= Info.ObjectName %>>(new SingleCriteria<<%= GetDataTypeGeneric(c.Properties[0], c.Properties[0].PropertyType) %>>(<%= strGetCritParams %>));
+            return <% if (ActiveObjects) { %>ActiveObjects.<% } %>DataPortal.Fetch<<%= Info.ObjectName %>>(<%= SendSingleCriteria(c, strGetCritParams) %>);
             <%
             }
             else

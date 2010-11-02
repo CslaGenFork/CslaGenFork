@@ -1,4 +1,15 @@
 <%
+CslaObjectInfo authzInfo = Info;
+if (IsCollectionType(Info.ObjectType))
+{
+    authzInfo = FindChildInfo(Info, Info.ItemType);
+    if (authzInfo == null)
+    {
+        Errors.Append("Collection " + Info.ObjectName + " missing Item Type." + Environment.NewLine);
+        return;
+    }
+}
+
 if (!Info.UseCustomLoading)
 {
     if (!Info.DataSetLoadingScheme)
@@ -13,9 +24,10 @@ if (!Info.UseCustomLoading)
         internal static <%= Info.ObjectName %> Get<%= Info.ObjectName %>(SafeDataReader dr)
         {
             <%
-        if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
+        if (IsCollectionType(Info.ObjectType) &&
+            CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
             CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel &&
-            Info.GetRoles.Trim() != String.Empty)
+            authzInfo.GetRoles.Trim() != String.Empty)
         {
             %>if (!CanGetObject())
                 throw new System.Security.SecurityException("User not authorized to load a <%= Info.ObjectName %>.");
@@ -58,9 +70,7 @@ if (!Info.UseCustomLoading)
             %>obj.RegisterAndSubscribe();
             <%
         }
-        %>
-
-            return obj;
+        %>return obj;
         }
     <%
     }
@@ -76,9 +86,10 @@ if (!Info.UseCustomLoading)
         internal static <%= Info.ObjectName %> Get<%= Info.ObjectName %>(DataRow<% if (IsCollectionType(Info.ObjectType)) { %>[]<% } %> dr)
         {
             <%
-        if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
+        if (IsCollectionType(Info.ObjectType) &&
+            CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
             CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel &&
-            Info.GetRoles.Trim() != String.Empty)
+            authzInfo.GetRoles.Trim() != String.Empty)
         {
             %>if (!CanGetObject())
                 throw new System.Security.SecurityException("User not authorized to load a <%= Info.ObjectName %>.");
@@ -96,7 +107,7 @@ if (!Info.UseCustomLoading)
             Info.ObjectType == CslaObjectType.EditableChildCollection)))
         {
             %>// show the framework that this is a child object
-            %>obj.MarkAsChild();
+            obj.MarkAsChild();
             <%
         }
         %>obj.Fetch(dr);

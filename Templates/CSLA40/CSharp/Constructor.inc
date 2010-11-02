@@ -9,9 +9,9 @@ if (!IsReadOnlyType(Info.ObjectType) && IsCollectionType(Info.ObjectType))
     itemName2 = itemInfo2.ObjectName;
     if ((CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
         CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel) &&
-        ((Info.NewRoles.Trim() != String.Empty) ||
-        (Info.UpdateRoles.Trim() != String.Empty) ||
-        (Info.DeleteRoles.Trim() != String.Empty)))
+        ((itemInfo2.NewRoles.Trim() != String.Empty) ||
+        (itemInfo2.UpdateRoles.Trim() != String.Empty) ||
+        (itemInfo2.DeleteRoles.Trim() != String.Empty)))
     {
         if (Info.AllowNew && itemInfo2.NewRoles.Trim() != String.Empty)
             dependentAllowNew2 = true;
@@ -30,7 +30,7 @@ if (!IsReadOnlyType(Info.ObjectType) && IsCollectionType(Info.ObjectType))
         /// </summary>
         /// <remarks> This isn't a public access method in order to prevent direct creation.
         /// Use factory methods instead.</remarks>
-        protected <% if (Info.ObjectType != CslaObjectType.ReadOnlyCollection) { %>internal<% } %> <%= Info.ObjectName %>()
+        protected <% if (Info.ObjectType != CslaObjectType.ReadOnlyCollection) { %>internal <% } %><%= Info.ObjectName %>()
         {
             // Prevent direct creation
             <% if (Info.ObjectType == CslaObjectType.ReadOnlyCollection) {
@@ -50,24 +50,31 @@ if (!IsReadOnlyType(Info.ObjectType) && IsCollectionType(Info.ObjectType))
             // CurrentUnit.GenerationParams.UseChildDataPortal is enought to say when this happens
             // except Get-(SafeDataReader dr) that bypass Child DataPortal methods
             if (!CurrentUnit.GenerationParams.UseChildDataPortal &&
-                (Info.ObjectType == CslaObjectType.EditableChild || Info.ObjectType == CslaObjectType.EditableChildCollection)) { %>
+                (Info.ObjectType == CslaObjectType.EditableChild ||
+                Info.ObjectType == CslaObjectType.EditableChildCollection))
+            {
+                %>
 
             // show the framework that this is a child object
             MarkAsChild();
-            <%    } %>
-        <% if (Info.ObjectType == CslaObjectType.EditableChildCollection ||
-                Info.ObjectType == CslaObjectType.EditableRootCollection ||
-                Info.ObjectType == CslaObjectType.DynamicEditableRootCollection)
+            <%
+            }
+            //if (Info.ObjectType == CslaObjectType.EditableChildCollection ||
+            //    Info.ObjectType == CslaObjectType.EditableRootCollection ||
+            //    Info.ObjectType == CslaObjectType.DynamicEditableRootCollection ||
+            //    Info.ObjectType == CslaObjectType.ReadOnlyCollection)
+            if (IsCollectionType(Info.ObjectType))
             {
                 %>
 
             RaiseListChangedEvents = false;
-            AllowNew = <%= dependentAllowNew2 ? itemName2 + ".CanAddObject()" : Info.AllowNew.ToString().ToLower() %>;
-            AllowEdit = <%= dependentAllowEdit2 ? itemName2 + ".CanEditObject()" : Info.AllowEdit.ToString().ToLower() %>;
-            AllowRemove = <%= dependentAllowRemove2 ? itemName2 + ".CanDeleteObject()" : Info.AllowRemove.ToString().ToLower() %>;
+            AllowNew = <%= dependentAllowNew2 ? Info + ".CanAddObject()" : Info.AllowNew.ToString().ToLower() %>;
+            AllowEdit = <%= dependentAllowEdit2 ? Info + ".CanEditObject()" : Info.AllowEdit.ToString().ToLower() %>;
+            AllowRemove = <%= dependentAllowRemove2 ? Info + ".CanDeleteObject()" : Info.AllowRemove.ToString().ToLower() %>;
             RaiseListChangedEvents = true;
         <%    }
-    foreach (ChildProperty prop in Info.GetMyChildProperties()) {
+    foreach (ChildProperty prop in Info.GetMyChildProperties())
+    {
         CslaObjectInfo _child = FindChildInfo(Info, prop.TypeName);
         if (_child == null) {
             Warnings.Append("TypeName '" + prop.TypeName + "' doesn't exist in this project." + Environment.NewLine);

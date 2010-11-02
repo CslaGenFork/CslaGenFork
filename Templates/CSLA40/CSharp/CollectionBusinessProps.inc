@@ -8,12 +8,13 @@ useAuthz = !IsReadOnlyType(itemInfo.ObjectType) &&
 bool needsBusiness = false;
 foreach (Criteria c in itemInfo.CriteriaObjects)
 {
-    if (c.CreateOptions.Factory || c.DeleteOptions.Factory)
+    if (c.CreateOptions.AddRemove || (c.DeleteOptions.AddRemove && c.Properties.Count > 0))
     {
         needsBusiness = true;
         break;
     }
 }
+
 if (useAuthz || needsBusiness)
 {
     %>
@@ -56,20 +57,18 @@ if (useAuthz)
                 throw new System.Security.SecurityException("User not authorized to remove a <%= itemInfo.ObjectName %>.");
 
             return base.Remove(item);
-        }
-        <%
+        }<%
     }
 }
 
-if (useAuthz && !needsBusiness)
+if (useAuthz && needsBusiness)
     Response.Write("\r\n");
 
 foreach (Criteria c in itemInfo.CriteriaObjects)
 {
-    if (c.CreateOptions.Factory)
+    if (c.CreateOptions.AddRemove)
     {
         %>
-
         /// <summary>
         /// Add new <see cref="<%= Info.ItemType %>"/> object to the <%=Info.ObjectName%> collection.
         /// </summary>
@@ -116,7 +115,7 @@ foreach (Criteria c in itemInfo.CriteriaObjects)
         <%
     }
 
-    if (c.DeleteOptions.Factory)
+    if (c.DeleteOptions.AddRemove && c.Properties.Count > 0)
     {
         %>
 

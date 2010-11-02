@@ -53,36 +53,46 @@ using Csla.Data;
     %>public partial class <%= Info.ObjectName %> : NameValueListBase<<%= GetDataTypeGeneric(valueProp, valueProp.PropertyType) %>, <%= GetDataTypeGeneric(nameProp, nameProp.PropertyType) %>>
     {
 
-        #region Constructors
-
-        <%= GetConstructorVisibility(Info) %> <%=Info.ObjectName %>()
-        {
-            // Prevent direct creation
-        }
-
-        #endregion
-
         <%
     if (Info.GenerateFactoryMethods)
     {
         if (!Info.UseCustomLoading)
         {
-            %>
-        #region Factory Methods
-
-        <%
             if (Info.CacheResults)
             {
                 %>
+        #region Private Fields
+
         private static <%= Info.ObjectName %> _list;
+
+        #endregion
+
+        #region Factory Methods
 
         /// <summary>
         /// Clears the in-memory <%= Info.ObjectName %> cache so it is reloaded on the next request.
         /// </summary>
         public static void Invalidate()
         {
-            _list = null;
+            <%
+        if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
+            CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel &&
+            Info.GetRoles.Trim() != String.Empty)
+        {
+            %>if (!CanGetObject())
+                throw new System.Security.SecurityException("User not authorized to load a <%= Info.ObjectName %>.");
+
+            <%
         }
+        %>_list = null;
+        }
+
+        <%
+            }
+            else
+            {
+                %>
+        #region Factory Methods
 
         <%
             }
@@ -121,15 +131,23 @@ using Csla.Data;
                     if (c.Properties.Count > 1)
                         crit = "new " + c.Name + "()";
                     else if (c.Properties.Count > 0)
-                        crit = "new SingleCriteria<" + GetDataType(c.Properties[0]) + ">(" + c.Properties[0].ParameterValue + ")";
+                        crit = SendSingleCriteria(c, c.Properties[0].ParameterValue);
         %>
         public static <%= Info.ObjectName %> Get<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>()
         {
             <%
+                    if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
+                        CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel &&
+                        Info.GetRoles.Trim() != String.Empty)
+                    {
+                        %>if (!CanGetObject())
+                throw new System.Security.SecurityException("User not authorized to load a <%= Info.ObjectName %>.");
+
+            <%
+                    }
                     if (Info.CacheResults)
                     {
-                        %>
-            if (_list == null)
+                        %>if (_list == null)
                 _list = <% if (ActiveObjects) { %>ActiveObjects.<% } %>DataPortal.Fetch<<%= Info.ObjectName %>>(<%= crit %>);
 
             return _list;
@@ -148,6 +166,15 @@ using Csla.Data;
             }
         }
         %>
+
+        #endregion
+
+        #region Constructors
+
+        <%= GetConstructorVisibility(Info) %> <%=Info.ObjectName %>()
+        {
+            // Prevent direct creation
+        }
 
         #endregion
     <%
@@ -187,8 +214,8 @@ using Csla.Data;
             %>
         /// Load <see cref="<%= Info.ObjectName %>"/> collection from the database, based on given criteria.
         /// </summary>
-        /// <param name="crit">The fetch criteria.</param>
-        protected void DataPortal_Fetch(SingleCriteria<<%= GetDataType(c.Properties[0]) %>> crit)
+        /// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The fetch criteria.</param>
+        protected void DataPortal_Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)
         <%
         }
         else
@@ -213,17 +240,34 @@ using Csla.Data;
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     <%
-        foreach (CriteriaProperty prop in c.Properties)
+        foreach (CriteriaProperty p in c.Properties)
         {
-            %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(prop, true, c.Properties.Count < 2) %>);
+            if (c.Properties.Count > 1)
+            {
+                %>cmd.Parameters.AddWithValue("@<%=p.ParameterName%>", <%= GetParameterSet(p, true) %>);
                     <%
+            }
+            else
+            {
+                %>cmd.Parameters.AddWithValue("@<%=p.ParameterName%>", <%= AssignSingleCriteria(c, "crit") %>);
+                    <%
+            }
         }
         if (Info.PersistenceType == PersistenceType.SqlConnectionUnshared)
         {
             %>cn.Open();
                     <%
         }
-        %>var args = new DataPortalHookArgs(cmd);
+        string hookArgs = string.Empty;
+        if (c.Properties.Count > 1)
+        {
+            hookArgs = ", crit";
+        }
+        else if (c.Properties.Count > 0)
+        {
+            hookArgs = ", " + HookSingleCriteria(c, "crit");
+        }
+        %>var args = new DataPortalHookArgs(cmd<%= hookArgs %>);
                     OnFetchPre(args);
                     LoadCollection(cmd);
                     OnFetchPost(args);
