@@ -1,5 +1,5 @@
 <%
-IndentLevel = 2;
+IndentLevel = 2; 
 %>
         #region Business Properties
         <%
