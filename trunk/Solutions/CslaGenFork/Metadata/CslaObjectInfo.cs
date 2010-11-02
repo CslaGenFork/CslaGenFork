@@ -1182,13 +1182,44 @@
             #endregion
 
             [Browsable(false)]
+            public bool HasCreateCriteria
+            {
+                get
+                {
+                    foreach (Criteria c in _criteriaObjects)
+                    {
+                        //if (c.CreateOptions.DataPortal || c.CreateOptions.Factory)
+                        if (c.CreateOptions.DataPortal)
+                            return true;
+                    }
+                    return false;
+                }
+            }
+
+            [Browsable(false)]
             public bool HasGetCriteria
             {
                 get
                 {
                     foreach (Criteria c in _criteriaObjects)
                     {
-                        if (c.GetOptions.DataPortal || c.GetOptions.Factory)
+                        //if (c.GetOptions.DataPortal || c.GetOptions.Factory)
+                        if (c.GetOptions.DataPortal)
+                            return true;
+                    }
+                    return false;
+                }
+            }
+
+            [Browsable(false)]
+            public bool HasDeleteCriteria
+            {
+                get
+                {
+                    foreach (Criteria c in _criteriaObjects)
+                    {
+                        //if (c.DeleteOptions.DataPortal || c.DeleteOptions.Factory)
+                        if (c.DeleteOptions.DataPortal)
                             return true;
                     }
                     return false;

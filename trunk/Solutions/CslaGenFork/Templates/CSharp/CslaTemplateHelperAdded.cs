@@ -1502,6 +1502,23 @@ namespace CslaGenerator.Util
         public List<string> GetEventList(CslaObjectInfo info)
         {
             var eventList = new List<string>();
+
+            if (info.HasCreateCriteria &&
+                ((IsEditableType(info.ObjectType) &&
+                IsChildType(info.ObjectType)) || 
+                info.ObjectType == CslaObjectType.EditableRoot))
+            {
+                eventList.Add("Create");
+            }
+
+            if (info.HasDeleteCriteria &&
+                ((IsEditableType(info.ObjectType) &&
+                IsChildType(info.ObjectType)) ||
+                info.ObjectType == CslaObjectType.EditableRoot))
+            {
+                eventList.AddRange(new[] { "DeletePre", "DeletePost" });
+            }
+
             if (info.HasGetCriteria ||
                 (info.ObjectType != CslaObjectType.ReadOnlyObject &&
                 info.ParentType != string.Empty &&
@@ -1509,28 +1526,25 @@ namespace CslaGenerator.Util
             {
                 eventList.AddRange(new[] { "FetchPre", "FetchPost" });
             }
-            if (!IsReadOnlyType(info.ObjectType) &&
-                info.ObjectType != CslaObjectType.NameValueList &&
-                !IsCollectionType(info.ObjectType))
-            {
-                eventList.AddRange(new[] { "UpdateStart", "UpdatePre", "UpdatePost", "InsertStart", "InsertPre", "InsertPost", "DeletePre", "DeletePost" });
-            }
+
             if (!IsCollectionType(info.ObjectType) &&
                 info.ObjectType != CslaObjectType.NameValueList)
             {
                 eventList.Add("FetchRead");
             }
-            if (info.ObjectType == CslaObjectType.EditableRoot ||
-                info.ObjectType == CslaObjectType.DynamicEditableRoot ||
-                info.ObjectType == CslaObjectType.EditableChild ||
-                info.ObjectType == CslaObjectType.EditableSwitchable)
-            {
-                eventList.Add("Create");
-            }
-            if (info.ObjectType == CslaObjectType.EditableChildCollection &&
-                !CurrentUnit.GenerationParams.UseChildDataPortal)
+
+            if (IsEditableType(info.ObjectType) &&
+                !IsCollectionType(info.ObjectType) &&
+                info.GenerateDataPortalUpdate)
             {
                 eventList.AddRange(new[] { "UpdateStart", "UpdatePre", "UpdatePost" });
+            }
+
+            if (IsEditableType(info.ObjectType) &&
+                !IsCollectionType(info.ObjectType) &&
+                info.GenerateDataPortalInsert)
+            {
+                eventList.AddRange(new[] { "InsertStart", "InsertPre", "InsertPost" });
             }
 
             return eventList;
