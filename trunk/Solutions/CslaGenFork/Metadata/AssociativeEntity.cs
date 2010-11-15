@@ -86,7 +86,7 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Relation")]
-        [Description("Relation name. This is just a label for operator reference and isn't used by CslaGenFork in any way.")]
+        [Description("Relation name. This is just a label for user reference and isn't used by CslaGenFork in any way.")]
         [UserFriendlyName("Object Name")]
         public string ObjectName
         {
@@ -149,23 +149,27 @@ namespace CslaGenerator.Metadata
         public string MainItemTypeName { get; set; }
 
         [Category("03. Primary Entity Options")]
-        [Description("Whether or not this object should be \"lazy loaded\".  \"Lazy loading\" means the child " +
-            "objects are not loaded when the parent object is loaded and are only loaded when they are referenced.")]
-        [UserFriendlyName("Primary Lazy Load")]
-        public bool MainLazyLoad { get; set; }
-
-        [Category("03. Primary Entity Options")]
-        [Description("This LoadingScheme for the collection and items.")]
-        [UserFriendlyName("Primary Loading Scheme")]
-        public LoadingScheme MainLoadingScheme { get; set; }
-
-        [Category("03. Primary Entity Options")]
         [Description("The primary entity's properties which are used in Update method, as parameters for Stored Procedures, etc. " +
             "These will used as Criteria properties in the item object.")]
         [Editor(typeof(AssociativeEntityParameterCollectionEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(ParameterCollectionConverter))]
         [UserFriendlyName("Primary Load Parameters")]
         public ParameterCollection MainLoadParameters { get; set; }
+
+        [Category("03. Primary Entity Options")]
+        [Description("The Loading Scheme for the collection." +
+        "If set to ParentLoad then the child will be populated by the parent class.\r\n" +
+        "If set to SelfLoad the child will load its own data.\r\n" +
+        "If set to None then the child will not be populated with data at all (unsupported for CSLA40 targets).")]
+        [UserFriendlyName("Primary Loading Scheme")]
+        public LoadingScheme MainLoadingScheme { get; set; }
+
+        [Category("03. Primary Entity Options")]
+        [Description("Whether or not this object should be lazy loaded. This applies to SelfLoad mode.\r\n" +
+            "If set to True, loading of child data is defered until the child object is referenced.\r\n" +
+            "If set to False, the child data is loaded when the parent is instantiated.")]
+        [UserFriendlyName("Primary Lazy Load")]
+        public bool MainLazyLoad { get; set; }
 
         [Category("04. Secondary Entity Definition")]
         [Description("Type name of the secondary entity. This must be a root object (editable or read only). This ")]
@@ -213,23 +217,27 @@ namespace CslaGenerator.Metadata
         public string SecondaryItemTypeName { get; set; }
 
         [Category("05. Secondary Entity Options")]
-        [Description("Whether or not this object should be \"lazy loaded\".  \"Lazy loading\" means the child objects " +
-            "are not loaded when the parent object is loaded and are only loaded when they are referenced.")]
-        [UserFriendlyName("Secondary Lazy Load")]
-        public bool SecondaryLazyLoad { get; set; }
-
-        [Category("05. Secondary Entity Options")]
-        [Description("This LoadingScheme for the collection and items.")]
-        [UserFriendlyName("Secondary Loading Scheme")]
-        public LoadingScheme SecondaryLoadingScheme { get; set; }
-
-        [Category("05. Secondary Entity Options")]
         [Description("The secondary entity's properties which are used in Update method, as parameters for " +
             "Stored Procedures. These will used as Criteria properties in the item object.")]
         [Editor(typeof(AssociativeEntityParameterCollectionEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(ParameterCollectionConverter))]
         [UserFriendlyName("Secondary Load Parameters")]
         public ParameterCollection SecondaryLoadParameters { get; set; }
+
+        [Category("05. Secondary Entity Options")]
+        [Description("The Loading Scheme for the collection." +
+        "If set to ParentLoad then the child will be populated by the parent class.\r\n" +
+        "If set to SelfLoad the child will load its own data.\r\n" +
+        "If set to None then the child will not be populated with data at all (unsupported for CSLA40 targets).")]
+        [UserFriendlyName("Secondary Loading Scheme")]
+        public LoadingScheme SecondaryLoadingScheme { get; set; }
+
+        [Category("05. Secondary Entity Options")]
+        [Description("Whether or not this object should be lazy loaded. This applies to SelfLoad mode.\r\n" +
+            "If set to True, loading of child data is defered until the child object is referenced.\r\n" +
+            "If set to False, the child data is loaded when the parent is instantiated.")]
+        [UserFriendlyName("Secondary Lazy Load")]
+        public bool SecondaryLazyLoad { get; set; }
 
         #endregion
 

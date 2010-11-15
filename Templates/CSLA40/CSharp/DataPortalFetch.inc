@@ -6,7 +6,6 @@ if (!Info.UseCustomLoading)
         if (c.GetOptions.DataPortal)
         {
         %>
-
         /// <summary>
         /// Retrieve an existing <see cref="<%=Info.ObjectName%>"/> object from the database, based on given criteria.
         /// </summary>
@@ -91,18 +90,41 @@ if (!Info.UseCustomLoading)
                     Fetch(cmd);
                     OnFetchPost(args);
                 }
-            }
+            <%
+            if (SelfLoadsChildren(Info))
+            {
+                string fetchChildrenParam = string.Empty;
+                if (c.Properties.Count == 1)
+                    fetchChildrenParam = AssignSingleCriteria(c, "crit");
+                else
+                {
+                    bool first1 = true;
+                    foreach (Property p in c.Properties)
+                    {
+                        if (first1) { first1 = false; } else { fetchChildrenParam += ", "; }
+                        fetchChildrenParam += "crit." + p.Name;
+                    }
+                }
+                %>}
+            FetchChildren(<%= fetchChildrenParam %>);
         }
 
         <%
+            }
+            else
+            {
+        %>}
+        }
+
+        <%
+            }
         }
     }
     if (Info.HasGetCriteria)
     {
         if (!Info.DataSetLoadingScheme)
         {
-            %>
-        private void Fetch(SqlCommand cmd)
+            %>private void Fetch(SqlCommand cmd)
         {
             using (var dr = new SafeDataReader(cmd.ExecuteReader()))
             {
@@ -134,6 +156,7 @@ if (!Info.UseCustomLoading)
                 %>
             }
         }
+
         <%
         }
         else
@@ -175,12 +198,12 @@ if (!Info.UseCustomLoading)
             }
             %>
         }
+
 <!-- #include file="CreateRelations.inc" -->
         <%
         }
     }
 %>
-
         <!-- #include file="InternalFetch.inc" -->
     <%
 }

@@ -340,12 +340,20 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("05. Options")]
-        [Description("Accessibility for property setter.\r\nDefaults to public.")]
+        [Description("Accessibility for property setter.\r\n" +
+            "If \"ReadOnly\" is true, this settings is ignored.\r\n  - Auto properties have a private setter\r\n  - Classic, managed and unmanaged properties have no setter.\r\n" +
+            "If \"ReadOnly\" is false, this setting applies. By default the setter has the same accessibility of the property.\r\n" +
+            "Note -  \"NoSetter\" is deprecated and is converted to \"Default\".")]
         [UserFriendlyName("Setter Accessibility")]
         public AccessorVisibility PropSetAccessibility
         {
             get { return _propSetAccessibility; }
-            set { _propSetAccessibility = value; }
+            set
+            {
+                if (value == AccessorVisibility.NoSetter)
+                    value = AccessorVisibility.Default;
+                _propSetAccessibility = value;
+            }
         }
 
         [Category("05. Options")]

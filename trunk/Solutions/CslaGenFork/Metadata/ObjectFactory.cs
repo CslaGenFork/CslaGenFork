@@ -263,7 +263,7 @@ namespace CslaGenerator.Metadata
                 {
                     destination.PrimaryKey = ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK;
                     destination.ReadOnly = true;
-                    destination.PropSetAccessibility = AccessorVisibility.NoSetter;
+                    destination.PropSetAccessibility = AccessorVisibility.Default;
                 }
                 else
                 {
@@ -292,7 +292,7 @@ namespace CslaGenerator.Metadata
             if (_currentUnit.Params.CreationDateColumn == p.ColumnName)
             {
                 destination.ReadOnly = true;
-                destination.PropSetAccessibility = AccessorVisibility.NoSetter;
+                destination.PropSetAccessibility = AccessorVisibility.Default;
                 destination.DataAccess = ValueProperty.DataAccessBehaviour.CreateOnly;
                 if (destination.PropertyType == TypeCodeEx.SmartDate)
                 {
@@ -310,14 +310,14 @@ namespace CslaGenerator.Metadata
             else if (_currentUnit.Params.CreationUserColumn == p.ColumnName)
             {
                 destination.ReadOnly = true;
-                destination.PropSetAccessibility = AccessorVisibility.NoSetter;
+                destination.PropSetAccessibility = AccessorVisibility.Default;
                 destination.DataAccess = ValueProperty.DataAccessBehaviour.CreateOnly;
                 destination.DefaultValue = _currentUnit.Params.GetUserMethod;
             }
             else if (_currentUnit.Params.ChangedDateColumn == p.ColumnName)
             {
                 destination.ReadOnly = true;
-                destination.PropSetAccessibility = AccessorVisibility.NoSetter;
+                destination.PropSetAccessibility = AccessorVisibility.Default;
                 if (CslaTemplateHelper.IsCreationDateColumnPresent(_currentCslaObject))
                 {
                     destination.DefaultValue = "$" + _currentUnit.Params.CreationDateColumn;
@@ -332,7 +332,7 @@ namespace CslaGenerator.Metadata
             else if (_currentUnit.Params.ChangedUserColumn == p.ColumnName)
             {
                 destination.ReadOnly = true;
-                destination.PropSetAccessibility = AccessorVisibility.NoSetter;
+                destination.PropSetAccessibility = AccessorVisibility.Default;
                 if (CslaTemplateHelper.IsCreationUserColumnPresent(_currentCslaObject))
                 {
                     destination.DefaultValue = "$" + _currentUnit.Params.CreationUserColumn;

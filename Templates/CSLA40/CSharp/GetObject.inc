@@ -41,8 +41,8 @@ if (!Info.UseCustomLoading)
                 }
             }
             %>
-        /// <returns>A reference to the fetched <see cref="<%=Info.ObjectName%>"/> object.</returns>
-        public static <%= Info.ObjectName %> Get<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>(<%= strGetParams %>)
+        /// <returns>A reference to the fetched <see cref="<%= Info.ObjectName %>"/> object.</returns>
+        <%= Info.ParentType == string.Empty ? "public" : "internal" %> static <%= Info.ObjectName %> Get<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>(<%= strGetParams %>)
         {
             <%
             if (Info.ObjectType == CslaObjectType.EditableSwitchable)

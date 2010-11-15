@@ -63,6 +63,7 @@ using Csla.Data;
 
 <% if (Info.GenerateDataAccessRegion) { %>
         #region Data Access
+
         <!-- #include file="DataPortalFetch.inc" -->
 <% Response.Write(Environment.NewLine); %>
         #endregion

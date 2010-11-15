@@ -20,41 +20,111 @@ using System;
 using System.Data;
 using System.Data.SqlClient;
 using Csla;
-<% if (ActiveObjects) { %>using ActiveObjects;
-<% } %>using Csla.Data;
+<%
+    if (ActiveObjects)
+    {
+    %>using ActiveObjects;
+<%
+    }
+%>using Csla.Data;
 <%= GetUsingStatementsString(Info) %>
-<% if (Info.ObjectNamespace.Length > 0) { %>namespace <%= Info.ObjectNamespace %>
-{<% } %>
-<% bool? firstComment = null; %><!-- #include file="XmlComment.inc" -->
-    <% if (GetAttributesString(Info.Attributes) != string.Empty) { %>
+<%
+    if (Info.ObjectNamespace.Length > 0)
+    {
+        %>namespace <%= Info.ObjectNamespace %>
+{
+<%
+    }
+    bool? firstComment = null;
+    %><!-- #include file="XmlComment.inc" -->
+<%
+    if (GetAttributesString(Info.Attributes) != string.Empty)
+    {
+        %>
     <%= GetAttributesString(Info.Attributes) %>
-    <% } %>
+    <%
+    }
+    %>
     [Serializable]
-<% if (CurrentUnit.GenerationParams.GeneratedUIEnvironment == UIEnvironment.WinForms_WPF) { %>#if WPF<% }
-else if (CurrentUnit.GenerationParams.GeneratedUIEnvironment == UIEnvironment.WPF_WinForms) { %>#if WINFORMS<% } %>
-    <% if (ActiveObjects) { %>[RegisterNotify("IsValid, IsDirty, BrokenRulesChanged")]
-    <% if (Info.SubscribeToChannel.Length > 0) { %>[Subscribe("<%= Info.SubscribeToChannel %>")]<% } %>
-    <% } %>public partial class <%= Info.ObjectName %> : <%
-         if (Info.InheritedType.Type != String.Empty) {
+<%
+    if (CurrentUnit.GenerationParams.GeneratedUIEnvironment == UIEnvironment.WinForms_WPF)
+    {
+        %>#if WPF
+    <%
+    }
+    else if (CurrentUnit.GenerationParams.GeneratedUIEnvironment == UIEnvironment.WPF_WinForms)
+    {
+        %>#if WINFORMS
+    <%
+    }
+    if (ActiveObjects)
+    {
+        %>[RegisterNotify("IsValid, IsDirty, BrokenRulesChanged")]
+        <%
+        if (Info.SubscribeToChannel.Length > 0)
+        {
+            %>[Subscribe("<%= Info.SubscribeToChannel %>")]<%
+        }
+    }
+    %>public partial class <%= Info.ObjectName %> : <%
+    if (Info.InheritedType.Type != String.Empty)
+    {
+        %><%=Info.InheritedType.Type%><%
+    }
+    else if (Info.InheritedType.ObjectName != String.Empty)
+    {
+        %><%=Info.InheritedType.ObjectName%><%
+    }
+    else
+    {
+        if (ActiveObjects)
+        {
+            %>Active<%
+        }
+        %><%= BusinessListBaseHelper(true) %><%
+    }
+    %><<%= Info.ObjectName %>, <%= Info.ItemType %>><!-- #include file="Implements.inc" -->
+<%
+    if (CurrentUnit.GenerationParams.GeneratedUIEnvironment == UIEnvironment.WinForms_WPF ||
+        CurrentUnit.GenerationParams.GeneratedUIEnvironment == UIEnvironment.WPF_WinForms)
+    {
+        %>#else
+    <%
+        if (ActiveObjects)
+        {
+            %>[RegisterNotify("IsValid, IsDirty, BrokenRulesChanged")]
+    <%
+            if (Info.SubscribeToChannel.Length > 0)
+            {
+                %>[Subscribe("<%= Info.SubscribeToChannel %>")]<%
+            }
+        }
+    %>public partial class <%= Info.ObjectName %> : <%
+        if (Info.InheritedType.Type != String.Empty)
+        {
             %><%=Info.InheritedType.Type%><%
-         } else if (Info.InheritedType.ObjectName != String.Empty) {
+        }
+        else if (Info.InheritedType.ObjectName != String.Empty)
+        {
             %><%=Info.InheritedType.ObjectName%><%
-         } else {
-            %><% if (ActiveObjects) { %>Active<% } %><%= BusinessListBaseHelper(true) %><%
-        } %><<%= Info.ObjectName %>, <%= Info.ItemType %>><!-- #include file="Implements.inc" -->
-<% if (CurrentUnit.GenerationParams.GeneratedUIEnvironment == UIEnvironment.WinForms_WPF || CurrentUnit.GenerationParams.GeneratedUIEnvironment == UIEnvironment.WPF_WinForms) { %>#else
-    <% if (ActiveObjects) { %>[RegisterNotify("IsValid, IsDirty, BrokenRulesChanged")]
-    <% if (Info.SubscribeToChannel.Length > 0) { %>[Subscribe("<%= Info.SubscribeToChannel %>")]<% } %>
-    <% } %>public partial class <%= Info.ObjectName %> : <%
-         if (Info.InheritedType.Type != String.Empty) {
-            %><%=Info.InheritedType.Type%><%
-         } else if (Info.InheritedType.ObjectName != String.Empty) {
-            %><%=Info.InheritedType.ObjectName%><%
-         } else {
-            %><% if (ActiveObjects) { %>Active<% } %><%= BusinessListBaseHelper(false) %><%
-        } %><<%= Info.ObjectName %>, <%= Info.ItemType %>><!-- #include file="Implements.inc" -->
-<% if (CurrentUnit.GenerationParams.GeneratedUIEnvironment == UIEnvironment.WinForms_WPF || CurrentUnit.GenerationParams.GeneratedUIEnvironment == UIEnvironment.WPF_WinForms) { %>#endif<% }
-            } %>
+        }
+        else
+        {
+            if (ActiveObjects)
+            {
+                %>Active<%
+            }
+            %><%= BusinessListBaseHelper(false) %><%
+        }
+        %><<%= Info.ObjectName %>, <%= Info.ItemType %>><!-- #include file="Implements.inc" -->
+<%
+        if (CurrentUnit.GenerationParams.GeneratedUIEnvironment == UIEnvironment.WinForms_WPF ||
+            CurrentUnit.GenerationParams.GeneratedUIEnvironment == UIEnvironment.WPF_WinForms)
+        {
+            %>#endif<%
+        }
+    }
+    %>
     {
         <!-- #include file="CollectionBusinessProps.inc" -->
 
@@ -62,28 +132,62 @@ else if (CurrentUnit.GenerationParams.GeneratedUIEnvironment == UIEnvironment.WP
 
         #region Factory Methods
     <%
+    bool createCriteria = false;
     if (Info.GenerateFactoryMethods)
     {
-        if (Info.LazyLoad && Info.DbName.Equals(String.Empty))
+        PropertyDeclaration declarationMode = GetDeclarationMode(Info);
+        bool selfLoad3 = GetSelfLoad(Info);
+        bool lazyLoad3 = GetLazyLoad(Info);
+        bool parentCreateCriteria = false;
+        CslaObjectInfo parentInfo = Info.Parent.CslaObjects.Find(Info.ParentType);
+        foreach (Criteria c in Info.CriteriaObjects)
         {
-            Warnings.Append("Make sure you specify a DB name." + Environment.NewLine);
+            if (c.CreateOptions.Factory)
+            {
+                createCriteria = true;
+                break;
+            }
         }
+        foreach (Criteria c in parentInfo.CriteriaObjects)
+        {
+            if (c.CreateOptions.Factory || c.CreateOptions.DataPortal)
+            {
+                parentCreateCriteria = true;
+                break;
+            }
+        }
+        if (lazyLoad3 || createCriteria || parentCreateCriteria || declarationMode == PropertyDeclaration.ClassicProperty)
+        {
+            if (selfLoad3 && Info.DbName.Equals(String.Empty))
+            {
+                Warnings.Append("Make sure you specify a DB name." + Environment.NewLine);
+            }
     %>
 
         /// <summary>
-        /// Factory method. Creates a new <see cref="<%=Info.ItemType%>"/> collection.
+        /// Factory method. Creates a new <see cref="<%=Info.ObjectName%>"/> collection.
         /// </summary>
         /// <returns>A reference to the created <see cref="<%=Info.ObjectName%>"/> object.</returns>
         internal static <%= Info.ObjectName %> New<%= Info.ObjectName %>()
         {
             return DataPortal.Create<%= CurrentUnit.GenerationParams.UseChildDataPortal ? "Child" : "" %><<%= Info.ObjectName %>>();
         }
-        <% if (!Info.LazyLoad) { %>
+        <%
+        }
+        if (!selfLoad3)
+        {
+            %>
         <!-- #include file="InternalGetObject.inc" -->
-        <%  } else { %>
+        <%
+        }
+        else
+        {
+            %>
         <!-- #include file="GetObject.inc" -->
-        <% } %>
-    <% } %>
+        <%
+        }
+    }
+    %>
 
         #endregion
 <!-- #include file="SharedAuthorizationMethods.inc" -->
@@ -92,36 +196,37 @@ else if (CurrentUnit.GenerationParams.GeneratedUIEnvironment == UIEnvironment.WP
 
         <!-- #include file="Criteria.inc" -->
 <%
-if (Info.GenerateDataAccessRegion)
-{
-    %>
+    if (Info.GenerateDataAccessRegion)
+    {
+        %>
 
         #region Data Access
+
         <!-- #include file="CollectionDataPortalFetch.inc" -->
 
         <%
-    if (!CurrentUnit.GenerationParams.UseChildDataPortal)
-    {
-        %>
+        if (!CurrentUnit.GenerationParams.UseChildDataPortal)
+        {
+            %>
         /// <summary>
         /// Update all changes made on <see cref="<%=Info.ObjectName%>"/> object's children to the database.
         /// </summary>
         <%
-        if (Info.TransactionType == TransactionType.EnterpriseServices)
-        {
-            %>[Transactional(TransactionalTypes.EnterpriseServices)]
+            if (Info.TransactionType == TransactionType.EnterpriseServices)
+            {
+                %>[Transactional(TransactionalTypes.EnterpriseServices)]
         <%
-        }
-        else if (Info.TransactionType == TransactionType.TransactionScope)
-        {
-            %>[Transactional(TransactionalTypes.TransactionScope)]
+            }
+            else if (Info.TransactionType == TransactionType.TransactionScope)
+            {
+                %>[Transactional(TransactionalTypes.TransactionScope)]
         <%
-        }
-        if (Info.ParentType.Length == 0)
-        {
-            Errors.Append("ParentType not set." + Environment.NewLine + Info.ObjectName + " will not compile." + Environment.NewLine);
-        }
-        %>internal void Update(<%= Info.ParentType %> parent)
+            }
+            if (Info.ParentType.Length == 0)
+            {
+                Errors.Append("ParentType not set." + Environment.NewLine + Info.ObjectName + " will not compile." + Environment.NewLine);
+            }
+            %>internal void Update(<%= Info.ParentType %> parent)
         {
             RaiseListChangedEvents = false;
             var args = new DataPortalHookArgs();
@@ -144,22 +249,29 @@ if (Info.GenerateDataAccessRegion)
                 if (child.IsNew)
                     child.Insert(parent);
                 else
-                    child.Update(<%    if (!ParentInsertOnly) { %>parent<% } %>);
+                    child.Update(<% if (!ParentInsertOnly) { %>parent<% } %>);
             }
             OnUpdatePost(args);
             RaiseListChangedEvents = true;
         }
 
         <%
-    }
+        }
         %>
         #endregion
 <!-- #include file="Events.inc" -->
 
-<% } %>
+<%
+    }
+    %>
 
     }
-<% if (Info.ObjectNamespace.Length > 0) { %>
+<%
+    if (Info.ObjectNamespace.Length > 0)
+    {
+        %>
 }
-<% } %>
-<% } %>
+<%
+    }
+}
+%>

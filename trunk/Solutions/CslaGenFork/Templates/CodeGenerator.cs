@@ -416,7 +416,7 @@ namespace CslaGenerator.Templates
 
                             if (generationParams.OneSpFilePerObject)
                             {
-                                GenerateAllSprocsFile(info, _targetDirectory);
+                                GenerateAllSprocsFile(info, _targetDirectory, generationParams);
                             }
                             else
                             {
@@ -424,12 +424,13 @@ namespace CslaGenerator.Templates
                                 GenerateSelectProcedure(info, _targetDirectory);
                                 if (_abortRequested) break;
 
-                                if (info.ObjectType != CslaObjectType.ReadOnlyObject
+                                if (!generationParams.OnlyNeededSprocs ||
+                                    (info.ObjectType != CslaObjectType.ReadOnlyObject
                                     && info.ObjectType != CslaObjectType.ReadOnlyCollection
                                     && info.ObjectType != CslaObjectType.EditableRootCollection
                                     && info.ObjectType != CslaObjectType.DynamicEditableRootCollection
                                     && info.ObjectType != CslaObjectType.EditableChildCollection
-                                    && info.ObjectType != CslaObjectType.NameValueList)
+                                    && info.ObjectType != CslaObjectType.NameValueList))
                                 {
                                     GenerateInsertProcedure(info, _targetDirectory);
                                     if (_abortRequested) break;
@@ -487,27 +488,32 @@ namespace CslaGenerator.Templates
 
         #region Private Stored Procedures generation
 
-        private void GenerateAllSprocsFile(CslaObjectInfo info, string dir)
+        private void GenerateAllSprocsFile(CslaObjectInfo info, string dir, GenerationParameters generationParams)
         {
+            var lazyLoad = CslaTemplateHelper.GetLazyLoad(info);
+
             StringBuilder proc = new StringBuilder();
 
             //make sure we don't generate selects when we don't need to.
-            if (!((info.ObjectType == CslaObjectType.EditableChildCollection || info.ObjectType == CslaObjectType.EditableChild) && !info.LazyLoad))
+            if (!generationParams.OnlyNeededSprocs ||
+                (!((info.ObjectType == CslaObjectType.EditableChildCollection ||
+                info.ObjectType == CslaObjectType.EditableChild) && !lazyLoad)))
             {
                 foreach (Criteria crit in info.CriteriaObjects)
                 {
                     if (crit.GetOptions.Procedure && !String.IsNullOrEmpty(crit.GetOptions.ProcedureName))
-                        proc.AppendLine(GenerateProcedure(info, crit, "SelectProcedure.cst", crit.GetOptions.ProcedureName));
+                        proc.AppendLine(GenerateProcedure(info, crit, "SelectProcedure.cst",
+                                                          crit.GetOptions.ProcedureName));
                 }
             }
 
-
-            if (info.ObjectType != CslaObjectType.ReadOnlyObject
+            if (!generationParams.OnlyNeededSprocs ||
+                (info.ObjectType != CslaObjectType.ReadOnlyObject
                 && info.ObjectType != CslaObjectType.ReadOnlyCollection
                 && info.ObjectType != CslaObjectType.EditableRootCollection
                 && info.ObjectType != CslaObjectType.DynamicEditableRootCollection
                 && info.ObjectType != CslaObjectType.EditableChildCollection
-                && info.ObjectType != CslaObjectType.NameValueList)
+                && info.ObjectType != CslaObjectType.NameValueList))
             {
                 //Insert
                 if (info.InsertProcedureName != "")
@@ -541,8 +547,10 @@ namespace CslaGenerator.Templates
 
         private void GenerateSelectProcedure(CslaObjectInfo info, string dir)
         {
+            var lazyLoad = CslaTemplateHelper.GetLazyLoad(info);
+
             //make sure we don't generate selects when we don't need to.
-            if (!((info.ObjectType == CslaObjectType.EditableChildCollection || info.ObjectType == CslaObjectType.EditableChild) && !info.LazyLoad))
+            if (!((info.ObjectType == CslaObjectType.EditableChildCollection || info.ObjectType == CslaObjectType.EditableChild) && !lazyLoad))
             {
                 foreach (Criteria crit in info.CriteriaObjects)
                 {

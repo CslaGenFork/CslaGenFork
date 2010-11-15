@@ -63,7 +63,7 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Definition")]
-        [Description("Property Declaration Mode. For child properties should be \"Managed\" or \"ManagedWithTypeConversion\".")]
+        [Description("Property Declaration Mode. For child collections this should be \"ClassicProperty\" or \"Managed\".")]
         [UserFriendlyName("Declaration Mode")]
         public PropertyDeclaration DeclarationMode
         {
@@ -80,7 +80,8 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Definition")]
-        [Description("Whether this property can have a null value. The following types aren't nullable: \"String \", \"ByteArray \", \"SmartDate \", \"DBNull \", \"Object\" and \"Empty\".")]
+        [Description("Whether this property can have a null value. This is ignored for child collections.\r\n" +
+            "The following types aren't nullable: \"String \", \"ByteArray \", \"SmartDate \", \"DBNull \", \"Object\" and \"Empty\".")]
         public override bool Nullable
         {
             get { return base.Nullable; }
@@ -88,16 +89,21 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("05. Options")]
-        [Description("This is a description.")]
-        [UserFriendlyName("Lazy Load")]
-        public bool LazyLoad
+        [Editor(typeof(ParameterCollectionEditor), typeof(UITypeEditor))]
+        [TypeConverter(typeof(ParameterCollectionConverter))]
+        [Description("The parent properties that are used to load the child object.")]
+        [UserFriendlyName("Load Parameters")]
+        public ParameterCollection LoadParameters
         {
-            get { return _lazyLoad; }
-            set { _lazyLoad = value; }
+            get { return _loadParameters; }
+            set { _loadParameters = value; }
         }
 
         [Category("05. Options")]
-        [Description("This is a description.")]
+        [Description("The Loading Scheme for the child." +
+        "If set to ParentLoad then the child will be populated by the parent class.\r\n" +
+        "If set to SelfLoad the child will load its own data.\r\n" +
+        "If set to None then the child will not be populated with data at all (unsupported for CSLA40 targets).")]
         [UserFriendlyName("Loading Scheme")]
         public LoadingScheme LoadingScheme
         {
@@ -106,14 +112,14 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("05. Options")]
-        [Editor(typeof(ParameterCollectionEditor),typeof(UITypeEditor))]
-        [TypeConverter(typeof(ParameterCollectionConverter))]
-        [Description("The parent properties that are used to load the child object.")]
-        [UserFriendlyName("Load Parameters")]
-        public ParameterCollection LoadParameters
+        [Description("Whether or not this object should be lazy loaded. This applies to SelfLoad mode.\r\n" +
+            "If set to True, loading of child data is defered until the child object is referenced.\r\n" +
+            "If set to False, the child data is loaded when the parent is instantiated.")]
+        [UserFriendlyName("Lazy Load")]
+        public bool LazyLoad
         {
-            get { return _loadParameters; }
-            set { _loadParameters = value; }
+            get { return _lazyLoad; }
+            set { _lazyLoad = value; }
         }
 
         [Category("05. Options")]

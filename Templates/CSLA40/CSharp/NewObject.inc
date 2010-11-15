@@ -16,7 +16,7 @@ foreach (Criteria c in Info.CriteriaObjects)
             strNewCritParams += FormatCamel(c.Properties[i].Name);
         }
 
-        if (Info.ObjectType == CslaObjectType.ReadOnlyCollection && Info.ParentType != String.Empty)
+        if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
         {
             %>
 
@@ -24,7 +24,7 @@ foreach (Criteria c in Info.CriteriaObjects)
         /// Factory method. Creates a new <see cref="<%=Info.ObjectName%>"/> collection.
         /// </summary>
         /// <returns>A reference to the created <see cref="<%=Info.ObjectName%>"/> collection.</returns>
-        internal static <%=Info.ObjectName%> New<%=Info.ObjectName%>()
+        <%= Info.ParentType == string.Empty ? "public" : "internal" %> static <%=Info.ObjectName%> New<%=Info.ObjectName%>()
         {
             return new <%=Info.ObjectName%>();
         }
@@ -35,7 +35,7 @@ foreach (Criteria c in Info.CriteriaObjects)
         %>
 
         /// <summary>
-        /// Factory method. New <see cref="<%=Info.ObjectName%>"/> object is created, based on given parameters.
+        /// Factory method. Creates a new <see cref="<%=Info.ObjectName%>"/> object, based on given parameters.
         /// </summary>
         /// <returns>A reference to the created <see cref="<%=Info.ObjectName%>"/> object.</returns>
         <%

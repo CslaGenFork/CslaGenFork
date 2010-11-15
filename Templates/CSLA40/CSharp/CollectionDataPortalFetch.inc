@@ -1,19 +1,28 @@
 <%
 if (!Info.UseCustomLoading)
 {
-    if (Info.LazyLoad && Info.CriteriaObjects.Count == 0)
+    bool selfLoad1 = GetSelfLoad(Info);
+    if (selfLoad1 && Info.CriteriaObjects.Count == 0)
     {
-        Errors.Append("Object " + Info.ObjectName + " missing criteria. To \"Lazyload\" a collection, you need a criteria at the collection level." + Environment.NewLine);
+        Errors.Append("Object " + Info.ObjectName + " missing criteria. To \"SelfLoad\" a collection, you need a criteria at the collection level." + Environment.NewLine);
         return;
     }
+    bool first2 = true;
     if (Info.CriteriaObjects.Count > 0)
     {
         foreach (Criteria c in Info.CriteriaObjects)
         {
             if (c.GetOptions.DataPortal)
             {
+                if (first2)
+                {
+                    first2 = false;
+                }
+                else
+                {
+                    Response.Write("\r\n");
+                }
                 %>
-
         /// <summary>
         <%
                 if (c.Properties.Count > 1)
@@ -131,7 +140,7 @@ if (!Info.UseCustomLoading)
         }
 
 <!-- #include file="CreateRelations.inc" -->
-        <%
+<%
             }
         }
     }
@@ -144,12 +153,15 @@ if (!Info.UseCustomLoading)
     }
     if (!Info.DataSetLoadingScheme)
     {
+        if (!first2)
+        {
+            Response.Write("\r\n");
+        }
         %>
-
         /// <summary>
         /// Load all <see cref="<%=Info.ObjectName%>"/> collection items using given SafeDataReader.
         /// </summary>
-        /// <param name="dr">The SafeDataReader.</param>
+        /// <param name="dr">The SafeDataReader to use.</param>
         private void Fetch(SafeDataReader dr)
         {
             RaiseListChangedEvents = false;
@@ -160,7 +172,7 @@ if (!Info.UseCustomLoading)
             IsReadOnly = false;
             <%
         }
-        if (!Info.HasGetCriteria && Info.ParentType != string.Empty && !Info.LazyLoad)
+        if (!Info.HasGetCriteria && Info.ParentType != string.Empty && !selfLoad1)
         {
             %>
             var args = new DataPortalHookArgs(dr);
@@ -180,7 +192,7 @@ if (!Info.UseCustomLoading)
             IsReadOnly = true;
             <%
         }
-        if (!Info.HasGetCriteria && Info.ParentType != string.Empty && !Info.LazyLoad)
+        if (!Info.HasGetCriteria && Info.ParentType != string.Empty && !selfLoad1)
         {
             %>
             OnFetchPost(args);

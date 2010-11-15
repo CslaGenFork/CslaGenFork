@@ -1,11 +1,34 @@
 <%
-IndentLevel = 2; 
+IndentLevel = 2;
+bool isReadOnly = (Info.ObjectType == CslaObjectType.ReadOnlyObject);
 %>
         #region Business Properties
         <%
 foreach (ValueProperty prop in Info.AllValueProperties)
 {
-    bool isSetterReadOnly = prop.PropSetAccessibility == AccessorVisibility.NoSetter;
+    bool useSetter = true;
+
+    if (Info.ObjectType == CslaObjectType.ReadOnlyObject)
+    {
+        if (prop.DeclarationMode == PropertyDeclaration.ClassicProperty ||
+            prop.DeclarationMode == PropertyDeclaration.ClassicPropertyWithTypeConversion)
+        {
+            if (CurrentUnit.GenerationParams.ForceReadOnlyProperties)
+            {
+                useSetter = false;
+            }
+        }
+        else if (prop.DeclarationMode != PropertyDeclaration.AutoProperty)
+        {
+            useSetter = false;
+        }
+    }
+
+    if (prop.ReadOnly && prop.DeclarationMode != PropertyDeclaration.AutoProperty)
+    {
+        useSetter = false;
+    }
+
     string statement = PropertyInfoDeclare(Info, prop);
     if (!string.IsNullOrEmpty(statement))
     {
@@ -30,7 +53,7 @@ foreach (ValueProperty prop in Info.AllValueProperties)
             Response.Write("\r\n");
             %>
         /// <summary>
-        /// Gets <%= (isSetterReadOnly ? "" : "or sets ") %>the <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.ValueProperty.SplitOnCaps(prop.Name) %>.
+        /// Gets <%= useSetter ? "or sets " : "" %>the <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.ValueProperty.SplitOnCaps(prop.Name) %>.
         /// </summary>
         <%
         }
