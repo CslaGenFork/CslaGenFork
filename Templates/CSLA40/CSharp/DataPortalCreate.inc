@@ -95,7 +95,7 @@ foreach (Criteria c in Info.CriteriaObjects)
     foreach (ChildProperty childProp in Info.GetCollectionChildProperties())
     {
         CslaObjectInfo _child = FindChildInfo(Info, childProp.TypeName);
-        if (_child != null && !childProp.LazyLoad && childProp.LoadingScheme == LoadingScheme.ParentLoad)
+        if (_child != null && childProp.LoadingScheme == LoadingScheme.ParentLoad)
         {
             %><%= GetNewChildLoadStatement(childProp, true) %>;
             <%
@@ -123,6 +123,7 @@ foreach (Criteria c in Info.CriteriaObjects)
     %>
             base.<%= (Info.ObjectType == CslaObjectType.EditableChild && CurrentUnit.GenerationParams.UseChildDataPortal) ? "Child_" : "DataPortal_" %>Create();
         }
+
     <%
     }
 }

@@ -70,9 +70,8 @@ using Csla.Data;
     if (c.CreateOptions.Factory) { %>
 
         /// <summary>
-        /// Factory method. New <see cref="<%=Info.ObjectName%>"/> Object is created as child, based on given parameters.
+        /// Factory method. Creates a new <see cref="<%=Info.ObjectName%>"/> child object, based on given parameters.
         /// </summary>
-        /// <returns>A reference to the created <see cref="<%=Info.ObjectName%>"/> object.</returns>
 <%
         string strNewParams = string.Empty;
         string strNewCritParams = string.Empty;
@@ -86,6 +85,7 @@ using Csla.Data;
             strNewCritParams += FormatCamel(newParams[i].Name);
         }
 %>
+        /// <returns>A reference to the created <see cref="<%=Info.ObjectName%>"/> object.</returns>
         internal static <%= Info.ObjectName %> New<%= Info.ObjectName %><%=c.CreateOptions.FactorySuffix%>Child(<%=  strNewParams %>)
         {
         <%
@@ -115,7 +115,7 @@ using Csla.Data;
 
     if (c.GetOptions.Factory) { %>
         /// <summary>
-        /// Factory method. New <see cref="<%=Info.ObjectName%>" /> Object is created as a Child Object and loaded from the database, based on given parameters.
+        /// Factory method. New <see cref="<%=Info.ObjectName%>" /> child object is loaded from the database, based on given parameters.
         /// </summary>
         <%
             string strGetParams = string.Empty;

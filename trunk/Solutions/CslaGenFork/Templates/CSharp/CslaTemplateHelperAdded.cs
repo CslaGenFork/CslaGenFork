@@ -396,7 +396,7 @@ namespace CslaGenerator.Util
 
             if (prop.LazyLoad)
             {
-                response += ", RelationshipTypes.LazyLoad";
+                response += ", RelationshipTypes.Child | RelationshipTypes.LazyLoad";
             }
             else
             {
@@ -414,32 +414,44 @@ namespace CslaGenerator.Util
         public string PropertyDeclare(CslaObjectInfo info, ValueProperty prop)
         {
             var response = string.Empty;
+            var isReadOnly = false;
+
+            if (info.ObjectType == CslaObjectType.ReadOnlyObject)
+            {
+                if (prop.DeclarationMode == PropertyDeclaration.AutoProperty ||
+                    prop.DeclarationMode == PropertyDeclaration.ClassicProperty ||
+                    prop.DeclarationMode == PropertyDeclaration.ClassicPropertyWithTypeConversion)
+                {
+                    if (CurrentUnit.GenerationParams.ForceReadOnlyProperties)
+                    {
+                        isReadOnly = true;
+                    }
+                }
+                else
+                {
+                    isReadOnly = true;
+                }
+            }
+
+            if (prop.ReadOnly)
+            {
+                isReadOnly = true;
+            }            
+
             if (prop.DeclarationMode == PropertyDeclaration.Managed ||
                 prop.DeclarationMode == PropertyDeclaration.Unmanaged ||
                 prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion ||
                 prop.DeclarationMode == PropertyDeclaration.UnmanagedWithTypeConversion)
             {
-                response = string.Format("{0} {1} {2}{3}",
+                response = string.Format("{0} {1} {2}" + Environment.NewLine,
                                          GetPropertyAccess(prop),
                                          GetDataTypeGeneric(prop, prop.PropertyType),
-                                         prop.Name, Environment.NewLine);
+                                         prop.Name);
                 response += "        {" + Environment.NewLine;
                 response += PropertyDeclareGetter(prop);
 
-                var isReadOnly = (info.ObjectType == CslaObjectType.ReadOnlyObject);
-
                 response += PropertyDeclareSetter(isReadOnly, prop);
                 response += "        }";
-            }
-            else if (prop.DeclarationMode == PropertyDeclaration.AutoProperty)
-            {
-                response += string.Format("{0} {1} {2} {{ get; {3} set; }}",
-                                          GetPropertyAccess(prop),
-                                          GetDataTypeGeneric(prop, prop.PropertyType),
-                                          FormatPascal(prop.Name),
-                                          (prop.ReadOnly || prop.PropSetAccessibility == AccessorVisibility.Private)
-                                              ? "private"
-                                              : "");
             }
             else if (prop.DeclarationMode == PropertyDeclaration.ClassicProperty ||
                      prop.DeclarationMode == PropertyDeclaration.ClassicPropertyWithTypeConversion)
@@ -451,10 +463,16 @@ namespace CslaGenerator.Util
                 response += "        {" + Environment.NewLine;
                 response += PropertyDeclareGetter(prop);
 
-                var isReadOnly = (info.ObjectType == CslaObjectType.ReadOnlyObject);
-
                 response += PropertyDeclareSetter(isReadOnly, prop);
                 response += "        }";
+            }
+            else if (prop.DeclarationMode == PropertyDeclaration.AutoProperty)
+            {
+                response += string.Format("{0} {1} {2} {{ get; {3}set; }}",
+                                          GetPropertyAccess(prop),
+                                          GetDataTypeGeneric(prop, prop.PropertyType),
+                                          FormatPascal(prop.Name),
+                                          PropertyDeclareSetter(isReadOnly, prop));
             }
 
             return response;
@@ -495,20 +513,18 @@ namespace CslaGenerator.Util
             return response;
         }
 
-        // TODO: check ReadOnly objects aren't trying to have write side of properties enabled
-        // This must be validated by templates, not here
-        // 1) ReadOnly - properties should have no setter except for unmanaged (w/ or w/o type conversion) and auto properties
-        // 2) ReadOnly - porperties should have private setters unless they have NoSetter
-
         private string PropertyDeclareSetter(bool isReadOnly, ValueProperty prop)
         {
-            if (prop.PropSetAccessibility == AccessorVisibility.NoSetter)
-                return "";
-
-            if ((prop.PropSetAccessibility == AccessorVisibility.Private || prop.ReadOnly) &&
+            if (isReadOnly &&
                 (prop.DeclarationMode == PropertyDeclaration.ClassicProperty ||
-                 prop.DeclarationMode == PropertyDeclaration.ClassicPropertyWithTypeConversion))
+                 prop.DeclarationMode == PropertyDeclaration.ClassicPropertyWithTypeConversion ||
+                 prop.DeclarationMode == PropertyDeclaration.Managed ||
+                 prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion ||
+                 prop.DeclarationMode == PropertyDeclaration.Unmanaged ||
+                 prop.DeclarationMode == PropertyDeclaration.UnmanagedWithTypeConversion))
+            {
                 return "";
+            }
 
             var response = string.Empty;
             var isConversion = (prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion ||
@@ -534,12 +550,17 @@ namespace CslaGenerator.Util
                                               : FormatPropertyInfoName(prop.Name),
                                           Environment.NewLine);
             }
-            else
+            else if (prop.DeclarationMode == PropertyDeclaration.ClassicProperty ||
+                     prop.DeclarationMode == PropertyDeclaration.ClassicPropertyWithTypeConversion)
             {
                 response += string.Format("            {0}set {{ {1} = value; }}{2}",
                                           PropertyDeclareSetterVisibility(isReadOnly, prop),
                                           FormatFieldName(prop.Name) + ConvertTextToSmartDate(prop),
                                           Environment.NewLine);
+            }
+            else if (prop.DeclarationMode == PropertyDeclaration.AutoProperty)
+            {
+                response += PropertyDeclareSetterVisibility(isReadOnly, prop);
             }
 
             return response;
@@ -547,14 +568,28 @@ namespace CslaGenerator.Util
 
         private string PropertyDeclareSetterVisibility(bool isReadOnly, ValueProperty prop)
         {
-            if (GetPropertyAccess(prop) == "private")
+            if (prop.DeclarationMode == PropertyDeclaration.AutoProperty)
+            {
+                if (isReadOnly ||
+                    prop.PropSetAccessibility == AccessorVisibility.Private ||
+                    prop.PropSetAccessibility == AccessorVisibility.NoSetter)
+                {
+                    return "private ";
+                }
+            }
+            else if (isReadOnly)
+            {
+                return prop.PropSetAccessibility == AccessorVisibility.Private
+                           ? "private "
+                           : "";
+            }
+
+            var response = GetAccessorVisibility(prop);
+
+            if (response == GetPropertyAccess(prop))
                 return "";
 
-            return (prop.ReadOnly ||
-                    prop.PropSetAccessibility == AccessorVisibility.Private ||
-                    isReadOnly)
-                       ? "private "
-                       : "";
+            return response + "";
         }
 
         private static string PropertyDeclareSetterMethod(bool isReadOnly, bool isConversion)
@@ -800,6 +835,89 @@ namespace CslaGenerator.Util
 
         #region Child handling
 
+        public static bool GetSelfLoad(CslaObjectInfo info)
+        {
+            var selfLoad = false;
+            if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40)
+            {
+                var parent = info.Parent.CslaObjects.Find(info.ParentType);
+                if (parent != null)
+                {
+                    foreach (var childProp in parent.ChildCollectionProperties)
+                    {
+                        if (childProp.TypeName == info.ObjectName)
+                        {
+                            selfLoad = childProp.LoadingScheme == LoadingScheme.SelfLoad;
+                            break;
+                        }
+                    }
+                } 
+            }
+            return selfLoad;
+        }
+
+        public static bool GetLoadNone(CslaObjectInfo info)
+        {
+            var selfLoadNone = false;
+            if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40)
+            {
+                var parent = info.Parent.CslaObjects.Find(info.ParentType);
+                if (parent != null)
+                {
+                    foreach (var childProp in parent.ChildCollectionProperties)
+                    {
+                        if (childProp.TypeName == info.ObjectName)
+                        {
+                            selfLoadNone = childProp.LoadingScheme == LoadingScheme.None;
+                            break;
+                        }
+                    }
+                } 
+            }
+            return selfLoadNone;
+        }
+
+        public static bool GetLazyLoad(CslaObjectInfo info)
+        {
+            var lazyLoad = info.LazyLoad;
+            if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40)
+            {
+                var parent = info.Parent.CslaObjects.Find(info.ParentType);
+                if (parent != null)
+                {
+                    foreach (var childProp in parent.ChildCollectionProperties)
+                    {
+                        if (childProp.TypeName == info.ObjectName)
+                        {
+                            lazyLoad = childProp.LazyLoad;
+                            break;
+                        }
+                    }
+                } 
+            }
+            return lazyLoad;
+        }
+
+        public static PropertyDeclaration GetDeclarationMode(CslaObjectInfo info)
+        {
+            var declarationMode = PropertyDeclaration.NoProperty;
+
+            var parent = info.Parent.CslaObjects.Find(info.ParentType);
+            if (parent != null)
+            {
+                foreach (var childProp in parent.ChildCollectionProperties)
+                {
+                    if (childProp.TypeName == info.ObjectName)
+                    {
+                        declarationMode = childProp.DeclarationMode;
+                        break;
+                    }
+                }
+            }
+
+            return declarationMode;
+        }
+
         public virtual string GetNewChildLoadStatement(ChildProperty prop, bool isDataPortalCreate)
         {
             var value = prop.TypeName + ".New" + prop.TypeName + "()";
@@ -828,17 +946,20 @@ namespace CslaGenerator.Util
             var response = string.Empty;
 
             if (prop.DeclarationMode == PropertyDeclaration.Managed ||
-                prop.DeclarationMode == PropertyDeclaration.Unmanaged)
+                prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion ||
+                prop.DeclarationMode == PropertyDeclaration.Unmanaged ||
+                prop.DeclarationMode == PropertyDeclaration.UnmanagedWithTypeConversion)
             {
-                response += string.Format("{0} {1} {2}{3}",
+                response += string.Format("{0} {1} {2}" + Environment.NewLine,
                                           GetPropertyAccess(prop),
                                           prop.TypeName,
-                                          prop.Name, Environment.NewLine);
+                                          prop.Name);
                 response += "        {" + Environment.NewLine;
                 response += ChildPropertyDeclareGetter(info, prop);
                 response += "        }";
             }
-            else if (prop.DeclarationMode == PropertyDeclaration.ClassicProperty)
+            else if (prop.DeclarationMode == PropertyDeclaration.ClassicProperty ||
+                     prop.DeclarationMode == PropertyDeclaration.ClassicPropertyWithTypeConversion)
             {
                 response += string.Format("{0} {1} {2}" + Environment.NewLine,
                                           GetPropertyAccess(prop),
@@ -846,21 +967,14 @@ namespace CslaGenerator.Util
                                           FormatPascal(prop.Name));
                 response += "        {" + Environment.NewLine;
                 response += ChildPropertyDeclareGetter(info, prop);
-
-                var isReadOnly = (info.ObjectType == CslaObjectType.ReadOnlyObject);
-
-                response += PropertyDeclareSetter(isReadOnly, prop);
                 response += "        }";
             }
             else if (prop.DeclarationMode == PropertyDeclaration.AutoProperty)
             {
-                var isReadOnly = (info.ObjectType == CslaObjectType.ReadOnlyObject || prop.ReadOnly);
-
-                response += string.Format("{0} {1} {2} {{ get; {3}set; }}",
+                response += string.Format("{0} {1} {2} {{ get; private set; }}",
                                           GetPropertyAccess(prop),
                                           prop.TypeName,
-                                          FormatPascal(prop.Name),
-                                          isReadOnly ? "private " : "");
+                                          FormatPascal(prop.Name));
             }
 
             return response;
@@ -868,54 +982,46 @@ namespace CslaGenerator.Util
 
         private string ChildPropertyDeclareGetter(CslaObjectInfo info, ChildProperty prop)
         {
-            if (prop.LazyLoad || prop.LoadingScheme == LoadingScheme.SelfLoad)
+            if (prop.LazyLoad)
             {
-                return ChildPropertyDeclareGetterSpecial(info, prop);
+                return ChildPropertyDeclareGetterLazyLoad(info, prop);
             }
 
-            // this is LoadingScheme.ParentLoad or LoadingScheme.None
-            var response = string.Empty;
+            // this is LoadingScheme.ParentLoad or LoadingScheme.SelfLoad
+            //var response = string.Empty;
+            var response = prop.DeclarationMode + " should be handled?";
 
             if (prop.DeclarationMode == PropertyDeclaration.Managed ||
                 prop.DeclarationMode == PropertyDeclaration.Unmanaged)
             {
-                response += string.Format("            get {{ return GetProperty({0}); }}{1}",
-                                          FormatPropertyInfoName(prop.Name),
-                                          Environment.NewLine);
+                response = string.Format("            get {{ return GetProperty({0}); }}" + Environment.NewLine,
+                                          FormatPropertyInfoName(prop.Name));
             }
-            else
+            else if (prop.DeclarationMode == PropertyDeclaration.ClassicProperty)
             {
-                // prop.DeclarationMode == PropertyDeclaration.ClassicProperty
-
-                response += string.Format("            get {{ return {0}; }}{1}",
-                                          FormatFieldName(prop.Name),
-                                          Environment.NewLine);
+                response = string.Format("            get {{ return {0}; }}" + Environment.NewLine,
+                                          FormatFieldName(prop.Name));
             }
 
             return response;
         }
 
-        private string ChildPropertyDeclareGetterSpecial(CslaObjectInfo info, ChildProperty prop)
+        private string ChildPropertyDeclareGetterLazyLoad(CslaObjectInfo info, ChildProperty prop)
         {
             var response = string.Empty;
 
             if (prop.DeclarationMode == PropertyDeclaration.Managed ||
-                prop.DeclarationMode == PropertyDeclaration.Unmanaged)
+                prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion ||
+                prop.DeclarationMode == PropertyDeclaration.Unmanaged ||
+                prop.DeclarationMode == PropertyDeclaration.UnmanagedWithTypeConversion ||
+                prop.DeclarationMode == PropertyDeclaration.ClassicProperty ||
+                prop.DeclarationMode == PropertyDeclaration.ClassicPropertyWithTypeConversion)
             {
                 response += "            get" + Environment.NewLine;
                 response += "            {" + Environment.NewLine;
                 response += ChildPropertyDeclareGetLazyLoad(info, prop);
-                response += ChildPropertyDeclareGetLoadingScheme(prop);
                 response += ChildPropertyDeclareGetReturner(prop);
                 response += "            }" + Environment.NewLine;
-            }
-            else
-            {
-                // prop.DeclarationMode == PropertyDeclaration.ClassicProperty
-
-                response += string.Format("            get {{ return {0}; }}{1}",
-                                          FormatFieldName(prop.Name),
-                                          Environment.NewLine);
             }
 
             return response;
@@ -923,44 +1029,91 @@ namespace CslaGenerator.Util
 
         private string ChildPropertyDeclareGetLazyLoad(CslaObjectInfo info, ChildProperty prop)
         {
-            if (!prop.LazyLoad)
-                return "";
+            if (prop.DeclarationMode == PropertyDeclaration.Managed ||
+                prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion ||
+                prop.DeclarationMode == PropertyDeclaration.Unmanaged ||
+                prop.DeclarationMode == PropertyDeclaration.UnmanagedWithTypeConversion)
+            {
+                return ChildLazyLoadManaged(info, prop);
+            }
 
+            return ChildLazyLoadClassic(info, prop);
+        }
+
+        private string ChildLazyLoadManaged(CslaObjectInfo info, ChildProperty prop)
+        {
             var response = string.Empty;
 
-            if (prop.DeclarationMode == PropertyDeclaration.Managed ||
-                prop.DeclarationMode == PropertyDeclaration.Unmanaged)
+            if (IsEditableType(info.ObjectType))
             {
-                /*if (!FieldManager.FieldExists(ChildProperty))
+                /* Editable
+
+                if (!FieldManager.FieldExists(ChildProperty))
                     if (this.IsNew)
                         LoadProperty(ChildProperty, ChildType.NewChild());
                     else
                         LoadProperty(ChildProperty, ChildType.GetChild(this));*/
-                response += string.Format("                if (!FieldManager.FieldExists({0})){1}",
-                                          FormatPropertyInfoName(prop.Name),
-                                          Environment.NewLine);
-                response += "                    if (this.IsNew)" + Environment.NewLine;
-                response += string.Format("                        LoadProperty({0}, {1}.New{1}());{2}",
-                                          FormatPropertyInfoName(prop.Name),
-                                          prop.TypeName,
-                                          Environment.NewLine);
-                response += "                    else" + Environment.NewLine;
-                response += string.Format("                        LoadProperty({0}, {1}.Get{1}({2}));{3}",
-                                          FormatPropertyInfoName(prop.Name),
-                                          prop.TypeName,
-                                          GetFieldReaderStatementList(info, prop),
-                                          Environment.NewLine);
-                response += Environment.NewLine;
 
+                response += string.Format("                if (!FieldManager.FieldExists({0}))" + Environment.NewLine,
+                                          FormatPropertyInfoName(prop.Name));
+                response += "                    if (this.IsNew)" + Environment.NewLine;
+                response +=
+                    string.Format("                        LoadProperty({0}, {1}.New{1}());" + Environment.NewLine,
+                                  FormatPropertyInfoName(prop.Name),
+                                  prop.TypeName);
+                response += "                    else" + Environment.NewLine;
+                response +=
+                    string.Format("                        LoadProperty({0}, {1}.Get{1}({2}));" + Environment.NewLine,
+                                  FormatPropertyInfoName(prop.Name),
+                                  prop.TypeName,
+                                  GetFieldReaderStatementList(info, prop));
+                response += Environment.NewLine;
             }
             else
             {
-                // prop.DeclarationMode == PropertyDeclaration.ClassicProperty
+                /* ReadOnly
 
-                response += string.Format("                return {0};{1}",
-                                          FormatFieldName(prop.Name),
-                                          Environment.NewLine);
+                if (!FieldManager.FieldExists(ChildProperty))
+                    LoadProperty(ChildProperty, ChildType.GetChild(this));*/
+
+                response += string.Format("                if (!FieldManager.FieldExists({0}))" + Environment.NewLine,
+                                          FormatPropertyInfoName(prop.Name));
+                response +=
+                    string.Format("                    LoadProperty({0}, {1}.Get{1}({2}));" + Environment.NewLine,
+                                  FormatPropertyInfoName(prop.Name),
+                                  prop.TypeName,
+                                  GetFieldReaderStatementList(info, prop));
+                response += Environment.NewLine;
             }
+
+            return response;
+        }
+
+        private string ChildLazyLoadClassic(CslaObjectInfo info, ChildProperty prop)
+        {
+            var response = string.Empty;
+
+            /*
+            if (!_childTypeLoaded)
+            {
+                _childType = ChildType.GetChild(UserID);
+                _childTypeLoaded = true;
+            }
+
+            return _childType;
+            */
+
+            response += string.Format("                if (!{0})" + Environment.NewLine,
+                                      FormatFieldName(prop.Name + "Loaded"));
+            response += "                {" + Environment.NewLine;
+            response += string.Format("                    {0} = {1}.Get{1}({2});" + Environment.NewLine,
+                                      FormatFieldName(prop.Name),
+                                      prop.TypeName,
+                                      GetFieldReaderStatementList(info, prop));
+            response += string.Format("                    {0} = true;" + Environment.NewLine,
+                                      FormatFieldName(prop.Name + "Loaded"));
+            response += "                }" + Environment.NewLine;
+            response += Environment.NewLine;
 
             return response;
         }
@@ -979,94 +1132,24 @@ namespace CslaGenerator.Util
             return response;
         }
 
-        private string ChildPropertyDeclareGetLoadingScheme(ChildProperty prop)
-        {
-            if (prop.LazyLoad || prop.LoadingScheme != LoadingScheme.SelfLoad)
-                return "";
-
-            var response = string.Empty;
-
-            if (prop.DeclarationMode == PropertyDeclaration.Managed ||
-                prop.DeclarationMode == PropertyDeclaration.Unmanaged)
-            {
-                response += string.Format("                if (!FieldManager.FieldExists({0})){1}",
-                                          FormatPropertyInfoName(prop.Name),
-                                          Environment.NewLine);
-                response += string.Format("                    LoadProperty({0}, {1}.New{1}());{2}",
-                                          FormatPropertyInfoName(prop.Name),
-                                          prop.TypeName,
-                                          Environment.NewLine);
-                response += Environment.NewLine;
-            }
-            else
-            {
-                // prop.DeclarationMode == PropertyDeclaration.ClassicProperty
-
-                response += string.Format("                return {0};{1}",
-                                          FormatFieldName(prop.Name),
-                                          Environment.NewLine);
-            }
-
-            return response;
-        }
-
         private string ChildPropertyDeclareGetReturner(ChildProperty prop)
         {
-            var response = string.Empty;
+            //var response = string.Empty;
+            var response = prop.DeclarationMode + " should be handled?";
 
             if (prop.DeclarationMode == PropertyDeclaration.Managed ||
                 prop.DeclarationMode == PropertyDeclaration.Unmanaged)
             {
-                response += string.Format("                return GetProperty({0});{1}",
-                                          FormatPropertyInfoName(prop.Name),
-                                          Environment.NewLine);
+                response = string.Format("                return GetProperty({0});" + Environment.NewLine,
+                                          FormatPropertyInfoName(prop.Name));
             }
-            else
+            else if (prop.DeclarationMode == PropertyDeclaration.ClassicProperty)
             {
-                // prop.DeclarationMode == PropertyDeclaration.ClassicProperty
-
-                response += string.Format("                return {0};{1}",
-                                          FormatFieldName(prop.Name),
-                                          Environment.NewLine);
+                response = string.Format("                return {0};" + Environment.NewLine,
+                                          FormatFieldName(prop.Name));
             }
 
             return response;
-        }
-
-        private string PropertyDeclareSetter(bool isReadOnly, ChildProperty prop)
-        {
-            if ((prop.ReadOnly) &&
-                (prop.DeclarationMode == PropertyDeclaration.ClassicProperty ||
-                 prop.DeclarationMode == PropertyDeclaration.ClassicPropertyWithTypeConversion))
-                return "";
-
-            var response = string.Empty;
-            if (prop.DeclarationMode == PropertyDeclaration.Managed ||
-                prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion ||
-                prop.DeclarationMode == PropertyDeclaration.Unmanaged ||
-                prop.DeclarationMode == PropertyDeclaration.UnmanagedWithTypeConversion)
-            {
-                return "";
-            }
-            else
-            {
-                response += string.Format("            {0}set {{ {1} = value; }}{2}",
-                                          PropertyDeclareSetterVisibility(isReadOnly, prop),
-                                          FormatFieldName(prop.Name),
-                                          Environment.NewLine);
-            }
-
-            return response;
-        }
-
-        private string PropertyDeclareSetterVisibility(bool isReadOnly, ChildProperty prop)
-        {
-            if (GetPropertyAccess(prop) == "private")
-                return "";
-
-            return (prop.ReadOnly || isReadOnly)
-                       ? "private "
-                       : "";
         }
 
         #endregion
@@ -1267,17 +1350,17 @@ namespace CslaGenerator.Util
             switch (prop.PropSetAccessibility)
             {
                 case AccessorVisibility.Private:
-                    return "private";
-                case AccessorVisibility.Public:
-                    return "public";
+                    return "private ";
                 case AccessorVisibility.Protected:
-                    return "Protected";
+                    return "protected ";
                 case AccessorVisibility.ProtectedInternal:
-                    return "protected internal";
+                    return "protected internal ";
                 case AccessorVisibility.Internal:
-                    return "internal";
+                    return "internal ";
+                //case AccessorVisibility.Public:
+                //    return "";
                 default:
-                    return "public";
+                    return "";
             }
         }
 
@@ -1337,7 +1420,7 @@ namespace CslaGenerator.Util
                 case 10:
                     return "ten";
                 default:
-                    return "plus then ten";
+                    return "more then ten";
             }
         }
 
@@ -1350,7 +1433,7 @@ namespace CslaGenerator.Util
                 case CslaObjectType.EditableChild:
                     return "editable child object";
                 case CslaObjectType.EditableSwitchable:
-                    return "editable wwitchable object";
+                    return "editable switchable object";
                 case CslaObjectType.DynamicEditableRoot:
                     return "dynamic editable root object";
                 case CslaObjectType.EditableRootCollection:
@@ -1501,6 +1584,8 @@ namespace CslaGenerator.Util
 
         public List<string> GetEventList(CslaObjectInfo info)
         {
+            var lazyLoad = GetLazyLoad(info);
+
             var eventList = new List<string>();
 
             if (info.HasCreateCriteria &&
@@ -1522,7 +1607,7 @@ namespace CslaGenerator.Util
             if (info.HasGetCriteria ||
                 (info.ObjectType != CslaObjectType.ReadOnlyObject &&
                 info.ParentType != string.Empty &&
-                !info.LazyLoad))
+                !lazyLoad))
             {
                 eventList.AddRange(new[] { "FetchPre", "FetchPost" });
             }

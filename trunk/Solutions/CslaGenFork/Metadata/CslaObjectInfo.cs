@@ -400,9 +400,9 @@
                     if (!ReferenceEquals(value, _inheritedType))
                     {
                         if (_inheritedType != null)
-                            _inheritedType.TypeChanged -= new EventHandler(InheritedType_TypeChanged);
+                            _inheritedType.TypeChanged -= InheritedType_TypeChanged;
                         _inheritedType = value;
-                        _inheritedType.TypeChanged += new EventHandler(InheritedType_TypeChanged);
+                        _inheritedType.TypeChanged += InheritedType_TypeChanged;
                         //SetInheritedProperties(_inheritedType);
                     }
                 }
@@ -412,7 +412,7 @@
             /// Wheter the constructor is private, protected, etc... Defaults to private.
             /// </summary>
             [Category("01. Common Options")]
-            [Description("Wheter the constructor is private, protected, etc.\r\nDefaults to private.")]
+            [Description("Wheter the constructor is private, protected, etc. The default is \"private\".")]
             [UserFriendlyName("Constructor's Visibility")]
             public ConstructorVisibility ConstructorVisibility
             {
@@ -663,7 +663,9 @@
             /// object is loaded and are only loaded when they are referenced.
             /// </summary>
             [Category("04. Child Object Options")]
-            [Description("Whether or not this object should be \"lazy loaded\" when it is a child.  \"Lazy loading\" means the child objects are not loaded when the parent object is loaded and are only loaded when they are referenced.")]
+            [Description("Whether or not this object should be \"lazy loaded\".  \"Lazy loading\" means the child object data " +
+                "isn't loaded when the parent object data is loaded but is defered until the child object is referenced.\r\n" +
+                "It must be set the same way in the parent object.")]
             [UserFriendlyName("Lazy Load")]
             public bool LazyLoad
             {

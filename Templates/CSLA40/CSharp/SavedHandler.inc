@@ -71,7 +71,7 @@ if (Info.UpdaterType != string.Empty)
         #region Saved Event Handler
 
         /// <summary>
-        /// Handle Saved events of <see cref="<%=Info.UpdaterType%>"/> to update chikd <see cref="<%=Info.ItemType%>"/> objects. event.
+        /// Handle Saved events of <see cref="<%=Info.UpdaterType%>"/> to update child <see cref="<%=Info.ItemType%>"/> objects. event.
         /// </summary>
         /// <param name="sender">The sender of the event.</param>
         /// <param name="e">The <see cref="Csla.Core.SavedEventArgs"/> instance containing the event data.</param>

@@ -14,20 +14,26 @@ if (!Info.UseCustomLoading)
 {
     if (!Info.DataSetLoadingScheme)
     {
+    bool lazyLoad4 = GetLazyLoad(Info);
+    bool selfLoad4 = GetSelfLoad(Info);
+    if (!IsReadOnlyType(Info.ObjectType) ||
+        (Info.ParentType != string.Empty &&
+        (Info.ObjectType == CslaObjectType.ReadOnlyObject || (!lazyLoad4 && !selfLoad4))))
+    {
         %>
 
         /// <summary>
-        /// Factory method. New <see cref="<%=Info.ObjectName%>"/> object is created and loaded from the given SafeDataReader.
+        /// Factory method. New <see cref="<%=Info.ObjectName%>"/> object is loaded from the given SafeDataReader.
         /// </summary>
-        /// <param name="dr">The SafeDataReader.</param>
-        /// <returns>A reference to the created <see cref="<%= Info.ObjectName %>"/> object.</returns>
+        /// <param name="dr">The SafeDataReader to use.</param>
+        /// <returns>A reference to the fetched <see cref="<%= Info.ObjectName %>"/> object.</returns>
         internal static <%= Info.ObjectName %> Get<%= Info.ObjectName %>(SafeDataReader dr)
         {
             <%
-        if (IsCollectionType(Info.ObjectType) &&
+        if (authzInfo.GetRoles.Trim() != String.Empty &&
+            IsCollectionType(Info.ObjectType) &&
             CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
-            CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel &&
-            authzInfo.GetRoles.Trim() != String.Empty)
+            CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel)
         {
             %>if (!CanGetObject())
                 throw new System.Security.SecurityException("User not authorized to load a <%= Info.ObjectName %>.");
@@ -74,15 +80,16 @@ if (!Info.UseCustomLoading)
         }
     <%
     }
+    }
     else
     {
         %>
 
         /// <summary>
-        /// Factory method. New <see cref="<%=Info.ObjectName%>"/> object is created and loaded from the given SafeDataReader.
+        /// Factory method. New <see cref="<%=Info.ObjectName%>"/> object is loaded from the given DataRow.
         /// </summary>
-        /// <param name="dr">The DataRow.</param>
-        /// <returns>A reference to the created <see cref="<%= Info.ObjectName %>"/> object.</returns>
+        /// <param name="dr">The DataRow to use.</param>
+        /// <returns>A reference to the fetched <see cref="<%= Info.ObjectName %>"/> object.</returns>
         internal static <%= Info.ObjectName %> Get<%= Info.ObjectName %>(DataRow<% if (IsCollectionType(Info.ObjectType)) { %>[]<% } %> dr)
         {
             <%

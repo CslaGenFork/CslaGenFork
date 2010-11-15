@@ -19,28 +19,61 @@ if (Errors.Length == 0)
 using System;
 using System.Data;
 using System.Data.SqlClient;
-<% if (ActiveObjects) { %>using ActiveObjects;<% } else { %>using Csla;<% } %>
+<%
+    if (ActiveObjects)
+    {
+        %>using ActiveObjects;
+        <%
+    }
+    else
+    {
+        %>using Csla;<%
+    }
+    %>
 using Csla.Data;
 <%= GetUsingStatementsString(Info) %>
-<% if (Info.ObjectNamespace.Length > 0) { %>namespace <%=Info.ObjectNamespace%>
-{<% } %>
-<% bool? firstComment = null; %><!-- #include file="XmlComment.inc" -->
-    <% if (GetAttributesString(Info.Attributes) != string.Empty) { %>
+<%
+    if (Info.ObjectNamespace.Length > 0)
+    {
+        %>namespace <%=Info.ObjectNamespace%>
+{
+<%
+    }
+    bool? firstComment = null;
+    %><!-- #include file="XmlComment.inc" -->
+    <%
+    if (GetAttributesString(Info.Attributes) != string.Empty)
+    {
+        %>
     <%= GetAttributesString(Info.Attributes) %>
-    <% } %>
+    <%
+    }
+    %>
     [Serializable]
-    <% if (ActiveObjects && Info.SubscribeToChannel.Length > 0) { %>[Subscribe("<%= Info.SubscribeToChannel %>")]
-    <% } %>public partial class <%=Info.ObjectName%> : <%
-        if (ActiveObjects) { %>Active<% } %>ReadOnlyListBase<<%=Info.ObjectName%>, <%=Info.ItemType %>><!-- #include file="Implements.inc" -->
+    <%
+    if (ActiveObjects && Info.SubscribeToChannel.Length > 0)
+    {
+        %>[Subscribe("<%= Info.SubscribeToChannel %>")]
+    <%
+    }
+    %>public partial class <%=Info.ObjectName%> : <%
+    if (ActiveObjects)
+    {
+        %>Active<%
+    }
+    %>ReadOnlyListBase<<%=Info.ObjectName%>, <%=Info.ItemType %>><!-- #include file="Implements.inc" -->
     {
         <!-- #include file="CollectionBusinessProps.inc" -->
 
 <!-- #include file="FindMethods.inc" -->
-    <% if (Info.GenerateFactoryMethods) {
-        if (Info.DbName.Equals(String.Empty)) {
+    <%
+    if (Info.GenerateFactoryMethods)
+    {
+        if (Info.DbName.Equals(String.Empty))
+        {
             Warnings.Append("Make sure you specify a DB name." + Environment.NewLine);
         }
-    %>
+        %>
         #region Factory Methods
         <!-- #include file="NewObject.inc" -->
 
@@ -49,24 +82,37 @@ using Csla.Data;
         <!-- #include file="InternalGetObject.inc" -->
 <% Response.Write(Environment.NewLine); %>
         #endregion
-    <% } %>
+        <%
+    }
+    %>
 <!-- #include file="Constructor.inc" -->
 
         <!-- #include file="Criteria.inc" -->
 
 <!-- #include file="SharedAuthorizationMethods.inc" -->
 <!-- #include file="SavedHandler.inc" -->
-<% if (Info.GenerateDataAccessRegion) { %>
+<%
+    if (Info.GenerateDataAccessRegion)
+    {
+        %>
 
         #region Data Access
+
         <!-- #include file="CollectionDataPortalFetch.inc" -->
         #endregion
 <!-- #include file="Events.inc" -->
 
-<% } %>
+<%
+    }
+    %>
 
     }
-<% if (Info.ObjectNamespace.Length > 0) { %>
+    <%
+    if (Info.ObjectNamespace.Length > 0)
+    {
+        %>
 }
-<% } %>
-<% } %>
+<%
+    }
+}
+%>

@@ -41,8 +41,10 @@
     <add key="NameValueList:EqualsProperty" value="false" />
     <add key="NameValueList:HashcodeProperty" value="false" />
     <add key="NameValueList:ToStringProperty" value="false" />
-    <add key="NameValueList:DeleteRoles" value="true" />
+    <add key="NameValueList:NewRoles" value="false" />
     <add key="NameValueList:GetRoles" value="true" />
+    <add key="NameValueList:UpdateRoles" value="false" />
+    <add key="NameValueList:DeleteRoles" value="false" />
     <add key="NameValueList:ParentInsertOnly" value="false" />
     <add key="NameValueList:PublishToChannel" value="false" />
     <add key="NameValueList:AllowNew" value="false" />
@@ -92,8 +94,10 @@
     <add key="ReadOnlyCollection:EqualsProperty" value="false" />
     <add key="ReadOnlyCollection:HashcodeProperty" value="false" />
     <add key="ReadOnlyCollection:ToStringProperty" value="false" />
-    <add key="ReadOnlyCollection:DeleteRoles" value="true" />
-    <add key="ReadOnlyCollection:GetRoles" value="true" />
+    <add key="ReadOnlyCollection:NewRoles" value="false" />
+    <add key="ReadOnlyCollection:GetRoles" value="false" />
+    <add key="ReadOnlyCollection:UpdateRoles" value="false" />
+    <add key="ReadOnlyCollection:DeleteRoles" value="false" />
     <add key="ReadOnlyCollection:ParentInsertOnly" value="false" />
     <add key="ReadOnlyCollection:PublishToChannel" value="false" />
     <add key="ReadOnlyCollection:AllowNew" value="false" />
@@ -143,8 +147,10 @@
     <add key="ReadOnlyObject:EqualsProperty" value="false" />
     <add key="ReadOnlyObject:HashcodeProperty" value="false" />
     <add key="ReadOnlyObject:ToStringProperty" value="false" />
-    <add key="ReadOnlyObject:DeleteRoles" value="true" />
+    <add key="ReadOnlyObject:NewRoles" value="false" />
     <add key="ReadOnlyObject:GetRoles" value="true" />
+    <add key="ReadOnlyObject:UpdateRoles" value="false" />
+    <add key="ReadOnlyObject:DeleteRoles" value="false" />
     <add key="ReadOnlyObject:ParentInsertOnly" value="false" />
     <add key="ReadOnlyObject:PublishToChannel" value="false" />
     <add key="ReadOnlyObject:AllowNew" value="false" />
@@ -194,8 +200,10 @@
     <add key="EditableChild:EqualsProperty" value="true" />
     <add key="EditableChild:HashcodeProperty" value="true" />
     <add key="EditableChild:ToStringProperty" value="true" />
-    <add key="EditableChild:DeleteRoles" value="true" />
+    <add key="EditableChild:NewRoles" value="true" />
     <add key="EditableChild:GetRoles" value="true" />
+    <add key="EditableChild:UpdateRoles" value="true" />
+    <add key="EditableChild:DeleteRoles" value="true" />
     <add key="EditableChild:ParentInsertOnly" value="true" />
     <add key="EditableChild:PublishToChannel" value="false" />
     <add key="EditableChild:AllowNew" value="false" />
@@ -245,8 +253,10 @@
     <add key="EditableChildCollection:EqualsProperty" value="false" />
     <add key="EditableChildCollection:HashcodeProperty" value="false" />
     <add key="EditableChildCollection:ToStringProperty" value="false" />
-    <add key="EditableChildCollection:DeleteRoles" value="true" />
-    <add key="EditableChildCollection:GetRoles" value="true" />
+    <add key="EditableChildCollection:NewRoles" value="false" />
+    <add key="EditableChildCollection:GetRoles" value="false" />
+    <add key="EditableChildCollection:UpdateRoles" value="false" />
+    <add key="EditableChildCollection:DeleteRoles" value="false" />
     <add key="EditableChildCollection:ParentInsertOnly" value="false" />
     <add key="EditableChildCollection:PublishToChannel" value="false" />
     <add key="EditableChildCollection:AllowNew" value="true" />
@@ -296,8 +306,10 @@
     <add key="EditableRoot:EqualsProperty" value="true" />
     <add key="EditableRoot:HashcodeProperty" value="true" />
     <add key="EditableRoot:ToStringProperty" value="true" />
-    <add key="EditableRoot:DeleteRoles" value="true" />
+    <add key="EditableRoot:NewRoles" value="true" />
     <add key="EditableRoot:GetRoles" value="true" />
+    <add key="EditableRoot:UpdateRoles" value="true" />
+    <add key="EditableRoot:DeleteRoles" value="true" />
     <add key="EditableRoot:ParentInsertOnly" value="false" />
     <add key="EditableRoot:PublishToChannel" value="true" />
     <add key="EditableRoot:AllowNew" value="false" />
@@ -347,8 +359,10 @@
     <add key="EditableRootCollection:EqualsProperty" value="false" />
     <add key="EditableRootCollection:HashcodeProperty" value="false" />
     <add key="EditableRootCollection:ToStringProperty" value="false" />
-    <add key="EditableRootCollection:DeleteRoles" value="true" />
-    <add key="EditableRootCollection:GetRoles" value="true" />
+    <add key="EditableRootCollection:NewRoles" value="false" />
+    <add key="EditableRootCollection:GetRoles" value="false" />
+    <add key="EditableRootCollection:UpdateRoles" value="false" />
+    <add key="EditableRootCollection:DeleteRoles" value="false" />
     <add key="EditableRootCollection:ParentInsertOnly" value="false" />
     <add key="EditableRootCollection:PublishToChannel" value="false" />
     <add key="EditableRootCollection:AllowNew" value="true" />
@@ -398,8 +412,10 @@
     <add key="EditableSwitchable:EqualsProperty" value="true" />
     <add key="EditableSwitchable:HashcodeProperty" value="true" />
     <add key="EditableSwitchable:ToStringProperty" value="true" />
-    <add key="EditableSwitchable:DeleteRoles" value="true" />
+    <add key="EditableSwitchable:NewRoles" value="true" />
     <add key="EditableSwitchable:GetRoles" value="true" />
+    <add key="EditableSwitchable:UpdateRoles" value="true" />
+    <add key="EditableSwitchable:DeleteRoles" value="true" />
     <add key="EditableSwitchable:ParentInsertOnly" value="true" />
     <add key="EditableSwitchable:PublishToChannel" value="true" />
     <add key="EditableSwitchable:AllowNew" value="false" />
@@ -449,8 +465,10 @@
     <add key="DynamicEditableRoot:EqualsProperty" value="true" />
     <add key="DynamicEditableRoot:HashcodeProperty" value="true" />
     <add key="DynamicEditableRoot:ToStringProperty" value="true" />
-    <add key="DynamicEditableRoot:DeleteRoles" value="true" />
+    <add key="DynamicEditableRoot:NewRoles" value="true" />
     <add key="DynamicEditableRoot:GetRoles" value="true" />
+    <add key="DynamicEditableRoot:UpdateRoles" value="true" />
+    <add key="DynamicEditableRoot:DeleteRoles" value="true" />
     <add key="DynamicEditableRoot:ParentInsertOnly" value="false" />
     <add key="DynamicEditableRoot:PublishToChannel" value="true" />
     <add key="DynamicEditableRoot:AllowNew" value="false" />
@@ -500,8 +518,10 @@
     <add key="DynamicEditableRootCollection:EqualsProperty" value="false" />
     <add key="DynamicEditableRootCollection:HashcodeProperty" value="false" />
     <add key="DynamicEditableRootCollection:ToStringProperty" value="false" />
-    <add key="DynamicEditableRootCollection:DeleteRoles" value="true" />
-    <add key="DynamicEditableRootCollection:GetRoles" value="true" />
+    <add key="DynamicEditableRootCollection:NewRoles" value="false" />
+    <add key="DynamicEditableRootCollection:GetRoles" value="false" />
+    <add key="DynamicEditableRootCollection:UpdateRoles" value="false" />
+    <add key="DynamicEditableRootCollection:DeleteRoles" value="false" />
     <add key="DynamicEditableRootCollection:ParentInsertOnly" value="false" />
     <add key="DynamicEditableRootCollection:PublishToChannel" value="false" />
     <add key="DynamicEditableRootCollection:AllowNew" value="true" />

@@ -30,7 +30,7 @@ if (!IsReadOnlyType(Info.ObjectType) && IsCollectionType(Info.ObjectType))
         /// </summary>
         /// <remarks> This isn't a public access method in order to prevent direct creation.
         /// Use factory methods instead.</remarks>
-        protected <% if (Info.ObjectType != CslaObjectType.ReadOnlyCollection) { %>internal <% } %><%= Info.ObjectName %>()
+        <%= GetConstructorVisibility(Info) %> <%= Info.ObjectName %>()
         {
             // Prevent direct creation
             <% if (Info.ObjectType == CslaObjectType.ReadOnlyCollection) {

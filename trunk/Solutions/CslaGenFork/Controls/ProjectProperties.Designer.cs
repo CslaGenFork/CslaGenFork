@@ -146,9 +146,7 @@ namespace CslaGenerator.Controls
             this.chkActiveObjects = new System.Windows.Forms.CheckBox();
             this.chkUseBypassPropertyChecks = new System.Windows.Forms.CheckBox();
             this.chkUseSingleCriteria = new System.Windows.Forms.CheckBox();
-            this.chkGenerateStoredProcedures = new System.Windows.Forms.CheckBox();
-            this.chkSpOneFile = new System.Windows.Forms.CheckBox();
-            this.chkGenerateDatabaseClass = new System.Windows.Forms.CheckBox();
+            this.chkForceReadOnlyProperties = new System.Windows.Forms.CheckBox();
             this.chkSaveGenerationFiles = new System.Windows.Forms.CheckBox();
             this.tabGenerationFiles = new System.Windows.Forms.TabPage();
             this.lblBaseFilenameSuffix = new System.Windows.Forms.Label();
@@ -165,6 +163,10 @@ namespace CslaGenerator.Controls
             this.txtUtilitiesNamespace = new System.Windows.Forms.TextBox();
             this.lblUtilitiesFolder = new System.Windows.Forms.Label();
             this.txtUtilitiesFolder = new System.Windows.Forms.TextBox();
+            this.chkGenerateStoredProcedures = new System.Windows.Forms.CheckBox();
+            this.chkSpOneFile = new System.Windows.Forms.CheckBox();
+            this.chkOnlyNeededSprocs = new System.Windows.Forms.CheckBox();
+            this.chkGenerateDatabaseClass = new System.Windows.Forms.CheckBox();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.selectNoneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -1225,9 +1227,7 @@ namespace CslaGenerator.Controls
             this.tabGeneration.Controls.Add(this.chkActiveObjects);
             this.tabGeneration.Controls.Add(this.chkUseBypassPropertyChecks);
             this.tabGeneration.Controls.Add(this.chkUseSingleCriteria);
-            this.tabGeneration.Controls.Add(this.chkGenerateStoredProcedures);
-            this.tabGeneration.Controls.Add(this.chkSpOneFile);
-            this.tabGeneration.Controls.Add(this.chkGenerateDatabaseClass);
+            this.tabGeneration.Controls.Add(this.chkForceReadOnlyProperties);
             this.tabGeneration.Location = new System.Drawing.Point(4, 22);
             this.tabGeneration.Name = "tabGeneration";
             this.tabGeneration.Padding = new System.Windows.Forms.Padding(3);
@@ -1432,39 +1432,18 @@ namespace CslaGenerator.Controls
                                      "If unchecked, single native type parameter will be passed to DataPortal methods as native type.\r\n" +
                                      "Otherwise generates SingleCriteria for single parameter passing to DataPortal methods.");
             //
-            // chkGenerateStoredProcedures
+            // chkForceReadOnlyProperties
             // 
-            this.chkGenerateStoredProcedures.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "GenerateSprocs", true));
-            this.chkGenerateStoredProcedures.Location = new System.Drawing.Point(15, 190);
-            this.chkGenerateStoredProcedures.Name = "chkGenerateStoredProcedures";
-            this.chkGenerateStoredProcedures.Size = new System.Drawing.Size(216, 17);
-            this.chkGenerateStoredProcedures.TabIndex = 7;
-            this.chkGenerateStoredProcedures.Text = "Generate Stored Procedures";
-            this.toolTip1.SetToolTip(this.chkGenerateStoredProcedures,
-                                     "If checked, generates stored procedures for the objects that can generate them.");
-            // 
-            // chkSpOneFile
-            // 
-            this.chkSpOneFile.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "OneSpFilePerObject", true));
-            this.chkSpOneFile.Location = new System.Drawing.Point(15, 218);
-            this.chkSpOneFile.Name = "chkSpOneFile";
-            this.chkSpOneFile.Size = new System.Drawing.Size(216, 17);
-            this.chkSpOneFile.TabIndex = 9;
-            this.chkSpOneFile.Text = "Generate only one SP file per object";
-            this.toolTip1.SetToolTip(this.chkSpOneFile,
-                                     "If checked, creates only one file that contains all the\r\n" +
-                                     "generated stored procedures for the business object");
-            // 
-            // chkGenerateDatabaseClass
-            // 
-            this.chkGenerateDatabaseClass.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "GenerateDatabaseClass", true));
-            this.chkGenerateDatabaseClass.Location = new System.Drawing.Point(15, 246);
-            this.chkGenerateDatabaseClass.Name = "chkGenerateDatabaseClass";
-            this.chkGenerateDatabaseClass.Size = new System.Drawing.Size(216, 17);
-            this.chkGenerateDatabaseClass.TabIndex = 11;
-            this.chkGenerateDatabaseClass.Text = "Generate Database class";
-            this.toolTip1.SetToolTip(this.chkGenerateDatabaseClass,
-                                     "If checked, generates a \"Database.cs\" or \"Database.vb\" file.");
+            this.chkForceReadOnlyProperties.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "ForceReadOnlyProperties", true));
+            this.chkForceReadOnlyProperties.Location = new System.Drawing.Point(255, 190);
+            this.chkForceReadOnlyProperties.Name = "chkForceReadOnlyProperties";
+            this.chkForceReadOnlyProperties.Size = new System.Drawing.Size(216, 17);
+            this.chkForceReadOnlyProperties.TabIndex = 7;
+            this.chkForceReadOnlyProperties.Text = "Force ReadOnly Properties";
+            this.toolTip1.SetToolTip(this.chkForceReadOnlyProperties,
+                                     "If checked, all ReadOnlyObject's properties are ReadOnly.\r\n" +
+                                     "Otherwise allows all kinds of accessibility for ReadOnlyObject's properties.\r\n\r\n" +
+                                     "Note - ReadOnlyObject's managed and unmanaged properties are always ReadOnly properties.");
             // 
             // tabGenerationFiles
             // 
@@ -1483,12 +1462,16 @@ namespace CslaGenerator.Controls
             this.tabGenerationFiles.Controls.Add(this.txtUtilitiesNamespace);
             this.tabGenerationFiles.Controls.Add(this.lblUtilitiesFolder);
             this.tabGenerationFiles.Controls.Add(this.txtUtilitiesFolder);
+            this.tabGenerationFiles.Controls.Add(this.chkGenerateStoredProcedures);
+            this.tabGenerationFiles.Controls.Add(this.chkSpOneFile);
+            this.tabGenerationFiles.Controls.Add(this.chkOnlyNeededSprocs);
+            this.tabGenerationFiles.Controls.Add(this.chkGenerateDatabaseClass);
             this.tabGenerationFiles.Location = new System.Drawing.Point(4, 22);
             this.tabGenerationFiles.Name = "tabGenerationFiles";
             this.tabGenerationFiles.Padding = new System.Windows.Forms.Padding(3);
             this.tabGenerationFiles.Size = new System.Drawing.Size(525, 329);
             this.tabGenerationFiles.TabIndex = 4;
-            this.tabGenerationFiles.Text = "Generation Files";
+            this.tabGenerationFiles.Text = "Gen. Files & SP";
             this.tabGenerationFiles.UseVisualStyleBackColor = true;
             // 
             // chkSaveGenerationFiles
@@ -1638,6 +1621,52 @@ namespace CslaGenerator.Controls
             this.txtUtilitiesFolder.TabIndex = 5;
             this.toolTip1.SetToolTip(this.txtUtilitiesFolder, "Specify the folder where the <Database> and <DataPortalHookArgs> files will be created." +
                 "\r\nThis is relative to the project\'s output folder and is used only when namespaces aren't separated in folders.");
+            //
+            // chkGenerateStoredProcedures
+            // 
+            this.chkGenerateStoredProcedures.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "GenerateSprocs", true));
+            this.chkGenerateStoredProcedures.Location = new System.Drawing.Point(255, 186);
+            this.chkGenerateStoredProcedures.Name = "chkGenerateStoredProcedures";
+            this.chkGenerateStoredProcedures.Size = new System.Drawing.Size(216, 17);
+            this.chkGenerateStoredProcedures.TabIndex = 7;
+            this.chkGenerateStoredProcedures.Text = "Generate Stored Procedures";
+            this.toolTip1.SetToolTip(this.chkGenerateStoredProcedures,
+                                     "If checked, generates stored procedures for the objects that can generate them.");
+            // 
+            // chkSpOneFile
+            // 
+            this.chkSpOneFile.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "OneSpFilePerObject", true));
+            this.chkSpOneFile.Location = new System.Drawing.Point(255, 210);
+            this.chkSpOneFile.Name = "chkSpOneFile";
+            this.chkSpOneFile.Size = new System.Drawing.Size(216, 17);
+            this.chkSpOneFile.TabIndex = 9;
+            this.chkSpOneFile.Text = "Generate only one SP file per object";
+            this.toolTip1.SetToolTip(this.chkSpOneFile,
+                                     "If checked, creates only one file that contains all the\r\n" +
+                                     "generated stored procedures for the business object");
+            // 
+            // chkOnlyNeededSprocs
+            // 
+            this.chkOnlyNeededSprocs.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "OnlyNeededSprocs", true));
+            this.chkOnlyNeededSprocs.Location = new System.Drawing.Point(255, 234);
+            this.chkOnlyNeededSprocs.Name = "chkOnlyNeededSprocs";
+            this.chkOnlyNeededSprocs.Size = new System.Drawing.Size(216, 17);
+            this.chkOnlyNeededSprocs.TabIndex = 9;
+            this.chkOnlyNeededSprocs.Text = "Generate only needed SP";
+            this.toolTip1.SetToolTip(this.chkOnlyNeededSprocs,
+                                     "If checked, generates only stored procedures that are needed by the object stereotype,\r\n" +
+                                     "ignoring criteria settings.");
+            // 
+            // chkGenerateDatabaseClass
+            // 
+            this.chkGenerateDatabaseClass.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "GenerateDatabaseClass", true));
+            this.chkGenerateDatabaseClass.Location = new System.Drawing.Point(255, 258);
+            this.chkGenerateDatabaseClass.Name = "chkGenerateDatabaseClass";
+            this.chkGenerateDatabaseClass.Size = new System.Drawing.Size(216, 17);
+            this.chkGenerateDatabaseClass.TabIndex = 11;
+            this.chkGenerateDatabaseClass.Text = "Generate Database class";
+            this.toolTip1.SetToolTip(this.chkGenerateDatabaseClass,
+                                     "If checked, generates a \"Database.cs\" or \"Database.vb\" file.");
             // 
             // contextMenuStrip1
             // 
@@ -1834,9 +1863,7 @@ namespace CslaGenerator.Controls
         private System.Windows.Forms.CheckBox chkActiveObjects;
         private System.Windows.Forms.CheckBox chkUseBypassPropertyChecks;
         private System.Windows.Forms.CheckBox chkUseSingleCriteria;
-        private System.Windows.Forms.CheckBox chkGenerateStoredProcedures;
-        private System.Windows.Forms.CheckBox chkSpOneFile;
-        private System.Windows.Forms.CheckBox chkGenerateDatabaseClass;
+        private System.Windows.Forms.CheckBox chkForceReadOnlyProperties;
         private System.Windows.Forms.CheckBox chkSaveGenerationFiles;
         private System.Windows.Forms.Label lblBaseFilenameSuffix;
         private System.Windows.Forms.TextBox txtBaseFilenameSuffix;
@@ -1852,6 +1879,10 @@ namespace CslaGenerator.Controls
         private System.Windows.Forms.TextBox txtUtilitiesNamespace;
         private System.Windows.Forms.Label lblUtilitiesFolder;
         private System.Windows.Forms.TextBox txtUtilitiesFolder;
+        private System.Windows.Forms.CheckBox chkGenerateStoredProcedures;
+        private System.Windows.Forms.CheckBox chkSpOneFile;
+        private System.Windows.Forms.CheckBox chkOnlyNeededSprocs;
+        private System.Windows.Forms.CheckBox chkGenerateDatabaseClass;
         private System.Windows.Forms.BindingSource generationParametersBindingSource;
         private System.Windows.Forms.BindingSource projectParametersBindingSource;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;

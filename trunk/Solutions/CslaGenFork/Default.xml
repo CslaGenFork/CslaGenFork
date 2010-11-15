@@ -53,9 +53,7 @@
     <BackupOldSource>false</BackupOldSource>
     <SeparateNamespaces>true</SeparateNamespaces>
     <SeparateBaseClasses>false</SeparateBaseClasses>
-    <GenerateSprocs>true</GenerateSprocs>
     <ActiveObjects>false</ActiveObjects>
-    <OneSpFilePerObject>true</OneSpFilePerObject>
     <UseDotDesignerFileNameConvention>false</UseDotDesignerFileNameConvention>
     <RecompileTemplates>false</RecompileTemplates>
     <OutputLanguage>CSharp</OutputLanguage>
@@ -63,17 +61,21 @@
     <PropertyMode>Default</PropertyMode>
     <GeneratedUIEnvironment>WinForms_WPF</GeneratedUIEnvironment>
     <UseChildDataPortal>true</UseChildDataPortal>
-    <GenerateDatabaseClass>true</GenerateDatabaseClass>
     <GenerateAuthorization>FullSupport</GenerateAuthorization>
     <HeaderVerbosity>None</HeaderVerbosity>
     <UseBypassPropertyChecks>true</UseBypassPropertyChecks>
     <UseSingleCriteria>false</UseSingleCriteria>
+    <ForceReadOnlyProperties>true</ForceReadOnlyProperties>
     <BaseFilenameSuffix>.Designer</BaseFilenameSuffix>
     <ExtendedFilenameSuffix />
     <ClassCommentFilenameSuffix />
     <SeparateClassComment>false</SeparateClassComment>
     <UtilitiesNamespace>MyBO</UtilitiesNamespace>
     <UtilitiesFolder />
+    <GenerateSprocs>true</GenerateSprocs>
+    <OneSpFilePerObject>true</OneSpFilePerObject>
+    <OnlyNeededSprocs>true</OnlyNeededSprocs>
+    <GenerateDatabaseClass>true</GenerateDatabaseClass>
   </GenerationParams>
   <CslaObjects />
   <AssociativeEntities />

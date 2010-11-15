@@ -11,7 +11,8 @@
 <%@ Import Namespace="System.Text" %>
 
 <!-- #include file="EditableChildValidate.inc" -->
-<% if (Errors.Length == 0)
+<%
+if (Errors.Length == 0)
 {
     bool first = true;
     %><!-- #include file="Header.inc" -->
@@ -94,11 +95,13 @@ using Csla.Data;
         <%
         if (Info.DbName != String.Empty)
         {
+            bool selfLoad2 = GetSelfLoad(Info);
+            bool lazyLoad2 = GetLazyLoad(Info);
             CslaObjectInfo tmpInfo = Info.Parent.CslaObjects.Find(Info.ParentType);
             bool isCollection = false;
             if (tmpInfo != null)
                 isCollection = IsCollectionType(tmpInfo.ObjectType);
-            if (Info.LazyLoad && !isCollection)
+            if (selfLoad2 && lazyLoad2 && !isCollection)
             {
                 %>
         <!-- #include file="GetObject.inc" -->
@@ -136,15 +139,13 @@ using Csla.Data;
         {
             %>
         #region Data Access
-            <%
-            Response.Write(Environment.NewLine);
-            %>
+
         <!-- #include file="DataPortalCreate.inc"  -->
 
         <!-- #include file="DataPortalFetch.inc" -->
 
         <!-- #include file="InternalUpdate.inc" -->
-
+<% Response.Write(""); %>
         #endregion
 <!-- #include file="Events.inc" -->
 <%

@@ -897,11 +897,7 @@ namespace CslaGenerator.Util.PropertyBags
                             (propertyName == "PublishToChannel" || propertyName == "SubscribeToChannel"))
                             return false;
                         if (((GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == Authorization.None ||
-                            GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == Authorization.PropertyLevel) ||
-                            typ == CslaObjectType.EditableRootCollection.ToString() || 
-                            typ == CslaObjectType.DynamicEditableRootCollection.ToString() || 
-                            typ == CslaObjectType.EditableChildCollection.ToString() || 
-                            typ == CslaObjectType.ReadOnlyCollection.ToString()) &&
+                            GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == Authorization.PropertyLevel)) &&
                             (propertyName == "NewRoles" ||
                              propertyName == "GetRoles" ||
                              propertyName == "UpdateRoles" ||
@@ -912,6 +908,9 @@ namespace CslaGenerator.Util.PropertyBags
                             propertyName == "HashcodeProperty" ||
                             propertyName == "EqualsProperty" ||
                             propertyName == "DeleteProcedureName"))
+                            return false;
+                        if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 &&
+                            (propertyName == "LazyLoad"))
                             return false;
                     }
                     if (mSelectedObject.Length > 1 && IsEnumerable(GetPropertyInfoCache(propertyName)))

@@ -168,6 +168,7 @@ using Csla;
         %>
 
         #region Data Access
+
         <!-- #include file="CollectionDataPortalFetch.inc" -->
 
         /// <summary>

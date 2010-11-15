@@ -205,7 +205,7 @@ namespace CslaGenerator.Metadata
             }
 
             // populate collection
-            coll.LazyLoad = entity.LazyLoad;
+//            coll.LazyLoad = entity.LazyLoad;
             coll.ParentType = entity.ObjectName;
             coll.ParentProperties = BuildParentProperties(coll);
             coll.ItemType = entity.ItemTypeName;
@@ -231,7 +231,7 @@ namespace CslaGenerator.Metadata
             }
 
             // populate collection item
-            item.LazyLoad = entity.LazyLoad;
+//            item.LazyLoad = entity.LazyLoad;
             if (!isMultipleToMultiple)
                 item.ParentInsertOnly = true;
             else
@@ -285,7 +285,9 @@ namespace CslaGenerator.Metadata
 
         private void BuildCollectionCriteriaGet(CslaObjectInfo info, CriteriaPropertyCollection rootCriteriaProperties)
         {
-            if (!info.LazyLoad)
+            var lazyLoad = CslaTemplateHelper.GetLazyLoad(info);
+
+            if (!lazyLoad)
             {
                 DeleteDefaultCollectionCriteria(info);
                 return;

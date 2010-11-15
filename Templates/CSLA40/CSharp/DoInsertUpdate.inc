@@ -59,7 +59,7 @@ foreach (ValueProperty prop in Info.GetAllValueProperties())
                 else
                 {
                     %>
-            cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %><%= propType == TypeCodeEx.SmartDate ? ".DBValue" :"" %>).DbType = DbType.<%= prop.DbBindColumn.DataType.ToString() %>;
+            cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %>).DbType = DbType.<%= prop.DbBindColumn.DataType.ToString() %>;
                     <%
                 }
             }

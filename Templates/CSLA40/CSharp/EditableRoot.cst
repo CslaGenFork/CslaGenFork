@@ -76,7 +76,7 @@ using Csla.Data;
 <!-- #include file="ConvertProperties.inc" -->
 <% if (Info.GenerateDataAccessRegion) { %>
         #region Data Access
-<% Response.Write(Environment.NewLine); %>
+
         <!-- #include file="DataPortalCreate.inc"  -->
 
         <!-- #include file="DataPortalFetch.inc"  -->

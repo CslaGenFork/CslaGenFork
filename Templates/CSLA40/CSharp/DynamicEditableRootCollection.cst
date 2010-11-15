@@ -94,6 +94,7 @@ using Csla;
 <% if (Info.GenerateDataAccessRegion) { %>
 
         #region Data Access
+
         <!-- #include file="CollectionDataPortalFetch.inc" -->
 
         #endregion

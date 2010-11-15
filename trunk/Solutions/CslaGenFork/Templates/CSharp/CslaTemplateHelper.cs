@@ -52,6 +52,11 @@ namespace CslaGenerator.Util
             return CurrentUnit.Params.DelegateNamePrefix + FormatCamel(name);
         }
 
+        /// <summary>
+        /// Convert a name to Camel casing (initial to lower case).
+        /// </summary>
+        /// <param name="name">The name to convert.</param>
+        /// <returns>The converted name.</returns>
         public string FormatCamel(string name)
         {
             if (name.Length == 2)
@@ -92,6 +97,11 @@ namespace CslaGenerator.Util
             return "[" + string.Join(", ", attributes) + "]";
         }
 
+        /// <summary>
+        /// Convert a name to Pascal casing (initial to upper case).
+        /// </summary>
+        /// <param name="name">The name to convert.</param>
+        /// <returns>The converted name.</returns>
         public string FormatPascal(string name)
         {
             if (name.Length > 0)
@@ -598,16 +608,36 @@ namespace CslaGenerator.Util
                 info = FindChildInfo(info, info.ItemType);
 
             foreach (var child in info.ChildProperties)
-                if (!child.LazyLoad) { return true; }
+                if (child.LoadingScheme == LoadingScheme.ParentLoad) { return true; }
 
             foreach (var child in info.ChildCollectionProperties)
-                if (!child.LazyLoad) { return true; }
+                if (child.LoadingScheme == LoadingScheme.ParentLoad) { return true; }
 
             foreach (var child in info.InheritedChildProperties)
-                if (!child.LazyLoad) { return true; }
+                if (child.LoadingScheme == LoadingScheme.ParentLoad) { return true; }
 
             foreach (var child in info.InheritedChildCollectionProperties)
-                if (!child.LazyLoad) { return true; }
+                if (child.LoadingScheme == LoadingScheme.ParentLoad) { return true; }
+
+            return false;
+        }
+
+        public bool SelfLoadsChildren(CslaObjectInfo info)
+        {
+            if (IsCollectionType(info.ObjectType))
+                info = FindChildInfo(info, info.ItemType);
+
+            foreach (var child in info.ChildProperties)
+                if (!child.LazyLoad && child.LoadingScheme != LoadingScheme.ParentLoad) { return true; }
+
+            foreach (var child in info.ChildCollectionProperties)
+                if (!child.LazyLoad && child.LoadingScheme != LoadingScheme.ParentLoad) { return true; }
+
+            foreach (var child in info.InheritedChildProperties)
+                if (!child.LazyLoad && child.LoadingScheme != LoadingScheme.ParentLoad) { return true; }
+
+            foreach (var child in info.InheritedChildCollectionProperties)
+                if (!child.LazyLoad && child.LoadingScheme != LoadingScheme.ParentLoad) { return true; }
 
             return false;
         }
@@ -655,6 +685,24 @@ namespace CslaGenerator.Util
             return false;
         }
 
+        public bool IsRootType(CslaObjectType cslaType)
+        {
+            if (cslaType == CslaObjectType.EditableRoot ||
+                cslaType == CslaObjectType.EditableRootCollection ||
+                cslaType == CslaObjectType.DynamicEditableRoot ||
+                cslaType == CslaObjectType.DynamicEditableRootCollection ||
+                cslaType == CslaObjectType.EditableSwitchable)
+                return true;
+
+            return false;
+        }
+
+        /// <summary>
+        /// Finds the child info.
+        /// </summary>
+        /// <param name="info">The info.</param>
+        /// <param name="name">The child name to find.</param>
+        /// <returns></returns>
         public CslaObjectInfo FindChildInfo(CslaObjectInfo info, string name)
         {
             return info.Parent.CslaObjects.Find(name);
