@@ -60,6 +60,14 @@ if ((firstComment == null && string.IsNullOrEmpty(Info.Parent.GenerationParams.C
         %>
     /// <remarks>
     <%= xmlRemark %>
+    <%
+        if (Info.ClassRemarks != string.Empty)
+        {
+            %>
+    /// <%= Info.ClassRemarks %>
+    <%
+        }
+        %>
     /// </remarks>
     <%
     }

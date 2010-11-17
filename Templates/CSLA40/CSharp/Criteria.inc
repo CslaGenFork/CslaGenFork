@@ -20,8 +20,18 @@ if (Info.CriteriaObjects.Count > 0)
             {
                 %>
         /// <summary>
-        /// <%= crit.Name %> criteria.
+        /// <%= crit.Summary  == string.Empty ? crit.Name + " criteria." : crit.Summary %>
         /// </summary>
+        <%
+        if (crit.Remarks != string.Empty)
+        {
+            %>
+        /// <remarks>
+        /// <%= crit.Remarks %>
+        /// </remarks>
+        <%
+        }
+        %>
         [Serializable]
         protected class <%= crit.Name %>
         {
@@ -46,6 +56,7 @@ if (Info.CriteriaObjects.Count > 0)
             <%
                     if (prop.Summary != String.Empty)
                     {
+                        IndentLevel = 3;
                         %>
             /// <summary>
 <%= GetXmlCommentString(prop.Summary) %>
@@ -80,6 +91,7 @@ if (Info.CriteriaObjects.Count > 0)
                     }
                     if (prop.Remarks != String.Empty)
                     {
+                        IndentLevel = 3;
                         %>
             /// <remarks>
 <%= GetXmlCommentString(prop.Remarks) %>
