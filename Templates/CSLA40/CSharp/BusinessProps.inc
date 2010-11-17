@@ -42,6 +42,7 @@ foreach (ValueProperty prop in Info.AllValueProperties)
     {
         if (prop.Summary != String.Empty)
         {
+            IndentLevel = 2;
             %>
         /// <summary>
 <%= GetXmlCommentString(prop.Summary) %>
@@ -77,6 +78,7 @@ foreach (ValueProperty prop in Info.AllValueProperties)
         }
         if (prop.Remarks != String.Empty)
         {
+            IndentLevel = 2;
             %>
         /// <remarks>
 <%= GetXmlCommentString(prop.Remarks) %>
@@ -154,6 +156,7 @@ foreach (ChildProperty prop in Info.GetMyChildProperties())
     }
     if (prop.Summary != String.Empty)
     {
+        IndentLevel = 2;
         %>
         /// <summary>
 <%= GetXmlCommentString(prop.Summary) %>
@@ -173,6 +176,7 @@ foreach (ChildProperty prop in Info.GetMyChildProperties())
         <%
     if (prop.Remarks != String.Empty)
     {
+        IndentLevel = 2;
         %>
         /// <remarks>
 <%= GetXmlCommentString(prop.Remarks) %>

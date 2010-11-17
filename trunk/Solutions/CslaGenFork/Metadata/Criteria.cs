@@ -124,7 +124,7 @@ namespace CslaGenerator.Metadata
         [Category("03. Criteria Properties")]
         [Editor(typeof(PropertyCollectionForm), typeof(UITypeEditor))]
         [XmlArrayItem(ElementName = "Property", Type = typeof(CriteriaProperty))]
-        [Description("Properties used by the criteria. These will be the parameters to be passed to the DataPortal methods.")]
+        [Description("Properties used by the criteria. These will be the parameters to be passed to the generated methods.")]
         [UserFriendlyName("Criteria Properties")]
         public CriteriaPropertyCollection Properties
         {
