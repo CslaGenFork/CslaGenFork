@@ -869,6 +869,9 @@ namespace CslaGenerator.Util
         {
             bool exists;
             var filteredKeys = new List<IForeignKeyConstraint>();
+            if (fKeys.Count == 0)
+                return filteredKeys;
+
             var fkArray = fKeys.ToArray();
 
             filteredKeys.Add(fkArray[0]);
