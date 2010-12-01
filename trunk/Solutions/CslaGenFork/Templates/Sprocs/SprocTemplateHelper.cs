@@ -256,7 +256,7 @@ namespace CslaGenerator.Util
             foreach (ChildProperty childProp in info.GetAllChildProperties())
             {
                 CslaObjectInfo childInfo = FindChildInfo(info, childProp.TypeName);
-                if (childInfo != null && childInfo.LazyLoad == false)
+                if (!collType && childInfo != null && childProp.LoadingScheme != LoadingScheme.SelfLoad)
                 {
                     if (!first)
                         sb.Append(Environment.NewLine);
@@ -279,7 +279,6 @@ namespace CslaGenerator.Util
             valPropColl.AddRange(info.GetAllValueProperties());
             foreach (ValueProperty valProp in valPropColl)
             {
-                //if (valProp.FKConstraint != "" && valProp.FKConstraint != string.Empty)
                 if (valProp.FKConstraint != string.Empty)
                 {
                     FKField = true;

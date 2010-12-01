@@ -1,6 +1,5 @@
-using System;
-using System.Windows.Forms.Design;
 using System.Windows.Forms;
+using System.Windows.Forms.Design;
 
 namespace CslaGenerator.Design
 {
@@ -15,9 +14,9 @@ namespace CslaGenerator.Design
 
         protected override void InitializeDialog(OpenFileDialog fileDialog)
         {
-            fileDialog.Filter = "CslaGenerator Xml files (*.xml) | *.xml" +
-                "|All Files (*.*) | *.*";
-            fileDialog.RestoreDirectory = true ;
+            fileDialog.Filter = @"CslaGenerator Xml files (*.xml) | *.xml" +
+                @"|All Files (*.*) | *.*";
+            fileDialog.RestoreDirectory = true;
         }
     }
 }

@@ -20,18 +20,18 @@ bool collType = IsCollectionType(Info.ObjectType);
 bool searchWhereClause = collType;
 %>
 /***** <%=Criteria.GetOptions.ProcedureName%> *****/
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[<%=Criteria.GetOptions.ProcedureName%>]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-    DROP PROCEDURE [<%=Criteria.GetOptions.ProcedureName%>]
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[<%= Criteria.GetOptions.ProcedureName %>]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
+    DROP PROCEDURE [<%= Criteria.GetOptions.ProcedureName %>]
 GO
 
-CREATE PROCEDURE [<%=Criteria.GetOptions.ProcedureName%>]<%
+CREATE PROCEDURE [<%= Criteria.GetOptions.ProcedureName %>]<%
 first = true;
 foreach (CriteriaProperty parm in Criteria.Properties)
 {
     propCount++;
     if (!first) { %>,<% } else { first = false; } 
     %>
-    @<%=parm.ParameterName%> <%=GetDataTypeString(parm)%><%=collType ? " = NULL" : ""%><%
+    @<%= parm.ParameterName %> <%= GetDataTypeString(parm) %><%= (collType && parm.Nullable) ? " = NULL" : "" %><%
 }
 %>
 AS
@@ -57,7 +57,7 @@ if (collType && propCount > 0)
                 {
                     %>
         IF (@<%=parm.Name%> <> '')
-            SET @<%=parm.Name%> = RTRIM(@<%=parm.Name%>) + '%'
+            SET @<%=parm.Name%> = RTRIM(@<%= parm.Name %>) + '%'
         ELSE
             SET @<%=parm.Name%> = '%'
 <%
@@ -66,9 +66,9 @@ if (collType && propCount > 0)
                 {
                     %>
         IF (@<%=parm.Name%> <> '')
-            SET @<%=parm.Name%> = @<%=parm.Name%> + '%'
+            SET @<%= parm.Name %> = @<%= parm.Name %> + '%'
         ELSE
-            SET @<%=parm.Name%> = '%'
+            SET @<%= parm.Name %> = '%'
 <% 
                 }
             }

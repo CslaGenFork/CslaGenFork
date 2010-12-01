@@ -16,7 +16,7 @@ namespace CslaGenerator.Metadata
         private string _name = String.Empty;
         private string _summary = String.Empty;
         private string _remarks = String.Empty;
-        private CriteriaPropertyCollection _properties = new CriteriaPropertyCollection();
+        private readonly CriteriaPropertyCollection _properties = new CriteriaPropertyCollection();
         private CriteriaUsageParameter _createOptions = new CriteriaUsageParameter();
         private CriteriaUsageParameter _getOptions = new CriteriaUsageParameter();
         private CriteriaUsageParameter _deleteOptions = new CriteriaUsageParameter();

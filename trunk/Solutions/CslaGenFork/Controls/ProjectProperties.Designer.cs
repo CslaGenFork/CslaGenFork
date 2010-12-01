@@ -165,7 +165,6 @@ namespace CslaGenerator.Controls
             this.txtUtilitiesFolder = new System.Windows.Forms.TextBox();
             this.chkGenerateStoredProcedures = new System.Windows.Forms.CheckBox();
             this.chkSpOneFile = new System.Windows.Forms.CheckBox();
-            this.chkOnlyNeededSprocs = new System.Windows.Forms.CheckBox();
             this.chkGenerateDatabaseClass = new System.Windows.Forms.CheckBox();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -1464,7 +1463,6 @@ namespace CslaGenerator.Controls
             this.tabGenerationFiles.Controls.Add(this.txtUtilitiesFolder);
             this.tabGenerationFiles.Controls.Add(this.chkGenerateStoredProcedures);
             this.tabGenerationFiles.Controls.Add(this.chkSpOneFile);
-            this.tabGenerationFiles.Controls.Add(this.chkOnlyNeededSprocs);
             this.tabGenerationFiles.Controls.Add(this.chkGenerateDatabaseClass);
             this.tabGenerationFiles.Location = new System.Drawing.Point(4, 22);
             this.tabGenerationFiles.Name = "tabGenerationFiles";
@@ -1644,18 +1642,6 @@ namespace CslaGenerator.Controls
             this.toolTip1.SetToolTip(this.chkSpOneFile,
                                      "If checked, creates only one file that contains all the\r\n" +
                                      "generated stored procedures for the business object");
-            // 
-            // chkOnlyNeededSprocs
-            // 
-            this.chkOnlyNeededSprocs.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "OnlyNeededSprocs", true));
-            this.chkOnlyNeededSprocs.Location = new System.Drawing.Point(255, 234);
-            this.chkOnlyNeededSprocs.Name = "chkOnlyNeededSprocs";
-            this.chkOnlyNeededSprocs.Size = new System.Drawing.Size(216, 17);
-            this.chkOnlyNeededSprocs.TabIndex = 9;
-            this.chkOnlyNeededSprocs.Text = "Generate only needed SP";
-            this.toolTip1.SetToolTip(this.chkOnlyNeededSprocs,
-                                     "If checked, generates only stored procedures that are needed by the object stereotype,\r\n" +
-                                     "ignoring criteria settings.");
             // 
             // chkGenerateDatabaseClass
             // 
@@ -1881,7 +1867,6 @@ namespace CslaGenerator.Controls
         private System.Windows.Forms.TextBox txtUtilitiesFolder;
         private System.Windows.Forms.CheckBox chkGenerateStoredProcedures;
         private System.Windows.Forms.CheckBox chkSpOneFile;
-        private System.Windows.Forms.CheckBox chkOnlyNeededSprocs;
         private System.Windows.Forms.CheckBox chkGenerateDatabaseClass;
         private System.Windows.Forms.BindingSource generationParametersBindingSource;
         private System.Windows.Forms.BindingSource projectParametersBindingSource;

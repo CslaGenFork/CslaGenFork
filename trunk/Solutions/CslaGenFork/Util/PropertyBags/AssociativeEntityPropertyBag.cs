@@ -581,8 +581,12 @@ namespace CslaGenerator.Util.PropertyBags
                 var types = new List<string>();
                 foreach (AssociativeEntity obj in _selectedObject)
                 {
-                    if (!types.Contains(obj.RelationType.ToString()))
+//                    if (!types.Contains(obj.RelationType.ToString()))
                         types.Add(obj.RelationType.ToString());
+//                    if (!types.Contains(obj.MainLoadingScheme.ToString()))
+                        types.Add(obj.MainLoadingScheme.ToString());
+//                    if (!types.Contains(obj.SecondaryLoadingScheme.ToString()))
+                        types.Add(obj.SecondaryLoadingScheme.ToString());
                 }
                 // here get rid of ComponentName and Parent
                 bool isValidProperty = (pi.Name != "Properties" && pi.Name != "ComponentName" && pi.Name != "Parent");
@@ -635,7 +639,16 @@ namespace CslaGenerator.Util.PropertyBags
                      propertyName == "SecondaryItemTypeName" ||
                      propertyName == "SecondaryLazyLoad" ||
                      propertyName == "SecondaryLoadingScheme" ||
+                     propertyName == "SecondaryLoadProperties" ||
                      propertyName == "SecondaryLoadParameters"))
+                    return false;
+                if (objectType[1] == "SelfLoad" && propertyName == "MainLoadParameters")
+                    return false;
+                if (objectType[1] == "ParentLoad" && propertyName == "MainLoadProperties")
+                    return false;
+                if (objectType[2] == "SelfLoad" && propertyName == "SecondaryLoadParameters")
+                    return false;
+                if (objectType[2] == "ParentLoad" && propertyName == "SecondaryLoadProperties")
                     return false;
 
                 if (_selectedObject.Length > 1 && IsEnumerable(GetPropertyInfoCache(propertyName)))

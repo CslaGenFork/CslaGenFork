@@ -9,7 +9,7 @@ if (StateFieldsForAllValueProperties(Info) || StateFieldsForAllChildProperties(I
     // Value Properties
     foreach (ValueProperty prop in Info.AllValueProperties)
     {
-        string statement = FieldDeclare(prop);
+        string statement = FieldDeclare(Info, prop);
         if (!string.IsNullOrEmpty(statement))
         {
             %>

@@ -1,6 +1,8 @@
+using System.Collections.Generic;
+
 namespace CslaGenerator.Metadata
 {
-    public class ChildPropertyCollection : System.Collections.Generic.List<ChildProperty>
+    public class ChildPropertyCollection : List<ChildProperty>
     {
         public ChildProperty Find(string name)
         {

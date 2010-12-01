@@ -1,10 +1,8 @@
 using System;
-using System.Collections;
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
-using System.Reflection;
 using CslaGenerator.Metadata;
 using CslaGenerator.Util;
 using DBSchemaInfo.Base;
@@ -13,7 +11,7 @@ namespace CslaGenerator.Design
 {
     public class DbBindColumnEditor : UITypeEditor
     {
-        private IWindowsFormsEditorService editorService = null;
+        private IWindowsFormsEditorService _editorService;
 
         public DbBindColumnEditor()
         {
@@ -21,44 +19,39 @@ namespace CslaGenerator.Design
 
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
-            if (provider != null)
+            _editorService = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
+            if (_editorService != null)
             {
-                editorService = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
-                if (editorService != null)
+                if (context.Instance != null)
                 {
-                    if (context.Instance != null)
+                    // CR modifying to accomodate PropertyBag
+                    Type instanceType = null;
+                    object objinfo = null;
+                    TypeHelper.GetContextInstanceObject(context, ref objinfo, ref instanceType);
+                    var obj = (IBoundProperty)objinfo;
+                    var frm = new DbBindColumnEditorForm();
+                    frm.ColumnInfo = obj.DbBindColumn.Column;
+
+                    if (_editorService.ShowDialog(frm) == DialogResult.Cancel)
+                        return value;
+
+                    var selected = frm.SelectedNode;
+                    IColumnInfo newCol = null;
+                    if (selected != null)
+                        newCol = selected.Tag as IColumnInfo;
+                    if (frm.NoneSelected)
                     {
-                        // CR modifying to accomodate PropertyBag
-                        Type instanceType = null;
-                        object objinfo = null;
-                        TypeHelper.GetContextInstanceObject(context, ref objinfo, ref instanceType);
-
-                        IBoundProperty obj = (IBoundProperty) objinfo;
-
-                        DbBindColumnEditorForm frm = new DbBindColumnEditorForm();
-                        frm.ColumnInfo = obj.DbBindColumn.Column;
-
-
-                        if (editorService.ShowDialog(frm) == DialogResult.Cancel)
-                            return value;
-                        TreeNode selected = frm.SelectedNode;
-                        IColumnInfo newCol = null;
-                        if (selected != null)
-                            newCol = selected.Tag as IColumnInfo;
-                        if (frm.NoneSelected)
-                        {
-                            obj.DbBindColumn = new DbBindColumn();
-                        }
-                        else if (newCol != null)
-                        {
-                            DbBindColumn newDbc = new DbBindColumn();
-                            Controls.DbSchemaPanel.SetDbBindColumn(selected.Parent, newCol, newDbc);
-                            obj.DbBindColumn = newDbc;
-                        }
-
+                        obj.DbBindColumn = new DbBindColumn();
+                    }
+                    else if (newCol != null)
+                    {
+                        var newDbc = new DbBindColumn();
+                        Controls.DbSchemaPanel.SetDbBindColumn(selected.Parent, newCol, newDbc);
+                        obj.DbBindColumn = newDbc;
                     }
                 }
             }
+
             return value;
         }
 

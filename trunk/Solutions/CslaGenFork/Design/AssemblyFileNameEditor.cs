@@ -1,6 +1,5 @@
-using System;
-using System.Windows.Forms.Design;
 using System.Windows.Forms;
+using System.Windows.Forms.Design;
 
 namespace CslaGenerator.Design
 {
@@ -15,7 +14,7 @@ namespace CslaGenerator.Design
 
         protected override void InitializeDialog(OpenFileDialog fileDialog)
         {
-            fileDialog.Filter = "Assembly files (*.DLL) | *.DLL" ;
+            fileDialog.Filter = @"Assembly files (*.DLL) | *.DLL" ;
             fileDialog.RestoreDirectory = true ;
         }
     }

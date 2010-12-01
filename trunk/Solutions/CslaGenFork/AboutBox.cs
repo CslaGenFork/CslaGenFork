@@ -1,8 +1,7 @@
 using System;
-using System.Windows.Forms;
-using System.Reflection;
-using System.Diagnostics;
 using System.IO;
+using System.Reflection;
+using System.Windows.Forms;
 
 namespace CslaGenerator
 {
@@ -13,19 +12,20 @@ namespace CslaGenerator
             InitializeComponent();
         }
 
-        private void AboutBox_Load(object sender, EventArgs e)
+        private void AboutBoxLoad(object sender, EventArgs e)
         {
-            this.lblAppTitle.Text = GetAttr<AssemblyTitleAttribute>().Title;
-            this.lblAppDescription.Text = GetAttr<AssemblyDescriptionAttribute>().Description;
-            this.lblAppCopyright.Text = GetAttr<AssemblyCopyrightAttribute>().Copyright;
-            this.lblAssyVersion.Text = Assembly.GetExecutingAssembly().FullName.Split(new string[] { ", " }, StringSplitOptions.RemoveEmptyEntries)[1].Replace("=", " ");
+            lblAppTitle.Text = GetAttr<AssemblyTitleAttribute>().Title;
+            lblAppDescription.Text = GetAttr<AssemblyDescriptionAttribute>().Description;
+            lblAppCopyright.Text = GetAttr<AssemblyCopyrightAttribute>().Copyright;
+            lblAssyVersion.Text = Assembly.GetExecutingAssembly().FullName.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries)[1].Replace("=", " ");
+//            lblAssyVersion.Text += @" (CTP2 RC1)";
         }
         
         private T GetAttr<T>() {            
             return ((T)Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(T), false)[0]);
         }
 
-        private string GetVersion() {
+        /*private string GetVersion() {
             return GetBuildDate().ToString("yyyy'-'MM'-'dd");
         }
 
@@ -35,8 +35,8 @@ namespace CslaGenerator
         /// </summary>
         private DateTime GetBuildDate()
         {
-            const int PE_HEADER_OFFSET = 60;
-            const int LINKER_TIMESTAMP_OFFSET = 8;
+            const int peHeaderOffset = 60;
+            const int linkerTimestampOffset = 8;
             DateTime linkerDate = new DateTime(1970, 1, 1);
             byte[] data = new byte[2048];
             try
@@ -45,7 +45,7 @@ namespace CslaGenerator
                 {
                     s.Read(data, 0, 2048);
                 }
-                int peTimestampOffset = BitConverter.ToInt32(data, PE_HEADER_OFFSET) + LINKER_TIMESTAMP_OFFSET;
+                int peTimestampOffset = BitConverter.ToInt32(data, peHeaderOffset) + linkerTimestampOffset;
                 int epochSeconds = BitConverter.ToInt32(data, peTimestampOffset);
                 linkerDate = linkerDate.AddSeconds(epochSeconds);
                 linkerDate = linkerDate.AddHours(TimeZone.CurrentTimeZone.GetUtcOffset(linkerDate).Hours);
@@ -55,11 +55,11 @@ namespace CslaGenerator
                 linkerDate.AddDays(10);
             }
             return linkerDate;
-        }
+        }*/
 
-        private void button1_Click(object sender, EventArgs e)
+        private void Button1Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
     }

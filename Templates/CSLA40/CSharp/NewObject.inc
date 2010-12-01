@@ -60,19 +60,19 @@ foreach (Criteria c in Info.CriteriaObjects)
                 %>
             return <% if (ActiveObjects) { %>ActiveObjects.<% } %>DataPortal.Create<%= (Info.ObjectType == CslaObjectType.EditableChild && CurrentUnit.GenerationParams.UseChildDataPortal) ? "Child" : "" %><<%= Info.ObjectName %>>(new <%= c.Name %>(<%= strNewCritParams %>));
                 <%
-                }
-                else if (c.Properties.Count > 0)
-                {
-                    %>
+            }
+            else if (c.Properties.Count > 0)
+            {
+                %>
             return <% if (ActiveObjects) { %>ActiveObjects.<% } %>DataPortal.Create<%= (Info.ObjectType == CslaObjectType.EditableChild && CurrentUnit.GenerationParams.UseChildDataPortal) ? "Child" : "" %><<%= Info.ObjectName %>>(<%= SendSingleCriteria(c, strNewCritParams) %>);
                     <%
-                }
-                else
-                {
-                    %>
+            }
+            else
+            {
+                %>
             return <% if (ActiveObjects) { %>ActiveObjects.<% } %>DataPortal.Create<%= (Info.ObjectType == CslaObjectType.EditableChild && CurrentUnit.GenerationParams.UseChildDataPortal) ? "Child" : "" %><<%= Info.ObjectName %>>();
                     <%
-                }
+            }
             %>
         }
         <%

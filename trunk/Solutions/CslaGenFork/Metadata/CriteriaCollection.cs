@@ -1,6 +1,8 @@
+using System.ComponentModel;
+
 namespace CslaGenerator.Metadata
 {
-    public class CriteriaCollection : System.ComponentModel.BindingList<Criteria>
+    public class CriteriaCollection : BindingList<Criteria>
     {
         CslaObjectInfo _parent;
 

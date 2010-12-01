@@ -10,25 +10,20 @@ namespace CslaGenerator.Design
 {
     public class AssociativeEntityTypeEditor : UITypeEditor
     {
-        private IWindowsFormsEditorService editorService = null;
-        private ListBox lstProperties;
+        private IWindowsFormsEditorService _editorService;
+        private readonly ListBox _lstProperties;
 
         public AssociativeEntityTypeEditor()
         {
-            lstProperties = new ListBox();
-            lstProperties.DoubleClick += lstProperties_DoubleClick;
-            lstProperties.SelectionMode = SelectionMode.One;
-        }
-
-        void lstProperties_DoubleClick(object sender, EventArgs e)
-        {
-            editorService.CloseDropDown();
+            _lstProperties = new ListBox();
+            _lstProperties.DoubleClick += LstPropertiesDoubleClick;
+            _lstProperties.SelectionMode = SelectionMode.One;
         }
 
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
-            editorService = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
-            if (editorService != null)
+            _editorService = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
+            if (_editorService != null)
             {
                 if (context.Instance != null)
                 {
@@ -36,9 +31,9 @@ namespace CslaGenerator.Design
                     Type instanceType = null;
                     object objinfo = null;
                     TypeHelper.GetAssociativeEntityContextInstanceObject(context, ref objinfo, ref instanceType);
-                    var associativeEntity = (AssociativeEntity) objinfo;
-                    lstProperties.Items.Clear();
-                    lstProperties.Items.Add("(None)");
+                    var associativeEntity = (AssociativeEntity)objinfo;
+                    _lstProperties.Items.Clear();
+                    _lstProperties.Items.Add("(None)");
                     if (context.PropertyDescriptor.DisplayName == "Primary Object" ||
                         (context.PropertyDescriptor.DisplayName == "Secondary Object" &&
                         associativeEntity.RelationType == ObjectRelationType.MultipleToMultiple))
@@ -47,7 +42,7 @@ namespace CslaGenerator.Design
                         {
                             if (RelationRulesEngine.IsAllowedEntityObject(obj))
                             {
-                                lstProperties.Items.Add(obj.ObjectName);
+                                _lstProperties.Items.Add(obj.ObjectName);
                             }
                         }
                     }
@@ -59,7 +54,7 @@ namespace CslaGenerator.Design
                         {
                             if (RelationRulesEngine.IsAllowedEntityCollection(obj))
                             {
-                                lstProperties.Items.Add(obj.ObjectName);
+                                _lstProperties.Items.Add(obj.ObjectName);
                             }
                         }
                     }
@@ -71,60 +66,66 @@ namespace CslaGenerator.Design
                         {
                             if (RelationRulesEngine.IsAllowedEntityCollectionItem(obj))
                             {
-                                lstProperties.Items.Add(obj.ObjectName);
+                                _lstProperties.Items.Add(obj.ObjectName);
                             }
                         }
                     }
-                    lstProperties.Sorted = true;
+                    _lstProperties.Sorted = true;
 
                     if (context.PropertyDescriptor.DisplayName == "Primary Object" && associativeEntity.MainObject != null)
                     {
-                        if (lstProperties.Items.Contains(associativeEntity.MainObject))
-                            lstProperties.SelectedItem = associativeEntity.MainObject;
+                        if (_lstProperties.Items.Contains(associativeEntity.MainObject))
+                            _lstProperties.SelectedItem = associativeEntity.MainObject;
                     }
                     else if (context.PropertyDescriptor.DisplayName == "Secondary Object" && associativeEntity.SecondaryObject != null)
                     {
-                        if (lstProperties.Items.Contains(associativeEntity.SecondaryObject))
-                            lstProperties.SelectedItem = associativeEntity.SecondaryObject;
+                        if (_lstProperties.Items.Contains(associativeEntity.SecondaryObject))
+                            _lstProperties.SelectedItem = associativeEntity.SecondaryObject;
                     }
                     else if (context.PropertyDescriptor.DisplayName == "Primary Collection Type Name" && associativeEntity.MainCollectionTypeName != null)
                     {
-                        if (lstProperties.Items.Contains(associativeEntity.MainCollectionTypeName))
-                            lstProperties.SelectedItem = associativeEntity.MainCollectionTypeName;
+                        if (_lstProperties.Items.Contains(associativeEntity.MainCollectionTypeName))
+                            _lstProperties.SelectedItem = associativeEntity.MainCollectionTypeName;
                     }
                     else if (context.PropertyDescriptor.DisplayName == "Secondary Collection Type Name" && associativeEntity.SecondaryCollectionTypeName != null)
                     {
-                        if (lstProperties.Items.Contains(associativeEntity.SecondaryCollectionTypeName))
-                            lstProperties.SelectedItem = associativeEntity.SecondaryCollectionTypeName;
+                        if (_lstProperties.Items.Contains(associativeEntity.SecondaryCollectionTypeName))
+                            _lstProperties.SelectedItem = associativeEntity.SecondaryCollectionTypeName;
                     }
                     else if (context.PropertyDescriptor.DisplayName == "Primary Item Type Name" && associativeEntity.MainItemTypeName != null)
                     {
-                        if (lstProperties.Items.Contains(associativeEntity.MainItemTypeName))
-                            lstProperties.SelectedItem = associativeEntity.MainItemTypeName;
+                        if (_lstProperties.Items.Contains(associativeEntity.MainItemTypeName))
+                            _lstProperties.SelectedItem = associativeEntity.MainItemTypeName;
                     }
                     else if (context.PropertyDescriptor.DisplayName == "Secondary Item Type Name" && associativeEntity.SecondaryItemTypeName != null)
                     {
-                        if (lstProperties.Items.Contains(associativeEntity.SecondaryItemTypeName))
-                            lstProperties.SelectedItem = associativeEntity.SecondaryItemTypeName;
+                        if (_lstProperties.Items.Contains(associativeEntity.SecondaryItemTypeName))
+                            _lstProperties.SelectedItem = associativeEntity.SecondaryItemTypeName;
                     }
                     else
                     {
-                        lstProperties.SelectedItem = "(None)";
+                        _lstProperties.SelectedItem = "(None)";
                     }
 
-                    editorService.DropDownControl(lstProperties);
-                    if (lstProperties.SelectedIndex < 0 || lstProperties.SelectedItem.ToString() == "(None)")
+                    _editorService.DropDownControl(_lstProperties);
+                    if (_lstProperties.SelectedIndex < 0 || _lstProperties.SelectedItem.ToString() == "(None)")
                         return string.Empty;
 
-                    return lstProperties.SelectedItem.ToString();
+                    return _lstProperties.SelectedItem.ToString();
                 }
             }
+
             return value;
         }
 
         public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
         {
             return UITypeEditorEditStyle.DropDown;
+        }
+
+        void LstPropertiesDoubleClick(object sender, EventArgs e)
+        {
+            _editorService.CloseDropDown();
         }
     }
 }

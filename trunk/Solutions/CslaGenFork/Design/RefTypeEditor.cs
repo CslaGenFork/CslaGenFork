@@ -1,10 +1,9 @@
 using System;
 using System.ComponentModel;
 using System.Drawing.Design;
+using System.Reflection;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
-using System.Reflection;
-using System.Collections;
 using CslaGenerator.Metadata;
 using CslaGenerator.Util;
 
@@ -12,68 +11,63 @@ namespace CslaGenerator.Design
 {
     public class RefTypeEditor : UITypeEditor
     {
-        private IWindowsFormsEditorService editorService = null;
-        private ListBox lstRefType = null;
-        private Type instance;
+        private IWindowsFormsEditorService _editorService;
+        private readonly ListBox _lstProperties;
+        private Type _instance;
 
         public RefTypeEditor()
         {
-            lstRefType = new ListBox();
-            lstRefType.SelectedValueChanged += new EventHandler(Value_Changed);
+            _lstProperties = new ListBox();
+            _lstProperties.SelectedValueChanged += ValueChanged;
         }
 
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
-            if (provider != null)
+            _editorService = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
+            if (_editorService != null)
             {
-                editorService = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
-                if (editorService != null)
+                if (context.Instance != null)
                 {
-                    if (context.Instance != null)
+                    // CR modifying to accomodate PropertyBag
+                    Type instanceType = null;
+                    object objinfo = null;
+                    TypeHelper.GetInheritedTypeContextInstanceObject(context, ref objinfo, ref instanceType);
+                    var obj = (TypeInfo)objinfo;
+                    _instance = objinfo.GetType();
+
+                    _lstProperties.Items.Clear();
+                    _lstProperties.Items.Add("(None)");
+
+                    // Get Assembly File Path
+                    var assemblyFileInfo = _instance.GetProperty("AssemblyFile");
+                    //string assemblyFilePath = (string) assemblyFileInfo.GetValue(context.Instance,null);
+                    //string assemblyFilePath = (string) assemblyFileInfo.GetValue(context.Instance, null);
+                    var assemblyFilePath = (string)assemblyFileInfo.GetValue(objinfo, null);
+
+                    // If Assembly path is available, use assembly to load a drop down with available types.
+                    if (!string.IsNullOrEmpty(assemblyFilePath))
                     {
-                        // CR modifying to accomodate PropertyBag
-                        Type instanceType = null;
-                        object objinfo = null;
-                        TypeHelper.GetInheritedTypeContextInstanceObject(context, ref objinfo, ref instanceType);
-                        TypeInfo obj = (TypeInfo)objinfo;
-                        instance = objinfo.GetType();
-
-                        lstRefType.Items.Clear();
-                        lstRefType.Items.Add("(None)");
-
-                        // Get Assembly File Path
-                        PropertyInfo assemblyFileInfo = instance.GetProperty("AssemblyFile");
-                        //string assemblyFilePath = (string) assemblyFileInfo.GetValue(context.Instance,null);
-                        //string assemblyFilePath = (string) assemblyFileInfo.GetValue(context.Instance, null);
-                        string assemblyFilePath = (string) assemblyFileInfo.GetValue(objinfo, null);
-
-                        // If Assembly path is available, use assembly to load a drop down with available types.
-                        if (assemblyFilePath != null && assemblyFilePath != String.Empty)
+                        var assembly = Assembly.LoadFrom(assemblyFilePath);
+                        var types = assembly.GetExportedTypes();
+                        for (int i = 0; i < types.Length; i++)
                         {
-                            Assembly assembly = Assembly.LoadFrom(assemblyFilePath);
-                            Type[] types = assembly.GetExportedTypes();
-                            for (int i = 0; i < types.Length ; i++)
-                            {
-                                lstRefType.Items.Add(types[i].ToString());
-                            }
-                            lstRefType.Sorted = true;
+                            _lstProperties.Items.Add(types[i].ToString());
                         }
-
-                        if (lstRefType.Items.Contains(obj.Type))
-                            lstRefType.SelectedItem = obj.Type;
-                        else
-                            lstRefType.SelectedItem = "(None)";
-
-                        editorService.DropDownControl(lstRefType);
-
-                        if (lstRefType.SelectedIndex < 0 || lstRefType.SelectedItem.ToString() == "(None)")
-                            return string.Empty;
-
-                        //return lstRefType.SelectedItem;
-                        return lstRefType.SelectedItem.ToString();
+                        _lstProperties.Sorted = true;
                     }
 
+                    if (_lstProperties.Items.Contains(obj.Type))
+                        _lstProperties.SelectedItem = obj.Type;
+                    else
+                        _lstProperties.SelectedItem = "(None)";
+
+                    _editorService.DropDownControl(_lstProperties);
+                    if (_lstProperties.SelectedIndex < 0 || _lstProperties.SelectedItem.ToString() == "(None)")
+                        return string.Empty;
+
+                    return _lstProperties.SelectedItem.ToString();
                 }
+
             }
 
             return value;
@@ -84,11 +78,11 @@ namespace CslaGenerator.Design
             return UITypeEditorEditStyle.Modal;
         }
 
-        private void Value_Changed(object sender, EventArgs e)
+        private void ValueChanged(object sender, EventArgs e)
         {
-            if (editorService != null)
+            if (_editorService != null)
             {
-                editorService.CloseDropDown();
+                _editorService.CloseDropDown();
             }
         }
     }

@@ -1,6 +1,4 @@
 using System;
-using System.Drawing;
-using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
 
@@ -9,21 +7,22 @@ namespace CslaGenerator.Design
     /// <summary>
     /// Summary description for ObjectEditorForm.
     /// </summary>
-    public class XmlCommentEditorForm : System.Windows.Forms.Form
+    public class XmlCommentEditorForm : Form
     {
-        private System.Windows.Forms.Button btnOK;
-        private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button btnC;
-        private System.Windows.Forms.Button btnCode;
-        private System.Windows.Forms.Button btnPara;
-        private System.Windows.Forms.Button btnSee;
-        private System.Windows.Forms.TextBox txtXmlComment;
+        private Button btnOK;
+        private Button btnCancel;
+        private Label label1;
+        private Label label2;
+        private Button btnC;
+        private Button btnCode;
+        private Button btnPara;
+        private Button btnSee;
+        private TextBox txtXmlComment;
+
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.Container components = null;
+        private Container components;
 
         public XmlCommentEditorForm()
         {
@@ -36,16 +35,16 @@ namespace CslaGenerator.Design
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
-        protected override void Dispose( bool disposing )
+        protected override void Dispose(bool disposing)
         {
-            if( disposing )
+            if (disposing)
             {
-                if(components != null)
+                if (components != null)
                 {
                     components.Dispose();
                 }
             }
-            base.Dispose( disposing );
+            base.Dispose(disposing);
         }
 
         #region Windows Form Designer generated code
@@ -187,24 +186,24 @@ namespace CslaGenerator.Design
             set { txtXmlComment.Text = value; }
         }
 
-        private void btnOK_Click(object sender, System.EventArgs e)
+        private void btnOK_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.OK;
         }
 
-        private void btnCancel_Click(object sender, System.EventArgs e)
+        private void btnCancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
         }
 
-        private void btnC_Click(object sender, System.EventArgs e)
+        private void btnC_Click(object sender, EventArgs e)
         {
             int caretPosition = txtXmlComment.SelectionStart;
 
             string result = txtXmlComment.Text.Substring(0, caretPosition) + " <c></c> ";
             if (txtXmlComment.SelectionStart < txtXmlComment.Text.Length)
             {
-                 result += txtXmlComment.Text.Substring(caretPosition);
+                result += txtXmlComment.Text.Substring(caretPosition);
             }
 
             txtXmlComment.Text = result;
@@ -213,14 +212,14 @@ namespace CslaGenerator.Design
             txtXmlComment.Focus();
         }
 
-        private void btnCode_Click(object sender, System.EventArgs e)
+        private void btnCode_Click(object sender, EventArgs e)
         {
             int caretPosition = txtXmlComment.SelectionStart;
 
             string result = txtXmlComment.Text.Substring(0, caretPosition) + "\r\n<code></code>\r\n";
             if (txtXmlComment.SelectionStart < txtXmlComment.Text.Length)
             {
-                 result += txtXmlComment.Text.Substring(caretPosition);
+                result += txtXmlComment.Text.Substring(caretPosition);
             }
 
             txtXmlComment.Text = result;
@@ -229,14 +228,14 @@ namespace CslaGenerator.Design
             txtXmlComment.Focus();
         }
 
-        private void btnPara_Click(object sender, System.EventArgs e)
+        private void btnPara_Click(object sender, EventArgs e)
         {
             int caretPosition = txtXmlComment.SelectionStart;
 
             string result = txtXmlComment.Text.Substring(0, caretPosition) + "\r\n<para></para>\r\n";
             if (txtXmlComment.SelectionStart < txtXmlComment.Text.Length)
             {
-                 result += txtXmlComment.Text.Substring(caretPosition);
+                result += txtXmlComment.Text.Substring(caretPosition);
             }
 
             txtXmlComment.Text = result;
@@ -245,14 +244,14 @@ namespace CslaGenerator.Design
             txtXmlComment.Focus();
         }
 
-        private void btnSee_Click(object sender, System.EventArgs e)
+        private void btnSee_Click(object sender, EventArgs e)
         {
             int caretPosition = txtXmlComment.SelectionStart;
 
             string result = txtXmlComment.Text.Substring(0, caretPosition) + " <see cref=\"\" /> ";
             if (txtXmlComment.SelectionStart < txtXmlComment.Text.Length)
             {
-                 result += txtXmlComment.Text.Substring(caretPosition);
+                result += txtXmlComment.Text.Substring(caretPosition);
             }
 
             txtXmlComment.Text = result;

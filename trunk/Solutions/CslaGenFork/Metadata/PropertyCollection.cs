@@ -4,24 +4,11 @@ using System.Xml.Serialization;
 
 namespace CslaGenerator.Metadata
 {
-    //public class PropertyCollection : System.Collections.Generic.List<Property>
-    //{
-    //    //
-    //    public bool Contains(string name)
-    //    {
-    //        foreach (Property p in this)
-    //        {
-    //            if (p.Name.Equals(name))
-    //                return true;
-    //        }
-    //        return false;
-    //    }
-    //}
     /// <summary>
-    ///        A strongly-typed collection of <see cref="Property"/> objects.
+    /// A strongly-typed collection of <see cref="Property"/> objects.
     /// </summary>
     [Serializable]
-    public class PropertyCollection : ICollection, IList, IEnumerable, ICloneable
+    public class PropertyCollection : IList, ICloneable
     {
         #region Interfaces
         /// <summary>
@@ -32,7 +19,7 @@ namespace CslaGenerator.Metadata
             /// <summary>
             ///        Gets the current element in the collection.
             /// </summary>
-            Property Current { get;}
+            Property Current { get; }
 
             /// <summary>
             ///        Advances the enumerator to the next element in the collection.
@@ -1114,4 +1101,3 @@ namespace CslaGenerator.Metadata
         #endregion
     }
 }
-

@@ -1,9 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 using DBSchemaInfo.Base;
 namespace CslaGenerator.Design
@@ -14,14 +9,14 @@ namespace CslaGenerator.Design
         public DbBindColumnEditorForm()
         {
             InitializeComponent();
-            tree=this.dbTreeView1.TreeViewSchema;
+            tree = dbTreeView1.TreeViewSchema;
             tree.HideSelection = false;
-            tree.NodeMouseDoubleClick += new TreeNodeMouseClickEventHandler(TreeViewSchema_NodeMouseDoubleClick);
-            tree.NodeMouseClick += new TreeNodeMouseClickEventHandler(TreeViewSchema_NodeMouseClick);
+            tree.NodeMouseDoubleClick += TreeViewSchemaNodeMouseDoubleClick;
+            tree.NodeMouseClick += TreeViewSchemaNodeMouseClick;
             dbTreeView1.BuildSchemaTree(GeneratorController.Catalog, true);
         }
 
-        void TreeViewSchema_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        void TreeViewSchemaNodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             if (e.Node == dbTreeView1.TreeViewSchema.Nodes[0] ||
                 (e.Node.Tag != null && e.Node.Tag is IColumnInfo))
@@ -34,11 +29,10 @@ namespace CslaGenerator.Design
             }
         }
 
-        void TreeViewSchema_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        void TreeViewSchemaNodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             if (cmdOK.Enabled)
                 cmdOK.PerformClick();
-
         }
 
         public IColumnInfo ColumnInfo
@@ -65,11 +59,9 @@ namespace CslaGenerator.Design
         {
             get
             {
-
                 return (tree.SelectedNode == null || tree.SelectedNode == tree.Nodes[0] || ColumnInfo == null);
             }
         }
-
 
         private bool FindNode(TreeNodeCollection nodes, IColumnInfo col)
         {
@@ -87,18 +79,18 @@ namespace CslaGenerator.Design
             return false;
         }
 
-        private void cmdOK_Click(object sender, EventArgs e)
+        private void CmdOkClick(object sender, EventArgs e)
         {
             if (ColumnInfo == null && tree.SelectedNode != tree.Nodes[0])
-                MessageBox.Show("Invalid Selection");
+                MessageBox.Show(@"Invalid Selection");
             else
             {
-                this.DialogResult = DialogResult.OK;
-                this.Close();
+                DialogResult = DialogResult.OK;
+                Close();
             }
         }
 
-        private void DbBindColumnEditorForm_Activated(object sender, EventArgs e)
+        private void DbBindColumnEditorFormActivated(object sender, EventArgs e)
         {
             tree.Focus();
         }

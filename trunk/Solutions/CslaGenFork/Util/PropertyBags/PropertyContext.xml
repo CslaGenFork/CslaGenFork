@@ -53,6 +53,7 @@
     <add key="NameValueList:AddParentReference" value="false" />
     <add key="NameValueList:GenerateDataPortalInsert" value="false" />
     <add key="NameValueList:GenerateDataPortalUpdate" value="false" />
+    <add key="NameValueList:GenerateDataPortalDelete" value="false" />
     <add key="NameValueList:SupportUpdateProperties" value="false" />
     <add key="NameValueList:CheckRulesOnFetch" value="false" />
     <add key="ReadOnlyCollection:Generate" value="true" />
@@ -106,6 +107,7 @@
     <add key="ReadOnlyCollection:AddParentReference" value="false" />
     <add key="ReadOnlyCollection:GenerateDataPortalInsert" value="false" />
     <add key="ReadOnlyCollection:GenerateDataPortalUpdate" value="false" />
+    <add key="ReadOnlyCollection:GenerateDataPortalDelete" value="false" />
     <add key="ReadOnlyCollection:SupportUpdateProperties" value="false" />
     <add key="ReadOnlyCollection:CheckRulesOnFetch" value="false" />
     <add key="ReadOnlyObject:Generate" value="true" />
@@ -159,6 +161,7 @@
     <add key="ReadOnlyObject:AddParentReference" value="false" />
     <add key="ReadOnlyObject:GenerateDataPortalInsert" value="false" />
     <add key="ReadOnlyObject:GenerateDataPortalUpdate" value="false" />
+    <add key="ReadOnlyObject:GenerateDataPortalDelete" value="false" />
     <add key="ReadOnlyObject:SupportUpdateProperties" value="false" />
     <add key="ReadOnlyObject:CheckRulesOnFetch" value="false" />
     <add key="EditableChild:Generate" value="true" />
@@ -211,6 +214,7 @@
     <add key="EditableChild:AllowRemove" value="false" />
     <add key="EditableChild:GenerateDataPortalInsert" value="true" />
     <add key="EditableChild:GenerateDataPortalUpdate" value="true" />
+    <add key="EditableChild:GenerateDataPortalDelete" value="true" />
     <add key="EditableChild:SupportUpdateProperties" value="false" />
     <add key="EditableChild:CheckRulesOnFetch" value="true" />
     <add key="EditableChild:AddParentReference" value="false" />
@@ -265,6 +269,7 @@
     <add key="EditableChildCollection:AddParentReference" value="true" />
     <add key="EditableChildCollection:GenerateDataPortalInsert" value="false" />
     <add key="EditableChildCollection:GenerateDataPortalUpdate" value="false" />
+    <add key="EditableChildCollection:GenerateDataPortalDelete" value="false" />
     <add key="EditableChildCollection:SupportUpdateProperties" value="false" />
     <add key="EditableChildCollection:CheckRulesOnFetch" value="true" />
     <add key="EditableRoot:Generate" value="true" />
@@ -318,6 +323,7 @@
     <add key="EditableRoot:AddParentReference" value="false" />
     <add key="EditableRoot:GenerateDataPortalInsert" value="true" />
     <add key="EditableRoot:GenerateDataPortalUpdate" value="true" />
+    <add key="EditableRoot:GenerateDataPortalDelete" value="true" />
     <add key="EditableRoot:SupportUpdateProperties" value="true" />
     <add key="EditableRoot:CheckRulesOnFetch" value="true" />
     <add key="EditableRootCollection:Generate" value="true" />
@@ -338,7 +344,7 @@
     <add key="EditableRootCollection:ValueProperties" value="false" />
     <add key="EditableRootCollection:CriteriaObjects" value="true" />
     <add key="EditableRootCollection:LazyLoad" value="false" />
-    <add key="EditableRootCollection:ParentProperties" value="true" />
+    <add key="EditableRootCollection:ParentProperties" value="false" />
     <add key="EditableRootCollection:ParentType" value="false" />
     <add key="EditableRootCollection:FindMethodsParameters" value="true" />
     <add key="EditableRootCollection:ItemType" value="true" />
@@ -371,6 +377,7 @@
     <add key="EditableRootCollection:AddParentReference" value="false" />
     <add key="EditableRootCollection:GenerateDataPortalInsert" value="false" />
     <add key="EditableRootCollection:GenerateDataPortalUpdate" value="false" />
+    <add key="EditableRootCollection:GenerateDataPortalDelete" value="false" />
     <add key="EditableRootCollection:SupportUpdateProperties" value="false" />
     <add key="EditableRootCollection:CheckRulesOnFetch" value="true" />
     <add key="EditableSwitchable:Generate" value="true" />
@@ -424,6 +431,7 @@
     <add key="EditableSwitchable:AddParentReference" value="false" />
     <add key="EditableSwitchable:GenerateDataPortalInsert" value="true" />
     <add key="EditableSwitchable:GenerateDataPortalUpdate" value="true" />
+    <add key="EditableSwitchable:GenerateDataPortalDelete" value="true" />
     <add key="EditableSwitchable:SupportUpdateProperties" value="true" />
     <add key="EditableSwitchable:CheckRulesOnFetch" value="true" />
     <add key="DynamicEditableRoot:Generate" value="true" />
@@ -477,6 +485,7 @@
     <add key="DynamicEditableRoot:AddParentReference" value="false" />
     <add key="DynamicEditableRoot:GenerateDataPortalInsert" value="true" />
     <add key="DynamicEditableRoot:GenerateDataPortalUpdate" value="true" />
+    <add key="DynamicEditableRoot:GenerateDataPortalDelete" value="true" />
     <add key="DynamicEditableRoot:SupportUpdateProperties" value="true" />
     <add key="DynamicEditableRoot:CheckRulesOnFetch" value="true" />
     <add key="DynamicEditableRootCollection:Generate" value="true" />
@@ -530,6 +539,7 @@
     <add key="DynamicEditableRootCollection:AddParentReference" value="false" />
     <add key="DynamicEditableRootCollection:GenerateDataPortalInsert" value="false" />
     <add key="DynamicEditableRootCollection:GenerateDataPortalUpdate" value="false" />
+    <add key="DynamicEditableRootCollection:GenerateDataPortalDelete" value="false" />
     <add key="DynamicEditableRootCollection:SupportUpdateProperties" value="false" />
     <add key="DynamicEditableRootCollection:CheckRulesOnFetch" value="true" />
   </contextSettings>

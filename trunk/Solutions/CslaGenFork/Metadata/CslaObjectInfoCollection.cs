@@ -1,12 +1,9 @@
 using System;
-using System.Collections;
-using System.Xml.Serialization;
 using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace CslaGenerator.Metadata
 {
-
     public class CslaObjectInfoCollection : BindingList<CslaObjectInfo>
     {
         public CslaObjectInfo Find(string name)
@@ -28,5 +25,4 @@ namespace CslaGenerator.Metadata
         }
 
     }
-
 }

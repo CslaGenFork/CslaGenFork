@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Drawing.Design;
-using System.Reflection;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using CslaGenerator.Metadata;
@@ -15,38 +14,41 @@ namespace CslaGenerator.Design
     /// </summary>
     public class ParameterCollectionEditor : UITypeEditor
     {
-        private IWindowsFormsEditorService editorService = null;
-        private ListBox lstParameters;
-        private object _instance = null;
+        private IWindowsFormsEditorService _editorService;
+        private readonly ListBox _lstProperties;
+        private object _instance;
 
         public ParameterCollectionEditor()
         {
-            lstParameters = new ListBox();
-            lstParameters.DoubleClick += lstProperties_DoubleClick;
-            lstParameters.DisplayMember = "key";
-            lstParameters.ValueMember = "value";
-            lstParameters.SelectionMode = SelectionMode.MultiSimple;
-        }
-
-        void lstProperties_DoubleClick(object sender, EventArgs e)
-        {
-            editorService.CloseDropDown();
+            _lstProperties = new ListBox();
+            _lstProperties.DoubleClick += LstPropertiesDoubleClick;
+            _lstProperties.DisplayMember = "key";
+            _lstProperties.ValueMember = "value";
+            _lstProperties.SelectionMode = SelectionMode.MultiSimple;
         }
 
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
-            if (provider != null)
+            _editorService = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
+            if (_editorService != null && context.Instance != null)
             {
-                editorService = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
-                if (editorService != null && context.Instance != null)
+                // CR modifying to accomodate PropertyBag
+                Type instanceType = null;
+                object objinfo = null;
+                TypeHelper.GetChildPropertyContextInstanceObject(context, ref objinfo, ref instanceType);
+                var propInfo = instanceType.GetProperty("LoadParameters");
+                var paramColl = (ParameterCollection)propInfo.GetValue(objinfo, null);
+                propInfo = instanceType.GetProperty("LoadingScheme");
+                var isSelfLoad = (LoadingScheme)propInfo.GetValue(objinfo, null) == LoadingScheme.SelfLoad;
+                if (isSelfLoad)
                 {
-                    // CR modifying to accomodate PropertyBag
-                    Type instanceType = null;
-                    object objinfo = null;
-                    TypeHelper.GetChildPropertyContextInstanceObject(context, ref objinfo, ref instanceType);
-                    PropertyInfo propInfo = instanceType.GetProperty("LoadParameters");
-                    ParameterCollection paramColl = (ParameterCollection)propInfo.GetValue(objinfo, null);
-
+                    propInfo = instanceType.GetProperty("TypeName");
+                    var typeName = (string)propInfo.GetValue(objinfo, null);
+                    var objectColl = GeneratorController.Current.GeneratorForm.ProjectPanel.Objects;
+                    _instance = objectColl.Find(typeName);
+                }
+                else
+                {
                     if (instanceType != typeof(CslaObjectInfo))
                     {
                         _instance = GeneratorController.Current.GeneratorForm.ProjectPanel.ListObjects.SelectedItem;
@@ -57,53 +59,63 @@ namespace CslaGenerator.Design
                         //_instance = context.Instance;
                         _instance = objinfo;
                     }
-                    PropertyInfo criteriaInfo = typeof(CslaObjectInfo).GetProperty("CriteriaObjects");
-                    object criteriaObjects = criteriaInfo.GetValue(_instance,null);
-
-                    lstParameters.Items.Clear();
-                    foreach (Criteria crit in (CriteriaCollection)criteriaObjects)
-                    {
-                        if (crit.GetOptions.Factory || crit.GetOptions.AddRemove || crit.GetOptions.DataPortal)
-                        {
-                            foreach (Property prop in crit.Properties)
-                            {
-                                lstParameters.Items.Add(new DictionaryEntry(crit.Name + "." + prop.Name,
-                                                                            new Parameter(crit, prop)));
-                            }
-                        }
-                    }
-                    lstParameters.Sorted = true;
-
-                    foreach (Parameter param in paramColl)
-                    {
-                        var key = param.Criteria.Name + "." + param.Property.Name;
-                        for (var entry = 0; entry < lstParameters.Items.Count; entry++)
-                        {
-                            if (key == ((DictionaryEntry)lstParameters.Items[entry]).Key.ToString())
-                            {
-                                var val = (Parameter)((DictionaryEntry)lstParameters.Items[entry]).Value;
-                                lstParameters.SelectedItems.Add(new DictionaryEntry(key, val));
-                            }
-                        }
-                    }
-
-                    editorService.DropDownControl(lstParameters);
-
-                    if (lstParameters.SelectedItems != null && lstParameters.SelectedItems.Count > 0)
-                    {
-                        ParameterCollection param = new ParameterCollection();
-                        foreach (object item in lstParameters.SelectedItems)
-                        {
-                            param.Add((Parameter)((DictionaryEntry)item).Value);
-                        }
-                        return param;
-                    }
-
-                    return new ParameterCollection();
                 }
+
+                var criteriaInfo = typeof(CslaObjectInfo).GetProperty("CriteriaObjects");
+                var criteriaObjects = criteriaInfo.GetValue(_instance, null);
+
+                _lstProperties.Items.Clear();
+                _lstProperties.Items.Add(new DictionaryEntry("(None)", new Parameter()));
+                foreach (Criteria crit in (CriteriaCollection)criteriaObjects)
+                {
+                    if (crit.GetOptions.Factory || crit.GetOptions.AddRemove || crit.GetOptions.DataPortal)
+                    {
+                        foreach (var prop in crit.Properties)
+                        {
+                            _lstProperties.Items.Add(new DictionaryEntry(crit.Name + "." + prop.Name,
+                                                                         new Parameter(crit, prop)));
+                        }
+                    }
+                }
+                _lstProperties.Sorted = true;
+
+                foreach (var param in paramColl)
+                {
+                    var key = param.Criteria.Name + "." + param.Property.Name;
+                    for (var entry = 0; entry < _lstProperties.Items.Count; entry++)
+                    {
+                        if (key == ((DictionaryEntry)_lstProperties.Items[entry]).Key.ToString())
+                        {
+                            var val = (Parameter)((DictionaryEntry)_lstProperties.Items[entry]).Value;
+                            _lstProperties.SelectedItems.Add(new DictionaryEntry(key, val));
+                        }
+                    }
+                }
+
+                _lstProperties.SelectedIndexChanged += LstPropertiesSelectedIndexChanged;
+                _editorService.DropDownControl(_lstProperties);
+                _lstProperties.SelectedIndexChanged -= LstPropertiesSelectedIndexChanged;
+
+                if (_lstProperties.SelectedItems.Count > 0)
+                {
+                    var param = new ParameterCollection();
+                    foreach (var item in _lstProperties.SelectedItems)
+                    {
+                        param.Add((Parameter)((DictionaryEntry)item).Value);
+                    }
+                    return param;
+                }
+
+                return new ParameterCollection();
             }
 
             return value;
+        }
+
+        void LstPropertiesSelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (_lstProperties.SelectedIndex == 0)
+                _lstProperties.SelectedIndices.Clear();
         }
 
         public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
@@ -111,13 +123,9 @@ namespace CslaGenerator.Design
             return UITypeEditorEditStyle.DropDown;
         }
 
-        //private object GetInfoTypeInstance(object o)
-        //{
-        //    if (o is ChildProperty)
-        //    {
-        //        //return ChildProperty.Parent;
-        //    }
-        //    else { throw new Exception("Invalid type"); }
-        //}
+        void LstPropertiesDoubleClick(object sender, EventArgs e)
+        {
+            _editorService.CloseDropDown();
+        }
     }
 }

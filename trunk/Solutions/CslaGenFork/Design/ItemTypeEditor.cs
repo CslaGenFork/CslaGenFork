@@ -10,68 +10,64 @@ namespace CslaGenerator.Design
 {
     public class ItemTypeEditor : UITypeEditor
     {
-        private IWindowsFormsEditorService editorService;
-        private ListBox lstProperties;
-        //private Type instance;
+        private IWindowsFormsEditorService _editorService;
+        private readonly ListBox _lstProperties;
 
         public ItemTypeEditor()
         {
-            lstProperties = new ListBox();
-            lstProperties.DoubleClick += lstProperties_DoubleClick;
-            lstProperties.SelectionMode = SelectionMode.One;
-        }
-
-        private void lstProperties_DoubleClick(object sender, EventArgs e)
-        {
-            editorService.CloseDropDown();
+            _lstProperties = new ListBox();
+            _lstProperties.DoubleClick += LstPropertiesDoubleClick;
+            _lstProperties.SelectionMode = SelectionMode.One;
         }
 
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
-            if (provider != null)
+            _editorService = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
+            if (_editorService != null)
             {
-                editorService = (IWindowsFormsEditorService) provider.GetService(typeof (IWindowsFormsEditorService));
-                if (editorService != null)
+                if (context.Instance != null)
                 {
-                    if (context.Instance != null)
+                    // CR modifying to accomodate PropertyBag
+                    Type instanceType = null;
+                    object objinfo = null;
+                    TypeHelper.GetContextInstanceObject(context, ref objinfo, ref instanceType);
+                    var obj = (CslaObjectInfo)objinfo;
+                    _lstProperties.Items.Clear();
+                    _lstProperties.Items.Add("(None)");
+                    foreach (var o in GeneratorController.Current.CurrentUnit.CslaObjects)
                     {
-                        // CR modifying to accomodate PropertyBag
-                        Type instanceType = null;
-                        object objinfo = null;
-                        TypeHelper.GetContextInstanceObject(context, ref objinfo, ref instanceType);
-                        CslaObjectInfo obj = (CslaObjectInfo) objinfo;
-                        lstProperties.Items.Clear();
-                        lstProperties.Items.Add("(None)");
-                        foreach (CslaObjectInfo o in GeneratorController.Current.CurrentUnit.CslaObjects)
+                        if (o.ObjectName != obj.ObjectName)
                         {
-                            if (o.ObjectName != obj.ObjectName)
-                            {
-                                //if (IsItemType(obj.ObjectType, o.ObjectType))
-                                if (RelationRulesEngine.IsChildAllowed(obj.ObjectType, o.ObjectType))
-                                    lstProperties.Items.Add(o.ObjectName);
-                            }
+                            if (RelationRulesEngine.IsChildAllowed(obj.ObjectType, o.ObjectType))
+                                _lstProperties.Items.Add(o.ObjectName);
                         }
-                        lstProperties.Sorted = true;
-
-                        if (lstProperties.Items.Contains(obj.ItemType))
-                            lstProperties.SelectedItem = obj.ItemType;
-                        else
-                            lstProperties.SelectedItem = "(None)";
-
-                        editorService.DropDownControl(lstProperties);
-                        if (lstProperties.SelectedIndex < 0 || lstProperties.SelectedItem.ToString() == "(None)")
-                            return string.Empty;
-
-                        return lstProperties.SelectedItem.ToString();
                     }
+                    _lstProperties.Sorted = true;
+
+                    if (_lstProperties.Items.Contains(obj.ItemType))
+                        _lstProperties.SelectedItem = obj.ItemType;
+                    else
+                        _lstProperties.SelectedItem = "(None)";
+
+                    _editorService.DropDownControl(_lstProperties);
+                    if (_lstProperties.SelectedIndex < 0 || _lstProperties.SelectedItem.ToString() == "(None)")
+                        return string.Empty;
+
+                    return _lstProperties.SelectedItem.ToString();
                 }
             }
+
             return value;
         }
 
         public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
         {
             return UITypeEditorEditStyle.DropDown;
+        }
+
+        private void LstPropertiesDoubleClick(object sender, EventArgs e)
+        {
+            _editorService.CloseDropDown();
         }
     }
 }

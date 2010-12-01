@@ -54,7 +54,7 @@ namespace CslaGenerator.Design
             this.cmdOK.TabIndex = 1;
             this.cmdOK.Text = "&OK";
             this.cmdOK.UseVisualStyleBackColor = true;
-            this.cmdOK.Click += new System.EventHandler(this.cmdOK_Click);
+            this.cmdOK.Click += new System.EventHandler(this.CmdOkClick);
             // 
             // cmdCancel
             // 
@@ -87,7 +87,7 @@ namespace CslaGenerator.Design
             this.Name = "DbBindColumnEditorForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "DbBindColumn Editor";
-            this.Activated += new System.EventHandler(this.DbBindColumnEditorForm_Activated);
+            this.Activated += new System.EventHandler(this.DbBindColumnEditorFormActivated);
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
