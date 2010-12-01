@@ -24,22 +24,45 @@ using System.Data.SqlClient;
 <% if (ActiveObjects) { %>using ActiveObjects;<%  } else { %>using Csla;<% } %>
 using Csla.Data;
 <%= GetUsingStatementsString(Info) %>
-<% if (Info.ObjectNamespace.Length > 0) { %>namespace <%= Info.ObjectNamespace %>
-{<% } %>
-<% bool? firstComment = null; %><!-- #include file="XmlComment.inc" -->
-    <% if (GetAttributesString(Info.Attributes) != string.Empty) { %>
+<%
+    if (Info.ObjectNamespace.Length > 0)
+    {
+%>namespace <%= Info.ObjectNamespace %>
+{
+<%
+    }
+
+    bool? firstComment = null;
+    %><!-- #include file="XmlComment.inc" -->
+    <%
+    if (GetAttributesString(Info.Attributes) != string.Empty)
+    {
+        %>
     <%= GetAttributesString(Info.Attributes) %>
-    <% } %>
+    <%
+    }
+    %>
     [Serializable]
-    <% if (ActiveObjects && Info.SubscribeToChannel.Length > 0) { %>[Subscribe("<%= Info.SubscribeToChannel %>")]
-    <% } %>public partial class <%= Info.ObjectName %> : <%
-        if (Info.InheritedType.Type != string.Empty) {
+    <%
+    if (ActiveObjects && Info.SubscribeToChannel.Length > 0)
+    {
+        %>[Subscribe("<%= Info.SubscribeToChannel %>")]
+    <%
+    }
+    %>public partial class <%= Info.ObjectName %> : <%
+    if (Info.InheritedType.Type != string.Empty)
+    {
             %><%=Info.InheritedType.Type%><%
-        } else if (Info.InheritedType.ObjectName != string.Empty) {
+    }
+    else if (Info.InheritedType.ObjectName != string.Empty)
+    {
             %><%=Info.InheritedType.ObjectName%><%
-         } else {
+    }
+    else
+    {
             %><% if (ActiveObjects) { %>Active<% } %>BusinessBase<<%=Info.ObjectName %>><%
-        } %><!-- #include file="Implements.inc" -->
+    }
+    %><!-- #include file="Implements.inc" -->
     {
 <!-- #include file="StaticFields.inc" -->
 <!-- #include file="StateFields.inc" -->
@@ -51,19 +74,22 @@ using Csla.Data;
         <!-- #include file="ObjectOverrides.inc" -->
         <% Response.Write(Environment.NewLine); %>
         #region Factory Methods
-    <% if (Info.GenerateFactoryMethods)
+    <%
+    if (Info.GenerateFactoryMethods)
     {
-            if (Info.DbName.Equals(String.Empty))
-            {
-                Warnings.Append("Make sure you specify a DB name." + Environment.NewLine) ;
-            }
+        if (Info.DbName.Equals(String.Empty))
+        {
+            Warnings.Append("Make sure you specify a DB name." + Environment.NewLine) ;
+        }
     %>
         <!-- #include file="NewObject.inc" -->
 
         <!-- #include file="GetObject.inc" -->
 
         <!-- #include file="DeleteObject.inc" -->
-    <% } %>
+    <%
+    }
+    %>
         <!-- #include file="Save.inc" -->
         <% Response.Write(Environment.NewLine); %>
         #endregion
@@ -74,7 +100,10 @@ using Csla.Data;
 <!-- #include file="SharedAuthorizationMethods.inc" -->
 <% Response.Write(Environment.NewLine); %>
 <!-- #include file="ConvertProperties.inc" -->
-<% if (Info.GenerateDataAccessRegion) { %>
+<%
+    if (Info.GenerateDataAccessRegion)
+    {
+        %>
         #region Data Access
 
         <!-- #include file="DataPortalCreate.inc"  -->
@@ -85,17 +114,29 @@ using Csla.Data;
 
         <!-- #include file="DataPortalUpdate.inc" -->
 
-<% if (Info.GenerateDataPortalInsert || Info.GenerateDataPortalUpdate) { %>
+<%
+        if (Info.GenerateDataPortalInsert || Info.GenerateDataPortalUpdate)
+        {
+            %>
 <!-- #include file="DoInsertUpdate.inc" -->
-<% } %>
+<%
+        }
+        %>
         <!-- #include file="DataPortalDelete.inc" -->
         #endregion
 <!-- #include file="Events.inc" -->
 
-<% } %>
+<%
+    }
+    %>
 
     }
-<% if (Info.ObjectNamespace.Length > 0) { %>
+<%
+    if (Info.ObjectNamespace.Length > 0)
+    {
+        %>
 }
-<% } %>
-<% } %>
+<%
+    }
+}
+%>

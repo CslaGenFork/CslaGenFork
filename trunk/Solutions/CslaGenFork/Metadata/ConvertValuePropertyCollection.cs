@@ -1,11 +1,9 @@
-using System;
-using System.Collections;
-using System.Xml.Serialization;
+using System.Collections.Generic;
 
 namespace CslaGenerator.Metadata
 {
 
-    public class ConvertValuePropertyCollection : System.Collections.Generic.List<ConvertValueProperty>
+    public class ConvertValuePropertyCollection : List<ConvertValueProperty>
     {
         public ConvertValueProperty Find(string name)
         {

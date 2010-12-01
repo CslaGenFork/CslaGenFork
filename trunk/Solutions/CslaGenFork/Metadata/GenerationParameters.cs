@@ -34,7 +34,6 @@ namespace CslaGenerator.Metadata
         private string _utilitiesNamespace = String.Empty;
         private bool _generateSprocs = true;
         private bool _oneSpFilePerObject = true;
-        private bool _onlyNeededSprocs = true;
         private bool _generateDatabaseClass = true;
 
         #endregion
@@ -363,18 +362,6 @@ namespace CslaGenerator.Metadata
                 if (_oneSpFilePerObject == value)
                     return;
                 _oneSpFilePerObject = value;
-                OnPropertyChanged("");
-            }
-        }
-
-        public bool OnlyNeededSprocs
-        {
-            get { return _onlyNeededSprocs; }
-            set
-            {
-                if (_onlyNeededSprocs == value)
-                    return;
-                _onlyNeededSprocs = value;
                 OnPropertyChanged("");
             }
         }

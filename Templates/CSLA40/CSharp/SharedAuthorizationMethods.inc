@@ -11,7 +11,10 @@ if (IsCollectionType(Info.ObjectType))
 }
 if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
     CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel &&
-    authzInfo2.GetRoles.Trim() != String.Empty)
+    (authzInfo2.NewRoles.Trim() != String.Empty ||
+    authzInfo2.GetRoles.Trim() != String.Empty ||
+    authzInfo2.UpdateRoles.Trim() != String.Empty ||
+    authzInfo2.DeleteRoles.Trim() != String.Empty))
 {
     %>
 

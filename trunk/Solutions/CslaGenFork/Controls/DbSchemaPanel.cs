@@ -1,75 +1,58 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Data;
+using System.Text;
 using System.Windows.Forms;
 using CslaGenerator.Metadata;
 using CslaGenerator.Util;
-using System.Text;
 using DBSchemaInfo.Base;
 using DBSchemaInfo.MsSql;
-using System.Drawing;
-
-
 
 namespace CslaGenerator.Controls
 {
     /// <summary>
     /// Summary description for DbSchemaPanel.
     /// </summary>
-    public partial class DbSchemaPanel : System.Windows.Forms.UserControl
+    public partial class DbSchemaPanel : UserControl
     {
         private CslaGeneratorUnit _currentUnit = null;
         private CslaObjectInfo _currentCslaObject = null;
         private ObjectFactory _currentFactory = null;
         private string cn = "";
 
-        /*public DbSchemaPanel()
-        {
-            // This call is required by the Windows.Forms Form Designer.
-            InitializeComponent();
-            for (int i = 0; i < schemaImages.Images.Count; i++)
-            {
-                schemaImages.Images[i].Save(@"c:\SchemaImages\" + i.ToString());
-            }
-
-        }*/
-
         public DbSchemaPanel(CslaGeneratorUnit cslagenunit, CslaObjectInfo cslaobject, string connection)
         {
-            this._currentUnit = cslagenunit;
-            this.cn = connection;
-            this._currentCslaObject = cslaobject;
+            _currentUnit = cslagenunit;
+            cn = connection;
+            _currentCslaObject = cslaobject;
             // This call is required by the Windows.Forms Form Designer.
             InitializeComponent();
         }
 
-
-        private void DbSchemaPanel_Load(object sender, System.EventArgs e)
+        private void DbSchemaPanel_Load(object sender, EventArgs e)
         {
             // hookup event handler for treeview select
-            this.dbTreeView1.TreeViewAfterSelect += new CslaGenerator.Controls.DbTreeView.TreeViewAfterSelectEventHandler(dbTreeView1_TreeViewAfterSelect);
+            dbTreeView1.TreeViewAfterSelect += dbTreeView1_TreeViewAfterSelect;
             // hookup event handler for treeview mouseup
-            this.dbTreeView1.TreeViewMouseUp += new CslaGenerator.Controls.DbTreeView.TreeViewMouseUpEventHandler(dbTreeView1_TreeViewMouseUp);
+            dbTreeView1.TreeViewMouseUp += dbTreeView1_TreeViewMouseUp;
             // set default width
-            this.dbTreeView1.Width = (int)((double)0.5 * (double)this.Width);
-            this.copySoftDeleteToolStripMenuItem.Checked = false;
+            dbTreeView1.Width = (int)((double)0.5 * (double)Width);
+            copySoftDeleteToolStripMenuItem.Checked = false;
         }
 
-        private void DbSchemaPanel_Resize(object sender, System.EventArgs e)
+        private void DbSchemaPanel_Resize(object sender, EventArgs e)
         {
             // keep treeview and listbox equal widths of 50% of panel body
             // when panel resized
-            this.dbTreeView1.Width = (int)((double)0.5 * (double)this.Width);
+            dbTreeView1.Width = (int)((double)0.5 * (double)Width);
         }
 
         #region Properties
 
         internal CslaGeneratorUnit CurrentUnit
         {
-            get { return this._currentUnit; }
+            get { return _currentUnit; }
             set { _currentUnit = value; }
         }
 
@@ -85,38 +68,38 @@ namespace CslaGenerator.Controls
 
         internal string ConnectionString
         {
-            get { return this.cn; }
+            get { return cn; }
             set { cn = value; }
         }
 
         internal TreeView TreeViewSchema
         {
-            get { return this.dbTreeView1.TreeViewSchema; }
+            get { return dbTreeView1.TreeViewSchema; }
         }
 
         internal ListBox DbColumns
         {
-            get { return this.dbColumns1.ListColumns; }
+            get { return dbColumns1.ListColumns; }
         }
 
         internal PropertyGrid PropertyGridColumn
         {
-            get { return this.dbColumns1.PropertyGridColumn; }
+            get { return dbColumns1.PropertyGridColumn; }
         }
 
         internal PropertyGrid PropertyGridDbObjects
         {
-            get { return this.dbTreeView1.PropertyGridDbObjects; }
+            get { return dbTreeView1.PropertyGridDbObjects; }
         }
 
         internal Dictionary<string, IColumnInfo> SelectedColumns
         {
-            get { return this.dbColumns1.SelectedIndices; }
+            get { return dbColumns1.SelectedIndices; }
         }
 
         internal int SelectedColumnsCount
         {
-            get { return this.dbColumns1.SelectedIndicesCount; }
+            get { return dbColumns1.SelectedIndicesCount; }
         }
 
         internal bool UseBoolSoftDelete
@@ -129,25 +112,28 @@ namespace CslaGenerator.Controls
         }
 
         #endregion
+
         #region Methods
+
         internal void SetDbColumnsPctHeight(double pct)
         {
-            this.dbColumns1.SetDbColumnsPctHeight(pct);
+            dbColumns1.SetDbColumnsPctHeight(pct);
         }
+
         internal void SetDbTreeViewPctHeight(double pct)
         {
-            this.dbTreeView1.SetDbTreeViewPctHeight(pct);
+            dbTreeView1.SetDbTreeViewPctHeight(pct);
         }
+
         #endregion
 
-
-
         // called to populate treeview from provided database connection
-        DBSchemaInfo.Base.ICatalog catalog = null;
+        ICatalog catalog = null;
+
         public void BuildSchemaTree()
         {
             TreeViewSchema.Nodes.Clear();
-            TreeViewSchema.ImageList = this.schemaImages;
+            TreeViewSchema.ImageList = schemaImages;
             string catalogName = null;
             string[] cnparts = cn.ToLower().Split(';');
             foreach (string cnpart in cnparts)
@@ -173,7 +159,7 @@ namespace CslaGenerator.Controls
             catalog.LoadProcedures();
             end = DateTime.Now;
             //OutputWindow.Current.AddOutputInfo("Load Procedures End:" + end.ToLongTimeString());
-            OutputWindow.Current.AddOutputInfo(string.Format("Found {0} sprocs in {1:0.00} seconds...", catalog.Procedures.Count.ToString(), end.Subtract(start).TotalSeconds),2);
+            OutputWindow.Current.AddOutputInfo(string.Format("Found {0} sprocs in {1:0.00} seconds...", catalog.Procedures.Count.ToString(), end.Subtract(start).TotalSeconds), 2);
             SprocName[] requiredSprocs = GetRequiredProcedureList();
             if (requiredSprocs.Length > 0)
                 OutputWindow.Current.AddOutputInfo("Loading required procedures:");
@@ -202,16 +188,16 @@ namespace CslaGenerator.Controls
                     sb.AppendLine(ex.Message);
                     sb.AppendLine("Stack Trace:");
                     sb.AppendLine();
-                    sb.AppendLine(ex.StackTrace.ToString());
+                    sb.AppendLine(ex.StackTrace);
                     sb.AppendLine();
                 }
                 OutputWindow.Current.AddOutputInfo(sb.ToString());
             }
             GeneratorController.Catalog = catalog;
             if (!String.IsNullOrEmpty(catalog.CatalogName))
-                this.paneDbName.Caption = catalog.CatalogName;
+                paneDbName.Caption = catalog.CatalogName;
             else
-                this.paneDbName.Caption = "Database Schema";
+                paneDbName.Caption = "Database Schema";
 
             if (_currentUnit != null)
             {
@@ -227,21 +213,24 @@ namespace CslaGenerator.Controls
                     info.LoadColumnInfo(catalog);
                 }
             }
-
         }
 
-        class SprocName : IEquatable<SprocName>
+        private class SprocName : IEquatable<SprocName>
         {
             private string _Schema;
+
             public string Schema
             {
-            	get	{ return _Schema; }
+                get { return _Schema; }
             }
+
             private string _Name;
+
             public string Name
             {
-            	get	{ return _Name; }
+                get { return _Name; }
             }
+
             /// <summary>
             /// Initializes a new instance of the Pair class.
             /// </summary>
@@ -253,7 +242,6 @@ namespace CslaGenerator.Controls
                 _Name = name == null ? string.Empty : name;
             }
 
-
             #region IEquatable<SprocName> Members
 
             public bool Equals(SprocName other)
@@ -263,8 +251,10 @@ namespace CslaGenerator.Controls
             }
 
             #endregion
+
         }
-        SprocName[] GetRequiredProcedureList()
+
+        private SprocName[] GetRequiredProcedureList()
         {
             List<SprocName> list = new List<SprocName>();
             foreach (CslaObjectInfo obj in _currentUnit.CslaObjects)
@@ -294,11 +284,9 @@ namespace CslaGenerator.Controls
             return list.ToArray();
         }
 
-
-
         private void dbTreeView1_TreeViewMouseUp(object sender, MouseEventArgs e)
         {
-            System.Windows.Forms.TreeNode node = TreeViewSchema.GetNodeAt(e.X, e.Y);
+            TreeNode node = TreeViewSchema.GetNodeAt(e.X, e.Y);
             if (TreeViewSchema.GetNodeAt(e.X, e.Y) == null)
             {
                 isDBItemSelected = false;
@@ -310,16 +298,19 @@ namespace CslaGenerator.Controls
             }
             TreeNodeSelected(node);
         }
+
         private void dbTreeView1_TreeViewAfterSelect(object sender, TreeViewEventArgs e)
         {
             TreeNodeSelected(e.Node);
         }
+
         bool isDBItemSelected;
         TreeNode currentTreeNode = null;
+
         private void TreeNodeSelected(TreeNode node)
         {
             currentTreeNode = node;
-            this.dbColumns1.Clear();
+            dbColumns1.Clear();
             isDBItemSelected = false;
             PropertyGridColumn.SelectedObject = null;
             SetDbColumnsPctHeight(73);
@@ -338,7 +329,9 @@ namespace CslaGenerator.Controls
                         }
                     }
                     else
-                    { isDBItemSelected = false; }
+                    {
+                        isDBItemSelected = false;
+                    }
                 }
             }
         }
@@ -347,13 +340,14 @@ namespace CslaGenerator.Controls
         {
             // this is a hack because the CommandResultColumnSchema does not store a reference to its  CommandResult
             //return frmGenerator.TreeViewSchema.SelectedNode.Index;
-            return this.TreeViewSchema.SelectedNode.Index;
+            return TreeViewSchema.SelectedNode.Index;
         }
 
         private void SetDbBindColumn(IColumnInfo p, DbBindColumn dbc)
         {
             SetDbBindColumn(TreeViewSchema.SelectedNode, p, dbc);
         }
+
         public static void SetDbBindColumn(TreeNode node, IColumnInfo p, DbBindColumn dbc)
         {
             //TreeNode node = TreeViewSchema.SelectedNode;
@@ -391,7 +385,7 @@ namespace CslaGenerator.Controls
             dbc.LoadColumn(GeneratorController.Catalog);
         }
 
-        #region " Context menu handlers "
+        #region Context menu handlers
 
         private void addToCslaObjectToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -400,12 +394,12 @@ namespace CslaGenerator.Controls
 
         private void selectAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.dbColumns1.SelectAll();
+            dbColumns1.SelectAll();
         }
 
         private void unselectAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.dbColumns1.UnSelectAll();
+            dbColumns1.UnSelectAll();
         }
 
         private void readOnlyCollectionToolStripMenuItem_Click(object sender, EventArgs e)
@@ -459,7 +453,7 @@ namespace CslaGenerator.Controls
                 CslaObjectInfo parent = _currentUnit.CslaObjects.Find(parentName);
                 if (parent == null)
                 {
-                    MessageBox.Show("Parent type not found", "CslaGenerator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(@"Parent type not found", @"CslaGenerator", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
                 NewCollection(CslaObjectType.EditableChildCollection, collectionName, itemName, parentName);
@@ -501,11 +495,11 @@ namespace CslaGenerator.Controls
             while (addInheritedValuePropertyToolStripMenuItem.DropDownItems.Count > 0)
             {
                 ToolStripItem mnu = addInheritedValuePropertyToolStripMenuItem.DropDownItems[0];
-                mnu.Click -= new EventHandler(addInheritedValuePropertyToolStripMenuItem_DropDownItemClicked);
+                mnu.Click -= addInheritedValuePropertyToolStripMenuItem_DropDownItemClicked;
                 addInheritedValuePropertyToolStripMenuItem.DropDownItems.RemoveAt(0);
             }
-            this.addInheritedValuePropertyToolStripMenuItem.Enabled = false;
-            if (this.dbColumns1.SelectedIndicesCount != 1)
+            addInheritedValuePropertyToolStripMenuItem.Enabled = false;
+            if (dbColumns1.SelectedIndicesCount != 1)
                 return;
             foreach (ValueProperty prop in _currentCslaObject.InheritedValueProperties)
             {
@@ -515,21 +509,21 @@ namespace CslaGenerator.Controls
                     mnu.Text += " (ASSIGN)";
                 else
                     mnu.Text += " (UPDATE)";
-                mnu.Click += new EventHandler(addInheritedValuePropertyToolStripMenuItem_DropDownItemClicked);
+                mnu.Click += addInheritedValuePropertyToolStripMenuItem_DropDownItemClicked;
                 mnu.Checked = (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None);
                 mnu.Tag = prop.Name;
                 addInheritedValuePropertyToolStripMenuItem.DropDownItems.Add(mnu);
             }
             addInheritedValuePropertyToolStripMenuItem.Enabled = (addInheritedValuePropertyToolStripMenuItem.DropDownItems.Count > 0);
             bool enableCreates = (dbColumns1.ListColumns.SelectedIndices.Count > 0);
-            this.createToolStripMenuItem.Enabled = enableCreates;
-            this.newCriteriaToolStripMenuItem.Enabled = enableCreates;
+            createToolStripMenuItem.Enabled = enableCreates;
+            newCriteriaToolStripMenuItem.Enabled = enableCreates;
         }
 
         private void addInheritedValuePropertyToolStripMenuItem_DropDownItemClicked(object sender, EventArgs e)
         {
             string name = (string)((ToolStripMenuItem)sender).Tag;
-            foreach (IColumnInfo col in this.SelectedColumns.Values)
+            foreach (IColumnInfo col in SelectedColumns.Values)
             {
                 // use name of column to see if a property of the same name exists
                 foreach (ValueProperty valProp in _currentCslaObject.InheritedValueProperties)
@@ -547,7 +541,7 @@ namespace CslaGenerator.Controls
             if (isDBItemSelected)
             {
                 dbColumns1.SelectAll(UseBoolSoftDelete ? _currentUnit.Params.SpBoolSoftDeleteColumn : "");
-                NewObject(CslaObjectType.EditableRoot, this.dbTreeView1.TreeViewSchema.SelectedNode.Text, "");
+                NewObject(CslaObjectType.EditableRoot, dbTreeView1.TreeViewSchema.SelectedNode.Text, "");
                 AddPropertiesForSelectedColumns();
             }
         }
@@ -557,7 +551,7 @@ namespace CslaGenerator.Controls
             if (isDBItemSelected)
             {
                 dbColumns1.SelectAll(UseBoolSoftDelete ? _currentUnit.Params.SpBoolSoftDeleteColumn : "");
-                NewObject(CslaObjectType.DynamicEditableRoot, this.dbTreeView1.TreeViewSchema.SelectedNode.Text, "");
+                NewObject(CslaObjectType.DynamicEditableRoot, dbTreeView1.TreeViewSchema.SelectedNode.Text, "");
                 AddPropertiesForSelectedColumns();
             }
         }
@@ -566,6 +560,7 @@ namespace CslaGenerator.Controls
         {
             if (!isDBItemSelected)
                 return;
+
             dbColumns1.SelectAll(this, _currentUnit);
             readOnlyCollectionToolStripMenuItem_Click(sender, e);
         }
@@ -574,6 +569,7 @@ namespace CslaGenerator.Controls
         {
             if (!isDBItemSelected)
                 return;
+
             dbColumns1.SelectAll(UseBoolSoftDelete ? _currentUnit.Params.SpBoolSoftDeleteColumn : "");
             editableRootCollectionToolStripMenuItem_Click(sender, e);
         }
@@ -582,6 +578,7 @@ namespace CslaGenerator.Controls
         {
             if (!isDBItemSelected)
                 return;
+
             dbColumns1.SelectAll(UseBoolSoftDelete ? _currentUnit.Params.SpBoolSoftDeleteColumn : "");
             dynamicEditableRootCollectionToolStripMenuItem_Click(sender, e);
         }
@@ -592,7 +589,7 @@ namespace CslaGenerator.Controls
                 return;
             string colNames = string.Empty;
             List<CriteriaProperty> cols = new List<CriteriaProperty>();
-            for (int i = 0; i < this.SelectedColumns.Count; i++)
+            for (int i = 0; i < SelectedColumns.Count; i++)
             {
                 IColumnInfo info = (IColumnInfo)this.dbColumns1.ListColumns.SelectedItems[i];
                 CriteriaProperty p = new CriteriaProperty(info.ColumnName, TypeHelper.GetTypeCodeEx(info.ManagedType), info.ColumnName);
@@ -603,7 +600,6 @@ namespace CslaGenerator.Controls
             if (cols.Count == 0)
                 return;
 
-
             string name = "Criteria" + colNames;
             int num = 0;
             while (true)
@@ -611,7 +607,7 @@ namespace CslaGenerator.Controls
                 if (_currentCslaObject.CriteriaObjects.Contains(name))
                 {
                     num++;
-                    name = "Criteria" + colNames + num.ToString();
+                    name = "Criteria" + colNames + num;
                 }
                 else
                     break;
@@ -620,12 +616,11 @@ namespace CslaGenerator.Controls
             c.Name = name;
             c.Properties.AddRange(cols);
             c.SetSprocNames();
-            Design.ObjectEditorForm frm = new CslaGenerator.Design.ObjectEditorForm();
+            Design.ObjectEditorForm frm = new Design.ObjectEditorForm();
             frm.ObjectToEdit = c;
             frm.StartPosition = FormStartPosition.CenterScreen;
             if (frm.ShowDialog() == DialogResult.OK)
                 _currentCslaObject.CriteriaObjects.Add(c);
-
         }
 
         private void nameValueListToolStripMenuItem_Click(object sender, EventArgs e)
@@ -641,7 +636,6 @@ namespace CslaGenerator.Controls
             }
             if (pkColumn != null && valueColumn != null && dbColumns1.ListColumns.SelectedItems.Count == 2)
             {
-
                 NewObjectDefaults frm = NewObjectDefaults.NewNVLProperties();
 
                 if (frm.ShowDialog() == DialogResult.OK)
@@ -654,20 +648,20 @@ namespace CslaGenerator.Controls
                 }
             }
             else
-                MessageBox.Show("You must select a PK column and a non PK column in order to automatically create a name value list. If you need to create a NVL and can't meet this requirement, create a new object manually through the toolbar.", "New NVL", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(@"You must select a PK column and a non PK column in order to automatically create a name value list. If you need to create a NVL and can't meet this requirement, create a new object manually through the toolbar.", "New NVL", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         #endregion
 
-        #region " New Object creation "
+        #region New Object creation
 
-        void NewCollection(Metadata.CslaObjectType type, string name, string item)
+        private void NewCollection(CslaObjectType type, string name, string item)
         {
             NewCollection(type, name, item, String.Empty);
         }
-        void NewCollection(Metadata.CslaObjectType type, string name, string item, string parent)
-        {
 
+        private void NewCollection(CslaObjectType type, string name, string item, string parent)
+        {
             CslaObjectInfo obj = new CslaObjectInfo(_currentUnit);
             obj.ObjectType = type;
             obj.ObjectName = ParseObjectName(name);
@@ -677,7 +671,7 @@ namespace CslaGenerator.Controls
             _currentFactory.AddDefaultCriteriaAndParameters(obj);
         }
 
-        void NewNVL(string name)
+        private void NewNVL(string name)
         {
             CslaObjectInfo obj = new CslaObjectInfo(_currentUnit);
             obj.ObjectType = CslaObjectType.NameValueList;
@@ -687,7 +681,6 @@ namespace CslaGenerator.Controls
             _currentFactory.AddDefaultCriteriaAndParameters();
         }
 
-
         private string ParseObjectName(string name)
         {
             if (name != null)
@@ -696,13 +689,13 @@ namespace CslaGenerator.Controls
                 idx++;
                 if (idx > 0)
                     return name.Substring(idx);
-                else
-                    return name;
+
+                return name;
             }
             return string.Empty;
         }
 
-        void NewObject(CslaObjectType type, string name, string parent)
+        private void NewObject(CslaObjectType type, string name, string parent)
         {
             CslaObjectInfo obj = new CslaObjectInfo(_currentUnit);
             obj.ObjectType = type;
@@ -713,25 +706,22 @@ namespace CslaGenerator.Controls
             _currentCslaObject = obj;
         }
 
-
         #endregion
 
-
-
-        void AddPropertiesForSelectedColumns()
+        private void AddPropertiesForSelectedColumns()
         {
             if (_currentCslaObject == null)
                 return;
-            if (this.SelectedColumnsCount == 0)
+            if (SelectedColumnsCount == 0)
             {
-                MessageBox.Show(this, "You must first select a column to add.", "Warning");
+                MessageBox.Show(this, @"You must first select a column to add.", @"Warning");
                 return;
             }
 
             List<IColumnInfo> columns = new List<IColumnInfo>();
-            for (int i = 0; i < this.SelectedColumns.Count; i++)
+            for (int i = 0; i < SelectedColumns.Count; i++)
             {
-                columns.Add((IColumnInfo)this.dbColumns1.ListColumns.SelectedItems[i]);
+                columns.Add((IColumnInfo)dbColumns1.ListColumns.SelectedItems[i]);
             }
 
             IDataBaseObject dbObject = GetCurrentDBObject();
@@ -739,20 +729,20 @@ namespace CslaGenerator.Controls
             _currentFactory.AddProperties(_currentCslaObject, dbObject, resultSet, columns, true, false);
         }
 
-        IResultSet GetCurrentResultSet()
+        private IResultSet GetCurrentResultSet()
         {
             if (currentTreeNode == null)
                 return null;
+
             return currentTreeNode.Tag as IResultSet;
         }
 
-        IDataBaseObject GetCurrentDBObject()
+        private IDataBaseObject GetCurrentDBObject()
         {
             if (currentTreeNode.Parent.Tag != null)
                 return currentTreeNode.Parent.Tag as IDataBaseObject;
-            else
-                return GetCurrentResultSet() as IDataBaseObject;
 
+            return GetCurrentResultSet() as IDataBaseObject;
         }
 
         private void reloadToolStripMenuItem_Click(object sender, EventArgs e)
@@ -775,6 +765,4 @@ namespace CslaGenerator.Controls
             }
         }
     }
-
 }
-

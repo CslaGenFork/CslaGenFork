@@ -94,7 +94,7 @@ namespace CslaGenerator.Metadata
             "\r\n\tReadOnly=xRx (can't write)" +
             "\r\n\tWriteOnly=CxU (can't read)" +
             "\r\n\tUpdateOnly=xRU (can't create)" +
-            "\r\n\tCreateOnly=CRx (can't update)"+
+            "\r\n\tCreateOnly=CRx (can't update)" +
             "")]
         [UserFriendlyName("Data Access Behaviour")]
         public virtual DataAccessBehaviour DataAccess
@@ -217,7 +217,7 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Definition")]
-        [Description("Whether this property can have a null value. The following types aren't nullable: \"String \", \"ByteArray \", \"SmartDate \", \"DBNull \", \"Object\" and \"Empty\".")]
+        [Description("Whether this property can have a null value. The following types aren't nullable: \"ByteArray \", \"SmartDate \", \"DBNull \", \"Object\" and \"Empty\".")]
         public override bool Nullable
         {
             get { return base.Nullable; }
@@ -259,7 +259,7 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("02. Advanced")]
-        [Description("This is a description.")]
+        [Description("The attributes you want to add to this property.")]
         public virtual string[] Attributes
         {
             get { return _attributes; }

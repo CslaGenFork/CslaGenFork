@@ -1,5 +1,6 @@
 <%
-int deleteCount = 0;
+if (Info.GenerateDataPortalDelete)
+{
 foreach (Criteria c in Info.CriteriaObjects)
 {
     if (c.DeleteOptions.DataPortal)
@@ -12,7 +13,6 @@ foreach (Criteria c in Info.CriteriaObjects)
         <%
         string strGetCritParams = string.Empty;
         bool firstParam = true;
-        bool isCriteriaClassNeeded = IsCriteriaClassNeeded(Info);
         for (int i = 0; i < c.Properties.Count; i++)
         {
             if (firstParam)
@@ -174,6 +174,7 @@ foreach (Criteria c in Info.CriteriaObjects)
             <%
         }
     }
+}
 }
 %>
 

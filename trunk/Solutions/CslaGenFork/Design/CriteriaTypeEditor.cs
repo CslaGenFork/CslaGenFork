@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Drawing.Design;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
-using System.Reflection;
 using CslaGenerator.Metadata;
 using CslaGenerator.Util;
 
@@ -13,51 +12,46 @@ namespace CslaGenerator.Design
     // guess isn't used any longer
     public class CriteriaTypeEditor : UITypeEditor
     {
-        private IWindowsFormsEditorService editorService = null;
-        private ListBox lstCriteria = new ListBox();
-        private Type instance;
+        private IWindowsFormsEditorService _editorService;
+        private readonly ListBox _lstProperties = new ListBox();
+        private Type _instance;
 
         public CriteriaTypeEditor()
         {
-            lstCriteria.DisplayMember = "key";
-            lstCriteria.ValueMember = "value";
-            lstCriteria.SelectedIndexChanged += new EventHandler(lstCriteria_SelectedIndexChanged);
+            _lstProperties.DisplayMember = "key";
+            _lstProperties.ValueMember = "value";
+            _lstProperties.SelectedIndexChanged += LstCriteriaSelectedIndexChanged;
         }
 
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
-            if (provider != null)
+            _editorService = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
+            if (_editorService != null)
             {
-                editorService = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
-                if (editorService != null)
+                if (context.Instance != null)
                 {
-                    if (context.Instance != null)
+                    // CR modifying to accomodate PropertyBag
+                    Type instanceType = null;
+                    object objinfo = null;
+                    TypeHelper.GetContextInstanceObject(context, ref objinfo, ref instanceType);
+                    _instance = objinfo.GetType();
+                    var criteriaInfo = _instance.GetProperty("CriteriaObjects");
+                    //CriteriaCollection criteria = (CriteriaCollection)criteriaInfo.GetValue(context.Instance,null);
+                    var criteria = (CriteriaCollection)criteriaInfo.GetValue(objinfo, null);
+                    if (criteria != null && criteria.Count > 0)
                     {
-                        // CR modifying to accomodate PropertyBag
-                        Type instanceType = null;
-                        object objinfo = null;
-                        TypeHelper.GetContextInstanceObject(context, ref objinfo, ref instanceType);
-                        instance = objinfo.GetType();
-                        PropertyInfo criteriaInfo = instance.GetProperty("CriteriaObjects");
-                        //CriteriaCollection criteria = (CriteriaCollection)criteriaInfo.GetValue(context.Instance,null);
-                        CriteriaCollection criteria = (CriteriaCollection)criteriaInfo.GetValue(objinfo,null);
-                        if (criteria != null && criteria.Count > 0)
+                        _lstProperties.Items.Clear();
+                        for (int i = 0; i < criteria.Count; i++)
                         {
-                            lstCriteria.Items.Clear();
-                            for (int i = 0; i < criteria.Count; i++)
-                            {
-                                lstCriteria.Items.Add(new DictionaryEntry(criteria[i].Name,criteria[i]));
-                            }
-                            editorService.DropDownControl(lstCriteria);
-                            if (lstCriteria.SelectedItem != null)
-                            {
-                                return ((DictionaryEntry)lstCriteria.SelectedItem).Value;
-                            }
-                            else
-                            {
-                                return new Criteria();
-                            }
+                            _lstProperties.Items.Add(new DictionaryEntry(criteria[i].Name, criteria[i]));
                         }
+                        _editorService.DropDownControl(_lstProperties);
+                        if (_lstProperties.SelectedItem != null)
+                        {
+                            return ((DictionaryEntry)_lstProperties.SelectedItem).Value;
+                        }
+
+                        return new Criteria();
                     }
                 }
             }
@@ -65,21 +59,22 @@ namespace CslaGenerator.Design
             return null;
         }
 
-        private void lstCriteria_SelectedIndexChanged(object sender, EventArgs e)
+        private void LstCriteriaSelectedIndexChanged(object sender, EventArgs e)
         {
-            if (editorService != null)
+            if (_editorService != null)
             {
-                editorService.CloseDropDown();
+                _editorService.CloseDropDown();
             }
         }
 
         public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
         {
-            if (context != null && context.Instance != null)
+            if (context.Instance != null)
             {
                 return UITypeEditorEditStyle.DropDown;
             }
-            else { return base.GetEditStyle(context); }
+
+            return base.GetEditStyle(context);
         }
     }
 }

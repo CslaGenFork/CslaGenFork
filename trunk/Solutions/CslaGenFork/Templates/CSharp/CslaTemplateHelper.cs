@@ -183,9 +183,14 @@ namespace CslaGenerator.Util
             if (nullable)
             {
                 if (TypeHelper.IsNullableType(prop.PropertyType))
-                    statement += string.Format("!dr.IsDBNull(\"{0}\") ? new {1}(", prop.ParameterName, GetDataType(prop));
+                    statement += string.Format("!dr.IsDBNull(\"{0}\") ? new {1}(({2}) ",
+                        prop.ParameterName,
+                        GetDataType(prop),
+                        GetDataType(prop.PropertyType));
                 else
-                    statement += string.Format("!dr.IsDBNull(\"{0}\") ? ", prop.ParameterName);
+                    statement += string.Format("!dr.IsDBNull(\"{0}\") ? ({1}) ",
+                        prop.ParameterName,
+                        GetDataType(prop));
             }
             statement += "dr.";
 
@@ -300,7 +305,8 @@ namespace CslaGenerator.Util
 
         protected internal string GetReaderMethod(DbType dataType, Property prop)
         {
-            if (prop.Nullable && TypeHelper.IsNullableType(prop.PropertyType))
+            if (prop.Nullable && (TypeHelper.IsNullableType(prop.PropertyType) ||
+                prop.PropertyType == TypeCodeEx.String))
                 return "GetValue";
 
             return GetReaderMethod(dataType, prop.PropertyType);

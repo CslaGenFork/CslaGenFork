@@ -197,7 +197,7 @@ using Csla;
         }
         if (CurrentUnit.GenerationParams.UseChildDataPortal)
         {
-            %>base.DataPortal_Update();
+            %>base.Child_Update();
 <%
         }
         else
@@ -226,14 +226,6 @@ using Csla;
 %>
             }
         }
-
-        /*/// <summary>
-        /// Not implemented.
-        /// </summary>
-        /// <param name="crit">The delete criteria.</param>
-        protected override void DataPortal_Delete(object crit)
-        {
-        }*/
 
         #endregion
 <!-- #include file="Events.inc" -->

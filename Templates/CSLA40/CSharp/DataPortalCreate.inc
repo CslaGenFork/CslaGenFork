@@ -22,6 +22,10 @@ foreach (Criteria c in Info.CriteriaObjects)
             %>[Csla.RunLocal]
             <%
         }
+        else
+        {
+            Response.Write("\r\n");
+        }
         if (c.Properties.Count > 1)
         {
             %>
@@ -70,6 +74,12 @@ foreach (Criteria c in Info.CriteriaObjects)
             <%= GetFieldLoaderStatement(Info, prop, prop.DefaultValue) %>;
             <%
             }
+        }
+        else if (prop.Nullable && prop.PropertyType == TypeCodeEx.String)
+        {
+            %>
+            <%= GetFieldLoaderStatement(Info, prop, "null") %>;
+            <%
         }
     }
     %>

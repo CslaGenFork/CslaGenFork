@@ -1,10 +1,8 @@
 using System;
 using System.ComponentModel;
 using System.Drawing.Design;
-using System.Reflection;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
-using CslaGenerator.Metadata;
 
 namespace CslaGenerator.Design
 {
@@ -13,7 +11,7 @@ namespace CslaGenerator.Design
     /// </summary>
     public class XmlCommentEditor : UITypeEditor
     {
-        private IWindowsFormsEditorService editorService = null;
+        private IWindowsFormsEditorService _editorService;
 
         public XmlCommentEditor()
         {
@@ -21,23 +19,17 @@ namespace CslaGenerator.Design
 
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
-            if (provider != null)
+            _editorService = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
+            if (_editorService != null)
             {
-                editorService = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
-                if (editorService != null)
+                var frmEdit = new XmlCommentEditorForm {XmlComment = (string) value};
+                var result = _editorService.ShowDialog(frmEdit);
+                if (result == DialogResult.OK)
                 {
-                    XmlCommentEditorForm frmEdit = new XmlCommentEditorForm();
-                    frmEdit.XmlComment = (string)value;
-                    DialogResult result = editorService.ShowDialog(frmEdit);
-                    if (result == DialogResult.OK)
-                    {
-                        return frmEdit.XmlComment;
-                    }
-                    else
-                    {
-                        return value;
-                    }
+                    return frmEdit.XmlComment;
                 }
+
+                return value;
             }
 
             return value;

@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Drawing.Design;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
-using System.Reflection;
 using CslaGenerator.Metadata;
 using CslaGenerator.Util;
 
@@ -15,95 +14,93 @@ namespace CslaGenerator.Design
     /// </summary>
     public class FMPropertyCollectionEditor : UITypeEditor
     {
-        private IWindowsFormsEditorService editorService = null;
-        private ListBox lstProperties;
+        private IWindowsFormsEditorService _editorService;
+        private readonly ListBox _lstProperties;
 
         public FMPropertyCollectionEditor()
         {
-            lstProperties = new ListBox();
-            lstProperties.DoubleClick += lstProperties_DoubleClick;
-            lstProperties.DisplayMember = "key";
-            lstProperties.ValueMember = "value";
-            lstProperties.SelectionMode = SelectionMode.MultiSimple;
-        }
-
-        void lstProperties_DoubleClick(object sender, EventArgs e)
-        {
-            editorService.CloseDropDown();
+            _lstProperties = new ListBox();
+            _lstProperties.DoubleClick += LstPropertiesDoubleClick;
+            _lstProperties.DisplayMember = "key";
+            _lstProperties.ValueMember = "value";
+            _lstProperties.SelectionMode = SelectionMode.MultiSimple;
         }
 
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
-            if (provider != null)
+            _editorService = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
+            if (_editorService != null)
             {
-                editorService = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
-                if (editorService != null)
+                if (context.Instance != null)
                 {
-                    if (context.Instance != null)
+                    // CR modifying to accomodate PropertyBag
+                    Type instanceType = null;
+                    object objinfo = null;
+                    TypeHelper.GetContextInstanceObject(context, ref objinfo, ref instanceType);
+                    var propInfo = instanceType.GetProperty("FindMethodsParameters");
+                    var propColl = (PropertyCollection)propInfo.GetValue(objinfo, null);
+
+                    var obj = (CslaObjectInfo)objinfo;
+                    var itemType = obj.ItemType;
+                    if (!string.IsNullOrEmpty(itemType))
                     {
-                        // CR modifying to accomodate PropertyBag
-                        Type instanceType = null;
-                        object objinfo = null;
-                        TypeHelper.GetContextInstanceObject(context, ref objinfo, ref instanceType);
-                        PropertyInfo propInfo = instanceType.GetProperty("FindMethodsParameters");
-                        PropertyCollection propColl = (PropertyCollection) propInfo.GetValue(objinfo, null);
-
-                        CslaObjectInfo obj = (CslaObjectInfo) objinfo;
-                        string itemType = obj.ItemType;
-                        if (itemType != null && itemType != "")
+                        var info = GeneratorController.Current.CurrentUnit.CslaObjects.Find(itemType);
+                        if (info != null)
                         {
-                            CslaObjectInfo info = GeneratorController.Current.CurrentUnit.CslaObjects.Find(itemType);
-                            if (info != null)
+                            var valueProps = info.ValueProperties;
+                            if (valueProps.Count > 0)
                             {
-                                ValuePropertyCollection valueProps = info.ValueProperties;
-                                if (valueProps.Count > 0)
+                                _lstProperties.Items.Clear();
+                                _lstProperties.Items.Add(new DictionaryEntry("(None)", new ValueProperty()));
+                                for (int i = 0; i < valueProps.Count; i++)
                                 {
-                                    lstProperties.Items.Clear();
-                                    lstProperties.Items.Add(new DictionaryEntry("(None)",new ValueProperty()));
-                                    for (int i = 0; i < valueProps.Count; i++)
-                                    {
-                                        lstProperties.Items.Add(new DictionaryEntry(valueProps[i].Name,valueProps[i]));
-                                    }
-                                    lstProperties.Sorted = true;
-
-                                    foreach (var parentProp in propColl)
-                                    {
-                                        lstProperties.SelectedItems.Add(new DictionaryEntry(parentProp.Name, parentProp));
-                                    }
-
-                                    lstProperties.SelectedIndexChanged += lstProperties_SelectedIndexChanged;
-                                    editorService.DropDownControl(lstProperties);
-                                    lstProperties.SelectedIndexChanged -= lstProperties_SelectedIndexChanged;
-
-                                    if (lstProperties.SelectedItems != null && lstProperties.SelectedItems.Count > 0)
-                                    {
-                                        PropertyCollection prop = new PropertyCollection();
-                                        foreach (object item in lstProperties.SelectedItems)
-                                        {
-                                            prop.Add((Property)((DictionaryEntry)item).Value);
-                                        }
-                                        return prop;
-                                    }
-
-                                    return new PropertyCollection();
+                                    _lstProperties.Items.Add(new DictionaryEntry(valueProps[i].Name, valueProps[i]));
                                 }
+                                _lstProperties.Sorted = true;
+
+                                foreach (var parentProp in propColl)
+                                {
+                                    _lstProperties.SelectedItems.Add(new DictionaryEntry(parentProp.Name, parentProp));
+                                }
+
+                                _lstProperties.SelectedIndexChanged += LstPropertiesSelectedIndexChanged;
+                                _editorService.DropDownControl(_lstProperties);
+                                _lstProperties.SelectedIndexChanged -= LstPropertiesSelectedIndexChanged;
+
+                                if (_lstProperties.SelectedItems.Count > 0)
+                                {
+                                    var prop = new PropertyCollection();
+                                    foreach (var item in _lstProperties.SelectedItems)
+                                    {
+                                        prop.Add((Property)((DictionaryEntry)item).Value);
+                                    }
+                                    return prop;
+                                }
+
+                                return new PropertyCollection();
                             }
                         }
                     }
                 }
             }
+
             return value;
         }
 
-        void lstProperties_SelectedIndexChanged(object sender, EventArgs e)
+        void LstPropertiesSelectedIndexChanged(object sender, EventArgs e)
         {
-            if (lstProperties.SelectedIndex == 0)
-                lstProperties.SelectedIndices.Clear();
+            if (_lstProperties.SelectedIndex == 0)
+                _lstProperties.SelectedIndices.Clear();
         }
 
         public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
         {
             return UITypeEditorEditStyle.DropDown;
+        }
+
+        void LstPropertiesDoubleClick(object sender, EventArgs e)
+        {
+            _editorService.CloseDropDown();
         }
     }
 }

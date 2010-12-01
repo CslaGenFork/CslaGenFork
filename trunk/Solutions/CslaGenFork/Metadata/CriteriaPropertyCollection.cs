@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
+
 namespace CslaGenerator.Metadata
 {
     [XmlInclude(typeof(Property))]
@@ -26,7 +27,7 @@ namespace CslaGenerator.Metadata
             return ConvertType((Property)p);
         }
 
-        CriteriaProperty ConvertType(Property p)
+        private static CriteriaProperty ConvertType(Property p)
         {
             if (p is CriteriaProperty)
                 return (CriteriaProperty)p;
@@ -35,9 +36,26 @@ namespace CslaGenerator.Metadata
             newP.ParameterName = p.ParameterName;
             newP.PropertyType = p.PropertyType;
             newP.ReadOnly = p.ReadOnly;
+            newP.Nullable = p.Nullable;
             newP.Remarks = p.Remarks;
             newP.Summary = p.Summary;
             return newP;
+        }
+
+        internal static CriteriaPropertyCollection Clone(CriteriaPropertyCollection masterCritProps)
+        {
+            var newCritProps = new CriteriaPropertyCollection();
+            foreach (var critProp in masterCritProps)
+            {
+                var newCritProp = new CriteriaProperty();
+                newCritProp.DbBindColumn = (DbBindColumn)critProp.DbBindColumn.Clone();
+                ((Property)newCritProp).Clone(critProp);
+                newCritProp.ParameterValue = critProp.ParameterValue;
+
+                newCritProps.Add(newCritProp);
+            }
+
+            return newCritProps;
         }
     }
 }

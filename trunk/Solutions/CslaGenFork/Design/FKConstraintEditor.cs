@@ -1,98 +1,89 @@
 using System;
-using System.Collections;
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
-using System.Reflection;
 using CslaGenerator.Metadata;
 using CslaGenerator.Util;
-using System.Drawing;
 
 namespace CslaGenerator.Design
 {
     public class FKConstraintEditor : UITypeEditor
     {
-        private IWindowsFormsEditorService editorService = null;
-        private ListBox lstProperties;
+        private IWindowsFormsEditorService _editorService;
+        private readonly ListBox _lstProperties;
 
         public FKConstraintEditor()
         {
-            lstProperties = new ListBox();
-            lstProperties.DoubleClick += lstProperties_DoubleClick;
-            lstProperties.SelectionMode = SelectionMode.One;
-        }
-
-        void lstProperties_DoubleClick(object sender, EventArgs e)
-        {
-            editorService.CloseDropDown();
+            _lstProperties = new ListBox();
+            _lstProperties.DoubleClick += LstPropertiesDoubleClick;
+            _lstProperties.SelectionMode = SelectionMode.One;
         }
 
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
-            if (provider != null)
+            _editorService = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
+            if (_editorService != null)
             {
-                editorService = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
-                if (editorService != null)
+                if (context.Instance != null)
                 {
-                    if (context.Instance != null)
+                    // CR modifying to accomodate PropertyBag
+                    Type instanceType = null;
+                    object objinfo = null;
+                    TypeHelper.GetValuePropertyContextInstanceObject(context, ref objinfo, ref instanceType);
+                    var obj = (ValueProperty)objinfo;
+                    _lstProperties.Items.Clear();
+                    _lstProperties.Items.Add("(None)");
+                    if (obj.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.Default)
                     {
-                        // CR modifying to accomodate PropertyBag
-                        Type instanceType = null;
-                        object objinfo = null;
-                        TypeHelper.GetValuePropertyContextInstanceObject(context, ref objinfo, ref instanceType);
-                        ValueProperty obj = (ValueProperty) objinfo;
-                        lstProperties.Items.Clear();
-                        if (obj.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.Default)
+                        // Warehouse.FK_Models_Brands - FK=Models.BrandID - PK = Brands.BrandID
+                        // GeneralStore.FK_Products_ProdFamilies
+                        //      FK=Products.ProdFamilyId
+                        //      PK=ProdFamily.ProdFamilyId
+                        //
+                        foreach (var constraint in GeneratorController.Catalog.ForeignKeyConstraints)
                         {
-                            lstProperties.Items.Add("(None)");
+                            // get constraints with table match for PK or FK
+                            if (obj.DbBindColumn.ObjectName == constraint.PKTable.ObjectName ||
+                                obj.DbBindColumn.ObjectName == constraint.ConstraintTable.ObjectName)
 
-                            // Warehouse.FK_Models_Brands - FK=Models.BrandID - PK = Brands.BrandID
-                            // GeneralStore.FK_Products_ProdFamilies
-                            //      FK=Products.ProdFamilyId
-                            //      PK=ProdFamily.ProdFamilyId
-                            //
-                            foreach (var constraint in GeneratorController.Catalog.ForeignKeyConstraints)
+                            // get constraints with table match for Constraint FK
+                            //if (obj.DbBindColumn.ObjectName == constraint.ConstraintTable.ObjectName)
                             {
-                                // get constraints with table match for PK or FK
-                                if (obj.DbBindColumn.ObjectName == constraint.PKTable.ObjectName ||
-                                    obj.DbBindColumn.ObjectName == constraint.ConstraintTable.ObjectName)
-
-                                    // get constraints with table match for Constraint FK
-                                    //if (obj.DbBindColumn.ObjectName == constraint.ConstraintTable.ObjectName)
-                                {
-                                    lstProperties.Items.Add(constraint.ConstraintName);
-                                }
+                                _lstProperties.Items.Add(constraint.ConstraintName);
                             }
-                            lstProperties.Sorted = true;
-
-                            if (lstProperties.Items.Contains(obj.FKConstraint))
-                                lstProperties.SelectedItem = obj.FKConstraint;
-                            else
-                                lstProperties.SelectedItem = "(None)";
-
-                            editorService.DropDownControl(lstProperties);
-                            if (lstProperties.SelectedIndex < 0 || lstProperties.SelectedItem.ToString() == "(None)")
-                                return string.Empty;
-
-                            return lstProperties.SelectedItem.ToString();
                         }
+                        _lstProperties.Sorted = true;
+
+                        if (_lstProperties.Items.Contains(obj.FKConstraint))
+                            _lstProperties.SelectedItem = obj.FKConstraint;
                         else
-                        {
-                            lstProperties.Items.Add("(Illegal)");
-                            editorService.DropDownControl(lstProperties);
+                            _lstProperties.SelectedItem = "(None)";
+
+                        _editorService.DropDownControl(_lstProperties);
+                        if (_lstProperties.SelectedIndex < 0 || _lstProperties.SelectedItem.ToString() == "(None)")
                             return string.Empty;
-                        }
+
+                        return _lstProperties.SelectedItem.ToString();
                     }
 
+                    _lstProperties.Items.Add("(Illegal)");
+                    _editorService.DropDownControl(_lstProperties);
+                    return string.Empty;
                 }
             }
+
             return value;
         }
 
         public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
         {
             return UITypeEditorEditStyle.DropDown;
+        }
+
+        void LstPropertiesDoubleClick(object sender, EventArgs e)
+        {
+            _editorService.CloseDropDown();
         }
     }
 }

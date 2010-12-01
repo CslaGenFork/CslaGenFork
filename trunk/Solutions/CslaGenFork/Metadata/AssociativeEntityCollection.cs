@@ -38,15 +38,13 @@ namespace CslaGenerator.Metadata
 
                 var mainCriteriaInfo = typeof(CslaObjectInfo).GetProperty("CriteriaObjects");
                 var mainCriteriaObjects = mainCriteriaInfo.GetValue(mainObject, null);
-                var mainParamCollection = new ParameterCollection();
                 foreach (var crit in (CriteriaCollection)mainCriteriaObjects)
                 {
                     foreach (var prop in crit.Properties)
                     {
-                        mainParamCollection.Add(new Parameter(crit, prop));
+                        entity.MainLoadProperties.Add(CriteriaProperty.Clone(prop));
                     }
                 }
-                entity.MainLoadParameters = mainParamCollection;
 
                 Add(entity);
             }
@@ -75,32 +73,29 @@ namespace CslaGenerator.Metadata
 
                     var mainCriteriaInfo = typeof(CslaObjectInfo).GetProperty("CriteriaObjects");
                     var mainCriteriaObjects = mainCriteriaInfo.GetValue(mainObject, null);
-                    var mainParamCollection = new ParameterCollection();
                     foreach (var crit in (CriteriaCollection)mainCriteriaObjects)
                     {
                         foreach (var prop in crit.Properties)
                         {
-                            mainParamCollection.Add(new Parameter(crit, prop));
+                            entity.MainLoadProperties.Add(CriteriaProperty.Clone(prop));
                         }
                     }
-                    entity.MainLoadParameters = mainParamCollection;
 
                     entity.SecondaryObject = secondaryObject.ObjectName;
                     entity.SecondaryPropertyName = mainObject.ObjectName + entity.Parent.Params.ORBChildPropertySuffix;
                     entity.SecondaryItemTypeName = secondaryObject.ObjectName + mainObject.ObjectName;
-                    entity.SecondaryCollectionTypeName = entity.SecondaryItemTypeName + entity.Parent.Params.ORBCollectionSuffix;
+                    entity.SecondaryCollectionTypeName = entity.SecondaryItemTypeName +
+                                                         entity.Parent.Params.ORBCollectionSuffix;
 
                     var secondaryCriteriaInfo = typeof(CslaObjectInfo).GetProperty("CriteriaObjects");
                     var secondaryCriteriaObjects = secondaryCriteriaInfo.GetValue(secondaryObject, null);
-                    var secondaryParamCollection = new ParameterCollection();
                     foreach (var crit in (CriteriaCollection)secondaryCriteriaObjects)
                     {
                         foreach (var prop in crit.Properties)
                         {
-                            secondaryParamCollection.Add(new Parameter(crit, prop));
+                            entity.SecondaryLoadProperties.Add(CriteriaProperty.Clone(prop));
                         }
                     }
-                    entity.SecondaryLoadParameters = secondaryParamCollection;
 
                     Add(entity);
                 }
@@ -116,5 +111,4 @@ namespace CslaGenerator.Metadata
         }
 
     }
-
 }

@@ -2,12 +2,15 @@
 if (!Info.UseCustomLoading)
 {
     bool selfLoad1 = GetSelfLoad(Info);
-    if (selfLoad1 && Info.CriteriaObjects.Count == 0)
-    {
-        Errors.Append("Object " + Info.ObjectName + " missing criteria. To \"SelfLoad\" a collection, you need a criteria at the collection level." + Environment.NewLine);
-        return;
-    }
     bool first2 = true;
+
+    bool isSwitchable = false;
+    CslaObjectInfo childInfo = FindChildInfo(Info, Info.ItemType);
+    if (childInfo.ObjectType == CslaObjectType.EditableSwitchable)
+    {
+        isSwitchable = true;
+    }
+
     if (Info.CriteriaObjects.Count > 0)
     {
         foreach (Criteria c in Info.CriteriaObjects)
@@ -104,6 +107,40 @@ if (!Info.UseCustomLoading)
             %>
                 }
             }
+            <%
+                if (Info.ObjectType == CslaObjectType.EditableRootCollection)
+                {
+                    foreach (ChildProperty childProp in childInfo.GetCollectionChildProperties())
+                    {
+                        if (childProp.LoadingScheme == LoadingScheme.SelfLoad && !childProp.LazyLoad)
+                        {
+                            string invokeParam = string.Empty;
+                            foreach (Parameter param in childProp.LoadParameters)
+                            {
+                                bool first1 = true;
+                                foreach (CriteriaProperty crit in param.Criteria.Properties)
+                                {
+                                    if (first1)
+                                    {
+                                        first1 = false;
+                                    }
+                                    else
+                                    {
+                                        invokeParam += ", ";
+                                    }
+                                    invokeParam += FormatPascal(crit.Name);
+                                }
+                            }
+            %>
+            foreach (var <%= FormatCamel(childInfo.ObjectName) %> in this)
+            {
+                <%= FormatCamel(childInfo.ObjectName) %>.FetchChildren(<%= FormatCamel(childInfo.ObjectName) %>.<%= invokeParam %>);
+            }
+        <%
+                        }
+                    }
+                }
+                %>
         }
         <%
             }
@@ -145,12 +182,6 @@ if (!Info.UseCustomLoading)
         }
     }
 
-    bool isSwitchable = false;
-    CslaObjectInfo childInfo = FindChildInfo(Info, Info.ItemType);
-    if (childInfo.ObjectType == CslaObjectType.EditableSwitchable)
-    {
-        isSwitchable = true;
-    }
     if (!Info.DataSetLoadingScheme)
     {
         if (!first2)

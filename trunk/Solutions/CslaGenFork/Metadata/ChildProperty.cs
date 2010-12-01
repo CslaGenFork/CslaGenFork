@@ -14,6 +14,9 @@ namespace CslaGenerator.Metadata
     [Serializable]
     public class ChildProperty : Property
     {
+
+        #region Fields
+
         private string _friendlyName = String.Empty;
         private LoadingScheme _loadingScheme = LoadingScheme.ParentLoad;
         private PropertyDeclaration _declarationMode;
@@ -23,6 +26,10 @@ namespace CslaGenerator.Metadata
         private ParameterCollection _loadParameters = new ParameterCollection();
         private PropertyAccess _access = PropertyAccess.IsPublic;
         private PropertyAccess _propertyInfoAccess = PropertyAccess.IsPublic;
+
+        #endregion
+
+        #region 01. Definition
 
         [Category("01. Definition")]
         [Description("The property name.")]
@@ -81,23 +88,16 @@ namespace CslaGenerator.Metadata
 
         [Category("01. Definition")]
         [Description("Whether this property can have a null value. This is ignored for child collections.\r\n" +
-            "The following types aren't nullable: \"String \", \"ByteArray \", \"SmartDate \", \"DBNull \", \"Object\" and \"Empty\".")]
+            "The following types aren't nullable: \"ByteArray \", \"SmartDate \", \"DBNull \", \"Object\" and \"Empty\".")]
         public override bool Nullable
         {
             get { return base.Nullable; }
             set { base.Nullable = value; }
         }
 
-        [Category("05. Options")]
-        [Editor(typeof(ParameterCollectionEditor), typeof(UITypeEditor))]
-        [TypeConverter(typeof(ParameterCollectionConverter))]
-        [Description("The parent properties that are used to load the child object.")]
-        [UserFriendlyName("Load Parameters")]
-        public ParameterCollection LoadParameters
-        {
-            get { return _loadParameters; }
-            set { _loadParameters = value; }
-        }
+        #endregion
+
+        #region 05. Options
 
         [Category("05. Options")]
         [Description("The Loading Scheme for the child." +
@@ -109,6 +109,17 @@ namespace CslaGenerator.Metadata
         {
             get { return _loadingScheme; }
             set { _loadingScheme = value; }
+        }
+
+        [Category("05. Options")]
+        [Editor(typeof(ParameterCollectionEditor), typeof(UITypeEditor))]
+        [TypeConverter(typeof(ParameterCollectionConverter))]
+        [Description("The parent properties that are used to load the child object.")]
+        [UserFriendlyName("Load Parameters")]
+        public ParameterCollection LoadParameters
+        {
+            get { return _loadParameters; }
+            set { _loadParameters = value; }
         }
 
         [Category("05. Options")]
@@ -147,6 +158,8 @@ namespace CslaGenerator.Metadata
             get { return _undoable; }
             set { _undoable = value; }
         }
+
+        #endregion
 
         // Hide PropertyType
         [Browsable(false)]

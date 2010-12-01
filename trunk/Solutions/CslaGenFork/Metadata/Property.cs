@@ -30,7 +30,7 @@ namespace CslaGenerator.Metadata
 
         public Property(Property prop)
         {
-            this.Clone(prop);
+            Clone(prop);
         }
 
         public Property(string name, TypeCodeEx type)
@@ -86,7 +86,7 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Definition")]
-        [Description("Whether this property can have a null value. The following types aren't nullable: \"String \", \"ByteArray \", \"SmartDate \", \"DBNull \", \"Object\" and \"Empty\".")]
+        [Description("Whether this property can have a null value. The following types aren't nullable: \"ByteArray \", \"SmartDate \", \"DBNull \", \"Object\" and \"Empty\".")]
         public virtual bool Nullable
         {
             get { return _nullable; }
@@ -126,8 +126,8 @@ namespace CslaGenerator.Metadata
 
             if (CaseInsensitiveComparer.Default.Compare(_name, ((Property)item).Name) == 0)
                 return true;
-            else
-                return false;
+
+            return false;
         }
 
         public override int GetHashCode()
@@ -156,12 +156,13 @@ namespace CslaGenerator.Metadata
 
         public virtual void Clone(Property prop)
         {
-            this.Name=prop.Name;
-            this.ParameterName=prop.ParameterName;
-            this.PropertyType=prop.PropertyType;
-            this.ReadOnly=prop.ReadOnly;
-            this.Remarks=prop.Remarks;
-            this.Summary=prop.Summary;
+            Name = prop.Name;
+            ParameterName = prop.ParameterName;
+            PropertyType = prop.PropertyType;
+            ReadOnly = prop.ReadOnly;
+            Nullable = prop.Nullable;
+            Remarks = prop.Remarks;
+            Summary = prop.Summary;
         }
     }
 }

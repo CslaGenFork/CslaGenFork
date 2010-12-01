@@ -10,23 +10,6 @@ else if (parentInfo.ObjectType == CslaObjectType.EditableRootCollection)
 else if (parentInfo.ObjectType == CslaObjectType.DynamicEditableRootCollection)
     parentType = "";
 
-// get the Delete Stored Procedure name from criteria
-string criteriaDeleteProcedureName = string.Empty;
-int deleteCount = 0;
-foreach (Criteria c in Info.CriteriaObjects)
-{
-    if (c.DeleteOptions.DataPortal)
-    {
-        deleteCount++;
-        //This is kind of weak, because this will generate only for the first delete criteria,
-        //but it's unlikely anyone will have more than one delete criteria.
-        if (deleteCount == 1)
-        {
-            criteriaDeleteProcedureName = c.DeleteOptions.ProcedureName;
-        }
-    }
-}
-
 if (Info.GenerateDataPortalInsert)
 {
     %>
@@ -262,8 +245,34 @@ if (Info.GenerateDataPortalInsert || Info.GenerateDataPortalUpdate)
     <%
 }
 
-if (deleteCount == 1)
+if (Info.GenerateDataPortalDelete)
 {
+    // get the Delete Stored Procedure name from criteria
+    string criteriaDeleteProcedureName = string.Empty;
+    // This is kind of weak, because this will fetch the procedure name for the first delete criteria found,
+    // but it's unlikely anyone will have more than one delete criteria.
+    foreach (Criteria c in Info.CriteriaObjects)
+    {
+        // Try first the sproc criteria with status enabled for sprocs
+        if (c.DeleteOptions.Procedure)
+        {
+            criteriaDeleteProcedureName = c.DeleteOptions.ProcedureName;
+            break;
+        }
+    }
+    if (criteriaDeleteProcedureName == string.Empty)
+    {
+        foreach (Criteria c in Info.CriteriaObjects)
+        {
+            // Try now just the procedure name disregarding the status (sprocs generation must be fixed)
+            if (c.DeleteOptions.ProcedureName != string.Empty)
+            {
+                criteriaDeleteProcedureName = c.DeleteOptions.ProcedureName;
+                break;
+            }
+        }
+    }
+
     Response.Write(Environment.NewLine);
     %>
         /// <summary>

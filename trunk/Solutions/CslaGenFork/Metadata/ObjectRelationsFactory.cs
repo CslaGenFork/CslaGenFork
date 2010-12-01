@@ -166,7 +166,7 @@ namespace CslaGenerator.Metadata
                 child = FacadeObjectInfo.ChildCollectionProperties.Find(entity.PropertyName);
             else
             {
-                child = new ChildProperty {Name = entity.PropertyName};
+                child = new ChildProperty { Name = entity.PropertyName };
                 FacadeObjectInfo.ChildCollectionProperties.Add(child);
 
                 // display message to the user
@@ -179,11 +179,12 @@ namespace CslaGenerator.Metadata
             child.ParameterName = entity.PropertyName;
             child.TypeName = entity.CollectionTypeName;
             child.DeclarationMode = PropertyDeclaration.Managed;
-            child.ReadOnly = true;
+            child.ReadOnly = FacadeObjectInfo.ObjectType == CslaObjectType.ReadOnlyObject;
             child.Nullable = false;
             child.LazyLoad = entity.LazyLoad;
             child.LoadingScheme = entity.LoadingScheme;
-            child.LoadParameters = entity.LoadParameters;
+            // LoadParameters is filled by BuildCollectionCriteriaGet
+            //child.LoadParameters = entity.LoadParameters;
             child.Access = PropertyAccess.IsPublic;
             child.Undoable = true;
 
@@ -205,13 +206,12 @@ namespace CslaGenerator.Metadata
             }
 
             // populate collection
-//            coll.LazyLoad = entity.LazyLoad;
             coll.ParentType = entity.ObjectName;
             coll.ParentProperties = BuildParentProperties(coll);
             coll.ItemType = entity.ItemTypeName;
 
             // handle collection criteria
-            BuildCollectionCriteriaGet(coll, FacadeRootCriteriaProperties);
+            BuildCollectionCriteriaGet(coll, entity, child);
 
             /* handle item */
             var item = _cslaObjects.Find(entity.ItemTypeName);
@@ -231,7 +231,6 @@ namespace CslaGenerator.Metadata
             }
 
             // populate collection item
-//            item.LazyLoad = entity.LazyLoad;
             if (!isMultipleToMultiple)
                 item.ParentInsertOnly = true;
             else
@@ -248,8 +247,20 @@ namespace CslaGenerator.Metadata
                 suffix = _entity.Parent.Params.ORBSingleSPSuffix;
                 objectName = _entity.MainItemTypeName;
             }
-            item.InsertProcedureName = _entity.Parent.Params.GetAddProcName(objectName) + suffix;
-            item.UpdateProcedureName = _entity.Parent.Params.GetUpdateProcName(objectName) + suffix;
+            if (item.ObjectType != CslaObjectType.ReadOnlyObject)
+            {
+                if (item.GenerateDataPortalInsert)
+                    item.InsertProcedureName = _entity.Parent.Params.GetAddProcName(objectName) + suffix;
+                if (item.GenerateDataPortalUpdate)
+                    item.UpdateProcedureName = _entity.Parent.Params.GetUpdateProcName(objectName) + suffix;
+            }
+            else
+            {
+                item.InsertProcedureName = string.Empty;
+                item.UpdateProcedureName = string.Empty;
+            }
+
+            // prepare for deprecate
             item.DeleteProcedureName = string.Empty;
 
             // handle collection item CriteriaNew
@@ -268,14 +279,14 @@ namespace CslaGenerator.Metadata
             // handle collection item Criteria
             if (!isMultipleToMultiple)
             {
-                BuildCollectionItemCriteria(item, null, null, false);
+                BuildCollectionItemCriteriaDelete(item, null, null, false);
             }
             else
             {
                 if (FacadeObjectInfo == MainObjectInfo)
-                    BuildCollectionItemCriteria(item, MainObjectInfo, SecondaryObjectInfo, true);
+                    BuildCollectionItemCriteriaDelete(item, MainObjectInfo, SecondaryObjectInfo, true);
                 else
-                    BuildCollectionItemCriteria(item, SecondaryObjectInfo, MainObjectInfo, true);
+                    BuildCollectionItemCriteriaDelete(item, SecondaryObjectInfo, MainObjectInfo, true);
             }
         }
 
@@ -283,13 +294,14 @@ namespace CslaGenerator.Metadata
 
         #region Collection CriteriaGet
 
-        private void BuildCollectionCriteriaGet(CslaObjectInfo info, CriteriaPropertyCollection rootCriteriaProperties)
+        private void BuildCollectionCriteriaGet(CslaObjectInfo info, AssociativeEntity.EntityFacade entity, ChildProperty child)
         {
-            var lazyLoad = CslaTemplateHelper.GetLazyLoad(info);
+            const string critName = "CriteriaGet";
 
-            if (!lazyLoad)
+            var selfLoad = CslaTemplateHelper.GetSelfLoad(info);
+            if (!selfLoad)
             {
-                DeleteDefaultCollectionCriteria(info);
+                DeleteDefaultCollectionCriteria(info, critName);
                 return;
             }
 
@@ -300,7 +312,7 @@ namespace CslaGenerator.Metadata
             Criteria criteria = null;
             foreach (var crit in collCriteria)
             {
-                if (CheckAndSetCollectionCriteriaGet(crit, info))
+                if (CheckAndSetCollectionCriteriaGet(crit, info, critName))
                 {
                     criteria = crit;
                     break;
@@ -310,40 +322,44 @@ namespace CslaGenerator.Metadata
             if (criteria == null)
             {
                 criteria = new Criteria();
-                criteria.Name = "CriteriaGet";
-                SetCollectionCriteriaGet(criteria, info);
+                criteria.Name = critName;
+                SetCollectionCriteriaGet(criteria, info, critName);
                 info.CriteriaObjects.Add(criteria);
 
                 // display message to the user
                 sb = new StringBuilder();
-                sb.AppendFormat("Successfully added criteria CriteriaGet to {0} collection object.", info.ObjectName);
+                sb.AppendFormat("Successfully added criteria {0} to {1} collection object.", critName, info.ObjectName);
                 OutputWindow.Current.AddOutputInfo(sb.ToString());
             }
 
-            if (criteria.Name != "CriteriaGet")
+            if (criteria.Name != critName)
                 return;
 
             if (criteria.Properties.Count > 0)
             {
                 // clear CriteriaGet properties
-                criteria.Properties.RemoveRange(0, criteria.Properties.Count);
+                criteria.Properties.Clear();
 
                 // display message to the user
                 sb = new StringBuilder();
-                sb.AppendFormat("Successfully removed all criteria properties of CriteriaGet on {0} collection object.", info.ObjectName);
+                sb.AppendFormat("Successfully removed all criteria properties of {0} on {1} collection object.",
+                                critName, info.ObjectName);
                 OutputWindow.Current.AddOutputInfo(sb.ToString());
             }
 
             // populate collection criteria properties
             var addedProps = new List<string>();
-            foreach (var criteriaProperty in rootCriteriaProperties)
+            if (entity.LoadProperties.Count == 0)
             {
-                if (criteria.Properties.IndexOf(criteriaProperty) == -1)
-                {
-                    criteria.Properties.Add(criteriaProperty);
-
-                    addedProps.Add(criteriaProperty.Name);
-                }
+                criteria.Properties.AddRange(CriteriaPropertyCollection.Clone(FacadeRootCriteriaProperties));
+                foreach (var property in FacadeRootCriteriaProperties)
+                    addedProps.Add(property.Name);
+            }
+            else
+            {
+                criteria.Properties.AddRange(CriteriaPropertyCollection.Clone(entity.LoadProperties));
+                foreach (var property in entity.LoadProperties)
+                    addedProps.Add(property.Name);
             }
 
             if (addedProps.Count > 0)
@@ -353,44 +369,50 @@ namespace CslaGenerator.Metadata
                 sb.Append("Successfully added the following criteria properties:" + Environment.NewLine);
                 foreach (var propName in addedProps)
                 {
-                    sb.AppendFormat("\t{0}.CriteriaGet.{1}" + Environment.NewLine, info.ObjectName, propName);
+                    sb.AppendFormat("\t{0}.{1}.{2}" + Environment.NewLine, critName, info.ObjectName, propName);
                 }
                 OutputWindow.Current.AddOutputInfo(sb.ToString());
             }
+
+            child.LoadParameters.Clear();
+            foreach (var property in criteria.Properties)
+            {
+                child.LoadParameters.Add(new Parameter(criteria, property));
+            }
         }
 
-        private void DeleteDefaultCollectionCriteria(CslaObjectInfo info)
+        private void DeleteDefaultCollectionCriteria(CslaObjectInfo info, string critName)
         {
             StringBuilder sb;
 
             var collCriteria = info.CriteriaObjects;
             foreach (var crit in collCriteria)
             {
-                if (crit.Name != "CriteriaGet")
+                if (crit.Name != critName)
                 {
                     if (crit.Properties.Count > 0)
                     {
                         // clear CriteriaGet properties
-                        crit.Properties.RemoveRange(0, crit.Properties.Count);
+                        crit.Properties.Clear();
 
                         // display message to the user
                         sb = new StringBuilder();
-                        sb.AppendFormat("Not LazyLoad - successfully removed all criteria properties of CriteriaGet on {0} collection object.", info.ObjectName);
+                        sb.AppendFormat("Not SelfLoad - successfully removed all criteria properties of {0} on {1} collection object.", critName, info.ObjectName);
                         OutputWindow.Current.AddOutputInfo(sb.ToString());
                     }
                 }
                 collCriteria.Remove(crit);
                 // display message to the user
                 sb = new StringBuilder();
-                sb.AppendFormat("Not LazyLoad - successfully removed criteria CriteriaGet to {0} collection object.", info.ObjectName);
+                sb.AppendFormat("Not SelfLoad - successfully removed criteria {0} to {1} collection object.", critName, info.ObjectName);
                 OutputWindow.Current.AddOutputInfo(sb.ToString());
                 break;
             }
         }
 
-        private bool CheckAndSetCollectionCriteriaGet(Criteria crit, CslaObjectInfo info)
+        private bool CheckAndSetCollectionCriteriaGet(Criteria crit, CslaObjectInfo info, string critName)
         {
-            if (crit.Name != "CriteriaGet")
+            if (crit.Name != critName)
             {
                 if (crit.GetOptions.Factory)
                 {
@@ -402,15 +424,15 @@ namespace CslaGenerator.Metadata
             }
             else
             {
-                SetCollectionCriteriaGet(crit, info);
+                SetCollectionCriteriaGet(crit, info, critName);
                 return true;
             }
             return false;
         }
 
-        private void SetCollectionCriteriaGet(Criteria crit, CslaObjectInfo info)
+        private void SetCollectionCriteriaGet(Criteria crit, CslaObjectInfo info, string critName)
         {
-            if (crit.Name != "CriteriaGet")
+            if (crit.Name != critName)
                 crit.GetOptions.Factory = true;
             else
             {
@@ -443,6 +465,15 @@ namespace CslaGenerator.Metadata
 
         private void BuildCollectionItemCriteriaNew(CslaObjectInfo info, CslaObjectInfo myRootInfo, CslaObjectInfo otherRootInfo, bool isMultipleToMultiple)
         {
+            const string critName = "CriteriaNew";
+
+            // don't generate CriteriaNew for read-only objects
+            if (info.ObjectType == CslaObjectType.ReadOnlyObject)
+            {
+                RemoveDefaultItemCriteria(info, critName);
+                return;
+            }
+
             StringBuilder sb;
 
             // make collection item criteria if needed
@@ -450,7 +481,7 @@ namespace CslaGenerator.Metadata
             Criteria criteria = null;
             foreach (var crit in itemCriteria)
             {
-                if (CheckCollectionItemCriteriaNew(crit))
+                if (CheckCollectionItemCriteriaNew(crit, critName))
                 {
                     criteria = crit;
                     break;
@@ -459,27 +490,27 @@ namespace CslaGenerator.Metadata
 
             if (criteria == null)
             {
-                criteria = new Criteria {Name = "CriteriaNew"};
-                SetCollectionItemCriteriaNew(criteria);
+                criteria = new Criteria { Name = critName };
+                SetCollectionItemCriteriaNew(criteria, critName);
                 info.CriteriaObjects.Add(criteria);
 
                 // display message to the user
                 sb = new StringBuilder();
-                sb.AppendFormat("Successfully added criteria CriteriaNew to {0} item object.", info.ObjectName);
+                sb.AppendFormat("Successfully added criteria {0} to {1} item object.", critName, info.ObjectName);
                 OutputWindow.Current.AddOutputInfo(sb.ToString());
             }
 
-            if (criteria.Name != "CriteriaNew")
+            if (criteria.Name != critName)
                 return;
 
             if (criteria.Properties.Count > 0)
             {
                 // clear CriteriaNew properties
-                criteria.Properties.RemoveRange(0, criteria.Properties.Count);
+                criteria.Properties.Clear();
 
                 // display message to the user
                 sb = new StringBuilder();
-                sb.AppendFormat("Successfully removed all criteria properties of CriteriaNew on {0} item object.", info.ObjectName);
+                sb.AppendFormat("Successfully removed all criteria properties of {0} on {1} item object.", critName, info.ObjectName);
                 OutputWindow.Current.AddOutputInfo(sb.ToString());
             }
 
@@ -497,15 +528,44 @@ namespace CslaGenerator.Metadata
                 sb.Append("Successfully added the following criteria properties:" + Environment.NewLine);
                 foreach (var propName in addedProps)
                 {
-                    sb.AppendFormat("\t{0}.CriteriaNew.{1}" + Environment.NewLine, info.ObjectName, propName);
+                    sb.AppendFormat("\t{0}.{1}.{2}" + Environment.NewLine, critName, info.ObjectName, propName);
                 }
                 OutputWindow.Current.AddOutputInfo(sb.ToString());
             }
         }
 
-        private bool CheckCollectionItemCriteriaNew(Criteria crit)
+        private static void RemoveDefaultItemCriteria(CslaObjectInfo info, string critName)
         {
-            if (crit.Name != "CriteriaNew")
+            StringBuilder sb;
+
+            var itemCriteria = info.CriteriaObjects;
+            foreach (var crit in itemCriteria)
+            {
+                if (crit.Name != critName)
+                {
+                    if (crit.Properties.Count > 0)
+                    {
+                        // clear CriteriaGet properties
+                        crit.Properties.Clear();
+
+                        // display message to the user
+                        sb = new StringBuilder();
+                        sb.AppendFormat("ReadOnly object - successfully removed all criteria properties of {0} on {1} item object.", critName, info.ObjectName);
+                        OutputWindow.Current.AddOutputInfo(sb.ToString());
+                    }
+                }
+                itemCriteria.Remove(crit);
+                // display message to the user
+                sb = new StringBuilder();
+                sb.AppendFormat("ReadOnly object - successfully removed criteria {0} to {1} item object.", critName, info.ObjectName);
+                OutputWindow.Current.AddOutputInfo(sb.ToString());
+                break;
+            }
+        }
+
+        private bool CheckCollectionItemCriteriaNew(Criteria crit, string critName)
+        {
+            if (crit.Name != critName)
             {
                 if (crit.CreateOptions.Factory)
                 {
@@ -514,15 +574,15 @@ namespace CslaGenerator.Metadata
             }
             else
             {
-                SetCollectionItemCriteriaNew(crit);
+                SetCollectionItemCriteriaNew(crit, critName);
                 return true;
             }
             return false;
         }
 
-        private void SetCollectionItemCriteriaNew(Criteria crit)
+        private void SetCollectionItemCriteriaNew(Criteria crit, string critName)
         {
-            if (crit.Name != "CriteriaNew")
+            if (crit.Name != critName)
             {
                 crit.CreateOptions.Factory = true;
             }
@@ -553,10 +613,19 @@ namespace CslaGenerator.Metadata
 
         #endregion
 
-        #region Collection Item Criteria
+        #region Collection Item CriteriaDelete
 
-        private void BuildCollectionItemCriteria(CslaObjectInfo info, CslaObjectInfo myRootInfo, CslaObjectInfo otherRootInfo, bool isMultipleToMultiple)
+        private void BuildCollectionItemCriteriaDelete(CslaObjectInfo info, CslaObjectInfo myRootInfo, CslaObjectInfo otherRootInfo, bool isMultipleToMultiple)
         {
+            const string critName = "CriteriaDelete";
+
+            // don't generate CriteriaNew for read-only objects
+            if (info.ObjectType == CslaObjectType.ReadOnlyObject)
+            {
+                RemoveDefaultItemCriteria(info, critName);
+                return;
+            }
+
             StringBuilder sb;
 
             // make collection item criteria if needed
@@ -564,7 +633,7 @@ namespace CslaGenerator.Metadata
             Criteria criteria = null;
             foreach (var crit in itemCriteria)
             {
-                if (CheckCollectionItemCriteria(crit, info, myRootInfo))
+                if (CheckCollectionItemCriteriaDelete(crit, info, myRootInfo, critName))
                 {
                     criteria = crit;
                     break;
@@ -573,27 +642,27 @@ namespace CslaGenerator.Metadata
 
             if (criteria == null)
             {
-                criteria = new Criteria {Name = "Criteria"};
-                SetCollectionItemCriteria(criteria, info, myRootInfo == MainObjectInfo);
+                criteria = new Criteria { Name = critName };
+                SetCollectionItemCriteriaDelete(criteria, info, myRootInfo == MainObjectInfo, critName);
                 info.CriteriaObjects.Add(criteria);
 
                 // display message to the user
                 sb = new StringBuilder();
-                sb.AppendFormat("Successfully added criteria Criteria to {0} item object.", info.ObjectName);
+                sb.AppendFormat("Successfully added criteria {0} to {1} item object.", critName, info.ObjectName);
                 OutputWindow.Current.AddOutputInfo(sb.ToString());
             }
 
-            if (criteria.Name != "Criteria")
+            if (criteria.Name != critName)
                 return;
 
             if (criteria.Properties.Count > 0)
             {
-                // clear Criteria properties
-                criteria.Properties.RemoveRange(0, criteria.Properties.Count);
+                // clear CriteriaDelete properties
+                criteria.Properties.Clear();
 
                 // display message to the user
                 sb = new StringBuilder();
-                sb.AppendFormat("Successfully removed all criteria properties of Criteria on {0} item object.", info.ObjectName);
+                sb.AppendFormat("Successfully removed all criteria properties of {0} on {1} item object.", critName, info.ObjectName);
                 OutputWindow.Current.AddOutputInfo(sb.ToString());
             }
 
@@ -607,24 +676,17 @@ namespace CslaGenerator.Metadata
                 sb.Append("Successfully added the following criteria properties:" + Environment.NewLine);
                 foreach (var propName in addedProps)
                 {
-                    sb.AppendFormat("\t{0}.Criteria.{1}" + Environment.NewLine, info.ObjectName, propName);
+                    sb.AppendFormat("\t{0}.{1}.{2}" + Environment.NewLine, critName, info.ObjectName, propName);
                 }
                 OutputWindow.Current.AddOutputInfo(sb.ToString());
             }
         }
 
-        private bool CheckCollectionItemCriteria(Criteria crit, CslaObjectInfo info, CslaObjectInfo myRootInfo)
+        private bool CheckCollectionItemCriteriaDelete(Criteria crit, CslaObjectInfo info, CslaObjectInfo myRootInfo, string critName)
         {
-            if (crit.Name != "Criteria")
+            if (crit.Name != critName)
             {
                 var accept = false;
-                if (crit.GetOptions.Factory)
-                {
-                    if (crit.GetOptions.Procedure || crit.GetOptions.DataPortal)
-                        accept = crit.GetOptions.ProcedureName != string.Empty;
-                    else
-                        accept = true;
-                }
                 if (crit.DeleteOptions.Factory)
                 {
                     if (crit.DeleteOptions.Procedure || crit.DeleteOptions.DataPortal)
@@ -632,21 +694,20 @@ namespace CslaGenerator.Metadata
                     else
                         accept = true;
                 }
-                if (!crit.GetOptions.Factory || !crit.DeleteOptions.Factory)
+                if (!crit.DeleteOptions.Factory)
                     accept = false;
 
                 return accept;
             }
 
-            SetCollectionItemCriteria(crit, info, myRootInfo == MainObjectInfo);
+            SetCollectionItemCriteriaDelete(crit, info, myRootInfo == MainObjectInfo, critName);
             return true;
         }
 
-        private void SetCollectionItemCriteria(Criteria crit, CslaObjectInfo info, bool isMain)
+        private void SetCollectionItemCriteriaDelete(Criteria crit, CslaObjectInfo info, bool isMain, string critName)
         {
-            if (crit.Name != "Criteria")
+            if (crit.Name != critName)
             {
-                crit.GetOptions.Factory = true;
                 crit.DeleteOptions.Factory = true;
             }
             else
@@ -670,16 +731,16 @@ namespace CslaGenerator.Metadata
                 crit.CreateOptions.Procedure = false;
                 crit.CreateOptions.ProcedureName = string.Empty;
 
-                crit.GetOptions.Factory = true;
+                crit.GetOptions.Factory = false;
                 crit.GetOptions.AddRemove = false;
-                crit.GetOptions.DataPortal = true;
+                crit.GetOptions.DataPortal = false;
                 crit.GetOptions.RunLocal = false;
-                crit.GetOptions.Procedure = !useSameProcedure || isMain;
-                crit.GetOptions.ProcedureName = _entity.Parent.Params.GetGetProcName(objectName) + suffix;
+                crit.GetOptions.Procedure = false;
+                crit.GetOptions.ProcedureName = string.Empty;
 
-                crit.DeleteOptions.Factory = true;
+                crit.DeleteOptions.Factory = false;
                 crit.DeleteOptions.AddRemove = _entity.RelationType == ObjectRelationType.OneToMultiple;
-                crit.DeleteOptions.DataPortal = true;
+                crit.DeleteOptions.DataPortal = false;
                 crit.DeleteOptions.RunLocal = false;
                 crit.DeleteOptions.Procedure = !useSameProcedure || isMain;
                 crit.DeleteOptions.ProcedureName = _entity.Parent.Params.GetDeleteProcName(objectName) + suffix;
@@ -731,7 +792,7 @@ namespace CslaGenerator.Metadata
                 if (!crit.Properties.Contains(prop.Name))
                 {
                     CriteriaProperty p = new CriteriaProperty(prop.Name, prop.PropertyType);
-                    p.DbBindColumn = (DbBindColumn) prop.DbBindColumn.Clone();
+                    p.DbBindColumn = (DbBindColumn)prop.DbBindColumn.Clone();
                     crit.Properties.Add(p);
                     addedProperties.Add(prop.Name);
                 }
@@ -768,14 +829,14 @@ namespace CslaGenerator.Metadata
 
         private static CriteriaPropertyCollection GetCriteriaProperties(CslaObjectInfo objectInfo)
         {
-            var criteriaInfo = typeof (CslaObjectInfo).GetProperty("CriteriaObjects");
+            var criteriaInfo = typeof(CslaObjectInfo).GetProperty("CriteriaObjects");
             var criteriaObjects = criteriaInfo.GetValue(objectInfo, null);
             var criteriaPropertyCollection = new CriteriaPropertyCollection();
-            foreach (var crit in (CriteriaCollection) criteriaObjects)
+            foreach (var crit in (CriteriaCollection)criteriaObjects)
             {
                 foreach (var prop in crit.Properties)
                 {
-                    if(crit.GetOptions.Factory)
+                    if (crit.GetOptions.Factory)
                         criteriaPropertyCollection.Add(prop);
                 }
             }
@@ -911,15 +972,15 @@ namespace CslaGenerator.Metadata
             // if there is an explicit FK Constraint, use it (in fact use the first found that matches)
             foreach (var property in item.ValueProperties)
             {
-                if(property.FKConstraint != string.Empty)
+                if (property.FKConstraint != string.Empty)
                 {
                     // check the FK Constraint exists on the catalog
                     foreach (var constraint in GeneratorController.Catalog.ForeignKeyConstraints)
                     {
-                        if(constraint.ConstraintName == property.FKConstraint)
+                        if (constraint.ConstraintName == property.FKConstraint)
                         {
                             // check the constraint's PK matches root's PK
-                            if(constraint.PKTable.ObjectName == mainPKInfos[0].PKTable &&
+                            if (constraint.PKTable.ObjectName == mainPKInfos[0].PKTable &&
                                 constraint.Columns[0].PKColumn.ColumnName == mainPKInfos[0].PKColumn)
                             {
                                 return constraint.ConstraintTable;

@@ -499,6 +499,20 @@ namespace CslaGenerator.Metadata
                             }
 
                             defaultCriteria.SetSprocNames();
+
+                            if (_currentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 &&
+                                _currentCslaObject.ObjectType != CslaObjectType.EditableRoot &&
+                                _currentCslaObject.ObjectType != CslaObjectType.EditableSwitchable)
+                            {
+                                defaultCriteria.Name = "CriteriaDelete";
+                                defaultCriteria.GetOptions.Factory = false;
+                                defaultCriteria.GetOptions.DataPortal = false;
+                                defaultCriteria.GetOptions.Procedure = false;
+                                defaultCriteria.GetOptions.ProcedureName = string.Empty;
+                                defaultCriteria.DeleteOptions.Factory = false;
+                                defaultCriteria.DeleteOptions.DataPortal = false;
+                            }
+
                             _currentCslaObject.CriteriaObjects.Add(defaultCriteria);
                             AddPropertiesToCriteria(primaryKeyProperties, defaultCriteria);
 
@@ -522,7 +536,7 @@ namespace CslaGenerator.Metadata
             foreach (CriteriaProperty p in defaultCriteria.Properties)
             {
                 CriteriaProperty newProp = (CriteriaProperty)ObjectCloner.CloneShallow(p);
-                newProp.DbBindColumn = (DbBindColumn)p.DbBindColumn.Clone();
+                newProp.DbBindColumn = (DbBindColumn) p.DbBindColumn.Clone();
                 timestampCriteria.Properties.Add(newProp);
 
             }
@@ -540,7 +554,7 @@ namespace CslaGenerator.Metadata
                 if (!crit.Properties.Contains(col.Name))
                 {
                     CriteriaProperty p = new CriteriaProperty(col.Name, col.PropertyType);
-                    p.DbBindColumn = (DbBindColumn)col.DbBindColumn.Clone();
+                    p.DbBindColumn = (DbBindColumn) col.DbBindColumn.Clone();
                     crit.Properties.Add(p);
                 }
             }

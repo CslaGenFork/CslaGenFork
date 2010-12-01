@@ -27,10 +27,12 @@ namespace CslaGenerator.Metadata
         #region Private Fields
 
         private CslaObjectInfoCollection _cslaObjects;
-        private string _mainObject;
-        private string _objectName = "AssociativeEntity";
         private ObjectRelationType _relationType;
+        private string _objectName = "AssociativeEntity";
+        private string _mainObject;
+        private CriteriaPropertyCollection _mainLoadProperties = new CriteriaPropertyCollection();
         private string _secondaryObject;
+        private CriteriaPropertyCollection _secondaryLoadProperties = new CriteriaPropertyCollection();
         private string _validationError;
 
         #endregion
@@ -59,7 +61,7 @@ namespace CslaGenerator.Metadata
 
         #endregion
 
-        #region Properties
+        #region 01. Relation
 
         [Category("01. Relation")]
         [Description("Relation type for this relation.")]
@@ -78,7 +80,7 @@ namespace CslaGenerator.Metadata
                         SecondaryPropertyName = string.Empty;
                         SecondaryCollectionTypeName = string.Empty;
                         SecondaryItemTypeName = string.Empty;
-                        SecondaryLoadParameters.Clear();
+                        SecondaryLoadProperties.Clear();
                     }
                     OnPropertyChanged("RelationType");
                 }
@@ -105,6 +107,10 @@ namespace CslaGenerator.Metadata
             }
         }
 
+        #endregion
+
+        #region 02. Primary Entity Definition
+
         [Category("02. Primary Entity Definition")]
         [Description("Type name of the primary entity. This must be a root object (editable or read only).")]
         [Editor(typeof(AssociativeEntityTypeEditor), typeof(UITypeEditor))]
@@ -123,7 +129,7 @@ namespace CslaGenerator.Metadata
                         MainPropertyName = string.Empty;
                         MainCollectionTypeName = string.Empty;
                         MainItemTypeName = string.Empty;
-                        MainLoadParameters.Clear();
+                        MainLoadProperties.Clear();
                         SecondaryCollectionTypeName = string.Empty;
                         SecondaryItemTypeName = string.Empty;
                     }
@@ -148,13 +154,9 @@ namespace CslaGenerator.Metadata
         [UserFriendlyName("Primary Item Type Name")]
         public string MainItemTypeName { get; set; }
 
-        [Category("03. Primary Entity Options")]
-        [Description("The primary entity's properties which are used in Update method, as parameters for Stored Procedures, etc. " +
-            "These will used as Criteria properties in the item object.")]
-        [Editor(typeof(AssociativeEntityParameterCollectionEditor), typeof(UITypeEditor))]
-        [TypeConverter(typeof(ParameterCollectionConverter))]
-        [UserFriendlyName("Primary Load Parameters")]
-        public ParameterCollection MainLoadParameters { get; set; }
+        #endregion
+
+        #region 03. Primary Entity Options
 
         [Category("03. Primary Entity Options")]
         [Description("The Loading Scheme for the collection." +
@@ -165,11 +167,38 @@ namespace CslaGenerator.Metadata
         public LoadingScheme MainLoadingScheme { get; set; }
 
         [Category("03. Primary Entity Options")]
+        [Description("The primary entity's properties which are used in Update method, as parameters for Stored Procedures, etc. " +
+            "These will used as Criteria properties in the item object.")]
+        [Editor(typeof(PropertyCollectionForm), typeof(UITypeEditor))]
+        [XmlArrayItem(ElementName = "Property", Type = typeof(CriteriaProperty))]
+        [UserFriendlyName("Primary Load Properties")]
+        public CriteriaPropertyCollection MainLoadProperties
+        {
+            get
+            {
+                LoadColumn(_mainLoadProperties);
+                return _mainLoadProperties;
+            }
+        }
+
+        [Category("03. Primary Entity Options")]
+        [Description("The primary entity's criteria parameters which are used in Update method, as parameters for Stored Procedures, etc. " +
+            "These will used as criteria parameters in the item object.")]
+        [Editor(typeof(AssociativeEntityParameterCollectionEditor), typeof(UITypeEditor))]
+        [TypeConverter(typeof(ParameterCollectionConverter))]
+        [UserFriendlyName("Primary Load Parameters")]
+        public ParameterCollection MainLoadParameters { get; set; }
+
+        [Category("03. Primary Entity Options")]
         [Description("Whether or not this object should be lazy loaded. This applies to SelfLoad mode.\r\n" +
             "If set to True, loading of child data is defered until the child object is referenced.\r\n" +
             "If set to False, the child data is loaded when the parent is instantiated.")]
         [UserFriendlyName("Primary Lazy Load")]
         public bool MainLazyLoad { get; set; }
+
+        #endregion
+
+        #region 04. Secondary Entity Definition
 
         [Category("04. Secondary Entity Definition")]
         [Description("Type name of the secondary entity. This must be a root object (editable or read only). This ")]
@@ -188,7 +217,7 @@ namespace CslaGenerator.Metadata
                         SecondaryPropertyName = string.Empty;
                         SecondaryCollectionTypeName = string.Empty;
                         SecondaryItemTypeName = string.Empty;
-                        SecondaryLoadParameters.Clear();
+                        SecondaryLoadProperties.Clear();
                         if (RelationType == ObjectRelationType.MultipleToMultiple)
                         {
                             MainCollectionTypeName = string.Empty;
@@ -216,13 +245,9 @@ namespace CslaGenerator.Metadata
         [UserFriendlyName("Secondary Item Type Name")]
         public string SecondaryItemTypeName { get; set; }
 
-        [Category("05. Secondary Entity Options")]
-        [Description("The secondary entity's properties which are used in Update method, as parameters for " +
-            "Stored Procedures. These will used as Criteria properties in the item object.")]
-        [Editor(typeof(AssociativeEntityParameterCollectionEditor), typeof(UITypeEditor))]
-        [TypeConverter(typeof(ParameterCollectionConverter))]
-        [UserFriendlyName("Secondary Load Parameters")]
-        public ParameterCollection SecondaryLoadParameters { get; set; }
+        #endregion
+
+        #region 05. Secondary Entity Options
 
         [Category("05. Secondary Entity Options")]
         [Description("The Loading Scheme for the collection." +
@@ -233,11 +258,46 @@ namespace CslaGenerator.Metadata
         public LoadingScheme SecondaryLoadingScheme { get; set; }
 
         [Category("05. Secondary Entity Options")]
+        [Description("The secondary entity's properties which are used in Update method, as parameters for " +
+            "Stored Procedures. These will used as Criteria properties in the item object.")]
+        [Editor(typeof(PropertyCollectionForm), typeof(UITypeEditor))]
+        [XmlArrayItem(ElementName = "Property", Type = typeof(CriteriaProperty))]
+        [UserFriendlyName("Secondary Load Properties")]
+        public CriteriaPropertyCollection SecondaryLoadProperties
+        {
+            get
+            {
+                LoadColumn(_secondaryLoadProperties);
+                return _secondaryLoadProperties;
+            }
+        }
+
+        [Category("05. Secondary Entity Options")]
+        [Description("The secondary entity's criteria parameters which are used in Update method, as parameters for " +
+            "Stored Procedures. These will used as criteria parameters in the item object.")]
+        [Editor(typeof(AssociativeEntityParameterCollectionEditor), typeof(UITypeEditor))]
+        [TypeConverter(typeof(ParameterCollectionConverter))]
+        [UserFriendlyName("Secondary Load Parameters")]
+        public ParameterCollection SecondaryLoadParameters { get; set; }
+
+        [Category("05. Secondary Entity Options")]
         [Description("Whether or not this object should be lazy loaded. This applies to SelfLoad mode.\r\n" +
             "If set to True, loading of child data is defered until the child object is referenced.\r\n" +
             "If set to False, the child data is loaded when the parent is instantiated.")]
         [UserFriendlyName("Secondary Lazy Load")]
         public bool SecondaryLazyLoad { get; set; }
+
+        #endregion
+
+        #region Private methods
+
+        private static void LoadColumn(CriteriaPropertyCollection loadProperties)
+        {
+            foreach (var property in loadProperties)
+            {
+                property.DbBindColumn.LoadColumn(GeneratorController.Catalog);
+            }
+        }
 
         #endregion
 
@@ -281,16 +341,25 @@ namespace CslaGenerator.Metadata
                 sb.AppendFormat("Starting the build of {0} relation.\r\n", ObjectName);
                 OutputWindow.Current.AddOutputInfo(sb.ToString());
 
+                if (MainLoadingScheme == LoadingScheme.ParentLoad)
+                    MainLoadProperties.Clear();
+                if (MainLoadingScheme == LoadingScheme.SelfLoad)
+                    MainLoadParameters.Clear();
+                if (SecondaryLoadingScheme == LoadingScheme.ParentLoad)
+                    SecondaryLoadProperties.Clear();
+                if (SecondaryLoadingScheme == LoadingScheme.SelfLoad)
+                    SecondaryLoadParameters.Clear();
+
                 if (RelationType == ObjectRelationType.OneToMultiple)
                 {
                     var factory = new ObjectRelationsFactory(Parent, this);
 
                     factory.FacadeObjectInfo = factory.MainObjectInfo;
-                    factory.FacadeRootCriteriaProperties = factory.MainRootCriteriaProperties;
+                    factory.FacadeRootCriteriaProperties = CriteriaPropertyCollection.Clone(factory.MainRootCriteriaProperties);
                     factory.BuildRelationObjects(new EntityFacade(Parent, RelationType, MainObject,
                                                                   MainPropertyName, MainCollectionTypeName,
-                                                                  MainItemTypeName, MainLazyLoad,
-                                                                  MainLoadingScheme, MainLoadParameters));
+                                                                  MainItemTypeName, MainLoadingScheme,
+                                                                  MainLoadProperties, MainLoadParameters, MainLazyLoad));
                     factory.PopulateRelationObjects(MainItemTypeName, factory.MainRootCriteriaProperties);
                 }
                 else
@@ -298,24 +367,25 @@ namespace CslaGenerator.Metadata
                     var factory = new ObjectRelationsFactory(Parent, this);
 
                     factory.FacadeObjectInfo = factory.MainObjectInfo;
-                    factory.FacadeRootCriteriaProperties = factory.MainRootCriteriaProperties;
+                    factory.FacadeRootCriteriaProperties = CriteriaPropertyCollection.Clone(factory.MainRootCriteriaProperties);
                     factory.BuildRelationObjects(new EntityFacade(Parent, RelationType, MainObject,
                                                                   MainPropertyName, MainCollectionTypeName,
-                                                                  MainItemTypeName, MainLazyLoad,
-                                                                  MainLoadingScheme, MainLoadParameters));
+                                                                  MainItemTypeName, MainLoadingScheme,
+                                                                  MainLoadProperties, MainLoadParameters, MainLazyLoad));
 
                     factory.FacadeObjectInfo = factory.SecondaryObjectInfo;
-                    factory.FacadeRootCriteriaProperties = factory.SecondaryRootCriteriaProperties;
+                    factory.FacadeRootCriteriaProperties = CriteriaPropertyCollection.Clone(factory.SecondaryRootCriteriaProperties);
                     factory.BuildRelationObjects(new EntityFacade(Parent, RelationType, SecondaryObject,
                                                                   SecondaryPropertyName, SecondaryCollectionTypeName,
-                                                                  SecondaryItemTypeName, SecondaryLazyLoad,
-                                                                  SecondaryLoadingScheme, SecondaryLoadParameters));
+                                                                  SecondaryItemTypeName, SecondaryLoadingScheme,
+                                                                  SecondaryLoadProperties, SecondaryLoadParameters,
+                                                                  SecondaryLazyLoad));
 
                     factory.PopulateRelationObjects(MainItemTypeName, factory.MainRootCriteriaProperties);
                     factory.PopulateRelationObjects(SecondaryItemTypeName, factory.SecondaryRootCriteriaProperties);
                 }
 
-                // display start up message to the user
+                // display end message to the user
                 sb = new StringBuilder();
                 sb.AppendFormat("Relation build end.\r\n");
                 OutputWindow.Current.AddOutputInfo(sb.ToString());
@@ -332,6 +402,8 @@ namespace CslaGenerator.Metadata
                 _validationError += "Primary Object not found." + Environment.NewLine;
             else if (!RelationRulesEngine.IsAllowedEntityObject(mainCslaObject))
                 _validationError += MainObject + " isn't allowed to be Primary Object." + Environment.NewLine;
+            else
+                _validationError += ValidateLoadingScheme(MainLoadingScheme, MainLazyLoad, "Primary");
 
             if (mainCslaObjectCollection == null)
             {
@@ -363,8 +435,7 @@ namespace CslaGenerator.Metadata
 
             if (mainCslaObjectCollection != null && mainCslaObjectItem != null)
             {
-                if (
-                    !RelationRulesEngine.IsCompatibleEntityCollectionItemPair(mainCslaObjectCollection,
+                if (!RelationRulesEngine.IsCompatibleEntityCollectionItemPair(mainCslaObjectCollection,
                                                                               mainCslaObjectItem))
                     _validationError += MainCollectionTypeName + " Collection is not compatible with " +
                                         MainItemTypeName + " Collection Item." + Environment.NewLine;
@@ -404,6 +475,8 @@ namespace CslaGenerator.Metadata
             else if (!RelationRulesEngine.IsAllowedEntityCollection(secondaryCslaObjectCollection))
                 _validationError += SecondaryCollectionTypeName + " isn't allowed to be Secondary Collection." +
                                     Environment.NewLine;
+            else
+                _validationError += ValidateLoadingScheme(SecondaryLoadingScheme, SecondaryLazyLoad, "Secondary");
 
             if (secondaryCslaObjectItem == null)
             {
@@ -458,6 +531,19 @@ namespace CslaGenerator.Metadata
             return false;
         }
 
+        private static string ValidateLoadingScheme(LoadingScheme scheme, bool lazyLoad, string element)
+        {
+            switch (scheme)
+            {
+                case LoadingScheme.None:
+                    return element + " can't be None (deprecated).";
+                case LoadingScheme.ParentLoad:
+                    if (lazyLoad) return element + " is ParentLoad; can't use LazyLoad.";
+                    break;
+            }
+            return string.Empty;
+        }
+
         #endregion
 
         #region INotifyPropertyChanged Members
@@ -485,6 +571,7 @@ namespace CslaGenerator.Metadata
             public string ItemTypeName;
             public bool LazyLoad = true;
             public LoadingScheme LoadingScheme;
+            public CriteriaPropertyCollection LoadProperties;
             public ParameterCollection LoadParameters;
 
             #region Constructors
@@ -503,7 +590,9 @@ namespace CslaGenerator.Metadata
             {
             }
 
-            public EntityFacade(CslaGeneratorUnit parent, ObjectRelationType relationType, string objectName, string propertyName, string collectionTypeName, string itemTypeName, bool lazyLoad, LoadingScheme loadingScheme, ParameterCollection loadParameters)
+            public EntityFacade(CslaGeneratorUnit parent, ObjectRelationType relationType, string objectName,
+                string propertyName, string collectionTypeName, string itemTypeName, LoadingScheme loadingScheme,
+                CriteriaPropertyCollection loadProperties, ParameterCollection loadParameters, bool lazyLoad)
                 : base(parent)
             {
                 RelationType = relationType;
@@ -513,6 +602,7 @@ namespace CslaGenerator.Metadata
                 ItemTypeName = itemTypeName;
                 LazyLoad = lazyLoad;
                 LoadingScheme = loadingScheme;
+                LoadProperties = CriteriaPropertyCollection.Clone(loadProperties);
                 LoadParameters = loadParameters;
 
                 if (parent != null && parent.Params != null)

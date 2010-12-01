@@ -23,6 +23,7 @@ namespace CslaGenerator.Templates
         private TargetFramework _targetFramework;
         private Dictionary<string, bool?> _fileSuccess = new Dictionary<string, bool?>();
         private int objFailed = 0;
+        private int objectWarnings = 0;
         private int sprocSuccess = 0;
         private int sprocFailed = 0;
         private Hashtable templates = new Hashtable();
@@ -82,8 +83,13 @@ namespace CslaGenerator.Templates
             else if (_fileSuccess["DataPortalHookArgs"] == false)
                 Controls.OutputWindow.Current.AddOutputInfo(String.Format("DataPortalHookArgs classe: failed."));
 
-            Controls.OutputWindow.Current.AddOutputInfo(String.Format("Classes: {0} generated. {1} failed.", (objFailed + objSuccess).ToString(), objFailed.ToString()));
-            Controls.OutputWindow.Current.AddOutputInfo(String.Format("Stored Procs: {0} generated. {1} failed.", (sprocFailed + sprocSuccess).ToString(), sprocFailed.ToString()));
+            if (objectWarnings > 0)
+                Controls.OutputWindow.Current.AddOutputInfo(String.Format("Warnings: {0} objects.", objectWarnings));
+
+            Controls.OutputWindow.Current.AddOutputInfo(String.Format("Classes: {0} generated. {1} failed.",
+                                                                      (objFailed + objSuccess), objFailed));
+            Controls.OutputWindow.Current.AddOutputInfo(String.Format("Stored Procs: {0} generated. {1} failed.",
+                                                                      (sprocFailed + sprocSuccess), sprocFailed));
         }
 
         #endregion
@@ -154,7 +160,10 @@ namespace CslaGenerator.Templates
                         if (warningsOutput != null)
                         {
                             if (warningsOutput.Length > 0)
+                            {
+                                objectWarnings++;
                                 OnGenerationInformation("Warning:" + Environment.NewLine + warningsOutput);
+                            }
                         }
                         objSuccess++;
                         //OnGenerationInformation("Success");
@@ -420,17 +429,15 @@ namespace CslaGenerator.Templates
                             }
                             else
                             {
-
                                 GenerateSelectProcedure(info, _targetDirectory);
                                 if (_abortRequested) break;
 
-                                if (!generationParams.OnlyNeededSprocs ||
-                                    (info.ObjectType != CslaObjectType.ReadOnlyObject
+                                if (info.ObjectType != CslaObjectType.ReadOnlyObject
                                     && info.ObjectType != CslaObjectType.ReadOnlyCollection
                                     && info.ObjectType != CslaObjectType.EditableRootCollection
                                     && info.ObjectType != CslaObjectType.DynamicEditableRootCollection
                                     && info.ObjectType != CslaObjectType.EditableChildCollection
-                                    && info.ObjectType != CslaObjectType.NameValueList))
+                                    && info.ObjectType != CslaObjectType.NameValueList)
                                 {
                                     GenerateInsertProcedure(info, _targetDirectory);
                                     if (_abortRequested) break;
@@ -490,14 +497,13 @@ namespace CslaGenerator.Templates
 
         private void GenerateAllSprocsFile(CslaObjectInfo info, string dir, GenerationParameters generationParams)
         {
-            var lazyLoad = CslaTemplateHelper.GetLazyLoad(info);
+            var selfLoad = CslaTemplateHelper.GetSelfLoad(info);
 
             StringBuilder proc = new StringBuilder();
 
             //make sure we don't generate selects when we don't need to.
-            if (!generationParams.OnlyNeededSprocs ||
-                (!((info.ObjectType == CslaObjectType.EditableChildCollection ||
-                info.ObjectType == CslaObjectType.EditableChild) && !lazyLoad)))
+            if (!((info.ObjectType == CslaObjectType.EditableChildCollection ||
+                info.ObjectType == CslaObjectType.EditableChild) && !selfLoad))
             {
                 foreach (Criteria crit in info.CriteriaObjects)
                 {
@@ -507,13 +513,12 @@ namespace CslaGenerator.Templates
                 }
             }
 
-            if (!generationParams.OnlyNeededSprocs ||
-                (info.ObjectType != CslaObjectType.ReadOnlyObject
+            if (info.ObjectType != CslaObjectType.ReadOnlyObject
                 && info.ObjectType != CslaObjectType.ReadOnlyCollection
                 && info.ObjectType != CslaObjectType.EditableRootCollection
                 && info.ObjectType != CslaObjectType.DynamicEditableRootCollection
                 && info.ObjectType != CslaObjectType.EditableChildCollection
-                && info.ObjectType != CslaObjectType.NameValueList))
+                && info.ObjectType != CslaObjectType.NameValueList)
             {
                 //Insert
                 if (info.InsertProcedureName != "")

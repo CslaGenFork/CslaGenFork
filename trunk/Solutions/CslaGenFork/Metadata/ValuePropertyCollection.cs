@@ -1,13 +1,10 @@
 using System;
-using System.Collections;
-using System.Xml.Serialization;
+using System.Collections.Generic;
 
 namespace CslaGenerator.Metadata
 {
-
-    public class ValuePropertyCollection : System.Collections.Generic.List<ValueProperty>
+    public class ValuePropertyCollection : List<ValueProperty>
     {
-
         public ValueProperty Find(string name)
         {
             foreach (ValueProperty p in this)
@@ -31,11 +28,12 @@ namespace CslaGenerator.Metadata
 
         void AddHandlers(ValueProperty item)
         {
-            item.Changed += new PropertyNameChanged(item_Changed);
+            item.Changed += item_Changed;
         }
+
         void RemoveHandlers(ValueProperty item)
         {
-            item.Changed -= new PropertyNameChanged(item_Changed);
+            item.Changed -= item_Changed;
         }
 
         private void item_Changed(ValueProperty sender, PropertyNameChangedEventArgs e)
@@ -48,5 +46,4 @@ namespace CslaGenerator.Metadata
         public event PropertyNameChanged ItemChanged;
 
     }
-
 }

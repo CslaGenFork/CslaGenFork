@@ -1,6 +1,8 @@
+using System.Collections.Generic;
+
 namespace CslaGenerator.Metadata
 {
-    public class CslaGeneratorComponentCollection : System.Collections.Generic.List<CslaGeneratorComponent>
+    public class CslaGeneratorComponentCollection : List<CslaGeneratorComponent>
     {
     }
 }

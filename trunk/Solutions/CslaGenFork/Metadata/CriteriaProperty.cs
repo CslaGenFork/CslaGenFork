@@ -69,7 +69,7 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Definition")]
-        [Description("Whether this property can have a null value. The following types aren't nullable: \"String \", \"ByteArray \", \"SmartDate \", \"DBNull \", \"Object\" and \"Empty\".")]
+        [Description("Whether this property can have a null value. The following types aren't nullable: \"ByteArray \", \"SmartDate \", \"DBNull \", \"Object\" and \"Empty\".")]
         public override bool Nullable
         {
             get { return base.Nullable; }
@@ -80,5 +80,14 @@ namespace CslaGenerator.Metadata
         [Description("The fixed parameter value is used as filter criteria.")]
         [UserFriendlyName("Parameter Value")]
         public string ParameterValue { get; set; }
+
+        internal static CriteriaProperty Clone(CriteriaProperty masterCritProp)
+        {
+            var newCritProp = new CriteriaProperty();
+            newCritProp.DbBindColumn = (DbBindColumn)masterCritProp.DbBindColumn.Clone();
+            ((Property)newCritProp).Clone(masterCritProp);
+            newCritProp.ParameterValue = masterCritProp.ParameterValue;
+            return newCritProp;
+        }
     }
 }

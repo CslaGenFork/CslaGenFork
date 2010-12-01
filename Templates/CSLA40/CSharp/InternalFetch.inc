@@ -105,6 +105,10 @@ if (!Info.UseCustomLoading)
         <%
             string methodParam = string.Empty;
             string invokeParam = string.Empty;
+            bool isParentEditableRoot = false;
+            CslaObjectInfo parentInfo2 = Info.Parent.CslaObjects.Find(Info.ParentType);
+            if (parentInfo2 != null)
+                isParentEditableRoot = parentInfo2.ObjectType == CslaObjectType.EditableRootCollection;
             foreach (Criteria c in Info.CriteriaObjects)
             {
                 bool first1 = true;
@@ -127,7 +131,7 @@ if (!Info.UseCustomLoading)
                 }
             }
             %>
-        private void FetchChildren(<%= methodParam %>)
+        <%= isParentEditableRoot ? "internal" : "private" %> void FetchChildren(<%= methodParam %>)
         {
             <%
             foreach (ChildProperty childProp in Info.GetCollectionChildProperties())

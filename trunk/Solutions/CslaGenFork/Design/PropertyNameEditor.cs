@@ -1,10 +1,8 @@
 using System;
-using System.Collections;
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
-using System.Reflection;
 using CslaGenerator.Metadata;
 using CslaGenerator.Util;
 
@@ -12,79 +10,77 @@ namespace CslaGenerator.Design
 {
     public class PropertyNameEditor : UITypeEditor
     {
-        private IWindowsFormsEditorService editorService = null;
-        private ListBox lstProperties;
-        private Type instance;
+        private IWindowsFormsEditorService _editorService;
+        private readonly ListBox _lstProperties;
+        private Type _instance;
 
         public PropertyNameEditor()
         {
-            lstProperties = new ListBox();
-            lstProperties.DoubleClick += lstProperties_DoubleClick;
-            lstProperties.DisplayMember = "key";
-            lstProperties.ValueMember = "value";
-            lstProperties.SelectedIndexChanged += lstProperties_SelectedIndexChanged;
-            lstProperties.SelectionMode = SelectionMode.One;
-        }
-
-        void lstProperties_DoubleClick(object sender, EventArgs e)
-        {
-            editorService.CloseDropDown();
+            _lstProperties = new ListBox();
+            _lstProperties.DoubleClick += LstPropertiesDoubleClick;
+            _lstProperties.DisplayMember = "key";
+            _lstProperties.ValueMember = "value";
+            _lstProperties.SelectedIndexChanged += LstPropertiesSelectedIndexChanged;
+            _lstProperties.SelectionMode = SelectionMode.One;
         }
 
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
-            if (provider != null)
+            _editorService = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
+            if (_editorService != null)
             {
-                editorService = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
-                if (editorService != null)
+                if (context.Instance != null)
                 {
-                    if (context.Instance != null)
+                    // CR modifying to accomodate PropertyBag
+                    Type instanceType = null;
+                    object objinfo = null;
+                    TypeHelper.GetContextInstanceObject(context, ref objinfo, ref instanceType);
+                    var obj = (CslaObjectInfo)objinfo;
+                    _instance = objinfo.GetType();
+                    var valuePropsInfo = _instance.GetProperty("ValueProperties");
+                    var valueProps = (ValuePropertyCollection)valuePropsInfo.GetValue(objinfo, null);
+                    if (valueProps.Count > 0)
                     {
-                        // CR modifying to accomodate PropertyBag
-                        Type instanceType = null;
-                        object objinfo = null;
-                        TypeHelper.GetContextInstanceObject(context, ref objinfo, ref instanceType);
-                        CslaObjectInfo obj = (CslaObjectInfo) objinfo;
-                        instance = objinfo.GetType();
-                        PropertyInfo valuePropsInfo = instance.GetProperty("ValueProperties");
-                        ValuePropertyCollection valueProps = (ValuePropertyCollection)valuePropsInfo.GetValue(objinfo,null);
-                        if (valueProps.Count > 0)
+                        _lstProperties.Items.Clear();
+                        for (int i = 0; i < valueProps.Count; i++)
                         {
-                            lstProperties.Items.Clear();
-                            for (int i = 0; i < valueProps.Count; i++)
-                            {
-                                lstProperties.Items.Add(valueProps[i].Name);
-                            }
-                            lstProperties.Sorted = true;
-
-                            if (context.PropertyDescriptor.DisplayName == "Value Column")
-                                lstProperties.SelectedItem = obj.NameColumn;
-                            else if (context.PropertyDescriptor.DisplayName == "Key Column")
-                                lstProperties.SelectedItem = obj.ValueColumn;
-
-                            editorService.DropDownControl(lstProperties);
-                            if (lstProperties.SelectedItem == null)
-                                return string.Empty;
-
-                            return lstProperties.SelectedItem.ToString();
+                            _lstProperties.Items.Add(valueProps[i].Name);
                         }
+                        _lstProperties.Sorted = true;
+
+                        if (context.PropertyDescriptor.DisplayName == "Value Column")
+                            _lstProperties.SelectedItem = obj.NameColumn;
+                        else if (context.PropertyDescriptor.DisplayName == "Key Column")
+                            _lstProperties.SelectedItem = obj.ValueColumn;
+
+                        _editorService.DropDownControl(_lstProperties);
+                        if (_lstProperties.SelectedItem == null)
+                            return string.Empty;
+
+                        return _lstProperties.SelectedItem.ToString();
                     }
                 }
             }
+
             return value;
         }
 
-        private void lstProperties_SelectedIndexChanged(object sender, EventArgs e)
+        private void LstPropertiesSelectedIndexChanged(object sender, EventArgs e)
         {
-            if (editorService != null)
+            if (_editorService != null)
             {
-                editorService.CloseDropDown();
+                _editorService.CloseDropDown();
             }
         }
 
         public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
         {
             return UITypeEditorEditStyle.DropDown;
+        }
+
+        void LstPropertiesDoubleClick(object sender, EventArgs e)
+        {
+            _editorService.CloseDropDown();
         }
     }
 }

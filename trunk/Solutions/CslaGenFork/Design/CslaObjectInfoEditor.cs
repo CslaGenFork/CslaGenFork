@@ -1,10 +1,9 @@
 using System;
+using System.Collections;
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
-using System.Reflection;
-using System.Collections;
 using CslaGenerator.Metadata;
 using CslaGenerator.Util;
 
@@ -16,67 +15,59 @@ namespace CslaGenerator.Design
     // and to enumerate CslaObjects collection.
     public class CslaObjectInfoEditor : UITypeEditor
     {
-        private IWindowsFormsEditorService editorService = null;
-        private ListBox lstObjectInfo = null;
-        private Type instance;
+        private IWindowsFormsEditorService _editorService;
+        private readonly ListBox _lstProperties;
+        private Type _instance;
 
         public CslaObjectInfoEditor()
         {
-            lstObjectInfo = new ListBox();
-            lstObjectInfo.DoubleClick += lstProperties_DoubleClick;
-            lstObjectInfo.DisplayMember = "key";
-            lstObjectInfo.ValueMember = "value";
-            lstObjectInfo.SelectedValueChanged += Value_Changed;
-        }
-
-        void lstProperties_DoubleClick(object sender, EventArgs e)
-        {
-            editorService.CloseDropDown();
+            _lstProperties = new ListBox();
+            _lstProperties.DoubleClick += LstPropertiesDoubleClick;
+            _lstProperties.DisplayMember = "key";
+            _lstProperties.ValueMember = "value";
+            _lstProperties.SelectedValueChanged += ValueChanged;
         }
 
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
-            if (provider != null)
+            _editorService = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
+            if (_editorService != null)
             {
-                editorService = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
-                if (editorService != null)
+                if (context.Instance != null)
                 {
-                    if (context.Instance != null)
+                    // CR modifying to accomodate PropertyBag
+                    Type instanceType = null;
+                    object objinfo = null;
+                    TypeHelper.GetInheritedTypeContextInstanceObject(context, ref objinfo, ref instanceType);
+                    _instance = objinfo.GetType();
+
+                    _lstProperties.Items.Clear();
+                    _lstProperties.Items.Add(new DictionaryEntry("(None)", null));
+                    // Get object info properties
+                    var parentInfo = _instance.GetProperty("Parent");
+                    //CslaObjectInfo cslaObj = (CslaObjectInfo)parentInfo.GetValue(context.Instance, null);
+                    var cslaObj = (CslaObjectInfo)parentInfo.GetValue(objinfo, null);
+                    foreach (var obj in cslaObj.Parent.CslaObjects)
                     {
-                        // CR modifying to accomodate PropertyBag
-                        Type instanceType = null;
-                        object objinfo = null;
-                        TypeHelper.GetInheritedTypeContextInstanceObject(context, ref objinfo, ref instanceType);
-                        instance = objinfo.GetType();
-
-                        lstObjectInfo.Items.Clear();
-                        lstObjectInfo.Items.Add(new DictionaryEntry("(None)", null));
-                        // Get object info properties
-                        PropertyInfo parentInfo = instance.GetProperty("Parent");
-                        //CslaObjectInfo cslaObj = (CslaObjectInfo)parentInfo.GetValue(context.Instance, null);
-                        CslaObjectInfo cslaObj = (CslaObjectInfo) parentInfo.GetValue(objinfo, null);
-                        foreach (CslaObjectInfo obj in cslaObj.Parent.CslaObjects)
-                        {
-                            lstObjectInfo.Items.Add(new DictionaryEntry(obj.ObjectName, obj));
-                        }
-                        lstObjectInfo.Sorted = true;
-
-                        lstObjectInfo.SelectedItem = new DictionaryEntry("(None)", null);
-                        for (var entry = 0; entry < lstObjectInfo.Items.Count; entry++)
-                        {
-                            if (cslaObj.InheritedType.ObjectName == ((DictionaryEntry) lstObjectInfo.Items[entry]).Key.ToString())
-                            {
-                                var val = (CslaObjectInfo)((DictionaryEntry)lstObjectInfo.Items[entry]).Value;
-                                lstObjectInfo.SelectedItems.Add(new DictionaryEntry(cslaObj.InheritedType.ObjectName, val));
-                            }
-                        }
-
-                        editorService.DropDownControl(lstObjectInfo);
-                        if (lstObjectInfo.SelectedIndex < 0 || ((DictionaryEntry) lstObjectInfo.SelectedItem).Key.ToString() == "(None)")
-                            return string.Empty;
-                        
-                        return ((CslaObjectInfo) ((DictionaryEntry) lstObjectInfo.SelectedItem).Value).ObjectName;
+                        _lstProperties.Items.Add(new DictionaryEntry(obj.ObjectName, obj));
                     }
+                    _lstProperties.Sorted = true;
+
+                    _lstProperties.SelectedItem = new DictionaryEntry("(None)", null);
+                    for (var entry = 0; entry < _lstProperties.Items.Count; entry++)
+                    {
+                        if (cslaObj.InheritedType.ObjectName == ((DictionaryEntry)_lstProperties.Items[entry]).Key.ToString())
+                        {
+                            var val = (CslaObjectInfo)((DictionaryEntry)_lstProperties.Items[entry]).Value;
+                            _lstProperties.SelectedItems.Add(new DictionaryEntry(cslaObj.InheritedType.ObjectName, val));
+                        }
+                    }
+
+                    _editorService.DropDownControl(_lstProperties);
+                    if (_lstProperties.SelectedIndex < 0 || ((DictionaryEntry)_lstProperties.SelectedItem).Key.ToString() == "(None)")
+                        return string.Empty;
+
+                    return ((CslaObjectInfo)((DictionaryEntry)_lstProperties.SelectedItem).Value).ObjectName;
                 }
             }
 
@@ -88,12 +79,17 @@ namespace CslaGenerator.Design
             return UITypeEditorEditStyle.Modal;
         }
 
-        private void Value_Changed(object sender, EventArgs e)
+        private void ValueChanged(object sender, EventArgs e)
         {
-            if (editorService != null)
+            if (_editorService != null)
             {
-                editorService.CloseDropDown();
+                _editorService.CloseDropDown();
             }
+        }
+
+        void LstPropertiesDoubleClick(object sender, EventArgs e)
+        {
+            _editorService.CloseDropDown();
         }
     }
 }

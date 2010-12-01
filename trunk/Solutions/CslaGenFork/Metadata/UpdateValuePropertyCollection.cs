@@ -1,6 +1,8 @@
+using System.Collections.Generic;
+
 namespace CslaGenerator.Metadata
 {
-    public class UpdateValuePropertyCollection : System.Collections.Generic.List<UpdateValueProperty>
+    public class UpdateValuePropertyCollection : List<UpdateValueProperty>
     {
         public UpdateValueProperty Find(string name)
         {

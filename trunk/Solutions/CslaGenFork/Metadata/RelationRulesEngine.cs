@@ -349,7 +349,7 @@ namespace CslaGenerator.Metadata
         {
             // child of editable lists
 
-            _specificErrorMessage = "The item of an Editable collection must be an Editable object.";
+            _specificErrorMessage = "The item of an Editable collection must be a child Editable object.";
 
             _baseStereotype.Clear();
             _baseStereotype.Add(CslaObjectType.EditableRootCollection);

@@ -104,56 +104,6 @@ namespace CslaGenerator.Util
             return FormatPascal(name);
         }
 
-        public string FormatEventDocumentation(string name)
-        {
-            var response = string.Empty;
-
-            switch (name)
-            {
-                case "Create":
-                    response += "after setting all defaults for object creation.";
-                    break;
-                case "FetchPre":
-                    response += "after setting query parameters and before the fetch operation.";
-                    break;
-                case "FetchPost":
-                    response += "after the fetch operation (object or collection is fully loaded and set up).";
-                    break;
-                case "FetchRead":
-                    response += "after the low level fetch operation, before the data reader is destroyed.";
-                    break;
-                case "InsertStart":
-                    response += "in DataPortal_Insert, after setting row identifiers (ID) and before setting other query parameters.";
-                    break;
-                case "InsertPre":
-                    response += "in DataPortal_Insert, after setting query parameters and before the insert operation.";
-                    break;
-                case "InsertPost":
-                    response += "in DataPortal_Insert, after the insert operation, before setting back row identifiers (ID and RowVersion) and Commit().";
-                    break;
-                case "UpdateStart":
-                    response += "after setting row identifiers (ID and RowVersion) and before setting other query parameters.";
-                    break;
-                case "UpdatePre":
-                    response += "after setting query parameters and before the update operation.";
-                    break;
-                case "UpdatePost":
-                    response += "in DataPortal_Insert, after the update operation, before setting back row identifiers (RowVersion) and Commit().";
-                    break;
-                case "DeletePre":
-                    response += "in DataPortal_Delete, after setting query parameters and before the delete operation.";
-                    break;
-                case "DeletePost":
-                    response += "in DataPortal_Delete, after the delete operation, before Commit().";
-                    break;
-                default:
-                    response += "undescribed circumstances.";
-                    break;
-            }
-
-            return response;
-        }
-
         public string FormatFieldName(ValueProperty prop)
         {
             return FormatPascal(prop.Name);
@@ -266,8 +216,14 @@ namespace CslaGenerator.Util
 
         // TODO: On ReadOnly objects, forbid Managed and Unmanaged with TypeConversion
 
-        public virtual string GetInitValue(ValueProperty prop, TypeCodeEx typeCode)
+        public virtual string GetInitValue(CslaObjectInfo info, ValueProperty prop, TypeCodeEx typeCode)
         {
+            if (!HasCreateCriteriaDataPortal(info))
+            {
+                if (prop.DefaultValue != string.Empty)
+                    return prop.DefaultValue;
+            }
+
             if (AllowNull(prop) && typeCode != TypeCodeEx.SmartDate)
                 return "null";
 
@@ -285,7 +241,7 @@ namespace CslaGenerator.Util
             return type;
         }
 
-        public string FieldDeclare(ValueProperty prop)
+        public string FieldDeclare(CslaObjectInfo info, ValueProperty prop)
         {
             var response = string.Empty;
             if (prop.DeclarationMode == PropertyDeclaration.Unmanaged ||
@@ -302,20 +258,20 @@ namespace CslaGenerator.Util
                                               ? GetDataTypeGeneric(prop, prop.PropertyType)
                                               : GetDataTypeGeneric(prop, prop.BackingFieldType),
                                           FormatFieldName(prop.Name),
-                                          GetFieldInitValue(prop));
+                                          GetFieldInitValue(info, prop));
             }
 
             return response;
         }
 
-        private string GetFieldInitValue(ValueProperty prop)
+        private string GetFieldInitValue(CslaObjectInfo info, ValueProperty prop)
         {
             if (prop.DeclarationMode == PropertyDeclaration.Unmanaged ||
                 prop.DeclarationMode == PropertyDeclaration.ClassicProperty ||
                 prop.DeclarationMode == PropertyDeclaration.NoProperty)
-                return GetInitValue(prop, prop.PropertyType);
+                return GetInitValue(info, prop, prop.PropertyType);
 
-            return GetInitValue(prop, prop.BackingFieldType);
+            return GetInitValue(info, prop, prop.BackingFieldType);
         }
 
         public string PropertyInfoDeclare(CslaObjectInfo info, ValueProperty prop)
@@ -330,7 +286,7 @@ namespace CslaGenerator.Util
                 // "private static PropertyInfo<{0}> {1} = RegisterProperty<{0}>(p => p.{2}, \"{3}\"{4});",
                 response =
                     string.Format(
-                        "{0} static PropertyInfo<{1}> {2} = RegisterProperty<{1}>(p => p.{3}, \"{4}\"{5});",
+                        "{0} static PropertyInfo<{1}> {2} = RegisterProperty<{1}>(p => p.{3}, \"{4}\"{5}{6});",
                         Access.Convert(prop.PropertyInfoAccess),
                         (prop.DeclarationMode == PropertyDeclaration.Managed ||
                          prop.DeclarationMode == PropertyDeclaration.Unmanaged)
@@ -339,10 +295,36 @@ namespace CslaGenerator.Util
                         FormatPropertyInfoName(prop.Name),
                         prop.Name,
                         prop.FriendlyName,
+                        GetDefault(info, prop),
                         GetRelationhipType(info, prop));
             }
 
             return response;
+        }
+
+        private static string GetDefault(CslaObjectInfo info, ValueProperty prop)
+        {
+            if (HasCreateCriteriaDataPortal(info))
+                return string.Empty;
+
+            if (prop.DefaultValue != string.Empty)
+                return ", " + prop.DefaultValue;
+
+            if (!prop.Nullable || prop.PropertyType != TypeCodeEx.String)
+                return string.Empty;
+
+            return ", null";
+        }
+
+        private static bool HasCreateCriteriaDataPortal(CslaObjectInfo info)
+        {
+            foreach (var crit in info.CriteriaObjects)
+            {
+                if (crit.CreateOptions.DataPortal)
+                    return true;
+            }
+
+            return false;
         }
 
         private string GetRelationhipType(CslaObjectInfo info, ValueProperty prop)
@@ -690,12 +672,12 @@ namespace CslaGenerator.Util
             return FormatFieldName(propName);
         }
 
-        public string GetSourceFieldReaderStatement(CslaObjectInfo info, ConvertValueProperty prop)
+        public ValueProperty GetSourceValueProperty(CslaObjectInfo info, ConvertValueProperty prop)
         {
             foreach (var valueProp in info.GetAllValueProperties())
             {
                 if (prop.SourcePropertyName == valueProp.Name)
-                    return GetFieldReaderStatement(valueProp.DeclarationMode, valueProp.Name);
+                    return valueProp;
             }
             /*foreach (var childProp in info.GetCollectionChildProperties())
             {
@@ -703,7 +685,7 @@ namespace CslaGenerator.Util
                     return GetFieldReaderStatement(childProp.DeclarationMode, childProp.Name);
             }*/
 
-            return "";
+            return null;
             //            return GetFieldReaderStatement(prop.SourceDeclarationMode, prop.SourcePropertyName);
         }
 
@@ -761,7 +743,6 @@ namespace CslaGenerator.Util
         /// <returns>The loader statemente on the form <code>_prop = value</code> or <code>LoadProperty(PropProperty, value)</code>.</returns>
         public string GetFieldLoaderStatement(CslaObjectInfo info, ValueProperty prop, string value)
         {
-            //            if (CurrentUnit.GenerationParams.GeneratedUIEnvironment == UIEnvironment.WinForms_WPF)
             if (value.IndexOf("$") != 0)
                 return GetFieldLoaderStatement(prop, value);
 
@@ -1582,6 +1563,8 @@ namespace CslaGenerator.Util
 
         #endregion
 
+        #region Pseudo events
+
         public List<string> GetEventList(CslaObjectInfo info)
         {
             var lazyLoad = GetLazyLoad(info);
@@ -1596,10 +1579,17 @@ namespace CslaGenerator.Util
                 eventList.Add("Create");
             }
 
-            if (info.HasDeleteCriteria &&
+            if (
+                (info.HasDeleteCriteria &&
                 ((IsEditableType(info.ObjectType) &&
                 IsChildType(info.ObjectType)) ||
                 info.ObjectType == CslaObjectType.EditableRoot))
+                ||
+                (info.GenerateDataPortalDelete && 
+                (info.ObjectType == CslaObjectType.EditableRoot || 
+                info.ObjectType == CslaObjectType.EditableChild || 
+                info.ObjectType == CslaObjectType.EditableSwitchable))
+                )
             {
                 eventList.AddRange(new[] { "DeletePre", "DeletePost" });
             }
@@ -1635,18 +1625,82 @@ namespace CslaGenerator.Util
             return eventList;
         }
 
+        public string FormatEventDocumentation(string name)
+        {
+            var response = string.Empty;
+
+            switch (name)
+            {
+                case "Create":
+                    response += "after setting all defaults for object creation.";
+                    break;
+                case "FetchPre":
+                    response += "after setting query parameters and before the fetch operation.";
+                    break;
+                case "FetchPost":
+                    response += "after the fetch operation (object or collection is fully loaded and set up).";
+                    break;
+                case "FetchRead":
+                    response += "after the low level fetch operation, before the data reader is destroyed.";
+                    break;
+                case "InsertStart":
+                    response += "in DataPortal_Insert, after setting row identifiers (ID) and before setting other query parameters.";
+                    break;
+                case "InsertPre":
+                    response += "in DataPortal_Insert, after setting query parameters and before the insert operation.";
+                    break;
+                case "InsertPost":
+                    response += "in DataPortal_Insert, after the insert operation, before setting back row identifiers (ID and RowVersion) and Commit().";
+                    break;
+                case "UpdateStart":
+                    response += "after setting row identifiers (ID and RowVersion) and before setting other query parameters.";
+                    break;
+                case "UpdatePre":
+                    response += "after setting query parameters and before the update operation.";
+                    break;
+                case "UpdatePost":
+                    response += "in DataPortal_Insert, after the update operation, before setting back row identifiers (RowVersion) and Commit().";
+                    break;
+                case "DeletePre":
+                    response += "in DataPortal_Delete, after setting query parameters and before the delete operation.";
+                    break;
+                case "DeletePost":
+                    response += "in DataPortal_Delete, after the delete operation, before Commit().";
+                    break;
+                default:
+                    response += "undescribed circumstances.";
+                    break;
+            }
+
+            return response;
+        }
+
+        #endregion
+
         #region Criteria and SingleCriteria support
 
-        // not very well done since it doesn't take care of multiple criteria use case
         public bool IsCriteriaClassNeeded(CslaObjectInfo info)
         {
             foreach (Criteria crit in info.CriteriaObjects)
             {
                 if (crit.Properties.Count > 1)
                 {
-                    return true;
+                    return FactoryOrDataPortal(crit);
                 }
             }
+
+            return false;
+        }
+
+        private static bool FactoryOrDataPortal(Criteria crit)
+        {
+            if (crit.CreateOptions.DataPortal ||
+                crit.CreateOptions.Factory ||
+                crit.GetOptions.DataPortal ||
+                crit.GetOptions.Factory ||
+                crit.DeleteOptions.DataPortal ||
+                crit.DeleteOptions.Factory)
+                return true;
 
             return false;
         }
