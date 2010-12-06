@@ -96,6 +96,10 @@
       <Name>CodeSmith.Engine</Name>
       <HintPath>..\..\References\CodeSmith.Engine.dll</HintPath>
     </Reference>
+    <Reference Include="DBSchemaInfo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\References\DBSchemaInfo.dll</HintPath>
+    </Reference>
     <Reference Include="Ionic.Zip.Reduced, Version=1.9.1.5, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\References\Ionic.Zip.Reduced.dll</HintPath>
@@ -617,12 +621,6 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DBSchemaInfo\DBSchemaInfo.csproj">
-      <Project>{4C1DAB30-AB30-48F9-BC13-8E8577AB57B0}</Project>
-      <Name>DBSchemaInfo</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
