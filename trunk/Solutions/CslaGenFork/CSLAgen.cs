@@ -7,8 +7,6 @@ using System.Windows.Forms;
 using CslaGenerator.Controls;
 using CslaGenerator.Plugins;
 using CslaGenerator.Util;
-using Ionic.Zip;
-using Microsoft.VisualBasic;
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace CslaGenerator
@@ -44,6 +42,21 @@ namespace CslaGenerator
             //fbGenerate.OnlyFilesystem = true;
             projectPanel.TargetDirChanged += projectPanel_TargetDirChanged;
             projectPanel.SelectedItemsChanged += projectPanel_SelectedItemsChanged;
+        }
+
+        private void ShieldBitmap(object sender, PaintEventArgs e)
+        {
+            if (!Windows7Security.IsVistaOrHigher())
+                return;
+
+            // Construct an Icon.
+            Icon icon1 = new Icon(SystemIcons.Shield, 16, 16);
+
+            // Call ToBitmap to convert it.
+            Bitmap bmp = icon1.ToBitmap();
+
+            // Draw the bitmap.
+            e.Graphics.DrawImage(bmp, new Point(5, 3));
         }
 
         internal void AddCtrlToMiddlePane(DbSchemaPanel dbSchemaPanel)
@@ -332,6 +345,12 @@ namespace CslaGenerator
             isNewProject = true;
             ofdLoad.FileName = string.Empty;
             Text = _baseFormText;
+            if (!File.Exists(Application.CommonAppDataPath + @"\Default.xml"))
+            {
+                _controller.CurrentPropertiesTab.CmdResetToFactory.PerformClick();
+                _controller.CurrentPropertiesTab.cmdSetDefault.PerformClick();
+            }
+
             _controller.CurrentPropertiesTab.cmdGetDefault.PerformClick();
             AfterOpenEnableButtonsAndMenus();
         }
@@ -792,7 +811,7 @@ namespace CslaGenerator
             }
         }
 
-        private void locateToolStripMenuItem_Click(object sender, EventArgs e)
+        private void LocateToolStripMenuItemClick(object sender, EventArgs e)
         {
             var tDirDialog = new FolderBrowserDialog();
             tDirDialog.Description = @"Current folder location of the CslaGen templates is:" + Environment.NewLine +
@@ -801,40 +820,24 @@ namespace CslaGenerator
             tDirDialog.ShowNewFolderButton = false;
             if (!string.IsNullOrEmpty(_controller.TemplatesDirectory))
                 tDirDialog.SelectedPath = _controller.TemplatesDirectory;
-            tDirDialog.RootFolder = Environment.SpecialFolder.Desktop;
-            tDirDialog.ShowDialog();
-            var tdir = tDirDialog.SelectedPath + @"\";
-            if (_controller.TemplatesDirectory != tdir)
+            else
+                tDirDialog.RootFolder = Environment.SpecialFolder.Desktop;
+
+            var dialogResult = tDirDialog.ShowDialog();
+            if (dialogResult == DialogResult.OK)
             {
-                _controller.TemplatesDirectory = tdir;
-                ConfigTools.Change("TemplatesDirectory", _controller.TemplatesDirectory);
+                var tdir = tDirDialog.SelectedPath + @"\";
+                if (_controller.TemplatesDirectory != tdir)
+                {
+                    _controller.TemplatesDirectory = tdir;
+                    ConfigTools.Change("TemplatesDirectory", _controller.TemplatesDirectory);
+                }
             }
         }
 
-        private void codeSmithExtensionToolStripMenuItem_Click(object sender, EventArgs e)
+        private void CodeSmithExtensionToolStripMenuItemClick(object sender, EventArgs e)
         {
-            var openFile = new OpenFileDialog();
-            openFile.Title = @"CodeSmith Extension - Select the free CodeSmith ZIP file";
-            openFile.Filter = @"ZIP files (*.zip) | *.zip";
-            openFile.DefaultExt = "zip";
-            openFile.Multiselect = false;
-            openFile.CheckFileExists = true;
-            openFile.CheckPathExists = true;
-            openFile.AddExtension = true;
-            var result = openFile.ShowDialog(this);
-            if (result != DialogResult.OK)
-                return;
-
-            var targetDir = Application.StartupPath + "\\";
-
-            using (var zip = ZipFile.Read(openFile.FileName))
-            {
-                zip["CodeSmith.Engine.dll"].Extract(targetDir, ExtractExistingFileAction.OverwriteSilently);
-                zip["license.rtf"].Extract(targetDir, ExtractExistingFileAction.OverwriteSilently);
-            }
-
-            File.Delete(targetDir + "CodeSmith.license.rtf");
-            FileSystem.Rename(targetDir + "license.rtf", targetDir + "CodeSmith.license.rtf");
+            Windows7Security.StartCodeSmithHandler();
         }
     }
 }

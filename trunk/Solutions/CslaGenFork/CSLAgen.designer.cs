@@ -325,14 +325,15 @@ namespace CslaGenerator
             this.locateToolStripMenuItem.Name = "locateToolStripMenuItem";
             this.locateToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
             this.locateToolStripMenuItem.Text = "&Locate Template Directory";
-            this.locateToolStripMenuItem.Click += new System.EventHandler(this.locateToolStripMenuItem_Click);
+            this.locateToolStripMenuItem.Click += new System.EventHandler(this.LocateToolStripMenuItemClick);
             // 
             // codeSmithExtensionToolStripMenuItem
             // 
             this.codeSmithExtensionToolStripMenuItem.Name = "codeSmithExtensionToolStripMenuItem";
             this.codeSmithExtensionToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
-            this.codeSmithExtensionToolStripMenuItem.Text = "CodeSmith Extension";
-            this.codeSmithExtensionToolStripMenuItem.Click += new System.EventHandler(this.codeSmithExtensionToolStripMenuItem_Click);
+            this.codeSmithExtensionToolStripMenuItem.Text = "CodeSmith Extension...";
+            this.codeSmithExtensionToolStripMenuItem.Paint += new System.Windows.Forms.PaintEventHandler(this.ShieldBitmap);
+            this.codeSmithExtensionToolStripMenuItem.Click += new System.EventHandler(this.CodeSmithExtensionToolStripMenuItemClick);
             // 
             // viewToolStripMenuItem
             // 
@@ -719,6 +720,7 @@ namespace CslaGenerator
         private WebBrowser webBrowser1;
         private ObjectRelationsBuilder objectRelationsBuilder;
         #endregion
+
         private ToolStripButton newProjectButton;
         private ToolStripButton openProjectButton;
         private ToolStripButton saveProjectButton;

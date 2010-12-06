@@ -22,7 +22,7 @@ namespace CslaGenerator.Design
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private Container components;
+        private Container components = null;
 
         public XmlCommentEditorForm()
         {

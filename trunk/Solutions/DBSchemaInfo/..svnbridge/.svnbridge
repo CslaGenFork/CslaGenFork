@@ -3,4 +3,8 @@ obj
 </Value></Property><Property><Name>svn:ignore</Name><Value>DBSchemaInfo.suo
 bin
 obj
+</Value></Property><Property><Name>svn:ignore</Name><Value>DBSchemaInfo.5.1.ReSharper.user
+DBSchemaInfo.suo
+bin
+obj
 </Value></Property></Properties></ItemProperties>

@@ -34,6 +34,7 @@ namespace CslaGenerator.Controls
             this.cmdExport = new System.Windows.Forms.Button();
             this.cmdGetDefault = new System.Windows.Forms.Button();
             this.cmdSetDefault = new System.Windows.Forms.Button();
+            this.CmdResetToFactory = new System.Windows.Forms.Button();
             this.cmdUndo = new System.Windows.Forms.Button();
             this.cmdApply = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -207,7 +208,7 @@ namespace CslaGenerator.Controls
             this.cmdImport.TabIndex = 20;
             this.cmdImport.Text = "&Import...";
             this.cmdImport.UseVisualStyleBackColor = true;
-            this.cmdImport.Click += new System.EventHandler(this.cmdImport_Click);
+            this.cmdImport.Click += new System.EventHandler(this.CmdImportClick);
             // 
             // cmdExport
             // 
@@ -218,7 +219,7 @@ namespace CslaGenerator.Controls
             this.cmdExport.TabIndex = 20;
             this.cmdExport.Text = "&Export...";
             this.cmdExport.UseVisualStyleBackColor = true;
-            this.cmdExport.Click += new System.EventHandler(this.cmdExport_Click);
+            this.cmdExport.Click += new System.EventHandler(this.CmdExportClick);
             // 
             // cmdGetDefault
             // 
@@ -229,7 +230,7 @@ namespace CslaGenerator.Controls
             this.cmdGetDefault.TabIndex = 20;
             this.cmdGetDefault.Text = "&Get default";
             this.cmdGetDefault.UseVisualStyleBackColor = true;
-            this.cmdGetDefault.Click += new System.EventHandler(this.cmdGetDefault_Click);
+            this.cmdGetDefault.Click += new System.EventHandler(this.CmdGetDefaultClick);
             // 
             // cmdSetDefault
             // 
@@ -240,7 +241,18 @@ namespace CslaGenerator.Controls
             this.cmdSetDefault.TabIndex = 20;
             this.cmdSetDefault.Text = "&Set default";
             this.cmdSetDefault.UseVisualStyleBackColor = true;
-            this.cmdSetDefault.Click += new System.EventHandler(this.cmdSetDefault_Click);
+            this.cmdSetDefault.Click += new System.EventHandler(this.CmdSetDefaultClick);
+            // 
+            // CmdResetToFactory
+            // 
+            this.CmdResetToFactory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.CmdResetToFactory.Location = new System.Drawing.Point(344, 396);
+            this.CmdResetToFactory.Name = "CmdResetToFactory";
+            this.CmdResetToFactory.Size = new System.Drawing.Size(100, 23);
+            this.CmdResetToFactory.TabIndex = 20;
+            this.CmdResetToFactory.Text = "&Factory default";
+            this.CmdResetToFactory.UseVisualStyleBackColor = true;
+            this.CmdResetToFactory.Click += new System.EventHandler(this.CmdResetToFactoryClick);
             // 
             // cmdUndo
             // 
@@ -250,7 +262,7 @@ namespace CslaGenerator.Controls
             this.cmdUndo.Size = new System.Drawing.Size(72, 24);
             this.cmdUndo.TabIndex = 21;
             this.cmdUndo.Text = "&Undo";
-            this.cmdUndo.Click += new System.EventHandler(this.cmdUndo_Click);
+            this.cmdUndo.Click += new System.EventHandler(this.CmdUndoClick);
             // 
             // cmdApply
             // 
@@ -260,7 +272,7 @@ namespace CslaGenerator.Controls
             this.cmdApply.Size = new System.Drawing.Size(72, 24);
             this.cmdApply.TabIndex = 22;
             this.cmdApply.Text = "&Apply";
-            this.cmdApply.Click += new System.EventHandler(this.cmdApply_Click);
+            this.cmdApply.Click += new System.EventHandler(this.CmdApplyClick);
             // 
             // tabControl1
             // 
@@ -1677,12 +1689,12 @@ namespace CslaGenerator.Controls
             // projectParametersBindingSource
             // 
             this.projectParametersBindingSource.DataSource = typeof(CslaGenerator.Metadata.ProjectParameters);
-            this.projectParametersBindingSource.CurrentItemChanged += new System.EventHandler(this.generationParametersBindingSource_CurrentItemChanged);
+            this.projectParametersBindingSource.CurrentItemChanged += new System.EventHandler(this.GenerationParametersBindingSourceCurrentItemChanged);
             // 
             // generationParametersBindingSource
             // 
             this.generationParametersBindingSource.DataSource = typeof(CslaGenerator.Metadata.GenerationParameters);
-            this.generationParametersBindingSource.CurrentItemChanged += new System.EventHandler(this.generationParametersBindingSource_CurrentItemChanged);
+            this.generationParametersBindingSource.CurrentItemChanged += new System.EventHandler(this.GenerationParametersBindingSourceCurrentItemChanged);
             // 
             // ProjectProperties
             // 
@@ -1693,6 +1705,7 @@ namespace CslaGenerator.Controls
             this.Controls.Add(this.cmdUndo);
             this.Controls.Add(this.cmdGetDefault);
             this.Controls.Add(this.cmdSetDefault);
+            this.Controls.Add(this.CmdResetToFactory);
             this.Controls.Add(this.cmdExport);
             this.Controls.Add(this.cmdImport);
             this.Controls.Add(this.tabControl1);
@@ -1735,7 +1748,8 @@ namespace CslaGenerator.Controls
         private System.Windows.Forms.Button cmdImport;
         private System.Windows.Forms.Button cmdExport;
         internal System.Windows.Forms.Button cmdGetDefault;
-        private System.Windows.Forms.Button cmdSetDefault;
+        internal System.Windows.Forms.Button cmdSetDefault;
+        internal System.Windows.Forms.Button CmdResetToFactory;
         private System.Windows.Forms.Button cmdUndo;
         internal System.Windows.Forms.Button cmdApply;
         private System.Windows.Forms.TabControl tabControl1;

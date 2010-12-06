@@ -245,12 +245,12 @@ namespace CslaGenerator
                     if (_frmGenerator.ProjectPanel.ListObjects.Items.Count > 0)
                     {
                         _currentCslaObject = (CslaObjectInfo)_frmGenerator.ProjectPanel.ListObjects.Items[0];
-                        //                        _frmGenerator.PropertyGrid.SelectedObject = new PropertyBag(_currentCslaObject, _propertyContext);
+                        // _frmGenerator.PropertyGrid.SelectedObject = new PropertyBag(_currentCslaObject, _propertyContext);
                     }
                     else
                     {
                         _currentCslaObject = null;
-                        //                        _frmGenerator.PropertyGrid.SelectedObject = null;
+                        // _frmGenerator.PropertyGrid.SelectedObject = null;
                     }
 
                     if (_dbSchemaPanel != null)
@@ -259,7 +259,7 @@ namespace CslaGenerator
                 else
                 {
                     _currentCslaObject = null;
-                    //                    _frmGenerator.PropertyGrid.SelectedObject = null;
+                    // _frmGenerator.PropertyGrid.SelectedObject = null;
                     if (_dbSchemaPanel != null)
                         _dbSchemaPanel.CslaObjectInfo = null;
                 }
@@ -281,7 +281,7 @@ namespace CslaGenerator
             }
             catch (Exception e)
             {
-                MessageBox.Show(_frmGenerator, "An error occurred while trying to load: " + Environment.NewLine + e.Message + Environment.NewLine + e.StackTrace, "Loading Error");
+                MessageBox.Show(_frmGenerator, @"An error occurred while trying to load: " + Environment.NewLine + e.Message + Environment.NewLine + e.StackTrace, "Loading Error");
             }
             finally
             {
@@ -312,7 +312,7 @@ namespace CslaGenerator
         public void NewCslaUnit()
         {
             CurrentUnit = new CslaGeneratorUnit();
-            _currentFilePath = System.IO.Path.GetTempPath() + @"\" + Guid.NewGuid().ToString();
+            _currentFilePath = Path.GetTempPath() + @"\" + Guid.NewGuid().ToString();
             _currentCslaObject = null;
             _currentUnit.ConnectionString = ConnectionFactory.ConnectionString;
             BindControls();
@@ -325,7 +325,7 @@ namespace CslaGenerator
             if (!_frmGenerator.ApplyProjectProperties())
                 return;
             FileStream fs = null;
-            string tempFile = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".cslagenerator";
+            string tempFile = Path.GetTempPath() + Guid.NewGuid().ToString() + ".cslagenerator";
             bool success = false;
             try
             {
@@ -337,7 +337,7 @@ namespace CslaGenerator
             }
             catch (Exception e)
             {
-                MessageBox.Show(_frmGenerator, "An error occurred while trying to save: " + Environment.NewLine + e.Message, "Save Error");
+                MessageBox.Show(_frmGenerator, @"An error occurred while trying to save: " + Environment.NewLine + e.Message, "Save Error");
             }
             finally
             {
@@ -587,7 +587,7 @@ namespace CslaGenerator
             var tDir = ConfigTools.Get("TemplatesDirectory");
             if (string.IsNullOrEmpty(tDir))
             {
-                TemplatesDirectory = Application.StartupPath + @"\Templates\";
+                TemplatesDirectory = Environment.SpecialFolder.Desktop.ToString();
             }
             else
             {
