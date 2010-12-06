@@ -7,14 +7,14 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCulture("")]
 [assembly: AssemblyTitle("Csla Generator Fork")]
 [assembly: AssemblyDescription("A Csla DAL and Business Object code generation tool based on the CodeSmith engine.\nThis fork is based on CslaGen 20090529.")]
-[assembly: AssemblyCompany("CslaGen Project")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("CslaGenFork Project")]
 [assembly: AssemblyProduct("Csla Generator Fork")]
 [assembly: AssemblyCopyright("Copyright © CslaGen Project, 2008, 2009 && Tiago Freitas Leal, 2009, 2010")]
 [assembly: AssemblyTrademark("All Rights Reserved")]
+[assembly: AssemblyCulture("")]
 
 //
 // Version information for an assembly consists of the following four values:
@@ -27,7 +27,7 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("4.0.0.*")]
+[assembly: AssemblyVersion("4.0.1.*")]
 
 //
 // In order to sign your assembly you must specify a key to use. Refer to the 
@@ -57,6 +57,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDelaySign(false)]
 [assembly: AssemblyKeyFile("")]
 [assembly: AssemblyKeyName("")]
-[assembly: AssemblyFileVersionAttribute("4.0.0")]
+[assembly: AssemblyFileVersionAttribute("4.0.1")]
 [assembly: GuidAttribute("5c019c4f-d2ab-40dd-9860-70bd603b6017")]
 [assembly: ComVisibleAttribute(false)]

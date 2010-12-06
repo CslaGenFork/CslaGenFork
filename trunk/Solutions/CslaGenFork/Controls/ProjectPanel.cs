@@ -106,7 +106,7 @@ namespace CslaGenerator.Controls
         private void textboxPlusBtn_ButtonClicked(object sender, EventArgs e)
         {
             FolderBrowserDialog fBrowser = new FolderBrowserDialog();
-            fBrowser.Description = "Please choose an output folder for the generated code.";
+            fBrowser.Description = @"Please choose an output folder for the generated code.";
 
             if (textboxPlusBtn.TextBox.Text.Trim().Length != 0)
             {

@@ -1,4 +1,5 @@
 ﻿using System.Configuration;
+using System.Windows.Forms;
 
 namespace CslaGenerator.Util
 {
@@ -16,16 +17,20 @@ namespace CslaGenerator.Util
         /// <returns>The value of the supplied key</returns>
         public static string Get(string key)
         {
-            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            var configFile = new ExeConfigurationFileMap
+                                 {
+                                     ExeConfigFilename = Application.CommonAppDataPath + @"\SharedApp.config"
+                                 };
+            var config = ConfigurationManager.OpenMappedExeConfiguration(configFile, ConfigurationUserLevel.None);
             var response = string.Empty;
             try
             {
                 response = config.AppSettings.Settings[key].Value;
             }
-            catch (System.NullReferenceException ex)
+            catch (System.NullReferenceException)
             {
-
             }
+
             return response;
         }
 
@@ -37,7 +42,11 @@ namespace CslaGenerator.Util
         /// <param name="value">The value for the added key</param>
         public static void Add(string key, string value)
         {
-            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            var configFile = new ExeConfigurationFileMap
+                                 {
+                                     ExeConfigFilename = Application.CommonAppDataPath + @"\SharedApp.config"
+                                 };
+            var config = ConfigurationManager.OpenMappedExeConfiguration(configFile, ConfigurationUserLevel.None);
             config.AppSettings.Settings.Add(key, value);
             config.Save(ConfigurationSaveMode.Modified);
             ConfigurationManager.RefreshSection("appSettings");
@@ -49,7 +58,11 @@ namespace CslaGenerator.Util
         /// <param name="key">The key name to be removed</param>
         public static void Remove(string key)
         {
-            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            var configFile = new ExeConfigurationFileMap
+                                 {
+                                     ExeConfigFilename = Application.CommonAppDataPath + @"\SharedApp.config"
+                                 };
+            var config = ConfigurationManager.OpenMappedExeConfiguration(configFile, ConfigurationUserLevel.None);
             config.AppSettings.Settings.Remove(key);
             config.Save(ConfigurationSaveMode.Modified);
             ConfigurationManager.RefreshSection("appSettings");
@@ -62,7 +75,11 @@ namespace CslaGenerator.Util
         /// <param name="value">The new value</param>
         public static void Change(string key, string value)
         {
-            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            var configFile = new ExeConfigurationFileMap
+                                 {
+                                     ExeConfigFilename = Application.CommonAppDataPath + @"\SharedApp.config"
+                                 };
+            var config = ConfigurationManager.OpenMappedExeConfiguration(configFile, ConfigurationUserLevel.None);
             config.AppSettings.Settings.Remove(key);
             config.AppSettings.Settings.Add(key, value);
             config.Save(ConfigurationSaveMode.Modified);
