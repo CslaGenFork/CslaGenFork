@@ -587,6 +587,16 @@ namespace CslaGenerator
             var tDir = ConfigTools.Get("TemplatesDirectory");
             if (string.IsNullOrEmpty(tDir))
             {
+                tDir = ConfigTools.OriginalGet("TemplatesDirectory");
+
+                while (tDir.LastIndexOf(@"\\") == tDir.Length - 2)
+                {
+                    tDir = tDir.Substring(0, tDir.Length - 1);
+                }
+            }
+
+            if (string.IsNullOrEmpty(tDir))
+            {
                 TemplatesDirectory = Environment.SpecialFolder.Desktop.ToString();
             }
             else

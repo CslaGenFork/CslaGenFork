@@ -826,12 +826,11 @@ namespace CslaGenerator
             var dialogResult = tDirDialog.ShowDialog();
             if (dialogResult == DialogResult.OK)
             {
-                var tdir = tDirDialog.SelectedPath + @"\";
-                if (_controller.TemplatesDirectory != tdir)
-                {
-                    _controller.TemplatesDirectory = tdir;
-                    ConfigTools.Change("TemplatesDirectory", _controller.TemplatesDirectory);
-                }
+                var tdir = tDirDialog.SelectedPath;
+                if (tDirDialog.SelectedPath.LastIndexOf('\\') != tDirDialog.SelectedPath.Length - 1)
+                    tdir += @"\";
+                _controller.TemplatesDirectory = tdir;
+                ConfigTools.Change("TemplatesDirectory", _controller.TemplatesDirectory);
             }
         }
 
