@@ -15,6 +15,26 @@ namespace CslaGenerator.Util
         /// </summary>
         /// <param name="key">The key name</param>
         /// <returns>The value of the supplied key</returns>
+        public static string OriginalGet(string key)
+        {
+            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            var response = string.Empty;
+            try
+            {
+                response = config.AppSettings.Settings[key].Value;
+            }
+            catch (System.NullReferenceException ex)
+            {
+
+            }
+            return response;
+        }
+
+        /// <summary>
+        /// Reads the value of a key
+        /// </summary>
+        /// <param name="key">The key name</param>
+        /// <returns>The value of the supplied key</returns>
         public static string Get(string key)
         {
             var configFile = new ExeConfigurationFileMap
