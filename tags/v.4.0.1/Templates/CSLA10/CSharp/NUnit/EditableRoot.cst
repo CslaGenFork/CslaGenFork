@@ -1,0 +1,9 @@
+<%-- 
+Name:
+Author: 
+Description: 
+--%>
+<%@ CodeTemplate Language="C#" TargetLanguage="C#" Src="" Inherits="CslaTemplateHelper" Debug="False" Description="Generates a NUnit test base class." %>
+<%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the EditableRoot object to create." %>
+
+<!-- #include file="EditableObject.cst" -->

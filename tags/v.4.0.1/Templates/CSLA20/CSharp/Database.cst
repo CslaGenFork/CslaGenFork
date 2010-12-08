@@ -1,0 +1,39 @@
+<%@ CodeTemplate Inherits="CslaTemplateHelper" Language="CSharp" TargetLanguage="CSharp" Description="Generates a static Database class." %>
+<%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the CSLA Object (just to get some project info)" %>
+
+<%@ Assembly Name="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator.Metadata" %>
+<%@ Import Namespace="CslaGenerator.Util" %>
+
+<!-- #include file="Version.inc" -->
+// Filename:    Database.cs
+// ObjectType:  Connection Strings for Database access
+// CSLAType:    n/a
+//
+
+using System.Configuration;
+
+<% if (Info.ObjectNamespace.Trim().Length > 0) { %>namespace <%=Info.ObjectNamespace%>
+{
+<% } %>
+    ///<summary>Class that provides the connection
+    /// strings used by the application.</summary>
+    internal static class Database
+    {
+        /// <summary>Connection string to the main database.</summary>
+        internal static string <%= Info.DbName %>Connection
+        {
+            get { return ConfigurationManager.ConnectionStrings["<%= Info.DbName %>"].ConnectionString; }
+        }
+
+        /// <summary>Connection string to the security database.</summary>
+        internal static string SecurityConnection
+        {
+            get { return ConfigurationManager.ConnectionStrings["Security"].ConnectionString; }
+        }
+    }
+
+<% if (Info.ObjectNamespace.Trim().Length > 0) { %>
+}
+<% } %>

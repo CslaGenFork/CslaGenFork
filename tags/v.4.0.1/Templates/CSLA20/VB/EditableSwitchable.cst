@@ -1,0 +1,194 @@
+<%@ CodeTemplate Inherits="VbCslaTemplateHelper" Language="VB" TargetLanguage="VB" Description="Generates a CSLA Editable Switchable Object." %>
+<%@ Property Name="Info" Type="CslaObjectInfo" Optional="False" Category="Business Object" Description="Definition of the EditableSwitchable object to create." %>
+<%@ Property Name="ActiveObjects" Type="System.Boolean" Default="false" Category="Options" Description="If true, base class is generated as ActiveObjects" %>
+<%@ Property Name="Errors" Type="System.Text.StringBuilder" Optional="False" Category="Options" Description="Allows the template to return errors to master.cst" %>
+
+<%@ Assembly Name="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator.Metadata" %>
+<%@ Import Namespace="CslaGenerator.Util" %>
+<%@ Assembly Name="System.Windows.Forms" %>
+<%@ Import Namespace="System.Windows.Forms" %>
+<%@ Import Namespace="System.Text" %>
+<%@ Import Namespace="System.Collections.Generic" %>
+<% Dim first As Boolean = True %>
+<!-- #include file="Header.inc" -->
+Imports System.Data.SqlClient
+Imports CSLA
+<% If ActiveObjects Then %>Imports ActiveObjects<% End If %>
+Imports CSLA.Data
+Imports CSLA.Validation
+<%= GetUsingStatementsString(Info) %>
+<% If Info.ObjectNamespace.Trim.Length > 0 Then %>Namespace <%=Info.ObjectNamespace%><% End If %>
+	<!-- #include file="XmlComment.inc" -->
+	<%= GetAttributesString(Info.Attributes) %>
+	<Serializable()<%
+       If ActiveObjects Then
+               If Info.SubscribeToChannel.Length > 0 Then
+               %>, Subscribe("<%= Info.SubscribeToChannel %>")<%
+               End If
+       End If %>> _
+	Public Partial Class <%=Info.ObjectName%>
+		Inherits <%
+			If Info.InheritedType.Type <> String.Empty Then 
+				%><%=Info.InheritedType.Type%><% 
+			ElseIf Info.InheritedType.ObjectName <> String.Empty Then
+				%><%=Info.InheritedType.ObjectName%><% 
+			Else 
+				%><% If ActiveObjects Then %>Active<% End If %>BusinessBase<% 
+			End If %>(Of <%=Info.ObjectName%>)
+		<!-- #include file="Implements.inc" -->	
+		
+		<!-- #include file="StateFields.inc" -->
+		
+		<!-- #include file="BusinessProps.inc" -->
+		
+		<!-- #include file="BusinessRules.inc" -->
+		
+		<!-- #include file="ObjectOverrides.inc" -->
+#Region " Shared Methods "
+	<% If Info.GenerateFactoryMethods Then 
+			If Info.DbName.Trim().Equals(String.Empty) Then
+				Errors.Append("	Make sure you specify a DB name.") 
+				Errors.Append(vbCrLf)
+			End If
+	%>
+		<!-- #include file="NewObject.inc" -->
+		
+		<!-- #include file="GetObject.inc" -->
+		
+		<!-- #include file="InternalGetObject.inc" -->
+		
+		<!-- #include file="DeleteObject.inc" -->
+
+<% For Each c As Criteria In Info.CriteriaObjects 
+	If c.CreateOptions.Factory Then %>
+		''' <summary>
+		''' Factory method. New <see cref="<%=Info.ObjectName%>" /> object is created as child, based on given parameters.
+		''' </summary>
+<%
+		Dim strNewParams as String = String.Empty
+		Dim strNewCritParams as String = String.Empty
+		Dim NewParams as Metadata.CriteriaPropertyCollection = c.Properties
+		For i As Integer = 0 To NewParams.Count - 1
+			If i > 0 Then
+				strNewParams &= ", "
+				strNewCritParams &= ", "
+			End If
+			strNewParams &= String.Concat("ByVal ", FormatCamel(NewParams(i).Name), " As ", GetDataType(NewParams(i)))
+			strNewCritParams &= FormatCamel(NewParams(i).Name)
+		Next
+%>	
+		Friend Shared Function New<%=Info.ObjectName%><%=c.CreateOptions.FactorySuffix.Trim()%>Child(<%= strNewParams %>) As <%=Info.ObjectName%>
+		<% If Info.NewRoles <> String.Empty Then 
+				Dim newRoles() As String = System.Text.RegularExpressions.Regex.Split(Info.NewRoles, ";")
+				first = True %>
+			If <% For Each role As String In newRoles 
+					If Not first Then %> AndAlso _
+			   <% 	Else
+						first = False 
+					End If %>Not System.Threading.Thread.CurrentPrincipal.IsInRole("<%=role%>")<%
+				   Next %> Then
+					Throw New System.Security.SecurityException("User not authorized to create a <%=Info.ObjectName%>")
+			End If
+			
+			<% End If 
+			
+			If Info.ObjectType = CslaObjectType.EditableSwitchable Then
+				If strNewCritParams.Length > 0 Then
+					strNewCritParams = "True, " & strNewCritParams
+				Else
+					strNewCritParams = "True"
+				End If
+			End If
+			
+			%>
+			Dim obj as <%= Info.ObjectName %>
+			obj = <% If ActiveObjects Then %>ActiveObjects.<% End If %>DataPortal.Create(Of <%= Info.ObjectName %>)(New <%= c.Name %>(<%= strNewCritParams %>))
+			obj.MarkAsChild
+			Return obj
+		End Function
+<% 	End If 
+
+
+	If c.GetOptions.Factory Then %>
+		''' <summary>
+		''' Factory method. New <see cref="<%=Info.ObjectName%>" /> object is created as a child object and loaded from the database, based on given parameters.
+		''' </summary>
+		<%
+				Dim strGetParams as String = String.Empty
+				Dim strGetCritParams as String = String.Empty
+				For i As Integer = 0 To c.Properties.Count - 1
+					If i > 0 Then
+						strGetParams &= ", "
+						strGetCritParams &= ", "
+					End If
+					strGetParams &= String.Concat("ByVal ", FormatCamel(c.Properties(i).Name), " As ", GetDataType(c.Properties(i)))
+					strGetCritParams &= FormatCamel(c.Properties(i).Name)
+				Next
+		%>
+		Friend Shared Function Get<%=Info.ObjectName%><%=c.GetOptions.FactorySuffix.Trim()%>Child(<%=strGetParams%>) As <%=Info.ObjectName%>
+		
+			<% If Info.GetRoles <> String.Empty Then 
+				Dim getRoles() As String = System.Text.RegularExpressions.Regex.Split(Info.GetRoles, ";")
+				first = True %>
+			If <% For Each role As String In getRoles 
+					If Not first Then %> AndAlso _
+			   <% 	Else
+						first = False 
+					End If %>Not System.Threading.Thread.CurrentPrincipal.IsInRole("<%=role%>")<%
+				   Next %> Then
+					Throw New System.Security.SecurityException("User not authorized to load a <%=Info.ObjectName%>")
+			End If
+			
+			<% End If 
+			If strGetCritParams.Trim().Length > 0 Then
+				strGetCritParams = "True, " & strGetCritParams
+			Else
+				strGetCritParams = "True"
+			End If
+			%>
+			Return <% If ActiveObjects Then %>ActiveObjects.<% End If %>DataPortal.Fetch(Of <%=Info.ObjectName %>)(New <%=c.Name%>(<%=strGetCritParams %>))
+			
+		End Function
+		<% End If 
+Next%>
+<% End If%>
+		<!-- #include file="Save.inc" -->
+		
+#End Region
+
+<!-- #include file="Constructor.inc" -->
+
+<!-- #include file="Criteria.inc" -->
+
+<!-- #include file="SharedAuthorizationMethods.inc" -->
+
+<% If Info.GenerateDataAccessRegion Then %>
+
+#Region " Data Access "
+
+		<!-- #include file="DataPortalFetch.inc" -->
+		
+		<!-- #include file="DataPortalInsert.inc" -->		
+		
+		<!-- #include file="DataPortalUpdate.inc" -->	
+		
+		<!-- #include file="DoInsertUpdate.inc" -->	
+		
+		<!-- #include file="InternalUpdate.inc" -->	
+		
+		<!-- #include file="DataPortalDelete.inc" -->
+		
+		<!-- #include file="DataPortalCreate.inc" -->
+		
+#End Region
+		<!-- #include file="Events.inc" -->
+
+<% End If %>
+
+		<!-- #include file="SetParent.inc" -->
+	
+	End Class
+
+<% If Info.ObjectNamespace.Trim.Length > 0 Then %>End Namespace<% End If %>

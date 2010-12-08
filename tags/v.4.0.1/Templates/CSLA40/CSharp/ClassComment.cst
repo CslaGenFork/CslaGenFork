@@ -1,0 +1,31 @@
+<%@ CodeTemplate Inherits="CslaTemplateHelper" Language="CSharp" TargetLanguage="CSharp" Description="Generates a CSLA Inherited Object." %>
+<%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the CSLA Object to inherit from." %>
+<%@ Property Name="ActiveObjects" Type="System.Boolean" Default="false" Category="Options" Description="if (true, base class is generated as ActiveObjects" %>
+
+<%@ Assembly Name="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator.Metadata" %>
+<%@ Import Namespace="CslaGenerator.Util" %>
+
+<!-- #include file="Header.inc" -->
+<%= GetUsingStatementsString(Info) %>
+<%
+if (Info.ObjectNamespace.Length > 0)
+{
+%>namespace <%= Info.ObjectNamespace %>
+{
+<%
+}
+bool? firstComment = true;
+%><!-- #include file="XmlComment.inc" -->
+    public partial class <%= Info.ObjectName %>
+    {
+    }
+<%
+if (Info.ObjectNamespace.Length > 0)
+{
+    %>
+}
+<%
+}
+%>
