@@ -1,0 +1,506 @@
+<%@ CodeTemplate Language="C#" TargetLanguage="Text" Debug="True" Description="Base template for loading metadata and generating objects." %>
+<%@ Property Name="MetadataXmlFile" Type="System.String" Default="" Category="Options" Description="The XML file that stores your objects information" %>
+<%@ Property Name="BackupOldSource" Type="System.Boolean" Default="true" Category="Options" Description="Backup previous source files" %>
+<%@ Property Name="GenerateAllObjects" Type="System.Boolean" Default="true" Category="Options" Description="Generate all objects regardless of their settings in the project." %>
+<%@ Property Name="GenerateAllSprocs" Type="System.Boolean" Default="true" Category="Options" Description="Generate all sprocs regardless of their settings in the project." %>
+<%@ Property Name="SeparateNamespaces" Type="System.Boolean" Default="false" Category="Options" Description="If true, business objects are arranged into folders, based on namespace names." %>
+<%@ Property Name="SeparateBaseClasses" Type="System.Boolean" Default="false" Category="Options" Description="If true, base class is generated in 'Base' subfolder of object's folder." %>
+
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="SchemaExplorer.SqlSchemaProvider" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Assembly Name="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator.Metadata" %>
+<%@ Import Namespace="System.Xml.Serialization" %>
+<%@ Import Namespace="System.IO" %>
+<%@ Assembly Name="System.Windows.Forms" %>
+<%@ Import Namespace="System.Windows.Forms" %>
+<%@ Import Namespace="System.Text" %>
+
+<%
+	Load(MetadataXmlFile);
+	GenerateProject(BackupOldSource, GenerateAllObjects, GenerateAllSprocs);
+%>
+
+<script runat="template">
+private CslaGeneratorUnit _currentUnit = null;
+private DatabaseSchema _schema = null;
+
+public void GenerateObject(CslaObjectInfo objInfo, bool backupSource)
+{
+	if (objInfo.OutputLanguage != CodeLanguage.CSharp && objInfo.OutputLanguage != CodeLanguage.VB)
+	{
+		throw new Exception("Object cannot be generated.  The only output languages currently available are C# and VB.NET");
+	}
+	if (_currentUnit != null && objInfo != null)
+	{
+		string fileName = GetFileName(objInfo);
+		string baseFileName = GetBaseFileName(objInfo);
+		FileStream fsBase = null;
+		StreamWriter swBase = null;
+		FileStream fs = null;
+		StreamWriter sw = null;
+		try 
+		{
+			string templateName = GetTemplateName(objInfo);
+			if (templateName != String.Empty)
+			{	
+				string path = this.CodeTemplateInfo.DirectoryName + @"\" + templateName;
+				CodeTemplateCompiler compiler = new CodeTemplateCompiler(path);
+				compiler.Compile();
+
+				if (compiler.Errors.Count == 0)
+				{
+					CodeTemplate template = compiler.CreateInstance();
+					template.SetProperty("Info", objInfo);
+
+					if (backupSource && File.Exists(baseFileName))
+					{
+						FileInfo oldFile = new FileInfo(baseFileName);
+						if (File.Exists(baseFileName + ".old"))
+						{
+							File.Delete(baseFileName + ".old");
+						}
+						oldFile.MoveTo(baseFileName + ".old");
+					}
+					fsBase = File.Open(baseFileName,FileMode.Create);
+					swBase = new StreamWriter(fsBase);
+					template.Render(swBase);
+				}
+				else
+				{
+					StringBuilder sb = new StringBuilder();
+					for (int i = 0; i < compiler.Errors.Count; i++)
+					{
+						sb.Append(compiler.Errors[i].ToString());
+						sb.Append(Environment.NewLine);
+					}
+					throw new Exception("Template failed to compile" + Environment.NewLine + sb.ToString());
+				}
+			}
+			// Create Inheritance file if it does not exist
+			if (!File.Exists(fileName) && objInfo.ObjectType != CslaObjectType.NameValueList)
+			{
+				templateName = "InheritFromBase.cst";
+				string path = this.CodeTemplateInfo.DirectoryName + @"\" + templateName;
+				CodeTemplateCompiler compiler = new CodeTemplateCompiler(path);
+				compiler.Compile();
+
+				if (compiler.Errors.Count == 0)
+				{
+					CodeTemplate template = compiler.CreateInstance();
+					template.SetProperty("Info", objInfo);
+					fs = File.Open(fileName,FileMode.Create);
+					sw = new StreamWriter(fs);
+					template.Render(sw);
+				}
+				else
+				{
+					StringBuilder sb = new StringBuilder();
+					for (int i = 0; i < compiler.Errors.Count; i++)
+					{
+						sb.Append(compiler.Errors[i].ToString());
+						sb.Append(Environment.NewLine);
+					}
+					throw new Exception("Template failed to compile." + Environment.NewLine + sb.ToString());
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			MessageBox.Show("An error occurred while generating object." + Environment.NewLine + e.Message + Environment.NewLine + e.StackTrace,"Generation Error");
+		}
+		finally
+		{
+			if (sw != null)
+			{
+				sw.Close();
+			}
+			if (swBase != null)
+			{
+				swBase.Close();
+			}
+		}
+	}
+}
+
+public void WriteToFile(string fileName, string data)
+{
+	FileStream fs = null;
+	StreamWriter sw = null;
+	try
+	{
+		fs = File.Open(fileName,FileMode.Create);
+		sw = new StreamWriter(fs);
+		sw.Write(data);
+	}
+	catch (Exception e)
+	{
+		MessageBox.Show("Error writing to file " + fileName);
+	}
+	finally
+	{
+		sw.Close();
+	}
+}
+
+public void GenerateProject(bool backupSource, bool allObjects, bool allSprocs)
+{
+	if (_currentUnit != null)
+	{
+		ProgressForm f = new ProgressForm(_currentUnit.CslaObjects.Count);
+		f.Show();
+
+		//Debugger.Break();
+		foreach (CslaObjectInfo info in _currentUnit.CslaObjects)
+		{
+			f.MessageText = info.ObjectName;
+			if (f.Cancelled) break;
+			
+			if  (allObjects || info.Generate)
+			{
+				GenerateObject(info, backupSource);
+				if (f.Cancelled) break;
+
+//				if (allSprocs || info.GenerateSprocs)
+//				{
+//					GenerateSelectProcedure(info, _currentUnit.TargetDirectory);
+//					if (f.Cancelled) break;
+//					
+//					GenerateInsertProcedure(info, _currentUnit.TargetDirectory);
+//					if (f.Cancelled) break;
+//					
+//					GenerateDeleteProcedure(info, _currentUnit.TargetDirectory);
+//					if (f.Cancelled) break;
+//					
+//					GenerateUpdateProcedure(info, _currentUnit.TargetDirectory);
+//					if (f.Cancelled) break;
+//				}
+			}
+			f.Value = f.Value + 1;
+		}
+		
+		if (f.Cancelled)
+			MessageBox.Show("Code Generation Cancelled", "Object Generator");
+		
+		f.Close();
+		
+		_currentUnit = null;
+	}
+}
+
+public void GenerateSelectProcedure(CslaObjectInfo info, string dir)
+{
+	if (info.SelectProcedureName != "")
+	{
+		string proc = GenerateProcedure(info, "SelectProcedure.cst");
+		CheckDirectory(dir + @"\sprocs");
+		WriteToFile(dir + @"\sprocs\" + info.SelectProcedureName + ".sql", proc);
+	}
+}
+
+public void GenerateInsertProcedure(CslaObjectInfo info, string dir)
+{
+	if (info.InsertProcedureName != "")
+	{
+		string proc = GenerateProcedure(info, "InsertProcedure.cst");
+		CheckDirectory(dir + @"\sprocs");
+		WriteToFile(dir + @"\sprocs\" + info.InsertProcedureName + ".sql",proc);
+	}
+}
+
+public void GenerateUpdateProcedure(CslaObjectInfo info, string dir)
+{
+	if (info.UpdateProcedureName != "")
+	{
+		string proc = GenerateProcedure(info, "UpdateProcedure.cst");
+		CheckDirectory(dir + @"\sprocs");
+		WriteToFile(dir + @"\sprocs\" + info.UpdateProcedureName + ".sql", proc);
+	}
+}
+
+public void GenerateDeleteProcedure(CslaObjectInfo info, string dir)
+{
+	if (info.DeleteProcedureName != "")
+	{
+		string proc = GenerateProcedure(info, "DeleteProcedure.cst");
+		CheckDirectory(dir + @"\sprocs");
+		WriteToFile(dir + @"\sprocs\" + info.DeleteProcedureName + ".sql", proc);
+	}
+}
+
+
+private string GenerateProcedure(CslaObjectInfo objInfo, string templateName)
+{
+	if (_currentUnit != null && objInfo != null)
+	{
+		StringWriter sw = null;
+		try 
+		{
+			if (templateName != String.Empty)
+			{	
+				string path = this.CodeTemplateInfo.DirectoryName + @"sprocs\" + templateName;
+				CodeTemplateCompiler compiler = new CodeTemplateCompiler(path);
+				compiler.Compile();
+
+				if (compiler.Errors.Count == 0)
+				{
+					CodeTemplate template = compiler.CreateInstance();
+					template.SetProperty("Info", objInfo);
+
+					sw = new StringWriter();
+					template.Render(sw);
+					return sw.ToString();
+				}
+				else
+				{
+					StringBuilder sb = new StringBuilder();
+					for (int i = 0; i < compiler.Errors.Count; i++)
+					{
+						sb.Append(compiler.Errors[i].ToString());
+						sb.Append(Environment.NewLine);
+					}
+					throw new Exception("Template failed to compile" + Environment.NewLine + sb.ToString());
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			MessageBox.Show("An error occurred while generating procedure." + Environment.NewLine + e.Message + Environment.NewLine + e.StackTrace, "Generation Error");
+		}
+		finally
+		{
+			if (sw != null)
+			{
+				sw.Close();
+			}
+		}
+	}
+	return String.Empty;
+}
+
+private void CheckDirectory(string dir)
+{
+	if(!Directory.Exists(dir))
+	{
+		// Recursion 
+		// If this folder doesn't exists, check the parent folder
+		// CheckDirectory(dir.Substring(0, dir.LastIndexOf(@"\")));
+		Directory.CreateDirectory(dir);
+	}
+}
+
+private string GetNamespaceDirectory(string targetDir, CslaObjectInfo info, bool baseClass)
+{
+	if(targetDir.EndsWith(@"\") == false) { targetDir += @"\"; }
+	
+	if(SeparateNamespaces) 
+	{
+		string namespaceSubFolder = info.ObjectNamespace.Replace(".", @"\");
+		
+		targetDir += namespaceSubFolder;
+		if(targetDir.EndsWith(@"\") == false) { targetDir += @"\"; }
+		if(baseClass && info.ObjectType != CslaObjectType.NameValueList) { targetDir += @"Base\"; }
+	}
+	else
+	{
+		if(baseClass && info.ObjectType != CslaObjectType.NameValueList) { targetDir += @"Base\"; }
+	}
+	
+	CheckDirectory(targetDir);
+	return targetDir;
+}
+
+private string GetFileName(CslaObjectInfo info)
+{
+	string fileName = info.FileName + "Test";
+	if (GetFileExtension(fileName) == String.Empty)
+	{
+		if (info.OutputLanguage == CodeLanguage.CSharp) fileName += ".cs";
+		if (info.OutputLanguage == CodeLanguage.VB) fileName += ".vb";
+	}
+
+	return(GetNamespaceDirectory(_currentUnit.TargetDirectory + @"\UnitTest\", info, false)  + fileName);
+}
+
+private string GetBaseFileName(CslaObjectInfo info)
+{
+	string fileNoExtension = GetFileNameWithoutExtension(info.FileName);
+	if (info.ObjectType != CslaObjectType.NameValueList) { fileNoExtension += "TestBase"; }
+	string fileExtension = GetFileExtension(info.FileName);
+	if (fileExtension == String.Empty)
+	{
+		if (info.OutputLanguage == CodeLanguage.CSharp) fileNoExtension += ".cs";
+		if (info.OutputLanguage == CodeLanguage.VB) fileNoExtension += ".vb";
+	}
+	else
+	{
+		fileNoExtension += fileExtension;
+	}
+
+	return(GetNamespaceDirectory(_currentUnit.TargetDirectory + @"\UnitTest\", info, SeparateBaseClasses)  + fileNoExtension);
+}
+
+public void Load(string fileName)
+{
+	FileStream fs = null;
+	try
+	{
+		fs = File.Open(fileName,FileMode.Open);
+		XmlSerializer serializer = new XmlSerializer(typeof(CslaGeneratorUnit));
+		_currentUnit = (CslaGeneratorUnit)serializer.Deserialize(fs);
+		_currentUnit.ResetParent();
+
+		_schema = new DatabaseSchema(new SqlSchemaProvider(), _currentUnit.ConnectionString);
+
+		foreach (CslaObjectInfo info in _currentUnit.CslaObjects)
+		{
+			if (_schema != null)
+			{
+				info.LoadColumnInfo(_schema);
+			}
+		}
+	}
+	catch (Exception e)
+	{
+		MessageBox.Show("An error occurred while trying to load: " + Environment.NewLine + e.Message + Environment.NewLine + e.StackTrace, "Loading Error");
+	}
+	finally
+	{
+		fs.Close();	
+	}
+}
+
+private string GetFileNameWithoutExtension(string fileName)
+{
+	int index = fileName.LastIndexOf(".");
+	if (index >= 0)
+	{
+		return fileName.Substring(0,index);
+	}
+	return fileName;
+}
+
+private string GetFileExtension(string fileName)
+{
+	int index = fileName.LastIndexOf(".");
+	if (index >= 0)
+	{
+		return fileName.Substring(index+1);
+	}
+	return "";
+}
+
+private string GetTemplateName(CslaObjectInfo info)
+{
+	switch (info.ObjectType)
+	{
+		case CslaObjectType.EditableRoot:
+			return "EditableRoot.cst";
+//		case CslaObjectType.EditableChild:
+//			return "EditableChild.cst";
+		case CslaObjectType.EditableRootCollection:
+			return "EditableRootCollection.cst";
+//		case CslaObjectType.EditableChildCollection:
+//			return "EditableChildCollection.cst";
+		case CslaObjectType.EditableSwitchable:
+			return "EditableSwitchable.cst";
+//		case CslaObjectType.NameValueList:
+//			return "NameValueList.cst";
+//		case CslaObjectType.ReadOnlyObject:
+//			return "ReadOnlyObject.cst";
+		case CslaObjectType.ReadOnlyCollection:
+			return "ReadOnlyCollection.cst";
+		default:
+			return String.Empty;
+	}
+}
+
+public class ProgressForm : System.Windows.Forms.Form
+{
+	private System.Windows.Forms.ProgressBar progressBar1;
+	private System.Windows.Forms.Label label1;
+	private bool bCancelled = false;
+
+	public ProgressForm()
+	{
+		InitializeComponent();
+	}
+
+	public ProgressForm(int nMaxValue)
+	{
+		InitializeComponent();
+		progressBar1.Maximum = nMaxValue;
+	}
+
+	private void InitializeComponent()
+	{
+		this.progressBar1 = new System.Windows.Forms.ProgressBar();
+		this.label1 = new System.Windows.Forms.Label();
+		this.SuspendLayout();
+		// 
+		// progressBar1
+		// 
+		this.progressBar1.Location = new System.Drawing.Point(10, 27);
+		this.progressBar1.Name = "progressBar1";
+		this.progressBar1.Size = new System.Drawing.Size(380, 23);
+		this.progressBar1.TabIndex = 1;
+		// 
+		// label1
+		// 
+		this.label1.Location = new System.Drawing.Point(10, 7);
+		this.label1.Name = "label1";
+		this.label1.Size = new System.Drawing.Size(380, 19);
+		this.label1.TabIndex = 2;
+		this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+		// 
+		// ProgressForm
+		// 
+		this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
+		this.ClientSize = new System.Drawing.Size(400, 57);
+		this.Controls.Add(this.label1);
+		this.Controls.Add(this.progressBar1);
+		this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+		this.MaximizeBox = false;
+		this.MinimizeBox = false;
+		this.Name = "ProgressForm";
+		this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+		this.Text = "Code Generation Progress";
+		this.Load += new System.EventHandler(this.ProgressForm_Load);
+		this.Closed += new System.EventHandler(this.ProgressForm_Closed);
+		this.ResumeLayout(false);
+	}
+
+	private void ProgressForm_Load(object sender, System.EventArgs e)
+	{
+		Application.DoEvents();
+	}
+
+	private void ProgressForm_Closed(object sender, System.EventArgs e)
+	{
+		if (progressBar1.Value < progressBar1.Maximum)
+			bCancelled = true;
+	}
+
+	public int Value
+	{
+		get { return progressBar1.Value; }
+		set { progressBar1.Value = value; }
+	}
+
+	public String MessageText
+	{
+		set { label1.Text = value; Application.DoEvents(); }
+	}
+
+	public bool Cancelled
+	{
+		get 
+		{ 
+			Application.DoEvents();
+			return bCancelled; 
+		}
+	}
+}
+
+</script>

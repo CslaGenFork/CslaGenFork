@@ -1,0 +1,176 @@
+<%@ CodeTemplate Inherits="VbCslaTemplateHelper" Language="VB" TargetLanguage="VB" Description="Generates a CSLA NameValueList Object." %>
+<%@ Property Name="Info" Type="CslaObjectInfo" Optional="False" Category="Business Object" Description="Definition of the NameValueList object to create." %>
+<%@ Property Name="Errors" Type="System.Text.StringBuilder" Optional="False" Category="Options" Description="Allows the template to return errors to master.cst" %>
+
+<%@ Assembly Name="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator.Metadata" %>
+<%@ Import Namespace="CslaGenerator.Util" %>
+<%@ Assembly Name="System.Windows.Forms" %>
+<%@ Import Namespace="System.Windows.Forms" %>
+<%@ Import Namespace="System.Text" %>
+<%@ Property Name="ActiveObjects" Type="System.Boolean" Default="false" Category="Options" Description="If true, base class is generated as ActiveObjects" %>
+
+<%
+Dim nameProp as ValueProperty
+Dim valueProp as ValueProperty
+For Each prop As ValueProperty In Info.ValueProperties
+	If prop.Name.Equals(Info.NameColumn) Then
+		nameProp = prop
+	End If
+	If prop.Name.Equals(Info.ValueColumn) Then
+		valueProp = prop
+	End If
+Next
+If nameProp Is Nothing or valueProp is Nothing Then
+	Errors.Append("Missing name or value properties")
+	Errors.Append(Environment.NewLine)
+Else
+%>
+<!-- #include file="Header.inc" -->
+Imports System.Data.SqlClient
+<% If ActiveObjects = False Then %>Imports CSLA<% else %>Imports ActiveObjects<% End If %>
+Imports CSLA.Data
+
+<% If Info.ObjectNamespace.Trim.Length > 0 Then %>Namespace <%=Info.ObjectNamespace%><% End If %>
+	<!-- #include file="XmlComment.inc" -->
+	<Serializable()<%
+	If ActiveObjects Then 
+		If Info.SubscribeToChannel.Length > 0 Then
+		%>, Subscribe("<%= Info.SubscribeToChannel %>")<% 
+		End If 
+	End If %>> _
+	Partial Public Class <%=Info.ObjectName%>
+		Inherits NameValueListBase(Of <%=GetDataType(valueProp)%>, <%=GetDataType(nameProp)%>)
+	
+#Region " Constructors "
+		
+		Protected Sub New()
+			' Prevent direct creation 
+		End Sub
+		
+#End Region
+		
+<% If Info.GenerateFactoryMethods Then 
+	If Not Info.UseCustomLoading Then %>
+#Region " Shared Methods "
+	
+	<% If Info.CacheResults Then %>
+	Private Shared m_CachedResults As New Dictionary(Of Object, <%=Info.ObjectName%>)
+	Public Shared Sub Invalidate()
+		m_CachedResults.Clear()
+	End Sub
+	<% End If %>
+	<% 
+	For Each c As Criteria In Info.CriteriaObjects
+	If c.GetOptions.Factory Then
+%>
+		''' <summary>
+		''' Factory method. New <see cref="<%=Info.ObjectName%>" /> object is loaded from the database, based on given parameters.
+		''' </summary>
+		<%
+				Dim strGetParams as String = String.Empty
+				Dim strGetCritParams as String = String.Empty
+				For i As Integer = 0 To c.Properties.Count - 1
+					If i > 0 Then
+						strGetParams &= ", "
+						strGetCritParams &= ", "
+					End If
+					strGetParams &= String.Concat("ByVal ", FormatCamel(c.Properties(i).Name), " As ", GetDataType(c.Properties(i)))
+					strGetCritParams &= FormatCamel(c.Properties(i).Name)
+				Next
+		%>
+		Public Shared Function Get<%=Info.ObjectName%><%=c.GetOptions.FactorySuffix.Trim()%>(<%=strGetParams%>) As <%=Info.ObjectName%>
+			<% If Info.GetRoles.Trim() <> String.Empty Then %>
+			If Not CanGetObject() Then
+				Throw New System.Security.SecurityException( _
+					"User not authorized to load a <%= Info.ObjectName %>")
+			End If
+			<% End If %>
+			<% 	If Info.ObjectType = CslaObjectType.EditableSwitchable Then
+					strGetCritParams = "False, " & strGetCritParams
+				End If
+				%>
+			Dim crit As New <%=c.Name%>(<%=strGetCritParams %>)
+			<% If Info.CacheResults Then %>
+			If Not m_CachedResults.ContainsKey(crit) Then
+				m_CachedResults.Add(crit, <% If ActiveObjects Then %>ActiveObjects.<% End If %>DataPortal.Fetch(Of <%=Info.ObjectName %>)(crit))
+			End If
+			Return m_CachedResults(crit)
+			<% Else %>
+			Return <% If ActiveObjects Then %>ActiveObjects.<% End If %>DataPortal.Fetch(Of <%=Info.ObjectName %>)(crit)
+			<% End If %>
+		End Function
+<%
+	End If
+	Next
+End If %>
+
+#End Region
+		<% End If %>
+		
+		<!-- #include file="Criteria.inc"  -->
+		
+		<!-- #include file="SharedAuthorizationMethods.inc" -->	
+
+<% If Info.GenerateDataAccessRegion Then %>
+<% If Not Info.UseCustomLoading Then %>
+#Region " Data Access "
+		
+<% 
+	For Each c As Criteria In Info.CriteriaObjects
+	If c.GetOptions.DataPortal Then %>
+	''' <summary>
+	''' Load <see cref="<%=Info.ObjectName%>" /> collection from the database, based on given parameters.
+	''' </summary>
+	Protected Overloads Sub DataPortal_Fetch(ByVal crit As <%=c.Name%>)
+		Using cn As New SqlConnection(DataBase.<%= Info.DbName %>Connection)
+			Using cmd As SqlCommand = cn.CreateCommand()
+				cmd.CommandType = CommandType.StoredProcedure
+				cmd.CommandText = "<%= c.GetOptions.ProcedureName %>"
+				<% For Each p As Metadata.Property In c.Properties %>
+				cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%=GetParameterSet(p,true)%>)
+				<% Next %>
+				cn.Open()
+				LoadCollection(cmd)
+				<% If Info.ObjectType = CslaObjectType.ReadOnlyCollection Then %>IsReadOnly = True<% End If %>
+			End Using
+		End Using
+	End Sub
+<%	End If
+	Next %>
+	
+	Private Sub LoadCollection(ByVal cmd As SqlCommand)
+		RaiseListChangedEvents = False
+		LocalContext("dpCommand") = cmd
+		LocalContext("dpConnection") = cmd.Connection
+		RaiseEvent FetchPre(Me, EventArgs.Empty)
+		Using dr As New SafeDataReader(cmd.ExecuteReader())
+			IsReadOnly = False
+			While dr.Read()
+				Dim k As <%=GetDataType(valueProp)%> = <%=GetInitValue(valueProp)%>
+				Dim v As <%=GetDataType(nameProp)%> = <%=GetInitValue(nameProp)%>
+				<%=String.Format(GetDataReaderStatement(valueProp), "k")%>
+				<%=String.Format(GetDataReaderStatement(nameProp), "v")%>
+				Dim nvp As New NameValuePair(k, v)
+				Me.Add(nvp)
+			End While
+			IsReadOnly = True
+		End Using
+		LocalContext("dpCommand") = cmd
+		LocalContext("dpConnection") = cmd.Connection
+		RaiseEvent FetchPost(Me, EventArgs.Empty)
+		RaiseListChangedEvents = True
+	End Sub
+	
+#End Region
+<% End If %>
+
+		<!-- #include file="Events.inc" -->
+
+<% End If %>
+
+	End Class
+	
+<% If Info.ObjectNamespace.Trim.Length > 0 Then %>End Namespace<% End If %>
+<% End If %>
