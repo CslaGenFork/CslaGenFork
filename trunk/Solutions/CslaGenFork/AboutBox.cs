@@ -17,7 +17,7 @@ namespace CslaGenerator
             lblAppDescription.Text = GetAttr<AssemblyDescriptionAttribute>().Description;
             lblAppCopyright.Text = GetAttr<AssemblyCopyrightAttribute>().Copyright;
             lblAssyVersion.Text = Assembly.GetExecutingAssembly().FullName.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries)[1].Replace("=", " ");
-            lblAssyVersion.Text += @" (CTP2 RC1)";
+            lblAssyVersion.Text += @" (CTP3 RC1)";
         }
         
         private T GetAttr<T>() {            

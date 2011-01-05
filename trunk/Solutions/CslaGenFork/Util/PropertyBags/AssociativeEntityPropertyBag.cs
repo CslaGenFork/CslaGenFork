@@ -626,12 +626,18 @@ namespace CslaGenerator.Util.PropertyBags
             return false;
         }
 
-        #region IsBrowsable map objecttype:propertyname -> true | false
+        #region IsBrowsable map objectType:propertyName -> true | false
 
         private bool IsBrowsable(string[] objectType, string propertyName)
         {
             try
             {
+                // is it non-root?
+                var mainCslaObject = GeneratorController.Current.CurrentUnit.CslaObjects.Find(SelectedObject[0].MainObject);
+                if (CslaTemplateHelper.IsNotRootType(mainCslaObject))
+                    if (propertyName == "MainLoadParameters" || propertyName == "SecondaryLoadParameters")
+                        return false;
+
                 if (objectType[0] == "OneToMultiple" &&
                     (propertyName == "SecondaryObject" ||
                      propertyName == "SecondaryPropertyName" ||
@@ -642,13 +648,11 @@ namespace CslaGenerator.Util.PropertyBags
                      propertyName == "SecondaryLoadProperties" ||
                      propertyName == "SecondaryLoadParameters"))
                     return false;
-                if (objectType[1] == "SelfLoad" && propertyName == "MainLoadParameters")
+
+                if (objectType[1] == "ParentLoad" && (propertyName == "MainLoadProperties" || propertyName == "MainLazyLoad"))
                     return false;
-                if (objectType[1] == "ParentLoad" && propertyName == "MainLoadProperties")
-                    return false;
-                if (objectType[2] == "SelfLoad" && propertyName == "SecondaryLoadParameters")
-                    return false;
-                if (objectType[2] == "ParentLoad" && propertyName == "SecondaryLoadProperties")
+
+                if (objectType[2] == "ParentLoad" && (propertyName == "SecondaryLoadProperties" || propertyName == "SecondaryLazyLoad"))
                     return false;
 
                 if (_selectedObject.Length > 1 && IsEnumerable(GetPropertyInfoCache(propertyName)))

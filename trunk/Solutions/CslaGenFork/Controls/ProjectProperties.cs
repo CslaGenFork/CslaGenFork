@@ -15,6 +15,7 @@ namespace CslaGenerator.Controls
             FillComboBox(cboOutputLanguage, typeof(CodeLanguage));
             FillComboBox(cboUIEnvironment, typeof(UIEnvironment));
             FillComboBox(cboTarget, typeof(TargetFramework));
+            FillComboBox(cboGenerateSilverlight, typeof(SilverlightSupport));
             FillComboBox(cboGenerateAuthorization, typeof(Authorization));
             FillComboBox(cboHeaderVerbosity, typeof(HeaderVerbosity));
             FillComboBox(cboTransactionType, typeof(TransactionType));

@@ -231,6 +231,7 @@
     <Compile Include="Metadata\AssociativeEntity.cs" />
     <Compile Include="Metadata\ObjectRelationsFactory.cs" />
     <Compile Include="Metadata\PersistenceType.cs" />
+    <Compile Include="Metadata\SilverlightSupport.cs" />
     <Compile Include="Metadata\UIEnvironment.cs">
       <SubType>Code</SubType>
     </Compile>

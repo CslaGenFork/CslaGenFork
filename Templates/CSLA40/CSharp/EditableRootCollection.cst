@@ -81,7 +81,7 @@ using Csla;
         {
             %>Active<%
         }
-        %><%= BusinessListBaseHelper(true) %><%
+        %><%= ListBaseHelper("Business", true) %><%
     }
     %><<%= Info.ObjectName %>, <%= Info.ItemType %>>
     <!-- #include file="Implements.inc" -->
@@ -115,7 +115,7 @@ using Csla;
             {
             %>Active<%
             }
-        %><%= BusinessListBaseHelper(false) %><%
+        %><%= ListBaseHelper("Business", false) %><%
         }
     %><<%= Info.ObjectName %>, <%= Info.ItemType %>><!-- #include file="Implements.inc" -->
 <%

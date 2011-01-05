@@ -503,7 +503,7 @@ namespace CslaGenerator.Util
             foreach (var namespaceName in usingNamespaces)
                 result += "using " + namespaceName + ";\r\n";
 
-            foreach (var p in info.ValueProperties)
+            foreach (var p in info.GetAllValueProperties())
             {
                 if (p.PropertyType == TypeCodeEx.ByteArray && AllowNull(p))
                     result += "using System.Linq; //Added for byte[] helpers" + Environment.NewLine;
@@ -698,6 +698,16 @@ namespace CslaGenerator.Util
                 cslaType == CslaObjectType.DynamicEditableRoot ||
                 cslaType == CslaObjectType.DynamicEditableRootCollection ||
                 cslaType == CslaObjectType.EditableSwitchable)
+                return true;
+
+            return false;
+        }
+
+        public static bool IsNotRootType(CslaObjectInfo info)
+        {
+            if (info.ObjectType == CslaObjectType.EditableChild ||
+                (info.ObjectType == CslaObjectType.ReadOnlyObject &&
+                info.ParentType != string.Empty))
                 return true;
 
             return false;

@@ -186,29 +186,29 @@ namespace CslaGenerator.Util
 
         #region Declarations
 
-        public string BusinessListBaseHelper(bool isFirstPass)
+        public string ListBaseHelper(string rootStereotype, bool isFirstPass)
         {
             if (CurrentUnit.GenerationParams.GeneratedUIEnvironment == UIEnvironment.WinForms)
-                return "BusinessBindingListBase";
+                return rootStereotype + "BindingListBase";
 
             if (CurrentUnit.GenerationParams.GeneratedUIEnvironment == UIEnvironment.WPF)
-                return "BusinessListBase";
+                return rootStereotype + "ListBase";
 
             var response = string.Empty;
 
             if (isFirstPass)
             {
                 if (CurrentUnit.GenerationParams.GeneratedUIEnvironment == UIEnvironment.WinForms_WPF)
-                    response += "BusinessListBase";
+                    response += rootStereotype + "ListBase";
                 else
-                    response += "BusinessBindingListBase";
+                    response += rootStereotype + "BindingListBase";
             }
             else
             {
                 if (CurrentUnit.GenerationParams.GeneratedUIEnvironment == UIEnvironment.WinForms_WPF)
-                    response += "BusinessBindingListBase";
+                    response += rootStereotype + "BindingListBase";
                 else
-                    response += "BusinessListBase";
+                    response += rootStereotype + "ListBase";
             }
 
             return response;
@@ -287,7 +287,7 @@ namespace CslaGenerator.Util
                 response =
                     string.Format(
                         "{0} static PropertyInfo<{1}> {2} = RegisterProperty<{1}>(p => p.{3}, \"{4}\"{5}{6});",
-                        Access.Convert(prop.PropertyInfoAccess),
+                        "private",
                         (prop.DeclarationMode == PropertyDeclaration.Managed ||
                          prop.DeclarationMode == PropertyDeclaration.Unmanaged)
                             ? GetDataTypeGeneric(prop, prop.PropertyType)
@@ -1077,7 +1077,7 @@ namespace CslaGenerator.Util
             /*
             if (!_childTypeLoaded)
             {
-                _childType = ChildType.GetChild(UserID);
+                _childType = ChildType.GetChild(_userID);
                 _childTypeLoaded = true;
             }
 
@@ -1137,8 +1137,7 @@ namespace CslaGenerator.Util
 
         public bool GetValuePropertyByName(CslaObjectInfo info, string propertyName, ref ValueProperty prop)
         {
-            //foreach (var valueProperty in info.GetAllValueProperties())
-            foreach (var valueProperty in info.ValueProperties)
+            foreach (var valueProperty in info.GetAllValueProperties())
             {
                 if (valueProperty.Name == propertyName)
                 {
@@ -1173,8 +1172,7 @@ namespace CslaGenerator.Util
 
         public static bool IsCreationDateColumnPresent(CslaObjectInfo info)
         {
-            //foreach (var valueProperty in info.GetAllValueProperties())
-            foreach (var valueProperty in info.ValueProperties)
+            foreach (var valueProperty in info.GetAllValueProperties())
             {
                 if (valueProperty.Name == info.Parent.Params.CreationDateColumn)
                 {
@@ -1186,8 +1184,7 @@ namespace CslaGenerator.Util
 
         public static bool IsCreationUserColumnPresent(CslaObjectInfo info)
         {
-            //foreach (var valueProperty in info.GetAllValueProperties())
-            foreach (var valueProperty in info.ValueProperties)
+            foreach (var valueProperty in info.GetAllValueProperties())
             {
                 if (valueProperty.Name == info.Parent.Params.CreationUserColumn)
                 {
@@ -1199,8 +1196,7 @@ namespace CslaGenerator.Util
 
         public static bool IsChangedDateColumnPresent(CslaObjectInfo info)
         {
-            //foreach (var valueProperty in info.GetAllValueProperties())
-            foreach (var valueProperty in info.ValueProperties)
+            foreach (var valueProperty in info.GetAllValueProperties())
             {
                 if (valueProperty.Name == info.Parent.Params.ChangedDateColumn)
                 {
@@ -1212,8 +1208,7 @@ namespace CslaGenerator.Util
 
         public static bool IsChangedUserColumnPresent(CslaObjectInfo info)
         {
-            //foreach (var valueProperty in info.GetAllValueProperties())
-            foreach (var valueProperty in info.ValueProperties)
+            foreach (var valueProperty in info.GetAllValueProperties())
             {
                 if (valueProperty.Name == info.Parent.Params.ChangedUserColumn)
                 {
@@ -1528,7 +1523,7 @@ namespace CslaGenerator.Util
 
             public static ValueProperty FindPrimaryKey(CslaObjectInfo info)
             {
-                foreach (var prop in info.ValueProperties)
+                foreach (var prop in info.GetAllValueProperties())
                 {
                     // accept DBProvidedPK and also UserProvidedPK
                     if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)

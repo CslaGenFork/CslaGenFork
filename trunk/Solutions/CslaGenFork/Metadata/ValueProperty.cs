@@ -61,7 +61,6 @@ namespace CslaGenerator.Metadata
         private string _denyReadRoles = string.Empty;
         private string _denyWriteRoles = string.Empty;
         private PropertyAccess _access = PropertyAccess.IsPublic;
-        private PropertyAccess _propertyInfoAccess = PropertyAccess.IsPublic;
         private DataAccessBehaviour _dataAccess = DataAccessBehaviour.ReadWrite;
         private UserDefinedKeyBehaviour _primaryKey = UserDefinedKeyBehaviour.Default;
         private AccessorVisibility _propSetAccessibility = AccessorVisibility.Default;
@@ -162,7 +161,7 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Definition")]
-        [Description("This is a description.")]
+        [Description("Human readable friendly display name of the property.")]
         [UserFriendlyName("Friendly Name")]
         public string FriendlyName
         {
@@ -354,15 +353,6 @@ namespace CslaGenerator.Metadata
                     value = AccessorVisibility.Default;
                 _propSetAccessibility = value;
             }
-        }
-
-        [Category("05. Options")]
-        [Description("Accessibility for the PropertyInfo.\r\nDefaults to IsPublic.")]
-        [UserFriendlyName("PropertyInfo Accessibility")]
-        public PropertyAccess PropertyInfoAccess
-        {
-            get { return _propertyInfoAccess; }
-            set { _propertyInfoAccess = value; }
         }
 
         [Category("05. Options")]

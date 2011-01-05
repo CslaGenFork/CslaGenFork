@@ -21,6 +21,7 @@ namespace CslaGenerator.Metadata
         private CslaPropertyMode _propertyMode = CslaPropertyMode.Default;
         private UIEnvironment _generatedUIEnvironment = UIEnvironment.WinForms_WPF;
         private bool _useChildDataPortal = true;
+        private SilverlightSupport _generateSilverlight = SilverlightSupport.CompilerDirectives;
         private Authorization _generateAuthorization = Authorization.FullSupport;
         private HeaderVerbosity _headerVerbosity = HeaderVerbosity.Full;
         private bool _useBypassPropertyChecks = true;
@@ -195,6 +196,18 @@ namespace CslaGenerator.Metadata
                 if (_useChildDataPortal == value)
                     return;
                 _useChildDataPortal = value;
+                OnPropertyChanged("");
+            }
+        }
+
+        public SilverlightSupport GenerateSilverlight
+        {
+            get { return _generateSilverlight; }
+            set
+            {
+                if (_generateSilverlight == value)
+                    return;
+                _generateSilverlight = value;
                 OnPropertyChanged("");
             }
         }
