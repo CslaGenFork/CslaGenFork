@@ -136,6 +136,8 @@ namespace CslaGenerator.Controls
             this.cboOutputLanguage = new System.Windows.Forms.ComboBox();
             this.lblUIEnvironment = new System.Windows.Forms.Label();
             this.cboUIEnvironment = new System.Windows.Forms.ComboBox();
+            this.lblGenerateSilverlight = new System.Windows.Forms.Label();
+            this.cboGenerateSilverlight = new System.Windows.Forms.ComboBox();
             this.lblGenerateAuthorization = new System.Windows.Forms.Label();
             this.cboGenerateAuthorization = new System.Windows.Forms.ComboBox();
             this.lblHeaderVerbosity = new System.Windows.Forms.Label();
@@ -1227,6 +1229,8 @@ namespace CslaGenerator.Controls
             this.tabGeneration.Controls.Add(this.cboOutputLanguage);
             this.tabGeneration.Controls.Add(this.lblUIEnvironment);
             this.tabGeneration.Controls.Add(this.cboUIEnvironment);
+            this.tabGeneration.Controls.Add(this.lblGenerateSilverlight);
+            this.tabGeneration.Controls.Add(this.cboGenerateSilverlight);
             this.tabGeneration.Controls.Add(this.lblGenerateAuthorization);
             this.tabGeneration.Controls.Add(this.cboGenerateAuthorization);
             this.tabGeneration.Controls.Add(this.lblHeaderVerbosity);
@@ -1317,12 +1321,34 @@ namespace CslaGenerator.Controls
             this.toolTip1.SetToolTip(this.cboUIEnvironment,
                                      "CSLA40 - Specify whether code must be generate for Windows Forms, WPF or both.\r\n" +
                                      "<WinForms_WPF> means \"Windows Forms first\" or \"defaults to Windows Forms.\r\n" +
-                                     "This will build BusinessBindingListBase usable on WinForms DataGridView.\r\n" +
-                                     "Use the \"WPF\" compiler directive to build BusinessListBase/ObservableCollection.");
+                                     "This will build *BindingListBase collections usable on WinForms controls or *ListBase collections usable on everything else.\r\n" +
+                                     "Use the \"WINFORMS\" compiler directive to build *BindingListBase/BindingList.\r\n" +
+                                     "Use the \"WPF\" compiler directive to build *ListBase/ObservableCollection.");
+            // 
+            // lblGenerateSilverlight
+            // 
+            this.lblGenerateSilverlight.Location = new System.Drawing.Point(15, 134);
+            this.lblGenerateSilverlight.Name = "lblGenerateSilverlight";
+            this.lblGenerateSilverlight.Size = new System.Drawing.Size(101, 16);
+            this.lblGenerateSilverlight.TabIndex = 39;
+            this.lblGenerateSilverlight.Text = "Silverlight code:";
+            // 
+            // cboGenerateSilverlight
+            // 
+            this.cboGenerateSilverlight.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.generationParametersBindingSource, "GenerateSilverlight", true));
+            this.cboGenerateSilverlight.Location = new System.Drawing.Point(116, 131);
+            this.cboGenerateSilverlight.Name = "cboGenerateSilverlight";
+            this.cboGenerateSilverlight.Size = new System.Drawing.Size(118, 21);
+            this.cboGenerateSilverlight.TabIndex = 5;
+            this.toolTip1.SetToolTip(this.cboGenerateSilverlight,
+                                     "CSLA40 - Generate Silverlight compatible code.\r\n"+
+                                     "Use \"None\" for no Silverlight support at all.\r\n" +
+                                     "Use \"CompilerDirectives\" for supporting both Silverlight and non Silverlight.\r\n" +
+                                     "Use \"SilverlightOnly\" for supporting only Silverlight.");
             // 
             // lblGenerateAuthorization
             // 
-            this.lblGenerateAuthorization.Location = new System.Drawing.Point(15, 134);
+            this.lblGenerateAuthorization.Location = new System.Drawing.Point(15, 162);
             this.lblGenerateAuthorization.Name = "lblGenerateAuthorization";
             this.lblGenerateAuthorization.Size = new System.Drawing.Size(101, 16);
             this.lblGenerateAuthorization.TabIndex = 39;
@@ -1331,12 +1357,12 @@ namespace CslaGenerator.Controls
             // cboGenerateAuthorization
             // 
             this.cboGenerateAuthorization.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.generationParametersBindingSource, "GenerateAuthorization", true));
-            this.cboGenerateAuthorization.Location = new System.Drawing.Point(116, 131);
+            this.cboGenerateAuthorization.Location = new System.Drawing.Point(116, 159);
             this.cboGenerateAuthorization.Name = "cboGenerateAuthorization";
             this.cboGenerateAuthorization.Size = new System.Drawing.Size(118, 21);
             this.cboGenerateAuthorization.TabIndex = 5;
             this.toolTip1.SetToolTip(this.cboGenerateAuthorization,
-                                     "Authorization level to generate. Use \"None\" for no implementation at all.\r\n" +
+                                     "CSLA40 - Authorization level to generate. Use \"None\" for no implementation at all.\r\n" +
                                      "In Csla Object Info panel and in all value properties panels,\r\n" +
                                      "the authz options will be shown or hidden according to this setting.\r\n" +
                                      "\r\nN.B. - \"Custom\" shows all authz options because it generates\r\n" +
@@ -1349,7 +1375,7 @@ namespace CslaGenerator.Controls
             // 
             // lblHeaderVerbosity
             // 
-            this.lblHeaderVerbosity.Location = new System.Drawing.Point(15, 162);
+            this.lblHeaderVerbosity.Location = new System.Drawing.Point(15, 190);
             this.lblHeaderVerbosity.Name = "lblHeaderVerbosity";
             this.lblHeaderVerbosity.Size = new System.Drawing.Size(101, 16);
             this.lblHeaderVerbosity.TabIndex = 39;
@@ -1358,7 +1384,7 @@ namespace CslaGenerator.Controls
             // cboHeaderVerbosity
             // 
             this.cboHeaderVerbosity.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.generationParametersBindingSource, "HeaderVerbosity", true));
-            this.cboHeaderVerbosity.Location = new System.Drawing.Point(116, 159);
+            this.cboHeaderVerbosity.Location = new System.Drawing.Point(116, 187);
             this.cboHeaderVerbosity.Name = "cboHeaderVerbosity";
             this.cboHeaderVerbosity.Size = new System.Drawing.Size(118, 21);
             this.cboHeaderVerbosity.TabIndex = 5;
@@ -1852,6 +1878,8 @@ namespace CslaGenerator.Controls
         private System.Windows.Forms.ComboBox cboOutputLanguage;
         private System.Windows.Forms.Label lblUIEnvironment;
         private System.Windows.Forms.ComboBox cboUIEnvironment;
+        private System.Windows.Forms.Label lblGenerateSilverlight;
+        private System.Windows.Forms.ComboBox cboGenerateSilverlight;
         private System.Windows.Forms.Label lblGenerateAuthorization;
         private System.Windows.Forms.ComboBox cboGenerateAuthorization;
         private System.Windows.Forms.Label lblHeaderVerbosity;

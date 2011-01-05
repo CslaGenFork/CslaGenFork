@@ -27,6 +27,10 @@ namespace CslaGenerator.Controls
             propGrid1.PropertySortChanged += OnSortTab;
             propGrid2.PropertySortChanged += OnSortTab;
             propGrid3.PropertySortChanged += OnSortTab;
+
+            propGrid1.PropertyValueChanged += OnPropertyValueChanged;
+            propGrid2.PropertyValueChanged += OnPropertyValueChanged;
+            propGrid3.PropertyValueChanged += OnPropertyValueChanged;
         }
 
         #endregion
@@ -74,16 +78,13 @@ namespace CslaGenerator.Controls
             if (_associativeEntities != null)
                 return true;
 
-            MessageBox.Show("You need to create a new project first.", "CslaGenerator", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(@"You need to create a new project first.", @"CslaGenerator", MessageBoxButtons.OK, MessageBoxIcon.Information);
             return false;
         }
 
         public AssociativeEntityCollection AssociativeEntities
         {
-            get
-            {
-                return _associativeEntities;
-            }
+            get { return _associativeEntities; }
             set
             {
                 if (_associativeEntities != null)
@@ -102,6 +103,14 @@ namespace CslaGenerator.Controls
         {
             if (GetCurrentPropertyGrid().PropertySort == PropertySort.CategorizedAlphabetical)
                 GetCurrentPropertyGrid().PropertySort = PropertySort.Categorized;
+        }
+
+        private void OnPropertyValueChanged(object sender, PropertyValueChangedEventArgs e)
+        {
+            if (e.ChangedItem.Label == "Primary Loading Scheme" || e.ChangedItem.Label == "Secondary Loading Scheme")
+            {
+                FillViews(true);
+            }
         }
 
         private void ListEntities_DrawItem(object sender, DrawItemEventArgs e)
@@ -130,8 +139,6 @@ namespace CslaGenerator.Controls
                 GetCurrentListBox().Refresh();
                 return;
             }
-
-            // TODO when "RelationType" no item is selected on his former tab
 
             FillViews(false);
             if (e.ListChangedType == ListChangedType.ItemAdded)

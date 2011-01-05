@@ -46,17 +46,17 @@ namespace CslaGenerator.Design
                     associativeEntity.MainObject != null)
                 {
                     propInfo = instanceType.GetProperty("MainLoadParameters");
-                    if (associativeEntity.MainLoadingScheme == LoadingScheme.SelfLoad)
-                        cslaObject = associativeEntity.MainCollectionTypeName;
-                    else
+//                    if (associativeEntity.MainLoadingScheme == LoadingScheme.SelfLoad)
+//                        cslaObject = associativeEntity.MainCollectionTypeName;
+//                    else
                         cslaObject = associativeEntity.MainObject;
                 }
                 else
                 {
                     propInfo = instanceType.GetProperty("SecondaryLoadParameters");
-                    if (associativeEntity.SecondaryLoadingScheme == LoadingScheme.SelfLoad)
-                        cslaObject = associativeEntity.SecondaryCollectionTypeName;
-                    else
+//                    if (associativeEntity.SecondaryLoadingScheme == LoadingScheme.SelfLoad)
+//                        cslaObject = associativeEntity.SecondaryCollectionTypeName;
+//                    else
                         cslaObject = associativeEntity.SecondaryObject;
                 }
                 var paramColl = (ParameterCollection)propInfo.GetValue(objinfo, null);

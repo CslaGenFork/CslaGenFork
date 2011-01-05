@@ -183,8 +183,9 @@ namespace CslaGenerator.Metadata
             child.Nullable = false;
             child.LazyLoad = entity.LazyLoad;
             child.LoadingScheme = entity.LoadingScheme;
-            // LoadParameters is filled by BuildCollectionCriteriaGet
-            //child.LoadParameters = entity.LoadParameters;
+
+            // LoadParameters might be re-filled by BuildCollectionCriteriaGet
+            child.LoadParameters = entity.LoadParameters;
             child.Access = PropertyAccess.IsPublic;
             child.Undoable = true;
 
@@ -374,10 +375,19 @@ namespace CslaGenerator.Metadata
                 OutputWindow.Current.AddOutputInfo(sb.ToString());
             }
 
-            child.LoadParameters.Clear();
-            foreach (var property in criteria.Properties)
+            // is it non-root?
+            var entityCslaObject = _cslaObjects.Find(entity.ObjectName);
+            if (entityCslaObject != null)
             {
-                child.LoadParameters.Add(new Parameter(criteria, property));
+                if (CslaTemplateHelper.IsNotRootType(entityCslaObject))
+                {
+                    // re-fill LoadParameters with child criteria
+                    child.LoadParameters.Clear();
+                    foreach (var property in criteria.Properties)
+                    {
+                        child.LoadParameters.Add(new Parameter(criteria, property));
+                    }
+                }
             }
         }
 

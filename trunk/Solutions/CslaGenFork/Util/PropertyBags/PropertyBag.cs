@@ -12,17 +12,20 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing.Design;
 using System.Reflection;
 using CslaGenerator.Attributes;
-using System.Configuration;
 using CslaGenerator.Metadata;
-using System.Diagnostics;
 
 namespace CslaGenerator.Util.PropertyBags
 {
+    // to set PropertyGrid Form height
+    // PropertyCollectionForm.HandleFormCollectionType
+    // 1 row = 16 pixels
 
     #region PropertySpec class
+
     /// <summary>
     /// Summary description for PropertySpec.
     /// </summary>
@@ -67,6 +70,7 @@ namespace CslaGenerator.Util.PropertyBags
         }
 
         #region properties
+
         /// <summary>
         /// Gets or sets a collection of additional Attributes for this property.  This can
         /// be used to specify attributes beyond those supported intrinsically by the
@@ -143,6 +147,7 @@ namespace CslaGenerator.Util.PropertyBags
             get { return type; }
             set { type = value; }
         }
+
         /// <summary>
         /// Gets or sets the boolean flag indicating if this property
         /// is readonly
@@ -152,6 +157,7 @@ namespace CslaGenerator.Util.PropertyBags
             get { return isReadonly; }
             set { isReadonly = value; }
         }
+
         /// <summary>
         /// Gets or sets the boolean flag indicating if this property
         /// is browsable (i.e. visible in PropertyGrid
@@ -171,6 +177,7 @@ namespace CslaGenerator.Util.PropertyBags
             get { return isBindable; }
             set { isBindable = value; }
         }
+
         /// <summary>
         /// Test
         ///
@@ -210,7 +217,6 @@ namespace CslaGenerator.Util.PropertyBags
             get { return helpTopic; }
             set { helpTopic = value; }
         }
-
     }
 
         #endregion
@@ -271,6 +277,7 @@ namespace CslaGenerator.Util.PropertyBags
     public class PropertyBag : ICustomTypeDescriptor
     {
         #region PropertySpecCollection class definition
+
         /// <summary>
         /// Encapsulates a collection of PropertySpec objects.
         /// </summary>
@@ -522,6 +529,7 @@ namespace CslaGenerator.Util.PropertyBags
             }
 
             #region Explicit interface implementations for ICollection and IList
+
             /// <summary>
             /// This member supports the .NET Framework infrastructure and is not intended to be used directly from your code.
             /// </summary>
@@ -553,11 +561,11 @@ namespace CslaGenerator.Util.PropertyBags
             {
                 get
                 {
-                    return ((PropertySpecCollection)this)[index];
+                    return this[index];
                 }
                 set
                 {
-                    ((PropertySpecCollection)this)[index] = (PropertySpec)value;
+                    this[index] = (PropertySpec)value;
                 }
             }
 
@@ -584,11 +592,14 @@ namespace CslaGenerator.Util.PropertyBags
             {
                 Remove((PropertySpec)value);
             }
+
             #endregion
         }
+
         #endregion
 
         #region PropertySpecDescriptor class definition
+
         private class PropertySpecDescriptor : PropertyDescriptor
         {
             private PropertyBag bag;
@@ -621,8 +632,8 @@ namespace CslaGenerator.Util.PropertyBags
             {
                 if (item.DefaultValue == null)
                     return false;
-                else
-                    return !this.GetValue(component).Equals(item.DefaultValue);
+
+                return !GetValue(component).Equals(item.DefaultValue);
             }
 
             public override object GetValue(object component)
@@ -655,17 +666,20 @@ namespace CslaGenerator.Util.PropertyBags
 
                 if (item.DefaultValue == null && val == null)
                     return false;
-                else
-                    return !val.Equals(item.DefaultValue);
+
+                return !val.Equals(item.DefaultValue);
             }
         }
+
         #endregion
 
-        #region properties and events
+        #region Properties and Events
+
         private string defaultProperty;
         private PropertySpecCollection properties;
         private CslaObjectInfo[] mSelectedObject;
         private PropertyContext propertyContext;
+
         /// <summary>
         /// Initializes a new instance of the PropertyBag class.
         /// </summary>
@@ -678,6 +692,7 @@ namespace CslaGenerator.Util.PropertyBags
         public PropertyBag(CslaObjectInfo obj)
             : this(new CslaObjectInfo[] { obj })
         { }
+
         public PropertyBag(CslaObjectInfo[] obj)
         {
             defaultProperty = null;
@@ -685,9 +700,11 @@ namespace CslaGenerator.Util.PropertyBags
             mSelectedObject = obj;
             InitPropertyBag();
         }
+
         public PropertyBag(CslaObjectInfo obj, PropertyContext context)
             : this(new CslaObjectInfo[] { obj }, context)
         { }
+
         public PropertyBag(CslaObjectInfo[] obj, PropertyContext context)
         {
             defaultProperty = "ObjectName";
@@ -696,6 +713,7 @@ namespace CslaGenerator.Util.PropertyBags
             propertyContext = context;
             InitPropertyBag();
         }
+
         /// <summary>
         /// Gets or sets the name of the default property in the collection.
         /// </summary>
@@ -704,6 +722,7 @@ namespace CslaGenerator.Util.PropertyBags
             get { return defaultProperty; }
             set { defaultProperty = value; }
         }
+
         /// <summary>
         /// Gets or sets the name of the default property in the collection.
         /// </summary>
@@ -716,6 +735,7 @@ namespace CslaGenerator.Util.PropertyBags
                 InitPropertyBag();
             }
         }
+
         /// <summary>
         /// Gets or sets the property context.
         /// </summary>
@@ -727,6 +747,7 @@ namespace CslaGenerator.Util.PropertyBags
                 propertyContext = value;
             }
         }
+
         /// <summary>
         /// Gets the collection of properties contained within this PropertyBag.
         /// </summary>
@@ -767,6 +788,7 @@ namespace CslaGenerator.Util.PropertyBags
                 SetValue(this, e);
             setProperty(e.Property.TargetObject, e.Property.TargetProperty, e.Value);
         }
+
         #endregion
 
         #region Initialize Propertybag
@@ -854,10 +876,12 @@ namespace CslaGenerator.Util.PropertyBags
                 }
             }
         }
+
         #endregion
 
-        Dictionary<string, PropertyInfo> propertyInfoCache = new Dictionary<string, PropertyInfo>();
-        PropertyInfo GetPropertyInfoCache(string propertyName)
+        private Dictionary<string, PropertyInfo> propertyInfoCache = new Dictionary<string, PropertyInfo>();
+
+        private PropertyInfo GetPropertyInfoCache(string propertyName)
         {
             if (!propertyInfoCache.ContainsKey(propertyName))
             {
@@ -866,7 +890,7 @@ namespace CslaGenerator.Util.PropertyBags
             return propertyInfoCache[propertyName];
         }
 
-        bool IsEnumerable(PropertyInfo prop)
+        private bool IsEnumerable(PropertyInfo prop)
         {
             if (prop.PropertyType == typeof(string))
                 return false;
@@ -877,7 +901,7 @@ namespace CslaGenerator.Util.PropertyBags
             return false;
         }
 
-        #region IsBrowsable map objecttype:propertyname -> true | false
+        #region IsBrowsable map objectType:propertyName -> true | false
 
         private bool IsBrowsable(string[] objectType, string propertyName)
         {
@@ -885,7 +909,7 @@ namespace CslaGenerator.Util.PropertyBags
             {
                 // Use PropertyContext class to determine if the combination
                 // objectType + propertyName should be shown in propertygrid
-                // else defalut to true (show it)
+                // else default to true (show it)
                 // objectType + propertyName --> true | false
                 if (propertyContext != null)
                 {
@@ -917,8 +941,8 @@ namespace CslaGenerator.Util.PropertyBags
                         return false;
                     return true;
                 }
-                else
-                    return true;
+                
+                return true;
             }
             catch //(Exception e)
             {
@@ -930,7 +954,6 @@ namespace CslaGenerator.Util.PropertyBags
         #endregion
 
         #region reflection functions
-
 
         private object getField(Type t, string name, object target)
         {
@@ -953,7 +976,7 @@ namespace CslaGenerator.Util.PropertyBags
             return obj;
         }
 
-        bool setProperty(object obj, string propertyName, object val)
+        private bool setProperty(object obj, string propertyName, object val)
         {
             try
             {
@@ -975,7 +998,8 @@ namespace CslaGenerator.Util.PropertyBags
                 return false;
             }
         }
-        object getProperty(object obj, string propertyName, object defaultValue)
+
+        private object getProperty(object obj, string propertyName, object defaultValue)
         {
             try
             {
@@ -1001,8 +1025,6 @@ namespace CslaGenerator.Util.PropertyBags
                             return string.Empty;
                     }
                 }
-
-
             }
             catch (Exception ex)
             {
@@ -1012,9 +1034,11 @@ namespace CslaGenerator.Util.PropertyBags
             // if property doesn't exist or throws
             return defaultValue;
         }
+
         #endregion
 
         #region ICustomTypeDescriptor explicit interface definitions
+
         // Most of the functions required by the ICustomTypeDescriptor are
         // merely pssed on to the default TypeDescriptor for this type,
         // which will do something appropriate.  The exceptions are noted
@@ -1144,8 +1168,8 @@ namespace CslaGenerator.Util.PropertyBags
         {
             return this;
         }
+
         #endregion
 
     }
-
 }

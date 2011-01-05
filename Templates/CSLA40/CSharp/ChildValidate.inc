@@ -10,16 +10,29 @@ foreach (ChildProperty childProperty in Info.AllChildProperties)
             Errors.Append(Info.ObjectName + "." + childProperty.Name + " Declaration Mode must be \"ClassicProperty\" or \"Managed\"." + Environment.NewLine);
         }
     }
-    else if(childProperty.DeclarationMode == PropertyDeclaration.Managed)
+    
+    // is it non-root?
+    if (IsNotRootType(Info))
     {
-        bool createOptionsDataPortal2 = false;
-        foreach (Criteria crit in Info.CriteriaObjects)
+        if (childProperty.LoadingScheme != LoadingScheme.SelfLoad)
         {
-            createOptionsDataPortal2 = createOptionsDataPortal2 | crit.CreateOptions.DataPortal;
+            Warnings.Append(Info.ObjectName + " isn't a root object; "+
+                Info.ObjectName + "." + childProperty.Name + " Loading Scheme should be \"SelfLoad\"." + Environment.NewLine);
         }
-        if (!createOptionsDataPortal2)
+    }
+    else
+    {
+        if (childProperty.DeclarationMode == PropertyDeclaration.Managed)
         {
-            Warnings.Append(Info.ObjectName + "." + childProperty.Name + " Declaration Mode is \"Managed\"; there must be a criteria with CreateOptions.DataPortal set to True or child " + childProperty.Name + " won't load." + Environment.NewLine);
+            bool getOptionsDataPortal2 = false;
+            foreach (Criteria crit in Info.CriteriaObjects)
+            {
+                getOptionsDataPortal2 = getOptionsDataPortal2 | crit.GetOptions.DataPortal;
+            }
+            if (!getOptionsDataPortal2)
+            {
+                Warnings.Append(Info.ObjectName + "." + childProperty.Name + " Declaration Mode is \"Managed\"; there must be a criteria with GetOptions.DataPortal set to True or child " + childProperty.Name + " won't load." + Environment.NewLine);
+            }
         }
     }
 
@@ -27,19 +40,17 @@ foreach (ChildProperty childProperty in Info.AllChildProperties)
     {
         Errors.Append(Info.ObjectName + "." + childProperty.Name + " Loading Scheme is \"None\"; this isn't supported for CSLA40 targets." + Environment.NewLine);
     }
-    else if (childProperty.LoadingScheme == LoadingScheme.ParentLoad &&
-             childProperty.LazyLoad)
+    else if (childProperty.LoadingScheme == LoadingScheme.ParentLoad)
     {
-        Warnings.Append(Info.ObjectName + "." + childProperty.Name + " Loading Scheme is \"Parent Load\"; \"Lazy Load\" should be set to False." + Environment.NewLine);
-    }
-
-    if (childProperty.LoadingScheme == LoadingScheme.ParentLoad)
-    {
-        if (Info.ParentType != string.Empty)
+        if (childProperty.LazyLoad)
         {
-            Warnings.Append(Info.ObjectName + " isn't root and has children; "+
-                Info.ObjectName + "." + childProperty.Name + " Loading Scheme should be \"Self Load\"." + Environment.NewLine);
+            Warnings.Append(Info.ObjectName + "." + childProperty.Name + " Loading Scheme is \"Parent Load\"; \"Lazy Load\" should be set to False." + Environment.NewLine);
         }
+    }
+    
+    if (childProperty.LoadParameters.Count == 0)
+    {
+        Warnings.Append(Info.ObjectName + "." + childProperty.Name + " \"Load Parameters\" cannot be empty." + Environment.NewLine);
     }
 }
 %>

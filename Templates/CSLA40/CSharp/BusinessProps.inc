@@ -58,13 +58,13 @@ foreach (ValueProperty prop in Info.AllValueProperties)
         /// </summary>
         <%
         }
-        if(prop.PropertyType == TypeCodeEx.Boolean && prop.Nullable == false)
+        if (prop.PropertyType == TypeCodeEx.Boolean && prop.Nullable == false)
         {
             %>
         /// <value><c>true</c> if <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.ValueProperty.SplitOnCaps(prop.Name) %>; otherwise, <c>false</c>.</value>
         <%
         }
-        else if(prop.PropertyType == TypeCodeEx.Boolean && prop.Nullable == true)
+        else if (prop.PropertyType == TypeCodeEx.Boolean && prop.Nullable == true)
         {
             %>
         /// <value><c>true</c> if <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.ValueProperty.SplitOnCaps(prop.Name) %>; <c>false</c> if not <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.ValueProperty.SplitOnCaps(prop.Name) %>; otherwise, <c>null</c>.</value>
@@ -107,6 +107,7 @@ foreach (ValueProperty prop in Info.AllValueProperties)
         {
             if (prop.PropertyType != TypeCodeEx.ByteArray)
             {
+                // empty
             }
             else
             {
@@ -140,6 +141,7 @@ foreach (ValueProperty prop in Info.AllValueProperties)
     }
 }
 
+// Child properties
 int childCount = 0;
 foreach (ChildProperty prop in Info.GetMyChildProperties())
 {
@@ -167,13 +169,11 @@ foreach (ChildProperty prop in Info.GetMyChildProperties())
     {
         %>
         /// <summary>
-        /// Gets the <%= CslaGenerator.Metadata.ValueProperty.SplitOnCaps(prop.Name) %> (child property).
+        /// Gets the <%= CslaGenerator.Metadata.ValueProperty.SplitOnCaps(prop.Name) %> (<%= (prop.LoadingScheme == LoadingScheme.ParentLoad) ? "parent load " : (prop.LazyLoad ? "lazy load " : "self load ") %>child property).
         /// </summary>
         /// <value>The <%= CslaGenerator.Metadata.ValueProperty.SplitOnCaps(prop.Name) %>.</value>
         <%
     }
-    %>
-        <%
     if (prop.Remarks != String.Empty)
     {
         IndentLevel = 2;
@@ -187,6 +187,7 @@ foreach (ChildProperty prop in Info.GetMyChildProperties())
         <%= PropertyDeclare(Info, prop) %>
         <%
 }
+
 string strGetIdValue = string.Empty;
 bool singleProperty = true;
 foreach (ValueProperty prop in Info.ValueProperties)
@@ -201,7 +202,9 @@ foreach (ValueProperty prop in Info.ValueProperties)
         strGetIdValue += FormatFieldName(prop.Name);
     }
     if (!singleProperty)
+    {
         strGetIdValue += ".ToString()";
+    }
 }
         %>
 

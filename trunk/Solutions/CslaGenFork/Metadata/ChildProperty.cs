@@ -40,7 +40,7 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Definition")]
-        [Description("This is a description.")]
+        [Description("Human readable friendly display name of the property.")]
         [UserFriendlyName("Friendly Name")]
         public string FriendlyName
         {
@@ -112,18 +112,7 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("05. Options")]
-        [Editor(typeof(ParameterCollectionEditor), typeof(UITypeEditor))]
-        [TypeConverter(typeof(ParameterCollectionConverter))]
-        [Description("The parent properties that are used to load the child object.")]
-        [UserFriendlyName("Load Parameters")]
-        public ParameterCollection LoadParameters
-        {
-            get { return _loadParameters; }
-            set { _loadParameters = value; }
-        }
-
-        [Category("05. Options")]
-        [Description("Whether or not this object should be lazy loaded. This applies to SelfLoad mode.\r\n" +
+        [Description("Whether or not this object should be lazy loaded.\r\n" +
             "If set to True, loading of child data is defered until the child object is referenced.\r\n" +
             "If set to False, the child data is loaded when the parent is instantiated.")]
         [UserFriendlyName("Lazy Load")]
@@ -131,6 +120,17 @@ namespace CslaGenerator.Metadata
         {
             get { return _lazyLoad; }
             set { _lazyLoad = value; }
+        }
+
+        [Category("05. Options")]
+        [Editor(typeof(ParameterCollectionEditor), typeof(UITypeEditor))]
+        [TypeConverter(typeof(ParameterCollectionConverter))]
+        [Description("The parent get criteria parameters that are used to load the child object.")]
+        [UserFriendlyName("Load Parameters")]
+        public ParameterCollection LoadParameters
+        {
+            get { return _loadParameters; }
+            set { _loadParameters = value; }
         }
 
         [Category("05. Options")]

@@ -167,6 +167,21 @@ namespace CslaGenerator.Metadata
         public LoadingScheme MainLoadingScheme { get; set; }
 
         [Category("03. Primary Entity Options")]
+        [Description("Whether or not this object should be lazy loaded.\r\n" +
+            "If set to True, loading of child data is defered until the child object is referenced.\r\n" +
+            "If set to False, the child data is loaded when the parent is instantiated.")]
+        [UserFriendlyName("Primary Lazy Load")]
+        public bool MainLazyLoad { get; set; }
+
+        [Category("03. Primary Entity Options")]
+        [Description("The primary entity's criteria parameters which are used in Update method, as parameters for Stored Procedures, etc. " +
+            "These will used as criteria parameters in the item object.")]
+        [Editor(typeof(AssociativeEntityParameterCollectionEditor), typeof(UITypeEditor))]
+        [TypeConverter(typeof(ParameterCollectionConverter))]
+        [UserFriendlyName("Primary Load Parameters")]
+        public ParameterCollection MainLoadParameters { get; set; }
+
+        [Category("03. Primary Entity Options")]
         [Description("The primary entity's properties which are used in Update method, as parameters for Stored Procedures, etc. " +
             "These will used as Criteria properties in the item object.")]
         [Editor(typeof(PropertyCollectionForm), typeof(UITypeEditor))]
@@ -180,21 +195,6 @@ namespace CslaGenerator.Metadata
                 return _mainLoadProperties;
             }
         }
-
-        [Category("03. Primary Entity Options")]
-        [Description("The primary entity's criteria parameters which are used in Update method, as parameters for Stored Procedures, etc. " +
-            "These will used as criteria parameters in the item object.")]
-        [Editor(typeof(AssociativeEntityParameterCollectionEditor), typeof(UITypeEditor))]
-        [TypeConverter(typeof(ParameterCollectionConverter))]
-        [UserFriendlyName("Primary Load Parameters")]
-        public ParameterCollection MainLoadParameters { get; set; }
-
-        [Category("03. Primary Entity Options")]
-        [Description("Whether or not this object should be lazy loaded. This applies to SelfLoad mode.\r\n" +
-            "If set to True, loading of child data is defered until the child object is referenced.\r\n" +
-            "If set to False, the child data is loaded when the parent is instantiated.")]
-        [UserFriendlyName("Primary Lazy Load")]
-        public bool MainLazyLoad { get; set; }
 
         #endregion
 
@@ -258,6 +258,21 @@ namespace CslaGenerator.Metadata
         public LoadingScheme SecondaryLoadingScheme { get; set; }
 
         [Category("05. Secondary Entity Options")]
+        [Description("Whether or not this object should be lazy loaded.\r\n" +
+            "If set to True, loading of child data is defered until the child object is referenced.\r\n" +
+            "If set to False, the child data is loaded when the parent is instantiated.")]
+        [UserFriendlyName("Secondary Lazy Load")]
+        public bool SecondaryLazyLoad { get; set; }
+
+        [Category("05. Secondary Entity Options")]
+        [Description("The secondary entity's criteria parameters which are used in Update method, as parameters for " +
+            "Stored Procedures. These will used as criteria parameters in the item object.")]
+        [Editor(typeof(AssociativeEntityParameterCollectionEditor), typeof(UITypeEditor))]
+        [TypeConverter(typeof(ParameterCollectionConverter))]
+        [UserFriendlyName("Secondary Load Parameters")]
+        public ParameterCollection SecondaryLoadParameters { get; set; }
+
+        [Category("05. Secondary Entity Options")]
         [Description("The secondary entity's properties which are used in Update method, as parameters for " +
             "Stored Procedures. These will used as Criteria properties in the item object.")]
         [Editor(typeof(PropertyCollectionForm), typeof(UITypeEditor))]
@@ -271,21 +286,6 @@ namespace CslaGenerator.Metadata
                 return _secondaryLoadProperties;
             }
         }
-
-        [Category("05. Secondary Entity Options")]
-        [Description("The secondary entity's criteria parameters which are used in Update method, as parameters for " +
-            "Stored Procedures. These will used as criteria parameters in the item object.")]
-        [Editor(typeof(AssociativeEntityParameterCollectionEditor), typeof(UITypeEditor))]
-        [TypeConverter(typeof(ParameterCollectionConverter))]
-        [UserFriendlyName("Secondary Load Parameters")]
-        public ParameterCollection SecondaryLoadParameters { get; set; }
-
-        [Category("05. Secondary Entity Options")]
-        [Description("Whether or not this object should be lazy loaded. This applies to SelfLoad mode.\r\n" +
-            "If set to True, loading of child data is defered until the child object is referenced.\r\n" +
-            "If set to False, the child data is loaded when the parent is instantiated.")]
-        [UserFriendlyName("Secondary Lazy Load")]
-        public bool SecondaryLazyLoad { get; set; }
 
         #endregion
 
@@ -319,6 +319,8 @@ namespace CslaGenerator.Metadata
 
         public string Validate()
         {
+            // todo: check non root use SelfLoad
+
             if (_cslaObjects == null)
                 _cslaObjects = Parent.CslaObjects;
 
@@ -343,12 +345,8 @@ namespace CslaGenerator.Metadata
 
                 if (MainLoadingScheme == LoadingScheme.ParentLoad)
                     MainLoadProperties.Clear();
-                if (MainLoadingScheme == LoadingScheme.SelfLoad)
-                    MainLoadParameters.Clear();
                 if (SecondaryLoadingScheme == LoadingScheme.ParentLoad)
                     SecondaryLoadProperties.Clear();
-                if (SecondaryLoadingScheme == LoadingScheme.SelfLoad)
-                    SecondaryLoadParameters.Clear();
 
                 if (RelationType == ObjectRelationType.OneToMultiple)
                 {

@@ -13,14 +13,10 @@ namespace CslaGenerator.Controls
     /// </summary>
     public partial class ProjectPanel : UserControl
     {
-        //TODO previous SelectItems still get lost after clearing filter
-
         public ProjectPanel()
         {
-            // This call is required by the Windows.Forms Form Designer.
             InitializeComponent();
 
-            // TODO: Add any initialization after the InitializeComponent call
             cboObjectType.Items.Add("<All>");
             foreach (string oType in Enum.GetNames(typeof(CslaObjectType)))
                 cboObjectType.Items.Add(oType);

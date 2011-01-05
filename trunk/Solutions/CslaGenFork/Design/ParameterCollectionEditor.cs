@@ -40,12 +40,18 @@ namespace CslaGenerator.Design
                 var paramColl = (ParameterCollection)propInfo.GetValue(objinfo, null);
                 propInfo = instanceType.GetProperty("LoadingScheme");
                 var isSelfLoad = (LoadingScheme)propInfo.GetValue(objinfo, null) == LoadingScheme.SelfLoad;
-                if (isSelfLoad)
+
+                // is it non-root?
+                var currentCslaObject = (CslaObjectInfo)GeneratorController.Current.GeneratorForm.ProjectPanel.ListObjects.SelectedItem;
+                if (CslaTemplateHelper.IsNotRootType(currentCslaObject))
                 {
-                    propInfo = instanceType.GetProperty("TypeName");
-                    var typeName = (string)propInfo.GetValue(objinfo, null);
-                    var objectColl = GeneratorController.Current.GeneratorForm.ProjectPanel.Objects;
-                    _instance = objectColl.Find(typeName);
+                    if (isSelfLoad)
+                    {
+                        propInfo = instanceType.GetProperty("TypeName");
+                        var typeName = (string)propInfo.GetValue(objinfo, null);
+                        var objectColl = GeneratorController.Current.GeneratorForm.ProjectPanel.Objects;
+                        _instance = objectColl.Find(typeName);
+                    }
                 }
                 else
                 {

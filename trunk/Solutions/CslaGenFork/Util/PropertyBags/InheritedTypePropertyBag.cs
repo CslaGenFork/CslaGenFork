@@ -621,7 +621,7 @@ namespace CslaGenerator.Util.PropertyBags
             return false;
         }
 
-        #region IsBrowsable map objecttype:propertyname -> true | false
+        #region IsBrowsable map objectType:propertyName -> true | false
 
         private bool IsBrowsable(string[] objectType, string propertyName)
         {

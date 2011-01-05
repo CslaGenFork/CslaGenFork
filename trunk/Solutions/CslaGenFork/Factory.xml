@@ -61,6 +61,7 @@
     <PropertyMode>Default</PropertyMode>
     <GeneratedUIEnvironment>WinForms_WPF</GeneratedUIEnvironment>
     <UseChildDataPortal>true</UseChildDataPortal>
+    <GenerateSilverlight>CompilerDirectives</GenerateSilverlight>
     <GenerateAuthorization>FullSupport</GenerateAuthorization>
     <HeaderVerbosity>None</HeaderVerbosity>
     <UseBypassPropertyChecks>true</UseBypassPropertyChecks>

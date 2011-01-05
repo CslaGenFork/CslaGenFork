@@ -9,7 +9,7 @@ using CslaGenerator.Util.PropertyBags;
 namespace CslaGenerator.Design
 {
     /// <summary>
-    /// A custom collection editor that emulates the
+    /// A custom collection editor using the PropertyGrid control
     /// </summary>
     public class PropertyCollectionForm : CollectionEditor
     {
@@ -19,7 +19,7 @@ namespace CslaGenerator.Design
         private PropertyGrid _propGrid;
         private Type _collectionType;
 
-        #region Constructors
+        #region Constructor
 
         /// <summary>
         /// Creates a new instance of the <see cref="PropertyCollectionForm"/> class
@@ -57,16 +57,16 @@ namespace CslaGenerator.Design
                         {
                             if (panelControl is ListBox)
                             {
-                                ((ListBox) panelControl).SelectedIndexChanged += OnIndexChanged;
+                                ((ListBox)panelControl).SelectedIndexChanged += OnIndexChanged;
                             }
                             if (panelControl is TableLayoutPanel)
                             {
-                                var layoutPanel = (TableLayoutPanel) panelControl;
+                                var layoutPanel = (TableLayoutPanel)panelControl;
                                 foreach (var tableControl in layoutPanel.Controls)
                                 {
                                     if (tableControl is Button)
                                     {
-                                        var button = (Button) tableControl;
+                                        var button = (Button)tableControl;
                                         if (button.Text.IndexOf("Add") > 0 || button.Text.IndexOf("Remove") > 0)
                                             button.Click += OnItemAddedOrRemoved;
                                     }
@@ -80,12 +80,12 @@ namespace CslaGenerator.Design
             var formType = _form.GetType();
 
             //Get a reference to the private fieldtype propertyBrowser
-            //This is the propertgrid inside the collectionform
+            //This is the PropertGrid inside the CollectionForm
             var fieldInfo = formType.GetField("propertyBrowser", BindingFlags.NonPublic | BindingFlags.Instance);
 
             if (fieldInfo != null)
             {
-                _propGrid = (PropertyGrid) fieldInfo.GetValue(_form);
+                _propGrid = (PropertyGrid)fieldInfo.GetValue(_form);
 
                 if (_propGrid != null)
                 {
@@ -156,7 +156,7 @@ namespace CslaGenerator.Design
             }
             else if (_collectionType == typeof(ConvertValueProperty))
             {
-                var selectedObject = (ConvertValueProperty) _propGrid.SelectedObject;
+                var selectedObject = (ConvertValueProperty)_propGrid.SelectedObject;
                 //Get the property grid's type.
                 //This is a vsPropertyGrid located in System.Windows.Forms.Design
                 var propertyInfo = _propGrid.GetType().GetProperty("SelectedObject", BindingFlags.Public | BindingFlags.Instance);
@@ -202,14 +202,14 @@ namespace CslaGenerator.Design
             {
                 case "ValueProperty Collection Editor":
                     _form.Size = new Size(570, _form.Size.Height);
-                    _collectionType = typeof (ValueProperty);
+                    _collectionType = typeof(ValueProperty);
                     if (GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == Authorization.None ||
                         GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == Authorization.ObjectLevel)
-                        _form.Size = new Size(_form.Size.Width, 649);
+                        _form.Size = new Size(_form.Size.Width, 633);
                     else
-                        _form.Size = new Size(_form.Size.Width, 729);
+                        _form.Size = new Size(_form.Size.Width, 713);
                     if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40)
-                        _form.Size = new Size(_form.Size.Width, _form.Size.Height-16);
+                        _form.Size = new Size(_form.Size.Width, _form.Size.Height - 16);
                     break;
                 case "ChildProperty Collection Editor":
                     _form.Size = new Size(570, _form.Size.Height);
@@ -217,12 +217,12 @@ namespace CslaGenerator.Design
                     _form.Size = new Size(_form.Size.Width, 505);
                     break;
                 case "Criteria Collection Editor":
-                    _form.Size = new Size(550, _form.Size.Height); 
+                    _form.Size = new Size(550, _form.Size.Height);
                     _collectionType = typeof(Criteria);
                     _form.Size = new Size(_form.Size.Width, 713);
                     break;
                 case "CriteriaProperty Collection Editor":
-                    _collectionType = typeof (CriteriaProperty);
+                    _collectionType = typeof(CriteriaProperty);
                     _form.Size = new Size(_form.Size.Width, 393);
                     break;
                 case "ConvertValueProperty Collection Editor":
@@ -232,16 +232,15 @@ namespace CslaGenerator.Design
                     break;
                 case "UpdateValueProperty Collection Editor":
                     _form.Size = new Size(555, _form.Size.Height);
-                    _collectionType = typeof (UpdateValueProperty);
+                    _collectionType = typeof(UpdateValueProperty);
                     break;
                 case "Rule Collection Editor":
-                    _collectionType = typeof (Rule);
+                    _collectionType = typeof(Rule);
                     break;
                 case "DecoratorArgument Collection Editor":
-                    _collectionType = typeof (DecoratorArgument);
+                    _collectionType = typeof(DecoratorArgument);
                     break;
             }
-
         }
 
         public void OnIndexChanged(object sender, EventArgs e)

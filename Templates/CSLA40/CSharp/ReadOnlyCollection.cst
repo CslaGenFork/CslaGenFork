@@ -19,29 +19,25 @@ if (Errors.Length == 0)
 using System;
 using System.Data;
 using System.Data.SqlClient;
+using Csla;
 <%
     if (ActiveObjects)
     {
-        %>using ActiveObjects;
-        <%
+    %>using ActiveObjects;
+<%
     }
-    else
-    {
-        %>using Csla;<%
-    }
-    %>
-using Csla.Data;
+%>using Csla.Data;
 <%= GetUsingStatementsString(Info) %>
 <%
     if (Info.ObjectNamespace.Length > 0)
     {
-        %>namespace <%=Info.ObjectNamespace%>
+        %>namespace <%= Info.ObjectNamespace %>
 {
 <%
     }
     bool? firstComment = null;
     %><!-- #include file="XmlComment.inc" -->
-    <%
+<%
     if (GetAttributesString(Info.Attributes) != string.Empty)
     {
         %>
@@ -50,18 +46,77 @@ using Csla.Data;
     }
     %>
     [Serializable]
+<%
+    if (CurrentUnit.GenerationParams.GeneratedUIEnvironment == UIEnvironment.WinForms_WPF)
+    {
+        %>#if WPF
     <%
+    }
+    else if (CurrentUnit.GenerationParams.GeneratedUIEnvironment == UIEnvironment.WPF_WinForms)
+    {
+        %>#if WINFORMS
+    <%
+    }
     if (ActiveObjects && Info.SubscribeToChannel.Length > 0)
     {
         %>[Subscribe("<%= Info.SubscribeToChannel %>")]
     <%
     }
-    %>public partial class <%=Info.ObjectName%> : <%
-    if (ActiveObjects)
+    %>public partial class <%= Info.ObjectName %> : <%
+    if (Info.InheritedType.Type != String.Empty)
     {
-        %>Active<%
+        %><%=Info.InheritedType.Type%><%
     }
-    %>ReadOnlyListBase<<%=Info.ObjectName%>, <%=Info.ItemType %>><!-- #include file="Implements.inc" -->
+    else if (Info.InheritedType.ObjectName != String.Empty)
+    {
+        %><%=Info.InheritedType.ObjectName%><%
+    }
+    else
+    {
+        if (ActiveObjects)
+        {
+            %>Active<%
+        }
+        %><%= ListBaseHelper("ReadOnly", true) %><%
+    }
+    %><<%= Info.ObjectName %>, <%= Info.ItemType %>><!-- #include file="Implements.inc" -->
+<%
+    if (CurrentUnit.GenerationParams.GeneratedUIEnvironment == UIEnvironment.WinForms_WPF ||
+        CurrentUnit.GenerationParams.GeneratedUIEnvironment == UIEnvironment.WPF_WinForms)
+    {
+        %>#else
+    <%
+        if (ActiveObjects && Info.SubscribeToChannel.Length > 0)
+        {
+            %>[Subscribe("<%= Info.SubscribeToChannel %>")]
+    <%
+        }
+    %>public partial class <%= Info.ObjectName %> : <%
+        if (Info.InheritedType.Type != String.Empty)
+        {
+            %><%=Info.InheritedType.Type%><%
+        }
+        else if (Info.InheritedType.ObjectName != String.Empty)
+        {
+            %><%=Info.InheritedType.ObjectName%><%
+        }
+        else
+        {
+            if (ActiveObjects)
+            {
+                %>Active<%
+            }
+            %><%= ListBaseHelper("ReadOnly", false) %><%
+        }
+        %><<%= Info.ObjectName %>, <%= Info.ItemType %>><!-- #include file="Implements.inc" -->
+<%
+        if (CurrentUnit.GenerationParams.GeneratedUIEnvironment == UIEnvironment.WinForms_WPF ||
+            CurrentUnit.GenerationParams.GeneratedUIEnvironment == UIEnvironment.WPF_WinForms)
+        {
+            %>#endif<%
+        }
+    }
+    %>
     {
         <!-- #include file="CollectionBusinessProps.inc" -->
 
