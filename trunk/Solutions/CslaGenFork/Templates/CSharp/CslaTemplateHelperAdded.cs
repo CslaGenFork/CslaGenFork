@@ -283,10 +283,10 @@ namespace CslaGenerator.Util
                 prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion ||
                 prop.DeclarationMode == PropertyDeclaration.UnmanagedWithTypeConversion)
             {
-                // "private static PropertyInfo<{0}> {1} = RegisterProperty<{0}>(p => p.{2}, \"{3}\"{4});",
+                // "private static readonly PropertyInfo<{0}> {1} = RegisterProperty<{0}>(p => p.{2}, \"{3}\"{4});",
                 response =
                     string.Format(
-                        "{0} static PropertyInfo<{1}> {2} = RegisterProperty<{1}>(p => p.{3}, \"{4}\"{5}{6});",
+                        "{0} static readonly PropertyInfo<{1}> {2} = RegisterProperty<{1}>(p => p.{3}, \"{4}\"{5}{6});",
                         "private",
                         (prop.DeclarationMode == PropertyDeclaration.Managed ||
                          prop.DeclarationMode == PropertyDeclaration.Unmanaged)
@@ -354,10 +354,10 @@ namespace CslaGenerator.Util
                 prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion ||
                 prop.DeclarationMode == PropertyDeclaration.UnmanagedWithTypeConversion)
             {
-                // "private static PropertyInfo<{0}> {1} = RegisterProperty<{0}>(p => p.{2}, \"{3}\"{4});",
+                // "private static readonly PropertyInfo<{0}> {1} = RegisterProperty<{0}>(p => p.{2}, \"{3}\"{4});",
                 response =
                     string.Format(
-                        "{0} static PropertyInfo<{1}> {2} = RegisterProperty<{1}>(p => p.{3}, \"{4}\"{5});",
+                        "{0} static readonly PropertyInfo<{1}> {2} = RegisterProperty<{1}>(p => p.{3}, \"{4}\"{5});",
                         "private",
                         prop.TypeName,
                         FormatPropertyInfoName(prop.Name),
