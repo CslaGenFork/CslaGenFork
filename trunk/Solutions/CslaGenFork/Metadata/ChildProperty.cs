@@ -25,7 +25,6 @@ namespace CslaGenerator.Metadata
         private bool _undoable = true;
         private ParameterCollection _loadParameters = new ParameterCollection();
         private PropertyAccess _access = PropertyAccess.IsPublic;
-        private PropertyAccess _propertyInfoAccess = PropertyAccess.IsPublic;
 
         #endregion
 
@@ -140,15 +139,6 @@ namespace CslaGenerator.Metadata
         {
             get { return _access; }
             set { _access = value; }
-        }
-
-        [Category("05. Options")]
-        [Description("Accessibility for the PropertyInfo.\r\nDefaults to IsPublic.")]
-        [UserFriendlyName("PropertyInfo Accessibility")]
-        public PropertyAccess PropertyInfoAccess
-        {
-            get { return _propertyInfoAccess; }
-            set { _propertyInfoAccess = value; }
         }
 
         [Category("05. Options")]

@@ -358,7 +358,7 @@ namespace CslaGenerator.Util
                 response =
                     string.Format(
                         "{0} static PropertyInfo<{1}> {2} = RegisterProperty<{1}>(p => p.{3}, \"{4}\"{5});",
-                        Access.Convert(prop.PropertyInfoAccess),
+                        "private",
                         prop.TypeName,
                         FormatPropertyInfoName(prop.Name),
                         prop.Name,
