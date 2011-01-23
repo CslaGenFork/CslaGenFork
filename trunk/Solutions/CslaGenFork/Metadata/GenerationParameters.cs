@@ -115,7 +115,10 @@ namespace CslaGenerator.Metadata
 
         public bool UseDotDesignerFileNameConvention
         {
-            get { return false; }
+            get
+            {
+                return BaseFilenameSuffix == ".Designer";
+            }
             set
             {
                 if (value)
