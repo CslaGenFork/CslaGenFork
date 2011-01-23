@@ -2,7 +2,10 @@ using System;
 using System.Data;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
+using CslaGenerator;
 using CslaGenerator.Metadata;
+using CodeSmith.Engine;
 
 namespace CslaGenerator.Util
 {
@@ -11,7 +14,11 @@ namespace CslaGenerator.Util
 	/// </summary>
 	public class VbCslaTemplateHelper : CslaTemplateHelper
 	{
-        public override string GetInitValue(TypeCodeEx typeCode)
+		public VbCslaTemplateHelper() : base()
+		{
+		}
+
+		public override string GetInitValue(TypeCodeEx typeCode)
 		{
 			if (typeCode == TypeCodeEx.Int16 || typeCode == TypeCodeEx.Int32 || typeCode == TypeCodeEx.Int64 || typeCode == TypeCodeEx.Double
 				|| typeCode == TypeCodeEx.Decimal || typeCode == TypeCodeEx.Single) { return "0"; }
@@ -113,8 +120,7 @@ namespace CslaGenerator.Util
             return st.ToString();
         }
 
-        //protected override string GetDataType(TypeCodeEx type) // original
-	    public override string GetDataType(TypeCodeEx type)
+        protected override string GetDataType(TypeCodeEx type)
         {
             if (type == TypeCodeEx.ByteArray)
                 return "Byte()";
@@ -170,8 +176,7 @@ namespace CslaGenerator.Util
             }
         }
 
-		//protected internal override string GetLanguageVariableType(DbType dataType) // original
-	    public override string GetLanguageVariableType(DbType dataType)
+		protected internal override string GetLanguageVariableType(DbType dataType)
 		{	
 			switch (dataType)
 			{
@@ -208,7 +213,7 @@ namespace CslaGenerator.Util
 
 		public override string GetRelationString(CslaObjectInfo info, ChildProperty child)
 		{
-            string indent = new string(' ', IndentLevel * 4);
+			string indent = new string('\t', _indentLevel);
 
 			StringBuilder sb = new StringBuilder();
 			CslaObjectInfo childInfo = FindChildInfo(info,child.TypeName);
@@ -246,12 +251,12 @@ namespace CslaGenerator.Util
 
 		public override string GetXmlCommentString(string xmlComment)
 		{
-            string indent = new string(' ', IndentLevel * 4);
+			string indent = new string('\t', _indentLevel);
 
 			// add leading indent and comment sign 
 			xmlComment = indent + "''' " + xmlComment;
 
-			return Regex.Replace(xmlComment, "\r\n", "\r\n" + indent + "''' ", RegexOptions.Multiline);
+			return Regex.Replace(xmlComment, "\n", "\n" + indent + "''' ", RegexOptions.Multiline);
 		}
 
 		public override string GetUsingStatementsString(CslaObjectInfo info)

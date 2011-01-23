@@ -16,6 +16,7 @@ using System.Diagnostics;
 using System.Drawing.Design;
 using System.Reflection;
 using CslaGenerator.Attributes;
+using CslaGenerator.CodeGen;
 using CslaGenerator.Metadata;
 
 namespace CslaGenerator.Util.PropertyBags
@@ -634,7 +635,7 @@ namespace CslaGenerator.Util.PropertyBags
             {
                 // is it non-root?
                 var mainCslaObject = GeneratorController.Current.CurrentUnit.CslaObjects.Find(SelectedObject[0].MainObject);
-                if (CslaTemplateHelper.IsNotRootType(mainCslaObject))
+                if (CslaTemplateHelperCS.IsNotRootType(mainCslaObject))
                     if (propertyName == "MainLoadParameters" || propertyName == "SecondaryLoadParameters")
                         return false;
 

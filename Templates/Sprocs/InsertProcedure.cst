@@ -4,6 +4,7 @@
 <%@ Import Namespace="DBSchemaInfo.Base" %>
 <%@ Assembly Name="CslaGenerator" %>
 <%@ Import Namespace="CslaGenerator.Metadata" %>
+<%@ Import Namespace="CslaGenerator.CodeGen" %>
 <%@ Import Namespace="CslaGenerator.Util" %>
 <%@ Assembly Name="System.Data"%>
 <%@ Import Namespace="System.Collections" %>

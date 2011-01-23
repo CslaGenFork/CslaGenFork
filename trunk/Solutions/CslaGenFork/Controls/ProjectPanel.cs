@@ -606,19 +606,19 @@ namespace CslaGenerator.Controls
             {
                 case 1:
                     if (TopLevelControl != null)
-                        ((CSLAgen) TopLevelControl).ObjectRelationsBuilder.Add(
+                        ((MainForm) TopLevelControl).ObjectRelationsBuilder.Add(
                             (CslaObjectInfo) lstObjects.SelectedItems[0]);
                     break;
                 case 2:
                     if (TopLevelControl != null)
-                        ((CSLAgen) TopLevelControl).ObjectRelationsBuilder.Add(
+                        ((MainForm) TopLevelControl).ObjectRelationsBuilder.Add(
                             (CslaObjectInfo) lstObjects.SelectedItems[0],
                             (CslaObjectInfo) lstObjects.SelectedItems[1]);
                     break;
             }
 
             if (TopLevelControl != null)
-                ((CSLAgen) TopLevelControl).ObjectRelationsBuilderDockPanel.BringToFront();
+                ((MainForm) TopLevelControl).ObjectRelationsBuilderDockPanel.BringToFront();
         }
 
         public void AddToObjectRelationBuilder()

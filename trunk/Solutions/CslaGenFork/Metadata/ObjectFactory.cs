@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
+using CslaGenerator.CodeGen;
 using CslaGenerator.Controls;
 using CslaGenerator.Util;
 using DBSchemaInfo.Base;
@@ -318,7 +319,7 @@ namespace CslaGenerator.Metadata
             {
                 destination.ReadOnly = true;
                 destination.PropSetAccessibility = AccessorVisibility.Default;
-                if (CslaTemplateHelper.IsCreationDateColumnPresent(_currentCslaObject))
+                if (CslaTemplateHelperCS.IsCreationDateColumnPresent(_currentCslaObject))
                 {
                     destination.DefaultValue = "$" + _currentUnit.Params.CreationDateColumn;
                 }
@@ -333,7 +334,7 @@ namespace CslaGenerator.Metadata
             {
                 destination.ReadOnly = true;
                 destination.PropSetAccessibility = AccessorVisibility.Default;
-                if (CslaTemplateHelper.IsCreationUserColumnPresent(_currentCslaObject))
+                if (CslaTemplateHelperCS.IsCreationUserColumnPresent(_currentCslaObject))
                 {
                     destination.DefaultValue = "$" + _currentUnit.Params.CreationUserColumn;
                 }
