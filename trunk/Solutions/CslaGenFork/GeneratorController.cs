@@ -21,17 +21,17 @@ namespace CslaGenerator
         #region Private Fields
 
         private string[] _commandlineArgs;
-        private CslaGeneratorUnit _currentUnit = null;
-        private CslaObjectInfo _currentCslaObject = null;
-        private AssociativeEntity _currentAssociativeEntitiy = null;
-        private ProjectProperties _currentPropertiesTab = null;
+        private CslaGeneratorUnit _currentUnit;
+        private CslaObjectInfo _currentCslaObject;
+        private AssociativeEntity _currentAssociativeEntitiy;
+        private ProjectProperties _currentPropertiesTab;
         private string _currentFilePath = string.Empty;
-        private CSLAgen _frmGenerator = null;
-        private static ICatalog _catalog = null;
+        private MainForm _frmGenerator;
+        private static ICatalog _catalog;
         private static GeneratorController _current;
-        private PropertyContext _propertyContext = new PropertyContext();
-        private DbSchemaPanel _dbSchemaPanel = null;
-        public bool IsLoading = false;
+        private readonly PropertyContext _propertyContext = new PropertyContext();
+        private DbSchemaPanel _dbSchemaPanel;
+        public bool IsLoading;
 
         #endregion
 
@@ -46,7 +46,7 @@ namespace CslaGenerator
 
         private void Init()
         {
-            _frmGenerator = new CSLAgen(this);
+            _frmGenerator = new MainForm(this);
             _frmGenerator.ProjectPanel.SelectedItemsChanged += CslaObjectList_SelectedItemsChanged;
             _frmGenerator.ProjectPanel.LastItemRemoved += delegate { _currentCslaObject = null; };
             _frmGenerator.ObjectRelationsBuilder.SelectedItemsChanged += AssociativeEntitiesList_SelectedItemsChanged;
@@ -151,7 +151,7 @@ namespace CslaGenerator
             }
         }
 
-        public CSLAgen GeneratorForm
+        public MainForm GeneratorForm
         {
             get { return _frmGenerator; }
             set { _frmGenerator = value; }

@@ -1,29 +1,46 @@
 using System;
-using System.Collections.Generic;
+using System.Collections;
 using System.ComponentModel;
 using System.Data;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using CodeSmith.Engine;
+using CslaGenerator;
 using CslaGenerator.Metadata;
+using CodeSmith.Engine;
+using System.Collections.Generic;
 
 namespace CslaGenerator.Util
 {
-    /// <summary>
-    /// Summary description for CslaTemplateHelper.
-    /// </summary>
-    public partial class CslaTemplateHelper : CodeTemplate
-    {
-        public CslaGeneratorUnit CurrentUnit { get; set; }
+	/// <summary>
+	/// Summary description for CslaTemplateHelper.
+	/// </summary>
+	public class CslaTemplateHelper : CodeTemplate
+	{
+		public CslaTemplateHelper()
+		{
+		}
+
+        private CslaGeneratorUnit _CurrentUnit;
+        public CslaGeneratorUnit CurrentUnit
+        {
+            get
+            {
+                return _CurrentUnit;
+            }
+            set
+            {
+                _CurrentUnit = value;
+            }
+        }
 
         public CslaPropertyMode PropertyMode
         {
             get
             {
-                var pm = CurrentUnit.GenerationParams.PropertyMode;
+                var pm = _CurrentUnit.GenerationParams.PropertyMode;
                 if (pm == CslaPropertyMode.Default)
-                    switch (CurrentUnit.GenerationParams.TargetFramework)
+                    switch (_CurrentUnit.GenerationParams.TargetFramework)
                     {
                         case TargetFramework.CSLA10:
                         case TargetFramework.CSLA20:
@@ -35,59 +52,71 @@ namespace CslaGenerator.Util
             }
         }
 
-        [Browsable(false)]
-        public int IndentLevel { get; set; }
+		protected int _indentLevel = 0;
 
-        public bool DataSetLoadingScheme { get; set; }
+		[Browsable(false)]
+		public int IndentLevel
+		{
+			get { return _indentLevel; }
+			set { _indentLevel = value; }
+		}
 
-        protected int _resultSetCount = 0;
-
-        public string FormatFieldName(string name)
+        private bool _DataSetLoadingScheme;
+        public bool DataSetLoadingScheme
         {
-            return CurrentUnit.Params.FieldNamePrefix + FormatCamel(name);
-        }
-
-        public string FormatDelegateName(string name)
-        {
-            return CurrentUnit.Params.DelegateNamePrefix + FormatCamel(name);
-        }
-
-        /// <summary>
-        /// Convert a name to Camel casing (initial to lower case).
-        /// </summary>
-        /// <param name="name">The name to convert.</param>
-        /// <returns>The converted name.</returns>
-        public string FormatCamel(string name)
-        {
-            if (name.Length == 2)
-                return name.ToLower();
-            if (name.Length > 0)
+            get
             {
-                var sb = new StringBuilder();
-                sb.Append(Char.ToLower(name[0]));
-                if (name.Length > 1)
-                    sb.Append(name.Substring(1));
-                return sb.ToString();
+                return _DataSetLoadingScheme;
             }
-
-            return String.Empty;
+            set
+            {
+                _DataSetLoadingScheme = value;
+            }
         }
+
+		protected int _resultSetCount = 0;
+
+		public string FormatFieldName(string name)
+		{
+			return CurrentUnit.Params.FieldNamePrefix + FormatCamel(name);
+		}
+
+		public string FormatDelegateName(string name)
+		{
+            return CurrentUnit.Params.DelegateNamePrefix + FormatCamel(name);
+		}
+
+		public string FormatCamel(string name)
+		{
+			if (name.Length == 2)
+				return name.ToLower();
+			if (name.Length > 0)
+			{
+				StringBuilder sb = new StringBuilder();
+				sb.Append(Char.ToLower(name[0]));
+				if (name.Length > 1)
+					sb.Append(name.Substring(1));
+				return sb.ToString();
+			}
+			return String.Empty;
+		}
 
         public virtual string LoadProperty(ValueProperty prop, string value)
         {
             if (PropertyMode == CslaPropertyMode.Managed)
                 return String.Format("LoadProperty({0}, {1});", FormatManaged(prop.Name), value);
-
-            return String.Format("{0} = {1};", FormatFieldName(prop.Name), value);
+            else
+                return String.Format("{0} = {1};", FormatFieldName(prop.Name), value);
         }
 
         public virtual string ReadProperty(ValueProperty prop)
         {
             if (PropertyMode == CslaPropertyMode.Managed)
                 return String.Format("ReadProperty({0})", FormatManaged(prop.Name));
-
-            return FormatFieldName(prop.Name);
+            else
+                return FormatFieldName(prop.Name);
         }
+
 
         public virtual string GetAttributesString(string[] attributes)
         {
@@ -97,24 +126,18 @@ namespace CslaGenerator.Util
             return "[" + string.Join(", ", attributes) + "]";
         }
 
-        /// <summary>
-        /// Convert a name to Pascal casing (initial to upper case).
-        /// </summary>
-        /// <param name="name">The name to convert.</param>
-        /// <returns>The converted name.</returns>
-        public string FormatPascal(string name)
-        {
-            if (name.Length > 0)
-            {
-                var sb = new StringBuilder();
-                sb.Append(Char.ToUpper(name[0]));
-                if (name.Length > 1)
-                    sb.Append(name.Substring(1));
-                return sb.ToString();
-            }
-
-            return String.Empty;
-        }
+		public string FormatPascal(string name)
+		{
+			if (name.Length > 0)
+			{
+				StringBuilder sb = new StringBuilder();
+				sb.Append(Char.ToUpper(name[0]));
+				if (name.Length > 1)
+					sb.Append(name.Substring(1));
+				return sb.ToString();
+			}
+			return String.Empty;
+		}
 
         public string FormatManaged(string name)
         {
@@ -122,59 +145,50 @@ namespace CslaGenerator.Util
             {
                 return FormatPascal(name) + "Property";
             }
-
             return String.Empty;
         }
 
-        public virtual string GetInitValue(TypeCodeEx typeCode)
-        {
-            if (typeCode == TypeCodeEx.Int16 || typeCode == TypeCodeEx.Int32 || typeCode == TypeCodeEx.Int64 || typeCode == TypeCodeEx.Double
-                || typeCode == TypeCodeEx.Decimal || typeCode == TypeCodeEx.Single) { return "0"; }
-            else if (typeCode == TypeCodeEx.String) { return "String.Empty"; }
-            else if (typeCode == TypeCodeEx.Boolean) { return "false"; }
-            else if (typeCode == TypeCodeEx.Byte) { return "0"; }
-            else if (typeCode == TypeCodeEx.Object) { return "null"; }
-            else if (typeCode == TypeCodeEx.Guid) { return "Guid.Empty"; }
-            else if (typeCode == TypeCodeEx.SmartDate) { return "new SmartDate(true)"; }
+		public virtual string GetInitValue(TypeCodeEx typeCode)
+		{
+			if (typeCode == TypeCodeEx.Int16 || typeCode == TypeCodeEx.Int32 || typeCode == TypeCodeEx.Int64 || typeCode == TypeCodeEx.Double
+				|| typeCode == TypeCodeEx.Decimal || typeCode == TypeCodeEx.Single) { return "0"; }
+			else if (typeCode == TypeCodeEx.String) { return "String.Empty"; }
+			else if (typeCode == TypeCodeEx.Boolean) { return "false"; }
+			else if (typeCode == TypeCodeEx.Byte) { return "0"; }
+			else if (typeCode == TypeCodeEx.Object) { return "null"; }
+			else if (typeCode == TypeCodeEx.Guid) { return "Guid.Empty"; }
+			else if (typeCode == TypeCodeEx.SmartDate) { return "new SmartDate(true)"; }
             else if (typeCode == TypeCodeEx.DateTime) { return "DateTime.Now"; }
-            else if (typeCode == TypeCodeEx.Char) { return "Char.MinValue"; }
+			else if (typeCode == TypeCodeEx.Char) { return "Char.MinValue"; }
             else if (typeCode == TypeCodeEx.ByteArray) { return "new Byte[] {}"; }
             else { return String.Empty; }
-        }
+		}
 
         public virtual string GetInitValue(ValueProperty prop)
         {
             if (AllowNull(prop) && prop.PropertyType != TypeCodeEx.SmartDate)
                 return "null";
-
-            return GetInitValue(prop.PropertyType);
-        }
-
-        public virtual string GetReaderAssignmentStatement(ValueProperty prop)
-        {
-            return GetReaderAssignmentStatement(prop, false);
-        }
-
-        public virtual string GetReaderAssignmentStatement(ValueProperty prop, bool structure)
-        {
-            if (CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40)
-                if (prop.DeclarationMode == PropertyDeclaration.Managed ||
-                    prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion ||
-                    prop.DeclarationMode == PropertyDeclaration.AutoProperty)
-                    return GetDataLoaderStatement(prop);
-
-            string statement;
-            if (structure)
-                statement = "nfo." + prop.Name + " = ";
             else
-                statement = FormatFieldName(prop.Name) + " = ";
-
-            //statement += GetDataReaderStatement(prop) + ";"; // original
-            statement += GetDataReaderStatement(prop);
-
-            return statement;
+                return GetInitValue(prop.PropertyType);
         }
 
+		public virtual string GetReaderAssignmentStatement(ValueProperty prop)
+		{
+			return GetReaderAssignmentStatement(prop,false);
+		}
+
+		public virtual string GetReaderAssignmentStatement(ValueProperty prop, bool Structure)
+		{
+			string statement; 
+			if (Structure)
+				statement = "nfo." + prop.Name + " = ";
+			else
+				statement = FormatFieldName(prop.Name) + " = ";
+
+			statement += GetDataReaderStatement(prop) + ";";
+
+			return statement;
+		}
         public virtual string GetDataReaderStatement(ValueProperty prop)
         {
             bool nullable = AllowNull(prop);
@@ -183,27 +197,19 @@ namespace CslaGenerator.Util
             if (nullable)
             {
                 if (TypeHelper.IsNullableType(prop.PropertyType))
-                    statement += string.Format("!dr.IsDBNull(\"{0}\") ? new {1}(({2}) ",
-                        prop.ParameterName,
-                        GetDataType(prop),
-                        GetDataType(prop.PropertyType));
+                    statement += string.Format("!dr.IsDBNull(\"{0}\") ? new {1}(", prop.ParameterName, GetDataType(prop));
                 else
-                    statement += string.Format("!dr.IsDBNull(\"{0}\") ? ({1}) ",
-                        prop.ParameterName,
-                        GetDataType(prop));
+                    statement += string.Format("!dr.IsDBNull(\"{0}\") ? ", prop.ParameterName);
             }
             statement += "dr.";
 
             if (prop.DbBindColumn.ColumnOriginType == ColumnOriginType.None)
                 statement += GetReaderMethod(prop.PropertyType);
             else
-            {
-                //statement += GetReaderMethod(GetDbType(prop.DbBindColumn), prop.PropertyType);
-                statement += GetReaderMethod(GetDbType(prop.DbBindColumn), prop);
-            }
+                statement += GetReaderMethod(GetDbType(prop.DbBindColumn), prop.PropertyType);
 
             statement += "(\"" + prop.ParameterName + "\"";
-
+            
             if (prop.PropertyType == TypeCodeEx.SmartDate)
                 statement += ", true";
 
@@ -218,66 +224,50 @@ namespace CslaGenerator.Util
                 statement = "(" + statement + ") as Byte[]";
             return statement;
         }
-
         public bool AllowNull(Property prop)
         {
             return (GeneratorController.Current.CurrentUnit.GenerationParams.NullableSupport && prop.Nullable && prop.PropertyType != TypeCodeEx.SmartDate);
         }
-
-        public virtual string GetParameterSet(Property prop, bool criteria)
-        {
-            return GetParameterSet(prop, criteria, false);
-        }
-
-        public virtual string GetParameterSet(Property prop, bool criteria, bool singleCriteria)
-        {
+		public virtual string GetParameterSet(Property prop, bool Criteria)
+		{
             bool nullable = AllowNull(prop);
-            string propName;
-            if (singleCriteria)
-                propName = "crit.Value";
-            else if (criteria)
-                propName = "crit." + FormatPascal(prop.Name);
-            else
-                propName = FormatFieldName(prop.Name);
-
-            //propName = (criteria) ? "crit." + FormatPascal(prop.Name) : FormatFieldName(prop.Name);
+			string propName;
+			propName = (Criteria) ? "crit." + FormatPascal(prop.Name) : FormatFieldName(prop.Name);
 
             if (nullable && prop.PropertyType != TypeCodeEx.SmartDate)
             {
                 if (TypeHelper.IsNullableType(prop.PropertyType))
-                    return string.Format("{0} == null ? (object) DBNull.Value : {0}.Value", propName);
-
-                return string.Format("{0} == null ? (object) DBNull.Value : {0}", propName);
+                    return string.Format("{0} == null ? (object)DBNull.Value : {0}.Value", propName);
+                else
+                    return string.Format("{0} == null ? (object)DBNull.Value : {0}", propName);
             }
-            switch (prop.PropertyType)
-            {
-                case TypeCodeEx.SmartDate:
-                    return propName + ".DBValue";
-                case TypeCodeEx.Guid:
-                    return propName + ".Equals(Guid.Empty) ? (object) DBNull.Value : " + propName;
-                default:
-                    return propName;
-            }
-        }
+			switch (prop.PropertyType)
+			{
+				case Metadata.TypeCodeEx.SmartDate:
+					return propName + ".DBValue";
+				case Metadata.TypeCodeEx.Guid:
+					return propName + ".Equals(Guid.Empty) ? (object)DBNull.Value : " + propName;
+				default:
+					return propName;
+			}
+		}
+		
+		public virtual string GetParameterSet(Property prop)
+		{
+			return GetParameterSet(prop,false);
+		}
+		protected DbType GetDbType(DbBindColumn prop)
+		{
+			if (prop.NativeType == "real")
+				return DbType.Single;
+			return prop.DataType;
+		}
 
-        public virtual string GetParameterSet(Property prop)
-        {
-            return GetParameterSet(prop, false);
-        }
-
-        protected DbType GetDbType(DbBindColumn prop)
-        {
-            if (prop.NativeType == "real")
-                return DbType.Single;
-
-            return prop.DataType;
-        }
-
-        //public string GetParamInstanciation()
+		//public string GetParamInstanciation()
         public virtual string GetDataType(Property prop)
         {
             string type = GetDataType(prop.PropertyType);
-            if (AllowNull(prop))
+            if (this.AllowNull(prop))
             {
                 if (TypeHelper.IsNullableType(prop.PropertyType))
                     type += "?";
@@ -285,57 +275,37 @@ namespace CslaGenerator.Util
             return type;
         }
 
-        //protected virtual string GetDataType(TypeCodeEx type) // original
-        public virtual string GetDataType(TypeCodeEx type)
+        protected virtual string GetDataType(TypeCodeEx type)
         {
             if (type == TypeCodeEx.ByteArray)
                 return "Byte[]";
 
-            if (type == TypeCodeEx.String)
-                return "string";
-
-            if (type == TypeCodeEx.Int32)
-                return "int";
-
-            if (type == TypeCodeEx.Boolean)
-                return "bool";
-
             return type.ToString();
         }
-
-        protected internal string GetReaderMethod(DbType dataType, Property prop)
-        {
-            if (prop.Nullable && (TypeHelper.IsNullableType(prop.PropertyType) ||
-                prop.PropertyType == TypeCodeEx.String))
-                return "GetValue";
-
-            return GetReaderMethod(dataType, prop.PropertyType);
-        }
-
-        protected internal string GetReaderMethod(DbType dataType, TypeCodeEx propertyType)
-        {
-            switch (dataType)
-            {
-                case DbType.Byte: return "GetByte";
-                case DbType.Int16: return "GetInt16";
-                case DbType.Int32: return "GetInt32";
-                case DbType.Int64: return "GetInt64";
-                case DbType.AnsiStringFixedLength: return "GetChar";
-                case DbType.AnsiString: return "GetString";
-                case DbType.String: return "GetString";
-                case DbType.StringFixedLength: return "GetString";
-                case DbType.Boolean: return "GetBoolean";
-                case DbType.Guid: return "GetGuid";
-                case DbType.Currency: return "GetDecimal";
-                case DbType.Decimal: return "GetDecimal";
+		protected internal string GetReaderMethod(DbType dataType, TypeCodeEx propertyType)
+		{
+			switch (dataType)
+			{
+				case DbType.Byte: return "GetByte";
+				case DbType.Int16: return "GetInt16";
+				case DbType.Int32: return "GetInt32";
+				case DbType.Int64: return "GetInt64";
+				case DbType.AnsiStringFixedLength: return "GetChar";
+				case DbType.AnsiString: return "GetString";
+				case DbType.String: return "GetString";
+				case DbType.StringFixedLength: return "GetString";
+				case DbType.Boolean: return "GetBoolean";
+				case DbType.Guid: return "GetGuid";
+				case DbType.Currency: return "GetDecimal";
+				case DbType.Decimal: return "GetDecimal";
                 case DbType.DateTime:
                 case DbType.Date: return (propertyType == TypeCodeEx.SmartDate) ? "GetSmartDate" : "GetDateTime";
-                case DbType.Binary: return "GetValue";
-                case DbType.Single: return "GetFloat";
-                case DbType.Double: return "GetDouble";
-                default: return "GetValue";
-            }
-        }
+				case DbType.Binary: return "GetValue";
+				case DbType.Single: return "GetFloat";
+				case DbType.Double: return "GetDouble";
+				default: return "GetValue";
+			}
+		}
 
         public string GetReaderMethod(TypeCodeEx dataType)
         {
@@ -358,14 +328,12 @@ namespace CslaGenerator.Util
                 default: return "GetValue";
             }
         }
-
         /// <summary>
         /// This one is only used for casting values that coume OUT of db command parameters (commonly identity keys).
         /// </summary>
         /// <param name="dataType"></param>
         /// <returns></returns>
-        //protected internal virtual string GetLanguageVariableType(DbType dataType) // original
-        public virtual string GetLanguageVariableType(DbType dataType)
+        protected internal virtual string GetLanguageVariableType(DbType dataType)
         {
             switch (dataType)
             {
@@ -393,210 +361,181 @@ namespace CslaGenerator.Util
                 case DbType.UInt32: return "uint";
                 case DbType.UInt64: return "ulong";
                 case DbType.VarNumeric: return "decimal";
-                default: return "__UNKNOWN__" + dataType;
+                default: return "__UNKNOWN__" + dataType.ToString();
             }
         }
 
-        public string GetRelationStrings(CslaObjectInfo info)
-        {
-            if (IsCollectionType(info.ObjectType))
-                info = FindChildInfo(info, info.ItemType);
+		public string GetRelationStrings(CslaObjectInfo info)
+		{
+			if (IsCollectionType(info.ObjectType))
+				info = FindChildInfo(info,info.ItemType);
+	
+			StringBuilder sb = new StringBuilder();
+	
+			foreach (ChildProperty child in info.ChildProperties)
+				if (!child.LazyLoad)
+				{
+					sb.Append(GetRelationString(info,child));
+					sb.Append(Environment.NewLine);
+					CslaObjectInfo grandchildInfo = FindChildInfo(info,child.Name);
+					if (grandchildInfo != null)
+						sb.Append(GetRelationStrings(grandchildInfo));
+				}
+		
+			foreach (ChildProperty child in info.InheritedChildProperties)
+				if (!child.LazyLoad)
+				{
+					sb.Append(GetRelationString(info,child));
+					sb.Append(Environment.NewLine);
+					CslaObjectInfo grandchildInfo = FindChildInfo(info,child.Name);
+					if (grandchildInfo != null)
+						sb.Append(GetRelationStrings(grandchildInfo));
+				}
+	
+			foreach (ChildProperty child in info.ChildCollectionProperties)
+				if (!child.LazyLoad)
+				{
+					sb.Append(GetRelationString(info,child));
+					sb.Append(Environment.NewLine);
+					CslaObjectInfo grandchildInfo = FindChildInfo(info,child.Name);
+					if (grandchildInfo != null)
+						sb.Append(GetRelationStrings(grandchildInfo));
+				}
 
-            var sb = new StringBuilder();
+			foreach (ChildProperty child in info.InheritedChildCollectionProperties)
+				if (!child.LazyLoad)
+				{
+					sb.Append(GetRelationString(info,child));
+					sb.Append(Environment.NewLine);
+					CslaObjectInfo grandchildInfo = FindChildInfo(info,child.Name);
+					if (grandchildInfo != null)
+						sb.Append(GetRelationStrings(grandchildInfo));
+				}
+	
+			return sb.ToString();
+		}
 
-            foreach (var child in info.ChildProperties)
-                if (!child.LazyLoad)
-                {
-                    sb.Append(GetRelationString(info, child));
-                    sb.Append(Environment.NewLine);
-                    var grandchildInfo = FindChildInfo(info, child.Name);
-                    if (grandchildInfo != null)
-                        sb.Append(GetRelationStrings(grandchildInfo));
-                }
+		public virtual string GetRelationString(CslaObjectInfo info, ChildProperty child)
+		{
+			string indent = new string('\t', _indentLevel);
 
-            foreach (var child in info.InheritedChildProperties)
-                if (!child.LazyLoad)
-                {
-                    sb.Append(GetRelationString(info, child));
-                    sb.Append(Environment.NewLine);
-                    var grandchildInfo = FindChildInfo(info, child.Name);
-                    if (grandchildInfo != null)
-                        sb.Append(GetRelationStrings(grandchildInfo));
-                }
+			StringBuilder sb = new StringBuilder();
+			CslaObjectInfo childInfo = FindChildInfo(info,child.TypeName);
+			string joinColumn = String.Empty;
+			if (child.LoadParameters.Count > 0)
+			{
+				if (IsCollectionType(childInfo.ObjectType))
+				{
+					joinColumn = child.LoadParameters[0].Property.Name;
+					childInfo = FindChildInfo(info,childInfo.ItemType);
+				}
+				if (joinColumn == String.Empty)
+				{
+					joinColumn = child.LoadParameters[0].Property.Name;	
+				}
+			}
+	
+			sb.Append(indent);
+			sb.Append("ds.Relations.Add(\"");
+			sb.Append(info.ObjectName);
+			sb.Append(childInfo.ObjectName);
+			sb.Append("\", ds.Tables[");
+			sb.Append(_resultSetCount.ToString());
+			sb.Append("].Columns[\"");
+			sb.Append(joinColumn);
+			sb.Append("\"], ds.Tables[");
+			sb.Append((_resultSetCount + 1).ToString());
+			sb.Append("].Columns[\"");
+			sb.Append(joinColumn);
+			sb.Append("\"], false);");
+	
+			_resultSetCount++;
+			return sb.ToString();
+		}
 
-            foreach (var child in info.ChildCollectionProperties)
-                if (!child.LazyLoad)
-                {
-                    sb.Append(GetRelationString(info, child));
-                    sb.Append(Environment.NewLine);
-                    var grandchildInfo = FindChildInfo(info, child.Name);
-                    if (grandchildInfo != null)
-                        sb.Append(GetRelationStrings(grandchildInfo));
-                }
+		public virtual string GetXmlCommentString(string xmlComment)
+		{
+			string indent = new string('\t', _indentLevel);
 
-            foreach (var child in info.InheritedChildCollectionProperties)
-                if (!child.LazyLoad)
-                {
-                    sb.Append(GetRelationString(info, child));
-                    sb.Append(Environment.NewLine);
-                    var grandchildInfo = FindChildInfo(info, child.Name);
-                    if (grandchildInfo != null)
-                        sb.Append(GetRelationStrings(grandchildInfo));
-                }
+			// add leading indent and comment sign 
+			xmlComment = indent + "/// " + xmlComment;
 
-            return sb.ToString();
-        }
+			return Regex.Replace(xmlComment, "\n", "\n" + indent + "/// ", RegexOptions.Multiline);
+		}
 
-        public virtual string GetRelationString(CslaObjectInfo info, ChildProperty child)
-        {
-            var indent = new string(' ', IndentLevel * 4);
+		public virtual string GetUsingStatementsString(CslaObjectInfo info)
+		{
+			string[] usingNamespaces = GetNamespaces(info);
 
-            var sb = new StringBuilder();
-            var childInfo = FindChildInfo(info, child.TypeName);
-            var joinColumn = String.Empty;
-            if (child.LoadParameters.Count > 0)
-            {
-                if (IsCollectionType(childInfo.ObjectType))
-                {
-                    joinColumn = child.LoadParameters[0].Property.Name;
-                    childInfo = FindChildInfo(info, childInfo.ItemType);
-                }
-                if (joinColumn == String.Empty)
-                {
-                    joinColumn = child.LoadParameters[0].Property.Name;
-                }
-            }
+			string result = String.Empty;
+			foreach (string namespaceName in usingNamespaces)
+                result += "using " + namespaceName + ";" + Environment.NewLine;
 
-            sb.Append(indent);
-            sb.Append("ds.Relations.Add(\"");
-            sb.Append(info.ObjectName);
-            sb.Append(childInfo.ObjectName);
-            sb.Append("\", ds.Tables[");
-            sb.Append(_resultSetCount.ToString());
-            sb.Append("].Columns[\"");
-            sb.Append(joinColumn);
-            sb.Append("\"], ds.Tables[");
-            sb.Append((_resultSetCount + 1).ToString());
-            sb.Append("].Columns[\"");
-            sb.Append(joinColumn);
-            sb.Append("\"], false);");
-
-            _resultSetCount++;
-            return sb.ToString();
-        }
-
-        public virtual string GetXmlCommentString(string xmlComment)
-        {
-            var indent = new string(' ', IndentLevel * 4);
-
-            // add leading indent and comment sign
-            xmlComment = indent + "/// " + xmlComment;
-
-            return Regex.Replace(xmlComment, "\r\n", "\r\n" + indent + "/// ", RegexOptions.Multiline);
-        }
-
-        public virtual string GetUsingStatementsString(CslaObjectInfo info)
-        {
-            var usingNamespaces = GetNamespaces(info);
-
-            var result = String.Empty;
-            foreach (var namespaceName in usingNamespaces)
-                result += "using " + namespaceName + ";\r\n";
-
-            foreach (var p in info.GetAllValueProperties())
+            foreach (ValueProperty p in info.ValueProperties)
             {
                 if (p.PropertyType == TypeCodeEx.ByteArray && AllowNull(p))
                     result += "using System.Linq; //Added for byte[] helpers" + Environment.NewLine;
 
             }
+			return(result);
+		}
 
-            return (result);
-        }
+		// Helper funcion for GetUsingStatementString method 
+		protected string[] GetNamespaces(CslaObjectInfo info)
+		{
+			List<string> usingList = new List<string>();
+			
+			foreach (ChildProperty prop in info.ChildProperties) 
+				if (prop.TypeName != info.ObjectName) 
+				{
+					CslaObjectInfo childInfo = FindChildInfo(info, prop.TypeName);
+					if (childInfo != null) 
+						if (!usingList.Contains(childInfo.ObjectNamespace) && childInfo.ObjectNamespace != info.ObjectNamespace) 
+							usingList.Add (childInfo.ObjectNamespace);
+				}
+			
+			foreach (ChildProperty prop in info.InheritedChildProperties) 
+				if (prop.TypeName != info.ObjectName) 
+				{
+					CslaObjectInfo childInfo = FindChildInfo(info, prop.TypeName);
+					if (childInfo != null) 
+						if (!usingList.Contains(childInfo.ObjectNamespace) && childInfo.ObjectNamespace != info.ObjectNamespace) 
+							usingList.Add (childInfo.ObjectNamespace);
+				}
 
-        // Helper funcion for GetUsingStatementString method
-        protected string[] GetNamespaces(CslaObjectInfo info)
-        {
-            var usingList = new List<string>();
+			foreach (ChildProperty prop in info.ChildCollectionProperties) 
+				if (prop.TypeName != info.ObjectName) 
+				{
+					CslaObjectInfo childInfo = FindChildInfo(info, prop.TypeName);
+					if (childInfo != null) 
+						if (!usingList.Contains(childInfo.ObjectNamespace) && childInfo.ObjectNamespace != info.ObjectNamespace) 
+							usingList.Add (childInfo.ObjectNamespace);
+				}
 
-            if (CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 &&
-                (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
-                CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel))
-            {
-                CslaObjectInfo authzInfo = info;
-                if (IsCollectionType(info.ObjectType))
-                {
-                    authzInfo = FindChildInfo(info, info.ItemType);
-                }
+			foreach (ChildProperty prop in info.InheritedChildCollectionProperties) 
+				if (prop.TypeName != info.ObjectName) 
+				{
+					CslaObjectInfo childInfo = FindChildInfo(info, prop.TypeName);
+					if (childInfo != null) 
+						if (!usingList.Contains(childInfo.ObjectNamespace) && childInfo.ObjectNamespace != info.ObjectNamespace) 
+							usingList.Add (childInfo.ObjectNamespace);
+				}
 
-                if (authzInfo != null &&
-                    ((authzInfo.NewRoles.Trim() != String.Empty) ||
-                     (authzInfo.GetRoles.Trim() != String.Empty) ||
-                     (authzInfo.UpdateRoles.Trim() != String.Empty) ||
-                     (authzInfo.DeleteRoles.Trim() != String.Empty)))
-                {
-                    usingList.Add("Csla.Rules");
-                    usingList.Add("Csla.Rules.CommonRules");
-                }
-            }
+			if (info.ItemType != String.Empty) 
+			{
+				CslaObjectInfo childInfo = FindChildInfo(info, info.ItemType);
+				if (childInfo != null)
+					if (!usingList.Contains(childInfo.ObjectNamespace) && childInfo.ObjectNamespace != info.ObjectNamespace) 
+						usingList.Add (childInfo.ObjectNamespace);
+			}
 
-            if (info.ObjectNamespace.IndexOf(CurrentUnit.GenerationParams.UtilitiesNamespace) != 0)
-                usingList.Add(CurrentUnit.GenerationParams.UtilitiesNamespace);
-
-            foreach (var name in info.Namespaces)
-                if (!usingList.Contains(name))
-                    usingList.Add(name);
-
-            foreach (var prop in info.ChildProperties)
-                if (prop.TypeName != info.ObjectName)
-                {
-                    var childInfo = FindChildInfo(info, prop.TypeName);
-                    if (childInfo != null)
-                        if (!usingList.Contains(childInfo.ObjectNamespace) && childInfo.ObjectNamespace != info.ObjectNamespace)
-                            usingList.Add(childInfo.ObjectNamespace);
-                }
-
-            foreach (var prop in info.InheritedChildProperties)
-                if (prop.TypeName != info.ObjectName)
-                {
-                    var childInfo = FindChildInfo(info, prop.TypeName);
-                    if (childInfo != null)
-                        if (!usingList.Contains(childInfo.ObjectNamespace) && childInfo.ObjectNamespace != info.ObjectNamespace)
-                            usingList.Add(childInfo.ObjectNamespace);
-                }
-
-            foreach (var prop in info.ChildCollectionProperties)
-                if (prop.TypeName != info.ObjectName)
-                {
-                    var childInfo = FindChildInfo(info, prop.TypeName);
-                    if (childInfo != null)
-                        if (!usingList.Contains(childInfo.ObjectNamespace) && childInfo.ObjectNamespace != info.ObjectNamespace)
-                            usingList.Add(childInfo.ObjectNamespace);
-                }
-
-            foreach (var prop in info.InheritedChildCollectionProperties)
-                if (prop.TypeName != info.ObjectName)
-                {
-                    var childInfo = FindChildInfo(info, prop.TypeName);
-                    if (childInfo != null)
-                        if (!usingList.Contains(childInfo.ObjectNamespace) && childInfo.ObjectNamespace != info.ObjectNamespace)
-                            usingList.Add(childInfo.ObjectNamespace);
-                }
-
-            if (info.ItemType != String.Empty)
-            {
-                var childInfo = FindChildInfo(info, info.ItemType);
-                if (childInfo != null)
-                    if (!usingList.Contains(childInfo.ObjectNamespace) && childInfo.ObjectNamespace != info.ObjectNamespace)
-                        usingList.Add(childInfo.ObjectNamespace);
-            }
-
-            if (info.ParentType != String.Empty)
-            {
-                var parentInfo = FindChildInfo(info, info.ParentType);
-                if (parentInfo != null)
-                    if (!usingList.Contains(parentInfo.ObjectNamespace) && parentInfo.ObjectNamespace != info.ObjectNamespace)
-                        usingList.Add(parentInfo.ObjectNamespace);
-            }
+			if (info.ParentType != String.Empty) 
+			{
+				CslaObjectInfo parentInfo = FindChildInfo(info, info.ParentType);
+				if (parentInfo != null)
+					if (!usingList.Contains(parentInfo.ObjectNamespace) && parentInfo.ObjectNamespace != info.ObjectNamespace) 
+						usingList.Add (parentInfo.ObjectNamespace);
+			}
 
             //string[] usingNamespaces = new string[usingList.Count];
             //usingList.CopyTo(0, usingNamespaces, 0, usingList.Count);
@@ -604,132 +543,78 @@ namespace CslaGenerator.Util
             if (usingList.Contains(string.Empty))
                 usingList.Remove(string.Empty);
             usingList.Sort(string.Compare);
+            
 
-            return usingList.ToArray();
-        }
+			return usingList.ToArray();
+		}
 
-        public bool LoadsChildren(CslaObjectInfo info)
-        {
-            if (IsCollectionType(info.ObjectType))
-                info = FindChildInfo(info, info.ItemType);
+		public bool LoadsChildren(CslaObjectInfo info)
+		{
+			if (IsCollectionType(info.ObjectType))
+				info = FindChildInfo(info,info.ItemType);
 
-            foreach (var child in info.ChildProperties)
-                if (child.LoadingScheme == LoadingScheme.ParentLoad) { return true; }
+			foreach (ChildProperty child in info.ChildProperties)
+				if (!child.LazyLoad) { return true; }
+	
+			foreach (ChildProperty child in info.ChildCollectionProperties)
+				if (!child.LazyLoad) { return true; }
+	
+			foreach (ChildProperty child in info.InheritedChildProperties)
+				if (!child.LazyLoad) { return true; }
+	
+			foreach (ChildProperty child in info.InheritedChildCollectionProperties)
+				if (!child.LazyLoad) { return true; }
+	
+			return false;
+		}
 
-            foreach (var child in info.ChildCollectionProperties)
-                if (child.LoadingScheme == LoadingScheme.ParentLoad) { return true; }
-
-            foreach (var child in info.InheritedChildProperties)
-                if (child.LoadingScheme == LoadingScheme.ParentLoad) { return true; }
-
-            foreach (var child in info.InheritedChildCollectionProperties)
-                if (child.LoadingScheme == LoadingScheme.ParentLoad) { return true; }
-
-            return false;
-        }
-
-        public bool SelfLoadsChildren(CslaObjectInfo info)
-        {
-            if (IsCollectionType(info.ObjectType))
-                info = FindChildInfo(info, info.ItemType);
-
-            foreach (var child in info.ChildProperties)
-                if (!child.LazyLoad && child.LoadingScheme != LoadingScheme.ParentLoad) { return true; }
-
-            foreach (var child in info.ChildCollectionProperties)
-                if (!child.LazyLoad && child.LoadingScheme != LoadingScheme.ParentLoad) { return true; }
-
-            foreach (var child in info.InheritedChildProperties)
-                if (!child.LazyLoad && child.LoadingScheme != LoadingScheme.ParentLoad) { return true; }
-
-            foreach (var child in info.InheritedChildCollectionProperties)
-                if (!child.LazyLoad && child.LoadingScheme != LoadingScheme.ParentLoad) { return true; }
-
-            return false;
-        }
-
-        public bool IsCollectionType(CslaObjectType cslaType)
-        {
-            if (cslaType == CslaObjectType.EditableRootCollection ||
-                cslaType == CslaObjectType.EditableChildCollection ||
-                cslaType == CslaObjectType.DynamicEditableRootCollection ||
+		public bool IsCollectionType(CslaObjectType cslaType)
+		{
+			if (cslaType == CslaObjectType.EditableChildCollection ||
+				cslaType == CslaObjectType.EditableRootCollection ||
                 cslaType == CslaObjectType.ReadOnlyCollection)
-                return true;
+				return true;
+			return false;
+		}
 
-            return false;
-        }
+		public bool IsEditableType(CslaObjectType cslaType)
+		{
+			if (cslaType == CslaObjectType.EditableChild || 
+				cslaType == CslaObjectType.EditableChildCollection ||
+				cslaType == CslaObjectType.EditableRoot ||
+				cslaType == CslaObjectType.EditableRootCollection ||
+				cslaType == CslaObjectType.EditableSwitchable)
+				return true;
+			return false;
+		}
 
-        public bool IsEditableType(CslaObjectType cslaType)
-        {
-            if (cslaType == CslaObjectType.EditableChild ||
-                cslaType == CslaObjectType.EditableChildCollection ||
-                cslaType == CslaObjectType.EditableRoot ||
-                cslaType == CslaObjectType.EditableRootCollection ||
-                cslaType == CslaObjectType.EditableSwitchable ||
-                cslaType == CslaObjectType.DynamicEditableRoot ||
-                cslaType == CslaObjectType.DynamicEditableRootCollection)
-                return true;
+		public bool IsReadOnlyType(CslaObjectType cslaType)
+		{
+			if (cslaType == CslaObjectType.ReadOnlyCollection ||
+				cslaType == CslaObjectType.ReadOnlyObject)
+				return true;
+			return false;
+		}
 
-            return false;
-        }
+		public bool IsChildType(CslaObjectType cslaType)
+		{
+			if (cslaType == CslaObjectType.EditableChild || 
+				cslaType == CslaObjectType.EditableChildCollection)
+				return true;
+			return false;
+		}
 
-        public bool IsReadOnlyType(CslaObjectType cslaType)
-        {
-            if (cslaType == CslaObjectType.ReadOnlyCollection ||
-                cslaType == CslaObjectType.ReadOnlyObject)
-                return true;
-
-            return false;
-        }
-
-        public bool IsChildType(CslaObjectType cslaType)
-        {
-            if (cslaType == CslaObjectType.EditableChild ||
-                cslaType == CslaObjectType.EditableChildCollection)
-                return true;
-
-            return false;
-        }
-
-        public bool IsRootType(CslaObjectType cslaType)
-        {
-            if (cslaType == CslaObjectType.EditableRoot ||
-                cslaType == CslaObjectType.EditableRootCollection ||
-                cslaType == CslaObjectType.DynamicEditableRoot ||
-                cslaType == CslaObjectType.DynamicEditableRootCollection ||
-                cslaType == CslaObjectType.EditableSwitchable)
-                return true;
-
-            return false;
-        }
-
-        public static bool IsNotRootType(CslaObjectInfo info)
-        {
-            if (info.ObjectType == CslaObjectType.EditableChild ||
-                (info.ObjectType == CslaObjectType.ReadOnlyObject &&
-                info.ParentType != string.Empty))
-                return true;
-
-            return false;
-        }
-
-        /// <summary>
-        /// Finds the child info.
-        /// </summary>
-        /// <param name="info">The info.</param>
-        /// <param name="name">The child name to find.</param>
-        /// <returns></returns>
-        public CslaObjectInfo FindChildInfo(CslaObjectInfo info, string name)
-        {
-            return info.Parent.CslaObjects.Find(name);
-        }
+		public CslaObjectInfo FindChildInfo(CslaObjectInfo info, string name)
+		{
+			return info.Parent.CslaObjects.Find(name);
+		}
 
         public CslaObjectInfo[] GetChildItems(CslaObjectInfo info)
         {
-            var list = new List<CslaObjectInfo>();
-            foreach (var cp in info.GetAllChildProperties())
+            List<CslaObjectInfo> list = new List<CslaObjectInfo>();
+            foreach (ChildProperty cp in info.GetAllChildProperties())
             {
-                var ci = FindChildInfo(info, cp.TypeName);
+                CslaObjectInfo ci = FindChildInfo(info, cp.TypeName);
                 if (ci != null)
                 {
                     if (IsCollectionType(ci.ObjectType))
@@ -742,11 +627,10 @@ namespace CslaGenerator.Util
             }
             return list.ToArray();
         }
-
         public string[] GetAllChildItemsInHierarchy(CslaObjectInfo info)
         {
-            var list = new List<String>();
-            foreach (var obj in GetChildItems(info))
+            List<String> list = new List<String>();
+            foreach (CslaObjectInfo obj in GetChildItems(info))
             {
                 list.Add(obj.ObjectName);
                 list.AddRange(GetAllChildItemsInHierarchy(obj));
@@ -754,15 +638,15 @@ namespace CslaGenerator.Util
             return list.ToArray();
         }
 
-        public void Message(string msg)
-        {
-            MessageBox.Show(msg, "Csla Generator");
-        }
+		public void Message(string msg)
+		{
+			MessageBox.Show(msg, "CSLA Generator");
+		}
 
-        public void Message(string msg, string caption)
-        {
-            MessageBox.Show(msg, caption, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-        }
+		public void Message(string msg, string caption)
+		{
+			MessageBox.Show(msg, caption, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+		}
 
         protected internal string ParseNativeType(string nType)
         {
@@ -776,10 +660,9 @@ namespace CslaGenerator.Util
                 return string.Empty;
             }
         }
-
         public string GetNativeType(ValueProperty prop)
         {
-            string nativeType = null;
+            string nativeType=null;
             if (!string.IsNullOrEmpty(prop.DbBindColumn.NativeType))
                 nativeType = ParseNativeType(prop.DbBindColumn.NativeType);
             if (string.IsNullOrEmpty(nativeType))
@@ -790,5 +673,5 @@ namespace CslaGenerator.Util
             return nativeType;
         }
 
-    }
+	}
 }

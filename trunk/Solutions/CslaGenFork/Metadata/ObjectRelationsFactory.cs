@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
+using CslaGenerator.CodeGen;
 using CslaGenerator.Controls;
 using CslaGenerator.Util;
 using DBSchemaInfo.Base;
@@ -299,7 +300,7 @@ namespace CslaGenerator.Metadata
         {
             const string critName = "CriteriaGet";
 
-            var selfLoad = CslaTemplateHelper.GetSelfLoad(info);
+            var selfLoad = CslaTemplateHelperCS.GetSelfLoad(info);
             if (!selfLoad)
             {
                 DeleteDefaultCollectionCriteria(info, critName);
@@ -379,7 +380,7 @@ namespace CslaGenerator.Metadata
             var entityCslaObject = _cslaObjects.Find(entity.ObjectName);
             if (entityCslaObject != null)
             {
-                if (CslaTemplateHelper.IsNotRootType(entityCslaObject))
+                if (CslaTemplateHelperCS.IsNotRootType(entityCslaObject))
                 {
                     // re-fill LoadParameters with child criteria
                     child.LoadParameters.Clear();

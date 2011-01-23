@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Drawing.Design;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
+using CslaGenerator.CodeGen;
 using CslaGenerator.Metadata;
 using CslaGenerator.Util;
 
@@ -43,7 +44,7 @@ namespace CslaGenerator.Design
 
                 // is it non-root?
                 var currentCslaObject = (CslaObjectInfo)GeneratorController.Current.GeneratorForm.ProjectPanel.ListObjects.SelectedItem;
-                if (CslaTemplateHelper.IsNotRootType(currentCslaObject))
+                if (CslaTemplateHelperCS.IsNotRootType(currentCslaObject))
                 {
                     if (isSelfLoad)
                     {
