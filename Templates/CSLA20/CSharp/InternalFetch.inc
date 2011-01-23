@@ -10,7 +10,7 @@
                 if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
                         prop.DataAccess != ValueProperty.DataAccessBehaviour.WriteOnly) {
                     try { %>
-            <%= GetReaderAssignmentStatement(prop) %>;
+            <%= GetReaderAssignmentStatement(prop) %>
             <%        }
                     catch (Exception ex) {
                         Errors.Append(ex.Message + Environment.NewLine);

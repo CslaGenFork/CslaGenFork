@@ -43,7 +43,7 @@
                         prop.DataAccess == ValueProperty.DataAccessBehaviour.CreateOnly) { %>
                 cmd.Parameters.AddWithValue("@<%=prop.ParameterName%>", <%=GetParameterSet(prop)%>)<%
                     if (prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK) {
-                        %>.Direction = ParameterDirection.Output;<% } %>
+                        %>.Direction = ParameterDirection.Output<% } %>;
                 <%    }
                 } %>
                 onInsertStart(this, EventArgs.Empty);
