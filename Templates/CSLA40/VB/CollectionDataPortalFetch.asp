@@ -98,13 +98,7 @@ if (!Info.UseCustomLoading)
                 %>var args = new DataPortalHookArgs(cmd<%= hookArgs %>);
                     OnFetchPre(args);
                     LoadCollection(cmd);
-                    OnFetchPost(args);<%
-                if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
-                {
-                    %>
-                    IsReadOnly = true;<%
-                }
-            %>
+                    OnFetchPost(args);
                 }
             }
             <%
@@ -195,14 +189,16 @@ if (!Info.UseCustomLoading)
         /// <param name="dr">The SafeDataReader to use.</param>
         private void Fetch(SafeDataReader dr)
         {
-            RaiseListChangedEvents = false;
             <%
         if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
         {
             %>
             IsReadOnly = false;
             <%
-        }
+        }%>
+            var rlce = RaiseListChangedEvents;
+            RaiseListChangedEvents = false;
+            <%
         if (!Info.HasGetCriteria && Info.ParentType != string.Empty && !selfLoad1)
         {
             %>
@@ -217,12 +213,6 @@ if (!Info.UseCustomLoading)
                 Add(obj);
             }
             <%
-        if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
-        {
-            %>
-            IsReadOnly = true;
-            <%
-        }
         if (!Info.HasGetCriteria && Info.ParentType != string.Empty && !selfLoad1)
         {
             %>
@@ -230,7 +220,13 @@ if (!Info.UseCustomLoading)
             <%
         }
         %>
-            RaiseListChangedEvents = true;
+            RaiseListChangedEvents = rlce;<%
+        if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
+        {
+            %>
+            IsReadOnly = true;
+            <%
+        }%>
         }
     <%
     }
@@ -242,7 +238,6 @@ if (!Info.UseCustomLoading)
         /// </summary>
         private void Fetch(DataRow[] rows)
         {
-            RaiseListChangedEvents = false;
             <%
         if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
         {
@@ -251,11 +246,14 @@ if (!Info.UseCustomLoading)
             <%
         }
         %>
+            var rlce = RaiseListChangedEvents;
+            RaiseListChangedEvents = false;
             foreach (DataRow row in rows)
             {
                 <%= Info.ItemType %> obj = <%= Info.ItemType %>.Get<%= Info.ItemType %>(row);
                 Add(obj);
             }
+            RaiseListChangedEvents = rlce;
             <%
         if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
         {
@@ -264,7 +262,6 @@ if (!Info.UseCustomLoading)
             <%
         }
         %>
-            RaiseListChangedEvents = true;
         }
         <%
         if (Info.HasGetCriteria)
@@ -275,19 +272,22 @@ if (!Info.UseCustomLoading)
         /// </summary>
         private void Fetch(DataRowCollection rows)
         {
-            RaiseListChangedEvents = false;<%
-        if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
-        {
-            %>
+            <%
+            if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
+            {
+                %>
             IsReadOnly = false;
             <%
-        }
-        %>
+            }
+            %>
+            var rlce = RaiseListChangedEvents;
+            RaiseListChangedEvents = false;
             foreach (DataRow row in rows)
             {
                 <%= Info.ItemType %> obj = <%= Info.ItemType %>.Get<%= Info.ItemType %>(row);
                 Add(obj);
             }
+            RaiseListChangedEvents = rlce;
             <%
         if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
         {
@@ -296,7 +296,6 @@ if (!Info.UseCustomLoading)
             <%
         }
         %>
-            RaiseListChangedEvents = true;
         }
             <%
         }

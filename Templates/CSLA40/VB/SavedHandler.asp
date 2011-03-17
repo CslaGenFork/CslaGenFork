@@ -84,7 +84,10 @@ if (Info.UpdaterType != string.Empty)
             {
                 // it is a new item
                 IsReadOnly = false;
+                var rlce = RaiseListChangedEvents;
+                RaiseListChangedEvents = false;
                 Add(<%=Info.ItemType%>.LoadInfo((<%=Info.UpdaterType%>) e.NewObject));
+                RaiseListChangedEvents = rlce;
                 IsReadOnly = true;
             }
             else
