@@ -287,19 +287,20 @@ using Csla.Data;
             %>
         private void LoadCollection(SqlCommand cmd)
         {
+            IsReadOnly = false;
+            var rlce = RaiseListChangedEvents;
             RaiseListChangedEvents = false;
             using (var dr = new SafeDataReader(cmd.ExecuteReader()))
             {
-                IsReadOnly = false;
                 while (dr.Read())
                 {
                     Add(new NameValuePair(
                         <%=String.Format(GetDataReaderStatement(valueProp)) %>,
                         <%=String.Format(GetDataReaderStatement(nameProp)) %>));
                 }
-                IsReadOnly = true;
             }
-            RaiseListChangedEvents = true;
+            RaiseListChangedEvents = rlce;
+            IsReadOnly = true;
         }
 
         #endregion

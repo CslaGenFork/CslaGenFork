@@ -67,11 +67,12 @@ if (!IsReadOnlyType(Info.ObjectType) && IsCollectionType(Info.ObjectType))
             {
                 %>
 
+            var rlce = RaiseListChangedEvents;
             RaiseListChangedEvents = false;
             AllowNew = <%= dependentAllowNew2 ? Info + ".CanAddObject()" : Info.AllowNew.ToString().ToLower() %>;
             AllowEdit = <%= dependentAllowEdit2 ? Info + ".CanEditObject()" : Info.AllowEdit.ToString().ToLower() %>;
             AllowRemove = <%= dependentAllowRemove2 ? Info + ".CanDeleteObject()" : Info.AllowRemove.ToString().ToLower() %>;
-            RaiseListChangedEvents = true;
+            RaiseListChangedEvents = rlce;
         <%    }
     foreach (ChildProperty prop in Info.GetMyChildProperties())
     {

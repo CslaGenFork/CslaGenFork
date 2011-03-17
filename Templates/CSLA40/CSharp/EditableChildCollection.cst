@@ -229,6 +229,7 @@ using Csla;
             }
             %>internal void Update(<%= Info.ParentType %> parent)
         {
+            var rlce = RaiseListChangedEvents;
             RaiseListChangedEvents = false;
             var args = new DataPortalHookArgs();
             OnUpdateStart(args);
@@ -253,7 +254,7 @@ using Csla;
                     child.Update(<% if (!ParentInsertOnly) { %>parent<% } %>);
             }
             OnUpdatePost(args);
-            RaiseListChangedEvents = true;
+            RaiseListChangedEvents = rlce;
         }
 
         <%
