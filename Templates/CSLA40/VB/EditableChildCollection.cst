@@ -2,7 +2,7 @@
 <%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the EditableChildCollection Object to create." %>
 <%@ Property Name="Errors" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return errors to master.cst" %>
 <%@ Property Name="Warnings" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return warnings to master.cst" %>
-<%@ Property Name="ActiveObjects" Type="System.Boolean" Default="false" Category="Options" Description="if (true, base class is generated as ActiveObjects" %>
+<%@ Property Name="ActiveObjects" Type="System.Boolean" Default="false" Category="Options" Description="if true, base class is generated as ActiveObjects" %>
 
 <%@ Assembly Name="CslaGenerator" %>
 <%@ Import Namespace="CslaGenerator" %>
@@ -48,12 +48,7 @@ using Csla;
     %>
     [Serializable]
 <%
-    if (CurrentUnit.GenerationParams.GeneratedUIEnvironment == UIEnvironment.WinForms_WPF)
-    {
-        %>#if WPF
-    <%
-    }
-    else if (CurrentUnit.GenerationParams.GeneratedUIEnvironment == UIEnvironment.WPF_WinForms)
+    if (CurrentUnit.GenerationParams.DualListInheritance)
     {
         %>#if WINFORMS
     <%
@@ -67,7 +62,7 @@ using Csla;
             %>[Subscribe("<%= Info.SubscribeToChannel %>")]<%
         }
     }
-    %>public partial class <%= Info.ObjectName %> : <%
+    %><%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %>public partial class <%= Info.ObjectName %> : <%
     if (Info.InheritedType.Type != String.Empty)
     {
         %><%=Info.InheritedType.Type%><%
@@ -86,8 +81,7 @@ using Csla;
     }
     %><<%= Info.ObjectName %>, <%= Info.ItemType %>><!-- #include file="Implements.asp" -->
 <%
-    if (CurrentUnit.GenerationParams.GeneratedUIEnvironment == UIEnvironment.WinForms_WPF ||
-        CurrentUnit.GenerationParams.GeneratedUIEnvironment == UIEnvironment.WPF_WinForms)
+    if (CurrentUnit.GenerationParams.DualListInheritance)
     {
         %>#else
     <%
@@ -100,7 +94,7 @@ using Csla;
                 %>[Subscribe("<%= Info.SubscribeToChannel %>")]<%
             }
         }
-    %>public partial class <%= Info.ObjectName %> : <%
+    %><%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %>public partial class <%= Info.ObjectName %> : <%
         if (Info.InheritedType.Type != String.Empty)
         {
             %><%=Info.InheritedType.Type%><%
@@ -118,15 +112,10 @@ using Csla;
             %><%= ListBaseHelper("Business", false) %><%
         }
         %><<%= Info.ObjectName %>, <%= Info.ItemType %>><!-- #include file="Implements.asp" -->
-<%
-        if (CurrentUnit.GenerationParams.GeneratedUIEnvironment == UIEnvironment.WinForms_WPF ||
-            CurrentUnit.GenerationParams.GeneratedUIEnvironment == UIEnvironment.WPF_WinForms)
-        {
-            %>#endif<%
-        }
+#endif
+    <%
     }
-    %>
-    {
+    %><%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %>{
         <!-- #include file="CollectionBusinessProps.asp" -->
 
 <!-- #include file="FindMethods.asp" -->

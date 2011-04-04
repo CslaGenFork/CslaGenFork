@@ -10,7 +10,7 @@ foreach (ChildProperty childProperty in Info.AllChildProperties)
             Errors.Append(Info.ObjectName + "." + childProperty.Name + " Declaration Mode must be \"ClassicProperty\" or \"Managed\"." + Environment.NewLine);
         }
     }
-    
+
     // is it non-root?
     if (IsNotRootType(Info))
     {
@@ -47,7 +47,7 @@ foreach (ChildProperty childProperty in Info.AllChildProperties)
             Warnings.Append(Info.ObjectName + "." + childProperty.Name + " Loading Scheme is \"Parent Load\"; \"Lazy Load\" should be set to False." + Environment.NewLine);
         }
     }
-    
+
     if (childProperty.LoadParameters.Count == 0)
     {
         Warnings.Append(Info.ObjectName + "." + childProperty.Name + " \"Load Parameters\" cannot be empty." + Environment.NewLine);

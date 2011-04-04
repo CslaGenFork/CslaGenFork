@@ -34,7 +34,7 @@ if (useAuthz)
         /// <exception cref="System.Security.SecurityException">if the user isn't authorized to add items to the collection.</exception>
         public new void Add(<%= itemInfo.ObjectName %> item)
         {
-            if (!CanGetObject())
+            if (!CanAddObject())
                 throw new System.Security.SecurityException("User not authorized to create a <%= itemInfo.ObjectName %>.");
 
             base.Add(item);
