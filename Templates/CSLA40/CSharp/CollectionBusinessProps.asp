@@ -5,7 +5,7 @@ useAuthz = !IsReadOnlyType(itemInfo.ObjectType) &&
     ((itemInfo.DeleteRoles.Trim() != String.Empty) ||
     (itemInfo.NewRoles.Trim() != String.Empty));
 
-bool needsBusiness = false;
+bool needsBusiness = false; 
 foreach (Criteria c in itemInfo.CriteriaObjects)
 {
     if (c.CreateOptions.AddRemove || (c.DeleteOptions.AddRemove && c.Properties.Count > 0))
