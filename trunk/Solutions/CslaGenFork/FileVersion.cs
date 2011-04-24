@@ -3,6 +3,6 @@ namespace CslaGenerator
 {
     class FileVersion
     {
-        public const string CurrentFileVersion = "4.0.0";
+        public const string CurrentFileVersion = "4.0.1";
     }
 }

@@ -15,11 +15,12 @@
 <%
 if (Errors.Length == 0)
 {
+    int silverlightLevel = 0;
     bool first = true;
     %><!-- #include file="Header.asp" -->
 using System;
-using System.Data;
-using System.Data.SqlClient;
+<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel) %>using System.Data;
+using System.Data.SqlClient;<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel) %>
 using Csla;
 <%
     if (ActiveObjects)
@@ -27,7 +28,7 @@ using Csla;
     %>using ActiveObjects;
 <%
     }
-%>using Csla.Data;
+%><%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel) %>using Csla.Data;<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel) %>
 <%= GetUsingStatementsString(Info) %>
 <%
     if (Info.ObjectNamespace.Length > 0)
@@ -130,6 +131,7 @@ using Csla;
         bool lazyLoad3 = GetLazyLoad(Info);
         bool parentCreateCriteria = false;
         CslaObjectInfo parentInfo = Info.Parent.CslaObjects.Find(Info.ParentType);
+        string strNewCallback2 = string.Empty;
         foreach (Criteria c in Info.CriteriaObjects)
         {
             if (c.CreateOptions.Factory)
@@ -140,6 +142,14 @@ using Csla;
         }
         foreach (Criteria c in parentInfo.CriteriaObjects)
         {
+            if (c.CreateOptions.RunLocal)
+            {
+                strNewCallback2 += ", DataPortal.ProxyModes.LocalOnly";
+            }
+            else
+            {
+                strNewCallback2 += ", DataPortal.ProxyModes.Auto";
+            }
             if (c.CreateOptions.Factory || c.CreateOptions.DataPortal)
             {
                 parentCreateCriteria = true;
@@ -153,7 +163,7 @@ using Csla;
                 Warnings.Append("Make sure you specify a DB name." + Environment.NewLine);
             }
     %>
-
+<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel) %>
         /// <summary>
         /// Factory method. Creates a new <see cref="<%=Info.ObjectName%>"/> collection.
         /// </summary>
@@ -163,22 +173,60 @@ using Csla;
             return DataPortal.Create<%= CurrentUnit.GenerationParams.UseChildDataPortal ? "Child" : "" %><<%= Info.ObjectName %>>();
         }
         <%
+            if (CurrentUnit.GenerationParams.GenerateSilverlight4)
+            {
+                %>
+
+        /// <summary>
+        /// Factory method. Asynchronously creates a new <see cref="<%=Info.ObjectName%>"/> collection.
+        /// </summary>
+        /// <param name="callback">The completion callback method.</param>
+        internal static void New<%= Info.ObjectName %>(EventHandler<DataPortalResult<<%= Info.ObjectName %>>> callback)
+        {
+            DataPortal.BeginCreate<<%= Info.ObjectName %>>(callback);
+        }
+        <%
+            }
         }
         if (!selfLoad3)
         {
             %>
-        <!-- #include file="InternalGetObject.asp" -->
-        <%
+
+<!-- #include file="InternalGetObject.asp" -->
+<%
         }
         else
         {
             %>
-        <!-- #include file="GetObject.asp" -->
+<!-- #include file="GetObject.asp" -->
+<%
+            if (CurrentUnit.GenerationParams.GenerateAsynchronous)
+            {
+                %>
+<!-- #include file="GetObjectAsync.asp" -->
+<%
+            }
+        }
+        if (lazyLoad3 || createCriteria || parentCreateCriteria || declarationMode == PropertyDeclaration.ClassicProperty)
+        {
+            if (CurrentUnit.GenerationParams.GenerateSilverlight4)
+            {
+    %>
+<%= IfSilverlight (Conditional.Else, 0, ref silverlightLevel) %>
+        /// <summary>
+        /// Factory method. Asynchronously creates a new <see cref="<%=Info.ObjectName%>"/> collection.
+        /// </summary>
+        /// <param name="callback">The completion callback method.</param>
+        internal static void New<%= Info.ObjectName %>(EventHandler<DataPortalResult<<%= Info.ObjectName %>>> callback)
+        {
+            DataPortal.BeginCreate<<%= Info.ObjectName %>>(callback<%= strNewCallback2 %>);
+        }
         <%
+            }
         }
     }
     %>
-
+<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel) %>
         #endregion
 <!-- #include file="SharedAuthorizationMethods.asp" -->
 
@@ -191,7 +239,7 @@ using Csla;
         %>
 
         #region Data Access
-
+<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel) %>
         <!-- #include file="CollectionDataPortalFetch.asp" -->
 
         <%
@@ -249,6 +297,7 @@ using Csla;
         <%
         }
         %>
+<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel) %>
         #endregion
 <!-- #include file="Events.asp" -->
 

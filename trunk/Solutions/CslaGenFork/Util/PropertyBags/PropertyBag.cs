@@ -217,9 +217,9 @@ namespace CslaGenerator.Util.PropertyBags
             get { return helpTopic; }
             set { helpTopic = value; }
         }
-    }
 
         #endregion
+    }
 
     /// <summary>
     /// Provides data for the GetValue and SetValue events of the PropertyBag class.
@@ -927,21 +927,34 @@ namespace CslaGenerator.Util.PropertyBags
                              propertyName == "UpdateRoles" ||
                              propertyName == "DeleteRoles"))
                             return false;
-                        if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 &&
+                        if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 ||
+                            GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL) &&
                             (propertyName == "AddParentReference" ||
                             propertyName == "HashcodeProperty" ||
                             propertyName == "EqualsProperty" ||
                             propertyName == "DeleteProcedureName"))
                             return false;
-                        if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 &&
+                        if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 ||
+                            GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL) &&
                             (propertyName == "LazyLoad"))
+                            return false;
+                        if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 ||
+                            GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL) &&
+                            (propertyName == "CacheResults"))
+                            return false;
+                        if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40 &&
+                            GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL) &&
+                            (propertyName == "SimpleCacheOptions"))
+                            return false;
+                        if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL) &&
+                            (propertyName == "SupportUpdateProperties" || propertyName == "UpdateValueProperties"))
                             return false;
                     }
                     if (mSelectedObject.Length > 1 && IsEnumerable(GetPropertyInfoCache(propertyName)))
                         return false;
                     return true;
                 }
-                
+
                 return true;
             }
             catch //(Exception e)
@@ -1173,3 +1186,4 @@ namespace CslaGenerator.Util.PropertyBags
 
     }
 }
+

@@ -28,9 +28,26 @@ if (!IsReadOnlyType(Info.ObjectType) && IsCollectionType(Info.ObjectType))
         /// <summary>
         /// Initializes a new instance of the <see cref="<%= Info.ObjectName %>"/> class.
         /// </summary>
-        /// <remarks> This isn't a public access method in order to prevent direct creation.
-        /// Use factory methods instead.</remarks>
+        /// <remarks> Do not use to create a Csla object. Use factory methods instead.</remarks>
+<%
+if (CurrentUnit.GenerationParams.GenerateSilverlight4)
+{
+    %>
+#if SILVERLIGHT
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public <%= Info.ObjectName %>()
+#else
         <%= GetConstructorVisibility(Info) %> <%= Info.ObjectName %>()
+#endif
+<%
+}
+else
+{
+    %>
+        <%= GetConstructorVisibility(Info) %> <%= Info.ObjectName %>()
+<%
+}
+%>
         {
             // Prevent direct creation
             <% if (Info.ObjectType == CslaObjectType.ReadOnlyCollection) {

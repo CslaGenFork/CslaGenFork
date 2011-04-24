@@ -2,8 +2,8 @@
 <CslaGeneratorUnit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Params>
     <DefaultTransactionType>ADO</DefaultTransactionType>
-    <DefaultDataBase>MyDatabase</DefaultDataBase>
-    <DefaultNamespace>MyBO</DefaultNamespace>
+    <DefaultDataBase>MyProject.Database</DefaultDataBase>
+    <DefaultNamespace>MyProject.Library</DefaultNamespace>
     <DefaultFolder />
     <SmartDateDefault>true</SmartDateDefault>
     <AutoCriteria>true</AutoCriteria>
@@ -18,7 +18,7 @@
     <ORBChildPropertySuffix>s</ORBChildPropertySuffix>
     <ORBCollectionSuffix>Coll</ORBCollectionSuffix>
     <ORBSingleSPSuffix>Relation</ORBSingleSPSuffix>
-    <ORBItemsUseSingleSP>false</ORBItemsUseSingleSP>
+    <ORBItemsUseSingleSP>true</ORBItemsUseSingleSP>
     <SpAddPrefix>Add</SpAddPrefix>
     <SpDeletePrefix>Delete</SpDeletePrefix>
     <SpUpdatePrefix>Update</SpUpdatePrefix>
@@ -54,14 +54,12 @@
     <SeparateNamespaces>true</SeparateNamespaces>
     <SeparateBaseClasses>false</SeparateBaseClasses>
     <ActiveObjects>false</ActiveObjects>
-    <UseDotDesignerFileNameConvention>false</UseDotDesignerFileNameConvention>
+    <UseDotDesignerFileNameConvention>true</UseDotDesignerFileNameConvention>
     <RecompileTemplates>false</RecompileTemplates>
     <OutputLanguage>CSharp</OutputLanguage>
     <NullableSupport>true</NullableSupport>
     <PropertyMode>Default</PropertyMode>
-    <GeneratedUIEnvironment>WinForms_WPF</GeneratedUIEnvironment>
     <UseChildDataPortal>true</UseChildDataPortal>
-    <GenerateSilverlight>CompilerDirectives</GenerateSilverlight>
     <GenerateAuthorization>FullSupport</GenerateAuthorization>
     <HeaderVerbosity>None</HeaderVerbosity>
     <UseBypassPropertyChecks>true</UseBypassPropertyChecks>
@@ -71,16 +69,27 @@
     <ExtendedFilenameSuffix />
     <ClassCommentFilenameSuffix />
     <SeparateClassComment>false</SeparateClassComment>
-    <UtilitiesNamespace>MyBO</UtilitiesNamespace>
+    <BaseNamespace>MyProject</BaseNamespace>
+    <UtilitiesNamespace>MyProject.Library.Util</UtilitiesNamespace>
     <UtilitiesFolder />
+    <InterfaceDALNamespace>MyProject.DataAccess</InterfaceDALNamespace>
+    <DALNamespace>MyProject.DataAccess.Sql</DALNamespace>
     <GenerateSprocs>true</GenerateSprocs>
     <OneSpFilePerObject>true</OneSpFilePerObject>
+    <GenerateInlineQueries>false</GenerateInlineQueries>
     <GenerateDatabaseClass>true</GenerateDatabaseClass>
+    <GenerateWinForms>true</GenerateWinForms>
+    <GenerateWPF>true</GenerateWPF>
+    <GenerateSilverlight4>false</GenerateSilverlight4>
+    <TargetDAL>None</TargetDAL>
+    <GenerateDAL>false</GenerateDAL>
+    <GenerateSynchronous>true</GenerateSynchronous>
+    <GenerateAsynchronous>false</GenerateAsynchronous>
   </GenerationParams>
   <CslaObjects />
   <AssociativeEntities />
   <ConnectionString />
-  <ProjectName>Project</ProjectName>
+  <ProjectName>MyProject</ProjectName>
   <TargetDirectory />
-  <FileVersion>4.0.0</FileVersion>
+  <FileVersion>4.0.1</FileVersion>
 </CslaGeneratorUnit>

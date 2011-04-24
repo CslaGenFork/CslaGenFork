@@ -5,9 +5,9 @@ if (!Info.UseCustomLoading)
     {
         if (c.GetOptions.DataPortal)
         {
-        %>
+            %>
         /// <summary>
-        /// Retrieve an existing <see cref="<%=Info.ObjectName%>"/> object from the database, based on given criteria.
+        /// Loads an existing <see cref="<%=Info.ObjectName%>"/> object from the database, based on given criteria.
         /// </summary>
         <%
             if (c.Properties.Count > 0)
@@ -156,7 +156,6 @@ if (!Info.UseCustomLoading)
                 %>
             }
         }
-
         <%
         }
         else
@@ -198,13 +197,13 @@ if (!Info.UseCustomLoading)
             }
             %>
         }
-
 <!-- #include file="CreateRelations.asp" -->
         <%
         }
     }
-%>
-        <!-- #include file="InternalFetch.asp" -->
-    <%
+    %>
+<%= IfNewSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel) %>
+<!-- #include file="InternalFetch.asp" --><%= IfNewSilverlight (Conditional.End, 0, ref silverlightLevel) %>
+<%
 }
 %>

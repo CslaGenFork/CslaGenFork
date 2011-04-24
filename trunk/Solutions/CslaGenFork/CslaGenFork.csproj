@@ -172,7 +172,7 @@
     <None Include="Resources\ErrorList.png" />
     <None Include="Resources\Output.png" />
     <Content Include="Factory.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Resources\arrow_down.png" />
     <None Include="Resources\arrow_up.png" />
@@ -197,7 +197,7 @@
     <Content Include="StartPage\startpage.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Util\PropertyBags\PropertyContext.xml">
+    <Content Include="PropertyContext.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Compile Include="AboutBox.cs">
@@ -209,6 +209,7 @@
     <Compile Include="CodeGen\AdvancedGenerator.cs" />
     <Compile Include="CodeGen\CslaTemplateHelperCS.cs" />
     <Compile Include="CodeGen\CslaTemplateHelperVB.cs" />
+    <Compile Include="CodeGen\GenerationStep.cs" />
     <Compile Include="ICodeGenerator.cs" />
     <Compile Include="CodeGen\SprocTemplateHelper.cs" />
     <Compile Include="Controls\ObjectRelationsBuilder.cs">
@@ -243,13 +244,11 @@
     <Compile Include="Metadata\ObjectRelationsFactory.cs" />
     <Compile Include="Metadata\PersistenceType.cs" />
     <Compile Include="Metadata\SilverlightSupport.cs" />
-    <Compile Include="Metadata\UIEnvironment.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Metadata\SimpleCacheResults.cs" />
+    <Compile Include="Metadata\TargetDAL.cs" />
     <Compile Include="Templates\CodeGenerator.cs" />
     <Compile Include="Templates\CSharp\CslaTemplateHelper.cs" />
     <Compile Include="Templates\VB\VbCslaTemplateHelper.cs" />
-    <Compile Include="Util\PropertyBags\ChildPropertyBag.cs" />
     <Compile Include="Util\ConfigTools.cs" />
     <Compile Include="Metadata\ConstructorVisibility.cs" />
     <Compile Include="Metadata\PropertyDeclaration.cs" />
@@ -495,21 +494,19 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Util\ObjectCloner.cs" />
     <Compile Include="Util\PropertyBags\AssociativeEntityPropertyBag.cs" />
+    <Compile Include="Util\PropertyBags\ChildPropertyBag.cs" />
     <Compile Include="Util\PropertyBags\ConvertValuePropertyBag.cs" />
+    <Compile Include="Util\PropertyBags\CriteriaBag.cs" />
     <Compile Include="Util\PropertyBags\CriteriaPropertyBag.cs" />
     <Compile Include="Util\PropertyBags\DecoratorArgumentBag.cs" />
     <Compile Include="Util\PropertyBags\InheritedTypePropertyBag.cs" />
-    <Compile Include="Util\ObjectCloner.cs" />
+    <Compile Include="Util\PropertyBags\PropertyBag.cs" />
+    <Compile Include="Util\PropertyBags\PropertyContext.cs" />
     <Compile Include="Util\PropertyBags\RuleBag.cs" />
     <Compile Include="Util\PropertyBags\UpdateValuePropertyBagBag.cs" />
     <Compile Include="Util\PropertyBags\ValuePropertyBag.cs" />
-    <Compile Include="Util\PropertyBags\PropertyBag.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Util\PropertyBags\PropertyContext.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Util\TreeNodeComparer.cs">
       <SubType>Code</SubType>
     </Compile>

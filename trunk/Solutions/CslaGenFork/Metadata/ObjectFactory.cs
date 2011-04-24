@@ -60,7 +60,7 @@ namespace CslaGenerator.Metadata
         /// <param name="view"></param>
         public void AddProperties(IViewInfo view)
         {
-            AddProperties(view, view, view.Columns,false,false);
+            AddProperties(view, view, view.Columns, false, false);
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace CslaGenerator.Metadata
         /// <param name="selectedColumns"></param>
         public void AddProperties(ITableInfo table, IList<IColumnInfo> selectedColumns)
         {
-            AddProperties(table, table, selectedColumns,false,false);
+            AddProperties(table, table, selectedColumns, false, false);
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace CslaGenerator.Metadata
         /// <param name="selectedColumns"></param>
         public void AddProperties(IViewInfo view, IList<IColumnInfo> selectedColumns)
         {
-            AddProperties(view, view, selectedColumns,false,false);
+            AddProperties(view, view, selectedColumns, false, false);
         }
 
         /// <summary>
@@ -136,7 +136,7 @@ namespace CslaGenerator.Metadata
                 SetValuePropertyInfo(obj, rs, col, newProp);
                 if (newProp.DbBindColumn.ColumnOriginType != ColumnOriginType.Table)
                     origin = newProp.DbBindColumn.ColumnOriginType;
-                if(!askConfirmation)
+                if (!askConfirmation)
                 {
                     _currentCslaObject.ValueProperties.Add(newProp);
                     added = true;
@@ -203,7 +203,7 @@ namespace CslaGenerator.Metadata
                 sb.Append("Note: \"Generate stored procedures\" was set to false because the origins of the columns are not tables.");
             }
 
-            if(sb.ToString().Length > 0)
+            if (sb.ToString().Length > 0)
                 OutputWindow.Current.AddOutputInfo(sb.ToString());
         }
 
@@ -501,7 +501,8 @@ namespace CslaGenerator.Metadata
 
                             defaultCriteria.SetSprocNames();
 
-                            if (_currentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 &&
+                            if ((_currentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 ||
+                                _currentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL) &&
                                 _currentCslaObject.ObjectType != CslaObjectType.EditableRoot &&
                                 _currentCslaObject.ObjectType != CslaObjectType.EditableSwitchable)
                             {
@@ -527,7 +528,7 @@ namespace CslaGenerator.Metadata
 
         private void AddDefaultCriteria()
         {
-            
+
         }
 
         private void AddTimestampProperty(Criteria defaultCriteria, ValueProperty timeStampProperty)
@@ -537,7 +538,7 @@ namespace CslaGenerator.Metadata
             foreach (CriteriaProperty p in defaultCriteria.Properties)
             {
                 CriteriaProperty newProp = (CriteriaProperty)ObjectCloner.CloneShallow(p);
-                newProp.DbBindColumn = (DbBindColumn) p.DbBindColumn.Clone();
+                newProp.DbBindColumn = (DbBindColumn)p.DbBindColumn.Clone();
                 timestampCriteria.Properties.Add(newProp);
 
             }
@@ -555,7 +556,7 @@ namespace CslaGenerator.Metadata
                 if (!crit.Properties.Contains(col.Name))
                 {
                     CriteriaProperty p = new CriteriaProperty(col.Name, col.PropertyType);
-                    p.DbBindColumn = (DbBindColumn) col.DbBindColumn.Clone();
+                    p.DbBindColumn = (DbBindColumn)col.DbBindColumn.Clone();
                     crit.Properties.Add(p);
                 }
             }

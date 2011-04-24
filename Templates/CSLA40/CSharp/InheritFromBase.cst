@@ -9,6 +9,7 @@
 <%@ Import Namespace="CslaGenerator.Util" %>
 
 <%
+int silverlightLevel = 0;
 if (ActiveObjects)
 {
 %>using ActiveObjects;
@@ -18,7 +19,7 @@ if (ActiveObjects)
 <%
 if (Info.ObjectNamespace.IndexOf(CurrentUnit.GenerationParams.UtilitiesNamespace) != 0)
 {
-%>using <%= CurrentUnit.GenerationParams.UtilitiesNamespace %>;
+%><%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel) %>using <%= CurrentUnit.GenerationParams.UtilitiesNamespace %>;<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel) %>
 <%
 Response.Write(Environment.NewLine);
 }
@@ -36,8 +37,7 @@ if (Info.ObjectNamespace.Length > 0)
         if (eventList.Count > 0)
         {
             %>
-
-        #region Pseudo Event Handlers
+<%= IfSilverlight (Conditional.NotSilverlight, 2, ref silverlightLevel) %>#region Pseudo Event Handlers
 
             <%
             foreach (string strEvent in eventList)
@@ -51,8 +51,7 @@ if (Info.ObjectNamespace.Length > 0)
                 <%
             }
             %>
-        #endregion
-
+        #endregion<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel) %>
             <%
         }
         %>

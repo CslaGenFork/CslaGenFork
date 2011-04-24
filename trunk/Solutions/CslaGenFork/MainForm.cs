@@ -94,7 +94,7 @@ namespace CslaGenerator
             {
                 if (ctl.Text == @"Schema")
                 {
-                    ((Form) ctl).Close();
+                    ((Form)ctl).Close();
                     ctl.Dispose();
                     break;
                 }
@@ -132,9 +132,9 @@ namespace CslaGenerator
             {
                 foreach (ScriptCommandInfo cmd in plugin.GetCommands())
                 {
-// ReSharper disable UseObjectOrCollectionInitializer
+                    // ReSharper disable UseObjectOrCollectionInitializer
                     var pluginMenu = new ToolStripMenuItem(cmd.CommandTitle);
-// ReSharper restore UseObjectOrCollectionInitializer
+                    // ReSharper restore UseObjectOrCollectionInitializer
                     pluginMenu.Tag = cmd;
                     pluginMenu.Click += PluginMenuClick;
                     pluginsToolStripMenuItem.DropDownItems.Add(pluginMenu);
@@ -152,8 +152,8 @@ namespace CslaGenerator
                     plugin.Unit = _controller.CurrentUnit;
                     plugin.SelectedObjects = projectPanel.GetSelectedObjects();
                 }
-                var menu = (ToolStripMenuItem) sender;
-                var cmd = (ScriptCommandInfo) menu.Tag;
+                var menu = (ToolStripMenuItem)sender;
+                var cmd = (ScriptCommandInfo)menu.Tag;
                 cmd.RunCommand();
             }
             catch (Exception ex)
@@ -166,9 +166,9 @@ namespace CslaGenerator
         private void ShowStartPage()
         {
             _showingStartPage = true;
-//            var str = "";
-//            object nullObject = 0;
-//            object nullObjStr = "";
+            //            var str = "";
+            //            object nullObject = 0;
+            //            object nullObjStr = "";
             string startupPath = Application.StartupPath;
             int idx = startupPath.IndexOf(@"\bin");
             string url;
@@ -201,17 +201,17 @@ namespace CslaGenerator
             // if we are calling this from the controller, then the
             // file dialog will not have been used to open the file, and since other code relies
             // on the file dialog having been used (no local/controller storage for file name) ...
-// ReSharper disable RedundantCheckBeforeAssignment
+            // ReSharper disable RedundantCheckBeforeAssignment
             if (ofdLoad.FileName != fileName)
-// ReSharper restore RedundantCheckBeforeAssignment
+            // ReSharper restore RedundantCheckBeforeAssignment
             {
                 ofdLoad.FileName = fileName;
             }
         }
 
-// ReSharper disable UnusedMember.Local
+        // ReSharper disable UnusedMember.Local
         private void GeneratorRequestSave(object sender, EventArgs e)
-// ReSharper restore UnusedMember.Local
+        // ReSharper restore UnusedMember.Local
         {
             SaveToolStripMenuItemClick(sender, e);
         }
@@ -230,6 +230,9 @@ namespace CslaGenerator
 
         internal bool ApplyProjectProperties()
         {
+            if (!_controller.CurrentPropertiesTab.ValidateOptions())
+                return false;
+
             if (_controller.CurrentPropertiesTab.IsDirty)
             {
                 DialogResult result =
@@ -276,7 +279,8 @@ namespace CslaGenerator
             {
                 targetDir = _controller.CurrentFilePath + @"\" + targetDir;
             }
-            if(_controller.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40)
+            if (_controller.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 ||
+                _controller.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL)
             {
                 _generator = new CodeGen.AdvancedGenerator(targetDir, _controller.TemplatesDirectory);
             }
@@ -312,9 +316,9 @@ namespace CslaGenerator
                 Generate();
         }
 
-// ReSharper disable MemberCanBeMadeStatic.Local
+        // ReSharper disable MemberCanBeMadeStatic.Local
         private void AboutToolStripMenuItemClick(object sender, EventArgs e)
-// ReSharper restore MemberCanBeMadeStatic.Local
+        // ReSharper restore MemberCanBeMadeStatic.Local
         {
             using (var frm = new AboutBox())
             {
@@ -324,9 +328,9 @@ namespace CslaGenerator
 
         private void LocateToolStripMenuItemClick(object sender, EventArgs e)
         {
-// ReSharper disable UseObjectOrCollectionInitializer
+            // ReSharper disable UseObjectOrCollectionInitializer
             var tDirDialog = new FolderBrowserDialog();
-// ReSharper restore UseObjectOrCollectionInitializer
+            // ReSharper restore UseObjectOrCollectionInitializer
             tDirDialog.Description = @"Current folder location of the CslaGen templates is:" + Environment.NewLine +
                                      _controller.TemplatesDirectory + Environment.NewLine +
                                      @"Select a new folder location and press OK.";
@@ -347,9 +351,9 @@ namespace CslaGenerator
             }
         }
 
-// ReSharper disable MemberCanBeMadeStatic.Local
+        // ReSharper disable MemberCanBeMadeStatic.Local
         private void CodeSmithExtensionToolStripMenuItemClick(object sender, EventArgs e)
-// ReSharper restore MemberCanBeMadeStatic.Local
+        // ReSharper restore MemberCanBeMadeStatic.Local
         {
             Windows7Security.StartCodeSmithHandler();
         }
@@ -714,7 +718,7 @@ namespace CslaGenerator
         {
             if (progressBar.Value < progressBar.Maximum)
             {
-                Invoke((MethodInvoker) delegate { progressBar.Value++; });
+                Invoke((MethodInvoker)delegate { progressBar.Value++; });
             }
         }
 
@@ -731,18 +735,18 @@ namespace CslaGenerator
 
             var output = new OutputWindow();
             output.VisibleChanged +=
-                delegate(object sender, EventArgs e) { outputWindowToolStripMenuItem.Checked = ((DockContent) sender).Visible; };
+                delegate(object sender, EventArgs e) { outputWindowToolStripMenuItem.Checked = ((DockContent)sender).Visible; };
             output.FormClosing += PaneFormClosing;
             output.Show(dockPanel1);
 
-// ReSharper disable JoinDeclarationAndInitializer
+            // ReSharper disable JoinDeclarationAndInitializer
             DockContent pane;
-// ReSharper restore JoinDeclarationAndInitializer
+            // ReSharper restore JoinDeclarationAndInitializer
             //set up docking for the PropertyGrid
             Controls.Remove(PropertyGrid);
-// ReSharper disable UseObjectOrCollectionInitializer
+            // ReSharper disable UseObjectOrCollectionInitializer
             pane = new DockContent();
-// ReSharper restore UseObjectOrCollectionInitializer
+            // ReSharper restore UseObjectOrCollectionInitializer
             pane.Icon = Icon.FromHandle(Resources.Properties.GetHicon());
             pane.Controls.Add(PropertyGrid);
             pane.DockAreas = DockAreas.DockRight |
@@ -751,7 +755,7 @@ namespace CslaGenerator
             PropertyGrid.Dock = DockStyle.Fill;
             pane.Text = @"Csla Object Info";
             pane.VisibleChanged +=
-                delegate(object sender, EventArgs e) { objectPropertiesPanelToolStripMenuItem.Checked = ((DockContent) sender).Visible; };
+                delegate(object sender, EventArgs e) { objectPropertiesPanelToolStripMenuItem.Checked = ((DockContent)sender).Visible; };
             pane.FormClosing += PaneFormClosing;
             _propertyGridDockPanel = pane;
             pane.Show(dockPanel1);
@@ -764,7 +768,7 @@ namespace CslaGenerator
             pane.MdiParent = this;
             pane.Text = @"Start Page";
             pane.VisibleChanged +=
-                delegate(object sender, EventArgs e) { mainPageToolStripMenuItem.Checked = ((DockContent) sender).Visible; };
+                delegate(object sender, EventArgs e) { mainPageToolStripMenuItem.Checked = ((DockContent)sender).Visible; };
             pane.FormClosing += PaneFormClosing;
             _webBrowserDockPanel = pane;
             pane.Show(dockPanel1);
@@ -778,7 +782,7 @@ namespace CslaGenerator
             pane.MdiParent = this;
             pane.Text = @"Object Relations Builder";
             pane.VisibleChanged +=
-                delegate(object sender, EventArgs e) { objectRelationsBuilderPageToolStripMenuItem.Checked = ((DockContent) sender).Visible; };
+                delegate(object sender, EventArgs e) { objectRelationsBuilderPageToolStripMenuItem.Checked = ((DockContent)sender).Visible; };
             pane.FormClosing += PaneFormClosing;
             ObjectRelationsBuilderDockPanel = pane;
             //            pane.Show(dockPanel1);
@@ -787,9 +791,9 @@ namespace CslaGenerator
             //set up docking for the Project Panel);
             Controls.Remove(projectPanel);
             projectPanel.Dock = DockStyle.Fill;
-// ReSharper disable UseObjectOrCollectionInitializer
+            // ReSharper disable UseObjectOrCollectionInitializer
             pane = new DockContent();
-// ReSharper restore UseObjectOrCollectionInitializer
+            // ReSharper restore UseObjectOrCollectionInitializer
             pane.Icon = Icon.FromHandle(Resources.Classes.GetHicon());
             pane.Controls.Add(projectPanel);
             pane.DockAreas = DockAreas.DockLeft |
@@ -798,7 +802,7 @@ namespace CslaGenerator
             pane.ShowHint = DockState.DockLeft;
             pane.Text = @"CslaGen Project";
             pane.VisibleChanged +=
-                delegate(object sender, EventArgs e) { projectPanelToolStripMenuItem.Checked = ((DockContent) sender).Visible; };
+                delegate(object sender, EventArgs e) { projectPanelToolStripMenuItem.Checked = ((DockContent)sender).Visible; };
             pane.FormClosing += PaneFormClosing;
             _projectDockPanel = pane;
             pane.Show(dockPanel1);
@@ -810,7 +814,7 @@ namespace CslaGenerator
                 return;
             SaveBeforeClose(true);
             e.Cancel = true;
-            ((DockContent) sender).Hide();
+            ((DockContent)sender).Hide();
         }
 
         protected override void OnClosing(CancelEventArgs e)

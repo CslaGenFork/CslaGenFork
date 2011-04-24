@@ -6,7 +6,8 @@ foreach (Criteria c in Info.CriteriaObjects)
         %>
 
         /// <summary>
-        /// Marks the <see cref="<%=Info.ObjectName%>"/> object for deletion. The object will be deleted as part of the next save operation.
+        /// Marks the <see cref="<%=Info.ObjectName%>"/> object for deletion.
+        /// The object will be deleted as part of the next save operation.
         /// </summary>
 <%
         string strDelParams = string.Empty;
@@ -15,7 +16,7 @@ foreach (Criteria c in Info.CriteriaObjects)
         for (int i = 0; i < c.Properties.Count; i++)
         {
             %>
-        /// <param name="<%= FormatCamel(c.Properties[i].Name) %>">The <%= FormatProperty(c.Properties[i].Name) %>.</param>
+        /// <param name="<%= FormatCamel(c.Properties[i].Name) %>">The <%= FormatProperty(c.Properties[i].Name) %> of the <%=Info.ObjectName%> to delete.</param>
         <%
             if (i > 0)
             {

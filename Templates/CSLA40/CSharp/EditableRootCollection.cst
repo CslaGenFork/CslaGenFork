@@ -15,11 +15,12 @@
 <%
 if (Errors.Length == 0)
 {
+    int silverlightLevel = 0;
     bool first = true;
     %><!-- #include file="Header.asp" -->
 using System;
-using System.Data;
-using System.Data.SqlClient;
+<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel) %>using System.Data;
+using System.Data.SqlClient;<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel) %>
 using Csla;
 <%
     if (ActiveObjects)
@@ -27,7 +28,7 @@ using Csla;
     %>using ActiveObjects;
 <%
     }
-    %>using Csla.Data;
+    %><%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel) %>using Csla.Data;<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel) %>
 <%= GetUsingStatementsString(Info) %>
 <%
     if (Info.ObjectNamespace.Length > 0)
@@ -130,18 +131,15 @@ using Csla;
         }
         %>
         #region Factory Methods
-
-        /// <summary>
-        /// Factory method. Creates a new <see cref="<%=Info.ObjectName%>"/> collection.
-        /// </summary>
-        /// <returns>A reference to the created <see cref="<%=Info.ObjectName%>"/> object.</returns>
-        public static <%= Info.ObjectName %> New<%= Info.ObjectName %>()
-        {
-            return DataPortal.Create<<%= Info.ObjectName %>>();
-        }
+<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel) %>
+        <!-- #include file="NewObject.asp" -->
         <!-- #include file="GetObject.asp" -->
-        <% Response.Write(Environment.NewLine); %>
-        #endregion
+        <!-- #include file="NewObjectAsync.asp" -->
+<%= IfSilverlight (Conditional.Else, 0, ref silverlightLevel) %>
+        <!-- #include file="NewObjectSilverlight.asp" -->
+<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel) %>
+        <!-- #include file="GetObjectAsync.asp" -->
+<% Response.Write(Environment.NewLine); %>        #endregion
         <%
     }
     %>
@@ -158,7 +156,7 @@ using Csla;
         %>
 
         #region Data Access
-
+<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel) %>
         <!-- #include file="CollectionDataPortalFetch.asp" -->
 
         /// <summary>
@@ -216,7 +214,7 @@ using Csla;
 %>
             }
         }
-
+<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel) %>
         #endregion
 <!-- #include file="Events.asp" -->
 

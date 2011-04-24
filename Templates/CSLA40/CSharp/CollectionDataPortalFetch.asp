@@ -23,7 +23,7 @@ if (!Info.UseCustomLoading)
                 }
                 else
                 {
-                    Response.Write("\r\n");
+                    Response.Write(Environment.NewLine);
                 }
                 %>
         /// <summary>
@@ -35,6 +35,7 @@ if (!Info.UseCustomLoading)
         /// </summary>
         /// <param name="crit">The fetch criteria.</param>
         protected void <%= (Info.ObjectType == CslaObjectType.EditableChild && CurrentUnit.GenerationParams.UseChildDataPortal) ? "Child_" : "DataPortal_" %>Fetch(<%= c.Name %> crit)
+        {
         <%
                 }
                 else if (c.Properties.Count > 0)
@@ -44,6 +45,7 @@ if (!Info.UseCustomLoading)
         /// </summary>
         /// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The fetch criteria.</param>
         protected void <%= (Info.ObjectType == CslaObjectType.EditableChild && CurrentUnit.GenerationParams.UseChildDataPortal) ? "Child_" : "DataPortal_" %>Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)
+        {
         <%
                 }
                 else
@@ -52,10 +54,21 @@ if (!Info.UseCustomLoading)
         /// Load <see cref="<%=Info.ObjectName%>"/> collection from the database.
         /// </summary>
         protected void <%= (Info.ObjectType == CslaObjectType.EditableChild && CurrentUnit.GenerationParams.UseChildDataPortal) ? "Child_" : "DataPortal_" %>Fetch()
+        {
         <%
+                    if (Info.SimpleCacheOptions == SimpleCacheResults.DataPortal)
+                    {
+                        %>
+            if (IsCached)
+            {
+                LoadCachedList();
+                return;
+            }
+
+            <%
+                    }
                 }
                 %>
-        {
             <%= GetConnection(Info, true) %>
             {
                 <%
@@ -144,6 +157,21 @@ if (!Info.UseCustomLoading)
         {
             if (!Info.DataSetLoadingScheme)
             {
+                if (Info.SimpleCacheOptions == SimpleCacheResults.DataPortal)
+                {
+                    %>
+
+        private void LoadCachedList()
+        {
+            IsReadOnly = false;
+            var rlce = RaiseListChangedEvents;
+            RaiseListChangedEvents = false;
+            AddRange(_list);
+            RaiseListChangedEvents = rlce;
+            IsReadOnly = true;
+        }
+        <%
+                }
                 %>
 
         private void LoadCollection(SqlCommand cmd)
@@ -180,7 +208,7 @@ if (!Info.UseCustomLoading)
     {
         if (!first2)
         {
-            Response.Write("\r\n");
+            Response.Write(Environment.NewLine);
         }
         %>
         /// <summary>
@@ -220,7 +248,8 @@ if (!Info.UseCustomLoading)
             <%
         }
         %>
-            RaiseListChangedEvents = rlce;<%
+            RaiseListChangedEvents = rlce;
+            <%
         if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
         {
             %>

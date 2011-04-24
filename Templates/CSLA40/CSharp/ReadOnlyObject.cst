@@ -15,13 +15,14 @@
 <%
 if (Errors.Length == 0)
 {
+    int silverlightLevel = 0;
     bool first = true;
     %><!-- #include file="Header.asp" -->
 using System;
-using System.Data;
-using System.Data.SqlClient;
+<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel) %>using System.Data;
+using System.Data.SqlClient;<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel) %>
 <% if (ActiveObjects) { %>using ActiveObjects;<% } else { %>using Csla;<% } %>
-using Csla.Data;
+<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel) %>using Csla.Data;<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel) %>
 <%= GetUsingStatementsString(Info) %>
 <% if (Info.ObjectNamespace.Length > 0) { %>namespace <%=Info.ObjectNamespace%>
 {<% } %>
@@ -49,10 +50,11 @@ using Csla.Data;
 
         <% Response.Write(Environment.NewLine); %>
         #region Factory Methods
+<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel) %>
         <!-- #include file="InternalGetObject.asp" -->
 
         <!-- #include file="GetObject.asp" -->
-<% Response.Write(Environment.NewLine); %>
+<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel) %>
         #endregion
 <!-- #include file="Constructor.asp"  -->
 
@@ -64,9 +66,9 @@ using Csla.Data;
 
 <% if (Info.GenerateDataAccessRegion) { %>
         #region Data Access
-
+<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel) %>
         <!-- #include file="DataPortalFetch.asp" -->
-<% Response.Write(Environment.NewLine); %>
+<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel) %>
         #endregion
 <!-- #include file="Events.asp" -->
 
