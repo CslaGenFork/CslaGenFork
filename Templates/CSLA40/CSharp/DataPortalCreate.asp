@@ -24,7 +24,7 @@ foreach (Criteria c in Info.CriteriaObjects)
         }
         else
         {
-            Response.Write("\r\n");
+            Response.Write(Environment.NewLine);
         }
         if (c.Properties.Count > 1)
         {

@@ -74,6 +74,7 @@ namespace CslaGenerator.Metadata
         private bool _generateDataPortalDelete = true;
         private bool _supportUpdateProperties = false;
         private bool _addParentReference = false;
+        private SimpleCacheResults _simpleCacheOptions = SimpleCacheResults.None;
         private bool _useCustomLoading = false;
         private bool _checkRulesOnFetch = true;
         private bool _generateDataAccessRegion = true;
@@ -805,6 +806,18 @@ namespace CslaGenerator.Metadata
         {
             get { return _addParentReference; }
             set { _addParentReference = value; }
+        }
+
+        /// <summary>
+        /// Cache the results of the fetch operation for the list.
+        /// </summary>
+        [Category("05. Collection Options")]
+        [Description("Cache the results of the fetch operation for the list.\r\nFactory uses a static field that isn't transferred from server to client side.\r\nDataPortal avoids duplicate hits on the database.")]
+        [UserFriendlyName("Cache Results Options")]
+        public SimpleCacheResults SimpleCacheOptions
+        {
+            get { return _simpleCacheOptions; }
+            set { _simpleCacheOptions = value; }
         }
 
         #endregion

@@ -15,14 +15,15 @@
 <%
 if (Errors.Length == 0)
 {
+    int silverlightLevel = 0;
     bool first = true;
     %><!-- #include file="Header.asp" -->
 using System;
-using System.Data;
-using System.Data.SqlClient;
+<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel) %>using System.Data;
+using System.Data.SqlClient;<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel) %>
 using Csla;
 <% if (ActiveObjects) { %>using ActiveObjects;
-<% } %>using Csla.Data;
+<% } %><%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel) %>using Csla.Data;<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel) %>
 <%= GetUsingStatementsString(Info) %>
 <% if (Info.ObjectNamespace.Length > 0) { %>namespace <%= Info.ObjectNamespace %>
 {<% } %>

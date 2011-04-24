@@ -208,7 +208,8 @@ namespace CslaGenerator.Design
                         _form.Size = new Size(_form.Size.Width, 633);
                     else
                         _form.Size = new Size(_form.Size.Width, 713);
-                    if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40)
+                    if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 ||
+                        GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL)
                         _form.Size = new Size(_form.Size.Width, _form.Size.Height - 16);
                     break;
                 case "ChildProperty Collection Editor":

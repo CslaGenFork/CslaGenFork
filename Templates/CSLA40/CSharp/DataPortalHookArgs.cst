@@ -8,6 +8,7 @@
 <%@ Import Namespace="CslaGenerator.Util" %>
 
 <%
+int silverlightLevel = 0;
 if (CurrentUnit.GenerationParams.HeaderVerbosity != HeaderVerbosity.None)
 {
     %>

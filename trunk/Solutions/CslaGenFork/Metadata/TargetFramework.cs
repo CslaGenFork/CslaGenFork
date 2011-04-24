@@ -5,6 +5,7 @@
         CSLA10,
         CSLA20,
         CSLA35,
-        CSLA40
+        CSLA40,
+        CSLA40DAL
     }
 }

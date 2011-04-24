@@ -1,6 +1,5 @@
 using System;
 using System.ComponentModel;
-using System.Data;
 
 namespace CslaGenerator.Metadata
 {
@@ -10,32 +9,41 @@ namespace CslaGenerator.Metadata
 
         private bool _saveBeforeGenerate = true;
         private TargetFramework _targetFramework = TargetFramework.CSLA40;
-        private bool _backupOldSource = false;
+        private bool _backupOldSource;
         private bool _separateNamespaces = true;
-        private bool _separateBaseClasses = false;
-        private bool _activeObjects = false;
+        private bool _separateBaseClasses;
+        private bool _activeObjects;
         private bool _useDotDesignerFileNameConvention = true;
-        private bool _recompileTemplates = false;
-        private bool _nullableSupport = false;
+        private bool _recompileTemplates;
+        private bool _nullableSupport;
         private CodeLanguage _outputLanguage = CodeLanguage.CSharp;
         private CslaPropertyMode _propertyMode = CslaPropertyMode.Default;
-        private UIEnvironment _generatedUIEnvironment = UIEnvironment.WinForms_WPF;
         private bool _useChildDataPortal = true;
-        private SilverlightSupport _generateSilverlight = SilverlightSupport.CompilerDirectives;
         private Authorization _generateAuthorization = Authorization.FullSupport;
         private HeaderVerbosity _headerVerbosity = HeaderVerbosity.Full;
-        private bool _useBypassPropertyChecks = true;
-        private bool _useSingleCriteria = false;
-        private bool _forceReadOnlyProperties = false;
+        private bool _useBypassPropertyChecks;
+        private bool _useSingleCriteria;
+        private bool _forceReadOnlyProperties;
         private string _baseFilenameSuffix = string.Empty;
         private string _extendedFilenameSuffix = string.Empty;
         private string _classCommentFilenameSuffix = string.Empty;
-        private bool _separateClassComment = false;
-        private string _utilitiesFolder = String.Empty;
+        private bool _separateClassComment;
+        private string _baseNamespace = String.Empty;
         private string _utilitiesNamespace = String.Empty;
+        private string _utilitiesFolder = String.Empty;
+        private string _interfaceDALNamespace = "DataAccess";
+        private string _dalNamespace = "DataAccess.Sql";
         private bool _generateSprocs = true;
         private bool _oneSpFilePerObject = true;
+        private bool _generateInlineQueries;
         private bool _generateDatabaseClass = true;
+        private bool _generateWinForms = true;
+        private bool _generateWPF;
+        private bool _generateSilverlight;
+        private TargetDAL _targetDAL = TargetDAL.None;
+        private bool _generateDAL = true;
+        private bool _generateSynchronous = true;
+        private bool _generateAsynchronous;
 
         #endregion
 
@@ -61,7 +69,7 @@ namespace CslaGenerator.Metadata
                 if (_targetFramework == value)
                     return;
                 _targetFramework = value;
-                OnPropertyChanged("");
+                OnPropertyChanged("TargetFramework");
             }
         }
 
@@ -130,6 +138,7 @@ namespace CslaGenerator.Metadata
             }
         }
 
+        [Browsable(false)]
         public bool RecompileTemplates
         {
             get { return _recompileTemplates; }
@@ -179,38 +188,15 @@ namespace CslaGenerator.Metadata
             }
         }
 
-        public UIEnvironment GeneratedUIEnvironment
-        {
-            get { return _generatedUIEnvironment; }
-            set
-            {
-                if (_generatedUIEnvironment == value)
-                    return;
-                _generatedUIEnvironment = value;
-                OnPropertyChanged("");
-            }
-        }
-
         public bool UseChildDataPortal
         {
-            get { return _useChildDataPortal; }
+//            get { return _useChildDataPortal; }
+            get { return true; }
             set
             {
                 if (_useChildDataPortal == value)
                     return;
                 _useChildDataPortal = value;
-                OnPropertyChanged("");
-            }
-        }
-
-        public SilverlightSupport GenerateSilverlight
-        {
-            get { return _generateSilverlight; }
-            set
-            {
-                if (_generateSilverlight == value)
-                    return;
-                _generateSilverlight = value;
                 OnPropertyChanged("");
             }
         }
@@ -332,12 +318,25 @@ namespace CslaGenerator.Metadata
             }
         }
 
+        public string BaseNamespace
+        {
+            get { return _baseNamespace; }
+            set
+            {
+                value = value.Trim().Replace("  ", " ").Replace(' ', '_').Replace('\\', '.').Replace('/', '.');
+                if (_baseNamespace == value)
+                    return;
+                _baseNamespace = value;
+                OnPropertyChanged("");
+            }
+        }
+
         public string UtilitiesNamespace
         {
             get { return _utilitiesNamespace; }
             set
             {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                value = value.Trim().Replace("  ", " ").Replace(' ', '_').Replace('\\', '.').Replace('/', '.');
                 if (_utilitiesNamespace == value)
                     return;
                 _utilitiesNamespace = value;
@@ -354,6 +353,32 @@ namespace CslaGenerator.Metadata
                 if (_utilitiesFolder == value)
                     return;
                 _utilitiesFolder = value;
+                OnPropertyChanged("");
+            }
+        }
+
+        public string InterfaceDALNamespace
+        {
+            get { return _interfaceDALNamespace; }
+            set
+            {
+                value = value.Trim().Replace("  ", " ").Replace(' ', '_').Replace('\\', '.').Replace('/', '.');
+                if (_interfaceDALNamespace == value)
+                    return;
+                _interfaceDALNamespace = value;
+                OnPropertyChanged("");
+            }
+        }
+
+        public string DALNamespace
+        {
+            get { return _dalNamespace; }
+            set
+            {
+                value = value.Trim().Replace("  ", " ").Replace(' ', '_').Replace('\\', '.').Replace('/', '.');
+                if (_dalNamespace == value)
+                    return;
+                _dalNamespace = value;
                 OnPropertyChanged("");
             }
         }
@@ -382,6 +407,18 @@ namespace CslaGenerator.Metadata
             }
         }
 
+        public bool GenerateInlineQueries
+        {
+            get { return _generateInlineQueries; }
+            set
+            {
+                if (_generateInlineQueries == value)
+                    return;
+                _generateInlineQueries = value;
+                OnPropertyChanged("");
+            }
+        }
+
         public bool GenerateDatabaseClass
         {
             get { return _generateDatabaseClass; }
@@ -394,6 +431,96 @@ namespace CslaGenerator.Metadata
             }
         }
 
+        public bool GenerateWinForms
+        {
+            get { return _generateWinForms; }
+            set
+            {
+                if (_generateWinForms == value)
+                    return;
+                _generateWinForms = value;
+                OnPropertyChanged("GenerateWinForms");
+            }
+        }
+
+        public bool GenerateWPF
+        {
+            get { return _generateWPF; }
+            set
+            {
+                if (_generateWPF == value)
+                    return;
+                _generateWPF = value;
+                OnPropertyChanged("GenerateWPF");
+            }
+        }
+
+        public bool GenerateSilverlight4
+        {
+            get { return _generateSilverlight; }
+            set
+            {
+                if (_generateSilverlight == value)
+                    return;
+                _generateSilverlight = value;
+                OnPropertyChanged("GenerateSilverlight4");
+            }
+        }
+
+        public TargetDAL TargetDAL
+        {
+            get { return _targetDAL; }
+            set
+            {
+                if (_targetDAL == value)
+                    return;
+                _targetDAL = value;
+                OnPropertyChanged("");
+            }
+        }
+
+        public bool GenerateDAL
+        {
+            get { return _generateDAL; }
+            set
+            {
+                if (_generateDAL == value)
+                    return;
+                _generateDAL = value;
+                OnPropertyChanged("");
+            }
+        }
+
+        public bool GenerateSynchronous
+        {
+            get { return _generateSynchronous; }
+            set
+            {
+                if (_generateSynchronous == value)
+                    return;
+                _generateSynchronous = value;
+                OnPropertyChanged("GenerateSynchronous");
+            }
+        }
+
+        public bool GenerateAsynchronous
+        {
+            get { return _generateAsynchronous; }
+            set
+            {
+                if (_generateAsynchronous == value)
+                    return;
+                _generateAsynchronous = value;
+                OnPropertyChanged("GenerateAsynchronous");
+            }
+        }
+
+        [Browsable(false)]
+        public bool DualListInheritance
+        {
+            get { return GenerateWinForms && (GenerateWPF || GenerateSilverlight4); }
+        }
+
         #endregion
 
         #region INotifyPropertyChanged Members
@@ -401,20 +528,79 @@ namespace CslaGenerator.Metadata
         public event PropertyChangedEventHandler PropertyChanged;
         void OnPropertyChanged(string propertyName)
         {
-            _Dirty = true;
+            if (!string.IsNullOrEmpty(propertyName))
+            {
+                if (propertyName == "TargetFramework")
+                    SetAdvancedOptions();
+                if (propertyName == "GenerateWinForms")
+                    SetAsyncUIOptions();
+                if (propertyName == "GenerateWPF")
+                    SetAsyncUIOptions();
+                if (propertyName == "GenerateSilverlight4")
+                    SetAsyncUIOptions();
+                if (propertyName == "GenerateSynchronous")
+                    SetAsyncUIOptions();
+                if (propertyName == "GenerateAsynchronous")
+                    SetAsyncUIOptions();
+            }
+
+            Dirty = true;
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
-        private bool _Dirty = false;
-        [Browsable(false)]
-        internal bool Dirty
+
+        private void SetAdvancedOptions()
         {
-            get { return _Dirty; }
-            set
+            if (_targetFramework == TargetFramework.CSLA40DAL)
             {
-                _Dirty = value;
+                Advanced = true;
+                _targetDAL = TargetDAL.Simple;
+                _activeObjects = false;
+                _useChildDataPortal = true;
+                _useSingleCriteria = false;
+            }
+            else
+            {
+                Advanced = false;
+                _targetDAL = TargetDAL.None;
+                _generateDAL = false;
             }
         }
+
+        private void SetAsyncUIOptions()
+        {
+            if (_generateSilverlight)
+            {
+                _generateAsynchronous = true;
+                ForceAsyncUI = true;
+            }
+            else
+            {
+                ForceAsyncUI = false;
+            }
+
+            if (!(_generateWinForms || _generateWPF))
+            {
+                _generateSynchronous = false;
+                ForceSyncUI = true;
+            }
+            else
+            {
+                ForceSyncUI = false;
+            }
+        }
+
+        [Browsable(false)]
+        internal bool Advanced { get; private set; }
+
+        [Browsable(false)]
+        internal bool ForceSyncUI { get; private set; }
+
+        [Browsable(false)]
+        internal bool ForceAsyncUI { get; private set; }
+
+        [Browsable(false)]
+        internal bool Dirty { get; set; }
 
         #endregion
 
@@ -424,7 +610,7 @@ namespace CslaGenerator.Metadata
             try
             {
                 obj = (GenerationParameters)Util.ObjectCloner.CloneShallow(this);
-                obj._Dirty = false;
+                obj.Dirty = false;
             }
             catch (Exception ex)
             {
@@ -434,5 +620,14 @@ namespace CslaGenerator.Metadata
             return obj;
         }
 
+        public GenerationParameters()
+        {
+            OnPropertyChanged("TargetFramework");
+            OnPropertyChanged("GenerateWinForms");
+            OnPropertyChanged("GenerateWPF");
+            OnPropertyChanged("GenerateSilverlight4");
+            OnPropertyChanged("GenerateSynchronous");
+            OnPropertyChanged("GenerateAsynchronous");
+        }
     }
 }

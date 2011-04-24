@@ -43,8 +43,8 @@ namespace CslaGenerator.Metadata
         private bool _autoTimestampCriteria = true;
         private bool _datesDefaultStringWithTypeConversion = true;
         private PropertyDeclaration _createTimestampPropertyMode = PropertyDeclaration.NoProperty;
-        private bool _readOnlyObjectsCopyAuditing = false;
-        private bool _readOnlyObjectsCopyTimestamp = false;
+        private bool _readOnlyObjectsCopyAuditing;
+        private bool _readOnlyObjectsCopyTimestamp;
         private PropertyDeclaration _createReadOnlyObjectsPropertyMode = PropertyDeclaration.AutoProperty;
 
         #endregion
@@ -112,7 +112,7 @@ namespace CslaGenerator.Metadata
             }
             set
             {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                value = value.Trim().Replace("  ", " ").Replace(' ', '_').Replace('\\', '.').Replace('/', '.');
                 if (_defaultNamespace == value)
                     return;
                 _defaultNamespace = value;

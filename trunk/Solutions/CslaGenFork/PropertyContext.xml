@@ -28,6 +28,7 @@
     <add key="NameValueList:NameColumn" value="true" />
     <add key="NameValueList:ValueColumn" value="true" />
     <add key="NameValueList:CacheResults" value="true" />
+    <add key="NameValueList:SimpleCacheOptions" value="true" />
     <add key="NameValueList:DbName" value="true" />
     <add key="NameValueList:DeleteObjectCriteriaType" value="false" />
     <add key="NameValueList:GetObjectCriteriaType" value="false" />
@@ -82,6 +83,7 @@
     <add key="ReadOnlyCollection:NameColumn" value="false" />
     <add key="ReadOnlyCollection:ValueColumn" value="false" />
     <add key="ReadOnlyCollection:CacheResults" value="false" />
+    <add key="ReadOnlyCollection:SimpleCacheOptions" value="true" />
     <add key="ReadOnlyCollection:DbName" value="true" />
     <add key="ReadOnlyCollection:DeleteObjectCriteriaType" value="false" />
     <add key="ReadOnlyCollection:GetObjectCriteriaType" value="false" />
@@ -136,6 +138,7 @@
     <add key="ReadOnlyObject:NameColumn" value="false" />
     <add key="ReadOnlyObject:ValueColumn" value="false" />
     <add key="ReadOnlyObject:CacheResults" value="false" />
+    <add key="ReadOnlyObject:SimpleCacheOptions" value="false" />
     <add key="ReadOnlyObject:DbName" value="true" />
     <add key="ReadOnlyObject:DeleteObjectCriteriaType" value="false" />
     <add key="ReadOnlyObject:GetObjectCriteriaType" value="false" />
@@ -190,6 +193,7 @@
     <add key="EditableChild:NameColumn" value="false" />
     <add key="EditableChild:ValueColumn" value="false" />
     <add key="EditableChild:CacheResults" value="false" />
+    <add key="EditableChild:SimpleCacheOptions" value="false" />
     <add key="EditableChild:DbName" value="true" />
     <add key="EditableChild:DeleteObjectCriteriaType" value="false" />
     <add key="EditableChild:GetObjectCriteriaType" value="false" />
@@ -244,6 +248,7 @@
     <add key="EditableChildCollection:NameColumn" value="false" />
     <add key="EditableChildCollection:ValueColumn" value="false" />
     <add key="EditableChildCollection:CacheResults" value="false" />
+    <add key="EditableChildCollection:SimpleCacheOptions" value="false" />
     <add key="EditableChildCollection:DbName" value="true" />
     <add key="EditableChildCollection:DeleteObjectCriteriaType" value="false" />
     <add key="EditableChildCollection:GetObjectCriteriaType" value="false" />
@@ -298,6 +303,7 @@
     <add key="EditableRoot:NameColumn" value="false" />
     <add key="EditableRoot:ValueColumn" value="false" />
     <add key="EditableRoot:CacheResults" value="false" />
+    <add key="EditableRoot:SimpleCacheOptions" value="false" />
     <add key="EditableRoot:DbName" value="true" />
     <add key="EditableRoot:DeleteObjectCriteriaType" value="false" />
     <add key="EditableRoot:GetObjectCriteriaType" value="false" />
@@ -352,6 +358,7 @@
     <add key="EditableRootCollection:NameColumn" value="false" />
     <add key="EditableRootCollection:ValueColumn" value="false" />
     <add key="EditableRootCollection:CacheResults" value="false" />
+    <add key="EditableRootCollection:SimpleCacheOptions" value="false" />
     <add key="EditableRootCollection:DbName" value="true" />
     <add key="EditableRootCollection:DeleteObjectCriteriaType" value="false" />
     <add key="EditableRootCollection:GetObjectCriteriaType" value="false" />
@@ -406,6 +413,7 @@
     <add key="EditableSwitchable:NameColumn" value="false" />
     <add key="EditableSwitchable:ValueColumn" value="false" />
     <add key="EditableSwitchable:CacheResults" value="false" />
+    <add key="EditableSwitchable:SimpleCacheOptions" value="false" />
     <add key="EditableSwitchable:DbName" value="true" />
     <add key="EditableSwitchable:DeleteObjectCriteriaType" value="false" />
     <add key="EditableSwitchable:GetObjectCriteriaType" value="false" />
@@ -460,6 +468,7 @@
     <add key="DynamicEditableRoot:NameColumn" value="false" />
     <add key="DynamicEditableRoot:ValueColumn" value="false" />
     <add key="DynamicEditableRoot:CacheResults" value="false" />
+    <add key="DynamicEditableRoot:SimpleCacheOptions" value="false" />
     <add key="DynamicEditableRoot:DbName" value="true" />
     <add key="DynamicEditableRoot:DeleteObjectCriteriaType" value="false" />
     <add key="DynamicEditableRoot:GetObjectCriteriaType" value="false" />
@@ -514,6 +523,7 @@
     <add key="DynamicEditableRootCollection:NameColumn" value="false" />
     <add key="DynamicEditableRootCollection:ValueColumn" value="false" />
     <add key="DynamicEditableRootCollection:CacheResults" value="false" />
+    <add key="DynamicEditableRootCollection:SimpleCacheOptions" value="false" />
     <add key="DynamicEditableRootCollection:DbName" value="true" />
     <add key="DynamicEditableRootCollection:DeleteObjectCriteriaType" value="false" />
     <add key="DynamicEditableRootCollection:GetObjectCriteriaType" value="false" />

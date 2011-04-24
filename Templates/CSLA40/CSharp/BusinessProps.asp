@@ -29,14 +29,21 @@ foreach (ValueProperty prop in Info.AllValueProperties)
         useSetter = false;
     }
 
-    string statement = PropertyInfoDeclare(Info, prop);
+    string statement = PropertyInfoDeclare(Info, prop, false);
     if (!string.IsNullOrEmpty(statement))
     {
+        statement = new string(' ', 8) + statement;
+        string statementSilverlight = string.Empty;
+        if (CurrentUnit.GenerationParams.GenerateSilverlight4)
+        {
+            statementSilverlight = "[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]" + "\r\n" + new string(' ', 8);
+            statementSilverlight += PropertyInfoDeclare(Info, prop, true);
+        }
         Response.Write(Environment.NewLine); %>
         /// <summary>
         /// Maintains metadata about <see cref="<%= prop.Name %>"/> property.
         /// </summary>
-        <%= statement %><%
+<%= IfSilverlight (Conditional.Silverlight, 2, ref silverlightLevel) %><%= statementSilverlight %><%= IfSilverlight (Conditional.Else, 0, ref silverlightLevel) %><%= statement %><%= IfSilverlight (Conditional.End, 0, ref silverlightLevel) %><%
     }
     if (prop.DeclarationMode != PropertyDeclaration.NoProperty)
     {
@@ -51,7 +58,7 @@ foreach (ValueProperty prop in Info.AllValueProperties)
         }
         else
         {
-            Response.Write("\r\n");
+            Response.Write(Environment.NewLine);
             %>
         /// <summary>
         /// Gets <%= useSetter ? "or sets " : "" %>the <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.ValueProperty.SplitOnCaps(prop.Name) %>.
@@ -146,15 +153,21 @@ int childCount = 0;
 foreach (ChildProperty prop in Info.GetMyChildProperties())
 {
     childCount ++;
-    Response.Write("\r\n");
-    string statement = PropertyInfoChildDeclare(Info, prop);
+    string statement = PropertyInfoChildDeclare(Info, prop, false);
     if (!string.IsNullOrEmpty(statement))
     {
-        %>
+        statement = new string(' ', 8) + statement;
+        string statementSilverlight = string.Empty;
+        if (CurrentUnit.GenerationParams.GenerateSilverlight4)
+        {
+            statementSilverlight = "[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]" + "\r\n" + new string(' ', 8);
+            statementSilverlight += PropertyInfoChildDeclare(Info, prop, true);
+        }
+        Response.Write(Environment.NewLine); %>
         /// <summary>
         /// Maintains metadata about child <see cref="<%= prop.Name %>"/> property.
         /// </summary>
-        <%= statement + Environment.NewLine %><%
+<%= IfSilverlight (Conditional.Silverlight, 2, ref silverlightLevel) %><%= statementSilverlight %><%= IfSilverlight (Conditional.Else, 0, ref silverlightLevel) %><%= statement %><%= IfSilverlight (Conditional.End, 0, ref silverlightLevel)+"\r\n" %><%
     }
     if (prop.Summary != String.Empty)
     {
@@ -184,7 +197,7 @@ foreach (ChildProperty prop in Info.GetMyChildProperties())
         <%
     }
     %>
-        <%= PropertyDeclare(Info, prop) %>
+        <%= ChildPropertyDeclare(Info, prop) %>
         <%
 }
 

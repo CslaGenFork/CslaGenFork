@@ -28,12 +28,11 @@ if ((Info.ObjectType == CslaObjectType.EditableRoot ||
 }
 %>
         #region Pseudo Events
-<%
+<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel) %><%
 System.Collections.Generic.List<string> eventList = GetEventList(Info);
 foreach (string strEvent in eventList)
 {
     %>
-
         /// <summary>
         /// Occurs <%= FormatEventDocumentation(strEvent) %>
         /// </summary>
@@ -41,5 +40,5 @@ foreach (string strEvent in eventList)
         <%
 }
 %>
-
+<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel) %>
         #endregion

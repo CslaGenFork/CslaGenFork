@@ -13,22 +13,25 @@ namespace CslaGenerator.Controls
             InitializeComponent();
             DockAreas = WeifenLuo.WinFormsUI.Docking.DockAreas.Document;
             FillComboBox(cboOutputLanguage, typeof(CodeLanguage));
-            FillComboBox(cboUIEnvironment, typeof(UIEnvironment));
             FillComboBox(cboTarget, typeof(TargetFramework));
-            FillComboBox(cboGenerateSilverlight, typeof(SilverlightSupport));
+            FillComboBox(cboTargetDAL, typeof(TargetDAL));
+            cboTargetDAL.Items.RemoveAt(4);
+            cboTargetDAL.Items.RemoveAt(3);
             FillComboBox(cboGenerateAuthorization, typeof(Authorization));
             FillComboBox(cboHeaderVerbosity, typeof(HeaderVerbosity));
             FillComboBox(cboTransactionType, typeof(TransactionType));
             FillComboBox(cboPersistenceType, typeof(PersistenceType));
             FillComboBox(cboCreateTimestampPropertyMode, typeof(PropertyDeclaration));
-//            FillComboBox(cboPropertyMode, typeof(CslaPropertyMode));
             FillComboBox(cboCreateReadOnlyObjectsPropertyMode, typeof(PropertyDeclaration));
-            foreach (TabPage tab in tabControl1.TabPages)
+            foreach (TabPage tab in tabControlMain.TabPages)
                 foreach (Control ctl in tab.Controls)
                     foreach (Binding b in ctl.DataBindings)
                         b.DataSourceUpdateMode = DataSourceUpdateMode.OnPropertyChanged;
-        }
 
+            txtIntSoftDelete.Enabled = false;
+            chkGenerateInlineQueries.Enabled = false;
+            chkUseBypassPropertyChecks.Enabled = false;
+        }
 
         private void FillComboBox(ComboBox cbo, Type enumType)
         {
@@ -79,6 +82,9 @@ namespace CslaGenerator.Controls
 
         private void CmdApplyClick(object sender, EventArgs e)
         {
+            if (!ValidateOptions())
+                return;
+
             DialogResult confirm = DialogResult.No;
             if (!(_projParams.SpGeneralPrefix.Equals(mProject.Params.SpGeneralPrefix) &&
                 _projParams.SpGetPrefix.Equals(mProject.Params.SpGetPrefix) &&
@@ -156,7 +162,7 @@ namespace CslaGenerator.Controls
                 return;
 
             Application.DoEvents();
-            ImportParams(fileLoad.FileName);            
+            ImportParams(fileLoad.FileName);
         }
 
         private void ImportParams(string filename)
@@ -231,6 +237,27 @@ namespace CslaGenerator.Controls
                 TabText = @"Project Properties*";
             else
                 TabText = @"Project Properties";
+
+            if (Advanced)
+            {
+                if (cboTargetDAL.Items[0].ToString() == "None")
+                    cboTargetDAL.Items.RemoveAt(0);
+            }
+            else
+            {
+                if (cboTargetDAL.Items[0].ToString() != "None")
+                    cboTargetDAL.Items.Insert(0, TargetDAL.None);
+            }
+
+            cboTargetDAL.Enabled = Advanced;
+            chkGenerateDAL.Enabled = Advanced;
+            chkSynchronous.Enabled = !_genParams.ForceSyncUI;
+            chkAsynchronous.Enabled = !_genParams.ForceAsyncUI;
+
+            txtDALNamespace.Enabled = Advanced;
+            txtInterfaceDALNamespace.Enabled = Advanced;
+
+            chkActiveObjects.Enabled = !Advanced;
         }
 
         public bool IsDirty
@@ -238,6 +265,14 @@ namespace CslaGenerator.Controls
             get
             {
                 return (_genParams.Dirty || _projParams.Dirty);
+            }
+        }
+
+        private bool Advanced
+        {
+            get
+            {
+                return (_genParams.Advanced);
             }
         }
 
@@ -253,10 +288,26 @@ namespace CslaGenerator.Controls
                         break;
                     case DialogResult.Cancel:
                         return false;
-
                 }
             }
             return true;
+        }
+
+        internal bool ValidateOptions()
+        {
+            var result = true;
+            if (!_genParams.GenerateAsynchronous && !_genParams.GenerateSynchronous)
+            {
+                result = false;
+                MessageBox.Show(@"Must select either Synchronous or Asynchronous server methods.", @"CslaGenerator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            if (!_genParams.GenerateWinForms && !_genParams.GenerateWPF)
+            {
+                result = false;
+                MessageBox.Show(@"Must select either Windows Forms or WPF.", @"CslaGenerator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return result;
         }
     }
 }

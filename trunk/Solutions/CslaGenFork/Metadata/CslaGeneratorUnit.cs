@@ -23,7 +23,7 @@ namespace CslaGenerator.Metadata
         public CslaGeneratorUnit()
         {
             _cslaObjects = new CslaObjectInfoCollection();
-            _projectName = "Project";
+            _projectName = "MyProject";
         }
 
         public ProjectParameters Params

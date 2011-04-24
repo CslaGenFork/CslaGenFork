@@ -15,11 +15,12 @@
 <%
 if (Errors.Length == 0)
 {
+    int silverlightLevel = 0;
     bool first = true;
     %><!-- #include file="Header.asp" -->
 using System;
-using System.Data;
-using System.Data.SqlClient;
+<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel) %>using System.Data;
+using System.Data.SqlClient;<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel) %>
 using Csla;
 <%
     if (ActiveObjects)
@@ -28,7 +29,7 @@ using Csla;
         <%
     }
 %>
-using Csla.Data;
+<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel) %>using Csla.Data;<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel) %>
 <%= GetUsingStatementsString(Info) %>
 <%
     if (Info.ObjectNamespace.Length > 0)
@@ -81,9 +82,6 @@ using Csla.Data;
         <!-- #include file="ObjectOverrides.asp" -->
     <%
     Response.Write(Environment.NewLine);
-    %>
-        #region Factory Methods
-        <%
     if (Info.GenerateFactoryMethods)
     {
         if (Info.DbName.Equals(String.Empty))
@@ -91,35 +89,38 @@ using Csla.Data;
             Warnings.Append("Make sure you specify a DB name." + Environment.NewLine) ;
         }
         %>
+        #region Factory Methods
+<%= IfSilverlight (Conditional.NotSilverlight, 2, ref silverlightLevel) %>
         <!-- #include file="NewObject.asp" -->
 
-        <%
+        <!-- #include file="NewObjectAsync.asp" -->
+<%
+        bool selfLoad2 = GetSelfLoad(Info);
+        bool lazyLoad2 = GetLazyLoad(Info);
+        bool isCollection = false;
         if (Info.DbName != String.Empty)
         {
-            bool selfLoad2 = GetSelfLoad(Info);
-            bool lazyLoad2 = GetLazyLoad(Info);
             CslaObjectInfo tmpInfo = Info.Parent.CslaObjects.Find(Info.ParentType);
-            bool isCollection = false;
             if (tmpInfo != null)
                 isCollection = IsCollectionType(tmpInfo.ObjectType);
             if (selfLoad2 && lazyLoad2 && !isCollection)
             {
                 %>
-        <!-- #include file="GetObject.asp" -->
-                <%
+<!-- #include file="GetObject.asp" -->
+<%
             }
             else
             {
                 %>
-        <!-- #include file="InternalGetObject.asp" -->
-                <%
+
+<!-- #include file="InternalGetObject.asp" -->
+<%
             }
         }
         %>
-        <%
-        Response.Write(Environment.NewLine);
-        %>
-        #endregion
+<%= IfSilverlight (Conditional.Else, 0, ref silverlightLevel) %><!-- #include file="NewObjectSilverlight.asp" --><%= IfSilverlight (Conditional.End, 0, ref silverlightLevel) %>
+<!-- #include file="GetObjectAsync.asp" -->
+<% Response.Write(Environment.NewLine); %>        #endregion
         <%
     }
     %>
@@ -140,13 +141,13 @@ using Csla.Data;
         {
             %>
         #region Data Access
-
+<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel) %>
         <!-- #include file="DataPortalCreate.asp"  -->
-
         <!-- #include file="DataPortalFetch.asp" -->
-
         <!-- #include file="InternalUpdate.asp" -->
 <% Response.Write(""); %>
+<%= IfSilverlight (Conditional.Else, 0, ref silverlightLevel) %><!-- #include file="DataPortalCreateSilverlight.asp" -->
+<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel) %>
         #endregion
 <!-- #include file="Events.asp" -->
 <%

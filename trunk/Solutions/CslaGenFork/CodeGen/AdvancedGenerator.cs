@@ -23,28 +23,20 @@ namespace CslaGenerator.CodeGen
         private int _objectWarnings;
         private int _sprocFailed;
         private int _sprocSuccess;
-        private string _targetDirectory = string.Empty;
         private TargetFramework _targetFramework;
+        private bool _generateInterfaceDAL;
         private Hashtable _templates = new Hashtable();
 
         #endregion
 
         #region ICodeGenerator Members
 
-        public string TargetDirectory
-        {
-            get { return _targetDirectory; }
-            set { _targetDirectory = value; }
-        }
+        public string TargetDirectory { get; set; }
 
         public void Abort()
         {
             _abortRequested = true;
         }
-
-        #endregion
-
-        #region Private code generatiom
 
         public void GenerateProject(CslaGeneratorUnit unit)
         {
@@ -58,6 +50,7 @@ namespace CslaGenerator.CodeGen
             var generationParams = unit.GenerationParams;
             _generateDatabaseClass = generationParams.GenerateDatabaseClass;
             _targetFramework = generationParams.TargetFramework;
+            _generateInterfaceDAL = generationParams.TargetDAL == TargetDAL.Interface;
             _abortRequested = false;
             _fullTemplatesPath = _templatesDirectory + generationParams.TargetFramework + @"\";
             _templates = new Hashtable(); //to recompile templates in case they changed.
@@ -68,6 +61,7 @@ namespace CslaGenerator.CodeGen
                 if (unit.CslaObjects[i].Generate)
                     list.Add(unit.CslaObjects[i]);
             }
+
             foreach (var info in list)
             {
                 if (info.Generate)
@@ -76,6 +70,10 @@ namespace CslaGenerator.CodeGen
                         objInfo = info;
                     if (_abortRequested) break;
                     OnStep(info.ObjectName);
+
+
+                    // Business Objects
+
                     try
                     {
                         GenerateObject(info, unit);
@@ -83,7 +81,7 @@ namespace CslaGenerator.CodeGen
                     catch (Exception ex)
                     {
                         var sb = new StringBuilder();
-                        sb.AppendFormat("Object {0} failed to generate:", info.ObjectName);
+                        sb.AppendFormat("Business Objects: {0} failed to generate:", info.ObjectName);
                         sb.AppendLine();
                         sb.Append("    ");
                         sb.Append(ex.Message);
@@ -91,17 +89,56 @@ namespace CslaGenerator.CodeGen
                     }
                     if (_abortRequested) break;
 
+
+                    // Interface DAL
+
+                    try
+                    {
+                        GenerateInterfaceDAL(info, unit);
+                    }
+                    catch (Exception ex)
+                    {
+                        var sb = new StringBuilder();
+                        sb.AppendFormat("Interface DAL: {0} failed to generate:", info.ObjectName);
+                        sb.AppendLine();
+                        sb.Append("    ");
+                        sb.Append(ex.Message);
+                        OnGenerationInformation(sb.ToString());
+                    }
+                    if (_abortRequested) break;
+
+
+                    // DAL Objects
+
+                    try
+                    {
+                        GenerateDAL(info, unit);
+                    }
+                    catch (Exception ex)
+                    {
+                        var sb = new StringBuilder();
+                        sb.AppendFormat("DAL Objects: {0} failed to generate:", info.ObjectName);
+                        sb.AppendLine();
+                        sb.Append("    ");
+                        sb.Append(ex.Message);
+                        OnGenerationInformation(sb.ToString());
+                    }
+                    if (_abortRequested) break;
+
+
+                    // Stored Procedures 
+
                     if (generationParams.GenerateSprocs && info.GenerateSprocs)
                     {
                         try
                         {
                             if (generationParams.OneSpFilePerObject)
                             {
-                                GenerateAllSprocsFile(info, _targetDirectory, generationParams);
+                                GenerateAllSprocsFile(info, TargetDirectory, generationParams);
                             }
                             else
                             {
-                                GenerateSelectProcedure(info, _targetDirectory);
+                                GenerateSelectProcedure(info, TargetDirectory);
                                 if (_abortRequested) break;
 
                                 if (info.ObjectType != CslaObjectType.ReadOnlyObject
@@ -111,13 +148,13 @@ namespace CslaGenerator.CodeGen
                                     && info.ObjectType != CslaObjectType.EditableChildCollection
                                     && info.ObjectType != CslaObjectType.NameValueList)
                                 {
-                                    GenerateInsertProcedure(info, _targetDirectory);
+                                    GenerateInsertProcedure(info, TargetDirectory);
                                     if (_abortRequested) break;
 
-                                    GenerateDeleteProcedure(info, _targetDirectory);
+                                    GenerateDeleteProcedure(info, TargetDirectory);
                                     if (_abortRequested) break;
 
-                                    GenerateUpdateProcedure(info, _targetDirectory);
+                                    GenerateUpdateProcedure(info, TargetDirectory);
                                     if (_abortRequested) break;
                                 }
                             }
@@ -142,16 +179,31 @@ namespace CslaGenerator.CodeGen
                 }
             }
 
+
+            // Infrastructure classes
+
             if (_generateDatabaseClass)
             {
-                GenerateUtilityFile("Database", objInfo, generationParams.TargetFramework, unit);
+                GenerateUtilityFile("Database", objInfo, unit, GenerationStep.Business);
             }
             else
             {
                 _fileSuccess.Add("Database", null);
             }
 
-            GenerateUtilityFile("DataPortalHookArgs", objInfo, generationParams.TargetFramework, unit);
+            GenerateUtilityFile("DataPortalHookArgs", objInfo, unit, GenerationStep.Business);
+
+            if (_generateInterfaceDAL)
+            {
+                GenerateUtilityFile("IDalManager", objInfo, unit, GenerationStep.InterfaceDAL);
+                GenerateUtilityFile("DalFactory", objInfo, unit, GenerationStep.InterfaceDAL);
+                GenerateUtilityFile("DataNotFoundException", objInfo, unit, GenerationStep.InterfaceDAL);
+            }
+
+            if (_generateInterfaceDAL)
+            {
+                GenerateUtilityFile("DalManager", objInfo, unit, GenerationStep.DAL);
+            }
 
             if (_abortRequested)
             {
@@ -160,21 +212,43 @@ namespace CslaGenerator.CodeGen
             OnFinalized();
         }
 
+        public event GenerationInformationDelegate GenerationInformation;
+        public event GenerationInformationDelegate Step;
+        public event EventHandler Finalized;
+
+        #endregion
+
+        #region Constructor
+
+        public AdvancedGenerator(string targetDirectory, string templatesDirectory)
+        {
+            TargetDirectory = targetDirectory;
+            _templatesDirectory = templatesDirectory;
+        }
+
+        #endregion
+
+        #region Private code generatiom
+
         private void GenerateObject(CslaObjectInfo objInfo, CslaGeneratorUnit unit)
         {
             var generationParams = unit.GenerationParams;
             var fileName = GetBaseFileName(objInfo, false, generationParams.SeparateBaseClasses,
-                                              generationParams.SeparateNamespaces, generationParams.BaseFilenameSuffix,
-                                              generationParams.ExtendedFilenameSuffix,
-                                              generationParams.ClassCommentFilenameSuffix, false, false);
+                                           unit.GenerationParams.BaseNamespace,
+                                           generationParams.SeparateNamespaces,
+                                           generationParams.BaseFilenameSuffix,
+                                           generationParams.ExtendedFilenameSuffix,
+                                           generationParams.ClassCommentFilenameSuffix, false, false);
             var baseFileName = GetBaseFileName(objInfo, true, generationParams.SeparateBaseClasses,
-                                                  generationParams.SeparateNamespaces,
-                                                  generationParams.BaseFilenameSuffix,
-                                                  generationParams.ExtendedFilenameSuffix,
-                                                  generationParams.ClassCommentFilenameSuffix, false, false);
+                                               unit.GenerationParams.BaseNamespace,
+                                               generationParams.SeparateNamespaces,
+                                               generationParams.BaseFilenameSuffix,
+                                               generationParams.ExtendedFilenameSuffix,
+                                               generationParams.ClassCommentFilenameSuffix, false, false);
             var classCommentFileName = string.Empty;
             if (!string.IsNullOrEmpty(generationParams.ClassCommentFilenameSuffix))
                 classCommentFileName = GetBaseFileName(objInfo, false, generationParams.SeparateBaseClasses,
+                                                       unit.GenerationParams.BaseNamespace,
                                                        generationParams.SeparateNamespaces,
                                                        generationParams.BaseFilenameSuffix,
                                                        generationParams.ExtendedFilenameSuffix,
@@ -208,8 +282,8 @@ namespace CslaGenerator.CodeGen
                     OnGenerationFileName(baseFileName);
                     swBase = new StreamWriter(fsBase);
                     template.Render(swBase);
-                    errorsOutput = (StringBuilder) template.GetProperty("Errors");
-                    warningsOutput = (StringBuilder) template.GetProperty("Warnings");
+                    errorsOutput = (StringBuilder)template.GetProperty("Errors");
+                    warningsOutput = (StringBuilder)template.GetProperty("Warnings");
                     if (errorsOutput.Length > 0)
                     {
                         _objFailed++;
@@ -249,6 +323,18 @@ namespace CslaGenerator.CodeGen
                     swBase.Close();
                 }
             }
+        }
+
+        private void GenerateInterfaceDAL(CslaObjectInfo objInfo, CslaGeneratorUnit unit)
+        {
+            if (!_generateInterfaceDAL)
+                return;
+        }
+
+        private void GenerateDAL(CslaObjectInfo objInfo, CslaGeneratorUnit unit)
+        {
+            if (_targetFramework == TargetFramework.CSLA40)
+                return;
         }
 
         private void GenerateInheritanceFile(string fileName, CslaObjectInfo objInfo, bool activeObjects, CslaGeneratorUnit unit)
@@ -292,29 +378,11 @@ namespace CslaGenerator.CodeGen
             }
         }
 
-        private void GenerateUtilityFile(string utilityFilename, CslaObjectInfo objInfo, TargetFramework framework,
-                                         CslaGeneratorUnit unit)
+        private void GenerateUtilityFile(string utilityFilename, CslaObjectInfo objInfo, CslaGeneratorUnit unit, GenerationStep step)
         {
             _fileSuccess.Add(utilityFilename, null);
 
-            // only implement this for more recent frameworks);
-            if (framework != TargetFramework.CSLA40)
-                return;
-
-            // base directory of project
-            var fullFilename = _targetDirectory + @"\";
-
-            if (unit.GenerationParams.SeparateNamespaces)
-            {
-                // check whether to use namespace as folder
-                fullFilename += unit.GenerationParams.UtilitiesNamespace.Replace(".", @"\") + @"\";
-            }
-            else if (!unit.GenerationParams.UtilitiesFolder.Equals(String.Empty))
-            {
-                // output folder inside directory
-                fullFilename += unit.GenerationParams.UtilitiesFolder + @"\";
-            }
-
+            var fullFilename = GetFolderPath(unit, step);
             CheckDirectory(fullFilename);
 
             // filename w/o extension
@@ -357,6 +425,66 @@ namespace CslaGenerator.CodeGen
             }
         }
 
+        private string GetFolderPath(CslaGeneratorUnit unit, GenerationStep step)
+        {
+            // base directory of project
+            var folderpath = TargetDirectory + @"\";
+
+            if (step == GenerationStep.Business)
+            {
+                folderpath = GetFolderPath(unit.GenerationParams.SeparateNamespaces,
+                                            unit.GenerationParams.BaseNamespace,
+                                            unit.GenerationParams.UtilitiesNamespace,
+                                            unit.GenerationParams.UtilitiesFolder);
+            }
+            else if (step == GenerationStep.InterfaceDAL)
+            {
+                folderpath = GetFolderPath(unit.GenerationParams.SeparateNamespaces,
+                                            unit.GenerationParams.BaseNamespace,
+                                            unit.GenerationParams.InterfaceDALNamespace,
+                                            unit.GenerationParams.InterfaceDALNamespace);
+            }
+            else if (step == GenerationStep.DAL)
+            {
+                string baseNamespace = unit.GenerationParams.BaseNamespace;
+                if ((unit.GenerationParams.TargetDAL == TargetDAL.Interface) ||
+                    (unit.GenerationParams.TargetDAL == TargetDAL.Interface_DTO))
+                    baseNamespace = unit.GenerationParams.InterfaceDALNamespace;
+                folderpath = GetFolderPath(unit.GenerationParams.SeparateNamespaces,
+                                           baseNamespace,
+                                           unit.GenerationParams.DALNamespace,
+                                           unit.GenerationParams.DALNamespace);
+            }
+
+            return folderpath;
+        }
+
+        private string GetFolderPath(bool separateNamespaces, string baseNamespace, string fullNamespace, string insideFolder)
+        {
+            var result = TargetDirectory + @"\";
+            if (separateNamespaces)// check whether to use namespace as folder
+            {
+                if(fullNamespace.IndexOf(baseNamespace + ".") == 0)
+                {
+                    result += baseNamespace + ".";
+                    fullNamespace = fullNamespace.Substring(baseNamespace.Length + 1);
+                }
+                result += fullNamespace.Replace(".", @"\");
+            }
+            else if (!insideFolder.Equals(String.Empty))
+            {
+                // output folder inside directory
+                result += insideFolder;
+            }
+
+            if (result.EndsWith(@"\") == false)
+            {
+                result += @"\";
+            }
+
+            return result;
+        }
+
         private CodeTemplate GetTemplate(CslaObjectInfo objInfo, string templatePath)
         {
             CodeTemplateCompiler compiler;
@@ -383,7 +511,7 @@ namespace CslaGenerator.CodeGen
             }
             else
             {
-                compiler = (CodeTemplateCompiler) _templates[templatePath];
+                compiler = (CodeTemplateCompiler)_templates[templatePath];
             }
             if (compiler.Errors.Count > 0)
                 return null;
@@ -478,10 +606,10 @@ namespace CslaGenerator.CodeGen
                         proc.AppendLine(GenerateProcedure(info, crit, "DeleteProcedure.cst",
                                                           crit.DeleteOptions.ProcedureName));
                 }
-                if (_targetFramework != TargetFramework.CSLA40 && info.ObjectType == CslaObjectType.EditableChild)
+                /*if (_targetFramework != TargetFramework.CSLA40 && info.ObjectType == CslaObjectType.EditableChild)
                 {
                     proc.AppendLine(GenerateProcedure(info, null, "DeleteProcedure.cst", info.DeleteProcedureName));
-                }
+                }*/
             }
             if (proc.Length > 0)
             {
@@ -542,12 +670,12 @@ namespace CslaGenerator.CodeGen
                     WriteToFile(dir + @"\sprocs\" + crit.DeleteOptions.ProcedureName + ".sql", proc);
                 }
             }
-            if (_targetFramework != TargetFramework.CSLA40 && info.ObjectType == CslaObjectType.EditableChild)
+            /*if (_targetFramework != TargetFramework.CSLA40 && info.ObjectType == CslaObjectType.EditableChild)
             {
                 var proc = GenerateProcedure(info, null, "DeleteProcedure.cst", info.DeleteProcedureName);
                 CheckDirectory(dir + @"\sprocs");
                 WriteToFile(dir + @"\sprocs\" + info.DeleteProcedureName + ".sql", proc);
-            }
+            }*/
         }
 
         private string GenerateProcedure(CslaObjectInfo objInfo, Criteria crit, string templateName, string sprocName)
@@ -619,18 +747,24 @@ namespace CslaGenerator.CodeGen
         }
 
         private static string GetNamespaceDirectory(string targetDir, CslaObjectInfo info, bool isBaseClass,
-                                                    bool separateNamespaces, bool isClassComment)
+                                                    bool separateNamespaces, string baseNamespace, bool isClassComment)
         {
             if (targetDir.EndsWith(@"\") == false)
             {
                 targetDir += @"\";
             }
 
-            if (separateNamespaces)
-            {
-                string namespaceSubFolder = info.ObjectNamespace.Replace(".", @"\");
 
-                targetDir += namespaceSubFolder;
+            if (separateNamespaces)// check whether to use namespace as folder
+            {
+                var objectNamespace = info.ObjectNamespace;
+                if (objectNamespace.IndexOf(baseNamespace + ".") == 0)
+                {
+                    targetDir += baseNamespace + ".";
+                    objectNamespace = objectNamespace.Substring(baseNamespace.Length + 1);
+                }
+                targetDir += objectNamespace.Replace(".", @"\");
+
                 if (targetDir.EndsWith(@"\") == false)
                 {
                     targetDir += @"\";
@@ -639,7 +773,6 @@ namespace CslaGenerator.CodeGen
 
             if (!info.Folder.Trim().Equals(String.Empty))
                 targetDir += info.Folder + @"\";
-            //if(baseClass && info.ObjectType != CslaObjectType.NameValueList) { targetDir += @"Base\"; }
             if (isBaseClass)
             {
                 targetDir += @"Base\";
@@ -652,7 +785,7 @@ namespace CslaGenerator.CodeGen
             return targetDir;
         }
 
-        private string GetBaseFileName(CslaObjectInfo info, bool isBaseClass, bool separateBaseClasses,
+        private string GetBaseFileName(CslaObjectInfo info, bool isBaseClass, bool separateBaseClasses, string baseNamespace,
                                        bool separateNamespaces, string baseFilenameSuffix, string extendedFilenameSuffix,
                                        string classCommentFilenameSuffix, bool isClassComment, bool separateClassComment)
         {
@@ -687,9 +820,9 @@ namespace CslaGenerator.CodeGen
             }
 
             return
-                (GetNamespaceDirectory(_targetDirectory, info,
+                (GetNamespaceDirectory(TargetDirectory, info,
                                        isBaseClass ? separateBaseClasses : false,
-                                       separateNamespaces,
+                                       separateNamespaces, baseNamespace,
                                        isClassComment ? separateClassComment : false) +
                  fileNoExtension);
         }
@@ -726,11 +859,7 @@ namespace CslaGenerator.CodeGen
 
         #endregion
 
-        #region Events
-
-        public event GenerationInformationDelegate GenerationInformation;
-        public event GenerationInformationDelegate Step;
-        public event EventHandler Finalized;
+        #region Event triggers
 
         private void OnGenerationFileName(string e)
         {
@@ -757,7 +886,7 @@ namespace CslaGenerator.CodeGen
         {
             if (Finalized != null)
                 Finalized(this, new EventArgs());
-            OutputWindow.Current.AddOutputInfo("Done");
+            OutputWindow.Current.AddOutputInfo("\r\nDone");
 
             if (_generateDatabaseClass)
             {
@@ -772,23 +901,33 @@ namespace CslaGenerator.CodeGen
             else if (_fileSuccess["DataPortalHookArgs"] == false)
                 OutputWindow.Current.AddOutputInfo(String.Format("DataPortalHookArgs classe: failed."));
 
+            if (_generateInterfaceDAL)
+            {
+                if (_fileSuccess["IDalManager"] == null)
+                    OutputWindow.Current.AddOutputInfo(String.Format("IDalManager classe: already exists."));
+                else if (_fileSuccess["IDalManager"] == false)
+                    OutputWindow.Current.AddOutputInfo(String.Format("IDalManager classe: failed."));
+                if (_fileSuccess["DalFactory"] == null)
+                    OutputWindow.Current.AddOutputInfo(String.Format("DalFactory classe: already exists."));
+                else if (_fileSuccess["DalFactory"] == false)
+                    OutputWindow.Current.AddOutputInfo(String.Format("DalFactory classe: failed."));
+                if (_fileSuccess["DataNotFoundException"] == null)
+                    OutputWindow.Current.AddOutputInfo(String.Format("DataNotFoundException classe: already exists."));
+                else if (_fileSuccess["DataNotFoundException"] == false)
+                    OutputWindow.Current.AddOutputInfo(String.Format("DataNotFoundException classe: failed."));
+                if (_fileSuccess["DalManager"] == null)
+                    OutputWindow.Current.AddOutputInfo(String.Format("DalManager classe: already exists."));
+                else if (_fileSuccess["DalManager"] == false)
+                    OutputWindow.Current.AddOutputInfo(String.Format("DalManager classe: failed."));
+            }
+
             if (_objectWarnings > 0)
                 OutputWindow.Current.AddOutputInfo(String.Format("Warnings: {0} objects.", _objectWarnings));
 
-            OutputWindow.Current.AddOutputInfo(String.Format("Classes: {0} generated. {1} failed.",
+            OutputWindow.Current.AddOutputInfo(String.Format("\r\nClasses: {0} generated. {1} failed.",
                                                              (_objFailed + _objSuccess), _objFailed));
             OutputWindow.Current.AddOutputInfo(String.Format("Stored Procs: {0} generated. {1} failed.",
                                                              (_sprocFailed + _sprocSuccess), _sprocFailed));
-        }
-
-        #endregion
-
-        #region Constructor
-
-        public AdvancedGenerator(string targetDirectory, string templatesDirectory)
-        {
-            _targetDirectory = targetDirectory;
-            _templatesDirectory = templatesDirectory;
         }
 
         #endregion

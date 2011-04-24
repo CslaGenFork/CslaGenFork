@@ -242,7 +242,7 @@ if (Info.GenerateDataPortalInsert || Info.GenerateDataPortalUpdate)
 {
     %>
 <!-- #include file="DoInsertUpdate.asp" -->
-    <%
+<%
 }
 
 if (Info.GenerateDataPortalDelete)

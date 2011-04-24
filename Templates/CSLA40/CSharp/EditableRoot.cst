@@ -17,13 +17,14 @@
 <%
 if (Errors.Length == 0)
 {
+    int silverlightLevel = 0;
     bool first = true;
     %><!-- #include file="Header.asp" -->
 using System;
-using System.Data;
-using System.Data.SqlClient;
+<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel) %>using System.Data;
+using System.Data.SqlClient;<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel) %>
 <% if (ActiveObjects) { %>using ActiveObjects;<%  } else { %>using Csla;<% } %>
-using Csla.Data;
+<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel) %>using Csla.Data;<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel) %>
 <%= GetUsingStatementsString(Info) %>
 <%
     if (Info.ObjectNamespace.Length > 0)
@@ -73,27 +74,29 @@ using Csla.Data;
 <!-- #include file="BusinessRules.asp" -->
 
         <!-- #include file="ObjectOverrides.asp" -->
-        <% Response.Write(Environment.NewLine); %>
-        #region Factory Methods
     <%
+    Response.Write(Environment.NewLine);
     if (Info.GenerateFactoryMethods)
     {
         if (Info.DbName.Equals(String.Empty))
         {
             Warnings.Append("Make sure you specify a DB name." + Environment.NewLine) ;
         }
-    %>
+        %>
+        #region Factory Methods
+<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel) %>
         <!-- #include file="NewObject.asp" -->
-
+        <!-- #include file="NewObjectAsync.asp" -->
         <!-- #include file="GetObject.asp" -->
-
         <!-- #include file="DeleteObject.asp" -->
-    <%
+        <!-- #include file="Save.asp" -->
+<%= IfSilverlight (Conditional.Else, 0, ref silverlightLevel) %><!-- #include file="NewObjectSilverlight.asp" -->
+<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel) %>
+        <!-- #include file="GetObjectAsync.asp" -->
+<% Response.Write(Environment.NewLine); %>        #endregion
+        <%
     }
     %>
-        <!-- #include file="Save.asp" -->
-        <% Response.Write(Environment.NewLine); %>
-        #endregion
 <!-- #include file="Constructor.asp"  -->
 
         <!-- #include file="Criteria.asp"  -->
@@ -106,15 +109,11 @@ using Csla.Data;
     {
         %>
         #region Data Access
-
+<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel) %>
         <!-- #include file="DataPortalCreate.asp"  -->
-
         <!-- #include file="DataPortalFetch.asp"  -->
-
         <!-- #include file="DataPortalInsert.asp" -->
-
         <!-- #include file="DataPortalUpdate.asp" -->
-
 <%
         if (Info.GenerateDataPortalInsert || Info.GenerateDataPortalUpdate)
         {
@@ -124,6 +123,8 @@ using Csla.Data;
         }
         %>
         <!-- #include file="DataPortalDelete.asp" -->
+<%= IfSilverlight (Conditional.Else, 0, ref silverlightLevel) %><!-- #include file="DataPortalCreateSilverlight.asp" -->
+<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel) %>
         #endregion
 <!-- #include file="Events.asp" -->
 

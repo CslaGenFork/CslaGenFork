@@ -22,12 +22,19 @@ if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
         <%
     if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.Custom)
     {
+        string statement = new string(' ', 8) + "protected static void AddObjectAuthorizationRules()";
+        string statementSilverlight = string.Empty;
+        if (CurrentUnit.GenerationParams.GenerateSilverlight4)
+        {
+            statementSilverlight = "[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]" + "\r\n" + new string(' ', 8);
+            statementSilverlight += "public static void AddObjectAuthorizationRules()";
+        }
         %>
 
         /// <summary>
         /// Adds the object authorization rules.
         /// </summary>
-        protected static void AddObjectAuthorizationRules()
+<%= IfSilverlight (Conditional.Silverlight, 2, ref silverlightLevel) %><%= statementSilverlight %><%= IfSilverlight (Conditional.Else, 0, ref silverlightLevel) %><%= statement %><%= IfSilverlight (Conditional.End, 0, ref silverlightLevel) %>
         {
             <%
         if (authzInfo2.NewRoles.Trim() != String.Empty)

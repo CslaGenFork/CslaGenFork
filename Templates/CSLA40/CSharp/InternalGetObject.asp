@@ -21,9 +21,8 @@ if (!Info.UseCustomLoading)
         (Info.ObjectType == CslaObjectType.ReadOnlyObject || (!lazyLoad4 && !selfLoad4))))
     {
         %>
-
         /// <summary>
-        /// Factory method. New <see cref="<%=Info.ObjectName%>"/> object is loaded from the given SafeDataReader.
+        /// Factory method. Loads an existing <see cref="<%=Info.ObjectName%>"/> object from the given SafeDataReader.
         /// </summary>
         /// <param name="dr">The SafeDataReader to use.</param>
         /// <returns>A reference to the fetched <see cref="<%= Info.ObjectName %>"/> object.</returns>
@@ -86,7 +85,7 @@ if (!Info.UseCustomLoading)
         %>
 
         /// <summary>
-        /// Factory method. New <see cref="<%=Info.ObjectName%>"/> object is loaded from the given DataRow.
+        /// Factory method. Loads an existing <see cref="<%=Info.ObjectName%>"/> object from the given DataRow.
         /// </summary>
         /// <param name="dr">The DataRow to use.</param>
         /// <returns>A reference to the fetched <see cref="<%= Info.ObjectName %>"/> object.</returns>

@@ -8,7 +8,7 @@ if (!Info.UseCustomLoading)
             %>
 
         /// <summary>
-        /// Factory method. New <see cref="<%=Info.ObjectName%>"/> object is loaded from the database, based on given parameters.
+        /// Factory method. Loads an existing <see cref="<%=Info.ObjectName%>"/> object from the database<%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
         /// </summary>
         <%
             string strGetParams = string.Empty;
@@ -20,7 +20,7 @@ if (!Info.UseCustomLoading)
                 if (string.IsNullOrEmpty(c.Properties[i].ParameterValue))
                 {
                     %>
-        /// <param name="<%= FormatCamel(c.Properties[i].Name) %>">The <%= FormatProperty(c.Properties[i].Name) %>.</param>
+        /// <param name="<%= FormatCamel(c.Properties[i].Name) %>">The <%= FormatProperty(c.Properties[i].Name) %> parameter of the <%=Info.ObjectName%> to fetch.</param>
         <%
                     if (firstParam)
                     {
@@ -63,9 +63,21 @@ if (!Info.UseCustomLoading)
             }
             else
             {
-                %>
+                if (Info.SimpleCacheOptions != SimpleCacheResults.None)
+                {
+                    %>
+            if (_list == null)
+                _list = <% if (ActiveObjects) { %>ActiveObjects.<% } %>DataPortal.Fetch<<%= Info.ObjectName %>>();
+
+            return _list;
+            <%
+                }
+                else
+                {
+                    %>
             return <% if (ActiveObjects) { %>ActiveObjects.<% } %>DataPortal.Fetch<<%= Info.ObjectName %>>();
         <%
+                }
             }
             %>
         }

@@ -7,7 +7,7 @@ if (Info.ConvertValueProperties.Count > 0)
         // todo: validation template must check both properties exist on this object
 
         /// <summary>
-        /// Update property value converting other property on Fetch/Read/UpdateOnSaved.
+        /// Update property value converting other property on Fetch/Read<%= Info.SupportUpdateProperties ? "/UpdateOnSaved" : "" %>.
         /// </summary>
         private void ConvertPropertiesOnRead()
         {
