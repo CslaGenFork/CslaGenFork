@@ -50,12 +50,12 @@ using System.Data.SqlClient;<%= IfSilverlight (Conditional.End, 0, ref silverlig
 
         <% Response.Write(Environment.NewLine); %>
         #region Factory Methods
-<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel) %>
-        <!-- #include file="InternalGetObject.asp" -->
+<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel) %><!-- #include file="InternalGetObject.asp" -->
 
         <!-- #include file="GetObject.asp" -->
 <%= IfSilverlight (Conditional.End, 0, ref silverlightLevel) %>
-        #endregion
+        <!-- #include file="GetObjectAsync.asp" -->
+<% Response.Write(Environment.NewLine); %>        #endregion
 <!-- #include file="Constructor.asp"  -->
 
         <!-- #include file="Criteria.asp"  -->
