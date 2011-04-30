@@ -53,8 +53,7 @@ using System.Data.SqlClient;<%= IfSilverlight (Conditional.End, 0, ref silverlig
 <%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel) %><!-- #include file="InternalGetObject.asp" -->
 
         <!-- #include file="GetObject.asp" -->
-<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel) %>
-        <!-- #include file="GetObjectAsync.asp" -->
+<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel) %><!-- #include file="GetObjectAsync.asp" -->
 <% Response.Write(Environment.NewLine); %>        #endregion
 <!-- #include file="Constructor.asp"  -->
 
