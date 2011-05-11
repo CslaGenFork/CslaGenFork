@@ -17,8 +17,8 @@ namespace CslaGenerator.Metadata
         private string _projectName = String.Empty;
         private string _targetDirectory = String.Empty;
         private string _fileVersion = CslaGenerator.FileVersion.CurrentFileVersion;
-        private ProjectParameters mParams = new ProjectParameters();
-        private GenerationParameters _GenerationParams = new GenerationParameters();
+        private ProjectParameters _projectParams = new ProjectParameters();
+        private GenerationParameters _generationParams = new GenerationParameters();
 
         public CslaGeneratorUnit()
         {
@@ -28,20 +28,20 @@ namespace CslaGenerator.Metadata
 
         public ProjectParameters Params
         {
-            get { return mParams; }
-            set { if (value != null) { mParams= value; }}
+            get { return _projectParams; }
+            set { if (value != null) { _projectParams= value; }}
         }
 
         public GenerationParameters GenerationParams
         {
             get
             {
-                return _GenerationParams;
+                return _generationParams;
             }
             set
             {
                 if (value != null)
-                    _GenerationParams = value;
+                    _generationParams = value;
             }
         }
         public CslaObjectInfoCollection CslaObjects

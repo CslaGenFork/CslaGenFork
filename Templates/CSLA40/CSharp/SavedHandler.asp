@@ -66,8 +66,12 @@ if (Info.UpdaterType != string.Empty)
     }
     if (Errors.Length == 0)
     {
-%>
-
+        if (!genOptional)
+        {
+            Response.Write(Environment.NewLine);
+        }
+        genOptional = true;
+        %>
         #region Saved Event Handler
 
         /// <summary>

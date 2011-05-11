@@ -676,9 +676,9 @@ namespace CslaGenerator.Util.PropertyBags
         #region Properties and Events
 
         private string defaultProperty;
-        private PropertySpecCollection properties;
-        private CslaObjectInfo[] mSelectedObject;
-        private PropertyContext propertyContext;
+        private PropertySpecCollection _properties;
+        private CslaObjectInfo[] _selectedObject;
+        private PropertyContext _propertyContext;
 
         /// <summary>
         /// Initializes a new instance of the PropertyBag class.
@@ -686,7 +686,7 @@ namespace CslaGenerator.Util.PropertyBags
         public PropertyBag()
         {
             defaultProperty = null;
-            properties = new PropertySpecCollection();
+            _properties = new PropertySpecCollection();
         }
 
         public PropertyBag(CslaObjectInfo obj)
@@ -696,8 +696,8 @@ namespace CslaGenerator.Util.PropertyBags
         public PropertyBag(CslaObjectInfo[] obj)
         {
             defaultProperty = null;
-            properties = new PropertySpecCollection();
-            mSelectedObject = obj;
+            _properties = new PropertySpecCollection();
+            _selectedObject = obj;
             InitPropertyBag();
         }
 
@@ -708,9 +708,9 @@ namespace CslaGenerator.Util.PropertyBags
         public PropertyBag(CslaObjectInfo[] obj, PropertyContext context)
         {
             defaultProperty = "ObjectName";
-            properties = new PropertySpecCollection();
-            mSelectedObject = obj;
-            propertyContext = context;
+            _properties = new PropertySpecCollection();
+            _selectedObject = obj;
+            _propertyContext = context;
             InitPropertyBag();
         }
 
@@ -728,10 +728,10 @@ namespace CslaGenerator.Util.PropertyBags
         /// </summary>
         public CslaObjectInfo[] SelectedObject
         {
-            get { return mSelectedObject; }
+            get { return _selectedObject; }
             set
             {
-                mSelectedObject = value;
+                _selectedObject = value;
                 InitPropertyBag();
             }
         }
@@ -741,10 +741,10 @@ namespace CslaGenerator.Util.PropertyBags
         /// </summary>
         public PropertyContext PropertyContext
         {
-            get { return propertyContext; }
+            get { return _propertyContext; }
             set
             {
-                propertyContext = value;
+                _propertyContext = value;
             }
         }
 
@@ -753,7 +753,7 @@ namespace CslaGenerator.Util.PropertyBags
         /// </summary>
         public PropertySpecCollection Properties
         {
-            get { return properties; }
+            get { return _properties; }
         }
 
         /// <summary>
@@ -861,7 +861,7 @@ namespace CslaGenerator.Util.PropertyBags
                 }
                 userfriendlyname = userfriendlyname.Length > 0 ? userfriendlyname : pi.Name;
                 List<string> types = new List<string>();
-                foreach (CslaObjectInfo obj in mSelectedObject)
+                foreach (CslaObjectInfo obj in _selectedObject)
                 {
                     if (!types.Contains(obj.ObjectType.ToString()))
                         types.Add(obj.ObjectType.ToString());
@@ -872,7 +872,7 @@ namespace CslaGenerator.Util.PropertyBags
                 {
                     // CR added missing parameters
                     //this.Properties.Add(new PropertySpec(userfriendlyname,pi.PropertyType.AssemblyQualifiedName,category,description,defaultvalue, editor, typeconverter, mSelectedObject, pi.Name,helptopic));
-                    this.Properties.Add(new PropertySpec(userfriendlyname, pi.PropertyType.AssemblyQualifiedName, category, description, defaultvalue, editor, typeconverter, mSelectedObject, pi.Name, helptopic, isreadonly, isbrowsable, designertypename, bindable));
+                    this.Properties.Add(new PropertySpec(userfriendlyname, pi.PropertyType.AssemblyQualifiedName, category, description, defaultvalue, editor, typeconverter, _selectedObject, pi.Name, helptopic, isreadonly, isbrowsable, designertypename, bindable));
                 }
             }
         }
@@ -911,46 +911,60 @@ namespace CslaGenerator.Util.PropertyBags
                 // objectType + propertyName should be shown in propertygrid
                 // else default to true (show it)
                 // objectType + propertyName --> true | false
-                if (propertyContext != null)
+                if (_propertyContext != null)
                 {
                     foreach (string typ in objectType)
                     {
-                        if (!propertyContext.ShowProperty(typ, propertyName))
+                        if (!_propertyContext.ShowProperty(typ, propertyName))
                             return false;
                         if (!GeneratorController.Current.CurrentUnit.GenerationParams.ActiveObjects &&
                             (propertyName == "PublishToChannel" || propertyName == "SubscribeToChannel"))
                             return false;
-                        if (((GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == Authorization.None ||
-                            GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == Authorization.PropertyLevel)) &&
+                        if (((GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization ==
+                              Authorization.None ||
+                              GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization ==
+                              Authorization.PropertyLevel)) &&
                             (propertyName == "NewRoles" ||
                              propertyName == "GetRoles" ||
                              propertyName == "UpdateRoles" ||
                              propertyName == "DeleteRoles"))
                             return false;
-                        if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 ||
-                            GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL) &&
+                        if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework ==
+                             TargetFramework.CSLA40 ||
+                             GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework ==
+                             TargetFramework.CSLA40DAL) &&
                             (propertyName == "AddParentReference" ||
-                            propertyName == "HashcodeProperty" ||
-                            propertyName == "EqualsProperty" ||
-                            propertyName == "DeleteProcedureName"))
+                             propertyName == "HashcodeProperty" ||
+                             propertyName == "EqualsProperty" ||
+                             propertyName == "DeleteProcedureName"))
                             return false;
-                        if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 ||
-                            GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL) &&
+                        if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework ==
+                             TargetFramework.CSLA40 ||
+                             GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework ==
+                             TargetFramework.CSLA40DAL) &&
                             (propertyName == "LazyLoad"))
                             return false;
-                        if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 ||
-                            GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL) &&
+                        if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework ==
+                             TargetFramework.CSLA40 ||
+                             GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework ==
+                             TargetFramework.CSLA40DAL) &&
                             (propertyName == "CacheResults"))
                             return false;
-                        if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40 &&
-                            GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL) &&
+                        if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework !=
+                             TargetFramework.CSLA40 &&
+                             GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework !=
+                             TargetFramework.CSLA40DAL) &&
                             (propertyName == "SimpleCacheOptions"))
                             return false;
-                        if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL) &&
+                        if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework ==
+                             TargetFramework.CSLA40DAL) &&
                             (propertyName == "SupportUpdateProperties" || propertyName == "UpdateValueProperties"))
                             return false;
+                        if (typ != "UnitOfWork" &&
+                            (propertyName == "UnitOfWorkCollectionProperties" || propertyName == "UnitOfWorkType"))
+                            return false;
                     }
-                    if (mSelectedObject.Length > 1 && IsEnumerable(GetPropertyInfoCache(propertyName)))
+                    if (_selectedObject.Length > 1 && IsEnumerable(GetPropertyInfoCache(propertyName)))
                         return false;
                     return true;
                 }
@@ -1092,8 +1106,8 @@ namespace CslaGenerator.Util.PropertyBags
             PropertySpec propertySpec = null;
             if (defaultProperty != null)
             {
-                int index = properties.IndexOf(defaultProperty);
-                propertySpec = properties[index];
+                int index = _properties.IndexOf(defaultProperty);
+                propertySpec = _properties[index];
             }
 
             if (propertySpec != null)
@@ -1131,7 +1145,7 @@ namespace CslaGenerator.Util.PropertyBags
 
             ArrayList props = new ArrayList();
 
-            foreach (PropertySpec property in properties)
+            foreach (PropertySpec property in _properties)
             {
                 ArrayList attrs = new ArrayList();
 

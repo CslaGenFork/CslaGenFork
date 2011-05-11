@@ -16,62 +16,92 @@
 if (Errors.Length == 0)
 {
     int silverlightLevel = 0;
+    bool genOptional = false;
     bool first = true;
     %><!-- #include file="Header.asp" -->
-using System;
-<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel) %>using System.Data;
-using System.Data.SqlClient;<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel) %>
-<% if (ActiveObjects) { %>using ActiveObjects;<% } else { %>using Csla;<% } %>
-<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel) %>using Csla.Data;<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel) %>
-<%= GetUsingStatementsString(Info) %>
-<% if (Info.ObjectNamespace.Length > 0) { %>namespace <%=Info.ObjectNamespace%>
-{<% } %>
-<% bool? firstComment = null; %><!-- #include file="XmlComment.asp" -->
-    <% if (GetAttributesString(Info.Attributes) != string.Empty) { %>
+<!-- #include file="Using.asp" -->
+<%
+    if (Info.ObjectNamespace.Length > 0)
+    {
+        %>namespace <%= Info.ObjectNamespace %>
+{
+<%
+    }
+    bool? firstComment = null;
+    %><!-- #include file="XmlComment.asp" -->
+    <%
+    if (GetAttributesString(Info.Attributes) != string.Empty)
+    {
+        %>
     <%= GetAttributesString(Info.Attributes) %>
-    <% } %>
+    <%
+    }
+    %>
     [Serializable]
-    <% if (ActiveObjects && Info.SubscribeToChannel.Length > 0) { %>[Subscribe("<%= Info.SubscribeToChannel %>")]
-    <% } %>public partial class <%=Info.ObjectName%> : <%
-            if (Info.InheritedType.Type != String.Empty) {
-                %><%=Info.InheritedType.Type%><%
-            } else if (Info.InheritedType.ObjectName != String.Empty) {
-                %><%=Info.InheritedType.ObjectName%><%
-             } else {
-                %><% if (ActiveObjects) { %>Active<% } %>ReadOnlyBase<<%=Info.ObjectName %>><%
-            } %><!-- #include file="Implements.asp" -->
+    <%
+    if (ActiveObjects && Info.SubscribeToChannel.Length > 0)
+    {
+        %>[Subscribe("<%= Info.SubscribeToChannel %>")]
+    <%
+    }
+    %>public partial class <%= Info.ObjectName %> : <%
+    if (Info.InheritedType.Type != String.Empty)
+    {
+        %><%= Info.InheritedType.Type %><%
+    }
+    else if (Info.InheritedType.ObjectName != String.Empty)
+    {
+        %><%= Info.InheritedType.ObjectName %><%
+    }
+    else
+    {
+        %><% if (ActiveObjects) { %>Active<% } %>ReadOnlyBase<<%=Info.ObjectName %>><%
+    }
+    %><!-- #include file="Implements.asp" -->
     {
 <!-- #include file="StaticFields.asp" -->
 <!-- #include file="StateFields.asp" -->
-
 <!-- #include file="BusinessProps.asp" -->
+<!-- #include file="ObjectOverrides.asp" -->
+    <%
+    Response.Write(Environment.NewLine);
+    if (Info.GenerateFactoryMethods)
+    {
+        if (Info.DbName.Equals(String.Empty))
+        {
+            Warnings.Append("Make sure you specify a DB name." + Environment.NewLine) ;
+        }
+        %>
+        #region Factory Methods<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel, true, false) %>
+<!-- #include file="InternalGetObject.asp" -->
+<!-- #include file="GetObject.asp" -->
+<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel, true, true) %><!-- #include file="GetObjectAsync.asp" -->
 
-        <!-- #include file="ObjectOverrides.asp" -->
-
-        <% Response.Write(Environment.NewLine); %>
-        #region Factory Methods
-<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel) %><!-- #include file="InternalGetObject.asp" -->
-
-        <!-- #include file="GetObject.asp" -->
-<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel) %><!-- #include file="GetObjectAsync.asp" -->
-<% Response.Write(Environment.NewLine); %>        #endregion
-<!-- #include file="Constructor.asp"  -->
-
-        <!-- #include file="Criteria.asp"  -->
+        #endregion
+        <%
+    }
+    %>
+<!-- #include file="Constructor.asp" -->
+<!-- #include file="Criteria.asp" -->
 <!-- #include file="SharedAuthorizationMethods.asp" -->
 <!-- #include file="UpdateProperties.asp" -->
-<% Response.Write(Environment.NewLine); %>
 <!-- #include file="ConvertProperties.asp" -->
-
-<% if (Info.GenerateDataAccessRegion) { %>
-        #region Data Access
-<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel) %>
-        <!-- #include file="DataPortalFetch.asp" -->
-<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel) %>
-        #endregion
+<%
+    if (Info.GenerateDataAccessRegion)
+    {
+        if (!genOptional)
+        {
+            Response.Write(Environment.NewLine);
+        }
+        %>
+        #region Data Access<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel, true, false) %>
+<!-- #include file="DataPortalFetch.asp" -->
+<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel, false, true) %>        #endregion
 <!-- #include file="Events.asp" -->
 
-<% } %>
+<%
+    }
+    %>
 
     }
 <% if (Info.ObjectNamespace.Length > 0) { %>

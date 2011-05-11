@@ -59,11 +59,11 @@
     <OutputLanguage>CSharp</OutputLanguage>
     <NullableSupport>true</NullableSupport>
     <PropertyMode>Default</PropertyMode>
-    <UseChildDataPortal>true</UseChildDataPortal>
     <GenerateAuthorization>FullSupport</GenerateAuthorization>
     <HeaderVerbosity>None</HeaderVerbosity>
     <UseBypassPropertyChecks>true</UseBypassPropertyChecks>
     <UseSingleCriteria>false</UseSingleCriteria>
+    <UsePublicPropertyInfo>true</UsePublicPropertyInfo>
     <ForceReadOnlyProperties>true</ForceReadOnlyProperties>
     <BaseFilenameSuffix>.Designer</BaseFilenameSuffix>
     <ExtendedFilenameSuffix />
@@ -80,11 +80,11 @@
     <GenerateDatabaseClass>true</GenerateDatabaseClass>
     <GenerateWinForms>true</GenerateWinForms>
     <GenerateWPF>true</GenerateWPF>
-    <GenerateSilverlight4>false</GenerateSilverlight4>
+    <GenerateSilverlight4>true</GenerateSilverlight4>
     <TargetDAL>None</TargetDAL>
     <GenerateDAL>false</GenerateDAL>
     <GenerateSynchronous>true</GenerateSynchronous>
-    <GenerateAsynchronous>false</GenerateAsynchronous>
+    <GenerateAsynchronous>true</GenerateAsynchronous>
   </GenerationParams>
   <CslaObjects />
   <AssociativeEntities />

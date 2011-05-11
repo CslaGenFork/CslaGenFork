@@ -5,8 +5,31 @@ if ((firstComment == null && string.IsNullOrEmpty(Info.Parent.GenerationParams.C
     firstComment = true;
     %>
     /// <summary>
-    /// <%= string.IsNullOrEmpty(Info.ClassSummary) ? Info.ObjectName : Info.ClassSummary %> (<%= CslaStereotype(Info.ObjectType) %>).<br/>
+    /// <%= string.IsNullOrEmpty(Info.ClassSummary) ? Info.ObjectName : Info.ClassSummary %> (<%= CslaStereotype(Info) %>).<br/>
     /// This is a base generated class of <see cref="<%=Info.ObjectName%>"/> business object.
+<%
+    if (string.IsNullOrEmpty(Info.ParentType))
+    {
+        if (Info.ObjectType == CslaObjectType.ReadOnlyObject)
+        {
+            %>
+    /// This class is a root object.<br/>
+<%
+        }
+        else if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
+        {
+            %>
+    /// This class is a root collection.<br/>
+<%
+        }
+        else if (Info.ObjectType == CslaObjectType.UnitOfWork)
+        {
+            %>
+    /// This class is a root object that implements the Unit of Work pattern.<br/>
+<%
+        }
+    }
+%>
     /// </summary>
     <%
     int indentLevel = (CurrentUnit.GenerationParams.UtilitiesNamespace.Length > 0) ? 1 : 0;
@@ -41,7 +64,7 @@ if ((firstComment == null && string.IsNullOrEmpty(Info.Parent.GenerationParams.C
         {
             if (firstComment == true) { firstComment = false; } else { xmlRemark += "<br/>\r\n"; }
             CslaObjectInfo parent = Info.FindParent(Info);
-            xmlRemark += "This class is child of <see cref=\"" + Info.ParentType + "\"/> " + CslaStereotype(parent.ObjectType) + ".";
+            xmlRemark += "This class is child of <see cref=\"" + Info.ParentType + "\"/> " + CslaStereotype(parent) + ".";
         }
     }
     // collections

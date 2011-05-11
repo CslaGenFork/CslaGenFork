@@ -136,6 +136,15 @@ namespace CslaGenerator.Design
                 if (selectedObject != null)
                     propertyInfo.SetValue(_propGrid, new ChildPropertyBag(selectedObject), null);
             }
+            else if (_collectionType == typeof(UnitOfWorkProperty))
+            {
+                var selectedObject = (UnitOfWorkProperty)_propGrid.SelectedObject;
+                //Get the property grid's type.
+                //This is a vsPropertyGrid located in System.Windows.Forms.Design
+                var propertyInfo = _propGrid.GetType().GetProperty("SelectedObject", BindingFlags.Public | BindingFlags.Instance);
+                if (selectedObject != null)
+                    propertyInfo.SetValue(_propGrid, new UnitOfWorkPropertyBag(selectedObject), null);
+            }
             /*else if (_collectionType == typeof(Criteria))
             {
                 var selectedObject = (Criteria)_propGrid.SelectedObject;
@@ -215,12 +224,17 @@ namespace CslaGenerator.Design
                 case "ChildProperty Collection Editor":
                     _form.Size = new Size(570, _form.Size.Height);
                     _collectionType = typeof(ChildProperty);
-                    _form.Size = new Size(_form.Size.Width, 505);
+                    _form.Size = new Size(_form.Size.Width, 489);
+                    break;
+                case "UnitOfWorkProperty Collection Editor":
+                    _form.Size = new Size(570, _form.Size.Height);
+                    _collectionType = typeof(UnitOfWorkProperty);
+                    _form.Size = new Size(_form.Size.Width, 361);
                     break;
                 case "Criteria Collection Editor":
                     _form.Size = new Size(550, _form.Size.Height);
                     _collectionType = typeof(Criteria);
-                    _form.Size = new Size(_form.Size.Width, 713);
+                    _form.Size = new Size(_form.Size.Width, 729);
                     break;
                 case "CriteriaProperty Collection Editor":
                     _collectionType = typeof(CriteriaProperty);
@@ -229,7 +243,7 @@ namespace CslaGenerator.Design
                 case "ConvertValueProperty Collection Editor":
                     _form.Size = new Size(570, _form.Size.Height);
                     _collectionType = typeof(ConvertValueProperty);
-                    _form.Size = new Size(_form.Size.Width, 585);
+                    _form.Size = new Size(_form.Size.Width, 569);
                     break;
                 case "UpdateValueProperty Collection Editor":
                     _form.Size = new Size(555, _form.Size.Height);

@@ -15,7 +15,10 @@
             }
             return(false);
         }
-        <% if (Info.ObjectType != CslaObjectType.ReadOnlyCollection) { %>
+        <%
+        if (Info.ObjectType != CslaObjectType.ReadOnlyCollection)
+        {
+            %>
 
         /// <summary>
         /// Determines whether an <see cref="<%=Info.ItemType%>"/> object is in the <see cref="<%=Info.ObjectName%>"/> collection, but it's been deleted.

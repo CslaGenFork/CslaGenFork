@@ -210,6 +210,8 @@
     <Compile Include="CodeGen\CslaTemplateHelperCS.cs" />
     <Compile Include="CodeGen\CslaTemplateHelperVB.cs" />
     <Compile Include="CodeGen\GenerationStep.cs" />
+    <Compile Include="Design\UnitOfWorkTypeEditor.cs" />
+    <Compile Include="Design\UnitOfWorkTargetCriteriaEditor.cs" />
     <Compile Include="ICodeGenerator.cs" />
     <Compile Include="CodeGen\SprocTemplateHelper.cs" />
     <Compile Include="Controls\ObjectRelationsBuilder.cs">
@@ -239,6 +241,7 @@
     </Compile>
     <Compile Include="Metadata\AssociativeEntityCollection.cs" />
     <Compile Include="Metadata\Authorization.cs" />
+    <Compile Include="Metadata\CriteriaMode.cs" />
     <Compile Include="Metadata\HeaderVerbosity.cs" />
     <Compile Include="Metadata\AssociativeEntity.cs" />
     <Compile Include="Metadata\ObjectRelationsFactory.cs" />
@@ -246,6 +249,9 @@
     <Compile Include="Metadata\SilverlightSupport.cs" />
     <Compile Include="Metadata\SimpleCacheResults.cs" />
     <Compile Include="Metadata\TargetDAL.cs" />
+    <Compile Include="Metadata\UnitOfWorkProperty.cs" />
+    <Compile Include="Metadata\UnitOfWorkPropertyCollection.cs" />
+    <Compile Include="Metadata\UnitOfWorkFunction.cs" />
     <Compile Include="Templates\CodeGenerator.cs" />
     <Compile Include="Templates\CSharp\CslaTemplateHelper.cs" />
     <Compile Include="Templates\VB\VbCslaTemplateHelper.cs" />
@@ -505,6 +511,7 @@
     <Compile Include="Util\PropertyBags\PropertyBag.cs" />
     <Compile Include="Util\PropertyBags\PropertyContext.cs" />
     <Compile Include="Util\PropertyBags\RuleBag.cs" />
+    <Compile Include="Util\PropertyBags\UnitOfWorkPropertyBag.cs" />
     <Compile Include="Util\PropertyBags\UpdateValuePropertyBagBag.cs" />
     <Compile Include="Util\PropertyBags\ValuePropertyBag.cs" />
     <Compile Include="Util\TreeNodeComparer.cs">

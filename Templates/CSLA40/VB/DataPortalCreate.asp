@@ -1,9 +1,10 @@
 <%
-foreach (Criteria c in Info.CriteriaObjects)
+foreach (Criteria c in GetCriteriaObjects(Info))
 {
     if (c.CreateOptions.DataPortal)
     {
         %>
+
         /// <summary>
         /// Load default values for the <see cref="<%=Info.ObjectName%>"/> object properties.
         /// Values can be hardcoded or loaded from the database.
@@ -24,24 +25,24 @@ foreach (Criteria c in Info.CriteriaObjects)
         }
         else
         {
-            Response.Write("\r\n");
+            Response.Write(Environment.NewLine);
         }
         if (c.Properties.Count > 1)
         {
             %>
-        protected void <%= (Info.ObjectType == CslaObjectType.EditableChild && CurrentUnit.GenerationParams.UseChildDataPortal) ? "Child_" : "DataPortal_" %>Create(<%= c.Name %> crit)
+        protected void <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_" : "DataPortal_" %>Create(<%= c.Name %> crit)
             <%
         }
         else if (c.Properties.Count > 0)
         {
             %>
-        protected void <%= (Info.ObjectType == CslaObjectType.EditableChild && CurrentUnit.GenerationParams.UseChildDataPortal) ? "Child_" : "DataPortal_" %>Create(<%= ReceiveSingleCriteria(c, "crit") %>)
+        protected void <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_" : "DataPortal_" %>Create(<%= ReceiveSingleCriteria(c, "crit") %>)
             <%
         }
         else
         {
             %>
-        protected override void <%= (Info.ObjectType == CslaObjectType.EditableChild && CurrentUnit.GenerationParams.UseChildDataPortal) ? "Child_" : "DataPortal_" %>Create()
+        protected override void <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_" : "DataPortal_" %>Create()
             <%
         }
         %>
@@ -131,7 +132,7 @@ foreach (Criteria c in Info.CriteriaObjects)
             <%
     }
     %>
-            base.<%= (Info.ObjectType == CslaObjectType.EditableChild && CurrentUnit.GenerationParams.UseChildDataPortal) ? "Child_" : "DataPortal_" %>Create();
+            base.<%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_" : "DataPortal_" %>Create();
         }
 
     <%

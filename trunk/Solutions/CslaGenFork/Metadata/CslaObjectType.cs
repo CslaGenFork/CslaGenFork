@@ -14,6 +14,7 @@ namespace CslaGenerator.Metadata
         EditableChildCollection,
         ReadOnlyObject,
         ReadOnlyCollection,
-        NameValueList
+        NameValueList,
+        UnitOfWork
     }
 }

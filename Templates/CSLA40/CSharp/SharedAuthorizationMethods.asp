@@ -9,6 +9,12 @@ if (IsCollectionType(Info.ObjectType))
         return;
     }
 }
+if (IsReadOnlyType(authzInfo2.ObjectType))
+{
+    authzInfo2.NewRoles = String.Empty;
+    authzInfo2.UpdateRoles = String.Empty;
+    authzInfo2.DeleteRoles = String.Empty;
+}
 if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
     CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel &&
     (authzInfo2.NewRoles.Trim() != String.Empty ||
@@ -16,8 +22,12 @@ if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
     authzInfo2.UpdateRoles.Trim() != String.Empty ||
     authzInfo2.DeleteRoles.Trim() != String.Empty))
 {
+    if (!genOptional)
+    {
+        Response.Write(Environment.NewLine);
+    }
+    genOptional = true;
     %>
-
         #region Authorization
         <%
     if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.Custom)
@@ -34,7 +44,22 @@ if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
         /// <summary>
         /// Adds the object authorization rules.
         /// </summary>
-<%= IfSilverlight (Conditional.Silverlight, 2, ref silverlightLevel) %><%= statementSilverlight %><%= IfSilverlight (Conditional.Else, 0, ref silverlightLevel) %><%= statement %><%= IfSilverlight (Conditional.End, 0, ref silverlightLevel) %>
+        <%
+        if (CurrentUnit.GenerationParams.GenerateSilverlight4)
+        {
+            %>
+<%= IfSilverlight (Conditional.Silverlight, 2, ref silverlightLevel, false, true) %><%= statementSilverlight %>
+<%= IfSilverlight (Conditional.Else, 0, ref silverlightLevel, false, true) %><%= statement %>
+<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel, false, false) %>
+        <%
+        }
+        else
+        {
+            %>
+<%= statement %>
+        <%
+        }
+        %>
         {
             <%
         if (authzInfo2.NewRoles.Trim() != String.Empty)
@@ -47,7 +72,7 @@ if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
                 infoNewRoles = infoNewRoles.Substring(1);
             }
             %>
-            BusinessRules.AddRule(typeof(<%= Info.ObjectName %>), new IsInRole(AuthorizationActions.CreateObject<%
+            BusinessRules.AddRule(typeof(<%= Info.ObjectName %>), new Is<%= allowOrDeny %>InRole(AuthorizationActions.CreateObject<%
             String[] newRoles = System.Text.RegularExpressions.Regex.Split(infoNewRoles, ";");
             foreach(String role in newRoles)
             {
@@ -66,7 +91,7 @@ if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
                 infoGetRoles = infoGetRoles.Substring(1);
             }
             %>
-            BusinessRules.AddRule(typeof(<%= Info.ObjectName %>), new IsInRole(AuthorizationActions.GetObject<%
+            BusinessRules.AddRule(typeof(<%= Info.ObjectName %>), new Is<%= allowOrDeny %>InRole(AuthorizationActions.GetObject<%
             String[] getRoles = System.Text.RegularExpressions.Regex.Split(infoGetRoles, ";");
             foreach(String role in getRoles)
             {
@@ -104,7 +129,7 @@ if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
                 infoDeleteRoles = infoDeleteRoles.Substring(1);
             }
             %>
-            BusinessRules.AddRule(typeof(<%= Info.ObjectName %>), new IsInRole(AuthorizationActions.DeleteObject<%
+            BusinessRules.AddRule(typeof(<%= Info.ObjectName %>), new Is<%= allowOrDeny %>InRole(AuthorizationActions.DeleteObject<%
             String[] deleteRoles = System.Text.RegularExpressions.Regex.Split(infoDeleteRoles, ";");
             foreach(String role in deleteRoles)
             {
@@ -172,6 +197,7 @@ if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
     %>
 
         #endregion
+
 <%
 }
 %>

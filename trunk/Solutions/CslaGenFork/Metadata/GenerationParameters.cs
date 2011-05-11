@@ -18,11 +18,12 @@ namespace CslaGenerator.Metadata
         private bool _nullableSupport;
         private CodeLanguage _outputLanguage = CodeLanguage.CSharp;
         private CslaPropertyMode _propertyMode = CslaPropertyMode.Default;
-        private bool _useChildDataPortal = true;
+//        private bool _useChildDataPortal = true;
         private Authorization _generateAuthorization = Authorization.FullSupport;
         private HeaderVerbosity _headerVerbosity = HeaderVerbosity.Full;
         private bool _useBypassPropertyChecks;
         private bool _useSingleCriteria;
+        private bool _usePublicPropertyInfo;
         private bool _forceReadOnlyProperties;
         private string _baseFilenameSuffix = string.Empty;
         private string _extendedFilenameSuffix = string.Empty;
@@ -188,7 +189,7 @@ namespace CslaGenerator.Metadata
             }
         }
 
-        public bool UseChildDataPortal
+        /*public bool UseChildDataPortal
         {
 //            get { return _useChildDataPortal; }
             get { return true; }
@@ -199,7 +200,7 @@ namespace CslaGenerator.Metadata
                 _useChildDataPortal = value;
                 OnPropertyChanged("");
             }
-        }
+        }*/
 
         public Authorization GenerateAuthorization
         {
@@ -245,6 +246,18 @@ namespace CslaGenerator.Metadata
                 if (_useSingleCriteria == value)
                     return;
                 _useSingleCriteria = value;
+                OnPropertyChanged("");
+            }
+        }
+
+        public bool UsePublicPropertyInfo
+        {
+            get { return _usePublicPropertyInfo; }
+            set
+            {
+                if (_usePublicPropertyInfo == value)
+                    return;
+                _usePublicPropertyInfo = value;
                 OnPropertyChanged("");
             }
         }
@@ -556,7 +569,7 @@ namespace CslaGenerator.Metadata
                 Advanced = true;
                 _targetDAL = TargetDAL.Simple;
                 _activeObjects = false;
-                _useChildDataPortal = true;
+//                _useChildDataPortal = true;
                 _useSingleCriteria = false;
             }
             else

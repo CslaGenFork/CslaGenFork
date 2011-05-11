@@ -68,13 +68,8 @@ foreach (Criteria c in itemInfo.CriteriaObjects)
 {
     if (c.CreateOptions.AddRemove)
     {
-        %>
-<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel) %>
-<!-- #include file="AddItem.asp" -->
-<% Response.Write(""); %>
-<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel) %>
-
-<!-- #include file="AddItemAsync.asp" -->
+        %><%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel, false, false) %><!-- #include file="AddItem.asp" -->
+<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel, true, false) %><!-- #include file="AddItemAsync.asp" -->
         <%
     }
 

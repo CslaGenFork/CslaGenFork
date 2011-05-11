@@ -637,6 +637,9 @@ namespace CslaGenerator.Util.PropertyBags
                      propertyName == "DenyWriteRoles"))
                     return false;
 
+                if (SelectedObject[0].CriteriaClassMode == CriteriaMode.BusinessBase && propertyName == "NestedClass")
+                    return false;
+
                 if (_selectedObject.Length > 1 && IsEnumerable(GetPropertyInfoCache(propertyName)))
                     return false;
 

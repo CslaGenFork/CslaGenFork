@@ -1,13 +1,27 @@
 <%
 foreach (ChildProperty childProperty in Info.AllChildProperties)
 {
+    if (childProperty.DeclarationMode == PropertyDeclaration.AutoProperty)
+    {
+        if (childProperty.LoadingScheme == LoadingScheme.SelfLoad &&
+            childProperty.LazyLoad)
+        {
+            CslaObjectInfo childInfo = FindChildInfo(Info, childProperty.TypeName);
+            if (IsCollectionType(childInfo.ObjectType))
+            {
+                Errors.Append(Info.ObjectName + "." + childProperty.Name + " is LazyLoad; Declaration Mode must be \"ClassicProperty\" or \"Managed\"." + Environment.NewLine);
+            }
+        }
+    }
+
     if (childProperty.DeclarationMode != PropertyDeclaration.ClassicProperty &&
+        childProperty.DeclarationMode != PropertyDeclaration.AutoProperty &&
         childProperty.DeclarationMode != PropertyDeclaration.Managed)
     {
         CslaObjectInfo childInfo = FindChildInfo(Info, childProperty.TypeName);
         if (IsCollectionType(childInfo.ObjectType))
         {
-            Errors.Append(Info.ObjectName + "." + childProperty.Name + " Declaration Mode must be \"ClassicProperty\" or \"Managed\"." + Environment.NewLine);
+            Errors.Append(Info.ObjectName + "." + childProperty.Name + " Declaration Mode must be \"ClassicProperty\", \"AutoProperty\" or \"Managed\"." + Environment.NewLine);
         }
     }
 
@@ -25,7 +39,7 @@ foreach (ChildProperty childProperty in Info.AllChildProperties)
         if (childProperty.DeclarationMode == PropertyDeclaration.Managed)
         {
             bool getOptionsDataPortal2 = false;
-            foreach (Criteria crit in Info.CriteriaObjects)
+            foreach (Criteria crit in GetCriteriaObjects(Info))
             {
                 getOptionsDataPortal2 = getOptionsDataPortal2 | crit.GetOptions.DataPortal;
             }

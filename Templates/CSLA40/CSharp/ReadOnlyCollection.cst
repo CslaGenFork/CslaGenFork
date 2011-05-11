@@ -16,20 +16,10 @@
 if (Errors.Length == 0)
 {
     int silverlightLevel = 0;
+    bool genOptional = false;
     bool first = true;
     %><!-- #include file="Header.asp" -->
-using System;
-<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel) %>using System.Data;
-using System.Data.SqlClient;<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel) %>
-using Csla;
-<%
-    if (ActiveObjects)
-    {
-    %>using ActiveObjects;
-<%
-    }
-%><%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel) %>using Csla.Data;<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel) %>
-<%= GetUsingStatementsString(Info) %>
+<!-- #include file="Using.asp" -->
 <%
     if (Info.ObjectNamespace.Length > 0)
     {
@@ -39,7 +29,7 @@ using Csla;
     }
     bool? firstComment = null;
     %><!-- #include file="XmlComment.asp" -->
-<%
+    <%
     if (GetAttributesString(Info.Attributes) != string.Empty)
     {
         %>
@@ -109,8 +99,7 @@ using Csla;
     <%
     }
     %><%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %>{
-        <!-- #include file="CollectionBusinessProps.asp" -->
-
+<!-- #include file="CollectionBusinessProps.asp" -->
 <!-- #include file="FindMethods.asp" -->
     <%
     if (Info.GenerateFactoryMethods)
@@ -167,32 +156,30 @@ using Csla;
         <%
         }
         %>
-        #region Factory Methods
-<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel) %>
-        <!-- #include file="GetObject.asp" -->
-        <!-- #include file="InternalGetObject.asp" -->
-<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel) %>
-        <!-- #include file="GetObjectAsync.asp" -->
-<% Response.Write(Environment.NewLine); %>        #endregion
+        #region Factory Methods<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel, true, false) %>
+<!-- #include file="GetObject.asp" -->
+<!-- #include file="InternalGetObject.asp" -->
+<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel, true, true) %><!-- #include file="GetObjectAsync.asp" -->
+
+        #endregion
         <%
     }
     %>
 <!-- #include file="Constructor.asp" -->
-
-        <!-- #include file="Criteria.asp" -->
-
+<!-- #include file="Criteria.asp" -->
 <!-- #include file="SharedAuthorizationMethods.asp" -->
 <!-- #include file="SavedHandler.asp" -->
 <%
     if (Info.GenerateDataAccessRegion)
     {
+        if (!genOptional)
+        {
+            Response.Write(Environment.NewLine);
+        }
         %>
-
-        #region Data Access
-<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel) %>
+        #region Data Access<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel, true, true) %>
 <!-- #include file="CollectionDataPortalFetch.asp" -->
-<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel) %>
-        #endregion
+<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel, false, true) %>        #endregion
 <!-- #include file="Events.asp" -->
 
 <%

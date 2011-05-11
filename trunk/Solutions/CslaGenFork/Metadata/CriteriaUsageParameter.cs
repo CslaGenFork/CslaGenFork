@@ -107,6 +107,22 @@ namespace CslaGenerator.Metadata
             if (SuffixChanged != null)
                 SuffixChanged(this, EventArgs.Empty);
         }
+
+        internal static CriteriaUsageParameter Clone(CriteriaUsageParameter masterUsageParam)
+        {
+            var newUsageParam = new CriteriaUsageParameter();
+
+            newUsageParam.Factory = masterUsageParam.Factory;
+            newUsageParam.AddRemove = masterUsageParam.AddRemove;
+            newUsageParam.DataPortal = masterUsageParam.DataPortal;
+            newUsageParam.RunLocal = masterUsageParam.RunLocal;
+            newUsageParam.Procedure = masterUsageParam.Procedure;
+            newUsageParam.ProcedureName = masterUsageParam.ProcedureName;
+            newUsageParam.FactorySuffix = masterUsageParam.FactorySuffix;
+
+            return newUsageParam;
+        }
+
     }
 
     public class CriteriaUsageParameterConverter : ExpandableObjectConverter

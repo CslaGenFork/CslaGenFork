@@ -1,4 +1,4 @@
-<%@ CodeTemplate Inherits="CslaTemplateHelperCS" Language="VB" TargetLanguage="VB" Description="Generates a CSLA Inherited Object." %>
+<%@ CodeTemplate Inherits="CslaTemplateHelperCS" Language="CSharp" TargetLanguage="CSharp" Description="Generates a CSLA Inherited Object." %>
 <%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the CSLA Object to inherit from." %>
 <%@ Property Name="ActiveObjects" Type="System.Boolean" Default="false" Category="Options" Description="if true, base class is generated as ActiveObjects" %>
 
@@ -8,19 +8,23 @@
 <%@ Import Namespace="CslaGenerator.CodeGen" %>
 <%@ Import Namespace="CslaGenerator.Util" %>
 
+<!-- #include file="Header.asp" -->
 <%
+int silverlightLevel = 0;
+bool genOptional = false;
 if (ActiveObjects)
 {
-%>using ActiveObjects;
+    %>
+using ActiveObjects;
 <%
 }
-    %><!-- #include file="Header.asp" -->
-<%
 if (Info.ObjectNamespace.IndexOf(CurrentUnit.GenerationParams.UtilitiesNamespace) != 0)
 {
-%>using <%= CurrentUnit.GenerationParams.UtilitiesNamespace %>;
+%>
+<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel, false, true) %>using <%= CurrentUnit.GenerationParams.UtilitiesNamespace %>;
+<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel, false, true) %>
 <%
-Response.Write(Environment.NewLine);
+//Response.Write(Environment.NewLine);
 }
 if (Info.ObjectNamespace.Length > 0)
 {
@@ -32,14 +36,15 @@ if (Info.ObjectNamespace.Length > 0)
     public partial class <%= Info.ObjectName %>
     {
         <%
+        if (Info.ObjectType != CslaObjectType.UnitOfWork)
+        {
         System.Collections.Generic.List<string> eventList = GetEventList(Info);
         if (eventList.Count > 0)
         {
             %>
 
         #region Pseudo Event Handlers
-
-            <%
+<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel, false, true) %><%
             foreach (string strEvent in eventList)
             {
                 %>
@@ -47,20 +52,16 @@ if (Info.ObjectNamespace.Length > 0)
         //{
         //    throw new System.Exception("The method or operation is not implemented.");
         //}
-
-                <%
+        <%
             }
             %>
+<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel, true, false) %>
         #endregion
 
             <%
         }
-        %>
-        <%
         if (ActiveObjects)
         {
-            %>
-            <%
             if (Info.ObjectType == CslaObjectType.ReadOnlyCollection || Info.ObjectType == CslaObjectType.ReadOnlyObject)
             {
                 %>
@@ -78,24 +79,23 @@ if (Info.ObjectNamespace.Length > 0)
         //internal void ExtractInfo(ObjectType obj)
         {
                 <%
-                foreach (ValueProperty prop in Info.GetAllValueProperties())
-                {
-                    %>
+                    foreach (ValueProperty prop in Info.GetAllValueProperties())
+                    {
+                        %>
             //this.<%= FormatProperty(prop.Name) %> = obj.<%= FormatProperty(prop.Name) %>;
                     <%
-                }
-                %>
+                    }
+                    %>
         //}
 
             <%
-            }
-            %>
+                }
+                %>
         #endregion
             <%
+            }
         }
-        %>
-    <%
-    }
+        }
 %>
     }
 <%
