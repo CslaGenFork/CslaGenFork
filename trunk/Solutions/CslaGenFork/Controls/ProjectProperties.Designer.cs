@@ -185,6 +185,7 @@ namespace CslaGenerator.Controls
             this.chkUseBypassPropertyChecks = new System.Windows.Forms.CheckBox();
             this.groupBoxLegacy = new System.Windows.Forms.GroupBox();
             this.chkActiveObjects = new System.Windows.Forms.CheckBox();
+            this.chkUsePublicPropertyInfo = new System.Windows.Forms.CheckBox();
             this.chkForceReadOnlyProperties = new System.Windows.Forms.CheckBox();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -1736,6 +1737,7 @@ namespace CslaGenerator.Controls
             this.tabGenerationMisc.Controls.Add(this.chkGenerateDatabaseClass);
             this.tabGenerationMisc.Controls.Add(this.chkNullableSupport);
             this.tabGenerationMisc.Controls.Add(this.chkUseBypassPropertyChecks);
+            this.tabGenerationMisc.Controls.Add(this.chkUsePublicPropertyInfo);
             this.tabGenerationMisc.Controls.Add(this.chkForceReadOnlyProperties);
             this.tabGenerationMisc.Controls.Add(this.groupBoxLegacy);
             this.tabGenerationMisc.Location = new System.Drawing.Point(4, 22);
@@ -1848,7 +1850,20 @@ namespace CslaGenerator.Controls
             this.chkGenerateDatabaseClass.Text = "Generate Database class";
             this.toolTip1.SetToolTip(this.chkGenerateDatabaseClass,
                                      "If checked, generates a \"Database.cs\" or \"Database.vb\" file.");
+            //
+            // chkUseBypassPropertyChecks
             // 
+            this.chkUseBypassPropertyChecks.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "UseBypassPropertyChecks", true));
+            this.chkUseBypassPropertyChecks.Location = new System.Drawing.Point(15, 218);
+            this.chkUseBypassPropertyChecks.Name = "chkUseBypassPropertyChecks";
+            this.chkUseBypassPropertyChecks.Size = new System.Drawing.Size(216, 17);
+            this.chkUseBypassPropertyChecks.TabIndex = 12;
+            this.chkUseBypassPropertyChecks.Text = "Generate BypassPropertyChecks";
+            this.toolTip1.SetToolTip(this.chkUseBypassPropertyChecks,
+                                     "CTP - Not implemented.\r\n\r\n" +
+                                     "If checked, improves code readability by using BypassPropertyChecks blocks\r\n" +
+                                     "and assign values using .NET properties.\r\n" +
+                                     "Otherwise uses LoadProperty() to assign values.");            // 
             // chkNullableSupport
             // 
             this.chkNullableSupport.AutoSize = true;
@@ -1861,19 +1876,16 @@ namespace CslaGenerator.Controls
             this.chkNullableSupport.UseVisualStyleBackColor = true;
             this.toolTip1.SetToolTip(this.chkNullableSupport, "If checked, enables Nullable<T> support.");
             //
-            // chkUseBypassPropertyChecks
+            // chkUsePublicPropertyInfo
             // 
-            this.chkUseBypassPropertyChecks.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "UseBypassPropertyChecks", true));
-            this.chkUseBypassPropertyChecks.Location = new System.Drawing.Point(255, 78);
-            this.chkUseBypassPropertyChecks.Name = "chkUseBypassPropertyChecks";
-            this.chkUseBypassPropertyChecks.Size = new System.Drawing.Size(260, 17);
-            this.chkUseBypassPropertyChecks.TabIndex = 12;
-            this.chkUseBypassPropertyChecks.Text = "Generate BypassPropertyChecks code blocks";
-            this.toolTip1.SetToolTip(this.chkUseBypassPropertyChecks,
-                                     "CTP - Not implemented.\r\n\r\n" +
-                                     "If checked, improves code readability by using BypassPropertyChecks blocks\r\n" +
-                                     "and assign values using .NET properties.\r\n" +
-                                     "Otherwise uses LoadProperty() to assign values.");
+            this.chkUsePublicPropertyInfo.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "UsePublicPropertyInfo", true));
+            this.chkUsePublicPropertyInfo.Location = new System.Drawing.Point(255, 78);
+            this.chkUsePublicPropertyInfo.Name = "chkUsePublicPropertyInfo";
+            this.chkUsePublicPropertyInfo.Size = new System.Drawing.Size(260, 17);
+            this.chkUsePublicPropertyInfo.TabIndex = 12;
+            this.chkUsePublicPropertyInfo.Text = "Use public PropertyInfo";
+            this.toolTip1.SetToolTip(this.chkUsePublicPropertyInfo,
+                                     "CTP - Not implemented.");
             //
             // chkForceReadOnlyProperties
             // 
@@ -1893,7 +1905,7 @@ namespace CslaGenerator.Controls
             this.groupBoxLegacy.Controls.Add(this.chkActiveObjects);
             this.groupBoxLegacy.Location = new System.Drawing.Point(255, 133);
             this.groupBoxLegacy.Name = "groupBoxLegacy";
-            this.groupBoxLegacy.Size = new System.Drawing.Size(240, 104);
+            this.groupBoxLegacy.Size = new System.Drawing.Size(240, 76);
             this.groupBoxLegacy.TabIndex = 35;
             this.groupBoxLegacy.TabStop = false;
             this.groupBoxLegacy.Text = "Legacy Support";
@@ -2157,6 +2169,7 @@ namespace CslaGenerator.Controls
         private System.Windows.Forms.CheckBox chkGenerateDatabaseClass;
         private System.Windows.Forms.CheckBox chkNullableSupport;
         private System.Windows.Forms.CheckBox chkUseBypassPropertyChecks;
+        private System.Windows.Forms.CheckBox chkUsePublicPropertyInfo;
         private System.Windows.Forms.CheckBox chkForceReadOnlyProperties;
         private System.Windows.Forms.GroupBox groupBoxLegacy;
         private System.Windows.Forms.CheckBox chkActiveObjects;

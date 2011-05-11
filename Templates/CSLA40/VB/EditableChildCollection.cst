@@ -1,4 +1,4 @@
-<%@ CodeTemplate Inherits="CslaTemplateHelperCS" Language="VB" TargetLanguage="VB" Description="Generates a CSLA Editable Child Collection." %>
+<%@ CodeTemplate Inherits="CslaTemplateHelperCS" Language="CSharp" TargetLanguage="CSharp" Description="Generates a CSLA Editable Child Collection." %>
 <%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the EditableChildCollection Object to create." %>
 <%@ Property Name="Errors" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return errors to master.cst" %>
 <%@ Property Name="Warnings" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return warnings to master.cst" %>
@@ -15,20 +15,11 @@
 <%
 if (Errors.Length == 0)
 {
+    int silverlightLevel = 0;
+    bool genOptional = false;
     bool first = true;
     %><!-- #include file="Header.asp" -->
-using System;
-using System.Data;
-using System.Data.SqlClient;
-using Csla;
-<%
-    if (ActiveObjects)
-    {
-    %>using ActiveObjects;
-<%
-    }
-%>using Csla.Data;
-<%= GetUsingStatementsString(Info) %>
+<!-- #include file="Using.asp" -->
 <%
     if (Info.ObjectNamespace.Length > 0)
     {
@@ -38,7 +29,7 @@ using Csla;
     }
     bool? firstComment = null;
     %><!-- #include file="XmlComment.asp" -->
-<%
+    <%
     if (GetAttributesString(Info.Attributes) != string.Empty)
     {
         %>
@@ -116,11 +107,10 @@ using Csla;
     <%
     }
     %><%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %>{
-        <!-- #include file="CollectionBusinessProps.asp" -->
+<!-- #include file="CollectionBusinessProps.asp" -->
 
 <!-- #include file="FindMethods.asp" -->
 
-        #region Factory Methods
     <%
     bool createCriteria = false;
     if (Info.GenerateFactoryMethods)
@@ -130,7 +120,8 @@ using Csla;
         bool lazyLoad3 = GetLazyLoad(Info);
         bool parentCreateCriteria = false;
         CslaObjectInfo parentInfo = Info.Parent.CslaObjects.Find(Info.ParentType);
-        foreach (Criteria c in Info.CriteriaObjects)
+        string strNewCallback2 = string.Empty;
+        foreach (Criteria c in GetCriteriaObjects(Info))
         {
             if (c.CreateOptions.Factory)
             {
@@ -140,19 +131,30 @@ using Csla;
         }
         foreach (Criteria c in parentInfo.CriteriaObjects)
         {
+            if (c.CreateOptions.RunLocal)
+            {
+                strNewCallback2 += ", DataPortal.ProxyModes.LocalOnly";
+            }
+            else
+            {
+                strNewCallback2 += ", DataPortal.ProxyModes.Auto";
+            }
             if (c.CreateOptions.Factory || c.CreateOptions.DataPortal)
             {
                 parentCreateCriteria = true;
                 break;
             }
         }
-        if (lazyLoad3 || createCriteria || parentCreateCriteria || declarationMode == PropertyDeclaration.ClassicProperty)
+        if (lazyLoad3 || createCriteria || parentCreateCriteria ||
+            declarationMode == PropertyDeclaration.ClassicProperty ||
+            declarationMode == PropertyDeclaration.AutoProperty)
         {
             if (selfLoad3 && Info.DbName.Equals(String.Empty))
             {
                 Warnings.Append("Make sure you specify a DB name." + Environment.NewLine);
             }
-    %>
+            %>
+        #region Factory Methods<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel, true, false) %>
 
         /// <summary>
         /// Factory method. Creates a new <see cref="<%=Info.ObjectName%>"/> collection.
@@ -160,42 +162,85 @@ using Csla;
         /// <returns>A reference to the created <see cref="<%=Info.ObjectName%>"/> object.</returns>
         internal static <%= Info.ObjectName %> New<%= Info.ObjectName %>()
         {
-            return DataPortal.Create<%= CurrentUnit.GenerationParams.UseChildDataPortal ? "Child" : "" %><<%= Info.ObjectName %>>();
+            return DataPortal.CreateChild<<%= Info.ObjectName %>>();
         }
         <%
+            if (CurrentUnit.GenerationParams.GenerateSilverlight4)
+            {
+                %>
+
+        /// <summary>
+        /// Factory method. Asynchronously creates a new <see cref="<%=Info.ObjectName%>"/> collection.
+        /// </summary>
+        /// <param name="callback">The completion callback method.</param>
+        internal static void New<%= Info.ObjectName %>(EventHandler<DataPortalResult<<%= Info.ObjectName %>>> callback)
+        {
+            DataPortal.BeginCreate<<%= Info.ObjectName %>>(callback);
+        }
+        <%
+            }
         }
         if (!selfLoad3)
         {
             %>
-        <!-- #include file="InternalGetObject.asp" -->
-        <%
+<!-- #include file="InternalGetObject.asp" -->
+<%
         }
         else
         {
             %>
-        <!-- #include file="GetObject.asp" -->
+<!-- #include file="GetObject.asp" -->
+<%
+        }
+        if (lazyLoad3 || createCriteria || parentCreateCriteria ||
+            declarationMode == PropertyDeclaration.ClassicProperty ||
+            declarationMode == PropertyDeclaration.AutoProperty)
+        {
+            if (CurrentUnit.GenerationParams.GenerateSilverlight4)
+            {
+    %>
+<%= IfSilverlight (Conditional.Else, 0, ref silverlightLevel, true, false) %>
+
+        /// <summary>
+        /// Factory method. Asynchronously creates a new <see cref="<%=Info.ObjectName%>"/> collection.
+        /// </summary>
+        /// <param name="callback">The completion callback method.</param>
+        internal static void New<%= Info.ObjectName %>(EventHandler<DataPortalResult<<%= Info.ObjectName %>>> callback)
+        {
+            DataPortal.BeginCreate<<%= Info.ObjectName %>>(callback<%= strNewCallback2 %>);
+        }
         <%
+            }
         }
     }
-    %>
-
-        #endregion
+    if (CurrentUnit.GenerationParams.GenerateAsynchronous)
+    {
+        %>
+<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel, true, true) %><!-- #include file="GetObjectAsync.asp" --><%
+    }
+    else
+    {
+        %>
+<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel, true, false) %><%
+    }
+%>        #endregion
+<!-- #include file="Constructor.asp" -->
+<!-- #include file="Criteria.asp" -->
 <!-- #include file="SharedAuthorizationMethods.asp" -->
-
-<!-- #include file="Constructor.asp"  -->
-
-        <!-- #include file="Criteria.asp" -->
 <%
     if (Info.GenerateDataAccessRegion)
     {
+        if (!genOptional)
+        {
+            Response.Write(Environment.NewLine);
+        }
         %>
-
-        #region Data Access
-
-        <!-- #include file="CollectionDataPortalFetch.asp" -->
+        #region Data Access<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel, true, true) %>
+<!-- #include file="CollectionDataPortalFetch.asp" -->
 
         <%
-        if (!CurrentUnit.GenerationParams.UseChildDataPortal)
+        //if (!CurrentUnit.GenerationParams.UseChildDataPortal)
+        if (false)
         {
             %>
         /// <summary>
@@ -249,7 +294,7 @@ using Csla;
         <%
         }
         %>
-        #endregion
+<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel, false, true) %>        #endregion
 <!-- #include file="Events.asp" -->
 
 <%

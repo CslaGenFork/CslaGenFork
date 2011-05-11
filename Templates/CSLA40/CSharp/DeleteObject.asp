@@ -1,5 +1,7 @@
 <%
-foreach (Criteria c in Info.CriteriaObjects)
+if (CurrentUnit.GenerationParams.GenerateSynchronous)
+{
+foreach (Criteria c in GetCriteriaObjects(Info))
 {
     if (c.DeleteOptions.Factory)
     {
@@ -66,5 +68,6 @@ foreach (Criteria c in Info.CriteriaObjects)
         }
 <%
     }
+}
 }
 %>

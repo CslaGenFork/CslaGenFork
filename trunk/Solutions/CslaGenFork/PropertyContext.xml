@@ -1,6 +1,67 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <propertybag>
   <contextSettings>
+    <add key="UnitOfWork:Generate" value="true" />
+    <add key="UnitOfWork:GenerateFactoryMethods" value="false" />
+    <add key="UnitOfWork:GenerateDataAccessRegion" value="false" />
+    <add key="UnitOfWork:GenerateSprocs" value="false" />
+    <add key="UnitOfWork:DataSetLoadingScheme" value="false" />
+    <add key="UnitOfWork:UseCustomLoading" value="false" />
+    <add key="UnitOfWork:Filename" value="true" />
+    <add key="UnitOfWork:InheritedType" value="false" />
+    <add key="UnitOfWork:ObjectName" value="true" />
+    <add key="UnitOfWork:ObjectNamespace" value="true" />
+    <add key="UnitOfWork:ObjectType" value="true" />
+    <add key="UnitOfWork:OutputLanguage" value="true" />
+    <add key="UnitOfWork:Implements" value="false" />
+    <add key="UnitOfWork:ChildCollectionProperties" value="false" />
+    <add key="UnitOfWork:ChildProperties" value="false" />
+    <add key="UnitOfWork:InheritedChildCollectionProperties" value="false" />
+    <add key="UnitOfWork:InheritedChildProperties" value="false" />
+    <add key="UnitOfWork:InheritedValueProperties" value="false" />
+    <add key="UnitOfWork:ConvertValueProperties" value="false" />
+    <add key="UnitOfWork:UpdateValueProperties" value="false" />
+    <add key="UnitOfWork:ValueProperties" value="false" />
+    <add key="UnitOfWork:CriteriaObjects" value="true" />
+    <add key="UnitOfWork:LazyLoad" value="false" />
+    <add key="UnitOfWork:ParentProperties" value="false" />
+    <add key="UnitOfWork:ParentType" value="false" />
+    <add key="UnitOfWork:FindMethodsParameters" value="false" />
+    <add key="UnitOfWork:ItemType" value="false" />
+    <add key="UnitOfWork:UpdaterType" value="false" />
+    <add key="UnitOfWork:NameColumn" value="false" />
+    <add key="UnitOfWork:ValueColumn" value="false" />
+    <add key="UnitOfWork:CacheResults" value="false" />
+    <add key="UnitOfWork:SimpleCacheOptions" value="false" />
+    <add key="UnitOfWork:DbName" value="false" />
+    <add key="UnitOfWork:DeleteObjectCriteriaType" value="false" />
+    <add key="UnitOfWork:GetObjectCriteriaType" value="false" />
+    <add key="UnitOfWork:NewObjectCriteriaType" value="false" />
+    <add key="UnitOfWork:TransactionType" value="false" />
+    <add key="UnitOfWork:PersistenceType" value="false" />
+    <add key="UnitOfWork:DbContextObject" value="false" />
+    <add key="UnitOfWork:DeleteProcedureName" value="false" />
+    <add key="UnitOfWork:InsertProcedureName" value="false" />
+    <add key="UnitOfWork:SelectProcedureName" value="false" />
+    <add key="UnitOfWork:UpdateProcedureName" value="false" />
+    <add key="UnitOfWork:EqualsProperty" value="false" />
+    <add key="UnitOfWork:HashcodeProperty" value="false" />
+    <add key="UnitOfWork:ToStringProperty" value="false" />
+    <add key="UnitOfWork:NewRoles" value="false" />
+    <add key="UnitOfWork:GetRoles" value="false" />
+    <add key="UnitOfWork:UpdateRoles" value="false" />
+    <add key="UnitOfWork:DeleteRoles" value="false" />
+    <add key="UnitOfWork:ParentInsertOnly" value="false" />
+    <add key="UnitOfWork:PublishToChannel" value="false" />
+    <add key="UnitOfWork:AllowNew" value="false" />
+    <add key="UnitOfWork:AllowEdit" value="false" />
+    <add key="UnitOfWork:AllowRemove" value="false" />
+    <add key="UnitOfWork:AddParentReference" value="false" />
+    <add key="UnitOfWork:GenerateDataPortalInsert" value="false" />
+    <add key="UnitOfWork:GenerateDataPortalUpdate" value="false" />
+    <add key="UnitOfWork:GenerateDataPortalDelete" value="false" />
+    <add key="UnitOfWork:SupportUpdateProperties" value="false" />
+    <add key="UnitOfWork:CheckRulesOnFetch" value="false" />
     <add key="NameValueList:DataSetLoadingScheme" value="false" />
     <add key="NameValueList:Generate" value="true" />
     <add key="NameValueList:GenerateSprocs" value="true" />

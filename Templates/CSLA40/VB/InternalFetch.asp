@@ -109,7 +109,7 @@ if (!Info.UseCustomLoading)
             CslaObjectInfo parentInfo2 = Info.Parent.CslaObjects.Find(Info.ParentType);
             if (parentInfo2 != null)
                 isParentEditableRoot = parentInfo2.ObjectType == CslaObjectType.EditableRootCollection;
-            foreach (Criteria c in Info.CriteriaObjects)
+            foreach (Criteria c in GetCriteriaObjects(Info))
             {
                 bool first1 = true;
                 foreach (Property p in c.Properties)
@@ -147,7 +147,8 @@ if (!Info.UseCustomLoading)
             LoadProperty(<%= FormatPropertyInfoName(childProp.Name) %>, <%= childProp.TypeName %>.Get<%= childProp.TypeName %>(<%= invokeParam %>));
             <%
                         }
-                        else if (childProp.DeclarationMode == PropertyDeclaration.ClassicProperty)
+                        else if (childProp.DeclarationMode == PropertyDeclaration.ClassicProperty ||
+                            childProp.DeclarationMode == PropertyDeclaration.AutoProperty)
                         {
                             %>
             <%= GetFieldLoaderStatement(childProp, childProp.TypeName + ".Get" + childProp.TypeName +"(" + invokeParam + ")") %>;

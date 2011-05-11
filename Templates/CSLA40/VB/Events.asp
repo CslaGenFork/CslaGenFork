@@ -6,6 +6,7 @@ if ((Info.ObjectType == CslaObjectType.EditableRoot ||
     Info.SupportUpdateProperties == true)
 {
     %>
+
         #region Saved Event
 
         /// <summary> Use this event to signal a <see cref="<%= Info.ObjectName %>"/> object was saved.</summary>
@@ -27,13 +28,11 @@ if ((Info.ObjectType == CslaObjectType.EditableRoot ||
 <%
 }
 %>
-        #region Pseudo Events
-<%
+        #region Pseudo Events<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel, true, true) %><%
 System.Collections.Generic.List<string> eventList = GetEventList(Info);
 foreach (string strEvent in eventList)
 {
     %>
-
         /// <summary>
         /// Occurs <%= FormatEventDocumentation(strEvent) %>
         /// </summary>
@@ -41,5 +40,4 @@ foreach (string strEvent in eventList)
         <%
 }
 %>
-
-        #endregion
+<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel, true, true) %>        #endregion

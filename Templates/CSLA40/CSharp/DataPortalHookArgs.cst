@@ -9,6 +9,7 @@
 
 <%
 int silverlightLevel = 0;
+bool genOptional = false;
 if (CurrentUnit.GenerationParams.HeaderVerbosity != HeaderVerbosity.None)
 {
     %>
@@ -81,7 +82,7 @@ if (CurrentUnit.GenerationParams.UtilitiesNamespace.Length > 0)
 
         #endregion
 
-        #region Constructors
+        #region Constructor
 
         /// <summary>
         /// Initializes a new empty instance of the <see cref="DataPortalHookArgs"/> class.

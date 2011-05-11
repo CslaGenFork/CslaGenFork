@@ -34,16 +34,20 @@ foreach (ValueProperty prop in Info.AllValueProperties)
     {
         statement = new string(' ', 8) + statement;
         string statementSilverlight = string.Empty;
-        if (CurrentUnit.GenerationParams.GenerateSilverlight4)
+        if (!CurrentUnit.GenerationParams.UsePublicPropertyInfo)
         {
-            statementSilverlight = "[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]" + "\r\n" + new string(' ', 8);
-            statementSilverlight += PropertyInfoDeclare(Info, prop, true);
+            if (CurrentUnit.GenerationParams.GenerateSilverlight4)
+            {
+                statementSilverlight = "[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]" + "\r\n" + new string(' ', 8);
+                statementSilverlight += PropertyInfoDeclare(Info, prop, true);
+            }
         }
-        Response.Write(Environment.NewLine); %>
+        %>
+
         /// <summary>
         /// Maintains metadata about <see cref="<%= prop.Name %>"/> property.
         /// </summary>
-<%= IfSilverlight (Conditional.Silverlight, 2, ref silverlightLevel) %><%= statementSilverlight %><%= IfSilverlight (Conditional.Else, 0, ref silverlightLevel) %><%= statement %><%= IfSilverlight (Conditional.End, 0, ref silverlightLevel) %><%
+<%= CurrentUnit.GenerationParams.UsePublicPropertyInfo ? "" : IfSilverlight (Conditional.Silverlight, 2, ref silverlightLevel, true, true) %><%= statementSilverlight %><%= CurrentUnit.GenerationParams.UsePublicPropertyInfo ? "" : IfSilverlight (Conditional.Else, 0, ref silverlightLevel, true, true) %><%= statement %><%= CurrentUnit.GenerationParams.UsePublicPropertyInfo ? "" : IfSilverlight (Conditional.End, 0, ref silverlightLevel, true, true) %><%
     }
     if (prop.DeclarationMode != PropertyDeclaration.NoProperty)
     {
@@ -58,8 +62,8 @@ foreach (ValueProperty prop in Info.AllValueProperties)
         }
         else
         {
-            Response.Write(Environment.NewLine);
             %>
+
         /// <summary>
         /// Gets <%= useSetter ? "or sets " : "" %>the <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.ValueProperty.SplitOnCaps(prop.Name) %>.
         /// </summary>
@@ -158,16 +162,20 @@ foreach (ChildProperty prop in Info.GetMyChildProperties())
     {
         statement = new string(' ', 8) + statement;
         string statementSilverlight = string.Empty;
-        if (CurrentUnit.GenerationParams.GenerateSilverlight4)
+        if (!CurrentUnit.GenerationParams.UsePublicPropertyInfo)
         {
-            statementSilverlight = "[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]" + "\r\n" + new string(' ', 8);
-            statementSilverlight += PropertyInfoChildDeclare(Info, prop, true);
+            if (CurrentUnit.GenerationParams.GenerateSilverlight4)
+            {
+                statementSilverlight = "[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]" + "\r\n" + new string(' ', 8);
+                statementSilverlight += PropertyInfoChildDeclare(Info, prop, true);
+            }
         }
-        Response.Write(Environment.NewLine); %>
+        %>
+
         /// <summary>
         /// Maintains metadata about child <see cref="<%= prop.Name %>"/> property.
         /// </summary>
-<%= IfSilverlight (Conditional.Silverlight, 2, ref silverlightLevel) %><%= statementSilverlight %><%= IfSilverlight (Conditional.Else, 0, ref silverlightLevel) %><%= statement %><%= IfSilverlight (Conditional.End, 0, ref silverlightLevel)+"\r\n" %><%
+<%= CurrentUnit.GenerationParams.UsePublicPropertyInfo ? "" : IfSilverlight (Conditional.Silverlight, 2, ref silverlightLevel, true, true) %><%= statementSilverlight %><%= CurrentUnit.GenerationParams.UsePublicPropertyInfo ? "" : IfSilverlight (Conditional.Else, 0, ref silverlightLevel, true, true) %><%= statement %><%= CurrentUnit.GenerationParams.UsePublicPropertyInfo ? "" : IfSilverlight (Conditional.End, 0, ref silverlightLevel, true, true)+"\r\n" %><%
     }
     if (prop.Summary != String.Empty)
     {
@@ -181,8 +189,9 @@ foreach (ChildProperty prop in Info.GetMyChildProperties())
     else
     {
         %>
+
         /// <summary>
-        /// Gets the <%= CslaGenerator.Metadata.ValueProperty.SplitOnCaps(prop.Name) %> (<%= (prop.LoadingScheme == LoadingScheme.ParentLoad) ? "parent load " : (prop.LazyLoad ? "lazy load " : "self load ") %>child property).
+        /// Gets the <%= CslaGenerator.Metadata.ValueProperty.SplitOnCaps(prop.Name) %> (<%= (prop.LoadingScheme == LoadingScheme.ParentLoad) ? "\"parent load\" " : (prop.LazyLoad ? "\"lazy load\" " : "\"self load\" ") %>child property).
         /// </summary>
         /// <value>The <%= CslaGenerator.Metadata.ValueProperty.SplitOnCaps(prop.Name) %>.</value>
         <%
@@ -198,6 +207,64 @@ foreach (ChildProperty prop in Info.GetMyChildProperties())
     }
     %>
         <%= ChildPropertyDeclare(Info, prop) %>
+        <%
+}
+
+// Unit of Work properties
+int uowCount = 0;
+foreach (UnitOfWorkProperty prop in Info.UnitOfWorkCollectionProperties)
+{
+    uowCount ++;
+    string statement = PropertyInfoUoWDeclare(Info, prop, false);
+    if (!string.IsNullOrEmpty(statement))
+    {
+        statement = new string(' ', 8) + statement;
+        string statementSilverlight = string.Empty;
+        if (!CurrentUnit.GenerationParams.UsePublicPropertyInfo)
+        {
+            if (CurrentUnit.GenerationParams.GenerateSilverlight4)
+            {
+                statementSilverlight = "[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]" + "\r\n" + new string(' ', 8);
+                statementSilverlight += PropertyInfoUoWDeclare(Info, prop, true);
+            }
+        }
+        %>
+
+        /// <summary>
+        /// Maintains metadata about unit of work (child) <see cref="<%= prop.Name %>"/> property.
+        /// </summary>
+<%= CurrentUnit.GenerationParams.UsePublicPropertyInfo ? "" : IfSilverlight (Conditional.Silverlight, 2, ref silverlightLevel, true, true) %><%= statementSilverlight %><%= CurrentUnit.GenerationParams.UsePublicPropertyInfo ? "" : IfSilverlight (Conditional.Else, 0, ref silverlightLevel, true, true) %><%= statement %><%= CurrentUnit.GenerationParams.UsePublicPropertyInfo ? "" : IfSilverlight (Conditional.End, 0, ref silverlightLevel, true, true)+"\r\n" %><%
+    }
+    if (prop.Summary != String.Empty)
+    {
+        IndentLevel = 2;
+        %>
+        /// <summary>
+<%= GetXmlCommentString(prop.Summary) %>
+        /// </summary>
+        <%
+    }
+    else
+    {
+        %>
+
+        /// <summary>
+        /// Gets the <%= CslaGenerator.Metadata.ValueProperty.SplitOnCaps(prop.Name) %> object (unit of work child property).
+        /// </summary>
+        /// <value>The <%= CslaGenerator.Metadata.ValueProperty.SplitOnCaps(prop.Name) %>.</value>
+        <%
+    }
+    if (prop.Remarks != String.Empty)
+    {
+        IndentLevel = 2;
+        %>
+        /// <remarks>
+<%= GetXmlCommentString(prop.Remarks) %>
+        /// </remarks>
+        <%
+    }
+    %>
+        <%= UnitOfWorkPropertyDeclare(Info, prop) %>
         <%
 }
 

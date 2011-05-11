@@ -208,7 +208,7 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Definition")]
-        [Description("This is a description.")]
+        [Description("Whether this property can be changed by other classes.")]
         public override bool ReadOnly
         {
             get { return base.ReadOnly; }

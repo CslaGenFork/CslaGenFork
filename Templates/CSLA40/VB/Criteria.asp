@@ -1,21 +1,22 @@
 <%
-if (Info.CriteriaObjects.Count > 0)
+if (GetCriteriaObjects(Info).Count > 0)
 {
     bool isCriteriaClassNeeded = IsCriteriaClassNeeded(Info);
 
     if (isCriteriaClassNeeded)
     {
+        genOptional = true;
         IndentLevel += 3;
         %>
 
         #region Criteria
 
         <%
-        foreach (Criteria crit in Info.CriteriaObjects)
+        foreach (Criteria crit in GetCriteriaObjects(Info))
         {
-            String strParams = String.Empty;
-            String strFieldAssignments = String.Empty;
-            String strSummaryParams = String.Empty;
+            string strParams = string.Empty;
+            string strFieldAssignments = string.Empty;
+            string strSummaryParams = string.Empty;
             if (crit.Properties.Count > 1)
             {
                 %>
@@ -33,7 +34,47 @@ if (Info.CriteriaObjects.Count > 0)
         }
         %>
         [Serializable]
+        <%
+        if (CurrentUnit.GenerationParams.GenerateSilverlight4)
+        {
+            bool usePubliccriteria = false;
+            foreach (Criteria c in GetCriteriaObjects(Info))
+            {
+                if (c.CreateOptions.DataPortal && c.Properties.Count > 1 && c.CreateOptions.RunLocal)
+                {
+                    usePubliccriteria = true;
+                }
+            }
+            if (usePubliccriteria &&
+                (Info.ObjectType == CslaObjectType.EditableRoot ||
+                Info.ObjectType == CslaObjectType.EditableRootCollection ||
+                Info.ObjectType == CslaObjectType.DynamicEditableRootCollection ||
+                (Info.ObjectType == CslaObjectType.ReadOnlyObject && Info.ParentType == string.Empty) ||
+                (Info.ObjectType == CslaObjectType.ReadOnlyCollection && Info.ParentType == string.Empty)))
+            {
+                %>
+#if SILVERLIGHT
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public class <%= crit.Name %>
+#else
         protected class <%= crit.Name %>
+#endif
+        <%
+            }
+            else
+            {
+                %>
+        protected class <%= crit.Name %>
+        <%
+            }
+        }
+        else
+        {
+            %>
+        protected class <%= crit.Name %>
+        <%
+        }
+            %>
         {
             <%
                 if (Info.ObjectType == CslaObjectType.EditableSwitchable)
@@ -54,7 +95,7 @@ if (Info.CriteriaObjects.Count > 0)
                     %>
 
             <%
-                    if (prop.Summary != String.Empty)
+                    if (prop.Summary != string.Empty)
                     {
                         IndentLevel = 3;
                         %>
@@ -89,7 +130,7 @@ if (Info.CriteriaObjects.Count > 0)
             /// <value>The <%= CslaGenerator.Metadata.ValueProperty.SplitOnCaps(prop.Name) %>.</value>
             <%
                     }
-                    if (prop.Remarks != String.Empty)
+                    if (prop.Remarks != string.Empty)
                     {
                         IndentLevel = 3;
                         %>
@@ -170,11 +211,10 @@ if (Info.CriteriaObjects.Count > 0)
 
         <%
             }
-            %>
-        <%
         }
         %>
         #endregion
+
 <%
         IndentLevel -=3;
     }

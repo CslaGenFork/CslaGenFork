@@ -28,7 +28,7 @@ if (Info.GenerateDataPortalInsert)
         %>[Transactional(TransactionalTypes.TransactionScope)]
         <%
     }
-    %>internal void <%= (Info.ObjectType == CslaObjectType.EditableChild && CurrentUnit.GenerationParams.UseChildDataPortal) ? "Child_" : "" %>Insert(<% if (parentType.Length > 0) { %><%= parentType %> parent<% } %>)
+    %>internal void <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_" : "" %>Insert(<% if (parentType.Length > 0) { %><%= parentType %> parent<% } %>)
         {
             <%
     if (UseSimpleAuditTrail(Info))
@@ -150,7 +150,7 @@ if (Info.GenerateDataPortalUpdate)
         %>[Transactional(TransactionalTypes.TransactionScope)]
         <%
     }
-    %>internal void <%= (Info.ObjectType == CslaObjectType.EditableChild && CurrentUnit.GenerationParams.UseChildDataPortal) ? "Child_" : "" %>Update(<% if (parentType.Length > 0 && !Info.ParentInsertOnly) { %><%= parentType %> parent<% } %>)
+    %>internal void <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_" : "" %>Update(<% if (parentType.Length > 0 && !Info.ParentInsertOnly) { %><%= parentType %> parent<% } %>)
         {
             if (base.IsDirty)
             {<%
@@ -242,16 +242,15 @@ if (Info.GenerateDataPortalInsert || Info.GenerateDataPortalUpdate)
 {
     %>
 <!-- #include file="DoInsertUpdate.asp" -->
-    <%
+<%
 }
-
 if (Info.GenerateDataPortalDelete)
 {
     // get the Delete Stored Procedure name from criteria
     string criteriaDeleteProcedureName = string.Empty;
     // This is kind of weak, because this will fetch the procedure name for the first delete criteria found,
     // but it's unlikely anyone will have more than one delete criteria.
-    foreach (Criteria c in Info.CriteriaObjects)
+    foreach (Criteria c in GetCriteriaObjects(Info))
     {
         // Try first the sproc criteria with status enabled for sprocs
         if (c.DeleteOptions.Procedure)
@@ -262,7 +261,7 @@ if (Info.GenerateDataPortalDelete)
     }
     if (criteriaDeleteProcedureName == string.Empty)
     {
-        foreach (Criteria c in Info.CriteriaObjects)
+        foreach (Criteria c in GetCriteriaObjects(Info))
         {
             // Try now just the procedure name disregarding the status (sprocs generation must be fixed)
             if (c.DeleteOptions.ProcedureName != string.Empty)
@@ -273,8 +272,8 @@ if (Info.GenerateDataPortalDelete)
         }
     }
 
-    Response.Write(Environment.NewLine);
     %>
+
         /// <summary>
         /// Delete <see cref="<%=Info.ObjectName%>"/> object from database with or without transaction.
         /// </summary>
@@ -289,7 +288,7 @@ if (Info.GenerateDataPortalDelete)
         %>[Transactional(TransactionalTypes.TransactionScope)]
         <%
     }
-        %>internal void <%= (Info.ObjectType == CslaObjectType.EditableChild && CurrentUnit.GenerationParams.UseChildDataPortal) ? "Child_" : "" %>DeleteSelf(<% if (parentType.Length > 0 && !Info.ParentInsertOnly) { %><%= parentType %> parent<% } %>)
+        %>internal void <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_" : "" %>DeleteSelf(<% if (parentType.Length > 0 && !Info.ParentInsertOnly) { %><%= parentType %> parent<% } %>)
         {
             if (!IsNew)
             {

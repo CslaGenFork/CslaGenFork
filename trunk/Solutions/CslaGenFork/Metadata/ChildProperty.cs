@@ -69,16 +69,29 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Definition")]
-        [Description("Property Declaration Mode. For child collections this should be \"ClassicProperty\" or \"Managed\".")]
+        [Description("Property Declaration Mode. For child collections this must be \"ClassicProperty\", \"AutoProperty\" or \"Managed\".\r\n"+
+            "For lazy loaded child collections this must be \"ClassicProperty\" or \"Managed\".")]
         [UserFriendlyName("Declaration Mode")]
         public PropertyDeclaration DeclarationMode
         {
             get { return _declarationMode; }
-            set { _declarationMode = value; }
+            set
+            {
+                if(LoadingScheme == LoadingScheme.SelfLoad && LazyLoad)
+                {
+                    if (value == PropertyDeclaration.ClassicProperty ||
+                        value == PropertyDeclaration.Managed)
+                        _declarationMode = value;
+                }
+                else if (value == PropertyDeclaration.ClassicProperty ||
+                    value == PropertyDeclaration.AutoProperty ||
+                    value == PropertyDeclaration.Managed)
+                    _declarationMode = value;
+            }
         }
 
         [Category("01. Definition")]
-        [Description("This is a description.")]
+        [Description("Whether this property can be changed by other classes.")]
         public override bool ReadOnly
         {
             get { return base.ReadOnly; }

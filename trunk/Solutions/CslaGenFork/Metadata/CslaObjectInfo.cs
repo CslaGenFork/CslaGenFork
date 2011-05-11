@@ -29,17 +29,20 @@ namespace CslaGenerator.Metadata
         private PersistenceType _persistenceType = PersistenceType.SqlConnectionManager;
         private string _dbContextObject = string.Empty;
         private CslaObjectType _objectType = CslaObjectType.EditableRoot;
+        private UnitOfWorkFunction _unitOfWorkType;
         private ConstructorVisibility _constructorVisibility = ConstructorVisibility.Default;
         private TypeInfo _inheritedType;
         private ValuePropertyCollection _valueProperties = new ValuePropertyCollection();
         private ChildPropertyCollection _childProperties = new ChildPropertyCollection();
         private ChildPropertyCollection _childCollectionProperties = new ChildPropertyCollection();
+        private UnitOfWorkPropertyCollection _unitOfWorkCollectionProperties = new UnitOfWorkPropertyCollection();
         private ConvertValuePropertyCollection _convertValueProperties = new ConvertValuePropertyCollection();
         private UpdateValuePropertyCollection _updateValueProperties = new UpdateValuePropertyCollection();
         private ValuePropertyCollection _inheritedValueProperties;
         private ChildPropertyCollection _inheritedChildProperties;
         private ChildPropertyCollection _inheritedChildCollectionProperties;
         private CriteriaCollection _criteriaObjects = new CriteriaCollection();
+        private CriteriaCollection _myCriteriaObjects = new CriteriaCollection();
         private PropertyCollection _equalsProperty = new PropertyCollection();
         private PropertyCollection _hashcodeProperty = new PropertyCollection();
         private PropertyCollection _toStringProperty = new PropertyCollection();
@@ -55,14 +58,14 @@ namespace CslaGenerator.Metadata
         private string _fileName = String.Empty;
         private string _nameColumn = String.Empty;
         private string _valueColumn = String.Empty;
-        private bool _lazyLoad = false;
+        private bool _lazyLoad;
         private bool _generateSprocs = true;
         private PropertyCollection _parentProperties = new PropertyCollection();
         private string _getRoles = String.Empty;
         private string _newRoles = String.Empty;
         private string _updateRoles = String.Empty;
         private string _deleteRoles = String.Empty;
-        private bool _parentInsertOnly = false;
+        private bool _parentInsertOnly;
         private string _publishToChannel = String.Empty;
         private string _subscribeToChannel = String.Empty;
         private bool _allowNew = true;
@@ -72,10 +75,10 @@ namespace CslaGenerator.Metadata
         private bool _generateDataPortalInsert = true;
         private bool _generateDataPortalUpdate = true;
         private bool _generateDataPortalDelete = true;
-        private bool _supportUpdateProperties = false;
-        private bool _addParentReference = false;
+        private bool _supportUpdateProperties;
+        private bool _addParentReference;
         private SimpleCacheResults _simpleCacheOptions = SimpleCacheResults.None;
-        private bool _useCustomLoading = false;
+        private bool _useCustomLoading;
         private bool _checkRulesOnFetch = true;
         private bool _generateDataAccessRegion = true;
         private string _folder = String.Empty;
@@ -84,7 +87,7 @@ namespace CslaGenerator.Metadata
         private string _classSummary = String.Empty;
         private string _classRemarks = String.Empty;
         private string[] _namespaces = new string[] { };
-        private bool _dataSetLoadingScheme = false;
+        private bool _dataSetLoadingScheme;
         private bool _cacheResults = true;
 
         #endregion
@@ -173,7 +176,8 @@ namespace CslaGenerator.Metadata
             {
                 if (ObjectType == CslaObjectType.ReadOnlyCollection ||
                     ObjectType == CslaObjectType.ReadOnlyObject ||
-                    ObjectType == CslaObjectType.NameValueList)
+                    ObjectType == CslaObjectType.NameValueList ||
+                    ObjectType == CslaObjectType.UnitOfWork)
                     return false;
                 return _generateDataPortalInsert;
             }
@@ -189,7 +193,8 @@ namespace CslaGenerator.Metadata
             {
                 if (ObjectType == CslaObjectType.ReadOnlyCollection ||
                     ObjectType == CslaObjectType.ReadOnlyObject ||
-                    ObjectType == CslaObjectType.NameValueList)
+                    ObjectType == CslaObjectType.NameValueList ||
+                    ObjectType == CslaObjectType.UnitOfWork)
                     return false;
                 return _generateDataPortalUpdate;
             }
@@ -204,7 +209,8 @@ namespace CslaGenerator.Metadata
             get
             {
                 if (ObjectType == CslaObjectType.ReadOnlyObject ||
-                    ObjectType == CslaObjectType.NameValueList)
+                    ObjectType == CslaObjectType.NameValueList ||
+                    ObjectType == CslaObjectType.UnitOfWork)
                     return false;
                 return _generateDataPortalDelete;
             }
@@ -294,6 +300,22 @@ namespace CslaGenerator.Metadata
                     }
                 }
                 OnPropertyChanged("ObjectType");
+            }
+        }
+
+        [Category("01. Common Options")]
+        [Description("The type of Unit of Work to create: Creator, Getter, Updater, Deleter")]
+        [UserFriendlyName("Unit of Work Type")]
+        public UnitOfWorkFunction UnitOfWorkType
+        {
+            get { return _unitOfWorkType; }
+            set
+            {
+                if (_unitOfWorkType != value)
+                {
+                    _unitOfWorkType = value;
+                    OnPropertyChanged("UnitOfWorkType");
+                }
             }
         }
 
@@ -495,6 +517,18 @@ namespace CslaGenerator.Metadata
         #region 02. Business Properties
 
         /// <summary>
+        /// The Unit of Work collection properties of the object.
+        /// </summary>
+        [Category("02. Business Properties")]
+        [Description("The Unit of Work collection properties (specify here the root objects to handle as a unit).")]
+        [Editor(typeof(PropertyCollectionForm), typeof(UITypeEditor))]
+        [UserFriendlyName("Unit of Work Collection Properties")]
+        public UnitOfWorkPropertyCollection UnitOfWorkCollectionProperties
+        {
+            get { return _unitOfWorkCollectionProperties; }
+        }
+
+        /// <summary>
         /// The child collection properties of the object.
         /// </summary>
         [Category("02. Business Properties")]
@@ -653,7 +687,7 @@ namespace CslaGenerator.Metadata
             get { return _parentType; }
             set
             {
-                if (_parentType != this.ObjectName) //make sure we don't set ourselves as parent, just in case.
+                if (_parentType != ObjectName) //make sure we don't set ourselves as parent, just in case.
                     _parentType = value;
                 else
                     _parentType = string.Empty;
@@ -1313,6 +1347,62 @@ namespace CslaGenerator.Metadata
         }
 
         [Browsable(false)]
+        [XmlIgnore]
+        public CriteriaCollection MyCriteriaObjects
+        {
+            get { return _myCriteriaObjects; }
+            set { _myCriteriaObjects = value; }
+        }
+
+        [Browsable(false)]
+        public bool IsCreator
+        {
+            get
+            {
+                if (UnitOfWorkType == UnitOfWorkFunction.Creator)
+                    return true;
+
+                return false;
+            }
+        }
+
+        [Browsable(false)]
+        public bool IsGetter
+        {
+            get
+            {
+                if (UnitOfWorkType == UnitOfWorkFunction.Getter)
+                    return true;
+
+                return false;
+            }
+        }
+
+        [Browsable(false)]
+        public bool IsUpdater
+        {
+            get
+            {
+                if (UnitOfWorkType == UnitOfWorkFunction.Updater)
+                    return true;
+
+                return false;
+            }
+        }
+
+        [Browsable(false)]
+        public bool IsDeleter
+        {
+            get
+            {
+                if (UnitOfWorkType == UnitOfWorkFunction.Deleter)
+                    return true;
+
+                return false;
+            }
+        }
+
+        [Browsable(false)]
         public bool HasNullableProperties
         {
             get
@@ -1324,7 +1414,7 @@ namespace CslaGenerator.Metadata
                 }
                 foreach (Criteria c in CriteriaObjects)
                 {
-                    foreach (Property p in c.Properties)
+                    foreach (var p in c.Properties)
                     {
                         if (p.Nullable)
                             return true;
@@ -1340,7 +1430,7 @@ namespace CslaGenerator.Metadata
 
         public void InheritedType_TypeChanged(object sender, EventArgs e)
         {
-            TypeInfo t = (TypeInfo)sender;
+            var t = (TypeInfo)sender;
             if (t.Type != String.Empty)
             {
                 //ValidateType(t.GetInheritedType());
@@ -1350,123 +1440,11 @@ namespace CslaGenerator.Metadata
 
         #endregion
 
-        #region Private Methods
-
-        //private void ValidateType(Type t)
-        //{
-        //    if (t == null)
-        //    {
-        //        _inheritedType.Type = null;
-        //    }
-        //    else if (t.IsSubclassOf(typeof(Csla.BusinessBase)))
-        //    {
-        //        if (_objectType != CslaObjectType.EditableChild &&
-        //            _objectType != CslaObjectType.EditableRoot &&
-        //            _objectType != CslaObjectType.EditableSwitchable)
-        //        {
-        //            _objectType = CslaObjectType.EditableRoot;
-        //            throw new InvalidOperationException("Object inherits from BusinessBase. It must therefore have a type of EditableRoot, EditableChild, or EditableSwitchable.");
-        //        }
-        //    }
-        //    else if (t.IsSubclassOf(typeof(Csla.BusinessCollectionBase)))
-        //    {
-        //        if (_objectType != CslaObjectType.EditableChildCollection &&
-        //            _objectType != CslaObjectType.EditableRootCollection)
-        //        {
-        //            _objectType = CslaObjectType.EditableRootCollection;
-        //            throw new InvalidOperationException("Object inherits from BusinessCollectionBase. It must therefore have a type of EditableRootCollection or EditableChildCollection.");
-        //        }
-        //    }
-        //    else if (t.IsSubclassOf(typeof(Csla.ReadOnlyBase)))
-        //    {
-        //        if (_objectType != CslaObjectType.ReadOnlyObject)
-        //        {
-        //            _objectType = CslaObjectType.ReadOnlyObject;
-        //            throw new InvalidOperationException("Object inherits from ReadOnlyBase. It must therefore have a type of ReadOnlyObject.");
-        //        }
-        //    }
-        //    else if (t.IsSubclassOf(typeof(Csla.ReadOnlyCollectionBase)))
-        //    {
-        //        if (_objectType != CslaObjectType.ReadOnlyCollection)
-        //        {
-        //            _objectType = CslaObjectType.ReadOnlyCollection;
-        //            throw new InvalidOperationException("Object inherits from ReadOnlyBase. It must therefore have a type of ReadOnlyCollection.");
-        //        }
-        //    }
-        //    else
-        //    {
-        //        _inheritedType.Type = null;
-        //        throw new InvalidOperationException("Object must inherit from a valid Csla object.");
-        //    }
-        //}
-
-        //private void SetInheritedProperties(TypeInfo typeInfo)
-        //{
-        //    ValuePropertyCollection valueProps = new ValuePropertyCollection();
-        //    ChildPropertyCollection childProps = new ChildPropertyCollection();
-        //    ChildPropertyCollection childCollProps = new ChildPropertyCollection();
-        //    if (typeInfo.Type != String.Empty)
-        //    {
-        //        Type type = typeInfo.GetInheritedType();
-        //        PropertyInfo[] props = type.GetProperties();
-        //        for (int i = 0; i < props.Length; i++)
-        //        {
-        //            if (props[i].PropertyType.IsSubclassOf(typeof(Csla.BusinessBase)) ||
-        //                props[i].PropertyType.IsSubclassOf(typeof(Csla.ReadOnlyBase)))
-        //            {
-        //                childProps.Add(GetChildPropertyFromInfo(props[i]));
-        //            }
-        //            else if (props[i].PropertyType.IsSubclassOf(typeof(Csla.BusinessCollectionBase)) ||
-        //                props[i].PropertyType.IsSubclassOf(typeof(Csla.ReadOnlyCollectionBase)))
-        //            {
-        //                childCollProps.Add(GetChildPropertyFromInfo(props[i]));
-        //            }
-        //            else if (props[i].PropertyType.IsPrimitive || props[i].PropertyType == typeof(string))
-        //            {
-        //                if (props[i].Name != "IsDeleted" && props[i].Name != "IsDirty" &&
-        //                    props[i].Name != "IsNew" && props[i].Name != "IsValid" &&
-        //                    props[i].Name != "IsSavable" && props[i].Name != "BrokenRulesString" &&
-        //                    props[i].Name != "Count" && props[i].Name != "IsChild")
-        //                {
-        //                    valueProps.Add(GetValuePropertyFromInfo(props[i]));
-        //                }
-        //            }
-        //        }
-        //    }
-        //    else if (typeInfo.ObjectMetadata != null)
-        //    {
-        //        do
-        //        {
-        //            foreach (ValueProperty prop in typeInfo.ObjectMetadata.ValueProperties)
-        //            {
-        //                valueProps.Add((ValueProperty)prop.Clone());
-        //            }
-        //            foreach (ChildProperty prop in typeInfo.ObjectMetadata.ChildProperties)
-        //            {
-        //                childProps.Add((ChildProperty)prop.Clone());
-        //            }
-        //            foreach (ChildProperty prop in typeInfo.ObjectMetadata.ChildCollectionProperties)
-        //            {
-        //                childCollProps.Add((ChildProperty)prop.Clone());
-        //            }
-        //            typeInfo = typeInfo.ObjectMetadata.InheritedType;
-        //        } while (typeInfo.ObjectMetadata != null);
-        //    }
-        //    _inheritedValueProperties = valueProps; //ValuePropertyCollection.ReadOnly(valueProps);
-        //    _inheritedChildProperties = childProps; //ChildPropertyCollection.ReadOnly(childProps);
-        //    _inheritedChildCollectionProperties = childCollProps; //ChildPropertyCollection.ReadOnly(childCollProps);
-        //    if (GeneratorController.Schema != null)
-        //    {
-        //        foreach (ValueProperty prop in _inheritedValueProperties)
-        //        {
-        //            prop.DbBindColumn.LoadColumn(GeneratorController.Schema);
-        //        }
-        //    }
-        //}
+        #region Private and Internal Methods
 
         private ValueProperty GetValuePropertyFromInfo(PropertyInfo info)
         {
-            ValueProperty prop = new ValueProperty();
+            var prop = new ValueProperty();
             prop.Name = info.Name;
             prop.PropertyType = TypeHelper.GetTypeCodeEx(info.PropertyType);
 
@@ -1475,16 +1453,25 @@ namespace CslaGenerator.Metadata
 
         private ChildProperty GetChildPropertyFromInfo(PropertyInfo info)
         {
-            ChildProperty prop = new ChildProperty();
+            var prop = new ChildProperty();
             prop.Name = info.Name;
             prop.TypeName = info.PropertyType.FullName;
             prop.LoadingScheme = LoadingScheme.ParentLoad;
             return prop;
         }
 
+        private UnitOfWorkProperty GetUnitOfWorkPropertyFromInfo(PropertyInfo info)
+        {
+            var prop = new UnitOfWorkProperty();
+            prop.Name = info.Name;
+            return prop;
+        }
+
         internal void SetProcedureNames()
         {
             if (Parent == null)
+                return;
+            if (_objectType == CslaObjectType.UnitOfWork)
                 return;
             if (_objectType == CslaObjectType.EditableChild ||
                     _objectType == CslaObjectType.EditableSwitchable ||
@@ -1598,16 +1585,16 @@ namespace CslaGenerator.Metadata
 
         public CslaObjectInfo Duplicate(ICatalog catalog)
         {
-            MemoryStream buffer = new MemoryStream();
-            XmlSerializer ser = new XmlSerializer(typeof(CslaObjectInfo));
+            var buffer = new MemoryStream();
+            var ser = new XmlSerializer(typeof(CslaObjectInfo));
             ser.Serialize(buffer, this);
             buffer.Position = 0;
-            CslaObjectInfo duplicate = (CslaObjectInfo)ser.Deserialize(buffer);
+            var duplicate = (CslaObjectInfo)ser.Deserialize(buffer);
             if (catalog != null)
             {
                 duplicate.LoadColumnInfo(catalog);
             }
-            duplicate.Parent = base.Parent;
+            duplicate.Parent = Parent;
             return duplicate;
         }
 
@@ -1641,7 +1628,7 @@ namespace CslaGenerator.Metadata
 
         public ValuePropertyCollection GetAllValueProperties()
         {
-            ValuePropertyCollection allValueProperties = new ValuePropertyCollection();
+            var allValueProperties = new ValuePropertyCollection();
 
             allValueProperties.AddRange(_valueProperties);
             allValueProperties.AddRange(_inheritedValueProperties);
@@ -1651,7 +1638,7 @@ namespace CslaGenerator.Metadata
 
         public ValuePropertyCollection GetParentValueProperties()
         {
-            ValuePropertyCollection parentValueProperties = new ValuePropertyCollection();
+            var parentValueProperties = new ValuePropertyCollection();
             if (!_parentType.Equals(string.Empty))
             {
                 CslaObjectInfo parent = FindParent(this);
@@ -1692,7 +1679,7 @@ namespace CslaGenerator.Metadata
 
         public ChildPropertyCollection GetMyChildProperties()
         {
-            ChildPropertyCollection myChildProperties = new ChildPropertyCollection();
+            var myChildProperties = new ChildPropertyCollection();
 
             myChildProperties.AddRange(_childProperties);
             myChildProperties.AddRange(_childCollectionProperties);
@@ -1702,7 +1689,7 @@ namespace CslaGenerator.Metadata
 
         public ValuePropertyCollection GetMyValueProperties()
         {
-            ValuePropertyCollection myValueProperties = new ValuePropertyCollection();
+            var myValueProperties = new ValuePropertyCollection();
 
             myValueProperties.AddRange(_valueProperties);
             myValueProperties.AddRange(ConvertToValuePropertyCollection(_convertValueProperties));
@@ -1712,7 +1699,7 @@ namespace CslaGenerator.Metadata
 
         private ValuePropertyCollection ConvertToValuePropertyCollection(ConvertValuePropertyCollection convertValuePropertyCollection)
         {
-            ValuePropertyCollection valuePropertyCollection = new ValuePropertyCollection();
+            var valuePropertyCollection = new ValuePropertyCollection();
             foreach (ConvertValueProperty convertValueProperty in convertValuePropertyCollection)
             {
                 ValueProperty valueProperty = convertValueProperty;
@@ -1723,7 +1710,7 @@ namespace CslaGenerator.Metadata
 
         public ChildPropertyCollection GetInheritedChildProperties()
         {
-            ChildPropertyCollection inheritedChildProperties = new ChildPropertyCollection();
+            var inheritedChildProperties = new ChildPropertyCollection();
 
             inheritedChildProperties.AddRange(_inheritedChildProperties);
             inheritedChildProperties.AddRange(_inheritedChildCollectionProperties);
@@ -1733,7 +1720,7 @@ namespace CslaGenerator.Metadata
 
         public ChildPropertyCollection GetAllChildProperties()
         {
-            ChildPropertyCollection allChildProperties = new ChildPropertyCollection();
+            var allChildProperties = new ChildPropertyCollection();
 
             allChildProperties.AddRange(_childProperties);
             allChildProperties.AddRange(_childCollectionProperties);
@@ -1745,29 +1732,29 @@ namespace CslaGenerator.Metadata
 
         public ChildPropertyCollection GetNonCollectionChildProperties()
         {
-            ChildPropertyCollection _myChildProps = new ChildPropertyCollection();
+            var myChildProps = new ChildPropertyCollection();
 
-            _myChildProps.AddRange(_childProperties);
-            _myChildProps.AddRange(_inheritedChildProperties);
+            myChildProps.AddRange(_childProperties);
+            myChildProps.AddRange(_inheritedChildProperties);
 
-            return _myChildProps;
+            return myChildProps;
         }
 
         public ChildPropertyCollection GetCollectionChildProperties()
         {
-            ChildPropertyCollection _myChildProps = new ChildPropertyCollection();
+            var myChildProps = new ChildPropertyCollection();
 
-            _myChildProps.AddRange(_childCollectionProperties);
-            _myChildProps.AddRange(_inheritedChildCollectionProperties);
+            myChildProps.AddRange(_childCollectionProperties);
+            myChildProps.AddRange(_inheritedChildCollectionProperties);
 
-            return _myChildProps;
+            return myChildProps;
         }
 
         #endregion
 
         private void vp_ItemChanged(ValueProperty sender, PropertyNameChangedEventArgs e)
         {
-            foreach (Criteria c in _criteriaObjects)
+            foreach (var c in _criteriaObjects)
             {
                 HandleNameChanged(c.Properties, e);
             }
@@ -1776,25 +1763,25 @@ namespace CslaGenerator.Metadata
             HandleNameChanged(_hashcodeProperty, e);
         }
 
-        void HandleNameChanged(PropertyCollection col, PropertyNameChangedEventArgs e)
+        private void HandleNameChanged(PropertyCollection col, PropertyNameChangedEventArgs e)
         {
-            foreach (Property p in col)
+            foreach (var p in col)
             {
                 if (p.Name.Equals(e.OldName))
                     p.Name = e.NewName;
             }
         }
 
-        void HandleNameChanged(CriteriaPropertyCollection col, PropertyNameChangedEventArgs e)
+        private void HandleNameChanged(CriteriaPropertyCollection col, PropertyNameChangedEventArgs e)
         {
-            foreach (Property p in col)
+            foreach (var p in col)
             {
                 if (p.Name.Equals(e.OldName))
                     p.Name = e.NewName;
             }
         }
 
-        //void HandleNameChanged(ParameterCollection col, PropertyNameChangedEventArgs e)
+        //private void HandleNameChanged(ParameterCollection col, PropertyNameChangedEventArgs e)
         //{
         //    foreach (Parameter p in col)
         //    {

@@ -1,4 +1,4 @@
-﻿<%@ CodeTemplate Inherits="CslaTemplateHelperCS" Language="VB" TargetLanguage="VB" Description="Generates the DataPortalHook event arguments class." %>
+﻿<%@ CodeTemplate Inherits="CslaTemplateHelperCS" Language="CSharp" TargetLanguage="CSharp" Description="Generates the DataPortalHook event arguments class." %>
 <%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the CSLA Object (just to get some project info)" %>
 
 <%@ Assembly Name="CslaGenerator" %>
@@ -8,6 +8,8 @@
 <%@ Import Namespace="CslaGenerator.Util" %>
 
 <%
+int silverlightLevel = 0;
+bool genOptional = false;
 if (CurrentUnit.GenerationParams.HeaderVerbosity != HeaderVerbosity.None)
 {
     %>
@@ -80,7 +82,7 @@ if (CurrentUnit.GenerationParams.UtilitiesNamespace.Length > 0)
 
         #endregion
 
-        #region Constructors
+        #region Constructor
 
         /// <summary>
         /// Initializes a new empty instance of the <see cref="DataPortalHookArgs"/> class.

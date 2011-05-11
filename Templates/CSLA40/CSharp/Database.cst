@@ -9,6 +9,7 @@
 
 <%
 int silverlightLevel = 0;
+bool genOptional = false;
 if (CurrentUnit.GenerationParams.HeaderVerbosity != HeaderVerbosity.None)
 {
     %>

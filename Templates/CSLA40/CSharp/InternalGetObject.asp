@@ -21,6 +21,7 @@ if (!Info.UseCustomLoading)
         (Info.ObjectType == CslaObjectType.ReadOnlyObject || (!lazyLoad4 && !selfLoad4))))
     {
         %>
+
         /// <summary>
         /// Factory method. Loads an existing <see cref="<%=Info.ObjectName%>"/> object from the given SafeDataReader.
         /// </summary>
@@ -44,10 +45,13 @@ if (!Info.UseCustomLoading)
         // DataPortal_CreateChild already takes care of marking childs
         // CurrentUnit.GenerationParams.UseChildDataPortal is enought to say when this happens
         // except Get-(SafeDataReader dr) that bypass Child DataPortal methods
-        if (Info.ObjectType == CslaObjectType.EditableSwitchable ||
+        /*if (Info.ObjectType == CslaObjectType.EditableSwitchable ||
             (CurrentUnit.GenerationParams.UseChildDataPortal &&
             (Info.ObjectType == CslaObjectType.EditableChild ||
-            Info.ObjectType == CslaObjectType.EditableChildCollection)))
+            Info.ObjectType == CslaObjectType.EditableChildCollection)))*/
+        if (Info.ObjectType == CslaObjectType.EditableSwitchable ||
+            (Info.ObjectType == CslaObjectType.EditableChild ||
+            Info.ObjectType == CslaObjectType.EditableChildCollection))
         {
             %>// show the framework that this is a child object
             obj.MarkAsChild();
@@ -83,7 +87,6 @@ if (!Info.UseCustomLoading)
     else
     {
         %>
-
         /// <summary>
         /// Factory method. Loads an existing <see cref="<%=Info.ObjectName%>"/> object from the given DataRow.
         /// </summary>
@@ -107,10 +110,13 @@ if (!Info.UseCustomLoading)
         // DataPortal_CreateChild already takes care of marking childs
         // CurrentUnit.GenerationParams.UseChildDataPortal is enought to say when this happens
         // except Get-(SafeDataReader dr) that bypass Child DataPortal methods
-        if (Info.ObjectType == CslaObjectType.EditableSwitchable ||
+        /*if (Info.ObjectType == CslaObjectType.EditableSwitchable ||
             (CurrentUnit.GenerationParams.UseChildDataPortal &&
             (Info.ObjectType == CslaObjectType.EditableChild ||
-            Info.ObjectType == CslaObjectType.EditableChildCollection)))
+            Info.ObjectType == CslaObjectType.EditableChildCollection)))*/
+        if (Info.ObjectType == CslaObjectType.EditableSwitchable ||
+            (Info.ObjectType == CslaObjectType.EditableChild ||
+            Info.ObjectType == CslaObjectType.EditableChildCollection))
         {
             %>// show the framework that this is a child object
             obj.MarkAsChild();

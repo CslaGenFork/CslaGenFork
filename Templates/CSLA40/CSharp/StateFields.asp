@@ -23,8 +23,9 @@ if (StateFieldsForAllValueProperties(Info) || StateFieldsForAllChildProperties(I
     // Child Properties
     foreach (ChildProperty prop in Info.AllChildProperties)
     {
-        if (prop.DeclarationMode == PropertyDeclaration.AutoProperty ||
-            prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion ||
+        if (prop.DeclarationMode == PropertyDeclaration.AutoProperty)
+            continue;
+        if (prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion ||
             prop.DeclarationMode == PropertyDeclaration.UnmanagedWithTypeConversion ||
             prop.DeclarationMode == PropertyDeclaration.ClassicPropertyWithTypeConversion)
         {

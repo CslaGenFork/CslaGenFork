@@ -11,9 +11,9 @@ if (!Info.UseCustomLoading)
         isSwitchable = true;
     }
 
-    if (Info.CriteriaObjects.Count > 0)
+    if (GetCriteriaObjects(Info).Count > 0)
     {
-        foreach (Criteria c in Info.CriteriaObjects)
+        foreach (Criteria c in GetCriteriaObjects(Info))
         {
             if (c.GetOptions.DataPortal)
             {
@@ -23,7 +23,7 @@ if (!Info.UseCustomLoading)
                 }
                 else
                 {
-                    Response.Write("\r\n");
+                    Response.Write(Environment.NewLine);
                 }
                 %>
         /// <summary>
@@ -31,31 +31,44 @@ if (!Info.UseCustomLoading)
                 if (c.Properties.Count > 1)
                 {
                     %>
-        /// Load <see cref="<%=Info.ObjectName%>"/> collection from the database, based on given criteria.
+        /// Load <see cref="<%=Info.ObjectName%>"/> collection from the database<%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
         /// </summary>
         /// <param name="crit">The fetch criteria.</param>
-        protected void <%= (Info.ObjectType == CslaObjectType.EditableChild && CurrentUnit.GenerationParams.UseChildDataPortal) ? "Child_" : "DataPortal_" %>Fetch(<%= c.Name %> crit)
+        protected void <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_" : "DataPortal_" %>Fetch(<%= c.Name %> crit)
+        {
         <%
                 }
                 else if (c.Properties.Count > 0)
                 {
                     %>
-        /// Load <see cref="<%=Info.ObjectName%>"/> collection from the database, based on given criteria.
+        /// Load <see cref="<%=Info.ObjectName%>"/> collection from the database<%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
         /// </summary>
         /// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The fetch criteria.</param>
-        protected void <%= (Info.ObjectType == CslaObjectType.EditableChild && CurrentUnit.GenerationParams.UseChildDataPortal) ? "Child_" : "DataPortal_" %>Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)
+        protected void <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_" : "DataPortal_" %>Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)
+        {
         <%
                 }
                 else
                 {
                     %>
-        /// Load <see cref="<%=Info.ObjectName%>"/> collection from the database.
+        /// Load <see cref="<%=Info.ObjectName%>"/> collection from the database<%= Info.SimpleCacheOptions == SimpleCacheResults.DataPortal ? " or from the cache" : "" %>.
         /// </summary>
-        protected void <%= (Info.ObjectType == CslaObjectType.EditableChild && CurrentUnit.GenerationParams.UseChildDataPortal) ? "Child_" : "DataPortal_" %>Fetch()
+        protected void <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_" : "DataPortal_" %>Fetch()
+        {
         <%
+                    if (Info.SimpleCacheOptions == SimpleCacheResults.DataPortal)
+                    {
+                        %>
+            if (IsCached)
+            {
+                LoadCachedList();
+                return;
+            }
+
+            <%
+                    }
                 }
                 %>
-        {
             <%= GetConnection(Info, true) %>
             {
                 <%
@@ -137,6 +150,21 @@ if (!Info.UseCustomLoading)
                 %>
         }
         <%
+                if (c.Properties.Count == 0 && Info.SimpleCacheOptions == SimpleCacheResults.DataPortal)
+                {
+                    %>
+
+        private void LoadCachedList()
+        {
+            IsReadOnly = false;
+            var rlce = RaiseListChangedEvents;
+            RaiseListChangedEvents = false;
+            AddRange(_list);
+            RaiseListChangedEvents = rlce;
+            IsReadOnly = true;
+        }
+        <%
+                }
             }
         }
 
@@ -180,7 +208,7 @@ if (!Info.UseCustomLoading)
     {
         if (!first2)
         {
-            Response.Write("\r\n");
+            Response.Write(Environment.NewLine);
         }
         %>
         /// <summary>
@@ -195,7 +223,8 @@ if (!Info.UseCustomLoading)
             %>
             IsReadOnly = false;
             <%
-        }%>
+        }
+        %>
             var rlce = RaiseListChangedEvents;
             RaiseListChangedEvents = false;
             <%
@@ -220,13 +249,15 @@ if (!Info.UseCustomLoading)
             <%
         }
         %>
-            RaiseListChangedEvents = rlce;<%
+            RaiseListChangedEvents = rlce;
+            <%
         if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
         {
             %>
             IsReadOnly = true;
             <%
-        }%>
+        }
+        %>
         }
     <%
     }
@@ -289,13 +320,13 @@ if (!Info.UseCustomLoading)
             }
             RaiseListChangedEvents = rlce;
             <%
-        if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
-        {
-            %>
+            if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
+            {
+                %>
             IsReadOnly = true;
             <%
-        }
-        %>
+            }
+            %>
         }
             <%
         }

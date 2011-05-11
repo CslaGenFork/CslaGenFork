@@ -1,14 +1,23 @@
 <%
 // Check there is something to update or else skip over
-if (Info.UpdateValueProperties.Count > 0) {
+if (Info.UpdateValueProperties.Count > 0)
+{
     string parentType = Info.ParentType;
-    if (parentType != string.Empty) {
+    if (parentType != string.Empty)
+    {
         CslaObjectInfo parentInfo = FindChildInfo(Info, parentType);
-        if (parentInfo.UpdaterType == string.Empty) {
+        if (parentInfo.UpdaterType == string.Empty)
+        {
             Errors.Append("No UpdaterType defined on " + parentInfo.ObjectName + "." + Environment.NewLine);
-        } else {
-        %>
-
+        }
+        else
+        {
+            if (!genOptional)
+            {
+                Response.Write(Environment.NewLine);
+            }
+            genOptional = true;
+            %>
         #region Update Properties on Saved object
 
         /// <summary>
@@ -26,15 +35,25 @@ if (Info.UpdateValueProperties.Count > 0) {
         /// </summary>
         internal void UpdatePropertiesOnSaved(<%=parentInfo.UpdaterType%> <%=FormatCamel(parentInfo.UpdaterType)%>)
         {
-        <% foreach (UpdateValueProperty prop in Info.UpdateValueProperties) { %>
+        <%
+            foreach (UpdateValueProperty prop in Info.UpdateValueProperties)
+            {
+                %>
             <%= GetFieldLoaderStatement(Info, prop, FormatCamel(parentInfo.UpdaterType) + "." + prop.SourcePropertyName) %>;
-        <% } %>
-        <% if (Info.ConvertValueProperties.Count > 0) { %>
+        <%
+            }
+            if (Info.ConvertValueProperties.Count > 0)
+            {
+                %>
             ConvertPropertiesOnRead();
-        <% } %>
+        <%
+            }
+            %>
         }
 
         #endregion
-        <% } %>
-    <% } %>
-<% } %>
+        <%
+        }
+    }
+}
+%>

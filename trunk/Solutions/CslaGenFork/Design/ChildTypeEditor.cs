@@ -36,14 +36,16 @@ namespace CslaGenerator.Design
                     _lstProperties.Items.Add("(None)");
                     foreach (var o in GeneratorController.Current.CurrentUnit.CslaObjects)
                     {
-                        // wainting to find a way to distinguish collection and non collection child properties
+                        // waiting to find a way to distinguish collection and non collection child properties
                         //if(!TypeHelper.IsCollectionType(o.ObjectType))
                         if (o.ObjectType != CslaObjectType.NameValueList)
                             _lstProperties.Items.Add(o.ObjectName);
                     }
                     _lstProperties.Sorted = true;
 
-                    // waiting to find a way to fetc the CslaObjectInfo
+                    // waiting to find a way to fetch the CslaObjectInfo
+
+                    var currentCslaObject = (CslaObjectInfo)GeneratorController.Current.GeneratorForm.ProjectPanel.ListObjects.SelectedItem;
                     /*var obj = GeneratorController.Current.CurrentUnit.CslaObjects.Find("");
                     foreach (CslaObjectInfo o in GeneratorController.Current.CurrentUnit.CslaObjects)
                     {

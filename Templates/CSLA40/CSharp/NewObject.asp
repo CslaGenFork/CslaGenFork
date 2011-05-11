@@ -1,5 +1,7 @@
 <%
-foreach (Criteria c in Info.CriteriaObjects)
+if (CurrentUnit.GenerationParams.GenerateSynchronous)
+{
+foreach (Criteria c in GetCriteriaObjects(Info))
 {
     if (c.CreateOptions.Factory ||
         Info.ObjectType == CslaObjectType.EditableRootCollection ||
@@ -24,6 +26,7 @@ foreach (Criteria c in Info.CriteriaObjects)
             Info.ObjectType == CslaObjectType.EditableChildCollection)
         {
             %>
+
         /// <summary>
         /// Factory method. Creates a new <see cref="<%=Info.ObjectName%>"/> collection.
         /// </summary>
@@ -37,10 +40,11 @@ foreach (Criteria c in Info.CriteriaObjects)
         else
         {
             %>
+
         /// <summary>
-        /// Factory method. Creates a new <see cref="<%=Info.ObjectName%>"/> object<%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
+        /// Factory method. Creates a new <see cref="<%=Info.ObjectName%>"/> <%= Info.ObjectType == CslaObjectType.UnitOfWork ? "unit of objects" : "object" %><%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
         /// </summary>
-        <%= strNewComment %>/// <returns>A reference to the created <see cref="<%=Info.ObjectName%>"/> object.</returns>
+        <%= strNewComment %>/// <returns>A reference to the created <see cref="<%=Info.ObjectName%>"/> <%= Info.ObjectType == CslaObjectType.UnitOfWork ? "unit of objects" : "object" %>.</returns>
         <%
             if (Info.ObjectType == CslaObjectType.EditableChild)
             {
@@ -61,19 +65,19 @@ foreach (Criteria c in Info.CriteriaObjects)
             if (c.Properties.Count > 1)
             {
                 %>
-            return <% if (ActiveObjects) { %>ActiveObjects.<% } %>DataPortal.Create<%= (Info.ObjectType == CslaObjectType.EditableChild && CurrentUnit.GenerationParams.UseChildDataPortal) ? "Child" : "" %><<%= Info.ObjectName %>>(new <%= c.Name %>(<%= strNewCritParams %>));
+            return <% if (ActiveObjects) { %>ActiveObjects.<% } %>DataPortal.Create<%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child" : "" %><<%= Info.ObjectName %>>(new <%= c.Name %>(<%= strNewCritParams %>));
                 <%
             }
             else if (c.Properties.Count > 0)
             {
                 %>
-            return <% if (ActiveObjects) { %>ActiveObjects.<% } %>DataPortal.Create<%= (Info.ObjectType == CslaObjectType.EditableChild && CurrentUnit.GenerationParams.UseChildDataPortal) ? "Child" : "" %><<%= Info.ObjectName %>>(<%= SendSingleCriteria(c, strNewCritParams) %>);
+            return <% if (ActiveObjects) { %>ActiveObjects.<% } %>DataPortal.Create<%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child" : "" %><<%= Info.ObjectName %>>(<%= SendSingleCriteria(c, strNewCritParams) %>);
                     <%
             }
             else
             {
                 %>
-            return <% if (ActiveObjects) { %>ActiveObjects.<% } %>DataPortal.Create<%= (Info.ObjectType == CslaObjectType.EditableChild && CurrentUnit.GenerationParams.UseChildDataPortal) ? "Child" : "" %><<%= Info.ObjectName %>>();
+            return <% if (ActiveObjects) { %>ActiveObjects.<% } %>DataPortal.Create<%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child" : "" %><<%= Info.ObjectName %>>();
                     <%
             }
             %>
@@ -81,5 +85,6 @@ foreach (Criteria c in Info.CriteriaObjects)
         <%
         }
     }
+}
 }
 %>

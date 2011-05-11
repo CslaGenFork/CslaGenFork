@@ -232,6 +232,29 @@ namespace CslaGenerator.Util
             }
         }
 
+        public static void GetUnitOfWorkPropertyContextInstanceObject(ITypeDescriptorContext context, ref object objinfo, ref Type instanceType)
+        {
+            if (context.Instance != null)
+            {
+                // check if context.Instance is UnitOfWorkPropertyBag or PropertyGrid
+                if (context.Instance is UnitOfWorkPropertyBag)
+                {
+                    var pBag = (UnitOfWorkPropertyBag)context.Instance;
+                    if (pBag.SelectedObject.Length == 1)
+                        objinfo = pBag.SelectedObject[0];
+                    else
+                        objinfo = (pBag).SelectedObject;
+                    instanceType = objinfo.GetType();
+                }
+                else
+                {
+                    // by default it is a propertygrid
+                    objinfo = context.Instance;
+                    instanceType = context.Instance.GetType();
+                }
+            }
+        }
+
         public static void GetChildPropertyContextInstanceObject(ITypeDescriptorContext context, ref object objinfo, ref Type instanceType)
         {
             if (context.Instance != null)

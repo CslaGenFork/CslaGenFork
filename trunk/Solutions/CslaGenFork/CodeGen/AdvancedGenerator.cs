@@ -128,7 +128,7 @@ namespace CslaGenerator.CodeGen
 
                     // Stored Procedures 
 
-                    if (generationParams.GenerateSprocs && info.GenerateSprocs)
+                    if (generationParams.GenerateSprocs && info.GenerateSprocs && info.ObjectType != CslaObjectType.UnitOfWork)
                     {
                         try
                         {
