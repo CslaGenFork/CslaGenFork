@@ -39,7 +39,7 @@
 				End Using
 				<!-- #include file="UpdateChildProperties.inc" -->
 				<% If Info.TransactionType = TransactionType.ADO Then %>
-				ctx.Transaction.Commit()
+				ctx.Commit()
 				<% End If 
 				If ActiveObjects Then 
 					If Info.PublishToChannel.Length > 0 Then %>
