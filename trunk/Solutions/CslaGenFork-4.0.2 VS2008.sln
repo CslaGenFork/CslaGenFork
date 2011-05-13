@@ -5,16 +5,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		OldStuff\Help.htm = OldStuff\Help.htm
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CslaGenFork", "CslaGenFork\CslaGenFork.csproj", "{117ED001-9979-478E-B8EB-1CD1CF7FA1B8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CslaGenFork", "CslaGenFork\CslaGenFork VS2008.csproj", "{117ED001-9979-478E-B8EB-1CD1CF7FA1B8}"
 	ProjectSection(ProjectDependencies) = postProject
 		{37BB723F-1BED-4356-8E76-1655F9F95BDB} = {37BB723F-1BED-4356-8E76-1655F9F95BDB}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{96877C6B-1DB8-4091-A3A4-3FDF074DBB71}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests VS2008.csproj", "{96877C6B-1DB8-4091-A3A4-3FDF074DBB71}"
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "CslaGenForkSetup", "CslaGenForkSetup\CslaGenForkSetup.vdproj", "{7100A6CC-1ECF-45D4-AB2A-94AD08AF137D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HandleCodeSmithExtension", "HandleCodeSmithExtension\HandleCodeSmithExtension.csproj", "{37BB723F-1BED-4356-8E76-1655F9F95BDB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HandleCodeSmithExtension", "HandleCodeSmithExtension\HandleCodeSmithExtension VS2008.csproj", "{37BB723F-1BED-4356-8E76-1655F9F95BDB}"
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution

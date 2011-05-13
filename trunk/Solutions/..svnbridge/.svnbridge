@@ -2,4 +2,7 @@
 </Value></Property><Property><Name>svn:ignore</Name><Value>CslaGenFork-4.0.0.5.1.ReSharper.user
 </Value></Property><Property><Name>svn:ignore</Name><Value>CslaGenFork-4.0.0.5.1.ReSharper.user
 CslaGenFork-4.0.1.5.1.ReSharper.user
+</Value></Property><Property><Name>svn:ignore</Name><Value>*.suo
+CslaGenFork-4.0.0.5.1.ReSharper.user
+CslaGenFork-4.0.1.5.1.ReSharper.user
 </Value></Property></Properties></ItemProperties>
