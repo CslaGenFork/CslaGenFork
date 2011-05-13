@@ -238,26 +238,39 @@ namespace CslaGenerator.Controls
             else
                 TabText = @"Project Properties";
 
-            if (Advanced)
+            if (UseCsla4)
             {
                 if (cboTargetDAL.Items[0].ToString() == "None")
                     cboTargetDAL.Items.RemoveAt(0);
+
+                chkActiveObjects.Checked = false;
+                chkSynchronous.Enabled = !_genParams.ForceSyncUI;
+                chkAsynchronous.Enabled = !_genParams.ForceAsyncUI;
             }
             else
             {
                 if (cboTargetDAL.Items[0].ToString() != "None")
                     cboTargetDAL.Items.Insert(0, TargetDAL.None);
+
+                chkWinForms.Checked = true;
+                chkWPF.Checked = false;
+                chkSilverlight.Checked = false;
+                chkSynchronous.Checked = true;
+                chkAsynchronous.Checked = false;
+
+                chkSynchronous.Enabled = false;
+                chkAsynchronous.Enabled = false;
             }
 
-            cboTargetDAL.Enabled = Advanced;
-            chkGenerateDAL.Enabled = Advanced;
-            chkSynchronous.Enabled = !_genParams.ForceSyncUI;
-            chkAsynchronous.Enabled = !_genParams.ForceAsyncUI;
+            cboTargetDAL.Enabled = UseDal;
+            chkGenerateDAL.Enabled = UseDal;
+            txtDALNamespace.Enabled = UseDal;
+            txtInterfaceDALNamespace.Enabled = UseDal;
 
-            txtDALNamespace.Enabled = Advanced;
-            txtInterfaceDALNamespace.Enabled = Advanced;
-
-            chkActiveObjects.Enabled = !Advanced;
+            chkWinForms.Enabled = UseCsla4;
+            chkWPF.Enabled = UseCsla4;
+            chkSilverlight.Enabled = UseCsla4;
+            chkActiveObjects.Enabled = !UseCsla4;
         }
 
         public bool IsDirty
@@ -268,11 +281,19 @@ namespace CslaGenerator.Controls
             }
         }
 
-        private bool Advanced
+        private bool UseCsla4
         {
             get
             {
-                return (_genParams.Advanced);
+                return (_genParams.UseCsla4);
+            }
+        }
+
+        private bool UseDal
+        {
+            get
+            {
+                return (_genParams.UseDal);
             }
         }
 

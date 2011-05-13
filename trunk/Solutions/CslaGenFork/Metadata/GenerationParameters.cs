@@ -18,7 +18,6 @@ namespace CslaGenerator.Metadata
         private bool _nullableSupport;
         private CodeLanguage _outputLanguage = CodeLanguage.CSharp;
         private CslaPropertyMode _propertyMode = CslaPropertyMode.Default;
-//        private bool _useChildDataPortal = true;
         private Authorization _generateAuthorization = Authorization.FullSupport;
         private HeaderVerbosity _headerVerbosity = HeaderVerbosity.Full;
         private bool _useBypassPropertyChecks;
@@ -188,19 +187,6 @@ namespace CslaGenerator.Metadata
                 OnPropertyChanged("");
             }
         }
-
-        /*public bool UseChildDataPortal
-        {
-//            get { return _useChildDataPortal; }
-            get { return true; }
-            set
-            {
-                if (_useChildDataPortal == value)
-                    return;
-                _useChildDataPortal = value;
-                OnPropertyChanged("");
-            }
-        }*/
 
         public Authorization GenerateAuthorization
         {
@@ -544,7 +530,7 @@ namespace CslaGenerator.Metadata
             if (!string.IsNullOrEmpty(propertyName))
             {
                 if (propertyName == "TargetFramework")
-                    SetAdvancedOptions();
+                    SetCsla4Options();
                 if (propertyName == "GenerateWinForms")
                     SetAsyncUIOptions();
                 if (propertyName == "GenerateWPF")
@@ -562,21 +548,26 @@ namespace CslaGenerator.Metadata
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void SetAdvancedOptions()
+        private void SetCsla4Options()
         {
-            if (_targetFramework == TargetFramework.CSLA40DAL)
+            UseCsla4 = false;
+            UseCsla4 = false;
+            _targetDAL = TargetDAL.None;
+            UseDal = false;
+            _generateDAL = false;
+
+            if (_targetFramework == TargetFramework.CSLA40 || _targetFramework == TargetFramework.CSLA40DAL)
             {
-                Advanced = true;
-                _targetDAL = TargetDAL.Simple;
+                UseCsla4 = true;
                 _activeObjects = false;
-//                _useChildDataPortal = true;
                 _useSingleCriteria = false;
             }
-            else
+
+            if (_targetFramework == TargetFramework.CSLA40DAL)
             {
-                Advanced = false;
-                _targetDAL = TargetDAL.None;
-                _generateDAL = false;
+                UseDal = true;
+                _targetDAL = TargetDAL.Simple;
+                _generateDAL = true;
             }
         }
 
@@ -604,7 +595,10 @@ namespace CslaGenerator.Metadata
         }
 
         [Browsable(false)]
-        internal bool Advanced { get; private set; }
+        internal bool UseCsla4 { get; private set; }
+
+        [Browsable(false)]
+        internal bool UseDal { get; private set; }
 
         [Browsable(false)]
         internal bool ForceSyncUI { get; private set; }
