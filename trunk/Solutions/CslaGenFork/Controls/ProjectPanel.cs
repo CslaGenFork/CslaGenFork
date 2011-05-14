@@ -271,7 +271,7 @@ namespace CslaGenerator.Controls
             AddToObjectRelationBuilder();
         }
 
-        private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
+        private void cslaObjectContextMenuStrip_Opening(object sender, CancelEventArgs e)
         {
             addToolStripMenuItem.Enabled = (_objects != null);
             deleteToolStripMenuItem.Enabled = (_objects != null && lstObjects.SelectedIndices.Count != 0);

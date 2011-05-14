@@ -97,6 +97,11 @@ namespace CslaGenerator.Controls
             get { return dbColumns1.SelectedIndices; }
         }
 
+        internal int ColumnsCount
+        {
+            get { return dbColumns1.ListColumns.Items.Count; }
+        }
+
         internal int SelectedColumnsCount
         {
             get { return dbColumns1.SelectedIndicesCount; }
@@ -385,11 +390,114 @@ namespace CslaGenerator.Controls
             dbc.LoadColumn(GeneratorController.Catalog);
         }
 
+        #region Schema Objects Context menu handlers
+
+        private void createEditableRootToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (isDBItemSelected)
+            {
+                dbColumns1.SelectAll(UseBoolSoftDelete ? _currentUnit.Params.SpBoolSoftDeleteColumn : "");
+                NewObject(CslaObjectType.EditableRoot, dbTreeView1.TreeViewSchema.SelectedNode.Text, "");
+                AddPropertiesForSelectedColumns();
+            }
+        }
+
+        private void createReadOnlyRootToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (isDBItemSelected)
+            {
+                dbColumns1.SelectAll(UseBoolSoftDelete ? _currentUnit.Params.SpBoolSoftDeleteColumn : "");
+                NewObject(CslaObjectType.ReadOnlyObject, dbTreeView1.TreeViewSchema.SelectedNode.Text, "");
+                AddPropertiesForSelectedColumns();
+            }
+        }
+
+        private void createEditableRootCollectionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!isDBItemSelected)
+                return;
+
+            dbColumns1.SelectAll(UseBoolSoftDelete ? _currentUnit.Params.SpBoolSoftDeleteColumn : "");
+            editableRootCollectionToolStripMenuItem_Click(sender, e);
+        }
+
+        private void createReadOnlyRootCollectionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!isDBItemSelected)
+                return;
+
+            dbColumns1.SelectAll(this, _currentUnit);
+            readOnlyRootCollectionToolStripMenuItem_Click(sender, e);
+        }
+
+        private void createDynamicEditableRootCollectionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!isDBItemSelected)
+                return;
+
+            dbColumns1.SelectAll(UseBoolSoftDelete ? _currentUnit.Params.SpBoolSoftDeleteColumn : "");
+            dynamicEditableRootCollectionToolStripMenuItem_Click(sender, e);
+        }
+
+        private void reloadToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            IDataBaseObject obj = currentTreeNode.Tag as IDataBaseObject;
+            if (obj != null)
+            {
+                try
+                {
+                    obj.Reload(true);
+                    dbTreeView1.LoadNode(currentTreeNode, obj);
+                    TreeNodeSelected(currentTreeNode);
+                }
+                catch (Exception ex)
+                {
+                    OutputWindow.Current.ClearOutput();
+                    OutputWindow.Current.AddOutputInfo(ex.Message, 2);
+                    //OutputWindow.Current.AddOutputInfo(ex.StackTrace, 2);
+                }
+            }
+        }
+
+        #endregion
+
         #region Context menu handlers
 
-        private void addToCslaObjectToolStripMenuItem_Click(object sender, EventArgs e)
+        private void columnsContextMenuStrip_Opening(object sender, CancelEventArgs e)
         {
-            AddPropertiesForSelectedColumns();
+            var objSelected = (_currentCslaObject != null);
+            var rowPresent = (ColumnsCount > 0);
+            var rowSelected = (SelectedColumnsCount > 0);
+            selectAllToolStripMenuItem.Enabled = rowPresent;
+            unselectAllToolStripMenuItem.Enabled = rowSelected;
+            addToCslaObjectToolStripMenuItem.Enabled = objSelected && rowSelected;
+            newCriteriaToolStripMenuItem.Enabled = objSelected && rowSelected;
+            createEditableToolStripMenuItem.Enabled = rowSelected;
+            createReadOnlyToolStripMenuItem.Enabled = rowSelected;
+            while (addInheritedValuePropertyToolStripMenuItem.DropDownItems.Count > 0)
+            {
+                ToolStripItem mnu = addInheritedValuePropertyToolStripMenuItem.DropDownItems[0];
+                mnu.Click -= addInheritedValuePropertyToolStripMenuItem_DropDownItemClicked;
+                addInheritedValuePropertyToolStripMenuItem.DropDownItems.RemoveAt(0);
+            }
+            addInheritedValuePropertyToolStripMenuItem.Enabled = false;
+            if (dbColumns1.SelectedIndicesCount != 1)
+                return;
+            if (_currentCslaObject != null)
+                foreach (ValueProperty prop in _currentCslaObject.InheritedValueProperties)
+                {
+                    ToolStripMenuItem mnu = new ToolStripMenuItem();
+                    mnu.Text = prop.Name;
+                    if (prop.DbBindColumn.ColumnOriginType == ColumnOriginType.None)
+                        mnu.Text += " (ASSIGN)";
+                    else
+                        mnu.Text += " (UPDATE)";
+                    mnu.Click += addInheritedValuePropertyToolStripMenuItem_DropDownItemClicked;
+                    mnu.Checked = (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None);
+                    mnu.Tag = prop.Name;
+                    addInheritedValuePropertyToolStripMenuItem.DropDownItems.Add(mnu);
+                }
+            addInheritedValuePropertyToolStripMenuItem.Enabled = (addInheritedValuePropertyToolStripMenuItem.DropDownItems.Count > 0);
         }
 
         private void selectAllToolStripMenuItem_Click(object sender, EventArgs e)
@@ -402,16 +510,78 @@ namespace CslaGenerator.Controls
             dbColumns1.UnSelectAll();
         }
 
-        private void readOnlyCollectionToolStripMenuItem_Click(object sender, EventArgs e)
+        private void addToCslaObjectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AddPropertiesForSelectedColumns();
+        }
+
+        private void addInheritedValuePropertyToolStripMenuItem_DropDownItemClicked(object sender, EventArgs e)
+        {
+            string name = (string)((ToolStripMenuItem)sender).Tag;
+            foreach (IColumnInfo col in SelectedColumns.Values)
+            {
+                // use name of column to see if a property of the same name exists
+                foreach (ValueProperty valProp in _currentCslaObject.InheritedValueProperties)
+                {
+                    if (valProp.Name.Equals(name))
+                    {
+                        _currentFactory.SetValuePropertyInfo(GetCurrentDBObject(), GetCurrentResultSet(), col, valProp);
+                    }
+                }
+            }
+        }
+
+        private void editableRootToolStripMenuItem_Click(object sender, EventArgs e)
         {
             NewObjectDefaults frm = NewObjectDefaults.NewReadOnlyListProperties();
             if (frm.ShowDialog() == DialogResult.OK)
             {
-                string collectionName = frm.GetPropertyValue("CollectionName");
-                string itemName = frm.GetPropertyValue("ItemName");
-                NewCollection(CslaObjectType.ReadOnlyCollection, collectionName, itemName);
-                NewObject(CslaObjectType.ReadOnlyObject, itemName, collectionName);
+                string objectName = frm.GetPropertyValue("ObjectName");
+                NewObject(CslaObjectType.EditableRoot, objectName, "");
                 AddPropertiesForSelectedColumns();
+            }
+        }
+
+        private void editableChildToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            NewObjectDefaults frm = NewObjectDefaults.NewEditableChildListProperties();
+            if (frm.ShowDialog() == DialogResult.OK)
+            {
+                string objectName = frm.GetPropertyValue("ObjectName");
+                string parentName = frm.GetPropertyValue("ParentType");
+                string propertyName = frm.GetPropertyValue("PropertyNameInParentType");
+                CslaObjectInfo parent = _currentUnit.CslaObjects.Find(parentName);
+                if (parent == null)
+                {
+                    MessageBox.Show(@"Parent type not found", @"CslaGenerator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                NewObject(CslaObjectType.EditableChild, objectName, parentName);
+                AddPropertiesForSelectedColumns();
+                ArrayList lst = new ArrayList();
+                foreach (ValueProperty p in parent.ValueProperties)
+                    if (p.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
+                        lst.Add(p);
+                foreach (Property p in lst)
+                    _currentCslaObject.ParentProperties.Add(p);
+                ChildProperty col = new ChildProperty();
+                col.TypeName = objectName;
+                if (!string.IsNullOrEmpty(propertyName))
+                    col.Name = propertyName;
+                else
+                    col.Name = objectName;
+                col.ReadOnly = true;
+                foreach (var crit in parent.CriteriaObjects)
+                {
+                    if (crit.GetOptions.Factory || crit.GetOptions.AddRemove || crit.GetOptions.DataPortal)
+                    {
+                        foreach (var prop in crit.Properties)
+                        {
+                            col.LoadParameters.Add(new Parameter(crit, prop));
+                        }
+                    }
+                }
+                parent.ChildCollectionProperties.Add(col);
             }
         }
 
@@ -428,15 +598,114 @@ namespace CslaGenerator.Controls
             }
         }
 
-        private void dynamicEditableRootCollectionToolStripMenuItem_Click(object sender, EventArgs e)
+        private void editableChildCollectionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            NewObjectDefaults frm = NewObjectDefaults.NewEditableChildListProperties();
+            if (frm.ShowDialog() == DialogResult.OK)
+            {
+                string collectionName = frm.GetPropertyValue("CollectionName");
+                string itemName = frm.GetPropertyValue("ItemName");
+                string parentName = frm.GetPropertyValue("ParentType");
+                string propertyName = frm.GetPropertyValue("PropertyNameInParentType");
+                CslaObjectInfo parent = _currentUnit.CslaObjects.Find(parentName);
+                if (parent == null)
+                {
+                    MessageBox.Show(@"Parent type not found", @"CslaGenerator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                NewCollection(CslaObjectType.EditableChildCollection, collectionName, itemName, parentName);
+                NewObject(CslaObjectType.EditableChild, itemName, collectionName);
+                AddPropertiesForSelectedColumns();
+                ArrayList lst = new ArrayList();
+                foreach (ValueProperty p in parent.ValueProperties)
+                    if (p.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
+                        lst.Add(p);
+                foreach (Property p in lst)
+                    _currentCslaObject.ParentProperties.Add(p);
+                ChildProperty col = new ChildProperty();
+                col.TypeName = collectionName;
+                if (!string.IsNullOrEmpty(propertyName))
+                    col.Name = propertyName;
+                else
+                    col.Name = collectionName;
+                col.ReadOnly = true;
+                foreach (var crit in parent.CriteriaObjects)
+                {
+                    if (crit.GetOptions.Factory || crit.GetOptions.AddRemove || crit.GetOptions.DataPortal)
+                    {
+                        foreach (var prop in crit.Properties)
+                        {
+                            col.LoadParameters.Add(new Parameter(crit, prop));
+                        }
+                    }
+                }
+                parent.ChildCollectionProperties.Add(col);
+            }
+        }
+
+        private void readOnlyRootToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            NewObjectDefaults frm = NewObjectDefaults.NewReadOnlyListProperties();
+            if (frm.ShowDialog() == DialogResult.OK)
+            {
+                string objectName = frm.GetPropertyValue("ObjectName");
+                NewObject(CslaObjectType.EditableRoot, objectName, "");
+                AddPropertiesForSelectedColumns();
+            }
+        }
+
+        private void readOnlyChildToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            NewObjectDefaults frm = NewObjectDefaults.NewEditableChildListProperties();
+            if (frm.ShowDialog() == DialogResult.OK)
+            {
+                string objectName = frm.GetPropertyValue("ObjectName");
+                string parentName = frm.GetPropertyValue("ParentType");
+                string propertyName = frm.GetPropertyValue("PropertyNameInParentType");
+                CslaObjectInfo parent = _currentUnit.CslaObjects.Find(parentName);
+                if (parent == null)
+                {
+                    MessageBox.Show(@"Parent type not found", @"CslaGenerator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                NewObject(CslaObjectType.ReadOnlyObject, objectName, parentName);
+                AddPropertiesForSelectedColumns();
+                ArrayList lst = new ArrayList();
+                foreach (ValueProperty p in parent.ValueProperties)
+                    if (p.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
+                        lst.Add(p);
+                foreach (Property p in lst)
+                    _currentCslaObject.ParentProperties.Add(p);
+                ChildProperty col = new ChildProperty();
+                col.TypeName = objectName;
+                if (!string.IsNullOrEmpty(propertyName))
+                    col.Name = propertyName;
+                else
+                    col.Name = objectName;
+                col.ReadOnly = true;
+                foreach (var crit in parent.CriteriaObjects)
+                {
+                    if (crit.GetOptions.Factory || crit.GetOptions.AddRemove || crit.GetOptions.DataPortal)
+                    {
+                        foreach (var prop in crit.Properties)
+                        {
+                            col.LoadParameters.Add(new Parameter(crit, prop));
+                        }
+                    }
+                }
+                parent.ChildCollectionProperties.Add(col);
+            }
+        }
+
+        private void readOnlyRootCollectionToolStripMenuItem_Click(object sender, EventArgs e)
         {
             NewObjectDefaults frm = NewObjectDefaults.NewReadOnlyListProperties();
             if (frm.ShowDialog() == DialogResult.OK)
             {
                 string collectionName = frm.GetPropertyValue("CollectionName");
                 string itemName = frm.GetPropertyValue("ItemName");
-                NewCollection(CslaObjectType.DynamicEditableRootCollection, collectionName, itemName);
-                NewObject(CslaObjectType.DynamicEditableRoot, itemName, collectionName);
+                NewCollection(CslaObjectType.ReadOnlyCollection, collectionName, itemName);
+                NewObject(CslaObjectType.ReadOnlyObject, itemName, collectionName);
                 AddPropertiesForSelectedColumns();
             }
         }
@@ -486,146 +755,45 @@ namespace CslaGenerator.Controls
             }
         }
 
-        private void editableChildCollectionToolStripMenuItem_Click(object sender, EventArgs e)
+        private void nameValueListToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            NewObjectDefaults frm = NewObjectDefaults.NewEditableChildListProperties();
+            IColumnInfo pkColumn = null;
+            IColumnInfo valueColumn = null;
+            foreach (IColumnInfo info in dbColumns1.ListColumns.SelectedItems)
+            {
+                if (info.IsPrimaryKey)
+                    pkColumn = info;
+                else
+                    valueColumn = info;
+            }
+            if (pkColumn != null && valueColumn != null && dbColumns1.ListColumns.SelectedItems.Count == 2)
+            {
+                NewObjectDefaults frm = NewObjectDefaults.NewNVLProperties();
+
+                if (frm.ShowDialog() == DialogResult.OK)
+                {
+                    string collectionName = frm.GetPropertyValue("CollectionName");
+                    NewNVL(collectionName);
+                    AddPropertiesForSelectedColumns();
+                    _currentCslaObject.NameColumn = valueColumn.ColumnName;
+                    _currentCslaObject.ValueColumn = pkColumn.ColumnName;
+                }
+            }
+            else
+                MessageBox.Show(@"You must select a PK column and a non PK column in order to automatically create a name value list. If you need to create a NVL and can't meet this requirement, create a new object manually through the toolbar.", "New NVL", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+        private void dynamicEditableRootCollectionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            NewObjectDefaults frm = NewObjectDefaults.NewReadOnlyListProperties();
             if (frm.ShowDialog() == DialogResult.OK)
             {
                 string collectionName = frm.GetPropertyValue("CollectionName");
                 string itemName = frm.GetPropertyValue("ItemName");
-                string parentName = frm.GetPropertyValue("ParentType");
-                string propertyName = frm.GetPropertyValue("PropertyNameInParentType");
-                CslaObjectInfo parent = _currentUnit.CslaObjects.Find(parentName);
-                if (parent == null)
-                {
-                    MessageBox.Show(@"Parent type not found", @"CslaGenerator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-                NewCollection(CslaObjectType.EditableChildCollection, collectionName, itemName, parentName);
-                NewObject(CslaObjectType.EditableChild, itemName, collectionName);
-                AddPropertiesForSelectedColumns();
-                ArrayList lst = new ArrayList();
-                foreach (ValueProperty p in parent.ValueProperties)
-                    if (p.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
-                        lst.Add(p);
-                foreach (Property p in lst)
-                    _currentCslaObject.ParentProperties.Add(p);
-                ChildProperty col = new ChildProperty();
-                col.TypeName = collectionName;
-                if (!string.IsNullOrEmpty(propertyName))
-                    col.Name = propertyName;
-                else
-                    col.Name = collectionName;
-                col.ReadOnly = true;
-                foreach (var crit in parent.CriteriaObjects)
-                {
-                    if (crit.GetOptions.Factory || crit.GetOptions.AddRemove || crit.GetOptions.DataPortal)
-                    {
-                        foreach (var prop in crit.Properties)
-                        {
-                            col.LoadParameters.Add(new Parameter(crit, prop));
-                        }
-                    }
-                }
-                parent.ChildCollectionProperties.Add(col);
-            }
-        }
-
-        private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
-        {
-            bool objSelected = (_currentCslaObject != null);
-            addToCslaObjectToolStripMenuItem.Enabled = objSelected;
-            newCriteriaToolStripMenuItem.Enabled = objSelected;
-            editableChildCollectionToolStripMenuItem.Enabled = objSelected;
-            while (addInheritedValuePropertyToolStripMenuItem.DropDownItems.Count > 0)
-            {
-                ToolStripItem mnu = addInheritedValuePropertyToolStripMenuItem.DropDownItems[0];
-                mnu.Click -= addInheritedValuePropertyToolStripMenuItem_DropDownItemClicked;
-                addInheritedValuePropertyToolStripMenuItem.DropDownItems.RemoveAt(0);
-            }
-            addInheritedValuePropertyToolStripMenuItem.Enabled = false;
-            if (dbColumns1.SelectedIndicesCount != 1)
-                return;
-            foreach (ValueProperty prop in _currentCslaObject.InheritedValueProperties)
-            {
-                ToolStripMenuItem mnu = new ToolStripMenuItem();
-                mnu.Text = prop.Name;
-                if (prop.DbBindColumn.ColumnOriginType == ColumnOriginType.None)
-                    mnu.Text += " (ASSIGN)";
-                else
-                    mnu.Text += " (UPDATE)";
-                mnu.Click += addInheritedValuePropertyToolStripMenuItem_DropDownItemClicked;
-                mnu.Checked = (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None);
-                mnu.Tag = prop.Name;
-                addInheritedValuePropertyToolStripMenuItem.DropDownItems.Add(mnu);
-            }
-            addInheritedValuePropertyToolStripMenuItem.Enabled = (addInheritedValuePropertyToolStripMenuItem.DropDownItems.Count > 0);
-            bool enableCreates = (dbColumns1.ListColumns.SelectedIndices.Count > 0);
-            createToolStripMenuItem.Enabled = enableCreates;
-            newCriteriaToolStripMenuItem.Enabled = enableCreates;
-        }
-
-        private void addInheritedValuePropertyToolStripMenuItem_DropDownItemClicked(object sender, EventArgs e)
-        {
-            string name = (string)((ToolStripMenuItem)sender).Tag;
-            foreach (IColumnInfo col in SelectedColumns.Values)
-            {
-                // use name of column to see if a property of the same name exists
-                foreach (ValueProperty valProp in _currentCslaObject.InheritedValueProperties)
-                {
-                    if (valProp.Name.Equals(name))
-                    {
-                        _currentFactory.SetValuePropertyInfo(GetCurrentDBObject(), GetCurrentResultSet(), col, valProp);
-                    }
-                }
-            }
-        }
-
-        private void createEditableRootToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (isDBItemSelected)
-            {
-                dbColumns1.SelectAll(UseBoolSoftDelete ? _currentUnit.Params.SpBoolSoftDeleteColumn : "");
-                NewObject(CslaObjectType.EditableRoot, dbTreeView1.TreeViewSchema.SelectedNode.Text, "");
+                NewCollection(CslaObjectType.DynamicEditableRootCollection, collectionName, itemName);
+                NewObject(CslaObjectType.DynamicEditableRoot, itemName, collectionName);
                 AddPropertiesForSelectedColumns();
             }
-        }
-
-        private void createDynamicEditableRootToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (isDBItemSelected)
-            {
-                dbColumns1.SelectAll(UseBoolSoftDelete ? _currentUnit.Params.SpBoolSoftDeleteColumn : "");
-                NewObject(CslaObjectType.DynamicEditableRoot, dbTreeView1.TreeViewSchema.SelectedNode.Text, "");
-                AddPropertiesForSelectedColumns();
-            }
-        }
-
-        private void createReadonlyCollectionToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (!isDBItemSelected)
-                return;
-
-            dbColumns1.SelectAll(this, _currentUnit);
-            readOnlyCollectionToolStripMenuItem_Click(sender, e);
-        }
-
-        private void createEditableRootCollectionToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (!isDBItemSelected)
-                return;
-
-            dbColumns1.SelectAll(UseBoolSoftDelete ? _currentUnit.Params.SpBoolSoftDeleteColumn : "");
-            editableRootCollectionToolStripMenuItem_Click(sender, e);
-        }
-
-        private void createDynamicEditableRootCollectionToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (!isDBItemSelected)
-                return;
-
-            dbColumns1.SelectAll(UseBoolSoftDelete ? _currentUnit.Params.SpBoolSoftDeleteColumn : "");
-            dynamicEditableRootCollectionToolStripMenuItem_Click(sender, e);
         }
 
         private void newCriteriaToolStripMenuItem_Click(object sender, EventArgs e)
@@ -666,34 +834,6 @@ namespace CslaGenerator.Controls
             frm.StartPosition = FormStartPosition.CenterScreen;
             if (frm.ShowDialog() == DialogResult.OK)
                 _currentCslaObject.CriteriaObjects.Add(c);
-        }
-
-        private void nameValueListToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            IColumnInfo pkColumn = null;
-            IColumnInfo valueColumn = null;
-            foreach (IColumnInfo info in dbColumns1.ListColumns.SelectedItems)
-            {
-                if (info.IsPrimaryKey)
-                    pkColumn = info;
-                else
-                    valueColumn = info;
-            }
-            if (pkColumn != null && valueColumn != null && dbColumns1.ListColumns.SelectedItems.Count == 2)
-            {
-                NewObjectDefaults frm = NewObjectDefaults.NewNVLProperties();
-
-                if (frm.ShowDialog() == DialogResult.OK)
-                {
-                    string collectionName = frm.GetPropertyValue("CollectionName");
-                    NewNVL(collectionName);
-                    AddPropertiesForSelectedColumns();
-                    _currentCslaObject.NameColumn = valueColumn.ColumnName;
-                    _currentCslaObject.ValueColumn = pkColumn.ColumnName;
-                }
-            }
-            else
-                MessageBox.Show(@"You must select a PK column and a non PK column in order to automatically create a name value list. If you need to create a NVL and can't meet this requirement, create a new object manually through the toolbar.", "New NVL", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         #endregion
@@ -790,24 +930,5 @@ namespace CslaGenerator.Controls
             return GetCurrentResultSet() as IDataBaseObject;
         }
 
-        private void reloadToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            IDataBaseObject obj = currentTreeNode.Tag as IDataBaseObject;
-            if (obj != null)
-            {
-                try
-                {
-                    obj.Reload(true);
-                    dbTreeView1.LoadNode(currentTreeNode, obj);
-                    TreeNodeSelected(currentTreeNode);
-                }
-                catch (Exception ex)
-                {
-                    OutputWindow.Current.ClearOutput();
-                    OutputWindow.Current.AddOutputInfo(ex.Message, 2);
-                    //OutputWindow.Current.AddOutputInfo(ex.StackTrace, 2);
-                }
-            }
-        }
     }
 }
