@@ -36,7 +36,7 @@ namespace CslaGenerator.Controls
             this.textboxPlusBtn = new CslaGenerator.Controls.TextboxPlusBtn();
             this.pnlLstObjects = new System.Windows.Forms.Panel();
             this.lstObjects = new System.Windows.Forms.ListBox();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.cslaObjectContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.duplicateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -61,7 +61,7 @@ namespace CslaGenerator.Controls
             this.pnlProjectName.SuspendLayout();
             this.pnlOutputDir.SuspendLayout();
             this.pnlLstObjects.SuspendLayout();
-            this.contextMenuStrip1.SuspendLayout();
+            this.cslaObjectContextMenuStrip.SuspendLayout();
             this.grpFilters.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -116,7 +116,7 @@ namespace CslaGenerator.Controls
             // lstObjects
             // 
             this.lstObjects.BackColor = System.Drawing.SystemColors.Window;
-            this.lstObjects.ContextMenuStrip = this.contextMenuStrip1;
+            this.lstObjects.ContextMenuStrip = this.cslaObjectContextMenuStrip;
             this.lstObjects.DisplayMember = "ObjectName";
             this.lstObjects.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lstObjects.IntegralHeight = false;
@@ -129,9 +129,9 @@ namespace CslaGenerator.Controls
             this.lstObjects.SelectedIndexChanged += new System.EventHandler(this.ListObjects_SelectedIndexChanged);
             this.lstObjects.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lstObjects_KeyDown);
             // 
-            // contextMenuStrip1
+            // cslaObjectContextMenuStrip
             // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cslaObjectContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addToolStripMenuItem,
             this.deleteToolStripMenuItem,
             this.duplicateToolStripMenuItem,
@@ -141,9 +141,9 @@ namespace CslaGenerator.Controls
             this.toolStripMenuItem2,
             this.newObjectRelationToolStripMenuItem,
             this.addToObjectRelationToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(224, 170);
-            this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
+            this.cslaObjectContextMenuStrip.Name = "cslaObjectContextMenuStrip";
+            this.cslaObjectContextMenuStrip.Size = new System.Drawing.Size(224, 170);
+            this.cslaObjectContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.cslaObjectContextMenuStrip_Opening);
             // 
             // addToolStripMenuItem
             // 
@@ -361,7 +361,7 @@ namespace CslaGenerator.Controls
             this.pnlProjectName.PerformLayout();
             this.pnlOutputDir.ResumeLayout(false);
             this.pnlLstObjects.ResumeLayout(false);
-            this.contextMenuStrip1.ResumeLayout(false);
+            this.cslaObjectContextMenuStrip.ResumeLayout(false);
             this.grpFilters.ResumeLayout(false);
             this.grpFilters.PerformLayout();
             this.ResumeLayout(false);
@@ -384,7 +384,7 @@ namespace CslaGenerator.Controls
         private CslaGenerator.Controls.TextboxPlusBtn textboxPlusBtn;
         private System.Windows.Forms.Panel pnlLstObjects;
         private System.Windows.Forms.ListBox lstObjects;
-        private ContextMenuStrip contextMenuStrip1;
+        private ContextMenuStrip cslaObjectContextMenuStrip;
         private ToolStripMenuItem addToolStripMenuItem;
         private ToolStripMenuItem deleteToolStripMenuItem;
         private ToolStripMenuItem duplicateToolStripMenuItem;

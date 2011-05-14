@@ -1,4 +1,5 @@
 ﻿using System.Windows.Forms;
+
 namespace CslaGenerator.Controls
 {
     partial class DbSchemaPanel
@@ -33,33 +34,39 @@ namespace CslaGenerator.Controls
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DbSchemaPanel));
             this.splitMiddle = new System.Windows.Forms.Splitter();
             this.schemaImages = new System.Windows.Forms.ImageList(this.components);
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.addToCslaObjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.columnsContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.unselectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addToCslaObjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addInheritedValuePropertyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.createToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.createEditableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.editableRootToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.editableRootCollectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.editableChildToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.editableChildCollectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dynamicEditableRootCollectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.createReadOnlyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.readOnlyRootToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.readOnlyChildToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.readOnlyRootCollectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.readOnlyChildCollectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.editableRootCollectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.editableChildCollectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.nameValueListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newCriteriaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.dbContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.schemaContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.createEditableRootToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.createDynamicEditableRootToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-            this.createReadonlyCollectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.createReadOnlyRootToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.createEditableRootCollectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.createReadOnlyRootCollectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.createDynamicEditableRootCollectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.reloadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dbColumns1 = new CslaGenerator.Controls.DbColumns();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.copySoftDeleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dbTreeView1 = new CslaGenerator.Controls.DbTreeView();
             this.paneDbName = new CslaGenerator.Controls.PaneCaption();
-            this.reloadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.copySoftDeleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.contextMenuStrip1.SuspendLayout();
-            this.dbContextMenuStrip.SuspendLayout();
+            this.columnsContextMenuStrip.SuspendLayout();
+            this.schemaContextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitMiddle
@@ -86,24 +93,26 @@ namespace CslaGenerator.Controls
             this.schemaImages.Images.SetKeyName(8, "8.png");
             this.schemaImages.Images.SetKeyName(9, "9.png");
             // 
-            // contextMenuStrip1
+            // columnsContextMenuStrip
             // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.addToCslaObjectToolStripMenuItem,
+            this.columnsContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.selectAllToolStripMenuItem,
             this.unselectAllToolStripMenuItem,
+            this.addToCslaObjectToolStripMenuItem,
             this.addInheritedValuePropertyToolStripMenuItem,
-            this.createToolStripMenuItem,
+            this.createEditableToolStripMenuItem,
+            this.createReadOnlyToolStripMenuItem,
+            this.createDynamicEditableRootCollectionToolStripMenuItem,
             this.newCriteriaToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(226, 136);
-            this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
+            this.columnsContextMenuStrip.Name = "columnsContextMenuStrip";
+            this.columnsContextMenuStrip.Size = new System.Drawing.Size(226, 136);
+            this.columnsContextMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.columnsContextMenuStrip_Opening);
             // 
             // addToCslaObjectToolStripMenuItem
             // 
             this.addToCslaObjectToolStripMenuItem.Name = "addToCslaObjectToolStripMenuItem";
             this.addToCslaObjectToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
-            this.addToCslaObjectToolStripMenuItem.Text = "&Add To CSLA Object";
+            this.addToCslaObjectToolStripMenuItem.Text = "&Add to CSLA Object";
             this.addToCslaObjectToolStripMenuItem.Click += new System.EventHandler(this.addToCslaObjectToolStripMenuItem_Click);
             // 
             // selectAllToolStripMenuItem
@@ -127,31 +136,31 @@ namespace CslaGenerator.Controls
             this.addInheritedValuePropertyToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
             this.addInheritedValuePropertyToolStripMenuItem.Text = "Add Inherited Value Property";
             // 
-            // createToolStripMenuItem
+            // createEditableToolStripMenuItem
             // 
-            this.createToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.readOnlyRootCollectionToolStripMenuItem,
-            this.readOnlyChildCollectionToolStripMenuItem,
+            this.createEditableToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.editableRootToolStripMenuItem,
+            this.editableChildToolStripMenuItem,
             this.editableRootCollectionToolStripMenuItem,
             this.editableChildCollectionToolStripMenuItem,
-            this.nameValueListToolStripMenuItem});
-            this.createToolStripMenuItem.Name = "createToolStripMenuItem";
-            this.createToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
-            this.createToolStripMenuItem.Text = "&Create";
+            this.dynamicEditableRootCollectionToolStripMenuItem});
+            this.createEditableToolStripMenuItem.Name = "createEditableToolStripMenuItem";
+            this.createEditableToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
+            this.createEditableToolStripMenuItem.Text = "&Create Editable";
             // 
-            // readOnlyRootCollectionToolStripMenuItem
+            // editableRootToolStripMenuItem
             // 
-            this.readOnlyRootCollectionToolStripMenuItem.Name = "readOnlyRootCollectionToolStripMenuItem";
-            this.readOnlyRootCollectionToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
-            this.readOnlyRootCollectionToolStripMenuItem.Text = "&Read Only Root Collection";
-            this.readOnlyRootCollectionToolStripMenuItem.Click += new System.EventHandler(this.readOnlyCollectionToolStripMenuItem_Click);
+            this.editableRootToolStripMenuItem.Name = "editableRootToolStripMenuItem";
+            this.editableRootToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.editableRootToolStripMenuItem.Text = "&Editable Root";
+            this.editableRootToolStripMenuItem.Click += new System.EventHandler(this.editableRootToolStripMenuItem_Click);
             // 
-            // readOnlyChildCollectionToolStripMenuItem
+            // editableChildToolStripMenuItem
             // 
-            this.readOnlyChildCollectionToolStripMenuItem.Name = "readOnlyChildCollectionToolStripMenuItem";
-            this.readOnlyChildCollectionToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
-            this.readOnlyChildCollectionToolStripMenuItem.Text = "Read Only &Child Collection";
-            this.readOnlyChildCollectionToolStripMenuItem.Click += new System.EventHandler(this.readOnlyChildCollectionToolStripMenuItem_Click);
+            this.editableChildToolStripMenuItem.Name = "editableChildToolStripMenuItem";
+            this.editableChildToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.editableChildToolStripMenuItem.Text = "Editable C&hild";
+            this.editableChildToolStripMenuItem.Click += new System.EventHandler(this.editableChildToolStripMenuItem_Click);
             // 
             // editableRootCollectionToolStripMenuItem
             // 
@@ -167,11 +176,58 @@ namespace CslaGenerator.Controls
             this.editableChildCollectionToolStripMenuItem.Text = "Editable C&hild Collection";
             this.editableChildCollectionToolStripMenuItem.Click += new System.EventHandler(this.editableChildCollectionToolStripMenuItem_Click);
             // 
+            // dynamicEditableRootCollectionToolStripMenuItem
+            // 
+            this.dynamicEditableRootCollectionToolStripMenuItem.Name = "dynamicEditableRootCollectionToolStripMenuItem";
+            this.dynamicEditableRootCollectionToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.dynamicEditableRootCollectionToolStripMenuItem.Text = "Dynamic Editable Root &Collection";
+            this.dynamicEditableRootCollectionToolStripMenuItem.Click += new System.EventHandler(this.dynamicEditableRootCollectionToolStripMenuItem_Click);
+            // 
+            // createReadOnlyToolStripMenuItem
+            // 
+            this.createReadOnlyToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.readOnlyRootToolStripMenuItem,
+            this.readOnlyChildToolStripMenuItem,
+            this.readOnlyRootCollectionToolStripMenuItem,
+            this.readOnlyChildCollectionToolStripMenuItem,
+            this.nameValueListToolStripMenuItem});
+            this.createReadOnlyToolStripMenuItem.Name = "createReadOnlyToolStripMenuItem";
+            this.createReadOnlyToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
+            this.createReadOnlyToolStripMenuItem.Text = "&Create Read Only";
+            // 
+            // readOnlyRootToolStripMenuItem
+            // 
+            this.readOnlyRootToolStripMenuItem.Name = "readOnlyRootToolStripMenuItem";
+            this.readOnlyRootToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.readOnlyRootToolStripMenuItem.Text = "&Read Only Root";
+            this.readOnlyRootToolStripMenuItem.Click += new System.EventHandler(this.readOnlyRootToolStripMenuItem_Click);
+            // 
+            // readOnlyChildToolStripMenuItem
+            // 
+            this.readOnlyChildToolStripMenuItem.Name = "readOnlyChildToolStripMenuItem";
+            this.readOnlyChildToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.readOnlyChildToolStripMenuItem.Text = "&Read Only Child";
+            this.readOnlyChildToolStripMenuItem.Click += new System.EventHandler(this.readOnlyChildToolStripMenuItem_Click);
+            // 
+            // readOnlyRootCollectionToolStripMenuItem
+            // 
+            this.readOnlyRootCollectionToolStripMenuItem.Name = "readOnlyRootCollectionToolStripMenuItem";
+            this.readOnlyRootCollectionToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.readOnlyRootCollectionToolStripMenuItem.Text = "&Read Only Root Collection";
+            this.readOnlyRootCollectionToolStripMenuItem.Click += new System.EventHandler(this.readOnlyRootCollectionToolStripMenuItem_Click);
+            // 
+            // readOnlyChildCollectionToolStripMenuItem
+            // 
+            this.readOnlyChildCollectionToolStripMenuItem.Name = "readOnlyChildCollectionToolStripMenuItem";
+            this.readOnlyChildCollectionToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
+            this.readOnlyChildCollectionToolStripMenuItem.Text = "Read Only &Child Collection";
+            this.readOnlyChildCollectionToolStripMenuItem.Click += new System.EventHandler(this.readOnlyChildCollectionToolStripMenuItem_Click);
+            // 
             // nameValueListToolStripMenuItem
             // 
             this.nameValueListToolStripMenuItem.Name = "nameValueListToolStripMenuItem";
             this.nameValueListToolStripMenuItem.Size = new System.Drawing.Size(198, 22);
-            this.nameValueListToolStripMenuItem.Text = "Name Value List";
+            this.nameValueListToolStripMenuItem.Text = "Name &Value List";
             this.nameValueListToolStripMenuItem.Click += new System.EventHandler(this.nameValueListToolStripMenuItem_Click);
             // 
             // newCriteriaToolStripMenuItem
@@ -181,20 +237,20 @@ namespace CslaGenerator.Controls
             this.newCriteriaToolStripMenuItem.Text = "New Criteria";
             this.newCriteriaToolStripMenuItem.Click += new System.EventHandler(this.newCriteriaToolStripMenuItem_Click);
             // 
-            // dbContextMenuStrip
+            // schemaContextMenuStrip
             // 
-            this.dbContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.schemaContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.createEditableRootToolStripMenuItem,
-            this.createDynamicEditableRootToolStripMenuItem,
-            this.createReadonlyCollectionToolStripMenuItem,
+            this.createReadOnlyRootToolStripMenuItem,
             this.createEditableRootCollectionToolStripMenuItem,
+            this.createReadOnlyRootCollectionToolStripMenuItem,
             this.createDynamicEditableRootCollectionToolStripMenuItem,
-            this.toolStripMenuItem1,
-            this.reloadToolStripMenuItem,
             this.toolStripSeparator1,
+            this.reloadToolStripMenuItem,
+            this.toolStripSeparator2,
             this.copySoftDeleteToolStripMenuItem});
-            this.dbContextMenuStrip.Name = "dbContextMenuStrip";
-            this.dbContextMenuStrip.Size = new System.Drawing.Size(226, 192);
+            this.schemaContextMenuStrip.Name = "schemaContextMenuStrip";
+            this.schemaContextMenuStrip.Size = new System.Drawing.Size(226, 192);
             // 
             // createEditableRootToolStripMenuItem
             // 
@@ -203,24 +259,17 @@ namespace CslaGenerator.Controls
             this.createEditableRootToolStripMenuItem.Text = "Create Editable Root";
             this.createEditableRootToolStripMenuItem.Click += new System.EventHandler(this.createEditableRootToolStripMenuItem_Click);
             // 
-            // createDynamicEditableRootToolStripMenuItem
+            // createReadOnlyRootToolStripMenuItem
             // 
-            this.createDynamicEditableRootToolStripMenuItem.Name = "createDynamicEditableRootToolStripMenuItem";
-            this.createDynamicEditableRootToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
-            this.createDynamicEditableRootToolStripMenuItem.Text = "Create Dynamic Root";
-            this.createDynamicEditableRootToolStripMenuItem.Click += new System.EventHandler(this.createDynamicEditableRootToolStripMenuItem_Click);
+            this.createReadOnlyRootToolStripMenuItem.Name = "createReadOnlyRootToolStripMenuItem";
+            this.createReadOnlyRootToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.createReadOnlyRootToolStripMenuItem.Text = "Create Read Only Root";
+            this.createReadOnlyRootToolStripMenuItem.Click += new System.EventHandler(this.createReadOnlyRootToolStripMenuItem_Click);
             // 
-            // toolStripMenuItem1
+            // toolStripSeparator1
             // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(231, 6);
-            // 
-            // createReadonlyCollectionToolStripMenuItem
-            // 
-            this.createReadonlyCollectionToolStripMenuItem.Name = "createReadonlyCollectionToolStripMenuItem";
-            this.createReadonlyCollectionToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
-            this.createReadonlyCollectionToolStripMenuItem.Text = "Create Read Only Collection";
-            this.createReadonlyCollectionToolStripMenuItem.Click += new System.EventHandler(this.createReadonlyCollectionToolStripMenuItem_Click);
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(231, 6);
             // 
             // createEditableRootCollectionToolStripMenuItem
             // 
@@ -229,17 +278,24 @@ namespace CslaGenerator.Controls
             this.createEditableRootCollectionToolStripMenuItem.Text = "Create Editable Root Collection";
             this.createEditableRootCollectionToolStripMenuItem.Click += new System.EventHandler(this.createEditableRootCollectionToolStripMenuItem_Click);
             // 
+            // createReadOnlyRootCollectionToolStripMenuItem
+            // 
+            this.createReadOnlyRootCollectionToolStripMenuItem.Name = "createReadOnlyRootCollectionToolStripMenuItem";
+            this.createReadOnlyRootCollectionToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
+            this.createReadOnlyRootCollectionToolStripMenuItem.Text = "Create Read Only Root Collection";
+            this.createReadOnlyRootCollectionToolStripMenuItem.Click += new System.EventHandler(this.createReadOnlyRootCollectionToolStripMenuItem_Click);
+            // 
             // createDynamicEditableRootCollectionToolStripMenuItem
             // 
             this.createDynamicEditableRootCollectionToolStripMenuItem.Name = "createDynamicEditableRootCollectionToolStripMenuItem";
             this.createDynamicEditableRootCollectionToolStripMenuItem.Size = new System.Drawing.Size(234, 22);
-            this.createDynamicEditableRootCollectionToolStripMenuItem.Text = "Create Dynamic Root Collection";
+            this.createDynamicEditableRootCollectionToolStripMenuItem.Text = "Create Dynamic Editable Root Collection";
             this.createDynamicEditableRootCollectionToolStripMenuItem.Click += new System.EventHandler(this.createDynamicEditableRootCollectionToolStripMenuItem_Click);
             // 
             // dbColumns1
             // 
             this.dbColumns1.BackColor = System.Drawing.SystemColors.Control;
-            this.dbColumns1.ContextMenuStrip = this.contextMenuStrip1;
+            this.dbColumns1.ContextMenuStrip = this.columnsContextMenuStrip;
             this.dbColumns1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dbColumns1.Location = new System.Drawing.Point(174, 26);
             this.dbColumns1.Name = "dbColumns1";
@@ -248,7 +304,7 @@ namespace CslaGenerator.Controls
             // 
             // dbTreeView1
             // 
-            this.dbTreeView1.ContextMenuStrip = this.dbContextMenuStrip;
+            this.dbTreeView1.ContextMenuStrip = this.schemaContextMenuStrip;
             this.dbTreeView1.Dock = System.Windows.Forms.DockStyle.Left;
             this.dbTreeView1.Location = new System.Drawing.Point(0, 26);
             this.dbTreeView1.Name = "dbTreeView1";
@@ -276,10 +332,10 @@ namespace CslaGenerator.Controls
             this.reloadToolStripMenuItem.Text = "Reload";
             this.reloadToolStripMenuItem.Click += new System.EventHandler(this.reloadToolStripMenuItem_Click);
             // 
-            // toolStripSeparator1
+            // toolStripSeparator2
             // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(222, 6);
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(222, 6);
             // 
             // copySoftDeleteToolStripMenuItem
             // 
@@ -299,8 +355,8 @@ namespace CslaGenerator.Controls
             this.Size = new System.Drawing.Size(384, 472);
             this.Load += new System.EventHandler(this.DbSchemaPanel_Load);
             this.Resize += new System.EventHandler(this.DbSchemaPanel_Resize);
-            this.contextMenuStrip1.ResumeLayout(false);
-            this.dbContextMenuStrip.ResumeLayout(false);
+            this.columnsContextMenuStrip.ResumeLayout(false);
+            this.schemaContextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -312,29 +368,34 @@ namespace CslaGenerator.Controls
         private CslaGenerator.Controls.DbColumns dbColumns1;
         private CslaGenerator.Controls.PaneCaption paneDbName;
         internal System.Windows.Forms.ImageList schemaImages;
-        private ContextMenuStrip contextMenuStrip1;
-        private ToolStripMenuItem addToCslaObjectToolStripMenuItem;
+        private ContextMenuStrip columnsContextMenuStrip;
         private ToolStripMenuItem selectAllToolStripMenuItem;
         private ToolStripMenuItem unselectAllToolStripMenuItem;
+        private ToolStripMenuItem addToCslaObjectToolStripMenuItem;
         private ToolStripMenuItem addInheritedValuePropertyToolStripMenuItem;
-        private ToolStripMenuItem createToolStripMenuItem;
+        private ToolStripMenuItem createEditableToolStripMenuItem;
+        private ToolStripMenuItem editableRootToolStripMenuItem;
+        private ToolStripMenuItem editableRootCollectionToolStripMenuItem;
+        private ToolStripMenuItem editableChildToolStripMenuItem;
+        private ToolStripMenuItem editableChildCollectionToolStripMenuItem;
+        private ToolStripMenuItem dynamicEditableRootCollectionToolStripMenuItem;
+        private ToolStripMenuItem createReadOnlyToolStripMenuItem;
+        private ToolStripMenuItem readOnlyRootToolStripMenuItem;
+        private ToolStripMenuItem readOnlyChildToolStripMenuItem;
         private ToolStripMenuItem readOnlyRootCollectionToolStripMenuItem;
         private ToolStripMenuItem readOnlyChildCollectionToolStripMenuItem;
-        private ToolStripMenuItem editableRootCollectionToolStripMenuItem;
-        private ToolStripMenuItem editableChildCollectionToolStripMenuItem;
-        private ContextMenuStrip dbContextMenuStrip;
-        private ToolStripMenuItem createEditableRootToolStripMenuItem;
-        private ToolStripMenuItem createDynamicEditableRootToolStripMenuItem;
-        private ToolStripSeparator toolStripMenuItem1;
-        private ToolStripMenuItem createReadonlyCollectionToolStripMenuItem;
-        private ToolStripMenuItem createEditableRootCollectionToolStripMenuItem;
-        private ToolStripMenuItem createDynamicEditableRootCollectionToolStripMenuItem;
-        private ToolStripMenuItem newCriteriaToolStripMenuItem;
         private ToolStripMenuItem nameValueListToolStripMenuItem;
-        private ToolStripMenuItem reloadToolStripMenuItem;
+        private ToolStripMenuItem newCriteriaToolStripMenuItem;
+        private ContextMenuStrip schemaContextMenuStrip;
+        private ToolStripMenuItem createEditableRootToolStripMenuItem;
+        private ToolStripMenuItem createReadOnlyRootToolStripMenuItem;
+        private ToolStripMenuItem createEditableRootCollectionToolStripMenuItem;
+        private ToolStripMenuItem createReadOnlyRootCollectionToolStripMenuItem;
+        private ToolStripMenuItem createDynamicEditableRootCollectionToolStripMenuItem;
         private ToolStripSeparator toolStripSeparator1;
+        private ToolStripMenuItem reloadToolStripMenuItem;
+        private ToolStripSeparator toolStripSeparator2;
         private ToolStripMenuItem copySoftDeleteToolStripMenuItem;
-	
     
     }
 }
