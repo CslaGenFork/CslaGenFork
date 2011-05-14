@@ -441,9 +441,54 @@ namespace CslaGenerator.Controls
             }
         }
 
+        private void readOnlyChildCollectionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            NewObjectDefaults frm = NewObjectDefaults.NewReadOnlyChildListProperties();
+            if (frm.ShowDialog() == DialogResult.OK)
+            {
+                string collectionName = frm.GetPropertyValue("CollectionName");
+                string itemName = frm.GetPropertyValue("ItemName");
+                string parentName = frm.GetPropertyValue("ParentType");
+                string propertyName = frm.GetPropertyValue("PropertyNameInParentType");
+                CslaObjectInfo parent = _currentUnit.CslaObjects.Find(parentName);
+                if (parent == null)
+                {
+                    MessageBox.Show(@"Parent type not found", @"CslaGenerator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                NewCollection(CslaObjectType.ReadOnlyCollection, collectionName, itemName, parentName);
+                NewObject(CslaObjectType.ReadOnlyObject, itemName, collectionName);
+                AddPropertiesForSelectedColumns();
+                ArrayList lst = new ArrayList();
+                foreach (ValueProperty p in parent.ValueProperties)
+                    if (p.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
+                        lst.Add(p);
+                foreach (Property p in lst)
+                    _currentCslaObject.ParentProperties.Add(p);
+                ChildProperty col = new ChildProperty();
+                col.TypeName = collectionName;
+                if (!string.IsNullOrEmpty(propertyName))
+                    col.Name = propertyName;
+                else
+                    col.Name = collectionName;
+                col.ReadOnly = true;
+                foreach (var crit in parent.CriteriaObjects)
+                {
+                    if (crit.GetOptions.Factory || crit.GetOptions.AddRemove || crit.GetOptions.DataPortal)
+                    {
+                        foreach (var prop in crit.Properties)
+                        {
+                            col.LoadParameters.Add(new Parameter(crit, prop));
+                        }
+                    }
+                }
+                parent.ChildCollectionProperties.Add(col);
+            }
+        }
+
         private void editableChildCollectionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            NewObjectDefaults frm = NewObjectDefaults.NewChildListProperties();
+            NewObjectDefaults frm = NewObjectDefaults.NewEditableChildListProperties();
             if (frm.ShowDialog() == DialogResult.OK)
             {
                 string collectionName = frm.GetPropertyValue("CollectionName");
