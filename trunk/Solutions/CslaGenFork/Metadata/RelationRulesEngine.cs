@@ -162,7 +162,8 @@ namespace CslaGenerator.Metadata
         {
             // parent of editable objects
 
-            _specificErrorMessage = "The parent of an Editable object must be Editable (object or collection).";
+            //_specificErrorMessage = "The parent of an Editable object must be Editable (object or collection).";
+            _specificErrorMessage = "The parent of an object must be object or collection (Editable or ReadOnly).";
 
             _baseStereotype.Clear();
             _baseStereotype.Add(CslaObjectType.EditableChild);
@@ -175,6 +176,7 @@ namespace CslaGenerator.Metadata
             _dependentStereotype.Add(CslaObjectType.DynamicEditableRoot);
             _dependentStereotype.Add(CslaObjectType.EditableRootCollection);
             _dependentStereotype.Add(CslaObjectType.EditableChildCollection);
+            _dependentStereotype.Add(CslaObjectType.ReadOnlyObject);//added 2011-05-14
             _dependentStereotype.Add(CslaObjectType.ReadOnlyCollection);//added 2009-11-29
         }
 
@@ -182,7 +184,8 @@ namespace CslaGenerator.Metadata
         {
             // parent of editable lists
 
-            _specificErrorMessage = "The parent of an Editable collection must be an Editable object.";
+            //_specificErrorMessage = "The parent of an Editable collection must be an Editable object.";
+            _specificErrorMessage = "The parent of an Editable collection must be an object (Editable or ReadOnly).";
 
             _baseStereotype.Clear();
             _baseStereotype.Add(CslaObjectType.EditableChildCollection);
