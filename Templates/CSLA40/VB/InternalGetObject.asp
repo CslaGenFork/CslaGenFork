@@ -74,11 +74,6 @@ if (!Info.UseCustomLoading)
             <%
             }
         }
-        if (ActiveObjects)
-        {
-            %>obj.RegisterAndSubscribe();
-            <%
-        }
         %>return obj;
         }
     <%
@@ -138,11 +133,6 @@ if (!Info.UseCustomLoading)
                 %>obj.BusinessRules.CheckRules();
             <%
             }
-        }
-        if (ActiveObjects)
-        {
-            %>obj.RegisterAndSubscribe();
-            <%
         }
         %>
 

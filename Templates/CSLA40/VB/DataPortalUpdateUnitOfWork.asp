@@ -102,15 +102,6 @@ if (Info.GenerateDataPortalUpdate)
                     ctx.Commit();
                 <%
     }
-    if (ActiveObjects)
-    {
-        if (Info.PublishToChannel.Length > 0)
-        {
-            %>
-                        SafePublish("<%= Info.PublishToChannel %>", BusinessEvents.Updated, this);
-                        <%
-        }
-    }
     %>
                 }
             }

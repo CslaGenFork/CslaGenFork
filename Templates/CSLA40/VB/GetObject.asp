@@ -54,13 +54,13 @@ if (!Info.UseCustomLoading)
             if (c.Properties.Count > 1 || (Info.ObjectType == CslaObjectType.EditableSwitchable && c.Properties.Count == 1))
             {
                 %>
-            return <% if (ActiveObjects) { %>ActiveObjects.<% } %>DataPortal.Fetch<<%= Info.ObjectName %>>(new <%= c.Name %>(<%= strGetCritParams %>));
+            return DataPortal.Fetch<<%= Info.ObjectName %>>(new <%= c.Name %>(<%= strGetCritParams %>));
             <%
             }
             else if (c.Properties.Count > 0)
             {
                 %>
-            return <% if (ActiveObjects) { %>ActiveObjects.<% } %>DataPortal.Fetch<<%= Info.ObjectName %>>(<%= SendSingleCriteria(c, strGetCritParams) %>);
+            return DataPortal.Fetch<<%= Info.ObjectName %>>(<%= SendSingleCriteria(c, strGetCritParams) %>);
             <%
             }
             else
@@ -69,7 +69,7 @@ if (!Info.UseCustomLoading)
                 {
                     %>
             if (_list == null)
-                _list = <% if (ActiveObjects) { %>ActiveObjects.<% } %>DataPortal.Fetch<<%= Info.ObjectName %>>();
+                _list = DataPortal.Fetch<<%= Info.ObjectName %>>();
 
             return _list;
             <%
@@ -77,7 +77,7 @@ if (!Info.UseCustomLoading)
                 else
                 {
                     %>
-            return <% if (ActiveObjects) { %>ActiveObjects.<% } %>DataPortal.Fetch<<%= Info.ObjectName %>>();
+            return DataPortal.Fetch<<%= Info.ObjectName %>>();
         <%
                 }
             }
