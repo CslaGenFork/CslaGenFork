@@ -64,15 +64,6 @@ if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
         }
     }
 }
-if (ActiveObjects)
-{
-    if (Info.ObjectType != CslaObjectType.EditableChildCollection)
-    {
-        %>
-            RegisterAndSubscribe();
-                <%
-    }
-}
 // DataPortal_CreateChild already takes care of marking childs
 // CurrentUnit.GenerationParams.UseChildDataPortal is enought to say when this happens
 // except Get-(SafeDataReader dr) that bypass Child DataPortal methods

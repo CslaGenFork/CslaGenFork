@@ -1,6 +1,5 @@
 <%@ CodeTemplate Inherits="CslaTemplateHelperCS" Language="CSharp" TargetLanguage="CSharp" Description="Generates a CSLA Inherited Object." %>
 <%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the CSLA Object to inherit from." %>
-<%@ Property Name="ActiveObjects" Type="System.Boolean" Default="false" Category="Options" Description="if true, base class is generated as ActiveObjects" %>
 
 <%@ Assembly Name="CslaGenerator" %>
 <%@ Import Namespace="CslaGenerator" %>
@@ -12,12 +11,6 @@
 <%
 int silverlightLevel = 0;
 bool genOptional = false;
-if (ActiveObjects)
-{
-    %>
-using ActiveObjects;
-<%
-}
 if (Info.ObjectNamespace.IndexOf(CurrentUnit.GenerationParams.UtilitiesNamespace) != 0)
 {
 %>
@@ -38,63 +31,28 @@ if (Info.ObjectNamespace.Length > 0)
         <%
         if (Info.ObjectType != CslaObjectType.UnitOfWork)
         {
-        System.Collections.Generic.List<string> eventList = GetEventList(Info);
-        if (eventList.Count > 0)
-        {
-            %>
+            System.Collections.Generic.List<string> eventList = GetEventList(Info);
+            if (eventList.Count > 0)
+            {
+                %>
 
         #region Pseudo Event Handlers
 <%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel, false, true) %><%
-            foreach (string strEvent in eventList)
-            {
-                %>
+                foreach (string strEvent in eventList)
+                {
+                    %>
         //partial void On<%= strEvent %>(DataPortalHookArgs e)
         //{
         //    throw new System.Exception("The method or operation is not implemented.");
         //}
         <%
-            }
-            %>
+                }
+                %>
 <%= IfSilverlight (Conditional.End, 0, ref silverlightLevel, true, false) %>
         #endregion
 
             <%
-        }
-        if (ActiveObjects)
-        {
-            if (Info.ObjectType == CslaObjectType.ReadOnlyCollection || Info.ObjectType == CslaObjectType.ReadOnlyObject)
-            {
-                %>
-        #region ISubscriber interface (overriden)
-                <%
-                if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
-                {
-                    CslaObjectInfo childInfo = FindChildInfo(Info, Info.ItemType);
-                }
-                %>
-                <%
-                if (Info.ObjectType == CslaObjectType.ReadOnlyObject)
-                {
-                    %>
-        //internal void ExtractInfo(ObjectType obj)
-        {
-                <%
-                    foreach (ValueProperty prop in Info.GetAllValueProperties())
-                    {
-                        %>
-            //this.<%= FormatProperty(prop.Name) %> = obj.<%= FormatProperty(prop.Name) %>;
-                    <%
-                    }
-                    %>
-        //}
-
-            <%
-                }
-                %>
-        #endregion
-            <%
             }
-        }
         }
 %>
     }

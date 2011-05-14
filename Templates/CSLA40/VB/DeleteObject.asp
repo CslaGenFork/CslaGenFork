@@ -46,23 +46,15 @@ foreach (Criteria c in GetCriteriaObjects(Info))
             }
             if (c.Properties.Count > 1)
             {
-                if (ActiveObjects) { %>ActiveObjects.<% } %>DataPortal.Delete<<%= Info.ObjectName %>>(new <%= c.Name %>(<%=strDelCritParams %>));<%
+                %>DataPortal.Delete<<%= Info.ObjectName %>>(new <%= c.Name %>(<%=strDelCritParams %>));<%
             }
             else if (c.Properties.Count > 0)
             {
-                if (ActiveObjects) { %>ActiveObjects.<% } %>DataPortal.Delete<<%= Info.ObjectName %>>(<%= SendSingleCriteria(c, strDelCritParams) %>);<%
+                %>DataPortal.Delete<<%= Info.ObjectName %>>(<%= SendSingleCriteria(c, strDelCritParams) %>);<%
             }
             else
             {
-                if (ActiveObjects) { %>ActiveObjects.<% } %>DataPortal.Delete(new <%= c.Name %>(<%=strDelCritParams %>));<%
-            }
-            if (ActiveObjects)
-            {
-                if (Info.PublishToChannel.Length > 0)
-                {
-                    %>
-            Observer.EventChannels.Publish("<%= Info.PublishToChannel %>", null, BusinessEvents.Deleted, <%= UpdateEventString_Delete %>);<%
-                }
+                %>DataPortal.Delete(new <%= c.Name %>(<%=strDelCritParams %>));<%
             }
             %>
         }

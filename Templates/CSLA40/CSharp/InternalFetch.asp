@@ -85,12 +85,6 @@ if (!Info.UseCustomLoading)
                     }
                 }
             }
-            if (ActiveObjects)
-            {
-                %>
-            RegisterAndSubscribe();
-            <%
-            }
             %>
         }
         <%
@@ -237,12 +231,6 @@ if (!Info.UseCustomLoading)
             <%= FormatFieldName(childProp.Name) %> = <%= childProp.TypeName %>.Get<%= childProp.TypeName %>(childRows);
             <%
                 }
-            }
-            if (ActiveObjects)
-            {
-                %>
-            RegisterAndSubscribe();
-            <%
             }
             %>
         }

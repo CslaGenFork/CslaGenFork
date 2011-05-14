@@ -189,12 +189,6 @@ if (!Info.UseCustomLoading)
             BusinessRules.CheckRules();
             <%
                 }
-                if (ActiveObjects)
-                {
-                    %>
-            this.RegisterAndSubscribe();
-            <%
-                }
             }
             %>
         }

@@ -50,7 +50,7 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
                     if (Info.SimpleCacheOptions != SimpleCacheResults.None)
                     {
                         %>if (_list == null)
-                _list = <% if (ActiveObjects) { %>ActiveObjects.<% } %>DataPortal.Fetch<<%= Info.ObjectName %>>(<%= crit %>);
+                _list = DataPortal.Fetch<<%= Info.ObjectName %>>(<%= crit %>);
 
             return _list;
             <%
@@ -58,7 +58,7 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
                     else
                     {
                         %>
-            return <% if (ActiveObjects) { %>ActiveObjects.<% } %>DataPortal.Fetch<<%= Info.ObjectName %>>(<%= crit %>);
+            return DataPortal.Fetch<<%= Info.ObjectName %>>(<%= crit %>);
             <%
                     }
                     %>

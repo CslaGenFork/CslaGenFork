@@ -65,19 +65,19 @@ foreach (Criteria c in GetCriteriaObjects(Info))
             if (c.Properties.Count > 1)
             {
                 %>
-            return <% if (ActiveObjects) { %>ActiveObjects.<% } %>DataPortal.Create<%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child" : "" %><<%= Info.ObjectName %>>(new <%= c.Name %>(<%= strNewCritParams %>));
+            return DataPortal.Create<%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child" : "" %><<%= Info.ObjectName %>>(new <%= c.Name %>(<%= strNewCritParams %>));
                 <%
             }
             else if (c.Properties.Count > 0)
             {
                 %>
-            return <% if (ActiveObjects) { %>ActiveObjects.<% } %>DataPortal.Create<%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child" : "" %><<%= Info.ObjectName %>>(<%= SendSingleCriteria(c, strNewCritParams) %>);
+            return DataPortal.Create<%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child" : "" %><<%= Info.ObjectName %>>(<%= SendSingleCriteria(c, strNewCritParams) %>);
                     <%
             }
             else
             {
                 %>
-            return <% if (ActiveObjects) { %>ActiveObjects.<% } %>DataPortal.Create<%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child" : "" %><<%= Info.ObjectName %>>();
+            return DataPortal.Create<%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child" : "" %><<%= Info.ObjectName %>>();
                     <%
             }
             %>

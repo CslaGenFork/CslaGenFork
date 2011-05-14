@@ -39,12 +39,6 @@ if (StateFieldsForAllValueProperties(Info) || StateFieldsForAllChildProperties(I
             {
                 Warnings.Append("TypeName '" + prop.TypeName + "' doesn't exist in this project." + Environment.NewLine);
             }
-            if (ActiveObjects)
-            {
-                %>
-        [RegisterNotify("IsValid, IsDirty, BrokenRulesChanged")]
-        <%
-            }
             if (!prop.Undoable)
             {
                 %>
