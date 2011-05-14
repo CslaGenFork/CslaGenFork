@@ -192,7 +192,8 @@ namespace CslaGenerator.Metadata
             _dependentStereotype.Add(CslaObjectType.EditableChild);
             _dependentStereotype.Add(CslaObjectType.EditableSwitchable);
             _dependentStereotype.Add(CslaObjectType.DynamicEditableRoot);
-            _dependentStereotype.Add(CslaObjectType.ReadOnlyCollection);//added 2009-11-29
+            //added 2009-11-29; corrected to object 2011-05-14 (was Collection)
+            _dependentStereotype.Add(CslaObjectType.ReadOnlyObject);
         }
 
         private static void ParentType4_LoadData()
