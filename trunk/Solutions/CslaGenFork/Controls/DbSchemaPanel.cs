@@ -547,11 +547,11 @@ namespace CslaGenerator.Controls
             NewObjectDefaults frm = NewObjectDefaults.NewEditableChildProperties();
             if (frm.ShowDialog() == DialogResult.OK)
             {
-                string objectName = frm.GetPropertyValue("ObjectName");
-                string parentName = frm.GetPropertyValue("ParentType");
-                string propertyName = frm.GetPropertyValue("PropertyNameInParentType");
-                string parentProperties = frm.GetPropertyValue("ParentProperties");
-                CslaObjectInfo parent = _currentUnit.CslaObjects.Find(parentName);
+                var objectName = frm.GetPropertyValue("ObjectName");
+                var parentName = frm.GetPropertyValue("ParentType");
+                var propertyName = frm.GetPropertyValue("PropertyNameInParentType");
+                var parentProperties = frm.GetPropertyValue("ParentProperties");
+                var parent = _currentUnit.CslaObjects.Find(parentName);
                 if (parent == null)
                 {
                     MessageBox.Show(@"Parent type not found", @"CslaGenerator", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -559,32 +559,33 @@ namespace CslaGenerator.Controls
                 }
                 NewObject(CslaObjectType.EditableChild, objectName, parentName);
                 AddPropertiesForSelectedColumns();
+                AddParentProperties(parent, parentProperties);
 
-                ArrayList lst = new ArrayList();
-                foreach (ValueProperty p in parent.ValueProperties)
-                    if (p.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
-                        lst.Add(p);
-                foreach (Property p in lst)
-                    _currentCslaObject.ParentProperties.Add(p);
+                /*var lst = new ArrayList();
+                foreach (var prop in parent.ValueProperties)
+                    if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
+                        lst.Add(prop);
+                foreach (Property prop in lst)
+                    _currentCslaObject.ParentProperties.Add(prop);*/
 
-                ChildProperty col = new ChildProperty();
-                col.TypeName = objectName;
+                var child = new ChildProperty();
+                child.TypeName = objectName;
                 if (!string.IsNullOrEmpty(propertyName))
-                    col.Name = propertyName;
+                    child.Name = propertyName;
                 else
-                    col.Name = objectName;
-                col.ReadOnly = true;
+                    child.Name = objectName;
+                child.ReadOnly = true;
                 foreach (var crit in parent.CriteriaObjects)
                 {
                     if (crit.GetOptions.Factory || crit.GetOptions.AddRemove || crit.GetOptions.DataPortal)
                     {
                         foreach (var prop in crit.Properties)
                         {
-                            col.LoadParameters.Add(new Parameter(crit, prop));
+                            child.LoadParameters.Add(new Parameter(crit, prop));
                         }
                     }
                 }
-                parent.ChildProperties.Add(col);
+                parent.ChildProperties.Add(child);
             }
         }
 
@@ -601,28 +602,17 @@ namespace CslaGenerator.Controls
             }
         }
 
-        private void AddParentProperties(CslaObjectInfo parent, string parentProperties)
-        {
-            var lst = new ArrayList();
-            foreach (var prop in parent.ValueProperties)
-                if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
-                    lst.Add(prop);
-            foreach (Property prop in lst)
-                _currentCslaObject.ParentProperties.Add(prop);
-        }
-
-
         private void editableChildCollectionToolStripMenuItem_Click(object sender, EventArgs e)
         {
             NewObjectDefaults frm = NewObjectDefaults.NewEditableChildListProperties();
             if (frm.ShowDialog() == DialogResult.OK)
             {
-                string collectionName = frm.GetPropertyValue("CollectionName");
-                string itemName = frm.GetPropertyValue("ItemName");
-                string parentName = frm.GetPropertyValue("ParentType");
-                string propertyName = frm.GetPropertyValue("PropertyNameInParentType");
-                string parentProperties = frm.GetPropertyValue("ParentProperties");
-                CslaObjectInfo parent = _currentUnit.CslaObjects.Find(parentName);
+                var collectionName = frm.GetPropertyValue("CollectionName");
+                var itemName = frm.GetPropertyValue("ItemName");
+                var parentName = frm.GetPropertyValue("ParentType");
+                var propertyName = frm.GetPropertyValue("PropertyNameInParentType");
+                var parentProperties = frm.GetPropertyValue("ParentProperties");
+                var parent = _currentUnit.CslaObjects.Find(parentName);
                 if (parent == null)
                 {
                     MessageBox.Show(@"Parent type not found", @"CslaGenerator", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -631,32 +621,33 @@ namespace CslaGenerator.Controls
                 NewCollection(CslaObjectType.EditableChildCollection, collectionName, itemName, parentName);
                 NewObject(CslaObjectType.EditableChild, itemName, collectionName);
                 AddPropertiesForSelectedColumns();
+                AddParentProperties(parent, parentProperties);
 
-                ArrayList lst = new ArrayList();
-                foreach (ValueProperty p in parent.ValueProperties)
-                    if (p.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
-                        lst.Add(p);
-                foreach (Property p in lst)
-                    _currentCslaObject.ParentProperties.Add(p);
+                /*var lst = new ArrayList();
+                foreach (var prop in parent.ValueProperties)
+                    if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
+                        lst.Add(prop);
+                foreach (Property prop in lst)
+                    _currentCslaObject.ParentProperties.Add(prop);*/
 
-                ChildProperty col = new ChildProperty();
-                col.TypeName = collectionName;
+                var child = new ChildProperty();
+                child.TypeName = collectionName;
                 if (!string.IsNullOrEmpty(propertyName))
-                    col.Name = propertyName;
+                    child.Name = propertyName;
                 else
-                    col.Name = collectionName;
-                col.ReadOnly = true;
+                    child.Name = collectionName;
+                child.ReadOnly = true;
                 foreach (var crit in parent.CriteriaObjects)
                 {
                     if (crit.GetOptions.Factory || crit.GetOptions.AddRemove || crit.GetOptions.DataPortal)
                     {
                         foreach (var prop in crit.Properties)
                         {
-                            col.LoadParameters.Add(new Parameter(crit, prop));
+                            child.LoadParameters.Add(new Parameter(crit, prop));
                         }
                     }
                 }
-                parent.ChildCollectionProperties.Add(col);
+                parent.ChildCollectionProperties.Add(child);
             }
         }
 
@@ -689,11 +680,11 @@ namespace CslaGenerator.Controls
             NewObjectDefaults frm = NewObjectDefaults.NewReadOnlyChildProperties();
             if (frm.ShowDialog() == DialogResult.OK)
             {
-                string objectName = frm.GetPropertyValue("ObjectName");
-                string parentName = frm.GetPropertyValue("ParentType");
-                string propertyName = frm.GetPropertyValue("PropertyNameInParentType");
-                string parentProperties = frm.GetPropertyValue("ParentProperties");
-                CslaObjectInfo parent = _currentUnit.CslaObjects.Find(parentName);
+                var objectName = frm.GetPropertyValue("ObjectName");
+                var parentName = frm.GetPropertyValue("ParentType");
+                var propertyName = frm.GetPropertyValue("PropertyNameInParentType");
+                var parentProperties = frm.GetPropertyValue("ParentProperties");
+                var parent = _currentUnit.CslaObjects.Find(parentName);
                 if (parent == null)
                 {
                     MessageBox.Show(@"Parent type not found", @"CslaGenerator", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -701,32 +692,33 @@ namespace CslaGenerator.Controls
                 }
                 NewObject(CslaObjectType.ReadOnlyObject, objectName, parentName);
                 AddPropertiesForSelectedColumns();
+                AddParentProperties(parent, parentProperties);
 
-                ArrayList lst = new ArrayList();
-                foreach (ValueProperty p in parent.ValueProperties)
-                    if (p.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
-                        lst.Add(p);
-                foreach (Property p in lst)
-                    _currentCslaObject.ParentProperties.Add(p);
+                /*var lst = new ArrayList();
+                foreach (var prop in parent.ValueProperties)
+                    if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
+                        lst.Add(prop);
+                foreach (Property prop in lst)
+                    _currentCslaObject.ParentProperties.Add(prop);*/
 
-                ChildProperty col = new ChildProperty();
-                col.TypeName = objectName;
+                var child = new ChildProperty();
+                child.TypeName = objectName;
                 if (!string.IsNullOrEmpty(propertyName))
-                    col.Name = propertyName;
+                    child.Name = propertyName;
                 else
-                    col.Name = objectName;
-                col.ReadOnly = true;
+                    child.Name = objectName;
+                child.ReadOnly = true;
                 foreach (var crit in parent.CriteriaObjects)
                 {
                     if (crit.GetOptions.Factory || crit.GetOptions.AddRemove || crit.GetOptions.DataPortal)
                     {
                         foreach (var prop in crit.Properties)
                         {
-                            col.LoadParameters.Add(new Parameter(crit, prop));
+                            child.LoadParameters.Add(new Parameter(crit, prop));
                         }
                     }
                 }
-                parent.ChildProperties.Add(col);
+                parent.ChildProperties.Add(child);
             }
         }
 
@@ -748,12 +740,12 @@ namespace CslaGenerator.Controls
             NewObjectDefaults frm = NewObjectDefaults.NewReadOnlyChildListProperties();
             if (frm.ShowDialog() == DialogResult.OK)
             {
-                string collectionName = frm.GetPropertyValue("CollectionName");
-                string itemName = frm.GetPropertyValue("ItemName");
-                string parentName = frm.GetPropertyValue("ParentType");
-                string propertyName = frm.GetPropertyValue("PropertyNameInParentType");
-                string parentProperties = frm.GetPropertyValue("ParentProperties");
-                CslaObjectInfo parent = _currentUnit.CslaObjects.Find(parentName);
+                var collectionName = frm.GetPropertyValue("CollectionName");
+                var itemName = frm.GetPropertyValue("ItemName");
+                var parentName = frm.GetPropertyValue("ParentType");
+                var propertyName = frm.GetPropertyValue("PropertyNameInParentType");
+                var parentProperties = frm.GetPropertyValue("ParentProperties");
+                var parent = _currentUnit.CslaObjects.Find(parentName);
                 if (parent == null)
                 {
                     MessageBox.Show(@"Parent type not found", @"CslaGenerator", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -762,15 +754,16 @@ namespace CslaGenerator.Controls
                 NewCollection(CslaObjectType.ReadOnlyCollection, collectionName, itemName, parentName);
                 NewObject(CslaObjectType.ReadOnlyObject, itemName, collectionName);
                 AddPropertiesForSelectedColumns();
+                AddParentProperties(parent, parentProperties);
 
-                ArrayList lst = new ArrayList();
-                foreach (ValueProperty p in parent.ValueProperties)
-                    if (p.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
-                        lst.Add(p);
-                foreach (Property p in lst)
-                    _currentCslaObject.ParentProperties.Add(p);
+                /*var lst = new ArrayList();
+                foreach (var prop in parent.ValueProperties)
+                    if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
+                        lst.Add(prop);
+                foreach (Property prop in lst)
+                    _currentCslaObject.ParentProperties.Add(prop);*/
 
-                ChildProperty col = new ChildProperty();
+                var col = new ChildProperty();
                 col.TypeName = collectionName;
                 if (!string.IsNullOrEmpty(propertyName))
                     col.Name = propertyName;
@@ -823,21 +816,21 @@ namespace CslaGenerator.Controls
         {
             if (_currentCslaObject == null)
                 return;
-            string colNames = string.Empty;
-            List<CriteriaProperty> cols = new List<CriteriaProperty>();
-            for (int i = 0; i < SelectedColumns.Count; i++)
+            var colNames = string.Empty;
+            var cols = new List<CriteriaProperty>();
+            for (var i = 0; i < SelectedColumns.Count; i++)
             {
-                IColumnInfo info = (IColumnInfo)this.dbColumns1.ListColumns.SelectedItems[i];
-                CriteriaProperty p = new CriteriaProperty(info.ColumnName, TypeHelper.GetTypeCodeEx(info.ManagedType), info.ColumnName);
-                SetDbBindColumn(info, p.DbBindColumn);
-                cols.Add(p);
-                colNames += p.Name;
+                var info = (IColumnInfo)dbColumns1.ListColumns.SelectedItems[i];
+                var prop = new CriteriaProperty(info.ColumnName, TypeHelper.GetTypeCodeEx(info.ManagedType), info.ColumnName);
+                SetDbBindColumn(info, prop.DbBindColumn);
+                cols.Add(prop);
+                colNames += prop.Name;
             }
             if (cols.Count == 0)
                 return;
 
-            string name = "Criteria" + colNames;
-            int num = 0;
+            var name = "Criteria" + colNames;
+            var num = 0;
             while (true)
             {
                 if (_currentCslaObject.CriteriaObjects.Contains(name))
@@ -848,11 +841,11 @@ namespace CslaGenerator.Controls
                 else
                     break;
             }
-            Criteria c = new Criteria(_currentCslaObject);
+            var c = new Criteria(_currentCslaObject);
             c.Name = name;
             c.Properties.AddRange(cols);
             c.SetSprocNames();
-            Design.ObjectEditorForm frm = new Design.ObjectEditorForm();
+            var frm = new Design.ObjectEditorForm();
             frm.ObjectToEdit = c;
             frm.StartPosition = FormStartPosition.CenterScreen;
             if (frm.ShowDialog() == DialogResult.OK)
@@ -870,7 +863,7 @@ namespace CslaGenerator.Controls
 
         private void NewCollection(CslaObjectType type, string name, string item, string parent)
         {
-            CslaObjectInfo obj = new CslaObjectInfo(_currentUnit);
+            var obj = new CslaObjectInfo(_currentUnit);
             obj.ObjectType = type;
             obj.ObjectName = ParseObjectName(name);
             obj.ParentType = parent;
@@ -881,7 +874,7 @@ namespace CslaGenerator.Controls
 
         private void NewNVL(string name)
         {
-            CslaObjectInfo obj = new CslaObjectInfo(_currentUnit);
+            var obj = new CslaObjectInfo(_currentUnit);
             obj.ObjectType = CslaObjectType.NameValueList;
             obj.ObjectName = ParseObjectName(name);
             _currentUnit.CslaObjects.Add(obj);
@@ -905,7 +898,7 @@ namespace CslaGenerator.Controls
 
         private void NewObject(CslaObjectType type, string name, string parent)
         {
-            CslaObjectInfo obj = new CslaObjectInfo(_currentUnit);
+            var obj = new CslaObjectInfo(_currentUnit);
             obj.ObjectType = type;
             obj.ObjectName = ParseObjectName(name);
             obj.ParentType = parent;
@@ -915,6 +908,35 @@ namespace CslaGenerator.Controls
         }
 
         #endregion
+
+        private void AddParentProperties(CslaObjectInfo parent, string parentProperties)
+        {
+            if (string.IsNullOrEmpty(parentProperties))
+            {
+                var propList = new ArrayList();
+
+                foreach (var prop in parent.ValueProperties)
+                    if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
+                        propList.Add(prop);
+
+                foreach (Property prop in propList)
+                    _currentCslaObject.ParentProperties.Add(prop);
+            }
+            else
+            {
+                string[] userParams = parentProperties.Split(',');
+
+                var propList = new ArrayList();
+
+                foreach (var prop in parent.ValueProperties)
+                    foreach (var param in userParams)
+                        if (prop.Name == param)
+                            propList.Add(prop);
+
+                foreach (Property prop in propList)
+                    _currentCslaObject.ParentProperties.Add(prop);
+            }
+        }
 
         private void AddPropertiesForSelectedColumns()
         {
@@ -926,14 +948,14 @@ namespace CslaGenerator.Controls
                 return;
             }
 
-            List<IColumnInfo> columns = new List<IColumnInfo>();
+            var columns = new List<IColumnInfo>();
             for (int i = 0; i < SelectedColumns.Count; i++)
             {
                 columns.Add((IColumnInfo)dbColumns1.ListColumns.SelectedItems[i]);
             }
 
-            IDataBaseObject dbObject = GetCurrentDBObject();
-            IResultSet resultSet = GetCurrentResultSet();
+            var dbObject = GetCurrentDBObject();
+            var resultSet = GetCurrentResultSet();
             _currentFactory.AddProperties(_currentCslaObject, dbObject, resultSet, columns, true, false);
         }
 

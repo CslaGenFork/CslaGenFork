@@ -698,7 +698,7 @@ namespace CslaGenerator.Metadata
         /// Parent properties which are used in Update method, as parameters for Stored Procedures.
         /// </summary>
         [Category("04. Child Object Options")]
-        [Description("Parent properties which are used in Update method, as parameters for Stored Procedures.")]
+        [Description("Parent properties which are used in DataPortal_Update, as parameters for Stored Procedures.")]
         [Editor(typeof(ParentPropertyCollectionEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(PropertyCollectionConverter))]
         [UserFriendlyName("Parent Properties")]
@@ -1510,77 +1510,6 @@ namespace CslaGenerator.Metadata
 
         #endregion
 
-        #region Events
-
-        /*[field: NonSerialized]
-            public event EventHandler ObjectNameChanged;
-
-            protected void OnObjectNameChanged()
-            {
-                SetProcedureNames();
-                if (ObjectNameChanged != null)
-                {
-                    ObjectNameChanged(this, EventArgs.Empty);
-                }
-            }
-
-            [field: NonSerialized]
-            public event EventHandler ObjectTypeChanged;
-
-            protected void OnObjectTypeChanged()
-            {
-                if (ObjectTypeChanged != null)
-                {
-                    ObjectTypeChanged(this, EventArgs.Empty);
-                }
-            }
-
-            [field: NonSerialized]
-            public event EventHandler SelectProcedureChanged;
-
-            protected void OnSelectProcedureChanged()
-            {
-                if (SelectProcedureChanged != null)
-                {
-                    SelectProcedureChanged(this, EventArgs.Empty);
-                }
-            }
-
-            [field: NonSerialized]
-            public event EventHandler InsertProcedureChanged;
-
-            protected void OnInsertProcedureChanged()
-            {
-                if (InsertProcedureChanged != null)
-                {
-                    InsertProcedureChanged(this, EventArgs.Empty);
-                }
-            }
-
-            [field: NonSerialized]
-            public event EventHandler UpdateProcedureChanged;
-
-            protected void OnUpdateProcedureChanged()
-            {
-                if (UpdateProcedureChanged != null)
-                {
-                    UpdateProcedureChanged(this, EventArgs.Empty);
-                }
-            }
-
-            [field: NonSerialized]
-            public event EventHandler DeleteProcedureChanged;
-
-            protected void OnDeleteProcedureChanged()
-            {
-                if (DeleteProcedureChanged != null)
-                {
-                    DeleteProcedureChanged(this, EventArgs.Empty);
-                }
-            }*/
-
-        #endregion
-
         #region Public Methods
 
         public CslaObjectInfo Duplicate(ICatalog catalog)
@@ -1780,16 +1709,6 @@ namespace CslaGenerator.Metadata
                     p.Name = e.NewName;
             }
         }
-
-        //private void HandleNameChanged(ParameterCollection col, PropertyNameChangedEventArgs e)
-        //{
-        //    foreach (Parameter p in col)
-        //    {
-        //        if (p.Property.Name.Equals(e.OldName))
-        //            p.Property.Name = e.NewName;
-        //        HandleNameChanged(p.Criteria.Properties, e);
-        //    }
-        //}
 
         #region System.Object Overrides
 
