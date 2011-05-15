@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
+using CslaGenerator.CodeGen;
 using CslaGenerator.Metadata;
 
 namespace CslaGenerator.Controls
@@ -22,7 +23,7 @@ namespace CslaGenerator.Controls
             _propertyList = list;
             for (int i = 0; i < list.Count; i++)
             {
-                ObjectProperty objectProp = list[i];
+                var objectProp = list[i];
                 var lbl = new Label();
                 lbl.Text = ValueProperty.SplitOnCaps(objectProp.PropertyName);
                 lbl.Size = new Size(165, 20);
@@ -44,6 +45,7 @@ namespace CslaGenerator.Controls
                 else if (objectProp.PropertyName == "ParentProperties")
                 {
                     var lstBox = new ListBox();
+                    lstBox.Enabled = false;
                     lstBox.Name = objectProp.PropertyName;
                     lstBox.Items.AddRange(objectProp.ValueList);
                     lstBox.Tag = objectProp.PropertyName;
@@ -51,7 +53,6 @@ namespace CslaGenerator.Controls
                     lstBox.TabIndex = i;
                     lstBox.DataBindings.Add("SelectedItem", objectProp, "PropertyValue", false, DataSourceUpdateMode.OnValidation);
                     lstBox.SelectionMode = SelectionMode.MultiSimple;
-                    //                    lstBox.Leave += ListBox_Leaving;
                     lstBox.Validating += ListBox_Validating;
                     tableLayoutPanel1.Controls.Add(lbl, 0, i);
                     tableLayoutPanel1.Controls.Add(lstBox, 1, i);
@@ -77,7 +78,7 @@ namespace CslaGenerator.Controls
             return this;
         }
 
-        private void ListBox_Leaving(object sender, EventArgs e)
+        private static void ListBox_Validating(object sender, CancelEventArgs e)
         {
             var lstBox = sender as ListBox;
             var parentProps = string.Empty;
@@ -86,24 +87,7 @@ namespace CslaGenerator.Controls
                 var first = true;
                 foreach (var item in lstBox.SelectedItems)
                 {
-                    if (!first) parentProps += ", ";
-                    else first = false;
-                    parentProps += item.ToString();
-                }
-                lstBox.Tag = parentProps;
-            }
-        }
-
-        private void ListBox_Validating(object sender, CancelEventArgs e)
-        {
-            var lstBox = sender as ListBox;
-            var parentProps = string.Empty;
-            if (lstBox != null)
-            {
-                var first = true;
-                foreach (var item in lstBox.SelectedItems)
-                {
-                    if (!first) parentProps += ", ";
+                    if (!first) parentProps += ",";
                     else first = false;
                     parentProps += item.ToString();
                 }
@@ -222,7 +206,9 @@ namespace CslaGenerator.Controls
             public string PropertyValue
             {
                 get { return _propertyValue; }
+                // ReSharper disable UnusedMember.Local
                 set
+                // ReSharper restore UnusedMember.Local
                 {
                     if (_propertyValue == value)
                         return;
@@ -240,17 +226,29 @@ namespace CslaGenerator.Controls
                 if (propertyName == "PropertyValue" && _propertyName == "ParentType" &&
                     !string.IsNullOrEmpty(_propertyValue))
                 {
-                    CslaObjectInfo info = GeneratorController.Current.CurrentUnit.CslaObjects.Find(_propertyValue);
-                    ValuePropertyCollection vp = info.GetAllValueProperties();
-                    var properties = new string[vp.Count];
-                    for (int index = 0; index < vp.Count; index++)
+                    var parentInfo = GeneratorController.Current.CurrentUnit.CslaObjects.Find(_propertyValue);
+                    var lstBox = _parent.tableLayoutPanel1.Controls.Find("ParentProperties", true)[0] as ListBox;
+                    if (lstBox != null)
                     {
-                        properties[index] = vp[index].Name;
-                    }
+                        lstBox.Items.Clear();
 
-                    var lstBx = _parent.tableLayoutPanel1.Controls.Find("ParentProperties", true)[0] as ListBox;
-                    lstBx.Items.Clear();
-                    lstBx.Items.AddRange(properties);
+                        if (CslaTemplateHelperCS.IsCollectionType(parentInfo.ObjectType))
+                        {
+                            lstBox.Enabled = false;
+                        }
+                        else
+                        {
+                            lstBox.Enabled = true;
+
+                            var valProps = parentInfo.GetAllValueProperties();
+                            foreach (var prop in valProps)
+                                lstBox.Items.Add(prop.Name);
+
+                            foreach (var prop in parentInfo.ValueProperties)
+                                if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
+                                    lstBox.SelectedItems.Add(prop.Name);
+                        }
+                    }
                 }
                 else if (propertyName == "PropertyValue" && _propertyName == "ParentProperties")
                 {
@@ -258,11 +256,13 @@ namespace CslaGenerator.Controls
                     if (lstBox != null)
                         _propertyValue = lstBox.Tag.ToString();
                 }
+
                 if (PropertyChanged != null)
                     PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
 
             #endregion
+
         }
 
         #endregion
