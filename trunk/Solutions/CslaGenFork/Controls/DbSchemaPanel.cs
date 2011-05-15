@@ -533,7 +533,7 @@ namespace CslaGenerator.Controls
 
         private void editableRootToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            NewObjectDefaults frm = NewObjectDefaults.NewReadOnlyListProperties();
+            NewObjectDefaults frm = NewObjectDefaults.NewListProperties();
             if (frm.ShowDialog() == DialogResult.OK)
             {
                 string objectName = frm.GetPropertyValue("ObjectName");
@@ -544,12 +544,13 @@ namespace CslaGenerator.Controls
 
         private void editableChildToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            NewObjectDefaults frm = NewObjectDefaults.NewEditableChildListProperties();
+            NewObjectDefaults frm = NewObjectDefaults.NewEditableChildProperties();
             if (frm.ShowDialog() == DialogResult.OK)
             {
                 string objectName = frm.GetPropertyValue("ObjectName");
                 string parentName = frm.GetPropertyValue("ParentType");
                 string propertyName = frm.GetPropertyValue("PropertyNameInParentType");
+                string parentProperties = frm.GetPropertyValue("ParentProperties");
                 CslaObjectInfo parent = _currentUnit.CslaObjects.Find(parentName);
                 if (parent == null)
                 {
@@ -558,12 +559,14 @@ namespace CslaGenerator.Controls
                 }
                 NewObject(CslaObjectType.EditableChild, objectName, parentName);
                 AddPropertiesForSelectedColumns();
+
                 ArrayList lst = new ArrayList();
                 foreach (ValueProperty p in parent.ValueProperties)
                     if (p.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
                         lst.Add(p);
                 foreach (Property p in lst)
                     _currentCslaObject.ParentProperties.Add(p);
+
                 ChildProperty col = new ChildProperty();
                 col.TypeName = objectName;
                 if (!string.IsNullOrEmpty(propertyName))
@@ -581,13 +584,13 @@ namespace CslaGenerator.Controls
                         }
                     }
                 }
-                parent.ChildCollectionProperties.Add(col);
+                parent.ChildProperties.Add(col);
             }
         }
 
         private void editableRootCollectionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            NewObjectDefaults frm = NewObjectDefaults.NewReadOnlyListProperties();
+            NewObjectDefaults frm = NewObjectDefaults.NewListProperties();
             if (frm.ShowDialog() == DialogResult.OK)
             {
                 string collectionName = frm.GetPropertyValue("CollectionName");
@@ -598,6 +601,17 @@ namespace CslaGenerator.Controls
             }
         }
 
+        private void AddParentProperties(CslaObjectInfo parent, string parentProperties)
+        {
+            var lst = new ArrayList();
+            foreach (var prop in parent.ValueProperties)
+                if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
+                    lst.Add(prop);
+            foreach (Property prop in lst)
+                _currentCslaObject.ParentProperties.Add(prop);
+        }
+
+
         private void editableChildCollectionToolStripMenuItem_Click(object sender, EventArgs e)
         {
             NewObjectDefaults frm = NewObjectDefaults.NewEditableChildListProperties();
@@ -607,6 +621,7 @@ namespace CslaGenerator.Controls
                 string itemName = frm.GetPropertyValue("ItemName");
                 string parentName = frm.GetPropertyValue("ParentType");
                 string propertyName = frm.GetPropertyValue("PropertyNameInParentType");
+                string parentProperties = frm.GetPropertyValue("ParentProperties");
                 CslaObjectInfo parent = _currentUnit.CslaObjects.Find(parentName);
                 if (parent == null)
                 {
@@ -616,12 +631,14 @@ namespace CslaGenerator.Controls
                 NewCollection(CslaObjectType.EditableChildCollection, collectionName, itemName, parentName);
                 NewObject(CslaObjectType.EditableChild, itemName, collectionName);
                 AddPropertiesForSelectedColumns();
+
                 ArrayList lst = new ArrayList();
                 foreach (ValueProperty p in parent.ValueProperties)
                     if (p.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
                         lst.Add(p);
                 foreach (Property p in lst)
                     _currentCslaObject.ParentProperties.Add(p);
+
                 ChildProperty col = new ChildProperty();
                 col.TypeName = collectionName;
                 if (!string.IsNullOrEmpty(propertyName))
@@ -643,9 +660,22 @@ namespace CslaGenerator.Controls
             }
         }
 
+        private void dynamicEditableRootCollectionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            NewObjectDefaults frm = NewObjectDefaults.NewListProperties();
+            if (frm.ShowDialog() == DialogResult.OK)
+            {
+                string collectionName = frm.GetPropertyValue("CollectionName");
+                string itemName = frm.GetPropertyValue("ItemName");
+                NewCollection(CslaObjectType.DynamicEditableRootCollection, collectionName, itemName);
+                NewObject(CslaObjectType.DynamicEditableRoot, itemName, collectionName);
+                AddPropertiesForSelectedColumns();
+            }
+        }
+
         private void readOnlyRootToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            NewObjectDefaults frm = NewObjectDefaults.NewReadOnlyListProperties();
+            NewObjectDefaults frm = NewObjectDefaults.NewListProperties();
             if (frm.ShowDialog() == DialogResult.OK)
             {
                 string objectName = frm.GetPropertyValue("ObjectName");
@@ -656,12 +686,13 @@ namespace CslaGenerator.Controls
 
         private void readOnlyChildToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            NewObjectDefaults frm = NewObjectDefaults.NewEditableChildListProperties();
+            NewObjectDefaults frm = NewObjectDefaults.NewReadOnlyChildProperties();
             if (frm.ShowDialog() == DialogResult.OK)
             {
                 string objectName = frm.GetPropertyValue("ObjectName");
                 string parentName = frm.GetPropertyValue("ParentType");
                 string propertyName = frm.GetPropertyValue("PropertyNameInParentType");
+                string parentProperties = frm.GetPropertyValue("ParentProperties");
                 CslaObjectInfo parent = _currentUnit.CslaObjects.Find(parentName);
                 if (parent == null)
                 {
@@ -670,12 +701,14 @@ namespace CslaGenerator.Controls
                 }
                 NewObject(CslaObjectType.ReadOnlyObject, objectName, parentName);
                 AddPropertiesForSelectedColumns();
+
                 ArrayList lst = new ArrayList();
                 foreach (ValueProperty p in parent.ValueProperties)
                     if (p.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
                         lst.Add(p);
                 foreach (Property p in lst)
                     _currentCslaObject.ParentProperties.Add(p);
+
                 ChildProperty col = new ChildProperty();
                 col.TypeName = objectName;
                 if (!string.IsNullOrEmpty(propertyName))
@@ -693,13 +726,13 @@ namespace CslaGenerator.Controls
                         }
                     }
                 }
-                parent.ChildCollectionProperties.Add(col);
+                parent.ChildProperties.Add(col);
             }
         }
 
         private void readOnlyRootCollectionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            NewObjectDefaults frm = NewObjectDefaults.NewReadOnlyListProperties();
+            NewObjectDefaults frm = NewObjectDefaults.NewListProperties();
             if (frm.ShowDialog() == DialogResult.OK)
             {
                 string collectionName = frm.GetPropertyValue("CollectionName");
@@ -719,6 +752,7 @@ namespace CslaGenerator.Controls
                 string itemName = frm.GetPropertyValue("ItemName");
                 string parentName = frm.GetPropertyValue("ParentType");
                 string propertyName = frm.GetPropertyValue("PropertyNameInParentType");
+                string parentProperties = frm.GetPropertyValue("ParentProperties");
                 CslaObjectInfo parent = _currentUnit.CslaObjects.Find(parentName);
                 if (parent == null)
                 {
@@ -728,12 +762,14 @@ namespace CslaGenerator.Controls
                 NewCollection(CslaObjectType.ReadOnlyCollection, collectionName, itemName, parentName);
                 NewObject(CslaObjectType.ReadOnlyObject, itemName, collectionName);
                 AddPropertiesForSelectedColumns();
+
                 ArrayList lst = new ArrayList();
                 foreach (ValueProperty p in parent.ValueProperties)
                     if (p.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
                         lst.Add(p);
                 foreach (Property p in lst)
                     _currentCslaObject.ParentProperties.Add(p);
+
                 ChildProperty col = new ChildProperty();
                 col.TypeName = collectionName;
                 if (!string.IsNullOrEmpty(propertyName))
@@ -781,19 +817,6 @@ namespace CslaGenerator.Controls
             }
             else
                 MessageBox.Show(@"You must select a PK column and a non PK column in order to automatically create a name value list. If you need to create a NVL and can't meet this requirement, create a new object manually through the toolbar.", "New NVL", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
-
-        private void dynamicEditableRootCollectionToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            NewObjectDefaults frm = NewObjectDefaults.NewReadOnlyListProperties();
-            if (frm.ShowDialog() == DialogResult.OK)
-            {
-                string collectionName = frm.GetPropertyValue("CollectionName");
-                string itemName = frm.GetPropertyValue("ItemName");
-                NewCollection(CslaObjectType.DynamicEditableRootCollection, collectionName, itemName);
-                NewObject(CslaObjectType.DynamicEditableRoot, itemName, collectionName);
-                AddPropertiesForSelectedColumns();
-            }
         }
 
         private void newCriteriaToolStripMenuItem_Click(object sender, EventArgs e)
