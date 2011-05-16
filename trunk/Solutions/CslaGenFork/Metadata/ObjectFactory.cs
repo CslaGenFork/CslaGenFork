@@ -180,7 +180,7 @@ namespace CslaGenerator.Metadata
             StringBuilder sb = new StringBuilder();
             if (addedProps.Count > 0 && added)
             {
-                sb.Append("Successfully added the following properties:" + Environment.NewLine);
+                sb.Append("Successfully added the following Value Properties:" + Environment.NewLine);
                 foreach (var propName in addedProps)
                 {
                     sb.AppendFormat("\t{0}.{1}\r\n", _currentCslaObject.ObjectName, propName.Name);

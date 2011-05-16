@@ -956,9 +956,10 @@ namespace CslaGenerator.Util.PropertyBags
                              TargetFramework.CSLA40DAL) &&
                             (propertyName == "SimpleCacheOptions"))
                             return false;
-                        if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework ==
-                             TargetFramework.CSLA40DAL) &&
-                            (propertyName == "SupportUpdateProperties" || propertyName == "UpdateValueProperties"))
+                        // hide for all
+                        if (propertyName == "SupportUpdateProperties" ||
+                            propertyName == "UpdateValueProperties" ||
+                            propertyName == "UpdaterType")
                             return false;
                         if (typ != "UnitOfWork" &&
                             (propertyName == "UnitOfWorkCollectionProperties" || propertyName == "UnitOfWorkType"))

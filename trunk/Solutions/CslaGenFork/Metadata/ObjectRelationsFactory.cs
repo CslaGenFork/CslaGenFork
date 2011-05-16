@@ -368,7 +368,7 @@ namespace CslaGenerator.Metadata
             {
                 // display message to the user
                 sb = new StringBuilder();
-                sb.Append("Successfully added the following criteria properties:" + Environment.NewLine);
+                sb.AppendFormat("Successfully added the following properties to criteria {0}:" + Environment.NewLine, criteria.Name);
                 foreach (var propName in addedProps)
                 {
                     sb.AppendFormat("\t{0}.{1}.{2}" + Environment.NewLine, critName, info.ObjectName, propName);
@@ -536,7 +536,7 @@ namespace CslaGenerator.Metadata
             {
                 // display message to the user
                 sb = new StringBuilder();
-                sb.Append("Successfully added the following criteria properties:" + Environment.NewLine);
+                sb.AppendFormat("Successfully added the following properties to criteria {0}:" + Environment.NewLine, criteria.Name);
                 foreach (var propName in addedProps)
                 {
                     sb.AppendFormat("\t{0}.{1}.{2}" + Environment.NewLine, critName, info.ObjectName, propName);
@@ -684,7 +684,7 @@ namespace CslaGenerator.Metadata
             {
                 // display message to the user
                 sb = new StringBuilder();
-                sb.Append("Successfully added the following criteria properties:" + Environment.NewLine);
+                sb.AppendFormat("Successfully added the following properties to criteria {0}:" + Environment.NewLine, criteria.Name);
                 foreach (var propName in addedProps)
                 {
                     sb.AppendFormat("\t{0}.{1}.{2}" + Environment.NewLine, critName, info.ObjectName, propName);
