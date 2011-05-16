@@ -92,8 +92,8 @@ namespace DBSchemaInfo.MsSql
             DataTable table = new DataTable();
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
             sb.Append("	select object_name(constid) CONSTRAINT_NAME, ");
-            sb.Append("	db_name() TABLE_CATALOG, user_name(o1.uid) TABLE_SCHEMA, o1.name TABLE_NAME, c1.name COLUMN_NAME,");
-            sb.Append("	db_name() REF_TABLE_CATALOG, user_name(o2.uid) REF_TABLE_SCHEMA, o2.name REF_TABLE_NAME, c2.name  REF_COLUMN_NAME");
+            sb.Append("	db_name() TABLE_CATALOG, SCHEMA_NAME(o1.uid) TABLE_SCHEMA, o1.name TABLE_NAME, c1.name COLUMN_NAME,");
+            sb.Append("	db_name() REF_TABLE_CATALOG, SCHEMA_NAME(o2.uid) REF_TABLE_SCHEMA, o2.name REF_TABLE_NAME, c2.name  REF_COLUMN_NAME");
             sb.Append("	from sysforeignkeys a");
             sb.Append("	INNER JOIN syscolumns c1");
             sb.Append("		ON a.fkeyid = c1.id");
