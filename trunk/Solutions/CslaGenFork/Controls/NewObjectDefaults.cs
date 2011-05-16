@@ -33,7 +33,7 @@ namespace CslaGenerator.Controls
                     var combo = new ComboBox();
                     combo.Name = objectProp.PropertyName;
                     combo.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-                    combo.Items.AddRange(objectProp.ValueList);
+                    combo.Items.AddRange(objectProp.ResultValueList);
                     combo.AutoCompleteSource = AutoCompleteSource.ListItems;
                     combo.Tag = objectProp.PropertyName;
                     combo.Dock = DockStyle.Fill;
@@ -47,7 +47,7 @@ namespace CslaGenerator.Controls
                     var lstBox = new ListBox();
                     lstBox.Enabled = false;
                     lstBox.Name = objectProp.PropertyName;
-                    lstBox.Items.AddRange(objectProp.ValueList);
+                    lstBox.Items.AddRange(objectProp.ResultValueList);
                     lstBox.Tag = objectProp.PropertyName;
                     lstBox.Dock = DockStyle.Fill;
                     lstBox.TabIndex = i;
@@ -62,7 +62,7 @@ namespace CslaGenerator.Controls
                     var tBox = new TextBox();
                     tBox.Name = objectProp.PropertyName;
                     tBox.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-                    tBox.AutoCompleteCustomSource.AddRange(objectProp.ValueList);
+                    tBox.AutoCompleteCustomSource.AddRange(objectProp.ResultValueList);
                     tBox.AutoCompleteSource = AutoCompleteSource.CustomSource;
                     tBox.Tag = objectProp.PropertyName;
                     tBox.Dock = DockStyle.Fill;
@@ -178,14 +178,14 @@ namespace CslaGenerator.Controls
         {
             private readonly NewObjectDefaults _parent;
             private readonly string _propertyName;
-            private readonly string[] _valueList;
+            private readonly string[] _resultValueList;
             private string _propertyValue;
 
-            public ObjectProperty(NewObjectDefaults parent, string propertyName, string[] valueList)
+            public ObjectProperty(NewObjectDefaults parent, string propertyName, string[] resultValueList)
             {
                 _parent = parent;
                 _propertyName = propertyName;
-                _valueList = valueList;
+                _resultValueList = resultValueList;
             }
 
             public ObjectProperty(NewObjectDefaults parent, string propertyName)
@@ -193,9 +193,9 @@ namespace CslaGenerator.Controls
             {
             }
 
-            public string[] ValueList
+            public string[] ResultValueList
             {
-                get { return _valueList; }
+                get { return _resultValueList; }
             }
 
             public string PropertyName
@@ -205,7 +205,17 @@ namespace CslaGenerator.Controls
 
             public string PropertyValue
             {
-                get { return _propertyValue; }
+                get
+                {
+                    if (_propertyName == "ParentProperties")
+                    {
+                        var lstBox = _parent.tableLayoutPanel1.Controls.Find("ParentProperties", true)[0] as ListBox;
+                        if (lstBox != null)
+                            return lstBox.Tag.ToString();
+                    }
+
+                    return _propertyValue;
+                }
                 // ReSharper disable UnusedMember.Local
                 set
                 // ReSharper restore UnusedMember.Local
@@ -244,17 +254,22 @@ namespace CslaGenerator.Controls
                             foreach (var prop in valProps)
                                 lstBox.Items.Add(prop.Name);
 
+                            var first = true;
+                            var parentProps = string.Empty;
                             foreach (var prop in parentInfo.ValueProperties)
+                            {
                                 if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
+                                {
                                     lstBox.SelectedItems.Add(prop.Name);
+                                    if (!first) parentProps += ",";
+                                    else first = false;
+                                    parentProps += prop.Name;
+                                }
+                            }
+
+                            lstBox.Tag = parentProps;
                         }
                     }
-                }
-                else if (propertyName == "PropertyValue" && _propertyName == "ParentProperties")
-                {
-                    var lstBox = _parent.tableLayoutPanel1.Controls.Find("ParentProperties", true)[0] as ListBox;
-                    if (lstBox != null)
-                        _propertyValue = lstBox.Tag.ToString();
                 }
 
                 if (PropertyChanged != null)

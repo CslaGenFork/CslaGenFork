@@ -188,6 +188,19 @@ namespace CslaGenerator.Metadata
             string cat = null;
             if (_catalogName != null)
             {
+                // This was needed under Framework 4
+                /*if (_catalog != null)
+                {
+                    if (string.Compare(_catalogName, _catalog.CatalogName, true) != 0)
+                        cat = null; //When connecting to a DB with a different name
+                    else
+                        cat = _catalogName;
+                }
+                else
+                {
+                    cat = _catalogName;
+                }*/
+
                 if (string.Compare(_catalogName, _catalog.CatalogName, true) != 0)
                     cat = null; //When connecting to a DB with a different name
                 else
