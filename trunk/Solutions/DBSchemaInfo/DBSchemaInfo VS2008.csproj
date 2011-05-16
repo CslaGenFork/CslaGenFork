@@ -1,5 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -14,7 +13,7 @@
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
-    <OldToolsVersion>3.5</OldToolsVersion>
+    <OldToolsVersion>2.0</OldToolsVersion>
     <IsWebBootstrapper>true</IsWebBootstrapper>
     <PublishUrl>http://localhost/DBSchemaInfo/</PublishUrl>
     <Install>true</Install>
@@ -34,7 +33,6 @@
     <SccLocalPath>Svn</SccLocalPath>
     <SccAuxPath>Svn</SccAuxPath>
     <SccProvider>SubversionScc</SccProvider>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -44,7 +42,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -53,7 +50,6 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="MySql.Data, Version=5.0.3.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
@@ -98,26 +94,26 @@
     <Compile Include="Base\IResultObject.cs" />
     <Compile Include="Base\StandardForeignKeyColumnPair.cs" />
     <Compile Include="Base\StandardForeignKeyConstraint.cs" />
-    <Compile Include="Base\DBStructure.cs">
-      <DependentUpon>DBStructure.xsd</DependentUpon>
+    <Compile Include="Base\DBStructure VS2008.cs">
+      <DependentUpon>DBStructure VS2008.xsd</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Base\DBStructure.Designer.cs">
+    <Compile Include="Base\DBStructure VS2008.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>DBStructure.xsd</DependentUpon>
+      <DependentUpon>DBStructure VS2008.xsd</DependentUpon>
     </Compile>
     <Compile Include="MsSql\SqlStaticObjectBase.cs" />
     <Compile Include="MsSql\SqlViewInfo.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
+    <Compile Include="Properties\Resources VS2008.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
+      <DependentUpon>Resources VS2008.resx</DependentUpon>
     </Compile>
-    <Compile Include="Properties\Settings.Designer.cs">
+    <Compile Include="Properties\Settings VS2008.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
+      <DependentUpon>Settings VS2008.settings</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -148,26 +144,26 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Base\DBStructure.xsc">
-      <DependentUpon>DBStructure.xsd</DependentUpon>
+    <None Include="Base\DBStructure VS2008.xsc">
+      <DependentUpon>DBStructure VS2008.xsd</DependentUpon>
     </None>
-    <None Include="Base\DBStructure.xsd">
+    <None Include="Base\DBStructure VS2008.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>DBStructure.Designer.cs</LastGenOutput>
+      <LastGenOutput>DBStructure VS2008.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Base\DBStructure.xss">
-      <DependentUpon>DBStructure.xsd</DependentUpon>
+    <None Include="Base\DBStructure VS2008.xss">
+      <DependentUpon>DBStructure VS2008.xsd</DependentUpon>
     </None>
-    <None Include="Properties\Settings.settings">
+    <None Include="Properties\Settings VS2008.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+      <LastGenOutput>Settings VS2008.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
+    <EmbeddedResource Include="Properties\Resources VS2008.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <LastGenOutput>Resources VS2008.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
