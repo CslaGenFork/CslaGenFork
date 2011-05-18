@@ -8,17 +8,17 @@ using CslaGenerator.Metadata;
 
 namespace CslaGenerator.Controls
 {
-    public partial class NewObjectDefaults : Form
+    public partial class NewObjectProperties : Form
     {
-        private static NewObjectDefaults _identity;
+        private static NewObjectProperties _identity;
         private List<ObjectProperty> _propertyList;
 
-        public NewObjectDefaults()
+        public NewObjectProperties()
         {
             InitializeComponent();
         }
 
-        private NewObjectDefaults AssignList(List<ObjectProperty> list)
+        private NewObjectProperties AssignList(List<ObjectProperty> list)
         {
             _propertyList = list;
             for (int i = 0; i < list.Count; i++)
@@ -39,8 +39,8 @@ namespace CslaGenerator.Controls
                     combo.Dock = DockStyle.Fill;
                     combo.TabIndex = i;
                     combo.DataBindings.Add("Text", objectProp, "PropertyValue", false, DataSourceUpdateMode.OnValidation);
-                    tableLayoutPanel1.Controls.Add(lbl, 0, i);
-                    tableLayoutPanel1.Controls.Add(combo, 1, i);
+                    tableLayoutPanel.Controls.Add(lbl, 0, i);
+                    tableLayoutPanel.Controls.Add(combo, 1, i);
                 }
                 else if (objectProp.PropertyName == "ParentProperties")
                 {
@@ -52,10 +52,10 @@ namespace CslaGenerator.Controls
                     lstBox.Dock = DockStyle.Fill;
                     lstBox.TabIndex = i;
                     lstBox.DataBindings.Add("SelectedItem", objectProp, "PropertyValue", false, DataSourceUpdateMode.OnValidation);
-                    lstBox.SelectionMode = SelectionMode.MultiSimple;
+                    lstBox.SelectionMode = SelectionMode.MultiExtended;
                     lstBox.Validating += ListBox_Validating;
-                    tableLayoutPanel1.Controls.Add(lbl, 0, i);
-                    tableLayoutPanel1.Controls.Add(lstBox, 1, i);
+                    tableLayoutPanel.Controls.Add(lbl, 0, i);
+                    tableLayoutPanel.Controls.Add(lstBox, 1, i);
                 }
                 else
                 {
@@ -68,8 +68,8 @@ namespace CslaGenerator.Controls
                     tBox.Dock = DockStyle.Fill;
                     tBox.TabIndex = i;
                     tBox.DataBindings.Add("Text", objectProp, "PropertyValue", false, DataSourceUpdateMode.OnValidation);
-                    tableLayoutPanel1.Controls.Add(lbl, 0, i);
-                    tableLayoutPanel1.Controls.Add(tBox, 1, i);
+                    tableLayoutPanel.Controls.Add(lbl, 0, i);
+                    tableLayoutPanel.Controls.Add(tBox, 1, i);
                     if (i == 0)
                         ActiveControl = tBox;
                 }
@@ -105,9 +105,10 @@ namespace CslaGenerator.Controls
             return String.Empty;
         }
 
-        public static NewObjectDefaults NewEditableChildProperties()
+        public static NewObjectProperties NewEditableChildProperties()
         {
-            _identity = new NewObjectDefaults();
+            _identity = new NewObjectProperties();
+            _identity.Text = @"New Editable Child Properties";
             var list = new List<ObjectProperty>();
             list.Add(new ObjectProperty(_identity, "ObjectName"));
             list.Add(new ObjectProperty(_identity, "ParentType",
@@ -117,9 +118,10 @@ namespace CslaGenerator.Controls
             return _identity.AssignList(list);
         }
 
-        public static NewObjectDefaults NewEditableChildListProperties()
+        public static NewObjectProperties NewEditableChildListProperties()
         {
-            _identity = new NewObjectDefaults();
+            _identity = new NewObjectProperties();
+            _identity.Text = @"New Editable Child Collection Properties";
             var list = new List<ObjectProperty>();
             list.Add(new ObjectProperty(_identity, "CollectionName"));
             list.Add(new ObjectProperty(_identity, "ItemName"));
@@ -130,9 +132,10 @@ namespace CslaGenerator.Controls
             return _identity.AssignList(list);
         }
 
-        public static NewObjectDefaults NewReadOnlyChildProperties()
+        public static NewObjectProperties NewReadOnlyChildProperties()
         {
-            _identity = new NewObjectDefaults();
+            _identity = new NewObjectProperties();
+            _identity.Text = @"New Read Only Child Object Properties";
             var list = new List<ObjectProperty>();
             list.Add(new ObjectProperty(_identity, "ObjectName"));
             list.Add(new ObjectProperty(_identity, "ParentType",
@@ -142,9 +145,10 @@ namespace CslaGenerator.Controls
             return _identity.AssignList(list);
         }
 
-        public static NewObjectDefaults NewReadOnlyChildListProperties()
+        public static NewObjectProperties NewReadOnlyChildListProperties()
         {
-            _identity = new NewObjectDefaults();
+            _identity = new NewObjectProperties();
+            _identity.Text = @"New Read Only Child Collection Properties";
             var list = new List<ObjectProperty>();
             list.Add(new ObjectProperty(_identity, "CollectionName"));
             list.Add(new ObjectProperty(_identity, "ItemName"));
@@ -155,18 +159,20 @@ namespace CslaGenerator.Controls
             return _identity.AssignList(list);
         }
 
-        public static NewObjectDefaults NewListProperties()
+        public static NewObjectProperties NewListProperties(string objectType)
         {
-            _identity = new NewObjectDefaults();
+            _identity = new NewObjectProperties();
+            _identity.Text = @"New " + objectType + @" Properties";
             var list = new List<ObjectProperty>();
             list.Add(new ObjectProperty(_identity, "CollectionName"));
             list.Add(new ObjectProperty(_identity, "ItemName"));
             return _identity.AssignList(list);
         }
 
-        public static NewObjectDefaults NewNVLProperties()
+        public static NewObjectProperties NewNVLProperties()
         {
-            _identity = new NewObjectDefaults();
+            _identity = new NewObjectProperties();
+            _identity.Text = @"New Name Value List Properties";
             var list = new List<ObjectProperty>();
             list.Add(new ObjectProperty(_identity, "CollectionName"));
             return _identity.AssignList(list);
@@ -176,19 +182,19 @@ namespace CslaGenerator.Controls
 
         private class ObjectProperty : INotifyPropertyChanged
         {
-            private readonly NewObjectDefaults _parent;
+            private readonly NewObjectProperties _parent;
             private readonly string _propertyName;
             private readonly string[] _resultValueList;
             private string _propertyValue;
 
-            public ObjectProperty(NewObjectDefaults parent, string propertyName, string[] resultValueList)
+            public ObjectProperty(NewObjectProperties parent, string propertyName, string[] resultValueList)
             {
                 _parent = parent;
                 _propertyName = propertyName;
                 _resultValueList = resultValueList;
             }
 
-            public ObjectProperty(NewObjectDefaults parent, string propertyName)
+            public ObjectProperty(NewObjectProperties parent, string propertyName)
                 : this(parent, propertyName, new string[] { })
             {
             }
@@ -209,7 +215,7 @@ namespace CslaGenerator.Controls
                 {
                     if (_propertyName == "ParentProperties")
                     {
-                        var lstBox = _parent.tableLayoutPanel1.Controls.Find("ParentProperties", true)[0] as ListBox;
+                        var lstBox = _parent.tableLayoutPanel.Controls.Find("ParentProperties", true)[0] as ListBox;
                         if (lstBox != null)
                             return lstBox.Tag.ToString();
                     }
@@ -237,7 +243,7 @@ namespace CslaGenerator.Controls
                     !string.IsNullOrEmpty(_propertyValue))
                 {
                     var parentInfo = GeneratorController.Current.CurrentUnit.CslaObjects.Find(_propertyValue);
-                    var lstBox = _parent.tableLayoutPanel1.Controls.Find("ParentProperties", true)[0] as ListBox;
+                    var lstBox = _parent.tableLayoutPanel.Controls.Find("ParentProperties", true)[0] as ListBox;
                     if (lstBox != null)
                     {
                         lstBox.Items.Clear();

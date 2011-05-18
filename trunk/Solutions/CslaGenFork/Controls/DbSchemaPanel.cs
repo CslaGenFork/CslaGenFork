@@ -533,7 +533,7 @@ namespace CslaGenerator.Controls
 
         private void editableRootToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            NewObjectDefaults frm = NewObjectDefaults.NewListProperties();
+            NewObjectProperties frm = NewObjectProperties.NewListProperties("Editable Root");
             if (frm.ShowDialog() == DialogResult.OK)
             {
                 string objectName = frm.GetPropertyValue("ObjectName");
@@ -544,7 +544,7 @@ namespace CslaGenerator.Controls
 
         private void editableChildToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            NewObjectDefaults frm = NewObjectDefaults.NewEditableChildProperties();
+            NewObjectProperties frm = NewObjectProperties.NewEditableChildProperties();
             if (frm.ShowDialog() == DialogResult.OK)
             {
                 var objectName = frm.GetPropertyValue("ObjectName");
@@ -560,8 +560,9 @@ namespace CslaGenerator.Controls
                 NewObject(CslaObjectType.EditableChild, objectName, parentName);
                 AddParentProperties(parent, parentProperties);
                 AddPropertiesForSelectedColumns(parent);
+                AddChildToParent(parent, objectName, propertyName);
 
-                var child = new ChildProperty();
+                /*var child = new ChildProperty();
                 child.TypeName = objectName;
                 if (!string.IsNullOrEmpty(propertyName))
                     child.Name = propertyName;
@@ -578,18 +579,18 @@ namespace CslaGenerator.Controls
                         }
                     }
                 }
-                parent.ChildProperties.Add(child);
+                parent.ChildProperties.Add(child);*/
             }
         }
 
         private void editableRootCollectionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            NewObjectDefaults frm = NewObjectDefaults.NewListProperties();
+            NewObjectProperties frm = NewObjectProperties.NewListProperties("Editable Root Collection");
             if (frm.ShowDialog() == DialogResult.OK)
             {
                 string collectionName = frm.GetPropertyValue("CollectionName");
                 string itemName = frm.GetPropertyValue("ItemName");
-                NewCollection(CslaObjectType.EditableRootCollection, collectionName, itemName);
+                NewRootCollection(CslaObjectType.EditableRootCollection, collectionName, itemName);
                 NewObject(CslaObjectType.EditableChild, itemName, collectionName);
                 AddPropertiesForSelectedColumns();
             }
@@ -597,7 +598,7 @@ namespace CslaGenerator.Controls
 
         private void editableChildCollectionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            NewObjectDefaults frm = NewObjectDefaults.NewEditableChildListProperties();
+            NewObjectProperties frm = NewObjectProperties.NewEditableChildListProperties();
             if (frm.ShowDialog() == DialogResult.OK)
             {
                 var collectionName = frm.GetPropertyValue("CollectionName");
@@ -615,8 +616,9 @@ namespace CslaGenerator.Controls
                 NewObject(CslaObjectType.EditableChild, itemName, collectionName);
                 AddParentProperties(parent, parentProperties);
                 AddPropertiesForSelectedColumns(parent);
+                AddChildCollectionToParent(parent, collectionName, propertyName);
 
-                var coll = new ChildProperty();
+                /*var coll = new ChildProperty();
                 coll.TypeName = collectionName;
                 if (!string.IsNullOrEmpty(propertyName))
                     coll.Name = propertyName;
@@ -633,18 +635,18 @@ namespace CslaGenerator.Controls
                         }
                     }
                 }
-                parent.ChildCollectionProperties.Add(coll);
+                parent.ChildCollectionProperties.Add(coll);*/
             }
         }
 
         private void dynamicEditableRootCollectionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            NewObjectDefaults frm = NewObjectDefaults.NewListProperties();
+            NewObjectProperties frm = NewObjectProperties.NewListProperties("Dynamic Editable Root Collection");
             if (frm.ShowDialog() == DialogResult.OK)
             {
                 string collectionName = frm.GetPropertyValue("CollectionName");
                 string itemName = frm.GetPropertyValue("ItemName");
-                NewCollection(CslaObjectType.DynamicEditableRootCollection, collectionName, itemName);
+                NewRootCollection(CslaObjectType.DynamicEditableRootCollection, collectionName, itemName);
                 NewObject(CslaObjectType.DynamicEditableRoot, itemName, collectionName);
                 AddPropertiesForSelectedColumns();
             }
@@ -652,18 +654,18 @@ namespace CslaGenerator.Controls
 
         private void readOnlyRootToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            NewObjectDefaults frm = NewObjectDefaults.NewListProperties();
+            NewObjectProperties frm = NewObjectProperties.NewListProperties(@"Read Only Root Object");
             if (frm.ShowDialog() == DialogResult.OK)
             {
                 string objectName = frm.GetPropertyValue("ObjectName");
-                NewObject(CslaObjectType.EditableRoot, objectName, "");
+                NewObject(CslaObjectType.ReadOnlyObject, objectName, "");
                 AddPropertiesForSelectedColumns();
             }
         }
 
         private void readOnlyChildToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            NewObjectDefaults frm = NewObjectDefaults.NewReadOnlyChildProperties();
+            NewObjectProperties frm = NewObjectProperties.NewReadOnlyChildProperties();
             if (frm.ShowDialog() == DialogResult.OK)
             {
                 var objectName = frm.GetPropertyValue("ObjectName");
@@ -679,8 +681,9 @@ namespace CslaGenerator.Controls
                 NewObject(CslaObjectType.ReadOnlyObject, objectName, parentName);
                 AddParentProperties(parent, parentProperties);
                 AddPropertiesForSelectedColumns(parent);
+                AddChildToParent(parent, objectName, propertyName);
 
-                var child = new ChildProperty();
+                /*var child = new ChildProperty();
                 child.TypeName = objectName;
                 if (!string.IsNullOrEmpty(propertyName))
                     child.Name = propertyName;
@@ -697,18 +700,18 @@ namespace CslaGenerator.Controls
                         }
                     }
                 }
-                parent.ChildProperties.Add(child);
+                parent.ChildProperties.Add(child);*/
             }
         }
 
         private void readOnlyRootCollectionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            NewObjectDefaults frm = NewObjectDefaults.NewListProperties();
+            NewObjectProperties frm = NewObjectProperties.NewListProperties("Read Only Root Collection");
             if (frm.ShowDialog() == DialogResult.OK)
             {
                 string collectionName = frm.GetPropertyValue("CollectionName");
                 string itemName = frm.GetPropertyValue("ItemName");
-                NewCollection(CslaObjectType.ReadOnlyCollection, collectionName, itemName);
+                NewRootCollection(CslaObjectType.ReadOnlyCollection, collectionName, itemName);
                 NewObject(CslaObjectType.ReadOnlyObject, itemName, collectionName);
                 AddPropertiesForSelectedColumns();
             }
@@ -716,7 +719,7 @@ namespace CslaGenerator.Controls
 
         private void readOnlyChildCollectionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            NewObjectDefaults frm = NewObjectDefaults.NewReadOnlyChildListProperties();
+            NewObjectProperties frm = NewObjectProperties.NewReadOnlyChildListProperties();
             if (frm.ShowDialog() == DialogResult.OK)
             {
                 var collectionName = frm.GetPropertyValue("CollectionName");
@@ -734,8 +737,9 @@ namespace CslaGenerator.Controls
                 NewObject(CslaObjectType.ReadOnlyObject, itemName, collectionName);
                 AddParentProperties(parent, parentProperties);
                 AddPropertiesForSelectedColumns(parent);
+                AddChildCollectionToParent(parent, collectionName, propertyName);
 
-                var coll = new ChildProperty();
+                /*var coll = new ChildProperty();
                 coll.TypeName = collectionName;
                 if (!string.IsNullOrEmpty(propertyName))
                     coll.Name = propertyName;
@@ -752,7 +756,7 @@ namespace CslaGenerator.Controls
                         }
                     }
                 }
-                parent.ChildCollectionProperties.Add(coll);
+                parent.ChildCollectionProperties.Add(coll);*/
             }
         }
 
@@ -769,7 +773,7 @@ namespace CslaGenerator.Controls
             }
             if (pkColumn != null && valueColumn != null && dbColumns1.ListColumns.SelectedItems.Count == 2)
             {
-                NewObjectDefaults frm = NewObjectDefaults.NewNVLProperties();
+                NewObjectProperties frm = NewObjectProperties.NewNVLProperties();
 
                 if (frm.ShowDialog() == DialogResult.OK)
                 {
@@ -828,7 +832,7 @@ namespace CslaGenerator.Controls
 
         #region New Object creation
 
-        private void NewCollection(CslaObjectType type, string name, string item)
+        private void NewRootCollection(CslaObjectType type, string name, string item)
         {
             NewCollection(type, name, item, String.Empty);
         }
@@ -982,6 +986,50 @@ namespace CslaGenerator.Controls
             var dbObject = GetCurrentDBObject();
             var resultSet = GetCurrentResultSet();
             _currentFactory.AddProperties(_currentCslaObject, dbObject, resultSet, columns, true, false);
+        }
+
+        private static void AddChildToParent(CslaObjectInfo parent, string objectName, string propertyName)
+        {
+            var child = new ChildProperty();
+            child.TypeName = objectName;
+            if (!string.IsNullOrEmpty(propertyName))
+                child.Name = propertyName;
+            else
+                child.Name = objectName;
+            child.ReadOnly = true;
+            foreach (var crit in parent.CriteriaObjects)
+            {
+                if (crit.GetOptions.Factory || crit.GetOptions.AddRemove || crit.GetOptions.DataPortal)
+                {
+                    foreach (var prop in crit.Properties)
+                    {
+                        child.LoadParameters.Add(new Parameter(crit, prop));
+                    }
+                }
+            }
+            parent.ChildProperties.Add(child);
+        }
+
+        private static void AddChildCollectionToParent(CslaObjectInfo parent, string collectionName, string propertyName)
+        {
+            var coll = new ChildProperty();
+            coll.TypeName = collectionName;
+            if (!string.IsNullOrEmpty(propertyName))
+                coll.Name = propertyName;
+            else
+                coll.Name = collectionName;
+            coll.ReadOnly = true;
+            foreach (var crit in parent.CriteriaObjects)
+            {
+                if (crit.GetOptions.Factory || crit.GetOptions.AddRemove || crit.GetOptions.DataPortal)
+                {
+                    foreach (var prop in crit.Properties)
+                    {
+                        coll.LoadParameters.Add(new Parameter(crit, prop));
+                    }
+                }
+            }
+            parent.ChildCollectionProperties.Add(coll);
         }
 
         private IResultSet GetCurrentResultSet()

@@ -18,8 +18,8 @@
 bool first = false;
 List<IResultObject> tables = GetTablesDelete(Info);
 SortTables(tables);
-string plainTableSchema = tables[0].ObjectSchema + ".";
-string fullTableSchema = "[" + tables[0].ObjectSchema + "].";
+string plainTableSchema = GetSchema(tables[0], false);
+string fullTableSchema = GetSchema(tables[0], true);
 bool timeStampColumn=false;
 string procName=String.Empty;
 string parms=String.Empty;
@@ -72,7 +72,7 @@ else
         if (!first)
         {
             if (parm.DbBindColumn.NativeType != "timestamp")
-                whereClauseTS += " \r\n        AND    ";
+                whereClauseTS += "\r\n        AND    ";
             whereClause += "\r\n        AND    ";
             parms += ","  + Environment.NewLine;
         }
@@ -236,8 +236,8 @@ AS
                 {
                     List<IResultObject> childTables = GetTablesDelete(childInfo);
                     SortTables(childTables);
-                    string plainChildSchema = tables[0].ObjectSchema + ".";
-                    string fullChildSchema = "[" + tables[0].ObjectSchema + "].";
+                    //string plainChildSchema = GetSchema(tables[0], false);
+                    string fullChildSchema = GetSchema(tables[0], true);
                     if (!UseBoolSoftDelete(childTables, false))
                     {
                         Response.Write("\r\n");

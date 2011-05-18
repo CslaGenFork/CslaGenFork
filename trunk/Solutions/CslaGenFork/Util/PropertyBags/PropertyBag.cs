@@ -918,7 +918,8 @@ namespace CslaGenerator.Util.PropertyBags
                         if (!_propertyContext.ShowProperty(typ, propertyName))
                             return false;
                         if (!GeneratorController.Current.CurrentUnit.GenerationParams.ActiveObjects &&
-                            (propertyName == "PublishToChannel" || propertyName == "SubscribeToChannel"))
+                            (propertyName == "PublishToChannel" ||
+                            propertyName == "SubscribeToChannel"))
                             return false;
                         if (((GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization ==
                               Authorization.None ||
@@ -948,13 +949,20 @@ namespace CslaGenerator.Util.PropertyBags
                              TargetFramework.CSLA40 ||
                              GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework ==
                              TargetFramework.CSLA40DAL) &&
-                            (propertyName == "CacheResults"))
+                             typ == "EditableChildCollection" &&
+                            propertyName == "ParentProperties")
+                            return false;
+                        if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework ==
+                             TargetFramework.CSLA40 ||
+                             GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework ==
+                             TargetFramework.CSLA40DAL) &&
+                            propertyName == "CacheResults")
                             return false;
                         if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework !=
                              TargetFramework.CSLA40 &&
                              GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework !=
                              TargetFramework.CSLA40DAL) &&
-                            (propertyName == "SimpleCacheOptions"))
+                            propertyName == "SimpleCacheOptions")
                             return false;
                         // hide for all
                         if (propertyName == "SupportUpdateProperties" ||

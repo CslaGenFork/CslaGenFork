@@ -34,8 +34,8 @@ if (GenerateSP)
     List<IResultObject> tables = GetTablesUpdate(Info);
     string timeStampColumn = String.Empty;
     SortTables(tables);
-    string plainTableSchema = tables[0].ObjectSchema + ".";
-    string fullTableSchema = "[" + tables[0].ObjectSchema + "].";
+    string plainTableSchema = GetSchema(tables[0], false);
+    string fullTableSchema = GetSchema(tables[0], true);
     bool useBoolSoftDelete = UseBoolSoftDelete(tables, IgnoreFilter(Info));
 %>
 /****** Object:  StoredProcedure <%= fullTableSchema %>[<%= Info.UpdateProcedureName %>]    Script Date: <%= DateTime.Now %> ******/
@@ -241,12 +241,10 @@ AS
     %>
         <%-- Update ------------------------%>
     <%
-    string plainTableSchema2 = string.Empty;
-    string fullTableSchema2 = string.Empty;
     foreach(IResultObject table in tables)
     {
-        plainTableSchema2 = table.ObjectSchema + ".";
-        fullTableSchema2 = "[" + table.ObjectSchema + "].";
+        string plainTableSchema2 = GetSchema(table, false);
+        string fullTableSchema2 = GetSchema(table, true);
         %>
 
         /* Update object in <%= plainTableSchema2 %><%= table.ObjectName %> */

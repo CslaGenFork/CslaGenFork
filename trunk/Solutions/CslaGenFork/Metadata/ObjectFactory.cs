@@ -421,7 +421,8 @@ namespace CslaGenerator.Metadata
                 return;
 
             if (_currentCslaObject.ObjectType == CslaObjectType.NameValueList ||
-                _currentCslaObject.ObjectType == CslaObjectType.ReadOnlyCollection ||
+                (_currentCslaObject.ObjectType == CslaObjectType.ReadOnlyCollection &&
+                _currentCslaObject.ParentType == string.Empty) ||
                 _currentCslaObject.ObjectType == CslaObjectType.EditableRootCollection ||
                 _currentCslaObject.ObjectType == CslaObjectType.DynamicEditableRootCollection)
             {

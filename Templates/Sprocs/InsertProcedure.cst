@@ -20,8 +20,8 @@ ValueProperty propPK = null;
 List<IResultObject> tables = GetTablesInsert(Info);
 string timeStampColumn = String.Empty;
 SortTables(tables);
-string plainTableSchema = tables[0].ObjectSchema + ".";
-string fullTableSchema = "[" + tables[0].ObjectSchema + "].";
+string plainTableSchema = GetSchema(tables[0], false);
+string fullTableSchema = GetSchema(tables[0], true);
 /*
 ValuePropertyCollection allValueProps = new ValuePropertyCollection();
 allValueProps.AddRange(Info.GetAllValueProperties());
@@ -82,8 +82,8 @@ AS
 <%
 foreach(IResultObject table in tables)
 {
-    string plainTableSchema2 = tables[0].ObjectSchema + ".";
-    string fullTableSchema2 = "[" + tables[0].ObjectSchema + "].";
+    string plainTableSchema2 = GetSchema(table, false);
+    string fullTableSchema2 = GetSchema(table, true);
     first = true;
     string fields=string.Empty;
     string parms=string.Empty;

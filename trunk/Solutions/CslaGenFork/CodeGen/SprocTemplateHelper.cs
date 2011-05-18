@@ -94,6 +94,17 @@ namespace CslaGenerator.CodeGen
             _topLevelObject = info;
         }
 
+        public string GetSchema(IResultObject table, bool fullSchema)
+        {
+            if (!Info.Parent.GenerationParams.GenerateQueriesWithSchema)
+                return "";
+            
+            if (fullSchema)
+                return "[" + table.ObjectSchema + "].";
+
+            return table.ObjectSchema + ".";
+        }
+
         public void StoreCorrelationNames(CslaObjectInfo info)
         {
             correlationNames.Clear();
@@ -306,7 +317,7 @@ namespace CslaGenerator.CodeGen
             sb.Append(Indent(2) + "FROM ");
             if (tables.Count == 1)
             {
-                sb.AppendFormat("[{0}].[{1}]", tables[0].ObjectSchema, tables[0].ObjectName);
+                sb.AppendFormat("{0}[{1}]", GetSchema(tables[0], true), tables[0].ObjectName);
                 sb.Append(Environment.NewLine);
                 return sb.ToString();
             }
@@ -334,10 +345,10 @@ namespace CslaGenerator.CodeGen
                             {
                                 if (first)
                                 {
-                                    sb.AppendFormat("[{0}].[{1}]", key.PKTable.ObjectSchema, key.PKTable.ObjectName);
+                                    sb.AppendFormat("{0}[{1}]", GetSchema(key.PKTable, true), key.PKTable.ObjectName);
                                     sb.Append(Environment.NewLine + Indent(3));
                                     sb.Append(" INNER JOIN ");
-                                    sb.AppendFormat("[{0}].[{1}]", key.ConstraintTable.ObjectSchema, key.ConstraintTable.ObjectName);
+                                    sb.AppendFormat("{0}[{1}]", GetSchema(key.ConstraintTable, true), key.ConstraintTable.ObjectName);
                                     sb.Append(" ON ");
                                     bool firstCol = true;
                                     for (int i = 0; i < key.Columns.Count; i++)
@@ -362,7 +373,7 @@ namespace CslaGenerator.CodeGen
                                     usedTables.Add(curTable);
                                     sb.Append(Environment.NewLine + Indent(3));
                                     sb.Append(" INNER JOIN ");
-                                    sb.AppendFormat("[{0}].[{1}]", curTable.ObjectSchema, curTable.ObjectName);
+                                    sb.AppendFormat("{0}[{1}]", GetSchema(curTable, true), curTable.ObjectName);
                                     sb.Append(" ON ");
                                     bool firstCol = true;
                                     for (int i = 0; i < key.Columns.Count; i++)
@@ -395,13 +406,13 @@ namespace CslaGenerator.CodeGen
             sb.Append(Indent(2) + "FROM ");
             if (tables.Count == 1)
             {
-                sb.AppendFormat("[{0}].[{1}]", tables[0].ObjectSchema, curTable.ObjectName);
+                sb.AppendFormat("{0}[{1}]", GetSchema(tables[0], true), curTable.ObjectName);
                 sb.Append(Environment.NewLine);
                 return sb.ToString();
             }
             else if (tables.Count > 1)
             {
-                sb.AppendFormat("[{0}].[{1}]", curTable.ObjectSchema, curTable.ObjectName);
+                sb.AppendFormat("{0}[{1}]", GetSchema(curTable, true), curTable.ObjectName);
                 ValuePropertyCollection vpc = new ValuePropertyCollection();
                 vpc.AddRange(info.GetAllValueProperties());
                 foreach (ValueProperty vp in vpc)
@@ -415,7 +426,7 @@ namespace CslaGenerator.CodeGen
                             {
                                 sb.Append(Environment.NewLine + Indent(3));
                                 sb.Append(" INNER JOIN ");
-                                sb.AppendFormat("[{0}].[{1}]", fKey.PKTable.ObjectSchema, fKey.PKTable.ObjectName);
+                                sb.AppendFormat("{0}[{1}]", GetSchema(fKey.PKTable, true), fKey.PKTable.ObjectName);
                                 string corrName = GetCorrelationName(vp);
                                 if (corrName != vp.DbBindColumn.ObjectName)
                                     sb.AppendFormat(" AS [{0}]", corrName);
