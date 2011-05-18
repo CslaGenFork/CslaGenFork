@@ -18,6 +18,8 @@
 bool first = false;
 List<IResultObject> tables = GetTablesDelete(Info);
 SortTables(tables);
+string plainTableSchema = tables[0].ObjectSchema + ".";
+string fullTableSchema = "[" + tables[0].ObjectSchema + "].";
 bool timeStampColumn=false;
 string procName=String.Empty;
 string parms=String.Empty;
@@ -87,13 +89,13 @@ else
     }
 }
 %>
-/***** <%=procName%> *****/
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[<%=procName%>]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-    DROP PROCEDURE [<%=procName%>]
+/****** Object:  StoredProcedure <%= fullTableSchema %>[<%= procName %>]    Script Date: <%= DateTime.Now %> ******/
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'<%= fullTableSchema %>[<%= procName %>]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE <%= fullTableSchema %>[<%= procName %>]
 GO
 
-CREATE PROCEDURE [<%=procName%>]
-<%=parms%>
+CREATE PROCEDURE <%= fullTableSchema %>[<%= procName %>]
+<%= parms %>
 AS
     BEGIN
 
@@ -108,7 +110,7 @@ AS
                 foreach (ValueProperty prop in Info.GetParentValueProperties())
                 {
                     if (!first) { %>, <% } else { first = false; }
-                %>[<%=GetColumnString(prop.DbBindColumn)%>]<%
+                %>[<%= GetColumnString(prop.DbBindColumn) %>]<%
                 }
             }
             foreach (ValueProperty prop in Info.ValueProperties)
@@ -116,10 +118,10 @@ AS
                 if (prop.DbBindColumn.IsPrimaryKey)
                 {
                     if (!first) { %>, <% } else { first = false; }
-            %>[<%=GetColumnString(prop.DbBindColumn)%>]<%
+            %>[<%= GetColumnString(prop.DbBindColumn) %>]<%
                 }
             }
-            %> FROM [<%=tables[0].ObjectName%>]
+            %> FROM <%= fullTableSchema %>[<%= tables[0].ObjectName %>]
             WHERE  <%
             first = true;
             if (!Info.ParentInsertOnly)
@@ -130,7 +132,7 @@ AS
                     {
                     %>
             AND    <% } else { first = false; }
-            %>[<%=GetColumnString(prop.DbBindColumn)%>] = @<%=prop.ParameterName%><%
+            %>[<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
                 }
             }
             foreach (ValueProperty prop in Info.GetAllValueProperties())
@@ -141,7 +143,7 @@ AS
                     {
                     %>
             AND    <% } else { first = false; }
-            %>[<%=GetColumnString(prop.DbBindColumn)%>] = @<%=prop.ParameterName%><%
+            %>[<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
                 }
             }
             if (UseBoolSoftDelete(tables, IgnoreFilter(Info)))
@@ -168,7 +170,7 @@ AS
             %>
         )
         BEGIN
-            RAISERROR ('''<%=Info.ObjectName%>'' object not found. It was probably removed by another user.', 16, 1)
+            RAISERROR ('''<%= plainTableSchema %><%= Info.ObjectName %>'' object not found. It was probably removed by another user.', 16, 1)
             RETURN
         END
         <%
@@ -185,7 +187,7 @@ AS
                 foreach (ValueProperty prop in Info.GetParentValueProperties())
                 {
                     if (!first) { %>, <% } else { first = false; }
-                %>[<%=GetColumnString(prop.DbBindColumn)%>]<%
+                %>[<%= GetColumnString(prop.DbBindColumn) %>]<%
                 }
             }
             foreach (ValueProperty prop in Info.ValueProperties)
@@ -193,10 +195,10 @@ AS
                 if (prop.DbBindColumn.IsPrimaryKey)
                 {
                     if (!first) { %>, <% } else { first = false; }
-            %>[<%=GetColumnString(prop.DbBindColumn)%>]<%
+            %>[<%= GetColumnString(prop.DbBindColumn) %>]<%
                 }
             }
-            %> FROM [<%=tables[0].ObjectName%>]
+            %> FROM <%= fullTableSchema %>[<%= tables[0].ObjectName %>]
             WHERE  <%
             first = true;
             if (!Info.ParentInsertOnly)
@@ -205,20 +207,20 @@ AS
                 {
                     if (!first) { %>
             AND    <% } else { first = false; }
-            %>[<%=GetColumnString(prop.DbBindColumn)%>] = @<%=prop.ParameterName%><%
+            %>[<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
                 }
             }
             foreach (ValueProperty prop in Info.ValueProperties) {
                 if (prop.DbBindColumn.IsPrimaryKey || prop.DbBindColumn.NativeType == "timestamp") {
                     if (!first) { %>
             AND    <% } else { first = false; }
-            %>[<%=GetColumnString(prop.DbBindColumn)%>] = @<%=prop.ParameterName%><%
+            %>[<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
                 }
             }
             %>
         )
         BEGIN
-            RAISERROR ('''<%=Info.ObjectName%>'' object was modified by another user.', 16, 1)
+            RAISERROR ('''<%= plainTableSchema %><%= Info.ObjectName %>'' object was modified by another user.', 16, 1)
             RETURN
         END
         <%
@@ -234,12 +236,14 @@ AS
                 {
                     List<IResultObject> childTables = GetTablesDelete(childInfo);
                     SortTables(childTables);
+                    string plainChildSchema = tables[0].ObjectSchema + ".";
+                    string fullChildSchema = "[" + tables[0].ObjectSchema + "].";
                     if (!UseBoolSoftDelete(childTables, false))
                     {
                         Response.Write("\r\n");
                         %>
-        /* Delete child <%= childInfo.ObjectName %> from <%=childTables[0].ObjectName%> */
-        DELETE FROM [<%= childTables[0].ObjectName %>]
+        /* Delete child <%= childInfo.ObjectName %> from <%= childTables[0].ObjectName %> */
+        DELETE FROM <%= fullChildSchema %>[<%= childTables[0].ObjectName %>]
         WHERE  <%= whereClause %>
         <%
                     }
@@ -248,7 +252,7 @@ AS
                         Response.Write("\r\n");
                         %>
         /* Mark child <%= childInfo.ObjectName %> as not active */
-        UPDATE [<%= childTables[0].ObjectName %>]
+        UPDATE <%= fullChildSchema %>[<%= childTables[0].ObjectName %>]
         SET    [<%= childInfo.Parent.Params.SpBoolSoftDeleteColumn %>] = 'false'
         WHERE  <%= whereClause %>
         <%
@@ -261,15 +265,15 @@ AS
         {
             Response.Write("\r\n");
             %>
-        /* Delete <%= Info.ObjectName %> object from <%=tables[0].ObjectName%> */
-        DELETE FROM [<%= tables[0].ObjectName %>]
+        /* Delete <%= Info.ObjectName %> object from <%= tables[0].ObjectName %> */
+        DELETE FROM <%= fullTableSchema %>[<%= tables[0].ObjectName %>]
         WHERE  <%= whereClause %><%
         }
         else
         {
             %>
         /* Mark <%= Info.ObjectName %> object as not active */
-        UPDATE [<%= tables[0].ObjectName %>]
+        UPDATE <%= fullTableSchema %>[<%= tables[0].ObjectName %>]
         SET    [<%= Info.Parent.Params.SpBoolSoftDeleteColumn %>] = 'false'
         WHERE  <%= whereClause %><%
         }

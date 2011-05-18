@@ -415,7 +415,7 @@ namespace CslaGenerator.CodeGen
                             {
                                 sb.Append(Environment.NewLine + Indent(3));
                                 sb.Append(" INNER JOIN ");
-                                sb.AppendFormat("[{0}].[{1}]", curTable.ObjectSchema, fKey.PKTable.ObjectName);
+                                sb.AppendFormat("[{0}].[{1}]", fKey.PKTable.ObjectSchema, fKey.PKTable.ObjectName);
                                 string corrName = GetCorrelationName(vp);
                                 if (corrName != vp.DbBindColumn.ObjectName)
                                     sb.AppendFormat(" AS [{0}]", corrName);
@@ -635,6 +635,37 @@ namespace CslaGenerator.CodeGen
         }
 
         #region Tables
+
+        public List<IResultObject> GetTablesSelect(CslaObjectInfo info)
+        {
+            var tables = new List<IResultObject>();
+            var allValueProps = new ValuePropertyCollection();
+
+            if (!CslaTemplateHelperCS.IsCollectionType(info.ObjectType))
+            {
+                allValueProps = info.GetAllValueProperties();
+            }
+            else
+            {
+                CslaObjectInfo item = info.Parent.CslaObjects.Find(Info.ItemType);
+                allValueProps = item.GetAllValueProperties();
+            }
+
+            foreach (var prop in allValueProps)
+            {
+                if ((prop.DataAccess != ValueProperty.DataAccessBehaviour.WriteOnly ||
+                     prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default) &&
+                    prop.DbBindColumn.ColumnOriginType == ColumnOriginType.Table)
+                {
+                    var table = (IResultObject) prop.DbBindColumn.DatabaseObject;
+                    if (!tables.Contains(table))
+                    {
+                        tables.Add(table);
+                    }
+                }
+            }
+            return tables;
+        }
 
         public List<IResultObject> GetTablesInsert(CslaObjectInfo info)
         {
