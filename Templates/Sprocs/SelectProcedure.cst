@@ -1,5 +1,5 @@
 <%@ CodeTemplate Inherits="SprocTemplateHelper" Language="C#" TargetLanguage="T-SQL" Description="Generates a Select stored procedure." %>
-
+ 
 <%@ Assembly Name="DBSchemaInfo" %>
 <%@ Import Namespace="DBSchemaInfo.Base" %>
 <%@ Assembly Name="CslaGenerator" %>
