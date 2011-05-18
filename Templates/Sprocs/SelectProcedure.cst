@@ -22,8 +22,8 @@ bool collType = IsCollectionType(Info.ObjectType);
 bool searchWhereClause = collType;
 List<IResultObject> tables = GetTablesSelect(Info);
 SortTables(tables);
-string plainTableSchema = tables[0].ObjectSchema + ".";
-string fullTableSchema = "[" + tables[0].ObjectSchema + "].";
+string plainTableSchema = GetSchema(tables[0], false);
+string fullTableSchema = GetSchema(tables[0], true);
 %>
 /****** Object:  StoredProcedure <%= fullTableSchema %>[<%= Criteria.GetOptions.ProcedureName %>]    Script Date: <%= DateTime.Now %> ******/
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'<%= fullTableSchema %>[<%= Criteria.GetOptions.ProcedureName %>]') AND type in (N'P', N'PC'))

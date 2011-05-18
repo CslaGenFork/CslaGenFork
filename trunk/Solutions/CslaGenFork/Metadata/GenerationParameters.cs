@@ -36,6 +36,7 @@ namespace CslaGenerator.Metadata
         private bool _generateSprocs = true;
         private bool _oneSpFilePerObject = true;
         private bool _generateInlineQueries;
+        private bool _generateQueriesWithSchema = true;
         private bool _generateDatabaseClass = true;
         private bool _generateWinForms = true;
         private bool _generateWPF;
@@ -414,6 +415,18 @@ namespace CslaGenerator.Metadata
                 if (_generateInlineQueries == value)
                     return;
                 _generateInlineQueries = value;
+                OnPropertyChanged("");
+            }
+        }
+
+        public bool GenerateQueriesWithSchema
+        {
+            get { return _generateQueriesWithSchema; }
+            set
+            {
+                if (_generateQueriesWithSchema == value)
+                    return;
+                _generateQueriesWithSchema = value;
                 OnPropertyChanged("");
             }
         }

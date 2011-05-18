@@ -1,6 +1,6 @@
 namespace CslaGenerator.Controls
 {
-    partial class NewObjectDefaults
+    partial class NewObjectProperties
     {
         /// <summary>
         /// Required designer variable.
@@ -28,22 +28,22 @@ namespace CslaGenerator.Controls
         /// </summary>
         private void InitializeComponent()
         {
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.buttonPanel = new System.Windows.Forms.Panel();
             this.butCancel = new System.Windows.Forms.Button();
             this.butOK = new System.Windows.Forms.Button();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.panel1.SuspendLayout();
+            this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.buttonPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.butCancel);
-            this.panel1.Controls.Add(this.butOK);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 253);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(442, 36);
-            this.panel1.TabIndex = 0;
+            this.buttonPanel.Controls.Add(this.butCancel);
+            this.buttonPanel.Controls.Add(this.butOK);
+            this.buttonPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.buttonPanel.Location = new System.Drawing.Point(0, 253);
+            this.buttonPanel.Name = "buttonPanel";
+            this.buttonPanel.Size = new System.Drawing.Size(442, 36);
+            this.buttonPanel.TabIndex = 0;
             // 
             // butCancel
             // 
@@ -69,18 +69,18 @@ namespace CslaGenerator.Controls
             // 
             // tableLayoutPanel1
             // 
-            this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 170F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 250F));
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 3);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.Padding = new System.Windows.Forms.Padding(3, 6, 3, 0);
-            this.tableLayoutPanel1.RowCount = 1;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.AutoSize));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(442, 253);
-            this.tableLayoutPanel1.TabIndex = 1;
+            this.tableLayoutPanel.ColumnCount = 2;
+            this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 170F));
+            this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 250F));
+            this.tableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel.Margin = new System.Windows.Forms.Padding(6, 6, 6, 3);
+            this.tableLayoutPanel.Name = "tableLayoutPanel";
+            this.tableLayoutPanel.Padding = new System.Windows.Forms.Padding(3, 6, 3, 0);
+            this.tableLayoutPanel.RowCount = 1;
+            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.AutoSize));
+            this.tableLayoutPanel.Size = new System.Drawing.Size(442, 253);
+            this.tableLayoutPanel.TabIndex = 1;
             // 
             // NewObjectDefaults
             // 
@@ -89,20 +89,20 @@ namespace CslaGenerator.Controls
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.butCancel;
             this.ClientSize = new System.Drawing.Size(442, 289);
-            this.Controls.Add(this.tableLayoutPanel1);
-            this.Controls.Add(this.panel1);
-            this.Name = "NewObjectDefaults";
+            this.Controls.Add(this.tableLayoutPanel);
+            this.Controls.Add(this.buttonPanel);
+            this.Name = "NewObjectProperties";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "New Object Defaults";
-            this.panel1.ResumeLayout(false);
+            this.Text = "New Object Properties";
+            this.buttonPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Panel buttonPanel;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel;
         private System.Windows.Forms.Button butCancel;
         private System.Windows.Forms.Button butOK;
     }
