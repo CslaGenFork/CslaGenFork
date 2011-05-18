@@ -34,14 +34,16 @@ if (GenerateSP)
     List<IResultObject> tables = GetTablesUpdate(Info);
     string timeStampColumn = String.Empty;
     SortTables(tables);
+    string plainTableSchema = tables[0].ObjectSchema + ".";
+    string fullTableSchema = "[" + tables[0].ObjectSchema + "].";
     bool useBoolSoftDelete = UseBoolSoftDelete(tables, IgnoreFilter(Info));
 %>
-/***** <%=Info.UpdateProcedureName%> *****/
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[<%=Info.UpdateProcedureName%>]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-    DROP PROCEDURE [<%=Info.UpdateProcedureName%>]
+/****** Object:  StoredProcedure <%= fullTableSchema %>[<%= Info.UpdateProcedureName %>]    Script Date: <%= DateTime.Now %> ******/
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'<%= fullTableSchema %>[<%= Info.UpdateProcedureName %>]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE <%= fullTableSchema %>[<%= Info.UpdateProcedureName %>]
 GO
 
-CREATE PROCEDURE [<%=Info.UpdateProcedureName%>]<%
+CREATE PROCEDURE <%= fullTableSchema %>[<%= Info.UpdateProcedureName %>]<%
     first = true;
     foreach (ValueProperty prop in Info.GetAllValueProperties())
     {
@@ -50,7 +52,7 @@ CREATE PROCEDURE [<%=Info.UpdateProcedureName%>]<%
             if (!first) { %>,<% } else { first = false; }
             propPK=prop;
             %>
-    @<%=prop.ParameterName%> <%=GetDataTypeString(prop.DbBindColumn)%><%
+    @<%= prop.ParameterName %> <%= GetDataTypeString(prop.DbBindColumn) %><%
         }
     }
     if (!Info.ParentInsertOnly)
@@ -58,7 +60,7 @@ CREATE PROCEDURE [<%=Info.UpdateProcedureName%>]<%
         foreach (ValueProperty prop in Info.GetParentValueProperties())
         {
             if (!first) { %>,<% } else { first = false; } %>
-    @<%=prop.ParameterName%> <%=GetDataTypeString(prop.DbBindColumn)%><%
+    @<%= prop.ParameterName %> <%= GetDataTypeString(prop.DbBindColumn) %><%
         }
     }
     foreach (ValueProperty prop in Info.GetAllValueProperties())
@@ -70,11 +72,11 @@ CREATE PROCEDURE [<%=Info.UpdateProcedureName%>]<%
         {
             if (!first) { %>,<% } else { first = false; }
             %>
-    @<%=prop.ParameterName%> <%=GetDataTypeString(prop.DbBindColumn)%><%
+    @<%= prop.ParameterName %> <%= GetDataTypeString(prop.DbBindColumn) %><%
             if (prop.DbBindColumn.NativeType == "timestamp")
             {
                 timeStampColumn = prop.ParameterName; %>,
-    @New<%=prop.ParameterName%> <%=GetDataTypeString(prop.DbBindColumn)%> OUTPUT<%
+    @New<%= prop.ParameterName %> <%= GetDataTypeString(prop.DbBindColumn) %> OUTPUT<%
             }
         }
     }
@@ -94,7 +96,7 @@ AS
         foreach (ValueProperty prop in Info.GetParentValueProperties())
         {
             if (!first) { %>, <% } else { first = false; }
-                %>[<%=GetColumnString(prop.DbBindColumn)%>]<%
+                %>[<%= GetColumnString(prop.DbBindColumn) %>]<%
         }
     }
     foreach (ValueProperty prop in Info.ValueProperties)
@@ -102,10 +104,10 @@ AS
         if (prop.DbBindColumn.IsPrimaryKey)
         {
             if (!first) { %>, <% } else { first = false; }
-            %>[<%=GetColumnString(prop.DbBindColumn)%>]<%
+            %>[<%= GetColumnString(prop.DbBindColumn) %>]<%
         }
     }
-            %> FROM [<%=tables[0].ObjectName%>]
+            %> FROM <%= fullTableSchema %>[<%= tables[0].ObjectName %>]
             WHERE  <%
     first = true;
     if (!Info.ParentInsertOnly)
@@ -121,7 +123,7 @@ AS
             {
                 first = false;
             }
-            %>[<%=GetColumnString(prop.DbBindColumn)%>] = @<%=prop.ParameterName%><%
+            %>[<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
         }
     }
     foreach (ValueProperty prop in Info.GetAllValueProperties())
@@ -137,7 +139,7 @@ AS
             {
                 first = false;
             }
-            %>[<%=GetColumnString(prop.DbBindColumn)%>] = @<%=prop.ParameterName%><%
+            %>[<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
         }
     }
     if (useBoolSoftDelete)
@@ -148,7 +150,7 @@ AS
     %>
         )
         BEGIN
-            RAISERROR ('''<%=Info.ObjectName%>'' object not found. It was probably removed by another user.', 16, 1)
+            RAISERROR ('''<%= plainTableSchema %><%= Info.ObjectName %>'' object not found. It was probably removed by another user.', 16, 1)
             RETURN
         END
     <%
@@ -166,7 +168,7 @@ AS
             foreach (ValueProperty prop in Info.GetParentValueProperties())
             {
                 if (!first) { %>, <% } else { first = false; }
-                %>[<%=GetColumnString(prop.DbBindColumn)%>]<%
+                %>[<%= GetColumnString(prop.DbBindColumn) %>]<%
             }
         }
         foreach (ValueProperty prop in Info.ValueProperties)
@@ -174,10 +176,10 @@ AS
             if (prop.DbBindColumn.IsPrimaryKey)
             {
                 if (!first) { %>, <% } else { first = false; }
-            %>[<%=GetColumnString(prop.DbBindColumn)%>]<%
+            %>[<%= GetColumnString(prop.DbBindColumn) %>]<%
             }
         }
-            %> FROM [<%=tables[0].ObjectName%>]
+            %> FROM <%= fullTableSchema %>[<%= tables[0].ObjectName %>]
             WHERE  <%
         first = true;
         if (!Info.ParentInsertOnly)
@@ -193,7 +195,7 @@ AS
                 {
                     first = false;
                 }
-            %>[<%=GetColumnString(prop.DbBindColumn)%>] = @<%=prop.ParameterName%><%
+            %>[<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
             }
         }
         foreach (ValueProperty prop in Info.ValueProperties)
@@ -209,7 +211,7 @@ AS
                 {
                     first = false;
                 }
-            %>[<%=GetColumnString(prop.DbBindColumn)%>] = @<%=prop.ParameterName%><%
+            %>[<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
             }
         }
         foreach (ValueProperty prop in Info.InheritedValueProperties)
@@ -225,13 +227,13 @@ AS
                 {
                     first = false;
                 }
-            %>[<%=GetColumnString(prop.DbBindColumn)%>] = @<%=prop.ParameterName%><%
+            %>[<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
             }
         }
         %>
         )
         BEGIN
-            RAISERROR ('''<%=Info.ObjectName%>'' object was modified by another user.', 16, 1)
+            RAISERROR ('''<%= plainTableSchema %><%= Info.ObjectName %>'' object was modified by another user.', 16, 1)
             RETURN
         END
         <%
@@ -239,12 +241,16 @@ AS
     %>
         <%-- Update ------------------------%>
     <%
+    string plainTableSchema2 = string.Empty;
+    string fullTableSchema2 = string.Empty;
     foreach(IResultObject table in tables)
     {
+        plainTableSchema2 = table.ObjectSchema + ".";
+        fullTableSchema2 = "[" + table.ObjectSchema + "].";
         %>
 
-        /* Update object in <%=table.ObjectName%> */
-        UPDATE [<%=table.ObjectName%>]
+        /* Update object in <%= plainTableSchema2 %><%= table.ObjectName %> */
+        UPDATE <%= fullTableSchema2 %>[<%= table.ObjectName %>]
         SET<%
         first = true;
         foreach (ValueProperty prop in Info.ValueProperties)
@@ -255,7 +261,7 @@ AS
                 if (prop.DbBindColumn.ObjectName == table.ObjectName && !prop.DbBindColumn.IsPrimaryKey && prop.DbBindColumn.NativeType != "timestamp")
                 {
                     if (!first) { %>,<% } else { first = false; } %>
-               [<%=GetColumnString(prop.DbBindColumn)%>] = @<%=prop.ParameterName%><%
+               [<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
                 }
             }
         }
@@ -267,7 +273,7 @@ AS
                 if (prop.DbBindColumn.ObjectName == table.ObjectName && !prop.DbBindColumn.IsPrimaryKey && prop.DbBindColumn.NativeType != "timestamp")
                 {
                     if (!first) { %>,<% } else { first = false; } %>
-               [<%=GetColumnString(prop.DbBindColumn)%>] = @<%=prop.ParameterName%><%
+               [<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
                 }
             }
         }
@@ -287,7 +293,7 @@ AS
                 {
                     first = false;
                 }
-            %>[<%=GetColumnString(prop.DbBindColumn)%>] = @<%=prop.ParameterName%><%
+            %>[<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
             }
         }
         foreach (ValueProperty prop in Info.GetAllValueProperties())
@@ -303,7 +309,7 @@ AS
                 {
                     first = false;
                 }
-            %>[<%=GetColumnString(prop.DbBindColumn)%>] = @<%=prop.ParameterName%><%
+            %>[<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
             }
         }
     }
@@ -315,8 +321,8 @@ AS
     {
         %>
         /* Return new row version value */
-        SELECT @New<%=timeStampColumn%> = [<%=timeStampColumn%>]
-        FROM   [<%=tables[0].ObjectName%>]
+        SELECT @New<%= timeStampColumn %> = [<%= timeStampColumn %>]
+        FROM   <%= fullTableSchema %>[<%= tables[0].ObjectName %>]
         WHERE  <%
         first = true;
 
@@ -333,7 +339,7 @@ AS
                 {
                     first = false;
                 }
-            %>[<%=GetColumnString(prop.DbBindColumn)%>] = @<%=prop.ParameterName%><%
+            %>[<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
             }
         }
         foreach (ValueProperty prop in Info.ValueProperties)
@@ -349,7 +355,7 @@ AS
                 {
                     first = false;
                 }
-        %>[<%=GetColumnString(prop.DbBindColumn)%>] = @<%=prop.ParameterName%><%
+        %>[<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
             }
         }
         foreach (ValueProperty prop in Info.InheritedValueProperties)
@@ -365,7 +371,7 @@ AS
                 {
                     first = false;
                 }
-        %>[<%=GetColumnString(prop.DbBindColumn)%>] = @<%=prop.ParameterName%><%
+        %>[<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
             }
         }
     }

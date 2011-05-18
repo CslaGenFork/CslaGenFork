@@ -20,17 +20,20 @@ ValueProperty propPK = null;
 List<IResultObject> tables = GetTablesInsert(Info);
 string timeStampColumn = String.Empty;
 SortTables(tables);
+string plainTableSchema = tables[0].ObjectSchema + ".";
+string fullTableSchema = "[" + tables[0].ObjectSchema + "].";
 /*
 ValuePropertyCollection allValueProps = new ValuePropertyCollection();
 allValueProps.AddRange(Info.GetAllValueProperties());
-allValueProps.AddRange(Info.GetParentValueProperties());*/
+allValueProps.AddRange(Info.GetParentValueProperties());
+*/
 %>
-/***** <%=Info.InsertProcedureName%> *****/
-IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'[<%=Info.InsertProcedureName%>]') and OBJECTPROPERTY(id, N'IsProcedure') = 1)
-    DROP PROCEDURE [<%=Info.InsertProcedureName%>]
+/****** Object:  StoredProcedure <%= fullTableSchema %>[<%= Info.InsertProcedureName%>]    Script Date: <%= DateTime.Now %> ******/
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'<%= fullTableSchema %>[<%= Info.InsertProcedureName %>]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE <%= fullTableSchema %>[<%= Info.InsertProcedureName %>]
 GO
 
-CREATE PROCEDURE [<%=Info.InsertProcedureName%>]<%
+CREATE PROCEDURE <%= fullTableSchema %>[<%= Info.InsertProcedureName %>]<%
 first = true;
 foreach (ValueProperty prop in Info.GetAllValueProperties())
 {
@@ -39,13 +42,13 @@ foreach (ValueProperty prop in Info.GetAllValueProperties())
         if (!first) { %>,<% } else { first = false; }
         propPK=prop;
         %>
-    @<%=prop.ParameterName%> <%=GetDataTypeString(prop.DbBindColumn)%> OUTPUT<%
+    @<%= prop.ParameterName %> <%= GetDataTypeString(prop.DbBindColumn) %> OUTPUT<%
     }
 }
 foreach (ValueProperty parentProp in Info.GetParentValueProperties())
 {
     if (!first) { %>,<% } else { first = false; } %>
-    @<%=parentProp.ParameterName%> <%=GetDataTypeString(parentProp.DbBindColumn)%><%
+    @<%= parentProp.ParameterName %> <%= GetDataTypeString(parentProp.DbBindColumn) %><%
 }
 foreach (ValueProperty prop in Info.GetAllValueProperties())
 {
@@ -56,7 +59,7 @@ foreach (ValueProperty prop in Info.GetAllValueProperties())
     {
         if (!first) { %>,<% } else { first = false; }
         %>
-    @<%=prop.ParameterName%> <%=GetDataTypeString(prop.DbBindColumn)%><%
+    @<%= prop.ParameterName %> <%= GetDataTypeString(prop.DbBindColumn) %><%
     }
 }
 foreach (ValueProperty prop in Info.GetAllValueProperties())
@@ -66,7 +69,7 @@ foreach (ValueProperty prop in Info.GetAllValueProperties())
         if (!first) { %>,<% } else { first = false; }
         timeStampColumn = prop.Name;
         %>
-    @New<%=prop.ParameterName%> <%=GetDataTypeString(prop.DbBindColumn)%> OUTPUT<%
+    @New<%= prop.ParameterName %> <%= GetDataTypeString(prop.DbBindColumn) %> OUTPUT<%
     }
 }
 
@@ -79,6 +82,8 @@ AS
 <%
 foreach(IResultObject table in tables)
 {
+    string plainTableSchema2 = tables[0].ObjectSchema + ".";
+    string fullTableSchema2 = "[" + tables[0].ObjectSchema + "].";
     first = true;
     string fields=string.Empty;
     string parms=string.Empty;
@@ -123,8 +128,8 @@ foreach(IResultObject table in tables)
     {
         %>
 
-        /* Insert object into <%=table.ObjectName%> */
-        INSERT INTO [<%=table.ObjectName%>]
+        /* Insert object into <%= plainTableSchema2 %><%= table.ObjectName %> */
+        INSERT INTO <%= fullTableSchema2 %>[<%= table.ObjectName %>]
         (
             <%= fields %>
         )
@@ -145,8 +150,8 @@ foreach(IResultObject table in tables)
                 %>
 
         /* Return new row version value */
-        SELECT @New<%=timeStampColumn%> = [<%=timeStampColumn%>]
-        FROM   [<%=tables[0].ObjectName%>]
+        SELECT @New<%= timeStampColumn %> = [<%= timeStampColumn %>]
+        FROM   <%= fullTableSchema %>[<%= tables[0].ObjectName %>]
         WHERE  <%
         %>[<%= GetColumnString(propPK.DbBindColumn) %>] = @<%= propPK.ParameterName %><%
             }
@@ -160,8 +165,8 @@ foreach(IResultObject table in tables)
             {
                 %>
         /* Return new row version value */
-        SELECT @New<%=timeStampColumn%> = [<%=timeStampColumn%>]
-        FROM   [<%=tables[0].ObjectName%>]
+        SELECT @New<%= timeStampColumn %> = [<%= timeStampColumn %>]
+        FROM   <%= fullTableSchema %>[<%= tables[0].ObjectName %>]
         WHERE  <%
                 first = true;
                 foreach (ValueProperty prop in Info.GetParentValueProperties())
@@ -169,7 +174,7 @@ foreach(IResultObject table in tables)
                     if (!first) { %>
         AND    <%
                     } else { first = false; }
-            %>[<%=GetColumnString(prop.DbBindColumn)%>] = @<%=prop.ParameterName%><%
+            %>[<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
                 }
                 foreach (ValueProperty prop in Info.ValueProperties)
                 {
@@ -178,7 +183,7 @@ foreach(IResultObject table in tables)
                         if (!first) { %>
         AND    <%
                         } else { first = false; }
-        %>[<%=GetColumnString(prop.DbBindColumn)%>] = @<%=prop.ParameterName%><%
+        %>[<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
                     }
                 }
                 foreach (ValueProperty prop in Info.InheritedValueProperties)
@@ -188,7 +193,7 @@ foreach(IResultObject table in tables)
                         if (!first) { %>
         AND    <%
                         } else { first = false; }
-        %>[<%=GetColumnString(prop.DbBindColumn)%>] = @<%=prop.ParameterName%><%
+        %>[<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
                     }
                 }
             }
