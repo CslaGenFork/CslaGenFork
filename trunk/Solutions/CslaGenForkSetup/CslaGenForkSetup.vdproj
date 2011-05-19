@@ -471,8 +471,8 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:CslaGeneratorFork"
-        "ProductCode" = "8:{42C2D2C3-643D-4DBD-8B2C-1A44BE123706}"
-        "PackageCode" = "8:{C488ED6D-6868-45A7-8D79-C9C0CDE0BFFF}"
+        "ProductCode" = "8:{F06A1FFF-B805-4887-AC27-654F866E46A5}"
+        "PackageCode" = "8:{50285CD5-C01B-48D7-A298-F071DB0785E8}"
         "UpgradeCode" = "8:{83BDF6E0-C913-48C1-96F7-BCF1E83B1F7E}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
