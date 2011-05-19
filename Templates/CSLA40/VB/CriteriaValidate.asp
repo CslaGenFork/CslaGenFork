@@ -3,9 +3,12 @@ bool isCollection2 =
     //Info.ObjectType == CslaObjectType.EditableRootCollection ||
     //Info.ObjectType == CslaObjectType.DynamicEditableRootCollection ||
     Info.ObjectType == CslaObjectType.EditableChildCollection ||
-    (Info.ObjectType == CslaObjectType.ReadOnlyCollection && Info.ParentType != string.Empty);
+    Info.ObjectType == CslaObjectType.ReadOnlyCollection;
 
-bool isSelfLoadCollection = isCollection2 && GetSelfLoad(Info);
+bool isSelfLoadCollection =
+    (Info.ObjectType == CslaObjectType.EditableChildCollection ||
+    Info.ObjectType == CslaObjectType.ReadOnlyCollection) &&
+    GetSelfLoad(Info);
 
 bool createOptionsFactory;
 bool createOptionsDataPortal;
