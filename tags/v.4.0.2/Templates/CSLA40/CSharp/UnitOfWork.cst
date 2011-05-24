@@ -1,0 +1,115 @@
+<%@ CodeTemplate Inherits="CslaTemplateHelperCS" Language="CSharp" TargetLanguage="CSharp" Description="Generates a Unit of Work (CSLA ReadOnly or Command object)." %>
+<%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the ReadOnly Object to create." %>
+<%@ Property Name="Errors" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return errors to master.cst" %>
+<%@ Property Name="Warnings" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return warnings to master.cst" %>
+
+<%@ Assembly Name="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator.Metadata" %>
+<%@ Import Namespace="CslaGenerator.CodeGen" %>
+<%@ Import Namespace="CslaGenerator.Util" %>
+<%@ Import Namespace="System.Text" %>
+
+<!-- #include file="UnitOfWorkValidate.asp" -->
+<%
+if (Errors.Length == 0)
+{
+    int silverlightLevel = 0;
+    bool genOptional = false;
+    bool first = true;
+    %><!-- #include file="Header.asp" -->
+using System;
+using Csla;
+<%= GetUsingStatementsString(Info) %>
+<%
+    if (Info.ObjectNamespace.Length > 0)
+    {
+        %>namespace <%= Info.ObjectNamespace %>
+{
+<%
+    }
+    bool? firstComment = null;
+    %><!-- #include file="XmlComment.asp" -->
+    <%
+    if (GetAttributesString(Info.Attributes) != string.Empty)
+    {
+        %>
+    <%= GetAttributesString(Info.Attributes) %>
+    <%
+    }
+    %>
+    [Serializable]
+    public partial class <%=Info.ObjectName%> : <%= (Info.IsUpdater || Info.IsDeleter) ? "CommandBase" : "ReadOnlyBase" %><<%=Info.ObjectName %>>
+    {
+
+<!-- #include file="BusinessProps.asp" -->
+
+<% Response.Write(Environment.NewLine); %>
+        #region Factory Methods<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel, true, false) %><%
+    if (Info.IsCreator)
+    {
+        %>
+<!-- #include file="NewObject.asp" --><%
+    }
+    if (Info.IsGetter)
+    {
+        %><!-- #include file="GetObject.asp" --><%
+    }
+    if (Info.IsDeleter)
+    {
+        %><!-- #include file="DeleteObject.asp" --><%
+    }
+%><%= IfSilverlight (Conditional.End, 0, ref silverlightLevel, true, false) %><%
+    if (Info.IsCreator)
+    {
+        %>
+<!-- #include file="NewObjectAsync.asp" --><%
+    }
+    if (Info.IsGetter)
+    {
+        %><!-- #include file="GetObjectAsync.asp" --><%
+    }
+    if (Info.IsDeleter)
+    {
+        %><!-- #include file="DeleteObjectAsync.asp" --><%
+    }
+%><% Response.Write(Environment.NewLine); %>        #endregion
+<!-- #include file="Constructor.asp" -->
+<!-- #include file="Criteria.asp" -->
+<%
+    if (!genOptional)
+    {
+        Response.Write(Environment.NewLine);
+    }
+    %>
+        #region Data Access<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel, true, true) %><%
+    if (Info.IsCreator)
+    {
+        %>
+<!-- #include file="DataPortalCreateUnitOfWork.asp" --><%
+    }
+    if (Info.IsGetter)
+    {
+        %><!-- #include file="DataPortalFetchUnitOfWork.asp" --><%
+    }
+    if (Info.IsUpdater)
+    {
+        %><!-- #include file="DataPortalUpdateUnitOfWork.asp" --><%
+    }
+    if (Info.IsDeleter)
+    {
+        %><!-- #include file="DataPortalDeleteUnitOfWork.asp" --><%
+    }
+    %>
+<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel, true, true) %>        #endregion
+
+    }
+<%
+    if (Info.ObjectNamespace.Length > 0)
+    {
+        %>
+}
+<%
+    }
+ }
+ %>

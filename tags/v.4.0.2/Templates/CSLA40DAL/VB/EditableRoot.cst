@@ -1,0 +1,143 @@
+<%@ CodeTemplate Inherits="CslaTemplateHelperCS" Language="VB" TargetLanguage="VB" Description="Generates a CSLA Editable Root Object." %>
+<%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the EditableRoot Object to create." %>
+<%@ Property Name="Errors" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return errors to master.cst" %>
+<%@ Property Name="Warnings" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return warnings to master.cst" %>
+<%@ Property Name="ActiveObjects" Type="System.Boolean" Default="false" Category="Options" Description="if true, base class is generated as ActiveObjects" %>
+
+<%@ Assembly Name="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator.Metadata" %>
+<%@ Import Namespace="CslaGenerator.CodeGen" %>
+<%@ Import Namespace="CslaGenerator.Util" %>
+<%@ Assembly Name="System.Windows.Forms" %>
+<%@ Import Namespace="System.Windows.Forms" %>
+<%@ Import Namespace="System.Text" %>
+
+<!-- #include file="EditableRootValidate.asp" -->
+<%
+if (Errors.Length == 0)
+{
+    bool first = true;
+    %><!-- #include file="Header.asp" -->
+using System;
+using System.Data;
+using System.Data.SqlClient;
+<% if (ActiveObjects) { %>using ActiveObjects;<%  } else { %>using Csla;<% } %>
+using Csla.Data;
+<%= GetUsingStatementsString(Info) %>
+<%
+    if (Info.ObjectNamespace.Length > 0)
+    {
+%>namespace <%= Info.ObjectNamespace %>
+{
+<%
+    }
+
+    bool? firstComment = null;
+    %><!-- #include file="XmlComment.asp" -->
+    <%
+    if (GetAttributesString(Info.Attributes) != string.Empty)
+    {
+        %>
+    <%= GetAttributesString(Info.Attributes) %>
+    <%
+    }
+    %>
+    [Serializable]
+    <%
+    if (ActiveObjects && Info.SubscribeToChannel.Length > 0)
+    {
+        %>[Subscribe("<%= Info.SubscribeToChannel %>")]
+    <%
+    }
+    %>public partial class <%= Info.ObjectName %> : <%
+    if (Info.InheritedType.Type != string.Empty)
+    {
+            %><%=Info.InheritedType.Type%><%
+    }
+    else if (Info.InheritedType.ObjectName != string.Empty)
+    {
+            %><%=Info.InheritedType.ObjectName%><%
+    }
+    else
+    {
+            %><% if (ActiveObjects) { %>Active<% } %>BusinessBase<<%=Info.ObjectName %>><%
+    }
+    %><!-- #include file="Implements.asp" -->
+    {
+<!-- #include file="StaticFields.asp" -->
+<!-- #include file="StateFields.asp" -->
+
+<!-- #include file="BusinessProps.asp" -->
+
+<!-- #include file="BusinessRules.asp" -->
+
+        <!-- #include file="ObjectOverrides.asp" -->
+        <% Response.Write(Environment.NewLine); %>
+        #region Factory Methods
+    <%
+    if (Info.GenerateFactoryMethods)
+    {
+        if (Info.DbName.Equals(String.Empty))
+        {
+            Warnings.Append("Make sure you specify a DB name." + Environment.NewLine) ;
+        }
+    %>
+        <!-- #include file="NewObject.asp" -->
+
+        <!-- #include file="GetObject.asp" -->
+
+        <!-- #include file="DeleteObject.asp" -->
+    <%
+    }
+    %>
+        <!-- #include file="Save.asp" -->
+        <% Response.Write(Environment.NewLine); %>
+        #endregion
+<!-- #include file="Constructor.asp"  -->
+
+        <!-- #include file="Criteria.asp"  -->
+
+<!-- #include file="SharedAuthorizationMethods.asp" -->
+<% Response.Write(Environment.NewLine); %>
+<!-- #include file="ConvertProperties.asp" -->
+<%
+    if (Info.GenerateDataAccessRegion)
+    {
+        %>
+        #region Data Access
+
+        <!-- #include file="DataPortalCreate.asp"  -->
+
+        <!-- #include file="DataPortalFetch.asp"  -->
+
+        <!-- #include file="DataPortalInsert.asp" -->
+
+        <!-- #include file="DataPortalUpdate.asp" -->
+
+<%
+        if (Info.GenerateDataPortalInsert || Info.GenerateDataPortalUpdate)
+        {
+            %>
+<!-- #include file="DoInsertUpdate.asp" -->
+<%
+        }
+        %>
+        <!-- #include file="DataPortalDelete.asp" -->
+        #endregion
+<!-- #include file="Events.asp" -->
+
+<%
+    }
+    %>
+
+    }
+<%
+    if (Info.ObjectNamespace.Length > 0)
+    {
+        %>
+}
+<%
+    }
+}
+%>

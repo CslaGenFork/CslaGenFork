@@ -1,0 +1,124 @@
+<%@ CodeTemplate Inherits="CslaTemplateHelperCS" Language="CSharp" TargetLanguage="CSharp" Description="Generates a CSLA Dynamic Root Object." %>
+<%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the DynamicEditableRoot Object to create." %>
+<%@ Property Name="Errors" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return errors to master.cst" %>
+<%@ Property Name="Warnings" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return warnings to master.cst" %>
+
+<%@ Assembly Name="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator.Metadata" %>
+<%@ Import Namespace="CslaGenerator.CodeGen" %>
+<%@ Import Namespace="CslaGenerator.Util" %>
+<%@ Assembly Name="System.Windows.Forms" %>
+<%@ Import Namespace="System.Windows.Forms" %>
+<%@ Import Namespace="System.Text" %>
+
+<!-- #include file="DynamicEditableRootValidate.asp" -->
+<%
+if (Errors.Length == 0)
+{
+    int silverlightLevel = 0;
+    bool genOptional = false;
+    bool first = true;
+    %><!-- #include file="Header.asp" -->
+<!-- #include file="Using.asp" -->
+<%
+    if (Info.ObjectNamespace.Length > 0)
+    {
+        %>namespace <%= Info.ObjectNamespace %>
+{
+<%
+    }
+    bool? firstComment = null;
+    %><!-- #include file="XmlComment.asp" -->
+    <%
+    if (GetAttributesString(Info.Attributes) != string.Empty)
+    {
+        %>
+    <%= GetAttributesString(Info.Attributes) %>
+    <%
+    }
+    %>
+    [Serializable]
+    public partial class <%= Info.ObjectName %> : <%
+    if (Info.InheritedType.Type != string.Empty)
+    {
+        %><%= Info.InheritedType.Type %><%
+    }
+    else if (Info.InheritedType.ObjectName != string.Empty)
+    {
+        %><%= Info.InheritedType.ObjectName %><%
+    }
+    else
+    {
+        %>BusinessBase<<%=Info.ObjectName %>><%
+    }
+    %><!-- #include file="Implements.asp" -->
+    {
+<!-- #include file="StaticFields.asp" -->
+<!-- #include file="StateFields.asp" -->
+<!-- #include file="BusinessProps.asp" -->
+<!-- #include file="ObjectOverrides.asp" -->
+    <%
+    Response.Write(Environment.NewLine);
+    if (Info.GenerateFactoryMethods)
+    {
+        if (Info.DbName.Equals(String.Empty))
+        {
+            Warnings.Append("Make sure you specify a DB name." + Environment.NewLine);
+        }
+        %>
+        #region Factory Methods<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel, true, false) %>
+<!-- #include file="NewObject.asp" -->
+<!-- #include file="GetObject.asp" -->
+<!-- #include file="InternalGetObject.asp" -->
+<!-- #include file="Save.asp" -->
+<%= IfSilverlight (Conditional.Else, 0, ref silverlightLevel, true, true) %><!-- #include file="NewObjectSilverlight.asp" -->
+<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel, true, true) %><!-- #include file="GetObjectAsync.asp" -->
+
+        #endregion
+<%
+    }
+    %>
+<!-- #include file="Constructor.asp" -->
+<!-- #include file="Criteria.asp" -->
+<!-- #include file="SharedAuthorizationMethods.asp" -->
+<!-- #include file="ConvertProperties.asp" -->
+<%
+    if (Info.GenerateDataAccessRegion)
+    {
+        if (!genOptional)
+        {
+            Response.Write(Environment.NewLine);
+        }
+        %>
+        #region Data Access<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel, true, false) %>
+<!-- #include file="DataPortalCreate.asp" -->
+<!-- #include file="DataPortalFetch.asp" -->
+<!-- #include file="DataPortalInsert.asp" -->
+<!-- #include file="DataPortalUpdate.asp" -->
+<!-- #include file="InternalUpdate.asp" -->
+<%
+        if (Info.GenerateDataPortalInsert || Info.GenerateDataPortalUpdate)
+        {
+            %>
+<!-- #include file="DoInsertUpdate.asp" -->
+<%
+        }
+        %>
+<!-- #include file="DataPortalDelete.asp" -->
+<%= IfSilverlight (Conditional.Else, 0, ref silverlightLevel, true, true) %><!-- #include file="DataPortalCreateSilverlight.asp" -->
+<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel, true, true) %>        #endregion
+<!-- #include file="Events.asp" -->
+<%
+    }
+    %>
+    }
+<%
+    if (Info.ObjectNamespace.Length > 0)
+    {
+        %>
+}
+<%
+    }
+}
+%>

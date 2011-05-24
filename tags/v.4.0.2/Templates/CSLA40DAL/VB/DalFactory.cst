@@ -1,0 +1,47 @@
+﻿<%@ CodeTemplate Inherits="CslaTemplateHelperCS" Language="VB" TargetLanguage="VB" Description="Generates a static Database class." %>
+<%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the CSLA Object (just to get some project info)" %>
+
+<%@ Assembly Name="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator.Metadata" %>
+<%@ Import Namespace="CslaGenerator.CodeGen" %>
+<%@ Import Namespace="CslaGenerator.Util" %>
+
+//-----------------------------------------------------------------------
+// <copyright file="DalFactory.cs" company="Marimer LLC">
+//     Copyright (c) Marimer LLC. All rights reserved.
+//     Website: http://www.lhotka.net/cslanet/
+// </copyright>
+//-----------------------------------------------------------------------
+
+using System;
+using System.Configuration;
+
+namespace <%= CurrentUnit.GenerationParams.InterfaceDALNamespace %>
+{
+    /// <summary>
+    /// Creates a DAL manager provider.
+    /// </summary>
+    public static class DalFactory
+    {
+        private static Type _dalType;
+
+        /// <summary>Gets the DAL manager type that must be set
+        /// in the appSettings section of the application config file.</summary>
+        /// <returns>A new <see cref="IDalManager"/> instance</returns>
+        public static IDalManager GetManager()
+        {
+            if (_dalType == null)
+            {
+                string dalTypeName = ConfigurationManager.AppSettings["DalManagerType"];
+                if (!string.IsNullOrEmpty(dalTypeName))
+                    _dalType = Type.GetType(dalTypeName);
+                else
+                    throw new NullReferenceException("DalManagerType");
+                if (_dalType == null)
+                    throw new ArgumentException(string.Format("Type {0} could not be found", dalTypeName));
+            }
+            return (IDalManager) Activator.CreateInstance(_dalType);
+        }
+    }
+}
