@@ -24,7 +24,7 @@ namespace CslaGenerator.Metadata
         private CriteriaUsageParameter _createOptions = new CriteriaUsageParameter();
         private CriteriaUsageParameter _getOptions = new CriteriaUsageParameter();
         private CriteriaUsageParameter _deleteOptions = new CriteriaUsageParameter();
-        private CslaObjectInfo _parent;
+        private CslaObjectInfo _parentObject;
 
         #endregion
 
@@ -39,7 +39,7 @@ namespace CslaGenerator.Metadata
         public Criteria(CslaObjectInfo obj)
             : this()
         {
-            _parent = obj;
+            _parentObject = obj;
         }
 
         #endregion
@@ -68,7 +68,7 @@ namespace CslaGenerator.Metadata
         [Category("01. Definition")]
         [Description("Whether the criteria class should be nested and protected or not nested and public." +
             "\r\nNote - BusinessBase criteria class is always not nested and public.")]
-        [UserFriendlyName("Nesteded Class")]
+        [UserFriendlyName("Nested Class")]
         public bool NestedClass
         {
             get { return _nestedClass; }
@@ -128,20 +128,20 @@ namespace CslaGenerator.Metadata
 
         #endregion
 
-        #region 04. Documentation
+        #region 03. Documentation
 
-        [Category("04. Documentation")]
+        [Category("03. Documentation")]
         [Editor(typeof(XmlCommentEditor), typeof(UITypeEditor))]
-        [Description("Summary of the criteria. This will be used to document the nested criteria class.")]
+        [Description("Summary of the criteria. This will be used to document the criteria class.")]
         public string Summary
         {
             get { return _summary; }
             set { _summary = value; }
         }
 
-        [Category("04. Documentation")]
+        [Category("03. Documentation")]
         [Editor(typeof(XmlCommentEditor), typeof(UITypeEditor))]
-        [Description("Remarks of the criteria. This will be used to document the nested criteria class.")]
+        [Description("Remarks of the criteria. This will be used to document the criteria class.")]
         public string Remarks
         {
             get { return _remarks; }
@@ -193,9 +193,9 @@ namespace CslaGenerator.Metadata
 
         #region Event Handlers
 
-        void SuffixChanged(object sender, EventArgs e)
+        void SuffixChangedHandler(object sender, EventArgs e)
         {
-            if (_parent == null ||
+            if (_parentObject == null ||
                 GeneratorController.Current == null ||
                 GeneratorController.Current.CurrentUnit == null)
             {
@@ -203,9 +203,9 @@ namespace CslaGenerator.Metadata
             }
             ProjectParameters p = GeneratorController.Current.CurrentUnit.Params;
             if (ReferenceEquals(sender, _getOptions))
-                _getOptions.ProcedureName = p.GetGetProcName(_parent.ObjectName + _getOptions.FactorySuffix);
+                _getOptions.ProcedureName = p.GetGetProcName(_parentObject.ObjectName + _getOptions.FactorySuffix);
             else if (ReferenceEquals(sender, _deleteOptions))
-                _deleteOptions.ProcedureName = p.GetDeleteProcName(_parent.ObjectName + _deleteOptions.FactorySuffix);
+                _deleteOptions.ProcedureName = p.GetDeleteProcName(_parentObject.ObjectName + _deleteOptions.FactorySuffix);
         }
 
         #endregion
@@ -216,19 +216,19 @@ namespace CslaGenerator.Metadata
         {
             if (p == null)
                 return;
-            p.SuffixChanged += SuffixChanged;
+            p.SuffixChanged += SuffixChangedHandler;
         }
 
         private void UnSetHandlers(CriteriaUsageParameter p)
         {
             if (p == null)
                 return;
-            p.SuffixChanged -= SuffixChanged;
+            p.SuffixChanged -= SuffixChangedHandler;
         }
 
         internal void SetParent(CslaObjectInfo obj)
         {
-            _parent = obj;
+            _parentObject = obj;
         }
 
         #endregion
@@ -237,10 +237,14 @@ namespace CslaGenerator.Metadata
 
         public void SetSprocNames()
         {
-            if (_parent == null) { return; }
+            if (_parentObject == null)
+                return;
+
             ProjectParameters p = GeneratorController.Current.CurrentUnit.Params;
-            _getOptions.ProcedureName = p.GetGetProcName(_parent.ObjectName);
-            _deleteOptions.ProcedureName = p.GetDeleteProcName(_parent.ObjectName);
+            if (IsGetter)
+                _getOptions.ProcedureName = p.GetGetProcName(_parentObject.ObjectName);
+            if (IsDeleter)
+                _deleteOptions.ProcedureName = p.GetDeleteProcName(_parentObject.ObjectName);
         }
 
         internal static Criteria Clone(Criteria masterCrit)

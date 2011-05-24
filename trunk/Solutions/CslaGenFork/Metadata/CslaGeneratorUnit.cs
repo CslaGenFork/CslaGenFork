@@ -20,30 +20,6 @@ namespace CslaGenerator.Metadata
         private ProjectParameters _projectParams = new ProjectParameters();
         private GenerationParameters _generationParams = new GenerationParameters();
 
-        public CslaGeneratorUnit()
-        {
-            _cslaObjects = new CslaObjectInfoCollection();
-            _projectName = "MyProject";
-        }
-
-        public ProjectParameters Params
-        {
-            get { return _projectParams; }
-            set { if (value != null) { _projectParams= value; }}
-        }
-
-        public GenerationParameters GenerationParams
-        {
-            get
-            {
-                return _generationParams;
-            }
-            set
-            {
-                if (value != null)
-                    _generationParams = value;
-            }
-        }
         public CslaObjectInfoCollection CslaObjects
         {
             get { return _cslaObjects; }
@@ -94,7 +70,32 @@ namespace CslaGenerator.Metadata
             set { _fileVersion = value; }
         }
 
-        [field : NonSerialized]
+        public CslaGeneratorUnit()
+        {
+            _cslaObjects = new CslaObjectInfoCollection();
+            _projectName = "MyProject";
+        }
+
+        public ProjectParameters Params
+        {
+            get { return _projectParams; }
+            set { if (value != null) { _projectParams = value; } }
+        }
+
+        public GenerationParameters GenerationParams
+        {
+            get
+            {
+                return _generationParams;
+            }
+            set
+            {
+                if (value != null)
+                    _generationParams = value;
+            }
+        }
+
+        [field: NonSerialized]
         public event EventHandler ProjectNameChanged;
 
         protected void OnProjectNameChanged()

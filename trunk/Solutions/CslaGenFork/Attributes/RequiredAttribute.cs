@@ -8,16 +8,18 @@ namespace CslaGenerator.Attributes
 	[AttributeUsage(AttributeTargets.Property)]
 	public class RequiredAttribute : Attribute
 	{
-		private bool isrequired;
+		private readonly bool _isrequired;
+
 		public RequiredAttribute(bool required)
 		{
-			isrequired = required;
+			_isrequired = required;
 		}
+
 		//Define IsRequired property.
 		//This is a read-only attribute.        
 		public virtual bool IsRequired
 		{
-			get {return isrequired;}        
+			get {return _isrequired;}        
 		}
 	}
 }

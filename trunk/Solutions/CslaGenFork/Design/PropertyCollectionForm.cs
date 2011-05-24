@@ -59,7 +59,7 @@ namespace CslaGenerator.Design
                             {
                                 ((ListBox)panelControl).SelectedIndexChanged += OnIndexChanged;
                             }
-                            if (panelControl is TableLayoutPanel)
+                            else if (panelControl is TableLayoutPanel)
                             {
                                 var layoutPanel = (TableLayoutPanel)panelControl;
                                 foreach (var tableControl in layoutPanel.Controls)
@@ -71,6 +71,10 @@ namespace CslaGenerator.Design
                                             button.Click += OnItemAddedOrRemoved;
                                     }
                                 }
+                            }
+                            else if (panelControl is PropertyGrid)
+                            {
+                                ((PropertyGrid) panelControl).SelectedGridItemChanged += OnGridItemChanged;
                             }
                         }
                     }
@@ -145,7 +149,7 @@ namespace CslaGenerator.Design
                 if (selectedObject != null)
                     propertyInfo.SetValue(_propGrid, new UnitOfWorkPropertyBag(selectedObject), null);
             }
-            /*else if (_collectionType == typeof(Criteria))
+            else if (_collectionType == typeof(Criteria))
             {
                 var selectedObject = (Criteria)_propGrid.SelectedObject;
                 //Get the property grid's type.
@@ -153,7 +157,7 @@ namespace CslaGenerator.Design
                 var propertyInfo = _propGrid.GetType().GetProperty("SelectedObject", BindingFlags.Public | BindingFlags.Instance);
                 if (selectedObject != null)
                     propertyInfo.SetValue(_propGrid, new CriteriaBag(selectedObject), null);
-            }*/
+            }
             else if (_collectionType == typeof(CriteriaProperty))
             {
                 var selectedObject = (CriteriaProperty)_propGrid.SelectedObject;
@@ -211,51 +215,69 @@ namespace CslaGenerator.Design
             {
                 case "ValueProperty Collection Editor":
                     _form.Size = new Size(570, _form.Size.Height);
-                    _collectionType = typeof(ValueProperty);
-                    if (GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == Authorization.None ||
-                        GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == Authorization.ObjectLevel)
+                    _collectionType = typeof (ValueProperty);
+                    if (GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization ==
+                        Authorization.None ||
+                        GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization ==
+                        Authorization.ObjectLevel)
                         _form.Size = new Size(_form.Size.Width, 633);
                     else
                         _form.Size = new Size(_form.Size.Width, 713);
-                    if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 ||
-                        GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL)
+                    if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework ==
+                        TargetFramework.CSLA40 ||
+                        GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework ==
+                        TargetFramework.CSLA40DAL)
                         _form.Size = new Size(_form.Size.Width, _form.Size.Height - 16);
                     break;
                 case "ChildProperty Collection Editor":
                     _form.Size = new Size(570, _form.Size.Height);
-                    _collectionType = typeof(ChildProperty);
+                    _collectionType = typeof (ChildProperty);
                     _form.Size = new Size(_form.Size.Width, 489);
                     break;
                 case "UnitOfWorkProperty Collection Editor":
                     _form.Size = new Size(570, _form.Size.Height);
-                    _collectionType = typeof(UnitOfWorkProperty);
+                    _collectionType = typeof (UnitOfWorkProperty);
                     _form.Size = new Size(_form.Size.Width, 361);
                     break;
                 case "Criteria Collection Editor":
                     _form.Size = new Size(550, _form.Size.Height);
-                    _collectionType = typeof(Criteria);
+                    _collectionType = typeof (Criteria);
                     _form.Size = new Size(_form.Size.Width, 729);
+                    var cslaObject = (CslaObjectInfo)GeneratorController.Current.GeneratorForm.ProjectPanel.ListObjects.SelectedItem;
+                    if ((cslaObject.ObjectType == CslaObjectType.ReadOnlyObject ||
+                         cslaObject.ObjectType == CslaObjectType.ReadOnlyCollection ||
+                         cslaObject.ObjectType == CslaObjectType.NameValueList ||
+                         (cslaObject.ObjectType == CslaObjectType.UnitOfWork)))
+                        _form.Size = new Size(_form.Size.Width, _form.Size.Height - 256);
+                    if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40 &&
+                        GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL)
+                        _form.Size = new Size(_form.Size.Width, _form.Size.Height - 32);
                     break;
                 case "CriteriaProperty Collection Editor":
-                    _collectionType = typeof(CriteriaProperty);
+                    _collectionType = typeof (CriteriaProperty);
                     _form.Size = new Size(_form.Size.Width, 393);
                     break;
                 case "ConvertValueProperty Collection Editor":
                     _form.Size = new Size(570, _form.Size.Height);
-                    _collectionType = typeof(ConvertValueProperty);
+                    _collectionType = typeof (ConvertValueProperty);
                     _form.Size = new Size(_form.Size.Width, 569);
                     break;
                 case "UpdateValueProperty Collection Editor":
                     _form.Size = new Size(555, _form.Size.Height);
-                    _collectionType = typeof(UpdateValueProperty);
+                    _collectionType = typeof (UpdateValueProperty);
                     break;
                 case "Rule Collection Editor":
-                    _collectionType = typeof(Rule);
+                    _collectionType = typeof (Rule);
                     break;
                 case "DecoratorArgument Collection Editor":
-                    _collectionType = typeof(DecoratorArgument);
+                    _collectionType = typeof (DecoratorArgument);
                     break;
             }
+        }
+
+        public void OnGridItemChanged(object sender, EventArgs e)
+        {
+            _propGrid.ExpandAllGridItems();
         }
 
         public void OnIndexChanged(object sender, EventArgs e)

@@ -8,17 +8,18 @@ namespace CslaGenerator.Attributes
 	[AttributeUsage(AttributeTargets.Property)]
 	public class UserFriendlyNameAttribute : Attribute
 	{
-		private string name;
+		private readonly string _name;
+
 		public  UserFriendlyNameAttribute(string name)
 		{
-			this.name = name;
+			_name = name;
 		}
 
 		//Define Name property.
 		//This is a read-only attribute.        
 		public virtual string UserFriendlyName
 		{
-			get {return name;}        
+			get {return _name;}        
 		}
 	}
 }
