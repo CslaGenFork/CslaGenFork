@@ -1,0 +1,139 @@
+Release Notes for version 3.0.5.0
+
+
+
+A) Introduction
+---------------
+
+The numbering of versions reflects the latest Csla version supported (as of August 2009) - the last digit is used 
+for releases.
+
+Csla 3.0.5 can run under Framework .NET 2.0 or Framework .NET 3.0 according to the NET20 compiler symbol 
+(http://www.lhotka.net/Article.aspx?area=4&id=ac20fe4c-6afc-4176-bcb4-d74b5a370356).
+
+This fork is based on CslaGen build 20071009.
+
+
+
+B) Differences to the base CslaGen build
+----------------------------------------
+
+GENERAL
+
+1. Drop the versioning by build and use version numbers.
+
+2. Add an "About" window reporting the version number (design based on CslaGen 20090529).
+
+3. Cleanup the start page: added a red "Fork" to the image, deleted outdated references and added links to 
+Code Project articles and samples.
+
+4. Added a UnitTest project.
+
+5. Small changes:
+- startup form shows the project name on the form title area (updated on open, new, save, save as and generate)
+- startup form "CSLAgen" renamed to "MainForm"
+- upper cased "CSLA" was mostly converted to "Csla"
+- AccesorVisibility renamed to AccessorVisibility
+- ParentTypeEditor only show collection stereotypes in the ParentType combo box
+- item and parent combo boxes select available objects using Relation Rules Engine
+- old stuff moved to a solution folder, etc.
+
+
+
+Template changes were made to C# 2.0 and also to sprocs (sorry, I'm a noob on VB).
+
+
+TEMPLATES
+
+6. "Templates" folder is inside the VS2008 solution and gets copied to the output folder on compile. 
+The old "Templates" was renamed "TemplateHelpers". (Editing templates and having to keep two folders synchronized 
+wasn't a pratical proposition.)
+
+7. All Sprocs and C# 2.0 templates are in Windows format (\r\n) (Visual Studio was complaining about it all the time).
+
+8. All source code, sprocs and C# 2.0 templates are free of Tab characters (CSLA 1.0 and VB for 2.0 may contain 
+Tabs or "\t").
+
+9. Templates for sprocs and C# 2.0 were cleaned up as much as possible in order to get correct (near 100%) indentation 
+and correct line spacing around region marks. Trailing spaces were also cleaned up.
+
+10. The template for generating the file header now includes a file with CslaGenFork version.
+
+11. Created "Warnings" template string property to log non fatal errors. The "Errors" property is to be used only when it's impossible to 
+complete the template run. CslaGen generates as much code as it can but this separation avoids most of generation exceptions.
+
+12. Added checks:
+- use Relation Rules Engine for template runtime checks
+12.1. Collection item checks - on all collection types (except for NVL):
+- the item type property is specified
+- the item type exists
+- the parent type of the collection's item is specified
+- the parent type of the collection's item matches the current collection name
+- the object type of the collection's item type is compatible with the collection object type (Relation Rules Engine)
+12.2. Collection parent checks (ReadOnlyObject, EditableChild, EditableSwitchable and DynamicEditableRoot)
+- the parent type property is specified (only on EditableSwitchable and DynamicEditableRoot)
+- the parent type exists (if specified)
+- the item type of the parent collection is specified
+- the item type of the parent collection matches the current item name
+- the object type of the parent collection is compatible with the item object type (Relation Rules Engine)
+12.3. Non-collection checks
+- EditableChild and EditableChildCollection parent type is specified (no checks on parent object type)
+
+
+MOST IMPORTANT
+
+13. Added support for generate System.Threading.Interlocked.Decrement(ref _lastID) as default property value.
+Provided the PrimaryKey is DBProvidedPK you enter _lastID (case insensitive) and PropertyType is an integer (16/32/64), 
+the template will replace _lastID with "System.Threading.Interlocked.Decrement(ref _lastID)" and 
+will create a static _lastID field.
+
+14. Added "onInsertStart" and "onUpdateStart" events in order to allow setting the changed user and changed date/time 
+for auditing (there was no other way to set those values before DoInsertUpdate is executed).
+
+15. Value properties have a new "FKConstraint" property that generates the appropriate INNER JOINs.
+Example: on the Docs table you set the DbBindColumn to the DocTypeID and then convert it somehow to the "doc type name"; 
+now you can set the DbBindColumn to the DocTypeName column of the DocTypes table and CslaGenFork does all the work for you.
+
+16. Csla 2.0+ only - CslaGen generates an internal/Friend static/NotInheritable class "Database" that reads normal app.config settings for 
+the main database and also for the security database. The location of that file is defined on the 
+"New Object Defaults" tab of the project options (the folder is created if it doesn't exist). Generation of this file can 
+be switched off on "Generation" tab. There is only one database class file and the generation process will never overwrite it.
+
+17. Created a Relation Rules Engine (unit tests added) to check parent/child, collection/item relations 
+(used in template runtime checks and combo box population).
+
+18. Support for DynamicEditableRoot and DynamicEditableRootCollection Csla stereotypes.
+
+19. Support for "convert value properties" - properties that doesn't exist on the database and are convert from/to other 
+properties. This is intend for converting IDs to human readable descriptions using NVL objects (doesn't apply to 
+collections and NameValueList).
+
+20. Support for "update value properties" - properties of an object that get updated on a Saved event triggered by an 
+editable object. This is intended for updating a ReadOnlyList of info objects when a corresponding root object gets updated 
+(OnSaved event may be generated by EditableRoot, EditableSwitchable and DynamicEditableRoot; only ReadOnlyCollection/ReadOnlyObject 
+may handle the event).
+(http://www.lhotka.net/weblog/IAmWorkingOnMyUsingCSLANET30EbookAndWroteSomeContentThatIDontThinkImGoingToUseInTheBook.aspx)
+
+TO DO
+
+-> separate Warning and FATAL errors - on going
+
+-> move the template folder to another location - make a setting for templates path
+
+
+
+C) Temporary solutions to CSLA.NET shortcomings
+-----------------------------------------------
+
+CSLA.NET type "Editable Root List Base" (ERLB) is CslaGen type "DynamicEditableRootCollection". CSLA.NET doesn't define the 
+Initialize() signature (it's on Rocky's todo list and should be solved on version 4)
+
+The problems
+- VS2008 says "there is no suitable method to override"
+- we can't use standard CslaGen automatic support for DataPortal events
+
+The solutions
+- the template omits "override" for DynamicEditableRootCollection objects
+- the template adds an explicit call to this.Initialize() for DynamicEditableRootCollection objects
+
+These template changes must be reversed for future CSLA.NET with this problem solved.
