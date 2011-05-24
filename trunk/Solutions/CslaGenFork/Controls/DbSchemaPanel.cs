@@ -533,7 +533,7 @@ namespace CslaGenerator.Controls
 
         private void editableRootToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            NewObjectProperties frm = NewObjectProperties.NewListProperties("Editable Root");
+            NewObjectProperties frm = NewObjectProperties.NewRootObjectProperties("Editable Root");
             if (frm.ShowDialog() == DialogResult.OK)
             {
                 string objectName = frm.GetPropertyValue("ObjectName");
@@ -585,7 +585,7 @@ namespace CslaGenerator.Controls
 
         private void editableRootCollectionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            NewObjectProperties frm = NewObjectProperties.NewListProperties("Editable Root Collection");
+            NewObjectProperties frm = NewObjectProperties.NewRootListProperties("Editable Root Collection");
             if (frm.ShowDialog() == DialogResult.OK)
             {
                 string collectionName = frm.GetPropertyValue("CollectionName");
@@ -641,7 +641,7 @@ namespace CslaGenerator.Controls
 
         private void dynamicEditableRootCollectionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            NewObjectProperties frm = NewObjectProperties.NewListProperties("Dynamic Editable Root Collection");
+            NewObjectProperties frm = NewObjectProperties.NewRootListProperties("Dynamic Editable Root Collection");
             if (frm.ShowDialog() == DialogResult.OK)
             {
                 string collectionName = frm.GetPropertyValue("CollectionName");
@@ -654,7 +654,7 @@ namespace CslaGenerator.Controls
 
         private void readOnlyRootToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            NewObjectProperties frm = NewObjectProperties.NewListProperties(@"Read Only Root Object");
+            NewObjectProperties frm = NewObjectProperties.NewRootObjectProperties(@"Read Only Root Object");
             if (frm.ShowDialog() == DialogResult.OK)
             {
                 string objectName = frm.GetPropertyValue("ObjectName");
@@ -706,7 +706,7 @@ namespace CslaGenerator.Controls
 
         private void readOnlyRootCollectionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            NewObjectProperties frm = NewObjectProperties.NewListProperties("Read Only Root Collection");
+            NewObjectProperties frm = NewObjectProperties.NewRootListProperties("Read Only Root Collection");
             if (frm.ShowDialog() == DialogResult.OK)
             {
                 string collectionName = frm.GetPropertyValue("CollectionName");

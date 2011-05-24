@@ -159,13 +159,22 @@ namespace CslaGenerator.Controls
             return _identity.AssignList(list);
         }
 
-        public static NewObjectProperties NewListProperties(string objectType)
+        public static NewObjectProperties NewRootListProperties(string objectType)
         {
             _identity = new NewObjectProperties();
             _identity.Text = @"New " + objectType + @" Properties";
             var list = new List<ObjectProperty>();
             list.Add(new ObjectProperty(_identity, "CollectionName"));
             list.Add(new ObjectProperty(_identity, "ItemName"));
+            return _identity.AssignList(list);
+        }
+
+        public static NewObjectProperties NewRootObjectProperties(string objectType)
+        {
+            _identity = new NewObjectProperties();
+            _identity.Text = @"New " + objectType + @" Properties";
+            var list = new List<ObjectProperty>();
+            list.Add(new ObjectProperty(_identity, "ObjectName"));
             return _identity.AssignList(list);
         }
 

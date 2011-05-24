@@ -210,6 +210,7 @@
     <Compile Include="CodeGen\CslaTemplateHelperCS.cs" />
     <Compile Include="CodeGen\CslaTemplateHelperVB.cs" />
     <Compile Include="CodeGen\GenerationStep.cs" />
+    <Compile Include="Design\CriteriaUsageParameterConverter.cs" />
     <Compile Include="Design\UnitOfWorkTypeEditor.cs" />
     <Compile Include="Design\UnitOfWorkTargetCriteriaEditor.cs" />
     <Compile Include="ICodeGenerator.cs" />
@@ -323,9 +324,6 @@
     </Compile>
     <Compile Include="Design\DbBindColumnEditor.cs" />
     <Compile Include="Design\CriteriaTypeConverter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Design\CriteriaTypeEditor.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Design\CslaObjectInfoEditor.cs">

@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
-using System.Globalization;
+using CslaGenerator.Attributes;
+using CslaGenerator.Design;
 
 namespace CslaGenerator.Metadata
 {
@@ -37,6 +38,7 @@ namespace CslaGenerator.Metadata
         }
 
         [Description("Defines whether you want to generate the collection Add/Remove method or not. This property is set on the collection item although the method is generated in the collection class.")]
+        [UserFriendlyName("Add/Remove")]
         public bool AddRemove
         {
             get { return _addRemove; }
@@ -49,6 +51,7 @@ namespace CslaGenerator.Metadata
         }
 
         [Description("Defines whether you want to generate the DataPortal method or not. If set to false, the criteria nested class won't be generated.")]
+        [UserFriendlyName("DataPortal")]
         public bool DataPortal
         {
             get { return _dataPortal; }
@@ -77,6 +80,7 @@ namespace CslaGenerator.Metadata
         }
 
         [Description("Defines the name of the stored procedure. This will be used for generating the DataPortal method and the stored procedure itself.")]
+        [UserFriendlyName("Procedure Name")]
         public string ProcedureName
         {
             get { return _procedureName; }
@@ -88,7 +92,10 @@ namespace CslaGenerator.Metadata
             }
         }
 
-        [Description("When generating factory methods, they will be named [Get/Delete/Create] + ObjectName + Suffix. For instance for an object named Project and empty suffix: GetProject(). Sample with 'ByName': GetProjectByName().")]
+        [Description("When generating factory methods, they will be named [Get/Delete/Create] + ObjectName + Suffix.\r\n" +
+            "For instance for an object named Project and empty suffix: GetProject(). Sample with 'ByName': GetProjectByName().\r\n"+
+            "This suffix will also be added to the SProc name.")]
+        [UserFriendlyName("Factory Suffix")]
         public string FactorySuffix
         {
             get { return _factorySuffix; }
@@ -121,29 +128,6 @@ namespace CslaGenerator.Metadata
             newUsageParam.FactorySuffix = masterUsageParam.FactorySuffix;
 
             return newUsageParam;
-        }
-
-    }
-
-    public class CriteriaUsageParameterConverter : ExpandableObjectConverter
-    {
-        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
-        {
-            if (destinationType == typeof(CriteriaUsageParameter))
-                return true;
-
-            return base.CanConvertTo(context, destinationType);
-        }
-
-        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
-        {
-            if (destinationType == typeof(String) && value is CriteriaUsageParameter)
-            {
-                CriteriaUsageParameter so = (CriteriaUsageParameter)value;
-                return "Factory: " + so.Factory;
-            }
-
-            return base.ConvertTo(context, culture, value, destinationType);
         }
     }
 }

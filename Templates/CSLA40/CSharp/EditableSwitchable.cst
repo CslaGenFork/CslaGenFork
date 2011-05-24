@@ -184,7 +184,7 @@ if (Errors.Length == 0)
 <!-- #include file="SharedAuthorizationMethods.asp" -->
 <!-- #include file="ConvertProperties.asp" -->
 <%
-    if (Info.GenerateDataAccessRegion)~
+    if (Info.GenerateDataAccessRegion)
     {
         if (!genOptional)
         {

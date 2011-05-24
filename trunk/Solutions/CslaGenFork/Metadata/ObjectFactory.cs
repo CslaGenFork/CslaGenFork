@@ -467,11 +467,13 @@ namespace CslaGenerator.Metadata
                     // If default criteria doesn't exists, create a new criteria
                     if (defaultCriteria == null)
                     {
-
-                        if (_currentCslaObject.ObjectType != CslaObjectType.ReadOnlyObject)
+                        if (!(_currentCslaObject.ObjectType == CslaObjectType.ReadOnlyObject &&
+                            _currentCslaObject.ParentType != string.Empty))
                         {
                             defaultCriteria = new Criteria(_currentCslaObject);
-                            defaultCriteria.Name = "Criteria";
+                            defaultCriteria.Name = _currentCslaObject.ObjectType == CslaObjectType.ReadOnlyObject
+                                                       ? "CriteriaGet"
+                                                       : "Criteria";
                             defaultCriteria.GetOptions.Enable();
                             if (_currentCslaObject.ObjectType == CslaObjectType.EditableRoot ||
                                 _currentCslaObject.ObjectType == CslaObjectType.EditableSwitchable ||
@@ -503,9 +505,10 @@ namespace CslaGenerator.Metadata
                             defaultCriteria.SetSprocNames();
 
                             if ((_currentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 ||
-                                _currentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL) &&
+                                 _currentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL) &&
                                 _currentCslaObject.ObjectType != CslaObjectType.EditableRoot &&
-                                _currentCslaObject.ObjectType != CslaObjectType.EditableSwitchable)
+                                _currentCslaObject.ObjectType != CslaObjectType.EditableSwitchable &&
+                                _currentCslaObject.ObjectType != CslaObjectType.ReadOnlyObject)
                             {
                                 defaultCriteria.Name = "CriteriaDelete";
                                 defaultCriteria.GetOptions.Factory = false;
@@ -519,7 +522,8 @@ namespace CslaGenerator.Metadata
                             _currentCslaObject.CriteriaObjects.Add(defaultCriteria);
                             AddPropertiesToCriteria(primaryKeyProperties, defaultCriteria);
 
-                            if (_currentUnit.Params.AutoTimestampCriteria && timestampProperty != null && timestampCriteria == null)
+                            if (_currentUnit.Params.AutoTimestampCriteria && timestampProperty != null &&
+                                timestampCriteria == null)
                                 AddTimestampProperty(defaultCriteria, timestampProperty);
                         }
                     }

@@ -42,7 +42,7 @@ namespace CslaGenerator.CodeGen
 
         #endregion
 
-        #region Basic Fromat and basic stuff
+        #region Basic Format and other basic stuff
 
         public string FormatFieldName(string name)
         {
@@ -170,7 +170,6 @@ namespace CslaGenerator.CodeGen
             else
                 statement = FormatFieldName(prop.Name) + " = ";
 
-            //statement += GetDataReaderStatement(prop) + ";"; // original
             statement += GetDataReaderStatement(prop);
 
             return statement;
@@ -274,7 +273,6 @@ namespace CslaGenerator.CodeGen
             return prop.DataType;
         }
 
-        //public string GetParamInstanciation()
         public virtual string GetDataType(Property prop)
         {
             string type = GetDataType(prop.PropertyType);
@@ -286,7 +284,6 @@ namespace CslaGenerator.CodeGen
             return type;
         }
 
-        //protected virtual string GetDataType(TypeCodeEx type) // original
         public virtual string GetDataType(TypeCodeEx type)
         {
             if (type == TypeCodeEx.ByteArray)
@@ -365,7 +362,6 @@ namespace CslaGenerator.CodeGen
         /// </summary>
         /// <param name="dataType"></param>
         /// <returns></returns>
-        //protected internal virtual string GetLanguageVariableType(DbType dataType) // original
         public virtual string GetLanguageVariableType(DbType dataType)
         {
             switch (dataType)
@@ -533,7 +529,6 @@ namespace CslaGenerator.CodeGen
             return (result);
         }
 
-        // Helper funcion for GetUsingStatementString method
         protected string[] GetNamespaces(CslaObjectInfo info)
         {
             var usingList = new List<string>();
@@ -2336,8 +2331,8 @@ namespace CslaGenerator.CodeGen
                 /*if ((crit.IsCreator && info.IsCreator) ||
                     (crit.IsGetter && info.IsGetter) ||
                     (crit.IsDeleter && info.IsDeleter))*/
-                    if(crit.Properties.Count > 0)
-                        criteriaCount++;
+                if (crit.Properties.Count > 0)
+                    criteriaCount++;
             }
 
             // TODO: must filter by type of Unit of Work
@@ -2350,7 +2345,7 @@ namespace CslaGenerator.CodeGen
                 /*if ((crit.IsCreator && info.IsCreator) ||
                     (crit.IsGetter && info.IsGetter) ||
                     (crit.IsDeleter && info.IsDeleter))*/
-                    masterCrit = Criteria.MergeUnitOfWorkCriteria(masterCrit, crit);
+                masterCrit = Criteria.MergeUnitOfWorkCriteria(masterCrit, crit);
             }
 
             if (info.IsCreator)
@@ -2663,8 +2658,6 @@ namespace CslaGenerator.CodeGen
                     return "protected internal ";
                 case AccessorVisibility.Internal:
                     return "internal ";
-                //case AccessorVisibility.Public:
-                //    return "";
                 default:
                     return "";
             }

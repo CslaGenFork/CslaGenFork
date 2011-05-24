@@ -1,4 +1,5 @@
 ﻿using System.Windows.Forms;
+
 namespace CslaGenerator.Controls
 {
     partial class ProjectPanel
@@ -370,13 +371,11 @@ namespace CslaGenerator.Controls
 
         #endregion
 
-        // public events
         public delegate void TargetDirChangedEventHandler(string path);
         public virtual event TargetDirChangedEventHandler TargetDirChanged;
         private CslaGenerator.Controls.PaneCaption paneCaption1;
         private CslaGenerator.Controls.PaneCaption paneCaption2;
         private CslaGenerator.Controls.PaneCaption paneCaption3;
-        //private CslaGenerator.Util.FolderBrowser fbGenerate;
         private bool onlyfilesystem = true;
         private System.Windows.Forms.TextBox txtProjectName;
         private System.Windows.Forms.Panel pnlProjectName;
@@ -403,6 +402,5 @@ namespace CslaGenerator.Controls
         private Label label3;
         private Label label2;
         private Label label1;
-        //private Infragistics.Win.UltraWinToolTip.UltraToolTipManager ultraToolTipManager1;
     }
 }

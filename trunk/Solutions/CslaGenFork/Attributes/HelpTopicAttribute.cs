@@ -8,17 +8,18 @@ namespace CslaGenerator.Attributes
 	[AttributeUsage(AttributeTargets.Property)]
 	public class HelpTopicAttribute : Attribute
 	{
-		private string name;
+		private readonly string _name;
+
 		public  HelpTopicAttribute(string name)
 		{
-			this.name = name;
+			_name = name;
 		}
 
 		//Define Name property.
 		//This is a read-only attribute.        
 		public virtual string HelpTopic
 		{
-			get {return name;}        
+			get {return _name;}        
 		}
 	}
 }

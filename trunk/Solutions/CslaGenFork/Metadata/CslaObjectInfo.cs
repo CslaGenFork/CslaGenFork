@@ -5,6 +5,7 @@ using System.IO;
 using System.Reflection;
 using System.Xml.Serialization;
 using CslaGenerator.Attributes;
+using CslaGenerator.CodeGen;
 using CslaGenerator.Design;
 using CslaGenerator.Util;
 using DBSchemaInfo.Base;
@@ -963,7 +964,7 @@ namespace CslaGenerator.Metadata
         /// </summary>
         [Category("07. Data Access Options")]
         [Description("The type of the Criteria object to be passed to the DeleteObject method.")]
-        [Editor(typeof(CriteriaTypeEditor), typeof(UITypeEditor))]
+        //[Editor(typeof(CriteriaTypeEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(CriteriaTypeConverter))]
         [UserFriendlyName("Delete Object Criteria Type")]
         public Criteria DeleteObjectCriteriaType
@@ -1004,7 +1005,7 @@ namespace CslaGenerator.Metadata
         /// </summary>
         [Category("07. Data Access Options")]
         [Description("The type of the Criteria object to be passed to the GetObject method.")]
-        [Editor(typeof(CriteriaTypeEditor), typeof(UITypeEditor))]
+        //[Editor(typeof(CriteriaTypeEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(CriteriaTypeConverter))]
         [UserFriendlyName("GetObject Criteria Type")]
         public Criteria GetObjectCriteriaType
@@ -1045,7 +1046,7 @@ namespace CslaGenerator.Metadata
         /// </summary>
         [Category("07. Data Access Options")]
         [Description("The type of the Criteria object to be passed to the NewObject method.")]
-        [Editor(typeof(CriteriaTypeEditor), typeof(UITypeEditor))]
+        //[Editor(typeof(CriteriaTypeEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(CriteriaTypeConverter))]
         [UserFriendlyName("NewObject Criteria Type")]
         public Criteria NewObjectCriteriaType
@@ -1484,24 +1485,27 @@ namespace CslaGenerator.Metadata
                     + Parent.Params.SpDeleteSuffix
                     + Parent.Params.SpGeneralSuffix;
             }
-            _insertProcedureName =
-                Parent.Params.SpGeneralPrefix
-                + Parent.Params.SpAddPrefix
-                + _objectName
-                + Parent.Params.SpAddSuffix
-                + Parent.Params.SpGeneralSuffix;
-            /*_selectProcedureName =
-                Parent.Params.SpGeneralPrefix
-                + Parent.Params.SpGetPrefix
-                + _objectName
-                + Parent.Params.SpGetSuffix
-                + Parent.Params.SpGeneralSuffix;*/
-            _updateProcedureName =
-                Parent.Params.SpGeneralPrefix
-                + Parent.Params.SpUpdatePrefix
-                + _objectName
-                + Parent.Params.SpUpdateSuffix
-                + Parent.Params.SpGeneralSuffix;
+            if (CslaTemplateHelperCS.IsEditableType(_objectType))
+            {
+                _insertProcedureName =
+                    Parent.Params.SpGeneralPrefix
+                    + Parent.Params.SpAddPrefix
+                    + _objectName
+                    + Parent.Params.SpAddSuffix
+                    + Parent.Params.SpGeneralSuffix;
+                /*_selectProcedureName =
+                    Parent.Params.SpGeneralPrefix
+                    + Parent.Params.SpGetPrefix
+                    + _objectName
+                    + Parent.Params.SpGetSuffix
+                    + Parent.Params.SpGeneralSuffix;*/
+                _updateProcedureName =
+                    Parent.Params.SpGeneralPrefix
+                    + Parent.Params.SpUpdatePrefix
+                    + _objectName
+                    + Parent.Params.SpUpdateSuffix
+                    + Parent.Params.SpGeneralSuffix;
+            }
             foreach (Criteria c in _criteriaObjects)
             {
                 c.SetSprocNames();
