@@ -1,0 +1,1 @@
+In order to build CslaGenFork-4.0.1 solution, please add CodeSmith.Engine.dll to the References folder.
