@@ -40,9 +40,11 @@ namespace CslaGenerator.Metadata
 
             public string ObjectCatalog { get; private set; }
 
+            public string ObjectSchema { get; private set; }
+
             public string ObjectName { get; private set; }
 
-            public string ObjectSchema { get; private set; }
+            public string ObjectDescription { get; set; }
 
             public ICatalog Catalog { get; private set; }
 

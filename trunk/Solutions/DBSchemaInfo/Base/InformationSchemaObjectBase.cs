@@ -1,18 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Data;
 
 namespace DBSchemaInfo.Base
 {
-    public abstract class InformationSchemaObjectBase : DBSchemaInfo.Base.IDataBaseObject
+    public abstract class InformationSchemaObjectBase : IDataBaseObject
     {
         public InformationSchemaObjectBase(DataRow dr, ICatalog cat)
         {
-            _Catalog = cat;
-            _ObjectName = dr[ISObjectName].ToString();
-            _ObjectSchema = dr[ISObjectSchema].ToString();
-            _ObjectCatalog = dr.IsNull(ISObjectCatalog) ? string.Empty : dr[ISObjectCatalog].ToString();
+            Catalog = cat;
+            ObjectName = dr[ISObjectName].ToString();
+            ObjectSchema = dr[ISObjectSchema].ToString();
+            ObjectCatalog = dr.IsNull(ISObjectCatalog) ? string.Empty : dr[ISObjectCatalog].ToString();
         }
 
         protected virtual string ISObjectName
@@ -28,56 +25,17 @@ namespace DBSchemaInfo.Base
             get { return "TABLE_CATALOG"; }
         }
 
-        private string _ObjectName;
-        public string ObjectName
-        {
-            get
-            {
-                return _ObjectName;
-            }
-            protected internal set
-            {
-                _ObjectName = value;
-            }
-        }
+        public string ObjectCatalog { get; protected internal set; }
 
-        private string _ObjectSchema;
-        public string ObjectSchema
-        {
-            get
-            {
-                return _ObjectSchema;
-            }
-            protected internal set
-            {
-                _ObjectSchema = value;
-            }
-        }
+        public string ObjectSchema { get; protected internal set; }
 
-        private string _ObjectCatalog;
-        public string ObjectCatalog
-        {
-            get
-            {
-                return _ObjectCatalog;
-            }
-            protected internal set
-            {
-                _ObjectCatalog = value;
-            }
-        }
+        public string ObjectName { get; protected internal set; }
 
-        ICatalog _Catalog;
-        public ICatalog Catalog
-        {
-            get
-            {
-                return _Catalog;
-            }
-        }
+        public string ObjectDescription { get; set; }
+
+        public ICatalog Catalog { get; private set; }
 
         public abstract void Reload(bool throwOnError);
 
-      
     }
 }

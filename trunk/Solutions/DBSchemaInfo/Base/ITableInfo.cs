@@ -1,8 +1,6 @@
-﻿using System;
-namespace DBSchemaInfo.Base
+﻿namespace DBSchemaInfo.Base
 {
     public interface ITableInfo : IResultObject
     {
-        
     }
 }

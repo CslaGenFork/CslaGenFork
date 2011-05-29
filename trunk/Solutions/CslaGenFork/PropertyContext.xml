@@ -521,7 +521,7 @@
     <add key="DynamicEditableRoot:ValueProperties" value="true" />
     <add key="DynamicEditableRoot:CriteriaObjects" value="true" />
     <add key="DynamicEditableRoot:LazyLoad" value="true" />
-    <add key="DynamicEditableRoot:ParentProperties" value="true" />
+    <add key="DynamicEditableRoot:ParentProperties" value="false" />
     <add key="DynamicEditableRoot:ParentType" value="true" />
     <add key="DynamicEditableRoot:FindMethodsParameters" value="false" />
     <add key="DynamicEditableRoot:ItemType" value="false" />
@@ -576,7 +576,7 @@
     <add key="DynamicEditableRootCollection:ValueProperties" value="false" />
     <add key="DynamicEditableRootCollection:CriteriaObjects" value="true" />
     <add key="DynamicEditableRootCollection:LazyLoad" value="false" />
-    <add key="DynamicEditableRootCollection:ParentProperties" value="true" />
+    <add key="DynamicEditableRootCollection:ParentProperties" value="false" />
     <add key="DynamicEditableRootCollection:ParentType" value="false" />
     <add key="DynamicEditableRootCollection:FindMethodsParameters" value="true" />
     <add key="DynamicEditableRootCollection:ItemType" value="true" />

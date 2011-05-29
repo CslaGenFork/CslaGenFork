@@ -16,6 +16,7 @@ using System.Diagnostics;
 using System.Drawing.Design;
 using System.Reflection;
 using CslaGenerator.Attributes;
+using CslaGenerator.CodeGen;
 using CslaGenerator.Metadata;
 
 namespace CslaGenerator.Util.PropertyBags
@@ -913,6 +914,8 @@ namespace CslaGenerator.Util.PropertyBags
                 // objectType + propertyName --> true | false
                 if (_propertyContext != null)
                 {
+                    var cslaObject = (CslaObjectInfo)GeneratorController.Current.GeneratorForm.ProjectPanel.ListObjects.SelectedItem;
+                    var hasParentProperties = CslaTemplateHelperCS.HasParentProperties(cslaObject);
                     foreach (string typ in objectType)
                     {
                         if (!_propertyContext.ShowProperty(typ, propertyName))
@@ -945,11 +948,18 @@ namespace CslaGenerator.Util.PropertyBags
                              TargetFramework.CSLA40DAL) &&
                             (propertyName == "LazyLoad"))
                             return false;
-                        if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework ==
+                        /*if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework ==
                              TargetFramework.CSLA40 ||
                              GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework ==
                              TargetFramework.CSLA40DAL) &&
                              typ == "EditableChildCollection" &&
+                            propertyName == "ParentProperties")
+                            return false;*/
+                        if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework ==
+                             TargetFramework.CSLA40 ||
+                             GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework ==
+                             TargetFramework.CSLA40DAL) &&
+                             !hasParentProperties &&
                             propertyName == "ParentProperties")
                             return false;
                         if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework ==
@@ -1209,4 +1219,3 @@ namespace CslaGenerator.Util.PropertyBags
 
     }
 }
-

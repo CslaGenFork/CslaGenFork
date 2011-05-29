@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace DBSchemaInfo.Base
 {
@@ -8,14 +6,13 @@ namespace DBSchemaInfo.Base
     {
 
         public ForeignKeyConstraintCollection()
-            : base()
         {
             IsReadOnly = false;
         }
 
         public List<IForeignKeyConstraint> GetConstraintsFor(IResultObject table)
         {
-            List<IForeignKeyConstraint> list = new List<IForeignKeyConstraint>();
+            var list = new List<IForeignKeyConstraint>();
             foreach (IForeignKeyConstraint fkc in this)
             {
                 if (fkc.ConstraintTable == table)
@@ -23,6 +20,5 @@ namespace DBSchemaInfo.Base
             }
             return list;
         }
-
     }
 }

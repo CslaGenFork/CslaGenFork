@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.ComponentModel;
 
 namespace DBSchemaInfo.Base
 {
     public class ReadOnlyList<T> : BindingList<T>
     {
+        private bool _isReadOnly = true;
+
         public ReadOnlyList(IEnumerable<T> items)
         {
             IsReadOnly = false;
@@ -14,39 +15,34 @@ namespace DBSchemaInfo.Base
                 Add(item);
             IsReadOnly = true;
         }
+
         public ReadOnlyList()
         {
         }
-        private bool _IsReadOnly = true;
+
         public bool IsReadOnly
         {
-            get
-            {
-                return _IsReadOnly;
-            }
-            protected internal set
-            {
-                _IsReadOnly = value;
-            }
+            get { return _isReadOnly; }
+            protected internal set { _isReadOnly = value; }
         }
-
-
 
         protected override void InsertItem(int index, T item)
         {
-            if (_IsReadOnly)
+            if (_isReadOnly)
                 throw new NotSupportedException();
             base.InsertItem(index, item);
         }
+
         protected override void RemoveItem(int index)
         {
-            if (_IsReadOnly)
+            if (_isReadOnly)
                 throw new NotSupportedException();
             base.RemoveItem(index);
         }
+
         protected override void SetItem(int index, T item)
         {
-            if (_IsReadOnly)
+            if (_isReadOnly)
                 throw new NotSupportedException();
             base.SetItem(index, item);
         }

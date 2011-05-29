@@ -1,11 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace DBSchemaInfo.Base
 {
     public class StandardForeignKeyColumnPair : IForeignKeyColumnPair
     {
+        private readonly IColumnInfo _fkColumn;
+        private readonly IColumnInfo _pkColumn;
 
         /// <summary>
         /// Initializes a new instance of the StandardForeignKeyColumnPair class.
@@ -14,23 +12,20 @@ namespace DBSchemaInfo.Base
         /// <param name="fKColumn"></param>
         public StandardForeignKeyColumnPair(IColumnInfo pKColumn, IColumnInfo fKColumn)
         {
-            _PKColumn = pKColumn;
-            _FKColumn = fKColumn;
+            _pkColumn = pKColumn;
+            _fkColumn = fKColumn;
         }
-
-        IColumnInfo _PKColumn;
-        IColumnInfo _FKColumn;
 
         #region IForeignKeyColumnPair Members
 
         public IColumnInfo PKColumn
         {
-            get { return _PKColumn; }
+            get { return _pkColumn; }
         }
 
         public IColumnInfo FKColumn
         {
-            get { return _FKColumn; }
+            get { return _fkColumn; }
         }
 
         #endregion

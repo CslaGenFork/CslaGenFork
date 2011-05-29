@@ -65,7 +65,7 @@ namespace CslaGenerator.Metadata
             get
             {
                 if (Column == null) { return _nativeType; }
-                return Column.NativeTypeName;
+                return Column.NativeType;
             }
             set
             {
@@ -263,7 +263,7 @@ namespace CslaGenerator.Metadata
             _isNullable = _column.IsNullable;
             _isIdentity = _column.IsIdentity;
             _dataType = _column.DbType;
-            _nativeType = _column.NativeTypeName;
+            _nativeType = _column.NativeType;
         }
 
         public bool IsNullable

@@ -20,6 +20,31 @@ namespace CslaGenerator.Metadata
         private ProjectParameters _projectParams = new ProjectParameters();
         private GenerationParameters _generationParams = new GenerationParameters();
 
+        public CslaGeneratorUnit()
+        {
+            _cslaObjects = new CslaObjectInfoCollection();
+            _projectName = "MyProject";
+        }
+
+        public ProjectParameters Params
+        {
+            get { return _projectParams; }
+            set { if (value != null) { _projectParams = value; } }
+        }
+
+        public GenerationParameters GenerationParams
+        {
+            get
+            {
+                return _generationParams;
+            }
+            set
+            {
+                if (value != null)
+                    _generationParams = value;
+            }
+        }
+
         public CslaObjectInfoCollection CslaObjects
         {
             get { return _cslaObjects; }
@@ -70,31 +95,6 @@ namespace CslaGenerator.Metadata
             set { _fileVersion = value; }
         }
 
-        public CslaGeneratorUnit()
-        {
-            _cslaObjects = new CslaObjectInfoCollection();
-            _projectName = "MyProject";
-        }
-
-        public ProjectParameters Params
-        {
-            get { return _projectParams; }
-            set { if (value != null) { _projectParams = value; } }
-        }
-
-        public GenerationParameters GenerationParams
-        {
-            get
-            {
-                return _generationParams;
-            }
-            set
-            {
-                if (value != null)
-                    _generationParams = value;
-            }
-        }
-
         [field: NonSerialized]
         public event EventHandler ProjectNameChanged;
 
@@ -102,28 +102,28 @@ namespace CslaGenerator.Metadata
         {
             if (ProjectNameChanged != null)
             {
-                ProjectNameChanged(this,EventArgs.Empty);
+                ProjectNameChanged(this, EventArgs.Empty);
             }
         }
 
-        [field : NonSerialized]
+        [field: NonSerialized]
         public event EventHandler TargetDirectoryChanged;
 
         protected void OnTargetDirectoryChanged()
         {
             if (TargetDirectoryChanged != null)
             {
-                TargetDirectoryChanged(this,EventArgs.Empty);
+                TargetDirectoryChanged(this, EventArgs.Empty);
             }
         }
 
         public void ResetParent()
         {
-            foreach(CslaObjectInfo info in _cslaObjects)
+            foreach (CslaObjectInfo info in _cslaObjects)
             {
                 info.Parent = this;
             }
-            foreach(AssociativeEntity info in _associativeEntities)
+            foreach (AssociativeEntity info in _associativeEntities)
             {
                 info.Parent = this;
             }
