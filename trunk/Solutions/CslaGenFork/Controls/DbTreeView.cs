@@ -21,9 +21,9 @@ namespace CslaGenerator.Controls
         private Panel panelTrim;
         private Panel panel4;
         private Panel panelBody;
-        private TreeView tvwSchema;
+        private TreeView treeViewSchema;
         private Splitter splitMiddle;
-        private PropertyGrid pgdDbObjects;
+        private PropertyGrid propertyGridDbObjects;
         internal ImageList schemaImages;
         private IContainer components;
 
@@ -71,9 +71,9 @@ namespace CslaGenerator.Controls
             this.panelTrim = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
             this.panelBody = new System.Windows.Forms.Panel();
-            this.pgdDbObjects = new System.Windows.Forms.PropertyGrid();
+            this.propertyGridDbObjects = new System.Windows.Forms.PropertyGrid();
             this.splitMiddle = new System.Windows.Forms.Splitter();
-            this.tvwSchema = new System.Windows.Forms.TreeView();
+            this.treeViewSchema = new System.Windows.Forms.TreeView();
             this.schemaImages = new System.Windows.Forms.ImageList(this.components);
             this.panelTop.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -165,9 +165,9 @@ namespace CslaGenerator.Controls
             // panelBody
             // 
             this.panelBody.BackColor = System.Drawing.SystemColors.Control;
-            this.panelBody.Controls.Add(this.pgdDbObjects);
+            this.panelBody.Controls.Add(this.propertyGridDbObjects);
             this.panelBody.Controls.Add(this.splitMiddle);
-            this.panelBody.Controls.Add(this.tvwSchema);
+            this.panelBody.Controls.Add(this.treeViewSchema);
             this.panelBody.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelBody.Location = new System.Drawing.Point(3, 3);
             this.panelBody.Name = "panelBody";
@@ -177,13 +177,14 @@ namespace CslaGenerator.Controls
             // 
             // pgdDbObjects
             // 
-            this.pgdDbObjects.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pgdDbObjects.HelpVisible = false;
-            this.pgdDbObjects.LineColor = System.Drawing.SystemColors.ScrollBar;
-            this.pgdDbObjects.Location = new System.Drawing.Point(2, 221);
-            this.pgdDbObjects.Name = "pgdDbObjects";
-            this.pgdDbObjects.Size = new System.Drawing.Size(246, 149);
-            this.pgdDbObjects.TabIndex = 5;
+            this.propertyGridDbObjects.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.propertyGridDbObjects.HelpVisible = false;
+            this.propertyGridDbObjects.LineColor = System.Drawing.SystemColors.ScrollBar;
+            this.propertyGridDbObjects.Location = new System.Drawing.Point(2, 221);
+            this.propertyGridDbObjects.Name = "pgdDbObjects";
+            this.propertyGridDbObjects.Size = new System.Drawing.Size(246, 149);
+            this.propertyGridDbObjects.PropertySort = PropertySort.NoSort;
+            this.propertyGridDbObjects.TabIndex = 5;
             // 
             // splitMiddle
             // 
@@ -194,17 +195,17 @@ namespace CslaGenerator.Controls
             this.splitMiddle.TabIndex = 6;
             this.splitMiddle.TabStop = false;
             // 
-            // tvwSchema
+            // treeViewSchema
             // 
-            this.tvwSchema.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tvwSchema.HideSelection = false;
-            this.tvwSchema.Location = new System.Drawing.Point(2, 2);
-            this.tvwSchema.Name = "tvwSchema";
-            this.tvwSchema.Size = new System.Drawing.Size(246, 214);
-            this.tvwSchema.TabIndex = 7;
-            this.tvwSchema.ControlAdded += new System.Windows.Forms.ControlEventHandler(this.TvwSchemaControlAdded);
-            this.tvwSchema.MouseUp += new System.Windows.Forms.MouseEventHandler(this.TvwSchemaMouseUp);
-            this.tvwSchema.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.TvwSchemaAfterSelect);
+            this.treeViewSchema.Dock = System.Windows.Forms.DockStyle.Top;
+            this.treeViewSchema.HideSelection = false;
+            this.treeViewSchema.Location = new System.Drawing.Point(2, 2);
+            this.treeViewSchema.Name = "treeViewSchema";
+            this.treeViewSchema.Size = new System.Drawing.Size(246, 214);
+            this.treeViewSchema.TabIndex = 7;
+            this.treeViewSchema.ControlAdded += new System.Windows.Forms.ControlEventHandler(this.treeViewSchema_ControlAdded);
+            this.treeViewSchema.MouseUp += new System.Windows.Forms.MouseEventHandler(this.treeViewSchema_MouseUp);
+            this.treeViewSchema.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewSchema_AfterSelect);
             // 
             // schemaImages
             // 
@@ -243,7 +244,7 @@ namespace CslaGenerator.Controls
 
         private void DbTreeView_Load(object sender, EventArgs e)
         {
-            tvwSchema.Height = (int)((double)0.75 * (double)this.panelBody.Height);
+            treeViewSchema.Height = (int)((double)0.75 * (double)this.panelBody.Height);
 
         }
 
@@ -260,18 +261,18 @@ namespace CslaGenerator.Controls
         {
             if (pct > 0 && pct < 100)
             {
-                tvwSchema.Height = (int)((double)pct / 100 * (double)this.panelBody.Height);
+                treeViewSchema.Height = (int)((double)pct / 100 * (double)this.panelBody.Height);
                 Invalidate();
             }
         }
-        private void TvwSchemaAfterSelect(object sender, TreeViewEventArgs e)
+        private void treeViewSchema_AfterSelect(object sender, TreeViewEventArgs e)
         {
             PropertyGridDbObjects.SelectedObject = e.Node.Tag;
             if (TreeViewAfterSelect != null)
                 TreeViewAfterSelect(sender, e);
         }
 
-        private void TvwSchemaMouseUp(object sender, MouseEventArgs e)
+        private void treeViewSchema_MouseUp(object sender, MouseEventArgs e)
         {
             if (TreeViewMouseUp != null)
                 TreeViewMouseUp(sender, e);
@@ -281,17 +282,17 @@ namespace CslaGenerator.Controls
 
         internal TreeView TreeViewSchema
         {
-            get { return tvwSchema; }
+            get { return treeViewSchema; }
         }
 
         internal PropertyGrid PropertyGridDbObjects
         {
-            get { return pgdDbObjects; }
+            get { return propertyGridDbObjects; }
         }
 
         #endregion
 
-        private void TvwSchemaControlAdded(object sender, ControlEventArgs e)
+        private void treeViewSchema_ControlAdded(object sender, ControlEventArgs e)
         {
             Console.Write(e.Control.Name + " " + e.Control.Text);
         }
@@ -307,12 +308,12 @@ namespace CslaGenerator.Controls
         {
             _showColumns = showColumns;
             TreeViewSchema.Nodes.Clear();
-            tvwSchema.ImageList = schemaImages;
+            treeViewSchema.ImageList = schemaImages;
             if (showColumns)
             {
                 TreeNode emptyNode = new TreeNode("None");
-                emptyNode.ImageIndex = (int)TvwIcons.field;
-                emptyNode.SelectedImageIndex = (int)TvwIcons.field;
+                emptyNode.ImageIndex = (int)TreeViewIcons.field;
+                emptyNode.SelectedImageIndex = (int)TreeViewIcons.field;
                 TreeViewSchema.Nodes.Add(emptyNode);
             }
             TreeNode tableBaseNode = null;
@@ -336,8 +337,8 @@ namespace CslaGenerator.Controls
             {
                 tableBaseNode = new TreeNode("Tables");
             }
-            tableBaseNode.ImageIndex = (int)TvwIcons.db;
-            tableBaseNode.SelectedImageIndex = (int)TvwIcons.db;
+            tableBaseNode.ImageIndex = (int)TreeViewIcons.db;
+            tableBaseNode.SelectedImageIndex = (int)TreeViewIcons.db;
             TreeViewSchema.Nodes.Add(tableBaseNode);
 
             #endregion
@@ -362,8 +363,8 @@ namespace CslaGenerator.Controls
             {
                 viewBaseNode = new TreeNode("Views");
             }
-            viewBaseNode.ImageIndex = (int)TvwIcons.db;
-            viewBaseNode.SelectedImageIndex = (int)TvwIcons.db;
+            viewBaseNode.ImageIndex = (int)TreeViewIcons.db;
+            viewBaseNode.SelectedImageIndex = (int)TreeViewIcons.db;
 
             TreeViewSchema.Nodes.Add(viewBaseNode);
 
@@ -388,8 +389,8 @@ namespace CslaGenerator.Controls
             {
                 spBaseNode = new TreeNode("Stored Procedures");
             }
-            spBaseNode.ImageIndex = (int)TvwIcons.db;
-            spBaseNode.SelectedImageIndex = (int)TvwIcons.db;
+            spBaseNode.ImageIndex = (int)TreeViewIcons.db;
+            spBaseNode.SelectedImageIndex = (int)TreeViewIcons.db;
 
             TreeViewSchema.Nodes.Add(spBaseNode);
 
@@ -410,8 +411,8 @@ namespace CslaGenerator.Controls
         {
             node.Tag = obj;
             node.Text = GetObjectName(obj);
-            node.ImageIndex = (int)TvwIcons.table;
-            node.SelectedImageIndex = (int)TvwIcons.table;
+            node.ImageIndex = (int)TreeViewIcons.table;
+            node.SelectedImageIndex = (int)TreeViewIcons.table;
             if (_showColumns)
                 AddColumns(node, obj.Columns);
         }
@@ -420,36 +421,51 @@ namespace CslaGenerator.Controls
         {
             node.Tag = obj;
             node.Text = GetObjectName(obj);
-            node.ImageIndex = (int)TvwIcons.view;
-            node.SelectedImageIndex = (int)TvwIcons.view;
+            node.ImageIndex = (int)TreeViewIcons.view;
+            node.SelectedImageIndex = (int)TreeViewIcons.view;
             if (_showColumns)
                 AddColumns(node, obj.Columns);
         }
 
         public void LoadStoredProcedureNode(TreeNode node, IStoredProcedureInfo obj)
         {
-            TreeNode[] resultNodes = new TreeNode[obj.ResultSets.Count];
+            var parameterNodes = new TreeNode[obj.Parameters.Count];
+            if (obj.Parameters.Count > 0)
+            {
+                // Add parameter nodes
+                for (int j = 0; j < obj.Parameters.Count; j++)
+                {
+
+                    var pNode = new TreeNode(obj.Parameters[j].ParameterName);
+                    parameterNodes[j] = pNode;
+                    pNode.Tag = obj.Parameters[j];
+                    pNode.ImageIndex = (int)TreeViewIcons.resultset;
+                    pNode.SelectedImageIndex = (int)TreeViewIcons.resultset;
+                }
+            }
+            var resultNodes = new TreeNode[obj.ResultSets.Count];
             if (obj.ResultSets.Count > 0)
             {
                 // Add result nodes
                 for (int j = 0; j < obj.ResultSets.Count; j++)
                 {
 
-                    TreeNode rNode = new TreeNode("Result Set " + (j + 1).ToString());
+                    var rNode = new TreeNode("Result Set " + (j + 1));
                     resultNodes[j] = rNode;
                     rNode.Tag = obj.ResultSets[j];
-                    rNode.ImageIndex = (int)TvwIcons.resultset;
-                    rNode.SelectedImageIndex = (int)TvwIcons.resultset;
+                    rNode.ImageIndex = (int)TreeViewIcons.resultset;
+                    rNode.SelectedImageIndex = (int)TreeViewIcons.resultset;
                     if (_showColumns)
                         AddColumns(rNode, obj.ResultSets[j].Columns);
                 }
             }
-            string procName = string.Empty;
+            var procName = string.Empty;
             node.Nodes.Clear();
             node.Text = GetObjectName(obj);
             node.Tag = obj;
-            node.ImageIndex = (int)TvwIcons.other;
-            node.SelectedImageIndex = (int)TvwIcons.other;
+            node.ImageIndex = (int)TreeViewIcons.other;
+            node.SelectedImageIndex = (int)TreeViewIcons.other;
+            node.Nodes.AddRange(parameterNodes);
             node.Nodes.AddRange(resultNodes);
         }
 
@@ -460,12 +476,12 @@ namespace CslaGenerator.Controls
             {
                 TreeNode n = new TreeNode(c.ColumnName);
                 n.Tag = c;
-                n.SelectedImageIndex = (int)TvwIcons.field;
-                n.ImageIndex = (int)TvwIcons.field;
+                n.SelectedImageIndex = (int)TreeViewIcons.field;
+                n.ImageIndex = (int)TreeViewIcons.field;
                 if (c.IsPrimaryKey)
                 {
-                    n.SelectedImageIndex = (int)TvwIcons.goldkey;
-                    n.ImageIndex = (int)TvwIcons.goldkey;
+                    n.SelectedImageIndex = (int)TreeViewIcons.goldkey;
+                    n.ImageIndex = (int)TreeViewIcons.goldkey;
                 }
                 node.Nodes.Add(n);
             }
@@ -480,7 +496,7 @@ namespace CslaGenerator.Controls
             return obj.ObjectName;
         }
 
-        private enum TvwIcons
+        private enum TreeViewIcons
         {
             db = 0,
             dbx = 1,

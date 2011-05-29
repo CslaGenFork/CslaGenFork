@@ -13,7 +13,7 @@ namespace DBSchemaInfo.MySql
 
         }
 
-        public override string NativeTypeName
+        public override string NativeType
         {
             get { return _mySqlDbType.ToString(); }
         }

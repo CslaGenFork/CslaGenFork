@@ -16,15 +16,15 @@ namespace CslaGenerator.Controls
     /// </summary>
     public partial class DbSchemaPanel : UserControl
     {
-        private CslaGeneratorUnit _currentUnit = null;
-        private CslaObjectInfo _currentCslaObject = null;
-        private ObjectFactory _currentFactory = null;
-        private string cn = "";
+        private CslaGeneratorUnit _currentUnit;
+        private CslaObjectInfo _currentCslaObject;
+        private ObjectFactory _currentFactory;
+        private string _cn = string.Empty;
 
         public DbSchemaPanel(CslaGeneratorUnit cslagenunit, CslaObjectInfo cslaobject, string connection)
         {
             _currentUnit = cslagenunit;
-            cn = connection;
+            _cn = connection;
             _currentCslaObject = cslaobject;
             // This call is required by the Windows.Forms Form Designer.
             InitializeComponent();
@@ -68,8 +68,8 @@ namespace CslaGenerator.Controls
 
         internal string ConnectionString
         {
-            get { return cn; }
-            set { cn = value; }
+            get { return _cn; }
+            set { _cn = value; }
         }
 
         internal TreeView TreeViewSchema
@@ -133,14 +133,14 @@ namespace CslaGenerator.Controls
         #endregion
 
         // called to populate treeview from provided database connection
-        ICatalog catalog = null;
+        ICatalog _catalog;
 
         public void BuildSchemaTree()
         {
             TreeViewSchema.Nodes.Clear();
             TreeViewSchema.ImageList = schemaImages;
             string catalogName = null;
-            string[] cnparts = cn.ToLower().Split(';');
+            string[] cnparts = _cn.ToLower().Split(';');
             foreach (string cnpart in cnparts)
             {
                 if (cnpart.Contains("initial catalog=") || cnpart.Contains("database="))
@@ -150,34 +150,32 @@ namespace CslaGenerator.Controls
             }
 
             OutputWindow.Current.ClearOutput();
-            catalog = new SqlCatalog(cn, catalogName);
-            DateTime start;
-            DateTime end;
+            _catalog = new SqlCatalog(_cn, catalogName);
             //OutputWindow.Current.AddOutputInfo("Load Tables & Views Start:" + DateTime.Now.ToLongTimeString());
-            start = DateTime.Now;
-            catalog.LoadStaticObjects();
-            end = DateTime.Now;
+            DateTime start = DateTime.Now;
+            _catalog.LoadStaticObjects();
+            DateTime end = DateTime.Now;
             //OutputWindow.Current.AddOutputInfo("Load Tables & Views End:" + end.ToLongTimeString());
-            OutputWindow.Current.AddOutputInfo(string.Format("Loaded {0} tables and {1} views in {2:0.00} seconds...", catalog.Tables.Count.ToString(), catalog.Views.Count.ToString(), end.Subtract(start).TotalSeconds));
+            OutputWindow.Current.AddOutputInfo(string.Format("Loaded {0} tables and {1} views in {2:0.00} seconds...", _catalog.Tables.Count, _catalog.Views.Count, end.Subtract(start).TotalSeconds));
             //OutputWindow.Current.AddOutputInfo("Load Procedures Start:" + DateTime.Now.ToLongTimeString());
             start = DateTime.Now;
-            catalog.LoadProcedures();
+            _catalog.LoadProcedures();
             end = DateTime.Now;
             //OutputWindow.Current.AddOutputInfo("Load Procedures End:" + end.ToLongTimeString());
-            OutputWindow.Current.AddOutputInfo(string.Format("Found {0} sprocs in {1:0.00} seconds...", catalog.Procedures.Count.ToString(), end.Subtract(start).TotalSeconds), 2);
+            OutputWindow.Current.AddOutputInfo(string.Format("Found {0} sprocs in {1:0.00} seconds...", _catalog.Procedures.Count, end.Subtract(start).TotalSeconds), 2);
             SprocName[] requiredSprocs = GetRequiredProcedureList();
             if (requiredSprocs.Length > 0)
                 OutputWindow.Current.AddOutputInfo("Loading required procedures:");
             foreach (SprocName sp in requiredSprocs)
             {
-                StringBuilder sb = new StringBuilder();
+                var sb = new StringBuilder();
                 if (!string.IsNullOrEmpty(sp.Schema))
                     sb.Append(sp.Schema).Append(".");
                 sb.Append(sp.Name);
                 sb.Append(": ");
                 try
                 {
-                    IStoredProcedureInfo sproc = catalog.Procedures[null, sp.Schema == "" ? null : sp.Schema, sp.Name];
+                    var sproc = _catalog.Procedures[null, sp.Schema == "" ? null : sp.Schema, sp.Name];
                     if (sproc != null)
                     {
                         start = DateTime.Now;
@@ -198,43 +196,34 @@ namespace CslaGenerator.Controls
                 }
                 OutputWindow.Current.AddOutputInfo(sb.ToString());
             }
-            GeneratorController.Catalog = catalog;
-            if (!String.IsNullOrEmpty(catalog.CatalogName))
-                paneDbName.Caption = catalog.CatalogName;
+            GeneratorController.Catalog = _catalog;
+            if (!String.IsNullOrEmpty(_catalog.CatalogName))
+                paneDbName.Caption = _catalog.CatalogName;
             else
                 paneDbName.Caption = "Database Schema";
 
             if (_currentUnit != null)
             {
-                _currentUnit.ConnectionString = cn;
+                _currentUnit.ConnectionString = _cn;
             }
 
-            dbTreeView1.BuildSchemaTree(catalog);
+            dbTreeView1.BuildSchemaTree(_catalog);
 
-            foreach (CslaObjectInfo info in _currentUnit.CslaObjects)
-            {
-                if (catalog != null)
+            if (_currentUnit != null)
+                foreach (var info in _currentUnit.CslaObjects)
                 {
-                    info.LoadColumnInfo(catalog);
+                    if (_catalog != null)
+                    {
+                        info.LoadColumnInfo(_catalog);
+                    }
                 }
-            }
         }
 
         private class SprocName : IEquatable<SprocName>
         {
-            private string _Schema;
+            public string Schema { get; private set; }
 
-            public string Schema
-            {
-                get { return _Schema; }
-            }
-
-            private string _Name;
-
-            public string Name
-            {
-                get { return _Name; }
-            }
+            public string Name { get; private set; }
 
             /// <summary>
             /// Initializes a new instance of the Pair class.
@@ -243,16 +232,16 @@ namespace CslaGenerator.Controls
             /// <param name="name"></param>
             public SprocName(string schema, string name)
             {
-                _Schema = schema == null ? string.Empty : schema;
-                _Name = name == null ? string.Empty : name;
+                Schema = schema == null ? string.Empty : schema;
+                Name = name == null ? string.Empty : name;
             }
 
             #region IEquatable<SprocName> Members
 
             public bool Equals(SprocName other)
             {
-                return (_Name.Equals(other._Name, StringComparison.CurrentCultureIgnoreCase) &&
-                    _Schema.Equals(other._Schema, StringComparison.CurrentCultureIgnoreCase));
+                return (Name.Equals(other.Name, StringComparison.CurrentCultureIgnoreCase) &&
+                    Schema.Equals(other.Schema, StringComparison.CurrentCultureIgnoreCase));
             }
 
             #endregion
@@ -261,25 +250,25 @@ namespace CslaGenerator.Controls
 
         private SprocName[] GetRequiredProcedureList()
         {
-            List<SprocName> list = new List<SprocName>();
-            foreach (CslaObjectInfo obj in _currentUnit.CslaObjects)
+            var list = new List<SprocName>();
+            foreach (var obj in _currentUnit.CslaObjects)
             {
-                foreach (ValueProperty prop in obj.GetAllValueProperties())
+                foreach (var prop in obj.GetAllValueProperties())
                 {
                     if (prop.DbBindColumn.ColumnOriginType == ColumnOriginType.StoredProcedure)
                     {
-                        SprocName sp = new SprocName(prop.DbBindColumn.SchemaName, prop.DbBindColumn.ObjectName);
+                        var sp = new SprocName(prop.DbBindColumn.SchemaName, prop.DbBindColumn.ObjectName);
                         if (!list.Contains(sp))
                             list.Add(sp);
                     }
                 }
-                foreach (Criteria crit in obj.CriteriaObjects)
+                foreach (var crit in obj.CriteriaObjects)
                 {
-                    foreach (CriteriaProperty prop in crit.Properties)
+                    foreach (var prop in crit.Properties)
                     {
                         if (prop.DbBindColumn.ColumnOriginType == ColumnOriginType.StoredProcedure)
                         {
-                            SprocName sp = new SprocName(prop.DbBindColumn.SchemaName, prop.DbBindColumn.ObjectName);
+                            var sp = new SprocName(prop.DbBindColumn.SchemaName, prop.DbBindColumn.ObjectName);
                             if (!list.Contains(sp))
                                 list.Add(sp);
                         }
@@ -294,7 +283,7 @@ namespace CslaGenerator.Controls
             TreeNode node = TreeViewSchema.GetNodeAt(e.X, e.Y);
             if (TreeViewSchema.GetNodeAt(e.X, e.Y) == null)
             {
-                isDBItemSelected = false;
+                _isDBItemSelected = false;
                 return;
             }
             if (e.Button == MouseButtons.Right)
@@ -309,14 +298,14 @@ namespace CslaGenerator.Controls
             TreeNodeSelected(e.Node);
         }
 
-        bool isDBItemSelected;
-        TreeNode currentTreeNode = null;
+        bool _isDBItemSelected;
+        TreeNode _currentTreeNode;
 
         private void TreeNodeSelected(TreeNode node)
         {
-            currentTreeNode = node;
+            _currentTreeNode = node;
             dbColumns1.Clear();
-            isDBItemSelected = false;
+            _isDBItemSelected = false;
             PropertyGridColumn.SelectedObject = null;
             SetDbColumnsPctHeight(73);
 
@@ -324,7 +313,7 @@ namespace CslaGenerator.Controls
             {
                 if (node.Tag != null)
                 {
-                    isDBItemSelected = true;
+                    _isDBItemSelected = true;
                     if (node.Tag is IResultSet)
                     {
                         PropertyGridDbObjects.SelectedObject = node.Tag;
@@ -335,7 +324,7 @@ namespace CslaGenerator.Controls
                     }
                     else
                     {
-                        isDBItemSelected = false;
+                        _isDBItemSelected = false;
                     }
                 }
             }
@@ -355,12 +344,11 @@ namespace CslaGenerator.Controls
 
         public static void SetDbBindColumn(TreeNode node, IColumnInfo p, DbBindColumn dbc)
         {
-            //TreeNode node = TreeViewSchema.SelectedNode;
-            IResultSet rs = (IResultSet)node.Tag;
+            var rs = (IResultSet)node.Tag;
             IStoredProcedureInfo sp = null;
             if (node.Parent.Tag != null)
                 sp = (IStoredProcedureInfo)node.Parent.Tag;
-            IDataBaseObject obj = null;
+            IDataBaseObject obj;
             if (sp != null)
             {
                 obj = sp;
@@ -382,7 +370,6 @@ namespace CslaGenerator.Controls
                     break;
             }
 
-            //dbc.ColumnOriginType=
             dbc.CatalogName = obj.ObjectCatalog;
             dbc.SchemaName = obj.ObjectSchema;
             dbc.ObjectName = obj.ObjectName;
@@ -394,7 +381,7 @@ namespace CslaGenerator.Controls
 
         private void createEditableRootToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (isDBItemSelected)
+            if (_isDBItemSelected)
             {
                 dbColumns1.SelectAll(UseBoolSoftDelete ? _currentUnit.Params.SpBoolSoftDeleteColumn : "");
                 NewObject(CslaObjectType.EditableRoot, dbTreeView1.TreeViewSchema.SelectedNode.Text, "");
@@ -404,7 +391,7 @@ namespace CslaGenerator.Controls
 
         private void createReadOnlyRootToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (isDBItemSelected)
+            if (_isDBItemSelected)
             {
                 dbColumns1.SelectAll(UseBoolSoftDelete ? _currentUnit.Params.SpBoolSoftDeleteColumn : "");
                 NewObject(CslaObjectType.ReadOnlyObject, dbTreeView1.TreeViewSchema.SelectedNode.Text, "");
@@ -414,7 +401,7 @@ namespace CslaGenerator.Controls
 
         private void createEditableRootCollectionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!isDBItemSelected)
+            if (!_isDBItemSelected)
                 return;
 
             dbColumns1.SelectAll(UseBoolSoftDelete ? _currentUnit.Params.SpBoolSoftDeleteColumn : "");
@@ -423,7 +410,7 @@ namespace CslaGenerator.Controls
 
         private void createReadOnlyRootCollectionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!isDBItemSelected)
+            if (!_isDBItemSelected)
                 return;
 
             dbColumns1.SelectAll(this, _currentUnit);
@@ -432,7 +419,7 @@ namespace CslaGenerator.Controls
 
         private void createDynamicEditableRootCollectionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!isDBItemSelected)
+            if (!_isDBItemSelected)
                 return;
 
             dbColumns1.SelectAll(UseBoolSoftDelete ? _currentUnit.Params.SpBoolSoftDeleteColumn : "");
@@ -441,14 +428,14 @@ namespace CslaGenerator.Controls
 
         private void reloadToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            IDataBaseObject obj = currentTreeNode.Tag as IDataBaseObject;
+            IDataBaseObject obj = _currentTreeNode.Tag as IDataBaseObject;
             if (obj != null)
             {
                 try
                 {
                     obj.Reload(true);
-                    dbTreeView1.LoadNode(currentTreeNode, obj);
-                    TreeNodeSelected(currentTreeNode);
+                    dbTreeView1.LoadNode(_currentTreeNode, obj);
+                    TreeNodeSelected(_currentTreeNode);
                 }
                 catch (Exception ex)
                 {
@@ -486,7 +473,7 @@ namespace CslaGenerator.Controls
             if (_currentCslaObject != null)
                 foreach (ValueProperty prop in _currentCslaObject.InheritedValueProperties)
                 {
-                    ToolStripMenuItem mnu = new ToolStripMenuItem();
+                    var mnu = new ToolStripMenuItem();
                     mnu.Text = prop.Name;
                     if (prop.DbBindColumn.ColumnOriginType == ColumnOriginType.None)
                         mnu.Text += @" (ASSIGN)";
@@ -785,7 +772,7 @@ namespace CslaGenerator.Controls
                 }
             }
             else
-                MessageBox.Show(@"You must select a PK column and a non PK column in order to automatically create a name value list. If you need to create a NVL and can't meet this requirement, create a new object manually through the toolbar.", "New NVL", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(@"You must select a PK column and a non PK column in order to automatically create a name value list. If you need to create a NVL and can't meet this requirement, create a new object manually through the toolbar.", @"New NVL", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         private void newCriteriaToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1034,16 +1021,16 @@ namespace CslaGenerator.Controls
 
         private IResultSet GetCurrentResultSet()
         {
-            if (currentTreeNode == null)
+            if (_currentTreeNode == null)
                 return null;
 
-            return currentTreeNode.Tag as IResultSet;
+            return _currentTreeNode.Tag as IResultSet;
         }
 
         private IDataBaseObject GetCurrentDBObject()
         {
-            if (currentTreeNode.Parent.Tag != null)
-                return currentTreeNode.Parent.Tag as IDataBaseObject;
+            if (_currentTreeNode.Parent.Tag != null)
+                return _currentTreeNode.Parent.Tag as IDataBaseObject;
 
             return GetCurrentResultSet() as IDataBaseObject;
         }

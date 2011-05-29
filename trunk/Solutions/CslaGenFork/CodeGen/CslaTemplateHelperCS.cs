@@ -681,6 +681,18 @@ namespace CslaGenerator.CodeGen
             return false;
         }
 
+        public static bool IsObjectType(CslaObjectType cslaType)
+        {
+            if (cslaType == CslaObjectType.EditableRoot ||
+                cslaType == CslaObjectType.EditableChild ||
+                cslaType == CslaObjectType.EditableSwitchable ||
+                cslaType == CslaObjectType.DynamicEditableRoot ||
+                cslaType == CslaObjectType.ReadOnlyObject)
+                return true;
+
+            return false;
+        }
+
         public static bool IsEditableType(CslaObjectType cslaType)
         {
             if (cslaType == CslaObjectType.EditableChild ||
@@ -731,6 +743,35 @@ namespace CslaGenerator.CodeGen
                 (info.ObjectType == CslaObjectType.ReadOnlyObject &&
                 info.ParentType != string.Empty))
                 return true;
+
+            return false;
+        }
+
+        public static bool HasParentProperties(CslaObjectInfo info)
+        {
+            if (IsCollectionType(info.ObjectType))
+                return false; // Object is a collection and thus has no Properties
+
+            if (info.ObjectType == CslaObjectType.EditableRoot ||
+                info.ObjectType == CslaObjectType.DynamicEditableRoot)
+                return false; // Object is root and thus has no ParentType
+
+            var parent = info.Parent.CslaObjects.Find(info.ParentType);
+            if (parent == null)
+                return info.ObjectType == CslaObjectType.ReadOnlyObject;// Object is ReadOnly and might have ParentProperties
+
+            if (IsCollectionType(parent.ObjectType)) // ParentType is a collection and thus has no Properties
+            {
+                if (parent.ObjectType == CslaObjectType.EditableRootCollection ||
+                    parent.ObjectType == CslaObjectType.DynamicEditableRootCollection ||
+                    (parent.ObjectType == CslaObjectType.ReadOnlyCollection && parent.ParentType == string.Empty))
+                    return false; // ParentType is a root collection; end of line
+
+                return true;// There should be a grand-parent with properties
+            }
+
+            if (IsObjectType(parent.ObjectType))
+                return true; // ParentType exists and has properties
 
             return false;
         }

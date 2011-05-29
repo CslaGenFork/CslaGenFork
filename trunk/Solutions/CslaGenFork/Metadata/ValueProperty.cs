@@ -76,7 +76,7 @@ namespace CslaGenerator.Metadata
         [Editor(typeof(DbBindColumnEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(DbBindColumnConverter))]
         [Description("The database column this property is bound to.")]
-        [UserFriendlyName("DB BindC olumn")]
+        [UserFriendlyName("DB Bind Column")]
         public virtual DbBindColumn DbBindColumn
         {
             get { return _dbBindColumn; }

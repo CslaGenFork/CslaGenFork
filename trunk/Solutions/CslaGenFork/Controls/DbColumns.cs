@@ -182,6 +182,7 @@ namespace CslaGenerator.Controls
             this._pgdColumn.Location = new System.Drawing.Point(2, 227);
             this._pgdColumn.Name = "_pgdColumn";
             this._pgdColumn.Size = new System.Drawing.Size(270, 207);
+            this._pgdColumn.PropertySort = PropertySort.NoSort;
             this._pgdColumn.TabIndex = 5;
             this._pgdColumn.Text = "propertyGrid1";
             this._pgdColumn.ViewBackColor = System.Drawing.SystemColors.Window;
@@ -252,7 +253,7 @@ namespace CslaGenerator.Controls
             for (int i = 0; i < _lstColumns.Items.Count; i++)
             {
                 var columnName = ((SqlColumnInfo)_lstColumns.Items[i]).ColumnName;
-                var columnNativeType = ((SqlColumnInfo)_lstColumns.Items[i]).NativeTypeName;
+                var columnNativeType = ((SqlColumnInfo)_lstColumns.Items[i]).NativeType;
 
                 // exception for soft delete column
                 if (dbSchemaPanel.UseBoolSoftDelete &&

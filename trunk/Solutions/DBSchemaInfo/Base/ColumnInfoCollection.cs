@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace DBSchemaInfo.Base
 {
@@ -14,7 +12,7 @@ namespace DBSchemaInfo.Base
         {
             get
             {
-                foreach (IColumnInfo col in this)
+                foreach (var col in this)
                 {
                     if (col.ColumnName.Equals(columnName))
                         return col;
@@ -22,6 +20,5 @@ namespace DBSchemaInfo.Base
                 return null;
             }
         }
-
     }
 }

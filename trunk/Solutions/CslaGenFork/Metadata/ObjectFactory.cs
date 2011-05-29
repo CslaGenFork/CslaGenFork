@@ -245,7 +245,7 @@ namespace CslaGenerator.Metadata
             SetDbBindColumn(obj, rs, p, destination.DbBindColumn);
             destination.Nullable = (p.IsNullable);
 
-            if (p.NativeTypeName == "timestamp")
+            if (p.NativeType == "timestamp")
             {
                 destination.ReadOnly = true;
                 destination.MarkDirtyOnChange = false;

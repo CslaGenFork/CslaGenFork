@@ -1,32 +1,28 @@
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace DBSchemaInfo.Base
 {
-	public class StandardForeignKeyConstraint : IForeignKeyConstraint
+    public class StandardForeignKeyConstraint : IForeignKeyConstraint
     {
-
         /// <summary>
         /// Initializes a new instance of the StandardForeignKeyConstraint class.
         /// </summary>
         /// <param name="constraintName"></param>
         /// <param name="pKTable"></param>
         /// <param name="constraintTable"></param>
-        /// <param name="columns"></param>
         public StandardForeignKeyConstraint(string constraintName, ITableInfo pKTable, ITableInfo constraintTable)
         {
-            _ConstraintName = constraintName;
-            _PKTable = pKTable;
-            _ConstraintTable = constraintTable;
+            _constraintName = constraintName;
+            _pkTable = pKTable;
+            _constraintTable = constraintTable;
         }
 
         #region Private Fields
 
-        string _ConstraintName;
-        ITableInfo _PKTable;
-        ITableInfo _ConstraintTable;
-        List<IForeignKeyColumnPair> _Columns= new List<IForeignKeyColumnPair>();
+        private readonly List<IForeignKeyColumnPair> _columns = new List<IForeignKeyColumnPair>();
+        private readonly string _constraintName;
+        private readonly ITableInfo _constraintTable;
+        private readonly ITableInfo _pkTable;
 
         #endregion
 
@@ -34,22 +30,22 @@ namespace DBSchemaInfo.Base
 
         public string ConstraintName
         {
-            get { return _ConstraintName; }
+            get { return _constraintName; }
         }
 
         public ITableInfo PKTable
         {
-            get { return _PKTable; }
+            get { return _pkTable; }
         }
 
         public ITableInfo ConstraintTable
         {
-            get { return _ConstraintTable; }
+            get { return _constraintTable; }
         }
 
         public List<IForeignKeyColumnPair> Columns
         {
-            get { return _Columns; }
+            get { return _columns; }
         }
 
         #endregion

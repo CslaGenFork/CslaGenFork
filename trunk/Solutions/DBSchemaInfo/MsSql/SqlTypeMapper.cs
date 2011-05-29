@@ -1,100 +1,101 @@
 using System;
 using System.Data;
+
 namespace DBSchemaInfo.MsSql
 {
     class SqlTypeMapper
     {
-        public static Type GetManagedType(System.Data.SqlDbType nativeType)
+        public static Type GetManagedType(SqlDbType sqlDbType)
         {
-            switch (nativeType)
+            switch (sqlDbType)
             {
-                case System.Data.SqlDbType.BigInt:
+                case SqlDbType.BigInt:
                     return typeof(Int64);
-                case System.Data.SqlDbType.Binary:
-                case System.Data.SqlDbType.Image:
-                case System.Data.SqlDbType.Timestamp:
-                case System.Data.SqlDbType.VarBinary:
+                case SqlDbType.Binary:
+                case SqlDbType.Image:
+                case SqlDbType.Timestamp:
+                case SqlDbType.VarBinary:
                     return typeof(byte[]);
-                case System.Data.SqlDbType.Bit:
+                case SqlDbType.Bit:
                     return typeof(bool);
-                case System.Data.SqlDbType.Char:
-                case System.Data.SqlDbType.NChar:
-                case System.Data.SqlDbType.NText:
-                case System.Data.SqlDbType.NVarChar:
-                case System.Data.SqlDbType.Text:
-                case System.Data.SqlDbType.VarChar:
-                case System.Data.SqlDbType.Xml:
+                case SqlDbType.Char:
+                case SqlDbType.NChar:
+                case SqlDbType.NText:
+                case SqlDbType.NVarChar:
+                case SqlDbType.Text:
+                case SqlDbType.VarChar:
+                case SqlDbType.Xml:
                     return typeof(string);
-                case System.Data.SqlDbType.DateTime:
+                case SqlDbType.DateTime:
                     return typeof(DateTime);
-                case System.Data.SqlDbType.Decimal:
-                case System.Data.SqlDbType.Money:
-                case System.Data.SqlDbType.SmallMoney:
+                case SqlDbType.Decimal:
+                case SqlDbType.Money:
+                case SqlDbType.SmallMoney:
                     return typeof(decimal);
-                case System.Data.SqlDbType.Float:
+                case SqlDbType.Float:
                     return typeof(double);
-                case System.Data.SqlDbType.Int:
+                case SqlDbType.Int:
                     return typeof(int);
-                case System.Data.SqlDbType.Real:
+                case SqlDbType.Real:
                     return typeof(Single);
-                case System.Data.SqlDbType.UniqueIdentifier:
+                case SqlDbType.UniqueIdentifier:
                     return typeof(Guid);
-                case System.Data.SqlDbType.SmallDateTime:
+                case SqlDbType.SmallDateTime:
                     return typeof(DateTime);
-                case System.Data.SqlDbType.SmallInt:
+                case SqlDbType.SmallInt:
                     return typeof(Int16);
-                case System.Data.SqlDbType.TinyInt:
+                case SqlDbType.TinyInt:
                     return typeof(byte);
-                case System.Data.SqlDbType.Variant:
-                case System.Data.SqlDbType.Udt:
+                case SqlDbType.Variant:
+                case SqlDbType.Udt:
                 default:
                     return typeof(object);
             }
         }
 
-        public static System.Data.DbType GetDbType(System.Data.SqlDbType nativeType)
+        public static DbType GetDbType(SqlDbType sqlDbType)
         {
-            switch (nativeType)
+            switch (sqlDbType)
             {
-                case System.Data.SqlDbType.BigInt:
+                case SqlDbType.BigInt:
                     return DbType.Int64;
-                case System.Data.SqlDbType.Binary:
-                case System.Data.SqlDbType.Image:
-                case System.Data.SqlDbType.Timestamp:
-                case System.Data.SqlDbType.VarBinary:
+                case SqlDbType.Binary:
+                case SqlDbType.Image:
+                case SqlDbType.Timestamp:
+                case SqlDbType.VarBinary:
                     return DbType.Binary;
-                case System.Data.SqlDbType.Bit:
+                case SqlDbType.Bit:
                     return DbType.Boolean;
-                case System.Data.SqlDbType.Char:
-                case System.Data.SqlDbType.NChar:
+                case SqlDbType.Char:
+                case SqlDbType.NChar:
                     return DbType.StringFixedLength;
-                case System.Data.SqlDbType.NText:
-                case System.Data.SqlDbType.NVarChar:
-                case System.Data.SqlDbType.Text:
-                case System.Data.SqlDbType.VarChar:
-                case System.Data.SqlDbType.Xml:
+                case SqlDbType.NText:
+                case SqlDbType.NVarChar:
+                case SqlDbType.Text:
+                case SqlDbType.VarChar:
+                case SqlDbType.Xml:
                     return DbType.String;
-                case System.Data.SqlDbType.DateTime:
-                case System.Data.SqlDbType.SmallDateTime:
+                case SqlDbType.DateTime:
+                case SqlDbType.SmallDateTime:
                     return DbType.DateTime;
-                case System.Data.SqlDbType.Decimal:
-                case System.Data.SqlDbType.Money:
-                case System.Data.SqlDbType.SmallMoney:
+                case SqlDbType.Decimal:
+                case SqlDbType.Money:
+                case SqlDbType.SmallMoney:
                     return DbType.Decimal;
-                case System.Data.SqlDbType.Float:
+                case SqlDbType.Float:
                     return DbType.Double;
-                case System.Data.SqlDbType.Int:
+                case SqlDbType.Int:
                     return DbType.Int32;
-                case System.Data.SqlDbType.Real:
+                case SqlDbType.Real:
                     return DbType.Single;
-                case System.Data.SqlDbType.UniqueIdentifier:
+                case SqlDbType.UniqueIdentifier:
                     return DbType.Guid;
-                case System.Data.SqlDbType.SmallInt:
+                case SqlDbType.SmallInt:
                     return DbType.Int16;
-                case System.Data.SqlDbType.TinyInt:
+                case SqlDbType.TinyInt:
                     return DbType.Byte;
-                case System.Data.SqlDbType.Variant:
-                case System.Data.SqlDbType.Udt:
+                case SqlDbType.Variant:
+                case SqlDbType.Udt:
                 default:
                     return DbType.Object;
             }
@@ -102,11 +103,31 @@ namespace DBSchemaInfo.MsSql
 
         public static SqlDbType GetSqlDbType(string type)
         {
-            string tempType = type;
+            var tempType = type;
             if (tempType == "numeric")
                 tempType = "decimal";
+            if (tempType == "sql_variant")
+                tempType = "variant";
             return (SqlDbType)Enum.Parse(typeof(SqlDbType), tempType, true);
         }
 
+        public static string GetCondensedDataType(string nativeType, long columnLength, int columnScale)
+        {
+            if (nativeType == "numeric" || nativeType == "decimal")
+                return nativeType + "(" + columnLength + ", " + columnScale + ")";
+
+            if (columnLength == -1)
+                return nativeType + "(MAX)";
+
+            if (nativeType == "binary" ||
+                nativeType == "char" ||
+                nativeType == "nchar" ||
+                nativeType == "nvarchar" ||
+                nativeType == "varbinary" ||
+                nativeType == "varchar")
+                return nativeType + "(" + columnLength + ")";
+
+            return nativeType;
+        }
     }
 }

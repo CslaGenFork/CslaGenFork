@@ -365,9 +365,6 @@
     <Compile Include="Design\PropertyCollectionEditor.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Design\PropertyConverter.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Design\PropertyNameEditor.cs">
       <SubType>Code</SubType>
     </Compile>

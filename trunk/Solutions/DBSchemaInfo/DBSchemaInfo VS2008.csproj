@@ -63,7 +63,6 @@
   <ItemGroup>
     <Compile Include="Base\ColumnInfoCollection.cs" />
     <Compile Include="Base\DataBaseObjectCollection.cs" />
-    <Compile Include="Base\DataTableResultSet.cs" />
     <Compile Include="Base\IForeignKeyConstraint.cs" />
     <Compile Include="Base\InformationSchemaObjectBase.cs" />
     <Compile Include="Base\InformationSchemaProcedureBase.cs" />
@@ -78,6 +77,7 @@
     <Compile Include="Base\ITableInfo.cs" />
     <Compile Include="Base\ReadOnlyList.cs" />
     <Compile Include="Base\ResultType.cs" />
+    <Compile Include="MsSql\FKConstraintConverter.cs" />
     <Compile Include="MsSql\SqlResultSet.cs" />
     <Compile Include="MsSql\SqlStoredProcedureInfo.cs" />
     <Compile Include="MsSql\SqlStoredProcedureParameter.cs" />

@@ -1,104 +1,45 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Data;
 
 namespace DBSchemaInfo.Base
 {
-    public abstract class InformationSchemaCatalogBase : DBSchemaInfo.Base.ICatalog
+    public abstract class InformationSchemaCatalogBase : ICatalog
     {
-        private string _ConnectionString;
-        private IDbConnection _cn;
-        private string _CatalogName;
-        private DataBaseObjectCollection<ITableInfo> _Tables;
-        private DataBaseObjectCollection<IViewInfo> _Views;
-        private DataBaseObjectCollection<IStoredProcedureInfo> _Procedures;
         public InformationSchemaCatalogBase(string cnString, string catalog)
         {
-            _ConnectionString = cnString;
-            _cn = CreateConnection();
-            _CatalogName = catalog;
+            ForeignKeyConstraints = new ForeignKeyConstraintCollection();
+            ConnectionString = cnString;
+            Connection = CreateConnection();
+            CatalogName = catalog;
         }
 
-        public string CatalogName
-        {
-            get
-            {
-                return _CatalogName;
-            }
-        }
-        protected IDbConnection Connection
-        { get { return _cn; } }
+        protected IDbConnection Connection { get; private set; }
 
         protected void OpenConnection()
         {
-            if (_cn.State == System.Data.ConnectionState.Closed)
-                _cn.Open();
+            if (Connection.State == ConnectionState.Closed)
+                Connection.Open();
         }
+
         protected void CloseConnection()
         {
-            if (_cn.State != System.Data.ConnectionState.Closed)
-                _cn.Close();
-        }
-
-        public DataBaseObjectCollection<ITableInfo> Tables
-        {
-            get
-            {
-                return _Tables;
-            }
-        }
-
-        public DataBaseObjectCollection<IViewInfo> Views
-        {
-            get
-            {
-                return _Views;
-            }
-        }
-        public DataBaseObjectCollection<IStoredProcedureInfo> Procedures
-        {
-            get
-            {
-                return _Procedures;
-            }
-        }
-
-        public void LoadStaticObjects()
-        {
-            LoadTablesAndViews();
-            LoadForeignKeys();
-        }
-        public void LoadProcedures()
-        {
-            OpenConnection();
-            try
-            {
-                DBStructure ds = GetProcedureSchema(_cn);
-                if (ds != null)
-                {
-                    List<IStoredProcedureInfo> list = new List<IStoredProcedureInfo>();
-                    foreach (DBStructure.INFORMATION_SCHEMA_ROUTINESRow dr in ds.INFORMATION_SCHEMA_ROUTINES.Rows)
-                    {
-                        if (dr.ROUTINE_TYPE.Equals("PROCEDURE", StringComparison.CurrentCultureIgnoreCase))
-                            list.Add(CreateProcedureInfo(dr));
-                    }
-                    _Procedures = new DataBaseObjectCollection<IStoredProcedureInfo>(list);
-                }
-            }
-            finally { CloseConnection(); }
+            if (Connection.State != ConnectionState.Closed)
+                Connection.Close();
         }
 
         protected abstract void LoadForeignKeys();
-        
+
+        protected abstract void LoadDescriptions();
+
         protected virtual void LoadTablesAndViews()
         {
             OpenConnection();
             try
             {
-                List<ITableInfo> listTables = new List<ITableInfo>();
-                List<IViewInfo> listViews = new List<IViewInfo>();
-                DBStructure ds = GetTableViewSchema(_cn);
+                var listTables = new List<ITableInfo>();
+                var listViews = new List<IViewInfo>();
+                var ds = GetTableViewSchema(Connection);
                 foreach (DBStructure.INFORMATION_SCHEMA_TABLESRow row in ds.INFORMATION_SCHEMA_TABLES)
                 {
                     if (row["TABLE_TYPE"].ToString() != "VIEW")
@@ -106,8 +47,8 @@ namespace DBSchemaInfo.Base
                     else
                         listViews.Add(CreateViewInfo(row));
                 }
-                _Tables = new DataBaseObjectCollection<ITableInfo>(listTables);
-                _Views = new DataBaseObjectCollection<IViewInfo>(listViews);
+                Tables = new DataBaseObjectCollection<ITableInfo>(listTables);
+                Views = new DataBaseObjectCollection<IViewInfo>(listViews);
             }
             finally
             {
@@ -115,38 +56,55 @@ namespace DBSchemaInfo.Base
             }
         }
 
+        #region ICatalog Members
+
+        public DataBaseObjectCollection<ITableInfo> Tables { get; private set; }
+
+        public DataBaseObjectCollection<IViewInfo> Views { get; private set; }
+
+        public DataBaseObjectCollection<IStoredProcedureInfo> Procedures { get; private set; }
+
+        public ForeignKeyConstraintCollection ForeignKeyConstraints { get; protected set; }
+
+        public string ConnectionString { get; private set; }
+
+        public string CatalogName { get; private set; }
+
+        public abstract IDbConnection CreateConnection();
+
+        public void LoadStaticObjects()
+        {
+            LoadTablesAndViews();
+            LoadForeignKeys();
+        }
+
+        public void LoadProcedures()
+        {
+            OpenConnection();
+            try
+            {
+                var ds = GetProcedureSchema(Connection);
+                if (ds != null)
+                {
+                    var list = new List<IStoredProcedureInfo>();
+                    foreach (DBStructure.INFORMATION_SCHEMA_ROUTINESRow dr in ds.INFORMATION_SCHEMA_ROUTINES.Rows)
+                    {
+                        if (dr.ROUTINE_TYPE.Equals("PROCEDURE", StringComparison.CurrentCultureIgnoreCase))
+                            list.Add(CreateProcedureInfo(dr));
+                    }
+                    Procedures = new DataBaseObjectCollection<IStoredProcedureInfo>(list);
+                }
+            }
+            finally { CloseConnection(); }
+            LoadDescriptions();
+        }
+
+        #endregion
+
         protected abstract DBStructure GetTableViewSchema(IDbConnection cn);
         protected virtual DBStructure GetProcedureSchema(IDbConnection cn) { return null; }
         protected abstract ITableInfo CreateTableInfo(DBStructure.INFORMATION_SCHEMA_TABLESRow dr);
         protected abstract IViewInfo CreateViewInfo(DBStructure.INFORMATION_SCHEMA_TABLESRow dr);
         protected virtual IStoredProcedureInfo CreateProcedureInfo(DBStructure.INFORMATION_SCHEMA_ROUTINESRow dr) { return null; }
-
-
-        #region ICatalog Members
-
-
-        public string ConnectionString
-        {
-            get { return _ConnectionString; }
-        }
-
-        #endregion
-
-        #region ICatalog Members
-
-        private ForeignKeyConstraintCollection _ForeignKeyConstraints = new ForeignKeyConstraintCollection();
-        public ForeignKeyConstraintCollection ForeignKeyConstraints
-        {
-            get { return _ForeignKeyConstraints; }
-            protected set
-            {
-                _ForeignKeyConstraints = value;
-            }
-        }
-
-        public abstract IDbConnection CreateConnection();
-        
-
-        #endregion
     }
 }
