@@ -128,7 +128,7 @@ namespace CslaGenerator.Metadata
         {
             get
             {
-                if (base._parameterName.Equals(String.Empty))
+                if (_parameterName.Equals(String.Empty))
                 {
                     if (!string.IsNullOrEmpty(DbBindColumn.ColumnName))
                         return DbBindColumn.ColumnName;

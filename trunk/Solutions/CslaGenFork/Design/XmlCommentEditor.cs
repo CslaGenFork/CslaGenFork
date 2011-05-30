@@ -19,10 +19,25 @@ namespace CslaGenerator.Design
 
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
+            if (context.Instance != null)
+            {
+                // check property is Summary and context.Instance is ValuePropertyBag
+                if (context.PropertyDescriptor.Name == "Summary" &&
+                    context.Instance is Util.PropertyBags.ValuePropertyBag)
+                {
+                    if (((Util.PropertyBags.ValuePropertyBag)context.Instance).SelectedObject[0].Summary.Trim() == string.Empty &&
+                        ((Util.PropertyBags.ValuePropertyBag)context.Instance).SelectedObject[0].DbBindColumn.Column.ColumnDescription.Trim() != string.Empty)
+                    {
+                        // return ColumnDescription
+                        return ((Util.PropertyBags.ValuePropertyBag)context.Instance).SelectedObject[0].DbBindColumn.Column.ColumnDescription;
+                    }
+                }
+            }
+
             _editorService = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
             if (_editorService != null)
             {
-                var frmEdit = new XmlCommentEditorForm {XmlComment = (string) value};
+                var frmEdit = new XmlCommentEditorForm { XmlComment = (string)value };
                 var result = _editorService.ShowDialog(frmEdit);
                 if (result == DialogResult.OK)
                 {

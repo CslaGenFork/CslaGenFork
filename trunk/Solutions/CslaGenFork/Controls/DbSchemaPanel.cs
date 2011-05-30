@@ -861,9 +861,12 @@ namespace CslaGenerator.Controls
 
         private void NewObject(CslaObjectType type, string name, string parent)
         {
+            var dbObject = GetCurrentDBObject();
+            
             var obj = new CslaObjectInfo(_currentUnit);
             obj.ObjectType = type;
             obj.ObjectName = ParseObjectName(name);
+            obj.ClassSummary = dbObject.ObjectDescription;
             obj.ParentType = parent;
             obj.ParentInsertOnly = true;
             _currentUnit.CslaObjects.Add(obj);
