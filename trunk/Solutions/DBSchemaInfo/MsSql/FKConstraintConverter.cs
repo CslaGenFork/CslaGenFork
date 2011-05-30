@@ -20,9 +20,10 @@ namespace DBSchemaInfo.MsSql
             if (destinationType == typeof(string))
             {
                 var fkConstraint = ((SqlColumnInfo)context.Instance).FKConstraint;
-                return fkConstraint.ConstraintName + " to " +
-                    fkConstraint.PKTable.ObjectSchema + "." +
-                    fkConstraint.PKTable.ObjectName;
+                if(fkConstraint != null)
+                    return fkConstraint.ConstraintName + " to " +
+                        fkConstraint.PKTable.ObjectSchema + "." +
+                        fkConstraint.PKTable.ObjectName;
             }
             return base.ConvertTo(context, culture, value, destinationType);
         }
