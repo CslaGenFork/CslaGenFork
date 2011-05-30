@@ -132,6 +132,7 @@ namespace CslaGenerator.Metadata
                 ValueProperty newProp = new ValueProperty();
 
                 newProp.Name = propertyName;
+                newProp.Summary = col.ColumnDescription;
                 newProp.PropertyType = TypeHelper.GetTypeCodeEx(col.ManagedType);
                 SetValuePropertyInfo(obj, rs, col, newProp);
                 if (newProp.DbBindColumn.ColumnOriginType != ColumnOriginType.Table)
