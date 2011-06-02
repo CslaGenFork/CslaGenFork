@@ -922,7 +922,8 @@ namespace CslaGenerator.CodeGen
             }
 
             if (_objectWarnings > 0)
-                OutputWindow.Current.AddOutputInfo(String.Format("Warnings: {0} objects.", _objectWarnings));
+                OutputWindow.Current.AddOutputInfo(String.Format("Warnings: {0} object{1}.", _objectWarnings,
+                                                                 _objectWarnings > 1 ? "s" : ""));
 
             OutputWindow.Current.AddOutputInfo(String.Format("\r\nClasses: {0} generated. {1} failed.",
                                                              (_objFailed + _objSuccess), _objFailed));

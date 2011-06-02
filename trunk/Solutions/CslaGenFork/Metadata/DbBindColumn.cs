@@ -90,10 +90,11 @@ namespace CslaGenerator.Metadata
             set { _spResultSetIndex = value; }
         }
 
+        [Obsolete("Use ObjectName instead")]
         [Browsable(false)]
         public string TableName
         {
-            get { return _tableName; }
+            get { return _objectName; }
             set
             {
                 if (string.IsNullOrEmpty(_objectName) && !string.IsNullOrEmpty(value))
@@ -103,11 +104,11 @@ namespace CslaGenerator.Metadata
             }
         }
 
-        //[Obsolete("Use Object Name instead")]
+        [Obsolete("Use ObjectName instead")]
         [Browsable(false)]
         public string ViewName
         {
-            get { return _viewName; }
+            get { return _objectName; }
             set
             {
                 if (string.IsNullOrEmpty(_objectName) && !string.IsNullOrEmpty(value))
@@ -116,11 +117,11 @@ namespace CslaGenerator.Metadata
             }
         }
 
-        //[Obsolete("Use Object Name instead")]
+        [Obsolete("Use ObjectName instead")]
         [Browsable(false)]
         public string SpName
         {
-            get { return _spName; }
+            get { return _objectName; }
             set
             {
                 if (string.IsNullOrEmpty(_objectName) && !string.IsNullOrEmpty(value))

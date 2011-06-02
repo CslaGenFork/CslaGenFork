@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 using System.Windows.Forms;
+using CslaGenerator.CodeGen;
 using CslaGenerator.Metadata;
 using CslaGenerator.Util;
 using DBSchemaInfo.Base;
@@ -862,11 +863,12 @@ namespace CslaGenerator.Controls
         private void NewObject(CslaObjectType type, string name, string parent)
         {
             var dbObject = GetCurrentDBObject();
-            
+
             var obj = new CslaObjectInfo(_currentUnit);
             obj.ObjectType = type;
             obj.ObjectName = ParseObjectName(name);
-            obj.ClassSummary = dbObject.ObjectDescription;
+            if (dbObject.ObjectDescription != null)
+                obj.ClassSummary = dbObject.ObjectDescription;
             obj.ParentType = parent;
             obj.ParentInsertOnly = true;
             _currentUnit.CslaObjects.Add(obj);
@@ -949,26 +951,28 @@ namespace CslaGenerator.Controls
             var sb = new StringBuilder();
             for (var index = 0; index < SelectedColumns.Count; index++)
             {
-                var isParent = false;
-                foreach (var prop in _currentCslaObject.ParentProperties)
+                var column = (IColumnInfo)dbColumns1.ListColumns.SelectedItems[index];
+
+                var nameTypeMatch = CslaTemplateHelperCS.ColumnNameMatchesParentProperty(parent, _currentCslaObject, column);
+                var fkMatch = CslaTemplateHelperCS.ColumnFKMatchesParentProperty(parent, _currentCslaObject, column);
+
+                if (string.IsNullOrEmpty(nameTypeMatch) && string.IsNullOrEmpty(fkMatch))
+                    columns.Add(column);
+                else
                 {
-                    if (prop.Name == ((IColumnInfo)dbColumns1.ListColumns.SelectedItems[index]).ColumnName &&
-                        prop.PropertyType ==
-                        TypeHelper.GetTypeCodeEx(((IColumnInfo)dbColumns1.ListColumns.SelectedItems[index]).ManagedType))
-                    {
-                        sb.AppendFormat("\t{0}.{1}.\r\n", parent.ObjectName, prop.Name);
-                        isParent = true;
-                        break;
-                    }
+                    if (!string.IsNullOrEmpty(nameTypeMatch))
+                        sb.AppendFormat("\t{0}.\r\n", fkMatch);
+                    else if (CslaTemplateHelperCS.MultipleColumnFKMatchesParent(parent, _currentCslaObject, column))
+                        columns.Add(column);
+                    else
+                        sb.AppendFormat("\t{0}.\r\n", fkMatch);
                 }
-                if (!isParent)
-                    columns.Add((IColumnInfo)dbColumns1.ListColumns.SelectedItems[index]);
             }
 
             if (sb.Length > 0)
             {
-                OutputWindow.Current.AddOutputInfo(
-                    string.Format("The following columns match {0} Parent Properties and weren't added to the Value Property collection:",
+                OutputWindow.Current.AddOutputInfo(string.Format(
+                        "The following columns match {0} Parent Properties and were not added to the Value Property collection:",
                         _currentCslaObject.ObjectName));
                 OutputWindow.Current.AddOutputInfo(sb.ToString());
             }
