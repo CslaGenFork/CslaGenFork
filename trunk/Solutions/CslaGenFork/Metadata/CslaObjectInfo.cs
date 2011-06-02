@@ -634,11 +634,9 @@ namespace CslaGenerator.Metadata
 
         /// <summary>
         /// The business properties of the object.
-        /// NOTE: When adding BrokenRules, use the property name
-        /// to create your AssertExpression, e.g., Amount > 0
         /// </summary>
         [Category("02. Business Properties")]
-        [Description("The business properties of the object. NOTE: When adding BrokenRules, use the property name to create your AssertExpression, e.g., Amount > 0")]
+        [Description("The business properties of the object.")]
         [Editor(typeof(PropertyCollectionForm), typeof(UITypeEditor))]
         [UserFriendlyName("Value Properties")]
         public ValuePropertyCollection ValueProperties
@@ -647,7 +645,7 @@ namespace CslaGenerator.Metadata
         }
 
         /// <summary>
-        /// Value properties that convert to/from other properties of the same object.
+        /// Object value properties plus convert value properties.
         /// </summary>
         // Hide AllValueProperties
         [Browsable(false)]

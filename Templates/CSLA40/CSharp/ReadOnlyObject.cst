@@ -9,6 +9,7 @@
 <%@ Import Namespace="CslaGenerator.CodeGen" %>
 <%@ Import Namespace="CslaGenerator.Util" %>
 <%@ Import Namespace="System.Text" %>
+<%@ Import Namespace="System.Collections.Generic" %>
 
 <!-- #include file="ReadOnlyObjectValidate.asp" -->
 <%

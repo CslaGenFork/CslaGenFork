@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using CodeSmith.Engine;
 using CslaGenerator.Metadata;
 using CslaGenerator.Util;
+using DBSchemaInfo.Base;
 
 namespace CslaGenerator.CodeGen
 {
@@ -17,7 +18,7 @@ namespace CslaGenerator.CodeGen
     /// </summary>
     public class CslaTemplateHelperCS : CodeTemplate
     {
-        protected int _resultSetCount = 0;
+        protected int ResultSetCount;
 
         #region Public Properties
 
@@ -469,16 +470,16 @@ namespace CslaGenerator.CodeGen
             sb.Append(info.ObjectName);
             sb.Append(childInfo.ObjectName);
             sb.Append("\", ds.Tables[");
-            sb.Append(_resultSetCount.ToString());
+            sb.Append(ResultSetCount.ToString());
             sb.Append("].Columns[\"");
             sb.Append(joinColumn);
             sb.Append("\"], ds.Tables[");
-            sb.Append((_resultSetCount + 1).ToString());
+            sb.Append((ResultSetCount + 1).ToString());
             sb.Append("].Columns[\"");
             sb.Append(joinColumn);
             sb.Append("\"], false);");
 
-            _resultSetCount++;
+            ResultSetCount++;
             return sb.ToString();
         }
 
@@ -774,6 +775,124 @@ namespace CslaGenerator.CodeGen
                 return true; // ParentType exists and has properties
 
             return false;
+        }
+
+        public static string PropertyNameMatchesParentProperty(CslaObjectInfo parent, CslaObjectInfo info, ValueProperty prop)
+        {
+            return ColumnNameMatchesParentProperty(parent, info, prop.DbBindColumn.Column);
+        }
+
+        public static string ColumnNameMatchesParentProperty(CslaObjectInfo parent, CslaObjectInfo info, IColumnInfo validatingColumn)
+        {
+            foreach (var prop in info.ParentProperties)
+            {
+                // name and data type match for Views
+                if (prop.Name == validatingColumn.ColumnName &&
+                    prop.PropertyType == TypeHelper.GetTypeCodeEx(validatingColumn.ManagedType))
+                    return info.ObjectName + "." + validatingColumn.ColumnName;
+            }
+
+            return string.Empty;
+        }
+
+        public static string PropertyFKMatchesParentProperty(CslaObjectInfo parent, CslaObjectInfo info, ValueProperty prop)
+        {
+            return ColumnFKMatchesParentProperty(parent, info, prop.DbBindColumn.Column);
+        }
+
+        public static string ColumnFKMatchesParentProperty(CslaObjectInfo parent, CslaObjectInfo info, IColumnInfo validatingColumn)
+        {
+            foreach (var prop in info.ParentProperties)
+            {
+                var parentPropertyFound = parent.GetAllValueProperties().Find(prop.Name);
+                if (parentPropertyFound != null)
+                {
+                    var parentSchema = parentPropertyFound.DbBindColumn.SchemaName;
+                    var parentTable = parentPropertyFound.DbBindColumn.ObjectName;
+                    var parentColumn = parentPropertyFound.DbBindColumn.Column;
+                    if (parentColumn != null)
+                    {
+                        if (validatingColumn.FKConstraint != null)
+                        {
+                            if (parentSchema == validatingColumn.FKConstraint.PKTable.ObjectSchema ||
+                                parentTable == validatingColumn.FKConstraint.PKTable.ObjectName)
+                            {
+                                foreach (var pkColumn in validatingColumn.FKConstraint.Columns)
+                                {
+                                    if (pkColumn.PKColumn == parentColumn)
+                                        return validatingColumn.FKConstraint.ConstraintTable.ObjectName + "." +
+                                               validatingColumn.ColumnName;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return string.Empty;
+        }
+
+        public static bool MultiplePropertyFKMatchesParent(CslaObjectInfo parent, CslaObjectInfo info, ValueProperty prop)
+        {
+            return MultipleColumnFKMatchesParent(parent, info, prop.DbBindColumn.Column);
+        }
+
+        public static bool MultipleColumnFKMatchesParent(CslaObjectInfo parent, CslaObjectInfo info, IColumnInfo validatingColumn)
+        {
+            foreach (var prop in info.ParentProperties)
+            {
+                var parentPropertyFound = parent.GetAllValueProperties().Find(prop.Name);
+                if (parentPropertyFound != null)
+                {
+                    var parentSchema = parentPropertyFound.DbBindColumn.SchemaName;
+                    var parentTable = parentPropertyFound.DbBindColumn.ObjectName;
+                    var parentColumn = parentPropertyFound.DbBindColumn.Column;
+                    if (parentColumn != null)
+                    {
+                        if (validatingColumn.FKConstraint != null)
+                        {
+                            if (parentSchema == validatingColumn.FKConstraint.PKTable.ObjectSchema ||
+                                parentTable == validatingColumn.FKConstraint.PKTable.ObjectName)
+                            {
+                                foreach (var pkColumn in validatingColumn.FKConstraint.Columns)
+                                {
+                                    if (pkColumn.PKColumn == parentColumn)
+                                    {
+                                        var matchCounter =
+                                            CountMatchingInfoColumns(validatingColumn.FKConstraint.ConstraintTable,
+                                                                     parentSchema, parentTable, parentColumn);
+                                        return matchCounter > 1;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private static int CountMatchingInfoColumns(ITableInfo infoTable, string parentSchema, string parentTable, IColumnInfo parentColumn)
+        {
+            var matchCounter = 0;
+            foreach (var infoColumn in infoTable.Columns)
+            {
+                if (infoColumn.FKConstraint != null)
+                {
+                    if (parentSchema == infoColumn.FKConstraint.PKTable.ObjectSchema ||
+                        parentTable == infoColumn.FKConstraint.PKTable.ObjectName)
+                    {
+                        foreach (var columnPair in infoColumn.FKConstraint.Columns)
+                        {
+                            if (columnPair.PKColumn == parentColumn)
+                                matchCounter++;
+                        }
+                    }
+                }
+            }
+
+            return matchCounter;
         }
 
         #endregion
