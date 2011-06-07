@@ -11,8 +11,9 @@
 <%@ Assembly Name="System.Windows.Forms" %>
 <%@ Import Namespace="System.Windows.Forms" %>
 <%@ Import Namespace="System.Text" %>
+<%@ Import Namespace="System.Collections.Generic" %>
 
-<!-- #include file="EditableRootValidate.asp" -->
+<!-- #include file="EditableRoot_Validate.asp" -->
 <%
 if (Errors.Length == 0)
 {
@@ -67,16 +68,7 @@ if (Errors.Length == 0)
             Warnings.Append("Make sure you specify a DB name." + Environment.NewLine) ;
         }
         %>
-        #region Factory Methods<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel, true, false) %>
-<!-- #include file="NewObject.asp" -->
-<!-- #include file="NewObjectAsync.asp" -->
-<!-- #include file="GetObject.asp" -->
-<!-- #include file="DeleteObject.asp" -->
-<!-- #include file="Save.asp" -->
-<%= IfSilverlight (Conditional.Else, 0, ref silverlightLevel, true, true) %><!-- #include file="NewObjectSilverlight.asp" -->
-<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel, true, true) %><!-- #include file="GetObjectAsync.asp" -->
-
-        #endregion
+<!-- #include file="EditableRoot_Factory.asp" -->
         <%
     }
     %>
@@ -92,22 +84,7 @@ if (Errors.Length == 0)
             Response.Write(Environment.NewLine);
         }
         %>
-        #region Data Access<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel, true, false) %>
-<!-- #include file="DataPortalCreate.asp" -->
-<!-- #include file="DataPortalFetch.asp" -->
-<!-- #include file="DataPortalInsert.asp" -->
-<!-- #include file="DataPortalUpdate.asp" -->
-<%
-        if (Info.GenerateDataPortalInsert || Info.GenerateDataPortalUpdate)
-        {
-            %>
-<!-- #include file="DoInsertUpdate.asp" -->
-<%
-        }
-        %>
-<!-- #include file="DataPortalDelete.asp" -->
-<%= IfSilverlight (Conditional.Else, 0, ref silverlightLevel, true, true) %><!-- #include file="DataPortalCreateSilverlight.asp" -->
-<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel, true, true) %>        #endregion
+<!-- #include file="EditableRoot_DataPortal.asp" -->
 <!-- #include file="Events.asp" -->
 <%
     }

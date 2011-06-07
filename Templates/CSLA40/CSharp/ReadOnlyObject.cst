@@ -11,7 +11,7 @@
 <%@ Import Namespace="System.Text" %>
 <%@ Import Namespace="System.Collections.Generic" %>
 
-<!-- #include file="ReadOnlyObjectValidate.asp" -->
+<!-- #include file="ReadOnlyObject_Validate.asp" -->
 <%
 if (Errors.Length == 0)
 {
@@ -66,12 +66,7 @@ if (Errors.Length == 0)
             Warnings.Append("Make sure you specify a DB name." + Environment.NewLine) ;
         }
         %>
-        #region Factory Methods<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel, true, false) %>
-<!-- #include file="InternalGetObject.asp" -->
-<!-- #include file="GetObject.asp" -->
-<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel, true, true) %><!-- #include file="GetObjectAsync.asp" -->
-
-        #endregion
+<!-- #include file="ReadOnlyObject_Factory.asp" -->
         <%
     }
     %>
@@ -88,9 +83,7 @@ if (Errors.Length == 0)
             Response.Write(Environment.NewLine);
         }
         %>
-        #region Data Access<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel, true, false) %>
-<!-- #include file="DataPortalFetch.asp" -->
-<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel, false, true) %>        #endregion
+<!-- #include file="ReadOnlyObject_DataPortal.asp" -->
 <!-- #include file="Events.asp" -->
 
 <%
@@ -98,7 +91,12 @@ if (Errors.Length == 0)
     %>
 
     }
-<% if (Info.ObjectNamespace.Length > 0) { %>
+    <%
+    if (Info.ObjectNamespace.Length > 0)
+    {
+        %>
 }
-<% } %>
-<% } %>
+<%
+    }
+}
+%>

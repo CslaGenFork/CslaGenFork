@@ -9,8 +9,9 @@
 <%@ Import Namespace="CslaGenerator.CodeGen" %>
 <%@ Import Namespace="CslaGenerator.Util" %>
 <%@ Import Namespace="System.Text" %>
+<%@ Import Namespace="System.Collections.Generic" %>
 
-<!-- #include file="UnitOfWorkValidate.asp" -->
+<!-- #include file="UnitOfWork_Validate.asp" -->
 <%
 if (Errors.Length == 0)
 {

@@ -37,15 +37,15 @@ if (GetCriteriaObjects(Info).Count > 0)
         <%
         if (CurrentUnit.GenerationParams.GenerateSilverlight4)
         {
-            bool usePubliccriteria = false;
+            bool usePublicCriteria = false;
             foreach (Criteria c in GetCriteriaObjects(Info))
             {
                 if (c.CreateOptions.DataPortal && c.Properties.Count > 1 && c.CreateOptions.RunLocal)
                 {
-                    usePubliccriteria = true;
+                    usePublicCriteria = true;
                 }
             }
-            if (usePubliccriteria &&
+            if (usePublicCriteria &&
                 (Info.ObjectType == CslaObjectType.EditableRoot ||
                 Info.ObjectType == CslaObjectType.EditableRootCollection ||
                 Info.ObjectType == CslaObjectType.DynamicEditableRootCollection ||

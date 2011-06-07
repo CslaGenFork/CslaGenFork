@@ -17,6 +17,11 @@ if (Info.GenerateDataPortalUpdate)
         %>[Transactional(TransactionalTypes.TransactionScope)]
         <%
     }
+    if (Info.InsertUpdateRunLocal)
+    {
+        %>[Csla.RunLocal]
+        <%
+    }
         %>protected override void DataPortal_Update()
         {
             if (base.IsDirty)
