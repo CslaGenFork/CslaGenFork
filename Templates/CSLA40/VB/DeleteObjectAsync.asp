@@ -6,7 +6,6 @@ foreach (Criteria c in GetCriteriaObjects(Info))
     if (c.DeleteOptions.Factory)
     {
         %>
-
         /// <summary>
         /// Asynchronously marks the <see cref="<%=Info.ObjectName%>"/> object for deletion.
         /// The object will be deleted as part of the next save operation.
@@ -61,6 +60,7 @@ foreach (Criteria c in GetCriteriaObjects(Info))
             }
             %>
         }
+
 <%
     }
 }

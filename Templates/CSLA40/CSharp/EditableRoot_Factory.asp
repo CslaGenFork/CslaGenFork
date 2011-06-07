@@ -5,6 +5,7 @@
 <!-- #include file="DeleteObject.asp" -->
 <%= IfSilverlight (Conditional.Else, 0, ref silverlightLevel, true, true) %><!-- #include file="NewObjectSilverlight.asp" -->
 <%= IfSilverlight (Conditional.End, 0, ref silverlightLevel, true, true) %><!-- #include file="GetObjectAsync.asp" -->
+<!-- #include file="DeleteObjectAsync.asp" -->
 <!-- #include file="Save.asp" -->
 
         #endregion
