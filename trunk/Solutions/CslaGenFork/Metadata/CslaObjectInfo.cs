@@ -48,6 +48,7 @@ namespace CslaGenerator.Metadata
         private PropertyCollection _hashcodeProperty = new PropertyCollection();
         private PropertyCollection _toStringProperty = new PropertyCollection();
         private PropertyCollection _findMethodsParameters = new PropertyCollection();
+        private bool _insertUpdateRunLocal;
         private string _selectProcedureName = String.Empty;
         private string _insertProcedureName = String.Empty;
         private string _updateProcedureName = String.Empty;
@@ -1081,12 +1082,23 @@ namespace CslaGenerator.Metadata
 
         #endregion
 
-        #region 08. Stored Procedure Names
+        #region 08. Insert & Update Options
+
+        // Show 08. Stored Procedure Names for pre CSLA4 targets
+
+        [Category("08. Insert & Update Options")]
+        [Description("Whether DataPortal_Insert and DataPortal_Update should run on the client.")]
+        [UserFriendlyName("Insert & Update RunLocal")]
+        public bool InsertUpdateRunLocal
+        {
+            get { return _insertUpdateRunLocal; }
+            set { _insertUpdateRunLocal = value; }
+        }
 
         /// <summary>
         /// Name of the insert procedure.
         /// </summary>
-        [Category("08. Stored Procedure Names")]
+        [Category("08. Insert & Update Options")]
         [Description("Name of the insert procedure.")]
         [UserFriendlyName("Insert Procedure Name")]
         public string InsertProcedureName
@@ -1105,7 +1117,7 @@ namespace CslaGenerator.Metadata
         /// <summary>
         /// Name of the select procedure.
         /// </summary>
-        [Category("08. Stored Procedure Names")]
+        [Category("08. Insert & Update Options")]
         [Description("Name of the select procedure.")]
         [UserFriendlyName("Select Procedure Name")]
         public string SelectProcedureName
@@ -1125,7 +1137,7 @@ namespace CslaGenerator.Metadata
         /// <summary>
         /// Name of the update procedure.
         /// </summary>
-        [Category("08. Stored Procedure Names")]
+        [Category("08. Insert & Update Options")]
         [Description("Name of the update procedure.")]
         [UserFriendlyName("Update Procedure Name")]
         public string UpdateProcedureName
@@ -1144,7 +1156,7 @@ namespace CslaGenerator.Metadata
         /// <summary>
         /// Name of the delete procedure.
         /// </summary>
-        [Category("08. Stored Procedure Names")]
+        [Category("08. Insert & Update Options")]
         [Description("Name of the delete procedure.")]
         [UserFriendlyName("Delete Procedure Name")]
         public string DeleteProcedureName
@@ -1166,7 +1178,7 @@ namespace CslaGenerator.Metadata
                 else
                 {
                     if (!String.IsNullOrEmpty(value))
-                        foreach (Criteria c in _criteriaObjects)
+                        foreach (var c in _criteriaObjects)
                             if (c.DeleteOptions.Procedure && string.IsNullOrEmpty(c.DeleteOptions.ProcedureName))
                                 c.DeleteOptions.ProcedureName = value;
                 }

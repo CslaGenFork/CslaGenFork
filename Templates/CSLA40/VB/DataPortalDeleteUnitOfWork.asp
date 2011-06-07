@@ -11,6 +11,11 @@ foreach (Criteria c in GetCriteriaObjects(Info))
         /// Self delete the <see cref="<%=Info.ObjectName%>"/> object.
         /// </summary>
         <%
+        if (c.DeleteOptions.RunLocal)
+        {
+            %>[Csla.RunLocal]
+        <%
+        }
         string strGetCritParams = string.Empty;
         bool firstParam = true;
         for (int i = 0; i < c.Properties.Count; i++)

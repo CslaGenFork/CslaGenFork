@@ -502,7 +502,7 @@ namespace CslaGenerator.CodeGen
             foreach (var namespaceName in usingNamespaces)
             {
                 if (namespaceName == CurrentUnit.GenerationParams.UtilitiesNamespace &&
-                    CurrentUnit.GenerationParams.GenerateSilverlight4)
+                    GenerateSilverlight())
                 {
                     result += IfSilverlight(Conditional.NotSilverlight, 0, ref silverlightLevel, false, true);
                     result += "using " + namespaceName + ";";
@@ -558,7 +558,7 @@ namespace CslaGenerator.CodeGen
                 info.ObjectType != CslaObjectType.UnitOfWork)
                 usingList.Add(CurrentUnit.GenerationParams.UtilitiesNamespace);
 
-            if (CurrentUnit.GenerationParams.GenerateSilverlight4)
+            if (GenerateSilverlight())
                 usingList.Add("Csla.Serialization");
 
             foreach (var name in info.Namespaces)
@@ -1195,7 +1195,7 @@ namespace CslaGenerator.CodeGen
             {
                 if (CurrentUnit.GenerationParams.GenerateWinForms &&
                     (CurrentUnit.GenerationParams.GenerateWPF ||
-                     CurrentUnit.GenerationParams.GenerateSilverlight4))
+                     GenerateSilverlight()))
                     response += rootStereotype + "ListBase";
             }
 
@@ -3274,6 +3274,16 @@ namespace CslaGenerator.CodeGen
             End
         }
 
+        public bool SilverlightUsingServices()
+        {
+            return CurrentUnit.GenerationParams.SilverlightUsingServices;
+        }
+
+        public bool GenerateSilverlight()
+        {
+            return CurrentUnit.GenerationParams.GenerateSilverlight4 || CurrentUnit.GenerationParams.SilverlightUsingServices;
+        }
+
         public string IfNewSilverlight(Conditional step, int indent, ref int silverlightLevel, bool formFeedBefore, bool formFeedAfter)
         {
             var result = string.Empty;
@@ -3303,7 +3313,7 @@ namespace CslaGenerator.CodeGen
         {
             var result = string.Empty;
             var outputValue = silverlightLevel;
-            if (CurrentUnit.GenerationParams.GenerateSilverlight4)
+            if (GenerateSilverlight())
             {
                 switch (step)
                 {
@@ -3335,7 +3345,7 @@ namespace CslaGenerator.CodeGen
         public string CommonVisibility(string desiredVisibity, int indent)
         {
             var result = desiredVisibity;
-            if (CurrentUnit.GenerationParams.GenerateSilverlight4)
+            if (GenerateSilverlight())
             {
                 result = "[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]\r\n" +
                          new string(' ', indent * 4) +

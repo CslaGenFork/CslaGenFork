@@ -11,7 +11,7 @@
 <%@ Import Namespace="System.Text" %>
 <%@ Import Namespace="System.Collections.Generic" %>
 
-<!-- #include file="EditableChildCollectionValidate.asp" -->
+<!-- #include file="EditableChildCollection_Validate.asp" -->
 <%
 if (Errors.Length == 0)
 {
@@ -118,85 +118,11 @@ if (Errors.Length == 0)
                 break;
             }
         }
-        if (lazyLoad3 || createCriteria || parentCreateCriteria ||
-            declarationMode == PropertyDeclaration.ClassicProperty ||
-            declarationMode == PropertyDeclaration.AutoProperty)
-        {
-            if (selfLoad3 && Info.DbName.Equals(String.Empty))
-            {
-                Warnings.Append("Make sure you specify a DB name." + Environment.NewLine);
-            }
-            %>
-        #region Factory Methods<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel, true, false) %>
-
-        /// <summary>
-        /// Factory method. Creates a new <see cref="<%=Info.ObjectName%>"/> collection.
-        /// </summary>
-        /// <returns>A reference to the created <see cref="<%=Info.ObjectName%>"/> object.</returns>
-        internal static <%= Info.ObjectName %> New<%= Info.ObjectName %>()
-        {
-            return DataPortal.CreateChild<<%= Info.ObjectName %>>();
-        }
-        <%
-            if (CurrentUnit.GenerationParams.GenerateSilverlight4)
-            {
-                %>
-
-        /// <summary>
-        /// Factory method. Asynchronously creates a new <see cref="<%=Info.ObjectName%>"/> collection.
-        /// </summary>
-        /// <param name="callback">The completion callback method.</param>
-        internal static void New<%= Info.ObjectName %>(EventHandler<DataPortalResult<<%= Info.ObjectName %>>> callback)
-        {
-            DataPortal.BeginCreate<<%= Info.ObjectName %>>(callback);
-        }
-        <%
-            }
-        }
-        if (!selfLoad3)
-        {
-            %>
-<!-- #include file="InternalGetObject.asp" -->
-<%
-        }
-        else
-        {
-            %>
-<!-- #include file="GetObject.asp" -->
-<%
-        }
-        if (lazyLoad3 || createCriteria || parentCreateCriteria ||
-            declarationMode == PropertyDeclaration.ClassicProperty ||
-            declarationMode == PropertyDeclaration.AutoProperty)
-        {
-            if (CurrentUnit.GenerationParams.GenerateSilverlight4)
-            {
+        %>
+<!-- #include file="EditableChildCollection_Factory.asp" -->
+    <%
+    }
     %>
-<%= IfSilverlight (Conditional.Else, 0, ref silverlightLevel, true, false) %>
-
-        /// <summary>
-        /// Factory method. Asynchronously creates a new <see cref="<%=Info.ObjectName%>"/> collection.
-        /// </summary>
-        /// <param name="callback">The completion callback method.</param>
-        internal static void New<%= Info.ObjectName %>(EventHandler<DataPortalResult<<%= Info.ObjectName %>>> callback)
-        {
-            DataPortal.BeginCreate<<%= Info.ObjectName %>>(callback<%= strNewCallback2 %>);
-        }
-        <%
-            }
-        }
-    }
-    if (CurrentUnit.GenerationParams.GenerateAsynchronous)
-    {
-        %>
-<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel, true, true) %><!-- #include file="GetObjectAsync.asp" --><%
-    }
-    else
-    {
-        %>
-<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel, true, false) %><%
-    }
-%>        #endregion
 <!-- #include file="Constructor.asp" -->
 <!-- #include file="Criteria.asp" -->
 <!-- #include file="SharedAuthorizationMethods.asp" -->
@@ -208,66 +134,7 @@ if (Errors.Length == 0)
             Response.Write(Environment.NewLine);
         }
         %>
-        #region Data Access<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel, true, true) %>
-<!-- #include file="CollectionDataPortalFetch.asp" -->
-
-        <%
-        //if (!CurrentUnit.GenerationParams.UseChildDataPortal)
-        if (false)
-        {
-            %>
-        /// <summary>
-        /// Update all changes made on <see cref="<%=Info.ObjectName%>"/> object's children to the database.
-        /// </summary>
-        <%
-            if (Info.TransactionType == TransactionType.EnterpriseServices)
-            {
-                %>[Transactional(TransactionalTypes.EnterpriseServices)]
-        <%
-            }
-            else if (Info.TransactionType == TransactionType.TransactionScope)
-            {
-                %>[Transactional(TransactionalTypes.TransactionScope)]
-        <%
-            }
-            if (Info.ParentType.Length == 0)
-            {
-                Errors.Append("ParentType not set." + Environment.NewLine + Info.ObjectName + " will not compile." + Environment.NewLine);
-            }
-            %>internal void Update(<%= Info.ParentType %> parent)
-        {
-            var rlce = RaiseListChangedEvents;
-            RaiseListChangedEvents = false;
-            var args = new DataPortalHookArgs();
-            OnUpdateStart(args);
-            OnUpdatePre(args);
-            <%
-            CslaObjectInfo cldInfo = FindChildInfo(Info, Info.ItemType);
-            bool ParentInsertOnly = cldInfo.ParentInsertOnly;
-            %>
-            // Loop through the deleted child objects and call their Update methods
-            foreach (<%= Info.ItemType %> child in DeletedList)
-                child.DeleteSelf(<%    if (!ParentInsertOnly) { %>parent<% } %>);
-
-            //Now clear the deleted objects from the list
-            DeletedList.Clear();
-
-            // Loop through the objects to add and update, calling the Update Method
-            foreach (<%= Info.ItemType %> child in this)
-            {
-                if (child.IsNew)
-                    child.Insert(parent);
-                else
-                    child.Update(<% if (!ParentInsertOnly) { %>parent<% } %>);
-            }
-            OnUpdatePost(args);
-            RaiseListChangedEvents = rlce;
-        }
-
-        <%
-        }
-        %>
-<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel, false, true) %>        #endregion
+<!-- #include file="EditableChildCollection_DataPortal.asp" -->
 <!-- #include file="Events.asp" -->
 
 <%

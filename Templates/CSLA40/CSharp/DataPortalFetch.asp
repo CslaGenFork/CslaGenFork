@@ -16,13 +16,10 @@ if (!Info.UseCustomLoading)
         %>/// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The fetch criteria.</param>
         <%
             }
-            if (c.Properties.Count > 0 && c.GetOptions.RunLocal)
-            {
-                Response.Write("\r\n        ");
-            }
             if (c.GetOptions.RunLocal)
             {
-        %>[Csla.RunLocal]<%
+                %>[Csla.RunLocal]
+        <%
             }
             if (c.Properties.Count > 1)
             {

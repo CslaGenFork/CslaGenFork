@@ -40,6 +40,7 @@
     <add key="UnitOfWork:TransactionType" value="false" />
     <add key="UnitOfWork:PersistenceType" value="false" />
     <add key="UnitOfWork:DbContextObject" value="false" />
+    <add key="UnitOfWork:InsertUpdateRunLocal" value="false" />
     <add key="UnitOfWork:DeleteProcedureName" value="false" />
     <add key="UnitOfWork:InsertProcedureName" value="false" />
     <add key="UnitOfWork:SelectProcedureName" value="false" />
@@ -96,6 +97,7 @@
     <add key="NameValueList:NewObjectCriteriaType" value="false" />
     <add key="NameValueList:TransactionType" value="false" />
     <add key="NameValueList:PersistenceType" value="true" />
+    <add key="NameValueList:InsertUpdateRunLocal" value="false" />
     <add key="NameValueList:DeleteProcedureName" value="false" />
     <add key="NameValueList:InsertProcedureName" value="false" />
     <add key="NameValueList:SelectProcedureName" value="false" />
@@ -151,6 +153,7 @@
     <add key="ReadOnlyCollection:NewObjectCriteriaType" value="false" />
     <add key="ReadOnlyCollection:TransactionType" value="false" />
     <add key="ReadOnlyCollection:PersistenceType" value="true" />
+    <add key="ReadOnlyCollection:InsertUpdateRunLocal" value="false" />
     <add key="ReadOnlyCollection:DeleteProcedureName" value="false" />
     <add key="ReadOnlyCollection:InsertProcedureName" value="false" />
     <add key="ReadOnlyCollection:SelectProcedureName" value="false" />
@@ -206,6 +209,7 @@
     <add key="ReadOnlyObject:NewObjectCriteriaType" value="false" />
     <add key="ReadOnlyObject:TransactionType" value="false" />
     <add key="ReadOnlyObject:PersistenceType" value="true" />
+    <add key="ReadOnlyObject:InsertUpdateRunLocal" value="false" />
     <add key="ReadOnlyObject:DeleteProcedureName" value="false" />
     <add key="ReadOnlyObject:InsertProcedureName" value="false" />
     <add key="ReadOnlyObject:SelectProcedureName" value="false" />
@@ -261,6 +265,7 @@
     <add key="EditableChild:NewObjectCriteriaType" value="false" />
     <add key="EditableChild:TransactionType" value="true" />
     <add key="EditableChild:PersistenceType" value="true" />
+    <add key="EditableChild:InsertUpdateRunLocal" value="true" />
     <add key="EditableChild:DeleteProcedureName" value="true" />
     <add key="EditableChild:InsertProcedureName" value="true" />
     <add key="EditableChild:SelectProcedureName" value="false" />
@@ -316,6 +321,7 @@
     <add key="EditableChildCollection:NewObjectCriteriaType" value="false" />
     <add key="EditableChildCollection:TransactionType" value="true" />
     <add key="EditableChildCollection:PersistenceType" value="true" />
+    <add key="EditableChildCollection:InsertUpdateRunLocal" value="false" />
     <add key="EditableChildCollection:DeleteProcedureName" value="false" />
     <add key="EditableChildCollection:InsertProcedureName" value="false" />
     <add key="EditableChildCollection:SelectProcedureName" value="false" />
@@ -371,6 +377,7 @@
     <add key="EditableRoot:NewObjectCriteriaType" value="false" />
     <add key="EditableRoot:TransactionType" value="true" />
     <add key="EditableRoot:PersistenceType" value="true" />
+    <add key="EditableRoot:InsertUpdateRunLocal" value="true" />
     <add key="EditableRoot:DeleteProcedureName" value="false" />
     <add key="EditableRoot:InsertProcedureName" value="true" />
     <add key="EditableRoot:SelectProcedureName" value="false" />
@@ -426,6 +433,7 @@
     <add key="EditableRootCollection:NewObjectCriteriaType" value="false" />
     <add key="EditableRootCollection:TransactionType" value="true" />
     <add key="EditableRootCollection:PersistenceType" value="true" />
+    <add key="EditableRootCollection:InsertUpdateRunLocal" value="false" />
     <add key="EditableRootCollection:DeleteProcedureName" value="false" />
     <add key="EditableRootCollection:InsertProcedureName" value="false" />
     <add key="EditableRootCollection:SelectProcedureName" value="false" />
@@ -481,6 +489,7 @@
     <add key="EditableSwitchable:NewObjectCriteriaType" value="false" />
     <add key="EditableSwitchable:TransactionType" value="true" />
     <add key="EditableSwitchable:PersistenceType" value="true" />
+    <add key="EditableSwitchable:InsertUpdateRunLocal" value="true" />
     <add key="EditableSwitchable:DeleteProcedureName" value="false" />
     <add key="EditableSwitchable:InsertProcedureName" value="true" />
     <add key="EditableSwitchable:SelectProcedureName" value="false" />
@@ -536,6 +545,7 @@
     <add key="DynamicEditableRoot:NewObjectCriteriaType" value="false" />
     <add key="DynamicEditableRoot:TransactionType" value="true" />
     <add key="DynamicEditableRoot:PersistenceType" value="true" />
+    <add key="DynamicEditableRoot:InsertUpdateRunLocal" value="true" />
     <add key="DynamicEditableRoot:DeleteProcedureName" value="false" />
     <add key="DynamicEditableRoot:InsertProcedureName" value="true" />
     <add key="DynamicEditableRoot:SelectProcedureName" value="false" />
@@ -591,6 +601,7 @@
     <add key="DynamicEditableRootCollection:NewObjectCriteriaType" value="false" />
     <add key="DynamicEditableRootCollection:TransactionType" value="true" />
     <add key="DynamicEditableRootCollection:PersistenceType" value="true" />
+    <add key="DynamicEditableRootCollection:InsertUpdateRunLocal" value="false" />
     <add key="DynamicEditableRootCollection:DeleteProcedureName" value="false" />
     <add key="DynamicEditableRootCollection:InsertProcedureName" value="false" />
     <add key="DynamicEditableRootCollection:SelectProcedureName" value="false" />

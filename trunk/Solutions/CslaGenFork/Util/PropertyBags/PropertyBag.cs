@@ -914,7 +914,7 @@ namespace CslaGenerator.Util.PropertyBags
                 // objectType + propertyName --> true | false
                 if (_propertyContext != null)
                 {
-                    var cslaObject = (CslaObjectInfo)GeneratorController.Current.GeneratorForm.ProjectPanel.ListObjects.SelectedItem;
+                    var cslaObject = (CslaObjectInfo) GeneratorController.Current.GeneratorForm.ProjectPanel.ListObjects.SelectedItem;
                     var hasParentProperties = CslaTemplateHelperCS.HasParentProperties(cslaObject);
                     foreach (string typ in objectType)
                     {
@@ -922,7 +922,7 @@ namespace CslaGenerator.Util.PropertyBags
                             return false;
                         if (!GeneratorController.Current.CurrentUnit.GenerationParams.ActiveObjects &&
                             (propertyName == "PublishToChannel" ||
-                            propertyName == "SubscribeToChannel"))
+                             propertyName == "SubscribeToChannel"))
                             return false;
                         if (((GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization ==
                               Authorization.None ||
@@ -940,13 +940,10 @@ namespace CslaGenerator.Util.PropertyBags
                             (propertyName == "AddParentReference" ||
                              propertyName == "HashcodeProperty" ||
                              propertyName == "EqualsProperty" ||
-                             propertyName == "DeleteProcedureName"))
-                            return false;
-                        if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework ==
-                             TargetFramework.CSLA40 ||
-                             GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework ==
-                             TargetFramework.CSLA40DAL) &&
-                            (propertyName == "LazyLoad"))
+                             propertyName == "DeleteProcedureName" ||
+                             propertyName == "LazyLoad" ||
+                             propertyName == "ParentProperties" ||
+                             propertyName == "CacheResults"))
                             return false;
                         /*if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework ==
                              TargetFramework.CSLA40 ||
@@ -955,24 +952,12 @@ namespace CslaGenerator.Util.PropertyBags
                              typ == "EditableChildCollection" &&
                             propertyName == "ParentProperties")
                             return false;*/
-                        if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework ==
-                             TargetFramework.CSLA40 ||
-                             GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework ==
-                             TargetFramework.CSLA40DAL) &&
-                             !hasParentProperties &&
-                            propertyName == "ParentProperties")
-                            return false;
-                        if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework ==
-                             TargetFramework.CSLA40 ||
-                             GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework ==
-                             TargetFramework.CSLA40DAL) &&
-                            propertyName == "CacheResults")
-                            return false;
                         if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework !=
                              TargetFramework.CSLA40 &&
                              GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework !=
                              TargetFramework.CSLA40DAL) &&
-                            propertyName == "SimpleCacheOptions")
+                            (propertyName == "SimpleCacheOptions" ||
+                             propertyName == "InsertUpdateRunLocal"))
                             return false;
                         // hide for all
                         if (propertyName == "SupportUpdateProperties" ||
@@ -980,7 +965,8 @@ namespace CslaGenerator.Util.PropertyBags
                             propertyName == "UpdaterType")
                             return false;
                         if (typ != "UnitOfWork" &&
-                            (propertyName == "UnitOfWorkCollectionProperties" || propertyName == "UnitOfWorkType"))
+                            (propertyName == "UnitOfWorkCollectionProperties" ||
+                             propertyName == "UnitOfWorkType"))
                             return false;
                     }
                     if (_selectedObject.Length > 1 && IsEnumerable(GetPropertyInfoCache(propertyName)))
@@ -1171,7 +1157,15 @@ namespace CslaGenerator.Util.PropertyBags
                 // If a category, description, editor, or type converter are specified
                 // in the PropertySpec, create attributes to define that relationship.
                 if (property.Category != null)
+                {
+                    if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework !=
+                             TargetFramework.CSLA40 &&
+                             GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework !=
+                             TargetFramework.CSLA40DAL) &&
+                            property.Category == "08. Insert & Update Options")
+                        property.Category = "08. Stored Procedure Names";
                     attrs.Add(new CategoryAttribute(property.Category));
+                }
 
                 if (property.Description != null)
                     attrs.Add(new DescriptionAttribute(property.Description));

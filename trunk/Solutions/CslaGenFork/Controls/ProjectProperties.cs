@@ -244,8 +244,8 @@ namespace CslaGenerator.Controls
                     cboTargetDAL.Items.RemoveAt(0);
 
                 chkActiveObjects.Checked = false;
-                chkSynchronous.Enabled = !_genParams.ForceSyncUI;
-                chkAsynchronous.Enabled = !_genParams.ForceAsyncUI;
+                chkSynchronous.Enabled = !_genParams.ForceSync;
+                chkAsynchronous.Enabled = !_genParams.ForceAsync;
             }
             else
             {
@@ -317,17 +317,32 @@ namespace CslaGenerator.Controls
         internal bool ValidateOptions()
         {
             var result = true;
-            if (!_genParams.GenerateAsynchronous && !_genParams.GenerateSynchronous)
+
+            if (!_genParams.GenerateWinForms && !_genParams.GenerateWPF && _genParams.GenerateSilverlight4)
+            {
+                result = false;
+                MessageBox.Show(@"Must select at least one of these options:" + Environment.NewLine +
+                                @"- Windows Forms" + Environment.NewLine +
+                                @"- WPF",
+                                @"CslaGenerator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (!_genParams.GenerateWinForms && !_genParams.GenerateWPF && !_genParams.SilverlightUsingServices)
+            {
+                result = false;
+                MessageBox.Show(@"Must select at least one of these options:" + Environment.NewLine +
+                                @"- Windows Forms" + Environment.NewLine +
+                                @"- WPF" + Environment.NewLine +
+                                @"- Silverlight using services",
+                                @"CslaGenerator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            if (!_genParams.GenerateAsynchronous && !_genParams.GenerateSynchronous &&
+                (_genParams.GenerateWinForms || _genParams.GenerateWPF))
             {
                 result = false;
                 MessageBox.Show(@"Must select either Synchronous or Asynchronous server methods.", @"CslaGenerator", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
-            if (!_genParams.GenerateWinForms && !_genParams.GenerateWPF)
-            {
-                result = false;
-                MessageBox.Show(@"Must select either Windows Forms or WPF.", @"CslaGenerator", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
             return result;
         }
     }

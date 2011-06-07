@@ -142,6 +142,7 @@ namespace CslaGenerator.Controls
             this.chkWinForms = new System.Windows.Forms.CheckBox();
             this.chkWPF = new System.Windows.Forms.CheckBox();
             this.chkSilverlight = new System.Windows.Forms.CheckBox();
+            this.chkSilverlightUseServices = new System.Windows.Forms.CheckBox();
             this.groupBoxDataAccessLayer = new System.Windows.Forms.GroupBox();
             this.lblTargetDAL = new System.Windows.Forms.Label();
             this.cboTargetDAL = new System.Windows.Forms.ComboBox();
@@ -1368,9 +1369,10 @@ namespace CslaGenerator.Controls
             this.groupBoxUIEnvironment.Controls.Add(this.chkWinForms);
             this.groupBoxUIEnvironment.Controls.Add(this.chkWPF);
             this.groupBoxUIEnvironment.Controls.Add(this.chkSilverlight);
+            this.groupBoxUIEnvironment.Controls.Add(this.chkSilverlightUseServices);
             this.groupBoxUIEnvironment.Location = new System.Drawing.Point(15, 118);
             this.groupBoxUIEnvironment.Name = "groupBoxUIEnvironment";
-            this.groupBoxUIEnvironment.Size = new System.Drawing.Size(240, 104);
+            this.groupBoxUIEnvironment.Size = new System.Drawing.Size(240, 132);
             this.groupBoxUIEnvironment.TabIndex = 7;
             this.groupBoxUIEnvironment.TabStop = false;
             this.groupBoxUIEnvironment.Text = "UI Environment";
@@ -1411,6 +1413,18 @@ namespace CslaGenerator.Controls
             this.chkSilverlight.Text = "Generate Silverlight";
             this.chkSilverlight.UseVisualStyleBackColor = true;
             this.toolTip1.SetToolTip(this.chkSilverlight, "If checked, will generate Silverlight code with conditional compilation symbol SILVERLIGHT.");
+            // 
+            // chkSilverlightUseServices
+            // 
+            this.chkSilverlightUseServices.AutoSize = true;
+            this.chkSilverlightUseServices.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "SilverlightUsingServices", true));
+            this.chkSilverlightUseServices.Location = new System.Drawing.Point(12, 102);
+            this.chkSilverlightUseServices.Name = "chkSilverlightUseServices";
+            this.chkSilverlightUseServices.Size = new System.Drawing.Size(71, 17);
+            this.chkSilverlightUseServices.TabIndex = 9;
+            this.chkSilverlightUseServices.Text = "Generate Silverlight using services";
+            this.chkSilverlightUseServices.UseVisualStyleBackColor = true;
+            this.toolTip1.SetToolTip(this.chkSilverlightUseServices, "If checked, Silverlight DataPortal methods will call a partial method\r\nthat should handle the service interaction.");
             // 
             // groupBoxDataAccessLayer
             // 
@@ -2143,6 +2157,7 @@ namespace CslaGenerator.Controls
         private System.Windows.Forms.CheckBox chkWinForms;
         private System.Windows.Forms.CheckBox chkWPF;
         private System.Windows.Forms.CheckBox chkSilverlight;
+        private System.Windows.Forms.CheckBox chkSilverlightUseServices;
         private System.Windows.Forms.GroupBox groupBoxDataAccessLayer;
         private System.Windows.Forms.Label lblTargetDAL;
         private System.Windows.Forms.ComboBox cboTargetDAL;

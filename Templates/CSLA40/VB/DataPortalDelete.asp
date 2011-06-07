@@ -11,6 +11,11 @@ if (Info.GenerateDataPortalDelete)
         /// Self delete the <see cref="<%=Info.ObjectName%>"/> object.
         /// </summary>
         <%
+            if (c.DeleteOptions.RunLocal)
+            {
+                %>[Csla.RunLocal]
+        <%
+            }
             string strGetCritParams = string.Empty;
             bool firstParam = true;
             for (int i = 0; i < c.Properties.Count; i++)
@@ -25,8 +30,7 @@ if (Info.GenerateDataPortalDelete)
                 }
                 strGetCritParams += c.Properties[i].Name;
             }
-            %>
-        protected override void DataPortal_DeleteSelf()
+            %>protected override void DataPortal_DeleteSelf()
         {
             <%
             if (Info.ObjectType == CslaObjectType.EditableSwitchable)
@@ -75,7 +79,8 @@ if (Info.GenerateDataPortalDelete)
                 }
                 if (c.DeleteOptions.RunLocal)
                 {
-            %>[Csla.RunLocal]<%
+            %>[Csla.RunLocal]
+        <%
                 }
                 if (c.Properties.Count > 1)
                 {

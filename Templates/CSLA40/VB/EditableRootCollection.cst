@@ -9,8 +9,9 @@
 <%@ Import Namespace="CslaGenerator.CodeGen" %>
 <%@ Import Namespace="CslaGenerator.Util" %>
 <%@ Import Namespace="System.Text" %>
+<%@ Import Namespace="System.Collections.Generic" %>
 
-<!-- #include file="EditableRootCollectionValidate.asp" -->
+<!-- #include file="EditableRootCollection_Validate.asp" -->
 <%
 if (Errors.Length == 0)
 {
@@ -90,18 +91,10 @@ if (Errors.Length == 0)
             Warnings.Append("Make sure you specify a DB name." + Environment.NewLine);
         }
         %>
-        #region Factory Methods<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel, true, false) %>
-<!-- #include file="NewObject.asp" -->
-<!-- #include file="NewObjectAsync.asp" -->
-<!-- #include file="GetObject.asp" -->
-<%= IfSilverlight (Conditional.Else, 0, ref silverlightLevel, true, false) %><!-- #include file="NewObjectSilverlight.asp" -->
-<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel, true, true) %><!-- #include file="GetObjectAsync.asp" -->
-
-        #endregion
+<!-- #include file="EditableRootCollection_Factory.asp" -->
         <%
     }
     %>
-<!-- #include file="Save.asp" -->
 <!-- #include file="Constructor.asp" -->
 <!-- #include file="Criteria.asp" -->
 <!-- #include file="SharedAuthorizationMethods.asp" -->
@@ -113,66 +106,7 @@ if (Errors.Length == 0)
             Response.Write(Environment.NewLine);
         }
         %>
-        #region Data Access<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel, true, false) %>
-<!-- #include file="CollectionDataPortalFetch.asp" -->
-
-        /// <summary>
-        /// Saves (delete, add, update) all child objects to database.
-        /// </summary>
-        <%
-        if (Info.TransactionType == TransactionType.EnterpriseServices)
-        {
-            %>[Transactional(TransactionalTypes.EnterpriseServices)]
-        <%
-        }
-        else if (Info.TransactionType == TransactionType.TransactionScope)
-        {
-            %>[Transactional(TransactionalTypes.TransactionScope)]
-        <%
-        }
-        %>protected override void DataPortal_Update()
-        {
-            <%= GetConnection(Info, false) %>
-            {
-                <%
-        if (Info.PersistenceType == PersistenceType.SqlConnectionUnshared)
-        {
-            %>cn.Open();
-                <%
-        }
-        //if (CurrentUnit.GenerationParams.UseChildDataPortal)
-        if (true)
-        {
-            %>base.Child_Update();
-<%
-        }
-        else
-        {
-            %>foreach (<%= Info.ItemType %> child in DeletedList)
-                    child.DeleteSelf();
-
-                // Now clear the deleted objects from the list
-                DeletedList.Clear();
-
-                foreach (<%= Info.ItemType %> child in this)
-                {
-                    if (child.IsNew)
-                        child.Insert();
-                    else
-                        child.Update();
-                }
-                <%
-        }
-        if (Info.TransactionType == TransactionType.ADO && Info.PersistenceType == PersistenceType.SqlConnectionManager)
-        {
-            %>
-                ctx.Commit();
-                <%
-        }
-%>
-            }
-        }
-<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel, true, true) %>        #endregion
+<!-- #include file="EditableRootCollection_DataPortal.asp" -->
 <!-- #include file="Events.asp" -->
 
 <%

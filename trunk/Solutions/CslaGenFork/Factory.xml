@@ -82,6 +82,7 @@
     <GenerateWinForms>true</GenerateWinForms>
     <GenerateWPF>true</GenerateWPF>
     <GenerateSilverlight4>true</GenerateSilverlight4>
+    <SilverlightUsingServices>false</SilverlightUsingServices>
     <TargetDAL>None</TargetDAL>
     <GenerateDAL>false</GenerateDAL>
     <GenerateSynchronous>true</GenerateSynchronous>

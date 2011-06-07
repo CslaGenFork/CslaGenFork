@@ -41,6 +41,7 @@ namespace CslaGenerator.Metadata
         private bool _generateWinForms = true;
         private bool _generateWPF;
         private bool _generateSilverlight;
+        private bool _silverlightUsingServices;
         private TargetDAL _targetDAL = TargetDAL.None;
         private bool _generateDAL = true;
         private bool _generateSynchronous = true;
@@ -479,6 +480,18 @@ namespace CslaGenerator.Metadata
             }
         }
 
+        public bool SilverlightUsingServices
+        {
+            get { return _silverlightUsingServices; }
+            set
+            {
+                if (_silverlightUsingServices == value)
+                    return;
+                _silverlightUsingServices = value;
+                OnPropertyChanged("SilverlightUsingServices");
+            }
+        }
+
         public TargetDAL TargetDAL
         {
             get { return _targetDAL; }
@@ -545,15 +558,25 @@ namespace CslaGenerator.Metadata
                 if (propertyName == "TargetFramework")
                     SetCsla4Options();
                 if (propertyName == "GenerateWinForms")
-                    SetAsyncUIOptions();
+                    SetServerInvocationOptions();
                 if (propertyName == "GenerateWPF")
-                    SetAsyncUIOptions();
+                    SetServerInvocationOptions();
                 if (propertyName == "GenerateSilverlight4")
-                    SetAsyncUIOptions();
+                {
+                    if(_generateSilverlight)
+                        _silverlightUsingServices = false;
+                    SetServerInvocationOptions();
+                }
+                if (propertyName == "SilverlightUsingServices")
+                {
+                    if (_silverlightUsingServices)
+                        _generateSilverlight = false;
+                    SetServerInvocationOptions();
+                }
                 if (propertyName == "GenerateSynchronous")
-                    SetAsyncUIOptions();
+                    SetServerInvocationOptions();
                 if (propertyName == "GenerateAsynchronous")
-                    SetAsyncUIOptions();
+                    SetServerInvocationOptions();
             }
 
             Dirty = true;
@@ -584,26 +607,23 @@ namespace CslaGenerator.Metadata
             }
         }
 
-        private void SetAsyncUIOptions()
+        private void SetServerInvocationOptions()
         {
-            if (_generateSilverlight)
+            ForceSync = false;
+            ForceAsync = false;
+
+            if (_generateSilverlight && (_generateWinForms || _generateWPF))
             {
                 _generateAsynchronous = true;
-                ForceAsyncUI = true;
-            }
-            else
-            {
-                ForceAsyncUI = false;
+                ForceAsync = true;
             }
 
-            if (!(_generateWinForms || _generateWPF))
+            if (_silverlightUsingServices && !(_generateWinForms || _generateWPF))
             {
                 _generateSynchronous = false;
-                ForceSyncUI = true;
-            }
-            else
-            {
-                ForceSyncUI = false;
+                _generateAsynchronous = false;
+                ForceSync = true;
+                ForceAsync = true;
             }
         }
 
@@ -614,10 +634,10 @@ namespace CslaGenerator.Metadata
         internal bool UseDal { get; private set; }
 
         [Browsable(false)]
-        internal bool ForceSyncUI { get; private set; }
+        internal bool ForceSync { get; private set; }
 
         [Browsable(false)]
-        internal bool ForceAsyncUI { get; private set; }
+        internal bool ForceAsync { get; private set; }
 
         [Browsable(false)]
         internal bool Dirty { get; set; }
