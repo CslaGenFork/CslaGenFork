@@ -34,7 +34,7 @@ if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
     {
         string statement = new string(' ', 8) + "protected static void AddObjectAuthorizationRules()";
         string statementSilverlight = string.Empty;
-        if (CurrentUnit.GenerationParams.GenerateSilverlight4)
+        if (UseSilverlight())
         {
             statementSilverlight = "[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]" + "\r\n" + new string(' ', 8);
             statementSilverlight += "public static void AddObjectAuthorizationRules()";
@@ -45,7 +45,7 @@ if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
         /// Adds the object authorization rules.
         /// </summary>
         <%
-        if (CurrentUnit.GenerationParams.GenerateSilverlight4)
+        if (UseSilverlight())
         {
             %>
 <%= IfSilverlight (Conditional.Silverlight, 2, ref silverlightLevel, false, true) %><%= statementSilverlight %>

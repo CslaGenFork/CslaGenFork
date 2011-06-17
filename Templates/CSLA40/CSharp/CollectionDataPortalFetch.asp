@@ -21,17 +21,14 @@ if (!Info.UseCustomLoading)
                 {
                     first2 = false;
                 }
-                else
-                {
-                    Response.Write(Environment.NewLine);
-                }
                 %>
+
         /// <summary>
         <%
                 if (c.Properties.Count > 1)
                 {
                     %>
-        /// Load <see cref="<%=Info.ObjectName%>"/> collection from the database<%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
+        /// Loads an existing <see cref="<%= Info.ObjectName %>"/> collection from the database<%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
         /// </summary>
         /// <param name="crit">The fetch criteria.</param>
         protected void <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_" : "DataPortal_" %>Fetch(<%= c.Name %> crit)
@@ -41,7 +38,7 @@ if (!Info.UseCustomLoading)
                 else if (c.Properties.Count > 0)
                 {
                     %>
-        /// Load <see cref="<%=Info.ObjectName%>"/> collection from the database<%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
+        /// Loads <see cref="<%= Info.ObjectName %>"/> collection from the database<%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
         /// </summary>
         /// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The fetch criteria.</param>
         protected void <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_" : "DataPortal_" %>Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)
@@ -51,7 +48,7 @@ if (!Info.UseCustomLoading)
                 else
                 {
                     %>
-        /// Load <see cref="<%=Info.ObjectName%>"/> collection from the database<%= Info.SimpleCacheOptions == SimpleCacheResults.DataPortal ? " or from the cache" : "" %>.
+        /// Loads <see cref="<%= Info.ObjectName %>"/> collection from the database<%= Info.SimpleCacheOptions == SimpleCacheResults.DataPortal ? " or from the cache" : "" %>.
         /// </summary>
         protected void <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_" : "DataPortal_" %>Fetch()
         {
@@ -192,13 +189,14 @@ if (!Info.UseCustomLoading)
 
     if (!Info.DataSetLoadingScheme)
     {
-        if (!first2)
-        {
-            Response.Write(Environment.NewLine);
-        }
+        //if (!first2)
+        //{
+        //    Response.Write(Environment.NewLine);
+        //}
         %>
+
         /// <summary>
-        /// Load all <see cref="<%=Info.ObjectName%>"/> collection items using given SafeDataReader.
+        /// Loads the <see cref="<%= Info.ObjectName %>"/> collection items from the given SafeDataReader.
         /// </summary>
         /// <param name="dr">The SafeDataReader to use.</param>
         private void Fetch(SafeDataReader dr)
@@ -250,8 +248,9 @@ if (!Info.UseCustomLoading)
     else
     {
         %>
+
         /// <summary>
-        /// Load all <see cref="<%=Info.ObjectName%>"/> collection items using given DataRow array.
+        /// Loads all <see cref="<%= Info.ObjectName %>"/> collection items using given DataRow array.
         /// </summary>
         private void Fetch(DataRow[] rows)
         {
@@ -284,8 +283,9 @@ if (!Info.UseCustomLoading)
         if (Info.HasGetCriteria)
         {
             %>
+
         /// <summary>
-        /// Load all <see cref="<%=Info.ObjectName%>"/> collection items from given DataTable.
+        /// Loads all <see cref="<%= Info.ObjectName %>"/> collection items from given DataTable.
         /// </summary>
         private void Fetch(DataRowCollection rows)
         {
@@ -319,4 +319,3 @@ if (!Info.UseCustomLoading)
     }
 }
 %>
-

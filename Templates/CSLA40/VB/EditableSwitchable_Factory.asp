@@ -1,4 +1,13 @@
-        #region Factory Methods<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel, true, false) %>
+        #region Factory Methods
+<%
+if (UseBoth()) // check there is a fetch OR Sync
+{
+    %>
+
+#if !SILVERLIGHT
+<%
+}
+%>
 <!-- #include file="NewObject.asp" -->
 <!-- #include file="GetObject.asp" -->
 <!-- #include file="InternalGetObject.asp" -->
@@ -11,7 +20,7 @@
                 %>
 
         /// <summary>
-        /// Factory method. Creates a new <see cref="<%=Info.ObjectName%>"/> child object<%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
+        /// Factory method. Creates a new <see cref="<%= Info.ObjectName %>"/> child object<%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
         /// </summary>
 <%
                 string strNewParams = string.Empty;
@@ -28,7 +37,7 @@
                     strNewCritParams += FormatCamel(newParams[i].Name);
                 }
 %>
-        /// <returns>A reference to the created <see cref="<%=Info.ObjectName%>"/> object.</returns>
+        /// <returns>A reference to the created <see cref="<%= Info.ObjectName %>"/> object.</returns>
         internal static <%= Info.ObjectName %> New<%= Info.ObjectName %><%=c.CreateOptions.FactorySuffix%>Child(<%=  strNewParams %>)
         {
         <%
@@ -66,7 +75,7 @@
                 %>
 
         /// <summary>
-        /// Factory method. Loads an existing <see cref="<%=Info.ObjectName%>" /> child object from the database<%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
+        /// Factory method. Loads an existing <see cref="<%= Info.ObjectName %>" /> child object <%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
         /// </summary>
         <%
                 string strGetParams = string.Empty;

@@ -1,5 +1,6 @@
 <%
-if (Info.GenerateDataPortalDelete && SilverlightUsingServices())
+if (Info.GenerateDataPortalDelete &&
+    CurrentUnit.GenerationParams.SilverlightUsingServices)
 {
     List<string> deletePartialMethods = new List<string>();
     List<string> deletePartialParams = new List<string>();
@@ -10,7 +11,7 @@ if (Info.GenerateDataPortalDelete && SilverlightUsingServices())
             %>
 
         /// <summary>
-        /// Self delete the <see cref="<%=Info.ObjectName%>"/> object.
+        /// Self delete the <see cref="<%= Info.ObjectName %>"/> object.
         /// </summary>
         <%
 
@@ -31,7 +32,7 @@ if (Info.GenerateDataPortalDelete && SilverlightUsingServices())
             %>
         /// <param name="handler">The asynchronous handler.</param>
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public override void DataPortal_DeleteSelf(Csla.DataPortalClient.LocalProxy<<%=Info.ObjectName%>>.CompletedHandler handler)
+        public override void DataPortal_DeleteSelf(Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)
         {
             <%
             if (Info.ObjectType == CslaObjectType.EditableSwitchable)
@@ -64,7 +65,7 @@ if (Info.GenerateDataPortalDelete && SilverlightUsingServices())
                 %>
 
         /// <summary>
-        /// Delete the <see cref="<%=Info.ObjectName%>"/> object immediately.
+        /// Delete the <see cref="<%= Info.ObjectName %>"/> object immediately.
         /// </summary>
         /// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The delete criteria.</param>
         <%
@@ -84,12 +85,12 @@ if (Info.GenerateDataPortalDelete && SilverlightUsingServices())
                 if (c.Properties.Count > 1)
                 {
                     deletePartialMethods.Add("partial void Service_Delete(" + c.Name + " crit);");
-                    %>public void DataPortal_Delete(<%= c.Name %> crit, Csla.DataPortalClient.LocalProxy<<%=Info.ObjectName%>>.CompletedHandler handler)<%
+                    %>public void DataPortal_Delete(<%= c.Name %> crit, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
                 }
                 else
                 {
                     deletePartialMethods.Add("partial void Service_Delete(" + ReceiveSingleCriteria(c, "crit") + ");");
-                    %>public void DataPortal_Delete(<%= ReceiveSingleCriteria(c, "crit") %>, Csla.DataPortalClient.LocalProxy<<%=Info.ObjectName%>>.CompletedHandler handler)<%
+                    %>public void DataPortal_Delete(<%= ReceiveSingleCriteria(c, "crit") %>, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
                 }
                 %>
         {
@@ -141,7 +142,7 @@ if (Info.GenerateDataPortalDelete && SilverlightUsingServices())
         Response.Write(Environment.NewLine);
         %>
         /// <summary>
-        /// Implements <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_Delete()" : "DataPortal_Delete" %> for <see cref="<%=Info.ObjectName%>"/> object.
+        /// Implements <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_Delete()" : "DataPortal_Delete" %> for <see cref="<%= Info.ObjectName %>"/> object.
         /// </summary>
         <%= header %>
 <%

@@ -712,9 +712,9 @@ namespace CslaGenerator.Metadata
         /// Prevents the parent property form participating in updates or deletes.
         /// </summary>
         [Category("04. Child Object Options")]
-        [Description("The parent only does inserts. Prevents the parent property from participating in updates or deletes.\r\n" +
+        [Description("The Parent property is used only in inserts and isn't used in updates or deletes.\r\n" +
             "Set it to true when the child has its own ID that is used on updates or deletes.")]
-        [UserFriendlyName("Parent Insert Only")]
+        [UserFriendlyName("Parent Property only inserts")]
         public bool ParentInsertOnly
         {
             get { return _parentInsertOnly; }
@@ -1317,10 +1317,24 @@ namespace CslaGenerator.Metadata
         {
             get
             {
-                foreach (Criteria c in _criteriaObjects)
+                foreach (var c in _criteriaObjects)
                 {
                     //if (c.CreateOptions.DataPortal || c.CreateOptions.Factory)
                     if (c.CreateOptions.DataPortal)
+                        return true;
+                }
+                return false;
+            }
+        }
+
+        [Browsable(false)]
+        public bool HasCreateCriteriaFactory
+        {
+            get
+            {
+                foreach (var c in _criteriaObjects)
+                {
+                    if (c.CreateOptions.Factory)
                         return true;
                 }
                 return false;
@@ -1332,10 +1346,24 @@ namespace CslaGenerator.Metadata
         {
             get
             {
-                foreach (Criteria c in _criteriaObjects)
+                foreach (var c in _criteriaObjects)
                 {
                     //if (c.GetOptions.DataPortal || c.GetOptions.Factory)
                     if (c.GetOptions.DataPortal)
+                        return true;
+                }
+                return false;
+            }
+        }
+
+        [Browsable(false)]
+        public bool HasGetCriteriaFactory
+        {
+            get
+            {
+                foreach (var c in _criteriaObjects)
+                {
+                    if (c.GetOptions.Factory)
                         return true;
                 }
                 return false;
@@ -1347,10 +1375,24 @@ namespace CslaGenerator.Metadata
         {
             get
             {
-                foreach (Criteria c in _criteriaObjects)
+                foreach (var c in _criteriaObjects)
                 {
                     //if (c.DeleteOptions.DataPortal || c.DeleteOptions.Factory)
                     if (c.DeleteOptions.DataPortal)
+                        return true;
+                }
+                return false;
+            }
+        }
+
+        [Browsable(false)]
+        public bool HasDeleteCriteriaFactory
+        {
+            get
+            {
+                foreach (var c in _criteriaObjects)
+                {
+                    if (c.DeleteOptions.Factory)
                         return true;
                 }
                 return false;

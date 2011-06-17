@@ -17,14 +17,57 @@ if (Info.ConvertValueProperties.Count > 0)
         private void ConvertPropertiesOnRead()
         {
             <%
-    foreach (ConvertValueProperty prop in Info.ConvertValueProperties)
+    if (UseBoth())
     {
-        if (!string.IsNullOrEmpty(prop.NVLConverter))
+        %>
+#if !SILVERLIGHT
+<%
+    }
+    if (CurrentUnit.GenerationParams.GenerateSynchronous)
+    {
+        foreach (ConvertValueProperty prop in Info.ConvertValueProperties)
         {
-            %>
-            <%= GetFieldLoaderStatement(Info, prop, prop.NVLConverter + ".Value(" + GetFieldReaderStatement(GetSourceValueProperty(Info, prop)) + ")") %>;
+            if (!string.IsNullOrEmpty(prop.NVLConverter))
+            {
+                string converter = prop.NVLConverter;
+                if (converter.IndexOf(")") < 0)
+                    converter += "()";
+                %>
+            <%= GetFieldLoaderStatement(Info, prop, converter + ".Value(" + GetFieldReaderStatement(GetSourceValueProperty(Info, prop)) + ")") %>;
                 <%
+            }
         }
+    }
+    if (UseBoth())
+    {
+        %>
+#else
+<%
+    }
+    if (!CurrentUnit.GenerationParams.GenerateSynchronous || UseSilverlight())
+    {
+        foreach (ConvertValueProperty prop in Info.ConvertValueProperties)
+        {
+            if (!string.IsNullOrEmpty(prop.NVLConverter))
+            {
+                %>
+
+            <%= prop.NVLConverter %>((o, e) =>
+                {
+                    if (e.Error != null)
+                        throw e.Error;
+                    else
+                        <%= GetFieldLoaderStatement(Info, prop, "e.Object.Value(" + GetFieldReaderStatement(GetSourceValueProperty(Info, prop)) + ")") %>;
+                });
+                <%
+            }
+        }
+    }
+    if (UseBoth())
+    {
+        %>
+#endif
+<%
     }
     %>
         }
@@ -42,16 +85,59 @@ if (Info.ConvertValueProperties.Count > 0)
         private void ConvertPropertiesOnWrite()
         {
             <%
+    if (UseBoth())
+    {
+        %>
+#if !SILVERLIGHT
+<%
+    }
+    if (CurrentUnit.GenerationParams.GenerateSynchronous)
+    {
+        foreach (ConvertValueProperty prop in Info.ConvertValueProperties)
+        {
+            if (!string.IsNullOrEmpty(prop.NVLConverter))
+            {
+                string converter = prop.NVLConverter;
+                if (converter.IndexOf(")") < 0)
+                    converter += "()";
+                %>
+            <%= GetFieldLoaderStatement(Info, GetSourceValueProperty(Info, prop), converter + ".Key("+ GetFieldReaderStatement(prop) + ")") %>;
+                <%
+            }
+        }
+    }
+    if (UseBoth())
+    {
+        %>
+#else
+<%
+    }
+    if (!CurrentUnit.GenerationParams.GenerateSynchronous || UseSilverlight())
+    {
         foreach (ConvertValueProperty prop in Info.ConvertValueProperties)
         {
             if (!string.IsNullOrEmpty(prop.NVLConverter))
             {
                 %>
-            <%= GetFieldLoaderStatement(Info, GetSourceValueProperty(Info, prop), prop.NVLConverter + ".Key("+ GetFieldReaderStatement(prop) + ")") %>;
+
+            <%= prop.NVLConverter %>((o, e) =>
+                {
+                    if (e.Error != null)
+                        throw e.Error;
+                    else
+                        <%= GetFieldLoaderStatement(Info, GetSourceValueProperty(Info, prop), "e.Object.Key(" + GetFieldReaderStatement(prop) + ")") %>;
+                });
                 <%
             }
         }
+    }
+    if (UseBoth())
+    {
         %>
+#endif
+<%
+    }
+    %>
         }
         <%
     }

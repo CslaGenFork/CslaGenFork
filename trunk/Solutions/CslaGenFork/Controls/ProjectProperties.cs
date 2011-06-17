@@ -255,6 +255,7 @@ namespace CslaGenerator.Controls
                 chkWinForms.Checked = true;
                 chkWPF.Checked = false;
                 chkSilverlight.Checked = false;
+                chkSilverlightUseServices.Checked = false;
                 chkSynchronous.Checked = true;
                 chkAsynchronous.Checked = false;
 
@@ -270,6 +271,7 @@ namespace CslaGenerator.Controls
             chkWinForms.Enabled = UseCsla4;
             chkWPF.Enabled = UseCsla4;
             chkSilverlight.Enabled = UseCsla4;
+            chkSilverlightUseServices.Enabled = UseCsla4;
             chkActiveObjects.Enabled = !UseCsla4;
         }
 

@@ -1,17 +1,22 @@
+        #region Data Access
 <%
-if (true)
+if (UseBoth())
 {
     %>
-        #region Data Access<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel, true, true) %>
-<!-- #include file="CollectionDataPortalFetch.asp" -->
 
-        <%
+#if !SILVERLIGHT
+<%
+}
+%>
+<!-- #include file="CollectionDataPortalFetch.asp" -->
+<%
         //if (!CurrentUnit.GenerationParams.UseChildDataPortal)
         if (false)
         {
             %>
+
         /// <summary>
-        /// Update all changes made on <see cref="<%=Info.ObjectName%>"/> object's children to the database.
+        /// Update all changes made on <see cref="<%= Info.ObjectName %>"/> object's children to the database.
         /// </summary>
         <%
             if (Info.TransactionType == TransactionType.EnterpriseServices)
@@ -57,11 +62,15 @@ if (true)
             OnUpdatePost(args);
             RaiseListChangedEvents = rlce;
         }
-
         <%
         }
-        %>
-<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel, false, true) %>        #endregion
+if (UseBoth())
+{
+    %>
+
+#endif
 <%
 }
 %>
+
+        #endregion

@@ -4,7 +4,7 @@ if (Info.GenerateDataPortalUpdate)
     %>
 
         /// <summary>
-        /// Update all changes made on <see cref="<%=Info.ObjectName%>"/> object in the database.
+        /// Update all changes made on <see cref="<%= Info.ObjectName %>"/> object in the database.
         /// </summary>
         <%
     if (Info.TransactionType == TransactionType.EnterpriseServices)

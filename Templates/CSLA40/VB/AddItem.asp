@@ -1,10 +1,10 @@
 <%
-if (CurrentUnit.GenerationParams.GenerateAsynchronous)
+if (CurrentUnit.GenerationParams.GenerateSynchronous)
 {
     %>
 
         /// <summary>
-        /// Adds a new <see cref="<%= Info.ItemType %>"/> object to the <%=Info.ObjectName%> collection.
+        /// Adds a new <see cref="<%= Info.ItemType %>"/> object to the <%= Info.ObjectName %> collection.
         /// </summary>
         <%
         string prms = string.Empty;

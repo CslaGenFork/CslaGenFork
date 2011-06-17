@@ -14,6 +14,7 @@
 <%@ Import Namespace="System.Collections.Generic" %>
 
 <%
+bool isChild = false;
 int silverlightLevel = 0;
 bool genOptional = false;
 ValueProperty nameProp = null;
@@ -57,18 +58,13 @@ else
     {
         %>
 <!-- #include file="SimpleCacheFactory.asp" -->
-        <%
+<%
     }
     if (Info.GenerateFactoryMethods)
     {
-        if (Info.DbName.Equals(String.Empty))
-        {
-            Warnings.Append("Make sure you specify a DB name." + Environment.NewLine);
-        }
         %>
-
 <!-- #include file="NameValueList_Factory.asp" -->
-        <%
+<%
     }
     %>
 <!-- #include file="Constructor.asp" -->
@@ -77,6 +73,10 @@ else
 <%
     if (Info.GenerateDataAccessRegion)
     {
+        if (Info.DbName.Equals(String.Empty) && (UseNoSilverlight() || CurrentUnit.GenerationParams.GenerateSilverlight4))
+        {
+            Warnings.Append("Make sure you specify a DB name." + Environment.NewLine);
+        }
         if (!Info.UseCustomLoading)
         {
             if (!genOptional)

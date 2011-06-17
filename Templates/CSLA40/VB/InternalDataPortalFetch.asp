@@ -4,8 +4,9 @@ if (!Info.UseCustomLoading)
     if (!Info.DataSetLoadingScheme)
     {
         %>
+
         /// <summary>
-        /// Load a <see cref="<%=Info.ObjectName%>"/> object using given SafeDataReader.
+        /// Loads a <see cref="<%= Info.ObjectName %>"/> object from the given SafeDataReader.
         /// </summary>
         /// <param name="dr">The SafeDataReader to use.</param>
         private void Fetch(SafeDataReader dr)
@@ -42,7 +43,7 @@ if (!Info.UseCustomLoading)
             %>
 
         /// <summary>
-        /// Load child objects using given SafeDataReader.
+        /// Loads child objects from the given SafeDataReader.
         /// </summary>
         /// <param name="dr">The SafeDataReader to use.</param>
         private void FetchChildren(SafeDataReader dr)
@@ -161,7 +162,7 @@ if (!Info.UseCustomLoading)
         %>
 
         /// <summary>
-        /// Load a <see cref="<%=Info.ObjectName%>"/> object using given DataRow.
+        /// Load a <see cref="<%= Info.ObjectName %>"/> object from the given DataRow.
         /// </summary>
         /// <param name="dr">The DataRow to use.</param>
         private void Fetch(DataRow dr)

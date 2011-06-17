@@ -1,5 +1,5 @@
 <%
-if (CurrentUnit.GenerationParams.GenerateAsynchronous)
+if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationParams.GenerateSilverlight4)
 {
     if (!Info.UseCustomLoading)
     {
@@ -7,14 +7,24 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
         {
             if (c.GetOptions.Factory)
             {
+                for (int i = 0; i < c.Properties.Count; i++)
+                {
+                    if (string.IsNullOrEmpty(c.Properties[i].ParameterValue))
+                    {
+                        Errors.Append("Property: " + c.Properties[i].Name + " on criteria: " + c.Name + " must have a ParameterValue. Ignored." + Environment.NewLine);
+                        return;
+                    }
+                    else
+                    {
+                        c.Properties[i].ReadOnly = true;
+                    }
+                }
                 %>
 
         /// <summary>
-        /// Factory method. Asynchronously loads an existing <see cref="<%= Info.ObjectName %>"/> object from the database.
+        /// Factory method. Asynchronously loads an existing <see cref="<%= Info.ObjectName %>"/> object.
         /// </summary>
         <%
-                //string strGetParamsAsync = string.Empty;
-                //string strGetCritParamsAsync = string.Empty;
                 string critAsync = string.Empty;
                 for (int i = 0; i < c.Properties.Count; i++)
                 {
@@ -27,13 +37,6 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
                     {
                         c.Properties[i].ReadOnly = true;
                     }
-                    if (i > 0)
-                    {
-                        //strGetParamsAsync += ", ";
-                        //strGetCritParamsAsync += ", ";
-                    }
-                    //strGetParamsAsync += string.Concat(GetDataType(c.Properties[i]), " ", FormatCamel(c.Properties[i].Name));
-                    //strGetCritParamsAsync += FormatCamel(c.Properties[i].Name);
                 }
                 if (c.Properties.Count > 1)
                     critAsync = "new " + c.Name + "()";
@@ -72,8 +75,8 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
                     _list = e.Object;
                     callback(o, e);
                 });<%
-    }
-    %>
+                }
+                %>
         }
 <%
             }

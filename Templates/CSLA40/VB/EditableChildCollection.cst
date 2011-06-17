@@ -15,6 +15,7 @@
 <%
 if (Errors.Length == 0)
 {
+    bool isChild = true;
     int silverlightLevel = 0;
     bool genOptional = false;
     bool first = true;
@@ -80,28 +81,18 @@ if (Errors.Length == 0)
     <%
     }
     %><%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %>{
-<!-- #include file="CollectionBusinessProps.asp" -->
-
+<!-- #include file="CollectionBusinessMethods.asp" -->
 <!-- #include file="FindMethods.asp" -->
-
     <%
-    bool createCriteria = false;
     if (Info.GenerateFactoryMethods)
     {
+        bool createCriteria = Info.HasCreateCriteriaFactory;
         PropertyDeclaration declarationMode = GetDeclarationMode(Info);
         bool selfLoad3 = GetSelfLoad(Info);
         bool lazyLoad3 = GetLazyLoad(Info);
         bool parentCreateCriteria = false;
         CslaObjectInfo parentInfo = Info.Parent.CslaObjects.Find(Info.ParentType);
         string strNewCallback2 = string.Empty;
-        foreach (Criteria c in GetCriteriaObjects(Info))
-        {
-            if (c.CreateOptions.Factory)
-            {
-                createCriteria = true;
-                break;
-            }
-        }
         foreach (Criteria c in parentInfo.CriteriaObjects)
         {
             if (c.CreateOptions.RunLocal)
@@ -120,7 +111,7 @@ if (Errors.Length == 0)
         }
         %>
 <!-- #include file="EditableChildCollection_Factory.asp" -->
-    <%
+<%
     }
     %>
 <!-- #include file="Constructor.asp" -->
@@ -129,6 +120,10 @@ if (Errors.Length == 0)
 <%
     if (Info.GenerateDataAccessRegion)
     {
+        if (Info.DbName.Equals(String.Empty) && (UseNoSilverlight() || CurrentUnit.GenerationParams.GenerateSilverlight4))
+        {
+            Warnings.Append("Make sure you specify a DB name." + Environment.NewLine);
+        }
         if (!genOptional)
         {
             Response.Write(Environment.NewLine);

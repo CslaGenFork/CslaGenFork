@@ -1,30 +1,71 @@
-        #region Factory Methods<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel, true, false) %>
+        #region Factory Methods
+<%
+if (UseBoth())
+{
+    %>
+
+#if !SILVERLIGHT
+<%
+}
+if (UseNoSilverlight())
+{
+    %>
 <!-- #include file="NewObject.asp" -->
 <!-- #include file="NewObjectAsync.asp" -->
 <%
-        bool selfLoad2 = GetSelfLoad(Info);
-        bool lazyLoad2 = GetLazyLoad(Info);
-        bool isCollection = false;
-        if (Info.DbName != String.Empty)
+    bool selfLoad2 = GetSelfLoad(Info);
+    bool lazyLoad2 = GetLazyLoad(Info);
+    bool isCollection = false;
+    if (Info.DbName != String.Empty)
+    {
+        CslaObjectInfo tmpInfo = Info.Parent.CslaObjects.Find(Info.ParentType);
+        if (tmpInfo != null)
+            isCollection = IsCollectionType(tmpInfo.ObjectType);
+        if (selfLoad2 && lazyLoad2 && !isCollection)
         {
-            CslaObjectInfo tmpInfo = Info.Parent.CslaObjects.Find(Info.ParentType);
-            if (tmpInfo != null)
-                isCollection = IsCollectionType(tmpInfo.ObjectType);
-            if (selfLoad2 && lazyLoad2 && !isCollection)
-            {
-                %>
+            %>
 <!-- #include file="GetObject.asp" -->
 <%
-            }
-            else
+            if (CurrentUnit.GenerationParams.SilverlightUsingServices)
             {
                 %>
-<!-- #include file="InternalGetObject.asp" -->
+<!-- #include file="GetObjectAsync.asp" -->
 <%
             }
         }
-        %>
-<%= IfSilverlight (Conditional.Else, 0, ref silverlightLevel, true, true) %><!-- #include file="NewObjectSilverlight.asp" -->
-<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel, true, true) %><!-- #include file="GetObjectAsync.asp" -->
+        else if (UseNoSilverlight())
+        {
+            %>
+<!-- #include file="InternalGetObject.asp" -->
+<%
+        }
+    }
+}
+//if (UseBoth() && HasFactoryCreateOrGet(Info))
+if (UseBoth())
+{
+    %>
+
+#else
+<%
+}
+%>
+<!-- #include file="NewObjectSilverlight.asp" -->
+<!-- #include file="GetObjectSilverlight.asp" -->
+<%
+if (UseBoth())
+{
+    %>
+
+#endif
+<%
+}
+if (!CurrentUnit.GenerationParams.SilverlightUsingServices)
+{
+    %>
+<!-- #include file="GetObjectAsync.asp" -->
+<%
+}
+%>
 
         #endregion

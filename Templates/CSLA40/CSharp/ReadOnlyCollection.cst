@@ -15,6 +15,7 @@
 <%
 if (Errors.Length == 0)
 {
+    bool isChild = !string.IsNullOrEmpty(Info.ParentType);
     int silverlightLevel = 0;
     bool genOptional = false;
     bool first = true;
@@ -80,25 +81,20 @@ if (Errors.Length == 0)
     <%
     }
     %><%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %>{
-<!-- #include file="CollectionBusinessProps.asp" -->
+<!-- #include file="CollectionBusinessMethods.asp" -->
 <!-- #include file="FindMethods.asp" -->
     <%
     if (Info.SimpleCacheOptions != SimpleCacheResults.None)
     {
         %>
 <!-- #include file="SimpleCacheFactory.asp" -->
-        <%
+<%
     }
     if (Info.GenerateFactoryMethods)
     {
-        if (Info.DbName.Equals(String.Empty))
-        {
-            Warnings.Append("Make sure you specify a DB name." + Environment.NewLine);
-        }
         %>
-
 <!-- #include file="ReadOnlyCollection_Factory.asp" -->
-        <%
+<%
     }
     %>
 <!-- #include file="Constructor.asp" -->
@@ -108,6 +104,10 @@ if (Errors.Length == 0)
 <%
     if (Info.GenerateDataAccessRegion)
     {
+        if (Info.DbName.Equals(String.Empty) && (UseNoSilverlight() || CurrentUnit.GenerationParams.GenerateSilverlight4))
+        {
+            Warnings.Append("Make sure you specify a DB name." + Environment.NewLine);
+        }
         if (!genOptional)
         {
             Response.Write(Environment.NewLine);

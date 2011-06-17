@@ -1,6 +1,53 @@
-        #region Factory Methods<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel, true, false) %>
+        #region Factory Methods
+<%
+if (UseBoth() && (CurrentUnit.GenerationParams.GenerateSynchronous || CurrentUnit.GenerationParams.SilverlightUsingServices))
+{
+    %>
+
+#if !SILVERLIGHT
+<%
+}
+%>
 <!-- #include file="GetNVL.asp" -->
-<%= IfSilverlight (Conditional.Else, 0, ref silverlightLevel, true, false) %><!-- #include file="GetNVLSilverlight.asp" -->
-<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel, true, false) %><!-- #include file="GetNVLAsync.asp" -->
-<% Response.Write(Environment.NewLine); %>
+<%
+if (CurrentUnit.GenerationParams.GenerateAsynchronous && !CurrentUnit.GenerationParams.GenerateSilverlight4)
+{
+    %>
+<!-- #include file="GetNVLAsync.asp" -->
+<%
+}
+if (UseBoth() && (!CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationParams.SilverlightUsingServices))
+{
+    %>
+
+#else
+<%
+}
+if (!CurrentUnit.GenerationParams.GenerateAsynchronous && CurrentUnit.GenerationParams.GenerateSilverlight4)
+{
+    %>
+<!-- #include file="GetNVLAsync.asp" -->
+<%
+}
+else if (CurrentUnit.GenerationParams.SilverlightUsingServices)
+{
+    %>
+<!-- #include file="GetNVLSilverlight.asp" -->
+<%
+}
+if (UseBoth() && (CurrentUnit.GenerationParams.GenerateSynchronous || CurrentUnit.GenerationParams.SilverlightUsingServices))
+{
+    %>
+
+#endif
+<%
+}
+if (CurrentUnit.GenerationParams.GenerateAsynchronous && CurrentUnit.GenerationParams.GenerateSilverlight4)
+{
+        %>
+<!-- #include file="GetNVLAsync.asp" -->
+<%
+}
+%>
+
         #endregion

@@ -1,5 +1,5 @@
 <%
-if (CurrentUnit.GenerationParams.GenerateSilverlight4)
+if (CurrentUnit.GenerationParams.SilverlightUsingServices)
 {
     if (!Info.UseCustomLoading)
     {
@@ -7,14 +7,24 @@ if (CurrentUnit.GenerationParams.GenerateSilverlight4)
         {
             if (c.GetOptions.Factory)
             {
+                for (int i = 0; i < c.Properties.Count; i++)
+                {
+                    if (string.IsNullOrEmpty(c.Properties[i].ParameterValue))
+                    {
+                        Errors.Append("Property: " + c.Properties[i].Name + " on criteria: " + c.Name + " must have a ParameterValue. Ignored." + Environment.NewLine);
+                        return;
+                    }
+                    else
+                    {
+                        c.Properties[i].ReadOnly = true;
+                    }
+                }
                 %>
 
         /// <summary>
-        /// Factory method. Loads an existing <see cref="<%= Info.ObjectName %>"/> object from the database.
+        /// Factory method. Asynchronously loads an existing <see cref="<%= Info.ObjectName %>"/> object.
         /// </summary>
         <%
-                //string strGetParams = string.Empty;
-                //string strGetCritParams = string.Empty;
                 string critSilverlight = string.Empty;
                 for (int i = 0; i < c.Properties.Count; i++)
                 {
@@ -27,21 +37,15 @@ if (CurrentUnit.GenerationParams.GenerateSilverlight4)
                     {
                         c.Properties[i].ReadOnly = true;
                     }
-                    if (i > 0)
-                    {
-                        //strGetParams += ", ";
-                        //strGetCritParams += ", ";
-                    }
-                    //strGetParams += string.Concat(GetDataType(c.Properties[i]), " ", FormatCamel(c.Properties[i].Name));
-                    //strGetCritParams += FormatCamel(c.Properties[i].Name);
                 }
                 if (c.Properties.Count > 1)
                     critSilverlight = "new " + c.Name + "()";
                 else if (c.Properties.Count > 0)
                     critSilverlight = SendSingleCriteria(c, c.Properties[0].ParameterValue);
-        %>
-        /// <returns>A reference to the fetched <see cref="<%= Info.ObjectName %>"/> object.</returns>
-        public static <%= Info.ObjectName %> Get<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>()
+                critSilverlight += (critSilverlight.Length > 0 ? ", " : "") + "(o, e) =>";
+                %>
+        /// <param name="callback">The completion callback method.</param>
+        public static void Get<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>(<%= "EventHandler<DataPortalResult<" + Info.ObjectName + ">> callback" %>)
         {
             <%
                 if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
@@ -56,18 +60,23 @@ if (CurrentUnit.GenerationParams.GenerateSilverlight4)
                 if (Info.SimpleCacheOptions != SimpleCacheResults.None)
                 {
                     %>if (_list == null)
-                return _list;
-
-            return new <%= Info.ObjectName %>();
-            <%
+                DataPortal.BeginFetch<<%= Info.ObjectName %>>(<%= critSilverlight %>
+                    {
+                        _list = e.Object;
+                        callback(o, e);
+                    }, DataPortal.ProxyModes.LocalOnly);
+            else
+                callback(null, new DataPortalResult<<%= Info.ObjectName %>>(_list, null, null));<%
                 }
                 else
                 {
-                    %>
-            return DataPortal.Fetch<<%= Info.ObjectName %>>(<%= critSilverlight %>);
-            <%
-    }
-    %>
+                    %>DataPortal.BeginFetch<<%= Info.ObjectName %>>(<%= critSilverlight %>
+                {
+                    _list = e.Object;
+                    callback(o, e);
+                }, DataPortal.ProxyModes.LocalOnly);<%
+                }
+                %>
         }
 <%
             }

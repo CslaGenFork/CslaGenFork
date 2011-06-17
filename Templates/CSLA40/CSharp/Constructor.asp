@@ -30,21 +30,35 @@ if (!IsReadOnlyType(Info.ObjectType) && IsCollectionType(Info.ObjectType))
         /// </summary>
         /// <remarks> Do not use to create a <%= Info.ObjectType == CslaObjectType.UnitOfWork ? "Unit of Work" : "Csla object" %>. Use factory methods instead.</remarks>
 <%
-if (CurrentUnit.GenerationParams.GenerateSilverlight4)
+if (UseBoth())
 {
     %>
 #if SILVERLIGHT
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public <%= Info.ObjectName %>()
-#else
-        <%= GetConstructorVisibility(Info) %> <%= Info.ObjectName %>()
-#endif
 <%
 }
-else
+if (UseSilverlight())
+{
+    %>
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public <%= Info.ObjectName %>()
+<%
+}
+if (UseBoth()) // check there is a fetch
+{
+    %>
+#else
+<%
+}
+if (UseNoSilverlight())
 {
     %>
         <%= GetConstructorVisibility(Info) %> <%= Info.ObjectName %>()
+<%
+}
+if (UseBoth())
+{
+    %>
+#endif
 <%
 }
 %>

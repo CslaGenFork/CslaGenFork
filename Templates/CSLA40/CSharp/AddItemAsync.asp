@@ -1,10 +1,10 @@
 <%
-if (CurrentUnit.GenerationParams.GenerateAsynchronous)
+if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationParams.SilverlightUsingServices)
 {
     %>
 
         /// <summary>
-        /// Asynchronously adds a new <see cref="<%= Info.ItemType %>"/> object to the <%=Info.ObjectName%> collection.
+        /// Asynchronously adds a new <see cref="<%= Info.ItemType %>"/> object to the <%= Info.ObjectName %> collection.
         /// </summary>
 <%
         string prmsAsync = string.Empty;

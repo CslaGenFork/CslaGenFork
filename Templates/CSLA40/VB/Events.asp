@@ -28,16 +28,36 @@ if ((Info.ObjectType == CslaObjectType.EditableRoot ||
 <%
 }
 %>
-        #region Pseudo Events<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel, true, true) %><%
-System.Collections.Generic.List<string> eventList = GetEventList(Info);
-foreach (string strEvent in eventList)
+        #region Pseudo Events
+<%
+if (UseNoSilverlight())
 {
+    if (UseBoth())
+    {
+        %>
+
+#if !SILVERLIGHT
+<%
+    }
+    System.Collections.Generic.List<string> eventList = GetEventList(Info);
+    foreach (string strEvent in eventList)
+    {
     %>
+
         /// <summary>
         /// Occurs <%= FormatEventDocumentation(strEvent) %>
         /// </summary>
         partial void On<%= strEvent %>(DataPortalHookArgs args);
         <%
+    }
+    if (UseBoth())
+    {
+        %>
+
+#endif
+<%
+    }
 }
 %>
-<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel, true, true) %>        #endregion
+
+        #endregion

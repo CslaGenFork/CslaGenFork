@@ -6,7 +6,7 @@ if ((firstComment == null && string.IsNullOrEmpty(Info.Parent.GenerationParams.C
     %>
     /// <summary>
     /// <%= string.IsNullOrEmpty(Info.ClassSummary) ? Info.ObjectName : Info.ClassSummary %> (<%= CslaStereotype(Info) %>).<br/>
-    /// This is a base generated class of <see cref="<%=Info.ObjectName%>"/> business object.
+    /// This is a base generated class of <see cref="<%= Info.ObjectName %>"/> business object.
 <%
     if (string.IsNullOrEmpty(Info.ParentType))
     {
