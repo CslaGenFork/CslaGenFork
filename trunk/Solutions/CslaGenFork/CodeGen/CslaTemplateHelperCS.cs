@@ -3741,18 +3741,6 @@ namespace CslaGenerator.CodeGen
             return result;
         }
 
-/*        public string CommonVisibility(string desiredVisibity, int indent)
-        {
-            var result = desiredVisibity;
-            if (UseSilverlight())
-            {
-                result = "[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]" + Environment.NewLine +
-                         new string(' ', indent * 4) +
-                         "public";
-            }
-            return result;
-        }*/
-
         #endregion
     }
 }

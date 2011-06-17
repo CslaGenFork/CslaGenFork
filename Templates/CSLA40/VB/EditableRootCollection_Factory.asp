@@ -1,6 +1,6 @@
         #region Factory Methods
 <%
-if (UseBoth()) // check there is a fetch OR Sync
+if (UseBoth())
 {
     %>
 

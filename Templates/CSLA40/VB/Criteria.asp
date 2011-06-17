@@ -38,20 +38,29 @@ if (GetCriteriaObjects(Info).Count > 0)
         if (UseSilverlight())
         {
             bool usePublicCriteria = false;
-            foreach (Criteria c in GetCriteriaObjects(Info))
+            if (CurrentUnit.GenerationParams.GenerateSilverlight4)
             {
-                if (c.CreateOptions.DataPortal && c.Properties.Count > 1 && c.CreateOptions.RunLocal)
+                foreach (Criteria c in GetCriteriaObjects(Info))
                 {
-                    usePublicCriteria = true;
+                    if (c.CreateOptions.DataPortal && c.Properties.Count > 1 && c.CreateOptions.RunLocal)
+                    {
+                        usePublicCriteria = true;
+                    }
                 }
             }
-            if (usePublicCriteria &&
+            else
+            {
+                usePublicCriteria = true;
+            }
+            if (usePublicCriteria)
+            {
+            /*if (usePublicCriteria &&
                 (Info.ObjectType == CslaObjectType.EditableRoot ||
                 Info.ObjectType == CslaObjectType.EditableRootCollection ||
                 Info.ObjectType == CslaObjectType.DynamicEditableRootCollection ||
                 (Info.ObjectType == CslaObjectType.ReadOnlyObject && Info.ParentType == string.Empty) ||
                 (Info.ObjectType == CslaObjectType.ReadOnlyCollection && Info.ParentType == string.Empty)))
-            {
+            {*/
                 %>
 #if SILVERLIGHT
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]

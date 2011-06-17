@@ -48,11 +48,11 @@ if (Errors.Length == 0)
     %><%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %>public partial class <%= Info.ObjectName %> : <%
     if (Info.InheritedType.Type != String.Empty)
     {
-        %><%=Info.InheritedType.Type%><%
+        %><%= Info.InheritedType.Type %><%
     }
     else if (Info.InheritedType.ObjectName != String.Empty)
     {
-        %><%=Info.InheritedType.ObjectName%><%
+        %><%= Info.InheritedType.ObjectName %><%
     }
     else
     {
@@ -66,11 +66,11 @@ if (Errors.Length == 0)
     <%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %>public partial class <%= Info.ObjectName %> : <%
         if (Info.InheritedType.Type != String.Empty)
         {
-            %><%=Info.InheritedType.Type%><%
+            %><%= Info.InheritedType.Type %><%
         }
         else if (Info.InheritedType.ObjectName != String.Empty)
         {
-            %><%=Info.InheritedType.ObjectName%><%
+            %><%= Info.InheritedType.ObjectName %><%
         }
         else
         {
