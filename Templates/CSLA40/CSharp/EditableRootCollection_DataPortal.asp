@@ -1,12 +1,20 @@
+        #region Data Access
 <%
-if (true)
+if (UseBoth())
 {
     %>
-        #region Data Access<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel, true, false) %>
+
+#if !SILVERLIGHT
+<%
+}
+if (UseNoSilverlight())
+{
+    %>
 <!-- #include file="CollectionDataPortalFetch.asp" -->
+<% %>
 
         /// <summary>
-        /// Saves (delete, add, update) all child objects to database.
+        /// Update all changes made on <see cref="<%= Info.ObjectName %>"/> object in the database.
         /// </summary>
         <%
         if (Info.TransactionType == TransactionType.EnterpriseServices)
@@ -63,10 +71,29 @@ if (true)
                 ctx.Commit();
                 <%
         }
-%>
+        %>
             }
         }
-<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel, true, true) %>        #endregion
+<%
+}
+if (UseNoSilverlight() && CurrentUnit.GenerationParams.SilverlightUsingServices)
+{
+    %>
+
+#else
 <%
 }
 %>
+<!-- #include file="DataPortalFetchSilverlight.asp" -->
+<!-- #include file="DataPortalUpdateSilverlight.asp" -->
+<%
+if (UseBoth())
+{
+    %>
+
+#endif
+<%
+}
+%>
+
+        #endregion

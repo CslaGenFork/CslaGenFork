@@ -1,5 +1,5 @@
 <%
-if (CurrentUnit.GenerationParams.GenerateSilverlight4)
+if (UseSilverlight())
 {
     List<string> createPartialMethods = new List<string>();
     List<string> createPartialParams = new List<string>();
@@ -8,8 +8,9 @@ if (CurrentUnit.GenerationParams.GenerateSilverlight4)
         if (c.CreateOptions.DataPortal)
         {
             %>
+
         /// <summary>
-        /// Load default values for the <see cref="<%=Info.ObjectName%>"/> object properties.
+        /// Load default values for the <see cref="<%= Info.ObjectName %>"/> object properties<%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
         /// </summary>
         <%
             if (c.Properties.Count > 0)
@@ -28,17 +29,17 @@ if (CurrentUnit.GenerationParams.GenerateSilverlight4)
             if (c.Properties.Count > 1)
             {
                 createPartialMethods.Add("partial void Service_Create(" + c.Name + " crit);");
-                %>public void <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_" : "DataPortal_" %>Create(<%= c.Name %> crit, Csla.DataPortalClient.LocalProxy<<%=Info.ObjectName%>>.CompletedHandler handler)<%
+                %>public void <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_" : "DataPortal_" %>Create(<%= c.Name %> crit, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
             }
             else if (c.Properties.Count > 0)
             {
                 createPartialMethods.Add("partial void Service_Create(" + ReceiveSingleCriteria(c, "crit") + ");");
-                %>public void <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_" : "DataPortal_" %>Create(<%= ReceiveSingleCriteria(c, "crit") %>, Csla.DataPortalClient.LocalProxy<<%=Info.ObjectName%>>.CompletedHandler handler)<%
+                %>public void <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_" : "DataPortal_" %>Create(<%= ReceiveSingleCriteria(c, "crit") %>, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
             }
             else
             {
                 createPartialMethods.Add("partial void Service_Create();");
-                %>public <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "void Child_" : "override void DataPortal_" %>Create(Csla.DataPortalClient.LocalProxy<<%=Info.ObjectName%>>.CompletedHandler handler)<%
+                %>public <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "void Child_" : "override void DataPortal_" %>Create(Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
             }
             %>
         {
@@ -108,7 +109,7 @@ if (CurrentUnit.GenerationParams.GenerateSilverlight4)
             <%
                 }
             }
-            if (SilverlightUsingServices())
+            if (CurrentUnit.GenerationParams.SilverlightUsingServices)
             {
                 %>
             try
@@ -135,29 +136,34 @@ if (CurrentUnit.GenerationParams.GenerateSilverlight4)
             }
             <%
             }
-            // this is DataPortal_Create; so always CheckRules except for ReadOnlyCollection
-            if (Info.ObjectType != CslaObjectType.ReadOnlyCollection)
+            // this is DataPortal_Create; so always CheckRules except for ReadOnlyCollection and EditableRootCollection
+            if (Info.ObjectType != CslaObjectType.ReadOnlyCollection && Info.ObjectType != CslaObjectType.EditableRootCollection)
             {
                 %>
             BusinessRules.CheckRules();
             <%
             }
-            %>base.<%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_Create()" : "DataPortal_Create(handler)" %>;
+            %>
+            base.<%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_Create()" : "DataPortal_Create(handler)" %>;
         }
 <%
         }
     }
-    for (int index = 0; index < createPartialMethods.Count ; index++)
+    if (CurrentUnit.GenerationParams.SilverlightUsingServices)
     {
-        string header = createPartialParams[index] + (string.IsNullOrEmpty(createPartialParams[index]) ? "" : "\r\n        ");
-        header += createPartialMethods[index];
-        Response.Write(Environment.NewLine);
+        for (int index = 0; index < createPartialMethods.Count ; index++)
+        {
+            string header = createPartialParams[index] + (string.IsNullOrEmpty(createPartialParams[index]) ? "" : "\r\n        ");
+            header += createPartialMethods[index];
+            //Response.Write(Environment.NewLine);
         %>
+
         /// <summary>
-        /// Implements <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_Create()" : "DataPortal_Create" %> for <see cref="<%=Info.ObjectName%>"/> object.
+        /// Implements <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_Create()" : "DataPortal_Create" %> for <see cref="<%= Info.ObjectName %>"/> object.
         /// </summary>
         <%= header %>
 <%
+        }
     }
 }
 %>

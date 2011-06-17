@@ -1,10 +1,36 @@
+        #region Data Access
 <%
-if (true)
+if (UseBoth())
 {
     %>
-        #region Data Access<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel, true, true) %>
+
+#if !SILVERLIGHT
+<%
+}
+if (UseNoSilverlight())
+{
+    %>
 <!-- #include file="CollectionDataPortalFetch.asp" -->
-<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel, true, true) %>        #endregion
+<%
+}
+if (UseNoSilverlight() && CurrentUnit.GenerationParams.SilverlightUsingServices)
+{
+    %>
+
+#else
 <%
 }
 %>
+<!-- #include file="DataPortalFetchSilverlight.asp" -->
+<!-- #include file="DataPortalUpdateSilverlight.asp" -->
+<%
+if (UseBoth())
+{
+    %>
+
+#endif
+<%
+}
+%>
+
+        #endregion

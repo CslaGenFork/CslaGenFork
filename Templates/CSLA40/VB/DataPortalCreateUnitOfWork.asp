@@ -17,8 +17,9 @@ if (crit.CreateOptions.DataPortal)
         createUowCritParam = HookSingleCriteria(crit, "crit");
     }
         %>
+
         /// <summary>
-        /// Loads a new <see cref="<%=Info.ObjectName%>"/> unit of objects<%= crit.Properties.Count > 0 ? ", based on given criteria" : "" %>.
+        /// Loads a new <see cref="<%= Info.ObjectName %>"/> unit of objects<%= crit.Properties.Count > 0 ? ", based on given criteria" : "" %>.
         /// </summary>
         <%
     if (crit.Properties.Count > 0)
@@ -26,7 +27,10 @@ if (crit.CreateOptions.DataPortal)
         %>/// <param name="<%= createUowParam %>">The create criteria.</param>
         <%
     }
-        %>protected void DataPortal_Create(<%= createUowCrit %>)
+        %>/// <remarks>
+        /// ReadOnlyBase&lt;T&gt; doesn't allow the use of DataPortal_Create and thus DataPortal_Fetch is used.
+        /// </remarks>
+        protected void DataPortal_Fetch(<%= createUowCrit %>)
         {
             <%
     foreach (UnitOfWorkProperty uowProp in Info.UnitOfWorkCollectionProperties)
@@ -58,7 +62,7 @@ if (crit.CreateOptions.DataPortal)
             <%
         }
     }
-        %>
+    %>
         }
 <%
 }

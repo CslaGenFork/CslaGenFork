@@ -13,15 +13,13 @@ int silverlightLevel = 0;
 bool genOptional = false;
 if (Info.ObjectNamespace.IndexOf(CurrentUnit.GenerationParams.UtilitiesNamespace) != 0)
 {
-%>
-<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel, false, true) %>using <%= CurrentUnit.GenerationParams.UtilitiesNamespace %>;
+    %><%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel, false, true) %>using <%= CurrentUnit.GenerationParams.UtilitiesNamespace %>;
 <%= IfSilverlight (Conditional.End, 0, ref silverlightLevel, false, true) %>
 <%
-//Response.Write(Environment.NewLine);
 }
 if (Info.ObjectNamespace.Length > 0)
 {
-%>namespace <%= Info.ObjectNamespace %>
+    %>namespace <%= Info.ObjectNamespace %>
 {
 <%
 }
@@ -29,26 +27,41 @@ if (Info.ObjectNamespace.Length > 0)
     public partial class <%= Info.ObjectName %>
     {
         <%
-        if (Info.ObjectType != CslaObjectType.UnitOfWork)
-        {
-            System.Collections.Generic.List<string> eventList = GetEventList(Info);
-            if (eventList.Count > 0)
-            {
-                %>
+if (Info.ObjectType != CslaObjectType.UnitOfWork)
+{
+    System.Collections.Generic.List<string> eventList = GetEventList(Info);
+    if (eventList.Count > 0)
+    {
+        %>
 
         #region Pseudo Event Handlers
-<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel, false, true) %><%
-                foreach (string strEvent in eventList)
-                {
-                    %>
+<%
+        if (UseBoth()) // check there is a fetch OR Sync
+        {
+            %>
+
+#if !SILVERLIGHT
+<%
+        }
+        foreach (string strEvent in eventList)
+        {
+            %>
+
         //partial void On<%= strEvent %>(DataPortalHookArgs e)
         //{
         //    throw new System.Exception("The method or operation is not implemented.");
         //}
         <%
-                }
-                %>
-<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel, true, false) %>
+        }
+        if (UseBoth()) // check there is a fetch OR Sync
+        {
+            %>
+
+#endif
+<%
+        }
+        %>
+
         #endregion
 
             <%

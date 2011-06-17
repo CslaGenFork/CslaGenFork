@@ -1,10 +1,32 @@
+        #region Data Access
 <%
-if (true)
+if (UseBoth())
 {
     %>
-        #region Data Access<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel, true, true) %>
-<!-- #include file="NVLDataPortalFetch.asp" -->
-<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel, true, true) %>        #endregion
+
+#if !SILVERLIGHT
 <%
 }
 %>
+<!-- #include file="NVLDataPortalFetch.asp" -->
+<%
+if (UseNoSilverlight() && CurrentUnit.GenerationParams.SilverlightUsingServices)
+{
+    %>
+
+#else
+<%
+}
+%>
+<!-- #include file="NVLDataPortalFetchSilverlight.asp" -->
+<%
+if (UseBoth())
+{
+    %>
+
+#endif
+<%
+}
+%>
+
+        #endregion

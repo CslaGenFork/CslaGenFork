@@ -15,7 +15,7 @@ if (Info.GenerateDataPortalInsert)
     %>
 
         /// <summary>
-        /// Insert <see cref="<%=Info.ObjectName%>"/> object to database with or without transaction.
+        /// Insert <see cref="<%= Info.ObjectName %>"/> object to database with or without transaction.
         /// </summary>
         <%
     if (Info.TransactionType == TransactionType.EnterpriseServices)
@@ -137,7 +137,7 @@ if (Info.GenerateDataPortalUpdate)
 %>
 
         /// <summary>
-        /// Saves <see cref="<%=Info.ObjectName%>"/> object to database with or without transaction.
+        /// Saves <see cref="<%= Info.ObjectName %>"/> object to database with or without transaction.
         /// </summary>
         <%
     if (Info.TransactionType == TransactionType.EnterpriseServices)
@@ -275,7 +275,7 @@ if (Info.GenerateDataPortalDelete)
     %>
 
         /// <summary>
-        /// Delete <see cref="<%=Info.ObjectName%>"/> object from database with or without transaction.
+        /// Delete <see cref="<%= Info.ObjectName %>"/> object from database with or without transaction.
         /// </summary>
         <%
     if (Info.TransactionType == TransactionType.EnterpriseServices)

@@ -587,7 +587,6 @@ namespace CslaGenerator.Metadata
         private void SetCsla4Options()
         {
             UseCsla4 = false;
-            UseCsla4 = false;
             _targetDAL = TargetDAL.None;
             UseDal = false;
             _generateDAL = false;

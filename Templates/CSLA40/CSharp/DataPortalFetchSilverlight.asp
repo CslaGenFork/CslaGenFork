@@ -1,5 +1,6 @@
 <%
-if (SilverlightUsingServices())
+if (!Info.UseCustomLoading &&
+    CurrentUnit.GenerationParams.SilverlightUsingServices)
 {
     List<string> fetchPartialMethods = new List<string>();
     List<string> fetchPartialParams = new List<string>();
@@ -10,7 +11,7 @@ if (SilverlightUsingServices())
             %>
 
         /// <summary>
-        /// Loads an existing <see cref="<%=Info.ObjectName%>"/> object<%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
+        /// Loads an existing <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %><%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
         /// </summary>
         <%
             if (c.Properties.Count > 0)
@@ -19,23 +20,27 @@ if (SilverlightUsingServices())
                 %>/// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The fetch criteria.</param>
         <%
             }
+            else
+            {
+                fetchPartialParams.Add("");
+            }
+        %>/// <param name="handler">The asynchronous handler.</param>
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        <%
             if (c.Properties.Count > 1)
             {
                 fetchPartialMethods.Add("partial void Service_Fetch(" + c.Name + " crit);");
-                %>/// <param name="handler">The asynchronous handler.</param>
-        public void <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_" : "DataPortal_" %>Fetch(<%= c.Name %> crit, Csla.DataPortalClient.LocalProxy<<%=Info.ObjectName%>>.CompletedHandler handler)<%
+                %>public void <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_" : "DataPortal_" %>Fetch(<%= c.Name %> crit, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
             }
             else if (c.Properties.Count > 0)
             {
                 fetchPartialMethods.Add("partial void Service_Fetch(" + ReceiveSingleCriteria(c, "crit") + ");");
-                %>/// <param name="handler">The asynchronous handler.</param>
-        public void <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_" : "DataPortal_" %>Fetch(<%= ReceiveSingleCriteria(c, "crit") %>, Csla.DataPortalClient.LocalProxy<<%=Info.ObjectName%>>.CompletedHandler handler)<%
+                %>public void <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_" : "DataPortal_" %>Fetch(<%= ReceiveSingleCriteria(c, "crit") %>, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
             }
             else
             {
                 fetchPartialMethods.Add("partial void Service_Fetch();");
-                %>/// <param name="handler">The asynchronous handler.</param>
-        public void <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_" : "DataPortal_" %>Fetch(Csla.DataPortalClient.LocalProxy<<%=Info.ObjectName%>>.CompletedHandler handler)<%
+                %>public void <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_" : "DataPortal_" %>Fetch(Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
             }
         %>
         {
@@ -81,7 +86,7 @@ if (SilverlightUsingServices())
         Response.Write(Environment.NewLine);
         %>
         /// <summary>
-        /// Implements <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_Fetch()" : "DataPortal_Fetch" %> for <see cref="<%=Info.ObjectName%>"/> object.
+        /// Implements <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_Fetch()" : "DataPortal_Fetch" %> for <see cref="<%= Info.ObjectName %>"/> object.
         /// </summary>
         <%= header %>
 <%

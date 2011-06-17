@@ -8,7 +8,7 @@ if (Info.GenerateDataPortalDelete)
             %>
 
         /// <summary>
-        /// Self delete the <see cref="<%=Info.ObjectName%>"/> object.
+        /// Self delete the <see cref="<%= Info.ObjectName %>"/> object.
         /// </summary>
         <%
             if (c.DeleteOptions.RunLocal)
@@ -57,128 +57,121 @@ if (Info.GenerateDataPortalDelete)
             }
             %>
         }
-        <%
-            if (Info.ObjectType != CslaObjectType.DynamicEditableRoot)
-            {
-                %>
 
         /// <summary>
-        /// Delete the <see cref="<%=Info.ObjectName%>"/> object from database immediately.
+        /// Delete the <see cref="<%= Info.ObjectName %>"/> object from database immediately.
         /// </summary>
         /// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The delete criteria.</param>
         <%
-                if (Info.TransactionType == TransactionType.EnterpriseServices)
-                {
+            if (Info.TransactionType == TransactionType.EnterpriseServices)
+            {
             %>[Transactional(TransactionalTypes.EnterpriseServices)]
         <%
-                }
-                else if (Info.TransactionType == TransactionType.TransactionScope)
-                {
+            }
+            else if (Info.TransactionType == TransactionType.TransactionScope)
+            {
             %>[Transactional(TransactionalTypes.TransactionScope)]
         <%
-                }
-                if (c.DeleteOptions.RunLocal)
-                {
+            }
+            if (c.DeleteOptions.RunLocal)
+            {
             %>[Csla.RunLocal]
         <%
-                }
-                if (c.Properties.Count > 1)
-                {
-                    %>protected void DataPortal_Delete(<%= c.Name %> crit)<%
-                }
-                else
-                {
-                    %>protected void DataPortal_Delete(<%= ReceiveSingleCriteria(c, "crit") %>)<%
-                }
-                %>
+            }
+            if (c.Properties.Count > 1)
+            {
+                %>protected void DataPortal_Delete(<%= c.Name %> crit)<%
+            }
+            else
+            {
+                %>protected void DataPortal_Delete(<%= ReceiveSingleCriteria(c, "crit") %>)<%
+            }
+            %>
         {
             <%
-                if (UseSimpleAuditTrail(Info))
-                {
-                    %>// audit the object, just in case soft delete is used on this object
+            if (UseSimpleAuditTrail(Info))
+            {
+                %>// audit the object, just in case soft delete is used on this object
             SimpleAuditTrail();
             <%
-                }
-                %><%= GetConnection(Info, false) %>
+            }
+            %><%= GetConnection(Info, false) %>
             {
                 <%
-                if (string.IsNullOrEmpty(c.DeleteOptions.ProcedureName))
-                {
-                    Errors.Append("Criteria " + c.Name + " missing delete procedure name." + Environment.NewLine);
-                }
-                %>
+            if (string.IsNullOrEmpty(c.DeleteOptions.ProcedureName))
+            {
+                Errors.Append("Criteria " + c.Name + " missing delete procedure name." + Environment.NewLine);
+            }
+            %>
                 <%= GetCommand(Info, c.DeleteOptions.ProcedureName) %>
                 {
                 <%
-                if (Info.TransactionType == TransactionType.ADO && Info.PersistenceType == PersistenceType.SqlConnectionManager)
-                {
-                    %>
+            if (Info.TransactionType == TransactionType.ADO && Info.PersistenceType == PersistenceType.SqlConnectionManager)
+            {
+                %>
                     cmd.Transaction = ctx.Transaction;
 
                     <%
-                }
-                %>
+            }
+            %>
                     cmd.CommandType = CommandType.StoredProcedure;
                     <%
-                foreach (Property p in c.Properties)
-                {
-                    %>
-                    <%
-                    if (c.Properties.Count > 1)
-                    {
-                        %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= GetParameterSet(p, true) %>);<%
-                    }
-                    else
-                    {
-                        %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= AssignSingleCriteria(c, "crit") %>);
-                    <%
-                    }
-                }
-                if (Info.PersistenceType == PersistenceType.SqlConnectionUnshared)
-                {
-                    %>
-                    cn.Open();
-                    <%
-                }
-                string hookArgs = string.Empty;
+            foreach (Property p in c.Properties)
+            {
                 if (c.Properties.Count > 1)
                 {
-                    hookArgs = ", crit";
+                    %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= GetParameterSet(p, true) %>);<%
                 }
-                else if (c.Properties.Count > 0)
+                else
                 {
-                    hookArgs = ", " + HookSingleCriteria(c, "crit");
+                    %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= AssignSingleCriteria(c, "crit") %>);
+                    <%
                 }
+            }
+            if (Info.PersistenceType == PersistenceType.SqlConnectionUnshared)
+            {
                 %>
+                    cn.Open();
+                    <%
+            }
+            string hookArgs = string.Empty;
+            if (c.Properties.Count > 1)
+            {
+                hookArgs = ", crit";
+            }
+            else if (c.Properties.Count > 0)
+            {
+                hookArgs = ", " + HookSingleCriteria(c, "crit");
+            }
+            %>
                     var args = new DataPortalHookArgs(cmd<%= hookArgs %>);
                     OnDeletePre(args);
                     cmd.ExecuteNonQuery();
                     OnDeletePost(args);
                 }
                 <%
-                //if (CurrentUnit.GenerationParams.UseChildDataPortal)
-                if (true)
-                {
-                    if (Info.GetCollectionChildProperties().Count > 0 || Info.GetNonCollectionChildProperties().Count > 0)
-                    {
-                        %>
-
-                FieldManager.UpdateChildren(this);
-                <%
-                    }
-                }
-                if (Info.TransactionType == TransactionType.ADO && Info.PersistenceType == PersistenceType.SqlConnectionManager)
+            //if (CurrentUnit.GenerationParams.UseChildDataPortal)
+            if (true)
+            {
+                if (Info.GetCollectionChildProperties().Count > 0 || Info.GetNonCollectionChildProperties().Count > 0)
                 {
                     %>
 
+                FieldManager.UpdateChildren(this);
+                <%
+                }
+            }
+            if (Info.TransactionType == TransactionType.ADO && Info.PersistenceType == PersistenceType.SqlConnectionManager)
+            {
+                %>
+
                 ctx.Commit();
             <%
-                }
-                %>
+            }
+            %>
             }
         }
             <%
-            }
         }
     }
 }

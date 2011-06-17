@@ -17,8 +17,9 @@ if (crit.GetOptions.DataPortal)
         fetchUowCritParam = HookSingleCriteria(crit, "crit");
     }
         %>
+
         /// <summary>
-        /// Loads an existing <see cref="<%=Info.ObjectName%>"/> unit of objects<%= crit.Properties.Count > 0 ? ", based on given criteria" : "" %>.
+        /// Loads an existing <see cref="<%= Info.ObjectName %>"/> unit of objects<%= crit.Properties.Count > 0 ? ", based on given criteria" : "" %>.
         /// </summary>
         <%
     if (crit.Properties.Count > 0)

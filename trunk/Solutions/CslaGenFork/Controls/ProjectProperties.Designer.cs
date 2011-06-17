@@ -1412,7 +1412,8 @@ namespace CslaGenerator.Controls
             this.chkSilverlight.TabIndex = 9;
             this.chkSilverlight.Text = "Generate Silverlight";
             this.chkSilverlight.UseVisualStyleBackColor = true;
-            this.toolTip1.SetToolTip(this.chkSilverlight, "If checked, will generate Silverlight code with conditional compilation symbol SILVERLIGHT.");
+            this.toolTip1.SetToolTip(this.chkSilverlight, "If checked, Silverlight will use CSLA MobileObject to interact with the DataPortal.\r\n" +
+                "Generates code with conditional compilation symbol SILVERLIGHT.");
             // 
             // chkSilverlightUseServices
             // 
@@ -1424,7 +1425,9 @@ namespace CslaGenerator.Controls
             this.chkSilverlightUseServices.TabIndex = 9;
             this.chkSilverlightUseServices.Text = "Generate Silverlight using services";
             this.chkSilverlightUseServices.UseVisualStyleBackColor = true;
-            this.toolTip1.SetToolTip(this.chkSilverlightUseServices, "If checked, Silverlight DataPortal methods will call a partial method\r\nthat should handle the service interaction.");
+            this.toolTip1.SetToolTip(this.chkSilverlightUseServices, "If checked, Silverlight DataPortal methods will call a partial method\r\n" +
+                "that should handle the service interaction.\r\n" +
+                "Generates code with conditional compilation symbol SILVERLIGHT.");
             // 
             // groupBoxDataAccessLayer
             // 

@@ -8,7 +8,7 @@ if (!Info.UseCustomLoading)
             %>
 
         /// <summary>
-        /// Loads an existing <see cref="<%=Info.ObjectName%>"/> object from the database<%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
+        /// Loads an existing <see cref="<%= Info.ObjectName %>"/> object from the database<%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
         /// </summary>
         <%
             if (c.Properties.Count > 0)
@@ -103,17 +103,17 @@ if (!Info.UseCustomLoading)
                         fetchChildrenParam += "crit." + p.Name;
                     }
                 }
-                %>}
+                %>
+            }
             FetchChildren(<%= fetchChildrenParam %>);
         }
-
         <%
             }
             else
             {
-        %>}
+        %>
+            }
         }
-
         <%
             }
         }
@@ -122,7 +122,9 @@ if (!Info.UseCustomLoading)
     {
         if (!Info.DataSetLoadingScheme)
         {
-            %>private void Fetch(SqlCommand cmd)
+            %>
+
+        private void Fetch(SqlCommand cmd)
         {
             using (var dr = new SafeDataReader(cmd.ExecuteReader()))
             {
@@ -159,6 +161,7 @@ if (!Info.UseCustomLoading)
         else
         {
             %>
+
         private void Fetch(SqlCommand cmd)
         {
             DataSet ds = new DataSet();
@@ -193,8 +196,8 @@ if (!Info.UseCustomLoading)
         <%
         }
     }
-    %><%= IfNewSilverlight (Conditional.NotSilverlight, 2, ref silverlightLevel, true, true) %>
-<!-- #include file="InternalFetch.asp" --><%= IfNewSilverlight (Conditional.End, 0, ref silverlightLevel, true, true) %>
+    %>
+<!-- #include file="InternalDataPortalFetch.asp" -->
 <%
 }
 %>

@@ -1,11 +1,13 @@
 <%
-if (!Info.UseCustomLoading)
+if (!Info.UseCustomLoading && (UseNoSilverlight() ||
+    CurrentUnit.GenerationParams.GenerateSilverlight4))
 {
     foreach (Criteria c in GetCriteriaObjects(Info))
     {
         if (c.GetOptions.DataPortal)
         {
             %>
+
         /// <summary>
         <%
             if (c.Properties.Count > 1)

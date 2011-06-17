@@ -942,8 +942,13 @@ namespace CslaGenerator.Util.PropertyBags
                              propertyName == "EqualsProperty" ||
                              propertyName == "DeleteProcedureName" ||
                              propertyName == "LazyLoad" ||
-                             propertyName == "ParentProperties" ||
                              propertyName == "CacheResults"))
+                            return false;
+                        if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework ==
+                             TargetFramework.CSLA40 ||
+                             GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework ==
+                             TargetFramework.CSLA40DAL) &&
+                            (propertyName == "ParentProperties" && !hasParentProperties))
                             return false;
                         /*if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework ==
                              TargetFramework.CSLA40 ||

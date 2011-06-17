@@ -35,7 +35,7 @@ if (GetCriteriaObjects(Info).Count > 0)
         %>
         [Serializable]
         <%
-        if (CurrentUnit.GenerationParams.GenerateSilverlight4)
+        if (UseSilverlight())
         {
             bool usePublicCriteria = false;
             foreach (Criteria c in GetCriteriaObjects(Info))

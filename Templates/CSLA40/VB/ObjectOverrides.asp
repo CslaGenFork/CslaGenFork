@@ -7,7 +7,7 @@ if (Info.ToStringProperty != null && Info.ToStringProperty.Count > 0 &&
         #region BusinessBase<T> overrides
 
         /// <summary>
-        /// Returns a string that represents the current <see cref="<%=Info.ObjectName%>"/>
+        /// Returns a string that represents the current <see cref="<%= Info.ObjectName %>"/>
         /// </summary>
         /// <returns>
         /// A <see cref="System.String"/> that represents this instance.

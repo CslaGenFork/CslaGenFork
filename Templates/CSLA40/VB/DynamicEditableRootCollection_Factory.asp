@@ -1,34 +1,88 @@
-        #region Factory Methods<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel, true, false) %>
+        #region Factory Methods
+<%
+if (UseBoth()) // check there is a fetch OR Sync
+{
+    %>
 
-        /// <summary>Adds a new item to the end of the <see cref="<%=Info.ObjectName%>"/> collection.</summary>
-        protected override object AddNewCore()
+#if !SILVERLIGHT
+<%
+}
+if (UseNoSilverlight())
+{
+%>
+
+        /// <summary>Adds a new item to the end of the <see cref="<%= Info.ObjectName %>"/> collection.</summary>
+        protected override <%= Info.ItemType %> AddNewCore()
         {
             <%= Info.ItemType %> item = <%= Info.ItemType %>.New<%= Info.ItemType %>();
             Add(item);
             return item;
         }
-
-        /// <summary>
-        /// Factory method. Creates a new <see cref="<%=Info.ObjectName%>"/> collection.
-        /// </summary>
-        /// <returns>A reference to the created <see cref="<%=Info.ObjectName%>"/> object.</returns>
-        public static <%= Info.ObjectName %> New<%= Info.ObjectName %>()
-        {
-            <%
-        if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
-            CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel &&
-            Info.GetRoles.Trim() != String.Empty)
-        {
-            %>
-            //if (!CanAddObject())
-            //    throw new System.Security.SecurityException("User not authorized to create a <%= Info.ObjectName %>.");aaa
-
-            <%
-        }
-        %>
-            return DataPortal.Create<<%= Info.ObjectName %>>();
-        }
+<%
+}
+%>
+<!-- #include file="NewObject.asp" -->
+<!-- #include file="NewObjectAsync.asp" -->
 <!-- #include file="GetObject.asp" -->
+<%
+if (CurrentUnit.GenerationParams.SilverlightUsingServices)
+{
+    %>
+<!-- #include file="GetObjectAsync.asp" -->
+<%
+}
+if (UseBoth()) // check there is a fetch
+{
+    %>
+
+#else
+<%
+}
+if (UseSilverlight())
+{
+%>
+
+        /// <summary>Asynchronously adds a new item to the end of the <see cref="<%= Info.ObjectName %>"/> collection.</summary>
+        protected override void AddNewCore()
+        {
+            <%= Info.ItemType %>.New<%= Info.ItemType %>((o, e) =>
+                {
+                    if (e.Error != null)
+                    {
+                        throw e.Error;
+                    }
+                    else
+                    {
+                        Add(e.Object);
+                        OnAddedNew(e.Object);
+                    }
+                });
+        }
+<%
+}
+%>
+<!-- #include file="NewObjectSilverlight.asp" -->
+<%
+if (CurrentUnit.GenerationParams.SilverlightUsingServices)
+{
+    %>
+<!-- #include file="GetObjectSilverlight.asp" -->
+<%
+}
+if (UseBoth())
+{
+    %>
+
+#endif
+<%
+}
+if (!CurrentUnit.GenerationParams.SilverlightUsingServices)
+{
+    %>
+<!-- #include file="GetObjectAsync.asp" -->
+<%
+}
+%>
 <!-- #include file="Save.asp" -->
 
         #endregion

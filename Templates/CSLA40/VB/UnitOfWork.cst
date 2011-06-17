@@ -15,6 +15,7 @@
 <%
 if (Errors.Length == 0)
 {
+    bool isChild = false;
     int silverlightLevel = 0;
     bool genOptional = false;
     bool first = true;
@@ -40,70 +41,16 @@ using Csla;
     }
     %>
     [Serializable]
-    public partial class <%=Info.ObjectName%> : <%= (Info.IsUpdater || Info.IsDeleter) ? "CommandBase" : "ReadOnlyBase" %><<%=Info.ObjectName %>>
+    public partial class <%= Info.ObjectName %> : <%= (Info.IsUpdater || Info.IsDeleter) ? "CommandBase" : "ReadOnlyBase" %><<%=Info.ObjectName %>>
     {
 
 <!-- #include file="BusinessProps.asp" -->
-
-<% Response.Write(Environment.NewLine); %>
-        #region Factory Methods<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel, true, false) %><%
-    if (Info.IsCreator)
-    {
-        %>
-<!-- #include file="NewObject.asp" --><%
-    }
-    if (Info.IsGetter)
-    {
-        %><!-- #include file="GetObject.asp" --><%
-    }
-    if (Info.IsDeleter)
-    {
-        %><!-- #include file="DeleteObject.asp" --><%
-    }
-%><%= IfSilverlight (Conditional.End, 0, ref silverlightLevel, true, false) %><%
-    if (Info.IsCreator)
-    {
-        %>
-<!-- #include file="NewObjectAsync.asp" --><%
-    }
-    if (Info.IsGetter)
-    {
-        %><!-- #include file="GetObjectAsync.asp" --><%
-    }
-    if (Info.IsDeleter)
-    {
-        %><!-- #include file="DeleteObjectAsync.asp" --><%
-    }
-%><% Response.Write(Environment.NewLine); %>        #endregion
+<!-- #include file="UnitOfWork_Factory.asp" -->
 <!-- #include file="Constructor.asp" -->
-<!-- #include file="Criteria.asp" -->
+<!-- #include file="UnitOfWork_DataPortal.asp" -->
 <%
-    if (!genOptional)
-    {
-        Response.Write(Environment.NewLine);
-    }
-    %>
-        #region Data Access<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel, true, true) %><%
-    if (Info.IsCreator)
-    {
-        %>
-<!-- #include file="DataPortalCreateUnitOfWork.asp" --><%
-    }
-    if (Info.IsGetter)
-    {
-        %><!-- #include file="DataPortalFetchUnitOfWork.asp" --><%
-    }
-    if (Info.IsUpdater)
-    {
-        %><!-- #include file="DataPortalUpdateUnitOfWork.asp" --><%
-    }
-    if (Info.IsDeleter)
-    {
-        %><!-- #include file="DataPortalDeleteUnitOfWork.asp" --><%
-    }
-    %>
-<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel, true, true) %>        #endregion
-
+    Response.Write(Environment.NewLine);
+%>
     }
 <%
     if (Info.ObjectNamespace.Length > 0)

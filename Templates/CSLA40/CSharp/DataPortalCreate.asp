@@ -6,7 +6,7 @@ foreach (Criteria c in GetCriteriaObjects(Info))
         %>
 
         /// <summary>
-        /// Load default values for the <see cref="<%=Info.ObjectName%>"/> object properties.
+        /// Load default values for the <see cref="<%= Info.ObjectName %>"/> object properties<%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
         /// </summary>
         <%
         if (c.Properties.Count > 0)
@@ -120,7 +120,6 @@ foreach (Criteria c in GetCriteriaObjects(Info))
     %>
             base.<%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_" : "DataPortal_" %>Create();
         }
-
     <%
     }
 }

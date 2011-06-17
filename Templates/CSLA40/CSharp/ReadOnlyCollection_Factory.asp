@@ -1,6 +1,54 @@
-        #region Factory Methods<%= IfSilverlight (Conditional.NotSilverlight, 0, ref silverlightLevel, true, false) %>
-<!-- #include file="GetObject.asp" -->
+        #region Factory Methods
+<%
+CslaObjectInfo parent = Info.Parent.CslaObjects.Find(Info.ParentType);
+bool internalGetObjectUsed = false;
+if (parent != null)
+    internalGetObjectUsed = !Info.HasGetCriteriaFactory && GetSelfLoad(parent);
+if (UseBoth() && (CurrentUnit.GenerationParams.GenerateSynchronous || CurrentUnit.GenerationParams.SilverlightUsingServices || internalGetObjectUsed))
+{
+    %>
+
+#if !SILVERLIGHT
+<%
+}
+if (UseNoSilverlight())
+{
+    %>
 <!-- #include file="InternalGetObject.asp" -->
-<%= IfSilverlight (Conditional.End, 0, ref silverlightLevel, true, true) %><!-- #include file="GetObjectAsync.asp" -->
+<%
+}
+%>
+<!-- #include file="GetObject.asp" -->
+<%
+if (CurrentUnit.GenerationParams.GenerateAsynchronous && !CurrentUnit.GenerationParams.GenerateSilverlight4)
+{
+    %>
+<!-- #include file="GetObjectAsync.asp" -->
+<%
+}
+if (UseBoth() && CurrentUnit.GenerationParams.SilverlightUsingServices && Info.HasGetCriteriaFactory)
+{
+    %>
+
+#else
+<%
+}
+%>
+<!-- #include file="GetObjectSilverlight.asp" -->
+<%
+if (UseBoth() && (CurrentUnit.GenerationParams.GenerateSynchronous || CurrentUnit.GenerationParams.SilverlightUsingServices || internalGetObjectUsed))
+{
+    %>
+
+#endif
+<%
+}
+if (CurrentUnit.GenerationParams.GenerateAsynchronous && CurrentUnit.GenerationParams.GenerateSilverlight4)
+{
+        %>
+<!-- #include file="GetObjectAsync.asp" -->
+<%
+}
+%>
 
         #endregion

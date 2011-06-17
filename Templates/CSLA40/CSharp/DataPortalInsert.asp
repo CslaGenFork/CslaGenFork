@@ -4,7 +4,7 @@ if (Info.GenerateDataPortalInsert)
     %>
 
         /// <summary>
-        /// Insert the new <see cref="<%=Info.ObjectName%>"/> object in the database.
+        /// Insert the new <see cref="<%= Info.ObjectName %>"/> object in the database.
         /// </summary>
         <%
     if (Info.TransactionType == TransactionType.EnterpriseServices)

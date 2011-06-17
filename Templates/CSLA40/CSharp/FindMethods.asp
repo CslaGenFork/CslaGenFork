@@ -3,13 +3,14 @@ if (Info.FindMethodsParameters.Count > 0)
 {
     %>
         #region Find Methods
-
         <%
-        foreach (Property prop in Info.FindMethodsParameters)
-        {
-            %>
+
+    foreach (Property prop in Info.FindMethodsParameters)
+    {
+        %>
+
         /// <summary>
-        /// Find a <see cref="<%=Info.ItemType%>"/> object in the <see cref="<%=Info.ObjectName%>"/> collection, based on given <%= prop.Name %>.
+        /// Finds a <see cref="<%=Info.ItemType%>"/> object in the <see cref="<%= Info.ObjectName %>"/> collection, based on a given <%= prop.Name %>.
         /// </summary>
         /// <param name="<%= FormatCamel(prop.Name) %>">The <%= FormatProperty(prop.Name) %>.</param>
         /// <returns>A <see cref="<%= Info.ItemType %>"/> object.</returns>
@@ -22,14 +23,15 @@ if (Info.FindMethodsParameters.Count > 0)
                     return this[i];
                 }
             }
+
             return null;
         }
-
         <%
-        }
-        %>
+    }
+%>
+
         #endregion
+
 <%
 }
 %>
-<% Response.Write(Environment.NewLine); %>
