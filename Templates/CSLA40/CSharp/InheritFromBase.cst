@@ -36,7 +36,7 @@ if (Info.ObjectType != CslaObjectType.UnitOfWork)
 
         #region Pseudo Event Handlers
 <%
-        if (UseBoth()) // check there is a fetch OR Sync
+        if (UseBoth())
         {
             %>
 
@@ -53,7 +53,7 @@ if (Info.ObjectType != CslaObjectType.UnitOfWork)
         //}
         <%
         }
-        if (UseBoth()) // check there is a fetch OR Sync
+        if (UseBoth())
         {
             %>
 

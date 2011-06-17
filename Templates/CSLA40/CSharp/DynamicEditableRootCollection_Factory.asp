@@ -1,23 +1,10 @@
         #region Factory Methods
 <%
-if (UseBoth()) // check there is a fetch OR Sync
+if (UseBoth())
 {
     %>
 
 #if !SILVERLIGHT
-<%
-}
-if (UseNoSilverlight())
-{
-%>
-
-        /// <summary>Adds a new item to the end of the <see cref="<%= Info.ObjectName %>"/> collection.</summary>
-        protected override <%= Info.ItemType %> AddNewCore()
-        {
-            <%= Info.ItemType %> item = <%= Info.ItemType %>.New<%= Info.ItemType %>();
-            Add(item);
-            return item;
-        }
 <%
 }
 %>
@@ -36,28 +23,6 @@ if (UseBoth()) // check there is a fetch
     %>
 
 #else
-<%
-}
-if (UseSilverlight())
-{
-%>
-
-        /// <summary>Asynchronously adds a new item to the end of the <see cref="<%= Info.ObjectName %>"/> collection.</summary>
-        protected override void AddNewCore()
-        {
-            <%= Info.ItemType %>.New<%= Info.ItemType %>((o, e) =>
-                {
-                    if (e.Error != null)
-                    {
-                        throw e.Error;
-                    }
-                    else
-                    {
-                        Add(e.Object);
-                        OnAddedNew(e.Object);
-                    }
-                });
-        }
 <%
 }
 %>

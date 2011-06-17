@@ -39,7 +39,13 @@ if (Errors.Length == 0)
     }
     %>
     [Serializable]
-    public partial class <%= Info.ObjectName %> : <%
+<%
+    if (CurrentUnit.GenerationParams.DualListInheritance)
+    {
+        %>#if WINFORMS
+    <%
+    }
+    %><%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %>public partial class <%= Info.ObjectName %> : <%
     if (Info.InheritedType.Type != String.Empty)
     {
         %><%= Info.InheritedType.Type %><%
@@ -50,12 +56,35 @@ if (Errors.Length == 0)
     }
     else
     {
-        %>DynamicListBase<%
+        %><%= ListBaseHelper("Dynamic", true) %><%
     }
-    %><<%= Info.ItemType %>><!-- #include file="Implements.asp" -->
+    %><<%= Info.ItemType %>>
+    <!-- #include file="Implements.asp" -->
+<%
+    if (CurrentUnit.GenerationParams.DualListInheritance)
     {
+%>#else
+    <%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %>public partial class <%= Info.ObjectName %> : <%
+        if (Info.InheritedType.Type != String.Empty)
+        {
+            %><%= Info.InheritedType.Type %><%
+        }
+        else if (Info.InheritedType.ObjectName != String.Empty)
+        {
+            %><%= Info.InheritedType.ObjectName %><%
+        }
+        else
+        {
+            %><%= ListBaseHelper("Dynamic", false) %><%
+        }
+        %><<%= Info.ItemType %>><!-- #include file="Implements.asp" -->
+#endif
+    <%
+    }
+    %><%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %>{
 <!-- #include file="CollectionBusinessMethods.asp" -->
 <!-- #include file="FindMethods.asp" -->
+<!-- #include file="AddNewCore.asp" -->
     <%
     if (Info.GenerateFactoryMethods)
     {
