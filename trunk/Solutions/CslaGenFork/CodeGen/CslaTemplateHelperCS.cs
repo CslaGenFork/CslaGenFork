@@ -2275,9 +2275,9 @@ namespace CslaGenerator.CodeGen
         {
             var response = string.Empty;
 
-            if (CurrentUnit.GenerationParams.SilverlightUsingServices &&
-                !CurrentUnit.GenerationParams.GenerateSynchronous &&
-                !CurrentUnit.GenerationParams.GenerateAsynchronous)
+            if (UseSilverlight() &&
+                (CurrentUnit.GenerationParams.GenerateSynchronous ||
+                !CurrentUnit.GenerationParams.GenerateAsynchronous))
             {
                 /* Editable Silverlight using services
 
@@ -2391,7 +2391,11 @@ namespace CslaGenerator.CodeGen
                     FormatPascal(prop.Name), prop.TypeName, GetFieldReaderStatementList(info, prop));
                 response += Environment.NewLine;
                 response += ChildPropertyDeclareGetReturner(prop);
-                response += (CurrentUnit.GenerationParams.SilverlightUsingServices ? "#endif" + Environment.NewLine : "");
+                response += ((UseSilverlight() &&
+                              (CurrentUnit.GenerationParams.GenerateSynchronous ||
+                               !CurrentUnit.GenerationParams.GenerateAsynchronous))
+                                 ? "#endif" + Environment.NewLine
+                                 : "");
             }
             else if (CurrentUnit.GenerationParams.GenerateAsynchronous)
             {
@@ -2478,7 +2482,11 @@ namespace CslaGenerator.CodeGen
                 response += "                {" + Environment.NewLine;
                 response += "    " + ChildPropertyDeclareGetReturner(prop);
                 response += "                }" + Environment.NewLine;
-                response += (CurrentUnit.GenerationParams.SilverlightUsingServices ? "#endif" + Environment.NewLine : "");
+                response += ((UseSilverlight() &&
+                              (CurrentUnit.GenerationParams.GenerateSynchronous ||
+                               !CurrentUnit.GenerationParams.GenerateAsynchronous))
+                                 ? "#endif" + Environment.NewLine
+                                 : "");
             }
 
             return response;
