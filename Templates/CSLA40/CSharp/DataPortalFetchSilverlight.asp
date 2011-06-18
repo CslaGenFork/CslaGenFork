@@ -30,17 +30,17 @@ if (!Info.UseCustomLoading &&
             if (c.Properties.Count > 1)
             {
                 fetchPartialMethods.Add("partial void Service_Fetch(" + c.Name + " crit);");
-                %>public void <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_" : "DataPortal_" %>Fetch(<%= c.Name %> crit, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
+                %>public void <%= isChild ? "Child" : "DataPortal" %>_Fetch(<%= c.Name %> crit, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
             }
             else if (c.Properties.Count > 0)
             {
                 fetchPartialMethods.Add("partial void Service_Fetch(" + ReceiveSingleCriteria(c, "crit") + ");");
-                %>public void <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_" : "DataPortal_" %>Fetch(<%= ReceiveSingleCriteria(c, "crit") %>, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
+                %>public void <%= isChild ? "Child" : "DataPortal" %>_Fetch(<%= ReceiveSingleCriteria(c, "crit") %>, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
             }
             else
             {
                 fetchPartialMethods.Add("partial void Service_Fetch();");
-                %>public void <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_" : "DataPortal_" %>Fetch(Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
+                %>public void <%= isChild ? "Child" : "DataPortal" %>_Fetch(Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
             }
         %>
         {
@@ -86,7 +86,7 @@ if (!Info.UseCustomLoading &&
         Response.Write(Environment.NewLine);
         %>
         /// <summary>
-        /// Implements <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_Fetch()" : "DataPortal_Fetch" %> for <see cref="<%= Info.ObjectName %>"/> object.
+        /// Implements <%= isChild ? "Child_Fetch" : "DataPortal_Fetch" %> for <see cref="<%= Info.ObjectName %>"/> object.
         /// </summary>
         <%= header %>
 <%

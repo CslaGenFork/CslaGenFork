@@ -7,7 +7,7 @@ if (true)
 <!-- #include file="DataPortalFetch.asp" -->
 <!-- #include file="DataPortalInsert.asp" -->
 <!-- #include file="DataPortalUpdate.asp" -->
-<!-- #include file="InternalUpdate.asp" -->
+<!-- #include file="InternalInsertUpdateDelete.asp" -->
 <%
         if (Info.GenerateDataPortalInsert || Info.GenerateDataPortalUpdate)
         {
@@ -17,11 +17,10 @@ if (true)
         }
         %>
 <!-- #include file="DataPortalDelete.asp" -->
-<%= IfSilverlight (Conditional.Else, 0, ref silverlightLevel, true, true) %><!-- #include file="DataPortalCreateSilverlight.asp" -->
+<%= IfSilverlight (Conditional.Else, 0, ref silverlightLevel, true, true) %>
+<!-- #include file="DataPortalCreateSilverlight.asp" -->
 <!-- #include file="DataPortalFetchSilverlight.asp" -->
-<!-- #include file="DataPortalInsertSilverlight.asp" -->
-<!-- #include file="DataPortalUpdateSilverlight.asp" -->
-<!-- #include file="DataPortalDeleteSilverlight.asp" -->
+<!-- #include file="InternalInsertUpdateDeleteSilverlight.asp" -->
 <%= IfSilverlight (Conditional.End, 0, ref silverlightLevel, true, true) %>        #endregion
 <%
 }

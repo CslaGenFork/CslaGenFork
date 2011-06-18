@@ -42,29 +42,8 @@ if (UseNoSilverlight())
             %>cn.Open();
                 <%
         }
-        //if (CurrentUnit.GenerationParams.UseChildDataPortal)
-        if (true)
-        {
-            %>base.Child_Update();
+            %>base.DataPortal_Update();
 <%
-        }
-        else
-        {
-            %>foreach (<%= Info.ItemType %> child in DeletedList)
-                    child.DeleteSelf();
-
-                // Now clear the deleted objects from the list
-                DeletedList.Clear();
-
-                foreach (<%= Info.ItemType %> child in this)
-                {
-                    if (child.IsNew)
-                        child.Insert();
-                    else
-                        child.Update();
-                }
-                <%
-        }
         if (Info.TransactionType == TransactionType.ADO && Info.PersistenceType == PersistenceType.SqlConnectionManager)
         {
             %>

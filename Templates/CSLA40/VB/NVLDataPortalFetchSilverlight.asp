@@ -98,7 +98,7 @@ if (!Info.UseCustomLoading &&
         Response.Write(Environment.NewLine);
         %>
         /// <summary>
-        /// Implements <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_Fetch()" : "DataPortal_Fetch" %> for <see cref="<%= Info.ObjectName %>"/> collection.
+        /// Implements <%= isChild ? "Child_Fetch" : "DataPortal_Fetch" %> for <see cref="<%= Info.ObjectName %>"/> collection.
         /// </summary>
         <%= header %>
 <%

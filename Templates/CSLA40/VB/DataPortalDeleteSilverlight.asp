@@ -14,7 +14,6 @@ if (Info.GenerateDataPortalDelete &&
         /// Self delete the <see cref="<%= Info.ObjectName %>"/> object.
         /// </summary>
         <%
-
             string strGetCritParams = string.Empty;
             bool firstParam = true;
             for (int i = 0; i < c.Properties.Count; i++)
@@ -59,40 +58,36 @@ if (Info.GenerateDataPortalDelete &&
             }
             %>
         }
-        <%
-            if (Info.ObjectType != CslaObjectType.DynamicEditableRoot)
-            {
-                %>
 
         /// <summary>
         /// Delete the <see cref="<%= Info.ObjectName %>"/> object immediately.
         /// </summary>
         /// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The delete criteria.</param>
         <%
-                if (Info.TransactionType == TransactionType.EnterpriseServices)
-                {
-            %>[Transactional(TransactionalTypes.EnterpriseServices)]
+            if (Info.TransactionType == TransactionType.EnterpriseServices)
+            {
+                %>[Transactional(TransactionalTypes.EnterpriseServices)]
         <%
-                }
-                else if (Info.TransactionType == TransactionType.TransactionScope)
-                {
-            %>[Transactional(TransactionalTypes.TransactionScope)]
+            }
+            else if (Info.TransactionType == TransactionType.TransactionScope)
+            {
+                %>[Transactional(TransactionalTypes.TransactionScope)]
         <%
-                }
-            %>[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+            }
+        %>[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         <%
-                deletePartialParams.Add("/// <param name=\"" + (c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit")) + "\">The delete criteria.</param>");
-                if (c.Properties.Count > 1)
-                {
-                    deletePartialMethods.Add("partial void Service_Delete(" + c.Name + " crit);");
-                    %>public void DataPortal_Delete(<%= c.Name %> crit, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
-                }
-                else
-                {
-                    deletePartialMethods.Add("partial void Service_Delete(" + ReceiveSingleCriteria(c, "crit") + ");");
-                    %>public void DataPortal_Delete(<%= ReceiveSingleCriteria(c, "crit") %>, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
-                }
-                %>
+            deletePartialParams.Add("/// <param name=\"" + (c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit")) + "\">The delete criteria.</param>");
+            if (c.Properties.Count > 1)
+            {
+                deletePartialMethods.Add("partial void Service_Delete(" + c.Name + " crit);");
+                %>public void DataPortal_Delete(<%= c.Name %> crit, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
+            }
+            else
+            {
+                deletePartialMethods.Add("partial void Service_Delete(" + ReceiveSingleCriteria(c, "crit") + ");");
+                %>public void DataPortal_Delete(<%= ReceiveSingleCriteria(c, "crit") %>, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
+            }
+            %>
         {
             try
             {
@@ -109,7 +104,7 @@ if (Info.GenerateDataPortalDelete &&
             {
                 %>Service_Delete();<%
             }
-    %>
+            %>
                 handler(this, null);
             }
             catch (Exception ex)
@@ -117,22 +112,16 @@ if (Info.GenerateDataPortalDelete &&
                 handler(null, ex);
             }
             <%
-                //if (CurrentUnit.GenerationParams.UseChildDataPortal)
-                if (true)
-                {
-                    if (Info.GetCollectionChildProperties().Count > 0 || Info.GetNonCollectionChildProperties().Count > 0)
-                    {
-                        %>
+            if (Info.GetCollectionChildProperties().Count > 0 || Info.GetNonCollectionChildProperties().Count > 0)
+            {
+                %>
 
             FieldManager.UpdateChildren(this);
-                <%
-                    }
-                }
-
-                %>
-        }
-            <%
+        <%
             }
+            %>
+        }
+        <%
         }
     }
     for (int index = 0; index < deletePartialMethods.Count ; index++)
@@ -141,8 +130,9 @@ if (Info.GenerateDataPortalDelete &&
         header += deletePartialMethods[index];
         Response.Write(Environment.NewLine);
         %>
+
         /// <summary>
-        /// Implements <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_Delete()" : "DataPortal_Delete" %> for <see cref="<%= Info.ObjectName %>"/> object.
+        /// Implements <%= isChild ? "Child_Delete" : "DataPortal_Delete" %> for <see cref="<%= Info.ObjectName %>"/> object.
         /// </summary>
         <%= header %>
 <%

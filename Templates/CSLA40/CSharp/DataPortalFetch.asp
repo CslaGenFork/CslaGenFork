@@ -23,15 +23,15 @@ if (!Info.UseCustomLoading)
             }
             if (c.Properties.Count > 1)
             {
-        %>protected void <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_" : "DataPortal_" %>Fetch(<%= c.Name %> crit)<%
+        %>protected void <%= isChild ? "Child" : "DataPortal" %>_Fetch(<%= c.Name %> crit)<%
             }
             else if (c.Properties.Count > 0)
             {
-        %>protected void <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_" : "DataPortal_" %>Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)<%
+        %>protected void <%= isChild ? "Child" : "DataPortal" %>_Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)<%
             }
             else
             {
-        %>protected void <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_" : "DataPortal_" %>Fetch()<%
+        %>protected void <%= isChild ? "Child" : "DataPortal" %>_Fetch()<%
             }
         %>
         {

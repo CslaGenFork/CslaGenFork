@@ -29,17 +29,17 @@ if (UseSilverlight())
             if (c.Properties.Count > 1)
             {
                 createPartialMethods.Add("partial void Service_Create(" + c.Name + " crit);");
-                %>public void <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_" : "DataPortal_" %>Create(<%= c.Name %> crit, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
+                %>public void <%= isChild ? "Child" : "DataPortal" %>_Create(<%= c.Name %> crit, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
             }
             else if (c.Properties.Count > 0)
             {
                 createPartialMethods.Add("partial void Service_Create(" + ReceiveSingleCriteria(c, "crit") + ");");
-                %>public void <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_" : "DataPortal_" %>Create(<%= ReceiveSingleCriteria(c, "crit") %>, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
+                %>public void <%= isChild ? "Child" : "DataPortal" %>_Create(<%= ReceiveSingleCriteria(c, "crit") %>, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
             }
             else
             {
                 createPartialMethods.Add("partial void Service_Create();");
-                %>public <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "void Child_" : "override void DataPortal_" %>Create(Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
+                %>public <%= isChild ? "void Child_" : "override void DataPortal_" %>Create(Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
             }
             %>
         {
@@ -144,7 +144,7 @@ if (UseSilverlight())
             <%
             }
             %>
-            base.<%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_Create()" : "DataPortal_Create(handler)" %>;
+            base.<%= isChild ? "Child_Create()" : "DataPortal_Create(handler)" %>;
         }
 <%
         }
@@ -159,7 +159,7 @@ if (UseSilverlight())
         %>
 
         /// <summary>
-        /// Implements <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_Create()" : "DataPortal_Create" %> for <see cref="<%= Info.ObjectName %>"/> object.
+        /// Implements <%= isChild ? "Child_Create" : "DataPortal_Create" %> for <see cref="<%= Info.ObjectName %>"/> object.
         /// </summary>
         <%= header %>
 <%

@@ -99,6 +99,7 @@ else
             }
         }
         else if (!(Info.ObjectType == CslaObjectType.EditableRoot ||
+            Info.ObjectType == CslaObjectType.DynamicEditableRoot ||
             Info.ObjectType == CslaObjectType.EditableSwitchable ||
             (Info.ObjectType == CslaObjectType.ReadOnlyObject && Info.ParentType == string.Empty)))
         {

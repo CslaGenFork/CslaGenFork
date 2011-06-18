@@ -28,7 +28,7 @@ if (Info.GenerateDataPortalInsert)
         %>[Transactional(TransactionalTypes.TransactionScope)]
         <%
     }
-    %>internal void <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_" : "" %>Insert(<% if (parentType.Length > 0) { %><%= parentType %> parent<% } %>)
+    %>internal void <%= isChild ? "Child_" : "DataPortal_" %>Insert(<% if (parentType.Length > 0) { %><%= parentType %> parent<% } %>)
         {
             <%
     if (UseSimpleAuditTrail(Info))
@@ -150,7 +150,7 @@ if (Info.GenerateDataPortalUpdate)
         %>[Transactional(TransactionalTypes.TransactionScope)]
         <%
     }
-    %>internal void <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_" : "" %>Update(<% if (parentType.Length > 0 && !Info.ParentInsertOnly) { %><%= parentType %> parent<% } %>)
+    %>internal void <%= isChild ? "Child_" : "DataPortal_" %>Update(<% if (parentType.Length > 0 && !Info.ParentInsertOnly) { %><%= parentType %> parent<% } %>)
         {
             if (base.IsDirty)
             {<%
@@ -288,7 +288,7 @@ if (Info.GenerateDataPortalDelete)
         %>[Transactional(TransactionalTypes.TransactionScope)]
         <%
     }
-        %>internal void <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_" : "" %>DeleteSelf(<% if (parentType.Length > 0 && !Info.ParentInsertOnly) { %><%= parentType %> parent<% } %>)
+        %>internal void <%= isChild ? "Child_" : "DataPortal_" %>DeleteSelf(<% if (parentType.Length > 0 && !Info.ParentInsertOnly) { %><%= parentType %> parent<% } %>)
         {
             if (!IsNew)
             {

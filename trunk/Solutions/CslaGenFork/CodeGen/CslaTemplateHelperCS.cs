@@ -2275,7 +2275,9 @@ namespace CslaGenerator.CodeGen
         {
             var response = string.Empty;
 
-            if (CurrentUnit.GenerationParams.SilverlightUsingServices)
+            if (CurrentUnit.GenerationParams.SilverlightUsingServices &&
+                !CurrentUnit.GenerationParams.GenerateSynchronous &&
+                !CurrentUnit.GenerationParams.GenerateAsynchronous)
             {
                 /* Editable Silverlight using services
 
@@ -2367,7 +2369,31 @@ namespace CslaGenerator.CodeGen
                 response += (UseNoSilverlight() ? "#else" + Environment.NewLine : "");
             }
 
-            if (CurrentUnit.GenerationParams.GenerateAsynchronous)
+            if (CurrentUnit.GenerationParams.GenerateSynchronous)
+            {
+                /* Editable Synchronous
+
+                if (!FieldManager.FieldExists(ChildrenProperty))
+                    if (this.IsNew)
+                        Children = ChildType.NewChildType();
+                    else
+                        Children = ChildType.GetChildType(this);
+
+                return GetProperty(ChildrenProperty);*/
+
+                response += string.Format("                if (!FieldManager.FieldExists({0}))" + Environment.NewLine,
+                    FormatPropertyInfoName(prop.Name));
+                response += "                    if (this.IsNew)" + Environment.NewLine;
+                response += string.Format("                        {0} = {1}.New{1}();" + Environment.NewLine,
+                    FormatPascal(prop.Name), prop.TypeName);
+                response += "                    else" + Environment.NewLine;
+                response += string.Format("                        {0} = {1}.Get{1}({2});" + Environment.NewLine,
+                    FormatPascal(prop.Name), prop.TypeName, GetFieldReaderStatementList(info, prop));
+                response += Environment.NewLine;
+                response += ChildPropertyDeclareGetReturner(prop);
+                response += (CurrentUnit.GenerationParams.SilverlightUsingServices ? "#endif" + Environment.NewLine : "");
+            }
+            else if (CurrentUnit.GenerationParams.GenerateAsynchronous)
             {
                 /* Editable Asynchronous
 
@@ -2452,30 +2478,6 @@ namespace CslaGenerator.CodeGen
                 response += "                {" + Environment.NewLine;
                 response += "    " + ChildPropertyDeclareGetReturner(prop);
                 response += "                }" + Environment.NewLine;
-                response += (CurrentUnit.GenerationParams.SilverlightUsingServices ? "#endif" + Environment.NewLine : "");
-            }
-            else if (CurrentUnit.GenerationParams.GenerateSynchronous)
-            {
-                /* Editable Synchronous
-
-                if (!FieldManager.FieldExists(ChildrenProperty))
-                    if (this.IsNew)
-                        Children = ChildType.NewChildType();
-                    else
-                        Children = ChildType.GetChildType(this);
-
-                return GetProperty(ChildrenProperty);*/
-
-                response += string.Format("                if (!FieldManager.FieldExists({0}))" + Environment.NewLine,
-                    FormatPropertyInfoName(prop.Name));
-                response += "                    if (this.IsNew)" + Environment.NewLine;
-                response += string.Format("                        {0} = {1}.New{1}();" + Environment.NewLine,
-                    FormatPascal(prop.Name), prop.TypeName);
-                response += "                    else" + Environment.NewLine;
-                response += string.Format("                        {0} = {1}.Get{1}({2});" + Environment.NewLine,
-                    FormatPascal(prop.Name), prop.TypeName, GetFieldReaderStatementList(info, prop));
-                response += Environment.NewLine;
-                response += ChildPropertyDeclareGetReturner(prop);
                 response += (CurrentUnit.GenerationParams.SilverlightUsingServices ? "#endif" + Environment.NewLine : "");
             }
 
@@ -3138,11 +3140,11 @@ namespace CslaGenerator.CodeGen
                 case CslaObjectType.EditableSwitchable:
                     return "editable switchable object";
                 case CslaObjectType.DynamicEditableRoot:
-                    return "dynamic editable root object";
+                    return "dynamic root object";
                 case CslaObjectType.EditableRootCollection:
                     return "editable root collection";
                 case CslaObjectType.DynamicEditableRootCollection:
-                    return "dynamic editable root collection";
+                    return "dynamic root collection";
                 case CslaObjectType.EditableChildCollection:
                     return "editable child collection";
                 case CslaObjectType.ReadOnlyObject:
