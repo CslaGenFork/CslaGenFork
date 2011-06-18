@@ -21,15 +21,15 @@ foreach (Criteria c in GetCriteriaObjects(Info))
         }
         if (c.Properties.Count > 1)
         {
-            %>protected void <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_" : "DataPortal_" %>Create(<%= c.Name %> crit)<%
+            %>protected void <%= isChild ? "Child" : "DataPortal" %>_Create(<%= c.Name %> crit)<%
         }
         else if (c.Properties.Count > 0)
         {
-            %>protected void <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_" : "DataPortal_" %>Create(<%= ReceiveSingleCriteria(c, "crit") %>)<%
+            %>protected void <%= isChild ? "Child" : "DataPortal" %>_Create(<%= ReceiveSingleCriteria(c, "crit") %>)<%
         }
         else
         {
-            %>protected override void <%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_" : "DataPortal_" %>Create()<%
+            %>protected override void <%= isChild ? "Child" : "DataPortal" %>_Create()<%
         }
         %>
         {
@@ -118,7 +118,7 @@ foreach (Criteria c in GetCriteriaObjects(Info))
             <%
     }
     %>
-            base.<%= (Info.ObjectType == CslaObjectType.EditableChild) ? "Child_" : "DataPortal_" %>Create();
+            base.<%= isChild ? "Child" : "DataPortal" %>_Create();
         }
     <%
     }

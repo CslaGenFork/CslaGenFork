@@ -12,10 +12,10 @@ if (UseNoSilverlight())
     %>
 <!-- #include file="DataPortalCreate.asp" -->
 <!-- #include file="DataPortalFetch.asp" -->
-<!-- #include file="InternalUpdate.asp" -->
+<!-- #include file="InternalInsertUpdateDelete.asp" -->
 <%
 }
-if (UseBoth() && (HasDataPortalCreate(Info) || (HasDataPortalGet(Info) && CurrentUnit.GenerationParams.SilverlightUsingServices)))
+if (UseBoth() && (HasDataPortalCreate(Info) || ((HasDataPortalGetOrDelete(Info) || Info.GenerateDataPortalUpdate) && CurrentUnit.GenerationParams.SilverlightUsingServices)))
 {
     %>
 
@@ -25,8 +25,7 @@ if (UseBoth() && (HasDataPortalCreate(Info) || (HasDataPortalGet(Info) && Curren
 %>
 <!-- #include file="DataPortalCreateSilverlight.asp" -->
 <!-- #include file="DataPortalFetchSilverlight.asp" -->
-<!-- #include file="DataPortalInsertSilverlight.asp" -->
-<!-- #include file="DataPortalUpdateSilverlight.asp" -->
+<!-- #include file="InternalInsertUpdateDeleteSilverlight.asp" -->
 <%
 if (UseBoth())
 {

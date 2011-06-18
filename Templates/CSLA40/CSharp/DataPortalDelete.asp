@@ -65,12 +65,12 @@ if (Info.GenerateDataPortalDelete)
         <%
             if (Info.TransactionType == TransactionType.EnterpriseServices)
             {
-            %>[Transactional(TransactionalTypes.EnterpriseServices)]
+                %>[Transactional(TransactionalTypes.EnterpriseServices)]
         <%
             }
             else if (Info.TransactionType == TransactionType.TransactionScope)
             {
-            %>[Transactional(TransactionalTypes.TransactionScope)]
+                %>[Transactional(TransactionalTypes.TransactionScope)]
         <%
             }
             if (c.DeleteOptions.RunLocal)
