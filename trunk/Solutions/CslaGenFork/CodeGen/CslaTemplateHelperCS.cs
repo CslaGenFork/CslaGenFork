@@ -3150,15 +3150,15 @@ namespace CslaGenerator.CodeGen
                 case CslaObjectType.DynamicEditableRoot:
                     return "dynamic root object";
                 case CslaObjectType.EditableRootCollection:
-                    return "editable root collection";
+                    return "editable root list";
                 case CslaObjectType.DynamicEditableRootCollection:
-                    return "dynamic root collection";
+                    return "dynamic root list";
                 case CslaObjectType.EditableChildCollection:
-                    return "editable child collection";
+                    return "editable child list";
                 case CslaObjectType.ReadOnlyObject:
                     return "read only object";
                 case CslaObjectType.ReadOnlyCollection:
-                    return "read only collection";
+                    return "read only list";
                 case CslaObjectType.NameValueList:
                     return "name value list";
                 case CslaObjectType.UnitOfWork:
