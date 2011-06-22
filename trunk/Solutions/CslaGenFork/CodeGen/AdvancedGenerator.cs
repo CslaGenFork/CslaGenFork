@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Windows.Forms;
 using CodeSmith.Engine;
 using CslaGenerator.Controls;
 using CslaGenerator.Metadata;
@@ -38,8 +39,30 @@ namespace CslaGenerator.CodeGen
             _abortRequested = true;
         }
 
+        private bool TargetDALAlert(CslaGeneratorUnit unit)
+        {
+            var result = true;
+            if (unit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL)
+            {
+                var alert = MessageBox.Show(
+                    unit.ProjectName + @" targets CSLA 4 using DAL and isn't supported in this release of CslaGenFork.",
+                    @"CslaGenFork project generation", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                if (alert == DialogResult.Cancel)
+                    result = false;
+            }
+
+            return result;
+        }
+
         public void GenerateProject(CslaGeneratorUnit unit)
         {
+            if (!TargetDALAlert(unit))
+            {
+                _objFailed++;
+                OnGenerationInformation("Project generation cancelled." + Environment.NewLine);
+                return;
+            }
+
             CslaTemplateHelperCS.PrimaryKeys.ClearCache();
             CslaObjectInfo objInfo = null;
             _objFailed = 0;
@@ -64,8 +87,9 @@ namespace CslaGenerator.CodeGen
 
             foreach (var info in list)
             {
-                if (info.Generate)
-                {
+// list already filter Generate status
+//                if (info.Generate)
+//                {
                     if (objInfo == null)
                         objInfo = info;
                     if (_abortRequested) break;
@@ -176,7 +200,7 @@ namespace CslaGenerator.CodeGen
                             OnGenerationInformation(generationErrors.ToString());
                         }
                     }
-                }
+//                }
             }
 
 
@@ -230,8 +254,31 @@ namespace CslaGenerator.CodeGen
 
         #region Private code generatiom
 
+        private bool EditableSwitchableAlert(CslaObjectInfo objInfo)
+        {
+            var result = true;
+            if (objInfo.ObjectType == CslaObjectType.EditableSwitchable)
+            {
+                var alert = MessageBox.Show(
+                    objInfo.ObjectName + @" is EditableSwitchable" + Environment.NewLine +
+                    @"and isn't supported in this release of CslaGenFork.",
+                    @"CslaGenFork object generation", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                if (alert == DialogResult.Cancel)
+                    result = false;
+            }
+
+            return result;
+        }
+
         private void GenerateObject(CslaObjectInfo objInfo, CslaGeneratorUnit unit)
         {
+            if (!EditableSwitchableAlert(objInfo))
+            {
+                _objFailed++;
+                OnGenerationInformation("Object generation cancelled." + Environment.NewLine);
+                return;
+            }
+            
             var generationParams = unit.GenerationParams;
             var fileName = GetBaseFileName(objInfo, false, generationParams.SeparateBaseClasses,
                                            unit.GenerationParams.BaseNamespace,
