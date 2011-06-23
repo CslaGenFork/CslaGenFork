@@ -63,8 +63,8 @@ if (UseNoSilverlight() && CurrentUnit.GenerationParams.SilverlightUsingServices)
 <%
 }
 %>
-<!-- #include file="DataPortalFetchSilverlight.asp" -->
-<!-- #include file="DataPortalUpdateSilverlight.asp" -->
+<!-- #include file="DataPortalFetchServices.asp" -->
+<!-- #include file="DataPortalUpdateServices.asp" -->
 <%
 if (UseBoth())
 {

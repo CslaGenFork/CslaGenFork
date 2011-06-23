@@ -105,16 +105,18 @@ if (Info.GenerateDataPortalDelete)
             %>
                 <%= GetCommand(Info, c.DeleteOptions.ProcedureName) %>
                 {
-                <%
+                    <%
             if (Info.TransactionType == TransactionType.ADO && Info.PersistenceType == PersistenceType.SqlConnectionManager)
             {
-                %>
-                    cmd.Transaction = ctx.Transaction;
-
+                %>cmd.Transaction = ctx.Transaction;
                     <%
             }
-            %>
-                    cmd.CommandType = CommandType.StoredProcedure;
+            if (Info.CommandTimeout != string.Empty)
+            {
+                %>cmd.CommandTimeout = <%= Info.CommandTimeout %>;
+                    <%
+            }
+            %>cmd.CommandType = CommandType.StoredProcedure;
                     <%
             foreach (Property p in c.Properties)
             {

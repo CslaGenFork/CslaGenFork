@@ -2,6 +2,7 @@
 if (Info.GenerateDataPortalInsert &&
     CurrentUnit.GenerationParams.SilverlightUsingServices)
 {
+    MethodList.Add("partial void Service_Insert()");
     %>
 
         /// <summary>

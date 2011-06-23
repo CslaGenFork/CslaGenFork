@@ -79,12 +79,12 @@ if (Info.GenerateDataPortalDelete &&
             deletePartialParams.Add("/// <param name=\"" + (c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit")) + "\">The delete criteria.</param>");
             if (c.Properties.Count > 1)
             {
-                deletePartialMethods.Add("partial void Service_Delete(" + c.Name + " crit);");
+                deletePartialMethods.Add("partial void Service_Delete(" + c.Name + " crit)");
                 %>public void DataPortal_Delete(<%= c.Name %> crit, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
             }
             else
             {
-                deletePartialMethods.Add("partial void Service_Delete(" + ReceiveSingleCriteria(c, "crit") + ");");
+                deletePartialMethods.Add("partial void Service_Delete(" + ReceiveSingleCriteria(c, "crit") + ")");
                 %>public void DataPortal_Delete(<%= ReceiveSingleCriteria(c, "crit") %>, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
             }
             %>
@@ -128,13 +128,13 @@ if (Info.GenerateDataPortalDelete &&
     {
         string header = deletePartialParams[index] + (string.IsNullOrEmpty(deletePartialParams[index]) ? "" : "\r\n        ");
         header += deletePartialMethods[index];
-        Response.Write(Environment.NewLine);
+        MethodList.Add(header);
         %>
 
         /// <summary>
         /// Implements <%= isChild ? "Child_Delete" : "DataPortal_Delete" %> for <see cref="<%= Info.ObjectName %>"/> object.
         /// </summary>
-        <%= header %>
+        <%= header %>;
 <%
     }
 }

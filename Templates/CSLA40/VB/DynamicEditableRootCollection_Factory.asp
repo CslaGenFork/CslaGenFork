@@ -18,7 +18,7 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
 <!-- #include file="GetObjectAsync.asp" -->
 <%
 }
-if (UseBoth()) // check there is a fetch
+if (UseBoth())
 {
     %>
 
@@ -27,13 +27,8 @@ if (UseBoth()) // check there is a fetch
 }
 %>
 <!-- #include file="NewObjectSilverlight.asp" -->
-<%
-if (CurrentUnit.GenerationParams.SilverlightUsingServices)
-{
-    %>
 <!-- #include file="GetObjectSilverlight.asp" -->
 <%
-}
 if (UseBoth())
 {
     %>

@@ -33,11 +33,11 @@ if (UseBoth() && (HasDataPortalCreate(Info) || (HasDataPortalGetOrDelete(Info) &
 <%
 }
 %>
-<!-- #include file="DataPortalCreateSilverlight.asp" -->
-<!-- #include file="DataPortalFetchSilverlight.asp" -->
-<!-- #include file="DataPortalInsertSilverlight.asp" -->
-<!-- #include file="DataPortalUpdateSilverlight.asp" -->
-<!-- #include file="DataPortalDeleteSilverlight.asp" -->
+<!-- #include file="DataPortalCreateServices.asp" -->
+<!-- #include file="DataPortalFetchServices.asp" -->
+<!-- #include file="DataPortalInsertServices.asp" -->
+<!-- #include file="DataPortalUpdateServices.asp" -->
+<!-- #include file="DataPortalDeleteServices.asp" -->
 <%
 if (UseBoth())
 {

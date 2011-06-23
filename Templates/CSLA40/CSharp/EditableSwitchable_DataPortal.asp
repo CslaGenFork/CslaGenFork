@@ -18,9 +18,9 @@ if (true)
         %>
 <!-- #include file="DataPortalDelete.asp" -->
 <%= IfSilverlight (Conditional.Else, 0, ref silverlightLevel, true, true) %>
-<!-- #include file="DataPortalCreateSilverlight.asp" -->
-<!-- #include file="DataPortalFetchSilverlight.asp" -->
-<!-- #include file="InternalInsertUpdateDeleteSilverlight.asp" -->
+<!-- #include file="DataPortalCreateServices.asp" -->
+<!-- #include file="DataPortalFetchServices.asp" -->
+<!-- #include file="InternalInsertUpdateDeleteServices.asp" -->
 <%= IfSilverlight (Conditional.End, 0, ref silverlightLevel, true, true) %>        #endregion
 <%
 }

@@ -4,7 +4,8 @@ CslaObjectInfo parent = Info.Parent.CslaObjects.Find(Info.ParentType);
 bool internalGetObjectUsed = false;
 if (parent != null)
     internalGetObjectUsed = !Info.HasGetCriteriaFactory && GetSelfLoad(parent);
-if (UseBoth() && (CurrentUnit.GenerationParams.GenerateSynchronous || CurrentUnit.GenerationParams.SilverlightUsingServices || internalGetObjectUsed))
+if (UseBoth() &&
+    (CurrentUnit.GenerationParams.GenerateSynchronous || CurrentUnit.GenerationParams.SilverlightUsingServices || internalGetObjectUsed))
 {
     %>
 
@@ -36,7 +37,8 @@ if (UseBoth() && CurrentUnit.GenerationParams.SilverlightUsingServices && Info.H
 %>
 <!-- #include file="GetObjectSilverlight.asp" -->
 <%
-if (UseBoth() && (CurrentUnit.GenerationParams.GenerateSynchronous || CurrentUnit.GenerationParams.SilverlightUsingServices || internalGetObjectUsed))
+if (UseBoth() &&
+    (CurrentUnit.GenerationParams.GenerateSynchronous || CurrentUnit.GenerationParams.SilverlightUsingServices || internalGetObjectUsed))
 {
     %>
 

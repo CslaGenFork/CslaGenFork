@@ -1,6 +1,7 @@
         #region Factory Methods
 <%
-if (UseBoth() && (CurrentUnit.GenerationParams.GenerateSynchronous || CurrentUnit.GenerationParams.SilverlightUsingServices))
+if (UseBoth() &&
+    (CurrentUnit.GenerationParams.GenerateSynchronous || CurrentUnit.GenerationParams.SilverlightUsingServices))
 {
     %>
 
@@ -35,7 +36,8 @@ else if (CurrentUnit.GenerationParams.SilverlightUsingServices)
 <!-- #include file="GetNVLSilverlight.asp" -->
 <%
 }
-if (UseBoth() && (CurrentUnit.GenerationParams.GenerateSynchronous || CurrentUnit.GenerationParams.SilverlightUsingServices))
+if (UseBoth() &&
+    (CurrentUnit.GenerationParams.GenerateSynchronous || CurrentUnit.GenerationParams.SilverlightUsingServices))
 {
     %>
 

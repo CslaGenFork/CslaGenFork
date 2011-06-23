@@ -29,6 +29,7 @@ namespace CslaGenerator.Metadata
         private TransactionType _transactionType = TransactionType.None;
         private PersistenceType _persistenceType = PersistenceType.SqlConnectionManager;
         private string _dbContextObject = string.Empty;
+        private string _commandTimeout = string.Empty;
         private CslaObjectType _objectType = CslaObjectType.EditableRoot;
         private UnitOfWorkFunction _unitOfWorkType;
         private ConstructorVisibility _constructorVisibility = ConstructorVisibility.Default;
@@ -938,6 +939,27 @@ namespace CslaGenerator.Metadata
         {
             get { return _dbContextObject; }
             set { _dbContextObject = value; }
+        }
+
+        /// <summary>
+        /// Command Timeout.
+        /// </summary>
+        [Category("07. Data Access Options")]
+        [Description("The time (in seconds) to wait for the command to execute. If not set will use the default value of 30 seconds.")]
+        [UserFriendlyName("Command Timeout")]
+        public string CommandTimeout
+        {
+            get
+            {
+                if (_commandTimeout == "0")
+                    return string.Empty;
+                return _commandTimeout;
+            }
+            set
+            {
+                if(value != string.Empty)
+                    _commandTimeout = Convert.ToInt32(value).ToString();
+            }
         }
 
         /// <summary>

@@ -18,6 +18,11 @@ if (Info.GenerateDataPortalInsert)
         /// Insert <see cref="<%= Info.ObjectName %>"/> object to database with or without transaction.
         /// </summary>
         <%
+    if (parentType.Length > 0)
+    {
+        %>/// <param name="parent">The parent object.</param>
+        <%
+    }
     if (Info.TransactionType == TransactionType.EnterpriseServices)
     {
         %>[Transactional(TransactionalTypes.EnterpriseServices)]
@@ -52,7 +57,11 @@ if (Info.GenerateDataPortalInsert)
             if (Info.TransactionType == TransactionType.ADO && Info.PersistenceType == PersistenceType.SqlConnectionManager)
             {
                 %>cmd.Transaction = ctx.Transaction;
-
+                    <%
+            }
+            if (Info.CommandTimeout != string.Empty)
+            {
+                %>cmd.CommandTimeout = <%= Info.CommandTimeout %>;
                     <%
             }
             %>cmd.CommandType = CommandType.StoredProcedure;
@@ -140,6 +149,11 @@ if (Info.GenerateDataPortalUpdate)
         /// Saves <see cref="<%= Info.ObjectName %>"/> object to database with or without transaction.
         /// </summary>
         <%
+    if (parentType.Length > 0 && !Info.ParentInsertOnly)
+    {
+        %>/// <param name="parent">The parent object.</param>
+        <%
+    }
     if (Info.TransactionType == TransactionType.EnterpriseServices)
     {
         %>[Transactional(TransactionalTypes.EnterpriseServices)]
@@ -174,7 +188,11 @@ if (Info.GenerateDataPortalUpdate)
             if (Info.TransactionType == TransactionType.ADO && Info.PersistenceType == PersistenceType.SqlConnectionManager)
             {
                 %>cmd.Transaction = ctx.Transaction;
-
+                        <%
+            }
+            if (Info.CommandTimeout != string.Empty)
+            {
+                %>cmd.CommandTimeout = <%= Info.CommandTimeout %>;
                         <%
             }
             %>cmd.CommandType = CommandType.StoredProcedure;
@@ -275,9 +293,14 @@ if (Info.GenerateDataPortalDelete)
     %>
 
         /// <summary>
-        /// Delete <see cref="<%= Info.ObjectName %>"/> object from database with or without transaction.
+        /// Self delete the <see cref="<%= Info.ObjectName %>"/> object from database with or without transaction.
         /// </summary>
         <%
+    if (parentType.Length > 0 && !Info.ParentInsertOnly)
+    {
+        %>/// <param name="parent">The parent object.</param>
+        <%
+    }
     if (Info.TransactionType == TransactionType.EnterpriseServices)
     {
         %>[Transactional(TransactionalTypes.EnterpriseServices)]
@@ -314,7 +337,11 @@ if (Info.GenerateDataPortalDelete)
     if (Info.TransactionType == TransactionType.ADO && Info.PersistenceType == PersistenceType.SqlConnectionManager)
     {
         %>cmd.Transaction = ctx.Transaction;
-
+                        <%
+    }
+    if (Info.CommandTimeout != string.Empty)
+    {
+        %>cmd.CommandTimeout = <%= Info.CommandTimeout %>;
                         <%
     }
     %>cmd.CommandType = CommandType.StoredProcedure;

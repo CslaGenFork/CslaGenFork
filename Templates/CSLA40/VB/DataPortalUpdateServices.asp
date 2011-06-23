@@ -2,6 +2,7 @@
 if (Info.GenerateDataPortalUpdate &&
     CurrentUnit.GenerationParams.SilverlightUsingServices)
 {
+    MethodList.Add("partial void Service_Update()");
     %>
 
         /// <summary>
