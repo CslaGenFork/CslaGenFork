@@ -111,7 +111,7 @@
         "DisplayName" = "8:Debug"
         "IsDebugOnly" = "11:TRUE"
         "IsReleaseOnly" = "11:FALSE"
-        "OutputFilename" = "8:Debug\\CslaGenFork 2011.05.30 Setup.msi"
+        "OutputFilename" = "8:Debug\\CslaGenFork 2011.06.23 Setup.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -482,7 +482,7 @@
         "Manufacturer" = "8:CslaGenFork"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:http://cslagenfork.codeplex.com/"
-        "Title" = "8:Csla Generator Fork 2011.05.30 Setup"
+        "Title" = "8:Csla Generator Fork 2011.06.23 Setup"
         "Subject" = "8:"
         "ARPCONTACT" = "8:Tiago Freitas Leal"
         "Keywords" = "8:"
@@ -593,7 +593,7 @@
         {
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_10FB53964EE74D7FB5B30B077465FA38"
             {
-            "Name" = "8:Csla Generator Fork 2011.05.30"
+            "Name" = "8:Csla Generator Fork 2011.06.23"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
