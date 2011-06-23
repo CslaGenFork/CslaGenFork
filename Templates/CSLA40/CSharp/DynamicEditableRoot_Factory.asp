@@ -7,33 +7,36 @@ if (UseBoth())
 #if !SILVERLIGHT
 <%
 }
-%>
+if (UseNoSilverlight())
+{
+    %>
 <!-- #include file="NewObject.asp" -->
 <!-- #include file="NewObjectAsync.asp" -->
 <!-- #include file="GetObject.asp" -->
 <%
-if (CurrentUnit.GenerationParams.SilverlightUsingServices)
-{
-    %>
+    if (CurrentUnit.GenerationParams.SilverlightUsingServices)
+    {
+        %>
 <!-- #include file="GetObjectAsync.asp" -->
 <%
-}
-if (UseNoSilverlight())
-{
-    %>
+    }
+    if (UseNoSilverlight())
+    {
+        %>
 <!-- #include file="InternalGetObject.asp" -->
 <%
-}
-%>
+    }
+    %>
 <!-- #include file="DeleteObject.asp" -->
 <%
-if (CurrentUnit.GenerationParams.SilverlightUsingServices)
-{
-    %>
+    if (CurrentUnit.GenerationParams.SilverlightUsingServices)
+    {
+        %>
 <!-- #include file="DeleteObjectAsync.asp" -->
 <%
+    }
 }
-if (UseBoth()) // check there is a fetch
+if (UseBoth() && HasFactoryCreateOrGetOrDelete(Info))
 {
     %>
 

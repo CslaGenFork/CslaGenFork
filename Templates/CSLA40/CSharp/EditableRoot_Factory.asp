@@ -30,7 +30,7 @@ if (UseNoSilverlight())
 <%
     }
 }
-if (UseBoth() && (HasFactoryCreateOrGetOrDelete(Info)))
+if (UseBoth() && HasFactoryCreateOrGetOrDelete(Info))
 {
     %>
 

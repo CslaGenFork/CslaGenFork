@@ -32,17 +32,17 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
         <%
             if (c.Properties.Count > 1)
             {
-                createPartialMethods.Add("partial void Service_Create(" + c.Name + " crit);");
+                createPartialMethods.Add("partial void Service_Create(" + c.Name + " crit)");
                 %>public void DataPortal_Fetch(<%= c.Name %> crit, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
             }
             else if (c.Properties.Count > 0)
             {
-                createPartialMethods.Add("partial void Service_Create(" + ReceiveSingleCriteria(c, "crit") + ");");
+                createPartialMethods.Add("partial void Service_Create(" + ReceiveSingleCriteria(c, "crit") + ")");
                 %>public void DataPortal_Fetch(<%= ReceiveSingleCriteria(c, "crit") %>, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
             }
             else
             {
-                createPartialMethods.Add("partial void Service_Create();");
+                createPartialMethods.Add("partial void Service_Create()");
                 %>public void DataPortal_Fetch(Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
             }
         %>
@@ -77,15 +77,16 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
     {
         string header = createPartialParams[index] + (string.IsNullOrEmpty(createPartialParams[index]) ? "" : "\r\n        ");
         header += createPartialMethods[index];
-        Response.Write(Environment.NewLine);
+        MethodList.Add(header);
         %>
+
         /// <summary>
         /// Implements DataPortal_Fetch for <see cref="<%= Info.ObjectName %>"/> object.
         /// </summary>
         /// <remarks>
         /// ReadOnlyBase&lt;T&gt; doesn't allow the use of DataPortal_Create and thus DataPortal_Fetch is used.
         /// </remarks>
-        <%= header %>
+        <%= header %>;
 <%
     }
 }

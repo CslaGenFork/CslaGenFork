@@ -28,17 +28,17 @@ if (UseSilverlight())
         <%
             if (c.Properties.Count > 1)
             {
-                createPartialMethods.Add("partial void Service_Create(" + c.Name + " crit);");
+                createPartialMethods.Add("partial void Service_Create(" + c.Name + " crit)");
                 %>public void <%= isChild ? "Child" : "DataPortal" %>_Create(<%= c.Name %> crit, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
             }
             else if (c.Properties.Count > 0)
             {
-                createPartialMethods.Add("partial void Service_Create(" + ReceiveSingleCriteria(c, "crit") + ");");
+                createPartialMethods.Add("partial void Service_Create(" + ReceiveSingleCriteria(c, "crit") + ")");
                 %>public void <%= isChild ? "Child" : "DataPortal" %>_Create(<%= ReceiveSingleCriteria(c, "crit") %>, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
             }
             else
             {
-                createPartialMethods.Add("partial void Service_Create();");
+                createPartialMethods.Add("partial void Service_Create()");
                 %>public <%= isChild ? "void Child_" : "override void DataPortal_" %>Create(Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
             }
             %>
@@ -155,13 +155,13 @@ if (UseSilverlight())
         {
             string header = createPartialParams[index] + (string.IsNullOrEmpty(createPartialParams[index]) ? "" : "\r\n        ");
             header += createPartialMethods[index];
-            //Response.Write(Environment.NewLine);
+            MethodList.Add(header);
         %>
 
         /// <summary>
         /// Implements <%= isChild ? "Child_Create" : "DataPortal_Create" %> for <see cref="<%= Info.ObjectName %>"/> object.
         /// </summary>
-        <%= header %>
+        <%= header %>;
 <%
         }
     }

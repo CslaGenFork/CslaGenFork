@@ -15,6 +15,7 @@ namespace CslaGenerator.CodeGen
         #region Private Fields
 
         private readonly Dictionary<string, bool?> _fileSuccess = new Dictionary<string, bool?>();
+        private List<string> _methodList;
         private readonly string _templatesDirectory = string.Empty;
         private bool _abortRequested;
         private string _fullTemplatesPath;
@@ -45,7 +46,7 @@ namespace CslaGenerator.CodeGen
             if (unit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL)
             {
                 var alert = MessageBox.Show(
-                    unit.ProjectName + @" targets CSLA 4 using DAL and isn't supported in this release of CslaGenFork.",
+                    unit.ProjectName + @" targets CSLA 4 using DAL and isn't supported (yet) in this release of CslaGenFork.",
                     @"CslaGenFork project generation", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
                 if (alert == DialogResult.Cancel)
                     result = false;
@@ -111,7 +112,8 @@ namespace CslaGenerator.CodeGen
                         sb.Append(ex.Message);
                         OnGenerationInformation(sb.ToString());
                     }
-                    if (_abortRequested) break;
+                    if (_abortRequested)
+                        break;
 
 
                     // Interface DAL
@@ -129,7 +131,8 @@ namespace CslaGenerator.CodeGen
                         sb.Append(ex.Message);
                         OnGenerationInformation(sb.ToString());
                     }
-                    if (_abortRequested) break;
+                    if (_abortRequested)
+                        break;
 
 
                     // DAL Objects
@@ -147,7 +150,8 @@ namespace CslaGenerator.CodeGen
                         sb.Append(ex.Message);
                         OnGenerationInformation(sb.ToString());
                     }
-                    if (_abortRequested) break;
+                    if (_abortRequested)
+                        break;
 
 
                     // Stored Procedures 
@@ -163,7 +167,8 @@ namespace CslaGenerator.CodeGen
                             else
                             {
                                 GenerateSelectProcedure(info, TargetDirectory);
-                                if (_abortRequested) break;
+                                if (_abortRequested)
+                                    break;
 
                                 if (info.ObjectType != CslaObjectType.ReadOnlyObject
                                     && info.ObjectType != CslaObjectType.ReadOnlyCollection
@@ -173,13 +178,16 @@ namespace CslaGenerator.CodeGen
                                     && info.ObjectType != CslaObjectType.NameValueList)
                                 {
                                     GenerateInsertProcedure(info, TargetDirectory);
-                                    if (_abortRequested) break;
+                                    if (_abortRequested)
+                                        break;
 
                                     GenerateDeleteProcedure(info, TargetDirectory);
-                                    if (_abortRequested) break;
+                                    if (_abortRequested)
+                                        break;
 
                                     GenerateUpdateProcedure(info, TargetDirectory);
-                                    if (_abortRequested) break;
+                                    if (_abortRequested)
+                                        break;
                                 }
                             }
                         }
@@ -261,7 +269,7 @@ namespace CslaGenerator.CodeGen
             {
                 var alert = MessageBox.Show(
                     objInfo.ObjectName + @" is EditableSwitchable" + Environment.NewLine +
-                    @"and isn't supported in this release of CslaGenFork.",
+                    @"and isn't supported (yet) in this release of CslaGenFork.",
                     @"CslaGenFork object generation", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
                 if (alert == DialogResult.Cancel)
                     result = false;
@@ -301,6 +309,7 @@ namespace CslaGenerator.CodeGen
                                                        generationParams.ExtendedFilenameSuffix,
                                                        generationParams.ClassCommentFilenameSuffix, true,
                                                        generationParams.SeparateClassComment);
+            _methodList = new List<string>();
             StreamWriter swBase = null;
             StreamWriter sw = null;
             try
@@ -311,9 +320,11 @@ namespace CslaGenerator.CodeGen
                 {
                     var errorsOutput = new StringBuilder();
                     var warningsOutput = new StringBuilder();
-                    template.SetProperty("ActiveObjects", generationParams.ActiveObjects);
+                    // discontinue ActiveObjects
+                    //template.SetProperty("ActiveObjects", generationParams.ActiveObjects);
                     template.SetProperty("Errors", errorsOutput);
                     template.SetProperty("Warnings", warningsOutput);
+                    template.SetProperty("MethodList", _methodList);
                     template.SetProperty("CurrentUnit", unit);
                     template.SetProperty("DataSetLoadingScheme", objInfo.DataSetLoadingScheme);
                     if (generationParams.BackupOldSource && File.Exists(baseFileName))
@@ -331,6 +342,7 @@ namespace CslaGenerator.CodeGen
                     template.Render(swBase);
                     errorsOutput = (StringBuilder)template.GetProperty("Errors");
                     warningsOutput = (StringBuilder)template.GetProperty("Warnings");
+                    _methodList = (List<string>)template.GetProperty("MethodList");
                     if (errorsOutput.Length > 0)
                     {
                         _objFailed++;
@@ -404,8 +416,11 @@ namespace CslaGenerator.CodeGen
                 var template = GetTemplate(objInfo, tPath);
                 if (template != null)
                 {
-                    template.SetProperty("ActiveObjects", activeObjects);
+                    // discontinue ActiveObjects
+                    //template.SetProperty("ActiveObjects", activeObjects);
                     template.SetProperty("CurrentUnit", unit);
+                    if (_methodList != null)
+                        template.SetProperty("MethodList", _methodList);
                     var fs = File.Open(fileName, FileMode.Create);
                     OnGenerationFileName(fileName);
                     var sw = new StreamWriter(fs);

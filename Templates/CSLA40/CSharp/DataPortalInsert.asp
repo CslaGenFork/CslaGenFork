@@ -44,7 +44,11 @@ if (Info.GenerateDataPortalInsert)
     if (Info.TransactionType == TransactionType.ADO && Info.PersistenceType == PersistenceType.SqlConnectionManager)
     {
         %>cmd.Transaction = ctx.Transaction;
-
+                    <%
+    }
+    if (Info.CommandTimeout != string.Empty)
+    {
+        %>cmd.CommandTimeout = <%= Info.CommandTimeout %>;
                     <%
     }
     %>cmd.CommandType = CommandType.StoredProcedure;
