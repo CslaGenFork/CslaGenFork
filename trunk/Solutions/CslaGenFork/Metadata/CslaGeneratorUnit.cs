@@ -119,11 +119,11 @@ namespace CslaGenerator.Metadata
 
         public void ResetParent()
         {
-            foreach (CslaObjectInfo info in _cslaObjects)
+            foreach (var info in _cslaObjects)
             {
                 info.Parent = this;
             }
-            foreach (AssociativeEntity info in _associativeEntities)
+            foreach (var info in _associativeEntities)
             {
                 info.Parent = this;
             }

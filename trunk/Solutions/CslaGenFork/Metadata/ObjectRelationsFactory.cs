@@ -201,7 +201,7 @@ namespace CslaGenerator.Metadata
                                ObjectType = CslaObjectType.EditableChildCollection,
                                ObjectName = entity.CollectionTypeName
                            };
-                _currentUnit.CslaObjects.Add(coll);
+                _currentUnit.CslaObjects.InsertAtTop(coll);
 
                 // display message to the user
                 sb = new StringBuilder();
@@ -226,7 +226,7 @@ namespace CslaGenerator.Metadata
                                ObjectType = CslaObjectType.EditableChild,
                                ObjectName = entity.ItemTypeName
                            };
-                _currentUnit.CslaObjects.Add(item);
+                _currentUnit.CslaObjects.InsertAtTop(item);
 
                 // display message to the user
                 sb = new StringBuilder();

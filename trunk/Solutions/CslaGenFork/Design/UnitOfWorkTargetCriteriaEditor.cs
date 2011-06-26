@@ -31,7 +31,7 @@ namespace CslaGenerator.Design
                     Type instanceType = null;
                     object objinfo = null;
                     TypeHelper.GetUnitOfWorkPropertyContextInstanceObject(context, ref objinfo, ref instanceType);
-                    var currentCslaObject = (CslaObjectInfo)GeneratorController.Current.GeneratorForm.ProjectPanel.ListObjects.SelectedItem;
+                    var currentCslaObject = (CslaObjectInfo)GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem;
                     var target = (UnitOfWorkProperty)objinfo;
                     _lstProperties.Items.Clear();
                     _lstProperties.Items.Add("(None)");

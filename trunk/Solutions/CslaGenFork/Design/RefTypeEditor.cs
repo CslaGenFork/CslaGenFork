@@ -40,7 +40,6 @@ namespace CslaGenerator.Design
 
                     // Get Assembly File Path
                     var assemblyFileInfo = _instance.GetProperty("AssemblyFile");
-                    //string assemblyFilePath = (string) assemblyFileInfo.GetValue(context.Instance,null);
                     //string assemblyFilePath = (string) assemblyFileInfo.GetValue(context.Instance, null);
                     var assemblyFilePath = (string)assemblyFileInfo.GetValue(objinfo, null);
 
@@ -49,8 +48,10 @@ namespace CslaGenerator.Design
                     {
                         var assembly = Assembly.LoadFrom(assemblyFilePath);
                         var types = assembly.GetExportedTypes();
-                        for (int i = 0; i < types.Length; i++)
+                        for (var i = 0; i < types.Length; i++)
                         {
+                            // check here for Csla.Rules.BusinessRule inheritance
+                            // check here for System.ComponentModel.DataAnnotations.ValidationAttribute inheritance
                             _lstProperties.Items.Add(types[i].ToString());
                         }
                         _lstProperties.Sorted = true;

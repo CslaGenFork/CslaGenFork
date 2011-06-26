@@ -60,7 +60,7 @@ namespace CslaGenerator.Design
                         cslaObject = associativeEntity.SecondaryObject;
                 }
                 var paramColl = (ParameterCollection)propInfo.GetValue(objinfo, null);
-                var objectColl = GeneratorController.Current.GeneratorForm.ProjectPanel.Objects;
+                var objectColl = GeneratorController.Current.MainForm.ProjectPanel.Objects;
                 _instance = objectColl.Find(cslaObject);
 
                 var criteriaInfo = typeof(CslaObjectInfo).GetProperty("CriteriaObjects");

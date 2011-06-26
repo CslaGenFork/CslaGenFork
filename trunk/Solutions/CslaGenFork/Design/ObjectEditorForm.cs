@@ -28,16 +28,37 @@ namespace CslaGenerator.Design
                 _object = value;
                 if (_object.GetType() == typeof (Criteria))
                 {
-                    Text = "Criteria Editor";
-                    pgEditor.SelectedObject = _object;
-                    //pgEditor.SelectedObject = new CriteriaPropertyBag(((Criteria) _object).Properties[0]);
+                    Text = @"Criteria Editor";
+                    // pgEditor.SelectedObject = _object;
+                    pgEditor.SelectedObject = new CriteriaBag(((Criteria) _object));
+                    pgEditor.PropertySort = PropertySort.Categorized;
+                    this.Size = new Size(this.Size.Width, 711);
+                    pgEditor.Size = new Size(pgEditor.Size.Width, 619);
+                    var cslaObject = (CslaObjectInfo)GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem;
+                    if ((cslaObject.ObjectType == CslaObjectType.ReadOnlyObject ||
+                         cslaObject.ObjectType == CslaObjectType.ReadOnlyCollection ||
+                         cslaObject.ObjectType == CslaObjectType.NameValueList ||
+                         (cslaObject.ObjectType == CslaObjectType.UnitOfWork)))
+                    {
+                        this.Size = new Size(this.Size.Width, this.Size.Height - 256);
+                        pgEditor.Size = new Size(pgEditor.Size.Width, pgEditor.Size.Height - 256);
+                    }
+                    if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40 &&
+                        GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL)
+                    {
+                        this.Size = new Size(this.Size.Width, this.Size.Height - 32);
+                        pgEditor.Size = new Size(pgEditor.Size.Width, pgEditor.Size.Height - 32);
+                    }
+                    pgEditor.ExpandAllGridItems();
                 }
                 else
                 {
-                    Text = "InheritedType Editor";
+                    Text = @"InheritedType Editor";
                     //pgEditor.SelectedObject = _object;
                     pgEditor.SelectedObject = new InheritedTypePropertyBag((TypeInfo) _object);
                 }
+                this.MaximumSize = new Size(this.Size.Width + 100, this.Size.Height);
+                this.MinimumSize = new Size(this.Size.Width - 100, this.Size.Height);
             }
         }
 
@@ -50,5 +71,12 @@ namespace CslaGenerator.Design
         {
             DialogResult = DialogResult.Cancel;
         }
+
+        public void OnSort(object sender, EventArgs e)
+        {
+            if (pgEditor.PropertySort == PropertySort.CategorizedAlphabetical)
+                pgEditor.PropertySort = PropertySort.Categorized;
+        }
+
     }
 }
