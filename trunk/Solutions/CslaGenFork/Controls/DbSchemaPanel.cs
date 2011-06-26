@@ -19,6 +19,7 @@ namespace CslaGenerator.Controls
     {
         private CslaGeneratorUnit _currentUnit;
         private CslaObjectInfo _currentCslaObject;
+        private CslaObjectInfoCollection _objectsAdded = new CslaObjectInfoCollection();
         private ObjectFactory _currentFactory;
         private string _cn = string.Empty;
 
@@ -834,6 +835,7 @@ namespace CslaGenerator.Controls
             obj.ItemType = item;
             _currentUnit.CslaObjects.Add(obj);
             _currentFactory.AddDefaultCriteriaAndParameters(obj);
+            _objectsAdded.Add(obj);
         }
 
         private void NewNVL(string name)
@@ -841,7 +843,9 @@ namespace CslaGenerator.Controls
             var obj = new CslaObjectInfo(_currentUnit);
             obj.ObjectType = CslaObjectType.NameValueList;
             obj.ObjectName = ParseObjectName(name);
-            _currentUnit.CslaObjects.Add(obj);
+            _objectsAdded.Insert(0, obj);
+            GeneratorController.Current.MainForm.ProjectPanel.AddCreatedObject(_objectsAdded);
+            _objectsAdded = new CslaObjectInfoCollection();
             _currentCslaObject = obj;
             _currentFactory.AddDefaultCriteriaAndParameters();
         }
@@ -871,7 +875,9 @@ namespace CslaGenerator.Controls
                 obj.ClassSummary = dbObject.ObjectDescription;
             obj.ParentType = parent;
             obj.ParentInsertOnly = true;
-            _currentUnit.CslaObjects.Add(obj);
+            _objectsAdded.Insert(0, obj);
+            GeneratorController.Current.MainForm.ProjectPanel.AddCreatedObject(_objectsAdded);
+            _objectsAdded = new CslaObjectInfoCollection();
             _currentCslaObject = obj;
         }
 

@@ -64,7 +64,7 @@ namespace CslaGenerator.Controls
             if (_objects != null)
                 return true;
 
-            MessageBox.Show("You need to create a new project first.", "CslaGenerator", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(@"You need to create a new project first.", @"CslaGenerator", MessageBoxButtons.OK, MessageBoxIcon.Information);
             return false;
         }
 
@@ -142,32 +142,8 @@ namespace CslaGenerator.Controls
                 // no need to fire lstObjects_SelectedIndexChanged 3 times
                 DisableEventSelectedIndexChanged();
 
-                // store currency values for later use
-                var selectedItems = new List<CslaObjectInfo>();
-                if (_objects != null)
-                {
-                    foreach (CslaObjectInfo obj in lstObjects.SelectedItems)
-                    {
-                        if (_objects.Contains(obj))
-                            selectedItems.Add(obj);
-                    }
-                }
-
                 // update the ListBox items
                 ApplyFiltersPresenter();
-                lstObjects.SelectedItems.Clear();
-
-                if (_objects != null)
-                {
-                    if (selectedItems.Count == 0 && lstObjects.Items.Count > 0)
-                    {
-                        _selectedItems.Clear();
-                        lstObjects.SelectedIndex = lstObjects.Items.Count - 1;
-                    }
-                }
-
-                foreach (var obj in selectedItems)
-                    lstObjects.SelectedItems.Add(obj);
 
                 EnableEventSelectedIndexChanged();
                 ListObjects_SelectedIndexChanged(this, new EventArgs());
@@ -446,8 +422,8 @@ namespace CslaGenerator.Controls
             foreach (CslaObjectInfo obj in lstObjects.SelectedItems)
                 deleteList.Add(obj);
 
-            // This is item above the top most selected item
-            var selectedIndex = lstObjects.SelectedIndex - 1;
+            // Select the top most selected item
+            var selectedIndex = lstObjects.SelectedIndex;// -1;
 
             // Now we don't need SelectedIndices any more (and they don't exist anyway)
             lstObjects.SelectedIndices.Clear();
@@ -464,14 +440,14 @@ namespace CslaGenerator.Controls
             if (lstObjects.Items.Count == 0)
                 return;
 
-            // Select the first element
+            // Can'tselect past the first element
             if (selectedIndex == -1)
                 selectedIndex = 0;
 
             _selectedItems = new List<CslaObjectInfo>();
             lstObjects.SelectedIndices.Clear();
 
-            // Can't select past the end
+            // Can't select past the last element
             if (selectedIndex > lstObjects.Items.Count - 1)
                 selectedIndex = lstObjects.Items.Count - 1;
 
@@ -488,11 +464,43 @@ namespace CslaGenerator.Controls
         {
             if (!UnitLoaded())
                 return;
+
+            _suspendListUpdates = true;
+            DisableEventDrawItem();
+
             var duplicateList = new List<CslaObjectInfo>();
             foreach (CslaObjectInfo obj in lstObjects.SelectedItems)
                 duplicateList.Add(obj.Duplicate(GeneratorController.Catalog));
-            foreach (CslaObjectInfo obj in duplicateList)
-                _objects.Add(obj);
+            foreach (var obj in duplicateList)
+                _objects.InsertAtTop(obj, true);
+
+            _suspendListUpdates = false;
+            EnableEventDrawItem();
+            ApplyFilters(true);
+
+            lstObjects.SelectedItems.Clear();
+            foreach (var obj in duplicateList)
+                lstObjects.SelectedItems.Add(obj);
+        }
+
+        public void AddCreatedObject(CslaObjectInfoCollection objects)
+        {
+            if (!UnitLoaded())
+                return;
+
+            _suspendListUpdates = true;
+            DisableEventDrawItem();
+
+            foreach (var obj in objects)
+                _objects.InsertAtTop(obj);
+
+            _suspendListUpdates = false;
+            EnableEventDrawItem();
+            ApplyFilters(true);
+
+            lstObjects.SelectedItems.Clear();
+            foreach (var obj in objects)
+                lstObjects.SelectedItems.Add(obj);
         }
 
         public void AddNewObject()
@@ -500,7 +508,7 @@ namespace CslaGenerator.Controls
             if (!UnitLoaded())
                 return;
             var newCslaObjectInfo = new CslaObjectInfo(GeneratorController.Current.CurrentUnit);
-            _objects.Add(newCslaObjectInfo);
+            _objects.InsertAtTop(newCslaObjectInfo, true);
         }
 
         public void MoveUpSelected()

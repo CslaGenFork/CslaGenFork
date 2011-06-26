@@ -914,7 +914,7 @@ namespace CslaGenerator.Util.PropertyBags
                 // objectType + propertyName --> true | false
                 if (_propertyContext != null)
                 {
-                    var cslaObject = (CslaObjectInfo) GeneratorController.Current.GeneratorForm.ProjectPanel.ListObjects.SelectedItem;
+                    var cslaObject = (CslaObjectInfo) GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem;
                     var hasParentProperties = CslaTemplateHelperCS.HasParentProperties(cslaObject);
                     foreach (string typ in objectType)
                     {

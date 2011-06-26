@@ -55,7 +55,7 @@ namespace CslaGenerator.Design
 
                     // waiting to find a way to fetch the CslaObjectInfo
                     
-                    var currentCslaObject = (CslaObjectInfo)GeneratorController.Current.GeneratorForm.ProjectPanel.ListObjects.SelectedItem;
+                    var currentCslaObject = (CslaObjectInfo)GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem;
                     /*var obj = GeneratorController.Current.CurrentUnit.CslaObjects.Find("");
                     foreach (CslaObjectInfo o in GeneratorController.Current.CurrentUnit.CslaObjects)
                     {

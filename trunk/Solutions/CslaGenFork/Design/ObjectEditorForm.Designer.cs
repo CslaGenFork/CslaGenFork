@@ -35,19 +35,21 @@
             // 
             // pgEditor
             // 
-            this.pgEditor.CommandsVisibleIfAvailable = true;
-            this.pgEditor.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pgEditor.LargeButtons = false;
+            this.pgEditor.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pgEditor.LineColor = System.Drawing.SystemColors.ScrollBar;
+            this.pgEditor.Location = new System.Drawing.Point(8, 8);
             this.pgEditor.Name = "pgEditor";
             this.pgEditor.Size = new System.Drawing.Size(368, 312);
             this.pgEditor.TabIndex = 0;
             this.pgEditor.Text = "pgEditor";
             this.pgEditor.ViewBackColor = System.Drawing.SystemColors.Window;
             this.pgEditor.ViewForeColor = System.Drawing.SystemColors.WindowText;
+            this.pgEditor.PropertySortChanged += OnSort;
             // 
             // btnOK
             // 
+            this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnOK.Location = new System.Drawing.Point(104, 336);
             this.btnOK.Name = "btnOK";
             this.btnOK.TabIndex = 1;
@@ -56,6 +58,7 @@
             // 
             // btnCancel
             // 
+            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.Location = new System.Drawing.Point(192, 336);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.TabIndex = 2;
@@ -65,7 +68,7 @@
             // ObjectEditorForm
             // 
             this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-            this.ClientSize = new System.Drawing.Size(368, 374);
+            this.ClientSize = new System.Drawing.Size(384, 374);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.pgEditor);

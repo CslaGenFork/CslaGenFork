@@ -628,7 +628,7 @@ namespace CslaGenerator.Util.PropertyBags
         {
             try
             {
-                var cslaObject = (CslaObjectInfo)GeneratorController.Current.GeneratorForm.ProjectPanel.ListObjects.SelectedItem;
+                var cslaObject = (CslaObjectInfo)GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem;
 
                 if ((cslaObject.ObjectType == CslaObjectType.ReadOnlyObject ||
                     cslaObject.ObjectType == CslaObjectType.ReadOnlyCollection ||

@@ -26,7 +26,7 @@ namespace CslaGenerator
         private AssociativeEntity _currentAssociativeEntitiy;
         private ProjectProperties _currentPropertiesTab;
         private string _currentFilePath = string.Empty;
-        private MainForm _frmGenerator;
+        private MainForm _mainForm;
         private static ICatalog _catalog;
         private static GeneratorController _current;
         private readonly PropertyContext _propertyContext = new PropertyContext();
@@ -46,11 +46,11 @@ namespace CslaGenerator
 
         private void Init()
         {
-            _frmGenerator = new MainForm(this);
-            _frmGenerator.ProjectPanel.SelectedItemsChanged += CslaObjectList_SelectedItemsChanged;
-            _frmGenerator.ProjectPanel.LastItemRemoved += delegate { _currentCslaObject = null; };
-            _frmGenerator.ObjectRelationsBuilder.SelectedItemsChanged += AssociativeEntitiesList_SelectedItemsChanged;
-            _frmGenerator.Show();
+            _mainForm = new MainForm(this);
+            _mainForm.ProjectPanel.SelectedItemsChanged += CslaObjectList_SelectedItemsChanged;
+            _mainForm.ProjectPanel.LastItemRemoved += delegate { _currentCslaObject = null; };
+            _mainForm.ObjectRelationsBuilder.SelectedItemsChanged += AssociativeEntitiesList_SelectedItemsChanged;
+            _mainForm.Show();
         }
 
         public void Dispose()
@@ -70,7 +70,7 @@ namespace CslaGenerator
                 {
                     // request that the UI load the project, since it keeps track
                     // of *additional* state (isNew) that this class is unaware of.
-                    _frmGenerator.OpenProjectFile(filename);
+                    _mainForm.OpenProjectFile(filename);
                 }
             }
         }
@@ -89,7 +89,7 @@ namespace CslaGenerator
         static void Main(string[] args)
         {
             GeneratorController controller = new GeneratorController();
-            controller.GeneratorForm.Closing += new CancelEventHandler(controller.GeneratorForm_Closing);
+            controller.MainForm.Closing += new CancelEventHandler(controller.GeneratorForm_Closing);
             controller.CommandLineArgs = args;
             // process the command line args here so we have a UI, also, we can not process in Init without
             // modifying more code to take args[]
@@ -106,7 +106,7 @@ namespace CslaGenerator
             get { return _currentUnit; }
             private set
             {
-                _frmGenerator.ObjectRelationsBuilderDockPanel.Show(_frmGenerator.DockPanel);
+                _mainForm.ObjectRelationsBuilderDockPanel.Show(_mainForm.DockPanel);
                 if (_currentUnit != null)
                 {
                     if (_currentPropertiesTab != null && !_currentPropertiesTab.IsDisposed)
@@ -119,7 +119,7 @@ namespace CslaGenerator
                 _currentUnit = value;
                 _currentPropertiesTab = new ProjectProperties();
                 _currentPropertiesTab.LoadInfo();
-                _currentPropertiesTab.Show(_frmGenerator.DockPanel);
+                _currentPropertiesTab.Show(_mainForm.DockPanel);
             }
         }
 
@@ -151,10 +151,10 @@ namespace CslaGenerator
             }
         }
 
-        public MainForm GeneratorForm
+        public MainForm MainForm
         {
-            get { return _frmGenerator; }
-            set { _frmGenerator = value; }
+            get { return _mainForm; }
+            set { _mainForm = value; }
         }
 
         public string CurrentFilePath
@@ -242,9 +242,9 @@ namespace CslaGenerator
                 }
                 if (_currentUnit.CslaObjects.Count > 0)
                 {
-                    if (_frmGenerator.ProjectPanel.ListObjects.Items.Count > 0)
+                    if (_mainForm.ProjectPanel.ListObjects.Items.Count > 0)
                     {
-                        _currentCslaObject = (CslaObjectInfo)_frmGenerator.ProjectPanel.ListObjects.Items[0];
+                        _currentCslaObject = (CslaObjectInfo)_mainForm.ProjectPanel.ListObjects.Items[0];
                         // _frmGenerator.PropertyGrid.SelectedObject = new PropertyBag(_currentCslaObject, _propertyContext);
                     }
                     else
@@ -263,7 +263,7 @@ namespace CslaGenerator
                     if (_dbSchemaPanel != null)
                         _dbSchemaPanel.CslaObjectInfo = null;
                 }
-                _frmGenerator.ProjectPanel.ApplyFiltersPresenter();
+                _mainForm.ProjectPanel.ApplyFiltersPresenter();
 
                 _currentUnit.AssociativeEntities.ListChanged += AssociativeEntities_ListChanged;
                 /*if (_currentUnit.AssociativeEntities.Count > 0)
@@ -281,7 +281,7 @@ namespace CslaGenerator
             }
             catch (Exception e)
             {
-                MessageBox.Show(_frmGenerator, @"An error occurred while trying to load: " + Environment.NewLine + e.Message + Environment.NewLine + e.StackTrace, "Loading Error");
+                MessageBox.Show(_mainForm, @"An error occurred while trying to load: " + Environment.NewLine + e.Message + Environment.NewLine + e.StackTrace, "Loading Error");
             }
             finally
             {
@@ -295,7 +295,7 @@ namespace CslaGenerator
         {
             if (e.ListChangedType == ListChangedType.ItemChanged)
             {
-                if (e.PropertyDescriptor.Name == "ObjectType" && _frmGenerator.ProjectPanel.FilterTypeIsActive)
+                if (e.PropertyDescriptor.Name == "ObjectType" && _mainForm.ProjectPanel.FilterTypeIsActive)
                     ReloadPropertyGrid();
             }
         }
@@ -317,12 +317,12 @@ namespace CslaGenerator
             _currentUnit.ConnectionString = ConnectionFactory.ConnectionString;
             BindControls();
             EnableButtons();
-            _frmGenerator.PropertyGrid.SelectedObject = null;
+            _mainForm.PropertyGrid.SelectedObject = null;
         }
 
         public void Save(string fileName)
         {
-            if (!_frmGenerator.ApplyProjectProperties())
+            if (!_mainForm.ApplyProjectProperties())
                 return;
             FileStream fs = null;
             string tempFile = Path.GetTempPath() + Guid.NewGuid().ToString() + ".cslagenerator";
@@ -337,7 +337,7 @@ namespace CslaGenerator
             }
             catch (Exception e)
             {
-                MessageBox.Show(_frmGenerator, @"An error occurred while trying to save: " + Environment.NewLine + e.Message, "Save Error");
+                MessageBox.Show(_mainForm, @"An error occurred while trying to save: " + Environment.NewLine + e.Message, "Save Error");
             }
             finally
             {
@@ -382,11 +382,11 @@ namespace CslaGenerator
         {
             if (_currentUnit != null)
             {
-                _frmGenerator.ProjectNameTextBox.DataBindings.Clear();
-                _frmGenerator.ProjectNameTextBox.DataBindings.Add("Text", _currentUnit, "ProjectName");
+                _mainForm.ProjectNameTextBox.DataBindings.Clear();
+                _mainForm.ProjectNameTextBox.DataBindings.Add("Text", _currentUnit, "ProjectName");
 
-                _frmGenerator.TargetDirectoryTextBox.DataBindings.Clear();
-                _frmGenerator.TargetDirectoryTextBox.DataBindings.Add("Text", _currentUnit, "TargetDirectory");
+                _mainForm.TargetDirectoryTextBox.DataBindings.Clear();
+                _mainForm.TargetDirectoryTextBox.DataBindings.Add("Text", _currentUnit, "TargetDirectory");
 
                 BindCslaList();
                 BindRelationsList();
@@ -397,14 +397,14 @@ namespace CslaGenerator
         {
             if (_currentUnit != null)
             {
-                _frmGenerator.ProjectPanel.Objects = _currentUnit.CslaObjects;
-                _frmGenerator.ProjectPanel.ApplyFilters(true);
-                _frmGenerator.ProjectPanel.ListObjects.ClearSelected();
-                if (_frmGenerator.ProjectPanel.ListObjects.Items.Count > 0)
-                    _frmGenerator.ProjectPanel.ListObjects.SelectedIndex = 0;
+                _mainForm.ProjectPanel.Objects = _currentUnit.CslaObjects;
+                _mainForm.ProjectPanel.ApplyFilters(true);
+                _mainForm.ProjectPanel.ListObjects.ClearSelected();
+                if (_mainForm.ProjectPanel.ListObjects.Items.Count > 0)
+                    _mainForm.ProjectPanel.ListObjects.SelectedIndex = 0;
 
                 // make sure the previous stored selection is cleared
-                _frmGenerator.ProjectPanel.ClearSelectedItems();
+                _mainForm.ProjectPanel.ClearSelectedItems();
             }
         }
 
@@ -412,14 +412,14 @@ namespace CslaGenerator
         {
             if (_currentUnit != null)
             {
-                _frmGenerator.ObjectRelationsBuilder.AssociativeEntities = _currentUnit.AssociativeEntities;
-                _frmGenerator.ObjectRelationsBuilder.FillViews(true);
-                _frmGenerator.ObjectRelationsBuilder.GetCurrentListBox().ClearSelected();
-                if (_frmGenerator.ObjectRelationsBuilder.GetCurrentListBox().Items.Count > 0)
-                    _frmGenerator.ObjectRelationsBuilder.GetCurrentListBox().SelectedIndex = 0;
+                _mainForm.ObjectRelationsBuilder.AssociativeEntities = _currentUnit.AssociativeEntities;
+                _mainForm.ObjectRelationsBuilder.FillViews(true);
+                _mainForm.ObjectRelationsBuilder.GetCurrentListBox().ClearSelected();
+                if (_mainForm.ObjectRelationsBuilder.GetCurrentListBox().Items.Count > 0)
+                    _mainForm.ObjectRelationsBuilder.GetCurrentListBox().SelectedIndex = 0;
 
                 // make sure the previous stored selection is cleared
-                _frmGenerator.ObjectRelationsBuilder.ClearSelectedItems();
+                _mainForm.ObjectRelationsBuilder.ClearSelectedItems();
             }
         }
 
@@ -430,8 +430,8 @@ namespace CslaGenerator
                 //dbSchemaPanel = new DbSchemaPanel(ref _currentUnit, ref _currentCslaObject, connectionString);
                 _dbSchemaPanel = new DbSchemaPanel(_currentUnit, _currentCslaObject, connectionString);
                 _dbSchemaPanel.BuildSchemaTree();
-                _frmGenerator.DbSchemaPanel = _dbSchemaPanel;
-                _frmGenerator.AddCtrlToMiddlePane(_dbSchemaPanel);
+                _mainForm.DbSchemaPanel = _dbSchemaPanel;
+                _mainForm.AddCtrlToMiddlePane(_dbSchemaPanel);
                 _dbSchemaPanel.SetDbColumnsPctHeight(73);
                 _dbSchemaPanel.SetDbTreeViewPctHeight(73);
             }
@@ -532,7 +532,7 @@ namespace CslaGenerator
                 _dbSchemaPanel.CslaObjectInfo = null;
 
             var selectedItems = new List<CslaObjectInfo>();
-            foreach (CslaObjectInfo obj in _frmGenerator.ProjectPanel.ListObjects.SelectedItems)
+            foreach (CslaObjectInfo obj in _mainForm.ProjectPanel.ListObjects.SelectedItems)
             {
                 selectedItems.Add(obj);
                 if (!IsLoading && _dbSchemaPanel != null)
@@ -549,15 +549,15 @@ namespace CslaGenerator
             }
 
             if (selectedItems.Count == 0)
-                _frmGenerator.PropertyGrid.SelectedObject = null;
+                _mainForm.PropertyGrid.SelectedObject = null;
             else
-                _frmGenerator.PropertyGrid.SelectedObject = new PropertyBag(selectedItems.ToArray(), _propertyContext);
+                _mainForm.PropertyGrid.SelectedObject = new PropertyBag(selectedItems.ToArray(), _propertyContext);
         }
 
         void ReloadBuilderPropertyGrid()
         {
             var selectedItems = new List<AssociativeEntity>();
-            var listBoxSelectedItems = _frmGenerator.ObjectRelationsBuilder.GetCurrentListBox().SelectedItems;
+            var listBoxSelectedItems = _mainForm.ObjectRelationsBuilder.GetCurrentListBox().SelectedItems;
 
             foreach (AssociativeEntity obj in listBoxSelectedItems)
             {
@@ -577,7 +577,7 @@ namespace CslaGenerator
                 if (_currentAssociativeEntitiy == null)
                     _currentAssociativeEntitiy = selectedItems[0];
             }
-            _frmGenerator.ObjectRelationsBuilder.SetAllPropertyGridSelectedObject(_currentAssociativeEntitiy);
+            _mainForm.ObjectRelationsBuilder.SetAllPropertyGridSelectedObject(_currentAssociativeEntitiy);
         }
 
         #endregion
