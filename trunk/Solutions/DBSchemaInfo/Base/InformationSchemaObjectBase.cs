@@ -7,20 +7,20 @@ namespace DBSchemaInfo.Base
         public InformationSchemaObjectBase(DataRow dr, ICatalog cat)
         {
             Catalog = cat;
-            ObjectName = dr[ISObjectName].ToString();
-            ObjectSchema = dr[ISObjectSchema].ToString();
-            ObjectCatalog = dr.IsNull(ISObjectCatalog) ? string.Empty : dr[ISObjectCatalog].ToString();
+            ObjectName = dr[IsObjectName].ToString();
+            ObjectSchema = dr[IsObjectSchema].ToString();
+            ObjectCatalog = dr.IsNull(IsObjectCatalog) ? string.Empty : dr[IsObjectCatalog].ToString();
         }
 
-        protected virtual string ISObjectName
+        protected virtual string IsObjectName
         {
             get { return "TABLE_NAME"; }
         }
-        protected virtual string ISObjectSchema
+        protected virtual string IsObjectSchema
         {
             get { return "TABLE_SCHEMA"; }
         }
-        protected virtual string ISObjectCatalog
+        protected virtual string IsObjectCatalog
         {
             get { return "TABLE_CATALOG"; }
         }
@@ -33,7 +33,7 @@ namespace DBSchemaInfo.Base
 
         public string ObjectDescription { get; set; }
 
-        public ICatalog Catalog { get; private set; }
+        public ICatalog Catalog { get; set; }
 
         public abstract void Reload(bool throwOnError);
 
