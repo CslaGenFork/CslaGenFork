@@ -205,13 +205,12 @@ namespace CslaGenerator
             {
                 Cursor.Current = Cursors.WaitCursor;
                 fs = File.Open(fileName, FileMode.Open);
-                XmlSerializer s = new XmlSerializer(typeof(CslaGeneratorUnit));
+                var s = new XmlSerializer(typeof(CslaGeneratorUnit));
                 CurrentUnit = (CslaGeneratorUnit)s.Deserialize(fs);
                 _currentUnit.ResetParent();
                 _currentCslaObject = null;
                 _currentAssociativeEntitiy = null;
                 _currentFilePath = GetFilePath(fileName);
-                BindControls();
 
                 ConnectionFactory.ConnectionString = _currentUnit.ConnectionString;
                 // check if this is a valid connection, else let the user enter new connection info
@@ -235,8 +234,9 @@ namespace CslaGenerator
                     }
                 }
 
+                BindControls();
                 _currentUnit.CslaObjects.ListChanged += CslaObjects_ListChanged;
-                foreach (CslaObjectInfo info in _currentUnit.CslaObjects)
+                foreach (var info in _currentUnit.CslaObjects)
                 {
                     info.InheritedType.Parent = info;
                 }

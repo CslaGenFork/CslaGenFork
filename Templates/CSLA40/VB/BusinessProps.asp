@@ -1,7 +1,13 @@
 <%
+bool useParentReference;
+useParentReference = (Info.ObjectType == CslaObjectType.DynamicEditableRoot) &&
+    Info.AddParentReference;
+
 IndentLevel = 2;
 bool isReadOnly = (Info.ObjectType == CslaObjectType.ReadOnlyObject);
 %>
+<!-- #include file="InternalProps.asp" -->
+
         #region Business Properties
         <%
 foreach (ValueProperty prop in Info.AllValueProperties)
@@ -55,26 +61,26 @@ foreach (ValueProperty prop in Info.AllValueProperties)
             %>
 
         /// <summary>
-        /// Gets <%= useSetter ? "or sets " : "" %>the <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.ValueProperty.SplitOnCaps(prop.Name) %>.
+        /// Gets <%= useSetter ? "or sets " : "" %>the <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>.
         /// </summary>
         <%
         }
         if (prop.PropertyType == TypeCodeEx.Boolean && prop.Nullable == false)
         {
             %>
-        /// <value><c>true</c> if <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.ValueProperty.SplitOnCaps(prop.Name) %>; otherwise, <c>false</c>.</value>
+        /// <value><c>true</c> if <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; otherwise, <c>false</c>.</value>
         <%
         }
         else if (prop.PropertyType == TypeCodeEx.Boolean && prop.Nullable == true)
         {
             %>
-        /// <value><c>true</c> if <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.ValueProperty.SplitOnCaps(prop.Name) %>; <c>false</c> if not <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.ValueProperty.SplitOnCaps(prop.Name) %>; otherwise, <c>null</c>.</value>
+        /// <value><c>true</c> if <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; <c>false</c> if not <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; otherwise, <c>null</c>.</value>
         <%
         }
         else
         {
             %>
-        /// <value>The <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.ValueProperty.SplitOnCaps(prop.Name) %>.</value>
+        /// <value>The <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>.</value>
         <%
         }
         if (prop.Remarks != String.Empty)
@@ -108,35 +114,15 @@ foreach (ValueProperty prop in Info.AllValueProperties)
         {
             if (prop.PropertyType != TypeCodeEx.ByteArray)
             {
-                // empty
+                %>
+                // legacy 1
+        <%
             }
             else
             {
                 %>
-                bool setNewValue = false;
-                if (value != null && <%=FormatFieldName(prop.Name)%> == null)
-                    setNewValue = true;
-                if (!setNewValue && value != null && <%=FormatFieldName(prop.Name)%> != null)
-                {
-                    if (<%=FormatFieldName(prop.Name)%>.Length != value.Length)
-                    {
-                        setNewValue = true;
-                    }
-                    else
-                    {
-                        for (int i=0; i < value.Length; i++)
-                        {
-                            if (value[i] != <%=FormatFieldName(prop.Name)%>[i])
-                            {
-                                setNewValue = true;
-                                break;
-                            }
-                        }
-                    }
-                }
-                if (setNewValue)
-                {
-                    <%
+                // legacy 2
+        <%
             }
         }
     }
@@ -171,9 +157,9 @@ foreach (ChildProperty prop in Info.GetMyChildProperties())
         %>
 
         /// <summary>
-        /// Gets the <%= CslaGenerator.Metadata.ValueProperty.SplitOnCaps(prop.Name) %> (<%= (prop.LoadingScheme == LoadingScheme.ParentLoad) ? "\"parent load\" " : (prop.LazyLoad ? "\"lazy load\" " : "\"self load\" ") %>child property).
+        /// Gets the <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %> (<%= (prop.LoadingScheme == LoadingScheme.ParentLoad) ? "\"parent load\" " : (prop.LazyLoad ? "\"lazy load\" " : "\"self load\" ") %>child property).
         /// </summary>
-        /// <value>The <%= CslaGenerator.Metadata.ValueProperty.SplitOnCaps(prop.Name) %>.</value>
+        /// <value>The <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>.</value>
         <%
     }
     if (prop.Remarks != String.Empty)
@@ -229,9 +215,9 @@ foreach (UnitOfWorkProperty prop in Info.UnitOfWorkCollectionProperties)
         %>
 
         /// <summary>
-        /// Gets the <%= CslaGenerator.Metadata.ValueProperty.SplitOnCaps(prop.Name) %> object (unit of work child property).
+        /// Gets the <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %> object (unit of work child property).
         /// </summary>
-        /// <value>The <%= CslaGenerator.Metadata.ValueProperty.SplitOnCaps(prop.Name) %>.</value>
+        /// <value>The <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>.</value>
         <%
     }
     if (prop.Remarks != String.Empty)

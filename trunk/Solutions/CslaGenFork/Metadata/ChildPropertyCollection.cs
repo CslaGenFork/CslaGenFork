@@ -6,7 +6,7 @@ namespace CslaGenerator.Metadata
     {
         public ChildProperty Find(string name)
         {
-            foreach (ChildProperty c in this)
+            foreach (var c in this)
             {
                 if (c.Name.Equals(name))
                     return c;
@@ -16,7 +16,7 @@ namespace CslaGenerator.Metadata
 
         public ChildProperty FindType(string typeName)
         {
-            foreach (ChildProperty c in this)
+            foreach (var c in this)
             {
                 if (c.TypeName.Equals(typeName))
                     return c;

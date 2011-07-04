@@ -137,7 +137,7 @@ namespace CslaGenerator.Metadata
                 }
                 return _parameterName;
             }
-            set { _parameterName = value; }
+            set { _parameterName = PropertyHelper.Tidy(value); }
         }
 
         #endregion
@@ -151,6 +151,7 @@ namespace CslaGenerator.Metadata
             get { return base.Name; }
             set
             {
+                value = PropertyHelper.Tidy(value);
                 PropertyNameChangedEventArgs e;
                 e = new PropertyNameChangedEventArgs(base.Name, value);
                 base.Name = value;
@@ -168,12 +169,12 @@ namespace CslaGenerator.Metadata
             get
             {
                 if (string.IsNullOrEmpty(_friendlyName))
-                    return SplitOnCaps(base.Name);
+                    return PropertyHelper.SplitOnCaps(base.Name);
                 return _friendlyName;
             }
             set
             {
-                if (value != null && !value.Equals(SplitOnCaps(base.Name)))
+                if (value != null && !value.Equals(PropertyHelper.SplitOnCaps(base.Name)))
                     _friendlyName = value;
                 else
                     _friendlyName = string.Empty;
@@ -229,7 +230,7 @@ namespace CslaGenerator.Metadata
         public virtual string DefaultValue
         {
             get { return _defaultValue; }
-            set { _defaultValue = value; }
+            set { _defaultValue = PropertyHelper.TidyAllowSpaces(value); }
         }
 
         [Category("01. Definition")]
@@ -246,27 +247,19 @@ namespace CslaGenerator.Metadata
         #region 02. Advanced
 
         [Category("02. Advanced")]
-        [Description("This is a description.")]
-        public virtual string Implements
-        {
-            get { return _implements; }
-            set
-            {
-                if (value != null)
-                    _implements = value;
-            }
-        }
-
-        [Category("02. Advanced")]
         [Description("The attributes you want to add to this property.")]
         public virtual string[] Attributes
         {
             get { return _attributes; }
-            set
-            {
-                if (value != null)
-                    _attributes = value;
-            }
+            set { _attributes = PropertyHelper.TidyAllowSpaces(value); }
+        }
+
+        [Category("02. Advanced")]
+        [Description("This is a description.")]
+        public virtual string Implements
+        {
+            get { return _implements; }
+            set { _implements = PropertyHelper.Tidy(value); }
         }
 
         #endregion
@@ -279,11 +272,7 @@ namespace CslaGenerator.Metadata
         public virtual string AllowReadRoles
         {
             get { return _allowReadRoles; }
-            set
-            {
-                if (value != null)
-                    _allowReadRoles = value;
-            }
+            set { _allowReadRoles = PropertyHelper.TidyAllowSpaces(value); }
         }
 
         [Category("03. Authorization")]
@@ -292,11 +281,7 @@ namespace CslaGenerator.Metadata
         public virtual string AllowWriteRoles
         {
             get { return _allowWriteRoles; }
-            set
-            {
-                if (value != null)
-                    _allowWriteRoles = value;
-            }
+            set { _allowWriteRoles = PropertyHelper.TidyAllowSpaces(value); }
         }
 
         [Category("03. Authorization")]
@@ -305,11 +290,7 @@ namespace CslaGenerator.Metadata
         public virtual string DenyReadRoles
         {
             get { return _denyReadRoles; }
-            set
-            {
-                if (value != null)
-                    _denyReadRoles = value;
-            }
+            set { _denyReadRoles = PropertyHelper.TidyAllowSpaces(value); }
         }
 
         [Category("03. Authorization")]
@@ -318,11 +299,7 @@ namespace CslaGenerator.Metadata
         public virtual string DenyWriteRoles
         {
             get { return _denyWriteRoles; }
-            set
-            {
-                if (value != null)
-                    _denyWriteRoles = value;
-            }
+            set { _denyWriteRoles = PropertyHelper.TidyAllowSpaces(value); }
         }
 
         #endregion
@@ -375,17 +352,6 @@ namespace CslaGenerator.Metadata
         #endregion
 
         #endregion
-
-        public static string SplitOnCaps(string name)
-        {
-            var mc = System.Text.RegularExpressions.Regex.Matches(name, @"(\P{Lu}+)|(\p{Lu}+\P{Lu}*)");
-            var parts = new string[mc.Count];
-            for (var i = 0; i < mc.Count; i++)
-            {
-                parts[i] = mc[i].ToString();
-            }
-            return string.Join(" ", parts);
-        }
 
         [field: NonSerialized]
         public event PropertyNameChanged Changed;

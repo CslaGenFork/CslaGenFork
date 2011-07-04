@@ -29,7 +29,7 @@ if (!Info.UseCustomLoading)
                 }
             }
         }
-        if (Info.ConvertValueProperties.Count > 0)
+        if (plainConvertProperties.Count > 0)
         {
             %>ConvertPropertiesOnRead();
             <%

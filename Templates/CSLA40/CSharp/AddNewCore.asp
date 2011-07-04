@@ -96,4 +96,6 @@ if (UseBoth())
 %>
 
         #endregion
-<% %>
+
+<%
+%>

@@ -8,7 +8,7 @@
         {
         <% if (Info.GetRoles.Trim() != String.Empty) { %>
             <% String[] getRoles = System.Text.RegularExpressions.Regex.Split(Info.GetRoles, ";");
-            foreach(String role in getRoles)
+            foreach (String role in getRoles)
             { %>
             if (Csla.ApplicationContext.User.IsInRole("<%=role.Trim()%>"))
                 return true;
@@ -29,7 +29,7 @@
         {
         <% if (Info.DeleteRoles.Trim() != String.Empty) { %>
             <% String[] deleteRoles = System.Text.RegularExpressions.Regex.Split(Info.DeleteRoles, ";");
-            foreach(String role in deleteRoles)
+            foreach (String role in deleteRoles)
             { %>
             if (Csla.ApplicationContext.User.IsInRole("<%=role.Trim()%>"))
                 return true;
@@ -47,7 +47,7 @@
         {
         <% if (Info.NewRoles.Trim() != String.Empty) { %>
             <% String[] newRoles = System.Text.RegularExpressions.Regex.Split(Info.NewRoles, ";");
-            foreach(String role in newRoles)
+            foreach (String role in newRoles)
             { %>
             if (Csla.ApplicationContext.User.IsInRole("<%=role.Trim()%>"))
                 return true;
@@ -65,7 +65,7 @@
         {
         <% if (Info.UpdateRoles.Trim() != String.Empty) { %>
             <% String[] updateRoles = System.Text.RegularExpressions.Regex.Split(Info.UpdateRoles, ";");
-            foreach(String role in updateRoles)
+            foreach (String role in updateRoles)
             { %>
             if (Csla.ApplicationContext.User.IsInRole("<%=role.Trim()%>"))
                 return true;

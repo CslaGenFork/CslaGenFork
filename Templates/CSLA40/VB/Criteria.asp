@@ -117,26 +117,26 @@ if (GetCriteriaObjects(Info).Count > 0)
                     {
                         %>
             /// <summary>
-            /// Gets <%= (prop.ReadOnly ? "" : "or sets ") %>the <%= CslaGenerator.Metadata.ValueProperty.SplitOnCaps(prop.Name) %>.
+            /// Gets <%= (prop.ReadOnly ? "" : "or sets ") %>the <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>.
             /// </summary>
             <%
                     }
                     if(prop.PropertyType == TypeCodeEx.Boolean && prop.Nullable == false)
                     {
                         %>
-            /// <value><c>true</c> if <%= CslaGenerator.Metadata.ValueProperty.SplitOnCaps(prop.Name) %>; otherwise, <c>false</c>.</value>
+            /// <value><c>true</c> if <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; otherwise, <c>false</c>.</value>
             <%
                     }
                     else if(prop.PropertyType == TypeCodeEx.Boolean && prop.Nullable == true)
                     {
                         %>
-            /// <value><c>true</c> if <%= CslaGenerator.Metadata.ValueProperty.SplitOnCaps(prop.Name) %>; <c>false</c> if not <%= CslaGenerator.Metadata.ValueProperty.SplitOnCaps(prop.Name) %>; otherwise, <c>null</c>.</value>
+            /// <value><c>true</c> if <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; <c>false</c> if not <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; otherwise, <c>null</c>.</value>
             <%
                     }
                     else
                     {
                         %>
-            /// <value>The <%= CslaGenerator.Metadata.ValueProperty.SplitOnCaps(prop.Name) %>.</value>
+            /// <value>The <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>.</value>
             <%
                     }
                     if (prop.Remarks != string.Empty)

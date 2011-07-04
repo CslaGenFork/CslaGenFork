@@ -30,8 +30,10 @@ namespace CslaGenerator.Metadata
         private ObjectRelationType _relationType;
         private string _objectName = "AssociativeEntity";
         private string _mainObject;
+        private string _mainPropertyName;
         private CriteriaPropertyCollection _mainLoadProperties = new CriteriaPropertyCollection();
         private string _secondaryObject;
+        private string _secondaryPropertyName;
         private CriteriaPropertyCollection _secondaryLoadProperties = new CriteriaPropertyCollection();
         private string _validationError;
 
@@ -95,9 +97,9 @@ namespace CslaGenerator.Metadata
             get { return _objectName; }
             set
             {
+                value = PropertyHelper.TidyAllowSpaces(value);
                 if (_objectName != value)
                 {
-                    value = value.Trim().Replace("  ", " ");
                     if (!string.IsNullOrEmpty(value))
                     {
                         _objectName = value;
@@ -140,7 +142,11 @@ namespace CslaGenerator.Metadata
         [Category("02. Primary Entity Definition")]
         [Description("The name of the primary entity's property for the child collection.")]
         [UserFriendlyName("Primary Property Name")]
-        public string MainPropertyName { get; set; }
+        public string MainPropertyName
+        {
+            get { return _mainPropertyName; }
+            set { _mainPropertyName = PropertyHelper.Tidy(value); }
+        }
 
         [Category("02. Primary Entity Definition")]
         [Description("The child collection's Type name.")]
@@ -231,7 +237,11 @@ namespace CslaGenerator.Metadata
         [Category("04. Secondary Entity Definition")]
         [Description("The name of the secondary entity's property for the child collection.")]
         [UserFriendlyName("Secondary Property Name")]
-        public string SecondaryPropertyName { get; set; }
+        public string SecondaryPropertyName
+        {
+            get { return _secondaryPropertyName; }
+            set { _secondaryPropertyName = PropertyHelper.Tidy(value); }
+        }
 
         [Category("04. Secondary Entity Definition")]
         [Description("The child collection's Type name.")]

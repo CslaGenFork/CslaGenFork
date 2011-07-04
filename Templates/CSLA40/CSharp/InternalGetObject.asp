@@ -26,8 +26,16 @@ if (!Info.UseCustomLoading)
         /// Factory method. Loads an existing <see cref="<%= Info.ObjectName %>"/> object from the given SafeDataReader.
         /// </summary>
         /// <param name="dr">The SafeDataReader to use.</param>
+        <%
+        if (useParentReference)
+        {
+            %>
+        /// <param name="parentList">The parent list reference.</param>
+        <%
+        }
+        %>
         /// <returns>A reference to the fetched <see cref="<%= Info.ObjectName %>"/> object.</returns>
-        internal static <%= Info.ObjectName %> Get<%= Info.ObjectName %>(SafeDataReader dr)
+        internal static <%= Info.ObjectName %> Get<%= Info.ObjectName %>(SafeDataReader dr<%= useParentReference ? (", " + Info.ParentType + " parentList") : "" %>)
         {
             <%
             if (authzInfo.GetRoles.Trim() != String.Empty &&
@@ -62,6 +70,11 @@ if (!Info.UseCustomLoading)
             if (LoadsChildren(Info))
             {
                 %>obj.FetchChildren(dr);
+            <%
+            }
+            if (useParentReference)
+            {
+                %>obj.ParentList = parentList;
             <%
             }
             if (Info.ObjectType != CslaObjectType.ReadOnlyObject && !IsCollectionType(Info.ObjectType))

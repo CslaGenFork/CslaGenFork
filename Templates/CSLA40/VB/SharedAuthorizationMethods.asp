@@ -74,7 +74,7 @@ if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
             %>
             BusinessRules.AddRule(typeof(<%= Info.ObjectName %>), new Is<%= allowOrDeny %>InRole(AuthorizationActions.CreateObject<%
             String[] newRoles = System.Text.RegularExpressions.Regex.Split(infoNewRoles, ";");
-            foreach(String role in newRoles)
+            foreach (String role in newRoles)
             {
                 %>, "<%= role.Trim() %>"<%
             }
@@ -93,7 +93,7 @@ if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
             %>
             BusinessRules.AddRule(typeof(<%= Info.ObjectName %>), new Is<%= allowOrDeny %>InRole(AuthorizationActions.GetObject<%
             String[] getRoles = System.Text.RegularExpressions.Regex.Split(infoGetRoles, ";");
-            foreach(String role in getRoles)
+            foreach (String role in getRoles)
             {
                 %>, "<%= role.Trim() %>"<%
             }
@@ -112,7 +112,7 @@ if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
             %>
             BusinessRules.AddRule(typeof(<%= Info.ObjectName %>), new Is<%= allowOrDeny %>InRole(AuthorizationActions.EditObject<%
             String[] updateRoles = System.Text.RegularExpressions.Regex.Split(infoUpdateRoles, ";");
-            foreach(String role in updateRoles)
+            foreach (String role in updateRoles)
             {
                 %>, "<%= role.Trim() %>"<%
             }
@@ -131,7 +131,7 @@ if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
             %>
             BusinessRules.AddRule(typeof(<%= Info.ObjectName %>), new Is<%= allowOrDeny %>InRole(AuthorizationActions.DeleteObject<%
             String[] deleteRoles = System.Text.RegularExpressions.Regex.Split(infoDeleteRoles, ";");
-            foreach(String role in deleteRoles)
+            foreach (String role in deleteRoles)
             {
                 %>, "<%= role.Trim() %>"<%
             }

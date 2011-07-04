@@ -1,8 +1,10 @@
 using System;
 using System.ComponentModel;
+using System.Drawing.Design;
 using System.IO;
 using System.Xml.Serialization;
 using CslaGenerator.Attributes;
+using CslaGenerator.Design;
 
 namespace CslaGenerator.Metadata
 {
@@ -63,10 +65,15 @@ namespace CslaGenerator.Metadata
             get { return _baseName; }
             set
             {
+                value = PropertyHelper.Tidy(value);
+                _baseName = value;
+
                 if (value != null && (base.Name.Equals(_baseName + "Name") || string.IsNullOrEmpty(base.Name)))
                     base.Name = value + "Name";
-
-                _baseName = value;
+                if (value != null && GeneratorController.Current.CurrentUnit != null && string.IsNullOrEmpty(_sourcePropertyName))
+                    _sourcePropertyName = CheckSourceProperty(_baseName + "ID");
+                if (value != null && GeneratorController.Current.CurrentUnit != null && string.IsNullOrEmpty(_nvlConverter))
+                    _nvlConverter = CheckNVLConverter(_baseName + "NVL.Get" + _baseName + "NVL");
             }
 
         }
@@ -76,7 +83,12 @@ namespace CslaGenerator.Metadata
         public override string Name
         {
             get { return base.Name; }
-            set { base.Name = value; }
+            set
+            {
+                value = PropertyHelper.Tidy(value);
+                if (value != base.Name)
+                    base.Name = value; 
+            }
         }
 
         // Hide ParameterName
@@ -129,43 +141,81 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("06. Conversion")]
+        [Editor(typeof(SourcePropertyTypeEditor), typeof(UITypeEditor))]
         [Description("The property that feeds the conversion (convert from).\r\nAutomatic filling uses the Base Name.")]
-        [UserFriendlyName("Source Property Name")]
+        [UserFriendlyName("Source Property Type")]
         public string SourcePropertyName
         {
-            get
-            {
-                if (string.IsNullOrEmpty(_sourcePropertyName) && !string.IsNullOrEmpty(_baseName))
-                    return _baseName + "ID";
-                return _sourcePropertyName;
-            }
+            get { return _sourcePropertyName; }
             set
             {
-                if (value != null && !value.Equals(_baseName + "ID"))
-                    _sourcePropertyName = value;
-                else
-                    _sourcePropertyName = string.Empty;
+                _sourcePropertyName = value;
             }
         }
 
         [Category("06. Conversion")]
-        [Description("The class that takes care of the conversion.\r\nAutomatic filling uses the Base Name.")]
+        [Editor(typeof(NVLTypeEditor), typeof(UITypeEditor))]
+        [Description("The NVL class that takes care of the conversion.\r\nAutomatic filling uses the Base Name.")]
         [UserFriendlyName("NVL Converter Class")]
         public string NVLConverter
         {
-            get
+            get { return _nvlConverter; }
+            set { _nvlConverter = value; }
+        }
+
+        private string CheckSourceProperty(string candidate)
+        {
+            var empty = string.Empty;
+            var props = ((CslaObjectInfo)GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem).GetAllValueProperties();
+            foreach (var prop in props)
             {
-                if (string.IsNullOrEmpty(_nvlConverter) && !string.IsNullOrEmpty(_baseName))
-                    return _baseName + "NVL.Get"+_baseName+"NVL()";
-                return _nvlConverter;
+                if (prop.PropertyType == TypeCodeEx.Int16 || prop.PropertyType == TypeCodeEx.Int32 || prop.PropertyType == TypeCodeEx.Int64 ||
+                    prop.PropertyType == TypeCodeEx.UInt16 || prop.PropertyType == TypeCodeEx.UInt32 || prop.PropertyType == TypeCodeEx.UInt64 ||
+                    prop.PropertyType == TypeCodeEx.SByte)
+                {
+                    if (prop.Name == candidate)
+                    {
+                        base.PropertyType =TypeCodeEx.String;
+                        base.ReadOnly = prop.ReadOnly;
+                        return candidate;
+                    }
+                }
             }
-            set
+            return empty;
+        }
+
+        private string CheckNVLConverter(string candidate)
+        {
+            var empty = string.Empty;
+            foreach (var o in GeneratorController.Current.CurrentUnit.CslaObjects)
             {
-                if (value != null && !value.Equals(_baseName + "NVL.Get" + _baseName + "NVL()"))
-                    _nvlConverter = value;
-                else
-                    _nvlConverter = string.Empty;
+                if (o.ObjectType == CslaObjectType.NameValueList)
+                {
+                    var prefix = string.Empty;
+                    var objectNamespace = ((CslaObjectInfo)GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem).ObjectNamespace;
+                    if (objectNamespace != o.ObjectNamespace)
+                    {
+                        var idx = objectNamespace.IndexOf(o.ObjectNamespace);
+                        if (idx == 0)
+                        {
+                            prefix = objectNamespace.Substring(o.ObjectNamespace.Length + 1) + ".";
+                        }
+                        else if (idx == -1)
+                        {
+                            idx = o.ObjectNamespace.IndexOf(objectNamespace);
+                            if (idx == 0)
+                                prefix = o.ObjectNamespace.Substring(objectNamespace.Length + 1) + ".";
+                        }
+                        else
+                        {
+                            prefix = o.ObjectNamespace + ".";
+                        }
+                    }
+                    if (prefix + o.ObjectName + ".Get" + o.ObjectName == candidate)
+                        return candidate;
+                }
             }
+            return empty;
         }
 
         public override object Clone()
