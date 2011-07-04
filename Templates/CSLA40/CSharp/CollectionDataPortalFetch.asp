@@ -222,7 +222,7 @@ if (!Info.UseCustomLoading)
         %>
             while (dr.Read())
             {
-                <%= Info.ItemType %> obj = <%= Info.ItemType %>.Get<%= Info.ItemType %>(dr);
+                <%= Info.ItemType %> obj = <%= Info.ItemType %>.Get<%= Info.ItemType %>(dr<%= useParentReference ? (", this") : "" %>);
                 Add(obj);
             }
             <%

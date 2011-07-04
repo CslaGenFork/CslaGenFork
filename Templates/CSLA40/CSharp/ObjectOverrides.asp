@@ -9,9 +9,7 @@ if (Info.ToStringProperty != null && Info.ToStringProperty.Count > 0 &&
         /// <summary>
         /// Returns a string that represents the current <see cref="<%= Info.ObjectName %>"/>
         /// </summary>
-        /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
-        /// </returns>
+        /// <returns>A <see cref="System.String"/> that represents this instance.</returns>
         public override string ToString()
         {
             // Return the Primary Key as a string

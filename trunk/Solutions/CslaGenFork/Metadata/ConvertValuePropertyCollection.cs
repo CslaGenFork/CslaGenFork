@@ -7,7 +7,7 @@ namespace CslaGenerator.Metadata
     {
         public ConvertValueProperty Find(string name)
         {
-            foreach (ConvertValueProperty c in this)
+            foreach (var c in this)
             {
                 if (c.Name.Equals(name))
                     return c;
@@ -17,7 +17,7 @@ namespace CslaGenerator.Metadata
 
         public ConvertValueProperty FindType(string typeName)
         {
-            foreach (ConvertValueProperty c in this)
+            foreach (var c in this)
             {
                 if (c.Name.Equals(typeName))
                     return c;

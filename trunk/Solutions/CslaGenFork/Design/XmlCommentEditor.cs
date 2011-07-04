@@ -1,8 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
+using CslaGenerator.Metadata;
+using DBSchemaInfo.Base;
 
 namespace CslaGenerator.Design
 {
@@ -28,8 +31,33 @@ namespace CslaGenerator.Design
                     if (((Util.PropertyBags.ValuePropertyBag)context.Instance).SelectedObject[0].Summary.Trim() == string.Empty &&
                         ((Util.PropertyBags.ValuePropertyBag)context.Instance).SelectedObject[0].DbBindColumn.Column.ColumnDescription.Trim() != string.Empty)
                     {
-                        // return ColumnDescription
                         return ((Util.PropertyBags.ValuePropertyBag)context.Instance).SelectedObject[0].DbBindColumn.Column.ColumnDescription;
+                    }
+                }
+
+                // check property is Class Summary and context.Instance is PropertyBag
+                if (context.PropertyDescriptor.Name == "Class Summary" &&
+                    context.Instance is Util.PropertyBags.PropertyBag)
+                {
+                    if (((Util.PropertyBags.PropertyBag)context.Instance).SelectedObject[0].ClassSummary.Trim() == string.Empty)
+                    {
+                        var tableDescriptions = new List<string>();
+                        foreach (var prop in ((Util.PropertyBags.PropertyBag)context.Instance).SelectedObject[0].ValueProperties)
+                        {
+                            var description = prop.DbBindColumn.DatabaseObject.ObjectDescription;
+                            if (description != string.Empty && !tableDescriptions.Contains(description))
+                                    tableDescriptions.Add(description);
+                        }
+
+                        var result = string.Empty;
+                        bool first = true;
+                        foreach (var description in tableDescriptions)
+                        {
+                            result += (!first ? Environment.NewLine : "") + description;
+                            first = false;
+                        }
+
+                        return result;
                     }
                 }
             }

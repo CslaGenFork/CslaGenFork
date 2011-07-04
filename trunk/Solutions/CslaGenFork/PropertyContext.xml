@@ -562,7 +562,7 @@
     <add key="DynamicEditableRoot:AllowNew" value="false" />
     <add key="DynamicEditableRoot:AllowEdit" value="false" />
     <add key="DynamicEditableRoot:AllowRemove" value="false" />
-    <add key="DynamicEditableRoot:AddParentReference" value="false" />
+    <add key="DynamicEditableRoot:AddParentReference" value="true" />
     <add key="DynamicEditableRoot:GenerateDataPortalInsert" value="true" />
     <add key="DynamicEditableRoot:GenerateDataPortalUpdate" value="true" />
     <add key="DynamicEditableRoot:GenerateDataPortalDelete" value="true" />

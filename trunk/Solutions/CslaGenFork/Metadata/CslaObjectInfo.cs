@@ -131,9 +131,6 @@ namespace CslaGenerator.Metadata
 
         #region 00. Generate Options
 
-        /// <summary>
-        /// Whether or not this object should be generated.
-        /// </summary>
         [Category("00. Generate Options")]
         [Description("Whether or not this object should be generated.")]
         [UserFriendlyName("Generate Object")]
@@ -149,9 +146,6 @@ namespace CslaGenerator.Metadata
             }
         }
 
-        /// <summary>
-        /// Whether or not to generate factory methods for this object.
-        /// </summary>
         [Category("00. Generate Options")]
         [Description("Whether or not to generate factory methods for this object.")]
         [UserFriendlyName("Generate Factory Methods")]
@@ -219,9 +213,7 @@ namespace CslaGenerator.Metadata
             }
             set { _generateDataPortalDelete = value; }
         }
-        /// <summary>
-        /// Whether or not to generate stored procedures for this object when it is run in the master template.
-        /// </summary>
+
         [Category("00. Generate Options")]
         [Description("Whether or not to generate stored procedures for this object.")]
         [UserFriendlyName("Generate Stored Procedures")]
@@ -240,9 +232,6 @@ namespace CslaGenerator.Metadata
             set { _dataSetLoadingScheme = value; }
         }
 
-        /// <summary>
-        /// Whether or not to generate DataPortal_ / Child_ Fetch methods. If True these methods are not generated so that you can create a custom loading scheme.
-        /// </summary>
         [Category("00. Generate Options")]
         [Description("Whether or not to generate DataPortal_ / Child_ Fetch methods. If True these methods are not generated so that you can create a custom loading scheme.")]
         [UserFriendlyName("Use Custom Loading")]
@@ -252,9 +241,6 @@ namespace CslaGenerator.Metadata
             set { _useCustomLoading = value; }
         }
 
-        /// <summary>
-        /// Whether or not to check rules on DataPortal_ / Child_ Fetch methods. This invokes all business (validation) rules for the business type.
-        /// </summary>
         [Category("00. Generate Options")]
         [Description("Whether or not to check rules on DataPortal_ / Child_ Fetch methods. This invokes all business (validation) rules for the business type.")]
         [UserFriendlyName("Check Rules On Fetch")]
@@ -277,9 +263,6 @@ namespace CslaGenerator.Metadata
 
         #region 01. Common Options
 
-        /// <summary>
-        /// The type of Csla object to create, e.g EditableRoot, EditableChild, etc...
-        /// </summary>
         [Category("01. Common Options")]
         [Description("The type of Csla object to create, e.g EditableRoot, EditableChild, etc...")]
         [UserFriendlyName("Csla Object Type")]
@@ -322,9 +305,6 @@ namespace CslaGenerator.Metadata
             }
         }
 
-        /// <summary>
-        /// The class name of the Csla object.
-        /// </summary>
         [Category("01. Common Options")]
         [Description("The class name of the Csla object.")]
         [UserFriendlyName("Object Name")]
@@ -333,6 +313,7 @@ namespace CslaGenerator.Metadata
             get { return _objectName; }
             set
             {
+                value = PropertyHelper.Tidy(value);
                 if (_objectName != value)
                 {
                     _objectName = value;
@@ -343,42 +324,26 @@ namespace CslaGenerator.Metadata
             }
         }
 
-        /// <summary>
-        /// The Namespace the object will exist in.
-        /// </summary>
         [Category("01. Common Options")]
         [Description("The Namespace the object will exist in.")]
         [UserFriendlyName("Object Namespace")]
         public string ObjectNamespace
         {
             get { return _objectNamespace; }
-            set
-            {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
-                _objectNamespace = value;
-            }
+            set { _objectNamespace = PropertyHelper.Tidy(value); }
         }
 
-        /// <summary>
-        /// The class summary documentation for the object.
-        /// </summary>
         [Category("01. Common Options")]
-        [Description("Class Summary documentation for the object. This shows before the automatic Csla stereotype.")]
+        [Description("Class Summary documentation for the object. This shows before the automatic Csla stereotype.\r\n" +
+            "Clear, close and re-open to fetch the table descriptions.")]
         [Editor(typeof(XmlCommentEditor), typeof(UITypeEditor))]
         [UserFriendlyName("Class Summary")]
         public string ClassSummary
         {
             get { return _classSummary; }
-            set
-            {
-                value = value.Trim().Replace("  ", " ").Replace("\n\n", "\n").Replace("\n", "\r\n");
-                _classSummary = value;
-            }
+            set { _classSummary = PropertyHelper.TidyXML(value); }
         }
 
-        /// <summary>
-        /// The class summary documentation for the object.
-        /// </summary>
         [Category("01. Common Options")]
         [Description("Class Remarks documentation for the object. This shows before the automatic remarks.")]
         [Editor(typeof(XmlCommentEditor), typeof(UITypeEditor))]
@@ -386,11 +351,7 @@ namespace CslaGenerator.Metadata
         public string ClassRemarks
         {
             get { return _classRemarks; }
-            set
-            {
-                value = value.Trim().Replace("  ", " ").Replace("\n\n", "\n").Replace("\n", "\r\n");
-                _classRemarks = value;
-            }
+            set { _classRemarks = PropertyHelper.TidyXML(value); }
         }
 
         [Category("01. Common Options")]
@@ -399,28 +360,16 @@ namespace CslaGenerator.Metadata
         public string[] Namespaces
         {
             get { return _namespaces; }
-            set
-            {
-                if (value != null)
-                    _namespaces = value;
-            }
+            set { _namespaces = PropertyHelper.Tidy(value); }
         }
 
-        /// <summary>
-        /// Gets or sets the attributes you want to add to this class.
-        /// </summary>
-        /// <value>The attributes.</value>
         [Category("01. Common Options")]
         [Description("The attributes you want to add to this class.")]
         [UserFriendlyName("Attributes")]
         public string[] Attributes
         {
             get { return _attributes; }
-            set
-            {
-                if (value != null)
-                    _attributes = value;
-            }
+            set { _attributes = PropertyHelper.TidyAllowSpaces(value); }
         }
 
         [Category("01. Common Options")]
@@ -429,21 +378,11 @@ namespace CslaGenerator.Metadata
         public string[] Implements
         {
             get { return _implements; }
-            set
-            {
-                if (value != null)
-                    _implements = value;
-            }
+            set { _implements = PropertyHelper.Tidy(value); }
         }
 
-        /// <summary>
-        /// The type that this object inherits from.  You can either select
-        /// an object defined in the current project or an object defined
-        /// in another assembly.  The object you inherit from must inherit
-        /// from a valid Csla base object.
-        /// </summary>
         [Category("01. Common Options")]
-        [Description("The type that this object inherits from.  You can either select an object defined in the current project or an object defined in another assembly.  The object you inherit from must inherit from a valid Csla base object.")]
+        [Description("The type that this object inherits from. You can either select an object defined in the current project or an object defined in another assembly.  The object you inherit from must inherit from a valid Csla base object.")]
         [Editor(typeof(ObjectEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(TypeInfoConverter))]
         [UserFriendlyName("Inherited Type")]
@@ -458,16 +397,12 @@ namespace CslaGenerator.Metadata
                         _inheritedType.TypeChanged -= InheritedType_TypeChanged;
                     _inheritedType = value;
                     _inheritedType.TypeChanged += InheritedType_TypeChanged;
-                    //SetInheritedProperties(_inheritedType);
                 }
             }
         }
 
-        /// <summary>
-        /// Wheter the constructor is private, protected, etc... Defaults to private.
-        /// </summary>
         [Category("01. Common Options")]
-        [Description("Wheter the constructor is private, protected, etc. The default is \"private\".")]
+        [Description("Wheter the class constructor is private, protected, etc. The default is \"private\".")]
         [UserFriendlyName("Constructor's Visibility")]
         public ConstructorVisibility ConstructorVisibility
         {
@@ -481,33 +416,23 @@ namespace CslaGenerator.Metadata
         public string Folder
         {
             get { return _folder; }
-            set { _folder = value; }
+            set { _folder = PropertyHelper.TidyAllowSpaces(value); }
         }
 
-        /// <summary>
-        /// The name of the source file for the object.
-        /// If no file extension is given, it default to .cs.
-        /// </summary>
         [Category("01. Common Options")]
-        [Description("The name of the source file for the object. If no file extension is given, it defaults according to the Output Code Language for this object.")]
+        [Description("The name of the generated file for the object. If no file extension is given, it defaults according to the Output Code Language for this object.")]
         [UserFriendlyName("File Name")]
         public string FileName
         {
             get { return _fileName; }
-            set
+            set 
             {
-                _fileName = value;
+                _fileName = PropertyHelper.TidyAllowSpaces(value);
                 if (_objectName.Equals(String.Empty))
-                    _objectName = value;
+                    _objectName = PropertyHelper.Tidy(value);
             }
         }
 
-        /// <summary>
-        /// The code language that the object should be generated in.
-        /// </summary>
-        /*            [Category("01. Common Options")]
-                    [Description("The code language that the object should be generated in.")]
-                    [UserFriendlyName("Output Code Language")]*/
         [Browsable(false)]
         public CodeLanguage OutputLanguage
         {
@@ -519,9 +444,6 @@ namespace CslaGenerator.Metadata
 
         #region 02. Business Properties
 
-        /// <summary>
-        /// The Unit of Work collection properties of the object.
-        /// </summary>
         [Category("02. Business Properties")]
         [Description("The Unit of Work collection properties (specify here the root objects to handle as a unit).")]
         [Editor(typeof(PropertyCollectionForm), typeof(UITypeEditor))]
@@ -531,9 +453,6 @@ namespace CslaGenerator.Metadata
             get { return _unitOfWorkCollectionProperties; }
         }
 
-        /// <summary>
-        /// The child collection properties of the object.
-        /// </summary>
         [Category("02. Business Properties")]
         [Description("The child collection properties of the object (specify here the child collections).")]
         [Editor(typeof(PropertyCollectionForm), typeof(UITypeEditor))]
@@ -543,9 +462,6 @@ namespace CslaGenerator.Metadata
             get { return _childCollectionProperties; }
         }
 
-        /// <summary>
-        /// The non-collection child properties of the object.
-        /// </summary>
         [Category("02. Business Properties")]
         [Description("The non-collection child properties of the object (specify here the child objects).")]
         [Editor(typeof(PropertyCollectionForm), typeof(UITypeEditor))]
@@ -555,12 +471,6 @@ namespace CslaGenerator.Metadata
             get { return _childProperties; }
         }
 
-        /// <summary>
-        /// If this object inherits from another type, this
-        /// property will store the child collection properties it inherits.
-        /// You cannot add or remove inherited properties, but you
-        /// can modify them.
-        /// </summary>
         [Category("02. Business Properties")]
         [Description("If this object inherits from another type, this property will store the child collection properties it inherits. You cannot add or remove inherited properties, but you can modify them.")]
         [Editor(typeof(PropertyCollectionForm), typeof(UITypeEditor))]
@@ -570,12 +480,6 @@ namespace CslaGenerator.Metadata
             get { return _inheritedChildCollectionProperties; }
         }
 
-        /// <summary>
-        /// If this object inherits from another type, this
-        /// property will store the non-collection child properties it inherits.
-        /// You cannot add or remove inherited properties, but you
-        /// can modify them.
-        /// </summary>
         [Category("02. Business Properties")]
         [Description("If this object inherits from another type, this property will store the non-collection child properties it inherits.You cannot add or remove inherited properties, but you can modify them.")]
         [Editor(typeof(PropertyCollectionForm), typeof(UITypeEditor))]
@@ -586,7 +490,7 @@ namespace CslaGenerator.Metadata
         }
 
         /// <summary>
-        /// Child properties that convert to/from other properties of the same object.
+        /// Object's non-collection child properties plus collection child properties.
         /// </summary>
         // Hide AllChildProperties
         [Browsable(false)]
@@ -595,9 +499,6 @@ namespace CslaGenerator.Metadata
             get { return GetMyChildProperties(); }
         }
 
-        /// <summary>
-        /// Value properties that convert to/from other properties of the same object.
-        /// </summary>
         [Category("02. Business Properties")]
         [Description("Value properties that convert to/from other properties of the same object.")]
         [Editor(typeof(PropertyCollectionForm), typeof(UITypeEditor))]
@@ -607,9 +508,6 @@ namespace CslaGenerator.Metadata
             get { return _convertValueProperties; }
         }
 
-        /// <summary>
-        /// Value properties of this object that are updated when another object saves itself.
-        /// </summary>
         [Category("02. Business Properties")]
         [Description("Value properties of this object that are updated when another object saves itself.")]
         [Editor(typeof(PropertyCollectionForm), typeof(UITypeEditor))]
@@ -619,12 +517,6 @@ namespace CslaGenerator.Metadata
             get { return _updateValueProperties; }
         }
 
-        /// <summary>
-        /// If this object inherits from another type, this
-        /// property will store the business properties it inherits.
-        /// You cannot add or remove inherited properties, but you
-        /// can modify them.
-        /// </summary>
         [Category("02. Business Properties")]
         [Description("If this object inherits from another type, this property will store the business properties it inherits. You cannot add or remove inherited properties, but you can modify them.")]
         [Editor(typeof(PropertyCollectionForm), typeof(UITypeEditor))]
@@ -634,9 +526,6 @@ namespace CslaGenerator.Metadata
             get { return _inheritedValueProperties; }
         }
 
-        /// <summary>
-        /// The business properties of the object.
-        /// </summary>
         [Category("02. Business Properties")]
         [Description("The business properties of the object.")]
         [Editor(typeof(PropertyCollectionForm), typeof(UITypeEditor))]
@@ -647,7 +536,7 @@ namespace CslaGenerator.Metadata
         }
 
         /// <summary>
-        /// Object value properties plus convert value properties.
+        /// Object's value properties plus convert value properties.
         /// </summary>
         // Hide AllValueProperties
         [Browsable(false)]
@@ -660,11 +549,8 @@ namespace CslaGenerator.Metadata
 
         #region 03. Criteria
 
-        /// <summary>
-        /// The Criteria classes that will be nested in the object.
-        /// </summary>
         [Category("03. Criteria")]
-        [Description("The Criteria classes that will be nested in the object.")]
+        [Description("The Criteria classes that will be used by this object.")]
         [Editor(typeof(PropertyCollectionForm), typeof(UITypeEditor))]
         [UserFriendlyName("Criteria Objects")]
         public CriteriaCollection CriteriaObjects
@@ -676,9 +562,6 @@ namespace CslaGenerator.Metadata
 
         #region 04. Child Object Options
 
-        /// <summary>
-        /// The object type of the of this object's parent.
-        /// </summary>
         [Category("04. Child Object Options")]
         [Description("The object type of the of this object's parent (specify the collection name for an item, or object name for a collection).")]
         [UserFriendlyName("Parent Type")]
@@ -695,9 +578,6 @@ namespace CslaGenerator.Metadata
             }
         }
 
-        /// <summary>
-        /// Parent properties which are used in Update method, as parameters for Stored Procedures.
-        /// </summary>
         [Category("04. Child Object Options")]
         [Description("Parent properties which are used in DataPortal_Update, as parameters for Stored Procedures.")]
         [Editor(typeof(ParentPropertyCollectionEditor), typeof(UITypeEditor))]
@@ -722,11 +602,7 @@ namespace CslaGenerator.Metadata
             set { _parentInsertOnly = value; }
         }
 
-        /// <summary>
-        /// Whether or not this object should be "lazy loaded" when it is a child.
-        /// "lazy loading" is when the child objects are not loaded when the parent
-        /// object is loaded and are only loaded when they are referenced.
-        /// </summary>
+
         [Category("04. Child Object Options")]
         [Description("Whether or not this object should be \"lazy loaded\".  \"Lazy loading\" means the child object data " +
             "isn't loaded when the parent object data is loaded but is defered until the child object is referenced.\r\n" +
@@ -742,9 +618,6 @@ namespace CslaGenerator.Metadata
 
         #region 05. Collection Options
 
-        /// <summary>
-        /// The type name of the objects the collection will hold.
-        /// </summary>
         [Category("05. Collection Options")]
         [Description("The type name of the objects the collection will hold.")]
         [UserFriendlyName("Item Type")]
@@ -755,10 +628,6 @@ namespace CslaGenerator.Metadata
             set { _itemType = value; }
         }
 
-        /// <summary>
-        /// For each parameter you select, a find method will be created
-        /// which uses that parameter to find an object in the collection.
-        /// </summary>
         [Category("05. Collection Options")]
         [Description("For each parameter you select, a find method will be created which uses that parameter to find an object in the collection.")]
         [Editor(typeof(FMPropertyCollectionEditor), typeof(UITypeEditor))]
@@ -770,9 +639,7 @@ namespace CslaGenerator.Metadata
             set { _findMethodsParameters = value; }
         }
 
-        /// <summary>
-        /// The type name of the object that will update this collection.
-        /// </summary>
+
         [Category("05. Collection Options")]
         [Description("The type name of that will update the items of this collection.")]
         [UserFriendlyName("Updater Type")]
@@ -835,7 +702,8 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("05. Collection Options")]
-        [Description("Create a parent reference. This option is only available for child collections. When targeting CSLA40 this option is ignored ")]
+        [Description("Create a parent reference. This option is only available for child collections.\r\n"+
+            "When targeting CSLA40 this option is honoured for DynamicEditableRoot objects.")]
         [UserFriendlyName("Add Parent Reference")]
         public bool AddParentReference
         {
@@ -843,9 +711,6 @@ namespace CslaGenerator.Metadata
             set { _addParentReference = value; }
         }
 
-        /// <summary>
-        /// Cache the results of the fetch operation for the list.
-        /// </summary>
         [Category("05. Collection Options")]
         [Description("Cache the results of the fetch operation for the list.\r\nFactory uses a static field that isn't transferred from server to client side.\r\nDataPortal avoids duplicate hits on the database.")]
         [UserFriendlyName("Cache Results Options")]
@@ -859,9 +724,6 @@ namespace CslaGenerator.Metadata
 
         #region 06. NameValueList Info
 
-        /// <summary>
-        /// Name of the column that will be used as the value column in a NameValue List.
-        /// </summary>
         [Category("06. NameValueList Info")]
         [Description("Name of the column that will be used as the key column in a NameValue List.")]
         [Editor(typeof(PropertyNameEditor), typeof(UITypeEditor))]
@@ -872,9 +734,6 @@ namespace CslaGenerator.Metadata
             set { _valueColumn = value; }
         }
 
-        /// <summary>
-        /// Name of the column that will be used as the name column in a NameValue List.
-        /// </summary>
         [Category("06. NameValueList Info")]
         [Description("Name of the column that will be used as the value column in a NameValue List.")]
         [Editor(typeof(PropertyNameEditor), typeof(UITypeEditor))]
@@ -885,9 +744,6 @@ namespace CslaGenerator.Metadata
             set { _nameColumn = value; }
         }
 
-        /// <summary>
-        /// Whether to cache the results of the fetch operation for the name value list or not.
-        /// </summary>
         [Category("06. NameValueList Info")]
         [Description("Whether to cache the results of the fetch operation for the name value list or not. This will also generate an InvalidateAll method to clear the cache.")]
         [UserFriendlyName("Cache Results")]
@@ -901,20 +757,13 @@ namespace CslaGenerator.Metadata
 
         #region 07. Data Access Options
 
-        /// <summary>
-        /// Name of the database alias used to get connection string from configuration file.
-        /// </summary>
         [Category("07. Data Access Options")]
         [Description("Name of the database alias used to get connection string from configuration file.")]
         [UserFriendlyName("Database Name")]
         public string DbName
         {
             get { return _dbName; }
-            set
-            {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
-                _dbName = value;
-            }
+            set { _dbName = PropertyHelper.Tidy(value); }
         }
 
         /// <summary>
@@ -938,7 +787,7 @@ namespace CslaGenerator.Metadata
         public string DbContextObject
         {
             get { return _dbContextObject; }
-            set { _dbContextObject = value; }
+            set { _dbContextObject = PropertyHelper.Tidy(value); }
         }
 
         /// <summary>
@@ -956,10 +805,7 @@ namespace CslaGenerator.Metadata
                 return _commandTimeout;
             }
             set
-            {
-                if(value != string.Empty)
-                    _commandTimeout = Convert.ToInt32(value).ToString();
-            }
+            { _commandTimeout = PropertyHelper.TidyInteger(value); }
         }
 
         /// <summary>
@@ -1133,7 +979,7 @@ namespace CslaGenerator.Metadata
                     return string.Empty;
                 return _insertProcedureName;
             }
-            set { _insertProcedureName = value; }
+            set { _insertProcedureName = PropertyHelper.Tidy(value); }
         }
 
         /// <summary>
@@ -1151,7 +997,7 @@ namespace CslaGenerator.Metadata
                 if (!String.IsNullOrEmpty(value))
                     foreach (Criteria c in _criteriaObjects)
                         if (c.GetOptions.Procedure && string.IsNullOrEmpty(c.GetOptions.ProcedureName))
-                            c.GetOptions.ProcedureName = value;
+                            c.GetOptions.ProcedureName = PropertyHelper.Tidy(value);
 
             }
         }
@@ -1172,7 +1018,7 @@ namespace CslaGenerator.Metadata
                     return string.Empty;
                 return _updateProcedureName;
             }
-            set { _updateProcedureName = value; }
+            set { _updateProcedureName = PropertyHelper.Tidy(value); }
         }
 
         /// <summary>
@@ -1196,13 +1042,13 @@ namespace CslaGenerator.Metadata
                 if (_objectType == CslaObjectType.EditableChild ||
                     _objectType == CslaObjectType.EditableSwitchable ||
                     _objectType == CslaObjectType.DynamicEditableRoot)
-                    _deleteProcedureName = value;
+                    _deleteProcedureName = PropertyHelper.Tidy(value);
                 else
                 {
                     if (!String.IsNullOrEmpty(value))
                         foreach (var c in _criteriaObjects)
                             if (c.DeleteOptions.Procedure && string.IsNullOrEmpty(c.DeleteOptions.ProcedureName))
-                                c.DeleteOptions.ProcedureName = value;
+                                c.DeleteOptions.ProcedureName = PropertyHelper.Tidy(value);
                 }
             }
         }
@@ -1271,7 +1117,7 @@ namespace CslaGenerator.Metadata
         public string NewRoles
         {
             get { return _newRoles; }
-            set { _newRoles = value; }
+            set { _newRoles = PropertyHelper.TidyAllowSpaces(value); }
         }
 
         /// <summary>
@@ -1283,7 +1129,7 @@ namespace CslaGenerator.Metadata
         public string GetRoles
         {
             get { return _getRoles; }
-            set { _getRoles = value; }
+            set { _getRoles = PropertyHelper.TidyAllowSpaces(value); }
         }
 
         /// <summary>
@@ -1295,7 +1141,7 @@ namespace CslaGenerator.Metadata
         public string UpdateRoles
         {
             get { return _updateRoles; }
-            set { _updateRoles = value; }
+            set { _updateRoles = PropertyHelper.TidyAllowSpaces(value); }
         }
 
         /// <summary>
@@ -1307,7 +1153,7 @@ namespace CslaGenerator.Metadata
         public string DeleteRoles
         {
             get { return _deleteRoles; }
-            set { _deleteRoles = value; }
+            set { _deleteRoles = PropertyHelper.TidyAllowSpaces(value); }
         }
 
         #endregion

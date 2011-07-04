@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.IO;
@@ -10,21 +10,21 @@ using System.Xml.Serialization;
 namespace CslaGenerator.Metadata
 {
     /// <summary>
-    /// Summary description for TypeInfo.
+    /// Summary description for BusinessRuleInfo for Rules 4
     /// </summary>
     [Serializable]
-    public class TypeInfo : ICloneable
+    public class BusinessRuleInfo : ICloneable
     {
         private string _assemblyFile = String.Empty;
         private string _type = String.Empty;
         private string _objectName = String.Empty;
         private CslaObjectInfo _parent;
 
-        public TypeInfo()
+        public BusinessRuleInfo()
         {
         }
 
-        public TypeInfo(CslaObjectInfo parent)
+        public BusinessRuleInfo(CslaObjectInfo parent)
         {
             _parent = parent;
         }
@@ -53,7 +53,7 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("02. Inherit from Type in Assembly")]
-        [Editor(typeof(AssemblyFileNameEditor),typeof(UITypeEditor))]
+        [Editor(typeof(AssemblyFileNameEditor), typeof(UITypeEditor))]
         [Description("This is a description.")]
         [UserFriendlyName("Assembly File Name")]
         public string AssemblyFile
@@ -86,10 +86,7 @@ namespace CslaGenerator.Metadata
         {
             get
             {
-                if (_objectName == String.Empty)
-                {
-                    return null;
-                }
+                if (_objectName == String.Empty) { return null; }
                 return _parent.Parent.CslaObjects.Find(_objectName);
             }
         }
@@ -123,10 +120,10 @@ namespace CslaGenerator.Metadata
         public object Clone()
         {
             var buffer = new MemoryStream();
-            var ser = new XmlSerializer (typeof(TypeInfo));
+            var ser = new XmlSerializer(typeof(BusinessRuleInfo));
             ser.Serialize(buffer, this);
             buffer.Position = 0;
-            var result = (TypeInfo)ser.Deserialize(buffer);
+            var result = (BusinessRuleInfo)ser.Deserialize(buffer);
             result._parent = _parent;
             return result;
         }

@@ -9,7 +9,7 @@ namespace CslaGenerator.Metadata
     {
         public bool Contains(string name)
         {
-            foreach (Property p in this)
+            foreach (var p in this)
             {
                 if (p.Name.Equals(name))
                     return true;
@@ -31,7 +31,7 @@ namespace CslaGenerator.Metadata
         {
             if (p is CriteriaProperty)
                 return (CriteriaProperty)p;
-            CriteriaProperty newP = new CriteriaProperty(p);
+            var newP = new CriteriaProperty(p);
             newP.Name = p.Name;
             newP.ParameterName = p.ParameterName;
             newP.PropertyType = p.PropertyType;

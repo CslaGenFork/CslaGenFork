@@ -53,7 +53,7 @@ namespace CslaGenerator.Metadata
         public string Name
         {
             get { return _name; }
-            set { _name = value; }
+            set { _name = PropertyHelper.Tidy(value); }
         }
 
         [Category("01. Definition")]
@@ -136,7 +136,7 @@ namespace CslaGenerator.Metadata
         public string Summary
         {
             get { return _summary; }
-            set { _summary = value; }
+            set { _summary = PropertyHelper.TidyXML(value); }
         }
 
         [Category("03. Documentation")]
@@ -145,7 +145,7 @@ namespace CslaGenerator.Metadata
         public string Remarks
         {
             get { return _remarks; }
-            set { _remarks = value; }
+            set { _remarks = PropertyHelper.TidyXML(value); }
         }
 
         #endregion

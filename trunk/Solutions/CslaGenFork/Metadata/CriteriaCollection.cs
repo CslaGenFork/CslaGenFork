@@ -8,7 +8,7 @@ namespace CslaGenerator.Metadata
 
         public Criteria Find(string name)
         {
-            foreach (Criteria c in this)
+            foreach (var c in this)
             {
                 if (c.Name.Equals(name))
                     return c;

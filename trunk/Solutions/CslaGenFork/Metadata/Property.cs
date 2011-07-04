@@ -46,6 +46,10 @@ namespace CslaGenerator.Metadata
             _parameterName = parameterName;
         }
 
+        #region Public Properties
+
+        #region 00. Database
+
         [Category("00. Database")]
         [Description("The stored procedure parameter name.")]
         [UserFriendlyName("Parameter Name")]
@@ -57,15 +61,19 @@ namespace CslaGenerator.Metadata
                     return _name;
                 return _parameterName;
             }
-            set { _parameterName = value; }
+            set { _parameterName = PropertyHelper.Tidy(value); }
         }
+
+        #endregion
+
+        #region 01. Definition
 
         [Category("01. Definition")]
         [Description("The property name.")]
         public virtual string Name
         {
             get { return _name; }
-            set { _name = value; }
+            set { _name = PropertyHelper.Tidy(value); }
         }
 
         [Category("01. Definition")]
@@ -78,7 +86,7 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Definition")]
-        [Description("This is a description.")]
+        [Description("Whether this property is read only..")]
         public virtual bool ReadOnly
         {
             get { return _readOnly; }
@@ -93,17 +101,17 @@ namespace CslaGenerator.Metadata
             set { _nullable = value; }
         }
 
+        #endregion
+
+        #region 04. Documentation
+
         [Category("04. Documentation")]
         [Editor(typeof(XmlCommentEditor), typeof(UITypeEditor))]
         [Description("Summary of the property.")]
         public virtual string Summary
         {
             get { return _summary; }
-            set
-            {
-                value = value.Trim().Replace("  ", " ").Replace("\n\n", "\n").Replace("\n", "\r\n");
-                _summary = value;
-            }
+            set { _summary = PropertyHelper.TidyXML(value); }
         }
 
         [Category("04. Documentation")]
@@ -112,16 +120,16 @@ namespace CslaGenerator.Metadata
         public virtual string Remarks
         {
             get { return _remarks; }
-            set
-            {
-                value = value.Trim().Replace("  ", " ").Replace("\n\n", "\n").Replace("\n", "\r\n");
-                _remarks = value;
-            }
+            set { _remarks = PropertyHelper.TidyXML(value); }
         }
+
+        #endregion
+
+        #endregion
 
         public override bool Equals(object item)
         {
-            if (!item.GetType().Equals(this.GetType()))
+            if (!item.GetType().Equals(GetType()))
                 return false;
 
             if (CaseInsensitiveComparer.Default.Compare(_name, ((Property)item).Name) == 0)
@@ -147,8 +155,8 @@ namespace CslaGenerator.Metadata
 
         public virtual object Clone()
         {
-            MemoryStream buffer = new MemoryStream();
-            XmlSerializer ser = new XmlSerializer(typeof(Property));
+            var buffer = new MemoryStream();
+            var ser = new XmlSerializer(typeof(Property));
             ser.Serialize(buffer, this);
             buffer.Position = 0;
             return ser.Deserialize(buffer);

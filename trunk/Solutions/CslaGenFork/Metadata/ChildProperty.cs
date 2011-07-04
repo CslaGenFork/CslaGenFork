@@ -35,7 +35,7 @@ namespace CslaGenerator.Metadata
         public override string Name
         {
             get { return base.Name; }
-            set { base.Name = value; }
+            set { base.Name = PropertyHelper.Tidy(value); }
         }
 
         [Category("01. Definition")]
@@ -46,12 +46,12 @@ namespace CslaGenerator.Metadata
             get
             {
                 if (string.IsNullOrEmpty(_friendlyName))
-                    return ValueProperty.SplitOnCaps(base.Name);
+                    return PropertyHelper.SplitOnCaps(base.Name);
                 return _friendlyName;
             }
             set
             {
-                if (value != null && !value.Equals(ValueProperty.SplitOnCaps(base.Name)))
+                if (value != null && !value.Equals(PropertyHelper.SplitOnCaps(base.Name)))
                     _friendlyName = value;
                 else
                     _friendlyName = string.Empty;

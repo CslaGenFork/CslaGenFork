@@ -2,11 +2,11 @@
         private void DoInsertUpdate(SqlCommand cmd)
         {
 <%
-if (Info.ConvertValueProperties.Count > 0)
+if (plainConvertPropertiesWrite.Count > 0)
 {
     %>
             ConvertPropertiesOnWrite();
-    <%
+            <%
 }
 bool bHasTimeStamp = false;
 %>
@@ -67,7 +67,8 @@ foreach (ValueProperty prop in Info.GetAllValueProperties())
     }
 }
 %>
-        }<%
+        }
+<%
 if (UseSimpleAuditTrail(Info))
 {
     %>
@@ -129,6 +130,12 @@ if (UseSimpleAuditTrail(Info))
                 }
                 %>
             }
+        <%
+    }
+    if (auditConvertProperties.Count > 0)
+    {
+        %>
+            ConvertAuditPropertiesOnUpdate();
         <%
     }
     %>

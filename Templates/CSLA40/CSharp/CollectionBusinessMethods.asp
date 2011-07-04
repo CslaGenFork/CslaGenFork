@@ -1,6 +1,11 @@
 <%
-bool useAuthz;
 CslaObjectInfo itemInfo = FindChildInfo(Info, Info.ItemType);
+
+bool useParentReference;
+useParentReference = (Info.ObjectType == CslaObjectType.DynamicEditableRootCollection) &&
+    itemInfo.AddParentReference;
+
+bool useAuthz;
 useAuthz = !IsReadOnlyType(itemInfo.ObjectType) &&
     ((itemInfo.DeleteRoles.Trim() != String.Empty) ||
     (itemInfo.NewRoles.Trim() != String.Empty));
@@ -15,13 +20,33 @@ foreach (Criteria c in itemInfo.CriteriaObjects)
     }
 }
 
-if (useAuthz || needsBusiness)
+if (useParentReference || useAuthz || needsBusiness)
 {
     %>
 
         #region Collection Business Methods
         <%
-    if (useAuthz)
+    if (useParentReference && !useAuthz)
+    {
+        %>
+
+        /// <summary>
+        /// Adds a new <see cref="<%= itemInfo.ObjectName %>"/> object to the <%= Info.ObjectName %> collection.
+        /// </summary>
+        /// <param name="item">The item to add.</param>
+        /// <remarks>
+        /// DynamicEditableRoot object are in a special case of  EditableRoot and thus the Parent property is null.
+        /// The Add method is redefined so it takes care of filling the ParentList property.
+        /// </remarks>
+        public new void Add(<%= itemInfo.ObjectName %> item)
+        {
+            item.ParentList = this;
+            base.Add(item);
+        }
+
+        <%
+    }
+    else if (useAuthz)
     {
         if (itemInfo.NewRoles.Trim() != String.Empty)
         {
@@ -31,12 +56,31 @@ if (useAuthz || needsBusiness)
         /// Adds a new <see cref="<%= itemInfo.ObjectName %>"/> object to the <%= Info.ObjectName %> collection.
         /// </summary>
         /// <param name="item">The item to add.</param>
+        <%
+        if (useParentReference)
+        {
+            %>
+        /// <remarks>
+        /// DynamicEditableRoot object are in a special case of  EditableRoot and thus the Parent property is null.
+        /// The Add method is redefined so it takes care of filling the ParentList property.
+        /// </remarks>
+        <%
+        }
+        %>
         /// <exception cref="System.Security.SecurityException">if the user isn't authorized to add items to the collection.</exception>
         public new void Add(<%= itemInfo.ObjectName %> item)
         {
             if (!CanAddObject())
                 throw new System.Security.SecurityException("User not authorized to create a <%= itemInfo.ObjectName %>.");
 
+        <%
+        if (useParentReference)
+        {
+            %>
+            item.ParentList = this;
+        <%
+        }
+        %>
             base.Add(item);
         }
         <%

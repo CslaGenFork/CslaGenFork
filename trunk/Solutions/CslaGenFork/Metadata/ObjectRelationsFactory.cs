@@ -46,7 +46,7 @@ namespace CslaGenerator.Metadata
 
             public string ObjectDescription { get; set; }
 
-            public ICatalog Catalog { get; private set; }
+            public ICatalog Catalog { get; set; }
 
             public void Reload(bool throwOnError)
             {

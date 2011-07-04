@@ -421,15 +421,12 @@ namespace CslaGenerator.Metadata
             if (_currentCslaObject.CriteriaObjects.Count != 0)
                 return;
 
-            if (_currentCslaObject.ObjectType == CslaObjectType.NameValueList ||
-                (_currentCslaObject.ObjectType == CslaObjectType.ReadOnlyCollection &&
-                _currentCslaObject.ParentType == string.Empty) ||
-                _currentCslaObject.ObjectType == CslaObjectType.EditableRootCollection ||
+            if (_currentCslaObject.ObjectType == CslaObjectType.EditableRootCollection ||
                 _currentCslaObject.ObjectType == CslaObjectType.DynamicEditableRootCollection)
             {
                 if (_currentUnit.Params.AutoCriteria)
                 {
-                    Criteria crit = CreateEmptyFetchCriteria();
+                    var crit = CreateEmptyNewAndFetchCriteria();
                     _currentCslaObject.CriteriaObjects.Add(crit);
                     crit.SetSprocNames();
                 }
@@ -437,18 +434,32 @@ namespace CslaGenerator.Metadata
                 return;
             }
 
-            List<ValueProperty> primaryKeyProperties = new List<ValueProperty>();
+            if (_currentCslaObject.ObjectType == CslaObjectType.NameValueList ||
+                (_currentCslaObject.ObjectType == CslaObjectType.ReadOnlyCollection &&
+                _currentCslaObject.ParentType == string.Empty))
+            {
+                if (_currentUnit.Params.AutoCriteria)
+                {
+                    var crit = CreateEmptyFetchCriteria();
+                    _currentCslaObject.CriteriaObjects.Add(crit);
+                    crit.SetSprocNames();
+                }
+                //no need to go through the properties here.
+                return;
+            }
+
+            var primaryKeyProperties = new List<ValueProperty>();
             ValueProperty timestampProperty = null;
-            bool UseForCreate = false;
+            var useForCreate = false;
 
             // retrieve all primary key and timestamp properties
-            foreach (ValueProperty prop in _currentCslaObject.ValueProperties)
+            foreach (var prop in _currentCslaObject.ValueProperties)
             {
                 if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
                 {
                     primaryKeyProperties.Add(prop);
                     if (!(prop.DbBindColumn.IsIdentity || prop.PropertyType == TypeCodeEx.Guid))
-                        UseForCreate = true;
+                        useForCreate = true;
                 }
                 else if (prop.DbBindColumn.NativeType == "timestamp")
                 {
@@ -482,7 +493,7 @@ namespace CslaGenerator.Metadata
                                 _currentCslaObject.ObjectType == CslaObjectType.DynamicEditableRoot)
                             {
                                 defaultCriteria.DeleteOptions.Enable();
-                                if (defaultCriteria.Properties.Count > 0 && UseForCreate)
+                                if (defaultCriteria.Properties.Count > 0 && useForCreate)
                                 {
                                     defaultCriteria.CreateOptions.Factory = true;
                                     defaultCriteria.CreateOptions.DataPortal = true;
@@ -532,11 +543,6 @@ namespace CslaGenerator.Metadata
             }
         }
 
-        private void AddDefaultCriteria()
-        {
-
-        }
-
         private void AddTimestampProperty(Criteria defaultCriteria, ValueProperty timeStampProperty)
         {
             var timestampCriteria = new Criteria(_currentCslaObject);
@@ -561,16 +567,26 @@ namespace CslaGenerator.Metadata
             {
                 if (!crit.Properties.Contains(col.Name))
                 {
-                    CriteriaProperty p = new CriteriaProperty(col.Name, col.PropertyType);
+                    var p = new CriteriaProperty(col.Name, col.PropertyType);
                     p.DbBindColumn = (DbBindColumn)col.DbBindColumn.Clone();
                     crit.Properties.Add(p);
                 }
             }
         }
 
+        private static Criteria CreateEmptyNewAndFetchCriteria()
+        {
+            var c = new Criteria();
+            c.Name = "Criteria";
+            c.CreateOptions.Enable();
+            c.CreateOptions.RunLocal = true;
+            c.GetOptions.Enable();
+            return c;
+        }
+
         private static Criteria CreateEmptyFetchCriteria()
         {
-            Criteria c = new Criteria();
+            var c = new Criteria();
             c.Name = "CriteriaGet";
             c.GetOptions.Enable();
             return c;

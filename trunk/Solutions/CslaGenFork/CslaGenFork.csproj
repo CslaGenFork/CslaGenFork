@@ -31,7 +31,7 @@
     <SccLocalPath>Svn</SccLocalPath>
     <SccAuxPath>Svn</SccAuxPath>
     <SccProvider>SubversionScc</SccProvider>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <PublishUrl>http://localhost/CslaGenerator/</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Web</InstallFrom>
@@ -46,6 +46,7 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\Debug\</OutputPath>
@@ -100,8 +101,7 @@
       <Name>CodeSmith.Engine</Name>
       <HintPath>..\..\References\CodeSmith.Engine.dll</HintPath>
     </Reference>
-    <Reference Include="DBSchemaInfo, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="DBSchemaInfo">
       <HintPath>..\..\References\DBSchemaInfo.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
@@ -215,6 +215,9 @@
     <Compile Include="CodeGen\CslaTemplateHelperVB.cs" />
     <Compile Include="CodeGen\GenerationStep.cs" />
     <Compile Include="Design\CriteriaUsageParameterConverter.cs" />
+    <Compile Include="Design\NVLTypeEditor.cs" />
+    <Compile Include="Design\RuleTypeEditor.cs" />
+    <Compile Include="Design\SourcePropertyTypeEditor.cs" />
     <Compile Include="Design\UnitOfWorkTypeEditor.cs" />
     <Compile Include="Design\UnitOfWorkTargetCriteriaEditor.cs" />
     <Compile Include="ICodeGenerator.cs" />
@@ -246,12 +249,13 @@
     </Compile>
     <Compile Include="Metadata\AssociativeEntityCollection.cs" />
     <Compile Include="Metadata\Authorization.cs" />
+    <Compile Include="Metadata\BusinessRuleInfo.cs" />
     <Compile Include="Metadata\CriteriaMode.cs" />
     <Compile Include="Metadata\HeaderVerbosity.cs" />
     <Compile Include="Metadata\AssociativeEntity.cs" />
     <Compile Include="Metadata\ObjectRelationsFactory.cs" />
     <Compile Include="Metadata\PersistenceType.cs" />
-    <Compile Include="Metadata\SilverlightSupport.cs" />
+    <Compile Include="Metadata\PropertyHelper.cs" />
     <Compile Include="Metadata\SimpleCacheResults.cs" />
     <Compile Include="Metadata\TargetDAL.cs" />
     <Compile Include="Metadata\UnitOfWorkProperty.cs" />

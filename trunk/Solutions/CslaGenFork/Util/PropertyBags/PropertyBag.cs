@@ -937,8 +937,14 @@ namespace CslaGenerator.Util.PropertyBags
                              TargetFramework.CSLA40 ||
                              GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework ==
                              TargetFramework.CSLA40DAL) &&
-                            (propertyName == "AddParentReference" ||
-                             propertyName == "HashcodeProperty" ||
+                             typ != "DynamicEditableRoot" &&
+                            propertyName == "AddParentReference")
+                            return false;
+                        if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework ==
+                             TargetFramework.CSLA40 ||
+                             GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework ==
+                             TargetFramework.CSLA40DAL) &&
+                            (propertyName == "HashcodeProperty" ||
                              propertyName == "EqualsProperty" ||
                              propertyName == "DeleteProcedureName" ||
                              propertyName == "LazyLoad" ||

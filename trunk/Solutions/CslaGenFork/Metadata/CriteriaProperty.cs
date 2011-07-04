@@ -8,6 +8,7 @@ namespace CslaGenerator.Metadata
     public class CriteriaProperty : Property, IBoundProperty
     {
         private DbBindColumn _dbBindColumn = new DbBindColumn();
+        private string _parameterValue;
 
         public CriteriaProperty()
         {
@@ -48,7 +49,7 @@ namespace CslaGenerator.Metadata
         public override string Name
         {
             get { return base.Name; }
-            set { base.Name = value; }
+            set { base.Name = PropertyHelper.Tidy(value); }
         }
 
         [Category("01. Definition")]
@@ -79,7 +80,11 @@ namespace CslaGenerator.Metadata
         [Category("01. Definition")]
         [Description("The fixed parameter value is used as filter criteria.")]
         [UserFriendlyName("Parameter Value")]
-        public string ParameterValue { get; set; }
+        public string ParameterValue
+        {
+            get { return _parameterValue; }
+            set { _parameterValue = PropertyHelper.TidyAllowSpaces(value); }
+        }
 
         internal static CriteriaProperty Clone(CriteriaProperty masterCritProp)
         {

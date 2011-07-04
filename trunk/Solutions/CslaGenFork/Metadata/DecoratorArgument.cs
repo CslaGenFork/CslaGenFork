@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
+﻿using System.ComponentModel;
 using CslaGenerator.Attributes;
 
 namespace CslaGenerator.Metadata
 {
     public class DecoratorArgument
     {
-        private string _Name=string.Empty;
-        private string _Value=string.Empty;
-        private TypeCodeEx _ValueType = TypeCodeEx.String;
+        private string _name = string.Empty;
+        private string _value = string.Empty;
+        private TypeCodeEx _valueType = TypeCodeEx.String;
 
         #region Constructors
+
         public DecoratorArgument()
         {
         }
@@ -24,8 +22,8 @@ namespace CslaGenerator.Metadata
         /// <param name="value">The value of the decorator property</param>
         public DecoratorArgument(string name, string value)
         {
-            _Name = name;
-            _Value = value;
+            _name = name;
+            _value = value;
         }
         /// <summary>
         /// Initializes a new instance of the DecoratorArgument class.
@@ -35,34 +33,30 @@ namespace CslaGenerator.Metadata
         /// <param name="addQuotes">If True, wraps the value with quotes. Intended for string decorator values.</param>
         public DecoratorArgument(string name, string value, bool addQuotes)
         {
-            _Name = name;
+            _name = name;
             if (addQuotes)
-                _Value = "\"" + value + "\"";
+                _value = "\"" + value + "\"";
             else
-                _Value = value;
+                _value = value;
         }
         #endregion
+
+        #region Public properties
 
         [Category("01. Definition")]
         [Description("This is a description.")]
         public string Name
         {
-            get { return _Name; }
-            set
-            {
-                _Name = value;
-            }
+            get { return _name; }
+            set { _name = PropertyHelper.Tidy(value); }
         }
 
         [Category("01. Definition")]
         [Description("This is a description.")]
         public string Value
         {
-            get { return _Value; }
-            set
-            {
-                _Value = value;
-            }
+            get { return _value; }
+            set { _value = PropertyHelper.Tidy(value); }
         }
 
         [Category("01. Definition")]
@@ -70,15 +64,11 @@ namespace CslaGenerator.Metadata
         [UserFriendlyName("Value Type")]
         public TypeCodeEx ValueType
         {
-            get
-            {
-                return _ValueType;
-            }
-            set
-            {
-                _ValueType = value;
-            }
+            get { return _valueType; }
+            set { _valueType = value; }
         }
+
+        #endregion
 
     }
 }

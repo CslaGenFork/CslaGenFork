@@ -25,7 +25,7 @@ namespace CslaGenerator.Metadata
             _dataPortal = true;
         }
 
-        [Description("Defines whether you want to generate the factory method or not.")]
+        [Description("Defines whether you want to generate the factory methods or not.")]
         public bool Factory
         {
             get { return _factory; }
@@ -37,7 +37,8 @@ namespace CslaGenerator.Metadata
             }
         }
 
-        [Description("Defines whether you want to generate the collection Add/Remove method or not. This property is set on the collection item although the method is generated in the collection class.")]
+        [Description("Defines whether you want to generate the collection Add/Remove method or not.\r\n" +
+            "This property is set on the collection item although the method is generated in the collection class.")]
         [UserFriendlyName("Add/Remove")]
         public bool AddRemove
         {
@@ -50,8 +51,7 @@ namespace CslaGenerator.Metadata
             }
         }
 
-        [Description("Defines whether you want to generate the DataPortal method or not. If set to false, the criteria nested class won't be generated.")]
-        [UserFriendlyName("DataPortal")]
+        [Description("Defines whether you want to generate the DataPortal methods or not. If set to false, the criteria classes won't be generated.")]
         public bool DataPortal
         {
             get { return _dataPortal; }
@@ -86,9 +86,9 @@ namespace CslaGenerator.Metadata
             get { return _procedureName; }
             set
             {
-                if (_procedureName == value)
+                if (_procedureName == PropertyHelper.Tidy(value))
                     return;
-                _procedureName = value;
+                _procedureName = PropertyHelper.Tidy(value);
             }
         }
 
@@ -101,9 +101,9 @@ namespace CslaGenerator.Metadata
             get { return _factorySuffix; }
             set
             {
-                if (!_factorySuffix.Equals(value))
+                if (!_factorySuffix.Equals(PropertyHelper.Tidy(value)))
                 {
-                    _factorySuffix = value;
+                    _factorySuffix = PropertyHelper.Tidy(value);
                     OnSuffixChanged();
                 }
             }

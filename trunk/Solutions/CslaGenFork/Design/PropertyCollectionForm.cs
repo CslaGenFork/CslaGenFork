@@ -242,7 +242,7 @@ namespace CslaGenerator.Design
                 case "Criteria Collection Editor":
                     _form.Size = new Size(550, _form.Size.Height);
                     _collectionType = typeof (Criteria);
-                    _form.Size = new Size(_form.Size.Width, 729);
+                    _form.Size = new Size(_form.Size.Width, 726);
                     var cslaObject = (CslaObjectInfo)GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem;
                     if ((cslaObject.ObjectType == CslaObjectType.ReadOnlyObject ||
                          cslaObject.ObjectType == CslaObjectType.ReadOnlyCollection ||

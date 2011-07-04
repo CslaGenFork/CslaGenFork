@@ -25,7 +25,7 @@ namespace CslaGenerator.Controls
             {
                 var objectProp = list[i];
                 var lbl = new Label();
-                lbl.Text = ValueProperty.SplitOnCaps(objectProp.PropertyName);
+                lbl.Text = PropertyHelper.SplitOnCaps(objectProp.PropertyName);
                 lbl.Size = new Size(165, 20);
                 lbl.Padding = new Padding(3, 6, 0, 0);
                 if (objectProp.PropertyName == "ParentType")

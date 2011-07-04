@@ -42,7 +42,7 @@ if (Info.UpdateValueProperties.Count > 0)
             <%= GetFieldLoaderStatement(Info, prop, FormatCamel(parentInfo.UpdaterType) + "." + prop.SourcePropertyName) %>;
         <%
             }
-            if (Info.ConvertValueProperties.Count > 0)
+            if (plainConvertProperties.Count > 0)
             {
                 %>
             ConvertPropertiesOnRead();
