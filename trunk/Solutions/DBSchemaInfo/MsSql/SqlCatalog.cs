@@ -58,10 +58,12 @@ namespace DBSchemaInfo.MsSql
                     {
                         ITableInfo cnstTable =
                             Tables[(string)dr["TABLE_CATALOG"], (string)dr["TABLE_SCHEMA"], (string)dr["TABLE_NAME"]];
+                        cnstTable.Catalog = this;
                         ITableInfo pkTable =
                             Tables[
                                 (string)dr["REF_TABLE_CATALOG"], (string)dr["REF_TABLE_SCHEMA"],
                                 (string)dr["REF_TABLE_NAME"]];
+                        pkTable.Catalog = this;
                         constraint =
                             new StandardForeignKeyConstraint(
                                 constraintName, pkTable, cnstTable);

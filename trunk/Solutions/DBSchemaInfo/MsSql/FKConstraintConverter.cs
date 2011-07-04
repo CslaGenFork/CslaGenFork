@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Globalization;
-using DBSchemaInfo.Base;
 
 namespace DBSchemaInfo.MsSql
 {
@@ -20,7 +19,8 @@ namespace DBSchemaInfo.MsSql
             if (destinationType == typeof(string))
             {
                 var fkConstraint = ((SqlColumnInfo)context.Instance).FKConstraint;
-                return fkConstraint.ConstraintName + " to " +
+                if(fkConstraint != null)
+                    return fkConstraint.ConstraintName + " to " +
                     fkConstraint.PKTable.ObjectSchema + "." +
                     fkConstraint.PKTable.ObjectName;
             }

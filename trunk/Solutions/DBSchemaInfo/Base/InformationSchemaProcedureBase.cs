@@ -22,15 +22,15 @@ namespace DBSchemaInfo.Base
 
         #region Information Schema properties overrides...
 
-        protected override string ISObjectCatalog
+        protected override string IsObjectCatalog
         {
             get { return "SPECIFIC_CATALOG"; }
         }
-        protected override string ISObjectName
+        protected override string IsObjectName
         {
             get { return "SPECIFIC_NAME"; }
         }
-        protected override string ISObjectSchema
+        protected override string IsObjectSchema
         {
             get { return "SPECIFIC_SCHEMA"; }
         }
