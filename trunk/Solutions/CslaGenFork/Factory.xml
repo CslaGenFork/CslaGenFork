@@ -79,6 +79,8 @@
     <GenerateInlineQueries>false</GenerateInlineQueries>
     <GenerateQueriesWithSchema>true</GenerateQueriesWithSchema>
     <GenerateDatabaseClass>true</GenerateDatabaseClass>
+    <DefaultCslaAuthorizationProvider>true</DefaultCslaAuthorizationProvider>
+    <HideAuthorizationProvider>true</HideAuthorizationProvider>
     <GenerateWinForms>true</GenerateWinForms>
     <GenerateWPF>true</GenerateWPF>
     <GenerateSilverlight4>true</GenerateSilverlight4>

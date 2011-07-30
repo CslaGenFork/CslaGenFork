@@ -254,6 +254,75 @@ namespace CslaGenerator.Util
                 }
             }
         }
+        
+        public static void GetAuthorizationTypeContextInstanceObject(ITypeDescriptorContext context, ref object objinfo, ref Type instanceType)
+        {
+            if (context.Instance != null)
+            {
+                // check if context.Instance is AuthorizationProviderPropertyBag or PropertyGrid
+                if (context.Instance is AuthorizationPropertyBag)
+                {
+                    var pBag = (AuthorizationPropertyBag)context.Instance;
+                    if (pBag.SelectedObject.Length == 1)
+                        objinfo = pBag.SelectedObject[0];
+                    else
+                        objinfo = (pBag).SelectedObject;
+                    instanceType = objinfo.GetType();
+                }
+                else
+                {
+                    // by default it is a propertygrid
+                    objinfo = context.Instance;
+                    instanceType = context.Instance.GetType();
+                }
+            }
+        }
+
+        public static void GetBusinessRuleTypeContextInstanceObject(ITypeDescriptorContext context, ref object objinfo, ref Type instanceType)
+        {
+            if (context.Instance != null)
+            {
+                // check if context.Instance is AuthorizationProviderPropertyBag or PropertyGrid
+                if (context.Instance is BusinessRuleBag)
+                {
+                    var pBag = (BusinessRuleBag)context.Instance;
+                    if (pBag.SelectedObject.Length == 1)
+                        objinfo = pBag.SelectedObject[0];
+                    else
+                        objinfo = (pBag).SelectedObject;
+                    instanceType = objinfo.GetType();
+                }
+                else
+                {
+                    // by default it is a propertygrid
+                    objinfo = context.Instance;
+                    instanceType = context.Instance.GetType();
+                }
+            }
+        }
+
+        public static void GetBusinessRulePropertyTypeContextInstanceObject(ITypeDescriptorContext context, ref object objinfo, ref Type instanceType)
+        {
+            if (context.Instance != null)
+            {
+                // check if context.Instance is AuthorizationProviderPropertyBag or PropertyGrid
+                if (context.Instance is BusinessRulePropertyBag)
+                {
+                    var pBag = (BusinessRulePropertyBag)context.Instance;
+                    if (pBag.SelectedObject.Length == 1)
+                        objinfo = pBag.SelectedObject[0];
+                    else
+                        objinfo = (pBag).SelectedObject;
+                    instanceType = objinfo.GetType();
+                }
+                else
+                {
+                    // by default it is a propertygrid
+                    objinfo = context.Instance;
+                    instanceType = context.Instance.GetType();
+                }
+            }
+        }
 
         public static void GetUnitOfWorkPropertyContextInstanceObject(ITypeDescriptorContext context, ref object objinfo, ref Type instanceType)
         {

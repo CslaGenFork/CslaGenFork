@@ -355,8 +355,7 @@ namespace CslaGenerator.Util.PropertyBags
             private readonly PropertySpec _item;
 
             public PropertySpecDescriptor(PropertySpec item, InheritedTypePropertyBag bag, string name, Attribute[] attrs)
-                :
-                    base(name, attrs)
+                : base(name, attrs)
             {
                 _bag = bag;
                 _item = item;
@@ -629,10 +628,8 @@ namespace CslaGenerator.Util.PropertyBags
             {
                 if ((GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == Authorization.None ||
                     GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == Authorization.ObjectLevel) &&
-                    (propertyName == "AllowReadRoles" ||
-                     propertyName == "AllowWriteRoles" ||
-                     propertyName == "DenyReadRoles" ||
-                     propertyName == "DenyWriteRoles"))
+                    (propertyName == "ReadRoles" ||
+                     propertyName == "WriteRoles"))
                     return false;
 
                 if (_selectedObject.Length > 1 && IsEnumerable(GetPropertyInfoCache(propertyName)))
@@ -848,8 +845,7 @@ namespace CslaGenerator.Util.PropertyBags
 
                 // Create a new property descriptor for the property item, and add
                 // it to the list.
-                var pd = new PropertySpecDescriptor(property,
-                                                    this, property.Name, attrArray);
+                var pd = new PropertySpecDescriptor(property, this, property.Name, attrArray);
                 props.Add(pd);
             }
 

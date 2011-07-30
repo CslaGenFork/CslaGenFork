@@ -374,7 +374,7 @@ namespace CslaGenerator
 
         private string GetFilePath(string fileName)
         {
-            System.IO.FileInfo fi = new System.IO.FileInfo(fileName);
+            FileInfo fi = new FileInfo(fileName);
             return fi.Directory.FullName;
         }
 

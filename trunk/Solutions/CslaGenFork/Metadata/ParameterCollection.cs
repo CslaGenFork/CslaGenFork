@@ -1,6 +1,8 @@
+using System.Collections.Generic;
+
 namespace CslaGenerator.Metadata
 {
-    public class ParameterCollection : System.Collections.Generic.List<Parameter>
+    public class ParameterCollection : List<Parameter>
     {
         public virtual bool Contains(Criteria crit, Property prop)
         {

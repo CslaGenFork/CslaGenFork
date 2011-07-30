@@ -20,6 +20,9 @@ namespace CslaGenerator.Metadata
         private string _friendlyName = String.Empty;
         private LoadingScheme _loadingScheme = LoadingScheme.ParentLoad;
         private PropertyDeclaration _declarationMode;
+        private string _implements = string.Empty;
+        private BusinessRuleCollection _businessRules = new BusinessRuleCollection(); 
+        private string[] _attributes = new string[] { };
         private bool _lazyLoad;
         private string _typeName = String.Empty;
         private bool _undoable = true;
@@ -105,6 +108,35 @@ namespace CslaGenerator.Metadata
         {
             get { return base.Nullable; }
             set { base.Nullable = value; }
+        }
+
+        #endregion
+
+        #region 02. Advanced
+
+        [Category("02. Advanced")]
+        [Description("Collection of business rules (transformation, validation, etc).")]
+        [Editor(typeof(PropertyCollectionForm), typeof(UITypeEditor))]
+        [UserFriendlyName("Business Rules Collection")]
+        public virtual BusinessRuleCollection BusinessRules
+        {
+            get { return _businessRules; }
+        }
+
+        [Category("02. Advanced")]
+        [Description("The attributes you want to add to this property.")]
+        public virtual string[] Attributes
+        {
+            get { return _attributes; }
+            set { _attributes = PropertyHelper.TidyAllowSpaces(value); }
+        }
+
+        [Category("02. Advanced")]
+        [Description("This is a description.")]
+        public virtual string Implements
+        {
+            get { return _implements; }
+            set { _implements = PropertyHelper.Tidy(value); }
         }
 
         #endregion

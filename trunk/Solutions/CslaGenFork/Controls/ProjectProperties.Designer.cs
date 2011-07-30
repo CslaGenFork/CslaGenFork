@@ -183,6 +183,8 @@ namespace CslaGenerator.Controls
             this.chkGenerateInlineQueries = new System.Windows.Forms.CheckBox();
             this.chkGenerateQueriesWithSchema = new System.Windows.Forms.CheckBox();
             this.chkGenerateDatabaseClass = new System.Windows.Forms.CheckBox();
+            this.chkDefaultCslaAuthorizationProvider = new System.Windows.Forms.CheckBox();
+            this.chkHideAuthorizationProvider = new System.Windows.Forms.CheckBox();
             this.chkUseBypassPropertyChecks = new System.Windows.Forms.CheckBox();
             this.chkNullableSupport = new System.Windows.Forms.CheckBox();
             this.groupBoxLegacy = new System.Windows.Forms.GroupBox();
@@ -458,9 +460,10 @@ namespace CslaGenerator.Controls
             this.chkAutoCriteria.Name = "chkAutoCriteria";
             this.chkAutoCriteria.Size = new System.Drawing.Size(450, 17);
             this.chkAutoCriteria.TabIndex = 10;
-            this.chkAutoCriteria.Text = "Add a parameterless Get criteria to ReadOnlyCollection and NameValueList.";
+            this.chkAutoCriteria.Text = "Add default Criteria to NameValue list, EditableRoot, DynamicEditableRoot and ReadOnly collections.";
             this.chkAutoCriteria.UseVisualStyleBackColor = true;
-            this.toolTip1.SetToolTip(this.chkAutoCriteria, "If checked, ReadOnly Collections and Name Value Lists are created with a parameterless Get criteria.");
+            this.toolTip1.SetToolTip(this.chkAutoCriteria, "If checked,\r\n- ReadOnly collections and Name Value lists are created with a parameterless Get Criteria;\r\n"+
+                "- EditableRoot and DynamicEditableRoot collections are created with a parameterless Create and Get Criteria.");
             // 
             // chkAutoTimestampCriteria
             // 
@@ -963,7 +966,7 @@ namespace CslaGenerator.Controls
             this.txtIntSoftDelete.Name = "txtIntSoftDelete";
             this.txtIntSoftDelete.Size = new System.Drawing.Size(130, 20);
             this.txtIntSoftDelete.TabIndex = 15;
-            this.toolTip1.SetToolTip(this.txtIntSoftDelete, "CTP - Not implemented.\r\n\r\n" + 
+            this.toolTip1.SetToolTip(this.txtIntSoftDelete, "RC - Not implemented.\r\n\r\n" + 
                 "Specify the column name to be recognized as an \"integer\" soft delete column.");
             // 
             // chkIgnoreFilterWhenSoftDeleteIsParam
@@ -993,7 +996,7 @@ namespace CslaGenerator.Controls
             this.toolTip1.SetToolTip(this.chkRemoveChildBeforeParent,
                                      "If checked, the Stored Procedure will delete (or soft delete) all child rows\r\n" +
                                      "before deleting (or soft deleting) the parent row." +
-                                     "\r\n\r\nCTP - Not implemented.\r\n" +
+                                     "\r\n\r\nRC - Not implemented.\r\n" +
                                      "If unchecked, the database child removal must be handle by an override to RemoveItem.");
             // 
             // tabAdvanced
@@ -1754,6 +1757,8 @@ namespace CslaGenerator.Controls
             this.tabGenerationMisc.Controls.Add(this.chkGenerateInlineQueries);
             this.tabGenerationMisc.Controls.Add(this.chkGenerateQueriesWithSchema);
             this.tabGenerationMisc.Controls.Add(this.chkGenerateDatabaseClass);
+            this.tabGenerationMisc.Controls.Add(this.chkDefaultCslaAuthorizationProvider);
+            this.tabGenerationMisc.Controls.Add(this.chkHideAuthorizationProvider);
             this.tabGenerationMisc.Controls.Add(this.chkUseBypassPropertyChecks);
             this.tabGenerationMisc.Controls.Add(this.chkNullableSupport);
             this.tabGenerationMisc.Controls.Add(this.chkUsePublicPropertyInfo);
@@ -1881,24 +1886,48 @@ namespace CslaGenerator.Controls
             this.toolTip1.SetToolTip(this.chkGenerateDatabaseClass,
                                      "If checked, generates a \"Database.cs\" or \"Database.vb\" file.");
             //
+            // chkDefaultCslaAuthorizationProvider
+            // 
+            this.chkDefaultCslaAuthorizationProvider.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "DefaultCslaAuthorizationProvider", true));
+            this.chkDefaultCslaAuthorizationProvider.Location = new System.Drawing.Point(255, 50);
+            this.chkDefaultCslaAuthorizationProvider.Name = "chkDefaultCslaAuthorizationProvider";
+            this.chkDefaultCslaAuthorizationProvider.Size = new System.Drawing.Size(216, 17);
+            this.chkDefaultCslaAuthorizationProvider.TabIndex = 12;
+            this.chkDefaultCslaAuthorizationProvider.Text = "Defaults to Csla Authorization Provider";
+            this.toolTip1.SetToolTip(this.chkDefaultCslaAuthorizationProvider,
+                                     "If checked, the default Csla Authorization provider IsInRole is set by default.");
+
+            //
+            // chkHideAuthorizationProvider
+            // 
+            this.chkHideAuthorizationProvider.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "HideAuthorizationProvider", true));
+            this.chkHideAuthorizationProvider.Location = new System.Drawing.Point(255, 78);
+            this.chkHideAuthorizationProvider.Name = "chkHideAuthorizationProvider";
+            this.chkHideAuthorizationProvider.Size = new System.Drawing.Size(216, 17);
+            this.chkHideAuthorizationProvider.TabIndex = 12;
+            this.chkHideAuthorizationProvider.Text = "Hides Authorization Provider option";
+            this.toolTip1.SetToolTip(this.chkHideAuthorizationProvider,
+                                     "If checked, the Authorization Provider options are never shown and\r\nthe default Csla Authorization provider IsInRole is always used.");
+            //
             // chkUseBypassPropertyChecks
             // 
             this.chkUseBypassPropertyChecks.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "UseBypassPropertyChecks", true));
-            this.chkUseBypassPropertyChecks.Location = new System.Drawing.Point(255, 50);
+            this.chkUseBypassPropertyChecks.Location = new System.Drawing.Point(255, 106);
             this.chkUseBypassPropertyChecks.Name = "chkUseBypassPropertyChecks";
             this.chkUseBypassPropertyChecks.Size = new System.Drawing.Size(216, 17);
             this.chkUseBypassPropertyChecks.TabIndex = 12;
             this.chkUseBypassPropertyChecks.Text = "Generate BypassPropertyChecks";
             this.toolTip1.SetToolTip(this.chkUseBypassPropertyChecks,
-                                     "CTP - Not implemented.\r\n\r\n" +
+                                     "RC - Not implemented.\r\n\r\n" +
                                      "If checked, improves code readability by using BypassPropertyChecks blocks\r\n" +
                                      "and assign values using .NET properties.\r\n" +
-                                     "Otherwise uses LoadProperty() to assign values.");            // 
+                                     "Otherwise uses LoadProperty() to assign values.");
+            // 
             // chkNullableSupport
             // 
             this.chkNullableSupport.AutoSize = true;
             this.chkNullableSupport.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "NullableSupport", true));
-            this.chkNullableSupport.Location = new System.Drawing.Point(255, 78);
+            this.chkNullableSupport.Location = new System.Drawing.Point(255, 134);
             this.chkNullableSupport.Name = "chkNullableSupport";
             this.chkNullableSupport.Size = new System.Drawing.Size(157, 17);
             this.chkNullableSupport.TabIndex = 11;
@@ -1909,18 +1938,18 @@ namespace CslaGenerator.Controls
             // chkUsePublicPropertyInfo
             // 
             this.chkUsePublicPropertyInfo.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "UsePublicPropertyInfo", true));
-            this.chkUsePublicPropertyInfo.Location = new System.Drawing.Point(255, 106);
+            this.chkUsePublicPropertyInfo.Location = new System.Drawing.Point(255, 162);
             this.chkUsePublicPropertyInfo.Name = "chkUsePublicPropertyInfo";
             this.chkUsePublicPropertyInfo.Size = new System.Drawing.Size(260, 17);
             this.chkUsePublicPropertyInfo.TabIndex = 12;
             this.chkUsePublicPropertyInfo.Text = "Use public PropertyInfo";
             this.toolTip1.SetToolTip(this.chkUsePublicPropertyInfo,
-                                     "CTP - Not implemented.");
+                                     "RC - Not implemented.");
             //
             // chkForceReadOnlyProperties
             // 
             this.chkForceReadOnlyProperties.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "ForceReadOnlyProperties", true));
-            this.chkForceReadOnlyProperties.Location = new System.Drawing.Point(255, 134);
+            this.chkForceReadOnlyProperties.Location = new System.Drawing.Point(255, 189);
             this.chkForceReadOnlyProperties.Name = "chkForceReadOnlyProperties";
             this.chkForceReadOnlyProperties.Size = new System.Drawing.Size(216, 17);
             this.chkForceReadOnlyProperties.TabIndex = 13;
@@ -1933,9 +1962,9 @@ namespace CslaGenerator.Controls
             // groupBoxLegacy
             // 
             this.groupBoxLegacy.Controls.Add(this.chkActiveObjects);
-            this.groupBoxLegacy.Location = new System.Drawing.Point(255, 161);
+            this.groupBoxLegacy.Location = new System.Drawing.Point(255, 217);
             this.groupBoxLegacy.Name = "groupBoxLegacy";
-            this.groupBoxLegacy.Size = new System.Drawing.Size(240, 76);
+            this.groupBoxLegacy.Size = new System.Drawing.Size(240, 48);
             this.groupBoxLegacy.TabIndex = 35;
             this.groupBoxLegacy.TabStop = false;
             this.groupBoxLegacy.Text = "Legacy Support";
@@ -2199,6 +2228,8 @@ namespace CslaGenerator.Controls
         private System.Windows.Forms.CheckBox chkGenerateInlineQueries;
         private System.Windows.Forms.CheckBox chkGenerateQueriesWithSchema;
         private System.Windows.Forms.CheckBox chkGenerateDatabaseClass;
+        private System.Windows.Forms.CheckBox chkDefaultCslaAuthorizationProvider;
+        private System.Windows.Forms.CheckBox chkHideAuthorizationProvider;
         private System.Windows.Forms.CheckBox chkUseBypassPropertyChecks;
         private System.Windows.Forms.CheckBox chkNullableSupport;
         private System.Windows.Forms.CheckBox chkUsePublicPropertyInfo;

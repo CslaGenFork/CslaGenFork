@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Drawing;
 using System.Reflection;
@@ -18,6 +19,7 @@ namespace CslaGenerator.Design
         private CollectionForm _form;
         private PropertyGrid _propGrid;
         private Type _collectionType;
+        private static string _parentValProp;
 
         #region Constructor
 
@@ -47,7 +49,7 @@ namespace CslaGenerator.Design
             HandleFormCollectionType();
 
             // hook events for expanding Criteria properties hierarchy
-            if (_collectionType == typeof(Criteria))
+            if (_collectionType == typeof (Criteria))
             {
                 foreach (Control control in _form.Controls)
                 {
@@ -57,16 +59,16 @@ namespace CslaGenerator.Design
                         {
                             if (panelControl is ListBox)
                             {
-                                ((ListBox)panelControl).SelectedIndexChanged += OnIndexChanged;
+                                ((ListBox) panelControl).SelectedIndexChanged += OnIndexChanged;
                             }
                             else if (panelControl is TableLayoutPanel)
                             {
-                                var layoutPanel = (TableLayoutPanel)panelControl;
+                                var layoutPanel = (TableLayoutPanel) panelControl;
                                 foreach (var tableControl in layoutPanel.Controls)
                                 {
                                     if (tableControl is Button)
                                     {
-                                        var button = (Button)tableControl;
+                                        var button = (Button) tableControl;
                                         if (button.Text.IndexOf("Add") > 0 || button.Text.IndexOf("Remove") > 0)
                                             button.Click += OnItemAddedOrRemoved;
                                     }
@@ -75,6 +77,34 @@ namespace CslaGenerator.Design
                             else if (panelControl is PropertyGrid)
                             {
                                 ((PropertyGrid) panelControl).SelectedGridItemChanged += OnGridItemChanged;
+                            }
+                        }
+                    }
+                }
+            }
+            else if (_collectionType == typeof (BusinessRuleProperty) || _collectionType == typeof (BusinessRuleParameter))
+            {
+                foreach (Control control in _form.Controls)
+                {
+                    if (control is TableLayoutPanel)
+                    {
+                        foreach (var panelControl in control.Controls)
+                        {
+                            if (panelControl is TableLayoutPanel)
+                            {
+                                var layoutPanel = (TableLayoutPanel) panelControl;
+                                foreach (var tableControl in layoutPanel.Controls)
+                                {
+                                    if (tableControl is Button)
+                                    {
+                                        var button = (Button) tableControl;
+                                        if (button.Text.IndexOf("Add") > 0 || button.Text.IndexOf("Remove") > 0)
+                                        {
+                                            button.Hide();
+                                            button.Enabled = false;
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -89,7 +119,7 @@ namespace CslaGenerator.Design
 
             if (fieldInfo != null)
             {
-                _propGrid = (PropertyGrid)fieldInfo.GetValue(_form);
+                _propGrid = (PropertyGrid) fieldInfo.GetValue(_form);
 
                 if (_propGrid != null)
                 {
@@ -122,77 +152,110 @@ namespace CslaGenerator.Design
         {
             _propGrid.SelectedObjectsChanged -= OnSelect;
 
-            if (_collectionType == typeof(ValueProperty))
+            if (_collectionType == typeof (ValueProperty))
             {
-                var selectedObject = (ValueProperty)_propGrid.SelectedObject;
+                var selectedObject = (ValueProperty) _propGrid.SelectedObject;
                 //Get the property grid's type.
                 //This is a vsPropertyGrid located in System.Windows.Forms.Design
                 var propertyInfo = _propGrid.GetType().GetProperty("SelectedObject", BindingFlags.Public | BindingFlags.Instance);
                 if (selectedObject != null)
+                {
                     propertyInfo.SetValue(_propGrid, new ValuePropertyBag(selectedObject), null);
+                    _parentValProp = selectedObject.Name;
+                }
             }
-            else if (_collectionType == typeof(ChildProperty))
+            else if (_collectionType == typeof (ChildProperty))
             {
-                var selectedObject = (ChildProperty)_propGrid.SelectedObject;
+                var selectedObject = (ChildProperty) _propGrid.SelectedObject;
                 //Get the property grid's type.
                 //This is a vsPropertyGrid located in System.Windows.Forms.Design
                 var propertyInfo = _propGrid.GetType().GetProperty("SelectedObject", BindingFlags.Public | BindingFlags.Instance);
                 if (selectedObject != null)
                     propertyInfo.SetValue(_propGrid, new ChildPropertyBag(selectedObject), null);
             }
-            else if (_collectionType == typeof(UnitOfWorkProperty))
+            else if (_collectionType == typeof (UnitOfWorkProperty))
             {
-                var selectedObject = (UnitOfWorkProperty)_propGrid.SelectedObject;
+                var selectedObject = (UnitOfWorkProperty) _propGrid.SelectedObject;
                 //Get the property grid's type.
                 //This is a vsPropertyGrid located in System.Windows.Forms.Design
                 var propertyInfo = _propGrid.GetType().GetProperty("SelectedObject", BindingFlags.Public | BindingFlags.Instance);
                 if (selectedObject != null)
                     propertyInfo.SetValue(_propGrid, new UnitOfWorkPropertyBag(selectedObject), null);
             }
-            else if (_collectionType == typeof(Criteria))
+            else if (_collectionType == typeof (Criteria))
             {
-                var selectedObject = (Criteria)_propGrid.SelectedObject;
+                var selectedObject = (Criteria) _propGrid.SelectedObject;
                 //Get the property grid's type.
                 //This is a vsPropertyGrid located in System.Windows.Forms.Design
                 var propertyInfo = _propGrid.GetType().GetProperty("SelectedObject", BindingFlags.Public | BindingFlags.Instance);
                 if (selectedObject != null)
                     propertyInfo.SetValue(_propGrid, new CriteriaBag(selectedObject), null);
             }
-            else if (_collectionType == typeof(CriteriaProperty))
+            else if (_collectionType == typeof (CriteriaProperty))
             {
-                var selectedObject = (CriteriaProperty)_propGrid.SelectedObject;
+                var selectedObject = (CriteriaProperty) _propGrid.SelectedObject;
                 //Get the property grid's type.
                 //This is a vsPropertyGrid located in System.Windows.Forms.Design
                 var propertyInfo = _propGrid.GetType().GetProperty("SelectedObject", BindingFlags.Public | BindingFlags.Instance);
                 if (selectedObject != null)
                     propertyInfo.SetValue(_propGrid, new CriteriaPropertyBag(selectedObject), null);
             }
-            else if (_collectionType == typeof(ConvertValueProperty))
+            else if (_collectionType == typeof (ConvertValueProperty))
             {
-                var selectedObject = (ConvertValueProperty)_propGrid.SelectedObject;
+                var selectedObject = (ConvertValueProperty) _propGrid.SelectedObject;
                 //Get the property grid's type.
                 //This is a vsPropertyGrid located in System.Windows.Forms.Design
                 var propertyInfo = _propGrid.GetType().GetProperty("SelectedObject", BindingFlags.Public | BindingFlags.Instance);
                 if (selectedObject != null)
                     propertyInfo.SetValue(_propGrid, new ConvertValuePropertyBag(selectedObject), null);
             }
-            else if (_collectionType == typeof(UpdateValueProperty))
+            else if (_collectionType == typeof (UpdateValueProperty))
             {
-                var selectedObject = (UpdateValueProperty)_propGrid.SelectedObject;
+                var selectedObject = (UpdateValueProperty) _propGrid.SelectedObject;
                 //Get the property grid's type.
                 //This is a vsPropertyGrid located in System.Windows.Forms.Design
                 var propertyInfo = _propGrid.GetType().GetProperty("SelectedObject", BindingFlags.Public | BindingFlags.Instance);
                 if (selectedObject != null)
                     propertyInfo.SetValue(_propGrid, new UpdateValuePropertyBag(selectedObject), null);
             }
-            else if (_collectionType == typeof(Rule))
+            else if (_collectionType == typeof (Rule))
             {
-                var selectedObject = (Rule)_propGrid.SelectedObject;
+                var selectedObject = (Rule) _propGrid.SelectedObject;
                 //Get the property grid's type.
                 //This is a vsPropertyGrid located in System.Windows.Forms.Design
                 var propertyInfo = _propGrid.GetType().GetProperty("SelectedObject", BindingFlags.Public | BindingFlags.Instance);
                 if (selectedObject != null)
                     propertyInfo.SetValue(_propGrid, new RuleBag(selectedObject), null);
+            }
+            else if (_collectionType == typeof(BusinessRule))
+            {
+                var selectedObject = (BusinessRule) _propGrid.SelectedObject;
+                //Get the property grid's type.
+                //This is a vsPropertyGrid located in System.Windows.Forms.Design
+                var propertyInfo = _propGrid.GetType().GetProperty("SelectedObject", BindingFlags.Public | BindingFlags.Instance);
+                if (selectedObject != null)
+                {
+                    selectedObject.Parent = _parentValProp;
+                    propertyInfo.SetValue(_propGrid, new BusinessRuleBag(selectedObject), null);
+                }
+            }
+            else if (_collectionType == typeof(BusinessRuleProperty))
+            {
+                var selectedObject = (BusinessRuleProperty)_propGrid.SelectedObject;
+                //Get the property grid's type.
+                //This is a vsPropertyGrid located in System.Windows.Forms.Design
+                var propertyInfo = _propGrid.GetType().GetProperty("SelectedObject", BindingFlags.Public | BindingFlags.Instance);
+                if (selectedObject != null)
+                    propertyInfo.SetValue(_propGrid, new BusinessRulePropertyBag(selectedObject), null);
+            }
+            else if (_collectionType == typeof(BusinessRuleParameter))
+            {
+                var selectedObject = (BusinessRuleParameter)_propGrid.SelectedObject;
+                //Get the property grid's type.
+                //This is a vsPropertyGrid located in System.Windows.Forms.Design
+                var propertyInfo = _propGrid.GetType().GetProperty("SelectedObject", BindingFlags.Public | BindingFlags.Instance);
+                if (selectedObject != null)
+                    propertyInfo.SetValue(_propGrid, new BusinessRuleParameterBag(selectedObject), null);
             }
             else if (_collectionType == typeof(DecoratorArgument))
             {
@@ -203,6 +266,8 @@ namespace CslaGenerator.Design
                 if (selectedObject != null)
                     propertyInfo.SetValue(_propGrid, new DecoratorArgumentBag(selectedObject), null);
             }
+
+            _propGrid.Layout += pgEditor_Layout;
 
             _propGrid.SelectedObjectsChanged += OnSelect;
         }
@@ -243,14 +308,16 @@ namespace CslaGenerator.Design
                     _form.Size = new Size(550, _form.Size.Height);
                     _collectionType = typeof (Criteria);
                     _form.Size = new Size(_form.Size.Width, 726);
-                    var cslaObject = (CslaObjectInfo)GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem;
+                    var cslaObject = (CslaObjectInfo) GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem;
                     if ((cslaObject.ObjectType == CslaObjectType.ReadOnlyObject ||
                          cslaObject.ObjectType == CslaObjectType.ReadOnlyCollection ||
                          cslaObject.ObjectType == CslaObjectType.NameValueList ||
                          (cslaObject.ObjectType == CslaObjectType.UnitOfWork)))
                         _form.Size = new Size(_form.Size.Width, _form.Size.Height - 256);
-                    if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40 &&
-                        GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL)
+                    if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework !=
+                        TargetFramework.CSLA40 &&
+                        GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework !=
+                        TargetFramework.CSLA40DAL)
                         _form.Size = new Size(_form.Size.Width, _form.Size.Height - 32);
                     break;
                 case "CriteriaProperty Collection Editor":
@@ -268,6 +335,18 @@ namespace CslaGenerator.Design
                     break;
                 case "Rule Collection Editor":
                     _collectionType = typeof (Rule);
+                    break;
+                case "BusinessRule Collection Editor":
+                    _form.Size = new Size(700, 569);
+                    _collectionType = typeof (BusinessRule);
+                    break;
+                case "BusinessRuleProperty Collection Editor":
+                    _form.Size = new Size(700, 569);
+                    _collectionType = typeof(BusinessRuleProperty);
+                    break;
+                case "BusinessRuleParameter Collection Editor":
+                    _form.Size = new Size(700, 569);
+                    _collectionType = typeof(BusinessRuleParameter);
                     break;
                 case "DecoratorArgument Collection Editor":
                     _collectionType = typeof (DecoratorArgument);
@@ -300,7 +379,7 @@ namespace CslaGenerator.Design
         {
             var maxHeight = Screen.PrimaryScreen.WorkingArea.Height;
 
-            if (_collectionType == typeof(Criteria))
+            if (_collectionType == typeof (Criteria))
                 _propGrid.ExpandAllGridItems();
 
             _form.StartPosition = FormStartPosition.CenterParent;
@@ -312,9 +391,50 @@ namespace CslaGenerator.Design
                 if (hDiff == 0)
                     hDiff = 0;
                 else
-                    hDiff = hDiff / 2;
+                    hDiff = hDiff/2;
 
                 _form.Bounds = new Rectangle(_form.Bounds.X, hDiff, _form.Bounds.Width, _form.Bounds.Height);
+            }
+
+            pgEditor_Layout(this, new LayoutEventArgs(_propGrid, "gridView"));
+  
+        }
+
+        private void pgEditor_Layout(object sender, LayoutEventArgs e)
+        {
+            var gridItem = _propGrid.SelectedGridItem;
+            if (gridItem == null)
+                return;
+
+            while (gridItem.Parent != null)
+            {
+                gridItem = gridItem.Parent;
+            }
+            var r = 0;
+            GetLongest(gridItem.GridItems, ref r);
+
+            http: //www.dotnetmonster.com/Uwe/Forum.aspx/winform-controls/5624/Using-the-PropertyGrid-Control
+
+            FieldInfo fi = typeof (PropertyGrid).GetField("gridView", BindingFlags.Instance | BindingFlags.NonPublic);
+            object propertyGridView = fi.GetValue(_propGrid);
+
+            _propGrid.AutoSize = false;
+
+            MethodInfo mi = propertyGridView.GetType().GetMethod("MoveSplitterTo",
+                                                                 BindingFlags.NonPublic | BindingFlags.Instance);
+            mi.Invoke(propertyGridView, new object[] {r + 20});
+        }
+
+        private void GetLongest(GridItemCollection col, ref int r)
+        {
+            foreach (GridItem item in col)
+            {
+                if (item.GridItemType != GridItemType.Category)
+                    r = Math.Max(r, TextRenderer.MeasureText(item.Label, _propGrid.Font).Width);
+                if (item.Expanded)
+                {
+                    GetLongest(item.GridItems, ref r);
+                }
             }
         }
     }

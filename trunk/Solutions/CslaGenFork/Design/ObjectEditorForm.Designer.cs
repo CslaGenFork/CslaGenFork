@@ -46,6 +46,7 @@
             this.pgEditor.ViewBackColor = System.Drawing.SystemColors.Window;
             this.pgEditor.ViewForeColor = System.Drawing.SystemColors.WindowText;
             this.pgEditor.PropertySortChanged += OnSort;
+            this.pgEditor.Layout += new System.Windows.Forms.LayoutEventHandler(this.pgEditor_Layout);
             // 
             // btnOK
             // 
@@ -73,6 +74,7 @@
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.pgEditor);
             this.Name = "ObjectEditorForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Object Editor";
             this.ResumeLayout(false);
 

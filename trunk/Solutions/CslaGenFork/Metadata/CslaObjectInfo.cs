@@ -64,6 +64,7 @@ namespace CslaGenerator.Metadata
         private bool _lazyLoad;
         private bool _generateSprocs = true;
         private PropertyCollection _parentProperties = new PropertyCollection();
+        private AuthzTypeInfo _objectAuthzProviderType = new AuthzTypeInfo();
         private string _getRoles = String.Empty;
         private string _newRoles = String.Empty;
         private string _updateRoles = String.Empty;
@@ -355,7 +356,7 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Common Options")]
-        [Description("The Namespaces this class uses (\"using\" in C# or \"Imports\" in VB).")]
+        [Description("The Namespaces this class uses (\"using\" in C# or \"Imports\" in VB). Write one namespace per line.")]
         [UserFriendlyName("Namespaces")]
         public string[] Namespaces
         {
@@ -382,7 +383,8 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Common Options")]
-        [Description("The type that this object inherits from. You can either select an object defined in the current project or an object defined in another assembly.  The object you inherit from must inherit from a valid Csla base object.")]
+        [Description("The type that this object inherits from. You can either select an object defined in the current project or an object defined in another assembly.\r\n" + 
+            "The object you inherit from must inherit from a valid Csla base object.")]
         [Editor(typeof(ObjectEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(TypeInfoConverter))]
         [UserFriendlyName("Inherited Type")]
@@ -1108,6 +1110,26 @@ namespace CslaGenerator.Metadata
 
         #region 10. Authorization
 
+        [Category("10. Authorization")]
+        [Description("Roles to create object. Multiple roles must be separated with \";\". Use no prefix to allow or use prefix \"!\" to deny.")]
+        [Editor(typeof(ObjectEditor), typeof(UITypeEditor))]
+        [TypeConverter(typeof(AuthzTypeConverter))]
+        [UserFriendlyName("Object Autorization Type")]
+        public AuthzTypeInfo ObjectAuthzRuleType
+        {
+            get { return _objectAuthzProviderType; }
+            set
+            {
+                if (!ReferenceEquals(value, _objectAuthzProviderType))
+                {
+                    if (_objectAuthzProviderType != null)
+//                        _authzProviderType.TypeChanged -= AuthProviderType_TypeChanged;
+                    _objectAuthzProviderType = value;
+//                    _authzProviderType.TypeChanged += AuthProviderType_TypeChanged;
+                }
+            }
+        }
+
         /// <summary>
         /// Roles to create object. Multiple roles must be separated with ;.
         /// </summary>
@@ -1359,8 +1381,18 @@ namespace CslaGenerator.Metadata
             //SetInheritedProperties(t);
         }
 
-        #endregion
+        /*public void AuthProviderType_TypeChanged(object sender, EventArgs e)
+        {
+            var t = (AutzTypeInfo)sender;
+            if (t.Type != String.Empty)
+            {
+                //ValidateType(t.GetInheritedType());
+            }
+            //SetInheritedProperties(t);
+        }*/
 
+        #endregion
+        
         #region Private and Internal Methods
 
         private ValueProperty GetValuePropertyFromInfo(PropertyInfo info)

@@ -46,7 +46,6 @@ namespace CslaGenerator.Metadata
 
         #region Private Fields
 
-        private RuleCollection _rules = new RuleCollection();
         private DbBindColumn _dbBindColumn = new DbBindColumn();
         private string _fkConstraint = String.Empty;
         private bool _markDirtyOnChange = true;
@@ -54,12 +53,13 @@ namespace CslaGenerator.Metadata
         private string _defaultValue = string.Empty;
         private string _friendlyName = string.Empty;
         private PropertyDeclaration _declarationMode;
+        private RuleCollection _rules = new RuleCollection();
+        private BusinessRuleCollection _businessRules = new BusinessRuleCollection();
         private string _implements = string.Empty;
         private string[] _attributes = new string[] { };
-        private string _allowReadRoles = string.Empty;
-        private string _allowWriteRoles = string.Empty;
-        private string _denyReadRoles = string.Empty;
-        private string _denyWriteRoles = string.Empty;
+        private AuthzTypeInfo _authzProviderType= new AuthzTypeInfo();
+        private string _readRoles = string.Empty;
+        private string _writeRoles = string.Empty;
         private PropertyAccess _access = PropertyAccess.IsPublic;
         private DataAccessBehaviour _dataAccess = DataAccessBehaviour.ReadWrite;
         private UserDefinedKeyBehaviour _primaryKey = UserDefinedKeyBehaviour.Default;
@@ -163,7 +163,7 @@ namespace CslaGenerator.Metadata
 
         [Category("01. Definition")]
         [Description("Human readable friendly display name of the property.")]
-        [UserFriendlyName("Friendly Name")]
+        [UserFriendlyName("Property Friendly Name")]
         public string FriendlyName
         {
             get
@@ -182,7 +182,7 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Definition")]
-        [Description("The property Type.")]
+        [Description("The property data Type.")]
         [UserFriendlyName("Property Type")]
         public override TypeCodeEx PropertyType
         {
@@ -200,7 +200,7 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Definition")]
-        [Description("Type of Backing Field of the Property.")]
+        [Description("Type of Backing Field of the Property. Leave as \"Empty\" for no backing field.")]
         [UserFriendlyName("Backing Field Type")]
         public TypeCodeEx BackingFieldType
         {
@@ -225,7 +225,7 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Definition")]
-        [Description("This is a description.")]
+        [Description("Value that is set when the object is created..")]
         [UserFriendlyName("Default Value")]
         public virtual string DefaultValue
         {
@@ -233,8 +233,12 @@ namespace CslaGenerator.Metadata
             set { _defaultValue = PropertyHelper.TidyAllowSpaces(value); }
         }
 
-        [Category("01. Definition")]
-        [Description("This is a description.")]
+        #endregion
+
+        #region 02. Advanced
+
+        [Category("02. Advanced")]
+        [Description("Collection of business rules.")]
         [Editor(typeof(PropertyCollectionForm), typeof(UITypeEditor))]
         [UserFriendlyName("Rule Collection")]
         public virtual RuleCollection Rules
@@ -242,9 +246,14 @@ namespace CslaGenerator.Metadata
             get { return _rules; }
         }
 
-        #endregion
-
-        #region 02. Advanced
+        [Category("02. Advanced")]
+        [Description("Collection of business rules (transformation, validation, etc).")]
+        [Editor(typeof(PropertyCollectionForm), typeof(UITypeEditor))]
+        [UserFriendlyName("Business Rules Collection")]
+        public virtual BusinessRuleCollection BusinessRules
+        {
+            get { return _businessRules; }
+        }
 
         [Category("02. Advanced")]
         [Description("The attributes you want to add to this property.")]
@@ -267,40 +276,43 @@ namespace CslaGenerator.Metadata
         #region 03. Authorization
 
         [Category("03. Authorization")]
-        [Description("Roles allowed to read the property. Multiple roles must be separated with ;")]
-        [UserFriendlyName("Allow Read Roles")]
-        public virtual string AllowReadRoles
+        [Description("Roles to create object. Multiple roles must be separated with \";\". Use no prefix to allow or use prefix \"!\" to deny.")]
+        [Editor(typeof(ObjectEditor), typeof(UITypeEditor))]
+        [TypeConverter(typeof(AuthzTypeConverter))]
+        [UserFriendlyName("Autorization Type")]
+        public virtual AuthzTypeInfo AuthzRuleType
         {
-            get { return _allowReadRoles; }
-            set { _allowReadRoles = PropertyHelper.TidyAllowSpaces(value); }
+            get { return _authzProviderType; }
+            set
+            {
+                if (!ReferenceEquals(value, _authzProviderType))
+                {
+                    if (_authzProviderType != null)
+//                        _authzProviderType.TypeChanged -= AuthProviderType_TypeChanged;
+                    _authzProviderType = value;
+//                    _authzProviderType.TypeChanged += AuthProviderType_TypeChanged;
+                }
+            }
+        }
+
+        [Category("03. Authorization")]
+        [Description("Roles allowed to read the property. Multiple roles must be separated with ;")]
+        [UserFriendlyName("Read Roles")]
+        public virtual string ReadRoles
+        {
+            get { return _readRoles; }
+            set { _readRoles = PropertyHelper.TidyAllowSpaces(value); }
         }
 
         [Category("03. Authorization")]
         [Description("Roles allowed to write to the property. Multiple roles must be separated with ;")]
-        [UserFriendlyName("Allow Write Roles")]
-        public virtual string AllowWriteRoles
+        [UserFriendlyName("Write Roles")]
+        public virtual string WriteRoles
         {
-            get { return _allowWriteRoles; }
-            set { _allowWriteRoles = PropertyHelper.TidyAllowSpaces(value); }
+            get { return _writeRoles; }
+            set { _writeRoles = PropertyHelper.TidyAllowSpaces(value); }
         }
 
-        [Category("03. Authorization")]
-        [Description("Roles denied to read the property. Multiple roles must be separated with ;")]
-        [UserFriendlyName("Deny Read Roles")]
-        public virtual string DenyReadRoles
-        {
-            get { return _denyReadRoles; }
-            set { _denyReadRoles = PropertyHelper.TidyAllowSpaces(value); }
-        }
-
-        [Category("03. Authorization")]
-        [Description("Roles denied to write to the property. Multiple roles must be separated with ;")]
-        [UserFriendlyName("Deny Write Roles")]
-        public virtual string DenyWriteRoles
-        {
-            get { return _denyWriteRoles; }
-            set { _denyWriteRoles = PropertyHelper.TidyAllowSpaces(value); }
-        }
 
         #endregion
 

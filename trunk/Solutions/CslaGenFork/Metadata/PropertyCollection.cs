@@ -11,6 +11,7 @@ namespace CslaGenerator.Metadata
     public class PropertyCollection : IList, ICloneable
     {
         #region Interfaces
+
         /// <summary>
         ///        Supports type-safe iteration over a <see cref="PropertyCollection"/>.
         /// </summary>
@@ -38,18 +39,21 @@ namespace CslaGenerator.Metadata
             /// </summary>
             void Reset();
         }
+
         #endregion
 
         private const int DEFAULT_CAPACITY = 16;
 
         #region Implementation (data)
-        private Property[] m_array;
-        private int m_count = 0;
-        [XmlIgnore]
-        private int m_version = 0;
+
+        private Property[] _array;
+        private int _count = 0;
+        [XmlIgnore] private int _version = 0;
+
         #endregion
 
         #region Static Wrappers
+
         /// <summary>
         ///        Creates a synchronized (thread-safe) wrapper for a
         ///     <c>PropertyCollection</c> instance.
@@ -77,16 +81,18 @@ namespace CslaGenerator.Metadata
                 throw new ArgumentNullException("list");
             return new ReadOnlyPropertyCollection(list);
         }
+
         #endregion
 
         #region Construction
+
         /// <summary>
         ///        Initializes a new instance of the <c>PropertyCollection</c> class
         ///        that is empty and has the default initial capacity.
         /// </summary>
         public PropertyCollection()
         {
-            m_array = new Property[DEFAULT_CAPACITY];
+            _array = new Property[DEFAULT_CAPACITY];
         }
 
         /// <summary>
@@ -98,7 +104,7 @@ namespace CslaGenerator.Metadata
         ///    </param>
         public PropertyCollection(int capacity)
         {
-            m_array = new Property[capacity];
+            _array = new Property[capacity];
         }
 
         /// <summary>
@@ -108,7 +114,7 @@ namespace CslaGenerator.Metadata
         /// <param name="c">The <c>PropertyCollection</c> whose elements are copied to the new collection.</param>
         public PropertyCollection(PropertyCollection c)
         {
-            m_array = new Property[c.Count];
+            _array = new Property[c.Count];
             AddRange(c);
         }
 
@@ -119,7 +125,7 @@ namespace CslaGenerator.Metadata
         /// <param name="a">The <see cref="Property"/> array whose elements are copied to the new list.</param>
         public PropertyCollection(Property[] a)
         {
-            m_array = new Property[a.Length];
+            _array = new Property[a.Length];
             AddRange(a);
         }
 
@@ -130,17 +136,19 @@ namespace CslaGenerator.Metadata
 
         protected PropertyCollection(Tag t)
         {
-            m_array = null;
+            _array = null;
         }
+
         #endregion
 
         #region Operations (type-safe ICollection)
+
         /// <summary>
         ///        Gets the number of elements actually contained in the <c>PropertyCollection</c>.
         /// </summary>
         public virtual int Count
         {
-            get { return m_count; }
+            get { return _count; }
         }
 
         /// <summary>
@@ -161,10 +169,10 @@ namespace CslaGenerator.Metadata
         /// <param name="start">The zero-based index in <paramref name="array"/> at which copying begins.</param>
         public virtual void CopyTo(Property[] array, int start)
         {
-            if (m_count > array.GetUpperBound(0) + 1 - start)
+            if (_count > array.GetUpperBound(0) + 1 - start)
                 throw new System.ArgumentException("Destination array was not long enough.");
 
-            Array.Copy(m_array, 0, array, start, m_count);
+            Array.Copy(_array, 0, array, start, _count);
         }
 
         /// <summary>
@@ -173,7 +181,7 @@ namespace CslaGenerator.Metadata
         /// <returns>true if access to the ICollection is synchronized (thread-safe); otherwise, false.</returns>
         public virtual bool IsSynchronized
         {
-            get { return m_array.IsSynchronized; }
+            get { return _array.IsSynchronized; }
         }
 
         /// <summary>
@@ -181,11 +189,13 @@ namespace CslaGenerator.Metadata
         /// </summary>
         public virtual object SyncRoot
         {
-            get { return m_array.SyncRoot; }
+            get { return _array.SyncRoot; }
         }
+
         #endregion
 
         #region Operations (type-safe IList)
+
         /// <summary>
         ///        Gets or sets the <see cref="Property"/> at the specified index.
         /// </summary>
@@ -200,13 +210,13 @@ namespace CslaGenerator.Metadata
             get
             {
                 ValidateIndex(index); // throws
-                return m_array[index];
+                return _array[index];
             }
             set
             {
                 ValidateIndex(index); // throws
-                ++m_version;
-                m_array[index] = value;
+                ++_version;
+                _array[index] = value;
             }
         }
 
@@ -221,13 +231,13 @@ namespace CslaGenerator.Metadata
             //and avoid saving a ValueProperty to the xml when there's no need.
 
 
-            if (m_count == m_array.Length)
-                EnsureCapacity(m_count + 1);
+            if (_count == _array.Length)
+                EnsureCapacity(_count + 1);
 
-            m_array[m_count] = item;
-            m_version++;
+            _array[_count] = item;
+            _version++;
 
-            return m_count++;
+            return _count++;
         }
 
         /// <summary>
@@ -235,9 +245,9 @@ namespace CslaGenerator.Metadata
         /// </summary>
         public virtual void Clear()
         {
-            ++m_version;
-            m_array = new Property[DEFAULT_CAPACITY];
-            m_count = 0;
+            ++_version;
+            _array = new Property[DEFAULT_CAPACITY];
+            _count = 0;
         }
 
         /// <summary>
@@ -245,10 +255,10 @@ namespace CslaGenerator.Metadata
         /// </summary>
         public virtual object Clone()
         {
-            PropertyCollection newColl = new PropertyCollection(m_count);
-            Array.Copy(m_array, 0, newColl.m_array, 0, m_count);
-            newColl.m_count = m_count;
-            newColl.m_version = m_version;
+            PropertyCollection newColl = new PropertyCollection(_count);
+            Array.Copy(_array, 0, newColl._array, 0, _count);
+            newColl._count = _count;
+            newColl._version = _version;
 
             return newColl;
         }
@@ -260,8 +270,8 @@ namespace CslaGenerator.Metadata
         /// <returns><c>true</c> if <paramref name="item"/> is found in the <c>PropertyCollection</c>; otherwise, <c>false</c>.</returns>
         public virtual bool Contains(Property item)
         {
-            for (int i = 0; i != m_count; ++i)
-                if (m_array[i].Equals(item))
+            for (int i = 0; i != _count; ++i)
+                if (_array[i].Equals(item))
                     return true;
             return false;
         }
@@ -273,8 +283,8 @@ namespace CslaGenerator.Metadata
         /// <returns><c>true</c> if <paramref name="name"/> is found in the <c>PropertyCollection</c>; otherwise, <c>false</c>.</returns>
         public virtual bool Contains(string name)
         {
-            for (int i = 0; i != m_count; ++i)
-                if (CaseInsensitiveComparer.Default.Compare(m_array[i].Name, name) == 0)
+            for (int i = 0; i != _count; ++i)
+                if (CaseInsensitiveComparer.Default.Compare(_array[i].Name, name) == 0)
                     return true;
             return false;
         }
@@ -290,8 +300,8 @@ namespace CslaGenerator.Metadata
         ///    </returns>
         public virtual int IndexOf(Property item)
         {
-            for (int i = 0; i != m_count; ++i)
-                if (m_array[i].Equals(item))
+            for (int i = 0; i != _count; ++i)
+                if (_array[i].Equals(item))
                     return i;
             return -1;
         }
@@ -310,17 +320,17 @@ namespace CslaGenerator.Metadata
         {
             ValidateIndex(index, true); // throws
 
-            if (m_count == m_array.Length)
-                EnsureCapacity(m_count + 1);
+            if (_count == _array.Length)
+                EnsureCapacity(_count + 1);
 
-            if (index < m_count)
+            if (index < _count)
             {
-                Array.Copy(m_array, index, m_array, index + 1, m_count - index);
+                Array.Copy(_array, index, _array, index + 1, _count - index);
             }
             item = new Property(item);
-            m_array[index] = item;
-            m_count++;
-            m_version++;
+            _array[index] = item;
+            _count++;
+            _version++;
         }
 
         /// <summary>
@@ -334,9 +344,10 @@ namespace CslaGenerator.Metadata
         {
             int i = IndexOf(item);
             if (i < 0)
-                throw new System.ArgumentException("Cannot remove the specified item because it was not found in the specified Collection.");
+                throw new ArgumentException(
+                    "Cannot remove the specified item because it was not found in the specified Collection.");
 
-            ++m_version;
+            ++_version;
             RemoveAt(i);
         }
 
@@ -353,19 +364,19 @@ namespace CslaGenerator.Metadata
         {
             ValidateIndex(index); // throws
 
-            m_count--;
+            _count--;
 
-            if (index < m_count)
+            if (index < _count)
             {
-                Array.Copy(m_array, index + 1, m_array, index, m_count - index);
+                Array.Copy(_array, index + 1, _array, index, _count - index);
             }
 
             // We can't set the deleted entry equal to null, because it might be a value type.
             // Instead, we'll create an empty single-element array of the right type and copy it
             // over the entry we want to erase.
             Property[] temp = new Property[1];
-            Array.Copy(temp, 0, m_array, m_count, 1);
-            m_version++;
+            Array.Copy(temp, 0, _array, _count, 1);
+            _version++;
         }
 
         /// <summary>
@@ -385,6 +396,7 @@ namespace CslaGenerator.Metadata
         {
             get { return false; }
         }
+
         #endregion
 
         #region Operations (type-safe IEnumerable)
@@ -397,6 +409,7 @@ namespace CslaGenerator.Metadata
         {
             return new Enumerator(this);
         }
+
         #endregion
 
         #region Public helpers (just to mimic some nice features of ArrayList)
@@ -406,24 +419,24 @@ namespace CslaGenerator.Metadata
         /// </summary>
         public virtual int Capacity
         {
-            get { return m_array.Length; }
+            get { return _array.Length; }
 
             set
             {
-                if (value < m_count)
-                    value = m_count;
+                if (value < _count)
+                    value = _count;
 
-                if (value != m_array.Length)
+                if (value != _array.Length)
                 {
                     if (value > 0)
                     {
                         Property[] temp = new Property[value];
-                        Array.Copy(m_array, temp, m_count);
-                        m_array = temp;
+                        Array.Copy(_array, temp, _count);
+                        _array = temp;
                     }
                     else
                     {
-                        m_array = new Property[DEFAULT_CAPACITY];
+                        _array = new Property[DEFAULT_CAPACITY];
                     }
                 }
             }
@@ -436,14 +449,14 @@ namespace CslaGenerator.Metadata
         /// <returns>The new <see cref="PropertyCollection.Count"/> of the <c>PropertyCollection</c>.</returns>
         public virtual int AddRange(PropertyCollection x)
         {
-            if (m_count + x.Count >= m_array.Length)
-                EnsureCapacity(m_count + x.Count);
+            if (_count + x.Count >= _array.Length)
+                EnsureCapacity(_count + x.Count);
 
-            Array.Copy(x.m_array, 0, m_array, m_count, x.Count);
-            m_count += x.Count;
-            m_version++;
+            Array.Copy(x._array, 0, _array, _count, x.Count);
+            _count += x.Count;
+            _version++;
 
-            return m_count;
+            return _count;
         }
 
         /// <summary>
@@ -453,14 +466,14 @@ namespace CslaGenerator.Metadata
         /// <returns>The new <see cref="PropertyCollection.Count"/> of the <c>PropertyCollection</c>.</returns>
         public virtual int AddRange(Property[] x)
         {
-            if (m_count + x.Length >= m_array.Length)
-                EnsureCapacity(m_count + x.Length);
+            if (_count + x.Length >= _array.Length)
+                EnsureCapacity(_count + x.Length);
 
-            Array.Copy(x, 0, m_array, m_count, x.Length);
-            m_count += x.Length;
-            m_version++;
+            Array.Copy(x, 0, _array, _count, x.Length);
+            _count += x.Length;
+            _version++;
 
-            return m_count;
+            return _count;
         }
 
         /// <summary>
@@ -468,7 +481,7 @@ namespace CslaGenerator.Metadata
         /// </summary>
         public virtual void TrimToSize()
         {
-            this.Capacity = m_count;
+            Capacity = _count;
         }
 
         #endregion
@@ -485,25 +498,28 @@ namespace CslaGenerator.Metadata
             ValidateIndex(i, false);
         }
 
-        /// <exception cref="ArgumentOutOfRangeException">
-        ///        <para><paramref name="index"/> is less than zero</para>
-        ///        <para>-or-</para>
-        ///        <para><paramref name="index"/> is equal to or greater than <see cref="PropertyCollection.Count"/>.</para>
-        /// </exception>
+        /// <summary>
+        /// Validates the index.
+        /// </summary>
+        /// <param name="i">The i.</param>
+        /// <param name="allowEqualEnd">if set to <c>true</c> [allow equal end].</param>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         private void ValidateIndex(int i, bool allowEqualEnd)
         {
-            int max = (allowEqualEnd) ? (m_count) : (m_count - 1);
+            int max = (allowEqualEnd) ? (_count) : (_count - 1);
             if (i < 0 || i > max)
-                throw new System.ArgumentOutOfRangeException("Index was out of range.  Must be non-negative and less than the size of the collection.", (object)i, "Specified argument was out of the range of valid values.");
+                throw new ArgumentOutOfRangeException(
+                    "Index was out of range.  Must be non-negative and less than the size of the collection.",
+                    i, "Specified argument was out of the range of valid values.");
         }
 
         private void EnsureCapacity(int min)
         {
-            int newCapacity = ((m_array.Length == 0) ? DEFAULT_CAPACITY : m_array.Length * 2);
+            int newCapacity = ((_array.Length == 0) ? DEFAULT_CAPACITY : _array.Length*2);
             if (newCapacity < min)
                 newCapacity = min;
 
-            this.Capacity = newCapacity;
+            Capacity = newCapacity;
         }
 
         #endregion
@@ -512,7 +528,7 @@ namespace CslaGenerator.Metadata
 
         void ICollection.CopyTo(Array array, int start)
         {
-            this.CopyTo((Property[])array, start);
+            CopyTo((Property[]) array, start);
         }
 
         #endregion
@@ -521,38 +537,38 @@ namespace CslaGenerator.Metadata
 
         object IList.this[int i]
         {
-            get { return (object)this[i]; }
-            set { this[i] = (Property)value; }
+            get { return this[i]; }
+            set { this[i] = (Property) value; }
         }
 
         int IList.Add(object x)
         {
-            return this.Add((Property)x);
+            return this.Add((Property) x);
         }
 
         bool IList.Contains(object x)
         {
-            return this.Contains((Property)x);
+            return Contains((Property) x);
         }
 
         int IList.IndexOf(object x)
         {
-            return this.IndexOf((Property)x);
+            return IndexOf((Property) x);
         }
 
         void IList.Insert(int pos, object x)
         {
-            this.Insert(pos, (Property)x);
+            Insert(pos, (Property) x);
         }
 
         void IList.Remove(object x)
         {
-            this.Remove((Property)x);
+            Remove((Property) x);
         }
 
         void IList.RemoveAt(int pos)
         {
-            this.RemoveAt(pos);
+            RemoveAt(pos);
         }
 
         #endregion
@@ -561,12 +577,13 @@ namespace CslaGenerator.Metadata
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return (IEnumerator)(this.GetEnumerator());
+            return (IEnumerator) (GetEnumerator());
         }
 
         #endregion
 
         #region Nested enumerator class
+
         /// <summary>
         ///        Supports simple iteration over a <see cref="PropertyCollection"/>.
         /// </summary>
@@ -574,9 +591,9 @@ namespace CslaGenerator.Metadata
         {
             #region Implementation (data)
 
-            private PropertyCollection m_collection;
-            private int m_index;
-            private int m_version;
+            private PropertyCollection _collection;
+            private int _index;
+            private int _version;
 
             #endregion
 
@@ -588,9 +605,9 @@ namespace CslaGenerator.Metadata
             /// <param name="tc"></param>
             internal Enumerator(PropertyCollection tc)
             {
-                m_collection = tc;
-                m_index = -1;
-                m_version = tc.m_version;
+                _collection = tc;
+                _index = -1;
+                _version = tc._version;
             }
 
             #endregion
@@ -602,7 +619,7 @@ namespace CslaGenerator.Metadata
             /// </summary>
             public Property Current
             {
-                get { return m_collection[m_index]; }
+                get { return _collection[_index]; }
             }
 
             /// <summary>
@@ -617,11 +634,12 @@ namespace CslaGenerator.Metadata
             /// </returns>
             public bool MoveNext()
             {
-                if (m_version != m_collection.m_version)
-                    throw new System.InvalidOperationException("Collection was modified; enumeration operation may not execute.");
+                if (_version != _collection._version)
+                    throw new InvalidOperationException(
+                        "Collection was modified; enumeration operation may not execute.");
 
-                ++m_index;
-                return (m_index < m_collection.Count) ? true : false;
+                ++_index;
+                return (_index < _collection.Count);
             }
 
             /// <summary>
@@ -629,74 +647,84 @@ namespace CslaGenerator.Metadata
             /// </summary>
             public void Reset()
             {
-                m_index = -1;
+                _index = -1;
             }
+
             #endregion
 
             #region Implementation (IEnumerator)
 
             object IEnumerator.Current
             {
-                get { return (object)(this.Current); }
+                get { return Current; }
             }
 
             #endregion
         }
+
         #endregion
 
         #region Nested Syncronized Wrapper class
+
         [Serializable]
         private class SyncPropertyCollection : PropertyCollection, System.Runtime.Serialization.IDeserializationCallback
         {
             #region Implementation (data)
-            private const int timeout = 0; // infinite
-            private PropertyCollection collection;
+
+            private const int Timeout = 0; // infinite
+            private PropertyCollection _collection;
             [XmlIgnore]
-            private System.Threading.ReaderWriterLock rwLock;
+            private System.Threading.ReaderWriterLock _rwLock;
+
             #endregion
 
             #region Construction
+
             internal SyncPropertyCollection(PropertyCollection list)
                 : base(Tag.Default)
             {
-                rwLock = new System.Threading.ReaderWriterLock();
-                collection = list;
+                _rwLock = new System.Threading.ReaderWriterLock();
+                _collection = list;
             }
+
             #endregion
 
             #region IDeserializationCallback Members
+
             void System.Runtime.Serialization.IDeserializationCallback.OnDeserialization(object sender)
             {
-                rwLock = new System.Threading.ReaderWriterLock();
+                _rwLock = new System.Threading.ReaderWriterLock();
             }
+
             #endregion
 
             #region Type-safe ICollection
+
             public override void CopyTo(Property[] array)
             {
-                rwLock.AcquireReaderLock(timeout);
+                _rwLock.AcquireReaderLock(Timeout);
 
                 try
                 {
-                    collection.CopyTo(array);
+                    _collection.CopyTo(array);
                 }
                 finally
                 {
-                    rwLock.ReleaseReaderLock();
+                    _rwLock.ReleaseReaderLock();
                 }
             }
 
             public override void CopyTo(Property[] array, int start)
             {
-                rwLock.AcquireReaderLock(timeout);
+                _rwLock.AcquireReaderLock(Timeout);
 
                 try
                 {
-                    collection.CopyTo(array, start);
+                    _collection.CopyTo(array, start);
                 }
                 finally
                 {
-                    rwLock.ReleaseReaderLock();
+                    _rwLock.ReleaseReaderLock();
                 }
             }
 
@@ -705,15 +733,15 @@ namespace CslaGenerator.Metadata
                 get
                 {
                     int count = 0;
-                    rwLock.AcquireReaderLock(timeout);
+                    _rwLock.AcquireReaderLock(Timeout);
 
                     try
                     {
-                        count = collection.Count;
+                        count = _collection.Count;
                     }
                     finally
                     {
-                        rwLock.ReleaseReaderLock();
+                        _rwLock.ReleaseReaderLock();
                     }
 
                     return count;
@@ -727,25 +755,27 @@ namespace CslaGenerator.Metadata
 
             public override object SyncRoot
             {
-                get { return collection.SyncRoot; }
+                get { return _collection.SyncRoot; }
             }
+
             #endregion
 
             #region Type-safe IList
+
             public override Property this[int i]
             {
                 get
                 {
                     Property thisItem;
-                    rwLock.AcquireReaderLock(timeout);
+                    _rwLock.AcquireReaderLock(Timeout);
 
                     try
                     {
-                        thisItem = collection[i];
+                        thisItem = _collection[i];
                     }
                     finally
                     {
-                        rwLock.ReleaseReaderLock();
+                        _rwLock.ReleaseReaderLock();
                     }
 
                     return thisItem;
@@ -753,31 +783,31 @@ namespace CslaGenerator.Metadata
 
                 set
                 {
-                    rwLock.AcquireWriterLock(timeout);
+                    _rwLock.AcquireWriterLock(Timeout);
 
                     try
                     {
-                        collection[i] = value;
+                        _collection[i] = value;
                     }
                     finally
                     {
-                        rwLock.ReleaseWriterLock();
+                        _rwLock.ReleaseWriterLock();
                     }
                 }
             }
 
             public override int Add(Property x)
             {
-                int result = 0;
-                rwLock.AcquireWriterLock(timeout);
+                int result;
+                _rwLock.AcquireWriterLock(Timeout);
 
                 try
                 {
-                    result = collection.Add(x);
+                    result = _collection.Add(x);
                 }
                 finally
                 {
-                    rwLock.ReleaseWriterLock();
+                    _rwLock.ReleaseWriterLock();
                 }
 
                 return result;
@@ -785,30 +815,30 @@ namespace CslaGenerator.Metadata
 
             public override void Clear()
             {
-                rwLock.AcquireWriterLock(timeout);
+                _rwLock.AcquireWriterLock(Timeout);
 
                 try
                 {
-                    collection.Clear();
+                    _collection.Clear();
                 }
                 finally
                 {
-                    rwLock.ReleaseWriterLock();
+                    _rwLock.ReleaseWriterLock();
                 }
             }
 
             public override bool Contains(Property x)
             {
                 bool result = false;
-                rwLock.AcquireReaderLock(timeout);
+                _rwLock.AcquireReaderLock(Timeout);
 
                 try
                 {
-                    result = collection.Contains(x);
+                    result = _collection.Contains(x);
                 }
                 finally
                 {
-                    rwLock.ReleaseReaderLock();
+                    _rwLock.ReleaseReaderLock();
                 }
 
                 return result;
@@ -816,16 +846,16 @@ namespace CslaGenerator.Metadata
 
             public override int IndexOf(Property x)
             {
-                int result = 0;
-                rwLock.AcquireReaderLock(timeout);
+                int result;
+                _rwLock.AcquireReaderLock(Timeout);
 
                 try
                 {
-                    result = collection.IndexOf(x);
+                    result = _collection.IndexOf(x);
                 }
                 finally
                 {
-                    rwLock.ReleaseReaderLock();
+                    _rwLock.ReleaseReaderLock();
                 }
 
                 return result;
@@ -833,92 +863,96 @@ namespace CslaGenerator.Metadata
 
             public override void Insert(int pos, Property x)
             {
-                rwLock.AcquireWriterLock(timeout);
+                _rwLock.AcquireWriterLock(Timeout);
 
                 try
                 {
-                    collection.Insert(pos, x);
+                    _collection.Insert(pos, x);
                 }
                 finally
                 {
-                    rwLock.ReleaseWriterLock();
+                    _rwLock.ReleaseWriterLock();
                 }
             }
 
             public override void Remove(Property x)
             {
-                rwLock.AcquireWriterLock(timeout);
+                _rwLock.AcquireWriterLock(Timeout);
 
                 try
                 {
-                    collection.Remove(x);
+                    _collection.Remove(x);
                 }
                 finally
                 {
-                    rwLock.ReleaseWriterLock();
+                    _rwLock.ReleaseWriterLock();
                 }
             }
 
             public override void RemoveAt(int pos)
             {
-                rwLock.AcquireWriterLock(timeout);
+                _rwLock.AcquireWriterLock(Timeout);
 
                 try
                 {
-                    collection.RemoveAt(pos);
+                    _collection.RemoveAt(pos);
                 }
                 finally
                 {
-                    rwLock.ReleaseWriterLock();
+                    _rwLock.ReleaseWriterLock();
                 }
             }
 
             public override bool IsFixedSize
             {
-                get { return collection.IsFixedSize; }
+                get { return _collection.IsFixedSize; }
             }
 
             public override bool IsReadOnly
             {
-                get { return collection.IsReadOnly; }
+                get { return _collection.IsReadOnly; }
             }
+
             #endregion
 
             #region Type-safe IEnumerable
+
             public override IPropertyCollectionEnumerator GetEnumerator()
             {
-                IPropertyCollectionEnumerator enumerator = null;
-                rwLock.AcquireReaderLock(timeout);
+                IPropertyCollectionEnumerator enumerator;
+                _rwLock.AcquireReaderLock(Timeout);
 
                 try
                 {
-                    enumerator = collection.GetEnumerator();
+                    enumerator = _collection.GetEnumerator();
                 }
                 finally
                 {
-                    rwLock.ReleaseReaderLock();
+                    _rwLock.ReleaseReaderLock();
                 }
 
                 return enumerator;
             }
+
             #endregion
 
             #region Public Helpers
+
             // (just to mimic some nice features of ArrayList)
             public override int Capacity
             {
                 get
                 {
-                    int result = 0;
-                    rwLock.AcquireReaderLock(timeout);
+                    int result;
+                    _rwLock.AcquireReaderLock(Timeout);
 
                     try
                     {
-                        result = collection.Capacity;
+                        result = _collection.Capacity;
                     }
                     finally
                     {
-                        rwLock.ReleaseReaderLock();
+                        _rwLock.ReleaseReaderLock();
                     }
 
                     return result;
@@ -926,31 +960,31 @@ namespace CslaGenerator.Metadata
 
                 set
                 {
-                    rwLock.AcquireWriterLock(timeout);
+                    _rwLock.AcquireWriterLock(Timeout);
 
                     try
                     {
-                        collection.Capacity = value;
+                        _collection.Capacity = value;
                     }
                     finally
                     {
-                        rwLock.ReleaseWriterLock();
+                        _rwLock.ReleaseWriterLock();
                     }
                 }
             }
 
             public override int AddRange(PropertyCollection x)
             {
-                int result = 0;
-                rwLock.AcquireWriterLock(timeout);
+                int result;
+                _rwLock.AcquireWriterLock(Timeout);
 
                 try
                 {
-                    result = collection.AddRange(x);
+                    result = _collection.AddRange(x);
                 }
                 finally
                 {
-                    rwLock.ReleaseWriterLock();
+                    _rwLock.ReleaseWriterLock();
                 }
 
                 return result;
@@ -958,70 +992,81 @@ namespace CslaGenerator.Metadata
 
             public override int AddRange(Property[] x)
             {
-                int result = 0;
-                rwLock.AcquireWriterLock(timeout);
+                int result;
+                _rwLock.AcquireWriterLock(Timeout);
 
                 try
                 {
-                    result = collection.AddRange(x);
+                    result = _collection.AddRange(x);
                 }
                 finally
                 {
-                    rwLock.ReleaseWriterLock();
+                    _rwLock.ReleaseWriterLock();
                 }
 
                 return result;
             }
+
             #endregion
         }
+
         #endregion
 
         #region Nested Read Only Wrapper class
+
         [Serializable]
         private class ReadOnlyPropertyCollection : PropertyCollection
         {
             #region Implementation (data)
-            private PropertyCollection m_collection;
+
+            private PropertyCollection _collection;
+
             #endregion
 
             #region Construction
+
             internal ReadOnlyPropertyCollection(PropertyCollection list)
                 : base(Tag.Default)
             {
-                m_collection = list;
+                _collection = list;
             }
+
             #endregion
 
             #region Type-safe ICollection
+
             public override void CopyTo(Property[] array)
             {
-                m_collection.CopyTo(array);
+                _collection.CopyTo(array);
             }
 
             public override void CopyTo(Property[] array, int start)
             {
-                m_collection.CopyTo(array, start);
+                _collection.CopyTo(array, start);
             }
+
             public override int Count
             {
-                get { return m_collection.Count; }
+                get { return _collection.Count; }
             }
 
             public override bool IsSynchronized
             {
-                get { return m_collection.IsSynchronized; }
+                get { return _collection.IsSynchronized; }
             }
 
             public override object SyncRoot
             {
-                get { return this.m_collection.SyncRoot; }
+                get { return _collection.SyncRoot; }
             }
+
             #endregion
 
             #region Type-safe IList
+
             public override Property this[int i]
             {
-                get { return m_collection[i]; }
+                get { return _collection[i]; }
                 set { throw new NotSupportedException("This is a Read Only Collection and can not be modified"); }
             }
 
@@ -1037,12 +1082,12 @@ namespace CslaGenerator.Metadata
 
             public override bool Contains(Property x)
             {
-                return m_collection.Contains(x);
+                return _collection.Contains(x);
             }
 
             public override int IndexOf(Property x)
             {
-                return m_collection.IndexOf(x);
+                return _collection.IndexOf(x);
             }
 
             public override void Insert(int pos, Property x)
@@ -1069,20 +1114,24 @@ namespace CslaGenerator.Metadata
             {
                 get { return true; }
             }
+
             #endregion
 
             #region Type-safe IEnumerable
+
             public override IPropertyCollectionEnumerator GetEnumerator()
             {
-                return m_collection.GetEnumerator();
+                return _collection.GetEnumerator();
             }
+
             #endregion
 
             #region Public Helpers
+
             // (just to mimic some nice features of ArrayList)
             public override int Capacity
             {
-                get { return m_collection.Capacity; }
+                get { return _collection.Capacity; }
 
                 set { throw new NotSupportedException("This is a Read Only Collection and can not be modified"); }
             }
@@ -1096,8 +1145,10 @@ namespace CslaGenerator.Metadata
             {
                 throw new NotSupportedException("This is a Read Only Collection and can not be modified");
             }
+
             #endregion
         }
+
         #endregion
     }
 }

@@ -1,7 +1,6 @@
 using System;
 using System.Drawing;
-using System.Collections;
-using System.ComponentModel;
+using System.Reflection;
 using System.Windows.Forms;
 using CslaGenerator.Metadata;
 using CslaGenerator.Util.PropertyBags;
@@ -32,7 +31,7 @@ namespace CslaGenerator.Design
                     // pgEditor.SelectedObject = _object;
                     pgEditor.SelectedObject = new CriteriaBag(((Criteria) _object));
                     pgEditor.PropertySort = PropertySort.Categorized;
-                    this.Size = new Size(this.Size.Width, 711);
+                    Size = new Size(Size.Width, 711);
                     pgEditor.Size = new Size(pgEditor.Size.Width, 619);
                     var cslaObject = (CslaObjectInfo)GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem;
                     if ((cslaObject.ObjectType == CslaObjectType.ReadOnlyObject ||
@@ -40,25 +39,33 @@ namespace CslaGenerator.Design
                          cslaObject.ObjectType == CslaObjectType.NameValueList ||
                          (cslaObject.ObjectType == CslaObjectType.UnitOfWork)))
                     {
-                        this.Size = new Size(this.Size.Width, this.Size.Height - 256);
+                        Size = new Size(Size.Width, Size.Height - 256);
                         pgEditor.Size = new Size(pgEditor.Size.Width, pgEditor.Size.Height - 256);
                     }
                     if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40 &&
                         GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL)
                     {
-                        this.Size = new Size(this.Size.Width, this.Size.Height - 32);
+                        Size = new Size(Size.Width, Size.Height - 32);
                         pgEditor.Size = new Size(pgEditor.Size.Width, pgEditor.Size.Height - 32);
                     }
                     pgEditor.ExpandAllGridItems();
                 }
-                else
+                else if (_object.GetType() == typeof(TypeInfo))
                 {
-                    Text = @"InheritedType Editor";
+                    Text = @"Inherited Type Editor";
                     //pgEditor.SelectedObject = _object;
                     pgEditor.SelectedObject = new InheritedTypePropertyBag((TypeInfo) _object);
+                    Size = new Size(Size.Width + 100, Size.Height);
                 }
-                this.MaximumSize = new Size(this.Size.Width + 100, this.Size.Height);
-                this.MinimumSize = new Size(this.Size.Width - 100, this.Size.Height);
+                else if (_object.GetType() == typeof(AuthzTypeInfo))
+                {
+                    Text = @"Authorization Type Editor";
+                    //pgEditor.SelectedObject = _object;
+                    pgEditor.SelectedObject = new AuthorizationPropertyBag((AuthzTypeInfo)_object);
+                    Size = new Size(Size.Width + 100, Size.Height);
+                }
+                MaximumSize = new Size(Size.Width + 100, Size.Height);
+                MinimumSize = new Size(Size.Width - 100, Size.Height);
             }
         }
 
@@ -78,5 +85,38 @@ namespace CslaGenerator.Design
                 pgEditor.PropertySort = PropertySort.Categorized;
         }
 
+        private void pgEditor_Layout(object sender, LayoutEventArgs e)
+        {
+            var gridItem = pgEditor.SelectedGridItem;
+            while (gridItem.Parent != null)
+            {
+                gridItem = gridItem.Parent;
+            }
+            var r = 0;
+            GetLongest(gridItem.GridItems, ref r);
+
+            http://www.dotnetmonster.com/Uwe/Forum.aspx/winform-controls/5624/Using-the-PropertyGrid-Control
+
+            FieldInfo fi = typeof(PropertyGrid).GetField("gridView", BindingFlags.Instance | BindingFlags.NonPublic);
+            object propertyGridView = fi.GetValue(pgEditor);
+
+            pgEditor.AutoSize = false;
+
+            MethodInfo mi = propertyGridView.GetType().GetMethod("MoveSplitterTo", BindingFlags.NonPublic | BindingFlags.Instance);
+            mi.Invoke(propertyGridView, new object[] { r+10 });
+        }
+
+        private void GetLongest(GridItemCollection col, ref int r)
+        {
+            foreach (GridItem item in col)
+            {
+                if(item.GridItemType != GridItemType.Category)
+                    r = Math.Max(r, TextRenderer.MeasureText(item.Label, pgEditor.Font).Width);
+                if (item.Expanded)
+                {
+                    GetLongest(item.GridItems, ref r);
+                }
+            }
+        }
     }
 }
