@@ -82,7 +82,7 @@ namespace CslaGenerator.Design
                     }
                 }
             }
-            else if (_collectionType == typeof (BusinessRuleProperty) || _collectionType == typeof (BusinessRuleParameter))
+            else if (_collectionType == typeof (BusinessRuleProperty))
             {
                 foreach (Control control in _form.Controls)
                 {
@@ -99,6 +99,34 @@ namespace CslaGenerator.Design
                                     {
                                         var button = (Button) tableControl;
                                         if (button.Text.IndexOf("Add") > 0 || button.Text.IndexOf("Remove") > 0)
+                                        {
+                                            button.Hide();
+                                            button.Enabled = false;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            else if (_collectionType == typeof (BusinessRuleParameter))
+            {
+                foreach (Control control in _form.Controls)
+                {
+                    if (control is TableLayoutPanel)
+                    {
+                        foreach (var panelControl in control.Controls)
+                        {
+                            if (panelControl is TableLayoutPanel)
+                            {
+                                var layoutPanel = (TableLayoutPanel) panelControl;
+                                foreach (var tableControl in layoutPanel.Controls)
+                                {
+                                    if (tableControl is Button)
+                                    {
+                                        var button = (Button) tableControl;
+                                        if (button.Text.IndexOf("Add") > 0)
                                         {
                                             button.Hide();
                                             button.Enabled = false;
@@ -285,9 +313,13 @@ namespace CslaGenerator.Design
                         Authorization.None ||
                         GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization ==
                         Authorization.ObjectLevel)
-                        _form.Size = new Size(_form.Size.Width, 633);
+                        _form.Size = new Size(_form.Size.Width, 646);
                     else
-                        _form.Size = new Size(_form.Size.Width, 713);
+                    {
+                        _form.Size = new Size(_form.Size.Width, 710);
+                        if (GeneratorController.Current.CurrentUnit.GenerationParams.HideAuthorizationProvider)
+                            _form.Size = new Size(_form.Size.Width, _form.Size.Height - 16);
+                    }
                     if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework ==
                         TargetFramework.CSLA40 ||
                         GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework ==
@@ -297,12 +329,12 @@ namespace CslaGenerator.Design
                 case "ChildProperty Collection Editor":
                     _form.Size = new Size(570, _form.Size.Height);
                     _collectionType = typeof (ChildProperty);
-                    _form.Size = new Size(_form.Size.Width, 489);
+                    _form.Size = new Size(_form.Size.Width, 534);
                     break;
                 case "UnitOfWorkProperty Collection Editor":
                     _form.Size = new Size(570, _form.Size.Height);
                     _collectionType = typeof (UnitOfWorkProperty);
-                    _form.Size = new Size(_form.Size.Width, 361);
+                    _form.Size = new Size(_form.Size.Width, 358);
                     break;
                 case "Criteria Collection Editor":
                     _form.Size = new Size(550, _form.Size.Height);
@@ -327,25 +359,25 @@ namespace CslaGenerator.Design
                 case "ConvertValueProperty Collection Editor":
                     _form.Size = new Size(570, _form.Size.Height);
                     _collectionType = typeof (ConvertValueProperty);
-                    _form.Size = new Size(_form.Size.Width, 569);
+                    _form.Size = new Size(_form.Size.Width, 582);
                     break;
                 case "UpdateValueProperty Collection Editor":
-                    _form.Size = new Size(555, _form.Size.Height);
+                    _form.Size = new Size(550, _form.Size.Height);
                     _collectionType = typeof (UpdateValueProperty);
                     break;
                 case "Rule Collection Editor":
                     _collectionType = typeof (Rule);
                     break;
                 case "BusinessRule Collection Editor":
-                    _form.Size = new Size(700, 569);
+                    _form.Size = new Size(650, 569);
                     _collectionType = typeof (BusinessRule);
                     break;
                 case "BusinessRuleProperty Collection Editor":
-                    _form.Size = new Size(700, 569);
+                    _form.Size = new Size(550, 569);
                     _collectionType = typeof(BusinessRuleProperty);
                     break;
                 case "BusinessRuleParameter Collection Editor":
-                    _form.Size = new Size(700, 569);
+                    _form.Size = new Size(550, 569);
                     _collectionType = typeof(BusinessRuleParameter);
                     break;
                 case "DecoratorArgument Collection Editor":
