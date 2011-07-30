@@ -39,7 +39,7 @@ namespace CslaGenerator.Metadata
 
         [Category("01. Inherit from Type Defined in Project")]
         [Editor(typeof(CslaObjectInfoEditor), typeof(UITypeEditor))]
-        [Description("This is a description.")]
+        [Description("Inherited Type Name.")]
         [UserFriendlyName("Csla Object Name")]
         public string ObjectName
         {
@@ -54,7 +54,7 @@ namespace CslaGenerator.Metadata
 
         [Category("02. Inherit from Type in Assembly")]
         [Editor(typeof(AssemblyFileNameEditor),typeof(UITypeEditor))]
-        [Description("This is a description.")]
+        [Description("The assembly file full path")]
         [UserFriendlyName("Assembly File Name")]
         public string AssemblyFile
         {
@@ -64,7 +64,7 @@ namespace CslaGenerator.Metadata
 
         [Category("02. Inherit from Type in Assembly")]
         [Editor(typeof(RefTypeEditor), typeof(UITypeEditor))]
-        [Description("This is a description.")]
+        [Description("Inherited Type Name.")]
         [UserFriendlyName("Type Name")]
         public string Type
         {

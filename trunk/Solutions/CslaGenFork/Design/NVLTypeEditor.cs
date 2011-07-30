@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.Windows.Forms;
@@ -8,12 +8,12 @@ using CslaGenerator.Util;
 
 namespace CslaGenerator.Design
 {
-    public class ParentTypeEditor : UITypeEditor
+    public class NVLTypeEditor : UITypeEditor
     {
         private IWindowsFormsEditorService _editorService;
         private readonly ListBox _lstProperties;
 
-        public ParentTypeEditor()
+        public NVLTypeEditor()
         {
             _lstProperties = new ListBox();
             _lstProperties.DoubleClick += LstPropertiesDoubleClick;
@@ -30,26 +30,38 @@ namespace CslaGenerator.Design
                     // CR modifying to accomodate PropertyBag
                     Type instanceType = null;
                     object objinfo = null;
-                    TypeHelper.GetContextInstanceObject(context, ref objinfo, ref instanceType);
-                    var obj = (CslaObjectInfo)objinfo;
+                    TypeHelper.GetConvertValuePropertyContextInstanceObject(context, ref objinfo, ref instanceType);
+                    var obj = (ConvertValueProperty)objinfo;
                     _lstProperties.Items.Clear();
                     _lstProperties.Items.Add("(None)");
                     foreach (var o in GeneratorController.Current.CurrentUnit.CslaObjects)
                     {
-                        /*if (o.ObjectName != obj.ObjectName)
-                            lstProperties.Items.Add(o.ObjectName);*/
-                        if (o.ObjectName != obj.ObjectName)
+                        if (o.ObjectType == CslaObjectType.NameValueList)
                         {
-                            if (RelationRulesEngine.IsParentAllowed(o.ObjectType, obj.ObjectType))
-                                _lstProperties.Items.Add(o.ObjectName);
+                            var prefix = string.Empty;
+                            var objectNamespace = ((CslaObjectInfo)GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem).ObjectNamespace;
+                            if (objectNamespace != o.ObjectNamespace)
+                            {
+                                var idx = objectNamespace.IndexOf(o.ObjectNamespace);
+                                if (idx == 0)
+                                {
+                                    prefix = objectNamespace.Substring(o.ObjectNamespace.Length + 1) + ".";
+                                }
+                                else if (idx == -1)
+                                {
+                                    idx = o.ObjectNamespace.IndexOf(objectNamespace);
+                                    if (idx == 0)
+                                        prefix = o.ObjectNamespace.Substring(objectNamespace.Length + 1) + ".";
+                                }
+                                else
+                                {
+                                    prefix = o.ObjectNamespace + ".";
+                                }
+                            }
+                            _lstProperties.Items.Add(prefix + o.ObjectName + ".Get" + o.ObjectName);
                         }
                     }
                     _lstProperties.Sorted = true;
-
-                    if (_lstProperties.Items.Contains(obj.ParentType))
-                        _lstProperties.SelectedItem = obj.ParentType;
-                    else
-                        _lstProperties.SelectedItem = "(None)";
 
                     _editorService.DropDownControl(_lstProperties);
                     if (_lstProperties.SelectedIndex < 0 || _lstProperties.SelectedItem.ToString() == "(None)")
@@ -67,7 +79,7 @@ namespace CslaGenerator.Design
             return UITypeEditorEditStyle.DropDown;
         }
 
-        private void LstPropertiesDoubleClick(object sender, EventArgs e)
+        void LstPropertiesDoubleClick(object sender, EventArgs e)
         {
             _editorService.CloseDropDown();
         }

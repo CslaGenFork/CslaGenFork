@@ -629,10 +629,8 @@ namespace CslaGenerator.Util.PropertyBags
             {
                 /*if ((GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == Authorization.None ||
                     GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == Authorization.ObjectLevel) &&
-                    (propertyName == "AllowReadRoles" ||
-                     propertyName == "AllowWriteRoles" ||
-                     propertyName == "DenyReadRoles" ||
-                     propertyName == "DenyWriteRoles"))
+                    (propertyName == "ReadRoles" ||
+                     propertyName == "WriteRoles"))
                     return false;*/
 
                 if (_selectedObject.Length > 1 && IsEnumerable(GetPropertyInfoCache(propertyName)))

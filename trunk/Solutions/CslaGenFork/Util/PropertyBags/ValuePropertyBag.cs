@@ -630,10 +630,21 @@ namespace CslaGenerator.Util.PropertyBags
             {
                 if ((GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == Authorization.None ||
                     GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == Authorization.ObjectLevel) &&
-                    (propertyName == "AllowReadRoles" ||
-                     propertyName == "AllowWriteRoles" ||
-                     propertyName == "DenyReadRoles" ||
-                     propertyName == "DenyWriteRoles"))
+                    (propertyName == "ReadRoles" ||
+                     propertyName == "WriteRoles"))
+                    return false;
+                if (((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40 &&
+                    GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL)
+                    ||
+                    (GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == Authorization.None ||
+                    GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == Authorization.ObjectLevel)
+                    || GeneratorController.Current.CurrentUnit.GenerationParams.HideAuthorizationProvider
+                    ) &&
+                    propertyName == "AuthzRuleType")
+                    return false;
+                if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40 &&
+                    GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL) &&
+                     propertyName == "BusinessRules")
                     return false;
                 if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 ||
                     GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL) &&

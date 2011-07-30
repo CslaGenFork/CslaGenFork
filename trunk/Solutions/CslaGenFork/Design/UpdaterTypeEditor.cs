@@ -39,7 +39,7 @@ namespace CslaGenerator.Design
                         Type instanceType = null;
                         object objinfo = null;
                         TypeHelper.GetContextInstanceObject(context, ref objinfo, ref instanceType);
-                        CslaObjectInfo obj = (CslaObjectInfo) objinfo;
+                        var obj = (CslaObjectInfo) objinfo;
                         lstProperties.Items.Clear();
                         lstProperties.Items.Add("(None)");
                         foreach (CslaObjectInfo o in GeneratorController.Current.CurrentUnit.CslaObjects)

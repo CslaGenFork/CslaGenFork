@@ -112,30 +112,23 @@ namespace CslaGenerator.Metadata
             get { return string.Empty; }
         }
 
-        // Hide AllowReadRoles
+        // Hide AuthzRuleType
         [Browsable(false)]
-        public override string AllowReadRoles
+        public override AuthzTypeInfo AuthzRuleType
+        {
+            get { return null; }
+        }
+
+        // Hide ReadRoles
+        [Browsable(false)]
+        public override string ReadRoles
         {
             get { return string.Empty; }
         }
 
-        // Hide AllowWriteRoles
+        // Hide WriteRoles
         [Browsable(false)]
-        public override string AllowWriteRoles
-        {
-            get { return string.Empty; }
-        }
-
-        // Hide DenyReadRoles
-        [Browsable(false)]
-        public override string DenyReadRoles
-        {
-            get { return string.Empty; }
-        }
-
-        // Hide DenyWriteRoles
-        [Browsable(false)]
-        public override string DenyWriteRoles
+        public override string WriteRoles
         {
             get { return string.Empty; }
         }
@@ -166,6 +159,9 @@ namespace CslaGenerator.Metadata
         private string CheckSourceProperty(string candidate)
         {
             var empty = string.Empty;
+            if (GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem == null)
+                return empty;
+
             var props = ((CslaObjectInfo)GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem).GetAllValueProperties();
             foreach (var prop in props)
             {

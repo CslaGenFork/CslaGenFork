@@ -38,6 +38,8 @@ namespace CslaGenerator.Metadata
         private bool _generateInlineQueries;
         private bool _generateQueriesWithSchema = true;
         private bool _generateDatabaseClass = true;
+        private bool _defaultCslaAuthorizationProvider = true;
+        private bool _hideAuthorizationProvider = true;
         private bool _generateWinForms = true;
         private bool _generateWPF;
         private bool _generateSilverlight;
@@ -440,6 +442,30 @@ namespace CslaGenerator.Metadata
                 if (_generateDatabaseClass == value)
                     return;
                 _generateDatabaseClass = value;
+                OnPropertyChanged("");
+            }
+        }
+
+        public bool DefaultCslaAuthorizationProvider
+        {
+            get { return _defaultCslaAuthorizationProvider; }
+            set
+            {
+                if (_defaultCslaAuthorizationProvider == value)
+                    return;
+                _defaultCslaAuthorizationProvider = value;
+                OnPropertyChanged("");
+            }
+        }
+
+        public bool HideAuthorizationProvider
+        {
+            get { return _hideAuthorizationProvider; }
+            set
+            {
+                if (_hideAuthorizationProvider == value)
+                    return;
+                _hideAuthorizationProvider = value;
                 OnPropertyChanged("");
             }
         }
