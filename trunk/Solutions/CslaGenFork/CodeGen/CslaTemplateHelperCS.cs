@@ -2283,6 +2283,7 @@ namespace CslaGenerator.CodeGen
 
                 if (!FieldManager.FieldExists(ChildrenProperty))
                 {
+                    LoadProperty(ChildrenProperty, null);
                     if (this.IsNew)
                     {
                         DataPortal.BeginCreate<ChildType>((o, e) =>
@@ -2321,6 +2322,8 @@ namespace CslaGenerator.CodeGen
                 response += string.Format("                if (!FieldManager.FieldExists({0}))" + Environment.NewLine,
                     FormatPropertyInfoName(prop.Name));
                 response += "                {" + Environment.NewLine;
+                response += string.Format("                    LoadProperty({0}, null);" + Environment.NewLine,
+                    FormatPropertyInfoName(prop.Name));
                 response += "                    if (this.IsNew)" + Environment.NewLine;
                 response += "                    {" + Environment.NewLine;
                 /*response += string.Format("                        DataPortal.BeginCreate<{0}>((o, e) =>" + Environment.NewLine,
@@ -2403,6 +2406,7 @@ namespace CslaGenerator.CodeGen
 
                 if (!FieldManager.FieldExists(ChildrenProperty))
                 {
+                    LoadProperty(ChildrenProperty, null);
                     if (this.IsNew)
                     {
                         DataPortal.BeginCreate<ChildType>((o, e) =>
@@ -2440,6 +2444,8 @@ namespace CslaGenerator.CodeGen
                 response += string.Format("                if (!FieldManager.FieldExists({0}))" + Environment.NewLine,
                     FormatPropertyInfoName(prop.Name));
                 response += "                {" + Environment.NewLine;
+                response += string.Format("                    LoadProperty({0}, null);" + Environment.NewLine,
+                    FormatPropertyInfoName(prop.Name));
                 response += "                    if (this.IsNew)" + Environment.NewLine;
                 response += "                    {" + Environment.NewLine;
                 /*response += string.Format("                        DataPortal.BeginCreate<{0}>((o, e) =>" + Environment.NewLine,
@@ -2450,7 +2456,7 @@ namespace CslaGenerator.CodeGen
                 response += "                                    throw e.Error;" + Environment.NewLine;
                 response += "                                else" + Environment.NewLine;
                 response += "                                {" + Environment.NewLine;
-                response += "                                    // set the property so OnPropertyChanged is raised" + 
+                response += "                                    // set the property so OnPropertyChanged is raised" +
                     Environment.NewLine;
                 response += string.Format("                                    {0} = e.Object;" + Environment.NewLine,
                     FormatPascal(prop.Name));
@@ -2469,7 +2475,7 @@ namespace CslaGenerator.CodeGen
                 response += "                                    throw e.Error;" + Environment.NewLine;
                 response += "                                else" + Environment.NewLine;
                 response += "                                {" + Environment.NewLine;
-                response += "                                    // set the property so OnPropertyChanged is raised" + 
+                response += "                                    // set the property so OnPropertyChanged is raised" +
                     Environment.NewLine;
                 response += string.Format("                                    {0} = e.Object;" + Environment.NewLine,
                     FormatPascal(prop.Name));
@@ -2502,6 +2508,7 @@ namespace CslaGenerator.CodeGen
 
                 if (!FieldManager.FieldExists(ChildrenProperty))
                 {
+                    LoadProperty(ChildrenProperty, null);
                     DataPortal.BeginFetch<ChildType>(this, (o, e) =>
                         {
                             if (e.Error != null)
@@ -2523,6 +2530,8 @@ namespace CslaGenerator.CodeGen
                 response += string.Format("                if (!FieldManager.FieldExists({0}))" + Environment.NewLine,
                     FormatPropertyInfoName(prop.Name));
                 response += "                {" + Environment.NewLine;
+                response += string.Format("                    LoadProperty({0}, null);" + Environment.NewLine,
+                    FormatPropertyInfoName(prop.Name));
                 /*response += string.Format("                    DataPortal.BeginFetch<{0}>({1}, (o, e) =>" + Environment.NewLine,
                     prop.TypeName, GetFieldReaderStatementList(info, prop));*/
                 response += string.Format("                    {0}.Get{0}({1}, (o, e) =>" + Environment.NewLine,
@@ -2554,6 +2563,7 @@ namespace CslaGenerator.CodeGen
 
                 if (!FieldManager.FieldExists(ChildrenProperty))
                 {
+                    LoadProperty(ChildrenProperty, null);
                     DataPortal.BeginFetch<ChildType>(this, (o, e) =>
                         {
                             if (e.Error != null)
@@ -2574,6 +2584,8 @@ namespace CslaGenerator.CodeGen
                 response += string.Format("                if (!FieldManager.FieldExists({0}))" + Environment.NewLine,
                     FormatPropertyInfoName(prop.Name));
                 response += "                {" + Environment.NewLine;
+                response += string.Format("                    LoadProperty({0}, null);" + Environment.NewLine,
+                    FormatPropertyInfoName(prop.Name));
                 /*response += string.Format("                    DataPortal.BeginFetch<{0}>({1}, (o, e) =>" + Environment.NewLine,
                     prop.TypeName, GetFieldReaderStatementList(info, prop));*/
                 response += string.Format("                    {0}.Get{0}({1}, (o, e) =>" + Environment.NewLine,
