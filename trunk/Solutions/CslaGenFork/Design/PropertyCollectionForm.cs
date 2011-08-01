@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Drawing;
 using System.Reflection;
@@ -38,8 +37,8 @@ namespace CslaGenerator.Design
         /// Creates a new CollectionForm to display the collection editor
         /// </summary>
         /// <remarks>
-        /// This methods uses reflection to access non-public fields/properties within the collectionform.
-        /// This method can also be used to alter other visual aspects of the form.
+        /// This methods uses reflection to access non-public fields/properties within the CollectionForm.
+        /// This method can also be used to alter other visual aspects of the Form.
         /// </remarks>
         /// <returns>CollectionForm</returns>
         protected override CollectionForm CreateCollectionForm()
@@ -82,8 +81,9 @@ namespace CslaGenerator.Design
                     }
                 }
             }
-            else if (_collectionType == typeof (BusinessRuleProperty))
+            /*else if (_collectionType == typeof (BusinessRuleProperty))
             {
+                // hide Add & Remove buttons
                 foreach (Control control in _form.Controls)
                 {
                     if (control is TableLayoutPanel)
@@ -109,9 +109,10 @@ namespace CslaGenerator.Design
                         }
                     }
                 }
-            }
-            else if (_collectionType == typeof (BusinessRuleParameter))
+            }*/
+            else if (_collectionType == typeof(BusinessRuleConstructor))
             {
+                // hide Add & Remove buttons
                 foreach (Control control in _form.Controls)
                 {
                     if (control is TableLayoutPanel)
@@ -126,7 +127,7 @@ namespace CslaGenerator.Design
                                     if (tableControl is Button)
                                     {
                                         var button = (Button) tableControl;
-                                        if (button.Text.IndexOf("Add") > 0)
+                                        if (button.Text.IndexOf("Add") > 0 || button.Text.IndexOf("Remove") > 0)
                                         {
                                             button.Hide();
                                             button.Enabled = false;
@@ -265,9 +266,36 @@ namespace CslaGenerator.Design
                 {
                     selectedObject.Parent = _parentValProp;
                     propertyInfo.SetValue(_propGrid, new BusinessRuleBag(selectedObject), null);
+
+                    var ruleCount = 0;
+                    var rules = ((BusinessRuleBag) _propGrid.SelectedObject).SelectedObject;
+                    foreach (var businessRule in rules)
+                    {
+                        ruleCount = businessRule.RuleProperties.Count;
+                        if (ruleCount == 0)
+                        {
+                            if (_form.Size.Height != 438)
+                                _form.Size = new Size(_form.Size.Width, 438);
+                        }
+                        else
+                        {
+                            var newHeight = 454 + (ruleCount*16);
+                            if (_form.Size.Height != newHeight)
+                                _form.Size = new Size(_form.Size.Width, newHeight);
+                        }
+                    }
                 }
             }
-            else if (_collectionType == typeof(BusinessRuleProperty))
+            else if (_collectionType == typeof(BusinessRuleConstructor))
+            {
+                var selectedObject = (BusinessRuleConstructor)_propGrid.SelectedObject;
+                //Get the property grid's type.
+                //This is a vsPropertyGrid located in System.Windows.Forms.Design
+                var propertyInfo = _propGrid.GetType().GetProperty("SelectedObject", BindingFlags.Public | BindingFlags.Instance);
+                if (selectedObject != null)
+                    propertyInfo.SetValue(_propGrid, new BusinessRuleConstructorBag(selectedObject), null);
+            }
+            /*else if (_collectionType == typeof(BusinessRuleProperty))
             {
                 var selectedObject = (BusinessRuleProperty)_propGrid.SelectedObject;
                 //Get the property grid's type.
@@ -284,7 +312,7 @@ namespace CslaGenerator.Design
                 var propertyInfo = _propGrid.GetType().GetProperty("SelectedObject", BindingFlags.Public | BindingFlags.Instance);
                 if (selectedObject != null)
                     propertyInfo.SetValue(_propGrid, new BusinessRuleParameterBag(selectedObject), null);
-            }
+            }*/
             else if (_collectionType == typeof(DecoratorArgument))
             {
                 var selectedObject = (DecoratorArgument)_propGrid.SelectedObject;
@@ -329,7 +357,22 @@ namespace CslaGenerator.Design
                 case "ChildProperty Collection Editor":
                     _form.Size = new Size(570, _form.Size.Height);
                     _collectionType = typeof (ChildProperty);
-                    _form.Size = new Size(_form.Size.Width, 534);
+                    if (GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization ==
+                        Authorization.None ||
+                        GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization ==
+                        Authorization.ObjectLevel)
+                        _form.Size = new Size(_form.Size.Width, 550);
+                    else
+                    {
+                        _form.Size = new Size(_form.Size.Width, 614);
+                        if (GeneratorController.Current.CurrentUnit.GenerationParams.HideAuthorizationProvider)
+                            _form.Size = new Size(_form.Size.Width, _form.Size.Height - 16);
+                    }
+                    if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework ==
+                        TargetFramework.CSLA40 ||
+                        GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework ==
+                        TargetFramework.CSLA40DAL)
+                        _form.Size = new Size(_form.Size.Width, _form.Size.Height - 16);
                     break;
                 case "UnitOfWorkProperty Collection Editor":
                     _form.Size = new Size(570, _form.Size.Height);
@@ -369,17 +412,21 @@ namespace CslaGenerator.Design
                     _collectionType = typeof (Rule);
                     break;
                 case "BusinessRule Collection Editor":
-                    _form.Size = new Size(650, 569);
+                    _form.Size = new Size(650, 438);
                     _collectionType = typeof (BusinessRule);
                     break;
-                case "BusinessRuleProperty Collection Editor":
+                case "BusinessRuleConstructor Collection Editor":
+                    _form.Size = new Size(550, 393);
+                    _collectionType = typeof(BusinessRuleConstructor);
+                    break;
+                /*case "BusinessRuleProperty Collection Editor":
                     _form.Size = new Size(550, 569);
                     _collectionType = typeof(BusinessRuleProperty);
                     break;
                 case "BusinessRuleParameter Collection Editor":
                     _form.Size = new Size(550, 569);
-                    _collectionType = typeof(BusinessRuleParameter);
-                    break;
+                    _collectionType = typeof(BusinessRuleConstructorParameter);
+                    break;*/
                 case "DecoratorArgument Collection Editor":
                     _collectionType = typeof (DecoratorArgument);
                     break;
@@ -429,7 +476,6 @@ namespace CslaGenerator.Design
             }
 
             pgEditor_Layout(this, new LayoutEventArgs(_propGrid, "gridView"));
-  
         }
 
         private void pgEditor_Layout(object sender, LayoutEventArgs e)
@@ -445,15 +491,14 @@ namespace CslaGenerator.Design
             var r = 0;
             GetLongest(gridItem.GridItems, ref r);
 
-            http: //www.dotnetmonster.com/Uwe/Forum.aspx/winform-controls/5624/Using-the-PropertyGrid-Control
+            //http: //www.dotnetmonster.com/Uwe/Forum.aspx/winform-controls/5624/Using-the-PropertyGrid-Control
 
             FieldInfo fi = typeof (PropertyGrid).GetField("gridView", BindingFlags.Instance | BindingFlags.NonPublic);
             object propertyGridView = fi.GetValue(_propGrid);
 
             _propGrid.AutoSize = false;
 
-            MethodInfo mi = propertyGridView.GetType().GetMethod("MoveSplitterTo",
-                                                                 BindingFlags.NonPublic | BindingFlags.Instance);
+            MethodInfo mi = propertyGridView.GetType().GetMethod("MoveSplitterTo", BindingFlags.NonPublic | BindingFlags.Instance);
             mi.Invoke(propertyGridView, new object[] {r + 20});
         }
 

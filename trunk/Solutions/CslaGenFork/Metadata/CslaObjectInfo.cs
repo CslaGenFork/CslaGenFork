@@ -494,7 +494,7 @@ namespace CslaGenerator.Metadata
         /// <summary>
         /// Object's non-collection child properties plus collection child properties.
         /// </summary>
-        // Hide AllChildProperties
+        [XmlIgnore]
         [Browsable(false)]
         public ChildPropertyCollection AllChildProperties
         {
@@ -540,7 +540,7 @@ namespace CslaGenerator.Metadata
         /// <summary>
         /// Object's value properties plus convert value properties.
         /// </summary>
-        // Hide AllValueProperties
+        [XmlIgnore]
         [Browsable(false)]
         public ValuePropertyCollection AllValueProperties
         {

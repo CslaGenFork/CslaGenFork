@@ -23,7 +23,7 @@ namespace CslaGenerator.Util
             {
                 response = config.AppSettings.Settings[key].Value;
             }
-            catch (System.NullReferenceException ex)
+            catch (System.NullReferenceException)
             {
 
             }

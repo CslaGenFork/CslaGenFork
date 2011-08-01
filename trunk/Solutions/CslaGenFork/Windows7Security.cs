@@ -42,7 +42,7 @@ namespace CslaGenerator
                 Process process = Process.Start(startInfo);
                 process.WaitForExit();
             }
-            catch (System.ComponentModel.Win32Exception ex)
+            catch (System.ComponentModel.Win32Exception)
             {
                 return; //If cancelled, do nothing
             }

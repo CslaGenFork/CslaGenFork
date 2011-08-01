@@ -425,7 +425,7 @@ namespace CslaGenerator.Util.PropertyBags
 
         private readonly PropertySpecCollection _properties;
         private string _defaultProperty;
-        private BusinessRuleParameter[] _selectedObject;
+        private BusinessRuleConstructorParameter[] _selectedObject;
 
         /// <summary>
         /// Initializes a new instance of the BusinessRuleParameterBag class.
@@ -436,12 +436,12 @@ namespace CslaGenerator.Util.PropertyBags
             _properties = new PropertySpecCollection();
         }
 
-        public BusinessRuleParameterBag(BusinessRuleParameter obj)
+        public BusinessRuleParameterBag(BusinessRuleConstructorParameter obj)
             : this(new[] {obj})
         {
         }
 
-        public BusinessRuleParameterBag(BusinessRuleParameter[] obj)
+        public BusinessRuleParameterBag(BusinessRuleConstructorParameter[] obj)
         {
             _defaultProperty = "Name";
             _properties = new PropertySpecCollection();
@@ -461,7 +461,7 @@ namespace CslaGenerator.Util.PropertyBags
         /// <summary>
         /// Gets or sets the name of the default property in the collection.
         /// </summary>
-        public BusinessRuleParameter[] SelectedObject
+        public BusinessRuleConstructorParameter[] SelectedObject
         {
             get { return _selectedObject; }
             set
@@ -518,7 +518,7 @@ namespace CslaGenerator.Util.PropertyBags
         private void InitPropertyBag()
         {
             PropertyInfo pi;
-            Type t = typeof(BusinessRuleParameter); // _selectedObject.GetType();
+            Type t = typeof(BusinessRuleConstructorParameter); // _selectedObject.GetType();
             PropertyInfo[] props = t.GetProperties();
             // Display information for all properties.
             for (int i = 0; i < props.Length; i++)
@@ -578,7 +578,7 @@ namespace CslaGenerator.Util.PropertyBags
                     }
                 }
 
-                BusinessRuleParameter target = SelectedObject[0];
+                BusinessRuleConstructorParameter target = SelectedObject[0];
 
                 if (pi.Name != "Value")
                 {
@@ -586,13 +586,13 @@ namespace CslaGenerator.Util.PropertyBags
                 }
                 else
                 {
-                    userfriendlyname = target.ObjectName;
+                    userfriendlyname = target.Name;
                     description = (target.IsGenericType ? "Generic " : "") + "Parameter " + userfriendlyname + " of " +
                                   (target.IsGenericType ? "<" : "") +
                                   target.Type +
                                   (target.IsGenericType ? ">" : "") + " type.";
 
-                    if (target.ObjectName == "PrimaryProperty")
+                    if (target.Name == "PrimaryProperty")
                         isreadonly = true;
 
                     switch (target.Type)
@@ -609,8 +609,8 @@ namespace CslaGenerator.Util.PropertyBags
                 var types = new List<string>();
                 foreach (var obj in _selectedObject)
                 {
-                    if (!types.Contains(obj.ObjectName))
-                        types.Add(obj.ObjectName);
+                    if (!types.Contains(obj.Name))
+                        types.Add(obj.Name);
                 }
                 // here get rid of ComponentName and Parent
                 bool isValidProperty = (pi.Name != "Properties" && pi.Name != "ComponentName" && pi.Name != "Parent");
@@ -628,7 +628,7 @@ namespace CslaGenerator.Util.PropertyBags
             }
         }
 
-        public static Type GetDataType(BusinessRuleParameter target, out string assemblyQualifiedName, out string editor)
+        public static Type GetDataType(BusinessRuleConstructorParameter target, out string assemblyQualifiedName, out string editor)
         {
             editor = typeof (UITypeEditor).AssemblyQualifiedName;
 
@@ -662,7 +662,7 @@ namespace CslaGenerator.Util.PropertyBags
         {
             if (!propertyInfoCache.ContainsKey(propertyName))
             {
-                propertyInfoCache.Add(propertyName, typeof (BusinessRuleParameter).GetProperty(propertyName));
+                propertyInfoCache.Add(propertyName, typeof (BusinessRuleConstructorParameter).GetProperty(propertyName));
             }
             return propertyInfoCache[propertyName];
         }
@@ -733,14 +733,14 @@ namespace CslaGenerator.Util.PropertyBags
             {
                 // get a reference to the PropertyInfo, exit if no property with that
                 // name
-                PropertyInfo pi = typeof (BusinessRuleParameter).GetProperty(propertyName);
+                PropertyInfo pi = typeof (BusinessRuleConstructorParameter).GetProperty(propertyName);
 
                 if (pi == null)
                     return false;
                 // convert the value to the expected type
                 val = Convert.ChangeType(val, pi.PropertyType);
                 // attempt the assignment
-                foreach (BusinessRuleParameter bo in (BusinessRuleParameter[])obj)
+                foreach (BusinessRuleConstructorParameter bo in (BusinessRuleConstructorParameter[])obj)
                     pi.SetValue(bo, val, null);
                 return true;
             }
@@ -757,10 +757,10 @@ namespace CslaGenerator.Util.PropertyBags
                 PropertyInfo pi = GetPropertyInfoCache(propertyName);
                 if (!(pi == null))
                 {
-                    var objs = (BusinessRuleParameter[])obj;
+                    var objs = (BusinessRuleConstructorParameter[])obj;
                     var valueList = new ArrayList();
 
-                    foreach (BusinessRuleParameter bo in objs)
+                    foreach (BusinessRuleConstructorParameter bo in objs)
                     {
                         object value = pi.GetValue(bo, null);
                         if (!valueList.Contains(value))

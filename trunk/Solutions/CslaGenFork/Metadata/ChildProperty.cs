@@ -15,7 +15,7 @@ namespace CslaGenerator.Metadata
     public class ChildProperty : Property
     {
 
-        #region Fields
+        #region Private Fields
 
         private string _friendlyName = String.Empty;
         private LoadingScheme _loadingScheme = LoadingScheme.ParentLoad;
@@ -23,6 +23,9 @@ namespace CslaGenerator.Metadata
         private string _implements = string.Empty;
         private BusinessRuleCollection _businessRules = new BusinessRuleCollection(); 
         private string[] _attributes = new string[] { };
+        private AuthzTypeInfo _authzProviderType = new AuthzTypeInfo();
+        private string _readRoles = string.Empty;
+        private string _writeRoles = string.Empty;
         private bool _lazyLoad;
         private string _typeName = String.Empty;
         private bool _undoable = true;
@@ -138,6 +141,51 @@ namespace CslaGenerator.Metadata
             get { return _implements; }
             set { _implements = PropertyHelper.Tidy(value); }
         }
+
+        #endregion
+
+        #region 03. Authorization
+
+        [Category("03. Authorization")]
+        [Description("Roles to create object. Multiple roles must be separated with \";\". Use no prefix to allow or use prefix \"!\" to deny.")]
+        [Editor(typeof(ObjectEditor), typeof(UITypeEditor))]
+        [TypeConverter(typeof(AuthzTypeConverter))]
+        [UserFriendlyName("Autorization Type")]
+        public virtual AuthzTypeInfo AuthzRuleType
+        {
+            get { return _authzProviderType; }
+            set
+            {
+                if (!ReferenceEquals(value, _authzProviderType))
+                {
+                    if (_authzProviderType != null)
+                    {
+                        // _authzProviderType.TypeChanged -= AuthProviderType_TypeChanged;
+                        _authzProviderType = value;
+                        // _authzProviderType.TypeChanged += AuthProviderType_TypeChanged;
+                    }
+                }
+            }
+        }
+
+        [Category("03. Authorization")]
+        [Description("Roles allowed to read the property. Multiple roles must be separated with ;")]
+        [UserFriendlyName("Read Roles")]
+        public virtual string ReadRoles
+        {
+            get { return _readRoles; }
+            set { _readRoles = PropertyHelper.TidyAllowSpaces(value); }
+        }
+
+        [Category("03. Authorization")]
+        [Description("Roles allowed to write to the property. Multiple roles must be separated with ;")]
+        [UserFriendlyName("Write Roles")]
+        public virtual string WriteRoles
+        {
+            get { return _writeRoles; }
+            set { _writeRoles = PropertyHelper.TidyAllowSpaces(value); }
+        }
+
 
         #endregion
 

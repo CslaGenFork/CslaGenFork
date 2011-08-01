@@ -43,13 +43,19 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("02. Authorization Rule in Assembly")]
-        [Editor(typeof(AssemblyFileNameEditor), typeof(UITypeEditor))]
         [Description("The assembly file full path.")]
+        [Editor(typeof (AssemblyFileNameEditor), typeof (UITypeEditor))]
+        //        [TypeConverter(typeof(AssemblyFileConverter))]
         [UserFriendlyName("Assembly File Name")]
         public string AssemblyFile
         {
             get { return _assemblyFile; }
-            set { _assemblyFile = value; }
+            set
+            {
+                _assemblyFile = value;
+                if (string.IsNullOrEmpty(_assemblyFile))
+                    Type = String.Empty;
+            }
         }
 
         [Category("02. Authorization Rule in Assembly")]

@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
-using CslaGenerator.Attributes;
 
 namespace CslaGenerator.Metadata
 {
-    public class BusinessRuleParameterCollection : List<BusinessRuleParameter>
+    public class BusinessRuleConstructorParameterCollection : List<BusinessRuleConstructorParameter>
     {
-        public BusinessRuleParameter Find(string name)
+        public BusinessRuleConstructorParameter Find(string name)
         {
             foreach (var c in this)
             {
@@ -16,7 +14,7 @@ namespace CslaGenerator.Metadata
             return null;
         }
 
-        public BusinessRuleParameter FindType(string type)
+        public BusinessRuleConstructorParameter FindType(string type)
         {
             foreach (var c in this)
             {

@@ -215,6 +215,7 @@
     <Compile Include="CodeGen\CslaTemplateHelperCS.cs" />
     <Compile Include="CodeGen\CslaTemplateHelperVB.cs" />
     <Compile Include="CodeGen\GenerationStep.cs" />
+    <Compile Include="Design\AssemblyFileConverter.cs" />
     <Compile Include="Design\AuthzTypeConverter.cs" />
     <Compile Include="Design\BusinessRuleTypeEditor.cs" />
     <Compile Include="Design\CriteriaUsageParameterConverter.cs" />
@@ -255,8 +256,10 @@
     <Compile Include="Metadata\Authorization.cs" />
     <Compile Include="Metadata\BusinessRule.cs" />
     <Compile Include="Metadata\BusinessRuleCollection.cs" />
-    <Compile Include="Metadata\BusinessRuleParameter.cs" />
-    <Compile Include="Metadata\BusinessRuleParameterCollection.cs" />
+    <Compile Include="Metadata\BusinessRuleConstructor.cs" />
+    <Compile Include="Metadata\BusinessRuleConstructorCollection.cs" />
+    <Compile Include="Metadata\BusinessRuleConstructorParameter.cs" />
+    <Compile Include="Metadata\BusinessRuleConstructorParameterCollection.cs" />
     <Compile Include="Metadata\BusinessRuleProperty.cs" />
     <Compile Include="Metadata\BusinessRulePropertyCollection.cs" />
     <Compile Include="Metadata\BusinessRuleRunModes.cs" />
@@ -518,8 +521,7 @@
     <Compile Include="Util\PropertyBags\AssociativeEntityPropertyBag.cs" />
     <Compile Include="Util\PropertyBags\AuthorizationPropertyBag.cs" />
     <Compile Include="Util\PropertyBags\BusinessRuleBag.cs" />
-    <Compile Include="Util\PropertyBags\BusinessRuleParameterBag.cs" />
-    <Compile Include="Util\PropertyBags\BusinessRulePropertyBag.cs" />
+    <Compile Include="Util\PropertyBags\BusinessRuleConstructorBag.cs" />
     <Compile Include="Util\PropertyBags\ChildPropertyBag.cs" />
     <Compile Include="Util\PropertyBags\ConvertValuePropertyBag.cs" />
     <Compile Include="Util\PropertyBags\CriteriaBag.cs" />

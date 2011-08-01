@@ -95,7 +95,7 @@ namespace CslaGenerator.Design
             var r = 0;
             GetLongest(gridItem.GridItems, ref r);
 
-            http://www.dotnetmonster.com/Uwe/Forum.aspx/winform-controls/5624/Using-the-PropertyGrid-Control
+            // http://www.dotnetmonster.com/Uwe/Forum.aspx/winform-controls/5624/Using-the-PropertyGrid-Control
 
             FieldInfo fi = typeof(PropertyGrid).GetField("gridView", BindingFlags.Instance | BindingFlags.NonPublic);
             object propertyGridView = fi.GetValue(pgEditor);

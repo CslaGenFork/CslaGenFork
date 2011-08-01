@@ -12,9 +12,10 @@ using System.Xml.Serialization;
 namespace CslaGenerator.Metadata
 {
     /// <summary>
-    /// Summary description for BusinessRuleConstructor for Rules 4
+    /// Summary description for BusinessRuleProperty for Rules 4
     /// </summary>
-    public class BusinessRuleProperty
+    [Serializable]
+    public class BusinessRuleProperty : ICloneable
     {
 
         #region Private Fields
@@ -27,7 +28,7 @@ namespace CslaGenerator.Metadata
 
         #endregion
 
-        [Description("The Property Parameter Name.")]
+        [Description("The Property Name.")]
         [UserFriendlyName("Property Name")]
         [ReadOnly(true)]
         public string Name
