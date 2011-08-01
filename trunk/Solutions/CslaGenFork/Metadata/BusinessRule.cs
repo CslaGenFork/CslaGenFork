@@ -23,7 +23,7 @@ namespace CslaGenerator.Metadata
         private string _assemblyFile = String.Empty;
         private string _type = String.Empty;
         private string _objectName = String.Empty;
-        private BusinessRuleParameterCollection _constructorParameters = new BusinessRuleParameterCollection();
+        private BusinessRuleConstructorCollection _constructors = new BusinessRuleConstructorCollection();
         private BusinessRulePropertyCollection _ruleProperties = new BusinessRulePropertyCollection();
         private PropertyCollection _inputProperties;
         private bool _isAsync;
@@ -97,18 +97,29 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Definition")]
-        [Editor(typeof(AssemblyFileNameEditor), typeof(UITypeEditor))]
         [Description("The assembly file full path.")]
+        [Editor(typeof(AssemblyFileNameEditor), typeof(UITypeEditor))]
+//        [TypeConverter(typeof(AssemblyFileConverter))]
         [UserFriendlyName("Assembly File Name")]
         public string AssemblyFile
         {
             get { return _assemblyFile; }
-            set { _assemblyFile = value; }
+            set
+            {
+                _assemblyFile = value;
+                if (string.IsNullOrEmpty(_assemblyFile))
+                {
+                    Type = String.Empty;
+                    Constructors = new BusinessRuleConstructorCollection();
+                    RuleProperties = new BusinessRulePropertyCollection();
+                }
+            }
         }
 
         [Category("01. Definition")]
         [Editor(typeof (BusinessRuleTypeEditor), typeof (UITypeEditor))]
         [Description("Business Rule Type Defined in Assembly.")]
+        [TypeConverter(typeof(AuthzTypeConverter))]
         [UserFriendlyName("Imported Rule Type Name")]
         public string Type
         {
@@ -133,30 +144,82 @@ namespace CslaGenerator.Metadata
 
         #endregion
 
-        #region 02. Business Rule Constructor Parameters
+        #region 02. Business Rule Constructors
 
-        [Category("02. Business Rule Constructor Parameters")]
+        [Category("02. Business Rule Constructors")]
+        [Description("The constructors for the Business Rule.")]
         [Editor(typeof(PropertyCollectionForm), typeof(UITypeEditor))]
-        [Description("This Rule Constructor Parameters.")]
-        [UserFriendlyName("Constructor Parameters")]
-        public BusinessRuleParameterCollection ConstructorParameters
+        [UserFriendlyName("Business Rule Constructors")]
+        public BusinessRuleConstructorCollection Constructors
         {
-            get { return _constructorParameters; }
-            set { _constructorParameters = value; }
+            get { return _constructors; }
+            set { _constructors = value; }
         }
+
+        [XmlIgnore]
+        [ReadOnly(true)]
+        [Browsable(false)]
+        public BusinessRuleConstructor Constructor0 { get; set; }
+
+        [XmlIgnore]
+        [ReadOnly(true)]
+        [Browsable(false)]
+        public BusinessRuleConstructor Constructor1 { get; set; }
+
+        [XmlIgnore]
+        [ReadOnly(true)]
+        [Browsable(false)]
+        public BusinessRuleConstructor Constructor2 { get; set; }
+
+        [XmlIgnore]
+        [ReadOnly(true)]
+        [Browsable(false)]
+        public BusinessRuleConstructor Constructor3 { get; set; }
+
+        [XmlIgnore]
+        [ReadOnly(true)]
+        [Browsable(false)]
+        public BusinessRuleConstructor Constructor4 { get; set; }
 
         #endregion
 
         #region 03. Specific Business Rule Options
 
-        [Category("03. Specific Business Rule Options")]
-        [Editor(typeof(PropertyCollectionForm), typeof(UITypeEditor))]
-        [Description("The Specific Properties for this rule.")]
         public BusinessRulePropertyCollection RuleProperties
         {
             get { return _ruleProperties; }
             set { _ruleProperties = value; }
         }
+
+        [XmlIgnore]
+        public BusinessRuleProperty RuleProperty0 { get; set; }
+
+        [XmlIgnore]
+        public BusinessRuleProperty RuleProperty1 { get; set; }
+
+        [XmlIgnore]
+        public BusinessRuleProperty RuleProperty2 { get; set; }
+
+        [XmlIgnore]
+        public BusinessRuleProperty RuleProperty3 { get; set; }
+
+        [XmlIgnore]
+        public BusinessRuleProperty RuleProperty4 { get; set; }
+
+        [XmlIgnore]
+        public BusinessRuleProperty RuleProperty5 { get; set; }
+
+        [XmlIgnore]
+        public BusinessRuleProperty RuleProperty6 { get; set; }
+
+        [XmlIgnore]
+        public BusinessRuleProperty RuleProperty7 { get; set; }
+
+        [XmlIgnore]
+        public BusinessRuleProperty RuleProperty8 { get; set; }
+
+        [XmlIgnore]
+        public BusinessRuleProperty RuleProperty9 { get; set; }
 
         #endregion
 

@@ -288,9 +288,11 @@ namespace CslaGenerator.Metadata
                 if (!ReferenceEquals(value, _authzProviderType))
                 {
                     if (_authzProviderType != null)
-//                        _authzProviderType.TypeChanged -= AuthProviderType_TypeChanged;
-                    _authzProviderType = value;
-//                    _authzProviderType.TypeChanged += AuthProviderType_TypeChanged;
+                    {
+                        // _authzProviderType.TypeChanged -= AuthProviderType_TypeChanged;
+                        _authzProviderType = value;
+                        // _authzProviderType.TypeChanged += AuthProviderType_TypeChanged;
+                    }
                 }
             }
         }
@@ -312,7 +314,6 @@ namespace CslaGenerator.Metadata
             get { return _writeRoles; }
             set { _writeRoles = PropertyHelper.TidyAllowSpaces(value); }
         }
-
 
         #endregion
 

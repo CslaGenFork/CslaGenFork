@@ -26,7 +26,7 @@ namespace CslaGenerator.Util.PropertyBags
     /// PropertyGrid to provide functionality beyond that of the simple reflection
     /// normally used to query an object's properties.
     /// </summary>
-    public class BusinessRuleBag : ICustomTypeDescriptor
+    public class BusinessRuleConstructorBag : ICustomTypeDescriptor
     {
         #region PropertySpecCollection class definition
 
@@ -56,7 +56,7 @@ namespace CslaGenerator.Util.PropertyBags
             /// </value>
             public PropertySpec this[int index]
             {
-                get { return (PropertySpec) _innerArray[index]; }
+                get { return (PropertySpec)_innerArray[index]; }
                 set { _innerArray[index] = value; }
             }
 
@@ -281,7 +281,7 @@ namespace CslaGenerator.Util.PropertyBags
             /// <returns>A PropertySpec array containing copies of the elements of the PropertySpecCollection.</returns>
             public PropertySpec[] ToArray()
             {
-                return (PropertySpec[]) _innerArray.ToArray(typeof (PropertySpec));
+                return (PropertySpec[])_innerArray.ToArray(typeof(PropertySpec));
             }
 
             #region Explicit interface implementations for ICollection and IList
@@ -291,7 +291,7 @@ namespace CslaGenerator.Util.PropertyBags
             /// </summary>
             void ICollection.CopyTo(Array array, int index)
             {
-                CopyTo((PropertySpec[]) array, index);
+                CopyTo((PropertySpec[])array, index);
             }
 
             /// <summary>
@@ -299,7 +299,7 @@ namespace CslaGenerator.Util.PropertyBags
             /// </summary>
             int IList.Add(object value)
             {
-                return Add((PropertySpec) value);
+                return Add((PropertySpec)value);
             }
 
             /// <summary>
@@ -307,7 +307,7 @@ namespace CslaGenerator.Util.PropertyBags
             /// </summary>
             bool IList.Contains(object obj)
             {
-                return Contains((PropertySpec) obj);
+                return Contains((PropertySpec)obj);
             }
 
             /// <summary>
@@ -316,7 +316,7 @@ namespace CslaGenerator.Util.PropertyBags
             object IList.this[int index]
             {
                 get { return this[index]; }
-                set { this[index] = (PropertySpec) value; }
+                set { this[index] = (PropertySpec)value; }
             }
 
             /// <summary>
@@ -324,7 +324,7 @@ namespace CslaGenerator.Util.PropertyBags
             /// </summary>
             int IList.IndexOf(object obj)
             {
-                return IndexOf((PropertySpec) obj);
+                return IndexOf((PropertySpec)obj);
             }
 
             /// <summary>
@@ -332,7 +332,7 @@ namespace CslaGenerator.Util.PropertyBags
             /// </summary>
             void IList.Insert(int index, object value)
             {
-                Insert(index, (PropertySpec) value);
+                Insert(index, (PropertySpec)value);
             }
 
             /// <summary>
@@ -340,7 +340,7 @@ namespace CslaGenerator.Util.PropertyBags
             /// </summary>
             void IList.Remove(object value)
             {
-                Remove((PropertySpec) value);
+                Remove((PropertySpec)value);
             }
 
             #endregion
@@ -352,10 +352,10 @@ namespace CslaGenerator.Util.PropertyBags
 
         private class PropertySpecDescriptor : PropertyDescriptor
         {
-            private readonly BusinessRuleBag _bag;
+            private readonly BusinessRuleConstructorBag _bag;
             private readonly PropertySpec _item;
 
-            public PropertySpecDescriptor(PropertySpec item, BusinessRuleBag bag, string name, Attribute[] attrs)
+            public PropertySpecDescriptor(PropertySpec item, BusinessRuleConstructorBag bag, string name, Attribute[] attrs)
                 : base(name, attrs)
             {
                 _bag = bag;
@@ -392,8 +392,8 @@ namespace CslaGenerator.Util.PropertyBags
 
                 var e = new PropertySpecEventArgs(_item, null);
                 _bag.OnGetValue(e);
-                if (e.Value is BusinessRuleProperty)
-                    return (e.Value as BusinessRuleProperty).Value;
+                if (e.Value is BusinessRuleConstructorParameter)
+                    return (e.Value as BusinessRuleConstructorParameter).Value;
 
                 return e.Value;
             }
@@ -429,22 +429,23 @@ namespace CslaGenerator.Util.PropertyBags
 
         private readonly PropertySpecCollection _properties;
         private string _defaultProperty;
-        private BusinessRule[] _selectedObject;
+        private BusinessRuleConstructor[] _selectedObject;
 
         /// <summary>
-        /// Initializes a new instance of the BusinessRuleBag class.
+        /// Initializes a new instance of the BusinessRuleConstructorBag class.
         /// </summary>
-        public BusinessRuleBag()
+        public BusinessRuleConstructorBag()
         {
             _defaultProperty = null;
             _properties = new PropertySpecCollection();
         }
 
-        public BusinessRuleBag(BusinessRule obj) : this(new[] { obj })
+        public BusinessRuleConstructorBag(BusinessRuleConstructor obj)
+            : this(new[] { obj })
         {
         }
 
-        public BusinessRuleBag(BusinessRule[] obj)
+        public BusinessRuleConstructorBag(BusinessRuleConstructor[] obj)
         {
             _defaultProperty = "Name";
             _properties = new PropertySpecCollection();
@@ -464,7 +465,7 @@ namespace CslaGenerator.Util.PropertyBags
         /// <summary>
         /// Gets or sets the name of the default property in the collection.
         /// </summary>
-        public BusinessRule[] SelectedObject
+        public BusinessRuleConstructor[] SelectedObject
         {
             get { return _selectedObject; }
             set
@@ -475,7 +476,7 @@ namespace CslaGenerator.Util.PropertyBags
         }
 
         /// <summary>
-        /// Gets the collection of properties contained within this BusinessRuleBag.
+        /// Gets the collection of properties contained within this BusinessRuleConstructorBag.
         /// </summary>
         public PropertySpecCollection Properties
         {
@@ -520,9 +521,9 @@ namespace CslaGenerator.Util.PropertyBags
 
         private void InitPropertyBag()
         {
-            int rulePropertyCounter = 0;
+            int ctorParameterCounter = 0;
             PropertyInfo pi;
-            Type t = typeof(BusinessRule); // _selectedObject.GetType();
+            Type t = typeof(BusinessRuleConstructor); // _selectedObject.GetType();
             PropertyInfo[] props = t.GetProperties();
             // Display information for all properties.
             for (int i = 0; i < props.Length; i++)
@@ -542,50 +543,50 @@ namespace CslaGenerator.Util.PropertyBags
                 string editor = "";
                 string assemblyQualifiedName = "";
 
-                if (pi.Name.Contains("RuleProperty"))
+                if (pi.Name.Contains("ConstructorParameter") && pi.Name != "ConstructorParameters")
                 {
-                    category = "03. Specific Business Rule Options";
-                    HandleRuleProperty(ref rulePropertyCounter, out isbrowsable, out userfriendlyname, out description, out isreadonly, ref editor, out assemblyQualifiedName);
+                    category = "02. Business Rule ConstructorParameters";
+                    HandleConstructorParameter(ref ctorParameterCounter, out isbrowsable, out userfriendlyname, out description, out isreadonly, ref editor, out assemblyQualifiedName);
                 }
                 else
                 {
                     for (int n = 0; n < myAttributes.Length; n++)
                     {
-                        var a = (Attribute) myAttributes[n];
+                        var a = (Attribute)myAttributes[n];
                         switch (a.GetType().ToString())
                         {
                             case "System.ComponentModel.CategoryAttribute":
-                                category = ((CategoryAttribute) a).Category;
+                                category = ((CategoryAttribute)a).Category;
                                 break;
                             case "System.ComponentModel.DescriptionAttribute":
-                                description = ((DescriptionAttribute) a).Description;
+                                description = ((DescriptionAttribute)a).Description;
                                 break;
                             case "System.ComponentModel.ReadOnlyAttribute":
-                                isreadonly = ((ReadOnlyAttribute) a).IsReadOnly;
+                                isreadonly = ((ReadOnlyAttribute)a).IsReadOnly;
                                 break;
                             case "System.ComponentModel.BrowsableAttribute":
-                                isbrowsable = ((BrowsableAttribute) a).Browsable;
+                                isbrowsable = ((BrowsableAttribute)a).Browsable;
                                 break;
                             case "System.ComponentModel.DefaultValueAttribute":
-                                defaultvalue = ((DefaultValueAttribute) a).Value;
+                                defaultvalue = ((DefaultValueAttribute)a).Value;
                                 break;
                             case "CslaGenerator.Attributes.UserFriendlyNameAttribute":
-                                userfriendlyname = ((UserFriendlyNameAttribute) a).UserFriendlyName;
+                                userfriendlyname = ((UserFriendlyNameAttribute)a).UserFriendlyName;
                                 break;
                             case "CslaGenerator.Attributes.HelpTopicAttribute":
-                                helptopic = ((HelpTopicAttribute) a).HelpTopic;
+                                helptopic = ((HelpTopicAttribute)a).HelpTopic;
                                 break;
                             case "System.ComponentModel.TypeConverterAttribute":
-                                typeconverter = ((TypeConverterAttribute) a).ConverterTypeName;
+                                typeconverter = ((TypeConverterAttribute)a).ConverterTypeName;
                                 break;
                             case "System.ComponentModel.DesignerAttribute":
-                                designertypename = ((DesignerAttribute) a).DesignerTypeName;
+                                designertypename = ((DesignerAttribute)a).DesignerTypeName;
                                 break;
                             case "System.ComponentModel.BindableAttribute":
-                                bindable = ((BindableAttribute) a).Bindable;
+                                bindable = ((BindableAttribute)a).Bindable;
                                 break;
                             case "System.ComponentModel.EditorAttribute":
-                                editor = ((EditorAttribute) a).EditorTypeName;
+                                editor = ((EditorAttribute)a).EditorTypeName;
                                 break;
                         }
                     }
@@ -613,12 +614,12 @@ namespace CslaGenerator.Util.PropertyBags
             }
         }
 
-        private void HandleRuleProperty(ref int rulePropertyCounter, out bool isbrowsable, out string userfriendlyname, out string description, out bool isreadonly, ref string editor, out string assemblyQualifiedName)
+        private void HandleConstructorParameter(ref int ctorParameterCounter, out bool isbrowsable, out string userfriendlyname, out string description, out bool isreadonly, ref string editor, out string assemblyQualifiedName)
         {
             assemblyQualifiedName = string.Empty;
             isbrowsable = true;
             isreadonly = false;
-            if (rulePropertyCounter == SelectedObject[0].RuleProperties.Count)
+            if (ctorParameterCounter == SelectedObject[0].ConstructorParameters.Count)
             {
                 isbrowsable = false;
                 description = string.Empty;
@@ -626,10 +627,10 @@ namespace CslaGenerator.Util.PropertyBags
                 return;
             }
 
-            var target = SelectedObject[0].RuleProperties[rulePropertyCounter];
+            var target = SelectedObject[0].ConstructorParameters[ctorParameterCounter];
 
             userfriendlyname = target.Name;
-            description = (target.IsGenericType ? "Generic " : "") + "Property " + userfriendlyname + " of " +
+            description = (target.IsGenericType ? "Generic " : "") + "Parameter " + userfriendlyname + " of " +
                           (target.IsGenericType ? "<" : "") +
                           target.Type +
                           (target.IsGenericType ? ">" : "") + " type.";
@@ -642,70 +643,70 @@ namespace CslaGenerator.Util.PropertyBags
                 case "IPropertyInfo":
                     break;
                 default:
-                    GetPropertyDataType(target, out assemblyQualifiedName, out editor);
+                    GetParameterDataType(target, out assemblyQualifiedName, out editor);
                     break;
             }
 
-            switch (rulePropertyCounter)
+            switch (ctorParameterCounter)
             {
                 case 0:
-                    SelectedObject[0].RuleProperty0 = target;
+                    SelectedObject[0].ConstructorParameter0 = target;
                     break;
                 case 1:
-                    SelectedObject[0].RuleProperty1 = target;
+                    SelectedObject[0].ConstructorParameter1 = target;
                     break;
                 case 2:
-                    SelectedObject[0].RuleProperty2 = target;
+                    SelectedObject[0].ConstructorParameter2 = target;
                     break;
                 case 3:
-                    SelectedObject[0].RuleProperty3 = target;
+                    SelectedObject[0].ConstructorParameter3 = target;
                     break;
                 case 4:
-                    SelectedObject[0].RuleProperty4 = target;
+                    SelectedObject[0].ConstructorParameter4 = target;
                     break;
                 case 5:
-                    SelectedObject[0].RuleProperty5 = target;
+                    SelectedObject[0].ConstructorParameter5 = target;
                     break;
                 case 6:
-                    SelectedObject[0].RuleProperty6 = target;
+                    SelectedObject[0].ConstructorParameter6 = target;
                     break;
                 case 7:
-                    SelectedObject[0].RuleProperty7 = target;
+                    SelectedObject[0].ConstructorParameter7 = target;
                     break;
                 case 8:
-                    SelectedObject[0].RuleProperty8 = target;
+                    SelectedObject[0].ConstructorParameter8 = target;
                     break;
                 case 9:
-                    SelectedObject[0].RuleProperty9 = target;
+                    SelectedObject[0].ConstructorParameter9 = target;
                     break;
             }
-            rulePropertyCounter++;
+            ctorParameterCounter++;
         }
 
-        private static Type GetPropertyDataType(BusinessRuleProperty target, out string assemblyQualifiedName, out string editor)
+        private static Type GetParameterDataType(BusinessRuleConstructorParameter target, out string assemblyQualifiedName, out string editor)
         {
             editor = typeof(UITypeEditor).AssemblyQualifiedName;
 
-            Type propType;
+            Type paramType;
             if (target.IsGenericType || target.IsGenericParameter)
             {
-                propType = Type.GetType("System.String");
+                paramType = Type.GetType("System.String");
             }
             else
             {
-                propType = Type.GetType(target.Type);
-                if (propType == null)
-                    propType = Type.GetType("System." + target.Type);
-                if (propType == null)
-                    propType = Type.GetType("CslaGenerator.Metadata." + target.Type);
+                paramType = Type.GetType(target.Type);
+                if (paramType == null)
+                    paramType = Type.GetType("System." + target.Type);
+                if (paramType == null)
+                    paramType = Type.GetType("CslaGenerator.Metadata." + target.Type);
             }
 
-            if (propType == null)
+            if (paramType == null)
                 assemblyQualifiedName = string.Empty;
             else
-                assemblyQualifiedName = propType.AssemblyQualifiedName;
+                assemblyQualifiedName = paramType.AssemblyQualifiedName;
 
-            return propType;
+            return paramType;
         }
 
         #endregion
@@ -716,14 +717,14 @@ namespace CslaGenerator.Util.PropertyBags
         {
             if (!propertyInfoCache.ContainsKey(propertyName))
             {
-                propertyInfoCache.Add(propertyName, typeof(BusinessRule).GetProperty(propertyName));
+                propertyInfoCache.Add(propertyName, typeof(BusinessRuleConstructor).GetProperty(propertyName));
             }
             return propertyInfoCache[propertyName];
         }
 
         private bool IsEnumerable(PropertyInfo prop)
         {
-            if (prop.PropertyType == typeof (string))
+            if (prop.PropertyType == typeof(string))
                 return false;
             Type[] interfaces = prop.PropertyType.GetInterfaces();
             foreach (Type typ in interfaces)
@@ -747,10 +748,10 @@ namespace CslaGenerator.Util.PropertyBags
                 /*if (propertyName == "Name" && SelectedObject[0].Name == "Name")
                     return false;*/
 
-                if (propertyName == "RuleProperties")
+                if (propertyName == "ConstructorParameters")
                     return false;
 
-                /*if (propertyName == "Constructors" || propertyName == "RuleProperties")
+                /*if (propertyName == "ConstructorParameters" || propertyName == "RuleProperties")
                     return false;*/
 
                 if (_selectedObject.Length > 1 && IsEnumerable(GetPropertyInfoCache(propertyName)))
@@ -779,14 +780,14 @@ namespace CslaGenerator.Util.PropertyBags
             fields = target.GetType().GetFields(BindingFlags.Public);
 
             tx = target.GetType();
-            obj = tx.InvokeMember(name, BindingFlags.Default | BindingFlags.GetField, null, target, new object[] {});
+            obj = tx.InvokeMember(name, BindingFlags.Default | BindingFlags.GetField, null, target, new object[] { });
             return obj;
         }
 
         private object SetField(Type t, string name, object value, object target)
         {
             object obj;
-            obj = t.InvokeMember(name, BindingFlags.Default | BindingFlags.SetField, null, target, new[] {value});
+            obj = t.InvokeMember(name, BindingFlags.Default | BindingFlags.SetField, null, target, new[] { value });
             return obj;
         }
 
@@ -796,56 +797,56 @@ namespace CslaGenerator.Util.PropertyBags
             {
                 // get a reference to the PropertyInfo, exit if no property with that
                 // name
-                PropertyInfo pi = typeof (BusinessRule).GetProperty(propertyName);
+                PropertyInfo pi = typeof(BusinessRuleConstructor).GetProperty(propertyName);
 
                 if (pi == null)
                     return false;
                 // convert the value to the expected type
-                if (pi.PropertyType.Name == "BusinessRuleProperty")
+                if (pi.PropertyType.Name == "BusinessRuleConstructorParameter")
                 {
-                    PropertyInfo piProp = typeof (BusinessRuleProperty).GetProperty("Value");
+                    PropertyInfo piProp = typeof(BusinessRuleConstructorParameter).GetProperty("Value");
                     val = Convert.ChangeType(val, piProp.PropertyType);
                     // attempt the assignment
                     switch (propertyName)
-                        {
-                            case "RuleProperty0":
-                                SelectedObject[0].RuleProperty0.Value = val;
-                                break;
-                            case "RuleProperty1":
-                                SelectedObject[0].RuleProperty1.Value = val;
-                                break;
-                            case "RuleProperty2":
-                                SelectedObject[0].RuleProperty2.Value = val;
-                                break;
-                            case "RuleProperty3":
-                                SelectedObject[0].RuleProperty3.Value = val;
-                                break;
-                            case "RuleProperty4":
-                                SelectedObject[0].RuleProperty4.Value = val;
-                                break;
-                            case "RuleProperty5":
-                                SelectedObject[0].RuleProperty5.Value = val;
-                                break;
-                            case "RuleProperty6":
-                                SelectedObject[0].RuleProperty6.Value = val;
-                                break;
-                            case "RuleProperty7":
-                                SelectedObject[0].RuleProperty7.Value = val;
-                                break;
-                            case "RuleProperty8":
-                                SelectedObject[0].RuleProperty8.Value = val;
-                                break;
-                            case "RuleProperty9":
-                                SelectedObject[0].RuleProperty9.Value = val;
-                                break;
-                        }
+                    {
+                        case "ConstructorParameter0":
+                            SelectedObject[0].ConstructorParameter0.Value = val;
+                            break;
+                        case "ConstructorParameter1":
+                            SelectedObject[0].ConstructorParameter1.Value = val;
+                            break;
+                        case "ConstructorParameter2":
+                            SelectedObject[0].ConstructorParameter2.Value = val;
+                            break;
+                        case "ConstructorParameter3":
+                            SelectedObject[0].ConstructorParameter3.Value = val;
+                            break;
+                        case "ConstructorParameter4":
+                            SelectedObject[0].ConstructorParameter4.Value = val;
+                            break;
+                        case "ConstructorParameter5":
+                            SelectedObject[0].ConstructorParameter5.Value = val;
+                            break;
+                        case "ConstructorParameter6":
+                            SelectedObject[0].ConstructorParameter6.Value = val;
+                            break;
+                        case "ConstructorParameter7":
+                            SelectedObject[0].ConstructorParameter7.Value = val;
+                            break;
+                        case "ConstructorParameter8":
+                            SelectedObject[0].ConstructorParameter8.Value = val;
+                            break;
+                        case "ConstructorParameter9":
+                            SelectedObject[0].ConstructorParameter9.Value = val;
+                            break;
+                    }
                     return true;
                 }
                 else
                 {
                     val = Convert.ChangeType(val, pi.PropertyType);
                     // attempt the assignment
-                    foreach (BusinessRule bo in (BusinessRule[]) obj)
+                    foreach (BusinessRuleConstructor bo in (BusinessRuleConstructor[])obj)
                         pi.SetValue(bo, val, null);
                     return true;
                 }
@@ -863,10 +864,10 @@ namespace CslaGenerator.Util.PropertyBags
                 PropertyInfo pi = GetPropertyInfoCache(propertyName);
                 if (!(pi == null))
                 {
-                    var objs = (BusinessRule[])obj;
+                    var objs = (BusinessRuleConstructor[])obj;
                     var valueList = new ArrayList();
 
-                    foreach (BusinessRule bo in objs)
+                    foreach (BusinessRuleConstructor bo in objs)
                     {
                         object value = pi.GetValue(bo, null);
                         if (!valueList.Contains(value))
@@ -963,13 +964,13 @@ namespace CslaGenerator.Util.PropertyBags
 
         PropertyDescriptorCollection ICustomTypeDescriptor.GetProperties()
         {
-            return ((ICustomTypeDescriptor) this).GetProperties(new Attribute[0]);
+            return ((ICustomTypeDescriptor)this).GetProperties(new Attribute[0]);
         }
 
         PropertyDescriptorCollection ICustomTypeDescriptor.GetProperties(Attribute[] attributes)
         {
             // Rather than passing this function on to the default TypeDescriptor,
-            // which would return the actual properties of BusinessRuleBag, I construct
+            // which would return the actual properties of BusinessRuleConstructorBag, I construct
             // a list here that contains property descriptors for the elements of the
             // Properties list in the bag.
 
@@ -988,7 +989,7 @@ namespace CslaGenerator.Util.PropertyBags
                     attrs.Add(new DescriptionAttribute(property.Description));
 
                 if (property.EditorTypeName != null)
-                    attrs.Add(new EditorAttribute(property.EditorTypeName, typeof (UITypeEditor)));
+                    attrs.Add(new EditorAttribute(property.EditorTypeName, typeof(UITypeEditor)));
 
                 if (property.ConverterTypeName != null)
                     attrs.Add(new TypeConverterAttribute(property.ConverterTypeName));
@@ -1005,7 +1006,7 @@ namespace CslaGenerator.Util.PropertyBags
                 attrs.Add(new ReadOnlyAttribute(property.ReadOnly));
                 attrs.Add(new BindableAttribute(property.Bindable));
 
-                var attrArray = (Attribute[]) attrs.ToArray(typeof (Attribute));
+                var attrArray = (Attribute[])attrs.ToArray(typeof(Attribute));
 
                 // Create a new property descriptor for the property item, and add
                 // it to the list.
@@ -1015,8 +1016,8 @@ namespace CslaGenerator.Util.PropertyBags
 
             // Convert the list of PropertyDescriptors to a collection that the
             // ICustomTypeDescriptor can use, and return it.
-            var propArray = (PropertyDescriptor[]) props.ToArray(
-                typeof (PropertyDescriptor));
+            var propArray = (PropertyDescriptor[])props.ToArray(
+                typeof(PropertyDescriptor));
             return new PropertyDescriptorCollection(propArray);
         }
 

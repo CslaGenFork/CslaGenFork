@@ -28,6 +28,7 @@ namespace CslaGenerator.Design
         {
             _lstProperties = new ListBox();
             _lstProperties.SelectedValueChanged += ValueChanged;
+            _lstProperties.Width = 300;
         }
 
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
@@ -94,10 +95,11 @@ namespace CslaGenerator.Design
                         _lstProperties.SelectedItem = "(None)";
 
                     _editorService.DropDownControl(_lstProperties);
+                    FillSubsidiaryGrids(_rule, _lstProperties.SelectedItem.ToString());
+
                     if (_lstProperties.SelectedIndex < 0 || _lstProperties.SelectedItem.ToString() == "(None)")
                         return string.Empty;
 
-                    FillSubsidiaryGrids(_rule, _lstProperties.SelectedItem.ToString());
                     return _lstProperties.SelectedItem.ToString();
                 }
             }
@@ -137,9 +139,6 @@ namespace CslaGenerator.Design
                     usedType = type;
             }
 
-            if (usedType == null)
-                return;
-
             var typeProperties = new Dictionary<string, string>();
             typeProperties.Add("InputProperties", "List<string>");
             typeProperties.Add("IsAsync", "bool");
@@ -148,8 +147,14 @@ namespace CslaGenerator.Design
             typeProperties.Add("ProvideTargetWhenAsync", "bool");
             typeProperties.Add("RuleUri", "string");
             typeProperties.Add("RunMode", "BusinessRuleRunModes");
-
             _rule.RuleProperties = new BusinessRulePropertyCollection();
+            _rule.Constructors = new BusinessRuleConstructorCollection();
+
+            if (usedType == null)
+            {
+                return;
+            }
+
             foreach (var prop in usedType.GetProperties(BindingFlags.Instance | BindingFlags.Public).
                 Where(p => p.CanRead && p.CanWrite))
             {
@@ -206,53 +211,63 @@ namespace CslaGenerator.Design
             }
 
             var ctor = usedType.GetConstructors();
-            _rule.ConstructorParameters = new BusinessRuleParameterCollection();
             var ctorCounter = 0;
             foreach (var info in ctor)
             {
                 ctorCounter++;
+                var ctorInfo = new BusinessRuleConstructor();
+                ctorInfo.Name = "Constructor #" + ctorCounter;
+                if (ctorCounter == 1)
+                {
+                    ctorInfo.IsActive = true;
+                    ctorInfo.Name += "(Default)";
+                }
+
                 var ctorParams = info.GetParameters();
                 foreach (var param in ctorParams)
                 {
-                    var ctorInfo = new BusinessRuleParameter();
-                    ctorInfo.ObjectName = param.Name;
-                    ctorInfo.Type = param.ParameterType.Name;
-                    ctorInfo.IsGenericType = param.ParameterType.IsGenericParameter;
-                    ctorInfo.IsGenericParameter = param.ParameterType.IsGenericType;
+                    var ctorParamInfo = new BusinessRuleConstructorParameter();
+                    ctorParamInfo.Name = param.Name;
+                    ctorParamInfo.Type = param.ParameterType.Name;
+                    ctorParamInfo.IsGenericType = param.ParameterType.IsGenericParameter;
+                    ctorParamInfo.IsGenericParameter = param.ParameterType.IsGenericType;
 
-                    if (ctorInfo.IsGenericParameter)
+                    if (ctorParamInfo.IsGenericParameter)
                     {
-                        ctorInfo.Type = param.ParameterType.Name.Substring(0, param.ParameterType.Name.LastIndexOf('`'));
+                        ctorParamInfo.Type = param.ParameterType.Name.Substring(0, param.ParameterType.Name.LastIndexOf('`'));
                         foreach (var argument in param.ParameterType.GetGenericArguments())
                         {
-                            ctorInfo.Type += "<" + argument.Name + ">";
+                            ctorParamInfo.Type += "<" + argument.Name + ">";
                         }
-                    } 
-                    
-                    if (ctorInfo.Type == "IPropertyInfo")
-                        ctorInfo.Value = rule.Parent;
+                    }
+
+                    if (ctorParamInfo.Type == "IPropertyInfo")
+                        ctorParamInfo.Value = rule.Parent;
                     else
                     {
-                        Type targetType = GetDataType(ctorInfo.Type);
+                        Type targetType = GetDataType(ctorParamInfo.Type);
                         if (targetType != null)
                         {
                             if (targetType.IsEnum)
-                                ctorInfo.Value = ConvertStringToEnum(targetType, "");
-                            else if (targetType == typeof(Int16))
-                                ctorInfo.Value = (Int16)0;
-                            else if (targetType == typeof(Int32))
-                                ctorInfo.Value = (Int32)0;
-                            else if (targetType == typeof(Int64))
-                                ctorInfo.Value = (Int64)0;
+                                ctorParamInfo.Value = ConvertStringToEnum(targetType, "");
+                            else if (targetType == typeof (Int16))
+                                ctorParamInfo.Value = (Int16) 0;
+                            else if (targetType == typeof (Int32))
+                                ctorParamInfo.Value = (Int32) 0;
+                            else if (targetType == typeof (Int64))
+                                ctorParamInfo.Value = (Int64) 0;
                         }
                         else
-                            ctorInfo.Value = " ";
-                        ctorInfo.Value = string.Empty;
+                        {
+                            ctorParamInfo.Value = " ";
+                            ctorParamInfo.Value = string.Empty;
+                        }
                     }
 
-                    ctorInfo.Name = "Constructor #" + ctorCounter;
-                    _rule.ConstructorParameters.Add(ctorInfo);
+                    ctorInfo.ConstructorParameters.Add(ctorParamInfo);
                 }
+
+                _rule.Constructors.Add(ctorInfo);
             }
         }
 

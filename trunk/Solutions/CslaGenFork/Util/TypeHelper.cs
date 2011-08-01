@@ -301,7 +301,7 @@ namespace CslaGenerator.Util
             }
         }
 
-        public static void GetBusinessRulePropertyTypeContextInstanceObject(ITypeDescriptorContext context, ref object objinfo, ref Type instanceType)
+        /*public static void GetBusinessRulePropertyTypeContextInstanceObject(ITypeDescriptorContext context, ref object objinfo, ref Type instanceType)
         {
             if (context.Instance != null)
             {
@@ -322,7 +322,7 @@ namespace CslaGenerator.Util
                     instanceType = context.Instance.GetType();
                 }
             }
-        }
+        }*/
 
         public static void GetUnitOfWorkPropertyContextInstanceObject(ITypeDescriptorContext context, ref object objinfo, ref Type instanceType)
         {
