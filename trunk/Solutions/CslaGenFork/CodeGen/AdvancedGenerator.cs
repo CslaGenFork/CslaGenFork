@@ -362,7 +362,7 @@ namespace CslaGenerator.CodeGen
                         //OnGenerationInformation("Success");
                     }
                 }
-                GenerateInheritanceFile(fileName, objInfo, generationParams.ActiveObjects, unit);
+                GenerateExtendedFile(fileName, objInfo, generationParams.ActiveObjects, unit);
                 if (!string.IsNullOrEmpty(generationParams.ClassCommentFilenameSuffix))
                     GenerateClassCommentFile(classCommentFileName, objInfo, generationParams.ActiveObjects, unit);
             }
@@ -396,9 +396,9 @@ namespace CslaGenerator.CodeGen
                 return;
         }
 
-        private void GenerateInheritanceFile(string fileName, CslaObjectInfo objInfo, bool activeObjects, CslaGeneratorUnit unit)
+        private void GenerateExtendedFile(string fileName, CslaObjectInfo objInfo, bool activeObjects, CslaGeneratorUnit unit)
         {
-            GenerateAccessoryFile(fileName, "\\InheritFromBase.cst", objInfo, activeObjects, unit);
+            GenerateAccessoryFile(fileName, "\\ExtendedFile.cst", objInfo, activeObjects, unit);
         }
 
         private void GenerateClassCommentFile(string fileName, CslaObjectInfo objInfo, bool activeObjects, CslaGeneratorUnit unit)
@@ -411,7 +411,7 @@ namespace CslaGenerator.CodeGen
             // Create Inheritance file if it does not exist
             if (!File.Exists(fileName)) //&& objInfo.ObjectType != CslaObjectType.NameValueList)
             {
-                // string tPath = this._fullTemplatesPath + objInfo.OutputLanguage.ToString() + "\\InheritFromBase.cst";
+                // string tPath = this._fullTemplatesPath + objInfo.OutputLanguage.ToString() + "\\ExtendedFile.cst";
                 var tPath = _fullTemplatesPath + objInfo.OutputLanguage + templateFile;
                 var template = GetTemplate(objInfo, tPath);
                 if (template != null)
