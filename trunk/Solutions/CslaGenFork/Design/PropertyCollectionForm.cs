@@ -200,7 +200,10 @@ namespace CslaGenerator.Design
                 //This is a vsPropertyGrid located in System.Windows.Forms.Design
                 var propertyInfo = _propGrid.GetType().GetProperty("SelectedObject", BindingFlags.Public | BindingFlags.Instance);
                 if (selectedObject != null)
+                {
                     propertyInfo.SetValue(_propGrid, new ChildPropertyBag(selectedObject), null);
+                    _parentValProp = selectedObject.Name;
+                }
             }
             else if (_collectionType == typeof (UnitOfWorkProperty))
             {
@@ -236,7 +239,10 @@ namespace CslaGenerator.Design
                 //This is a vsPropertyGrid located in System.Windows.Forms.Design
                 var propertyInfo = _propGrid.GetType().GetProperty("SelectedObject", BindingFlags.Public | BindingFlags.Instance);
                 if (selectedObject != null)
+                {
                     propertyInfo.SetValue(_propGrid, new ConvertValuePropertyBag(selectedObject), null);
+                    _parentValProp = selectedObject.Name;
+                }
             }
             else if (_collectionType == typeof (UpdateValueProperty))
             {
@@ -261,7 +267,8 @@ namespace CslaGenerator.Design
                 var selectedObject = (BusinessRule) _propGrid.SelectedObject;
                 //Get the property grid's type.
                 //This is a vsPropertyGrid located in System.Windows.Forms.Design
-                var propertyInfo = _propGrid.GetType().GetProperty("SelectedObject", BindingFlags.Public | BindingFlags.Instance);
+                var propertyInfo = _propGrid.GetType().GetProperty("SelectedObject",
+                                                                   BindingFlags.Public | BindingFlags.Instance);
                 if (selectedObject != null)
                 {
                     selectedObject.Parent = _parentValProp;

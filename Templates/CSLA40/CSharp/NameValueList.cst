@@ -18,6 +18,7 @@
 bool isChild = false;
 int silverlightLevel = 0;
 bool genOptional = false;
+bool useItem = false;
 ValueProperty nameProp = null;
 ValueProperty valueProp = null;
 foreach (ValueProperty prop in Info.ValueProperties)

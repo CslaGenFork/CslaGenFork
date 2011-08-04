@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.Reflection;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
+using CslaGenerator.CodeGen;
 using CslaGenerator.Metadata;
 using CslaGenerator.Util;
 
@@ -14,6 +16,7 @@ namespace CslaGenerator.Design
         private IWindowsFormsEditorService _editorService;
         private readonly ListBox _lstProperties;
         private Type _instance;
+        private List<Type> _types;
 
         public RefTypeEditor()
         {
@@ -46,12 +49,35 @@ namespace CslaGenerator.Design
                     // If Assembly path is available, use assembly to load a drop down with available types.
                     if (!string.IsNullOrEmpty(assemblyFilePath))
                     {
+                        /*var currentCslaObject = (CslaObjectInfo) GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem;
+                        var baseType = currentCslaObject.ObjectType;*/
+
                         var assembly = Assembly.LoadFrom(assemblyFilePath);
-                        var types = assembly.GetExportedTypes();
-                        for (var i = 0; i < types.Length; i++)
+                        var alltypes = assembly.GetExportedTypes();
+                        if (alltypes.Length > 0)
+                            _types = new List<Type>();
+
+                        foreach (var type in alltypes)
                         {
-                            _lstProperties.Items.Add(types[i].ToString());
+                            // exclude abstract classes
+                            if (!type.IsAbstract && !type.IsInterface)
+                            {
+                                _types.Add(type);
+
+                                var listableType = type.ToString();
+                                if (type.IsGenericType)
+                                {
+                                    listableType = listableType.Substring(0, listableType.LastIndexOf('`'));
+                                    foreach (var argument in type.GetGenericArguments())
+                                    {
+                                        listableType += "<" + argument.Name + ">";
+                                    }
+                                }
+                                listableType = listableType.Replace("><", ",");
+                                _lstProperties.Items.Add(listableType);
+                            }
                         }
+
                         _lstProperties.Sorted = true;
                     }
 

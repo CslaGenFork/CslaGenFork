@@ -19,6 +19,7 @@ if (Errors.Length == 0)
     bool isChild = false;
     int silverlightLevel = 0;
     bool genOptional = false;
+    bool useItem = false;
     bool first = true;
     %><!-- #include file="Header.asp" -->
 using System;
