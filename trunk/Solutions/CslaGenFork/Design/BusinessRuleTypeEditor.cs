@@ -52,6 +52,7 @@ namespace CslaGenerator.Design
                     var assemblyFileInfo = _instance.GetProperty("AssemblyFile");
                     //string assemblyFilePath = (string) assemblyFileInfo.GetValue(context.Instance, null);
                     var assemblyFilePath = (string) assemblyFileInfo.GetValue(objinfo, null);
+                    Type baseBusinessRule = null;
 
                     // If Assembly path is available, use assembly to load a drop down with available types.
                     if (!string.IsNullOrEmpty(assemblyFilePath))
@@ -80,8 +81,16 @@ namespace CslaGenerator.Design
                                             listableType += "<" + argument.Name + ">";
                                         }
                                     }
-
+                                    listableType = listableType.Replace("><", ",");
                                     _lstProperties.Items.Add(listableType);
+                                }
+                                else
+                                {
+                                    if (type.BaseType != null)
+                                    {
+                                        if (type.BaseType.Name == "BusinessRule")
+                                            baseBusinessRule = type.BaseType;
+                                    }
                                 }
                             }
                         }
@@ -95,7 +104,7 @@ namespace CslaGenerator.Design
                         _lstProperties.SelectedItem = "(None)";
 
                     _editorService.DropDownControl(_lstProperties);
-                    FillSubsidiaryGrids(_rule, _lstProperties.SelectedItem.ToString());
+                    FillSubsidiaryGrids(baseBusinessRule, _rule, _lstProperties.SelectedItem.ToString());
 
                     if (_lstProperties.SelectedIndex < 0 || _lstProperties.SelectedItem.ToString() == "(None)")
                         return string.Empty;
@@ -120,7 +129,7 @@ namespace CslaGenerator.Design
             }
         }
 
-        private void FillSubsidiaryGrids(BusinessRule rule, string stringType)
+        private void FillSubsidiaryGrids(Type baseBusinessRule, BusinessRule rule, string stringType)
         {
             Type usedType = null;
 
@@ -139,20 +148,17 @@ namespace CslaGenerator.Design
                     usedType = type;
             }
 
-            var typeProperties = new Dictionary<string, string>();
-            typeProperties.Add("InputProperties", "List<string>");
-            typeProperties.Add("IsAsync", "bool");
-            typeProperties.Add("PrimaryProperty", "string");
-            typeProperties.Add("Priority", "int");
-            typeProperties.Add("ProvideTargetWhenAsync", "bool");
-            typeProperties.Add("RuleUri", "string");
-            typeProperties.Add("RunMode", "BusinessRuleRunModes");
+            if (usedType == null)
+                return;
+
+            _rule.BaseRules = new List<string>();
             _rule.RuleProperties = new BusinessRulePropertyCollection();
             _rule.Constructors = new BusinessRuleConstructorCollection();
 
-            if (usedType == null)
+            foreach (var prop in baseBusinessRule.GetProperties(BindingFlags.Instance | BindingFlags.Public).
+                Where(p => p.CanRead && p.CanWrite))
             {
-                return;
+                _rule.BaseRules.Add(prop.Name);
             }
 
             foreach (var prop in usedType.GetProperties(BindingFlags.Instance | BindingFlags.Public).
@@ -171,7 +177,7 @@ namespace CslaGenerator.Design
                     var d = "IsGenericTypeDefinition";
                 }*/
 
-                if (!typeProperties.ContainsKey(prop.Name))
+                if (!_rule.BaseRules.Contains(prop.Name))
                 {
                     var ruleInfo = new BusinessRuleProperty();
                     ruleInfo.Name = prop.Name;

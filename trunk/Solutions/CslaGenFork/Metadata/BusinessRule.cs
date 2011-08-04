@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.IO;
@@ -23,17 +24,18 @@ namespace CslaGenerator.Metadata
         private string _assemblyFile = String.Empty;
         private string _type = String.Empty;
         private string _objectName = String.Empty;
+        private string _parent;
+        private List<string> _baseRules = new List<string>();
         private BusinessRuleConstructorCollection _constructors = new BusinessRuleConstructorCollection();
         private BusinessRulePropertyCollection _ruleProperties = new BusinessRulePropertyCollection();
+        private PropertyCollection _affectedProperties;
         private PropertyCollection _inputProperties;
         private bool _isAsync;
-        private int _priority;
         private bool _provideTargetWhenAsync;
-        private string _ruleUri;
+        private int _priority;
         private BusinessRuleRunModes _runModes;
-        private string _parent;
 
-        #endregion
+            #endregion
 
         [Browsable(false)]
         [XmlIgnore]
@@ -41,6 +43,13 @@ namespace CslaGenerator.Metadata
         {
             get { return _parent; }
             set { _parent = value; }
+        }
+
+        [Browsable(false)]
+        public List<string> BaseRules
+        {
+            get { return _baseRules; }
+            set { _baseRules = value; }
         }
 
         #region 01. Definition
@@ -71,8 +80,9 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Definition")]
-        [Description("Business Rule Type Defined in Project.")]
+        [Description("Business Rule Type Defined in Project. Unsupported at this time.")]
         [UserFriendlyName("Internal project Type Name")]
+        [ReadOnly(true)]
         public string ObjectName
         {
             get { return _objectName; }
@@ -110,8 +120,9 @@ namespace CslaGenerator.Metadata
                 if (string.IsNullOrEmpty(_assemblyFile))
                 {
                     Type = String.Empty;
-                    Constructors = new BusinessRuleConstructorCollection();
+                    BaseRules = new List<string>();
                     RuleProperties = new BusinessRulePropertyCollection();
+                    Constructors = new BusinessRuleConstructorCollection();
                 }
             }
         }
@@ -242,10 +253,22 @@ namespace CslaGenerator.Metadata
         
         [Category("04. Base Business Rule Options")]
         [Editor(typeof(InputPropertyCollectionEditor), typeof(UITypeEditor))]
+        [Description("List of properties affected by this rule."+
+            " Rules for these properties are executed after rules for the primaryproperty.")]
+        [TypeConverter(typeof(PropertyCollectionConverter))]
+        [UserFriendlyName("Affected Properties Collection")]
+        public PropertyCollection AffectedProperties 
+        {
+            get { return _affectedProperties; }
+            set { _affectedProperties = value; }
+        }
+
+        [Category("04. Base Business Rule Options")]
+        [Editor(typeof(InputPropertyCollectionEditor), typeof(UITypeEditor))]
         [Description("List of secondary property values to be supplied to the rule when it is executed.")]
         [TypeConverter(typeof(PropertyCollectionConverter))]
-        [UserFriendlyName("Rule Input Properties Collection")]
-        public PropertyCollection InputProperties 
+        [UserFriendlyName("Input Properties Collection")]
+        public PropertyCollection InputProperties
         {
             get { return _inputProperties; }
             set { _inputProperties = value; }
@@ -261,17 +284,8 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("04. Base Business Rule Options")]
-        [Description("The rule priority (0 executes before 1, etc).")]
-        [UserFriendlyName("Rule Priority")]
-        public int Priority 
-        {
-            get { return _priority; }
-            set { _priority = value; }
-        }
-
-        [Category("04. Base Business Rule Options")]
         [Description("Whether the Target property should be set even for an async rule" +
-                     "(note that using Target from a background thread will cause major problems).")]
+                     " (note that using Target from a background thread will cause major problems).")]
         [UserFriendlyName("Provide Target When Async")]
         public bool ProvideTargetWhenAsync
         {
@@ -280,17 +294,17 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("04. Base Business Rule Options")]
-        [Description("The rule:// URI object for the rule.")]
-        [UserFriendlyName("Rule URI")]
-        public string RuleUri
+        [Description("The rule priority (0 executes before 1, etc).")]
+        [UserFriendlyName("Rule Priority")]
+        public int Priority
         {
-            get { return _ruleUri; }
-            set { _ruleUri = value; }
+            get { return _priority; }
+            set { _priority = value; }
         }
 
         [Category("04. Base Business Rule Options")]
-        [Description("How rule will run in context")]
-        [UserFriendlyName("Rule Run Mode")]
+        [Description("How rule will run in context.")]
+        [UserFriendlyName("Run Mode")]
         public BusinessRuleRunModes RunMode 
         {
             get { return _runModes; }

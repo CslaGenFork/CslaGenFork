@@ -460,7 +460,7 @@ namespace CslaGenerator.Controls
             this.chkAutoCriteria.Name = "chkAutoCriteria";
             this.chkAutoCriteria.Size = new System.Drawing.Size(450, 17);
             this.chkAutoCriteria.TabIndex = 10;
-            this.chkAutoCriteria.Text = "Add default Criteria to NameValue list, EditableRoot, DynamicEditableRoot and ReadOnly collections.";
+            this.chkAutoCriteria.Text = "Add default Criteria to NameValueList ReadOnlyColl. EditableRootColl. and DynamicEditableRootColl.";
             this.chkAutoCriteria.UseVisualStyleBackColor = true;
             this.toolTip1.SetToolTip(this.chkAutoCriteria, "If checked,\r\n- ReadOnly collections and Name Value lists are created with a parameterless Get Criteria;\r\n"+
                 "- EditableRoot and DynamicEditableRoot collections are created with a parameterless Create and Get Criteria.");
@@ -475,7 +475,7 @@ namespace CslaGenerator.Controls
             this.chkAutoTimestampCriteria.TabIndex = 11;
             this.chkAutoTimestampCriteria.Text = "Add a Delete CriteriaTS whem DB type \"timestamp\" is found.";
             this.chkAutoTimestampCriteria.UseVisualStyleBackColor = true;
-            this.toolTip1.SetToolTip(this.chkAutoCriteria, "If checked, whem DB type \"timestamp\" is found on EditableRoot, EditableChild and DynamicRoot objects are created with a Delete CriteriaTS.");
+            this.toolTip1.SetToolTip(this.chkAutoTimestampCriteria, "If checked, whem DB type \"timestamp\" is found on EditableRoot, EditableChild and DynamicRoot objects are created with a Delete CriteriaTS.");
             // 
             // groupBoxReadOnlyObjects
             // 

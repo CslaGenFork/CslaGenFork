@@ -21,6 +21,7 @@ if (Errors.Length == 0)
     bool isChild = false;
     int silverlightLevel = 0;
     bool genOptional = false;
+    bool useItem = false;
     bool first = true;
     %><!-- #include file="Header.asp" -->
 <!-- #include file="Using.asp" -->
@@ -43,19 +44,15 @@ if (Errors.Length == 0)
     %>
     [Serializable]
     public partial class <%= Info.ObjectName %> : <%
-    if (Info.InheritedType.Type != string.Empty)
+    if (Info.InheritedType.Type != string.Empty || Info.InheritedType.ObjectName != string.Empty)
     {
-        %><%= Info.InheritedType.Type %><%
-    }
-    else if (Info.InheritedType.ObjectName != string.Empty)
-    {
-        %><%= Info.InheritedType.ObjectName %><%
+        %><!-- #include file="Inherits.asp" --><%
     }
     else
     {
-        %>BusinessBase<<%=Info.ObjectName %>><%
+        %>BusinessBase<<%=Info.ObjectName %>><!-- #include file="Implements.asp" --><%
     }
-    %><!-- #include file="Implements.asp" -->
+    %>
     {
 <!-- #include file="StaticFields.asp" -->
 <!-- #include file="StateFields.asp" -->

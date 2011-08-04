@@ -19,6 +19,7 @@ if (Errors.Length == 0)
     bool isChild = false;
     int silverlightLevel = 0;
     bool genOptional = false;
+    bool useItem = true;
     bool first = true;
     %><!-- #include file="Header.asp" -->
 <!-- #include file="Using.asp" -->
@@ -47,39 +48,27 @@ if (Errors.Length == 0)
     <%
     }
     %><%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %>public partial class <%= Info.ObjectName %> : <%
-    if (Info.InheritedType.Type != String.Empty)
+    if (Info.InheritedType.Type != string.Empty || Info.InheritedType.ObjectName != string.Empty)
     {
-        %><%= Info.InheritedType.Type %><%
-    }
-    else if (Info.InheritedType.ObjectName != String.Empty)
-    {
-        %><%= Info.InheritedType.ObjectName %><%
+        %><!-- #include file="Inherits.asp" --><%
     }
     else
     {
-        %><%= ListBaseHelper("Dynamic", true) %><%
+        %><%= ListBaseHelper("Dynamic", true) %><<%= Info.ItemType %>><!-- #include file="Implements.asp" --><%
     }
-    %><<%= Info.ItemType %>>
-    <!-- #include file="Implements.asp" -->
-<%
     if (CurrentUnit.GenerationParams.DualListInheritance)
     {
-%>#else
+        %>#else
     <%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %>public partial class <%= Info.ObjectName %> : <%
-        if (Info.InheritedType.Type != String.Empty)
+        if (Info.InheritedType.Type != string.Empty || Info.InheritedType.ObjectName != string.Empty)
         {
-            %><%= Info.InheritedType.Type %><%
-        }
-        else if (Info.InheritedType.ObjectName != String.Empty)
-        {
-            %><%= Info.InheritedType.ObjectName %><%
+            %><!-- #include file="Inherits.asp" --><%
         }
         else
         {
-            %><%= ListBaseHelper("Dynamic", false) %><%
+            %><%= ListBaseHelper("Dynamic", false) %><<%= Info.ItemType %>><!-- #include file="Implements.asp" --><%
         }
-        %><<%= Info.ItemType %>><!-- #include file="Implements.asp" -->
-#endif
+%>#endif
     <%
     }
     %><%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %>{
