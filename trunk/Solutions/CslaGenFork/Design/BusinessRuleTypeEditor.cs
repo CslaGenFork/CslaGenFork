@@ -161,7 +161,7 @@ namespace CslaGenerator.Design
 
             #region Base Rule Properties
 
-            _rule.BaseRules = new List<string>();
+            _rule.BaseRuleProperties = new List<string>();
             foreach (var baseType in _baseTypes)
             {
                 if (baseType.Type != usedType)
@@ -172,7 +172,7 @@ namespace CslaGenerator.Design
                     if (!prop.GetSetMethod().IsPublic)
                         continue;
 
-                    _rule.BaseRules.Add(prop.Name);
+                    _rule.BaseRuleProperties.Add(prop.Name);
                 }
             }
 
@@ -200,7 +200,7 @@ namespace CslaGenerator.Design
                 if (!prop.GetSetMethod().IsPublic)
                     continue;
 
-                if (!_rule.BaseRules.Contains(prop.Name))
+                if (!_rule.BaseRuleProperties.Contains(prop.Name))
                 {
                     var ruleInfo = new BusinessRuleProperty();
                     ruleInfo.Name = prop.Name;

@@ -12,7 +12,7 @@ namespace CslaGenerator.Metadata
     /// Summary description for ChildProperty.
     /// </summary>
     [Serializable]
-    public class ChildProperty : Property
+    public class ChildProperty : Property, IHaveBusinessRules
     {
 
         #region Private Fields

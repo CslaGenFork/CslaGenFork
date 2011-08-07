@@ -693,6 +693,38 @@ namespace CslaGenerator.CodeGen
             return result;
         }
 
+        public bool IsBaseRulePropertyDefault(string property, string value)
+        {
+            if (value == "")
+                return true;
+            if (value == "0")
+                return true;
+            switch (property)
+            {
+                case "Severity":
+                    if (value == "RuleSeverity.Error")
+                        return true;
+                    break;
+                case "CanRunAsAffectedProperty":
+                    if (value.ToLower() == "true")
+                        return true;
+                    break;
+                case "CanRunOnServer":
+                    if (value.ToLower() == "true")
+                        return true;
+                    break;
+                case "CanRunInCheckRules":
+                    if (value.ToLower() == "true")
+                        return true;
+                    break;
+                case "RunMode":
+                    if (value == "RunModes.Default")
+                        return true;
+                    break;
+            }
+            return false;
+        }
+
         public void TestRules(CslaObjectInfo Info)
         {
             string resultRule = string.Empty;
@@ -700,140 +732,18 @@ namespace CslaGenerator.CodeGen
             string resultProperties = string.Empty;
             bool primaryOnCtor = false;
 
-            #region ValueProperties
-
-            ValuePropertyCollection allValueProperties = new ValuePropertyCollection();
-            allValueProperties.AddRange(Info.AllValueProperties); // ValueProperties and ConvertValueProperties
-            allValueProperties.AddRange(Info.InheritedValueProperties); // InheritedValueProperties
-            foreach (ValueProperty valueProperty in allValueProperties)
-            {
-                if (valueProperty.BusinessRules.Count > 0)
-                    Response.Write(new string(' ', 12) + "//" + valueProperty.Name + Environment.NewLine);
-
-                foreach (BusinessRule rule in valueProperty.BusinessRules)
-                {
-                    string backupRuleType = rule.Type;
-                    resultConstructor = string.Empty;
-                    resultProperties = string.Empty;
-                    primaryOnCtor = false;
-                    bool isFirst = true;
-                    bool isFirstGeneric = true;
-                    foreach (BusinessRuleConstructor constructor in rule.Constructors)
-                    {
-                        if (constructor.IsActive)
-                        {
-                            foreach (BusinessRuleConstructorParameter parameter in constructor.ConstructorParameters)
-                            {
-                                if (isFirst)
-                                    isFirst = false;
-                                else
-                                    resultConstructor += ", ";
-                                if (parameter.Name == "primaryProperty")
-                                {
-                                    resultConstructor += FormatPropertyInfoName(ReturnRawParameterValue(parameter));
-                                    primaryOnCtor = true;
-                                }
-                                else
-                                {
-                                    if (parameter.IsGenericType)
-                                    {
-                                        backupRuleType = backupRuleType.Replace(parameter.Type, GetDataType(parameter.GenericType));
-                                        if (isFirstGeneric)
-                                            isFirstGeneric = false;
-                                        else
-                                            backupRuleType = backupRuleType.Replace(",", ", ");
-                                    }
-                                    resultConstructor += ReturnParameterValue(parameter);
-                                }
-                            }
-                        }
-                    }
-
-                    isFirst = true;
-                    foreach (BusinessRuleProperty property in rule.RuleProperties)
-                    {
-                        if (property.Name == "primaryProperty")
-                        {
-                            if (primaryOnCtor)
-                                continue;
-                            if (isFirst)
-                                isFirst = false;
-                            else
-                                resultProperties += ", ";
-                            resultProperties += property.Name + " = " + FormatPropertyInfoName(ReturnRawPropertyValue(property));
-                        }
-                        else
-                        {
-                            string stringValue = ReturnPropertyValue(property);
-                            if (stringValue == string.Empty)
-                                continue;
-
-                            if (isFirst)
-                                isFirst = false;
-                            else
-                                resultProperties += ", ";
-                            resultProperties += property.Name + " = " + stringValue;
-                        }
-                    }
-
-                    PropertyInfo[] ruleProps = typeof(BusinessRule).GetProperties();
-                    foreach (PropertyInfo property in ruleProps)
-                    {
-                        if (rule.BaseRules.Contains(property.Name))
-                        {
-                            if (property.Name == "PrimaryProperty")
-                            {
-                                if (primaryOnCtor)
-                                    continue;
-                                if (isFirst)
-                                    isFirst = false;
-                                else
-                                    resultProperties += ", ";
-
-                                resultProperties += property.Name + " = " + FormatPropertyInfoName(ReturnRawPropertyValue(rule, property));
-                            }
-                            else
-                            {
-                                string stringValue = ReturnPropertyValue(rule, property);
-                                if (stringValue == "")
-                                    continue;
-                                if (stringValue == "0")
-                                    continue;
-                                if (stringValue == "RunModes.Default")
-                                    continue;
-                                if (stringValue == "RuleSeverity.Error")
-                                    continue;
-
-                                if (isFirst)
-                                    isFirst = false;
-                                else
-                                    resultProperties += ", ";
-                                resultProperties += property.Name + " = " + stringValue;
-                            }
-                        }
-                    }
-
-                    if (resultProperties != string.Empty)
-                        resultProperties = " { " + resultProperties + " }";
-
-                    resultRule = "BusinessRules.AddRule(new " + backupRuleType + "(" + resultConstructor + ")" + resultProperties + ")" + ";";
-                    Response.Write(resultRule + Environment.NewLine);
-                }
-            }
-
-            #endregion
-
-            #region ChildProperties
-
-            ChildPropertyCollection allChildProperties = new ChildPropertyCollection();
+            HaveBusinessRulesCollection allRulesProperties = new HaveBusinessRulesCollection();
+            allRulesProperties.AddRange(Info.AllValueProperties); // ValueProperties and ConvertValueProperties
+            allRulesProperties.AddRange(Info.InheritedValueProperties); // InheritedValueProperties
             // ChildProperties, ChildCollectionProperties, InheritedChildProperties, InheritedChildCollectionProperties
-            allChildProperties.AddRange(Info.GetAllChildProperties());
-            foreach (ChildProperty childProperty in allChildProperties)
-            {
-                if (childProperty.BusinessRules.Count > 0)
-                    Response.Write(new string(' ', 12) + "//" + childProperty.Name + Environment.NewLine);
+            allRulesProperties.AddRange(Info.GetAllChildProperties());
 
-                foreach (BusinessRule rule in childProperty.BusinessRules)
+            foreach (IHaveBusinessRules rulableProperty in allRulesProperties)
+            {
+                if (rulableProperty.BusinessRules.Count > 0)
+                    Response.Write(new string(' ', 12) + "//" + rulableProperty.Name + Environment.NewLine);
+
+                foreach (BusinessRule rule in rulableProperty.BusinessRules)
                 {
                     string backupRuleType = rule.Type;
                     resultConstructor = string.Empty;
@@ -841,6 +751,8 @@ namespace CslaGenerator.CodeGen
                     primaryOnCtor = false;
                     bool isFirst = true;
                     bool isFirstGeneric = true;
+
+                    // Constructors and ConstructorParameters
                     foreach (BusinessRuleConstructor constructor in rule.Constructors)
                     {
                         if (constructor.IsActive)
@@ -872,6 +784,7 @@ namespace CslaGenerator.CodeGen
                         }
                     }
 
+                    // RuleProperties
                     isFirst = true;
                     foreach (BusinessRuleProperty property in rule.RuleProperties)
                     {
@@ -883,7 +796,6 @@ namespace CslaGenerator.CodeGen
                                 isFirst = false;
                             else
                                 resultProperties += ", ";
-
                             resultProperties += property.Name + " = " + FormatPropertyInfoName(ReturnRawPropertyValue(property));
                         }
                         else
@@ -900,10 +812,11 @@ namespace CslaGenerator.CodeGen
                         }
                     }
 
+                    // BaseRuleProperties
                     PropertyInfo[] ruleProps = typeof(BusinessRule).GetProperties();
                     foreach (PropertyInfo property in ruleProps)
                     {
-                        if (rule.BaseRules.Contains(property.Name))
+                        if (rule.BaseRuleProperties.Contains(property.Name))
                         {
                             if (property.Name == "PrimaryProperty")
                             {
@@ -913,18 +826,13 @@ namespace CslaGenerator.CodeGen
                                     isFirst = false;
                                 else
                                     resultProperties += ", ";
+
                                 resultProperties += property.Name + " = " + FormatPropertyInfoName(ReturnRawPropertyValue(rule, property));
                             }
                             else
                             {
                                 string stringValue = ReturnPropertyValue(rule, property);
-                                if (stringValue == "")
-                                    continue;
-                                if (stringValue == "0")
-                                    continue;
-                                if (stringValue == "RunModes.Default")
-                                    continue;
-                                if (stringValue == "RuleSeverity.Error")
+                                if (IsBaseRulePropertyDefault(property.Name, stringValue))
                                     continue;
 
                                 if (isFirst)
@@ -943,8 +851,6 @@ namespace CslaGenerator.CodeGen
                     Response.Write(resultRule + Environment.NewLine);
                 }
             }
-
-            #endregion
         }
 
         #region Query Object Metadata
