@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Configuration;
 using System.Diagnostics;
 using System.IO;
+using System.Windows.Forms;
 using System.Xml;
 
 namespace CslaGenerator.Util.PropertyBags
@@ -18,13 +20,24 @@ namespace CslaGenerator.Util.PropertyBags
 
         public PropertyContext()
         {
-            string[] setting = (string[]) ConfigurationManager.AppSettings.GetValues("PropertyContextFile");
-            string xmlFile = setting.Length > 0 ? setting[0] : "" ;
+            /*string[] setting = (string[]) ConfigurationManager.AppSettings.GetValues("PropertyContextFile");
+            string xmlFile = setting.Length > 0 ? setting[0] : "" ;*/
+
+            var xmlFile = ConfigurationManager.AppSettings.Get("PropertyContextFile");
+
+            if (string.IsNullOrWhiteSpace(xmlFile))
+            {
+                MessageBox.Show(@"Error in ""appSettings"" section of ""CslaGenerator.exe.config"" file." + Environment.NewLine +
+                                @"The key ""PropertyContextFile"" is empty or missing." + Environment.NewLine +
+                                @"Do not use CslaGenFork until you solve this problemS.",
+                                @"CslaGenFork initialization", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
             if (File.Exists(xmlFile))
-            {				
-                hashTable = ParseXML(xmlFile);				
+            {
+                hashTable = ParseXML(xmlFile);
             }
         }
+
         // mappings are loaded into a hash table 
         // for quick retrieval
         public Hashtable HashTable
