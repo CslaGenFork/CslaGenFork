@@ -283,7 +283,7 @@ namespace CslaGenerator.Design
                         if (ruleCount > 0)
                             heightIncrease = 16 + (ruleCount*16);
 
-                        baseCount = businessRule.BaseRules.Count;
+                        baseCount = businessRule.BaseRuleProperties.Count;
                         if (baseCount > 0)
                             heightIncrease += 16 + (baseCount*16);
 

@@ -740,55 +740,55 @@ namespace CslaGenerator.Util.PropertyBags
                 switch (propertyName)
                 {
                     case "AffectedProperties":
-                        if (!SelectedObject[0].BaseRules.Contains("AffectedProperties"))
+                        if (!SelectedObject[0].BaseRuleProperties.Contains("AffectedProperties"))
                             return false;
                         break;
                     case "InputProperties":
-                        if (!SelectedObject[0].BaseRules.Contains("InputProperties"))
+                        if (!SelectedObject[0].BaseRuleProperties.Contains("InputProperties"))
                             return false;
                         break;
                     case "IsAsync":
-                        if (!SelectedObject[0].BaseRules.Contains("IsAsync"))
+                        if (!SelectedObject[0].BaseRuleProperties.Contains("IsAsync"))
                             return false;
                         break;
                     case "ProvideTargetWhenAsync":
-                        if (!SelectedObject[0].BaseRules.Contains("ProvideTargetWhenAsync"))
+                        if (!SelectedObject[0].BaseRuleProperties.Contains("ProvideTargetWhenAsync"))
                             return false;
                         break;
                     case "PrimaryProperty":
-                        if (!SelectedObject[0].BaseRules.Contains("PrimaryProperty"))
+                        if (!SelectedObject[0].BaseRuleProperties.Contains("PrimaryProperty"))
                             return false;
                         break;
                     case "Severity":
-                        if (!SelectedObject[0].BaseRules.Contains("Severity"))
+                        if (!SelectedObject[0].BaseRuleProperties.Contains("Severity"))
                             return false;
                         break;
                     case "MessageText":
-                        if (!SelectedObject[0].BaseRules.Contains("MessageText"))
+                        if (!SelectedObject[0].BaseRuleProperties.Contains("MessageText"))
                             return false;
                         break;
                     case "MessageDelegate":
-                        if (!SelectedObject[0].BaseRules.Contains("MessageDelegate"))
+                        if (!SelectedObject[0].BaseRuleProperties.Contains("MessageDelegate"))
                             return false;
                         break;
                     case "CanRunAsAffectedProperty":
-                        if (!SelectedObject[0].BaseRules.Contains("CanRunAsAffectedProperty"))
+                        if (!SelectedObject[0].BaseRuleProperties.Contains("CanRunAsAffectedProperty"))
                             return false;
                         break;
                     case "CanRunOnServer":
-                        if (!SelectedObject[0].BaseRules.Contains("CanRunOnServer"))
+                        if (!SelectedObject[0].BaseRuleProperties.Contains("CanRunOnServer"))
                             return false;
                         break;
                     case "CanRunInCheckRules":
-                        if (!SelectedObject[0].BaseRules.Contains("CanRunInCheckRules"))
+                        if (!SelectedObject[0].BaseRuleProperties.Contains("CanRunInCheckRules"))
                             return false;
                         break;
                     case "Priority":
-                        if (!SelectedObject[0].BaseRules.Contains("Priority"))
+                        if (!SelectedObject[0].BaseRuleProperties.Contains("Priority"))
                             return false;
                         break;
                     case "RunMode":
-                        if (!SelectedObject[0].BaseRules.Contains("RunMode"))
+                        if (!SelectedObject[0].BaseRuleProperties.Contains("RunMode"))
                             return false;
                         break;
                 }

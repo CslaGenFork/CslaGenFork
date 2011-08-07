@@ -25,7 +25,7 @@ namespace CslaGenerator.Metadata
         private string _type = String.Empty;
         private string _objectName = String.Empty;
         private string _parent;
-        private List<string> _baseRules = new List<string>();
+        private List<string> _baseRuleProperties = new List<string>();
         private BusinessRuleConstructorCollection _constructors = new BusinessRuleConstructorCollection();
         private BusinessRulePropertyCollection _ruleProperties = new BusinessRulePropertyCollection();
         private PropertyCollection _affectedProperties;
@@ -33,13 +33,12 @@ namespace CslaGenerator.Metadata
         private bool _isAsync;
         private bool _provideTargetWhenAsync;
         private int _priority;
-        private BusinessRuleRunModes _runModes;
+        private BusinessRuleRunModes _runModes = BusinessRuleRunModes.Default;
         private RuleSeverity _severity = RuleSeverity.Error;
 
-        private bool _canRunAsAffectedProperty;
-        private bool _canRunInCheckRules;
-        private bool _canRunOnServer;
-        private bool _hasMessageDelegate;
+        private bool _canRunAsAffectedProperty = true;
+        private bool _canRunInCheckRules = true;
+        private bool _canRunOnServer = true;
         private string _messageDelegate;
         private string _messageText;
 
@@ -54,10 +53,10 @@ namespace CslaGenerator.Metadata
         }
 
         [Browsable(false)]
-        public List<string> BaseRules
+        public List<string> BaseRuleProperties
         {
-            get { return _baseRules; }
-            set { _baseRules = value; }
+            get { return _baseRuleProperties; }
+            set { _baseRuleProperties = value; }
         }
 
         #region 01. Definition
@@ -128,7 +127,7 @@ namespace CslaGenerator.Metadata
                 if (string.IsNullOrEmpty(_assemblyFile))
                 {
                     Type = String.Empty;
-                    BaseRules = new List<string>();
+                    BaseRuleProperties = new List<string>();
                     RuleProperties = new BusinessRulePropertyCollection();
                     Constructors = new BusinessRuleConstructorCollection();
                 }
@@ -269,7 +268,7 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("04. Base Business Rule Options")]
-        [Description("The  error message as a string.")]
+        [Description("The error message constant as a string.")]
         [UserFriendlyName("Message Text")]
         public string MessageText
         {
@@ -278,7 +277,7 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("04. Base Business Rule Options")]
-        [Description("The error message function for this rule. Note this must be of Func<string> type.")]
+        [Description("The error message constant as a Func<string> type. Use this for localizable messages from a resource file.")]
         [UserFriendlyName("Message Delegate")]
         public string MessageDelegate
         {
@@ -305,7 +304,7 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("04. Base Business Rule Options")]
-        [Description("Whether this instance can run in CheckRules.")]
+        [Description("Whether this instance can run when CheckRules is called on BO.")]
         [UserFriendlyName("Can Run in CheckRules")]
         public bool CanRunInCheckRules
         {

@@ -26,7 +26,7 @@ namespace CslaGenerator.Metadata
     /// Summary description for ValueProperty.
     /// </summary>
     [Serializable]
-    public class ValueProperty : Property, IBoundProperty
+    public class ValueProperty : Property, IBoundProperty, IHaveBusinessRules
     {
         public enum DataAccessBehaviour
         {

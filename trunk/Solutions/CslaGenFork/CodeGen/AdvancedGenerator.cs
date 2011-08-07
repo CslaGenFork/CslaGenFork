@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
@@ -28,6 +29,8 @@ namespace CslaGenerator.CodeGen
         private TargetFramework _targetFramework;
         private bool _generateInterfaceDAL;
         private Hashtable _templates = new Hashtable();
+        private string _codeEncoding;
+        private string _sprocEncoding;
 
         #endregion
 
@@ -256,6 +259,8 @@ namespace CslaGenerator.CodeGen
         {
             TargetDirectory = targetDirectory;
             _templatesDirectory = templatesDirectory;
+            _codeEncoding = ConfigurationManager.AppSettings.Get("CodeEncoding");
+            _sprocEncoding = ConfigurationManager.AppSettings.Get("SProcEncoding");
         }
 
         #endregion
@@ -338,7 +343,7 @@ namespace CslaGenerator.CodeGen
                     }
                     var fsBase = File.Open(baseFileName, FileMode.Create);
                     OnGenerationFileName(baseFileName);
-                    swBase = new StreamWriter(fsBase);
+                    swBase = new StreamWriter(fsBase, Encoding.GetEncoding(_codeEncoding));
                     template.Render(swBase);
                     errorsOutput = (StringBuilder)template.GetProperty("Errors");
                     warningsOutput = (StringBuilder)template.GetProperty("Warnings");
@@ -423,7 +428,7 @@ namespace CslaGenerator.CodeGen
                         template.SetProperty("MethodList", _methodList);
                     var fs = File.Open(fileName, FileMode.Create);
                     OnGenerationFileName(fileName);
-                    var sw = new StreamWriter(fs);
+                    var sw = new StreamWriter(fs, Encoding.GetEncoding(_codeEncoding));
                     try
                     {
                         template.Render(sw);
@@ -468,7 +473,7 @@ namespace CslaGenerator.CodeGen
                     var fs = File.Open(fullFilename, FileMode.Create);
                     OnGenerationInformation(utilityFilename + " file:");
                     OnGenerationFileName(fullFilename);
-                    var sw = new StreamWriter(fs);
+                    var sw = new StreamWriter(fs, Encoding.GetEncoding(_codeEncoding));
                     try
                     {
                         template.Render(sw);
@@ -604,7 +609,7 @@ namespace CslaGenerator.CodeGen
             {
                 var fs = File.Open(fileName, FileMode.Create);
                 OnGenerationFileName(fileName);
-                sw = new StreamWriter(fs);
+                sw = new StreamWriter(fs, Encoding.GetEncoding(_sprocEncoding));
                 sw.Write(data);
             }
             catch (Exception e)

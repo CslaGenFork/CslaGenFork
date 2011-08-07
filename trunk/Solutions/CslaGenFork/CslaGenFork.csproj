@@ -264,8 +264,10 @@
     <Compile Include="Metadata\BusinessRulePropertyCollection.cs" />
     <Compile Include="Metadata\BusinessRuleRunModes.cs" />
     <Compile Include="Metadata\CriteriaMode.cs" />
+    <Compile Include="Metadata\HaveBusinessRulesCollection.cs" />
     <Compile Include="Metadata\HeaderVerbosity.cs" />
     <Compile Include="Metadata\AssociativeEntity.cs" />
+    <Compile Include="Metadata\IHaveBusinessRules.cs" />
     <Compile Include="Metadata\ObjectRelationsFactory.cs" />
     <Compile Include="Metadata\PersistenceType.cs" />
     <Compile Include="Metadata\PropertyHelper.cs" />
