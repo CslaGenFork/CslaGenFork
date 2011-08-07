@@ -267,28 +267,35 @@ namespace CslaGenerator.Design
                 var selectedObject = (BusinessRule) _propGrid.SelectedObject;
                 //Get the property grid's type.
                 //This is a vsPropertyGrid located in System.Windows.Forms.Design
-                var propertyInfo = _propGrid.GetType().GetProperty("SelectedObject",
-                                                                   BindingFlags.Public | BindingFlags.Instance);
+                var propertyInfo = _propGrid.GetType().GetProperty("SelectedObject", BindingFlags.Public | BindingFlags.Instance);
                 if (selectedObject != null)
                 {
                     selectedObject.Parent = _parentValProp;
                     propertyInfo.SetValue(_propGrid, new BusinessRuleBag(selectedObject), null);
 
                     var ruleCount = 0;
+                    var baseCount = 0;
+                    var heightIncrease = 0;
                     var rules = ((BusinessRuleBag) _propGrid.SelectedObject).SelectedObject;
                     foreach (var businessRule in rules)
                     {
                         ruleCount = businessRule.RuleProperties.Count;
-                        if (ruleCount == 0)
+                        if (ruleCount > 0)
+                            heightIncrease = 16 + (ruleCount*16);
+
+                        baseCount = businessRule.BaseRules.Count;
+                        if (baseCount > 0)
+                            heightIncrease += 16 + (baseCount*16);
+
+                        if (ruleCount == 0 && baseCount == 0)
                         {
-                            if (_form.Size.Height != 438)
-                                _form.Size = new Size(_form.Size.Width, 438);
+                            if (_form.Size.Height != 330)
+                                _form.Size = new Size(_form.Size.Width, 330);
                         }
                         else
                         {
-                            var newHeight = 454 + (ruleCount*16);
-                            if (_form.Size.Height != newHeight)
-                                _form.Size = new Size(_form.Size.Width, newHeight);
+                            if (_form.Size.Height != 310 + heightIncrease)
+                                _form.Size = new Size(_form.Size.Width, 310 + heightIncrease);
                         }
                     }
                 }
@@ -300,7 +307,38 @@ namespace CslaGenerator.Design
                 //This is a vsPropertyGrid located in System.Windows.Forms.Design
                 var propertyInfo = _propGrid.GetType().GetProperty("SelectedObject", BindingFlags.Public | BindingFlags.Instance);
                 if (selectedObject != null)
+                {
                     propertyInfo.SetValue(_propGrid, new BusinessRuleConstructorBag(selectedObject), null);
+
+                    var parameterCount = 0;
+                    var genericCount = 0;
+                    var heightIncrease = 0;
+                    var constructors = ((BusinessRuleConstructorBag)_propGrid.SelectedObject).SelectedObject;
+                    foreach (var constructor in constructors)
+                    {
+                        parameterCount = constructor.ConstructorParameters.Count;
+                        heightIncrease = parameterCount*16;
+
+                        foreach (var parameter in constructor.ConstructorParameters)
+                        {
+                            if (parameter.IsGenericType)
+                                genericCount++;
+                        }
+                        if (genericCount > 0)
+                            heightIncrease += 16 + (genericCount*16);
+
+                        if (parameterCount == 0 && genericCount == 0)
+                        {
+                            if (_form.Size.Height != 330)
+                                _form.Size = new Size(_form.Size.Width, 330);
+                        }
+                        else
+                        {
+                            if (_form.Size.Height != 262 + heightIncrease)
+                                _form.Size = new Size(_form.Size.Width, 262 + heightIncrease);
+                        }
+                    }
+                }
             }
             /*else if (_collectionType == typeof(BusinessRuleProperty))
             {
@@ -419,11 +457,11 @@ namespace CslaGenerator.Design
                     _collectionType = typeof (Rule);
                     break;
                 case "BusinessRule Collection Editor":
-                    _form.Size = new Size(650, 438);
+                    _form.Size = new Size(650, 330);
                     _collectionType = typeof (BusinessRule);
                     break;
                 case "BusinessRuleConstructor Collection Editor":
-                    _form.Size = new Size(550, 393);
+                    _form.Size = new Size(550, 330);
                     _collectionType = typeof(BusinessRuleConstructor);
                     break;
                 /*case "BusinessRuleProperty Collection Editor":

@@ -5,8 +5,12 @@ ConvertValuePropertyCollection plainConvertPropertiesWrite = new ConvertValuePro
 ConvertValuePropertyCollection auditConvertProperties = new ConvertValuePropertyCollection();
 if (Info.ConvertValueProperties.Count > 0)
 {
+    if (!genOptional)
+    {
+        Response.Write(Environment.NewLine);
+    }
+    genOptional = true;
     %>
-
         #region Convert Properties
 <%
     foreach (ConvertValueProperty prop in Info.ConvertValueProperties)

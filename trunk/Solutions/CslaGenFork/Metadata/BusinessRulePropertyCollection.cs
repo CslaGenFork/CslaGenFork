@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
-using CslaGenerator.Attributes;
 
 namespace CslaGenerator.Metadata
 {

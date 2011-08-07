@@ -13,6 +13,7 @@
 <%@ Import Namespace="System.Windows.Forms" %>
 <%@ Import Namespace="System.Text" %>
 <%@ Import Namespace="System.Collections.Generic" %>
+<%@ Import Namespace="System.Reflection" %>
 
 <!-- #include file="EditableSwitchable_Validate.asp" -->
 <%
@@ -70,6 +71,7 @@ if (Errors.Length == 0)
 <!-- #include file="Constructor.asp" -->
 <!-- #include file="Criteria.asp" -->
 <!-- #include file="SharedAuthorizationMethods.asp" -->
+<!-- #include file="BusinessRules.asp" -->
 <!-- #include file="ConvertProperties.asp" -->
 <%
     if (Info.GenerateDataAccessRegion)

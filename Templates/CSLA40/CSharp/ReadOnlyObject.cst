@@ -11,6 +11,7 @@
 <%@ Import Namespace="CslaGenerator.Util" %>
 <%@ Import Namespace="System.Text" %>
 <%@ Import Namespace="System.Collections.Generic" %>
+<%@ Import Namespace="System.Reflection" %>
 
 <!-- #include file="ReadOnlyObject_Validate.asp" -->
 <%
@@ -68,6 +69,7 @@ if (Errors.Length == 0)
 <!-- #include file="Constructor.asp" -->
 <!-- #include file="Criteria.asp" -->
 <!-- #include file="SharedAuthorizationMethods.asp" -->
+<!-- #include file="BusinessRules.asp" -->
 <!-- #include file="ConvertProperties.asp" -->
 <!-- #include file="UpdateProperties.asp" -->
 <%

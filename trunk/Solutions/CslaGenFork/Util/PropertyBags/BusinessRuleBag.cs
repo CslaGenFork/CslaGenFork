@@ -16,7 +16,6 @@ using System.Diagnostics;
 using System.Drawing.Design;
 using System.Reflection;
 using CslaGenerator.Attributes;
-using CslaGenerator.Design;
 using CslaGenerator.Metadata;
 
 namespace CslaGenerator.Util.PropertyBags
@@ -738,6 +737,61 @@ namespace CslaGenerator.Util.PropertyBags
         {
             try
             {
+                switch (propertyName)
+                {
+                    case "AffectedProperties":
+                        if (!SelectedObject[0].BaseRules.Contains("AffectedProperties"))
+                            return false;
+                        break;
+                    case "InputProperties":
+                        if (!SelectedObject[0].BaseRules.Contains("InputProperties"))
+                            return false;
+                        break;
+                    case "IsAsync":
+                        if (!SelectedObject[0].BaseRules.Contains("IsAsync"))
+                            return false;
+                        break;
+                    case "ProvideTargetWhenAsync":
+                        if (!SelectedObject[0].BaseRules.Contains("ProvideTargetWhenAsync"))
+                            return false;
+                        break;
+                    case "PrimaryProperty":
+                        if (!SelectedObject[0].BaseRules.Contains("PrimaryProperty"))
+                            return false;
+                        break;
+                    case "Severity":
+                        if (!SelectedObject[0].BaseRules.Contains("Severity"))
+                            return false;
+                        break;
+                    case "MessageText":
+                        if (!SelectedObject[0].BaseRules.Contains("MessageText"))
+                            return false;
+                        break;
+                    case "MessageDelegate":
+                        if (!SelectedObject[0].BaseRules.Contains("MessageDelegate"))
+                            return false;
+                        break;
+                    case "CanRunAsAffectedProperty":
+                        if (!SelectedObject[0].BaseRules.Contains("CanRunAsAffectedProperty"))
+                            return false;
+                        break;
+                    case "CanRunOnServer":
+                        if (!SelectedObject[0].BaseRules.Contains("CanRunOnServer"))
+                            return false;
+                        break;
+                    case "CanRunInCheckRules":
+                        if (!SelectedObject[0].BaseRules.Contains("CanRunInCheckRules"))
+                            return false;
+                        break;
+                    case "Priority":
+                        if (!SelectedObject[0].BaseRules.Contains("Priority"))
+                            return false;
+                        break;
+                    case "RunMode":
+                        if (!SelectedObject[0].BaseRules.Contains("RunMode"))
+                            return false;
+                        break;
+                }
                 /*if ((GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == Authorization.None ||
                     GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == Authorization.ObjectLevel) &&
                     (propertyName == "ReadRoles" ||

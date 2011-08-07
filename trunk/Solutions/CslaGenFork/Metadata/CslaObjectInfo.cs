@@ -34,6 +34,7 @@ namespace CslaGenerator.Metadata
         private UnitOfWorkFunction _unitOfWorkType;
         private ConstructorVisibility _constructorVisibility = ConstructorVisibility.Default;
         private TypeInfo _inheritedType;
+        private TypeInfo _inheritedTypeWinForms;
         private ValuePropertyCollection _valueProperties = new ValuePropertyCollection();
         private ChildPropertyCollection _childProperties = new ChildPropertyCollection();
         private ChildPropertyCollection _childCollectionProperties = new ChildPropertyCollection();
@@ -103,6 +104,9 @@ namespace CslaGenerator.Metadata
         {
             _inheritedType = new TypeInfo(this);
             _inheritedType.TypeChanged += InheritedType_TypeChanged;
+
+            _inheritedTypeWinForms = new TypeInfo(this);
+            _inheritedTypeWinForms.TypeChanged += InheritedTypeWinForms_TypeChanged;
 
             _inheritedValueProperties = new ValuePropertyCollection(); //.ReadOnly(new ValuePropertyCollection());
             _inheritedChildProperties = new ChildPropertyCollection(); //.ReadOnly(new ChildPropertyCollection());
@@ -399,6 +403,28 @@ namespace CslaGenerator.Metadata
                         _inheritedType.TypeChanged -= InheritedType_TypeChanged;
                     _inheritedType = value;
                     _inheritedType.TypeChanged += InheritedType_TypeChanged;
+                    OnPropertyChanged("InheritedType");
+                }
+            }
+        }
+
+        [Category("01. Common Options")]
+        [Description("For Windows Forms, the type that this object inherits from. You can either select an object defined in the current project or an object defined in another assembly.\r\n" + 
+            "The object you inherit from must inherit from a valid Csla base object.")]
+        [Editor(typeof(ObjectEditor), typeof(UITypeEditor))]
+        [TypeConverter(typeof(TypeInfoConverter))]
+        [UserFriendlyName("Inherited Type for WinForms")]
+        public TypeInfo InheritedTypeWinForms
+        {
+            get { return _inheritedTypeWinForms; }
+            set
+            {
+                if (!ReferenceEquals(value, _inheritedTypeWinForms))
+                {
+                    if (_inheritedTypeWinForms != null)
+                        _inheritedTypeWinForms.TypeChanged -= InheritedTypeWinForms_TypeChanged;
+                    _inheritedTypeWinForms = value;
+                    _inheritedTypeWinForms.TypeChanged += InheritedTypeWinForms_TypeChanged;
                 }
             }
         }
@@ -473,6 +499,16 @@ namespace CslaGenerator.Metadata
             get { return _childProperties; }
         }
 
+        /// <summary>
+        /// Object's non-collection child properties plus collection child properties.
+        /// </summary>
+        [XmlIgnore]
+        [Browsable(false)]
+        public ChildPropertyCollection AllChildProperties
+        {
+            get { return GetMyChildProperties(); }
+        }
+
         [Category("02. Business Properties")]
         [Description("If this object inherits from another type, this property will store the child collection properties it inherits. You cannot add or remove inherited properties, but you can modify them.")]
         [Editor(typeof(PropertyCollectionForm), typeof(UITypeEditor))]
@@ -492,13 +528,13 @@ namespace CslaGenerator.Metadata
         }
 
         /// <summary>
-        /// Object's non-collection child properties plus collection child properties.
+        /// Inherited non-collection child properties plus collection child properties.
         /// </summary>
         [XmlIgnore]
         [Browsable(false)]
-        public ChildPropertyCollection AllChildProperties
+        public ChildPropertyCollection AllInheritedChildProperties
         {
-            get { return GetMyChildProperties(); }
+            get { return GetInheritedChildProperties(); }
         }
 
         [Category("02. Business Properties")]
@@ -1379,6 +1415,17 @@ namespace CslaGenerator.Metadata
                 //ValidateType(t.GetInheritedType());
             }
             //SetInheritedProperties(t);
+            OnPropertyChanged("InheritedType");
+        }
+
+        public void InheritedTypeWinForms_TypeChanged(object sender, EventArgs e)
+        {
+            var t = (TypeInfo)sender;
+            if (t.Type != String.Empty)
+            {
+                //ValidateType(t.GetInheritedType());
+            }
+            //SetInheritedProperties(t);
         }
 
         /*public void AuthProviderType_TypeChanged(object sender, EventArgs e)
@@ -1697,6 +1744,14 @@ namespace CslaGenerator.Metadata
 
         void OnPropertyChanged(string propertyName)
         {
+            if (propertyName == "InheritedType")
+            {
+                if (_inheritedType.ObjectName == string.Empty && _inheritedType.Type == string.Empty)
+                {
+                    _inheritedTypeWinForms.ObjectName = string.Empty;
+                    _inheritedTypeWinForms.Type = string.Empty;
+                }
+            }
             if (propertyName == "ObjectName")
                 SetProcedureNames();
             if (PropertyChanged != null)

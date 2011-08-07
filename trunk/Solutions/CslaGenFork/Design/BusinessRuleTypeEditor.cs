@@ -18,10 +18,25 @@ namespace CslaGenerator.Design
     /// </summary>
     public class BusinessRuleTypeEditor : UITypeEditor
     {
+
+        public class BaseProperty
+        {
+            public Type Type { get; set; }
+            public Type BaseType { get; set; }
+            public string TypeName { get; set; }
+
+            public BaseProperty (Type type, Type baseType, string typeName)
+            {
+                Type = type;
+                BaseType = baseType;
+                TypeName = typeName;
+            }
+        }
+
         private IWindowsFormsEditorService _editorService;
         private readonly ListBox _lstProperties;
         private Type _instance;
-        private List<Type> _types;
+        private List<BaseProperty> _baseTypes;
         private BusinessRule _rule;
 
         public BusinessRuleTypeEditor()
@@ -52,7 +67,6 @@ namespace CslaGenerator.Design
                     var assemblyFileInfo = _instance.GetProperty("AssemblyFile");
                     //string assemblyFilePath = (string) assemblyFileInfo.GetValue(context.Instance, null);
                     var assemblyFilePath = (string) assemblyFileInfo.GetValue(objinfo, null);
-                    Type baseBusinessRule = null;
 
                     // If Assembly path is available, use assembly to load a drop down with available types.
                     if (!string.IsNullOrEmpty(assemblyFilePath))
@@ -60,18 +74,16 @@ namespace CslaGenerator.Design
                         var assembly = Assembly.LoadFrom(assemblyFilePath);
                         var alltypes = assembly.GetExportedTypes();
                         if (alltypes.Length > 0)
-                            _types = new List<Type>();
+                            _baseTypes = new List<BaseProperty>();
 
                         foreach (var type in alltypes)
                         {
                             // check here for Csla.Rules.BusinessRule inheritance
                             if (type.GetInterface("Csla.Rules.IBusinessRule") != null)
                             {
-                                // exclude abstract classes
+                                // exclude abstract
                                 if (!type.IsAbstract)
                                 {
-                                    _types.Add(type);
-
                                     var listableType = type.ToString();
                                     if (type.IsGenericType)
                                     {
@@ -83,14 +95,7 @@ namespace CslaGenerator.Design
                                     }
                                     listableType = listableType.Replace("><", ",");
                                     _lstProperties.Items.Add(listableType);
-                                }
-                                else
-                                {
-                                    if (type.BaseType != null)
-                                    {
-                                        if (type.BaseType.Name == "BusinessRule")
-                                            baseBusinessRule = type.BaseType;
-                                    }
+                                    _baseTypes.Add(new BaseProperty(type, type.BaseType, listableType));
                                 }
                             }
                         }
@@ -104,10 +109,11 @@ namespace CslaGenerator.Design
                         _lstProperties.SelectedItem = "(None)";
 
                     _editorService.DropDownControl(_lstProperties);
-                    FillSubsidiaryGrids(baseBusinessRule, _rule, _lstProperties.SelectedItem.ToString());
 
                     if (_lstProperties.SelectedIndex < 0 || _lstProperties.SelectedItem.ToString() == "(None)")
                         return string.Empty;
+
+                    FillSubsidiaryGrids(_rule, _lstProperties.SelectedItem.ToString());
 
                     return _lstProperties.SelectedItem.ToString();
                 }
@@ -129,40 +135,54 @@ namespace CslaGenerator.Design
             }
         }
 
-        private void FillSubsidiaryGrids(Type baseBusinessRule, BusinessRule rule, string stringType)
+        private void FillSubsidiaryGrids(BusinessRule rule, string stringType)
         {
             Type usedType = null;
 
-            foreach (var type in _types)
+            foreach (var baseType in _baseTypes)
             {
-                var listableType = type.ToString();
-                if (type.IsGenericType)
+                if(baseType.TypeName == stringType)
+                    usedType = baseType.Type;
+                /*var listableType = baseType.Type.ToString();
+                if (baseType.Type.IsGenericType)
                 {
                     listableType = listableType.Substring(0, listableType.LastIndexOf('`'));
-                    foreach (var argument in type.GetGenericArguments())
+                    foreach (var argument in baseType.Type.GetGenericArguments())
                     {
                         listableType += "<" + argument.Name + ">";
                     }
                 }
                 if (stringType == listableType)
-                    usedType = type;
+                    usedType = baseType.Type;*/
             }
 
             if (usedType == null)
                 return;
 
-            _rule.BaseRules = new List<string>();
-            _rule.RuleProperties = new BusinessRulePropertyCollection();
-            _rule.Constructors = new BusinessRuleConstructorCollection();
+            #region Base Rule Properties
 
-            foreach (var prop in baseBusinessRule.GetProperties(BindingFlags.Instance | BindingFlags.Public).
-                Where(p => p.CanRead && p.CanWrite))
+            _rule.BaseRules = new List<string>();
+            foreach (var baseType in _baseTypes)
             {
-                _rule.BaseRules.Add(prop.Name);
+                if (baseType.Type != usedType)
+                    continue;
+                foreach (var prop in baseType.BaseType.GetProperties(BindingFlags.Instance | BindingFlags.Public).
+                    Where(p => p.CanRead && p.GetSetMethod() != null))
+                {
+                    if (!prop.GetSetMethod().IsPublic)
+                        continue;
+
+                    _rule.BaseRules.Add(prop.Name);
+                }
             }
 
-            foreach (var prop in usedType.GetProperties(BindingFlags.Instance | BindingFlags.Public).
-                Where(p => p.CanRead && p.CanWrite))
+            #endregion
+
+            #region Specific Rule Properties
+
+            _rule.RuleProperties = new BusinessRulePropertyCollection();
+            foreach (var prop in usedType.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly).
+                Where(p => p.CanRead && p.GetSetMethod() != null))
             {
                 /*if(prop.PropertyType.IsGenericParameter)
                 {
@@ -176,6 +196,9 @@ namespace CslaGenerator.Design
                 {
                     var d = "IsGenericTypeDefinition";
                 }*/
+
+                if (!prop.GetSetMethod().IsPublic)
+                    continue;
 
                 if (!_rule.BaseRules.Contains(prop.Name))
                 {
@@ -216,6 +239,11 @@ namespace CslaGenerator.Design
                 }
             }
 
+            #endregion
+
+            #region Contructors
+
+            _rule.Constructors = new BusinessRuleConstructorCollection();
             var ctor = usedType.GetConstructors();
             var ctorCounter = 0;
             foreach (var info in ctor)
@@ -275,6 +303,9 @@ namespace CslaGenerator.Design
 
                 _rule.Constructors.Add(ctorInfo);
             }
+
+            #endregion
+
         }
 
         private dynamic ConvertStringToEnum(Type targetType, string value)

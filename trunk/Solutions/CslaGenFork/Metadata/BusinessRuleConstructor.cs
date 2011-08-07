@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing.Design;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Xml.Serialization;
 using CslaGenerator.Attributes;
-using CslaGenerator.Design;
 
 namespace CslaGenerator.Metadata
 {
@@ -47,7 +42,41 @@ namespace CslaGenerator.Metadata
 
         #endregion
 
-        #region 02. Constructor Parameters
+        #region 02. Generic Parameters Type
+
+        [XmlIgnore]
+        public TypeCodeEx GenericType0 { get; set; }
+
+        [XmlIgnore]
+        public TypeCodeEx GenericType1 { get; set; }
+
+        [XmlIgnore]
+        public TypeCodeEx GenericType2 { get; set; }
+
+        [XmlIgnore]
+        public TypeCodeEx GenericType3 { get; set; }
+
+        [XmlIgnore]
+        public TypeCodeEx GenericType4 { get; set; }
+
+        [XmlIgnore]
+        public TypeCodeEx GenericType5 { get; set; }
+
+        [XmlIgnore]
+        public TypeCodeEx GenericType6 { get; set; }
+
+        [XmlIgnore]
+        public TypeCodeEx GenericType7 { get; set; }
+
+        [XmlIgnore]
+        public TypeCodeEx GenericType8 { get; set; }
+
+        [XmlIgnore]
+        public TypeCodeEx GenericType9 { get; set; }
+
+        #endregion
+
+        #region 03. Parameters Value
 
         public BusinessRuleConstructorParameterCollection ConstructorParameters
         {
