@@ -16,7 +16,6 @@ using System.Diagnostics;
 using System.Drawing.Design;
 using System.Reflection;
 using CslaGenerator.Attributes;
-using CslaGenerator.Design;
 using CslaGenerator.Metadata;
 
 namespace CslaGenerator.Util.PropertyBags
@@ -522,6 +521,7 @@ namespace CslaGenerator.Util.PropertyBags
         private void InitPropertyBag()
         {
             int ctorParameterCounter = 0;
+            int genericCounter = 0;
             PropertyInfo pi;
             Type t = typeof(BusinessRuleConstructor); // _selectedObject.GetType();
             PropertyInfo[] props = t.GetProperties();
@@ -543,9 +543,14 @@ namespace CslaGenerator.Util.PropertyBags
                 string editor = "";
                 string assemblyQualifiedName = "";
 
-                if (pi.Name.Contains("ConstructorParameter") && pi.Name != "ConstructorParameters")
+                if (pi.Name.Contains("GenericType"))
                 {
-                    category = "02. Business Rule ConstructorParameters";
+                    category = "02. Generic Parameters Type";
+                    HandleGenericType(ref genericCounter, out isbrowsable, out userfriendlyname, out description, out isreadonly, ref editor);
+                }
+                else if (pi.Name.Contains("ConstructorParameter") && pi.Name != "ConstructorParameters")
+                {
+                    category = "03. Parameters Value";
                     HandleConstructorParameter(ref ctorParameterCounter, out isbrowsable, out userfriendlyname, out description, out isreadonly, ref editor, out assemblyQualifiedName);
                 }
                 else
@@ -612,6 +617,88 @@ namespace CslaGenerator.Util.PropertyBags
                                                     bindable));
                 }
             }
+        }
+
+        private void HandleGenericType(ref int genericCounter, out bool isbrowsable, out string userfriendlyname, out string description, out bool isreadonly, ref string editor)
+        {
+            isbrowsable = true;
+            isreadonly = false;
+            if (genericCounter == SelectedObject[0].ConstructorParameters.Count)
+            {
+                isbrowsable = false;
+                description = string.Empty;
+                userfriendlyname = string.Empty;
+                return;
+            }
+
+            var target = SelectedObject[0].ConstructorParameters[genericCounter];
+            if (!target.IsGenericType)
+            {
+                isbrowsable = false;
+                description = string.Empty;
+                userfriendlyname = string.Empty;
+                genericCounter++;
+                return;
+            }
+
+            userfriendlyname = "<" + target.Type + ">";
+            description = "Concrete Type for contructor parameter " + target.Name;
+            editor = typeof(UITypeEditor).AssemblyQualifiedName;
+
+            switch (genericCounter)
+            {
+                case 0:
+                    SelectedObject[0].ConstructorParameter0 = target;
+                    if (target.GenericType != TypeCodeEx.Object)
+                        SelectedObject[0].GenericType0 = target.GenericType;
+                    break;
+                case 1:
+                    SelectedObject[0].ConstructorParameter1 = target;
+                    if (target.GenericType != TypeCodeEx.Object)
+                        SelectedObject[0].GenericType1 = target.GenericType;
+                    break;
+                case 2:
+                    SelectedObject[0].ConstructorParameter2 = target;
+                    if (target.GenericType != TypeCodeEx.Object)
+                        SelectedObject[0].GenericType2 = target.GenericType;
+                    break;
+                case 3:
+                    SelectedObject[0].ConstructorParameter3 = target;
+                    if (target.GenericType != TypeCodeEx.Object)
+                        SelectedObject[0].GenericType3 = target.GenericType;
+                    break;
+                case 4:
+                    SelectedObject[0].ConstructorParameter4 = target;
+                    if (target.GenericType != TypeCodeEx.Object)
+                        SelectedObject[0].GenericType4 = target.GenericType;
+                    break;
+                case 5:
+                    SelectedObject[0].ConstructorParameter5 = target;
+                    if (target.GenericType != TypeCodeEx.Object)
+                        SelectedObject[0].GenericType5 = target.GenericType;
+                    break;
+                case 6:
+                    SelectedObject[0].ConstructorParameter6 = target;
+                    if (target.GenericType != TypeCodeEx.Object)
+                        SelectedObject[0].GenericType6 = target.GenericType;
+                    break;
+                case 7:
+                    SelectedObject[0].ConstructorParameter7 = target;
+                    if (target.GenericType != TypeCodeEx.Object)
+                        SelectedObject[0].GenericType7 = target.GenericType;
+                    break;
+                case 8:
+                    SelectedObject[0].ConstructorParameter8 = target;
+                    if (target.GenericType != TypeCodeEx.Object)
+                        SelectedObject[0].GenericType8 = target.GenericType;
+                    break;
+                case 9:
+                    SelectedObject[0].ConstructorParameter9 = target;
+                    if (target.GenericType != TypeCodeEx.Object)
+                        SelectedObject[0].GenericType9 = target.GenericType;
+                    break;
+            }
+            genericCounter++;
         }
 
         private void HandleConstructorParameter(ref int ctorParameterCounter, out bool isbrowsable, out string userfriendlyname, out string description, out bool isreadonly, ref string editor, out string assemblyQualifiedName)
@@ -797,6 +884,111 @@ namespace CslaGenerator.Util.PropertyBags
             {
                 // get a reference to the PropertyInfo, exit if no property with that
                 // name
+                PropertyInfo pi = typeof (BusinessRuleConstructor).GetProperty(propertyName);
+
+                if (pi == null)
+                    return false;
+                // convert the value to the expected type
+                if (pi.PropertyType.Name == "BusinessRuleConstructorParameter")
+                {
+                    PropertyInfo piProp = typeof (BusinessRuleConstructorParameter).GetProperty("Value");
+                    val = Convert.ChangeType(val, piProp.PropertyType);
+                    // attempt the assignment
+                    switch (propertyName)
+                    {
+                        case "ConstructorParameter0":
+                            SelectedObject[0].ConstructorParameter0.Value = val;
+                            break;
+                        case "ConstructorParameter1":
+                            SelectedObject[0].ConstructorParameter1.Value = val;
+                            break;
+                        case "ConstructorParameter2":
+                            SelectedObject[0].ConstructorParameter2.Value = val;
+                            break;
+                        case "ConstructorParameter3":
+                            SelectedObject[0].ConstructorParameter3.Value = val;
+                            break;
+                        case "ConstructorParameter4":
+                            SelectedObject[0].ConstructorParameter4.Value = val;
+                            break;
+                        case "ConstructorParameter5":
+                            SelectedObject[0].ConstructorParameter5.Value = val;
+                            break;
+                        case "ConstructorParameter6":
+                            SelectedObject[0].ConstructorParameter6.Value = val;
+                            break;
+                        case "ConstructorParameter7":
+                            SelectedObject[0].ConstructorParameter7.Value = val;
+                            break;
+                        case "ConstructorParameter8":
+                            SelectedObject[0].ConstructorParameter8.Value = val;
+                            break;
+                        case "ConstructorParameter9":
+                            SelectedObject[0].ConstructorParameter9.Value = val;
+                            break;
+                    }
+                    return true;
+                }
+
+                if (pi.PropertyType.Name == "TypeCodeEx")
+                {
+                    PropertyInfo piProp = typeof (BusinessRuleConstructorParameter).GetProperty("GenericType");
+                    val = Convert.ChangeType(val, piProp.PropertyType);
+                    // attempt the assignment
+                    switch (propertyName)
+                    {
+                        case "GenericType0":
+                            SelectedObject[0].ConstructorParameter0.GenericType = (TypeCodeEx) val;
+                            break;
+                        case "GenericType1":
+                            SelectedObject[0].ConstructorParameter1.GenericType = (TypeCodeEx) val;
+                            break;
+                        case "GenericType2":
+                            SelectedObject[0].ConstructorParameter2.GenericType = (TypeCodeEx) val;
+                            break;
+                        case "GenericType3":
+                            SelectedObject[0].ConstructorParameter3.GenericType = (TypeCodeEx) val;
+                            break;
+                        case "GenericType4":
+                            SelectedObject[0].ConstructorParameter4.GenericType = (TypeCodeEx) val;
+                            break;
+                        case "GenericType5":
+                            SelectedObject[0].ConstructorParameter5.GenericType = (TypeCodeEx) val;
+                            break;
+                        case "GenericType6":
+                            SelectedObject[0].ConstructorParameter6.GenericType = (TypeCodeEx) val;
+                            break;
+                        case "GenericType7":
+                            SelectedObject[0].ConstructorParameter7.GenericType = (TypeCodeEx) val;
+                            break;
+                        case "GenericType8":
+                            SelectedObject[0].ConstructorParameter8.GenericType = (TypeCodeEx) val;
+                            break;
+                        case "GenericType9":
+                            SelectedObject[0].ConstructorParameter9.GenericType = (TypeCodeEx) val;
+                            break;
+                    }
+                    return true;
+                }
+
+                val = Convert.ChangeType(val, pi.PropertyType);
+                // attempt the assignment
+                foreach (BusinessRuleConstructor bo in (BusinessRuleConstructor[]) obj)
+                    pi.SetValue(bo, val, null);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /*private bool SetProperty_old(object obj, string propertyName, object val)
+        {
+            try
+            {
+                // get a reference to the PropertyInfo, exit if no property with that
+                // name
                 PropertyInfo pi = typeof(BusinessRuleConstructor).GetProperty(propertyName);
 
                 if (pi == null)
@@ -855,7 +1047,7 @@ namespace CslaGenerator.Util.PropertyBags
             {
                 return false;
             }
-        }
+        }*/
 
         private object GetProperty(object obj, string propertyName, object defaultValue)
         {

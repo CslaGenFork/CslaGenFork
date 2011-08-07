@@ -45,6 +45,17 @@ if (Errors.Length == 0)
     if (CurrentUnit.GenerationParams.DualListInheritance)
     {
         %>#if WINFORMS
+    <%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %>public partial class <%= Info.ObjectName %> : <%
+        if (Info.InheritedTypeWinForms.Type != string.Empty || Info.InheritedTypeWinForms.ObjectName != string.Empty)
+        {
+            %><!-- #include file="InheritsWinForms.asp" --><%
+        }
+        else
+        {
+            %><%= ListBaseHelper("Business", true) %><<%= Info.ObjectName %>, <%= Info.ItemType %>><!-- #include file="Implements.asp" --><%
+        }
+
+        %>#else
     <%
     }
     %><%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %>public partial class <%= Info.ObjectName %> : <%
@@ -54,21 +65,11 @@ if (Errors.Length == 0)
     }
     else
     {
-        %><%= ListBaseHelper("Business", true) %><<%= Info.ObjectName %>, <%= Info.ItemType %>><!-- #include file="Implements.asp" --><%
+        %><%= ListBaseHelper("Business", false) %><<%= Info.ObjectName %>, <%= Info.ItemType %>><!-- #include file="Implements.asp" --><%
     }
     if (CurrentUnit.GenerationParams.DualListInheritance)
     {
-        %>#else
-    <%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %>public partial class <%= Info.ObjectName %> : <%
-        if (Info.InheritedType.Type != string.Empty || Info.InheritedType.ObjectName != string.Empty)
-        {
-            %><!-- #include file="Inherits.asp" --><%
-        }
-        else
-        {
-            %><%= ListBaseHelper("Business", false) %><<%= Info.ObjectName %>, <%= Info.ItemType %>><!-- #include file="Implements.asp" --><%
-        }
-%>#endif
+        %>#endif
     <%
     }
     %><%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %>{
@@ -108,6 +109,7 @@ if (Errors.Length == 0)
 <!-- #include file="Constructor.asp" -->
 <!-- #include file="Criteria.asp" -->
 <!-- #include file="SharedAuthorizationMethods.asp" -->
+<!-- #include file="BusinessRules.asp" -->
 <%
     if (Info.GenerateDataAccessRegion)
     {

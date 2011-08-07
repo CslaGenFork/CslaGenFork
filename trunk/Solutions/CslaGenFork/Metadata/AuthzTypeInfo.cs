@@ -60,7 +60,7 @@ namespace CslaGenerator.Metadata
 
         [Category("02. Authorization Rule in Assembly")]
         [Editor(typeof(AuthzTypeEditor), typeof(UITypeEditor))]
-        [Description("Authorization Rule Type Name.")]
+        [Description("Authorization Rule Type Name. Abstract classes and interface classes are excluded from the list.")]
         [UserFriendlyName("Imported Type Name")]
         public string Type
         {

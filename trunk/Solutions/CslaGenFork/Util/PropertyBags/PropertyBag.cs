@@ -776,7 +776,6 @@ namespace CslaGenerator.Util.PropertyBags
             if (e.Value != null)
                 GetValue(this, e);
             e.Value = getProperty(e.Property.TargetObject, e.Property.TargetProperty, e.Property.DefaultValue);
-
         }
 
         /// <summary>
@@ -941,7 +940,17 @@ namespace CslaGenerator.Util.PropertyBags
                             || GeneratorController.Current.CurrentUnit.GenerationParams.HideAuthorizationProvider
                             ) &&
                             propertyName == "ObjectAuthzRuleType")
-                            return false; if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework ==
+                            return false;
+                        if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40 &&
+                            GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL)
+                            ||
+                            (!GeneratorController.Current.CurrentUnit.GenerationParams.GenerateWinForms ||
+                            !CslaTemplateHelperCS.IsCollectionType(cslaObject.ObjectType) ||
+                            (string.IsNullOrEmpty(cslaObject.InheritedType.Type) && string.IsNullOrEmpty(cslaObject.InheritedType.ObjectName)))
+                            &&
+                            propertyName == "InheritedTypeWinForms")
+                            return false;
+                        if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework ==
                              TargetFramework.CSLA40 ||
                              GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework ==
                              TargetFramework.CSLA40DAL) &&

@@ -61,8 +61,8 @@ namespace CslaGenerator.Design
                             // check here for Csla.Rules.IAuthorizationRule inheritance
                             if (type.GetInterface("Csla.Rules.IAuthorizationRule") != null)
                             {
-                                // exclude abstract classes
-                                if (!type.IsAbstract)
+                                // exclude abstract and interface classes
+                                if (!type.IsAbstract && !type.IsInterface)
                                     _lstProperties.Items.Add(type.ToString());
                             }
                         }

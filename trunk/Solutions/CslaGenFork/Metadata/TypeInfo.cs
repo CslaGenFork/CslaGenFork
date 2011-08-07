@@ -70,7 +70,7 @@ namespace CslaGenerator.Metadata
 
         [Category("02. Inherit from Type in Assembly")]
         [Editor(typeof(RefTypeEditor), typeof(UITypeEditor))]
-        [Description("Inherited Type Name.")]
+        [Description("Inherited Type Name. Interface classes are excluded from the list.")]
         [UserFriendlyName("Type Name")]
         public string Type
         {

@@ -59,22 +59,27 @@ namespace CslaGenerator.Design
 
                         foreach (var type in alltypes)
                         {
-                            // exclude abstract classes
-                            if (!type.IsAbstract && !type.IsInterface)
+                            if (type.GetInterface("Csla.Core.IBusinessObject") != null ||
+                                type.GetInterface("Csla.Core.IObservableBindingList") != null ||
+                                type.GetInterface("Csla.Core.IExtendedBindingList") != null)
                             {
-                                _types.Add(type);
-
-                                var listableType = type.ToString();
-                                if (type.IsGenericType)
+                                // exclude interface classes
+                                if (!type.IsInterface)
                                 {
-                                    listableType = listableType.Substring(0, listableType.LastIndexOf('`'));
-                                    foreach (var argument in type.GetGenericArguments())
+                                    _types.Add(type);
+
+                                    var listableType = type.ToString();
+                                    if (type.IsGenericType)
                                     {
-                                        listableType += "<" + argument.Name + ">";
+                                        listableType = listableType.Substring(0, listableType.LastIndexOf('`'));
+                                        foreach (var argument in type.GetGenericArguments())
+                                        {
+                                            listableType += "<" + argument.Name + ">";
+                                        }
                                     }
+                                    listableType = listableType.Replace("><", ",");
+                                    _lstProperties.Items.Add(listableType);
                                 }
-                                listableType = listableType.Replace("><", ",");
-                                _lstProperties.Items.Add(listableType);
                             }
                         }
 

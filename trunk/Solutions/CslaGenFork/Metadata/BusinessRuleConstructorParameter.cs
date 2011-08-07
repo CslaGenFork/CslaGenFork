@@ -3,8 +3,6 @@ using System.ComponentModel;
 using System.IO;
 using System.Xml.Serialization;
 using CslaGenerator.Attributes;
-using CslaGenerator.Design;
-
 
 namespace CslaGenerator.Metadata
 {
@@ -20,6 +18,7 @@ namespace CslaGenerator.Metadata
         private string _type = String.Empty;
         private bool _isGenericType;
         private bool _isGenericParameter;
+        private TypeCodeEx _genericType = TypeCodeEx.Object;
         private dynamic _value;
 
         #endregion
@@ -58,6 +57,14 @@ namespace CslaGenerator.Metadata
         {
             get { return _isGenericParameter; }
             set { _isGenericParameter = value; }
+        }
+
+        [Description("The Type of generic parameter.")]
+        [UserFriendlyName("Generic parameter Type")]
+        public TypeCodeEx GenericType
+        {
+            get { return _genericType; }
+            set { _genericType = value; }
         }
 
         [Description("The intended value for the Parameter.")]

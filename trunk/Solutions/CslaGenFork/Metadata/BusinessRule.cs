@@ -34,6 +34,14 @@ namespace CslaGenerator.Metadata
         private bool _provideTargetWhenAsync;
         private int _priority;
         private BusinessRuleRunModes _runModes;
+        private RuleSeverity _severity = RuleSeverity.Error;
+
+        private bool _canRunAsAffectedProperty;
+        private bool _canRunInCheckRules;
+        private bool _canRunOnServer;
+        private bool _hasMessageDelegate;
+        private string _messageDelegate;
+        private string _messageText;
 
             #endregion
 
@@ -129,7 +137,7 @@ namespace CslaGenerator.Metadata
 
         [Category("01. Definition")]
         [Editor(typeof (BusinessRuleTypeEditor), typeof (UITypeEditor))]
-        [Description("Business Rule Type Defined in Assembly.")]
+        [Description("Business Rule Type Defined in Assembly. Abstract classes and interface classes are excluded from the list.")]
         [TypeConverter(typeof(AuthzTypeConverter))]
         [UserFriendlyName("Imported Rule Type Name")]
         public string Type
@@ -252,6 +260,80 @@ namespace CslaGenerator.Metadata
         }
         
         [Category("04. Base Business Rule Options")]
+        [Description("The severity for this rule: Information, Warning or Error.")]
+        [UserFriendlyName("Rule Severity")]
+        public RuleSeverity Severity
+        {
+            get { return _severity; }
+            set { _severity = value; }
+        }
+
+        [Category("04. Base Business Rule Options")]
+        [Description("The  error message as a string.")]
+        [UserFriendlyName("Message Text")]
+        public string MessageText
+        {
+            get { return _messageText; }
+            set { _messageText = value; }
+        }
+
+        [Category("04. Base Business Rule Options")]
+        [Description("The error message function for this rule. Note this must be of Func<string> type.")]
+        [UserFriendlyName("Message Delegate")]
+        public string MessageDelegate
+        {
+            get { return _messageDelegate; }
+            set { _messageDelegate = value; }
+        }
+
+        [Category("04. Base Business Rule Options")]
+        [Description("Whether this instance can run as affected property.")]
+        [UserFriendlyName("Can Run as Affected Property")]
+        public bool CanRunAsAffectedProperty
+        {
+            get { return _canRunAsAffectedProperty; }
+            set { _canRunAsAffectedProperty = value; }
+        }
+
+        [Category("04. Base Business Rule Options")]
+        [Description("Whether this instance can run in logical Server side Data Portal.")]
+        [UserFriendlyName("Can Run on Server")]
+        public bool CanRunOnServer
+        {
+            get { return _canRunOnServer; }
+            set { _canRunOnServer = value; }
+        }
+
+        [Category("04. Base Business Rule Options")]
+        [Description("Whether this instance can run in CheckRules.")]
+        [UserFriendlyName("Can Run in CheckRules")]
+        public bool CanRunInCheckRules
+        {
+            get { return _canRunInCheckRules; }
+            set { _canRunInCheckRules = value; }
+        }
+
+        [Category("04. Base Business Rule Options")]
+        [Description("The rule priority (0 executes before 1, etc).")]
+        [UserFriendlyName("Rule Priority")]
+        public int Priority
+        {
+            get { return _priority; }
+            set { _priority = value; }
+        }
+
+        [Category("04. Base Business Rule Options")]
+        [Description("How rule will run in context.")]
+        [UserFriendlyName("Run Mode")]
+        public BusinessRuleRunModes RunMode
+        {
+            get { return _runModes; }
+            set { _runModes = value; }
+        }
+
+        #region Unknown status
+
+        [Category("04. Base Business Rule Options")]
         [Editor(typeof(InputPropertyCollectionEditor), typeof(UITypeEditor))]
         [Description("List of properties affected by this rule."+
             " Rules for these properties are executed after rules for the primaryproperty.")]
@@ -292,24 +374,8 @@ namespace CslaGenerator.Metadata
             get { return _provideTargetWhenAsync; }
             set { _provideTargetWhenAsync = value; }
         }
-
-        [Category("04. Base Business Rule Options")]
-        [Description("The rule priority (0 executes before 1, etc).")]
-        [UserFriendlyName("Rule Priority")]
-        public int Priority
-        {
-            get { return _priority; }
-            set { _priority = value; }
-        }
-
-        [Category("04. Base Business Rule Options")]
-        [Description("How rule will run in context.")]
-        [UserFriendlyName("Run Mode")]
-        public BusinessRuleRunModes RunMode 
-        {
-            get { return _runModes; }
-            set { _runModes = value; }
-        }
+        
+        #endregion
 
         #endregion
 

@@ -1,4 +1,5 @@
 <%
+bool defaultCslaAuthorizationProvider = CurrentUnit.GenerationParams.DefaultCslaAuthorizationProvider;
 CslaObjectInfo authzInfo2 = Info;
 if (IsCollectionType(Info.ObjectType))
 {
