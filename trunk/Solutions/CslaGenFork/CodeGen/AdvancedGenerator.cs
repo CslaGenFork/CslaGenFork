@@ -259,13 +259,43 @@ namespace CslaGenerator.CodeGen
         {
             TargetDirectory = targetDirectory;
             _templatesDirectory = templatesDirectory;
-            _codeEncoding = ConfigurationManager.AppSettings.Get("CodeEncoding");
-            _sprocEncoding = ConfigurationManager.AppSettings.Get("SProcEncoding");
+            _codeEncoding = ValidateEncodings("CodeEncoding");
+            _sprocEncoding = ValidateEncodings("SProcEncoding");
         }
 
         #endregion
 
         #region Private code generatiom
+
+        private string ValidateEncodings(string key)
+        {
+            const string defaultEncoding = "iso-8859-1";
+            string encoding = ConfigurationManager.AppSettings.Get(key);
+
+            if (string.IsNullOrWhiteSpace(encoding))
+            {
+                MessageBox.Show(@"Error in ""appSettings"" section of ""CslaGenerator.exe.config"" file." + Environment.NewLine +
+                                @"The key """ + key + @""" is empty or missing." + Environment.NewLine +
+                                @"Will use " + defaultEncoding + @" instead.",
+                                @"CslaGenFork object generation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return defaultEncoding;
+            }
+
+            try
+            {
+                Encoding encode = Encoding.GetEncoding(encoding);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show(@"Error in ""appSettings"" section of ""CslaGenerator.exe.config"" file." + Environment.NewLine +
+                                @"The key """ + key + @"""=""" + encoding + @""" is not valid." + Environment.NewLine +
+                                @"Will use """ + defaultEncoding + @""" instead.",
+                                @"CslaGenFork object generation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return defaultEncoding;
+            }
+
+            return encoding;
+        }
 
         private bool EditableSwitchableAlert(CslaObjectInfo objInfo)
         {

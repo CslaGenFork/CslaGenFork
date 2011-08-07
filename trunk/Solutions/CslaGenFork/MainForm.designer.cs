@@ -31,7 +31,7 @@ namespace CslaGenerator
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
-		{
+        {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.sfdSave = new System.Windows.Forms.SaveFileDialog();
             this.ofdLoad = new System.Windows.Forms.OpenFileDialog();
@@ -691,10 +691,10 @@ namespace CslaGenerator
             this.PerformLayout();
 
 }
-		private GeneratorController _controller = null;
-		//private CslaGenerator.Util.FolderBrowser fbGenerate;
-		private System.Windows.Forms.SaveFileDialog sfdSave;
-		private System.Windows.Forms.OpenFileDialog ofdLoad;
+        private GeneratorController _controller = null;
+        //private CslaGenerator.Util.FolderBrowser fbGenerate;
+        private System.Windows.Forms.SaveFileDialog sfdSave;
+        private System.Windows.Forms.OpenFileDialog ofdLoad;
         private DbSchemaPanel dbSchemaPanel = null;
         private System.Windows.Forms.PropertyGrid pgGrid;
         private MenuStrip menuStrip1;
