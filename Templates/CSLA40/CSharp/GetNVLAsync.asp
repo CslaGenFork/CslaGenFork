@@ -11,7 +11,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
                 {
                     if (string.IsNullOrEmpty(c.Properties[i].ParameterValue))
                     {
-                        Errors.Append("Property: " + c.Properties[i].Name + " on criteria: " + c.Name + " must have a ParameterValue. Ignored." + Environment.NewLine);
+                        Errors.Append("Property: " + c.Properties[i].Name + " on criteria: " + c.Name + " must have a ParameterValue. Add it or remove the Criteria Property." + Environment.NewLine);
                         return;
                     }
                     else
@@ -30,7 +30,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
                 {
                     if (string.IsNullOrEmpty(c.Properties[i].ParameterValue))
                     {
-                        Errors.Append("Property: " + c.Properties[i].Name + " on criteria: " + c.Name + " must have a ParameterValue. Ignored." + Environment.NewLine);
+                        Errors.Append("Property: " + c.Properties[i].Name + " on criteria: " + c.Name + " must have a ParameterValue. Add it or remove the Criteria Property." + Environment.NewLine);
                         return;
                     }
                     else
