@@ -12,8 +12,8 @@
         public static void InvalidateCache()
         {
             <%
-    if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
-        CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel &&
+    if (CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.None &&
+        CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.PropertyLevel &&
         Info.GetRoles.Trim() != String.Empty)
     {
         %>if (!CanGetObject())

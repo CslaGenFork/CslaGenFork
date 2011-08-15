@@ -15,7 +15,7 @@ namespace CslaGenerator.Design
     /// <summary>
     /// Summary description for RuleTypeEditor for Rules 4
     /// </summary>
-    public class BusinessRuleTypeEditor : UITypeEditor
+    public class AuthorizationRuleTypeEditor : UITypeEditor
     {
 
         public class BaseProperty
@@ -37,11 +37,10 @@ namespace CslaGenerator.Design
         private Type _instance;
         private List<BaseProperty> _baseTypes;
 
-        public BusinessRuleTypeEditor()
+        public AuthorizationRuleTypeEditor()
         {
             _lstProperties = new ListBox();
             _lstProperties.SelectedValueChanged += ValueChanged;
-            _lstProperties.Width = 300;
         }
 
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
@@ -54,8 +53,8 @@ namespace CslaGenerator.Design
                     // CR modifying to accomodate PropertyBag
                     Type instanceType = null;
                     object objinfo = null;
-                    TypeHelper.GetBusinessRuleTypeContextInstanceObject(context, ref objinfo, ref instanceType);
-                    var obj = (BusinessRule) objinfo;
+                    TypeHelper.GetAuthorizationTypeContextInstanceObject(context, ref objinfo, ref instanceType);
+                    var obj = (AuthorizationRule) objinfo;
                     _instance = objinfo.GetType();
 
                     _lstProperties.Items.Clear();
@@ -76,10 +75,13 @@ namespace CslaGenerator.Design
 
                         foreach (var type in alltypes)
                         {
-                            // check here for Csla.Rules.BusinessRule inheritance
-                            if (type.GetInterface("Csla.Rules.IBusinessRule") != null)
+                            // check here for System.ComponentModel.DataAnnotations.ValidationAttribute inheritance
+                            // var validationAttribute = type.GetInterface("System.Runtime.InteropServices._Attribute");
+
+                            // check here for Csla.Rules.IAuthorizationRule inheritance
+                            if (type.GetInterface("Csla.Rules.IAuthorizationRule") != null)
                             {
-                                // exclude abstract
+                                // exclude abstract classes
                                 if (!type.IsAbstract)
                                 {
                                     var listableType = type.ToString();
@@ -136,7 +138,7 @@ namespace CslaGenerator.Design
             }
         }
 
-        private void FillSubsidiaryGrids(BusinessRule rule, string stringType)
+        private void FillSubsidiaryGrids(AuthorizationRule rule, string stringType)
         {
             Type usedType = null;
 
@@ -184,9 +186,12 @@ namespace CslaGenerator.Design
                 }
             }
 
+            if (!string.IsNullOrWhiteSpace(rule.Parent))
+                rule.BaseRuleProperties.Add("Element");
+
             #endregion
 
-            #region Business Rule Properties
+            #region Authorization Rule Properties
 
             rule.RuleProperties = new BusinessRulePropertyCollection();
             foreach (var prop in usedType.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly).
@@ -289,8 +294,10 @@ namespace CslaGenerator.Design
                         }
                     }
 
-                    if (ctorParamInfo.Type == "IPropertyInfo")
+                    if (ctorParamInfo.Type == "IMemberInfo")
                         ctorParamInfo.Value = rule.Parent;
+                    else if (ctorParamInfo.Type == "AuthorizationActions")
+                        ctorParamInfo.Value = rule.ActionProperty.ToString();
                     else
                     {
                         Type targetType = GetDataType(ctorParamInfo.Type);
@@ -324,9 +331,6 @@ namespace CslaGenerator.Design
 
         private dynamic ConvertStringToEnum(Type targetType, string value)
         {
-            if (targetType.Name == "RuleSeverity" && string.IsNullOrWhiteSpace(value))
-                value = "Error";
-
             dynamic val = targetType;
             if (Enum.IsDefined(targetType, value))
                 val = Enum.Parse(targetType, value, true);

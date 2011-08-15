@@ -17,6 +17,7 @@ namespace CslaGenerator.Design
         public ObjectEditorForm()
         {
             InitializeComponent();
+            pgEditor.PropertySort = PropertySort.Categorized;
         }
 
         public object ObjectToEdit
@@ -25,15 +26,23 @@ namespace CslaGenerator.Design
             set
             {
                 _object = value;
+                OnSelect(this, new EventArgs());
+            }
+        }
+
+        public void OnSelect(object sender, EventArgs e)
+        {
+            if (_object != null)
+            {
                 if (_object.GetType() == typeof (Criteria))
                 {
                     Text = @"Criteria Editor";
                     // pgEditor.SelectedObject = _object;
                     pgEditor.SelectedObject = new CriteriaBag(((Criteria) _object));
-                    pgEditor.PropertySort = PropertySort.Categorized;
                     Size = new Size(Size.Width, 711);
                     pgEditor.Size = new Size(pgEditor.Size.Width, 619);
-                    var cslaObject = (CslaObjectInfo)GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem;
+                    var cslaObject =
+                        (CslaObjectInfo) GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem;
                     if ((cslaObject.ObjectType == CslaObjectType.ReadOnlyObject ||
                          cslaObject.ObjectType == CslaObjectType.ReadOnlyCollection ||
                          cslaObject.ObjectType == CslaObjectType.NameValueList ||
@@ -42,27 +51,33 @@ namespace CslaGenerator.Design
                         Size = new Size(Size.Width, Size.Height - 256);
                         pgEditor.Size = new Size(pgEditor.Size.Width, pgEditor.Size.Height - 256);
                     }
-                    if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40 &&
-                        GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL)
+                    if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework !=
+                        TargetFramework.CSLA40 &&
+                        GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework !=
+                        TargetFramework.CSLA40DAL)
                     {
                         Size = new Size(Size.Width, Size.Height - 32);
                         pgEditor.Size = new Size(pgEditor.Size.Width, pgEditor.Size.Height - 32);
                     }
                     pgEditor.ExpandAllGridItems();
                 }
-                else if (_object.GetType() == typeof(TypeInfo))
+                else if (_object.GetType() == typeof (TypeInfo))
                 {
                     Text = @"Inherited Type Editor";
                     //pgEditor.SelectedObject = _object;
                     pgEditor.SelectedObject = new InheritedTypePropertyBag((TypeInfo) _object);
                     Size = new Size(Size.Width + 100, Size.Height);
                 }
-                else if (_object.GetType() == typeof(AuthzTypeInfo))
+                else if (_object.GetType() == typeof (AuthorizationRule))
                 {
                     Text = @"Authorization Type Editor";
+                    ((AuthorizationRule) _object).TypeChanged -= OnSelect;
+                    ((AuthorizationRule) _object).TypeChanged += OnSelect;
+                    ((AuthorizationRule) _object).Parent = PropertyCollectionForm.ParentValProp;
+                    ((AuthorizationRule) _object).ActionProperty = ValueProperty.Convert(PropertyCollectionForm.ParentProperty);
                     //pgEditor.SelectedObject = _object;
-                    pgEditor.SelectedObject = new AuthorizationPropertyBag((AuthzTypeInfo)_object);
-                    Size = new Size(Size.Width + 100, Size.Height);
+                    pgEditor.SelectedObject = new AuthorizationRuleBag((AuthorizationRule) _object);
+                    Size = new Size(468, Size.Height);
                 }
                 MaximumSize = new Size(Size.Width + 100, Size.Height);
                 MinimumSize = new Size(Size.Width - 100, Size.Height);

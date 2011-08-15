@@ -7,8 +7,8 @@ if (!IsReadOnlyType(Info.ObjectType) && IsCollectionType(Info.ObjectType))
 {
     CslaObjectInfo itemInfo2 = FindChildInfo(Info, Info.ItemType);
     itemName2 = itemInfo2.ObjectName;
-    if ((CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
-        CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel) &&
+    if ((CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.None &&
+        CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.PropertyLevel) &&
         ((itemInfo2.NewRoles.Trim() != String.Empty) ||
         (itemInfo2.UpdateRoles.Trim() != String.Empty) ||
         (itemInfo2.DeleteRoles.Trim() != String.Empty)))

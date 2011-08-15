@@ -25,7 +25,7 @@ namespace CslaGenerator.Util.PropertyBags
     /// PropertyGrid to provide functionality beyond that of the simple reflection
     /// normally used to query an object's properties.
     /// </summary>
-    public class AuthorizationPropertyBag : ICustomTypeDescriptor
+    public class AuthorizationRuleBag : ICustomTypeDescriptor
     {
         #region PropertySpecCollection class definition
 
@@ -55,7 +55,7 @@ namespace CslaGenerator.Util.PropertyBags
             /// </value>
             public PropertySpec this[int index]
             {
-                get { return (PropertySpec)_innerArray[index]; }
+                get { return (PropertySpec) _innerArray[index]; }
                 set { _innerArray[index] = value; }
             }
 
@@ -280,7 +280,7 @@ namespace CslaGenerator.Util.PropertyBags
             /// <returns>A PropertySpec array containing copies of the elements of the PropertySpecCollection.</returns>
             public PropertySpec[] ToArray()
             {
-                return (PropertySpec[])_innerArray.ToArray(typeof(PropertySpec));
+                return (PropertySpec[]) _innerArray.ToArray(typeof (PropertySpec));
             }
 
             #region Explicit interface implementations for ICollection and IList
@@ -290,7 +290,7 @@ namespace CslaGenerator.Util.PropertyBags
             /// </summary>
             void ICollection.CopyTo(Array array, int index)
             {
-                CopyTo((PropertySpec[])array, index);
+                CopyTo((PropertySpec[]) array, index);
             }
 
             /// <summary>
@@ -298,7 +298,7 @@ namespace CslaGenerator.Util.PropertyBags
             /// </summary>
             int IList.Add(object value)
             {
-                return Add((PropertySpec)value);
+                return Add((PropertySpec) value);
             }
 
             /// <summary>
@@ -306,7 +306,7 @@ namespace CslaGenerator.Util.PropertyBags
             /// </summary>
             bool IList.Contains(object obj)
             {
-                return Contains((PropertySpec)obj);
+                return Contains((PropertySpec) obj);
             }
 
             /// <summary>
@@ -315,7 +315,7 @@ namespace CslaGenerator.Util.PropertyBags
             object IList.this[int index]
             {
                 get { return this[index]; }
-                set { this[index] = (PropertySpec)value; }
+                set { this[index] = (PropertySpec) value; }
             }
 
             /// <summary>
@@ -323,7 +323,7 @@ namespace CslaGenerator.Util.PropertyBags
             /// </summary>
             int IList.IndexOf(object obj)
             {
-                return IndexOf((PropertySpec)obj);
+                return IndexOf((PropertySpec) obj);
             }
 
             /// <summary>
@@ -331,7 +331,7 @@ namespace CslaGenerator.Util.PropertyBags
             /// </summary>
             void IList.Insert(int index, object value)
             {
-                Insert(index, (PropertySpec)value);
+                Insert(index, (PropertySpec) value);
             }
 
             /// <summary>
@@ -339,7 +339,7 @@ namespace CslaGenerator.Util.PropertyBags
             /// </summary>
             void IList.Remove(object value)
             {
-                Remove((PropertySpec)value);
+                Remove((PropertySpec) value);
             }
 
             #endregion
@@ -351,12 +351,11 @@ namespace CslaGenerator.Util.PropertyBags
 
         private class PropertySpecDescriptor : PropertyDescriptor
         {
-            private readonly AuthorizationPropertyBag _bag;
+            private readonly AuthorizationRuleBag _bag;
             private readonly PropertySpec _item;
 
-            public PropertySpecDescriptor(PropertySpec item, AuthorizationPropertyBag bag, string name, Attribute[] attrs)
-                :
-                    base(name, attrs)
+            public PropertySpecDescriptor(PropertySpec item, AuthorizationRuleBag bag, string name, Attribute[] attrs)
+                : base(name, attrs)
             {
                 _bag = bag;
                 _item = item;
@@ -392,6 +391,9 @@ namespace CslaGenerator.Util.PropertyBags
 
                 var e = new PropertySpecEventArgs(_item, null);
                 _bag.OnGetValue(e);
+                if (e.Value is BusinessRuleProperty)
+                    return (e.Value as BusinessRuleProperty).Value;
+
                 return e.Value;
             }
 
@@ -426,25 +428,25 @@ namespace CslaGenerator.Util.PropertyBags
 
         private readonly PropertySpecCollection _properties;
         private string _defaultProperty;
-        private AuthzTypeInfo[] _selectedObject;
+        private AuthorizationRule[] _selectedObject;
 
         /// <summary>
-        /// Initializes a new instance of the AuthorizationProviderPropertyBag class.
+        /// Initializes a new instance of the AuthorizationRuleBag class.
         /// </summary>
-        public AuthorizationPropertyBag()
+        public AuthorizationRuleBag()
         {
             _defaultProperty = null;
             _properties = new PropertySpecCollection();
         }
 
-        public AuthorizationPropertyBag(AuthzTypeInfo obj)
+        public AuthorizationRuleBag(AuthorizationRule obj)
             : this(new[] { obj })
         {
         }
 
-        public AuthorizationPropertyBag(AuthzTypeInfo[] obj)
+        public AuthorizationRuleBag(AuthorizationRule[] obj)
         {
-            _defaultProperty = "ObjectName";
+            _defaultProperty = "AssemblyFile";
             _properties = new PropertySpecCollection();
             _selectedObject = obj;
             InitPropertyBag();
@@ -462,7 +464,7 @@ namespace CslaGenerator.Util.PropertyBags
         /// <summary>
         /// Gets or sets the name of the default property in the collection.
         /// </summary>
-        public AuthzTypeInfo[] SelectedObject
+        public AuthorizationRule[] SelectedObject
         {
             get { return _selectedObject; }
             set
@@ -473,7 +475,7 @@ namespace CslaGenerator.Util.PropertyBags
         }
 
         /// <summary>
-        /// Gets the collection of properties contained within this AuthorizationProviderPropertyBag.
+        /// Gets the collection of properties contained within this AuthorizationRuleBag.
         /// </summary>
         public PropertySpecCollection Properties
         {
@@ -518,8 +520,9 @@ namespace CslaGenerator.Util.PropertyBags
 
         private void InitPropertyBag()
         {
+            int rulePropertyCounter = 0;
             PropertyInfo pi;
-            Type t = typeof(AuthzTypeInfo); // _selectedObject.GetType();
+            Type t = typeof(AuthorizationRule); // _selectedObject.GetType();
             PropertyInfo[] props = t.GetProperties();
             // Display information for all properties.
             for (int i = 0; i < props.Length; i++)
@@ -537,65 +540,182 @@ namespace CslaGenerator.Util.PropertyBags
                 string helptopic = "";
                 bool bindable = true;
                 string editor = "";
-                for (int n = 0; n < myAttributes.Length; n++)
+                string assemblyQualifiedName = "";
+
+                if (pi.Name.Contains("RuleProperty"))
                 {
-                    var a = (Attribute)myAttributes[n];
-                    switch (a.GetType().ToString())
+                    category = "03. Authorization Rule Options";
+                    HandleRuleProperty(ref rulePropertyCounter, out isbrowsable, out userfriendlyname, out description, out isreadonly, ref editor, out assemblyQualifiedName);
+                }
+                else
+                {
+                    for (int n = 0; n < myAttributes.Length; n++)
                     {
-                        case "System.ComponentModel.CategoryAttribute":
-                            category = ((CategoryAttribute)a).Category;
-                            break;
-                        case "System.ComponentModel.DescriptionAttribute":
-                            description = ((DescriptionAttribute)a).Description;
-                            break;
-                        case "System.ComponentModel.ReadOnlyAttribute":
-                            isreadonly = ((ReadOnlyAttribute)a).IsReadOnly;
-                            break;
-                        case "System.ComponentModel.BrowsableAttribute":
-                            isbrowsable = ((BrowsableAttribute)a).Browsable;
-                            break;
-                        case "System.ComponentModel.DefaultValueAttribute":
-                            defaultvalue = ((DefaultValueAttribute)a).Value;
-                            break;
-                        case "CslaGenerator.Attributes.UserFriendlyNameAttribute":
-                            userfriendlyname = ((UserFriendlyNameAttribute)a).UserFriendlyName;
-                            break;
-                        case "CslaGenerator.Attributes.HelpTopicAttribute":
-                            helptopic = ((HelpTopicAttribute)a).HelpTopic;
-                            break;
-                        case "System.ComponentModel.TypeConverterAttribute":
-                            typeconverter = ((TypeConverterAttribute)a).ConverterTypeName;
-                            break;
-                        case "System.ComponentModel.DesignerAttribute":
-                            designertypename = ((DesignerAttribute)a).DesignerTypeName;
-                            break;
-                        case "System.ComponentModel.BindableAttribute":
-                            bindable = ((BindableAttribute)a).Bindable;
-                            break;
-                        case "System.ComponentModel.EditorAttribute":
-                            editor = ((EditorAttribute)a).EditorTypeName;
-                            break;
+                        var a = (Attribute) myAttributes[n];
+                        switch (a.GetType().ToString())
+                        {
+                            case "System.ComponentModel.CategoryAttribute":
+                                category = ((CategoryAttribute) a).Category;
+                                break;
+                            case "System.ComponentModel.DescriptionAttribute":
+                                description = ((DescriptionAttribute) a).Description;
+                                break;
+                            case "System.ComponentModel.ReadOnlyAttribute":
+                                isreadonly = ((ReadOnlyAttribute) a).IsReadOnly;
+                                break;
+                            case "System.ComponentModel.BrowsableAttribute":
+                                isbrowsable = ((BrowsableAttribute) a).Browsable;
+                                break;
+                            case "System.ComponentModel.DefaultValueAttribute":
+                                defaultvalue = ((DefaultValueAttribute) a).Value;
+                                break;
+                            case "CslaGenerator.Attributes.UserFriendlyNameAttribute":
+                                userfriendlyname = ((UserFriendlyNameAttribute) a).UserFriendlyName;
+                                break;
+                            case "CslaGenerator.Attributes.HelpTopicAttribute":
+                                helptopic = ((HelpTopicAttribute) a).HelpTopic;
+                                break;
+                            case "System.ComponentModel.TypeConverterAttribute":
+                                typeconverter = ((TypeConverterAttribute) a).ConverterTypeName;
+                                break;
+                            case "System.ComponentModel.DesignerAttribute":
+                                designertypename = ((DesignerAttribute) a).DesignerTypeName;
+                                break;
+                            case "System.ComponentModel.BindableAttribute":
+                                bindable = ((BindableAttribute) a).Bindable;
+                                break;
+                            case "System.ComponentModel.EditorAttribute":
+                                editor = ((EditorAttribute) a).EditorTypeName;
+                                break;
+                        }
                     }
                 }
                 userfriendlyname = userfriendlyname.Length > 0 ? userfriendlyname : pi.Name;
                 var types = new List<string>();
                 foreach (var obj in _selectedObject)
                 {
-                    if (!types.Contains(obj.ObjectName))
+                    if (!string.IsNullOrWhiteSpace(obj.ObjectName) &&!types.Contains(obj.ObjectName))
                         types.Add(obj.ObjectName);
+                    else if (!string.IsNullOrWhiteSpace(obj.Type) && !types.Contains(obj.Type))
+                        types.Add(obj.Type);
                 }
                 // here get rid of ComponentName and Parent
                 bool isValidProperty = (pi.Name != "Properties" && pi.Name != "ComponentName" && pi.Name != "Parent");
                 if (isValidProperty && IsBrowsable(types.ToArray(), pi.Name))
                 {
+                    if (assemblyQualifiedName == string.Empty)
+                        assemblyQualifiedName = pi.PropertyType.AssemblyQualifiedName;
                     // CR added missing parameters
                     //this.Properties.Add(new PropertySpec(userfriendlyname,pi.PropertyType.AssemblyQualifiedName,category,description,defaultvalue, editor, typeconverter, _selectedObject, pi.Name,helptopic));
-                    Properties.Add(new PropertySpec(userfriendlyname, pi.PropertyType.AssemblyQualifiedName, category,
+                    Properties.Add(new PropertySpec(userfriendlyname, assemblyQualifiedName, category,
                                                     description, defaultvalue, editor, typeconverter, _selectedObject,
                                                     pi.Name, helptopic, isreadonly, isbrowsable, designertypename,
                                                     bindable));
                 }
             }
+        }
+
+        private void HandleRuleProperty(ref int rulePropertyCounter, out bool isbrowsable, out string userfriendlyname, out string description, out bool isreadonly, ref string editor, out string assemblyQualifiedName)
+        {
+            assemblyQualifiedName = string.Empty;
+            isbrowsable = true;
+            isreadonly = false;
+            if (rulePropertyCounter == SelectedObject[0].RuleProperties.Count)
+            {
+                isbrowsable = false;
+                description = string.Empty;
+                userfriendlyname = string.Empty;
+                return;
+            }
+
+            var target = SelectedObject[0].RuleProperties[rulePropertyCounter];
+
+            userfriendlyname = target.Name;
+            description = (target.IsGenericType ? "Generic " : "") + "Property " + userfriendlyname + " of " +
+                          (target.IsGenericType ? "<" : "") +
+                          target.Type +
+                          (target.IsGenericType ? ">" : "") + " type." +
+                          ((target.Type.LastIndexOf("[]") == target.Type.Length - 2)
+                               ? " Use a comma to separate Array elements."
+                               : "") +
+                          ((target.Type.IndexOf("List<") == 0)
+                               ? " Use a comma to separate List elements."
+                               : "");
+
+            if (target.Name == "Element" || target.Name == "Action")
+                isreadonly = true;
+
+            switch (target.Type)
+            {
+                case "IMemberInfo":
+                    break;
+                case "AuthorizationActions":
+                    break;
+                default:
+                    GetPropertyDataType(target, out assemblyQualifiedName, out editor);
+                    break;
+            }
+
+            switch (rulePropertyCounter)
+            {
+                case 0:
+                    SelectedObject[0].RuleProperty0 = target;
+                    break;
+                case 1:
+                    SelectedObject[0].RuleProperty1 = target;
+                    break;
+                case 2:
+                    SelectedObject[0].RuleProperty2 = target;
+                    break;
+                case 3:
+                    SelectedObject[0].RuleProperty3 = target;
+                    break;
+                case 4:
+                    SelectedObject[0].RuleProperty4 = target;
+                    break;
+                case 5:
+                    SelectedObject[0].RuleProperty5 = target;
+                    break;
+                case 6:
+                    SelectedObject[0].RuleProperty6 = target;
+                    break;
+                case 7:
+                    SelectedObject[0].RuleProperty7 = target;
+                    break;
+                case 8:
+                    SelectedObject[0].RuleProperty8 = target;
+                    break;
+                case 9:
+                    SelectedObject[0].RuleProperty9 = target;
+                    break;
+            }
+            rulePropertyCounter++;
+        }
+
+        private static Type GetPropertyDataType(BusinessRuleProperty target, out string assemblyQualifiedName, out string editor)
+        {
+            editor = typeof(UITypeEditor).AssemblyQualifiedName;
+
+            Type propType;
+            if (target.IsGenericType || target.IsGenericParameter || target.Type == "IComparable" || target.Type.LastIndexOf("[]") == target.Type.Length -2)
+            {
+                propType = Type.GetType("System.String");
+            }
+            else
+            {
+                propType = Type.GetType(target.Type);
+                if (propType == null)
+                    propType = Type.GetType("System." + target.Type);
+                if (propType == null)
+                    propType = Type.GetType("CslaGenerator.Metadata." + target.Type);
+            }
+
+            if (propType == null)
+                assemblyQualifiedName = string.Empty;
+            else
+                assemblyQualifiedName = propType.AssemblyQualifiedName;
+
+            return propType;
         }
 
         #endregion
@@ -606,14 +726,14 @@ namespace CslaGenerator.Util.PropertyBags
         {
             if (!propertyInfoCache.ContainsKey(propertyName))
             {
-                propertyInfoCache.Add(propertyName, typeof(AuthzTypeInfo).GetProperty(propertyName));
+                propertyInfoCache.Add(propertyName, typeof(AuthorizationRule).GetProperty(propertyName));
             }
             return propertyInfoCache[propertyName];
         }
 
         private bool IsEnumerable(PropertyInfo prop)
         {
-            if (prop.PropertyType == typeof(string))
+            if (prop.PropertyType == typeof (string))
                 return false;
             Type[] interfaces = prop.PropertyType.GetInterfaces();
             foreach (Type typ in interfaces)
@@ -628,11 +748,28 @@ namespace CslaGenerator.Util.PropertyBags
         {
             try
             {
-                if ((GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == Authorization.None ||
-                    GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == Authorization.ObjectLevel) &&
+                if (propertyName == "Element")
+                    if (!SelectedObject[0].BaseRuleProperties.Contains("Element"))
+                        return false;
+                if (propertyName == "CacheResult")
+                    if (!SelectedObject[0].BaseRuleProperties.Contains("CacheResult"))
+                        return false;
+                if ((GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization ==
+                     AuthorizationLevel.None ||
+                     GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization ==
+                     AuthorizationLevel.ObjectLevel) &&
                     (propertyName == "ReadRoles" ||
                      propertyName == "WriteRoles"))
                     return false;
+
+                /*if (propertyName == "Name" && SelectedObject[0].Name == "Name")
+                    return false;*/
+
+                if (propertyName == "RuleProperties")
+                    return false;
+
+                /*if (propertyName == "Constructors" || propertyName == "RuleProperties")
+                    return false;*/
 
                 if (_selectedObject.Length > 1 && IsEnumerable(GetPropertyInfoCache(propertyName)))
                     return false;
@@ -660,14 +797,14 @@ namespace CslaGenerator.Util.PropertyBags
             fields = target.GetType().GetFields(BindingFlags.Public);
 
             tx = target.GetType();
-            obj = tx.InvokeMember(name, BindingFlags.Default | BindingFlags.GetField, null, target, new object[] { });
+            obj = tx.InvokeMember(name, BindingFlags.Default | BindingFlags.GetField, null, target, new object[] {});
             return obj;
         }
 
         private object SetField(Type t, string name, object value, object target)
         {
             object obj;
-            obj = t.InvokeMember(name, BindingFlags.Default | BindingFlags.SetField, null, target, new[] { value });
+            obj = t.InvokeMember(name, BindingFlags.Default | BindingFlags.SetField, null, target, new[] {value});
             return obj;
         }
 
@@ -677,16 +814,59 @@ namespace CslaGenerator.Util.PropertyBags
             {
                 // get a reference to the PropertyInfo, exit if no property with that
                 // name
-                PropertyInfo pi = typeof(AuthzTypeInfo).GetProperty(propertyName);
+                PropertyInfo pi = typeof (AuthorizationRule).GetProperty(propertyName);
 
                 if (pi == null)
                     return false;
                 // convert the value to the expected type
-                val = Convert.ChangeType(val, pi.PropertyType);
-                // attempt the assignment
-                foreach (AuthzTypeInfo bo in (AuthzTypeInfo[])obj)
-                    pi.SetValue(bo, val, null);
-                return true;
+                if (pi.PropertyType.Name == "BusinessRuleProperty")
+                {
+                    PropertyInfo piProp = typeof (BusinessRuleProperty).GetProperty("Value");
+                    val = Convert.ChangeType(val, piProp.PropertyType);
+                    // attempt the assignment
+                    switch (propertyName)
+                    {
+                        case "RuleProperty0":
+                            SelectedObject[0].RuleProperty0.Value = val;
+                            break;
+                        case "RuleProperty1":
+                            SelectedObject[0].RuleProperty1.Value = val;
+                            break;
+                        case "RuleProperty2":
+                            SelectedObject[0].RuleProperty2.Value = val;
+                            break;
+                        case "RuleProperty3":
+                            SelectedObject[0].RuleProperty3.Value = val;
+                            break;
+                        case "RuleProperty4":
+                            SelectedObject[0].RuleProperty4.Value = val;
+                            break;
+                        case "RuleProperty5":
+                            SelectedObject[0].RuleProperty5.Value = val;
+                            break;
+                        case "RuleProperty6":
+                            SelectedObject[0].RuleProperty6.Value = val;
+                            break;
+                        case "RuleProperty7":
+                            SelectedObject[0].RuleProperty7.Value = val;
+                            break;
+                        case "RuleProperty8":
+                            SelectedObject[0].RuleProperty8.Value = val;
+                            break;
+                        case "RuleProperty9":
+                            SelectedObject[0].RuleProperty9.Value = val;
+                            break;
+                    }
+                    return true;
+                }
+                else
+                {
+                    val = Convert.ChangeType(val, pi.PropertyType);
+                    // attempt the assignment
+                    foreach (AuthorizationRule bo in (AuthorizationRule[]) obj)
+                        pi.SetValue(bo, val, null);
+                    return true;
+                }
             }
             catch
             {
@@ -701,10 +881,10 @@ namespace CslaGenerator.Util.PropertyBags
                 PropertyInfo pi = GetPropertyInfoCache(propertyName);
                 if (!(pi == null))
                 {
-                    var objs = (AuthzTypeInfo[])obj;
+                    var objs = (AuthorizationRule[])obj;
                     var valueList = new ArrayList();
 
-                    foreach (AuthzTypeInfo bo in objs)
+                    foreach (AuthorizationRule bo in objs)
                     {
                         object value = pi.GetValue(bo, null);
                         if (!valueList.Contains(value))
@@ -801,13 +981,13 @@ namespace CslaGenerator.Util.PropertyBags
 
         PropertyDescriptorCollection ICustomTypeDescriptor.GetProperties()
         {
-            return ((ICustomTypeDescriptor)this).GetProperties(new Attribute[0]);
+            return ((ICustomTypeDescriptor) this).GetProperties(new Attribute[0]);
         }
 
         PropertyDescriptorCollection ICustomTypeDescriptor.GetProperties(Attribute[] attributes)
         {
             // Rather than passing this function on to the default TypeDescriptor,
-            // which would return the actual properties of AuthorizationProviderPropertyBag, I construct
+            // which would return the actual properties of AuthorizationRuleBag, I construct
             // a list here that contains property descriptors for the elements of the
             // Properties list in the bag.
 
@@ -826,7 +1006,7 @@ namespace CslaGenerator.Util.PropertyBags
                     attrs.Add(new DescriptionAttribute(property.Description));
 
                 if (property.EditorTypeName != null)
-                    attrs.Add(new EditorAttribute(property.EditorTypeName, typeof(UITypeEditor)));
+                    attrs.Add(new EditorAttribute(property.EditorTypeName, typeof (UITypeEditor)));
 
                 if (property.ConverterTypeName != null)
                     attrs.Add(new TypeConverterAttribute(property.ConverterTypeName));
@@ -843,19 +1023,18 @@ namespace CslaGenerator.Util.PropertyBags
                 attrs.Add(new ReadOnlyAttribute(property.ReadOnly));
                 attrs.Add(new BindableAttribute(property.Bindable));
 
-                var attrArray = (Attribute[])attrs.ToArray(typeof(Attribute));
+                var attrArray = (Attribute[]) attrs.ToArray(typeof (Attribute));
 
                 // Create a new property descriptor for the property item, and add
                 // it to the list.
-                var pd = new PropertySpecDescriptor(property,
-                                                    this, property.Name, attrArray);
+                var pd = new PropertySpecDescriptor(property, this, property.Name, attrArray);
                 props.Add(pd);
             }
 
             // Convert the list of PropertyDescriptors to a collection that the
             // ICustomTypeDescriptor can use, and return it.
-            var propArray = (PropertyDescriptor[])props.ToArray(
-                typeof(PropertyDescriptor));
+            var propArray = (PropertyDescriptor[]) props.ToArray(
+                typeof (PropertyDescriptor));
             return new PropertyDescriptorCollection(propArray);
         }
 

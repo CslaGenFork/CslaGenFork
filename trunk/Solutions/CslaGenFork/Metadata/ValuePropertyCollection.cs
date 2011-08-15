@@ -26,24 +26,23 @@ namespace CslaGenerator.Metadata
             base.Add(item);
         }
 
-        void AddHandlers(ValueProperty item)
+        private void AddHandlers(ValueProperty item)
         {
-            item.Changed += item_Changed;
+            item.NameChanged += Item_Changed;
         }
 
-        void RemoveHandlers(ValueProperty item)
+        private void RemoveHandlers(ValueProperty item)
         {
-            item.Changed -= item_Changed;
+            item.NameChanged -= Item_Changed;
         }
 
-        private void item_Changed(ValueProperty sender, PropertyNameChangedEventArgs e)
+        private void Item_Changed(ValueProperty sender, PropertyNameChangedEventArgs e)
         {
             if (ItemChanged != null)
                 ItemChanged(sender, e);
         }
 
-        [field: NonSerialized()]
+        [field: NonSerialized]
         public event PropertyNameChanged ItemChanged;
-
     }
 }

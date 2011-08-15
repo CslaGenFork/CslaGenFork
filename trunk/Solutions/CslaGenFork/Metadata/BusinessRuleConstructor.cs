@@ -6,6 +6,10 @@ using CslaGenerator.Attributes;
 
 namespace CslaGenerator.Metadata
 {
+    public delegate void NameChanged(BusinessRuleConstructor sender, EventArgs e);
+
+    public delegate void ActiveStatusChanged(BusinessRuleConstructor sender, EventArgs e);
+
     /// <summary>
     /// Summary description for BusinessRuleConstructor for Rules 4
     /// </summary>
@@ -16,7 +20,9 @@ namespace CslaGenerator.Metadata
 
         private string _name = String.Empty;
         private bool _isActive;
-        private BusinessRuleConstructorParameterCollection _constructorParameters = new BusinessRuleConstructorParameterCollection();
+
+        private BusinessRuleConstructorParameterCollection _constructorParameters =
+            new BusinessRuleConstructorParameterCollection();
 
         #endregion
 
@@ -28,7 +34,13 @@ namespace CslaGenerator.Metadata
         public string Name
         {
             get { return _name; }
-            set { _name = value; }
+            set
+            {
+                _name = PropertyHelper.TidyAllowSpaces(value);
+                var e = new EventArgs();
+                if (NameChanged != null)
+                    NameChanged(this, e);
+            }
         }
 
         [Category("01. Definition")]
@@ -37,7 +49,19 @@ namespace CslaGenerator.Metadata
         public bool IsActive
         {
             get { return _isActive; }
-            set { _isActive = value; }
+            set
+            {
+                if (_isActive != value)
+                {
+                    _isActive = value;
+                    if (_isActive)
+                    {
+                        var e = new EventArgs();
+                        if (ActiveChanged != null)
+                            ActiveChanged(this, e);
+                    }
+                }
+            }
         }
 
         #endregion
@@ -76,7 +100,7 @@ namespace CslaGenerator.Metadata
 
         #endregion
 
-        #region 03. Parameters Value
+        #region 03. Parameter Values
 
         public BusinessRuleConstructorParameterCollection ConstructorParameters
         {
@@ -115,6 +139,17 @@ namespace CslaGenerator.Metadata
         public BusinessRuleConstructorParameter ConstructorParameter9 { get; set; }
 
         #endregion
+
+        [field: NonSerialized]
+        public event NameChanged NameChanged;
+
+        [field: NonSerialized]
+        public event ActiveStatusChanged ActiveChanged;
+
+        internal void SetName(string newName)
+        {
+            _name = newName;
+        }
 
         public object Clone()
         {

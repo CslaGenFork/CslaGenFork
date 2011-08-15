@@ -578,11 +578,11 @@ namespace CslaGenerator.Util.PropertyBags
                     }
                 }
                 userfriendlyname = userfriendlyname.Length > 0 ? userfriendlyname : pi.Name;
-                var types = new List<string>();
+                var types = new List<ValueProperty>();
                 foreach (var obj in _selectedObject)
                 {
-                    if (!types.Contains(obj.Name))
-                        types.Add(obj.Name);
+                    if (!types.Contains(obj))
+                        types.Add(obj);
                 }
                 // here get rid of ComponentName and Parent
                 bool isValidProperty = (pi.Name != "Properties" && pi.Name != "ComponentName" && pi.Name != "Parent");
@@ -624,36 +624,45 @@ namespace CslaGenerator.Util.PropertyBags
 
         #region IsBrowsable map objectType:propertyName -> true | false
 
-        private bool IsBrowsable(string[] objectType, string propertyName)
+        private bool IsBrowsable(ValueProperty[] objectType, string propertyName)
         {
             try
             {
-                if ((GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == Authorization.None ||
-                    GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == Authorization.ObjectLevel) &&
-                    (propertyName == "ReadRoles" ||
-                     propertyName == "WriteRoles"))
-                    return false;
-                if (((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40 &&
-                    GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL)
-                    ||
-                    (GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == Authorization.None ||
-                    GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == Authorization.ObjectLevel)
-                    || GeneratorController.Current.CurrentUnit.GenerationParams.HideAuthorizationProvider
-                    ) &&
-                    propertyName == "AuthzRuleType")
-                    return false;
-                if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40 &&
-                    GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL) &&
-                     propertyName == "BusinessRules")
-                    return false;
-                if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 ||
-                    GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL) &&
-                     propertyName == "Rules")
-                    return false;
+                foreach (var valueProperty in objectType)
+                {
+                    if ((GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.None ||
+                        GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.ObjectLevel ||
+                        ((valueProperty.AuthzProvider == AuthorizationProvider.Custom) &&
+                        !GeneratorController.Current.CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider)) &&
+                        (propertyName == "ReadRoles" ||
+                        propertyName == "WriteRoles"))
+                        return false;
+                    if ((GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.None ||
+                        GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.ObjectLevel ||
+                        ((valueProperty.AuthzProvider == AuthorizationProvider.IsInRole ||
+                        valueProperty.AuthzProvider == AuthorizationProvider.IsNotInRole) &&
+                        !GeneratorController.Current.CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider) ||
+                        GeneratorController.Current.CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider) &&
+                        (propertyName == "ReadAuthzRuleType" ||
+                         propertyName == "WriteAuthzRuleType"))
+                        return false; 
+                    if (((GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.None ||
+                        GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.ObjectLevel) ||
+                        GeneratorController.Current.CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider) &&
+                        propertyName == "AuthzProvider")
+                        return false;
+                    if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40 &&
+                         GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL) &&
+                        propertyName == "BusinessRules")
+                        return false;
+                    if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 ||
+                         GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL) &&
+                        propertyName == "Rules")
+                        return false;
 
-                if (_selectedObject.Length > 1 && IsEnumerable(GetPropertyInfoCache(propertyName)))
-                    return false;
-
+                    if (_selectedObject.Length > 1 && IsEnumerable(GetPropertyInfoCache(propertyName)))
+                        return false;
+                }
                 return true;
             }
             catch //(Exception e)

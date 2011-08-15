@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -132,18 +133,52 @@ namespace CslaGenerator.CodeGen
 
         public virtual string GetInitValue(TypeCodeEx typeCode)
         {
-            if (typeCode == TypeCodeEx.Int16 || typeCode == TypeCodeEx.Int32 || typeCode == TypeCodeEx.Int64 || typeCode == TypeCodeEx.Double
-                || typeCode == TypeCodeEx.Decimal || typeCode == TypeCodeEx.Single) { return "0"; }
-            else if (typeCode == TypeCodeEx.String) { return "String.Empty"; }
-            else if (typeCode == TypeCodeEx.Boolean) { return "false"; }
-            else if (typeCode == TypeCodeEx.Byte) { return "0"; }
-            else if (typeCode == TypeCodeEx.Object) { return "null"; }
-            else if (typeCode == TypeCodeEx.Guid) { return "Guid.Empty"; }
-            else if (typeCode == TypeCodeEx.SmartDate) { return "new SmartDate(true)"; }
-            else if (typeCode == TypeCodeEx.DateTime) { return "DateTime.Now"; }
-            else if (typeCode == TypeCodeEx.Char) { return "Char.MinValue"; }
-            else if (typeCode == TypeCodeEx.ByteArray) { return "new Byte[] {}"; }
-            else { return String.Empty; }
+            if (typeCode == TypeCodeEx.Int16 || typeCode == TypeCodeEx.Int32 || typeCode == TypeCodeEx.Int64 ||
+                typeCode == TypeCodeEx.Double
+                || typeCode == TypeCodeEx.Decimal || typeCode == TypeCodeEx.Single)
+            {
+                return "0";
+            }
+            else if (typeCode == TypeCodeEx.String)
+            {
+                return "String.Empty";
+            }
+            else if (typeCode == TypeCodeEx.Boolean)
+            {
+                return "false";
+            }
+            else if (typeCode == TypeCodeEx.Byte)
+            {
+                return "0";
+            }
+            else if (typeCode == TypeCodeEx.Object)
+            {
+                return "null";
+            }
+            else if (typeCode == TypeCodeEx.Guid)
+            {
+                return "Guid.Empty";
+            }
+            else if (typeCode == TypeCodeEx.SmartDate)
+            {
+                return "new SmartDate(true)";
+            }
+            else if (typeCode == TypeCodeEx.DateTime)
+            {
+                return "DateTime.Now";
+            }
+            else if (typeCode == TypeCodeEx.Char)
+            {
+                return "Char.MinValue";
+            }
+            else if (typeCode == TypeCodeEx.ByteArray)
+            {
+                return "new Byte[] {}";
+            }
+            else
+            {
+                return String.Empty;
+            }
         }
 
         public virtual string GetInitValue(ValueProperty prop)
@@ -162,8 +197,8 @@ namespace CslaGenerator.CodeGen
         public virtual string GetReaderAssignmentStatement(ValueProperty prop, bool structure)
         {
             if (prop.DeclarationMode == PropertyDeclaration.Managed ||
-                    prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion ||
-                    prop.DeclarationMode == PropertyDeclaration.AutoProperty)
+                prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion ||
+                prop.DeclarationMode == PropertyDeclaration.AutoProperty)
                 return GetDataLoaderStatement(prop);
 
             string statement;
@@ -186,13 +221,13 @@ namespace CslaGenerator.CodeGen
             {
                 if (TypeHelper.IsNullableType(prop.PropertyType))
                     statement += string.Format("!dr.IsDBNull(\"{0}\") ? new {1}(({2}) ",
-                        prop.ParameterName,
-                        GetDataType(prop),
-                        GetDataType(prop.PropertyType));
+                                               prop.ParameterName,
+                                               GetDataType(prop),
+                                               GetDataType(prop.PropertyType));
                 else
                     statement += string.Format("!dr.IsDBNull(\"{0}\") ? ({1}) ",
-                        prop.ParameterName,
-                        GetDataType(prop));
+                                               prop.ParameterName,
+                                               GetDataType(prop));
             }
             statement += "dr.";
 
@@ -223,7 +258,8 @@ namespace CslaGenerator.CodeGen
 
         public bool AllowNull(Property prop)
         {
-            return (GeneratorController.Current.CurrentUnit.GenerationParams.NullableSupport && prop.Nullable && prop.PropertyType != TypeCodeEx.SmartDate);
+            return (GeneratorController.Current.CurrentUnit.GenerationParams.NullableSupport && prop.Nullable &&
+                    prop.PropertyType != TypeCodeEx.SmartDate);
         }
 
         public virtual string GetParameterSet(Property prop, bool criteria)
@@ -306,7 +342,7 @@ namespace CslaGenerator.CodeGen
         protected internal string GetReaderMethod(DbType dataType, Property prop)
         {
             if (prop.Nullable && (TypeHelper.IsNullableType(prop.PropertyType) ||
-                prop.PropertyType == TypeCodeEx.String))
+                                  prop.PropertyType == TypeCodeEx.String))
                 return "GetValue";
 
             return GetReaderMethod(dataType, prop.PropertyType);
@@ -316,24 +352,41 @@ namespace CslaGenerator.CodeGen
         {
             switch (dataType)
             {
-                case DbType.Byte: return "GetByte";
-                case DbType.Int16: return "GetInt16";
-                case DbType.Int32: return "GetInt32";
-                case DbType.Int64: return "GetInt64";
-                case DbType.AnsiStringFixedLength: return "GetChar";
-                case DbType.AnsiString: return "GetString";
-                case DbType.String: return "GetString";
-                case DbType.StringFixedLength: return "GetString";
-                case DbType.Boolean: return "GetBoolean";
-                case DbType.Guid: return "GetGuid";
-                case DbType.Currency: return "GetDecimal";
-                case DbType.Decimal: return "GetDecimal";
+                case DbType.Byte:
+                    return "GetByte";
+                case DbType.Int16:
+                    return "GetInt16";
+                case DbType.Int32:
+                    return "GetInt32";
+                case DbType.Int64:
+                    return "GetInt64";
+                case DbType.AnsiStringFixedLength:
+                    return "GetChar";
+                case DbType.AnsiString:
+                    return "GetString";
+                case DbType.String:
+                    return "GetString";
+                case DbType.StringFixedLength:
+                    return "GetString";
+                case DbType.Boolean:
+                    return "GetBoolean";
+                case DbType.Guid:
+                    return "GetGuid";
+                case DbType.Currency:
+                    return "GetDecimal";
+                case DbType.Decimal:
+                    return "GetDecimal";
                 case DbType.DateTime:
-                case DbType.Date: return (propertyType == TypeCodeEx.SmartDate) ? "GetSmartDate" : "GetDateTime";
-                case DbType.Binary: return "GetValue";
-                case DbType.Single: return "GetFloat";
-                case DbType.Double: return "GetDouble";
-                default: return "GetValue";
+                case DbType.Date:
+                    return (propertyType == TypeCodeEx.SmartDate) ? "GetSmartDate" : "GetDateTime";
+                case DbType.Binary:
+                    return "GetValue";
+                case DbType.Single:
+                    return "GetFloat";
+                case DbType.Double:
+                    return "GetDouble";
+                default:
+                    return "GetValue";
             }
         }
 
@@ -341,21 +394,36 @@ namespace CslaGenerator.CodeGen
         {
             switch (dataType)
             {
-                case TypeCodeEx.Byte: return "GetByte";
-                case TypeCodeEx.Int16: return "GetInt16";
-                case TypeCodeEx.Int32: return "GetInt32";
-                case TypeCodeEx.Int64: return "GetInt64";
-                case TypeCodeEx.String: return "GetString";
-                case TypeCodeEx.Boolean: return "GetBoolean";
-                case TypeCodeEx.Guid: return "GetGuid";
-                case TypeCodeEx.Decimal: return "GetDecimal";
-                case TypeCodeEx.SmartDate: return "GetSmartDate";
-                case TypeCodeEx.DateTime: return "GetDateTime";
-                case TypeCodeEx.ByteArray: return "GetValue";
-                case TypeCodeEx.Single: return "GetFloat";
-                case TypeCodeEx.Double: return "GetDouble";
-                case TypeCodeEx.Char: return "GetChar";
-                default: return "GetValue";
+                case TypeCodeEx.Byte:
+                    return "GetByte";
+                case TypeCodeEx.Int16:
+                    return "GetInt16";
+                case TypeCodeEx.Int32:
+                    return "GetInt32";
+                case TypeCodeEx.Int64:
+                    return "GetInt64";
+                case TypeCodeEx.String:
+                    return "GetString";
+                case TypeCodeEx.Boolean:
+                    return "GetBoolean";
+                case TypeCodeEx.Guid:
+                    return "GetGuid";
+                case TypeCodeEx.Decimal:
+                    return "GetDecimal";
+                case TypeCodeEx.SmartDate:
+                    return "GetSmartDate";
+                case TypeCodeEx.DateTime:
+                    return "GetDateTime";
+                case TypeCodeEx.ByteArray:
+                    return "GetValue";
+                case TypeCodeEx.Single:
+                    return "GetFloat";
+                case TypeCodeEx.Double:
+                    return "GetDouble";
+                case TypeCodeEx.Char:
+                    return "GetChar";
+                default:
+                    return "GetValue";
             }
         }
 
@@ -368,31 +436,55 @@ namespace CslaGenerator.CodeGen
         {
             switch (dataType)
             {
-                case DbType.AnsiString: return "string";
-                case DbType.AnsiStringFixedLength: return "string";
-                case DbType.Binary: return "byte[]";
-                case DbType.Boolean: return "bool";
-                case DbType.Byte: return "byte";
-                case DbType.Currency: return "decimal";
+                case DbType.AnsiString:
+                    return "string";
+                case DbType.AnsiStringFixedLength:
+                    return "string";
+                case DbType.Binary:
+                    return "byte[]";
+                case DbType.Boolean:
+                    return "bool";
+                case DbType.Byte:
+                    return "byte";
+                case DbType.Currency:
+                    return "decimal";
                 case DbType.Date:
-                case DbType.DateTime: return "DateTime";
-                case DbType.Decimal: return "decimal";
-                case DbType.Double: return "double";
-                case DbType.Guid: return "Guid";
-                case DbType.Int16: return "short";
-                case DbType.Int32: return "int";
-                case DbType.Int64: return "long";
-                case DbType.Object: return "object";
-                case DbType.SByte: return "sbyte";
-                case DbType.Single: return "float";
-                case DbType.String: return "string";
-                case DbType.StringFixedLength: return "string";
-                case DbType.Time: return "TimeSpan";
-                case DbType.UInt16: return "ushort";
-                case DbType.UInt32: return "uint";
-                case DbType.UInt64: return "ulong";
-                case DbType.VarNumeric: return "decimal";
-                default: return "__UNKNOWN__" + dataType;
+                case DbType.DateTime:
+                    return "DateTime";
+                case DbType.Decimal:
+                    return "decimal";
+                case DbType.Double:
+                    return "double";
+                case DbType.Guid:
+                    return "Guid";
+                case DbType.Int16:
+                    return "short";
+                case DbType.Int32:
+                    return "int";
+                case DbType.Int64:
+                    return "long";
+                case DbType.Object:
+                    return "object";
+                case DbType.SByte:
+                    return "sbyte";
+                case DbType.Single:
+                    return "float";
+                case DbType.String:
+                    return "string";
+                case DbType.StringFixedLength:
+                    return "string";
+                case DbType.Time:
+                    return "TimeSpan";
+                case DbType.UInt16:
+                    return "ushort";
+                case DbType.UInt32:
+                    return "uint";
+                case DbType.UInt64:
+                    return "ulong";
+                case DbType.VarNumeric:
+                    return "decimal";
+                default:
+                    return "__UNKNOWN__" + dataType;
             }
         }
 
@@ -448,7 +540,7 @@ namespace CslaGenerator.CodeGen
 
         public virtual string GetRelationString(CslaObjectInfo info, ChildProperty child)
         {
-            var indent = new string(' ', IndentLevel * 4);
+            var indent = new string(' ', IndentLevel*4);
 
             var sb = new StringBuilder();
             var childInfo = FindChildInfo(info, child.TypeName);
@@ -486,12 +578,13 @@ namespace CslaGenerator.CodeGen
 
         public virtual string GetXmlCommentString(string xmlComment)
         {
-            var indent = new string(' ', IndentLevel * 4);
+            var indent = new string(' ', IndentLevel*4);
 
             // add leading indent and comment sign
             xmlComment = indent + "/// " + xmlComment;
 
-            return Regex.Replace(xmlComment, Environment.NewLine, Environment.NewLine + indent + "/// ", RegexOptions.Multiline);
+            return Regex.Replace(xmlComment, Environment.NewLine, Environment.NewLine + indent + "/// ",
+                                 RegexOptions.Multiline);
         }
 
         public virtual string GetUsingStatementsString(CslaObjectInfo info)
@@ -535,8 +628,8 @@ namespace CslaGenerator.CodeGen
         {
             var usingList = new List<string>();
 
-            if ((CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
-                CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel))
+            if ((CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.None &&
+                 CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.PropertyLevel))
             {
                 CslaObjectInfo authzInfo = info;
                 if (IsCollectionType(info.ObjectType))
@@ -571,7 +664,8 @@ namespace CslaGenerator.CodeGen
                 {
                     var childInfo = FindChildInfo(info, prop.TypeName);
                     if (childInfo != null)
-                        if (!usingList.Contains(childInfo.ObjectNamespace) && childInfo.ObjectNamespace != info.ObjectNamespace)
+                        if (!usingList.Contains(childInfo.ObjectNamespace) &&
+                            childInfo.ObjectNamespace != info.ObjectNamespace)
                             usingList.Add(childInfo.ObjectNamespace);
                 }
 
@@ -580,7 +674,8 @@ namespace CslaGenerator.CodeGen
                 {
                     var childInfo = FindChildInfo(info, prop.TypeName);
                     if (childInfo != null)
-                        if (!usingList.Contains(childInfo.ObjectNamespace) && childInfo.ObjectNamespace != info.ObjectNamespace)
+                        if (!usingList.Contains(childInfo.ObjectNamespace) &&
+                            childInfo.ObjectNamespace != info.ObjectNamespace)
                             usingList.Add(childInfo.ObjectNamespace);
                 }
 
@@ -589,7 +684,8 @@ namespace CslaGenerator.CodeGen
                 {
                     var childInfo = FindChildInfo(info, prop.TypeName);
                     if (childInfo != null)
-                        if (!usingList.Contains(childInfo.ObjectNamespace) && childInfo.ObjectNamespace != info.ObjectNamespace)
+                        if (!usingList.Contains(childInfo.ObjectNamespace) &&
+                            childInfo.ObjectNamespace != info.ObjectNamespace)
                             usingList.Add(childInfo.ObjectNamespace);
                 }
 
@@ -598,7 +694,8 @@ namespace CslaGenerator.CodeGen
                 {
                     var childInfo = FindChildInfo(info, prop.TypeName);
                     if (childInfo != null)
-                        if (!usingList.Contains(childInfo.ObjectNamespace) && childInfo.ObjectNamespace != info.ObjectNamespace)
+                        if (!usingList.Contains(childInfo.ObjectNamespace) &&
+                            childInfo.ObjectNamespace != info.ObjectNamespace)
                             usingList.Add(childInfo.ObjectNamespace);
                 }
 
@@ -606,7 +703,8 @@ namespace CslaGenerator.CodeGen
             {
                 var childInfo = FindChildInfo(info, info.ItemType);
                 if (childInfo != null)
-                    if (!usingList.Contains(childInfo.ObjectNamespace) && childInfo.ObjectNamespace != info.ObjectNamespace)
+                    if (!usingList.Contains(childInfo.ObjectNamespace) &&
+                        childInfo.ObjectNamespace != info.ObjectNamespace)
                         usingList.Add(childInfo.ObjectNamespace);
             }
 
@@ -614,7 +712,8 @@ namespace CslaGenerator.CodeGen
             {
                 var parentInfo = FindChildInfo(info, info.ParentType);
                 if (parentInfo != null)
-                    if (!usingList.Contains(parentInfo.ObjectNamespace) && parentInfo.ObjectNamespace != info.ObjectNamespace)
+                    if (!usingList.Contains(parentInfo.ObjectNamespace) &&
+                        parentInfo.ObjectNamespace != info.ObjectNamespace)
                         usingList.Add(parentInfo.ObjectNamespace);
             }
 
@@ -630,13 +729,120 @@ namespace CslaGenerator.CodeGen
 
         #endregion
 
+        #region Business and Autorization Rules handling
+
+        public string ReturnRoleList(string parameter)
+        {
+            if (string.IsNullOrWhiteSpace(parameter))
+                return string.Empty;
+
+            parameter = parameter.Replace("\"", "");
+            parameter = parameter.Replace(";", " ");
+            parameter = parameter.Replace("  ", " ");
+            string[] resultSplit = parameter.Split(new[] {' '});
+            string result = string.Empty;
+            for (var i = 0; i < resultSplit.Length; i++)
+            {
+                result += ", \"" + resultSplit[i].Trim() + "\"";
+            }
+
+            return result;
+        }
+
+        private string BuildArrayOrParams(BusinessRuleConstructorParameter parameter, string result)
+        {
+            if (parameter.IsParams)
+                return result;
+
+            if (parameter.Type == "String[]" || parameter.Type == "Int32[]")
+                return "new[] {" + result + "}";
+
+            return "new " + parameter.Type + " {" + result + "}";
+        }
+
         public string ReturnParameterValue(BusinessRuleConstructorParameter parameter)
         {
             string result = ReturnRawParameterValue(parameter);
-            if (parameter.Type.ToLower() == "string" && result != string.Empty)
+            if (parameter.Type == "String" && result != string.Empty)
                 result = "\"" + result.Trim(new[] {'\"'}) + "\"";
-
-            return result;
+            else if (parameter.Type == "String[]" && result != string.Empty)
+            {
+                result = result.Replace("\"", "");
+                string[] resultSplit = result.Split(new[] { ',' });
+                result = string.Empty;
+                var isFirst = true;
+                for (var i = 0; i < resultSplit.Length; i++)
+                {
+                    if (isFirst)
+                        isFirst = false;
+                    else
+                        result += ", ";
+                    result += "\"" + resultSplit[i] + "\"";
+                }
+                result = BuildArrayOrParams(parameter, result);
+            }
+            else if (parameter.Type.LastIndexOf("[]") == parameter.Type.Length -2 && result != string.Empty)
+            {
+                string[] resultSplit = result.Split(new[] { ',' });
+                result = string.Empty;
+                var isFirst = true;
+                for (var i = 0; i < resultSplit.Length; i++)
+                {
+                    if (isFirst)
+                        isFirst = false;
+                    else
+                        result += ", ";
+                    result += resultSplit[i];
+                }
+                result = BuildArrayOrParams(parameter, result);
+            }
+            else if (parameter.Type == "List<String>" && result != string.Empty)
+            {
+                result = result.Replace("\"", "");
+                string[] resultSplit = result.Split(new[] { ',' });
+                result = string.Empty;
+                var isFirst = true;
+                for (var i = 0; i < resultSplit.Length; i++)
+                {
+                    if (isFirst)
+                        isFirst = false;
+                    else
+                        result += ", ";
+                    result += "\"" + resultSplit[i] + "\"";
+                }
+                result = "new List<string> {" + result + "}";
+            }
+            else if (parameter.Type == "List<Int32>" && result != string.Empty)
+            {
+                string[] resultSplit = result.Split(new[] { ',' });
+                result = string.Empty;
+                var isFirst = true;
+                for (var i = 0; i < resultSplit.Length; i++)
+                {
+                    if (isFirst)
+                        isFirst = false;
+                    else
+                        result += ", ";
+                    result += resultSplit[i];
+                }
+                result = "new List<int> {" + result + "}";
+            }
+            else if (parameter.Type.IndexOf("List<") == 0 && result != string.Empty)
+            {
+                string[] resultSplit = result.Split(new[] {','});
+                result = string.Empty;
+                var isFirst = true;
+                for (var i = 0; i < resultSplit.Length; i++)
+                {
+                    if (isFirst)
+                        isFirst = false;
+                    else
+                        result += ", ";
+                    result += resultSplit[i];
+                    result = "new " + parameter.Type + " {" + result + "}";
+                }
+            }
+            return result.Trim();
         }
 
         public string ReturnRawParameterValue(BusinessRuleConstructorParameter parameter)
@@ -650,10 +856,71 @@ namespace CslaGenerator.CodeGen
         public string ReturnPropertyValue(BusinessRuleProperty property)
         {
             string result = ReturnRawPropertyValue(property);
-            if (property.Type.ToLower() == "string" && result != string.Empty)
+            if (property.Type == "String" && result != string.Empty)
                 result = "\"" + result.Trim(new[] {'\"'}) + "\"";
+            else if (property.Type == "String[]" && result != string.Empty)
+            {
+                result = result.Replace("\"", "");
+                string[] resultSplit = result.Split(new[] { ',' });
+                result = string.Empty;
+                var isFirst = true;
+                for (var i = 0; i < resultSplit.Length; i++)
+                {
+                    if (isFirst)
+                        isFirst = false;
+                    else
+                        result += ", ";
+                    result += "\"" + resultSplit[i] + "\"";
+                }
+            }
+            else if (property.Type == "List<String>" && result != string.Empty)
+            {
+                result = result.Replace("\"", "");
+                string[] resultSplit = result.Split(new[] { ',' });
+                result = string.Empty;
+                var isFirst = true;
+                for (var i = 0; i < resultSplit.Length; i++)
+                {
+                    if (isFirst)
+                        isFirst = false;
+                    else
+                        result += ", ";
+                    result += "\"" + resultSplit[i] + "\"";
+                }
+                result = "new List<string> {" + result + "}";
+            }
+            else if (property.Type == "List<Int32>" && result != string.Empty)
+            {
+                string[] resultSplit = result.Split(new[] { ',' });
+                result = string.Empty;
+                var isFirst = true;
+                for (var i = 0; i < resultSplit.Length; i++)
+                {
+                    if (isFirst)
+                        isFirst = false;
+                    else
+                        result += ", ";
+                    result += resultSplit[i];
+                    result = "new List<int> {" + result + "}";
+                }
+            }
+            else if (property.Type.Contains("List<") && result != string.Empty)
+            {
+                string[] resultSplit = result.Split(new[] { ',' });
+                result = string.Empty;
+                var isFirst = true;
+                for (var i = 0; i < resultSplit.Length; i++)
+                {
+                    if (isFirst)
+                        isFirst = false;
+                    else
+                        result += ", ";
+                    result += resultSplit[i];
+                    result = "new " + property.Type + " {" + result + "}";
+                }
+            }
 
-            return result;
+            return result.Trim();
         }
 
         public string ReturnRawPropertyValue(BusinessRuleProperty property)
@@ -664,7 +931,7 @@ namespace CslaGenerator.CodeGen
             return property.Value.ToString();
         }
 
-        public string ReturnPropertyValue(BusinessRule rule, PropertyInfo property)
+        public string ReturnPropertyValue(IBusinessRule rule, PropertyInfo property)
         {
             string result = ReturnRawPropertyValue(rule, property);
             if (property.Name == "Severity")
@@ -679,7 +946,7 @@ namespace CslaGenerator.CodeGen
             return result;
         }
 
-        public string ReturnRawPropertyValue(BusinessRule rule, PropertyInfo property)
+        public string ReturnRawPropertyValue(IBusinessRule rule, PropertyInfo property)
         {
             object value = property.GetValue(rule, null);
             if (value == null)
@@ -725,100 +992,116 @@ namespace CslaGenerator.CodeGen
             return false;
         }
 
-        public void TestRules(CslaObjectInfo Info)
+        /*public void TestRules(CslaObjectInfo Info)
         {
+            bool generateRuleRegion = false;
+            bool generateAuthRegion = false;
+
             string resultRule = string.Empty;
             string resultConstructor = string.Empty;
             string resultProperties = string.Empty;
-            bool primaryOnCtor = false;
 
             HaveBusinessRulesCollection allRulesProperties = new HaveBusinessRulesCollection();
             allRulesProperties.AddRange(Info.AllValueProperties); // ValueProperties and ConvertValueProperties
             allRulesProperties.AddRange(Info.InheritedValueProperties); // InheritedValueProperties
             // ChildProperties, ChildCollectionProperties, InheritedChildProperties, InheritedChildCollectionProperties
             allRulesProperties.AddRange(Info.GetAllChildProperties());
-
             foreach (IHaveBusinessRules rulableProperty in allRulesProperties)
             {
                 if (rulableProperty.BusinessRules.Count > 0)
-                    Response.Write(new string(' ', 12) + "//" + rulableProperty.Name + Environment.NewLine);
-
-                foreach (BusinessRule rule in rulableProperty.BusinessRules)
                 {
-                    string backupRuleType = rule.Type;
-                    resultConstructor = string.Empty;
-                    resultProperties = string.Empty;
-                    primaryOnCtor = false;
-                    bool isFirst = true;
-                    bool isFirstGeneric = true;
-
-                    // Constructors and ConstructorParameters
-                    foreach (BusinessRuleConstructor constructor in rule.Constructors)
+                    generateRuleRegion = true;
+                }
+                if (CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.None &&
+                    CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.ObjectLevel)
+                {
+                    if (CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider ||
+                        rulableProperty.AuthzProvider != AuthorizationProvider.Custom)
                     {
-                        if (constructor.IsActive)
+                        if (!String.IsNullOrWhiteSpace(rulableProperty.ReadRoles) ||
+                            !String.IsNullOrWhiteSpace(rulableProperty.WriteRoles))
                         {
-                            foreach (BusinessRuleConstructorParameter parameter in constructor.ConstructorParameters)
+                            generateAuthRegion = true;
+                        }
+                    }
+                    else if (rulableProperty.ReadAuthzRuleType.Constructors.Count > 0 ||
+                             rulableProperty.WriteAuthzRuleType.Constructors.Count > 0)
+                    {
+                        generateAuthRegion = true;
+                    }
+                }
+                if (generateRuleRegion || generateAuthRegion)
+                    break;
+            }
+
+            #region Business Rules
+
+            if (generateRuleRegion)
+            {
+                Response.WriteLine(Environment.NewLine + new string(' ', 12) + "// Business Rules" + Environment.NewLine);
+                bool primaryOnCtor = false;
+                foreach (IHaveBusinessRules rulableProperty in allRulesProperties)
+                {
+                    if (rulableProperty.BusinessRules.Count > 0)
+                        Response.WriteLine(new string(' ', 12) + "//" + rulableProperty.Name);
+
+                    foreach (BusinessRule rule in rulableProperty.BusinessRules)
+                    {
+                        string backupRuleType = rule.Type;
+                        foreach (string ns in Info.Namespaces)
+                        {
+                            string nameSpace = ns + '.';
+                            if (backupRuleType.IndexOf(nameSpace) == 0 &&
+                                backupRuleType.Substring(nameSpace.Length).IndexOf('.') == -1)
                             {
-                                if (isFirst)
-                                    isFirst = false;
-                                else
-                                    resultConstructor += ", ";
-                                if (parameter.Name == "primaryProperty")
+                                backupRuleType = backupRuleType.Substring(nameSpace.Length);
+                                break;
+                            }
+                        }
+                        resultConstructor = string.Empty;
+                        resultProperties = string.Empty;
+                        primaryOnCtor = false;
+                        bool isFirst = true;
+                        bool isFirstGeneric = true;
+
+                        // Constructors and ConstructorParameters
+                        foreach (BusinessRuleConstructor constructor in rule.Constructors)
+                        {
+                            if (constructor.IsActive)
+                            {
+                                foreach (BusinessRuleConstructorParameter parameter in constructor.ConstructorParameters
+                                    )
                                 {
-                                    resultConstructor += FormatPropertyInfoName(ReturnRawParameterValue(parameter));
-                                    primaryOnCtor = true;
-                                }
-                                else
-                                {
-                                    if (parameter.IsGenericType)
+                                    if (isFirst)
+                                        isFirst = false;
+                                    else
+                                        resultConstructor += ", ";
+                                    if (parameter.Type == "IPropertyInfo")
                                     {
-                                        backupRuleType = backupRuleType.Replace(parameter.Type, GetDataType(parameter.GenericType));
-                                        if (isFirstGeneric)
-                                            isFirstGeneric = false;
-                                        else
-                                            backupRuleType = backupRuleType.Replace(",", ", ");
+                                        resultConstructor += FormatPropertyInfoName(ReturnRawParameterValue(parameter));
+                                        primaryOnCtor = true;
                                     }
-                                    resultConstructor += ReturnParameterValue(parameter);
+                                    else
+                                    {
+                                        if (parameter.IsGenericType)
+                                        {
+                                            backupRuleType = backupRuleType.Replace(parameter.Type, GetDataType(parameter.GenericType));
+                                            if (isFirstGeneric)
+                                                isFirstGeneric = false;
+                                            else
+                                                backupRuleType = backupRuleType.Replace(",", ", ");
+                                        }
+                                        resultConstructor += ReturnParameterValue(parameter);
+                                    }
                                 }
                             }
                         }
-                    }
 
-                    // RuleProperties
-                    isFirst = true;
-                    foreach (BusinessRuleProperty property in rule.RuleProperties)
-                    {
-                        if (property.Name == "primaryProperty")
+                        // RuleProperties
+                        isFirst = true;
+                        foreach (BusinessRuleProperty property in rule.RuleProperties)
                         {
-                            if (primaryOnCtor)
-                                continue;
-                            if (isFirst)
-                                isFirst = false;
-                            else
-                                resultProperties += ", ";
-                            resultProperties += property.Name + " = " + FormatPropertyInfoName(ReturnRawPropertyValue(property));
-                        }
-                        else
-                        {
-                            string stringValue = ReturnPropertyValue(property);
-                            if (stringValue == string.Empty)
-                                continue;
-
-                            if (isFirst)
-                                isFirst = false;
-                            else
-                                resultProperties += ", ";
-                            resultProperties += property.Name + " = " + stringValue;
-                        }
-                    }
-
-                    // BaseRuleProperties
-                    PropertyInfo[] ruleProps = typeof(BusinessRule).GetProperties();
-                    foreach (PropertyInfo property in ruleProps)
-                    {
-                        if (rule.BaseRuleProperties.Contains(property.Name))
-                        {
-                            if (property.Name == "PrimaryProperty")
+                            if (property.Type == "IPropertyInfo")
                             {
                                 if (primaryOnCtor)
                                     continue;
@@ -826,13 +1109,12 @@ namespace CslaGenerator.CodeGen
                                     isFirst = false;
                                 else
                                     resultProperties += ", ";
-
-                                resultProperties += property.Name + " = " + FormatPropertyInfoName(ReturnRawPropertyValue(rule, property));
+                                resultProperties += property.Name + " = " + FormatPropertyInfoName(ReturnRawPropertyValue(property));
                             }
                             else
                             {
-                                string stringValue = ReturnPropertyValue(rule, property);
-                                if (IsBaseRulePropertyDefault(property.Name, stringValue))
+                                string stringValue = ReturnPropertyValue(property);
+                                if (stringValue == string.Empty)
                                     continue;
 
                                 if (isFirst)
@@ -842,16 +1124,266 @@ namespace CslaGenerator.CodeGen
                                 resultProperties += property.Name + " = " + stringValue;
                             }
                         }
+
+                        // BaseRuleProperties
+                        if (rule.BaseRuleProperties.Count > 0)
+                        {
+                            PropertyInfo[] ruleProps = typeof (BusinessRule).GetProperties();
+                            foreach (PropertyInfo property in ruleProps)
+                            {
+                                if (rule.BaseRuleProperties.Contains(property.Name))
+                                {
+                                    if (property.Name == "PrimaryProperty")
+                                    {
+                                        if (primaryOnCtor)
+                                            continue;
+                                        if (isFirst)
+                                            isFirst = false;
+                                        else
+                                            resultProperties += ", ";
+
+                                        resultProperties += property.Name + " = " +
+                                                            FormatPropertyInfoName(ReturnRawPropertyValue(rule, property));
+                                    }
+                                    else
+                                    {
+                                        string stringValue = ReturnPropertyValue(rule, property);
+                                        if (IsBaseRulePropertyDefault(property.Name, stringValue))
+                                            continue;
+
+                                        if (isFirst)
+                                            isFirst = false;
+                                        else
+                                            resultProperties += ", ";
+                                        resultProperties += property.Name + " = " + stringValue;
+                                    }
+                                }
+                            }
+                        }
+
+                        if (resultProperties != string.Empty)
+                            resultProperties = " { " + resultProperties + " }";
+
+                        resultRule = "BusinessRules.AddRule(new " + backupRuleType + "(" + resultConstructor + ")" + resultProperties + ")" + ";";
+                        Response.WriteLine(resultRule);
                     }
-
-                    if (resultProperties != string.Empty)
-                        resultProperties = " { " + resultProperties + " }";
-
-                    resultRule = "BusinessRules.AddRule(new " + backupRuleType + "(" + resultConstructor + ")" + resultProperties + ")" + ";";
-                    Response.Write(resultRule + Environment.NewLine);
                 }
             }
-        }
+
+            #endregion
+
+            #region Authorization Rules
+
+            if (generateAuthRegion)
+            {
+                Response.WriteLine(Environment.NewLine + new string(' ', 12) + "// Authorization Rules" + Environment.NewLine);
+                AuthorizationRule authzRule;
+                foreach (IHaveBusinessRules rulableProperty in allRulesProperties)
+                {
+                    if (CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider ||
+                        rulableProperty.AuthzProvider != AuthorizationProvider.Custom)
+                    {
+                        if (!String.IsNullOrWhiteSpace(rulableProperty.ReadRoles) ||
+                            !String.IsNullOrWhiteSpace(rulableProperty.WriteRoles))
+                        {
+                            Response.WriteLine(new string(' ', 12) + "//" + rulableProperty.Name);
+                            if (CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider ||
+                                rulableProperty.AuthzProvider == AuthorizationProvider.IsInRole)
+                            {
+                                resultRule = "BusinessRules.AddRule(typeof(" + Info.ObjectName + "), new IsInRole(AuthorizationActions.ReadProperty" + ReturnRoleList(rulableProperty.ReadRoles) +"));";
+                                Response.Write(resultRule + Environment.NewLine);
+                            }
+                            else
+                            {
+                                resultRule = "BusinessRules.AddRule(typeof(" + Info.ObjectName + "), new IsNotInRole(AuthorizationActions.ReadProperty" + ReturnRoleList(rulableProperty.ReadRoles) + "));";
+                                Response.Write(resultRule + Environment.NewLine);
+                            }
+                        }
+                    }
+                    else if (rulableProperty.ReadAuthzRuleType.Constructors.Count > 0 ||
+                             rulableProperty.WriteAuthzRuleType.Constructors.Count > 0)
+                    {
+                        Response.WriteLine(new string(' ', 12) + "//" + rulableProperty.Name);
+                        if (!string.IsNullOrWhiteSpace(rulableProperty.ReadAuthzRuleType.Type))
+                        {
+                            authzRule = rulableProperty.ReadAuthzRuleType;
+                            //%><!-- #include file="AuthorizationRules.asp" --><%
+                            BuildAuthzRule(Info, authzRule);
+                        }
+                        if (!string.IsNullOrWhiteSpace(rulableProperty.WriteAuthzRuleType.Type))
+                        {
+                            authzRule = rulableProperty.WriteAuthzRuleType;
+                            //%><!-- #include file="AuthorizationRules.asp" --><%
+                            BuildAuthzRule(Info, authzRule);
+                        }
+                    }
+                }
+            }
+
+            #endregion
+
+        }*/
+
+        /*public void BuildAuthzRule(CslaObjectInfo Info, AuthorizationRule authzRule)
+        {
+            string backupRuleType = authzRule.Type;
+            foreach (string ns in Info.Namespaces)
+            {
+                string nameSpace = ns + '.';
+                if (backupRuleType.IndexOf(nameSpace) == 0)
+                {
+                    backupRuleType = backupRuleType.Substring(nameSpace.Length);
+                    break;
+                }
+            }
+            string resultRule = string.Empty;
+            string resultConstructor = string.Empty;
+            string resultProperties = string.Empty;
+            bool isFirst = true;
+            bool isFirstGeneric = true;
+            bool actionOnCtor = false;
+            bool elementOnCtor = false;
+
+            // Constructors and ConstructorParameters
+            foreach (BusinessRuleConstructor constructor in authzRule.Constructors)
+            {
+                if (constructor.IsActive)
+                {
+                    foreach (BusinessRuleConstructorParameter parameter in constructor.ConstructorParameters)
+                    {
+                        if (parameter.Type == "IMemberInfo")
+                        {
+                            if (isFirst)
+                                isFirst = false;
+                            else
+                                resultConstructor += ", ";
+                            resultConstructor += FormatPropertyInfoName(ReturnRawParameterValue(parameter));
+                            elementOnCtor = true;
+                        }
+                        else if (parameter.Type == "AuthorizationActions")
+                        {
+                            if (isFirst)
+                                isFirst = false;
+                            else
+                                resultConstructor += ", ";
+                            resultConstructor += "AuthorizationActions." + ReturnRawParameterValue(parameter);
+                            actionOnCtor = true;
+                        }
+                        else
+                        {
+                            if (parameter.IsGenericType)
+                            {
+                                backupRuleType = backupRuleType.Replace(parameter.Type, GetDataType(parameter.GenericType));
+                                if (isFirstGeneric)
+                                    isFirstGeneric = false;
+                                else
+                                    backupRuleType = backupRuleType.Replace(",", ", ");
+                            }
+
+                            string stringValue = ReturnParameterValue(parameter);
+                            if (stringValue == string.Empty)
+                                continue;
+                            if (isFirst)
+                                isFirst = false;
+                            else
+                                resultConstructor += ", ";
+
+                            resultConstructor += stringValue;
+                        }
+                    }
+                }
+            }
+
+            // RuleProperties
+            isFirst = true;
+            foreach (BusinessRuleProperty property in authzRule.RuleProperties)
+            {
+                if (property.Type == "IMemberInfo")
+                {
+                    if (elementOnCtor)
+                        continue;
+                    if (isFirst)
+                        isFirst = false;
+                    else
+                        resultProperties += ", ";
+                    resultProperties += property.Name + " = " + FormatPropertyInfoName(ReturnRawPropertyValue(property));
+                }
+                else if (property.Type == "AuthorizationActions")
+                {
+                    if (actionOnCtor)
+                        continue;
+                    if (isFirst)
+                        isFirst = false;
+                    else
+                        resultProperties += ", ";
+                    resultProperties += property.Name + " = " + FormatPropertyInfoName(ReturnRawPropertyValue(property));
+                }
+                else
+                {
+                    string stringValue = ReturnPropertyValue(property);
+                    if (stringValue == string.Empty)
+                        continue;
+
+                    if (isFirst)
+                        isFirst = false;
+                    else
+                        resultProperties += ", ";
+                    resultProperties += property.Name + " = " + stringValue;
+                }
+            }
+
+            // BaseRuleProperties
+            if (authzRule.BaseRuleProperties.Count > 0)
+            {
+                PropertyInfo[] ruleProps = typeof (AuthorizationRule).GetProperties();
+                foreach (PropertyInfo property in ruleProps)
+                {
+                    if (authzRule.BaseRuleProperties.Contains(property.Name))
+                    {
+                        if (property.Name == "Element")
+                        {
+                            if (elementOnCtor)
+                                continue;
+                            if (isFirst)
+                                isFirst = false;
+                            else
+                                resultProperties += ", ";
+                            resultProperties += property.Name + " = " + FormatPropertyInfoName(ReturnRawPropertyValue(authzRule, property));
+                        }
+                        else if (property.Name == "Action")
+                        {
+                            if (actionOnCtor)
+                                continue;
+                            if (isFirst)
+                                isFirst = false;
+                            else
+                                resultProperties += ", ";
+                            resultProperties += property.Name + " = " + FormatPropertyInfoName(ReturnRawPropertyValue(authzRule, property));
+                        }
+                        else
+                        {
+                            string stringValue = ReturnPropertyValue(authzRule, property);
+                            if (IsBaseRulePropertyDefault(property.Name, stringValue))
+                                continue;
+
+                            if (isFirst)
+                                isFirst = false;
+                            else
+                                resultProperties += ", ";
+                            resultProperties += property.Name + " = " + stringValue;
+                        }
+                    }
+                }
+            }
+
+            if (resultProperties != string.Empty)
+                resultProperties = " { " + resultProperties + " }";
+
+            resultRule = "BusinessRules.AddRule(typeof(" + Info.ObjectName + "), new " + backupRuleType + "(" + resultConstructor + ")" + resultProperties + ")" + ";";
+            Response.Write(resultRule + Environment.NewLine);
+        }*/
+
+        #endregion
 
         #region Query Object Metadata
 

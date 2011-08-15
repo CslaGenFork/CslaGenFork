@@ -10,30 +10,34 @@ namespace CslaGenerator.Metadata
     {
         public static string Tidy(string prop)
         {
-            return prop.Trim().Replace("  ", " ").Replace("\r", "").Replace("\n", "").Replace(" ", "_");
+            prop = TidyAllowSpaces(prop);
+            return prop.Replace(" ", "_");
         }
 
         public static string[] Tidy(string[] propArray)
         {
             for (var item = 0; item < propArray.Length; item++)
             {
-                propArray[item] = propArray[item].Trim().Replace("  ", " ").Replace("\r", "").Replace("\n", "").Replace(" ", "_");
-                
+                propArray[item] = Tidy(propArray[item]);
             }
             return propArray;
         }
 
         public static string TidyAllowSpaces(string prop)
         {
-            return prop.Trim().Replace("  ", " ").Replace("\r", "").Replace("\n", "");
+            prop = prop.Trim().Replace("\r", "").Replace("\n", "");
+            while (prop.Contains("  "))
+            {
+                prop = prop.Replace("  ", " ");
+            }
+            return prop;
         }
 
         public static string[] TidyAllowSpaces(string[] propArray)
         {
             for (var item = 0; item < propArray.Length; item++)
             {
-                propArray[item] = propArray[item].Trim().Replace("  ", " ").Replace("\r", "").Replace("\n", "");
-
+                propArray[item] = TidyAllowSpaces(propArray[item]);
             }
             return propArray;
         }
@@ -45,7 +49,7 @@ namespace CslaGenerator.Metadata
 
         public static string TidyInteger(string prop)
         {
-            return Regex.Replace(prop, @"\D+","",RegexOptions.Singleline);
+            return Regex.Replace(prop, @"\D+", "", RegexOptions.Singleline);
         }
 
         public static string SplitOnCaps(string name)
@@ -58,6 +62,5 @@ namespace CslaGenerator.Metadata
             }
             return string.Join(" ", parts).Replace("_ ", " ");
         }
-
     }
 }

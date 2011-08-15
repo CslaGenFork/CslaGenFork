@@ -70,7 +70,7 @@ if (Errors.Length == 0)
     %>
 <!-- #include file="Constructor.asp" -->
 <!-- #include file="Criteria.asp" -->
-<!-- #include file="SharedAuthorizationMethods.asp" -->
+<!-- #include file="ObjectAuthorizationMethods.asp" -->
 <!-- #include file="BusinessRules.asp" -->
 <!-- #include file="ConvertProperties.asp" -->
 <%
@@ -82,7 +82,7 @@ if (Errors.Length == 0)
         }
         if (!genOptional)
         {
-            Response.Write("abb" + Environment.NewLine);
+            Response.Write(Environment.NewLine);
         }
         %>
 <!-- #include file="EditableRoot_DataPortal.asp" -->

@@ -20,7 +20,7 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
                 {
                     if (string.IsNullOrEmpty(c.Properties[i].ParameterValue))
                     {
-                        Errors.Append("Property: " + c.Properties[i].Name + " on criteria: " + c.Name + " must have a ParameterValue. Ignored." + Environment.NewLine);
+                        Errors.Append("Property: " + c.Properties[i].Name + " on criteria: " + c.Name + " must have a ParameterValue. Add it or remove the Criteria Property." + Environment.NewLine);
                         return;
                     }
                     else
@@ -44,8 +44,8 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
         public static <%= Info.ObjectName %> Get<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>()
         {
             <%
-                if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
-                    CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel &&
+                if (CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.None &&
+                    CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.PropertyLevel &&
                     Info.GetRoles.Trim() != String.Empty)
                 {
                     %>if (!CanGetObject())

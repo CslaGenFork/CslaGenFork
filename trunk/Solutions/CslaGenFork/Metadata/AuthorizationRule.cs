@@ -11,11 +11,11 @@ using CslaGenerator.Design;
 namespace CslaGenerator.Metadata
 {
     /// <summary>
-    /// Summary description for BusinessRule for Rules 4
+    /// Summary description for AuthorizationRule for Rules 4
     /// </summary>
     [Serializable]
     [DefaultProperty("AssemblyFile")]
-    public class BusinessRule : ICloneable, IBusinessRule
+    public class AuthorizationRule : ICloneable, IBusinessRule
     {
         #region Private Fields
 
@@ -27,18 +27,8 @@ namespace CslaGenerator.Metadata
         private List<string> _baseRuleProperties = new List<string>();
         private BusinessRuleConstructorCollection _constructors = new BusinessRuleConstructorCollection();
         private BusinessRulePropertyCollection _ruleProperties = new BusinessRulePropertyCollection();
-        private PropertyCollection _affectedProperties;
-        private PropertyCollection _inputProperties;
-        private bool _isAsync;
-        private bool _provideTargetWhenAsync;
-        private int _priority;
-        private BusinessRuleRunModes _runModes = BusinessRuleRunModes.Default;
-        private RuleSeverity _severity = RuleSeverity.Error;
-        private bool _canRunAsAffectedProperty = true;
-        private bool _canRunInCheckRules = true;
-        private bool _canRunOnServer = true;
-        private string _messageDelegate;
-        private string _messageText;
+        private AuthorizationActions _actionProperty;
+        private bool _cacheResult;
 
         #endregion
 
@@ -48,6 +38,14 @@ namespace CslaGenerator.Metadata
         {
             get { return _parent; }
             set { _parent = value; }
+        }
+
+        [Browsable(false)]
+        [XmlIgnore]
+        public AuthorizationActions ActionProperty
+        {
+            get { return _actionProperty; }
+            set { _actionProperty = value; }
         }
 
         [Browsable(false)]
@@ -61,7 +59,7 @@ namespace CslaGenerator.Metadata
 
         [Category("01. Definition")]
         [Description("This is used for usability purposes only.")]
-        [UserFriendlyName("Business Rule Name")]
+        [UserFriendlyName("Authorization Rule Name")]
         public string Name
         {
             get
@@ -85,9 +83,8 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Definition")]
-        [Description("Business Rule Type defined in this CslaGenFork project. Unsupported at this time.")]
+        [Description("Authorization Rule Type defined in this CslaGenFork project.")]
         [UserFriendlyName("Internal project Type Name")]
-        [ReadOnly(true)]
         public string ObjectName
         {
             get { return _objectName; }
@@ -114,7 +111,6 @@ namespace CslaGenerator.Metadata
         [Category("01. Definition")]
         [Description("The assembly file full path.")]
         [Editor(typeof (AssemblyFileNameEditor), typeof (UITypeEditor))]
-        // [TypeConverter(typeof(AssemblyFileConverter))]
         [UserFriendlyName("Assembly File Name")]
         public string AssemblyFile
         {
@@ -133,8 +129,8 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Definition")]
-        [Editor(typeof (BusinessRuleTypeEditor), typeof (UITypeEditor))]
-        [Description("Business Rule Type defined in Assembly. Abstract classes are excluded from the list.")]
+        [Editor(typeof(AuthorizationRuleTypeEditor), typeof(UITypeEditor))]
+        [Description("Authorization Rule Type defined in Assembly. Abstract classes are excluded from the list.")]
         [UserFriendlyName("Rule Type Name")]
         public string Type
         {
@@ -159,12 +155,12 @@ namespace CslaGenerator.Metadata
 
         #endregion
 
-        #region 02. Business Rule Constructors
+        #region 02. Authorization Rule Constructors
 
-        [Category("02. Business Rule Constructors")]
-        [Description("The constructors for the Business Rule.")]
+        [Category("02. Authorization Rule Constructors")]
+        [Description("The constructors for the Authorization Rule.")]
         [Editor(typeof(PropertyCollectionForm), typeof(UITypeEditor))]
-        [UserFriendlyName("Business Rule Constructors")]
+        [UserFriendlyName("Authorization Rule Constructors")]
         public BusinessRuleConstructorCollection Constructors
         {
             get { return _constructors; }
@@ -198,7 +194,7 @@ namespace CslaGenerator.Metadata
 
         #endregion
 
-        #region 03. Business Rule Options
+        #region 03. Authorization Rule Options
 
         public BusinessRulePropertyCollection RuleProperties
         {
@@ -238,13 +234,13 @@ namespace CslaGenerator.Metadata
 
         #endregion
 
-        #region 04. Base Business Rule Options
+        #region 04. Base Authorization Rule Options
 
-        [Category("04. Base Business Rule Options")]
-        [Description("The primary property affected by this rule.")]
-        [UserFriendlyName("Primary Property of the Rule")]
+        [Category("04. Base Authorization Rule Options")]
+        [Description("The element (property or object Type) affected by this rule.")]
+        [UserFriendlyName("Element Name")]
         [ReadOnly(true)]
-        public string PrimaryProperty
+        public string Element
         {
             get
             {
@@ -254,124 +250,30 @@ namespace CslaGenerator.Metadata
                 return string.Empty;
             }
         }
-        
-        [Category("04. Base Business Rule Options")]
-        [Description("The severity for this rule: Information, Warning or Error.")]
-        [UserFriendlyName("Rule Severity")]
-        public RuleSeverity Severity
+
+        [Category("04. Base Authorization Rule Options")]
+        [Description("Whether the results of this rule can be cached at the business object level.")]
+        [UserFriendlyName("Cache Result")]
+        [ReadOnly(true)]
+        public bool CacheResult
         {
-            get { return _severity; }
-            set { _severity = value; }
+            get { return _cacheResult; }
         }
 
-        [Category("04. Base Business Rule Options")]
-        [Description("The error message constant as a string.")]
-        [UserFriendlyName("Message Text")]
-        public string MessageText
+        [Category("04. Base Authorization Rule Options")]
+        [Description("The authorization action this rule will enforce.")]
+        [UserFriendlyName("Action")]
+        [ReadOnly(true)]
+        public string Action
         {
-            get { return _messageText; }
-            set { _messageText = value; }
-        }
+            get
+            {
+                if (!string.IsNullOrEmpty(_actionProperty.ToString()))
+                    return _actionProperty.ToString();
 
-        [Category("04. Base Business Rule Options")]
-        [Description("The error message constant as a Func<string> type. Use this for localizable messages from a resource file.")]
-        [UserFriendlyName("Message Delegate")]
-        public string MessageDelegate
-        {
-            get { return _messageDelegate; }
-            set { _messageDelegate = value; }
+                return string.Empty;
+            }
         }
-
-        [Category("04. Base Business Rule Options")]
-        [Description("Whether this instance can run as affected property.")]
-        [UserFriendlyName("Can Run as Affected Property")]
-        public bool CanRunAsAffectedProperty
-        {
-            get { return _canRunAsAffectedProperty; }
-            set { _canRunAsAffectedProperty = value; }
-        }
-
-        [Category("04. Base Business Rule Options")]
-        [Description("Whether this instance can run in logical Server side Data Portal.")]
-        [UserFriendlyName("Can Run on Server")]
-        public bool CanRunOnServer
-        {
-            get { return _canRunOnServer; }
-            set { _canRunOnServer = value; }
-        }
-
-        [Category("04. Base Business Rule Options")]
-        [Description("Whether this instance can run when CheckRules is called on BO.")]
-        [UserFriendlyName("Can Run in CheckRules")]
-        public bool CanRunInCheckRules
-        {
-            get { return _canRunInCheckRules; }
-            set { _canRunInCheckRules = value; }
-        }
-
-        [Category("04. Base Business Rule Options")]
-        [Description("The rule priority (0 executes before 1, etc).")]
-        [UserFriendlyName("Rule Priority")]
-        public int Priority
-        {
-            get { return _priority; }
-            set { _priority = value; }
-        }
-
-        [Category("04. Base Business Rule Options")]
-        [Description("How rule will run in context.")]
-        [UserFriendlyName("Run Mode")]
-        public BusinessRuleRunModes RunMode
-        {
-            get { return _runModes; }
-            set { _runModes = value; }
-        }
-
-        #region Unknown status
-
-        [Category("04. Base Business Rule Options")]
-        [Editor(typeof(InputPropertyCollectionEditor), typeof(UITypeEditor))]
-        [Description("List of properties affected by this rule."+
-            " Rules for these properties are executed after rules for the primaryproperty.")]
-        [TypeConverter(typeof(PropertyCollectionConverter))]
-        [UserFriendlyName("Affected Properties Collection")]
-        public PropertyCollection AffectedProperties 
-        {
-            get { return _affectedProperties; }
-            set { _affectedProperties = value; }
-        }
-
-        [Category("04. Base Business Rule Options")]
-        [Editor(typeof(InputPropertyCollectionEditor), typeof(UITypeEditor))]
-        [Description("List of secondary property values to be supplied to the rule when it is executed.")]
-        [TypeConverter(typeof(PropertyCollectionConverter))]
-        [UserFriendlyName("Input Properties Collection")]
-        public PropertyCollection InputProperties
-        {
-            get { return _inputProperties; }
-            set { _inputProperties = value; }
-        }
-
-        [Category("04. Base Business Rule Options")]
-        [Description("Whether the rule will run on a background thread.")]
-        [UserFriendlyName("Is Business Rule Async")]
-        public bool IsAsync 
-        {
-            get { return _isAsync; }
-            set { _isAsync = value; }
-        }
-
-        [Category("04. Base Business Rule Options")]
-        [Description("Whether the Target property should be set even for an async rule" +
-                     " (note that using Target from a background thread will cause major problems).")]
-        [UserFriendlyName("Provide Target When Async")]
-        public bool ProvideTargetWhenAsync
-        {
-            get { return _provideTargetWhenAsync; }
-            set { _provideTargetWhenAsync = value; }
-        }
-        
-        #endregion
 
         #endregion
 
@@ -403,10 +305,10 @@ namespace CslaGenerator.Metadata
         public object Clone()
         {
             var buffer = new MemoryStream();
-            var ser = new XmlSerializer(typeof(BusinessRule));
+            var ser = new XmlSerializer(typeof(AuthorizationRule));
             ser.Serialize(buffer, this);
             buffer.Position = 0;
-            var result = (BusinessRule)ser.Deserialize(buffer);
+            var result = (AuthorizationRule)ser.Deserialize(buffer);
             return result;
         }
     }

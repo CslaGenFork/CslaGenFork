@@ -1,9 +1,9 @@
 ﻿namespace CslaGenerator.Metadata
 {
     /// <summary>
-    /// Authorization to use in objects and properties.
+    /// AuthorizationLevel to use in objects and properties.
     /// </summary>
-    public enum Authorization
+    public enum AuthorizationLevel
     {
         None,
         ObjectLevel,

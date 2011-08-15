@@ -30,6 +30,56 @@ if (Info.ObjectNamespace.Length > 0)
         <%
 if (Info.ObjectType != CslaObjectType.UnitOfWork)
 {
+    bool generateRuleRegion = false;
+    bool generateAuthRegion = false;
+
+    HaveBusinessRulesCollection allRulesProperties = new HaveBusinessRulesCollection();
+    allRulesProperties.AddRange(Info.AllValueProperties); // ValueProperties and ConvertValueProperties
+    allRulesProperties.AddRange(Info.InheritedValueProperties); // InheritedValueProperties
+    // ChildProperties, ChildCollectionProperties, InheritedChildProperties, InheritedChildCollectionProperties
+    allRulesProperties.AddRange(Info.GetAllChildProperties());
+
+    foreach (IHaveBusinessRules rulableProperty in allRulesProperties)
+    {
+        if (rulableProperty.BusinessRules.Count > 0)
+        {
+            generateRuleRegion = true;
+        }
+        if (CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.None &&
+            CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.ObjectLevel)
+        {
+            if (CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider ||
+                rulableProperty.AuthzProvider != AuthorizationProvider.Custom)
+            {
+                if (!String.IsNullOrWhiteSpace(rulableProperty.ReadRoles) ||
+                    !String.IsNullOrWhiteSpace(rulableProperty.WriteRoles))
+                {
+                    generateAuthRegion = true;
+                }
+            }
+            else if (rulableProperty.ReadAuthzRuleType.Constructors.Count > 0 ||
+                     rulableProperty.WriteAuthzRuleType.Constructors.Count > 0)
+            {
+                generateAuthRegion = true;
+            }
+        }
+        if (generateRuleRegion && generateAuthRegion)
+            break;
+    }
+    if (generateRuleRegion || generateAuthRegion)
+    {
+        %>
+
+        #region Custom Business Rules and Property Authorization
+
+        //partial void AddBusinessRulesExtend()
+        //{
+        //    throw new System.Exception("The method or operation is not implemented.");
+        //}
+
+        #endregion
+<%
+    }
     System.Collections.Generic.List<string> eventList = GetEventList(Info);
     if (eventList.Count > 0 && UseNoSilverlight())
     {

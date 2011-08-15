@@ -44,8 +44,8 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
         public static <%= Info.ObjectName %> Get<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>()
         {
             <%
-                if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
-                    CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel &&
+                if (CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.None &&
+                    CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.PropertyLevel &&
                     Info.GetRoles.Trim() != String.Empty)
                 {
                     %>if (!CanGetObject())

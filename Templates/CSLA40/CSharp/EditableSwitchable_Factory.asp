@@ -41,8 +41,8 @@ if (UseBoth())
         internal static <%= Info.ObjectName %> New<%= Info.ObjectName %><%=c.CreateOptions.FactorySuffix%>Child(<%=  strNewParams %>)
         {
         <%
-                if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
-                    CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel &&
+                if (CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.None &&
+                    CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.PropertyLevel &&
                     Info.GetRoles.Trim() != String.Empty)
                 {
                     %>
@@ -94,8 +94,8 @@ if (UseBoth())
         internal static <%= Info.ObjectName %> Get<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>Child(<%= strGetParams %>)
         {
             <%
-            if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
-                CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel &&
+            if (CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.None &&
+                CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.PropertyLevel &&
                 Info.GetRoles.Trim() != String.Empty)
             {
                 %>

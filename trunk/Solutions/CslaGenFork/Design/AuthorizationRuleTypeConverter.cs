@@ -8,11 +8,11 @@ namespace CslaGenerator.Design
     /// <summary>
     /// Summary description for AuthzTypeConverter.
     /// </summary>
-    public class AuthzTypeConverter : TypeConverter
+    public class AuthorizationRuleTypeConverter : TypeConverter
     {
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
-            if (sourceType == typeof (AuthzTypeInfo))
+            if (sourceType == typeof (AuthorizationRule))
             {
                 return true;
             }
@@ -34,17 +34,11 @@ namespace CslaGenerator.Design
         {
             if (destinationType == typeof (String))
             {
-                if (value is AuthzTypeInfo)
+                if (value is AuthorizationRule)
                 {
-                    var info = (AuthzTypeInfo) value;
-                    if (info.Type != String.Empty)
-                        return info.Type;
-
-                    if (info.ObjectName != string.Empty)
-                        return info.ObjectName;
-
-                    if (GeneratorController.Current.CurrentUnit.GenerationParams.DefaultCslaAuthorizationProvider)
-                        return "Csla.Rules.CommonRules.IsInRole";
+                    var info = (AuthorizationRule) value;
+                    if (info.Name != String.Empty)
+                        return info.Name;
 
                     return String.Empty;
                 }
