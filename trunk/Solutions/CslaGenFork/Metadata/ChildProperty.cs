@@ -23,7 +23,9 @@ namespace CslaGenerator.Metadata
         private string _implements = string.Empty;
         private BusinessRuleCollection _businessRules = new BusinessRuleCollection(); 
         private string[] _attributes = new string[] { };
-        private AuthzTypeInfo _authzProviderType = new AuthzTypeInfo();
+        private AuthorizationProvider _authzProvider;
+        private AuthorizationRule _readAuthzRuleType = new AuthorizationRule();
+        private AuthorizationRule _writeAuthzRuleType = new AuthorizationRule();
         private string _readRoles = string.Empty;
         private string _writeRoles = string.Empty;
         private bool _lazyLoad;
@@ -147,25 +149,12 @@ namespace CslaGenerator.Metadata
         #region 03. Authorization
 
         [Category("03. Authorization")]
-        [Description("Roles to create object. Multiple roles must be separated with \";\". Use no prefix to allow or use prefix \"!\" to deny.")]
-        [Editor(typeof(ObjectEditor), typeof(UITypeEditor))]
-        [TypeConverter(typeof(AuthzTypeConverter))]
-        [UserFriendlyName("Autorization Type")]
-        public virtual AuthzTypeInfo AuthzRuleType
+        [Description("The Autorization Provider for this property.")]
+        [UserFriendlyName("Autorization Provider")]
+        public virtual AuthorizationProvider AuthzProvider
         {
-            get { return _authzProviderType; }
-            set
-            {
-                if (!ReferenceEquals(value, _authzProviderType))
-                {
-                    if (_authzProviderType != null)
-                    {
-                        // _authzProviderType.TypeChanged -= AuthProviderType_TypeChanged;
-                        _authzProviderType = value;
-                        // _authzProviderType.TypeChanged += AuthProviderType_TypeChanged;
-                    }
-                }
-            }
+            get { return _authzProvider; }
+            set { _authzProvider = value; }
         }
 
         [Category("03. Authorization")]
@@ -186,6 +175,45 @@ namespace CslaGenerator.Metadata
             set { _writeRoles = PropertyHelper.TidyAllowSpaces(value); }
         }
 
+        [Category("03. Authorization")]
+        [Description("The Autorization Type that controls read action. You can either select an object defined in the current project or an object defined in another assembly.")]
+        [Editor(typeof(ObjectEditor), typeof(UITypeEditor))]
+        [TypeConverter(typeof(AuthorizationRuleTypeConverter))]
+        [UserFriendlyName("Read Autorization Type")]
+        public virtual AuthorizationRule ReadAuthzRuleType
+        {
+            get { return _readAuthzRuleType; }
+            set
+            {
+                if (!ReferenceEquals(value, _readAuthzRuleType))
+                {
+                    if (_readAuthzRuleType != null)
+                    {
+                        _readAuthzRuleType = value;
+                    }
+                }
+            }
+        }
+
+        [Category("03. Authorization")]
+        [Description("The Autorization Type that controls write action. You can either select an object defined in the current project or an object defined in another assembly.")]
+        [Editor(typeof(ObjectEditor), typeof(UITypeEditor))]
+        [TypeConverter(typeof(AuthorizationRuleTypeConverter))]
+        [UserFriendlyName("Write Autorization Type")]
+        public virtual AuthorizationRule WriteAuthzRuleType
+        {
+            get { return _writeAuthzRuleType; }
+            set
+            {
+                if (!ReferenceEquals(value, _writeAuthzRuleType))
+                {
+                    if (_writeAuthzRuleType != null)
+                    {
+                        _writeAuthzRuleType = value;
+                    }
+                }
+            }
+        }
 
         #endregion
 

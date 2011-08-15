@@ -626,8 +626,8 @@ namespace CslaGenerator.Util.PropertyBags
         {
             try
             {
-                if ((GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == Authorization.None ||
-                    GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == Authorization.ObjectLevel) &&
+                if ((GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.None ||
+                    GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.ObjectLevel) &&
                     (propertyName == "ReadRoles" ||
                      propertyName == "WriteRoles"))
                     return false;

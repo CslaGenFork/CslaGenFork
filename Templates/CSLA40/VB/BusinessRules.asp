@@ -1,24 +1,44 @@
 <%
 bool generateRuleRegion = false;
+bool generateAuthRegion = false;
 
 HaveBusinessRulesCollection allRulesProperties = new HaveBusinessRulesCollection();
 allRulesProperties.AddRange(Info.AllValueProperties); // ValueProperties and ConvertValueProperties
 allRulesProperties.AddRange(Info.InheritedValueProperties); // InheritedValueProperties
 // ChildProperties, ChildCollectionProperties, InheritedChildProperties, InheritedChildCollectionProperties
 allRulesProperties.AddRange(Info.GetAllChildProperties());
-            
+
 foreach (IHaveBusinessRules rulableProperty in allRulesProperties)
 {
     if (rulableProperty.BusinessRules.Count > 0)
     {
         generateRuleRegion = true;
-        break;
     }
+    if (CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.None &&
+        CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.ObjectLevel)
+    {
+        if (CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider ||
+            rulableProperty.AuthzProvider != AuthorizationProvider.Custom)
+        {
+            if (!String.IsNullOrWhiteSpace(rulableProperty.ReadRoles) ||
+                !String.IsNullOrWhiteSpace(rulableProperty.WriteRoles))
+            {
+                generateAuthRegion = true;
+            }
+        }
+        else if (rulableProperty.ReadAuthzRuleType.Constructors.Count > 0 ||
+                 rulableProperty.WriteAuthzRuleType.Constructors.Count > 0)
+        {
+            generateAuthRegion = true;
+        }
+    }
+    if (generateRuleRegion && generateAuthRegion)
+        break;
 }
 
 //TestRules (Info);
 //if (false)
-if (generateRuleRegion)
+if (generateRuleRegion || generateAuthRegion)
 {
     if (!genOptional)
     {
@@ -37,99 +57,79 @@ if (generateRuleRegion)
         /// </remarks>
         protected override void AddBusinessRules()
         {
+            base.AddBusinessRules();
             <%
             string resultRule = string.Empty;
             string resultConstructor = string.Empty;
             string resultProperties = string.Empty;
-            bool primaryOnCtor = false;
 
-            /*HaveBusinessRulesCollection allRulesProperties = new HaveBusinessRulesCollection();
-            allRulesProperties.AddRange(Info.AllValueProperties); // ValueProperties and ConvertValueProperties
-            allRulesProperties.AddRange(Info.InheritedValueProperties); // InheritedValueProperties
-            // ChildProperties, ChildCollectionProperties, InheritedChildProperties, InheritedChildCollectionProperties
-            allRulesProperties.AddRange(Info.GetAllChildProperties());*/
-
-            foreach (IHaveBusinessRules rulableProperty in allRulesProperties)
+            if (generateRuleRegion)
             {
-                if (rulableProperty.BusinessRules.Count > 0)
-                    Response.Write(new string(' ', 12) + "//" + rulableProperty.Name + Environment.NewLine);
-
-                foreach (BusinessRule rule in rulableProperty.BusinessRules)
+                Response.WriteLine(Environment.NewLine + new string(' ', 12) + "// Business Rules" + Environment.NewLine);
+                bool primaryOnCtor = false;
+                foreach (IHaveBusinessRules rulableProperty in allRulesProperties)
                 {
-                    string backupRuleType = rule.Type;
-                    resultConstructor = string.Empty;
-                    resultProperties = string.Empty;
-                    primaryOnCtor = false;
-                    bool isFirst = true;
-                    bool isFirstGeneric = true;
+                    resultRule = string.Empty;
+                    if (rulableProperty.BusinessRules.Count > 0)
+                        Response.WriteLine(new string(' ', 12) + "// " + rulableProperty.Name);
 
-                    // Constructors and ConstructorParameters
-                    foreach (BusinessRuleConstructor constructor in rule.Constructors)
+                    foreach (BusinessRule rule in rulableProperty.BusinessRules)
                     {
-                        if (constructor.IsActive)
+                        string backupRuleType = rule.Type;
+                        foreach (string ns in Info.Namespaces)
                         {
-                            foreach (BusinessRuleConstructorParameter parameter in constructor.ConstructorParameters)
+                            string nameSpace = ns + '.';
+                            if (backupRuleType.IndexOf(nameSpace) == 0 &&
+                                backupRuleType.Substring(nameSpace.Length).IndexOf('.') == -1)
                             {
-                                if (isFirst)
-                                    isFirst = false;
-                                else
-                                    resultConstructor += ", ";
-                                if (parameter.Name == "primaryProperty")
+                                backupRuleType = backupRuleType.Substring(nameSpace.Length);
+                                break;
+                            }
+                        }
+                        resultConstructor = string.Empty;
+                        resultProperties = string.Empty;
+                        primaryOnCtor = false;
+                        bool isFirst = true;
+                        bool isFirstGeneric = true;
+
+                        // Constructors and ConstructorParameters
+                        foreach (BusinessRuleConstructor constructor in rule.Constructors)
+                        {
+                            if (constructor.IsActive)
+                            {
+                                foreach (BusinessRuleConstructorParameter parameter in constructor.ConstructorParameters
+                                    )
                                 {
-                                    resultConstructor += FormatPropertyInfoName(ReturnRawParameterValue(parameter));
-                                    primaryOnCtor = true;
-                                }
-                                else
-                                {
-                                    if (parameter.IsGenericType)
+                                    if (isFirst)
+                                        isFirst = false;
+                                    else
+                                        resultConstructor += ", ";
+                                    if (parameter.Type == "IPropertyInfo")
                                     {
-                                        backupRuleType = backupRuleType.Replace(parameter.Type, GetDataType(parameter.GenericType));
-                                        if (isFirstGeneric)
-                                            isFirstGeneric = false;
-                                        else
-                                            backupRuleType = backupRuleType.Replace(",", ", ");
+                                        resultConstructor += FormatPropertyInfoName(ReturnRawParameterValue(parameter));
+                                        primaryOnCtor = true;
                                     }
-                                    resultConstructor += ReturnParameterValue(parameter);
+                                    else
+                                    {
+                                        if (parameter.IsGenericType)
+                                        {
+                                            backupRuleType = backupRuleType.Replace(parameter.Type, GetDataType(parameter.GenericType));
+                                            if (isFirstGeneric)
+                                                isFirstGeneric = false;
+                                            else
+                                                backupRuleType = backupRuleType.Replace(",", ", ");
+                                        }
+                                        resultConstructor += ReturnParameterValue(parameter);
+                                    }
                                 }
                             }
                         }
-                    }
 
-                    // RuleProperties
-                    isFirst = true;
-                    foreach (BusinessRuleProperty property in rule.RuleProperties)
-                    {
-                        if (property.Name == "primaryProperty")
+                        // RuleProperties
+                        isFirst = true;
+                        foreach (BusinessRuleProperty property in rule.RuleProperties)
                         {
-                            if (primaryOnCtor)
-                                continue;
-                            if (isFirst)
-                                isFirst = false;
-                            else
-                                resultProperties += ", ";
-                            resultProperties += property.Name + " = " + FormatPropertyInfoName(ReturnRawPropertyValue(property));
-                        }
-                        else
-                        {
-                            string stringValue = ReturnPropertyValue(property);
-                            if (stringValue == string.Empty)
-                                continue;
-
-                            if (isFirst)
-                                isFirst = false;
-                            else
-                                resultProperties += ", ";
-                            resultProperties += property.Name + " = " + stringValue;
-                        }
-                    }
-
-                    // BaseRuleProperties
-                    PropertyInfo[] ruleProps = typeof(BusinessRule).GetProperties();
-                    foreach (PropertyInfo property in ruleProps)
-                    {
-                        if (rule.BaseRuleProperties.Contains(property.Name))
-                        {
-                            if (property.Name == "PrimaryProperty")
+                            if (property.Type == "IPropertyInfo")
                             {
                                 if (primaryOnCtor)
                                     continue;
@@ -137,13 +137,12 @@ if (generateRuleRegion)
                                     isFirst = false;
                                 else
                                     resultProperties += ", ";
-
-                                resultProperties += property.Name + " = " + FormatPropertyInfoName(ReturnRawPropertyValue(rule, property));
+                                resultProperties += property.Name + " = " + FormatPropertyInfoName(ReturnRawPropertyValue(property));
                             }
                             else
                             {
-                                string stringValue = ReturnPropertyValue(rule, property);
-                                if (IsBaseRulePropertyDefault(property.Name, stringValue))
+                                string stringValue = ReturnPropertyValue(property);
+                                if (stringValue == string.Empty)
                                     continue;
 
                                 if (isFirst)
@@ -153,19 +152,141 @@ if (generateRuleRegion)
                                 resultProperties += property.Name + " = " + stringValue;
                             }
                         }
-                    }
 
-                    if (resultProperties != string.Empty)
-                        resultProperties = " { " + resultProperties + " }";
+                        // BaseRuleProperties
+                        if (rule.BaseRuleProperties.Count > 0)
+                        {
+                            PropertyInfo[] ruleProps = typeof (BusinessRule).GetProperties();
+                            foreach (PropertyInfo property in ruleProps)
+                            {
+                                if (rule.BaseRuleProperties.Contains(property.Name))
+                                {
+                                    if (property.Name == "PrimaryProperty")
+                                    {
+                                        if (primaryOnCtor)
+                                            continue;
+                                        if (isFirst)
+                                            isFirst = false;
+                                        else
+                                            resultProperties += ", ";
 
-                    resultRule = "BusinessRules.AddRule(new " + backupRuleType + "(" + resultConstructor + ")" + resultProperties + ")" + ";";
-                    %>
+                                        resultProperties += property.Name + " = " + FormatPropertyInfoName(ReturnRawPropertyValue(rule, property));
+                                    }
+                                    else
+                                    {
+                                        string stringValue = ReturnPropertyValue(rule, property);
+                                        if (IsBaseRulePropertyDefault(property.Name, stringValue))
+                                            continue;
+
+                                        if (isFirst)
+                                            isFirst = false;
+                                        else
+                                            resultProperties += ", ";
+                                        resultProperties += property.Name + " = " + stringValue;
+                                    }
+                                }
+                            }
+                        }
+
+                        if (resultProperties != string.Empty)
+                            resultProperties = " { " + resultProperties + " }";
+
+                        resultRule = "BusinessRules.AddRule(new " + backupRuleType + "(" + resultConstructor + ")" + resultProperties + ")" + ";";
+            %>
             <%= resultRule %>
-            <%
+<%
+                    }
+                }
+            }
+
+            // Authorization Rules
+            if (generateAuthRegion)
+            {
+                Response.WriteLine(Environment.NewLine + new string(' ', 12) + "// Authorization Rules" + Environment.NewLine);
+                AuthorizationRule authzRule;
+                foreach (IHaveBusinessRules rulableProperty in allRulesProperties)
+                {
+                    if (CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider ||
+                        rulableProperty.AuthzProvider != AuthorizationProvider.Custom)
+                    {
+                        if (!String.IsNullOrWhiteSpace(rulableProperty.ReadRoles) ||
+                            !String.IsNullOrWhiteSpace(rulableProperty.WriteRoles))
+                        {
+                            Response.WriteLine(new string(' ', 12) + "// " + rulableProperty.Name);
+                        }
+                        if (!String.IsNullOrWhiteSpace(rulableProperty.ReadRoles))
+                        {
+                            if (CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider ||
+                                rulableProperty.AuthzProvider == AuthorizationProvider.IsInRole)
+                            {
+                                resultRule = "BusinessRules.AddRule(typeof (" + Info.ObjectName + "), new IsInRole(AuthorizationActions.ReadProperty" + ReturnRoleList(rulableProperty.ReadRoles) +"));";
+            %>
+            <%= resultRule %>
+<%
+                            }
+                            else
+                            {
+                                resultRule = "BusinessRules.AddRule(typeof (" + Info.ObjectName + "), new IsNotInRole(AuthorizationActions.ReadProperty" + ReturnRoleList(rulableProperty.ReadRoles) + "));";
+            %>
+            <%= resultRule %>
+<%
+                            }
+                        }
+                        if (!String.IsNullOrWhiteSpace(rulableProperty.WriteRoles))
+                        {
+                            if (CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider ||
+                                rulableProperty.AuthzProvider == AuthorizationProvider.IsInRole)
+                            {
+                                resultRule = "BusinessRules.AddRule(typeof (" + Info.ObjectName + "), new IsInRole(AuthorizationActions.WriteProperty" + ReturnRoleList(rulableProperty.WriteRoles) +"));";
+            %>
+            <%= resultRule %>
+<%
+                            }
+                            else
+                            {
+                                resultRule = "BusinessRules.AddRule(typeof (" + Info.ObjectName + "), new IsNotInRole(AuthorizationActions.WriteProperty" + ReturnRoleList(rulableProperty.WriteRoles) + "));";
+            %>
+            <%= resultRule %>
+<%
+                            }
+                        }
+                    }
+                    else if (!CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider &&
+                        rulableProperty.AuthzProvider == AuthorizationProvider.Custom)
+                    {
+                        if (rulableProperty.ReadAuthzRuleType.Constructors.Count > 0 ||
+                            rulableProperty.WriteAuthzRuleType.Constructors.Count > 0)
+                        {
+                            Response.WriteLine(new string(' ', 12) + "// " + rulableProperty.Name);
+                            if (!string.IsNullOrWhiteSpace(rulableProperty.ReadAuthzRuleType.Type))
+                            {
+                                authzRule = rulableProperty.ReadAuthzRuleType;
+%>
+            <!-- #include file="AuthorizationRules.asp" -->
+<%
+                                //BuildAuthzRule(Info, authzRule);
+                            }
+                            if (!string.IsNullOrWhiteSpace(rulableProperty.WriteAuthzRuleType.Type))
+                            {
+                                authzRule = rulableProperty.WriteAuthzRuleType;
+%>
+            <!-- #include file="AuthorizationRules.asp" -->
+<%
+                                //BuildAuthzRule(Info, authzRule);
+                            }
+                        }
+                    }
                 }
             }
             %>
+
+            AddBusinessRulesExtend();
         }
+
+        /// <summary>
+        /// Allows the set up of custom shared business rules.
+        /// </summary>
+        partial void AddBusinessRulesExtend();
 
         #endregion
 

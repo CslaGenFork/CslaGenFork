@@ -40,8 +40,8 @@ if (!Info.UseCustomLoading)
             <%
             if (authzInfo.GetRoles.Trim() != String.Empty &&
                 IsCollectionType(Info.ObjectType) &&
-                CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
-                CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel)
+                CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.None &&
+                CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.PropertyLevel)
             {
                 %>if (!CanGetObject())
                 throw new System.Security.SecurityException("User not authorized to load a <%= Info.ObjectName %>.");
@@ -105,8 +105,8 @@ if (!Info.UseCustomLoading)
         {
             <%
         if (IsCollectionType(Info.ObjectType) &&
-            CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
-            CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel &&
+            CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.None &&
+            CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.PropertyLevel &&
             authzInfo.GetRoles.Trim() != String.Empty)
         {
             %>if (!CanGetObject())

@@ -259,10 +259,10 @@ namespace CslaGenerator.Util
         {
             if (context.Instance != null)
             {
-                // check if context.Instance is AuthorizationProviderPropertyBag or PropertyGrid
-                if (context.Instance is AuthorizationPropertyBag)
+                // check if context.Instance is AuthorizationRuleBag or PropertyGrid
+                if (context.Instance is AuthorizationRuleBag)
                 {
-                    var pBag = (AuthorizationPropertyBag)context.Instance;
+                    var pBag = (AuthorizationRuleBag)context.Instance;
                     if (pBag.SelectedObject.Length == 1)
                         objinfo = pBag.SelectedObject[0];
                     else
@@ -282,7 +282,7 @@ namespace CslaGenerator.Util
         {
             if (context.Instance != null)
             {
-                // check if context.Instance is AuthorizationProviderPropertyBag or PropertyGrid
+                // check if context.Instance is AuthorizationRuleBag or PropertyGrid
                 if (context.Instance is BusinessRuleBag)
                 {
                     var pBag = (BusinessRuleBag)context.Instance;
@@ -305,7 +305,7 @@ namespace CslaGenerator.Util
         {
             if (context.Instance != null)
             {
-                // check if context.Instance is AuthorizationProviderPropertyBag or PropertyGrid
+                // check if context.Instance is AuthorizationRuleBag or PropertyGrid
                 if (context.Instance is BusinessRulePropertyBag)
                 {
                     var pBag = (BusinessRulePropertyBag)context.Instance;

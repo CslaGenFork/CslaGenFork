@@ -17,7 +17,7 @@ namespace CslaGenerator.Controls
             FillComboBox(cboTargetDAL, typeof(TargetDAL));
             cboTargetDAL.Items.RemoveAt(4);
             cboTargetDAL.Items.RemoveAt(3);
-            FillComboBox(cboGenerateAuthorization, typeof(Authorization));
+            FillComboBox(cboGenerateAuthorization, typeof(AuthorizationLevel));
             FillComboBox(cboHeaderVerbosity, typeof(HeaderVerbosity));
             FillComboBox(cboTransactionType, typeof(TransactionType));
             FillComboBox(cboPersistenceType, typeof(PersistenceType));
@@ -27,10 +27,6 @@ namespace CslaGenerator.Controls
                 foreach (Control ctl in tab.Controls)
                     foreach (Binding b in ctl.DataBindings)
                         b.DataSourceUpdateMode = DataSourceUpdateMode.OnPropertyChanged;
-
-            txtIntSoftDelete.Enabled = false;
-            chkGenerateInlineQueries.Enabled = false;
-            chkUseBypassPropertyChecks.Enabled = false;
         }
 
         private void FillComboBox(ComboBox cbo, Type enumType)
@@ -69,6 +65,19 @@ namespace CslaGenerator.Controls
             _projParams = mProject.Params.Clone();
             generationParametersBindingSource.DataSource = _genParams;
             projectParametersBindingSource.DataSource = _projParams;
+
+            NotYetImplemented();
+        }
+
+        private void NotYetImplemented()
+        {
+            txtIntSoftDelete.Enabled = false;
+
+            _genParams.GenerateInlineQueries = false;
+            chkGenerateInlineQueries.Enabled = false;
+
+            _genParams.UseBypassPropertyChecks = false;
+            chkUseBypassPropertyChecks.Enabled = false;
         }
 
         public void SaveInfo()
@@ -246,6 +255,8 @@ namespace CslaGenerator.Controls
                 chkActiveObjects.Checked = false;
                 chkSynchronous.Enabled = !_genParams.ForceSync;
                 chkAsynchronous.Enabled = !_genParams.ForceAsync;
+                cboGenerateAuthorization.Enabled = true;
+                chkUsesCslaAuthorizationProvider.Enabled = true;
             }
             else
             {
@@ -261,6 +272,8 @@ namespace CslaGenerator.Controls
 
                 chkSynchronous.Enabled = false;
                 chkAsynchronous.Enabled = false;
+                cboGenerateAuthorization.Enabled = false;
+                chkUsesCslaAuthorizationProvider.Enabled = false;
             }
 
             cboTargetDAL.Enabled = UseDal;

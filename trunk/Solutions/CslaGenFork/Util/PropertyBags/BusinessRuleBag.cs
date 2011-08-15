@@ -439,13 +439,14 @@ namespace CslaGenerator.Util.PropertyBags
             _properties = new PropertySpecCollection();
         }
 
-        public BusinessRuleBag(BusinessRule obj) : this(new[] { obj })
+        public BusinessRuleBag(BusinessRule obj)
+            : this(new[] { obj })
         {
         }
 
         public BusinessRuleBag(BusinessRule[] obj)
         {
-            _defaultProperty = "Name";
+            _defaultProperty = "AssemblyFile";
             _properties = new PropertySpecCollection();
             _selectedObject = obj;
             InitPropertyBag();
@@ -543,7 +544,7 @@ namespace CslaGenerator.Util.PropertyBags
 
                 if (pi.Name.Contains("RuleProperty"))
                 {
-                    category = "03. Specific Business Rule Options";
+                    category = "03. Business Rule Options";
                     HandleRuleProperty(ref rulePropertyCounter, out isbrowsable, out userfriendlyname, out description, out isreadonly, ref editor, out assemblyQualifiedName);
                 }
                 else
@@ -593,8 +594,10 @@ namespace CslaGenerator.Util.PropertyBags
                 var types = new List<string>();
                 foreach (var obj in _selectedObject)
                 {
-                    if (!types.Contains(obj.Name))
-                        types.Add(obj.Name);
+                    if (!string.IsNullOrWhiteSpace(obj.ObjectName) && !types.Contains(obj.ObjectName))
+                        types.Add(obj.ObjectName);
+                    else if (!string.IsNullOrWhiteSpace(obj.Type) && !types.Contains(obj.Type))
+                        types.Add(obj.Type);
                 }
                 // here get rid of ComponentName and Parent
                 bool isValidProperty = (pi.Name != "Properties" && pi.Name != "ComponentName" && pi.Name != "Parent");
@@ -631,7 +634,13 @@ namespace CslaGenerator.Util.PropertyBags
             description = (target.IsGenericType ? "Generic " : "") + "Property " + userfriendlyname + " of " +
                           (target.IsGenericType ? "<" : "") +
                           target.Type +
-                          (target.IsGenericType ? ">" : "") + " type.";
+                          (target.IsGenericType ? ">" : "") + " type." +
+                          ((target.Type.LastIndexOf("[]") == target.Type.Length - 2)
+                               ? " Use a comma to separate Array elements."
+                               : "") +
+                          ((target.Type.IndexOf("List<") == 0)
+                               ? " Use a comma to separate List elements."
+                               : "");
 
             if (target.Name == "PrimaryProperty")
                 isreadonly = true;
@@ -686,7 +695,7 @@ namespace CslaGenerator.Util.PropertyBags
             editor = typeof(UITypeEditor).AssemblyQualifiedName;
 
             Type propType;
-            if (target.IsGenericType || target.IsGenericParameter)
+            if (target.IsGenericType || target.IsGenericParameter || target.Type == "IComparable" || target.Type.LastIndexOf("[]") == target.Type.Length -2)
             {
                 propType = Type.GetType("System.String");
             }
@@ -792,8 +801,8 @@ namespace CslaGenerator.Util.PropertyBags
                             return false;
                         break;
                 }
-                /*if ((GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == Authorization.None ||
-                    GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == Authorization.ObjectLevel) &&
+                /*if ((GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.None ||
+                    GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.ObjectLevel) &&
                     (propertyName == "ReadRoles" ||
                      propertyName == "WriteRoles"))
                     return false;*/
@@ -861,38 +870,38 @@ namespace CslaGenerator.Util.PropertyBags
                     val = Convert.ChangeType(val, piProp.PropertyType);
                     // attempt the assignment
                     switch (propertyName)
-                        {
-                            case "RuleProperty0":
-                                SelectedObject[0].RuleProperty0.Value = val;
-                                break;
-                            case "RuleProperty1":
-                                SelectedObject[0].RuleProperty1.Value = val;
-                                break;
-                            case "RuleProperty2":
-                                SelectedObject[0].RuleProperty2.Value = val;
-                                break;
-                            case "RuleProperty3":
-                                SelectedObject[0].RuleProperty3.Value = val;
-                                break;
-                            case "RuleProperty4":
-                                SelectedObject[0].RuleProperty4.Value = val;
-                                break;
-                            case "RuleProperty5":
-                                SelectedObject[0].RuleProperty5.Value = val;
-                                break;
-                            case "RuleProperty6":
-                                SelectedObject[0].RuleProperty6.Value = val;
-                                break;
-                            case "RuleProperty7":
-                                SelectedObject[0].RuleProperty7.Value = val;
-                                break;
-                            case "RuleProperty8":
-                                SelectedObject[0].RuleProperty8.Value = val;
-                                break;
-                            case "RuleProperty9":
-                                SelectedObject[0].RuleProperty9.Value = val;
-                                break;
-                        }
+                    {
+                        case "RuleProperty0":
+                            SelectedObject[0].RuleProperty0.Value = val;
+                            break;
+                        case "RuleProperty1":
+                            SelectedObject[0].RuleProperty1.Value = val;
+                            break;
+                        case "RuleProperty2":
+                            SelectedObject[0].RuleProperty2.Value = val;
+                            break;
+                        case "RuleProperty3":
+                            SelectedObject[0].RuleProperty3.Value = val;
+                            break;
+                        case "RuleProperty4":
+                            SelectedObject[0].RuleProperty4.Value = val;
+                            break;
+                        case "RuleProperty5":
+                            SelectedObject[0].RuleProperty5.Value = val;
+                            break;
+                        case "RuleProperty6":
+                            SelectedObject[0].RuleProperty6.Value = val;
+                            break;
+                        case "RuleProperty7":
+                            SelectedObject[0].RuleProperty7.Value = val;
+                            break;
+                        case "RuleProperty8":
+                            SelectedObject[0].RuleProperty8.Value = val;
+                            break;
+                        case "RuleProperty9":
+                            SelectedObject[0].RuleProperty9.Value = val;
+                            break;
+                    }
                     return true;
                 }
                 else

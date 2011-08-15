@@ -1,10 +1,8 @@
 using System;
 using System.ComponentModel;
-using System.Drawing.Design;
 using System.IO;
 using System.Xml.Serialization;
 using CslaGenerator.Attributes;
-using CslaGenerator.Design;
 
 namespace CslaGenerator.Metadata
 {

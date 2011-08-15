@@ -61,7 +61,7 @@
     <PropertyMode>Default</PropertyMode>
     <GenerateAuthorization>FullSupport</GenerateAuthorization>
     <HeaderVerbosity>None</HeaderVerbosity>
-    <UseBypassPropertyChecks>true</UseBypassPropertyChecks>
+    <UseBypassPropertyChecks>false</UseBypassPropertyChecks>
     <UseSingleCriteria>false</UseSingleCriteria>
     <UsePublicPropertyInfo>true</UsePublicPropertyInfo>
     <ForceReadOnlyProperties>true</ForceReadOnlyProperties>
@@ -79,8 +79,7 @@
     <GenerateInlineQueries>false</GenerateInlineQueries>
     <GenerateQueriesWithSchema>true</GenerateQueriesWithSchema>
     <GenerateDatabaseClass>true</GenerateDatabaseClass>
-    <DefaultCslaAuthorizationProvider>true</DefaultCslaAuthorizationProvider>
-    <HideAuthorizationProvider>true</HideAuthorizationProvider>
+    <UsesCslaAuthorizationProvider>true</UsesCslaAuthorizationProvider>
     <GenerateWinForms>true</GenerateWinForms>
     <GenerateWPF>true</GenerateWPF>
     <GenerateSilverlight4>true</GenerateSilverlight4>

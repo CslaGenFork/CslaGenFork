@@ -550,7 +550,7 @@ namespace CslaGenerator.Util.PropertyBags
                 }
                 else if (pi.Name.Contains("ConstructorParameter") && pi.Name != "ConstructorParameters")
                 {
-                    category = "03. Parameters Value";
+                    category = "03. Parameter Values";
                     HandleConstructorParameter(ref ctorParameterCounter, out isbrowsable, out userfriendlyname, out description, out isreadonly, ref editor, out assemblyQualifiedName);
                 }
                 else
@@ -602,6 +602,8 @@ namespace CslaGenerator.Util.PropertyBags
                 {
                     if (!types.Contains(obj.Name))
                         types.Add(obj.Name);
+                    if (pi.Name=="IsActive" && obj.IsActive)
+                        isreadonly = true;
                 }
                 // here get rid of ComponentName and Parent
                 bool isValidProperty = (pi.Name != "Properties" && pi.Name != "ComponentName" && pi.Name != "Parent");
@@ -718,16 +720,27 @@ namespace CslaGenerator.Util.PropertyBags
 
             userfriendlyname = target.Name;
             description = (target.IsGenericType ? "Generic " : "") + "Parameter " + userfriendlyname + " of " +
+                          (target.IsParams ? "params " : "") +
                           (target.IsGenericType ? "<" : "") +
                           target.Type +
-                          (target.IsGenericType ? ">" : "") + " type.";
+                          (target.IsGenericType ? ">" : "") + " type." +
+                          ((target.Type.LastIndexOf("[]") == target.Type.Length - 2)
+                               ? " Use a comma to separate Array elements."
+                               : "") +
+                          ((target.Type.IndexOf("List<") == 0)
+                               ? " Use a comma to separate List elements."
+                               : "");
 
-            if (target.Name == "PrimaryProperty")
+            if (target.Type == "IPropertyInfo" || target.Type == "IMemberInfo" || target.Type == "AuthorizationActions")
                 isreadonly = true;
 
             switch (target.Type)
             {
                 case "IPropertyInfo":
+                    break;
+                case "IMemberInfo":
+                    break;
+                case "AuthorizationActions":
                     break;
                 default:
                     GetParameterDataType(target, out assemblyQualifiedName, out editor);
@@ -775,7 +788,7 @@ namespace CslaGenerator.Util.PropertyBags
             editor = typeof(UITypeEditor).AssemblyQualifiedName;
 
             Type paramType;
-            if (target.IsGenericType || target.IsGenericParameter)
+            if (target.IsGenericType || target.IsGenericParameter || target.Type == "IComparable" || target.Type.LastIndexOf("[]") == target.Type.Length - 2)
             {
                 paramType = Type.GetType("System.String");
             }
@@ -826,8 +839,8 @@ namespace CslaGenerator.Util.PropertyBags
         {
             try
             {
-                /*if ((GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == Authorization.None ||
-                    GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == Authorization.ObjectLevel) &&
+                /*if ((GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.None ||
+                    GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.ObjectLevel) &&
                     (propertyName == "ReadRoles" ||
                      propertyName == "WriteRoles"))
                     return false;*/

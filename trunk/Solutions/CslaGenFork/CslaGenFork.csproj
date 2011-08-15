@@ -216,12 +216,12 @@
     <Compile Include="CodeGen\CslaTemplateHelperVB.cs" />
     <Compile Include="CodeGen\GenerationStep.cs" />
     <Compile Include="Design\AssemblyFileConverter.cs" />
-    <Compile Include="Design\AuthzTypeConverter.cs" />
+    <Compile Include="Design\AuthorizationRuleTypeConverter.cs" />
     <Compile Include="Design\BusinessRuleTypeEditor.cs" />
     <Compile Include="Design\CriteriaUsageParameterConverter.cs" />
     <Compile Include="Design\InputPropertyCollectionEditor.cs" />
     <Compile Include="Design\NVLTypeEditor.cs" />
-    <Compile Include="Design\AuthzTypeEditor.cs" />
+    <Compile Include="Design\AuthorizationRuleTypeEditor.cs" />
     <Compile Include="Design\SourcePropertyTypeEditor.cs" />
     <Compile Include="Design\UnitOfWorkTypeEditor.cs" />
     <Compile Include="Design\UnitOfWorkTargetCriteriaEditor.cs" />
@@ -253,7 +253,9 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Metadata\AssociativeEntityCollection.cs" />
-    <Compile Include="Metadata\Authorization.cs" />
+    <Compile Include="Metadata\AuthorizationLevel.cs" />
+    <Compile Include="Metadata\AuthorizationActions.cs" />
+    <Compile Include="Metadata\AuthorizationProvider.cs" />
     <Compile Include="Metadata\BusinessRule.cs" />
     <Compile Include="Metadata\BusinessRuleCollection.cs" />
     <Compile Include="Metadata\BusinessRuleConstructor.cs" />
@@ -267,11 +269,12 @@
     <Compile Include="Metadata\HaveBusinessRulesCollection.cs" />
     <Compile Include="Metadata\HeaderVerbosity.cs" />
     <Compile Include="Metadata\AssociativeEntity.cs" />
+    <Compile Include="Metadata\IBusinessRule.cs" />
     <Compile Include="Metadata\IHaveBusinessRules.cs" />
     <Compile Include="Metadata\ObjectRelationsFactory.cs" />
     <Compile Include="Metadata\PersistenceType.cs" />
     <Compile Include="Metadata\PropertyHelper.cs" />
-    <Compile Include="Metadata\AuthzTypeInfo.cs" />
+    <Compile Include="Metadata\AuthorizationRule.cs" />
     <Compile Include="Metadata\SimpleCacheResults.cs" />
     <Compile Include="Metadata\TargetDAL.cs" />
     <Compile Include="Metadata\UnitOfWorkProperty.cs" />
@@ -521,7 +524,7 @@
     </Compile>
     <Compile Include="Util\ObjectCloner.cs" />
     <Compile Include="Util\PropertyBags\AssociativeEntityPropertyBag.cs" />
-    <Compile Include="Util\PropertyBags\AuthorizationPropertyBag.cs" />
+    <Compile Include="Util\PropertyBags\AuthorizationRuleBag.cs" />
     <Compile Include="Util\PropertyBags\BusinessRuleBag.cs" />
     <Compile Include="Util\PropertyBags\BusinessRuleConstructorBag.cs" />
     <Compile Include="Util\PropertyBags\ChildPropertyBag.cs" />

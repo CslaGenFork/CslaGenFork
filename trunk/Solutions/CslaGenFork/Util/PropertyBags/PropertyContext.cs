@@ -102,12 +102,12 @@ namespace CslaGenerator.Util.PropertyBags
             }
         }
         // should "cslaobject:property" be shown in propertygrid?
-        public bool ShowProperty(string cslaobject, string property)
+        public bool ShowProperty(string cslaobjectType, string property)
         {
-            string key = cslaobject + ":" + property;
+            string key = cslaobjectType + ":" + property;
             if (hashTable.ContainsKey(key))
             {
-                //				return hashTable[key] == "true" ? true : false;
+                // return hashTable[key] == "true" ? true : false;
                 if (hashTable[key].Equals("true"))
                 {
                     // show property

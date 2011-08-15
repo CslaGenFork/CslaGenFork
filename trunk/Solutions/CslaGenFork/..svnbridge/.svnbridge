@@ -5,4 +5,7 @@ obj
 </Value></Property><Property><Name>svn:ignore</Name><Value>*.ReSharper
 bin
 obj
+</Value></Property><Property><Name>svn:ignore</Name><Value>CslaGenFork.csproj.ReSharper
+bin
+obj
 </Value></Property></Properties></ItemProperties>

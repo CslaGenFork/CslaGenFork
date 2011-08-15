@@ -112,11 +112,11 @@ namespace CslaGenerator.Metadata
             get { return string.Empty; }
         }
 
-        // Hide AuthzRuleType
+        // Hide AuthzProvider
         [Browsable(false)]
-        public override AuthzTypeInfo AuthzRuleType
+        public override AuthorizationProvider AuthzProvider
         {
-            get { return null; }
+            get { return base.AuthzProvider; }
         }
 
         // Hide ReadRoles
@@ -131,6 +131,20 @@ namespace CslaGenerator.Metadata
         public override string WriteRoles
         {
             get { return string.Empty; }
+        }
+
+        // Hide ReadAuthzRuleType
+        [Browsable(false)]
+        public override AuthorizationRule ReadAuthzRuleType
+        {
+            get { return null; }
+        }
+
+        // Hide WriteAuthzRuleType
+        [Browsable(false)]
+        public override AuthorizationRule WriteAuthzRuleType
+        {
+            get { return null; }
         }
 
         [Category("06. Conversion")]

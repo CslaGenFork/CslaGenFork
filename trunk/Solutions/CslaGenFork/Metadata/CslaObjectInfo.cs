@@ -65,7 +65,12 @@ namespace CslaGenerator.Metadata
         private bool _lazyLoad;
         private bool _generateSprocs = true;
         private PropertyCollection _parentProperties = new PropertyCollection();
-        private AuthzTypeInfo _objectAuthzProviderType = new AuthzTypeInfo();
+        private AuthorizationProvider _authzProvider;
+        private AuthorizationRule _objectAuthzRuleType = new AuthorizationRule();
+        private AuthorizationRule _getAuthzRuleType = new AuthorizationRule();
+        private AuthorizationRule _newAuthzRuleType = new AuthorizationRule();
+        private AuthorizationRule _updateAuthzRuleType = new AuthorizationRule();
+        private AuthorizationRule _deleteAuthzRuleType = new AuthorizationRule();
         private string _getRoles = String.Empty;
         private string _newRoles = String.Empty;
         private string _updateRoles = String.Empty;
@@ -1147,25 +1152,21 @@ namespace CslaGenerator.Metadata
         #region 10. Authorization
 
         [Category("10. Authorization")]
-        [Description("Roles to create object. Multiple roles must be separated with \";\". Use no prefix to allow or use prefix \"!\" to deny.")]
-        [Editor(typeof(ObjectEditor), typeof(UITypeEditor))]
-        [TypeConverter(typeof(AuthzTypeConverter))]
-        [UserFriendlyName("Object Autorization Type")]
-        public AuthzTypeInfo ObjectAuthzRuleType
+        [Description("The Autorization Provider for this property.")]
+        [UserFriendlyName("Autorization Provider")]
+        public virtual AuthorizationProvider AuthzProvider
         {
-            get { return _objectAuthzProviderType; }
+            get { return _authzProvider; }
             set
             {
-                if (!ReferenceEquals(value, _objectAuthzProviderType))
+                if (_authzProvider != value)
                 {
-                    if (_objectAuthzProviderType != null)
-//                        _authzProviderType.TypeChanged -= AuthProviderType_TypeChanged;
-                    _objectAuthzProviderType = value;
-//                    _authzProviderType.TypeChanged += AuthProviderType_TypeChanged;
+                    _authzProvider = value;
+                    OnPropertyChanged("AuthzProvider");
                 }
             }
         }
-
+        
         /// <summary>
         /// Roles to create object. Multiple roles must be separated with ;.
         /// </summary>
@@ -1212,6 +1213,94 @@ namespace CslaGenerator.Metadata
         {
             get { return _deleteRoles; }
             set { _deleteRoles = PropertyHelper.TidyAllowSpaces(value); }
+        }
+
+        [Category("10. Authorization")]
+        [Description("The Autorization Type that controls create object action. You can either select an object defined in the current project or an object defined in another assembly.")]
+        [Editor(typeof(ObjectEditor), typeof(UITypeEditor))]
+        [TypeConverter(typeof(AuthorizationRuleTypeConverter))]
+        [UserFriendlyName("Create Autorization Type")]
+        public virtual AuthorizationRule NewAuthzRuleType
+        {
+            get { return _newAuthzRuleType; }
+            set
+            {
+                if (!ReferenceEquals(value, _newAuthzRuleType))
+                {
+                    if (_newAuthzRuleType != null)
+                    {
+                        // _authzProviderType.TypeChanged -= AuthProviderType_TypeChanged;
+                        _newAuthzRuleType = value;
+                        // _authzProviderType.TypeChanged += AuthProviderType_TypeChanged;
+                    }
+                }
+            }
+        }
+
+        [Category("10. Authorization")]
+        [Description("The Autorization Type that controls get object action. You can either select an object defined in the current project or an object defined in another assembly.")]
+        [Editor(typeof(ObjectEditor), typeof(UITypeEditor))]
+        [TypeConverter(typeof(AuthorizationRuleTypeConverter))]
+        [UserFriendlyName("Get Autorization Type")]
+        public virtual AuthorizationRule GetAuthzRuleType
+        {
+            get { return _getAuthzRuleType; }
+            set
+            {
+                if (!ReferenceEquals(value, _getAuthzRuleType))
+                {
+                    if (_getAuthzRuleType != null)
+                    {
+                        // _authzProviderType.TypeChanged -= AuthProviderType_TypeChanged;
+                        _getAuthzRuleType = value;
+                        // _authzProviderType.TypeChanged += AuthProviderType_TypeChanged;
+                    }
+                }
+            }
+        }
+
+        [Category("10. Authorization")]
+        [Description("The Autorization Type that controls update object action. You can either select an object defined in the current project or an object defined in another assembly.")]
+        [Editor(typeof(ObjectEditor), typeof(UITypeEditor))]
+        [TypeConverter(typeof(AuthorizationRuleTypeConverter))]
+        [UserFriendlyName("Update Autorization Type")]
+        public virtual AuthorizationRule UpdateAuthzRuleType
+        {
+            get { return _updateAuthzRuleType; }
+            set
+            {
+                if (!ReferenceEquals(value, _updateAuthzRuleType))
+                {
+                    if (_updateAuthzRuleType != null)
+                    {
+                        // _authzProviderType.TypeChanged -= AuthProviderType_TypeChanged;
+                        _updateAuthzRuleType = value;
+                        // _authzProviderType.TypeChanged += AuthProviderType_TypeChanged;
+                    }
+                }
+            }
+        }
+
+        [Category("10. Authorization")]
+        [Description("The Autorization Type that controls delete object action. You can either select an object defined in the current project or an object defined in another assembly.")]
+        [Editor(typeof(ObjectEditor), typeof(UITypeEditor))]
+        [TypeConverter(typeof(AuthorizationRuleTypeConverter))]
+        [UserFriendlyName("Delete Autorization Type")]
+        public virtual AuthorizationRule DeleteAuthzRuleType
+        {
+            get { return _deleteAuthzRuleType; }
+            set
+            {
+                if (!ReferenceEquals(value, _deleteAuthzRuleType))
+                {
+                    if (_deleteAuthzRuleType != null)
+                    {
+                        // _authzProviderType.TypeChanged -= AuthProviderType_TypeChanged;
+                        _deleteAuthzRuleType = value;
+                        // _authzProviderType.TypeChanged += AuthProviderType_TypeChanged;
+                    }
+                }
+            }
         }
 
         #endregion

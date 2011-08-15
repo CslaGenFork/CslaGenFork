@@ -70,7 +70,7 @@ if (Errors.Length == 0)
     %>
 <!-- #include file="Constructor.asp" -->
 <!-- #include file="Criteria.asp" -->
-<!-- #include file="SharedAuthorizationMethods.asp" -->
+<!-- #include file="ObjectAuthorizationMethods.asp" -->
 <!-- #include file="BusinessRules.asp" -->
 <!-- #include file="ConvertProperties.asp" -->
 <%

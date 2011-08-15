@@ -1,5 +1,5 @@
 <%
-bool defaultCslaAuthorizationProvider = CurrentUnit.GenerationParams.DefaultCslaAuthorizationProvider;
+bool usesCslaAuthorizationProvider = CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider;
 CslaObjectInfo authzInfo2 = Info;
 if (IsCollectionType(Info.ObjectType))
 {
@@ -16,8 +16,8 @@ if (IsReadOnlyType(authzInfo2.ObjectType))
     authzInfo2.UpdateRoles = String.Empty;
     authzInfo2.DeleteRoles = String.Empty;
 }
-if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
-    CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel &&
+if (CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.None &&
+    CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.PropertyLevel &&
     (authzInfo2.NewRoles.Trim() != String.Empty ||
     authzInfo2.GetRoles.Trim() != String.Empty ||
     authzInfo2.UpdateRoles.Trim() != String.Empty ||
@@ -31,7 +31,7 @@ if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
     %>
         #region Authorization
         <%
-    if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.Custom)
+    if (CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.Custom)
     {
         string statement = new string(' ', 8) + "protected static void AddObjectAuthorizationRules()";
         string statementSilverlight = string.Empty;
@@ -65,15 +65,9 @@ if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
             <%
         if (authzInfo2.NewRoles.Trim() != String.Empty)
         {
-            string allowOrDeny = string.Empty;
             string infoNewRoles = authzInfo2.NewRoles;
-            if (authzInfo2.NewRoles[0] == '!')
-            {
-                allowOrDeny = "Not";
-                infoNewRoles = infoNewRoles.Substring(1);
-            }
             %>
-            BusinessRules.AddRule(typeof(<%= Info.ObjectName %>), new Is<%= allowOrDeny %>InRole(AuthorizationActions.CreateObject<%
+            BusinessRules.AddRule(typeof(<%= Info.ObjectName %>), new IsInRole(AuthorizationActions.CreateObject<%
             String[] newRoles = System.Text.RegularExpressions.Regex.Split(infoNewRoles, ";");
             foreach (String role in newRoles)
             {

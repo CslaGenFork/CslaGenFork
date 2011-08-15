@@ -16,6 +16,7 @@ namespace CslaGenerator.Metadata
 
         private string _name = String.Empty;
         private string _type = String.Empty;
+        private bool _isParams;
         private bool _isGenericType;
         private bool _isGenericParameter;
         private TypeCodeEx _genericType = TypeCodeEx.Object;
@@ -39,6 +40,15 @@ namespace CslaGenerator.Metadata
         {
             get { return _type; }
             set { _type = value; }
+        }
+
+        [Description("Whether this parameter is a params Array.")]
+        [UserFriendlyName("Is params Array")]
+        [Browsable(false)]
+        public bool IsParams
+        {
+            get { return _isParams; }
+            set { _isParams = value; }
         }
 
         [Description("Whether the Parameter is a generic Type.")]

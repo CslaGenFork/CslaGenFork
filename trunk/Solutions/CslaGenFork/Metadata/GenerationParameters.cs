@@ -18,7 +18,7 @@ namespace CslaGenerator.Metadata
         private bool _nullableSupport;
         private CodeLanguage _outputLanguage = CodeLanguage.CSharp;
         private CslaPropertyMode _propertyMode = CslaPropertyMode.Default;
-        private Authorization _generateAuthorization = Authorization.FullSupport;
+        private AuthorizationLevel _generateAuthorization = AuthorizationLevel.FullSupport;
         private HeaderVerbosity _headerVerbosity = HeaderVerbosity.Full;
         private bool _useBypassPropertyChecks;
         private bool _useSingleCriteria;
@@ -38,8 +38,7 @@ namespace CslaGenerator.Metadata
         private bool _generateInlineQueries;
         private bool _generateQueriesWithSchema = true;
         private bool _generateDatabaseClass = true;
-        private bool _defaultCslaAuthorizationProvider = true;
-        private bool _hideAuthorizationProvider = true;
+        private bool _usesCslaAuthorizationProvider = true;
         private bool _generateWinForms = true;
         private bool _generateWPF;
         private bool _generateSilverlight;
@@ -192,7 +191,7 @@ namespace CslaGenerator.Metadata
             }
         }
 
-        public Authorization GenerateAuthorization
+        public AuthorizationLevel GenerateAuthorization
         {
             get { return _generateAuthorization; }
             set
@@ -446,26 +445,14 @@ namespace CslaGenerator.Metadata
             }
         }
 
-        public bool DefaultCslaAuthorizationProvider
+        public bool UsesCslaAuthorizationProvider
         {
-            get { return _defaultCslaAuthorizationProvider; }
+            get { return _usesCslaAuthorizationProvider; }
             set
             {
-                if (_defaultCslaAuthorizationProvider == value)
+                if (_usesCslaAuthorizationProvider == value)
                     return;
-                _defaultCslaAuthorizationProvider = value;
-                OnPropertyChanged("");
-            }
-        }
-
-        public bool HideAuthorizationProvider
-        {
-            get { return _hideAuthorizationProvider; }
-            set
-            {
-                if (_hideAuthorizationProvider == value)
-                    return;
-                _hideAuthorizationProvider = value;
+                _usesCslaAuthorizationProvider = value;
                 OnPropertyChanged("");
             }
         }
@@ -589,7 +576,7 @@ namespace CslaGenerator.Metadata
                     SetServerInvocationOptions();
                 if (propertyName == "GenerateSilverlight4")
                 {
-                    if(_generateSilverlight)
+                    if (_generateSilverlight)
                         _silverlightUsingServices = false;
                     SetServerInvocationOptions();
                 }
@@ -604,7 +591,7 @@ namespace CslaGenerator.Metadata
                 if (propertyName == "GenerateAsynchronous")
                     SetServerInvocationOptions();
             }
-
+            
             Dirty = true;
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
@@ -622,6 +609,11 @@ namespace CslaGenerator.Metadata
                 UseCsla4 = true;
                 _activeObjects = false;
                 _useSingleCriteria = false;
+            }
+            else
+            {
+                _usesCslaAuthorizationProvider = true;
+                _generateAuthorization = AuthorizationLevel.ObjectLevel;
             }
 
             if (_targetFramework == TargetFramework.CSLA40DAL)
