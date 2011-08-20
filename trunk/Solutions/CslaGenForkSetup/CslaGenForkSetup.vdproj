@@ -21,7 +21,19 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_19D13CE4848A828DFE84BF3D27A3FCFE"
+        "MsmKey" = "8:_0F9472CBC4653A36B146B8C7A4BD3D18"
+        "OwnerKey" = "8:_3B7CDB4F9B074CBEBE4DFE4383C061AD"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_2C1375BB4EC4BD6A1260B2328C5AD778"
+        "OwnerKey" = "8:_3B7CDB4F9B074CBEBE4DFE4383C061AD"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_3B406727F9D4780DEB2E002C8B1F3A21"
         "OwnerKey" = "8:_3B7CDB4F9B074CBEBE4DFE4383C061AD"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -45,26 +57,14 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_86571E3719D13CFF04F3F3FE96B1F596"
-        "OwnerKey" = "8:_3B7CDB4F9B074CBEBE4DFE4383C061AD"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_9B59908526D74F1B86043CD52ADEB327"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_C052132EF7093355DF97D436518CCE3F"
+        "MsmKey" = "8:_CA06FEC3E0236960750F18C092B5F4A1"
         "OwnerKey" = "8:_490DB46022BA454283A2A128D38A87D1"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_E510D21E726BFB0D14EE0A8190484EA2"
-        "OwnerKey" = "8:_3B7CDB4F9B074CBEBE4DFE4383C061AD"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -82,25 +82,25 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_C052132EF7093355DF97D436518CCE3F"
+        "OwnerKey" = "8:_CA06FEC3E0236960750F18C092B5F4A1"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_19D13CE4848A828DFE84BF3D27A3FCFE"
+        "OwnerKey" = "8:_3B406727F9D4780DEB2E002C8B1F3A21"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_86571E3719D13CFF04F3F3FE96B1F596"
+        "OwnerKey" = "8:_0F9472CBC4653A36B146B8C7A4BD3D18"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_E510D21E726BFB0D14EE0A8190484EA2"
+        "OwnerKey" = "8:_2C1375BB4EC4BD6A1260B2328C5AD778"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -111,7 +111,7 @@
         "DisplayName" = "8:Debug"
         "IsDebugOnly" = "11:TRUE"
         "IsReleaseOnly" = "11:FALSE"
-        "OutputFilename" = "8:Debug\\CslaGenFork 2011.08.01 Setup.msi"
+        "OutputFilename" = "8:Debug\\CslaGenFork 2011.08.20 Setup.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -228,14 +228,76 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_19D13CE4848A828DFE84BF3D27A3FCFE"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_0F9472CBC4653A36B146B8C7A4BD3D18"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:DBSchemaInfo, Version=1.0.0.5, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_0F9472CBC4653A36B146B8C7A4BD3D18"
+                    {
+                    "Name" = "8:DBSchemaInfo.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:DBSchemaInfo.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_D507985A4EB24FF7A6A772C0E8F3C3BB"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_2C1375BB4EC4BD6A1260B2328C5AD778"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:CodeSmith.Engine, Version=2.6.0.117, Culture=neutral, PublicKeyToken=9fd61cdb91609a7a"
+                "ScatterAssemblies"
+                {
+                    "_2C1375BB4EC4BD6A1260B2328C5AD778"
+                    {
+                    "Name" = "8:CodeSmith.Engine.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:CodeSmith.Engine.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_D507985A4EB24FF7A6A772C0E8F3C3BB"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:TRUE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_3B406727F9D4780DEB2E002C8B1F3A21"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:WeifenLuo.WinFormsUI.Docking, Version=2.2.2864.18696, Culture=neutral, PublicKeyToken=d481317c817cec47, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_19D13CE4848A828DFE84BF3D27A3FCFE"
+                    "_3B406727F9D4780DEB2E002C8B1F3A21"
                     {
                     "Name" = "8:WeifenLuo.WinFormsUI.Docking.dll"
                     "Attributes" = "3:512"
@@ -279,37 +341,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_86571E3719D13CFF04F3F3FE96B1F596"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:DBSchemaInfo, Version=1.0.0.5, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_86571E3719D13CFF04F3F3FE96B1F596"
-                    {
-                    "Name" = "8:DBSchemaInfo.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:DBSchemaInfo.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_D507985A4EB24FF7A6A772C0E8F3C3BB"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9B59908526D74F1B86043CD52ADEB327"
             {
             "SourcePath" = "8:logo-500x70.bmp"
@@ -330,14 +361,14 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C052132EF7093355DF97D436518CCE3F"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_CA06FEC3E0236960750F18C092B5F4A1"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:Ionic.Zip.Reduced, Version=1.9.1.5, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_C052132EF7093355DF97D436518CCE3F"
+                    "_CA06FEC3E0236960750F18C092B5F4A1"
                     {
                     "Name" = "8:Ionic.Zip.Reduced.dll"
                     "Attributes" = "3:512"
@@ -358,37 +389,6 @@
             "PackageAs" = "3:1"
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_E510D21E726BFB0D14EE0A8190484EA2"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:CodeSmith.Engine, Version=2.6.0.117, Culture=neutral, PublicKeyToken=9fd61cdb91609a7a"
-                "ScatterAssemblies"
-                {
-                    "_E510D21E726BFB0D14EE0A8190484EA2"
-                    {
-                    "Name" = "8:CodeSmith.Engine.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:CodeSmith.Engine.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_D507985A4EB24FF7A6A772C0E8F3C3BB"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
@@ -471,19 +471,19 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:CslaGeneratorFork"
-        "ProductCode" = "8:{B2B7FB34-16A9-4C80-8A96-8F29B4144CAC}"
-        "PackageCode" = "8:{DFAAAF18-A9DD-4F0D-AC99-B31E10BE83AD}"
+        "ProductCode" = "8:{4728B24C-C1F7-46A6-A365-E2475B01B639}"
+        "PackageCode" = "8:{43B7CC38-43CA-45A5-8D46-0EF0613CF599}"
         "UpgradeCode" = "8:{83BDF6E0-C913-48C1-96F7-BCF1E83B1F7E}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:4.0.5"
+        "ProductVersion" = "8:4.0.6"
         "Manufacturer" = "8:CslaGenFork"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:http://cslagenfork.codeplex.com/"
-        "Title" = "8:Csla Generator Fork 2011.08.01 Setup"
+        "Title" = "8:Csla Generator Fork 2011.08.20 Setup"
         "Subject" = "8:"
         "ARPCONTACT" = "8:Tiago Freitas Leal"
         "Keywords" = "8:"
@@ -594,7 +594,7 @@
         {
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_10FB53964EE74D7FB5B30B077465FA38"
             {
-            "Name" = "8:Csla Generator Fork 2011.08.01"
+            "Name" = "8:Csla Generator Fork 2011.08.20"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
