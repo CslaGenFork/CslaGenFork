@@ -472,7 +472,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:CslaGeneratorFork"
         "ProductCode" = "8:{4728B24C-C1F7-46A6-A365-E2475B01B639}"
-        "PackageCode" = "8:{43B7CC38-43CA-45A5-8D46-0EF0613CF599}"
+        "PackageCode" = "8:{0401F8D3-3C81-4FF8-AA86-23A671C1D5A1}"
         "UpgradeCode" = "8:{83BDF6E0-C913-48C1-96F7-BCF1E83B1F7E}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
