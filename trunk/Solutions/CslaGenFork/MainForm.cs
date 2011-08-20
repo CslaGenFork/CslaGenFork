@@ -40,6 +40,19 @@ namespace CslaGenerator
             //generator = new CslaGenerator.CodeGen.CodeGenerator();
         }
 
+        private bool ForceLoadCodeSmith()
+        {
+            if (!CodeSmothExists())
+                Windows7Security.StartCodeSmithHandler();
+
+            return CodeSmothExists();
+        }
+
+        private bool CodeSmothExists()
+        {
+            return File.Exists(Application.StartupPath + @"\CodeSmith.Engine.dll");
+        }
+
         internal DockPanel DockPanel
         {
             get { return dockPanel1; }
@@ -503,31 +516,37 @@ namespace CslaGenerator
 
         private void NewToolStripMenuItemClick(object sender, EventArgs e)
         {
-            _controller.NewCslaUnit();
-            _isNewProject = true;
-            ofdLoad.FileName = string.Empty;
-            Text = BaseFormText;
-            if (!File.Exists(Application.CommonAppDataPath + @"\Default.xml"))
+            if (ForceLoadCodeSmith())
             {
-                _controller.CurrentPropertiesTab.CmdResetToFactory.PerformClick();
-                _controller.CurrentPropertiesTab.cmdSetDefault.PerformClick();
-            }
+                _controller.NewCslaUnit();
+                _isNewProject = true;
+                ofdLoad.FileName = string.Empty;
+                Text = BaseFormText;
+                if (!File.Exists(Application.CommonAppDataPath + @"\Default.xml"))
+                {
+                    _controller.CurrentPropertiesTab.CmdResetToFactory.PerformClick();
+                    _controller.CurrentPropertiesTab.cmdSetDefault.PerformClick();
+                }
 
-            _controller.CurrentPropertiesTab.cmdGetDefault.PerformClick();
-            AfterOpenEnableButtonsAndMenus();
+                _controller.CurrentPropertiesTab.cmdGetDefault.PerformClick();
+                AfterOpenEnableButtonsAndMenus();
+            }
         }
 
         private void OpenToolStripMenuItemClick(object sender, EventArgs e)
         {
-            DialogResult result = ofdLoad.ShowDialog(this);
-            if (result == DialogResult.OK)
+            if (ForceLoadCodeSmith())
             {
-                Application.DoEvents();
-                Cursor.Current = Cursors.WaitCursor;
-                OpenProjectFile(ofdLoad.FileName);
-                Cursor.Current = Cursors.Default;
-                Text = _controller.CurrentUnit.ProjectName + @" - " + BaseFormText;
-                AfterOpenEnableButtonsAndMenus();
+                DialogResult result = ofdLoad.ShowDialog(this);
+                if (result == DialogResult.OK)
+                {
+                    Application.DoEvents();
+                    Cursor.Current = Cursors.WaitCursor;
+                    OpenProjectFile(ofdLoad.FileName);
+                    Cursor.Current = Cursors.Default;
+                    Text = _controller.CurrentUnit.ProjectName + @" - " + BaseFormText;
+                    AfterOpenEnableButtonsAndMenus();
+                }
             }
         }
 
