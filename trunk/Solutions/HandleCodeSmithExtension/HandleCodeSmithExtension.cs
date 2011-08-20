@@ -51,7 +51,7 @@ namespace HandleCodeSmithExtension
             if (InstallCodeSmith.Enabled)
             {
                 InstallLbl1.Text = @"CodeSmith DLL not found.";
-                InstallLbl2.Text = @"Install CodeSmith Extension to enable code generation.";
+                InstallLbl2.Text = @"To enable all features of CslaGenFork install CodeSmith Extension.";
             }
             else
             {
