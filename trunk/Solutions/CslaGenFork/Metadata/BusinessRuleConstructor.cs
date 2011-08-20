@@ -6,9 +6,19 @@ using CslaGenerator.Attributes;
 
 namespace CslaGenerator.Metadata
 {
-    public delegate void NameChanged(BusinessRuleConstructor sender, EventArgs e);
+    public delegate void NameChanged(BusinessRuleConstructor sender, ActiveStatusChangedEventArgs e);
 
-    public delegate void ActiveStatusChanged(BusinessRuleConstructor sender, EventArgs e);
+    public delegate void ActiveStatusChanged(BusinessRuleConstructor sender, ActiveStatusChangedEventArgs e);
+
+    public class ActiveStatusChangedEventArgs : EventArgs
+    {
+        public BusinessRuleConstructor NewActive;
+
+        public ActiveStatusChangedEventArgs(BusinessRuleConstructor newActive)
+        {
+            NewActive = newActive;
+        }
+    }
 
     /// <summary>
     /// Summary description for BusinessRuleConstructor for Rules 4
@@ -20,9 +30,9 @@ namespace CslaGenerator.Metadata
 
         private string _name = String.Empty;
         private bool _isActive;
+        private string _parent;
 
-        private BusinessRuleConstructorParameterCollection _constructorParameters =
-            new BusinessRuleConstructorParameterCollection();
+        private BusinessRuleConstructorParameterCollection _constructorParameters = new BusinessRuleConstructorParameterCollection();
 
         #endregion
 
@@ -37,7 +47,7 @@ namespace CslaGenerator.Metadata
             set
             {
                 _name = PropertyHelper.TidyAllowSpaces(value);
-                var e = new EventArgs();
+                var e = new ActiveStatusChangedEventArgs(this);
                 if (NameChanged != null)
                     NameChanged(this, e);
             }
@@ -56,7 +66,7 @@ namespace CslaGenerator.Metadata
                     _isActive = value;
                     if (_isActive)
                     {
-                        var e = new EventArgs();
+                        var e = new ActiveStatusChangedEventArgs(this);
                         if (ActiveChanged != null)
                             ActiveChanged(this, e);
                     }
@@ -146,7 +156,7 @@ namespace CslaGenerator.Metadata
         [field: NonSerialized]
         public event ActiveStatusChanged ActiveChanged;
 
-        internal void SetName(string newName)
+        public void SetName(string newName)
         {
             _name = newName;
         }

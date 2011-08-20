@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace CslaGenerator.Metadata
 {
-    public class BusinessRuleCollection : List<BusinessRule>
+    public class AuthorizationRuleCollection : List<AuthorizationRule>
     {
-        public BusinessRule Find(string name)
+        public AuthorizationRule Find(string name)
         {
-            foreach (BusinessRule p in this)
+            foreach (AuthorizationRule p in this)
             {
                 if (p.Name.Equals(name))
                     return p;
@@ -29,7 +29,7 @@ namespace CslaGenerator.Metadata
                 {
                     foreach (var parameter in constructor.ConstructorParameters)
                     {
-                        if (parameter.Type == "IPropertyInfo" && parameter.Name == "primaryProperty")
+                        if (parameter.Type == "IMemberInfo" && parameter.Name == "element")
                         {
                             parameter.Value = sender.Name;
                             break;

@@ -375,7 +375,7 @@ namespace CslaGenerator
             // objectRelationsBuilderPageToolStripMenuItem
             // 
             this.objectRelationsBuilderPageToolStripMenuItem.Checked = true;
-            this.objectRelationsBuilderPageToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.objectRelationsBuilderPageToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Unchecked;
             this.objectRelationsBuilderPageToolStripMenuItem.Name = "objectRelationsBuilderPageToolStripMenuItem";
             this.objectRelationsBuilderPageToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
             this.objectRelationsBuilderPageToolStripMenuItem.Text = "Object Relations Builder Page";

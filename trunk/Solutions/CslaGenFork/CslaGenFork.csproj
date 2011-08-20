@@ -215,6 +215,7 @@
     <Compile Include="CodeGen\CslaTemplateHelperCS.cs" />
     <Compile Include="CodeGen\CslaTemplateHelperVB.cs" />
     <Compile Include="CodeGen\GenerationStep.cs" />
+    <Compile Include="Design\AllPropertiesTypeEditor.cs" />
     <Compile Include="Design\AssemblyFileConverter.cs" />
     <Compile Include="Design\AuthorizationRuleTypeConverter.cs" />
     <Compile Include="Design\BusinessRuleTypeEditor.cs" />
@@ -256,6 +257,7 @@
     <Compile Include="Metadata\AuthorizationLevel.cs" />
     <Compile Include="Metadata\AuthorizationActions.cs" />
     <Compile Include="Metadata\AuthorizationProvider.cs" />
+    <Compile Include="Metadata\AuthorizationRuleCollection.cs" />
     <Compile Include="Metadata\BusinessRule.cs" />
     <Compile Include="Metadata\BusinessRuleCollection.cs" />
     <Compile Include="Metadata\BusinessRuleConstructor.cs" />

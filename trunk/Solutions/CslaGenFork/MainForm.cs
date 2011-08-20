@@ -71,6 +71,10 @@ namespace CslaGenerator
             //fbGenerate.OnlyFilesystem = true;
             projectPanel.TargetDirChanged += ProjectPanelTargetDirChanged;
             projectPanel.SelectedItemsChanged += ProjectPanelSelectedItemsChanged;
+            projectPanel.ProjectNameTextBox.Enabled = false;
+            projectPanel.ProjectNameTextBox.Text = @"Load or create a project";
+            projectPanel.TargetDirectory.Enabled = false;
+            projectPanel.TargetDirectoryButton.Enabled = false;
         }
 
         private static void ShieldBitmap(object sender, PaintEventArgs e)
@@ -104,6 +108,7 @@ namespace CslaGenerator
             pane.Controls.Add(dbSchemaPnl);
             dbSchemaPnl.Dock = DockStyle.Fill;
             pane.DockAreas = DockAreas.Float | DockAreas.Document;
+            pane.CloseButton = false;
 
             pane.MdiParent = this;
             pane.Text = @"Schema";
@@ -369,6 +374,11 @@ namespace CslaGenerator
         internal TextBox ProjectNameTextBox
         {
             get { return projectPanel.ProjectNameTextBox; }
+        }
+
+        internal Button TargetDirectoryButton
+        {
+            get { return projectPanel.TargetDirectoryButton; }
         }
 
         internal TextBox TargetDirectoryTextBox
@@ -844,7 +854,10 @@ namespace CslaGenerator
             if (objectRelationsBuilderPageToolStripMenuItem.Checked)
                 ObjectRelationsBuilderDockPanel.Hide();
             else
-                ObjectRelationsBuilderDockPanel.Show(dockPanel1);
+            {
+                if (_controller.CurrentUnit != null)
+                    ObjectRelationsBuilderDockPanel.Show(dockPanel1);
+            }
         }
 
         private void ProjectPanelToolStripMenuItemClick(object sender, EventArgs e)

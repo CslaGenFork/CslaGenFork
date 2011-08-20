@@ -8,6 +8,8 @@ using CslaGenerator.Design;
 
 namespace CslaGenerator.Metadata
 {
+    public delegate void ChildPropertyNameChanged(ChildProperty sender, PropertyNameChangedEventArgs e);
+
     /// <summary>
     /// Summary description for ChildProperty.
     /// </summary>
@@ -21,11 +23,10 @@ namespace CslaGenerator.Metadata
         private LoadingScheme _loadingScheme = LoadingScheme.ParentLoad;
         private PropertyDeclaration _declarationMode;
         private string _implements = string.Empty;
-        private BusinessRuleCollection _businessRules = new BusinessRuleCollection(); 
+        private BusinessRuleCollection _businessRules;
         private string[] _attributes = new string[] { };
         private AuthorizationProvider _authzProvider;
-        private AuthorizationRule _readAuthzRuleType = new AuthorizationRule();
-        private AuthorizationRule _writeAuthzRuleType = new AuthorizationRule();
+        private AuthorizationRuleCollection _authzRules;
         private string _readRoles = string.Empty;
         private string _writeRoles = string.Empty;
         private bool _lazyLoad;
@@ -36,6 +37,16 @@ namespace CslaGenerator.Metadata
 
         #endregion
 
+        public ChildProperty()
+        {
+            _businessRules = new BusinessRuleCollection(); 
+            NameChanged += _businessRules.OnParentChanged;
+            _authzRules = new AuthorizationRuleCollection();
+            _authzRules.Add(new AuthorizationRule());
+            _authzRules.Add(new AuthorizationRule());
+            NameChanged += _authzRules.OnParentChanged;
+        }
+
         #region 01. Definition
 
         [Category("01. Definition")]
@@ -43,7 +54,14 @@ namespace CslaGenerator.Metadata
         public override string Name
         {
             get { return base.Name; }
-            set { base.Name = PropertyHelper.Tidy(value); }
+            set
+            {
+                value = PropertyHelper.Tidy(value);
+                var e = new PropertyNameChangedEventArgs(base.Name, value);
+                base.Name = value;
+                if (NameChanged != null)
+                    NameChanged(this, e);
+            }
         }
 
         [Category("01. Definition")]
@@ -182,14 +200,15 @@ namespace CslaGenerator.Metadata
         [UserFriendlyName("Read Autorization Type")]
         public virtual AuthorizationRule ReadAuthzRuleType
         {
-            get { return _readAuthzRuleType; }
+            get { return _authzRules[0]; }
             set
             {
-                if (!ReferenceEquals(value, _readAuthzRuleType))
+                if (!ReferenceEquals(value, _authzRules[0]))
                 {
-                    if (_readAuthzRuleType != null)
+                    if (_authzRules[0] != null)
                     {
-                        _readAuthzRuleType = value;
+                        _authzRules[0] = value;
+                        _authzRules[0].Parent = Name;
                     }
                 }
             }
@@ -202,14 +221,15 @@ namespace CslaGenerator.Metadata
         [UserFriendlyName("Write Autorization Type")]
         public virtual AuthorizationRule WriteAuthzRuleType
         {
-            get { return _writeAuthzRuleType; }
+            get { return _authzRules[1]; }
             set
             {
-                if (!ReferenceEquals(value, _writeAuthzRuleType))
+                if (!ReferenceEquals(value, _authzRules[1]))
                 {
-                    if (_writeAuthzRuleType != null)
+                    if (_authzRules[1] != null)
                     {
-                        _writeAuthzRuleType = value;
+                        _authzRules[1] = value;
+                        _authzRules[1].Parent = Name;
                     }
                 }
             }
@@ -278,6 +298,9 @@ namespace CslaGenerator.Metadata
         {
             get { return TypeCodeEx.Empty; }
         }
+
+        [field: NonSerialized]
+        public event ChildPropertyNameChanged NameChanged;
 
         public override object Clone()
         {

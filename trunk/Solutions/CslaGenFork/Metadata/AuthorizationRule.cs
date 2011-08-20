@@ -258,6 +258,7 @@ namespace CslaGenerator.Metadata
         public bool CacheResult
         {
             get { return _cacheResult; }
+            set { _cacheResult = value; }
         }
 
         [Category("04. Base Authorization Rule Options")]
@@ -292,6 +293,7 @@ namespace CslaGenerator.Metadata
             return null;
         }
 
+        [field: NonSerialized]
         public event EventHandler TypeChanged;
 
         protected void OnTypeChanged(EventArgs e)

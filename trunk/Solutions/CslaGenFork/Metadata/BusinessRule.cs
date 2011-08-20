@@ -114,7 +114,6 @@ namespace CslaGenerator.Metadata
         [Category("01. Definition")]
         [Description("The assembly file full path.")]
         [Editor(typeof (AssemblyFileNameEditor), typeof (UITypeEditor))]
-        // [TypeConverter(typeof(AssemblyFileConverter))]
         [UserFriendlyName("Assembly File Name")]
         public string AssemblyFile
         {
@@ -390,6 +389,7 @@ namespace CslaGenerator.Metadata
             return null;
         }
 
+        [field: NonSerialized]
         public event EventHandler TypeChanged;
 
         protected void OnTypeChanged(EventArgs e)
