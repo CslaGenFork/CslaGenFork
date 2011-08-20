@@ -8,9 +8,9 @@ namespace CslaGenerator.Metadata
         public new void Add(BusinessRuleConstructor item)
         {
 //            item.NameChanged -= Name_Changed;
-            item.NameChanged += Name_Changed;
+            item.NameChanged += OnNameChanged;
 //            item.ActiveChanged -= Active_Changed;
-            item.ActiveChanged += Active_Changed;
+            item.ActiveChanged += OnActiveChanged;
             base.Add(item);
         }
 
@@ -39,7 +39,7 @@ namespace CslaGenerator.Metadata
             return null;
         }
 
-        private void Name_Changed(BusinessRuleConstructor sender, EventArgs e)
+        private void OnNameChanged(BusinessRuleConstructor sender, EventArgs e)
         {
 //            sender.NameChanged -= Name_Changed;
 
@@ -54,7 +54,7 @@ namespace CslaGenerator.Metadata
 //            sender.NameChanged += Name_Changed;
         }
 
-        private void Active_Changed(BusinessRuleConstructor sender, EventArgs e)
+        private void OnActiveChanged(BusinessRuleConstructor sender, EventArgs e)
         {
 //            sender.NameChanged -= Name_Changed;
 
@@ -74,5 +74,6 @@ namespace CslaGenerator.Metadata
 
 //            sender.NameChanged += Name_Changed;
         }
+
     }
 }

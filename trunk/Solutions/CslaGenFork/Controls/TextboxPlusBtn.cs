@@ -1,23 +1,22 @@
 using System;
 using System.Windows.Forms;
 
-
 namespace CslaGenerator.Controls
 {
 	/// <summary>
 	/// Summary description for TextboxPlusBtn.
 	/// </summary>
-	public class TextboxPlusBtn : System.Windows.Forms.UserControl
+	public class TextboxPlusBtn : UserControl
 	{
 		// public events
-		public delegate void ButtonClickedEventHandler(object sender, System.EventArgs e);
+		public delegate void ButtonClickedEventHandler(object sender, EventArgs e);
 		public virtual event ButtonClickedEventHandler ButtonClicked;
-		private System.Windows.Forms.TextBox textBox;
-		private System.Windows.Forms.Button button;
+		private TextBox textBox;
+		private Button button;
 		/// <summary> 
 		/// Required designer variable.
 		/// </summary>
-		private System.ComponentModel.Container components = null;
+		private System.ComponentModel.Container components;
 
 		public TextboxPlusBtn()
 		{
@@ -86,16 +85,15 @@ namespace CslaGenerator.Controls
 
 		internal TextBox TextBox
 		{
-			get { return this.textBox; }
+			get { return textBox; }
 		}
 
-		internal bool TextBoxEnabled
+		internal Button Button
 		{
-			get { return this.textBox.Enabled; }
-			set { this.textBox.Enabled = value; }
+			get { return button; }
 		}
 
-		private void button_Click(object sender, System.EventArgs e)
+		private void button_Click(object sender, EventArgs e)
 		{
 			ButtonClicked(sender, e);
 		}	

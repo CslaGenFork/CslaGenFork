@@ -13,10 +13,10 @@ namespace CslaGenerator.Metadata
         public string OldName;
         public string NewName;
 
-        public PropertyNameChangedEventArgs(string oName, string nName)
+        public PropertyNameChangedEventArgs(string oldName, string newName)
         {
-            OldName = oName;
-            NewName = nName;
+            OldName = oldName;
+            NewName = newName;
         }
     }
 
@@ -82,12 +82,11 @@ namespace CslaGenerator.Metadata
         private string _friendlyName = string.Empty;
         private PropertyDeclaration _declarationMode;
         private RuleCollection _rules = new RuleCollection();
-        private BusinessRuleCollection _businessRules = new BusinessRuleCollection();
+        private BusinessRuleCollection _businessRules;
         private string _implements = string.Empty;
         private string[] _attributes = new string[] { };
         private AuthorizationProvider _authzProvider;
-        private AuthorizationRule _readAuthzRuleType = new AuthorizationRule();
-        private AuthorizationRule _writeAuthzRuleType = new AuthorizationRule();
+        private AuthorizationRuleCollection _authzRules;
         private string _readRoles = string.Empty;
         private string _writeRoles = string.Empty;
         private PropertyAccess _access = PropertyAccess.IsPublic;
@@ -97,6 +96,16 @@ namespace CslaGenerator.Metadata
         private TypeCodeEx _backingFieldType = TypeCodeEx.Empty;
 
         #endregion
+
+        public ValueProperty()
+        {
+            _businessRules = new BusinessRuleCollection();
+            NameChanged += _businessRules.OnParentChanged;
+            _authzRules = new AuthorizationRuleCollection();
+            _authzRules.Add(new AuthorizationRule());
+            _authzRules.Add(new AuthorizationRule());
+            NameChanged += _authzRules.OnParentChanged;
+        }
 
         #region Properties
 
@@ -337,14 +346,15 @@ namespace CslaGenerator.Metadata
         [UserFriendlyName("Read Autorization Type")]
         public virtual AuthorizationRule ReadAuthzRuleType
         {
-            get { return _readAuthzRuleType; }
+            get { return _authzRules[0]; }
             set
             {
-                if (!ReferenceEquals(value, _readAuthzRuleType))
+                if (!ReferenceEquals(value, _authzRules[0]))
                 {
-                    if (_readAuthzRuleType != null)
+                    if (_authzRules[0] != null)
                     {
-                        _readAuthzRuleType = value;
+                        _authzRules[0] = value;
+                        _authzRules[0].Parent = Name;
                     }
                 }
             }
@@ -357,14 +367,15 @@ namespace CslaGenerator.Metadata
         [UserFriendlyName("Write Autorization Type")]
         public virtual AuthorizationRule WriteAuthzRuleType
         {
-            get { return _writeAuthzRuleType; }
+            get { return _authzRules[1]; }
             set
             {
-                if (!ReferenceEquals(value, _writeAuthzRuleType))
+                if (!ReferenceEquals(value, _authzRules[1]))
                 {
-                    if (_writeAuthzRuleType != null)
+                    if (_authzRules[1] != null)
                     {
-                        _writeAuthzRuleType = value;
+                        _authzRules[1] = value;
+                        _authzRules[1].Parent = Name;
                     }
                 }
             }

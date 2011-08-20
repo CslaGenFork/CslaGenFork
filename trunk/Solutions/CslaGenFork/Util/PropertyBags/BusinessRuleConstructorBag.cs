@@ -16,6 +16,7 @@ using System.Diagnostics;
 using System.Drawing.Design;
 using System.Reflection;
 using CslaGenerator.Attributes;
+using CslaGenerator.Design;
 using CslaGenerator.Metadata;
 
 namespace CslaGenerator.Util.PropertyBags
@@ -731,14 +732,30 @@ namespace CslaGenerator.Util.PropertyBags
                                ? " Use a comma to separate List elements."
                                : "");
 
-            if (target.Type == "IPropertyInfo" || target.Type == "IMemberInfo" || target.Type == "AuthorizationActions")
+            if (target.Type == "AuthorizationActions")
                 isreadonly = true;
+
+            if (target.Type == "IPropertyInfo" && target.Name == "primaryProperty")
+                isreadonly = true;
+
+            if (target.Type == "IMemberInfo" && target.Name == "element")
+                isreadonly = true;
+
+            /*if (target.Type == "IPropertyInfo")
+                target.Value = SelectedObject[0].Parent;
+
+            if (target.Type == "IMemberInfo")
+                target.Value = SelectedObject[0].Parent;*/
 
             switch (target.Type)
             {
                 case "IPropertyInfo":
+                    if (target.Name != "primaryProperty")
+                        editor = typeof(AllPropertiesTypeEditor).AssemblyQualifiedName;
                     break;
                 case "IMemberInfo":
+                    if (target.Name != "element")
+                        editor = typeof(AllPropertiesTypeEditor).AssemblyQualifiedName;
                     break;
                 case "AuthorizationActions":
                     break;

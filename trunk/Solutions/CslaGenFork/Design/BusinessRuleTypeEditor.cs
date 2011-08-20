@@ -289,7 +289,7 @@ namespace CslaGenerator.Design
                         }
                     }
 
-                    if (ctorParamInfo.Type == "IPropertyInfo")
+                    if (ctorParamInfo.Type == "IPropertyInfo" && ctorParamInfo.Name == "primaryProperty")
                         ctorParamInfo.Value = rule.Parent;
                     else
                     {

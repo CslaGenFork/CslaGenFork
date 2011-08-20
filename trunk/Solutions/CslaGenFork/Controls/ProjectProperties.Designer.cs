@@ -2003,6 +2003,7 @@ namespace CslaGenerator.Controls
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(557, 425);
+            this.CloseButton = false;
             this.Controls.Add(this.cmdApply);
             this.Controls.Add(this.cmdUndo);
             this.Controls.Add(this.cmdGetDefault);

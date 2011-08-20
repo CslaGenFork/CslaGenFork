@@ -63,9 +63,9 @@ namespace CslaGenerator
         /// </summary>
         private void ProcessCommandLineArgs()
         {
-            if (this.CommandLineArgs.Length > 0)
+            if (CommandLineArgs.Length > 0)
             {
-                string filename = this.CommandLineArgs[0];
+                string filename = CommandLineArgs[0];
                 if (File.Exists(filename))
                 {
                     // request that the UI load the project, since it keeps track
@@ -88,8 +88,8 @@ namespace CslaGenerator
         [STAThread]
         static void Main(string[] args)
         {
-            GeneratorController controller = new GeneratorController();
-            controller.MainForm.Closing += new CancelEventHandler(controller.GeneratorForm_Closing);
+            var controller = new GeneratorController();
+            controller.MainForm.Closing += controller.GeneratorForm_Closing;
             controller.CommandLineArgs = args;
             // process the command line args here so we have a UI, also, we can not process in Init without
             // modifying more code to take args[]
@@ -186,8 +186,8 @@ namespace CslaGenerator
 
         public void Connect()
         {
-            ConnectionForm frmConn = new ConnectionForm();
-            DialogResult result = frmConn.ShowDialog();
+            var frmConn = new ConnectionForm();
+            var result = frmConn.ShowDialog();
             if (result == DialogResult.OK)
             {
                 Cursor.Current = Cursors.WaitCursor;
@@ -382,9 +382,12 @@ namespace CslaGenerator
         {
             if (_currentUnit != null)
             {
+                _mainForm.ProjectNameTextBox.Enabled = true;
                 _mainForm.ProjectNameTextBox.DataBindings.Clear();
                 _mainForm.ProjectNameTextBox.DataBindings.Add("Text", _currentUnit, "ProjectName");
 
+                _mainForm.TargetDirectoryButton.Enabled = true;
+                _mainForm.TargetDirectoryTextBox.Enabled = true;
                 _mainForm.TargetDirectoryTextBox.DataBindings.Clear();
                 _mainForm.TargetDirectoryTextBox.DataBindings.Add("Text", _currentUnit, "TargetDirectory");
 

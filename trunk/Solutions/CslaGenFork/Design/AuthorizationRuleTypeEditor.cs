@@ -294,7 +294,7 @@ namespace CslaGenerator.Design
                         }
                     }
 
-                    if (ctorParamInfo.Type == "IMemberInfo")
+                    if (ctorParamInfo.Type == "IMemberInfo" && ctorParamInfo.Name == "element")
                         ctorParamInfo.Value = rule.Parent;
                     else if (ctorParamInfo.Type == "AuthorizationActions")
                         ctorParamInfo.Value = rule.ActionProperty.ToString();

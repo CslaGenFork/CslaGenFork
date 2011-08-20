@@ -32,6 +32,11 @@ namespace CslaGenerator.Controls
             get { return txtProjectName; }
         }
 
+        internal Button TargetDirectoryButton
+        {
+            get { return textboxPlusBtn.Button; }
+        }
+
         internal TextBox TargetDirectory
         {
             get { return textboxPlusBtn.TextBox; }
@@ -101,7 +106,7 @@ namespace CslaGenerator.Controls
 
         private void textboxPlusBtn_ButtonClicked(object sender, EventArgs e)
         {
-            FolderBrowserDialog fBrowser = new FolderBrowserDialog();
+            var fBrowser = new FolderBrowserDialog();
             fBrowser.Description = @"Please choose an output folder for the generated code.";
 
             if (textboxPlusBtn.TextBox.Text.Trim().Length != 0)
@@ -123,7 +128,7 @@ namespace CslaGenerator.Controls
             }
         }
 
-        void objects_ListChanged(object sender, ListChangedEventArgs e)
+        private void objects_ListChanged(object sender, ListChangedEventArgs e)
         {
             if(_suspendListUpdates)
                 return;
@@ -283,7 +288,7 @@ namespace CslaGenerator.Controls
 
         private void ProjectPanel_Load(object sender, EventArgs e)
         {
-            textboxPlusBtn.ButtonClicked += this.textboxPlusBtn_ButtonClicked;
+            textboxPlusBtn.ButtonClicked += textboxPlusBtn_ButtonClicked;
             textboxPlusBtn.TextBox.TextChanged += TextBox_TextChanged;
         }
 

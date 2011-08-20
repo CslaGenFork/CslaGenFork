@@ -1,7 +1,4 @@
 using System;
-using System.ComponentModel;
-using System.Data;
-using CslaGenerator.Controls;
 
 namespace CslaGenerator.Metadata
 {
