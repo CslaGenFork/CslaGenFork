@@ -677,7 +677,7 @@ namespace CslaGenerator
             this.IsMdiContainer = true;
             this.KeyPreview = true;
             this.Name = "MainForm";
-            this.Text = "CSLAGEN";
+            this.Text = "CslaGenFork";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.MainFormLoad);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainFormKeyDown);

@@ -349,7 +349,7 @@ namespace CslaGenerator
             // ReSharper disable UseObjectOrCollectionInitializer
             var tDirDialog = new FolderBrowserDialog();
             // ReSharper restore UseObjectOrCollectionInitializer
-            tDirDialog.Description = @"Current folder location of the CslaGen templates is:" + Environment.NewLine +
+            tDirDialog.Description = @"Current folder location of the CslaGenFork templates is:" + Environment.NewLine +
                                      _controller.TemplatesDirectory + Environment.NewLine +
                                      @"Select a new folder location and press OK.";
             tDirDialog.ShowNewFolderButton = false;
@@ -829,7 +829,7 @@ namespace CslaGenerator
                              DockAreas.DockRight |
                              DockAreas.Float;
             pane.ShowHint = DockState.DockLeft;
-            pane.Text = @"CslaGen Project";
+            pane.Text = @"CslaGenFork Project";
             pane.VisibleChanged +=
                 delegate(object sender, EventArgs e) { projectPanelToolStripMenuItem.Checked = ((DockContent)sender).Visible; };
             pane.FormClosing += PaneFormClosing;

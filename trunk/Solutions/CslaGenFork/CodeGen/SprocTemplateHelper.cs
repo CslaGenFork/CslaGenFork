@@ -155,7 +155,10 @@ namespace CslaGenerator.CodeGen
         public string GetDataTypeString(CslaObjectInfo info, string propName)
         {
             ValueProperty prop = GetValuePropertyByName(info,propName);
-            if (prop == null) { throw new Exception("Parameter '" + propName + "' does not have a corresponding ValueProperty. Make sure a ValueProperty with the same name exists"); }
+            if (prop == null)
+            {
+                throw new Exception("Parameter '" + propName + "' does not have a corresponding ValueProperty. Make sure a ValueProperty with the same name exists");
+            }
 
             if (prop.DbBindColumn == null) { throw new Exception("Property '" + propName + "' does not have it's DbBindColumn initialized."); }
 
@@ -290,6 +293,8 @@ namespace CslaGenerator.CodeGen
             valPropColl.AddRange(info.GetAllValueProperties());
             foreach (ValueProperty valProp in valPropColl)
             {
+                if (valProp.DbBindColumn.Column == null)
+                    continue;
                 if (valProp.FKConstraint != string.Empty)
                 {
                     FKField = true;
@@ -417,6 +422,8 @@ namespace CslaGenerator.CodeGen
                 vpc.AddRange(info.GetAllValueProperties());
                 foreach (ValueProperty vp in vpc)
                 {
+                    if (vp.DbBindColumn.Column == null)
+                        continue;
                     if (vp.DbBindColumn.ObjectName != curTable.ObjectName)
                     {
                         List<IForeignKeyConstraint> fKeys = Catalog.ForeignKeyConstraints.GetConstraintsFor(curTable);
@@ -471,6 +478,8 @@ namespace CslaGenerator.CodeGen
             vpc.AddRange(info.GetAllValueProperties());
             foreach (ValueProperty prop in vpc)
             {
+                if (prop.DbBindColumn.Column == null)
+                    continue;
                 if (prop.DataAccess != ValueProperty.DataAccessBehaviour.WriteOnly)
                 {
                     if (!first)
@@ -662,8 +671,10 @@ namespace CslaGenerator.CodeGen
                 allValueProps = item.GetAllValueProperties();
             }
 
-            foreach (var prop in allValueProps)
+            foreach (ValueProperty prop in allValueProps)
             {
+                if (prop.DbBindColumn.Column == null)
+                    continue;
                 if ((prop.DataAccess != ValueProperty.DataAccessBehaviour.WriteOnly ||
                      prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default) &&
                     prop.DbBindColumn.ColumnOriginType == ColumnOriginType.Table)
@@ -683,6 +694,8 @@ namespace CslaGenerator.CodeGen
             List<IResultObject> tables = new List<IResultObject>();
             foreach (ValueProperty prop in info.GetAllValueProperties())
             {
+                if (prop.DbBindColumn.Column == null)
+                    continue;
                 if (prop.DataAccess != ValueProperty.DataAccessBehaviour.ReadOnly &&
                     prop.DataAccess != ValueProperty.DataAccessBehaviour.UpdateOnly &&
                     prop.DbBindColumn.ColumnOriginType == ColumnOriginType.Table)
@@ -702,6 +715,8 @@ namespace CslaGenerator.CodeGen
             List<IResultObject> tables = new List<IResultObject>();
             foreach (ValueProperty prop in info.GetAllValueProperties())
             {
+                if (prop.DbBindColumn.Column == null)
+                    continue;
                 if (prop.DataAccess != ValueProperty.DataAccessBehaviour.ReadOnly &&
                     prop.DataAccess != ValueProperty.DataAccessBehaviour.CreateOnly &&
                     prop.DbBindColumn.ColumnOriginType == ColumnOriginType.Table)
@@ -759,6 +774,8 @@ namespace CslaGenerator.CodeGen
 
             foreach (ValueProperty prop in info.GetAllValueProperties())
             {
+                if (prop.DbBindColumn.Column == null)
+                    continue;
                 if (prop.DbBindColumn.ColumnOriginType == ColumnOriginType.Table ||
                     prop.DbBindColumn.ColumnOriginType == ColumnOriginType.View)
                 {
@@ -783,6 +800,8 @@ namespace CslaGenerator.CodeGen
 
             foreach (ValueProperty prop in info.GetAllValueProperties())
             {
+                if (prop.DbBindColumn.Column == null)
+                    continue;
                 if (prop.DataAccess != ValueProperty.DataAccessBehaviour.ReadOnly && prop.DbBindColumn.ColumnOriginType == ColumnOriginType.Table)
                 {
                     IResultObject table = (IResultObject)prop.DbBindColumn.DatabaseObject;
@@ -921,7 +940,7 @@ namespace CslaGenerator.CodeGen
             for (var i = 0; i < fkArray.Length; i++)
             {
                 exists = false;
-                foreach (var key in filteredKeys)
+                foreach (IForeignKeyConstraint key in filteredKeys)
                 {
                     if (fkArray[i].ConstraintTable.ObjectName == key.ConstraintTable.ObjectName &&
                         fkArray[i].PKTable.ObjectName == key.PKTable.ObjectName)
@@ -1141,7 +1160,7 @@ namespace CslaGenerator.CodeGen
 
         private bool IgnoreFilterCriteria(Criteria crit)
         {
-            foreach (var prop in crit.Properties)
+            foreach (CriteriaProperty prop in crit.Properties)
             {
                 if(prop.DbBindColumn.ColumnName == Info.Parent.Params.SpBoolSoftDeleteColumn &&
                     prop.DbBindColumn.Column.DbType == DbType.Boolean)
@@ -1167,10 +1186,10 @@ namespace CslaGenerator.CodeGen
             if (onlyChildObjects)
             {
                 var originalTables = GetTables(crit, originalInfo, false);
-                foreach (var originalTable in originalTables)
+                foreach (IResultObject originalTable in originalTables)
                 {
                     var found = false;
-                    foreach (var table in tables)
+                    foreach (IResultObject table in tables)
                     {
                         if (originalTable == table)
                         {
@@ -1188,7 +1207,7 @@ namespace CslaGenerator.CodeGen
             {
                 if (tables.Count > 0)
                 {
-                    foreach (var table in tables)
+                    foreach (IResultObject table in tables)
                     {
                         sb.Append(SoftDeleteWhereClause(originalInfo, table, first));
                     }
@@ -1198,7 +1217,7 @@ namespace CslaGenerator.CodeGen
                     // this Select Criteria has no criteria properties
                     var childInfo = FindChildInfo(info, info.ItemType);
                     var childTables = GetTables(crit, childInfo, false);
-                    foreach (var originalTable in childTables)
+                    foreach (IResultObject originalTable in childTables)
                     {
                         sb.Append(SoftDeleteWhereClause(originalInfo, originalTable, first));
                     }
@@ -1235,8 +1254,10 @@ namespace CslaGenerator.CodeGen
         {
             if (Info.Parent.Params.SpIgnoreFilterWhenSoftDeleteIsParam)
             {
-                foreach (var prop in originalInfo.GetAllValueProperties())
+                foreach (ValueProperty prop in originalInfo.GetAllValueProperties())
                 {
+                    if (prop.DbBindColumn.Column == null)
+                        continue;
                     if (prop.Name == Info.Parent.Params.SpBoolSoftDeleteColumn)
                         return true;
                 }
@@ -1257,7 +1278,7 @@ namespace CslaGenerator.CodeGen
             if (!string.IsNullOrEmpty(Info.Parent.Params.SpBoolSoftDeleteColumn)
                 && !ignoreFilterEnabled)
             {
-                foreach (var table in tables)
+                foreach (IResultObject table in tables)
                 {
                     if (!UseBoolSoftDelete(table, ignoreFilterEnabled))
                         return false;
@@ -1289,7 +1310,7 @@ namespace CslaGenerator.CodeGen
             if (!string.IsNullOrEmpty(Info.Parent.Params.SpIntSoftDeleteColumn)
                 && !ignoreFilterEnabled)
             {
-                foreach (var table in tables)
+                foreach (IResultObject table in tables)
                 {
                     if (!UseIntSoftDelete(table))
                         return false;
