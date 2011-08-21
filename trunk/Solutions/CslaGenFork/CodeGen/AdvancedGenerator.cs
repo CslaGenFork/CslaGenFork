@@ -662,7 +662,7 @@ namespace CslaGenerator.CodeGen
 
         private void GenerateAllSprocsFile(CslaObjectInfo info, string dir, CslaGeneratorUnit unit)
         {
-            var filename = dir + @"\Sprocs4\" + info.ObjectName + ".sql";
+            var filename = dir + @"\sprocs\" + info.ObjectName + ".sql";
             var selfLoad = CslaTemplateHelperCS.GetSelfLoad(info);
 
             var proc = new StringBuilder();
@@ -718,8 +718,8 @@ namespace CslaGenerator.CodeGen
             }
             if (proc.Length > 0)
             {
-                CheckDirectory(dir + @"\Sprocs4");
-                WriteToFile(dir + @"\Sprocs4\" + info.ObjectName + ".sql", proc.ToString(), unit);
+                CheckDirectory(dir + @"\sprocs");
+                WriteToFile(dir + @"\sprocs\" + info.ObjectName + ".sql", proc.ToString(), unit);
             }
         }
 
@@ -736,9 +736,9 @@ namespace CslaGenerator.CodeGen
                 {
                     if (crit.GetOptions.Procedure && !String.IsNullOrEmpty(crit.GetOptions.ProcedureName))
                     {
-                        string proc = GenerateProcedure(info, crit, "SelectProcedure.cst", crit.GetOptions.ProcedureName, dir + @"\Sprocs4\" + crit.GetOptions.ProcedureName + ".sql");
-                        CheckDirectory(dir + @"\Sprocs4");
-                        WriteToFile(dir + @"\Sprocs4\" + crit.GetOptions.ProcedureName + ".sql", proc, unit);
+                        string proc = GenerateProcedure(info, crit, "SelectProcedure.cst", crit.GetOptions.ProcedureName, dir + @"\sprocs\" + crit.GetOptions.ProcedureName + ".sql");
+                        CheckDirectory(dir + @"\sprocs");
+                        WriteToFile(dir + @"\sprocs\" + crit.GetOptions.ProcedureName + ".sql", proc, unit);
                     }
                 }
             }
@@ -748,9 +748,9 @@ namespace CslaGenerator.CodeGen
         {
             if (info.InsertProcedureName != "")
             {
-                var proc = GenerateProcedure(info, null, "InsertProcedure.cst", info.InsertProcedureName, dir + @"\Sprocs4\" + info.InsertProcedureName + ".sql");
-                CheckDirectory(dir + @"\Sprocs4");
-                WriteToFile(dir + @"\Sprocs4\" + info.InsertProcedureName + ".sql", proc, unit);
+                var proc = GenerateProcedure(info, null, "InsertProcedure.cst", info.InsertProcedureName, dir + @"\sprocs\" + info.InsertProcedureName + ".sql");
+                CheckDirectory(dir + @"\sprocs");
+                WriteToFile(dir + @"\sprocs\" + info.InsertProcedureName + ".sql", proc, unit);
             }
         }
 
@@ -758,9 +758,9 @@ namespace CslaGenerator.CodeGen
         {
             if (info.UpdateProcedureName != "")
             {
-                var proc = GenerateProcedure(info, null, "UpdateProcedure.cst", info.UpdateProcedureName, dir + @"\Sprocs4\" + info.UpdateProcedureName + ".sql");
-                CheckDirectory(dir + @"\Sprocs4");
-                WriteToFile(dir + @"\Sprocs4\" + info.UpdateProcedureName + ".sql", proc, unit);
+                var proc = GenerateProcedure(info, null, "UpdateProcedure.cst", info.UpdateProcedureName, dir + @"\sprocs\" + info.UpdateProcedureName + ".sql");
+                CheckDirectory(dir + @"\sprocs");
+                WriteToFile(dir + @"\sprocs\" + info.UpdateProcedureName + ".sql", proc, unit);
             }
         }
 
@@ -770,16 +770,16 @@ namespace CslaGenerator.CodeGen
             {
                 if (crit.DeleteOptions.Procedure && !String.IsNullOrEmpty(crit.DeleteOptions.ProcedureName))
                 {
-                    string proc = GenerateProcedure(info, crit, "DeleteProcedure.cst", crit.DeleteOptions.ProcedureName, dir + @"\Sprocs4\" + crit.DeleteOptions.ProcedureName + ".sql");
-                    CheckDirectory(dir + @"\Sprocs4");
-                    WriteToFile(dir + @"\Sprocs4\" + crit.DeleteOptions.ProcedureName + ".sql", proc, unit);
+                    string proc = GenerateProcedure(info, crit, "DeleteProcedure.cst", crit.DeleteOptions.ProcedureName, dir + @"\sprocs\" + crit.DeleteOptions.ProcedureName + ".sql");
+                    CheckDirectory(dir + @"\sprocs");
+                    WriteToFile(dir + @"\sprocs\" + crit.DeleteOptions.ProcedureName + ".sql", proc, unit);
                 }
             }
             /*if (_targetFramework != TargetFramework.CSLA40 && info.ObjectType == CslaObjectType.EditableChild)
             {
                 var proc = GenerateProcedure(info, null, "DeleteProcedure.cst", info.DeleteProcedureName);
-                CheckDirectory(dir + @"\Sprocs4");
-                WriteToFile(dir + @"\Sprocs4\" + info.DeleteProcedureName + ".sql", proc);
+                CheckDirectory(dir + @"\sprocs");
+                WriteToFile(dir + @"\sprocs\" + info.DeleteProcedureName + ".sql", proc);
             }*/
         }
 
@@ -792,7 +792,7 @@ namespace CslaGenerator.CodeGen
                 {
                     if (templateName != String.Empty)
                     {
-                        var path = _templatesDirectory + @"Sprocs4\" + templateName;
+                        var path = _templatesDirectory + @"SProcs4\" + templateName;
                         var template = GetTemplate(objInfo, path);
                         if (template != null)
                         {
