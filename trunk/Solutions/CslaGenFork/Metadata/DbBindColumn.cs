@@ -45,7 +45,7 @@ namespace CslaGenerator.Metadata
             get { return _columnOriginType; }
         }
 
-        internal IColumnInfo Column
+        public IColumnInfo Column
         {
             get { return _column; }
         }

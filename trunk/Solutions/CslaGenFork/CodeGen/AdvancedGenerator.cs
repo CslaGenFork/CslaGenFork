@@ -25,6 +25,7 @@ namespace CslaGenerator.CodeGen
         private int _objSuccess;
         private int _objectWarnings;
         private int _sprocFailed;
+        private int _sprocWarnings;
         private int _sprocSuccess;
         private TargetFramework _targetFramework;
         private bool _generateInterfaceDAL;
@@ -91,14 +92,13 @@ namespace CslaGenerator.CodeGen
 
             foreach (var info in list)
             {
-// list already filter Generate status
-//                if (info.Generate)
-//                {
+                // list already filter Generate status
+                //if (info.Generate)
+                //{
                     if (objInfo == null)
                         objInfo = info;
                     if (_abortRequested) break;
                     OnStep(info.ObjectName);
-
 
                     // Business Objects
 
@@ -118,7 +118,6 @@ namespace CslaGenerator.CodeGen
                     if (_abortRequested)
                         break;
 
-
                     // Interface DAL
 
                     try
@@ -136,7 +135,6 @@ namespace CslaGenerator.CodeGen
                     }
                     if (_abortRequested)
                         break;
-
 
                     // DAL Objects
 
@@ -156,7 +154,6 @@ namespace CslaGenerator.CodeGen
                     if (_abortRequested)
                         break;
 
-
                     // Stored Procedures 
 
                     if (generationParams.GenerateSprocs && info.GenerateSprocs && info.ObjectType != CslaObjectType.UnitOfWork)
@@ -165,11 +162,11 @@ namespace CslaGenerator.CodeGen
                         {
                             if (generationParams.OneSpFilePerObject)
                             {
-                                GenerateAllSprocsFile(info, TargetDirectory, generationParams);
+                                GenerateAllSprocsFile(info, TargetDirectory, unit);
                             }
                             else
                             {
-                                GenerateSelectProcedure(info, TargetDirectory);
+                                GenerateSelectProcedure(info, TargetDirectory, unit);
                                 if (_abortRequested)
                                     break;
 
@@ -180,15 +177,15 @@ namespace CslaGenerator.CodeGen
                                     && info.ObjectType != CslaObjectType.EditableChildCollection
                                     && info.ObjectType != CslaObjectType.NameValueList)
                                 {
-                                    GenerateInsertProcedure(info, TargetDirectory);
+                                    GenerateInsertProcedure(info, TargetDirectory, unit);
                                     if (_abortRequested)
                                         break;
 
-                                    GenerateDeleteProcedure(info, TargetDirectory);
+                                    GenerateDeleteProcedure(info, TargetDirectory, unit);
                                     if (_abortRequested)
                                         break;
 
-                                    GenerateUpdateProcedure(info, TargetDirectory);
+                                    GenerateUpdateProcedure(info, TargetDirectory, unit);
                                     if (_abortRequested)
                                         break;
                                 }
@@ -211,9 +208,8 @@ namespace CslaGenerator.CodeGen
                             OnGenerationInformation(generationErrors.ToString());
                         }
                     }
-//                }
+                //}
             }
-
 
             // Infrastructure classes
 
@@ -355,8 +351,6 @@ namespace CslaGenerator.CodeGen
                 {
                     var errorsOutput = new StringBuilder();
                     var warningsOutput = new StringBuilder();
-                    // discontinue ActiveObjects
-                    //template.SetProperty("ActiveObjects", generationParams.ActiveObjects);
                     template.SetProperty("Errors", errorsOutput);
                     template.SetProperty("Warnings", warningsOutput);
                     template.SetProperty("MethodList", _methodList);
@@ -632,21 +626,28 @@ namespace CslaGenerator.CodeGen
             OnGenerationInformation(sb.ToString());
         }
 
-        private void WriteToFile(string fileName, string data)
+        private void WriteToFile(string fileName, string data, CslaGeneratorUnit unit)
         {
+            if (unit.GenerationParams.BackupOldSource && File.Exists(fileName))
+            {
+                var oldFile = new FileInfo(fileName);
+                if (File.Exists(fileName + ".old"))
+                {
+                    File.Delete(fileName + ".old");
+                }
+                oldFile.MoveTo(fileName + ".old");
+            }
+
             StreamWriter sw = null;
             try
             {
                 var fs = File.Open(fileName, FileMode.Create);
-                OnGenerationFileName(fileName);
                 sw = new StreamWriter(fs, Encoding.GetEncoding(_sprocEncoding));
                 sw.Write(data);
             }
             catch (Exception e)
             {
-                var errorDesc = String.Format("Error writing to file {0}: {1}",
-                                                 fileName, e.Message);
-
+                var errorDesc = String.Format("Error writing to file {0}: {1}", fileName, e.Message);
                 OnGenerationInformation(errorDesc);
             }
             finally
@@ -659,8 +660,9 @@ namespace CslaGenerator.CodeGen
 
         #region Private Stored Procedures generation
 
-        private void GenerateAllSprocsFile(CslaObjectInfo info, string dir, GenerationParameters generationParams)
+        private void GenerateAllSprocsFile(CslaObjectInfo info, string dir, CslaGeneratorUnit unit)
         {
+            var filename = dir + @"\Sprocs4\" + info.ObjectName + ".sql";
             var selfLoad = CslaTemplateHelperCS.GetSelfLoad(info);
 
             var proc = new StringBuilder();
@@ -672,8 +674,10 @@ namespace CslaGenerator.CodeGen
                 foreach (var crit in info.CriteriaObjects)
                 {
                     if (crit.GetOptions.Procedure && !String.IsNullOrEmpty(crit.GetOptions.ProcedureName))
-                        proc.AppendLine(GenerateProcedure(info, crit, "SelectProcedure.cst",
-                                                          crit.GetOptions.ProcedureName));
+                    {
+                        proc.AppendLine(GenerateProcedure(info, crit, "SelectProcedure.cst", crit.GetOptions.ProcedureName, filename));
+                        filename = string.Empty;
+                    }
                 }
             }
 
@@ -687,21 +691,25 @@ namespace CslaGenerator.CodeGen
                 //Insert
                 if (info.InsertProcedureName != "")
                 {
-                    proc.AppendLine(GenerateProcedure(info, null, "InsertProcedure.cst", info.InsertProcedureName));
+                    proc.AppendLine(GenerateProcedure(info, null, "InsertProcedure.cst", info.InsertProcedureName, filename));
+                    filename = string.Empty;
                 }
 
                 //update
                 if (info.UpdateProcedureName != "")
                 {
-                    proc.AppendLine(GenerateProcedure(info, null, "UpdateProcedure.cst", info.UpdateProcedureName));
+                    proc.AppendLine(GenerateProcedure(info, null, "UpdateProcedure.cst", info.UpdateProcedureName, filename));
+                    filename = string.Empty;
                 }
 
                 //delete
                 foreach (var crit in info.CriteriaObjects)
                 {
                     if (crit.DeleteOptions.Procedure && !String.IsNullOrEmpty(crit.DeleteOptions.ProcedureName))
-                        proc.AppendLine(GenerateProcedure(info, crit, "DeleteProcedure.cst",
-                                                          crit.DeleteOptions.ProcedureName));
+                    {
+                        proc.AppendLine(GenerateProcedure(info, crit, "DeleteProcedure.cst", crit.DeleteOptions.ProcedureName, filename));
+                        filename = string.Empty;
+                    }
                 }
                 /*if (_targetFramework != TargetFramework.CSLA40 && info.ObjectType == CslaObjectType.EditableChild)
                 {
@@ -710,12 +718,12 @@ namespace CslaGenerator.CodeGen
             }
             if (proc.Length > 0)
             {
-                CheckDirectory(dir + @"\sprocs");
-                WriteToFile(dir + @"\sprocs\" + info.ObjectName + ".sql", proc.ToString());
+                CheckDirectory(dir + @"\Sprocs4");
+                WriteToFile(dir + @"\Sprocs4\" + info.ObjectName + ".sql", proc.ToString(), unit);
             }
         }
 
-        private void GenerateSelectProcedure(CslaObjectInfo info, string dir)
+        private void GenerateSelectProcedure(CslaObjectInfo info, string dir, CslaGeneratorUnit unit)
         {
             var lazyLoad = CslaTemplateHelperCS.GetLazyLoad(info);
 
@@ -728,54 +736,54 @@ namespace CslaGenerator.CodeGen
                 {
                     if (crit.GetOptions.Procedure && !String.IsNullOrEmpty(crit.GetOptions.ProcedureName))
                     {
-                        string proc = GenerateProcedure(info, crit, "SelectProcedure.cst", crit.GetOptions.ProcedureName);
-                        CheckDirectory(dir + @"\sprocs");
-                        WriteToFile(dir + @"\sprocs\" + crit.GetOptions.ProcedureName + ".sql", proc);
+                        string proc = GenerateProcedure(info, crit, "SelectProcedure.cst", crit.GetOptions.ProcedureName, dir + @"\Sprocs4\" + crit.GetOptions.ProcedureName + ".sql");
+                        CheckDirectory(dir + @"\Sprocs4");
+                        WriteToFile(dir + @"\Sprocs4\" + crit.GetOptions.ProcedureName + ".sql", proc, unit);
                     }
                 }
             }
         }
 
-        private void GenerateInsertProcedure(CslaObjectInfo info, string dir)
+        private void GenerateInsertProcedure(CslaObjectInfo info, string dir, CslaGeneratorUnit unit)
         {
             if (info.InsertProcedureName != "")
             {
-                var proc = GenerateProcedure(info, null, "InsertProcedure.cst", info.InsertProcedureName);
-                CheckDirectory(dir + @"\sprocs");
-                WriteToFile(dir + @"\sprocs\" + info.InsertProcedureName + ".sql", proc);
+                var proc = GenerateProcedure(info, null, "InsertProcedure.cst", info.InsertProcedureName, dir + @"\Sprocs4\" + info.InsertProcedureName + ".sql");
+                CheckDirectory(dir + @"\Sprocs4");
+                WriteToFile(dir + @"\Sprocs4\" + info.InsertProcedureName + ".sql", proc, unit);
             }
         }
 
-        private void GenerateUpdateProcedure(CslaObjectInfo info, string dir)
+        private void GenerateUpdateProcedure(CslaObjectInfo info, string dir, CslaGeneratorUnit unit)
         {
             if (info.UpdateProcedureName != "")
             {
-                var proc = GenerateProcedure(info, null, "UpdateProcedure.cst", info.UpdateProcedureName);
-                CheckDirectory(dir + @"\sprocs");
-                WriteToFile(dir + @"\sprocs\" + info.UpdateProcedureName + ".sql", proc);
+                var proc = GenerateProcedure(info, null, "UpdateProcedure.cst", info.UpdateProcedureName, dir + @"\Sprocs4\" + info.UpdateProcedureName + ".sql");
+                CheckDirectory(dir + @"\Sprocs4");
+                WriteToFile(dir + @"\Sprocs4\" + info.UpdateProcedureName + ".sql", proc, unit);
             }
         }
 
-        private void GenerateDeleteProcedure(CslaObjectInfo info, string dir)
+        private void GenerateDeleteProcedure(CslaObjectInfo info, string dir, CslaGeneratorUnit unit)
         {
             foreach (var crit in info.CriteriaObjects)
             {
                 if (crit.DeleteOptions.Procedure && !String.IsNullOrEmpty(crit.DeleteOptions.ProcedureName))
                 {
-                    string proc = GenerateProcedure(info, crit, "DeleteProcedure.cst", crit.DeleteOptions.ProcedureName);
-                    CheckDirectory(dir + @"\sprocs");
-                    WriteToFile(dir + @"\sprocs\" + crit.DeleteOptions.ProcedureName + ".sql", proc);
+                    string proc = GenerateProcedure(info, crit, "DeleteProcedure.cst", crit.DeleteOptions.ProcedureName, dir + @"\Sprocs4\" + crit.DeleteOptions.ProcedureName + ".sql");
+                    CheckDirectory(dir + @"\Sprocs4");
+                    WriteToFile(dir + @"\Sprocs4\" + crit.DeleteOptions.ProcedureName + ".sql", proc, unit);
                 }
             }
             /*if (_targetFramework != TargetFramework.CSLA40 && info.ObjectType == CslaObjectType.EditableChild)
             {
                 var proc = GenerateProcedure(info, null, "DeleteProcedure.cst", info.DeleteProcedureName);
-                CheckDirectory(dir + @"\sprocs");
-                WriteToFile(dir + @"\sprocs\" + info.DeleteProcedureName + ".sql", proc);
+                CheckDirectory(dir + @"\Sprocs4");
+                WriteToFile(dir + @"\Sprocs4\" + info.DeleteProcedureName + ".sql", proc);
             }*/
         }
 
-        private string GenerateProcedure(CslaObjectInfo objInfo, Criteria crit, string templateName, string sprocName)
+        private string GenerateProcedure(CslaObjectInfo objInfo, Criteria crit, string templateName, string sprocName, string filename)
         {
             if (objInfo != null)
             {
@@ -784,17 +792,42 @@ namespace CslaGenerator.CodeGen
                 {
                     if (templateName != String.Empty)
                     {
-                        var path = _templatesDirectory + @"sprocs\" + templateName;
+                        var path = _templatesDirectory + @"Sprocs4\" + templateName;
                         var template = GetTemplate(objInfo, path);
-                        if (crit != null)
-                            template.SetProperty("Criteria", crit);
-                        template.SetProperty("IncludeParentProperties", objInfo.DataSetLoadingScheme);
                         if (template != null)
                         {
+                            var errorsOutput = new StringBuilder();
+                            var warningsOutput = new StringBuilder();
+                            template.SetProperty("Errors", errorsOutput);
+                            template.SetProperty("Warnings", warningsOutput);
+                            if (crit != null)
+                                template.SetProperty("Criteria", crit);
+                            template.SetProperty("IncludeParentProperties", objInfo.DataSetLoadingScheme);
                             //template.SetProperty("Catalog", _);
                             sw = new StringWriter();
+                            if (!string.IsNullOrEmpty(filename))
+                                OnGenerationFileName(filename);
                             template.Render(sw);
-                            _sprocSuccess++;
+                            errorsOutput = (StringBuilder) template.GetProperty("Errors");
+                            warningsOutput = (StringBuilder) template.GetProperty("Warnings");
+                            if (errorsOutput.Length > 0)
+                            {
+                                _sprocFailed++;
+                                OnGenerationInformation("Failed:" + Environment.NewLine + errorsOutput);
+                            }
+                            else
+                            {
+                                if (warningsOutput != null)
+                                {
+                                    if (warningsOutput.Length > 0)
+                                    {
+                                        _sprocWarnings++;
+                                        OnGenerationInformation("Warning:" + Environment.NewLine + warningsOutput);
+                                    }
+                                }
+                                _sprocSuccess++;
+                                //OnGenerationInformation("Success");
+                            }
                             return sw.ToString();
                         }
                     }
@@ -802,8 +835,7 @@ namespace CslaGenerator.CodeGen
                 catch (Exception e)
                 {
                     _sprocFailed++;
-                    throw (new Exception(
-                        "Error generating " + GetFileNameWithoutExtension(templateName) + ": " + sprocName, e));
+                    throw (new Exception("Error generating " + GetFileNameWithoutExtension(templateName) + ": " + sprocName, e));
                 }
                 finally
                 {
@@ -1018,8 +1050,12 @@ namespace CslaGenerator.CodeGen
                     OutputWindow.Current.AddOutputInfo(String.Format("DalManager classe: failed."));
             }
 
+            if (_sprocWarnings > 0)
+                OutputWindow.Current.AddOutputInfo(String.Format("SProc warnings: {0} object{1}.", _sprocWarnings,
+                                                                 _sprocWarnings > 1 ? "s" : ""));
+
             if (_objectWarnings > 0)
-                OutputWindow.Current.AddOutputInfo(String.Format("Warnings: {0} object{1}.", _objectWarnings,
+                OutputWindow.Current.AddOutputInfo(String.Format("Object warnings: {0} object{1}.", _objectWarnings,
                                                                  _objectWarnings > 1 ? "s" : ""));
 
             OutputWindow.Current.AddOutputInfo(String.Format("\r\nClasses: {0} generated. {1} failed.",

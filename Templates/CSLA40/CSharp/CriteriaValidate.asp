@@ -18,17 +18,26 @@ bool getOptionsDataPortal;
 bool deleteOptionsFactory;
 bool deleteOptionsDataPortal;
 
-if (GetSelfLoad(Info))
+foreach (Criteria crit in GetCriteriaObjects(Info))
 {
-    foreach (Criteria crit in GetCriteriaObjects(Info))
+    foreach (CriteriaProperty criteriaProperty in crit.Properties)
     {
-        getOptionsFactory = getOptionsFactory | crit.GetOptions.Factory;
+        if(criteriaProperty.DbBindColumn.Column == null)
+        {
+            Errors.Append("Criteria Property " + Info.ObjectName + "." + crit.Name + "." + criteriaProperty.Name + " is missing DB Bind Column." + Environment.NewLine);
+            //Errors.Append("Criteria Property " + Info.ObjectName + crit.Name + criteriaProperty.Name + " is missing DB Bind Column." + Environment.NewLine);
+            return;
+        }
     }
 
-    if (!getOptionsFactory)
+    if (GetSelfLoad(Info))
     {
-        Errors.Append("Object " + Info.ObjectName + " is missing get criteria; to \"SelfLoad\" an object, that object must have a criteria with GetOptions.Factory set." + Environment.NewLine);
-        return;
+        getOptionsFactory = getOptionsFactory | crit.GetOptions.Factory;
+        if (!getOptionsFactory)
+        {
+            Errors.Append("Object " + Info.ObjectName + " is missing get criteria; to \"SelfLoad\" an object, that object must have a criteria with GetOptions.Factory set." + Environment.NewLine);
+            return;
+        }
     }
 }
 getOptionsFactory = false;
