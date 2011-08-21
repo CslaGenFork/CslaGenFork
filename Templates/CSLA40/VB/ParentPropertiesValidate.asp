@@ -6,22 +6,25 @@ if (!Info.ParentType.Equals(String.Empty))
     CslaObjectInfo parent = Info.FindParent(Info);
     foreach (ValueProperty valProp in Info.ValueProperties)
     {
-        string nameTypeMatch = PropertyNameMatchesParentProperty(parent, Info, valProp);
-        string fkMatch = PropertyFKMatchesParentProperty(parent, Info, valProp);
-
-        if (string.IsNullOrEmpty(nameTypeMatch) && string.IsNullOrEmpty(fkMatch))
-            continue;
-        else
+        if (!string.IsNullOrEmpty(valProp.DbBindColumn.ColumnName))
         {
-            if (!string.IsNullOrEmpty(nameTypeMatch))
-            {
-                propNames.Add(valProp.Name);// make sure there is at least one item
-                propNames[0] = valProp.Name;// make sure this is the first item
-            }
-            else if (CslaTemplateHelperCS.MultiplePropertyFKMatchesParent(parent, Info, valProp))
+            string nameTypeMatch = PropertyNameMatchesParentProperty(parent, Info, valProp);
+            string fkMatch = PropertyFKMatchesParentProperty(parent, Info, valProp);
+
+            if (string.IsNullOrEmpty(nameTypeMatch) && string.IsNullOrEmpty(fkMatch))
                 continue;
             else
-                propNames.Add(valProp.Name);// make sure there is at least one item
+            {
+                if (!string.IsNullOrEmpty(nameTypeMatch))
+                {
+                    propNames.Add(valProp.Name);// make sure there is at least one item
+                    propNames[0] = valProp.Name;// make sure this is the first item
+                }
+                else if (CslaTemplateHelperCS.MultiplePropertyFKMatchesParent(parent, Info, valProp))
+                    continue;
+                else
+                    propNames.Add(valProp.Name);// make sure there is at least one item
+            }
         }
     }
 
