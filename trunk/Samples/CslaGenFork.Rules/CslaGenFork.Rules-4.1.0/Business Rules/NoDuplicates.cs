@@ -90,8 +90,8 @@ namespace CslaGenFork.Rules.CollectionRules
             if (value == null)
                 return;
 
-            dynamic target = context.Target;
-            var parent = target.Parent;
+            var target = (BusinessBase)context.Target;
+            dynamic parent = target.Parent;
             if (parent != null)
             {
                 foreach (var item in parent)

@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Authorization Rules\IsEmptyOrIsInRole.cs" />
     <Compile Include="Authorization Rules\IsNewOrIsInRole.cs" />
     <Compile Include="CommonRuleWithMessage.cs" />
     <Compile Include="Business Rules\AnyRequired.cs" />

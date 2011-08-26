@@ -37,13 +37,11 @@ namespace CslaGenFork.Rules.AuthorizationRules
 {
     /// <summary>
     /// Authorization rule for checking a Property can be accessed only it was empty
-    /// (at the time the edit started) or any the specified roles.
+    /// (at the time the edit started) or the user has any of the specified roles.
     /// </summary>
     public class IsEmptyOrIsInRole : AuthorizationRule
     {
         private readonly List<string> _roles;
-        private static object _target;
-        private static Dictionary<string, bool> _elements;
 
         /// <summary>
         /// Creates an instance of the rule.
@@ -75,18 +73,34 @@ namespace CslaGenFork.Rules.AuthorizationRules
         /// <param name="context">Authorization context.</param>
         protected override void Execute(AuthorizationContext context)
         {
-            if (_target != context.Target)
-                _elements = new Dictionary<string, bool>();
+            var isEmpty = false;
 
-            if (!_elements.ContainsKey(Element.Name))
+            var field = Element as IPropertyInfo;
+            var smartField = Element as ISmartField;
+
+            var target = (BusinessBase)context.Target;
+            var value = MethodCaller.CallPropertyGetter(target, Element.Name);
+
+            if (target.IsNew)
+                isEmpty = true;
+            else if (field != null)
             {
-                _target = context.Target;
-                var isEmpty =
-                    string.IsNullOrEmpty(MethodCaller.CallPropertyGetter(context.Target, Element.Name).ToString());
-                _elements.Add(Element.Name, isEmpty);
+                if (value == field.DefaultValue)
+                    isEmpty = true;
+            }
+            else if (smartField != null)
+            {
+                if (smartField.IsEmpty)
+                    isEmpty = true;
             }
 
-            if (_elements[Element.Name])
+            if (!isEmpty)
+                if (target.IsDirty)
+                    isEmpty = true;
+                else
+                    isEmpty = string.IsNullOrEmpty(value.ToString());
+
+            if (isEmpty)
                 context.HasPermission = true;
             else
             {

@@ -54,8 +54,7 @@ namespace CslaGenFork.Rules.ShortCircuitingRules
         /// <param name="primaryProperty">The primary property.</param>
         /// <param name="messageDelegate">The error message function.</param>
         /// <param name="additionalProperties">The additional properties.</param>
-        public AnyRequired(IPropertyInfo primaryProperty, Func<string> messageDelegate,
-                           params IPropertyInfo[] additionalProperties)
+        public AnyRequired(IPropertyInfo primaryProperty, Func<string> messageDelegate, params IPropertyInfo[] additionalProperties)
             : this(primaryProperty, additionalProperties)
         {
             MessageDelegate = messageDelegate;
