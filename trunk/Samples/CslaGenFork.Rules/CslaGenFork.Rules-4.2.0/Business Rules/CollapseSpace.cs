@@ -18,7 +18,7 @@ namespace CslaGenFork.Rules.TransformationRules
     /// <summary>
     /// Removes leading, trailing and duplicate spaces.
     /// </summary>
-    public class CollapseSpace : PropertyRule
+    public class CollapseSpace : BusinessRule
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CollapseSpace"/> class.
