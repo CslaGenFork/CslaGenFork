@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CslaGenFork.Rules-4.1.0", "CslaGenFork.Rules-4.1.0\CslaGenFork.Rules-4.1.0.csproj", "{656E7D66-DD6C-446E-8DB4-7FC055438EB7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CslaGenFork.Rules-4.2.0", "CslaGenFork.Rules-4.2.0\CslaGenFork.Rules-4.2.0.csproj", "{829D08A4-F322-4B28-B155-5C55950EED61}"
+EndProject
+Global
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{656E7D66-DD6C-446E-8DB4-7FC055438EB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{656E7D66-DD6C-446E-8DB4-7FC055438EB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{656E7D66-DD6C-446E-8DB4-7FC055438EB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{656E7D66-DD6C-446E-8DB4-7FC055438EB7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{829D08A4-F322-4B28-B155-5C55950EED61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{829D08A4-F322-4B28-B155-5C55950EED61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{829D08A4-F322-4B28-B155-5C55950EED61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{829D08A4-F322-4B28-B155-5C55950EED61}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
