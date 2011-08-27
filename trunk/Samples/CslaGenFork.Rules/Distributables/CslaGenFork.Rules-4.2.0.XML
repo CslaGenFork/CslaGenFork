@@ -4,246 +4,6 @@
         <name>CslaGenFork.Rules-4.2.0</name>
     </assembly>
     <members>
-        <member name="T:CslaGenFork.Rules.AuthorizationRules.IsInRoleOrIsOwner">
-            <summary>
-            Authorization rule for checking a Property can be accessed only
-            by the user that created the object or the user has any of the specified roles.
-            </summary>
-        </member>
-        <member name="M:CslaGenFork.Rules.AuthorizationRules.IsInRoleOrIsOwner.#ctor(Csla.Rules.AuthorizationActions,Csla.Core.IMemberInfo,System.String,System.Func{System.Int32},System.Collections.Generic.List{System.String})">
-            <summary>
-            Creates an instance of the rule.
-            </summary>
-            <param name="action">Action this rule will enforce.</param>
-            <param name="element">Member to be authorized.</param>
-            <param name="creatorProperty">Name of the property for the creator ID.</param>
-            <param name="getCurrentUserDelegate">The Func delegate to get the current user ID.</param>
-            <param name="roles">List of allowed roles.</param>
-        </member>
-        <member name="M:CslaGenFork.Rules.AuthorizationRules.IsInRoleOrIsOwner.#ctor(Csla.Rules.AuthorizationActions,Csla.Core.IMemberInfo,System.String,System.Func{System.Int32},System.String[])">
-            <summary>
-            Creates an instance of the rule.
-            </summary>
-            <param name="action">Action this rule will enforce.</param>
-            <param name="element">Member to be authorized.</param>
-            <param name="creatorProperty">Name of the property for the creator ID.</param>
-            <param name="getCurrentUserDelegate">The Func delegate to get the current user ID.</param>
-            <param name="roles">List of allowed roles.</param>
-        </member>
-        <member name="M:CslaGenFork.Rules.AuthorizationRules.IsInRoleOrIsOwner.Execute(Csla.Rules.AuthorizationContext)">
-            <summary>
-            Rule implementation.
-            </summary>
-            <param name="context">Authorization context.</param>
-        </member>
-        <member name="P:CslaGenFork.Rules.AuthorizationRules.IsInRoleOrIsOwner.CacheResult">
-            <summary>
-            Gets a value indicating whether the results
-            of this rule can be cached at the business
-            object level.
-            </summary>
-            <value>
-              <c>true</c> if the result of this rule can be cached by the calling code; otherwise, <c>false</c>.
-            </value>
-        </member>
-        <member name="T:CslaGenFork.Rules.GatewayRules.IsNew">
-            <summary>
-            Gateway rule that will only call inner rule when object.IsNew is true
-            </summary>
-        </member>
-        <member name="M:CslaGenFork.Rules.GatewayRules.IsNew.#ctor(Csla.Core.IPropertyInfo,Csla.Rules.IBusinessRule)">
-            <summary>
-            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.GatewayRules.IsNew"/> class.
-            </summary>
-            <param name="primaryProperty">
-            The primary property.
-            </param>
-            <param name="innerRule">
-            The inner rule.
-            </param>
-        </member>
-        <member name="M:CslaGenFork.Rules.GatewayRules.IsNew.Execute(Csla.Rules.RuleContext)">
-            <summary>
-            Executes the rule
-            </summary>
-            <param name="context">
-            The rule context.
-            </param>
-        </member>
-        <member name="P:CslaGenFork.Rules.GatewayRules.IsNew.InnerRule">
-            <summary>
-            Gets the inner rule.
-            </summary>
-            <value>The inner rule.</value>
-        </member>
-        <member name="T:CslaGenFork.Rules.Properties.Resources">
-            <summary>
-              A strongly-typed resource class, for looking up localized strings, etc.
-            </summary>
-        </member>
-        <member name="P:CslaGenFork.Rules.Properties.Resources.ResourceManager">
-            <summary>
-              Returns the cached ResourceManager instance used by this class.
-            </summary>
-        </member>
-        <member name="P:CslaGenFork.Rules.Properties.Resources.Culture">
-            <summary>
-              Overrides the current thread's CurrentUICulture property for all
-              resource lookups using this strongly typed resource class.
-            </summary>
-        </member>
-        <member name="P:CslaGenFork.Rules.Properties.Resources.GreaterThanOrEqualRule">
-            <summary>
-              Looks up a localized string similar to {0} must be greater than or equal to {1}.
-            </summary>
-        </member>
-        <member name="P:CslaGenFork.Rules.Properties.Resources.GreaterThanRule">
-            <summary>
-              Looks up a localized string similar to {0} must be greater than {1}.
-            </summary>
-        </member>
-        <member name="P:CslaGenFork.Rules.Properties.Resources.LessThanOrEqualRule">
-            <summary>
-              Looks up a localized string similar to {0} must be less than or equal to {1}.
-            </summary>
-        </member>
-        <member name="P:CslaGenFork.Rules.Properties.Resources.LessThanRule">
-            <summary>
-              Looks up a localized string similar to {0} must be less than {1}.
-            </summary>
-        </member>
-        <member name="P:CslaGenFork.Rules.Properties.Resources.RangeRule">
-            <summary>
-              Looks up a localized string similar to {0} must be between {1} and {2}.
-            </summary>
-        </member>
-        <member name="T:CslaGenFork.Rules.TransformationRules.CollapseSpace">
-            <summary>
-            Removes leading, trailing and duplicate spaces.<br/>
-            Rule should run on client when a property is changed or when CheckRules is called.
-            Rule must run before any validation rules.
-            </summary>
-        </member>
-        <member name="M:CslaGenFork.Rules.TransformationRules.CollapseSpace.#ctor(Csla.Core.IPropertyInfo)">
-            <summary>
-            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.TransformationRules.CollapseSpace"/> class.
-            </summary>
-            <param name="primaryProperty">
-            The primary property.
-            </param>
-        </member>
-        <member name="M:CslaGenFork.Rules.TransformationRules.CollapseSpace.Execute(Csla.Rules.RuleContext)">
-            <summary>
-            Business rule implementation.
-            </summary>
-            <param name="context">
-            Rule context object.
-            </param>
-        </member>
-        <member name="T:CslaGenFork.Rules.ShortCircuitingRules.StopIfIsNotNew">
-            <summary>
-            Shorcircuits rule processing if object is not new.
-            </summary>
-        </member>
-        <member name="M:CslaGenFork.Rules.ShortCircuitingRules.StopIfIsNotNew.#ctor(Csla.Core.IPropertyInfo)">
-            <summary>
-            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.ShortCircuitingRules.StopIfIsNotNew"/> class.
-            </summary>
-            <param name="primaryProperty">
-            The primary property.
-            </param>
-        </member>
-        <member name="M:CslaGenFork.Rules.ShortCircuitingRules.StopIfIsNotNew.Execute(Csla.Rules.RuleContext)">
-            <summary>
-            The execute.
-            </summary>
-            <param name="context">
-            The context.
-            </param>
-        </member>
-        <member name="T:CslaGenFork.Rules.CompareFieldsRules.GreaterThanOrEqual">
-            <summary>
-            Validates that PrimaryProperty is greater than or equal compareToProperty
-            </summary>
-        </member>
-        <member name="M:CslaGenFork.Rules.CompareFieldsRules.GreaterThanOrEqual.#ctor(Csla.Core.IPropertyInfo,Csla.Core.IPropertyInfo)">
-            <summary>
-            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.CompareFieldsRules.GreaterThanOrEqual"/> class.
-            </summary>
-            <param name="primaryProperty">
-            The primary property.
-            </param>
-            <param name="compareToProperty">
-            The compare to property.
-            </param>
-        </member>
-        <member name="M:CslaGenFork.Rules.CompareFieldsRules.GreaterThanOrEqual.GetMessage">
-            <summary>
-            Gets the error message.
-            </summary>
-            <returns>
-            The error message.
-            </returns>
-        </member>
-        <member name="M:CslaGenFork.Rules.CompareFieldsRules.GreaterThanOrEqual.Execute(Csla.Rules.RuleContext)">
-            <summary>
-            Does the check for primary propert less than compareTo property
-            </summary>
-            <param name="context">
-            Rule context object.
-            </param>
-        </member>
-        <member name="P:CslaGenFork.Rules.CompareFieldsRules.GreaterThanOrEqual.CompareTo">
-            <summary>
-            Gets or sets CompareTo.
-            </summary>
-        </member>
-        <member name="T:CslaGenFork.Rules.ShortCircuitingRules.AnyRequired">
-            <summary>
-            Check that at least one of the fields of type string or SmartValue field has a value.<br/>
-            </summary>
-            <remarks>
-            Since Csla 4.0.2 InputProperties are regarded as Dependency so you will not need to add a Dependency
-            rule to each input field in order to rerun the rule whenever one of the inputs is changed.
-            </remarks>
-        </member>
-        <member name="M:CslaGenFork.Rules.ShortCircuitingRules.AnyRequired.#ctor(Csla.Core.IPropertyInfo,Csla.Core.IPropertyInfo[])">
-            <summary>
-            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.ShortCircuitingRules.AnyRequired"/> class.
-            </summary>
-            <param name="primaryProperty">The primary property.</param>
-            <param name="additionalProperties">The additional properties.</param>
-        </member>
-        <member name="M:CslaGenFork.Rules.ShortCircuitingRules.AnyRequired.#ctor(Csla.Core.IPropertyInfo,System.String,Csla.Core.IPropertyInfo[])">
-            <summary>
-            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.ShortCircuitingRules.AnyRequired"/> class.
-            </summary>
-            <param name="primaryProperty">The primary property.</param>
-            <param name="message">The error message text.</param>
-            <param name="additionalProperties">The additional properties.</param>
-        </member>
-        <member name="M:CslaGenFork.Rules.ShortCircuitingRules.AnyRequired.#ctor(Csla.Core.IPropertyInfo,System.Func{System.String},Csla.Core.IPropertyInfo[])">
-            <summary>
-            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.ShortCircuitingRules.AnyRequired"/> class.
-            </summary>
-            <param name="primaryProperty">The primary property.</param>
-            <param name="messageDelegate">The error message function.</param>
-            <param name="additionalProperties">The additional properties.</param>
-        </member>
-        <member name="M:CslaGenFork.Rules.ShortCircuitingRules.AnyRequired.GetMessage">
-            <summary>
-            Gets the error message.
-            </summary>
-            <returns>
-            The error message.
-            </returns>
-        </member>
-        <member name="M:CslaGenFork.Rules.ShortCircuitingRules.AnyRequired.Execute(Csla.Rules.RuleContext)">
-            <summary>
-            Executes the rule in specified context.
-            </summary>
-            <param name="context">The context.</param>
-        </member>
         <member name="T:CslaGenFork.Rules.AuthorizationRules.IsOwner">
             <summary>
             Authorization rule for checking a Property can be accessed only by the user that created the object.
@@ -274,103 +34,23 @@
               <c>true</c> if the result of this rule can be cached by the calling code; otherwise, <c>false</c>.
             </value>
         </member>
-        <member name="T:CslaGenFork.Rules.ShortCircuitingRules.StopIfNotCanWrite">
+        <member name="T:CslaGenFork.Rules.CompareFieldsRules.LessThan">
             <summary>
-            Short circuit rule processing for this property if user is not allowed to edit this field.
+            Validates that PrimaryProperty is less than compareToProperty
             </summary>
         </member>
-        <member name="M:CslaGenFork.Rules.ShortCircuitingRules.StopIfNotCanWrite.#ctor(Csla.Core.IPropertyInfo)">
+        <member name="M:CslaGenFork.Rules.CompareFieldsRules.LessThan.#ctor(Csla.Core.IPropertyInfo,Csla.Core.IPropertyInfo)">
             <summary>
-            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.ShortCircuitingRules.StopIfNotCanWrite"/> class.
+            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.CompareFieldsRules.LessThan"/> class.
             </summary>
             <param name="primaryProperty">
             The primary property.
             </param>
-        </member>
-        <member name="M:CslaGenFork.Rules.ShortCircuitingRules.StopIfNotCanWrite.Execute(Csla.Rules.RuleContext)">
-            <summary>
-            The execute.
-            </summary>
-            <param name="context">
-            The context.
+            <param name="compareToProperty">
+            The compare to property.
             </param>
         </member>
-        <member name="T:CslaGenFork.Rules.AuthorizationRules.RestrictByStatusOrIsInRole">
-            <summary>
-            Authorization rule for checking a Property can not be accessed
-            if the object is in a given status (or statuses) or the user has any of the specified roles.
-            </summary>
-        </member>
-        <member name="M:CslaGenFork.Rules.AuthorizationRules.RestrictByStatusOrIsInRole.#ctor(Csla.Rules.AuthorizationActions,Csla.Core.IMemberInfo,System.String,System.Collections.Generic.List{System.Int32},System.Collections.Generic.List{System.String})">
-            <summary>
-            Creates an instance of the rule.
-            </summary>
-            <param name="action">Action this rule will enforce.</param>
-            <param name="element">Member to be authorized.</param>
-            <param name="statusProperty">Name of the property for the status ID.</param>
-            <param name="restrictedStatus">The statuses subject to restrictions.</param>
-            <param name="roles">List of allowed roles.</param>
-        </member>
-        <member name="M:CslaGenFork.Rules.AuthorizationRules.RestrictByStatusOrIsInRole.#ctor(Csla.Rules.AuthorizationActions,Csla.Core.IMemberInfo,System.String,System.Collections.Generic.List{System.Int32},System.String[])">
-            <summary>
-            Creates an instance of the rule.
-            </summary>
-            <param name="action">Action this rule will enforce.</param>
-            <param name="element">Member to be authorized.</param>
-            <param name="statusProperty">Name of the property for the status ID.</param>
-            <param name="restrictedStatus">The statuses subject to restrictions.</param>
-            <param name="roles">List of allowed roles.</param>
-        </member>
-        <member name="M:CslaGenFork.Rules.AuthorizationRules.RestrictByStatusOrIsInRole.Execute(Csla.Rules.AuthorizationContext)">
-            <summary>
-            Rule implementation.
-            </summary>
-            <param name="context">Rule context.</param>
-        </member>
-        <member name="P:CslaGenFork.Rules.AuthorizationRules.RestrictByStatusOrIsInRole.CacheResult">
-            <summary>
-            Gets a value indicating whether the results
-            of this rule can be cached at the business
-            object level.
-            </summary>
-            <value>
-              <c>true</c> if the result of this rule can be cached by the calling code; otherwise, <c>false</c>.
-            </value>
-        </member>
-        <member name="T:CslaGenFork.Rules.CompareFieldsRules.Range`2">
-            <summary>
-            Business rule for checking a value is between a minimum and a maximum.
-            </summary>
-            <typeparam name="MIN">The type of the minimum value.</typeparam>
-            <typeparam name="MAX">The type of the maximum value.</typeparam>
-        </member>
-        <member name="M:CslaGenFork.Rules.CompareFieldsRules.Range`2.#ctor(Csla.Core.IPropertyInfo,`0,`1)">
-            <summary>
-            Creates an instance of the rule.
-            </summary>
-            <param name="primaryProperty">Property to which the rule applies.</param>
-            <param name="min">Min value.</param>
-            <param name="max">Max value.</param>
-        </member>
-        <member name="M:CslaGenFork.Rules.CompareFieldsRules.Range`2.#ctor(Csla.Core.IPropertyInfo,`0,`1,System.String)">
-            <summary>
-            Creates an instance of the rule.
-            </summary>
-            <param name="primaryProperty">Property to which the rule applies.</param>
-            <param name="min">Min value.</param>
-            <param name="max">Max value.</param>
-            <param name="message">The minimum error message text.</param>
-        </member>
-        <member name="M:CslaGenFork.Rules.CompareFieldsRules.Range`2.#ctor(Csla.Core.IPropertyInfo,`0,`1,System.Func{System.String})">
-            <summary>
-            Creates an instance of the rule.
-            </summary>
-            <param name="primaryProperty">Property to which the rule applies.</param>
-            <param name="min">Min value.</param>
-            <param name="max">Max value.</param>
-            <param name="messageDelegate">The minimum error message function.</param>
-        </member>
-        <member name="M:CslaGenFork.Rules.CompareFieldsRules.Range`2.GetMessage">
+        <member name="M:CslaGenFork.Rules.CompareFieldsRules.LessThan.GetMessage">
             <summary>
             Gets the error message.
             </summary>
@@ -378,37 +58,18 @@
             The error message.
             </returns>
         </member>
-        <member name="M:CslaGenFork.Rules.CompareFieldsRules.Range`2.Execute(Csla.Rules.RuleContext)">
+        <member name="M:CslaGenFork.Rules.CompareFieldsRules.LessThan.Execute(Csla.Rules.RuleContext)">
             <summary>
-            Rule implementation.
+            Does the check for primary propert less than compareTo property
             </summary>
-            <param name="context">Rule context.</param>
+            <param name="context">
+            Rule context object.
+            </param>
         </member>
-        <member name="P:CslaGenFork.Rules.CompareFieldsRules.Range`2.Min">
+        <member name="P:CslaGenFork.Rules.CompareFieldsRules.LessThan.CompareTo">
             <summary>
-            Gets the minimum value.
+            Gets or sets CompareTo.
             </summary>
-            <value>
-            The minimum value.
-            </value>
-        </member>
-        <member name="P:CslaGenFork.Rules.CompareFieldsRules.Range`2.Max">
-            <summary>
-            Gets the maximum value.
-            </summary>
-            <value>
-            The maximum value.
-            </value>
-        </member>
-        <member name="P:CslaGenFork.Rules.CompareFieldsRules.Range`2.Format">
-            <summary>
-            Gets or sets the format string used
-            to format the minimum and maximum values.
-            </summary>
-            <value>
-            The format string used
-            to format the minimum and maximum values.
-            </value>
         </member>
         <member name="T:CslaGenFork.Rules.CollectionRules.NoDuplicates">
             <summary>
@@ -450,14 +111,38 @@
             </summary>
             <param name="context">Rule context object.</param>
         </member>
-        <member name="T:CslaGenFork.Rules.GatewayRules.CanWrite">
+        <member name="T:CslaGenFork.Rules.TransformationRules.ToLower">
             <summary>
-            Gateway rule that will only call inner rule when uuser can edit property
+            Converts the property to lowercase string.<br/>
+            Rule should run on client when a property is changed or when CheckRules is called.
+            Rule must run before any validation rules.
             </summary>
         </member>
-        <member name="M:CslaGenFork.Rules.GatewayRules.CanWrite.#ctor(Csla.Core.IPropertyInfo,Csla.Rules.IBusinessRule)">
+        <member name="M:CslaGenFork.Rules.TransformationRules.ToLower.#ctor(Csla.Core.IPropertyInfo)">
             <summary>
-            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.GatewayRules.CanWrite"/> class.
+            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.TransformationRules.ToLower"/> class.
+            </summary>
+            <param name="primaryProperty">
+            The primary property.
+            </param>
+        </member>
+        <member name="M:CslaGenFork.Rules.TransformationRules.ToLower.Execute(Csla.Rules.RuleContext)">
+            <summary>
+            The execute.
+            </summary>
+            <param name="context">
+            The context.
+            </param>
+        </member>
+        <member name="T:CslaGenFork.Rules.GatewayRules.IsNotNew">
+            <summary>
+            The is not new.
+            </summary>
+            Gateway rule that will only call inner rule when object.IsNew is false
+        </member>
+        <member name="M:CslaGenFork.Rules.GatewayRules.IsNotNew.#ctor(Csla.Core.IPropertyInfo,Csla.Rules.IBusinessRule)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.GatewayRules.IsNotNew"/> class.
             </summary>
             <param name="primaryProperty">
             The primary property.
@@ -466,7 +151,7 @@
             The inner rule.
             </param>
         </member>
-        <member name="M:CslaGenFork.Rules.GatewayRules.CanWrite.Execute(Csla.Rules.RuleContext)">
+        <member name="M:CslaGenFork.Rules.GatewayRules.IsNotNew.Execute(Csla.Rules.RuleContext)">
             <summary>
             Executes the rule
             </summary>
@@ -474,132 +159,71 @@
             The rule context.
             </param>
         </member>
-        <member name="P:CslaGenFork.Rules.GatewayRules.CanWrite.InnerRule">
+        <member name="P:CslaGenFork.Rules.GatewayRules.IsNotNew.InnerRule">
             <summary>
             Gets the inner rule.
             </summary>
             <value>The inner rule.</value>
         </member>
-        <member name="T:CslaGenFork.Rules.ShortCircuitingRules.StopIfIsNew">
+        <member name="T:CslaGenFork.Rules.TransformationRules.CollapseWhiteSpace">
             <summary>
-            Shorcircuits rule processing if object is new.
-            </summary>
-        </member>
-        <member name="M:CslaGenFork.Rules.ShortCircuitingRules.StopIfIsNew.#ctor(Csla.Core.IPropertyInfo)">
-            <summary>
-            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.ShortCircuitingRules.StopIfIsNew"/> class.
-            </summary>
-            <param name="primaryProperty">
-            The primary property.
-            </param>
-        </member>
-        <member name="M:CslaGenFork.Rules.ShortCircuitingRules.StopIfIsNew.Execute(Csla.Rules.RuleContext)">
-            <summary>
-            The execute.
-            </summary>
-            <param name="context">
-            The context.
-            </param>
-        </member>
-        <member name="T:CslaGenFork.Rules.AuthorizationRules.IsNewOrIsInRole">
-            <summary>
-            Authorization rule for checking a Property can be accessed only if the object IsNew
-            or the user has any of the specified roles.
-            </summary>
-        </member>
-        <member name="M:CslaGenFork.Rules.AuthorizationRules.IsNewOrIsInRole.#ctor(Csla.Rules.AuthorizationActions,Csla.Core.IMemberInfo,System.Collections.Generic.List{System.String})">
-            <summary>
-            Creates an instance of the rule.
-            </summary>
-            <param name="action">Action this rule will enforce.</param>
-            <param name="element">Member to be authorized.</param>
-            <param name="roles">List of allowed roles.</param>
-        </member>
-        <member name="M:CslaGenFork.Rules.AuthorizationRules.IsNewOrIsInRole.#ctor(Csla.Rules.AuthorizationActions,Csla.Core.IMemberInfo,System.String[])">
-            <summary>
-            Creates an instance of the rule.
-            </summary>
-            <param name="action">Action this rule will enforce.</param>
-            <param name="element">Member to be authorized.</param>
-            <param name="roles">List of allowed roles.</param>
-        </member>
-        <member name="M:CslaGenFork.Rules.AuthorizationRules.IsNewOrIsInRole.Execute(Csla.Rules.AuthorizationContext)">
-            <summary>
-            Rule implementation.
-            </summary>
-            <param name="context">Rule context.</param>
-        </member>
-        <member name="P:CslaGenFork.Rules.AuthorizationRules.IsNewOrIsInRole.CacheResult">
-            <summary>
-            Gets a value indicating whether the results
-            of this rule can be cached at the business
-            object level.
-            </summary>
-            <value>
-              <c>true</c> if the result of this rule can be cached by the calling code; otherwise, <c>false</c>.
-            </value>
-        </member>
-        <member name="T:CslaGenFork.Rules.TransformationRules.ToUpper">
-            <summary>
-            Converts the property to uppercase string.<br/>
+            Removes leading, trailing, duplicate white space characters.<br/>
             Rule should run on client when a property is changed or when CheckRules is called.
             Rule must run before any validation rules.
             </summary>
         </member>
-        <member name="M:CslaGenFork.Rules.TransformationRules.ToUpper.#ctor(Csla.Core.IPropertyInfo)">
+        <member name="M:CslaGenFork.Rules.TransformationRules.CollapseWhiteSpace.#ctor(Csla.Core.IPropertyInfo)">
             <summary>
-            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.TransformationRules.ToUpper"/> class.
+            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.TransformationRules.CollapseWhiteSpace"/> class.
             </summary>
-            <param name="primaryProperty">
-            The primary property.
-            </param>
+            <param name="primaryProperty">The primary property.</param>
         </member>
-        <member name="M:CslaGenFork.Rules.TransformationRules.ToUpper.Execute(Csla.Rules.RuleContext)">
-            <summary>
-            The execute.
-            </summary>
-            <param name="context">
-            The context.
-            </param>
-        </member>
-        <member name="T:CslaGenFork.Rules.DateRules.DateNotInFuture">
-            <summary>
-            Business rule for checking a date property is valid and not in the future.
-            </summary>
-        </member>
-        <member name="M:CslaGenFork.Rules.DateRules.DateNotInFuture.#ctor(Csla.Core.IPropertyInfo)">
-            <summary>
-            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.DateRules.DateNotInFuture"/> class.
-            </summary>
-            <param name="primaryProperty">Primary property for this rule.</param>
-        </member>
-        <member name="M:CslaGenFork.Rules.DateRules.DateNotInFuture.#ctor(Csla.Core.IPropertyInfo,System.String)">
-            <summary>
-            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.DateRules.DateNotInFuture"/> class.
-            </summary>
-            <param name="primaryProperty">Primary property for this rule.</param>
-            <param name="message">The error message text.</param>
-        </member>
-        <member name="M:CslaGenFork.Rules.DateRules.DateNotInFuture.#ctor(Csla.Core.IPropertyInfo,System.Func{System.String})">
-            <summary>
-            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.DateRules.DateNotInFuture"/> class.
-            </summary>
-            <param name="primaryProperty">Primary property for this rule.</param>
-            <param name="messageDelegate">The error message function.</param>
-        </member>
-        <member name="M:CslaGenFork.Rules.DateRules.DateNotInFuture.GetMessage">
-            <summary>
-            Gets the error message.
-            </summary>
-            <returns>
-            The error message.
-            </returns>
-        </member>
-        <member name="M:CslaGenFork.Rules.DateRules.DateNotInFuture.Execute(Csla.Rules.RuleContext)">
+        <member name="M:CslaGenFork.Rules.TransformationRules.CollapseWhiteSpace.Execute(Csla.Rules.RuleContext)">
             <summary>
             Business rule implementation.
             </summary>
             <param name="context">Rule context object.</param>
+        </member>
+        <member name="T:CslaGenFork.Rules.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:CslaGenFork.Rules.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:CslaGenFork.Rules.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:CslaGenFork.Rules.Properties.Resources.GreaterThanOrEqualRule">
+            <summary>
+              Looks up a localized string similar to {0} must be greater than or equal to {1}.
+            </summary>
+        </member>
+        <member name="P:CslaGenFork.Rules.Properties.Resources.GreaterThanRule">
+            <summary>
+              Looks up a localized string similar to {0} must be greater than {1}.
+            </summary>
+        </member>
+        <member name="P:CslaGenFork.Rules.Properties.Resources.LessThanOrEqualRule">
+            <summary>
+              Looks up a localized string similar to {0} must be less than or equal to {1}.
+            </summary>
+        </member>
+        <member name="P:CslaGenFork.Rules.Properties.Resources.LessThanRule">
+            <summary>
+              Looks up a localized string similar to {0} must be less than {1}.
+            </summary>
+        </member>
+        <member name="P:CslaGenFork.Rules.Properties.Resources.RangeRule">
+            <summary>
+              Looks up a localized string similar to {0} must be between {1} and {2}.
+            </summary>
         </member>
         <member name="T:CslaGenFork.Rules.CompareFieldsRules.Range">
             <summary>
@@ -699,169 +323,85 @@
             to format the minimum and maximum values.
             </value>
         </member>
-        <member name="T:CslaGenFork.Rules.CompareFieldsRules.LessThan">
+        <member name="T:CslaGenFork.Rules.ShortCircuitingRules.AnyRequired">
             <summary>
-            Validates that PrimaryProperty is less than compareToProperty
-            </summary>
-        </member>
-        <member name="M:CslaGenFork.Rules.CompareFieldsRules.LessThan.#ctor(Csla.Core.IPropertyInfo,Csla.Core.IPropertyInfo)">
-            <summary>
-            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.CompareFieldsRules.LessThan"/> class.
-            </summary>
-            <param name="primaryProperty">
-            The primary property.
-            </param>
-            <param name="compareToProperty">
-            The compare to property.
-            </param>
-        </member>
-        <member name="M:CslaGenFork.Rules.CompareFieldsRules.LessThan.GetMessage">
-            <summary>
-            Gets the error message.
-            </summary>
-            <returns>
-            The error message.
-            </returns>
-        </member>
-        <member name="M:CslaGenFork.Rules.CompareFieldsRules.LessThan.Execute(Csla.Rules.RuleContext)">
-            <summary>
-            Does the check for primary propert less than compareTo property
-            </summary>
-            <param name="context">
-            Rule context object.
-            </param>
-        </member>
-        <member name="P:CslaGenFork.Rules.CompareFieldsRules.LessThan.CompareTo">
-            <summary>
-            Gets or sets CompareTo.
-            </summary>
-        </member>
-        <member name="T:CslaGenFork.Rules.GatewayRules.IsNotNew">
-            <summary>
-            The is not new.
-            </summary>
-            Gateway rule that will only call inner rule when object.IsNew is false
-        </member>
-        <member name="M:CslaGenFork.Rules.GatewayRules.IsNotNew.#ctor(Csla.Core.IPropertyInfo,Csla.Rules.IBusinessRule)">
-            <summary>
-            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.GatewayRules.IsNotNew"/> class.
-            </summary>
-            <param name="primaryProperty">
-            The primary property.
-            </param>
-            <param name="innerRule">
-            The inner rule.
-            </param>
-        </member>
-        <member name="M:CslaGenFork.Rules.GatewayRules.IsNotNew.Execute(Csla.Rules.RuleContext)">
-            <summary>
-            Executes the rule
-            </summary>
-            <param name="context">
-            The rule context.
-            </param>
-        </member>
-        <member name="P:CslaGenFork.Rules.GatewayRules.IsNotNew.InnerRule">
-            <summary>
-            Gets the inner rule.
-            </summary>
-            <value>The inner rule.</value>
-        </member>
-        <member name="T:CslaGenFork.Rules.CompareFieldsRules.GreaterThan">
-            <summary>
-            Validates that PrimaryProperty is greater than compareToProperty
-            </summary>
-        </member>
-        <member name="M:CslaGenFork.Rules.CompareFieldsRules.GreaterThan.#ctor(Csla.Core.IPropertyInfo,Csla.Core.IPropertyInfo)">
-            <summary>
-            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.CompareFieldsRules.GreaterThan"/> class.
-            </summary>
-            <param name="primaryProperty">
-            The primary property.
-            </param>
-            <param name="compareToProperty">
-            The compare to property.
-            </param>
-        </member>
-        <member name="M:CslaGenFork.Rules.CompareFieldsRules.GreaterThan.GetMessage">
-            <summary>
-            Gets the error message.
-            </summary>
-            <returns>
-            The error message.
-            </returns>
-        </member>
-        <member name="M:CslaGenFork.Rules.CompareFieldsRules.GreaterThan.Execute(Csla.Rules.RuleContext)">
-            <summary>
-            Does the check for primary propert less than compareTo property
-            </summary>
-            <param name="context">
-            Rule context object.
-            </param>
-        </member>
-        <member name="P:CslaGenFork.Rules.CompareFieldsRules.GreaterThan.CompareTo">
-            <summary>
-            Gets or sets CompareTo.
-            </summary>
-        </member>
-        <member name="T:CslaGenFork.Rules.TransformationRules.CalcSum">
-            <summary>
-            CalcSum rule will set PrimaryProperty to the sum of all supplied properties.<br/>
-            Rule should run on client when a property is changed or when CheckRules is called.
+            Check that at least one of the fields of type string or SmartValue field has a value.<br/>
             </summary>
             <remarks>
             Since Csla 4.0.2 InputProperties are regarded as Dependency so you will not need to add a Dependency
-            rule to each input field in order to rerun calculation whenever one of the inputs is changed.
+            rule to each input field in order to rerun the rule whenever one of the inputs is changed.
             </remarks>
         </member>
-        <member name="M:CslaGenFork.Rules.TransformationRules.CalcSum.#ctor(Csla.Core.IPropertyInfo,Csla.Core.IPropertyInfo[])">
+        <member name="M:CslaGenFork.Rules.ShortCircuitingRules.AnyRequired.#ctor(Csla.Core.IPropertyInfo,Csla.Core.IPropertyInfo[])">
             <summary>
-            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.TransformationRules.CalcSum"/> class.
+            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.ShortCircuitingRules.AnyRequired"/> class.
             </summary>
-            <param name="primaryProperty">
-            The primary property.
-            </param>
-            <param name="inputProperties">
-            The input properties.
-            </param>
+            <param name="primaryProperty">The primary property.</param>
+            <param name="additionalProperties">The additional properties.</param>
         </member>
-        <member name="M:CslaGenFork.Rules.TransformationRules.CalcSum.Execute(Csla.Rules.RuleContext)">
+        <member name="M:CslaGenFork.Rules.ShortCircuitingRules.AnyRequired.#ctor(Csla.Core.IPropertyInfo,System.String,Csla.Core.IPropertyInfo[])">
             <summary>
-            Business rule implementation.
+            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.ShortCircuitingRules.AnyRequired"/> class.
             </summary>
-            <param name="context">
-            Rule context object.
-            </param>
+            <param name="primaryProperty">The primary property.</param>
+            <param name="message">The error message text.</param>
+            <param name="additionalProperties">The additional properties.</param>
         </member>
-        <member name="T:CslaGenFork.Rules.AuthorizationRules.IsEmptyOrIsInRole">
+        <member name="M:CslaGenFork.Rules.ShortCircuitingRules.AnyRequired.#ctor(Csla.Core.IPropertyInfo,System.Func{System.String},Csla.Core.IPropertyInfo[])">
             <summary>
-            Authorization rule for checking a Property can be accessed only it was empty
-            (at the time the edit started) or the user has any of the specified roles.
+            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.ShortCircuitingRules.AnyRequired"/> class.
+            </summary>
+            <param name="primaryProperty">The primary property.</param>
+            <param name="messageDelegate">The error message function.</param>
+            <param name="additionalProperties">The additional properties.</param>
+        </member>
+        <member name="M:CslaGenFork.Rules.ShortCircuitingRules.AnyRequired.GetMessage">
+            <summary>
+            Gets the error message.
+            </summary>
+            <returns>
+            The error message.
+            </returns>
+        </member>
+        <member name="M:CslaGenFork.Rules.ShortCircuitingRules.AnyRequired.Execute(Csla.Rules.RuleContext)">
+            <summary>
+            Executes the rule in specified context.
+            </summary>
+            <param name="context">The context.</param>
+        </member>
+        <member name="T:CslaGenFork.Rules.AuthorizationRules.RestrictByStatusOrIsInRole">
+            <summary>
+            Authorization rule for checking a Property can not be accessed
+            if the object is in a given status (or statuses) or the user has any of the specified roles.
             </summary>
         </member>
-        <member name="M:CslaGenFork.Rules.AuthorizationRules.IsEmptyOrIsInRole.#ctor(Csla.Rules.AuthorizationActions,Csla.Core.IMemberInfo,System.Collections.Generic.List{System.String})">
+        <member name="M:CslaGenFork.Rules.AuthorizationRules.RestrictByStatusOrIsInRole.#ctor(Csla.Rules.AuthorizationActions,Csla.Core.IMemberInfo,System.String,System.Collections.Generic.List{System.Int32},System.Collections.Generic.List{System.String})">
             <summary>
             Creates an instance of the rule.
             </summary>
             <param name="action">Action this rule will enforce.</param>
             <param name="element">Member to be authorized.</param>
+            <param name="statusProperty">Name of the property for the status ID.</param>
+            <param name="restrictedStatus">The statuses subject to restrictions.</param>
             <param name="roles">List of allowed roles.</param>
         </member>
-        <member name="M:CslaGenFork.Rules.AuthorizationRules.IsEmptyOrIsInRole.#ctor(Csla.Rules.AuthorizationActions,Csla.Core.IMemberInfo,System.String[])">
+        <member name="M:CslaGenFork.Rules.AuthorizationRules.RestrictByStatusOrIsInRole.#ctor(Csla.Rules.AuthorizationActions,Csla.Core.IMemberInfo,System.String,System.Collections.Generic.List{System.Int32},System.String[])">
             <summary>
             Creates an instance of the rule.
             </summary>
             <param name="action">Action this rule will enforce.</param>
             <param name="element">Member to be authorized.</param>
+            <param name="statusProperty">Name of the property for the status ID.</param>
+            <param name="restrictedStatus">The statuses subject to restrictions.</param>
             <param name="roles">List of allowed roles.</param>
         </member>
-        <member name="M:CslaGenFork.Rules.AuthorizationRules.IsEmptyOrIsInRole.Execute(Csla.Rules.AuthorizationContext)">
+        <member name="M:CslaGenFork.Rules.AuthorizationRules.RestrictByStatusOrIsInRole.Execute(Csla.Rules.AuthorizationContext)">
             <summary>
             Rule implementation.
             </summary>
-            <param name="context">Authorization context.</param>
+            <param name="context">Rule context.</param>
         </member>
-        <member name="P:CslaGenFork.Rules.AuthorizationRules.IsEmptyOrIsInRole.CacheResult">
+        <member name="P:CslaGenFork.Rules.AuthorizationRules.RestrictByStatusOrIsInRole.CacheResult">
             <summary>
             Gets a value indicating whether the results
             of this rule can be cached at the business
@@ -871,22 +411,20 @@
               <c>true</c> if the result of this rule can be cached by the calling code; otherwise, <c>false</c>.
             </value>
         </member>
-        <member name="T:CslaGenFork.Rules.TransformationRules.ToLower">
+        <member name="T:CslaGenFork.Rules.ShortCircuitingRules.StopIfIsNotNew">
             <summary>
-            Converts the property to lowercase string.<br/>
-            Rule should run on client when a property is changed or when CheckRules is called.
-            Rule must run before any validation rules.
+            Shorcircuits rule processing if object is not new.
             </summary>
         </member>
-        <member name="M:CslaGenFork.Rules.TransformationRules.ToLower.#ctor(Csla.Core.IPropertyInfo)">
+        <member name="M:CslaGenFork.Rules.ShortCircuitingRules.StopIfIsNotNew.#ctor(Csla.Core.IPropertyInfo)">
             <summary>
-            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.TransformationRules.ToLower"/> class.
+            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.ShortCircuitingRules.StopIfIsNotNew"/> class.
             </summary>
             <param name="primaryProperty">
             The primary property.
             </param>
         </member>
-        <member name="M:CslaGenFork.Rules.TransformationRules.ToLower.Execute(Csla.Rules.RuleContext)">
+        <member name="M:CslaGenFork.Rules.ShortCircuitingRules.StopIfIsNotNew.Execute(Csla.Rules.RuleContext)">
             <summary>
             The execute.
             </summary>
@@ -931,6 +469,191 @@
             Gets or sets CompareTo.
             </summary>
         </member>
+        <member name="T:CslaGenFork.Rules.ShortCircuitingRules.StopIfNotCanWrite">
+            <summary>
+            Short circuit rule processing for this property if user is not allowed to edit this field.
+            </summary>
+        </member>
+        <member name="M:CslaGenFork.Rules.ShortCircuitingRules.StopIfNotCanWrite.#ctor(Csla.Core.IPropertyInfo)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.ShortCircuitingRules.StopIfNotCanWrite"/> class.
+            </summary>
+            <param name="primaryProperty">
+            The primary property.
+            </param>
+        </member>
+        <member name="M:CslaGenFork.Rules.ShortCircuitingRules.StopIfNotCanWrite.Execute(Csla.Rules.RuleContext)">
+            <summary>
+            The execute.
+            </summary>
+            <param name="context">
+            The context.
+            </param>
+        </member>
+        <member name="T:CslaGenFork.Rules.CompareFieldsRules.GreaterThanOrEqual">
+            <summary>
+            Validates that PrimaryProperty is greater than or equal compareToProperty
+            </summary>
+        </member>
+        <member name="M:CslaGenFork.Rules.CompareFieldsRules.GreaterThanOrEqual.#ctor(Csla.Core.IPropertyInfo,Csla.Core.IPropertyInfo)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.CompareFieldsRules.GreaterThanOrEqual"/> class.
+            </summary>
+            <param name="primaryProperty">
+            The primary property.
+            </param>
+            <param name="compareToProperty">
+            The compare to property.
+            </param>
+        </member>
+        <member name="M:CslaGenFork.Rules.CompareFieldsRules.GreaterThanOrEqual.GetMessage">
+            <summary>
+            Gets the error message.
+            </summary>
+            <returns>
+            The error message.
+            </returns>
+        </member>
+        <member name="M:CslaGenFork.Rules.CompareFieldsRules.GreaterThanOrEqual.Execute(Csla.Rules.RuleContext)">
+            <summary>
+            Does the check for primary propert less than compareTo property
+            </summary>
+            <param name="context">
+            Rule context object.
+            </param>
+        </member>
+        <member name="P:CslaGenFork.Rules.CompareFieldsRules.GreaterThanOrEqual.CompareTo">
+            <summary>
+            Gets or sets CompareTo.
+            </summary>
+        </member>
+        <member name="T:CslaGenFork.Rules.AuthorizationRules.IsEmptyOrIsInRole">
+            <summary>
+            Authorization rule for checking a Property can be accessed only it was empty
+            (at the time the edit started) or the user has any of the specified roles.
+            </summary>
+        </member>
+        <member name="M:CslaGenFork.Rules.AuthorizationRules.IsEmptyOrIsInRole.#ctor(Csla.Rules.AuthorizationActions,Csla.Core.IMemberInfo,System.Collections.Generic.List{System.String})">
+            <summary>
+            Creates an instance of the rule.
+            </summary>
+            <param name="action">Action this rule will enforce.</param>
+            <param name="element">Member to be authorized.</param>
+            <param name="roles">List of allowed roles.</param>
+        </member>
+        <member name="M:CslaGenFork.Rules.AuthorizationRules.IsEmptyOrIsInRole.#ctor(Csla.Rules.AuthorizationActions,Csla.Core.IMemberInfo,System.String[])">
+            <summary>
+            Creates an instance of the rule.
+            </summary>
+            <param name="action">Action this rule will enforce.</param>
+            <param name="element">Member to be authorized.</param>
+            <param name="roles">List of allowed roles.</param>
+        </member>
+        <member name="M:CslaGenFork.Rules.AuthorizationRules.IsEmptyOrIsInRole.Execute(Csla.Rules.AuthorizationContext)">
+            <summary>
+            Rule implementation.
+            </summary>
+            <param name="context">Authorization context.</param>
+        </member>
+        <member name="P:CslaGenFork.Rules.AuthorizationRules.IsEmptyOrIsInRole.CacheResult">
+            <summary>
+            Gets a value indicating whether the results
+            of this rule can be cached at the business
+            object level.
+            </summary>
+            <value>
+              <c>true</c> if the result of this rule can be cached by the calling code; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="T:CslaGenFork.Rules.ShortCircuitingRules.StopIfIsNew">
+            <summary>
+            Shorcircuits rule processing if object is new.
+            </summary>
+        </member>
+        <member name="M:CslaGenFork.Rules.ShortCircuitingRules.StopIfIsNew.#ctor(Csla.Core.IPropertyInfo)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.ShortCircuitingRules.StopIfIsNew"/> class.
+            </summary>
+            <param name="primaryProperty">
+            The primary property.
+            </param>
+        </member>
+        <member name="M:CslaGenFork.Rules.ShortCircuitingRules.StopIfIsNew.Execute(Csla.Rules.RuleContext)">
+            <summary>
+            The execute.
+            </summary>
+            <param name="context">
+            The context.
+            </param>
+        </member>
+        <member name="T:CslaGenFork.Rules.AuthorizationRules.IsNewOrIsInRole">
+            <summary>
+            Authorization rule for checking a Property can be accessed only if the object IsNew
+            or the user has any of the specified roles.
+            </summary>
+        </member>
+        <member name="M:CslaGenFork.Rules.AuthorizationRules.IsNewOrIsInRole.#ctor(Csla.Rules.AuthorizationActions,Csla.Core.IMemberInfo,System.Collections.Generic.List{System.String})">
+            <summary>
+            Creates an instance of the rule.
+            </summary>
+            <param name="action">Action this rule will enforce.</param>
+            <param name="element">Member to be authorized.</param>
+            <param name="roles">List of allowed roles.</param>
+        </member>
+        <member name="M:CslaGenFork.Rules.AuthorizationRules.IsNewOrIsInRole.#ctor(Csla.Rules.AuthorizationActions,Csla.Core.IMemberInfo,System.String[])">
+            <summary>
+            Creates an instance of the rule.
+            </summary>
+            <param name="action">Action this rule will enforce.</param>
+            <param name="element">Member to be authorized.</param>
+            <param name="roles">List of allowed roles.</param>
+        </member>
+        <member name="M:CslaGenFork.Rules.AuthorizationRules.IsNewOrIsInRole.Execute(Csla.Rules.AuthorizationContext)">
+            <summary>
+            Rule implementation.
+            </summary>
+            <param name="context">Rule context.</param>
+        </member>
+        <member name="P:CslaGenFork.Rules.AuthorizationRules.IsNewOrIsInRole.CacheResult">
+            <summary>
+            Gets a value indicating whether the results
+            of this rule can be cached at the business
+            object level.
+            </summary>
+            <value>
+              <c>true</c> if the result of this rule can be cached by the calling code; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="T:CslaGenFork.Rules.GatewayRules.IsNew">
+            <summary>
+            Gateway rule that will only call inner rule when object.IsNew is true
+            </summary>
+        </member>
+        <member name="M:CslaGenFork.Rules.GatewayRules.IsNew.#ctor(Csla.Core.IPropertyInfo,Csla.Rules.IBusinessRule)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.GatewayRules.IsNew"/> class.
+            </summary>
+            <param name="primaryProperty">
+            The primary property.
+            </param>
+            <param name="innerRule">
+            The inner rule.
+            </param>
+        </member>
+        <member name="M:CslaGenFork.Rules.GatewayRules.IsNew.Execute(Csla.Rules.RuleContext)">
+            <summary>
+            Executes the rule
+            </summary>
+            <param name="context">
+            The rule context.
+            </param>
+        </member>
+        <member name="P:CslaGenFork.Rules.GatewayRules.IsNew.InnerRule">
+            <summary>
+            Gets the inner rule.
+            </summary>
+            <value>The inner rule.</value>
+        </member>
         <member name="T:CslaGenFork.Rules.ShortCircuitingRules.StopIfAnyAdditionalHasValue">
             <summary>
             If any of the additional properties has a value stop rule processing
@@ -950,24 +673,301 @@
             </summary>
             <param name="context">The context.</param>
         </member>
-        <member name="T:CslaGenFork.Rules.TransformationRules.CollapseWhiteSpace">
+        <member name="T:CslaGenFork.Rules.CompareFieldsRules.Range`2">
             <summary>
-            Removes leading, trailing, duplicate white space characters.<br/>
+            Business rule for checking a value is between a minimum and a maximum.
+            </summary>
+            <typeparam name="MIN">The type of the minimum value.</typeparam>
+            <typeparam name="MAX">The type of the maximum value.</typeparam>
+        </member>
+        <member name="M:CslaGenFork.Rules.CompareFieldsRules.Range`2.#ctor(Csla.Core.IPropertyInfo,`0,`1)">
+            <summary>
+            Creates an instance of the rule.
+            </summary>
+            <param name="primaryProperty">Property to which the rule applies.</param>
+            <param name="min">Min value.</param>
+            <param name="max">Max value.</param>
+        </member>
+        <member name="M:CslaGenFork.Rules.CompareFieldsRules.Range`2.#ctor(Csla.Core.IPropertyInfo,`0,`1,System.String)">
+            <summary>
+            Creates an instance of the rule.
+            </summary>
+            <param name="primaryProperty">Property to which the rule applies.</param>
+            <param name="min">Min value.</param>
+            <param name="max">Max value.</param>
+            <param name="message">The minimum error message text.</param>
+        </member>
+        <member name="M:CslaGenFork.Rules.CompareFieldsRules.Range`2.#ctor(Csla.Core.IPropertyInfo,`0,`1,System.Func{System.String})">
+            <summary>
+            Creates an instance of the rule.
+            </summary>
+            <param name="primaryProperty">Property to which the rule applies.</param>
+            <param name="min">Min value.</param>
+            <param name="max">Max value.</param>
+            <param name="messageDelegate">The minimum error message function.</param>
+        </member>
+        <member name="M:CslaGenFork.Rules.CompareFieldsRules.Range`2.GetMessage">
+            <summary>
+            Gets the error message.
+            </summary>
+            <returns>
+            The error message.
+            </returns>
+        </member>
+        <member name="M:CslaGenFork.Rules.CompareFieldsRules.Range`2.Execute(Csla.Rules.RuleContext)">
+            <summary>
+            Rule implementation.
+            </summary>
+            <param name="context">Rule context.</param>
+        </member>
+        <member name="P:CslaGenFork.Rules.CompareFieldsRules.Range`2.Min">
+            <summary>
+            Gets the minimum value.
+            </summary>
+            <value>
+            The minimum value.
+            </value>
+        </member>
+        <member name="P:CslaGenFork.Rules.CompareFieldsRules.Range`2.Max">
+            <summary>
+            Gets the maximum value.
+            </summary>
+            <value>
+            The maximum value.
+            </value>
+        </member>
+        <member name="P:CslaGenFork.Rules.CompareFieldsRules.Range`2.Format">
+            <summary>
+            Gets or sets the format string used
+            to format the minimum and maximum values.
+            </summary>
+            <value>
+            The format string used
+            to format the minimum and maximum values.
+            </value>
+        </member>
+        <member name="T:CslaGenFork.Rules.CompareFieldsRules.GreaterThan">
+            <summary>
+            Validates that PrimaryProperty is greater than compareToProperty
+            </summary>
+        </member>
+        <member name="M:CslaGenFork.Rules.CompareFieldsRules.GreaterThan.#ctor(Csla.Core.IPropertyInfo,Csla.Core.IPropertyInfo)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.CompareFieldsRules.GreaterThan"/> class.
+            </summary>
+            <param name="primaryProperty">
+            The primary property.
+            </param>
+            <param name="compareToProperty">
+            The compare to property.
+            </param>
+        </member>
+        <member name="M:CslaGenFork.Rules.CompareFieldsRules.GreaterThan.GetMessage">
+            <summary>
+            Gets the error message.
+            </summary>
+            <returns>
+            The error message.
+            </returns>
+        </member>
+        <member name="M:CslaGenFork.Rules.CompareFieldsRules.GreaterThan.Execute(Csla.Rules.RuleContext)">
+            <summary>
+            Does the check for primary propert less than compareTo property
+            </summary>
+            <param name="context">
+            Rule context object.
+            </param>
+        </member>
+        <member name="P:CslaGenFork.Rules.CompareFieldsRules.GreaterThan.CompareTo">
+            <summary>
+            Gets or sets CompareTo.
+            </summary>
+        </member>
+        <member name="T:CslaGenFork.Rules.GatewayRules.CanWrite">
+            <summary>
+            Gateway rule that will only call inner rule when uuser can edit property
+            </summary>
+        </member>
+        <member name="M:CslaGenFork.Rules.GatewayRules.CanWrite.#ctor(Csla.Core.IPropertyInfo,Csla.Rules.IBusinessRule)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.GatewayRules.CanWrite"/> class.
+            </summary>
+            <param name="primaryProperty">
+            The primary property.
+            </param>
+            <param name="innerRule">
+            The inner rule.
+            </param>
+        </member>
+        <member name="M:CslaGenFork.Rules.GatewayRules.CanWrite.Execute(Csla.Rules.RuleContext)">
+            <summary>
+            Executes the rule
+            </summary>
+            <param name="context">
+            The rule context.
+            </param>
+        </member>
+        <member name="P:CslaGenFork.Rules.GatewayRules.CanWrite.InnerRule">
+            <summary>
+            Gets the inner rule.
+            </summary>
+            <value>The inner rule.</value>
+        </member>
+        <member name="T:CslaGenFork.Rules.TransformationRules.ToUpper">
+            <summary>
+            Converts the property to uppercase string.<br/>
             Rule should run on client when a property is changed or when CheckRules is called.
             Rule must run before any validation rules.
             </summary>
         </member>
-        <member name="M:CslaGenFork.Rules.TransformationRules.CollapseWhiteSpace.#ctor(Csla.Core.IPropertyInfo)">
+        <member name="M:CslaGenFork.Rules.TransformationRules.ToUpper.#ctor(Csla.Core.IPropertyInfo)">
             <summary>
-            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.TransformationRules.CollapseWhiteSpace"/> class.
+            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.TransformationRules.ToUpper"/> class.
             </summary>
-            <param name="primaryProperty">The primary property.</param>
+            <param name="primaryProperty">
+            The primary property.
+            </param>
         </member>
-        <member name="M:CslaGenFork.Rules.TransformationRules.CollapseWhiteSpace.Execute(Csla.Rules.RuleContext)">
+        <member name="M:CslaGenFork.Rules.TransformationRules.ToUpper.Execute(Csla.Rules.RuleContext)">
+            <summary>
+            The execute.
+            </summary>
+            <param name="context">
+            The context.
+            </param>
+        </member>
+        <member name="T:CslaGenFork.Rules.TransformationRules.CollapseSpace">
+            <summary>
+            Removes leading, trailing and duplicate spaces.<br/>
+            Rule should run on client when a property is changed or when CheckRules is called.
+            Rule must run before any validation rules.
+            </summary>
+        </member>
+        <member name="M:CslaGenFork.Rules.TransformationRules.CollapseSpace.#ctor(Csla.Core.IPropertyInfo)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.TransformationRules.CollapseSpace"/> class.
+            </summary>
+            <param name="primaryProperty">
+            The primary property.
+            </param>
+        </member>
+        <member name="M:CslaGenFork.Rules.TransformationRules.CollapseSpace.Execute(Csla.Rules.RuleContext)">
+            <summary>
+            Business rule implementation.
+            </summary>
+            <param name="context">
+            Rule context object.
+            </param>
+        </member>
+        <member name="T:CslaGenFork.Rules.DateRules.DateNotInFuture">
+            <summary>
+            Business rule for checking a date property is valid and not in the future.
+            </summary>
+        </member>
+        <member name="M:CslaGenFork.Rules.DateRules.DateNotInFuture.#ctor(Csla.Core.IPropertyInfo)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.DateRules.DateNotInFuture"/> class.
+            </summary>
+            <param name="primaryProperty">Primary property for this rule.</param>
+        </member>
+        <member name="M:CslaGenFork.Rules.DateRules.DateNotInFuture.#ctor(Csla.Core.IPropertyInfo,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.DateRules.DateNotInFuture"/> class.
+            </summary>
+            <param name="primaryProperty">Primary property for this rule.</param>
+            <param name="message">The error message text.</param>
+        </member>
+        <member name="M:CslaGenFork.Rules.DateRules.DateNotInFuture.#ctor(Csla.Core.IPropertyInfo,System.Func{System.String})">
+            <summary>
+            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.DateRules.DateNotInFuture"/> class.
+            </summary>
+            <param name="primaryProperty">Primary property for this rule.</param>
+            <param name="messageDelegate">The error message function.</param>
+        </member>
+        <member name="M:CslaGenFork.Rules.DateRules.DateNotInFuture.GetMessage">
+            <summary>
+            Gets the error message.
+            </summary>
+            <returns>
+            The error message.
+            </returns>
+        </member>
+        <member name="M:CslaGenFork.Rules.DateRules.DateNotInFuture.Execute(Csla.Rules.RuleContext)">
             <summary>
             Business rule implementation.
             </summary>
             <param name="context">Rule context object.</param>
+        </member>
+        <member name="T:CslaGenFork.Rules.TransformationRules.CalcSum">
+            <summary>
+            CalcSum rule will set PrimaryProperty to the sum of all supplied properties.<br/>
+            Rule should run on client when a property is changed or when CheckRules is called.
+            </summary>
+            <remarks>
+            Since Csla 4.0.2 InputProperties are regarded as Dependency so you will not need to add a Dependency
+            rule to each input field in order to rerun calculation whenever one of the inputs is changed.
+            </remarks>
+        </member>
+        <member name="M:CslaGenFork.Rules.TransformationRules.CalcSum.#ctor(Csla.Core.IPropertyInfo,Csla.Core.IPropertyInfo[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.TransformationRules.CalcSum"/> class.
+            </summary>
+            <param name="primaryProperty">
+            The primary property.
+            </param>
+            <param name="inputProperties">
+            The input properties.
+            </param>
+        </member>
+        <member name="M:CslaGenFork.Rules.TransformationRules.CalcSum.Execute(Csla.Rules.RuleContext)">
+            <summary>
+            Business rule implementation.
+            </summary>
+            <param name="context">
+            Rule context object.
+            </param>
+        </member>
+        <member name="T:CslaGenFork.Rules.AuthorizationRules.IsOwnerOrIsInRole">
+            <summary>
+            Authorization rule for checking a Property can be accessed only
+            by the user that created the object or the user has any of the specified roles.
+            </summary>
+        </member>
+        <member name="M:CslaGenFork.Rules.AuthorizationRules.IsOwnerOrIsInRole.#ctor(Csla.Rules.AuthorizationActions,Csla.Core.IMemberInfo,System.String,System.Func{System.Int32},System.Collections.Generic.List{System.String})">
+            <summary>
+            Creates an instance of the rule.
+            </summary>
+            <param name="action">Action this rule will enforce.</param>
+            <param name="element">Member to be authorized.</param>
+            <param name="creatorProperty">Name of the property for the creator ID.</param>
+            <param name="getCurrentUserDelegate">The Func delegate to get the current user ID.</param>
+            <param name="roles">List of allowed roles.</param>
+        </member>
+        <member name="M:CslaGenFork.Rules.AuthorizationRules.IsOwnerOrIsInRole.#ctor(Csla.Rules.AuthorizationActions,Csla.Core.IMemberInfo,System.String,System.Func{System.Int32},System.String[])">
+            <summary>
+            Creates an instance of the rule.
+            </summary>
+            <param name="action">Action this rule will enforce.</param>
+            <param name="element">Member to be authorized.</param>
+            <param name="creatorProperty">Name of the property for the creator ID.</param>
+            <param name="getCurrentUserDelegate">The Func delegate to get the current user ID.</param>
+            <param name="roles">List of allowed roles.</param>
+        </member>
+        <member name="M:CslaGenFork.Rules.AuthorizationRules.IsOwnerOrIsInRole.Execute(Csla.Rules.AuthorizationContext)">
+            <summary>
+            Rule implementation.
+            </summary>
+            <param name="context">Authorization context.</param>
+        </member>
+        <member name="P:CslaGenFork.Rules.AuthorizationRules.IsOwnerOrIsInRole.CacheResult">
+            <summary>
+            Gets a value indicating whether the results
+            of this rule can be cached at the business
+            object level.
+            </summary>
+            <value>
+              <c>true</c> if the result of this rule can be cached by the calling code; otherwise, <c>false</c>.
+            </value>
         </member>
     </members>
 </doc>

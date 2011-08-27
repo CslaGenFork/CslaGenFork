@@ -16,7 +16,7 @@
     <Name>Documentation</Name>
     <!-- SHFB properties -->
     <OutputPath>..\Distributables\</OutputPath>
-    <HtmlHelpName>CslaGenFork.Rules-4.1.0</HtmlHelpName>
+    <HtmlHelpName>CslaGenFork.Rules-4.1.0-CS</HtmlHelpName>
     <DocumentationSources>
       <DocumentationSource sourceFile="..\Distributables\CslaGenFork.Rules-4.1.0.dll" />
       <DocumentationSource sourceFile="..\Distributables\CslaGenFork.Rules-4.1.0.xml" />
