@@ -21,6 +21,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 // </copyright>
 // <summary>
 //   Business rule for checking a name property is unique at the parent collection level.
+//   Rule should run on client when a property is changed or when CheckRules is called.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -35,6 +36,7 @@ namespace CslaGenFork.Rules.CollectionRules
 {
     /// <summary>
     /// Business rule for checking a name property is unique at the parent collection level.
+    /// Rule should run on client when a property is changed or when CheckRules is called.
     /// </summary>
     public class NoDuplicates : CommonBusinessRule
     {
@@ -46,6 +48,8 @@ namespace CslaGenFork.Rules.CollectionRules
             : base(primaryProperty)
         {
             InputProperties = new List<IPropertyInfo> {primaryProperty};
+
+            CanRunOnServer = false;
         }
 
         /// <summary>

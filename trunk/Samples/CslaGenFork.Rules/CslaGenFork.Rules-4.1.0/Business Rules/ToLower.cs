@@ -3,7 +3,9 @@
 //   Copyright (c) Marimer LLC. All rights reserved. Website: http://www.lhotka.net/cslanet
 // </copyright>
 // <summary>
-//   The to lower.
+//   Converts the property to lowercase string.
+//   Rule should run on client when a property is changed or when CheckRules is called.
+//   Rule must run before any validation rules.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -15,7 +17,9 @@ using Csla.Rules;
 namespace CslaGenFork.Rules.TransformationRules
 {
     /// <summary>
-    /// The to lower.
+    /// Converts the property to lowercase string.<br/>
+    /// Rule should run on client when a property is changed or when CheckRules is called.
+    /// Rule must run before any validation rules.
     /// </summary>
     public class ToLower : BusinessRule
     {

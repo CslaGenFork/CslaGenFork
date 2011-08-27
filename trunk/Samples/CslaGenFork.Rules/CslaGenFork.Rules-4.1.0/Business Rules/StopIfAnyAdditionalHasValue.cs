@@ -41,7 +41,7 @@ namespace CslaGenFork.Rules.ShortCircuitingRules
         protected override void Execute(RuleContext context)
         {
             var hasValue = false;
-            // excludes primary property
+            // excludes PrimaryProperty
             foreach (var field in context.InputPropertyValues.Where(p => p.Key != PrimaryProperty))
             {
                 // smartfields have their own implementation of IsEmpty

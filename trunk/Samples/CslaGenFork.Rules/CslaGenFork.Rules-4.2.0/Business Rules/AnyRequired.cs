@@ -3,8 +3,7 @@
 //   Copyright (c) Marimer LLC. All rights reserved. Website: http://www.lhotka.net/cslanet
 // </copyright>
 // <summary>
-//   Check that at least one of the fields of type string or smartvalue field has a value.
-//   Code must also add Dependency rules from each additional properties to primary property.
+//   Check that at least one of the fields of type string or SmartValue field has a value.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -19,9 +18,12 @@ using Csla.Rules.CommonRules;
 namespace CslaGenFork.Rules.ShortCircuitingRules
 {
     /// <summary>
-    /// Check that at least one of the fields of type string or smartvalue field has a value.
-    /// Code must also add Dependency rules from each additional properties to primary property.
+    /// Check that at least one of the fields of type string or SmartValue field has a value.<br/>
     /// </summary>
+    /// <remarks>
+    /// Since Csla 4.0.2 InputProperties are regarded as Dependency so you will not need to add a Dependency
+    /// rule to each input field in order to rerun the rule whenever one of the inputs is changed.
+    /// </remarks>
     public class AnyRequired : CommonBusinessRule
     {
         /// <summary>

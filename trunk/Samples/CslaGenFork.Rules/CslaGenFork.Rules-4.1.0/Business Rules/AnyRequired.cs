@@ -3,8 +3,11 @@
 //   Copyright (c) Marimer LLC. All rights reserved. Website: http://www.lhotka.net/cslanet
 // </copyright>
 // <summary>
-//   Check that at least one of the fields of type string or smartvalue field has a value.
-//   Code must also add Dependency rules from each additional properties to primary property.
+//   Check that at least one of the fields of type string or SmartValue field has a value.
+//   Rule should run on client when a property is changed or when CheckRules is called.
+//   For use under Csla 4.0.1 or previous versions, 
+//   code must also add Dependency rules from each additional properties to PrimaryProperty
+//   in order to rerun the rule whenever one of the inputs is changed.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -18,8 +21,11 @@ using Csla.Rules;
 namespace CslaGenFork.Rules.ShortCircuitingRules
 {
     /// <summary>
-    /// Check that at least one of the fields of type string or smartvalue field has a value.
-    /// Code must also add Dependency rules from each additional properties to primary property.
+    /// Check that at least one of the fields of type string or SmartValue field has a value.<br/>
+    /// Rule should run on client when a property is changed or when CheckRules is called.<br/>
+    /// For use under Csla 4.0.1 or previous versions, 
+    /// code must also add Dependency rules from each additional properties to PrimaryProperty
+    /// in order to rerun the rule whenever one of the inputs is changed.
     /// </summary>
     public class AnyRequired : CommonRuleWithMessage
     {

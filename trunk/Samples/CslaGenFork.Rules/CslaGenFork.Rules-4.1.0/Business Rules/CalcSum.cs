@@ -3,8 +3,11 @@
 //   Copyright (c) Marimer LLC. All rights reserved. Website: http://www.lhotka.net/cslanet
 // </copyright>
 // <summary>
-//   CalcSum rule will set primary property to the sum of all supplied properties.
+//   CalcSum rule will set PrimaryProperty to the sum of all supplied properties.
 //   Rule should run on client when a property is changed or when CheckRules is called.
+//   For use under Csla 4.0.1 or previous versions, 
+//   code must also add Dependency rules from each additional properties to PrimaryProperty
+//   in order to rerun calculation whenever one of the inputs is changed.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -17,14 +20,12 @@ using Csla.Rules;
 namespace CslaGenFork.Rules.TransformationRules
 {
     /// <summary>
-    /// CalcSum rule will set primary property to the sum of all supplied properties.
-    ///
-    /// Rule should run on client when a property is changed or when CheckRules is called.
+    /// CalcSum rule will set PrimaryProperty to the sum of all supplied properties.<br/>
+    /// Rule should run on client when a property is changed or when CheckRules is called.<br/>
+    /// For use under Csla 4.0.1 or previous versions, 
+    /// code must also add Dependency rules from each additional properties to PrimaryProperty
+    /// in order to rerun calculation whenever one of the inputs is changed.
     /// </summary>
-    /// <remarks>
-    /// As InputProperties is now regarded as Dependency you will not need to add a Dependency
-    /// rule to each input field in order to rerun calculation whenever on of the inputs is changed.
-    /// </remarks>
     public class CalcSum : CommonRuleWithMessage
     {
         /// <summary>
