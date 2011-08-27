@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="Authorization Rules\IsEmptyOrIsInRole.cs" />
     <Compile Include="Authorization Rules\IsNewOrIsInRole.cs" />
+    <Compile Include="Authorization Rules\IsOwnerOrIsInRole.cs" />
     <Compile Include="Business Rules\AnyRequired.cs" />
     <Compile Include="Business Rules\CollapseWhiteSpace.cs" />
     <Compile Include="Business Rules\StopIfAnyAdditionalHasValue.cs" />
@@ -69,7 +70,6 @@
     <Compile Include="Business Rules\ToLower.cs" />
     <Compile Include="Business Rules\ToUpper.cs" />
     <Compile Include="Business Rules\DateNotInFuture.cs" />
-    <Compile Include="Authorization Rules\IsInRoleOrIsOwner.cs" />
     <Compile Include="Authorization Rules\IsOwner.cs" />
     <Compile Include="Business Rules\NoDuplicates.cs" />
     <Compile Include="Business Rules\RangeMM.cs" />
