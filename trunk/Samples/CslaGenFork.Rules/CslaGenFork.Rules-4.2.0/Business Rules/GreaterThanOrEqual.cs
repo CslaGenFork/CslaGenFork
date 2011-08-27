@@ -3,7 +3,7 @@
 //   Copyright (c) Marimer LLC. All rights reserved. Website: http://www.lhotka.net/cslanet
 // </copyright>
 // <summary>
-//   Validates that primary property is greater than or equal compareToProperty
+//   Validates that PrimaryProperty is greater than or equal compareToProperty
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -18,7 +18,7 @@ using CslaGenFork.Rules.Properties;
 namespace CslaGenFork.Rules.CompareFieldsRules
 {
     /// <summary>
-    /// Validates that primary property is greater than or equal compareToProperty
+    /// Validates that PrimaryProperty is greater than or equal compareToProperty
     /// </summary>
     public class GreaterThanOrEqual : CommonBusinessRule
     {

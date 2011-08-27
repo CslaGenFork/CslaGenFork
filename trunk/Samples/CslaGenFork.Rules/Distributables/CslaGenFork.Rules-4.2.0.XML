@@ -119,7 +119,9 @@
         </member>
         <member name="T:CslaGenFork.Rules.TransformationRules.CollapseSpace">
             <summary>
-            Removes leading, trailing and duplicate spaces.
+            Removes leading, trailing and duplicate spaces.<br/>
+            Rule should run on client when a property is changed or when CheckRules is called.
+            Rule must run before any validation rules.
             </summary>
         </member>
         <member name="M:CslaGenFork.Rules.TransformationRules.CollapseSpace.#ctor(Csla.Core.IPropertyInfo)">
@@ -161,7 +163,7 @@
         </member>
         <member name="T:CslaGenFork.Rules.CompareFieldsRules.GreaterThanOrEqual">
             <summary>
-            Validates that primary property is greater than or equal compareToProperty
+            Validates that PrimaryProperty is greater than or equal compareToProperty
             </summary>
         </member>
         <member name="M:CslaGenFork.Rules.CompareFieldsRules.GreaterThanOrEqual.#ctor(Csla.Core.IPropertyInfo,Csla.Core.IPropertyInfo)">
@@ -198,9 +200,12 @@
         </member>
         <member name="T:CslaGenFork.Rules.ShortCircuitingRules.AnyRequired">
             <summary>
-            Check that at least one of the fields of type string or smartvalue field has a value.
-            Code must also add Dependency rules from each additional properties to primary property.
+            Check that at least one of the fields of type string or SmartValue field has a value.<br/>
             </summary>
+            <remarks>
+            Since Csla 4.0.2 InputProperties are regarded as Dependency so you will not need to add a Dependency
+            rule to each input field in order to rerun the rule whenever one of the inputs is changed.
+            </remarks>
         </member>
         <member name="M:CslaGenFork.Rules.ShortCircuitingRules.AnyRequired.#ctor(Csla.Core.IPropertyInfo,Csla.Core.IPropertyInfo[])">
             <summary>
@@ -408,6 +413,7 @@
         <member name="T:CslaGenFork.Rules.CollectionRules.NoDuplicates">
             <summary>
             Business rule for checking a name property is unique at the parent collection level.
+            Rule should run on client when a property is changed or when CheckRules is called.
             </summary>
         </member>
         <member name="M:CslaGenFork.Rules.CollectionRules.NoDuplicates.#ctor(Csla.Core.IPropertyInfo)">
@@ -535,7 +541,9 @@
         </member>
         <member name="T:CslaGenFork.Rules.TransformationRules.ToUpper">
             <summary>
-            The to upper.
+            Converts the property to uppercase string.<br/>
+            Rule should run on client when a property is changed or when CheckRules is called.
+            Rule must run before any validation rules.
             </summary>
         </member>
         <member name="M:CslaGenFork.Rules.TransformationRules.ToUpper.#ctor(Csla.Core.IPropertyInfo)">
@@ -693,7 +701,7 @@
         </member>
         <member name="T:CslaGenFork.Rules.CompareFieldsRules.LessThan">
             <summary>
-            Validates that primary property is less than compareToProperty
+            Validates that PrimaryProperty is less than compareToProperty
             </summary>
         </member>
         <member name="M:CslaGenFork.Rules.CompareFieldsRules.LessThan.#ctor(Csla.Core.IPropertyInfo,Csla.Core.IPropertyInfo)">
@@ -761,7 +769,7 @@
         </member>
         <member name="T:CslaGenFork.Rules.CompareFieldsRules.GreaterThan">
             <summary>
-            Validates that primary property is greater than compareToProperty
+            Validates that PrimaryProperty is greater than compareToProperty
             </summary>
         </member>
         <member name="M:CslaGenFork.Rules.CompareFieldsRules.GreaterThan.#ctor(Csla.Core.IPropertyInfo,Csla.Core.IPropertyInfo)">
@@ -797,15 +805,14 @@
             </summary>
         </member>
         <member name="T:CslaGenFork.Rules.TransformationRules.CalcSum">
-             <summary>
-             CalcSum rule will set primary property to the sum of all supplied properties.
-            
-             Rule should run on client when a property is changed or when CheckRules is called.
-             </summary>
-             <remarks>
-             As InputProperties is now regarded as Dependency you will not need to add a Dependency
-             rule to each input field in order to rerun calculation whenever on of the inputs is changed.
-             </remarks>
+            <summary>
+            CalcSum rule will set PrimaryProperty to the sum of all supplied properties.<br/>
+            Rule should run on client when a property is changed or when CheckRules is called.
+            </summary>
+            <remarks>
+            Since Csla 4.0.2 InputProperties are regarded as Dependency so you will not need to add a Dependency
+            rule to each input field in order to rerun calculation whenever one of the inputs is changed.
+            </remarks>
         </member>
         <member name="M:CslaGenFork.Rules.TransformationRules.CalcSum.#ctor(Csla.Core.IPropertyInfo,Csla.Core.IPropertyInfo[])">
             <summary>
@@ -866,7 +873,9 @@
         </member>
         <member name="T:CslaGenFork.Rules.TransformationRules.ToLower">
             <summary>
-            The to lower.
+            Converts the property to lowercase string.<br/>
+            Rule should run on client when a property is changed or when CheckRules is called.
+            Rule must run before any validation rules.
             </summary>
         </member>
         <member name="M:CslaGenFork.Rules.TransformationRules.ToLower.#ctor(Csla.Core.IPropertyInfo)">
@@ -887,7 +896,7 @@
         </member>
         <member name="T:CslaGenFork.Rules.CompareFieldsRules.LessThanOrEqual">
             <summary>
-            Validates that primary property is less than or equal compareToProperty
+            Validates that PrimaryProperty is less than or equal compareToProperty
             </summary>
         </member>
         <member name="M:CslaGenFork.Rules.CompareFieldsRules.LessThanOrEqual.#ctor(Csla.Core.IPropertyInfo,Csla.Core.IPropertyInfo)">
@@ -943,7 +952,9 @@
         </member>
         <member name="T:CslaGenFork.Rules.TransformationRules.CollapseWhiteSpace">
             <summary>
-            Removes leading, trailing, duplicate white space characters.
+            Removes leading, trailing, duplicate white space characters.<br/>
+            Rule should run on client when a property is changed or when CheckRules is called.
+            Rule must run before any validation rules.
             </summary>
         </member>
         <member name="M:CslaGenFork.Rules.TransformationRules.CollapseWhiteSpace.#ctor(Csla.Core.IPropertyInfo)">

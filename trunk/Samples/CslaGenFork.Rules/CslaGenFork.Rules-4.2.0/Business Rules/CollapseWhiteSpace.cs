@@ -4,6 +4,8 @@
 // </copyright>
 // <summary>
 //   Removes leading, trailing, duplicate white space characters.
+//   Rule should run on client when a property is changed or when CheckRules is called.
+//   Rule must run before any validation rules.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,9 +18,11 @@ using Csla.Rules;
 namespace CslaGenFork.Rules.TransformationRules
 {
     /// <summary>
-    /// Removes leading, trailing, duplicate white space characters.
+    /// Removes leading, trailing, duplicate white space characters.<br/>
+    /// Rule should run on client when a property is changed or when CheckRules is called.
+    /// Rule must run before any validation rules.
     /// </summary>
-    public class CollapseWhiteSpace : BusinessRule
+    public class CollapseWhiteSpace : PropertyRule
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CollapseWhiteSpace"/> class.
@@ -28,6 +32,8 @@ namespace CslaGenFork.Rules.TransformationRules
             : base(primaryProperty)
         {
             InputProperties = new List<IPropertyInfo> {primaryProperty};
+
+            CanRunOnServer = false;
         }
 
         /// <summary>
