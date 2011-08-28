@@ -87,7 +87,7 @@ namespace CslaGenerator.Metadata
         [Category("01. Definition")]
         [Description("Business Rule Type defined in this CslaGenFork project. Unsupported at this time.")]
         [UserFriendlyName("Internal project Type Name")]
-        [ReadOnly(true)]
+        [Browsable(true)]
         public string ObjectName
         {
             get { return _objectName; }
