@@ -10,6 +10,7 @@ using CslaGenerator.Metadata;
 using CslaGenerator.Plugins;
 using CslaGenerator.Properties;
 using CslaGenerator.Util;
+using CslaGenerator.Util.PropertyBags;
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace CslaGenerator
@@ -896,5 +897,27 @@ namespace CslaGenerator
         }
 
         #endregion
+
+        private void OnSelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
+        {
+            CslaObjectInfo cslaObj = ((PropertyBag)((PropertyGrid)sender).SelectedObject).SelectedObject[0];
+            AuthorizationActions result;
+            switch (e.NewSelection.Label)
+            {
+                case "Create Authorization Type":
+                    cslaObj.ActionProperty = AuthorizationActions.CreateObject;
+                    break;
+                case "Get Authorization Type":
+                    cslaObj.ActionProperty = AuthorizationActions.GetObject;
+                    break;
+                case "Update Authorization Type":
+                    cslaObj.ActionProperty = AuthorizationActions.EditObject;
+                    break;
+                case "Delete Authorization Type":
+                    cslaObj.ActionProperty = AuthorizationActions.DeleteObject;
+                    break;
+            }
+
+        }
     }
 }
