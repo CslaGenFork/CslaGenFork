@@ -1152,8 +1152,8 @@ namespace CslaGenerator.Metadata
         #region 10. Authorization
 
         [Category("10. Authorization")]
-        [Description("The Autorization Provider for this property.")]
-        [UserFriendlyName("Autorization Provider")]
+        [Description("The Authorization Provider for this property.")]
+        [UserFriendlyName("Authorization Provider")]
         public virtual AuthorizationProvider AuthzProvider
         {
             get { return _authzProvider; }
@@ -1171,55 +1171,55 @@ namespace CslaGenerator.Metadata
         /// Roles to create object. Multiple roles must be separated with ;.
         /// </summary>
         [Category("10. Authorization")]
-        [Description("Roles to create object. Multiple roles must be separated with \";\". Use no prefix to allow or use prefix \"!\" to deny.")]
+        [Description("Roles to create object. Use a comma to separate multiple roles.")]
         [UserFriendlyName("New Roles")]
         public string NewRoles
         {
             get { return _newRoles; }
-            set { _newRoles = PropertyHelper.TidyAllowSpaces(value); }
+            set { _newRoles = PropertyHelper.TidyAllowSpaces(value).Replace(';', ',').Trim(new[] {'!', ','}); }
         }
 
         /// <summary>
         /// Roles to retrieve object. Multiple roles must be separated with ;.
         /// </summary>
         [Category("10. Authorization")]
-        [Description("Roles to retrieve object. Multiple roles must be separated with \";\". Use no prefix to allow or use prefix \"!\" to deny.")]
+        [Description("Roles to retrieve object. Use a comma to separate multiple roles.")]
         [UserFriendlyName("Get Roles")]
         public string GetRoles
         {
             get { return _getRoles; }
-            set { _getRoles = PropertyHelper.TidyAllowSpaces(value); }
+            set { _getRoles = PropertyHelper.TidyAllowSpaces(value).Replace(';', ',').Trim(new[] { '!', ',' }); }
         }
 
         /// <summary>
         /// Roles to update object. Multiple roles must be separated with ;.
         /// </summary>
         [Category("10. Authorization")]
-        [Description("Roles to update object. Multiple roles must be separated with \";\". Use no prefix to allow or use prefix \"!\" to deny.")]
+        [Description("Roles to update object. Use a comma to separate multiple roles.")]
         [UserFriendlyName("Update Roles")]
         public string UpdateRoles
         {
             get { return _updateRoles; }
-            set { _updateRoles = PropertyHelper.TidyAllowSpaces(value); }
+            set { _updateRoles = PropertyHelper.TidyAllowSpaces(value).Replace(';', ',').Trim(new[] { '!', ',' }); }
         }
 
         /// <summary>
         /// Roles to delete object. Multiple roles must be separated with ;.
         /// </summary>
         [Category("10. Authorization")]
-        [Description("Roles to delete object. Multiple roles must be separated with \";\". Use no prefix to allow or use prefix \"!\" to deny.")]
+        [Description("Roles to delete object. Use a comma to separate multiple roles.")]
         [UserFriendlyName("Delete Roles")]
         public string DeleteRoles
         {
             get { return _deleteRoles; }
-            set { _deleteRoles = PropertyHelper.TidyAllowSpaces(value); }
+            set { _deleteRoles = PropertyHelper.TidyAllowSpaces(value).Replace(';', ',').Trim(new[] { '!', ',' }); }
         }
 
         [Category("10. Authorization")]
-        [Description("The Autorization Type that controls create object action. You can either select an object defined in the current project or an object defined in another assembly.")]
+        [Description("The Authorization Type that controls create object action. You can either select an object defined in the current project or an object defined in another assembly.")]
         [Editor(typeof(ObjectEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(AuthorizationRuleTypeConverter))]
-        [UserFriendlyName("Create Autorization Type")]
+        [UserFriendlyName("Create Authorization Type")]
         public virtual AuthorizationRule NewAuthzRuleType
         {
             get { return _newAuthzRuleType; }
@@ -1238,10 +1238,10 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("10. Authorization")]
-        [Description("The Autorization Type that controls get object action. You can either select an object defined in the current project or an object defined in another assembly.")]
+        [Description("The Authorization Type that controls get object action. You can either select an object defined in the current project or an object defined in another assembly.")]
         [Editor(typeof(ObjectEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(AuthorizationRuleTypeConverter))]
-        [UserFriendlyName("Get Autorization Type")]
+        [UserFriendlyName("Get Authorization Type")]
         public virtual AuthorizationRule GetAuthzRuleType
         {
             get { return _getAuthzRuleType; }
@@ -1260,10 +1260,10 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("10. Authorization")]
-        [Description("The Autorization Type that controls update object action. You can either select an object defined in the current project or an object defined in another assembly.")]
+        [Description("The Authorization Type that controls update object action. You can either select an object defined in the current project or an object defined in another assembly.")]
         [Editor(typeof(ObjectEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(AuthorizationRuleTypeConverter))]
-        [UserFriendlyName("Update Autorization Type")]
+        [UserFriendlyName("Update Authorization Type")]
         public virtual AuthorizationRule UpdateAuthzRuleType
         {
             get { return _updateAuthzRuleType; }
@@ -1282,10 +1282,10 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("10. Authorization")]
-        [Description("The Autorization Type that controls delete object action. You can either select an object defined in the current project or an object defined in another assembly.")]
+        [Description("The Authorization Type that controls delete object action. You can either select an object defined in the current project or an object defined in another assembly.")]
         [Editor(typeof(ObjectEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(AuthorizationRuleTypeConverter))]
-        [UserFriendlyName("Delete Autorization Type")]
+        [UserFriendlyName("Delete Authorization Type")]
         public virtual AuthorizationRule DeleteAuthzRuleType
         {
             get { return _deleteAuthzRuleType; }
@@ -1326,6 +1326,10 @@ namespace CslaGenerator.Metadata
         }
 
         #endregion
+
+        [Browsable(false)]
+        [XmlIgnore]
+        public AuthorizationActions ActionProperty { get; set; }
 
         [Browsable(false)]
         public bool HasCreateCriteria

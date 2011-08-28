@@ -49,22 +49,22 @@ namespace CslaGenerator.Metadata
             AuthorizationActions result;
             switch (actionProperty)
             {
-                case "Read Autorization Type":
+                case "Read Authorization Type":
                     result = AuthorizationActions.ReadProperty;
                     break;
-                case "Write Autorization Type":
+                case "Write Authorization Type":
                     result = AuthorizationActions.WriteProperty;
                     break;
-                case "Create Autorization Type":
+                case "Create Authorization Type":
                     result = AuthorizationActions.CreateObject;
                     break;
-                case "Get Autorization Type":
+                case "Get Authorization Type":
                     result = AuthorizationActions.GetObject;
                     break;
-                case "Update Autorization Type":
+                case "Update Authorization Type":
                     result = AuthorizationActions.EditObject;
                     break;
-                //case "Delete Autorization Type":
+                //case "Delete Authorization Type":
                 default:
                     result = AuthorizationActions.DeleteObject;
                     break;
@@ -313,8 +313,8 @@ namespace CslaGenerator.Metadata
         #region 03. Authorization
 
         [Category("03. Authorization")]
-        [Description("The Autorization Provider for this property.")]
-        [UserFriendlyName("Autorization Provider")]
+        [Description("The Authorization Provider for this property.")]
+        [UserFriendlyName("Authorization Provider")]
         public virtual AuthorizationProvider AuthzProvider
         {
             get { return _authzProvider; }
@@ -322,28 +322,28 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("03. Authorization")]
-        [Description("Roles allowed to read the property. Multiple roles must be separated with ;")]
+        [Description("Roles allowed to read the property. Use a comma to separate multiple roles.")]
         [UserFriendlyName("Read Roles")]
         public virtual string ReadRoles
         {
             get { return _readRoles; }
-            set { _readRoles = PropertyHelper.TidyAllowSpaces(value); }
+            set { _readRoles = PropertyHelper.TidyAllowSpaces(value).Replace(';', ',').Trim(new[] { ',' }); }
         }
 
         [Category("03. Authorization")]
-        [Description("Roles allowed to write to the property. Multiple roles must be separated with ;")]
+        [Description("Roles allowed to write to the property. Use a comma to separate multiple roles.")]
         [UserFriendlyName("Write Roles")]
         public virtual string WriteRoles
         {
             get { return _writeRoles; }
-            set { _writeRoles = PropertyHelper.TidyAllowSpaces(value); }
+            set { _writeRoles = PropertyHelper.TidyAllowSpaces(value).Replace(';', ',').Trim(new[] { ',' }); }
         }
 
         [Category("03. Authorization")]
-        [Description("The Autorization Type that controls read action. You can either select an object defined in the current project or an object defined in another assembly.")]
+        [Description("The Authorization Type that controls read action. You can either select an object defined in the current project or an object defined in another assembly.")]
         [Editor(typeof(ObjectEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(AuthorizationRuleTypeConverter))]
-        [UserFriendlyName("Read Autorization Type")]
+        [UserFriendlyName("Read Authorization Type")]
         public virtual AuthorizationRule ReadAuthzRuleType
         {
             get { return _authzRules[0]; }
@@ -361,10 +361,10 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("03. Authorization")]
-        [Description("The Autorization Type that controls write action. You can either select an object defined in the current project or an object defined in another assembly.")]
+        [Description("The Authorization Type that controls write action. You can either select an object defined in the current project or an object defined in another assembly.")]
         [Editor(typeof(ObjectEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(AuthorizationRuleTypeConverter))]
-        [UserFriendlyName("Write Autorization Type")]
+        [UserFriendlyName("Write Authorization Type")]
         public virtual AuthorizationRule WriteAuthzRuleType
         {
             get { return _authzRules[1]; }
