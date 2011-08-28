@@ -729,7 +729,7 @@ namespace CslaGenerator.CodeGen
 
         #endregion
 
-        #region Business and Autorization Rules handling
+        #region Business and Authorization Rules handling
 
         public string ReturnRoleList(string parameter)
         {
@@ -737,9 +737,7 @@ namespace CslaGenerator.CodeGen
                 return string.Empty;
 
             parameter = parameter.Replace("\"", "");
-            parameter = parameter.Replace(";", " ");
-            parameter = parameter.Replace("  ", " ");
-            string[] resultSplit = parameter.Split(new[] {' '});
+            string[] resultSplit = parameter.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
             string result = string.Empty;
             for (var i = 0; i < resultSplit.Length; i++)
             {
@@ -752,12 +750,12 @@ namespace CslaGenerator.CodeGen
         private string BuildArrayOrParams(BusinessRuleConstructorParameter parameter, string result)
         {
             if (parameter.IsParams)
-                return result;
+                return result.Trim();
 
             if (parameter.Type == "String[]" || parameter.Type == "Int32[]")
-                return "new[] {" + result + "}";
+                return "new[] {" + result.Trim() + "}";
 
-            return "new " + parameter.Type + " {" + result + "}";
+            return "new " + parameter.Type + " {" + result.Trim() + "}";
         }
 
         public string ReturnParameterValue(BusinessRuleConstructorParameter parameter)
@@ -768,7 +766,7 @@ namespace CslaGenerator.CodeGen
             else if (parameter.Type == "String[]" && result != string.Empty)
             {
                 result = result.Replace("\"", "");
-                string[] resultSplit = result.Split(new[] { ',' });
+                string[] resultSplit = result.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
                 result = string.Empty;
                 var isFirst = true;
                 for (var i = 0; i < resultSplit.Length; i++)
@@ -777,13 +775,13 @@ namespace CslaGenerator.CodeGen
                         isFirst = false;
                     else
                         result += ", ";
-                    result += "\"" + resultSplit[i] + "\"";
+                    result += "\"" + resultSplit[i].Trim() + "\"";
                 }
                 result = BuildArrayOrParams(parameter, result);
             }
             else if (parameter.Type.LastIndexOf("[]") == parameter.Type.Length -2 && result != string.Empty)
             {
-                string[] resultSplit = result.Split(new[] { ',' });
+                string[] resultSplit = result.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
                 result = string.Empty;
                 var isFirst = true;
                 for (var i = 0; i < resultSplit.Length; i++)
@@ -792,14 +790,14 @@ namespace CslaGenerator.CodeGen
                         isFirst = false;
                     else
                         result += ", ";
-                    result += resultSplit[i];
+                    result += resultSplit[i].Trim();
                 }
                 result = BuildArrayOrParams(parameter, result);
             }
             else if (parameter.Type == "List<String>" && result != string.Empty)
             {
                 result = result.Replace("\"", "");
-                string[] resultSplit = result.Split(new[] { ',' });
+                string[] resultSplit = result.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
                 result = string.Empty;
                 var isFirst = true;
                 for (var i = 0; i < resultSplit.Length; i++)
@@ -808,13 +806,13 @@ namespace CslaGenerator.CodeGen
                         isFirst = false;
                     else
                         result += ", ";
-                    result += "\"" + resultSplit[i] + "\"";
+                    result += "\"" + resultSplit[i].Trim() + "\"";
                 }
                 result = "new List<string> {" + result + "}";
             }
             else if (parameter.Type == "List<Int32>" && result != string.Empty)
             {
-                string[] resultSplit = result.Split(new[] { ',' });
+                string[] resultSplit = result.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
                 result = string.Empty;
                 var isFirst = true;
                 for (var i = 0; i < resultSplit.Length; i++)
@@ -823,13 +821,13 @@ namespace CslaGenerator.CodeGen
                         isFirst = false;
                     else
                         result += ", ";
-                    result += resultSplit[i];
+                    result += resultSplit[i].Trim();
                 }
                 result = "new List<int> {" + result + "}";
             }
             else if (parameter.Type.IndexOf("List<") == 0 && result != string.Empty)
             {
-                string[] resultSplit = result.Split(new[] {','});
+                string[] resultSplit = result.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
                 result = string.Empty;
                 var isFirst = true;
                 for (var i = 0; i < resultSplit.Length; i++)
@@ -838,7 +836,7 @@ namespace CslaGenerator.CodeGen
                         isFirst = false;
                     else
                         result += ", ";
-                    result += resultSplit[i];
+                    result += resultSplit[i].Trim();
                     result = "new " + parameter.Type + " {" + result + "}";
                 }
             }
@@ -861,7 +859,7 @@ namespace CslaGenerator.CodeGen
             else if (property.Type == "String[]" && result != string.Empty)
             {
                 result = result.Replace("\"", "");
-                string[] resultSplit = result.Split(new[] { ',' });
+                string[] resultSplit = result.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
                 result = string.Empty;
                 var isFirst = true;
                 for (var i = 0; i < resultSplit.Length; i++)
@@ -870,13 +868,13 @@ namespace CslaGenerator.CodeGen
                         isFirst = false;
                     else
                         result += ", ";
-                    result += "\"" + resultSplit[i] + "\"";
+                    result += "\"" + resultSplit[i].Trim() + "\"";
                 }
             }
             else if (property.Type == "List<String>" && result != string.Empty)
             {
                 result = result.Replace("\"", "");
-                string[] resultSplit = result.Split(new[] { ',' });
+                string[] resultSplit = result.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
                 result = string.Empty;
                 var isFirst = true;
                 for (var i = 0; i < resultSplit.Length; i++)
@@ -885,13 +883,13 @@ namespace CslaGenerator.CodeGen
                         isFirst = false;
                     else
                         result += ", ";
-                    result += "\"" + resultSplit[i] + "\"";
+                    result += "\"" + resultSplit[i].Trim() + "\"";
                 }
                 result = "new List<string> {" + result + "}";
             }
             else if (property.Type == "List<Int32>" && result != string.Empty)
             {
-                string[] resultSplit = result.Split(new[] { ',' });
+                string[] resultSplit = result.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
                 result = string.Empty;
                 var isFirst = true;
                 for (var i = 0; i < resultSplit.Length; i++)
@@ -900,13 +898,13 @@ namespace CslaGenerator.CodeGen
                         isFirst = false;
                     else
                         result += ", ";
-                    result += resultSplit[i];
+                    result += resultSplit[i].Trim();
                     result = "new List<int> {" + result + "}";
                 }
             }
             else if (property.Type.Contains("List<") && result != string.Empty)
             {
-                string[] resultSplit = result.Split(new[] { ',' });
+                string[] resultSplit = result.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
                 result = string.Empty;
                 var isFirst = true;
                 for (var i = 0; i < resultSplit.Length; i++)
@@ -915,7 +913,7 @@ namespace CslaGenerator.CodeGen
                         isFirst = false;
                     else
                         result += ", ";
-                    result += resultSplit[i];
+                    result += resultSplit[i].Trim();
                     result = "new " + property.Type + " {" + result + "}";
                 }
             }
