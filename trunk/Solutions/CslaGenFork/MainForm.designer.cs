@@ -110,6 +110,7 @@ namespace CslaGenerator
             this.pgGrid.Size = new System.Drawing.Size(274, 479);
             this.pgGrid.TabIndex = 1;
             this.pgGrid.PropertySortChanged += OnSort;
+            this.pgGrid.SelectedGridItemChanged += OnSelectedGridItemChanged;
             // 
             // webBrowser1
             // 
