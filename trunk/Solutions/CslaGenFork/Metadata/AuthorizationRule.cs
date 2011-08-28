@@ -83,8 +83,9 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Definition")]
-        [Description("Authorization Rule Type defined in this CslaGenFork project.")]
+        [Description("Authorization Rule Type defined in this CslaGenFork project. Unsupported at this time.")]
         [UserFriendlyName("Internal project Type Name")]
+        [Browsable(true)]
         public string ObjectName
         {
             get { return _objectName; }
