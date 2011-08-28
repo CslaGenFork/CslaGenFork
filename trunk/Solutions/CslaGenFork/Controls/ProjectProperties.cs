@@ -243,7 +243,7 @@ namespace CslaGenerator.Controls
         private void GenerationParametersBindingSourceCurrentItemChanged(object sender, EventArgs e)
         {
             if (IsDirty)
-                TabText = @"Project Properties*";
+                TabText = @"Project Properties *";
             else
                 TabText = @"Project Properties";
 
@@ -286,6 +286,9 @@ namespace CslaGenerator.Controls
             chkSilverlight.Enabled = UseCsla4;
             chkSilverlightUseServices.Enabled = UseCsla4;
             chkActiveObjects.Enabled = !UseCsla4;
+            chkUsesCslaAuthorizationProvider.Enabled =
+                (_genParams.GenerateAuthorization != AuthorizationLevel.None &&
+                _genParams.GenerateAuthorization != AuthorizationLevel.Custom);
         }
 
         public bool IsDirty

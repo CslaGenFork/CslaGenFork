@@ -199,7 +199,7 @@ namespace CslaGenerator.Metadata
                 if (_generateAuthorization == value)
                     return;
                 _generateAuthorization = value;
-                OnPropertyChanged("");
+                OnPropertyChanged("GenerateAuthorization");
             }
         }
 
@@ -590,8 +590,14 @@ namespace CslaGenerator.Metadata
                     SetServerInvocationOptions();
                 if (propertyName == "GenerateAsynchronous")
                     SetServerInvocationOptions();
+                if (propertyName == "GenerateAuthorization")
+                {
+                    if (_generateAuthorization == AuthorizationLevel.None ||
+                        _generateAuthorization == AuthorizationLevel.Custom)
+                        _usesCslaAuthorizationProvider = false;
+                }
             }
-            
+
             Dirty = true;
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
@@ -685,6 +691,7 @@ namespace CslaGenerator.Metadata
             OnPropertyChanged("GenerateSilverlight4");
             OnPropertyChanged("GenerateSynchronous");
             OnPropertyChanged("GenerateAsynchronous");
+            OnPropertyChanged("GenerateAuthorization");
         }
     }
 }
