@@ -73,8 +73,17 @@ namespace CslaGenerator.Design
                     Text = @"Authorization Type Editor";
                     ((AuthorizationRule) _object).TypeChanged -= OnSelect;
                     ((AuthorizationRule) _object).TypeChanged += OnSelect;
-                    ((AuthorizationRule) _object).Parent = PropertyCollectionForm.ParentValProp;
-                    ((AuthorizationRule) _object).ActionProperty = ValueProperty.Convert(PropertyCollectionForm.ParentProperty);
+                    if (PropertyCollectionForm.ParentValProp != null)
+                    {
+                        ((AuthorizationRule) _object).Parent = PropertyCollectionForm.ParentValProp;
+                        ((AuthorizationRule) _object).ActionProperty = ValueProperty.Convert(PropertyCollectionForm.ParentProperty);
+                    }
+                    else
+                    {
+                        var cslaObject =
+                            (CslaObjectInfo) GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem;
+                        ((AuthorizationRule) _object).ActionProperty = cslaObject.ActionProperty;
+                    }
                     //pgEditor.SelectedObject = _object;
                     pgEditor.SelectedObject = new AuthorizationRuleBag((AuthorizationRule) _object);
                     Size = new Size(468, Size.Height);
