@@ -323,8 +323,8 @@ namespace CslaGenerator.Design
                         }
                         else
                         {
-                            if (_form.Size.Height != 310 + heightIncrease)
-                                _form.Size = new Size(_form.Size.Width, 310 + heightIncrease);
+                            if (_form.Size.Height != 294 + heightIncrease)
+                                _form.Size = new Size(_form.Size.Width, 294 + heightIncrease);
                         }
                     }
                 }
