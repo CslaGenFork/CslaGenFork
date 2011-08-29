@@ -73,7 +73,7 @@
         </member>
         <member name="T:CslaGenFork.Rules.CollectionRules.NoDuplicates">
             <summary>
-            Business rule for checking a name property is unique at the parent collection level.
+            Business rule for checking a name property is unique at the parent collection level.<br/>
             Rule should run on client when a property is changed or when CheckRules is called.
             </summary>
         </member>
@@ -813,6 +813,48 @@
             </summary>
             <value>The inner rule.</value>
         </member>
+        <member name="T:CslaGenFork.Rules.AuthorizationRules.IsOwnerOrIsInRole">
+            <summary>
+            Authorization rule for checking a Property can be accessed only
+            by the user that created the object or the user has any of the specified roles.
+            </summary>
+        </member>
+        <member name="M:CslaGenFork.Rules.AuthorizationRules.IsOwnerOrIsInRole.#ctor(Csla.Rules.AuthorizationActions,Csla.Core.IMemberInfo,System.String,System.Func{System.Int32},System.Collections.Generic.List{System.String})">
+            <summary>
+            Creates an instance of the rule.
+            </summary>
+            <param name="action">Action this rule will enforce.</param>
+            <param name="element">Member to be authorized.</param>
+            <param name="creatorProperty">Name of the property for the creator ID.</param>
+            <param name="getCurrentUserDelegate">The Func delegate to get the current user ID.</param>
+            <param name="roles">List of allowed roles.</param>
+        </member>
+        <member name="M:CslaGenFork.Rules.AuthorizationRules.IsOwnerOrIsInRole.#ctor(Csla.Rules.AuthorizationActions,Csla.Core.IMemberInfo,System.String,System.Func{System.Int32},System.String[])">
+            <summary>
+            Creates an instance of the rule.
+            </summary>
+            <param name="action">Action this rule will enforce.</param>
+            <param name="element">Member to be authorized.</param>
+            <param name="creatorProperty">Name of the property for the creator ID.</param>
+            <param name="getCurrentUserDelegate">The Func delegate to get the current user ID.</param>
+            <param name="roles">List of allowed roles.</param>
+        </member>
+        <member name="M:CslaGenFork.Rules.AuthorizationRules.IsOwnerOrIsInRole.Execute(Csla.Rules.AuthorizationContext)">
+            <summary>
+            Rule implementation.
+            </summary>
+            <param name="context">Authorization context.</param>
+        </member>
+        <member name="P:CslaGenFork.Rules.AuthorizationRules.IsOwnerOrIsInRole.CacheResult">
+            <summary>
+            Gets a value indicating whether the results
+            of this rule can be cached at the business
+            object level.
+            </summary>
+            <value>
+              <c>true</c> if the result of this rule can be cached by the calling code; otherwise, <c>false</c>.
+            </value>
+        </member>
         <member name="T:CslaGenFork.Rules.TransformationRules.ToUpper">
             <summary>
             Converts the property to uppercase string.<br/>
@@ -926,48 +968,6 @@
             <param name="context">
             Rule context object.
             </param>
-        </member>
-        <member name="T:CslaGenFork.Rules.AuthorizationRules.IsOwnerOrIsInRole">
-            <summary>
-            Authorization rule for checking a Property can be accessed only
-            by the user that created the object or the user has any of the specified roles.
-            </summary>
-        </member>
-        <member name="M:CslaGenFork.Rules.AuthorizationRules.IsOwnerOrIsInRole.#ctor(Csla.Rules.AuthorizationActions,Csla.Core.IMemberInfo,System.String,System.Func{System.Int32},System.Collections.Generic.List{System.String})">
-            <summary>
-            Creates an instance of the rule.
-            </summary>
-            <param name="action">Action this rule will enforce.</param>
-            <param name="element">Member to be authorized.</param>
-            <param name="creatorProperty">Name of the property for the creator ID.</param>
-            <param name="getCurrentUserDelegate">The Func delegate to get the current user ID.</param>
-            <param name="roles">List of allowed roles.</param>
-        </member>
-        <member name="M:CslaGenFork.Rules.AuthorizationRules.IsOwnerOrIsInRole.#ctor(Csla.Rules.AuthorizationActions,Csla.Core.IMemberInfo,System.String,System.Func{System.Int32},System.String[])">
-            <summary>
-            Creates an instance of the rule.
-            </summary>
-            <param name="action">Action this rule will enforce.</param>
-            <param name="element">Member to be authorized.</param>
-            <param name="creatorProperty">Name of the property for the creator ID.</param>
-            <param name="getCurrentUserDelegate">The Func delegate to get the current user ID.</param>
-            <param name="roles">List of allowed roles.</param>
-        </member>
-        <member name="M:CslaGenFork.Rules.AuthorizationRules.IsOwnerOrIsInRole.Execute(Csla.Rules.AuthorizationContext)">
-            <summary>
-            Rule implementation.
-            </summary>
-            <param name="context">Authorization context.</param>
-        </member>
-        <member name="P:CslaGenFork.Rules.AuthorizationRules.IsOwnerOrIsInRole.CacheResult">
-            <summary>
-            Gets a value indicating whether the results
-            of this rule can be cached at the business
-            object level.
-            </summary>
-            <value>
-              <c>true</c> if the result of this rule can be cached by the calling code; otherwise, <c>false</c>.
-            </value>
         </member>
     </members>
 </doc>

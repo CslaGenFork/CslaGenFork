@@ -4975,6 +4975,12 @@
             </summary>
             <param name="property">Property for rule.</param>
         </member>
+        <member name="M:Csla.Rules.IHostRules.RuleComplete(System.String)">
+            <summary>
+            Indicates that a rule has finished processing.
+            </summary>
+            <param name="property">Property for rule.</param>
+        </member>
         <member name="M:Csla.Rules.IHostRules.AllRulesComplete">
             <summary>
             Indicates that all rules have finished processing.
