@@ -165,6 +165,85 @@
             </summary>
             <value>The inner rule.</value>
         </member>
+        <member name="T:CslaGenFork.Rules.CommonObjectRule">
+            <summary>
+            Base class used to create common object rules.
+            </summary>
+        </member>
+        <member name="T:CslaGenFork.Rules.ObjectRuleEx">
+            <summary>
+            Base class for an object rule 
+            </summary>
+        </member>
+        <member name="M:CslaGenFork.Rules.ObjectRuleEx.GetMessage">
+            <summary>
+            Gets the error message.
+            </summary>
+            <returns>
+            The error message.
+            </returns>
+        </member>
+        <member name="M:CslaGenFork.Rules.ObjectRuleEx.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.ObjectRuleEx"/> class.
+            </summary>
+        </member>
+        <member name="P:CslaGenFork.Rules.ObjectRuleEx.MessageText">
+            <summary>
+            Gets or sets the error message (constant).
+            </summary>
+            <value>The error message text.</value>
+        </member>
+        <member name="P:CslaGenFork.Rules.ObjectRuleEx.MessageDelegate">
+            <summary>
+            Gets or sets the error message function for this rule.
+            Use this for localizable messages from a resource file. 
+            </summary>    
+            <value>The error message function.</value>
+        </member>
+        <member name="P:CslaGenFork.Rules.ObjectRuleEx.HasMessageDelegate">
+            <summary>
+            Gets a value indicating whether this instance has message delegate.
+            </summary>
+            <value>
+            	<c>true</c> if this instance has message delegate; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:CslaGenFork.Rules.ObjectRuleEx.PrimaryProperty">
+            <summary>
+            Gets or sets the primary property affected by this rule.
+            Will always return null.
+            Will throw ArgumentException if set to anything but null.
+            </summary>
+            <value>The primary property.</value>
+        </member>
+        <member name="P:CslaGenFork.Rules.ObjectRuleEx.CanRunOnServer">
+            <summary>
+            Gets or sets a value indicating whether this instance can run in logical serverside data portal.
+            </summary>
+            <value>
+            	<c>true</c> if this instance can run logical serverside data portal; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:CslaGenFork.Rules.ObjectRuleEx.CanRunInCheckRules">
+            <summary>
+            Gets or sets a value indicating whether this instance can run when CheckRules is called on BO.
+            </summary>
+            <value>
+            	<c>true</c> if this instance can run when CheckRules is called; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="M:CslaGenFork.Rules.CommonObjectRule.#ctor">
+            <summary>
+            Creates an instance of the rule.
+            </summary>
+        </member>
+        <member name="P:CslaGenFork.Rules.CommonObjectRule.Severity">
+            <summary>
+            Gets or sets the severity for this rule.
+            </summary>
+            <value>The rule severity.</value>
+        </member>
         <member name="T:CslaGenFork.Rules.TransformationRules.CollapseWhiteSpace">
             <summary>
             Removes leading, trailing, duplicate white space characters.<br/>
@@ -293,9 +372,7 @@
             <summary>
             Rule implementation.
             </summary>
-            <param name="context">
-            Rule context.
-            </param>
+            <param name="context"> Rule context. </param>
         </member>
         <member name="P:CslaGenFork.Rules.CompareFieldsRules.Range.Min">
             <summary>
@@ -812,6 +889,61 @@
             Gets the inner rule.
             </summary>
             <value>The inner rule.</value>
+        </member>
+        <member name="T:CslaGenFork.Rules.ObjectRules.CollectionPopulated">
+            <summary>
+            Business rule for checking a child collection has a least one item.<br/>
+            Rule should run on client when a property is changed or when CheckRules is called.
+            </summary>
+            <remarks>
+            If no child collections are specified, will check every child collection.
+            </remarks>
+        </member>
+        <member name="M:CslaGenFork.Rules.ObjectRules.CollectionPopulated.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.ObjectRules.CollectionPopulated"/> class.
+            </summary>
+            <param name="message">The error message text.</param>
+        </member>
+        <member name="M:CslaGenFork.Rules.ObjectRules.CollectionPopulated.#ctor(System.Func{System.String})">
+            <summary>
+            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.ObjectRules.CollectionPopulated"/> class.
+            </summary>
+            <param name="messageDelegate">The error message function.</param>
+        </member>
+        <member name="M:CslaGenFork.Rules.ObjectRules.CollectionPopulated.#ctor(Csla.Core.IPropertyInfo[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.ObjectRules.CollectionPopulated"/> class.
+            </summary>
+            <param name="chilCollectionProperties">The child collections properties to check.</param>
+        </member>
+        <member name="M:CslaGenFork.Rules.ObjectRules.CollectionPopulated.#ctor(System.String,Csla.Core.IPropertyInfo[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.ObjectRules.CollectionPopulated"/> class.
+            </summary>
+            <param name="message">The error message text.</param>
+            <param name="chilCollectionProperties">The child collections properties to check.</param>
+        </member>
+        <member name="M:CslaGenFork.Rules.ObjectRules.CollectionPopulated.#ctor(System.Func{System.String},Csla.Core.IPropertyInfo[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.ObjectRules.CollectionPopulated"/> class.
+            </summary>
+            <param name="messageDelegate">The error message function.</param>
+            <param name="chilCollectionProperties">The child collections properties to check.</param>
+        </member>
+        <member name="M:CslaGenFork.Rules.ObjectRules.CollectionPopulated.GetMessage">
+            <summary>
+            Gets the error message.
+            </summary>
+            <returns>
+            The error message.
+            </returns>
+        </member>
+        <member name="M:CslaGenFork.Rules.ObjectRules.CollectionPopulated.Execute(Csla.Rules.RuleContext)">
+            <summary>
+            Business rule implementation.
+            </summary>
+            <param name="context">Rule context object.</param>
         </member>
         <member name="T:CslaGenFork.Rules.AuthorizationRules.IsOwnerOrIsInRole">
             <summary>

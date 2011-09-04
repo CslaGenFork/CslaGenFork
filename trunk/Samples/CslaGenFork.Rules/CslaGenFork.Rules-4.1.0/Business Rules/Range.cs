@@ -128,9 +128,7 @@ namespace CslaGenFork.Rules.CompareFieldsRules
         /// <summary>
         /// Rule implementation.
         /// </summary>
-        /// <param name="context">
-        /// Rule context.
-        /// </param>
+        /// <param name="context">Rule context.</param>
         protected override void Execute(RuleContext context)
         {
             var value = (IComparable) context.InputPropertyValues[PrimaryProperty];

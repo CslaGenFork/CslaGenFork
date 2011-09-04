@@ -53,6 +53,7 @@
     <Compile Include="Authorization Rules\IsOwnerOrIsInRole.cs" />
     <Compile Include="Business Rules\AnyRequired.cs" />
     <Compile Include="Business Rules\CollapseWhiteSpace.cs" />
+    <Compile Include="Business Rules\CollectionPopulated.cs" />
     <Compile Include="Business Rules\StopIfAnyAdditionalHasValue.cs" />
     <Compile Include="Business Rules\CalcSum.cs" />
     <Compile Include="Business Rules\CanWrite.cs" />
@@ -74,6 +75,8 @@
     <Compile Include="Business Rules\NoDuplicates.cs" />
     <Compile Include="Business Rules\RangeMM.cs" />
     <Compile Include="Authorization Rules\RestrictByStatusOrIsInRole.cs" />
+    <Compile Include="CommonObjectRule.cs" />
+    <Compile Include="ObjectRuleEx.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
