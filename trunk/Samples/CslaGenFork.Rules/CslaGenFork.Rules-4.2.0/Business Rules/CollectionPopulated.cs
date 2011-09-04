@@ -20,10 +20,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 //   Copyright (c) 2011 CslaGenFork project. Website: http://cslagenfork.codeplex.com/
 // </copyright>
 // <summary>
-//   Business rule for checking a child collection has a least one item.
+//   Object Business rule for checking a child collection has a least one item.
 // </summary>
 // <remarks>
-//   If no child collections are specified, will check every child collection.
+//   If no child collections are specified, will check every child collection of the object.
 //   Rule should run on client when a property is changed or when CheckRules is called.
 // </remarks>
 // --------------------------------------------------------------------------------------------------------------------
@@ -40,11 +40,11 @@ using Csla.Rules;
 namespace CslaGenFork.Rules.ObjectRules
 {
     /// <summary>
-    /// Business rule for checking a child collection has a least one item.<br/>
+    /// Object Business rule for checking a child collection has a least one item.<br/>
     /// Rule should run on client when a property is changed or when CheckRules is called.
     /// </summary>
     /// <remarks>
-    /// If no child collections are specified, will check every child collection.
+    /// If no child collections are specified, will check every child collection of the object.
     /// </remarks>
     public class CollectionPopulated : CommonObjectRule
     {
