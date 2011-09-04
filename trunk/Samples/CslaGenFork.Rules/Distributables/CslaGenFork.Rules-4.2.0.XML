@@ -892,11 +892,11 @@
         </member>
         <member name="T:CslaGenFork.Rules.ObjectRules.CollectionPopulated">
             <summary>
-            Business rule for checking a child collection has a least one item.<br/>
+            Object Business rule for checking a child collection has a least one item.<br/>
             Rule should run on client when a property is changed or when CheckRules is called.
             </summary>
             <remarks>
-            If no child collections are specified, will check every child collection.
+            If no child collections are specified, will check every child collection of the object.
             </remarks>
         </member>
         <member name="M:CslaGenFork.Rules.ObjectRules.CollectionPopulated.#ctor(System.String)">

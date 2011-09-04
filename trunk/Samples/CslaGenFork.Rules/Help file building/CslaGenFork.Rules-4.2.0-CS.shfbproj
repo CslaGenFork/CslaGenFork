@@ -27,14 +27,14 @@
     <HelpTitle>CslaGenFork.Rules Library %28Csla 4.2.0%29</HelpTitle>
     <NamespaceSummaries>
       <NamespaceSummaryItem name="(global)" isDocumented="False" />
-      <NamespaceSummaryItem name="CslaGenFork.Rules.Authz" isDocumented="True">Authorization rules</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="CslaGenFork.Rules.CollectionRules" isDocumented="True">Collection rules</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="CslaGenFork.Rules.CompareFieldsRules" isDocumented="True">Compare Field rules</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="CslaGenFork.Rules.DateRules" isDocumented="True">Date rules</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="CslaGenFork.Rules.GatewayRules" isDocumented="True">Gateway rules</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="CslaGenFork.Rules.ShortCircuitingRules" isDocumented="True">Short Circuiting rules</NamespaceSummaryItem>
-      <NamespaceSummaryItem name="CslaGenFork.Rules.TransformationRules" isDocumented="True">Transformation rules</NamespaceSummaryItem>
-    </NamespaceSummaries>
+<NamespaceSummaryItem name="CslaGenFork.Rules.Authz" isDocumented="True">Authorization rules</NamespaceSummaryItem>
+<NamespaceSummaryItem name="CslaGenFork.Rules.CollectionRules" isDocumented="True">Collection rules</NamespaceSummaryItem>
+<NamespaceSummaryItem name="CslaGenFork.Rules.CompareFieldsRules" isDocumented="True">Compare Field rules</NamespaceSummaryItem>
+<NamespaceSummaryItem name="CslaGenFork.Rules.DateRules" isDocumented="True">Date rules</NamespaceSummaryItem>
+<NamespaceSummaryItem name="CslaGenFork.Rules.GatewayRules" isDocumented="True">Gateway rules</NamespaceSummaryItem>
+<NamespaceSummaryItem name="CslaGenFork.Rules.ShortCircuitingRules" isDocumented="True">Short Circuiting rules</NamespaceSummaryItem>
+<NamespaceSummaryItem name="CslaGenFork.Rules.TransformationRules" isDocumented="True">Transformation rules</NamespaceSummaryItem>
+<NamespaceSummaryItem name="CslaGenFork.Rules.ObjectRules" isDocumented="True">Object business rules. These rules aren't associated with any particular property.</NamespaceSummaryItem></NamespaceSummaries>
     <ProjectSummary>CslaGenFork.Rules %28for Csla 4.2.0%29</ProjectSummary>
     <HeaderText>
     </HeaderText>

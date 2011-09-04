@@ -97,7 +97,7 @@ namespace CslaGenFork.Rules.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Object rule can not have PrimaryPropery..
+        ///   Looks up a localized string similar to Object rule can not have PrimaryPropery.
         /// </summary>
         internal static string ObjectRulesCannotSetPrimaryProperty {
             get {
