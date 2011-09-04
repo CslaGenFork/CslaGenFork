@@ -97,6 +97,15 @@ namespace CslaGenFork.Rules.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Object rule can not have PrimaryPropery..
+        /// </summary>
+        internal static string ObjectRulesCannotSetPrimaryProperty {
+            get {
+                return ResourceManager.GetString("ObjectRulesCannotSetPrimaryProperty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} must be between {1} and {2}.
         /// </summary>
         internal static string RangeRule {

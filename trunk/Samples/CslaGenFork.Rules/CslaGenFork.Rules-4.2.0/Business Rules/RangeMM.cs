@@ -129,7 +129,7 @@ namespace CslaGenFork.Rules.CompareFieldsRules
         /// <param name="context">Rule context.</param>
         protected override void Execute(RuleContext context)
         {
-            var value = (IComparable)context.InputPropertyValues[PrimaryProperty];
+            var value = (IComparable) context.InputPropertyValues[PrimaryProperty];
             int minResult = value.CompareTo(Min);
             var maxResult = value.CompareTo(Max);
 
@@ -143,7 +143,7 @@ namespace CslaGenFork.Rules.CompareFieldsRules
                                       : string.Format(string.Format("{{0:{0}}}", Format), Max);
 
                 var message = string.Format(GetMessage(), PrimaryProperty.FriendlyName, minOutValue, maxOutValue);
-                context.Results.Add(new RuleResult(RuleName, PrimaryProperty, message) { Severity = Severity });
+                context.Results.Add(new RuleResult(RuleName, PrimaryProperty, message) {Severity = Severity});
             }
         }
     }

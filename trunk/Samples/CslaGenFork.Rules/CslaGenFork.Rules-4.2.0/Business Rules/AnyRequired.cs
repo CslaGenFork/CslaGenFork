@@ -71,7 +71,7 @@ namespace CslaGenFork.Rules.ShortCircuitingRules
         /// </returns>
         protected override string GetMessage()
         {
-            return HasMessageDelegate ? base.GetMessage() : "At least one of the fields {0} must have a value";
+            return HasMessageDelegate ? base.GetMessage() : "At least one of the fields {0} must have a value.";
         }
 
         /// <summary>
