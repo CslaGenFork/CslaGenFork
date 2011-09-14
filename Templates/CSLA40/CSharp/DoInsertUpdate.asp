@@ -30,36 +30,32 @@ foreach (ValueProperty prop in Info.GetAllValueProperties())
             }
             else
             {
-                TypeCodeEx propType = prop.PropertyType;
-                if (prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion ||
-                    prop.DeclarationMode == PropertyDeclaration.UnmanagedWithTypeConversion ||
-                    prop.DeclarationMode == PropertyDeclaration.ClassicPropertyWithTypeConversion)
-                    propType = prop.BackingFieldType;
+                TypeCodeEx propType = TypeHelper.GetBackingFieldType(prop);
                 if (prop.DeclarationMode == PropertyDeclaration.Managed || prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion)
                 {
                     if (AllowNull(prop) && propType != TypeCodeEx.SmartDate)
                     {
                         %>
-            cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", ReadProperty(<%= FormatPropertyInfoName(prop.Name) %>) == null ? (object) DBNull.Value : ReadProperty(<%= FormatPropertyInfoName(prop.Name) %>)<%= TypeHelper.IsNullableType(propType) ? ".Value" :"" %>).DbType = DbType.<%= prop.DbBindColumn.DataType.ToString() %>;
+            cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", ReadProperty(<%= FormatPropertyInfoName(prop.Name) %>) == null ? (object) DBNull.Value : ReadProperty(<%= FormatPropertyInfoName(prop.Name) %>)<%= TypeHelper.IsNullableType(propType) ? ".Value" :"" %>).DbType = DbType.<%= TypeHelper.GetDbType(propType) %>;
             <%
                     }
                     else if (propType == TypeCodeEx.Guid)
                     {
                         %>
-            cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", ReadProperty(<%= FormatPropertyInfoName(prop.Name) %>).Equals(Guid.Empty) ? (object) DBNull.Value : ReadProperty(<%= FormatPropertyInfoName(prop.Name) %>)).DbType = DbType.<%= prop.DbBindColumn.DataType.ToString() %>;
+            cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", ReadProperty(<%= FormatPropertyInfoName(prop.Name) %>).Equals(Guid.Empty) ? (object) DBNull.Value : ReadProperty(<%= FormatPropertyInfoName(prop.Name) %>)).DbType = DbType.<%= TypeHelper.GetDbType(propType) %>;
             <%
                     }
                     else
                     {
                     %>
-            cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", ReadProperty(<%= FormatPropertyInfoName(prop.Name) %>)<%= propType == TypeCodeEx.SmartDate ? ".DBValue" :"" %>).DbType = DbType.<%= prop.DbBindColumn.DataType.ToString() %>;
+            cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", ReadProperty(<%= FormatPropertyInfoName(prop.Name) %>)).DbType = DbType.<%= TypeHelper.GetDbType(propType) %>;
                     <%
                     }
                 }
                 else
                 {
                     %>
-            cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %>).DbType = DbType.<%= prop.DbBindColumn.DataType.ToString() %>;
+            cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %>).DbType = DbType.<%= TypeHelper.GetDbType(propType) %>;
                     <%
                 }
             }

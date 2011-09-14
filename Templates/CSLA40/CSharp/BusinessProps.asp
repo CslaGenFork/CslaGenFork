@@ -41,7 +41,7 @@ foreach (ValueProperty prop in Info.AllValueProperties)
         %>
 
         /// <summary>
-        /// Maintains metadata about <see cref="<%= prop.Name %>"/> property.
+        /// Maintains metadata about <see cref="<%= string.IsNullOrEmpty(prop.Implements) ? prop.Name : prop.Implements %>"/> property.
         /// </summary>
 <%= statement %><%
     }
@@ -105,27 +105,22 @@ foreach (ValueProperty prop in Info.AllValueProperties)
     if (!string.IsNullOrEmpty(statement))
     {
         %>
-        <%= statement  + Environment.NewLine %><%
+        <%= statement %>
+        <%
     }
-    if (prop.DeclarationMode != PropertyDeclaration.Managed &&
-        prop.DeclarationMode != PropertyDeclaration.ManagedWithTypeConversion)
+    /*if (prop.DeclarationMode == PropertyDeclaration.ClassicProperty &&
+        prop.DeclarationMode == PropertyDeclaration.ClassicPropertyWithTypeConversion)
     {
         if (Info.ObjectType != CslaObjectType.ReadOnlyObject && prop.ReadOnly == false)
         {
             if (prop.PropertyType != TypeCodeEx.ByteArray)
             {
-                %>
+                % >
                 // legacy 1
-        <%
-            }
-            else
-            {
-                %>
-                // legacy 2
-        <%
+        < %
             }
         }
-    }
+    }*/
 }
 
 // Child properties
@@ -139,7 +134,7 @@ foreach (ChildProperty prop in Info.GetMyChildProperties())
         %>
 
         /// <summary>
-        /// Maintains metadata about child <see cref="<%= prop.Name %>"/> property.
+        /// Maintains metadata about child <see cref="<%= string.IsNullOrEmpty(prop.Implements) ? prop.Name : prop.Implements %>"/> property.
         /// </summary>
 <%= statement %><%
     }
@@ -169,6 +164,14 @@ foreach (ChildProperty prop in Info.GetMyChildProperties())
         /// <remarks>
 <%= GetXmlCommentString(prop.Remarks) %>
         /// </remarks>
+        <%
+    }
+    %>
+    <%
+    if (GetAttributesString(prop.Attributes) != string.Empty)
+    {
+        %>
+        <%= GetAttributesString(prop.Attributes) %>
         <%
     }
     %>

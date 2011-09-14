@@ -56,8 +56,24 @@ if (!Info.UseCustomLoading)
                     %>
             dr.NextResult();
             if (dr.Read())
-                <%= FormatFieldName(childProp.Name) %> = <%= childProp.Name %>.Get<%= childProp.Name %>(dr);
             <%
+                    CslaObjectInfo _child = FindChildInfo(Info, childProp.TypeName);
+                    if (_child != null)
+                    {
+                        if (childProp.DeclarationMode == PropertyDeclaration.Managed ||
+                            childProp.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion)
+                        {
+                            %>
+                LoadProperty(<%= FormatPropertyInfoName(childProp.Name) %>, <%= childProp.TypeName %>.Get<%= childProp.TypeName %>(dr));
+            <%
+                        }
+                        else
+                        {
+                            %>
+                <%= GetFieldLoaderStatement(childProp, childProp.TypeName + ".Get" + childProp.TypeName +"(dr)") %>;
+            <%
+                        }
+                    }
                 }
             }
             foreach (ChildProperty childProp in Info.GetCollectionChildProperties())
