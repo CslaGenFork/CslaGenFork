@@ -13,7 +13,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCompany("CslaGenFork Project")]
 [assembly: AssemblyProduct("Csla Generator Fork")]
 [assembly: AssemblyCopyright("Copyright © CslaGen Project, 2007, 2009 && Tiago Freitas Leal, 2009, 2010, 2011")]
-[assembly: AssemblyTrademark("All Rights Reserved")]
+[assembly: AssemblyTrademark("All Rights Reserved.")]
 [assembly: AssemblyCulture("")]
 
 //

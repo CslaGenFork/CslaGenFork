@@ -54,7 +54,7 @@ namespace CslaGenerator.Metadata
 
         [Category("02. Inherit from Type in Assembly")]
         [Description("The assembly file full path")]
-        [Editor(typeof(AssemblyFileNameEditor),typeof(UITypeEditor))]
+        [Editor(typeof(AssemblyObjectFileNameEditor),typeof(UITypeEditor))]
 //        [TypeConverter(typeof(AssemblyFileConverter))]
         [UserFriendlyName("Assembly File Name")]
         public string AssemblyFile

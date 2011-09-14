@@ -4,6 +4,7 @@ namespace CslaGenerator.Metadata
 {
     public interface IBusinessRule
     {
+        bool IsPropertyRule { get; set; }
         string Parent { get; set; }
         string Name { get; set; }
         string ObjectName { get; set; }

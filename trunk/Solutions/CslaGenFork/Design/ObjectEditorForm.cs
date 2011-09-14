@@ -75,6 +75,7 @@ namespace CslaGenerator.Design
                     ((AuthorizationRule) _object).TypeChanged += OnSelect;
                     if (PropertyCollectionForm.ParentValProp != null)
                     {
+                        ((AuthorizationRule) _object).IsPropertyRule = true;
                         ((AuthorizationRule) _object).Parent = PropertyCollectionForm.ParentValProp;
                         ((AuthorizationRule) _object).ActionProperty = ValueProperty.Convert(PropertyCollectionForm.ParentProperty);
                     }
@@ -83,6 +84,7 @@ namespace CslaGenerator.Design
                         var cslaObject =
                             (CslaObjectInfo) GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem;
                         ((AuthorizationRule) _object).ActionProperty = cslaObject.ActionProperty;
+                        ((AuthorizationRule)_object).Parent = string.Empty;
                     }
                     //pgEditor.SelectedObject = _object;
                     pgEditor.SelectedObject = new AuthorizationRuleBag((AuthorizationRule) _object);

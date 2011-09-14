@@ -48,7 +48,7 @@ namespace CslaGenerator.Util
             if (type == typeof(DateTime))
             {
                 if (GeneratorController.Current.CurrentUnit.Params.SmartDateDefault)
-                return TypeCodeEx.SmartDate;
+                    return TypeCodeEx.SmartDate;
 
                 return TypeCodeEx.DateTime;
             }
@@ -92,6 +92,8 @@ namespace CslaGenerator.Util
                     return SqlDbType.Bit;
                 case TypeCodeEx.Byte:
                     return SqlDbType.TinyInt;
+                case TypeCodeEx.ByteArray:
+                    return SqlDbType.Image;
                 case TypeCodeEx.Char:
                     return SqlDbType.Char;
                 case TypeCodeEx.SmartDate:
@@ -128,6 +130,52 @@ namespace CslaGenerator.Util
             }
         }
 
+        public static DbType GetDbType(TypeCodeEx type)
+        {
+            switch (type)
+            {
+                case TypeCodeEx.Boolean:
+                    return DbType.Boolean;
+                case TypeCodeEx.Byte:
+                    return DbType.Byte;
+                case TypeCodeEx.ByteArray:
+                    return DbType.Binary;
+                case TypeCodeEx.Char:
+                    return DbType.StringFixedLength;
+                case TypeCodeEx.SmartDate:
+                case TypeCodeEx.DateTime:
+                    return DbType.DateTime;
+                case TypeCodeEx.Decimal:
+                    return DbType.Decimal;
+                case TypeCodeEx.Double:
+                    return DbType.Double;
+                case TypeCodeEx.Guid:
+                    return DbType.Guid;
+                case TypeCodeEx.Int16:
+                    return DbType.Int16;
+                case TypeCodeEx.Int32:
+                    return DbType.Int32;
+                case TypeCodeEx.Int64:
+                    return DbType.Int64;
+                case TypeCodeEx.SByte:
+                    return DbType.SByte;
+                case TypeCodeEx.Single:
+                    return DbType.Single;
+                case TypeCodeEx.String:
+                    return DbType.String;
+                case TypeCodeEx.UInt16:
+                    return DbType.UInt16;
+                case TypeCodeEx.UInt32:
+                    return DbType.UInt32;
+                case TypeCodeEx.UInt64:
+                    return DbType.UInt64;
+                case TypeCodeEx.Object:
+                    return DbType.Binary;
+                default:
+                    return DbType.String;
+            }
+        }
+
         public static bool IsNullableType(TypeCodeEx type)
         {
             switch (type)
@@ -160,7 +208,16 @@ namespace CslaGenerator.Util
                  */
             }
             return false;
+        }
 
+        public static TypeCodeEx GetBackingFieldType(ValueProperty prop)
+        {
+            if (prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion ||
+                    prop.DeclarationMode == PropertyDeclaration.UnmanagedWithTypeConversion ||
+                    prop.DeclarationMode == PropertyDeclaration.ClassicPropertyWithTypeConversion)
+                return prop.BackingFieldType;
+
+            return prop.PropertyType;
         }
         
         public static void GetContextInstanceObject(ITypeDescriptorContext context, ref object objinfo, ref Type instanceType)

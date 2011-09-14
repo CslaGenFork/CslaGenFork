@@ -123,6 +123,10 @@ namespace CslaGenerator
             }
         }
 
+        public string ProjectsFolderPath { get; set; }
+        public string ObjectsFolderPath { get; set; }
+        public string RulesFolderPath { get; set; }
+
         internal ProjectProperties ProjectPropertiesTab
         {
             get

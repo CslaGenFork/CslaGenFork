@@ -256,7 +256,9 @@ namespace CslaGenerator.Controls
                 chkSynchronous.Enabled = !_genParams.ForceSync;
                 chkAsynchronous.Enabled = !_genParams.ForceAsync;
                 cboGenerateAuthorization.Enabled = true;
-                chkUsesCslaAuthorizationProvider.Enabled = true;
+                chkUsesCslaAuthorizationProvider.Enabled =
+                    (_genParams.GenerateAuthorization != AuthorizationLevel.None &&
+                    _genParams.GenerateAuthorization != AuthorizationLevel.Custom);
             }
             else
             {
@@ -279,16 +281,14 @@ namespace CslaGenerator.Controls
             cboTargetDAL.Enabled = UseDal;
             chkGenerateDAL.Enabled = UseDal;
             txtDALNamespace.Enabled = UseDal;
-            txtInterfaceDALNamespace.Enabled = UseDal;
+            txtInterfaceDALNamespace.Enabled = UseDal &&
+                (_genParams.TargetDAL == TargetDAL.Interface ||_genParams.TargetDAL == TargetDAL.Interface_DTO);
 
             chkWinForms.Enabled = UseCsla4;
             chkWPF.Enabled = UseCsla4;
             chkSilverlight.Enabled = UseCsla4;
             chkSilverlightUseServices.Enabled = UseCsla4;
             chkActiveObjects.Enabled = !UseCsla4;
-            chkUsesCslaAuthorizationProvider.Enabled =
-                (_genParams.GenerateAuthorization != AuthorizationLevel.None &&
-                _genParams.GenerateAuthorization != AuthorizationLevel.Custom);
         }
 
         public bool IsDirty

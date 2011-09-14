@@ -301,11 +301,29 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("02. Advanced")]
-        [Description("This is a description.")]
+        [Description("The interface this property explicitly implements.")]
         public virtual string Implements
         {
             get { return _implements; }
-            set { _implements = PropertyHelper.Tidy(value); }
+            set
+            {
+                value = PropertyHelper.Tidy(value);
+                if (!string.IsNullOrEmpty(value))
+                {
+                    var namePostfix = '.' + Name;
+                    if (value.LastIndexOf(namePostfix) != value.Length - namePostfix.Length)
+                    {
+                        if (GeneratorController.Current.CurrentUnit != null)
+                        {
+                            if (GeneratorController.Current.CurrentUnit.GenerationParams.OutputLanguage ==
+                                CodeLanguage.CSharp ||
+                                _implements == string.Empty)
+                                value = value + namePostfix;
+                        }
+                    }
+                }
+                _implements = value;
+            }
         }
 
         #endregion

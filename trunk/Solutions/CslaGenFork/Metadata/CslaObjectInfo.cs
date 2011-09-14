@@ -1757,22 +1757,22 @@ namespace CslaGenerator.Metadata
 
         public ChildPropertyCollection GetNonCollectionChildProperties()
         {
-            var myChildProps = new ChildPropertyCollection();
+            var nonCollectionChildProps = new ChildPropertyCollection();
 
-            myChildProps.AddRange(_childProperties);
-            myChildProps.AddRange(_inheritedChildProperties);
+            nonCollectionChildProps.AddRange(_childProperties);
+            nonCollectionChildProps.AddRange(_inheritedChildProperties);
 
-            return myChildProps;
+            return nonCollectionChildProps;
         }
 
         public ChildPropertyCollection GetCollectionChildProperties()
         {
-            var myChildProps = new ChildPropertyCollection();
+            var collectionChildProps = new ChildPropertyCollection();
 
-            myChildProps.AddRange(_childCollectionProperties);
-            myChildProps.AddRange(_inheritedChildCollectionProperties);
+            collectionChildProps.AddRange(_childCollectionProperties);
+            collectionChildProps.AddRange(_inheritedChildCollectionProperties);
 
-            return myChildProps;
+            return collectionChildProps;
         }
 
         #endregion

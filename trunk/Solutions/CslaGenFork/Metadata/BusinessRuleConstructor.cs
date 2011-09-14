@@ -30,7 +30,6 @@ namespace CslaGenerator.Metadata
 
         private string _name = String.Empty;
         private bool _isActive;
-        private string _parent;
 
         private BusinessRuleConstructorParameterCollection _constructorParameters = new BusinessRuleConstructorParameterCollection();
 
