@@ -72,7 +72,7 @@ if (Info.GenerateDataPortalInsert)
             }
             else
             {
-                %>.DbType = DbType.<%=prop.DbBindColumn.DataType.ToString()%>;<%
+                %>.DbType = DbType.<%= TypeHelper.GetDbType(prop.PropertyType) %>;<%
             }
             %>
                     <%

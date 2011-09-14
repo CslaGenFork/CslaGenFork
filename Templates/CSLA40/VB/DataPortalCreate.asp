@@ -89,13 +89,16 @@ foreach (Criteria c in GetCriteriaObjects(Info))
             }
         }
     }
-    foreach (ChildProperty childProp in Info.GetCollectionChildProperties())
+    foreach (ChildProperty childProp in Info.GetAllChildProperties())
     {
         CslaObjectInfo _child = FindChildInfo(Info, childProp.TypeName);
-        if (_child != null && childProp.LoadingScheme == LoadingScheme.ParentLoad)
+        if (_child != null)
         {
-            %><%= GetNewChildLoadStatement(childProp, true) %>;
+            if (IsEditableType(_child.ObjectType) && childProp.LoadingScheme == LoadingScheme.ParentLoad)
+            {
+                %><%= GetNewChildLoadStatement(childProp, true) %>;
             <%
+            }
         }
     }
     string hookArgs = string.Empty;

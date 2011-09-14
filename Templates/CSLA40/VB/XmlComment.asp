@@ -6,26 +6,26 @@ if ((firstComment == null && string.IsNullOrEmpty(Info.Parent.GenerationParams.C
     %>
     /// <summary>
     /// <%= string.IsNullOrEmpty(Info.ClassSummary) ? Info.ObjectName : Info.ClassSummary %> (<%= CslaStereotype(Info) %>).<br/>
-    /// This is a base generated class of <see cref="<%= Info.ObjectName %>"/> business object.
+    /// This is a generated base class of <see cref="<%= Info.ObjectName %>"/> business object.
 <%
     if (string.IsNullOrEmpty(Info.ParentType))
     {
         if (Info.ObjectType == CslaObjectType.ReadOnlyObject)
         {
             %>
-    /// This class is a root object.<br/>
+    /// This class is a root object.
 <%
         }
         else if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
         {
             %>
-    /// This class is a root collection.<br/>
+    /// This class is a root collection.
 <%
         }
         else if (Info.ObjectType == CslaObjectType.UnitOfWork)
         {
             %>
-    /// This class is a root object that implements the Unit of Work pattern.<br/>
+    /// This class is a root object that implements the Unit of Work pattern.
 <%
         }
     }
@@ -38,14 +38,16 @@ if ((firstComment == null && string.IsNullOrEmpty(Info.Parent.GenerationParams.C
     // contained child collections
     if (Info.ChildCollectionProperties.Count > 0)
     {
+        string collectionName;
         firstComment = false;
         xmlRemark += "This class contains " + Ordinal(Info.ChildCollectionProperties.Count) + " child collection" +
             (Info.ChildCollectionProperties.Count > 1 ? "s" : "") + ":<br/>\r\n";
         for (int collection = 0; collection < Info.ChildCollectionProperties.Count; collection++)
         {
+            collectionName = string.IsNullOrEmpty(Info.ChildCollectionProperties[collection].Implements) ? Info.ChildCollectionProperties[collection].Name : Info.ChildCollectionProperties[collection].Implements;
             CslaObjectInfo childColl = FindChildInfo(Info, Info.ChildCollectionProperties[collection].TypeName);
             CslaObjectInfo associated = FindAssociated(Info, childColl);
-            xmlRemark += "- <see cref=\"" + Info.ChildCollectionProperties[collection].Name + "\"/> of type <see cref=\"" + childColl.ObjectName +
+            xmlRemark += "- <see cref=\"" + collectionName + "\"/> of type <see cref=\"" + childColl.ObjectName +
                 "\"/> (" + (associated == null ? "1" : "N") + " to N relation to <see cref=\"" + (associated == null ? childColl.ItemType : associated.ObjectName) + "\"/>)" + (collection != Info.ChildCollectionProperties.Count - 1 ? "<br/>\r\n" : "");
         }
     }
