@@ -36,6 +36,7 @@ namespace CslaGenerator.Design
         private readonly ListBox _lstProperties;
         private Type _instance;
         private List<BaseProperty> _baseTypes;
+        private List<string> _sizeSortedNamespaces;
 
         public BusinessRuleTypeEditor()
         {
@@ -61,6 +62,11 @@ namespace CslaGenerator.Design
                     _lstProperties.Items.Clear();
                     _lstProperties.Items.Add("(None)");
 
+                    _sizeSortedNamespaces = new List<string>();
+                    var currentCslaObject = (CslaObjectInfo)GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem;
+                    _sizeSortedNamespaces = currentCslaObject.Namespaces.ToList();
+                    _sizeSortedNamespaces = GetSizeSorted(_sizeSortedNamespaces);
+
                     // Get Assembly File Path
                     var assemblyFileInfo = _instance.GetProperty("AssemblyFile");
                     //string assemblyFilePath = (string) assemblyFileInfo.GetValue(context.Instance, null);
@@ -76,11 +82,11 @@ namespace CslaGenerator.Design
 
                         foreach (var type in alltypes)
                         {
-                            // check here for Csla.Rules.BusinessRule inheritance
+                            // check here for Csla.Rules.IBusinessRule inheritance
                             if (type.GetInterface("Csla.Rules.IBusinessRule") != null)
                             {
-                                // exclude abstract
-                                if (!type.IsAbstract)
+                                // exclude abstract classes and exclude Property level rules for Objects and vv.
+                                if (!type.IsAbstract && CTorMatchesRuleLevel(obj, type))
                                 {
                                     var listableType = type.ToString();
                                     if (type.IsGenericType)
@@ -92,6 +98,7 @@ namespace CslaGenerator.Design
                                         }
                                     }
                                     listableType = listableType.Replace("><", ",");
+                                    listableType = StripKnownNamespaces(_sizeSortedNamespaces, listableType);
                                     _lstProperties.Items.Add(listableType);
                                     _baseTypes.Add(new BaseProperty(type, type.BaseType, listableType));
                                 }
@@ -101,8 +108,8 @@ namespace CslaGenerator.Design
                         _lstProperties.Sorted = true;
                     }
 
-                    if (_lstProperties.Items.Contains(obj.Type))
-                        _lstProperties.SelectedItem = obj.Type;
+                    if (_lstProperties.Items.Contains(StripKnownNamespaces(_sizeSortedNamespaces, obj.Type)))
+                        _lstProperties.SelectedItem = StripKnownNamespaces(_sizeSortedNamespaces, obj.Type);
                     else
                         _lstProperties.SelectedItem = "(None)";
 
@@ -136,6 +143,24 @@ namespace CslaGenerator.Design
             }
         }
 
+        public static List<string> GetSizeSorted(List<string> namespaces)
+        {
+            var result = namespaces.OrderByDescending(o => o.Length).ToList();
+            return result;
+        }
+
+        public static string StripKnownNamespaces(List<string> sortedNamespaces, string stringType)
+        {
+            foreach (var ns in sortedNamespaces)
+            {
+                if(stringType.IndexOf(ns) == 0)
+                {
+                    return stringType.Substring(ns.Length+1);
+                } 
+            }
+            return stringType;
+        }
+
         private void FillSubsidiaryGrids(BusinessRule rule, string stringType)
         {
             Type usedType = null;
@@ -144,7 +169,7 @@ namespace CslaGenerator.Design
             {
                 foreach (var baseType in _baseTypes)
                 {
-                    if (baseType.TypeName == stringType)
+                    if (baseType.TypeName == StripKnownNamespaces(_sizeSortedNamespaces, stringType))
                         usedType = baseType.Type;
                 }
             }
@@ -183,6 +208,8 @@ namespace CslaGenerator.Design
                     rule.BaseRuleProperties.Add(prop.Name);
                 }
             }
+
+            // PrimaryProperty always shows in baseType.BaseType.GetProperties()
 
             #endregion
 
@@ -254,17 +281,11 @@ namespace CslaGenerator.Design
             rule.Constructors = new BusinessRuleConstructorCollection();
             var ctor = usedType.GetConstructors();
             var ctorCounter = 0;
+            var isSetActive = false;
             foreach (var info in ctor)
             {
-                ctorCounter++;
+                var elementFound = false;
                 var ctorInfo = new BusinessRuleConstructor();
-                ctorInfo.Name = "Constructor #" + ctorCounter;
-                if (ctorCounter == 1)
-                {
-                    ctorInfo.IsActive = true;
-                    ctorInfo.Name += " (Active)";
-                }
-
                 var ctorParams = info.GetParameters();
                 foreach (var param in ctorParams)
                 {
@@ -290,7 +311,10 @@ namespace CslaGenerator.Design
                     }
 
                     if (ctorParamInfo.Type == "IPropertyInfo" && ctorParamInfo.Name == "primaryProperty")
+                    {
                         ctorParamInfo.Value = rule.Parent;
+                        elementFound = true;
+                    }
                     else
                     {
                         Type targetType = GetDataType(ctorParamInfo.Type);
@@ -315,11 +339,54 @@ namespace CslaGenerator.Design
                     ctorInfo.ConstructorParameters.Add(ctorParamInfo);
                 }
 
+                if (rule.IsPropertyRule && !elementFound)
+                    continue;
+
+                if (!rule.IsPropertyRule && elementFound)
+                    continue;
+
+                ctorCounter++;
+                ctorInfo.Name = "Constructor #" + ctorCounter;
+
+                if (!isSetActive)
+                {
+                    ctorInfo.IsActive = true;
+                    ctorInfo.Name += " (Active)";
+                    isSetActive = true;
+                }
+
                 rule.Constructors.Add(ctorInfo);
             }
 
             #endregion
 
+        }
+
+        private bool CTorMatchesRuleLevel(BusinessRule rule, Type candidate)
+        {
+            var hasObjectCTor = false;
+            var hasPropertyCTor = false;
+            foreach (var constructor in candidate.GetConstructors())
+            {
+                var elementFound = false;
+                foreach (var parameter in constructor.GetParameters())
+                {
+                    if (parameter.ParameterType.Name == "IPropertyInfo" && parameter.Name == "primaryProperty")
+                        elementFound = true;
+                }
+                if (elementFound)
+                    hasPropertyCTor = true;
+                else
+                    hasObjectCTor = true;
+            }
+
+            if (rule.IsPropertyRule && !hasPropertyCTor)
+                return false;
+
+            if (!rule.IsPropertyRule && !hasObjectCTor)
+                return false;
+
+            return true;
         }
 
         private dynamic ConvertStringToEnum(Type targetType, string value)

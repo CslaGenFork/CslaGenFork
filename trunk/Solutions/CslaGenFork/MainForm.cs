@@ -215,6 +215,7 @@ namespace CslaGenerator
 
         public void OpenProjectFile(string fileName)
         {
+            _controller.NewCslaUnit();
             _controller.Load(fileName);
             _isNewProject = false;
             // if we are calling this from the controller, then the
@@ -538,9 +539,11 @@ namespace CslaGenerator
         {
             if (ForceLoadCodeSmith())
             {
+                ofdLoad.InitialDirectory = _controller.ProjectsFolderPath;
                 DialogResult result = ofdLoad.ShowDialog(this);
                 if (result == DialogResult.OK)
                 {
+                    _controller.ProjectsFolderPath = ofdLoad.FileName.Substring(0, ofdLoad.FileName.LastIndexOf('\\'));
                     Application.DoEvents();
                     Cursor.Current = Cursors.WaitCursor;
                     OpenProjectFile(ofdLoad.FileName);
@@ -577,9 +580,11 @@ namespace CslaGenerator
             else
                 sfdSave.FileName = "Project.xml";
 
+            sfdSave.InitialDirectory = _controller.ProjectsFolderPath;
             DialogResult result = sfdSave.ShowDialog(this);
             if (result == DialogResult.OK)
             {
+                _controller.ProjectsFolderPath = sfdSave.FileName.Substring(0, sfdSave.FileName. LastIndexOf('\\'));
                 Cursor.Current = Cursors.WaitCursor;
                 Application.DoEvents();
                 _controller.Save(sfdSave.FileName);
@@ -901,7 +906,6 @@ namespace CslaGenerator
         private void OnSelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
         {
             CslaObjectInfo cslaObj = ((PropertyBag)((PropertyGrid)sender).SelectedObject).SelectedObject[0];
-            AuthorizationActions result;
             switch (e.NewSelection.Label)
             {
                 case "Create Authorization Type":

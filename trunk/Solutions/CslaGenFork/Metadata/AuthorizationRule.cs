@@ -19,6 +19,7 @@ namespace CslaGenerator.Metadata
     {
         #region Private Fields
 
+        private bool _isPropertyRule;
         private string _name = String.Empty;
         private string _objectName = String.Empty;
         private string _assemblyFile = String.Empty;
@@ -53,6 +54,14 @@ namespace CslaGenerator.Metadata
         {
             get { return _baseRuleProperties; }
             set { _baseRuleProperties = value; }
+        }
+
+        [Browsable(false)]
+        [XmlIgnore]
+        public bool IsPropertyRule
+        {
+            get { return _isPropertyRule; }
+            set { _isPropertyRule = value; }
         }
 
         #region 01. Definition
@@ -111,7 +120,7 @@ namespace CslaGenerator.Metadata
 
         [Category("01. Definition")]
         [Description("The assembly file full path.")]
-        [Editor(typeof (AssemblyFileNameEditor), typeof (UITypeEditor))]
+        [Editor(typeof (AssemblyRulesFileNameEditor), typeof (UITypeEditor))]
         [UserFriendlyName("Assembly File Name")]
         public string AssemblyFile
         {

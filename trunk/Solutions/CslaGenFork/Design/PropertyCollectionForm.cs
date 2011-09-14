@@ -299,6 +299,7 @@ namespace CslaGenerator.Design
                 var propertyInfo = _propGrid.GetType().GetProperty("SelectedObject", BindingFlags.Public | BindingFlags.Instance);
                 if (selectedObject != null)
                 {
+                    selectedObject.IsPropertyRule = true;
                     selectedObject.Parent = _parentValProp;
                     propertyInfo.SetValue(_propGrid, new BusinessRuleBag(selectedObject), null);
 

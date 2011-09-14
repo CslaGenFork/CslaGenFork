@@ -620,6 +620,7 @@ namespace CslaGenerator.Metadata
             {
                 _usesCslaAuthorizationProvider = true;
                 _generateAuthorization = AuthorizationLevel.ObjectLevel;
+                _usesCslaAuthorizationProvider = true;
             }
 
             if (_targetFramework == TargetFramework.CSLA40DAL)
