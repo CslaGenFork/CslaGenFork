@@ -73,7 +73,7 @@ if (Info.GenerateDataPortalInsert)
             if (prop.PropertyType == TypeCodeEx.SmartDate)
             {
                 %>SmartDate l<%= prop.Name %> = new SmartDate(parent.<%= prop.Name %>);
-                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", l<%= prop.Name %>).DbType = DbType.DateTime;
+                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", l<%= prop.Name %>.DBValue).DbType = DbType.DateTime;
                     <%
             }
             else
@@ -89,7 +89,7 @@ if (Info.GenerateDataPortalInsert)
         if (prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK ||
             prop.DataAccess == ValueProperty.DataAccessBehaviour.CreateOnly)
         {
-            %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %>)<%
+            %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %><%= (propType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>)<%
             if (prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK)
             {
                 %>.Direction = ParameterDirection.Output;
@@ -205,7 +205,7 @@ if (Info.GenerateDataPortalUpdate)
                             if (prop.PropertyType == TypeCodeEx.SmartDate)
                             {
                                 %>SmartDate l<%=prop.Name%> = new SmartDate(parent.<%=prop.Name%>);
-                        cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", l<%= prop.Name %>).DbType = DbType.DateTime;
+                        cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", l<%= prop.Name %>.DBValue).DbType = DbType.DateTime;
                         <%
                             }
                             else
@@ -221,7 +221,7 @@ if (Info.GenerateDataPortalUpdate)
                             prop.DataAccess == ValueProperty.DataAccessBehaviour.UpdateOnly ||
                             prop.DbBindColumn.NativeType == "timestamp")
                         {
-                            %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %>).DbType = DbType.<%= TypeHelper.GetDbType(prop.PropertyType) %>;
+                            %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %><%= (prop.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TypeHelper.GetDbType(prop.PropertyType) %>;
                         <%
                         }
                     }
@@ -351,7 +351,7 @@ if (Info.GenerateDataPortalDelete)
     {
         if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
         {
-            %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %>).DbType = DbType.<%= TypeHelper.GetDbType(prop.PropertyType) %>;
+            %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %><%= (prop.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TypeHelper.GetDbType(prop.PropertyType) %>;
                         <%
         }
     }
@@ -362,7 +362,7 @@ if (Info.GenerateDataPortalDelete)
             if (prop.PropertyType == TypeCodeEx.SmartDate)
             {
                 %>SmartDate l<%= prop.Name %> = new SmartDate(parent.<%= prop.Name %>);
-                        cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", l<%= prop.Name %>).DbType = DbType.DateTime;
+                        cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", l<%= prop.Name %>.DBValue).DbType = DbType.DateTime;
                         <%
             }
             else
