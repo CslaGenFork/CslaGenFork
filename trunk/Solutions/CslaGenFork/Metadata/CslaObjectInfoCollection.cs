@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 
@@ -65,7 +64,7 @@ namespace CslaGenerator.Metadata
             if (isUnique)
                 item.ObjectName = FindNameAvailable(item.ObjectName, 0);
 
-            base.Insert(0, item);
+            Insert(0, item);
         }
 
         public List<string> GetAllChildNames(CslaObjectInfo info)
