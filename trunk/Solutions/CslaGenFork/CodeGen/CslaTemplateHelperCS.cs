@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -258,8 +257,8 @@ namespace CslaGenerator.CodeGen
 
         public bool AllowNull(Property prop)
         {
-            return (GeneratorController.Current.CurrentUnit.GenerationParams.NullableSupport && prop.Nullable &&
-                    prop.PropertyType != TypeCodeEx.SmartDate);
+            return GeneratorController.Current.CurrentUnit.GenerationParams.NullableSupport && prop.Nullable &&
+                    prop.PropertyType != TypeCodeEx.SmartDate;
         }
 
         public virtual string GetParameterSet(Property prop, bool criteria)
@@ -297,8 +296,6 @@ namespace CslaGenerator.CodeGen
 
             switch (propType)
             {
-                case TypeCodeEx.SmartDate:
-                    return propName + ".DBValue";
                 case TypeCodeEx.Guid:
                     return propName + ".Equals(Guid.Empty) ? (object) DBNull.Value : " + propName;
                 default:
