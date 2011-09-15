@@ -182,7 +182,7 @@ namespace CslaGenerator.CodeGen
 
         public virtual string GetInitValue(ValueProperty prop)
         {
-            if (AllowNull(prop) && prop.PropertyType != TypeCodeEx.SmartDate)
+            if (AllowNull(prop) && TypeHelper.IsNullableType(prop.PropertyType))
                 return "null";
 
             return GetInitValue(prop.PropertyType);
@@ -2587,7 +2587,7 @@ namespace CslaGenerator.CodeGen
             {
                 statement += String.Format("{0} = {1} dr.{2}(\"{3}\"{4})",
                                            FormatProperty(prop.Name),
-                                           "(" + prop.PropertyType + ")",
+                                           "(" + GetDataType(prop) +")",
                     //GetReaderMethod(GetDbType(prop.DbBindColumn), prop.PropertyType),
                                            GetReaderMethod(GetDbType(prop.DbBindColumn), prop),
                                            prop.ParameterName,
