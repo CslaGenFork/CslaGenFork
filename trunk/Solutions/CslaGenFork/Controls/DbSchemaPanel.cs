@@ -833,7 +833,6 @@ namespace CslaGenerator.Controls
             obj.ObjectName = ParseObjectName(name);
             obj.ParentType = parent;
             obj.ItemType = item;
-            _currentUnit.CslaObjects.Add(obj);
             _currentFactory.AddDefaultCriteriaAndParameters(obj);
             _objectsAdded.Add(obj);
         }
