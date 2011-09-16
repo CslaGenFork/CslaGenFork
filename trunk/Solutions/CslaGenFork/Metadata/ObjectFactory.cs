@@ -580,6 +580,7 @@ namespace CslaGenerator.Metadata
             c.Name = "Criteria";
             c.CreateOptions.Enable();
             c.CreateOptions.RunLocal = true;
+            c.CreateOptions.Procedure = false;
             c.GetOptions.Enable();
             return c;
         }
