@@ -58,14 +58,11 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
                     %>if (_list == null)
                 _list = DataPortal.Fetch<<%= Info.ObjectName %>>(<%= crit %>);
 
-            return _list;
-            <%
+            return _list;<%
                 }
                 else
                 {
-                    %>
-            return DataPortal.Fetch<<%= Info.ObjectName %>>(<%= crit %>);
-            <%
+                    %>return DataPortal.Fetch<<%= Info.ObjectName %>>(<%= crit %>);<%
                 }
                 %>
         }

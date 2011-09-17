@@ -42,7 +42,10 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
                     critSilverlight = "new " + c.Name + "()";
                 else if (c.Properties.Count > 0)
                     critSilverlight = SendSingleCriteria(c, c.Properties[0].ParameterValue);
-                critSilverlight += (critSilverlight.Length > 0 ? ", " : "") + "(o, e) =>";
+                if (Info.SimpleCacheOptions != SimpleCacheResults.None)
+                    critSilverlight += (critSilverlight.Length > 0 ? ", " : "") + "(o, e) =>";
+                else
+                    critSilverlight += (critSilverlight.Length > 0 ? ", " : "");
                 %>
         /// <param name="callback">The completion callback method.</param>
         public static void Get<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>(<%= "EventHandler<DataPortalResult<" + Info.ObjectName + ">> callback" %>)
@@ -70,11 +73,7 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
                 }
                 else
                 {
-                    %>DataPortal.BeginFetch<<%= Info.ObjectName %>>(<%= critSilverlight %>
-                {
-                    _list = e.Object;
-                    callback(o, e);
-                }, DataPortal.ProxyModes.LocalOnly);<%
+                    %>DataPortal.BeginFetch<<%= Info.ObjectName %>>(<%= critSilverlight %>callback, DataPortal.ProxyModes.LocalOnly);<%
                 }
                 %>
         }
