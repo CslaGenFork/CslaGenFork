@@ -42,7 +42,10 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
                     critAsync = "new " + c.Name + "()";
                 else if (c.Properties.Count > 0)
                     critAsync = SendSingleCriteria(c, c.Properties[0].ParameterValue);
-                critAsync += (critAsync.Length > 0 ? ", " : "") + "(o, e) =>";
+                if (Info.SimpleCacheOptions != SimpleCacheResults.None)
+                    critAsync += (critAsync.Length > 0 ? ", " : "") + "(o, e) =>";
+                else
+                    critAsync += (critAsync.Length > 0 ? ", " : "");
                 %>
         /// <param name="callback">The completion callback method.</param>
         public static void Get<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>(<%= "EventHandler<DataPortalResult<" + Info.ObjectName + ">> callback" %>)
@@ -70,11 +73,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
                 }
                 else
                 {
-                    %>DataPortal.BeginFetch<<%= Info.ObjectName %>>(<%= critAsync %>
-                {
-                    _list = e.Object;
-                    callback(o, e);
-                });<%
+                    %>DataPortal.BeginFetch<<%= Info.ObjectName %>>(<%= critAsync %>callback);<%
                 }
                 %>
         }
