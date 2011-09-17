@@ -89,7 +89,6 @@ if (Errors.Length == 0)
 <!-- #include file="Constructor.asp" -->
 <!-- #include file="Criteria.asp" -->
 <!-- #include file="ObjectAuthorizationMethods.asp" -->
-<!-- #include file="BusinessRules.asp" -->
 <%
     if (Info.GenerateDataAccessRegion)
     {
