@@ -51,6 +51,13 @@ namespace CslaGenFork.Rules.ObjectRules
         /// <summary>
         /// Initializes a new instance of the <see cref="CollectionPopulated"/> class.
         /// </summary>
+        public CollectionPopulated()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CollectionPopulated"/> class.
+        /// </summary>
         /// <param name="message">The error message text.</param>
         public CollectionPopulated(string message)
         {

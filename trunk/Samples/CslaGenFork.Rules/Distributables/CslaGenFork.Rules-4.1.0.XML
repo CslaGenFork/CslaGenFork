@@ -335,6 +335,11 @@
             </summary>
             <value>The rule severity.</value>
         </member>
+        <member name="M:CslaGenFork.Rules.ObjectRules.CollectionPopulated.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:CslaGenFork.Rules.ObjectRules.CollectionPopulated"/> class.
+            </summary>
+        </member>
         <member name="M:CslaGenFork.Rules.ObjectRules.CollectionPopulated.#ctor(System.String)">
             <summary>
             Initializes a new instance of the <see cref="T:CslaGenFork.Rules.ObjectRules.CollectionPopulated"/> class.
