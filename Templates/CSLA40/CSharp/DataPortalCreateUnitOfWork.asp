@@ -33,7 +33,7 @@ if (crit.CreateOptions.DataPortal)
         protected void DataPortal_Fetch(<%= createUowCrit %>)
         {
             <%
-    foreach (UnitOfWorkProperty uowProp in Info.UnitOfWorkCollectionProperties)
+    foreach (UnitOfWorkProperty uowProp in Info.UnitOfWorkProperties)
     {
         bool isGetter = ForceIsGetter(Info, uowProp);
         if (CheckTargetPropertiesFound(Info, uowProp, crit))

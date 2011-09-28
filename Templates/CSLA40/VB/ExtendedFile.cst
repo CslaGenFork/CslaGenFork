@@ -49,11 +49,7 @@ if (Info.ObjectType != CslaObjectType.UnitOfWork)
     bool generateRuleRegion = false;
     bool generateAuthRegion = false;
 
-    HaveBusinessRulesCollection allRulesProperties = new HaveBusinessRulesCollection();
-    allRulesProperties.AddRange(Info.AllValueProperties); // ValueProperties and ConvertValueProperties
-    allRulesProperties.AddRange(Info.InheritedValueProperties); // InheritedValueProperties
-    // ChildProperties, ChildCollectionProperties, InheritedChildProperties, InheritedChildCollectionProperties
-    allRulesProperties.AddRange(Info.GetAllChildProperties());
+    HaveBusinessRulesCollection allRulesProperties = Info.AllRulableProperties();
 
     foreach (IHaveBusinessRules rulableProperty in allRulesProperties)
     {

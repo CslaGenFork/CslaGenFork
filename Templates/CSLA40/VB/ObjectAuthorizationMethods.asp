@@ -53,7 +53,7 @@ if (generateAuthRegion2)
     }
     genOptional = true;
     %>
-        #region Authorization
+        #region Object Authorization
         <%
     string statement = string.Empty;
     if (UseNoSilverlight())
@@ -234,7 +234,7 @@ if (generateAuthRegion2)
         /// <returns><c>true</c> if the user can create a new object; otherwise, <c>false</c>.</returns>
         public static bool CanAddObject()
         {
-            return Csla.Rules.BusinessRules.HasPermission(Csla.Rules.AuthorizationActions.CreateObject, typeof(<%= Info.ObjectName %>));
+            return BusinessRules.HasPermission(Csla.Rules.AuthorizationActions.CreateObject, typeof(<%= Info.ObjectName %>));
         }
 
         <%
@@ -246,7 +246,7 @@ if (generateAuthRegion2)
         /// <returns><c>true</c> if the user can read the object; otherwise, <c>false</c>.</returns>
         public static bool CanGetObject()
         {
-            return Csla.Rules.BusinessRules.HasPermission(Csla.Rules.AuthorizationActions.GetObject, typeof(<%= Info.ObjectName %>));
+            return BusinessRules.HasPermission(Csla.Rules.AuthorizationActions.GetObject, typeof(<%= Info.ObjectName %>));
         }
         <%
     if (authzInfo2.ObjectType != CslaObjectType.ReadOnlyCollection &&
@@ -261,7 +261,7 @@ if (generateAuthRegion2)
         /// <returns><c>true</c> if the user can update the object; otherwise, <c>false</c>.</returns>
         public static bool CanEditObject()
         {
-            return Csla.Rules.BusinessRules.HasPermission(Csla.Rules.AuthorizationActions.EditObject, typeof(<%= Info.ObjectName %>));
+            return BusinessRules.HasPermission(Csla.Rules.AuthorizationActions.EditObject, typeof(<%= Info.ObjectName %>));
         }
 
         /// <summary>
@@ -270,7 +270,7 @@ if (generateAuthRegion2)
         /// <returns><c>true</c> if the user can delete the object; otherwise, <c>false</c>.</returns>
         public static bool CanDeleteObject()
         {
-            return Csla.Rules.BusinessRules.HasPermission(Csla.Rules.AuthorizationActions.DeleteObject, typeof(<%= Info.ObjectName %>));
+            return BusinessRules.HasPermission(Csla.Rules.AuthorizationActions.DeleteObject, typeof(<%= Info.ObjectName %>));
         }
         <%
     }

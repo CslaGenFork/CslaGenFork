@@ -1,16 +1,16 @@
 <%
 bool generateRuleRegion = false;
 bool generateAuthRegion = false;
+bool generateObjectRuleRegion = false;
 
-HaveBusinessRulesCollection allRulesProperties = new HaveBusinessRulesCollection();
-allRulesProperties.AddRange(Info.AllValueProperties); // ValueProperties and ConvertValueProperties
-allRulesProperties.AddRange(Info.InheritedValueProperties); // InheritedValueProperties
-// ChildProperties, ChildCollectionProperties, InheritedChildProperties, InheritedChildCollectionProperties
-allRulesProperties.AddRange(Info.GetAllChildProperties());
+HaveBusinessRulesCollection allRulesProperties = Info.AllRulableProperties();
 
 foreach (IHaveBusinessRules rulableProperty in allRulesProperties)
 {
-    if (rulableProperty.BusinessRules.Count > 0)
+    if (Info.ObjectType != CslaObjectType.UnitOfWork &&
+        Info.ObjectType != CslaObjectType.NameValueList &&
+        !IsCollectionType(Info.ObjectType) &&
+        rulableProperty.BusinessRules.Count > 0)
     {
         generateRuleRegion = true;
     }
@@ -35,8 +35,15 @@ foreach (IHaveBusinessRules rulableProperty in allRulesProperties)
     if (generateRuleRegion && generateAuthRegion)
         break;
 }
+if (Info.ObjectType != CslaObjectType.UnitOfWork &&
+    Info.ObjectType != CslaObjectType.NameValueList &&
+    !IsCollectionType(Info.ObjectType))
+{
+    if (Info.BusinessRules.Count > 0)
+        generateObjectRuleRegion = true;
+}
 
-if (generateRuleRegion || generateAuthRegion)
+if (generateRuleRegion || generateAuthRegion || generateObjectRuleRegion)
 {
     if (!genOptional)
     {
@@ -61,9 +68,106 @@ if (generateRuleRegion || generateAuthRegion)
     string resultConstructor = string.Empty;
     string resultProperties = string.Empty;
 
+    // Object Business Rules
+    if (generateObjectRuleRegion)
+    {
+        Response.WriteLine(Environment.NewLine + new string(' ', 12) + "// Object Business Rules");
+        bool primaryOnCtor = false;
+
+        foreach (BusinessRule rule in Info.BusinessRules)
+        {
+            string backupRuleType = rule.Type;
+            foreach (string ns in Info.Namespaces)
+            {
+                string nameSpace = ns + '.';
+                if (backupRuleType.IndexOf(nameSpace) == 0 &&
+                    backupRuleType.Substring(nameSpace.Length).IndexOf('.') == -1)
+                {
+                    backupRuleType = backupRuleType.Substring(nameSpace.Length);
+                    break;
+                }
+            }
+            resultConstructor = string.Empty;
+            resultProperties = string.Empty;
+            primaryOnCtor = false;
+            bool isFirst = true;
+            bool isFirstGeneric = true;
+
+            // Constructors and ConstructorParameters
+            foreach (BusinessRuleConstructor constructor in rule.Constructors)
+            {
+                if (constructor.IsActive)
+                {
+                    foreach (BusinessRuleConstructorParameter parameter in constructor.ConstructorParameters
+                        )
+                    {
+                        if (isFirst)
+                            isFirst = false;
+                        else
+                            resultConstructor += ", ";
+                        if (parameter.IsGenericType)
+                        {
+                            backupRuleType = backupRuleType.Replace(parameter.Type, GetDataType(parameter.GenericType));
+                            if (isFirstGeneric)
+                                isFirstGeneric = false;
+                            else
+                                backupRuleType = backupRuleType.Replace(",", ", ");
+                        }
+                        resultConstructor += ReturnParameterValue(parameter);
+                    }
+                }
+            }
+
+            // RuleProperties
+            isFirst = true;
+            foreach (BusinessRuleProperty property in rule.RuleProperties)
+            {
+                string stringValue = ReturnPropertyValue(property);
+                if (stringValue == string.Empty)
+                    continue;
+
+                if (isFirst)
+                    isFirst = false;
+                else
+                    resultProperties += ", ";
+                resultProperties += property.Name + " = " + stringValue;
+            }
+
+            // BaseRuleProperties
+            if (rule.BaseRuleProperties.Count > 0)
+            {
+                PropertyInfo[] ruleProps = typeof (BusinessRule).GetProperties();
+                foreach (PropertyInfo property in ruleProps)
+                {
+                    if (rule.BaseRuleProperties.Contains(property.Name))
+                    {
+                        string stringValue = ReturnPropertyValue(rule, property);
+                        if (IsBaseRulePropertyDefault(property.Name, stringValue))
+                            continue;
+
+                        if (isFirst)
+                            isFirst = false;
+                        else
+                            resultProperties += ", ";
+                        resultProperties += property.Name + " = " + stringValue;
+                    }
+                }
+            }
+
+            if (resultProperties != string.Empty)
+                resultProperties = " { " + resultProperties + " }";
+
+            resultRule = "BusinessRules.AddRule(new " + backupRuleType + "(" + resultConstructor + ")" + resultProperties + ")" + ";";
+            %>
+            <%= resultRule %>
+<%
+        }
+    }
+
+    // Property Business Rules
     if (generateRuleRegion)
     {
-        Response.WriteLine(Environment.NewLine + new string(' ', 12) + "// Business Rules" + Environment.NewLine);
+        Response.WriteLine(Environment.NewLine + new string(' ', 12) + "// Property Business Rules" + Environment.NewLine);
         bool primaryOnCtor = false;
         foreach (IHaveBusinessRules rulableProperty in allRulesProperties)
         {
@@ -197,7 +301,7 @@ if (generateRuleRegion || generateAuthRegion)
         }
     }
 
-    // Authorization Rules
+    // Property Authorization Rules
     if (generateAuthRegion)
     {
         Response.WriteLine(Environment.NewLine + new string(' ', 12) + "// Authorization Rules" + Environment.NewLine);
