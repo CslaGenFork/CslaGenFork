@@ -38,7 +38,7 @@ namespace CslaGenerator.Metadata
         private ValuePropertyCollection _valueProperties = new ValuePropertyCollection();
         private ChildPropertyCollection _childProperties = new ChildPropertyCollection();
         private ChildPropertyCollection _childCollectionProperties = new ChildPropertyCollection();
-        private UnitOfWorkPropertyCollection _unitOfWorkCollectionProperties = new UnitOfWorkPropertyCollection();
+        private UnitOfWorkPropertyCollection _unitOfWorkProperties = new UnitOfWorkPropertyCollection();
         private ConvertValuePropertyCollection _convertValueProperties = new ConvertValuePropertyCollection();
         private UpdateValuePropertyCollection _updateValueProperties = new UpdateValuePropertyCollection();
         private ValuePropertyCollection _inheritedValueProperties;
@@ -65,8 +65,8 @@ namespace CslaGenerator.Metadata
         private bool _lazyLoad;
         private bool _generateSprocs = true;
         private PropertyCollection _parentProperties = new PropertyCollection();
+        private BusinessRuleCollection _businessRules;
         private AuthorizationProvider _authzProvider;
-        private AuthorizationRule _objectAuthzRuleType = new AuthorizationRule();
         private AuthorizationRule _getAuthzRuleType = new AuthorizationRule();
         private AuthorizationRule _newAuthzRuleType = new AuthorizationRule();
         private AuthorizationRule _updateAuthzRuleType = new AuthorizationRule();
@@ -480,10 +480,10 @@ namespace CslaGenerator.Metadata
         [Category("02. Business Properties")]
         [Description("The Unit of Work collection properties (specify here the root objects to handle as a unit).")]
         [Editor(typeof(PropertyCollectionForm), typeof(UITypeEditor))]
-        [UserFriendlyName("Unit of Work Collection Properties")]
-        public UnitOfWorkPropertyCollection UnitOfWorkCollectionProperties
+        [UserFriendlyName("Unit of Work Properties")]
+        public UnitOfWorkPropertyCollection UnitOfWorkProperties
         {
-            get { return _unitOfWorkCollectionProperties; }
+            get { return _unitOfWorkProperties; }
         }
 
         [Category("02. Business Properties")]
@@ -504,16 +504,6 @@ namespace CslaGenerator.Metadata
             get { return _childProperties; }
         }
 
-        /// <summary>
-        /// Object's non-collection child properties plus collection child properties.
-        /// </summary>
-        [XmlIgnore]
-        [Browsable(false)]
-        public ChildPropertyCollection AllChildProperties
-        {
-            get { return GetMyChildProperties(); }
-        }
-
         [Category("02. Business Properties")]
         [Description("If this object inherits from another type, this property will store the child collection properties it inherits. You cannot add or remove inherited properties, but you can modify them.")]
         [Editor(typeof(PropertyCollectionForm), typeof(UITypeEditor))]
@@ -530,16 +520,6 @@ namespace CslaGenerator.Metadata
         public ChildPropertyCollection InheritedChildProperties
         {
             get { return _inheritedChildProperties; }
-        }
-
-        /// <summary>
-        /// Inherited non-collection child properties plus collection child properties.
-        /// </summary>
-        [XmlIgnore]
-        [Browsable(false)]
-        public ChildPropertyCollection AllInheritedChildProperties
-        {
-            get { return GetInheritedChildProperties(); }
         }
 
         [Category("02. Business Properties")]
@@ -576,16 +556,6 @@ namespace CslaGenerator.Metadata
         public ValuePropertyCollection ValueProperties
         {
             get { return _valueProperties; }
-        }
-
-        /// <summary>
-        /// Object's value properties plus convert value properties.
-        /// </summary>
-        [XmlIgnore]
-        [Browsable(false)]
-        public ValuePropertyCollection AllValueProperties
-        {
-            get { return GetMyValueProperties(); }
         }
 
         #endregion
@@ -1149,9 +1119,26 @@ namespace CslaGenerator.Metadata
 
         #endregion
 
-        #region 10. Authorization
+        #region 10. Business Rules & Authorization
 
-        [Category("10. Authorization")]
+        [Category("10. Business Rules & Authorization")]
+        [Description("Collection of business rules (transformation, validation, etc).")]
+        [Editor(typeof(PropertyCollectionForm), typeof(UITypeEditor))]
+        [UserFriendlyName("Business Rules Collection")]
+        public virtual BusinessRuleCollection BusinessRules
+        {
+            get { return _businessRules; }
+            set
+            {
+                if (_businessRules != value)
+                {
+                    _businessRules = value;
+                    OnPropertyChanged("BusinessRules");
+                }
+            }
+        }
+        
+        [Category("10. Business Rules & Authorization")]
         [Description("The Authorization Provider for this property.")]
         [UserFriendlyName("Authorization Provider")]
         public virtual AuthorizationProvider AuthzProvider
@@ -1170,7 +1157,7 @@ namespace CslaGenerator.Metadata
         /// <summary>
         /// Roles to create object. Multiple roles must be separated with ;.
         /// </summary>
-        [Category("10. Authorization")]
+        [Category("10. Business Rules & Authorization")]
         [Description("Roles to create object. Use a comma to separate multiple roles.")]
         [UserFriendlyName("New Roles")]
         public string NewRoles
@@ -1182,7 +1169,7 @@ namespace CslaGenerator.Metadata
         /// <summary>
         /// Roles to retrieve object. Multiple roles must be separated with ;.
         /// </summary>
-        [Category("10. Authorization")]
+        [Category("10. Business Rules & Authorization")]
         [Description("Roles to retrieve object. Use a comma to separate multiple roles.")]
         [UserFriendlyName("Get Roles")]
         public string GetRoles
@@ -1194,7 +1181,7 @@ namespace CslaGenerator.Metadata
         /// <summary>
         /// Roles to update object. Multiple roles must be separated with ;.
         /// </summary>
-        [Category("10. Authorization")]
+        [Category("10. Business Rules & Authorization")]
         [Description("Roles to update object. Use a comma to separate multiple roles.")]
         [UserFriendlyName("Update Roles")]
         public string UpdateRoles
@@ -1206,7 +1193,7 @@ namespace CslaGenerator.Metadata
         /// <summary>
         /// Roles to delete object. Multiple roles must be separated with ;.
         /// </summary>
-        [Category("10. Authorization")]
+        [Category("10. Business Rules & Authorization")]
         [Description("Roles to delete object. Use a comma to separate multiple roles.")]
         [UserFriendlyName("Delete Roles")]
         public string DeleteRoles
@@ -1215,7 +1202,7 @@ namespace CslaGenerator.Metadata
             set { _deleteRoles = PropertyHelper.TidyAllowSpaces(value).Replace(';', ',').Trim(new[] { '!', ',' }); }
         }
 
-        [Category("10. Authorization")]
+        [Category("10. Business Rules & Authorization")]
         [Description("The Authorization Type that controls create object action. You can either select an object defined in the current project or an object defined in another assembly.")]
         [Editor(typeof(ObjectEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(AuthorizationRuleTypeConverter))]
@@ -1237,7 +1224,7 @@ namespace CslaGenerator.Metadata
             }
         }
 
-        [Category("10. Authorization")]
+        [Category("10. Business Rules & Authorization")]
         [Description("The Authorization Type that controls get object action. You can either select an object defined in the current project or an object defined in another assembly.")]
         [Editor(typeof(ObjectEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(AuthorizationRuleTypeConverter))]
@@ -1259,7 +1246,7 @@ namespace CslaGenerator.Metadata
             }
         }
 
-        [Category("10. Authorization")]
+        [Category("10. Business Rules & Authorization")]
         [Description("The Authorization Type that controls update object action. You can either select an object defined in the current project or an object defined in another assembly.")]
         [Editor(typeof(ObjectEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(AuthorizationRuleTypeConverter))]
@@ -1281,7 +1268,7 @@ namespace CslaGenerator.Metadata
             }
         }
 
-        [Category("10. Authorization")]
+        [Category("10. Business Rules & Authorization")]
         [Description("The Authorization Type that controls delete object action. You can either select an object defined in the current project or an object defined in another assembly.")]
         [Editor(typeof(ObjectEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(AuthorizationRuleTypeConverter))]
@@ -1323,6 +1310,51 @@ namespace CslaGenerator.Metadata
         {
             get { return _subscribeToChannel; }
             set { _subscribeToChannel = value; }
+        }
+
+        #endregion
+
+        #region Utility property collections
+
+        /// <summary>
+        /// Object's non-collection child properties plus collection child properties, including inherited
+        /// </summary>
+        [XmlIgnore]
+        [Browsable(false)]
+        public ChildPropertyCollection AllChildProperties
+        {
+            get { return GetMyChildProperties(); }
+        }
+
+        /// <summary>
+        /// Inherited non-collection child properties plus collection child properties.
+        /// </summary>
+        [XmlIgnore]
+        [Browsable(false)]
+        public ChildPropertyCollection AllInheritedChildProperties
+        {
+            get { return GetInheritedChildProperties(); }
+        }
+
+        /// <summary>
+        /// Object's value properties plus convert value properties.
+        /// </summary>
+        [XmlIgnore]
+        [Browsable(false)]
+        public ValuePropertyCollection AllValueProperties
+        {
+            get { return GetMyValueProperties(); }
+        }
+
+        public HaveBusinessRulesCollection AllRulableProperties()
+        {
+            var allRulableProperties = new HaveBusinessRulesCollection();
+            allRulableProperties.AddRange(AllValueProperties); // ValueProperties and ConvertValueProperties
+            allRulableProperties.AddRange(InheritedValueProperties); // InheritedValueProperties
+            // ChildProperties, ChildCollectionProperties, InheritedChildProperties, InheritedChildCollectionProperties
+            allRulableProperties.AddRange(GetAllChildProperties());
+
+            return allRulableProperties;
         }
 
         #endregion

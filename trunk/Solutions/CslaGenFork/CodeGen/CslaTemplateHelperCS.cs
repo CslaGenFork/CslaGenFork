@@ -633,25 +633,71 @@ namespace CslaGenerator.CodeGen
         {
             var usingList = new List<string>();
 
-            if ((CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.None &&
-                 CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.PropertyLevel))
-            {
-                CslaObjectInfo authzInfo = info;
-                if (IsCollectionType(info.ObjectType))
-                {
-                    authzInfo = FindChildInfo(info, info.ItemType);
-                }
+            var addRules = false;
+            var addCommonRules = false;
 
-                if (authzInfo != null &&
-                    ((authzInfo.NewRoles.Trim() != String.Empty) ||
-                     (authzInfo.GetRoles.Trim() != String.Empty) ||
-                     (authzInfo.UpdateRoles.Trim() != String.Empty) ||
-                     (authzInfo.DeleteRoles.Trim() != String.Empty)))
+            if (CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.None)
+            {
+                if (CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.PropertyLevel)
                 {
-                    usingList.Add("Csla.Rules");
-                    usingList.Add("Csla.Rules.CommonRules");
+                    CslaObjectInfo authzInfo = info;
+                    if (IsCollectionType(info.ObjectType))
+                    {
+                        authzInfo = FindChildInfo(info, info.ItemType);
+                    }
+
+                    if (authzInfo != null)
+                    {
+                        if (authzInfo.AuthzProvider != AuthorizationProvider.Custom)
+                        {
+                            if ((authzInfo.NewRoles.Trim() != String.Empty) ||
+                                (authzInfo.GetRoles.Trim() != String.Empty) ||
+                                (authzInfo.UpdateRoles.Trim() != String.Empty) ||
+                                (authzInfo.DeleteRoles.Trim() != String.Empty))
+                            {
+                                addRules = true;
+                                addCommonRules = true;
+                            }
+                        }
+                        else
+                        {
+                            if (authzInfo.NewAuthzRuleType != null ||
+                                authzInfo.GetAuthzRuleType != null ||
+                                authzInfo.UpdateAuthzRuleType != null ||
+                                authzInfo.DeleteAuthzRuleType != null)
+                            {
+                                addRules = true;
+                            }
+                        }
+                    }
                 }
             }
+
+            if (!addRules || !addCommonRules)
+            {
+                if (CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.ObjectLevel)
+                {
+                    var rullableProperties = info.AllRulableProperties();
+                    foreach (var property in rullableProperties)
+                    {
+                        if (property.AuthzProvider != AuthorizationProvider.Custom)
+                        {
+                            if ((property.ReadRoles.Trim() != String.Empty) ||
+                                (property.WriteRoles.Trim() != String.Empty))
+                            {
+                                addRules = true;
+                                addCommonRules = true;
+                            }
+                        }
+                    }
+
+                }
+            }
+
+            if (addRules)
+                usingList.Add("Csla.Rules");
+            if (addCommonRules)
+                usingList.Add("Csla.Rules.CommonRules");
 
             if (info.ObjectNamespace.IndexOf(CurrentUnit.GenerationParams.UtilitiesNamespace) != 0 &&
                 info.ObjectType != CslaObjectType.UnitOfWork)
@@ -995,6 +1041,179 @@ namespace CslaGenerator.CodeGen
             return false;
         }
 
+        /*public void RulesValidate(CslaObjectInfo Info)
+        {
+            bool validateRuleRegion = false;
+            bool validateAuthRegion = false;
+
+            #region Is Property validation needed?
+
+            HaveBusinessRulesCollection validateAllRulesProperties = Info.AllRulableProperties();
+            foreach (IHaveBusinessRules rulableProperty in validateAllRulesProperties)
+            {
+                if (Info.ObjectType != CslaObjectType.UnitOfWork &&
+                    Info.ObjectType != CslaObjectType.NameValueList &&
+                    !IsCollectionType(Info.ObjectType) &&
+                    rulableProperty.BusinessRules.Count > 0)
+                {
+                    validateRuleRegion = true;
+                }
+
+                if (CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.None &&
+                    CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.ObjectLevel)
+                {
+                    if (rulableProperty.AuthzProvider == AuthorizationProvider.Custom)
+                    {
+                        if (rulableProperty.ReadAuthzRuleType.Constructors.Count > 0 ||
+                            rulableProperty.WriteAuthzRuleType.Constructors.Count > 0)
+                        {
+                            validateAuthRegion = true;
+                        }
+                    }
+                }
+                if (validateRuleRegion || validateAuthRegion)
+                    break;
+            }
+
+            #endregion
+
+            #region Validate Property Business Rules
+
+            if (validateRuleRegion)
+            {
+                foreach (IHaveBusinessRules rulableProperty in validateAllRulesProperties)
+                {
+                    foreach (BusinessRule rule in rulableProperty.BusinessRules)
+                    {
+                        foreach (BusinessRuleConstructor constructor in rule.Constructors)
+                        {
+                            if (constructor.IsActive)
+                            {
+                                foreach (BusinessRuleConstructorParameter parameter in constructor.ConstructorParameters
+                                    )
+                                {
+                                    if (parameter.IsGenericType && parameter.GenericType == TypeCodeEx.Empty)
+                                    {
+                                        //Errors.Append(rulableProperty.Name + ": business rule " + rule.Name + ": generic parameter <" + parameter.Type + "> is Empty (undefined)." + Environment.NewLine);
+                                    }
+                                    if (string.IsNullOrEmpty(ReturnRawParameterValue(parameter)))
+                                    {
+                                        //Errors.Append(rulableProperty.Name + ": business rule " + rule.Name + ": parameter " + parameter.Name + " has no value." + Environment.NewLine);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            #endregion
+
+            #region Validate Property Authorization Rules
+
+            if (validateAuthRegion)
+            {
+                foreach (IHaveBusinessRules rulableProperty in validateAllRulesProperties)
+                {
+                    AuthorizationRuleCollection allAuthzRules = new AuthorizationRuleCollection();
+                    allAuthzRules.Add(rulableProperty.ReadAuthzRuleType);
+                    allAuthzRules.Add(rulableProperty.WriteAuthzRuleType);
+                    foreach (AuthorizationRule rule in allAuthzRules)
+                    {
+                        foreach (BusinessRuleConstructor constructor in rule.Constructors)
+                        {
+                            if (constructor.IsActive)
+                            {
+                                foreach (BusinessRuleConstructorParameter parameter in constructor.ConstructorParameters
+                                    )
+                                {
+                                    if (parameter.IsGenericType && parameter.GenericType == TypeCodeEx.Empty)
+                                    {
+                                        //Errors.Append(rulableProperty.Name + ": authorization rule " + rule.Name + ": generic parameter <" + parameter.Type + "> is Empty (undefined)." + Environment.NewLine);
+                                    }
+                                    if (string.IsNullOrEmpty(ReturnRawParameterValue(parameter)))
+                                    {
+                                        //Errors.Append(rulableProperty.Name + ": authorization rule " + rule.Name + ": parameter " + parameter.Name + " has no value." + Environment.NewLine);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            #endregion
+
+            #region Validate Object Business Rules
+
+            if (Info.ObjectType != CslaObjectType.UnitOfWork &&
+                Info.ObjectType != CslaObjectType.NameValueList &&
+                !IsCollectionType(Info.ObjectType))
+            {
+                foreach (var rule in Info.BusinessRules)
+                {
+                    foreach (BusinessRuleConstructor constructor in rule.Constructors)
+                    {
+                        if (constructor.IsActive)
+                        {
+                            foreach (BusinessRuleConstructorParameter parameter in constructor.ConstructorParameters)
+                            {
+                                if (parameter.IsGenericType && parameter.GenericType == TypeCodeEx.Empty)
+                                {
+                                    //Errors.Append(Info.ObjectName + ": business rule " + rule.Name + ": generic parameter <" + parameter.Type + "> is Empty (undefined)." + Environment.NewLine);
+                                }
+                                if (string.IsNullOrEmpty(ReturnRawParameterValue(parameter)))
+                                {
+                                    //Errors.Append(Info.ObjectName + ": business rule " + rule.Name + ": parameter " + parameter.Name + " has no value." + Environment.NewLine);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            #endregion
+
+            #region Validate Object Authorization Rules
+
+            if (CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.None &&
+                CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.PropertyLevel)
+            {
+                if (Info.AuthzProvider == AuthorizationProvider.Custom)
+                {
+                    AuthorizationRuleCollection objectAuthzRules = new AuthorizationRuleCollection();
+                    objectAuthzRules.Add(Info.NewAuthzRuleType);
+                    objectAuthzRules.Add(Info.GetAuthzRuleType);
+                    objectAuthzRules.Add(Info.UpdateAuthzRuleType);
+                    objectAuthzRules.Add(Info.DeleteAuthzRuleType);
+                    foreach (AuthorizationRule rule in objectAuthzRules)
+                    {
+                        foreach (BusinessRuleConstructor constructor in rule.Constructors)
+                        {
+                            if (constructor.IsActive)
+                            {
+                                foreach (BusinessRuleConstructorParameter parameter in constructor.ConstructorParameters
+                                    )
+                                {
+                                    if (parameter.IsGenericType && parameter.GenericType == TypeCodeEx.Empty)
+                                    {
+                                        //Errors.Append(Info.ObjectName + ": authorization rule " + rule.Name + ": generic parameter <" + parameter.Type + "> is Empty (undefined)." + Environment.NewLine);
+                                    }
+                                    if (string.IsNullOrEmpty(ReturnRawParameterValue(parameter)))
+                                    {
+                                        //Errors.Append(Info.ObjectName + ": authorization rule " + rule.Name + ": parameter " + parameter.Name + " has no value." + Environment.NewLine);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            #endregion
+
+        }*/
+
         /*public void TestRules(CslaObjectInfo Info)
         {
             bool generateRuleRegion = false;
@@ -1004,15 +1223,13 @@ namespace CslaGenerator.CodeGen
             string resultConstructor = string.Empty;
             string resultProperties = string.Empty;
 
-            HaveBusinessRulesCollection allRulesProperties = new HaveBusinessRulesCollection();
-            allRulesProperties.AddRange(Info.AllValueProperties); // ValueProperties and ConvertValueProperties
-            allRulesProperties.AddRange(Info.InheritedValueProperties); // InheritedValueProperties
-            // ChildProperties, ChildCollectionProperties, InheritedChildProperties, InheritedChildCollectionProperties
-            allRulesProperties.AddRange(Info.GetAllChildProperties());
+            HaveBusinessRulesCollection allRulesProperties = Info.AllRulableProperties();
             foreach (IHaveBusinessRules rulableProperty in allRulesProperties)
             {
-                if (rulableProperty.BusinessRules.Count > 0)
-                {
+                if (Info.ObjectType != CslaObjectType.UnitOfWork &&
+                    Info.ObjectType != CslaObjectType.NameValueList &&
+                    !IsCollectionType(Info.ObjectType) &&
+                    rulableProperty.BusinessRules.Count > 0)
                     generateRuleRegion = true;
                 }
                 if (CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.None &&

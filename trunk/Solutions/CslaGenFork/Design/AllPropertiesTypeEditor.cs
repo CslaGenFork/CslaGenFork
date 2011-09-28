@@ -34,11 +34,7 @@ namespace CslaGenerator.Design
                     var parameter = (BusinessRuleConstructorParameter) objinfo;
                     _lstProperties.Items.Clear();
                     var info = (CslaObjectInfo) GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem;
-                    var allRulesProperties = new HaveBusinessRulesCollection();
-                    allRulesProperties.AddRange(info.AllValueProperties); // ValueProperties and ConvertValueProperties
-                    allRulesProperties.AddRange(info.InheritedValueProperties); // InheritedValueProperties
-                    // ChildProperties, ChildCollectionProperties, InheritedChildProperties, InheritedChildCollectionProperties
-                    allRulesProperties.AddRange(info.GetAllChildProperties());
+                    var allRulesProperties = info.AllRulableProperties();
 
                     foreach (IHaveBusinessRules rulableProperty in allRulesProperties)
                     {

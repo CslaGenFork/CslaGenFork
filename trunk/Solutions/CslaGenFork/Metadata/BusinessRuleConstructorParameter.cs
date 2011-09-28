@@ -19,7 +19,7 @@ namespace CslaGenerator.Metadata
         private bool _isParams;
         private bool _isGenericType;
         private bool _isGenericParameter;
-        private TypeCodeEx _genericType = TypeCodeEx.Object;
+        private TypeCodeEx _genericType = TypeCodeEx.Empty;
         private dynamic _value;
 
         #endregion

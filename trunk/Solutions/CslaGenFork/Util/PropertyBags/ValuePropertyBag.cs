@@ -626,6 +626,8 @@ namespace CslaGenerator.Util.PropertyBags
 
         private bool IsBrowsable(ValueProperty[] objectType, string propertyName)
         {
+            var cslaObject = (CslaObjectInfo)GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem;
+
             try
             {
                 foreach (var valueProperty in objectType)
@@ -658,6 +660,15 @@ namespace CslaGenerator.Util.PropertyBags
                     if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 ||
                          GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL) &&
                         propertyName == "Rules")
+                        return false;
+                    if (cslaObject.ObjectType == CslaObjectType.NameValueList &&
+                        (propertyName == "AuthzProvider" ||
+                        propertyName == "ReadRoles" ||
+                        propertyName == "WriteRoles" ||
+                        propertyName == "ReadAuthzRuleType" ||
+                        propertyName == "WriteAuthzRuleType" ||
+                        propertyName == "Rules" ||
+                        propertyName == "BusinessRules"))
                         return false;
 
                     if (_selectedObject.Length > 1 && IsEnumerable(GetPropertyInfoCache(propertyName)))

@@ -138,15 +138,6 @@ namespace CslaGenerator.Metadata
         #region 02. Advanced
 
         [Category("02. Advanced")]
-        [Description("Collection of business rules (transformation, validation, etc).")]
-        [Editor(typeof(PropertyCollectionForm), typeof(UITypeEditor))]
-        [UserFriendlyName("Business Rules Collection")]
-        public virtual BusinessRuleCollection BusinessRules
-        {
-            get { return _businessRules; }
-        }
-
-        [Category("02. Advanced")]
         [Description("The attributes you want to add to this property.")]
         public virtual string[] Attributes
         {
@@ -182,9 +173,18 @@ namespace CslaGenerator.Metadata
 
         #endregion
 
-        #region 03. Authorization
+        #region 03. Business Rules & Authorization
 
-        [Category("03. Authorization")]
+        [Category("03. Business Rules & Authorization")]
+        [Description("Collection of business rules (transformation, validation, etc).")]
+        [Editor(typeof(PropertyCollectionForm), typeof(UITypeEditor))]
+        [UserFriendlyName("Business Rules Collection")]
+        public virtual BusinessRuleCollection BusinessRules
+        {
+            get { return _businessRules; }
+        }
+
+        [Category("03. Business Rules & Authorization")]
         [Description("The Authorization Provider for this property.")]
         [UserFriendlyName("Authorization Provider")]
         public virtual AuthorizationProvider AuthzProvider
@@ -193,7 +193,7 @@ namespace CslaGenerator.Metadata
             set { _authzProvider = value; }
         }
 
-        [Category("03. Authorization")]
+        [Category("03. Business Rules & Authorization")]
         [Description("Roles allowed to read the property. Use a comma to separate multiple roles.")]
         [UserFriendlyName("Read Roles")]
         public virtual string ReadRoles
@@ -202,7 +202,7 @@ namespace CslaGenerator.Metadata
             set { _readRoles = PropertyHelper.TidyAllowSpaces(value).Replace(';', ',').Trim(new[] { ',' }); }
         }
 
-        [Category("03. Authorization")]
+        [Category("03. Business Rules & Authorization")]
         [Description("Roles allowed to write to the property. Use a comma to separate multiple roles.")]
         [UserFriendlyName("Write Roles")]
         public virtual string WriteRoles
@@ -211,7 +211,7 @@ namespace CslaGenerator.Metadata
             set { _writeRoles = PropertyHelper.TidyAllowSpaces(value).Replace(';', ',').Trim(new[] {','}); }
         }
 
-        [Category("03. Authorization")]
+        [Category("03. Business Rules & Authorization")]
         [Description("The Authorization Type that controls read action. You can either select an object defined in the current project or an object defined in another assembly.")]
         [Editor(typeof(ObjectEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(AuthorizationRuleTypeConverter))]
@@ -232,7 +232,7 @@ namespace CslaGenerator.Metadata
             }
         }
 
-        [Category("03. Authorization")]
+        [Category("03. Business Rules & Authorization")]
         [Description("The Authorization Type that controls write action. You can either select an object defined in the current project or an object defined in another assembly.")]
         [Editor(typeof(ObjectEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(AuthorizationRuleTypeConverter))]

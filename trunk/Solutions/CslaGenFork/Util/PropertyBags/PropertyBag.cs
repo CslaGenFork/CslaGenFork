@@ -988,7 +988,7 @@ namespace CslaGenerator.Util.PropertyBags
                             propertyName == "UpdaterType")
                             return false;
                         if (cslaObject.ObjectType != CslaObjectType.UnitOfWork &&
-                            (propertyName == "UnitOfWorkCollectionProperties" ||
+                            (propertyName == "UnitOfWorkProperties" ||
                              propertyName == "UnitOfWorkType"))
                             return false;
                         if (!_propertyContext.ShowProperty(cslaObject.ObjectType.ToString(), propertyName))
