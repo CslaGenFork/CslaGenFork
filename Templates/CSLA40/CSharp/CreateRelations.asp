@@ -6,30 +6,26 @@
                 {
 
                     System.Text.StringBuilder sb = new System.Text.StringBuilder();
-                    foreach (CslaObjectInfo item in GetChildItems(info))
-                    {
-                        if (item.ParentProperties.Count > 0)
-                        {
+                    foreach (CslaObjectInfo item in GetChildItems(info)) {
+                        if (item.ParentProperties.Count > 0) {
                             sb.Append("            ds.Relations.Add(\"");
                             sb.Append(info.ObjectName);
                             sb.Append(item.ObjectName);
-                            sb.Append("\", new DataColumn() {");
+                            sb.Append("\", new DataColumn[] {");
                             int i = 0;
-                            foreach (Property prop in item.ParentProperties)
-                            {
+                            foreach (CslaGenerator.Metadata.Property prop in item.ParentProperties) {
                                 if (i > 0)
                                     sb.Append(", ");
-                                sb.Append("ds.Tables(\"");
-                                sb.Append(Info.ObjectName);
-                                sb.Append("\").Columns(\"");
+                                sb.Append("ds.Tables[\"");
+                                sb.Append(info.ObjectName);
+                                sb.Append("\"].Columns[\"");
                                 sb.Append(prop.Name);
-                                sb.Append("\")");
+                                sb.Append("\"]");
                                 i++;
                             }
                             i = 0;
-                            sb.Append("}, new DataColumn() {");
-                            foreach (Property prop in item.ParentProperties)
-                            {
+                            sb.Append("}, new DataColumn[] {");
+                            foreach (CslaGenerator.Metadata.Property prop in item.ParentProperties) {
                                 if (i > 0)
                                     sb.Append(", ");
                                 sb.Append("ds.Tables[\"");
@@ -53,21 +49,13 @@
                 obj = FindChildInfo(Info, Info.ItemType);
             else
                 obj = Info;
-            if (obj != null)
-            {
+            if (obj != null) {
                 string[] objectNames = GetAllChildItemsInHierarchy(obj); %>
             ds.Tables[0].TableName = "<%=obj.ObjectName%>";
-                <%
-                for (int i = 0; i < objectNames.Length; i++)
-                {
-                    %>
+                <% for (int i = 0; i < objectNames.Length; i++) { %>
             ds.Tables[<%=(i+1).ToString()%>].TableName = "<%=objectNames[i]%>";
-                <%
-                }
-                %>
-<%= GetDSRelations(obj) %>
-            <%
-            }
-            %>
+                <% } %>
+<%=GetDSRelations(obj)%>
+            <% } %>
         }
         
