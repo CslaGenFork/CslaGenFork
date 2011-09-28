@@ -650,10 +650,8 @@ namespace CslaGenerator.Util.PropertyBags
                         GeneratorController.Current.CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider) &&
                         propertyName == "AuthzProvider")
                         return false;
-                    if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework !=
-                         TargetFramework.CSLA40 &&
-                         GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework !=
-                         TargetFramework.CSLA40DAL) &&
+                    if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40 &&
+                         GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL) &&
                         propertyName == "BusinessRules")
                         return false;
 

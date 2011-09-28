@@ -754,10 +754,8 @@ namespace CslaGenerator.Util.PropertyBags
                 if (propertyName == "CacheResult")
                     if (!SelectedObject[0].BaseRuleProperties.Contains("CacheResult"))
                         return false;
-                if ((GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization ==
-                     AuthorizationLevel.None ||
-                     GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization ==
-                     AuthorizationLevel.ObjectLevel) &&
+                if ((GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.None ||
+                     GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.ObjectLevel) &&
                     (propertyName == "ReadRoles" ||
                      propertyName == "WriteRoles"))
                     return false;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Drawing;
 using System.Reflection;
@@ -18,7 +19,8 @@ namespace CslaGenerator.Design
         private CollectionForm _form;
         private PropertyGrid _propGrid;
         private Type _collectionType;
-        private static string _parentValProp;
+        private Dictionary<string, Button> exitButton = new Dictionary<string, Button>();
+        private static string _parentValProp = string.Empty;
         private static string _parentProperty;
 
         public static string ParentValProp
@@ -94,7 +96,7 @@ namespace CslaGenerator.Design
                     }
                 }
             }
-            else if (_collectionType == typeof (ValueProperty) || _collectionType == typeof (ChildProperty))
+            else if (_collectionType == typeof(ValueProperty) || _collectionType == typeof(ChildProperty))
             {
                 foreach (Control control in _form.Controls)
                 {
@@ -105,6 +107,26 @@ namespace CslaGenerator.Design
                             if (panelControl is PropertyGrid)
                             {
                                 ((PropertyGrid) panelControl).SelectedGridItemChanged += OnGridItemChangedProperty;
+                            }
+                            
+                            if (panelControl is TableLayoutPanel)
+                            {
+                                var layoutPanel = (TableLayoutPanel)panelControl;
+                                if (layoutPanel.Name == "okCancelTableLayoutPanel")
+                                {
+                                    foreach (var tableControl in layoutPanel.Controls)
+                                    {
+                                        if (tableControl is Button)
+                                        {
+                                            var button = (Button) tableControl;
+                                            if (button.Name == "cancelButton" || button.Name == "okButton")
+                                            {
+                                                exitButton[button.Name] = button;
+                                                button.Click += ExitButtonClickHandler;
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -150,16 +172,19 @@ namespace CslaGenerator.Design
                         {
                             if (panelControl is TableLayoutPanel)
                             {
-                                var layoutPanel = (TableLayoutPanel) panelControl;
-                                foreach (var tableControl in layoutPanel.Controls)
+                                var layoutPanel = (TableLayoutPanel)panelControl;
+                                if (layoutPanel.Name == "addRemoveTableLayoutPanel")
                                 {
-                                    if (tableControl is Button)
+                                    foreach (var tableControl in layoutPanel.Controls)
                                     {
-                                        var button = (Button) tableControl;
-                                        if (button.Text.IndexOf("Add") > 0 || button.Text.IndexOf("Remove") > 0)
+                                        if (tableControl is Button)
                                         {
-                                            button.Hide();
-                                            button.Enabled = false;
+                                            var button = (Button) tableControl;
+                                            if (button.Name == "addButton" || button.Name == "removeButton")
+                                            {
+                                                button.Hide();
+                                                button.Enabled = false;
+                                            }
                                         }
                                     }
                                 }
@@ -204,6 +229,20 @@ namespace CslaGenerator.Design
             _form.Shown += OnFormShow;
 
             return _form;
+        }
+
+        private void ExitButtonClickHandler(object sender, EventArgs e)
+        {
+            _parentValProp = string.Empty;
+            DetachExitButtonClickHandler();
+        }
+
+        private void DetachExitButtonClickHandler()
+        {
+            foreach (var button in exitButton)
+            {
+                button.Value.Click -= ExitButtonClickHandler;
+            }
         }
 
         public void OnSelect(object sender, EventArgs e)
@@ -299,8 +338,17 @@ namespace CslaGenerator.Design
                 var propertyInfo = _propGrid.GetType().GetProperty("SelectedObject", BindingFlags.Public | BindingFlags.Instance);
                 if (selectedObject != null)
                 {
-                    selectedObject.IsPropertyRule = true;
-                    selectedObject.Parent = _parentValProp;
+                    if (!string.IsNullOrEmpty(ParentValProp))
+                    {
+                        selectedObject.IsPropertyRule = true;
+                        selectedObject.Parent = _parentValProp;
+                    }
+                    else
+                    {
+                        selectedObject.IsPropertyRule= false;
+                        selectedObject.Parent = string.Empty;
+                    }
+                    
                     propertyInfo.SetValue(_propGrid, new BusinessRuleBag(selectedObject), null);
 
                     var ruleCount = 0;
@@ -348,7 +396,7 @@ namespace CslaGenerator.Design
                     foreach (var constructor in constructors)
                     {
                         parameterCount = constructor.ConstructorParameters.Count;
-                        heightIncrease = parameterCount*16;
+                        heightIncrease = parameterCount * 16;
 
                         foreach (var parameter in constructor.ConstructorParameters)
                         {
@@ -356,7 +404,7 @@ namespace CslaGenerator.Design
                                 genericCount++;
                         }
                         if (genericCount > 0)
-                            heightIncrease += 16 + (genericCount*16);
+                            heightIncrease += 16 + (genericCount * 16);
 
                         if (parameterCount == 0 && genericCount == 0)
                         {

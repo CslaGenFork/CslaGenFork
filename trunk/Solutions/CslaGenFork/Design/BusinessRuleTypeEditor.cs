@@ -284,7 +284,7 @@ namespace CslaGenerator.Design
             var isSetActive = false;
             foreach (var info in ctor)
             {
-                var elementFound = false;
+                var primaryPropertyFound = false;
                 var ctorInfo = new BusinessRuleConstructor();
                 var ctorParams = info.GetParameters();
                 foreach (var param in ctorParams)
@@ -313,7 +313,7 @@ namespace CslaGenerator.Design
                     if (ctorParamInfo.Type == "IPropertyInfo" && ctorParamInfo.Name == "primaryProperty")
                     {
                         ctorParamInfo.Value = rule.Parent;
-                        elementFound = true;
+                        primaryPropertyFound = true;
                     }
                     else
                     {
@@ -339,10 +339,10 @@ namespace CslaGenerator.Design
                     ctorInfo.ConstructorParameters.Add(ctorParamInfo);
                 }
 
-                if (rule.IsPropertyRule && !elementFound)
+                if (rule.IsPropertyRule && !primaryPropertyFound)
                     continue;
 
-                if (!rule.IsPropertyRule && elementFound)
+                if (!rule.IsPropertyRule && primaryPropertyFound)
                     continue;
 
                 ctorCounter++;
@@ -368,13 +368,13 @@ namespace CslaGenerator.Design
             var hasPropertyCTor = false;
             foreach (var constructor in candidate.GetConstructors())
             {
-                var elementFound = false;
+                var primaryPropertyFound = false;
                 foreach (var parameter in constructor.GetParameters())
                 {
                     if (parameter.ParameterType.Name == "IPropertyInfo" && parameter.Name == "primaryProperty")
-                        elementFound = true;
+                        primaryPropertyFound = true;
                 }
-                if (elementFound)
+                if (primaryPropertyFound)
                     hasPropertyCTor = true;
                 else
                     hasObjectCTor = true;
