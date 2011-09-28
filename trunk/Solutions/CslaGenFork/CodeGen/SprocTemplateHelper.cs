@@ -667,7 +667,7 @@ namespace CslaGenerator.CodeGen
             }
             else
             {
-                CslaObjectInfo item = info.Parent.CslaObjects.Find(Info.ItemType);
+                CslaObjectInfo item = info.Parent.CslaObjects.Find(info.ItemType);
                 allValueProps = item.GetAllValueProperties();
             }
 
