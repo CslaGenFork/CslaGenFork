@@ -33,7 +33,7 @@ if (!Info.IsUpdater)
 
     string typeOfCriteria = string.Empty;
     string objectFunctions = string.Empty;
-    foreach (UnitOfWorkProperty uowProp in Info.UnitOfWorkCollectionProperties)
+    foreach (UnitOfWorkProperty uowProp in Info.UnitOfWorkProperties)
     {
         // check criteria compatibility
         if (uowProp.TargetCriteria == string.Empty)

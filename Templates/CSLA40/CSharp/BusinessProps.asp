@@ -181,7 +181,7 @@ foreach (ChildProperty prop in Info.GetMyChildProperties())
 
 // Unit of Work properties
 int uowCount = 0;
-foreach (UnitOfWorkProperty prop in Info.UnitOfWorkCollectionProperties)
+foreach (UnitOfWorkProperty prop in Info.UnitOfWorkProperties)
 {
     uowCount ++;
     string statement = PropertyInfoUoWDeclare(Info, prop);

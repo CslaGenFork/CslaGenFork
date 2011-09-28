@@ -30,7 +30,7 @@ if (crit.GetOptions.DataPortal)
         %>protected void DataPortal_Fetch(<%= fetchUowCrit %>)
         {
             <%
-    foreach (UnitOfWorkProperty uowProp in Info.UnitOfWorkCollectionProperties)
+    foreach (UnitOfWorkProperty uowProp in Info.UnitOfWorkProperties)
     {
         if (CheckTargetPropertiesFound(Info, uowProp, crit))
         {
