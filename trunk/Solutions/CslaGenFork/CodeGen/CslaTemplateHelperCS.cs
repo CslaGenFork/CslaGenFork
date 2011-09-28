@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -4048,7 +4049,15 @@ namespace CslaGenerator.CodeGen
 
         public string GetCommand(CslaObjectInfo info, string commandText)
         {
-            return "using (var cmd = new SqlCommand(\"" + commandText + "\", " + LocalContextConnection(info) + "))";
+            var sprocTemplateHelper = new SprocTemplateHelper();
+            List<IResultObject> tables = sprocTemplateHelper.GetTablesSelect(info);
+            sprocTemplateHelper.SortTables(tables);
+
+            var plainTableSchema = string.Empty;
+            if (info.Parent.GenerationParams.GenerateQueriesWithSchema)
+                plainTableSchema = tables[0].ObjectSchema + ".";
+
+            return "using (var cmd = new SqlCommand(\"" + plainTableSchema + commandText + "\", " + LocalContextConnection(info) + "))";
         }
 
         public string LocalContextConnection(CslaObjectInfo info)
@@ -4068,12 +4077,13 @@ namespace CslaGenerator.CodeGen
 
         public string[] CslaObjectPrimaryKeys(CslaObjectInfo info)
         {
-            var pkList = new List<string>();
+            /*var pkList = new List<string>();
             foreach (var prop in info.AllValueProperties)
             {
                 if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
                     pkList.Add(prop.Name);
-            }
+            }*/
+            var pkList = (from prop in info.AllValueProperties where prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default select prop.Name).ToList();
             pkList.Sort();
 
             return pkList.ToArray();
