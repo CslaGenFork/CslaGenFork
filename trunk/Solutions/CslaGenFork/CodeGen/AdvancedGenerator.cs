@@ -215,6 +215,14 @@ namespace CslaGenerator.CodeGen
 
             if (_generateDatabaseClass)
             {
+                var tempDbFilename = GetFolderPath(unit, GenerationStep.Business);
+                tempDbFilename += "Database";
+                if (objInfo.OutputLanguage == CodeLanguage.CSharp)
+                    tempDbFilename += ".cs";
+                else if (objInfo.OutputLanguage == CodeLanguage.VB)
+                    tempDbFilename += ".vb";
+                if(File.Exists(tempDbFilename))
+                    File.Delete(tempDbFilename);
                 GenerateUtilityFile("Database", objInfo, unit, GenerationStep.Business);
             }
             else
