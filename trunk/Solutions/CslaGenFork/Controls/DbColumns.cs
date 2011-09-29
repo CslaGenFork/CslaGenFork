@@ -246,7 +246,7 @@ namespace CslaGenerator.Controls
         internal void SelectAll(DbSchemaPanel dbSchemaPanel, CslaGeneratorUnit currentUnit)
         {
             /*
-		    currentUnit.Params.CreateReadOnlyObjectsCopySoftDelete
+            currentUnit.Params.CreateReadOnlyObjectsCopySoftDelete
             */
 
             // select all columns in list, except for the exceptions

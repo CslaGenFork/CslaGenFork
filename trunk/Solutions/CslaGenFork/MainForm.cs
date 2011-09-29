@@ -539,11 +539,12 @@ namespace CslaGenerator
         {
             if (ForceLoadCodeSmith())
             {
-                ofdLoad.InitialDirectory = _controller.ProjectsFolderPath;
+                ofdLoad.InitialDirectory = _controller.ProjectsDirectory;
                 DialogResult result = ofdLoad.ShowDialog(this);
                 if (result == DialogResult.OK)
                 {
-                    _controller.ProjectsFolderPath = ofdLoad.FileName.Substring(0, ofdLoad.FileName.LastIndexOf('\\'));
+                    _controller.ProjectsDirectory = ofdLoad.FileName.Substring(0, ofdLoad.FileName.LastIndexOf('\\'));
+                    ConfigTools.Change("ProjectsDirectory", _controller.ProjectsDirectory);
                     Application.DoEvents();
                     Cursor.Current = Cursors.WaitCursor;
                     OpenProjectFile(ofdLoad.FileName);
@@ -567,10 +568,10 @@ namespace CslaGenerator
                 return;
             }
 
-            SaveasToolStripMenuItemClick(sender, e);
+            SaveAsToolStripMenuItemClick(sender, e);
         }
 
-        private void SaveasToolStripMenuItemClick(object sender, EventArgs e)
+        private void SaveAsToolStripMenuItemClick(object sender, EventArgs e)
         {
             Application.DoEvents();
             if (ofdLoad.FileName.Length > 1)
@@ -580,11 +581,12 @@ namespace CslaGenerator
             else
                 sfdSave.FileName = "Project.xml";
 
-            sfdSave.InitialDirectory = _controller.ProjectsFolderPath;
+            sfdSave.InitialDirectory = _controller.ProjectsDirectory;
             DialogResult result = sfdSave.ShowDialog(this);
             if (result == DialogResult.OK)
             {
-                _controller.ProjectsFolderPath = sfdSave.FileName.Substring(0, sfdSave.FileName. LastIndexOf('\\'));
+                _controller.ProjectsDirectory = sfdSave.FileName.Substring(0, sfdSave.FileName. LastIndexOf('\\'));
+                ConfigTools.Change("ProjectsDirectory", _controller.ProjectsDirectory);
                 Cursor.Current = Cursors.WaitCursor;
                 Application.DoEvents();
                 _controller.Save(sfdSave.FileName);

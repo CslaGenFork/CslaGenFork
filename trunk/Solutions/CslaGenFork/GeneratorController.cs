@@ -123,9 +123,10 @@ namespace CslaGenerator
             }
         }
 
-        public string ProjectsFolderPath { get; set; }
-        public string ObjectsFolderPath { get; set; }
-        public string RulesFolderPath { get; set; }
+        public string TemplatesDirectory { get; set; }
+        public string ProjectsDirectory { get; set; }
+        public string ObjectsDirectory { get; set; }
+        public string RulesDirectory { get; set; }
 
         internal ProjectProperties ProjectPropertiesTab
         {
@@ -166,8 +167,6 @@ namespace CslaGenerator
             get { return _currentFilePath; }
             set { _currentFilePath = value; }
         }
-
-        public string TemplatesDirectory { get; set; }
 
         #endregion
 
@@ -591,6 +590,14 @@ namespace CslaGenerator
 
         private void GetConfig()
         {
+            GetConfigTemplatesFolder();
+            GetConfigProjectsFolder();
+            GetConfigObjectsFolder();
+            GetConfigRulesFolder();
+        }
+
+        private void GetConfigTemplatesFolder()
+        {
             var tDir = ConfigTools.Get("TemplatesDirectory");
             if (string.IsNullOrEmpty(tDir))
             {
@@ -609,6 +616,75 @@ namespace CslaGenerator
             else
             {
                 TemplatesDirectory = tDir;
+            }
+        }
+
+        private void GetConfigProjectsFolder()
+        {
+            var tDir = ConfigTools.Get("ProjectsDirectory");
+            if (string.IsNullOrEmpty(tDir))
+            {
+                tDir = ConfigTools.OriginalGet("ProjectsDirectory");
+
+                while (tDir.LastIndexOf(@"\\") == tDir.Length - 2)
+                {
+                    tDir = tDir.Substring(0, tDir.Length - 1);
+                }
+            }
+
+            if (string.IsNullOrEmpty(tDir))
+            {
+                ProjectsDirectory = Environment.SpecialFolder.Desktop.ToString();
+            }
+            else
+            {
+                ProjectsDirectory = tDir;
+            }
+        }
+
+        internal void GetConfigObjectsFolder()
+        {
+            var tDir = ConfigTools.Get("ObjectsDirectory");
+            if (string.IsNullOrEmpty(tDir))
+            {
+                tDir = ConfigTools.OriginalGet("ObjectsDirectory");
+
+                while (tDir.LastIndexOf(@"\\") == tDir.Length - 2)
+                {
+                    tDir = tDir.Substring(0, tDir.Length - 1);
+                }
+            }
+
+            if (string.IsNullOrEmpty(tDir))
+            {
+                ObjectsDirectory = Environment.SpecialFolder.Desktop.ToString();
+            }
+            else
+            {
+                ObjectsDirectory = tDir;
+            }
+        }
+
+        internal void GetConfigRulesFolder()
+        {
+            var tDir = ConfigTools.Get("RulesDirectory");
+            if (string.IsNullOrEmpty(tDir))
+            {
+                tDir = ConfigTools.OriginalGet("RulesDirectory");
+
+                while (tDir.LastIndexOf(@"\\") == tDir.Length - 2)
+                {
+                    tDir = tDir.Substring(0, tDir.Length - 1);
+                }
+            }
+
+            if (string.IsNullOrEmpty(tDir))
+            {
+                RulesDirectory = Environment.SpecialFolder.Desktop.ToString();
+            }
+            else
+            {
+                RulesDirectory = tDir;
             }
         }
 
