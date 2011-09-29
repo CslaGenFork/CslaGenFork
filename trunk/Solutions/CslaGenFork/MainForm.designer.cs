@@ -202,7 +202,7 @@ namespace CslaGenerator
             this.saveasToolStripMenuItem.Name = "saveasToolStripMenuItem";
             this.saveasToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.saveasToolStripMenuItem.Text = "Save &as";
-            this.saveasToolStripMenuItem.Click += new System.EventHandler(this.SaveasToolStripMenuItemClick);
+            this.saveasToolStripMenuItem.Click += new System.EventHandler(this.SaveAsToolStripMenuItemClick);
             // 
             // fileMenuSeparator1
             // 
