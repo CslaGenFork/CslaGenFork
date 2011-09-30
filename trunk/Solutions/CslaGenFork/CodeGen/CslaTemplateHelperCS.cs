@@ -831,7 +831,7 @@ namespace CslaGenerator.CodeGen
                 }
                 result = BuildArrayOrParams(parameter, result);
             }
-            else if (parameter.Type.LastIndexOf("[]") == parameter.Type.Length -2 && result != string.Empty)
+            else if (parameter.Type.LastIndexOf("[]") > -1 && parameter.Type.LastIndexOf("[]") == parameter.Type.Length -2 && result != string.Empty)
             {
                 string[] resultSplit = result.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
                 result = string.Empty;
