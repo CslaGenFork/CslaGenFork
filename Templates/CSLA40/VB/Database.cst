@@ -6,10 +6,20 @@
 <%@ Import Namespace="CslaGenerator.Metadata" %>
 <%@ Import Namespace="CslaGenerator.CodeGen" %>
 <%@ Import Namespace="CslaGenerator.Util" %>
+<%@ Import Namespace="System.Collections.Generic" %>
 
 <%
 int silverlightLevel = 0;
 bool genOptional = false;
+List<string> dbNameList = new List<string>();
+foreach (CslaObjectInfo cslaInfo in CurrentUnit.CslaObjects)
+{
+    if (cslaInfo.Generate)
+    {
+        if(!dbNameList.Contains(cslaInfo.DbName))
+            dbNameList.Add(cslaInfo.DbName);
+    }
+}
 if (CurrentUnit.GenerationParams.HeaderVerbosity != HeaderVerbosity.None)
 {
     %>
@@ -35,13 +45,18 @@ if (CurrentUnit.GenerationParams.UtilitiesNamespace.Length > 0)
 
         #region Database Connections
 
-        /// <summary>Connection string to the main database.</summary>
-        internal static string <%= Info.DbName %>Connection
+        <%
+foreach (string dbName in dbNameList)
+{
+        %>/// <summary>Connection string to the <%= dbName %> database.</summary>
+        internal static string <%= dbName %>Connection
         {
-            get { return ConfigurationManager.ConnectionStrings["<%= Info.DbName %>"].ConnectionString; }
+            get { return ConfigurationManager.ConnectionStrings["<%= dbName %>"].ConnectionString; }
         }
 
-        /// <summary>Connection string to the security database.</summary>
+        <%
+}
+        %>/// <summary>Connection string to the security database.</summary>
         internal static string SecurityConnection
         {
             get { return ConfigurationManager.ConnectionStrings["Security"].ConnectionString; }

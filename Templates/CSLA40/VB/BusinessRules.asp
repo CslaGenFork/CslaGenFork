@@ -98,8 +98,7 @@ if (generateRuleRegion || generateAuthRegion || generateObjectRuleRegion)
             {
                 if (constructor.IsActive)
                 {
-                    foreach (BusinessRuleConstructorParameter parameter in constructor.ConstructorParameters
-                        )
+                    foreach (BusinessRuleConstructorParameter parameter in constructor.ConstructorParameters)
                     {
                         if (isFirst)
                             isFirst = false;
@@ -199,8 +198,7 @@ if (generateRuleRegion || generateAuthRegion || generateObjectRuleRegion)
                 {
                     if (constructor.IsActive)
                     {
-                        foreach (BusinessRuleConstructorParameter parameter in constructor.ConstructorParameters
-                            )
+                        foreach (BusinessRuleConstructorParameter parameter in constructor.ConstructorParameters)
                         {
                             if (isFirst)
                                 isFirst = false;
