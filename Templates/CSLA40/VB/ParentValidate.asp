@@ -53,8 +53,8 @@ else
                     if (!found)
                     {
                         Errors.Append("ParentType " + Info.ParentType + " has no child collection " + Info.ObjectName + Environment.NewLine);
+                        return;
                     }
-                    return;
                 }
 
                 // The parent of Child objects must know they exist
@@ -73,8 +73,8 @@ else
                     if (!found)
                     {
                         Errors.Append("ParentType " + Info.ParentType + " has no child " + Info.ObjectName + Environment.NewLine);
+                        return;
                     }
-                    return;
                 }
             }
         }
@@ -142,8 +142,8 @@ else
                 if (!found)
                 {
                     Errors.Append("Grand ParentType " + validateParentInfo.ParentType + " has no child collection " + validateInfo.ObjectName + Environment.NewLine);
+                    return;
                 }
-                return;
             }
 
             // The parent of Child objects must know they exist
@@ -162,8 +162,8 @@ else
                 if (!found)
                 {
                     Errors.Append("ParentType " + validateParentInfo.ParentType + " has no child " + validateInfo.ObjectName + Environment.NewLine);
+                    return;
                 }
-                return;
             }
         }
     }
