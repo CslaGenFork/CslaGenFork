@@ -65,7 +65,7 @@ namespace CslaGenerator.Metadata
         private bool _lazyLoad;
         private bool _generateSprocs = true;
         private PropertyCollection _parentProperties = new PropertyCollection();
-        private BusinessRuleCollection _businessRules;
+        private BusinessRuleCollection _businessRules = new BusinessRuleCollection();
         private AuthorizationProvider _authzProvider;
         private AuthorizationRule _getAuthzRuleType = new AuthorizationRule();
         private AuthorizationRule _newAuthzRuleType = new AuthorizationRule();
@@ -1327,7 +1327,7 @@ namespace CslaGenerator.Metadata
         }
 
         /// <summary>
-        /// Inherited non-collection child properties plus collection child properties.
+        /// Inherited non-collection child properties plus inherited collection child properties.
         /// </summary>
         [XmlIgnore]
         [Browsable(false)]
