@@ -1,156 +1,93 @@
-<%@ CodeTemplate Inherits="CslaTemplateHelperCS" Debug="false" Language="VB" TargetLanguage="VB" Description="Generates a CSLA Editable Child Object." %>
+<%@ CodeTemplate Inherits="CslaTemplateHelperCS" Debug="false" Language="CSharp" TargetLanguage="CSharp" Description="Generates a CSLA Editable Child Object." %>
 <%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the EditableChild Object to create." %>
 <%@ Property Name="Errors" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return errors to master.cst" %>
 <%@ Property Name="Warnings" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return warnings to master.cst" %>
-<%@ Property Name="ActiveObjects" Type="System.Boolean" Default="false" Category="Options" Description="if true, base class is generated as ActiveObjects" %>
+<%@ Property Name="MethodList" Type="System.Collections.Generic.List<string>" Optional="false" Category="Options" Description="Allows the template to return a list a partial methods to master.cst (for Silverlight using services)" %>
 
+<%@ Assembly Name="DBSchemaInfo" %>
+<%@ Import Namespace="DBSchemaInfo.Base" %>
 <%@ Assembly Name="CslaGenerator" %>
 <%@ Import Namespace="CslaGenerator" %>
 <%@ Import Namespace="CslaGenerator.Metadata" %>
 <%@ Import Namespace="CslaGenerator.CodeGen" %>
 <%@ Import Namespace="CslaGenerator.Util" %>
 <%@ Import Namespace="System.Text" %>
+<%@ Import Namespace="System.Collections.Generic" %>
+<%@ Import Namespace="System.Reflection" %>
 
-<!-- #include file="EditableChildValidate.asp" -->
+<!-- #include file="EditableChild_Validate.asp" -->
 <%
 if (Errors.Length == 0)
 {
+    bool isChild = true;
+    int silverlightLevel = 0;
+    bool genOptional = false;
+    bool useItem = false;
     bool first = true;
     %><!-- #include file="Header.asp" -->
-using System;
-using System.Data;
-using System.Data.SqlClient;
-using Csla;
-<%
-    if (ActiveObjects)
-    {
-        %>using ActiveObjects;
-        <%
-    }
-%>
-using Csla.Data;
-<%= GetUsingStatementsString(Info) %>
+<!-- #include file="Using.asp" -->
 <%
     if (Info.ObjectNamespace.Length > 0)
     {
         %>namespace <%= Info.ObjectNamespace %>
 {
-    <%
+<%
     }
-    %>
-<% bool? firstComment = null; %><!-- #include file="XmlComment.asp" -->
+    bool? firstComment = null;
+    %><!-- #include file="XmlComment.asp" -->
     <%
     if (GetAttributesString(Info.Attributes) != string.Empty)
     {
         %>
     <%= GetAttributesString(Info.Attributes) %>
-        <%
+    <%
     }
     %>
     [Serializable]
-    <%
-    if (ActiveObjects && Info.SubscribeToChannel.Length > 0)
-    {
-        %>
-        [Subscribe("<%= Info.SubscribeToChannel %>")]
-        <%
-    }
-    %>
     public partial class <%= Info.ObjectName %> : <%
-    if (Info.InheritedType.Type != string.Empty)
+    if (Info.InheritedType.Type != string.Empty || Info.InheritedType.ObjectName != string.Empty)
     {
-        %><%=Info.InheritedType.Type%><%
-    }
-    else if (Info.InheritedType.ObjectName != string.Empty)
-    {
-        %><%=Info.InheritedType.ObjectName%><%
+        %><!-- #include file="Inherits.asp" --><%
     }
     else
     {
-        %><% if (ActiveObjects) { %>Active<% } %>BusinessBase<%
+        %>BusinessBase<<%=Info.ObjectName %>><!-- #include file="Implements.asp" --><%
     }
-        %><<%=Info.ObjectName%>><!-- #include file="Implements.asp" -->
+    %>
     {
 <!-- #include file="StaticFields.asp" -->
 <!-- #include file="StateFields.asp" -->
-
 <!-- #include file="BusinessProps.asp" -->
-
-<!-- #include file="BusinessRules.asp" -->
-
-        <!-- #include file="ObjectOverrides.asp" -->
+<!-- #include file="ObjectOverrides.asp" -->
     <%
     Response.Write(Environment.NewLine);
-    %>
-        #region Factory Methods
-        <%
     if (Info.GenerateFactoryMethods)
     {
-        if (Info.DbName.Equals(String.Empty))
-        {
-            Warnings.Append("Make sure you specify a DB name." + Environment.NewLine) ;
-        }
         %>
-        <!-- #include file="NewObject.asp" -->
-
-        <%
-        if (Info.DbName != String.Empty)
-        {
-            bool selfLoad2 = GetSelfLoad(Info);
-            bool lazyLoad2 = GetLazyLoad(Info);
-            CslaObjectInfo tmpInfo = Info.Parent.CslaObjects.Find(Info.ParentType);
-            bool isCollection = false;
-            if (tmpInfo != null)
-                isCollection = IsCollectionType(tmpInfo.ObjectType);
-            if (selfLoad2 && lazyLoad2 && !isCollection)
-            {
-                %>
-        <!-- #include file="GetObject.asp" -->
-                <%
-            }
-            else
-            {
-                %>
-        <!-- #include file="InternalGetObject.asp" -->
-                <%
-            }
-        }
-        %>
-        <%
-        Response.Write(Environment.NewLine);
-        %>
-        #endregion
-        <%
+<!-- #include file="EditableChild_Factory.asp" -->
+<%
     }
     %>
-<!-- #include file="Constructor.asp"  -->
-
-    <!-- #include file="Criteria.asp"  -->
-
-<!-- #include file="SharedAuthorizationMethods.asp" -->
-    <%
-    Response.Write(Environment.NewLine);
-    %>
+<!-- #include file="Constructor.asp" -->
+<!-- #include file="Criteria.asp" -->
+<!-- #include file="ObjectAuthorizationMethods.asp" -->
+<!-- #include file="BusinessRules.asp" -->
 <!-- #include file="ConvertProperties.asp" -->
-
-    <%
-    if (Info.DbName != String.Empty)
+<%
+    if (Info.GenerateDataAccessRegion)
     {
-        if (Info.GenerateDataAccessRegion)
+        if (CurrentUnit.GenerationParams.DatabaseConnection.Equals(String.Empty) && (UseNoSilverlight() || CurrentUnit.GenerationParams.GenerateSilverlight4))
         {
-            %>
-        #region Data Access
-
-        <!-- #include file="DataPortalCreate.asp"  -->
-
-        <!-- #include file="DataPortalFetch.asp" -->
-
-        <!-- #include file="InternalUpdate.asp" -->
-<% Response.Write(""); %>
-        #endregion
+            Errors.Append("Make sure you specify a DB name." + Environment.NewLine);
+        }
+        if (!genOptional)
+        {
+            Response.Write(Environment.NewLine);
+        }
+        %>
+<!-- #include file="EditableChild_DataPortal.asp" -->
 <!-- #include file="Events.asp" -->
 <%
-        }
     }
     %>
 
@@ -160,7 +97,7 @@ using Csla.Data;
     {
         %>
 }
-        <%
+<%
     }
 }
 %>

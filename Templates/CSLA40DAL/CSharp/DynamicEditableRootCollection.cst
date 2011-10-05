@@ -2,109 +2,120 @@
 <%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the DynamicEditableRootCollection Object to create." %>
 <%@ Property Name="Errors" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return errors to master.cst" %>
 <%@ Property Name="Warnings" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return warnings to master.cst" %>
-<%@ Property Name="ActiveObjects" Type="System.Boolean" Default="false" Category="Options" Description="if true, base class is generated as ActiveObjects" %>
+<%@ Property Name="MethodList" Type="System.Collections.Generic.List<string>" Optional="false" Category="Options" Description="Allows the template to return a list a partial methods to master.cst (for Silverlight using services)" %>
 
+<%@ Assembly Name="DBSchemaInfo" %>
+<%@ Import Namespace="DBSchemaInfo.Base" %>
 <%@ Assembly Name="CslaGenerator" %>
 <%@ Import Namespace="CslaGenerator" %>
 <%@ Import Namespace="CslaGenerator.Metadata" %>
 <%@ Import Namespace="CslaGenerator.CodeGen" %>
 <%@ Import Namespace="CslaGenerator.Util" %>
 <%@ Import Namespace="System.Text" %>
+<%@ Import Namespace="System.Collections.Generic" %>
+<%@ Import Namespace="System.Reflection" %>
 
-<!-- #include file="DynamicEditableRootCollectionValidate.asp" -->
+<!-- #include file="DynamicEditableRootCollection_Validate.asp" -->
 <%
 if (Errors.Length == 0)
 {
+    bool isChild = false;
+    int silverlightLevel = 0;
+    bool genOptional = false;
+    bool useItem = true;
     bool first = true;
     %><!-- #include file="Header.asp" -->
-using System;
-using System.Data;
-using System.Data.SqlClient;
-using Csla;
-<% if (ActiveObjects) { %>using ActiveObjects;
-<% } %>using Csla.Data;
-<%= GetUsingStatementsString(Info) %>
-<% if (Info.ObjectNamespace.Length > 0) { %>namespace <%= Info.ObjectNamespace %>
-{<% } %>
-<% bool? firstComment = null; %><!-- #include file="XmlComment.asp" -->
-    <% if (GetAttributesString(Info.Attributes) != string.Empty) { %>
-    <%= GetAttributesString(Info.Attributes) %>
-    <% } %>
-    [Serializable]
-    <% if (ActiveObjects) { %>[RegisterNotify("IsValid, IsDirty, BrokenRulesChanged")]
-    <%    if (Info.SubscribeToChannel.Length > 0) { %>[Subscribe("<%= Info.SubscribeToChannel %>")]<% } %>
-    <% } %>public partial class <%= Info.ObjectName %> : <%
-            if (Info.InheritedType.Type != String.Empty) {
-                %><%=Info.InheritedType.Type%><%
-            } else if (Info.InheritedType.ObjectName != String.Empty) {
-                %><%=Info.InheritedType.ObjectName%><%
-             } else {
-                %><% if (ActiveObjects) { %>Active<% } %>DynamicListBase<%
-            } %><<%=Info.ItemType %>><!-- #include file="Implements.asp" -->
+<!-- #include file="Using.asp" -->
+<%
+    if (Info.ObjectNamespace.Length > 0)
     {
-        <!-- #include file="CollectionBusinessProps.asp" -->
-
-<!-- #include file="FindMethods.asp" -->
-
-    <% if (Info.GenerateFactoryMethods) {
-            if (Info.DbName.Equals(String.Empty)) {
-                Warnings.Append("Make sure you specify a DB name." + Environment.NewLine);
-            }
+        %>namespace <%= Info.ObjectNamespace %>
+{
+<%
+    }
+    bool? firstComment = null;
+    %><!-- #include file="XmlComment.asp" -->
+    <%
+    if (GetAttributesString(Info.Attributes) != string.Empty)
+    {
+        %>
+    <%= GetAttributesString(Info.Attributes) %>
+    <%
+    }
     %>
-        #region Factory Methods
-
-        /// <summary>Adds a new item to the end of the <see cref="<%=Info.ObjectName%>"/> collection.</summary>
-        protected override object AddNewCore()
+    [Serializable]
+<%
+    if (CurrentUnit.GenerationParams.DualListInheritance)
+    {
+        %>#if WINFORMS
+    <%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %>public partial class <%= Info.ObjectName %> : <%
+        if (Info.InheritedTypeWinForms.Type != string.Empty || Info.InheritedTypeWinForms.ObjectName != string.Empty)
         {
-            <%= Info.ItemType %> item = <%= Info.ItemType %>.New<%= Info.ItemType %>();
-            Add(item);
-            return item;
+            %><!-- #include file="InheritsWinForms.asp" --><%
+        }
+        else
+        {
+            %><%= ListBaseHelper("Dynamic", true) %><<%= Info.ItemType %>><!-- #include file="Implements.asp" --><%
         }
 
-        /// <summary>
-        /// Factory method. Creates a new <see cref="<%=Info.ObjectName%>"/> collection.
-        /// </summary>
-        /// <returns>A reference to the created <see cref="<%=Info.ObjectName%>"/> object.</returns>
-        public static <%= Info.ObjectName %> New<%= Info.ObjectName %>()
-        {
-            <%
-            if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
-                CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel &&
-                Info.GetRoles.Trim() != String.Empty)
-            {
-                %>
-            //if (!CanAddObject())
-            //    throw new System.Security.SecurityException("User not authorized to create a <%= Info.ObjectName %>.");aaa
-
-            <%
-            }
-            %>
-            return DataPortal.Create<<%= Info.ObjectName %>>();
-        }
-        <!-- #include file="GetObject.asp" -->
-<% Response.Write(Environment.NewLine); %>
-        #endregion
-    <% } %>
-        <!-- #include file="Save.asp" -->
-
+        %>#else
+    <%
+    }
+    %><%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %>public partial class <%= Info.ObjectName %> : <%
+    if (Info.InheritedType.Type != string.Empty || Info.InheritedType.ObjectName != string.Empty)
+    {
+        %><!-- #include file="Inherits.asp" --><%
+    }
+    else
+    {
+        %><%= ListBaseHelper("Dynamic", false) %><<%= Info.ItemType %>><!-- #include file="Implements.asp" --><%
+    }
+    if (CurrentUnit.GenerationParams.DualListInheritance)
+    {
+        %>#endif
+    <%
+    }
+    %><%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %>{
+<!-- #include file="CollectionBusinessMethods.asp" -->
+<!-- #include file="FindMethods.asp" -->
+<!-- #include file="AddNewCore.asp" -->
+    <%
+    if (Info.GenerateFactoryMethods)
+    {
+        %>
+<!-- #include file="DynamicEditableRootCollection_Factory.asp" -->
+<%
+    }
+    %>
 <!-- #include file="Constructor.asp" -->
-
-        <!-- #include file="Criteria.asp" -->
-
-<!-- #include file="SharedAuthorizationMethods.asp" -->
-<% if (Info.GenerateDataAccessRegion) { %>
-
-        #region Data Access
-
-        <!-- #include file="CollectionDataPortalFetch.asp" -->
-
-        #endregion
+<!-- #include file="Criteria.asp" -->
+<!-- #include file="ObjectAuthorizationMethods.asp" -->
+<%
+    if (Info.GenerateDataAccessRegion)
+    {
+        if (CurrentUnit.GenerationParams.DatabaseConnection.Equals(String.Empty) && (UseNoSilverlight() || CurrentUnit.GenerationParams.GenerateSilverlight4))
+        {
+            Errors.Append("Make sure you specify a DB name." + Environment.NewLine);
+        }
+        if (!genOptional)
+        {
+            Response.Write(Environment.NewLine);
+        }
+        %>
+<!-- #include file="DynamicEditableRootCollection_DataPortal.asp" -->
 <!-- #include file="Events.asp" -->
 
-<% } %>
+<%
+    }
+    %>
 
     }
-<% if (Info.ObjectNamespace.Length > 0) { %>
+<%
+    if (Info.ObjectNamespace.Length > 0)
+    {
+        %>
 }
-<% } %>
-<% } %>
+<%
+    }
+}
+%>

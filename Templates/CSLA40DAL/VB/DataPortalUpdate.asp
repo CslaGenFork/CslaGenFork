@@ -4,7 +4,7 @@ if (Info.GenerateDataPortalUpdate)
     %>
 
         /// <summary>
-        /// Update all changes made on <see cref="<%=Info.ObjectName%>"/> object in the database.
+        /// Update all changes made on <see cref="<%= Info.ObjectName %>"/> object in the database.
         /// </summary>
         <%
     if (Info.TransactionType == TransactionType.EnterpriseServices)
@@ -15,6 +15,11 @@ if (Info.GenerateDataPortalUpdate)
     else if (Info.TransactionType == TransactionType.TransactionScope || Info.TransactionType == TransactionType.TransactionScope)
     {
         %>[Transactional(TransactionalTypes.TransactionScope)]
+        <%
+    }
+    if (Info.InsertUpdateRunLocal)
+    {
+        %>[Csla.RunLocal]
         <%
     }
         %>protected override void DataPortal_Update()
@@ -41,7 +46,11 @@ if (Info.GenerateDataPortalUpdate)
     if (Info.TransactionType == TransactionType.ADO && Info.PersistenceType == PersistenceType.SqlConnectionManager)
     {
         %>cmd.Transaction = ctx.Transaction;
-
+                        <%
+    }
+    if (Info.CommandTimeout != string.Empty)
+    {
+        %>cmd.CommandTimeout = <%= Info.CommandTimeout %>;
                         <%
     }
     %>cmd.CommandType = CommandType.StoredProcedure;
@@ -54,12 +63,12 @@ if (Info.GenerateDataPortalUpdate)
         {
             if (prop.DeclarationMode == PropertyDeclaration.Managed)
             {
-                %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", ReadProperty(<%= FormatPropertyInfoName(prop.Name) %>)).DbType = DbType.<%=prop.DbBindColumn.DataType.ToString()%>;
+                %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", ReadProperty(<%= FormatPropertyInfoName(prop.Name) %>)).DbType = DbType.<%= TypeHelper.GetDbType(prop.PropertyType) %>;
                         <%
             }
             else
             {
-                %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %>).DbType = DbType.<%=prop.DbBindColumn.DataType.ToString()%>;
+                %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %>).DbType = DbType.<%= TypeHelper.GetDbType(prop.PropertyType) %>;
                         <%
             }
         }
@@ -101,15 +110,6 @@ if (Info.GenerateDataPortalUpdate)
 
                     ctx.Commit();
                 <%
-    }
-    if (ActiveObjects)
-    {
-        if (Info.PublishToChannel.Length > 0)
-        {
-            %>
-                        SafePublish("<%= Info.PublishToChannel %>", BusinessEvents.Updated, this);
-                        <%
-        }
     }
     %>
                 }

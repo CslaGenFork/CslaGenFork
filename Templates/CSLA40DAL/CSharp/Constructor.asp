@@ -7,8 +7,8 @@ if (!IsReadOnlyType(Info.ObjectType) && IsCollectionType(Info.ObjectType))
 {
     CslaObjectInfo itemInfo2 = FindChildInfo(Info, Info.ItemType);
     itemName2 = itemInfo2.ObjectName;
-    if ((CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
-        CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel) &&
+    if ((CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.None &&
+        CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.PropertyLevel) &&
         ((itemInfo2.NewRoles.Trim() != String.Empty) ||
         (itemInfo2.UpdateRoles.Trim() != String.Empty) ||
         (itemInfo2.DeleteRoles.Trim() != String.Empty)))
@@ -23,37 +23,81 @@ if (!IsReadOnlyType(Info.ObjectType) && IsCollectionType(Info.ObjectType))
 }
 %>
 
-        #region Constructors
+        #region Constructor
 
         /// <summary>
         /// Initializes a new instance of the <see cref="<%= Info.ObjectName %>"/> class.
         /// </summary>
-        /// <remarks> This isn't a public access method in order to prevent direct creation.
-        /// Use factory methods instead.</remarks>
+        /// <remarks> Do not use to create a <%= Info.ObjectType == CslaObjectType.UnitOfWork ? "Unit of Work" : "Csla object" %>. Use factory methods instead.</remarks>
+<%
+if (UseBoth())
+{
+    %>
+#if SILVERLIGHT
+<%
+}
+if (UseSilverlight())
+{
+    %>
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public <%= Info.ObjectName %>()
+<%
+}
+if (UseBoth()) // check there is a fetch
+{
+    %>
+#else
+<%
+}
+if (UseNoSilverlight())
+{
+    %>
         <%= GetConstructorVisibility(Info) %> <%= Info.ObjectName %>()
+<%
+}
+if (UseBoth())
+{
+    %>
+#endif
+<%
+}
+%>
         {
             // Prevent direct creation
             <%
-            // DataPortal_CreateChild already takes care of marking childs
-            // CurrentUnit.GenerationParams.UseChildDataPortal is enought to say when this happens
-            // except Get-(SafeDataReader dr) that bypass Child DataPortal methods
-            if (!CurrentUnit.GenerationParams.UseChildDataPortal &&
-                (Info.ObjectType == CslaObjectType.EditableChild ||
-                Info.ObjectType == CslaObjectType.EditableChildCollection))
-            {
-                %>
+if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
+{
+    if (Info.UpdaterType != string.Empty)
+    {
+        CslaObjectInfo childInfo4 = FindChildInfo(Info, Info.ItemType);
+        if (childInfo4.UpdateValueProperties.Count > 0)
+        {
+            %>
+            <%= Info.UpdaterType %>.<%= Info.UpdaterType %>Saved += <%= Info.UpdaterType %>SavedHandler;
+                    <%
+        }
+    }
+}
+// DataPortal_CreateChild already takes care of marking child
+// CurrentUnit.GenerationParams.UseChildDataPortal is enought to say when this happens
+// except Get-(SafeDataReader dr) that bypass Child DataPortal methods
+//if (!CurrentUnit.GenerationParams.UseChildDataPortal &&
+if (Info.ObjectType == CslaObjectType.EditableChild ||
+    Info.ObjectType == CslaObjectType.EditableChildCollection)
+{
+    %>
 
             // show the framework that this is a child object
             MarkAsChild();
             <%
-            }
-            //if (Info.ObjectType == CslaObjectType.EditableChildCollection ||
-            //    Info.ObjectType == CslaObjectType.EditableRootCollection ||
-            //    Info.ObjectType == CslaObjectType.DynamicEditableRootCollection ||
-            //    Info.ObjectType == CslaObjectType.ReadOnlyCollection)
-            if (IsCollectionType(Info.ObjectType))
-            {
-                %>
+}
+//if (Info.ObjectType == CslaObjectType.EditableChildCollection ||
+//    Info.ObjectType == CslaObjectType.EditableRootCollection ||
+//    Info.ObjectType == CslaObjectType.DynamicEditableRootCollection ||
+//    Info.ObjectType == CslaObjectType.ReadOnlyCollection)
+if (IsCollectionType(Info.ObjectType))
+{
+    %>
 
             var rlce = RaiseListChangedEvents;
             RaiseListChangedEvents = false;
@@ -61,14 +105,17 @@ if (!IsReadOnlyType(Info.ObjectType) && IsCollectionType(Info.ObjectType))
             AllowEdit = <%= dependentAllowEdit2 ? Info + ".CanEditObject()" : Info.AllowEdit.ToString().ToLower() %>;
             AllowRemove = <%= dependentAllowRemove2 ? Info + ".CanDeleteObject()" : Info.AllowRemove.ToString().ToLower() %>;
             RaiseListChangedEvents = rlce;
-        <%    }
-    foreach (ChildProperty prop in Info.GetMyChildProperties())
+        <%
+}
+foreach (ChildProperty prop in Info.GetMyChildProperties())
+{
+    CslaObjectInfo _child = FindChildInfo(Info, prop.TypeName);
+    if (_child == null)
     {
-        CslaObjectInfo _child = FindChildInfo(Info, prop.TypeName);
-        if (_child == null) {
-            Warnings.Append("TypeName '" + prop.TypeName + "' doesn't exist in this project." + Environment.NewLine);
-        }
-    } %>
+        Warnings.Append("TypeName '" + prop.TypeName + "' doesn't exist in this project." + Environment.NewLine);
+    }
+}
+%>
         }
 
         #endregion

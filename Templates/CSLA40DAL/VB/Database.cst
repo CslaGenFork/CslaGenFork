@@ -1,5 +1,7 @@
-<%@ CodeTemplate Inherits="CslaTemplateHelperCS" Language="VB" TargetLanguage="VB" Description="Generates a static Database class." %>
+<%@ CodeTemplate Inherits="CslaTemplateHelperCS" Language="CSharp" TargetLanguage="CSharp" Description="Generates a static Database class." %>
 <%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the CSLA Object (just to get some project info)" %>
+<%@ Property Name="Errors" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return errors to master.cst" %>
+<%@ Property Name="Warnings" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return warnings to master.cst" %>
 
 <%@ Assembly Name="CslaGenerator" %>
 <%@ Import Namespace="CslaGenerator" %>
@@ -8,6 +10,8 @@
 <%@ Import Namespace="CslaGenerator.Util" %>
 
 <%
+int silverlightLevel = 0;
+bool genOptional = false;
 if (CurrentUnit.GenerationParams.HeaderVerbosity != HeaderVerbosity.None)
 {
     %>
@@ -19,37 +23,37 @@ if (CurrentUnit.GenerationParams.HeaderVerbosity != HeaderVerbosity.None)
 using System.Configuration;
 
 <%
-if (CurrentUnit.GenerationParams.UtilitiesNamespace.Length > 0)
+if (CurrentUnit.GenerationParams.GenerateDAL)
 {
+%>namespace <%= CurrentUnit.GenerationParams.DALNamespace %>
+{
+    <%
+}
+else
+{
+    if (CurrentUnit.GenerationParams.UtilitiesNamespace.Length > 0)
+    {
 %>namespace <%= CurrentUnit.GenerationParams.UtilitiesNamespace %>
 {
     <%
+    }
 }
 %>
     /// <summary>Class that provides the connection
     /// strings used by the application.</summary>
-    internal static class Database
+    internal static partial class Database
     {
 
-        #region Database Connections
-
-        /// <summary>Connection string to the main database.</summary>
-        internal static string <%= Info.DbName %>Connection
+        /// <summary>Connection string to the <%= CurrentUnit.GenerationParams.DatabaseConnection %> database.</summary>
+        internal static string <%= CurrentUnit.GenerationParams.DatabaseConnection %>Connection
         {
-            get { return ConfigurationManager.ConnectionStrings["<%= Info.DbName %>"].ConnectionString; }
+            get { return ConfigurationManager.ConnectionStrings["<%= CurrentUnit.GenerationParams.DatabaseConnection %>"].ConnectionString; }
         }
-
-        /// <summary>Connection string to the security database.</summary>
-        internal static string SecurityConnection
-        {
-            get { return ConfigurationManager.ConnectionStrings["Security"].ConnectionString; }
-        }
-
-        #endregion
 
     }
 <%
-if (CurrentUnit.GenerationParams.UtilitiesNamespace.Length > 0)
+if (CurrentUnit.GenerationParams.UtilitiesNamespace.Length > 0 ||
+    CurrentUnit.GenerationParams.GenerateDAL)
 {
 %>
 }

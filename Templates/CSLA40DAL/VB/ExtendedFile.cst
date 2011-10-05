@@ -1,6 +1,6 @@
-<%@ CodeTemplate Inherits="CslaTemplateHelperCS" Language="VB" TargetLanguage="VB" Description="Generates a CSLA Inherited Object." %>
+<%@ CodeTemplate Inherits="CslaTemplateHelperCS" Language="CSharp" TargetLanguage="CSharp" Description="Generates a CSLA Inherited Object." %>
 <%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the CSLA Object to inherit from." %>
-<%@ Property Name="ActiveObjects" Type="System.Boolean" Default="false" Category="Options" Description="if true, base class is generated as ActiveObjects" %>
+<%@ Property Name="MethodList" Type="System.Collections.Generic.List<string>" Optional="false" Category="Options" Description="Allows the template to return a list a partial methods to master.cst (for Silverlight using services)" %>
 
 <%@ Assembly Name="CslaGenerator" %>
 <%@ Import Namespace="CslaGenerator" %>
@@ -8,23 +8,35 @@
 <%@ Import Namespace="CslaGenerator.CodeGen" %>
 <%@ Import Namespace="CslaGenerator.Util" %>
 
+<!-- #include file="Header.asp" -->
 <%
-if (ActiveObjects)
-{
-%>using ActiveObjects;
-<%
-}
-    %><!-- #include file="Header.asp" -->
-<%
+int silverlightLevel = 0;
+bool genOptional = false;
 if (Info.ObjectNamespace.IndexOf(CurrentUnit.GenerationParams.UtilitiesNamespace) != 0)
 {
-%>using <%= CurrentUnit.GenerationParams.UtilitiesNamespace %>;
+    if (UseBoth())
+    {
+        %>#if !SILVERLIGHT
 <%
-Response.Write(Environment.NewLine);
+    }
+    if (UseNoSilverlight())
+    {
+    %>using <%= CurrentUnit.GenerationParams.UtilitiesNamespace %>;
+<%
+    }
+    if (UseBoth())
+    {
+        %>
+#endif
+<%
+    }
+    if (UseNoSilverlight())
+        Response.WriteLine();
 }
 if (Info.ObjectNamespace.Length > 0)
 {
-%>namespace <%= Info.ObjectNamespace %>
+    %>
+namespace <%= Info.ObjectNamespace %>
 {
 <%
 }
@@ -32,70 +44,141 @@ if (Info.ObjectNamespace.Length > 0)
     public partial class <%= Info.ObjectName %>
     {
         <%
-        System.Collections.Generic.List<string> eventList = GetEventList(Info);
-        if (eventList.Count > 0)
+if (Info.ObjectType != CslaObjectType.UnitOfWork)
+{
+    bool generateRuleRegion = false;
+    bool generateAuthRegion = false;
+
+    HaveBusinessRulesCollection allRulesProperties = Info.AllRulableProperties();
+
+    foreach (IHaveBusinessRules rulableProperty in allRulesProperties)
+    {
+        if (rulableProperty.BusinessRules.Count > 0)
         {
-            %>
-
-        #region Pseudo Event Handlers
-
-            <%
-            foreach (string strEvent in eventList)
+            generateRuleRegion = true;
+        }
+        if (CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.None &&
+            CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.ObjectLevel)
+        {
+            if (CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider ||
+                rulableProperty.AuthzProvider != AuthorizationProvider.Custom)
             {
-                %>
-        //partial void On<%= strEvent %>(DataPortalHookArgs e)
+                if (!String.IsNullOrWhiteSpace(rulableProperty.ReadRoles) ||
+                    !String.IsNullOrWhiteSpace(rulableProperty.WriteRoles))
+                {
+                    generateAuthRegion = true;
+                }
+            }
+            else if (rulableProperty.ReadAuthzRuleType.Constructors.Count > 0 ||
+                     rulableProperty.WriteAuthzRuleType.Constructors.Count > 0)
+            {
+                generateAuthRegion = true;
+            }
+        }
+        if (generateRuleRegion && generateAuthRegion)
+            break;
+    }
+    bool generateAuthRegion2 = false;
+    CslaObjectInfo authzInfo2 = Info;
+    if (IsCollectionType(Info.ObjectType))
+    {
+        authzInfo2 = FindChildInfo(Info, Info.ItemType);
+    }
+    if (authzInfo2 != null)
+    {
+        if (CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.None &&
+            CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.PropertyLevel)
+        {
+            if (CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider ||
+                authzInfo2.AuthzProvider != AuthorizationProvider.Custom)
+            {
+                if (!String.IsNullOrWhiteSpace(authzInfo2.NewRoles) ||
+                    !String.IsNullOrWhiteSpace(authzInfo2.GetRoles) ||
+                    !String.IsNullOrWhiteSpace(authzInfo2.UpdateRoles) ||
+                    !String.IsNullOrWhiteSpace(authzInfo2.DeleteRoles))
+                {
+                    generateAuthRegion2 = true;
+                }
+            }
+            else if (authzInfo2.NewAuthzRuleType.Constructors.Count > 0 ||
+                     authzInfo2.GetAuthzRuleType.Constructors.Count > 0 ||
+                     authzInfo2.UpdateAuthzRuleType.Constructors.Count > 0 ||
+                     authzInfo2.DeleteAuthzRuleType.Constructors.Count > 0)
+            {
+                generateAuthRegion2 = true;
+            }
+        }
+    }
+    if (generateRuleRegion || generateAuthRegion)
+    {
+        %>
+
+        #region Custom Business Rules and Property Authorization
+
+        //partial void AddBusinessRulesExtend()
         //{
         //    throw new System.Exception("The method or operation is not implemented.");
         //}
 
-                <%
-            }
-            %>
         #endregion
-
-            <%
-        }
+<%
+    }
+    if (generateAuthRegion2)
+    {
         %>
-        <%
-        if (ActiveObjects)
-        {
-            %>
-            <%
-            if (Info.ObjectType == CslaObjectType.ReadOnlyCollection || Info.ObjectType == CslaObjectType.ReadOnlyObject)
-            {
-                %>
-        #region ISubscriber interface (overriden)
-                <%
-                if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
-                {
-                    CslaObjectInfo childInfo = FindChildInfo(Info, Info.ItemType);
-                }
-                %>
-                <%
-                if (Info.ObjectType == CslaObjectType.ReadOnlyObject)
-                {
-                    %>
-        //internal void ExtractInfo(ObjectType obj)
-        {
-                <%
-                foreach (ValueProperty prop in Info.GetAllValueProperties())
-                {
-                    %>
-            //this.<%= FormatProperty(prop.Name) %> = obj.<%= FormatProperty(prop.Name) %>;
-                    <%
-                }
-                %>
+
+        #region Custom Object Authorization
+
+        //static partial void AddObjectAuthorizationRulesExtend()
+        //{
+        //    throw new System.Exception("The method or operation is not implemented.");
         //}
 
-            <%
-            }
-            %>
         #endregion
-            <%
+<%
+    }
+    System.Collections.Generic.List<string> eventList = GetEventList(Info);
+    if (eventList.Count > 0 && UseNoSilverlight())
+    {
+        if (UseBoth())
+        {
+            %>
+
+#if !SILVERLIGHT
+<%
         }
         %>
+
+        #region Pseudo Event Handlers
+<%
+
+        foreach (string strEvent in eventList)
+        {
+            %>
+
+        //partial void On<%= strEvent %>(DataPortalHookArgs args)
+        //{
+        //    throw new System.Exception("The method or operation is not implemented.");
+        //}
+        <%
+        }
+        %>
+
+        #endregion
+
     <%
     }
+    if (UseBoth())
+    {
+        %>
+#endif
+
+<%
+    }
+    %>
+<!-- #include file="ServicesImplementation.asp" -->
+<%
+}
 %>
     }
 <%

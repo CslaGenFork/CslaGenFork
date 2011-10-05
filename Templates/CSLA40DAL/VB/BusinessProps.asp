@@ -1,7 +1,13 @@
 <%
+bool useParentReference;
+useParentReference = (Info.ObjectType == CslaObjectType.DynamicEditableRoot) &&
+    Info.AddParentReference;
+
 IndentLevel = 2;
 bool isReadOnly = (Info.ObjectType == CslaObjectType.ReadOnlyObject);
 %>
+<!-- #include file="InternalProps.asp" -->
+
         #region Business Properties
         <%
 foreach (ValueProperty prop in Info.AllValueProperties)
@@ -32,11 +38,12 @@ foreach (ValueProperty prop in Info.AllValueProperties)
     string statement = PropertyInfoDeclare(Info, prop);
     if (!string.IsNullOrEmpty(statement))
     {
-        Response.Write(Environment.NewLine); %>
+        %>
+
         /// <summary>
-        /// Maintains metadata about <see cref="<%= prop.Name %>"/> property.
+        /// Maintains metadata about <see cref="<%= string.IsNullOrEmpty(prop.Implements) ? prop.Name : prop.Implements %>"/> property.
         /// </summary>
-        <%= statement %><%
+<%= statement %><%
     }
     if (prop.DeclarationMode != PropertyDeclaration.NoProperty)
     {
@@ -51,29 +58,29 @@ foreach (ValueProperty prop in Info.AllValueProperties)
         }
         else
         {
-            Response.Write("\r\n");
             %>
+
         /// <summary>
-        /// Gets <%= useSetter ? "or sets " : "" %>the <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.ValueProperty.SplitOnCaps(prop.Name) %>.
+        /// Gets <%= useSetter ? "or sets " : "" %>the <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>.
         /// </summary>
         <%
         }
         if (prop.PropertyType == TypeCodeEx.Boolean && prop.Nullable == false)
         {
             %>
-        /// <value><c>true</c> if <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.ValueProperty.SplitOnCaps(prop.Name) %>; otherwise, <c>false</c>.</value>
+        /// <value><c>true</c> if <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; otherwise, <c>false</c>.</value>
         <%
         }
         else if (prop.PropertyType == TypeCodeEx.Boolean && prop.Nullable == true)
         {
             %>
-        /// <value><c>true</c> if <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.ValueProperty.SplitOnCaps(prop.Name) %>; <c>false</c> if not <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.ValueProperty.SplitOnCaps(prop.Name) %>; otherwise, <c>null</c>.</value>
+        /// <value><c>true</c> if <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; <c>false</c> if not <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; otherwise, <c>null</c>.</value>
         <%
         }
         else
         {
             %>
-        /// <value>The <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.ValueProperty.SplitOnCaps(prop.Name) %>.</value>
+        /// <value>The <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>.</value>
         <%
         }
         if (prop.Remarks != String.Empty)
@@ -98,47 +105,22 @@ foreach (ValueProperty prop in Info.AllValueProperties)
     if (!string.IsNullOrEmpty(statement))
     {
         %>
-        <%= statement  + Environment.NewLine %><%
+        <%= statement %>
+        <%
     }
-    if (prop.DeclarationMode != PropertyDeclaration.Managed &&
-        prop.DeclarationMode != PropertyDeclaration.ManagedWithTypeConversion)
+    /*if (prop.DeclarationMode == PropertyDeclaration.ClassicProperty &&
+        prop.DeclarationMode == PropertyDeclaration.ClassicPropertyWithTypeConversion)
     {
         if (Info.ObjectType != CslaObjectType.ReadOnlyObject && prop.ReadOnly == false)
         {
             if (prop.PropertyType != TypeCodeEx.ByteArray)
             {
-                // empty
-            }
-            else
-            {
-                %>
-                bool setNewValue = false;
-                if (value != null && <%=FormatFieldName(prop.Name)%> == null)
-                    setNewValue = true;
-                if (!setNewValue && value != null && <%=FormatFieldName(prop.Name)%> != null)
-                {
-                    if (<%=FormatFieldName(prop.Name)%>.Length != value.Length)
-                    {
-                        setNewValue = true;
-                    }
-                    else
-                    {
-                        for (int i=0; i < value.Length; i++)
-                        {
-                            if (value[i] != <%=FormatFieldName(prop.Name)%>[i])
-                            {
-                                setNewValue = true;
-                                break;
-                            }
-                        }
-                    }
-                }
-                if (setNewValue)
-                {
-                    <%
+                % >
+                // legacy 1
+        < %
             }
         }
-    }
+    }*/
 }
 
 // Child properties
@@ -146,15 +128,15 @@ int childCount = 0;
 foreach (ChildProperty prop in Info.GetMyChildProperties())
 {
     childCount ++;
-    Response.Write("\r\n");
     string statement = PropertyInfoChildDeclare(Info, prop);
     if (!string.IsNullOrEmpty(statement))
     {
         %>
+
         /// <summary>
-        /// Maintains metadata about child <see cref="<%= prop.Name %>"/> property.
+        /// Maintains metadata about child <see cref="<%= string.IsNullOrEmpty(prop.Implements) ? prop.Name : prop.Implements %>"/> property.
         /// </summary>
-        <%= statement + Environment.NewLine %><%
+<%= statement %><%
     }
     if (prop.Summary != String.Empty)
     {
@@ -168,10 +150,11 @@ foreach (ChildProperty prop in Info.GetMyChildProperties())
     else
     {
         %>
+
         /// <summary>
-        /// Gets the <%= CslaGenerator.Metadata.ValueProperty.SplitOnCaps(prop.Name) %> (<%= (prop.LoadingScheme == LoadingScheme.ParentLoad) ? "parent load " : (prop.LazyLoad ? "lazy load " : "self load ") %>child property).
+        /// Gets the <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %> (<%= (prop.LoadingScheme == LoadingScheme.ParentLoad) ? "\"parent load\" " : (prop.LazyLoad ? "\"lazy load\" " : "\"self load\" ") %>child property).
         /// </summary>
-        /// <value>The <%= CslaGenerator.Metadata.ValueProperty.SplitOnCaps(prop.Name) %>.</value>
+        /// <value>The <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>.</value>
         <%
     }
     if (prop.Remarks != String.Empty)
@@ -184,7 +167,73 @@ foreach (ChildProperty prop in Info.GetMyChildProperties())
         <%
     }
     %>
-        <%= PropertyDeclare(Info, prop) %>
+    <%
+    if (GetAttributesString(prop.Attributes) != string.Empty)
+    {
+        %>
+        <%= GetAttributesString(prop.Attributes) %>
+        <%
+    }
+    %>
+        <%= ChildPropertyDeclare(Info, prop) %>
+        <%
+}
+
+// Unit of Work properties
+int uowCount = 0;
+foreach (UnitOfWorkProperty prop in Info.UnitOfWorkProperties)
+{
+    uowCount ++;
+    string statement = PropertyInfoUoWDeclare(Info, prop);
+    if (!string.IsNullOrEmpty(statement))
+    {
+        /*statement = new string(' ', 8) + statement;
+        string statementSilverlight = string.Empty;
+        if (!CurrentUnit.GenerationParams.UsePublicPropertyInfo)
+        {
+            if (UseSilverlight())
+            {
+                statementSilverlight = "[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]" + "\r\n" + new string(' ', 8);
+                statementSilverlight += PropertyInfoUoWDeclare(Info, prop, true);
+            }
+        }*/
+        %>
+
+        /// <summary>
+        /// Maintains metadata about unit of work (child) <see cref="<%= prop.Name %>"/> property.
+        /// </summary>
+<%= statement %><%
+    }
+    if (prop.Summary != String.Empty)
+    {
+        IndentLevel = 2;
+        %>
+        /// <summary>
+<%= GetXmlCommentString(prop.Summary) %>
+        /// </summary>
+        <%
+    }
+    else
+    {
+        %>
+
+        /// <summary>
+        /// Gets the <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %> object (unit of work child property).
+        /// </summary>
+        /// <value>The <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>.</value>
+        <%
+    }
+    if (prop.Remarks != String.Empty)
+    {
+        IndentLevel = 2;
+        %>
+        /// <remarks>
+<%= GetXmlCommentString(prop.Remarks) %>
+        /// </remarks>
+        <%
+    }
+    %>
+        <%= UnitOfWorkPropertyDeclare(Info, prop) %>
         <%
 }
 

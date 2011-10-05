@@ -1,13 +1,14 @@
 <%
 if (!Info.UseCustomLoading)
 {
-    foreach (Criteria c in Info.CriteriaObjects)
+    foreach (Criteria c in GetCriteriaObjects(Info))
     {
         if (c.GetOptions.DataPortal)
         {
-        %>
+            %>
+
         /// <summary>
-        /// Retrieve an existing <see cref="<%=Info.ObjectName%>"/> object from the database, based on given criteria.
+        /// Loads an existing <see cref="<%= Info.ObjectName %>"/> object from the database<%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
         /// </summary>
         <%
             if (c.Properties.Count > 0)
@@ -15,25 +16,22 @@ if (!Info.UseCustomLoading)
         %>/// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The fetch criteria.</param>
         <%
             }
-            if (c.Properties.Count > 0 && c.GetOptions.RunLocal)
-            {
-                Response.Write("\r\n        ");
-            }
             if (c.GetOptions.RunLocal)
             {
-        %>[Csla.RunLocal]<%
+                %>[Csla.RunLocal]
+        <%
             }
             if (c.Properties.Count > 1)
             {
-        %>protected void <%= (Info.ObjectType == CslaObjectType.EditableChild && CurrentUnit.GenerationParams.UseChildDataPortal) ? "Child_" : "DataPortal_" %>Fetch(<%= c.Name %> crit)<%
+        %>protected void <%= isChild ? "Child" : "DataPortal" %>_Fetch(<%= c.Name %> crit)<%
             }
             else if (c.Properties.Count > 0)
             {
-        %>protected void <%= (Info.ObjectType == CslaObjectType.EditableChild && CurrentUnit.GenerationParams.UseChildDataPortal) ? "Child_" : "DataPortal_" %>Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)<%
+        %>protected void <%= isChild ? "Child" : "DataPortal" %>_Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)<%
             }
             else
             {
-        %>protected void <%= (Info.ObjectType == CslaObjectType.EditableChild && CurrentUnit.GenerationParams.UseChildDataPortal) ? "Child_" : "DataPortal_" %>Fetch()<%
+        %>protected void <%= isChild ? "Child" : "DataPortal" %>_Fetch()<%
             }
         %>
         {
@@ -62,12 +60,12 @@ if (!Info.UseCustomLoading)
             {
                 if (c.Properties.Count > 1)
                 {
-                    %>cmd.Parameters.AddWithValue("@<%=p.ParameterName%>", <%= GetParameterSet(p, true) %>);
+                    %>cmd.Parameters.AddWithValue("@<%=p.ParameterName%>", <%= GetParameterSet(p, true) %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
                     <%
                 }
                 else
                 {
-                    %>cmd.Parameters.AddWithValue("@<%=p.ParameterName%>", <%= AssignSingleCriteria(c, "crit") %>);
+                    %>cmd.Parameters.AddWithValue("@<%=p.ParameterName%>", <%= AssignSingleCriteria(c, "crit") %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
                     <%
                 }
             }
@@ -105,17 +103,17 @@ if (!Info.UseCustomLoading)
                         fetchChildrenParam += "crit." + p.Name;
                     }
                 }
-                %>}
+                %>
+            }
             FetchChildren(<%= fetchChildrenParam %>);
         }
-
         <%
             }
             else
             {
-        %>}
+        %>
+            }
         }
-
         <%
             }
         }
@@ -124,7 +122,9 @@ if (!Info.UseCustomLoading)
     {
         if (!Info.DataSetLoadingScheme)
         {
-            %>private void Fetch(SqlCommand cmd)
+            %>
+
+        private void Fetch(SqlCommand cmd)
         {
             using (var dr = new SafeDataReader(cmd.ExecuteReader()))
             {
@@ -156,12 +156,12 @@ if (!Info.UseCustomLoading)
                 %>
             }
         }
-
         <%
         }
         else
         {
             %>
+
         private void Fetch(SqlCommand cmd)
         {
             DataSet ds = new DataSet();
@@ -189,22 +189,15 @@ if (!Info.UseCustomLoading)
             BusinessRules.CheckRules();
             <%
                 }
-                if (ActiveObjects)
-                {
-                    %>
-            this.RegisterAndSubscribe();
-            <%
-                }
             }
             %>
         }
-
 <!-- #include file="CreateRelations.asp" -->
         <%
         }
     }
-%>
-        <!-- #include file="InternalFetch.asp" -->
-    <%
+    %>
+<!-- #include file="InternalDataPortalFetch.asp" -->
+<%
 }
 %>

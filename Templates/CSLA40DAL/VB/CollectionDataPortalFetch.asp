@@ -11,9 +11,9 @@ if (!Info.UseCustomLoading)
         isSwitchable = true;
     }
 
-    if (Info.CriteriaObjects.Count > 0)
+    if (GetCriteriaObjects(Info).Count > 0)
     {
-        foreach (Criteria c in Info.CriteriaObjects)
+        foreach (Criteria c in GetCriteriaObjects(Info))
         {
             if (c.GetOptions.DataPortal)
             {
@@ -21,41 +21,51 @@ if (!Info.UseCustomLoading)
                 {
                     first2 = false;
                 }
-                else
-                {
-                    Response.Write("\r\n");
-                }
                 %>
+
         /// <summary>
         <%
                 if (c.Properties.Count > 1)
                 {
                     %>
-        /// Load <see cref="<%=Info.ObjectName%>"/> collection from the database, based on given criteria.
+        /// Loads an existing <see cref="<%= Info.ObjectName %>"/> collection from the database<%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
         /// </summary>
         /// <param name="crit">The fetch criteria.</param>
-        protected void <%= (Info.ObjectType == CslaObjectType.EditableChild && CurrentUnit.GenerationParams.UseChildDataPortal) ? "Child_" : "DataPortal_" %>Fetch(<%= c.Name %> crit)
+        protected void <%= isChild ? "Child" : "DataPortal" %>_Fetch(<%= c.Name %> crit)
+        {
         <%
                 }
                 else if (c.Properties.Count > 0)
                 {
                     %>
-        /// Load <see cref="<%=Info.ObjectName%>"/> collection from the database, based on given criteria.
+        /// Loads <see cref="<%= Info.ObjectName %>"/> collection from the database<%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
         /// </summary>
         /// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The fetch criteria.</param>
-        protected void <%= (Info.ObjectType == CslaObjectType.EditableChild && CurrentUnit.GenerationParams.UseChildDataPortal) ? "Child_" : "DataPortal_" %>Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)
+        protected void <%= isChild ? "Child" : "DataPortal" %>_Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)
+        {
         <%
                 }
                 else
                 {
                     %>
-        /// Load <see cref="<%=Info.ObjectName%>"/> collection from the database.
+        /// Loads <see cref="<%= Info.ObjectName %>"/> collection from the database<%= Info.SimpleCacheOptions == SimpleCacheResults.DataPortal ? " or from the cache" : "" %>.
         /// </summary>
-        protected void <%= (Info.ObjectType == CslaObjectType.EditableChild && CurrentUnit.GenerationParams.UseChildDataPortal) ? "Child_" : "DataPortal_" %>Fetch()
+        protected void <%= isChild ? "Child" : "DataPortal" %>_Fetch()
+        {
         <%
+                    if (Info.SimpleCacheOptions == SimpleCacheResults.DataPortal)
+                    {
+                        %>
+            if (IsCached)
+            {
+                LoadCachedList();
+                return;
+            }
+
+            <%
+                    }
                 }
                 %>
-        {
             <%= GetConnection(Info, true) %>
             {
                 <%
@@ -72,12 +82,12 @@ if (!Info.UseCustomLoading)
                 {
                     if (c.Properties.Count > 1)
                     {
-                        %>cmd.Parameters.AddWithValue("@<%=p.ParameterName%>", <%= GetParameterSet(p, true) %>);
+                        %>cmd.Parameters.AddWithValue("@<%=p.ParameterName%>", <%= GetParameterSet(p, true) %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
                     <%
                     }
                     else
                     {
-                        %>cmd.Parameters.AddWithValue("@<%=p.ParameterName%>", <%= AssignSingleCriteria(c, "crit") %>);
+                        %>cmd.Parameters.AddWithValue("@<%=p.ParameterName%>", <%= AssignSingleCriteria(c, "crit") %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
                     <%
                     }
                 }
@@ -136,6 +146,7 @@ if (!Info.UseCustomLoading)
                 }
                 %>
         }
+<!-- #include file="SimpleCacheLoadCachedList.asp" -->
         <%
             }
         }
@@ -178,13 +189,14 @@ if (!Info.UseCustomLoading)
 
     if (!Info.DataSetLoadingScheme)
     {
-        if (!first2)
-        {
-            Response.Write("\r\n");
-        }
+        //if (!first2)
+        //{
+        //    Response.Write(Environment.NewLine);
+        //}
         %>
+
         /// <summary>
-        /// Load all <see cref="<%=Info.ObjectName%>"/> collection items using given SafeDataReader.
+        /// Loads the <see cref="<%= Info.ObjectName %>"/> collection items from the given SafeDataReader.
         /// </summary>
         /// <param name="dr">The SafeDataReader to use.</param>
         private void Fetch(SafeDataReader dr)
@@ -195,7 +207,8 @@ if (!Info.UseCustomLoading)
             %>
             IsReadOnly = false;
             <%
-        }%>
+        }
+        %>
             var rlce = RaiseListChangedEvents;
             RaiseListChangedEvents = false;
             <%
@@ -209,7 +222,7 @@ if (!Info.UseCustomLoading)
         %>
             while (dr.Read())
             {
-                <%= Info.ItemType %> obj = <%= Info.ItemType %>.Get<%= Info.ItemType %>(dr);
+                <%= Info.ItemType %> obj = <%= Info.ItemType %>.Get<%= Info.ItemType %>(dr<%= useParentReference ? (", this") : "" %>);
                 Add(obj);
             }
             <%
@@ -220,21 +233,24 @@ if (!Info.UseCustomLoading)
             <%
         }
         %>
-            RaiseListChangedEvents = rlce;<%
+            RaiseListChangedEvents = rlce;
+            <%
         if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
         {
             %>
             IsReadOnly = true;
             <%
-        }%>
+        }
+        %>
         }
     <%
     }
     else
     {
         %>
+
         /// <summary>
-        /// Load all <see cref="<%=Info.ObjectName%>"/> collection items using given DataRow array.
+        /// Loads all <see cref="<%= Info.ObjectName %>"/> collection items using given DataRow array.
         /// </summary>
         private void Fetch(DataRow[] rows)
         {
@@ -267,8 +283,9 @@ if (!Info.UseCustomLoading)
         if (Info.HasGetCriteria)
         {
             %>
+
         /// <summary>
-        /// Load all <see cref="<%=Info.ObjectName%>"/> collection items from given DataTable.
+        /// Loads all <see cref="<%= Info.ObjectName %>"/> collection items from given DataTable.
         /// </summary>
         private void Fetch(DataRowCollection rows)
         {
@@ -289,17 +306,16 @@ if (!Info.UseCustomLoading)
             }
             RaiseListChangedEvents = rlce;
             <%
-        if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
-        {
-            %>
+            if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
+            {
+                %>
             IsReadOnly = true;
             <%
-        }
-        %>
+            }
+            %>
         }
             <%
         }
     }
 }
 %>
-

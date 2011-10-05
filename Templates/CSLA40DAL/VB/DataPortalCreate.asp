@@ -1,48 +1,35 @@
 <%
-foreach (Criteria c in Info.CriteriaObjects)
+foreach (Criteria c in GetCriteriaObjects(Info))
 {
     if (c.CreateOptions.DataPortal)
     {
         %>
+
         /// <summary>
-        /// Load default values for the <see cref="<%=Info.ObjectName%>"/> object properties.
-        /// Values can be hardcoded or loaded from the database.
+        /// Load default values for the <see cref="<%= Info.ObjectName %>"/> object properties<%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
         /// </summary>
         <%
         if (c.Properties.Count > 0)
         {
-        %>/// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The create criteria.</param><%
-        }
-        if (c.Properties.Count > 0 && c.CreateOptions.RunLocal)
-        {
-            Response.Write("\r\n        ");
+            %>/// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The create criteria.</param>
+        <%
         }
         if (c.CreateOptions.RunLocal)
         {
             %>[Csla.RunLocal]
-            <%
-        }
-        else
-        {
-            Response.Write("\r\n");
+        <%
         }
         if (c.Properties.Count > 1)
         {
-            %>
-        protected void <%= (Info.ObjectType == CslaObjectType.EditableChild && CurrentUnit.GenerationParams.UseChildDataPortal) ? "Child_" : "DataPortal_" %>Create(<%= c.Name %> crit)
-            <%
+            %>protected void <%= isChild ? "Child" : "DataPortal" %>_Create(<%= c.Name %> crit)<%
         }
         else if (c.Properties.Count > 0)
         {
-            %>
-        protected void <%= (Info.ObjectType == CslaObjectType.EditableChild && CurrentUnit.GenerationParams.UseChildDataPortal) ? "Child_" : "DataPortal_" %>Create(<%= ReceiveSingleCriteria(c, "crit") %>)
-            <%
+            %>protected void <%= isChild ? "Child" : "DataPortal" %>_Create(<%= ReceiveSingleCriteria(c, "crit") %>)<%
         }
         else
         {
-            %>
-        protected override void <%= (Info.ObjectType == CslaObjectType.EditableChild && CurrentUnit.GenerationParams.UseChildDataPortal) ? "Child_" : "DataPortal_" %>Create()
-            <%
+            %>protected override void <%= isChild ? "Child" : "DataPortal" %>_Create()<%
         }
         %>
         {
@@ -102,13 +89,16 @@ foreach (Criteria c in Info.CriteriaObjects)
             }
         }
     }
-    foreach (ChildProperty childProp in Info.GetCollectionChildProperties())
+    foreach (ChildProperty childProp in Info.GetAllChildProperties())
     {
         CslaObjectInfo _child = FindChildInfo(Info, childProp.TypeName);
-        if (_child != null && childProp.LoadingScheme == LoadingScheme.ParentLoad)
+        if (_child != null)
         {
-            %><%= GetNewChildLoadStatement(childProp, true) %>;
+            if (IsEditableType(_child.ObjectType) && childProp.LoadingScheme == LoadingScheme.ParentLoad)
+            {
+                %><%= GetNewChildLoadStatement(childProp, true) %>;
             <%
+            }
         }
     }
     string hookArgs = string.Empty;
@@ -131,9 +121,8 @@ foreach (Criteria c in Info.CriteriaObjects)
             <%
     }
     %>
-            base.<%= (Info.ObjectType == CslaObjectType.EditableChild && CurrentUnit.GenerationParams.UseChildDataPortal) ? "Child_" : "DataPortal_" %>Create();
+            base.<%= isChild ? "Child" : "DataPortal" %>_Create();
         }
-
     <%
     }
 }

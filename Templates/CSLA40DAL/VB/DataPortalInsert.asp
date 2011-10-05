@@ -4,7 +4,7 @@ if (Info.GenerateDataPortalInsert)
     %>
 
         /// <summary>
-        /// Insert the new <see cref="<%=Info.ObjectName%>"/> object in the database.
+        /// Insert the new <see cref="<%= Info.ObjectName %>"/> object in the database.
         /// </summary>
         <%
     if (Info.TransactionType == TransactionType.EnterpriseServices)
@@ -15,6 +15,11 @@ if (Info.GenerateDataPortalInsert)
     else if (Info.TransactionType == TransactionType.TransactionScope || Info.TransactionType == TransactionType.TransactionScope)
     {
         %>[Transactional(TransactionalTypes.TransactionScope)]
+        <%
+    }
+    if (Info.InsertUpdateRunLocal)
+    {
+        %>[Csla.RunLocal]
         <%
     }
         %>protected override void DataPortal_Insert()
@@ -39,7 +44,11 @@ if (Info.GenerateDataPortalInsert)
     if (Info.TransactionType == TransactionType.ADO && Info.PersistenceType == PersistenceType.SqlConnectionManager)
     {
         %>cmd.Transaction = ctx.Transaction;
-
+                    <%
+    }
+    if (Info.CommandTimeout != string.Empty)
+    {
+        %>cmd.CommandTimeout = <%= Info.CommandTimeout %>;
                     <%
     }
     %>cmd.CommandType = CommandType.StoredProcedure;
@@ -49,13 +58,14 @@ if (Info.GenerateDataPortalInsert)
         if (prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK ||
             prop.DataAccess == ValueProperty.DataAccessBehaviour.CreateOnly)
         {
+            TypeCodeEx propType = TypeHelper.GetBackingFieldType(prop);
             if (prop.DeclarationMode == PropertyDeclaration.Managed)
             {
-                %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetFieldReaderStatement(prop) %>)<%
+                %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetFieldReaderStatement(prop) %><%= (propType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>)<%
             }
             else
             {
-                %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %>)<%
+                %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %><%= (propType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>)<%
             }
             if (prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK)
             {
@@ -63,7 +73,7 @@ if (Info.GenerateDataPortalInsert)
             }
             else
             {
-                %>.DbType = DbType.<%=prop.DbBindColumn.DataType.ToString()%>;<%
+                %>.DbType = DbType.<%= TypeHelper.GetDbType(prop.PropertyType) %>;<%
             }
             %>
                     <%
@@ -122,15 +132,6 @@ if (Info.GenerateDataPortalInsert)
 
                 ctx.Commit();
             <%
-    }
-    if (ActiveObjects)
-    {
-        if (Info.PublishToChannel.Length > 0)
-        {
-            %>
-                    SafePublish("<%= Info.PublishToChannel %>", BusinessEvents.Added, this);
-                    <%
-        }
     }
     %>
             }

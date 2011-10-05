@@ -1,5 +1,7 @@
 ﻿<%@ CodeTemplate Inherits="CslaTemplateHelperCS" Language="CSharp" TargetLanguage="CSharp" Description="Generates the DataPortalHook event arguments class." %>
 <%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the CSLA Object (just to get some project info)" %>
+<%@ Property Name="Errors" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return errors to master.cst" %>
+<%@ Property Name="Warnings" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return warnings to master.cst" %>
 
 <%@ Assembly Name="CslaGenerator" %>
 <%@ Import Namespace="CslaGenerator" %>
@@ -8,6 +10,8 @@
 <%@ Import Namespace="CslaGenerator.Util" %>
 
 <%
+int silverlightLevel = 0;
+bool genOptional = false;
 if (CurrentUnit.GenerationParams.HeaderVerbosity != HeaderVerbosity.None)
 {
     %>
@@ -17,6 +21,7 @@ if (CurrentUnit.GenerationParams.HeaderVerbosity != HeaderVerbosity.None)
 }
 %>
 using System.Data;
+using System.Data.Common;
 using Csla.Data;
 
 <%
@@ -46,19 +51,19 @@ if (CurrentUnit.GenerationParams.UtilitiesNamespace.Length > 0)
         /// Gets or sets the connection argument.
         /// </summary>
         /// <value>The connection.</value>
-        public IDbConnection ConnectionArg { get; private set; }
+        public DbConnection ConnectionArg { get; private set; }
 
         /// <summary>
         /// Gets or sets the command argument.
         /// </summary>
         /// <value>The command.</value>
-        public IDbCommand CommandArg { get; private set; }
+        public DbCommand CommandArg { get; private set; }
 
         /// <summary>
         /// Gets or sets the ADO transaction argument.
         /// </summary>
         /// <value>The ADO transaction.</value>
-        public IDbTransaction TransactionArg { get; private set; }
+        public DbTransaction TransactionArg { get; private set; }
 
         /// <summary>
         /// Gets or sets the data reader argument.
@@ -80,7 +85,7 @@ if (CurrentUnit.GenerationParams.UtilitiesNamespace.Length > 0)
 
         #endregion
 
-        #region Constructors
+        #region Constructor
 
         /// <summary>
         /// Initializes a new empty instance of the <see cref="DataPortalHookArgs"/> class.
@@ -94,7 +99,7 @@ if (CurrentUnit.GenerationParams.UtilitiesNamespace.Length > 0)
         /// </summary>
         /// <param name="cmd">The command argument.</param>
         /// <remarks>The connection and ADO transaction arguments are set automatically, based on the command argument.</remarks>
-        public DataPortalHookArgs(IDbCommand cmd)
+        public DataPortalHookArgs(DbCommand cmd)
         {
             CommandArg = cmd;
             ConnectionArg = cmd.Connection;
@@ -107,7 +112,7 @@ if (CurrentUnit.GenerationParams.UtilitiesNamespace.Length > 0)
         /// <param name="cmd">The command argument.</param>
         /// <param name="crit">The criteria argument.</param>
         /// <remarks>The connection and ADO transaction arguments are set automatically, based on the command argument.</remarks>
-        public DataPortalHookArgs(IDbCommand cmd, object crit)
+        public DataPortalHookArgs(DbCommand cmd, object crit)
             : this(cmd)
         {
             CriteriaArg = crit;
@@ -128,7 +133,7 @@ if (CurrentUnit.GenerationParams.UtilitiesNamespace.Length > 0)
         /// <param name="cmd">The command argument.</param>
         /// <param name="dr">The SafeDataReader argument.</param>
         /// <remarks>The connection and ADO transaction arguments are set automatically, based on the command argument.</remarks>
-        public DataPortalHookArgs(IDbCommand cmd, SafeDataReader dr)
+        public DataPortalHookArgs(DbCommand cmd, SafeDataReader dr)
             : this(cmd)
         {
             DataReaderArg = dr;
@@ -140,7 +145,7 @@ if (CurrentUnit.GenerationParams.UtilitiesNamespace.Length > 0)
         /// <param name="cmd">The command argument.</param>
         /// <param name="ds">The DataSet argument.</param>
         /// <remarks>The connection and ADO transaction arguments are set automatically, based on the command argument.</remarks>
-        public DataPortalHookArgs(IDbCommand cmd, DataSet ds)
+        public DataPortalHookArgs(DbCommand cmd, DataSet ds)
             : this(cmd)
         {
             DataSetArg = ds;
