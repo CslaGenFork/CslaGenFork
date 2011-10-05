@@ -2,8 +2,10 @@
 <%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the NameValueList Object to create." %>
 <%@ Property Name="Errors" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return errors to master.cst" %>
 <%@ Property Name="Warnings" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return warnings to master.cst" %>
-<%@ Property Name="ActiveObjects" Type="System.Boolean" Default="false" Category="Options" Description="If true, base class is generated as ActiveObjects" %>
+<%@ Property Name="MethodList" Type="System.Collections.Generic.List<string>" Optional="false" Category="Options" Description="Allows the template to return a list a partial methods to master.cst (for Silverlight using services)" %>
 
+<%@ Assembly Name="DBSchemaInfo" %>
+<%@ Import Namespace="DBSchemaInfo.Base" %>
 <%@ Assembly Name="CslaGenerator" %>
 <%@ Import Namespace="CslaGenerator" %>
 <%@ Import Namespace="CslaGenerator.Metadata" %>
@@ -12,8 +14,14 @@
 <%@ Assembly Name="System.Windows.Forms" %>
 <%@ Import Namespace="System.Windows.Forms" %>
 <%@ Import Namespace="System.Text" %>
+<%@ Import Namespace="System.Collections.Generic" %>
+<%@ Import Namespace="System.Reflection" %>
 
 <%
+bool isChild = false;
+int silverlightLevel = 0;
+bool genOptional = false;
+bool useItem = false;
 ValueProperty nameProp = null;
 ValueProperty valueProp = null;
 foreach (ValueProperty prop in Info.ValueProperties)
@@ -28,282 +36,60 @@ if (nameProp == null || valueProp == null)
 else
 {
     %><!-- #include file="Header.asp" -->
-using System;
-using System.Data;
-using System.Data.SqlClient;
-<%
-    if (ActiveObjects) { %>using ActiveObjects;<%  } else { %>using Csla;<% } %>
-using Csla.Data;
-<%= GetUsingStatementsString(Info) %>
+<!-- #include file="Using.asp" -->
 <%
     if (Info.ObjectNamespace.Length > 0)
     {
-%>namespace <%= Info.ObjectNamespace %>
+        %>namespace <%= Info.ObjectNamespace %>
 {
+<%
+    }
+    bool? firstComment = null;
+    %><!-- #include file="XmlComment.asp" -->
+    <%
+    if (GetAttributesString(Info.Attributes) != string.Empty)
+    {
+        %>
+    <%= GetAttributesString(Info.Attributes) %>
     <%
     }
     %>
-<% bool? firstComment = null; %><!-- #include file="XmlComment.asp" -->
     [Serializable]
-    <%
-    if (ActiveObjects && Info.SubscribeToChannel.Length > 0)
-    {
-    %>[Subscribe("<%= Info.SubscribeToChannel %>")]
-    <%
-    }
-    %>public partial class <%= Info.ObjectName %> : NameValueListBase<<%= GetDataTypeGeneric(valueProp, valueProp.PropertyType) %>, <%= GetDataTypeGeneric(nameProp, nameProp.PropertyType) %>>
+    public partial class <%= Info.ObjectName %> : NameValueListBase<<%= GetDataTypeGeneric(valueProp, valueProp.PropertyType) %>, <%= GetDataTypeGeneric(nameProp, nameProp.PropertyType) %>>
     {
 
         <%
+    if (Info.SimpleCacheOptions != SimpleCacheResults.None)
+    {
+        %>
+<!-- #include file="SimpleCacheFactory.asp" -->
+<%
+    }
     if (Info.GenerateFactoryMethods)
     {
-        if (!Info.UseCustomLoading)
-        {
-            if (Info.CacheResults)
-            {
-                %>
-        #region Private Fields
-
-        private static <%= Info.ObjectName %> _list;
-
-        #endregion
-
-        #region Factory Methods
-
-        /// <summary>
-        /// Clears the in-memory <%= Info.ObjectName %> cache so it is reloaded on the next request.
-        /// </summary>
-        public static void Invalidate()
-        {
-            <%
-        if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
-            CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel &&
-            Info.GetRoles.Trim() != String.Empty)
-        {
-            %>if (!CanGetObject())
-                throw new System.Security.SecurityException("User not authorized to load a <%= Info.ObjectName %>.");
-
-            <%
-        }
-        %>_list = null;
-        }
-
-        <%
-            }
-            else
-            {
-                %>
-        #region Factory Methods
-
-        <%
-            }
-            foreach (Criteria c in Info.CriteriaObjects)
-            {
-                if (c.GetOptions.Factory)
-                {
-                    %>
-        /// <summary>
-        /// Factory method. New <see cref="<%= Info.ObjectName %>"/> object is loaded from the database.
-        /// </summary>
-        <%
-                    string strGetParams = string.Empty;
-                    string strGetCritParams = string.Empty;
-                    string crit = string.Empty;
-                    for (int i = 0; i < c.Properties.Count; i++)
-                    {
-                        if (string.IsNullOrEmpty(c.Properties[i].ParameterValue))
-                        {
-                            Errors.Append("Property: " + c.Properties[i].Name + " on criteria: " + c.Name + " must have a ParameterValue. Ignored." + Environment.NewLine);
-                            return;
-                        }
-                        else
-                        {
-                            c.Properties[i].ReadOnly = true;
-                        }
-                        if (i > 0)
-                        {
-                            strGetParams += ", ";
-                            strGetCritParams += ", ";
-                        }
-                        strGetParams += string.Concat(GetDataType(c.Properties[i]), " ", FormatCamel(c.Properties[i].Name));
-                        strGetCritParams += FormatCamel(c.Properties[i].Name);
-                    }
-                    if (c.Properties.Count > 1)
-                        crit = "new " + c.Name + "()";
-                    else if (c.Properties.Count > 0)
-                        crit = SendSingleCriteria(c, c.Properties[0].ParameterValue);
         %>
-        /// <returns>A reference to the fetched <see cref="<%= Info.ObjectName %>"/> object.</returns>
-        public static <%= Info.ObjectName %> Get<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>()
-        {
-            <%
-                    if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
-                        CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel &&
-                        Info.GetRoles.Trim() != String.Empty)
-                    {
-                        %>if (!CanGetObject())
-                throw new System.Security.SecurityException("User not authorized to load a <%= Info.ObjectName %>.");
-
-            <%
-                    }
-                    if (Info.CacheResults)
-                    {
-                        %>if (_list == null)
-                _list = <% if (ActiveObjects) { %>ActiveObjects.<% } %>DataPortal.Fetch<<%= Info.ObjectName %>>(<%= crit %>);
-
-            return _list;
-            <%
-                    }
-                    else
-                    {
-                        %>
-            return <% if (ActiveObjects) { %>ActiveObjects.<% } %>DataPortal.Fetch<<%= Info.ObjectName %>>(<%= crit %>);
-            <%
-                    }
-                    %>
-        }
+<!-- #include file="NameValueList_Factory.asp" -->
 <%
-                }
-            }
-        }
-        %>
-
-        #endregion
-
-        #region Constructors
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="<%= Info.ObjectName %>"/> class.
-        /// </summary>
-        /// <remarks> This isn't a public access method in order to prevent direct creation.
-        /// Use factory methods instead.</remarks>
-        <%= GetConstructorVisibility(Info) %> <%=Info.ObjectName %>()
-        {
-            // Prevent direct creation
-        }
-
-        #endregion
-    <%
     }
-        %>
-        <!-- #include file="Criteria.asp"  -->
-
-<!-- #include file="SharedAuthorizationMethods.asp" -->
+    %>
+<!-- #include file="Constructor.asp" -->
+<!-- #include file="Criteria.asp" -->
+<!-- #include file="ObjectAuthorizationMethods.asp" -->
 <%
     if (Info.GenerateDataAccessRegion)
     {
+        if (CurrentUnit.GenerationParams.DatabaseConnection.Equals(String.Empty) && (UseNoSilverlight() || CurrentUnit.GenerationParams.GenerateSilverlight4))
+        {
+            Errors.Append("Make sure you specify a DB name." + Environment.NewLine);
+        }
         if (!Info.UseCustomLoading)
         {
-            %>
-
-        #region Data Access
-
-        <%
-            foreach (Criteria c in Info.CriteriaObjects)
+            if (!genOptional)
             {
-                if (c.GetOptions.DataPortal)
-                {
-                    %>
-        /// <summary>
-        <%
-        if (c.Properties.Count > 1)
-        {
-            %>
-        /// Load <see cref="<%= Info.ObjectName %>"/> collection from the database, based on given criteria.
-        /// </summary>
-        /// <param name="crit">The fetch criteria.</param>
-        protected void DataPortal_Fetch(<%= c.Name %> crit)
-        <%
-        }
-        else if (c.Properties.Count > 0)
-        {
-            %>
-        /// Load <see cref="<%= Info.ObjectName %>"/> collection from the database, based on given criteria.
-        /// </summary>
-        /// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The fetch criteria.</param>
-        protected void DataPortal_Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)
-        <%
-        }
-        else
-        {
-            %>
-        /// Load <see cref="<%= Info.ObjectName %>"/> collection from the database.
-        /// </summary>
-        protected void DataPortal_Fetch()
-        <%
-        }
-        %>
-        {
-            <%= GetConnection(Info, true) %>
-            {
-                <%
-        if (string.IsNullOrEmpty(c.GetOptions.ProcedureName))
-        {
-            Errors.Append("Criteria " + c.Name + " missing get procedure name." + Environment.NewLine);
-        }
-        %>
-                <%= GetCommand(Info, c.GetOptions.ProcedureName) %>
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    <%
-        foreach (CriteriaProperty p in c.Properties)
-        {
-            if (c.Properties.Count > 1)
-            {
-                %>cmd.Parameters.AddWithValue("@<%=p.ParameterName%>", <%= GetParameterSet(p, true) %>);
-                    <%
-            }
-            else
-            {
-                %>cmd.Parameters.AddWithValue("@<%=p.ParameterName%>", <%= AssignSingleCriteria(c, "crit") %>);
-                    <%
-            }
-        }
-        if (Info.PersistenceType == PersistenceType.SqlConnectionUnshared)
-        {
-            %>cn.Open();
-                    <%
-        }
-        string hookArgs = string.Empty;
-        if (c.Properties.Count > 1)
-        {
-            hookArgs = ", crit";
-        }
-        else if (c.Properties.Count > 0)
-        {
-            hookArgs = ", " + HookSingleCriteria(c, "crit");
-        }
-        %>var args = new DataPortalHookArgs(cmd<%= hookArgs %>);
-                    OnFetchPre(args);
-                    LoadCollection(cmd);
-                    OnFetchPost(args);
-                }
-            }
-        }
-
-        <%
-                }
+                Response.Write(Environment.NewLine);
             }
             %>
-        private void LoadCollection(SqlCommand cmd)
-        {
-            IsReadOnly = false;
-            var rlce = RaiseListChangedEvents;
-            RaiseListChangedEvents = false;
-            using (var dr = new SafeDataReader(cmd.ExecuteReader()))
-            {
-                while (dr.Read())
-                {
-                    Add(new NameValuePair(
-                        <%=String.Format(GetDataReaderStatement(valueProp)) %>,
-                        <%=String.Format(GetDataReaderStatement(nameProp)) %>));
-                }
-            }
-            RaiseListChangedEvents = rlce;
-            IsReadOnly = true;
-        }
-
-        #endregion
+<!-- #include file="NameValueList_DataPortal.asp" -->
         <%
         }
     %>

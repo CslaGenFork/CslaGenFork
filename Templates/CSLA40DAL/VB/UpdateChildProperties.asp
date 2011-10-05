@@ -1,5 +1,6 @@
 <%
-if (CurrentUnit.GenerationParams.UseChildDataPortal)
+//if (CurrentUnit.GenerationParams.UseChildDataPortal)
+if (true)
 {
     if (Info.GetCollectionChildProperties().Count > 0 || Info.GetNonCollectionChildProperties().Count > 0)
     {
