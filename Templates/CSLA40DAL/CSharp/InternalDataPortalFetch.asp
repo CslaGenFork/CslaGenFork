@@ -20,7 +20,7 @@ if (!Info.UseCustomLoading)
             {
                 try
                 {
-                    %><%= GetReaderAssignmentStatement(prop) %>;
+                    %><%= GetReaderAssignmentStatement(Info, prop) %>;
             <%
                 }
                 catch (Exception ex)
@@ -191,20 +191,9 @@ if (!Info.UseCustomLoading)
                 {
                     if (prop.DataAccess != ValueProperty.DataAccessBehaviour.WriteOnly)
                     {
-                        if (prop.PropertyType == TypeCodeEx.SmartDate)
-                        {
-                            %>
-            if (!dr.IsNull("<%= prop.ParameterName %>"))
-                <%= FormatFieldName(prop.Name) %> = new SmartDate((DateTime)dr["<%= prop.ParameterName %>"]);
-                        <%
-                        }
-                        else
-                        {
-                            %>
-            if (!dr.IsNull("<%= prop.ParameterName %>"))
-                <%=FormatFieldName(prop.Name)%> = (<%=GetDataTypeGeneric(prop, prop.PropertyType)%>) dr["<%= prop.ParameterName %>"];
+                        %>if (!dr.IsNull("<%= prop.ParameterName %>"))
+                <%= GetReaderAssignmentStatement(Info, prop) %>;
             <%
-                        }
                     }
                 }
             }

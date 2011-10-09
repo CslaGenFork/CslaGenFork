@@ -16,11 +16,16 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+<%
+string utilNamespace = string.Empty;
+if (CurrentUnit.GenerationParams.UtilitiesNamespace.Length - CurrentUnit.GenerationParams.BaseNamespace.Length > 0)
+    utilNamespace = CurrentUnit.GenerationParams.UtilitiesNamespace.Substring(CurrentUnit.GenerationParams.BaseNamespace.Length);
+%>
 using System;
 using System.Runtime.Serialization;
 using System.Security.Permissions;
 
-namespace <%= CurrentUnit.GenerationParams.InterfaceDALNamespace %>
+namespace <%= CurrentUnit.GenerationParams.InterfaceDALNamespace %><%= utilNamespace %>
 {
     /// <summary>
     /// Exception indicating data could not be found.
@@ -36,7 +41,6 @@ namespace <%= CurrentUnit.GenerationParams.InterfaceDALNamespace %>
             : base(message)
         {
         }
-
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DataNotFoundException"/> class.
