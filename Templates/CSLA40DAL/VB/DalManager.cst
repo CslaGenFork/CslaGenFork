@@ -16,18 +16,39 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+<%
+string utilNamespace = string.Empty;
+if (CurrentUnit.GenerationParams.UtilitiesNamespace.Length - CurrentUnit.GenerationParams.BaseNamespace.Length > 0)
+    utilNamespace = CurrentUnit.GenerationParams.UtilitiesNamespace.Substring(CurrentUnit.GenerationParams.BaseNamespace.Length);
+%>
 using System;
 using System.Data.SqlClient;
 using Csla.Data;
+<%
+if (utilNamespace.Length > 0)
+{
+    %>
+using <%= CurrentUnit.GenerationParams.InterfaceDALNamespace %><%= utilNamespace %>;
+<%
+}
+%>
 
-namespace <%= CurrentUnit.GenerationParams.DALNamespace %>
+namespace <%= CurrentUnit.GenerationParams.DALNamespace %><%= utilNamespace %>
 {
     /// <summary>
     /// Implements <see cref="IDalManager"/> interface.
     /// </summary>
+    /// <remarks>
+    /// To use this DAL:
+    /// 1) name this assembly DocStore.DataAccess.Security.Sql
+    /// 2) add the following line to the <strong>appSettings</strong>
+    /// section of the application .config file: <br/>
+    /// &lt;add key="<%= CurrentUnit.GenerationParams.DatabaseConnection %>.DalManagerType" value="<%= CurrentUnit.GenerationParams.DALNamespace %><%= utilNamespace %>.DalManager, <%= CurrentUnit.GenerationParams.DALNamespace %>" /&gt;
+    /// </remarks>
     public class DalManager : IDalManager
     {
-        private static readonly string TypeMask = typeof (DalManager).FullName.Replace("DalManager", @"{0}");
+        private static readonly string TypeMask = typeof (DalManager).FullName<%= (utilNamespace.Length > 0) ? (".Replace(\"" + utilNamespace + "\", string.Empty)") : "" %>.Replace("DalManager", @"{0}");
+        private const string BaseNamespace = "<%= CurrentUnit.GenerationParams.InterfaceDALNamespace %>";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DalManager"/> class.
@@ -40,6 +61,7 @@ namespace <%= CurrentUnit.GenerationParams.DALNamespace %>
         /// <summary>
         /// Gets the ADO ConnectionManager object.
         /// </summary>
+        /// <value>The ConnectionManager object</value>
         public ConnectionManager<SqlConnection> ConnectionManager { get; private set; }
 
         #region IDalManager Members
@@ -51,7 +73,14 @@ namespace <%= CurrentUnit.GenerationParams.DALNamespace %>
         /// <returns>A new DAL instance for the given Type.</returns>
         public T GetProvider<T>() where T : class
         {
-            var typeName = string.Format(TypeMask, typeof (T).Name.Substring(1));
+            string typeName;
+            var namespaceDiff = typeof(T).Namespace.Length - BaseNamespace.Length;
+            if (namespaceDiff > 0)
+                typeName = string.Format(TypeMask, typeof(T).Namespace.Substring(BaseNamespace.Length + 1,
+                    namespaceDiff - 1)) + "." + typeof(T).Name.Substring(1);
+            else
+                typeName = string.Format(TypeMask, typeof(T).Name.Substring(1));
+
             var type = Type.GetType(typeName);
             if (type != null)
                 return Activator.CreateInstance(type) as T;

@@ -16,9 +16,14 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+<%
+string utilNamespace = string.Empty;
+if (CurrentUnit.GenerationParams.UtilitiesNamespace.Length - CurrentUnit.GenerationParams.BaseNamespace.Length > 0)
+    utilNamespace = CurrentUnit.GenerationParams.UtilitiesNamespace.Substring(CurrentUnit.GenerationParams.BaseNamespace.Length);
+%>
 using System;
 
-namespace <%= CurrentUnit.GenerationParams.InterfaceDALNamespace %>
+namespace <%= CurrentUnit.GenerationParams.InterfaceDALNamespace %><%= utilNamespace %>
 {
     /// <summary>
     /// Defines the DAL manager interface for DAL providers.

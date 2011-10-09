@@ -10,6 +10,9 @@
 <%@ Import Namespace="CslaGenerator.Util" %>
 
 <%
+string utilNamespace = string.Empty;
+if (CurrentUnit.GenerationParams.UtilitiesNamespace.Length - CurrentUnit.GenerationParams.BaseNamespace.Length > 0)
+    utilNamespace = CurrentUnit.GenerationParams.UtilitiesNamespace.Substring(CurrentUnit.GenerationParams.BaseNamespace.Length);
 int silverlightLevel = 0;
 bool genOptional = false;
 if (CurrentUnit.GenerationParams.HeaderVerbosity != HeaderVerbosity.None)
@@ -25,7 +28,7 @@ using System.Configuration;
 <%
 if (CurrentUnit.GenerationParams.GenerateDAL)
 {
-%>namespace <%= CurrentUnit.GenerationParams.DALNamespace %>
+%>namespace <%= CurrentUnit.GenerationParams.DALNamespace %><%= utilNamespace %>
 {
     <%
 }
