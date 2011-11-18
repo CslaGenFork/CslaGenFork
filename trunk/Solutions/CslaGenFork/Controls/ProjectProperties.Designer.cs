@@ -1,3 +1,5 @@
+using System.Windows.Forms;
+
 namespace CslaGenerator.Controls
 {
     partial class ProjectProperties
@@ -144,9 +146,12 @@ namespace CslaGenerator.Controls
             this.chkSilverlight = new System.Windows.Forms.CheckBox();
             this.chkSilverlightUseServices = new System.Windows.Forms.CheckBox();
             this.groupBoxDataAccessLayer = new System.Windows.Forms.GroupBox();
-            this.lblTargetDAL = new System.Windows.Forms.Label();
-            this.cboTargetDAL = new System.Windows.Forms.ComboBox();
-            this.chkGenerateDAL = new System.Windows.Forms.CheckBox();
+            this.lblUseDto = new System.Windows.Forms.Label();
+            this.cboUseDto = new System.Windows.Forms.ComboBox();
+            this.txtDtoLimit = new System.Windows.Forms.TextBox();
+            this.lblDtoLimit = new System.Windows.Forms.Label();
+            this.chkGenerateDalInterface = new System.Windows.Forms.CheckBox();
+            this.chkGenerateDalObject = new System.Windows.Forms.CheckBox();
             this.groupBoxServerInvocation = new System.Windows.Forms.GroupBox();
             this.chkSynchronous = new System.Windows.Forms.CheckBox();
             this.chkAsynchronous = new System.Windows.Forms.CheckBox();
@@ -168,25 +173,30 @@ namespace CslaGenerator.Controls
             this.txtUtilitiesNamespace = new System.Windows.Forms.TextBox();
             this.lblUtilitiesFolder = new System.Windows.Forms.Label();
             this.txtUtilitiesFolder = new System.Windows.Forms.TextBox();
-            this.lblInterfaceDALNamespace = new System.Windows.Forms.Label();
-            this.txtInterfaceDALNamespace = new System.Windows.Forms.TextBox();
-            this.lblDALNamespace = new System.Windows.Forms.Label();
-            this.txtDALNamespace = new System.Windows.Forms.TextBox();
+            this.lblDalInterfaceNamespace = new System.Windows.Forms.Label();
+            this.txtDalInterfaceNamespace = new System.Windows.Forms.TextBox();
+            this.lblDalObjectNamespace = new System.Windows.Forms.Label();
+            this.txtDalObjectNamespace = new System.Windows.Forms.TextBox();
+            this.tabGenerationDatabase = new System.Windows.Forms.TabPage();
+            this.chkSaveGenerationDatabase = new System.Windows.Forms.CheckBox();
+            this.groupBoxStoredProcs = new System.Windows.Forms.GroupBox();
+            this.lblDatabaseConnection = new System.Windows.Forms.Label();
+            this.txtDatabaseConnection = new System.Windows.Forms.TextBox();
+            this.chkGenerateStoredProcedures = new System.Windows.Forms.CheckBox();
+            this.chkSpOneFile = new System.Windows.Forms.CheckBox();
+            this.chkGenerateInlineQueries = new System.Windows.Forms.CheckBox();
+            this.chkGenerateQueriesWithSchema = new System.Windows.Forms.CheckBox();
+            this.chkUseConnectionName = new System.Windows.Forms.CheckBox();
+            this.chkGenerateDatabaseClass = new System.Windows.Forms.CheckBox();
             this.tabGenerationMisc = new System.Windows.Forms.TabPage();
             this.chkSaveGenerationMisc = new System.Windows.Forms.CheckBox();
             this.lblGenerateAuthorization = new System.Windows.Forms.Label();
             this.cboGenerateAuthorization = new System.Windows.Forms.ComboBox();
             this.lblHeaderVerbosity = new System.Windows.Forms.Label();
             this.cboHeaderVerbosity = new System.Windows.Forms.ComboBox();
-            this.chkGenerateStoredProcedures = new System.Windows.Forms.CheckBox();
-            this.chkSpOneFile = new System.Windows.Forms.CheckBox();
-            this.chkGenerateInlineQueries = new System.Windows.Forms.CheckBox();
-            this.chkGenerateQueriesWithSchema = new System.Windows.Forms.CheckBox();
-            this.chkGenerateDatabaseClass = new System.Windows.Forms.CheckBox();
             this.chkUsesCslaAuthorizationProvider = new System.Windows.Forms.CheckBox();
             this.chkUseBypassPropertyChecks = new System.Windows.Forms.CheckBox();
             this.chkNullableSupport = new System.Windows.Forms.CheckBox();
-            this.groupBoxLegacy = new System.Windows.Forms.GroupBox();
             this.chkActiveObjects = new System.Windows.Forms.CheckBox();
             this.chkUsePublicPropertyInfo = new System.Windows.Forms.CheckBox();
             this.chkForceReadOnlyProperties = new System.Windows.Forms.CheckBox();
@@ -210,7 +220,8 @@ namespace CslaGenerator.Controls
             this.groupBoxDataAccessLayer.SuspendLayout();
             this.groupBoxServerInvocation.SuspendLayout();
             this.tabGenerationFiles.SuspendLayout();
-            this.groupBoxLegacy.SuspendLayout();
+            this.tabGenerationDatabase.SuspendLayout();
+            this.groupBoxStoredProcs.SuspendLayout();
             this.tabGenerationMisc.SuspendLayout();
             this.groupBoxReadOnlyObjects.SuspendLayout();
             this.groupBoxObjectRelationsBuilder.SuspendLayout();
@@ -385,7 +396,7 @@ namespace CslaGenerator.Controls
             // 
             // txtNamespace
             // 
-            this.txtNamespace.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "DefaultNamespace", true));
+            this.txtNamespace.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "DefaultNamespace", true, DataSourceUpdateMode.OnPropertyChanged));
             this.txtNamespace.Location = new System.Drawing.Point(15, 56);
             this.txtNamespace.Name = "txtNamespace";
             this.txtNamespace.Size = new System.Drawing.Size(177, 20);
@@ -402,7 +413,7 @@ namespace CslaGenerator.Controls
             // 
             // txtFolder
             // 
-            this.txtFolder.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "DefaultFolder", true));
+            this.txtFolder.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "DefaultFolder", true, DataSourceUpdateMode.OnPropertyChanged));
             this.txtFolder.Location = new System.Drawing.Point(15, 100);
             this.txtFolder.Name = "txtFolder";
             this.txtFolder.Size = new System.Drawing.Size(177, 20);
@@ -420,7 +431,7 @@ namespace CslaGenerator.Controls
             // 
             // cboCreateTimestampPropertyMode
             // 
-            this.cboCreateTimestampPropertyMode.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "CreateTimestampPropertyMode", true));
+            this.cboCreateTimestampPropertyMode.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "CreateTimestampPropertyMode", true, DataSourceUpdateMode.OnPropertyChanged));
             this.cboCreateTimestampPropertyMode.Location = new System.Drawing.Point(15, 144);
             this.cboCreateTimestampPropertyMode.Name = "cboCreateTimestampPropertyMode";
             this.cboCreateTimestampPropertyMode.Size = new System.Drawing.Size(177, 21);
@@ -430,7 +441,7 @@ namespace CslaGenerator.Controls
             // chkSmartDateDefault
             // 
             this.chkSmartDateDefault.AutoSize = true;
-            this.chkSmartDateDefault.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.projectParametersBindingSource, "SmartDateDefault", true));
+            this.chkSmartDateDefault.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.projectParametersBindingSource, "SmartDateDefault", true, DataSourceUpdateMode.OnPropertyChanged));
             this.chkSmartDateDefault.Location = new System.Drawing.Point(15, 176);
             this.chkSmartDateDefault.Name = "chkSmartDateDefault";
             this.chkSmartDateDefault.Size = new System.Drawing.Size(336, 17);
@@ -442,7 +453,7 @@ namespace CslaGenerator.Controls
             // chkDatesDefaultStringWithTypeConversion
             // 
             this.chkDatesDefaultStringWithTypeConversion.AutoSize = true;
-            this.chkDatesDefaultStringWithTypeConversion.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.projectParametersBindingSource, "DatesDefaultStringWithTypeConversion", true));
+            this.chkDatesDefaultStringWithTypeConversion.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.projectParametersBindingSource, "DatesDefaultStringWithTypeConversion", true, DataSourceUpdateMode.OnPropertyChanged));
             this.chkDatesDefaultStringWithTypeConversion.Location = new System.Drawing.Point(15, 200);
             this.chkDatesDefaultStringWithTypeConversion.Name = "chkDatesDefaultStringWithTypeConversion";
             this.chkDatesDefaultStringWithTypeConversion.Size = new System.Drawing.Size(450, 17);
@@ -454,7 +465,7 @@ namespace CslaGenerator.Controls
             // chkAutoCriteria
             // 
             this.chkAutoCriteria.AutoSize = true;
-            this.chkAutoCriteria.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.projectParametersBindingSource, "AutoCriteria", true));
+            this.chkAutoCriteria.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.projectParametersBindingSource, "AutoCriteria", true, DataSourceUpdateMode.OnPropertyChanged));
             this.chkAutoCriteria.Location = new System.Drawing.Point(15, 224);
             this.chkAutoCriteria.Name = "chkAutoCriteria";
             this.chkAutoCriteria.Size = new System.Drawing.Size(450, 17);
@@ -467,7 +478,7 @@ namespace CslaGenerator.Controls
             // chkAutoTimestampCriteria
             // 
             this.chkAutoTimestampCriteria.AutoSize = true;
-            this.chkAutoTimestampCriteria.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.projectParametersBindingSource, "AutoTimestampCriteria", true));
+            this.chkAutoTimestampCriteria.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.projectParametersBindingSource, "AutoTimestampCriteria", true, DataSourceUpdateMode.OnPropertyChanged));
             this.chkAutoTimestampCriteria.Location = new System.Drawing.Point(15, 248);
             this.chkAutoTimestampCriteria.Name = "chkAutoTimestampCriteria";
             this.chkAutoTimestampCriteria.Size = new System.Drawing.Size(450, 17);
@@ -492,7 +503,7 @@ namespace CslaGenerator.Controls
             // chkReadOnlyObjectsCopyAuditing
             // 
             this.chkReadOnlyObjectsCopyAuditing.AutoSize = true;
-            this.chkReadOnlyObjectsCopyAuditing.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.projectParametersBindingSource, "ReadOnlyObjectsCopyAuditing", true));
+            this.chkReadOnlyObjectsCopyAuditing.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.projectParametersBindingSource, "ReadOnlyObjectsCopyAuditing", true, DataSourceUpdateMode.OnPropertyChanged));
             this.chkReadOnlyObjectsCopyAuditing.Location = new System.Drawing.Point(12, 24);
             this.chkReadOnlyObjectsCopyAuditing.Name = "chkReadOnlyObjectsCopyAuditing";
             this.chkReadOnlyObjectsCopyAuditing.Size = new System.Drawing.Size(450, 17);
@@ -504,7 +515,7 @@ namespace CslaGenerator.Controls
             // chkReadOnlyObjectsCopyTimestamp
             // 
             this.chkReadOnlyObjectsCopyTimestamp.AutoSize = true;
-            this.chkReadOnlyObjectsCopyTimestamp.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.projectParametersBindingSource, "ReadOnlyObjectsCopyTimestamp", true));
+            this.chkReadOnlyObjectsCopyTimestamp.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.projectParametersBindingSource, "ReadOnlyObjectsCopyTimestamp", true, DataSourceUpdateMode.OnPropertyChanged));
             this.chkReadOnlyObjectsCopyTimestamp.Location = new System.Drawing.Point(12, 48);
             this.chkReadOnlyObjectsCopyTimestamp.Name = "chkReadOnlyObjectsCopyTimestamp";
             this.chkReadOnlyObjectsCopyTimestamp.Size = new System.Drawing.Size(450, 17);
@@ -523,7 +534,7 @@ namespace CslaGenerator.Controls
             // 
             // cboCreateReadOnlyObjectsPropertyMode
             // 
-            this.cboCreateReadOnlyObjectsPropertyMode.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "CreateReadOnlyObjectsPropertyMode", true));
+            this.cboCreateReadOnlyObjectsPropertyMode.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "CreateReadOnlyObjectsPropertyMode", true, DataSourceUpdateMode.OnPropertyChanged));
             this.cboCreateReadOnlyObjectsPropertyMode.Location = new System.Drawing.Point(12, 94);
             this.cboCreateReadOnlyObjectsPropertyMode.Name = "cboCreateReadOnlyObjectsPropertyMode";
             this.cboCreateReadOnlyObjectsPropertyMode.Size = new System.Drawing.Size(177, 21);
@@ -570,7 +581,7 @@ namespace CslaGenerator.Controls
             // 
             // txtDatabase
             // 
-            this.txtDatabase.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "DefaultDataBase", true));
+            this.txtDatabase.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "DefaultDataBase", true, DataSourceUpdateMode.OnPropertyChanged));
             this.txtDatabase.Location = new System.Drawing.Point(15, 56);
             this.txtDatabase.Name = "txtDatabase";
             this.txtDatabase.Size = new System.Drawing.Size(177, 20);
@@ -587,7 +598,7 @@ namespace CslaGenerator.Controls
             // 
             // cboTransactionType
             // 
-            this.cboTransactionType.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "DefaultTransactionType", true));
+            this.cboTransactionType.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "DefaultTransactionType", true, DataSourceUpdateMode.OnPropertyChanged));
             this.cboTransactionType.Location = new System.Drawing.Point(15, 104);
             this.cboTransactionType.Name = "cboTransactionType";
             this.cboTransactionType.Size = new System.Drawing.Size(177, 21);
@@ -607,7 +618,7 @@ namespace CslaGenerator.Controls
             // 
             // cboPersistenceType
             // 
-            this.cboPersistenceType.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "DefaultPersistenceType", true));
+            this.cboPersistenceType.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "DefaultPersistenceType", true, DataSourceUpdateMode.OnPropertyChanged));
             this.cboPersistenceType.Location = new System.Drawing.Point(15, 152);
             this.cboPersistenceType.Name = "cboPersistenceType";
             this.cboPersistenceType.Size = new System.Drawing.Size(177, 21);
@@ -629,7 +640,7 @@ namespace CslaGenerator.Controls
             // 
             // txtDatabaseContextObject
             // 
-            this.txtDatabaseContextObject.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "DefaultDatabaseContextObject", true));
+            this.txtDatabaseContextObject.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "DefaultDatabaseContextObject", true, DataSourceUpdateMode.OnPropertyChanged));
             this.txtDatabaseContextObject.Location = new System.Drawing.Point(15, 200);
             this.txtDatabaseContextObject.Name = "txtDatabaseContextObject";
             this.txtDatabaseContextObject.Size = new System.Drawing.Size(177, 20);
@@ -663,7 +674,7 @@ namespace CslaGenerator.Controls
             // 
             // txtChildPropertySuffix
             // 
-            this.txtChildPropertySuffix.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "ORBChildPropertySuffix", true));
+            this.txtChildPropertySuffix.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "ORBChildPropertySuffix", true, DataSourceUpdateMode.OnPropertyChanged));
             this.txtChildPropertySuffix.Location = new System.Drawing.Point(12, 36);
             this.txtChildPropertySuffix.Name = "txtChildPropertySuffix";
             this.txtChildPropertySuffix.Size = new System.Drawing.Size(104, 20);
@@ -680,7 +691,7 @@ namespace CslaGenerator.Controls
             // 
             // txtCollectionSuffix
             // 
-            this.txtCollectionSuffix.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "ORBCollectionSuffix", true));
+            this.txtCollectionSuffix.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "ORBCollectionSuffix", true, DataSourceUpdateMode.OnPropertyChanged));
             this.txtCollectionSuffix.Location = new System.Drawing.Point(12, 80);
             this.txtCollectionSuffix.Name = "txtCollectionSuffix";
             this.txtCollectionSuffix.Size = new System.Drawing.Size(104, 20);
@@ -697,7 +708,7 @@ namespace CslaGenerator.Controls
             // 
             // txtSingleSPSuffix
             // 
-            this.txtSingleSPSuffix.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "ORBSingleSPSuffix", true));
+            this.txtSingleSPSuffix.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "ORBSingleSPSuffix", true, DataSourceUpdateMode.OnPropertyChanged));
             this.txtSingleSPSuffix.Location = new System.Drawing.Point(12, 124);
             this.txtSingleSPSuffix.Name = "txtSingleSPSuffix";
             this.txtSingleSPSuffix.Size = new System.Drawing.Size(104, 20);
@@ -707,10 +718,10 @@ namespace CslaGenerator.Controls
             // chkItemsUseSingleSP
             // 
             this.chkItemsUseSingleSP.AutoSize = false;
-            this.chkItemsUseSingleSP.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.projectParametersBindingSource, "ORBItemsUseSingleSP", true));
+            this.chkItemsUseSingleSP.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.projectParametersBindingSource, "ORBItemsUseSingleSP", true, DataSourceUpdateMode.OnPropertyChanged));
             this.chkItemsUseSingleSP.Location = new System.Drawing.Point(12, 152);
             this.chkItemsUseSingleSP.Name = "chkItemsUseSingleSP";
-            this.chkItemsUseSingleSP.Size = new System.Drawing.Size(193, 20);
+            this.chkItemsUseSingleSP.Size = new System.Drawing.Size(193, 17);
             this.chkItemsUseSingleSP.TabIndex = 12;
             this.chkItemsUseSingleSP.Text = "Use single SP set for N to N items";
             this.chkItemsUseSingleSP.UseVisualStyleBackColor = true;
@@ -773,7 +784,7 @@ namespace CslaGenerator.Controls
             // 
             // txtGeneralSpPrefix
             // 
-            this.txtGeneralSpPrefix.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "SpGeneralPrefix", true));
+            this.txtGeneralSpPrefix.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "SpGeneralPrefix", true, DataSourceUpdateMode.OnPropertyChanged));
             this.txtGeneralSpPrefix.Location = new System.Drawing.Point(12, 36);
             this.txtGeneralSpPrefix.Name = "txtGeneralSpPrefix";
             this.txtGeneralSpPrefix.Size = new System.Drawing.Size(104, 20);
@@ -790,7 +801,7 @@ namespace CslaGenerator.Controls
             // 
             // txtSelectPrefix
             // 
-            this.txtSelectPrefix.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "SpGetPrefix", true));
+            this.txtSelectPrefix.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "SpGetPrefix", true, DataSourceUpdateMode.OnPropertyChanged));
             this.txtSelectPrefix.Location = new System.Drawing.Point(12, 88);
             this.txtSelectPrefix.Name = "txtSelectPrefix";
             this.txtSelectPrefix.Size = new System.Drawing.Size(104, 20);
@@ -807,7 +818,7 @@ namespace CslaGenerator.Controls
             // 
             // txtInsertPrefix
             // 
-            this.txtInsertPrefix.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "SpAddPrefix", true));
+            this.txtInsertPrefix.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "SpAddPrefix", true, DataSourceUpdateMode.OnPropertyChanged));
             this.txtInsertPrefix.Location = new System.Drawing.Point(12, 132);
             this.txtInsertPrefix.Name = "txtInsertPrefix";
             this.txtInsertPrefix.Size = new System.Drawing.Size(104, 20);
@@ -824,7 +835,7 @@ namespace CslaGenerator.Controls
             // 
             // txtUpdatePrefix
             // 
-            this.txtUpdatePrefix.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "SpUpdatePrefix", true));
+            this.txtUpdatePrefix.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "SpUpdatePrefix", true, DataSourceUpdateMode.OnPropertyChanged));
             this.txtUpdatePrefix.Location = new System.Drawing.Point(12, 176);
             this.txtUpdatePrefix.Name = "txtUpdatePrefix";
             this.txtUpdatePrefix.Size = new System.Drawing.Size(104, 20);
@@ -841,7 +852,7 @@ namespace CslaGenerator.Controls
             // 
             // txtDeletePrefix
             // 
-            this.txtDeletePrefix.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "SpDeletePrefix", true));
+            this.txtDeletePrefix.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "SpDeletePrefix", true, DataSourceUpdateMode.OnPropertyChanged));
             this.txtDeletePrefix.Location = new System.Drawing.Point(12, 220);
             this.txtDeletePrefix.Name = "txtDeletePrefix";
             this.txtDeletePrefix.Size = new System.Drawing.Size(104, 20);
@@ -858,7 +869,7 @@ namespace CslaGenerator.Controls
             // 
             // txtGeneralSpSuffix
             // 
-            this.txtGeneralSpSuffix.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "SpGeneralSuffix", true));
+            this.txtGeneralSpSuffix.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "SpGeneralSuffix", true, DataSourceUpdateMode.OnPropertyChanged));
             this.txtGeneralSpSuffix.Location = new System.Drawing.Point(150, 36);
             this.txtGeneralSpSuffix.Name = "txtGeneralSpSuffix";
             this.txtGeneralSpSuffix.Size = new System.Drawing.Size(104, 20);
@@ -875,7 +886,7 @@ namespace CslaGenerator.Controls
             // 
             // txtSelectSuffix
             // 
-            this.txtSelectSuffix.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "SpGetSuffix", true));
+            this.txtSelectSuffix.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "SpGetSuffix", true, DataSourceUpdateMode.OnPropertyChanged));
             this.txtSelectSuffix.Location = new System.Drawing.Point(150, 88);
             this.txtSelectSuffix.Name = "txtSelectSuffix";
             this.txtSelectSuffix.Size = new System.Drawing.Size(104, 20);
@@ -892,7 +903,7 @@ namespace CslaGenerator.Controls
             // 
             // txtInsertSuffix
             // 
-            this.txtInsertSuffix.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "SpAddSuffix", true));
+            this.txtInsertSuffix.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "SpAddSuffix", true, DataSourceUpdateMode.OnPropertyChanged));
             this.txtInsertSuffix.Location = new System.Drawing.Point(150, 132);
             this.txtInsertSuffix.Name = "txtInsertSuffix";
             this.txtInsertSuffix.Size = new System.Drawing.Size(104, 20);
@@ -909,7 +920,7 @@ namespace CslaGenerator.Controls
             // 
             // txtUpdateSuffix
             // 
-            this.txtUpdateSuffix.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "SpUpdateSuffix", true));
+            this.txtUpdateSuffix.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "SpUpdateSuffix", true, DataSourceUpdateMode.OnPropertyChanged));
             this.txtUpdateSuffix.Location = new System.Drawing.Point(150, 176);
             this.txtUpdateSuffix.Name = "txtUpdateSuffix";
             this.txtUpdateSuffix.Size = new System.Drawing.Size(104, 20);
@@ -926,7 +937,7 @@ namespace CslaGenerator.Controls
             // 
             // txtDeleteSuffix
             // 
-            this.txtDeleteSuffix.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "SpDeleteSuffix", true));
+            this.txtDeleteSuffix.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "SpDeleteSuffix", true, DataSourceUpdateMode.OnPropertyChanged));
             this.txtDeleteSuffix.Location = new System.Drawing.Point(150, 220);
             this.txtDeleteSuffix.Name = "txtDeleteSuffix";
             this.txtDeleteSuffix.Size = new System.Drawing.Size(104, 20);
@@ -943,7 +954,7 @@ namespace CslaGenerator.Controls
             // 
             // txtBoolSoftDelete
             // 
-            this.txtBoolSoftDelete.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "SpBoolSoftDeleteColumn", true));
+            this.txtBoolSoftDelete.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "SpBoolSoftDeleteColumn", true, DataSourceUpdateMode.OnPropertyChanged));
             this.txtBoolSoftDelete.Location = new System.Drawing.Point(294, 28);
             this.txtBoolSoftDelete.Name = "txtBoolSoftDelete";
             this.txtBoolSoftDelete.Size = new System.Drawing.Size(130, 20);
@@ -960,7 +971,7 @@ namespace CslaGenerator.Controls
             // 
             // txtIntSoftDelete
             // 
-            this.txtIntSoftDelete.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "SpIntSoftDeleteColumn", true));
+            this.txtIntSoftDelete.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "SpIntSoftDeleteColumn", true, DataSourceUpdateMode.OnPropertyChanged));
             this.txtIntSoftDelete.Location = new System.Drawing.Point(294, 72);
             this.txtIntSoftDelete.Name = "txtIntSoftDelete";
             this.txtIntSoftDelete.Size = new System.Drawing.Size(130, 20);
@@ -971,10 +982,10 @@ namespace CslaGenerator.Controls
             // chkIgnoreFilterWhenSoftDeleteIsParam
             // 
             this.chkIgnoreFilterWhenSoftDeleteIsParam.AutoSize = true;
-            this.chkIgnoreFilterWhenSoftDeleteIsParam.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.projectParametersBindingSource, "SpIgnoreFilterWhenSoftDeleteIsParam", true));
+            this.chkIgnoreFilterWhenSoftDeleteIsParam.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.projectParametersBindingSource, "SpIgnoreFilterWhenSoftDeleteIsParam", true, DataSourceUpdateMode.OnPropertyChanged));
             this.chkIgnoreFilterWhenSoftDeleteIsParam.Location = new System.Drawing.Point(294, 104);
             this.chkIgnoreFilterWhenSoftDeleteIsParam.Name = "chkIgnoreFilterWhenSoftDeleteIsParam";
-            this.chkIgnoreFilterWhenSoftDeleteIsParam.Size = new System.Drawing.Size(130, 20);
+            this.chkIgnoreFilterWhenSoftDeleteIsParam.Size = new System.Drawing.Size(130, 17);
             this.chkIgnoreFilterWhenSoftDeleteIsParam.TabIndex = 16;
             this.chkIgnoreFilterWhenSoftDeleteIsParam.Text = "Ignore filter when soft delete column is a ValueProperty";
             this.chkIgnoreFilterWhenSoftDeleteIsParam.UseVisualStyleBackColor = true;
@@ -985,10 +996,10 @@ namespace CslaGenerator.Controls
             // chkRemoveChildBeforeParent
             // 
             this.chkRemoveChildBeforeParent.AutoSize = true;
-            this.chkRemoveChildBeforeParent.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.projectParametersBindingSource, "SpRemoveChildBeforeParent", true));
+            this.chkRemoveChildBeforeParent.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.projectParametersBindingSource, "SpRemoveChildBeforeParent", true, DataSourceUpdateMode.OnPropertyChanged));
             this.chkRemoveChildBeforeParent.Location = new System.Drawing.Point(294, 132);
             this.chkRemoveChildBeforeParent.Name = "chkRemoveChildBeforeParent";
-            this.chkRemoveChildBeforeParent.Size = new System.Drawing.Size(130, 20);
+            this.chkRemoveChildBeforeParent.Size = new System.Drawing.Size(130, 17);
             this.chkRemoveChildBeforeParent.TabIndex = 17;
             this.chkRemoveChildBeforeParent.Text = "Remove all child before removing the parent";
             this.chkRemoveChildBeforeParent.UseVisualStyleBackColor = true;
@@ -1037,7 +1048,7 @@ namespace CslaGenerator.Controls
             // 
             // txtIDGuidDefaultValue
             // 
-            this.txtIDGuidDefaultValue.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "IDGuidDefaultValue", true));
+            this.txtIDGuidDefaultValue.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "IDGuidDefaultValue", true, DataSourceUpdateMode.OnPropertyChanged));
             this.txtIDGuidDefaultValue.Location = new System.Drawing.Point(112, 22);
             this.txtIDGuidDefaultValue.Name = "txtIDGuidDefaultValue";
             this.txtIDGuidDefaultValue.Size = new System.Drawing.Size(100, 20);
@@ -1055,7 +1066,7 @@ namespace CslaGenerator.Controls
             // 
             // txtIDInt16DefaultValue
             // 
-            this.txtIDInt16DefaultValue.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "IDInt16DefaultValue", true));
+            this.txtIDInt16DefaultValue.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "IDInt16DefaultValue", true, DataSourceUpdateMode.OnPropertyChanged));
             this.txtIDInt16DefaultValue.Location = new System.Drawing.Point(112, 50);
             this.txtIDInt16DefaultValue.Name = "txtIDInt16DefaultValue";
             this.txtIDInt16DefaultValue.Size = new System.Drawing.Size(100, 20);
@@ -1075,7 +1086,7 @@ namespace CslaGenerator.Controls
             // 
             // txtIDInt32DefaultValue
             // 
-            this.txtIDInt32DefaultValue.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "IDInt32DefaultValue", true));
+            this.txtIDInt32DefaultValue.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "IDInt32DefaultValue", true, DataSourceUpdateMode.OnPropertyChanged));
             this.txtIDInt32DefaultValue.Location = new System.Drawing.Point(112, 78);
             this.txtIDInt32DefaultValue.Name = "txtIDInt32DefaultValue";
             this.txtIDInt32DefaultValue.Size = new System.Drawing.Size(100, 20);
@@ -1095,7 +1106,7 @@ namespace CslaGenerator.Controls
             // 
             // txtIDInt64DefaultValue
             // 
-            this.txtIDInt64DefaultValue.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "IDInt64DefaultValue", true));
+            this.txtIDInt64DefaultValue.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "IDInt64DefaultValue", true, DataSourceUpdateMode.OnPropertyChanged));
             this.txtIDInt64DefaultValue.Location = new System.Drawing.Point(112, 106);
             this.txtIDInt64DefaultValue.Name = "txtIDInt64DefaultValue";
             this.txtIDInt64DefaultValue.Size = new System.Drawing.Size(100, 20);
@@ -1128,7 +1139,7 @@ namespace CslaGenerator.Controls
             // 
             // txtFieldNamePrefix
             // 
-            this.txtFieldNamePrefix.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "FieldNamePrefix", true));
+            this.txtFieldNamePrefix.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "FieldNamePrefix", true, DataSourceUpdateMode.OnPropertyChanged));
             this.txtFieldNamePrefix.Location = new System.Drawing.Point(112, 22);
             this.txtFieldNamePrefix.Name = "txtFieldNamePrefix";
             this.txtFieldNamePrefix.Size = new System.Drawing.Size(100, 20);
@@ -1145,7 +1156,7 @@ namespace CslaGenerator.Controls
             // 
             // txtDelegateNamePrefix
             // 
-            this.txtDelegateNamePrefix.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "DelegateNamePrefix", true));
+            this.txtDelegateNamePrefix.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "DelegateNamePrefix", true, DataSourceUpdateMode.OnPropertyChanged));
             this.txtDelegateNamePrefix.Location = new System.Drawing.Point(112, 50);
             this.txtDelegateNamePrefix.Name = "txtDelegateNamePrefix";
             this.txtDelegateNamePrefix.Size = new System.Drawing.Size(100, 20);
@@ -1182,7 +1193,7 @@ namespace CslaGenerator.Controls
             // 
             // txtCreationDateColumn
             // 
-            this.txtCreationDateColumn.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "CreationDateColumn", true));
+            this.txtCreationDateColumn.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "CreationDateColumn", true, DataSourceUpdateMode.OnPropertyChanged));
             this.txtCreationDateColumn.Location = new System.Drawing.Point(134, 22);
             this.txtCreationDateColumn.Name = "txtCreationDateColumn";
             this.txtCreationDateColumn.Size = new System.Drawing.Size(100, 20);
@@ -1200,7 +1211,7 @@ namespace CslaGenerator.Controls
             // 
             // txtCreationUserColumn
             // 
-            this.txtCreationUserColumn.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "CreationUserColumn", true));
+            this.txtCreationUserColumn.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "CreationUserColumn", true, DataSourceUpdateMode.OnPropertyChanged));
             this.txtCreationUserColumn.Location = new System.Drawing.Point(134, 50);
             this.txtCreationUserColumn.Name = "txtCreationUserColumn";
             this.txtCreationUserColumn.Size = new System.Drawing.Size(100, 20);
@@ -1218,7 +1229,7 @@ namespace CslaGenerator.Controls
             // 
             // txtChangedDateColumn
             // 
-            this.txtChangedDateColumn.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "ChangedDateColumn", true));
+            this.txtChangedDateColumn.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "ChangedDateColumn", true, DataSourceUpdateMode.OnPropertyChanged));
             this.txtChangedDateColumn.Location = new System.Drawing.Point(134, 78);
             this.txtChangedDateColumn.Name = "txtChangedDateColumn";
             this.txtChangedDateColumn.Size = new System.Drawing.Size(100, 20);
@@ -1236,7 +1247,7 @@ namespace CslaGenerator.Controls
             // 
             // txtChangedUserColumn
             // 
-            this.txtChangedUserColumn.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "ChangedUserColumn", true));
+            this.txtChangedUserColumn.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "ChangedUserColumn", true, DataSourceUpdateMode.OnPropertyChanged));
             this.txtChangedUserColumn.Location = new System.Drawing.Point(134, 106);
             this.txtChangedUserColumn.Name = "txtChangedUserColumn";
             this.txtChangedUserColumn.Size = new System.Drawing.Size(100, 20);
@@ -1246,10 +1257,10 @@ namespace CslaGenerator.Controls
             // 
             // chkLogDateAndTime
             // 
-            this.chkLogDateAndTime.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.projectParametersBindingSource, "LogDateAndTime", true));
+            this.chkLogDateAndTime.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.projectParametersBindingSource, "LogDateAndTime", true, DataSourceUpdateMode.OnPropertyChanged));
             this.chkLogDateAndTime.Location = new System.Drawing.Point(12, 150);
             this.chkLogDateAndTime.Name = "chkLogDateAndTime";
-            this.chkLogDateAndTime.Size = new System.Drawing.Size(200, 20);
+            this.chkLogDateAndTime.Size = new System.Drawing.Size(200, 17);
             this.chkLogDateAndTime.TabIndex = 5;
             this.chkLogDateAndTime.Text = "Log Date and also Time";
             this.toolTip1.SetToolTip(this.chkLogDateAndTime, "If checked, date auditing uses time precision up to seconds.");
@@ -1264,7 +1275,7 @@ namespace CslaGenerator.Controls
             // 
             // txtGetUserMethod
             // 
-            this.txtGetUserMethod.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "GetUserMethod", true));
+            this.txtGetUserMethod.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "GetUserMethod", true, DataSourceUpdateMode.OnPropertyChanged));
             this.txtGetUserMethod.Location = new System.Drawing.Point(12, 196);
             this.txtGetUserMethod.Name = "txtGetUserMethod";
             this.txtGetUserMethod.Size = new System.Drawing.Size(223, 20);
@@ -1289,6 +1300,7 @@ namespace CslaGenerator.Controls
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControlGeneration.Controls.Add(this.tabGenerationTarget);
             this.tabControlGeneration.Controls.Add(this.tabGenerationFiles);
+            this.tabControlGeneration.Controls.Add(this.tabGenerationDatabase);
             this.tabControlGeneration.Controls.Add(this.tabGenerationMisc);
             this.tabControlGeneration.Location = new System.Drawing.Point(0, 0);
             this.tabControlGeneration.Name = "tabControlGeneration";
@@ -1318,7 +1330,7 @@ namespace CslaGenerator.Controls
             // 
             this.chkSaveGenerationTarget.Checked = true;
             this.chkSaveGenerationTarget.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkSaveGenerationTarget.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "SaveBeforeGenerate", true));
+            this.chkSaveGenerationTarget.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "SaveBeforeGenerate", true, DataSourceUpdateMode.OnPropertyChanged));
             this.chkSaveGenerationTarget.Font = new System.Drawing.Font("Trebuchet MS", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chkSaveGenerationTarget.Location = new System.Drawing.Point(15, 10);
             this.chkSaveGenerationTarget.Name = "chkSaveGenerationTarget";
@@ -1338,14 +1350,14 @@ namespace CslaGenerator.Controls
             // 
             // cboTarget
             // 
-            this.cboTarget.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.generationParametersBindingSource, "TargetFramework", true));
+            this.cboTarget.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.generationParametersBindingSource, "TargetFramework", true, DataSourceUpdateMode.OnPropertyChanged));
             this.cboTarget.Location = new System.Drawing.Point(116, 47);
             this.cboTarget.Name = "cboTarget";
             this.cboTarget.Size = new System.Drawing.Size(118, 21);
             this.cboTarget.TabIndex = 5;
             this.toolTip1.SetToolTip(this.cboTarget,
                                      "Select the target CSLA.NET framework version.\r\n" +
-                                     "Use \"CSLA40DAL\" for generating a separate Data Access Layer.");
+                                     "Use \"CSLA40DAL\" to generate a separate Data Access Layer.");
             // 
             // lblOutputLanguage
             // 
@@ -1357,7 +1369,7 @@ namespace CslaGenerator.Controls
             // 
             // cboOutputLanguage
             // 
-            this.cboOutputLanguage.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.generationParametersBindingSource, "OutputLanguage", true));
+            this.cboOutputLanguage.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.generationParametersBindingSource, "OutputLanguage", true, DataSourceUpdateMode.OnPropertyChanged));
             this.cboOutputLanguage.Location = new System.Drawing.Point(116, 75);
             this.cboOutputLanguage.Name = "cboOutputLanguage";
             this.cboOutputLanguage.Size = new System.Drawing.Size(118, 21);
@@ -1382,7 +1394,7 @@ namespace CslaGenerator.Controls
             // chkWinForms
             // 
             this.chkWinForms.AutoSize = true;
-            this.chkWinForms.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "GenerateWinForms", true));
+            this.chkWinForms.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "GenerateWinForms", true, DataSourceUpdateMode.OnPropertyChanged));
             this.chkWinForms.Location = new System.Drawing.Point(12, 18);
             this.chkWinForms.Name = "chkWinForms";
             this.chkWinForms.Size = new System.Drawing.Size(287, 17);
@@ -1394,7 +1406,7 @@ namespace CslaGenerator.Controls
             // chkWPF
             // 
             this.chkWPF.AutoSize = true;
-            this.chkWPF.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "GenerateWPF", true));
+            this.chkWPF.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "GenerateWPF", true, DataSourceUpdateMode.OnPropertyChanged));
             this.chkWPF.Location = new System.Drawing.Point(12, 46);
             this.chkWPF.Name = "chkWPF";
             this.chkWPF.Size = new System.Drawing.Size(74, 17);
@@ -1407,7 +1419,7 @@ namespace CslaGenerator.Controls
             // chkSilverlight
             // 
             this.chkSilverlight.AutoSize = true;
-            this.chkSilverlight.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "GenerateSilverlight4", true));
+            this.chkSilverlight.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "GenerateSilverlight4", true, DataSourceUpdateMode.OnPropertyChanged));
             this.chkSilverlight.Location = new System.Drawing.Point(12, 74);
             this.chkSilverlight.Name = "chkSilverlight";
             this.chkSilverlight.Size = new System.Drawing.Size(71, 17);
@@ -1420,7 +1432,7 @@ namespace CslaGenerator.Controls
             // chkSilverlightUseServices
             // 
             this.chkSilverlightUseServices.AutoSize = true;
-            this.chkSilverlightUseServices.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "SilverlightUsingServices", true));
+            this.chkSilverlightUseServices.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "SilverlightUsingServices", true, DataSourceUpdateMode.OnPropertyChanged));
             this.chkSilverlightUseServices.Location = new System.Drawing.Point(12, 102);
             this.chkSilverlightUseServices.Name = "chkSilverlightUseServices";
             this.chkSilverlightUseServices.Size = new System.Drawing.Size(71, 17);
@@ -1433,54 +1445,87 @@ namespace CslaGenerator.Controls
             // 
             // groupBoxDataAccessLayer
             // 
-            this.groupBoxDataAccessLayer.Controls.Add(this.lblTargetDAL);
-            this.groupBoxDataAccessLayer.Controls.Add(this.cboTargetDAL);
-            this.groupBoxDataAccessLayer.Controls.Add(this.chkGenerateDAL);
-            this.groupBoxDataAccessLayer.Location = new System.Drawing.Point(268, 30);
+            this.groupBoxDataAccessLayer.Controls.Add(this.lblUseDto);
+            this.groupBoxDataAccessLayer.Controls.Add(this.cboUseDto);
+            this.groupBoxDataAccessLayer.Controls.Add(this.txtDtoLimit);
+            this.groupBoxDataAccessLayer.Controls.Add(this.lblDtoLimit);
+            this.groupBoxDataAccessLayer.Controls.Add(this.chkGenerateDalInterface);
+            this.groupBoxDataAccessLayer.Controls.Add(this.chkGenerateDalObject);
+            this.groupBoxDataAccessLayer.Location = new System.Drawing.Point(268, 42);
             this.groupBoxDataAccessLayer.Name = "groupBoxDataAccessLayer";
-            this.groupBoxDataAccessLayer.Size = new System.Drawing.Size(240, 76);
+            this.groupBoxDataAccessLayer.Size = new System.Drawing.Size(240, 122);
             this.groupBoxDataAccessLayer.TabIndex = 37;
             this.groupBoxDataAccessLayer.TabStop = false;
             this.groupBoxDataAccessLayer.Text = "Data Access Layer";
             // 
-            // lblTargetDAL
+            // lblUseDto
             // 
-            this.lblTargetDAL.Location = new System.Drawing.Point(12, 18);
-            this.lblTargetDAL.Name = "lblTargetDAL";
-            this.lblTargetDAL.Size = new System.Drawing.Size(98, 16);
-            this.lblTargetDAL.TabIndex = 36;
-            this.lblTargetDAL.Text = "DAL type:";
+            this.lblUseDto.Location = new System.Drawing.Point(12, 18);
+            this.lblUseDto.Name = "lblUseDto";
+            this.lblUseDto.Size = new System.Drawing.Size(101, 16);
+            this.lblUseDto.TabIndex = 31;
+            this.lblUseDto.Text = "Use DTO:";
             // 
-            // cboTargetDAL
+            // cboUseDto
             // 
-            this.cboTargetDAL.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.generationParametersBindingSource, "TargetDAL", true));
-            this.cboTargetDAL.Location = new System.Drawing.Point(113, 15);
-            this.cboTargetDAL.Name = "cboTargetDAL";
-            this.cboTargetDAL.Size = new System.Drawing.Size(118, 21);
-            this.cboTargetDAL.TabIndex = 11;
-            this.toolTip1.SetToolTip(this.cboTargetDAL, "Select the type of DAL:\r\n" +
-                " - Simple DAL generates Encapsulated Invoke - Data Access code is on its own project\r\n" +
-                " - Interface DAL generates Encapsulated Invoke using an interface - DAL interface and DAL are on their own projects.\r\n" +
-                "\r\nN.B. - This option is disabled for targets other than CSLA40DAL.");
+            this.cboUseDto.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.generationParametersBindingSource, "UseDto", true, DataSourceUpdateMode.OnPropertyChanged));
+            this.cboUseDto.Location = new System.Drawing.Point(12, 34);
+            this.cboUseDto.Name = "cboUseDto";
+            this.cboUseDto.Size = new System.Drawing.Size(80, 21);
+            this.cboUseDto.TabIndex = 5;
+            this.toolTip1.SetToolTip(this.cboUseDto, "Select when to use Data Transfer Objects:\r\n" +
+                "- \"MoreThan\" uses a DataReader on fetch operations and uses parameter passing or DTO on inserts and updates.\r\n" +
+                "- \"Always\" excludes the use of DataReader and is suited for XML data sources.\r\n" +
+                "- \"Never\" excludes the use of DTOs, except for return values.\r\n");
             // 
-            // chkGenerateDAL
+            // txtDtoLimit
             // 
-            this.chkGenerateDAL.AutoSize = true;
-            this.chkGenerateDAL.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "GenerateDAL", true));
-            this.chkGenerateDAL.Location = new System.Drawing.Point(12, 46);
-            this.chkGenerateDAL.Name = "chkGenerateDAL";
-            this.chkGenerateDAL.Size = new System.Drawing.Size(50, 17);
-            this.chkGenerateDAL.TabIndex = 12;
-            this.chkGenerateDAL.Text = "Generate DAL";
-            this.chkGenerateDAL.UseVisualStyleBackColor = true;
-            this.toolTip1.SetToolTip(this.chkGenerateDAL, "If checked, will generate DAL code.\r\n" +
-                                     "Otherwise DAL settings are honoured in Business Objects but no DAl code is generated.");
+            this.txtDtoLimit.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.generationParametersBindingSource, "DtoLimit", true, DataSourceUpdateMode.OnPropertyChanged));
+            this.txtDtoLimit.Location = new System.Drawing.Point(97, 34);
+            this.txtDtoLimit.Name = "txtDtoLimit";
+            this.txtDtoLimit.Size = new System.Drawing.Size(20, 20);
+            this.txtDtoLimit.TabIndex = 5;
+            this.toolTip1.SetToolTip(this.txtDtoLimit, "Specify the maximum number of properties allowed for parameter passing.");
+            // 
+            // lblDtoLimit
+            // 
+            this.lblDtoLimit.Location = new System.Drawing.Point(120, 37);
+            this.lblDtoLimit.Name = "lblDtoLimit";
+            this.lblDtoLimit.Size = new System.Drawing.Size(105, 16);
+            this.lblDtoLimit.TabIndex = 31;
+            this.lblDtoLimit.Text = "properties.";
+            // 
+            // chkGenerateDalInterface
+            // 
+            this.chkGenerateDalInterface.AutoSize = true;
+            this.chkGenerateDalInterface.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "GenerateDalInterface", true, DataSourceUpdateMode.OnPropertyChanged));
+            this.chkGenerateDalInterface.Location = new System.Drawing.Point(12, 64);
+            this.chkGenerateDalInterface.Name = "chkGenerateDalInterface";
+            this.chkGenerateDalInterface.Size = new System.Drawing.Size(50, 17);
+            this.chkGenerateDalInterface.TabIndex = 12;
+            this.chkGenerateDalInterface.Text = "Generate DAL interface";
+            this.chkGenerateDalInterface.UseVisualStyleBackColor = true;
+            this.toolTip1.SetToolTip(this.chkGenerateDalInterface, "If checked, will generate DAL interface code.\r\n" +
+                                     "Otherwise DAL settings are honoured in Business Objects but no DAL interface code is generated.");
+            // 
+            // chkGenerateDalObject
+            // 
+            this.chkGenerateDalObject.AutoSize = true;
+            this.chkGenerateDalObject.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "GenerateDalObject", true, DataSourceUpdateMode.OnPropertyChanged));
+            this.chkGenerateDalObject.Location = new System.Drawing.Point(12, 92);
+            this.chkGenerateDalObject.Name = "chkGenerateDalObject";
+            this.chkGenerateDalObject.Size = new System.Drawing.Size(50, 17);
+            this.chkGenerateDalObject.TabIndex = 12;
+            this.chkGenerateDalObject.Text = "Generate DAL";
+            this.chkGenerateDalObject.UseVisualStyleBackColor = true;
+            this.toolTip1.SetToolTip(this.chkGenerateDalObject, "If checked, will generate DAL code.\r\n" +
+                                     "Otherwise DAL settings are honoured in Business Objects but no DAL code is generated.");
             // 
             // groupBoxServerInvocation
             // 
             this.groupBoxServerInvocation.Controls.Add(this.chkSynchronous);
             this.groupBoxServerInvocation.Controls.Add(this.chkAsynchronous);
-            this.groupBoxServerInvocation.Location = new System.Drawing.Point(268, 118);
+            this.groupBoxServerInvocation.Location = new System.Drawing.Point(268, 174);
             this.groupBoxServerInvocation.Name = "groupBoxServerInvocation";
             this.groupBoxServerInvocation.Size = new System.Drawing.Size(240, 76);
             this.groupBoxServerInvocation.TabIndex = 37;
@@ -1490,7 +1535,7 @@ namespace CslaGenerator.Controls
             // chkSynchronous
             // 
             this.chkSynchronous.AutoSize = true;
-            this.chkSynchronous.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "GenerateSynchronous", true));
+            this.chkSynchronous.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "GenerateSynchronous", true, DataSourceUpdateMode.OnPropertyChanged));
             this.chkSynchronous.Location = new System.Drawing.Point(12, 18);
             this.chkSynchronous.Name = "chkSynchronous";
             this.chkSynchronous.Size = new System.Drawing.Size(88, 17);
@@ -1502,7 +1547,7 @@ namespace CslaGenerator.Controls
             // chkAsynchronous
             // 
             this.chkAsynchronous.AutoSize = true;
-            this.chkAsynchronous.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "GenerateAsynchronous", true));
+            this.chkAsynchronous.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "GenerateAsynchronous", true, DataSourceUpdateMode.OnPropertyChanged));
             this.chkAsynchronous.Location = new System.Drawing.Point(12, 46);
             this.chkAsynchronous.Name = "chkAsynchronous";
             this.chkAsynchronous.Size = new System.Drawing.Size(93, 17);
@@ -1520,7 +1565,6 @@ namespace CslaGenerator.Controls
             this.tabGenerationFiles.Controls.Add(this.txtExtendedFilenameSuffix);
             this.tabGenerationFiles.Controls.Add(this.lblClassCommentFilenameSuffix);
             this.tabGenerationFiles.Controls.Add(this.txtClassCommentFilenameSuffix);
-            this.tabGenerationFiles.Controls.Add(this.chkBackupOldSource);
             this.tabGenerationFiles.Controls.Add(this.chkSeparateBaseClasses);
             this.tabGenerationFiles.Controls.Add(this.chkSeparateNamespaces);
             this.tabGenerationFiles.Controls.Add(this.chkSeparateClassComment);
@@ -1530,10 +1574,10 @@ namespace CslaGenerator.Controls
             this.tabGenerationFiles.Controls.Add(this.txtUtilitiesNamespace);
             this.tabGenerationFiles.Controls.Add(this.lblUtilitiesFolder);
             this.tabGenerationFiles.Controls.Add(this.txtUtilitiesFolder);
-            this.tabGenerationFiles.Controls.Add(this.lblInterfaceDALNamespace);
-            this.tabGenerationFiles.Controls.Add(this.txtInterfaceDALNamespace);
-            this.tabGenerationFiles.Controls.Add(this.lblDALNamespace);
-            this.tabGenerationFiles.Controls.Add(this.txtDALNamespace);
+            this.tabGenerationFiles.Controls.Add(this.lblDalInterfaceNamespace);
+            this.tabGenerationFiles.Controls.Add(this.txtDalInterfaceNamespace);
+            this.tabGenerationFiles.Controls.Add(this.lblDalObjectNamespace);
+            this.tabGenerationFiles.Controls.Add(this.txtDalObjectNamespace);
             this.tabGenerationFiles.Location = new System.Drawing.Point(4, 22);
             this.tabGenerationFiles.Name = "tabGenerationFiles";
             this.tabGenerationFiles.Padding = new System.Windows.Forms.Padding(3);
@@ -1546,7 +1590,7 @@ namespace CslaGenerator.Controls
             // 
             this.chkSaveGenerationFiles.Checked = true;
             this.chkSaveGenerationFiles.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkSaveGenerationFiles.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "SaveBeforeGenerate", true));
+            this.chkSaveGenerationFiles.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "SaveBeforeGenerate", true, DataSourceUpdateMode.OnPropertyChanged));
             this.chkSaveGenerationFiles.Font = new System.Drawing.Font("Trebuchet MS", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chkSaveGenerationFiles.Location = new System.Drawing.Point(15, 10);
             this.chkSaveGenerationFiles.Name = "chkSaveGenerationFiles";
@@ -1565,10 +1609,10 @@ namespace CslaGenerator.Controls
             // 
             // txtBaseFilenameSuffix
             // 
-            this.txtBaseFilenameSuffix.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.generationParametersBindingSource, "BaseFilenameSuffix", true));
+            this.txtBaseFilenameSuffix.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.generationParametersBindingSource, "BaseFilenameSuffix", true, DataSourceUpdateMode.OnPropertyChanged));
             this.txtBaseFilenameSuffix.Location = new System.Drawing.Point(15, 66);
             this.txtBaseFilenameSuffix.Name = "txtBaseFilenameSuffix";
-            this.txtBaseFilenameSuffix.Size = new System.Drawing.Size(164, 17);
+            this.txtBaseFilenameSuffix.Size = new System.Drawing.Size(164, 20);
             this.txtBaseFilenameSuffix.TabIndex = 5;
             this.toolTip1.SetToolTip(this.txtBaseFilenameSuffix,
                                      "If specified, base classes use \"<object><suffix>\" in file names instead of \"<object>Base\" file name." +
@@ -1586,10 +1630,10 @@ namespace CslaGenerator.Controls
             // txtExtendedFilenameSuffix
             // 
             this.txtExtendedFilenameSuffix.AutoSize = true;
-            this.txtExtendedFilenameSuffix.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.generationParametersBindingSource, "ExtendedFilenameSuffix", true));
+            this.txtExtendedFilenameSuffix.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.generationParametersBindingSource, "ExtendedFilenameSuffix", true, DataSourceUpdateMode.OnPropertyChanged));
             this.txtExtendedFilenameSuffix.Location = new System.Drawing.Point(15, 110);
             this.txtExtendedFilenameSuffix.Name = "txtExtendedFilenameSuffix";
-            this.txtExtendedFilenameSuffix.Size = new System.Drawing.Size(164, 17);
+            this.txtExtendedFilenameSuffix.Size = new System.Drawing.Size(164, 20);
             this.txtExtendedFilenameSuffix.TabIndex = 6;
             this.toolTip1.SetToolTip(this.txtExtendedFilenameSuffix,
                                      "If specified, extended classes use \"<object><suffix>\" in file names instead of \"<object>\" file name." +
@@ -1607,28 +1651,18 @@ namespace CslaGenerator.Controls
             // txtClassCommentFilenameSuffix
             // 
             this.txtClassCommentFilenameSuffix.AutoSize = true;
-            this.txtClassCommentFilenameSuffix.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.generationParametersBindingSource, "ClassCommentFilenameSuffix", true));
+            this.txtClassCommentFilenameSuffix.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.generationParametersBindingSource, "ClassCommentFilenameSuffix", true, DataSourceUpdateMode.OnPropertyChanged));
             this.txtClassCommentFilenameSuffix.Location = new System.Drawing.Point(15, 154);
             this.txtClassCommentFilenameSuffix.Name = "txtClassCommentFilenameSuffix";
-            this.txtClassCommentFilenameSuffix.Size = new System.Drawing.Size(164, 17);
+            this.txtClassCommentFilenameSuffix.Size = new System.Drawing.Size(164, 20);
             this.txtClassCommentFilenameSuffix.TabIndex = 7;
             this.toolTip1.SetToolTip(this.txtClassCommentFilenameSuffix,
                                      "If specified, class comments are separated on its own file with file names \"<object><suffix>\". If blank, class comments are inserted on base class files.");
             // 
-            // chkBackupOldSource
-            // 
-            this.chkBackupOldSource.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "BackupOldSource", true));
-            this.chkBackupOldSource.Location = new System.Drawing.Point(15, 186);
-            this.chkBackupOldSource.Name = "chkBackupOldSource";
-            this.chkBackupOldSource.Size = new System.Drawing.Size(216, 17);
-            this.chkBackupOldSource.TabIndex = 8;
-            this.chkBackupOldSource.Text = "Backup old source files";
-            this.toolTip1.SetToolTip(this.chkBackupOldSource, "If checked, replaced files are backed up as \"<filename>.old\"");
-            // 
             // chkSeparateBaseClasses
             // 
-            this.chkSeparateBaseClasses.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "SeparateBaseClasses", true));
-            this.chkSeparateBaseClasses.Location = new System.Drawing.Point(15, 210);
+            this.chkSeparateBaseClasses.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "SeparateBaseClasses", true, DataSourceUpdateMode.OnPropertyChanged));
+            this.chkSeparateBaseClasses.Location = new System.Drawing.Point(15, 186);
             this.chkSeparateBaseClasses.Name = "chkSeparateBaseClasses";
             this.chkSeparateBaseClasses.Size = new System.Drawing.Size(216, 17);
             this.chkSeparateBaseClasses.TabIndex = 9;
@@ -1637,8 +1671,8 @@ namespace CslaGenerator.Controls
             // 
             // chkSeparateNamespaces
             // 
-            this.chkSeparateNamespaces.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "SeparateNamespaces", true));
-            this.chkSeparateNamespaces.Location = new System.Drawing.Point(15, 234);
+            this.chkSeparateNamespaces.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "SeparateNamespaces", true, DataSourceUpdateMode.OnPropertyChanged));
+            this.chkSeparateNamespaces.Location = new System.Drawing.Point(15, 214);
             this.chkSeparateNamespaces.Name = "chkSeparateNamespaces";
             this.chkSeparateNamespaces.Size = new System.Drawing.Size(216, 17);
             this.chkSeparateNamespaces.TabIndex = 10;
@@ -1647,8 +1681,8 @@ namespace CslaGenerator.Controls
             // 
             // chkSeparateClassComment
             // 
-            this.chkSeparateClassComment.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "SeparateClassComment", true));
-            this.chkSeparateClassComment.Location = new System.Drawing.Point(15, 258);
+            this.chkSeparateClassComment.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "SeparateClassComment", true, DataSourceUpdateMode.OnPropertyChanged));
+            this.chkSeparateClassComment.Location = new System.Drawing.Point(15, 242);
             this.chkSeparateClassComment.Name = "chkSeparateClassComment";
             this.chkSeparateClassComment.Size = new System.Drawing.Size(216, 17);
             this.chkSeparateClassComment.TabIndex = 11;
@@ -1659,109 +1693,235 @@ namespace CslaGenerator.Controls
             // 
             this.lblBaseNamespace.Location = new System.Drawing.Point(255, 50);
             this.lblBaseNamespace.Name = "lblBaseNamespace";
-            this.lblBaseNamespace.Size = new System.Drawing.Size(150, 16);
+            this.lblBaseNamespace.Size = new System.Drawing.Size(170, 16);
             this.lblBaseNamespace.TabIndex = 31;
             this.lblBaseNamespace.Text = "Base namespace:";
             // 
             // txtBaseNamespace
             // 
-            this.txtBaseNamespace.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.generationParametersBindingSource, "BaseNamespace", true));
+            this.txtBaseNamespace.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.generationParametersBindingSource, "BaseNamespace", true, DataSourceUpdateMode.OnPropertyChanged));
             this.txtBaseNamespace.Location = new System.Drawing.Point(255, 66);
             this.txtBaseNamespace.Name = "txtBaseNamespace";
             this.txtBaseNamespace.Size = new System.Drawing.Size(177, 20);
             this.txtBaseNamespace.TabIndex = 12;
             this.toolTip1.SetToolTip(this.txtBaseNamespace, "Specify the base namespace for the project.\r\n" +
-                                                            "When separating namespaces in folders, do not create a folder for this namespace.");
+                                                            "When separating namespaces in folders, this namespace will be the root folder.");
             // 
             // lblUtilitiesNamespace
             // 
             this.lblUtilitiesNamespace.Location = new System.Drawing.Point(255, 94);
             this.lblUtilitiesNamespace.Name = "lblUtilitiesNamespace";
-            this.lblUtilitiesNamespace.Size = new System.Drawing.Size(150, 16);
+            this.lblUtilitiesNamespace.Size = new System.Drawing.Size(170, 16);
             this.lblUtilitiesNamespace.TabIndex = 31;
-            this.lblUtilitiesNamespace.Text = "Utility classes namespace:";
+            this.lblUtilitiesNamespace.Text = "Utility classes namespace sufix:";
             // 
             // txtUtilitiesNamespace
             // 
-            this.txtUtilitiesNamespace.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.generationParametersBindingSource, "UtilitiesNamespace", true));
+            this.txtUtilitiesNamespace.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.generationParametersBindingSource, "UtilitiesNamespace", true, DataSourceUpdateMode.OnPropertyChanged));
             this.txtUtilitiesNamespace.Location = new System.Drawing.Point(255, 110);
             this.txtUtilitiesNamespace.Name = "txtUtilitiesNamespace";
             this.txtUtilitiesNamespace.Size = new System.Drawing.Size(177, 20);
             this.txtUtilitiesNamespace.TabIndex = 12;
-            this.toolTip1.SetToolTip(this.txtUtilitiesNamespace, "Specify the namespace where the <Database> and <DataPortalHookArgs> files will be created.");
+            this.toolTip1.SetToolTip(this.txtUtilitiesNamespace, "Specify the namespace suffix where the <Database>, <DataPortalHookArgs> and DAL support files will be created." +
+                "\r\nThis namespace suffix adds to the \"Base namespace\" specified above and DAL namespaces below." +
+                "\r\nThis is alternative to \"Utility classes folder\" that is used only when namespaces are separated in folders.");
             // 
             // lblUtilitiesFolder
             // 
             this.lblUtilitiesFolder.Location = new System.Drawing.Point(255, 138);
             this.lblUtilitiesFolder.Name = "lblUtilitiesFolder";
-            this.lblUtilitiesFolder.Size = new System.Drawing.Size(150, 16);
+            this.lblUtilitiesFolder.Size = new System.Drawing.Size(170, 16);
             this.lblUtilitiesFolder.TabIndex = 35;
             this.lblUtilitiesFolder.Text = "Utility classes folder:";
             // 
             // txtUtilitiesFolder
             // 
-            this.txtUtilitiesFolder.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.generationParametersBindingSource, "UtilitiesFolder", true));
+            this.txtUtilitiesFolder.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.generationParametersBindingSource, "UtilitiesFolder", true, DataSourceUpdateMode.OnPropertyChanged));
             this.txtUtilitiesFolder.Location = new System.Drawing.Point(255, 154);
             this.txtUtilitiesFolder.Name = "txtUtilitiesFolder";
             this.txtUtilitiesFolder.Size = new System.Drawing.Size(177, 20);
             this.txtUtilitiesFolder.TabIndex = 13;
             this.toolTip1.SetToolTip(this.txtUtilitiesFolder, "Specify the folder where the <Database> and <DataPortalHookArgs> files will be created." +
-                "\r\nThis is relative to the project\'s output folder and is used only when namespaces aren't separated in folders.");
+                "\r\nThis is relative to the project\'s output folder and is alternative to \"Utility classes namespace\" that is used only when namespaces are not separated in folders.");
             // 
-            // lblInterfaceDALNamespace
+            // lblDalInterfaceNamespace
             // 
-            this.lblInterfaceDALNamespace.Location = new System.Drawing.Point(255, 182);
-            this.lblInterfaceDALNamespace.Name = "lblInterfaceDALNamespace";
-            this.lblInterfaceDALNamespace.Size = new System.Drawing.Size(150, 16);
-            this.lblInterfaceDALNamespace.TabIndex = 31;
-            this.lblInterfaceDALNamespace.Text = "Interface DAL namespace:";
+            this.lblDalInterfaceNamespace.Location = new System.Drawing.Point(255, 182);
+            this.lblDalInterfaceNamespace.Name = "lblDalInterfaceNamespace";
+            this.lblDalInterfaceNamespace.Size = new System.Drawing.Size(170, 16);
+            this.lblDalInterfaceNamespace.TabIndex = 31;
+            this.lblDalInterfaceNamespace.Text = "DAL Interface base namespace:";
             // 
-            // txtInterfaceDALNamespace
+            // txtDalInterfaceNamespace
             // 
-            this.txtInterfaceDALNamespace.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.generationParametersBindingSource, "InterfaceDALNamespace", true));
-            this.txtInterfaceDALNamespace.Location = new System.Drawing.Point(255, 198);
-            this.txtInterfaceDALNamespace.Name = "txtInterfaceDALNamespace";
-            this.txtInterfaceDALNamespace.Size = new System.Drawing.Size(177, 20);
-            this.txtInterfaceDALNamespace.TabIndex = 14;
-            this.toolTip1.SetToolTip(this.txtInterfaceDALNamespace, "Specify the namespace where the DAL interface will be created." +
+            this.txtDalInterfaceNamespace.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.generationParametersBindingSource, "DalInterfaceNamespace", true, DataSourceUpdateMode.OnPropertyChanged));
+            this.txtDalInterfaceNamespace.Location = new System.Drawing.Point(255, 198);
+            this.txtDalInterfaceNamespace.Name = "txtDalInterfaceNamespace";
+            this.txtDalInterfaceNamespace.Size = new System.Drawing.Size(177, 20);
+            this.txtDalInterfaceNamespace.TabIndex = 14;
+            this.toolTip1.SetToolTip(this.txtDalInterfaceNamespace, "Specify the base namespace where the DAL interface will be created." +
                 "\r\nThis will be also used as a folder path relative to the project\'s output folder.");
             // 
-            // lblDALNamespace
+            // lblDalObjectNamespace
             // 
-            this.lblDALNamespace.Location = new System.Drawing.Point(255, 226);
-            this.lblDALNamespace.Name = "lblDALNamespace";
-            this.lblDALNamespace.Size = new System.Drawing.Size(150, 16);
-            this.lblDALNamespace.TabIndex = 31;
-            this.lblDALNamespace.Text = "DAL namespace:";
+            this.lblDalObjectNamespace.Location = new System.Drawing.Point(255, 226);
+            this.lblDalObjectNamespace.Name = "lblDalObjectNamespace";
+            this.lblDalObjectNamespace.Size = new System.Drawing.Size(170, 16);
+            this.lblDalObjectNamespace.TabIndex = 31;
+            this.lblDalObjectNamespace.Text = "DAL base namespace:";
             // 
-            // txtDALNamespace
+            // txtDalObjectNamespace
             // 
-            this.txtDALNamespace.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.generationParametersBindingSource, "DALNamespace", true));
-            this.txtDALNamespace.Location = new System.Drawing.Point(255, 242);
-            this.txtDALNamespace.Name = "txtDALNamespace";
-            this.txtDALNamespace.Size = new System.Drawing.Size(177, 20);
-            this.txtDALNamespace.TabIndex = 15;
-            this.toolTip1.SetToolTip(this.txtDALNamespace, "Specify the namespace where the DAL will be created." +
+            this.txtDalObjectNamespace.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.generationParametersBindingSource, "DalObjectNamespace", true, DataSourceUpdateMode.OnPropertyChanged));
+            this.txtDalObjectNamespace.Location = new System.Drawing.Point(255, 242);
+            this.txtDalObjectNamespace.Name = "txtDalObjectNamespace";
+            this.txtDalObjectNamespace.Size = new System.Drawing.Size(177, 20);
+            this.txtDalObjectNamespace.TabIndex = 15;
+            this.toolTip1.SetToolTip(this.txtDalObjectNamespace, "Specify the base namespace where the DAL will be created." +
                 "\r\nThis will be also used as a folder path relative to the project\'s output folder.");
+            // 
+            // tabGenerationDatabase
+            // 
+            this.tabGenerationDatabase.Controls.Add(this.chkSaveGenerationDatabase);
+            this.tabGenerationDatabase.Controls.Add(this.lblDatabaseConnection);
+            this.tabGenerationDatabase.Controls.Add(this.txtDatabaseConnection);
+            this.tabGenerationDatabase.Controls.Add(this.chkUseConnectionName);
+            this.tabGenerationDatabase.Controls.Add(this.chkGenerateDatabaseClass);
+            this.tabGenerationDatabase.Controls.Add(this.chkGenerateQueriesWithSchema);
+            this.tabGenerationDatabase.Controls.Add(this.chkGenerateInlineQueries);
+            this.tabGenerationDatabase.Controls.Add(this.groupBoxStoredProcs);
+            this.tabGenerationDatabase.Location = new System.Drawing.Point(4, 22);
+            this.tabGenerationDatabase.Name = "tabGenerationDatabase";
+            this.tabGenerationDatabase.Padding = new System.Windows.Forms.Padding(3);
+            this.tabGenerationDatabase.Size = new System.Drawing.Size(525, 329);
+            this.tabGenerationDatabase.TabIndex = 3;
+            this.tabGenerationDatabase.Text = "Database";
+            this.tabGenerationDatabase.UseVisualStyleBackColor = true;
+            // 
+            // chkSaveGenerationDatabase
+            // 
+            this.chkSaveGenerationDatabase.Checked = true;
+            this.chkSaveGenerationDatabase.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkSaveGenerationDatabase.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "SaveBeforeGenerate", true, DataSourceUpdateMode.OnPropertyChanged));
+            this.chkSaveGenerationDatabase.Font = new System.Drawing.Font("Trebuchet MS", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.chkSaveGenerationDatabase.Location = new System.Drawing.Point(15, 10);
+            this.chkSaveGenerationDatabase.Name = "chkSaveGenerationDatabase";
+            this.chkSaveGenerationDatabase.Size = new System.Drawing.Size(225, 21);
+            this.chkSaveGenerationDatabase.TabIndex = 4;
+            this.chkSaveGenerationDatabase.Text = "Save project before generating";
+            this.toolTip1.SetToolTip(this.chkSaveGenerationDatabase, "If checked, projects are silently saved before code generation.");
+            // 
+            // lblDatabaseConnection
+            // 
+            this.lblDatabaseConnection.Location = new System.Drawing.Point(15, 50);
+            this.lblDatabaseConnection.Name = "lblDatabaseConnection";
+            this.lblDatabaseConnection.Size = new System.Drawing.Size(150, 16);
+            this.lblDatabaseConnection.TabIndex = 36;
+            this.lblDatabaseConnection.Text = "Connection name:";
+            // 
+            // txtDatabaseConnection
+            // 
+            this.txtDatabaseConnection.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.generationParametersBindingSource, "DatabaseConnection", true, DataSourceUpdateMode.OnPropertyChanged));
+            this.txtDatabaseConnection.Location = new System.Drawing.Point(15, 66);
+            this.txtDatabaseConnection.Name = "txtDatabaseConnection";
+            this.txtDatabaseConnection.Size = new System.Drawing.Size(164, 20);
+            this.txtDatabaseConnection.TabIndex = 5;
+            this.toolTip1.SetToolTip(this.txtDatabaseConnection, "Specify the Database Connection name to bu used by this project.");
+            // 
+            // chkUseConnectionName
+            // 
+            this.chkUseConnectionName.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "UseConnectionName", true, DataSourceUpdateMode.OnPropertyChanged));
+            this.chkUseConnectionName.Location = new System.Drawing.Point(15, 98);
+            this.chkUseConnectionName.Name = "chkUseConnectionName";
+            this.chkUseConnectionName.Size = new System.Drawing.Size(216, 17);
+            this.chkUseConnectionName.TabIndex = 10;
+            this.chkUseConnectionName.Text = "Use Connection name";
+            this.toolTip1.SetToolTip(this.chkUseConnectionName,
+                                     "If checked, the connection name will be used on Database and DAL support classes.\r\n"+
+                                     "Uncheck only if your VS project uses a single database connection.");
+            // 
+            // chkGenerateDatabaseClass
+            // 
+            this.chkGenerateDatabaseClass.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "GenerateDatabaseClass", true, DataSourceUpdateMode.OnPropertyChanged));
+            this.chkGenerateDatabaseClass.Location = new System.Drawing.Point(15, 126);
+            this.chkGenerateDatabaseClass.Name = "chkGenerateDatabaseClass";
+            this.chkGenerateDatabaseClass.Size = new System.Drawing.Size(216, 17);
+            this.chkGenerateDatabaseClass.TabIndex = 10;
+            this.chkGenerateDatabaseClass.Text = "Generate Database class";
+            this.toolTip1.SetToolTip(this.chkGenerateDatabaseClass,
+                                     "If checked, generates a \"Database.cs\" or \"Database.vb\" file.");
+            // 
+            // chkGenerateQueriesWithSchema
+            // 
+            this.chkGenerateQueriesWithSchema.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "GenerateQueriesWithSchema", true, DataSourceUpdateMode.OnPropertyChanged));
+            this.chkGenerateQueriesWithSchema.Location = new System.Drawing.Point(15, 154);
+            this.chkGenerateQueriesWithSchema.Name = "chkGenerateQueriesWithSchema";
+            this.chkGenerateQueriesWithSchema.Size = new System.Drawing.Size(216, 17);
+            this.chkGenerateQueriesWithSchema.TabIndex = 10;
+            this.chkGenerateQueriesWithSchema.Text = "Use Schema on queries";
+            this.toolTip1.SetToolTip(this.chkGenerateQueriesWithSchema,
+                                     "If checked, generates queries with Schema.");
+            // 
+            // chkGenerateInlineQueries
+            // 
+            this.chkGenerateInlineQueries.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "GenerateInlineQueries", true, DataSourceUpdateMode.OnPropertyChanged));
+            this.chkGenerateInlineQueries.Location = new System.Drawing.Point(255, 50);
+            this.chkGenerateInlineQueries.Name = "chkGenerateInlineQueries";
+            this.chkGenerateInlineQueries.Size = new System.Drawing.Size(216, 17);
+            this.chkGenerateInlineQueries.TabIndex = 9;
+            this.chkGenerateInlineQueries.Text = "Generate Inline SQL Queries";
+            this.toolTip1.SetToolTip(this.chkGenerateInlineQueries,
+                                     "If checked, generates inline SQL queries\r\n" +
+                                     "making stored procedures useless.");
+            // 
+            // groupBoxStoredProcs
+            // 
+            this.groupBoxStoredProcs.Controls.Add(this.chkGenerateStoredProcedures);
+            this.groupBoxStoredProcs.Controls.Add(this.chkSpOneFile);
+            this.groupBoxStoredProcs.Location = new System.Drawing.Point(255, 78);
+            this.groupBoxStoredProcs.Name = "groupBoxStoredProcs";
+            this.groupBoxStoredProcs.Size = new System.Drawing.Size(240, 76);
+            this.groupBoxStoredProcs.TabIndex = 37;
+            this.groupBoxStoredProcs.TabStop = false;
+            this.groupBoxStoredProcs.Text = "Stored Procedures";
+            //
+            // chkGenerateStoredProcedures
+            // 
+            this.chkGenerateStoredProcedures.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "GenerateSprocs", true, DataSourceUpdateMode.OnPropertyChanged));
+            this.chkGenerateStoredProcedures.Location = new System.Drawing.Point(12, 18);
+            this.chkGenerateStoredProcedures.Name = "chkGenerateStoredProcedures";
+            this.chkGenerateStoredProcedures.Size = new System.Drawing.Size(216, 17);
+            this.chkGenerateStoredProcedures.TabIndex = 7;
+            this.chkGenerateStoredProcedures.Text = "Generate Stored Procedures";
+            this.toolTip1.SetToolTip(this.chkGenerateStoredProcedures,
+                                     "If checked, generates stored procedures for the objects that can generate them.");
+            // 
+            // chkSpOneFile
+            // 
+            this.chkSpOneFile.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "OneSpFilePerObject", true, DataSourceUpdateMode.OnPropertyChanged));
+            this.chkSpOneFile.Location = new System.Drawing.Point(12, 46);
+            this.chkSpOneFile.Name = "chkSpOneFile";
+            this.chkSpOneFile.Size = new System.Drawing.Size(216, 17);
+            this.chkSpOneFile.TabIndex = 8;
+            this.chkSpOneFile.Text = "Generate only one SP file per object";
+            this.toolTip1.SetToolTip(this.chkSpOneFile,
+                                     "If checked, creates only one file that contains all the\r\n" +
+                                     "generated stored procedures for the business object.");
             // 
             // tabGenerationMisc
             // 
             this.tabGenerationMisc.Controls.Add(this.chkSaveGenerationMisc);
             this.tabGenerationMisc.Controls.Add(this.lblGenerateAuthorization);
             this.tabGenerationMisc.Controls.Add(this.cboGenerateAuthorization);
+            this.tabGenerationMisc.Controls.Add(this.chkUsesCslaAuthorizationProvider);
+            this.tabGenerationMisc.Controls.Add(this.chkUsePublicPropertyInfo);
+            this.tabGenerationMisc.Controls.Add(this.chkUseBypassPropertyChecks);
+            this.tabGenerationMisc.Controls.Add(this.chkBackupOldSource);
             this.tabGenerationMisc.Controls.Add(this.lblHeaderVerbosity);
             this.tabGenerationMisc.Controls.Add(this.cboHeaderVerbosity);
-            this.tabGenerationMisc.Controls.Add(this.chkGenerateStoredProcedures);
-            this.tabGenerationMisc.Controls.Add(this.chkSpOneFile);
-            this.tabGenerationMisc.Controls.Add(this.chkGenerateInlineQueries);
-            this.tabGenerationMisc.Controls.Add(this.chkGenerateQueriesWithSchema);
-            this.tabGenerationMisc.Controls.Add(this.chkGenerateDatabaseClass);
-            this.tabGenerationMisc.Controls.Add(this.chkUsesCslaAuthorizationProvider);
-            this.tabGenerationMisc.Controls.Add(this.chkUseBypassPropertyChecks);
             this.tabGenerationMisc.Controls.Add(this.chkNullableSupport);
-            this.tabGenerationMisc.Controls.Add(this.chkUsePublicPropertyInfo);
             this.tabGenerationMisc.Controls.Add(this.chkForceReadOnlyProperties);
-            this.tabGenerationMisc.Controls.Add(this.groupBoxLegacy);
+            this.tabGenerationMisc.Controls.Add(this.chkActiveObjects);
             this.tabGenerationMisc.Location = new System.Drawing.Point(4, 22);
             this.tabGenerationMisc.Name = "tabGenerationMisc";
             this.tabGenerationMisc.Padding = new System.Windows.Forms.Padding(3);
@@ -1774,7 +1934,7 @@ namespace CslaGenerator.Controls
             // 
             this.chkSaveGenerationMisc.Checked = true;
             this.chkSaveGenerationMisc.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkSaveGenerationMisc.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "SaveBeforeGenerate", true));
+            this.chkSaveGenerationMisc.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "SaveBeforeGenerate", true, DataSourceUpdateMode.OnPropertyChanged));
             this.chkSaveGenerationMisc.Font = new System.Drawing.Font("Trebuchet MS", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.chkSaveGenerationMisc.Location = new System.Drawing.Point(15, 10);
             this.chkSaveGenerationMisc.Name = "chkSaveGenerationMisc";
@@ -1793,7 +1953,7 @@ namespace CslaGenerator.Controls
             // 
             // cboGenerateAuthorization
             // 
-            this.cboGenerateAuthorization.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.generationParametersBindingSource, "GenerateAuthorization", true));
+            this.cboGenerateAuthorization.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.generationParametersBindingSource, "GenerateAuthorization", true, DataSourceUpdateMode.OnPropertyChanged));
             this.cboGenerateAuthorization.Location = new System.Drawing.Point(116, 47);
             this.cboGenerateAuthorization.Name = "cboGenerateAuthorization";
             this.cboGenerateAuthorization.Size = new System.Drawing.Size(118, 21);
@@ -1809,85 +1969,11 @@ namespace CslaGenerator.Controls
                                      "- \"AddObjectAuthorizationRules()\" method is generated on the extended file.\r\n" +
                                      "- until Rules 4 are implemented \"AddBusinessRules()\" method isn't generated.\r\n" +
                                      "  So it's up to you to write this method on the extended file.");
-            // 
-            // lblHeaderVerbosity
-            // 
-            this.lblHeaderVerbosity.Location = new System.Drawing.Point(15, 78);
-            this.lblHeaderVerbosity.Name = "lblHeaderVerbosity";
-            this.lblHeaderVerbosity.Size = new System.Drawing.Size(101, 16);
-            this.lblHeaderVerbosity.TabIndex = 39;
-            this.lblHeaderVerbosity.Text = "Header verbosity:";
-            // 
-            // cboHeaderVerbosity
-            // 
-            this.cboHeaderVerbosity.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.generationParametersBindingSource, "HeaderVerbosity", true));
-            this.cboHeaderVerbosity.Location = new System.Drawing.Point(116, 75);
-            this.cboHeaderVerbosity.Name = "cboHeaderVerbosity";
-            this.cboHeaderVerbosity.Size = new System.Drawing.Size(118, 21);
-            this.cboHeaderVerbosity.TabIndex = 6;
-            this.toolTip1.SetToolTip(this.cboHeaderVerbosity, "Header verbosity level.");
-            //
-            // chkGenerateStoredProcedures
-            // 
-            this.chkGenerateStoredProcedures.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "GenerateSprocs", true));
-            this.chkGenerateStoredProcedures.Location = new System.Drawing.Point(15, 106);
-            this.chkGenerateStoredProcedures.Name = "chkGenerateStoredProcedures";
-            this.chkGenerateStoredProcedures.Size = new System.Drawing.Size(216, 17);
-            this.chkGenerateStoredProcedures.TabIndex = 7;
-            this.chkGenerateStoredProcedures.Text = "Generate Stored Procedures";
-            this.toolTip1.SetToolTip(this.chkGenerateStoredProcedures,
-                                     "If checked, generates stored procedures for the objects that can generate them.");
-            // 
-            // chkSpOneFile
-            // 
-            this.chkSpOneFile.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "OneSpFilePerObject", true));
-            this.chkSpOneFile.Location = new System.Drawing.Point(15, 134);
-            this.chkSpOneFile.Name = "chkSpOneFile";
-            this.chkSpOneFile.Size = new System.Drawing.Size(216, 17);
-            this.chkSpOneFile.TabIndex = 8;
-            this.chkSpOneFile.Text = "Generate only one SP file per object";
-            this.toolTip1.SetToolTip(this.chkSpOneFile,
-                                     "If checked, creates only one file that contains all the\r\n" +
-                                     "generated stored procedures for the business object.");
-            // 
-            // chkGenerateInlineQueries
-            // 
-            this.chkGenerateInlineQueries.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "GenerateInlineQueries", true));
-            this.chkGenerateInlineQueries.Location = new System.Drawing.Point(15, 162);
-            this.chkGenerateInlineQueries.Name = "chkGenerateInlineQueries";
-            this.chkGenerateInlineQueries.Size = new System.Drawing.Size(216, 17);
-            this.chkGenerateInlineQueries.TabIndex = 9;
-            this.chkGenerateInlineQueries.Text = "Generate Inline SQL Queries";
-            this.toolTip1.SetToolTip(this.chkGenerateInlineQueries,
-                                     "If checked, generates inline SQL queries\r\n" +
-                                     "making stored procedures useless.");
-            // 
-            // chkGenerateQueriesWithSchema
-            // 
-            this.chkGenerateQueriesWithSchema.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "GenerateQueriesWithSchema", true));
-            this.chkGenerateQueriesWithSchema.Location = new System.Drawing.Point(15, 190);
-            this.chkGenerateQueriesWithSchema.Name = "chkGenerateQueriesWithSchema";
-            this.chkGenerateQueriesWithSchema.Size = new System.Drawing.Size(216, 17);
-            this.chkGenerateQueriesWithSchema.TabIndex = 10;
-            this.chkGenerateQueriesWithSchema.Text = "Use Schema on queries";
-            this.toolTip1.SetToolTip(this.chkGenerateQueriesWithSchema,
-                                     "If checked, generates queries with Schema.");
-            // 
-            // chkGenerateDatabaseClass
-            // 
-            this.chkGenerateDatabaseClass.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "GenerateDatabaseClass", true));
-            this.chkGenerateDatabaseClass.Location = new System.Drawing.Point(15, 218);
-            this.chkGenerateDatabaseClass.Name = "chkGenerateDatabaseClass";
-            this.chkGenerateDatabaseClass.Size = new System.Drawing.Size(216, 17);
-            this.chkGenerateDatabaseClass.TabIndex = 10;
-            this.chkGenerateDatabaseClass.Text = "Generate Database class";
-            this.toolTip1.SetToolTip(this.chkGenerateDatabaseClass,
-                                     "If checked, generates a \"Database.cs\" or \"Database.vb\" file.");
             //
             // chkUsesCslaAuthorizationProvider
             // 
-            this.chkUsesCslaAuthorizationProvider.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "UsesCslaAuthorizationProvider", true));
-            this.chkUsesCslaAuthorizationProvider.Location = new System.Drawing.Point(255, 50);
+            this.chkUsesCslaAuthorizationProvider.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "UsesCslaAuthorizationProvider", true, DataSourceUpdateMode.OnPropertyChanged));
+            this.chkUsesCslaAuthorizationProvider.Location = new System.Drawing.Point(15, 78);
             this.chkUsesCslaAuthorizationProvider.Name = "chkUsesCslaAuthorizationProvider";
             this.chkUsesCslaAuthorizationProvider.Size = new System.Drawing.Size(216, 17);
             this.chkUsesCslaAuthorizationProvider.TabIndex = 12;
@@ -1895,10 +1981,21 @@ namespace CslaGenerator.Controls
             this.toolTip1.SetToolTip(this.chkUsesCslaAuthorizationProvider,
                                      "If checked, the Csla Authorization provider IsInRole is used by default and the Authorization Provider options are never shown.");
             //
+            // chkUsePublicPropertyInfo
+            // 
+            this.chkUsePublicPropertyInfo.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "UsePublicPropertyInfo", true, DataSourceUpdateMode.OnPropertyChanged));
+            this.chkUsePublicPropertyInfo.Location = new System.Drawing.Point(15, 106);
+            this.chkUsePublicPropertyInfo.Name = "chkUsePublicPropertyInfo";
+            this.chkUsePublicPropertyInfo.Size = new System.Drawing.Size(216, 17);
+            this.chkUsePublicPropertyInfo.TabIndex = 12;
+            this.chkUsePublicPropertyInfo.Text = "Use public PropertyInfo";
+            this.toolTip1.SetToolTip(this.chkUsePublicPropertyInfo,
+                                     "RC - Not implemented.");
+            //
             // chkUseBypassPropertyChecks
             // 
-            this.chkUseBypassPropertyChecks.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "UseBypassPropertyChecks", true));
-            this.chkUseBypassPropertyChecks.Location = new System.Drawing.Point(255, 78);
+            this.chkUseBypassPropertyChecks.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "UseBypassPropertyChecks", true, DataSourceUpdateMode.OnPropertyChanged));
+            this.chkUseBypassPropertyChecks.Location = new System.Drawing.Point(15, 134);
             this.chkUseBypassPropertyChecks.Name = "chkUseBypassPropertyChecks";
             this.chkUseBypassPropertyChecks.Size = new System.Drawing.Size(216, 17);
             this.chkUseBypassPropertyChecks.TabIndex = 12;
@@ -1909,33 +2006,37 @@ namespace CslaGenerator.Controls
                                      "and assign values using .NET properties.\r\n" +
                                      "Otherwise uses LoadProperty() to assign values.");
             // 
-            // chkNullableSupport
+            // chkBackupOldSource
             // 
-            this.chkNullableSupport.AutoSize = true;
-            this.chkNullableSupport.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "NullableSupport", true));
-            this.chkNullableSupport.Location = new System.Drawing.Point(255, 106);
-            this.chkNullableSupport.Name = "chkNullableSupport";
-            this.chkNullableSupport.Size = new System.Drawing.Size(157, 17);
-            this.chkNullableSupport.TabIndex = 11;
-            this.chkNullableSupport.Text = "Enable Nullable<T> support";
-            this.chkNullableSupport.UseVisualStyleBackColor = true;
-            this.toolTip1.SetToolTip(this.chkNullableSupport, "If checked, enables Nullable<T> support.");
-            //
-            // chkUsePublicPropertyInfo
+            this.chkBackupOldSource.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "BackupOldSource", true, DataSourceUpdateMode.OnPropertyChanged));
+            this.chkBackupOldSource.Location = new System.Drawing.Point(15, 162);
+            this.chkBackupOldSource.Name = "chkBackupOldSource";
+            this.chkBackupOldSource.Size = new System.Drawing.Size(216, 17);
+            this.chkBackupOldSource.TabIndex = 8;
+            this.chkBackupOldSource.Text = "Backup old source files";
+            this.toolTip1.SetToolTip(this.chkBackupOldSource, "If checked, replaced files are backed up as \"<filename>.old\"");
             // 
-            this.chkUsePublicPropertyInfo.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "UsePublicPropertyInfo", true));
-            this.chkUsePublicPropertyInfo.Location = new System.Drawing.Point(255, 134);
-            this.chkUsePublicPropertyInfo.Name = "chkUsePublicPropertyInfo";
-            this.chkUsePublicPropertyInfo.Size = new System.Drawing.Size(260, 17);
-            this.chkUsePublicPropertyInfo.TabIndex = 12;
-            this.chkUsePublicPropertyInfo.Text = "Use public PropertyInfo";
-            this.toolTip1.SetToolTip(this.chkUsePublicPropertyInfo,
-                                     "RC - Not implemented.");
+            // lblHeaderVerbosity
+            // 
+            this.lblHeaderVerbosity.Location = new System.Drawing.Point(255, 50);
+            this.lblHeaderVerbosity.Name = "lblHeaderVerbosity";
+            this.lblHeaderVerbosity.Size = new System.Drawing.Size(101, 16);
+            this.lblHeaderVerbosity.TabIndex = 39;
+            this.lblHeaderVerbosity.Text = "Header verbosity:";
+            // 
+            // cboHeaderVerbosity
+            // 
+            this.cboHeaderVerbosity.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.generationParametersBindingSource, "HeaderVerbosity", true, DataSourceUpdateMode.OnPropertyChanged));
+            this.cboHeaderVerbosity.Location = new System.Drawing.Point(356, 47);
+            this.cboHeaderVerbosity.Name = "cboHeaderVerbosity";
+            this.cboHeaderVerbosity.Size = new System.Drawing.Size(118, 21);
+            this.cboHeaderVerbosity.TabIndex = 6;
+            this.toolTip1.SetToolTip(this.cboHeaderVerbosity, "Header verbosity level.");
             //
             // chkForceReadOnlyProperties
             // 
-            this.chkForceReadOnlyProperties.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "ForceReadOnlyProperties", true));
-            this.chkForceReadOnlyProperties.Location = new System.Drawing.Point(255, 162);
+            this.chkForceReadOnlyProperties.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "ForceReadOnlyProperties", true, DataSourceUpdateMode.OnPropertyChanged));
+            this.chkForceReadOnlyProperties.Location = new System.Drawing.Point(255, 78);
             this.chkForceReadOnlyProperties.Name = "chkForceReadOnlyProperties";
             this.chkForceReadOnlyProperties.Size = new System.Drawing.Size(216, 17);
             this.chkForceReadOnlyProperties.TabIndex = 13;
@@ -1945,20 +2046,22 @@ namespace CslaGenerator.Controls
                                      "Otherwise allows all kinds of accessibility for ReadOnlyObject's properties.\r\n\r\n" +
                                      "Note - ReadOnlyObject's managed and unmanaged properties are always ReadOnly properties.");
             // 
-            // groupBoxLegacy
+            // chkNullableSupport
             // 
-            this.groupBoxLegacy.Controls.Add(this.chkActiveObjects);
-            this.groupBoxLegacy.Location = new System.Drawing.Point(255, 189);
-            this.groupBoxLegacy.Name = "groupBoxLegacy";
-            this.groupBoxLegacy.Size = new System.Drawing.Size(240, 48);
-            this.groupBoxLegacy.TabIndex = 35;
-            this.groupBoxLegacy.TabStop = false;
-            this.groupBoxLegacy.Text = "Legacy Support";
+            this.chkNullableSupport.AutoSize = true;
+            this.chkNullableSupport.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "NullableSupport", true, DataSourceUpdateMode.OnPropertyChanged));
+            this.chkNullableSupport.Location = new System.Drawing.Point(255, 106);
+            this.chkNullableSupport.Name = "chkNullableSupport";
+            this.chkNullableSupport.Size = new System.Drawing.Size(157, 17);
+            this.chkNullableSupport.TabIndex = 11;
+            this.chkNullableSupport.Text = "Enable Nullable<T> support";
+            this.chkNullableSupport.UseVisualStyleBackColor = true;
+            this.toolTip1.SetToolTip(this.chkNullableSupport, "If checked, enables Nullable<T> support.");
             //
             // chkActiveObjects
             // 
-            this.chkActiveObjects.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "ActiveObjects", true));
-            this.chkActiveObjects.Location = new System.Drawing.Point(12, 18);
+            this.chkActiveObjects.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "ActiveObjects", true, DataSourceUpdateMode.OnPropertyChanged));
+            this.chkActiveObjects.Location = new System.Drawing.Point(255, 134);
             this.chkActiveObjects.Name = "chkActiveObjects";
             this.chkActiveObjects.Size = new System.Drawing.Size(216, 17);
             this.chkActiveObjects.TabIndex = 14;
@@ -2043,16 +2146,18 @@ namespace CslaGenerator.Controls
             this.tabGenerationTarget.PerformLayout();
             this.tabGenerationFiles.ResumeLayout(false);
             this.tabGenerationFiles.PerformLayout();
+            this.tabGenerationDatabase.ResumeLayout(false);
+            this.tabGenerationDatabase.PerformLayout();
             this.tabGenerationMisc.ResumeLayout(false);
             this.tabGenerationMisc.PerformLayout();
             this.groupBoxUIEnvironment.ResumeLayout(false);
             this.groupBoxUIEnvironment.PerformLayout();
+            this.groupBoxStoredProcs.ResumeLayout(false);
+            this.groupBoxStoredProcs.PerformLayout();
             this.groupBoxDataAccessLayer.ResumeLayout(false);
             this.groupBoxDataAccessLayer.PerformLayout();
             this.groupBoxServerInvocation.ResumeLayout(false);
             this.groupBoxServerInvocation.PerformLayout();
-            this.groupBoxLegacy.ResumeLayout(false);
-            this.groupBoxLegacy.PerformLayout();
             this.contextMenuStrip1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.projectParametersBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.generationParametersBindingSource)).EndInit();
@@ -2165,8 +2270,7 @@ namespace CslaGenerator.Controls
         private System.Windows.Forms.Label lblGetUserMethod;
         private System.Windows.Forms.TextBox txtGetUserMethod;
         private System.Windows.Forms.TabPage tabGenerationTarget;
-        private System.Windows.Forms.TabPage tabGenerationMisc;
-        private System.Windows.Forms.TabPage tabGenerationFiles;
+
         private System.Windows.Forms.CheckBox chkSaveGenerationTarget;
         private System.Windows.Forms.Label lblTarget;
         private System.Windows.Forms.ComboBox cboTarget;
@@ -2178,12 +2282,16 @@ namespace CslaGenerator.Controls
         private System.Windows.Forms.CheckBox chkSilverlight;
         private System.Windows.Forms.CheckBox chkSilverlightUseServices;
         private System.Windows.Forms.GroupBox groupBoxDataAccessLayer;
-        private System.Windows.Forms.Label lblTargetDAL;
-        private System.Windows.Forms.ComboBox cboTargetDAL;
-        private System.Windows.Forms.CheckBox chkGenerateDAL;
+        private System.Windows.Forms.Label lblUseDto;
+        private System.Windows.Forms.ComboBox cboUseDto;
+        private System.Windows.Forms.TextBox txtDtoLimit;
+        private System.Windows.Forms.Label lblDtoLimit;
+        private System.Windows.Forms.CheckBox chkGenerateDalInterface;
+        private System.Windows.Forms.CheckBox chkGenerateDalObject;
         private System.Windows.Forms.GroupBox groupBoxServerInvocation;
         private System.Windows.Forms.CheckBox chkSynchronous;
         private System.Windows.Forms.CheckBox chkAsynchronous;
+        private System.Windows.Forms.TabPage tabGenerationFiles;
         private System.Windows.Forms.CheckBox chkSaveGenerationFiles;
         private System.Windows.Forms.Label lblBaseFilenameSuffix;
         private System.Windows.Forms.TextBox txtBaseFilenameSuffix;
@@ -2201,26 +2309,32 @@ namespace CslaGenerator.Controls
         private System.Windows.Forms.TextBox txtUtilitiesNamespace;
         private System.Windows.Forms.Label lblUtilitiesFolder;
         private System.Windows.Forms.TextBox txtUtilitiesFolder;
-        private System.Windows.Forms.Label lblInterfaceDALNamespace;
-        private System.Windows.Forms.TextBox txtInterfaceDALNamespace;
-        private System.Windows.Forms.Label lblDALNamespace;
-        private System.Windows.Forms.TextBox txtDALNamespace;
-        private System.Windows.Forms.CheckBox chkSaveGenerationMisc;
-        private System.Windows.Forms.Label lblGenerateAuthorization;
-        private System.Windows.Forms.ComboBox cboGenerateAuthorization;
-        private System.Windows.Forms.Label lblHeaderVerbosity;
-        private System.Windows.Forms.ComboBox cboHeaderVerbosity;
+        private System.Windows.Forms.Label lblDalInterfaceNamespace;
+        private System.Windows.Forms.TextBox txtDalInterfaceNamespace;
+        private System.Windows.Forms.Label lblDalObjectNamespace;
+        private System.Windows.Forms.TextBox txtDalObjectNamespace;
+        private System.Windows.Forms.TabPage tabGenerationDatabase;
+        private System.Windows.Forms.CheckBox chkSaveGenerationDatabase;
+        private System.Windows.Forms.Label lblDatabaseConnection;
+        private System.Windows.Forms.TextBox txtDatabaseConnection;
+        private System.Windows.Forms.GroupBox groupBoxStoredProcs;
         private System.Windows.Forms.CheckBox chkGenerateStoredProcedures;
         private System.Windows.Forms.CheckBox chkSpOneFile;
         private System.Windows.Forms.CheckBox chkGenerateInlineQueries;
         private System.Windows.Forms.CheckBox chkGenerateQueriesWithSchema;
+        private System.Windows.Forms.CheckBox chkUseConnectionName;
         private System.Windows.Forms.CheckBox chkGenerateDatabaseClass;
+        private System.Windows.Forms.TabPage tabGenerationMisc;
+        private System.Windows.Forms.CheckBox chkSaveGenerationMisc;
+        private System.Windows.Forms.Label lblGenerateAuthorization;
+        private System.Windows.Forms.ComboBox cboGenerateAuthorization;
         private System.Windows.Forms.CheckBox chkUsesCslaAuthorizationProvider;
+        private System.Windows.Forms.Label lblHeaderVerbosity;
+        private System.Windows.Forms.ComboBox cboHeaderVerbosity;
         private System.Windows.Forms.CheckBox chkUseBypassPropertyChecks;
         private System.Windows.Forms.CheckBox chkNullableSupport;
         private System.Windows.Forms.CheckBox chkUsePublicPropertyInfo;
         private System.Windows.Forms.CheckBox chkForceReadOnlyProperties;
-        private System.Windows.Forms.GroupBox groupBoxLegacy;
         private System.Windows.Forms.CheckBox chkActiveObjects;
         private System.Windows.Forms.BindingSource generationParametersBindingSource;
         private System.Windows.Forms.BindingSource projectParametersBindingSource;

@@ -35,7 +35,7 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
 <%
         }
         %>
-        public <%= Info.ItemType %> Add(<%=prms%>)
+        public <%= Info.ItemType %> Add(<%= prms %>)
         {
         <%
         string newMethodName = "New" + Info.ItemType;
@@ -44,9 +44,9 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
             newMethodName += "Child";
         }
         %>
-            var <%=FormatCamel(Info.ItemType)%> = <%= Info.ItemType %>.<%=newMethodName%><%=c.CreateOptions.FactorySuffix%>(<%=factoryParams%>);
-            Add(<%=FormatCamel(Info.ItemType)%>);
-            return <%=FormatCamel(Info.ItemType)%>;
+            var <%= FormatCamel(Info.ItemType) %> = <%= Info.ItemType %>.<%= newMethodName %><%= c.CreateOptions.FactorySuffix %>(<%= factoryParams %>);
+            Add(<%= FormatCamel(Info.ItemType) %>);
+            return <%= FormatCamel(Info.ItemType) %>;
         }
         <%
 }

@@ -23,7 +23,7 @@ if (!Info.UseCustomLoading)
             %>
 
         /// <summary>
-        /// Factory method. Loads an existing <see cref="<%= Info.ObjectName %>"/> object from the given SafeDataReader.
+        /// Factory method. Loads a <see cref="<%= Info.ObjectName %>"/> object from the given SafeDataReader.
         /// </summary>
         /// <param name="dr">The SafeDataReader to use.</param>
         <%
@@ -50,13 +50,6 @@ if (!Info.UseCustomLoading)
             }
             %><%= Info.ObjectName %> obj = new <%= Info.ObjectName %>();
             <%
-            // DataPortal_CreateChild already takes care of marking childs
-            // CurrentUnit.GenerationParams.UseChildDataPortal is enought to say when this happens
-            // except Get-(SafeDataReader dr) that bypass Child DataPortal methods
-            /*if (Info.ObjectType == CslaObjectType.EditableSwitchable ||
-                (CurrentUnit.GenerationParams.UseChildDataPortal &&
-                (Info.ObjectType == CslaObjectType.EditableChild ||
-                Info.ObjectType == CslaObjectType.EditableChildCollection)))*/
             if (Info.ObjectType == CslaObjectType.EditableSwitchable ||
                 (Info.ObjectType == CslaObjectType.EditableChild ||
                 Info.ObjectType == CslaObjectType.EditableChildCollection))
@@ -97,7 +90,7 @@ if (!Info.UseCustomLoading)
         %>
 
         /// <summary>
-        /// Factory method. Loads an existing <see cref="<%= Info.ObjectName %>"/> object from the given DataRow.
+        /// Factory method. Loads a <see cref="<%= Info.ObjectName %>"/> object from the given DataRow.
         /// </summary>
         /// <param name="dr">The DataRow to use.</param>
         /// <returns>A reference to the fetched <see cref="<%= Info.ObjectName %>"/> object.</returns>
@@ -116,13 +109,6 @@ if (!Info.UseCustomLoading)
         }
         %><%= Info.ObjectName %> obj = new <%= Info.ObjectName %>();
             <%
-        // DataPortal_CreateChild already takes care of marking childs
-        // CurrentUnit.GenerationParams.UseChildDataPortal is enought to say when this happens
-        // except Get-(SafeDataReader dr) that bypass Child DataPortal methods
-        /*if (Info.ObjectType == CslaObjectType.EditableSwitchable ||
-            (CurrentUnit.GenerationParams.UseChildDataPortal &&
-            (Info.ObjectType == CslaObjectType.EditableChild ||
-            Info.ObjectType == CslaObjectType.EditableChildCollection)))*/
         if (Info.ObjectType == CslaObjectType.EditableSwitchable ||
             (Info.ObjectType == CslaObjectType.EditableChild ||
             Info.ObjectType == CslaObjectType.EditableChildCollection))

@@ -14,7 +14,7 @@ if (UseNoSilverlight())
 <% %>
 
         /// <summary>
-        /// Update all changes made on <see cref="<%= Info.ObjectName %>"/> object in the database.
+        /// Updates in the database all changes made to the <see cref="<%= Info.ObjectName %>"/> object.
         /// </summary>
         <%
         if (Info.TransactionType == TransactionType.EnterpriseServices)
@@ -34,23 +34,9 @@ if (UseNoSilverlight())
         }
         %>protected override void DataPortal_Update()
         {
-            <%= GetConnection(Info, false) %>
+            using (var dalManager = DalFactory<%= GetConnectionName(CurrentUnit) %>.GetManager())
             {
-                <%
-        if (Info.PersistenceType == PersistenceType.SqlConnectionUnshared)
-        {
-            %>cn.Open();
-                <%
-        }
-            %>base.DataPortal_Update();
-<%
-        if (Info.TransactionType == TransactionType.ADO && Info.PersistenceType == PersistenceType.SqlConnectionManager)
-        {
-            %>
-                ctx.Commit();
-                <%
-        }
-        %>
+                base.Child_Update();
             }
         }
 <%

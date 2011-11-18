@@ -127,6 +127,7 @@ namespace CslaGenerator
         public string ProjectsDirectory { get; set; }
         public string ObjectsDirectory { get; set; }
         public string RulesDirectory { get; set; }
+        public bool UseDalAlert { get; set; }
 
         internal ProjectProperties ProjectPropertiesTab
         {
@@ -334,7 +335,7 @@ namespace CslaGenerator
             {
                 Cursor.Current = Cursors.WaitCursor;
                 fs = File.Open(tempFile, FileMode.Create);
-                XmlSerializer s = new XmlSerializer(typeof(CslaGeneratorUnit));
+                var s = new XmlSerializer(typeof(CslaGeneratorUnit));
                 s.Serialize(fs, _currentUnit);
                 success = true;
             }
@@ -594,6 +595,7 @@ namespace CslaGenerator
             GetConfigProjectsFolder();
             GetConfigObjectsFolder();
             GetConfigRulesFolder();
+            GetConfigUseDalAlert();
         }
 
         private void GetConfigTemplatesFolder()
@@ -685,6 +687,24 @@ namespace CslaGenerator
             else
             {
                 RulesDirectory = tDir;
+            }
+        }
+
+        internal void GetConfigUseDalAlert()
+        {
+            var tDir = ConfigTools.Get("UseDalAlert");
+            if (string.IsNullOrEmpty(tDir))
+            {
+                tDir = ConfigTools.OriginalGet("UseDalAlert");
+            }
+
+            if (string.IsNullOrEmpty(tDir))
+            {
+                UseDalAlert = true;
+            }
+            else
+            {
+                UseDalAlert = tDir.ToLower() == "true";
             }
         }
 

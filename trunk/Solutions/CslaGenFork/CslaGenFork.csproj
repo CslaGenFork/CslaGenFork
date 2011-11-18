@@ -280,7 +280,7 @@
     <Compile Include="Metadata\PropertyHelper.cs" />
     <Compile Include="Metadata\AuthorizationRule.cs" />
     <Compile Include="Metadata\SimpleCacheResults.cs" />
-    <Compile Include="Metadata\TargetDAL.cs" />
+    <Compile Include="Metadata\TargetDto.cs" />
     <Compile Include="Metadata\UnitOfWorkProperty.cs" />
     <Compile Include="Metadata\UnitOfWorkPropertyCollection.cs" />
     <Compile Include="Metadata\UnitOfWorkFunction.cs" />

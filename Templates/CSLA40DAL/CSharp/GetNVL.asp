@@ -10,7 +10,7 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
                 %>
 
         /// <summary>
-        /// Factory method. Loads an existing <see cref="<%= Info.ObjectName %>"/> object.
+        /// Factory method. Loads a <see cref="<%= Info.ObjectName %>"/> object.
         /// </summary>
         <%
                 //string strGetParams = string.Empty;

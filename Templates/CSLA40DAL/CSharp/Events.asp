@@ -13,7 +13,7 @@ if ((Info.ObjectType == CslaObjectType.EditableRoot ||
         public static event EventHandler<Csla.Core.SavedEventArgs> <%= Info.ObjectName %>Saved;
 
         /// <summary>
-        /// Called when a <see cref="<%= Info.ObjectName %>"/> object is saved..
+        /// Called when a <see cref="<%= Info.ObjectName %>"/> object is saved.
         /// </summary>
         /// <param name="sender">The sender of the event.</param>
         /// <param name="e">The <see cref="Csla.Core.SavedEventArgs"/> instance containing the event data.</param>

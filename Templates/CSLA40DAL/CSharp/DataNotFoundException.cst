@@ -18,14 +18,14 @@
 
 <%
 string utilNamespace = string.Empty;
-if (CurrentUnit.GenerationParams.UtilitiesNamespace.Length - CurrentUnit.GenerationParams.BaseNamespace.Length > 0)
-    utilNamespace = CurrentUnit.GenerationParams.UtilitiesNamespace.Substring(CurrentUnit.GenerationParams.BaseNamespace.Length);
+if (CurrentUnit.GenerationParams.UtilitiesNamespace != string.Empty)
+    utilNamespace = "." + CurrentUnit.GenerationParams.UtilitiesNamespace;
 %>
 using System;
 using System.Runtime.Serialization;
 using System.Security.Permissions;
 
-namespace <%= CurrentUnit.GenerationParams.InterfaceDALNamespace %><%= utilNamespace %>
+namespace <%= CurrentUnit.GenerationParams.DalInterfaceNamespace %><%= utilNamespace %>
 {
     /// <summary>
     /// Exception indicating data could not be found.

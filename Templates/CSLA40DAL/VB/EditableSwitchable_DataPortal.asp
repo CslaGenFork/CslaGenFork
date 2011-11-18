@@ -9,10 +9,10 @@ if (true)
 <!-- #include file="DataPortalUpdate.asp" -->
 <!-- #include file="InternalInsertUpdateDelete.asp" -->
 <%
-        if (Info.GenerateDataPortalInsert || Info.GenerateDataPortalUpdate)
+        if (Info.GenerateDataPortalInsert || Info.GenerateDataPortalUpdate || Info.GenerateDataPortalDelete)
         {
             %>
-<!-- #include file="DoInsertUpdate.asp" -->
+<!-- #include file="SimpleAuditTrail.asp" -->
 <%
         }
         %>

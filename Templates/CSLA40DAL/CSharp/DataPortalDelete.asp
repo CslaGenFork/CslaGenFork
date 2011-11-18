@@ -5,86 +5,158 @@ if (Info.GenerateDataPortalDelete)
     {
         if (c.DeleteOptions.DataPortal)
         {
-            %>
+            string strSelfDeleteCritParams = string.Empty;
+            string strDeleteCritParams = string.Empty;
+            string strDeleteCallParams = string.Empty;
+            string strDeleteComment = string.Empty;
+            bool deleteIsFirst = true;
 
-        /// <summary>
-        /// Self delete the <see cref="<%= Info.ObjectName %>"/> object.
-        /// </summary>
-        <%
-            if (c.DeleteOptions.RunLocal)
+            if (usesDalCriteria)
             {
-                %>[Csla.RunLocal]
-        <%
-            }
-            string strGetCritParams = string.Empty;
-            bool firstParam = true;
-            for (int i = 0; i < c.Properties.Count; i++)
-            {
-                if (firstParam)
+                foreach (Property p in c.Properties)
                 {
-                    firstParam = false;
+                    if (!deleteIsFirst)
+                    {
+                        strSelfDeleteCritParams += ", ";
+                        strDeleteCritParams += ", ";
+                        strDeleteCallParams += ", ";
+                        strDeleteComment += System.Environment.NewLine + new string(' ', 8);
+                    }
+                    else
+                        deleteIsFirst = false;
+
+                    TypeCodeEx propType = p.PropertyType;
+
+                    strSelfDeleteCritParams += FormatGeneralParameter(Info, p, false, false, true);
+                    strDeleteCritParams += p.Name;
+                    strDeleteCallParams += FormatCamel(p.Name);
                 }
-                else
+
+                strDeleteComment += "/// <param name=\"" + (c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit")) + "\">The delete criteria.</param>";
+
+                if (Info.ObjectType == CslaObjectType.EditableSwitchable)
                 {
-                    strGetCritParams += ", ";
+                    strSelfDeleteCritParams = "false, " + strSelfDeleteCritParams;
+                    strDeleteCritParams = "false, " + strDeleteCritParams;
                 }
-                strGetCritParams += c.Properties[i].Name;
-            }
-            %>protected override void DataPortal_DeleteSelf()
-        {
-            <%
-            if (Info.ObjectType == CslaObjectType.EditableSwitchable)
-            {
-                strGetCritParams = "false, " + strGetCritParams;
-            }
-            if (c.Properties.Count > 1 || (Info.ObjectType == CslaObjectType.EditableSwitchable && c.Properties.Count == 1))
-            {
-                %>
-            DataPortal_Delete(new <%= c.Name %>(<%= strGetCritParams %>));
-        <%
-            }
-            else if (c.Properties.Count > 0)
-            {
-                %>
-            DataPortal_Delete(<%= SendSingleCriteria(c, strGetCritParams) %>);
-        <%
+                if (c.Properties.Count > 1 || (Info.ObjectType == CslaObjectType.EditableSwitchable && c.Properties.Count == 1))
+                {
+                    strSelfDeleteCritParams = "new " + c.Name + "(" + strSelfDeleteCritParams + ")";
+                    strDeleteCritParams = "new " + c.Name + "(" + strDeleteCritParams + ")";
+                }
+                else if (c.Properties.Count > 0)
+                {
+                    strSelfDeleteCritParams = SendSingleCriteria(c, strSelfDeleteCritParams);
+                    strDeleteCritParams = SendSingleCriteria(c, strDeleteCritParams);
+                }
             }
             else
             {
-                %>
-            DataPortal_Delete();
-        <%
+                foreach (Property p in c.Properties)
+                {
+                    if (!deleteIsFirst)
+                    {
+                        strSelfDeleteCritParams += ", ";
+                        strDeleteCritParams += ", ";
+                        strDeleteCallParams += ", ";
+                        strDeleteComment += System.Environment.NewLine + new string(' ', 8);
+                    }
+                    else
+                        deleteIsFirst = false;
+
+                    TypeCodeEx propType = p.PropertyType;
+
+                    strSelfDeleteCritParams += FormatGeneralParameter(Info, p, false, false, true);
+                    strDeleteCritParams += string.Concat(GetDataTypeGeneric(p, propType), " ", FormatCamel(p.Name));
+                    strDeleteCallParams += FormatCamel(p.Name);
+                    strDeleteComment += "/// <param name=\"" + FormatCamel(p.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(p.Name) + ".</param>";
+                }
             }
             %>
-        }
 
         /// <summary>
-        /// Delete the <see cref="<%= Info.ObjectName %>"/> object from database immediately.
+        /// Self deletes the <see cref="<%= Info.ObjectName %>"/> object.
         /// </summary>
-        /// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The delete criteria.</param>
         <%
             if (Info.TransactionType == TransactionType.EnterpriseServices)
             {
                 %>[Transactional(TransactionalTypes.EnterpriseServices)]
         <%
             }
-            else if (Info.TransactionType == TransactionType.TransactionScope)
+            else if (Info.TransactionType == TransactionType.TransactionScope || Info.TransactionType == TransactionType.TransactionScope)
             {
                 %>[Transactional(TransactionalTypes.TransactionScope)]
         <%
             }
-            if (c.DeleteOptions.RunLocal)
+            if (Info.InsertUpdateRunLocal)
             {
-            %>[Csla.RunLocal]
+                %>[Csla.RunLocal]
         <%
             }
-            if (c.Properties.Count > 1)
+            %>protected override void DataPortal_DeleteSelf()
+        {
+            DataPortal_Delete(<%= strSelfDeleteCritParams %>);
+        }
+        <%
+            deleteIsFirst = true;
+
+            if (usesDalCriteria)
             {
-                %>protected void DataPortal_Delete(<%= c.Name %> crit)<%
+                %>
+
+        /// <summary>
+        /// Deletes the <see cref="<%= Info.ObjectName %>"/> object from database.
+        /// </summary>
+        <%= strDeleteComment %>
+        <%
+                if (Info.TransactionType == TransactionType.EnterpriseServices)
+                {
+                    %>[Transactional(TransactionalTypes.EnterpriseServices)]
+        <%
+                }
+                else if (Info.TransactionType == TransactionType.TransactionScope)
+                {
+                    %>[Transactional(TransactionalTypes.TransactionScope)]
+        <%
+                }
+                if (c.DeleteOptions.RunLocal)
+                {
+                    %>[Csla.RunLocal]
+        <%
+                }
+                if (c.Properties.Count > 1)
+                {
+                    %>private void DataPortal_Delete(<%= c.Name %> crit)<%
+                }
+                else
+                {
+                    %>private void DataPortal_Delete(<%= ReceiveSingleCriteria(c, "crit") %>)<%
+                }
             }
             else
             {
-                %>protected void DataPortal_Delete(<%= ReceiveSingleCriteria(c, "crit") %>)<%
+                %>
+        /// <summary>
+        /// Deletes the <see cref="<%= Info.ObjectName %>"/> object from database.
+        /// </summary>
+        <%= strDeleteComment %>
+        <%
+                if (Info.TransactionType == TransactionType.EnterpriseServices)
+                {
+                    %>[Transactional(TransactionalTypes.EnterpriseServices)]
+        <%
+                }
+                else if (Info.TransactionType == TransactionType.TransactionScope)
+                {
+                    %>[Transactional(TransactionalTypes.TransactionScope)]
+        <%
+                }
+                if (c.DeleteOptions.RunLocal)
+                {
+                    %>[Csla.RunLocal]
+        <%
+                }
+                %>private void DataPortal_Delete(<%= strDeleteCritParams %>)<%
             }
             %>
         {
@@ -95,46 +167,37 @@ if (Info.GenerateDataPortalDelete)
             SimpleAuditTrail();
             <%
             }
-            %><%= GetConnection(Info, false) %>
+            %>
+            var args = new DataPortalHookArgs();
+            using (var dalManager = DalFactory<%= GetConnectionName(CurrentUnit) %>.GetManager())
             {
                 <%
-            if (string.IsNullOrEmpty(c.DeleteOptions.ProcedureName))
+            if (Info.GetMyChildProperties().Count > 0)
             {
-                Errors.Append("Criteria " + c.Name + " missing delete procedure name." + Environment.NewLine);
+                %>
+<!-- #include file="UpdateChildProperties.asp" -->
+                <%
             }
             %>
-                <%= GetCommand(Info, c.DeleteOptions.ProcedureName) %>
+                OnDeletePre(args);
+                var dal = dalManager.GetProvider<I<%= Info.ObjectName %>Dal>();
+                using (BypassPropertyChecks)
                 {
-                    <%
-            if (Info.TransactionType == TransactionType.ADO && Info.PersistenceType == PersistenceType.SqlConnectionManager)
-            {
-                %>cmd.Transaction = ctx.Transaction;
-                    <%
+                    dal.Delete(<%= strDeleteCallParams %>);
+                }
+                OnDeletePost(args);
             }
-            if (Info.CommandTimeout != string.Empty)
-            {
-                %>cmd.CommandTimeout = <%= Info.CommandTimeout %>;
-                    <%
-            }
-            %>cmd.CommandType = CommandType.StoredProcedure;
-                    <%
-            foreach (Property p in c.Properties)
+            <%
+            /*foreach (Property p in c.Properties)
             {
                 if (c.Properties.Count > 1)
                 {
-                    %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= GetParameterSet(p, true) %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;<%
+                    >cmd.Parameters.AddWithValue("@<= p.ParameterName >", <= GetParameterSet(p, true) ><= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") >).DbType = DbType.<= TypeHelper.GetDbType(p.PropertyType) >;<
                 }
                 else
                 {
-                    %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= AssignSingleCriteria(c, "crit") %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
-                    <%
+                    >cmd.Parameters.AddWithValue("@<= p.ParameterName >", <= AssignSingleCriteria(c, "crit") ><= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") >).DbType = DbType.<= TypeHelper.GetDbType(p.PropertyType) >;                    <
                 }
-            }
-            if (Info.PersistenceType == PersistenceType.SqlConnectionUnshared)
-            {
-                %>
-                    cn.Open();
-                    <%
             }
             string hookArgs = string.Empty;
             if (c.Properties.Count > 1)
@@ -144,34 +207,8 @@ if (Info.GenerateDataPortalDelete)
             else if (c.Properties.Count > 0)
             {
                 hookArgs = ", " + HookSingleCriteria(c, "crit");
-            }
+            }*/
             %>
-                    var args = new DataPortalHookArgs(cmd<%= hookArgs %>);
-                    OnDeletePre(args);
-                    cmd.ExecuteNonQuery();
-                    OnDeletePost(args);
-                }
-                <%
-            //if (CurrentUnit.GenerationParams.UseChildDataPortal)
-            if (true)
-            {
-                if (Info.GetCollectionChildProperties().Count > 0 || Info.GetNonCollectionChildProperties().Count > 0)
-                {
-                    %>
-
-                FieldManager.UpdateChildren(this);
-                <%
-                }
-            }
-            if (Info.TransactionType == TransactionType.ADO && Info.PersistenceType == PersistenceType.SqlConnectionManager)
-            {
-                %>
-
-                ctx.Commit();
-            <%
-            }
-            %>
-            }
         }
             <%
         }

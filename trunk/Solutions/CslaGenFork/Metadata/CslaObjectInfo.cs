@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Xml.Serialization;
 using CslaGenerator.Attributes;
@@ -771,7 +772,7 @@ namespace CslaGenerator.Metadata
         #region 07. Data Access Options
 
         [Category("07. Data Access Options")]
-        [Description("Name of the database alias used to get connection string from configuration file.")]
+        [Description("Name of the database alias used to get the connection string from configuration file.")]
         [UserFriendlyName("Database Name")]
         public string DbName
         {
@@ -783,12 +784,26 @@ namespace CslaGenerator.Metadata
         /// Persistence type to use for data access.
         /// </summary>
         [Category("07. Data Access Options")]
-        [Description("Persistence type to use for data storage.")]
+        [Description("Persistence type to use for data storage. When using DAL, SqlConnectionUnshared type is invalid.")]
         [UserFriendlyName("Persistence Type")]
         public PersistenceType PersistenceType
         {
-            get { return _persistenceType; }
-            set { _persistenceType = value; }
+            get
+            {
+                if (GeneratorController.Current.CurrentUnit.GenerationParams.UseDal)
+                    if (_persistenceType == PersistenceType.SqlConnectionUnshared)
+                        return PersistenceType.SqlConnectionManager;
+                
+                return _persistenceType;
+            }
+            set
+            {
+                if (GeneratorController.Current.CurrentUnit.GenerationParams.UseDal)
+                    if (_persistenceType == PersistenceType.SqlConnectionUnshared)
+                        value=  PersistenceType.SqlConnectionManager;
+
+                _persistenceType = value;
+            }
         }
 
         /// <summary>
@@ -825,15 +840,29 @@ namespace CslaGenerator.Metadata
         /// Transaction type to use for data access.
         /// </summary>
         [Category("07. Data Access Options")]
-        [Description("Transaction type to use for data access.")]
+        [Description("Transaction type to use for data access. When using DAL, ADO type is invalid.")]
         [UserFriendlyName("Transaction Type")]
         public TransactionType TransactionType
         {
-            get { return _transactionType; }
+            get
+            {
+                if (GeneratorController.Current.CurrentUnit.GenerationParams.UseDal)
+                    if (_transactionType == TransactionType.ADO)
+                        return TransactionType.TransactionScope;
+
+                return _transactionType;
+            }
             set
             {
                 if (value == TransactionType.TransactionalAttribute)
+                {
                     _transactionType = TransactionType.TransactionScope;
+                }
+                else if (GeneratorController.Current.CurrentUnit.GenerationParams.UseDal)
+                {
+                    if (value == TransactionType.ADO)
+                        _transactionType = TransactionType.TransactionScope;
+                }
                 else
                     _transactionType = value;
             }
@@ -1317,7 +1346,7 @@ namespace CslaGenerator.Metadata
         #region Utility property collections
 
         /// <summary>
-        /// Object's non-collection child properties plus collection child properties, including inherited
+        /// Object's child collection and non collection properties.
         /// </summary>
         [XmlIgnore]
         [Browsable(false)]
@@ -1327,7 +1356,7 @@ namespace CslaGenerator.Metadata
         }
 
         /// <summary>
-        /// Inherited non-collection child properties plus inherited collection child properties.
+        /// Object's inherited child collection and non collection properties.
         /// </summary>
         [XmlIgnore]
         [Browsable(false)]
@@ -1337,7 +1366,7 @@ namespace CslaGenerator.Metadata
         }
 
         /// <summary>
-        /// Object's value properties plus convert value properties.
+        /// Object's value properties and convert value properties.
         /// </summary>
         [XmlIgnore]
         [Browsable(false)]
@@ -1346,6 +1375,10 @@ namespace CslaGenerator.Metadata
             get { return GetMyValueProperties(); }
         }
 
+        /// <summary>
+        /// Object's properties that can have rules associated with.
+        /// </summary>
+        /// <returns>All value properties, inherited value properties and absolutely all child properties.</returns>
         public HaveBusinessRulesCollection AllRulableProperties()
         {
             var allRulableProperties = new HaveBusinessRulesCollection();
@@ -1366,88 +1399,37 @@ namespace CslaGenerator.Metadata
         [Browsable(false)]
         public bool HasCreateCriteria
         {
-            get
-            {
-                foreach (var c in _criteriaObjects)
-                {
-                    //if (c.CreateOptions.DataPortal || c.CreateOptions.Factory)
-                    if (c.CreateOptions.DataPortal)
-                        return true;
-                }
-                return false;
-            }
+            get { return _criteriaObjects.Any(c => c.CreateOptions.DataPortal); }
         }
 
         [Browsable(false)]
         public bool HasCreateCriteriaFactory
         {
-            get
-            {
-                foreach (var c in _criteriaObjects)
-                {
-                    if (c.CreateOptions.Factory)
-                        return true;
-                }
-                return false;
-            }
+            get { return _criteriaObjects.Any(c => c.CreateOptions.Factory); }
         }
 
         [Browsable(false)]
         public bool HasGetCriteria
         {
-            get
-            {
-                foreach (var c in _criteriaObjects)
-                {
-                    //if (c.GetOptions.DataPortal || c.GetOptions.Factory)
-                    if (c.GetOptions.DataPortal)
-                        return true;
-                }
-                return false;
-            }
+            get { return _criteriaObjects.Any(c => c.GetOptions.DataPortal); }
         }
 
         [Browsable(false)]
         public bool HasGetCriteriaFactory
         {
-            get
-            {
-                foreach (var c in _criteriaObjects)
-                {
-                    if (c.GetOptions.Factory)
-                        return true;
-                }
-                return false;
-            }
+            get { return _criteriaObjects.Any(c => c.GetOptions.Factory); }
         }
 
         [Browsable(false)]
         public bool HasDeleteCriteria
         {
-            get
-            {
-                foreach (var c in _criteriaObjects)
-                {
-                    //if (c.DeleteOptions.DataPortal || c.DeleteOptions.Factory)
-                    if (c.DeleteOptions.DataPortal)
-                        return true;
-                }
-                return false;
-            }
+            get { return _criteriaObjects.Any(c => c.DeleteOptions.DataPortal); }
         }
 
         [Browsable(false)]
         public bool HasDeleteCriteriaFactory
         {
-            get
-            {
-                foreach (var c in _criteriaObjects)
-                {
-                    if (c.DeleteOptions.Factory)
-                        return true;
-                }
-                return false;
-            }
+            get { return _criteriaObjects.Any(c => c.DeleteOptions.Factory); }
         }
 
         [Browsable(false)]
@@ -1461,49 +1443,25 @@ namespace CslaGenerator.Metadata
         [Browsable(false)]
         public bool IsCreator
         {
-            get
-            {
-                if (UnitOfWorkType == UnitOfWorkFunction.Creator)
-                    return true;
-
-                return false;
-            }
+            get { return UnitOfWorkType == UnitOfWorkFunction.Creator; }
         }
 
         [Browsable(false)]
         public bool IsGetter
         {
-            get
-            {
-                if (UnitOfWorkType == UnitOfWorkFunction.Getter)
-                    return true;
-
-                return false;
-            }
+            get { return UnitOfWorkType == UnitOfWorkFunction.Getter; }
         }
 
         [Browsable(false)]
         public bool IsUpdater
         {
-            get
-            {
-                if (UnitOfWorkType == UnitOfWorkFunction.Updater)
-                    return true;
-
-                return false;
-            }
+            get { return UnitOfWorkType == UnitOfWorkFunction.Updater; }
         }
 
         [Browsable(false)]
         public bool IsDeleter
         {
-            get
-            {
-                if (UnitOfWorkType == UnitOfWorkFunction.Deleter)
-                    return true;
-
-                return false;
-            }
+            get { return UnitOfWorkType == UnitOfWorkFunction.Deleter; }
         }
 
         [Browsable(false)]
@@ -1511,20 +1469,11 @@ namespace CslaGenerator.Metadata
         {
             get
             {
-                foreach (ValueProperty p in GetAllValueProperties())
+                if (GetAllValueProperties().Any(p => p.Nullable))
                 {
-                    if (p.Nullable)
-                        return true;
+                    return true;
                 }
-                foreach (Criteria c in CriteriaObjects)
-                {
-                    foreach (var p in c.Properties)
-                    {
-                        if (p.Nullable)
-                            return true;
-                    }
-                }
-                return false;
+                return CriteriaObjects.SelectMany(c => c.Properties).Any(p => p.Nullable);
             }
         }
 
@@ -1683,6 +1632,24 @@ namespace CslaGenerator.Metadata
             }
         }
 
+        /// <summary>
+        /// Gets all value properties database boundable (it doesn't check whether they are actually bound).
+        /// </summary>
+        /// <returns>A ValuePropertyCollection with all ValueProperties and InheritedValueProperties.</returns>
+        public ValuePropertyCollection GetDatabaseBoundValueProperties()
+        {
+            var allDatabaseBoundValueProperties = new ValuePropertyCollection();
+
+            allDatabaseBoundValueProperties.AddRange(_valueProperties);
+            allDatabaseBoundValueProperties.AddRange(_inheritedValueProperties);
+
+            return allDatabaseBoundValueProperties;
+        }
+
+        /// <summary>
+        /// Gets value properties and inherited value properties.
+        /// </summary>
+        /// <returns>A ValuePropertyCollection with ValueProperties and InheritedValueProperties.</returns>
         public ValuePropertyCollection GetAllValueProperties()
         {
             var allValueProperties = new ValuePropertyCollection();
@@ -1693,6 +1660,10 @@ namespace CslaGenerator.Metadata
             return allValueProperties;
         }
 
+        /// <summary>
+        /// Gets the value properties correpondent to the parent properties of the child object.
+        /// </summary>
+        /// <returns>A ValuePropertyCollection with parent's ValueProperties of the child's parent properties.</returns>
         public ValuePropertyCollection GetParentValueProperties()
         {
             var parentValueProperties = new ValuePropertyCollection();
@@ -1712,6 +1683,11 @@ namespace CslaGenerator.Metadata
             return parentValueProperties;
         }
 
+        /// <summary>
+        /// Finds the parent of a child CslaObjectInfo (object or collection).
+        /// </summary>
+        /// <param name="childInfo">The child CslaObjectInfo.</param>
+        /// <returns>The parent CslaObjectInfo.</returns>
         public CslaObjectInfo FindParent(CslaObjectInfo childInfo)
         {
             //cloned from sp template helper
@@ -1734,6 +1710,10 @@ namespace CslaGenerator.Metadata
             return null;
         }
 
+        /// <summary>
+        /// Gets the child collection and non collection properties.
+        /// </summary>
+        /// <returns>A ChildPropertyCollection with ChildProperties and ChildCollectionProperties.</returns>
         public ChildPropertyCollection GetMyChildProperties()
         {
             var myChildProperties = new ChildPropertyCollection();
@@ -1744,6 +1724,10 @@ namespace CslaGenerator.Metadata
             return myChildProperties;
         }
 
+        /// <summary>
+        /// Gets the value properties and convert value properties.
+        /// </summary>
+        /// <returns>A ValuePropertyCollection with ValueProperties and ConvertValueProperties.</returns>
         public ValuePropertyCollection GetMyValueProperties()
         {
             var myValueProperties = new ValuePropertyCollection();
@@ -1754,6 +1738,11 @@ namespace CslaGenerator.Metadata
             return myValueProperties;
         }
 
+        /// <summary>
+        /// Converts a ConvertValuePropertyCollection to ValuePropertyCollection.
+        /// </summary>
+        /// <param name="convertValuePropertyCollection">The ConvertValuePropertyCollection to convert.</param>
+        /// <returns>A ValuePropertyCollection with the converted ConvertValueProperties.</returns>
         private ValuePropertyCollection ConvertToValuePropertyCollection(ConvertValuePropertyCollection convertValuePropertyCollection)
         {
             var valuePropertyCollection = new ValuePropertyCollection();
@@ -1765,6 +1754,10 @@ namespace CslaGenerator.Metadata
             return valuePropertyCollection;
         }
 
+        /// <summary>
+        /// Gets the inherited child collection and non collection properties.
+        /// </summary>
+        /// <returns>A ChildPropertyCollection with InheritedChildProperties and InheritedChildProperties.</returns>
         public ChildPropertyCollection GetInheritedChildProperties()
         {
             var inheritedChildProperties = new ChildPropertyCollection();
@@ -1775,6 +1768,10 @@ namespace CslaGenerator.Metadata
             return inheritedChildProperties;
         }
 
+        /// <summary>
+        /// Gets all child properties: collection and non-collection, including inherited.
+        /// </summary>
+        /// <returns>A ChildPropertyCollection with absolutely all ChildProperties.</returns>
         public ChildPropertyCollection GetAllChildProperties()
         {
             var allChildProperties = new ChildPropertyCollection();
@@ -1787,6 +1784,10 @@ namespace CslaGenerator.Metadata
             return allChildProperties;
         }
 
+        /// <summary>
+        /// Gets the non collection child and inherited child properties.
+        /// </summary>
+        /// <returns>A ChildPropertyCollection with ChildProperties and InheritedChildProperties.</returns>
         public ChildPropertyCollection GetNonCollectionChildProperties()
         {
             var nonCollectionChildProps = new ChildPropertyCollection();
@@ -1797,6 +1798,10 @@ namespace CslaGenerator.Metadata
             return nonCollectionChildProps;
         }
 
+        /// <summary>
+        /// Gets the collection child and inherited child properties.
+        /// </summary>
+        /// <returns>A ChildPropertyCollection with ChildCollectionProperties and InheritedChildCollectionProperties.</returns>
         public ChildPropertyCollection GetCollectionChildProperties()
         {
             var collectionChildProps = new ChildPropertyCollection();

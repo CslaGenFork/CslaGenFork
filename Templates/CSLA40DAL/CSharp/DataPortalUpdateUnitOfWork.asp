@@ -4,7 +4,7 @@ if (Info.GenerateDataPortalUpdate)
     %>
 
         /// <summary>
-        /// Update all changes made on <see cref="<%= Info.ObjectName %>"/> object in the database.
+        /// Updates in the database all changes made to the <see cref="<%= Info.ObjectName %>"/> object.
         /// </summary>
         <%
     if (Info.TransactionType == TransactionType.EnterpriseServices)
@@ -29,12 +29,6 @@ if (Info.GenerateDataPortalUpdate)
     }
                 %><%= GetConnection(Info, false) %>
                 {
-                    <%
-    if (string.IsNullOrEmpty(Info.UpdateProcedureName))
-    {
-        Errors.Append("Object " + Info.ObjectName + " missing update procedure name." + Environment.NewLine);
-    }
-    %>
                     <%= GetCommand(Info, Info.UpdateProcedureName) %>
                     {
                         <%
@@ -68,14 +62,7 @@ if (Info.GenerateDataPortalUpdate)
             }
         }
     }
-    if (Info.PersistenceType == PersistenceType.SqlConnectionUnshared)
-    {
-        %>cn.Open();
-                        <%
-    }
     %>var args = new DataPortalHookArgs(cmd);
-                        OnUpdateStart(args);
-                        DoInsertUpdate(cmd);
                         OnUpdatePre(args);
                         cmd.ExecuteNonQuery();
                         OnUpdatePost(args);
@@ -86,23 +73,26 @@ if (Info.GenerateDataPortalUpdate)
         {
             if (prop.DeclarationMode == PropertyDeclaration.Managed)
             {
-                %>LoadProperty(<%= FormatPropertyInfoName(prop.Name) %>, (Byte[]) cmd.Parameters["@New<%= prop.ParameterName %>"].Value);<%
+                %>LoadProperty(<%= FormatPropertyInfoName(prop.Name) %>, (byte[]) cmd.Parameters["@New<%= prop.ParameterName %>"].Value);<%
             }
             else
             {
-                %><%=FormatFieldName(prop.Name)%> = (Byte[]) cmd.Parameters["@New<%= prop.ParameterName %>"].Value;<%
+                %><%= FormatFieldName(prop.Name) %> = (byte[]) cmd.Parameters["@New<%= prop.ParameterName %>"].Value;<%
             }
         }
     }
-    string indent = "    ";
     %>
                     }
-                    <!-- #include file="UpdateChildProperties.asp" -->
                     <%
+    if (Info.GetMyChildProperties().Count > 0)
+    {
+        %>
+<!-- #include file="UpdateChildProperties.asp" -->
+                    <%
+    }
     if (Info.TransactionType == TransactionType.ADO && Info.PersistenceType == PersistenceType.SqlConnectionManager)
     {
         %>
-
                     ctx.Commit();
                 <%
     }

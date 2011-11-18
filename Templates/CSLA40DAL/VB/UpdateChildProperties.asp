@@ -1,49 +1,19 @@
 <%
-//if (CurrentUnit.GenerationParams.UseChildDataPortal)
-if (true)
+List<ChildProperty> children = (List<ChildProperty>)Info.GetMyChildProperties();
+children = SortChildren(children);
+if (IgnoreSortOrder(children))
 {
-    if (Info.GetCollectionChildProperties().Count > 0 || Info.GetNonCollectionChildProperties().Count > 0)
-    {
-        %>
-
-                <%= indent %>FieldManager.UpdateChildren(this);
+    %>
+                FieldManager.UpdateChildren(this);
                 <%
-    }
 }
 else
 {
-    foreach (ChildProperty child in Info.GetCollectionChildProperties())
+    foreach (ChildProperty child in children)
     {
-        CslaObjectInfo _child = FindChildInfo(Info, child.TypeName);
-        if (_child != null && _child.ObjectType != CslaObjectType.ReadOnlyObject &&
-            _child.ObjectType != CslaObjectType.ReadOnlyCollection)
-        {
-            %>
-
-                <%= indent %>// Update child Properties
-                <%= indent %>if (<%=FormatFieldName(child)%> != null)
-                <%= indent %>    <%=FormatFieldName(child)%>.Update(this);
+        %>
+                DataPortal.UpdateChild(<%= child.Name %>, this);
                 <%
-        }
-    }
-    foreach (ChildProperty child in Info.GetNonCollectionChildProperties())
-    {
-        CslaObjectInfo _child = FindChildInfo(Info, child.TypeName);
-        if (_child != null && _child.ObjectType != CslaObjectType.ReadOnlyObject &&
-            _child.ObjectType != CslaObjectType.ReadOnlyCollection)
-        {
-            %>
-
-                    <%= indent %>// Insert/Update child Properties
-                    <%= indent %>if (<%=FormatFieldName(child)%> != null)
-                    <%= indent %>{
-                    <%= indent %>    if (<%=FormatFieldName(child)%>.IsNew)
-                    <%= indent %>        <%=FormatFieldName(child)%>.Insert(this);
-                    <%= indent %>    else
-                    <%= indent %>        <%=FormatFieldName(child)%>.Update(<% if (!_child.ParentInsertOnly) { %>this<% } %>);
-                    <%= indent %>}
-                                <%
-        }
     }
 }
 %>

@@ -38,7 +38,7 @@ if (UseBoth())
                 }
 %>
         /// <returns>A reference to the created <see cref="<%= Info.ObjectName %>"/> object.</returns>
-        internal static <%= Info.ObjectName %> New<%= Info.ObjectName %><%=c.CreateOptions.FactorySuffix%>Child(<%=  strNewParams %>)
+        internal static <%= Info.ObjectName %> New<%= Info.ObjectName %><%= c.CreateOptions.FactorySuffix %>Child(<%= strNewParams %>)
         {
         <%
                 if (CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.None &&
@@ -75,7 +75,7 @@ if (UseBoth())
                 %>
 
         /// <summary>
-        /// Factory method. Loads an existing <see cref="<%= Info.ObjectName %>" /> child object <%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
+        /// Factory method. Loads a <see cref="<%= Info.ObjectName %>" /> child object <%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
         /// </summary>
         <%
                 string strGetParams = string.Empty;

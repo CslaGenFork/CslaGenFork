@@ -132,8 +132,7 @@ namespace CslaGenerator.Metadata
             "\r\n\tReadOnly=xRx (can't write)" +
             "\r\n\tWriteOnly=CxU (can't read)" +
             "\r\n\tUpdateOnly=xRU (can't create)" +
-            "\r\n\tCreateOnly=CRx (can't update)" +
-            "")]
+            "\r\n\tCreateOnly=CRx (can't update)")]
         [UserFriendlyName("Data Access Behaviour")]
         public virtual DataAccessBehaviour DataAccess
         {

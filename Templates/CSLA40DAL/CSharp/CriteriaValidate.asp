@@ -1,7 +1,5 @@
 <%
 bool isCollection2 =
-    //Info.ObjectType == CslaObjectType.EditableRootCollection ||
-    //Info.ObjectType == CslaObjectType.DynamicEditableRootCollection ||
     Info.ObjectType == CslaObjectType.EditableChildCollection ||
     Info.ObjectType == CslaObjectType.ReadOnlyCollection;
 
@@ -24,8 +22,7 @@ foreach (Criteria crit in GetCriteriaObjects(Info))
     {
         if(criteriaProperty.DbBindColumn.Column == null)
         {
-            Errors.Append("Criteria Property " + Info.ObjectName + "." + crit.Name + "." + criteriaProperty.Name + " is missing DB Bind Column." + Environment.NewLine);
-            //Errors.Append("Criteria Property " + Info.ObjectName + crit.Name + criteriaProperty.Name + " is missing DB Bind Column." + Environment.NewLine);
+            Errors.Append("Criteria " + Info.ObjectName + "." + crit.Name + ": property " + criteriaProperty.Name + " is missing DB Bind Column." + Environment.NewLine);
             return;
         }
     }
@@ -71,11 +68,11 @@ else
             // only get criteria
             if (createOptionsFactory || createOptionsDataPortal)
             {
-                Warnings.Append(Info.ObjectName + "." + crit.Name + ".CreateOptions: all options should be \"False\" or empty." + Environment.NewLine);
+                Warnings.Append("Criteria " + Info.ObjectName + "." + crit.Name + ": all Create options should be \"False\" or empty." + Environment.NewLine);
             }
             if (deleteOptionsFactory || deleteOptionsDataPortal)
             {
-                Warnings.Append(Info.ObjectName + "." + crit.Name + ".DeleteOptions: all options should be \"False\" or empty." + Environment.NewLine);
+                Warnings.Append("Criteria " + Info.ObjectName + "." + crit.Name + ": all Delete options should be \"False\" or empty." + Environment.NewLine);
             }
 
             // not even get?
@@ -83,7 +80,7 @@ else
             {
                 if (getOptionsFactory || getOptionsDataPortal)
                 {
-                    Warnings.Append(Info.ObjectName + "." + crit.Name + ".GetOptions: all options should be \"False\" or empty." + Environment.NewLine);
+                    Warnings.Append("Criteria " + Info.ObjectName + "." + crit.Name + ": all Get options should be \"False\" or empty." + Environment.NewLine);
                 }
             }
         }
@@ -92,39 +89,41 @@ else
         {
             if (!createOptionsFactory)
             {
-                Warnings.Append(Info.ObjectName + "." + crit.Name + ".CreateOptions: Factory should be \"True\"." + Environment.NewLine);
+                Warnings.Append("Criteria " + Info.ObjectName + "." + crit.Name + ": Create option Factory should be \"True\"." + Environment.NewLine);
             }
             if (!createOptionsDataPortal)
             {
-                Warnings.Append(Info.ObjectName + "." + crit.Name + ".CreateOptions: DataPortal should be \"True\"." + Environment.NewLine);
+                Warnings.Append("Criteria " + Info.ObjectName + "." + crit.Name + ": Create option DataPortal should be \"True\"." + Environment.NewLine);
             }
             if (!createOptionsRunLocal)
             {
-                Warnings.Append(Info.ObjectName + "." + crit.Name + ".CreateOptions: RunLocal should be \"True\"." + Environment.NewLine);
+                Warnings.Append("Criteria " + Info.ObjectName + "." + crit.Name + ": Create option RunLocal should be \"True\"." + Environment.NewLine);
             }
             if (deleteOptionsFactory || deleteOptionsDataPortal)
             {
-                Warnings.Append(Info.ObjectName + "." + crit.Name + ".DeleteOptions: all options should be \"False\" or empty." + Environment.NewLine);
+                Warnings.Append("Criteria " + Info.ObjectName + "." + crit.Name + ": all Delete options should be \"False\" or empty." + Environment.NewLine);
             }
         }
         else if (!(Info.ObjectType == CslaObjectType.EditableRoot ||
             Info.ObjectType == CslaObjectType.DynamicEditableRoot ||
+            Info.ObjectType == CslaObjectType.EditableChild ||
             Info.ObjectType == CslaObjectType.EditableSwitchable ||
             (Info.ObjectType == CslaObjectType.ReadOnlyObject && Info.ParentType == string.Empty)))
         {
             if (getOptionsFactory || getOptionsDataPortal)
             {
-                Warnings.Append(Info.ObjectName + "." + crit.Name + ".GetOptions: all options should be \"False\" or empty (neither a root object nor a SelfLoad object)." + Environment.NewLine);
+                Warnings.Append("Criteria " + Info.ObjectName + "." + crit.Name + ": all Get options should be \"False\" or empty (neither a root object nor a SelfLoad object)." + Environment.NewLine);
             }
             if (deleteOptionsFactory || deleteOptionsDataPortal)
             {
-                Warnings.Append(Info.ObjectName + "." + crit.Name + ".DeleteOptions:" +
+                Warnings.Append("Criteria " + Info.ObjectName + "." + crit.Name + ": Delete options " +
                     (deleteOptionsFactory ? " \"Factory\"" : "") +
                     ((deleteOptionsFactory && deleteOptionsDataPortal) ? " and" : "") +
                     (deleteOptionsDataPortal ? " \"DataPortal\"" : "") +
                     " should be set to \"False\"." +
                     Environment.NewLine);
-                if (!(createOptionsFactory || createOptionsDataPortal || getOptionsFactory || getOptionsDataPortal))
+                if (!(createOptionsFactory || createOptionsDataPortal || getOptionsFactory || getOptionsDataPortal) &&
+                    crit.Properties.Count > 1)
                 {
                     Warnings.Append("Useless \"" + crit.Name + "\" class will be generated as no other \"Factory\" or \"DataPortal\" options are set." + Environment.NewLine);
                 }

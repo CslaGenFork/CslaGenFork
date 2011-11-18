@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
-<CslaGeneratorUnit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<CslaGeneratorUnit xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Params>
     <DefaultTransactionType>ADO</DefaultTransactionType>
-    <DefaultDataBase>MyProject.Database</DefaultDataBase>
-    <DefaultNamespace>MyProject.Library</DefaultNamespace>
+    <DefaultDataBase>MyDatabase</DefaultDataBase>
+    <DefaultNamespace>MyProject.Business</DefaultNamespace>
     <DefaultFolder />
     <SmartDateDefault>true</SmartDateDefault>
     <AutoCriteria>true</AutoCriteria>
@@ -69,23 +69,27 @@
     <ExtendedFilenameSuffix />
     <ClassCommentFilenameSuffix />
     <SeparateClassComment>false</SeparateClassComment>
-    <BaseNamespace>MyProject</BaseNamespace>
-    <UtilitiesNamespace>MyProject.Library.Util</UtilitiesNamespace>
+    <BaseNamespace>MyProject.Business</BaseNamespace>
+    <UtilitiesNamespace />
     <UtilitiesFolder />
-    <InterfaceDALNamespace>MyProject.DataAccess</InterfaceDALNamespace>
-    <DALNamespace>MyProject.DataAccess.Sql</DALNamespace>
+    <DalInterfaceNamespace>MyProject.DataAccess</DalInterfaceNamespace>
+    <DalObjectNamespace>MyProject.DataAccess.Sql</DalObjectNamespace>
     <GenerateSprocs>true</GenerateSprocs>
     <OneSpFilePerObject>true</OneSpFilePerObject>
     <GenerateInlineQueries>false</GenerateInlineQueries>
     <GenerateQueriesWithSchema>true</GenerateQueriesWithSchema>
     <GenerateDatabaseClass>true</GenerateDatabaseClass>
+    <UseConnectionName>true</UseConnectionName>
     <UsesCslaAuthorizationProvider>true</UsesCslaAuthorizationProvider>
     <GenerateWinForms>true</GenerateWinForms>
     <GenerateWPF>true</GenerateWPF>
     <GenerateSilverlight4>true</GenerateSilverlight4>
     <SilverlightUsingServices>false</SilverlightUsingServices>
-    <TargetDAL>None</TargetDAL>
-    <GenerateDAL>false</GenerateDAL>
+    <DatabaseConnection>MyDatabase</DatabaseConnection>
+    <UseDto>MoreThan</UseDto>
+    <DtoLimit>7</DtoLimit>
+    <GenerateDalInterface>false</GenerateDalInterface>
+    <GenerateDalObject>false</GenerateDalObject>
     <GenerateSynchronous>true</GenerateSynchronous>
     <GenerateAsynchronous>true</GenerateAsynchronous>
   </GenerationParams>

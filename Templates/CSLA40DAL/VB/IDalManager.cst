@@ -10,7 +10,7 @@
 <%@ Import Namespace="CslaGenerator.Util" %>
 
 //-----------------------------------------------------------------------
-// <copyright file="IDalManager.cs" company="Marimer LLC">
+// <copyright file="IDalManager<%= GetConnectionName(CurrentUnit) %>.cs" company="Marimer LLC">
 //     Copyright (c) Marimer LLC. All rights reserved.
 //     Website: http://www.lhotka.net/cslanet/
 // </copyright>
@@ -18,23 +18,23 @@
 
 <%
 string utilNamespace = string.Empty;
-if (CurrentUnit.GenerationParams.UtilitiesNamespace.Length - CurrentUnit.GenerationParams.BaseNamespace.Length > 0)
-    utilNamespace = CurrentUnit.GenerationParams.UtilitiesNamespace.Substring(CurrentUnit.GenerationParams.BaseNamespace.Length);
+if (CurrentUnit.GenerationParams.UtilitiesNamespace != string.Empty)
+    utilNamespace = "." + CurrentUnit.GenerationParams.UtilitiesNamespace;
 %>
 using System;
 
-namespace <%= CurrentUnit.GenerationParams.InterfaceDALNamespace %><%= utilNamespace %>
+namespace <%= CurrentUnit.GenerationParams.DalInterfaceNamespace %><%= utilNamespace %>
 {
     /// <summary>
-    /// Defines the DAL manager interface for DAL providers.
+    /// Defines the <%= GetConnectionName(CurrentUnit) %> DAL manager interface for DAL providers.
     /// </summary>
-    public interface IDalManager : IDisposable
+    public interface IDalManager<%= GetConnectionName(CurrentUnit) %> : IDisposable
     {
         /// <summary>
         /// Gets the DAL provider for a given object Type.
         /// </summary>
-        /// <typeparam name="T">Object Type that requires a DAL provider.</typeparam>
-        /// <returns>A new DAL instance for the given Type.</returns>
+        /// <typeparam name="T">Object Type that requires a <%= GetConnectionName(CurrentUnit) %> DAL provider.</typeparam>
+        /// <returns>A new <%= GetConnectionName(CurrentUnit) %> DAL instance for the given Type.</returns>
         T GetProvider<T>() where T : class;
     }
 }

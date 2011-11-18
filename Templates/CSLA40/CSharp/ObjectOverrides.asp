@@ -25,7 +25,7 @@ if (Info.ToStringProperty != null && Info.ToStringProperty.Count > 0 &&
                 {
                     firstLine = false;
                 }
-                %><%=FormatProperty(prop.Name)%>.ToString()<%
+                %><%= FormatProperty(prop.Name) %>.ToString()<%
              }%>;
         }
 

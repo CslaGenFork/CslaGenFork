@@ -33,7 +33,7 @@ if ((firstComment == null && string.IsNullOrEmpty(Info.Parent.GenerationParams.C
     /// </summary>
     <%
     int indentLevel = (CurrentUnit.GenerationParams.UtilitiesNamespace.Length > 0) ? 1 : 0;
-    string indent = new string(' ', indentLevel * 4);
+    string localIndent = new string(' ', indentLevel * 4);
     string xmlRemark = "/// ";
     // contained child collections
     if (Info.ChildCollectionProperties.Count > 0)
@@ -48,7 +48,7 @@ if ((firstComment == null && string.IsNullOrEmpty(Info.Parent.GenerationParams.C
             CslaObjectInfo childColl = FindChildInfo(Info, Info.ChildCollectionProperties[collection].TypeName);
             CslaObjectInfo associated = FindAssociated(Info, childColl);
             xmlRemark += "- <see cref=\"" + collectionName + "\"/> of type <see cref=\"" + childColl.ObjectName +
-                "\"/> (" + (associated == null ? "1" : "N") + " to N relation to <see cref=\"" + (associated == null ? childColl.ItemType : associated.ObjectName) + "\"/>)" + (collection != Info.ChildCollectionProperties.Count - 1 ? "<br/>\r\n" : "");
+                "\"/> (" + (associated == null ? "1" : "M") + ":M relation to <see cref=\"" + (associated == null ? childColl.ItemType : associated.ObjectName) + "\"/>)" + (collection != Info.ChildCollectionProperties.Count - 1 ? "<br/>\r\n" : "");
         }
     }
     // collection items
@@ -81,7 +81,7 @@ if ((firstComment == null && string.IsNullOrEmpty(Info.Parent.GenerationParams.C
     }
     if (firstComment == false)
     {
-        xmlRemark = System.Text.RegularExpressions.Regex.Replace(xmlRemark, "\r\n", "\r\n" + indent + "/// ", System.Text.RegularExpressions.RegexOptions.Multiline);
+        xmlRemark = System.Text.RegularExpressions.Regex.Replace(xmlRemark, "\r\n", "\r\n" + localIndent + "/// ", System.Text.RegularExpressions.RegexOptions.Multiline);
         %>
     /// <remarks>
     <%= xmlRemark %>

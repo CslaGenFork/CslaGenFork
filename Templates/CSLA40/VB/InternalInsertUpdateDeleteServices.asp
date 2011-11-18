@@ -18,7 +18,7 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
         %>
 
         /// <summary>
-        /// Insert the new <see cref="<%= Info.ObjectName %>"/> object.
+        /// Inserts a new <see cref="<%= Info.ObjectName %>"/> object in the database.
         /// </summary>
         <%
         if (parentType.Length > 0)
@@ -28,7 +28,7 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
         }
         %>/// <param name="handler">The asynchronous handler.</param>
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public void <%= isChild ? "Child_" : "DataPortal_" %>Insert(<% if (parentType.Length > 0) { %><%= parentType %> parent, <% } %>Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)
+        public <%= ((!isChild && parentType.Length > 0) ? "override " : "") %>void <%= isChild ? "Child_" : "DataPortal_" %>Insert(<%= (parentType.Length > 0 ? parentType + " parent, " : "") %>Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)
         {
             try
             {
@@ -60,7 +60,7 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
         %>
 
         /// <summary>
-        /// Update all changes made on <see cref="<%= Info.ObjectName %>"/> object.
+        /// Updates in the database all changes made to the <see cref="<%= Info.ObjectName %>"/> object.
         /// </summary>
         <%
         if (parentType.Length > 0 && !Info.ParentInsertOnly)
@@ -70,7 +70,7 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
         }
         %>/// <param name="handler">The asynchronous handler.</param>
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public void <%= isChild ? "Child_" : "DataPortal_" %>Update(<% if (parentType.Length > 0 && !Info.ParentInsertOnly) { %><%= parentType %> parent, <% } %>Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)
+        public <%= ((!isChild && parentType.Length > 0) ? "override " : "") %>void <%= isChild ? "Child_" : "DataPortal_" %>Update(<%= ((parentType.Length > 0 && !Info.ParentInsertOnly) ? parentType + " parent, " : "") %>Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)
         {
             try
             {
@@ -102,7 +102,7 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
         %>
 
         /// <summary>
-        /// Self delete the <see cref="<%= Info.ObjectName %>"/> object.
+        /// Self deletes the <see cref="<%= Info.ObjectName %>"/> object.
         /// </summary>
         <%
         if (parentType.Length > 0 && !Info.ParentInsertOnly)
@@ -112,7 +112,7 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
         }
         %>/// <param name="handler">The asynchronous handler.</param>
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public void <%= isChild ? "Child_" : "DataPortal_" %>DeleteSelf(<% if (parentType.Length > 0 && !Info.ParentInsertOnly) { %><%= parentType %> parent, <% } %>Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)
+        public <%= ((!isChild && parentType.Length > 0) ? "override " : "") %>void <%= isChild ? "Child_" : "DataPortal_" %>DeleteSelf(<%= ((parentType.Length > 0 && !Info.ParentInsertOnly) ? parentType + " parent, " : "") %>Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)
         {
             try
             {

@@ -16,7 +16,7 @@ if (UseNoSilverlight())
     bool selfLoad2 = GetSelfLoad(Info);
     bool lazyLoad2 = GetLazyLoad(Info);
     bool isCollection = false;
-    if (Info.DbName != String.Empty)
+    if (CurrentUnit.GenerationParams.DatabaseConnection != String.Empty)
     {
         CslaObjectInfo tmpInfo = Info.Parent.CslaObjects.Find(Info.ParentType);
         if (tmpInfo != null)

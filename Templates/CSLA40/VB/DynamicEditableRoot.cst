@@ -17,6 +17,7 @@
 <%@ Import Namespace="System.Collections.Generic" %>
 <%@ Import Namespace="System.Reflection" %>
 
+<!-- #include file="ObjectValidate.asp" -->
 <!-- #include file="DynamicEditableRoot_Validate.asp" -->
 <%
 if (Errors.Length == 0)
@@ -28,13 +29,9 @@ if (Errors.Length == 0)
     bool first = true;
     %><!-- #include file="Header.asp" -->
 <!-- #include file="Using.asp" -->
-<%
-    if (Info.ObjectNamespace.Length > 0)
-    {
-        %>namespace <%= Info.ObjectNamespace %>
+namespace <%= GetContextBaseNamespace(Info, CurrentUnit, GenerationStep.Business) %>
 {
 <%
-    }
     bool? firstComment = null;
     %><!-- #include file="XmlComment.asp" -->
     <%
@@ -53,7 +50,7 @@ if (Errors.Length == 0)
     }
     else
     {
-        %>BusinessBase<<%=Info.ObjectName %>><!-- #include file="Implements.asp" --><%
+        %>BusinessBase<<%= Info.ObjectName %>><!-- #include file="Implements.asp" --><%
     }
     %>
     {
@@ -78,10 +75,6 @@ if (Errors.Length == 0)
 <%
     if (Info.GenerateDataAccessRegion)
     {
-        if (Info.DbName.Equals(String.Empty) && (UseNoSilverlight() || CurrentUnit.GenerationParams.GenerateSilverlight4))
-        {
-            Warnings.Append("Make sure you specify a DB name." + Environment.NewLine);
-        }
         if (!genOptional)
         {
             Response.Write(Environment.NewLine);
@@ -94,12 +87,8 @@ if (Errors.Length == 0)
     %>
 
     }
-<%
-    if (Info.ObjectNamespace.Length > 0)
-    {
-        %>
+<!-- #include file="CriteriaObject.asp" -->
 }
 <%
-    }
 }
 %>

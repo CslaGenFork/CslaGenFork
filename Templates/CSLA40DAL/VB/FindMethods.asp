@@ -10,7 +10,7 @@ if (Info.FindMethodsParameters.Count > 0)
         %>
 
         /// <summary>
-        /// Finds a <see cref="<%=Info.ItemType%>"/> object in the <see cref="<%= Info.ObjectName %>"/> collection, based on a given <%= prop.Name %>.
+        /// Finds a <see cref="<%= Info.ItemType %>"/> object in the <see cref="<%= Info.ObjectName %>"/> collection, based on a given <%= prop.Name %>.
         /// </summary>
         /// <param name="<%= FormatCamel(prop.Name) %>">The <%= FormatProperty(prop.Name) %>.</param>
         /// <returns>A <see cref="<%= Info.ItemType %>"/> object.</returns>

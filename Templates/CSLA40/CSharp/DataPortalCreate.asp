@@ -6,7 +6,7 @@ foreach (Criteria c in GetCriteriaObjects(Info))
         %>
 
         /// <summary>
-        /// Load default values for the <see cref="<%= Info.ObjectName %>"/> object properties<%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
+        /// Loads default values for the <see cref="<%= Info.ObjectName %>"/> object properties<%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
         /// </summary>
         <%
         if (c.Properties.Count > 0)
@@ -21,15 +21,15 @@ foreach (Criteria c in GetCriteriaObjects(Info))
         }
         if (c.Properties.Count > 1)
         {
-            %>protected void <%= isChild ? "Child" : "DataPortal" %>_Create(<%= c.Name %> crit)<%
+            %>protected void <%= isChild ? "Child_" : "DataPortal_" %>Create(<%= c.Name %> crit)<%
         }
         else if (c.Properties.Count > 0)
         {
-            %>protected void <%= isChild ? "Child" : "DataPortal" %>_Create(<%= ReceiveSingleCriteria(c, "crit") %>)<%
+            %>protected void <%= isChild ? "Child_" : "DataPortal_" %>Create(<%= ReceiveSingleCriteria(c, "crit") %>)<%
         }
         else
         {
-            %>protected override void <%= isChild ? "Child" : "DataPortal" %>_Create()<%
+            %>protected override void <%= isChild ? "Child_" : "DataPortal_" %>Create()<%
         }
         %>
         {
@@ -121,7 +121,7 @@ foreach (Criteria c in GetCriteriaObjects(Info))
             <%
     }
     %>
-            base.<%= isChild ? "Child" : "DataPortal" %>_Create();
+            base.<%= isChild ? "Child_" : "DataPortal_" %>Create();
         }
     <%
     }

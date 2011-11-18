@@ -9,7 +9,7 @@ foreach (ValueProperty prop in Info.ValueProperties) { %>
 
         #region Static Fields
 
-        private static <%=GetDataTypeGeneric(prop, prop.PropertyType)%> <%=prop.DefaultValue.Trim()%>;
+        private static <%= GetDataTypeGeneric(prop, prop.PropertyType) %> <%= prop.DefaultValue.Trim() %>;
 
         #endregion
     <% }

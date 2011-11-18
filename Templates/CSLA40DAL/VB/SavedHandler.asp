@@ -75,33 +75,33 @@ if (Info.UpdaterType != string.Empty)
         #region Saved Event Handler
 
         /// <summary>
-        /// Handle Saved events of <see cref="<%=Info.UpdaterType%>"/> to update child <see cref="<%=Info.ItemType%>"/> objects. event.
+        /// Handle Saved events of <see cref="<%= Info.UpdaterType %>"/> to update child <see cref="<%= Info.ItemType %>"/> objects. event.
         /// </summary>
         /// <param name="sender">The sender of the event.</param>
         /// <param name="e">The <see cref="Csla.Core.SavedEventArgs"/> instance containing the event data.</param>
-        private void <%=Info.UpdaterType%>SavedHandler(object sender, Csla.Core.SavedEventArgs e)
+        private void <%= Info.UpdaterType %>SavedHandler(object sender, Csla.Core.SavedEventArgs e)
         {
             // find item corresponding to sender
             // and update item with e.NewObject
-            <%=Info.UpdaterType%> old = (<%=Info.UpdaterType%>)sender;
+            <%= Info.UpdaterType %> old = (<%= Info.UpdaterType %>)sender;
             if (old.IsNew)
             {
                 // it is a new item
                 IsReadOnly = false;
                 var rlce = RaiseListChangedEvents;
                 RaiseListChangedEvents = false;
-                Add(<%=Info.ItemType%>.LoadInfo((<%=Info.UpdaterType%>) e.NewObject));
+                Add(<%= Info.ItemType %>.LoadInfo((<%= Info.UpdaterType %>) e.NewObject));
                 RaiseListChangedEvents = rlce;
                 IsReadOnly = true;
             }
             else
             {
                 // it is an existing item
-                foreach (<%=Info.ItemType%> child in this)
+                foreach (<%= Info.ItemType %> child in this)
                 {
-                    if (child.<%=identityName%> == old.<%=identitySourceName%>)
+                    if (child.<%= identityName %> == old.<%= identitySourceName %>)
                     {
-                        child.UpdatePropertiesOnSaved((<%=Info.UpdaterType%>) e.NewObject);
+                        child.UpdatePropertiesOnSaved((<%= Info.UpdaterType %>) e.NewObject);
                         break;
                     }
                 }

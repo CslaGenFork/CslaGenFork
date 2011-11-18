@@ -8,7 +8,7 @@
 <%@ Import Namespace="CslaGenerator.Util" %>
 
 <!-- #include file="Header.asp" -->
-<%= GetUsingStatementsString(Info) %>
+
 <%
 if (Info.ObjectNamespace.Length > 0)
 {

@@ -46,16 +46,16 @@ if (StateFieldsForAllValueProperties(Info) || StateFieldsForAllChildProperties(I
         <%
             }
             %>
-        private <%=prop.TypeName%> <%=FormatFieldName(prop.Name)%><%
+        private <%= prop.TypeName %> <%= FormatFieldName(prop.Name) %><%
         if (_child.ObjectType != CslaObjectType.ReadOnlyObject && _child.ObjectType != CslaObjectType.ReadOnlyCollection)
         {
-            %> = <%=prop.TypeName%>.New<%=prop.TypeName%>()<%
+            %> = <%= prop.TypeName %>.New<%= prop.TypeName %>()<%
         } %>;
         <%
             if (prop.LazyLoad)
             {
                 %>
-        private bool <%=FormatFieldName(prop.Name + "Loaded")%> = false;<%= "\r\n" %><%
+        private bool <%= FormatFieldName(prop.Name + "Loaded") %> = false;<%= "\r\n" %><%
             }
         }
     }

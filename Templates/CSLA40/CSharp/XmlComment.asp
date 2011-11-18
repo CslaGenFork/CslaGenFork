@@ -48,7 +48,7 @@ if ((firstComment == null && string.IsNullOrEmpty(Info.Parent.GenerationParams.C
             CslaObjectInfo childColl = FindChildInfo(Info, Info.ChildCollectionProperties[collection].TypeName);
             CslaObjectInfo associated = FindAssociated(Info, childColl);
             xmlRemark += "- <see cref=\"" + collectionName + "\"/> of type <see cref=\"" + childColl.ObjectName +
-                "\"/> (" + (associated == null ? "1" : "N") + " to N relation to <see cref=\"" + (associated == null ? childColl.ItemType : associated.ObjectName) + "\"/>)" + (collection != Info.ChildCollectionProperties.Count - 1 ? "<br/>\r\n" : "");
+                "\"/> (" + (associated == null ? "1" : "M") + ":M relation to <see cref=\"" + (associated == null ? childColl.ItemType : associated.ObjectName) + "\"/>)" + (collection != Info.ChildCollectionProperties.Count - 1 ? "<br/>\r\n" : "");
         }
     }
     // collection items

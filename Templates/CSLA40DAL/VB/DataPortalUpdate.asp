@@ -1,10 +1,66 @@
 <%
 if (Info.GenerateDataPortalUpdate)
 {
+    bool propUpdatePropertyInfo = false;
+    string strUpdateResult = string.Empty;
+    string strUpdateParams = string.Empty;
+    bool updateIsFirst = true;
+
+    foreach (ValueProperty prop in Info.GetAllValueProperties())
+    {
+        if (prop.DbBindColumn.NativeType == "timestamp")
+        {
+            if ((prop.DeclarationMode == PropertyDeclaration.Managed && !prop.ReadOnly) ||
+                prop.DeclarationMode == PropertyDeclaration.AutoProperty)
+            {
+                strUpdateResult = FormatPascal(prop.Name) + " = ";
+            }
+            else if ((prop.DeclarationMode == PropertyDeclaration.Managed && prop.ReadOnly) ||
+                prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion ||
+                prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion)
+            {
+                propUpdatePropertyInfo = true;
+                strUpdateResult = "LoadProperty(" + FormatPropertyInfoName(prop.Name) + ", ";
+            }
+            else //Unmanaged, ClassicProperty, ClassicPropertyWithTypeConversion
+            {
+                strUpdateResult = FormatFieldName(prop.Name) + " = ";
+            }
+        }
+        if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
+            prop.DataAccess != ValueProperty.DataAccessBehaviour.ReadOnly &&
+            (prop.DataAccess != ValueProperty.DataAccessBehaviour.CreateOnly ||
+            (prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK ||
+            prop.DataAccess == ValueProperty.DataAccessBehaviour.UpdateOnly)) ||
+            prop.DbBindColumn.NativeType == "timestamp")
+        {
+            if (!updateIsFirst)
+                strUpdateParams += ",";
+            else
+                updateIsFirst = false;
+
+            strUpdateParams += Environment.NewLine + new string(' ', 24);
+            if (prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion ||
+                prop.DeclarationMode == PropertyDeclaration.UnmanagedWithTypeConversion)
+            {
+                strUpdateParams += GetFieldReaderStatement(prop);
+            }
+            else if (prop.DeclarationMode == PropertyDeclaration.Managed ||
+                prop.DeclarationMode == PropertyDeclaration.AutoProperty)
+            {
+                strUpdateParams += FormatPascal(prop.Name);
+            }
+            else //Unmanaged, ClassicProperty, ClassicPropertyWithTypeConversion
+            {
+                strUpdateParams += FormatFieldName(prop.Name);
+            }
+        }
+    }
+    strUpdateParams += Environment.NewLine + new string(' ', 24);
     %>
 
         /// <summary>
-        /// Update all changes made on <see cref="<%= Info.ObjectName %>"/> object in the database.
+        /// Updates in the database all changes made to the <see cref="<%= Info.ObjectName %>"/> object.
         /// </summary>
         <%
     if (Info.TransactionType == TransactionType.EnterpriseServices)
@@ -24,95 +80,31 @@ if (Info.GenerateDataPortalUpdate)
     }
         %>protected override void DataPortal_Update()
         {
-            if (base.IsDirty)
-            {
-                <%
+            <%
     if (UseSimpleAuditTrail(Info))
     {
-                %>SimpleAuditTrail();
-                <%
+        %>SimpleAuditTrail();
+            <%
     }
-                %><%= GetConnection(Info, false) %>
+    %>
+            var args = new DataPortalHookArgs();
+            using (var dalManager = DalFactory<%= GetConnectionName(CurrentUnit) %>.GetManager())
+            {
+                OnUpdatePre(args);
+                var dal = dalManager.GetProvider<I<%= Info.ObjectName %>Dal>();
+                using (BypassPropertyChecks)
                 {
-                    <%
-    if (string.IsNullOrEmpty(Info.UpdateProcedureName))
-    {
-        Errors.Append("Object " + Info.ObjectName + " missing update procedure name." + Environment.NewLine);
-    }
-    %>
-                    <%= GetCommand(Info, Info.UpdateProcedureName) %>
-                    {
-                        <%
-    if (Info.TransactionType == TransactionType.ADO && Info.PersistenceType == PersistenceType.SqlConnectionManager)
-    {
-        %>cmd.Transaction = ctx.Transaction;
-                        <%
-    }
-    if (Info.CommandTimeout != string.Empty)
-    {
-        %>cmd.CommandTimeout = <%= Info.CommandTimeout %>;
-                        <%
-    }
-    %>cmd.CommandType = CommandType.StoredProcedure;
-                        <%
-    foreach (ValueProperty prop in Info.GetAllValueProperties())
-    {
-        if (prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK ||
-            prop.DataAccess == ValueProperty.DataAccessBehaviour.UpdateOnly ||
-            prop.DbBindColumn.NativeType == "timestamp")
-        {
-            if (prop.DeclarationMode == PropertyDeclaration.Managed)
-            {
-                %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", ReadProperty(<%= FormatPropertyInfoName(prop.Name) %>)).DbType = DbType.<%= TypeHelper.GetDbType(prop.PropertyType) %>;
-                        <%
-            }
-            else
-            {
-                %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %>).DbType = DbType.<%= TypeHelper.GetDbType(prop.PropertyType) %>;
-                        <%
-            }
-        }
-    }
-    if (Info.PersistenceType == PersistenceType.SqlConnectionUnshared)
-    {
-        %>cn.Open();
-                        <%
-    }
-    %>var args = new DataPortalHookArgs(cmd);
-                        OnUpdateStart(args);
-                        DoInsertUpdate(cmd);
-                        OnUpdatePre(args);
-                        cmd.ExecuteNonQuery();
-                        OnUpdatePost(args);
-                        <%
-    foreach (ValueProperty prop in Info.GetAllValueProperties())
-    {
-        if (prop.DbBindColumn.NativeType == "timestamp")
-        {
-            if (prop.DeclarationMode == PropertyDeclaration.Managed)
-            {
-                %>LoadProperty(<%= FormatPropertyInfoName(prop.Name) %>, (Byte[]) cmd.Parameters["@New<%= prop.ParameterName %>"].Value);<%
-            }
-            else
-            {
-                %><%=FormatFieldName(prop.Name)%> = (Byte[]) cmd.Parameters["@New<%= prop.ParameterName %>"].Value;<%
-            }
-        }
-    }
-    string indent = "    ";
-    %>
-                    }
-                    <!-- #include file="UpdateChildProperties.asp" -->
-                    <%
-    if (Info.TransactionType == TransactionType.ADO && Info.PersistenceType == PersistenceType.SqlConnectionManager)
+                    <%= strUpdateResult %>dal.Update(<%= strUpdateParams %>)<%= propUpdatePropertyInfo ? ")" : "" %>;
+                }
+                OnUpdatePost(args);
+                <%
+    if (Info.GetMyChildProperties().Count > 0)
     {
         %>
-
-                    ctx.Commit();
+<!-- #include file="UpdateChildProperties.asp" -->
                 <%
     }
     %>
-                }
             }
         }
     <%

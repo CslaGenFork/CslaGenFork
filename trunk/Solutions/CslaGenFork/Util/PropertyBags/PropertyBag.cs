@@ -962,7 +962,8 @@ namespace CslaGenerator.Util.PropertyBags
                             return false;
                         if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 ||
                              GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL) &&
-                            (propertyName == "HashcodeProperty" ||
+                            (propertyName == "DbName" ||
+                             propertyName == "HashcodeProperty" ||
                              propertyName == "EqualsProperty" ||
                              propertyName == "DeleteProcedureName" ||
                              propertyName == "LazyLoad" ||

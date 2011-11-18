@@ -1,4 +1,4 @@
-<%@ CodeTemplate Inherits="CslaTemplateHelperCS" Language="CSharp" TargetLanguage="CSharp" Description="Generates a CSLA ReadOnly Object." %>
+<%@ CodeTemplate Inherits="CslaTemplateHelperCS" Debug="false" Language="CSharp" TargetLanguage="CSharp" Description="Generates a CSLA ReadOnly Object." %>
 <%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the ReadOnly Object to create." %>
 <%@ Property Name="Errors" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return errors to master.cst" %>
 <%@ Property Name="Warnings" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return warnings to master.cst" %>
@@ -15,24 +15,23 @@
 <%@ Import Namespace="System.Collections.Generic" %>
 <%@ Import Namespace="System.Reflection" %>
 
+<!-- #include file="ObjectValidate.asp" -->
 <!-- #include file="ReadOnlyObject_Validate.asp" -->
 <%
 if (Errors.Length == 0)
 {
+    GenerationStep genStep = GenerationStep.Business;
+    bool usesDTO = DalObjectUsesDTO(Info);
+    bool usesDalCriteria = DalObjectUsesCriteria(Info);
     bool isChild = !string.IsNullOrEmpty(Info.ParentType);
     int silverlightLevel = 0;
     bool genOptional = false;
     bool useItem = false;
-    bool first = true;
     %><!-- #include file="Header.asp" -->
 <!-- #include file="Using.asp" -->
-<%
-    if (Info.ObjectNamespace.Length > 0)
-    {
-        %>namespace <%= Info.ObjectNamespace %>
+namespace <%= GetContextBaseNamespace(Info, CurrentUnit, genStep) %>
 {
 <%
-    }
     bool? firstComment = null;
     %><!-- #include file="XmlComment.asp" -->
     <%
@@ -51,7 +50,7 @@ if (Errors.Length == 0)
     }
     else
     {
-        %>ReadOnlyBase<<%=Info.ObjectName %>><!-- #include file="Implements.asp" --><%
+        %>ReadOnlyBase<<%= Info.ObjectName %>><!-- #include file="Implements.asp" --><%
     }
     %>
     {
@@ -77,10 +76,6 @@ if (Errors.Length == 0)
 <%
     if (Info.GenerateDataAccessRegion)
     {
-        if (CurrentUnit.GenerationParams.DatabaseConnection.Equals(String.Empty) && (UseNoSilverlight() || CurrentUnit.GenerationParams.GenerateSilverlight4))
-        {
-            Errors.Append("Make sure you specify a DB name." + Environment.NewLine);
-        }
         if (!genOptional)
         {
             Response.Write(Environment.NewLine);
@@ -94,12 +89,8 @@ if (Errors.Length == 0)
     %>
 
     }
-    <%
-    if (Info.ObjectNamespace.Length > 0)
-    {
-        %>
+<!-- #include file="CriteriaObject.asp" -->
 }
 <%
-    }
 }
 %>

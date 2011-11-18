@@ -17,7 +17,11 @@
 <%@ Import Namespace="System.Collections.Generic" %>
 <%@ Import Namespace="System.Reflection" %>
 
+<!-- #include file="ObjectValidate.asp" -->
 <%
+GenerationStep genStep = GenerationStep.Business;
+bool usesDTO = DalObjectUsesDTO(Info);
+bool usesDalCriteria = DalObjectUsesCriteria(Info);
 bool isChild = false;
 int silverlightLevel = 0;
 bool genOptional = false;
@@ -37,13 +41,9 @@ else
 {
     %><!-- #include file="Header.asp" -->
 <!-- #include file="Using.asp" -->
-<%
-    if (Info.ObjectNamespace.Length > 0)
-    {
-        %>namespace <%= Info.ObjectNamespace %>
+namespace <%= GetContextBaseNamespace(Info, CurrentUnit, genStep) %>
 {
 <%
-    }
     bool? firstComment = null;
     %><!-- #include file="XmlComment.asp" -->
     <%
@@ -78,10 +78,6 @@ else
 <%
     if (Info.GenerateDataAccessRegion)
     {
-        if (CurrentUnit.GenerationParams.DatabaseConnection.Equals(String.Empty) && (UseNoSilverlight() || CurrentUnit.GenerationParams.GenerateSilverlight4))
-        {
-            Errors.Append("Make sure you specify a DB name." + Environment.NewLine);
-        }
         if (!Info.UseCustomLoading)
         {
             if (!genOptional)
@@ -100,12 +96,8 @@ else
 %>
 
     }
-<%
-    if (Info.ObjectNamespace.Length > 0)
-    {
-    %>
+<!-- #include file="CriteriaObject.asp" -->
 }
 <%
-    }
 }
 %>

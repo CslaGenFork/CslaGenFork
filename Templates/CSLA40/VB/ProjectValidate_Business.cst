@@ -1,0 +1,138 @@
+<%@ CodeTemplate Inherits="CslaTemplateHelperCS" Language="CSharp" TargetLanguage="CSharp" Description="Generates a CSLA ReadOnly Collection." %>
+<%@ Property Name="Errors" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return errors to master.cst" %>
+<%@ Property Name="Warnings" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return warnings to master.cst" %>
+
+<%@ Assembly Name="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator.Metadata" %>
+<%@ Import Namespace="CslaGenerator.CodeGen" %>
+<%@ Import Namespace="CslaGenerator.Util" %>
+<%@ Import Namespace="System.Text" %>
+<%@ Import Namespace="System.Collections.Generic" %>
+<%@ Import Namespace="System.Reflection" %>
+<%@ Assembly Name="System.Core" %>
+<%@ Import Namespace="System.Linq" %>
+
+<%
+/*
+ERRORS
+1. Suffix for base and extended must be different
+2. Suffix for base and comment must be different
+3. Suffix for extended and comment must be different
+4. Base namespace can not be empty
+5. Connection name can not be empty
+WARNINGS
+6. Fill Utility classes namespace / Utility classes folder correctly
+7. Utility classes namespace must be under base namespace
+8. Check no repeated object names
+9. Check no repeated file names
+10. Check no repeated criteria names for non nested class (with more than one property)
+*/
+
+if (CurrentUnit.GenerationParams.BaseFilenameSuffix != string.Empty &&
+    CurrentUnit.GenerationParams.BaseFilenameSuffix ==
+    CurrentUnit.GenerationParams.ExtendedFilenameSuffix)
+{
+    Errors.Append("Generation settings: Suffix for base files can not be equal to Suffix for extended files. (" +
+        CurrentUnit.GenerationParams.BaseFilenameSuffix + ")" + Environment.NewLine);
+}
+
+if (CurrentUnit.GenerationParams.BaseFilenameSuffix != string.Empty &&
+    CurrentUnit.GenerationParams.BaseFilenameSuffix ==
+    CurrentUnit.GenerationParams.ClassCommentFilenameSuffix)
+{
+    Errors.Append("Generation settings: Suffix for base files can not be equal to Suffix for class comment files. (" +
+        CurrentUnit.GenerationParams.BaseFilenameSuffix + ")" + Environment.NewLine);
+}
+
+if (CurrentUnit.GenerationParams.ExtendedFilenameSuffix != string.Empty &&
+    CurrentUnit.GenerationParams.ExtendedFilenameSuffix ==
+    CurrentUnit.GenerationParams.ClassCommentFilenameSuffix)
+{
+    Errors.Append("Generation settings: Suffix for extended files can not be equal to Suffix for class comment files. (" +
+        CurrentUnit.GenerationParams.ExtendedFilenameSuffix + ")" + Environment.NewLine);
+}
+
+if (CurrentUnit.GenerationParams.BaseNamespace.Equals(String.Empty))
+{
+    Errors.Append("Generation settings: Base namespace is empty." + Environment.NewLine);
+}
+
+if (CurrentUnit.GenerationParams.DatabaseConnection.Equals(String.Empty))
+{
+    Errors.Append("Generation settings: Connection name is empty." + Environment.NewLine);
+}
+
+if (!CurrentUnit.GenerationParams.SeparateNamespaces &&
+    CurrentUnit.GenerationParams.UtilitiesFolder == String.Empty &&
+    CurrentUnit.GenerationParams.UtilitiesNamespace != String.Empty)
+{
+    Warnings.Append("Generation settings: should fill 'Utility classes folder' instead of 'Utility classes namespace'." + Environment.NewLine);
+}
+if (CurrentUnit.GenerationParams.SeparateNamespaces &&
+    CurrentUnit.GenerationParams.UtilitiesNamespace == String.Empty &&
+    CurrentUnit.GenerationParams.UtilitiesFolder != String.Empty)
+{
+    Warnings.Append("Generation settings: should fill 'Utility classes namespace' instead of 'Utility classes folder'." + Environment.NewLine);
+}
+
+Warnings.Append("Revert Utilities to namespace (and not a suffix) " + Environment.NewLine);
+
+/*if (CurrentUnit.GenerationParams.UtilitiesNamespace.IndexOf(CurrentUnit.GenerationParams.BaseNamespace) != 0)
+{
+    Errors.Append("Generation settings: 'Utility classes namespace' must be under Base namespace." + Environment.NewLine);
+}*/
+
+if (Errors.Length > 0)
+    return;
+
+List<string> objectNames = new List<string>();
+List<string> filenames = new List<string>();
+List<string> criteriaNames = new List<string>();
+foreach (CslaObjectInfo objectInfo in CurrentUnit.CslaObjects)
+{
+    if (objectInfo.Generate)
+    {
+        // duplicated object names
+        if (objectNames.Contains(objectInfo.ObjectName))
+        {
+            Warnings.Append(objectInfo.ObjectName + ": object name is repeated." + Environment.NewLine);
+        }
+        else
+        {
+            objectNames.Add(objectInfo.ObjectName);
+        }
+
+        // duplicated filenames
+        if (filenames.Contains(objectInfo.FileName))
+        {
+            Warnings.Append(objectInfo.ObjectName + ": object file name " + objectInfo.FileName +
+                            " is repeated." + Environment.NewLine);
+        }
+        else
+        {
+            filenames.Add(objectInfo.FileName);
+        }
+
+        // duplicated criteria names
+        foreach (Criteria criteria in objectInfo.CriteriaObjects)
+        {
+            if (!criteria.NestedClass && criteria.Properties.Count > 1)
+            {
+                if (criteriaNames.Contains(criteria.Name))
+                {
+                    Warnings.Append(objectInfo.ObjectName + ": criteria name " + criteria.Name +
+                            " is repeated." + Environment.NewLine);
+                }
+                else
+                {
+                    criteriaNames.Add(criteria.Name);
+                }
+            }
+        }
+    }
+}
+
+if (Errors.Length > 0)
+    return;
+%>
