@@ -44,7 +44,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
             }
             if (c.Properties.Count > 1)
             {
-                %>DataPortal.BeginDelete<<%= Info.ObjectName %>>(new <%= c.Name %>(<%=strDelCritParams %>), callback);<%
+                %>DataPortal.BeginDelete<<%= Info.ObjectName %>>(new <%= c.Name %>(<%= strDelCritParams %>), callback);<%
             }
             else if (c.Properties.Count > 0)
             {

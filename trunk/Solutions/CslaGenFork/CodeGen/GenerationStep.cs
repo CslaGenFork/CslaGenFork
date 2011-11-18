@@ -6,7 +6,7 @@
     public enum GenerationStep
     {
         Business,
-        InterfaceDAL,
-        DAL
+        DalInterface,
+        DalObject
     }
 }

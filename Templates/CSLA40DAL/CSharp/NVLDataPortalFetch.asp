@@ -13,7 +13,7 @@ if (!Info.UseCustomLoading && (UseNoSilverlight() ||
             if (c.Properties.Count > 1)
             {
                 %>
-        /// Load <see cref="<%= Info.ObjectName %>"/> collection from the database<%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
+        /// Loads a <see cref="<%= Info.ObjectName %>"/> collection from the database<%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
         /// </summary>
         /// <param name="crit">The fetch criteria.</param>
         protected void DataPortal_Fetch(<%= c.Name %> crit)
@@ -23,7 +23,7 @@ if (!Info.UseCustomLoading && (UseNoSilverlight() ||
             else if (c.Properties.Count > 0)
             {
                 %>
-        /// Load <see cref="<%= Info.ObjectName %>"/> collection from the database<%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
+        /// Loads a <see cref="<%= Info.ObjectName %>"/> collection from the database<%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
         /// </summary>
         /// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The fetch criteria.</param>
         protected void DataPortal_Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)
@@ -33,7 +33,7 @@ if (!Info.UseCustomLoading && (UseNoSilverlight() ||
             else
             {
                 %>
-        /// Load <see cref="<%= Info.ObjectName %>"/> collection from the database<%= Info.SimpleCacheOptions == SimpleCacheResults.DataPortal ? " or from the cache" : "" %>.
+        /// Loads a <see cref="<%= Info.ObjectName %>"/> collection from the database<%= Info.SimpleCacheOptions == SimpleCacheResults.DataPortal ? " or from the cache" : "" %>.
         /// </summary>
         protected void DataPortal_Fetch()
         {
@@ -50,52 +50,25 @@ if (!Info.UseCustomLoading && (UseNoSilverlight() ||
             <%
                 }
             }
-            %>
-            <%= GetConnection(Info, true) %>
-            {
-                <%
-            if (string.IsNullOrEmpty(c.GetOptions.ProcedureName))
-            {
-                Errors.Append("Criteria " + c.Name + " missing get procedure name." + Environment.NewLine);
-            }
-            %>
-                <%= GetCommand(Info, c.GetOptions.ProcedureName) %>
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    <%
-            foreach (CriteriaProperty p in c.Properties)
-            {
-                if (c.Properties.Count > 1)
-                {
-                    %>cmd.Parameters.AddWithValue("@<%=p.ParameterName%>", <%= GetParameterSet(p, true) %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
-                    <%
-                }
-                else
-                {
-                    %>cmd.Parameters.AddWithValue("@<%=p.ParameterName%>", <%= AssignSingleCriteria(c, "crit") %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
-                    <%
-                }
-            }
-            if (Info.PersistenceType == PersistenceType.SqlConnectionUnshared)
-            {
-                %>cn.Open();
-                    <%
-            }
             string hookArgs = string.Empty;
             if (c.Properties.Count > 1)
             {
-                hookArgs = ", crit";
+                hookArgs = "crit";
             }
             else if (c.Properties.Count > 0)
             {
-                hookArgs = ", " + HookSingleCriteria(c, "crit");
+                hookArgs = HookSingleCriteria(c, "crit");
             }
-                    %>var args = new DataPortalHookArgs(cmd<%= hookArgs %>);
-                    OnFetchPre(args);
-                    LoadCollection(cmd);
-                    OnFetchPost(args);
-                }
+            %>
+            var args = new DataPortalHookArgs(<%= hookArgs %>);
+            OnFetchPre(args);
+            using (var dalManager = DalFactory<%= GetConnectionName(CurrentUnit) %>.GetManager())
+            {
+                var dal = dalManager.GetProvider<I<%= Info.ObjectName %>Dal>();
+                var data = dal.Fetch(<%= hookArgs %>);
+                LoadCollection(data);
             }
+            OnFetchPost(args);
         }
 <!-- #include file="SimpleCacheLoadCachedList.asp" -->
         <%
@@ -103,18 +76,18 @@ if (!Info.UseCustomLoading && (UseNoSilverlight() ||
     }
     %>
 
-        private void LoadCollection(SqlCommand cmd)
+        private void LoadCollection(IDataReader data)
         {
             IsReadOnly = false;
             var rlce = RaiseListChangedEvents;
             RaiseListChangedEvents = false;
-            using (var dr = new SafeDataReader(cmd.ExecuteReader()))
+            using (var dr = new SafeDataReader(data))
             {
                 while (dr.Read())
                 {
                     Add(new NameValuePair(
-                        <%=String.Format(GetDataReaderStatement(valueProp)) %>,
-                        <%=String.Format(GetDataReaderStatement(nameProp)) %>));
+                        <%= String.Format(GetDataReaderStatement(valueProp)) %>,
+                        <%= String.Format(GetDataReaderStatement(nameProp)) %>));
                 }
             }
             RaiseListChangedEvents = rlce;

@@ -8,7 +8,7 @@ if (Info.GenerateDataPortalDelete)
             %>
 
         /// <summary>
-        /// Self delete the <see cref="<%= Info.ObjectName %>"/> object.
+        /// Self deletes the <see cref="<%= Info.ObjectName %>"/> object.
         /// </summary>
         <%
             if (c.DeleteOptions.RunLocal)
@@ -16,9 +16,9 @@ if (Info.GenerateDataPortalDelete)
                 %>[Csla.RunLocal]
         <%
             }
-            string strGetCritParams = string.Empty;
+            string strDeleteCritParams = string.Empty;
             bool firstParam = true;
-            for (int i = 0; i < c.Properties.Count; i++)
+            foreach (Property p in c.Properties)
             {
                 if (firstParam)
                 {
@@ -26,27 +26,27 @@ if (Info.GenerateDataPortalDelete)
                 }
                 else
                 {
-                    strGetCritParams += ", ";
+                    strDeleteCritParams += ", ";
                 }
-                strGetCritParams += c.Properties[i].Name;
+                strDeleteCritParams += FormatGeneralParameter(Info, p, false, false, true);
             }
             %>protected override void DataPortal_DeleteSelf()
         {
             <%
             if (Info.ObjectType == CslaObjectType.EditableSwitchable)
             {
-                strGetCritParams = "false, " + strGetCritParams;
+                strDeleteCritParams = "false, " + strDeleteCritParams;
             }
             if (c.Properties.Count > 1 || (Info.ObjectType == CslaObjectType.EditableSwitchable && c.Properties.Count == 1))
             {
                 %>
-            DataPortal_Delete(new <%= c.Name %>(<%= strGetCritParams %>));
+            DataPortal_Delete(new <%= c.Name %>(<%= strDeleteCritParams %>));
         <%
             }
             else if (c.Properties.Count > 0)
             {
                 %>
-            DataPortal_Delete(<%= SendSingleCriteria(c, strGetCritParams) %>);
+            DataPortal_Delete(<%= SendSingleCriteria(c, strDeleteCritParams) %>);
         <%
             }
             else
@@ -59,7 +59,7 @@ if (Info.GenerateDataPortalDelete)
         }
 
         /// <summary>
-        /// Delete the <see cref="<%= Info.ObjectName %>"/> object from database immediately.
+        /// Deletes the <see cref="<%= Info.ObjectName %>"/> object from database.
         /// </summary>
         /// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The delete criteria.</param>
         <%
@@ -98,9 +98,12 @@ if (Info.GenerateDataPortalDelete)
             %><%= GetConnection(Info, false) %>
             {
                 <%
-            if (string.IsNullOrEmpty(c.DeleteOptions.ProcedureName))
+            if (Info.GetMyChildProperties().Count > 0)
             {
-                Errors.Append("Criteria " + c.Name + " missing delete procedure name." + Environment.NewLine);
+                %>
+                // flushes all pending data operations
+<!-- #include file="UpdateChildProperties.asp" -->
+                <%
             }
             %>
                 <%= GetCommand(Info, c.DeleteOptions.ProcedureName) %>
@@ -122,11 +125,14 @@ if (Info.GenerateDataPortalDelete)
             {
                 if (c.Properties.Count > 1)
                 {
-                    %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= GetParameterSet(p, true) %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;<%
+                    %>
+                    cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= GetParameterSet(p, true) %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
+                    <%
                 }
                 else
                 {
-                    %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= AssignSingleCriteria(c, "crit") %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
+                    %>
+                    cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= AssignSingleCriteria(c, "crit") %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
                     <%
                 }
             }
@@ -152,26 +158,28 @@ if (Info.GenerateDataPortalDelete)
                     OnDeletePost(args);
                 }
                 <%
-            //if (CurrentUnit.GenerationParams.UseChildDataPortal)
-            if (true)
-            {
-                if (Info.GetCollectionChildProperties().Count > 0 || Info.GetNonCollectionChildProperties().Count > 0)
-                {
-                    %>
-
-                FieldManager.UpdateChildren(this);
-                <%
-                }
-            }
             if (Info.TransactionType == TransactionType.ADO && Info.PersistenceType == PersistenceType.SqlConnectionManager)
             {
                 %>
-
                 ctx.Commit();
-            <%
+                <%
             }
             %>
             }
+            <%
+            if (Info.GetMyChildProperties().Count > 0)
+            {
+                %>
+            // removes all previous references to children
+            <%
+            }
+            foreach (ChildProperty collectionProperty in Info.GetMyChildProperties())
+            {
+                %>
+            <%= GetFieldLoaderStatement(collectionProperty, "DataPortal.CreateChild<" + collectionProperty.TypeName + ">()") %>;
+            <%
+            }
+            %>
         }
             <%
         }

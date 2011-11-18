@@ -20,7 +20,7 @@ if (!Info.UseCustomLoading)
             {
                 try
                 {
-                    %><%= GetReaderAssignmentStatement(prop) %>;
+                    %><%= GetReaderAssignmentStatement(Info, prop) %>;
             <%
                 }
                 catch (Exception ex)
@@ -111,7 +111,7 @@ if (!Info.UseCustomLoading)
             %>
 
         /// <summary>
-        /// Load child objects using given criteria.
+        /// Loads child objects using given criteria.
         /// </summary>
         <%
             string methodParam = string.Empty;
@@ -178,7 +178,7 @@ if (!Info.UseCustomLoading)
         %>
 
         /// <summary>
-        /// Load a <see cref="<%= Info.ObjectName %>"/> object from the given DataRow.
+        /// Loads a <see cref="<%= Info.ObjectName %>"/> object from the given DataRow.
         /// </summary>
         /// <param name="dr">The DataRow to use.</param>
         private void Fetch(DataRow dr)
@@ -187,25 +187,12 @@ if (!Info.UseCustomLoading)
             <%
             foreach (ValueProperty prop in Info.GetAllValueProperties())
             {
-                if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None)
+                if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
+                    prop.DataAccess != ValueProperty.DataAccessBehaviour.WriteOnly)
                 {
-                    if (prop.DataAccess != ValueProperty.DataAccessBehaviour.WriteOnly)
-                    {
-                        if (prop.PropertyType == TypeCodeEx.SmartDate)
-                        {
-                            %>
-            if (!dr.IsNull("<%= prop.ParameterName %>"))
-                <%= FormatFieldName(prop.Name) %> = new SmartDate((DateTime)dr["<%= prop.ParameterName %>"]);
-                        <%
-                        }
-                        else
-                        {
-                            %>
-            if (!dr.IsNull("<%= prop.ParameterName %>"))
-                <%=FormatFieldName(prop.Name)%> = (<%=GetDataTypeGeneric(prop, prop.PropertyType)%>) dr["<%= prop.ParameterName %>"];
+                    %>if (!dr.IsNull("<%= prop.ParameterName %>"))
+                <%= GetReaderAssignmentStatement(Info, prop) %>;
             <%
-                        }
-                    }
                 }
             }
             %>var args = new DataPortalHookArgs(dr);
@@ -217,7 +204,7 @@ if (!Info.UseCustomLoading)
             %>
 
         /// <summary>
-        /// Load child objects using given DataRow.
+        /// Loads child objects using given DataRow.
         /// </summary>
         /// <param name="dr">The DataRow to use.</param>
         private void FetchChildren(DataRow dr)
@@ -240,7 +227,7 @@ if (!Info.UseCustomLoading)
                 if (childProp.LoadingScheme == LoadingScheme.ParentLoad)
                 {
                     %>
-            childRows = dr.GetChildRows("<%=Info.ObjectName + FindChildInfo(Info, childProp.TypeName).ItemType %>");
+            childRows = dr.GetChildRows("<%= Info.ObjectName + FindChildInfo(Info, childProp.TypeName).ItemType %>");
             <%
             CslaObjectInfo _child = FindChildInfo(Info, childProp.TypeName);
             if (_child != null)

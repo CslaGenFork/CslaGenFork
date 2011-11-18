@@ -11,7 +11,7 @@ if (!Info.UseCustomLoading &&
             %>
 
         /// <summary>
-        /// Loads an existing <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %><%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
+        /// Loads a <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %><%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
         /// </summary>
         <%
             if (c.Properties.Count > 0)

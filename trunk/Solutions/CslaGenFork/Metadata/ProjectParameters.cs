@@ -32,10 +32,6 @@ namespace CslaGenerator.Metadata
 
         #region State Fields New Object Defaults
 
-        TransactionType _defaultTransactionType = TransactionType.None;
-        PersistenceType _defaultPersistenceType = PersistenceType.SqlConnectionManager;
-        private string _defaultDatabaseContextObject = string.Empty;
-        private string _defaultDataBase = String.Empty;
         private string _defaultNamespace = String.Empty;
         private string _defaultFolder = String.Empty;
         bool _smartDateDefault = true;
@@ -46,6 +42,10 @@ namespace CslaGenerator.Metadata
         private bool _readOnlyObjectsCopyAuditing;
         private bool _readOnlyObjectsCopyTimestamp;
         private PropertyDeclaration _createReadOnlyObjectsPropertyMode = PropertyDeclaration.AutoProperty;
+        TransactionType _defaultTransactionType = TransactionType.None;
+        PersistenceType _defaultPersistenceType = PersistenceType.SqlConnectionManager;
+        private string _defaultDatabaseContextObject = string.Empty;
+        private string _defaultDataBase = String.Empty;
 
         #endregion
 
@@ -68,51 +68,12 @@ namespace CslaGenerator.Metadata
 
         #region Properties New Object Defaults
 
-        public TransactionType DefaultTransactionType
-        {
-            get
-            {
-                return _defaultTransactionType;
-            }
-            set
-            {
-                if (value == TransactionType.TransactionalAttribute)
-                    _defaultTransactionType = TransactionType.TransactionScope;
-                else
-                {
-                    if (_defaultTransactionType == value)
-                        return;
-                    _defaultTransactionType = value;
-                }
-                OnPropertyChanged("");
-            }
-        }
-
-        public string DefaultDataBase
-        {
-            get
-            {
-                return _defaultDataBase;
-            }
-            set
-            {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
-                if (_defaultDataBase == value)
-                    return;
-                _defaultDataBase = value;
-                OnPropertyChanged("");
-            }
-        }
-
         public string DefaultNamespace
         {
-            get
-            {
-                return _defaultNamespace;
-            }
+            get { return _defaultNamespace; }
             set
             {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_').Replace('\\', '.').Replace('/', '.');
+                value = PropertyHelper.TidyFilename(value);
                 if (_defaultNamespace == value)
                     return;
                 _defaultNamespace = value;
@@ -122,13 +83,10 @@ namespace CslaGenerator.Metadata
 
         public string DefaultFolder
         {
-            get
-            {
-                return _defaultFolder;
-            }
+            get { return _defaultFolder; }
             set
             {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                value = PropertyHelper.Tidy(value);
                 if (_defaultFolder == value)
                     return;
                 _defaultFolder = value;
@@ -138,10 +96,7 @@ namespace CslaGenerator.Metadata
 
         public bool SmartDateDefault
         {
-            get
-            {
-                return _smartDateDefault;
-            }
+            get { return _smartDateDefault; }
             set
             {
                 if (_smartDateDefault == value)
@@ -153,10 +108,7 @@ namespace CslaGenerator.Metadata
 
         public bool AutoCriteria
         {
-            get
-            {
-                return _autoCriteria;
-            }
+            get { return _autoCriteria; }
             set
             {
                 if (_autoCriteria == value)
@@ -168,10 +120,7 @@ namespace CslaGenerator.Metadata
 
         public bool AutoTimestampCriteria
         {
-            get
-            {
-                return _autoTimestampCriteria;
-            }
+            get { return _autoTimestampCriteria; }
             set
             {
                 if (_autoTimestampCriteria == value)
@@ -183,10 +132,7 @@ namespace CslaGenerator.Metadata
 
         public bool DatesDefaultStringWithTypeConversion
         {
-            get
-            {
-                return _datesDefaultStringWithTypeConversion;
-            }
+            get { return _datesDefaultStringWithTypeConversion; }
             set
             {
                 if (_datesDefaultStringWithTypeConversion == value)
@@ -198,10 +144,7 @@ namespace CslaGenerator.Metadata
 
         public PropertyDeclaration CreateTimestampPropertyMode
         {
-            get
-            {
-                return _createTimestampPropertyMode;
-            }
+            get { return _createTimestampPropertyMode; }
             set
             {
                 if (_createTimestampPropertyMode == value)
@@ -213,10 +156,7 @@ namespace CslaGenerator.Metadata
 
         public bool ReadOnlyObjectsCopyAuditing
         {
-            get
-            {
-                return _readOnlyObjectsCopyAuditing;
-            }
+            get { return _readOnlyObjectsCopyAuditing; }
             set
             {
                 if (_readOnlyObjectsCopyAuditing == value)
@@ -228,10 +168,7 @@ namespace CslaGenerator.Metadata
 
         public bool ReadOnlyObjectsCopyTimestamp
         {
-            get
-            {
-                return _readOnlyObjectsCopyTimestamp;
-            }
+            get { return _readOnlyObjectsCopyTimestamp; }
             set
             {
                 if (_readOnlyObjectsCopyTimestamp == value)
@@ -243,10 +180,7 @@ namespace CslaGenerator.Metadata
 
         public PropertyDeclaration CreateReadOnlyObjectsPropertyMode
         {
-            get
-            {
-                return _createReadOnlyObjectsPropertyMode;
-            }
+            get { return _createReadOnlyObjectsPropertyMode; }
             set
             {
                 if (_createReadOnlyObjectsPropertyMode == value)
@@ -256,14 +190,76 @@ namespace CslaGenerator.Metadata
             }
         }
 
+        public string DefaultDataBase
+        {
+            get { return _defaultDataBase; }
+            set
+            {
+                value = PropertyHelper.Tidy(value);
+                if (_defaultDataBase == value)
+                    return;
+                _defaultDataBase = value;
+                GeneratorController.Current.CurrentUnit.GenerationParams.DatabaseConnection = value;
+                OnPropertyChanged("");
+            }
+        }
+
+        public TransactionType DefaultTransactionType
+        {
+            get
+            {
+                if (GeneratorController.Current.CurrentUnit.GenerationParams.UseDal)
+                    if (_defaultTransactionType == TransactionType.ADO)
+                        DefaultTransactionType = TransactionType.TransactionScope;
+
+                return _defaultTransactionType;
+            }
+            set
+            {
+                if (value == TransactionType.TransactionalAttribute)
+                {
+                    _defaultTransactionType = TransactionType.TransactionScope;
+                }
+                else if (value == TransactionType.ADO &&
+                    GeneratorController.Current.CurrentUnit.GenerationParams.UseDal)
+                {
+                        _defaultTransactionType = TransactionType.TransactionScope;
+                }
+                else
+                {
+                    if (_defaultTransactionType == value)
+                        return;
+                    _defaultTransactionType = value;
+                }
+                OnPropertyChanged("");
+            }
+        }
+
         public PersistenceType DefaultPersistenceType
         {
             get
             {
+                if (GeneratorController.Current.CurrentUnit.GenerationParams.UseDal)
+                    if (_defaultPersistenceType == PersistenceType.SqlConnectionUnshared)
+                        DefaultPersistenceType = PersistenceType.SqlConnectionManager;
+
                 return _defaultPersistenceType;
             }
             set
             {
+                if (value == PersistenceType.SqlConnectionUnshared &&
+                    GeneratorController.Current.CurrentUnit.GenerationParams.UseDal)
+                {
+                        _defaultPersistenceType = PersistenceType.SqlConnectionManager;
+                }
+                else
+                {
+                    if (_defaultPersistenceType == value)
+                        return;
+                    _defaultPersistenceType = value;
+                }
+                OnPropertyChanged("");
+
                 if (_defaultPersistenceType == value)
                     return;
                 _defaultPersistenceType = value;
@@ -273,13 +269,10 @@ namespace CslaGenerator.Metadata
 
         public string DefaultDatabaseContextObject
         {
-            get
-            {
-                return _defaultDatabaseContextObject;
-            }
+            get { return _defaultDatabaseContextObject; }
             set
             {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                value = PropertyHelper.Tidy(value);
                 if (_defaultDatabaseContextObject == value)
                     return;
                 _defaultDatabaseContextObject = value;
@@ -296,7 +289,7 @@ namespace CslaGenerator.Metadata
             get { return _orbChildPropertySuffix; }
             set
             {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                value = PropertyHelper.Tidy(value);
                 if (_orbChildPropertySuffix == value)
                     return;
                 _orbChildPropertySuffix = value;
@@ -309,7 +302,7 @@ namespace CslaGenerator.Metadata
             get { return _orbCollectionSuffix; }
             set
             {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                value = PropertyHelper.Tidy(value);
                 if (_orbCollectionSuffix == value)
                     return;
                 _orbCollectionSuffix = value;
@@ -322,7 +315,7 @@ namespace CslaGenerator.Metadata
             get { return _orbSingleSPSuffix; }
             set
             {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                value = PropertyHelper.Tidy(value);
                 if (_orbSingleSPSuffix == value)
                     return;
                 _orbSingleSPSuffix = value;
@@ -351,7 +344,7 @@ namespace CslaGenerator.Metadata
             get { return _spAddPrefix; }
             set
             {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                value = PropertyHelper.Tidy(value);
                 if (_spAddPrefix == value)
                     return;
                 _spAddPrefix = value;
@@ -364,7 +357,7 @@ namespace CslaGenerator.Metadata
             get { return _spDeletePrefix; }
             set
             {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                value = PropertyHelper.Tidy(value);
                 if (_spDeletePrefix == value)
                     return;
                 _spDeletePrefix = value;
@@ -377,7 +370,7 @@ namespace CslaGenerator.Metadata
             get { return _spUpdatePrefix; }
             set
             {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                value = PropertyHelper.Tidy(value);
                 if (_spUpdatePrefix == value)
                     return;
                 _spUpdatePrefix = value;
@@ -390,7 +383,7 @@ namespace CslaGenerator.Metadata
             get { return _spGetPrefix; }
             set
             {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                value = PropertyHelper.Tidy(value);
                 if (_spGetPrefix == value)
                     return;
                 _spGetPrefix = value;
@@ -403,7 +396,7 @@ namespace CslaGenerator.Metadata
             get { return _spGeneralPrefix; }
             set
             {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                value = PropertyHelper.Tidy(value);
                 if (_spGeneralPrefix == value)
                     return;
                 _spGeneralPrefix = value;
@@ -416,7 +409,7 @@ namespace CslaGenerator.Metadata
             get { return _spAddSuffix; }
             set
             {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                value = PropertyHelper.Tidy(value);
                 if (_spAddSuffix == value)
                     return;
                 _spAddSuffix = value;
@@ -429,7 +422,7 @@ namespace CslaGenerator.Metadata
             get { return _spDeleteSuffix; }
             set
             {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                value = PropertyHelper.Tidy(value);
                 if (_spDeleteSuffix == value)
                     return;
                 _spDeleteSuffix = value;
@@ -442,7 +435,7 @@ namespace CslaGenerator.Metadata
             get { return _spUpdateSuffix; }
             set
             {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                value = PropertyHelper.Tidy(value);
                 if (_spUpdateSuffix == value)
                     return;
                 _spUpdateSuffix = value;
@@ -455,7 +448,7 @@ namespace CslaGenerator.Metadata
             get { return _spGetSuffix; }
             set
             {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                value = PropertyHelper.Tidy(value);
                 if (_spGetSuffix == value)
                     return;
                 _spGetSuffix = value;
@@ -468,7 +461,7 @@ namespace CslaGenerator.Metadata
             get { return _spGeneralSuffix; }
             set
             {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                value = PropertyHelper.Tidy(value);
                 if (_spGeneralSuffix == value)
                     return;
                 _spGeneralSuffix = value;
@@ -493,7 +486,7 @@ namespace CslaGenerator.Metadata
             get { return _spBoolSoftDeleteColumn; }
             set
             {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                value = PropertyHelper.Tidy(value);
                 if (_spBoolSoftDeleteColumn == value)
                     return;
                 _spBoolSoftDeleteColumn = value;
@@ -506,7 +499,7 @@ namespace CslaGenerator.Metadata
             get { return _spIntSoftDeleteColumn; }
             set
             {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                value = PropertyHelper.Tidy(value);
                 if (_spIntSoftDeleteColumn == value)
                     return;
                 _spIntSoftDeleteColumn = value;
@@ -568,13 +561,10 @@ namespace CslaGenerator.Metadata
 
         public string IDGuidDefaultValue
         {
-            get
-            {
-                return _idGuidDefaultValue;
-            }
+            get { return _idGuidDefaultValue; }
             set
             {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                value = PropertyHelper.Tidy(value);
                 if (_idGuidDefaultValue == value)
                     return;
                 _idGuidDefaultValue = value;
@@ -584,13 +574,10 @@ namespace CslaGenerator.Metadata
 
         public string IDInt16DefaultValue
         {
-            get
-            {
-                return _idInt16DefaultValue;
-            }
+            get { return _idInt16DefaultValue; }
             set
             {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                value = PropertyHelper.Tidy(value);
                 if (_idInt16DefaultValue == value)
                     return;
                 _idInt16DefaultValue = value;
@@ -600,13 +587,10 @@ namespace CslaGenerator.Metadata
 
         public string IDInt32DefaultValue
         {
-            get
-            {
-                return _idInt32DefaultValue;
-            }
+            get { return _idInt32DefaultValue; }
             set
             {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                value = PropertyHelper.Tidy(value);
                 if (_idInt32DefaultValue == value)
                     return;
                 _idInt32DefaultValue = value;
@@ -616,13 +600,10 @@ namespace CslaGenerator.Metadata
 
         public string IDInt64DefaultValue
         {
-            get
-            {
-                return _idInt64DefaultValue;
-            }
+            get { return _idInt64DefaultValue; }
             set
             {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                value = PropertyHelper.Tidy(value);
                 if (_idInt64DefaultValue == value)
                     return;
                 _idInt64DefaultValue = value;
@@ -632,13 +613,10 @@ namespace CslaGenerator.Metadata
 
         public string FieldNamePrefix
         {
-            get
-            {
-                return _fieldNamePrefix;
-            }
+            get { return _fieldNamePrefix; }
             set
             {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                value = PropertyHelper.Tidy(value);
                 if (_fieldNamePrefix == value)
                     return;
                 _fieldNamePrefix = value;
@@ -648,13 +626,10 @@ namespace CslaGenerator.Metadata
 
         public string DelegateNamePrefix
         {
-            get
-            {
-                return _delegateNamePrefix;
-            }
+            get { return _delegateNamePrefix; }
             set
             {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                value = PropertyHelper.Tidy(value);
                 if (_delegateNamePrefix == value)
                     return;
                 _delegateNamePrefix = value;
@@ -664,13 +639,10 @@ namespace CslaGenerator.Metadata
 
         public string CreationDateColumn
         {
-            get
-            {
-                return _creationDateColumn;
-            }
+            get { return _creationDateColumn; }
             set
             {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                value = PropertyHelper.Tidy(value);
                 if (_creationDateColumn == value)
                     return;
                 _creationDateColumn = value;
@@ -680,13 +652,10 @@ namespace CslaGenerator.Metadata
 
         public string CreationUserColumn
         {
-            get
-            {
-                return _creationUserColumn;
-            }
+            get { return _creationUserColumn; }
             set
             {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                value = PropertyHelper.Tidy(value);
                 if (_creationUserColumn == value)
                     return;
                 _creationUserColumn = value;
@@ -696,13 +665,10 @@ namespace CslaGenerator.Metadata
 
         public string ChangedDateColumn
         {
-            get
-            {
-                return _changedDateColumn;
-            }
+            get { return _changedDateColumn; }
             set
             {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                value = PropertyHelper.Tidy(value);
                 if (_changedDateColumn == value)
                     return;
                 _changedDateColumn = value;
@@ -712,13 +678,10 @@ namespace CslaGenerator.Metadata
 
         public string ChangedUserColumn
         {
-            get
-            {
-                return _changedUserColumn;
-            }
+            get { return _changedUserColumn; }
             set
             {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                value = PropertyHelper.Tidy(value);
                 if (_changedUserColumn == value)
                     return;
                 _changedUserColumn = value;
@@ -728,10 +691,7 @@ namespace CslaGenerator.Metadata
 
         public bool LogDateAndTime
         {
-            get
-            {
-                return _logDateAndTime;
-            }
+            get { return _logDateAndTime; }
             set
             {
                 if (_logDateAndTime == value)
@@ -743,13 +703,10 @@ namespace CslaGenerator.Metadata
 
         public string GetUserMethod
         {
-            get
-            {
-                return _getUserMethod;
-            }
+            get { return _getUserMethod; }
             set
             {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                value = PropertyHelper.Tidy(value);
                 if (_getUserMethod == value)
                     return;
                 _getUserMethod = value;

@@ -2,7 +2,6 @@
 if (!Info.UseCustomLoading)
 {
     bool selfLoad1 = GetSelfLoad(Info);
-    bool first2 = true;
 
     bool isSwitchable = false;
     CslaObjectInfo childInfo = FindChildInfo(Info, Info.ItemType);
@@ -17,10 +16,6 @@ if (!Info.UseCustomLoading)
         {
             if (c.GetOptions.DataPortal)
             {
-                if (first2)
-                {
-                    first2 = false;
-                }
                 %>
 
         /// <summary>
@@ -28,31 +23,31 @@ if (!Info.UseCustomLoading)
                 if (c.Properties.Count > 1)
                 {
                     %>
-        /// Loads an existing <see cref="<%= Info.ObjectName %>"/> collection from the database<%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
+        /// Loads a <see cref="<%= Info.ObjectName %>"/> collection from the database<%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
         /// </summary>
         /// <param name="crit">The fetch criteria.</param>
-        protected void <%= isChild ? "Child" : "DataPortal" %>_Fetch(<%= c.Name %> crit)
+        protected void <%= isChild ? "Child_" : "DataPortal_" %>Fetch(<%= c.Name %> crit)
         {
-        <%
+            <%
                 }
                 else if (c.Properties.Count > 0)
                 {
                     %>
-        /// Loads <see cref="<%= Info.ObjectName %>"/> collection from the database<%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
+        /// Loads a <see cref="<%= Info.ObjectName %>"/> collection from the database<%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
         /// </summary>
         /// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The fetch criteria.</param>
-        protected void <%= isChild ? "Child" : "DataPortal" %>_Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)
+        protected void <%= isChild ? "Child_" : "DataPortal_" %>Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)
         {
-        <%
+            <%
                 }
                 else
                 {
                     %>
-        /// Loads <see cref="<%= Info.ObjectName %>"/> collection from the database<%= Info.SimpleCacheOptions == SimpleCacheResults.DataPortal ? " or from the cache" : "" %>.
+        /// Loads a <see cref="<%= Info.ObjectName %>"/> collection from the database<%= Info.SimpleCacheOptions == SimpleCacheResults.DataPortal ? " or from the cache" : "" %>.
         /// </summary>
-        protected void <%= isChild ? "Child" : "DataPortal" %>_Fetch()
+        protected void <%= isChild ? "Child_" : "DataPortal_" %>Fetch()
         {
-        <%
+            <%
                     if (Info.SimpleCacheOptions == SimpleCacheResults.DataPortal)
                     {
                         %>
@@ -68,26 +63,26 @@ if (!Info.UseCustomLoading)
                 %>
             <%= GetConnection(Info, true) %>
             {
-                <%
-                if (string.IsNullOrEmpty(c.GetOptions.ProcedureName))
-                {
-                    Errors.Append("Criteria " + c.Name + " missing get procedure name." + Environment.NewLine);
-                }
-                %>
                 <%= GetCommand(Info, c.GetOptions.ProcedureName) %>
                 {
-                    cmd.CommandType = CommandType.StoredProcedure;
+                    <%
+                if (Info.CommandTimeout != string.Empty)
+                {
+                    %>cmd.CommandTimeout = <%= Info.CommandTimeout %>;
+                    <%
+                }
+                %>cmd.CommandType = CommandType.StoredProcedure;
                     <%
                 foreach (Property p in c.Properties)
                 {
                     if (c.Properties.Count > 1)
                     {
-                        %>cmd.Parameters.AddWithValue("@<%=p.ParameterName%>", <%= GetParameterSet(p, true) %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
+                        %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= GetParameterSet(p, true) %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
                     <%
                     }
                     else
                     {
-                        %>cmd.Parameters.AddWithValue("@<%=p.ParameterName%>", <%= AssignSingleCriteria(c, "crit") %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
+                        %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= AssignSingleCriteria(c, "crit") %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
                     <%
                     }
                 }
@@ -189,14 +184,10 @@ if (!Info.UseCustomLoading)
 
     if (!Info.DataSetLoadingScheme)
     {
-        //if (!first2)
-        //{
-        //    Response.Write(Environment.NewLine);
-        //}
         %>
 
         /// <summary>
-        /// Loads the <see cref="<%= Info.ObjectName %>"/> collection items from the given SafeDataReader.
+        /// Loads all <see cref="<%= Info.ObjectName %>"/> collection items from the given SafeDataReader.
         /// </summary>
         /// <param name="dr">The SafeDataReader to use.</param>
         private void Fetch(SafeDataReader dr)

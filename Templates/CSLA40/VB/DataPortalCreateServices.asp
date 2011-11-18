@@ -10,7 +10,7 @@ if (UseSilverlight())
             %>
 
         /// <summary>
-        /// Load default values for the <see cref="<%= Info.ObjectName %>"/> object properties<%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
+        /// Loads default values for the <see cref="<%= Info.ObjectName %>"/> object properties<%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
         /// </summary>
         <%
             if (c.Properties.Count > 0)
@@ -29,12 +29,12 @@ if (UseSilverlight())
             if (c.Properties.Count > 1)
             {
                 createPartialMethods.Add("partial void Service_Create(" + c.Name + " crit)");
-                %>public void <%= isChild ? "Child" : "DataPortal" %>_Create(<%= c.Name %> crit, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
+                %>public void <%= isChild ? "Child_" : "DataPortal_" %>Create(<%= c.Name %> crit, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
             }
             else if (c.Properties.Count > 0)
             {
                 createPartialMethods.Add("partial void Service_Create(" + ReceiveSingleCriteria(c, "crit") + ")");
-                %>public void <%= isChild ? "Child" : "DataPortal" %>_Create(<%= ReceiveSingleCriteria(c, "crit") %>, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
+                %>public void <%= isChild ? "Child_" : "DataPortal_" %>Create(<%= ReceiveSingleCriteria(c, "crit") %>, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
             }
             else
             {

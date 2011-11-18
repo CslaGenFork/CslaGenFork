@@ -18,7 +18,7 @@ if (!Info.UseCustomLoading &&
             %>
 
         /// <summary>
-        /// Loads an existing <see cref="<%= Info.ObjectName %>"/> collection<%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
+        /// Loads a <see cref="<%= Info.ObjectName %>"/> collection<%= (c.Properties.Count == 0 && Info.SimpleCacheOptions == SimpleCacheResults.DataPortal ? " or from the cache" : "") %><%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
         /// </summary>
         <%
             if (c.Properties.Count > 0)

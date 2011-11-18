@@ -21,19 +21,19 @@ if (Info.UpdateValueProperties.Count > 0)
         #region Update Properties on Saved object
 
         /// <summary>
-        /// Existing <see cref="<%= Info.ObjectName %>"/> object is updated on <see cref="<%=parentInfo.UpdaterType%>"/> Saved event.
+        /// Existing <see cref="<%= Info.ObjectName %>"/> object is updated on <see cref="<%= parentInfo.UpdaterType %>"/> Saved event.
         /// </summary>
-        internal static <%= Info.ObjectName %> LoadInfo(<%=parentInfo.UpdaterType%> <%=FormatCamel(parentInfo.UpdaterType)%>)
+        internal static <%= Info.ObjectName %> LoadInfo(<%= parentInfo.UpdaterType %> <%= FormatCamel(parentInfo.UpdaterType) %>)
         {
             <%= Info.ObjectName %> info = new <%= Info.ObjectName %>();
-            info.UpdatePropertiesOnSaved(<%=FormatCamel(parentInfo.UpdaterType)%>);
+            info.UpdatePropertiesOnSaved(<%= FormatCamel(parentInfo.UpdaterType) %>);
             return info;
         }
 
         /// <summary>
-        /// Properties on <see cref="<%= Info.ObjectName %>"/> object are updated on <see cref="<%=parentInfo.UpdaterType%>"/> Saved event.
+        /// Properties on <see cref="<%= Info.ObjectName %>"/> object are updated on <see cref="<%= parentInfo.UpdaterType %>"/> Saved event.
         /// </summary>
-        internal void UpdatePropertiesOnSaved(<%=parentInfo.UpdaterType%> <%=FormatCamel(parentInfo.UpdaterType)%>)
+        internal void UpdatePropertiesOnSaved(<%= parentInfo.UpdaterType %> <%= FormatCamel(parentInfo.UpdaterType) %>)
         {
         <%
             foreach (UpdateValueProperty prop in Info.UpdateValueProperties)

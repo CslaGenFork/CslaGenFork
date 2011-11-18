@@ -12,6 +12,7 @@ namespace CslaGenerator.Metadata
 
         public CriteriaProperty()
         {
+            base.ReadOnly = true;
         }
 
         public CriteriaProperty(Property p)

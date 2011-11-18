@@ -6,7 +6,7 @@ if (Info.GenerateDataPortalInsert &&
     %>
 
         /// <summary>
-        /// Insert the new <see cref="<%= Info.ObjectName %>"/> object.
+        /// Inserts a new <see cref="<%= Info.ObjectName %>"/> object in the database.
         /// </summary>
         /// <param name="handler">The asynchronous handler.</param>
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]

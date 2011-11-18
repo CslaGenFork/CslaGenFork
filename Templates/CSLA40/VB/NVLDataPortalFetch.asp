@@ -13,7 +13,7 @@ if (!Info.UseCustomLoading && (UseNoSilverlight() ||
             if (c.Properties.Count > 1)
             {
                 %>
-        /// Load <see cref="<%= Info.ObjectName %>"/> collection from the database<%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
+        /// Loads a <see cref="<%= Info.ObjectName %>"/> collection from the database<%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
         /// </summary>
         /// <param name="crit">The fetch criteria.</param>
         protected void DataPortal_Fetch(<%= c.Name %> crit)
@@ -23,7 +23,7 @@ if (!Info.UseCustomLoading && (UseNoSilverlight() ||
             else if (c.Properties.Count > 0)
             {
                 %>
-        /// Load <see cref="<%= Info.ObjectName %>"/> collection from the database<%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
+        /// Loads a <see cref="<%= Info.ObjectName %>"/> collection from the database<%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
         /// </summary>
         /// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The fetch criteria.</param>
         protected void DataPortal_Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)
@@ -33,7 +33,7 @@ if (!Info.UseCustomLoading && (UseNoSilverlight() ||
             else
             {
                 %>
-        /// Load <see cref="<%= Info.ObjectName %>"/> collection from the database<%= Info.SimpleCacheOptions == SimpleCacheResults.DataPortal ? " or from the cache" : "" %>.
+        /// Loads a <see cref="<%= Info.ObjectName %>"/> collection from the database<%= Info.SimpleCacheOptions == SimpleCacheResults.DataPortal ? " or from the cache" : "" %>.
         /// </summary>
         protected void DataPortal_Fetch()
         {
@@ -53,26 +53,26 @@ if (!Info.UseCustomLoading && (UseNoSilverlight() ||
             %>
             <%= GetConnection(Info, true) %>
             {
-                <%
-            if (string.IsNullOrEmpty(c.GetOptions.ProcedureName))
-            {
-                Errors.Append("Criteria " + c.Name + " missing get procedure name." + Environment.NewLine);
-            }
-            %>
                 <%= GetCommand(Info, c.GetOptions.ProcedureName) %>
                 {
-                    cmd.CommandType = CommandType.StoredProcedure;
+                    <%
+            if (Info.CommandTimeout != string.Empty)
+            {
+                %>cmd.CommandTimeout = <%= Info.CommandTimeout %>;
+                    <%
+            }
+            %>cmd.CommandType = CommandType.StoredProcedure;
                     <%
             foreach (CriteriaProperty p in c.Properties)
             {
                 if (c.Properties.Count > 1)
                 {
-                    %>cmd.Parameters.AddWithValue("@<%=p.ParameterName%>", <%= GetParameterSet(p, true) %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
+                    %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= GetParameterSet(p, true) %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
                     <%
                 }
                 else
                 {
-                    %>cmd.Parameters.AddWithValue("@<%=p.ParameterName%>", <%= AssignSingleCriteria(c, "crit") %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
+                    %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= AssignSingleCriteria(c, "crit") %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
                     <%
                 }
             }
@@ -113,8 +113,8 @@ if (!Info.UseCustomLoading && (UseNoSilverlight() ||
                 while (dr.Read())
                 {
                     Add(new NameValuePair(
-                        <%=String.Format(GetDataReaderStatement(valueProp)) %>,
-                        <%=String.Format(GetDataReaderStatement(nameProp)) %>));
+                        <%= String.Format(GetDataReaderStatement(valueProp)) %>,
+                        <%= String.Format(GetDataReaderStatement(nameProp)) %>));
                 }
             }
             RaiseListChangedEvents = rlce;

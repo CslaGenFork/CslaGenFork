@@ -57,12 +57,24 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Definition")]
-        [Description("Criteria class mode. Whether to use simple criteria, CriteriaBase or BusinessBase for the criteria class.")]
+        [Description("Criteria class mode. Whether to use simple criteria (automatic properties), CriteriaBase or BusinessBase for the criteria class. "+
+            "Silverlight generation requires CriteriaBase or BusinessBase.")]
         [UserFriendlyName("Criteria Class Mode")]
         public CriteriaMode CriteriaClassMode
         {
             get { return _criteriaClassMode; }
-            set { _criteriaClassMode = value; }
+            set
+            {
+                if (value != _criteriaClassMode && value == CriteriaMode.BusinessBase)
+                {
+                    foreach (var property in Properties)
+                    {
+                        property.ReadOnly = false;
+                    }
+                }
+                _criteriaClassMode = value;
+                _nestedClass = false;
+            }
         }
 
         [Category("01. Definition")]

@@ -10,7 +10,7 @@
 <%@ Import Namespace="CslaGenerator.Util" %>
 
 //-----------------------------------------------------------------------
-// <copyright file="DalManager.cs" company="Marimer LLC">
+// <copyright file="DalManager<%= GetConnectionName(CurrentUnit) %>.cs" company="Marimer LLC">
 //     Copyright (c) Marimer LLC. All rights reserved.
 //     Website: http://www.lhotka.net/cslanet/
 // </copyright>
@@ -18,8 +18,8 @@
 
 <%
 string utilNamespace = string.Empty;
-if (CurrentUnit.GenerationParams.UtilitiesNamespace.Length - CurrentUnit.GenerationParams.BaseNamespace.Length > 0)
-    utilNamespace = CurrentUnit.GenerationParams.UtilitiesNamespace.Substring(CurrentUnit.GenerationParams.BaseNamespace.Length);
+if (CurrentUnit.GenerationParams.UtilitiesNamespace != string.Empty)
+    utilNamespace = "." + CurrentUnit.GenerationParams.UtilitiesNamespace;
 %>
 using System;
 using System.Data.SqlClient;
@@ -28,34 +28,34 @@ using Csla.Data;
 if (utilNamespace.Length > 0)
 {
     %>
-using <%= CurrentUnit.GenerationParams.InterfaceDALNamespace %><%= utilNamespace %>;
+using <%= CurrentUnit.GenerationParams.DalInterfaceNamespace %><%= utilNamespace %>;
 <%
 }
 %>
 
-namespace <%= CurrentUnit.GenerationParams.DALNamespace %><%= utilNamespace %>
+namespace <%= CurrentUnit.GenerationParams.DalObjectNamespace %><%= utilNamespace %>
 {
     /// <summary>
-    /// Implements <see cref="IDalManager"/> interface.
+    /// Implements <see cref="IDalManager<%= GetConnectionName(CurrentUnit) %>"/> interface.
     /// </summary>
     /// <remarks>
-    /// To use this DAL:
-    /// 1) name this assembly DocStore.DataAccess.Security.Sql
+    /// To use this DAL:<br/>
+    /// 1) name this assembly <%= CurrentUnit.GenerationParams.DalObjectNamespace %><br/>
     /// 2) add the following line to the <strong>appSettings</strong>
     /// section of the application .config file: <br/>
-    /// &lt;add key="<%= CurrentUnit.GenerationParams.DatabaseConnection %>.DalManagerType" value="<%= CurrentUnit.GenerationParams.DALNamespace %><%= utilNamespace %>.DalManager, <%= CurrentUnit.GenerationParams.DALNamespace %>" /&gt;
+    /// &lt;add key="<%= GetConnectionName(CurrentUnit) %>.DalManagerType" value="<%= CurrentUnit.GenerationParams.DalObjectNamespace %><%= utilNamespace %>.DalManager<%= GetConnectionName(CurrentUnit) %>, <%= CurrentUnit.GenerationParams.DalObjectNamespace %>" /&gt;
     /// </remarks>
-    public class DalManager : IDalManager
+    public class DalManager<%= GetConnectionName(CurrentUnit) %> : IDalManager<%= GetConnectionName(CurrentUnit) %>
     {
-        private static readonly string TypeMask = typeof (DalManager).FullName<%= (utilNamespace.Length > 0) ? (".Replace(\"" + utilNamespace + "\", string.Empty)") : "" %>.Replace("DalManager", @"{0}");
-        private const string BaseNamespace = "<%= CurrentUnit.GenerationParams.InterfaceDALNamespace %>";
+        private static readonly string TypeMask = typeof (DalManager<%= GetConnectionName(CurrentUnit) %>).FullName<%= (utilNamespace.Length > 0) ? (".Replace(\"" + utilNamespace + "\", string.Empty)") : "" %>.Replace("DalManager<%= GetConnectionName(CurrentUnit) %>", @"{0}");
+        private const string BaseNamespace = "<%= CurrentUnit.GenerationParams.DalInterfaceNamespace %>";
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DalManager"/> class.
+        /// Initializes a new instance of the <see cref="DalManager<%= GetConnectionName(CurrentUnit) %>"/> class.
         /// </summary>
-        public DalManager()
+        public DalManager<%= GetConnectionName(CurrentUnit) %>()
         {
-            ConnectionManager = ConnectionManager<SqlConnection>.GetManager("<%= CurrentUnit.GenerationParams.DatabaseConnection %>");
+            ConnectionManager = ConnectionManager<SqlConnection>.GetManager("<%= GetConnectionName(CurrentUnit) %>");
         }
 
         /// <summary>
@@ -64,13 +64,13 @@ namespace <%= CurrentUnit.GenerationParams.DALNamespace %><%= utilNamespace %>
         /// <value>The ConnectionManager object</value>
         public ConnectionManager<SqlConnection> ConnectionManager { get; private set; }
 
-        #region IDalManager Members
+        #region IDalManager<%= GetConnectionName(CurrentUnit) %> Members
 
         /// <summary>
-        /// Gets the DAL provider for a given object Type.
+        /// Gets the <%= GetConnectionName(CurrentUnit) %> DAL provider for a given object Type.
         /// </summary>
-        /// <typeparam name="T">Object Type that requires a DAL provider.</typeparam>
-        /// <returns>A new DAL instance for the given Type.</returns>
+        /// <typeparam name="T">Object Type that requires a <%= GetConnectionName(CurrentUnit) %> DAL provider.</typeparam>
+        /// <returns>A new <%= GetConnectionName(CurrentUnit) %> DAL instance for the given Type.</returns>
         public T GetProvider<T>() where T : class
         {
             string typeName;
@@ -98,5 +98,6 @@ namespace <%= CurrentUnit.GenerationParams.DALNamespace %><%= utilNamespace %>
         }
 
         #endregion
+
     }
 }

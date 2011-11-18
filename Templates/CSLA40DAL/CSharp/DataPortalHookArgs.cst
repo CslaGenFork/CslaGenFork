@@ -10,6 +10,9 @@
 <%@ Import Namespace="CslaGenerator.Util" %>
 
 <%
+string utilNamespace = string.Empty;
+if (CurrentUnit.GenerationParams.UtilitiesNamespace != string.Empty)
+    utilNamespace = "." + CurrentUnit.GenerationParams.UtilitiesNamespace;
 int silverlightLevel = 0;
 bool genOptional = false;
 if (CurrentUnit.GenerationParams.HeaderVerbosity != HeaderVerbosity.None)
@@ -24,14 +27,8 @@ using System.Data;
 using System.Data.Common;
 using Csla.Data;
 
-<%
-if (CurrentUnit.GenerationParams.UtilitiesNamespace.Length > 0)
+namespace <%= CurrentUnit.GenerationParams.BaseNamespace %><%= utilNamespace %>
 {
-%>namespace <%= CurrentUnit.GenerationParams.UtilitiesNamespace %>
-{
-    <%
-}
-%>
     /// <summary>
     /// Event arguments for the DataPortalHook.<br/>
     /// This class holds the arguments for events that happen during DataPortal operations.
@@ -172,11 +169,4 @@ if (CurrentUnit.GenerationParams.UtilitiesNamespace.Length > 0)
         #endregion
 
     }
-<%
-if (CurrentUnit.GenerationParams.UtilitiesNamespace.Length > 0)
-{
-%>
 }
-<%
-}
-%>

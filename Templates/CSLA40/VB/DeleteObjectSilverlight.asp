@@ -44,7 +44,7 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
             }
             if (c.Properties.Count > 1)
             {
-                %>DataPortal.BeginDelete<<%= Info.ObjectName %>>(new <%= c.Name %>(<%=strDelCritParams %>), callback, DataPortal.ProxyModes.LocalOnly);<%
+                %>DataPortal.BeginDelete<<%= Info.ObjectName %>>(new <%= c.Name %>(<%= strDelCritParams %>), callback, DataPortal.ProxyModes.LocalOnly);<%
             }
             else if (c.Properties.Count > 0)
             {

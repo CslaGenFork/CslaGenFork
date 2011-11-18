@@ -6,7 +6,7 @@ if (Info.GenerateDataPortalUpdate &&
     %>
 
         /// <summary>
-        /// Update all changes made on <see cref="<%= Info.ObjectName %>"/> object.
+        /// Updates in the database all changes made to the <see cref="<%= Info.ObjectName %>"/> object.
         /// </summary>
         /// <param name="handler">The asynchronous handler.</param>
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]

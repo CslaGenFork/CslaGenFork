@@ -31,20 +31,24 @@ namespace CslaGenerator.Metadata
         private string _baseNamespace = String.Empty;
         private string _utilitiesNamespace = String.Empty;
         private string _utilitiesFolder = String.Empty;
-        private string _interfaceDALNamespace = "DataAccess";
-        private string _dalNamespace = "DataAccess.Sql";
+        private string _dalInterfaceNamespace = "DataAccess";
+        private string _dalObjectNamespace = "DataAccess.Sql";
         private bool _generateSprocs = true;
         private bool _oneSpFilePerObject = true;
         private bool _generateInlineQueries;
         private bool _generateQueriesWithSchema = true;
         private bool _generateDatabaseClass = true;
+        private bool _useConnectionName = true;
         private bool _usesCslaAuthorizationProvider = true;
         private bool _generateWinForms = true;
         private bool _generateWPF;
         private bool _generateSilverlight;
         private bool _silverlightUsingServices;
-        private TargetDAL _targetDAL = TargetDAL.None;
-        private bool _generateDAL = true;
+        private string _databaseConnection;
+        private TargetDto _useDto = TargetDto.MoreThan;
+        private int _dtoLimit = 7;
+        private bool _generateDalInterface = true;
+        private bool _generateDalObject = true;
         private bool _generateSynchronous = true;
         private bool _generateAsynchronous;
 
@@ -126,10 +130,7 @@ namespace CslaGenerator.Metadata
 
         public bool UseDotDesignerFileNameConvention
         {
-            get
-            {
-                return BaseFilenameSuffix == ".Designer";
-            }
+            get { return BaseFilenameSuffix == ".Designer"; }
             set
             {
                 if (value)
@@ -268,7 +269,7 @@ namespace CslaGenerator.Metadata
             get { return _baseFilenameSuffix; }
             set
             {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                value = PropertyHelper.TidyFilename(value);
                 if (_baseFilenameSuffix == value)
                     return;
                 _baseFilenameSuffix = value;
@@ -281,7 +282,7 @@ namespace CslaGenerator.Metadata
             get { return _extendedFilenameSuffix; }
             set
             {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                value = PropertyHelper.TidyFilename(value);
                 if (_extendedFilenameSuffix == value)
                     return;
                 _extendedFilenameSuffix = value;
@@ -294,7 +295,7 @@ namespace CslaGenerator.Metadata
             get { return _classCommentFilenameSuffix; }
             set
             {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                value = PropertyHelper.TidyFilename(value);
                 if (_classCommentFilenameSuffix == value)
                     return;
                 _classCommentFilenameSuffix = value;
@@ -325,7 +326,7 @@ namespace CslaGenerator.Metadata
             get { return _baseNamespace; }
             set
             {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_').Replace('\\', '.').Replace('/', '.');
+                value = PropertyHelper.TidyFilename(value);
                 if (_baseNamespace == value)
                     return;
                 _baseNamespace = value;
@@ -338,7 +339,7 @@ namespace CslaGenerator.Metadata
             get { return _utilitiesNamespace; }
             set
             {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_').Replace('\\', '.').Replace('/', '.');
+                value = PropertyHelper.TidyFilename(value);
                 if (_utilitiesNamespace == value)
                     return;
                 _utilitiesNamespace = value;
@@ -351,7 +352,7 @@ namespace CslaGenerator.Metadata
             get { return _utilitiesFolder; }
             set
             {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_');
+                value = PropertyHelper.TidyFilename(value);
                 if (_utilitiesFolder == value)
                     return;
                 _utilitiesFolder = value;
@@ -359,28 +360,28 @@ namespace CslaGenerator.Metadata
             }
         }
 
-        public string InterfaceDALNamespace
+        public string DalInterfaceNamespace
         {
-            get { return _interfaceDALNamespace; }
+            get { return _dalInterfaceNamespace; }
             set
             {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_').Replace('\\', '.').Replace('/', '.');
-                if (_interfaceDALNamespace == value)
+                value = PropertyHelper.TidyFilename(value);
+                if (_dalInterfaceNamespace == value)
                     return;
-                _interfaceDALNamespace = value;
+                _dalInterfaceNamespace = value;
                 OnPropertyChanged("");
             }
         }
 
-        public string DALNamespace
+        public string DalObjectNamespace
         {
-            get { return _dalNamespace; }
+            get { return _dalObjectNamespace; }
             set
             {
-                value = value.Trim().Replace("  ", " ").Replace(' ', '_').Replace('\\', '.').Replace('/', '.');
-                if (_dalNamespace == value)
+                value = PropertyHelper.TidyFilename(value);
+                if (_dalObjectNamespace == value)
                     return;
-                _dalNamespace = value;
+                _dalObjectNamespace = value;
                 OnPropertyChanged("");
             }
         }
@@ -393,7 +394,7 @@ namespace CslaGenerator.Metadata
                 if (_generateSprocs == value)
                     return;
                 _generateSprocs = value;
-                OnPropertyChanged("");
+                OnPropertyChanged("GenerateSprocs");
             }
         }
 
@@ -441,6 +442,17 @@ namespace CslaGenerator.Metadata
                 if (_generateDatabaseClass == value)
                     return;
                 _generateDatabaseClass = value;
+                OnPropertyChanged("");
+            }
+        }
+        public bool UseConnectionName
+        {
+            get { return _useConnectionName; }
+            set
+            {
+                if (_useConnectionName == value)
+                    return;
+                _useConnectionName = value;
                 OnPropertyChanged("");
             }
         }
@@ -505,26 +517,72 @@ namespace CslaGenerator.Metadata
             }
         }
 
-        public TargetDAL TargetDAL
+        public string DatabaseConnection
         {
-            get { return _targetDAL; }
+            get
+            {
+                if (string.IsNullOrEmpty(_databaseConnection))
+                    if (GeneratorController.Current.CurrentUnit.Params != null)
+                        return GeneratorController.Current.CurrentUnit.Params.DefaultDataBase;
+
+                return _databaseConnection;
+            }
             set
             {
-                if (_targetDAL == value)
+                value = PropertyHelper.Tidy(value);
+                if (_databaseConnection == value)
                     return;
-                _targetDAL = value;
+                _databaseConnection = value;
+                GeneratorController.Current.CurrentUnit.Params.DefaultDataBase = value;
                 OnPropertyChanged("");
             }
         }
 
-        public bool GenerateDAL
+
+        public TargetDto UseDto
         {
-            get { return _generateDAL; }
+            get { return _useDto; }
             set
             {
-                if (_generateDAL == value)
+                if (_useDto == value)
                     return;
-                _generateDAL = value;
+                _useDto = value;
+                OnPropertyChanged("UseDto");
+            }
+        }
+
+        public int DtoLimit
+        {
+            get { return _dtoLimit; }
+            set
+            {
+                if (_dtoLimit == value)
+                    return;
+                _dtoLimit = value;
+                OnPropertyChanged("");
+            }
+        }
+
+        public bool GenerateDalInterface
+        {
+            get { return _generateDalInterface; }
+            set
+            {
+                if (_generateDalInterface == value)
+                    return;
+                _generateDalInterface = value;
+                OnPropertyChanged("");
+            }
+        }
+
+        public bool GenerateDalObject
+        {
+            get { return _generateDalObject; }
+            set
+            {
+                if (_generateDalObject == value)
+                    return;
+                _generateDalObject = value;
                 OnPropertyChanged("");
             }
         }
@@ -606,9 +664,9 @@ namespace CslaGenerator.Metadata
         private void SetCsla4Options()
         {
             UseCsla4 = false;
-            _targetDAL = TargetDAL.None;
             UseDal = false;
-            _generateDAL = false;
+            _generateDalInterface = false;
+            _generateDalObject = false;
 
             if (_targetFramework == TargetFramework.CSLA40 || _targetFramework == TargetFramework.CSLA40DAL)
             {
@@ -626,8 +684,10 @@ namespace CslaGenerator.Metadata
             if (_targetFramework == TargetFramework.CSLA40DAL)
             {
                 UseDal = true;
-                _targetDAL = TargetDAL.Simple;
-                _generateDAL = true;
+                _generateDalInterface = true;
+                _generateDalObject = true;
+                _silverlightUsingServices = false;
+                _generateDatabaseClass = false;
             }
         }
 
@@ -693,6 +753,8 @@ namespace CslaGenerator.Metadata
             OnPropertyChanged("GenerateSynchronous");
             OnPropertyChanged("GenerateAsynchronous");
             OnPropertyChanged("GenerateAuthorization");
+            OnPropertyChanged("UseDto");
+            OnPropertyChanged("GenerateSprocs");
         }
     }
 }

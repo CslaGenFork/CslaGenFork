@@ -6,27 +6,23 @@ namespace CslaGenerator.Controls
 {
     public partial class OutputWindow : WeifenLuo.WinFormsUI.Docking.DockContent
     {
-        static OutputWindow _Current;
+        static OutputWindow _current;
      
         public OutputWindow()
         {
             InitializeComponent();
-            Icon =Icon.FromHandle(CslaGenerator.Properties.Resources.Output.GetHicon());
-            this.DockAreas = WeifenLuo.WinFormsUI.Docking.DockAreas.DockBottom |
+            Icon =Icon.FromHandle(Properties.Resources.Output.GetHicon());
+            DockAreas = WeifenLuo.WinFormsUI.Docking.DockAreas.DockBottom |
                 WeifenLuo.WinFormsUI.Docking.DockAreas.Float;
-            _Current = this;
+            _current = this;
 
         }
-
 
         #region Properties
         
         public static OutputWindow Current
         {
-            get
-            {
-                return _Current;
-            }
+            get { return _current; }
         }
         
         #endregion
@@ -51,7 +47,7 @@ namespace CslaGenerator.Controls
         /// <param name="appendLines">Number of lines to append after the appended text.</param>
         public void AddOutputInfo(string info, int appendLines)
         {
-            this.Invoke(new MessageDelegate(DoStep), new object[] { info, appendLines });
+            Invoke(new MessageDelegate(DoStep), new object[] { info, appendLines });
         }
 
         /// <summary>
@@ -59,7 +55,7 @@ namespace CslaGenerator.Controls
         /// </summary>
         public void ClearOutput()
         {
-            this.Invoke(new EmptyDelegate(textBox1.Clear), new object[] { });
+            Invoke(new EmptyDelegate(textBox1.Clear), new object[] { });
         }
 
         #endregion
@@ -69,7 +65,7 @@ namespace CslaGenerator.Controls
         void DoStep(string message, int appendLines)
         {
             textBox1.AppendText(message);
-            for (int i=0; i < appendLines; i++)
+            for (var i=0; i < appendLines; i++)
                 textBox1.AppendText(Environment.NewLine);
             //txtOutput.AppendText(new String('=', 70) + Environment.NewLine
             //    + objectName + ":" + Environment.NewLine);

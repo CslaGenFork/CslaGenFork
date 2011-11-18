@@ -1,10 +1,93 @@
 <%
 if (Info.GenerateDataPortalInsert)
 {
+    bool propInsertPropertyInfo = false;
+    string strInsertPK = string.Empty;
+    string strInsertResultPK = string.Empty;
+    string strInsertParams = string.Empty;
+    string strInsertResult = string.Empty;
+    bool insertIsFirst = true;
+
+    foreach (ValueProperty prop in Info.GetAllValueProperties())
+    {
+        if (prop.DbBindColumn.NativeType == "timestamp")
+        {
+            if ((prop.DeclarationMode == PropertyDeclaration.Managed && !prop.ReadOnly) ||
+                prop.DeclarationMode == PropertyDeclaration.AutoProperty)
+            {
+                strInsertResult = FormatPascal(prop.Name) + " = ";
+            }
+            else if ((prop.DeclarationMode == PropertyDeclaration.Managed && prop.ReadOnly) ||
+                prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion ||
+                prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion)
+            {
+                propInsertPropertyInfo = true;
+                strInsertResult = "LoadProperty(" + FormatPropertyInfoName(prop.Name) + ", ";
+            }
+            else //Unmanaged, ClassicProperty, ClassicPropertyWithTypeConversion
+            {
+                strInsertResult = FormatFieldName(prop.Name) + " = ";
+            }
+        }
+        if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
+            prop.DataAccess != ValueProperty.DataAccessBehaviour.ReadOnly &&
+            prop.DbBindColumn.NativeType != "timestamp" &&
+            (prop.DataAccess != ValueProperty.DataAccessBehaviour.UpdateOnly || prop.DbBindColumn.NativeType == "timestamp"))
+        {
+            if (!insertIsFirst)
+                strInsertParams += ",";
+            else
+                insertIsFirst = false;
+
+            strInsertParams += Environment.NewLine + new string(' ', 24);
+            TypeCodeEx propType = TypeHelper.GetBackingFieldType(prop);
+
+            if (prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK)
+            {
+                strInsertPK = GetDataTypeGeneric(prop, propType) + " " + FormatCamel(prop.Name) + " = -1;" + Environment.NewLine + new string(' ', 20);
+                strInsertParams += "out " + FormatCamel(prop.Name);
+
+                strInsertResultPK = Environment.NewLine + new string(' ', 20);
+                if (prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion ||
+                    prop.DeclarationMode == PropertyDeclaration.UnmanagedWithTypeConversion ||
+                    prop.ReadOnly)
+                {
+                    strInsertResultPK += "LoadProperty(" + FormatPropertyInfoName(prop.Name) + ", " + FormatCamel(prop.Name) +");";
+                }
+                else if (prop.DeclarationMode == PropertyDeclaration.Managed ||
+                    prop.DeclarationMode == PropertyDeclaration.AutoProperty)
+                {
+                    strInsertResultPK += FormatPascal(prop.Name) + " = " + FormatCamel(prop.Name) +";";
+                }
+                else //Unmanaged, ClassicProperty, ClassicPropertyWithTypeConversion
+                {
+                    strInsertResultPK += FormatFieldName(prop.Name) + " = " + FormatCamel(prop.Name) +";";
+                }
+            }
+            else
+            {
+                if (prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion ||
+                    prop.DeclarationMode == PropertyDeclaration.UnmanagedWithTypeConversion)
+                {
+                    strInsertParams += GetFieldReaderStatement(prop);
+                }
+                else if (prop.DeclarationMode == PropertyDeclaration.Managed ||
+                    prop.DeclarationMode == PropertyDeclaration.AutoProperty)
+                {
+                    strInsertParams += FormatPascal(prop.Name);
+                }
+                else //Unmanaged, ClassicProperty, ClassicPropertyWithTypeConversion
+                {
+                    strInsertParams += FormatFieldName(prop.Name);
+                }
+            }
+        }
+    }
+    strInsertParams += Environment.NewLine + new string(' ', 24);
     %>
 
         /// <summary>
-        /// Insert the new <see cref="<%= Info.ObjectName %>"/> object in the database.
+        /// Inserts a new <see cref="<%= Info.ObjectName %>"/> object in the database.
         /// </summary>
         <%
     if (Info.TransactionType == TransactionType.EnterpriseServices)
@@ -30,108 +113,23 @@ if (Info.GenerateDataPortalInsert)
             %>SimpleAuditTrail();
             <%
     }
-            %><%= GetConnection(Info, false) %>
-            {
-                <%
-    if (string.IsNullOrEmpty(Info.InsertProcedureName))
-    {
-        Errors.Append("Object " + Info.ObjectName + " missing insert procedure name." + Environment.NewLine);
-    }
     %>
-                <%= GetCommand(Info, Info.InsertProcedureName) %>
+            var args = new DataPortalHookArgs();
+            using (var dalManager = DalFactory<%= GetConnectionName(CurrentUnit) %>.GetManager())
+            {
+                OnInsertPre(args);
+                var dal = dalManager.GetProvider<I<%= Info.ObjectName %>Dal>();
+                using (BypassPropertyChecks)
                 {
-                    <%
-    if (Info.TransactionType == TransactionType.ADO && Info.PersistenceType == PersistenceType.SqlConnectionManager)
-    {
-        %>cmd.Transaction = ctx.Transaction;
-                    <%
-    }
-    if (Info.CommandTimeout != string.Empty)
-    {
-        %>cmd.CommandTimeout = <%= Info.CommandTimeout %>;
-                    <%
-    }
-    %>cmd.CommandType = CommandType.StoredProcedure;
-                    <%
-    foreach (ValueProperty prop in Info.GetAllValueProperties())
-    {
-        if (prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK ||
-            prop.DataAccess == ValueProperty.DataAccessBehaviour.CreateOnly)
-        {
-            TypeCodeEx propType = TypeHelper.GetBackingFieldType(prop);
-            if (prop.DeclarationMode == PropertyDeclaration.Managed)
-            {
-                %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetFieldReaderStatement(prop) %><%= (propType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>)<%
-            }
-            else
-            {
-                %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %><%= (propType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>)<%
-            }
-            if (prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK)
-            {
-                %>.Direction = ParameterDirection.Output;<%
-            }
-            else
-            {
-                %>.DbType = DbType.<%= TypeHelper.GetDbType(prop.PropertyType) %>;<%
-            }
-            %>
-                    <%
-        }
-    }
-    if (Info.PersistenceType == PersistenceType.SqlConnectionUnshared)
-    {
-        %>cn.Open();
-                    <%
-    }
-    %>var args = new DataPortalHookArgs(cmd);
-                    OnInsertStart(args);
-                    DoInsertUpdate(cmd);
-                    OnInsertPre(args);
-                    cmd.ExecuteNonQuery();
-                    OnInsertPost(args);
-                    <%
-    foreach (ValueProperty prop in Info.GetAllValueProperties())
-    {
-        if (prop.DbBindColumn.NativeType == "timestamp")
-        {
-            if (prop.DeclarationMode == PropertyDeclaration.Managed)
-            {
-                %>LoadProperty(<%= FormatPropertyInfoName(prop.Name) %>, (Byte[]) cmd.Parameters["@New<%= prop.ParameterName %>"].Value);
-                    <%
-            }
-            else
-            {
-                %><%= FormatFieldName(prop.Name) %> = (Byte[]) cmd.Parameters["@New<%= prop.ParameterName %>"].Value;
-                    <%
-            }
-        }
-    }
-    foreach (ValueProperty prop in Info.GetAllValueProperties())
-    {
-        if (prop.DbBindColumn.IsPrimaryKey || prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
-        {
-            if (prop.DeclarationMode == PropertyDeclaration.Managed)
-            {
-                %>LoadProperty(<%= FormatPropertyInfoName(prop.Name) %>, (<%= GetLanguageVariableType(prop.DbBindColumn.DataType) %>) cmd.Parameters["@<%= prop.ParameterName %>"].Value);<%
-            }
-            else
-            {
-                %><%= FormatFieldName(prop.Name) %> = (<%= GetLanguageVariableType(prop.DbBindColumn.DataType) %>) cmd.Parameters["@<%= prop.ParameterName %>"].Value;<%
-            }
-        }
-    }
-    string indent = "";
-    %>
+                    <%= strInsertPK %><%= strInsertResult %>dal.Insert(<%= strInsertParams %>)<%= propInsertPropertyInfo ? ")" : "" %>;<%= strInsertResultPK %>
                 }
-                <!-- #include file="UpdateChildProperties.asp" -->
+                OnInsertPost(args);
                 <%
-    if (Info.TransactionType == TransactionType.ADO && Info.PersistenceType == PersistenceType.SqlConnectionManager)
+    if (Info.GetMyChildProperties().Count > 0)
     {
         %>
-
-                ctx.Commit();
-            <%
+<!-- #include file="UpdateChildProperties.asp" -->
+                <%
     }
     %>
             }

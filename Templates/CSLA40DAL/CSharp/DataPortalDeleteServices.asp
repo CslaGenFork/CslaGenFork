@@ -11,10 +11,10 @@ if (Info.GenerateDataPortalDelete &&
             %>
 
         /// <summary>
-        /// Self delete the <see cref="<%= Info.ObjectName %>"/> object.
+        /// Self deletes the <see cref="<%= Info.ObjectName %>"/> object.
         /// </summary>
         <%
-            string strGetCritParams = string.Empty;
+            string strDeleteCritParams = string.Empty;
             bool firstParam = true;
             for (int i = 0; i < c.Properties.Count; i++)
             {
@@ -24,9 +24,9 @@ if (Info.GenerateDataPortalDelete &&
                 }
                 else
                 {
-                    strGetCritParams += ", ";
+                    strDeleteCritParams += ", ";
                 }
-                strGetCritParams += c.Properties[i].Name;
+                strDeleteCritParams += c.Properties[i].Name;
             }
             %>
         /// <param name="handler">The asynchronous handler.</param>
@@ -36,18 +36,18 @@ if (Info.GenerateDataPortalDelete &&
             <%
             if (Info.ObjectType == CslaObjectType.EditableSwitchable)
             {
-                strGetCritParams = "false, " + strGetCritParams;
+                strDeleteCritParams = "false, " + strDeleteCritParams;
             }
             if (c.Properties.Count > 1 || (Info.ObjectType == CslaObjectType.EditableSwitchable && c.Properties.Count == 1))
             {
                 %>
-            DataPortal_Delete(new <%= c.Name %>(<%= strGetCritParams %>), handler);
+            DataPortal_Delete(new <%= c.Name %>(<%= strDeleteCritParams %>), handler);
         <%
             }
             else if (c.Properties.Count > 0)
             {
                 %>
-            DataPortal_Delete(<%= SendSingleCriteria(c, strGetCritParams) %>, handler);
+            DataPortal_Delete(<%= SendSingleCriteria(c, strDeleteCritParams) %>, handler);
         <%
             }
             else
@@ -60,7 +60,7 @@ if (Info.GenerateDataPortalDelete &&
         }
 
         /// <summary>
-        /// Delete the <see cref="<%= Info.ObjectName %>"/> object immediately.
+        /// Deletes the <see cref="<%= Info.ObjectName %>"/> object immediately.
         /// </summary>
         /// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The delete criteria.</param>
         <%
@@ -89,6 +89,14 @@ if (Info.GenerateDataPortalDelete &&
             }
             %>
         {
+            <%
+            if (Info.GetMyChildProperties().Count > 0)
+            {
+                %>
+<!-- #include file="UpdateChildProperties.asp" -->
+            <%
+            }
+            %>
             try
             {
                 <%
@@ -111,15 +119,6 @@ if (Info.GenerateDataPortalDelete &&
             {
                 handler(null, ex);
             }
-            <%
-            if (Info.GetCollectionChildProperties().Count > 0 || Info.GetNonCollectionChildProperties().Count > 0)
-            {
-                %>
-
-            FieldManager.UpdateChildren(this);
-        <%
-            }
-            %>
         }
         <%
         }

@@ -8,30 +8,27 @@ namespace CslaGenerator.Controls
 {
     public partial class ProjectProperties : WeifenLuo.WinFormsUI.Docking.DockContent
     {
+        private GenerationParameters _genParams;
+        private ProjectParameters _projParams;
+
         public ProjectProperties()
         {
             InitializeComponent();
             DockAreas = WeifenLuo.WinFormsUI.Docking.DockAreas.Document;
-            FillComboBox(cboOutputLanguage, typeof(CodeLanguage));
-            FillComboBox(cboTarget, typeof(TargetFramework));
-            FillComboBox(cboTargetDAL, typeof(TargetDAL));
-            cboTargetDAL.Items.RemoveAt(4);
-            cboTargetDAL.Items.RemoveAt(3);
-            FillComboBox(cboGenerateAuthorization, typeof(AuthorizationLevel));
-            FillComboBox(cboHeaderVerbosity, typeof(HeaderVerbosity));
-            FillComboBox(cboTransactionType, typeof(TransactionType));
-            FillComboBox(cboPersistenceType, typeof(PersistenceType));
-            FillComboBox(cboCreateTimestampPropertyMode, typeof(PropertyDeclaration));
-            FillComboBox(cboCreateReadOnlyObjectsPropertyMode, typeof(PropertyDeclaration));
-            foreach (TabPage tab in tabControlMain.TabPages)
-                foreach (Control ctl in tab.Controls)
-                    foreach (Binding b in ctl.DataBindings)
-                        b.DataSourceUpdateMode = DataSourceUpdateMode.OnPropertyChanged;
+            FillComboBox(cboOutputLanguage, typeof (CodeLanguage));
+            FillComboBox(cboTarget, typeof (TargetFramework));
+            FillComboBox(cboUseDto, typeof (TargetDto));
+            FillComboBox(cboGenerateAuthorization, typeof (AuthorizationLevel));
+            FillComboBox(cboHeaderVerbosity, typeof (HeaderVerbosity));
+            FillComboBox(cboTransactionType, typeof (TransactionType));
+            FillComboBox(cboPersistenceType, typeof (PersistenceType));
+            FillComboBox(cboCreateTimestampPropertyMode, typeof (PropertyDeclaration));
+            FillComboBox(cboCreateReadOnlyObjectsPropertyMode, typeof (PropertyDeclaration));
         }
 
         private void FillComboBox(ComboBox cbo, Type enumType)
         {
-            foreach (string str in Enum.GetNames(enumType))
+            foreach (var str in Enum.GetNames(enumType))
             {
                 cbo.Items.Add(str);
             }
@@ -41,28 +38,24 @@ namespace CslaGenerator.Controls
 
         private void EnumDropDownParse(object sender, ConvertEventArgs e)
         {
-            Binding binding = (Binding)sender;
-            ComboBox cbo = (ComboBox)binding.Control;
-            Type t = (Type)cbo.Tag;
-            e.Value = Enum.Parse(t, e.Value.ToString());
-
-        }
-
-        private CslaGeneratorUnit mProject
-        {
-            get
+            var binding = (Binding) sender;
+            var cbo = (ComboBox) binding.Control;
+            if (cbo != null)
             {
-                return GeneratorController.Current.CurrentUnit;
+                var t = (Type) cbo.Tag;
+                e.Value = Enum.Parse(t, e.Value.ToString());
             }
         }
 
-        private GenerationParameters _genParams;
-        private ProjectParameters _projParams;
+        private CslaGeneratorUnit project
+        {
+            get { return GeneratorController.Current.CurrentUnit; }
+        }
 
         public void LoadInfo()
         {
-            _genParams = mProject.GenerationParams.Clone();
-            _projParams = mProject.Params.Clone();
+            _genParams = project.GenerationParams.Clone();
+            _projParams = project.Params.Clone();
             generationParametersBindingSource.DataSource = _genParams;
             projectParametersBindingSource.DataSource = _projParams;
 
@@ -83,9 +76,9 @@ namespace CslaGenerator.Controls
         public void SaveInfo()
         {
             if (_genParams.Dirty)
-                mProject.GenerationParams = _genParams.Clone();
+                project.GenerationParams = _genParams.Clone();
             if (_projParams.Dirty)
-                mProject.Params = _projParams.Clone();
+                project.Params = _projParams.Clone();
             LoadInfo();
         }
 
@@ -95,16 +88,16 @@ namespace CslaGenerator.Controls
                 return;
 
             DialogResult confirm = DialogResult.No;
-            if (!(_projParams.SpGeneralPrefix.Equals(mProject.Params.SpGeneralPrefix) &&
-                _projParams.SpGetPrefix.Equals(mProject.Params.SpGetPrefix) &&
-                _projParams.SpAddPrefix.Equals(mProject.Params.SpAddPrefix) &&
-                _projParams.SpUpdatePrefix.Equals(mProject.Params.SpUpdatePrefix) &&
-                _projParams.SpDeletePrefix.Equals(mProject.Params.SpDeletePrefix) &&
-                _projParams.SpGeneralSuffix.Equals(mProject.Params.SpGeneralSuffix) &&
-                _projParams.SpGetSuffix.Equals(mProject.Params.SpGetSuffix) &&
-                _projParams.SpAddSuffix.Equals(mProject.Params.SpAddSuffix) &&
-                _projParams.SpUpdateSuffix.Equals(mProject.Params.SpUpdateSuffix) &&
-                _projParams.SpDeleteSuffix.Equals(mProject.Params.SpDeleteSuffix)))
+            if (!(_projParams.SpGeneralPrefix.Equals(project.Params.SpGeneralPrefix) &&
+                _projParams.SpGetPrefix.Equals(project.Params.SpGetPrefix) &&
+                _projParams.SpAddPrefix.Equals(project.Params.SpAddPrefix) &&
+                _projParams.SpUpdatePrefix.Equals(project.Params.SpUpdatePrefix) &&
+                _projParams.SpDeletePrefix.Equals(project.Params.SpDeletePrefix) &&
+                _projParams.SpGeneralSuffix.Equals(project.Params.SpGeneralSuffix) &&
+                _projParams.SpGetSuffix.Equals(project.Params.SpGetSuffix) &&
+                _projParams.SpAddSuffix.Equals(project.Params.SpAddSuffix) &&
+                _projParams.SpUpdateSuffix.Equals(project.Params.SpUpdateSuffix) &&
+                _projParams.SpDeleteSuffix.Equals(project.Params.SpDeleteSuffix)))
             {
                 confirm = MessageBox.Show(@"Your SP headings have changed. Do you wish to update your business objects to reflect these changes?", @"SP Naming", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             }
@@ -112,7 +105,7 @@ namespace CslaGenerator.Controls
             GeneratorController.Current.ReloadPropertyGrid();
             if (confirm == DialogResult.Yes)
             {
-                foreach (CslaObjectInfo info in mProject.CslaObjects)
+                foreach (var info in project.CslaObjects)
                 {
                     info.SetProcedureNames();
                 }
@@ -126,7 +119,7 @@ namespace CslaGenerator.Controls
 
         private void CmdExportClick(object sender, EventArgs e)
         {
-            OpenFileDialog fileSave = new OpenFileDialog();
+            var fileSave = new OpenFileDialog();
             fileSave.Title = @"Export project settings - Select an existing file or type a new file name";
             fileSave.Filter = @"CSLA Gen files (*.xml) | *.xml";
             fileSave.DefaultExt = "xml";
@@ -189,8 +182,8 @@ namespace CslaGenerator.Controls
                 }
                 if (unit != null)
                 {
-                    mProject.Params = unit.Params;
-                    mProject.GenerationParams = unit.GenerationParams;
+                    project.Params = unit.Params;
+                    project.GenerationParams = unit.GenerationParams;
                     LoadInfo();
                 }
             }
@@ -213,13 +206,13 @@ namespace CslaGenerator.Controls
             privateUnit.GenerationParams = _genParams.Clone();
             privateUnit.Params = _projParams.Clone();
             FileStream fs = null;
-            string tempFile = Path.GetTempPath() + Guid.NewGuid() + ".cslagenerator";
-            bool success = false;
+            var tempFile = Path.GetTempPath() + Guid.NewGuid() + ".cslagenerator";
+            var success = false;
             try
             {
                 Cursor.Current = Cursors.WaitCursor;
                 fs = File.Open(tempFile, FileMode.Create);
-                XmlSerializer s = new XmlSerializer(typeof(CslaGeneratorUnit));
+                var s = new XmlSerializer(typeof(CslaGeneratorUnit));
                 s.Serialize(fs, privateUnit);
                 success = true;
             }
@@ -230,7 +223,8 @@ namespace CslaGenerator.Controls
             finally
             {
                 Cursor.Current = Cursors.Default;
-                fs.Close();
+                if (fs != null)
+                    fs.Close();
             }
 
             if (success)
@@ -249,9 +243,6 @@ namespace CslaGenerator.Controls
 
             if (UseCsla4)
             {
-                if (cboTargetDAL.Items[0].ToString() == "None")
-                    cboTargetDAL.Items.RemoveAt(0);
-
                 chkActiveObjects.Checked = false;
                 chkSynchronous.Enabled = !_genParams.ForceSync;
                 chkAsynchronous.Enabled = !_genParams.ForceAsync;
@@ -262,9 +253,6 @@ namespace CslaGenerator.Controls
             }
             else
             {
-                if (cboTargetDAL.Items[0].ToString() != "None")
-                    cboTargetDAL.Items.Insert(0, TargetDAL.None);
-
                 chkWinForms.Checked = true;
                 chkWPF.Checked = false;
                 chkSilverlight.Checked = false;
@@ -277,49 +265,46 @@ namespace CslaGenerator.Controls
                 cboGenerateAuthorization.Enabled = false;
                 chkUsesCslaAuthorizationProvider.Enabled = false;
             }
+            cboUseDto.Enabled = UseDal;
+            txtDtoLimit.Enabled = UseDal && _genParams.UseDto == TargetDto.MoreThan;
+            chkGenerateDalInterface.Enabled = UseDal;
+            chkGenerateDalObject.Enabled = UseDal;
+            txtDalInterfaceNamespace.Enabled = UseDal;
+            txtDalObjectNamespace.Enabled = UseDal;
+            chkGenerateDatabaseClass.Enabled = !UseDal;
 
-            cboTargetDAL.Enabled = UseDal;
-            chkGenerateDAL.Enabled = UseDal;
-            txtDALNamespace.Enabled = UseDal;
-            txtInterfaceDALNamespace.Enabled = UseDal &&
-                (_genParams.TargetDAL == TargetDAL.Interface ||_genParams.TargetDAL == TargetDAL.Interface_DTO);
-
+            txtDatabase.Enabled = !UseCsla4;
+            txtDatabaseConnection.Enabled = UseCsla4;
+            chkUseConnectionName.Enabled = UseCsla4;
             chkWinForms.Enabled = UseCsla4;
             chkWPF.Enabled = UseCsla4;
             chkSilverlight.Enabled = UseCsla4;
             chkSilverlightUseServices.Enabled = UseCsla4;
             chkActiveObjects.Enabled = !UseCsla4;
+
+            chkSpOneFile.Enabled = _genParams.GenerateSprocs;
         }
 
         public bool IsDirty
         {
-            get
-            {
-                return (_genParams.Dirty || _projParams.Dirty);
-            }
+            get { return (_genParams.Dirty || _projParams.Dirty); }
         }
 
         private bool UseCsla4
         {
-            get
-            {
-                return (_genParams.UseCsla4);
-            }
+            get { return (_genParams.UseCsla4); }
         }
 
         private bool UseDal
         {
-            get
-            {
-                return (_genParams.UseDal);
-            }
+            get { return (_genParams.UseDal); }
         }
 
         internal bool ApplyProjectProperties()
         {
             if (IsDirty)
             {
-                DialogResult result = MessageBox.Show(@"There are unsaved changes in the project properties tab. Would you like to apply them now?", @"CslaGenerator", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                var result = MessageBox.Show(@"There are unsaved changes in the project properties tab. Would you like to apply them now?", @"CslaGenerator", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
                 switch (result)
                 {
                     case DialogResult.Yes:
@@ -336,7 +321,15 @@ namespace CslaGenerator.Controls
         {
             var result = true;
 
-            if (!_genParams.GenerateWinForms && !_genParams.GenerateWPF && _genParams.GenerateSilverlight4)
+            if (!_genParams.GenerateWinForms && !_genParams.GenerateWPF && _genParams.SilverlightUsingServices && UseDal)
+            {
+                result = false;
+                MessageBox.Show(@"Must select at least one of these options:" + Environment.NewLine +
+                                @"- Windows Forms" + Environment.NewLine +
+                                @"- WPF",
+                                @"CslaGenerator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (!_genParams.GenerateWinForms && !_genParams.GenerateWPF && _genParams.GenerateSilverlight4)
             {
                 result = false;
                 MessageBox.Show(@"Must select at least one of these options:" + Environment.NewLine +

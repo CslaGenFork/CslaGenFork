@@ -18,7 +18,7 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
         %>
 
         /// <summary>
-        /// Insert the new <see cref="<%= Info.ObjectName %>"/> object.
+        /// Inserts a new <see cref="<%= Info.ObjectName %>"/> object in the database.
         /// </summary>
         <%
         if (parentType.Length > 0)
@@ -60,7 +60,7 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
         %>
 
         /// <summary>
-        /// Update all changes made on <see cref="<%= Info.ObjectName %>"/> object.
+        /// Updates in the database all changes made to the <see cref="<%= Info.ObjectName %>"/> object.
         /// </summary>
         <%
         if (parentType.Length > 0 && !Info.ParentInsertOnly)
@@ -102,7 +102,7 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
         %>
 
         /// <summary>
-        /// Self delete the <see cref="<%= Info.ObjectName %>"/> object.
+        /// Self deletes the <see cref="<%= Info.ObjectName %>"/> object.
         /// </summary>
         <%
         if (parentType.Length > 0 && !Info.ParentInsertOnly)

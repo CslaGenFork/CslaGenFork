@@ -32,7 +32,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
 <%
         }
         %>
-        public void BeginAdd(<%=prmsAsync%>)
+        public void BeginAdd(<%= prmsAsync %>)
         {
         <%
         string newMethodNameAsync = "New" + Info.ItemType;
@@ -41,15 +41,15 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
             newMethodNameAsync += "Child";
         }
         %>
-            <%= Info.ItemType %> <%=FormatCamel(Info.ItemType)%> = null;
-            <%= Info.ItemType %>.<%=newMethodNameAsync%><%=c.CreateOptions.FactorySuffix%>(<%=factoryParamsAsync%><%= factoryParamsAsync.Length > 1 ? ", " : "" %>(o, e) =>
+            <%= Info.ItemType %> <%= FormatCamel(Info.ItemType) %> = null;
+            <%= Info.ItemType %>.<%= newMethodNameAsync %><%= c.CreateOptions.FactorySuffix %>(<%= factoryParamsAsync %><%= factoryParamsAsync.Length > 1 ? ", " : "" %>(o, e) =>
                 {
                     if (e.Error != null)
                         throw e.Error;
                     else
-                        <%=FormatCamel(Info.ItemType)%> = e.Object;
+                        <%= FormatCamel(Info.ItemType) %> = e.Object;
                 });
-            Add(<%=FormatCamel(Info.ItemType)%>);
+            Add(<%= FormatCamel(Info.ItemType) %>);
         }
         <%
 }

@@ -14,7 +14,7 @@ namespace CslaGenerator.Metadata
     /// Summary description for ChildProperty.
     /// </summary>
     [Serializable]
-    public class ChildProperty : Property, IHaveBusinessRules
+    public class ChildProperty : Property, IHaveBusinessRules, IComparable
     {
 
         #region Private Fields
@@ -34,6 +34,7 @@ namespace CslaGenerator.Metadata
         private bool _undoable = true;
         private ParameterCollection _loadParameters = new ParameterCollection();
         private PropertyAccess _access = PropertyAccess.IsPublic;
+        private int _childUpdateOrder = 0;
 
         #endregion
 
@@ -124,6 +125,7 @@ namespace CslaGenerator.Metadata
             set { base.ReadOnly = value; }
         }
 
+        [Browsable(false)]
         [Category("01. Definition")]
         [Description("Whether this property can have a null value. This is ignored for child collections.\r\n" +
             "The following types aren't nullable: \"ByteArray \", \"SmartDate \", \"DBNull \", \"Object\" and \"Empty\".")]
@@ -131,6 +133,15 @@ namespace CslaGenerator.Metadata
         {
             get { return base.Nullable; }
             set { base.Nullable = value; }
+        }
+
+        [Category("01. Definition")]
+        [Description("Specify the order in which the child updates occur. Set to 0 on all chilren to ignore it.")]
+        [UserFriendlyName("Child Update Order")]
+        public int ChildUpdateOrder
+        {
+            get { return _childUpdateOrder; }
+            set { _childUpdateOrder = value; }
         }
 
         #endregion
@@ -329,5 +340,9 @@ namespace CslaGenerator.Metadata
             return ser.Deserialize(buffer);
         }
 
+        public int CompareTo(object other)
+        {
+            return ChildUpdateOrder.CompareTo(((ChildProperty) other).ChildUpdateOrder);
+        }
     }
 }

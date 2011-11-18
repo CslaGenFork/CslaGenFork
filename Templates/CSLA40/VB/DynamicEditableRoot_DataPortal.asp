@@ -15,10 +15,10 @@ if (UseNoSilverlight())
 <!-- #include file="DataPortalInsert.asp" -->
 <!-- #include file="DataPortalUpdate.asp" -->
 <%
-    if (Info.GenerateDataPortalInsert || Info.GenerateDataPortalUpdate)
+    if (Info.GenerateDataPortalInsert || Info.GenerateDataPortalUpdate || Info.GenerateDataPortalDelete)
     {
         %>
-<!-- #include file="DoInsertUpdate.asp" -->
+<!-- #include file="SimpleAuditTrail.asp" -->
 <%
     }
     %>

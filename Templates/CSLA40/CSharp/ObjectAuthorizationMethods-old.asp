@@ -2,7 +2,7 @@
         #region Authorization
 
         /// <summary>
-        /// Checks if the role of the current user can retrieve <%=Info.ObjectName%>'s properties.
+        /// Checks if the role of the current user can retrieve <%= Info.ObjectName %>'s properties.
         /// </summary>
         public static bool CanGetObject()
         {
@@ -10,7 +10,7 @@
             <% String[] getRoles = System.Text.RegularExpressions.Regex.Split(Info.GetRoles, ";");
             foreach (String role in getRoles)
             { %>
-            if (Csla.ApplicationContext.User.IsInRole("<%=role.Trim()%>"))
+            if (Csla.ApplicationContext.User.IsInRole("<%= role.Trim() %>"))
                 return true;
             <% } %>
             return false;
@@ -23,7 +23,7 @@
             Info.ObjectType != CslaObjectType.NameValueList) { %>
 
         /// <summary>
-        /// Checks if the role of the current user can delete a <%=Info.ObjectName%> object.
+        /// Checks if the role of the current user can delete a <%= Info.ObjectName %> object.
         /// </summary>
         public static bool CanDeleteObject()
         {
@@ -31,7 +31,7 @@
             <% String[] deleteRoles = System.Text.RegularExpressions.Regex.Split(Info.DeleteRoles, ";");
             foreach (String role in deleteRoles)
             { %>
-            if (Csla.ApplicationContext.User.IsInRole("<%=role.Trim()%>"))
+            if (Csla.ApplicationContext.User.IsInRole("<%= role.Trim() %>"))
                 return true;
             <% } %>
             return false;
@@ -41,7 +41,7 @@
         }
 
         /// <summary>
-        /// Checks if the role of the current user can create a new <%=Info.ObjectName%> object.
+        /// Checks if the role of the current user can create a new <%= Info.ObjectName %> object.
         /// </summary>
         public static bool CanAddObject()
         {
@@ -49,7 +49,7 @@
             <% String[] newRoles = System.Text.RegularExpressions.Regex.Split(Info.NewRoles, ";");
             foreach (String role in newRoles)
             { %>
-            if (Csla.ApplicationContext.User.IsInRole("<%=role.Trim()%>"))
+            if (Csla.ApplicationContext.User.IsInRole("<%= role.Trim() %>"))
                 return true;
             <% } %>
             return false;
@@ -59,7 +59,7 @@
         }
 
         /// <summary>
-        /// Checks if the role of the current user can change <%=Info.ObjectName%>'s properties.
+        /// Checks if the role of the current user can change <%= Info.ObjectName %>'s properties.
         /// </summary>
         public static bool CanEditObject()
         {
@@ -67,7 +67,7 @@
             <% String[] updateRoles = System.Text.RegularExpressions.Regex.Split(Info.UpdateRoles, ";");
             foreach (String role in updateRoles)
             { %>
-            if (Csla.ApplicationContext.User.IsInRole("<%=role.Trim()%>"))
+            if (Csla.ApplicationContext.User.IsInRole("<%= role.Trim() %>"))
                 return true;
             <% } %>
             return false;

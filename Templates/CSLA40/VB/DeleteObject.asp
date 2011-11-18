@@ -41,7 +41,7 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
             }
             if (c.Properties.Count > 1)
             {
-                %>DataPortal.Delete<<%= Info.ObjectName %>>(new <%= c.Name %>(<%=strDelCritParams %>));<%
+                %>DataPortal.Delete<<%= Info.ObjectName %>>(new <%= c.Name %>(<%= strDelCritParams %>));<%
             }
             else if (c.Properties.Count > 0)
             {
@@ -49,7 +49,7 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
             }
             else
             {
-                %>DataPortal.Delete(new <%= c.Name %>(<%=strDelCritParams %>));<%
+                %>DataPortal.Delete(new <%= c.Name %>(<%= strDelCritParams %>));<%
             }
             %>
         }

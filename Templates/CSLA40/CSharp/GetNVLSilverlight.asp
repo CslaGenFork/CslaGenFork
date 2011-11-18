@@ -22,7 +22,7 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
                 %>
 
         /// <summary>
-        /// Factory method. Asynchronously loads an existing <see cref="<%= Info.ObjectName %>"/> object.
+        /// Factory method. Asynchronously loads a <see cref="<%= Info.ObjectName %>"/> object.
         /// </summary>
         <%
                 string critSilverlight = string.Empty;

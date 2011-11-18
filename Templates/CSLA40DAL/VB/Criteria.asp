@@ -1,89 +1,94 @@
 <%
 if (GetCriteriaObjects(Info).Count > 0)
 {
-    bool isCriteriaClassNeeded = IsCriteriaClassNeeded(Info);
+    bool isCriteriaNestedClassNeeded = IsCriteriaNestedClassNeeded(Info);
 
-    if (isCriteriaClassNeeded)
+    if (isCriteriaNestedClassNeeded)
     {
+        string getterCriteria = string.Empty;
+        string setterCriteria = string.Empty;
         genOptional = true;
         IndentLevel += 3;
         %>
 
         #region Criteria
-
         <%
         foreach (Criteria crit in GetCriteriaObjects(Info))
         {
             string strParams = string.Empty;
             string strFieldAssignments = string.Empty;
-            string strSummaryParams = string.Empty;
+            string strComment = string.Empty;
             if (crit.Properties.Count > 1)
             {
-                %>
+                    %>
+
         /// <summary>
         /// <%= crit.Summary  == string.Empty ? crit.Name + " criteria." : crit.Summary %>
         /// </summary>
         <%
-        if (crit.Remarks != string.Empty)
-        {
-            %>
+                if (crit.Remarks != string.Empty)
+                {
+                    %>
         /// <remarks>
         /// <%= crit.Remarks %>
         /// </remarks>
         <%
-        }
-        %>
+                }
+                %>
         [Serializable]
         <%
-        if (UseSilverlight())
-        {
-            bool usePublicCriteria = false;
-            if (CurrentUnit.GenerationParams.GenerateSilverlight4)
-            {
-                foreach (Criteria c in GetCriteriaObjects(Info))
+                if (UseBoth())
                 {
-                    if (c.CreateOptions.DataPortal && c.Properties.Count > 1 && c.CreateOptions.RunLocal)
+                    %>
+#if SILVERLIGHT
+        <%
+                }
+                if (UseSilverlight())
+                {
+                    %>
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        <%
+                    if (crit.CriteriaClassMode == CriteriaMode.Simple)
                     {
-                        usePublicCriteria = true;
+                        %>
+        public class <%= crit.Name %>
+        <%
+                    }
+                    else
+                    {
+                        %>
+        public <%= crit.CriteriaClassMode == CriteriaMode.BusinessBase ? "partial " : "" %>class <%= crit.Name %> : <%= crit.CriteriaClassMode != CriteriaMode.BusinessBase ? "CriteriaBase" : "BusinessBase" %><<%= crit.Name %>>
+        <%
                     }
                 }
-            }
-            else
-            {
-                usePublicCriteria = true;
-            }
-            if (usePublicCriteria)
-            {
-            /*if (usePublicCriteria &&
-                (Info.ObjectType == CslaObjectType.EditableRoot ||
-                Info.ObjectType == CslaObjectType.EditableRootCollection ||
-                Info.ObjectType == CslaObjectType.DynamicEditableRootCollection ||
-                (Info.ObjectType == CslaObjectType.ReadOnlyObject && Info.ParentType == string.Empty) ||
-                (Info.ObjectType == CslaObjectType.ReadOnlyCollection && Info.ParentType == string.Empty)))
-            {*/
-                %>
-#if SILVERLIGHT
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public class <%= crit.Name %>
+                if (UseBoth())
+                {
+                    %>
 #else
+        <%
+                }
+                if (UseNoSilverlight())
+                {
+                    if (crit.CriteriaClassMode == CriteriaMode.Simple)
+                    {
+                        %>
         protected class <%= crit.Name %>
+        <%
+                    }
+                    else
+                    {
+                        %>
+        protected <%= crit.CriteriaClassMode == CriteriaMode.BusinessBase ? "partial " : "" %>class <%= crit.Name %> : <%= crit.CriteriaClassMode != CriteriaMode.BusinessBase ? "CriteriaBase" : "BusinessBase" %><<%= crit.Name %>>
+        <%
+                    }
+                }
+                if (UseBoth())
+                {
+                    %>
 #endif
         <%
-            }
-            else
-            {
+                }
                 %>
-        protected class <%= crit.Name %>
-        <%
-            }
-        }
-        else
-        {
-            %>
-        protected class <%= crit.Name %>
-        <%
-        }
-            %>
         {
             <%
                 if (Info.ObjectType == CslaObjectType.EditableSwitchable)
@@ -99,11 +104,43 @@ if (GetCriteriaObjects(Info).Count > 0)
             }
             <%
                 }
+                getterCriteria = "Get";
+                setterCriteria = "Set";
+                if (crit.CriteriaClassMode != CriteriaMode.BusinessBase)
+                {
+                    getterCriteria = "Read";
+                    setterCriteria = "Load";
+                }
                 foreach (CriteriaProperty prop in crit.Properties)
                 {
                     %>
 
             <%
+                    if (crit.CriteriaClassMode != CriteriaMode.Simple)
+                    {
+                        %>
+            /// <summary>
+            /// Maintains metadata about <see cref="<%= FormatProperty(prop.Name) %>"/> property.
+            /// </summary>
+            <%
+                        if (CurrentUnit.GenerationParams.UsePublicPropertyInfo)
+                        {
+                            %>
+            public static readonly PropertyInfo<<%= GetDataTypeGeneric(prop, prop.PropertyType) %>> <%= FormatProperty(prop.Name) %>Property = RegisterProperty<<%= GetDataTypeGeneric(prop, prop.PropertyType) %>>(p => p.<%= FormatPascal(prop.Name) %>);
+            <%
+                        }
+                        else
+                        {
+                            %>
+#if SILVERLIGHT
+            [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+            public static readonly PropertyInfo<<%= GetDataTypeGeneric(prop, prop.PropertyType) %>> <%= FormatProperty(prop.Name) %>Property = RegisterProperty<<%= GetDataTypeGeneric(prop, prop.PropertyType) %>>(p => p.<%= FormatPascal(prop.Name) %>);
+#else
+            protected static readonly PropertyInfo<<%= GetDataTypeGeneric(prop, prop.PropertyType) %>> <%= FormatProperty(prop.Name) %>Property = RegisterProperty<<%= GetDataTypeGeneric(prop, prop.PropertyType) %>>(p => p.<%= FormatPascal(prop.Name) %>);
+#endif
+            <%
+                        }
+                    }
                     if (prop.Summary != string.Empty)
                     {
                         IndentLevel = 3;
@@ -148,9 +185,6 @@ if (GetCriteriaObjects(Info).Count > 0)
             /// </remarks>
             <%
                     }
-                    %>
-            public <%= GetDataTypeGeneric(prop, prop.PropertyType) %> <%= FormatProperty(prop.Name) %> { get; <%= (prop.ReadOnly ? "private " : "") %>set; }
-            <%
                     // Just creating strings for later use in the constructors in order to avoid another loop
                     if (string.IsNullOrEmpty(prop.ParameterValue))
                     {
@@ -160,18 +194,34 @@ if (GetCriteriaObjects(Info).Count > 0)
                         }
                         strParams += string.Concat(GetDataTypeGeneric(prop, prop.PropertyType), " ", FormatCamel(prop.Name));
                         strFieldAssignments += string.Concat("\r\n                ", FormatProperty(prop.Name), " = ", FormatCamel(prop.Name), ";");
-                        strSummaryParams += "\r\n            /// <param name=\"" + FormatCamel(prop.Name) + "\">The "+ FormatProperty(prop.Name) + ".</param>";
+                        strComment += "\r\n            /// <param name=\"" + FormatCamel(prop.Name) + "\">The "+ FormatProperty(prop.Name) + ".</param>";
                     }
                     else
                     {
                         strFieldAssignments += string.Concat("\r\n                ", FormatProperty(prop.Name), " = ", prop.ParameterValue, ";");
+                    }
+                    if (crit.CriteriaClassMode == CriteriaMode.Simple)
+                    {
+                        %>
+            public <%= GetDataTypeGeneric(prop, prop.PropertyType) %> <%= FormatProperty(prop.Name) %> { get; <%= (prop.ReadOnly ? "private " : "") %>set; }
+            <%
+                    }
+                    else
+                    {
+                        %>
+            public <%= GetDataTypeGeneric(prop, prop.PropertyType) %> <%= FormatProperty(prop.Name) %>
+            {
+                get { return <%= getterCriteria %>Property(<%= FormatProperty(prop.Name) %>Property); }
+                <%= (prop.ReadOnly ? "private " : "") %>set { <%= setterCriteria %>Property(<%= FormatProperty(prop.Name) %>Property, value); }
+            }
+            <%
                     }
                 }
                 %>
 
             /// <summary>
             /// Initializes a new instance of the <see cref="<%= crit.Name %>"/> class.
-            /// </summary><%= strSummaryParams %>
+            /// </summary><%= strComment %>
             public <%= crit.Name %>(<%= strParams %>)
             {
                 <%
@@ -217,11 +267,11 @@ if (GetCriteriaObjects(Info).Count > 0)
                 return string.Concat("<%= crit.Name %>"<% foreach (CriteriaProperty p in crit.Properties) { %>, <%= FormatProperty(p.Name) %>.ToString()<% } %>).GetHashCode();
             }
         }
-
         <%
             }
         }
         %>
+
         #endregion
 
 <%

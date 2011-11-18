@@ -58,16 +58,16 @@ public string GetDSRelations(CslaObjectInfo info)
             {
                 string[] objectNames = GetAllChildItemsInHierarchy(obj);
                 %>
-            ds.Tables[0].TableName = "<%=obj.ObjectName%>";
+            ds.Tables[0].TableName = "<%= obj.ObjectName %>";
             <%
                 for (int i = 0; i < objectNames.Length; i++)
                 {
                     %>
-            ds.Tables[<%=(i+1).ToString()%>].TableName = "<%=objectNames[i]%>";
+            ds.Tables[<%= (i+1).ToString() %>].TableName = "<%= objectNames[i] %>";
             <%
                 }
                 %>
-<%=GetDSRelations(obj)%><%
+<%= GetDSRelations(obj) %><%
             }
             %>
         }

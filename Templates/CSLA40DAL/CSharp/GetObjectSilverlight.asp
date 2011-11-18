@@ -10,7 +10,7 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
                 %>
 
         /// <summary>
-        /// Factory method. Asynchronously loads an existing <see cref="<%= Info.ObjectName %>"/> <%= Info.ObjectType == CslaObjectType.UnitOfWork ? "unit of objects" : "object" %><%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
+        /// Factory method. Asynchronously loads a <see cref="<%= Info.ObjectName %>"/> <%= Info.ObjectType == CslaObjectType.UnitOfWork ? "unit of objects" : "object" %><%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
         /// </summary>
         <%
                 string strGetParams = string.Empty;

@@ -12,7 +12,7 @@
 <%
 int silverlightLevel = 0;
 bool genOptional = false;
-if (Info.ObjectNamespace.IndexOf(CurrentUnit.GenerationParams.UtilitiesNamespace) != 0)
+if (CurrentUnit.GenerationParams.UtilitiesNamespace != string.Empty)
 {
     if (UseBoth())
     {
@@ -21,7 +21,7 @@ if (Info.ObjectNamespace.IndexOf(CurrentUnit.GenerationParams.UtilitiesNamespace
     }
     if (UseNoSilverlight())
     {
-    %>using <%= CurrentUnit.GenerationParams.UtilitiesNamespace %>;
+%>using <%= GetContextUtilitiesNamespace(CurrentUnit, GenerationStep.Business) %>;
 <%
     }
     if (UseBoth())
@@ -30,17 +30,11 @@ if (Info.ObjectNamespace.IndexOf(CurrentUnit.GenerationParams.UtilitiesNamespace
 #endif
 <%
     }
-    if (UseNoSilverlight())
-        Response.WriteLine();
 }
-if (Info.ObjectNamespace.Length > 0)
+if (UseNoSilverlight())
+    Response.WriteLine();
+%>namespace <%= Info.ObjectNamespace %>
 {
-    %>
-namespace <%= Info.ObjectNamespace %>
-{
-<%
-}
-%>
     public partial class <%= Info.ObjectName %>
     {
         <%
@@ -181,11 +175,30 @@ if (Info.ObjectType != CslaObjectType.UnitOfWork)
 }
 %>
     }
+    <%
+    if (IsCriteriaExtendedClassNeeded(Info))
+    {
+        %>
+
+    #region Criteria Object
+    <%
+        foreach (Criteria crit in GetCriteriaObjects(Info))
+        {
+            if (crit.Properties.Count > 1)
+            {
+                %>
+
+    public partial class <%= crit.Name %>
+    {
+    }
 <%
-if (Info.ObjectNamespace.Length > 0)
-{
+            }
+        }
+        %>
+
+    #endregion
+
+    <%
+    }
     %>
 }
-    <%
-}
-%>

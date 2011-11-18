@@ -8,7 +8,7 @@ if (!Info.UseCustomLoading)
             %>
 
         /// <summary>
-        /// Loads an existing <see cref="<%= Info.ObjectName %>"/> object from the database<%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
+        /// Loads a <see cref="<%= Info.ObjectName %>"/> object from the database<%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
         /// </summary>
         <%
             if (c.Properties.Count > 0)
@@ -23,15 +23,15 @@ if (!Info.UseCustomLoading)
             }
             if (c.Properties.Count > 1)
             {
-        %>protected void <%= isChild ? "Child" : "DataPortal" %>_Fetch(<%= c.Name %> crit)<%
+        %>protected void <%= isChild ? "Child_" : "DataPortal_" %>Fetch(<%= c.Name %> crit)<%
             }
             else if (c.Properties.Count > 0)
             {
-        %>protected void <%= isChild ? "Child" : "DataPortal" %>_Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)<%
+        %>protected void <%= isChild ? "Child_" : "DataPortal_" %>Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)<%
             }
             else
             {
-        %>protected void <%= isChild ? "Child" : "DataPortal" %>_Fetch()<%
+        %>protected void <%= isChild ? "Child_" : "DataPortal_" %>Fetch()<%
             }
         %>
         {
@@ -46,26 +46,26 @@ if (!Info.UseCustomLoading)
             %>
             <%= GetConnection(Info, true) %>
             {
-                <%
-            if (string.IsNullOrEmpty(c.GetOptions.ProcedureName))
-            {
-                Errors.Append("Criteria " + c.Name + " missing get procedure name." + Environment.NewLine);
-            }
-            %>
                 <%= GetCommand(Info, c.GetOptions.ProcedureName) %>
                 {
-                    cmd.CommandType = CommandType.StoredProcedure;
+                    <%
+            if (Info.CommandTimeout != string.Empty)
+            {
+                %>cmd.CommandTimeout = <%= Info.CommandTimeout %>;
+                    <%
+            }
+            %>cmd.CommandType = CommandType.StoredProcedure;
                     <%
             foreach (Property p in c.Properties)
             {
                 if (c.Properties.Count > 1)
                 {
-                    %>cmd.Parameters.AddWithValue("@<%=p.ParameterName%>", <%= GetParameterSet(p, true) %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
+                    %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= GetParameterSet(p, true) %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
                     <%
                 }
                 else
                 {
-                    %>cmd.Parameters.AddWithValue("@<%=p.ParameterName%>", <%= AssignSingleCriteria(c, "crit") %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
+                    %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= AssignSingleCriteria(c, "crit") %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
                     <%
                 }
             }
@@ -138,12 +138,6 @@ if (!Info.UseCustomLoading)
                     FetchChildren(dr);
                     <%
                 }
-                if (Info.ObjectType != CslaObjectType.ReadOnlyObject)
-                {
-                    %>
-                    MarkOld();
-                <%
-                }
                 %>
                 }
                 <%
@@ -178,17 +172,11 @@ if (!Info.UseCustomLoading)
             FetchChildren(ds.Tables[0].Rows[0]);
             <%
             }
-            if (Info.ObjectType != CslaObjectType.ReadOnlyObject)
+            if (Info.CheckRulesOnFetch)
             {
                 %>
-            MarkOld();
-            <%
-                if (Info.CheckRulesOnFetch)
-                {
-                    %>
             BusinessRules.CheckRules();
             <%
-                }
             }
             %>
         }
