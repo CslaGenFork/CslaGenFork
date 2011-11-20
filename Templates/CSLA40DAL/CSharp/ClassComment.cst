@@ -9,23 +9,14 @@
 
 <!-- #include file="Header.asp" -->
 
-<%
-if (Info.ObjectNamespace.Length > 0)
-{
-%>namespace <%= Info.ObjectNamespace %>
+namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.DalInterface) %>
 {
 <%
-}
 bool? firstComment = true;
-%><!-- #include file="XmlComment.asp" -->
+%>
+
+    <!-- #include file="XmlComment.asp" -->
     public partial class <%= Info.ObjectName %>
     {
     }
-<%
-if (Info.ObjectNamespace.Length > 0)
-{
-    %>
 }
-<%
-}
-%>

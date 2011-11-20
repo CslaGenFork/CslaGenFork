@@ -39,13 +39,13 @@ if (nameProp == null || valueProp == null)
     Errors.Append("Missing name or value properties." + Environment.NewLine);
 else
 {
+    bool? firstComment = null;
     %><!-- #include file="Header.asp" -->
 <!-- #include file="Using.asp" -->
-namespace <%= GetContextBaseNamespace(Info, CurrentUnit, genStep) %>
+namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
 {
-<%
-    bool? firstComment = null;
-    %><!-- #include file="XmlComment.asp" -->
+
+    <!-- #include file="XmlComment.asp" -->
     <%
     if (GetAttributesString(Info.Attributes) != string.Empty)
     {

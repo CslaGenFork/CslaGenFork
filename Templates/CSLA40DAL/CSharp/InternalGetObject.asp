@@ -70,7 +70,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
         }
         if (Info.ObjectType != CslaObjectType.ReadOnlyObject && !IsCollectionType(Info.ObjectType))
         {
-            %>obj.MarkOld(); 
+            %>obj.MarkOld();
             <%
             if (Info.CheckRulesOnFetch)
             {

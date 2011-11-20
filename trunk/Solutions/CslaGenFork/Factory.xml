@@ -70,7 +70,7 @@
     <ClassCommentFilenameSuffix />
     <SeparateClassComment>false</SeparateClassComment>
     <BaseNamespace>MyProject.Business</BaseNamespace>
-    <UtilitiesNamespace />
+    <UtilitiesNamespace>MyProject.Business</UtilitiesNamespace>
     <UtilitiesFolder />
     <DalInterfaceNamespace>MyProject.DataAccess</DalInterfaceNamespace>
     <DalObjectNamespace>MyProject.DataAccess.Sql</DalObjectNamespace>

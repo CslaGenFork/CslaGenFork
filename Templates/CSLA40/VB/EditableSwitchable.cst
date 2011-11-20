@@ -29,7 +29,7 @@ if (Errors.Length == 0)
     bool first = true;
     %><!-- #include file="Header.asp" -->
 <!-- #include file="Using.asp" -->
-namespace <%= GetContextBaseNamespace(Info, CurrentUnit, GenerationStep.Business) %>
+namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Business) %>
 {
 <%
     bool? firstComment = null;

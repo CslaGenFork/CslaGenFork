@@ -17,5 +17,4 @@ bool? firstComment = true;
     public partial interface I<%= Info.ObjectName %>Dal
     {
     }
-
 }

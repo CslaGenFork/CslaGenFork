@@ -36,6 +36,7 @@ if (nameProp == null || valueProp == null)
     Errors.Append("Missing name or value properties." + Environment.NewLine);
 else
 {
+    bool? firstComment = null;
     %><!-- #include file="Header_DalObject.asp" -->
 <!-- #include file="Using_DalObject.asp" -->
 namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>

@@ -10,7 +10,7 @@
 
 <!-- #include file="Header_DalObject.asp" -->
 
-namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
+namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.DalObject) %>
 {
     public partial class <%= Info.ObjectName %>Dal
     {

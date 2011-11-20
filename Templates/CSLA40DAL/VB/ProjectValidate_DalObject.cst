@@ -14,20 +14,27 @@
 <%
 /*
 ERRORS
-1. DAL Objects namespace can not be empty
-2. DAL Interface and DAL Objects must have different namespaces
+1. DAL Object namespace can not be empty
+2. DAL Object and Base namespaces must be different
+3. DAL Interface and DAL Object must have different namespaces
 */
 
 if (CurrentUnit.GenerationParams.DalObjectNamespace.Equals(String.Empty))
 {
-    Errors.Append("Generation settings: DAL Base namespace is empty." + Environment.NewLine);
+    Errors.Append("Generation settings: DAL Base namespace can not be empty." + Environment.NewLine);
 }
-
-if (CurrentUnit.GenerationParams.DalObjectNamespace != string.Empty &&
-    CurrentUnit.GenerationParams.DalObjectNamespace ==
+if (CurrentUnit.GenerationParams.DalObjectNamespace ==
+    CurrentUnit.GenerationParams.BaseNamespace)
+{
+        Errors.Append("Generation settings: DAL Base namespace (" +
+            CurrentUnit.GenerationParams.DalObjectNamespace +
+            ") can not be equal to Base namespace." + Environment.NewLine);
+}
+if (CurrentUnit.GenerationParams.DalObjectNamespace ==
     CurrentUnit.GenerationParams.DalInterfaceNamespace)
 {
-    Errors.Append("Generation settings: 'DAL Base namespace' can not be equal to 'DAL Interface Base namespace'. (" +
-        CurrentUnit.GenerationParams.DalObjectNamespace + ")" + Environment.NewLine);
+        Errors.Append("Generation settings: DAL Base namespace (" +
+            CurrentUnit.GenerationParams.DalObjectNamespace +
+            ") can not be equal to DAL Interface Base namespace." + Environment.NewLine);
 }
 %>

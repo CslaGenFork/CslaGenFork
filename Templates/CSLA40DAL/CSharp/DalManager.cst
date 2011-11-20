@@ -16,24 +16,21 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-<%
-string utilNamespace = string.Empty;
-if (CurrentUnit.GenerationParams.UtilitiesNamespace != string.Empty)
-    utilNamespace = "." + CurrentUnit.GenerationParams.UtilitiesNamespace;
-%>
 using System;
 using System.Data.SqlClient;
 using Csla.Data;
 <%
-if (utilNamespace.Length > 0)
+string utilNamespaceSuffix = string.Empty;
+if (CurrentUnit.GenerationParams.UtilitiesNamespace != CurrentUnit.GenerationParams.BaseNamespace)
 {
+    utilNamespaceSuffix = CurrentUnit.GenerationParams.UtilitiesNamespace.Substring(CurrentUnit.GenerationParams.BaseNamespace.Length);
     %>
-using <%= CurrentUnit.GenerationParams.DalInterfaceNamespace %><%= utilNamespace %>;
+using <%= GetContextUtilitiesNamespace(CurrentUnit, GenerationStep.DalInterface) %>;
 <%
 }
 %>
 
-namespace <%= CurrentUnit.GenerationParams.DalObjectNamespace %><%= utilNamespace %>
+namespace <%= GetContextUtilitiesNamespace(CurrentUnit, GenerationStep.DalObject) %>
 {
     /// <summary>
     /// Implements <see cref="IDalManager<%= GetConnectionName(CurrentUnit) %>"/> interface.
@@ -43,11 +40,11 @@ namespace <%= CurrentUnit.GenerationParams.DalObjectNamespace %><%= utilNamespac
     /// 1) name this assembly <%= CurrentUnit.GenerationParams.DalObjectNamespace %><br/>
     /// 2) add the following line to the <strong>appSettings</strong>
     /// section of the application .config file: <br/>
-    /// &lt;add key="<%= GetConnectionName(CurrentUnit) %>.DalManagerType" value="<%= CurrentUnit.GenerationParams.DalObjectNamespace %><%= utilNamespace %>.DalManager<%= GetConnectionName(CurrentUnit) %>, <%= CurrentUnit.GenerationParams.DalObjectNamespace %>" /&gt;
+    /// &lt;add key="<%= GetConnectionName(CurrentUnit) %>.DalManagerType" value="<%= CurrentUnit.GenerationParams.DalObjectNamespace %><%= utilNamespaceSuffix %>.DalManager<%= GetConnectionName(CurrentUnit) %>, <%= CurrentUnit.GenerationParams.DalObjectNamespace %>" /&gt;
     /// </remarks>
     public class DalManager<%= GetConnectionName(CurrentUnit) %> : IDalManager<%= GetConnectionName(CurrentUnit) %>
     {
-        private static readonly string TypeMask = typeof (DalManager<%= GetConnectionName(CurrentUnit) %>).FullName<%= (utilNamespace.Length > 0) ? (".Replace(\"" + utilNamespace + "\", string.Empty)") : "" %>.Replace("DalManager<%= GetConnectionName(CurrentUnit) %>", @"{0}");
+        private static readonly string TypeMask = typeof (DalManager<%= GetConnectionName(CurrentUnit) %>).FullName<%= (utilNamespaceSuffix.Length > 0) ? (".Replace(\"" + utilNamespaceSuffix + "\", string.Empty)") : "" %>.Replace("DalManager<%= GetConnectionName(CurrentUnit) %>", @"{0}");
         private const string BaseNamespace = "<%= CurrentUnit.GenerationParams.DalInterfaceNamespace %>";
 
         /// <summary>

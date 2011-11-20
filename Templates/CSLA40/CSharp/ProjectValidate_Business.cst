@@ -12,77 +12,71 @@
 <%@ Import Namespace="System.Reflection" %>
 <%@ Assembly Name="System.Core" %>
 <%@ Import Namespace="System.Linq" %>
-
 <%
 /*
 ERRORS
-1. Suffix for base and extended must be different
-2. Suffix for base and comment must be different
-3. Suffix for extended and comment must be different
+1. suffix for base and extended must be different
+2. suffix for base and comment must be different, except if both are empty
+3. suffix for extended and comment must be different, except if both are empty
 4. Base namespace can not be empty
-5. Connection name can not be empty
+5. Utilities namespace can not be empty
+6. Utilities namespace must be under Base namespace
+7. Connection name can not be empty
+8. Object namespace must be under base namespace
 WARNINGS
-6. Fill Utility classes namespace / Utility classes folder correctly
-7. Utility classes namespace must be under base namespace
-8. Check no repeated object names
-9. Check no repeated file names
-10. Check no repeated criteria names for non nested class (with more than one property)
+9. When separate namespaces in folders, ignored Utility classes folder
+10. Check no repeated object names
+11. Check no repeated file names
+12. Check no repeated criteria names for non nested class (with more than one property)
 */
 
-if (CurrentUnit.GenerationParams.BaseFilenameSuffix != string.Empty &&
-    CurrentUnit.GenerationParams.BaseFilenameSuffix ==
+if (CurrentUnit.GenerationParams.BaseFilenameSuffix ==
     CurrentUnit.GenerationParams.ExtendedFilenameSuffix)
 {
-    Errors.Append("Generation settings: Suffix for base files can not be equal to Suffix for extended files. (" +
-        CurrentUnit.GenerationParams.BaseFilenameSuffix + ")" + Environment.NewLine);
+    Errors.Append("Generation settings: 'Suffix for base files' can not be equal to 'Suffix for extended files' (" +
+        CurrentUnit.GenerationParams.BaseFilenameSuffix + ")." + Environment.NewLine);
 }
-
 if (CurrentUnit.GenerationParams.BaseFilenameSuffix != string.Empty &&
     CurrentUnit.GenerationParams.BaseFilenameSuffix ==
     CurrentUnit.GenerationParams.ClassCommentFilenameSuffix)
 {
-    Errors.Append("Generation settings: Suffix for base files can not be equal to Suffix for class comment files. (" +
-        CurrentUnit.GenerationParams.BaseFilenameSuffix + ")" + Environment.NewLine);
+    Errors.Append("Generation settings: 'Suffix for base files' can not be equal to 'Suffix for class comment files' (" +
+        CurrentUnit.GenerationParams.BaseFilenameSuffix + ")." + Environment.NewLine);
 }
-
 if (CurrentUnit.GenerationParams.ExtendedFilenameSuffix != string.Empty &&
     CurrentUnit.GenerationParams.ExtendedFilenameSuffix ==
     CurrentUnit.GenerationParams.ClassCommentFilenameSuffix)
 {
-    Errors.Append("Generation settings: Suffix for extended files can not be equal to Suffix for class comment files. (" +
-        CurrentUnit.GenerationParams.ExtendedFilenameSuffix + ")" + Environment.NewLine);
+    Errors.Append("Generation settings: 'Suffix for extended files' can not be equal to suffix for class comment files (" +
+        CurrentUnit.GenerationParams.ExtendedFilenameSuffix + ")." + Environment.NewLine);
 }
-
-if (CurrentUnit.GenerationParams.BaseNamespace.Equals(String.Empty))
+if (CurrentUnit.GenerationParams.BaseNamespace.Equals(string.Empty))
 {
-    Errors.Append("Generation settings: Base namespace is empty." + Environment.NewLine);
+    Errors.Append("Generation settings: 'Base namespace' can not be empty." + Environment.NewLine);
 }
-
-if (CurrentUnit.GenerationParams.DatabaseConnection.Equals(String.Empty))
+if (CurrentUnit.GenerationParams.UtilitiesNamespace.Equals(string.Empty))
 {
-    Errors.Append("Generation settings: Connection name is empty." + Environment.NewLine);
+    Errors.Append("Generation settings: 'Utility classes namespace' can not be empty." + Environment.NewLine);
 }
-
-if (!CurrentUnit.GenerationParams.SeparateNamespaces &&
-    CurrentUnit.GenerationParams.UtilitiesFolder == String.Empty &&
-    CurrentUnit.GenerationParams.UtilitiesNamespace != String.Empty)
+if (CurrentUnit.GenerationParams.UtilitiesNamespace.IndexOf(CurrentUnit.GenerationParams.BaseNamespace) != 0)
 {
-    Warnings.Append("Generation settings: should fill 'Utility classes folder' instead of 'Utility classes namespace'." + Environment.NewLine);
+    Errors.Append("Generation settings: 'Utility classes namespace' (" + CurrentUnit.GenerationParams.UtilitiesNamespace + ") must be under must be under 'Base namespace' (" +
+            CurrentUnit.GenerationParams.BaseNamespace + ")." + Environment.NewLine);
+}
+if (CurrentUnit.GenerationParams.DatabaseConnection.Equals(string.Empty))
+{
+    Errors.Append("Generation settings: 'Connection name' can not be empty." + Environment.NewLine);
 }
 if (CurrentUnit.GenerationParams.SeparateNamespaces &&
-    CurrentUnit.GenerationParams.UtilitiesNamespace == String.Empty &&
-    CurrentUnit.GenerationParams.UtilitiesFolder != String.Empty)
+    CurrentUnit.GenerationParams.UtilitiesFolder != string.Empty)
 {
-    Warnings.Append("Generation settings: should fill 'Utility classes namespace' instead of 'Utility classes folder'." + Environment.NewLine);
+    Warnings.Append("Generation settings: 'Utility classes folder' will be ignored (separate namespaces in folders is set)." + Environment.NewLine);
 }
-
-Warnings.Append("Revert Utilities to namespace (and not a suffix) " + Environment.NewLine);
-
-/*if (CurrentUnit.GenerationParams.UtilitiesNamespace.IndexOf(CurrentUnit.GenerationParams.BaseNamespace) != 0)
+if (CurrentUnit.GenerationParams.SeparateClassComment &&
+    CurrentUnit.GenerationParams.ClassCommentFilenameSuffix == string.Empty)
 {
-    Errors.Append("Generation settings: 'Utility classes namespace' must be under Base namespace." + Environment.NewLine);
-}*/
-
+    Warnings.Append("Generation settings: 'Separate class comments in a folder' will be ignored (class comment suffix is empty)." + Environment.NewLine);
+}
 if (Errors.Length > 0)
     return;
 
@@ -93,6 +87,11 @@ foreach (CslaObjectInfo objectInfo in CurrentUnit.CslaObjects)
 {
     if (objectInfo.Generate)
     {
+        if (objectInfo.ObjectNamespace.IndexOf(CurrentUnit.GenerationParams.BaseNamespace) != 0)
+        {
+            Errors.Append(objectInfo.ObjectName + ": object namespace (" + objectInfo.ObjectNamespace + ") must be under 'Base namespace' (" +
+            CurrentUnit.GenerationParams.BaseNamespace + ")." + Environment.NewLine);
+        }
         // duplicated object names
         if (objectNames.Contains(objectInfo.ObjectName))
         {
@@ -102,18 +101,16 @@ foreach (CslaObjectInfo objectInfo in CurrentUnit.CslaObjects)
         {
             objectNames.Add(objectInfo.ObjectName);
         }
-
         // duplicated filenames
         if (filenames.Contains(objectInfo.FileName))
         {
-            Warnings.Append(objectInfo.ObjectName + ": object file name " + objectInfo.FileName +
-                            " is repeated." + Environment.NewLine);
+            Warnings.Append(objectInfo.ObjectName + ": object file name (" + objectInfo.FileName +
+                            ") is repeated." + Environment.NewLine);
         }
         else
         {
             filenames.Add(objectInfo.FileName);
         }
-
         // duplicated criteria names
         foreach (Criteria criteria in objectInfo.CriteriaObjects)
         {
@@ -121,8 +118,8 @@ foreach (CslaObjectInfo objectInfo in CurrentUnit.CslaObjects)
             {
                 if (criteriaNames.Contains(criteria.Name))
                 {
-                    Warnings.Append(objectInfo.ObjectName + ": criteria name " + criteria.Name +
-                            " is repeated." + Environment.NewLine);
+                    Warnings.Append(objectInfo.ObjectName + ": criteria name (" + criteria.Name +
+                            ") is repeated." + Environment.NewLine);
                 }
                 else
                 {

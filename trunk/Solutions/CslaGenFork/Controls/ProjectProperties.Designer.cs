@@ -1657,7 +1657,7 @@ namespace CslaGenerator.Controls
             this.txtClassCommentFilenameSuffix.Size = new System.Drawing.Size(164, 20);
             this.txtClassCommentFilenameSuffix.TabIndex = 7;
             this.toolTip1.SetToolTip(this.txtClassCommentFilenameSuffix,
-                                     "If specified, class comments are separated on its own file with file names \"<object><suffix>\". If blank, class comments are inserted on base class files.");
+                                     "If specified, class comments are separated on its own file with file names \"<object><suffix>\". If empty, class comments are inserted on base class files.");
             // 
             // chkSeparateBaseClasses
             // 
@@ -1713,7 +1713,7 @@ namespace CslaGenerator.Controls
             this.lblUtilitiesNamespace.Name = "lblUtilitiesNamespace";
             this.lblUtilitiesNamespace.Size = new System.Drawing.Size(170, 16);
             this.lblUtilitiesNamespace.TabIndex = 31;
-            this.lblUtilitiesNamespace.Text = "Utility classes namespace sufix:";
+            this.lblUtilitiesNamespace.Text = "Utility classes namespace:";
             // 
             // txtUtilitiesNamespace
             // 
@@ -1722,9 +1722,8 @@ namespace CslaGenerator.Controls
             this.txtUtilitiesNamespace.Name = "txtUtilitiesNamespace";
             this.txtUtilitiesNamespace.Size = new System.Drawing.Size(177, 20);
             this.txtUtilitiesNamespace.TabIndex = 12;
-            this.toolTip1.SetToolTip(this.txtUtilitiesNamespace, "Specify the namespace suffix where the <Database>, <DataPortalHookArgs> and DAL support files will be created." +
-                "\r\nThis namespace suffix adds to the \"Base namespace\" specified above and DAL namespaces below." +
-                "\r\nThis is alternative to \"Utility classes folder\" that is used only when namespaces are separated in folders.");
+            this.toolTip1.SetToolTip(this.txtUtilitiesNamespace, "Specify the namespace where the <Database>, <DataPortalHookArgs> and DAL support files will be created.\r\n" +
+                "When separating namespaces in folders, this namespace will be used as the folder for utility files.");
             // 
             // lblUtilitiesFolder
             // 
@@ -1741,8 +1740,8 @@ namespace CslaGenerator.Controls
             this.txtUtilitiesFolder.Name = "txtUtilitiesFolder";
             this.txtUtilitiesFolder.Size = new System.Drawing.Size(177, 20);
             this.txtUtilitiesFolder.TabIndex = 13;
-            this.toolTip1.SetToolTip(this.txtUtilitiesFolder, "Specify the folder where the <Database> and <DataPortalHookArgs> files will be created." +
-                "\r\nThis is relative to the project\'s output folder and is alternative to \"Utility classes namespace\" that is used only when namespaces are not separated in folders.");
+            this.toolTip1.SetToolTip(this.txtUtilitiesFolder, "Specify the folder where the <Database> and <DataPortalHookArgs>  and DAL support files will be created.\r\n" +
+                "This is relative to the project\'s output folder and is used only when namespaces are not separated in folders.");
             // 
             // lblDalInterfaceNamespace
             // 
