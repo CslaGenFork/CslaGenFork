@@ -132,51 +132,45 @@ if (Info.GenerateDataPortalUpdate)
 
 if (Info.GenerateDataPortalDelete)
 {
-    foreach (Criteria c in GetCriteriaObjects(Info))
+    string strDeleteCritParams = string.Empty;
+    string strDeleteComment = string.Empty;
+    bool deleteIsFirst = true;
+
+    if (parentType.Length > 0 && !Info.ParentInsertOnly)
     {
-        if (c.DeleteOptions.ProcedureName != string.Empty)
+        foreach (Property prop in Info.ParentProperties)
         {
-            string strDeleteCritParams = string.Empty;
-            string strDeleteComment = string.Empty;
-            bool deleteIsFirst = true;
+            if (!deleteIsFirst)
+                strDeleteCritParams += ", ";
+            else
+                deleteIsFirst = false;
 
-            if (parentType.Length > 0 && !Info.ParentInsertOnly)
-            {
-                foreach (Property prop in Info.ParentProperties)
-                {
-                    if (!deleteIsFirst)
-                        strDeleteCritParams += ", ";
-                    else
-                        deleteIsFirst = false;
+            TypeCodeEx propType = prop.PropertyType;
 
-                    TypeCodeEx propType = prop.PropertyType;
+            strDeleteComment += "/// <param name=\"" + FormatCamel(prop.Name) + "\">The parent " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
+            strDeleteCritParams += string.Concat(GetDataTypeGeneric(prop, propType), " ", FormatCamel(prop.Name));
+        }
+    }
+    foreach (ValueProperty prop in Info.ValueProperties)
+    {
+        if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
+        {
+            if (!deleteIsFirst)
+                strDeleteCritParams += ", ";
+            else
+                deleteIsFirst = false;
 
-                    strDeleteComment += "/// <param name=\"" + FormatCamel(prop.Name) + "\">The parent " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
-                    strDeleteCritParams += string.Concat(GetDataTypeGeneric(prop, propType), " ", FormatCamel(prop.Name));
-                }
-            }
-            foreach (ValueProperty prop in Info.ValueProperties)
-            {
-                if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
-                {
-                    if (!deleteIsFirst)
-                        strDeleteCritParams += ", ";
-                    else
-                        deleteIsFirst = false;
+            TypeCodeEx propType = TypeHelper.GetBackingFieldType(prop);
 
-                    TypeCodeEx propType = TypeHelper.GetBackingFieldType(prop);
-
-                    strDeleteCritParams += string.Concat(GetDataTypeGeneric(prop, propType), " ", FormatCamel(prop.Name));
-                    strDeleteComment += "/// <param name=\"" + FormatCamel(prop.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
-                }
-            }
-            %>
+            strDeleteCritParams += string.Concat(GetDataTypeGeneric(prop, propType), " ", FormatCamel(prop.Name));
+            strDeleteComment += "/// <param name=\"" + FormatCamel(prop.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
+        }
+    }
+    %>
 
         /// <summary>
         /// Deletes the <%= Info.ObjectName %> object from database.
         /// </summary>
         <%= strDeleteComment %>void Delete(<%= strDeleteCritParams %>);<%
-        }
-    }
 }
 %>

@@ -637,6 +637,9 @@ namespace CslaGenerator.Util.PropertyBags
                     (propertyName == "CreateOptions" ||
                      propertyName == "DeleteOptions"))
                     return false;
+                if (cslaObject.ObjectType == CslaObjectType.EditableChild &&
+                    propertyName == "DeleteOptions")
+                    return false;
                 if ((cslaObject.ObjectType == CslaObjectType.UnitOfWork && cslaObject.IsCreator) &&
                     (propertyName == "GetOptions" ||
                      propertyName == "DeleteOptions"))
