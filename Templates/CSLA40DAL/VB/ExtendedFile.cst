@@ -10,6 +10,7 @@
 
 <!-- #include file="Header.asp" -->
 <%
+GenerationStep genStep = GenerationStep.Business;
 int silverlightLevel = 0;
 bool genOptional = false;
 if (CurrentUnit.GenerationParams.UtilitiesNamespace != string.Empty)

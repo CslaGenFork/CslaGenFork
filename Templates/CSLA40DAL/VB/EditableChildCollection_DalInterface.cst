@@ -23,6 +23,7 @@ if (Errors.Length == 0)
     bool usesDTO = DalObjectUsesDTO(Info);
     bool usesDalCriteria = DalObjectUsesCriteria(Info);
     bool isChild = true;
+    bool? firstComment = null;
     %><!-- #include file="Header_DalInterface.asp" -->
 using System;
 using System.Data;

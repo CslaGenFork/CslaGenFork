@@ -16,25 +16,20 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-<%
-string utilNamespace = string.Empty;
-if (CurrentUnit.GenerationParams.UtilitiesNamespace != string.Empty)
-    utilNamespace = "." + CurrentUnit.GenerationParams.UtilitiesNamespace;
-%>
 using System;
 using System.Configuration;
 
-namespace <%= CurrentUnit.GenerationParams.DalInterfaceNamespace %><%= utilNamespace %>
+namespace <%= GetContextUtilitiesNamespace(CurrentUnit, GenerationStep.DalInterface) %>
 {
     /// <summary>
     /// Creates a <%= GetConnectionName(CurrentUnit) %> DAL manager provider.
     /// </summary>
     /// <remarks>
     /// To use the generated DAL:<br/>
-    /// 1) name this assembly <%= GetConnectionName(CurrentUnit) %>.DataAccess.Security.Sql<br/>
+    /// 1) name this assembly <%= CurrentUnit.GenerationParams.DalInterfaceNamespace %><br/>
     /// 2) add the following line to the <strong>appSettings</strong>
     /// section of the application .config file: <br/>
-    /// &lt;add key="<%= GetConnectionName(CurrentUnit) %>.DalManagerType" value="<%= CurrentUnit.GenerationParams.DalObjectNamespace %><%= utilNamespace %>.DalManager<%= GetConnectionName(CurrentUnit) %>, <%= CurrentUnit.GenerationParams.DalObjectNamespace %>" /&gt;
+    /// &lt;add key="<%= GetConnectionName(CurrentUnit) %>.DalManagerType" value="<%= GetContextUtilitiesNamespace(CurrentUnit, GenerationStep.DalObject) %>.DalManager<%= GetConnectionName(CurrentUnit) %>, <%= CurrentUnit.GenerationParams.DalObjectNamespace %>" /&gt;
     /// </remarks>
     public static class DalFactory<%= GetConnectionName(CurrentUnit) %>
     {

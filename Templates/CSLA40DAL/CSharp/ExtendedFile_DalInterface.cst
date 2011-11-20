@@ -10,7 +10,7 @@
 
 <!-- #include file="Header_DalInterface.asp" -->
 
-namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
+namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.DalInterface) %>
 {
     public partial interface I<%= Info.ObjectName %>Dal
     {

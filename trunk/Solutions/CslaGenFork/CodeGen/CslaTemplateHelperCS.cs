@@ -694,11 +694,9 @@ namespace CslaGenerator.CodeGen
             var result = string.Empty;
 
             result += Environment.NewLine + "using " +
-                GetContextBaseNamespace(info, unit, GenerationStep.DalInterface) + ";";
+                GetContextObjectNamespace(info, unit, GenerationStep.DalInterface) + ";";
 
-            //todo : replace String.Empty by CurrentUnit.GenerationParams.BaseNamespace
-
-            if (CurrentUnit.GenerationParams.UtilitiesNamespace != String.Empty &&
+            if (CurrentUnit.GenerationParams.UtilitiesNamespace != CurrentUnit.GenerationParams.BaseNamespace &&
                 info.ObjectType != CslaObjectType.UnitOfWork)
                 result += Environment.NewLine + "using " +
                           GetContextUtilitiesNamespace(unit, GenerationStep.DalInterface) + ";";
@@ -776,7 +774,7 @@ namespace CslaGenerator.CodeGen
             if (addCommonRules)
                 usingList.Add("Csla.Rules.CommonRules");
 
-            if (CurrentUnit.GenerationParams.UtilitiesNamespace != String.Empty &&
+            if (CurrentUnit.GenerationParams.UtilitiesNamespace != CurrentUnit.GenerationParams.BaseNamespace &&
                 info.ObjectType != CslaObjectType.UnitOfWork)
                 usingList.Add(GetContextUtilitiesNamespace(unit, step));
 
@@ -855,27 +853,14 @@ namespace CslaGenerator.CodeGen
             return usingList.ToArray();
         }
 
-        public static string GetContextBaseNamespace(CslaObjectInfo info, CslaGeneratorUnit unit, GenerationStep step)
-        {
-            var result = AdvancedGenerator.GetContextBaseNamespace(unit, step);
-            var objectNamespace = info.ObjectNamespace.Substring(unit.GenerationParams.BaseNamespace.Length);
-            return result + objectNamespace;
-        }
-
         public static string GetContextUtilitiesNamespace(CslaGeneratorUnit unit, GenerationStep step)
         {
             var result = AdvancedGenerator.GetContextBaseNamespace(unit, step);
-
-            //todo : replace String.Empty by CurrentUnit.GenerationParams.BaseNamespace
-            //todo : add logic for UtilitiesFolder
-            
-            if (unit.GenerationParams.UtilitiesNamespace == String.Empty)
+            if (unit.GenerationParams.UtilitiesNamespace == unit.GenerationParams.BaseNamespace)
                 return result;
 
-            //todo : replace by 
-            // return result + unit.GenerationParams.UtilitiesNamespace.Substring(unit.GenerationParams.BaseNamespace.Length);
-
-            return result + "." + unit.GenerationParams.UtilitiesNamespace;
+            return result +
+                   unit.GenerationParams.UtilitiesNamespace.Substring(unit.GenerationParams.BaseNamespace.Length);
         }
 
         public static string GetContextObjectNamespace(CslaObjectInfo info, CslaGeneratorUnit unit, GenerationStep step)

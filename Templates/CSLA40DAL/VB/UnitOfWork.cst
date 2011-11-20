@@ -21,15 +21,15 @@ if (Errors.Length == 0)
     int silverlightLevel = 0;
     bool genOptional = false;
     bool useItem = false;
+    bool? firstComment = null;
     %><!-- #include file="Header.asp" -->
 using System;
 using Csla;
 <%= GetUsingStatementsString(Info, CurrentUnit) %>
-namespace <%= GetContextBaseNamespace(Info, CurrentUnit, genStep) %>
+namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
 {
-<%
-    bool? firstComment = null;
-    %><!-- #include file="XmlComment.asp" -->
+
+    <!-- #include file="XmlComment.asp" -->
     <%
     if (GetAttributesString(Info.Attributes) != string.Empty)
     {

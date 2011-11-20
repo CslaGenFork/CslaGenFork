@@ -35,6 +35,7 @@ if (nameProp == null || valueProp == null)
     Errors.Append("Missing name or value properties." + Environment.NewLine);
 else
 {
+    bool? firstComment = null;
     %><!-- #include file="Header_DalInterface.asp" -->
 using System;
 using System.Data;
