@@ -965,9 +965,14 @@ namespace CslaGenerator.Util.PropertyBags
                             (propertyName == "DbName" ||
                              propertyName == "HashcodeProperty" ||
                              propertyName == "EqualsProperty" ||
-                             propertyName == "DeleteProcedureName" ||
                              propertyName == "LazyLoad" ||
                              propertyName == "CacheResults"))
+                            return false;
+                        if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 ||
+                             GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL) &&
+                             cslaObject.ObjectType != CslaObjectType.EditableChild &&
+                             cslaObject.ObjectType != CslaObjectType.EditableSwitchable &&
+                             propertyName == "DeleteProcedureName")
                             return false;
                         if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 ||
                              GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL) &&
@@ -1184,6 +1189,22 @@ namespace CslaGenerator.Util.PropertyBags
                 // in the PropertySpec, create attributes to define that relationship.
                 if (property.Category != null)
                 {
+                    if (property.Category == "08. Insert & Update Options")
+                    {
+                        var cslaObject = (CslaObjectInfo)GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem;
+                        if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework !=
+                             TargetFramework.CSLA40 &&
+                             GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework !=
+                             TargetFramework.CSLA40DAL)
+                        {
+                            property.Category = "08. Stored Procedure Names";
+                        }
+                        else if (cslaObject.ObjectType == CslaObjectType.EditableChild)
+                        {
+                            property.Category = "08. Insert, Update, Delete Options";
+                        }
+                    }
+
                     if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework !=
                              TargetFramework.CSLA40 &&
                              GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework !=

@@ -352,11 +352,7 @@ if (Info.GenerateDataPortalInsert || Info.GenerateDataPortalUpdate || Info.Gener
 
 if (Info.GenerateDataPortalDelete)
 {
-    foreach (Criteria c in GetCriteriaObjects(Info))
-    {
-        if (c.DeleteOptions.DataPortal)
-        {
-        %>
+    %>
 
         /// <summary>
         /// Self deletes the <see cref="<%= Info.ObjectName %>"/> object from database.
@@ -399,7 +395,7 @@ if (Info.GenerateDataPortalDelete)
                 <%
     }
     %>
-                <%= GetCommand(Info, c.DeleteOptions.ProcedureName) %>
+                <%= GetCommand(Info, Info.DeleteProcedureName) %>
                 {
                     <%
     if (Info.TransactionType == TransactionType.ADO && Info.PersistenceType == PersistenceType.SqlConnectionManager)
@@ -467,7 +463,5 @@ if (Info.GenerateDataPortalDelete)
     %>
         }
 <%
-        }
-    }
 }
 %>

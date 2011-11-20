@@ -306,54 +306,49 @@ if (Info.GenerateDataPortalInsert || Info.GenerateDataPortalUpdate || Info.Gener
 
 if (Info.GenerateDataPortalDelete)
 {
-    foreach (Criteria c in GetCriteriaObjects(Info))
+    string strDeleteCritParams = string.Empty;
+    string strDeleteCallParams = string.Empty;
+    string strDeleteComment = string.Empty;
+    bool deleteIsFirst = true;
+
+    if (parentType.Length > 0 && !Info.ParentInsertOnly)
     {
-        if (c.DeleteOptions.ProcedureName != string.Empty)
+        foreach (Property prop in Info.ParentProperties)
         {
-            string strDeleteCritParams = string.Empty;
-            string strDeleteCallParams = string.Empty;
-            string strDeleteComment = string.Empty;
-            bool deleteIsFirst = true;
-
-            if (parentType.Length > 0 && !Info.ParentInsertOnly)
+            if (!deleteIsFirst)
             {
-                foreach (Property prop in Info.ParentProperties)
-                {
-                    if (!deleteIsFirst)
-                    {
-                        strDeleteCritParams += ", ";
-                        strDeleteCallParams += ", ";
-                    }
-                    else
-                        deleteIsFirst = false;
-
-                    TypeCodeEx propType = prop.PropertyType;
-
-                    strDeleteComment += "/// <param name=\"" + FormatCamel(prop.Name) + "\">The parent " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
-                    strDeleteCritParams += string.Concat(GetDataTypeGeneric(prop, propType), " ", FormatCamel(prop.Name));
-                    strDeleteCallParams += "parent." + prop.Name;
-                }
+                strDeleteCritParams += ", ";
+                strDeleteCallParams += ", ";
             }
-            foreach (ValueProperty prop in Info.ValueProperties)
+            else
+                deleteIsFirst = false;
+
+            TypeCodeEx propType = prop.PropertyType;
+
+            strDeleteComment += "/// <param name=\"" + FormatCamel(prop.Name) + "\">The parent " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
+            strDeleteCritParams += string.Concat(GetDataTypeGeneric(prop, propType), " ", FormatCamel(prop.Name));
+            strDeleteCallParams += "parent." + prop.Name;
+        }
+    }
+    foreach (ValueProperty prop in Info.ValueProperties)
+    {
+        if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
+        {
+            if (!deleteIsFirst)
             {
-                if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
-                {
-                    if (!deleteIsFirst)
-                    {
-                        strDeleteCritParams += ", ";
-                        strDeleteCallParams += ", ";
-                    }
-                    else
-                        deleteIsFirst = false;
-
-                    TypeCodeEx propType = TypeHelper.GetBackingFieldType(prop);
-
-                    strDeleteCritParams += string.Concat(GetDataTypeGeneric(prop, propType), " ", FormatCamel(prop.Name));
-                    strDeleteCallParams += GetParameterSet(Info, prop);
-                    strDeleteComment += "/// <param name=\"" + FormatCamel(prop.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
-                }
+                strDeleteCritParams += ", ";
+                strDeleteCallParams += ", ";
             }
+            else
+                deleteIsFirst = false;
 
+            TypeCodeEx propType = TypeHelper.GetBackingFieldType(prop);
+
+            strDeleteCritParams += string.Concat(GetDataTypeGeneric(prop, propType), " ", FormatCamel(prop.Name));
+            strDeleteCallParams += GetParameterSet(Info, prop);
+            strDeleteComment += "/// <param name=\"" + FormatCamel(prop.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
+        }
+    }
     %>
 
         /// <summary>
@@ -390,13 +385,13 @@ if (Info.GenerateDataPortalDelete)
             using (var dalManager = DalFactory<%= GetConnectionName(CurrentUnit) %>.GetManager())
             {
                 <%
-            if (Info.GetMyChildProperties().Count > 0)
-            {
-                %>
+    if (Info.GetMyChildProperties().Count > 0)
+    {
+        %>
 <!-- #include file="UpdateChildProperties.asp" -->
                 <%
-            }
-            %>
+    }
+    %>
                 OnDeletePre(args);
                 var dal = dalManager.GetProvider<I<%= Info.ObjectName %>Dal>();
                 using (BypassPropertyChecks)
@@ -405,36 +400,7 @@ if (Info.GenerateDataPortalDelete)
                 }
                 OnDeletePost(args);
             }
-            <%
-    /*foreach (ValueProperty prop in Info.ValueProperties)
-    {
-        if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
-        {
-             >cmd.Parameters.AddWithValue("@< = prop.ParameterName  >", < = GetParameterSet(Info, prop)  >< = (prop.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "")  >).DbType = DbType.< = TypeHelper.GetDbType(prop.PropertyType)  >;
-                    <
-        }
-    }
-    if (parentType.Length > 0 && !Info.ParentInsertOnly)
-    {
-        foreach (Property prop in Info.ParentProperties)
-        {
-            if (prop.PropertyType == TypeCodeEx.SmartDate)
-            {
-                 >SmartDate l< = prop.Name  > = new SmartDate(parent.< = prop.Name  >);
-                        cmd.Parameters.AddWithValue("@< = prop.ParameterName  >", l< = prop.Name  >.DBValue).DbType = DbType.DateTime;
-                    <
-            }
-            else
-            {
-                 >cmd.Parameters.AddWithValue("@< = prop.ParameterName  >", parent.< = prop.Name  >).DbType = DbType.< = TypeHelper.GetDbType(prop.PropertyType)  >;
-                    <
-            }
-        }
-    }*/
-            %>
         }
     <%
-        }
-    }
 }
 %>

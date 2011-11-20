@@ -997,8 +997,9 @@ namespace CslaGenerator.Metadata
         // Show 08. Stored Procedure Names for pre CSLA4 targets
 
         [Category("08. Insert & Update Options")]
-        [Description("Whether DataPortal_Insert and DataPortal_Update should run on the client.")]
-        [UserFriendlyName("Insert & Update RunLocal")]
+        [Description("Whether DataPortal_Insert and DataPortal_Update should run on the client.\r\n" +
+            "For Editable Child object it refers also to Child_DeleteSelf")]
+        [UserFriendlyName("RunLocal")]
         public bool InsertUpdateRunLocal
         {
             get { return _insertUpdateRunLocal; }
@@ -1067,7 +1068,7 @@ namespace CslaGenerator.Metadata
         /// Name of the delete procedure.
         /// </summary>
         [Category("08. Insert & Update Options")]
-        [Description("Name of the delete procedure.")]
+        [Description("Name of the delete procedure. This is used only for Editable Child objects.")]
         [UserFriendlyName("Delete Procedure Name")]
         public string DeleteProcedureName
         {
@@ -1082,8 +1083,7 @@ namespace CslaGenerator.Metadata
             set
             {
                 if (_objectType == CslaObjectType.EditableChild ||
-                    _objectType == CslaObjectType.EditableSwitchable ||
-                    _objectType == CslaObjectType.DynamicEditableRoot)
+                    _objectType == CslaObjectType.EditableSwitchable)
                     _deleteProcedureName = PropertyHelper.Tidy(value);
                 else
                 {
@@ -1661,7 +1661,7 @@ namespace CslaGenerator.Metadata
         }
 
         /// <summary>
-        /// Gets the value properties correpondent to the parent properties of the child object.
+        /// Gets the value properties correspondent to the parent properties of the child object.
         /// </summary>
         /// <returns>A ValuePropertyCollection with parent's ValueProperties of the child's parent properties.</returns>
         public ValuePropertyCollection GetParentValueProperties()
