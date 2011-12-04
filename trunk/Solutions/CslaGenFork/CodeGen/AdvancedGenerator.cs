@@ -46,32 +46,15 @@ namespace CslaGenerator.CodeGen
             _abortRequested = true;
         }
 
-        private bool TargetDalAlert()
-        {
-            if (!GeneratorController.Current.UseDalAlert)
-                return true;
-
-            var result = true;
-            if (_unit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL)
-            {
-                var alert = MessageBox.Show(_unit.ProjectName +
-                    @" targets CSLA 4 using DAL and isn't supported (yet) in this release of CslaGenFork.",
-                    @"CslaGenFork project generation", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
-                if (alert == DialogResult.Cancel)
-                    result = false;
-            }
-
-            return result;
-        }
-
         public void GenerateProject(CslaGeneratorUnit unit)
         {
             _unit = unit;
-            if (!TargetDalAlert())
+            if (_unit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL &&
+                (_unit.GenerationParams.UseDto == TargetDto.MoreThan ||
+                _unit.GenerationParams.UseDto == TargetDto.Always))
             {
-                _objFailed++;
-                OnGenerationInformation("Project generation cancelled." + Environment.NewLine);
-                return;
+                MessageBox.Show(@"DTO aren't supported (yet) in this release of CslaGenFork.",
+                    @"CslaGenFork DAL project generation", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
             CslaTemplateHelperCS.PrimaryKeys.ClearCache();
