@@ -31,10 +31,11 @@ SortTables(tables);
 string plainTableSchema = GetSchema(tables[0], false);
 string fullTableSchema = GetSchema(tables[0], true);
 bool timeStampColumn=false;
-string procName=String.Empty;
-string parms=String.Empty;
-string whereClause=String.Empty;
-string whereClauseTS=String.Empty;
+string procName = String.Empty;
+string parms =String.Empty;
+string whereClause = String.Empty;
+string whereClauseTS = String.Empty;
+
 if (!CriteriaDefined)
 {
     procName = Info.DeleteProcedureName;
@@ -50,7 +51,10 @@ if (!CriteriaDefined)
                 whereClause += "\r\n        AND    ";
                 parms += ","  + Environment.NewLine;
             }
-            else { first = false; }
+            else
+            {
+                first = false;
+            }
             whereClause += String.Format("[{0}] = @{1}", CheckParentRelationName(parm,tables[0]), parm.ParameterName);
             parms += String.Format("    @{0} {1}", parm.ParameterName, GetDataTypeString(parm.DbBindColumn));
         }
@@ -61,13 +65,17 @@ if (!CriteriaDefined)
             continue;
         if (parm.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
         {
-            if (!first) {
+            if (!first)
+            {
                 if (parm.DbBindColumn.NativeType != "timestamp")
                     whereClauseTS += "\r\n        AND    ";
                 whereClause += "\r\n        AND    ";
                 parms += ","  + Environment.NewLine;
             }
-            else { first = false; }
+            else
+            {
+                first = false;
+            }
             whereClause +=String.Format("[{0}] = @{1}", GetColumnString(parm.DbBindColumn), parm.ParameterName);
             if (parm.DbBindColumn.NativeType != "timestamp")
                 whereClauseTS +=String.Format("[{0}] = @{1}", GetColumnString(parm.DbBindColumn), parm.ParameterName) + Environment.NewLine;
@@ -94,11 +102,11 @@ else
         {
             first=false;
         }
-        whereClause +=String.Format("[{0}] = @{1}", GetColumnString(parm), parm.ParameterName);
+        whereClause += String.Format("[{0}] = @{1}", GetColumnString(parm), parm.ParameterName);
         if (parm.DbBindColumn.NativeType != "timestamp")
             whereClauseTS +=String.Format("[{0}] = @{1}", GetColumnString(parm), parm.ParameterName) + Environment.NewLine;
         else
-            timeStampColumn=true;
+            timeStampColumn = true;
         parms += String.Format("    @{0} {1}", parm.ParameterName, GetDataTypeString(parm));
     }
 }

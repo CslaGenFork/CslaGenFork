@@ -1,6 +1,12 @@
 <%
 foreach (ChildProperty childProperty in Info.AllChildProperties)
 {
+    bool isParentRootCollection = false;
+    CslaObjectInfo parentInfo2 = Info.Parent.CslaObjects.Find(Info.ParentType);
+    if (parentInfo2 != null)
+        isParentRootCollection = (parentInfo2.ObjectType == CslaObjectType.EditableRootCollection) ||
+            (parentInfo2.ObjectType == CslaObjectType.ReadOnlyCollection && parentInfo2.ParentType == String.Empty);
+
     if (childProperty.DeclarationMode == PropertyDeclaration.AutoProperty)
     {
         if (childProperty.LoadingScheme == LoadingScheme.SelfLoad &&
@@ -9,7 +15,7 @@ foreach (ChildProperty childProperty in Info.AllChildProperties)
             CslaObjectInfo childInfo = FindChildInfo(Info, childProperty.TypeName);
             if (IsCollectionType(childInfo.ObjectType))
             {
-                Errors.Append(Info.ObjectName + "." + childProperty.Name + " is LazyLoad; Declaration Mode must be \"ClassicProperty\" or \"Managed\"." + Environment.NewLine);
+                Errors.Append(Info.ObjectName + " child property " + childProperty.Name + " is LazyLoad; Declaration Mode must be \"ClassicProperty\" or \"Managed\"." + Environment.NewLine);
             }
         }
     }
@@ -21,7 +27,7 @@ foreach (ChildProperty childProperty in Info.AllChildProperties)
         CslaObjectInfo childInfo = FindChildInfo(Info, childProperty.TypeName);
         if (IsCollectionType(childInfo.ObjectType))
         {
-            Errors.Append(Info.ObjectName + "." + childProperty.Name + " Declaration Mode must be \"ClassicProperty\", \"AutoProperty\" or \"Managed\"." + Environment.NewLine);
+            Errors.Append(Info.ObjectName + " child property " + childProperty.Name + " Declaration Mode must be \"ClassicProperty\", \"AutoProperty\" or \"Managed\"." + Environment.NewLine);
         }
     }
 
@@ -31,7 +37,7 @@ foreach (ChildProperty childProperty in Info.AllChildProperties)
         if (childProperty.LoadingScheme != LoadingScheme.SelfLoad)
         {
             Warnings.Append(Info.ObjectName + " isn't a root object; "+
-                Info.ObjectName + "." + childProperty.Name + " Loading Scheme should be \"SelfLoad\"." + Environment.NewLine);
+                Info.ObjectName + " child property " + childProperty.Name + " Loading Scheme should be \"SelfLoad\"." + Environment.NewLine);
         }
     }
     else
@@ -45,26 +51,38 @@ foreach (ChildProperty childProperty in Info.AllChildProperties)
             }
             if (!getOptionsDataPortal2)
             {
-                Warnings.Append(Info.ObjectName + "." + childProperty.Name + " Declaration Mode is \"Managed\"; there must be a criteria with GetOptions.DataPortal set to True or child " + childProperty.Name + " won't load." + Environment.NewLine);
+                Warnings.Append(Info.ObjectName + " child property " + childProperty.Name + " Declaration Mode is \"Managed\"; there must be a criteria with GetOptions.DataPortal set to True or child " + childProperty.Name + " won't load." + Environment.NewLine);
             }
         }
     }
 
     if (childProperty.LoadingScheme == LoadingScheme.None)
     {
-        Errors.Append(Info.ObjectName + "." + childProperty.Name + " Loading Scheme is \"None\"; this isn't supported for CSLA40 targets." + Environment.NewLine);
+        Errors.Append(Info.ObjectName + " child property " + childProperty.Name + " Loading Scheme is \"None\"; this isn't supported for CSLA40 targets." + Environment.NewLine);
     }
     else if (childProperty.LoadingScheme == LoadingScheme.ParentLoad)
     {
         if (childProperty.LazyLoad)
         {
-            Warnings.Append(Info.ObjectName + "." + childProperty.Name + " Loading Scheme is \"Parent Load\"; \"Lazy Load\" should be set to False." + Environment.NewLine);
+            Warnings.Append(Info.ObjectName + " child property " + childProperty.Name + " Loading Scheme is \"Parent Load\"; \"Lazy Load\" should be set to False." + Environment.NewLine);
         }
     }
-
-    if (childProperty.LoadParameters.Count == 0)
+    else
     {
-        Warnings.Append(Info.ObjectName + "." + childProperty.Name + " \"Load Parameters\" cannot be empty." + Environment.NewLine);
+        if (isParentRootCollection)
+        {
+            if (childProperty.ParentLoadProperties.Count == 0)
+            {
+                Warnings.Append(Info.ObjectName + " child property " + childProperty.Name + " \"Parent Load Properties\" cannot be empty." + Environment.NewLine);
+            }
+        }
+        else
+        {
+            if (childProperty.LoadParameters.Count == 0)
+            {
+                Warnings.Append(Info.ObjectName + " child property " + childProperty.Name + " \"Parent Load Criteria Parameters\" cannot be empty." + Environment.NewLine);
+            }
+        }
     }
 }
 %>

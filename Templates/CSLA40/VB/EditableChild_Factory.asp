@@ -14,14 +14,13 @@ if (UseNoSilverlight())
 <!-- #include file="NewObjectAsync.asp" -->
 <%
     bool selfLoad2 = GetSelfLoad(Info);
-    bool lazyLoad2 = GetLazyLoad(Info);
     bool isCollection = false;
     if (CurrentUnit.GenerationParams.DatabaseConnection != String.Empty)
     {
         CslaObjectInfo tmpInfo = Info.Parent.CslaObjects.Find(Info.ParentType);
         if (tmpInfo != null)
             isCollection = IsCollectionType(tmpInfo.ObjectType);
-        if (selfLoad2 && lazyLoad2 && !isCollection)
+        if (selfLoad2 && !isCollection)
         {
             %>
 <!-- #include file="GetObject.asp" -->

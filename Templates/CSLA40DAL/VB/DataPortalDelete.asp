@@ -7,7 +7,7 @@ if (Info.GenerateDataPortalDelete)
         {
             string strSelfDeleteCritParams = string.Empty;
             string strDeleteCritParams = string.Empty;
-            string strDeleteCallParams = string.Empty;
+            string strDeleteInvokeParams = string.Empty;
             string strDeleteComment = string.Empty;
             bool deleteIsFirst = true;
 
@@ -19,7 +19,7 @@ if (Info.GenerateDataPortalDelete)
                     {
                         strSelfDeleteCritParams += ", ";
                         strDeleteCritParams += ", ";
-                        strDeleteCallParams += ", ";
+                        strDeleteInvokeParams += ", ";
                         strDeleteComment += System.Environment.NewLine + new string(' ', 8);
                     }
                     else
@@ -29,7 +29,7 @@ if (Info.GenerateDataPortalDelete)
 
                     strSelfDeleteCritParams += FormatGeneralParameter(Info, p, false, false, true);
                     strDeleteCritParams += p.Name;
-                    strDeleteCallParams += FormatCamel(p.Name);
+                    strDeleteInvokeParams += FormatCamel(p.Name);
                 }
 
                 strDeleteComment += "/// <param name=\"" + (c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit")) + "\">The delete criteria.</param>";
@@ -58,7 +58,7 @@ if (Info.GenerateDataPortalDelete)
                     {
                         strSelfDeleteCritParams += ", ";
                         strDeleteCritParams += ", ";
-                        strDeleteCallParams += ", ";
+                        strDeleteInvokeParams += ", ";
                         strDeleteComment += System.Environment.NewLine + new string(' ', 8);
                     }
                     else
@@ -68,7 +68,7 @@ if (Info.GenerateDataPortalDelete)
 
                     strSelfDeleteCritParams += FormatGeneralParameter(Info, p, false, false, true);
                     strDeleteCritParams += string.Concat(GetDataTypeGeneric(p, propType), " ", FormatCamel(p.Name));
-                    strDeleteCallParams += FormatCamel(p.Name);
+                    strDeleteInvokeParams += FormatCamel(p.Name);
                     strDeleteComment += "/// <param name=\"" + FormatCamel(p.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(p.Name) + ".</param>";
                 }
             }
@@ -183,7 +183,7 @@ if (Info.GenerateDataPortalDelete)
                 var dal = dalManager.GetProvider<I<%= Info.ObjectName %>Dal>();
                 using (BypassPropertyChecks)
                 {
-                    dal.Delete(<%= strDeleteCallParams %>);
+                    dal.Delete(<%= strDeleteInvokeParams %>);
                 }
                 OnDeletePost(args);
             }

@@ -21,15 +21,15 @@ foreach (Criteria c in GetCriteriaObjects(Info))
         }
         if (c.Properties.Count > 1)
         {
-            %>protected void <%= isChild ? "Child" : "DataPortal" %>_Create(<%= c.Name %> crit)<%
+            %>protected void <%= isChild ? "Child_" : "DataPortal_" %>Create(<%= c.Name %> crit)<%
         }
         else if (c.Properties.Count > 0)
         {
-            %>protected void <%= isChild ? "Child" : "DataPortal" %>_Create(<%= ReceiveSingleCriteria(c, "crit") %>)<%
+            %>protected void <%= isChild ? "Child_" : "DataPortal_" %>Create(<%= ReceiveSingleCriteria(c, "crit") %>)<%
         }
         else
         {
-            %>protected override void <%= isChild ? "Child" : "DataPortal" %>_Create()<%
+            %>protected override void <%= isChild ? "Child_" : "DataPortal_" %>Create()<%
         }
         %>
         {
@@ -94,7 +94,8 @@ foreach (Criteria c in GetCriteriaObjects(Info))
         CslaObjectInfo _child = FindChildInfo(Info, childProp.TypeName);
         if (_child != null)
         {
-            if (IsEditableType(_child.ObjectType) && childProp.LoadingScheme == LoadingScheme.ParentLoad)
+            if (IsEditableType(_child.ObjectType) &&
+                (childProp.LoadingScheme == LoadingScheme.ParentLoad || !childProp.LazyLoad))
             {
                 %><%= GetNewChildLoadStatement(childProp, true) %>;
             <%
@@ -121,7 +122,7 @@ foreach (Criteria c in GetCriteriaObjects(Info))
             <%
     }
     %>
-            base.<%= isChild ? "Child" : "DataPortal" %>_Create();
+            base.<%= isChild ? "Child_" : "DataPortal_" %>Create();
         }
     <%
     }

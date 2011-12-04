@@ -8,6 +8,24 @@ if (!Info.UseCustomLoading &&
     {
         if (c.GetOptions.DataPortal)
         {
+            string strGetComment = string.Empty;
+            bool getIsFirst = true;
+
+            foreach (Property p in c.Properties)
+            {
+                if (!getIsFirst)
+                {
+                    strGetComment += System.Environment.NewLine + new string(' ', 8);
+                }
+                else
+                    getIsFirst = false;
+
+                TypeCodeEx propType = p.PropertyType;
+
+                strGetComment += "/// <param name=\"" + FormatCamel(p.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(p.Name) + ".</param>";
+            }
+            if (c.Properties.Count > 1)
+                strGetComment = "/// <param name=\"crit\">The fetch criteria.</param>";
             %>
 
         /// <summary>
@@ -17,7 +35,7 @@ if (!Info.UseCustomLoading &&
             if (c.Properties.Count > 0)
             {
                 fetchPartialParams.Add("/// <param name=\"" + (c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit")) + "\">The fetch criteria.</param>");
-                %>/// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The fetch criteria.</param>
+        %><%= strGetComment %>
         <%
             }
             else
@@ -30,17 +48,17 @@ if (!Info.UseCustomLoading &&
             if (c.Properties.Count > 1)
             {
                 fetchPartialMethods.Add("partial void Service_Fetch(" + c.Name + " crit)");
-                %>public void <%= isChild ? "Child" : "DataPortal" %>_Fetch(<%= c.Name %> crit, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
+                %>public void <%= isChild ? "Child_" : "DataPortal_" %>Fetch(<%= c.Name %> crit, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
             }
             else if (c.Properties.Count > 0)
             {
                 fetchPartialMethods.Add("partial void Service_Fetch(" + ReceiveSingleCriteria(c, "crit") + ")");
-                %>public void <%= isChild ? "Child" : "DataPortal" %>_Fetch(<%= ReceiveSingleCriteria(c, "crit") %>, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
+                %>public void <%= isChild ? "Child_" : "DataPortal_" %>Fetch(<%= ReceiveSingleCriteria(c, "crit") %>, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
             }
             else
             {
                 fetchPartialMethods.Add("partial void Service_Fetch()");
-                %>public void <%= isChild ? "Child" : "DataPortal" %>_Fetch(Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
+                %>public void <%= isChild ? "Child_" : "DataPortal_" %>Fetch(Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
             }
         %>
         {

@@ -119,7 +119,7 @@ if (Info.GenerateDataPortalInsert)
                     %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= FormatCamel(prop.Name) %>.Equals(Guid.Empty) ? (object)DBNull.Value : <%= FormatCamel(prop.Name) %>)<%= postfix %>;
                     <%
                 }
-                else if(AllowNull(prop) && propType != TypeCodeEx.SmartDate)
+                else if (AllowNull(prop) && propType != TypeCodeEx.SmartDate)
                 {
                     %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= FormatCamel(prop.Name) %> == null ? (object)DBNull.Value : <%= FormatCamel(prop.Name) %><%= TypeHelper.IsNullableType(propType) ? ".Value" :"" %>)<%= postfix %>;
                     <%
@@ -347,19 +347,19 @@ if (Info.GenerateDataPortalDelete)
     }
     %>cmd.CommandType = CommandType.StoredProcedure;
                     <%
-    foreach (ValueProperty prop in Info.ValueProperties)
-    {
-        if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
-        {
-            %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= FormatCamel(prop.Name) %>).DbType = DbType.<%= TypeHelper.GetDbType(prop.PropertyType) %>;
-                    <%
-        }
-    }
     if (parentType.Length > 0 && !Info.ParentInsertOnly)
     {
         foreach (Property prop in Info.ParentProperties)
         {
     %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= FormatCamel(prop.Name) %>).DbType = DbType.<%= TypeHelper.GetDbType(prop.PropertyType) %>;
+                    <%
+        }
+    }
+    foreach (ValueProperty prop in Info.ValueProperties)
+    {
+        if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
+        {
+            %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= FormatCamel(prop.Name) %>).DbType = DbType.<%= TypeHelper.GetDbType(prop.PropertyType) %>;
                     <%
         }
     }

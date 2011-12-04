@@ -16,6 +16,7 @@ using System.Diagnostics;
 using System.Drawing.Design;
 using System.Reflection;
 using CslaGenerator.Attributes;
+using CslaGenerator.CodeGen;
 using CslaGenerator.Metadata;
 
 namespace CslaGenerator.Util.PropertyBags
@@ -646,7 +647,8 @@ namespace CslaGenerator.Util.PropertyBags
                     return false;
                 if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40 &&
                     GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL) &&
-                    (propertyName == "NestedClass" || propertyName == "CriteriaClassMode"))
+                    (propertyName == "NestedClass" ||
+                    propertyName == "CriteriaClassMode"))
                     return false;
                 if (SelectedObject[0].CriteriaClassMode == CriteriaMode.BusinessBase &&
                     propertyName == "NestedClass")

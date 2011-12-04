@@ -874,8 +874,8 @@ namespace CslaGenerator.CodeGen
 
         private bool HasInsUpdDelcriteria(CslaObjectInfo info)
         {
-            return (info.InsertProcedureName != "") ||
-                (info.UpdateProcedureName != "") ||
+            return (info.InsertProcedureName != string.Empty) ||
+                (info.UpdateProcedureName != string.Empty) ||
                 (info.CriteriaObjects.Any(crit => crit.DeleteOptions.Procedure &&
                     !string.IsNullOrEmpty(crit.DeleteOptions.ProcedureName)));
         }
@@ -923,26 +923,39 @@ namespace CslaGenerator.CodeGen
             if (NeedsDbInsUpdDel(info))
             {
                 //Insert
-                if (info.InsertProcedureName != "")
+                if (info.InsertProcedureName != string.Empty)
                 {
                     proc.AppendLine(GenerateProcedure(info, null, "InsertProcedure.cst", info.InsertProcedureName, filename));
                     filename = string.Empty;
                 }
 
                 //Update
-                if (info.UpdateProcedureName != "")
+                if (info.UpdateProcedureName != string.Empty)
                 {
                     proc.AppendLine(GenerateProcedure(info, null, "UpdateProcedure.cst", info.UpdateProcedureName, filename));
                     filename = string.Empty;
                 }
 
                 //Delete
-                foreach (var crit in info.CriteriaObjects)
+                if (info.ObjectType == CslaObjectType.EditableChild)
                 {
-                    if (crit.DeleteOptions.Procedure && !string.IsNullOrEmpty(crit.DeleteOptions.ProcedureName))
+                    if (info.DeleteProcedureName != string.Empty)
                     {
-                        proc.AppendLine(GenerateProcedure(info, crit, "DeleteProcedure.cst", crit.DeleteOptions.ProcedureName, filename));
-                        filename = string.Empty;
+                        proc.AppendLine(GenerateProcedure(info, null, "DeleteProcedure.cst",
+                                                              info.DeleteProcedureName, filename));
+                            filename = string.Empty;
+                    }
+                }
+                else
+                {
+                    foreach (var crit in info.CriteriaObjects)
+                    {
+                        if (crit.DeleteOptions.Procedure && !string.IsNullOrEmpty(crit.DeleteOptions.ProcedureName))
+                        {
+                            proc.AppendLine(GenerateProcedure(info, crit, "DeleteProcedure.cst",
+                                                              crit.DeleteOptions.ProcedureName, filename));
+                            filename = string.Empty;
+                        }
                     }
                 }
             }
@@ -978,7 +991,7 @@ namespace CslaGenerator.CodeGen
 
         private void GenerateInsertProcedure(CslaObjectInfo info, string dir)
         {
-            if (info.InsertProcedureName != "")
+            if (info.InsertProcedureName != string.Empty)
             {
                 var proc = GenerateProcedure(info, null, "InsertProcedure.cst", info.InsertProcedureName, dir + @"\sprocs\" + info.InsertProcedureName + ".sql");
                 CheckDirectory(dir + @"\sprocs");
@@ -988,7 +1001,7 @@ namespace CslaGenerator.CodeGen
 
         private void GenerateUpdateProcedure(CslaObjectInfo info, string dir)
         {
-            if (info.UpdateProcedureName != "")
+            if (info.UpdateProcedureName != string.Empty)
             {
                 var proc = GenerateProcedure(info, null, "UpdateProcedure.cst", info.UpdateProcedureName, dir + @"\sprocs\" + info.UpdateProcedureName + ".sql");
                 CheckDirectory(dir + @"\sprocs");
@@ -998,13 +1011,27 @@ namespace CslaGenerator.CodeGen
 
         private void GenerateDeleteProcedure(CslaObjectInfo info, string dir)
         {
-            foreach (var crit in info.CriteriaObjects)
+            if (info.ObjectType == CslaObjectType.EditableChild)
             {
-                if (crit.DeleteOptions.Procedure && !string.IsNullOrEmpty(crit.DeleteOptions.ProcedureName))
+                if (info.DeleteProcedureName != string.Empty)
                 {
-                    var proc = GenerateProcedure(info, crit, "DeleteProcedure.cst", crit.DeleteOptions.ProcedureName, dir + @"\sprocs\" + crit.DeleteOptions.ProcedureName + ".sql");
+                    var proc = GenerateProcedure(info, null, "DeleteProcedure.cst", info.DeleteProcedureName,
+                        dir + @"\sprocs\" + info.DeleteProcedureName + ".sql");
                     CheckDirectory(dir + @"\sprocs");
-                    WriteToFile(dir + @"\sprocs\" + crit.DeleteOptions.ProcedureName + ".sql", proc);
+                    WriteToFile(dir + @"\sprocs\" + info.DeleteProcedureName + ".sql", proc);
+                }
+            }
+            else
+            {
+                foreach (var crit in info.CriteriaObjects)
+                {
+                    if (crit.DeleteOptions.Procedure && !string.IsNullOrEmpty(crit.DeleteOptions.ProcedureName))
+                    {
+                        var proc = GenerateProcedure(info, crit, "DeleteProcedure.cst", crit.DeleteOptions.ProcedureName,
+                            dir + @"\sprocs\" + crit.DeleteOptions.ProcedureName + ".sql");
+                        CheckDirectory(dir + @"\sprocs");
+                        WriteToFile(dir + @"\sprocs\" + crit.DeleteOptions.ProcedureName + ".sql", proc);
+                    }
                 }
             }
         }

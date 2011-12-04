@@ -20,21 +20,20 @@ foreach (Criteria crit in GetCriteriaObjects(Info))
 {
     foreach (CriteriaProperty criteriaProperty in crit.Properties)
     {
-        if(criteriaProperty.DbBindColumn.Column == null)
+        if (criteriaProperty.DbBindColumn.Column == null)
         {
             Errors.Append("Criteria " + Info.ObjectName + "." + crit.Name + ": property " + criteriaProperty.Name + " is missing DB Bind Column." + Environment.NewLine);
             return;
         }
     }
-
-    if (GetSelfLoad(Info))
+    getOptionsFactory = getOptionsFactory | crit.GetOptions.Factory;
+}
+if (GetSelfLoad(Info))
+{
+    if (!getOptionsFactory)
     {
-        getOptionsFactory = getOptionsFactory | crit.GetOptions.Factory;
-        if (!getOptionsFactory)
-        {
-            Errors.Append("Object " + Info.ObjectName + " is missing get criteria; to \"SelfLoad\" an object, that object must have a criteria with GetOptions.Factory set." + Environment.NewLine);
-            return;
-        }
+        Errors.Append("Object " + Info.ObjectName + " is missing get criteria; to \"SelfLoad\" an object, that object must have a criteria with GetOptions.Factory set." + Environment.NewLine);
+        return;
     }
 }
 getOptionsFactory = false;

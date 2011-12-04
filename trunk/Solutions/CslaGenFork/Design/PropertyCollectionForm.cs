@@ -4,6 +4,7 @@ using System.ComponentModel.Design;
 using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
+using CslaGenerator.CodeGen;
 using CslaGenerator.Metadata;
 using CslaGenerator.Util.PropertyBags;
 
@@ -475,14 +476,14 @@ namespace CslaGenerator.Design
                         _form.Size = new Size(_form.Size.Width, _form.Size.Height - 16);
                     break;
                 case "ChildProperty Collection Editor":
-                    _form.Size = new Size(570, _form.Size.Height);
+                    _form.Size = new Size(586, _form.Size.Height);
                     _collectionType = typeof (ChildProperty);
                     if (GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.None ||
                         GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.ObjectLevel)
-                        _form.Size = new Size(_form.Size.Width, 550);
+                        _form.Size = new Size(_form.Size.Width, 566);
                     else
                     {
-                        _form.Size = new Size(_form.Size.Width, 614);
+                        _form.Size = new Size(_form.Size.Width, 630);
                         if (GeneratorController.Current.CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider)
                             _form.Size = new Size(_form.Size.Width, _form.Size.Height - 16);
                     }
@@ -508,6 +509,10 @@ namespace CslaGenerator.Design
                     if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40 &&
                         GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL)
                         _form.Size = new Size(_form.Size.Width, _form.Size.Height - 32);
+                    if (cslaObject.ObjectType == CslaObjectType.EditableChild)
+                    {
+                        _form.Size = new Size(_form.Size.Width, _form.Size.Height - 128);
+                    }
                     break;
                 case "CriteriaProperty Collection Editor":
                     _collectionType = typeof (CriteriaProperty);

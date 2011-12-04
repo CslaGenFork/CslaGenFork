@@ -56,8 +56,11 @@ namespace CslaGenerator.Metadata
         private string _insertProcedureName = String.Empty;
         private string _updateProcedureName = String.Empty;
         private string _deleteProcedureName = String.Empty;
+        private bool _deleteUseTimestamp = false;
+        private bool _removeItem = true;
         private string _dbName = String.Empty;
         private string _itemType = String.Empty;
+        private bool _containsItem = true;
         private string _updaterType = String.Empty;
         private string _parentType = String.Empty;
         private string _fileName = String.Empty;
@@ -564,7 +567,7 @@ namespace CslaGenerator.Metadata
         #region 03. Criteria
 
         [Category("03. Criteria")]
-        [Description("The Criteria classes that will be used by this object.")]
+        [Description("The Criteria classes that are used by this object.")]
         [Editor(typeof(PropertyCollectionForm), typeof(UITypeEditor))]
         [UserFriendlyName("Criteria Objects")]
         public CriteriaCollection CriteriaObjects
@@ -606,16 +609,37 @@ namespace CslaGenerator.Metadata
         /// <summary>
         /// Prevents the parent property form participating in updates or deletes.
         /// </summary>
-        [Category("04. Child Object Options")]
-        [Description("The Parent property is used only in inserts and isn't used in updates or deletes.\r\n" +
-            "Set it to true when the child has its own ID that is used on updates or deletes.")]
-        [UserFriendlyName("Parent Property only inserts")]
+        /*[Category("04. Child Object Options")]
+        [Description("The Parent properties are used only in inserts and aren't used in updates or deletes.\r\n" +
+            "Set it to true when the child has its own ID that is used on updates and deletes.")]
+        [UserFriendlyName("No Parent on updates/deletes")]*/
+        [Browsable(false)]
         public bool ParentInsertOnly
         {
             get { return _parentInsertOnly; }
             set { _parentInsertOnly = value; }
         }
 
+        /// <summary>
+        /// Prevents the parent property form participating in updates or deletes.
+        /// </summary>
+        [Category("04. Child Object Options")]
+        [Description("The Parent properties are used in inserts and may be also used in updates or deletes.\r\n" +
+            "Use \"InsertOnly\" when the child has its own ID that is used on updates and deletes. " +
+            "Use \"InsertUpdateDelete\" when the child has no ID of its own.")]
+        [UserFriendlyName("Parent Properties Usage")]
+        [XmlIgnore]
+        public ParentPropertiesUsage UseParentProperties
+        {
+            get { return _parentInsertOnly ? ParentPropertiesUsage.InsertOnly : ParentPropertiesUsage.InsertUpdateDelete; }
+            set
+            {
+                if (value == ParentPropertiesUsage.InsertOnly)
+                    _parentInsertOnly = true;
+                else
+                    _parentInsertOnly = false;
+            }
+        }
 
         [Category("04. Child Object Options")]
         [Description("Whether or not this object should be \"lazy loaded\".  \"Lazy loading\" means the child object data " +
@@ -643,7 +667,16 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("05. Collection Options")]
-        [Description("For each parameter you select, a find method will be created which uses that parameter to find an object in the collection.")]
+        [Description("Defines whether you want to generate the collection Contains & ContainsDeleted methods or not.")]
+        [UserFriendlyName("Use Contains Methods")]
+        public bool ContainsItem
+        {
+            get { return _containsItem; }
+            set { _containsItem = value; }
+        }
+
+        [Category("05. Collection Options")]
+        [Description("For each parameter you select, a find method will be created which uses that parameter to find an item in the collection.")]
         [Editor(typeof(FMPropertyCollectionEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(PropertyCollectionConverter))]
         [UserFriendlyName("Find Methods Parameters")]
@@ -652,7 +685,6 @@ namespace CslaGenerator.Metadata
             get { return _findMethodsParameters; }
             set { _findMethodsParameters = value; }
         }
-
 
         [Category("05. Collection Options")]
         [Description("The type name of that will update the items of this collection.")]
@@ -739,7 +771,7 @@ namespace CslaGenerator.Metadata
         #region 06. NameValueList Info
 
         [Category("06. NameValueList Info")]
-        [Description("Name of the column that will be used as the key column in a NameValue List.")]
+        [Description("Name of the column that are used as the key column in a NameValue List.")]
         [Editor(typeof(PropertyNameEditor), typeof(UITypeEditor))]
         [UserFriendlyName("Key Column")]
         public string ValueColumn
@@ -749,7 +781,7 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("06. NameValueList Info")]
-        [Description("Name of the column that will be used as the value column in a NameValue List.")]
+        [Description("Name of the column that are used as the value column in a NameValue List.")]
         [Editor(typeof(PropertyNameEditor), typeof(UITypeEditor))]
         [UserFriendlyName("Value Column")]
         public string NameColumn
@@ -869,47 +901,6 @@ namespace CslaGenerator.Metadata
         }
 
         /// <summary>
-        /// The type of the Criteria object to be passed to the DeleteObject method.
-        /// </summary>
-        [Category("07. Data Access Options")]
-        [Description("The type of the Criteria object to be passed to the DeleteObject method.")]
-        //[Editor(typeof(CriteriaTypeEditor), typeof(UITypeEditor))]
-        [TypeConverter(typeof(CriteriaTypeConverter))]
-        [UserFriendlyName("Delete Object Criteria Type")]
-        public Criteria DeleteObjectCriteriaType
-        {
-            get
-            {
-                return null;
-                //if (_deleteObjectCriteriaType != null)
-                //{
-                //    //This is done for backwards compatibility
-                //    _deleteObjectCriteriaTypeName = _deleteObjectCriteriaType.Name;
-                //    _deleteObjectCriteriaType = null;
-                //}
-                //return _criteriaObjects.Find(_deleteObjectCriteriaTypeName);
-            }
-            set
-            {
-                //if (value == null)
-                //    _deleteObjectCriteriaTypeName = String.Empty;
-                //else
-                //    _deleteObjectCriteriaTypeName = value.Name;
-                if (value != null)
-                {
-                    Criteria c = _criteriaObjects.Find(value.Name);
-                    if (c != null)
-                    {
-                        c.DeleteOptions.Factory = true;
-                        c.DeleteOptions.DataPortal = true;
-                        c.DeleteOptions.ProcedureName = _deleteProcedureName;
-                        c.DeleteOptions.Procedure = true;
-                    }
-                }
-            }
-        }
-
-        /// <summary>
         /// The type of the Criteria object to be passed to the GetObject method.
         /// </summary>
         [Category("07. Data Access Options")]
@@ -945,46 +936,6 @@ namespace CslaGenerator.Metadata
                         c.GetOptions.DataPortal = true;
                         c.GetOptions.ProcedureName = _selectProcedureName;
                         c.GetOptions.Procedure = true;
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// The type of the Criteria object to be passed to the NewObject method.
-        /// </summary>
-        [Category("07. Data Access Options")]
-        [Description("The type of the Criteria object to be passed to the NewObject method.")]
-        //[Editor(typeof(CriteriaTypeEditor), typeof(UITypeEditor))]
-        [TypeConverter(typeof(CriteriaTypeConverter))]
-        [UserFriendlyName("NewObject Criteria Type")]
-        public Criteria NewObjectCriteriaType
-        {
-            get
-            {
-                return null;
-                //if (_newObjectCriteriaType != null)
-                //{
-                //    //This is done for backwards compatibility
-                //    _newObjectCriteriaTypeName = _newObjectCriteriaType.Name;
-                //    _newObjectCriteriaType = null;
-                //}
-                //return _criteriaObjects.Find(_newObjectCriteriaTypeName);
-            }
-            set
-            {
-                //if (value == null)
-                //    _newObjectCriteriaTypeName = String.Empty;
-                //else
-                //    _newObjectCriteriaTypeName = value.Name;
-                if (value != null)
-                {
-                    Criteria c = _criteriaObjects.Find(value.Name);
-                    if (c != null)
-                    {
-                        c.CreateOptions.Factory = true;
-                        c.CreateOptions.DataPortal = true;
-                        c.CreateOptions.RunLocal = true;
                     }
                 }
             }
@@ -1095,17 +1046,37 @@ namespace CslaGenerator.Metadata
             }
         }
 
+        [Category("08. Insert & Update Options")]
+        [Description("Defines whether you want to use the timestamp property on Child_SelfDelete method or not. "+
+            "This is used only for Editable Child objects.")]
+        [UserFriendlyName("Use timestamp on Delete")]
+        public bool DeleteUseTimestamp
+        {
+            get { return _deleteUseTimestamp; }
+            set { _deleteUseTimestamp = value; }
+        }
+
+        [Category("08. Insert & Update Options")]
+        [Description("Defines whether you want to generate the collection Remove method or not. " +
+            "This is used only for Editable Child objects that are collection items.")]
+        [UserFriendlyName("Use Remove Method")]
+        public bool RemoveItem
+        {
+            get { return _removeItem; }
+            set { _removeItem = value; }
+        }
+
         #endregion
 
         #region 09. System.Object Overrides
 
         /// <summary>
-        /// The properties that will be used to create the object's hashcode.
+        /// The properties that are used to create the object's hashcode.
         /// If multiple properties are selected the results of their GetHashCode
         /// methods are xor'd.  If none are selected, GetHashCode method is not overridden
         /// </summary>
         [Category("09. System.Object Overrides")]
-        [Description("The properties that will be used to create the object's hashcode.  If multiple properties are selected the results of their GetHashCode methods are xor'd.  If none are selected, GetHashCode method is not overridden")]
+        [Description("The properties that are used to create the object's hashcode.  If multiple properties are selected the results of their GetHashCode methods are xor'd.  If none are selected, GetHashCode method is not overridden")]
         [Editor(typeof(PropertyCollectionEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(PropertyCollectionConverter))]
         [UserFriendlyName("Hashcode Property")]
@@ -1116,11 +1087,11 @@ namespace CslaGenerator.Metadata
         }
 
         /// <summary>
-        /// The properties that will be used to check object equivalence.
+        /// The properties that are used to check object equivalence.
         /// If none are selected, Equals method is not overridden
         /// </summary>
         [Category("09. System.Object Overrides")]
-        [Description("The properties that will be used to check object equivalence.  If none are selected, Equals method is not overridden")]
+        [Description("The properties that are used to check object equivalence.  If none are selected, Equals method is not overridden")]
         [Editor(typeof(PropertyCollectionEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(PropertyCollectionConverter))]
         [UserFriendlyName("Equals Property")]
@@ -1131,12 +1102,12 @@ namespace CslaGenerator.Metadata
         }
 
         /// <summary>
-        /// The properties that will be used to create a string from the object's ToString property.
+        /// The properties that are used to create a string from the object's ToString property.
         /// If multiple properties are selected, they are concatenated.
         /// If none are selected, ToString method is not overridden
         /// </summary>
         [Category("09. System.Object Overrides")]
-        [Description("The properties that will be used to create a string from the object's ToString property.  If multiple properties are selected, they are concatenated.  If none are selected, ToString method is not overridden")]
+        [Description("The properties that are used to create a string from the object's ToString property.  If multiple properties are selected, they are concatenated.  If none are selected, ToString method is not overridden")]
         [Editor(typeof(PropertyCollectionEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(PropertyCollectionConverter))]
         [UserFriendlyName("ToString Property")]

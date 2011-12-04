@@ -8,24 +8,15 @@
 <%@ Import Namespace="CslaGenerator.Util" %>
 
 <!-- #include file="Header.asp" -->
-<%= GetUsingStatementsString(Info, CurrentUnit) %>
-<%
-if (Info.ObjectNamespace.Length > 0)
-{
-%>namespace <%= Info.ObjectNamespace %>
+
+namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Business) %>
 {
 <%
-}
 bool? firstComment = true;
-%><!-- #include file="XmlComment.asp" -->
+%>
+
+    <!-- #include file="XmlComment.asp" -->
     public partial class <%= Info.ObjectName %>
     {
     }
-<%
-if (Info.ObjectNamespace.Length > 0)
-{
-    %>
 }
-<%
-}
-%>

@@ -9,6 +9,25 @@ if (!Info.UseCustomLoading &&
     {
         if (c.GetOptions.DataPortal)
         {
+            string strGetComment = string.Empty;
+            bool getIsFirst = true;
+
+            foreach (Property p in c.Properties)
+            {
+                if (!getIsFirst)
+                {
+                    strGetComment += System.Environment.NewLine + new string(' ', 8);
+                }
+                else
+                    getIsFirst = false;
+
+                TypeCodeEx propType = p.PropertyType;
+
+                strGetComment += "/// <param name=\"" + FormatCamel(p.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(p.Name) + ".</param>";
+            }
+            if (c.Properties.Count > 1)
+                strGetComment = "/// <param name=\"crit\">The fetch criteria.</param>";
+
             if (c.Properties.Count == 0 && Info.SimpleCacheOptions == SimpleCacheResults.DataPortal)
             {
                 cacheRemarks += "/// <remarks>" + Environment.NewLine + new string(' ', 8);
@@ -18,13 +37,13 @@ if (!Info.UseCustomLoading &&
             %>
 
         /// <summary>
-        /// Loads a <see cref="<%= Info.ObjectName %>"/> collection<%= (c.Properties.Count == 0 && Info.SimpleCacheOptions == SimpleCacheResults.DataPortal ? " or from the cache" : "") %><%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
+        /// Loads a <see cref="<%= Info.ObjectName %>"/> collection from the service<%= (Info.SimpleCacheOptions == SimpleCacheResults.DataPortal && c.Properties.Count == 0) ? " or from the cache" : "" %><%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
         /// </summary>
         <%
             if (c.Properties.Count > 0)
             {
                 fetchPartialParams.Add("/// <param name=\"" + (c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit")) + "\">The fetch criteria.</param>");
-                %>/// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The fetch criteria.</param>
+        %><%= strGetComment %>
         <%
             }
             else

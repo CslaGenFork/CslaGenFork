@@ -24,6 +24,7 @@ if (Errors.Length == 0)
     bool usesDTO = DalObjectUsesDTO(Info);
     bool usesDalCriteria = DalObjectUsesCriteria(Info);
     bool isChild = !string.IsNullOrEmpty(Info.ParentType);
+    bool useChildFactory = CurrentUnit.GenerationParams.UseChildFactory;
     int silverlightLevel = 0;
     bool genOptional = false;
     bool useItem = false;
@@ -77,18 +78,20 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
     %><%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %>{
 <!-- #include file="CollectionBusinessMethods.asp" -->
 <!-- #include file="FindMethods.asp" -->
-    <%
+<%
     if (Info.SimpleCacheOptions != SimpleCacheResults.None)
     {
         %>
 <!-- #include file="SimpleCacheFactory.asp" -->
 <%
+        Response.Write(Environment.NewLine);
     }
-    if (Info.GenerateFactoryMethods)
+    if (Info.GenerateFactoryMethods && (useChildFactory || Info.ParentType == string.Empty))
     {
         %>
 <!-- #include file="ReadOnlyCollection_Factory.asp" -->
 <%
+        Response.Write(Environment.NewLine);
     }
     %>
 <!-- #include file="Constructor.asp" -->

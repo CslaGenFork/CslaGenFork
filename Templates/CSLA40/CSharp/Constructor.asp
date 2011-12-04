@@ -22,7 +22,6 @@ if (!IsReadOnlyType(Info.ObjectType) && IsCollectionType(Info.ObjectType))
     }
 }
 %>
-
         #region Constructor
 
         /// <summary>

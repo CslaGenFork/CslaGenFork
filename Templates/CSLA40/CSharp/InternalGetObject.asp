@@ -12,10 +12,10 @@ if (IsCollectionType(Info.ObjectType))
 
 if (!Info.UseCustomLoading)
 {
+    bool lazyLoad4 = GetLazyLoad(Info);
+    bool selfLoad4 = GetSelfLoad(Info);
     if (!Info.DataSetLoadingScheme)
     {
-        bool lazyLoad4 = GetLazyLoad(Info);
-        bool selfLoad4 = GetSelfLoad(Info);
         if (!IsReadOnlyType(Info.ObjectType) ||
             (Info.ParentType != string.Empty &&
             (Info.ObjectType == CslaObjectType.ReadOnlyObject || (!lazyLoad4 && !selfLoad4))))
@@ -26,16 +26,8 @@ if (!Info.UseCustomLoading)
         /// Factory method. Loads a <see cref="<%= Info.ObjectName %>"/> object from the given SafeDataReader.
         /// </summary>
         /// <param name="dr">The SafeDataReader to use.</param>
-        <%
-        if (useParentReference)
-        {
-            %>
-        /// <param name="parentList">The parent list reference.</param>
-        <%
-        }
-        %>
         /// <returns>A reference to the fetched <see cref="<%= Info.ObjectName %>"/> object.</returns>
-        internal static <%= Info.ObjectName %> Get<%= Info.ObjectName %>(SafeDataReader dr<%= useParentReference ? (", " + Info.ParentType + " parentList") : "" %>)
+        internal static <%= Info.ObjectName %> Get<%= Info.ObjectName %>(SafeDataReader dr)
         {
             <%
             if (authzInfo.GetRoles.Trim() != String.Empty &&
@@ -60,14 +52,9 @@ if (!Info.UseCustomLoading)
             }
             %>obj.Fetch(dr);
             <%
-            if (LoadsChildren(Info))
+            if (selfLoad4 && !IsCollectionType(Info.ObjectType))
             {
                 %>obj.FetchChildren(dr);
-            <%
-            }
-            if (useParentReference)
-            {
-                %>obj.ParentList = parentList;
             <%
             }
             if (Info.ObjectType != CslaObjectType.ReadOnlyObject && !IsCollectionType(Info.ObjectType))
@@ -119,7 +106,7 @@ if (!Info.UseCustomLoading)
         }
         %>obj.Fetch(dr);
             <%
-        if (LoadsChildren(Info) && !IsCollectionType(Info.ObjectType))
+        if (selfLoad4 && !IsCollectionType(Info.ObjectType))
         {
             %>obj.FetchChildren(dr);
             <%

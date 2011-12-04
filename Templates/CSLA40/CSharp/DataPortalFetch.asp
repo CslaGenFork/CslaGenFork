@@ -5,6 +5,24 @@ if (!Info.UseCustomLoading)
     {
         if (c.GetOptions.DataPortal)
         {
+            string strGetComment = string.Empty;
+            bool getIsFirst = true;
+
+            foreach (Property p in c.Properties)
+            {
+                if (!getIsFirst)
+                {
+                    strGetComment += System.Environment.NewLine + new string(' ', 8);
+                }
+                else
+                    getIsFirst = false;
+
+                TypeCodeEx propType = p.PropertyType;
+
+                strGetComment += "/// <param name=\"" + FormatCamel(p.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(p.Name) + ".</param>";
+            }
+            if (c.Properties.Count > 1)
+                strGetComment = "/// <param name=\"crit\">The fetch criteria.</param>";
             %>
 
         /// <summary>
@@ -13,7 +31,7 @@ if (!Info.UseCustomLoading)
         <%
             if (c.Properties.Count > 0)
             {
-        %>/// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The fetch criteria.</param>
+        %><%= strGetComment %>
         <%
             }
             if (c.GetOptions.RunLocal)
@@ -91,21 +109,9 @@ if (!Info.UseCustomLoading)
             <%
             if (SelfLoadsChildren(Info))
             {
-                string fetchChildrenParam = string.Empty;
-                if (c.Properties.Count == 1)
-                    fetchChildrenParam = AssignSingleCriteria(c, "crit");
-                else
-                {
-                    bool first1 = true;
-                    foreach (Property p in c.Properties)
-                    {
-                        if (first1) { first1 = false; } else { fetchChildrenParam += ", "; }
-                        fetchChildrenParam += "crit." + p.Name;
-                    }
-                }
                 %>
             }
-            FetchChildren(<%= fetchChildrenParam %>);
+            FetchChildren();
         }
         <%
             }
@@ -132,7 +138,7 @@ if (!Info.UseCustomLoading)
                 {
                     Fetch(dr);
                     <%
-                if (LoadsChildren(Info))
+                if (ParentLoadsChildren(Info))
                 {
                     %>
                     FetchChildren(dr);
@@ -166,7 +172,7 @@ if (!Info.UseCustomLoading)
             CreateRelations(ds);
             Fetch(ds.Tables[0].Rows[0]);
             <%
-            if (LoadsChildren(Info))
+            if (ParentLoadsChildren(Info))
             {
                 %>
             FetchChildren(ds.Tables[0].Rows[0]);

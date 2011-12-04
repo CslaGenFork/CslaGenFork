@@ -13,7 +13,9 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.DalInt
 {
 <%
 bool? firstComment = true;
-%><!-- #include file="XmlComment_DalInterface.asp" -->
+%>
+
+    <!-- #include file="XmlComment_DalInterface.asp" -->
     public partial interface I<%= Info.ObjectName %>Dal
     {
     }

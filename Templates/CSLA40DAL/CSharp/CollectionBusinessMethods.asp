@@ -5,18 +5,41 @@ bool useParentReference;
 useParentReference = (Info.ObjectType == CslaObjectType.DynamicEditableRootCollection) &&
     itemInfo.AddParentReference;
 
-bool useAuthz;
-useAuthz = !IsReadOnlyType(itemInfo.ObjectType) &&
-    ((itemInfo.DeleteRoles.Trim() != String.Empty) ||
-    (itemInfo.NewRoles.Trim() != String.Empty));
-
-bool needsBusiness = false;
-foreach (Criteria c in itemInfo.CriteriaObjects)
+bool useAuthz = false;
+if (!IsReadOnlyType(itemInfo.ObjectType))
 {
-    if (c.CreateOptions.AddRemove || (c.DeleteOptions.AddRemove && c.Properties.Count > 0))
+    if (CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.None &&
+        CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.PropertyLevel)
     {
-        needsBusiness = true;
-        break;
+        if (CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider ||
+            itemInfo.AuthzProvider != AuthorizationProvider.Custom)
+        {
+            if (!String.IsNullOrWhiteSpace(itemInfo.NewRoles) ||
+                !String.IsNullOrWhiteSpace(itemInfo.DeleteRoles))
+            {
+                useAuthz = true;
+            }
+        }
+        else if (itemInfo.NewAuthzRuleType.Constructors.Count > 0 ||
+                 itemInfo.DeleteAuthzRuleType.Constructors.Count > 0)
+        {
+            useAuthz = true;
+        }
+    }
+}
+
+bool needsBusiness = itemInfo.RemoveItem &&
+    (Info.ObjectType == CslaObjectType.EditableRootCollection ||
+    Info.ObjectType == CslaObjectType.EditableChildCollection);
+if (!needsBusiness)
+{
+    foreach (Criteria c in itemInfo.CriteriaObjects)
+    {
+        if (c.CreateOptions.AddRemove || (c.DeleteOptions.AddRemove && c.Properties.Count > 0))
+        {
+            needsBusiness = true;
+            break;
+        }
     }
 }
 
@@ -31,14 +54,14 @@ if (useParentReference || useAuthz || needsBusiness)
         %>
 
         /// <summary>
-        /// Adds a new <see cref="<%= itemInfo.ObjectName %>"/> object to the <%= Info.ObjectName %> collection.
+        /// Adds a new <see cref="<%= Info.ItemType %>"/> item to the collection.
         /// </summary>
         /// <param name="item">The item to add.</param>
         /// <remarks>
-        /// DynamicEditableRoot object are in a special case of  EditableRoot and thus the Parent property is null.
+        /// DynamicEditableRoot objects are a special case of  EditableRoot and thus the Parent property is null.
         /// The Add method is redefined so it takes care of filling the ParentList property.
         /// </remarks>
-        public new void Add(<%= itemInfo.ObjectName %> item)
+        public new void Add(<%= Info.ItemType %> item)
         {
             item.ParentList = this;
             base.Add(item);
@@ -53,7 +76,7 @@ if (useParentReference || useAuthz || needsBusiness)
             %>
 
         /// <summary>
-        /// Adds a new <see cref="<%= itemInfo.ObjectName %>"/> object to the <%= Info.ObjectName %> collection.
+        /// Adds a new <see cref="<%= Info.ItemType %>"/> item to the collection.
         /// </summary>
         /// <param name="item">The item to add.</param>
         <%
@@ -61,17 +84,17 @@ if (useParentReference || useAuthz || needsBusiness)
         {
             %>
         /// <remarks>
-        /// DynamicEditableRoot object are in a special case of  EditableRoot and thus the Parent property is null.
+        /// DynamicEditableRoot objects are a special case of  EditableRoot and thus the Parent property is null.
         /// The Add method is redefined so it takes care of filling the ParentList property.
         /// </remarks>
         <%
         }
         %>
         /// <exception cref="System.Security.SecurityException">if the user isn't authorized to add items to the collection.</exception>
-        public new void Add(<%= itemInfo.ObjectName %> item)
+        public new void Add(<%= Info.ItemType %> item)
         {
             if (!CanAddObject())
-                throw new System.Security.SecurityException("User not authorized to create a <%= itemInfo.ObjectName %>.");
+                throw new System.Security.SecurityException("User not authorized to create a <%= Info.ItemType %>.");
 
         <%
         if (useParentReference)
@@ -90,15 +113,15 @@ if (useParentReference || useAuthz || needsBusiness)
             %>
 
         /// <summary>
-        /// Removes a <see cref="<%= itemInfo.ObjectName %>"/> object from the <%= Info.ObjectName %> collection.
+        /// Removes a <see cref="<%= Info.ItemType %>"/> item from the collection.
         /// </summary>
         /// <param name="item">The item to remove.</param>
         /// <returns><c>true</c> if the item was removed from the collection, otherwise <c>false</c>.</returns>
         /// <exception cref="System.Security.SecurityException">if the user isn't authorized to remove items from the collection.</exception>
-        public new bool Remove(<%= itemInfo.ObjectName %> item)
+        public new bool Remove(<%= Info.ItemType %> item)
         {
             if (!CanDeleteObject())
-                throw new System.Security.SecurityException("User not authorized to remove a <%= itemInfo.ObjectName %>.");
+                throw new System.Security.SecurityException("User not authorized to remove a <%= Info.ItemType %>.");
 
             return base.Remove(item);
         }
@@ -110,9 +133,10 @@ if (useParentReference || useAuthz || needsBusiness)
         Response.Write(Environment.NewLine);
     }
 
-if (useAuthz && needsBusiness && UseBoth() && CurrentUnit.GenerationParams.GenerateSynchronous)
-    Response.Write(Environment.NewLine);
+    if (useAuthz && needsBusiness && UseBoth() && CurrentUnit.GenerationParams.GenerateSynchronous)
+        Response.Write(Environment.NewLine);
 
+    bool removeItemUnhandled = itemInfo.RemoveItem;
     foreach (Criteria c in itemInfo.CriteriaObjects)
     {
         if (c.CreateOptions.AddRemove)
@@ -163,12 +187,85 @@ if (useAuthz && needsBusiness && UseBoth() && CurrentUnit.GenerationParams.Gener
             }
         }
 
-        if (c.DeleteOptions.AddRemove && c.Properties.Count > 0)
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+
+        if (Info.ObjectType == CslaObjectType.EditableRootCollection ||
+            Info.ObjectType == CslaObjectType.EditableChildCollection)
+        {
+            if (removeItemUnhandled)
+            {
+                removeItemUnhandled = false;
+                List<Property> propertyList = new List<Property>();
+
+                foreach (ValueProperty prop in itemInfo.ValueProperties)
+                {
+                    if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
+                    {
+                        propertyList.Add(prop);
+                    }
+                }
+            %>
+
+        /// <summary>
+        /// Removes a <see cref="<%= Info.ItemType %>"/> item from the collection.
+        /// </summary>
+        <%
+            string prms = string.Empty;
+            string factoryParams = string.Empty;
+            string paramName = string.Empty;
+            string[] factoryParamsArray = new string[propertyList.Count];
+            string[] paramNameArray = new string[propertyList.Count];
+            for (int i = 0; i < propertyList.Count; i++)
+            {
+                Property param = propertyList[i];
+                prms += string.Concat(", ", GetDataTypeGeneric(param, param.PropertyType), " ", FormatCamel(param.Name));
+                factoryParams += string.Concat(", ", FormatCamel(param.Name));
+                factoryParamsArray[i] = FormatCamel(param.Name);
+                paramName += string.Concat(", ", param.Name);
+                paramNameArray[i] = param.Name;
+            }
+            if (factoryParams.Length > 1)
+            {
+                factoryParams = factoryParams.Substring(2);
+                prms = prms.Substring(2);
+                paramName = paramName.Substring(2);
+            }
+            for (int i = 0; i < propertyList.Count; i++)
+            {
+                %>
+        /// <param name="<%= FormatCamel(propertyList[i].Name) %>">The <%= FormatProperty(propertyList[i].Name) %> of the item to be removed.</param>
+        <%
+            }
+            if (useAuthz)
+            {
+                %>/// <exception cref="System.Security.SecurityException">if the user isn't authorized to remove items from the collection.</exception>
+        <%
+            }
+            %>public void Remove(<%= prms %>)
+        {
+            foreach (<%= Info.ItemType %> <%= FormatCamel(Info.ItemType) %> in this)
+            {
+                if (<%
+            for (int i = 0; i < propertyList.Count; i++)
+            {
+                %><%= (i == 0) ? "" : " && " %><%= FormatCamel(Info.ItemType) %>.<%= paramNameArray[i] %> == <%= factoryParamsArray[i] %><%
+            }
+                        %>)
+                {
+                      Remove(<%= FormatCamel(Info.ItemType) %>);
+                      break;
+                }
+            }
+        }
+        <%
+            }
+        }
+        else if (c.DeleteOptions.AddRemove && c.Properties.Count > 0)
         {
             %>
 
         /// <summary>
-        /// Removes a <see cref="<%= Info.ItemType %>"/> object from the <%= Info.ObjectName %> collection.
+        /// Removes a <see cref="<%= Info.ItemType %>"/> item from the collection.
         /// </summary>
         <%
             string prms = string.Empty;
@@ -194,12 +291,12 @@ if (useAuthz && needsBusiness && UseBoth() && CurrentUnit.GenerationParams.Gener
             for (int i = 0; i < c.Properties.Count; i++)
             {
                 %>
-        /// <param name="<%= FormatCamel(c.Properties[i].Name) %>">The <%= FormatProperty(c.Properties[i].Name) %> of the object to be removed.</param>
+        /// <param name="<%= FormatCamel(c.Properties[i].Name) %>">The <%= FormatProperty(c.Properties[i].Name) %> of the item to be removed.</param>
         <%
             }
             if (useAuthz)
             {
-                %>/// <exception cref="System.Security.SecurityException">if the user isn't authorized to add items from the collection.</exception>
+                %>/// <exception cref="System.Security.SecurityException">if the user isn't authorized to remove items from the collection.</exception>
         <%
             }
             %>public void Remove(<%= prms %>)

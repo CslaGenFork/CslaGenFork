@@ -10,7 +10,7 @@ if (Info.GenerateDataPortalInsert &&
         /// </summary>
         /// <param name="handler">The asynchronous handler.</param>
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public <%= isChild ? "void Child_Insert" : "override void DataPortal_Insert" %>(Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)
+        public <%= isChild ? "void Child_" : "override void DataPortal_" %>Insert(Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)
         {
             try
             {

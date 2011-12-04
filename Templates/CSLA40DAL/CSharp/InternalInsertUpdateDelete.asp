@@ -307,7 +307,7 @@ if (Info.GenerateDataPortalInsert || Info.GenerateDataPortalUpdate || Info.Gener
 if (Info.GenerateDataPortalDelete)
 {
     string strDeleteCritParams = string.Empty;
-    string strDeleteCallParams = string.Empty;
+    string strDeleteInvokeParams = string.Empty;
     string strDeleteComment = string.Empty;
     bool deleteIsFirst = true;
 
@@ -318,7 +318,7 @@ if (Info.GenerateDataPortalDelete)
             if (!deleteIsFirst)
             {
                 strDeleteCritParams += ", ";
-                strDeleteCallParams += ", ";
+                strDeleteInvokeParams += ", ";
             }
             else
                 deleteIsFirst = false;
@@ -327,7 +327,7 @@ if (Info.GenerateDataPortalDelete)
 
             strDeleteComment += "/// <param name=\"" + FormatCamel(prop.Name) + "\">The parent " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
             strDeleteCritParams += string.Concat(GetDataTypeGeneric(prop, propType), " ", FormatCamel(prop.Name));
-            strDeleteCallParams += "parent." + prop.Name;
+            strDeleteInvokeParams += "parent." + prop.Name;
         }
     }
     foreach (ValueProperty prop in Info.ValueProperties)
@@ -337,7 +337,7 @@ if (Info.GenerateDataPortalDelete)
             if (!deleteIsFirst)
             {
                 strDeleteCritParams += ", ";
-                strDeleteCallParams += ", ";
+                strDeleteInvokeParams += ", ";
             }
             else
                 deleteIsFirst = false;
@@ -345,7 +345,7 @@ if (Info.GenerateDataPortalDelete)
             TypeCodeEx propType = TypeHelper.GetBackingFieldType(prop);
 
             strDeleteCritParams += string.Concat(GetDataTypeGeneric(prop, propType), " ", FormatCamel(prop.Name));
-            strDeleteCallParams += GetParameterSet(Info, prop);
+            strDeleteInvokeParams += GetParameterSet(Info, prop);
             strDeleteComment += "/// <param name=\"" + FormatCamel(prop.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
         }
     }
@@ -396,7 +396,7 @@ if (Info.GenerateDataPortalDelete)
                 var dal = dalManager.GetProvider<I<%= Info.ObjectName %>Dal>();
                 using (BypassPropertyChecks)
                 {
-                    dal.Delete(<%= strDeleteCallParams %>);
+                    dal.Delete(<%= strDeleteInvokeParams %>);
                 }
                 OnDeletePost(args);
             }

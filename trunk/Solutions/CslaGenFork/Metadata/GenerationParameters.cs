@@ -23,6 +23,7 @@ namespace CslaGenerator.Metadata
         private bool _useBypassPropertyChecks;
         private bool _useSingleCriteria;
         private bool _usePublicPropertyInfo;
+        private bool _useChildFactory;
         private bool _forceReadOnlyProperties;
         private string _baseFilenameSuffix = string.Empty;
         private string _extendedFilenameSuffix = string.Empty;
@@ -248,6 +249,18 @@ namespace CslaGenerator.Metadata
                 if (_usePublicPropertyInfo == value)
                     return;
                 _usePublicPropertyInfo = value;
+                OnPropertyChanged("");
+            }
+        }
+
+        public bool UseChildFactory
+        {
+            get { return _useChildFactory; }
+            set
+            {
+                if (_useChildFactory == value)
+                    return;
+                _useChildFactory = value;
                 OnPropertyChanged("");
             }
         }

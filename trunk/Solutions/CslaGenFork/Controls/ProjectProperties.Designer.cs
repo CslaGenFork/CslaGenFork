@@ -196,6 +196,7 @@ namespace CslaGenerator.Controls
             this.cboHeaderVerbosity = new System.Windows.Forms.ComboBox();
             this.chkUsesCslaAuthorizationProvider = new System.Windows.Forms.CheckBox();
             this.chkUseBypassPropertyChecks = new System.Windows.Forms.CheckBox();
+            this.chkUseChildFactory = new System.Windows.Forms.CheckBox();
             this.chkNullableSupport = new System.Windows.Forms.CheckBox();
             this.chkActiveObjects = new System.Windows.Forms.CheckBox();
             this.chkUsePublicPropertyInfo = new System.Windows.Forms.CheckBox();
@@ -1915,12 +1916,13 @@ namespace CslaGenerator.Controls
             this.tabGenerationMisc.Controls.Add(this.chkUsesCslaAuthorizationProvider);
             this.tabGenerationMisc.Controls.Add(this.chkUsePublicPropertyInfo);
             this.tabGenerationMisc.Controls.Add(this.chkUseBypassPropertyChecks);
-            this.tabGenerationMisc.Controls.Add(this.chkBackupOldSource);
+            this.tabGenerationMisc.Controls.Add(this.chkUseChildFactory);
             this.tabGenerationMisc.Controls.Add(this.lblHeaderVerbosity);
             this.tabGenerationMisc.Controls.Add(this.cboHeaderVerbosity);
             this.tabGenerationMisc.Controls.Add(this.chkNullableSupport);
             this.tabGenerationMisc.Controls.Add(this.chkForceReadOnlyProperties);
             this.tabGenerationMisc.Controls.Add(this.chkActiveObjects);
+            this.tabGenerationMisc.Controls.Add(this.chkBackupOldSource);
             this.tabGenerationMisc.Location = new System.Drawing.Point(4, 22);
             this.tabGenerationMisc.Name = "tabGenerationMisc";
             this.tabGenerationMisc.Padding = new System.Windows.Forms.Padding(3);
@@ -1976,9 +1978,9 @@ namespace CslaGenerator.Controls
             this.chkUsesCslaAuthorizationProvider.Name = "chkUsesCslaAuthorizationProvider";
             this.chkUsesCslaAuthorizationProvider.Size = new System.Drawing.Size(216, 17);
             this.chkUsesCslaAuthorizationProvider.TabIndex = 12;
-            this.chkUsesCslaAuthorizationProvider.Text = "Uses Csla Authorization Provider";
+            this.chkUsesCslaAuthorizationProvider.Text = "Use Csla Authorization Provider";
             this.toolTip1.SetToolTip(this.chkUsesCslaAuthorizationProvider,
-                                     "If checked, the Csla Authorization provider IsInRole is used by default and the Authorization Provider options are never shown.");
+                                     "If checked, the Csla Authorization provider IsInRole is used and the Authorization Provider options are never shown.");
             //
             // chkUsePublicPropertyInfo
             // 
@@ -1989,7 +1991,7 @@ namespace CslaGenerator.Controls
             this.chkUsePublicPropertyInfo.TabIndex = 12;
             this.chkUsePublicPropertyInfo.Text = "Use public PropertyInfo";
             this.toolTip1.SetToolTip(this.chkUsePublicPropertyInfo,
-                                     "RC - Not implemented.");
+                                     "If checked, PropertyInfo declarations are public. Otherwise uses private declarations.");
             //
             // chkUseBypassPropertyChecks
             // 
@@ -2005,15 +2007,16 @@ namespace CslaGenerator.Controls
                                      "and assign values using .NET properties.\r\n" +
                                      "Otherwise uses LoadProperty() to assign values.");
             // 
-            // chkBackupOldSource
+            // chkUseChildFactory
             // 
-            this.chkBackupOldSource.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "BackupOldSource", true, DataSourceUpdateMode.OnPropertyChanged));
-            this.chkBackupOldSource.Location = new System.Drawing.Point(15, 162);
-            this.chkBackupOldSource.Name = "chkBackupOldSource";
-            this.chkBackupOldSource.Size = new System.Drawing.Size(216, 17);
-            this.chkBackupOldSource.TabIndex = 8;
-            this.chkBackupOldSource.Text = "Backup old source files";
-            this.toolTip1.SetToolTip(this.chkBackupOldSource, "If checked, replaced files are backed up as \"<filename>.old\"");
+            this.chkUseChildFactory.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "UseChildFactory", true, DataSourceUpdateMode.OnPropertyChanged));
+            this.chkUseChildFactory.Location = new System.Drawing.Point(15, 162);
+            this.chkUseChildFactory.Name = "chkUseChildFactory";
+            this.chkUseChildFactory.Size = new System.Drawing.Size(216, 17);
+            this.chkUseChildFactory.TabIndex = 8;
+            this.chkUseChildFactory.Text = "Generate child factory methods";
+            this.toolTip1.SetToolTip(this.chkUseChildFactory, "If checked, all child collections and objects have factory methods.\r\n" +
+                "Otherwise only root collections and objects have factory methods.");
             // 
             // lblHeaderVerbosity
             // 
@@ -2069,6 +2072,16 @@ namespace CslaGenerator.Controls
                                      "If checked, outputs ActiveObjects code instead of plain CSLA.\r\n" +
                                      "If unchecked hides \"11. Active Objects\" properties in Csla Object Info panel.\r\n" +
                                      "\r\nN.B. - This option is disabled for target CSLA40DAL.");
+            // 
+            // chkBackupOldSource
+            // 
+            this.chkBackupOldSource.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "BackupOldSource", true, DataSourceUpdateMode.OnPropertyChanged));
+            this.chkBackupOldSource.Location = new System.Drawing.Point(255, 162);
+            this.chkBackupOldSource.Name = "chkBackupOldSource";
+            this.chkBackupOldSource.Size = new System.Drawing.Size(216, 17);
+            this.chkBackupOldSource.TabIndex = 8;
+            this.chkBackupOldSource.Text = "Backup old source files";
+            this.toolTip1.SetToolTip(this.chkBackupOldSource, "If checked, replaced files are backed up as \"<filename>.old\"");
             // 
             // contextMenuStrip1
             // 
@@ -2331,6 +2344,7 @@ namespace CslaGenerator.Controls
         private System.Windows.Forms.Label lblHeaderVerbosity;
         private System.Windows.Forms.ComboBox cboHeaderVerbosity;
         private System.Windows.Forms.CheckBox chkUseBypassPropertyChecks;
+        private System.Windows.Forms.CheckBox chkUseChildFactory;
         private System.Windows.Forms.CheckBox chkNullableSupport;
         private System.Windows.Forms.CheckBox chkUsePublicPropertyInfo;
         private System.Windows.Forms.CheckBox chkForceReadOnlyProperties;

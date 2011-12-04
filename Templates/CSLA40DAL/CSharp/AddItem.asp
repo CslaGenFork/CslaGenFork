@@ -4,7 +4,7 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
     %>
 
         /// <summary>
-        /// Adds a new <see cref="<%= Info.ItemType %>"/> object to the <%= Info.ObjectName %> collection.
+        /// Adds a new <see cref="<%= Info.ItemType %>"/> item to the collection.
         /// </summary>
         <%
         string prms = string.Empty;
@@ -26,12 +26,12 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
 <%
         }
         %>
-        /// <returns>The new <%= Info.ItemType %> object added to the collection.</returns>
+        /// <returns>The new <%= Info.ItemType %> item added to the collection.</returns>
 <%
         if (useAuthz)
         {
             %>
-        /// <exception cref="System.Security.SecurityException">if the user isn't authorized to add items from the collection.</exception>
+        /// <exception cref="System.Security.SecurityException">if the user isn't authorized to add items to the collection.</exception>
 <%
         }
         %>
@@ -43,10 +43,21 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
         {
             newMethodName += "Child";
         }
+        if (useChildFactory)
+        {
+            %>
+            var item = <%= Info.ItemType %>.<%= newMethodName %><%= c.CreateOptions.FactorySuffix %>(<%= factoryParams %>);
+            <%
+        }
+        else
+        {
+            %>
+            var item = DataPortal.CreateChild<<%= Info.ItemType %>>(<%= factoryParams %>);
+            <%
+        }
         %>
-            var <%= FormatCamel(Info.ItemType) %> = <%= Info.ItemType %>.<%= newMethodName %><%= c.CreateOptions.FactorySuffix %>(<%= factoryParams %>);
-            Add(<%= FormatCamel(Info.ItemType) %>);
-            return <%= FormatCamel(Info.ItemType) %>;
+            Add(item);
+            return item;
         }
         <%
 }

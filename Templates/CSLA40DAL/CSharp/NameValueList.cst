@@ -23,6 +23,7 @@ GenerationStep genStep = GenerationStep.Business;
 bool usesDTO = DalObjectUsesDTO(Info);
 bool usesDalCriteria = DalObjectUsesCriteria(Info);
 bool isChild = false;
+bool useChildFactory = CurrentUnit.GenerationParams.UseChildFactory;
 int silverlightLevel = 0;
 bool genOptional = false;
 bool useItem = false;
@@ -64,6 +65,7 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
         %>
 <!-- #include file="SimpleCacheFactory.asp" -->
 <%
+        Response.Write(Environment.NewLine);
     }
     if (Info.GenerateFactoryMethods)
     {
@@ -71,6 +73,7 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
 <!-- #include file="NameValueList_Factory.asp" -->
 <%
     }
+    Response.Write(Environment.NewLine);
     %>
 <!-- #include file="Constructor.asp" -->
 <!-- #include file="Criteria.asp" -->

@@ -28,15 +28,14 @@
     <add key="UnitOfWork:ParentType" value="false" />
     <add key="UnitOfWork:FindMethodsParameters" value="false" />
     <add key="UnitOfWork:ItemType" value="false" />
+    <add key="UnitOfWork:ContainsItem" value="false" />
     <add key="UnitOfWork:UpdaterType" value="false" />
     <add key="UnitOfWork:NameColumn" value="false" />
     <add key="UnitOfWork:ValueColumn" value="false" />
     <add key="UnitOfWork:CacheResults" value="false" />
     <add key="UnitOfWork:SimpleCacheOptions" value="false" />
     <add key="UnitOfWork:DbName" value="false" />
-    <add key="UnitOfWork:DeleteObjectCriteriaType" value="false" />
     <add key="UnitOfWork:GetObjectCriteriaType" value="false" />
-    <add key="UnitOfWork:NewObjectCriteriaType" value="false" />
     <add key="UnitOfWork:TransactionType" value="false" />
     <add key="UnitOfWork:PersistenceType" value="false" />
     <add key="UnitOfWork:DbContextObject" value="false" />
@@ -92,15 +91,14 @@
     <add key="NameValueList:ParentType" value="false" />
     <add key="NameValueList:FindMethodsParameters" value="false" />
     <add key="NameValueList:ItemType" value="false" />
+    <add key="NameValueList:ContainsItem" value="false" />
     <add key="NameValueList:UpdaterType" value="false" />
     <add key="NameValueList:NameColumn" value="true" />
     <add key="NameValueList:ValueColumn" value="true" />
     <add key="NameValueList:CacheResults" value="true" />
     <add key="NameValueList:SimpleCacheOptions" value="true" />
     <add key="NameValueList:DbName" value="true" />
-    <add key="NameValueList:DeleteObjectCriteriaType" value="false" />
     <add key="NameValueList:GetObjectCriteriaType" value="false" />
-    <add key="NameValueList:NewObjectCriteriaType" value="false" />
     <add key="NameValueList:TransactionType" value="false" />
     <add key="NameValueList:PersistenceType" value="true" />
     <add key="NameValueList:InsertUpdateRunLocal" value="false" />
@@ -154,15 +152,14 @@
     <add key="ReadOnlyCollection:ParentType" value="true" />
     <add key="ReadOnlyCollection:FindMethodsParameters" value="true" />
     <add key="ReadOnlyCollection:ItemType" value="true" />
+    <add key="ReadOnlyCollection:ContainsItem" value="false" />
     <add key="ReadOnlyCollection:UpdaterType" value="true" />
     <add key="ReadOnlyCollection:NameColumn" value="false" />
     <add key="ReadOnlyCollection:ValueColumn" value="false" />
     <add key="ReadOnlyCollection:CacheResults" value="false" />
     <add key="ReadOnlyCollection:SimpleCacheOptions" value="true" />
     <add key="ReadOnlyCollection:DbName" value="true" />
-    <add key="ReadOnlyCollection:DeleteObjectCriteriaType" value="false" />
     <add key="ReadOnlyCollection:GetObjectCriteriaType" value="false" />
-    <add key="ReadOnlyCollection:NewObjectCriteriaType" value="false" />
     <add key="ReadOnlyCollection:TransactionType" value="false" />
     <add key="ReadOnlyCollection:PersistenceType" value="true" />
     <add key="ReadOnlyCollection:InsertUpdateRunLocal" value="false" />
@@ -216,15 +213,14 @@
     <add key="ReadOnlyObject:ParentType" value="true" />
     <add key="ReadOnlyObject:FindMethodsParameters" value="false" />
     <add key="ReadOnlyObject:ItemType" value="false" />
+    <add key="ReadOnlyObject:ContainsItem" value="false" />
     <add key="ReadOnlyObject:UpdaterType" value="false" />
     <add key="ReadOnlyObject:NameColumn" value="false" />
     <add key="ReadOnlyObject:ValueColumn" value="false" />
     <add key="ReadOnlyObject:CacheResults" value="false" />
     <add key="ReadOnlyObject:SimpleCacheOptions" value="false" />
     <add key="ReadOnlyObject:DbName" value="true" />
-    <add key="ReadOnlyObject:DeleteObjectCriteriaType" value="false" />
     <add key="ReadOnlyObject:GetObjectCriteriaType" value="false" />
-    <add key="ReadOnlyObject:NewObjectCriteriaType" value="false" />
     <add key="ReadOnlyObject:TransactionType" value="false" />
     <add key="ReadOnlyObject:PersistenceType" value="true" />
     <add key="ReadOnlyObject:InsertUpdateRunLocal" value="false" />
@@ -278,15 +274,14 @@
     <add key="EditableChild:ParentType" value="true" />
     <add key="EditableChild:FindMethodsParameters" value="false" />
     <add key="EditableChild:ItemType" value="false" />
+    <add key="EditableChild:ContainsItem" value="false" />
     <add key="EditableChild:UpdaterType" value="false" />
     <add key="EditableChild:NameColumn" value="false" />
     <add key="EditableChild:ValueColumn" value="false" />
     <add key="EditableChild:CacheResults" value="false" />
     <add key="EditableChild:SimpleCacheOptions" value="false" />
     <add key="EditableChild:DbName" value="true" />
-    <add key="EditableChild:DeleteObjectCriteriaType" value="false" />
     <add key="EditableChild:GetObjectCriteriaType" value="false" />
-    <add key="EditableChild:NewObjectCriteriaType" value="false" />
     <add key="EditableChild:TransactionType" value="true" />
     <add key="EditableChild:PersistenceType" value="true" />
     <add key="EditableChild:InsertUpdateRunLocal" value="true" />
@@ -340,15 +335,14 @@
     <add key="EditableChildCollection:ParentType" value="true" />
     <add key="EditableChildCollection:FindMethodsParameters" value="true" />
     <add key="EditableChildCollection:ItemType" value="true" />
+    <add key="EditableChildCollection:ContainsItem" value="true" />
     <add key="EditableChildCollection:UpdaterType" value="false" />
     <add key="EditableChildCollection:NameColumn" value="false" />
     <add key="EditableChildCollection:ValueColumn" value="false" />
     <add key="EditableChildCollection:CacheResults" value="false" />
     <add key="EditableChildCollection:SimpleCacheOptions" value="false" />
     <add key="EditableChildCollection:DbName" value="true" />
-    <add key="EditableChildCollection:DeleteObjectCriteriaType" value="false" />
     <add key="EditableChildCollection:GetObjectCriteriaType" value="false" />
-    <add key="EditableChildCollection:NewObjectCriteriaType" value="false" />
     <add key="EditableChildCollection:TransactionType" value="true" />
     <add key="EditableChildCollection:PersistenceType" value="true" />
     <add key="EditableChildCollection:InsertUpdateRunLocal" value="false" />
@@ -402,15 +396,14 @@
     <add key="EditableRoot:ParentType" value="false" />
     <add key="EditableRoot:FindMethodsParameters" value="false" />
     <add key="EditableRoot:ItemType" value="false" />
+    <add key="EditableRoot:ContainsItem" value="false" />
     <add key="EditableRoot:UpdaterType" value="false" />
     <add key="EditableRoot:NameColumn" value="false" />
     <add key="EditableRoot:ValueColumn" value="false" />
     <add key="EditableRoot:CacheResults" value="false" />
     <add key="EditableRoot:SimpleCacheOptions" value="false" />
     <add key="EditableRoot:DbName" value="true" />
-    <add key="EditableRoot:DeleteObjectCriteriaType" value="false" />
     <add key="EditableRoot:GetObjectCriteriaType" value="false" />
-    <add key="EditableRoot:NewObjectCriteriaType" value="false" />
     <add key="EditableRoot:TransactionType" value="true" />
     <add key="EditableRoot:PersistenceType" value="true" />
     <add key="EditableRoot:InsertUpdateRunLocal" value="true" />
@@ -464,15 +457,14 @@
     <add key="EditableRootCollection:ParentType" value="false" />
     <add key="EditableRootCollection:FindMethodsParameters" value="true" />
     <add key="EditableRootCollection:ItemType" value="true" />
+    <add key="EditableRootCollection:ContainsItem" value="true" />
     <add key="EditableRootCollection:UpdaterType" value="false" />
     <add key="EditableRootCollection:NameColumn" value="false" />
     <add key="EditableRootCollection:ValueColumn" value="false" />
     <add key="EditableRootCollection:CacheResults" value="false" />
     <add key="EditableRootCollection:SimpleCacheOptions" value="false" />
     <add key="EditableRootCollection:DbName" value="true" />
-    <add key="EditableRootCollection:DeleteObjectCriteriaType" value="false" />
     <add key="EditableRootCollection:GetObjectCriteriaType" value="false" />
-    <add key="EditableRootCollection:NewObjectCriteriaType" value="false" />
     <add key="EditableRootCollection:TransactionType" value="true" />
     <add key="EditableRootCollection:PersistenceType" value="true" />
     <add key="EditableRootCollection:InsertUpdateRunLocal" value="false" />
@@ -526,15 +518,14 @@
     <add key="EditableSwitchable:ParentType" value="true" />
     <add key="EditableSwitchable:FindMethodsParameters" value="false" />
     <add key="EditableSwitchable:ItemType" value="false" />
+    <add key="EditableSwitchable:ContainsItem" value="false" />
     <add key="EditableSwitchable:UpdaterType" value="false" />
     <add key="EditableSwitchable:NameColumn" value="false" />
     <add key="EditableSwitchable:ValueColumn" value="false" />
     <add key="EditableSwitchable:CacheResults" value="false" />
     <add key="EditableSwitchable:SimpleCacheOptions" value="false" />
     <add key="EditableSwitchable:DbName" value="true" />
-    <add key="EditableSwitchable:DeleteObjectCriteriaType" value="false" />
     <add key="EditableSwitchable:GetObjectCriteriaType" value="false" />
-    <add key="EditableSwitchable:NewObjectCriteriaType" value="false" />
     <add key="EditableSwitchable:TransactionType" value="true" />
     <add key="EditableSwitchable:PersistenceType" value="true" />
     <add key="EditableSwitchable:InsertUpdateRunLocal" value="true" />
@@ -574,10 +565,10 @@
     <add key="DynamicEditableRoot:ObjectNamespace" value="true" />
     <add key="DynamicEditableRoot:ObjectType" value="true" />
     <add key="DynamicEditableRoot:OutputLanguage" value="true" />
-    <add key="DynamicEditableRoot:ChildCollectionProperties" value="true" />
-    <add key="DynamicEditableRoot:ChildProperties" value="true" />
-    <add key="DynamicEditableRoot:InheritedChildCollectionProperties" value="true" />
-    <add key="DynamicEditableRoot:InheritedChildProperties" value="true" />
+    <add key="DynamicEditableRoot:ChildCollectionProperties" value="false" />
+    <add key="DynamicEditableRoot:ChildProperties" value="false" />
+    <add key="DynamicEditableRoot:InheritedChildCollectionProperties" value="false" />
+    <add key="DynamicEditableRoot:InheritedChildProperties" value="false" />
     <add key="DynamicEditableRoot:InheritedValueProperties" value="true" />
     <add key="DynamicEditableRoot:ConvertValueProperties" value="true" />
     <add key="DynamicEditableRoot:UpdateValueProperties" value="false" />
@@ -588,15 +579,14 @@
     <add key="DynamicEditableRoot:ParentType" value="true" />
     <add key="DynamicEditableRoot:FindMethodsParameters" value="false" />
     <add key="DynamicEditableRoot:ItemType" value="false" />
+    <add key="DynamicEditableRoot:ContainsItem" value="false" />
     <add key="DynamicEditableRoot:UpdaterType" value="false" />
     <add key="DynamicEditableRoot:NameColumn" value="false" />
     <add key="DynamicEditableRoot:ValueColumn" value="false" />
     <add key="DynamicEditableRoot:CacheResults" value="false" />
     <add key="DynamicEditableRoot:SimpleCacheOptions" value="false" />
     <add key="DynamicEditableRoot:DbName" value="true" />
-    <add key="DynamicEditableRoot:DeleteObjectCriteriaType" value="false" />
     <add key="DynamicEditableRoot:GetObjectCriteriaType" value="false" />
-    <add key="DynamicEditableRoot:NewObjectCriteriaType" value="false" />
     <add key="DynamicEditableRoot:TransactionType" value="true" />
     <add key="DynamicEditableRoot:PersistenceType" value="true" />
     <add key="DynamicEditableRoot:InsertUpdateRunLocal" value="true" />
@@ -650,15 +640,14 @@
     <add key="DynamicEditableRootCollection:ParentType" value="false" />
     <add key="DynamicEditableRootCollection:FindMethodsParameters" value="true" />
     <add key="DynamicEditableRootCollection:ItemType" value="true" />
+    <add key="DynamicEditableRootCollection:ContainsItem" value="true" />
     <add key="DynamicEditableRootCollection:UpdaterType" value="false" />
     <add key="DynamicEditableRootCollection:NameColumn" value="false" />
     <add key="DynamicEditableRootCollection:ValueColumn" value="false" />
     <add key="DynamicEditableRootCollection:CacheResults" value="false" />
     <add key="DynamicEditableRootCollection:SimpleCacheOptions" value="false" />
     <add key="DynamicEditableRootCollection:DbName" value="true" />
-    <add key="DynamicEditableRootCollection:DeleteObjectCriteriaType" value="false" />
     <add key="DynamicEditableRootCollection:GetObjectCriteriaType" value="false" />
-    <add key="DynamicEditableRootCollection:NewObjectCriteriaType" value="false" />
     <add key="DynamicEditableRootCollection:TransactionType" value="true" />
     <add key="DynamicEditableRootCollection:PersistenceType" value="true" />
     <add key="DynamicEditableRootCollection:InsertUpdateRunLocal" value="false" />

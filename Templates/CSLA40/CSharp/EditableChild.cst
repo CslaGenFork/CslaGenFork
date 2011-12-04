@@ -1,4 +1,4 @@
-<%@ CodeTemplate Inherits="CslaTemplateHelperCS" Debug="false" Language="CSharp" TargetLanguage="CSharp" Description="Generates a CSLA Editable Child Object." %>
+<%@ CodeTemplate Inherits="CslaTemplateHelperCS" Language="CSharp" TargetLanguage="CSharp" Description="Generates a CSLA Editable Child Object." %>
 <%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the EditableChild Object to create." %>
 <%@ Property Name="Errors" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return errors to master.cst" %>
 <%@ Property Name="Warnings" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return warnings to master.cst" %>
@@ -21,16 +21,17 @@
 if (Errors.Length == 0)
 {
     bool isChild = true;
+    bool useChildFactory = CurrentUnit.GenerationParams.UseChildFactory;
     int silverlightLevel = 0;
     bool genOptional = false;
     bool useItem = false;
     bool first = true;
+    bool? firstComment = null;
     %><!-- #include file="Header.asp" -->
 <!-- #include file="Using.asp" -->
 namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Business) %>
 {
 <%
-    bool? firstComment = null;
     %><!-- #include file="XmlComment.asp" -->
     <%
     if (GetAttributesString(Info.Attributes) != string.Empty)
@@ -57,13 +58,14 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Busine
 <!-- #include file="BusinessProps.asp" -->
 <!-- #include file="ObjectOverrides.asp" -->
     <%
-    Response.Write(Environment.NewLine);
-    if (Info.GenerateFactoryMethods)
+    if (Info.GenerateFactoryMethods && useChildFactory)
     {
+        Response.Write(Environment.NewLine);
         %>
 <!-- #include file="EditableChild_Factory.asp" -->
 <%
     }
+    Response.Write(Environment.NewLine);
     %>
 <!-- #include file="Constructor.asp" -->
 <!-- #include file="Criteria.asp" -->

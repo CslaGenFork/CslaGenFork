@@ -32,6 +32,7 @@ namespace CslaGenerator.Metadata
         private bool _lazyLoad;
         private string _typeName = String.Empty;
         private bool _undoable = true;
+        private PropertyCollection _parentLoadProperties = new PropertyCollection();
         private ParameterCollection _loadParameters = new ParameterCollection();
         private PropertyAccess _access = PropertyAccess.IsPublic;
         private int _childUpdateOrder = 0;
@@ -292,10 +293,21 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("05. Options")]
+        [Description("The parent properties that are used to load the child object.")]
+        [Editor(typeof(PropertyCollectionEditor), typeof(UITypeEditor))]
+        [TypeConverter(typeof(PropertyCollectionConverter))]
+        [UserFriendlyName("Parent Properties")]
+        public PropertyCollection ParentLoadProperties
+        {
+            get { return _parentLoadProperties; }
+            set { _parentLoadProperties = value; }
+        }
+
+        [Category("05. Options")]
         [Editor(typeof(ParameterCollectionEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(ParameterCollectionConverter))]
         [Description("The parent get criteria parameters that are used to load the child object.")]
-        [UserFriendlyName("Load Parameters")]
+        [UserFriendlyName("Parent Criteria Parameters")]
         public ParameterCollection LoadParameters
         {
             get { return _loadParameters; }

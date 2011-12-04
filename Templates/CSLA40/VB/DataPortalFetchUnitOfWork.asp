@@ -2,11 +2,29 @@
 Criteria crit = GetCriteriaObjects(Info)[0];
 if (crit.GetOptions.DataPortal)
 {
+    string strGetComment = string.Empty;
+    bool getIsFirst = true;
+
+    foreach (Property p in crit.Properties)
+    {
+        if (!getIsFirst)
+        {
+            strGetComment += System.Environment.NewLine + new string(' ', 8);
+        }
+        else
+            getIsFirst = false;
+
+        TypeCodeEx propType = p.PropertyType;
+
+        strGetComment += "/// <param name=\"" + FormatCamel(p.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(p.Name) + ".</param>";
+    }
+
     string fetchUowParam = string.Empty;
     string fetchUowCrit = string.Empty;
     string fetchUowCritParam = string.Empty;
     if (crit.Properties.Count > 1)
     {
+        strGetComment = "/// <param name=\"crit\">The fetch criteria.</param>";
         fetchUowParam = "crit";
         fetchUowCrit = crit.Name + " crit";
     }
@@ -24,7 +42,7 @@ if (crit.GetOptions.DataPortal)
         <%
     if (crit.Properties.Count > 0)
     {
-        %>/// <param name="<%= fetchUowParam %>">The fetch criteria.</param>
+        %><%= strGetComment %>
         <%
     }
         %>protected void DataPortal_Fetch(<%= fetchUowCrit %>)

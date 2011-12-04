@@ -26,6 +26,7 @@ namespace CslaGenerator.Design
             _lstProperties.DisplayMember = "key";
             _lstProperties.ValueMember = "value";
             _lstProperties.SelectionMode = SelectionMode.MultiSimple;
+            _lstProperties.Width = 300;
         }
 
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
@@ -39,33 +40,15 @@ namespace CslaGenerator.Design
                 TypeHelper.GetChildPropertyContextInstanceObject(context, ref objinfo, ref instanceType);
                 var propInfo = instanceType.GetProperty("LoadParameters");
                 var paramColl = (ParameterCollection)propInfo.GetValue(objinfo, null);
-                propInfo = instanceType.GetProperty("LoadingScheme");
-                var isSelfLoad = (LoadingScheme)propInfo.GetValue(objinfo, null) == LoadingScheme.SelfLoad;
 
-                // is it non-root?
-                var currentCslaObject = (CslaObjectInfo)GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem;
-                if (CslaTemplateHelperCS.IsNotRootType(currentCslaObject))
+                if (instanceType == typeof(ChildProperty))
                 {
-                    if (isSelfLoad)
-                    {
-                        propInfo = instanceType.GetProperty("TypeName");
-                        var typeName = (string)propInfo.GetValue(objinfo, null);
-                        var objectColl = GeneratorController.Current.MainForm.ProjectPanel.Objects;
-                        _instance = objectColl.Find(typeName);
-                    }
+                    _instance = GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem;
                 }
                 else
                 {
-                    if (instanceType != typeof(CslaObjectInfo))
-                    {
-                        _instance = GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem;
-                        //_instance = GetInfoTypeInstance(objinfo);
-                    }
-                    else
-                    {
-                        //_instance = context.Instance;
-                        _instance = objinfo;
-                    }
+                    //_instance = context.Instance;
+                    _instance = objinfo;
                 }
 
                 var criteriaInfo = typeof(CslaObjectInfo).GetProperty("CriteriaObjects");
@@ -84,7 +67,7 @@ namespace CslaGenerator.Design
                         }
                     }
                 }
-                _lstProperties.Sorted = true;
+//                _lstProperties.Sorted = true;
 
                 foreach (var param in paramColl)
                 {
