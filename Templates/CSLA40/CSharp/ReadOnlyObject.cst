@@ -21,16 +21,17 @@
 if (Errors.Length == 0)
 {
     bool isChild = !string.IsNullOrEmpty(Info.ParentType);
+    bool useChildFactory = CurrentUnit.GenerationParams.UseChildFactory;
     int silverlightLevel = 0;
     bool genOptional = false;
     bool useItem = false;
     bool first = true;
+    bool? firstComment = null;
     %><!-- #include file="Header.asp" -->
 <!-- #include file="Using.asp" -->
 namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Business) %>
 {
 <%
-    bool? firstComment = null;
     %><!-- #include file="XmlComment.asp" -->
     <%
     if (GetAttributesString(Info.Attributes) != string.Empty)
@@ -57,13 +58,14 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Busine
 <!-- #include file="BusinessProps.asp" -->
 <!-- #include file="ObjectOverrides.asp" -->
     <%
-    Response.Write(Environment.NewLine);
-    if (Info.GenerateFactoryMethods)
+    if (Info.GenerateFactoryMethods && (useChildFactory || Info.ParentType == string.Empty))
     {
+        Response.Write(Environment.NewLine);
         %>
 <!-- #include file="ReadOnlyObject_Factory.asp" -->
 <%
     }
+    Response.Write(Environment.NewLine);
     %>
 <!-- #include file="Constructor.asp" -->
 <!-- #include file="Criteria.asp" -->

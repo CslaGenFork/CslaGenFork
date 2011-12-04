@@ -3,6 +3,10 @@ if (!Info.UseCustomLoading)
 {
     bool selfLoad1 = GetSelfLoad(Info);
 
+    bool isChildCollection = (Info.ObjectType == CslaObjectType.EditableChildCollection ||
+        (Info.ObjectType == CslaObjectType.ReadOnlyCollection && Info.ParentType != string.Empty)) &&
+        !selfLoad1;
+
     bool isSwitchable = false;
     CslaObjectInfo childInfo = FindChildInfo(Info, Info.ItemType);
     if (childInfo.ObjectType == CslaObjectType.EditableSwitchable)
@@ -16,16 +20,53 @@ if (!Info.UseCustomLoading)
         {
             if (c.GetOptions.DataPortal)
             {
+                string strGetCritParams = string.Empty;
+                string strGetInvokeParams = string.Empty;
+                string strGetComment = string.Empty;
+                bool getIsFirst = true;
+
+                foreach (Property p in c.Properties)
+                {
+                    if (!getIsFirst)
+                    {
+                        strGetCritParams += ", ";
+                        strGetInvokeParams += ", ";
+                        strGetComment += System.Environment.NewLine + new string(' ', 8);
+                    }
+                    else
+                        getIsFirst = false;
+
+                    TypeCodeEx propType = p.PropertyType;
+
+                    strGetCritParams += string.Concat(GetDataTypeGeneric(p, propType), " ", FormatCamel(p.Name));
+                    strGetInvokeParams += "crit." + FormatPascal(p.Name);
+                    strGetComment += "/// <param name=\"" + FormatCamel(p.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(p.Name) + ".</param>";
+                }
+                if (c.Properties.Count > 1)
+                    strGetComment = "/// <param name=\"crit\">The fetch criteria.</param>";
+                else if (c.Properties.Count == 1)
+                    strGetInvokeParams = FormatCamel(c.Properties[0].Name);
                 %>
 
         /// <summary>
+        /// Loads a <see cref="<%= Info.ObjectName %>"/> collection from the database<%= (c.Properties.Count == 0 && Info.SimpleCacheOptions == SimpleCacheResults.DataPortal ? " or from the cache" : "") %><%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
+        /// </summary>
         <%
+                if (c.Properties.Count > 0)
+                {
+                    %>
+        <%= strGetComment %>
+        <%
+                }
+                if (c.GetOptions.RunLocal)
+                {
+                    %>
+        [Csla.RunLocal]
+        <%
+                }
                 if (c.Properties.Count > 1)
                 {
                     %>
-        /// Loads a <see cref="<%= Info.ObjectName %>"/> collection from the database<%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
-        /// </summary>
-        /// <param name="crit">The fetch criteria.</param>
         protected void <%= isChild ? "Child_" : "DataPortal_" %>Fetch(<%= c.Name %> crit)
         {
             <%
@@ -33,9 +74,6 @@ if (!Info.UseCustomLoading)
                 else if (c.Properties.Count > 0)
                 {
                     %>
-        /// Loads a <see cref="<%= Info.ObjectName %>"/> collection from the database<%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
-        /// </summary>
-        /// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The fetch criteria.</param>
         protected void <%= isChild ? "Child_" : "DataPortal_" %>Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)
         {
             <%
@@ -43,12 +81,10 @@ if (!Info.UseCustomLoading)
                 else
                 {
                     %>
-        /// Loads a <see cref="<%= Info.ObjectName %>"/> collection from the database<%= Info.SimpleCacheOptions == SimpleCacheResults.DataPortal ? " or from the cache" : "" %>.
-        /// </summary>
         protected void <%= isChild ? "Child_" : "DataPortal_" %>Fetch()
         {
             <%
-                    if (Info.SimpleCacheOptions == SimpleCacheResults.DataPortal)
+                    if (Info.SimpleCacheOptions == SimpleCacheResults.DataPortal && c.Properties.Count == 0)
                     {
                         %>
             if (IsCached)
@@ -107,37 +143,14 @@ if (!Info.UseCustomLoading)
                 }
             }
             <%
-                if (Info.ObjectType == CslaObjectType.EditableRootCollection)
+                if (SelfLoadsChildren(Info) && IsCollectionType(Info.ObjectType))
                 {
-                    foreach (ChildProperty childProp in childInfo.GetCollectionChildProperties())
-                    {
-                        if (childProp.LoadingScheme == LoadingScheme.SelfLoad && !childProp.LazyLoad)
-                        {
-                            string invokeParam = string.Empty;
-                            foreach (Parameter param in childProp.LoadParameters)
-                            {
-                                bool first1 = true;
-                                foreach (CriteriaProperty crit in param.Criteria.Properties)
-                                {
-                                    if (first1)
-                                    {
-                                        first1 = false;
-                                    }
-                                    else
-                                    {
-                                        invokeParam += ", ";
-                                    }
-                                    invokeParam += FormatPascal(crit.Name);
-                                }
-                            }
-            %>
+                    %>
             foreach (var <%= FormatCamel(childInfo.ObjectName) %> in this)
             {
-                <%= FormatCamel(childInfo.ObjectName) %>.FetchChildren(<%= FormatCamel(childInfo.ObjectName) %>.<%= invokeParam %>);
+                <%= FormatCamel(childInfo.ObjectName) %>.FetchChildren();
             }
         <%
-                        }
-                    }
                 }
                 %>
         }
@@ -157,6 +170,17 @@ if (!Info.UseCustomLoading)
             using (var dr = new SafeDataReader(cmd.ExecuteReader()))
             {
                 Fetch(dr);
+                <%
+                if (ParentLoadsChildren(Info) && IsCollectionType(Info.ObjectType))
+                {
+                    %>
+                foreach (var <%= FormatCamel(childInfo.ObjectName) %> in this)
+                {
+                    <%= FormatCamel(childInfo.ObjectName) %>.FetchChildren(dr);
+                }
+                <%
+                }
+                %>
             }
         }
         <%
@@ -190,7 +214,7 @@ if (!Info.UseCustomLoading)
         /// Loads all <see cref="<%= Info.ObjectName %>"/> collection items from the given SafeDataReader.
         /// </summary>
         /// <param name="dr">The SafeDataReader to use.</param>
-        private void Fetch(SafeDataReader dr)
+        private void <%= (isChildCollection && !useChildFactory ? "Child_" : "") %>Fetch(SafeDataReader dr)
         {
             <%
         if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
@@ -213,8 +237,20 @@ if (!Info.UseCustomLoading)
         %>
             while (dr.Read())
             {
-                <%= Info.ItemType %> obj = <%= Info.ItemType %>.Get<%= Info.ItemType %>(dr<%= useParentReference ? (", this") : "" %>);
-                Add(obj);
+                <%
+        if (useChildFactory)
+        {
+            %>
+                Add(<%= Info.ItemType %>.Get<%= Info.ItemType %>(dr));
+            <%
+        }
+        else
+        {
+            %>
+                Add(DataPortal.Fetch<%= IsNotRootType(childInfo) ? "Child" : "" %><<%= Info.ItemType %>>(dr));
+            <%
+        }
+        %>
             }
             <%
         if (!Info.HasGetCriteria && Info.ParentType != string.Empty && !selfLoad1)
@@ -243,7 +279,7 @@ if (!Info.UseCustomLoading)
         /// <summary>
         /// Loads all <see cref="<%= Info.ObjectName %>"/> collection items using given DataRow array.
         /// </summary>
-        private void Fetch(DataRow[] rows)
+        private void <%= isChildCollection ? "Child_" : "" %>Fetch(DataRow[] rows)
         {
             <%
         if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
@@ -257,8 +293,18 @@ if (!Info.UseCustomLoading)
             RaiseListChangedEvents = false;
             foreach (DataRow row in rows)
             {
-                <%= Info.ItemType %> obj = <%= Info.ItemType %>.Get<%= Info.ItemType %>(row);
-                Add(obj);
+                <%
+        if (useChildFactory)
+        {
+            %>Add(<%= Info.ItemType %>.Get<%= Info.ItemType %>(row));
+                <%
+        }
+        else
+        {
+            %>Add(DataPortal.Fetch<%= IsNotRootType(childInfo) ? "Child" : "" %><<%= Info.ItemType %>>(row));
+                <%
+        }
+        %>
             }
             RaiseListChangedEvents = rlce;
             <%
@@ -278,7 +324,7 @@ if (!Info.UseCustomLoading)
         /// <summary>
         /// Loads all <see cref="<%= Info.ObjectName %>"/> collection items from given DataTable.
         /// </summary>
-        private void Fetch(DataRowCollection rows)
+        private void <%= isChildCollection ? "Child_" : "" %>Fetch(DataRowCollection rows)
         {
             <%
             if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
@@ -292,8 +338,18 @@ if (!Info.UseCustomLoading)
             RaiseListChangedEvents = false;
             foreach (DataRow row in rows)
             {
-                <%= Info.ItemType %> obj = <%= Info.ItemType %>.Get<%= Info.ItemType %>(row);
-                Add(obj);
+                <%
+        if (useChildFactory)
+        {
+            %>Add(<%= Info.ItemType %>.Get<%= Info.ItemType %>(row));
+                <%
+        }
+        else
+        {
+            %>Add(DataPortal.Fetch<%= IsNotRootType(childInfo) ? "Child" : "" %><<%= Info.ItemType %>>(row));
+                <%
+        }
+        %>
             }
             RaiseListChangedEvents = rlce;
             <%

@@ -276,6 +276,7 @@
     <Compile Include="Metadata\IBusinessRule.cs" />
     <Compile Include="Metadata\IHaveBusinessRules.cs" />
     <Compile Include="Metadata\ObjectRelationsFactory.cs" />
+    <Compile Include="Metadata\ParentPropertiesUsage.cs" />
     <Compile Include="Metadata\PersistenceType.cs" />
     <Compile Include="Metadata\PropertyHelper.cs" />
     <Compile Include="Metadata\AuthorizationRule.cs" />

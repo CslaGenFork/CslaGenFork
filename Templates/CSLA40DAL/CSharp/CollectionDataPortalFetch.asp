@@ -3,6 +3,10 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
 {
     bool selfLoad1 = GetSelfLoad(Info);
 
+    bool isChildCollection = (Info.ObjectType == CslaObjectType.EditableChildCollection ||
+        (Info.ObjectType == CslaObjectType.ReadOnlyCollection && Info.ParentType != string.Empty)) &&
+        !selfLoad1;
+
     bool isSwitchable = false;
     CslaObjectInfo childInfo = FindChildInfo(Info, Info.ItemType);
     if (childInfo.ObjectType == CslaObjectType.EditableSwitchable)
@@ -17,7 +21,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
             if (c.GetOptions.DataPortal)
             {
                 string strGetCritParams = string.Empty;
-                string strGetCallParams = string.Empty;
+                string strGetInvokeParams = string.Empty;
                 string strGetComment = string.Empty;
                 bool getIsFirst = true;
 
@@ -28,7 +32,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
                         if (!getIsFirst)
                         {
                             strGetCritParams += ", ";
-                            strGetCallParams += ", ";
+                            strGetInvokeParams += ", ";
                             strGetComment += System.Environment.NewLine + new string(' ', 8);
                         }
                         else
@@ -37,7 +41,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
                         TypeCodeEx propType = p.PropertyType;
 
                         strGetCritParams += p.Name;
-                        strGetCallParams += "crit." + FormatPascal(p.Name);
+                        strGetInvokeParams += "crit." + FormatPascal(p.Name);
                         strGetComment += "/// <param name=\"" + FormatCamel(p.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(p.Name) + ".</param>";
                     }
 
@@ -57,7 +61,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
                         if (!getIsFirst)
                         {
                             strGetCritParams += ", ";
-                            strGetCallParams += ", ";
+                            strGetInvokeParams += ", ";
                             strGetComment += System.Environment.NewLine + new string(' ', 8);
                         }
                         else
@@ -66,14 +70,14 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
                         TypeCodeEx propType = p.PropertyType;
 
                         strGetCritParams += string.Concat(GetDataTypeGeneric(p, propType), " ", FormatCamel(p.Name));
-                        strGetCallParams += "crit." + FormatPascal(p.Name);
+                        strGetInvokeParams += "crit." + FormatPascal(p.Name);
                         strGetComment += "/// <param name=\"" + FormatCamel(p.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(p.Name) + ".</param>";
                     }
                 }
                 if (c.Properties.Count > 1)
                     strGetComment = "/// <param name=\"crit\">The fetch criteria.</param>";
                 else if (c.Properties.Count == 1)
-                    strGetCallParams = FormatCamel(c.Properties[0].Name);
+                    strGetInvokeParams = FormatCamel(c.Properties[0].Name);
                 %>
 
         /// <summary>
@@ -95,24 +99,24 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
                 if (c.Properties.Count > 1)
                 {
                     %>
-        protected void <%= isChild ? "Child" : "DataPortal" %>_Fetch(<%= c.Name %> crit)
+        protected void <%= isChild ? "Child_" : "DataPortal_" %>Fetch(<%= c.Name %> crit)
         {
             <%
                 }
                 else if (c.Properties.Count > 0)
                 {
                     %>
-        protected void <%= isChild ? "Child" : "DataPortal" %>_Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)
+        protected void <%= isChild ? "Child_" : "DataPortal_" %>Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)
         {
             <%
                 }
                 else
                 {
                     %>
-        protected void <%= isChild ? "Child" : "DataPortal" %>_Fetch()
+        protected void <%= isChild ? "Child_" : "DataPortal_" %>Fetch()
         {
             <%
-                    if (Info.SimpleCacheOptions == SimpleCacheResults.DataPortal)
+                    if (Info.SimpleCacheOptions == SimpleCacheResults.DataPortal && c.Properties.Count == 0)
                     {
                         %>
             if (IsCached)
@@ -139,42 +143,19 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
             using (var dalManager = DalFactory<%= GetConnectionName(CurrentUnit) %>.GetManager())
             {
                 var dal = dalManager.GetProvider<I<%= Info.ObjectName %>Dal>();
-                var data = dal.Fetch(<%= strGetCallParams %>);
+                var data = dal.Fetch(<%= strGetInvokeParams %>);
                 LoadCollection(data);
             }
             OnFetchPost(args);
             <%
-                if (Info.ObjectType == CslaObjectType.EditableRootCollection)
+                if (SelfLoadsChildren(Info) && IsCollectionType(Info.ObjectType))
                 {
-                    foreach (ChildProperty childProp in childInfo.GetCollectionChildProperties())
-                    {
-                        if (childProp.LoadingScheme == LoadingScheme.SelfLoad && !childProp.LazyLoad)
-                        {
-                            string invokeParam = string.Empty;
-                            foreach (Parameter param in childProp.LoadParameters)
-                            {
-                                bool first1 = true;
-                                foreach (CriteriaProperty crit in param.Criteria.Properties)
-                                {
-                                    if (first1)
-                                    {
-                                        first1 = false;
-                                    }
-                                    else
-                                    {
-                                        invokeParam += ", ";
-                                    }
-                                    invokeParam += FormatPascal(crit.Name);
-                                }
-                            }
-            %>
+                %>
             foreach (var <%= FormatCamel(childInfo.ObjectName) %> in this)
             {
-                <%= FormatCamel(childInfo.ObjectName) %>.FetchChildren(<%= FormatCamel(childInfo.ObjectName) %>.<%= invokeParam %>);
+                <%= FormatCamel(childInfo.ObjectName) %>.FetchChildren();
             }
         <%
-                        }
-                    }
                 }
                 %>
         }
@@ -192,6 +173,17 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
             using (var dr = new SafeDataReader(data))
             {
                 Fetch(dr);
+                <%
+                if (ParentLoadsChildren(Info) && IsCollectionType(Info.ObjectType))
+                {
+                    %>
+                foreach (var <%= FormatCamel(childInfo.ObjectName) %> in this)
+                {
+                    <%= FormatCamel(childInfo.ObjectName) %>.FetchChildren(dr);
+                }
+                <%
+                }
+                %>
             }
         }
         <%
@@ -203,7 +195,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
         /// Loads all <see cref="<%= Info.ObjectName %>"/> collection items from the given SafeDataReader.
         /// </summary>
         /// <param name="dr">The SafeDataReader to use.</param>
-        private void Fetch(SafeDataReader dr)
+        private void <%= (isChildCollection && !useChildFactory ? "Child_" : "") %>Fetch(SafeDataReader dr)
         {
             <%
     if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
@@ -226,8 +218,20 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
     %>
             while (dr.Read())
             {
-                <%= Info.ItemType %> obj = <%= Info.ItemType %>.Get<%= Info.ItemType %>(dr<%= useParentReference ? (", this") : "" %>);
-                Add(obj);
+                <%
+    if (useChildFactory)
+    {
+        %>
+                Add(<%= Info.ItemType %>.Get<%= Info.ItemType %>(dr));
+            <%
+    }
+    else
+    {
+        %>
+                Add(DataPortal.Fetch<%= IsNotRootType(childInfo) ? "Child" : "" %><<%= Info.ItemType %>>(dr));
+            <%
+    }
+    %>
             }
             <%
     if (!Info.HasGetCriteria && Info.ParentType != string.Empty && !selfLoad1)

@@ -26,6 +26,7 @@ if (Errors.Length == 0)
     bool usesDTO = DalObjectUsesDTO(Info);
     bool usesDalCriteria = DalObjectUsesCriteria(Info);
     bool isChild = false;
+    bool useChildFactory = CurrentUnit.GenerationParams.UseChildFactory;
     int silverlightLevel = 0;
     bool genOptional = false;
     bool useItem = false;
@@ -68,6 +69,7 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
 <!-- #include file="EditableRoot_Factory.asp" -->
 <%
     }
+    Response.Write(Environment.NewLine);
     %>
 <!-- #include file="Constructor.asp" -->
 <!-- #include file="Criteria.asp" -->

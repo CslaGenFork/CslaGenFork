@@ -8,7 +8,7 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
             %>
 
         /// <summary>
-        /// Marks the <see cref="<%= Info.ObjectName %>"/> object for deletion.
+        /// Factory method. Marks the <see cref="<%= Info.ObjectName %>"/> object for deletion.
         /// The object will be deleted as part of the next save operation.
         /// </summary>
 <%

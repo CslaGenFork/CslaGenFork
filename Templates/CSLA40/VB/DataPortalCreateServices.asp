@@ -102,9 +102,10 @@ if (UseSilverlight())
             foreach (ChildProperty childProp in Info.GetAllChildProperties())
             {
                 CslaObjectInfo _child = FindChildInfo(Info, childProp.TypeName);
-                if (_child != null && childProp.LoadingScheme == LoadingScheme.ParentLoad)
+                if (_child != null)
                 {
-                    if (IsEditableType(_child.ObjectType) && childProp.LoadingScheme == LoadingScheme.ParentLoad)
+                    if (IsEditableType(_child.ObjectType) &&
+                        (childProp.LoadingScheme == LoadingScheme.ParentLoad || !childProp.LazyLoad))
                     {
                         %>
             <%= GetNewChildLoadStatement(childProp, true) %>;

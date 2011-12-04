@@ -576,6 +576,8 @@ namespace CslaGenerator.Util.PropertyBags
                             break;
                     }
                 }
+                if (SelectedObject[0].LoadingScheme == LoadingScheme.ParentLoad && pi.Name == "LazyLoad")
+                        isreadonly = true;
                 userfriendlyname = userfriendlyname.Length > 0 ? userfriendlyname : pi.Name;
                 var types = new List<ChildProperty>();
                 foreach (var obj in _selectedObject)
@@ -655,9 +657,23 @@ namespace CslaGenerator.Util.PropertyBags
                         propertyName == "BusinessRules")
                         return false;
 
-                    if (SelectedObject[0].LoadingScheme == LoadingScheme.ParentLoad && propertyName == "LazyLoad")
-                        return false;
+                    var isParentRootCollection = false;
+                    var cslaObject = (CslaObjectInfo)GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem;
+                    var parentInfo2 = cslaObject.Parent.CslaObjects.Find(cslaObject.ParentType);
+                    if (parentInfo2 != null)
+                        isParentRootCollection = (parentInfo2.ObjectType == CslaObjectType.EditableRootCollection) ||
+                            (parentInfo2.ObjectType == CslaObjectType.ReadOnlyCollection && parentInfo2.ParentType == String.Empty);
 
+                    if (isParentRootCollection &&
+                        propertyName == "LoadParameters")
+                        return false;
+                    if (((GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.None ||
+                        GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.ObjectLevel) ||
+                        !isParentRootCollection) &&
+                        propertyName == "ParentLoadProperties")
+                        return false;
+                    /*if (SelectedObject[0].LoadingScheme == LoadingScheme.ParentLoad && propertyName == "LazyLoad")
+                        return false;*/
                     if (_selectedObject.Length > 1 && IsEnumerable(GetPropertyInfoCache(propertyName)))
                         return false;
                 }

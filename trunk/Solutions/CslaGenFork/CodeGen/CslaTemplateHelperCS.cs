@@ -1709,24 +1709,20 @@ namespace CslaGenerator.CodeGen
 
         #region Query Object Metadata
 
-        public bool LoadsChildren(CslaObjectInfo info)
+        public bool ParentLoadsChildren(CslaObjectInfo info)
         {
             if (IsCollectionType(info.ObjectType))
                 info = FindChildInfo(info, info.ItemType);
 
-            foreach (var child in info.ChildProperties)
-                if (child.LoadingScheme == LoadingScheme.ParentLoad) { return true; }
+            /*foreach (var child in info.GetAllChildProperties())
+                if (child.LoadingScheme != LoadingScheme.SelfLoad)
+                {
+                    return true;
+                }
 
-            foreach (var child in info.ChildCollectionProperties)
-                if (child.LoadingScheme == LoadingScheme.ParentLoad) { return true; }
+            return false;*/
 
-            foreach (var child in info.InheritedChildProperties)
-                if (child.LoadingScheme == LoadingScheme.ParentLoad) { return true; }
-
-            foreach (var child in info.InheritedChildCollectionProperties)
-                if (child.LoadingScheme == LoadingScheme.ParentLoad) { return true; }
-
-            return false;
+            return info.GetAllChildProperties().Any(child => child.LoadingScheme != LoadingScheme.SelfLoad);
         }
 
         public bool SelfLoadsChildren(CslaObjectInfo info)
@@ -1734,19 +1730,15 @@ namespace CslaGenerator.CodeGen
             if (IsCollectionType(info.ObjectType))
                 info = FindChildInfo(info, info.ItemType);
 
-            foreach (var child in info.ChildProperties)
-                if (!child.LazyLoad && child.LoadingScheme != LoadingScheme.ParentLoad) { return true; }
+            /*foreach (var child in info.GetAllChildProperties())
+                if (!child.LazyLoad && child.LoadingScheme == LoadingScheme.SelfLoad)
+                {
+                    return true;
+                }
 
-            foreach (var child in info.ChildCollectionProperties)
-                if (!child.LazyLoad && child.LoadingScheme != LoadingScheme.ParentLoad) { return true; }
+            return false;*/
 
-            foreach (var child in info.InheritedChildProperties)
-                if (!child.LazyLoad && child.LoadingScheme != LoadingScheme.ParentLoad) { return true; }
-
-            foreach (var child in info.InheritedChildCollectionProperties)
-                if (!child.LazyLoad && child.LoadingScheme != LoadingScheme.ParentLoad) { return true; }
-
-            return false;
+            return info.GetAllChildProperties().Any(child => !child.LazyLoad && child.LoadingScheme == LoadingScheme.SelfLoad);
         }
 
         public static bool IsCollectionType(CslaObjectType cslaType)
@@ -3112,7 +3104,7 @@ namespace CslaGenerator.CodeGen
             var parent = info.Parent.CslaObjects.Find(info.ParentType);
             if (parent != null)
             {
-                foreach (var childProp in parent.ChildCollectionProperties)
+                foreach (var childProp in parent.GetAllChildProperties())
                 {
                     if (childProp.TypeName == info.ObjectName)
                     {
@@ -3493,7 +3485,7 @@ namespace CslaGenerator.CodeGen
                                     // set the property so OnPropertyChanged is raised
                                     Children = e.Object;
                                 }
-                            }, DataPortal.ProxyModes.LocalOnly);
+                            });
                         return null;
                     }
                 }
@@ -3510,9 +3502,11 @@ namespace CslaGenerator.CodeGen
                     FormatPropertyInfoName(prop.Name));
                 response += "                    if (this.IsNew)" + Environment.NewLine;
                 response += "                    {" + Environment.NewLine;
-                /*response += string.Format("                        DataPortal.BeginCreate<{0}>((o, e) =>" + Environment.NewLine,
-                    prop.TypeName);*/
-                response += String.Format("                        {0}.New{0}((o, e) =>" + Environment.NewLine,
+                if (CurrentUnit.GenerationParams.UseChildFactory)
+                    response += String.Format("                        {0}.New{0}((o, e) =>" + Environment.NewLine,
+                    prop.TypeName);
+                else
+                    response += string.Format("                        DataPortal.BeginCreate<{0}>((o, e) =>" + Environment.NewLine,
                     prop.TypeName);
                 response += "                            {" + Environment.NewLine;
                 response += "                                if (e.Error != null)" + Environment.NewLine;
@@ -3527,15 +3521,19 @@ namespace CslaGenerator.CodeGen
                                                : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
                                                  ") this)." + FormatPascal(prop.Name)));
                 response += "                                }" + Environment.NewLine;
-                /*response += "                            }, DataPortal.ProxyModes.LocalOnly);" + Environment.NewLine;*/
-                response += "                            });" + Environment.NewLine;
+                if (CurrentUnit.GenerationParams.UseChildFactory)
+                    response += "                            });" + Environment.NewLine;
+                else
+                    response += "                            }, DataPortal.ProxyModes.LocalOnly);" + Environment.NewLine;
                 response += "                        return null;" + Environment.NewLine;
                 response += "                    }" + Environment.NewLine;
                 response += "                    else" + Environment.NewLine;
                 response += "                    {" + Environment.NewLine;
-                /*response += string.Format("                        DataPortal.BeginFetch<{0}>({1}, (o, e) =>" +
-                    Environment.NewLine, prop.TypeName, GetFieldReaderStatementList(info, prop));*/
-                response += String.Format("                        {0}.Get{0}({1}, (o, e) =>" +
+                if(CurrentUnit.GenerationParams.UseChildFactory)
+                    response += String.Format("                        {0}.Get{0}({1}, (o, e) =>" +
+                    Environment.NewLine, prop.TypeName, GetFieldReaderStatementList(info, prop));
+                else
+                    response += string.Format("                        DataPortal.BeginFetch<{0}>({1}, (o, e) =>" +
                     Environment.NewLine, prop.TypeName, GetFieldReaderStatementList(info, prop));
                 response += "                            {" + Environment.NewLine;
                 response += "                                if (e.Error != null)" + Environment.NewLine;
@@ -3550,8 +3548,10 @@ namespace CslaGenerator.CodeGen
                                                : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
                                                  ") this)." + FormatPascal(prop.Name)));
                 response += "                                }" + Environment.NewLine;
-                /*response += "                            }, DataPortal.ProxyModes.LocalOnly);" + Environment.NewLine;*/
-                response += "                            });" + Environment.NewLine;
+                if (!CurrentUnit.GenerationParams.UseChildFactory && CurrentUnit.GenerationParams.SilverlightUsingServices)
+                    response += "                            }, DataPortal.ProxyModes.LocalOnly);" + Environment.NewLine;
+                else
+                    response += "                            });" + Environment.NewLine;
                 response += "                        return null;" + Environment.NewLine;
                 response += "                    }" + Environment.NewLine;
                 response += "                }" + Environment.NewLine;
@@ -3577,19 +3577,35 @@ namespace CslaGenerator.CodeGen
                 response += String.Format("                if (!FieldManager.FieldExists({0}))" + Environment.NewLine,
                     FormatPropertyInfoName(prop.Name));
                 response += "                    if (this.IsNew)" + Environment.NewLine;
-                response += String.Format("                        {0} = {1}.New{1}();" + Environment.NewLine,
-                                          (String.IsNullOrEmpty(prop.Implements)
-                                               ? FormatPascal(prop.Name)
-                                               : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
-                                                 ") this)." + FormatPascal(prop.Name)),
-                                          prop.TypeName);
+                if (CurrentUnit.GenerationParams.UseChildFactory)
+                    response += String.Format("                        {0} = {1}.New{1}();" + Environment.NewLine,
+                        (String.IsNullOrEmpty(prop.Implements)
+                        ? FormatPascal(prop.Name)
+                        : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
+                        ") this)." + FormatPascal(prop.Name)),
+                        prop.TypeName);
+                else
+                    response += String.Format("                        {0} = DataPortal.CreateChild<{1}>();" + Environment.NewLine,
+                        (String.IsNullOrEmpty(prop.Implements)
+                        ? FormatPascal(prop.Name)
+                        : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
+                        ") this)." + FormatPascal(prop.Name)),
+                        prop.TypeName);
                 response += "                    else" + Environment.NewLine;
-                response += String.Format("                        {0} = {1}.Get{1}({2});" + Environment.NewLine,
-                                          (String.IsNullOrEmpty(prop.Implements)
-                                               ? FormatPascal(prop.Name)
-                                               : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
-                                                 ") this)." + FormatPascal(prop.Name)),
-                                          prop.TypeName, GetFieldReaderStatementList(info, prop));
+                if (CurrentUnit.GenerationParams.UseChildFactory)
+                    response += String.Format("                        {0} = {1}.Get{1}({2});" + Environment.NewLine,
+                        (String.IsNullOrEmpty(prop.Implements)
+                        ? FormatPascal(prop.Name)
+                        : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
+                        ") this)." + FormatPascal(prop.Name)),
+                        prop.TypeName, GetFieldReaderStatementList(info, prop));
+                else
+                    response += String.Format("                        {0} = DataPortal.FetchChild<{1}>({2});" + Environment.NewLine,
+                        (String.IsNullOrEmpty(prop.Implements)
+                        ? FormatPascal(prop.Name)
+                        : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
+                        ") this)." + FormatPascal(prop.Name)),
+                        prop.TypeName, GetFieldReaderStatementList(info, prop));
                 response += Environment.NewLine;
                 response += ChildPropertyDeclareGetReturner(prop);
                 response += ((UseSilverlight() &&
@@ -3646,9 +3662,11 @@ namespace CslaGenerator.CodeGen
                     FormatPropertyInfoName(prop.Name));
                 response += "                    if (this.IsNew)" + Environment.NewLine;
                 response += "                    {" + Environment.NewLine;
-                /*response += string.Format("                        DataPortal.BeginCreate<{0}>((o, e) =>" + Environment.NewLine,
-                    prop.TypeName);*/
-                response += String.Format("                        {0}.New{0}((o, e) =>" + Environment.NewLine, prop.TypeName);
+                if (CurrentUnit.GenerationParams.UseChildFactory)
+                    response += String.Format("                        {0}.New{0}((o, e) =>" + Environment.NewLine, prop.TypeName);
+                else
+                    response += string.Format("                        DataPortal.BeginCreate<{0}>((o, e) =>" + Environment.NewLine,
+                        prop.TypeName);
                 response += "                            {" + Environment.NewLine;
                 response += "                                if (e.Error != null)" + Environment.NewLine;
                 response += "                                    throw e.Error;" + Environment.NewLine;
@@ -3667,10 +3685,12 @@ namespace CslaGenerator.CodeGen
                 response += "                    }" + Environment.NewLine;
                 response += "                    else" + Environment.NewLine;
                 response += "                    {" + Environment.NewLine;
-                /*response += string.Format("                        DataPortal.BeginFetch<{0}>({1}, (o, e) =>" +
-                    Environment.NewLine, prop.TypeName, GetFieldReaderStatementList(info, prop));*/
-                response += String.Format("                        {0}.Get{0}({1}, (o, e) =>" +
-                    Environment.NewLine, prop.TypeName, GetFieldReaderStatementList(info, prop));
+                if (CurrentUnit.GenerationParams.UseChildFactory)
+                    response += String.Format("                        {0}.Get{0}({1}, (o, e) =>" +
+                        Environment.NewLine, prop.TypeName, GetFieldReaderStatementList(info, prop));
+                else
+                    response += string.Format("                        DataPortal.BeginFetch<{0}>({1}, (o, e) =>" +
+                        Environment.NewLine, prop.TypeName, GetFieldReaderStatementList(info, prop));
                 response += "                            {" + Environment.NewLine;
                 response += "                                if (e.Error != null)" + Environment.NewLine;
                 response += "                                    throw e.Error;" + Environment.NewLine;
@@ -3736,10 +3756,12 @@ namespace CslaGenerator.CodeGen
                 response += "                {" + Environment.NewLine;
                 response += String.Format("                    LoadProperty({0}, null);" + Environment.NewLine,
                     FormatPropertyInfoName(prop.Name));
-                /*response += string.Format("                    DataPortal.BeginFetch<{0}>({1}, (o, e) =>" + Environment.NewLine,
-                    prop.TypeName, GetFieldReaderStatementList(info, prop));*/
-                response += String.Format("                    {0}.Get{0}({1}, (o, e) =>" + Environment.NewLine,
-                    prop.TypeName, GetFieldReaderStatementList(info, prop));
+                if (CurrentUnit.GenerationParams.UseChildFactory)
+                    response += String.Format("                    {0}.Get{0}({1}, (o, e) =>" + Environment.NewLine,
+                        prop.TypeName, GetFieldReaderStatementList(info, prop));
+                else
+                    response += string.Format("                    DataPortal.BeginFetch<{0}>({1}, (o, e) =>" + Environment.NewLine,
+                        prop.TypeName, GetFieldReaderStatementList(info, prop));
                 response += "                        {" + Environment.NewLine;
                 response += "                            if (e.Error != null)" + Environment.NewLine;
                 response += "                                throw e.Error;" + Environment.NewLine;
@@ -3753,8 +3775,10 @@ namespace CslaGenerator.CodeGen
                                                : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
                                                  ") this)." + FormatPascal(prop.Name)));
                 response += "                            }" + Environment.NewLine;
-                /*response += "                        }, DataPortal.ProxyModes.LocalOnly);" + Environment.NewLine;*/
-                response += "                        });" + Environment.NewLine;
+                if (CurrentUnit.GenerationParams.UseChildFactory)
+                    response += "                        });" + Environment.NewLine;
+                else
+                    response += "                        }, DataPortal.ProxyModes.LocalOnly);" + Environment.NewLine;
                 response += "                    return null;" + Environment.NewLine;
                 response += "                }" + Environment.NewLine;
                 response += "                else" + Environment.NewLine;
@@ -3793,10 +3817,12 @@ namespace CslaGenerator.CodeGen
                 response += "                {" + Environment.NewLine;
                 response += String.Format("                    LoadProperty({0}, null);" + Environment.NewLine,
                     FormatPropertyInfoName(prop.Name));
-                /*response += string.Format("                    DataPortal.BeginFetch<{0}>({1}, (o, e) =>" + Environment.NewLine,
-                    prop.TypeName, GetFieldReaderStatementList(info, prop));*/
-                response += String.Format("                    {0}.Get{0}({1}, (o, e) =>" + Environment.NewLine,
-                    prop.TypeName, GetFieldReaderStatementList(info, prop));
+                if (CurrentUnit.GenerationParams.UseChildFactory)
+                    response += String.Format("                    {0}.Get{0}({1}, (o, e) =>" + Environment.NewLine,
+                        prop.TypeName, GetFieldReaderStatementList(info, prop));
+                else
+                    response += string.Format("                    DataPortal.BeginFetch<{0}>({1}, (o, e) =>" + Environment.NewLine,
+                        prop.TypeName, GetFieldReaderStatementList(info, prop));
                 response += "                        {" + Environment.NewLine;
                 response += "                            if (e.Error != null)" + Environment.NewLine;
                 response += "                                throw e.Error;" + Environment.NewLine;
@@ -3830,12 +3856,20 @@ namespace CslaGenerator.CodeGen
 
                 response += String.Format("                if (!FieldManager.FieldExists({0}))" + Environment.NewLine,
                     FormatPropertyInfoName(prop.Name));
-                response += String.Format("                    {0} = {1}.Get{1}({2});" + Environment.NewLine,
-                                          (String.IsNullOrEmpty(prop.Implements)
-                                               ? FormatPascal(prop.Name)
-                                               : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
-                                                 ") this)." + FormatPascal(prop.Name)),
-                                          prop.TypeName, GetFieldReaderStatementList(info, prop));
+                if (CurrentUnit.GenerationParams.UseChildFactory)
+                    response += String.Format("                    {0} = {1}.Get{1}({2});" + Environment.NewLine,
+                        (String.IsNullOrEmpty(prop.Implements)
+                        ? FormatPascal(prop.Name)
+                        : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
+                        ") this)." + FormatPascal(prop.Name)),
+                        prop.TypeName, GetFieldReaderStatementList(info, prop));
+                else
+                    response += String.Format("                    {0} = DataPortal.FetchChild<{1}>({2});" + Environment.NewLine,
+                        (String.IsNullOrEmpty(prop.Implements)
+                        ? FormatPascal(prop.Name)
+                        : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
+                        ") this)." + FormatPascal(prop.Name)),
+                        prop.TypeName, GetFieldReaderStatementList(info, prop));
                 response += Environment.NewLine;
                 response += ChildPropertyDeclareGetReturner(prop);
                 response += (CurrentUnit.GenerationParams.SilverlightUsingServices ? "#endif" + Environment.NewLine : "");

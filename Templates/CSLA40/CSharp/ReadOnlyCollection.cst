@@ -21,16 +21,17 @@
 if (Errors.Length == 0)
 {
     bool isChild = !string.IsNullOrEmpty(Info.ParentType);
+    bool useChildFactory = CurrentUnit.GenerationParams.UseChildFactory;
     int silverlightLevel = 0;
     bool genOptional = false;
     bool useItem = false;
     bool first = true;
+    bool? firstComment = null;
     %><!-- #include file="Header.asp" -->
 <!-- #include file="Using.asp" -->
 namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Business) %>
 {
 <%
-    bool? firstComment = null;
     %><!-- #include file="XmlComment.asp" -->
     <%
     if (GetAttributesString(Info.Attributes) != string.Empty)
@@ -75,18 +76,20 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Busine
     %><%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %>{
 <!-- #include file="CollectionBusinessMethods.asp" -->
 <!-- #include file="FindMethods.asp" -->
-    <%
+<%
     if (Info.SimpleCacheOptions != SimpleCacheResults.None)
     {
         %>
 <!-- #include file="SimpleCacheFactory.asp" -->
 <%
+        Response.Write(Environment.NewLine);
     }
-    if (Info.GenerateFactoryMethods)
+    if (Info.GenerateFactoryMethods && (useChildFactory || Info.ParentType == string.Empty))
     {
         %>
 <!-- #include file="ReadOnlyCollection_Factory.asp" -->
 <%
+        Response.Write(Environment.NewLine);
     }
     %>
 <!-- #include file="Constructor.asp" -->

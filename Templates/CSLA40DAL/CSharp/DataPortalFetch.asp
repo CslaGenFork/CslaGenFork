@@ -5,8 +5,8 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
     {
         if (c.GetOptions.DataPortal)
         {
-            string strGetCritParams = string.Empty;
-            string strGetCallParams = string.Empty;
+            //string strGetCritParams = string.Empty;
+            string strGetInvokeParams = string.Empty;
             string strGetComment = string.Empty;
             bool getIsFirst = true;
 
@@ -16,8 +16,8 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
                 {
                     if (!getIsFirst)
                     {
-                        strGetCritParams += ", ";
-                        strGetCallParams += ", ";
+                        //strGetCritParams += ", ";
+                        strGetInvokeParams += ", ";
                         strGetComment += System.Environment.NewLine + new string(' ', 8);
                     }
                     else
@@ -25,19 +25,19 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
 
                     TypeCodeEx propType = p.PropertyType;
 
-                    strGetCritParams += p.Name;
-                    strGetCallParams += "crit." + FormatPascal(p.Name);
+                    //strGetCritParams += p.Name;
+                    strGetInvokeParams += "crit." + FormatPascal(p.Name);
                     strGetComment += "/// <param name=\"" + FormatCamel(p.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(p.Name) + ".</param>";
                 }
 
-                if (c.Properties.Count > 1)
+                /*if (c.Properties.Count > 1)
                 {
                     strGetCritParams = "new " + c.Name + "(" + strGetCritParams + ")";
                 }
                 else if (c.Properties.Count > 0)
                 {
                     strGetCritParams = SendSingleCriteria(c, strGetCritParams);
-                }
+                }*/
             }
             else
             {
@@ -45,8 +45,8 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
                 {
                     if (!getIsFirst)
                     {
-                        strGetCritParams += ", ";
-                        strGetCallParams += ", ";
+                        //strGetCritParams += ", ";
+                        strGetInvokeParams += ", ";
                         strGetComment += System.Environment.NewLine + new string(' ', 8);
                     }
                     else
@@ -54,15 +54,15 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
 
                     TypeCodeEx propType = p.PropertyType;
 
-                    strGetCritParams += string.Concat(GetDataTypeGeneric(p, propType), " ", FormatCamel(p.Name));
-                    strGetCallParams += "crit." + FormatPascal(p.Name);
+                    //strGetCritParams += string.Concat(GetDataTypeGeneric(p, propType), " ", FormatCamel(p.Name));
+                    strGetInvokeParams += "crit." + FormatPascal(p.Name);
                     strGetComment += "/// <param name=\"" + FormatCamel(p.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(p.Name) + ".</param>";
                 }
             }
             if (c.Properties.Count > 1)
                 strGetComment = "/// <param name=\"crit\">The fetch criteria.</param>";
             else if (c.Properties.Count == 1)
-                strGetCallParams = FormatCamel(c.Properties[0].Name);
+                strGetInvokeParams = FormatCamel(c.Properties[0].Name);
             %>
 
         /// <summary>
@@ -81,15 +81,15 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
             }
             if (c.Properties.Count > 1)
             {
-        %>protected void <%= isChild ? "Child" : "DataPortal" %>_Fetch(<%= c.Name %> crit)<%
+        %>protected void <%= isChild ? "Child_" : "DataPortal_" %>Fetch(<%= c.Name %> crit)<%
             }
             else if (c.Properties.Count > 0)
             {
-        %>protected void <%= isChild ? "Child" : "DataPortal" %>_Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)<%
+        %>protected void <%= isChild ? "Child_" : "DataPortal_" %>Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)<%
             }
             else
             {
-        %>protected void <%= isChild ? "Child" : "DataPortal" %>_Fetch()<%
+        %>protected void <%= isChild ? "Child_" : "DataPortal_" %>Fetch()<%
             }
         %>
         {
@@ -116,27 +116,15 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
             using (var dalManager = DalFactory<%= GetConnectionName(CurrentUnit) %>.GetManager())
             {
                 var dal = dalManager.GetProvider<I<%= Info.ObjectName %>Dal>();
-                var data = dal.Fetch(<%= strGetCallParams %>);
+                var data = dal.Fetch(<%= strGetInvokeParams %>);
                 Fetch(data);
             }
             OnFetchPost(args);
             <%
             if (SelfLoadsChildren(Info))
             {
-                string fetchChildrenParam = string.Empty;
-                if (c.Properties.Count == 1)
-                    fetchChildrenParam = AssignSingleCriteria(c, "crit");
-                else
-                {
-                    bool first1 = true;
-                    foreach (Property p in c.Properties)
-                    {
-                        if (first1) { first1 = false; } else { fetchChildrenParam += ", "; }
-                        fetchChildrenParam += "crit." + p.Name;
-                    }
-                }
                 %>
-            FetchChildren(<%= fetchChildrenParam %>);
+            FetchChildren();
         }
         <%
             }
@@ -160,7 +148,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
                 {
                     Fetch(dr);
                     <%
-        if (LoadsChildren(Info))
+        if (ParentLoadsChildren(Info))
         {
             %>
                     FetchChildren(dr);

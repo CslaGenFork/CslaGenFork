@@ -37,17 +37,33 @@ namespace CslaGenerator.Design
                     // CR modifying to accomodate PropertyBag
                     Type instanceType = null;
                     object objinfo = null;
-                    TypeHelper.GetContextInstanceObject(context, ref objinfo, ref instanceType);
-                    PropertyInfo propInfo;
-                    if (context.PropertyDescriptor.DisplayName == "Hashcode Property")
-                        propInfo = instanceType.GetProperty("HashcodeProperty");
-                    else if (context.PropertyDescriptor.DisplayName == "Equals Property")
-                        propInfo = instanceType.GetProperty("EqualsProperty");
-                    else
-                        propInfo = instanceType.GetProperty("ToStringProperty");
-                    var propColl = (PropertyCollection)propInfo.GetValue(objinfo, null);
+                    var propColl = new PropertyCollection();
+                    var obj = new CslaObjectInfo();
 
-                    var obj = (CslaObjectInfo)objinfo;
+                    TypeHelper.GetContextInstanceObject(context, ref objinfo, ref instanceType);
+                    if (instanceType == typeof(CslaObjectInfo))
+                    {
+                        PropertyInfo propInfo;
+                        if (context.PropertyDescriptor.DisplayName == "Hashcode Property")
+                            propInfo = instanceType.GetProperty("HashcodeProperty");
+                        else if (context.PropertyDescriptor.DisplayName == "Equals Property")
+                            propInfo = instanceType.GetProperty("EqualsProperty");
+                        else
+                            propInfo = instanceType.GetProperty("ToStringProperty");
+
+                        propColl = (PropertyCollection)propInfo.GetValue(objinfo, null);
+                        obj = (CslaObjectInfo)objinfo;
+                    }
+                    else
+                    {
+                        instanceType = null;
+                        objinfo = null;
+                        TypeHelper.GetChildPropertyContextInstanceObject(context, ref objinfo, ref instanceType);
+                        var parentPropertiesPropInfo = instanceType.GetProperty("ParentLoadProperties");
+                        propColl = (PropertyCollection)parentPropertiesPropInfo.GetValue(objinfo, null);
+
+                        obj = (CslaObjectInfo)GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem;
+                    }
 
                     var valueProps = obj.GetAllValueProperties();
                     if (valueProps.Count > 0)
@@ -58,7 +74,6 @@ namespace CslaGenerator.Design
                         {
                             _lstProperties.Items.Add(new DictionaryEntry(valueProps[i].Name, valueProps[i]));
                         }
-                        _lstProperties.Sorted = true;
 
                         foreach (var parentProp in propColl)
                         {

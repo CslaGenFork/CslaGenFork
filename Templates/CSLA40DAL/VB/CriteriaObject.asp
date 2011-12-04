@@ -3,9 +3,7 @@ if (GetCriteriaObjects(Info).Count > 0)
 {
     bool isCriteriaObjectNeeded = IsCriteriaObjectNeeded(Info);
 
-    if (isCriteriaObjectNeeded &&
-        (!usesDalCriteria && genStep == GenerationStep.Business) ||
-        (usesDalCriteria && genStep == GenerationStep.DalInterface))
+    if (isCriteriaObjectNeeded)
     {
         string getterCriteria = string.Empty;
         string setterCriteria = string.Empty;
@@ -120,13 +118,13 @@ if (GetCriteriaObjects(Info).Count > 0)
         /// </summary>
         <%
                     }
-                    if(prop.PropertyType == TypeCodeEx.Boolean && prop.Nullable == false)
+                    if (prop.PropertyType == TypeCodeEx.Boolean && prop.Nullable == false)
                     {
                         %>
         /// <value><c>true</c> if <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; otherwise, <c>false</c>.</value>
         <%
                     }
-                    else if(prop.PropertyType == TypeCodeEx.Boolean && prop.Nullable == true)
+                    else if (prop.PropertyType == TypeCodeEx.Boolean && prop.Nullable == true)
                     {
                         %>
         /// <value><c>true</c> if <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; <c>false</c> if not <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; otherwise, <c>null</c>.</value>

@@ -1,4 +1,4 @@
-<%@ CodeTemplate Inherits="CslaTemplateHelperCS" Debug="false" Language="CSharp" TargetLanguage="CSharp" Description="Generates a CSLA ReadOnly Object." %>
+<%@ CodeTemplate Inherits="CslaTemplateHelperCS" Language="CSharp" TargetLanguage="CSharp" Description="Generates a CSLA ReadOnly Object." %>
 <%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the ReadOnly Object to create." %>
 <%@ Property Name="Errors" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return errors to master.cst" %>
 <%@ Property Name="Warnings" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return warnings to master.cst" %>
@@ -24,6 +24,7 @@ if (Errors.Length == 0)
     bool usesDTO = DalObjectUsesDTO(Info);
     bool usesDalCriteria = DalObjectUsesCriteria(Info);
     bool isChild = !string.IsNullOrEmpty(Info.ParentType);
+    bool useChildFactory = CurrentUnit.GenerationParams.UseChildFactory;
     int silverlightLevel = 0;
     bool genOptional = false;
     bool useItem = false;
@@ -59,13 +60,14 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
 <!-- #include file="BusinessProps.asp" -->
 <!-- #include file="ObjectOverrides.asp" -->
     <%
-    Response.Write(Environment.NewLine);
-    if (Info.GenerateFactoryMethods)
+    if (Info.GenerateFactoryMethods && (useChildFactory || Info.ParentType == string.Empty))
     {
+        Response.Write(Environment.NewLine);
         %>
 <!-- #include file="ReadOnlyObject_Factory.asp" -->
 <%
     }
+    Response.Write(Environment.NewLine);
     %>
 <!-- #include file="Constructor.asp" -->
 <!-- #include file="Criteria.asp" -->

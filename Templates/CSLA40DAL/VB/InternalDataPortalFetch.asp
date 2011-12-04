@@ -1,13 +1,18 @@
 <%
 if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
 {
+    string fetchString = string.Empty;
+    if (IsNotRootType(Info) && !useChildFactory)
+        fetchString = "Child_";
+    if (Info.ObjectType == CslaObjectType.DynamicEditableRoot && !useChildFactory)
+        fetchString = "DataPortal_";
     %>
 
         /// <summary>
         /// Loads a <see cref="<%= Info.ObjectName %>"/> object from the given SafeDataReader.
         /// </summary>
         /// <param name="dr">The SafeDataReader to use.</param>
-        private void Fetch(SafeDataReader dr)
+        private void <%= fetchString %>Fetch(SafeDataReader dr)
         {
             // Value properties
             <%
@@ -36,7 +41,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
             OnFetchRead(args);
         }
         <%
-    if (LoadsChildren(Info))
+    if (ParentLoadsChildren(Info))
     {
         %>
 
@@ -58,17 +63,22 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
                 CslaObjectInfo _child = FindChildInfo(Info, childProp.TypeName);
                 if (_child != null)
                 {
+                    if (useChildFactory)
+                        fetchString = childProp.TypeName + ".Get" + childProp.TypeName;
+                    else
+                        fetchString = "DataPortal.FetchChild<" + childProp.TypeName + ">";
+
                     if (childProp.DeclarationMode == PropertyDeclaration.Managed ||
                         childProp.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion)
                     {
                         %>
-                LoadProperty(<%= FormatPropertyInfoName(childProp.Name) %>, <%= childProp.TypeName %>.Get<%= childProp.TypeName %>(dr));
+                LoadProperty(<%= FormatPropertyInfoName(childProp.Name) %>, <%= fetchString %>(dr));
             <%
                     }
                     else
                     {
                         %>
-            <%= GetFieldLoaderStatement(childProp, childProp.TypeName + ".Get" + childProp.TypeName +"(dr)") %>;
+            <%= GetFieldLoaderStatement(childProp, fetchString +"(dr)") %>;
             <%
                     }
                 }
@@ -84,17 +94,22 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
                 CslaObjectInfo _child = FindChildInfo(Info, childProp.TypeName);
                 if (_child != null)
                 {
+                    if (useChildFactory)
+                        fetchString = childProp.TypeName + ".Get" + childProp.TypeName;
+                    else
+                        fetchString = "DataPortal.FetchChild<" + childProp.TypeName + ">";
+
                     if (childProp.DeclarationMode == PropertyDeclaration.Managed ||
                         childProp.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion)
                     {
                         %>
-            LoadProperty(<%= FormatPropertyInfoName(childProp.Name) %>, <%= childProp.TypeName %>.Get<%= childProp.TypeName %>(dr));
+            LoadProperty(<%= FormatPropertyInfoName(childProp.Name) %>, <%= fetchString %>(dr));
             <%
                     }
                     else
                     {
                         %>
-            <%= GetFieldLoaderStatement(childProp, childProp.TypeName + ".Get" + childProp.TypeName +"(dr)") %>;
+            <%= GetFieldLoaderStatement(childProp, fetchString +"(dr)") %>;
             <%
                     }
                 }
@@ -104,63 +119,70 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
         }
         <%
     }
-    if(SelfLoadsChildren(Info))
+    if (SelfLoadsChildren(Info))
     {
+        bool isParentRootCollection = false;
+        CslaObjectInfo parentInfo2 = Info.Parent.CslaObjects.Find(Info.ParentType);
+        if (parentInfo2 != null)
+            isParentRootCollection = (parentInfo2.ObjectType == CslaObjectType.EditableRootCollection) ||
+                (parentInfo2.ObjectType == CslaObjectType.ReadOnlyCollection && parentInfo2.ParentType == String.Empty);
         %>
 
         /// <summary>
-        /// Loads child objects using given criteria.
+        /// Loads child objects.
         /// </summary>
-        <%
-        string methodParam = string.Empty;
-        string invokeParam = string.Empty;
-        bool isParentEditableRoot = false;
-        CslaObjectInfo parentInfo2 = Info.Parent.CslaObjects.Find(Info.ParentType);
-        if (parentInfo2 != null)
-            isParentEditableRoot = parentInfo2.ObjectType == CslaObjectType.EditableRootCollection;
-        foreach (Criteria c in GetCriteriaObjects(Info))
-        {
-            bool first1 = true;
-            foreach (Property p in c.Properties)
-            {
-        %>
-        /// <param name="<%= FormatCamel(p.Name) %>">The <%= FormatProperty(p.Name) %> of the object to be fetched.</param>
-        <%
-                if (first1)
-                {
-                    first1 = false;
-                }
-                else
-                {
-                    methodParam += ", ";
-                    invokeParam += ", ";
-                }
-                methodParam += GetDataTypeGeneric(p, p.PropertyType) + " " + FormatCamel(p.Name);
-                invokeParam += FormatCamel(p.Name);
-            }
-        }
-        %>
-        <%= isParentEditableRoot ? "internal" : "private" %> void FetchChildren(<%= methodParam %>)
+        <%= isParentRootCollection ? "internal" : "private" %> void FetchChildren()
         {
             <%
-        foreach (ChildProperty childProp in Info.GetCollectionChildProperties())
+        foreach (ChildProperty childProp in Info.GetMyChildProperties())
         {
-            if (childProp.LoadingScheme != LoadingScheme.ParentLoad && !childProp.LazyLoad)
+            if (childProp.LoadingScheme == LoadingScheme.SelfLoad && !childProp.LazyLoad)
             {
-                CslaObjectInfo _child = FindChildInfo(Info, childProp.TypeName);
-                if (_child != null)
+                CslaObjectInfo childInfo = FindChildInfo(Info, childProp.TypeName);
+                if (childInfo != null)
                 {
+                    string invokeParam = string.Empty;
+                    bool first1 = true;
+                    if (isParentRootCollection)
+                    {
+                        foreach (Property prop in childProp.ParentLoadProperties)
+                        {
+                            if (first1)
+                                first1 = false;
+                            else
+                                invokeParam += ", ";
+
+                            invokeParam += FormatPascal(prop.Name);
+                        }
+                    }
+                    else
+                    {
+                        foreach (Parameter parm in childProp.LoadParameters)
+                        {
+                            if (first1)
+                                first1 = false;
+                            else
+                                invokeParam += ", ";
+
+                            invokeParam += FormatPascal(parm.Property.Name);
+                        }
+                    }
+                    if (useChildFactory)
+                        fetchString = childProp.TypeName + ".Get" + childProp.TypeName;
+                    else
+                        fetchString = "DataPortal.FetchChild<" + childProp.TypeName + ">";
+
                     if (childProp.DeclarationMode == PropertyDeclaration.Managed)
                     {
                         %>
-            LoadProperty(<%= FormatPropertyInfoName(childProp.Name) %>, <%= childProp.TypeName %>.Get<%= childProp.TypeName %>(<%= invokeParam %>));
+            LoadProperty(<%= FormatPropertyInfoName(childProp.Name) %>, <%= fetchString %>(<%= invokeParam %>));
             <%
                     }
                     else if (childProp.DeclarationMode == PropertyDeclaration.ClassicProperty ||
                         childProp.DeclarationMode == PropertyDeclaration.AutoProperty)
                     {
                         %>
-            <%= GetFieldLoaderStatement(childProp, childProp.TypeName + ".Get" + childProp.TypeName +"(" + invokeParam + ")") %>;
+            <%= GetFieldLoaderStatement(childProp, fetchString +"(" + invokeParam + ")") %>;
             <%
                     }
                 }

@@ -18,6 +18,7 @@ if (Errors.Length == 0)
 {
     GenerationStep genStep = GenerationStep.Business;
     bool isChild = false;
+    bool useChildFactory = CurrentUnit.GenerationParams.UseChildFactory;
     int silverlightLevel = 0;
     bool genOptional = false;
     bool useItem = false;
@@ -44,11 +45,14 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
 
 <!-- #include file="BusinessProps.asp" -->
 <!-- #include file="UnitOfWork_Factory.asp" -->
+<%
+    Response.Write(Environment.NewLine);
+    %>
 <!-- #include file="Constructor.asp" -->
 <!-- #include file="UnitOfWork_DataPortal.asp" -->
 <%
     Response.Write(Environment.NewLine);
-%>
+    %>
     }
 }
 <%

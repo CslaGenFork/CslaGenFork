@@ -23,7 +23,20 @@ if (CurrentUnit.GenerationParams.GenerateWinForms)
         /// <returns>The added object.</returns>
         protected override object AddNewCore()
         {
-            <%= Info.ItemType %> item = <%= Info.ItemType %>.New<%= Info.ItemType %>();
+            <%
+            if (useChildFactory)
+            {
+                %>
+            var item = <%= Info.ItemType %>.New<%= Info.ItemType %>();
+            <%
+            }
+            else
+            {
+                %>
+            var item = DataPortal.CreateChild<<%= Info.ItemType %>>();
+            <%
+            }
+            %>
             Add(item);
             return item;
         }
@@ -44,7 +57,20 @@ if (CurrentUnit.GenerationParams.GenerateWPF)
         /// <returns>The added object.</returns>
         protected override <%= Info.ItemType %> AddNewCore()
         {
-            <%= Info.ItemType %> item = <%= Info.ItemType %>.New<%= Info.ItemType %>();
+            <%
+            if (useChildFactory)
+            {
+                %>
+            var item = <%= Info.ItemType %>.New<%= Info.ItemType %>();
+            <%
+            }
+            else
+            {
+                %>
+            var item = DataPortal.CreateChild<<%= Info.ItemType %>>();
+            <%
+            }
+            %>
             Add(item);
             return item;
         }
@@ -71,7 +97,20 @@ if (UseSilverlight())
         /// <summary>Asynchronously adds a new item to the end of the <see cref="<%= Info.ObjectName %>"/> collection.</summary>
         protected override void AddNewCore()
         {
+            <%
+            if (useChildFactory)
+            {
+                %>
             <%= Info.ItemType %>.New<%= Info.ItemType %>((o, e) =>
+            <%
+            }
+            else
+            {
+                %>
+            DataPortal.BeginCreate<<%= Info.ItemType %>>((o, e) =>
+            <%
+            }
+            %>
                 {
                     if (e.Error != null)
                     {

@@ -24,6 +24,7 @@ if (Errors.Length == 0)
     bool usesDTO = DalObjectUsesDTO(Info);
     bool usesDalCriteria = DalObjectUsesCriteria(Info);
     bool isChild = true;
+    bool useChildFactory = CurrentUnit.GenerationParams.UseChildFactory;
     int silverlightLevel = 0;
     bool genOptional = false;
     bool useItem = false;
@@ -78,7 +79,7 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
 <!-- #include file="CollectionBusinessMethods.asp" -->
 <!-- #include file="FindMethods.asp" -->
     <%
-    if (Info.GenerateFactoryMethods)
+    if (Info.GenerateFactoryMethods && useChildFactory)
     {
         bool createCriteria = Info.HasCreateCriteriaFactory;
         PropertyDeclaration declarationMode = GetDeclarationMode(Info);
@@ -106,6 +107,7 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
         %>
 <!-- #include file="EditableChildCollection_Factory.asp" -->
 <%
+        Response.Write(Environment.NewLine);
     }
     %>
 <!-- #include file="Constructor.asp" -->

@@ -21,16 +21,17 @@
 if (Errors.Length == 0)
 {
     bool isChild = true;
+    bool useChildFactory = CurrentUnit.GenerationParams.UseChildFactory;
     int silverlightLevel = 0;
     bool genOptional = false;
     bool useItem = false;
     bool first = true;
+    bool? firstComment = null;
     %><!-- #include file="Header.asp" -->
 <!-- #include file="Using.asp" -->
 namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Business) %>
 {
 <%
-    bool? firstComment = null;
     %><!-- #include file="XmlComment.asp" -->
     <%
     if (GetAttributesString(Info.Attributes) != string.Empty)
@@ -76,7 +77,7 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Busine
 <!-- #include file="CollectionBusinessMethods.asp" -->
 <!-- #include file="FindMethods.asp" -->
     <%
-    if (Info.GenerateFactoryMethods)
+    if (Info.GenerateFactoryMethods && useChildFactory)
     {
         bool createCriteria = Info.HasCreateCriteriaFactory;
         PropertyDeclaration declarationMode = GetDeclarationMode(Info);
@@ -104,6 +105,7 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Busine
         %>
 <!-- #include file="EditableChildCollection_Factory.asp" -->
 <%
+        Response.Write(Environment.NewLine);
     }
     %>
 <!-- #include file="Constructor.asp" -->

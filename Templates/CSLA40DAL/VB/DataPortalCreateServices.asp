@@ -29,12 +29,12 @@ if (UseSilverlight())
             if (c.Properties.Count > 1)
             {
                 createPartialMethods.Add("partial void Service_Create(" + c.Name + " crit)");
-                %>public void <%= isChild ? "Child" : "DataPortal" %>_Create(<%= c.Name %> crit, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
+                %>public void <%= isChild ? "Child_" : "DataPortal_" %>Create(<%= c.Name %> crit, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
             }
             else if (c.Properties.Count > 0)
             {
                 createPartialMethods.Add("partial void Service_Create(" + ReceiveSingleCriteria(c, "crit") + ")");
-                %>public void <%= isChild ? "Child" : "DataPortal" %>_Create(<%= ReceiveSingleCriteria(c, "crit") %>, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
+                %>public void <%= isChild ? "Child_" : "DataPortal_" %>Create(<%= ReceiveSingleCriteria(c, "crit") %>, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
             }
             else
             {
@@ -102,9 +102,10 @@ if (UseSilverlight())
             foreach (ChildProperty childProp in Info.GetAllChildProperties())
             {
                 CslaObjectInfo _child = FindChildInfo(Info, childProp.TypeName);
-                if (_child != null && childProp.LoadingScheme == LoadingScheme.ParentLoad)
+                if (_child != null)
                 {
-                    if (IsEditableType(_child.ObjectType) && childProp.LoadingScheme == LoadingScheme.ParentLoad)
+                    if (IsEditableType(_child.ObjectType) &&
+                        (childProp.LoadingScheme == LoadingScheme.ParentLoad || !childProp.LazyLoad))
                     {
                         %>
             <%= GetNewChildLoadStatement(childProp, true) %>;

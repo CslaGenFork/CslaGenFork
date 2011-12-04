@@ -1,8 +1,6 @@
 <?xml version="1.0"?>
 <CslaGeneratorUnit xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <Params>
-    <DefaultTransactionType>ADO</DefaultTransactionType>
-    <DefaultDataBase>MyDatabase</DefaultDataBase>
     <DefaultNamespace>MyProject.Business</DefaultNamespace>
     <DefaultFolder />
     <SmartDateDefault>true</SmartDateDefault>
@@ -13,6 +11,8 @@
     <ReadOnlyObjectsCopyAuditing>false</ReadOnlyObjectsCopyAuditing>
     <ReadOnlyObjectsCopyTimestamp>false</ReadOnlyObjectsCopyTimestamp>
     <CreateReadOnlyObjectsPropertyMode>AutoProperty</CreateReadOnlyObjectsPropertyMode>
+    <DefaultDataBase>MyDatabase</DefaultDataBase>
+    <DefaultTransactionType>ADO</DefaultTransactionType>
     <DefaultPersistenceType>SqlConnectionManager</DefaultPersistenceType>
     <DefaultDatabaseContextObject />
     <ORBChildPropertySuffix>s</ORBChildPropertySuffix>
@@ -64,6 +64,7 @@
     <UseBypassPropertyChecks>false</UseBypassPropertyChecks>
     <UseSingleCriteria>false</UseSingleCriteria>
     <UsePublicPropertyInfo>true</UsePublicPropertyInfo>
+    <UseChildFactory>true</UseChildFactory>
     <ForceReadOnlyProperties>true</ForceReadOnlyProperties>
     <BaseFilenameSuffix>.Designer</BaseFilenameSuffix>
     <ExtendedFilenameSuffix />

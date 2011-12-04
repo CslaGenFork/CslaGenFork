@@ -9,7 +9,7 @@
 
 <!-- #include file="Header.asp" -->
 
-namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.DalInterface) %>
+namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Business) %>
 {
 <%
 bool? firstComment = true;

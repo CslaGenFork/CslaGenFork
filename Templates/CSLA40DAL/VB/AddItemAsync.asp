@@ -4,7 +4,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
     %>
 
         /// <summary>
-        /// Asynchronously adds a new <see cref="<%= Info.ItemType %>"/> object to the <%= Info.ObjectName %> collection.
+        /// Asynchronously adds a new <see cref="<%= Info.ItemType %>"/> item to the collection.
         /// </summary>
 <%
         string prmsAsync = string.Empty;
@@ -28,7 +28,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
         if (useAuthz)
         {
             %>
-        /// <exception cref="System.Security.SecurityException">if the user isn't authorized to add items from the collection.</exception>
+        /// <exception cref="System.Security.SecurityException">if the user isn't authorized to add items to the collection.</exception>
 <%
         }
         %>
@@ -42,7 +42,20 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
         }
         %>
             <%= Info.ItemType %> <%= FormatCamel(Info.ItemType) %> = null;
+            <%
+        if (useChildFactory)
+        {
+            %>
             <%= Info.ItemType %>.<%= newMethodNameAsync %><%= c.CreateOptions.FactorySuffix %>(<%= factoryParamsAsync %><%= factoryParamsAsync.Length > 1 ? ", " : "" %>(o, e) =>
+            <%
+        }
+        else
+        {
+            %>
+            DataPortal.BeginCreate<<%= Info.ItemType %>>(<%= factoryParamsAsync %><%= factoryParamsAsync.Length > 1 ? ", " : "" %>(o, e) =>
+            <%
+        }
+        %>
                 {
                     if (e.Error != null)
                         throw e.Error;

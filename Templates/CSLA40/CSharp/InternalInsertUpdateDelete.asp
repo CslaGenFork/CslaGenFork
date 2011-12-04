@@ -105,7 +105,7 @@ if (Info.GenerateDataPortalInsert)
                         %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", ReadProperty(<%= FormatPropertyInfoName(prop.Name) %>).Equals(Guid.Empty) ? (object)DBNull.Value : ReadProperty(<%= FormatPropertyInfoName(prop.Name) %>)).DbType = DbType.<%= TypeHelper.GetDbType(propType) %>;
                     <%
                     }
-                    else if(AllowNull(prop) && propType != TypeCodeEx.SmartDate)
+                    else if (AllowNull(prop) && propType != TypeCodeEx.SmartDate)
                     {
                         %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", ReadProperty(<%= FormatPropertyInfoName(prop.Name) %>) == null ? (object)DBNull.Value : ReadProperty(<%= FormatPropertyInfoName(prop.Name) %>)<%= TypeHelper.IsNullableType(propType) ? ".Value" :"" %>).DbType = DbType.<%= TypeHelper.GetDbType(propType) %>;
                     <%
@@ -123,7 +123,7 @@ if (Info.GenerateDataPortalInsert)
                         %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %>).Equals(Guid.Empty) ? (object)DBNull.Value : ReadProperty(<%= FormatPropertyInfoName(prop.Name) %>)).DbType = DbType.<%= TypeHelper.GetDbType(propType) %>;
                     <%
                     }
-                    else if(AllowNull(prop) && propType != TypeCodeEx.SmartDate)
+                    else if (AllowNull(prop) && propType != TypeCodeEx.SmartDate)
                     {
                         %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %>) == null ? (object)DBNull.Value : ReadProperty(<%= FormatPropertyInfoName(prop.Name) %>)<%= TypeHelper.IsNullableType(propType) ? ".Value" :"" %>).DbType = DbType.<%= TypeHelper.GetDbType(propType) %>;
                     <%
@@ -410,15 +410,6 @@ if (Info.GenerateDataPortalDelete)
     }
     %>cmd.CommandType = CommandType.StoredProcedure;
                     <%
-    foreach (ValueProperty prop in Info.ValueProperties)
-    {
-        if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
-            prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
-        {
-            %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %><%= (prop.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TypeHelper.GetDbType(prop.PropertyType) %>;
-                    <%
-        }
-    }
     if (parentType.Length > 0 && !Info.ParentInsertOnly)
     {
         foreach (Property prop in Info.ParentProperties)
@@ -434,6 +425,16 @@ if (Info.GenerateDataPortalDelete)
                 %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", parent.<%= prop.Name %>).DbType = DbType.<%= TypeHelper.GetDbType(prop.PropertyType) %>;
                     <%
             }
+        }
+    }
+    foreach (ValueProperty prop in Info.ValueProperties)
+    {
+        if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
+            (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default ||
+            (prop.DbBindColumn.NativeType == "timestamp" && Info.DeleteUseTimestamp)))
+        {
+            %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %><%= (prop.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TypeHelper.GetDbType(prop.PropertyType) %>;
+                    <%
         }
     }
     if (Info.PersistenceType == PersistenceType.SqlConnectionUnshared)
