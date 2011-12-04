@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 //
 [assembly: AssemblyTitle("Csla Generator Fork")]
-[assembly: AssemblyDescription("A Csla DAL and Business Object code generation tool based on the CodeSmith engine.\nThis fork is based on CslaGen 20090529.")]
+[assembly: AssemblyDescription("A CSLA.NET Business Objects and DAL code generation tool using the CodeSmith engine.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("CslaGenFork Project")]
 [assembly: AssemblyProduct("Csla Generator Fork")]
@@ -57,6 +57,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDelaySign(false)]
 [assembly: AssemblyKeyFile("")]
 [assembly: AssemblyKeyName("")]
-[assembly: AssemblyFileVersionAttribute("4.0.9")]
+[assembly: AssemblyFileVersionAttribute("4.0.10")]
 [assembly: GuidAttribute("5c019c4f-d2ab-40dd-9860-70bd603b6017")]
 [assembly: ComVisibleAttribute(false)]
