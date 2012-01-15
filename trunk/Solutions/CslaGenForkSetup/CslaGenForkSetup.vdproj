@@ -76,19 +76,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_490DB46022BA454283A2A128D38A87D1"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_1A703B4DB16AE451C783EC1DF7D87ED4"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_65E69012FEF37D52B6C2517B5FABEF82"
+        "OwnerKey" = "8:_0B9922BEBF5ED0151E945797947858DC"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -100,7 +88,19 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_0B9922BEBF5ED0151E945797947858DC"
+        "OwnerKey" = "8:_65E69012FEF37D52B6C2517B5FABEF82"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_1A703B4DB16AE451C783EC1DF7D87ED4"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_490DB46022BA454283A2A128D38A87D1"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -111,7 +111,7 @@
         "DisplayName" = "8:Debug"
         "IsDebugOnly" = "11:TRUE"
         "IsReleaseOnly" = "11:FALSE"
-        "OutputFilename" = "8:Debug\\CslaGenFork 2011.12.05 Setup.msi"
+        "OutputFilename" = "8:Debug\\CslaGenFork 2012.01.15 Setup.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -451,19 +451,19 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:CslaGeneratorFork"
-        "ProductCode" = "8:{666BDECD-8103-4835-8089-99D278031574}"
-        "PackageCode" = "8:{2CDD5431-4024-4BAB-8A7D-CAA0899E4ADA}"
+        "ProductCode" = "8:{5D9063CA-75C0-414E-ABB0-4217BBAFF9A3}"
+        "PackageCode" = "8:{A7EFB11B-E01E-49BD-82C1-0F4C5E1B3207}"
         "UpgradeCode" = "8:{83BDF6E0-C913-48C1-96F7-BCF1E83B1F7E}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:4.0.10"
+        "ProductVersion" = "8:4.0.11"
         "Manufacturer" = "8:CslaGenFork"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:http://cslagenfork.codeplex.com/"
-        "Title" = "8:Csla Generator Fork 2011.12.05 Setup"
+        "Title" = "8:Csla Generator Fork 2012.01.15 Setup"
         "Subject" = "8:"
         "ARPCONTACT" = "8:Tiago Freitas Leal"
         "Keywords" = "8:"
@@ -574,7 +574,7 @@
         {
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_10FB53964EE74D7FB5B30B077465FA38"
             {
-            "Name" = "8:Csla Generator Fork 2011.12.05"
+            "Name" = "8:Csla Generator Fork 2012.01.15"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
