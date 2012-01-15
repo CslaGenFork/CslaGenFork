@@ -52,22 +52,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ParentLoadActiveTestE.cs" />
-    <Compile Include="ParentLoadActiveTestF.cs" />
-    <Compile Include="ParentLoadROActiveTestE.cs" />
-    <Compile Include="ParentLoadROActiveTestF.cs" />
+    <Compile Include="ParentLoadROSoftDeleteTestE.cs" />
+    <Compile Include="ParentLoadROSoftDeleteTestF.cs" />
+    <Compile Include="ParentLoadSoftDeleteTestE.cs" />
+    <Compile Include="ParentLoadSoftDeleteTestF.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ParentLoadTestA.cs" />
     <Compile Include="ParentLoadTestB.cs" />
     <Compile Include="ParentLoadROTestA.cs" />
     <Compile Include="ParentLoadROTestB.cs" />
-    <Compile Include="SelfLoadActiveTestG.cs" />
-    <Compile Include="SelfLoadActiveTestH.cs" />
-    <Compile Include="SelfLoadROActiveTestG.cs" />
-    <Compile Include="SelfLoadROActiveTestH.cs" />
+    <Compile Include="SelfLoadROSoftDeleteTestG.cs" />
+    <Compile Include="SelfLoadROSoftDeleteTestH.cs" />
     <Compile Include="SelfLoadROTestC.cs" />
     <Compile Include="SelfLoadROTestD.cs" />
+    <Compile Include="SelfLoadSoftDeleteTestG.cs" />
+    <Compile Include="SelfLoadSoftDeleteTestH.cs" />
     <Compile Include="SelfLoadTestC.cs" />
     <Compile Include="SelfLoadTestD.cs" />
   </ItemGroup>

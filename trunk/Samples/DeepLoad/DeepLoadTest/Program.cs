@@ -8,8 +8,8 @@ namespace DeepLoadBench
         {
             ParentLoadTest();
             SelfLoadTest();
-            ParentLoadActiveTest();
-            SelfLoadActiveTest();
+            ParentLoadSoftDeleteTest();
+            SelfLoadSoftDeleteTest();
         }
 
         private static void ParentLoadTest()
@@ -63,10 +63,10 @@ namespace DeepLoadBench
             test8.FetchTest();
         }
 
-        private static void ParentLoadActiveTest()
+        private static void ParentLoadSoftDeleteTest()
         {
             Console.WriteLine("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
-            Console.WriteLine("ParentLoad EDITABLE - Active");
+            Console.WriteLine("ParentLoad EDITABLE - SoftDelete");
             Console.WriteLine("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
             Console.ReadLine();
             var test6 = new ParentLoadTestE();
@@ -77,7 +77,7 @@ namespace DeepLoadBench
             test7.FetchTest();
             Console.ReadLine();
             Console.WriteLine("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
-            Console.WriteLine("ParentLoad READ ONLY - Active");
+            Console.WriteLine("ParentLoad READ ONLY - SoftDelete");
             Console.WriteLine("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
             Console.ReadLine();
             var test8 = new ParentLoadROTestE();
@@ -88,11 +88,11 @@ namespace DeepLoadBench
             test9.FetchTest();
         }
 
-        private static void SelfLoadActiveTest()
+        private static void SelfLoadSoftDeleteTest()
         {
             Console.ReadLine();
             Console.WriteLine("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
-            Console.WriteLine("SelfLoad EDITABLE - Active");
+            Console.WriteLine("SelfLoad EDITABLE - SoftDelete");
             Console.WriteLine("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
             Console.ReadLine();
             var test10 = new SelfLoadTestG();
@@ -103,7 +103,7 @@ namespace DeepLoadBench
             test11.FetchTest();
             Console.ReadLine();
             Console.WriteLine("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
-            Console.WriteLine("SelfLoad READ ONLY - Active");
+            Console.WriteLine("SelfLoad READ ONLY - SoftDelete");
             Console.WriteLine("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
             Console.ReadLine();
             var test12 = new SelfLoadROTestG();
