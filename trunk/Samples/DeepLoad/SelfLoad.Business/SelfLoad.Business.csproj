@@ -1,0 +1,233 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F2AFF18B-E233-466B-A8AC-05E90F48801C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SelfLoad.Business</RootNamespace>
+    <AssemblyName>SelfLoad.Business</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Csla">
+      <HintPath>..\References\Csla.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DataPortalHookArgs.cs" />
+    <Compile Include="ERCLevel\D01Level1Coll.cs" />
+    <Compile Include="ERCLevel\D01Level1Coll.Designer.cs">
+      <DependentUpon>D01Level1Coll.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERCLevel\D02Level1.cs" />
+    <Compile Include="ERCLevel\D02Level1.Designer.cs">
+      <DependentUpon>D02Level1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERCLevel\D03Level11Child.cs" />
+    <Compile Include="ERCLevel\D03Level11Child.Designer.cs">
+      <DependentUpon>D03Level11Child.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERCLevel\D03Level11Coll.cs" />
+    <Compile Include="ERCLevel\D03Level11Coll.Designer.cs">
+      <DependentUpon>D03Level11Coll.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERCLevel\D03Level11ReChild.cs" />
+    <Compile Include="ERCLevel\D03Level11ReChild.Designer.cs">
+      <DependentUpon>D03Level11ReChild.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERCLevel\D04Level11.cs" />
+    <Compile Include="ERCLevel\D04Level11.Designer.cs">
+      <DependentUpon>D04Level11.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERCLevel\D05Level111Child.cs" />
+    <Compile Include="ERCLevel\D05Level111Child.Designer.cs">
+      <DependentUpon>D05Level111Child.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERCLevel\D05Level111Coll.cs" />
+    <Compile Include="ERCLevel\D05Level111Coll.Designer.cs">
+      <DependentUpon>D05Level111Coll.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERCLevel\D05Level111ReChild.cs" />
+    <Compile Include="ERCLevel\D05Level111ReChild.Designer.cs">
+      <DependentUpon>D05Level111ReChild.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERCLevel\D06Level111.cs" />
+    <Compile Include="ERCLevel\D06Level111.Designer.cs">
+      <DependentUpon>D06Level111.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERCLevel\D07Level1111Child.cs" />
+    <Compile Include="ERCLevel\D07Level1111Child.Designer.cs">
+      <DependentUpon>D07Level1111Child.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERCLevel\D07Level1111Coll.cs" />
+    <Compile Include="ERCLevel\D07Level1111Coll.Designer.cs">
+      <DependentUpon>D07Level1111Coll.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERCLevel\D07Level1111ReChild.cs" />
+    <Compile Include="ERCLevel\D07Level1111ReChild.Designer.cs">
+      <DependentUpon>D07Level1111ReChild.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERCLevel\D08Level1111.cs" />
+    <Compile Include="ERCLevel\D08Level1111.Designer.cs">
+      <DependentUpon>D08Level1111.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERCLevel\D09Level11111Child.cs" />
+    <Compile Include="ERCLevel\D09Level11111Child.Designer.cs">
+      <DependentUpon>D09Level11111Child.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERCLevel\D09Level11111Coll.cs" />
+    <Compile Include="ERCLevel\D09Level11111Coll.Designer.cs">
+      <DependentUpon>D09Level11111Coll.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERCLevel\D09Level11111ReChild.cs" />
+    <Compile Include="ERCLevel\D09Level11111ReChild.Designer.cs">
+      <DependentUpon>D09Level11111ReChild.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERCLevel\D10Level11111.cs" />
+    <Compile Include="ERCLevel\D10Level11111.Designer.cs">
+      <DependentUpon>D10Level11111.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERCLevel\D11Level111111Child.cs" />
+    <Compile Include="ERCLevel\D11Level111111Child.Designer.cs">
+      <DependentUpon>D11Level111111Child.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERCLevel\D11Level111111Coll.cs" />
+    <Compile Include="ERCLevel\D11Level111111Coll.Designer.cs">
+      <DependentUpon>D11Level111111Coll.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERCLevel\D11Level111111ReChild.cs" />
+    <Compile Include="ERCLevel\D11Level111111ReChild.Designer.cs">
+      <DependentUpon>D11Level111111ReChild.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERCLevel\D12Level111111.cs" />
+    <Compile Include="ERCLevel\D12Level111111.Designer.cs">
+      <DependentUpon>D12Level111111.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERLevel\C02Level1.cs" />
+    <Compile Include="ERLevel\C02Level1.Designer.cs">
+      <DependentUpon>C02Level1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERLevel\C03Level11Child.cs" />
+    <Compile Include="ERLevel\C03Level11Child.Designer.cs">
+      <DependentUpon>C03Level11Child.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERLevel\C03Level11Coll.cs" />
+    <Compile Include="ERLevel\C03Level11Coll.Designer.cs">
+      <DependentUpon>C03Level11Coll.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERLevel\C03Level11ReChild.cs" />
+    <Compile Include="ERLevel\C03Level11ReChild.Designer.cs">
+      <DependentUpon>C03Level11ReChild.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERLevel\C04Level11.cs" />
+    <Compile Include="ERLevel\C04Level11.Designer.cs">
+      <DependentUpon>C04Level11.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERLevel\C05Level111Child.cs" />
+    <Compile Include="ERLevel\C05Level111Child.Designer.cs">
+      <DependentUpon>C05Level111Child.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERLevel\C05Level111Coll.cs" />
+    <Compile Include="ERLevel\C05Level111Coll.Designer.cs">
+      <DependentUpon>C05Level111Coll.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERLevel\C05Level111ReChild.cs" />
+    <Compile Include="ERLevel\C05Level111ReChild.Designer.cs">
+      <DependentUpon>C05Level111ReChild.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERLevel\C06Level111.cs" />
+    <Compile Include="ERLevel\C06Level111.Designer.cs">
+      <DependentUpon>C06Level111.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERLevel\C07Level1111Child.cs" />
+    <Compile Include="ERLevel\C07Level1111Child.Designer.cs">
+      <DependentUpon>C07Level1111Child.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERLevel\C07Level1111Coll.cs" />
+    <Compile Include="ERLevel\C07Level1111Coll.Designer.cs">
+      <DependentUpon>C07Level1111Coll.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERLevel\C07Level1111ReChild.cs" />
+    <Compile Include="ERLevel\C07Level1111ReChild.Designer.cs">
+      <DependentUpon>C07Level1111ReChild.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERLevel\C08Level1111.cs" />
+    <Compile Include="ERLevel\C08Level1111.Designer.cs">
+      <DependentUpon>C08Level1111.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERLevel\C09Level11111Child.cs" />
+    <Compile Include="ERLevel\C09Level11111Child.Designer.cs">
+      <DependentUpon>C09Level11111Child.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERLevel\C09Level11111Coll.cs" />
+    <Compile Include="ERLevel\C09Level11111Coll.Designer.cs">
+      <DependentUpon>C09Level11111Coll.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERLevel\C09Level11111ReChild.cs" />
+    <Compile Include="ERLevel\C09Level11111ReChild.Designer.cs">
+      <DependentUpon>C09Level11111ReChild.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERLevel\C10Level11111.cs" />
+    <Compile Include="ERLevel\C10Level11111.Designer.cs">
+      <DependentUpon>C10Level11111.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERLevel\C11Level111111Child.cs" />
+    <Compile Include="ERLevel\C11Level111111Child.Designer.cs">
+      <DependentUpon>C11Level111111Child.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERLevel\C11Level111111Coll.cs" />
+    <Compile Include="ERLevel\C11Level111111Coll.Designer.cs">
+      <DependentUpon>C11Level111111Coll.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERLevel\C11Level111111ReChild.cs" />
+    <Compile Include="ERLevel\C11Level111111ReChild.Designer.cs">
+      <DependentUpon>C11Level111111ReChild.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERLevel\C12Level111111.cs" />
+    <Compile Include="ERLevel\C12Level111111.Designer.cs">
+      <DependentUpon>C12Level111111.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7E584CF4-B21E-44C3-A971-DF8C093498C1}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DeepLoadBench</RootNamespace>
+    <AssemblyName>DeepLoadBench</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>DeepLoadBench.Program</StartupObject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Csla, Version=4.2.2.0, Culture=neutral, PublicKeyToken=93be5fdc093e4c30, processorArchitecture=MSIL">
+      <HintPath>..\References\Csla.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ParentLoadActiveTestE.cs" />
+    <Compile Include="ParentLoadActiveTestF.cs" />
+    <Compile Include="ParentLoadROActiveTestE.cs" />
+    <Compile Include="ParentLoadROActiveTestF.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ParentLoadTestA.cs" />
+    <Compile Include="ParentLoadTestB.cs" />
+    <Compile Include="ParentLoadROTestA.cs" />
+    <Compile Include="ParentLoadROTestB.cs" />
+    <Compile Include="SelfLoadActiveTestG.cs" />
+    <Compile Include="SelfLoadActiveTestH.cs" />
+    <Compile Include="SelfLoadROActiveTestG.cs" />
+    <Compile Include="SelfLoadROActiveTestH.cs" />
+    <Compile Include="SelfLoadROTestC.cs" />
+    <Compile Include="SelfLoadROTestD.cs" />
+    <Compile Include="SelfLoadTestC.cs" />
+    <Compile Include="SelfLoadTestD.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ParentLoad.Business\ParentLoad.Business.csproj">
+      <Project>{7AEAB3A1-25BC-46F6-A73C-46E73DC490CF}</Project>
+      <Name>ParentLoad.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ParentLoadSoftDelete.Business\ParentLoadSoftDelete.Business.csproj">
+      <Project>{3BE6281D-88ED-4940-9F4E-0355AE838069}</Project>
+      <Name>ParentLoadActive.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ParentLoadRO.Business\ParentLoadRO.Business.csproj">
+      <Project>{1A7AC40F-88E0-4737-8834-83988B6B259E}</Project>
+      <Name>ParentLoadRO.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ParentLoadROSoftDelete.Business\ParentLoadROSoftDelete.Business.csproj">
+      <Project>{1FEB1EB9-E027-4372-88CD-8F04938C8409}</Project>
+      <Name>ParentLoadROActive.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SelfLoad.Business\SelfLoad.Business.csproj">
+      <Project>{F2AFF18B-E233-466B-A8AC-05E90F48801C}</Project>
+      <Name>SelfLoad.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SelfLoadSoftDelete.Business\SelfLoadSoftDelete.Business.csproj">
+      <Project>{A7981A5C-740F-4598-A759-28A0B5004A32}</Project>
+      <Name>SelfLoadActive.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SelfLoadRO.Business\SelfLoadRO.Business.csproj">
+      <Project>{40640CFF-F17A-4116-80AF-DCCBC6A3AD9C}</Project>
+      <Name>SelfLoadRO.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SelfLoadROSoftDelete.Business\SelfLoadROSoftDelete.Business.csproj">
+      <Project>{09F7B441-BF07-4C46-9B8E-7B30AC6F0966}</Project>
+      <Name>SelfLoadROActive.Business</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
