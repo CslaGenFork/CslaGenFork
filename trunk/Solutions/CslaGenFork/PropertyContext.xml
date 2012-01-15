@@ -58,6 +58,7 @@
     <add key="UnitOfWork:UpdateAuthzRuleType" value="false" />
     <add key="UnitOfWork:DeleteAuthzRuleType" value="false" />
     <add key="UnitOfWork:ParentInsertOnly" value="false" />
+    <add key="UnitOfWork:UseParentProperties" value="false" />
     <add key="UnitOfWork:PublishToChannel" value="false" />
     <add key="UnitOfWork:AllowNew" value="false" />
     <add key="UnitOfWork:AllowEdit" value="false" />
@@ -120,6 +121,7 @@
     <add key="NameValueList:UpdateAuthzRuleType" value="false" />
     <add key="NameValueList:DeleteAuthzRuleType" value="false" />
     <add key="NameValueList:ParentInsertOnly" value="false" />
+    <add key="NameValueList:UseParentProperties" value="false" />
     <add key="NameValueList:PublishToChannel" value="false" />
     <add key="NameValueList:AllowNew" value="false" />
     <add key="NameValueList:AllowEdit" value="false" />
@@ -181,6 +183,7 @@
     <add key="ReadOnlyCollection:UpdateAuthzRuleType" value="false" />
     <add key="ReadOnlyCollection:DeleteAuthzRuleType" value="false" />
     <add key="ReadOnlyCollection:ParentInsertOnly" value="false" />
+    <add key="ReadOnlyCollection:UseParentProperties" value="false" />
     <add key="ReadOnlyCollection:PublishToChannel" value="false" />
     <add key="ReadOnlyCollection:AllowNew" value="false" />
     <add key="ReadOnlyCollection:AllowEdit" value="false" />
@@ -242,16 +245,17 @@
     <add key="ReadOnlyObject:UpdateAuthzRuleType" value="false" />
     <add key="ReadOnlyObject:DeleteAuthzRuleType" value="false" />
     <add key="ReadOnlyObject:ParentInsertOnly" value="false" />
+    <add key="ReadOnlyObject:UseParentProperties" value="false" />
     <add key="ReadOnlyObject:PublishToChannel" value="false" />
     <add key="ReadOnlyObject:AllowNew" value="false" />
     <add key="ReadOnlyObject:AllowEdit" value="false" />
     <add key="ReadOnlyObject:AllowRemove" value="false" />
-    <add key="ReadOnlyObject:AddParentReference" value="false" />
+    <add key="ReadOnlyObject:AddParentReference" value="true" />
     <add key="ReadOnlyObject:GenerateDataPortalInsert" value="false" />
     <add key="ReadOnlyObject:GenerateDataPortalUpdate" value="false" />
     <add key="ReadOnlyObject:GenerateDataPortalDelete" value="false" />
     <add key="ReadOnlyObject:SupportUpdateProperties" value="false" />
-    <add key="ReadOnlyObject:CheckRulesOnFetch" value="false" />
+    <add key="ReadOnlyObject:CheckRulesOnFetch" value="true" />
     <add key="EditableChild:Generate" value="true" />
     <add key="EditableChild:GenerateSprocs" value="true" />
     <add key="EditableChild:Filename" value="true" />
@@ -302,7 +306,8 @@
     <add key="EditableChild:GetAuthzRuleType" value="true" />
     <add key="EditableChild:UpdateAuthzRuleType" value="true" />
     <add key="EditableChild:DeleteAuthzRuleType" value="true" />
-    <add key="EditableChild:ParentInsertOnly" value="true" />
+    <add key="EditableChild:ParentInsertOnly" value="false" />
+    <add key="EditableChild:UseParentProperties" value="true" />
     <add key="EditableChild:PublishToChannel" value="false" />
     <add key="EditableChild:AllowNew" value="false" />
     <add key="EditableChild:AllowEdit" value="false" />
@@ -364,6 +369,7 @@
     <add key="EditableChildCollection:UpdateAuthzRuleType" value="false" />
     <add key="EditableChildCollection:DeleteAuthzRuleType" value="false" />
     <add key="EditableChildCollection:ParentInsertOnly" value="false" />
+    <add key="EditableChildCollection:UseParentProperties" value="false" />
     <add key="EditableChildCollection:PublishToChannel" value="false" />
     <add key="EditableChildCollection:AllowNew" value="true" />
     <add key="EditableChildCollection:AllowEdit" value="true" />
@@ -373,7 +379,7 @@
     <add key="EditableChildCollection:GenerateDataPortalUpdate" value="false" />
     <add key="EditableChildCollection:GenerateDataPortalDelete" value="false" />
     <add key="EditableChildCollection:SupportUpdateProperties" value="false" />
-    <add key="EditableChildCollection:CheckRulesOnFetch" value="true" />
+    <add key="EditableChildCollection:CheckRulesOnFetch" value="false" />
     <add key="EditableRoot:Generate" value="true" />
     <add key="EditableRoot:GenerateSprocs" value="true" />
     <add key="EditableRoot:Filename" value="true" />
@@ -425,6 +431,7 @@
     <add key="EditableRoot:UpdateAuthzRuleType" value="true" />
     <add key="EditableRoot:DeleteAuthzRuleType" value="true" />
     <add key="EditableRoot:ParentInsertOnly" value="false" />
+    <add key="EditableRoot:UseParentProperties" value="false" />
     <add key="EditableRoot:PublishToChannel" value="true" />
     <add key="EditableRoot:AllowNew" value="false" />
     <add key="EditableRoot:AllowEdit" value="false" />
@@ -486,6 +493,7 @@
     <add key="EditableRootCollection:UpdateAuthzRuleType" value="false" />
     <add key="EditableRootCollection:DeleteAuthzRuleType" value="false" />
     <add key="EditableRootCollection:ParentInsertOnly" value="false" />
+    <add key="EditableRootCollection:UseParentProperties" value="false" />
     <add key="EditableRootCollection:PublishToChannel" value="false" />
     <add key="EditableRootCollection:AllowNew" value="true" />
     <add key="EditableRootCollection:AllowEdit" value="true" />
@@ -495,7 +503,7 @@
     <add key="EditableRootCollection:GenerateDataPortalUpdate" value="false" />
     <add key="EditableRootCollection:GenerateDataPortalDelete" value="false" />
     <add key="EditableRootCollection:SupportUpdateProperties" value="false" />
-    <add key="EditableRootCollection:CheckRulesOnFetch" value="true" />
+    <add key="EditableRootCollection:CheckRulesOnFetch" value="false" />
     <add key="EditableSwitchable:Generate" value="true" />
     <add key="EditableSwitchable:GenerateSprocs" value="true" />
     <add key="EditableSwitchable:Filename" value="true" />
@@ -546,7 +554,8 @@
     <add key="EditableSwitchable:GetAuthzRuleType" value="true" />
     <add key="EditableSwitchable:UpdateAuthzRuleType" value="true" />
     <add key="EditableSwitchable:DeleteAuthzRuleType" value="true" />
-    <add key="EditableSwitchable:ParentInsertOnly" value="true" />
+    <add key="EditableSwitchable:ParentInsertOnly" value="false" />
+    <add key="EditableSwitchable:UseParentProperties" value="true" />
     <add key="EditableSwitchable:PublishToChannel" value="true" />
     <add key="EditableSwitchable:AllowNew" value="false" />
     <add key="EditableSwitchable:AllowEdit" value="false" />
@@ -608,6 +617,7 @@
     <add key="DynamicEditableRoot:UpdateAuthzRuleType" value="true" />
     <add key="DynamicEditableRoot:DeleteAuthzRuleType" value="true" />
     <add key="DynamicEditableRoot:ParentInsertOnly" value="false" />
+    <add key="DynamicEditableRoot:UseParentProperties" value="false" />
     <add key="DynamicEditableRoot:PublishToChannel" value="true" />
     <add key="DynamicEditableRoot:AllowNew" value="false" />
     <add key="DynamicEditableRoot:AllowEdit" value="false" />
@@ -669,6 +679,7 @@
     <add key="DynamicEditableRootCollection:UpdateAuthzRuleType" value="false" />
     <add key="DynamicEditableRootCollection:DeleteAuthzRuleType" value="false" />
     <add key="DynamicEditableRootCollection:ParentInsertOnly" value="false" />
+    <add key="DynamicEditableRootCollection:UseParentProperties" value="false" />
     <add key="DynamicEditableRootCollection:PublishToChannel" value="false" />
     <add key="DynamicEditableRootCollection:AllowNew" value="true" />
     <add key="DynamicEditableRootCollection:AllowEdit" value="true" />
@@ -678,6 +689,6 @@
     <add key="DynamicEditableRootCollection:GenerateDataPortalUpdate" value="false" />
     <add key="DynamicEditableRootCollection:GenerateDataPortalDelete" value="false" />
     <add key="DynamicEditableRootCollection:SupportUpdateProperties" value="false" />
-    <add key="DynamicEditableRootCollection:CheckRulesOnFetch" value="true" />
+    <add key="DynamicEditableRootCollection:CheckRulesOnFetch" value="false" />
   </contextSettings>
 </propertybag>

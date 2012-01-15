@@ -1,5 +1,5 @@
 <%
-if (lazyLoad3 || createCriteria || parentCreateCriteria ||
+if (isChildLazyLoaded || createCriteria || parentCreateCriteria ||
     declarationMode == PropertyDeclaration.ClassicProperty ||
     declarationMode == PropertyDeclaration.AutoProperty)
 {
@@ -18,7 +18,7 @@ if (lazyLoad3 || createCriteria || parentCreateCriteria ||
 <!-- #include file="NewObjectAsync.asp" -->
 <%
 }
-if (!selfLoad3 && UseNoSilverlight())
+if (!isChildSelfLoaded && UseNoSilverlight())
 {
     %>
 <!-- #include file="InternalGetObject.asp" -->
@@ -36,7 +36,7 @@ else
 <%
     }
 }
-if (lazyLoad3 || createCriteria || parentCreateCriteria ||
+if (isChildLazyLoaded || createCriteria || parentCreateCriteria ||
     declarationMode == PropertyDeclaration.ClassicProperty ||
     declarationMode == PropertyDeclaration.AutoProperty)
 {

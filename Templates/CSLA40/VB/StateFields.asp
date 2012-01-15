@@ -1,11 +1,19 @@
 <%
-if (StateFieldsForAllValueProperties(Info) || StateFieldsForAllChildProperties(Info))
+bool stateFieldsForAllValueProperties = StateFieldsForAllValueProperties(Info);
+bool stateFieldsForAllChildProperties = StateFieldsForAllChildProperties(Info);
+bool useFieldForParentLoading = (((ancestorLoaderLevel > 2 && !ancestorIsCollection) || (ancestorLoaderLevel > 1 && ancestorIsCollection)) && Info.ParentProperties.Count > 0);
+if (stateFieldsForAllValueProperties || stateFieldsForAllChildProperties || useFieldForParentLoading)
 {
     %>
 
         #region State Fields
-
 <%
+    // if the object has child properties, then add a new line
+    if (stateFieldsForAllValueProperties)
+    {
+        Response.Write(Environment.NewLine);
+    }
+
     // Value Properties
     foreach (ValueProperty prop in Info.AllValueProperties)
     {
@@ -14,11 +22,15 @@ if (StateFieldsForAllValueProperties(Info) || StateFieldsForAllChildProperties(I
         {
             %>
         <%= statement %>
-<%      }
+<%
+        }
     }
 
     // if the object has child properties, then add a new line
-    if (StateFieldsForAllValueProperties(Info) && StateFieldsForAllChildProperties(Info)) { %><%= "\r\n" %><% }
+    if (stateFieldsForAllChildProperties)
+    {
+        Response.Write(Environment.NewLine);
+    }
 
     // Child Properties
     foreach (ChildProperty prop in Info.AllChildProperties)
@@ -58,6 +70,25 @@ if (StateFieldsForAllValueProperties(Info) || StateFieldsForAllChildProperties(I
         private bool <%= FormatFieldName(prop.Name + "Loaded") %> = false;<%= "\r\n" %><%
             }
         }
+    }
+
+    // parent loading field
+    if (useFieldForParentLoading)
+    {
+        foreach(Property prop in Info.ParentProperties)
+        {
+            %>
+        [NotUndoable]
+        [NonSerialized]
+        internal <%= GetDataTypeGeneric(prop, prop.PropertyType) %> <%= FormatCamel(GetFKColumn(Info, (isItem ? grandParentInfo : parentInfo), prop)) %> = <%= GetInitValue(prop.PropertyType) %>;
+        <%
+        }
+    }
+
+    // if any code was generated, then add a new line
+    if (stateFieldsForAllValueProperties || stateFieldsForAllChildProperties || useFieldForParentLoading)
+    {
+        Response.Write(Environment.NewLine);
     }
     %>
         #endregion

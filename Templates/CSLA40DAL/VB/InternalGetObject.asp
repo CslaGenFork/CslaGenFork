@@ -12,8 +12,8 @@ if (IsCollectionType(Info.ObjectType))
 
 if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
 {
-    bool lazyLoad4 = GetLazyLoad(Info);
-    bool selfLoad4 = GetSelfLoad(Info);
+    bool lazyLoad4 = IsChildLazyLoaded(Info);
+    bool selfLoad4 = IsChildSelfLoaded(Info);
     if (!IsReadOnlyType(Info.ObjectType) ||
         (Info.ParentType != string.Empty &&
         (Info.ObjectType == CslaObjectType.ReadOnlyObject || (!lazyLoad4 && !selfLoad4))))

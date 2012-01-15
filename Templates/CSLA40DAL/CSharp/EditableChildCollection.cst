@@ -83,8 +83,8 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
     {
         bool createCriteria = Info.HasCreateCriteriaFactory;
         PropertyDeclaration declarationMode = GetDeclarationMode(Info);
-        bool selfLoad3 = GetSelfLoad(Info);
-        bool lazyLoad3 = GetLazyLoad(Info);
+        bool selfLoad3 = IsChildSelfLoaded(Info);
+        bool lazyLoad3 = IsChildLazyLoaded(Info);
         bool parentCreateCriteria = false;
         CslaObjectInfo parentInfo = Info.Parent.CslaObjects.Find(Info.ParentType);
         string strNewCallback2 = string.Empty;

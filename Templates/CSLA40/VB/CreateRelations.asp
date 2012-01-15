@@ -6,7 +6,7 @@
 public string GetDSRelations(CslaObjectInfo info)
 {
     System.Text.StringBuilder sb = new System.Text.StringBuilder();
-    foreach (CslaObjectInfo item in GetChildItems(info))
+    foreach (CslaObjectInfo item in GetCollectionChildItems(info))
     {
         if (item.ParentProperties.Count > 0)
         {
@@ -56,7 +56,7 @@ public string GetDSRelations(CslaObjectInfo info)
                 obj = Info;
             if (obj != null)
             {
-                string[] objectNames = GetAllChildItemsInHierarchy(obj);
+                string[] objectNames = GetCollectionChildItemsInHierarchy(obj);
                 %>
             ds.Tables[0].TableName = "<%= obj.ObjectName %>";
             <%

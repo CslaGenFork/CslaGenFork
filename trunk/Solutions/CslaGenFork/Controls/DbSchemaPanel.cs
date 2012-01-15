@@ -550,25 +550,6 @@ namespace CslaGenerator.Controls
                 AddParentProperties(parent, parentProperties);
                 AddPropertiesForSelectedColumns(parent);
                 AddChildToParent(parent, objectName, propertyName);
-
-                /*var child = new ChildProperty();
-                child.TypeName = objectName;
-                if (!string.IsNullOrEmpty(propertyName))
-                    child.Name = propertyName;
-                else
-                    child.Name = objectName;
-                child.ReadOnly = true;
-                foreach (var crit in parent.CriteriaObjects)
-                {
-                    if (crit.GetOptions.Factory || crit.GetOptions.AddRemove || crit.GetOptions.DataPortal)
-                    {
-                        foreach (var prop in crit.Properties)
-                        {
-                            child.LoadParameters.Add(new Parameter(crit, prop));
-                        }
-                    }
-                }
-                parent.ChildProperties.Add(child);*/
             }
         }
 
@@ -606,25 +587,6 @@ namespace CslaGenerator.Controls
                 AddParentProperties(parent, parentProperties);
                 AddPropertiesForSelectedColumns(parent);
                 AddChildCollectionToParent(parent, collectionName, propertyName);
-
-                /*var coll = new ChildProperty();
-                coll.TypeName = collectionName;
-                if (!string.IsNullOrEmpty(propertyName))
-                    coll.Name = propertyName;
-                else
-                    coll.Name = collectionName;
-                coll.ReadOnly = true;
-                foreach (var crit in parent.CriteriaObjects)
-                {
-                    if (crit.GetOptions.Factory || crit.GetOptions.AddRemove || crit.GetOptions.DataPortal)
-                    {
-                        foreach (var prop in crit.Properties)
-                        {
-                            coll.LoadParameters.Add(new Parameter(crit, prop));
-                        }
-                    }
-                }
-                parent.ChildCollectionProperties.Add(coll);*/
             }
         }
 

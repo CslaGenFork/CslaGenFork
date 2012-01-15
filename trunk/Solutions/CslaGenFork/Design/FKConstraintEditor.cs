@@ -43,12 +43,12 @@ namespace CslaGenerator.Design
                         //
                         foreach (var constraint in GeneratorController.Catalog.ForeignKeyConstraints)
                         {
-                            // get constraints with table match for PK or FK
+                            /*// get constraints with table match for PK or FK
                             if (obj.DbBindColumn.ObjectName == constraint.PKTable.ObjectName ||
-                                obj.DbBindColumn.ObjectName == constraint.ConstraintTable.ObjectName)
+                                obj.DbBindColumn.ObjectName == constraint.ConstraintTable.ObjectName)*/
 
                             // get constraints with table match for Constraint FK
-                            //if (obj.DbBindColumn.ObjectName == constraint.ConstraintTable.ObjectName)
+                            if (obj.DbBindColumn.ObjectName == constraint.ConstraintTable.ObjectName)
                             {
                                 _lstProperties.Items.Add(constraint.ConstraintName);
                             }

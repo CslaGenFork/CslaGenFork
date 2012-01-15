@@ -133,10 +133,16 @@ namespace CslaGenerator
         {
             // show start page
             ShowStartPage();
-
             PanelsSetUp();
-
             LoadPlugins();
+            LoadMru();
+        }
+
+        private void LoadMru()
+        {
+            _controller.MruItems = new List<string>();
+            _controller.MruItems = ConfigTools.GetMru();
+            MruDisplay();
         }
 
         private void LoadPlugins()
@@ -506,6 +512,137 @@ namespace CslaGenerator
             return result;
         }
 
+        private void MruItem0Click(object sender, EventArgs e)
+        {
+            HanddleMruItem(0);
+        }
+
+        private void MruItem1Click(object sender, EventArgs e)
+        {
+            HanddleMruItem(1);
+        }
+
+        private void MruItem2Click(object sender, EventArgs e)
+        {
+            HanddleMruItem(2);
+        }
+
+        private void MruItem3Click(object sender, EventArgs e)
+        {
+            HanddleMruItem(3);
+        }
+
+        private void MruItem4Click(object sender, EventArgs e)
+        {
+            HanddleMruItem(4);
+        }
+
+        private void HanddleMruItem(int mruItem)
+        {
+            if (_controller.MruItems.Count > mruItem)
+            {
+                if (ForceLoadCodeSmith())
+                {
+                    if (!File.Exists(_controller.MruItems[mruItem]))
+                        HandleMruItemsMissing(mruItem);
+                    else
+                    {
+                        ofdLoad.FileName = _controller.MruItems[mruItem];
+                        _controller.ProjectsDirectory = ofdLoad.FileName.Substring(0, ofdLoad.FileName.LastIndexOf('\\'));
+                        ConfigTools.Change("ProjectsDirectory", _controller.ProjectsDirectory);
+                        Application.DoEvents();
+                        Cursor.Current = Cursors.WaitCursor;
+                        OpenProjectFile(ofdLoad.FileName);
+                        HandleMruItemsNewCurrent(ofdLoad.FileName);
+                        Cursor.Current = Cursors.Default;
+                        Text = _controller.CurrentUnit.ProjectName + @" - " + BaseFormText;
+                        AfterOpenEnableButtonsAndMenus();
+                    }
+                }
+            }
+        }
+
+        private void HandleMruItemsNewCurrent(string filename)
+        {
+            _controller.MruItems.Insert(0, filename);
+            _controller.ResortMruItems();
+            MruDisplay();
+        }
+
+        private void HandleMruItemsMissing(int mruItem)
+        {
+            var message = _controller.MruItems[mruItem] + Environment.NewLine +
+                          @"project file wasn't found." + Environment.NewLine + Environment.NewLine +
+                          @"Do you want to remove it from the recently used list?";
+            if (MessageBox.Show(message, @"Project file not found.", MessageBoxButtons.YesNo, MessageBoxIcon.Error) == DialogResult.Yes)
+            {
+                _controller.MruItems.RemoveAt(mruItem);
+                MruDisplay();
+            }
+        }
+
+        private void MruDisplay()
+        {
+            mruItem0.Text = string.Empty;
+            mruItem0.Visible = false;
+            mruItem1.Text = string.Empty;
+            mruItem1.Visible = false;
+            mruItem2.Text = string.Empty;
+            mruItem2.Visible = false;
+            mruItem3.Text = string.Empty;
+            mruItem3.Visible = false;
+            mruItem4.Text = string.Empty;
+            mruItem4.Visible = false;
+
+            for (var i = 0; i < 5; i++)
+            {
+                if (i == _controller.MruItems.Count)
+                    break;
+
+                var tooltip = _controller.MruItems[i];
+                var text = "&" + (i + 1) + " ...\\" + tooltip.Substring(tooltip.LastIndexOf('\\') + 1);
+
+                switch (i)
+                {
+                    case 0:
+                        mruItem0.ToolTipText = tooltip;
+                        mruItem0.Text = text;
+                        mruItem0.Visible = true;
+                        break;
+                    case 1:
+                        mruItem1.ToolTipText = tooltip;
+                        mruItem1.Text = text;
+                        mruItem1.Visible = true;
+                        break;
+                    case 2:
+                        mruItem2.ToolTipText = tooltip;
+                        mruItem2.Text = text;
+                        mruItem2.Visible = true;
+                        break;
+                    case 3:
+                        mruItem3.ToolTipText = tooltip;
+                        mruItem3.Text = text;
+                        mruItem3.Visible = true;
+                        break;
+                    case 4:
+                        mruItem4.ToolTipText = tooltip;
+                        mruItem4.Text = text;
+                        mruItem4.Visible = true;
+                        break;
+                }
+            }
+            HandleMruSeparator();
+        }
+
+        private void HandleMruSeparator()
+        {
+            if (_controller.MruItems.Count == 0)
+                mruSeparator.Visible = false;
+            else
+                mruSeparator.Visible = true;
+            return;
+        }
+
         private void ExitToolStripMenuItemClick(object sender, EventArgs e)
         {
             DialogResult result = SaveBeforeClose(false);
@@ -548,6 +685,7 @@ namespace CslaGenerator
                     Application.DoEvents();
                     Cursor.Current = Cursors.WaitCursor;
                     OpenProjectFile(ofdLoad.FileName);
+                    HandleMruItemsNewCurrent(ofdLoad.FileName);
                     Cursor.Current = Cursors.Default;
                     Text = _controller.CurrentUnit.ProjectName + @" - " + BaseFormText;
                     AfterOpenEnableButtonsAndMenus();
@@ -563,6 +701,7 @@ namespace CslaGenerator
                 Cursor.Current = Cursors.WaitCursor;
                 Application.DoEvents();
                 _controller.Save(ofdLoad.FileName);
+                HandleMruItemsNewCurrent(ofdLoad.FileName);
                 Cursor.Current = Cursors.Default;
                 Text = _controller.CurrentUnit.ProjectName + @" - " + BaseFormText;
                 return;
@@ -591,6 +730,7 @@ namespace CslaGenerator
                 Application.DoEvents();
                 _controller.Save(sfdSave.FileName);
                 ofdLoad.FileName = sfdSave.FileName;
+                HandleMruItemsNewCurrent(ofdLoad.FileName);
                 _isNewProject = false;
                 Cursor.Current = Cursors.Default;
                 Text = _controller.CurrentUnit.ProjectName + @" - " + BaseFormText;
@@ -725,12 +865,12 @@ namespace CslaGenerator
             projectPanel.MoveDownSelected();
         }
 
-        private void NewRelationsObjectButtonClick(object sender, EventArgs e)
+        private void NewObjectRelationButtonClick(object sender, EventArgs e)
         {
             projectPanel.AddNewObjectRelation();
         }
 
-        private void AddToRelationButtonClick(object sender, EventArgs e)
+        private void AddToObjectRelationButtonClick(object sender, EventArgs e)
         {
             projectPanel.AddToObjectRelationBuilder();
         }

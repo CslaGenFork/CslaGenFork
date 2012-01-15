@@ -20,8 +20,19 @@
 <%
 if (Errors.Length == 0)
 {
+    bool isItem = false;
+    bool isParentRootCollection = false;
+    CslaObjectInfo parentInfo = null;
+    CslaObjectInfo grandParentInfo = null;
+    CslaObjectInfo itemInfo = FindChildInfo(Info, Info.ItemType);
     bool isChild = false;
     bool useChildFactory = CurrentUnit.GenerationParams.UseChildFactory;
+    bool useBypassPropertyChecks = CurrentUnit.GenerationParams.UseBypassPropertyChecks;
+    string bpcSpacer = useBypassPropertyChecks ? bpcSpacer = new string(' ', 4) : string.Empty;
+    bool isChildSelfLoaded = false;
+    bool isChildLazyLoaded = false;
+    bool ancestorIsCollection = false;
+    int ancestorLoaderLevel = AncestorLoaderLevel(Info, out ancestorIsCollection);
     int silverlightLevel = 0;
     bool genOptional = false;
     bool useItem = true;

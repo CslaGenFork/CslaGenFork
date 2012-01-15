@@ -2,6 +2,7 @@
 using CslaGenerator.Controls;
 using System.Windows.Forms;
 using System;
+
 namespace CslaGenerator
 {
     partial class MainForm
@@ -32,6 +33,7 @@ namespace CslaGenerator
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.sfdSave = new System.Windows.Forms.SaveFileDialog();
             this.ofdLoad = new System.Windows.Forms.OpenFileDialog();
@@ -46,6 +48,12 @@ namespace CslaGenerator
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fileMenuSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.mruItem0 = new System.Windows.Forms.ToolStripMenuItem();
+            this.mruItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.mruItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.mruItem3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.mruItem4 = new System.Windows.Forms.ToolStripMenuItem();
+            this.mruSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.projectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addAnewObjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -96,9 +104,11 @@ namespace CslaGenerator
             this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.progressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.projectPanel = new CslaGenerator.Controls.ProjectPanel();
+            this.formSizePosition1 = new System.Windows.Forms.FormSizePosition(this.components);
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.formSizePosition1)).BeginInit();
             this.SuspendLayout();
             // 
             // pgGrid
@@ -165,6 +175,12 @@ namespace CslaGenerator
             this.saveToolStripMenuItem,
             this.saveasToolStripMenuItem,
             this.fileMenuSeparator1,
+            this.mruItem0,
+            this.mruItem1,
+            this.mruItem2,
+            this.mruItem3,
+            this.mruItem4,
+            this.mruSeparator,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(35, 20);
@@ -172,34 +188,34 @@ namespace CslaGenerator
             // 
             // newToolStripMenuItem
             // 
-            this.newToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
+            this.newToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
             this.newToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.newToolStripMenuItem.Text = "&New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.NewToolStripMenuItemClick);
             // 
             // openToolStripMenuItem
             // 
-            this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+            this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
             this.openToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.openToolStripMenuItem.Text = "&Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.OpenToolStripMenuItemClick);
             // 
             // saveToolStripMenuItem
             // 
-            this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
             this.saveToolStripMenuItem.Enabled = false;
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
             this.saveToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.saveToolStripMenuItem.Text = "&Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.SaveToolStripMenuItemClick);
             // 
             // saveasToolStripMenuItem
             // 
-            this.saveasToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
             this.saveasToolStripMenuItem.Enabled = false;
             this.saveasToolStripMenuItem.Name = "saveasToolStripMenuItem";
+            this.saveasToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
             this.saveasToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.saveasToolStripMenuItem.Text = "Save &as";
             this.saveasToolStripMenuItem.Click += new System.EventHandler(this.SaveAsToolStripMenuItemClick);
@@ -209,10 +225,60 @@ namespace CslaGenerator
             this.fileMenuSeparator1.Name = "fileMenuSeparator1";
             this.fileMenuSeparator1.Size = new System.Drawing.Size(109, 6);
             // 
+            // mruItem0
+            // 
+            this.mruItem0.Enabled = true;
+            this.mruItem0.Name = "mruItem0";
+            this.mruItem0.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D1)));
+            this.mruItem0.Size = new System.Drawing.Size(112, 22);
+            this.mruItem0.Text = "mruItem0";
+            this.mruItem0.Click += new System.EventHandler(this.MruItem0Click);
+            // 
+            // mruItem1
+            // 
+            this.mruItem1.Enabled = true;
+            this.mruItem1.Name = "mruItem1";
+            this.mruItem1.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D2)));
+            this.mruItem1.Size = new System.Drawing.Size(112, 22);
+            this.mruItem1.Text = "mruItem1";
+            this.mruItem1.Click += new System.EventHandler(this.MruItem1Click);
+            // 
+            // mruItem2
+            // 
+            this.mruItem2.Enabled = true;
+            this.mruItem2.Name = "mruItem2";
+            this.mruItem2.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D3)));
+            this.mruItem2.Size = new System.Drawing.Size(112, 22);
+            this.mruItem2.Text = "mruItem2";
+            this.mruItem2.Click += new System.EventHandler(this.MruItem2Click);
+            // 
+            // mruItem3
+            // 
+            this.mruItem3.Enabled = true;
+            this.mruItem3.Name = "mruItem3";
+            this.mruItem3.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D4)));
+            this.mruItem3.Size = new System.Drawing.Size(112, 22);
+            this.mruItem3.Text = "mruItem3";
+            this.mruItem3.Click += new System.EventHandler(this.MruItem3Click);
+            // 
+            // mruItem4
+            // 
+            this.mruItem4.Enabled = true;
+            this.mruItem4.Name = "mruItem4";
+            this.mruItem4.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D5)));
+            this.mruItem4.Size = new System.Drawing.Size(112, 22);
+            this.mruItem4.Text = "mruItem4";
+            this.mruItem4.Click += new System.EventHandler(this.MruItem4Click);
+            // 
+            // mruSeparator
+            // 
+            this.mruSeparator.Name = "mruSeparator";
+            this.mruSeparator.Size = new System.Drawing.Size(109, 6);
+            // 
             // exitToolStripMenuItem
             // 
-            this.exitToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.exitToolStripMenuItem.Text = "&Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItemClick);
@@ -554,27 +620,27 @@ namespace CslaGenerator
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(6, 39);
             // 
-            // newRelationsObjectButton
+            // newObjectRelationButton
             // 
             this.newObjectRelationButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.newObjectRelationButton.Enabled = false;
             this.newObjectRelationButton.Image = global::CslaGenerator.Properties.Resources.New_Relations_Object;
             this.newObjectRelationButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.newObjectRelationButton.Name = "newRelationsObjectButton";
+            this.newObjectRelationButton.Name = "newObjectRelationButton";
             this.newObjectRelationButton.Size = new System.Drawing.Size(36, 36);
             this.newObjectRelationButton.Text = "Add a new object relation";
-            this.newObjectRelationButton.Click += new System.EventHandler(this.NewRelationsObjectButtonClick);
+            this.newObjectRelationButton.Click += new System.EventHandler(this.NewObjectRelationButtonClick);
             // 
-            // addToRelationButton
+            // addToObjectRelationButton
             // 
             this.addToObjectRelationButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
             this.addToObjectRelationButton.Enabled = false;
             this.addToObjectRelationButton.Image = global::CslaGenerator.Properties.Resources.Add_To_Relation;
             this.addToObjectRelationButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.addToObjectRelationButton.Name = "addToRelationButton";
+            this.addToObjectRelationButton.Name = "addToObjectRelationButton";
             this.addToObjectRelationButton.Size = new System.Drawing.Size(36, 36);
             this.addToObjectRelationButton.Text = "Add to object relation as ...";
-            this.addToObjectRelationButton.Click += new System.EventHandler(this.AddToRelationButtonClick);
+            this.addToObjectRelationButton.Click += new System.EventHandler(this.AddToObjectRelationButtonClick);
             // 
             // toolStripSeparator4
             // 
@@ -661,6 +727,10 @@ namespace CslaGenerator
             this.projectPanel.Size = new System.Drawing.Size(231, 431);
             this.projectPanel.TabIndex = 0;
             // 
+            // formSizePosition1
+            // 
+            this.formSizePosition1.Form = this;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -679,7 +749,6 @@ namespace CslaGenerator
             this.KeyPreview = true;
             this.Name = "MainForm";
             this.Text = "CslaGenFork";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.MainFormLoad);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainFormKeyDown);
             this.menuStrip1.ResumeLayout(false);
@@ -688,6 +757,7 @@ namespace CslaGenerator
             this.toolStrip1.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.formSizePosition1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -710,6 +780,12 @@ namespace CslaGenerator
         private ToolStripMenuItem removeSelectedObjectToolStripMenuItem;
         private ToolStripMenuItem dataBaseToolStripMenuItem;
         private ToolStripSeparator fileMenuSeparator1;
+        private ToolStripMenuItem mruItem0;
+        private ToolStripMenuItem mruItem1;
+        private ToolStripMenuItem mruItem2;
+        private ToolStripMenuItem mruItem3;
+        private ToolStripMenuItem mruItem4;
+        private ToolStripSeparator mruSeparator;
         private ToolStripSeparator projectMenuSeparator1;
         private ToolStripSeparator projectMenuSeparator2;
         private ToolStripMenuItem connectToolStripMenuItem;
@@ -760,5 +836,6 @@ namespace CslaGenerator
         private ToolStripMenuItem toolStripMenuItem4;
         private ToolStripMenuItem locateToolStripMenuItem;
         private ToolStripMenuItem codeSmithExtensionToolStripMenuItem;
+        internal FormSizePosition formSizePosition1;
     }
 }

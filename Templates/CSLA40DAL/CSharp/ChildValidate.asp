@@ -34,11 +34,11 @@ foreach (ChildProperty childProperty in Info.AllChildProperties)
     // is it non-root?
     if (IsNotRootType(Info))
     {
-        if (childProperty.LoadingScheme != LoadingScheme.SelfLoad)
+        /*if (childProperty.LoadingScheme != LoadingScheme.SelfLoad)
         {
             Warnings.Append(Info.ObjectName + " isn't a root object; "+
                 Info.ObjectName + " child property " + childProperty.Name + " Loading Scheme should be \"SelfLoad\"." + Environment.NewLine);
-        }
+        }*/
     }
     else
     {

@@ -68,9 +68,6 @@ namespace CslaGenerator.Controls
 
             _genParams.GenerateInlineQueries = false;
             chkGenerateInlineQueries.Enabled = false;
-
-            _genParams.UseBypassPropertyChecks = false;
-            chkUseBypassPropertyChecks.Enabled = false;
         }
 
         public void SaveInfo()
@@ -280,6 +277,10 @@ namespace CslaGenerator.Controls
             chkWPF.Enabled = UseCsla4;
             chkSilverlight.Enabled = UseCsla4;
             chkSilverlightUseServices.Enabled = UseCsla4;
+            chkGenerateQueriesWithSchema.Enabled = UseCsla4;
+            chkUsePublicPropertyInfo.Enabled = UseCsla4;
+            chkUseChildFactory.Enabled = UseCsla4;
+            chkUseBypassPropertyChecks.Enabled = UseCsla4;
             chkActiveObjects.Enabled = !UseCsla4;
 
             chkSpOneFile.Enabled = _genParams.GenerateSprocs;

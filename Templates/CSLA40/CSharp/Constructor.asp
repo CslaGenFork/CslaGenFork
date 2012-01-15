@@ -2,11 +2,9 @@
 bool dependentAllowNew2 = false;
 bool dependentAllowEdit2 = false;
 bool dependentAllowRemove2 = false;
-string itemName2 = string.Empty;
 if (!IsReadOnlyType(Info.ObjectType) && IsCollectionType(Info.ObjectType))
 {
     CslaObjectInfo itemInfo2 = FindChildInfo(Info, Info.ItemType);
-    itemName2 = itemInfo2.ObjectName;
     if ((CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.None &&
         CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.PropertyLevel) &&
         ((itemInfo2.NewRoles.Trim() != String.Empty) ||
@@ -50,8 +48,17 @@ if (UseBoth()) // check there is a fetch
 }
 if (UseNoSilverlight())
 {
+    string ctorVisibility = string.Empty;
+    if (Info.ConstructorVisibility == ConstructorVisibility.Default &&
+        Info.ObjectType == CslaObjectType.ReadOnlyCollection &&
+        Info.ParentType != string.Empty &&
+        ancestorLoaderLevel > 1)
+        ctorVisibility = "internal";
+    else
+        ctorVisibility = GetConstructorVisibility(Info);
+
     %>
-        <%= GetConstructorVisibility(Info) %> <%= Info.ObjectName %>()
+        <%= ctorVisibility %> <%= Info.ObjectName %>()
 <%
 }
 if (UseBoth())

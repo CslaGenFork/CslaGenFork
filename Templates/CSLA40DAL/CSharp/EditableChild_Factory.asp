@@ -13,7 +13,7 @@ if (UseNoSilverlight())
 <!-- #include file="NewObject.asp" -->
 <!-- #include file="NewObjectAsync.asp" -->
 <%
-    bool selfLoad2 = GetSelfLoad(Info);
+    bool selfLoad2 = IsChildSelfLoaded(Info);
     bool isCollection = false;
     if (CurrentUnit.GenerationParams.DatabaseConnection != String.Empty)
     {

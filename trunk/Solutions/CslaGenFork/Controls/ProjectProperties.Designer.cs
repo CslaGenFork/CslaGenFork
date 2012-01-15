@@ -2002,10 +2002,10 @@ namespace CslaGenerator.Controls
             this.chkUseBypassPropertyChecks.TabIndex = 12;
             this.chkUseBypassPropertyChecks.Text = "Generate BypassPropertyChecks";
             this.toolTip1.SetToolTip(this.chkUseBypassPropertyChecks,
-                                     "RC - Not implemented.\r\n\r\n" +
-                                     "If checked, improves code readability by using BypassPropertyChecks blocks\r\n" +
-                                     "and assign values using .NET properties.\r\n" +
-                                     "Otherwise uses LoadProperty() to assign values.");
+                                     "If checked, improves code readability by using\r\n" +
+                                     "BypassPropertyChecks blocks and assign values using .NET properties.\r\n" +
+                                     "Otherwise uses LoadProperty() to assign values.\r\n" +
+                                     "Note - The implementation of this feature isn't completed.");
             // 
             // chkUseChildFactory
             // 

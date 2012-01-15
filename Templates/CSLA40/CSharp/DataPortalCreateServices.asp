@@ -140,13 +140,6 @@ if (UseSilverlight())
             }
             <%
             }
-            // this is DataPortal_Create; so always CheckRules except for ReadOnlyCollection and EditableRootCollection
-            if (Info.ObjectType != CslaObjectType.ReadOnlyCollection && Info.ObjectType != CslaObjectType.EditableRootCollection)
-            {
-                %>
-            BusinessRules.CheckRules();
-            <%
-            }
             %>
             base.<%= isChild ? "Child_Create()" : "DataPortal_Create(handler)" %>;
         }

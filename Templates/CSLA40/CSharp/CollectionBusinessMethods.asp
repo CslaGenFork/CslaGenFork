@@ -1,9 +1,12 @@
 <%
-CslaObjectInfo itemInfo = FindChildInfo(Info, Info.ItemType);
-
-bool useParentReference;
-useParentReference = (Info.ObjectType == CslaObjectType.DynamicEditableRootCollection) &&
-    itemInfo.AddParentReference;
+bool useParentReference = (Info.ObjectType == CslaObjectType.DynamicEditableRootCollection ||
+    (Info.ObjectType == CslaObjectType.ReadOnlyCollection && Info.ItemType != string.Empty)) && itemInfo.AddParentReference;
+bool isRODeepLoadCollection =
+    Info.ObjectType == CslaObjectType.ReadOnlyCollection &&
+    Info.ItemType != string.Empty &&
+    IsReadOnlyType(itemInfo.ObjectType) &&
+    ancestorLoaderLevel == 0 &&
+    ParentLoadsROChildren(Info);
 
 bool useAuthz = false;
 if (!IsReadOnlyType(itemInfo.ObjectType))
@@ -43,13 +46,13 @@ if (!needsBusiness)
     }
 }
 
-if (useParentReference || useAuthz || needsBusiness)
+if (useParentReference || isRODeepLoadCollection || useAuthz || needsBusiness)
 {
     %>
 
         #region Collection Business Methods
         <%
-    if (useParentReference && !useAuthz)
+    if ((useParentReference || isRODeepLoadCollection) && !useAuthz)
     {
         %>
 
@@ -58,7 +61,7 @@ if (useParentReference || useAuthz || needsBusiness)
         /// </summary>
         /// <param name="item">The item to add.</param>
         /// <remarks>
-        /// DynamicEditableRoot objects are a special case of  EditableRoot and thus the Parent property is null.
+        /// There is no valid Parent property (inexistant or null).
         /// The Add method is redefined so it takes care of filling the ParentList property.
         /// </remarks>
         public new void Add(<%= Info.ItemType %> item)
@@ -66,7 +69,6 @@ if (useParentReference || useAuthz || needsBusiness)
             item.ParentList = this;
             base.Add(item);
         }
-
         <%
     }
     else if (useAuthz)
@@ -80,11 +82,11 @@ if (useParentReference || useAuthz || needsBusiness)
         /// </summary>
         /// <param name="item">The item to add.</param>
         <%
-        if (useParentReference)
+        if (useParentReference || isRODeepLoadCollection)
         {
             %>
         /// <remarks>
-        /// DynamicEditableRoot objects are a special case of  EditableRoot and thus the Parent property is null.
+        /// There is no valid Parent property (inexistant or null).
         /// The Add method is redefined so it takes care of filling the ParentList property.
         /// </remarks>
         <%
@@ -97,7 +99,7 @@ if (useParentReference || useAuthz || needsBusiness)
                 throw new System.Security.SecurityException("User not authorized to create a <%= Info.ItemType %>.");
 
         <%
-        if (useParentReference)
+        if (useParentReference || isRODeepLoadCollection)
         {
             %>
             item.ParentList = this;
@@ -128,13 +130,9 @@ if (useParentReference || useAuthz || needsBusiness)
         <%
         }
     }
-    else
-    {
-        Response.Write(Environment.NewLine);
-    }
 
-    if (useAuthz && needsBusiness && UseBoth() && CurrentUnit.GenerationParams.GenerateSynchronous)
-        Response.Write(Environment.NewLine);
+    //if ((useAuthz && needsBusiness) || (UseBoth() && CurrentUnit.GenerationParams.GenerateSynchronous))
+        //Response.Write(Environment.NewLine);
 
     bool removeItemUnhandled = itemInfo.RemoveItem;
     foreach (Criteria c in itemInfo.CriteriaObjects)
@@ -144,6 +142,7 @@ if (useParentReference || useAuthz || needsBusiness)
             if (UseBoth() && CurrentUnit.GenerationParams.GenerateSynchronous)
             {
                 %>
+
 #if !SILVERLIGHT
 <%
             }
@@ -204,7 +203,7 @@ if (useParentReference || useAuthz || needsBusiness)
                         propertyList.Add(prop);
                     }
                 }
-            %>
+                %>
 
         /// <summary>
         /// Removes a <see cref="<%= Info.ItemType %>"/> item from the collection.
