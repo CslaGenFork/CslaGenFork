@@ -12,7 +12,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("CslaGenFork Project")]
 [assembly: AssemblyProduct("Csla Generator Fork")]
-[assembly: AssemblyCopyright("Copyright © CslaGen Project, 2007, 2009 && Tiago Freitas Leal, 2009, 2010, 2011")]
+[assembly: AssemblyCopyright("Copyright © CslaGen Project, 2007, 2009 && Tiago Freitas Leal, 2009, 2010, 2011, 2012")]
 [assembly: AssemblyTrademark("All Rights Reserved.")]
 [assembly: AssemblyCulture("")]
 
@@ -57,6 +57,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDelaySign(false)]
 [assembly: AssemblyKeyFile("")]
 [assembly: AssemblyKeyName("")]
-[assembly: AssemblyFileVersionAttribute("4.0.10")]
+[assembly: AssemblyFileVersionAttribute("4.0.11")]
 [assembly: GuidAttribute("5c019c4f-d2ab-40dd-9860-70bd603b6017")]
 [assembly: ComVisibleAttribute(false)]
