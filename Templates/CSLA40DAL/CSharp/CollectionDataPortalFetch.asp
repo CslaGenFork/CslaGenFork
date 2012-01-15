@@ -1,7 +1,7 @@
 <%
 if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
 {
-    bool selfLoad1 = GetSelfLoad(Info);
+    bool selfLoad1 = IsChildSelfLoaded(Info);
 
     bool isChildCollection = (Info.ObjectType == CslaObjectType.EditableChildCollection ||
         (Info.ObjectType == CslaObjectType.ReadOnlyCollection && Info.ParentType != string.Empty)) &&

@@ -134,7 +134,8 @@ namespace CslaGenerator.CodeGen
 
         public virtual string GetInitValue(TypeCodeEx typeCode)
         {
-            if (typeCode == TypeCodeEx.Int16 ||
+            if (typeCode == TypeCodeEx.Byte ||
+                typeCode == TypeCodeEx.Int16 ||
                 typeCode == TypeCodeEx.Int32 ||
                 typeCode == TypeCodeEx.Int64 ||
                 typeCode == TypeCodeEx.Double ||
@@ -143,13 +144,10 @@ namespace CslaGenerator.CodeGen
                 return "0";
 
             if (typeCode == TypeCodeEx.String)
-                return "String.Empty";
+                return "string.Empty";
 
             if (typeCode == TypeCodeEx.Boolean)
                 return "false";
-
-            if (typeCode == TypeCodeEx.Byte)
-                return "0";
 
             if (typeCode == TypeCodeEx.Object)
                 return "null";
@@ -164,7 +162,7 @@ namespace CslaGenerator.CodeGen
                 return "DateTime.Now";
 
             if (typeCode == TypeCodeEx.Char)
-                return "Char.MinValue";
+                return "char.MinValue";
 
             if (typeCode == TypeCodeEx.ByteArray)
                 return "new byte[] {}";
@@ -214,8 +212,8 @@ namespace CslaGenerator.CodeGen
         public virtual string GetDataSetStatement(ValueProperty prop)
         {
             // this is a quick hack
-            bool nullable = AllowNull(prop);
-            string statement = String.Empty;
+            var nullable = AllowNull(prop);
+            var statement = String.Empty;
 
             if (nullable)
             {
@@ -225,7 +223,7 @@ namespace CslaGenerator.CodeGen
                                                GetDataType(prop),
                                                GetDataType(prop.PropertyType));
                 else
-                    statement += String.Format("!dr.IsDBNull(\"{0}\") ? ({1}) ",
+                    statement += String.Format("!dr.IsDBNull(\"{0}\") ? ({1})",
                                                prop.ParameterName,
                                                GetDataType(prop));
             }
@@ -258,51 +256,55 @@ namespace CslaGenerator.CodeGen
 
         public virtual string GetDataReaderStatement(ValueProperty prop)
         {
-            bool nullable = AllowNull(prop);
-            string statement = String.Empty;
+            TypeCodeEx assignDataType;
+            if (prop.BackingFieldType == TypeCodeEx.Empty)
+                assignDataType = prop.PropertyType;
+            else
+                assignDataType = prop.BackingFieldType;
+
+            var nullable = AllowNull(prop);
+            var statement = String.Empty;
 
             if (nullable)
             {
-                if (TypeHelper.IsNullableType(prop.PropertyType))
-                    statement += String.Format("!dr.IsDBNull(\"{0}\") ? new {1}(({2}) ",
-                                               prop.ParameterName,
-                                               GetDataType(prop),
-                                               GetDataType(prop.PropertyType));
-                else
-                    statement += String.Format("!dr.IsDBNull(\"{0}\") ? ({1}) ",
-                                               prop.ParameterName,
+                if (TypeHelper.IsNullableType(assignDataType))
+                    statement += String.Format("({0})",
                                                GetDataType(prop));
+                else
+                    statement += String.Format("!dr.IsDBNull(\"{0}\") ? ",
+                                               prop.ParameterName);
             }
             statement += "dr.";
 
             if (prop.DbBindColumn.ColumnOriginType == ColumnOriginType.None)
-                statement += GetReaderMethod(prop.PropertyType);
+                statement += GetReaderMethod(assignDataType);
             else
-            {
                 statement += GetReaderMethod(GetDbType(prop.DbBindColumn), prop);
-            }
 
             statement += "(\"" + prop.ParameterName + "\"";
 
-            if (prop.PropertyType == TypeCodeEx.SmartDate)
+            if (assignDataType == TypeCodeEx.SmartDate)
                 statement += ", true";
 
             statement += ")";
-            if (nullable)
+            if (nullable && !TypeHelper.IsNullableType(assignDataType))
             {
-                if (TypeHelper.IsNullableType(prop.PropertyType))
+                if (TypeHelper.IsNullableType(assignDataType))
                     statement += ")";
                 statement += " : null";
             }
-            if (prop.PropertyType == TypeCodeEx.ByteArray)
+            if (assignDataType == TypeCodeEx.ByteArray)
                 statement = "(" + statement + ") as byte[]";
             return statement;
         }
 
         public bool AllowNull(Property prop)
         {
-            return GeneratorController.Current.CurrentUnit.GenerationParams.NullableSupport && prop.Nullable &&
-                    prop.PropertyType != TypeCodeEx.SmartDate;
+            /*return GeneratorController.Current.CurrentUnit.GenerationParams.NullableSupport &&
+                prop.Nullable &&
+                prop.PropertyType != TypeCodeEx.SmartDate;*/
+            return GeneratorController.Current.CurrentUnit.GenerationParams.NullableSupport &&
+                prop.Nullable;
         }
 
         public virtual string GetParameterSet(Property prop, bool criteria)
@@ -317,8 +319,7 @@ namespace CslaGenerator.CodeGen
             {
                 propType = TypeHelper.GetBackingFieldType(prop as ValueProperty);
             }
-            catch
-            { }
+            catch (Exception) { }
 
             bool nullable = AllowNull(prop);
             string propName;
@@ -329,7 +330,8 @@ namespace CslaGenerator.CodeGen
             else
                 propName = FormatFieldName(prop.Name);
 
-            if (nullable && propType != TypeCodeEx.SmartDate)
+            //if (nullable && propType != TypeCodeEx.SmartDate)
+            if (nullable)
             {
                 if (TypeHelper.IsNullableType(propType))
                     return String.Format("{0} == null ? (object)DBNull.Value : {0}.Value", propName);
@@ -359,12 +361,23 @@ namespace CslaGenerator.CodeGen
             return prop.DataType;
         }
 
-        public virtual string GetDataType(Property prop)
+        public virtual string GetDataType(ValueProperty prop)
         {
-            string type = GetDataType(prop.PropertyType);
+            var type = GetDataType(prop.PropertyType);
             if (AllowNull(prop))
             {
                 if (TypeHelper.IsNullableType(prop.PropertyType))
+                    type += "?";
+            }
+            return type;
+        }
+
+        public virtual string GetBackingDataType(ValueProperty prop)
+        {
+            var type = GetDataType(prop.BackingFieldType);
+            if (AllowNull(prop))
+            {
+                if (TypeHelper.IsNullableType(prop.BackingFieldType))
                     type += "?";
             }
             return type;
@@ -387,13 +400,15 @@ namespace CslaGenerator.CodeGen
             return type.ToString();
         }
 
-        protected internal string GetReaderMethod(DbType dataType, Property prop)
+        protected internal string GetReaderMethod(DbType dataType, ValueProperty prop)
         {
-            if (prop.Nullable && (TypeHelper.IsNullableType(prop.PropertyType) ||
-                                  prop.PropertyType == TypeCodeEx.String))
+            if (prop.Nullable && TypeHelper.IsNullableType(prop.PropertyType))
                 return "GetValue";
 
-            return GetReaderMethod(dataType, prop.PropertyType);
+            if(prop.BackingFieldType == TypeCodeEx.Empty)
+                return GetReaderMethod(dataType, prop.PropertyType);
+
+            return GetReaderMethod(dataType, prop.BackingFieldType);
         }
 
         protected internal string GetReaderMethod(DbType dataType, TypeCodeEx propertyType)
@@ -548,7 +563,7 @@ namespace CslaGenerator.CodeGen
                 {
                     sb.Append(GetRelationString(info, child));
                     sb.Append(Environment.NewLine);
-                    var grandchildInfo = FindChildInfo(info, child.Name);
+                    var grandchildInfo = FindChildInfo(info, child.TypeName);
                     if (grandchildInfo != null)
                         sb.Append(GetRelationStrings(grandchildInfo));
                 }
@@ -558,7 +573,7 @@ namespace CslaGenerator.CodeGen
                 {
                     sb.Append(GetRelationString(info, child));
                     sb.Append(Environment.NewLine);
-                    var grandchildInfo = FindChildInfo(info, child.Name);
+                    var grandchildInfo = FindChildInfo(info, child.TypeName);
                     if (grandchildInfo != null)
                         sb.Append(GetRelationStrings(grandchildInfo));
                 }
@@ -568,7 +583,7 @@ namespace CslaGenerator.CodeGen
                 {
                     sb.Append(GetRelationString(info, child));
                     sb.Append(Environment.NewLine);
-                    var grandchildInfo = FindChildInfo(info, child.Name);
+                    var grandchildInfo = FindChildInfo(info, child.TypeName);
                     if (grandchildInfo != null)
                         sb.Append(GetRelationStrings(grandchildInfo));
                 }
@@ -578,7 +593,7 @@ namespace CslaGenerator.CodeGen
                 {
                     sb.Append(GetRelationString(info, child));
                     sb.Append(Environment.NewLine);
-                    var grandchildInfo = FindChildInfo(info, child.Name);
+                    var grandchildInfo = FindChildInfo(info, child.TypeName);
                     if (grandchildInfo != null)
                         sb.Append(GetRelationStrings(grandchildInfo));
                 }
@@ -1715,14 +1730,50 @@ namespace CslaGenerator.CodeGen
                 info = FindChildInfo(info, info.ItemType);
 
             /*foreach (var child in info.GetAllChildProperties())
-                if (child.LoadingScheme != LoadingScheme.SelfLoad)
+                if (child.LoadingScheme == LoadingScheme.ParentLoad)
                 {
                     return true;
                 }
 
             return false;*/
 
-            return info.GetAllChildProperties().Any(child => child.LoadingScheme != LoadingScheme.SelfLoad);
+            return info.GetAllChildProperties().Any(child => child.LoadingScheme == LoadingScheme.ParentLoad);
+        }
+
+        public bool ParentLoadsROChildren(CslaObjectInfo info)
+        {
+            if (IsCollectionType(info.ObjectType))
+                info = FindChildInfo(info, info.ItemType);
+
+            foreach (var child in info.GetAllChildProperties())
+            {
+                if (child.LoadingScheme == LoadingScheme.ParentLoad)
+                {
+                    var childInfo = FindChildInfo(info, child.TypeName);
+                    if (IsReadOnlyType(childInfo.ObjectType))
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool ParentLoadsCollectionChildren(CslaObjectInfo info)
+        {
+            // todo: check if it's used on the templates and if not, remove this method
+
+            if (IsCollectionType(info.ObjectType))
+                info = FindChildInfo(info, info.ItemType);
+
+            /*foreach (var child in info.GetAllChildProperties())
+                if (child.LoadingScheme == LoadingScheme.ParentLoad)
+                {
+                    return true;
+                }
+
+            return false;*/
+
+            return info.GetCollectionChildProperties().Any(child => child.LoadingScheme == LoadingScheme.ParentLoad);
         }
 
         public bool SelfLoadsChildren(CslaObjectInfo info)
@@ -1796,13 +1847,29 @@ namespace CslaGenerator.CodeGen
             return false;
         }
 
-        public static bool IsRootType(CslaObjectType cslaType)
+        public static bool IsChildType(CslaObjectInfo info)
         {
-            if (cslaType == CslaObjectType.EditableRoot ||
-                cslaType == CslaObjectType.EditableRootCollection ||
-                cslaType == CslaObjectType.DynamicEditableRoot ||
-                cslaType == CslaObjectType.DynamicEditableRootCollection ||
-                cslaType == CslaObjectType.EditableSwitchable)
+            if (info.ObjectType == CslaObjectType.EditableSwitchable ||
+                info.ObjectType == CslaObjectType.EditableChild ||
+                info.ObjectType == CslaObjectType.EditableChildCollection ||
+                ((info.ObjectType == CslaObjectType.ReadOnlyObject ||
+                info.ObjectType == CslaObjectType.ReadOnlyCollection) &&
+                info.ParentType != String.Empty))
+                return true;
+
+            return false;
+        }
+
+        public static bool IsRootType(CslaObjectInfo info)
+        {
+            if (info.ObjectType == CslaObjectType.EditableRoot ||
+                info.ObjectType == CslaObjectType.EditableRootCollection ||
+                info.ObjectType == CslaObjectType.DynamicEditableRoot ||
+                info.ObjectType == CslaObjectType.DynamicEditableRootCollection ||
+                info.ObjectType == CslaObjectType.EditableSwitchable ||
+                ((info.ObjectType == CslaObjectType.ReadOnlyObject ||
+                  info.ObjectType == CslaObjectType.ReadOnlyCollection) &&
+                 info.ParentType == String.Empty))
                 return true;
 
             return false;
@@ -1834,7 +1901,19 @@ namespace CslaGenerator.CodeGen
             return false;
         }
 
-        public static bool HasParentProperties(CslaObjectInfo info)
+        public static bool IsRootOrRootItem(CslaObjectInfo info)
+        {
+            bool result = !IsChildType(info);
+            if (!result)
+            {
+                var parentInfo = info.Parent.CslaObjects.Find(info.ParentType);
+                if (parentInfo != null)
+                    result = !IsChildType(parentInfo);
+            }
+            return result;
+        }
+
+        public static bool CanHaveParentProperties(CslaObjectInfo info)
         {
             if (IsCollectionType(info.ObjectType))
                 return false; // Object is a collection and thus has no Properties
@@ -1990,40 +2069,10 @@ namespace CslaGenerator.CodeGen
         /// </summary>
         /// <param name="info">The info.</param>
         /// <param name="name">The child name to find.</param>
-        /// <returns></returns>
+        /// <returns>A CslaObjectInfo with the found object or null</returns>
         public CslaObjectInfo FindChildInfo(CslaObjectInfo info, string name)
         {
             return info.Parent.CslaObjects.Find(name);
-        }
-
-        public CslaObjectInfo[] GetChildItems(CslaObjectInfo info)
-        {
-            var list = new List<CslaObjectInfo>();
-            foreach (var cp in info.GetAllChildProperties())
-            {
-                var ci = FindChildInfo(info, cp.TypeName);
-                if (ci != null)
-                {
-                    if (IsCollectionType(ci.ObjectType))
-                    {
-                        ci = FindChildInfo(info, ci.ItemType);
-                    }
-                    if (ci != null)
-                        list.Add(ci);
-                }
-            }
-            return list.ToArray();
-        }
-
-        public string[] GetAllChildItemsInHierarchy(CslaObjectInfo info)
-        {
-            var list = new List<string>();
-            foreach (var obj in GetChildItems(info))
-            {
-                list.Add(obj.ObjectName);
-                list.AddRange(GetAllChildItemsInHierarchy(obj));
-            }
-            return list.ToArray();
         }
 
         public bool GetValuePropertyByName(CslaObjectInfo info, string propertyName, ref ValueProperty prop)
@@ -2033,6 +2082,19 @@ namespace CslaGenerator.CodeGen
                 if (valueProperty.Name == propertyName)
                 {
                     prop = valueProperty;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool GetChildPropertyByTypeName(CslaObjectInfo info, string propertyName, ref ChildProperty prop)
+        {
+            foreach (var childProperty in info.GetAllChildProperties())
+            {
+                if (childProperty.TypeName == propertyName)
+                {
+                    prop = childProperty;
                     return true;
                 }
             }
@@ -2115,7 +2177,8 @@ namespace CslaGenerator.CodeGen
                 propName = FormatFieldForPropertyType(info, prop);
             }
 
-            if (nullable && propType != TypeCodeEx.SmartDate)
+            //if (nullable && propType != TypeCodeEx.SmartDate)
+            if (nullable)
             {
                 if (TypeHelper.IsNullableType(propType))
                     return String.Format("{0} == null ? (object)DBNull.Value : {0}.Value", propName);
@@ -2282,7 +2345,7 @@ namespace CslaGenerator.CodeGen
 
         #endregion
 
-        #region State Field parts
+        #region State Field
 
         public bool StateFieldsForAllValueProperties(CslaObjectInfo info)
         {
@@ -2348,7 +2411,8 @@ namespace CslaGenerator.CodeGen
                     return prop.DefaultValue;
             }
 
-            if (AllowNull(prop) && typeCode != TypeCodeEx.SmartDate)
+            //if (AllowNull(prop) && typeCode != TypeCodeEx.SmartDate)
+            if (AllowNull(prop))
                 return "null";
 
             return GetInitValue(typeCode);
@@ -2466,7 +2530,7 @@ namespace CslaGenerator.CodeGen
             if (prop.DefaultValue != String.Empty)
                 return ", " + prop.DefaultValue;
 
-            if (!prop.Nullable || prop.PropertyType != TypeCodeEx.String)
+            if (!prop.Nullable)
                 return String.Empty;
 
             return ", null";
@@ -2476,7 +2540,7 @@ namespace CslaGenerator.CodeGen
         {
             foreach (var crit in info.CriteriaObjects)
             {
-                if (crit.CreateOptions.DataPortal)
+                if (crit.CreateOptions.DataPortal && crit.Name != "CreatedByCslaGenFork")
                     return true;
             }
 
@@ -2675,7 +2739,7 @@ namespace CslaGenerator.CodeGen
                 response = String.Format("{0}{1} {2}" + Environment.NewLine,
                                          (String.IsNullOrEmpty(prop.Implements) ? GetPropertyAccess(prop) + " " : ""),
                                          GetDataTypeGeneric(prop, prop.PropertyType),
-                                         (String.IsNullOrEmpty(prop.Implements) ? prop.Name : prop.Implements));
+                                         (String.IsNullOrEmpty(prop.Implements) ? FormatPascal(prop.Name) : prop.Implements));
                 response += "        {" + Environment.NewLine;
                 response += PropertyDeclareGetter(prop);
 
@@ -2978,24 +3042,15 @@ namespace CslaGenerator.CodeGen
 
             if (prop.DeclarationMode == PropertyDeclaration.AutoProperty)
             {
-                statement += String.Format("{0} = {1} dr.{2}(\"{3}\"{4})",
+                statement += String.Format("{0} = {1}",
                                            FormatProperty(prop.Name),
-                                           "(" + GetDataType(prop) +")",
-                                           GetReaderMethod(GetDbType(prop.DbBindColumn), prop),
-                                           prop.ParameterName,
-                                           (prop.PropertyType == TypeCodeEx.SmartDate)
-                                               ? ", true"
-                                               : "");
+                                           GetDataReaderStatement(prop));
             }
             else
             {
-                statement += String.Format("LoadProperty({0}, dr.{1}(\"{2}\"{3}))",
+                statement += String.Format("LoadProperty({0}, {1})",
                                            FormatPropertyInfoName(prop.Name),
-                                           GetReaderMethod(GetDbType(prop.DbBindColumn), prop),
-                                           prop.ParameterName,
-                                           (prop.PropertyType == TypeCodeEx.SmartDate)
-                                               ? ", true"
-                                               : "");
+                                           GetDataReaderStatement(prop));
             }
 
             return statement;
@@ -3096,9 +3151,274 @@ namespace CslaGenerator.CodeGen
 
         #endregion
 
+        #region Object's Collection Child listing
+
+        /// <summary>
+        /// Gets collection child objects of a CslaObjectInfo.
+        /// Gets the collection child and inherited collection child properties.
+        /// </summary>
+        /// <param name="info">The CslaOnjectInfo.</param>
+        /// <returns>A CslaObjectInfo array holding the objects for collection child properties.</returns>
+        public CslaObjectInfo[] GetCollectionChildItems(CslaObjectInfo info)
+        {
+            var list = new List<CslaObjectInfo>();
+            foreach (var cp in info.GetCollectionChildProperties())
+            {
+                var ci = FindChildInfo(info, cp.TypeName);
+                if (ci != null)
+                {
+                    /*if (IsCollectionType(ci.ObjectType))
+                    {
+                        ci = FindChildInfo(info, ci.ItemType);
+                    }*/
+                    ci = FindChildInfo(info, ci.ItemType);
+                    if (ci != null)
+                        list.Add(ci);
+                }
+            }
+            return list.ToArray();
+        }
+
+        /// <summary>
+        /// Gets the parent load collection child objects of a CslaObjectInfo.
+        /// Gets the collection child and inherited collection child properties.
+        /// </summary>
+        /// <param name="info">The CslaOnjectInfo.</param>
+        /// <returns>A CslaObjectInfo array holding the objects for parent load collection child properties.</returns>
+        public CslaObjectInfo[] GetParentLoadCollectionChildObjects(CslaObjectInfo info)
+        {
+            var list = new List<CslaObjectInfo>();
+            foreach (var cp in info.GetCollectionChildProperties())
+            {
+                if (cp.LoadingScheme == LoadingScheme.ParentLoad)
+                {
+                    var ci = FindChildInfo(info, cp.TypeName);
+                    if (ci != null)
+                    {
+                        /*if (IsCollectionType(ci.ObjectType))
+                        {
+                            ci = FindChildInfo(info, ci.ItemType);
+                        }*/
+                        ci = FindChildInfo(info, ci.ItemType);
+                        if (ci != null)
+                            list.Add(ci);
+                    }
+                }
+            }
+            return list.ToArray();
+        }
+
+        /// <summary>
+        /// Gets the parent load collection child properties of a CslaObjectInfo.
+        /// Gets the collection child and inherited collection child properties.
+        /// </summary>
+        /// <param name="info">The CslaOnjectInfo.</param>
+        /// <returns>A ChildPropertyCollection holding the objects for parent load collection child properties.</returns>
+        public ChildPropertyCollection GetParentLoadCollectionChildProperties(CslaObjectInfo info)
+        {
+            var list = new ChildPropertyCollection();
+            foreach (var cp in info.GetCollectionChildProperties())
+            {
+                if (cp.LoadingScheme == LoadingScheme.ParentLoad)
+                {
+                    list.Add(cp);
+                }
+            }
+            return list;
+        }
+
+        /// <summary>
+        /// Gets the full hierarchy of collection child object names of a CslaObjectInfo.
+        /// </summary>
+        /// <param name="info">The CslaOnjectInfo.</param>
+        /// <returns>A string array holding the objects for the hierarchy of collection child properties.</returns>
+        public string[] GetCollectionChildItemsInHierarchy(CslaObjectInfo info)
+        {
+            var list = new List<string>();
+            foreach (var obj in GetCollectionChildItems(info))
+            {
+                list.Add(obj.ObjectName);
+                list.AddRange(GetCollectionChildItemsInHierarchy(obj));
+            }
+            return list.ToArray();
+        }
+
+        /// <summary>
+        /// Gets the full hierarchy of parent load collection child properties of a CslaObjectInfo.
+        /// </summary>
+        /// <param name="info">The CslaOnjectInfo.</param>
+        /// <returns>A ChildPropertyCollection holding the hierarchy of parent load collection child objects.</returns>
+        public ChildPropertyCollection GetParentLoadCollectionChildPropertiesInHierarchy(CslaObjectInfo info)
+        {
+            var list = new ChildPropertyCollection();
+            foreach (var obj in GetParentLoadCollectionChildProperties(info))
+            {
+                list.Add(obj);
+                var childObject = FindChildInfo(info, obj.TypeName);
+                if (childObject != null)
+                {
+                    childObject = FindChildInfo(info, childObject.ItemType);
+                    if (childObject != null)
+                        list.AddRange(GetParentLoadCollectionChildPropertiesInHierarchy(childObject));
+                }
+            }
+            return list;
+        }
+
+        #endregion
+
+        #region Object's All Child listing
+
+        /// <summary>
+        /// Gets all child objects of a CslaObjectInfo.
+        /// Gets all child properties: collection and non-collection, including inherited.
+        /// </summary>
+        /// <param name="info">The CslaOnjectInfo.</param>
+        /// <returns>A CslaObjectInfo array holding the objects for all child properties.</returns>
+        public CslaObjectInfo[] GetAllChildItems(CslaObjectInfo info)
+        {
+            var list = new List<CslaObjectInfo>();
+            foreach (var cp in info.GetAllChildProperties())
+            {
+                var ci = FindChildInfo(info, cp.TypeName);
+                if (ci != null)
+                {
+                    ci = FindChildInfo(info, ci.ItemType);
+                    if (ci != null)
+                        list.Add(ci);
+                }
+            }
+            return list.ToArray();
+        }
+
+        /// <summary>
+        /// Gets all parent load child objects of a CslaObjectInfo.
+        /// Gets all child properties: collection and non-collection, including inherited.
+        /// </summary>
+        /// <param name="info">The CslaOnjectInfo.</param>
+        /// <returns>A CslaObjectInfo array holding the objects for all parent load child properties.</returns>
+        public CslaObjectInfo[] GetParentLoadAllChildObjects(CslaObjectInfo info)
+        {
+            var list = new List<CslaObjectInfo>();
+            foreach (var cp in info.GetAllChildProperties())
+            {
+                if (cp.LoadingScheme == LoadingScheme.ParentLoad)
+                {
+                    var ci = FindChildInfo(info, cp.TypeName);
+                    if (ci != null)
+                    {
+                        ci = FindChildInfo(info, ci.ItemType);
+                        if (ci != null)
+                            list.Add(ci);
+                    }
+                }
+            }
+            return list.ToArray();
+        }
+
+        /// <summary>
+        /// Gets all parent load child properties of a CslaObjectInfo.
+        /// Gets all child properties: collection and non-collection, including inherited.
+        /// </summary>
+        /// <param name="info">The CslaOnjectInfo.</param>
+        /// <returns>A ChildPropertyCollection holding the objects for all parent load child properties.</returns>
+        public ChildPropertyCollection GetParentLoadAllChildProperties(CslaObjectInfo info)
+        {
+            var list = new ChildPropertyCollection();
+            foreach (var cp in info.GetAllChildProperties())
+            {
+                if (cp.LoadingScheme == LoadingScheme.ParentLoad)
+                {
+                    list.Add(cp);
+                }
+            }
+            return list;
+        }
+
+        /// <summary>
+        /// Gets the full hierarchy of all child object names of a CslaObjectInfo.
+        /// </summary>
+        /// <param name="info">The CslaOnjectInfo.</param>
+        /// <returns>A string array holding the objects for the hierarchy of all child properties.</returns>
+        public string[] GetAllChildItemsInHierarchy(CslaObjectInfo info)
+        {
+            var list = new List<string>();
+            foreach (var obj in GetAllChildItems(info))
+            {
+                list.Add(obj.ObjectName);
+                list.AddRange(GetAllChildItemsInHierarchy(obj));
+            }
+            return list.ToArray();
+        }
+
+        /*/// <summary>
+        /// Gets the full hierarchy of parent load collection child properties of a CslaObjectInfo.
+        /// </summary>
+        /// <param name="info">The CslaOnjectInfo.</param>
+        /// <returns>A ChildPropertyCollection holding for the hierarchy of parent load all child objects.</returns>
+        public ChildPropertyCollection GetParentLoadAllChildPropertiesInHierarchy(CslaObjectInfo info)
+        {
+            var list = new ChildPropertyCollection();
+            foreach (var obj in GetParentLoadAllChildProperties(info))
+            {
+                list.Add(obj);
+                var childObject = FindChildInfo(info, obj.TypeName);
+                if (childObject != null)
+                {
+                    childObject = FindChildInfo(info, childObject.ItemType);
+                    if (childObject != null)
+                        list.AddRange(GetParentLoadAllChildPropertiesInHierarchy(childObject));
+                }
+            }
+            return list;
+        }*/
+
+        public ChildPropertyCollection GetParentLoadAllChildPropertiesInHierarchy(CslaObjectInfo info)
+        {
+            if (IsCollectionType(info.ObjectType))
+                info = FindChildInfo(info, info.ItemType);
+
+            var list = new ChildPropertyCollection();
+            foreach (var childProp in info.GetAllChildProperties())
+            {
+                list.Add(childProp);
+                var childInfo = FindChildInfo(info, childProp.TypeName);
+                if (childInfo != null && childProp.LoadingScheme == LoadingScheme.ParentLoad)
+                {
+                    list.AddRange(GetParentLoadAllChildPropertiesInHierarchy(childInfo));
+                }
+            }
+
+            return list;
+        }
+
+        public ChildPropertyCollection GetParentLoadAllGrandChildPropertiesInHierarchy(CslaObjectInfo info, bool firstRun)
+        {
+            if (IsCollectionType(info.ObjectType))
+                info = FindChildInfo(info, info.ItemType);
+
+            var list = new ChildPropertyCollection();
+            foreach (var childProp in info.GetAllChildProperties())
+            {
+                if (!firstRun)
+                    list.Add(childProp);
+
+                var childInfo = FindChildInfo(info, childProp.TypeName);
+                if (childInfo != null && childProp.LoadingScheme == LoadingScheme.ParentLoad)
+                {
+
+                    list.AddRange(GetParentLoadAllGrandChildPropertiesInHierarchy(childInfo, false));
+                }
+            }
+
+            return list;
+        }
+
+        #endregion
+
         #region Child handling
 
-        public static bool GetSelfLoad(CslaObjectInfo info)
+        public static bool IsChildSelfLoaded(CslaObjectInfo info)
         {
             var selfLoad = false;
             var parent = info.Parent.CslaObjects.Find(info.ParentType);
@@ -3117,7 +3437,7 @@ namespace CslaGenerator.CodeGen
             return selfLoad;
         }
 
-        public static bool GetLoadNone(CslaObjectInfo info)
+        public static bool IsChildSelfNotLoaded(CslaObjectInfo info)
         {
             var selfLoadNone = false;
             var parent = info.Parent.CslaObjects.Find(info.ParentType);
@@ -3136,9 +3456,9 @@ namespace CslaGenerator.CodeGen
             return selfLoadNone;
         }
 
-        public static bool GetLazyLoad(CslaObjectInfo info)
+        public static bool IsChildLazyLoaded(CslaObjectInfo info)
         {
-            var lazyLoad = info.LazyLoad;
+            var lazyLoad = false;
             var parent = info.Parent.CslaObjects.Find(info.ParentType);
             if (parent != null)
             {
@@ -3153,6 +3473,52 @@ namespace CslaGenerator.CodeGen
             }
 
             return lazyLoad;
+        }
+
+        public int AncestorLoaderLevel(CslaObjectInfo info, out bool ancestorIsCollection)
+        {
+            return FindAncestorLoaderLevel(info, 0, out ancestorIsCollection);
+        }
+
+        private static int FindAncestorLoaderLevel(CslaObjectInfo info, int level, out bool ancestorIsCollection)
+        {
+            if (IsCollectionType(info.ObjectType))
+                ancestorIsCollection = true;
+            else
+                ancestorIsCollection = false;
+
+            if (info.ParentType == string.Empty) // no parent specified; this is the last ancestor
+                return level;
+
+            var parentInfo = info.Parent.CslaObjects.Find(info.ParentType);
+            if (parentInfo == null) // there is no ancestor object; for all purposes, this is the last ancestor
+                return level;
+
+            level++;
+            if (IsCollectionType(parentInfo.ObjectType)) // is a collection; so find the next ancestor
+                return FindAncestorLoaderLevel(parentInfo, level, out ancestorIsCollection);
+
+            ancestorIsCollection = false;
+
+            if (info.ParentType == string.Empty) // no parent specified; this is the last ancestor
+                return level;
+
+            foreach (var childProperty in parentInfo.GetAllChildProperties())
+            {
+                if (childProperty.TypeName == info.ObjectName || childProperty.TypeName == info.ParentType)
+                {
+                    // no ParentLoad; this is the last ancestor
+                    if (childProperty.LoadingScheme != LoadingScheme.ParentLoad)
+                        return level;
+
+                    // is ParentLoad; so find the next ancestor
+                    if (childProperty.LoadingScheme == LoadingScheme.ParentLoad)
+                        return FindAncestorLoaderLevel(parentInfo, level, out ancestorIsCollection);
+                }
+            }
+
+            // strange enough, this object doesn't exist as a child of its parent
+            return level;
         }
 
         public static PropertyDeclaration GetDeclarationMode(CslaObjectInfo info)
@@ -3214,9 +3580,7 @@ namespace CslaGenerator.CodeGen
             var isReadOnly = false;
 
             if (prop.ReadOnly)
-            {
                 isReadOnly = true;
-            }
 
             if (info.ObjectType == CslaObjectType.ReadOnlyObject)
             {
@@ -4286,6 +4650,58 @@ namespace CslaGenerator.CodeGen
 
         #region Misplaced
 
+        public string GetFKColumn(CslaObjectInfo info, CslaObjectInfo parentInfo, Property parentProp)
+        {
+            var tableSchema = string.Empty;
+            var tableName = string.Empty;
+            foreach (var prop in info.GetDatabaseBoundValueProperties())
+            {
+                if (prop.DbBindColumn == null)
+                    continue;
+
+                if (prop.DbBindColumn.IsPrimaryKey)
+                {
+                    tableSchema = prop.DbBindColumn.SchemaName;
+                    tableName = prop.DbBindColumn.ObjectName;
+                    break;
+                }
+            }
+
+            // no primary keys found; use the first column
+            if (tableSchema == string.Empty && tableName == string.Empty)
+            {
+                foreach (var prop in info.GetDatabaseBoundValueProperties())
+                {
+                    if (prop.DbBindColumn == null)
+                        continue;
+
+                    tableSchema = prop.DbBindColumn.SchemaName;
+                    tableName = prop.DbBindColumn.ObjectName;
+                    break;
+                }
+            }
+
+            if (tableSchema != string.Empty && tableName != string.Empty)
+            {
+                var parentValueProperty = new ValueProperty();
+                if (GetValuePropertyByName(parentInfo, parentProp.Name, ref parentValueProperty))
+                {
+                    foreach (var constraint in GeneratorController.Catalog.ForeignKeyConstraints)
+                    {
+                        if (tableSchema == constraint.PKTable.ObjectSchema)
+                        {
+                            // get constraints with table match for PK or FK
+                            if (parentValueProperty.DbBindColumn.ObjectName == constraint.PKTable.ObjectName &&
+                                tableName == constraint.ConstraintTable.ObjectName)
+                                return constraint.Columns[0].FKColumn.ColumnName;
+                        }
+                    }
+                }
+            }
+
+            return "";
+        }
+
         public List<ChildProperty> SortChildren(List<ChildProperty> children)
         {
             return children.OrderBy(c => c.ChildUpdateOrder).ToList();
@@ -4334,7 +4750,8 @@ namespace CslaGenerator.CodeGen
 
         public virtual string GetInitValue(Property prop)
         {
-            if (AllowNull(prop) && prop.PropertyType != TypeCodeEx.SmartDate)
+            //if (AllowNull(prop) && prop.PropertyType != TypeCodeEx.SmartDate)
+            if (AllowNull(prop))
                 return "null";
 
             return GetInitValue(prop.PropertyType);
@@ -4342,7 +4759,8 @@ namespace CslaGenerator.CodeGen
 
         public virtual string GetInitValue(ConvertValueProperty prop)
         {
-            if (AllowNull(prop) && prop.PropertyType != TypeCodeEx.SmartDate)
+            //if (AllowNull(prop) && prop.PropertyType != TypeCodeEx.SmartDate)
+            if (AllowNull(prop))
                 return "null";
 
             return GetInitValue(prop.PropertyType);
@@ -4350,7 +4768,8 @@ namespace CslaGenerator.CodeGen
 
         public virtual string GetInitValue(UpdateValueProperty prop)
         {
-            if (AllowNull(prop) && prop.PropertyType != TypeCodeEx.SmartDate)
+            //if (AllowNull(prop) && prop.PropertyType != TypeCodeEx.SmartDate)
+            if (AllowNull(prop))
                 return "null";
 
             return GetInitValue(prop.PropertyType);
@@ -4607,7 +5026,7 @@ namespace CslaGenerator.CodeGen
 
         public List<string> GetEventList(CslaObjectInfo info)
         {
-            var lazyLoad = GetLazyLoad(info);
+            var lazyLoad = IsChildLazyLoaded(info);
 
             var eventList = new List<string>();
 

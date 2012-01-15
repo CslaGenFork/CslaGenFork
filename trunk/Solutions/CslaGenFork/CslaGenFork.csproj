@@ -104,6 +104,9 @@
     <Reference Include="DBSchemaInfo">
       <HintPath>..\..\References\DBSchemaInfo.dll</HintPath>
     </Reference>
+    <Reference Include="FormSizePosition">
+      <HintPath>..\..\References\FormSizePosition.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System">

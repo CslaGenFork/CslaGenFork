@@ -3,7 +3,7 @@
 CslaObjectInfo parent = Info.Parent.CslaObjects.Find(Info.ParentType);
 bool internalGetObjectUsed = false;
 if (parent != null)
-    internalGetObjectUsed = !Info.HasGetCriteriaFactory && GetSelfLoad(parent);
+    internalGetObjectUsed = !Info.HasGetCriteriaFactory && IsChildSelfLoaded(parent);
 if (UseBoth() &&
     (CurrentUnit.GenerationParams.GenerateSynchronous || CurrentUnit.GenerationParams.SilverlightUsingServices || internalGetObjectUsed))
 {

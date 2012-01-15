@@ -24,11 +24,6 @@ string timeStampColumn = String.Empty;
 SortTables(tables);
 string plainTableSchema = GetSchema(tables[0], false);
 string fullTableSchema = GetSchema(tables[0], true);
-/*
-ValuePropertyCollection allValueProps = new ValuePropertyCollection();
-allValueProps.AddRange(Info.GetAllValueProperties());
-allValueProps.AddRange(Info.GetParentValueProperties());
-*/
 %>
 /****** Object:  StoredProcedure <%= fullTableSchema %>[<%= Info.InsertProcedureName%>] ******/
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'<%= fullTableSchema %>[<%= Info.InsertProcedureName %>]') AND type in (N'P', N'PC'))
@@ -44,7 +39,7 @@ foreach (ValueProperty prop in Info.GetAllValueProperties())
     if (prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK)
     {
         if (!first) { %>,<% } else { first = false; }
-        propPK=prop;
+        propPK = prop;
         %>
     @<%= prop.ParameterName %> <%= GetDataTypeString(prop.DbBindColumn) %> OUTPUT<%
     }
@@ -101,17 +96,17 @@ foreach(IResultObject table in tables)
     {
         if (prop.DbBindColumn.Column == null)
             continue;
-        string colName = CheckParentRelationName(prop,table);
+        string colName = GetFKColumnForParentProperty(prop,table);
         if (colName != string.Empty)
         {
             if (!first)
             {
-                fields += ",\r\n" + new string(' ', 3*4);
-                parms +=  ",\r\n" +new string(' ', 3*4);
+                fields += "," + Environment.NewLine + new string(' ', 3*4);
+                parms +=  "," + Environment.NewLine + new string(' ', 3*4);
             }
             first = false;
-            fields += string.Concat("[",colName,"]");
-            parms += string.Concat("@",prop.ParameterName);
+            fields += string.Concat("[", colName,"]");
+            parms += string.Concat("@", prop.ParameterName);
         }
     }
     foreach (ValueProperty prop in Info.GetAllValueProperties())
@@ -126,8 +121,8 @@ foreach(IResultObject table in tables)
             {
                 if (!first)
                 {
-                    fields += ",\r\n" + new string(' ', 3*4);
-                    parms +=  ",\r\n" +new string(' ', 3*4);
+                    fields += "," + Environment.NewLine + new string(' ', 3*4);
+                    parms +=  "," + Environment.NewLine + new string(' ', 3*4);
                 }
                 else
                 {
@@ -155,7 +150,7 @@ foreach(IResultObject table in tables)
         <%
         if (propPK != null)
         {
-            Response.Write("\r\n");%>
+            Response.Write(Environment.NewLine);%>
         /* Return new primary key */
         SET @<%= propPK.ParameterName %> = SCOPE_IDENTITY()
             <%
@@ -166,7 +161,8 @@ foreach(IResultObject table in tables)
         /* Return new row version value */
         SELECT @New<%= timeStampColumn %> = [<%= timeStampColumn %>]
         FROM   <%= fullTableSchema %>[<%= tables[0].ObjectName %>]
-        WHERE  <%
+        WHERE
+            <%
         %>[<%= GetColumnString(propPK.DbBindColumn) %>] = @<%= propPK.ParameterName %><%
             }
         }
@@ -181,26 +177,38 @@ foreach(IResultObject table in tables)
         /* Return new row version value */
         SELECT @New<%= timeStampColumn %> = [<%= timeStampColumn %>]
         FROM   <%= fullTableSchema %>[<%= tables[0].ObjectName %>]
-        WHERE  <%
+        WHERE
+            <%
                 first = true;
                 foreach (ValueProperty prop in Info.GetParentValueProperties())
                 {
                     if (prop.DbBindColumn.Column == null)
                         continue;
-                    if (!first) { %>
-        AND    <%
-                    } else { first = false; }
-            %>[<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
+
+                    if (first)
+                        first = false;
+                    else
+                    {
+                        %> AND
+            <%
+                    }
+            %>[<%= GetFKColumnForParentProperty(prop,tables[0]) %>] = @<%= prop.ParameterName %><%
                 }
                 foreach (ValueProperty prop in Info.ValueProperties)
                 {
                     if (prop.DbBindColumn.Column == null)
                         continue;
-                    if (prop.DbBindColumn.IsPrimaryKey)
+
+                    //if (prop.DbBindColumn.IsPrimaryKey)
+                    if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
                     {
-                        if (!first) { %>
-        AND    <%
-                        } else { first = false; }
+                        if (first)
+                            first = false;
+                        else
+                        {
+                        %> AND
+            <%
+                        }
         %>[<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
                     }
                 }
@@ -208,11 +216,16 @@ foreach(IResultObject table in tables)
                 {
                     if (prop.DbBindColumn.Column == null)
                         continue;
+
                     if (prop.ParameterName != timeStampColumn)
                     {
-                        if (!first) { %>
-        AND    <%
-                        } else { first = false; }
+                        if (first)
+                            first = false;
+                        else
+                        {
+                        %> AND
+            <%
+                        }
         %>[<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
                     }
                 }

@@ -302,7 +302,7 @@ namespace CslaGenerator.Metadata
         {
             const string critName = "CriteriaGet";
 
-            var selfLoad = CslaTemplateHelperCS.GetSelfLoad(info);
+            var selfLoad = CslaTemplateHelperCS.IsChildSelfLoaded(info);
             if (!selfLoad)
             {
                 DeleteDefaultCollectionCriteria(info, critName);

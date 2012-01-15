@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System.Collections.Generic;
+using System.Configuration;
 using System.Windows.Forms;
 
 namespace CslaGenerator.Util
@@ -55,6 +56,32 @@ namespace CslaGenerator.Util
         }
 
         /// <summary>
+        /// Reads the value of all MRU keys
+        /// </summary>
+        /// <returns>The value of all MRU keys</returns>
+        public static List<string> GetMru()
+        {
+            var configFile = new ExeConfigurationFileMap
+                                 {
+                                     ExeConfigFilename = Application.CommonAppDataPath + @"\SharedApp.config"
+                                 };
+            var config = ConfigurationManager.OpenMappedExeConfiguration(configFile, ConfigurationUserLevel.None);
+            var response = new List<string>();
+            for (var i = 0; i < 9; i++)
+            {
+                try
+                {
+                    response.Add(config.AppSettings.Settings["MruItem" + i].Value);
+                }
+                catch (System.NullReferenceException)
+                {
+                }
+            }
+
+            return response;
+        }
+
+        /// <summary>
         /// Adds a new key and set its value, or add the given
         /// value to an existing key (values are comma separated)
         /// </summary>
@@ -102,6 +129,47 @@ namespace CslaGenerator.Util
             var config = ConfigurationManager.OpenMappedExeConfiguration(configFile, ConfigurationUserLevel.None);
             config.AppSettings.Settings.Remove(key);
             config.AppSettings.Settings.Add(key, value);
+            config.Save(ConfigurationSaveMode.Modified);
+            ConfigurationManager.RefreshSection("appSettings");
+        }
+
+        /// <summary>
+        /// Removes all MRU key, adds all MRU and sets their value
+        /// </summary>
+        /// <param name="value">The new value</param>
+        public static void ChangeMru(List<string> value)
+        {
+            var configFile = new ExeConfigurationFileMap
+                                 {
+                                     ExeConfigFilename = Application.CommonAppDataPath + @"\SharedApp.config"
+                                 };
+            var config = ConfigurationManager.OpenMappedExeConfiguration(configFile, ConfigurationUserLevel.None);
+
+            for (var i = 0; i < 9; i++)
+            {
+                try
+                {
+                    config.AppSettings.Settings.Remove("MruItem" + i);
+                }
+                catch (System.NullReferenceException)
+                {
+                }
+            }
+
+            for (var i = 0; i < 9; i++)
+            {
+                if (i < value.Count)
+                {
+                    try
+                    {
+                        config.AppSettings.Settings.Add("MruItem" + i, value[i]);
+                    }
+                    catch (System.NullReferenceException)
+                    {
+                    }
+                }
+            }
+
             config.Save(ConfigurationSaveMode.Modified);
             ConfigurationManager.RefreshSection("appSettings");
         }

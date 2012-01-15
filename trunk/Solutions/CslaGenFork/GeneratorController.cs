@@ -51,6 +51,7 @@ namespace CslaGenerator
             _mainForm.ProjectPanel.LastItemRemoved += delegate { _currentCslaObject = null; };
             _mainForm.ObjectRelationsBuilder.SelectedItemsChanged += AssociativeEntitiesList_SelectedItemsChanged;
             _mainForm.Show();
+            _mainForm.formSizePosition1.RestoreFormSizePosition();
         }
 
         public void Dispose()
@@ -127,6 +128,7 @@ namespace CslaGenerator
         public string ProjectsDirectory { get; set; }
         public string ObjectsDirectory { get; set; }
         public string RulesDirectory { get; set; }
+        public List<string> MruItems { get; set; }
 
         internal ProjectProperties ProjectPropertiesTab
         {
@@ -594,6 +596,7 @@ namespace CslaGenerator
             GetConfigProjectsFolder();
             GetConfigObjectsFolder();
             GetConfigRulesFolder();
+            GetConfigMruItems();
         }
 
         private void GetConfigTemplatesFolder()
@@ -686,6 +689,42 @@ namespace CslaGenerator
             {
                 RulesDirectory = tDir;
             }
+        }
+
+        internal void GetConfigMruItems()
+        {
+            var tDir = ConfigTools.Get("RulesDirectory");
+            if (string.IsNullOrEmpty(tDir))
+            {
+                tDir = ConfigTools.OriginalGet("RulesDirectory");
+
+                while (tDir.LastIndexOf(@"\\") == tDir.Length - 2)
+                {
+                    tDir = tDir.Substring(0, tDir.Length - 1);
+                }
+            }
+
+            if (string.IsNullOrEmpty(tDir))
+            {
+                RulesDirectory = Environment.SpecialFolder.Desktop.ToString();
+            }
+            else
+            {
+                RulesDirectory = tDir;
+            }
+        }
+
+        internal void ResortMruItems()
+        {
+            string[] original = MruItems.ToArray();
+            MruItems.Clear();
+            foreach (var item in original)
+            {
+                if(!MruItems.Contains(item))
+                    MruItems.Add(item);
+            }
+
+            ConfigTools.ChangeMru(MruItems);
         }
 
         #region Nested CslaObjectInfoComparer

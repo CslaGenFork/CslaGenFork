@@ -1,18 +1,12 @@
 <%
 if (!Info.UseCustomLoading)
 {
-    bool selfLoad1 = GetSelfLoad(Info);
-
+    string createString = string.Empty;
     bool isChildCollection = (Info.ObjectType == CslaObjectType.EditableChildCollection ||
         (Info.ObjectType == CslaObjectType.ReadOnlyCollection && Info.ParentType != string.Empty)) &&
-        !selfLoad1;
+        !isChildSelfLoaded;
 
-    bool isSwitchable = false;
-    CslaObjectInfo childInfo = FindChildInfo(Info, Info.ItemType);
-    if (childInfo.ObjectType == CslaObjectType.EditableSwitchable)
-    {
-        isSwitchable = true;
-    }
+    CslaObjectInfo itemInfo2 = FindChildInfo(Info, Info.ItemType);
 
     if (GetCriteriaObjects(Info).Count > 0)
     {
@@ -145,10 +139,11 @@ if (!Info.UseCustomLoading)
             <%
                 if (SelfLoadsChildren(Info) && IsCollectionType(Info.ObjectType))
                 {
+            //foreach (var <= FormatCamel(itemInfo2.ObjectName) > in this)
                     %>
-            foreach (var <%= FormatCamel(childInfo.ObjectName) %> in this)
+            foreach (var item in this)
             {
-                <%= FormatCamel(childInfo.ObjectName) %>.FetchChildren();
+                item.FetchChildren();
             }
         <%
                 }
@@ -171,14 +166,15 @@ if (!Info.UseCustomLoading)
             {
                 Fetch(dr);
                 <%
-                if (ParentLoadsChildren(Info) && IsCollectionType(Info.ObjectType))
+                if (itemInfo2 != null)
                 {
-                    %>
-                foreach (var <%= FormatCamel(childInfo.ObjectName) %> in this)
-                {
-                    <%= FormatCamel(childInfo.ObjectName) %>.FetchChildren(dr);
-                }
+                    if (ParentLoadsCollectionChildren(itemInfo2))
+                    {
+                        %>
+                if (this.Count > 0)
+                    this[0].FetchChildren(dr);
                 <%
+                    }
                 }
                 %>
             }
@@ -227,7 +223,7 @@ if (!Info.UseCustomLoading)
             var rlce = RaiseListChangedEvents;
             RaiseListChangedEvents = false;
             <%
-        if (!Info.HasGetCriteria && Info.ParentType != string.Empty && !selfLoad1)
+        if (!Info.HasGetCriteria && Info.ParentType != string.Empty && !isChildSelfLoaded)
         {
             %>
             var args = new DataPortalHookArgs(dr);
@@ -247,13 +243,13 @@ if (!Info.UseCustomLoading)
         else
         {
             %>
-                Add(DataPortal.Fetch<%= IsNotRootType(childInfo) ? "Child" : "" %><<%= Info.ItemType %>>(dr));
+                Add(DataPortal.Fetch<%= IsNotRootType(itemInfo2) ? "Child" : "" %><<%= Info.ItemType %>>(dr));
             <%
         }
         %>
             }
             <%
-        if (!Info.HasGetCriteria && Info.ParentType != string.Empty && !selfLoad1)
+        if (!Info.HasGetCriteria && Info.ParentType != string.Empty && !isChildSelfLoaded)
         {
             %>
             OnFetchPost(args);
@@ -271,6 +267,66 @@ if (!Info.UseCustomLoading)
         %>
         }
     <%
+        if ((ancestorLoaderLevel > 1 && !ancestorIsCollection) || (ancestorLoaderLevel > 1 && ancestorIsCollection))
+        {
+            ChildProperty childProp = new ChildProperty();
+            foreach (ChildProperty child in parentInfo.GetCollectionChildProperties())
+            {
+                if (child.TypeName == Info.ObjectName)
+                {
+                    childProp = child;
+                    break;
+                }
+            }
+            CslaObjectInfo childInfo = Info.Parent.CslaObjects.Find(childProp.TypeName);
+
+            string findByParams = string.Empty;
+            bool parentFirst = true;
+            foreach(Property prop in itemInfo.ParentProperties)
+            {
+                if (parentFirst)
+                    parentFirst = false;
+                else
+                    findByParams += ", ";
+
+                findByParams += "item." + FormatCamel(GetFKColumn(itemInfo, parentInfo, prop));
+            }
+            string collectionObject = FormatPascal(childProp.Name);
+            %>
+
+        /// <summary>
+        /// Loads <see cref="<%= FormatPascal(Info.ItemType) %>"/> items on the <%= FormatPascal(childProp.Name) %> collection.
+        /// </summary>
+        /// <param name="collection">The grand parent <see cref="<%= FormatPascal(parentInfo.ParentType) %>"/> collection.</param>
+        internal void LoadItems(<%= FormatPascal(parentInfo.ParentType) %> collection)
+        {
+            foreach (var item in this)
+            {
+                var obj = collection.Find<%= FormatPascal(Info.ParentType) %>ByParentProperties(<%= findByParams %>);
+                <%
+                if (childInfo.ObjectType == CslaObjectType.ReadOnlyCollection)
+                {
+                    %>
+                obj.<%= collectionObject %>.IsReadOnly = false;
+                <%
+                }
+                %>
+                var rlce = obj.<%= collectionObject %>.RaiseListChangedEvents;
+                obj.<%= collectionObject %>.RaiseListChangedEvents = false;
+                obj.<%= collectionObject %>.Add(item);
+                obj.<%= collectionObject %>.RaiseListChangedEvents = rlce;
+                <%
+                if (childInfo.ObjectType == CslaObjectType.ReadOnlyCollection)
+                {
+                    %>
+                obj.<%= collectionObject %>.IsReadOnly = true;
+                <%
+                }
+                %>
+            }
+        }
+    <%
+        }
     }
     else
     {
@@ -301,7 +357,7 @@ if (!Info.UseCustomLoading)
         }
         else
         {
-            %>Add(DataPortal.Fetch<%= IsNotRootType(childInfo) ? "Child" : "" %><<%= Info.ItemType %>>(row));
+            %>Add(DataPortal.Fetch<%= IsNotRootType(itemInfo2) ? "Child" : "" %><<%= Info.ItemType %>>(row));
                 <%
         }
         %>
@@ -346,7 +402,7 @@ if (!Info.UseCustomLoading)
         }
         else
         {
-            %>Add(DataPortal.Fetch<%= IsNotRootType(childInfo) ? "Child" : "" %><<%= Info.ItemType %>>(row));
+            %>Add(DataPortal.Fetch<%= IsNotRootType(itemInfo2) ? "Child" : "" %><<%= Info.ItemType %>>(row));
                 <%
         }
         %>

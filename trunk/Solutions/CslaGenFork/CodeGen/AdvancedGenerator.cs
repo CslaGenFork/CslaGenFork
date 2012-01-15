@@ -53,7 +53,7 @@ namespace CslaGenerator.CodeGen
                 (_unit.GenerationParams.UseDto == TargetDto.MoreThan ||
                 _unit.GenerationParams.UseDto == TargetDto.Always))
             {
-                MessageBox.Show(@"DTO aren't supported (yet) in this release of CslaGenFork.",
+                MessageBox.Show(@"DTO aren't supported in this release of CslaGenFork.",
                     @"CslaGenFork DAL project generation", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
@@ -221,20 +221,20 @@ namespace CslaGenerator.CodeGen
             if (_generateDatabaseClass && generationParams.TargetFramework == TargetFramework.CSLA40)
             {
                 const GenerationStep step = GenerationStep.Business;
-                GenerateUtilityFile("Database" + dbConnection, false, "Database", objInfo, step);
+                GenerateUtilityFile("Database" + dbConnection, false, "Database", step);
             }
             else
             {
                 _fileSuccess.Add("Database", null);
             }
 
-            GenerateUtilityFile("DataPortalHookArgs", false, "DataPortalHookArgs", objInfo, GenerationStep.Business);
+            GenerateUtilityFile("DataPortalHookArgs", false, "DataPortalHookArgs", GenerationStep.Business);
 
             if (generationParams.GenerateDalInterface)
             {
-                GenerateUtilityFile("IDalManager" + dbConnection, false, "IDalManager", objInfo, GenerationStep.DalInterface);
-                GenerateUtilityFile("DalFactory" + dbConnection, false, "DalFactory", objInfo, GenerationStep.DalInterface);
-                GenerateUtilityFile("DataNotFoundException", false, "DataNotFoundException", objInfo, GenerationStep.DalInterface);
+                GenerateUtilityFile("IDalManager" + dbConnection, false, "IDalManager", GenerationStep.DalInterface);
+                GenerateUtilityFile("DalFactory" + dbConnection, false, "DalFactory", GenerationStep.DalInterface);
+                GenerateUtilityFile("DataNotFoundException", false, "DataNotFoundException", GenerationStep.DalInterface);
             }
             else
             {
@@ -245,7 +245,7 @@ namespace CslaGenerator.CodeGen
 
             if (generationParams.GenerateDalObject)
             {
-                GenerateUtilityFile("DalManager" + dbConnection, false, "DalManager", objInfo, GenerationStep.DalObject);
+                GenerateUtilityFile("DalManager" + dbConnection, false, "DalManager", GenerationStep.DalObject);
             }
             else
             {
@@ -254,7 +254,7 @@ namespace CslaGenerator.CodeGen
 
             if (_abortRequested)
             {
-                OnGenerationInformation(Environment.NewLine + "Code Generation Cancelled!");
+                OnGenerationInformation(Environment.NewLine + "* * * * Code Generation Cancelled!");
             }
             OnFinalized();
         }
@@ -394,7 +394,7 @@ namespace CslaGenerator.CodeGen
             {
                 var alert = MessageBox.Show(
                     objInfo.ObjectName + @" is EditableSwitchable" + Environment.NewLine +
-                    @"and isn't supported (yet) in this release of CslaGenFork.",
+                    @"and isn't supported in this release of CslaGenFork.",
                     @"CslaGenFork object generation", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
                 if (alert == DialogResult.Cancel)
                     result = false;
@@ -651,8 +651,9 @@ namespace CslaGenerator.CodeGen
             }
         }
 
-        private void GenerateUtilityFile(string utilityFilename, bool deleteFile, string utilityTemplate, CslaObjectInfo objInfo, GenerationStep step)
+        private void GenerateUtilityFile(string utilityFilename, bool deleteFile, string utilityTemplate, GenerationStep step)
         {
+            var outputLanguage = _unit.GenerationParams.OutputLanguage;
             _fileSuccess.Add(utilityFilename, null);
 
             var fullFilename = GetUtilitiesFolderPath(step);
@@ -662,9 +663,9 @@ namespace CslaGenerator.CodeGen
             fullFilename += utilityFilename;
 
             // extension
-            if (objInfo.OutputLanguage == CodeLanguage.CSharp)
+            if (outputLanguage == CodeLanguage.CSharp)
                 fullFilename += ".cs";
-            else if (objInfo.OutputLanguage == CodeLanguage.VB)
+            else if (outputLanguage == CodeLanguage.VB)
                 fullFilename += ".vb";
 
             if (File.Exists(fullFilename) && deleteFile)
@@ -680,8 +681,8 @@ namespace CslaGenerator.CodeGen
                 {
                     if (utilityTemplate != string.Empty)
                     {
-                        var tPath = _fullTemplatesPath + objInfo.OutputLanguage + "\\" + utilityTemplate + ".cst";
-                        var template = GetTemplate(objInfo, tPath);
+                        var tPath = _fullTemplatesPath + outputLanguage + "\\" + utilityTemplate + ".cst";
+                        var template = GetTemplate(new CslaObjectInfo(), tPath);
                         if (template != null)
                         {
                             var errorsOutput = new StringBuilder();
@@ -839,7 +840,7 @@ namespace CslaGenerator.CodeGen
 
         private bool NeedsDbFetch(CslaObjectInfo info)
         {
-            var selfLoad = CslaTemplateHelperCS.GetSelfLoad(info);
+            var selfLoad = CslaTemplateHelperCS.IsChildSelfLoaded(info);
             return (!((info.ObjectType == CslaObjectType.EditableChildCollection ||
                        info.ObjectType == CslaObjectType.EditableChild) &&
                        !selfLoad));
@@ -1063,7 +1064,11 @@ namespace CslaGenerator.CodeGen
                                 _sprocSuccess++;
                                 //OnGenerationInformation("Success");
                             }
-                            return sw.ToString();
+
+                            var sproc = sw.ToString();
+                            sproc = sproc.Replace("\r\n\r\n\r\n\r\n", "\r\n\r\n");
+                            sproc = sproc.Replace("\r\n\r\n\r\n", "\r\n\r\n");
+                            return sproc;
                         }
                     }
                 }

@@ -199,12 +199,46 @@ namespace CslaGenerator.Util
 
                 /*
                  * These are not nullable:
-                case Metadata.TypeCodeEx.ByteArray:
-                case Metadata.TypeCodeEx.SmartDate:
-                case Metadata.TypeCodeEx.DBNull:
-                case Metadata.TypeCodeEx.Empty:
-                case Metadata.TypeCodeEx.Object:
-                case Metadata.TypeCodeEx.String:
+                case TypeCodeEx.ByteArray:
+                case TypeCodeEx.SmartDate:
+                case TypeCodeEx.DBNull:
+                case TypeCodeEx.Empty:
+                case TypeCodeEx.Object:
+                case TypeCodeEx.String:
+                 */
+            }
+            return false;
+        }
+
+        public static bool IsNullAllowedOnType(TypeCodeEx type)
+        {
+            switch (type)
+            {
+                case TypeCodeEx.Boolean:
+                case TypeCodeEx.Byte:
+                case TypeCodeEx.Char:
+                case TypeCodeEx.Decimal:
+                case TypeCodeEx.Double:
+                case TypeCodeEx.Guid:
+                case TypeCodeEx.Int16:
+                case TypeCodeEx.Int32:
+                case TypeCodeEx.Int64:
+                case TypeCodeEx.SByte:
+                case TypeCodeEx.Single:
+                case TypeCodeEx.UInt16:
+                case TypeCodeEx.UInt32:
+                case TypeCodeEx.UInt64:
+                case TypeCodeEx.DateTime:
+                case TypeCodeEx.SmartDate:
+                case TypeCodeEx.String:
+                    return true;
+
+                /*
+                 * These are not nullable:
+                case TypeCodeEx.ByteArray:
+                case TypeCodeEx.DBNull:
+                case TypeCodeEx.Empty:
+                case TypeCodeEx.Object:
                  */
             }
             return false;

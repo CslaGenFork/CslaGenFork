@@ -915,7 +915,7 @@ namespace CslaGenerator.Util.PropertyBags
                 {
                     foreach (var cslaObject in objectType)
                     {
-                        var hasParentProperties = CslaTemplateHelperCS.HasParentProperties(cslaObject);
+                        var canHaveParentProperties = CslaTemplateHelperCS.CanHaveParentProperties(cslaObject);
                         var cslaParent = new CslaObjectInfo();
                         if (cslaObject.ParentType != string.Empty)
                             cslaParent = cslaObject.Parent.CslaObjects.Find(cslaObject.ParentType);
@@ -959,7 +959,8 @@ namespace CslaGenerator.Util.PropertyBags
                             return false;
                         if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 ||
                             GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL) &&
-                            cslaObject.ObjectType != CslaObjectType.DynamicEditableRoot &&
+                            !(cslaObject.ObjectType == CslaObjectType.DynamicEditableRoot ||
+                            cslaObject.ObjectType == CslaObjectType.ReadOnlyObject) &&
                             propertyName == "AddParentReference")
                             return false;
                         if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 ||
@@ -980,19 +981,15 @@ namespace CslaGenerator.Util.PropertyBags
                             return false;
                         if ((((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40 &&
                             GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL) ||
-                            !(cslaObject.ObjectType == CslaObjectType.EditableChild && (cslaParent == null ||
-                            CslaTemplateHelperCS.IsCollectionType(cslaParent.ObjectType))))) &&
+                            !(cslaObject.ObjectType == CslaObjectType.EditableChild &&
+                            (cslaParent == null || CslaTemplateHelperCS.IsCollectionType(cslaParent.ObjectType))))) &&
                             propertyName == "RemoveItem")
                             return false;
                         if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 ||
                             GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL) &&
-                            (propertyName == "ParentProperties" && !hasParentProperties))
+                            (!canHaveParentProperties &&
+                            (propertyName == "ParentProperties" || propertyName == "UseParentProperties")))
                             return false;
-                        /*if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 ||
-                            GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL) &&
-                            typ == "EditableChildCollection" &&
-                            propertyName == "ParentProperties")
-                            return false;*/
                         if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40 &&
                             GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL) &&
                             (propertyName == "ContainsItem" ||

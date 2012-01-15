@@ -16,6 +16,7 @@ using System.Diagnostics;
 using System.Drawing.Design;
 using System.Reflection;
 using CslaGenerator.Attributes;
+using CslaGenerator.CodeGen;
 using CslaGenerator.Metadata;
 
 namespace CslaGenerator.Util.PropertyBags
@@ -657,19 +658,20 @@ namespace CslaGenerator.Util.PropertyBags
                         propertyName == "BusinessRules")
                         return false;
 
-                    var isParentRootCollection = false;
+                    var isParentCollection = false;
                     var cslaObject = (CslaObjectInfo)GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem;
                     var parentInfo2 = cslaObject.Parent.CslaObjects.Find(cslaObject.ParentType);
                     if (parentInfo2 != null)
-                        isParentRootCollection = (parentInfo2.ObjectType == CslaObjectType.EditableRootCollection) ||
-                            (parentInfo2.ObjectType == CslaObjectType.ReadOnlyCollection && parentInfo2.ParentType == String.Empty);
+                        isParentCollection = CslaTemplateHelperCS.IsCollectionType(parentInfo2.ObjectType);
 
-                    if (isParentRootCollection &&
-                        propertyName == "LoadParameters")
+                    if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 ||
+                         GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL) &&
+                         isParentCollection &&
+                         propertyName == "LoadParameters")
                         return false;
-                    if (((GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.None ||
-                        GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.ObjectLevel) ||
-                        !isParentRootCollection) &&
+                    if (((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40 &&
+                        GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL) ||
+                        !isParentCollection) &&
                         propertyName == "ParentLoadProperties")
                         return false;
                     /*if (SelectedObject[0].LoadingScheme == LoadingScheme.ParentLoad && propertyName == "LazyLoad")

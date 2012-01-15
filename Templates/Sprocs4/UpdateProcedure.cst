@@ -17,7 +17,7 @@
 <%@ Import Namespace="System.Windows.Forms"%>
 
 <%
-bool GenerateSP=false;
+bool GenerateSP = false;
 foreach(ValueProperty prop in Info.GetAllValueProperties())
 {
     if (prop.DataAccess != ValueProperty.DataAccessBehaviour.ReadOnly &&
@@ -51,9 +51,15 @@ CREATE PROCEDURE <%= fullTableSchema %>[<%= Info.UpdateProcedureName %>]<%
     {
         if (prop.DbBindColumn.Column == null)
             continue;
+
         if (prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK)
         {
-            if (!first) { %>,<% } else { first = false; }
+            if (first)
+                first = false;
+            else
+            {
+                %>,<%
+            }
             propPK=prop;
             %>
     @<%= prop.ParameterName %> <%= GetDataTypeString(prop.DbBindColumn) %><%
@@ -65,7 +71,14 @@ CREATE PROCEDURE <%= fullTableSchema %>[<%= Info.UpdateProcedureName %>]<%
         {
             if (prop.DbBindColumn.Column == null)
                 continue;
-            if (!first) { %>,<% } else { first = false; } %>
+
+            if (first)
+                first = false;
+            else
+            {
+                %>,<%
+            }
+            %>
     @<%= prop.ParameterName %> <%= GetDataTypeString(prop.DbBindColumn) %><%
         }
     }
@@ -73,12 +86,18 @@ CREATE PROCEDURE <%= fullTableSchema %>[<%= Info.UpdateProcedureName %>]<%
     {
         if (prop.DbBindColumn.Column == null)
             continue;
-        if(prop.DataAccess != ValueProperty.DataAccessBehaviour.ReadOnly
-            && (prop.DataAccess != ValueProperty.DataAccessBehaviour.CreateOnly
-            && prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK
-            || prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.UserProvidedPK))
+
+        if(prop.DataAccess != ValueProperty.DataAccessBehaviour.ReadOnly &&
+            (prop.DataAccess != ValueProperty.DataAccessBehaviour.CreateOnly &&
+            prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK ||
+            prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.UserProvidedPK))
         {
-            if (!first) { %>,<% } else { first = false; }
+            if (first)
+                first = false;
+            else
+            {
+                %>,<%
+            }
             %>
     @<%= prop.ParameterName %> <%= GetDataTypeString(prop.DbBindColumn) %><%
             if (prop.DbBindColumn.NativeType == "timestamp")
@@ -105,22 +124,35 @@ AS
         {
             if (prop.DbBindColumn.Column == null)
                 continue;
-            if (!first) { %>, <% } else { first = false; }
-                %>[<%= GetColumnString(prop.DbBindColumn) %>]<%
+
+            if (first)
+                first = false;
+            else
+            {
+                %>, <%
+            }
+            %>[<%= GetFKColumnForParentProperty(prop,tables[0]) %>]<%
         }
     }
     foreach (ValueProperty prop in Info.ValueProperties)
     {
         if (prop.DbBindColumn.Column == null)
             continue;
+
         if (prop.DbBindColumn.IsPrimaryKey)
         {
-            if (!first) { %>, <% } else { first = false; }
+            if (first)
+                first = false;
+            else
+            {
+                %>, <%
+            }
             %>[<%= GetColumnString(prop.DbBindColumn) %>]<%
         }
     }
             %> FROM <%= fullTableSchema %>[<%= tables[0].ObjectName %>]
-            WHERE  <%
+            WHERE
+                <%
     first = true;
     if (!Info.ParentInsertOnly)
     {
@@ -128,40 +160,38 @@ AS
         {
             if (prop.DbBindColumn.Column == null)
                 continue;
-            if (!first)
-            {
-                %>
-            AND    <%
-            }
+
+            if (first)
+                first = false;
             else
             {
-                first = false;
+                %> AND
+                <%
             }
-            %>[<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
+            %>[<%= GetFKColumnForParentProperty(prop,tables[0]) %>] = @<%= prop.ParameterName %><%
         }
     }
     foreach (ValueProperty prop in Info.GetAllValueProperties())
     {
         if (prop.DbBindColumn.Column == null)
             continue;
+
         if (prop.DbBindColumn.IsPrimaryKey)
         {
-            if (!first)
-            {
-                %>
-            AND    <%
-            }
+            if (first)
+                first = false;
             else
             {
-                first = false;
+                %> AND
+                <%
             }
             %>[<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
         }
     }
     if (useBoolSoftDelete)
     {
-        %>
-            AND    [<%= Info.Parent.Params.SpBoolSoftDeleteColumn %>] = 'true'<%
+                %> AND
+                [<%= Info.Parent.Params.SpBoolSoftDeleteColumn %>] = 'true'<%
     }
     %>
         )
@@ -185,22 +215,35 @@ AS
             {
                 if (prop.DbBindColumn.Column == null)
                     continue;
-                if (!first) { %>, <% } else { first = false; }
-                %>[<%= GetColumnString(prop.DbBindColumn) %>]<%
+
+                if (first)
+                    first = false;
+                else
+                {
+                    %>, <%
+                }
+                %>[<%= GetFKColumnForParentProperty(prop,tables[0]) %>]<%
             }
         }
         foreach (ValueProperty prop in Info.ValueProperties)
         {
             if (prop.DbBindColumn.Column == null)
                 continue;
+
             if (prop.DbBindColumn.IsPrimaryKey)
             {
-                if (!first) { %>, <% } else { first = false; }
-            %>[<%= GetColumnString(prop.DbBindColumn) %>]<%
+                if (first)
+                    first = false;
+                else
+                {
+                    %>, <%
+                }
+                %>[<%= GetColumnString(prop.DbBindColumn) %>]<%
             }
         }
             %> FROM <%= fullTableSchema %>[<%= tables[0].ObjectName %>]
-            WHERE  <%
+            WHERE
+                <%
         first = true;
         if (!Info.ParentInsertOnly)
         {
@@ -208,52 +251,49 @@ AS
             {
                 if (prop.DbBindColumn.Column == null)
                     continue;
-                if (!first)
-                {
-                    %>
-            AND    <%
-                }
+
+                if (first)
+                    first = false;
                 else
                 {
-                    first = false;
+                    %> AND
+                <%
                 }
-            %>[<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
+                %>[<%= GetFKColumnForParentProperty(prop,tables[0]) %>] = @<%= prop.ParameterName %><%
             }
         }
         foreach (ValueProperty prop in Info.ValueProperties)
         {
             if (prop.DbBindColumn.Column == null)
                 continue;
+
             if (prop.DbBindColumn.IsPrimaryKey || prop.ParameterName == timeStampColumn)
             {
-                if (!first)
-                {
-                    %>
-            AND    <%
-                }
+                if (first)
+                    first = false;
                 else
                 {
-                    first = false;
+                    %> AND
+                <%
                 }
-            %>[<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
+                %>[<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
             }
         }
         foreach (ValueProperty prop in Info.InheritedValueProperties)
         {
             if (prop.DbBindColumn.Column == null)
                 continue;
+
             if (prop.DbBindColumn.IsPrimaryKey || prop.ParameterName == timeStampColumn)
             {
-                if (!first)
-                {
-                    %>
-            AND    <%
-                }
+                if (first)
+                    first = false;
                 else
                 {
-                    first = false;
+                    %> AND
+                <%
                 }
-            %>[<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
+                %>[<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
             }
         }
         %>
@@ -281,13 +321,22 @@ AS
         {
             if (prop.DbBindColumn.Column == null)
                 continue;
+
             if(prop.DataAccess != ValueProperty.DataAccessBehaviour.ReadOnly
                 && prop.DataAccess != ValueProperty.DataAccessBehaviour.CreateOnly)
             {
-                if (prop.DbBindColumn.ObjectName == table.ObjectName && !prop.DbBindColumn.IsPrimaryKey && prop.DbBindColumn.NativeType != "timestamp")
+                if (prop.DbBindColumn.ObjectName == table.ObjectName &&
+                    !prop.DbBindColumn.IsPrimaryKey &&
+                    prop.DbBindColumn.NativeType != "timestamp")
                 {
-                    if (!first) { %>,<% } else { first = false; } %>
-               [<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
+                    if (first)
+                        first = false;
+                    else
+                    {
+                        %>,<%
+                    }
+                    %>
+            [<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
                 }
             }
         }
@@ -295,18 +344,28 @@ AS
         {
             if (prop.DbBindColumn.Column == null)
                 continue;
-            if(prop.DataAccess != ValueProperty.DataAccessBehaviour.ReadOnly
-                && prop.DataAccess != ValueProperty.DataAccessBehaviour.CreateOnly)
+
+            if(prop.DataAccess != ValueProperty.DataAccessBehaviour.ReadOnly &&
+                prop.DataAccess != ValueProperty.DataAccessBehaviour.CreateOnly)
             {
-                if (prop.DbBindColumn.ObjectName == table.ObjectName && !prop.DbBindColumn.IsPrimaryKey && prop.DbBindColumn.NativeType != "timestamp")
+                if (prop.DbBindColumn.ObjectName == table.ObjectName &&
+                    !prop.DbBindColumn.IsPrimaryKey &&
+                    prop.DbBindColumn.NativeType != "timestamp")
                 {
-                    if (!first) { %>,<% } else { first = false; } %>
-               [<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
+                    if (first)
+                        first = false;
+                    else
+                    {
+                        %>,<%
+                    }
+                    %>
+            [<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
                 }
             }
         }
         %>
-        WHERE  <%
+        WHERE
+            <%
         first = true;
         if (!Info.ParentInsertOnly)
         {
@@ -314,32 +373,30 @@ AS
             {
                 if (prop.DbBindColumn.Column == null)
                     continue;
-                if (!first)
-                {
-                    %>
-            AND    <%
-                }
+
+                if (first)
+                    first = false;
                 else
                 {
-                    first = false;
+                    %> AND
+            <%
                 }
-            %>[<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
+            %>[<%= GetFKColumnForParentProperty(prop,table) %>] = @<%= prop.ParameterName %><%
             }
         }
         foreach (ValueProperty prop in Info.GetAllValueProperties())
         {
             if (prop.DbBindColumn.Column == null)
                 continue;
+
             if (prop.DbBindColumn.IsPrimaryKey || prop.ParameterName == timeStampColumn)
             {
-                if (!first)
-                {
-                    %>
-        AND    <%
-                }
+                if (first)
+                    first = false;
                 else
                 {
-                    first = false;
+                    %> AND
+            <%
                 }
             %>[<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
             }
@@ -355,7 +412,8 @@ AS
         /* Return new row version value */
         SELECT @New<%= timeStampColumn %> = [<%= timeStampColumn %>]
         FROM   <%= fullTableSchema %>[<%= tables[0].ObjectName %>]
-        WHERE  <%
+        WHERE
+            <%
         first = true;
 
         if (!Info.ParentInsertOnly)
@@ -364,32 +422,30 @@ AS
             {
                 if (prop.DbBindColumn.Column == null)
                     continue;
-                if (!first)
-                {
-                    %>
-            AND    <%
-                }
+
+                if (first)
+                    first = false;
                 else
                 {
-                    first = false;
+                    %> AND
+            <%
                 }
-            %>[<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
+            %>[<%= GetFKColumnForParentProperty(prop,tables[0]) %>] = @<%= prop.ParameterName %><%
             }
         }
         foreach (ValueProperty prop in Info.ValueProperties)
         {
             if (prop.DbBindColumn.Column == null)
                 continue;
+
             if (prop.DbBindColumn.IsPrimaryKey)
             {
-                if (!first)
-                {
-                    %>
-        AND    <%
-                }
+                if (first)
+                    first = false;
                 else
                 {
-                    first = false;
+                    %> AND
+            <%
                 }
         %>[<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
             }
@@ -398,16 +454,15 @@ AS
         {
             if (prop.DbBindColumn.Column == null)
                 continue;
+
             if (prop.ParameterName != timeStampColumn)
             {
-                if (!first)
-                {
-                    %>
-        AND    <%
-                }
+                if (first)
+                    first = false;
                 else
                 {
-                    first = false;
+                    %> AND
+            <%
                 }
         %>[<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
             }

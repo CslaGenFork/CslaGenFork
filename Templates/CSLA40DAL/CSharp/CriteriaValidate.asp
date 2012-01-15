@@ -6,7 +6,7 @@ bool isCollection2 =
 bool isSelfLoadCollection =
     (Info.ObjectType == CslaObjectType.EditableChildCollection ||
     Info.ObjectType == CslaObjectType.ReadOnlyCollection) &&
-    GetSelfLoad(Info);
+    IsChildSelfLoaded(Info);
 
 bool createOptionsFactory;
 bool createOptionsDataPortal;
@@ -28,7 +28,7 @@ foreach (Criteria crit in GetCriteriaObjects(Info))
     }
     getOptionsFactory = getOptionsFactory | crit.GetOptions.Factory;
 }
-if (GetSelfLoad(Info))
+if (IsChildSelfLoaded(Info))
 {
     if (!getOptionsFactory)
     {

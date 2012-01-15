@@ -1,10 +1,14 @@
 <%
-bool useParentReference;
-useParentReference = (Info.ObjectType == CslaObjectType.DynamicEditableRoot) &&
-    Info.AddParentReference;
+bool useParentReference = (Info.ObjectType == CslaObjectType.DynamicEditableRoot ||
+    (Info.ObjectType == CslaObjectType.ReadOnlyObject && Info.ParentType != string.Empty)) && Info.AddParentReference;
+bool isRODeepLoadCollection =
+    Info.ObjectType == CslaObjectType.ReadOnlyObject &&
+    Info.ParentType != string.Empty &&
+    IsReadOnlyType(parentInfo.ObjectType) &&
+    ancestorLoaderLevel == 1 &&
+    ParentLoadsROChildren(Info);
 
 IndentLevel = 2;
-bool isReadOnly = (Info.ObjectType == CslaObjectType.ReadOnlyObject);
 %>
 <!-- #include file="InternalProps.asp" -->
 
