@@ -41,7 +41,13 @@ if (Info.GenerateDataPortalInsert)
             SimpleAuditTrail();
             <%
     }
-            %>
+    if (plainConvertPropertiesWrite.Count > 0)
+    {
+        %>
+            ConvertPropertiesOnWrite();
+            <%
+    }
+    %>
             <%= GetConnection(Info, false) %>
             {
                 <%= GetCommand(Info, Info.InsertProcedureName) %>
@@ -216,7 +222,13 @@ if (Info.GenerateDataPortalUpdate)
             SimpleAuditTrail();
             <%
     }
-            %>
+    if (plainConvertPropertiesWrite.Count > 0)
+    {
+        %>
+            ConvertPropertiesOnWrite();
+            <%
+    }
+    %>
             <%= GetConnection(Info, false) %>
             {
                 <%= GetCommand(Info, Info.UpdateProcedureName) %>
@@ -382,7 +394,7 @@ if (Info.GenerateDataPortalDelete)
             SimpleAuditTrail();
             <%
     }
-            %>
+    %>
             <%= GetConnection(Info, false) %>
             {
                 <%

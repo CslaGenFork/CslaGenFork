@@ -79,7 +79,7 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Definition")]
-        [Description("The property that results from a conversion.\r\nAutomatic filling uses the Base Name.")]
+        [Description("The property that results from a conversion.\r\nAutomatic property filling uses the Base Name.")]
         public override string Name
         {
             get { return base.Name; }

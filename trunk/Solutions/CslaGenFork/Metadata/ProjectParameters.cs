@@ -118,6 +118,12 @@ namespace CslaGenerator.Metadata
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether to add a Delete CriteriaTS whem DB type "timestamp" is found.
+        /// </summary>
+        /// <value>
+        /// 	<c>true</c> if [auto timestamp criteria]; otherwise, <c>false</c>.
+        /// </value>
         public bool AutoTimestampCriteria
         {
             get { return _autoTimestampCriteria; }
@@ -142,6 +148,12 @@ namespace CslaGenerator.Metadata
             }
         }
 
+        /// <summary>
+        /// Gets or sets the PropertyMode for timestamp Value Property creation.
+        /// </summary>
+        /// <value>
+        /// The create timestamp property mode.
+        /// </value>
         public PropertyDeclaration CreateTimestampPropertyMode
         {
             get { return _createTimestampPropertyMode; }

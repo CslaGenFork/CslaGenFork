@@ -32,6 +32,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
             }
         }
     }
+    bool isRoot = IsRootType(Info);
     if (plainConvertProperties.Count > 0)
     {
         %>ConvertPropertiesOnRead();
@@ -49,7 +50,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
         /// Loads child objects from the given SafeDataReader.
         /// </summary>
         /// <param name="dr">The SafeDataReader to use.</param>
-        private void FetchChildren(SafeDataReader dr)
+        <%= isRoot ? "private" : "internal" %> void FetchChildren(SafeDataReader dr)
         {
             <%
         foreach (ChildProperty childProp in Info.GetNonCollectionChildProperties())

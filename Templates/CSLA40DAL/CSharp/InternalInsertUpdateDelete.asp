@@ -140,6 +140,12 @@ if (Info.GenerateDataPortalInsert)
             SimpleAuditTrail();
             <%
     }
+    if (plainConvertPropertiesWrite.Count > 0)
+    {
+        %>
+            ConvertPropertiesOnWrite();
+            <%
+    }
     %>
             var args = new DataPortalHookArgs();
             using (var dalManager = DalFactory<%= GetConnectionName(CurrentUnit) %>.GetManager())
@@ -269,6 +275,12 @@ if (Info.GenerateDataPortalUpdate)
     {
         %>
             SimpleAuditTrail();
+            <%
+    }
+    if (plainConvertPropertiesWrite.Count > 0)
+    {
+        %>
+            ConvertPropertiesOnWrite();
             <%
     }
     %>

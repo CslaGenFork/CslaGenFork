@@ -112,7 +112,7 @@ namespace CslaGenerator.Controls
             var list = new List<ObjectProperty>();
             list.Add(new ObjectProperty(_identity, "ObjectName"));
             list.Add(new ObjectProperty(_identity, "ParentType",
-                                        GeneratorController.Current.CurrentUnit.CslaObjects.GetAllParentNames(CslaObjectType.EditableChild).ToArray()));
+                                        GeneratorController.Current.CurrentUnit.CslaObjects.GetAllParentNames(CslaObjectType.EditableChildCollection).ToArray()));
             list.Add(new ObjectProperty(_identity, "PropertyNameInParentType"));
             list.Add(new ObjectProperty(_identity, "ParentProperties"));
             return _identity.AssignList(list);
@@ -139,7 +139,7 @@ namespace CslaGenerator.Controls
             var list = new List<ObjectProperty>();
             list.Add(new ObjectProperty(_identity, "ObjectName"));
             list.Add(new ObjectProperty(_identity, "ParentType",
-                                        GeneratorController.Current.CurrentUnit.CslaObjects.GetAllParentNames(CslaObjectType.ReadOnlyObject).ToArray()));
+                                        GeneratorController.Current.CurrentUnit.CslaObjects.GetAllParentNames(CslaObjectType.ReadOnlyCollection).ToArray()));
             list.Add(new ObjectProperty(_identity, "PropertyNameInParentType"));
             list.Add(new ObjectProperty(_identity, "ParentProperties"));
             return _identity.AssignList(list);

@@ -4899,8 +4899,8 @@ namespace CslaGenerator.CodeGen
             // presume only one pair of Associated entities an a "M:M" relation
 
             List<string> allCslaObjects = CurrentUnit.CslaObjects.GetAllObjectNames();
-
             var primaryKeys = PrimaryKeys.GetPrimaryKeys(allCslaObjects, info);
+
             var originalChildCollectionItem = originalChild.Parent.CslaObjects.Find(originalChild.ItemType);
             var originalChildCollectionItemPK = PrimaryKeys.FindPrimaryKey(originalChildCollectionItem);
             var infoPK = PrimaryKeys.FindPrimaryKey(info);

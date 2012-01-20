@@ -34,6 +34,15 @@ if (validateRuleRegion)
 {
     foreach (IHaveBusinessRules rulableProperty in validateAllRulesProperties)
     {
+        if (rulableProperty.BusinessRules.Count > 0 &&
+            (rulableProperty.DeclarationMode == PropertyDeclaration.AutoProperty ||
+            rulableProperty.DeclarationMode == PropertyDeclaration.ClassicProperty ||
+            rulableProperty.DeclarationMode == PropertyDeclaration.ClassicPropertyWithTypeConversion ||
+            rulableProperty.DeclarationMode == PropertyDeclaration.NoProperty))
+        {
+            Errors.Append(rulableProperty.Name + " has Business Rules: must use Declaration Mode 'Managed', 'ManagedWithTypeConversion', 'Unmanaged' or 'UnmanagedWithTypeConversion'." + Environment.NewLine);
+            break;
+        }
         foreach (BusinessRule rule in rulableProperty.BusinessRules)
         {
             foreach (BusinessRuleConstructor constructor in rule.Constructors)
@@ -63,10 +72,21 @@ if (validateAuthRegion)
     foreach (IHaveBusinessRules rulableProperty in validateAllRulesProperties)
     {
         AuthorizationRuleCollection allAuthzRules = new AuthorizationRuleCollection();
-        allAuthzRules.Add(rulableProperty.ReadAuthzRuleType);
-        allAuthzRules.Add(rulableProperty.WriteAuthzRuleType);
+        if (rulableProperty.ReadAuthzRuleType != null)
+            allAuthzRules.Add(rulableProperty.ReadAuthzRuleType);
+        if (rulableProperty.WriteAuthzRuleType != null)
+            allAuthzRules.Add(rulableProperty.WriteAuthzRuleType);
         foreach (AuthorizationRule rule in allAuthzRules)
         {
+            if (rule.AssemblyFile != string.Empty &&
+                (rulableProperty.DeclarationMode == PropertyDeclaration.AutoProperty ||
+                rulableProperty.DeclarationMode == PropertyDeclaration.ClassicProperty ||
+                rulableProperty.DeclarationMode == PropertyDeclaration.ClassicPropertyWithTypeConversion ||
+                rulableProperty.DeclarationMode == PropertyDeclaration.NoProperty))
+            {
+                Errors.Append(rulableProperty.Name + " has Authorization Rules: must use Declaration Mode 'Managed', 'ManagedWithTypeConversion', 'Unmanaged' or 'UnmanagedWithTypeConversion'." + Environment.NewLine);
+                break;
+            }
             foreach (BusinessRuleConstructor constructor in rule.Constructors)
             {
                 if (constructor.IsActive)

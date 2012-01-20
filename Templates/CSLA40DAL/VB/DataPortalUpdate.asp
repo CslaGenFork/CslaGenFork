@@ -86,8 +86,12 @@ if (Info.GenerateDataPortalUpdate)
         %>SimpleAuditTrail();
             <%
     }
-    %>
-            var args = new DataPortalHookArgs();
+    if (plainConvertPropertiesWrite.Count > 0)
+    {
+        %>ConvertPropertiesOnWrite();
+            <%
+    }
+    %>var args = new DataPortalHookArgs();
             using (var dalManager = DalFactory<%= GetConnectionName(CurrentUnit) %>.GetManager())
             {
                 OnUpdatePre(args);

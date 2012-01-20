@@ -176,40 +176,40 @@ if (Info.ConvertValueProperties.Count > 0)
         private void ConvertPropertiesOnWrite()
         {
             <%
-    if (UseBoth())
-    {
-        %>
+        if (UseBoth())
+        {
+            %>
 #if !SILVERLIGHT
 <%
-    }
-    if (CurrentUnit.GenerationParams.GenerateSynchronous)
-    {
-        foreach (ConvertValueProperty prop in Info.ConvertValueProperties)
+        }
+        if (CurrentUnit.GenerationParams.GenerateSynchronous)
         {
-            if (!string.IsNullOrEmpty(prop.NVLConverter))
+            foreach (ConvertValueProperty prop in Info.ConvertValueProperties)
             {
-                string converter = prop.NVLConverter;
-                if (converter.IndexOf(")") < 0)
-                    converter += "()";
-                %>
+                if (!string.IsNullOrEmpty(prop.NVLConverter))
+                {
+                    string converter = prop.NVLConverter;
+                    if (converter.IndexOf(")") < 0)
+                        converter += "()";
+                    %>
             <%= GetFieldLoaderStatement(Info, GetSourceValueProperty(Info, prop), converter + ".Key("+ GetFieldReaderStatement(prop) + ")") %>;
 <%
+                }
             }
         }
-    }
-    if (UseBoth())
-    {
-        %>
+        if (UseBoth())
+        {
+            %>
 #else
 <%
-    }
-    if (!CurrentUnit.GenerationParams.GenerateSynchronous || UseSilverlight())
-    {
-        foreach (ConvertValueProperty prop in Info.ConvertValueProperties)
+        }
+        if (!CurrentUnit.GenerationParams.GenerateSynchronous || UseSilverlight())
         {
-            if (!string.IsNullOrEmpty(prop.NVLConverter))
+            foreach (ConvertValueProperty prop in Info.ConvertValueProperties)
             {
-                %>
+                if (!string.IsNullOrEmpty(prop.NVLConverter))
+                {
+                    %>
 
             <%= prop.NVLConverter %>((o, e) =>
                 {
@@ -219,16 +219,16 @@ if (Info.ConvertValueProperties.Count > 0)
                         <%= GetFieldLoaderStatement(Info, GetSourceValueProperty(Info, prop), "e.Object.Key(" + GetFieldReaderStatement(prop) + ")") %>;
                 });
                 <%
+                }
             }
         }
-    }
-    if (UseBoth())
-    {
-        %>
+        if (UseBoth())
+        {
+            %>
 #endif
 <%
-    }
-    %>
+        }
+        %>
         }
         <%
     }
