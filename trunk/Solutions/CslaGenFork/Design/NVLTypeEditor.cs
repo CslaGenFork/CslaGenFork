@@ -18,6 +18,7 @@ namespace CslaGenerator.Design
             _lstProperties = new ListBox();
             _lstProperties.DoubleClick += LstPropertiesDoubleClick;
             _lstProperties.SelectionMode = SelectionMode.One;
+            _lstProperties.Width = 300;
         }
 
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)

@@ -830,8 +830,15 @@ namespace CslaGenerator.Controls
             var dbObject = GetCurrentDBObject();
 
             var obj = new CslaObjectInfo(_currentUnit);
-            obj.ObjectType = type;
             obj.ObjectName = ParseObjectName(name);
+            obj.ObjectType = type;
+            if (type == CslaObjectType.EditableChild)
+            {
+                obj.DeleteUseTimestamp = CurrentUnit.Params.AutoTimestampCriteria;
+                obj.RemoveItem = true;
+            }
+            else if (type == CslaObjectType.ReadOnlyObject)
+                obj.CheckRulesOnFetch = false;
             if (dbObject.ObjectDescription != null)
                 obj.ClassSummary = dbObject.ObjectDescription;
             obj.ParentType = parent;
@@ -949,8 +956,15 @@ namespace CslaGenerator.Controls
             _currentFactory.AddProperties(_currentCslaObject, dbObject, resultSet, columns, true, false);
         }
 
-        private static void AddChildToParent(CslaObjectInfo parent, string objectName, string propertyName)
+        private void AddChildToParent(CslaObjectInfo parent, string objectName, string propertyName)
         {
+            var isItem = false;
+            var grandParent = _currentUnit.CslaObjects.Find(parent.ParentType);
+            if (grandParent != null)
+            {
+                if (CslaTemplateHelperCS.IsCollectionType(grandParent.ObjectType))
+                    isItem = true;
+            }
             var child = new ChildProperty();
             child.TypeName = objectName;
             if (!string.IsNullOrEmpty(propertyName))
@@ -958,21 +972,40 @@ namespace CslaGenerator.Controls
             else
                 child.Name = objectName;
             child.ReadOnly = true;
-            foreach (var crit in parent.CriteriaObjects)
+
+            if (isItem)
             {
-                if (crit.GetOptions.Factory || crit.GetOptions.AddRemove || crit.GetOptions.DataPortal)
+                foreach (var prop in parent.GetAllValueProperties())
                 {
-                    foreach (var prop in crit.Properties)
+                    if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
+                        child.ParentLoadProperties.Add(prop);
+                }
+            }
+            else
+            {
+                foreach (var crit in parent.CriteriaObjects)
+                {
+                    if (crit.GetOptions.Factory || crit.GetOptions.AddRemove || crit.GetOptions.DataPortal)
                     {
-                        child.LoadParameters.Add(new Parameter(crit, prop));
+                        foreach (var prop in crit.Properties)
+                        {
+                            child.LoadParameters.Add(new Parameter(crit, prop));
+                        }
                     }
                 }
             }
             parent.ChildProperties.Add(child);
         }
 
-        private static void AddChildCollectionToParent(CslaObjectInfo parent, string collectionName, string propertyName)
+        private void AddChildCollectionToParent(CslaObjectInfo parent, string collectionName, string propertyName)
         {
+            var isItem = false;
+            var grandParent = _currentUnit.CslaObjects.Find(parent.ParentType);
+            if (grandParent != null)
+            {
+                if (CslaTemplateHelperCS.IsCollectionType(grandParent.ObjectType))
+                    isItem = true;
+            }
             var coll = new ChildProperty();
             coll.TypeName = collectionName;
             if (!string.IsNullOrEmpty(propertyName))
@@ -980,13 +1013,25 @@ namespace CslaGenerator.Controls
             else
                 coll.Name = collectionName;
             coll.ReadOnly = true;
-            foreach (var crit in parent.CriteriaObjects)
+
+            if (isItem)
             {
-                if (crit.GetOptions.Factory || crit.GetOptions.AddRemove || crit.GetOptions.DataPortal)
+                foreach (var prop in parent.GetAllValueProperties())
                 {
-                    foreach (var prop in crit.Properties)
+                    if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
+                        coll.ParentLoadProperties.Add(prop);
+                }
+            }
+            else
+            {
+                foreach (var crit in parent.CriteriaObjects)
+                {
+                    if (crit.GetOptions.Factory || crit.GetOptions.AddRemove || crit.GetOptions.DataPortal)
                     {
-                        coll.LoadParameters.Add(new Parameter(crit, prop));
+                        foreach (var prop in crit.Properties)
+                        {
+                            coll.LoadParameters.Add(new Parameter(crit, prop));
+                        }
                     }
                 }
             }

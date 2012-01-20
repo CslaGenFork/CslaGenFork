@@ -286,7 +286,9 @@ namespace CslaGenerator
             }
             catch (Exception e)
             {
-                MessageBox.Show(_mainForm, @"An error occurred while trying to load: " + Environment.NewLine + e.Message + Environment.NewLine + e.StackTrace, "Loading Error");
+                MessageBox.Show(_mainForm,
+                                fileName + Environment.NewLine +
+                                e.Message, "Loading File Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {

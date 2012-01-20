@@ -3,6 +3,7 @@
     public interface IHaveBusinessRules
     {
         string Name { get; set; }
+        PropertyDeclaration DeclarationMode { get; set; }
 
         BusinessRuleCollection BusinessRules { get; }
 
