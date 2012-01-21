@@ -154,7 +154,7 @@
     <add key="ReadOnlyCollection:ParentType" value="true" />
     <add key="ReadOnlyCollection:FindMethodsParameters" value="true" />
     <add key="ReadOnlyCollection:ItemType" value="true" />
-    <add key="ReadOnlyCollection:ContainsItem" value="true" />
+    <add key="ReadOnlyCollection:ContainsItem" value="false" />
     <add key="ReadOnlyCollection:UpdaterType" value="true" />
     <add key="ReadOnlyCollection:NameColumn" value="false" />
     <add key="ReadOnlyCollection:ValueColumn" value="false" />
