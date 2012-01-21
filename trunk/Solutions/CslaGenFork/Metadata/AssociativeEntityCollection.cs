@@ -30,7 +30,7 @@ namespace CslaGenerator.Metadata
             if (RelationRulesEngine.IsAllowedEntityObject(mainObject))
             {
                 var entity = new AssociativeEntity(GeneratorController.Current.CurrentUnit);
-                entity.RelationType = ObjectRelationType.OneToMultiple;
+                entity.RelationType = ObjectRelationType.OneToMany;
                 entity.ObjectName = mainObject.ObjectName;
                 entity.MainObject = mainObject.ObjectName;
                 entity.MainLazyLoad = false;
@@ -61,7 +61,7 @@ namespace CslaGenerator.Metadata
                 if (RelationRulesEngine.IsAllowedEntityObject(secondaryObject))
                 {
                     var entity = new AssociativeEntity(GeneratorController.Current.CurrentUnit);
-                    entity.RelationType = ObjectRelationType.MultipleToMultiple;
+                    entity.RelationType = ObjectRelationType.ManyToMany;
                     entity.ObjectName = mainObject.ObjectName + secondaryObject.ObjectName;
                     entity.MainLazyLoad = false;
                     entity.SecondaryLazyLoad = false;

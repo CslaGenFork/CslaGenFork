@@ -5,6 +5,7 @@ using System.IO;
 using System.Xml.Serialization;
 using CslaGenerator.Attributes;
 using CslaGenerator.Design;
+using CslaGenerator.Util;
 
 namespace CslaGenerator.Metadata
 {
@@ -94,6 +95,7 @@ namespace CslaGenerator.Metadata
         private UserDefinedKeyBehaviour _primaryKey = UserDefinedKeyBehaviour.Default;
         private AccessorVisibility _propSetAccessibility = AccessorVisibility.Default;
         private TypeCodeEx _backingFieldType = TypeCodeEx.Empty;
+        private bool _nullable;
 
         #endregion
 
@@ -150,7 +152,7 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("00. Database")]
-        [Description("Use this foreign key constraint to find the property value.")]
+        [Description("Explicitly add the foreign key constraint for this column (shows on INNER JOIN declarations).")]
         [Editor(typeof(FKConstraintEditor), typeof(UITypeEditor))]
         [UserFriendlyName("FK Constraint")]
         public virtual string FKConstraint
@@ -236,11 +238,19 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Definition")]
-        [Description("Type of Backing Field of the Property. Leave as \"Empty\" for no backing field.")]
+        [Description("Type of Backing Field of the Property. Set to \"Empty\" for no backing field.")]
         [UserFriendlyName("Backing Field Type")]
         public TypeCodeEx BackingFieldType
         {
-            get { return _backingFieldType; }
+            get
+            {
+                if (DeclarationMode == PropertyDeclaration.ClassicPropertyWithTypeConversion ||
+                    DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion ||
+                    DeclarationMode == PropertyDeclaration.UnmanagedWithTypeConversion)
+                    return _backingFieldType;
+
+                return TypeCodeEx.Empty;
+            }
             set { _backingFieldType = value; }
         }
 
@@ -253,11 +263,21 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Definition")]
-        [Description("Whether this property can have a null value. The following types aren't nullable: \"ByteArray \", \"SmartDate \", \"DBNull \", \"Object\" and \"Empty\".")]
+        [Description("Whether this property can have a null value. The following types can't be null: \"ByteArray \", \"DBNull \", \"Object\" and \"Empty\".")]
         public override bool Nullable
         {
-            get { return base.Nullable; }
-            set { base.Nullable = value; }
+            get
+            {
+                if(BackingFieldType == TypeCodeEx.Empty &&
+                    TypeHelper.IsNullAllowedOnType(base.PropertyType))
+                    return _nullable;
+
+                if (TypeHelper.IsNullAllowedOnType(_backingFieldType))
+                    return _nullable;
+
+                return false;
+            }
+            set { _nullable = value; }
         }
 
         [Category("01. Definition")]

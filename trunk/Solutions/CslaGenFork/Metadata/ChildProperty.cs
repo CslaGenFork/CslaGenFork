@@ -129,7 +129,7 @@ namespace CslaGenerator.Metadata
         [Browsable(false)]
         [Category("01. Definition")]
         [Description("Whether this property can have a null value. This is ignored for child collections.\r\n" +
-            "The following types aren't nullable: \"ByteArray \", \"SmartDate \", \"DBNull \", \"Object\" and \"Empty\".")]
+            "The following types can't be null: \"ByteArray \", \"DBNull \", \"Object\" and \"Empty\".")]
         public override bool Nullable
         {
             get { return base.Nullable; }
@@ -271,9 +271,9 @@ namespace CslaGenerator.Metadata
 
         [Category("05. Options")]
         [Description("The Loading Scheme for the child." +
-        "If set to ParentLoad then the child will be populated by the parent class.\r\n" +
-        "If set to SelfLoad the child will load its own data.\r\n" +
-        "If set to None then the child will not be populated with data at all (unsupported for CSLA40 targets).")]
+        "If set to ParentLoad, data for both the parent and the child will be fetched at the same time. " +
+        "If set to SelfLoad, the child will fetch its own data. " +
+        "If set to None, the child will not be populated with data at all (unsupported for CSLA40 targets).")]
         [UserFriendlyName("Loading Scheme")]
         public LoadingScheme LoadingScheme
         {
@@ -288,7 +288,13 @@ namespace CslaGenerator.Metadata
         [UserFriendlyName("Lazy Load")]
         public bool LazyLoad
         {
-            get { return _lazyLoad; }
+            get
+            {
+                if (_loadingScheme == LoadingScheme.SelfLoad)
+                    return _lazyLoad;
+
+                return false;
+            }
             set { _lazyLoad = value; }
         }
 

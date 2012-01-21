@@ -117,7 +117,7 @@ namespace CslaGenerator.Metadata
             MainObjectInfo = _cslaObjects.Find(_entity.MainObject);
             MainRootCriteriaProperties = GetCriteriaProperties(MainObjectInfo);
 
-            if (entity.RelationType == ObjectRelationType.MultipleToMultiple)
+            if (entity.RelationType == ObjectRelationType.ManyToMany)
             {
                 SecondaryObjectInfo = _cslaObjects.Find(_entity.SecondaryObject);
                 SecondaryRootCriteriaProperties = GetCriteriaProperties(SecondaryObjectInfo);
@@ -161,7 +161,7 @@ namespace CslaGenerator.Metadata
         public void BuildRelationObjects(AssociativeEntity.EntityFacade entity)
         {
             StringBuilder sb;
-            var isMultipleToMultiple = (_entity.RelationType == ObjectRelationType.MultipleToMultiple);
+            var isMultipleToMultiple = (_entity.RelationType == ObjectRelationType.ManyToMany);
 
             // make property if needed
             ChildProperty child;
@@ -616,7 +616,7 @@ namespace CslaGenerator.Metadata
                 crit.GetOptions.ProcedureName = string.Empty;
 
                 crit.DeleteOptions.Factory = false;
-                crit.DeleteOptions.AddRemove = _entity.RelationType == ObjectRelationType.MultipleToMultiple;
+                crit.DeleteOptions.AddRemove = _entity.RelationType == ObjectRelationType.ManyToMany;
                 crit.DeleteOptions.DataPortal = false;
                 crit.DeleteOptions.RunLocal = false;
                 crit.CreateOptions.Procedure = false;
@@ -725,7 +725,7 @@ namespace CslaGenerator.Metadata
             }
             else
             {
-                var useSameProcedure = _entity.RelationType == ObjectRelationType.MultipleToMultiple &&
+                var useSameProcedure = _entity.RelationType == ObjectRelationType.ManyToMany &&
                                        !_entity.MainLazyLoad &&
                                        !_entity.SecondaryLazyLoad &&
                                        _entity.Parent.Params.ORBItemsUseSingleSP;
@@ -752,7 +752,7 @@ namespace CslaGenerator.Metadata
                 crit.GetOptions.ProcedureName = string.Empty;
 
                 crit.DeleteOptions.Factory = false;
-                crit.DeleteOptions.AddRemove = _entity.RelationType == ObjectRelationType.OneToMultiple;
+                crit.DeleteOptions.AddRemove = _entity.RelationType == ObjectRelationType.OneToMany;
                 crit.DeleteOptions.DataPortal = false;
                 crit.DeleteOptions.RunLocal = false;
                 crit.DeleteOptions.Procedure = !useSameProcedure || isMain;
@@ -1103,7 +1103,7 @@ namespace CslaGenerator.Metadata
         {
             ColumnInfoCollection columnInfoCollection;
             var selectedColumns = new List<IColumnInfo>();
-            if (_entity.RelationType == ObjectRelationType.OneToMultiple)
+            if (_entity.RelationType == ObjectRelationType.OneToMany)
             {
                 columnInfoCollection = _associatedTable.Columns;
             }

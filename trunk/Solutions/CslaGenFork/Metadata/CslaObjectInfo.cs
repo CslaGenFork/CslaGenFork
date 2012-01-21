@@ -161,7 +161,7 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("00. Generate Options")]
-        [Description("Whether or not to generate factory methods for this object.")]
+        [Description("Whether or not to generate factory methods for this object. If False these methods are not generated so that you can write your custom factory methods. Note that the generation option \"Generate child factory methods\" bypasses factory methods except for root objects/collections.")]
         [UserFriendlyName("Generate Factory Methods")]
         public bool GenerateFactoryMethods
         {
@@ -170,7 +170,7 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("00. Generate Options")]
-        [Description("Whether or not to generate DataPortal_ / Child_ methods. If False these methods are not generated so that you can create your custom data access region.")]
+        [Description("Whether or not to generate DataPortal_ / Child_ methods. If False these methods are not generated so that you can write your custom data access region.")]
         [UserFriendlyName("Generate Data Access Region")]
         public bool GenerateDataAccessRegion
         {
@@ -748,8 +748,8 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("05. Collection Options")]
-        [Description("Create a parent reference. This option is only available for child collections.\r\n"+
-            "When targeting CSLA40 this option is honoured for DynamicEditableRoot objects.")]
+        [Description("Create a reference to the parent collection. This option is only available for collection items.\r\n"+
+            "When targeting CSLA40 this option is honoured for DynamicEditableRoot and ReadOnlyObjects.")]
         [UserFriendlyName("Add Parent Reference")]
         public bool AddParentReference
         {
@@ -1651,33 +1651,35 @@ namespace CslaGenerator.Metadata
                     }
                 }
             }
+
             return parentValueProperties;
         }
 
         /// <summary>
-        /// Finds the parent of a child CslaObjectInfo (object or collection).
+        /// Finds the parent of a CslaObjectInfo (object or collection).
         /// </summary>
-        /// <param name="childInfo">The child CslaObjectInfo.</param>
-        /// <returns>The parent CslaObjectInfo.</returns>
-        public CslaObjectInfo FindParent(CslaObjectInfo childInfo)
+        /// <param name="info">The CslaObjectInfo.</param>
+        /// <returns>
+        /// The parent CslaObjectInfo.
+        /// </returns>
+        public CslaObjectInfo FindParent(CslaObjectInfo info)
         {
-            //cloned from sp template helper
-            CslaObjectInfo info = childInfo.Parent.CslaObjects.Find(childInfo.ParentType);
-            if (info != null)
+            if (!_parentType.Equals(string.Empty))
             {
-                if (info.ItemType == childInfo.ObjectName)
+                var parentInfo = info.Parent.CslaObjects.Find(info.ParentType);
+                if (parentInfo != null)
                 {
-                    return FindParent(info);
-                }
-                if (info.GetAllChildProperties().FindType(childInfo.ObjectName) != null)
-                {
-                    return info;
-                }
-                if (info.GetCollectionChildProperties().FindType(childInfo.ObjectName) != null)
-                {
-                    return info;
+                    if (parentInfo.ItemType == info.ObjectName)
+                        return FindParent(parentInfo);
+
+                    if (parentInfo.GetAllChildProperties().FindType(info.ObjectName) != null)
+                        return parentInfo;
+
+                    /*if (parentInfo.GetCollectionChildProperties().FindType(info.ObjectName) != null)
+                        return parentInfo;*/
                 }
             }
+
             return null;
         }
 
@@ -1770,7 +1772,7 @@ namespace CslaGenerator.Metadata
         }
 
         /// <summary>
-        /// Gets the collection child and inherited child properties.
+        /// Gets the collection child and inherited collection child properties.
         /// </summary>
         /// <returns>A ChildPropertyCollection with ChildCollectionProperties and InheritedChildCollectionProperties.</returns>
         public ChildPropertyCollection GetCollectionChildProperties()

@@ -36,7 +36,7 @@ namespace CslaGenerator.Design
                     _lstProperties.Items.Add("(None)");
                     if (context.PropertyDescriptor.DisplayName == "Primary Object" ||
                         (context.PropertyDescriptor.DisplayName == "Secondary Object" &&
-                        associativeEntity.RelationType == ObjectRelationType.MultipleToMultiple))
+                        associativeEntity.RelationType == ObjectRelationType.ManyToMany))
                     {
                         foreach (var obj in GeneratorController.Current.CurrentUnit.CslaObjects)
                         {
@@ -48,7 +48,7 @@ namespace CslaGenerator.Design
                     }
                     if (context.PropertyDescriptor.DisplayName == "Primary Collection Type Name" ||
                         (context.PropertyDescriptor.DisplayName == "Secondary Collection Type Name" &&
-                        associativeEntity.RelationType == ObjectRelationType.MultipleToMultiple))
+                        associativeEntity.RelationType == ObjectRelationType.ManyToMany))
                     {
                         foreach (var obj in GeneratorController.Current.CurrentUnit.CslaObjects)
                         {
@@ -60,7 +60,7 @@ namespace CslaGenerator.Design
                     }
                     if (context.PropertyDescriptor.DisplayName == "Primary Item Type Name" ||
                         (context.PropertyDescriptor.DisplayName == "Secondary Item Type Name" &&
-                        associativeEntity.RelationType == ObjectRelationType.MultipleToMultiple))
+                        associativeEntity.RelationType == ObjectRelationType.ManyToMany))
                     {
                         foreach (var obj in GeneratorController.Current.CurrentUnit.CslaObjects)
                         {

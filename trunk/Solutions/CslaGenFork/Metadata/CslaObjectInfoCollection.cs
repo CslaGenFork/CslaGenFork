@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 
 namespace CslaGenerator.Metadata
 {
@@ -7,20 +8,27 @@ namespace CslaGenerator.Metadata
     {
         public CslaObjectInfo Find(string name)
         {
-            foreach (var c in this)
+            if (name == string.Empty)
+                return null;
+
+            /*foreach (var c in this)
             {
                 if (c.ObjectName.Equals(name))
                     return c;
             }
-            return null;
+            return null;*/
+
+            return this.FirstOrDefault(c => c.ObjectName.Equals(name));
         }
 
         public List<string> GetAllObjectNames()
         {
-            var lst = new List<string>();
+            /*var lst = new List<string>();
             foreach (var obj in this)
                 lst.Add(obj.ObjectName);
-            return lst;
+            return lst;*/
+
+            return this.Select(obj => obj.ObjectName).ToList();
         }
 
         public List<string> GetAllParentNames(CslaObjectInfo info)

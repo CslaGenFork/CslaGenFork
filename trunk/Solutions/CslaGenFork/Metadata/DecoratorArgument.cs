@@ -45,6 +45,7 @@ namespace CslaGenerator.Metadata
 
         [Category("01. Definition")]
         [Description("This is a description.")]
+        [UserFriendlyName("Name")]
         public string Name
         {
             get { return _name; }
@@ -53,6 +54,7 @@ namespace CslaGenerator.Metadata
 
         [Category("01. Definition")]
         [Description("This is a description.")]
+        [UserFriendlyName("Value")]
         public string Value
         {
             get { return _value; }

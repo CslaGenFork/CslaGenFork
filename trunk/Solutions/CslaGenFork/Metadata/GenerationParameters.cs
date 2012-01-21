@@ -689,6 +689,10 @@ namespace CslaGenerator.Metadata
             }
             else
             {
+                _generateQueriesWithSchema = true;
+                _useBypassPropertyChecks = false;
+                _usePublicPropertyInfo = false;
+                _useChildFactory = true;
                 _usesCslaAuthorizationProvider = true;
                 _generateAuthorization = AuthorizationLevel.ObjectLevel;
                 _usesCslaAuthorizationProvider = true;

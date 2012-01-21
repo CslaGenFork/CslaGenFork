@@ -13,8 +13,8 @@ namespace CslaGenerator.Metadata
 {
     public enum ObjectRelationType
     {
-        OneToMultiple,
-        MultipleToMultiple
+        OneToMany,
+        ManyToMany
     }
 
     /// <summary>
@@ -76,7 +76,7 @@ namespace CslaGenerator.Metadata
                 if (_relationType != value)
                 {
                     _relationType = value;
-                    if (value == ObjectRelationType.OneToMultiple)
+                    if (value == ObjectRelationType.OneToMany)
                     {
                         SecondaryObject = string.Empty;
                         SecondaryPropertyName = string.Empty;
@@ -224,7 +224,7 @@ namespace CslaGenerator.Metadata
                         SecondaryCollectionTypeName = string.Empty;
                         SecondaryItemTypeName = string.Empty;
                         SecondaryLoadProperties.Clear();
-                        if (RelationType == ObjectRelationType.MultipleToMultiple)
+                        if (RelationType == ObjectRelationType.ManyToMany)
                         {
                             MainCollectionTypeName = string.Empty;
                             MainItemTypeName = string.Empty;
@@ -336,7 +336,7 @@ namespace CslaGenerator.Metadata
 
             _validationError = string.Empty;
 
-            if (RelationType == ObjectRelationType.OneToMultiple)
+            if (RelationType == ObjectRelationType.OneToMany)
                 ValidOneToMultiple();
             else
                 ValidMultipleToMultiple();
@@ -358,7 +358,7 @@ namespace CslaGenerator.Metadata
                 if (SecondaryLoadingScheme == LoadingScheme.ParentLoad)
                     SecondaryLoadProperties.Clear();
 
-                if (RelationType == ObjectRelationType.OneToMultiple)
+                if (RelationType == ObjectRelationType.OneToMany)
                 {
                     var factory = new ObjectRelationsFactory(Parent, this);
 
@@ -419,7 +419,7 @@ namespace CslaGenerator.Metadata
                     _validationError += "Primary Collection must be filled." + Environment.NewLine;
                 else
                 {
-                    if (RelationType == ObjectRelationType.OneToMultiple)
+                    if (RelationType == ObjectRelationType.OneToMany)
                         _validationError += "Primary Collection not found." + Environment.NewLine;
                 }
             }
@@ -433,7 +433,7 @@ namespace CslaGenerator.Metadata
                     _validationError += "Primary Collection Item must be filled." + Environment.NewLine;
                 else
                 {
-                    if (RelationType == ObjectRelationType.OneToMultiple)
+                    if (RelationType == ObjectRelationType.OneToMany)
                         _validationError += "Primary Collection Item not found." + Environment.NewLine;
                 }
             }
