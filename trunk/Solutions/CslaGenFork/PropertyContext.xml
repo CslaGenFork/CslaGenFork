@@ -154,7 +154,7 @@
     <add key="ReadOnlyCollection:ParentType" value="true" />
     <add key="ReadOnlyCollection:FindMethodsParameters" value="true" />
     <add key="ReadOnlyCollection:ItemType" value="true" />
-    <add key="ReadOnlyCollection:ContainsItem" value="false" />
+    <add key="ReadOnlyCollection:ContainsItem" value="true" />
     <add key="ReadOnlyCollection:UpdaterType" value="true" />
     <add key="ReadOnlyCollection:NameColumn" value="false" />
     <add key="ReadOnlyCollection:ValueColumn" value="false" />
@@ -255,7 +255,7 @@
     <add key="ReadOnlyObject:GenerateDataPortalUpdate" value="false" />
     <add key="ReadOnlyObject:GenerateDataPortalDelete" value="false" />
     <add key="ReadOnlyObject:SupportUpdateProperties" value="false" />
-    <add key="ReadOnlyObject:CheckRulesOnFetch" value="true" />
+    <add key="ReadOnlyObject:CheckRulesOnFetch" value="false" />
     <add key="EditableChild:Generate" value="true" />
     <add key="EditableChild:GenerateSprocs" value="true" />
     <add key="EditableChild:Filename" value="true" />
@@ -379,7 +379,7 @@
     <add key="EditableChildCollection:GenerateDataPortalUpdate" value="false" />
     <add key="EditableChildCollection:GenerateDataPortalDelete" value="false" />
     <add key="EditableChildCollection:SupportUpdateProperties" value="false" />
-    <add key="EditableChildCollection:CheckRulesOnFetch" value="false" />
+    <add key="EditableChildCollection:CheckRulesOnFetch" value="true" />
     <add key="EditableRoot:Generate" value="true" />
     <add key="EditableRoot:GenerateSprocs" value="true" />
     <add key="EditableRoot:Filename" value="true" />
@@ -503,7 +503,7 @@
     <add key="EditableRootCollection:GenerateDataPortalUpdate" value="false" />
     <add key="EditableRootCollection:GenerateDataPortalDelete" value="false" />
     <add key="EditableRootCollection:SupportUpdateProperties" value="false" />
-    <add key="EditableRootCollection:CheckRulesOnFetch" value="false" />
+    <add key="EditableRootCollection:CheckRulesOnFetch" value="true" />
     <add key="EditableSwitchable:Generate" value="true" />
     <add key="EditableSwitchable:GenerateSprocs" value="true" />
     <add key="EditableSwitchable:Filename" value="true" />
@@ -689,6 +689,6 @@
     <add key="DynamicEditableRootCollection:GenerateDataPortalUpdate" value="false" />
     <add key="DynamicEditableRootCollection:GenerateDataPortalDelete" value="false" />
     <add key="DynamicEditableRootCollection:SupportUpdateProperties" value="false" />
-    <add key="DynamicEditableRootCollection:CheckRulesOnFetch" value="false" />
+    <add key="DynamicEditableRootCollection:CheckRulesOnFetch" value="true" />
   </contextSettings>
 </propertybag>

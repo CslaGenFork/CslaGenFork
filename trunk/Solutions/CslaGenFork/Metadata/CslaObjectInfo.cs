@@ -667,7 +667,7 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("05. Collection Options")]
-        [Description("Defines whether you want to generate the collection Contains & ContainsDeleted methods or not.")]
+        [Description("Defines whether you want to generate the collection Contains && ContainsDeleted methods or not.")]
         [UserFriendlyName("Use Contains Methods")]
         public bool ContainsItem
         {
