@@ -73,7 +73,7 @@ namespace CslaGenerator.Controls
             return false;
         }
 
-        public CslaObjectInfoCollection Objects
+        internal CslaObjectInfoCollection Objects
         {
             get
             {
@@ -202,29 +202,12 @@ namespace CslaGenerator.Controls
             EnableEventSelectedIndexChanged();
         }
 
-        private void lstObjects_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Modifiers.ToString() != "Control")
-            {
-                e.SuppressKeyPress = false;
-                return;
-            }
-
-            e.SuppressKeyPress = true;
-
-            if (e.KeyValue == 38)
-                MoveUpSelected();
-
-            if (e.KeyValue == 40)
-                MoveDownSelected();
-        }
-
         private void addToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AddNewObject();
         }
 
-        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        private void removeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             RemoveSelected();
         }
@@ -232,6 +215,11 @@ namespace CslaGenerator.Controls
         private void duplicateToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DuplicateSelected();
+        }
+
+        private void selectAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SelectAll();
         }
 
         private void moveUpToolStripMenuItem_Click(object sender, EventArgs e)
@@ -257,7 +245,7 @@ namespace CslaGenerator.Controls
         private void cslaObjectContextMenuStrip_Opening(object sender, CancelEventArgs e)
         {
             addToolStripMenuItem.Enabled = (_objects != null);
-            deleteToolStripMenuItem.Enabled = (_objects != null && lstObjects.SelectedIndices.Count != 0);
+            removeToolStripMenuItem.Enabled = (_objects != null && lstObjects.SelectedIndices.Count != 0);
             duplicateToolStripMenuItem.Enabled = (_objects != null && lstObjects.SelectedIndices.Count != 0);
             moveUpToolStripMenuItem.Enabled = ((_objects != null && optNone.Checked &&
                                                 lstObjects.SelectedIndex > 0) ||
@@ -269,7 +257,7 @@ namespace CslaGenerator.Controls
             addToObjectRelationToolStripMenuItem.Enabled = (_objects != null && lstObjects.SelectedIndices.Count != 0);
         }
 
-        void lstObjects_DrawItem(object sender, DrawItemEventArgs e)
+        private void lstObjects_DrawItem(object sender, DrawItemEventArgs e)
         {
             if (e.Index < 0)
                 return;
@@ -292,7 +280,7 @@ namespace CslaGenerator.Controls
             textboxPlusBtn.TextBox.TextChanged += TextBox_TextChanged;
         }
 
-        void TextBox_TextChanged(object sender, EventArgs e)
+        private void TextBox_TextChanged(object sender, EventArgs e)
         {
             OnTargetDirChanged(textboxPlusBtn.TextBox.Text);
         }
@@ -301,14 +289,14 @@ namespace CslaGenerator.Controls
 
         #region Events
 
-        public event EventHandler SelectedItemsChanged;
+        internal event EventHandler SelectedItemsChanged;
         void OnSelectedItemsChanged()
         {
             if (SelectedItemsChanged != null)
                 SelectedItemsChanged(this, EventArgs.Empty);
         }
 
-        public event EventHandler LastItemRemoved;
+        internal event EventHandler LastItemRemoved;
         void OnLastItemRemoved()
         {
             if (LastItemRemoved != null)
@@ -319,7 +307,7 @@ namespace CslaGenerator.Controls
 
         #region Methods
 
-        public void ClearSelectedItems()
+        internal void ClearSelectedItems()
         {
             _selectedItems = new List<CslaObjectInfo>();
         }
@@ -331,7 +319,7 @@ namespace CslaGenerator.Controls
         /// This method should handle only the filtering of business objects.
         /// The view part - handle what is displayed in the ListBox - should be here.
         /// </remarks>
-        public void ApplyFilters(bool updatePresenter)
+        internal void ApplyFilters(bool updatePresenter)
         {
             if (_suspendFilter)
                 return;
@@ -366,7 +354,7 @@ namespace CslaGenerator.Controls
                 ApplyFiltersPresenter();
         }
 
-        public void ApplyFiltersPresenter()
+        internal void ApplyFiltersPresenter()
         {
             if (_suspendFilter)
                 return;
@@ -403,7 +391,7 @@ namespace CslaGenerator.Controls
             }
         }
 
-        void OnTargetDirChanged(string newDir)
+        private void OnTargetDirChanged(string newDir)
         {
             if (TargetDirChanged != null)
             {
@@ -413,7 +401,7 @@ namespace CslaGenerator.Controls
             }
         }
 
-        public void RemoveSelected()
+        internal void RemoveSelected()
         {
             if (!UnitLoaded())
                 return;
@@ -467,7 +455,7 @@ namespace CslaGenerator.Controls
             ApplyFiltersPresenter();
         }
 
-        public void DuplicateSelected()
+        internal void DuplicateSelected()
         {
             if (!UnitLoaded())
                 return;
@@ -490,7 +478,24 @@ namespace CslaGenerator.Controls
                 lstObjects.SelectedItems.Add(obj);
         }
 
-        public void AddCreatedObject(CslaObjectInfoCollection objects)
+        internal void SelectAll()
+        {
+            DisableEventSelectedIndexChanged();
+
+            lstObjects.SelectedItems.Clear();
+
+            for (int index = 0; index < lstObjects.Items.Count; index++)
+            {
+                var obj = lstObjects.Items[index];
+                lstObjects.SelectedItems.Add(obj);
+            }
+
+            OnSelectedItemsChanged();
+
+            EnableEventSelectedIndexChanged();
+        }
+
+        internal void AddCreatedObject(CslaObjectInfoCollection objects)
         {
             if (!UnitLoaded())
                 return;
@@ -510,7 +515,7 @@ namespace CslaGenerator.Controls
                 lstObjects.SelectedItems.Add(obj);
         }
 
-        public void AddNewObject()
+        internal void AddNewObject()
         {
             if (!UnitLoaded())
                 return;
@@ -518,7 +523,7 @@ namespace CslaGenerator.Controls
             _objects.InsertAtTop(newCslaObjectInfo, true);
         }
 
-        public void MoveUpSelected()
+        internal void MoveUpSelected()
         {
             if (!UnitLoaded())
                 return;
@@ -565,7 +570,7 @@ namespace CslaGenerator.Controls
             ApplyFilters(true);
         }
 
-        public void MoveDownSelected()
+        internal void MoveDownSelected()
         {
             if (!UnitLoaded())
                 return;
@@ -612,7 +617,7 @@ namespace CslaGenerator.Controls
             ApplyFilters(true);
         }
 
-        public void AddNewObjectRelation()
+        internal void AddNewObjectRelation()
         {
             if (!UnitLoaded())
                 return;
@@ -636,7 +641,7 @@ namespace CslaGenerator.Controls
                 ((MainForm) TopLevelControl).ObjectRelationsBuilderDockPanel.BringToFront();
         }
 
-        public void AddToObjectRelationBuilder()
+        internal void AddToObjectRelationBuilder()
         {
             MessageBox.Show("1) Select the Objetc Relation from a combo box\r\n" +
                             "2) Confirm or change the relation type from a combo box or radio buttons\r\n" +
@@ -647,7 +652,7 @@ namespace CslaGenerator.Controls
                             "\t- Primary item", "CTP - Not implemented.");
         }
 
-        public IEnumerable<CslaObjectInfo> GetSelectedObjects()
+        internal IEnumerable<CslaObjectInfo> GetSelectedObjects()
         {
             var lst = new List<CslaObjectInfo>();
             foreach (CslaObjectInfo itm in ListObjects.SelectedItems)

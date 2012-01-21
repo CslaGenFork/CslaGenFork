@@ -39,12 +39,14 @@ namespace CslaGenerator.Controls
             this.lstObjects = new System.Windows.Forms.ListBox();
             this.cslaObjectContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.duplicateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.moveUpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.moveDownToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.newObjectRelationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addToObjectRelationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.grpFilters = new System.Windows.Forms.GroupBox();
@@ -128,18 +130,19 @@ namespace CslaGenerator.Controls
             this.lstObjects.TabIndex = 22;
             this.lstObjects.ValueMember = "key";
             this.lstObjects.SelectedIndexChanged += new System.EventHandler(this.ListObjects_SelectedIndexChanged);
-            this.lstObjects.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lstObjects_KeyDown);
             // 
             // cslaObjectContextMenuStrip
             // 
             this.cslaObjectContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addToolStripMenuItem,
-            this.deleteToolStripMenuItem,
+            this.removeToolStripMenuItem,
             this.duplicateToolStripMenuItem,
             this.toolStripMenuItem1,
+            this.selectAllToolStripMenuItem,
+            this.toolStripMenuItem2,
             this.moveUpToolStripMenuItem,
             this.moveDownToolStripMenuItem,
-            this.toolStripMenuItem2,
+            this.toolStripMenuItem3,
             this.newObjectRelationToolStripMenuItem,
             this.addToObjectRelationToolStripMenuItem});
             this.cslaObjectContextMenuStrip.Name = "cslaObjectContextMenuStrip";
@@ -149,22 +152,27 @@ namespace CslaGenerator.Controls
             // addToolStripMenuItem
             // 
             this.addToolStripMenuItem.Name = "addToolStripMenuItem";
+            this.addToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Oemplus)));
+            this.addToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl+Plus";
             this.addToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
-            this.addToolStripMenuItem.Text = "&Add";
+            this.addToolStripMenuItem.Text = "Add";
             this.addToolStripMenuItem.Click += new System.EventHandler(this.addToolStripMenuItem_Click);
             // 
-            // deleteToolStripMenuItem
+            // removeToolStripMenuItem
             // 
-            this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
-            this.deleteToolStripMenuItem.Text = "&Delete";
-            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
+            this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
+            this.removeToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.OemMinus)));
+            this.removeToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl+Minus";
+            this.removeToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
+            this.removeToolStripMenuItem.Text = "Remove";
+            this.removeToolStripMenuItem.Click += new System.EventHandler(this.removeToolStripMenuItem_Click);
             // 
             // duplicateToolStripMenuItem
             // 
             this.duplicateToolStripMenuItem.Name = "duplicateToolStripMenuItem";
+            this.duplicateToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D)));
             this.duplicateToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
-            this.duplicateToolStripMenuItem.Text = "D&uplicate";
+            this.duplicateToolStripMenuItem.Text = "Duplicate";
             this.duplicateToolStripMenuItem.Click += new System.EventHandler(this.duplicateToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
@@ -172,28 +180,44 @@ namespace CslaGenerator.Controls
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(232, 6);
             // 
-            // moveUpToolStripMenuItem
+            // selectAllToolStripMenuItem
             // 
-            this.moveUpToolStripMenuItem.Name = "moveUpToolStripMenuItem";
-            this.moveUpToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
-            this.moveUpToolStripMenuItem.Text = "Move U&p";
-            this.moveUpToolStripMenuItem.Click += new System.EventHandler(this.moveUpToolStripMenuItem_Click);
-            // 
-            // moveDownToolStripMenuItem
-            // 
-            this.moveDownToolStripMenuItem.Name = "moveDownToolStripMenuItem";
-            this.moveDownToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
-            this.moveDownToolStripMenuItem.Text = "Move Dow&n";
-            this.moveDownToolStripMenuItem.Click += new System.EventHandler(this.moveDownToolStripMenuItem_Click);
+            this.selectAllToolStripMenuItem.Name = "selectAllToolStripMenuItem";
+            this.selectAllToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
+            this.selectAllToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
+            this.selectAllToolStripMenuItem.Text = "Select All";
+            this.selectAllToolStripMenuItem.Click += new System.EventHandler(this.selectAllToolStripMenuItem_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
             this.toolStripMenuItem2.Size = new System.Drawing.Size(232, 6);
             // 
+            // moveUpToolStripMenuItem
+            // 
+            this.moveUpToolStripMenuItem.Name = "moveUpToolStripMenuItem";
+            this.moveUpToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Up)));
+            this.moveUpToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
+            this.moveUpToolStripMenuItem.Text = "Move Up";
+            this.moveUpToolStripMenuItem.Click += new System.EventHandler(this.moveUpToolStripMenuItem_Click);
+            // 
+            // moveDownToolStripMenuItem
+            // 
+            this.moveDownToolStripMenuItem.Name = "moveDownToolStripMenuItem";
+            this.moveDownToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Down)));
+            this.moveDownToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
+            this.moveDownToolStripMenuItem.Text = "Move Down";
+            this.moveDownToolStripMenuItem.Click += new System.EventHandler(this.moveDownToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(232, 6);
+            // 
             // newObjectRelationToolStripMenuItem
             // 
             this.newObjectRelationToolStripMenuItem.Name = "newObjectRelationToolStripMenuItem";
+            this.newObjectRelationToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Insert)));
             this.newObjectRelationToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
             this.newObjectRelationToolStripMenuItem.Text = "Add a new object relation";
             this.newObjectRelationToolStripMenuItem.Click += new System.EventHandler(this.newObjectRelationToolStripMenuItem_Click);
@@ -202,7 +226,7 @@ namespace CslaGenerator.Controls
             // 
             this.addToObjectRelationToolStripMenuItem.Name = "addToObjectRelationToolStripMenuItem";
             this.addToObjectRelationToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
-            this.addToObjectRelationToolStripMenuItem.Text = "Add to object &relation as ...";
+            this.addToObjectRelationToolStripMenuItem.Text = "Add to object relation as ...";
             this.addToObjectRelationToolStripMenuItem.Click += new System.EventHandler(this.addToObjectRelationToolStripMenuItem_Click);
             // 
             // grpFilters
@@ -385,12 +409,14 @@ namespace CslaGenerator.Controls
         private System.Windows.Forms.ListBox lstObjects;
         private ContextMenuStrip cslaObjectContextMenuStrip;
         private ToolStripMenuItem addToolStripMenuItem;
-        private ToolStripMenuItem deleteToolStripMenuItem;
+        private ToolStripMenuItem removeToolStripMenuItem;
         private ToolStripMenuItem duplicateToolStripMenuItem;
         private ToolStripSeparator toolStripMenuItem1;
+        private ToolStripMenuItem selectAllToolStripMenuItem;
+        private ToolStripSeparator toolStripMenuItem2;
         private ToolStripMenuItem moveUpToolStripMenuItem;
         private ToolStripMenuItem moveDownToolStripMenuItem;
-        private ToolStripSeparator toolStripMenuItem2;
+        private ToolStripSeparator toolStripMenuItem3;
         private ToolStripMenuItem newObjectRelationToolStripMenuItem;
         private ToolStripMenuItem addToObjectRelationToolStripMenuItem;
         private GroupBox grpFilters;
