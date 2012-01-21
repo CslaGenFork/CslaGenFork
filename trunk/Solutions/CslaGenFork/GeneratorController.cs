@@ -209,9 +209,31 @@ namespace CslaGenerator
             try
             {
                 Cursor.Current = Cursors.WaitCursor;
-                fs = File.Open(fileName, FileMode.Open);
-                var s = new XmlSerializer(typeof(CslaGeneratorUnit));
-                CurrentUnit = (CslaGeneratorUnit)s.Deserialize(fs);
+                var deserialized = false;
+                while (!deserialized)
+                {
+                    try
+                    {
+                        fs = File.Open(fileName, FileMode.Open);
+                        var s = new XmlSerializer(typeof (CslaGeneratorUnit));
+                        CurrentUnit = (CslaGeneratorUnit) s.Deserialize(fs);
+                        deserialized = true;
+                    }
+                    catch (InvalidOperationException exception)
+                    {
+                        if (exception.InnerException == null)
+                            throw;
+
+                        fs.Close();
+                        string[] fileLines = File.ReadAllLines(fileName);
+                        var fileVersion = FileVersion.ExtractFileVersion(fileLines);
+                        if (fileVersion == FileVersion.CurrentFileVersion)
+                            throw;
+
+                        fileLines = FileVersion.HandleFileVersion(fileVersion, fileLines);
+                        File.WriteAllLines(fileName, fileLines);
+                    }
+                }
                 _currentUnit.ResetParent();
                 _currentCslaObject = null;
                 _currentAssociativeEntitiy = null;
@@ -286,9 +308,10 @@ namespace CslaGenerator
             }
             catch (Exception e)
             {
-                MessageBox.Show(_mainForm,
-                                fileName + Environment.NewLine +
-                                e.Message, "Loading File Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                var message = fileName + Environment.NewLine + e.Message;
+                if (e.InnerException != null)
+                    message += Environment.NewLine + e.InnerException.Message;
+                MessageBox.Show(_mainForm, message, "Loading File Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {

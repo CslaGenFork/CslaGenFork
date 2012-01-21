@@ -42,7 +42,7 @@ namespace CslaGenerator.Controls
             this.buildButton1 = new System.Windows.Forms.Button();
             this.buildAllButton1 = new System.Windows.Forms.Button();
             this.propGrid1 = new System.Windows.Forms.PropertyGrid();
-            this.OneToMultipleTab = new System.Windows.Forms.TabPage();
+            this.OneToManyTab = new System.Windows.Forms.TabPage();
             this.addButton2 = new System.Windows.Forms.Button();
             this.removeButton2 = new System.Windows.Forms.Button();
             this.upButton2 = new System.Windows.Forms.Button();
@@ -50,7 +50,7 @@ namespace CslaGenerator.Controls
             this.buildButton2 = new System.Windows.Forms.Button();
             this.buildAllButton2 = new System.Windows.Forms.Button();
             this.propGrid2 = new System.Windows.Forms.PropertyGrid();
-            this.MultipleToMultipleTab = new System.Windows.Forms.TabPage();
+            this.ManyToManyTab = new System.Windows.Forms.TabPage();
             this.addButton3 = new System.Windows.Forms.Button();
             this.removeButton3 = new System.Windows.Forms.Button();
             this.upButton3 = new System.Windows.Forms.Button();
@@ -61,8 +61,8 @@ namespace CslaGenerator.Controls
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.TabControl.SuspendLayout();
             this.AllObjectsTab.SuspendLayout();
-            this.OneToMultipleTab.SuspendLayout();
-            this.MultipleToMultipleTab.SuspendLayout();
+            this.OneToManyTab.SuspendLayout();
+            this.ManyToManyTab.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolTip1
@@ -114,8 +114,8 @@ namespace CslaGenerator.Controls
             this.TabControl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.TabControl.Controls.Add(this.AllObjectsTab);
-            this.TabControl.Controls.Add(this.OneToMultipleTab);
-            this.TabControl.Controls.Add(this.MultipleToMultipleTab);
+            this.TabControl.Controls.Add(this.OneToManyTab);
+            this.TabControl.Controls.Add(this.ManyToManyTab);
             this.TabControl.Location = new System.Drawing.Point(13, 13);
             this.TabControl.Name = "TabControl";
             this.TabControl.SelectedIndex = 0;
@@ -138,7 +138,7 @@ namespace CslaGenerator.Controls
             this.AllObjectsTab.Padding = new System.Windows.Forms.Padding(3);
             this.AllObjectsTab.Size = new System.Drawing.Size(521, 315);
             this.AllObjectsTab.TabIndex = 0;
-            this.AllObjectsTab.Text = "All Object Relations";
+            this.AllObjectsTab.Text = "All Relationships";
             this.AllObjectsTab.UseVisualStyleBackColor = true;
             // 
             // addButton1
@@ -149,7 +149,7 @@ namespace CslaGenerator.Controls
             this.addButton1.Name = "addButton1";
             this.addButton1.Size = new System.Drawing.Size(23, 23);
             this.addButton1.TabIndex = 2;
-            this.toolTip1.SetToolTip(this.addButton1, "Add a new object relation (Multiple to Multiple).");
+            this.toolTip1.SetToolTip(this.addButton1, "Add a new object relation (Many to Many).");
             this.addButton1.UseVisualStyleBackColor = true;
             this.addButton1.Click += new System.EventHandler(this.addButton_Click);
             // 
@@ -195,7 +195,7 @@ namespace CslaGenerator.Controls
             this.buildButton1.Name = "buildButton1";
             this.buildButton1.Size = new System.Drawing.Size(23, 23);
             this.buildButton1.TabIndex = 1;
-            this.toolTip1.SetToolTip(this.buildButton1, "Check and build the selected object relation.\r\n" +
+            this.toolTip1.SetToolTip(this.buildButton1, "Check and build the selected object relations.\r\n" +
                                                         "You will be asked to confirm the build.");
             this.buildButton1.UseVisualStyleBackColor = true;
             this.buildButton1.Click += new System.EventHandler(this.buildButton_Click);
@@ -224,23 +224,23 @@ namespace CslaGenerator.Controls
             this.propGrid1.Size = new System.Drawing.Size(252, 299);
             this.propGrid1.TabIndex = 4;
             // 
-            // OneToMultipleTab
+            // OneToManyTab
             // 
-            this.OneToMultipleTab.Controls.Add(this.addButton2);
-            this.OneToMultipleTab.Controls.Add(this.removeButton2);
-            this.OneToMultipleTab.Controls.Add(this.upButton2);
-            this.OneToMultipleTab.Controls.Add(this.downButton2);
-            this.OneToMultipleTab.Controls.Add(this.buildButton2);
-            this.OneToMultipleTab.Controls.Add(this.buildAllButton2);
-            this.OneToMultipleTab.Controls.Add(this.listEntities2);
-            this.OneToMultipleTab.Controls.Add(this.propGrid2);
-            this.OneToMultipleTab.Location = new System.Drawing.Point(4, 22);
-            this.OneToMultipleTab.Name = "OneToMultipleTab";
-            this.OneToMultipleTab.Padding = new System.Windows.Forms.Padding(3);
-            this.OneToMultipleTab.Size = new System.Drawing.Size(521, 315);
-            this.OneToMultipleTab.TabIndex = 1;
-            this.OneToMultipleTab.Text = "1 to N Relations";
-            this.OneToMultipleTab.UseVisualStyleBackColor = true;
+            this.OneToManyTab.Controls.Add(this.addButton2);
+            this.OneToManyTab.Controls.Add(this.removeButton2);
+            this.OneToManyTab.Controls.Add(this.upButton2);
+            this.OneToManyTab.Controls.Add(this.downButton2);
+            this.OneToManyTab.Controls.Add(this.buildButton2);
+            this.OneToManyTab.Controls.Add(this.buildAllButton2);
+            this.OneToManyTab.Controls.Add(this.listEntities2);
+            this.OneToManyTab.Controls.Add(this.propGrid2);
+            this.OneToManyTab.Location = new System.Drawing.Point(4, 22);
+            this.OneToManyTab.Name = "OneToManyTab";
+            this.OneToManyTab.Padding = new System.Windows.Forms.Padding(3);
+            this.OneToManyTab.Size = new System.Drawing.Size(521, 315);
+            this.OneToManyTab.TabIndex = 1;
+            this.OneToManyTab.Text = "1:M Relationships";
+            this.OneToManyTab.UseVisualStyleBackColor = true;
             // 
             // addButton2
             // 
@@ -250,7 +250,7 @@ namespace CslaGenerator.Controls
             this.addButton2.Name = "addButton2";
             this.addButton2.Size = new System.Drawing.Size(23, 23);
             this.addButton2.TabIndex = 2;
-            this.toolTip1.SetToolTip(this.addButton2, "Add a new object relation (One to Multiple).");
+            this.toolTip1.SetToolTip(this.addButton2, "Add a new object relation (One to Many).");
             this.addButton2.UseVisualStyleBackColor = true;
             this.addButton2.Click += new System.EventHandler(this.addButton_Click);
             // 
@@ -295,7 +295,7 @@ namespace CslaGenerator.Controls
             this.buildButton2.Name = "buildButton2";
             this.buildButton2.Size = new System.Drawing.Size(23, 23);
             this.buildButton2.TabIndex = 1;
-            this.toolTip1.SetToolTip(this.buildButton2, "Check and build the selected object relation\r\n" +
+            this.toolTip1.SetToolTip(this.buildButton2, "Check and build the selected object relations.\r\n" +
                                                         "You will be asked to confirm the build.");
             this.buildButton2.UseVisualStyleBackColor = true;
             this.buildButton2.Click += new System.EventHandler(this.buildButton_Click);
@@ -308,7 +308,7 @@ namespace CslaGenerator.Controls
             this.buildAllButton2.Name = "buildAllButton2";
             this.buildAllButton2.Size = new System.Drawing.Size(23, 23);
             this.buildAllButton2.TabIndex = 1;
-            this.toolTip1.SetToolTip(this.buildAllButton2, "Check and build all 1 to N relations.\r\n" +
+            this.toolTip1.SetToolTip(this.buildAllButton2, "Check and build all 1 to M relations.\r\n" +
                                                            "You will be asked to confirm the build.");
             this.buildAllButton2.UseVisualStyleBackColor = true;
             this.buildAllButton2.Click += new System.EventHandler(this.buildAllButton_Click);
@@ -323,23 +323,23 @@ namespace CslaGenerator.Controls
             this.propGrid2.Size = new System.Drawing.Size(252, 299);
             this.propGrid2.TabIndex = 4;
             // 
-            // MultipleToMultipleTab
+            // ManyToManyTab
             // 
-            this.MultipleToMultipleTab.Controls.Add(this.addButton3);
-            this.MultipleToMultipleTab.Controls.Add(this.removeButton3);
-            this.MultipleToMultipleTab.Controls.Add(this.upButton3);
-            this.MultipleToMultipleTab.Controls.Add(this.downButton3);
-            this.MultipleToMultipleTab.Controls.Add(this.buildButton3);
-            this.MultipleToMultipleTab.Controls.Add(this.buildAllButton3);
-            this.MultipleToMultipleTab.Controls.Add(this.listEntities3);
-            this.MultipleToMultipleTab.Controls.Add(this.propGrid3);
-            this.MultipleToMultipleTab.Location = new System.Drawing.Point(4, 22);
-            this.MultipleToMultipleTab.Name = "MultipleToMultipleTab";
-            this.MultipleToMultipleTab.Padding = new System.Windows.Forms.Padding(3);
-            this.MultipleToMultipleTab.Size = new System.Drawing.Size(521, 315);
-            this.MultipleToMultipleTab.TabIndex = 2;
-            this.MultipleToMultipleTab.Text = "N to N Relations";
-            this.MultipleToMultipleTab.UseVisualStyleBackColor = true;
+            this.ManyToManyTab.Controls.Add(this.addButton3);
+            this.ManyToManyTab.Controls.Add(this.removeButton3);
+            this.ManyToManyTab.Controls.Add(this.upButton3);
+            this.ManyToManyTab.Controls.Add(this.downButton3);
+            this.ManyToManyTab.Controls.Add(this.buildButton3);
+            this.ManyToManyTab.Controls.Add(this.buildAllButton3);
+            this.ManyToManyTab.Controls.Add(this.listEntities3);
+            this.ManyToManyTab.Controls.Add(this.propGrid3);
+            this.ManyToManyTab.Location = new System.Drawing.Point(4, 22);
+            this.ManyToManyTab.Name = "ManyToManyTab";
+            this.ManyToManyTab.Padding = new System.Windows.Forms.Padding(3);
+            this.ManyToManyTab.Size = new System.Drawing.Size(521, 315);
+            this.ManyToManyTab.TabIndex = 2;
+            this.ManyToManyTab.Text = "M:M Relationships";
+            this.ManyToManyTab.UseVisualStyleBackColor = true;
             // 
             // addButton3
             // 
@@ -349,7 +349,7 @@ namespace CslaGenerator.Controls
             this.addButton3.Name = "addButton3";
             this.addButton3.Size = new System.Drawing.Size(23, 23);
             this.addButton3.TabIndex = 2;
-            this.toolTip1.SetToolTip(this.addButton3, "Add a new object relation (Multiple to Multiple).");
+            this.toolTip1.SetToolTip(this.addButton3, "Add a new object relation (Many to Many).");
             this.addButton3.UseVisualStyleBackColor = true;
             this.addButton3.Click += new System.EventHandler(this.addButton_Click);
             // 
@@ -394,7 +394,7 @@ namespace CslaGenerator.Controls
             this.buildButton3.Name = "buildButton3";
             this.buildButton3.Size = new System.Drawing.Size(23, 23);
             this.buildButton3.TabIndex = 1;
-            this.toolTip1.SetToolTip(this.buildButton3, "Check and build the selected object relation\r\n" +
+            this.toolTip1.SetToolTip(this.buildButton3, "Check and build the selected object relation.\r\n" +
                                                         "You will be asked to confirm the build.");
             this.buildButton3.UseVisualStyleBackColor = true;
             this.buildButton3.Click += new System.EventHandler(this.buildButton_Click);
@@ -407,7 +407,7 @@ namespace CslaGenerator.Controls
             this.buildAllButton3.Name = "buildAllButton3";
             this.buildAllButton3.Size = new System.Drawing.Size(23, 23);
             this.buildAllButton3.TabIndex = 1;
-            this.toolTip1.SetToolTip(this.buildAllButton3, "Check and build all N to N relations\r\n" +
+            this.toolTip1.SetToolTip(this.buildAllButton3, "Check and build all M to M relations.\r\n" +
                                                            "You will be asked to confirm the build.");
             this.buildAllButton3.UseVisualStyleBackColor = true;
             this.buildAllButton3.Click += new System.EventHandler(this.buildAllButton_Click);
@@ -433,8 +433,8 @@ namespace CslaGenerator.Controls
             this.Size = new System.Drawing.Size(554, 416);
             this.TabControl.ResumeLayout(false);
             this.AllObjectsTab.ResumeLayout(false);
-            this.OneToMultipleTab.ResumeLayout(false);
-            this.MultipleToMultipleTab.ResumeLayout(false);
+            this.OneToManyTab.ResumeLayout(false);
+            this.ManyToManyTab.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -447,8 +447,8 @@ namespace CslaGenerator.Controls
         private System.Windows.Forms.ListBox listEntities3;
         public System.Windows.Forms.TabControl TabControl;
         public System.Windows.Forms.TabPage AllObjectsTab;
-        public System.Windows.Forms.TabPage OneToMultipleTab;
-        public System.Windows.Forms.TabPage MultipleToMultipleTab;
+        public System.Windows.Forms.TabPage OneToManyTab;
+        public System.Windows.Forms.TabPage ManyToManyTab;
         private System.Windows.Forms.PropertyGrid propGrid1;
         private System.Windows.Forms.PropertyGrid propGrid2;
         private System.Windows.Forms.PropertyGrid propGrid3;

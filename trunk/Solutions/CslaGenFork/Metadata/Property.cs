@@ -6,6 +6,7 @@ using System.IO;
 using System.Xml.Serialization;
 using CslaGenerator.Attributes;
 using CslaGenerator.Design;
+using CslaGenerator.Util;
 
 namespace CslaGenerator.Metadata
 {
@@ -86,7 +87,7 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Definition")]
-        [Description("Whether this property is read only..")]
+        [Description("Whether this property is read only.")]
         public virtual bool ReadOnly
         {
             get { return _readOnly; }
@@ -94,10 +95,16 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Definition")]
-        [Description("Whether this property can have a null value. The following types aren't nullable: \"ByteArray \", \"SmartDate \", \"DBNull \", \"Object\" and \"Empty\".")]
+        [Description("Whether this property can have a null value. The following types can't be null: \"ByteArray \", \"DBNull \", \"Object\" and \"Empty\".")]
         public virtual bool Nullable
         {
-            get { return _nullable; }
+            get
+            {
+                if (TypeHelper.IsNullAllowedOnType(_propertyType))
+                    return _nullable;
+
+                return false;
+            }
             set { _nullable = value; }
         }
 

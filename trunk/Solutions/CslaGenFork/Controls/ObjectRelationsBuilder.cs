@@ -378,7 +378,7 @@ namespace CslaGenerator.Controls
                 foreach (var obj in _associativeEntities)
                 {
                     View1.Add(obj);
-                    if (obj.RelationType == ObjectRelationType.OneToMultiple)
+                    if (obj.RelationType == ObjectRelationType.OneToMany)
                         View2.Add(obj);
                     else
                         View3.Add(obj);

@@ -513,6 +513,8 @@ namespace CslaGenerator.Metadata
                                     }
                                 }
                             }
+                            if (_currentCslaObject.ObjectType == CslaObjectType.EditableChild)
+                                return;
 
                             defaultCriteria.SetSprocNames();
 
