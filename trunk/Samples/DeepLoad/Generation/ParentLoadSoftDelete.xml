@@ -13583,5 +13583,5 @@
   <ConnectionString>Server=.\SQL2005;Database=DeepLoad;persist security info=False;user id=sa;password=password_1234;packet size=4096</ConnectionString>
   <ProjectName>ParentLoadSoftDelete</ProjectName>
   <TargetDirectory>..\..\DeepLoad</TargetDirectory>
-  <FileVersion>4.0.2</FileVersion>
+  <FileVersion>4.0.3</FileVersion>
 </CslaGeneratorUnit>

@@ -1,1 +1,0 @@
-Don't try to generate these files as current CslaGenFork (Nightly Build 2011.12.05) is capable of doing it.
