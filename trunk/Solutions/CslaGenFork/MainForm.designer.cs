@@ -60,9 +60,11 @@ namespace CslaGenerator
             this.removeSelectedObjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.duplicateObjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.projectMenuSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.selectAllObjectsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.projectMenuSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.newObjectRelationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addToObjectRelationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.projectMenuSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.projectMenuSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.propertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dataBaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.connectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -290,9 +292,11 @@ namespace CslaGenerator
             this.removeSelectedObjectToolStripMenuItem,
             this.duplicateObjectToolStripMenuItem,
             this.projectMenuSeparator1,
+            this.selectAllObjectsToolStripMenuItem,
+            this.projectMenuSeparator2,
             this.newObjectRelationToolStripMenuItem,
             this.addToObjectRelationToolStripMenuItem,
-            this.projectMenuSeparator2,
+            this.projectMenuSeparator3,
             this.propertiesToolStripMenuItem});
             this.projectToolStripMenuItem.Enabled = false;
             this.projectToolStripMenuItem.Name = "projectToolStripMenuItem";
@@ -325,6 +329,18 @@ namespace CslaGenerator
             this.projectMenuSeparator1.Name = "projectMenuSeparator1";
             this.projectMenuSeparator1.Size = new System.Drawing.Size(220, 6);
             // 
+            // selectAllObjectsToolStripMenuItem
+            // 
+            this.selectAllObjectsToolStripMenuItem.Name = "selectAllObjectsToolStripMenuItem";
+            this.selectAllObjectsToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
+            this.selectAllObjectsToolStripMenuItem.Text = "&Select All Objects";
+            this.selectAllObjectsToolStripMenuItem.Click += new System.EventHandler(this.SelectAllObjectsToolStripMenuItemClick);
+            // 
+            // projectMenuSeparator2
+            // 
+            this.projectMenuSeparator2.Name = "projectMenuSeparator2";
+            this.projectMenuSeparator2.Size = new System.Drawing.Size(220, 6);
+            // 
             // newObjectRelationToolStripMenuItem
             // 
             this.newObjectRelationToolStripMenuItem.Name = "newObjectRelationToolStripMenuItem";
@@ -339,10 +355,10 @@ namespace CslaGenerator
             this.addToObjectRelationToolStripMenuItem.Text = "Add to object &relation as ...";
             this.addToObjectRelationToolStripMenuItem.Click += new System.EventHandler(this.AddToObjectRelationToolStripMenuItemClick);
             // 
-            // projectMenuSeparator2
+            // projectMenuSeparator3
             // 
-            this.projectMenuSeparator2.Name = "projectMenuSeparator2";
-            this.projectMenuSeparator2.Size = new System.Drawing.Size(220, 6);
+            this.projectMenuSeparator3.Name = "projectMenuSeparator3";
+            this.projectMenuSeparator3.Size = new System.Drawing.Size(220, 6);
             // 
             // propertiesToolStripMenuItem
             // 
@@ -788,6 +804,7 @@ namespace CslaGenerator
         private ToolStripSeparator mruSeparator;
         private ToolStripSeparator projectMenuSeparator1;
         private ToolStripSeparator projectMenuSeparator2;
+        private ToolStripSeparator projectMenuSeparator3;
         private ToolStripMenuItem connectToolStripMenuItem;
         private ToolStripMenuItem refreshSchemaToolStripMenuItem;
         private ToolStripMenuItem retrieveSummariesToolStripMenuItem;
@@ -795,6 +812,7 @@ namespace CslaGenerator
         private ToolStripMenuItem aboutToolStripMenuItem;
         private ToolStripMenuItem newToolStripMenuItem;
         private ToolStripMenuItem duplicateObjectToolStripMenuItem;
+        private ToolStripMenuItem selectAllObjectsToolStripMenuItem;
         private ToolStripMenuItem newObjectRelationToolStripMenuItem;
         private ToolStripMenuItem addToObjectRelationToolStripMenuItem;
         private ToolStrip toolStrip1;

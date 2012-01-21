@@ -815,6 +815,11 @@ namespace CslaGenerator
             projectPanel.DuplicateSelected();
         }
 
+        private void SelectAllObjectsToolStripMenuItemClick(object sender, EventArgs e)
+        {
+            projectPanel.SelectAll();
+        }
+
         private void NewObjectRelationToolStripMenuItemClick(object sender, EventArgs e)
         {
             projectPanel.AddNewObjectRelation();
