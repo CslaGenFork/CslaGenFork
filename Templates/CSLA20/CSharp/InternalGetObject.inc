@@ -13,7 +13,7 @@
             <%=Info.ObjectName%> obj = new <%=Info.ObjectName%>();<% if (Info.ObjectType == CslaObjectType.EditableSwitchable) { %>
             obj.MarkAsChild();<% } %>
             obj.Fetch(dr);
-            <% if (LoadsChildren(Info)) { %>
+            <% if (LoadsChildren(Info) && !IsCollectionType(Info.ObjectType)) { %>
             obj.FetchChildren(dr);
             <% }
             if (Info.ObjectType != CslaObjectType.ReadOnlyObject && !IsCollectionType(Info.ObjectType)) { %>
