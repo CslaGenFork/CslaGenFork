@@ -27,14 +27,48 @@ namespace SelfLoadSoftDelete.Business.ERLevel
         /// <param name="level_1_1_1_1_1_ID">The Level_1_1_1_1_1_ID of the item to be removed.</param>
         public void Remove(int level_1_1_1_1_1_ID)
         {
-            foreach (G10Level11111 g10Level11111 in this)
+            foreach (var g10Level11111 in this)
             {
                 if (g10Level11111.Level_1_1_1_1_1_ID == level_1_1_1_1_1_ID)
                 {
-                      Remove(g10Level11111);
-                      break;
+                    Remove(g10Level11111);
+                    break;
                 }
             }
+        }
+
+        /// <summary>
+        /// Determines whether a <see cref="G10Level11111"/> item is in the collection.
+        /// </summary>
+        /// <param name="level_1_1_1_1_1_ID">The Level_1_1_1_1_1_ID of the item to search for.</param>
+        /// <returns><c>true</c> if the G10Level11111 is a collection item; otherwise, <c>false</c>.</returns>
+        public bool Contains(int level_1_1_1_1_1_ID)
+        {
+            foreach (var g10Level11111 in this)
+            {
+                if (g10Level11111.Level_1_1_1_1_1_ID == level_1_1_1_1_1_ID)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Determines whether a <see cref="G10Level11111"/> item is in the collection's DeletedList.
+        /// </summary>
+        /// <param name="level_1_1_1_1_1_ID">The Level_1_1_1_1_1_ID of the item to search for.</param>
+        /// <returns><c>true</c> if the G10Level11111 is a deleted collection item; otherwise, <c>false</c>.</returns>
+        public bool ContainsDeleted(int level_1_1_1_1_1_ID)
+        {
+            foreach (var g10Level11111 in this.DeletedList)
+            {
+                if (g10Level11111.Level_1_1_1_1_1_ID == level_1_1_1_1_1_ID)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         #endregion

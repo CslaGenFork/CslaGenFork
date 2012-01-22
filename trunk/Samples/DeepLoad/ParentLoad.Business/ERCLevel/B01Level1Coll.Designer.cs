@@ -26,14 +26,48 @@ namespace ParentLoad.Business.ERCLevel
         /// <param name="level_1_ID">The Level_1_ID of the item to be removed.</param>
         public void Remove(int level_1_ID)
         {
-            foreach (B02Level1 b02Level1 in this)
+            foreach (var b02Level1 in this)
             {
                 if (b02Level1.Level_1_ID == level_1_ID)
                 {
-                      Remove(b02Level1);
-                      break;
+                    Remove(b02Level1);
+                    break;
                 }
             }
+        }
+
+        /// <summary>
+        /// Determines whether a <see cref="B02Level1"/> item is in the collection.
+        /// </summary>
+        /// <param name="level_1_ID">The Level_1_ID of the item to search for.</param>
+        /// <returns><c>true</c> if the B02Level1 is a collection item; otherwise, <c>false</c>.</returns>
+        public bool Contains(int level_1_ID)
+        {
+            foreach (var b02Level1 in this)
+            {
+                if (b02Level1.Level_1_ID == level_1_ID)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Determines whether a <see cref="B02Level1"/> item is in the collection's DeletedList.
+        /// </summary>
+        /// <param name="level_1_ID">The Level_1_ID of the item to search for.</param>
+        /// <returns><c>true</c> if the B02Level1 is a deleted collection item; otherwise, <c>false</c>.</returns>
+        public bool ContainsDeleted(int level_1_ID)
+        {
+            foreach (var b02Level1 in this.DeletedList)
+            {
+                if (b02Level1.Level_1_ID == level_1_ID)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         #endregion

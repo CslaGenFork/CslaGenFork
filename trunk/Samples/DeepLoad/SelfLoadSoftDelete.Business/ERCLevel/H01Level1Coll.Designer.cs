@@ -26,14 +26,48 @@ namespace SelfLoadSoftDelete.Business.ERCLevel
         /// <param name="level_1_ID">The Level_1_ID of the item to be removed.</param>
         public void Remove(int level_1_ID)
         {
-            foreach (H02Level1 h02Level1 in this)
+            foreach (var h02Level1 in this)
             {
                 if (h02Level1.Level_1_ID == level_1_ID)
                 {
-                      Remove(h02Level1);
-                      break;
+                    Remove(h02Level1);
+                    break;
                 }
             }
+        }
+
+        /// <summary>
+        /// Determines whether a <see cref="H02Level1"/> item is in the collection.
+        /// </summary>
+        /// <param name="level_1_ID">The Level_1_ID of the item to search for.</param>
+        /// <returns><c>true</c> if the H02Level1 is a collection item; otherwise, <c>false</c>.</returns>
+        public bool Contains(int level_1_ID)
+        {
+            foreach (var h02Level1 in this)
+            {
+                if (h02Level1.Level_1_ID == level_1_ID)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Determines whether a <see cref="H02Level1"/> item is in the collection's DeletedList.
+        /// </summary>
+        /// <param name="level_1_ID">The Level_1_ID of the item to search for.</param>
+        /// <returns><c>true</c> if the H02Level1 is a deleted collection item; otherwise, <c>false</c>.</returns>
+        public bool ContainsDeleted(int level_1_ID)
+        {
+            foreach (var h02Level1 in this.DeletedList)
+            {
+                if (h02Level1.Level_1_ID == level_1_ID)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         #endregion

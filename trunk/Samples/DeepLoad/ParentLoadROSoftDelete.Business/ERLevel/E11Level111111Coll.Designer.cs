@@ -19,6 +19,27 @@ namespace ParentLoadROSoftDelete.Business.ERLevel
     public partial class E11Level111111Coll : ReadOnlyListBase<E11Level111111Coll, E12Level111111>
     {
 
+        #region Collection Business Methods
+
+        /// <summary>
+        /// Determines whether a <see cref="E12Level111111"/> item is in the collection.
+        /// </summary>
+        /// <param name="level_1_1_1_1_1_1_ID">The Level_1_1_1_1_1_1_ID of the item to search for.</param>
+        /// <returns><c>true</c> if the E12Level111111 is a collection item; otherwise, <c>false</c>.</returns>
+        public bool Contains(int level_1_1_1_1_1_1_ID)
+        {
+            foreach (var e12Level111111 in this)
+            {
+                if (e12Level111111.Level_1_1_1_1_1_1_ID == level_1_1_1_1_1_1_ID)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        #endregion
+
         #region Factory Methods
 
         /// <summary>
