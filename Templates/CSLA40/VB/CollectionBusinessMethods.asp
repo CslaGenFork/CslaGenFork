@@ -30,15 +30,17 @@ if (!IsReadOnlyType(itemInfo.ObjectType))
         }
     }
 }
-
-bool needsBusiness = itemInfo.RemoveItem &&
+bool needsBusiness =
+    (itemInfo.RemoveItem &&
     (Info.ObjectType == CslaObjectType.EditableRootCollection ||
-    Info.ObjectType == CslaObjectType.EditableChildCollection);
+    Info.ObjectType == CslaObjectType.EditableChildCollection)) ||
+    (Info.ContainsItem && Info.ObjectType == CslaObjectType.ReadOnlyCollection);
+
 if (!needsBusiness)
 {
-    foreach (Criteria c in itemInfo.CriteriaObjects)
+    foreach (Criteria crit in itemInfo.CriteriaObjects)
     {
-        if (c.CreateOptions.AddRemove || (c.DeleteOptions.AddRemove && c.Properties.Count > 0))
+        if (crit.CreateOptions.AddRemove || (crit.DeleteOptions.AddRemove && crit.Properties.Count > 0))
         {
             needsBusiness = true;
             break;
@@ -131,13 +133,9 @@ if (useParentReference || isRODeepLoadCollection || useAuthz || needsBusiness)
         }
     }
 
-    //if ((useAuthz && needsBusiness) || (UseBoth() && CurrentUnit.GenerationParams.GenerateSynchronous))
-        //Response.Write(Environment.NewLine);
-
-    bool removeItemUnhandled = itemInfo.RemoveItem;
-    foreach (Criteria c in itemInfo.CriteriaObjects)
+    foreach (Criteria crit in itemInfo.CriteriaObjects)
     {
-        if (c.CreateOptions.AddRemove)
+        if (crit.CreateOptions.AddRemove)
         {
             if (UseBoth() && CurrentUnit.GenerationParams.GenerateSynchronous)
             {
@@ -188,35 +186,18 @@ if (useParentReference || isRODeepLoadCollection || useAuthz || needsBusiness)
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-        if (Info.ObjectType == CslaObjectType.EditableRootCollection ||
-            Info.ObjectType == CslaObjectType.EditableChildCollection)
+        if (Info.ObjectType == CslaObjectType.DynamicEditableRootCollection &&
+            crit.DeleteOptions.AddRemove &&
+            crit.Properties.Count > 0)
         {
-            if (removeItemUnhandled)
-            {
-                removeItemUnhandled = false;
-                List<Property> propertyList = new List<Property>();
-
-                foreach (ValueProperty prop in itemInfo.ValueProperties)
-                {
-                    if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
-                    {
-                        propertyList.Add(prop);
-                    }
-                }
-                %>
-
-        /// <summary>
-        /// Removes a <see cref="<%= Info.ItemType %>"/> item from the collection.
-        /// </summary>
-        <%
             string prms = string.Empty;
             string factoryParams = string.Empty;
             string paramName = string.Empty;
-            string[] factoryParamsArray = new string[propertyList.Count];
-            string[] paramNameArray = new string[propertyList.Count];
-            for (int i = 0; i < propertyList.Count; i++)
+            string[] factoryParamsArray = new string[crit.Properties.Count];
+            string[] paramNameArray = new string[crit.Properties.Count];
+            for (int i = 0; i < crit.Properties.Count; i++)
             {
-                Property param = propertyList[i];
+                Property param = crit.Properties[i];
                 prms += string.Concat(", ", GetDataTypeGeneric(param, param.PropertyType), " ", FormatCamel(param.Name));
                 factoryParams += string.Concat(", ", FormatCamel(param.Name));
                 factoryParamsArray[i] = FormatCamel(param.Name);
@@ -229,6 +210,111 @@ if (useParentReference || isRODeepLoadCollection || useAuthz || needsBusiness)
                 prms = prms.Substring(2);
                 paramName = paramName.Substring(2);
             }
+            %>
+
+        /// <summary>
+        /// Removes a <see cref="<%= Info.ItemType %>"/> item from the collection.
+        /// </summary>
+        <%
+            for (int i = 0; i < crit.Properties.Count; i++)
+            {
+                %>
+        /// <param name="<%= FormatCamel(crit.Properties[i].Name) %>">The <%= FormatProperty(crit.Properties[i].Name) %> of the item to be removed.</param>
+        <%
+            }
+            if (useAuthz)
+            {
+                %>/// <exception cref="System.Security.SecurityException">if the user isn't authorized to remove items from the collection.</exception>
+        <%
+            }
+            %>public void Remove(<%= prms %>)
+        {
+            foreach (var <%= FormatCamel(Info.ItemType) %> in this)
+            {
+                if (<%
+            for (int i = 0; i < crit.Properties.Count; i++)
+            {
+                %><%= (i == 0) ? "" : " && " %><%= FormatCamel(Info.ItemType) %>.<%= paramNameArray[i] %> == <%= factoryParamsArray[i] %><%
+            }
+                        %>)
+                {
+                    Remove(<%= FormatCamel(Info.ItemType) %>);
+                    break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Determines whether a <see cref="<%= Info.ItemType %>"/> item is in the collection.
+        /// </summary>
+        <%
+            for (int i = 0; i < crit.Properties.Count; i++)
+            {
+                %>
+        /// <param name="<%= FormatCamel(crit.Properties[i].Name) %>">The <%= FormatProperty(crit.Properties[i].Name) %> of the item to search for.</param>
+        <%
+            }
+            %>/// <returns><c>true</c> if the <%= Info.ItemType %> is a collection item; otherwise, <c>false</c>.</returns>
+        public bool Contains(<%= prms %>)
+        {
+            foreach (var <%= FormatCamel(Info.ItemType) %> in this)
+            {
+                if (<%
+            for (int i = 0; i < crit.Properties.Count; i++)
+            {
+                %><%= (i == 0) ? "" : " && " %><%= FormatCamel(Info.ItemType) %>.<%= paramNameArray[i] %> == <%= factoryParamsArray[i] %><%
+            }
+                        %>)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        <%
+        }
+    }
+
+    if (Info.ObjectType == CslaObjectType.EditableRootCollection ||
+        Info.ObjectType == CslaObjectType.EditableChildCollection ||
+        Info.ObjectType == CslaObjectType.ReadOnlyCollection)
+    {
+        List<Property> propertyList = new List<Property>();
+        foreach (ValueProperty prop in itemInfo.ValueProperties)
+        {
+            if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
+            {
+                propertyList.Add(prop);
+            }
+        }
+        string prms = string.Empty;
+        string factoryParams = string.Empty;
+        string paramName = string.Empty;
+        string[] factoryParamsArray = new string[propertyList.Count];
+        string[] paramNameArray = new string[propertyList.Count];
+        for (int i = 0; i < propertyList.Count; i++)
+        {
+            Property param = propertyList[i];
+            prms += string.Concat(", ", GetDataTypeGeneric(param, param.PropertyType), " ", FormatCamel(param.Name));
+            factoryParams += string.Concat(", ", FormatCamel(param.Name));
+            factoryParamsArray[i] = FormatCamel(param.Name);
+            paramName += string.Concat(", ", param.Name);
+            paramNameArray[i] = param.Name;
+        }
+        if (factoryParams.Length > 1)
+        {
+            factoryParams = factoryParams.Substring(2);
+            prms = prms.Substring(2);
+            paramName = paramName.Substring(2);
+        }
+        if (Info.ObjectType != CslaObjectType.ReadOnlyCollection)
+        {
+            %>
+
+        /// <summary>
+        /// Removes a <see cref="<%= Info.ItemType %>"/> item from the collection.
+        /// </summary>
+        <%
             for (int i = 0; i < propertyList.Count; i++)
             {
                 %>
@@ -242,81 +328,87 @@ if (useParentReference || isRODeepLoadCollection || useAuthz || needsBusiness)
             }
             %>public void Remove(<%= prms %>)
         {
-            foreach (<%= Info.ItemType %> <%= FormatCamel(Info.ItemType) %> in this)
+            foreach (var <%= FormatCamel(Info.ItemType) %> in this)
             {
                 if (<%
             for (int i = 0; i < propertyList.Count; i++)
             {
                 %><%= (i == 0) ? "" : " && " %><%= FormatCamel(Info.ItemType) %>.<%= paramNameArray[i] %> == <%= factoryParamsArray[i] %><%
             }
-                        %>)
+                            %>)
                 {
-                      Remove(<%= FormatCamel(Info.ItemType) %>);
-                      break;
+                    Remove(<%= FormatCamel(Info.ItemType) %>);
+                    break;
                 }
             }
         }
         <%
-            }
         }
-        else if (c.DeleteOptions.AddRemove && c.Properties.Count > 0)
+        %>
+
+        /// <summary>
+        /// Determines whether a <see cref="<%= Info.ItemType %>"/> item is in the collection.
+        /// </summary>
+        <%
+        for (int i = 0; i < propertyList.Count; i++)
+        {
+            %>
+        /// <param name="<%= FormatCamel(propertyList[i].Name) %>">The <%= FormatProperty(propertyList[i].Name) %> of the item to search for.</param>
+        <%
+        }
+        %>/// <returns><c>true</c> if the <%= Info.ItemType %> is a collection item; otherwise, <c>false</c>.</returns>
+        public bool Contains(<%= prms %>)
+        {
+            foreach (var <%= FormatCamel(Info.ItemType) %> in this)
+            {
+                if (<%
+        for (int i = 0; i < propertyList.Count; i++)
+        {
+            %><%= (i == 0) ? "" : " && " %><%= FormatCamel(Info.ItemType) %>.<%= paramNameArray[i] %> == <%= factoryParamsArray[i] %><%
+        }
+                            %>)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        <%
+        if (Info.ObjectType != CslaObjectType.ReadOnlyCollection)
         {
             %>
 
         /// <summary>
-        /// Removes a <see cref="<%= Info.ItemType %>"/> item from the collection.
+        /// Determines whether a <see cref="<%= Info.ItemType %>"/> item is in the collection's DeletedList.
         /// </summary>
         <%
-            string prms = string.Empty;
-            string factoryParams = string.Empty;
-            string paramName = string.Empty;
-            string[] factoryParamsArray = new string[c.Properties.Count];
-            string[] paramNameArray = new string[c.Properties.Count];
-            for (int i = 0; i < c.Properties.Count; i++)
-            {
-                Property param = c.Properties[i];
-                prms += string.Concat(", ", GetDataTypeGeneric(param, param.PropertyType), " ", FormatCamel(param.Name));
-                factoryParams += string.Concat(", ", FormatCamel(param.Name));
-                factoryParamsArray[i] = FormatCamel(param.Name);
-                paramName += string.Concat(", ", param.Name);
-                paramNameArray[i] = param.Name;
-            }
-            if (factoryParams.Length > 1)
-            {
-                factoryParams = factoryParams.Substring(2);
-                prms = prms.Substring(2);
-                paramName = paramName.Substring(2);
-            }
-            for (int i = 0; i < c.Properties.Count; i++)
+            for (int i = 0; i < propertyList.Count; i++)
             {
                 %>
-        /// <param name="<%= FormatCamel(c.Properties[i].Name) %>">The <%= FormatProperty(c.Properties[i].Name) %> of the item to be removed.</param>
+        /// <param name="<%= FormatCamel(propertyList[i].Name) %>">The <%= FormatProperty(propertyList[i].Name) %> of the item to search for.</param>
         <%
             }
-            if (useAuthz)
-            {
-                %>/// <exception cref="System.Security.SecurityException">if the user isn't authorized to remove items from the collection.</exception>
-        <%
-            }
-            %>public void Remove(<%= prms %>)
+            %>/// <returns><c>true</c> if the <%= Info.ItemType %> is a deleted collection item; otherwise, <c>false</c>.</returns>
+        public bool ContainsDeleted(<%= prms %>)
         {
-            foreach (<%= Info.ItemType %> <%= FormatCamel(Info.ItemType) %> in this)
+            foreach (var <%= FormatCamel(Info.ItemType) %> in this.DeletedList)
             {
                 if (<%
-            for (int i = 0; i < c.Properties.Count; i++)
+            for (int i = 0; i < propertyList.Count; i++)
             {
                 %><%= (i == 0) ? "" : " && " %><%= FormatCamel(Info.ItemType) %>.<%= paramNameArray[i] %> == <%= factoryParamsArray[i] %><%
             }
-                        %>)
+                            %>)
                 {
-                      Remove(<%= FormatCamel(Info.ItemType) %>);
-                      break;
+                    return true;
                 }
             }
+            return false;
         }
         <%
         }
     }
+
 %>
 
         #endregion

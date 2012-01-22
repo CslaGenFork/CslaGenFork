@@ -9,7 +9,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
 <%
         string prmsAsync = string.Empty;
         string factoryParamsAsync = string.Empty;
-        foreach (Property param in c.Properties)
+        foreach (Property param in crit.Properties)
         {
             prmsAsync += string.Concat(", ", GetDataTypeGeneric(param, param.PropertyType), " ", FormatCamel(param.Name));
             factoryParamsAsync += string.Concat(", ", FormatCamel(param.Name));
@@ -19,10 +19,10 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
             factoryParamsAsync = factoryParamsAsync.Substring(2);
             prmsAsync = prmsAsync.Substring(2);
         }
-        for (int i = 0; i < c.Properties.Count; i++)
+        for (int i = 0; i < crit.Properties.Count; i++)
         {
             %>
-        /// <param name="<%= FormatCamel(c.Properties[i].Name) %>">The <%= FormatProperty(c.Properties[i].Name) %> of the object to be added.</param>
+        /// <param name="<%= FormatCamel(crit.Properties[i].Name) %>">The <%= FormatProperty(crit.Properties[i].Name) %> of the object to be added.</param>
 <%
         }
         if (useAuthz)
@@ -46,7 +46,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
         if (useChildFactory)
         {
             %>
-            <%= Info.ItemType %>.<%= newMethodNameAsync %><%= c.CreateOptions.FactorySuffix %>(<%= factoryParamsAsync %><%= factoryParamsAsync.Length > 1 ? ", " : "" %>(o, e) =>
+            <%= Info.ItemType %>.<%= newMethodNameAsync %><%= crit.CreateOptions.FactorySuffix %>(<%= factoryParamsAsync %><%= factoryParamsAsync.Length > 1 ? ", " : "" %>(o, e) =>
             <%
         }
         else

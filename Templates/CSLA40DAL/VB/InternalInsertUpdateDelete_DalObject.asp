@@ -16,7 +16,6 @@ if (Info.GenerateDataPortalInsert)
     string strInsertComment = string.Empty;
     string strInsertCommentResult = string.Empty;
     string strInsertParams = string.Empty;
-    string strInsertInitTimestamp = string.Empty;
     bool hasInsertTimestamp = false;
     bool insertIsFirst = true;
 
@@ -43,7 +42,6 @@ if (Info.GenerateDataPortalInsert)
         if (prop.DbBindColumn.NativeType == "timestamp")
         {
             hasInsertTimestamp = true;
-            strInsertInitTimestamp = "byte[] " + FormatCamel(prop.Name) + " = null;" + Environment.NewLine + new string(' ', 12);
             strInsertCommentResult = "/// <returns>The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) + " of the new " + Info.ObjectName + ".</returns>";
         }
         if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
@@ -73,7 +71,7 @@ if (Info.GenerateDataPortalInsert)
         <%= strInsertComment %><%= strInsertCommentResult %>
         public <%= hasInsertTimestamp ? "byte[]" : "void" %> Insert(<%= strInsertParams %>)
         {
-            <%= strInsertPK %><%= strInsertInitTimestamp %><%= GetConnection(Info, false) %>
+            <%= strInsertPK %><%= GetConnection(Info, false) %>
             {
                 <%= GetCommand(Info, Info.InsertProcedureName) %>
                 {
@@ -138,7 +136,7 @@ if (Info.GenerateDataPortalInsert)
     {
         if (prop.DbBindColumn.IsPrimaryKey || prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
         {
-            %><%= FormatCamel(prop.Name) %> = (<%= GetLanguageVariableType(prop.DbBindColumn.DataType) %>) cmd.Parameters["@<%= prop.ParameterName %>"].Value;
+            %><%= FormatCamel(prop.Name) %> = (<%= GetLanguageVariableType(prop.DbBindColumn.DataType) %>)cmd.Parameters["@<%= prop.ParameterName %>"].Value;
                     <%
         }
     }
@@ -146,7 +144,7 @@ if (Info.GenerateDataPortalInsert)
     {
         if (prop.DbBindColumn.NativeType == "timestamp")
         {
-            %>return (byte[]) cmd.Parameters["@New<%= prop.ParameterName %>"].Value;
+            %>return (byte[])cmd.Parameters["@New<%= prop.ParameterName %>"].Value;
                     <%
         }
     }
@@ -279,7 +277,7 @@ if (Info.GenerateDataPortalUpdate)
                     {
                         if (prop.DbBindColumn.NativeType == "timestamp")
                         {
-                            %>return (byte[]) cmd.Parameters["@New<%= prop.ParameterName %>"].Value;
+                            %>return (byte[])cmd.Parameters["@New<%= prop.ParameterName %>"].Value;
                     <%
                         }
                     }
