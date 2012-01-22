@@ -102,7 +102,7 @@ if (Info.GenerateDataPortalInsert)
     {
         if (prop.DbBindColumn.IsPrimaryKey || prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
         {
-            %><%= FormatCamel(prop.Name) %> = (<%= GetLanguageVariableType(prop.DbBindColumn.DataType) %>) cmd.Parameters["@<%= prop.ParameterName %>"].Value;
+            %><%= FormatCamel(prop.Name) %> = (<%= GetLanguageVariableType(prop.DbBindColumn.DataType) %>)cmd.Parameters["@<%= prop.ParameterName %>"].Value;
                     <%
         }
     }
@@ -110,7 +110,7 @@ if (Info.GenerateDataPortalInsert)
     {
         if (prop.DbBindColumn.NativeType == "timestamp")
         {
-            %>return (byte[]) cmd.Parameters["@New<%= prop.ParameterName %>"].Value;
+            %>return (byte[])cmd.Parameters["@New<%= prop.ParameterName %>"].Value;
                     <%
         }
     }

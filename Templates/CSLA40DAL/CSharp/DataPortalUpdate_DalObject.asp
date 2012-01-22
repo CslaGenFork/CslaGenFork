@@ -94,7 +94,7 @@ if (Info.GenerateDataPortalUpdate)
     {
         if (prop.DbBindColumn.NativeType == "timestamp")
         {
-            %>return (byte[]) cmd.Parameters["@New<%= prop.ParameterName %>"].Value;
+            %>return (byte[])cmd.Parameters["@New<%= prop.ParameterName %>"].Value;
                     <%
         }
     }

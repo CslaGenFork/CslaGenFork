@@ -9,7 +9,7 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
         <%
         string prms = string.Empty;
         string factoryParams = string.Empty;
-        foreach (Property param in c.Properties)
+        foreach (Property param in crit.Properties)
         {
             prms += string.Concat(", ", GetDataTypeGeneric(param, param.PropertyType), " ", FormatCamel(param.Name));
             factoryParams += string.Concat(", ", FormatCamel(param.Name));
@@ -19,10 +19,10 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
             factoryParams = factoryParams.Substring(2);
             prms = prms.Substring(2);
         }
-        for (int i = 0; i < c.Properties.Count; i++)
+        for (int i = 0; i < crit.Properties.Count; i++)
         {
             %>
-        /// <param name="<%= FormatCamel(c.Properties[i].Name) %>">The <%= FormatProperty(c.Properties[i].Name) %> of the object to be added.</param>
+        /// <param name="<%= FormatCamel(crit.Properties[i].Name) %>">The <%= FormatProperty(crit.Properties[i].Name) %> of the object to be added.</param>
 <%
         }
         %>
@@ -46,7 +46,7 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
         if (useChildFactory)
         {
             %>
-            var item = <%= Info.ItemType %>.<%= newMethodName %><%= c.CreateOptions.FactorySuffix %>(<%= factoryParams %>);
+            var item = <%= Info.ItemType %>.<%= newMethodName %><%= crit.CreateOptions.FactorySuffix %>(<%= factoryParams %>);
             <%
         }
         else
