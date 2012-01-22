@@ -27,14 +27,48 @@ namespace ParentLoad.Business.ERCLevel
         /// <param name="level_1_1_1_1_ID">The Level_1_1_1_1_ID of the item to be removed.</param>
         public void Remove(int level_1_1_1_1_ID)
         {
-            foreach (B08Level1111 b08Level1111 in this)
+            foreach (var b08Level1111 in this)
             {
                 if (b08Level1111.Level_1_1_1_1_ID == level_1_1_1_1_ID)
                 {
-                      Remove(b08Level1111);
-                      break;
+                    Remove(b08Level1111);
+                    break;
                 }
             }
+        }
+
+        /// <summary>
+        /// Determines whether a <see cref="B08Level1111"/> item is in the collection.
+        /// </summary>
+        /// <param name="level_1_1_1_1_ID">The Level_1_1_1_1_ID of the item to search for.</param>
+        /// <returns><c>true</c> if the B08Level1111 is a collection item; otherwise, <c>false</c>.</returns>
+        public bool Contains(int level_1_1_1_1_ID)
+        {
+            foreach (var b08Level1111 in this)
+            {
+                if (b08Level1111.Level_1_1_1_1_ID == level_1_1_1_1_ID)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Determines whether a <see cref="B08Level1111"/> item is in the collection's DeletedList.
+        /// </summary>
+        /// <param name="level_1_1_1_1_ID">The Level_1_1_1_1_ID of the item to search for.</param>
+        /// <returns><c>true</c> if the B08Level1111 is a deleted collection item; otherwise, <c>false</c>.</returns>
+        public bool ContainsDeleted(int level_1_1_1_1_ID)
+        {
+            foreach (var b08Level1111 in this.DeletedList)
+            {
+                if (b08Level1111.Level_1_1_1_1_ID == level_1_1_1_1_ID)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         #endregion

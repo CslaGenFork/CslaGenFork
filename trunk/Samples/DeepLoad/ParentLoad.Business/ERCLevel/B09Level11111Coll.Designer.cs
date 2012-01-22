@@ -27,14 +27,48 @@ namespace ParentLoad.Business.ERCLevel
         /// <param name="level_1_1_1_1_1_ID">The Level_1_1_1_1_1_ID of the item to be removed.</param>
         public void Remove(int level_1_1_1_1_1_ID)
         {
-            foreach (B10Level11111 b10Level11111 in this)
+            foreach (var b10Level11111 in this)
             {
                 if (b10Level11111.Level_1_1_1_1_1_ID == level_1_1_1_1_1_ID)
                 {
-                      Remove(b10Level11111);
-                      break;
+                    Remove(b10Level11111);
+                    break;
                 }
             }
+        }
+
+        /// <summary>
+        /// Determines whether a <see cref="B10Level11111"/> item is in the collection.
+        /// </summary>
+        /// <param name="level_1_1_1_1_1_ID">The Level_1_1_1_1_1_ID of the item to search for.</param>
+        /// <returns><c>true</c> if the B10Level11111 is a collection item; otherwise, <c>false</c>.</returns>
+        public bool Contains(int level_1_1_1_1_1_ID)
+        {
+            foreach (var b10Level11111 in this)
+            {
+                if (b10Level11111.Level_1_1_1_1_1_ID == level_1_1_1_1_1_ID)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Determines whether a <see cref="B10Level11111"/> item is in the collection's DeletedList.
+        /// </summary>
+        /// <param name="level_1_1_1_1_1_ID">The Level_1_1_1_1_1_ID of the item to search for.</param>
+        /// <returns><c>true</c> if the B10Level11111 is a deleted collection item; otherwise, <c>false</c>.</returns>
+        public bool ContainsDeleted(int level_1_1_1_1_1_ID)
+        {
+            foreach (var b10Level11111 in this.DeletedList)
+            {
+                if (b10Level11111.Level_1_1_1_1_1_ID == level_1_1_1_1_1_ID)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         #endregion

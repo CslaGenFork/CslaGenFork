@@ -19,6 +19,27 @@ namespace SelfLoadRO.Business.ERCLevel
     public partial class D09Level11111Coll : ReadOnlyListBase<D09Level11111Coll, D10Level11111>
     {
 
+        #region Collection Business Methods
+
+        /// <summary>
+        /// Determines whether a <see cref="D10Level11111"/> item is in the collection.
+        /// </summary>
+        /// <param name="level_1_1_1_1_1_ID">The Level_1_1_1_1_1_ID of the item to search for.</param>
+        /// <returns><c>true</c> if the D10Level11111 is a collection item; otherwise, <c>false</c>.</returns>
+        public bool Contains(int level_1_1_1_1_1_ID)
+        {
+            foreach (var d10Level11111 in this)
+            {
+                if (d10Level11111.Level_1_1_1_1_1_ID == level_1_1_1_1_1_ID)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        #endregion
+
         #region Factory Methods
 
         /// <summary>

@@ -19,6 +19,27 @@ namespace SelfLoadROSoftDelete.Business.ERCLevel
     public partial class H05Level111Coll : ReadOnlyListBase<H05Level111Coll, H06Level111>
     {
 
+        #region Collection Business Methods
+
+        /// <summary>
+        /// Determines whether a <see cref="H06Level111"/> item is in the collection.
+        /// </summary>
+        /// <param name="level_1_1_1_ID">The Level_1_1_1_ID of the item to search for.</param>
+        /// <returns><c>true</c> if the H06Level111 is a collection item; otherwise, <c>false</c>.</returns>
+        public bool Contains(int level_1_1_1_ID)
+        {
+            foreach (var h06Level111 in this)
+            {
+                if (h06Level111.Level_1_1_1_ID == level_1_1_1_ID)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        #endregion
+
         #region Factory Methods
 
         /// <summary>
