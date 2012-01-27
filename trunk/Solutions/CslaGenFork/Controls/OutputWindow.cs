@@ -1,36 +1,38 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using WeifenLuo.WinFormsUI.Docking;
 
 namespace CslaGenerator.Controls
 {
-    public partial class OutputWindow : WeifenLuo.WinFormsUI.Docking.DockContent
+    public partial class OutputWindow : DockContent
     {
-        static OutputWindow _current;
-     
+        private static OutputWindow _current;
+
         public OutputWindow()
         {
             InitializeComponent();
-            Icon =Icon.FromHandle(Properties.Resources.Output.GetHicon());
-            DockAreas = WeifenLuo.WinFormsUI.Docking.DockAreas.DockBottom |
-                WeifenLuo.WinFormsUI.Docking.DockAreas.Float;
+            Icon = Icon.FromHandle(Properties.Resources.Output.GetHicon());
+            DockAreas = DockAreas.DockBottom |
+                        DockAreas.Float;
             _current = this;
-
         }
 
         #region Properties
-        
+
         public static OutputWindow Current
         {
             get { return _current; }
         }
-        
+
         #endregion
 
         #region Thread Safe Handlers
 
-        delegate void EmptyDelegate();
-        delegate void MessageDelegate(string message, int appendLines);
+        private delegate void EmptyDelegate();
+
+        private delegate void MessageDelegate(string message, int appendLines);
+
         /// <summary>
         /// Thread safe method for appending text to the output panel.
         /// </summary>
@@ -47,7 +49,7 @@ namespace CslaGenerator.Controls
         /// <param name="appendLines">Number of lines to append after the appended text.</param>
         public void AddOutputInfo(string info, int appendLines)
         {
-            Invoke(new MessageDelegate(DoStep), new object[] { info, appendLines });
+            Invoke(new MessageDelegate(DoStep), new object[] {info, appendLines});
         }
 
         /// <summary>
@@ -55,17 +57,17 @@ namespace CslaGenerator.Controls
         /// </summary>
         public void ClearOutput()
         {
-            Invoke(new EmptyDelegate(textBox1.Clear), new object[] { });
+            Invoke(new EmptyDelegate(textBox1.Clear), new object[] {});
         }
 
         #endregion
 
         #region Private Methods
-        
-        void DoStep(string message, int appendLines)
+
+        private void DoStep(string message, int appendLines)
         {
             textBox1.AppendText(message);
-            for (var i=0; i < appendLines; i++)
+            for (var i = 0; i < appendLines; i++)
                 textBox1.AppendText(Environment.NewLine);
             //txtOutput.AppendText(new String('=', 70) + Environment.NewLine
             //    + objectName + ":" + Environment.NewLine);
@@ -76,9 +78,6 @@ namespace CslaGenerator.Controls
             //_generating = true;
             //btnGenerate.Enabled = true;
         }
-
-
-
 
         #endregion
 

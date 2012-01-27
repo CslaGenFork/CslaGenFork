@@ -83,30 +83,38 @@ namespace CslaGenerator
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.newProjectButton = new System.Windows.Forms.ToolStripButton();
-            this.openProjectButton = new System.Windows.Forms.ToolStripButton();
-            this.saveProjectButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.addObjectButton = new System.Windows.Forms.ToolStripButton();
-            this.deleteObjectButton = new System.Windows.Forms.ToolStripButton();
-            this.duplicateObjectButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.moveuUpObjectButton = new System.Windows.Forms.ToolStripButton();
-            this.moveDownObjectButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.newObjectRelationButton = new System.Windows.Forms.ToolStripButton();
-            this.addToObjectRelationButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-            this.connectDatabaseButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsbGenerate = new System.Windows.Forms.ToolStripButton();
-            this.tsbCancel = new System.Windows.Forms.ToolStripButton();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.globalStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.errors = new System.Windows.Forms.ToolStripStatusLabel();
+            this.warnings = new System.Windows.Forms.ToolStripStatusLabel();
+            this.loadingTimer = new System.Windows.Forms.ToolStripStatusLabel();
+            this.objects = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tables = new System.Windows.Forms.ToolStripStatusLabel();
+            this.views = new System.Windows.Forms.ToolStripStatusLabel();
+            this.sprocs = new System.Windows.Forms.ToolStripStatusLabel();
+            this.generatingTimer = new System.Windows.Forms.ToolStripStatusLabel();
             this.progressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.projectPanel = new CslaGenerator.Controls.ProjectPanel();
             this.formSizePosition1 = new System.Windows.Forms.FormSizePosition(this.components);
+            this.newProjectButton = new System.Windows.Forms.ToolStripButton();
+            this.openProjectButton = new System.Windows.Forms.ToolStripButton();
+            this.saveProjectButton = new System.Windows.Forms.ToolStripButton();
+            this.addObjectButton = new System.Windows.Forms.ToolStripButton();
+            this.deleteObjectButton = new System.Windows.Forms.ToolStripButton();
+            this.duplicateObjectButton = new System.Windows.Forms.ToolStripButton();
+            this.moveuUpObjectButton = new System.Windows.Forms.ToolStripButton();
+            this.moveDownObjectButton = new System.Windows.Forms.ToolStripButton();
+            this.newObjectRelationButton = new System.Windows.Forms.ToolStripButton();
+            this.addToObjectRelationButton = new System.Windows.Forms.ToolStripButton();
+            this.connectDatabaseButton = new System.Windows.Forms.ToolStripButton();
+            this.tsbGenerate = new System.Windows.Forms.ToolStripButton();
+            this.tsbCancel = new System.Windows.Forms.ToolStripButton();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -420,8 +428,8 @@ namespace CslaGenerator
             this.codeSmithExtensionToolStripMenuItem.Name = "codeSmithExtensionToolStripMenuItem";
             this.codeSmithExtensionToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
             this.codeSmithExtensionToolStripMenuItem.Text = "CodeSmith Extension...";
-            this.codeSmithExtensionToolStripMenuItem.Paint += new System.Windows.Forms.PaintEventHandler(ShieldBitmap);
             this.codeSmithExtensionToolStripMenuItem.Click += new System.EventHandler(this.CodeSmithExtensionToolStripMenuItemClick);
+            this.codeSmithExtensionToolStripMenuItem.Paint += new System.Windows.Forms.PaintEventHandler(ShieldBitmap);
             // 
             // viewToolStripMenuItem
             // 
@@ -531,6 +539,215 @@ namespace CslaGenerator
             this.toolStrip1.TabIndex = 15;
             this.toolStrip1.Text = "toolStrip1";
             // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 39);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 39);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 39);
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 39);
+            // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 39);
+            // 
+            // backgroundWorker1
+            // 
+            this.backgroundWorker1.WorkerSupportsCancellation = true;
+            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BackgroundWorker1DoWork);
+            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BackgroundWorker1RunWorkerCompleted);
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.globalStatus,
+            this.errors,
+            this.warnings,
+            this.loadingTimer,
+            this.objects,
+            this.tables,
+            this.views,
+            this.sprocs,
+            this.generatingTimer,
+            this.progressBar});
+            this.statusStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
+            this.statusStrip1.Location = new System.Drawing.Point(0, 524);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(800, 18);
+            this.statusStrip1.TabIndex = 17;
+            this.statusStrip1.Text = "statusStrip1";
+            this.statusStrip1.ShowItemToolTips = true;
+            // 
+            // globalStatus
+            // 
+            this.globalStatus.AutoSize = false;
+            this.globalStatus.AutoToolTip = true;
+            this.globalStatus.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.globalStatus.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+            this.globalStatus.DoubleClickEnabled = true;
+            this.globalStatus.Image = global::CslaGenerator.Properties.Resources.White;
+            this.globalStatus.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.globalStatus.Margin = new System.Windows.Forms.Padding(4, 2, 1, 1);
+            this.globalStatus.Name = "globalStatus";
+            this.globalStatus.Size = new System.Drawing.Size(80, 19);
+            this.globalStatus.Text = "Status       ";
+            this.globalStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.globalStatus.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
+            this.globalStatus.ToolTipText = "No project loaded.";
+            // 
+            // errors
+            // 
+            this.errors.AutoSize = false;
+            this.errors.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.errors.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+            this.errors.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.errors.Margin = new System.Windows.Forms.Padding(1, 2, 1, 1);
+            this.errors.Name = "errors";
+            this.errors.Size = new System.Drawing.Size(70, 19);
+            this.errors.Text = "Errors";
+            this.errors.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.errors.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
+            this.errors.DoubleClick += new System.EventHandler(this.errors_DoubleClick);
+            // 
+            // warnings
+            // 
+            this.warnings.AutoSize = false;
+            this.warnings.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.warnings.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+            this.warnings.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.warnings.Margin = new System.Windows.Forms.Padding(1, 2, 1, 1);
+            this.warnings.Name = "warnings";
+            this.warnings.Size = new System.Drawing.Size(80, 19);
+            this.warnings.Text = "Warnings";
+            this.warnings.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.warnings.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
+            this.warnings.DoubleClick += new System.EventHandler(this.warnings_DoubleClick);
+            // 
+            // loadingTimer
+            // 
+            this.loadingTimer.AutoSize = false;
+            this.loadingTimer.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.loadingTimer.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+            this.loadingTimer.Margin = new System.Windows.Forms.Padding(1, 2, 1, 1);
+            this.loadingTimer.Name = "loadingTimer";
+            this.loadingTimer.Size = new System.Drawing.Size(102, 19);
+            //this.loadingTimer.Text = "Loading: 00:00,000";
+            this.loadingTimer.Text = "Loading:";
+            this.loadingTimer.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // objects
+            // 
+            this.objects.AutoSize = false;
+            this.objects.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.objects.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+            this.objects.Margin = new System.Windows.Forms.Padding(1, 2, 1, 1);
+            this.objects.Name = "objects";
+            this.objects.Size = new System.Drawing.Size(70, 19);
+            //this.objects.Text = "Objects: 000";
+            this.objects.Text = "Objects:";
+            this.objects.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // tables
+            // 
+            this.tables.AutoSize = false;
+            this.tables.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.tables.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+            this.tables.Margin = new System.Windows.Forms.Padding(1, 2, 1, 1);
+            this.tables.Name = "tables";
+            this.tables.Size = new System.Drawing.Size(70, 19);
+            //this.tables.Text = "Tables: 0000";
+            this.tables.Text = "Tables:";
+            this.tables.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // views
+            // 
+            this.views.AutoSize = false;
+            this.views.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.views.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+            this.views.Margin = new System.Windows.Forms.Padding(1, 2, 1, 1);
+            this.views.Name = "views";
+            this.views.Size = new System.Drawing.Size(66, 19);
+            //this.views.Text = "Views: 0000";
+            this.views.Text = "Views:";
+            this.views.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // sprocs
+            // 
+            this.sprocs.AutoSize = false;
+            this.sprocs.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.sprocs.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+            this.sprocs.Margin = new System.Windows.Forms.Padding(1, 2, 1, 1);
+            this.sprocs.Name = "sprocs";
+            this.sprocs.Size = new System.Drawing.Size(71, 19);
+            //this.sprocs.Text = "SProcs: 0000";
+            this.sprocs.Text = "SProcs:";
+            this.sprocs.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // generatingTimer
+            // 
+            this.generatingTimer.AutoSize = false;
+            this.generatingTimer.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.generatingTimer.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
+            this.generatingTimer.Margin = new System.Windows.Forms.Padding(1, 2, 1, 1);
+            this.generatingTimer.Name = "generatingTimer";
+            this.generatingTimer.Size = new System.Drawing.Size(118, 19);
+            //this.generatingTimer.Text = "Generating: 00:00,000";
+            this.generatingTimer.Text = "Generating:";
+            this.generatingTimer.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // progressBar
+            // 
+            this.progressBar.AutoSize = false;
+            this.progressBar.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.progressBar.Margin = new System.Windows.Forms.Padding(1, 2, 1, 1);
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Overflow = System.Windows.Forms.ToolStripItemOverflow.Always;
+            this.progressBar.Size = new System.Drawing.Size(100, 18);
+            this.progressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.progressBar.Visible = false;
+            // 
+            // projectPanel
+            // 
+            this.projectPanel.Location = new System.Drawing.Point(0, 66);
+            this.projectPanel.Name = "projectPanel";
+            this.projectPanel.Size = new System.Drawing.Size(231, 431);
+            this.projectPanel.TabIndex = 0;
+            // 
+            // formSizePosition1
+            // 
+            this.formSizePosition1.Form = this;
+            // 
             // newProjectButton
             // 
             this.newProjectButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -564,11 +781,6 @@ namespace CslaGenerator
             this.saveProjectButton.Text = "Save Project";
             this.saveProjectButton.ToolTipText = "Save Project";
             this.saveProjectButton.Click += new System.EventHandler(this.SaveProjectButtonClick);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 39);
             // 
             // addObjectButton
             // 
@@ -604,11 +816,6 @@ namespace CslaGenerator
             this.duplicateObjectButton.Text = "Duplicate Object";
             this.duplicateObjectButton.Click += new System.EventHandler(this.DuplicateObjectButtonClick);
             // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 39);
-            // 
             // moveuUpObjectButton
             // 
             this.moveuUpObjectButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -630,11 +837,6 @@ namespace CslaGenerator
             this.moveDownObjectButton.Size = new System.Drawing.Size(36, 36);
             this.moveDownObjectButton.Text = "Move Down Object";
             this.moveDownObjectButton.Click += new System.EventHandler(this.MoveDownObjectButtonClick);
-            // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 39);
             // 
             // newObjectRelationButton
             // 
@@ -658,11 +860,6 @@ namespace CslaGenerator
             this.addToObjectRelationButton.Text = "Add to object relation as ...";
             this.addToObjectRelationButton.Click += new System.EventHandler(this.AddToObjectRelationButtonClick);
             // 
-            // toolStripSeparator4
-            // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 39);
-            // 
             // connectDatabaseButton
             // 
             this.connectDatabaseButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -673,11 +870,6 @@ namespace CslaGenerator
             this.connectDatabaseButton.Size = new System.Drawing.Size(36, 36);
             this.connectDatabaseButton.Text = "Connect To Database";
             this.connectDatabaseButton.Click += new System.EventHandler(this.ConnectDatabaseButtonClick);
-            // 
-            // toolStripSeparator5
-            // 
-            this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 39);
             // 
             // tsbGenerate
             // 
@@ -701,51 +893,6 @@ namespace CslaGenerator
             this.tsbCancel.Size = new System.Drawing.Size(36, 36);
             this.tsbCancel.Text = "Cancel";
             this.tsbCancel.Click += new System.EventHandler(this.TsbCancelClick);
-            // 
-            // backgroundWorker1
-            // 
-            this.backgroundWorker1.WorkerSupportsCancellation = true;
-            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BackgroundWorker1DoWork);
-            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BackgroundWorker1RunWorkerCompleted);
-            // 
-            // statusStrip1
-            // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.statusLabel,
-            this.progressBar});
-            this.statusStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
-            this.statusStrip1.Location = new System.Drawing.Point(0, 524);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(800, 18);
-            this.statusStrip1.TabIndex = 17;
-            this.statusStrip1.Text = "statusStrip1";
-            // 
-            // statusLabel
-            // 
-            this.statusLabel.Name = "statusLabel";
-            this.statusLabel.Size = new System.Drawing.Size(79, 13);
-            this.statusLabel.Text = "Csla Generator";
-            // 
-            // progressBar
-            // 
-            this.progressBar.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.progressBar.Name = "progressBar";
-            this.progressBar.Overflow = System.Windows.Forms.ToolStripItemOverflow.Always;
-            this.progressBar.Size = new System.Drawing.Size(100, 16);
-            this.progressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
-            this.progressBar.Visible = false;
-            // 
-            // projectPanel
-            // 
-            this.projectPanel.Location = new System.Drawing.Point(0, 66);
-            this.projectPanel.Name = "projectPanel";
-            this.projectPanel.Objects = null;
-            this.projectPanel.Size = new System.Drawing.Size(231, 431);
-            this.projectPanel.TabIndex = 0;
-            // 
-            // formSizePosition1
-            // 
-            this.formSizePosition1.Form = this;
             // 
             // MainForm
             // 
@@ -779,7 +926,6 @@ namespace CslaGenerator
 
 }
         private GeneratorController _controller = null;
-        //private CslaGenerator.Util.FolderBrowser fbGenerate;
         private System.Windows.Forms.SaveFileDialog sfdSave;
         private System.Windows.Forms.OpenFileDialog ofdLoad;
         private DbSchemaPanel dbSchemaPanel = null;
@@ -848,7 +994,15 @@ namespace CslaGenerator
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private ToolStripMenuItem outputWindowToolStripMenuItem;
         private StatusStrip statusStrip1;
-        private ToolStripStatusLabel statusLabel;
+        private ToolStripStatusLabel globalStatus;
+        private ToolStripStatusLabel errors;
+        private ToolStripStatusLabel warnings;
+        private ToolStripStatusLabel loadingTimer;
+        private ToolStripStatusLabel objects;
+        private ToolStripStatusLabel tables;
+        private ToolStripStatusLabel views;
+        private ToolStripStatusLabel sprocs;
+        private ToolStripStatusLabel generatingTimer;
         private ToolStripProgressBar progressBar;
         private ToolStripMenuItem pluginsToolStripMenuItem;
         private ToolStripMenuItem toolStripMenuItem4;

@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 using System.Xml.Serialization;
@@ -31,7 +32,14 @@ namespace CslaGenerator
         private static GeneratorController _current;
         private readonly PropertyContext _propertyContext = new PropertyContext();
         private DbSchemaPanel _dbSchemaPanel;
-        public bool IsLoading;
+        internal bool IsDBConnected = false;
+        internal bool IsLoading = false;
+        internal bool HasErrors = false;
+        internal bool HasWarnings = false;
+        internal Stopwatch LoadingTimer = new Stopwatch();
+        internal int Tables;
+        internal int Views;
+        internal int Sprocs;
 
         #endregion
 
@@ -199,12 +207,14 @@ namespace CslaGenerator
 
                 BuildSchemaTree(ConnectionFactory.ConnectionString);
                 Cursor.Current = Cursors.Default;
+                IsDBConnected = true;
             }
         }
 
         public void Load(string fileName)
         {
             IsLoading = true;
+            LoadingTimer.Restart();
             FileStream fs = null;
             try
             {
@@ -247,6 +257,7 @@ namespace CslaGenerator
                     cn = ConnectionFactory.NewConnection;
                     cn.Open();
                     BuildSchemaTree(_currentUnit.ConnectionString);
+                    IsDBConnected = true;
                 }
                 catch //(SqlException e)
                 {
@@ -272,12 +283,10 @@ namespace CslaGenerator
                     if (_mainForm.ProjectPanel.ListObjects.Items.Count > 0)
                     {
                         _currentCslaObject = (CslaObjectInfo)_mainForm.ProjectPanel.ListObjects.Items[0];
-                        // _frmGenerator.PropertyGrid.SelectedObject = new PropertyBag(_currentCslaObject, _propertyContext);
                     }
                     else
                     {
                         _currentCslaObject = null;
-                        // _frmGenerator.PropertyGrid.SelectedObject = null;
                     }
 
                     if (_dbSchemaPanel != null)
@@ -286,7 +295,6 @@ namespace CslaGenerator
                 else
                 {
                     _currentCslaObject = null;
-                    // _frmGenerator.PropertyGrid.SelectedObject = null;
                     if (_dbSchemaPanel != null)
                         _dbSchemaPanel.CslaObjectInfo = null;
                 }
@@ -318,6 +326,7 @@ namespace CslaGenerator
                 Cursor.Current = Cursors.Default;
                 fs.Close();
                 IsLoading = false;
+                LoadingTimer.Stop();
             }
         }
 
@@ -460,7 +469,6 @@ namespace CslaGenerator
         {
             try
             {
-                //dbSchemaPanel = new DbSchemaPanel(ref _currentUnit, ref _currentCslaObject, connectionString);
                 _dbSchemaPanel = new DbSchemaPanel(_currentUnit, _currentCslaObject, connectionString);
                 _dbSchemaPanel.BuildSchemaTree();
                 _mainForm.DbSchemaPanel = _dbSchemaPanel;

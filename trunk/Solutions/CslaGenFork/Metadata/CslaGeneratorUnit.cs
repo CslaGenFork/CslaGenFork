@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 
 namespace CslaGenerator.Metadata
 {
@@ -16,6 +17,7 @@ namespace CslaGenerator.Metadata
         private string _fileVersion = CslaGenerator.FileVersion.CurrentFileVersion;
         private ProjectParameters _projectParams = new ProjectParameters();
         private GenerationParameters _generationParams = new GenerationParameters();
+        internal Stopwatch GenerationTimer = new Stopwatch();
 
         public CslaGeneratorUnit()
         {

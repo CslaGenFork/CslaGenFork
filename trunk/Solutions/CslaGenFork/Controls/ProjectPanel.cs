@@ -453,6 +453,8 @@ namespace CslaGenerator.Controls
             // Now restore SelectedItems
             _restoreSelectedItems = true;
             ApplyFiltersPresenter();
+
+            GeneratorController.Current.MainForm.FillObjects();
         }
 
         internal void DuplicateSelected()
@@ -476,6 +478,8 @@ namespace CslaGenerator.Controls
             lstObjects.SelectedItems.Clear();
             foreach (var obj in duplicateList)
                 lstObjects.SelectedItems.Add(obj);
+
+            GeneratorController.Current.MainForm.FillObjects();
         }
 
         internal void SelectAll()
@@ -513,6 +517,8 @@ namespace CslaGenerator.Controls
             lstObjects.SelectedItems.Clear();
             foreach (var obj in objects)
                 lstObjects.SelectedItems.Add(obj);
+
+            GeneratorController.Current.MainForm.FillObjects();
         }
 
         internal void AddNewObject()
@@ -521,6 +527,7 @@ namespace CslaGenerator.Controls
                 return;
             var newCslaObjectInfo = new CslaObjectInfo(GeneratorController.Current.CurrentUnit);
             _objects.InsertAtTop(newCslaObjectInfo, true);
+            GeneratorController.Current.MainForm.FillObjects();
         }
 
         internal void MoveUpSelected()
