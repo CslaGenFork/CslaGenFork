@@ -448,6 +448,10 @@ namespace CslaGenerator.Metadata
                 return;
             }
 
+            // Condition excludes NameValueList
+            if (CslaTemplateHelperCS.IsCollectionType(_currentCslaObject.ObjectType))
+                return;
+
             var primaryKeyProperties = new List<ValueProperty>();
             ValueProperty timestampProperty = null;
             var useForCreate = false;

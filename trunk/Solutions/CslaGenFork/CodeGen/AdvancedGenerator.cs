@@ -22,6 +22,8 @@ namespace CslaGenerator.CodeGen
         private bool _abortRequested;
         private string _fullTemplatesPath;
         private bool _generateDatabaseClass;
+        private readonly GenerationReportCollection _errorReport = new GenerationReportCollection();
+        private readonly GenerationReportCollection _warningReport = new GenerationReportCollection();
         private int _objFailed;
         private int _objSuccess;
         private int _objectWarnings;
@@ -41,6 +43,16 @@ namespace CslaGenerator.CodeGen
 
         public string TargetDirectory { get; set; }
 
+        public GenerationReportCollection ErrorReport
+        {
+            get { return _errorReport; }
+        }
+
+        public GenerationReportCollection WarningReport
+        {
+            get { return _warningReport; }
+        }
+
         public void Abort()
         {
             _abortRequested = true;
@@ -57,6 +69,7 @@ namespace CslaGenerator.CodeGen
                     @"CslaGenFork DAL project generation", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
+            _unit.GenerationTimer.Restart();
             CslaTemplateHelperCS.PrimaryKeys.ClearCache();
             CslaObjectInfo objInfo = null;
             _objFailed = 0;
@@ -106,6 +119,13 @@ namespace CslaGenerator.CodeGen
                 catch (Exception ex)
                 {
                     _objFailed++;
+                    _errorReport.Add(new GenerationReport
+                    {
+                        ObjectName = info.ObjectName,
+                        ObjectType = info.ObjectType.ToString(),
+                        Message = ex.Message,
+                        FileName = "unknown (Business)"
+                    });
                     var sb = new StringBuilder();
                     sb.AppendLine("* * * Error:");
                     sb.AppendFormat("Business Object: {0} failed to generate:", info.ObjectName);
@@ -130,6 +150,13 @@ namespace CslaGenerator.CodeGen
                     catch (Exception ex)
                     {
                         _objFailed++;
+                        _errorReport.Add(new GenerationReport
+                        {
+                            ObjectName = info.ObjectName,
+                            ObjectType = info.ObjectType.ToString(),
+                            Message = ex.Message,
+                            FileName = "unknown (DAL interface)"
+                        });
                         var sb = new StringBuilder();
                         sb.AppendLine("* * * Error:");
                         sb.AppendFormat("DAL Interface: {0} failed to generate:", info.ObjectName);
@@ -148,6 +175,13 @@ namespace CslaGenerator.CodeGen
                     catch (Exception ex)
                     {
                         _objFailed++;
+                        _errorReport.Add(new GenerationReport
+                        {
+                            ObjectName = info.ObjectName,
+                            ObjectType = info.ObjectType.ToString(),
+                            Message = ex.Message,
+                            FileName = "unknown (DAL)"
+                        });
                         var sb = new StringBuilder();
                         sb.AppendLine("* * * Error:");
                         sb.AppendFormat("DAL Object: {0} failed to generate:", info.ObjectName);
@@ -256,6 +290,7 @@ namespace CslaGenerator.CodeGen
             {
                 OnGenerationInformation(Environment.NewLine + "* * * * Code Generation Cancelled!");
             }
+            _unit.GenerationTimer.Stop();
             OnFinalized();
         }
 
@@ -315,6 +350,13 @@ namespace CslaGenerator.CodeGen
                         warningsOutput = (StringBuilder) template.GetProperty("Warnings");
                         if (errorsOutput.Length > 0)
                         {
+                            _errorReport.Add(new GenerationReport
+                                                 {
+                                                     ObjectName = "General Validation",
+                                                     ObjectType = step.ToString(),
+                                                     Message = errorsOutput.ToString(),
+                                                     FileName = fullFilename
+                                                 });
                             OnGenerationInformation("* * Failed:" + Environment.NewLine + errorsOutput);
                             _fileSuccess[templateName] = false;
                         }
@@ -324,17 +366,32 @@ namespace CslaGenerator.CodeGen
                             {
                                 if (warningsOutput.Length > 0)
                                 {
+                                    _warningReport.AddMultiline(new GenerationReport
+                                                                    {
+                                                                        ObjectName = "General Validation",
+                                                                        ObjectType = step.ToString(),
+                                                                        Message = warningsOutput.ToString(),
+                                                                        FileName = fullFilename
+                                                                    });
                                     OnGenerationInformation("* Warning:" + Environment.NewLine + warningsOutput);
                                 }
                             }
-                                _fileSuccess[templateName] = true;
-                            }
+                            _fileSuccess[templateName] = true;
                         }
                     }
+                }
                 catch (Exception e)
                 {
                     _fileSuccess[templateName] = false;
-                    ShowExceptionInformation(e);
+                    var msg = ShowExceptionInformation(e);
+                    _errorReport.Add(new GenerationReport
+                                         {
+                                             ObjectName = "General Validation",
+                                             ObjectType = step.ToString(),
+                                             Message = msg,
+                                             FileName = fullFilename
+                                         });
+                    OnGenerationInformation(msg);
                 }
                 finally
                 {
@@ -389,6 +446,7 @@ namespace CslaGenerator.CodeGen
 
         private bool EditableSwitchableAlert(CslaObjectInfo objInfo)
         {
+            _unit.GenerationTimer.Stop();
             var result = true;
             if (objInfo.ObjectType == CslaObjectType.EditableSwitchable)
             {
@@ -400,6 +458,7 @@ namespace CslaGenerator.CodeGen
                     result = false;
             }
 
+            _unit.GenerationTimer.Start();
             return result;
         }
 
@@ -453,6 +512,13 @@ namespace CslaGenerator.CodeGen
                     {
                         _businessError = true;
                         _objFailed++;
+                        _errorReport.Add(new GenerationReport
+                                             {
+                                                 ObjectName = objInfo.ObjectName,
+                                                 ObjectType = objInfo.ObjectType.ToString(),
+                                                 Message = errorsOutput.ToString(),
+                                                 FileName = baseFileName
+                                             });
                         OnGenerationInformation("* * Failed:" + Environment.NewLine + errorsOutput);
                     }
                     else
@@ -462,6 +528,13 @@ namespace CslaGenerator.CodeGen
                             if (warningsOutput.Length > 0)
                             {
                                 _objectWarnings++;
+                                _warningReport.AddMultiline(new GenerationReport
+                                                                {
+                                                                    ObjectName = objInfo.ObjectName,
+                                                                    ObjectType = objInfo.ObjectType.ToString(),
+                                                                    Message = warningsOutput.ToString(),
+                                                                    FileName = baseFileName
+                                                                });
                                 OnGenerationInformation("* Warning:" + Environment.NewLine + warningsOutput);
                             }
                         }
@@ -476,7 +549,15 @@ namespace CslaGenerator.CodeGen
             catch (Exception e)
             {
                 _objFailed++;
-                ShowExceptionInformation(e);
+                var msg = ShowExceptionInformation(e);
+                _errorReport.Add(new GenerationReport
+                {
+                    ObjectName = objInfo.ObjectName,
+                    ObjectType = objInfo.ObjectType.ToString(),
+                    Message = msg,
+                    FileName = baseFileName
+                });
+                OnGenerationInformation(msg);
             }
             finally
             {
@@ -522,7 +603,15 @@ namespace CslaGenerator.CodeGen
                 catch (Exception e)
                 {
                     _objFailed++;
-                    ShowExceptionInformation(e);
+                    var msg = ShowExceptionInformation(e);
+                    _errorReport.Add(new GenerationReport
+                    {
+                        ObjectName = objInfo.ObjectName,
+                        ObjectType = objInfo.ObjectType.ToString(),
+                        Message = msg,
+                        FileName = fileName
+                    });
+                    OnGenerationInformation(msg);
                 }
                 finally
                 {
@@ -577,7 +666,14 @@ namespace CslaGenerator.CodeGen
             {
                 OnGenerationFileName(baseFileName);
                 _objFailed++;
-                OnGenerationInformation("* * Failed:" + Environment.NewLine + "Error on Business generation" + Environment.NewLine);
+                _errorReport.Add(new GenerationReport
+                                     {
+                                         ObjectName = objInfo.ObjectName,
+                                         ObjectType = objInfo.ObjectType.ToString(),
+                                         Message = "Error on Business generation.",
+                                         FileName = baseFileName
+                                     });
+                OnGenerationInformation("* * Failed:" + Environment.NewLine + "Error on Business generation." + Environment.NewLine);
                 return;
             }
 
@@ -619,6 +715,13 @@ namespace CslaGenerator.CodeGen
                     if (errorsOutput.Length > 0)
                     {
                         _objFailed++;
+                        _errorReport.Add(new GenerationReport
+                                               {
+                                                   ObjectName = objInfo.ObjectName,
+                                                   ObjectType = objInfo.ObjectType.ToString(),
+                                                   Message = errorsOutput.ToString(),
+                                                   FileName = baseFileName
+                                               });
                         OnGenerationInformation("* * Failed:" + Environment.NewLine + errorsOutput);
                     }
                     else
@@ -628,6 +731,13 @@ namespace CslaGenerator.CodeGen
                             if (warningsOutput.Length > 0)
                             {
                                 _objectWarnings++;
+                                _warningReport.AddMultiline(new GenerationReport
+                                                                {
+                                                                    ObjectName = objInfo.ObjectName,
+                                                                    ObjectType = objInfo.ObjectType.ToString(),
+                                                                    Message = warningsOutput.ToString(),
+                                                                    FileName = baseFileName
+                                                                });
                                 OnGenerationInformation("* Warning:" + Environment.NewLine + warningsOutput);
                             }
                         }
@@ -642,7 +752,15 @@ namespace CslaGenerator.CodeGen
             catch (Exception e)
             {
                 _objFailed++;
-                ShowExceptionInformation(e);
+                var msg = ShowExceptionInformation(e);
+                _errorReport.Add(new GenerationReport
+                {
+                    ObjectName = objInfo.ObjectName,
+                    ObjectType = objInfo.ObjectType.ToString(),
+                    Message = msg,
+                    FileName = "unknown (" + step + ")"
+                });
+                OnGenerationInformation(msg);
             }
             finally
             {
@@ -699,6 +817,13 @@ namespace CslaGenerator.CodeGen
                             warningsOutput = (StringBuilder) template.GetProperty("Warnings");
                             if (errorsOutput.Length > 0)
                             {
+                                _errorReport.Add(new GenerationReport
+                                                     {
+                                                         ObjectName = "Utility",
+                                                         ObjectType = step.ToString(),
+                                                         Message = errorsOutput.ToString(),
+                                                         FileName = fullFilename
+                                                     });
                                 OnGenerationInformation("* * Failed:" + Environment.NewLine + errorsOutput);
                                 _fileSuccess[utilityFilename] = false;
                             }
@@ -708,6 +833,13 @@ namespace CslaGenerator.CodeGen
                                 {
                                     if (warningsOutput.Length > 0)
                                     {
+                                        _warningReport.AddMultiline(new GenerationReport
+                                                                        {
+                                                                            ObjectName = "Utility",
+                                                                            ObjectType = step.ToString(),
+                                                                            Message = warningsOutput.ToString(),
+                                                                            FileName = fullFilename
+                                                                        });
                                         OnGenerationInformation("* Warning:" + Environment.NewLine + warningsOutput);
                                     }
                                 }
@@ -720,7 +852,15 @@ namespace CslaGenerator.CodeGen
                 catch (Exception e)
                 {
                     _fileSuccess[utilityFilename] = false;
-                    ShowExceptionInformation(e);
+                    var msg = ShowExceptionInformation(e);
+                    _errorReport.Add(new GenerationReport
+                    {
+                        ObjectName = "Utility",
+                        ObjectType = step.ToString(),
+                        Message = msg,
+                        FileName = fullFilename
+                    });
+                    OnGenerationInformation(msg);
                 }
                 finally
                 {
@@ -793,14 +933,14 @@ namespace CslaGenerator.CodeGen
             return template;
         }
 
-        private void ShowExceptionInformation(Exception e)
+        private string ShowExceptionInformation(Exception e)
         {
             var sb = new StringBuilder();
             sb.AppendLine("* * * Error:");
             sb.AppendLine(e.Message);
             sb.AppendLine("Stack Trace:");
             sb.AppendLine(e.StackTrace);
-            OnGenerationInformation(sb.ToString());
+            return sb.ToString();
         }
 
         private void WriteToFile(string fileName, string data)
@@ -1049,6 +1189,13 @@ namespace CslaGenerator.CodeGen
                             if (errorsOutput.Length > 0)
                             {
                                 _sprocFailed++;
+                                _errorReport.Add(new GenerationReport
+                                                     {
+                                                         ObjectName = objInfo.ObjectName,
+                                                         ObjectType = objInfo.ObjectType.ToString(),
+                                                         Message = errorsOutput.ToString(),
+                                                         FileName = filename
+                                                     });
                                 OnGenerationInformation("* * Failed:" + Environment.NewLine + errorsOutput);
                             }
                             else
@@ -1058,6 +1205,13 @@ namespace CslaGenerator.CodeGen
                                     if (warningsOutput.Length > 0)
                                     {
                                         _sprocWarnings++;
+                                        _warningReport.AddMultiline(new GenerationReport
+                                                                        {
+                                                                            ObjectName = objInfo.ObjectName,
+                                                                            ObjectType = objInfo.ObjectType.ToString(),
+                                                                            Message = warningsOutput.ToString(),
+                                                                            FileName = filename
+                                                                        });
                                         OnGenerationInformation("* Warning:" + Environment.NewLine + warningsOutput);
                                     }
                                 }
@@ -1324,6 +1478,8 @@ namespace CslaGenerator.CodeGen
                                                              (_objFailed + _objSuccess), _objFailed));
             OutputWindow.Current.AddOutputInfo(string.Format("Stored Procs: {0} generated. {1} failed.",
                                                              (_sprocFailed + _sprocSuccess), _sprocFailed));
+            GeneratorController.Current.HasErrors = _errorReport.Count > 0;
+            GeneratorController.Current.HasWarnings = _warningReport.Count > 0;
         }
 
         #endregion

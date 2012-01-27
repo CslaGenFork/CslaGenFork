@@ -31,7 +31,8 @@ namespace CslaGenerator.Templates
         int sprocSuccess = 0;
         int sprocFailed = 0;
         private Hashtable templates = new Hashtable();
-
+        private readonly GenerationReportCollection _errorReport = new GenerationReportCollection();
+        private readonly GenerationReportCollection _warningReport = new GenerationReportCollection();
 
         public string TargetDirectory
         {
@@ -43,6 +44,16 @@ namespace CslaGenerator.Templates
             {
                 _targetDirectory = value;
             }
+        }
+
+        public GenerationReportCollection ErrorReport
+        {
+            get { return _errorReport; }
+        }
+
+        public GenerationReportCollection WarningReport
+        {
+            get { return _warningReport; }
         }
 
         public void Abort()

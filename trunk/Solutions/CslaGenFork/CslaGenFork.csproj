@@ -144,6 +144,7 @@
     <None Include="App.config" />
     <Content Include="App.ico" />
     <None Include="Properties\DataSources\CslaGenerator.Metadata.GenerationParameters.datasource" />
+    <None Include="Properties\DataSources\CslaGenerator.Metadata.GenerationReportCollection.datasource" />
     <None Include="Properties\DataSources\CslaGenerator.Metadata.ProjectParameters.datasource" />
     <None Include="Resources\Save Project.png" />
     <None Include="Resources\Add Object.png" />
@@ -192,6 +193,14 @@
     <None Include="Resources\New Relations Object.png" />
     <None Include="Resources\Add To Relation.png" />
     <None Include="Resources\build_all.png" />
+    <None Include="Resources\109_AllAnnotations_Warning_16x16_72.png" />
+    <None Include="Resources\109_AllAnnotations_Error_16x16_72.png" />
+    <None Include="Resources\Blue.png" />
+    <None Include="Resources\Green.png" />
+    <None Include="Resources\Red.png" />
+    <None Include="Resources\White.png" />
+    <None Include="Resources\Orange.png" />
+    <None Include="Resources\112_RefreshArrow_Green_16x16_72.png" />
     <Content Include="StartPage\images\logo_top_left.gif" />
     <Content Include="StartPage\images\logo_top_middle.gif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -273,6 +282,8 @@
     <Compile Include="Metadata\BusinessRulePropertyCollection.cs" />
     <Compile Include="Metadata\BusinessRuleRunModes.cs" />
     <Compile Include="Metadata\CriteriaMode.cs" />
+    <Compile Include="Metadata\GenerationReport.cs" />
+    <Compile Include="Metadata\GenerationReportCollection.cs" />
     <Compile Include="Metadata\HaveBusinessRulesCollection.cs" />
     <Compile Include="Metadata\HeaderVerbosity.cs" />
     <Compile Include="Metadata\AssociativeEntity.cs" />
@@ -411,6 +422,12 @@
     </Compile>
     <Compile Include="Design\XmlFileNameEditor.cs">
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controls\GenerationReportViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\GenerationReportViewer.Designer.cs">
+      <DependentUpon>GenerationReportViewer.cs</DependentUpon>
     </Compile>
     <Compile Include="GeneratorController.cs">
       <SubType>Code</SubType>
@@ -613,6 +630,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\GenerationReportViewer.resx">
+      <DependentUpon>GenerationReportViewer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <SubType>Designer</SubType>

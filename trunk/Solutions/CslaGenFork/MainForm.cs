@@ -29,6 +29,8 @@ namespace CslaGenerator
         private DockContent _propertyGridDockPanel;
         private bool _showingStartPage;
         private DockContent _webBrowserDockPanel;
+        private GenerationReportViewer _errorPannel;
+        private GenerationReportViewer _warningPannel;
 
         public MainForm(GeneratorController controller)
         {
@@ -221,8 +223,18 @@ namespace CslaGenerator
 
         public void OpenProjectFile(string fileName)
         {
+            globalStatus.Image = Resources._112_RefreshArrow_Green_16x16_72;
+            globalStatus.ToolTipText = @"Loading...";
+            loadingTimer.Text = "Loading:";
+            ClearErrorsAndWarning();
+            statusStrip1.Refresh();
             _controller.NewCslaUnit();
             _controller.Load(fileName);
+            var timer = _controller.LoadingTimer.Elapsed;
+            loadingTimer.Text = String.Format("Loading: {0}:{1},{2}",
+                                                 timer.Minutes.ToString("00"),
+                                                 timer.Seconds.ToString("00"),
+                                                 timer.Milliseconds.ToString("000"));
             _isNewProject = false;
             // if we are calling this from the controller, then the
             // file dialog will not have been used to open the file, and since other code relies
@@ -233,6 +245,19 @@ namespace CslaGenerator
             {
                 ofdLoad.FileName = fileName;
             }
+            FillDatabaseObjects();
+            FillObjects();
+            if (_controller.IsDBConnected)
+            {
+                globalStatus.Image = Resources.Blue;
+                globalStatus.ToolTipText = @"Project loaded.";
+            }
+            else
+            {
+                globalStatus.Image = Resources.Orange;
+                globalStatus.ToolTipText = @"No database connection.";
+            }
+            statusStrip1.Refresh();
         }
 
         // ReSharper disable UnusedMember.Local
@@ -248,6 +273,13 @@ namespace CslaGenerator
             {
                 Application.DoEvents();
                 _controller.Connect();
+                FillDatabaseObjects();
+                if (_controller.IsDBConnected)
+                {
+                    globalStatus.Image = Resources.Blue;
+                    if (globalStatus.ToolTipText == @"New project has no database connection.")
+                        globalStatus.ToolTipText = @"New project.";
+                }
             }
             else
                 MessageBox.Show(@"You must load or start a new project before connecting to a database",
@@ -281,16 +313,21 @@ namespace CslaGenerator
         {
             if (_controller.CurrentUnit == null)
             {
-                MessageBox.Show(@"You must open a project before generating");
+                MessageBox.Show(@"You must open a project before generating.", "Invalid Generate Order", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
             if (Generating)
             {
-                MessageBox.Show(@"The Generation process is already running!");
+                MessageBox.Show(@"The Generation process is already running.", "Invalid Generate Order", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
             if (!ApplyProjectProperties())
                 return;
+
+            ClearErrorsAndWarning();
+            globalStatus.Image = Resources._112_RefreshArrow_Green_16x16_72;
+            globalStatus.ToolTipText = @"Generating...";
+            statusStrip1.Refresh();
 
             if (_controller.CurrentUnit.GenerationParams.SaveBeforeGenerate)
                 SaveToolStripMenuItemClick(this, EventArgs.Empty);
@@ -333,7 +370,39 @@ namespace CslaGenerator
 
         private void BackgroundWorker1RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            var timer = _controller.CurrentUnit.GenerationTimer.Elapsed;
+            generatingTimer.Text = String.Format("Generating: {0}:{1},{2}",
+                                                 timer.Minutes.ToString("00"),
+                                                 timer.Seconds.ToString("00"),
+                                                 timer.Milliseconds.ToString("000"));
             Generating = false;
+            if (!_controller.HasErrors && !_controller.HasWarnings)
+            {
+                globalStatus.Image = Resources.Green;
+                globalStatus.ToolTipText = @"Generation terminated.";
+            }
+            else
+            {
+                if (_controller.HasWarnings)
+                {
+                    globalStatus.Image = Resources.Orange;
+                    globalStatus.ToolTipText = @"Generation with issues.";
+                    warnings.Image = Resources._109_AllAnnotations_Warning_16x16_72;
+                    warnings.DoubleClickEnabled = true;
+                    warnings.ToolTipText = @"Double click to get the warning list.";
+                    warnings.AutoToolTip = true;
+                }
+                if (_controller.HasErrors)
+                {
+                    globalStatus.Image = Resources.Red;
+                    globalStatus.ToolTipText = @"Generation with errors.";
+                    errors.Image = Resources._109_AllAnnotations_Error_16x16_72;
+                    errors.DoubleClickEnabled = true;
+                    errors.ToolTipText = @"Double click to get the error list.";
+                    errors.AutoToolTip = true;
+                }
+            }
+            statusStrip1.Refresh();
         }
 
         private void MainFormKeyDown(object sender, KeyEventArgs e)
@@ -640,7 +709,6 @@ namespace CslaGenerator
                 mruSeparator.Visible = false;
             else
                 mruSeparator.Visible = true;
-            return;
         }
 
         private void ExitToolStripMenuItemClick(object sender, EventArgs e)
@@ -669,6 +737,20 @@ namespace CslaGenerator
 
                 _controller.CurrentPropertiesTab.cmdGetDefault.PerformClick();
                 AfterOpenEnableButtonsAndMenus();
+                if (_controller.IsDBConnected)
+                {
+                    globalStatus.Image = Resources.Blue;
+                    globalStatus.ToolTipText = @"New project.";
+                }
+                else
+                {
+                    globalStatus.Image = Resources.Orange;
+                    globalStatus.ToolTipText = @"New project has no database connection.";
+                }
+                loadingTimer.Text = "Loading:";
+                FillObjects();
+                ClearErrorsAndWarning();
+                statusStrip1.Refresh();
             }
         }
 
@@ -1069,6 +1151,72 @@ namespace CslaGenerator
                     break;
             }
 
+        }
+
+        private void ClearErrorsAndWarning()
+        {
+            generatingTimer.Text = "Generating:";
+            if (_errorPannel != null)
+            {
+                _errorPannel.Dispose();
+                _errorPannel = null;
+            }
+            if (_warningPannel != null)
+            {
+                _warningPannel.Dispose();
+                _warningPannel = null;
+            }
+            errors.Image = null;
+            warnings.Image = null;
+            errors.DoubleClickEnabled = false;
+            warnings.DoubleClickEnabled = false;
+            errors.ToolTipText = string.Empty;
+            warnings.ToolTipText = string.Empty;
+            errors.AutoToolTip = false;
+            warnings.AutoToolTip = false;
+        }
+
+        private void FillDatabaseObjects()
+        {
+            if (_controller.IsDBConnected)
+            {
+                tables.Text = string.Format("Tables: {0}", _controller.Tables);
+                views.Text = string.Format("Views: {0}", _controller.Views);
+                sprocs.Text = string.Format("SProcs: {0}", _controller.Sprocs);
+            }
+            else
+            {
+                tables.Text = "Tables:";
+                views.Text = "Views:";
+                sprocs.Text = "SProcs:";
+            }
+        }
+
+        internal void FillObjects()
+        {
+            objects.Text = string.Format("Objects: {0}", _controller.CurrentUnit.CslaObjects.Count);
+        }
+
+        private void errors_DoubleClick(object sender, EventArgs e)
+        {
+            if (_errorPannel == null)
+            {
+                _errorPannel = new GenerationReportViewer(_generator.ErrorReport, "Errors");
+                //_errorPannel.VisibleChanged += delegate(object sender, EventArgs e) { outputWindowToolStripMenuItem.Checked = ((DockContent)sender).Visible; };
+                _errorPannel.FormClosing += PaneFormClosing;
+            }
+            _errorPannel.Show(dockPanel1);
+        }
+
+        private void warnings_DoubleClick(object sender, EventArgs e)
+        {
+            if (_warningPannel == null)
+            {
+                _warningPannel = new GenerationReportViewer(_generator.WarningReport, "Warnings");
+                //_warningPannel.VisibleChanged += delegate(object sender, EventArgs e) { outputWindowToolStripMenuItem.Checked = ((DockContent)sender).Visible; };
+                _warningPannel.FormClosing += PaneFormClosing;
+            }
+            _warningPannel.Show(dockPanel1);
         }
     }
 }

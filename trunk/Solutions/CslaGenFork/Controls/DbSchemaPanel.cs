@@ -22,6 +22,7 @@ namespace CslaGenerator.Controls
         private CslaObjectInfoCollection _objectsAdded = new CslaObjectInfoCollection();
         private ObjectFactory _currentFactory;
         private string _cn = string.Empty;
+        private ICatalog _catalog;
 
         public DbSchemaPanel(CslaGeneratorUnit cslagenunit, CslaObjectInfo cslaobject, string connection)
         {
@@ -135,7 +136,6 @@ namespace CslaGenerator.Controls
         #endregion
 
         // called to populate treeview from provided database connection
-        ICatalog _catalog;
 
         public void BuildSchemaTree()
         {
@@ -165,6 +165,9 @@ namespace CslaGenerator.Controls
             end = DateTime.Now;
             //OutputWindow.Current.AddOutputInfo("Load Procedures End:" + end.ToLongTimeString());
             OutputWindow.Current.AddOutputInfo(string.Format("Found {0} sprocs in {1:0.00} seconds...", _catalog.Procedures.Count, end.Subtract(start).TotalSeconds), 2);
+            GeneratorController.Current.Tables = _catalog.Tables.Count;
+            GeneratorController.Current.Views = _catalog.Views.Count;
+            GeneratorController.Current.Sprocs = _catalog.Procedures.Count;
             SprocName[] requiredSprocs = GetRequiredProcedureList();
             if (requiredSprocs.Length > 0)
                 OutputWindow.Current.AddOutputInfo("Loading required procedures:");
