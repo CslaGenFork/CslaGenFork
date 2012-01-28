@@ -147,8 +147,8 @@ namespace CslaGenerator.Controls
             this.generationReportCollectionDataGridView.AllowUserToDeleteRows = false;
             this.generationReportCollectionDataGridView.AllowUserToResizeRows = false;
             this.generationReportCollectionDataGridView.AutoGenerateColumns = false;
-            this.generationReportCollectionDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.generationReportCollectionDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.generationReportCollectionDataGridView.CausesValidation = false;
+            this.generationReportCollectionDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.generationReportCollectionDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.objectNameDataGridViewTextBoxColumn,
             this.objectTypeDataGridViewTextBoxColumn,
@@ -159,12 +159,14 @@ namespace CslaGenerator.Controls
             this.generationReportCollectionDataGridView.Location = new System.Drawing.Point(0, 25);
             this.generationReportCollectionDataGridView.Name = "generationReportCollectionDataGridView";
             this.generationReportCollectionDataGridView.ReadOnly = true;
+            this.generationReportCollectionDataGridView.RowHeadersWidth = 16;
+            this.generationReportCollectionDataGridView.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.generationReportCollectionDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.generationReportCollectionDataGridView.ShowCellErrors = false;
+            this.generationReportCollectionDataGridView.ShowEditingIcon = false;
+            this.generationReportCollectionDataGridView.ShowRowErrors = false;
             this.generationReportCollectionDataGridView.Size = new System.Drawing.Size(592, 348);
             this.generationReportCollectionDataGridView.TabIndex = 1;
-            // 
-            // generationReportCollectionBindingSource
-            // 
-            this.generationReportCollectionBindingSource.DataSource = typeof(CslaGenerator.Metadata.GenerationReport);
             // 
             // objectNameDataGridViewTextBoxColumn
             // 
@@ -198,13 +200,16 @@ namespace CslaGenerator.Controls
             // 
             // fileNameDataGridViewTextBoxColumn
             // 
-            this.fileNameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.fileNameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.fileNameDataGridViewTextBoxColumn.DataPropertyName = "FileName";
             this.fileNameDataGridViewTextBoxColumn.HeaderText = "File";
             this.fileNameDataGridViewTextBoxColumn.MinimumWidth = 20;
             this.fileNameDataGridViewTextBoxColumn.Name = "fileNameDataGridViewTextBoxColumn";
             this.fileNameDataGridViewTextBoxColumn.ReadOnly = true;
-            this.fileNameDataGridViewTextBoxColumn.Width = 48;
+            // 
+            // generationReportCollectionBindingSource
+            // 
+            this.generationReportCollectionBindingSource.DataSource = typeof(CslaGenerator.Metadata.GenerationReport);
             // 
             // GenerationReportViewer
             // 
@@ -216,8 +221,8 @@ namespace CslaGenerator.Controls
             this.ClientSize = new System.Drawing.Size(592, 373);
             this.Controls.Add(this.generationReportCollectionDataGridView);
             this.Controls.Add(this.bindingNavigator1);
-            this.MinimumSize = new System.Drawing.Size(600, 400);
             this.Name = "GenerationReportViewer";
+            this.TabText = "GenerationReportViewer";
             this.Text = "GenerationReportViewer";
             ((System.ComponentModel.ISupportInitialize)(this.bindingNavigator1)).EndInit();
             this.bindingNavigator1.ResumeLayout(false);
@@ -242,9 +247,9 @@ namespace CslaGenerator.Controls
         private System.Windows.Forms.ToolStripButton bindingNavigatorMoveLastItem;
         private System.Windows.Forms.BindingSource generationReportCollectionBindingSource;
         private System.Windows.Forms.DataGridView generationReportCollectionDataGridView;
-        private System.Windows.Forms.DataGridViewTextBoxColumn objectNameDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn objectTypeDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn messageDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn fileNameDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn objectNameDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn objectTypeDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn messageDataGridViewTextBoxColumn;
+        private DataGridViewTextBoxColumn fileNameDataGridViewTextBoxColumn;
     }
 }

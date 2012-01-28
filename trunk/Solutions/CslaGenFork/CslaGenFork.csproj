@@ -104,6 +104,9 @@
     <Reference Include="DBSchemaInfo">
       <HintPath>..\..\References\DBSchemaInfo.dll</HintPath>
     </Reference>
+    <Reference Include="Equin.ApplicationFramework.BindingListView">
+      <HintPath>..\..\References\Equin.ApplicationFramework.BindingListView.dll</HintPath>
+    </Reference>
     <Reference Include="FormSizePosition">
       <HintPath>..\..\References\FormSizePosition.dll</HintPath>
     </Reference>
