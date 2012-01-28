@@ -29,8 +29,8 @@ namespace CslaGenerator
         private DockContent _propertyGridDockPanel;
         private bool _showingStartPage;
         private DockContent _webBrowserDockPanel;
-        private GenerationReportViewer _errorPannel;
-        private GenerationReportViewer _warningPannel;
+        private GenerationReportViewer _errorPannel = new GenerationReportViewer();
+        private GenerationReportViewer _warningPannel = new GenerationReportViewer();
 
         public MainForm(GeneratorController controller)
         {
@@ -1156,16 +1156,10 @@ namespace CslaGenerator
         private void ClearErrorsAndWarning()
         {
             generatingTimer.Text = "Generating:";
-            if (_errorPannel != null)
-            {
-                _errorPannel.Dispose();
-                _errorPannel = null;
-            }
-            if (_warningPannel != null)
-            {
-                _warningPannel.Dispose();
-                _warningPannel = null;
-            }
+            _errorPannel.Empty();
+            _errorPannel.Hide();
+            _warningPannel.Empty();
+            _warningPannel.Hide();
             errors.Image = null;
             warnings.Image = null;
             errors.DoubleClickEnabled = false;
@@ -1199,23 +1193,19 @@ namespace CslaGenerator
 
         private void errors_DoubleClick(object sender, EventArgs e)
         {
-            if (_errorPannel == null)
-            {
-                _errorPannel = new GenerationReportViewer(_generator.ErrorReport, "Errors");
-                //_errorPannel.VisibleChanged += delegate(object sender, EventArgs e) { outputWindowToolStripMenuItem.Checked = ((DockContent)sender).Visible; };
-                _errorPannel.FormClosing += PaneFormClosing;
-            }
+            _errorPannel.Fill(_generator.ErrorReport);
+            _errorPannel.TabText = @"Errors";
+            //_errorPannel.VisibleChanged += delegate(object sender, EventArgs e) { outputWindowToolStripMenuItem.Checked = ((DockContent)sender).Visible; };
+            _errorPannel.FormClosing += PaneFormClosing;
             _errorPannel.Show(dockPanel1);
         }
 
         private void warnings_DoubleClick(object sender, EventArgs e)
         {
-            if (_warningPannel == null)
-            {
-                _warningPannel = new GenerationReportViewer(_generator.WarningReport, "Warnings");
-                //_warningPannel.VisibleChanged += delegate(object sender, EventArgs e) { outputWindowToolStripMenuItem.Checked = ((DockContent)sender).Visible; };
-                _warningPannel.FormClosing += PaneFormClosing;
-            }
+            _warningPannel.Fill(_generator.WarningReport);
+            _warningPannel.TabText = @"Warnings";
+            //_warningPannel.VisibleChanged += delegate(object sender, EventArgs e) { outputWindowToolStripMenuItem.Checked = ((DockContent)sender).Visible; };
+            _warningPannel.FormClosing += PaneFormClosing;
             _warningPannel.Show(dockPanel1);
         }
     }
