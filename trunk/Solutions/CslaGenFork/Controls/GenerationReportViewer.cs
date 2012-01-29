@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 using CslaGenerator.Metadata;
-using Equin.ApplicationFramework;
+using Equin.ApplicationFramework;// http://sourceforge.net/projects/blw/ - BSD license
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace CslaGenerator.Controls
