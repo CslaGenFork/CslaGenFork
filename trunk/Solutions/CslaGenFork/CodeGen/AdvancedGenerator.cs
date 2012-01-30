@@ -98,7 +98,11 @@ namespace CslaGenerator.CodeGen
                 generalValidation &= GeneralValidation( GenerationStep.DalObject);
 
             if(!generalValidation)
+            {
+                _unit.GenerationTimer.Stop();
+                OnFinalized(false);
                 return;
+            }
 
             // add blank line
             OnGenerationInformation("");
@@ -291,7 +295,7 @@ namespace CslaGenerator.CodeGen
                 OnGenerationInformation(Environment.NewLine + "* * * * Code Generation Cancelled!");
             }
             _unit.GenerationTimer.Stop();
-            OnFinalized();
+            OnFinalized(true);
         }
 
         public event GenerationInformationDelegate GenerationInformation;
@@ -350,7 +354,7 @@ namespace CslaGenerator.CodeGen
                         warningsOutput = (StringBuilder) template.GetProperty("Warnings");
                         if (errorsOutput.Length > 0)
                         {
-                            _errorReport.Add(new GenerationReport
+                            _errorReport.AddMultiline(new GenerationReport
                                                  {
                                                      ObjectName = "General Validation",
                                                      ObjectType = step.ToString(),
@@ -1419,65 +1423,69 @@ namespace CslaGenerator.CodeGen
             OutputWindow.Current.AddOutputInfo(string.Format("{0}:", objectName));
         }
 
-        private void OnFinalized()
+        private void OnFinalized(bool isProjectValid)
         {
             if (Finalized != null)
                 Finalized(this, new EventArgs());
             OutputWindow.Current.AddOutputInfo("\r\nDone");
 
-            var dbConnection = CslaTemplateHelperCS.GetConnectionName(_unit);
-
-            if (_generateDatabaseClass)
+            if (isProjectValid)
             {
-                if (_fileSuccess["Database" + dbConnection] == null)
-                    OutputWindow.Current.AddOutputInfo(string.Format("Database" + dbConnection + " classe: already exists."));
-                else if (_fileSuccess["Database" + dbConnection] == false)
-                    OutputWindow.Current.AddOutputInfo(string.Format("Database" + dbConnection + " classe: failed."));
+                var dbConnection = CslaTemplateHelperCS.GetConnectionName(_unit);
+                if (_generateDatabaseClass)
+                {
+                    if (_fileSuccess["Database" + dbConnection] == null)
+                        OutputWindow.Current.AddOutputInfo(string.Format("Database" + dbConnection + " classe: already exists."));
+                    else if (_fileSuccess["Database" + dbConnection] == false)
+                        OutputWindow.Current.AddOutputInfo(string.Format("Database" + dbConnection + " classe: failed."));
+                }
+
+                if (_fileSuccess["DataPortalHookArgs"] == null)
+                    OutputWindow.Current.AddOutputInfo(string.Format("DataPortalHookArgs classe: already exists."));
+                else if (_fileSuccess["DataPortalHookArgs"] == false)
+                    OutputWindow.Current.AddOutputInfo(string.Format("DataPortalHookArgs classe: failed."));
+
+                if (GeneratorController.Current.CurrentUnit.GenerationParams.GenerateDalInterface)
+                {
+                    if (_fileSuccess["IDalManager" + dbConnection] == null)
+                        OutputWindow.Current.AddOutputInfo(string.Format("IDalManager" + dbConnection + " classe: already exists."));
+                    else if (_fileSuccess["IDalManager" + dbConnection] == false)
+                        OutputWindow.Current.AddOutputInfo(string.Format("IDalManager" + dbConnection + " classe: failed."));
+                    if (_fileSuccess["DalFactory" + dbConnection] == null)
+                        OutputWindow.Current.AddOutputInfo(string.Format("DalFactory" + dbConnection + " classe: already exists."));
+                    else if (_fileSuccess["DalFactory" + dbConnection] == false)
+                        OutputWindow.Current.AddOutputInfo(string.Format("DalFactory" + dbConnection + " classe: failed."));
+                    if (_fileSuccess["DataNotFoundException"] == null)
+                        OutputWindow.Current.AddOutputInfo(string.Format("DataNotFoundException classe: already exists."));
+                    else if (_fileSuccess["DataNotFoundException"] == false)
+                        OutputWindow.Current.AddOutputInfo(string.Format("DataNotFoundException classe: failed."));
+                }
+
+                if (GeneratorController.Current.CurrentUnit.GenerationParams.GenerateDalObject)
+                {
+                    if (_fileSuccess["DalManager" + dbConnection] == null)
+                        OutputWindow.Current.AddOutputInfo(string.Format("DalManager" + dbConnection + " classe: already exists."));
+                    else if (_fileSuccess["DalManager" + dbConnection] == false)
+                        OutputWindow.Current.AddOutputInfo(string.Format("DalManager" + dbConnection + " classe: failed."));
+                }
+
+                if (_sprocWarnings > 0 || _objectWarnings > 0)
+                    OutputWindow.Current.AddOutputInfo("");
+
+                if (_sprocWarnings > 0)
+                    OutputWindow.Current.AddOutputInfo(string.Format("SProc warnings: {0} object{1}.", _sprocWarnings,
+                                                                     _sprocWarnings > 1 ? "s" : ""));
+
+                if (_objectWarnings > 0)
+                    OutputWindow.Current.AddOutputInfo(string.Format("Object warnings: {0} object{1}.", _objectWarnings,
+                                                                     _objectWarnings > 1 ? "s" : ""));
+
+                OutputWindow.Current.AddOutputInfo(string.Format("\r\nClasses: {0} generated. {1} failed.",
+                                                                 (_objFailed + _objSuccess), _objFailed));
+                OutputWindow.Current.AddOutputInfo(string.Format("Stored Procs: {0} generated. {1} failed.",
+                                                                 (_sprocFailed + _sprocSuccess), _sprocFailed));
             }
 
-            if (_fileSuccess["DataPortalHookArgs"] == null)
-                OutputWindow.Current.AddOutputInfo(string.Format("DataPortalHookArgs classe: already exists."));
-            else if (_fileSuccess["DataPortalHookArgs"] == false)
-                OutputWindow.Current.AddOutputInfo(string.Format("DataPortalHookArgs classe: failed."));
-
-            if (GeneratorController.Current.CurrentUnit.GenerationParams.GenerateDalInterface)
-            {
-                if (_fileSuccess["IDalManager" + dbConnection] == null)
-                    OutputWindow.Current.AddOutputInfo(string.Format("IDalManager" + dbConnection + " classe: already exists."));
-                else if (_fileSuccess["IDalManager" + dbConnection] == false)
-                    OutputWindow.Current.AddOutputInfo(string.Format("IDalManager" + dbConnection + " classe: failed."));
-                if (_fileSuccess["DalFactory" + dbConnection] == null)
-                    OutputWindow.Current.AddOutputInfo(string.Format("DalFactory" + dbConnection + " classe: already exists."));
-                else if (_fileSuccess["DalFactory" + dbConnection] == false)
-                    OutputWindow.Current.AddOutputInfo(string.Format("DalFactory" + dbConnection + " classe: failed."));
-                if (_fileSuccess["DataNotFoundException"] == null)
-                    OutputWindow.Current.AddOutputInfo(string.Format("DataNotFoundException classe: already exists."));
-                else if (_fileSuccess["DataNotFoundException"] == false)
-                    OutputWindow.Current.AddOutputInfo(string.Format("DataNotFoundException classe: failed."));
-            }
-
-            if (GeneratorController.Current.CurrentUnit.GenerationParams.GenerateDalObject)
-            {
-                if (_fileSuccess["DalManager" + dbConnection] == null)
-                    OutputWindow.Current.AddOutputInfo(string.Format("DalManager" + dbConnection + " classe: already exists."));
-                else if (_fileSuccess["DalManager" + dbConnection] == false)
-                    OutputWindow.Current.AddOutputInfo(string.Format("DalManager" + dbConnection + " classe: failed."));
-            }
-            if (_sprocWarnings > 0 || _objectWarnings > 0)
-                OutputWindow.Current.AddOutputInfo("");
-
-            if (_sprocWarnings > 0)
-                OutputWindow.Current.AddOutputInfo(string.Format("SProc warnings: {0} object{1}.", _sprocWarnings,
-                                                                 _sprocWarnings > 1 ? "s" : ""));
-
-            if (_objectWarnings > 0)
-                OutputWindow.Current.AddOutputInfo(string.Format("Object warnings: {0} object{1}.", _objectWarnings,
-                                                                 _objectWarnings > 1 ? "s" : ""));
-
-            OutputWindow.Current.AddOutputInfo(string.Format("\r\nClasses: {0} generated. {1} failed.",
-                                                             (_objFailed + _objSuccess), _objFailed));
-            OutputWindow.Current.AddOutputInfo(string.Format("Stored Procs: {0} generated. {1} failed.",
-                                                             (_sprocFailed + _sprocSuccess), _sprocFailed));
             GeneratorController.Current.HasErrors = _errorReport.Count > 0;
             GeneratorController.Current.HasWarnings = _warningReport.Count > 0;
         }
