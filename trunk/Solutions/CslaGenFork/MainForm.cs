@@ -11,7 +11,7 @@ using CslaGenerator.Plugins;
 using CslaGenerator.Properties;
 using CslaGenerator.Util;
 using CslaGenerator.Util.PropertyBags;
-using WeifenLuo.WinFormsUI.Docking;
+using WeifenLuo.WinFormsUI.Docking;// http://sourceforge.net/projects/dockpanelsuite/ - MIT license
 
 namespace CslaGenerator
 {
