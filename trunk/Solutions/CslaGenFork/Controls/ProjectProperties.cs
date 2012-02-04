@@ -3,10 +3,11 @@ using System.Windows.Forms;
 using CslaGenerator.Metadata;
 using System.IO;
 using System.Xml.Serialization;
+using WeifenLuo.WinFormsUI.Docking;// http://sourceforge.net/projects/dockpanelsuite/ - MIT license
 
 namespace CslaGenerator.Controls
 {
-    public partial class ProjectProperties : WeifenLuo.WinFormsUI.Docking.DockContent
+    public partial class ProjectProperties : DockContent
     {
         private GenerationParameters _genParams;
         private ProjectParameters _projParams;
