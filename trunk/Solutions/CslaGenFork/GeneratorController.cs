@@ -47,13 +47,11 @@ namespace CslaGenerator
         private CslaGeneratorUnit _currentUnit;
         private CslaObjectInfo _currentCslaObject;
         private AssociativeEntity _currentAssociativeEntitiy;
-        private ProjectProperties _currentPropertiesTab;
         private string _currentFilePath = string.Empty;
         private MainForm _mainForm;
         private static ICatalog _catalog;
         private static GeneratorController _current;
         private readonly PropertyContext _propertyContext = new PropertyContext();
-        private DbSchemaPanel _dbSchemaPanel;
         internal bool IsDBConnected = false;
         internal bool IsLoading = false;
         internal bool HasErrors = false;
@@ -118,17 +116,17 @@ namespace CslaGenerator
                 _mainForm.ObjectRelationsBuilderPanel.Show(_mainForm.DockPanel);
                 if (_currentUnit != null)
                 {
-                    if (_currentPropertiesTab != null && !_currentPropertiesTab.IsDisposed)
+                    if (_mainForm.ProjectPropertiesPanel != null && !_mainForm.ProjectPropertiesPanel.IsDisposed)
                     {
-                        if (_currentPropertiesTab.Visible)
-                            _currentPropertiesTab.Close();
-                        _currentPropertiesTab.Dispose();
+                        if (_mainForm.ProjectPropertiesPanel.Visible)
+                            _mainForm.ProjectPropertiesPanel.Close();
+                        _mainForm.ProjectPropertiesPanel.Dispose();
                     }
                 }
                 _currentUnit = value;
-                _currentPropertiesTab = new ProjectProperties();
-                _currentPropertiesTab.LoadInfo();
-                _currentPropertiesTab.Show(_mainForm.DockPanel);
+                _mainForm.ProjectPropertiesPanel = new ProjectProperties();
+                _mainForm.ProjectPropertiesPanel.LoadInfo();
+                _mainForm.ActivateShowProjectProperties();
             }
         }
 
@@ -138,31 +136,23 @@ namespace CslaGenerator
         public string RulesDirectory { get; set; }
         public List<string> MruItems { get; set; }
 
-        internal ProjectProperties ProjectPropertiesTab
-        {
-            get
-            {
-                return _currentPropertiesTab;
-            }
-        }
-
         public string[] CommandLineArgs
         {
             get { return _commandlineArgs; }
             set { _commandlineArgs = value; }
         }
 
-        internal ProjectProperties CurrentPropertiesTab
+        internal ProjectProperties CurrentProjectProperties
         {
             get
             {
-                if (_currentPropertiesTab != null)
-                    if (_currentPropertiesTab.IsDisposed)
+                /*if (_mainForm.ProjectPropertiesPanel != null)
+                    if (_mainForm.ProjectPropertiesPanel.IsDisposed)
                     {
-                        _currentPropertiesTab = new ProjectProperties();
-                        _currentPropertiesTab.LoadInfo();
-                    }
-                return _currentPropertiesTab;
+                        _mainForm.ProjectPropertiesPanel = new ProjectProperties();
+                        _mainForm.ProjectPropertiesPanel.LoadInfo();
+                    }*/
+                return _mainForm.ProjectPropertiesPanel;
             }
         }
 
@@ -289,14 +279,14 @@ namespace CslaGenerator
                         _currentCslaObject = null;
                     }
 
-                    if (_dbSchemaPanel != null)
-                        _dbSchemaPanel.CslaObjectInfo = _currentCslaObject;
+                    if (_mainForm.DbSchemaPanel != null)
+                        _mainForm.DbSchemaPanel.CslaObjectInfo = _currentCslaObject;
                 }
                 else
                 {
                     _currentCslaObject = null;
-                    if (_dbSchemaPanel != null)
-                        _dbSchemaPanel.CslaObjectInfo = null;
+                    if (_mainForm.DbSchemaPanel != null)
+                        _mainForm.DbSchemaPanel.CslaObjectInfo = null;
                 }
                 _mainForm.ProjectPanel.ApplyFiltersPresenter();
 
@@ -469,12 +459,13 @@ namespace CslaGenerator
         {
             try
             {
-                _dbSchemaPanel = new DbSchemaPanel(_currentUnit, _currentCslaObject, connectionString);
-                _dbSchemaPanel.BuildSchemaTree();
-                _mainForm.DbSchemaPanel = _dbSchemaPanel;
-                _mainForm.AddCtrlToMiddlePane(_dbSchemaPanel);
-                _dbSchemaPanel.SetDbColumnsPctHeight(73);
-                _dbSchemaPanel.SetDbTreeViewPctHeight(73);
+                if (_mainForm.DbSchemaPanel != null && _mainForm.DbSchemaPanel.Visible)
+                    _mainForm.DbSchemaPanel.Hide();
+                _mainForm.DbSchemaPanel = new DbSchemaPanel(_currentUnit, _currentCslaObject, connectionString);
+                _mainForm.DbSchemaPanel.BuildSchemaTree();
+                _mainForm.ActivateShowSchema();
+                _mainForm.DbSchemaPanel.SetDbColumnsPctHeight(73);
+                _mainForm.DbSchemaPanel.SetDbTreeViewPctHeight(73);
             }
             catch (Exception e)
             {
@@ -547,7 +538,6 @@ namespace CslaGenerator
 
         private void GeneratorFormClosing(object sender, CancelEventArgs e)
         {
-//            _mainForm.SaveDockInfo();
             Application.Exit();
         }
 
@@ -570,24 +560,24 @@ namespace CslaGenerator
         // changed visibility so ActiveObjects settings can be hidden dynamicaly
         internal void ReloadPropertyGrid()
         {
-            if (_dbSchemaPanel != null)
-                _dbSchemaPanel.CslaObjectInfo = null;
+            if (_mainForm.DbSchemaPanel != null)
+                _mainForm.DbSchemaPanel.CslaObjectInfo = null;
 
             var selectedItems = new List<CslaObjectInfo>();
             foreach (CslaObjectInfo obj in _mainForm.ProjectPanel.ListObjects.SelectedItems)
             {
                 selectedItems.Add(obj);
-                if (!IsLoading && _dbSchemaPanel != null)
+                if (!IsLoading && _mainForm.DbSchemaPanel != null)
                 {
                     _currentCslaObject = obj;
-                    _dbSchemaPanel.CslaObjectInfo = obj;
+                    _mainForm.DbSchemaPanel.CslaObjectInfo = obj;
                 }
             }
 
-            if (_dbSchemaPanel != null && selectedItems.Count != 1)
+            if (_mainForm.DbSchemaPanel != null && selectedItems.Count != 1)
             {
                 _currentCslaObject = null;
-                _dbSchemaPanel.CslaObjectInfo = null;
+                _mainForm.DbSchemaPanel.CslaObjectInfo = null;
             }
 
             if (selectedItems.Count == 0)
