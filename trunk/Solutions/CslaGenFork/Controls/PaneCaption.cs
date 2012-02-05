@@ -7,403 +7,348 @@ using System.Windows.Forms;
 
 namespace CslaGenerator.Controls
 {
-// Custom control that draws the caption for each pane. Contains an active 
-// state and draws the caption different for each state. Caption is drawn
-// with a gradient fill and antialias font.
-public class PaneCaption : UserControl
-{
-	private class Consts
-	{
-		public const int DefaultHeight = 26;
-		public const string DefaultFontName = "Tahoma";
-		public const int DefaultFontSize = 12;
-		public const int PosOffset = 4;
-	}
+    // Custom control that draws the caption for each pane. Contains an active 
+    // state and draws the caption different for each state. Caption is drawn
+    // with a gradient fill and antialias font.
+    public sealed class PaneCaption : UserControl
+    {
+        private class Consts
+        {
+            public const int DefaultHeight = 26;
+            public const int PosOffset = 4;
+        }
 
-	private bool m_active = false;
-	private bool m_antiAlias = false;
-	private bool m_allowActive = false;
-	private string m_text = string.Empty;
-	
-	private Color m_colorActiveText = Color.Black;
-	private Color m_colorInactiveText = Color.White;
-	
-	private Color m_colorActiveLow = Color.FromArgb(255, 165, 78);
-	private Color m_colorActiveHigh = Color.FromArgb(255, 225, 155);
-	private Color m_colorInactiveLow = Color.FromArgb(3, 55, 145);
-	private Color m_colorInactiveHigh = Color.FromArgb(90, 135, 215);
-	
-	private SolidBrush m_brushActiveText;
-	private SolidBrush m_brushInactiveText;
-	private LinearGradientBrush m_brushActive;
-	private LinearGradientBrush m_brushInactive;
-	private StringFormat m_format = new StringFormat();
-	private LinearGradientMode mLinearGradientMode;
-	private IContainer components = null;
+        private bool _active;
+        private bool _antiAlias;
+        private bool _allowActive;
+        private string _text = string.Empty;
 
-	[CategoryAttribute("Appearance")]
-	[DescriptionAttribute("If should draw the text as antialiased.")]
-	[DefaultValueAttribute(true)]
-	public bool AntiAlias
-	{
-		get
-		{
-			return m_antiAlias;
-		}
+        private Color _colorActiveText = Color.Black;
+        private Color _colorInactiveText = Color.White;
 
-		set
-		{
-			m_antiAlias = value;
-			Invalidate();
-		}
-	}
+        private Color _colorActiveLow = Color.FromArgb(255, 165, 78);
+        private Color _colorActiveHigh = Color.FromArgb(255, 225, 155);
+        private Color _colorInactiveLow = Color.FromArgb(3, 55, 145);
+        private Color _colorInactiveHigh = Color.FromArgb(90, 135, 215);
 
-	[DefaultValueAttribute(typeof(Color), "Black")]
-	[DescriptionAttribute("Color of the text when active.")]
-	[CategoryAttribute("Appearance")]
-	public Color ActiveTextColor
-	{
-		get
-		{
-			return m_colorActiveText;
-		}
+        private SolidBrush _brushActiveText;
+        private SolidBrush _brushInactiveText;
+        private LinearGradientBrush _brushActive;
+        private LinearGradientBrush _brushInactive;
+        private readonly StringFormat _format = new StringFormat();
+        private LinearGradientMode _linearGradientMode;
+        private IContainer components;
 
-		set
-		{
-			if (value == Color.Empty)
-			{
-				value = Color.Black;
-			}
-			m_colorActiveText = value;
-			m_brushActiveText = new SolidBrush(m_colorActiveText);
-			Invalidate();
-		}
-	}
+        [CategoryAttribute("Appearance")]
+        [DescriptionAttribute("If should draw the text as antialiased.")]
+        [DefaultValueAttribute(true)]
+        public bool AntiAlias
+        {
+            get { return _antiAlias; }
 
-	[CategoryAttribute("Appearance")]
-	[DefaultValueAttribute(typeof(Color), "White")]
-	[DescriptionAttribute("Color of the text when inactive.")]
-	public Color InactiveTextColor
-	{
-		get
-		{
-			return m_colorInactiveText;
-		}
+            set
+            {
+                _antiAlias = value;
+                Invalidate();
+            }
+        }
 
-		set
-		{
-			if (value == Color.Empty)
-			{
-				value = Color.White;
-			}
-			m_colorInactiveText = value;
-			m_brushInactiveText = new SolidBrush(m_colorInactiveText);
-			Invalidate();
-		}
-	}
+        [DefaultValueAttribute(typeof (Color), "Black")]
+        [DescriptionAttribute("Color of the text when active.")]
+        [CategoryAttribute("Appearance")]
+        public Color ActiveTextColor
+        {
+            get { return _colorActiveText; }
 
-	[DescriptionAttribute("Linear Gradient Mode (direction of fade).")]
-	[CategoryAttribute("Appearance")]
-	[DefaultValueAttribute(LinearGradientMode.Horizontal)]
-	public LinearGradientMode LinearGradient
-	{
-		get
-		{
-			return mLinearGradientMode;
-		}
+            set
+            {
+                if (value == Color.Empty)
+                    value = Color.Black;
 
-		set
-		{
-			if (value != mLinearGradientMode) 
-			{
-				mLinearGradientMode = value;
-				Invalidate();
-			}
-		}
-	}
+                _colorActiveText = value;
+                _brushActiveText = new SolidBrush(_colorActiveText);
+                Invalidate();
+            }
+        }
 
-	[DescriptionAttribute("Low color of the active gradient.")]
-	[CategoryAttribute("Appearance")]
-	[DefaultValueAttribute(typeof(Color), "255, 165, 78")]
-	public Color ActiveGradientLowColor
-	{
-		get
-		{
-			return m_colorActiveLow;
-		}
+        [CategoryAttribute("Appearance")]
+        [DefaultValueAttribute(typeof (Color), "White")]
+        [DescriptionAttribute("Color of the text when inactive.")]
+        public Color InactiveTextColor
+        {
+            get { return _colorInactiveText; }
 
-		set
-		{
-			if (value == Color.Empty)
-			{
-				value = Color.FromArgb(255, 165, 78);
-			}
-			m_colorActiveLow = value;
-			CreateGradientBrushes(mLinearGradientMode);
-			Invalidate();
-		}
-	}
+            set
+            {
+                if (value == Color.Empty)
+                    value = Color.White;
 
-	[CategoryAttribute("Appearance")]
-	[DescriptionAttribute("High color of the active gradient.")]
-	[DefaultValueAttribute(typeof(Color), "255, 225, 155")]
-	public Color ActiveGradientHighColor
-	{
-		get
-		{
-			return m_colorActiveHigh;
-		}
+                _colorInactiveText = value;
+                _brushInactiveText = new SolidBrush(_colorInactiveText);
+                Invalidate();
+            }
+        }
 
-		set
-		{
-			if (value == Color.Empty)
-			{
-				value = Color.FromArgb(255, 225, 155);
-			}
-			m_colorActiveHigh = value;
-			CreateGradientBrushes(mLinearGradientMode);
-			Invalidate();
-		}
-	}
+        [DescriptionAttribute("Linear Gradient Mode (direction of fade).")]
+        [CategoryAttribute("Appearance")]
+        [DefaultValueAttribute(LinearGradientMode.Horizontal)]
+        public LinearGradientMode LinearGradient
+        {
+            get { return _linearGradientMode; }
 
-	[DefaultValueAttribute(typeof(Color), "3, 55, 145")]
-	[DescriptionAttribute("Low color of the inactive gradient.")]
-	[CategoryAttribute("Appearance")]
-	public Color InactiveGradientLowColor
-	{
-		get
-		{
-			return m_colorInactiveLow;
-		}
+            set
+            {
+                if (value != _linearGradientMode)
+                {
+                    _linearGradientMode = value;
+                    Invalidate();
+                }
+            }
+        }
 
-		set
-		{
-			if (value == Color.Empty)
-			{
-				value = Color.FromArgb(3, 55, 145);
-			}
-			m_colorInactiveLow = value;
-			CreateGradientBrushes(mLinearGradientMode);
-			Invalidate();
-		}
-	}
+        [DescriptionAttribute("Low color of the active gradient.")]
+        [CategoryAttribute("Appearance")]
+        [DefaultValueAttribute(typeof (Color), "255, 165, 78")]
+        public Color ActiveGradientLowColor
+        {
+            get { return _colorActiveLow; }
 
-	[CategoryAttribute("Appearance")]
-	[DescriptionAttribute("High color of the inactive gradient.")]
-	[DefaultValueAttribute(typeof(Color), "90, 135, 215")]
-	public Color InactiveGradientHighColor
-	{
-		get
-		{
-			return m_colorInactiveHigh;
-		}
+            set
+            {
+                if (value == Color.Empty)
+                    value = Color.FromArgb(255, 165, 78);
 
-		set
-		{
-			if (value == Color.Empty)
-			{
-				value = Color.FromArgb(90, 135, 215);
-			}
-			m_colorInactiveHigh = value;
-			CreateGradientBrushes(mLinearGradientMode);
-			Invalidate();
-		}
-	}
+                _colorActiveLow = value;
+                CreateGradientBrushes(_linearGradientMode);
+                Invalidate();
+            }
+        }
 
-	// brush used to draw the caption
-	private SolidBrush TextBrush
-	{
-		get
-		{
-			if (m_active && m_allowActive)
-				return m_brushActiveText;
-			else
-				return m_brushInactiveText;
-		}
-	}
+        [CategoryAttribute("Appearance")]
+        [DescriptionAttribute("High color of the active gradient.")]
+        [DefaultValueAttribute(typeof (Color), "255, 225, 155")]
+        public Color ActiveGradientHighColor
+        {
+            get { return _colorActiveHigh; }
 
-	// gradient brush for the background
-	private LinearGradientBrush BackBrush
-	{
-		get
-		{
-			if (m_active && m_allowActive)
-				return m_brushActive;
-			else
-				return m_brushInactive;
-		}
-	}
+            set
+            {
+                if (value == Color.Empty)
+                    value = Color.FromArgb(255, 225, 155);
 
-	public override string Text
-	{
-		get
-		{
-			return Caption;
-		}
+                _colorActiveHigh = value;
+                CreateGradientBrushes(_linearGradientMode);
+                Invalidate();
+            }
+        }
 
-		set
-		{
-			Caption = value;
-		}
-	}
+        [DefaultValueAttribute(typeof (Color), "3, 55, 145")]
+        [DescriptionAttribute("Low color of the inactive gradient.")]
+        [CategoryAttribute("Appearance")]
+        public Color InactiveGradientLowColor
+        {
+            get { return _colorInactiveLow; }
 
-	[DescriptionAttribute("Text displayed in the caption.")]
-	[DefaultValueAttribute("")]
-	[CategoryAttribute("Appearance")]
-	public string Caption
-	{
-		get
-		{
-			return m_text;
-		}
+            set
+            {
+                if (value == Color.Empty)
+                    value = Color.FromArgb(3, 55, 145);
 
-		set
-		{
-			m_text = value;
-			Invalidate();
-		}
-	}
+                _colorInactiveLow = value;
+                CreateGradientBrushes(_linearGradientMode);
+                Invalidate();
+            }
+        }
 
-	[DescriptionAttribute("The active state of the caption, draws the caption with different gradient colors.")]
-	[DefaultValueAttribute(false)]
-	[CategoryAttribute("Appearance")]
-	public bool Active
-	{
-		get
-		{
-			return m_active;
-		}
+        [CategoryAttribute("Appearance")]
+        [DescriptionAttribute("High color of the inactive gradient.")]
+        [DefaultValueAttribute(typeof (Color), "90, 135, 215")]
+        public Color InactiveGradientHighColor
+        {
+            get { return _colorInactiveHigh; }
 
-		set
-		{
-			m_active = value;
-			Invalidate();
-		}
-	}
+            set
+            {
+                if (value == Color.Empty)
+                    value = Color.FromArgb(90, 135, 215);
 
-	[DefaultValueAttribute(true)]
-	[CategoryAttribute("Appearance")]
-	[DescriptionAttribute("True always uses the inactive state colors, false maintains an active and inactive state.")]
-	public bool AllowActive
-	{
-		get
-		{
-			return m_allowActive;
-		}
+                _colorInactiveHigh = value;
+                CreateGradientBrushes(_linearGradientMode);
+                Invalidate();
+            }
+        }
 
-		set
-		{
-			m_allowActive = value;
-			Invalidate();
-		}
-	}
+        // brush used to draw the caption
+        private SolidBrush TextBrush
+        {
+            get
+            {
+                if (_active && _allowActive)
+                    return _brushActiveText;
 
-	public PaneCaption()
-	{
-		InitializeComponent();
-		
-		// set double buffer styles
-		SetStyle(ControlStyles.UserPaint | ControlStyles.ResizeRedraw | ControlStyles.AllPaintingInWmPaint | ControlStyles.DoubleBuffer, true);
-		
-		// init the height
-		Height = Consts.DefaultHeight;
-		
-		// format used when drawing the text
-		m_format.FormatFlags = StringFormatFlags.NoWrap;
-		m_format.LineAlignment = StringAlignment.Center;
-		m_format.Trimming = StringTrimming.EllipsisCharacter;
-		
-		// init the font
-		Font = new Font("Tahoma", 12.0F, FontStyle.Bold);
-		
-		// create gdi objects
-		ActiveTextColor = m_colorActiveText;
-		InactiveTextColor = m_colorInactiveText;
-		
-		// setting the height above actually does this, but leave
-		// in incase change the code (and forget to init the 
-		// gradient brushes)
-		CreateGradientBrushes(mLinearGradientMode);
-	}
+                return _brushInactiveText;
+            }
+        }
 
-	// the caption needs to be drawn
-	protected override void OnPaint(PaintEventArgs e)
-	{
-		DrawCaption(e.Graphics);
-		base.OnPaint(e);
-	}
+        // gradient brush for the background
+        private LinearGradientBrush BackBrush
+        {
+            get
+            {
+                if (_active && _allowActive)
+                    return _brushActive;
 
-	// draw the caption
-	private void DrawCaption(Graphics g)
-	{
-		// background
-		g.FillRectangle(this.BackBrush, this.DisplayRectangle);
-		
-		if (m_antiAlias)
-			g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
-		
-		// need a rectangle when want to use ellipsis
-		RectangleF bounds  = new RectangleF(Consts.PosOffset, 
-											0,
-											this.DisplayRectangle.Width - Consts.PosOffset, 
-											this.DisplayRectangle.Height);
+                return _brushInactive;
+            }
+        }
 
-		g.DrawString(m_text, this.Font, this.TextBrush, bounds, m_format);
-	}
+        public override string Text
+        {
+            get { return Caption; }
+            set { Caption = value; }
+        }
 
-	// clicking on the caption does not give focus,
-	// handle the mouse down event and set focus to self
-	protected override void OnMouseDown(MouseEventArgs e)
-	{
-		base.OnMouseDown(e);
-		if (m_allowActive)
-		{
-			Focus();
-		}
-	}
+        [DescriptionAttribute("Text displayed in the caption.")]
+        [DefaultValueAttribute("")]
+        [CategoryAttribute("Appearance")]
+        public string Caption
+        {
+            get { return _text; }
 
-	protected override void OnSizeChanged(EventArgs e)
-	{
-		base.OnSizeChanged(e);
-		// create the gradient brushes based on the new size
-		CreateGradientBrushes(mLinearGradientMode);
-	}
+            set
+            {
+                _text = value;
+                Invalidate();
+            }
+        }
 
-	private void CreateGradientBrushes(LinearGradientMode lgm)
-	{
-		// can only create brushes when have a width and height
-		if (Width > 0 && Height > 0)
-		{
-			if (m_brushActive != null)
-			{
-				m_brushActive.Dispose();
-			}
-			
-			m_brushActive = new LinearGradientBrush(DisplayRectangle, m_colorActiveHigh, m_colorActiveLow, lgm);
-			
-			if (m_brushInactive != null)
-			{
-				m_brushInactive.Dispose();
-			}
-			
-			m_brushInactive = new LinearGradientBrush(DisplayRectangle, m_colorInactiveHigh, m_colorInactiveLow, lgm);
-		}
-	}
+        [DescriptionAttribute("The active state of the caption, draws the caption with different gradient colors.")]
+        [DefaultValueAttribute(false)]
+        [CategoryAttribute("Appearance")]
+        public bool Active
+        {
+            get { return _active; }
 
-	protected override void Dispose(bool disposing)
-	{
-		if (disposing && components != null)
-		{
-			components.Dispose();
-		}
-		base.Dispose(disposing);
-	}
+            set
+            {
+                _active = value;
+                Invalidate();
+            }
+        }
 
-	[DebuggerStepThroughAttribute()]
-	private void InitializeComponent()
-	{
-		this.Name = "PaneCaption";
-		this.Size = new Size(150, 30);
-	}
-}
+        [DefaultValueAttribute(true)]
+        [CategoryAttribute("Appearance")]
+        [DescriptionAttribute("True always uses the inactive state colors, false maintains an active and inactive state.")]
+        public bool AllowActive
+        {
+            get { return _allowActive; }
+
+            set
+            {
+                _allowActive = value;
+                Invalidate();
+            }
+        }
+
+        public PaneCaption()
+        {
+            InitializeComponent();
+
+            // set double buffer styles
+            SetStyle(ControlStyles.UserPaint |
+                     ControlStyles.ResizeRedraw |
+                     ControlStyles.AllPaintingInWmPaint |
+                     ControlStyles.DoubleBuffer,
+                     true);
+
+            // init the height
+            Height = Consts.DefaultHeight;
+
+            // format used when drawing the text
+            _format.FormatFlags = StringFormatFlags.NoWrap;
+            _format.LineAlignment = StringAlignment.Center;
+            _format.Trimming = StringTrimming.EllipsisCharacter;
+
+            // init the font
+            Font = new Font("Tahoma", 12.0F, FontStyle.Bold);
+
+            // create gdi objects
+            ActiveTextColor = _colorActiveText;
+            InactiveTextColor = _colorInactiveText;
+
+            // setting the height above actually does this, but leave
+            // in incase change the code (and forget to init the 
+            // gradient brushes)
+            CreateGradientBrushes(_linearGradientMode);
+        }
+
+        // the caption needs to be drawn
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            DrawCaption(e.Graphics);
+            base.OnPaint(e);
+        }
+
+        // draw the caption
+        private void DrawCaption(Graphics g)
+        {
+            // background
+            g.FillRectangle(BackBrush, DisplayRectangle);
+
+            if (_antiAlias)
+                g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAlias;
+
+            // need a rectangle when want to use ellipsis
+            var bounds = new RectangleF(Consts.PosOffset, 0, DisplayRectangle.Width - Consts.PosOffset, DisplayRectangle.Height);
+            g.DrawString(_text, Font, TextBrush, bounds, _format);
+        }
+
+        // clicking on the caption does not give focus,
+        // handle the mouse down event and set focus to self
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            base.OnMouseDown(e);
+            if (_allowActive)
+                Focus();
+        }
+
+        protected override void OnSizeChanged(EventArgs e)
+        {
+            base.OnSizeChanged(e);
+            // create the gradient brushes based on the new size
+            CreateGradientBrushes(_linearGradientMode);
+        }
+
+        private void CreateGradientBrushes(LinearGradientMode lgm)
+        {
+            // can only create brushes when have a width and height
+            if (Width > 0 && Height > 0)
+            {
+                if (_brushActive != null)
+                    _brushActive.Dispose();
+
+                _brushActive = new LinearGradientBrush(DisplayRectangle, _colorActiveHigh, _colorActiveLow, lgm);
+
+                if (_brushInactive != null)
+                    _brushInactive.Dispose();
+
+                _brushInactive = new LinearGradientBrush(DisplayRectangle, _colorInactiveHigh, _colorInactiveLow, lgm);
+            }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && components != null)
+                components.Dispose();
+
+            base.Dispose(disposing);
+        }
+
+        [DebuggerStepThroughAttribute]
+        private void InitializeComponent()
+        {
+            Name = "PaneCaption";
+            Size = new Size(150, 30);
+        }
+    }
 }

@@ -351,7 +351,13 @@ namespace CslaGenerator.Controls
             this.Controls.Add(this.splitMiddle);
             this.Controls.Add(this.dbTreeView1);
             this.Controls.Add(this.paneDbName);
+            this.ShowHint = WeifenLuo.WinFormsUI.Docking.DockState.Document;
+            this.DockAreas = (WeifenLuo.WinFormsUI.Docking.DockAreas)
+                             WeifenLuo.WinFormsUI.Docking.DockAreas.Document |
+                             WeifenLuo.WinFormsUI.Docking.DockAreas.Float;
             this.Name = "DbSchemaPanel";
+            this.TabText = "Schema";
+            this.Text = "Schema";
             this.Size = new System.Drawing.Size(384, 472);
             this.Load += new System.EventHandler(this.DbSchemaPanel_Load);
             this.Resize += new System.EventHandler(this.DbSchemaPanel_Resize);

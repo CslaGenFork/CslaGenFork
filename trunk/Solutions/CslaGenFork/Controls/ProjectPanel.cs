@@ -5,14 +5,14 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using CslaGenerator.Metadata;
-using WeifenLuo.WinFormsUI.Docking;// http://sourceforge.net/projects/dockpanelsuite/ - MIT license
+using WeifenLuo.WinFormsUI.Docking;
 
 namespace CslaGenerator.Controls
 {
     /// <summary>
     /// Summary description for ProjectPanel.
     /// </summary>
-    public partial class ProjectPanel : UserControl
+    public partial class ProjectPanel : DockContent
     {
         public ProjectPanel()
         {
@@ -634,19 +634,19 @@ namespace CslaGenerator.Controls
             {
                 case 1:
                     if (TopLevelControl != null)
-                        ((MainForm) TopLevelControl).ObjectRelationsBuilder.Add(
+                        ((MainForm) TopLevelControl).ObjectRelationsBuilderPanel.Add(
                             (CslaObjectInfo) lstObjects.SelectedItems[0]);
                     break;
                 case 2:
                     if (TopLevelControl != null)
-                        ((MainForm) TopLevelControl).ObjectRelationsBuilder.Add(
+                        ((MainForm) TopLevelControl).ObjectRelationsBuilderPanel.Add(
                             (CslaObjectInfo) lstObjects.SelectedItems[0],
                             (CslaObjectInfo) lstObjects.SelectedItems[1]);
                     break;
             }
 
             if (TopLevelControl != null)
-                ((MainForm) TopLevelControl).ObjectRelationsBuilderDockPanel.BringToFront();
+                ((MainForm)TopLevelControl).ObjectRelationsBuilderPanel.BringToFront();
         }
 
         internal void AddToObjectRelationBuilder()

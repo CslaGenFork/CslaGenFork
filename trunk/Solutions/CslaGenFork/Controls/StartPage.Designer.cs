@@ -1,6 +1,6 @@
-namespace CslaGenerator.Controls
+﻿namespace CslaGenerator.Controls
 {
-    partial class OutputWindow
+    partial class StartPage
     {
         /// <summary> 
         /// Required designer variable.
@@ -28,40 +28,41 @@ namespace CslaGenerator.Controls
         /// </summary>
         private void InitializeComponent()
         {
-            this.textBox = new System.Windows.Forms.TextBox();
+            this.webBrowser = new System.Windows.Forms.WebBrowser();
             this.SuspendLayout();
             // 
-            // textBox
+            // webBrowser
             // 
-            this.textBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBox.Location = new System.Drawing.Point(0, 0);
-            this.textBox.Multiline = true;
-            this.textBox.Name = "textBox";
-            this.textBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBox.Size = new System.Drawing.Size(292, 266);
-            this.textBox.TabIndex = 0;
-            this.textBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TextBox_KeyPress);
+            this.webBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.webBrowser.Location = new System.Drawing.Point(0, 0);
+            this.webBrowser.MinimumSize = new System.Drawing.Size(20, 20);
+            this.webBrowser.Name = "webBrowser";
+            this.webBrowser.Size = new System.Drawing.Size(292, 273);
+            this.webBrowser.IsWebBrowserContextMenuEnabled = false;
+            this.webBrowser.ScrollBarsEnabled = false;
+            this.webBrowser.TabIndex = 0;
             // 
-            // OutputWindow
+            // StartPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(292, 266);
-            this.Controls.Add(this.textBox);
-            this.Name = "OutputWindow";
-            this.ShowHint = WeifenLuo.WinFormsUI.Docking.DockState.DockBottom;
+            this.ClientSize = new System.Drawing.Size(292, 273);
+            this.Controls.Add(this.webBrowser);
+            this.ShowHint = WeifenLuo.WinFormsUI.Docking.DockState.Document;
             this.DockAreas = (WeifenLuo.WinFormsUI.Docking.DockAreas)
-                             WeifenLuo.WinFormsUI.Docking.DockAreas.DockBottom |
+                             WeifenLuo.WinFormsUI.Docking.DockAreas.Document |
                              WeifenLuo.WinFormsUI.Docking.DockAreas.Float;
             this.TabText = "Output";
             this.Text = "Output";
+            this.Name = "StartPage";
+            this.TabText = "Start Page";
+            this.Text = "Start Page";
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.TextBox textBox;
+        internal System.Windows.Forms.WebBrowser webBrowser;
     }
 }

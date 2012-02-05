@@ -1,6 +1,4 @@
-﻿using System.Windows.Forms;
-
-namespace CslaGenerator.Controls
+﻿namespace CslaGenerator.Controls
 {
     partial class ProjectPanel
     {
@@ -31,6 +29,7 @@ namespace CslaGenerator.Controls
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProjectPanel));
             this.pnlProjectName = new System.Windows.Forms.Panel();
             this.txtProjectName = new System.Windows.Forms.TextBox();
             this.pnlOutputDir = new System.Windows.Forms.Panel();
@@ -75,7 +74,7 @@ namespace CslaGenerator.Controls
             this.pnlProjectName.Location = new System.Drawing.Point(0, 23);
             this.pnlProjectName.Name = "pnlProjectName";
             this.pnlProjectName.Padding = new System.Windows.Forms.Padding(4);
-            this.pnlProjectName.Size = new System.Drawing.Size(220, 28);
+            this.pnlProjectName.Size = new System.Drawing.Size(212, 28);
             this.pnlProjectName.TabIndex = 42;
             // 
             // txtProjectName
@@ -83,7 +82,7 @@ namespace CslaGenerator.Controls
             this.txtProjectName.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtProjectName.Location = new System.Drawing.Point(4, 4);
             this.txtProjectName.Name = "txtProjectName";
-            this.txtProjectName.Size = new System.Drawing.Size(212, 20);
+            this.txtProjectName.Size = new System.Drawing.Size(204, 20);
             this.txtProjectName.TabIndex = 42;
             // 
             // pnlOutputDir
@@ -93,7 +92,7 @@ namespace CslaGenerator.Controls
             this.pnlOutputDir.Location = new System.Drawing.Point(0, 74);
             this.pnlOutputDir.Name = "pnlOutputDir";
             this.pnlOutputDir.Padding = new System.Windows.Forms.Padding(4);
-            this.pnlOutputDir.Size = new System.Drawing.Size(220, 28);
+            this.pnlOutputDir.Size = new System.Drawing.Size(212, 28);
             this.pnlOutputDir.TabIndex = 43;
             // 
             // textboxPlusBtn
@@ -102,7 +101,7 @@ namespace CslaGenerator.Controls
             this.textboxPlusBtn.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textboxPlusBtn.Location = new System.Drawing.Point(4, 4);
             this.textboxPlusBtn.Name = "textboxPlusBtn";
-            this.textboxPlusBtn.Size = new System.Drawing.Size(212, 20);
+            this.textboxPlusBtn.Size = new System.Drawing.Size(204, 20);
             this.textboxPlusBtn.TabIndex = 32;
             // 
             // pnlLstObjects
@@ -113,7 +112,7 @@ namespace CslaGenerator.Controls
             this.pnlLstObjects.Location = new System.Drawing.Point(0, 125);
             this.pnlLstObjects.Name = "pnlLstObjects";
             this.pnlLstObjects.Padding = new System.Windows.Forms.Padding(4);
-            this.pnlLstObjects.Size = new System.Drawing.Size(220, 371);
+            this.pnlLstObjects.Size = new System.Drawing.Size(212, 344);
             this.pnlLstObjects.TabIndex = 44;
             // 
             // lstObjects
@@ -126,7 +125,7 @@ namespace CslaGenerator.Controls
             this.lstObjects.Location = new System.Drawing.Point(4, 98);
             this.lstObjects.Name = "lstObjects";
             this.lstObjects.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.lstObjects.Size = new System.Drawing.Size(212, 269);
+            this.lstObjects.Size = new System.Drawing.Size(204, 242);
             this.lstObjects.TabIndex = 22;
             this.lstObjects.ValueMember = "key";
             this.lstObjects.SelectedIndexChanged += new System.EventHandler(this.ListObjects_SelectedIndexChanged);
@@ -152,8 +151,8 @@ namespace CslaGenerator.Controls
             // addToolStripMenuItem
             // 
             this.addToolStripMenuItem.Name = "addToolStripMenuItem";
-            this.addToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Oemplus)));
             this.addToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl+Plus";
+            this.addToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Oemplus)));
             this.addToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
             this.addToolStripMenuItem.Text = "Add";
             this.addToolStripMenuItem.Click += new System.EventHandler(this.addToolStripMenuItem_Click);
@@ -161,8 +160,8 @@ namespace CslaGenerator.Controls
             // removeToolStripMenuItem
             // 
             this.removeToolStripMenuItem.Name = "removeToolStripMenuItem";
-            this.removeToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.OemMinus)));
             this.removeToolStripMenuItem.ShortcutKeyDisplayString = "Ctrl+Minus";
+            this.removeToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.OemMinus)));
             this.removeToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
             this.removeToolStripMenuItem.Text = "Remove";
             this.removeToolStripMenuItem.Click += new System.EventHandler(this.removeToolStripMenuItem_Click);
@@ -340,7 +339,7 @@ namespace CslaGenerator.Controls
             this.paneCaption3.InactiveGradientLowColor = System.Drawing.Color.FromArgb(((int)(((byte)(149)))), ((int)(((byte)(184)))), ((int)(((byte)(245)))));
             this.paneCaption3.Location = new System.Drawing.Point(0, 102);
             this.paneCaption3.Name = "paneCaption3";
-            this.paneCaption3.Size = new System.Drawing.Size(220, 23);
+            this.paneCaption3.Size = new System.Drawing.Size(212, 23);
             this.paneCaption3.TabIndex = 30;
             // 
             // paneCaption2
@@ -354,7 +353,7 @@ namespace CslaGenerator.Controls
             this.paneCaption2.InactiveGradientLowColor = System.Drawing.Color.FromArgb(((int)(((byte)(149)))), ((int)(((byte)(184)))), ((int)(((byte)(245)))));
             this.paneCaption2.Location = new System.Drawing.Point(0, 51);
             this.paneCaption2.Name = "paneCaption2";
-            this.paneCaption2.Size = new System.Drawing.Size(220, 23);
+            this.paneCaption2.Size = new System.Drawing.Size(212, 23);
             this.paneCaption2.TabIndex = 29;
             // 
             // paneCaption1
@@ -368,19 +367,26 @@ namespace CslaGenerator.Controls
             this.paneCaption1.InactiveGradientLowColor = System.Drawing.Color.FromArgb(((int)(((byte)(149)))), ((int)(((byte)(184)))), ((int)(((byte)(245)))));
             this.paneCaption1.Location = new System.Drawing.Point(0, 0);
             this.paneCaption1.Name = "paneCaption1";
-            this.paneCaption1.Size = new System.Drawing.Size(220, 23);
+            this.paneCaption1.Size = new System.Drawing.Size(212, 23);
             this.paneCaption1.TabIndex = 28;
             // 
             // ProjectPanel
             // 
+            this.ClientSize = new System.Drawing.Size(212, 469);
             this.Controls.Add(this.pnlLstObjects);
             this.Controls.Add(this.paneCaption3);
             this.Controls.Add(this.pnlOutputDir);
             this.Controls.Add(this.paneCaption2);
             this.Controls.Add(this.pnlProjectName);
             this.Controls.Add(this.paneCaption1);
+            this.DockAreas = ((WeifenLuo.WinFormsUI.Docking.DockAreas)(((WeifenLuo.WinFormsUI.Docking.DockAreas.Float | WeifenLuo.WinFormsUI.Docking.DockAreas.DockLeft) 
+            | WeifenLuo.WinFormsUI.Docking.DockAreas.DockRight)));
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ProjectPanel";
-            this.Size = new System.Drawing.Size(220, 496);
+            this.ShowHint = WeifenLuo.WinFormsUI.Docking.DockState.DockLeft;
+            this.TabPageContextMenuStrip = this.cslaObjectContextMenuStrip;
+            this.TabText = "CslaGenFork Project";
+            this.Text = "CslaGenFork Project";
             this.Load += new System.EventHandler(this.ProjectPanel_Load);
             this.pnlProjectName.ResumeLayout(false);
             this.pnlProjectName.PerformLayout();
@@ -407,26 +413,26 @@ namespace CslaGenerator.Controls
         private CslaGenerator.Controls.TextboxPlusBtn textboxPlusBtn;
         private System.Windows.Forms.Panel pnlLstObjects;
         private System.Windows.Forms.ListBox lstObjects;
-        private ContextMenuStrip cslaObjectContextMenuStrip;
-        private ToolStripMenuItem addToolStripMenuItem;
-        private ToolStripMenuItem removeToolStripMenuItem;
-        private ToolStripMenuItem duplicateToolStripMenuItem;
-        private ToolStripSeparator toolStripMenuItem1;
-        private ToolStripMenuItem selectAllToolStripMenuItem;
-        private ToolStripSeparator toolStripMenuItem2;
-        private ToolStripMenuItem moveUpToolStripMenuItem;
-        private ToolStripMenuItem moveDownToolStripMenuItem;
-        private ToolStripSeparator toolStripMenuItem3;
-        private ToolStripMenuItem newObjectRelationToolStripMenuItem;
-        private ToolStripMenuItem addToObjectRelationToolStripMenuItem;
-        private GroupBox grpFilters;
-        private ComboBox cboObjectType;
-        private TextBox txtFilter;
-        private RadioButton optType;
-        private RadioButton optName;
-        private RadioButton optNone;
-        private Label label3;
-        private Label label2;
-        private Label label1;
+        private System.Windows.Forms.ContextMenuStrip cslaObjectContextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem addToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem removeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem duplicateToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem selectAllToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem moveUpToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem moveDownToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
+        private System.Windows.Forms.ToolStripMenuItem newObjectRelationToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addToObjectRelationToolStripMenuItem;
+        private System.Windows.Forms.GroupBox grpFilters;
+        private System.Windows.Forms.ComboBox cboObjectType;
+        private System.Windows.Forms.TextBox txtFilter;
+        private System.Windows.Forms.RadioButton optType;
+        private System.Windows.Forms.RadioButton optName;
+        private System.Windows.Forms.RadioButton optNone;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
     }
 }

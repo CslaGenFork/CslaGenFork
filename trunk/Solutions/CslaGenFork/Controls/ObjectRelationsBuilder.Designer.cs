@@ -430,6 +430,12 @@ namespace CslaGenerator.Controls
             this.Controls.Add(this.formPanel);
             this.MinimumSize = new System.Drawing.Size(500, 416);
             this.Name = "ObjectRelationsBuilder";
+            this.ShowHint = WeifenLuo.WinFormsUI.Docking.DockState.Document;
+            this.DockAreas = (WeifenLuo.WinFormsUI.Docking.DockAreas)
+                             WeifenLuo.WinFormsUI.Docking.DockAreas.Document |
+                             WeifenLuo.WinFormsUI.Docking.DockAreas.Float;
+            this.TabText = "Object Relations Builder";
+            this.Text = "Object Relations Builder";
             this.Size = new System.Drawing.Size(554, 416);
             this.TabControl.ResumeLayout(false);
             this.AllObjectsTab.ResumeLayout(false);
