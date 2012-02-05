@@ -222,6 +222,10 @@ namespace CslaGenerator.Controls
             this.Controls.Add(this.generationReportCollectionDataGridView);
             this.Controls.Add(this.bindingNavigator1);
             this.Name = "GenerationReportViewer";
+            this.ShowHint = WeifenLuo.WinFormsUI.Docking.DockState.DockBottom;
+            this.DockAreas = (WeifenLuo.WinFormsUI.Docking.DockAreas)
+                             WeifenLuo.WinFormsUI.Docking.DockAreas.DockBottom |
+                             WeifenLuo.WinFormsUI.Docking.DockAreas.Float;
             this.TabText = "GenerationReportViewer";
             this.Text = "GenerationReportViewer";
             ((System.ComponentModel.ISupportInitialize)(this.bindingNavigator1)).EndInit();

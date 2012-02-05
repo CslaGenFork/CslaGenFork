@@ -2127,6 +2127,10 @@ namespace CslaGenerator.Controls
             this.Controls.Add(this.cmdExport);
             this.Controls.Add(this.cmdImport);
             this.Controls.Add(this.tabControlMain);
+            this.ShowHint = WeifenLuo.WinFormsUI.Docking.DockState.Document;
+            this.DockAreas = (WeifenLuo.WinFormsUI.Docking.DockAreas)
+                             WeifenLuo.WinFormsUI.Docking.DockAreas.Document |
+                             WeifenLuo.WinFormsUI.Docking.DockAreas.Float;
             this.Name = "ProjectProperties";
             this.TabText = "Project Properties";
             this.Text = "Project Properties";
@@ -2282,7 +2286,6 @@ namespace CslaGenerator.Controls
         private System.Windows.Forms.Label lblGetUserMethod;
         private System.Windows.Forms.TextBox txtGetUserMethod;
         private System.Windows.Forms.TabPage tabGenerationTarget;
-
         private System.Windows.Forms.CheckBox chkSaveGenerationTarget;
         private System.Windows.Forms.Label lblTarget;
         private System.Windows.Forms.ComboBox cboTarget;

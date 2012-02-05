@@ -3,7 +3,7 @@ using System.Windows.Forms;
 using CslaGenerator.Metadata;
 using System.IO;
 using System.Xml.Serialization;
-using WeifenLuo.WinFormsUI.Docking;// http://sourceforge.net/projects/dockpanelsuite/ - MIT license
+using WeifenLuo.WinFormsUI.Docking;
 
 namespace CslaGenerator.Controls
 {
@@ -15,7 +15,7 @@ namespace CslaGenerator.Controls
         public ProjectProperties()
         {
             InitializeComponent();
-            DockAreas = WeifenLuo.WinFormsUI.Docking.DockAreas.Document;
+            DockAreas = DockAreas.Document;
             FillComboBox(cboOutputLanguage, typeof (CodeLanguage));
             FillComboBox(cboTarget, typeof (TargetFramework));
             FillComboBox(cboUseDto, typeof (TargetDto));

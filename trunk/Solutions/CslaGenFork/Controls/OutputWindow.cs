@@ -1,7 +1,7 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
-using WeifenLuo.WinFormsUI.Docking;// http://sourceforge.net/projects/dockpanelsuite/ - MIT license
+using WeifenLuo.WinFormsUI.Docking;
 
 namespace CslaGenerator.Controls
 {
@@ -57,7 +57,7 @@ namespace CslaGenerator.Controls
         /// </summary>
         public void ClearOutput()
         {
-            Invoke(new EmptyDelegate(textBox1.Clear), new object[] {});
+            Invoke(new EmptyDelegate(textBox.Clear), new object[] {});
         }
 
         #endregion
@@ -66,9 +66,9 @@ namespace CslaGenerator.Controls
 
         private void DoStep(string message, int appendLines)
         {
-            textBox1.AppendText(message);
+            textBox.AppendText(message);
             for (var i = 0; i < appendLines; i++)
-                textBox1.AppendText(Environment.NewLine);
+                textBox.AppendText(Environment.NewLine);
             //txtOutput.AppendText(new String('=', 70) + Environment.NewLine
             //    + objectName + ":" + Environment.NewLine);
             //if (_generating)
@@ -81,7 +81,7 @@ namespace CslaGenerator.Controls
 
         #endregion
 
-        private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
+        private void TextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             e.Handled = true;
         }

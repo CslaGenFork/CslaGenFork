@@ -9,13 +9,14 @@ using CslaGenerator.Metadata;
 using CslaGenerator.Util;
 using DBSchemaInfo.Base;
 using DBSchemaInfo.MsSql;
+using WeifenLuo.WinFormsUI.Docking;
 
 namespace CslaGenerator.Controls
 {
     /// <summary>
     /// Summary description for DbSchemaPanel.
     /// </summary>
-    public partial class DbSchemaPanel : UserControl
+    public partial class DbSchemaPanel : DockContent
     {
         private CslaGeneratorUnit _currentUnit;
         private CslaObjectInfo _currentCslaObject;

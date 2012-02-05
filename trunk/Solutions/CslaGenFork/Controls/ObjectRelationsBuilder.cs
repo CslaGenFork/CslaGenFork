@@ -6,11 +6,11 @@ using System.Drawing;
 using System.Windows.Forms;
 using CslaGenerator.Metadata;
 using CslaGenerator.Util.PropertyBags;
-using WeifenLuo.WinFormsUI.Docking;// http://sourceforge.net/projects/dockpanelsuite/ - MIT license
+using WeifenLuo.WinFormsUI.Docking;
 
 namespace CslaGenerator.Controls
 {
-    public partial class ObjectRelationsBuilder : UserControl
+    public partial class ObjectRelationsBuilder : DockContent
     {
         #region Constructor
 
