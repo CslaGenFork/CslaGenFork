@@ -35,13 +35,10 @@ namespace CslaGenerator
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.sfdSave = new System.Windows.Forms.SaveFileDialog();
-            this.ofdLoad = new System.Windows.Forms.OpenFileDialog();
-            this.pgGrid = new System.Windows.Forms.PropertyGrid();
-            this.webBrowser1 = new System.Windows.Forms.WebBrowser();
-            this.objectRelationsBuilder = new CslaGenerator.Controls.ObjectRelationsBuilder();
-            this.dockPanel1 = new WeifenLuo.WinFormsUI.Docking.DockPanel();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.dockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
+            this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -82,14 +79,14 @@ namespace CslaGenerator
             this.pluginsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.backgroundWorker = new System.ComponentModel.BackgroundWorker();
+            this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.globalStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.errors = new System.Windows.Forms.ToolStripStatusLabel();
             this.warnings = new System.Windows.Forms.ToolStripStatusLabel();
@@ -100,8 +97,7 @@ namespace CslaGenerator
             this.sprocs = new System.Windows.Forms.ToolStripStatusLabel();
             this.generatingTimer = new System.Windows.Forms.ToolStripStatusLabel();
             this.progressBar = new System.Windows.Forms.ToolStripProgressBar();
-            this.projectPanel = new CslaGenerator.Controls.ProjectPanel();
-            this.formSizePosition1 = new System.Windows.Forms.FormSizePosition(this.components);
+            this.formSizePosition = new System.Windows.Forms.FormSizePosition(this.components);
             this.newProjectButton = new System.Windows.Forms.ToolStripButton();
             this.openProjectButton = new System.Windows.Forms.ToolStripButton();
             this.saveProjectButton = new System.Windows.Forms.ToolStripButton();
@@ -115,55 +111,25 @@ namespace CslaGenerator
             this.connectDatabaseButton = new System.Windows.Forms.ToolStripButton();
             this.tsbGenerate = new System.Windows.Forms.ToolStripButton();
             this.tsbCancel = new System.Windows.Forms.ToolStripButton();
-            this.menuStrip1.SuspendLayout();
-            this.toolStrip1.SuspendLayout();
-            this.statusStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.formSizePosition1)).BeginInit();
+            this.menuStrip.SuspendLayout();
+            this.toolStrip.SuspendLayout();
+            this.statusStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.formSizePosition)).BeginInit();
             this.SuspendLayout();
             // 
-            // pgGrid
+            // dockPanel
             // 
-            this.pgGrid.LineColor = System.Drawing.SystemColors.ScrollBar;
-            this.pgGrid.Location = new System.Drawing.Point(523, 66);
-            this.pgGrid.Name = "pgGrid";
-            this.pgGrid.PropertySort = System.Windows.Forms.PropertySort.Categorized;
-            this.pgGrid.Size = new System.Drawing.Size(274, 479);
-            this.pgGrid.TabIndex = 1;
-            this.pgGrid.PropertySortChanged += OnSort;
-            this.pgGrid.SelectedGridItemChanged += OnSelectedGridItemChanged;
+            this.dockPanel.ActiveAutoHideContent = null;
+            this.dockPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dockPanel.Font = new System.Drawing.Font("Tahoma", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World);
+            this.dockPanel.Location = new System.Drawing.Point(0, 63);
+            this.dockPanel.Name = "dockPanel";
+            this.dockPanel.Size = new System.Drawing.Size(798, 477);
+            this.dockPanel.TabIndex = 2;
             // 
-            // webBrowser1
+            // menuStrip
             // 
-            this.webBrowser1.IsWebBrowserContextMenuEnabled = false;
-            this.webBrowser1.Location = new System.Drawing.Point(237, 66);
-            this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
-            this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.ScrollBarsEnabled = false;
-            this.webBrowser1.Size = new System.Drawing.Size(280, 431);
-            this.webBrowser1.TabIndex = 1;
-            this.webBrowser1.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(this.WebBrowser1Navigating);
-            // 
-            // objectRelationsBuilder
-            // 
-            this.objectRelationsBuilder.AssociativeEntities = null;
-            this.objectRelationsBuilder.Location = new System.Drawing.Point(237, 66);
-            this.objectRelationsBuilder.MinimumSize = new System.Drawing.Size(20, 20);
-            this.objectRelationsBuilder.Name = "objectRelationsBuilder";
-            this.objectRelationsBuilder.Size = new System.Drawing.Size(280, 431);
-            this.objectRelationsBuilder.TabIndex = 1;
-            // 
-            // dockPanel1
-            // 
-            this.dockPanel1.ActiveAutoHideContent = null;
-            this.dockPanel1.Font = new System.Drawing.Font("Tahoma", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.World);
-            this.dockPanel1.Location = new System.Drawing.Point(0, 63);
-            this.dockPanel1.Name = "dockPanel1";
-            this.dockPanel1.Size = new System.Drawing.Size(798, 477);
-            this.dockPanel1.TabIndex = 2;
-            // 
-            // menuStrip1
-            // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.projectToolStripMenuItem,
             this.dataBaseToolStripMenuItem,
@@ -171,11 +137,11 @@ namespace CslaGenerator
             this.viewToolStripMenuItem,
             this.pluginsToolStripMenuItem,
             this.helpToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(800, 24);
-            this.menuStrip1.TabIndex = 14;
-            this.menuStrip1.Text = "menuStrip1";
+            this.menuStrip.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip.Name = "menuStrip";
+            this.menuStrip.Size = new System.Drawing.Size(800, 24);
+            this.menuStrip.TabIndex = 14;
+            this.menuStrip.Text = "menuStrip";
             // 
             // fileToolStripMenuItem
             // 
@@ -202,7 +168,7 @@ namespace CslaGenerator
             this.newToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
             this.newToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.newToolStripMenuItem.Text = "&New";
-            this.newToolStripMenuItem.Click += new System.EventHandler(this.NewToolStripMenuItemClick);
+            this.newToolStripMenuItem.Click += new System.EventHandler(this.NewToolStripMenuItem_Click);
             // 
             // openToolStripMenuItem
             // 
@@ -210,7 +176,7 @@ namespace CslaGenerator
             this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
             this.openToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.openToolStripMenuItem.Text = "&Open";
-            this.openToolStripMenuItem.Click += new System.EventHandler(this.OpenToolStripMenuItemClick);
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.OpenToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem
             // 
@@ -219,7 +185,7 @@ namespace CslaGenerator
             this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
             this.saveToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.saveToolStripMenuItem.Text = "&Save";
-            this.saveToolStripMenuItem.Click += new System.EventHandler(this.SaveToolStripMenuItemClick);
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.SaveToolStripMenuItem_Click);
             // 
             // saveasToolStripMenuItem
             // 
@@ -228,7 +194,7 @@ namespace CslaGenerator
             this.saveasToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
             this.saveasToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.saveasToolStripMenuItem.Text = "Save &as";
-            this.saveasToolStripMenuItem.Click += new System.EventHandler(this.SaveAsToolStripMenuItemClick);
+            this.saveasToolStripMenuItem.Click += new System.EventHandler(this.SaveAsToolStripMenuItem_Click);
             // 
             // fileMenuSeparator1
             // 
@@ -242,7 +208,7 @@ namespace CslaGenerator
             this.mruItem0.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D1)));
             this.mruItem0.Size = new System.Drawing.Size(112, 22);
             this.mruItem0.Text = "mruItem0";
-            this.mruItem0.Click += new System.EventHandler(this.MruItem0Click);
+            this.mruItem0.Click += new System.EventHandler(this.MruItem0_Click);
             // 
             // mruItem1
             // 
@@ -251,7 +217,7 @@ namespace CslaGenerator
             this.mruItem1.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D2)));
             this.mruItem1.Size = new System.Drawing.Size(112, 22);
             this.mruItem1.Text = "mruItem1";
-            this.mruItem1.Click += new System.EventHandler(this.MruItem1Click);
+            this.mruItem1.Click += new System.EventHandler(this.MruItem1_Click);
             // 
             // mruItem2
             // 
@@ -260,7 +226,7 @@ namespace CslaGenerator
             this.mruItem2.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D3)));
             this.mruItem2.Size = new System.Drawing.Size(112, 22);
             this.mruItem2.Text = "mruItem2";
-            this.mruItem2.Click += new System.EventHandler(this.MruItem2Click);
+            this.mruItem2.Click += new System.EventHandler(this.MruItem2_Click);
             // 
             // mruItem3
             // 
@@ -269,7 +235,7 @@ namespace CslaGenerator
             this.mruItem3.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D4)));
             this.mruItem3.Size = new System.Drawing.Size(112, 22);
             this.mruItem3.Text = "mruItem3";
-            this.mruItem3.Click += new System.EventHandler(this.MruItem3Click);
+            this.mruItem3.Click += new System.EventHandler(this.MruItem3_Click);
             // 
             // mruItem4
             // 
@@ -278,7 +244,7 @@ namespace CslaGenerator
             this.mruItem4.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D5)));
             this.mruItem4.Size = new System.Drawing.Size(112, 22);
             this.mruItem4.Text = "mruItem4";
-            this.mruItem4.Click += new System.EventHandler(this.MruItem4Click);
+            this.mruItem4.Click += new System.EventHandler(this.MruItem4_Click);
             // 
             // mruSeparator
             // 
@@ -291,7 +257,7 @@ namespace CslaGenerator
             this.exitToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.exitToolStripMenuItem.Text = "&Exit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItemClick);
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
             // 
             // projectToolStripMenuItem
             // 
@@ -316,21 +282,21 @@ namespace CslaGenerator
             this.addAnewObjectToolStripMenuItem.Name = "addAnewObjectToolStripMenuItem";
             this.addAnewObjectToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
             this.addAnewObjectToolStripMenuItem.Text = "&Add a new object";
-            this.addAnewObjectToolStripMenuItem.Click += new System.EventHandler(this.AddAnewObjectToolStripMenuItemClick);
+            this.addAnewObjectToolStripMenuItem.Click += new System.EventHandler(this.AddAnewObjectToolStripMenuItem_Click);
             // 
             // removeSelectedObjectToolStripMenuItem
             // 
             this.removeSelectedObjectToolStripMenuItem.Name = "removeSelectedObjectToolStripMenuItem";
             this.removeSelectedObjectToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
             this.removeSelectedObjectToolStripMenuItem.Text = "&Remove Selected Object";
-            this.removeSelectedObjectToolStripMenuItem.Click += new System.EventHandler(this.RemoveSelectedObjectToolStripMenuItemClick);
+            this.removeSelectedObjectToolStripMenuItem.Click += new System.EventHandler(this.RemoveSelectedObjectToolStripMenuItem_Click);
             // 
             // duplicateObjectToolStripMenuItem
             // 
             this.duplicateObjectToolStripMenuItem.Name = "duplicateObjectToolStripMenuItem";
             this.duplicateObjectToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
             this.duplicateObjectToolStripMenuItem.Text = "&Duplicate Selected Object";
-            this.duplicateObjectToolStripMenuItem.Click += new System.EventHandler(this.DuplicateObjectToolStripMenuItemClick);
+            this.duplicateObjectToolStripMenuItem.Click += new System.EventHandler(this.DuplicateObjectToolStripMenuItem_Click);
             // 
             // projectMenuSeparator1
             // 
@@ -342,7 +308,7 @@ namespace CslaGenerator
             this.selectAllObjectsToolStripMenuItem.Name = "selectAllObjectsToolStripMenuItem";
             this.selectAllObjectsToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
             this.selectAllObjectsToolStripMenuItem.Text = "&Select All Objects";
-            this.selectAllObjectsToolStripMenuItem.Click += new System.EventHandler(this.SelectAllObjectsToolStripMenuItemClick);
+            this.selectAllObjectsToolStripMenuItem.Click += new System.EventHandler(this.SelectAllObjectsToolStripMenuItem_Click);
             // 
             // projectMenuSeparator2
             // 
@@ -354,14 +320,14 @@ namespace CslaGenerator
             this.newObjectRelationToolStripMenuItem.Name = "newObjectRelationToolStripMenuItem";
             this.newObjectRelationToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
             this.newObjectRelationToolStripMenuItem.Text = "Add a new object relation";
-            this.newObjectRelationToolStripMenuItem.Click += new System.EventHandler(this.NewObjectRelationToolStripMenuItemClick);
+            this.newObjectRelationToolStripMenuItem.Click += new System.EventHandler(this.NewObjectRelationToolStripMenuItem_Click);
             // 
             // addToObjectRelationToolStripMenuItem
             // 
             this.addToObjectRelationToolStripMenuItem.Name = "addToObjectRelationToolStripMenuItem";
             this.addToObjectRelationToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
             this.addToObjectRelationToolStripMenuItem.Text = "Add to object &relation as ...";
-            this.addToObjectRelationToolStripMenuItem.Click += new System.EventHandler(this.AddToObjectRelationToolStripMenuItemClick);
+            this.addToObjectRelationToolStripMenuItem.Click += new System.EventHandler(this.AddToObjectRelationToolStripMenuItem_Click);
             // 
             // projectMenuSeparator3
             // 
@@ -373,7 +339,7 @@ namespace CslaGenerator
             this.propertiesToolStripMenuItem.Name = "propertiesToolStripMenuItem";
             this.propertiesToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
             this.propertiesToolStripMenuItem.Text = "&Properties";
-            this.propertiesToolStripMenuItem.Click += new System.EventHandler(this.PropertiesToolStripMenuItemClick);
+            this.propertiesToolStripMenuItem.Click += new System.EventHandler(this.PropertiesToolStripMenuItem_Click);
             // 
             // dataBaseToolStripMenuItem
             // 
@@ -391,21 +357,21 @@ namespace CslaGenerator
             this.connectToolStripMenuItem.Name = "connectToolStripMenuItem";
             this.connectToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.connectToolStripMenuItem.Text = "&Connect";
-            this.connectToolStripMenuItem.Click += new System.EventHandler(this.ConnectToolStripMenuItemClick);
+            this.connectToolStripMenuItem.Click += new System.EventHandler(this.ConnectToolStripMenuItem_Click);
             // 
             // refreshSchemaToolStripMenuItem
             // 
             this.refreshSchemaToolStripMenuItem.Name = "refreshSchemaToolStripMenuItem";
             this.refreshSchemaToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.refreshSchemaToolStripMenuItem.Text = "&Refresh Schema";
-            this.refreshSchemaToolStripMenuItem.Click += new System.EventHandler(this.RefreshSchemaToolStripMenuItemClick);
+            this.refreshSchemaToolStripMenuItem.Click += new System.EventHandler(this.RefreshSchemaToolStripMenuItem_Click);
             // 
             // retrieveSummariesToolStripMenuItem
             // 
             this.retrieveSummariesToolStripMenuItem.Name = "retrieveSummariesToolStripMenuItem";
             this.retrieveSummariesToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
             this.retrieveSummariesToolStripMenuItem.Text = "Retrieve Summaries";
-            this.retrieveSummariesToolStripMenuItem.Click += new System.EventHandler(this.RetrieveSummariesToolStripMenuItemClick);
+            this.retrieveSummariesToolStripMenuItem.Click += new System.EventHandler(this.RetrieveSummariesToolStripMenuItem_Click);
             // 
             // toolStripMenuItem4
             // 
@@ -421,14 +387,14 @@ namespace CslaGenerator
             this.locateToolStripMenuItem.Name = "locateToolStripMenuItem";
             this.locateToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
             this.locateToolStripMenuItem.Text = "&Locate Template Directory";
-            this.locateToolStripMenuItem.Click += new System.EventHandler(this.LocateToolStripMenuItemClick);
+            this.locateToolStripMenuItem.Click += new System.EventHandler(this.LocateToolStripMenuItem_Click);
             // 
             // codeSmithExtensionToolStripMenuItem
             // 
             this.codeSmithExtensionToolStripMenuItem.Name = "codeSmithExtensionToolStripMenuItem";
             this.codeSmithExtensionToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
             this.codeSmithExtensionToolStripMenuItem.Text = "CodeSmith Extension...";
-            this.codeSmithExtensionToolStripMenuItem.Click += new System.EventHandler(this.CodeSmithExtensionToolStripMenuItemClick);
+            this.codeSmithExtensionToolStripMenuItem.Click += new System.EventHandler(this.CodeSmithExtensionToolStripMenuItem_Click);
             this.codeSmithExtensionToolStripMenuItem.Paint += new System.Windows.Forms.PaintEventHandler(ShieldBitmap);
             // 
             // viewToolStripMenuItem
@@ -452,7 +418,7 @@ namespace CslaGenerator
             this.projectPanelToolStripMenuItem.Name = "projectPanelToolStripMenuItem";
             this.projectPanelToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
             this.projectPanelToolStripMenuItem.Text = "&Project Panel";
-            this.projectPanelToolStripMenuItem.Click += new System.EventHandler(this.ProjectPanelToolStripMenuItemClick);
+            this.projectPanelToolStripMenuItem.Click += new System.EventHandler(this.ProjectPanelToolStripMenuItem_Click);
             // 
             // mainPageToolStripMenuItem
             // 
@@ -461,7 +427,7 @@ namespace CslaGenerator
             this.mainPageToolStripMenuItem.Name = "mainPageToolStripMenuItem";
             this.mainPageToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
             this.mainPageToolStripMenuItem.Text = "&Main Page";
-            this.mainPageToolStripMenuItem.Click += new System.EventHandler(this.MainPageToolStripMenuItemClick);
+            this.mainPageToolStripMenuItem.Click += new System.EventHandler(this.MainPageToolStripMenuItem_Click);
             // 
             // objectRelationsBuilderPageToolStripMenuItem
             // 
@@ -479,7 +445,7 @@ namespace CslaGenerator
             this.objectPropertiesPanelToolStripMenuItem.Name = "objectPropertiesPanelToolStripMenuItem";
             this.objectPropertiesPanelToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
             this.objectPropertiesPanelToolStripMenuItem.Text = "&Object Properties Panel";
-            this.objectPropertiesPanelToolStripMenuItem.Click += new System.EventHandler(this.ObjectPropertiesPanelToolStripMenuItemClick);
+            this.objectPropertiesPanelToolStripMenuItem.Click += new System.EventHandler(this.ObjectPropertiesPanelToolStripMenuItem_Click);
             // 
             // outputWindowToolStripMenuItem
             // 
@@ -488,7 +454,7 @@ namespace CslaGenerator
             this.outputWindowToolStripMenuItem.Name = "outputWindowToolStripMenuItem";
             this.outputWindowToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
             this.outputWindowToolStripMenuItem.Text = "Output Window";
-            this.outputWindowToolStripMenuItem.Click += new System.EventHandler(this.OutputWindowToolStripMenuItemClick);
+            this.outputWindowToolStripMenuItem.Click += new System.EventHandler(this.OutputWindowToolStripMenuItem_Click);
             // 
             // pluginsToolStripMenuItem
             // 
@@ -509,12 +475,12 @@ namespace CslaGenerator
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
             this.aboutToolStripMenuItem.Text = "&About";
-            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.AboutToolStripMenuItemClick);
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.AboutToolStripMenuItem_Click);
             // 
-            // toolStrip1
+            // toolStrip
             // 
-            this.toolStrip1.ImageScalingSize = new System.Drawing.Size(32, 32);
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStrip.ImageScalingSize = new System.Drawing.Size(32, 32);
+            this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newProjectButton,
             this.openProjectButton,
             this.saveProjectButton,
@@ -533,11 +499,11 @@ namespace CslaGenerator
             this.toolStripSeparator5,
             this.tsbGenerate,
             this.tsbCancel});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 24);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(800, 39);
-            this.toolStrip1.TabIndex = 15;
-            this.toolStrip1.Text = "toolStrip1";
+            this.toolStrip.Location = new System.Drawing.Point(0, 24);
+            this.toolStrip.Name = "toolStrip1";
+            this.toolStrip.Size = new System.Drawing.Size(800, 39);
+            this.toolStrip.TabIndex = 15;
+            this.toolStrip.Text = "toolStrip1";
             // 
             // toolStripSeparator1
             // 
@@ -564,15 +530,15 @@ namespace CslaGenerator
             this.toolStripSeparator5.Name = "toolStripSeparator5";
             this.toolStripSeparator5.Size = new System.Drawing.Size(6, 39);
             // 
-            // backgroundWorker1
+            // backgroundWorker
             // 
-            this.backgroundWorker1.WorkerSupportsCancellation = true;
-            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BackgroundWorker1DoWork);
-            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BackgroundWorker1RunWorkerCompleted);
+            this.backgroundWorker.WorkerSupportsCancellation = true;
+            this.backgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BackgroundWorker1_DoWork);
+            this.backgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.BackgroundWorker_RunWorkerCompleted);
             // 
-            // statusStrip1
+            // statusStrip
             // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.globalStatus,
             this.errors,
             this.warnings,
@@ -583,13 +549,13 @@ namespace CslaGenerator
             this.sprocs,
             this.generatingTimer,
             this.progressBar});
-            this.statusStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
-            this.statusStrip1.Location = new System.Drawing.Point(0, 524);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(800, 18);
-            this.statusStrip1.TabIndex = 17;
-            this.statusStrip1.Text = "statusStrip1";
-            this.statusStrip1.ShowItemToolTips = true;
+            this.statusStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
+            this.statusStrip.Location = new System.Drawing.Point(0, 524);
+            this.statusStrip.Name = "statusStrip";
+            this.statusStrip.Size = new System.Drawing.Size(800, 18);
+            this.statusStrip.TabIndex = 17;
+            this.statusStrip.Text = "statusStrip";
+            this.statusStrip.ShowItemToolTips = true;
             // 
             // globalStatus
             // 
@@ -624,7 +590,7 @@ namespace CslaGenerator
             this.errors.Text = "Errors";
             this.errors.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.errors.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
-            this.errors.DoubleClick += new System.EventHandler(this.errors_DoubleClick);
+            this.errors.DoubleClick += new System.EventHandler(this.Errors_DoubleClick);
             // 
             // warnings
             // 
@@ -640,7 +606,7 @@ namespace CslaGenerator
             this.warnings.Text = "Warnings";
             this.warnings.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.warnings.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
-            this.warnings.DoubleClick += new System.EventHandler(this.warnings_DoubleClick);
+            this.warnings.DoubleClick += new System.EventHandler(this.Warnings_DoubleClick);
             // 
             // loadingTimer
             // 
@@ -737,16 +703,9 @@ namespace CslaGenerator
             this.progressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.progressBar.Visible = false;
             // 
-            // projectPanel
-            // 
-            this.projectPanel.Location = new System.Drawing.Point(0, 66);
-            this.projectPanel.Name = "projectPanel";
-            this.projectPanel.Size = new System.Drawing.Size(231, 431);
-            this.projectPanel.TabIndex = 0;
-            // 
             // formSizePosition1
             // 
-            this.formSizePosition1.Form = this;
+            this.formSizePosition.Form = this;
             // 
             // newProjectButton
             // 
@@ -757,7 +716,7 @@ namespace CslaGenerator
             this.newProjectButton.Size = new System.Drawing.Size(36, 36);
             this.newProjectButton.Text = "New Project";
             this.newProjectButton.ToolTipText = "New Project";
-            this.newProjectButton.Click += new System.EventHandler(this.NewProjectButtonClick);
+            this.newProjectButton.Click += new System.EventHandler(this.NewProjectButton_Click);
             // 
             // openProjectButton
             // 
@@ -768,7 +727,7 @@ namespace CslaGenerator
             this.openProjectButton.Size = new System.Drawing.Size(36, 36);
             this.openProjectButton.Text = "Open Project";
             this.openProjectButton.ToolTipText = "Open Project";
-            this.openProjectButton.Click += new System.EventHandler(this.OpenProjectButtonClick);
+            this.openProjectButton.Click += new System.EventHandler(this.OpenProjectButton_Click);
             // 
             // saveProjectButton
             // 
@@ -780,7 +739,7 @@ namespace CslaGenerator
             this.saveProjectButton.Size = new System.Drawing.Size(36, 36);
             this.saveProjectButton.Text = "Save Project";
             this.saveProjectButton.ToolTipText = "Save Project";
-            this.saveProjectButton.Click += new System.EventHandler(this.SaveProjectButtonClick);
+            this.saveProjectButton.Click += new System.EventHandler(this.SaveProjectButton_Click);
             // 
             // addObjectButton
             // 
@@ -792,7 +751,7 @@ namespace CslaGenerator
             this.addObjectButton.Size = new System.Drawing.Size(36, 36);
             this.addObjectButton.Text = "Add Object";
             this.addObjectButton.ToolTipText = "Add Object";
-            this.addObjectButton.Click += new System.EventHandler(this.AddObjectButtonClick);
+            this.addObjectButton.Click += new System.EventHandler(this.AddObjectButton_Click);
             // 
             // deleteObjectButton
             // 
@@ -803,7 +762,7 @@ namespace CslaGenerator
             this.deleteObjectButton.Name = "deleteObjectButton";
             this.deleteObjectButton.Size = new System.Drawing.Size(36, 36);
             this.deleteObjectButton.Text = "Delete Object";
-            this.deleteObjectButton.Click += new System.EventHandler(this.DeleteObjectButtonClick);
+            this.deleteObjectButton.Click += new System.EventHandler(this.DeleteObjectButton_Click);
             // 
             // duplicateObjectButton
             // 
@@ -814,7 +773,7 @@ namespace CslaGenerator
             this.duplicateObjectButton.Name = "duplicateObjectButton";
             this.duplicateObjectButton.Size = new System.Drawing.Size(36, 36);
             this.duplicateObjectButton.Text = "Duplicate Object";
-            this.duplicateObjectButton.Click += new System.EventHandler(this.DuplicateObjectButtonClick);
+            this.duplicateObjectButton.Click += new System.EventHandler(this.DuplicateObjectButton_Click);
             // 
             // moveuUpObjectButton
             // 
@@ -825,7 +784,7 @@ namespace CslaGenerator
             this.moveuUpObjectButton.Name = "moveuUpObjectButton";
             this.moveuUpObjectButton.Size = new System.Drawing.Size(36, 36);
             this.moveuUpObjectButton.Text = "Move Up Object";
-            this.moveuUpObjectButton.Click += new System.EventHandler(this.MoveuUpObjectButtonClick);
+            this.moveuUpObjectButton.Click += new System.EventHandler(this.MoveuUpObjectButton_Click);
             // 
             // moveDownObjectButton
             // 
@@ -836,7 +795,7 @@ namespace CslaGenerator
             this.moveDownObjectButton.Name = "moveDownObjectButton";
             this.moveDownObjectButton.Size = new System.Drawing.Size(36, 36);
             this.moveDownObjectButton.Text = "Move Down Object";
-            this.moveDownObjectButton.Click += new System.EventHandler(this.MoveDownObjectButtonClick);
+            this.moveDownObjectButton.Click += new System.EventHandler(this.MoveDownObjectButton_Click);
             // 
             // newObjectRelationButton
             // 
@@ -847,7 +806,7 @@ namespace CslaGenerator
             this.newObjectRelationButton.Name = "newObjectRelationButton";
             this.newObjectRelationButton.Size = new System.Drawing.Size(36, 36);
             this.newObjectRelationButton.Text = "Add a new object relation";
-            this.newObjectRelationButton.Click += new System.EventHandler(this.NewObjectRelationButtonClick);
+            this.newObjectRelationButton.Click += new System.EventHandler(this.NewObjectRelationButton_Click);
             // 
             // addToObjectRelationButton
             // 
@@ -858,7 +817,7 @@ namespace CslaGenerator
             this.addToObjectRelationButton.Name = "addToObjectRelationButton";
             this.addToObjectRelationButton.Size = new System.Drawing.Size(36, 36);
             this.addToObjectRelationButton.Text = "Add to object relation as ...";
-            this.addToObjectRelationButton.Click += new System.EventHandler(this.AddToObjectRelationButtonClick);
+            this.addToObjectRelationButton.Click += new System.EventHandler(this.AddToObjectRelationButton_Click);
             // 
             // connectDatabaseButton
             // 
@@ -869,7 +828,7 @@ namespace CslaGenerator
             this.connectDatabaseButton.Name = "connectDatabaseButton";
             this.connectDatabaseButton.Size = new System.Drawing.Size(36, 36);
             this.connectDatabaseButton.Text = "Connect To Database";
-            this.connectDatabaseButton.Click += new System.EventHandler(this.ConnectDatabaseButtonClick);
+            this.connectDatabaseButton.Click += new System.EventHandler(this.ConnectDatabaseButton_Click);
             // 
             // tsbGenerate
             // 
@@ -881,7 +840,7 @@ namespace CslaGenerator
             this.tsbGenerate.Size = new System.Drawing.Size(36, 36);
             this.tsbGenerate.Tag = "Generate";
             this.tsbGenerate.Text = "Generate";
-            this.tsbGenerate.Click += new System.EventHandler(this.TsbGenerateClick);
+            this.tsbGenerate.Click += new System.EventHandler(this.GenerateButton_Click);
             // 
             // tsbCancel
             // 
@@ -892,45 +851,39 @@ namespace CslaGenerator
             this.tsbCancel.Name = "tsbCancel";
             this.tsbCancel.Size = new System.Drawing.Size(36, 36);
             this.tsbCancel.Text = "Cancel";
-            this.tsbCancel.Click += new System.EventHandler(this.TsbCancelClick);
+            this.tsbCancel.Click += new System.EventHandler(this.CancelButton_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 542);
-            this.Controls.Add(this.statusStrip1);
-            this.Controls.Add(this.webBrowser1);
-            this.Controls.Add(this.objectRelationsBuilder);
-            this.Controls.Add(this.projectPanel);
-            this.Controls.Add(this.pgGrid);
-            this.Controls.Add(this.dockPanel1);
-            this.Controls.Add(this.toolStrip1);
-            this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.dockPanel);
+            this.Controls.Add(this.statusStrip);
+            this.Controls.Add(this.toolStrip);
+            this.Controls.Add(this.menuStrip);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.IsMdiContainer = true;
             this.KeyPreview = true;
             this.Name = "MainForm";
             this.Text = "CslaGenFork";
-            this.Load += new System.EventHandler(this.MainFormLoad);
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainFormKeyDown);
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
-            this.toolStrip1.ResumeLayout(false);
-            this.toolStrip1.PerformLayout();
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.formSizePosition1)).EndInit();
+            this.Load += new System.EventHandler(this.MainForm_Load);
+            this.Closing += new System.ComponentModel.CancelEventHandler(this.MainForm_Closing);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
+            this.menuStrip.ResumeLayout(false);
+            this.menuStrip.PerformLayout();
+            this.toolStrip.ResumeLayout(false);
+            this.toolStrip.PerformLayout();
+            this.statusStrip.ResumeLayout(false);
+            this.statusStrip.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.formSizePosition)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
 }
-        private GeneratorController _controller = null;
-        private System.Windows.Forms.SaveFileDialog sfdSave;
-        private System.Windows.Forms.OpenFileDialog ofdLoad;
-        private DbSchemaPanel dbSchemaPanel = null;
-        private System.Windows.Forms.PropertyGrid pgGrid;
-        private MenuStrip menuStrip1;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog;
+        private System.Windows.Forms.OpenFileDialog openFileDialog;
+        private MenuStrip menuStrip;
         private ToolStripMenuItem fileToolStripMenuItem;
         private ToolStripMenuItem openToolStripMenuItem;
         private ToolStripMenuItem saveToolStripMenuItem;
@@ -961,10 +914,7 @@ namespace CslaGenerator
         private ToolStripMenuItem selectAllObjectsToolStripMenuItem;
         private ToolStripMenuItem newObjectRelationToolStripMenuItem;
         private ToolStripMenuItem addToObjectRelationToolStripMenuItem;
-        private ToolStrip toolStrip1;
-        private ProjectPanel projectPanel;
-        private WebBrowser webBrowser1;
-        private ObjectRelationsBuilder objectRelationsBuilder;
+        private ToolStrip toolStrip;
         #endregion
 
         private ToolStripButton newProjectButton;
@@ -985,15 +935,15 @@ namespace CslaGenerator
         private ToolStripSeparator toolStripSeparator5;
         private ToolStripButton tsbGenerate;
         private ToolStripButton tsbCancel;
-        private WeifenLuo.WinFormsUI.Docking.DockPanel dockPanel1;
+        private WeifenLuo.WinFormsUI.Docking.DockPanel dockPanel;
         private ToolStripMenuItem viewToolStripMenuItem;
         private ToolStripMenuItem projectPanelToolStripMenuItem;
         private ToolStripMenuItem mainPageToolStripMenuItem;
         private ToolStripMenuItem objectRelationsBuilderPageToolStripMenuItem;
         private ToolStripMenuItem objectPropertiesPanelToolStripMenuItem;
-        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.ComponentModel.BackgroundWorker backgroundWorker;
         private ToolStripMenuItem outputWindowToolStripMenuItem;
-        private StatusStrip statusStrip1;
+        private StatusStrip statusStrip;
         private ToolStripStatusLabel globalStatus;
         private ToolStripStatusLabel errors;
         private ToolStripStatusLabel warnings;
@@ -1008,6 +958,6 @@ namespace CslaGenerator
         private ToolStripMenuItem toolStripMenuItem4;
         private ToolStripMenuItem locateToolStripMenuItem;
         private ToolStripMenuItem codeSmithExtensionToolStripMenuItem;
-        internal FormSizePosition formSizePosition1;
+        internal FormSizePosition formSizePosition;
     }
 }
