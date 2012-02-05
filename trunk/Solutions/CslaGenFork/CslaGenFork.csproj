@@ -230,6 +230,18 @@
     <Compile Include="CodeGen\CslaTemplateHelperCS.cs" />
     <Compile Include="CodeGen\CslaTemplateHelperVB.cs" />
     <Compile Include="CodeGen\GenerationStep.cs" />
+    <Compile Include="Controls\ObjectInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\ObjectInfo.Designer.cs">
+      <DependentUpon>ObjectInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\StartPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\StartPage.Designer.cs">
+      <DependentUpon>StartPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="Design\AllPropertiesTypeEditor.cs" />
     <Compile Include="Design\AssemblyFileConverter.cs" />
     <Compile Include="Design\AssemblyObjectFileNameEditor.cs" />
@@ -246,7 +258,7 @@
     <Compile Include="ICodeGenerator.cs" />
     <Compile Include="CodeGen\SprocTemplateHelper.cs" />
     <Compile Include="Controls\ObjectRelationsBuilder.cs">
-      <SubType>UserControl</SubType>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Controls\ObjectRelationsBuilder.Designer.cs">
       <DependentUpon>ObjectRelationsBuilder.cs</DependentUpon>
@@ -348,7 +360,7 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\ProjectPanel.cs">
-      <SubType>UserControl</SubType>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Controls\ProjectPanel.Designer.cs">
       <DependentUpon>ProjectPanel.cs</DependentUpon>
@@ -361,6 +373,9 @@
     </Compile>
     <Compile Include="Controls\TextboxPlusBtn.cs">
       <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\TextboxPlusBtn.Designer.cs">
+      <DependentUpon>TextboxPlusBtn.cs</DependentUpon>
     </Compile>
     <Compile Include="Data\ConnectionFactory.cs">
       <SubType>Code</SubType>
@@ -593,6 +608,9 @@
       <SubType>Designer</SubType>
       <DependentUpon>NewObjectProperties.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ObjectInfo.resx">
+      <DependentUpon>ObjectInfo.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\ObjectRelationsBuilder.resx">
       <DependentUpon>ObjectRelationsBuilder.cs</DependentUpon>
     </EmbeddedResource>
@@ -611,6 +629,9 @@
     <EmbeddedResource Include="Controls\ProjectProperties.resx">
       <DependentUpon>ProjectProperties.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\StartPage.resx">
+      <DependentUpon>StartPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\TextboxPlusBtn.resx">
       <DependentUpon>TextboxPlusBtn.cs</DependentUpon>

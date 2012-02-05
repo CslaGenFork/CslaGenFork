@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Text;
 using System.Windows.Forms;
 using CslaGenerator.Controls;
 using CslaGenerator.Metadata;
@@ -20,77 +21,127 @@ namespace CslaGenerator
     /// </summary>
     public partial class MainForm : Form
     {
+        #region Private fields
+
         private const string BaseFormText = "Csla Generator Fork";
-        private bool _generating;
-        private ICodeGenerator _generator;
         private bool _isNewProject = true;
-        private List<ISimplePlugin> _plugins = new List<ISimplePlugin>();
-        private DockContent _projectDockPanel;
-        private DockContent _propertyGridDockPanel;
         private bool _showingStartPage;
-        private DockContent _webBrowserDockPanel;
+        private bool _generating;
+        private bool _appClosing;
+        private GeneratorController _controller = null;
+        private ICodeGenerator _generator;
+        private List<ISimplePlugin> _plugins = new List<ISimplePlugin>();
+        private ObjectRelationsBuilder _objectRelationsBuilderPanel = new ObjectRelationsBuilder();
+        private ProjectPanel _projectPanel= new ProjectPanel();
+        private ObjectInfo _objectInfoPanel = new ObjectInfo();
+        private StartPage _webBrowserDockPanel = new StartPage();
         private GenerationReportViewer _errorPannel = new GenerationReportViewer();
         private GenerationReportViewer _warningPannel = new GenerationReportViewer();
+        private DbSchemaPanel _dbSchemaPanel = null;
+        private OutputWindow _outputPanel = new OutputWindow();
+        private DeserializeDockContent _deserializeDockContent;
 
-        public MainForm(GeneratorController controller)
-        {
-            //
-            // Required for Windows Form Designer support
-            //
-            InitializeComponent();
-            Init();
-            _controller = controller;
-            //generator = new CslaGenerator.CodeGen.CodeGenerator();
-        }
+        #endregion
 
-        private bool ForceLoadCodeSmith()
-        {
-            if (!CodeSmothExists())
-                Windows7Security.StartCodeSmithHandler();
+        #region Properties
 
-            return CodeSmothExists();
-        }
-
-        private bool CodeSmothExists()
-        {
-            return File.Exists(Application.StartupPath + @"\CodeSmith.Engine.dll");
-        }
-
-        internal DockPanel DockPanel
-        {
-            get { return dockPanel1; }
-        }
-
-        public DockContent ObjectRelationsBuilderDockPanel { get; set; }
-
-        public bool Generating
+        internal bool Generating
         {
             get { return _generating; }
             set
             {
                 _generating = value;
+                newToolStripMenuItem.Enabled = !value;
+                openToolStripMenuItem.Enabled = !value;
+                mruItem0.Enabled = !value;
+                mruItem1.Enabled = !value;
+                mruItem2.Enabled = !value;
+                mruItem3.Enabled = !value;
+                mruItem4.Enabled = !value;
+                newProjectButton.Enabled = !value;
+                openProjectButton.Enabled = !value;
                 tsbCancel.Enabled = value;
                 tsbGenerate.Enabled = !value;
                 progressBar.Visible = value;
             }
         }
 
-        private void Init()
+        private string DockSettingsFile
         {
-            Text = BaseFormText;
-            sfdSave.Filter = @"Csla Gen files (*.xml) | *.xml";
-            sfdSave.DefaultExt = "xml";
+            get
+            {
+                return Application.LocalUserAppDataPath.Substring(0, Application.LocalUserAppDataPath.LastIndexOf("\\")) +
+                    @"\DockSettings.xml";
+            }
+        }
 
-            ofdLoad.Filter = sfdSave.Filter;
-            ofdLoad.DefaultExt = sfdSave.DefaultExt;
+        internal PropertyGrid ObjectInfoGrid
+        {
+            get { return _objectInfoPanel.propertyGrid; }
+        }
 
-            //fbGenerate.OnlyFilesystem = true;
-            projectPanel.TargetDirChanged += ProjectPanelTargetDirChanged;
-            projectPanel.SelectedItemsChanged += ProjectPanelSelectedItemsChanged;
-            projectPanel.ProjectNameTextBox.Enabled = false;
-            projectPanel.ProjectNameTextBox.Text = @"Load or create a project";
-            projectPanel.TargetDirectory.Enabled = false;
-            projectPanel.TargetDirectoryButton.Enabled = false;
+        internal TextBox ProjectNameTextBox
+        {
+            get { return _projectPanel.ProjectNameTextBox; }
+        }
+
+        internal Button TargetDirectoryButton
+        {
+            get { return _projectPanel.TargetDirectoryButton; }
+        }
+
+        internal TextBox TargetDirectoryTextBox
+        {
+            get { return _projectPanel.TargetDirectory; }
+        }
+
+        internal ProjectPanel ProjectPanel
+        {
+            get { return _projectPanel; }
+        }
+
+        internal ObjectRelationsBuilder ObjectRelationsBuilderPanel
+        {
+            get { return _objectRelationsBuilderPanel; }
+        }
+
+        internal DbSchemaPanel DbSchemaPanel
+        {
+            get { return _dbSchemaPanel; }
+            set { _dbSchemaPanel = value; }
+        }
+
+        internal DockPanel DockPanel
+        {
+            get { return dockPanel; }
+        }
+
+        #endregion
+
+        #region Constructor
+
+        public MainForm(GeneratorController controller)
+        {
+            InitializeComponent();
+            _controller = controller;
+            _deserializeDockContent = GetContentFromPersistString;
+        }
+        
+        #endregion
+
+        #region Initialization
+
+        private bool ForceLoadCodeSmith()
+        {
+            if (!CodeSmithExists())
+                Windows7Security.StartCodeSmithHandler();
+
+            return CodeSmithExists();
+        }
+
+        private bool CodeSmithExists()
+        {
+            return File.Exists(Application.StartupPath + @"\CodeSmith.Engine.dll");
         }
 
         private static void ShieldBitmap(object sender, PaintEventArgs e)
@@ -108,9 +159,195 @@ namespace CslaGenerator
             e.Graphics.DrawImage(bmp, new Point(5, 3));
         }
 
+        private IDockContent GetContentFromPersistString(string persistString)
+        {
+            if (persistString == typeof(StartPage).ToString())
+                return _webBrowserDockPanel;
+            if (persistString == typeof(OutputWindow).ToString())
+                return _outputPanel;
+            if (persistString == typeof(ProjectPanel).ToString())
+                return _projectPanel;
+            if (persistString == typeof(ObjectInfo).ToString())
+                return _objectInfoPanel;
+
+            return new DockContent();
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            if(File.Exists(DockSettingsFile))
+                dockPanel.LoadFromXml(DockSettingsFile, _deserializeDockContent);
+
+            ShowStartPage();
+            PanelsSetUp();
+            LoadPlugins();
+            LoadMru();
+        }
+
+        private void ShowStartPage()
+        {
+            _showingStartPage = true;
+            var startupPath = Application.StartupPath;
+            var idx = startupPath.IndexOf(@"\bin");
+            string url;
+            if (idx == -1)
+                url = startupPath + @"\" + @"StartPage\startpage.html";
+            else
+                url = startupPath.Substring(0, idx) + @"\" + @"StartPage\startpage.html";
+
+            // Web Browser
+            _webBrowserDockPanel.webBrowser.TabIndex = 1;
+            _webBrowserDockPanel.webBrowser.Navigating += WebBrowser_Navigating;
+            _webBrowserDockPanel.MdiParent = this;
+            _webBrowserDockPanel.VisibleChanged +=
+                delegate(object sender, EventArgs e) { mainPageToolStripMenuItem.Checked = ((DockContent)sender).Visible; };
+            _webBrowserDockPanel.FormClosing += PaneFormClosing;
+            _webBrowserDockPanel.webBrowser.Navigate(url);
+            _webBrowserDockPanel.Show(dockPanel);
+            _showingStartPage = false;
+        }
+
+        private void PanelsSetUp()
+        {
+            Text = BaseFormText;
+            saveFileDialog.Filter = @"Csla Gen files (*.xml) | *.xml";
+            saveFileDialog.DefaultExt = "xml";
+
+            openFileDialog.Filter = saveFileDialog.Filter;
+            openFileDialog.DefaultExt = saveFileDialog.DefaultExt;
+
+            dockPanel.BringToFront();
+
+            // Output panel
+            _outputPanel.VisibleChanged +=
+                delegate(object sender, EventArgs e) { outputWindowToolStripMenuItem.Checked = ((DockContent)sender).Visible; };
+            _outputPanel.FormClosing += PaneFormClosing;
+            _outputPanel.Show(dockPanel);
+
+            // ProjectPanel
+            _projectPanel.TabIndex = 0;
+            _projectPanel.ProjectNameTextBox.Enabled = false;
+            _projectPanel.ProjectNameTextBox.Text = @"Load or create a project";
+            _projectPanel.TargetDirectory.Enabled = false;
+            _projectPanel.TargetDirectoryButton.Enabled = false;
+            _projectPanel.TargetDirChanged += ProjectPanel_TargetDirChanged;
+            _projectPanel.SelectedItemsChanged += ProjectPanel_SelectedItemsChanged;
+            _projectPanel.VisibleChanged +=
+                delegate(object sender, EventArgs e) { projectPanelToolStripMenuItem.Checked = ((DockContent)sender).Visible; };
+            _projectPanel.FormClosing += PaneFormClosing;
+            _projectPanel.Show(dockPanel);
+
+            // CslaObjectInfo PropertyGrid
+            _objectInfoPanel.TabIndex = 1;
+            _objectInfoPanel.Icon = Icon.FromHandle(Resources.Properties.GetHicon());
+            _objectInfoPanel.propertyGrid.SelectedObject = null;
+            _objectInfoPanel.propertyGrid.PropertySortChanged += OnSort;
+            _objectInfoPanel.propertyGrid.SelectedGridItemChanged += OnSelectedGridItemChanged;
+            _objectInfoPanel.VisibleChanged +=
+                delegate(object sender, EventArgs e) { objectPropertiesPanelToolStripMenuItem.Checked = ((DockContent)sender).Visible; };
+            _objectInfoPanel.FormClosing += PaneFormClosing;
+            _objectInfoPanel.Show(dockPanel);
+
+            // Object Relations Builder
+            _objectRelationsBuilderPanel.AssociativeEntities = null;
+            _objectRelationsBuilderPanel.TabIndex = 1;
+            _objectRelationsBuilderPanel.Dock = DockStyle.Fill;
+            _objectRelationsBuilderPanel.DockAreas = DockAreas.Float | DockAreas.Document;
+            _objectRelationsBuilderPanel.MdiParent = this;
+            _objectRelationsBuilderPanel.VisibleChanged +=
+                delegate(object sender, EventArgs e) { objectRelationsBuilderPageToolStripMenuItem.Checked = ((DockContent)sender).Visible; };
+            _objectRelationsBuilderPanel.FormClosing += PaneFormClosing;
+            _webBrowserDockPanel.BringToFront();
+        }
+
+        private void LoadPlugins()
+        {
+            _plugins = PluginLoader.LoadPlugins();
+            if (_plugins == null || _plugins.Count == 0)
+            {
+                pluginsToolStripMenuItem.Visible = false;
+                return;
+            }
+            foreach (ISimplePlugin plugin in _plugins)
+            {
+                foreach (ScriptCommandInfo cmd in plugin.GetCommands())
+                {
+                    var pluginMenu = new ToolStripMenuItem(cmd.CommandTitle);
+                    pluginMenu.Tag = cmd;
+                    pluginMenu.Click += PluginMenuClick;
+                    pluginsToolStripMenuItem.DropDownItems.Add(pluginMenu);
+                }
+            }
+        }
+
+        private void LoadMru()
+        {
+            _controller.MruItems = new List<string>();
+            _controller.MruItems = ConfigTools.GetMru();
+            MruDisplay();
+        }
+
+        #endregion
+
+        #region Closing
+
+        private void MainForm_Closing(object sender, CancelEventArgs e)
+        {
+            _appClosing = true;
+            dockPanel.SaveAsXml(DockSettingsFile, Encoding.UTF8);
+        }
+
+        private void PaneFormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (_appClosing)
+                return;
+
+            // individual controls on the form are closing
+            SaveBeforeClose(true);
+            e.Cancel = true;
+            ((DockContent)sender).Hide();
+        }
+
+        private DialogResult SaveBeforeClose(bool isClosing)
+        {
+            DialogResult result = DialogResult.None;
+            if (_controller.CurrentPropertiesTab != null && _controller.CurrentPropertiesTab.IsDirty)
+            {
+                result =
+                    MessageBox.Show(
+                        @"There are unsaved changes in the project properties tab. Would you like to save the project now?",
+                        @"CslaGenerator",
+                        isClosing
+                            ? MessageBoxButtons.YesNo
+                            : MessageBoxButtons.YesNoCancel,
+                        MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    _controller.CurrentPropertiesTab.cmdApply.PerformClick();
+                    SaveToolStripMenuItem_Click(this, new EventArgs());
+                }
+            }
+            return result;
+        }
+
+        #endregion
+
+        #region Misc events
+
+        private void MainForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.F5 && !Generating)
+                Generate();
+        }
+
+        /// <summary>
+        /// Adds the CTRL to middle pane.
+        /// </summary>
+        /// <param name="dbSchemaPnl">The db schema PNL.</param>
+        /// <remarks>Use by GeneratorController.BuildSchemaTree</remarks>
         internal void AddCtrlToMiddlePane(DbSchemaPanel dbSchemaPnl)
         {
-            foreach (Control ctl in dockPanel1.Contents)
+            foreach (Control ctl in dockPanel.Contents)
             {
                 if (ctl.Text == @"Schema")
                 {
@@ -128,186 +365,21 @@ namespace CslaGenerator
 
             pane.MdiParent = this;
             pane.Text = @"Schema";
-            pane.Show(dockPanel1);
+            pane.Show(dockPanel);
         }
 
-        private void MainFormLoad(object sender, EventArgs e)
+        private void WebBrowser_Navigating(object sender, WebBrowserNavigatingEventArgs e)
         {
-            // show start page
-            ShowStartPage();
-            PanelsSetUp();
-            LoadPlugins();
-            LoadMru();
-        }
-
-        private void LoadMru()
-        {
-            _controller.MruItems = new List<string>();
-            _controller.MruItems = ConfigTools.GetMru();
-            MruDisplay();
-        }
-
-        private void LoadPlugins()
-        {
-            _plugins = PluginLoader.LoadPlugins();
-            if (_plugins == null || _plugins.Count == 0)
+            if (!_showingStartPage)
             {
-                pluginsToolStripMenuItem.Visible = false;
-                return;
-            }
-            foreach (ISimplePlugin plugin in _plugins)
-            {
-                foreach (ScriptCommandInfo cmd in plugin.GetCommands())
-                {
-                    // ReSharper disable UseObjectOrCollectionInitializer
-                    var pluginMenu = new ToolStripMenuItem(cmd.CommandTitle);
-                    // ReSharper restore UseObjectOrCollectionInitializer
-                    pluginMenu.Tag = cmd;
-                    pluginMenu.Click += PluginMenuClick;
-                    pluginsToolStripMenuItem.DropDownItems.Add(pluginMenu);
-                }
+                e.Cancel = true;
+                Process.Start(e.Url.AbsolutePath);
             }
         }
 
-        private void PluginMenuClick(object sender, EventArgs e)
-        {
-            try
-            {
-                foreach (ISimplePlugin plugin in _plugins)
-                {
-                    plugin.Catalog = GeneratorController.Catalog;
-                    plugin.Unit = _controller.CurrentUnit;
-                    plugin.SelectedObjects = projectPanel.GetSelectedObjects();
-                }
-                var menu = (ToolStripMenuItem)sender;
-                var cmd = (ScriptCommandInfo)menu.Tag;
-                cmd.RunCommand();
-            }
-            catch (Exception ex)
-            {
-                OutputWindow.Current.AddOutputInfo("Error running plugin:");
-                OutputWindow.Current.AddOutputInfo(ex.Message);
-            }
-        }
+        #endregion
 
-        private void ShowStartPage()
-        {
-            _showingStartPage = true;
-            //            var str = "";
-            //            object nullObject = 0;
-            //            object nullObjStr = "";
-            string startupPath = Application.StartupPath;
-            int idx = startupPath.IndexOf(@"\bin");
-            string url;
-            if (idx == -1)
-            {
-                url = startupPath + @"\" + @"StartPage\startpage.html";
-            }
-            else
-            {
-                url = startupPath.Substring(0, idx) + @"\" + @"StartPage\startpage.html";
-            }
-            webBrowser1.Navigate(url);
-            _showingStartPage = false;
-        }
-
-        private void ProjectPanelTargetDirChanged(string path)
-        {
-            _controller.CurrentUnit.TargetDirectory = path;
-        }
-
-        private void ProjectPanelSelectedItemsChanged(object sender, EventArgs e)
-        {
-            ConditonalButtonsAndMenus();
-        }
-
-        public void OpenProjectFile(string fileName)
-        {
-            globalStatus.Image = Resources._112_RefreshArrow_Green_16x16_72;
-            globalStatus.ToolTipText = @"Loading...";
-            loadingTimer.Text = "Loading:";
-            ClearErrorsAndWarning();
-            statusStrip1.Refresh();
-            _controller.NewCslaUnit();
-            _controller.Load(fileName);
-            var timer = _controller.LoadingTimer.Elapsed;
-            loadingTimer.Text = String.Format("Loading: {0}:{1},{2}",
-                                                 timer.Minutes.ToString("00"),
-                                                 timer.Seconds.ToString("00"),
-                                                 timer.Milliseconds.ToString("000"));
-            _isNewProject = false;
-            // if we are calling this from the controller, then the
-            // file dialog will not have been used to open the file, and since other code relies
-            // on the file dialog having been used (no local/controller storage for file name) ...
-            // ReSharper disable RedundantCheckBeforeAssignment
-            if (ofdLoad.FileName != fileName)
-            // ReSharper restore RedundantCheckBeforeAssignment
-            {
-                ofdLoad.FileName = fileName;
-            }
-            FillDatabaseObjects();
-            FillObjects();
-            if (_controller.IsDBConnected)
-            {
-                globalStatus.Image = Resources.Blue;
-                globalStatus.ToolTipText = @"Project loaded.";
-            }
-            else
-            {
-                globalStatus.Image = Resources.Orange;
-                globalStatus.ToolTipText = @"No database connection.";
-            }
-            statusStrip1.Refresh();
-        }
-
-        // ReSharper disable UnusedMember.Local
-        private void GeneratorRequestSave(object sender, EventArgs e)
-        // ReSharper restore UnusedMember.Local
-        {
-            SaveToolStripMenuItemClick(sender, e);
-        }
-
-        private void Connect()
-        {
-            if (_controller.CurrentUnit != null)
-            {
-                Application.DoEvents();
-                _controller.Connect();
-                FillDatabaseObjects();
-                if (_controller.IsDBConnected)
-                {
-                    globalStatus.Image = Resources.Blue;
-                    if (globalStatus.ToolTipText == @"New project has no database connection.")
-                        globalStatus.ToolTipText = @"New project.";
-                }
-            }
-            else
-                MessageBox.Show(@"You must load or start a new project before connecting to a database",
-                                @"CslaGenerator", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-        internal bool ApplyProjectProperties()
-        {
-            if (!_controller.CurrentPropertiesTab.ValidateOptions())
-                return false;
-
-            if (_controller.CurrentPropertiesTab.IsDirty)
-            {
-                DialogResult result =
-                    MessageBox.Show(
-                        @"There are unsaved changes in the project properties tab. Would you like to apply them now?",
-                        @"CslaGenerator", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
-                switch (result)
-                {
-                    case DialogResult.Yes:
-                        _controller.CurrentPropertiesTab.cmdApply.PerformClick();
-                        break;
-                    case DialogResult.Cancel:
-                        return false;
-                }
-            }
-            return true;
-        }
+        #region Generation
 
         private void Generate()
         {
@@ -327,10 +399,10 @@ namespace CslaGenerator
             ClearErrorsAndWarning();
             globalStatus.Image = Resources._112_RefreshArrow_Green_16x16_72;
             globalStatus.ToolTipText = @"Generating...";
-            statusStrip1.Refresh();
+            statusStrip.Refresh();
 
             if (_controller.CurrentUnit.GenerationParams.SaveBeforeGenerate)
-                SaveToolStripMenuItemClick(this, EventArgs.Empty);
+                SaveToolStripMenuItem_Click(this, EventArgs.Empty);
 
             Generating = true;
             if (_generator != null)
@@ -360,15 +432,15 @@ namespace CslaGenerator
             }
             progressBar.Value = 0;
             progressBar.Maximum = i;
-            backgroundWorker1.RunWorkerAsync();
+            backgroundWorker.RunWorkerAsync();
         }
 
-        private void BackgroundWorker1DoWork(object sender, DoWorkEventArgs e)
+        private void BackgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
             _generator.GenerateProject(_controller.CurrentUnit);
         }
 
-        private void BackgroundWorker1RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        private void BackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             var timer = _controller.CurrentUnit.GenerationTimer.Elapsed;
             generatingTimer.Text = String.Format("Generating: {0}:{1},{2}",
@@ -402,118 +474,87 @@ namespace CslaGenerator
                     errors.AutoToolTip = true;
                 }
             }
-            statusStrip1.Refresh();
+            statusStrip.Refresh();
         }
 
-        private void MainFormKeyDown(object sender, KeyEventArgs e)
+        private void GeneratorStep(string e)
         {
-            if (e.KeyCode == Keys.F5 && !Generating)
-                Generate();
-        }
-
-        // ReSharper disable MemberCanBeMadeStatic.Local
-        private void AboutToolStripMenuItemClick(object sender, EventArgs e)
-        // ReSharper restore MemberCanBeMadeStatic.Local
-        {
-            using (var frm = new AboutBox())
+            if (progressBar.Value < progressBar.Maximum)
             {
-                frm.ShowDialog();
+                Invoke((MethodInvoker)delegate { progressBar.Value++; });
             }
         }
 
-        private void LocateToolStripMenuItemClick(object sender, EventArgs e)
+        internal bool ApplyProjectProperties()
         {
-            // ReSharper disable UseObjectOrCollectionInitializer
-            var tDirDialog = new FolderBrowserDialog();
-            // ReSharper restore UseObjectOrCollectionInitializer
-            tDirDialog.Description = @"Current folder location of the CslaGenFork templates is:" + Environment.NewLine +
-                                     _controller.TemplatesDirectory + Environment.NewLine +
-                                     @"Select a new folder location and press OK.";
-            tDirDialog.ShowNewFolderButton = false;
-            if (!string.IsNullOrEmpty(_controller.TemplatesDirectory))
-                tDirDialog.SelectedPath = _controller.TemplatesDirectory;
-            else
-                tDirDialog.RootFolder = Environment.SpecialFolder.Desktop;
+            if (!_controller.CurrentPropertiesTab.ValidateOptions())
+                return false;
 
-            DialogResult dialogResult = tDirDialog.ShowDialog();
-            if (dialogResult == DialogResult.OK)
+            if (_controller.CurrentPropertiesTab.IsDirty)
             {
-                string tdir = tDirDialog.SelectedPath;
-                if (tDirDialog.SelectedPath.LastIndexOf('\\') != tDirDialog.SelectedPath.Length - 1)
-                    tdir += @"\";
-                _controller.TemplatesDirectory = tdir;
-                ConfigTools.Change("TemplatesDirectory", _controller.TemplatesDirectory);
+                DialogResult result =
+                    MessageBox.Show(
+                        @"There are unsaved changes in the project properties tab. Would you like to apply them now?",
+                        @"CslaGenerator", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                switch (result)
+                {
+                    case DialogResult.Yes:
+                        _controller.CurrentPropertiesTab.cmdApply.PerformClick();
+                        break;
+                    case DialogResult.Cancel:
+                        return false;
+                }
             }
+            return true;
         }
 
-        // ReSharper disable MemberCanBeMadeStatic.Local
-        private void CodeSmithExtensionToolStripMenuItemClick(object sender, EventArgs e)
-        // ReSharper restore MemberCanBeMadeStatic.Local
+        #endregion
+        
+        #region Project panel
+
+        private void ProjectPanel_TargetDirChanged(string path)
         {
-            Windows7Security.StartCodeSmithHandler();
+            _controller.CurrentUnit.TargetDirectory = path;
         }
 
-        #region Control Properties
-
-        // Properties made available mainly for use within controller
-        internal PropertyGrid PropertyGrid
+        private void ProjectPanel_SelectedItemsChanged(object sender, EventArgs e)
         {
-            get { return pgGrid; }
-        }
-
-        internal TextBox ProjectNameTextBox
-        {
-            get { return projectPanel.ProjectNameTextBox; }
-        }
-
-        internal Button TargetDirectoryButton
-        {
-            get { return projectPanel.TargetDirectoryButton; }
-        }
-
-        internal TextBox TargetDirectoryTextBox
-        {
-            get { return projectPanel.TargetDirectory; }
-        }
-
-        internal ProjectPanel ProjectPanel
-        {
-            get { return projectPanel; }
-        }
-
-        internal ObjectRelationsBuilder ObjectRelationsBuilder
-        {
-            get { return objectRelationsBuilder; }
-        }
-
-        internal DbSchemaPanel DbSchemaPanel
-        {
-            get { return dbSchemaPanel; }
-            set { dbSchemaPanel = value; }
-        }
-
-        private void WebBrowser1Navigating(object sender, WebBrowserNavigatingEventArgs e)
-        {
-            if (!_showingStartPage)
-            {
-                e.Cancel = true;
-                Process.Start(e.Url.AbsolutePath);
-            }
+            ConditonalButtonsAndMenus();
         }
 
         #endregion
 
-        #region PropertyGrid stuff
+        #region CslaObjectInfo panel
 
         public void OnSort(object sender, EventArgs e)
         {
-            if (pgGrid.PropertySort == PropertySort.CategorizedAlphabetical)
-                pgGrid.PropertySort = PropertySort.Categorized;
+            if (_objectInfoPanel.propertyGrid.PropertySort == PropertySort.CategorizedAlphabetical)
+                _objectInfoPanel.propertyGrid.PropertySort = PropertySort.Categorized;
+        }
+
+        private void OnSelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
+        {
+            CslaObjectInfo cslaObj = ((PropertyBag)((PropertyGrid)sender).SelectedObject).SelectedObject[0];
+            switch (e.NewSelection.Label)
+            {
+                case "Create Authorization Type":
+                    cslaObj.ActionProperty = AuthorizationActions.CreateObject;
+                    break;
+                case "Get Authorization Type":
+                    cslaObj.ActionProperty = AuthorizationActions.GetObject;
+                    break;
+                case "Update Authorization Type":
+                    cslaObj.ActionProperty = AuthorizationActions.EditObject;
+                    break;
+                case "Delete Authorization Type":
+                    cslaObj.ActionProperty = AuthorizationActions.DeleteObject;
+                    break;
+            }
         }
 
         #endregion
 
-        #region Menu Handlers
+        #region General toolbar and menu handlers
 
         private void AfterOpenEnableButtonsAndMenus()
         {
@@ -559,52 +600,213 @@ namespace CslaGenerator
             addToObjectRelationToolStripMenuItem.Enabled = objectSelected;
         }
 
-        private DialogResult SaveBeforeClose(bool isClosing)
+        #endregion
+
+        #region Toolbar
+
+        private void NewProjectButton_Click(object sender, EventArgs e)
         {
-            DialogResult result = DialogResult.None;
-            if (_controller.CurrentPropertiesTab != null && _controller.CurrentPropertiesTab.IsDirty)
-            {
-                result =
-                    MessageBox.Show(
-                        @"There are unsaved changes in the project properties tab. Would you like to save the project now?",
-                        @"CslaGenerator",
-                        isClosing
-                            ? MessageBoxButtons.YesNo
-                            : MessageBoxButtons.YesNoCancel,
-                        MessageBoxIcon.Question);
-                if (result == DialogResult.Yes)
-                {
-                    _controller.CurrentPropertiesTab.cmdApply.PerformClick();
-                    SaveToolStripMenuItemClick(this, new EventArgs());
-                }
-            }
-            return result;
+            NewToolStripMenuItem_Click(sender, e);
         }
 
-        private void MruItem0Click(object sender, EventArgs e)
+        private void OpenProjectButton_Click(object sender, EventArgs e)
+        {
+            OpenToolStripMenuItem_Click(sender, e);
+        }
+
+        private void SaveProjectButton_Click(object sender, EventArgs e)
+        {
+            SaveToolStripMenuItem_Click(sender, e);
+        }
+
+        private void AddObjectButton_Click(object sender, EventArgs e)
+        {
+            _projectPanel.AddNewObject();
+        }
+
+        private void DeleteObjectButton_Click(object sender, EventArgs e)
+        {
+            _projectPanel.RemoveSelected();
+        }
+
+        private void DuplicateObjectButton_Click(object sender, EventArgs e)
+        {
+            _projectPanel.DuplicateSelected();
+        }
+
+        private void MoveuUpObjectButton_Click(object sender, EventArgs e)
+        {
+            _projectPanel.MoveUpSelected();
+        }
+
+        private void MoveDownObjectButton_Click(object sender, EventArgs e)
+        {
+            _projectPanel.MoveDownSelected();
+        }
+
+        private void NewObjectRelationButton_Click(object sender, EventArgs e)
+        {
+            _projectPanel.AddNewObjectRelation();
+        }
+
+        private void AddToObjectRelationButton_Click(object sender, EventArgs e)
+        {
+            _projectPanel.AddToObjectRelationBuilder();
+        }
+
+        private void ConnectDatabaseButton_Click(object sender, EventArgs e)
+        {
+            Connect();
+        }
+
+        private void GenerateButton_Click(object sender, EventArgs e)
+        {
+            Generate();
+        }
+
+        private void CancelButton_Click(object sender, EventArgs e)
+        {
+            if (Generating)
+                _generator.Abort();
+        }
+
+        #endregion
+
+        #region File menu
+
+        private void NewToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (ForceLoadCodeSmith())
+            {
+                _controller.NewCslaUnit();
+                _isNewProject = true;
+                openFileDialog.FileName = string.Empty;
+                Text = BaseFormText;
+                if (!File.Exists(Application.CommonAppDataPath + @"\Default.xml"))
+                {
+                    _controller.CurrentPropertiesTab.CmdResetToFactory.PerformClick();
+                    _controller.CurrentPropertiesTab.cmdSetDefault.PerformClick();
+                }
+
+                _controller.CurrentPropertiesTab.cmdGetDefault.PerformClick();
+                AfterOpenEnableButtonsAndMenus();
+                if (_controller.IsDBConnected)
+                {
+                    globalStatus.Image = Resources.Blue;
+                    globalStatus.ToolTipText = @"New project.";
+                }
+                else
+                {
+                    globalStatus.Image = Resources.Orange;
+                    globalStatus.ToolTipText = @"New project has no database connection.";
+                }
+                loadingTimer.Text = "Loading:";
+                FillObjects();
+                ClearErrorsAndWarning();
+                statusStrip.Refresh();
+            }
+        }
+
+        private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (ForceLoadCodeSmith())
+            {
+                openFileDialog.InitialDirectory = _controller.ProjectsDirectory;
+                DialogResult result = openFileDialog.ShowDialog(this);
+                if (result == DialogResult.OK)
+                {
+                    _controller.ProjectsDirectory = openFileDialog.FileName.Substring(0, openFileDialog.FileName.LastIndexOf('\\'));
+                    ConfigTools.Change("ProjectsDirectory", _controller.ProjectsDirectory);
+                    Application.DoEvents();
+                    Cursor.Current = Cursors.WaitCursor;
+                    OpenProjectFile(openFileDialog.FileName);
+                    HandleMruItemsNewCurrent(openFileDialog.FileName);
+                    Cursor.Current = Cursors.Default;
+                    Text = _controller.CurrentUnit.ProjectName + @" - " + BaseFormText;
+                    AfterOpenEnableButtonsAndMenus();
+                }
+            }
+        }
+
+        private void SaveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.DoEvents();
+            if (!_isNewProject && openFileDialog.FileName.Length > 1)
+            {
+                Cursor.Current = Cursors.WaitCursor;
+                Application.DoEvents();
+                _controller.Save(openFileDialog.FileName);
+                HandleMruItemsNewCurrent(openFileDialog.FileName);
+                Cursor.Current = Cursors.Default;
+                Text = _controller.CurrentUnit.ProjectName + @" - " + BaseFormText;
+                return;
+            }
+
+            SaveAsToolStripMenuItem_Click(sender, e);
+        }
+
+        private void SaveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.DoEvents();
+            if (openFileDialog.FileName.Length > 1)
+                saveFileDialog.FileName = _controller.RetrieveFilename(openFileDialog.FileName);
+            else if (_controller.CurrentUnit != null)
+                saveFileDialog.FileName = _controller.CurrentUnit.ProjectName + ".xml";
+            else
+                saveFileDialog.FileName = "Project.xml";
+
+            saveFileDialog.InitialDirectory = _controller.ProjectsDirectory;
+            DialogResult result = saveFileDialog.ShowDialog(this);
+            if (result == DialogResult.OK)
+            {
+                _controller.ProjectsDirectory = saveFileDialog.FileName.Substring(0, saveFileDialog.FileName.LastIndexOf('\\'));
+                ConfigTools.Change("ProjectsDirectory", _controller.ProjectsDirectory);
+                Cursor.Current = Cursors.WaitCursor;
+                Application.DoEvents();
+                _controller.Save(saveFileDialog.FileName);
+                openFileDialog.FileName = saveFileDialog.FileName;
+                HandleMruItemsNewCurrent(openFileDialog.FileName);
+                _isNewProject = false;
+                Cursor.Current = Cursors.Default;
+                Text = _controller.CurrentUnit.ProjectName + @" - " + BaseFormText;
+            }
+        }
+
+        private void MruItem0_Click(object sender, EventArgs e)
         {
             HanddleMruItem(0);
         }
 
-        private void MruItem1Click(object sender, EventArgs e)
+        private void MruItem1_Click(object sender, EventArgs e)
         {
             HanddleMruItem(1);
         }
 
-        private void MruItem2Click(object sender, EventArgs e)
+        private void MruItem2_Click(object sender, EventArgs e)
         {
             HanddleMruItem(2);
         }
 
-        private void MruItem3Click(object sender, EventArgs e)
+        private void MruItem3_Click(object sender, EventArgs e)
         {
             HanddleMruItem(3);
         }
 
-        private void MruItem4Click(object sender, EventArgs e)
+        private void MruItem4_Click(object sender, EventArgs e)
         {
             HanddleMruItem(4);
         }
+
+        private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DialogResult result = SaveBeforeClose(false);
+            if (result == DialogResult.Cancel)
+                return;
+
+            Close();
+        }
+
+        #region MRU helpers
 
         private void HanddleMruItem(int mruItem)
         {
@@ -616,13 +818,13 @@ namespace CslaGenerator
                         HandleMruItemsMissing(mruItem);
                     else
                     {
-                        ofdLoad.FileName = _controller.MruItems[mruItem];
-                        _controller.ProjectsDirectory = ofdLoad.FileName.Substring(0, ofdLoad.FileName.LastIndexOf('\\'));
+                        openFileDialog.FileName = _controller.MruItems[mruItem];
+                        _controller.ProjectsDirectory = openFileDialog.FileName.Substring(0, openFileDialog.FileName.LastIndexOf('\\'));
                         ConfigTools.Change("ProjectsDirectory", _controller.ProjectsDirectory);
                         Application.DoEvents();
                         Cursor.Current = Cursors.WaitCursor;
-                        OpenProjectFile(ofdLoad.FileName);
-                        HandleMruItemsNewCurrent(ofdLoad.FileName);
+                        OpenProjectFile(openFileDialog.FileName);
+                        HandleMruItemsNewCurrent(openFileDialog.FileName);
                         Cursor.Current = Cursors.Default;
                         Text = _controller.CurrentUnit.ProjectName + @" - " + BaseFormText;
                         AfterOpenEnableButtonsAndMenus();
@@ -634,7 +836,7 @@ namespace CslaGenerator
         private void HandleMruItemsNewCurrent(string filename)
         {
             _controller.MruItems.Insert(0, filename);
-            _controller.ResortMruItems();
+            _controller.ReSortMruItems();
             MruDisplay();
         }
 
@@ -711,120 +913,84 @@ namespace CslaGenerator
                 mruSeparator.Visible = true;
         }
 
-        private void ExitToolStripMenuItemClick(object sender, EventArgs e)
-        {
-            DialogResult result = SaveBeforeClose(false);
-            if (result == DialogResult.Cancel)
-                return;
+        #endregion
 
-            _appClosing = true;
-            Application.Exit();
-        }
+        #endregion
 
-        private void NewToolStripMenuItemClick(object sender, EventArgs e)
+        #region File menu helpers
+
+        public void OpenProjectFile(string fileName)
         {
-            if (ForceLoadCodeSmith())
+            globalStatus.Image = Resources._112_RefreshArrow_Green_16x16_72;
+            globalStatus.ToolTipText = @"Loading...";
+            loadingTimer.Text = "Loading:";
+            ClearErrorsAndWarning();
+            statusStrip.Refresh();
+            _controller.NewCslaUnit();
+            _controller.Load(fileName);
+            var timer = _controller.LoadingTimer.Elapsed;
+            loadingTimer.Text = String.Format("Loading: {0}:{1},{2}",
+                                                 timer.Minutes.ToString("00"),
+                                                 timer.Seconds.ToString("00"),
+                                                 timer.Milliseconds.ToString("000"));
+            _isNewProject = false;
+            // if we are calling this from the controller, then the
+            // file dialog will not have been used to open the file, and since other code relies
+            // on the file dialog having been used (no local/controller storage for file name) ...
+            if (openFileDialog.FileName != fileName)
             {
-                _controller.NewCslaUnit();
-                _isNewProject = true;
-                ofdLoad.FileName = string.Empty;
-                Text = BaseFormText;
-                if (!File.Exists(Application.CommonAppDataPath + @"\Default.xml"))
-                {
-                    _controller.CurrentPropertiesTab.CmdResetToFactory.PerformClick();
-                    _controller.CurrentPropertiesTab.cmdSetDefault.PerformClick();
-                }
-
-                _controller.CurrentPropertiesTab.cmdGetDefault.PerformClick();
-                AfterOpenEnableButtonsAndMenus();
-                if (_controller.IsDBConnected)
-                {
-                    globalStatus.Image = Resources.Blue;
-                    globalStatus.ToolTipText = @"New project.";
-                }
-                else
-                {
-                    globalStatus.Image = Resources.Orange;
-                    globalStatus.ToolTipText = @"New project has no database connection.";
-                }
-                loadingTimer.Text = "Loading:";
-                FillObjects();
-                ClearErrorsAndWarning();
-                statusStrip1.Refresh();
+                openFileDialog.FileName = fileName;
             }
-        }
-
-        private void OpenToolStripMenuItemClick(object sender, EventArgs e)
-        {
-            if (ForceLoadCodeSmith())
+            FillDatabaseObjects();
+            FillObjects();
+            if (_controller.IsDBConnected)
             {
-                ofdLoad.InitialDirectory = _controller.ProjectsDirectory;
-                DialogResult result = ofdLoad.ShowDialog(this);
-                if (result == DialogResult.OK)
-                {
-                    _controller.ProjectsDirectory = ofdLoad.FileName.Substring(0, ofdLoad.FileName.LastIndexOf('\\'));
-                    ConfigTools.Change("ProjectsDirectory", _controller.ProjectsDirectory);
-                    Application.DoEvents();
-                    Cursor.Current = Cursors.WaitCursor;
-                    OpenProjectFile(ofdLoad.FileName);
-                    HandleMruItemsNewCurrent(ofdLoad.FileName);
-                    Cursor.Current = Cursors.Default;
-                    Text = _controller.CurrentUnit.ProjectName + @" - " + BaseFormText;
-                    AfterOpenEnableButtonsAndMenus();
-                }
+                globalStatus.Image = Resources.Blue;
+                globalStatus.ToolTipText = @"Project loaded.";
             }
-        }
-
-        private void SaveToolStripMenuItemClick(object sender, EventArgs e)
-        {
-            Application.DoEvents();
-            if (!_isNewProject && ofdLoad.FileName.Length > 1)
-            {
-                Cursor.Current = Cursors.WaitCursor;
-                Application.DoEvents();
-                _controller.Save(ofdLoad.FileName);
-                HandleMruItemsNewCurrent(ofdLoad.FileName);
-                Cursor.Current = Cursors.Default;
-                Text = _controller.CurrentUnit.ProjectName + @" - " + BaseFormText;
-                return;
-            }
-
-            SaveAsToolStripMenuItemClick(sender, e);
-        }
-
-        private void SaveAsToolStripMenuItemClick(object sender, EventArgs e)
-        {
-            Application.DoEvents();
-            if (ofdLoad.FileName.Length > 1)
-                sfdSave.FileName = _controller.RetrieveFilename(ofdLoad.FileName);
-            else if (_controller.CurrentUnit != null)
-                sfdSave.FileName = _controller.CurrentUnit.ProjectName + ".xml";
             else
-                sfdSave.FileName = "Project.xml";
-
-            sfdSave.InitialDirectory = _controller.ProjectsDirectory;
-            DialogResult result = sfdSave.ShowDialog(this);
-            if (result == DialogResult.OK)
             {
-                _controller.ProjectsDirectory = sfdSave.FileName.Substring(0, sfdSave.FileName. LastIndexOf('\\'));
-                ConfigTools.Change("ProjectsDirectory", _controller.ProjectsDirectory);
-                Cursor.Current = Cursors.WaitCursor;
-                Application.DoEvents();
-                _controller.Save(sfdSave.FileName);
-                ofdLoad.FileName = sfdSave.FileName;
-                HandleMruItemsNewCurrent(ofdLoad.FileName);
-                _isNewProject = false;
-                Cursor.Current = Cursors.Default;
-                Text = _controller.CurrentUnit.ProjectName + @" - " + BaseFormText;
+                globalStatus.Image = Resources.Orange;
+                globalStatus.ToolTipText = @"No database connection.";
             }
+            statusStrip.Refresh();
         }
 
-        private void PropertiesToolStripMenuItemClick(object sender, EventArgs e)
+        #endregion
+
+        #region Project menu
+
+        private void AddAnewObjectToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ShowProjectProperties();
+            _projectPanel.AddNewObject();
         }
 
-        public void ShowProjectProperties()
+        private void RemoveSelectedObjectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _projectPanel.RemoveSelected();
+        }
+
+        private void DuplicateObjectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _projectPanel.DuplicateSelected();
+        }
+
+        private void SelectAllObjectsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _projectPanel.SelectAll();
+        }
+
+        private void NewObjectRelationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _projectPanel.AddNewObjectRelation();
+        }
+
+        private void AddToObjectRelationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _projectPanel.AddToObjectRelationBuilder();
+        }
+
+        private void PropertiesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (_controller.CurrentUnit != null)
             {
@@ -833,7 +999,7 @@ namespace CslaGenerator
                     if (_controller.CurrentPropertiesTab.Visible)
                         _controller.CurrentPropertiesTab.Focus();
                     else
-                        _controller.CurrentPropertiesTab.Show(dockPanel1);
+                        _controller.CurrentPropertiesTab.Show(dockPanel);
                 }
             }
             else
@@ -843,18 +1009,22 @@ namespace CslaGenerator
             }
         }
 
-        private void ConnectToolStripMenuItemClick(object sender, EventArgs e)
+        #endregion
+
+        #region Database menu
+
+        private void ConnectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Connect();
         }
 
-        private void RefreshSchemaToolStripMenuItemClick(object sender, EventArgs e)
+        private void RefreshSchemaToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (dbSchemaPanel != null)
-                dbSchemaPanel.BuildSchemaTree();
+            if (_dbSchemaPanel != null)
+                _dbSchemaPanel.BuildSchemaTree();
         }
 
-        private void RetrieveSummariesToolStripMenuItemClick(object sender, EventArgs e)
+        private void RetrieveSummariesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string msg = @"Do you want to retrieve summaries for all objects or just the current object?";
             msg += Environment.NewLine;
@@ -872,7 +1042,7 @@ namespace CslaGenerator
                 }
                 else
                 {
-                    foreach (ValueProperty vp in dbSchemaPanel.CslaObjectInfo.ValueProperties)
+                    foreach (ValueProperty vp in _dbSchemaPanel.CslaObjectInfo.ValueProperties)
                         vp.RetrieveSummaryFromColumnDefinition();
                 }
             }
@@ -880,278 +1050,146 @@ namespace CslaGenerator
 
         #endregion
 
-        #region Toolbar Handlers
+        #region Database helpers
 
-        private void AddAnewObjectToolStripMenuItemClick(object sender, EventArgs e)
+        private void Connect()
         {
-            projectPanel.AddNewObject();
-        }
-
-        private void RemoveSelectedObjectToolStripMenuItemClick(object sender, EventArgs e)
-        {
-            projectPanel.RemoveSelected();
-        }
-
-        private void DuplicateObjectToolStripMenuItemClick(object sender, EventArgs e)
-        {
-            projectPanel.DuplicateSelected();
-        }
-
-        private void SelectAllObjectsToolStripMenuItemClick(object sender, EventArgs e)
-        {
-            projectPanel.SelectAll();
-        }
-
-        private void NewObjectRelationToolStripMenuItemClick(object sender, EventArgs e)
-        {
-            projectPanel.AddNewObjectRelation();
-        }
-
-        private void AddToObjectRelationToolStripMenuItemClick(object sender, EventArgs e)
-        {
-            projectPanel.AddToObjectRelationBuilder();
-        }
-
-        private void NewProjectButtonClick(object sender, EventArgs e)
-        {
-            NewToolStripMenuItemClick(sender, e);
-        }
-
-        private void OpenProjectButtonClick(object sender, EventArgs e)
-        {
-            OpenToolStripMenuItemClick(sender, e);
-        }
-
-        private void SaveProjectButtonClick(object sender, EventArgs e)
-        {
-            SaveToolStripMenuItemClick(sender, e);
-        }
-
-        private void AddObjectButtonClick(object sender, EventArgs e)
-        {
-            projectPanel.AddNewObject();
-        }
-
-        private void DeleteObjectButtonClick(object sender, EventArgs e)
-        {
-            projectPanel.RemoveSelected();
-        }
-
-        private void DuplicateObjectButtonClick(object sender, EventArgs e)
-        {
-            projectPanel.DuplicateSelected();
-        }
-
-        private void MoveuUpObjectButtonClick(object sender, EventArgs e)
-        {
-            projectPanel.MoveUpSelected();
-        }
-
-        private void MoveDownObjectButtonClick(object sender, EventArgs e)
-        {
-            projectPanel.MoveDownSelected();
-        }
-
-        private void NewObjectRelationButtonClick(object sender, EventArgs e)
-        {
-            projectPanel.AddNewObjectRelation();
-        }
-
-        private void AddToObjectRelationButtonClick(object sender, EventArgs e)
-        {
-            projectPanel.AddToObjectRelationBuilder();
-        }
-
-        private void ConnectDatabaseButtonClick(object sender, EventArgs e)
-        {
-            Connect();
-        }
-
-        private void TsbGenerateClick(object sender, EventArgs e)
-        {
-            Generate();
-        }
-
-        private void TsbCancelClick(object sender, EventArgs e)
-        {
-            if (Generating)
-                _generator.Abort();
-        }
-
-        private void GeneratorStep(string e)
-        {
-            if (progressBar.Value < progressBar.Maximum)
+            if (_controller.CurrentUnit != null)
             {
-                Invoke((MethodInvoker)delegate { progressBar.Value++; });
+                Application.DoEvents();
+                _controller.Connect();
+                FillDatabaseObjects();
+                if (_controller.IsDBConnected)
+                {
+                    globalStatus.Image = Resources.Blue;
+                    if (globalStatus.ToolTipText == @"New project has no database connection.")
+                        globalStatus.ToolTipText = @"New project.";
+                }
             }
+            else
+                MessageBox.Show(@"You must load or start a new project before connecting to a database",
+                                @"CslaGenerator", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         #endregion
 
-        #region Project Panels
+        #region Tools menu
 
-        private bool _appClosing;
-
-        private void PanelsSetUp()
+        private void LocateToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            dockPanel1.BringToFront();
-            dockPanel1.Dock = DockStyle.Fill;
-
-            var output = new OutputWindow();
-            output.VisibleChanged +=
-                delegate(object sender, EventArgs e) { outputWindowToolStripMenuItem.Checked = ((DockContent)sender).Visible; };
-            output.FormClosing += PaneFormClosing;
-            output.Show(dockPanel1);
-
-            // ReSharper disable JoinDeclarationAndInitializer
-            DockContent pane;
-            // ReSharper restore JoinDeclarationAndInitializer
-            //set up docking for the PropertyGrid
-            Controls.Remove(PropertyGrid);
-            // ReSharper disable UseObjectOrCollectionInitializer
-            pane = new DockContent();
-            // ReSharper restore UseObjectOrCollectionInitializer
-            pane.Icon = Icon.FromHandle(Resources.Properties.GetHicon());
-            pane.Controls.Add(PropertyGrid);
-            pane.DockAreas = DockAreas.DockRight |
-                             DockAreas.DockLeft |
-                             DockAreas.Float;
-            PropertyGrid.Dock = DockStyle.Fill;
-            pane.Text = @"Csla Object Info";
-            pane.VisibleChanged +=
-                delegate(object sender, EventArgs e) { objectPropertiesPanelToolStripMenuItem.Checked = ((DockContent)sender).Visible; };
-            pane.FormClosing += PaneFormClosing;
-            _propertyGridDockPanel = pane;
-            pane.Show(dockPanel1);
-            //set up docking for the web browser
-            Controls.Remove(webBrowser1);
-            pane = new DockContent();
-            pane.Controls.Add(webBrowser1);
-            webBrowser1.Dock = DockStyle.Fill;
-            pane.DockAreas = DockAreas.Float | DockAreas.Document;
-            pane.MdiParent = this;
-            pane.Text = @"Start Page";
-            pane.VisibleChanged +=
-                delegate(object sender, EventArgs e) { mainPageToolStripMenuItem.Checked = ((DockContent)sender).Visible; };
-            pane.FormClosing += PaneFormClosing;
-            _webBrowserDockPanel = pane;
-            pane.Show(dockPanel1);
-
-            //set up docking for the object relations builder
-            Controls.Remove(objectRelationsBuilder);
-            pane = new DockContent();
-            pane.Controls.Add(objectRelationsBuilder);
-            objectRelationsBuilder.Dock = DockStyle.Fill;
-            pane.DockAreas = DockAreas.Float | DockAreas.Document;
-            pane.MdiParent = this;
-            pane.Text = @"Object Relations Builder";
-            pane.VisibleChanged +=
-                delegate(object sender, EventArgs e) { objectRelationsBuilderPageToolStripMenuItem.Checked = ((DockContent)sender).Visible; };
-            pane.FormClosing += PaneFormClosing;
-            ObjectRelationsBuilderDockPanel = pane;
-            //            pane.Show(dockPanel1);
-            _webBrowserDockPanel.BringToFront();
-
-            //set up docking for the Project Panel);
-            Controls.Remove(projectPanel);
-            projectPanel.Dock = DockStyle.Fill;
-            // ReSharper disable UseObjectOrCollectionInitializer
-            pane = new DockContent();
-            // ReSharper restore UseObjectOrCollectionInitializer
-            pane.Icon = Icon.FromHandle(Resources.Classes.GetHicon());
-            pane.Controls.Add(projectPanel);
-            pane.DockAreas = DockAreas.DockLeft |
-                             DockAreas.DockRight |
-                             DockAreas.Float;
-            pane.ShowHint = DockState.DockLeft;
-            pane.Text = @"CslaGenFork Project";
-            pane.VisibleChanged +=
-                delegate(object sender, EventArgs e) { projectPanelToolStripMenuItem.Checked = ((DockContent)sender).Visible; };
-            pane.FormClosing += PaneFormClosing;
-            _projectDockPanel = pane;
-            pane.Show(dockPanel1);
-        }
-
-        private void PaneFormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (_appClosing)
-                return;
-            SaveBeforeClose(true);
-            e.Cancel = true;
-            ((DockContent)sender).Hide();
-        }
-
-        protected override void OnClosing(CancelEventArgs e)
-        {
-            _appClosing = true;
-            base.OnClosing(e);
-        }
-
-        private void ObjectPropertiesPanelToolStripMenuItemClick(object sender, EventArgs e)
-        {
-            if (objectPropertiesPanelToolStripMenuItem.Checked)
-                _propertyGridDockPanel.Hide();
+            var tDirDialog = new FolderBrowserDialog();
+            tDirDialog.Description = @"Current folder location of the CslaGenFork templates is:" + Environment.NewLine +
+                                     _controller.TemplatesDirectory + Environment.NewLine +
+                                     @"Select a new folder location and press OK.";
+            tDirDialog.ShowNewFolderButton = false;
+            if (!string.IsNullOrEmpty(_controller.TemplatesDirectory))
+                tDirDialog.SelectedPath = _controller.TemplatesDirectory;
             else
-                _propertyGridDockPanel.Show(dockPanel1);
+                tDirDialog.RootFolder = Environment.SpecialFolder.Desktop;
+
+            DialogResult dialogResult = tDirDialog.ShowDialog();
+            if (dialogResult == DialogResult.OK)
+            {
+                string tdir = tDirDialog.SelectedPath;
+                if (tDirDialog.SelectedPath.LastIndexOf('\\') != tDirDialog.SelectedPath.Length - 1)
+                    tdir += @"\";
+                _controller.TemplatesDirectory = tdir;
+                ConfigTools.Change("TemplatesDirectory", _controller.TemplatesDirectory);
+            }
         }
 
-        private void MainPageToolStripMenuItemClick(object sender, EventArgs e)
+        private void CodeSmithExtensionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Windows7Security.StartCodeSmithHandler();
+        }
+
+        #endregion
+
+        #region View menu
+
+        private void ProjectPanelToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (projectPanelToolStripMenuItem.Checked)
+                _projectPanel.Hide();
+            else
+                _projectPanel.Show(dockPanel);
+        }
+
+        private void MainPageToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (mainPageToolStripMenuItem.Checked)
                 _webBrowserDockPanel.Hide();
             else
-                _webBrowserDockPanel.Show(dockPanel1);
+                _webBrowserDockPanel.Show(dockPanel);
         }
 
         private void ObjectRelationsBuilderPageToolStripMenuItemClick(object sender, EventArgs e)
         {
             if (objectRelationsBuilderPageToolStripMenuItem.Checked)
-                ObjectRelationsBuilderDockPanel.Hide();
+                ObjectRelationsBuilderPanel.Hide();
             else
             {
                 if (_controller.CurrentUnit != null)
-                    ObjectRelationsBuilderDockPanel.Show(dockPanel1);
+                    ObjectRelationsBuilderPanel.Show(dockPanel);
             }
         }
 
-        private void ProjectPanelToolStripMenuItemClick(object sender, EventArgs e)
+        private void ObjectPropertiesPanelToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (projectPanelToolStripMenuItem.Checked)
-                _projectDockPanel.Hide();
+            if (objectPropertiesPanelToolStripMenuItem.Checked)
+                _objectInfoPanel.Hide();
             else
-                _projectDockPanel.Show(dockPanel1);
+                _objectInfoPanel.Show(dockPanel);
         }
 
-        private void OutputWindowToolStripMenuItemClick(object sender, EventArgs e)
+        private void OutputWindowToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (outputWindowToolStripMenuItem.Checked)
                 OutputWindow.Current.Hide();
             else
-                OutputWindow.Current.Show(dockPanel1);
+                OutputWindow.Current.Show(dockPanel);
         }
 
         #endregion
 
-        private void OnSelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
-        {
-            CslaObjectInfo cslaObj = ((PropertyBag)((PropertyGrid)sender).SelectedObject).SelectedObject[0];
-            switch (e.NewSelection.Label)
-            {
-                case "Create Authorization Type":
-                    cslaObj.ActionProperty = AuthorizationActions.CreateObject;
-                    break;
-                case "Get Authorization Type":
-                    cslaObj.ActionProperty = AuthorizationActions.GetObject;
-                    break;
-                case "Update Authorization Type":
-                    cslaObj.ActionProperty = AuthorizationActions.EditObject;
-                    break;
-                case "Delete Authorization Type":
-                    cslaObj.ActionProperty = AuthorizationActions.DeleteObject;
-                    break;
-            }
+        #region Plugin menu
 
+        private void PluginMenuClick(object sender, EventArgs e)
+        {
+            try
+            {
+                foreach (ISimplePlugin plugin in _plugins)
+                {
+                    plugin.Catalog = GeneratorController.Catalog;
+                    plugin.Unit = _controller.CurrentUnit;
+                    plugin.SelectedObjects = _projectPanel.GetSelectedObjects();
+                }
+                var menu = (ToolStripMenuItem)sender;
+                var cmd = (ScriptCommandInfo)menu.Tag;
+                cmd.RunCommand();
+            }
+            catch (Exception ex)
+            {
+                OutputWindow.Current.AddOutputInfo("Error running plugin:");
+                OutputWindow.Current.AddOutputInfo(ex.Message);
+            }
         }
+
+        #endregion
+
+        #region Help menu
+
+        private void AboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var frm = new AboutBox())
+            {
+                frm.ShowDialog();
+            }
+        }
+
+        #endregion
+
+        #region Status bar
 
         private void ClearErrorsAndWarning()
         {
@@ -1191,22 +1229,25 @@ namespace CslaGenerator
             objects.Text = string.Format("Objects: {0}", _controller.CurrentUnit.CslaObjects.Count);
         }
 
-        private void errors_DoubleClick(object sender, EventArgs e)
+        private void Errors_DoubleClick(object sender, EventArgs e)
         {
             _errorPannel.Fill(_generator.ErrorReport);
             _errorPannel.TabText = @"Errors";
             //_errorPannel.VisibleChanged += delegate(object sender, EventArgs e) { outputWindowToolStripMenuItem.Checked = ((DockContent)sender).Visible; };
             _errorPannel.FormClosing += PaneFormClosing;
-            _errorPannel.Show(dockPanel1);
+            _errorPannel.Show(_outputPanel.Pane, _outputPanel);
         }
 
-        private void warnings_DoubleClick(object sender, EventArgs e)
+        private void Warnings_DoubleClick(object sender, EventArgs e)
         {
             _warningPannel.Fill(_generator.WarningReport);
             _warningPannel.TabText = @"Warnings";
             //_warningPannel.VisibleChanged += delegate(object sender, EventArgs e) { outputWindowToolStripMenuItem.Checked = ((DockContent)sender).Visible; };
             _warningPannel.FormClosing += PaneFormClosing;
-            _warningPannel.Show(dockPanel1);
+            _warningPannel.Show(_outputPanel.Pane, _outputPanel);
         }
+        
+        #endregion
+
     }
 }

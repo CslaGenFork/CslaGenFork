@@ -19,6 +19,28 @@ namespace CslaGenerator
 {
     public class GeneratorController : IDisposable
     {
+        #region Main (application entry point)
+
+        /// <summary>
+        /// The main entry point for the application.
+        /// </summary>
+        /// <param name="args">
+        /// Command line arguments.  First arg can be a filename to load.
+        /// </param>
+        [STAThread]
+        static void Main(string[] args)
+        {
+            var controller = new GeneratorController();
+            controller.MainForm.Closing += controller.GeneratorFormClosing;
+            controller.CommandLineArgs = args;
+            // process the command line args here so we have a UI, also, we can not process in Init without
+            // modifying more code to take args[]
+            controller.ProcessCommandLineArgs();
+            Application.Run();
+        }
+
+        #endregion
+
         #region Private Fields
 
         private string[] _commandlineArgs;
@@ -57,9 +79,9 @@ namespace CslaGenerator
             _mainForm = new MainForm(this);
             _mainForm.ProjectPanel.SelectedItemsChanged += CslaObjectList_SelectedItemsChanged;
             _mainForm.ProjectPanel.LastItemRemoved += delegate { _currentCslaObject = null; };
-            _mainForm.ObjectRelationsBuilder.SelectedItemsChanged += AssociativeEntitiesList_SelectedItemsChanged;
+            _mainForm.ObjectRelationsBuilderPanel.SelectedItemsChanged += AssociativeEntitiesList_SelectedItemsChanged;
             _mainForm.Show();
-            _mainForm.formSizePosition1.RestoreFormSizePosition();
+            _mainForm.formSizePosition.RestoreFormSizePosition();
         }
 
         public void Dispose()
@@ -86,28 +108,6 @@ namespace CslaGenerator
 
         #endregion
 
-        #region Main (application entry point)
-
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
-        /// <param name="args">
-        /// Command line arguments.  First arg can be a filename to load.
-        /// </param>
-        [STAThread]
-        static void Main(string[] args)
-        {
-            var controller = new GeneratorController();
-            controller.MainForm.Closing += controller.GeneratorForm_Closing;
-            controller.CommandLineArgs = args;
-            // process the command line args here so we have a UI, also, we can not process in Init without
-            // modifying more code to take args[]
-            controller.ProcessCommandLineArgs();
-            Application.Run();
-        }
-
-        #endregion
-
         #region Public Properties
 
         public CslaGeneratorUnit CurrentUnit
@@ -115,7 +115,7 @@ namespace CslaGenerator
             get { return _currentUnit; }
             private set
             {
-                _mainForm.ObjectRelationsBuilderDockPanel.Show(_mainForm.DockPanel);
+                _mainForm.ObjectRelationsBuilderPanel.Show(_mainForm.DockPanel);
                 if (_currentUnit != null)
                 {
                     if (_currentPropertiesTab != null && !_currentPropertiesTab.IsDisposed)
@@ -356,7 +356,7 @@ namespace CslaGenerator
             _currentUnit.ConnectionString = ConnectionFactory.ConnectionString;
             BindControls();
             EnableButtons();
-            _mainForm.PropertyGrid.SelectedObject = null;
+            _mainForm.ObjectInfoGrid.SelectedObject = null;
         }
 
         public void Save(string fileName)
@@ -454,14 +454,14 @@ namespace CslaGenerator
         {
             if (_currentUnit != null)
             {
-                _mainForm.ObjectRelationsBuilder.AssociativeEntities = _currentUnit.AssociativeEntities;
-                _mainForm.ObjectRelationsBuilder.FillViews(true);
-                _mainForm.ObjectRelationsBuilder.GetCurrentListBox().ClearSelected();
-                if (_mainForm.ObjectRelationsBuilder.GetCurrentListBox().Items.Count > 0)
-                    _mainForm.ObjectRelationsBuilder.GetCurrentListBox().SelectedIndex = 0;
+                _mainForm.ObjectRelationsBuilderPanel.AssociativeEntities = _currentUnit.AssociativeEntities;
+                _mainForm.ObjectRelationsBuilderPanel.FillViews(true);
+                _mainForm.ObjectRelationsBuilderPanel.GetCurrentListBox().ClearSelected();
+                if (_mainForm.ObjectRelationsBuilderPanel.GetCurrentListBox().Items.Count > 0)
+                    _mainForm.ObjectRelationsBuilderPanel.GetCurrentListBox().SelectedIndex = 0;
 
                 // make sure the previous stored selection is cleared
-                _mainForm.ObjectRelationsBuilder.ClearSelectedItems();
+                _mainForm.ObjectRelationsBuilderPanel.ClearSelectedItems();
             }
         }
 
@@ -545,8 +545,9 @@ namespace CslaGenerator
 
         #region Event Handlers
 
-        private void GeneratorForm_Closing(object sender, CancelEventArgs e)
+        private void GeneratorFormClosing(object sender, CancelEventArgs e)
         {
+//            _mainForm.SaveDockInfo();
             Application.Exit();
         }
 
@@ -590,15 +591,15 @@ namespace CslaGenerator
             }
 
             if (selectedItems.Count == 0)
-                _mainForm.PropertyGrid.SelectedObject = null;
+                _mainForm.ObjectInfoGrid.SelectedObject = null;
             else
-                _mainForm.PropertyGrid.SelectedObject = new PropertyBag(selectedItems.ToArray(), _propertyContext);
+                _mainForm.ObjectInfoGrid.SelectedObject = new PropertyBag(selectedItems.ToArray(), _propertyContext);
         }
 
         void ReloadBuilderPropertyGrid()
         {
             var selectedItems = new List<AssociativeEntity>();
-            var listBoxSelectedItems = _mainForm.ObjectRelationsBuilder.GetCurrentListBox().SelectedItems;
+            var listBoxSelectedItems = _mainForm.ObjectRelationsBuilderPanel.GetCurrentListBox().SelectedItems;
 
             foreach (AssociativeEntity obj in listBoxSelectedItems)
             {
@@ -618,7 +619,7 @@ namespace CslaGenerator
                 if (_currentAssociativeEntitiy == null)
                     _currentAssociativeEntitiy = selectedItems[0];
             }
-            _mainForm.ObjectRelationsBuilder.SetAllPropertyGridSelectedObject(_currentAssociativeEntitiy);
+            _mainForm.ObjectRelationsBuilderPanel.SetAllPropertyGridSelectedObject(_currentAssociativeEntitiy);
         }
 
         #endregion
@@ -747,7 +748,7 @@ namespace CslaGenerator
             }
         }
 
-        internal void ResortMruItems()
+        internal void ReSortMruItems()
         {
             string[] original = MruItems.ToArray();
             MruItems.Clear();

@@ -11,6 +11,15 @@ namespace CslaGenerator.Util
     /// </summary>
     public static class ConfigTools
     {
+        private static string SharedAppConfig
+        {
+            get
+            {
+                return Application.CommonAppDataPath.Substring(0, Application.CommonAppDataPath.LastIndexOf("\\"))
+                       + @"\SharedApp.config";
+            }
+        }
+
         /// <summary>
         /// Reads the value of a key
         /// </summary>
@@ -40,7 +49,7 @@ namespace CslaGenerator.Util
         {
             var configFile = new ExeConfigurationFileMap
                                  {
-                                     ExeConfigFilename = Application.CommonAppDataPath + @"\SharedApp.config"
+                                     ExeConfigFilename = SharedAppConfig
                                  };
             var config = ConfigurationManager.OpenMappedExeConfiguration(configFile, ConfigurationUserLevel.None);
             var response = string.Empty;
@@ -63,7 +72,7 @@ namespace CslaGenerator.Util
         {
             var configFile = new ExeConfigurationFileMap
                                  {
-                                     ExeConfigFilename = Application.CommonAppDataPath + @"\SharedApp.config"
+                                     ExeConfigFilename = SharedAppConfig
                                  };
             var config = ConfigurationManager.OpenMappedExeConfiguration(configFile, ConfigurationUserLevel.None);
             var response = new List<string>();
@@ -91,7 +100,7 @@ namespace CslaGenerator.Util
         {
             var configFile = new ExeConfigurationFileMap
                                  {
-                                     ExeConfigFilename = Application.CommonAppDataPath + @"\SharedApp.config"
+                                     ExeConfigFilename = SharedAppConfig
                                  };
             var config = ConfigurationManager.OpenMappedExeConfiguration(configFile, ConfigurationUserLevel.None);
             config.AppSettings.Settings.Add(key, value);
@@ -107,7 +116,7 @@ namespace CslaGenerator.Util
         {
             var configFile = new ExeConfigurationFileMap
                                  {
-                                     ExeConfigFilename = Application.CommonAppDataPath + @"\SharedApp.config"
+                                     ExeConfigFilename = SharedAppConfig
                                  };
             var config = ConfigurationManager.OpenMappedExeConfiguration(configFile, ConfigurationUserLevel.None);
             config.AppSettings.Settings.Remove(key);
@@ -124,7 +133,7 @@ namespace CslaGenerator.Util
         {
             var configFile = new ExeConfigurationFileMap
                                  {
-                                     ExeConfigFilename = Application.CommonAppDataPath + @"\SharedApp.config"
+                                     ExeConfigFilename = SharedAppConfig
                                  };
             var config = ConfigurationManager.OpenMappedExeConfiguration(configFile, ConfigurationUserLevel.None);
             config.AppSettings.Settings.Remove(key);
@@ -141,7 +150,7 @@ namespace CslaGenerator.Util
         {
             var configFile = new ExeConfigurationFileMap
                                  {
-                                     ExeConfigFilename = Application.CommonAppDataPath + @"\SharedApp.config"
+                                     ExeConfigFilename = SharedAppConfig
                                  };
             var config = ConfigurationManager.OpenMappedExeConfiguration(configFile, ConfigurationUserLevel.None);
 
