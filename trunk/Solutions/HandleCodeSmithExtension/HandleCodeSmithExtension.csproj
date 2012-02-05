@@ -96,9 +96,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Ionic.Zip.License.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <None Include="Resources\Cgf.ico" />
     <None Include="Resources\Security.png" />
   </ItemGroup>
