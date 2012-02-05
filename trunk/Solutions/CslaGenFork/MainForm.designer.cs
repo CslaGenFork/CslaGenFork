@@ -52,6 +52,7 @@ namespace CslaGenerator
             this.mruItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.mruSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitResetLayoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.projectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addAnewObjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeSelectedObjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -72,8 +73,10 @@ namespace CslaGenerator
             this.codeSmithExtensionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.projectPanelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.mainPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.startPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.objectRelationsBuilderPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.projectPropertiesPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.schemaPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.objectPropertiesPanelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.outputWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pluginsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -109,8 +112,8 @@ namespace CslaGenerator
             this.newObjectRelationButton = new System.Windows.Forms.ToolStripButton();
             this.addToObjectRelationButton = new System.Windows.Forms.ToolStripButton();
             this.connectDatabaseButton = new System.Windows.Forms.ToolStripButton();
-            this.tsbGenerate = new System.Windows.Forms.ToolStripButton();
-            this.tsbCancel = new System.Windows.Forms.ToolStripButton();
+            this.generateButton = new System.Windows.Forms.ToolStripButton();
+            this.cancelButton = new System.Windows.Forms.ToolStripButton();
             this.menuStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -157,6 +160,7 @@ namespace CslaGenerator
             this.mruItem3,
             this.mruItem4,
             this.mruSeparator,
+            this.exitResetLayoutToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(35, 20);
@@ -250,6 +254,13 @@ namespace CslaGenerator
             // 
             this.mruSeparator.Name = "mruSeparator";
             this.mruSeparator.Size = new System.Drawing.Size(109, 6);
+            // 
+            // exitResetLayoutToolStripMenuItem
+            // 
+            this.exitResetLayoutToolStripMenuItem.Name = "exitResetLayoutToolStripMenuItem";
+            this.exitResetLayoutToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.exitResetLayoutToolStripMenuItem.Text = "&Quick Exit (resets docking layout)";
+            this.exitResetLayoutToolStripMenuItem.Click += new System.EventHandler(this.ExitResetLayoutToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
@@ -403,8 +414,10 @@ namespace CslaGenerator
             this.viewToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.projectPanelToolStripMenuItem,
-            this.mainPageToolStripMenuItem,
+            this.startPageToolStripMenuItem,
             this.objectRelationsBuilderPageToolStripMenuItem,
+            this.projectPropertiesPageToolStripMenuItem,
+            this.schemaPageToolStripMenuItem,
             this.objectPropertiesPanelToolStripMenuItem,
             this.outputWindowToolStripMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
@@ -420,14 +433,14 @@ namespace CslaGenerator
             this.projectPanelToolStripMenuItem.Text = "&Project Panel";
             this.projectPanelToolStripMenuItem.Click += new System.EventHandler(this.ProjectPanelToolStripMenuItem_Click);
             // 
-            // mainPageToolStripMenuItem
+            // startPageToolStripMenuItem
             // 
-            this.mainPageToolStripMenuItem.Checked = true;
-            this.mainPageToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.mainPageToolStripMenuItem.Name = "mainPageToolStripMenuItem";
-            this.mainPageToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
-            this.mainPageToolStripMenuItem.Text = "&Main Page";
-            this.mainPageToolStripMenuItem.Click += new System.EventHandler(this.MainPageToolStripMenuItem_Click);
+            this.startPageToolStripMenuItem.Checked = true;
+            this.startPageToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.startPageToolStripMenuItem.Name = "startPageToolStripMenuItem";
+            this.startPageToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
+            this.startPageToolStripMenuItem.Text = "&Start Page";
+            this.startPageToolStripMenuItem.Click += new System.EventHandler(this.StartPageToolStripMenuItem_Click);
             // 
             // objectRelationsBuilderPageToolStripMenuItem
             // 
@@ -435,8 +448,26 @@ namespace CslaGenerator
             this.objectRelationsBuilderPageToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Unchecked;
             this.objectRelationsBuilderPageToolStripMenuItem.Name = "objectRelationsBuilderPageToolStripMenuItem";
             this.objectRelationsBuilderPageToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
-            this.objectRelationsBuilderPageToolStripMenuItem.Text = "Object Relations Builder Page";
+            this.objectRelationsBuilderPageToolStripMenuItem.Text = "Object &Relations Builder Page";
             this.objectRelationsBuilderPageToolStripMenuItem.Click += new System.EventHandler(this.ObjectRelationsBuilderPageToolStripMenuItemClick);
+            // 
+            // projectPropertiesPageToolStripMenuItem
+            // 
+            this.projectPropertiesPageToolStripMenuItem.Checked = true;
+            this.projectPropertiesPageToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Unchecked;
+            this.projectPropertiesPageToolStripMenuItem.Name = "projectPropertiesPageToolStripMenuItem";
+            this.projectPropertiesPageToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
+            this.projectPropertiesPageToolStripMenuItem.Text = "Pro&ject Properties Page";
+            this.projectPropertiesPageToolStripMenuItem.Click += new System.EventHandler(this.ProjectPropertiesPageToolStripMenuItemClick);
+            // 
+            // schemaPageToolStripMenuItem
+            // 
+            this.schemaPageToolStripMenuItem.Checked = true;
+            this.schemaPageToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Unchecked;
+            this.schemaPageToolStripMenuItem.Name = "schemaPageToolStripMenuItem";
+            this.schemaPageToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
+            this.schemaPageToolStripMenuItem.Text = "Sch&ema Page";
+            this.schemaPageToolStripMenuItem.Click += new System.EventHandler(this.SchemaPageToolStripMenuItemClick);
             // 
             // objectPropertiesPanelToolStripMenuItem
             // 
@@ -453,7 +484,7 @@ namespace CslaGenerator
             this.outputWindowToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.outputWindowToolStripMenuItem.Name = "outputWindowToolStripMenuItem";
             this.outputWindowToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
-            this.outputWindowToolStripMenuItem.Text = "Output Window";
+            this.outputWindowToolStripMenuItem.Text = "Outpu&t Window";
             this.outputWindowToolStripMenuItem.Click += new System.EventHandler(this.OutputWindowToolStripMenuItem_Click);
             // 
             // pluginsToolStripMenuItem
@@ -497,8 +528,8 @@ namespace CslaGenerator
             this.toolStripSeparator4,
             this.connectDatabaseButton,
             this.toolStripSeparator5,
-            this.tsbGenerate,
-            this.tsbCancel});
+            this.generateButton,
+            this.cancelButton});
             this.toolStrip.Location = new System.Drawing.Point(0, 24);
             this.toolStrip.Name = "toolStrip1";
             this.toolStrip.Size = new System.Drawing.Size(800, 39);
@@ -832,26 +863,26 @@ namespace CslaGenerator
             // 
             // tsbGenerate
             // 
-            this.tsbGenerate.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbGenerate.Enabled = false;
-            this.tsbGenerate.Image = global::CslaGenerator.Properties.Resources.generate;
-            this.tsbGenerate.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbGenerate.Name = "tsbGenerate";
-            this.tsbGenerate.Size = new System.Drawing.Size(36, 36);
-            this.tsbGenerate.Tag = "Generate";
-            this.tsbGenerate.Text = "Generate";
-            this.tsbGenerate.Click += new System.EventHandler(this.GenerateButton_Click);
+            this.generateButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.generateButton.Enabled = false;
+            this.generateButton.Image = global::CslaGenerator.Properties.Resources.generate;
+            this.generateButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.generateButton.Name = "tsbGenerate";
+            this.generateButton.Size = new System.Drawing.Size(36, 36);
+            this.generateButton.Tag = "Generate";
+            this.generateButton.Text = "Generate";
+            this.generateButton.Click += new System.EventHandler(this.GenerateButton_Click);
             // 
             // tsbCancel
             // 
-            this.tsbCancel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbCancel.Enabled = false;
-            this.tsbCancel.Image = global::CslaGenerator.Properties.Resources.generateCancel;
-            this.tsbCancel.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbCancel.Name = "tsbCancel";
-            this.tsbCancel.Size = new System.Drawing.Size(36, 36);
-            this.tsbCancel.Text = "Cancel";
-            this.tsbCancel.Click += new System.EventHandler(this.CancelButton_Click);
+            this.cancelButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.cancelButton.Enabled = false;
+            this.cancelButton.Image = global::CslaGenerator.Properties.Resources.generateCancel;
+            this.cancelButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.cancelButton.Name = "tsbCancel";
+            this.cancelButton.Size = new System.Drawing.Size(36, 36);
+            this.cancelButton.Text = "Cancel";
+            this.cancelButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
             // MainForm
             // 
@@ -888,6 +919,7 @@ namespace CslaGenerator
         private ToolStripMenuItem openToolStripMenuItem;
         private ToolStripMenuItem saveToolStripMenuItem;
         private ToolStripMenuItem saveasToolStripMenuItem;
+        private ToolStripMenuItem exitResetLayoutToolStripMenuItem;
         private ToolStripMenuItem exitToolStripMenuItem;
         private ToolStripMenuItem projectToolStripMenuItem;
         private ToolStripMenuItem propertiesToolStripMenuItem;
@@ -933,13 +965,15 @@ namespace CslaGenerator
         private ToolStripSeparator toolStripSeparator4;
         private ToolStripButton connectDatabaseButton;
         private ToolStripSeparator toolStripSeparator5;
-        private ToolStripButton tsbGenerate;
-        private ToolStripButton tsbCancel;
+        private ToolStripButton generateButton;
+        private ToolStripButton cancelButton;
         private WeifenLuo.WinFormsUI.Docking.DockPanel dockPanel;
         private ToolStripMenuItem viewToolStripMenuItem;
         private ToolStripMenuItem projectPanelToolStripMenuItem;
-        private ToolStripMenuItem mainPageToolStripMenuItem;
+        private ToolStripMenuItem startPageToolStripMenuItem;
         private ToolStripMenuItem objectRelationsBuilderPageToolStripMenuItem;
+        private ToolStripMenuItem projectPropertiesPageToolStripMenuItem;
+        private ToolStripMenuItem schemaPageToolStripMenuItem;
         private ToolStripMenuItem objectPropertiesPanelToolStripMenuItem;
         private System.ComponentModel.BackgroundWorker backgroundWorker;
         private ToolStripMenuItem outputWindowToolStripMenuItem;

@@ -12,7 +12,7 @@ using CslaGenerator.Plugins;
 using CslaGenerator.Properties;
 using CslaGenerator.Util;
 using CslaGenerator.Util.PropertyBags;
-using WeifenLuo.WinFormsUI.Docking;// http://sourceforge.net/projects/dockpanelsuite/ - MIT license
+using WeifenLuo.WinFormsUI.Docking;
 
 namespace CslaGenerator
 {
@@ -28,6 +28,7 @@ namespace CslaGenerator
         private bool _showingStartPage;
         private bool _generating;
         private bool _appClosing;
+        private bool _resetLayout;
         private GeneratorController _controller = null;
         private ICodeGenerator _generator;
         private List<ISimplePlugin> _plugins = new List<ISimplePlugin>();
@@ -37,6 +38,7 @@ namespace CslaGenerator
         private StartPage _webBrowserDockPanel = new StartPage();
         private GenerationReportViewer _errorPannel = new GenerationReportViewer();
         private GenerationReportViewer _warningPannel = new GenerationReportViewer();
+        private ProjectProperties _projectPropertiesPanel = null;
         private DbSchemaPanel _dbSchemaPanel = null;
         private OutputWindow _outputPanel = new OutputWindow();
         private DeserializeDockContent _deserializeDockContent;
@@ -60,8 +62,8 @@ namespace CslaGenerator
                 mruItem4.Enabled = !value;
                 newProjectButton.Enabled = !value;
                 openProjectButton.Enabled = !value;
-                tsbCancel.Enabled = value;
-                tsbGenerate.Enabled = !value;
+                cancelButton.Enabled = value;
+                generateButton.Enabled = !value;
                 progressBar.Visible = value;
             }
         }
@@ -105,6 +107,12 @@ namespace CslaGenerator
             get { return _objectRelationsBuilderPanel; }
         }
 
+        internal ProjectProperties ProjectPropertiesPanel
+        {
+            get { return _projectPropertiesPanel; }
+            set { _projectPropertiesPanel = value; }
+        }
+
         internal DbSchemaPanel DbSchemaPanel
         {
             get { return _dbSchemaPanel; }
@@ -129,7 +137,7 @@ namespace CslaGenerator
         
         #endregion
 
-        #region Initialization
+        #region Loading
 
         private bool ForceLoadCodeSmith()
         {
@@ -200,7 +208,7 @@ namespace CslaGenerator
             _webBrowserDockPanel.webBrowser.Navigating += WebBrowser_Navigating;
             _webBrowserDockPanel.MdiParent = this;
             _webBrowserDockPanel.VisibleChanged +=
-                delegate(object sender, EventArgs e) { mainPageToolStripMenuItem.Checked = ((DockContent)sender).Visible; };
+                delegate(object sender, EventArgs e) { startPageToolStripMenuItem.Checked = ((DockContent)sender).Visible; };
             _webBrowserDockPanel.FormClosing += PaneFormClosing;
             _webBrowserDockPanel.webBrowser.Navigate(url);
             _webBrowserDockPanel.Show(dockPanel);
@@ -260,6 +268,33 @@ namespace CslaGenerator
             _webBrowserDockPanel.BringToFront();
         }
 
+        /// <summary>
+        /// Activate and show the Project Properties panel.
+        /// </summary>
+        internal void ActivateShowProjectProperties()
+        {
+            _projectPropertiesPanel.MdiParent = this;
+            _projectPropertiesPanel.VisibleChanged +=
+                delegate(object sender, EventArgs e) { projectPropertiesPageToolStripMenuItem.Checked = ((DockContent)sender).Visible; };
+            _projectPropertiesPanel.FormClosing += PaneFormClosing;
+            _projectPropertiesPanel.Show(dockPanel);
+        }
+
+        /// <summary>
+        /// Activate and show the Schema panel.
+        /// </summary>
+        /// <remarks>
+        /// Used by GeneratorController.BuildSchemaTree.
+        /// </remarks>
+        internal void ActivateShowSchema()
+        {
+            _dbSchemaPanel.MdiParent = this;
+            _dbSchemaPanel.VisibleChanged +=
+                delegate(object sender, EventArgs e) { schemaPageToolStripMenuItem.Checked = ((DockContent)sender).Visible; };
+            _dbSchemaPanel.FormClosing += PaneFormClosing;
+            _dbSchemaPanel.Show(dockPanel);
+        }
+
         private void LoadPlugins()
         {
             _plugins = PluginLoader.LoadPlugins();
@@ -294,7 +329,18 @@ namespace CslaGenerator
         private void MainForm_Closing(object sender, CancelEventArgs e)
         {
             _appClosing = true;
-            dockPanel.SaveAsXml(DockSettingsFile, Encoding.UTF8);
+            if (_controller.CurrentProjectProperties != null)
+                _controller.CurrentProjectProperties.Close();
+            _objectRelationsBuilderPanel.Close();
+            _errorPannel.Close();
+            _warningPannel.Close();
+            if (DbSchemaPanel != null)
+                DbSchemaPanel.Close();
+
+            if (_resetLayout)
+                File.Delete(DockSettingsFile);
+            else
+                dockPanel.SaveAsXml(DockSettingsFile, Encoding.UTF8);
         }
 
         private void PaneFormClosing(object sender, FormClosingEventArgs e)
@@ -311,7 +357,7 @@ namespace CslaGenerator
         private DialogResult SaveBeforeClose(bool isClosing)
         {
             DialogResult result = DialogResult.None;
-            if (_controller.CurrentPropertiesTab != null && _controller.CurrentPropertiesTab.IsDirty)
+            if (_controller.CurrentProjectProperties != null && _controller.CurrentProjectProperties.IsDirty)
             {
                 result =
                     MessageBox.Show(
@@ -323,7 +369,7 @@ namespace CslaGenerator
                         MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)
                 {
-                    _controller.CurrentPropertiesTab.cmdApply.PerformClick();
+                    _controller.CurrentProjectProperties.cmdApply.PerformClick();
                     SaveToolStripMenuItem_Click(this, new EventArgs());
                 }
             }
@@ -338,34 +384,6 @@ namespace CslaGenerator
         {
             if (e.KeyCode == Keys.F5 && !Generating)
                 Generate();
-        }
-
-        /// <summary>
-        /// Adds the CTRL to middle pane.
-        /// </summary>
-        /// <param name="dbSchemaPnl">The db schema PNL.</param>
-        /// <remarks>Use by GeneratorController.BuildSchemaTree</remarks>
-        internal void AddCtrlToMiddlePane(DbSchemaPanel dbSchemaPnl)
-        {
-            foreach (Control ctl in dockPanel.Contents)
-            {
-                if (ctl.Text == @"Schema")
-                {
-                    ((Form)ctl).Close();
-                    ctl.Dispose();
-                    break;
-                }
-            }
-
-            var pane = new DockContent();
-            pane.Controls.Add(dbSchemaPnl);
-            dbSchemaPnl.Dock = DockStyle.Fill;
-            pane.DockAreas = DockAreas.Float | DockAreas.Document;
-            pane.CloseButton = false;
-
-            pane.MdiParent = this;
-            pane.Text = @"Schema";
-            pane.Show(dockPanel);
         }
 
         private void WebBrowser_Navigating(object sender, WebBrowserNavigatingEventArgs e)
@@ -487,10 +505,10 @@ namespace CslaGenerator
 
         internal bool ApplyProjectProperties()
         {
-            if (!_controller.CurrentPropertiesTab.ValidateOptions())
+            if (!_controller.CurrentProjectProperties.ValidateOptions())
                 return false;
 
-            if (_controller.CurrentPropertiesTab.IsDirty)
+            if (_controller.CurrentProjectProperties.IsDirty)
             {
                 DialogResult result =
                     MessageBox.Show(
@@ -499,7 +517,7 @@ namespace CslaGenerator
                 switch (result)
                 {
                     case DialogResult.Yes:
-                        _controller.CurrentPropertiesTab.cmdApply.PerformClick();
+                        _controller.CurrentProjectProperties.cmdApply.PerformClick();
                         break;
                     case DialogResult.Cancel:
                         return false;
@@ -590,7 +608,7 @@ namespace CslaGenerator
             addToObjectRelationButton.Enabled = objectSelected;
 
             bool objectsPresent = (ProjectPanel.Objects.Count > 0);
-            tsbGenerate.Enabled = objectsPresent;
+            generateButton.Enabled = objectsPresent;
 
             // Menus
 
@@ -684,11 +702,11 @@ namespace CslaGenerator
                 Text = BaseFormText;
                 if (!File.Exists(Application.CommonAppDataPath + @"\Default.xml"))
                 {
-                    _controller.CurrentPropertiesTab.CmdResetToFactory.PerformClick();
-                    _controller.CurrentPropertiesTab.cmdSetDefault.PerformClick();
+                    _controller.CurrentProjectProperties.CmdResetToFactory.PerformClick();
+                    _controller.CurrentProjectProperties.cmdSetDefault.PerformClick();
                 }
 
-                _controller.CurrentPropertiesTab.cmdGetDefault.PerformClick();
+                _controller.CurrentProjectProperties.cmdGetDefault.PerformClick();
                 AfterOpenEnableButtonsAndMenus();
                 if (_controller.IsDBConnected)
                 {
@@ -795,6 +813,16 @@ namespace CslaGenerator
         private void MruItem4_Click(object sender, EventArgs e)
         {
             HanddleMruItem(4);
+        }
+
+        private void ExitResetLayoutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _resetLayout = true;
+            DialogResult result = SaveBeforeClose(false);
+            if (result == DialogResult.Cancel)
+                return;
+
+            Close();
         }
 
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -994,12 +1022,12 @@ namespace CslaGenerator
         {
             if (_controller.CurrentUnit != null)
             {
-                if (_controller.CurrentPropertiesTab != null)
+                if (_controller.CurrentProjectProperties != null)
                 {
-                    if (_controller.CurrentPropertiesTab.Visible)
-                        _controller.CurrentPropertiesTab.Focus();
+                    if (_controller.CurrentProjectProperties.Visible)
+                        _controller.CurrentProjectProperties.Focus();
                     else
-                        _controller.CurrentPropertiesTab.Show(dockPanel);
+                        _controller.CurrentProjectProperties.Show(dockPanel);
                 }
             }
             else
@@ -1115,9 +1143,9 @@ namespace CslaGenerator
                 _projectPanel.Show(dockPanel);
         }
 
-        private void MainPageToolStripMenuItem_Click(object sender, EventArgs e)
+        private void StartPageToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (mainPageToolStripMenuItem.Checked)
+            if (startPageToolStripMenuItem.Checked)
                 _webBrowserDockPanel.Hide();
             else
                 _webBrowserDockPanel.Show(dockPanel);
@@ -1131,6 +1159,34 @@ namespace CslaGenerator
             {
                 if (_controller.CurrentUnit != null)
                     ObjectRelationsBuilderPanel.Show(dockPanel);
+            }
+        }
+
+        private void ProjectPropertiesPageToolStripMenuItemClick(object sender, EventArgs e)
+        {
+            if (ProjectPropertiesPanel == null)
+                return;
+
+            if (projectPropertiesPageToolStripMenuItem.Checked)
+                ProjectPropertiesPanel.Hide();
+            else
+            {
+                if (_controller.CurrentUnit != null)
+                    ProjectPropertiesPanel.Show(dockPanel);
+            }
+        }
+
+        private void SchemaPageToolStripMenuItemClick(object sender, EventArgs e)
+        {
+            if (DbSchemaPanel == null)
+                return;
+
+            if (schemaPageToolStripMenuItem.Checked)
+                DbSchemaPanel.Hide();
+            else
+            {
+                if (_controller.CurrentUnit != null)
+                    DbSchemaPanel.Show(dockPanel);
             }
         }
 
