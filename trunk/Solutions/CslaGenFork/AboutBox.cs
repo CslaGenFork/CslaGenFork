@@ -11,7 +11,7 @@ namespace CslaGenerator
             InitializeComponent();
         }
 
-        private void AboutBoxLoad(object sender, EventArgs e)
+        private void AboutBox_Load(object sender, EventArgs e)
         {
             lblAppTitle.Text = GetAttr<AssemblyTitleAttribute>().Title;
             lblAppDescription.Text = GetAttr<AssemblyDescriptionAttribute>().Description;
@@ -56,7 +56,7 @@ namespace CslaGenerator
             return linkerDate;
         }*/
 
-        private void Button1Click(object sender, EventArgs e)
+        private void Button_Click(object sender, EventArgs e)
         {
             Close();
         }

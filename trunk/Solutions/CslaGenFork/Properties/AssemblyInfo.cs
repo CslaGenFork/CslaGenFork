@@ -8,11 +8,11 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 //
 [assembly: AssemblyTitle("Csla Generator Fork")]
-[assembly: AssemblyDescription("A CSLA.NET Business Objects and DAL code generation tool using the CodeSmith engine.")]
+[assembly: AssemblyDescription("CSLA.NET Business Objects and Data Access Layer code generation tool.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("CslaGenFork Project")]
 [assembly: AssemblyProduct("Csla Generator Fork")]
-[assembly: AssemblyCopyright("Copyright © CslaGen Project, 2007, 2009 && Tiago Freitas Leal, 2009, 2010, 2011, 2012")]
+[assembly: AssemblyCopyright("Copyright © CslaGen Project 2007, 2009\r\nCopyright © Tiago Freitas Leal 2009, 2010, 2011, 2012")]
 [assembly: AssemblyTrademark("All Rights Reserved.")]
 [assembly: AssemblyCulture("")]
 
