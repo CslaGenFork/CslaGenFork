@@ -14,6 +14,7 @@ using CslaGenerator.Metadata;
 using CslaGenerator.Util;
 using CslaGenerator.Util.PropertyBags;
 using DBSchemaInfo.Base;
+using WeifenLuo.WinFormsUI.Docking;
 
 namespace CslaGenerator
 {
@@ -65,7 +66,7 @@ namespace CslaGenerator
 
         #region Constructors/Dispose
 
-        public GeneratorController()
+        internal GeneratorController()
         {
             Init();
             _current = this;
@@ -106,9 +107,9 @@ namespace CslaGenerator
 
         #endregion
 
-        #region Public Properties
+        #region internal Properties
 
-        public CslaGeneratorUnit CurrentUnit
+        internal CslaGeneratorUnit CurrentUnit
         {
             get { return _currentUnit; }
             private set
@@ -124,19 +125,26 @@ namespace CslaGenerator
                     }
                 }
                 _currentUnit = value;
+
+                if (_mainForm.ProjectPropertiesPanel != null)
+                {
+                    _mainForm.ProjectPropertiesPanel.Close();
+                    _mainForm.ProjectPropertiesPanel.Dispose();
+                }
                 _mainForm.ProjectPropertiesPanel = new ProjectProperties();
                 _mainForm.ProjectPropertiesPanel.LoadInfo();
                 _mainForm.ActivateShowProjectProperties();
             }
         }
 
-        public string TemplatesDirectory { get; set; }
-        public string ProjectsDirectory { get; set; }
-        public string ObjectsDirectory { get; set; }
-        public string RulesDirectory { get; set; }
-        public List<string> MruItems { get; set; }
+        internal CslaGeneratorUnitLayout CurrentUnitLayout { get; set; }
+        internal string TemplatesDirectory { get; set; }
+        internal string ProjectsDirectory { get; set; }
+        internal string ObjectsDirectory { get; set; }
+        internal string RulesDirectory { get; set; }
+        internal List<string> MruItems { get; set; }
 
-        public string[] CommandLineArgs
+        internal string[] CommandLineArgs
         {
             get { return _commandlineArgs; }
             set { _commandlineArgs = value; }
@@ -144,33 +152,20 @@ namespace CslaGenerator
 
         internal ProjectProperties CurrentProjectProperties
         {
-            get
-            {
-                /*if (_mainForm.ProjectPropertiesPanel != null)
-                    if (_mainForm.ProjectPropertiesPanel.IsDisposed)
-                    {
-                        _mainForm.ProjectPropertiesPanel = new ProjectProperties();
-                        _mainForm.ProjectPropertiesPanel.LoadInfo();
-                    }*/
-                return _mainForm.ProjectPropertiesPanel;
-            }
+            get { return _mainForm.ProjectPropertiesPanel; }
         }
 
-        public MainForm MainForm
+        internal MainForm MainForm
         {
             get { return _mainForm; }
             set { _mainForm = value; }
         }
 
-        public string CurrentFilePath
+        internal string CurrentFilePath
         {
             get { return _currentFilePath; }
             set { _currentFilePath = value; }
         }
-
-        #endregion
-
-        #region Internal Properties
 
         internal static ICatalog Catalog
         {
@@ -185,9 +180,9 @@ namespace CslaGenerator
 
         #endregion
 
-        #region Public Methods
+        #region internal Methods
 
-        public void Connect()
+        internal void Connect()
         {
             var frmConn = new ConnectionForm();
             var result = frmConn.ShowDialog();
@@ -201,10 +196,11 @@ namespace CslaGenerator
             }
         }
 
-        public void Load(string fileName)
+        internal void Load(string filePath)
         {
             IsLoading = true;
             LoadingTimer.Restart();
+
             FileStream fs = null;
             try
             {
@@ -214,9 +210,9 @@ namespace CslaGenerator
                 {
                     try
                     {
-                        fs = File.Open(fileName, FileMode.Open);
-                        var s = new XmlSerializer(typeof (CslaGeneratorUnit));
-                        CurrentUnit = (CslaGeneratorUnit) s.Deserialize(fs);
+                        fs = File.Open(filePath, FileMode.Open);
+                        var xml = new XmlSerializer(typeof (CslaGeneratorUnit));
+                        CurrentUnit = (CslaGeneratorUnit) xml.Deserialize(fs);
                         deserialized = true;
                     }
                     catch (InvalidOperationException exception)
@@ -225,19 +221,19 @@ namespace CslaGenerator
                             throw;
 
                         fs.Close();
-                        string[] fileLines = File.ReadAllLines(fileName);
+                        string[] fileLines = File.ReadAllLines(filePath);
                         var fileVersion = FileVersion.ExtractFileVersion(fileLines);
                         if (fileVersion == FileVersion.CurrentFileVersion)
                             throw;
 
                         fileLines = FileVersion.HandleFileVersion(fileVersion, fileLines);
-                        File.WriteAllLines(fileName, fileLines);
+                        File.WriteAllLines(filePath, fileLines);
                     }
                 }
                 _currentUnit.ResetParent();
                 _currentCslaObject = null;
                 _currentAssociativeEntitiy = null;
-                _currentFilePath = GetFilePath(fileName);
+                _currentFilePath = GetFilePath(filePath);
 
                 ConnectionFactory.ConnectionString = _currentUnit.ConnectionString;
                 // check if this is a valid connection, else let the user enter new connection info
@@ -306,7 +302,7 @@ namespace CslaGenerator
             }
             catch (Exception e)
             {
-                var message = fileName + Environment.NewLine + e.Message;
+                var message = filePath + Environment.NewLine + e.Message;
                 if (e.InnerException != null)
                     message += Environment.NewLine + e.InnerException.Message;
                 MessageBox.Show(_mainForm, message, "Loading File Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -315,8 +311,34 @@ namespace CslaGenerator
             {
                 Cursor.Current = Cursors.Default;
                 fs.Close();
-                IsLoading = false;
-                LoadingTimer.Stop();
+            }
+
+            LoadProjectLayout(filePath);
+            IsLoading = false;
+            LoadingTimer.Stop();
+
+            /*if (File.Exists(MainForm.DockSettingsFile))
+            {
+                MainForm.DockPanel.SuspendLayout(true);
+                MainForm.CloseDockContents();
+                MainForm.DockPanel.LoadFromXml(MainForm.DockSettingsFile, MainForm.DeserializeDockContent);
+                MainForm.DockPanel.ResumeLayout(true, true);
+                ShowStartPage();
+                PanelsSetUp();
+            }*/
+        }
+
+        internal void LoadProjectLayout(string filePath)
+        {
+            filePath = ExtractPathWithoutExtension(filePath) + ".Layout";
+            if (File.Exists(filePath))
+            {
+                var fs = File.Open(filePath, FileMode.Open);
+                var xml = new XmlSerializer(typeof(CslaGeneratorUnitLayout));
+                CurrentUnitLayout = (CslaGeneratorUnitLayout)xml.Deserialize(fs);
+                fs.Close();
+
+                MainForm.SetProjectState();
             }
         }
 
@@ -338,9 +360,10 @@ namespace CslaGenerator
             }
         }
 
-        public void NewCslaUnit()
+        internal void NewCslaUnit()
         {
-            CurrentUnit = new CslaGeneratorUnit();
+            _currentUnit = new CslaGeneratorUnit();
+            CurrentUnitLayout = new CslaGeneratorUnitLayout();
             _currentFilePath = Path.GetTempPath() + @"\" + Guid.NewGuid().ToString();
             _currentCslaObject = null;
             _currentUnit.ConnectionString = ConnectionFactory.ConnectionString;
@@ -349,13 +372,14 @@ namespace CslaGenerator
             _mainForm.ObjectInfoGrid.SelectedObject = null;
         }
 
-        public void Save(string fileName)
+        internal void Save(string filePath)
         {
             if (!_mainForm.ApplyProjectProperties())
                 return;
+
             FileStream fs = null;
-            string tempFile = Path.GetTempPath() + Guid.NewGuid().ToString() + ".cslagenerator";
-            bool success = false;
+            var tempFile = Path.GetTempPath() + Guid.NewGuid().ToString() + ".cslagenerator";
+            var success = false;
             try
             {
                 Cursor.Current = Cursors.WaitCursor;
@@ -375,35 +399,70 @@ namespace CslaGenerator
             }
             if (success)
             {
-                File.Delete(fileName);
-                File.Move(tempFile, fileName);
-                _currentFilePath = GetFilePath(fileName);
+                File.Delete(filePath);
+                File.Move(tempFile, filePath);
+                _currentFilePath = GetFilePath(filePath);
+            }
+            SaveProjectLayout(filePath);
+        }
+
+        internal void SaveProjectLayout(string filePath)
+        {
+            _mainForm.GetProjectState();
+            filePath = ExtractPathWithoutExtension(filePath) + ".Layout";
+            FileStream fs = null;
+            var tempFile = Path.GetTempPath() + Guid.NewGuid().ToString() + ".cslagenerator";
+            var success = false;
+            try
+            {
+                Cursor.Current = Cursors.WaitCursor;
+                fs = File.Open(tempFile, FileMode.Create);
+                var s = new XmlSerializer(typeof(CslaGeneratorUnitLayout));
+                s.Serialize(fs, CurrentUnitLayout);
+                success = true;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(_mainForm, @"An error occurred while trying to save: " + Environment.NewLine + e.Message, "Save Error");
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
+                fs.Close();
+            }
+            if (success)
+            {
+                File.Delete(filePath);
+                File.Move(tempFile, filePath);
+                File.SetAttributes(filePath, FileAttributes.Hidden);
             }
         }
 
-        public string RetrieveFilename(string fileName)
+        internal static string ExtractFilename(string filePath)
         {
-            int n = fileName.Length - 1;
-            int x = 0;
-            while (n >= 0)
-            {
-                x = x + 1;
-                if (fileName.Substring(n, 1) == @"\")
-                {
-                    return fileName.Substring(n + 1, x - 1);
-                }
-                n = n - 1;
-            }
-            return "";
+            var slash = filePath.LastIndexOf('\\');
+            if (slash > 0)
+                return filePath.Substring(slash);
+            
+            return filePath;
+        }
+
+        internal static string ExtractPathWithoutExtension(string filePath)
+        {
+            var dot = filePath.LastIndexOf('.');
+            if (dot > 0)
+                return filePath.Substring(0, dot);
+            
+            return filePath;
         }
 
         #endregion
 
-        #region Private Methods
+        #region private Methods
 
         private string GetFilePath(string fileName)
         {
-            FileInfo fi = new FileInfo(fileName);
+            var fi = new FileInfo(fileName);
             return fi.Directory.FullName;
         }
 
@@ -461,6 +520,12 @@ namespace CslaGenerator
             {
                 if (_mainForm.DbSchemaPanel != null && _mainForm.DbSchemaPanel.Visible)
                     _mainForm.DbSchemaPanel.Hide();
+
+                if (_mainForm.DbSchemaPanel != null)
+                {
+                    _mainForm.DbSchemaPanel.Close();
+                    _mainForm.DbSchemaPanel.Dispose();
+                }
                 _mainForm.DbSchemaPanel = new DbSchemaPanel(_currentUnit, _currentCslaObject, connectionString);
                 _mainForm.DbSchemaPanel.BuildSchemaTree();
                 _mainForm.ActivateShowSchema();

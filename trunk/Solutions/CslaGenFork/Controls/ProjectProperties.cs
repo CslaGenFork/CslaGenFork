@@ -7,12 +7,64 @@ using WeifenLuo.WinFormsUI.Docking;
 
 namespace CslaGenerator.Controls
 {
-    public partial class ProjectProperties : DockContent
+    internal partial class ProjectProperties : DockContent
     {
+        #region Fix for form flicker
+
+        // http://www.angryhacker.com/blog/archive/2010/07/21/how-to-get-rid-of-flicker-on-windows-forms-applications.aspx
+
+        int _originalExStyle = -1;
+        private bool _enableFormLevelDoubleBuffering = true;
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                if (_originalExStyle == -1)
+                    _originalExStyle = base.CreateParams.ExStyle;
+                CreateParams cp = base.CreateParams;
+                if (_enableFormLevelDoubleBuffering)
+                    cp.ExStyle |= 0x02000000; // WS_EX_COMPOSITED
+                else
+                    cp.ExStyle = _originalExStyle;
+                return cp;
+            }
+        }
+
+        internal void TurnOnFormLevelDoubleBuffering()
+        {
+            _enableFormLevelDoubleBuffering = true;
+        }
+
+        internal void TurnOffFormLevelDoubleBuffering()
+        {
+            _enableFormLevelDoubleBuffering = false;
+            MaximizeBox = true;
+        }
+
+        private void ProjectProperties_Shown(object sender, EventArgs e)
+        {
+            TurnOffFormLevelDoubleBuffering();
+        }
+
+        private void ProjectProperties_ResizeBegin(object sender, EventArgs e)
+        {
+            SuspendLayout();
+            TurnOnFormLevelDoubleBuffering();
+        }
+
+        private void ProjectProperties_ResizeEnd(object sender, EventArgs e)
+        {
+            TurnOffFormLevelDoubleBuffering();
+            ResumeLayout(true);
+        }
+
+        #endregion
+
         private GenerationParameters _genParams;
         private ProjectParameters _projParams;
 
-        public ProjectProperties()
+        internal ProjectProperties()
         {
             InitializeComponent();
             DockAreas = DockAreas.Document;
@@ -53,7 +105,7 @@ namespace CslaGenerator.Controls
             get { return GeneratorController.Current.CurrentUnit; }
         }
 
-        public void LoadInfo()
+        internal void LoadInfo()
         {
             _genParams = project.GenerationParams.Clone();
             _projParams = project.Params.Clone();
@@ -71,7 +123,7 @@ namespace CslaGenerator.Controls
             chkGenerateInlineQueries.Enabled = false;
         }
 
-        public void SaveInfo()
+        internal void SaveInfo()
         {
             if (_genParams.Dirty)
                 project.GenerationParams = _genParams.Clone();
@@ -195,7 +247,7 @@ namespace CslaGenerator.Controls
             }
         }
 
-        public void ExportParams(string fileName)
+        internal void ExportParams(string fileName)
         {
             if (!ApplyProjectProperties())
                 return;
@@ -287,7 +339,7 @@ namespace CslaGenerator.Controls
             chkSpOneFile.Enabled = _genParams.GenerateSprocs;
         }
 
-        public bool IsDirty
+        internal bool IsDirty
         {
             get { return (_genParams.Dirty || _projParams.Dirty); }
         }
@@ -358,5 +410,115 @@ namespace CslaGenerator.Controls
 
             return result;
         }
+
+        #region Manage state
+
+        internal void GetState()
+        {
+            TabPage mainTabPage = null;
+            TabPage subTabPage = null;
+
+            foreach (var control1 in Controls)
+            {
+                if (control1.GetType() == typeof(TabControl))
+                {
+                    var mainTabControl = control1 as TabControl;
+                    if (mainTabControl != null)
+                    {
+                        foreach (var subControl1 in mainTabControl.TabPages)
+                        {
+                            mainTabPage = subControl1 as TabPage;
+                            if (mainTabPage != null && (mainTabPage.ContainsFocus || mainTabPage.Visible))
+                            {
+                                foreach (var control2 in mainTabPage.Controls)
+                                {
+                                    if (control2.GetType() == typeof(TabControl))
+                                    {
+                                        var subTabControl = control2 as TabControl;
+                                        if (subTabControl != null)
+                                        {
+                                            foreach (var subControl2 in subTabControl.TabPages)
+                                            {
+                                                subTabPage = subControl2 as TabPage;
+                                                if (subTabPage != null && (subTabPage.ContainsFocus || subTabPage.Visible))
+                                                    break;
+                                            }
+                                        }
+                                        break;
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+
+            if (mainTabPage != null)
+                GeneratorController.Current.CurrentUnitLayout.ProjectPropertiesMainTab = mainTabPage.Name;
+            else
+                GeneratorController.Current.CurrentUnitLayout.ProjectPropertiesMainTab = string.Empty;
+
+            if (subTabPage != null)
+                GeneratorController.Current.CurrentUnitLayout.ProjectPropertiesSubTab = subTabPage.Name;
+            else
+                GeneratorController.Current.CurrentUnitLayout.ProjectPropertiesSubTab = string.Empty;
+        }
+
+        internal void SetState()
+        {
+            foreach (var control1 in Controls)
+            {
+                if (control1.GetType() == typeof(TabControl))
+                {
+                    var tabControl1 = control1 as TabControl;
+                    if (tabControl1 != null)
+                    {
+                        ScrollControlIntoView(tabControl1);
+                        tabControl1.Visible = true;
+                        tabControl1.Focus();
+                        for (var index1 = 0; index1 < tabControl1.TabPages.Count; index1++)
+                        {
+                            var tabPage1 = tabControl1.TabPages[index1];
+                            if (tabPage1.Name == GeneratorController.Current.CurrentUnitLayout.ProjectPropertiesMainTab)
+                            {
+                                tabControl1.SelectedIndex = index1;
+                                tabPage1.Focus();
+                                foreach (var control2 in tabPage1.Controls)
+                                {
+                                    if (control2.GetType() == typeof(TabControl))
+                                    {
+                                        var tabControl2 = control2 as TabControl;
+                                        if (tabControl2 != null)
+                                        {
+                                            tabPage1.ScrollControlIntoView(tabControl2);
+                                            tabControl2.Visible = true;
+                                            tabControl2.Focus();
+                                            for (var index2 = 0; index2 < tabControl2.TabPages.Count; index2++)
+                                            {
+                                                var tabPage2 = tabControl2.TabPages[index2];
+                                                if (tabPage2.Name == GeneratorController.Current.CurrentUnitLayout.ProjectPropertiesSubTab)
+                                                {
+                                                    tabControl2.SelectedIndex = index2;
+                                                    tabPage2.Focus();
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        break;
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+
+        #endregion
+
     }
 }

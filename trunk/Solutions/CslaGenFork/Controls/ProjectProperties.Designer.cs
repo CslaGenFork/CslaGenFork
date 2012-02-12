@@ -2,7 +2,7 @@ using System.Windows.Forms;
 
 namespace CslaGenerator.Controls
 {
-    partial class ProjectProperties
+    internal partial class ProjectProperties
     {
         /// <summary>
         /// Required designer variable.
@@ -31,7 +31,7 @@ namespace CslaGenerator.Controls
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.cmdImport = new System.Windows.Forms.Button();
             this.cmdExport = new System.Windows.Forms.Button();
             this.cmdGetDefault = new System.Windows.Forms.Button();
@@ -39,12 +39,12 @@ namespace CslaGenerator.Controls
             this.CmdResetToFactory = new System.Windows.Forms.Button();
             this.cmdUndo = new System.Windows.Forms.Button();
             this.cmdApply = new System.Windows.Forms.Button();
-            this.tabControlMain = new System.Windows.Forms.TabControl();
-            this.tabCreation = new System.Windows.Forms.TabPage();
-            this.tabControlCreation = new System.Windows.Forms.TabControl();
-            this.tabGeneration = new System.Windows.Forms.TabPage();
-            this.tabControlGeneration = new System.Windows.Forms.TabControl();
-            this.tabDefaultsGeneral = new System.Windows.Forms.TabPage();
+            this.MainTabControl = new System.Windows.Forms.TabControl();
+            this.CreationTab = new System.Windows.Forms.TabPage();
+            this.CreationTabControl = new System.Windows.Forms.TabControl();
+            this.GenerationTab = new System.Windows.Forms.TabPage();
+            this.GenerationTabControl = new System.Windows.Forms.TabControl();
+            this.DefaultsGeneralTab = new System.Windows.Forms.TabPage();
             this.lblAlertNewDefaultsGeneral = new System.Windows.Forms.Label();
             this.lblNamespace = new System.Windows.Forms.Label();
             this.txtNamespace = new System.Windows.Forms.TextBox();
@@ -61,7 +61,7 @@ namespace CslaGenerator.Controls
             this.cboCreateReadOnlyObjectsPropertyMode = new System.Windows.Forms.ComboBox();
             this.lblCreateTimestampPropertyMode = new System.Windows.Forms.Label();
             this.cboCreateTimestampPropertyMode = new System.Windows.Forms.ComboBox();
-            this.tabDefaultsDatabase = new System.Windows.Forms.TabPage();
+            this.DefaultsDatabaseTab = new System.Windows.Forms.TabPage();
             this.lblAlertNewDefaultsDatabase = new System.Windows.Forms.Label();
             this.lblDatabase = new System.Windows.Forms.Label();
             this.txtDatabase = new System.Windows.Forms.TextBox();
@@ -79,7 +79,7 @@ namespace CslaGenerator.Controls
             this.txtSingleSPSuffix = new System.Windows.Forms.TextBox();
             this.txtCollectionSuffix = new System.Windows.Forms.TextBox();
             this.chkItemsUseSingleSP = new System.Windows.Forms.CheckBox();
-            this.tabStoredProcs = new System.Windows.Forms.TabPage();
+            this.StoredProcsTab = new System.Windows.Forms.TabPage();
             this.groupBoxPrefixSuffix = new System.Windows.Forms.GroupBox();
             this.lblGeneralSpPrefix = new System.Windows.Forms.Label();
             this.txtGeneralSpPrefix = new System.Windows.Forms.TextBox();
@@ -107,7 +107,7 @@ namespace CslaGenerator.Controls
             this.txtBoolSoftDelete = new System.Windows.Forms.TextBox();
             this.chkIgnoreFilterWhenSoftDeleteIsParam = new System.Windows.Forms.CheckBox();
             this.chkRemoveChildBeforeParent = new System.Windows.Forms.CheckBox();
-            this.tabAdvanced = new System.Windows.Forms.TabPage();
+            this.AdvancedTab = new System.Windows.Forms.TabPage();
             this.groupBoxPKDefaultValues = new System.Windows.Forms.GroupBox();
             this.lblIDGuidDefaultValue = new System.Windows.Forms.Label();
             this.txtIDGuidDefaultValue = new System.Windows.Forms.TextBox();
@@ -134,7 +134,7 @@ namespace CslaGenerator.Controls
             this.chkLogDateAndTime = new System.Windows.Forms.CheckBox();
             this.lblGetUserMethod = new System.Windows.Forms.Label();
             this.txtGetUserMethod = new System.Windows.Forms.TextBox();
-            this.tabGenerationTarget = new System.Windows.Forms.TabPage();
+            this.GenerationTargetTab = new System.Windows.Forms.TabPage();
             this.chkSaveGenerationTarget = new System.Windows.Forms.CheckBox();
             this.lblTarget = new System.Windows.Forms.Label();
             this.cboTarget = new System.Windows.Forms.ComboBox();
@@ -155,7 +155,7 @@ namespace CslaGenerator.Controls
             this.groupBoxServerInvocation = new System.Windows.Forms.GroupBox();
             this.chkSynchronous = new System.Windows.Forms.CheckBox();
             this.chkAsynchronous = new System.Windows.Forms.CheckBox();
-            this.tabGenerationFiles = new System.Windows.Forms.TabPage();
+            this.GenerationFilesTab = new System.Windows.Forms.TabPage();
             this.chkSaveGenerationFiles = new System.Windows.Forms.CheckBox();
             this.lblBaseFilenameSuffix = new System.Windows.Forms.Label();
             this.txtBaseFilenameSuffix = new System.Windows.Forms.TextBox();
@@ -177,7 +177,7 @@ namespace CslaGenerator.Controls
             this.txtDalInterfaceNamespace = new System.Windows.Forms.TextBox();
             this.lblDalObjectNamespace = new System.Windows.Forms.Label();
             this.txtDalObjectNamespace = new System.Windows.Forms.TextBox();
-            this.tabGenerationDatabase = new System.Windows.Forms.TabPage();
+            this.GenerationDatabaseTab = new System.Windows.Forms.TabPage();
             this.chkSaveGenerationDatabase = new System.Windows.Forms.CheckBox();
             this.groupBoxStoredProcs = new System.Windows.Forms.GroupBox();
             this.lblDatabaseConnection = new System.Windows.Forms.Label();
@@ -188,7 +188,7 @@ namespace CslaGenerator.Controls
             this.chkGenerateQueriesWithSchema = new System.Windows.Forms.CheckBox();
             this.chkUseConnectionName = new System.Windows.Forms.CheckBox();
             this.chkGenerateDatabaseClass = new System.Windows.Forms.CheckBox();
-            this.tabGenerationMisc = new System.Windows.Forms.TabPage();
+            this.GenerationMiscTab = new System.Windows.Forms.TabPage();
             this.chkSaveGenerationMisc = new System.Windows.Forms.CheckBox();
             this.lblGenerateAuthorization = new System.Windows.Forms.Label();
             this.cboGenerateAuthorization = new System.Windows.Forms.ComboBox();
@@ -207,23 +207,23 @@ namespace CslaGenerator.Controls
             this.ofdLoad = new System.Windows.Forms.OpenFileDialog();
             this.projectParametersBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.generationParametersBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.tabControlMain.SuspendLayout();
-            this.tabCreation.SuspendLayout();
-            this.tabControlCreation.SuspendLayout();
-            this.tabGeneration.SuspendLayout();
-            this.tabControlGeneration.SuspendLayout();
-            this.tabDefaultsGeneral.SuspendLayout();
-            this.tabDefaultsDatabase.SuspendLayout();
-            this.tabStoredProcs.SuspendLayout();
-            this.tabAdvanced.SuspendLayout();
-            this.tabGenerationTarget.SuspendLayout();
+            this.MainTabControl.SuspendLayout();
+            this.CreationTab.SuspendLayout();
+            this.CreationTabControl.SuspendLayout();
+            this.GenerationTab.SuspendLayout();
+            this.GenerationTabControl.SuspendLayout();
+            this.DefaultsGeneralTab.SuspendLayout();
+            this.DefaultsDatabaseTab.SuspendLayout();
+            this.StoredProcsTab.SuspendLayout();
+            this.AdvancedTab.SuspendLayout();
+            this.GenerationTargetTab.SuspendLayout();
             this.groupBoxUIEnvironment.SuspendLayout();
             this.groupBoxDataAccessLayer.SuspendLayout();
             this.groupBoxServerInvocation.SuspendLayout();
-            this.tabGenerationFiles.SuspendLayout();
-            this.tabGenerationDatabase.SuspendLayout();
+            this.GenerationFilesTab.SuspendLayout();
+            this.GenerationDatabaseTab.SuspendLayout();
             this.groupBoxStoredProcs.SuspendLayout();
-            this.tabGenerationMisc.SuspendLayout();
+            this.GenerationMiscTab.SuspendLayout();
             this.groupBoxReadOnlyObjects.SuspendLayout();
             this.groupBoxObjectRelationsBuilder.SuspendLayout();
             this.groupBoxPrefixSuffix.SuspendLayout();
@@ -235,13 +235,13 @@ namespace CslaGenerator.Controls
             ((System.ComponentModel.ISupportInitialize)(this.generationParametersBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
-            // toolTip1
+            // toolTip
             // 
-            this.toolTip1.IsBalloon = true;
-            //this.toolTip1.AutomaticDelay = 500;//500
-            this.toolTip1.AutoPopDelay = 15000;//5000
-            //this.toolTip1.InitialDelay = 500;//500
-            //this.toolTip1.ReshowDelay = 100;//100
+            this.toolTip.IsBalloon = true;
+            //this.toolTip.AutomaticDelay = 500;//500
+            this.toolTip.AutoPopDelay = 15000;//5000
+            //this.toolTip.InitialDelay = 500;//500
+            //this.toolTip.ReshowDelay = 100;//100
             // 
             // cmdImport
             // 
@@ -318,65 +318,65 @@ namespace CslaGenerator.Controls
             this.cmdApply.Text = "&Apply";
             this.cmdApply.Click += new System.EventHandler(this.CmdApplyClick);
             // 
-            // tabControlMain
+            // MainTabControl
             // 
-            this.tabControlMain.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            this.MainTabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.tabControlMain.Controls.Add(this.tabCreation);
-            this.tabControlMain.Controls.Add(this.tabStoredProcs);
-            this.tabControlMain.Controls.Add(this.tabAdvanced);
-            this.tabControlMain.Controls.Add(this.tabGeneration);
-            this.tabControlMain.Location = new System.Drawing.Point(12, 16);
-            this.tabControlMain.Multiline = true;
-            this.tabControlMain.Name = "tabControl1";
-            this.tabControlMain.SelectedIndex = 0;
-            this.tabControlMain.Size = new System.Drawing.Size(533, 378);
-            this.tabControlMain.TabIndex = 3;
+            this.MainTabControl.Controls.Add(this.CreationTab);
+            this.MainTabControl.Controls.Add(this.StoredProcsTab);
+            this.MainTabControl.Controls.Add(this.AdvancedTab);
+            this.MainTabControl.Controls.Add(this.GenerationTab);
+            this.MainTabControl.Location = new System.Drawing.Point(12, 16);
+            this.MainTabControl.Multiline = true;
+            this.MainTabControl.Name = "MainTabControl";
+            this.MainTabControl.SelectedIndex = 0;
+            this.MainTabControl.Size = new System.Drawing.Size(533, 378);
+            this.MainTabControl.TabIndex = 3;
             // 
-            // tabCreation
+            // CreationTab
             // 
-            this.tabCreation.Controls.Add(this.tabControlCreation);
-            this.tabCreation.Location = new System.Drawing.Point(4, 22);
-            this.tabCreation.Name = "tabCreation";
-            this.tabCreation.Size = new System.Drawing.Size(525, 329);
-            this.tabCreation.TabIndex = 1;
-            this.tabCreation.Text = "Creation";
-            this.tabCreation.UseVisualStyleBackColor = true;
+            this.CreationTab.Controls.Add(this.CreationTabControl);
+            this.CreationTab.Location = new System.Drawing.Point(4, 22);
+            this.CreationTab.Name = "CreationTab";
+            this.CreationTab.Size = new System.Drawing.Size(525, 329);
+            this.CreationTab.TabIndex = 1;
+            this.CreationTab.Text = "Creation";
+            this.CreationTab.UseVisualStyleBackColor = true;
             // 
-            // tabControlCreation
+            // CreationTabControl
             // 
-            this.tabControlCreation.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            this.CreationTabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.tabControlCreation.Controls.Add(this.tabDefaultsGeneral);
-            this.tabControlCreation.Controls.Add(this.tabDefaultsDatabase);
-            this.tabControlCreation.Location = new System.Drawing.Point(0, 0);
-            this.tabControlCreation.Name = "tabControlCreation";
-            this.tabControlCreation.SelectedIndex = 0;
-            this.tabControlCreation.Size = new System.Drawing.Size(525, 334);
-            this.tabControlCreation.TabIndex = 2;
+            this.CreationTabControl.Controls.Add(this.DefaultsGeneralTab);
+            this.CreationTabControl.Controls.Add(this.DefaultsDatabaseTab);
+            this.CreationTabControl.Location = new System.Drawing.Point(0, 0);
+            this.CreationTabControl.Name = "CreationTabControl";
+            this.CreationTabControl.SelectedIndex = 0;
+            this.CreationTabControl.Size = new System.Drawing.Size(525, 334);
+            this.CreationTabControl.TabIndex = 2;
             // 
-            // tabDefaultsGeneral
+            // DefaultsGeneralTab
             // 
-            this.tabDefaultsGeneral.Controls.Add(this.lblAlertNewDefaultsGeneral);
-            this.tabDefaultsGeneral.Controls.Add(this.lblNamespace);
-            this.tabDefaultsGeneral.Controls.Add(this.txtNamespace);
-            this.tabDefaultsGeneral.Controls.Add(this.lblFolder);
-            this.tabDefaultsGeneral.Controls.Add(this.txtFolder);
-            this.tabDefaultsGeneral.Controls.Add(this.lblCreateTimestampPropertyMode);
-            this.tabDefaultsGeneral.Controls.Add(this.cboCreateTimestampPropertyMode);
-            this.tabDefaultsGeneral.Controls.Add(this.chkSmartDateDefault);
-            this.tabDefaultsGeneral.Controls.Add(this.chkDatesDefaultStringWithTypeConversion);
-            this.tabDefaultsGeneral.Controls.Add(this.chkAutoCriteria);
-            this.tabDefaultsGeneral.Controls.Add(this.chkAutoTimestampCriteria);
-            this.tabDefaultsGeneral.Controls.Add(this.groupBoxReadOnlyObjects);
-            this.tabDefaultsGeneral.Location = new System.Drawing.Point(4, 22);
-            this.tabDefaultsGeneral.Name = "tabDefaultsGeneral";
-            this.tabDefaultsGeneral.Size = new System.Drawing.Size(525, 329);
-            this.tabDefaultsGeneral.TabIndex = 3;
-            this.tabDefaultsGeneral.Text = "General Defaults";
-            this.tabDefaultsGeneral.UseVisualStyleBackColor = true;
+            this.DefaultsGeneralTab.Controls.Add(this.lblAlertNewDefaultsGeneral);
+            this.DefaultsGeneralTab.Controls.Add(this.lblNamespace);
+            this.DefaultsGeneralTab.Controls.Add(this.txtNamespace);
+            this.DefaultsGeneralTab.Controls.Add(this.lblFolder);
+            this.DefaultsGeneralTab.Controls.Add(this.txtFolder);
+            this.DefaultsGeneralTab.Controls.Add(this.lblCreateTimestampPropertyMode);
+            this.DefaultsGeneralTab.Controls.Add(this.cboCreateTimestampPropertyMode);
+            this.DefaultsGeneralTab.Controls.Add(this.chkSmartDateDefault);
+            this.DefaultsGeneralTab.Controls.Add(this.chkDatesDefaultStringWithTypeConversion);
+            this.DefaultsGeneralTab.Controls.Add(this.chkAutoCriteria);
+            this.DefaultsGeneralTab.Controls.Add(this.chkAutoTimestampCriteria);
+            this.DefaultsGeneralTab.Controls.Add(this.groupBoxReadOnlyObjects);
+            this.DefaultsGeneralTab.Location = new System.Drawing.Point(4, 22);
+            this.DefaultsGeneralTab.Name = "DefaultsGeneralTab";
+            this.DefaultsGeneralTab.Size = new System.Drawing.Size(525, 329);
+            this.DefaultsGeneralTab.TabIndex = 3;
+            this.DefaultsGeneralTab.Text = "General Defaults";
+            this.DefaultsGeneralTab.UseVisualStyleBackColor = true;
             // 
             // lblAlertNewDefaultsGeneral
             // 
@@ -402,7 +402,7 @@ namespace CslaGenerator.Controls
             this.txtNamespace.Name = "txtNamespace";
             this.txtNamespace.Size = new System.Drawing.Size(177, 20);
             this.txtNamespace.TabIndex = 5;
-            this.toolTip1.SetToolTip(this.txtNamespace, "Specify the default namespace to be set on created objects.");
+            this.toolTip.SetToolTip(this.txtNamespace, "Specify the default namespace to be set on created objects.");
             // 
             // lblFolder
             // 
@@ -419,7 +419,7 @@ namespace CslaGenerator.Controls
             this.txtFolder.Name = "txtFolder";
             this.txtFolder.Size = new System.Drawing.Size(177, 20);
             this.txtFolder.TabIndex = 6;
-            this.toolTip1.SetToolTip(this.txtFolder, "Specify the default folder to be set on created objects." +
+            this.toolTip.SetToolTip(this.txtFolder, "Specify the default folder to be set on created objects." +
                 "\r\nThis is relative to the project\'s output folder and is used only when namespaces aren't separated in folders.");
             // 
             // lblCreateTimestampPropertyMode
@@ -437,7 +437,7 @@ namespace CslaGenerator.Controls
             this.cboCreateTimestampPropertyMode.Name = "cboCreateTimestampPropertyMode";
             this.cboCreateTimestampPropertyMode.Size = new System.Drawing.Size(177, 21);
             this.cboCreateTimestampPropertyMode.TabIndex = 7;
-            this.toolTip1.SetToolTip(this.cboCreateTimestampPropertyMode, "Select the PropertyMode for timestamp Value Property creation.");
+            this.toolTip.SetToolTip(this.cboCreateTimestampPropertyMode, "Select the PropertyMode for timestamp Value Property creation.");
             // 
             // chkSmartDateDefault
             // 
@@ -449,7 +449,7 @@ namespace CslaGenerator.Controls
             this.chkSmartDateDefault.TabIndex = 8;
             this.chkSmartDateDefault.Text = "Use SmartDate instead of DateTime for date properties.";
             this.chkSmartDateDefault.UseVisualStyleBackColor = true;
-            this.toolTip1.SetToolTip(this.chkSmartDateDefault, "If checked, date properties are created with SmartDate type instead of DateTime.");
+            this.toolTip.SetToolTip(this.chkSmartDateDefault, "If checked, date properties are created with SmartDate type instead of DateTime.");
             // 
             // chkDatesDefaultStringWithTypeConversion
             // 
@@ -461,7 +461,7 @@ namespace CslaGenerator.Controls
             this.chkDatesDefaultStringWithTypeConversion.TabIndex = 9;
             this.chkDatesDefaultStringWithTypeConversion.Text = "Use String with TypeConversion to DateTime or SmartDate for date properties.";
             this.chkDatesDefaultStringWithTypeConversion.UseVisualStyleBackColor = true;
-            this.toolTip1.SetToolTip(this.chkDatesDefaultStringWithTypeConversion, "If checked, date properties are created with String type and backing field TypeConversion to DateTime or SmartDate.");
+            this.toolTip.SetToolTip(this.chkDatesDefaultStringWithTypeConversion, "If checked, date properties are created with String type and backing field TypeConversion to DateTime or SmartDate.");
             // 
             // chkAutoCriteria
             // 
@@ -473,7 +473,7 @@ namespace CslaGenerator.Controls
             this.chkAutoCriteria.TabIndex = 10;
             this.chkAutoCriteria.Text = "Add default Criteria to NameValueList ReadOnlyColl. EditableRootColl. and DynamicEditableRootColl.";
             this.chkAutoCriteria.UseVisualStyleBackColor = true;
-            this.toolTip1.SetToolTip(this.chkAutoCriteria, "If checked,\r\n- ReadOnly collections and Name Value lists are created with a parameterless Get Criteria;\r\n"+
+            this.toolTip.SetToolTip(this.chkAutoCriteria, "If checked,\r\n- ReadOnly collections and Name Value lists are created with a parameterless Get Criteria;\r\n"+
                 "- EditableRoot and DynamicEditableRoot collections are created with a parameterless Create and Get Criteria.");
             // 
             // chkAutoTimestampCriteria
@@ -486,7 +486,7 @@ namespace CslaGenerator.Controls
             this.chkAutoTimestampCriteria.TabIndex = 11;
             this.chkAutoTimestampCriteria.Text = "Add a Delete CriteriaTS whem DB type \"timestamp\" is found.";
             this.chkAutoTimestampCriteria.UseVisualStyleBackColor = true;
-            this.toolTip1.SetToolTip(this.chkAutoTimestampCriteria, "If checked, whem DB type \"timestamp\" is found on EditableRoot, EditableChild and DynamicRoot objects are created with a Delete CriteriaTS.");
+            this.toolTip.SetToolTip(this.chkAutoTimestampCriteria, "If checked, whem DB type \"timestamp\" is found on EditableRoot, EditableChild and DynamicRoot objects are created with a Delete CriteriaTS.");
             // 
             // groupBoxReadOnlyObjects
             // 
@@ -511,7 +511,7 @@ namespace CslaGenerator.Controls
             this.chkReadOnlyObjectsCopyAuditing.TabIndex = 13;
             this.chkReadOnlyObjectsCopyAuditing.Text = "Copy auditing columns.";
             this.chkReadOnlyObjectsCopyAuditing.UseVisualStyleBackColor = true;
-            this.toolTip1.SetToolTip(this.chkReadOnlyObjectsCopyAuditing, "If checked, creates ReadOnly Objects with auditing columns.");
+            this.toolTip.SetToolTip(this.chkReadOnlyObjectsCopyAuditing, "If checked, creates ReadOnly Objects with auditing columns.");
             // 
             // chkReadOnlyObjectsCopyTimestamp
             // 
@@ -523,7 +523,7 @@ namespace CslaGenerator.Controls
             this.chkReadOnlyObjectsCopyTimestamp.TabIndex = 14;
             this.chkReadOnlyObjectsCopyTimestamp.Text = "Copy timestamp column.";
             this.chkReadOnlyObjectsCopyTimestamp.UseVisualStyleBackColor = true;
-            this.toolTip1.SetToolTip(this.chkReadOnlyObjectsCopyTimestamp, "If checked, creates ReadOnly Objects with timestamp column.");
+            this.toolTip.SetToolTip(this.chkReadOnlyObjectsCopyTimestamp, "If checked, creates ReadOnly Objects with timestamp column.");
             // 
             // lblCreateReadOnlyObjectsPropertyMode
             // 
@@ -540,28 +540,28 @@ namespace CslaGenerator.Controls
             this.cboCreateReadOnlyObjectsPropertyMode.Name = "cboCreateReadOnlyObjectsPropertyMode";
             this.cboCreateReadOnlyObjectsPropertyMode.Size = new System.Drawing.Size(177, 21);
             this.cboCreateReadOnlyObjectsPropertyMode.TabIndex = 15;
-            this.toolTip1.SetToolTip(this.cboCreateReadOnlyObjectsPropertyMode,
+            this.toolTip.SetToolTip(this.cboCreateReadOnlyObjectsPropertyMode,
                                      "Select the Value Property's PropertyMode for creation  of ReadOnly Objects." +
                                      "\r\nNote - PropertyMode for \"timestamp\" DbType columns is specified below.");
             // 
-            // tabDefaultsDatabase
+            // DefaultsDatabaseTab
             // 
-            this.tabDefaultsDatabase.Controls.Add(this.lblAlertNewDefaultsDatabase);
-            this.tabDefaultsDatabase.Controls.Add(this.lblDatabase);
-            this.tabDefaultsDatabase.Controls.Add(this.txtDatabase);
-            this.tabDefaultsDatabase.Controls.Add(this.lblTransactionType);
-            this.tabDefaultsDatabase.Controls.Add(this.cboTransactionType);
-            this.tabDefaultsDatabase.Controls.Add(this.lblPersistenceType);
-            this.tabDefaultsDatabase.Controls.Add(this.cboPersistenceType);
-            this.tabDefaultsDatabase.Controls.Add(this.lblDatabaseContextObject);
-            this.tabDefaultsDatabase.Controls.Add(this.txtDatabaseContextObject);
-            this.tabDefaultsDatabase.Controls.Add(this.groupBoxObjectRelationsBuilder);
-            this.tabDefaultsDatabase.Location = new System.Drawing.Point(4, 22);
-            this.tabDefaultsDatabase.Name = "tabDefaultsDatabase";
-            this.tabDefaultsDatabase.Size = new System.Drawing.Size(525, 329);
-            this.tabDefaultsDatabase.TabIndex = 3;
-            this.tabDefaultsDatabase.Text = "Database Defaults";
-            this.tabDefaultsDatabase.UseVisualStyleBackColor = true;
+            this.DefaultsDatabaseTab.Controls.Add(this.lblAlertNewDefaultsDatabase);
+            this.DefaultsDatabaseTab.Controls.Add(this.lblDatabase);
+            this.DefaultsDatabaseTab.Controls.Add(this.txtDatabase);
+            this.DefaultsDatabaseTab.Controls.Add(this.lblTransactionType);
+            this.DefaultsDatabaseTab.Controls.Add(this.cboTransactionType);
+            this.DefaultsDatabaseTab.Controls.Add(this.lblPersistenceType);
+            this.DefaultsDatabaseTab.Controls.Add(this.cboPersistenceType);
+            this.DefaultsDatabaseTab.Controls.Add(this.lblDatabaseContextObject);
+            this.DefaultsDatabaseTab.Controls.Add(this.txtDatabaseContextObject);
+            this.DefaultsDatabaseTab.Controls.Add(this.groupBoxObjectRelationsBuilder);
+            this.DefaultsDatabaseTab.Location = new System.Drawing.Point(4, 22);
+            this.DefaultsDatabaseTab.Name = "DefaultsDatabaseTab";
+            this.DefaultsDatabaseTab.Size = new System.Drawing.Size(525, 329);
+            this.DefaultsDatabaseTab.TabIndex = 3;
+            this.DefaultsDatabaseTab.Text = "Database Defaults";
+            this.DefaultsDatabaseTab.UseVisualStyleBackColor = true;
             // 
             // lblAlertNewDefaultsDatabase
             // 
@@ -587,7 +587,7 @@ namespace CslaGenerator.Controls
             this.txtDatabase.Name = "txtDatabase";
             this.txtDatabase.Size = new System.Drawing.Size(177, 20);
             this.txtDatabase.TabIndex = 4;
-            this.toolTip1.SetToolTip(this.txtDatabase, "Specify the default database to be set on created objects.");
+            this.toolTip.SetToolTip(this.txtDatabase, "Specify the default database to be set on created objects.");
             // 
             // lblTransactionType
             // 
@@ -604,7 +604,7 @@ namespace CslaGenerator.Controls
             this.cboTransactionType.Name = "cboTransactionType";
             this.cboTransactionType.Size = new System.Drawing.Size(177, 21);
             this.cboTransactionType.TabIndex = 5;
-            this.toolTip1.SetToolTip(this.cboTransactionType,
+            this.toolTip.SetToolTip(this.cboTransactionType,
                                      "Select the transaction model to be used by the DataPortal." +
                                      "\r\nSince version 4.0.0 TransactionalAttribute is deprecated in favour of TransactionScope." +
                                      "\r\nReferences to TransactionalAttribute are automatically converted to TransactionScope.");
@@ -624,7 +624,7 @@ namespace CslaGenerator.Controls
             this.cboPersistenceType.Name = "cboPersistenceType";
             this.cboPersistenceType.Size = new System.Drawing.Size(177, 21);
             this.cboPersistenceType.TabIndex = 6;
-            this.toolTip1.SetToolTip(this.cboPersistenceType,
+            this.toolTip.SetToolTip(this.cboPersistenceType,
                                      "Select the type of persistence to be used by the DataPortal:" +
                                      "\r\n- SqlConnectionManager for SQL Server, using ConnectionManager/TransactionManager" +
                                      "\r\n- SqlConnectionUnshared for SQL Server, using classic SqlConnection object (no transactions available)" +
@@ -646,7 +646,7 @@ namespace CslaGenerator.Controls
             this.txtDatabaseContextObject.Name = "txtDatabaseContextObject";
             this.txtDatabaseContextObject.Size = new System.Drawing.Size(177, 20);
             this.txtDatabaseContextObject.TabIndex = 7;
-            this.toolTip1.SetToolTip(this.txtDatabaseContextObject, "Specify the default database context object to be set on created objects."+
+            this.toolTip.SetToolTip(this.txtDatabaseContextObject, "Specify the default database context object to be set on created objects."+
                 "\r\nThis is needed for LINQ to SQL and Entity Framework persistence.");
             // 
             // groupBoxObjectRelationsBuilder
@@ -680,7 +680,7 @@ namespace CslaGenerator.Controls
             this.txtChildPropertySuffix.Name = "txtChildPropertySuffix";
             this.txtChildPropertySuffix.Size = new System.Drawing.Size(104, 20);
             this.txtChildPropertySuffix.TabIndex = 9;
-            this.toolTip1.SetToolTip(this.txtChildPropertySuffix, "Specify a suffix to be used on Primary and Secondary Property Name.");
+            this.toolTip.SetToolTip(this.txtChildPropertySuffix, "Specify a suffix to be used on Primary and Secondary Property Name.");
             // 
             // lblCollectionSuffix
             // 
@@ -697,7 +697,7 @@ namespace CslaGenerator.Controls
             this.txtCollectionSuffix.Name = "txtCollectionSuffix";
             this.txtCollectionSuffix.Size = new System.Drawing.Size(104, 20);
             this.txtCollectionSuffix.TabIndex = 10;
-            this.toolTip1.SetToolTip(this.txtCollectionSuffix, "Specify a suffix to be used on Primary and Secondary Collection Type Name.");
+            this.toolTip.SetToolTip(this.txtCollectionSuffix, "Specify a suffix to be used on Primary and Secondary Collection Type Name.");
             // 
             // lblSingleSPSuffix
             // 
@@ -714,7 +714,7 @@ namespace CslaGenerator.Controls
             this.txtSingleSPSuffix.Name = "txtSingleSPSuffix";
             this.txtSingleSPSuffix.Size = new System.Drawing.Size(104, 20);
             this.txtSingleSPSuffix.TabIndex = 11;
-            this.toolTip1.SetToolTip(this.txtSingleSPSuffix, "Specify a suffix to be used on single set of stored procedure's name.");
+            this.toolTip.SetToolTip(this.txtSingleSPSuffix, "Specify a suffix to be used on single set of stored procedure's name.");
             // 
             // chkItemsUseSingleSP
             // 
@@ -726,25 +726,25 @@ namespace CslaGenerator.Controls
             this.chkItemsUseSingleSP.TabIndex = 12;
             this.chkItemsUseSingleSP.Text = "Use single SP set for N to N items";
             this.chkItemsUseSingleSP.UseVisualStyleBackColor = true;
-            this.toolTip1.SetToolTip(this.chkItemsUseSingleSP,
+            this.toolTip.SetToolTip(this.chkItemsUseSingleSP,
                                      "If checked, on N to N relations, a single set of stored procedures is generated\r\n" +
                                      "for relation items.");
             // 
-            // tabStoredProcs
+            // StoredProcsTab
             // 
-            this.tabStoredProcs.Controls.Add(this.groupBoxPrefixSuffix);
-            this.tabStoredProcs.Controls.Add(this.lblIntSoftDelete);
-            this.tabStoredProcs.Controls.Add(this.txtIntSoftDelete);
-            this.tabStoredProcs.Controls.Add(this.lblBoolSoftDelete);
-            this.tabStoredProcs.Controls.Add(this.txtBoolSoftDelete);
-            this.tabStoredProcs.Controls.Add(this.chkIgnoreFilterWhenSoftDeleteIsParam);
-            this.tabStoredProcs.Controls.Add(this.chkRemoveChildBeforeParent);
-            this.tabStoredProcs.Location = new System.Drawing.Point(4, 22);
-            this.tabStoredProcs.Name = "tabStoredProcs";
-            this.tabStoredProcs.Size = new System.Drawing.Size(525, 329);
-            this.tabStoredProcs.TabIndex = 2;
-            this.tabStoredProcs.Text = "Stored Procedures";
-            this.tabStoredProcs.UseVisualStyleBackColor = true;
+            this.StoredProcsTab.Controls.Add(this.groupBoxPrefixSuffix);
+            this.StoredProcsTab.Controls.Add(this.lblIntSoftDelete);
+            this.StoredProcsTab.Controls.Add(this.txtIntSoftDelete);
+            this.StoredProcsTab.Controls.Add(this.lblBoolSoftDelete);
+            this.StoredProcsTab.Controls.Add(this.txtBoolSoftDelete);
+            this.StoredProcsTab.Controls.Add(this.chkIgnoreFilterWhenSoftDeleteIsParam);
+            this.StoredProcsTab.Controls.Add(this.chkRemoveChildBeforeParent);
+            this.StoredProcsTab.Location = new System.Drawing.Point(4, 22);
+            this.StoredProcsTab.Name = "StoredProcsTab";
+            this.StoredProcsTab.Size = new System.Drawing.Size(525, 329);
+            this.StoredProcsTab.TabIndex = 2;
+            this.StoredProcsTab.Text = "Stored Procedures";
+            this.StoredProcsTab.UseVisualStyleBackColor = true;
             // 
             // groupBoxPrefixSuffix
             // 
@@ -790,7 +790,7 @@ namespace CslaGenerator.Controls
             this.txtGeneralSpPrefix.Name = "txtGeneralSpPrefix";
             this.txtGeneralSpPrefix.Size = new System.Drawing.Size(104, 20);
             this.txtGeneralSpPrefix.TabIndex = 4;
-            this.toolTip1.SetToolTip(this.txtGeneralSpPrefix, "Specify a prefix to be used on all stored procedure's name.");
+            this.toolTip.SetToolTip(this.txtGeneralSpPrefix, "Specify a prefix to be used on all stored procedure's name.");
             // 
             // lblSelectPrefix
             // 
@@ -807,7 +807,7 @@ namespace CslaGenerator.Controls
             this.txtSelectPrefix.Name = "txtSelectPrefix";
             this.txtSelectPrefix.Size = new System.Drawing.Size(104, 20);
             this.txtSelectPrefix.TabIndex = 5;
-            this.toolTip1.SetToolTip(this.txtSelectPrefix, "Specify a prefix to be used on SELECT stored procedure's name.");
+            this.toolTip.SetToolTip(this.txtSelectPrefix, "Specify a prefix to be used on SELECT stored procedure's name.");
             // 
             // lblInsertPrefix
             // 
@@ -824,7 +824,7 @@ namespace CslaGenerator.Controls
             this.txtInsertPrefix.Name = "txtInsertPrefix";
             this.txtInsertPrefix.Size = new System.Drawing.Size(104, 20);
             this.txtInsertPrefix.TabIndex = 6;
-            this.toolTip1.SetToolTip(this.txtInsertPrefix, "Specify a prefix to be used on INSERT stored procedure's name.");
+            this.toolTip.SetToolTip(this.txtInsertPrefix, "Specify a prefix to be used on INSERT stored procedure's name.");
             // 
             // lblUpdatePrefix
             // 
@@ -841,7 +841,7 @@ namespace CslaGenerator.Controls
             this.txtUpdatePrefix.Name = "txtUpdatePrefix";
             this.txtUpdatePrefix.Size = new System.Drawing.Size(104, 20);
             this.txtUpdatePrefix.TabIndex = 7;
-            this.toolTip1.SetToolTip(this.txtUpdatePrefix, "Specify a prefix to be used on UPDATE stored procedure's name.");
+            this.toolTip.SetToolTip(this.txtUpdatePrefix, "Specify a prefix to be used on UPDATE stored procedure's name.");
             // 
             // lblDeletePrefix
             // 
@@ -858,7 +858,7 @@ namespace CslaGenerator.Controls
             this.txtDeletePrefix.Name = "txtDeletePrefix";
             this.txtDeletePrefix.Size = new System.Drawing.Size(104, 20);
             this.txtDeletePrefix.TabIndex = 8;
-            this.toolTip1.SetToolTip(this.txtDeletePrefix, "Specify a prefix to be used on DELETE stored procedure's name.");
+            this.toolTip.SetToolTip(this.txtDeletePrefix, "Specify a prefix to be used on DELETE stored procedure's name.");
             // 
             // lblGeneralSpSuffix
             // 
@@ -875,7 +875,7 @@ namespace CslaGenerator.Controls
             this.txtGeneralSpSuffix.Name = "txtGeneralSpSuffix";
             this.txtGeneralSpSuffix.Size = new System.Drawing.Size(104, 20);
             this.txtGeneralSpSuffix.TabIndex = 9;
-            this.toolTip1.SetToolTip(this.txtGeneralSpSuffix, "Specify a suffix to be used on all stored procedure's name.");
+            this.toolTip.SetToolTip(this.txtGeneralSpSuffix, "Specify a suffix to be used on all stored procedure's name.");
             // 
             // lblSelectSuffix
             // 
@@ -892,7 +892,7 @@ namespace CslaGenerator.Controls
             this.txtSelectSuffix.Name = "txtSelectSuffix";
             this.txtSelectSuffix.Size = new System.Drawing.Size(104, 20);
             this.txtSelectSuffix.TabIndex = 10;
-            this.toolTip1.SetToolTip(this.txtSelectSuffix, "Specify a suffix to be used on SELECT stored procedure's name.");
+            this.toolTip.SetToolTip(this.txtSelectSuffix, "Specify a suffix to be used on SELECT stored procedure's name.");
             // 
             // lblInsertSuffix
             // 
@@ -909,7 +909,7 @@ namespace CslaGenerator.Controls
             this.txtInsertSuffix.Name = "txtInsertSuffix";
             this.txtInsertSuffix.Size = new System.Drawing.Size(104, 20);
             this.txtInsertSuffix.TabIndex = 11;
-            this.toolTip1.SetToolTip(this.txtInsertSuffix, "Specify a suffix to be used on INSERT stored procedure's name.");
+            this.toolTip.SetToolTip(this.txtInsertSuffix, "Specify a suffix to be used on INSERT stored procedure's name.");
             // 
             // lblUpdateSuffix
             // 
@@ -926,7 +926,7 @@ namespace CslaGenerator.Controls
             this.txtUpdateSuffix.Name = "txtUpdateSuffix";
             this.txtUpdateSuffix.Size = new System.Drawing.Size(104, 20);
             this.txtUpdateSuffix.TabIndex = 12;
-            this.toolTip1.SetToolTip(this.txtUpdateSuffix, "Specify a suffix to be used on UPDATE stored procedure's name.");
+            this.toolTip.SetToolTip(this.txtUpdateSuffix, "Specify a suffix to be used on UPDATE stored procedure's name.");
             // 
             // lblDeleteSuffix
             // 
@@ -943,7 +943,7 @@ namespace CslaGenerator.Controls
             this.txtDeleteSuffix.Name = "txtDeleteSuffix";
             this.txtDeleteSuffix.Size = new System.Drawing.Size(104, 20);
             this.txtDeleteSuffix.TabIndex = 13;
-            this.toolTip1.SetToolTip(this.txtDeleteSuffix, "Specify a suffix to be used on DELETE stored procedure's name.");
+            this.toolTip.SetToolTip(this.txtDeleteSuffix, "Specify a suffix to be used on DELETE stored procedure's name.");
             // 
             // lblBoolSoftDelete
             // 
@@ -960,7 +960,7 @@ namespace CslaGenerator.Controls
             this.txtBoolSoftDelete.Name = "txtBoolSoftDelete";
             this.txtBoolSoftDelete.Size = new System.Drawing.Size(130, 20);
             this.txtBoolSoftDelete.TabIndex = 14;
-            this.toolTip1.SetToolTip(this.txtBoolSoftDelete, "Specify the column name to be recognized as a \"Boolean\" soft delete column.");
+            this.toolTip.SetToolTip(this.txtBoolSoftDelete, "Specify the column name to be recognized as a \"Boolean\" soft delete column.");
             // 
             // lblIntSoftDelete
             // 
@@ -977,7 +977,7 @@ namespace CslaGenerator.Controls
             this.txtIntSoftDelete.Name = "txtIntSoftDelete";
             this.txtIntSoftDelete.Size = new System.Drawing.Size(130, 20);
             this.txtIntSoftDelete.TabIndex = 15;
-            this.toolTip1.SetToolTip(this.txtIntSoftDelete, "RC - Not implemented.\r\n\r\n" + 
+            this.toolTip.SetToolTip(this.txtIntSoftDelete, "RC - Not implemented.\r\n\r\n" + 
                 "Specify the column name to be recognized as an \"integer\" soft delete column.");
             // 
             // chkIgnoreFilterWhenSoftDeleteIsParam
@@ -990,7 +990,7 @@ namespace CslaGenerator.Controls
             this.chkIgnoreFilterWhenSoftDeleteIsParam.TabIndex = 16;
             this.chkIgnoreFilterWhenSoftDeleteIsParam.Text = "Ignore filter when soft delete column is a ValueProperty";
             this.chkIgnoreFilterWhenSoftDeleteIsParam.UseVisualStyleBackColor = true;
-            this.toolTip1.SetToolTip(this.chkIgnoreFilterWhenSoftDeleteIsParam,
+            this.toolTip.SetToolTip(this.chkIgnoreFilterWhenSoftDeleteIsParam,
                                      "If checked, when the soft delete column is a ValueProperty," +
                                      "\r\nthe Stored Procedure won't filter out rows based on soft delete status.");
             // 
@@ -1004,23 +1004,23 @@ namespace CslaGenerator.Controls
             this.chkRemoveChildBeforeParent.TabIndex = 17;
             this.chkRemoveChildBeforeParent.Text = "Remove all child before removing the parent";
             this.chkRemoveChildBeforeParent.UseVisualStyleBackColor = true;
-            this.toolTip1.SetToolTip(this.chkRemoveChildBeforeParent,
+            this.toolTip.SetToolTip(this.chkRemoveChildBeforeParent,
                                      "If checked, the Stored Procedure will delete (or soft delete) all child rows\r\n" +
                                      "before deleting (or soft deleting) the parent row." +
                                      "\r\n\r\nRC - Not implemented.\r\n" +
                                      "If unchecked, the database child removal must be handle by an override to RemoveItem.");
             // 
-            // tabAdvanced
+            // AdvancedTab
             // 
-            this.tabAdvanced.Controls.Add(this.groupBoxPKDefaultValues);
-            this.tabAdvanced.Controls.Add(this.groupBoxOtherParameters);
-            this.tabAdvanced.Controls.Add(this.groupBoxSimpleAuditing);
-            this.tabAdvanced.Location = new System.Drawing.Point(4, 22);
-            this.tabAdvanced.Name = "tabAdvanced";
-            this.tabAdvanced.Size = new System.Drawing.Size(525, 329);
-            this.tabAdvanced.TabIndex = 2;
-            this.tabAdvanced.Text = "Advanced";
-            this.tabAdvanced.UseVisualStyleBackColor = true;
+            this.AdvancedTab.Controls.Add(this.groupBoxPKDefaultValues);
+            this.AdvancedTab.Controls.Add(this.groupBoxOtherParameters);
+            this.AdvancedTab.Controls.Add(this.groupBoxSimpleAuditing);
+            this.AdvancedTab.Location = new System.Drawing.Point(4, 22);
+            this.AdvancedTab.Name = "AdvancedTab";
+            this.AdvancedTab.Size = new System.Drawing.Size(525, 329);
+            this.AdvancedTab.TabIndex = 2;
+            this.AdvancedTab.Text = "Advanced";
+            this.AdvancedTab.UseVisualStyleBackColor = true;
             // 
             // groupBoxPKDefaultValues
             // 
@@ -1054,7 +1054,7 @@ namespace CslaGenerator.Controls
             this.txtIDGuidDefaultValue.Name = "txtIDGuidDefaultValue";
             this.txtIDGuidDefaultValue.Size = new System.Drawing.Size(100, 20);
             this.txtIDGuidDefaultValue.TabIndex = 1;
-            this.toolTip1.SetToolTip(this.txtIDGuidDefaultValue,
+            this.toolTip.SetToolTip(this.txtIDGuidDefaultValue,
                                      "Specify the value to be assigned on new object creation by DataPortal_Create.");
             // 
             // lblIDInt16DefaultValue
@@ -1072,7 +1072,7 @@ namespace CslaGenerator.Controls
             this.txtIDInt16DefaultValue.Name = "txtIDInt16DefaultValue";
             this.txtIDInt16DefaultValue.Size = new System.Drawing.Size(100, 20);
             this.txtIDInt16DefaultValue.TabIndex = 2;
-            this.toolTip1.SetToolTip(this.txtIDInt16DefaultValue,
+            this.toolTip.SetToolTip(this.txtIDInt16DefaultValue,
                                      "Specify the value to be assigned on new object creation by DataPortal_Create." +
                                      "\r\nUse case insensitive \"_lastID\" to generate the assignement:" +
                                      "\r\nSystem.Threading.Interlocked.Decrement(ref _lastID)");
@@ -1092,7 +1092,7 @@ namespace CslaGenerator.Controls
             this.txtIDInt32DefaultValue.Name = "txtIDInt32DefaultValue";
             this.txtIDInt32DefaultValue.Size = new System.Drawing.Size(100, 20);
             this.txtIDInt32DefaultValue.TabIndex = 3;
-            this.toolTip1.SetToolTip(this.txtIDInt32DefaultValue,
+            this.toolTip.SetToolTip(this.txtIDInt32DefaultValue,
                                      "Specify the value to be assigned on new object creation by DataPortal_Create." +
                                      "\r\nUse case insensitive \"_lastID\" to generate the assignement:" +
                                      "\r\nSystem.Threading.Interlocked.Decrement(ref _lastID)");
@@ -1112,7 +1112,7 @@ namespace CslaGenerator.Controls
             this.txtIDInt64DefaultValue.Name = "txtIDInt64DefaultValue";
             this.txtIDInt64DefaultValue.Size = new System.Drawing.Size(100, 20);
             this.txtIDInt64DefaultValue.TabIndex = 4;
-            this.toolTip1.SetToolTip(this.txtIDInt64DefaultValue,
+            this.toolTip.SetToolTip(this.txtIDInt64DefaultValue,
                                      "Specify the value to be assigned on new object creation by DataPortal_Create." +
                                      "\r\nUse case insensitive \"_lastID\" to generate the assignement:" +
                                      "\r\nSystem.Threading.Interlocked.Decrement(ref _lastID)");
@@ -1145,7 +1145,7 @@ namespace CslaGenerator.Controls
             this.txtFieldNamePrefix.Name = "txtFieldNamePrefix";
             this.txtFieldNamePrefix.Size = new System.Drawing.Size(100, 20);
             this.txtFieldNamePrefix.TabIndex = 5;
-            this.toolTip1.SetToolTip(this.txtFieldNamePrefix, "Specify a prefix to be used on field's name.");
+            this.toolTip.SetToolTip(this.txtFieldNamePrefix, "Specify a prefix to be used on field's name.");
             // 
             // lblDelegateNamePrefix
             // 
@@ -1162,7 +1162,7 @@ namespace CslaGenerator.Controls
             this.txtDelegateNamePrefix.Name = "txtDelegateNamePrefix";
             this.txtDelegateNamePrefix.Size = new System.Drawing.Size(100, 20);
             this.txtDelegateNamePrefix.TabIndex = 6;
-            this.toolTip1.SetToolTip(this.txtDelegateNamePrefix, "Specify a prefix to be used on delegate's name.");
+            this.toolTip.SetToolTip(this.txtDelegateNamePrefix, "Specify a prefix to be used on delegate's name.");
             // 
             // groupBoxSimpleAuditing
             // 
@@ -1199,7 +1199,7 @@ namespace CslaGenerator.Controls
             this.txtCreationDateColumn.Name = "txtCreationDateColumn";
             this.txtCreationDateColumn.Size = new System.Drawing.Size(100, 20);
             this.txtCreationDateColumn.TabIndex = 5;
-            this.toolTip1.SetToolTip(this.txtCreationDateColumn,
+            this.toolTip.SetToolTip(this.txtCreationDateColumn,
                                      "Specify the column name to be recognized as a \"creation date\" column.");
             // 
             // lblCreationUserColumn
@@ -1217,7 +1217,7 @@ namespace CslaGenerator.Controls
             this.txtCreationUserColumn.Name = "txtCreationUserColumn";
             this.txtCreationUserColumn.Size = new System.Drawing.Size(100, 20);
             this.txtCreationUserColumn.TabIndex = 5;
-            this.toolTip1.SetToolTip(this.txtCreationUserColumn,
+            this.toolTip.SetToolTip(this.txtCreationUserColumn,
                                      "Specify the column name to be recognized as a \"creation user\" column.");
             // 
             // lblChangedDateColumn
@@ -1235,7 +1235,7 @@ namespace CslaGenerator.Controls
             this.txtChangedDateColumn.Name = "txtChangedDateColumn";
             this.txtChangedDateColumn.Size = new System.Drawing.Size(100, 20);
             this.txtChangedDateColumn.TabIndex = 5;
-            this.toolTip1.SetToolTip(this.txtChangedDateColumn,
+            this.toolTip.SetToolTip(this.txtChangedDateColumn,
                                      "Specify the column name to be recognized as a \"changed date\" column.");
             // 
             // lblChangedUserColumn
@@ -1253,7 +1253,7 @@ namespace CslaGenerator.Controls
             this.txtChangedUserColumn.Name = "txtChangedUserColumn";
             this.txtChangedUserColumn.Size = new System.Drawing.Size(100, 20);
             this.txtChangedUserColumn.TabIndex = 5;
-            this.toolTip1.SetToolTip(this.txtChangedUserColumn,
+            this.toolTip.SetToolTip(this.txtChangedUserColumn,
                                      "Specify the column name to be recognized as a \"changed user\" column.");
             // 
             // chkLogDateAndTime
@@ -1264,7 +1264,7 @@ namespace CslaGenerator.Controls
             this.chkLogDateAndTime.Size = new System.Drawing.Size(200, 17);
             this.chkLogDateAndTime.TabIndex = 5;
             this.chkLogDateAndTime.Text = "Log Date and also Time";
-            this.toolTip1.SetToolTip(this.chkLogDateAndTime, "If checked, date auditing uses time precision up to seconds.");
+            this.toolTip.SetToolTip(this.chkLogDateAndTime, "If checked, date auditing uses time precision up to seconds.");
             // 
             // lblGetUserMethod
             // 
@@ -1281,51 +1281,51 @@ namespace CslaGenerator.Controls
             this.txtGetUserMethod.Name = "txtGetUserMethod";
             this.txtGetUserMethod.Size = new System.Drawing.Size(223, 20);
             this.txtGetUserMethod.TabIndex = 5;
-            this.toolTip1.SetToolTip(this.txtGetUserMethod,
+            this.toolTip.SetToolTip(this.txtGetUserMethod,
                                      "Specify the method to be used to get a user value (ID or name or whatever) for auditing purposes.");
             // 
-            // tabGeneration
+            // GenerationTab
             // 
-            this.tabGeneration.Controls.Add(this.tabControlGeneration);
-            this.tabGeneration.Location = new System.Drawing.Point(4, 22);
-            this.tabGeneration.Name = "tabGeneration";
-            this.tabGeneration.Size = new System.Drawing.Size(525, 329);
-            this.tabGeneration.TabIndex = 1;
-            this.tabGeneration.Text = "Generation";
-            this.tabGeneration.UseVisualStyleBackColor = true;
+            this.GenerationTab.Controls.Add(this.GenerationTabControl);
+            this.GenerationTab.Location = new System.Drawing.Point(4, 22);
+            this.GenerationTab.Name = "GenerationTab";
+            this.GenerationTab.Size = new System.Drawing.Size(525, 329);
+            this.GenerationTab.TabIndex = 1;
+            this.GenerationTab.Text = "Generation";
+            this.GenerationTab.UseVisualStyleBackColor = true;
             // 
-            // tabControlGeneration
+            // GenerationTabControl
             // 
-            this.tabControlGeneration.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            this.GenerationTabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.tabControlGeneration.Controls.Add(this.tabGenerationTarget);
-            this.tabControlGeneration.Controls.Add(this.tabGenerationFiles);
-            this.tabControlGeneration.Controls.Add(this.tabGenerationDatabase);
-            this.tabControlGeneration.Controls.Add(this.tabGenerationMisc);
-            this.tabControlGeneration.Location = new System.Drawing.Point(0, 0);
-            this.tabControlGeneration.Name = "tabControlGeneration";
-            this.tabControlGeneration.SelectedIndex = 0;
-            this.tabControlGeneration.Size = new System.Drawing.Size(525, 334);
-            this.tabControlGeneration.TabIndex = 2;
+            this.GenerationTabControl.Controls.Add(this.GenerationTargetTab);
+            this.GenerationTabControl.Controls.Add(this.GenerationFilesTab);
+            this.GenerationTabControl.Controls.Add(this.GenerationDatabaseTab);
+            this.GenerationTabControl.Controls.Add(this.GenerationMiscTab);
+            this.GenerationTabControl.Location = new System.Drawing.Point(0, 0);
+            this.GenerationTabControl.Name = "GenerationTabControl";
+            this.GenerationTabControl.SelectedIndex = 0;
+            this.GenerationTabControl.Size = new System.Drawing.Size(525, 334);
+            this.GenerationTabControl.TabIndex = 2;
             // 
-            // tabGenerationTarget
+            // GenerationTargetTab
             // 
-            this.tabGenerationTarget.Controls.Add(this.chkSaveGenerationTarget);
-            this.tabGenerationTarget.Controls.Add(this.lblTarget);
-            this.tabGenerationTarget.Controls.Add(this.cboTarget);
-            this.tabGenerationTarget.Controls.Add(this.lblOutputLanguage);
-            this.tabGenerationTarget.Controls.Add(this.cboOutputLanguage);
-            this.tabGenerationTarget.Controls.Add(this.groupBoxUIEnvironment);
-            this.tabGenerationTarget.Controls.Add(this.groupBoxDataAccessLayer);
-            this.tabGenerationTarget.Controls.Add(this.groupBoxServerInvocation);
-            this.tabGenerationTarget.Location = new System.Drawing.Point(4, 22);
-            this.tabGenerationTarget.Name = "tabGenerationTarget";
-            this.tabGenerationTarget.Padding = new System.Windows.Forms.Padding(3);
-            this.tabGenerationTarget.Size = new System.Drawing.Size(525, 329);
-            this.tabGenerationTarget.TabIndex = 3;
-            this.tabGenerationTarget.Text = "Target";
-            this.tabGenerationTarget.UseVisualStyleBackColor = true;
+            this.GenerationTargetTab.Controls.Add(this.chkSaveGenerationTarget);
+            this.GenerationTargetTab.Controls.Add(this.lblTarget);
+            this.GenerationTargetTab.Controls.Add(this.cboTarget);
+            this.GenerationTargetTab.Controls.Add(this.lblOutputLanguage);
+            this.GenerationTargetTab.Controls.Add(this.cboOutputLanguage);
+            this.GenerationTargetTab.Controls.Add(this.groupBoxUIEnvironment);
+            this.GenerationTargetTab.Controls.Add(this.groupBoxDataAccessLayer);
+            this.GenerationTargetTab.Controls.Add(this.groupBoxServerInvocation);
+            this.GenerationTargetTab.Location = new System.Drawing.Point(4, 22);
+            this.GenerationTargetTab.Name = "GenerationTargetTab";
+            this.GenerationTargetTab.Padding = new System.Windows.Forms.Padding(3);
+            this.GenerationTargetTab.Size = new System.Drawing.Size(525, 329);
+            this.GenerationTargetTab.TabIndex = 3;
+            this.GenerationTargetTab.Text = "Target";
+            this.GenerationTargetTab.UseVisualStyleBackColor = true;
             // 
             // chkSaveGenerationTarget
             // 
@@ -1338,7 +1338,7 @@ namespace CslaGenerator.Controls
             this.chkSaveGenerationTarget.Size = new System.Drawing.Size(225, 21);
             this.chkSaveGenerationTarget.TabIndex = 4;
             this.chkSaveGenerationTarget.Text = "Save project before generating";
-            this.toolTip1.SetToolTip(this.chkSaveGenerationTarget,
+            this.toolTip.SetToolTip(this.chkSaveGenerationTarget,
                                      "If checked, projects are silently saved before code generation.");
             // 
             // lblTarget
@@ -1356,7 +1356,7 @@ namespace CslaGenerator.Controls
             this.cboTarget.Name = "cboTarget";
             this.cboTarget.Size = new System.Drawing.Size(118, 21);
             this.cboTarget.TabIndex = 5;
-            this.toolTip1.SetToolTip(this.cboTarget,
+            this.toolTip.SetToolTip(this.cboTarget,
                                      "Select the target CSLA.NET framework version.\r\n" +
                                      "Use \"CSLA40DAL\" to generate a separate Data Access Layer.");
             // 
@@ -1375,7 +1375,7 @@ namespace CslaGenerator.Controls
             this.cboOutputLanguage.Name = "cboOutputLanguage";
             this.cboOutputLanguage.Size = new System.Drawing.Size(118, 21);
             this.cboOutputLanguage.TabIndex = 6;
-            this.toolTip1.SetToolTip(this.cboOutputLanguage,
+            this.toolTip.SetToolTip(this.cboOutputLanguage,
                                      "Select the language for the generated code: C# or Visual Basic.\r\n" +
                                      "\r\nN.B. - JScript is deprecated since v.4.0.");
             // 
@@ -1402,7 +1402,7 @@ namespace CslaGenerator.Controls
             this.chkWinForms.TabIndex = 7;
             this.chkWinForms.Text = "Generate Windows Forms";
             this.chkWinForms.UseVisualStyleBackColor = true;
-            this.toolTip1.SetToolTip(this.chkWinForms, "If checked, will generate Windows Forms code with conditional compilation symbol WINFORMS.");
+            this.toolTip.SetToolTip(this.chkWinForms, "If checked, will generate Windows Forms code with conditional compilation symbol WINFORMS.");
             // 
             // chkWPF
             // 
@@ -1414,7 +1414,7 @@ namespace CslaGenerator.Controls
             this.chkWPF.TabIndex = 8;
             this.chkWPF.Text = "Generate WPF, etc.";
             this.chkWPF.UseVisualStyleBackColor = true;
-            this.toolTip1.SetToolTip(this.chkWPF, "If checked, will generate WPF code with no conditional compilation symbol.\r\n" +
+            this.toolTip.SetToolTip(this.chkWPF, "If checked, will generate WPF code with no conditional compilation symbol.\r\n" +
                                      "\r\nN.B. - Check this option also for ASP.NET and ASP.NET MVC.");
             // 
             // chkSilverlight
@@ -1427,7 +1427,7 @@ namespace CslaGenerator.Controls
             this.chkSilverlight.TabIndex = 9;
             this.chkSilverlight.Text = "Generate Silverlight";
             this.chkSilverlight.UseVisualStyleBackColor = true;
-            this.toolTip1.SetToolTip(this.chkSilverlight, "If checked, Silverlight will use CSLA MobileObject to interact with the DataPortal.\r\n" +
+            this.toolTip.SetToolTip(this.chkSilverlight, "If checked, Silverlight will use CSLA MobileObject to interact with the DataPortal.\r\n" +
                 "Generates code with conditional compilation symbol SILVERLIGHT.");
             // 
             // chkSilverlightUseServices
@@ -1440,7 +1440,7 @@ namespace CslaGenerator.Controls
             this.chkSilverlightUseServices.TabIndex = 9;
             this.chkSilverlightUseServices.Text = "Generate Silverlight using services";
             this.chkSilverlightUseServices.UseVisualStyleBackColor = true;
-            this.toolTip1.SetToolTip(this.chkSilverlightUseServices, "If checked, Silverlight DataPortal methods will call a partial method\r\n" +
+            this.toolTip.SetToolTip(this.chkSilverlightUseServices, "If checked, Silverlight DataPortal methods will call a partial method\r\n" +
                 "that should handle the service interaction.\r\n" +
                 "Generates code with conditional compilation symbol SILVERLIGHT.");
             // 
@@ -1474,7 +1474,7 @@ namespace CslaGenerator.Controls
             this.cboUseDto.Name = "cboUseDto";
             this.cboUseDto.Size = new System.Drawing.Size(80, 21);
             this.cboUseDto.TabIndex = 5;
-            this.toolTip1.SetToolTip(this.cboUseDto, "Select when to use Data Transfer Objects:\r\n" +
+            this.toolTip.SetToolTip(this.cboUseDto, "Select when to use Data Transfer Objects:\r\n" +
                 "- \"MoreThan\" uses a DataReader on fetch operations and uses parameter passing or DTO on inserts and updates.\r\n" +
                 "- \"Always\" excludes the use of DataReader and is suited for XML data sources.\r\n" +
                 "- \"Never\" excludes the use of DTOs, except for return values.\r\n");
@@ -1486,7 +1486,7 @@ namespace CslaGenerator.Controls
             this.txtDtoLimit.Name = "txtDtoLimit";
             this.txtDtoLimit.Size = new System.Drawing.Size(20, 20);
             this.txtDtoLimit.TabIndex = 5;
-            this.toolTip1.SetToolTip(this.txtDtoLimit, "Specify the maximum number of properties allowed for parameter passing.");
+            this.toolTip.SetToolTip(this.txtDtoLimit, "Specify the maximum number of properties allowed for parameter passing.");
             // 
             // lblDtoLimit
             // 
@@ -1506,7 +1506,7 @@ namespace CslaGenerator.Controls
             this.chkGenerateDalInterface.TabIndex = 12;
             this.chkGenerateDalInterface.Text = "Generate DAL interface";
             this.chkGenerateDalInterface.UseVisualStyleBackColor = true;
-            this.toolTip1.SetToolTip(this.chkGenerateDalInterface, "If checked, will generate DAL interface code.\r\n" +
+            this.toolTip.SetToolTip(this.chkGenerateDalInterface, "If checked, will generate DAL interface code.\r\n" +
                                      "Otherwise DAL settings are honoured in Business Objects but no DAL interface code is generated.");
             // 
             // chkGenerateDalObject
@@ -1519,7 +1519,7 @@ namespace CslaGenerator.Controls
             this.chkGenerateDalObject.TabIndex = 12;
             this.chkGenerateDalObject.Text = "Generate DAL";
             this.chkGenerateDalObject.UseVisualStyleBackColor = true;
-            this.toolTip1.SetToolTip(this.chkGenerateDalObject, "If checked, will generate DAL code.\r\n" +
+            this.toolTip.SetToolTip(this.chkGenerateDalObject, "If checked, will generate DAL code.\r\n" +
                                      "Otherwise DAL settings are honoured in Business Objects but no DAL code is generated.");
             // 
             // groupBoxServerInvocation
@@ -1543,7 +1543,7 @@ namespace CslaGenerator.Controls
             this.chkSynchronous.TabIndex = 13;
             this.chkSynchronous.Text = "Generate Synchronous";
             this.chkSynchronous.UseVisualStyleBackColor = true;
-            this.toolTip1.SetToolTip(this.chkSynchronous, "If checked, will generate synchronous server invocation.");
+            this.toolTip.SetToolTip(this.chkSynchronous, "If checked, will generate synchronous server invocation.");
             // 
             // chkAsynchronous
             // 
@@ -1555,37 +1555,37 @@ namespace CslaGenerator.Controls
             this.chkAsynchronous.TabIndex = 14;
             this.chkAsynchronous.Text = "Generate Asynchronous";
             this.chkAsynchronous.UseVisualStyleBackColor = true;
-            this.toolTip1.SetToolTip(this.chkAsynchronous, "If checked, will generate asynchronous server invocation.");
+            this.toolTip.SetToolTip(this.chkAsynchronous, "If checked, will generate asynchronous server invocation.");
             // 
-            // tabGenerationFiles
+            // GenerationFilesTab
             // 
-            this.tabGenerationFiles.Controls.Add(this.chkSaveGenerationFiles);
-            this.tabGenerationFiles.Controls.Add(this.lblBaseFilenameSuffix);
-            this.tabGenerationFiles.Controls.Add(this.txtBaseFilenameSuffix);
-            this.tabGenerationFiles.Controls.Add(this.lblExtendedFilenameSuffix);
-            this.tabGenerationFiles.Controls.Add(this.txtExtendedFilenameSuffix);
-            this.tabGenerationFiles.Controls.Add(this.lblClassCommentFilenameSuffix);
-            this.tabGenerationFiles.Controls.Add(this.txtClassCommentFilenameSuffix);
-            this.tabGenerationFiles.Controls.Add(this.chkSeparateBaseClasses);
-            this.tabGenerationFiles.Controls.Add(this.chkSeparateNamespaces);
-            this.tabGenerationFiles.Controls.Add(this.chkSeparateClassComment);
-            this.tabGenerationFiles.Controls.Add(this.lblBaseNamespace);
-            this.tabGenerationFiles.Controls.Add(this.txtBaseNamespace);
-            this.tabGenerationFiles.Controls.Add(this.lblUtilitiesNamespace);
-            this.tabGenerationFiles.Controls.Add(this.txtUtilitiesNamespace);
-            this.tabGenerationFiles.Controls.Add(this.lblUtilitiesFolder);
-            this.tabGenerationFiles.Controls.Add(this.txtUtilitiesFolder);
-            this.tabGenerationFiles.Controls.Add(this.lblDalInterfaceNamespace);
-            this.tabGenerationFiles.Controls.Add(this.txtDalInterfaceNamespace);
-            this.tabGenerationFiles.Controls.Add(this.lblDalObjectNamespace);
-            this.tabGenerationFiles.Controls.Add(this.txtDalObjectNamespace);
-            this.tabGenerationFiles.Location = new System.Drawing.Point(4, 22);
-            this.tabGenerationFiles.Name = "tabGenerationFiles";
-            this.tabGenerationFiles.Padding = new System.Windows.Forms.Padding(3);
-            this.tabGenerationFiles.Size = new System.Drawing.Size(525, 329);
-            this.tabGenerationFiles.TabIndex = 3;
-            this.tabGenerationFiles.Text = "Files";
-            this.tabGenerationFiles.UseVisualStyleBackColor = true;
+            this.GenerationFilesTab.Controls.Add(this.chkSaveGenerationFiles);
+            this.GenerationFilesTab.Controls.Add(this.lblBaseFilenameSuffix);
+            this.GenerationFilesTab.Controls.Add(this.txtBaseFilenameSuffix);
+            this.GenerationFilesTab.Controls.Add(this.lblExtendedFilenameSuffix);
+            this.GenerationFilesTab.Controls.Add(this.txtExtendedFilenameSuffix);
+            this.GenerationFilesTab.Controls.Add(this.lblClassCommentFilenameSuffix);
+            this.GenerationFilesTab.Controls.Add(this.txtClassCommentFilenameSuffix);
+            this.GenerationFilesTab.Controls.Add(this.chkSeparateBaseClasses);
+            this.GenerationFilesTab.Controls.Add(this.chkSeparateNamespaces);
+            this.GenerationFilesTab.Controls.Add(this.chkSeparateClassComment);
+            this.GenerationFilesTab.Controls.Add(this.lblBaseNamespace);
+            this.GenerationFilesTab.Controls.Add(this.txtBaseNamespace);
+            this.GenerationFilesTab.Controls.Add(this.lblUtilitiesNamespace);
+            this.GenerationFilesTab.Controls.Add(this.txtUtilitiesNamespace);
+            this.GenerationFilesTab.Controls.Add(this.lblUtilitiesFolder);
+            this.GenerationFilesTab.Controls.Add(this.txtUtilitiesFolder);
+            this.GenerationFilesTab.Controls.Add(this.lblDalInterfaceNamespace);
+            this.GenerationFilesTab.Controls.Add(this.txtDalInterfaceNamespace);
+            this.GenerationFilesTab.Controls.Add(this.lblDalObjectNamespace);
+            this.GenerationFilesTab.Controls.Add(this.txtDalObjectNamespace);
+            this.GenerationFilesTab.Location = new System.Drawing.Point(4, 22);
+            this.GenerationFilesTab.Name = "GenerationFilesTab";
+            this.GenerationFilesTab.Padding = new System.Windows.Forms.Padding(3);
+            this.GenerationFilesTab.Size = new System.Drawing.Size(525, 329);
+            this.GenerationFilesTab.TabIndex = 3;
+            this.GenerationFilesTab.Text = "Files";
+            this.GenerationFilesTab.UseVisualStyleBackColor = true;
             // 
             // chkSaveGenerationFiles
             // 
@@ -1598,7 +1598,7 @@ namespace CslaGenerator.Controls
             this.chkSaveGenerationFiles.Size = new System.Drawing.Size(225, 21);
             this.chkSaveGenerationFiles.TabIndex = 4;
             this.chkSaveGenerationFiles.Text = "Save project before generating";
-            this.toolTip1.SetToolTip(this.chkSaveGenerationFiles, "If checked, projects are silently saved before code generation.");
+            this.toolTip.SetToolTip(this.chkSaveGenerationFiles, "If checked, projects are silently saved before code generation.");
             // 
             // lblBaseFilenameSuffix
             // 
@@ -1615,7 +1615,7 @@ namespace CslaGenerator.Controls
             this.txtBaseFilenameSuffix.Name = "txtBaseFilenameSuffix";
             this.txtBaseFilenameSuffix.Size = new System.Drawing.Size(164, 20);
             this.txtBaseFilenameSuffix.TabIndex = 5;
-            this.toolTip1.SetToolTip(this.txtBaseFilenameSuffix,
+            this.toolTip.SetToolTip(this.txtBaseFilenameSuffix,
                                      "If specified, base classes use \"<object><suffix>\" in file names instead of \"<object>Base\" file name." +
                                      "\r\nN.B. - For generated filename compatibility with previous versions, use \".Designer\" suffix.");
             // 
@@ -1636,7 +1636,7 @@ namespace CslaGenerator.Controls
             this.txtExtendedFilenameSuffix.Name = "txtExtendedFilenameSuffix";
             this.txtExtendedFilenameSuffix.Size = new System.Drawing.Size(164, 20);
             this.txtExtendedFilenameSuffix.TabIndex = 6;
-            this.toolTip1.SetToolTip(this.txtExtendedFilenameSuffix,
+            this.toolTip.SetToolTip(this.txtExtendedFilenameSuffix,
                                      "If specified, extended classes use \"<object><suffix>\" in file names instead of \"<object>\" file name." +
                                      "\r\nN.B. - For generated filename compatibility with previous versions, use an empty suffix.");
             // 
@@ -1657,7 +1657,7 @@ namespace CslaGenerator.Controls
             this.txtClassCommentFilenameSuffix.Name = "txtClassCommentFilenameSuffix";
             this.txtClassCommentFilenameSuffix.Size = new System.Drawing.Size(164, 20);
             this.txtClassCommentFilenameSuffix.TabIndex = 7;
-            this.toolTip1.SetToolTip(this.txtClassCommentFilenameSuffix,
+            this.toolTip.SetToolTip(this.txtClassCommentFilenameSuffix,
                                      "If specified, class comments are separated on its own file with file names \"<object><suffix>\". If empty, class comments are inserted on base class files.");
             // 
             // chkSeparateBaseClasses
@@ -1668,7 +1668,7 @@ namespace CslaGenerator.Controls
             this.chkSeparateBaseClasses.Size = new System.Drawing.Size(216, 17);
             this.chkSeparateBaseClasses.TabIndex = 9;
             this.chkSeparateBaseClasses.Text = "Separate base classes in a folder";
-            this.toolTip1.SetToolTip(this.chkSeparateBaseClasses, "If checked, generated base classes go to \"<output path>\\Base\"");
+            this.toolTip.SetToolTip(this.chkSeparateBaseClasses, "If checked, generated base classes go to \"<output path>\\Base\"");
             // 
             // chkSeparateNamespaces
             // 
@@ -1678,7 +1678,7 @@ namespace CslaGenerator.Controls
             this.chkSeparateNamespaces.Size = new System.Drawing.Size(216, 17);
             this.chkSeparateNamespaces.TabIndex = 10;
             this.chkSeparateNamespaces.Text = "Separate Namespaces in folders";
-            this.toolTip1.SetToolTip(this.chkSeparateNamespaces, "If checked, generated codes is distributed in folders according to their namespaces.");
+            this.toolTip.SetToolTip(this.chkSeparateNamespaces, "If checked, generated codes is distributed in folders according to their namespaces.");
             // 
             // chkSeparateClassComment
             // 
@@ -1688,7 +1688,7 @@ namespace CslaGenerator.Controls
             this.chkSeparateClassComment.Size = new System.Drawing.Size(216, 17);
             this.chkSeparateClassComment.TabIndex = 11;
             this.chkSeparateClassComment.Text = "Separate class comments in a folder";
-            this.toolTip1.SetToolTip(this.chkSeparateClassComment, "If checked, generated class comments files go to \"<output path>\\Comment\"");
+            this.toolTip.SetToolTip(this.chkSeparateClassComment, "If checked, generated class comments files go to \"<output path>\\Comment\"");
             // 
             // lblBaseNamespace
             // 
@@ -1705,7 +1705,7 @@ namespace CslaGenerator.Controls
             this.txtBaseNamespace.Name = "txtBaseNamespace";
             this.txtBaseNamespace.Size = new System.Drawing.Size(177, 20);
             this.txtBaseNamespace.TabIndex = 12;
-            this.toolTip1.SetToolTip(this.txtBaseNamespace, "Specify the base namespace for the project.\r\n" +
+            this.toolTip.SetToolTip(this.txtBaseNamespace, "Specify the base namespace for the project.\r\n" +
                                                             "When separating namespaces in folders, this namespace will be the root folder.");
             // 
             // lblUtilitiesNamespace
@@ -1723,7 +1723,7 @@ namespace CslaGenerator.Controls
             this.txtUtilitiesNamespace.Name = "txtUtilitiesNamespace";
             this.txtUtilitiesNamespace.Size = new System.Drawing.Size(177, 20);
             this.txtUtilitiesNamespace.TabIndex = 12;
-            this.toolTip1.SetToolTip(this.txtUtilitiesNamespace, "Specify the namespace where the <Database>, <DataPortalHookArgs> and DAL support files will be created.\r\n" +
+            this.toolTip.SetToolTip(this.txtUtilitiesNamespace, "Specify the namespace where the <Database>, <DataPortalHookArgs> and DAL support files will be created.\r\n" +
                 "When separating namespaces in folders, this namespace will be used as the folder for utility files.");
             // 
             // lblUtilitiesFolder
@@ -1741,7 +1741,7 @@ namespace CslaGenerator.Controls
             this.txtUtilitiesFolder.Name = "txtUtilitiesFolder";
             this.txtUtilitiesFolder.Size = new System.Drawing.Size(177, 20);
             this.txtUtilitiesFolder.TabIndex = 13;
-            this.toolTip1.SetToolTip(this.txtUtilitiesFolder, "Specify the folder where the <Database> and <DataPortalHookArgs>  and DAL support files will be created.\r\n" +
+            this.toolTip.SetToolTip(this.txtUtilitiesFolder, "Specify the folder where the <Database> and <DataPortalHookArgs>  and DAL support files will be created.\r\n" +
                 "This is relative to the project\'s output folder and is used only when namespaces are not separated in folders.");
             // 
             // lblDalInterfaceNamespace
@@ -1759,7 +1759,7 @@ namespace CslaGenerator.Controls
             this.txtDalInterfaceNamespace.Name = "txtDalInterfaceNamespace";
             this.txtDalInterfaceNamespace.Size = new System.Drawing.Size(177, 20);
             this.txtDalInterfaceNamespace.TabIndex = 14;
-            this.toolTip1.SetToolTip(this.txtDalInterfaceNamespace, "Specify the base namespace where the DAL interface will be created." +
+            this.toolTip.SetToolTip(this.txtDalInterfaceNamespace, "Specify the base namespace where the DAL interface will be created." +
                 "\r\nThis will be also used as a folder path relative to the project\'s output folder.");
             // 
             // lblDalObjectNamespace
@@ -1777,26 +1777,26 @@ namespace CslaGenerator.Controls
             this.txtDalObjectNamespace.Name = "txtDalObjectNamespace";
             this.txtDalObjectNamespace.Size = new System.Drawing.Size(177, 20);
             this.txtDalObjectNamespace.TabIndex = 15;
-            this.toolTip1.SetToolTip(this.txtDalObjectNamespace, "Specify the base namespace where the DAL will be created." +
+            this.toolTip.SetToolTip(this.txtDalObjectNamespace, "Specify the base namespace where the DAL will be created." +
                 "\r\nThis will be also used as a folder path relative to the project\'s output folder.");
             // 
-            // tabGenerationDatabase
+            // GenerationDatabaseTab
             // 
-            this.tabGenerationDatabase.Controls.Add(this.chkSaveGenerationDatabase);
-            this.tabGenerationDatabase.Controls.Add(this.lblDatabaseConnection);
-            this.tabGenerationDatabase.Controls.Add(this.txtDatabaseConnection);
-            this.tabGenerationDatabase.Controls.Add(this.chkUseConnectionName);
-            this.tabGenerationDatabase.Controls.Add(this.chkGenerateDatabaseClass);
-            this.tabGenerationDatabase.Controls.Add(this.chkGenerateQueriesWithSchema);
-            this.tabGenerationDatabase.Controls.Add(this.chkGenerateInlineQueries);
-            this.tabGenerationDatabase.Controls.Add(this.groupBoxStoredProcs);
-            this.tabGenerationDatabase.Location = new System.Drawing.Point(4, 22);
-            this.tabGenerationDatabase.Name = "tabGenerationDatabase";
-            this.tabGenerationDatabase.Padding = new System.Windows.Forms.Padding(3);
-            this.tabGenerationDatabase.Size = new System.Drawing.Size(525, 329);
-            this.tabGenerationDatabase.TabIndex = 3;
-            this.tabGenerationDatabase.Text = "Database";
-            this.tabGenerationDatabase.UseVisualStyleBackColor = true;
+            this.GenerationDatabaseTab.Controls.Add(this.chkSaveGenerationDatabase);
+            this.GenerationDatabaseTab.Controls.Add(this.lblDatabaseConnection);
+            this.GenerationDatabaseTab.Controls.Add(this.txtDatabaseConnection);
+            this.GenerationDatabaseTab.Controls.Add(this.chkUseConnectionName);
+            this.GenerationDatabaseTab.Controls.Add(this.chkGenerateDatabaseClass);
+            this.GenerationDatabaseTab.Controls.Add(this.chkGenerateQueriesWithSchema);
+            this.GenerationDatabaseTab.Controls.Add(this.chkGenerateInlineQueries);
+            this.GenerationDatabaseTab.Controls.Add(this.groupBoxStoredProcs);
+            this.GenerationDatabaseTab.Location = new System.Drawing.Point(4, 22);
+            this.GenerationDatabaseTab.Name = "GenerationDatabaseTab";
+            this.GenerationDatabaseTab.Padding = new System.Windows.Forms.Padding(3);
+            this.GenerationDatabaseTab.Size = new System.Drawing.Size(525, 329);
+            this.GenerationDatabaseTab.TabIndex = 3;
+            this.GenerationDatabaseTab.Text = "Database";
+            this.GenerationDatabaseTab.UseVisualStyleBackColor = true;
             // 
             // chkSaveGenerationDatabase
             // 
@@ -1809,7 +1809,7 @@ namespace CslaGenerator.Controls
             this.chkSaveGenerationDatabase.Size = new System.Drawing.Size(225, 21);
             this.chkSaveGenerationDatabase.TabIndex = 4;
             this.chkSaveGenerationDatabase.Text = "Save project before generating";
-            this.toolTip1.SetToolTip(this.chkSaveGenerationDatabase, "If checked, projects are silently saved before code generation.");
+            this.toolTip.SetToolTip(this.chkSaveGenerationDatabase, "If checked, projects are silently saved before code generation.");
             // 
             // lblDatabaseConnection
             // 
@@ -1826,7 +1826,7 @@ namespace CslaGenerator.Controls
             this.txtDatabaseConnection.Name = "txtDatabaseConnection";
             this.txtDatabaseConnection.Size = new System.Drawing.Size(164, 20);
             this.txtDatabaseConnection.TabIndex = 5;
-            this.toolTip1.SetToolTip(this.txtDatabaseConnection, "Specify the Database Connection name to bu used by this project.");
+            this.toolTip.SetToolTip(this.txtDatabaseConnection, "Specify the Database Connection name to bu used by this project.");
             // 
             // chkUseConnectionName
             // 
@@ -1836,7 +1836,7 @@ namespace CslaGenerator.Controls
             this.chkUseConnectionName.Size = new System.Drawing.Size(216, 17);
             this.chkUseConnectionName.TabIndex = 10;
             this.chkUseConnectionName.Text = "Use Connection name";
-            this.toolTip1.SetToolTip(this.chkUseConnectionName,
+            this.toolTip.SetToolTip(this.chkUseConnectionName,
                                      "If checked, the connection name will be used on Database and DAL support classes.\r\n"+
                                      "Uncheck only if your VS project uses a single database connection.");
             // 
@@ -1848,7 +1848,7 @@ namespace CslaGenerator.Controls
             this.chkGenerateDatabaseClass.Size = new System.Drawing.Size(216, 17);
             this.chkGenerateDatabaseClass.TabIndex = 10;
             this.chkGenerateDatabaseClass.Text = "Generate Database class";
-            this.toolTip1.SetToolTip(this.chkGenerateDatabaseClass,
+            this.toolTip.SetToolTip(this.chkGenerateDatabaseClass,
                                      "If checked, generates a \"Database.cs\" or \"Database.vb\" file.");
             // 
             // chkGenerateQueriesWithSchema
@@ -1859,7 +1859,7 @@ namespace CslaGenerator.Controls
             this.chkGenerateQueriesWithSchema.Size = new System.Drawing.Size(216, 17);
             this.chkGenerateQueriesWithSchema.TabIndex = 10;
             this.chkGenerateQueriesWithSchema.Text = "Use Schema on queries";
-            this.toolTip1.SetToolTip(this.chkGenerateQueriesWithSchema,
+            this.toolTip.SetToolTip(this.chkGenerateQueriesWithSchema,
                                      "If checked, generates queries with Schema.");
             // 
             // chkGenerateInlineQueries
@@ -1870,7 +1870,7 @@ namespace CslaGenerator.Controls
             this.chkGenerateInlineQueries.Size = new System.Drawing.Size(216, 17);
             this.chkGenerateInlineQueries.TabIndex = 9;
             this.chkGenerateInlineQueries.Text = "Generate Inline SQL Queries";
-            this.toolTip1.SetToolTip(this.chkGenerateInlineQueries,
+            this.toolTip.SetToolTip(this.chkGenerateInlineQueries,
                                      "If checked, generates inline SQL queries\r\n" +
                                      "making stored procedures useless.");
             // 
@@ -1893,7 +1893,7 @@ namespace CslaGenerator.Controls
             this.chkGenerateStoredProcedures.Size = new System.Drawing.Size(216, 17);
             this.chkGenerateStoredProcedures.TabIndex = 7;
             this.chkGenerateStoredProcedures.Text = "Generate Stored Procedures";
-            this.toolTip1.SetToolTip(this.chkGenerateStoredProcedures,
+            this.toolTip.SetToolTip(this.chkGenerateStoredProcedures,
                                      "If checked, generates stored procedures for the objects that can generate them.");
             // 
             // chkSpOneFile
@@ -1904,32 +1904,32 @@ namespace CslaGenerator.Controls
             this.chkSpOneFile.Size = new System.Drawing.Size(216, 17);
             this.chkSpOneFile.TabIndex = 8;
             this.chkSpOneFile.Text = "Generate only one SP file per object";
-            this.toolTip1.SetToolTip(this.chkSpOneFile,
+            this.toolTip.SetToolTip(this.chkSpOneFile,
                                      "If checked, creates only one file that contains all the\r\n" +
                                      "generated stored procedures for the business object.");
             // 
-            // tabGenerationMisc
+            // GenerationMiscTab
             // 
-            this.tabGenerationMisc.Controls.Add(this.chkSaveGenerationMisc);
-            this.tabGenerationMisc.Controls.Add(this.lblGenerateAuthorization);
-            this.tabGenerationMisc.Controls.Add(this.cboGenerateAuthorization);
-            this.tabGenerationMisc.Controls.Add(this.chkUsesCslaAuthorizationProvider);
-            this.tabGenerationMisc.Controls.Add(this.chkUsePublicPropertyInfo);
-            this.tabGenerationMisc.Controls.Add(this.chkUseBypassPropertyChecks);
-            this.tabGenerationMisc.Controls.Add(this.chkUseChildFactory);
-            this.tabGenerationMisc.Controls.Add(this.lblHeaderVerbosity);
-            this.tabGenerationMisc.Controls.Add(this.cboHeaderVerbosity);
-            this.tabGenerationMisc.Controls.Add(this.chkNullableSupport);
-            this.tabGenerationMisc.Controls.Add(this.chkForceReadOnlyProperties);
-            this.tabGenerationMisc.Controls.Add(this.chkActiveObjects);
-            this.tabGenerationMisc.Controls.Add(this.chkBackupOldSource);
-            this.tabGenerationMisc.Location = new System.Drawing.Point(4, 22);
-            this.tabGenerationMisc.Name = "tabGenerationMisc";
-            this.tabGenerationMisc.Padding = new System.Windows.Forms.Padding(3);
-            this.tabGenerationMisc.Size = new System.Drawing.Size(525, 329);
-            this.tabGenerationMisc.TabIndex = 3;
-            this.tabGenerationMisc.Text = "Misc.";
-            this.tabGenerationMisc.UseVisualStyleBackColor = true;
+            this.GenerationMiscTab.Controls.Add(this.chkSaveGenerationMisc);
+            this.GenerationMiscTab.Controls.Add(this.lblGenerateAuthorization);
+            this.GenerationMiscTab.Controls.Add(this.cboGenerateAuthorization);
+            this.GenerationMiscTab.Controls.Add(this.chkUsesCslaAuthorizationProvider);
+            this.GenerationMiscTab.Controls.Add(this.chkUsePublicPropertyInfo);
+            this.GenerationMiscTab.Controls.Add(this.chkUseBypassPropertyChecks);
+            this.GenerationMiscTab.Controls.Add(this.chkUseChildFactory);
+            this.GenerationMiscTab.Controls.Add(this.lblHeaderVerbosity);
+            this.GenerationMiscTab.Controls.Add(this.cboHeaderVerbosity);
+            this.GenerationMiscTab.Controls.Add(this.chkNullableSupport);
+            this.GenerationMiscTab.Controls.Add(this.chkForceReadOnlyProperties);
+            this.GenerationMiscTab.Controls.Add(this.chkActiveObjects);
+            this.GenerationMiscTab.Controls.Add(this.chkBackupOldSource);
+            this.GenerationMiscTab.Location = new System.Drawing.Point(4, 22);
+            this.GenerationMiscTab.Name = "GenerationMiscTab";
+            this.GenerationMiscTab.Padding = new System.Windows.Forms.Padding(3);
+            this.GenerationMiscTab.Size = new System.Drawing.Size(525, 329);
+            this.GenerationMiscTab.TabIndex = 3;
+            this.GenerationMiscTab.Text = "Misc.";
+            this.GenerationMiscTab.UseVisualStyleBackColor = true;
             // 
             // chkSaveGenerationMisc
             // 
@@ -1942,7 +1942,7 @@ namespace CslaGenerator.Controls
             this.chkSaveGenerationMisc.Size = new System.Drawing.Size(225, 21);
             this.chkSaveGenerationMisc.TabIndex = 4;
             this.chkSaveGenerationMisc.Text = "Save project before generating";
-            this.toolTip1.SetToolTip(this.chkSaveGenerationMisc, "If checked, projects are silently saved before code generation.");
+            this.toolTip.SetToolTip(this.chkSaveGenerationMisc, "If checked, projects are silently saved before code generation.");
             // 
             // lblGenerateAuthorization
             // 
@@ -1959,7 +1959,7 @@ namespace CslaGenerator.Controls
             this.cboGenerateAuthorization.Name = "cboGenerateAuthorization";
             this.cboGenerateAuthorization.Size = new System.Drawing.Size(118, 21);
             this.cboGenerateAuthorization.TabIndex = 5;
-            this.toolTip1.SetToolTip(this.cboGenerateAuthorization,
+            this.toolTip.SetToolTip(this.cboGenerateAuthorization,
                                      "CSLA40 - Authorization level to generate. Use \"None\" for no implementation at all.\r\n" +
                                      "In Csla Object Info panel and in all value properties panels,\r\n" +
                                      "the authz options will be shown or hidden according to this setting.\r\n" +
@@ -1979,7 +1979,7 @@ namespace CslaGenerator.Controls
             this.chkUsesCslaAuthorizationProvider.Size = new System.Drawing.Size(216, 17);
             this.chkUsesCslaAuthorizationProvider.TabIndex = 12;
             this.chkUsesCslaAuthorizationProvider.Text = "Use Csla Authorization Provider";
-            this.toolTip1.SetToolTip(this.chkUsesCslaAuthorizationProvider,
+            this.toolTip.SetToolTip(this.chkUsesCslaAuthorizationProvider,
                                      "If checked, the Csla Authorization provider IsInRole is used and the Authorization Provider options are never shown.");
             //
             // chkUsePublicPropertyInfo
@@ -1990,7 +1990,7 @@ namespace CslaGenerator.Controls
             this.chkUsePublicPropertyInfo.Size = new System.Drawing.Size(216, 17);
             this.chkUsePublicPropertyInfo.TabIndex = 12;
             this.chkUsePublicPropertyInfo.Text = "Use public PropertyInfo";
-            this.toolTip1.SetToolTip(this.chkUsePublicPropertyInfo,
+            this.toolTip.SetToolTip(this.chkUsePublicPropertyInfo,
                                      "If checked, PropertyInfo declarations are public. Otherwise uses private declarations.");
             //
             // chkUseBypassPropertyChecks
@@ -2001,7 +2001,7 @@ namespace CslaGenerator.Controls
             this.chkUseBypassPropertyChecks.Size = new System.Drawing.Size(216, 17);
             this.chkUseBypassPropertyChecks.TabIndex = 12;
             this.chkUseBypassPropertyChecks.Text = "Generate BypassPropertyChecks";
-            this.toolTip1.SetToolTip(this.chkUseBypassPropertyChecks,
+            this.toolTip.SetToolTip(this.chkUseBypassPropertyChecks,
                                      "If checked, improves code readability by using\r\n" +
                                      "BypassPropertyChecks blocks and assign values using .NET properties.\r\n" +
                                      "Otherwise uses LoadProperty() to assign values.\r\n" +
@@ -2015,7 +2015,7 @@ namespace CslaGenerator.Controls
             this.chkUseChildFactory.Size = new System.Drawing.Size(216, 17);
             this.chkUseChildFactory.TabIndex = 8;
             this.chkUseChildFactory.Text = "Generate child factory methods";
-            this.toolTip1.SetToolTip(this.chkUseChildFactory, "If checked, all child collections and objects have factory methods.\r\n" +
+            this.toolTip.SetToolTip(this.chkUseChildFactory, "If checked, all child collections and objects have factory methods.\r\n" +
                 "Otherwise only root collections and objects have factory methods.");
             // 
             // lblHeaderVerbosity
@@ -2033,7 +2033,7 @@ namespace CslaGenerator.Controls
             this.cboHeaderVerbosity.Name = "cboHeaderVerbosity";
             this.cboHeaderVerbosity.Size = new System.Drawing.Size(118, 21);
             this.cboHeaderVerbosity.TabIndex = 6;
-            this.toolTip1.SetToolTip(this.cboHeaderVerbosity, "Header verbosity level.");
+            this.toolTip.SetToolTip(this.cboHeaderVerbosity, "Header verbosity level.");
             //
             // chkForceReadOnlyProperties
             // 
@@ -2043,7 +2043,7 @@ namespace CslaGenerator.Controls
             this.chkForceReadOnlyProperties.Size = new System.Drawing.Size(216, 17);
             this.chkForceReadOnlyProperties.TabIndex = 13;
             this.chkForceReadOnlyProperties.Text = "Force ReadOnly Properties";
-            this.toolTip1.SetToolTip(this.chkForceReadOnlyProperties,
+            this.toolTip.SetToolTip(this.chkForceReadOnlyProperties,
                                      "If checked, all ReadOnlyObject's properties are ReadOnly.\r\n" +
                                      "Otherwise allows all kinds of accessibility for ReadOnlyObject's properties.\r\n\r\n" +
                                      "Note - ReadOnlyObject's managed and unmanaged properties are always ReadOnly properties.");
@@ -2058,7 +2058,7 @@ namespace CslaGenerator.Controls
             this.chkNullableSupport.TabIndex = 11;
             this.chkNullableSupport.Text = "Enable Nullable<T> support";
             this.chkNullableSupport.UseVisualStyleBackColor = true;
-            this.toolTip1.SetToolTip(this.chkNullableSupport, "If checked, enables Nullable<T> support.");
+            this.toolTip.SetToolTip(this.chkNullableSupport, "If checked, enables Nullable<T> support.");
             //
             // chkActiveObjects
             // 
@@ -2068,7 +2068,7 @@ namespace CslaGenerator.Controls
             this.chkActiveObjects.Size = new System.Drawing.Size(216, 17);
             this.chkActiveObjects.TabIndex = 14;
             this.chkActiveObjects.Text = "Use Active Objects";
-            this.toolTip1.SetToolTip(this.chkActiveObjects,
+            this.toolTip.SetToolTip(this.chkActiveObjects,
                                      "If checked, outputs ActiveObjects code instead of plain CSLA.\r\n" +
                                      "If unchecked hides \"11. Active Objects\" properties in Csla Object Info panel.\r\n" +
                                      "\r\nN.B. - This option is disabled for target CSLA40DAL.");
@@ -2081,7 +2081,7 @@ namespace CslaGenerator.Controls
             this.chkBackupOldSource.Size = new System.Drawing.Size(216, 17);
             this.chkBackupOldSource.TabIndex = 8;
             this.chkBackupOldSource.Text = "Backup old source files";
-            this.toolTip1.SetToolTip(this.chkBackupOldSource, "If checked, replaced files are backed up as \"<filename>.old\"");
+            this.toolTip.SetToolTip(this.chkBackupOldSource, "If checked, replaced files are backed up as \"<filename>.old\"");
             // 
             // contextMenuStrip1
             // 
@@ -2126,7 +2126,7 @@ namespace CslaGenerator.Controls
             this.Controls.Add(this.CmdResetToFactory);
             this.Controls.Add(this.cmdExport);
             this.Controls.Add(this.cmdImport);
-            this.Controls.Add(this.tabControlMain);
+            this.Controls.Add(this.MainTabControl);
             this.ShowHint = WeifenLuo.WinFormsUI.Docking.DockState.Document;
             this.DockAreas = (WeifenLuo.WinFormsUI.Docking.DockAreas)
                              WeifenLuo.WinFormsUI.Docking.DockAreas.Document |
@@ -2134,22 +2134,25 @@ namespace CslaGenerator.Controls
             this.Name = "ProjectProperties";
             this.TabText = "Project Properties";
             this.Text = "Project Properties";
-            this.tabControlMain.ResumeLayout(false);
-            this.tabCreation.ResumeLayout(false);
-            this.tabControlCreation.ResumeLayout(false);
-            this.tabGeneration.ResumeLayout(false);
-            this.tabControlGeneration.ResumeLayout(false);
-            this.tabDefaultsGeneral.ResumeLayout(false);
-            this.tabDefaultsGeneral.PerformLayout();
-            this.tabDefaultsDatabase.ResumeLayout(false);
-            this.tabDefaultsDatabase.PerformLayout();
+            this.Shown += new System.EventHandler(this.ProjectProperties_Shown);
+            this.ResizeBegin += new System.EventHandler(this.ProjectProperties_ResizeBegin);
+            this.ResizeEnd += new System.EventHandler(this.ProjectProperties_ResizeEnd);
+            this.MainTabControl.ResumeLayout(false);
+            this.CreationTab.ResumeLayout(false);
+            this.CreationTabControl.ResumeLayout(false);
+            this.GenerationTab.ResumeLayout(false);
+            this.GenerationTabControl.ResumeLayout(false);
+            this.DefaultsGeneralTab.ResumeLayout(false);
+            this.DefaultsGeneralTab.PerformLayout();
+            this.DefaultsDatabaseTab.ResumeLayout(false);
+            this.DefaultsDatabaseTab.PerformLayout();
             this.groupBoxObjectRelationsBuilder.ResumeLayout(false);
             this.groupBoxObjectRelationsBuilder.PerformLayout();
-            this.tabStoredProcs.ResumeLayout(false);
-            this.tabStoredProcs.PerformLayout();
+            this.StoredProcsTab.ResumeLayout(false);
+            this.StoredProcsTab.PerformLayout();
             this.groupBoxPrefixSuffix.ResumeLayout(false);
             this.groupBoxPrefixSuffix.PerformLayout();
-            this.tabAdvanced.ResumeLayout(false);
+            this.AdvancedTab.ResumeLayout(false);
             this.groupBoxOtherParameters.ResumeLayout(false);
             this.groupBoxOtherParameters.PerformLayout();
             this.groupBoxSimpleAuditing.ResumeLayout(false);
@@ -2158,14 +2161,14 @@ namespace CslaGenerator.Controls
             this.groupBoxPKDefaultValues.PerformLayout();
             this.groupBoxReadOnlyObjects.ResumeLayout(false);
             this.groupBoxReadOnlyObjects.PerformLayout();
-            this.tabGenerationTarget.ResumeLayout(false);
-            this.tabGenerationTarget.PerformLayout();
-            this.tabGenerationFiles.ResumeLayout(false);
-            this.tabGenerationFiles.PerformLayout();
-            this.tabGenerationDatabase.ResumeLayout(false);
-            this.tabGenerationDatabase.PerformLayout();
-            this.tabGenerationMisc.ResumeLayout(false);
-            this.tabGenerationMisc.PerformLayout();
+            this.GenerationTargetTab.ResumeLayout(false);
+            this.GenerationTargetTab.PerformLayout();
+            this.GenerationFilesTab.ResumeLayout(false);
+            this.GenerationFilesTab.PerformLayout();
+            this.GenerationDatabaseTab.ResumeLayout(false);
+            this.GenerationDatabaseTab.PerformLayout();
+            this.GenerationMiscTab.ResumeLayout(false);
+            this.GenerationMiscTab.PerformLayout();
             this.groupBoxUIEnvironment.ResumeLayout(false);
             this.groupBoxUIEnvironment.PerformLayout();
             this.groupBoxStoredProcs.ResumeLayout(false);
@@ -2182,7 +2185,7 @@ namespace CslaGenerator.Controls
 
         #endregion
 
-        private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.Button cmdImport;
         private System.Windows.Forms.Button cmdExport;
         internal System.Windows.Forms.Button cmdGetDefault;
@@ -2190,12 +2193,12 @@ namespace CslaGenerator.Controls
         internal System.Windows.Forms.Button CmdResetToFactory;
         private System.Windows.Forms.Button cmdUndo;
         internal System.Windows.Forms.Button cmdApply;
-        private System.Windows.Forms.TabControl tabControlMain;
-        private System.Windows.Forms.TabControl tabControlCreation;
-        private System.Windows.Forms.TabControl tabControlGeneration;
-        private System.Windows.Forms.TabPage tabCreation;
-        private System.Windows.Forms.TabPage tabGeneration;
-        private System.Windows.Forms.TabPage tabDefaultsGeneral;
+        private System.Windows.Forms.TabControl MainTabControl;
+        private System.Windows.Forms.TabControl CreationTabControl;
+        private System.Windows.Forms.TabControl GenerationTabControl;
+        private System.Windows.Forms.TabPage CreationTab;
+        private System.Windows.Forms.TabPage GenerationTab;
+        private System.Windows.Forms.TabPage DefaultsGeneralTab;
         private System.Windows.Forms.Label lblAlertNewDefaultsGeneral;
         private System.Windows.Forms.Label lblNamespace;
         private System.Windows.Forms.TextBox txtNamespace;
@@ -2212,7 +2215,7 @@ namespace CslaGenerator.Controls
         private System.Windows.Forms.ComboBox cboCreateReadOnlyObjectsPropertyMode;
         private System.Windows.Forms.Label lblCreateTimestampPropertyMode;
         private System.Windows.Forms.ComboBox cboCreateTimestampPropertyMode;
-        private System.Windows.Forms.TabPage tabDefaultsDatabase;
+        private System.Windows.Forms.TabPage DefaultsDatabaseTab;
         private System.Windows.Forms.Label lblAlertNewDefaultsDatabase;
         private System.Windows.Forms.Label lblDatabase;
         private System.Windows.Forms.TextBox txtDatabase;
@@ -2230,7 +2233,7 @@ namespace CslaGenerator.Controls
         private System.Windows.Forms.Label lblSingleSPSuffix;
         private System.Windows.Forms.TextBox txtSingleSPSuffix;
         private System.Windows.Forms.CheckBox chkItemsUseSingleSP;
-        private System.Windows.Forms.TabPage tabStoredProcs;
+        private System.Windows.Forms.TabPage StoredProcsTab;
         private System.Windows.Forms.GroupBox groupBoxPrefixSuffix;
         private System.Windows.Forms.Label lblGeneralSpPrefix;
         private System.Windows.Forms.TextBox txtGeneralSpPrefix;
@@ -2258,7 +2261,7 @@ namespace CslaGenerator.Controls
         private System.Windows.Forms.TextBox txtIntSoftDelete;
         private System.Windows.Forms.CheckBox chkIgnoreFilterWhenSoftDeleteIsParam;
         private System.Windows.Forms.CheckBox chkRemoveChildBeforeParent;
-        private System.Windows.Forms.TabPage tabAdvanced;
+        private System.Windows.Forms.TabPage AdvancedTab;
         private System.Windows.Forms.GroupBox groupBoxPKDefaultValues;
         private System.Windows.Forms.Label lblIDGuidDefaultValue;
         private System.Windows.Forms.TextBox txtIDGuidDefaultValue;
@@ -2285,7 +2288,7 @@ namespace CslaGenerator.Controls
         private System.Windows.Forms.CheckBox chkLogDateAndTime;
         private System.Windows.Forms.Label lblGetUserMethod;
         private System.Windows.Forms.TextBox txtGetUserMethod;
-        private System.Windows.Forms.TabPage tabGenerationTarget;
+        private System.Windows.Forms.TabPage GenerationTargetTab;
         private System.Windows.Forms.CheckBox chkSaveGenerationTarget;
         private System.Windows.Forms.Label lblTarget;
         private System.Windows.Forms.ComboBox cboTarget;
@@ -2306,7 +2309,7 @@ namespace CslaGenerator.Controls
         private System.Windows.Forms.GroupBox groupBoxServerInvocation;
         private System.Windows.Forms.CheckBox chkSynchronous;
         private System.Windows.Forms.CheckBox chkAsynchronous;
-        private System.Windows.Forms.TabPage tabGenerationFiles;
+        private System.Windows.Forms.TabPage GenerationFilesTab;
         private System.Windows.Forms.CheckBox chkSaveGenerationFiles;
         private System.Windows.Forms.Label lblBaseFilenameSuffix;
         private System.Windows.Forms.TextBox txtBaseFilenameSuffix;
@@ -2328,7 +2331,7 @@ namespace CslaGenerator.Controls
         private System.Windows.Forms.TextBox txtDalInterfaceNamespace;
         private System.Windows.Forms.Label lblDalObjectNamespace;
         private System.Windows.Forms.TextBox txtDalObjectNamespace;
-        private System.Windows.Forms.TabPage tabGenerationDatabase;
+        private System.Windows.Forms.TabPage GenerationDatabaseTab;
         private System.Windows.Forms.CheckBox chkSaveGenerationDatabase;
         private System.Windows.Forms.Label lblDatabaseConnection;
         private System.Windows.Forms.TextBox txtDatabaseConnection;
@@ -2339,7 +2342,7 @@ namespace CslaGenerator.Controls
         private System.Windows.Forms.CheckBox chkGenerateQueriesWithSchema;
         private System.Windows.Forms.CheckBox chkUseConnectionName;
         private System.Windows.Forms.CheckBox chkGenerateDatabaseClass;
-        private System.Windows.Forms.TabPage tabGenerationMisc;
+        private System.Windows.Forms.TabPage GenerationMiscTab;
         private System.Windows.Forms.CheckBox chkSaveGenerationMisc;
         private System.Windows.Forms.Label lblGenerateAuthorization;
         private System.Windows.Forms.ComboBox cboGenerateAuthorization;

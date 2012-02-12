@@ -60,10 +60,10 @@ namespace CslaGenerator.Controls
             this.createDynamicEditableRootCollectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.reloadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.dbColumns1 = new CslaGenerator.Controls.DbColumns();
+            this.dbColumns = new CslaGenerator.Controls.DbColumns();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.copySoftDeleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.dbTreeView1 = new CslaGenerator.Controls.DbTreeView();
+            this.dbTreeView = new CslaGenerator.Controls.DbTreeView();
             this.paneDbName = new CslaGenerator.Controls.PaneCaption();
             this.columnsContextMenuStrip.SuspendLayout();
             this.schemaContextMenuStrip.SuspendLayout();
@@ -292,24 +292,24 @@ namespace CslaGenerator.Controls
             this.createDynamicEditableRootCollectionToolStripMenuItem.Text = "Create Dynamic Editable Root Collection";
             this.createDynamicEditableRootCollectionToolStripMenuItem.Click += new System.EventHandler(this.createDynamicEditableRootCollectionToolStripMenuItem_Click);
             // 
-            // dbColumns1
+            // dbColumns
             // 
-            this.dbColumns1.BackColor = System.Drawing.SystemColors.Control;
-            this.dbColumns1.ContextMenuStrip = this.columnsContextMenuStrip;
-            this.dbColumns1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dbColumns1.Location = new System.Drawing.Point(174, 26);
-            this.dbColumns1.Name = "dbColumns1";
-            this.dbColumns1.Size = new System.Drawing.Size(210, 446);
-            this.dbColumns1.TabIndex = 10;
+            this.dbColumns.BackColor = System.Drawing.SystemColors.Control;
+            this.dbColumns.ContextMenuStrip = this.columnsContextMenuStrip;
+            this.dbColumns.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dbColumns.Location = new System.Drawing.Point(174, 26);
+            this.dbColumns.Name = "dbColumns";
+            this.dbColumns.Size = new System.Drawing.Size(210, 446);
+            this.dbColumns.TabIndex = 10;
             // 
-            // dbTreeView1
+            // dbTreeView
             // 
-            this.dbTreeView1.ContextMenuStrip = this.schemaContextMenuStrip;
-            this.dbTreeView1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.dbTreeView1.Location = new System.Drawing.Point(0, 26);
-            this.dbTreeView1.Name = "dbTreeView1";
-            this.dbTreeView1.Size = new System.Drawing.Size(168, 446);
-            this.dbTreeView1.TabIndex = 9;
+            this.dbTreeView.ContextMenuStrip = this.schemaContextMenuStrip;
+            this.dbTreeView.Dock = System.Windows.Forms.DockStyle.Left;
+            this.dbTreeView.Location = new System.Drawing.Point(0, 26);
+            this.dbTreeView.Name = "dbTreeView";
+            this.dbTreeView.Size = new System.Drawing.Size(168, 446);
+            this.dbTreeView.TabIndex = 9;
             // 
             // paneDbName
             // 
@@ -347,9 +347,9 @@ namespace CslaGenerator.Controls
             // 
             // DbSchemaPanel
             // 
-            this.Controls.Add(this.dbColumns1);
+            this.Controls.Add(this.dbColumns);
             this.Controls.Add(this.splitMiddle);
-            this.Controls.Add(this.dbTreeView1);
+            this.Controls.Add(this.dbTreeView);
             this.Controls.Add(this.paneDbName);
             this.ShowHint = WeifenLuo.WinFormsUI.Docking.DockState.Document;
             this.DockAreas = (WeifenLuo.WinFormsUI.Docking.DockAreas)
@@ -358,6 +358,9 @@ namespace CslaGenerator.Controls
             this.Name = "DbSchemaPanel";
             this.TabText = "Schema";
             this.Text = "Schema";
+            this.Shown += new System.EventHandler(this.DbSchemaPanel_Shown);
+            this.ResizeBegin += new System.EventHandler(this.DbSchemaPanel_ResizeBegin);
+            this.ResizeEnd += new System.EventHandler(this.DbSchemaPanel_ResizeEnd);
             this.Size = new System.Drawing.Size(384, 472);
             this.Load += new System.EventHandler(this.DbSchemaPanel_Load);
             this.Resize += new System.EventHandler(this.DbSchemaPanel_Resize);
@@ -370,8 +373,8 @@ namespace CslaGenerator.Controls
         #endregion
 
         private System.Windows.Forms.Splitter splitMiddle;
-        private CslaGenerator.Controls.DbTreeView dbTreeView1;
-        private CslaGenerator.Controls.DbColumns dbColumns1;
+        private CslaGenerator.Controls.DbTreeView dbTreeView;
+        private CslaGenerator.Controls.DbColumns dbColumns;
         private CslaGenerator.Controls.PaneCaption paneDbName;
         internal System.Windows.Forms.ImageList schemaImages;
         private ContextMenuStrip columnsContextMenuStrip;

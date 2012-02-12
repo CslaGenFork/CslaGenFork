@@ -12,26 +12,54 @@ namespace CslaGenerator.Controls
 {
     public partial class ObjectRelationsBuilder : DockContent
     {
-        #region Constructor
+        #region Fix for form flicker
 
-        public ObjectRelationsBuilder()
+        // http://www.angryhacker.com/blog/archive/2010/07/21/how-to-get-rid-of-flicker-on-windows-forms-applications.aspx
+
+        int _originalExStyle = -1;
+        private bool _enableFormLevelDoubleBuffering = true;
+
+        protected override CreateParams CreateParams
         {
-            InitializeComponent();
+            get
+            {
+                if (_originalExStyle == -1)
+                    _originalExStyle = base.CreateParams.ExStyle;
+                CreateParams cp = base.CreateParams;
+                if (_enableFormLevelDoubleBuffering)
+                    cp.ExStyle |= 0x02000000; // WS_EX_COMPOSITED
+                else
+                    cp.ExStyle = _originalExStyle;
+                return cp;
+            }
+        }
 
-            listEntities1.DrawItem += ListEntities_DrawItem;
-            listEntities1.DrawMode = DrawMode.OwnerDrawFixed;
-            listEntities2.DrawItem += ListEntities_DrawItem;
-            listEntities2.DrawMode = DrawMode.OwnerDrawFixed;
-            listEntities3.DrawItem += ListEntities_DrawItem;
-            listEntities3.DrawMode = DrawMode.OwnerDrawFixed;
+        internal void TurnOnFormLevelDoubleBuffering()
+        {
+            _enableFormLevelDoubleBuffering = true;
+        }
 
-            propGrid1.PropertySortChanged += OnSortTab;
-            propGrid2.PropertySortChanged += OnSortTab;
-            propGrid3.PropertySortChanged += OnSortTab;
+        internal void TurnOffFormLevelDoubleBuffering()
+        {
+            _enableFormLevelDoubleBuffering = false;
+            MaximizeBox = true;
+        }
 
-            propGrid1.PropertyValueChanged += OnPropertyValueChanged;
-            propGrid2.PropertyValueChanged += OnPropertyValueChanged;
-            propGrid3.PropertyValueChanged += OnPropertyValueChanged;
+        private void ObjectRelationsBuilder_Shown(object sender, EventArgs e)
+        {
+            TurnOffFormLevelDoubleBuffering();
+        }
+
+        private void ObjectRelationsBuilder_ResizeBegin(object sender, EventArgs e)
+        {
+            SuspendLayout();
+            TurnOnFormLevelDoubleBuffering();
+        }
+
+        private void ObjectRelationsBuilder_ResizeEnd(object sender, EventArgs e)
+        {
+            TurnOffFormLevelDoubleBuffering();
+            ResumeLayout(true);
         }
 
         #endregion
@@ -94,6 +122,30 @@ namespace CslaGenerator.Controls
                 if (_associativeEntities != null)
                     _associativeEntities.ListChanged += associativeEntities_ListChanged;
             }
+        }
+
+        #endregion
+
+        #region Constructor
+
+        public ObjectRelationsBuilder()
+        {
+            InitializeComponent();
+
+            listEntities1.DrawItem += ListEntities_DrawItem;
+            listEntities1.DrawMode = DrawMode.OwnerDrawFixed;
+            listEntities2.DrawItem += ListEntities_DrawItem;
+            listEntities2.DrawMode = DrawMode.OwnerDrawFixed;
+            listEntities3.DrawItem += ListEntities_DrawItem;
+            listEntities3.DrawMode = DrawMode.OwnerDrawFixed;
+
+            propGrid1.PropertySortChanged += OnSortTab;
+            propGrid2.PropertySortChanged += OnSortTab;
+            propGrid3.PropertySortChanged += OnSortTab;
+
+            propGrid1.PropertyValueChanged += OnPropertyValueChanged;
+            propGrid2.PropertyValueChanged += OnPropertyValueChanged;
+            propGrid3.PropertyValueChanged += OnPropertyValueChanged;
         }
 
         #endregion
@@ -396,7 +448,7 @@ namespace CslaGenerator.Controls
 
             _restoreSelectedItems = true;
             // stupid Windows.Forms doesn't fire the event when the DataSource has elements and is assigned an empty collection
-            var firEventManually = false;
+            var fireEventManually = false;
 
             // store currency values for later use by ListEntities1_SelectedIndexChanged
             if (_selectedItems1 == null)
@@ -410,9 +462,9 @@ namespace CslaGenerator.Controls
                 }
             }
             if (listEntities1.DataSource != null)
-                firEventManually = ((ICollection) listEntities1.DataSource).Count > 0 && View1.Count == 0;
+                fireEventManually = ((ICollection) listEntities1.DataSource).Count > 0 && View1.Count == 0;
             listEntities1.DataSource = View1; // this sets the list SelectedItem to the first item
-            if (firEventManually)
+            if (fireEventManually)
                 ListEntities1_SelectedIndexChanged(this, new EventArgs());
 
             // store currency values for later use by ListEntities2_SelectedIndexChanged
@@ -427,9 +479,9 @@ namespace CslaGenerator.Controls
                 }
             }
             if (listEntities2.DataSource != null)
-                firEventManually = ((ICollection) listEntities2.DataSource).Count > 0 && View2.Count == 0;
+                fireEventManually = ((ICollection) listEntities2.DataSource).Count > 0 && View2.Count == 0;
             listEntities2.DataSource = View2; // this sets the list SelectedItem to the first item
-            if (firEventManually)
+            if (fireEventManually)
                 ListEntities2_SelectedIndexChanged(this, new EventArgs());
 
             // store currency values for later use by ListEntities3_SelectedIndexChanged
@@ -444,9 +496,9 @@ namespace CslaGenerator.Controls
                 }
             }
             if (listEntities3.DataSource != null)
-                firEventManually = ((ICollection) listEntities3.DataSource).Count > 0 && View3.Count == 0;
+                fireEventManually = ((ICollection) listEntities3.DataSource).Count > 0 && View3.Count == 0;
             listEntities3.DataSource = View3; // this sets the list SelectedItem to the first item
-            if (firEventManually)
+            if (fireEventManually)
                 ListEntities3_SelectedIndexChanged(this, new EventArgs());
             _restoreSelectedItems = false;
 
@@ -468,7 +520,7 @@ namespace CslaGenerator.Controls
 
         internal ListBox GetCurrentListBox()
         {
-            return GetListBox(TabControl.SelectedTab);
+            return GetListBox(MainTabControl.SelectedTab);
         }
 
         private ListBox GetListBox(TabPage page)
@@ -486,7 +538,7 @@ namespace CslaGenerator.Controls
 
         internal List<AssociativeEntity> GetCurrentViewItems()
         {
-            return GetViewItems(TabControl.SelectedTab);
+            return GetViewItems(MainTabControl.SelectedTab);
         }
 
         private List<AssociativeEntity> GetViewItems(TabPage page)
@@ -504,7 +556,7 @@ namespace CslaGenerator.Controls
 
         internal PropertyGrid GetCurrentPropertyGrid()
         {
-            return GetPropertyGrid(TabControl.SelectedTab);
+            return GetPropertyGrid(MainTabControl.SelectedTab);
         }
 
         private PropertyGrid GetPropertyGrid(TabPage page)
@@ -522,9 +574,9 @@ namespace CslaGenerator.Controls
 
         internal void SetAllPropertyGridSelectedObject(AssociativeEntity current)
         {
-            SetPropertyGridSelectedObject(TabControl.TabPages[0], current);
-            SetPropertyGridSelectedObject(TabControl.TabPages[1], current);
-            SetPropertyGridSelectedObject(TabControl.TabPages[2], current);
+            SetPropertyGridSelectedObject(MainTabControl.TabPages[0], current);
+            SetPropertyGridSelectedObject(MainTabControl.TabPages[1], current);
+            SetPropertyGridSelectedObject(MainTabControl.TabPages[2], current);
         }
 
         private void SetPropertyGridSelectedObject(TabPage page, AssociativeEntity current)
@@ -607,7 +659,7 @@ namespace CslaGenerator.Controls
             if (selectedIndex == -1)
                 selectedIndex = 0;
 
-            switch (TabControl.TabIndex)
+            switch (MainTabControl.TabIndex)
             {
                 case 0:
                     _selectedItems1 = new List<AssociativeEntity>();
@@ -627,7 +679,7 @@ namespace CslaGenerator.Controls
 
             GetCurrentListBox().SelectedIndex = selectedIndex;
             var selectdObject = (AssociativeEntity)GetCurrentListBox().SelectedItem;
-            switch (TabControl.TabIndex)
+            switch (MainTabControl.TabIndex)
             {
                 case 0:
                     _selectedItems1.Add(selectdObject);
@@ -760,7 +812,7 @@ namespace CslaGenerator.Controls
             {
                 MessageBox.Show(ex.Message, "Object Relations Builder", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
-            TabControl.SelectTab(1);
+            MainTabControl.SelectTab(1);
             listEntities2.SelectedItems.Clear();
             listEntities2.SelectedItem = listEntities2.Items[listEntities2.Items.Count - 1];
         }
@@ -775,7 +827,7 @@ namespace CslaGenerator.Controls
             {
                 MessageBox.Show(ex.Message, "Object Relations Builder", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
-            TabControl.SelectTab(2);
+            MainTabControl.SelectTab(2);
             listEntities3.SelectedItems.Clear();
             listEntities3.SelectedItem = listEntities3.Items[listEntities3.Items.Count - 1];
         }
@@ -806,6 +858,166 @@ namespace CslaGenerator.Controls
             listEntities1.DrawItem += ListEntities_DrawItem;
             listEntities2.DrawItem += ListEntities_DrawItem;
             listEntities3.DrawItem += ListEntities_DrawItem;
+        }
+
+        #endregion
+
+        #region Manage state
+
+        internal void GetState()
+        {
+            TabPage tabPage = null;
+            AssociativeEntity selectObject = null;
+
+            foreach (var control in Controls)
+            {
+                if (control.GetType() == typeof (TabControl))
+                {
+                    var tabControl = control as TabControl;
+                    if (tabControl != null)
+                    {
+                        foreach (var subControl in tabControl.TabPages)
+                        {
+                            tabPage = subControl as TabPage;
+                            if (tabPage != null && (tabPage.ContainsFocus || tabPage.Visible))
+                            {
+                                foreach (var subSubControl in tabPage.Controls)
+                                {
+                                    if (subSubControl.GetType() == typeof (ListBox))
+                                    {
+                                        var listBox = subSubControl as ListBox;
+                                        if (listBox != null && listBox.SelectedItem != null && listBox.SelectedItem.GetType() == typeof(AssociativeEntity))
+                                            selectObject = listBox.SelectedItem as AssociativeEntity;
+                                        break;
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+
+            if (tabPage != null)
+                GeneratorController.Current.CurrentUnitLayout.RelationsBuilderTab = tabPage.Name;
+            else
+                GeneratorController.Current.CurrentUnitLayout.RelationsBuilderTab = string.Empty;
+
+            if (selectObject != null)
+                GeneratorController.Current.CurrentUnitLayout.RelationsBuilderSelectedObject = selectObject.ObjectName;
+            else
+                GeneratorController.Current.CurrentUnitLayout.RelationsBuilderSelectedObject = string.Empty;
+
+            var propertyGrid = GetCurrentPropertyGrid();
+            GeneratorController.Current.CurrentUnitLayout.RelationsBuilderPropertySort = propertyGrid.PropertySort;
+            if (propertyGrid.SelectedGridItem.PropertyDescriptor != null)
+                GeneratorController.Current.CurrentUnitLayout.RelationsBuilderSelectedGridItem = propertyGrid.SelectedGridItem.PropertyDescriptor.Name;
+
+            if (propertyGrid.PropertySort != PropertySort.Alphabetical)
+            {
+                GeneratorController.Current.CurrentUnitLayout.RelationsBuilderCollapsedCategories.Clear();
+                var root = propertyGrid.SelectedGridItem;
+                while (root.Parent != null)
+                {
+                    root = root.Parent;
+                }
+
+                foreach (var item in root.GridItems)
+                {
+                    var gridItem = item as GridItem;
+                    if (gridItem != null && !gridItem.Expanded)
+                        GeneratorController.Current.CurrentUnitLayout.RelationsBuilderCollapsedCategories.Add(gridItem.Label);
+                }
+            }
+        }
+
+        internal void SetState()
+        {
+            foreach (var control in Controls)
+            {
+                if (control.GetType() == typeof(TabControl))
+                {
+                    var tabControl = control as TabControl;
+                    if (tabControl != null)
+                    {
+                        ScrollControlIntoView(tabControl);
+                        tabControl.Visible = true;
+                        tabControl.Focus();
+                        for (var index = 0; index < tabControl.TabPages.Count; index++)
+                        {
+                            var tabPage = tabControl.TabPages[index];
+                            if (tabPage.Name == GeneratorController.Current.CurrentUnitLayout.RelationsBuilderTab)
+                            {
+                                tabControl.SelectedIndex = index;
+                                tabPage.Focus();
+                                foreach (var subSubControl in tabPage.Controls)
+                                {
+                                    if (subSubControl.GetType() == typeof(ListBox))
+                                    {
+                                        var listBox = subSubControl as ListBox;
+                                        if (listBox != null)
+                                        {
+                                            foreach (var item in listBox.Items)
+                                            {
+                                                var itemLine = item as AssociativeEntity;
+                                                if (itemLine != null && itemLine.ObjectName == GeneratorController.Current.CurrentUnitLayout.RelationsBuilderSelectedObject)
+                                                {
+                                                    listBox.SelectedItems.Clear();
+                                                    listBox.SelectedItems.Add(item);
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        break;
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+
+            var propertyGrid = GetCurrentPropertyGrid();
+            propertyGrid.PropertySort = GeneratorController.Current.CurrentUnitLayout.RelationsBuilderPropertySort;
+
+            var root = propertyGrid.SelectedGridItem;
+            while (root.Parent != null)
+            {
+                root = root.Parent;
+            }
+
+            foreach (var item in root.GridItems)
+            {
+                var gridItem = item as GridItem;
+                if (gridItem != null)
+                {
+                    gridItem.Expanded = !IsRelationBuilderCategoryCollapsed(gridItem.Label);
+
+                    foreach (var subItem in gridItem.GridItems)
+                    {
+                        var subGridItem = subItem as GridItem;
+                        if (subGridItem != null && subGridItem.PropertyDescriptor != null)
+                        {
+                            if (subGridItem.PropertyDescriptor.Name == GeneratorController.Current.CurrentUnitLayout.RelationsBuilderSelectedGridItem)
+                                subGridItem.Select();
+                        }
+                    }
+                }
+            }
+        }
+
+        private static bool IsRelationBuilderCategoryCollapsed(string gridItem)
+        {
+            foreach (var category in GeneratorController.Current.CurrentUnitLayout.RelationsBuilderCollapsedCategories)
+            {
+                if (category == gridItem)
+                    return true;
+            }
+
+            return false;
         }
 
         #endregion

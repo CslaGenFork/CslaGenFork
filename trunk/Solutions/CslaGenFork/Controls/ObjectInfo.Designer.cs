@@ -36,6 +36,7 @@
             this.propertyGrid.LineColor = System.Drawing.SystemColors.ScrollBar;
             this.propertyGrid.Location = new System.Drawing.Point(0, 3);
             this.propertyGrid.Name = "propertyGrid";
+            this.propertyGrid.PropertySort = System.Windows.Forms.PropertySort.Categorized;
             this.propertyGrid.Size = new System.Drawing.Size(208, 283);
             this.propertyGrid.TabIndex = 0;
             // 
