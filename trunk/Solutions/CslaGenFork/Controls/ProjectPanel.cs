@@ -19,7 +19,7 @@ namespace CslaGenerator.Controls
             InitializeComponent();
 
             cboObjectType.Items.Add("<All>");
-            foreach (string oType in Enum.GetNames(typeof(CslaObjectType)))
+            foreach (var oType in Enum.GetNames(typeof(CslaObjectType)))
                 cboObjectType.Items.Add(oType);
             cboObjectType.SelectedIndex = 0;
             lstObjects.DrawItem += lstObjects_DrawItem;
@@ -690,5 +690,75 @@ namespace CslaGenerator.Controls
 
         #endregion
 
+        #region Manage state
+
+        internal void GetState()
+        {
+            GeneratorController.Current.CurrentUnitLayout.ProjectListFilterText = txtFilter.Text;
+            GeneratorController.Current.CurrentUnitLayout.ProjectListFilterType = cboObjectType.SelectedItem.ToString();
+            if (optType.Checked)
+                GeneratorController.Current.CurrentUnitLayout.ProjectListSortMode = optType.Text;
+            else if (optName.Checked)
+                GeneratorController.Current.CurrentUnitLayout.ProjectListSortMode = optName.Text;
+            else
+                GeneratorController.Current.CurrentUnitLayout.ProjectListSortMode = optNone.Text;
+
+            GeneratorController.Current.CurrentUnitLayout.ProjectListSelectedObjects.Clear();
+            foreach (var item in lstObjects.SelectedItems)
+            {
+                var cslaObject = item as CslaObjectInfo;
+                if (cslaObject != null)
+                    GeneratorController.Current.CurrentUnitLayout.ProjectListSelectedObjects.Add(cslaObject.ObjectName);
+            }
+        }
+        
+        internal void SetState()
+        {
+            txtFilter.Text = GeneratorController.Current.CurrentUnitLayout.ProjectListFilterText;
+            foreach (var item in cboObjectType.Items)
+            {
+                if (item.ToString() == GeneratorController.Current.CurrentUnitLayout.ProjectListFilterType)
+                {
+                    cboObjectType.SelectedItem = item;
+                    break;
+                }
+            }
+
+            if (GeneratorController.Current.CurrentUnitLayout.ProjectListSortMode == optType.Text)
+            {
+                optType.Checked = true;
+                optName.Checked = false;
+                optNone.Checked = false;
+            }
+            else if (GeneratorController.Current.CurrentUnitLayout.ProjectListSortMode == optName.Text)
+            {
+                optName.Checked = true;
+                optType.Checked = false;
+                optNone.Checked = false;
+            }
+            else
+            {
+                optNone.Checked = true;
+                optType.Checked = false;
+                optName.Checked = false;
+            }
+
+            if (GeneratorController.Current.CurrentUnitLayout.ProjectListSelectedObjects.Count > 0)
+                lstObjects.SelectedItems.Clear();
+            foreach (var selectedObject in GeneratorController.Current.CurrentUnitLayout.ProjectListSelectedObjects)
+            {
+                for (var index = 0; index < lstObjects.Items.Count; index++)
+                {
+                    var item = lstObjects.Items[index];
+                    var itemLine = item as CslaObjectInfo;
+                    if (itemLine != null && itemLine.ObjectName == selectedObject)
+                    {
+                        lstObjects.SelectedItems.Add(item);
+                    }
+                }
+            }
+        }
+
+        #endregion
     }
 }

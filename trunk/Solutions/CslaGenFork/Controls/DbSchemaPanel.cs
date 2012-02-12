@@ -18,12 +18,66 @@ namespace CslaGenerator.Controls
     /// </summary>
     public partial class DbSchemaPanel : DockContent
     {
+        #region Fix for form flicker
+
+        // http://www.angryhacker.com/blog/archive/2010/07/21/how-to-get-rid-of-flicker-on-windows-forms-applications.aspx
+
+        int _originalExStyle = -1;
+        private bool _enableFormLevelDoubleBuffering = true;
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                if (_originalExStyle == -1)
+                    _originalExStyle = base.CreateParams.ExStyle;
+                CreateParams cp = base.CreateParams;
+                if (_enableFormLevelDoubleBuffering)
+                    cp.ExStyle |= 0x02000000; // WS_EX_COMPOSITED
+                else
+                    cp.ExStyle = _originalExStyle;
+                return cp;
+            }
+        }
+
+        internal void TurnOnFormLevelDoubleBuffering()
+        {
+            _enableFormLevelDoubleBuffering = true;
+        }
+
+        internal void TurnOffFormLevelDoubleBuffering()
+        {
+            _enableFormLevelDoubleBuffering = false;
+            MaximizeBox = true;
+        }
+
+        private void DbSchemaPanel_Shown(object sender, EventArgs e)
+        {
+            TurnOffFormLevelDoubleBuffering();
+        }
+
+        private void DbSchemaPanel_ResizeBegin(object sender, EventArgs e)
+        {
+            SuspendLayout();
+            TurnOnFormLevelDoubleBuffering();
+        }
+
+        private void DbSchemaPanel_ResizeEnd(object sender, EventArgs e)
+        {
+            TurnOffFormLevelDoubleBuffering();
+            ResumeLayout(true);
+        }
+
+        #endregion
+
         private CslaGeneratorUnit _currentUnit;
         private CslaObjectInfo _currentCslaObject;
         private CslaObjectInfoCollection _objectsAdded = new CslaObjectInfoCollection();
         private ObjectFactory _currentFactory;
         private string _cn = string.Empty;
         private ICatalog _catalog;
+        bool _isDBItemSelected;
+        TreeNode _currentTreeNode;
 
         public DbSchemaPanel(CslaGeneratorUnit cslagenunit, CslaObjectInfo cslaobject, string connection)
         {
@@ -37,11 +91,11 @@ namespace CslaGenerator.Controls
         private void DbSchemaPanel_Load(object sender, EventArgs e)
         {
             // hookup event handler for treeview select
-            dbTreeView1.TreeViewAfterSelect += dbTreeView1_TreeViewAfterSelect;
+            dbTreeView.TreeViewAfterSelect += dbTreeView1_TreeViewAfterSelect;
             // hookup event handler for treeview mouseup
-            dbTreeView1.TreeViewMouseUp += dbTreeView1_TreeViewMouseUp;
+            dbTreeView.TreeViewMouseUp += dbTreeView1_TreeViewMouseUp;
             // set default width
-            dbTreeView1.Width = (int)((double)0.5 * (double)Width);
+            dbTreeView.Width = (int)((double)0.5 * (double)Width);
             copySoftDeleteToolStripMenuItem.Checked = false;
         }
 
@@ -49,7 +103,7 @@ namespace CslaGenerator.Controls
         {
             // keep treeview and listbox equal widths of 50% of panel body
             // when panel resized
-            dbTreeView1.Width = (int)((double)0.5 * (double)Width);
+            dbTreeView.Width = (int)((double)0.5 * (double)Width);
         }
 
         #region Properties
@@ -78,37 +132,37 @@ namespace CslaGenerator.Controls
 
         internal TreeView TreeViewSchema
         {
-            get { return dbTreeView1.TreeViewSchema; }
+            get { return dbTreeView.TreeViewSchema; }
         }
 
         internal ListBox DbColumns
         {
-            get { return dbColumns1.ListColumns; }
+            get { return dbColumns.ListColumns; }
         }
 
         internal PropertyGrid PropertyGridColumn
         {
-            get { return dbColumns1.PropertyGridColumn; }
+            get { return dbColumns.PropertyGridColumn; }
         }
 
         internal PropertyGrid PropertyGridDbObjects
         {
-            get { return dbTreeView1.PropertyGridDbObjects; }
+            get { return dbTreeView.PropertyGridDbObjects; }
         }
 
         internal Dictionary<string, IColumnInfo> SelectedColumns
         {
-            get { return dbColumns1.SelectedIndices; }
+            get { return dbColumns.SelectedIndices; }
         }
 
         internal int ColumnsCount
         {
-            get { return dbColumns1.ListColumns.Items.Count; }
+            get { return dbColumns.ListColumns.Items.Count; }
         }
 
         internal int SelectedColumnsCount
         {
-            get { return dbColumns1.SelectedIndicesCount; }
+            get { return dbColumns.SelectedIndicesCount; }
         }
 
         internal bool UseBoolSoftDelete
@@ -126,12 +180,12 @@ namespace CslaGenerator.Controls
 
         internal void SetDbColumnsPctHeight(double pct)
         {
-            dbColumns1.SetDbColumnsPctHeight(pct);
+            dbColumns.SetDbColumnsPctHeight(pct);
         }
 
         internal void SetDbTreeViewPctHeight(double pct)
         {
-            dbTreeView1.SetDbTreeViewPctHeight(pct);
+            dbTreeView.SetDbTreeViewPctHeight(pct);
         }
 
         #endregion
@@ -154,17 +208,13 @@ namespace CslaGenerator.Controls
 
             OutputWindow.Current.ClearOutput();
             _catalog = new SqlCatalog(_cn, catalogName);
-            //OutputWindow.Current.AddOutputInfo("Load Tables & Views Start:" + DateTime.Now.ToLongTimeString());
             DateTime start = DateTime.Now;
             _catalog.LoadStaticObjects();
             DateTime end = DateTime.Now;
-            //OutputWindow.Current.AddOutputInfo("Load Tables & Views End:" + end.ToLongTimeString());
             OutputWindow.Current.AddOutputInfo(string.Format("Loaded {0} tables and {1} views in {2:0.00} seconds...", _catalog.Tables.Count, _catalog.Views.Count, end.Subtract(start).TotalSeconds));
-            //OutputWindow.Current.AddOutputInfo("Load Procedures Start:" + DateTime.Now.ToLongTimeString());
             start = DateTime.Now;
             _catalog.LoadProcedures();
             end = DateTime.Now;
-            //OutputWindow.Current.AddOutputInfo("Load Procedures End:" + end.ToLongTimeString());
             OutputWindow.Current.AddOutputInfo(string.Format("Found {0} sprocs in {1:0.00} seconds...", _catalog.Procedures.Count, end.Subtract(start).TotalSeconds), 2);
             GeneratorController.Current.Tables = _catalog.Tables.Count;
             GeneratorController.Current.Views = _catalog.Views.Count;
@@ -213,9 +263,10 @@ namespace CslaGenerator.Controls
                 _currentUnit.ConnectionString = _cn;
             }
 
-            dbTreeView1.BuildSchemaTree(_catalog);
+            dbTreeView.BuildSchemaTree(_catalog);
 
             if (_currentUnit != null)
+            {
                 foreach (var info in _currentUnit.CslaObjects)
                 {
                     if (_catalog != null)
@@ -223,6 +274,7 @@ namespace CslaGenerator.Controls
                         info.LoadColumnInfo(_catalog);
                     }
                 }
+            }
         }
 
         private class SprocName : IEquatable<SprocName>
@@ -304,13 +356,10 @@ namespace CslaGenerator.Controls
             TreeNodeSelected(e.Node);
         }
 
-        bool _isDBItemSelected;
-        TreeNode _currentTreeNode;
-
         private void TreeNodeSelected(TreeNode node)
         {
             _currentTreeNode = node;
-            dbColumns1.Clear();
+            dbColumns.Clear();
             _isDBItemSelected = false;
             PropertyGridColumn.SelectedObject = null;
             SetDbColumnsPctHeight(73);
@@ -389,8 +438,8 @@ namespace CslaGenerator.Controls
         {
             if (_isDBItemSelected)
             {
-                dbColumns1.SelectAll(UseBoolSoftDelete ? _currentUnit.Params.SpBoolSoftDeleteColumn : "");
-                NewObject(CslaObjectType.EditableRoot, dbTreeView1.TreeViewSchema.SelectedNode.Text, "");
+                dbColumns.SelectAll(UseBoolSoftDelete ? _currentUnit.Params.SpBoolSoftDeleteColumn : "");
+                NewObject(CslaObjectType.EditableRoot, dbTreeView.TreeViewSchema.SelectedNode.Text, "");
                 AddPropertiesForSelectedColumns();
             }
         }
@@ -399,8 +448,8 @@ namespace CslaGenerator.Controls
         {
             if (_isDBItemSelected)
             {
-                dbColumns1.SelectAll(UseBoolSoftDelete ? _currentUnit.Params.SpBoolSoftDeleteColumn : "");
-                NewObject(CslaObjectType.ReadOnlyObject, dbTreeView1.TreeViewSchema.SelectedNode.Text, "");
+                dbColumns.SelectAll(UseBoolSoftDelete ? _currentUnit.Params.SpBoolSoftDeleteColumn : "");
+                NewObject(CslaObjectType.ReadOnlyObject, dbTreeView.TreeViewSchema.SelectedNode.Text, "");
                 AddPropertiesForSelectedColumns();
             }
         }
@@ -410,7 +459,7 @@ namespace CslaGenerator.Controls
             if (!_isDBItemSelected)
                 return;
 
-            dbColumns1.SelectAll(UseBoolSoftDelete ? _currentUnit.Params.SpBoolSoftDeleteColumn : "");
+            dbColumns.SelectAll(UseBoolSoftDelete ? _currentUnit.Params.SpBoolSoftDeleteColumn : "");
             editableRootCollectionToolStripMenuItem_Click(sender, e);
         }
 
@@ -419,7 +468,7 @@ namespace CslaGenerator.Controls
             if (!_isDBItemSelected)
                 return;
 
-            dbColumns1.SelectAll(this, _currentUnit);
+            dbColumns.SelectAll(this, _currentUnit);
             readOnlyRootCollectionToolStripMenuItem_Click(sender, e);
         }
 
@@ -428,7 +477,7 @@ namespace CslaGenerator.Controls
             if (!_isDBItemSelected)
                 return;
 
-            dbColumns1.SelectAll(UseBoolSoftDelete ? _currentUnit.Params.SpBoolSoftDeleteColumn : "");
+            dbColumns.SelectAll(UseBoolSoftDelete ? _currentUnit.Params.SpBoolSoftDeleteColumn : "");
             dynamicEditableRootCollectionToolStripMenuItem_Click(sender, e);
         }
 
@@ -440,7 +489,7 @@ namespace CslaGenerator.Controls
                 try
                 {
                     obj.Reload(true);
-                    dbTreeView1.LoadNode(_currentTreeNode, obj);
+                    dbTreeView.LoadNode(_currentTreeNode, obj);
                     TreeNodeSelected(_currentTreeNode);
                 }
                 catch (Exception ex)
@@ -474,7 +523,7 @@ namespace CslaGenerator.Controls
                 addInheritedValuePropertyToolStripMenuItem.DropDownItems.RemoveAt(0);
             }
             addInheritedValuePropertyToolStripMenuItem.Enabled = false;
-            if (dbColumns1.SelectedIndicesCount != 1)
+            if (dbColumns.SelectedIndicesCount != 1)
                 return;
             if (_currentCslaObject != null)
                 foreach (ValueProperty prop in _currentCslaObject.InheritedValueProperties)
@@ -495,12 +544,12 @@ namespace CslaGenerator.Controls
 
         private void selectAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            dbColumns1.SelectAll();
+            dbColumns.SelectAll();
         }
 
         private void unselectAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            dbColumns1.UnSelectAll();
+            dbColumns.UnSelectAll();
         }
 
         private void addToCslaObjectToolStripMenuItem_Click(object sender, EventArgs e)
@@ -719,14 +768,14 @@ namespace CslaGenerator.Controls
         {
             IColumnInfo pkColumn = null;
             IColumnInfo valueColumn = null;
-            foreach (IColumnInfo info in dbColumns1.ListColumns.SelectedItems)
+            foreach (IColumnInfo info in dbColumns.ListColumns.SelectedItems)
             {
                 if (info.IsPrimaryKey)
                     pkColumn = info;
                 else
                     valueColumn = info;
             }
-            if (pkColumn != null && valueColumn != null && dbColumns1.ListColumns.SelectedItems.Count == 2)
+            if (pkColumn != null && valueColumn != null && dbColumns.ListColumns.SelectedItems.Count == 2)
             {
                 NewObjectProperties frm = NewObjectProperties.NewNVLProperties();
 
@@ -751,7 +800,7 @@ namespace CslaGenerator.Controls
             var cols = new List<CriteriaProperty>();
             for (var i = 0; i < SelectedColumns.Count; i++)
             {
-                var info = (IColumnInfo)dbColumns1.ListColumns.SelectedItems[i];
+                var info = (IColumnInfo)dbColumns.ListColumns.SelectedItems[i];
                 var prop = new CriteriaProperty(info.ColumnName, TypeHelper.GetTypeCodeEx(info.ManagedType), info.ColumnName);
                 SetDbBindColumn(info, prop.DbBindColumn);
                 cols.Add(prop);
@@ -907,7 +956,7 @@ namespace CslaGenerator.Controls
             var columns = new List<IColumnInfo>();
             for (int i = 0; i < SelectedColumns.Count; i++)
             {
-                columns.Add((IColumnInfo)dbColumns1.ListColumns.SelectedItems[i]);
+                columns.Add((IColumnInfo)dbColumns.ListColumns.SelectedItems[i]);
             }
 
             var dbObject = GetCurrentDBObject();
@@ -929,7 +978,7 @@ namespace CslaGenerator.Controls
             var sb = new StringBuilder();
             for (var index = 0; index < SelectedColumns.Count; index++)
             {
-                var column = (IColumnInfo)dbColumns1.ListColumns.SelectedItems[index];
+                var column = (IColumnInfo)dbColumns.ListColumns.SelectedItems[index];
 
                 var nameTypeMatch = CslaTemplateHelperCS.ColumnNameMatchesParentProperty(parent, _currentCslaObject, column);
                 var fkMatch = CslaTemplateHelperCS.ColumnFKMatchesParentProperty(parent, _currentCslaObject, column);
@@ -1058,5 +1107,105 @@ namespace CslaGenerator.Controls
             return GetCurrentResultSet() as IDataBaseObject;
         }
 
+        #region Manage state
+
+        internal void GetState()
+        {
+            GeneratorController.Current.CurrentUnitLayout.SchemaSelectedTree = string.Empty;
+            GeneratorController.Current.CurrentUnitLayout.SchemaSelectedNode = string.Empty;
+            GeneratorController.Current.CurrentUnitLayout.SchemaSelectedSprocSubNode = string.Empty;
+            GeneratorController.Current.CurrentUnitLayout.SchemaExpandedTrees.Clear();
+            GeneratorController.Current.CurrentUnitLayout.SchemaExpandedNodes.Clear();
+            foreach (var item in TreeViewSchema.Nodes)
+            {
+                var treeNode = item as TreeNode;
+                if (treeNode != null && treeNode.IsExpanded)
+                {
+                    GeneratorController.Current.CurrentUnitLayout.SchemaExpandedTrees.Add(treeNode.Text);
+                    foreach (var subItem in treeNode.Nodes)
+                    {
+                        var treeSubNode = subItem as TreeNode;
+                        if (treeSubNode != null)
+                        {
+                            if (treeSubNode.IsExpanded)
+                                GeneratorController.Current.CurrentUnitLayout.SchemaExpandedNodes.Add(treeNode.Text + "/" + treeSubNode.Text);
+
+                            if (treeSubNode.IsSelected)
+                            {
+                                GeneratorController.Current.CurrentUnitLayout.SchemaSelectedTree = treeNode.Text;
+                                GeneratorController.Current.CurrentUnitLayout.SchemaSelectedNode = treeSubNode.Text;
+                            }
+                            else
+                            {
+                                foreach (var subSubItem in treeSubNode.Nodes)
+                                {
+                                    var treeSubSubNode = subSubItem as TreeNode;
+                                    if (treeSubSubNode != null && treeSubSubNode.IsSelected)
+                                    {
+                                        GeneratorController.Current.CurrentUnitLayout.SchemaSelectedTree = treeNode.Text;
+                                        GeneratorController.Current.CurrentUnitLayout.SchemaSelectedNode =
+                                            treeSubNode.Text;
+                                        GeneratorController.Current.CurrentUnitLayout.SchemaSelectedSprocSubNode =
+                                            treeSubSubNode.Text;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        internal void SetState()
+        {
+            foreach (var item in TreeViewSchema.Nodes)
+            {
+                var treeNode = item as TreeNode;
+                if (treeNode != null)
+                {
+                    foreach (var expandedTree in GeneratorController.Current.CurrentUnitLayout.SchemaExpandedTrees)
+                    {
+                        if (treeNode.Text == expandedTree)
+                            treeNode.Expand();
+                    }
+
+                    if (treeNode.Text == GeneratorController.Current.CurrentUnitLayout.SchemaSelectedTree)
+                    {
+                        TreeViewSchema.SelectedNode = treeNode;
+                    }
+
+                    foreach (var subItem in treeNode.Nodes)
+                    {
+                        var treeSubNode = subItem as TreeNode;
+                        if (treeSubNode != null)
+                        {
+                            foreach (var expandedNode in GeneratorController.Current.CurrentUnitLayout.SchemaExpandedNodes)
+                            {
+                                var expandedStructure = expandedNode.Split('/');
+                                if (treeNode.Text == expandedStructure[0] && treeSubNode.Text == expandedStructure[1])
+                                    treeSubNode.Expand();
+                            }
+
+                            if (treeSubNode.Text == GeneratorController.Current.CurrentUnitLayout.SchemaSelectedNode)
+                            {
+                                TreeViewSchema.SelectedNode = treeSubNode;
+                                foreach (var subSubItem in treeSubNode.Nodes)
+                                {
+                                    var treeSubSubNode = subSubItem as TreeNode;
+                                    if (treeSubSubNode != null &&
+                                        treeSubSubNode.Text ==
+                                        GeneratorController.Current.CurrentUnitLayout.SchemaSelectedSprocSubNode)
+                                    {
+                                        TreeViewSchema.SelectedNode = treeSubSubNode;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        #endregion
     }
 }

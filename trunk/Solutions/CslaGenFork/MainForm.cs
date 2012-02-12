@@ -19,7 +19,7 @@ namespace CslaGenerator
     /// <summary>
     /// Summary description for MainForm.
     /// </summary>
-    public partial class MainForm : Form
+    internal partial class MainForm : Form
     {
         #region Private fields
 
@@ -32,16 +32,17 @@ namespace CslaGenerator
         private GeneratorController _controller = null;
         private ICodeGenerator _generator;
         private List<ISimplePlugin> _plugins = new List<ISimplePlugin>();
-        private ObjectRelationsBuilder _objectRelationsBuilderPanel = new ObjectRelationsBuilder();
         private ProjectPanel _projectPanel= new ProjectPanel();
         private ObjectInfo _objectInfoPanel = new ObjectInfo();
         private StartPage _webBrowserDockPanel = new StartPage();
-        private GenerationReportViewer _errorPannel = new GenerationReportViewer();
-        private GenerationReportViewer _warningPannel = new GenerationReportViewer();
+        private ObjectRelationsBuilder _objectRelationsBuilderPanel = new ObjectRelationsBuilder();
         private ProjectProperties _projectPropertiesPanel = null;
         private DbSchemaPanel _dbSchemaPanel = null;
         private OutputWindow _outputPanel = new OutputWindow();
+        private GenerationReportViewer _errorPannel = new GenerationReportViewer();
+        private GenerationReportViewer _warningPannel = new GenerationReportViewer();
         private DeserializeDockContent _deserializeDockContent;
+        private string _previousProjectFilePath = string.Empty;
 
         #endregion
 
@@ -68,7 +69,7 @@ namespace CslaGenerator
             }
         }
 
-        private string DockSettingsFile
+        internal string DockSettingsFile
         {
             get
             {
@@ -102,6 +103,11 @@ namespace CslaGenerator
             get { return _projectPanel; }
         }
 
+        internal StartPage WebBrowserDockPanel
+        {
+            get { return _webBrowserDockPanel; }
+        }
+
         internal ObjectRelationsBuilder ObjectRelationsBuilderPanel
         {
             get { return _objectRelationsBuilderPanel; }
@@ -124,11 +130,17 @@ namespace CslaGenerator
             get { return dockPanel; }
         }
 
+        internal DeserializeDockContent DeserializeDockContent
+        {
+            get { return _deserializeDockContent; }
+            set { _deserializeDockContent = value; }
+        }
+
         #endregion
 
         #region Constructor
 
-        public MainForm(GeneratorController controller)
+        internal MainForm(GeneratorController controller)
         {
             InitializeComponent();
             _controller = controller;
@@ -322,6 +334,105 @@ namespace CslaGenerator
             MruDisplay();
         }
 
+        /*internal void CloseDockContents()
+        {
+            _projectPanel.DockPanel = null;
+            _objectInfoPanel.DockPanel = null;
+            _webBrowserDockPanel.DockPanel = null;
+            _objectRelationsBuilderPanel.DockPanel = null;
+            _projectPropertiesPanel.DockPanel = null;
+            _dbSchemaPanel.DockPanel = null;
+            _outputPanel.DockPanel = null;
+            _errorPannel.DockPanel = null;
+            _warningPannel.DockPanel = null;
+        }*/
+
+        #endregion
+
+        #region Manage project state
+
+        internal void GetProjectState()
+        {
+            if (_projectPanel != null)
+                _projectPanel.GetState();
+
+            if (_objectInfoPanel != null)
+                _objectInfoPanel.GetState();
+
+            foreach (var dockContent in DockPanel.Documents)
+            {
+                var docType = dockContent.GetType().UnderlyingSystemType;
+                if (dockContent.DockHandler.IsActivated)
+                    _controller.CurrentUnitLayout.ActiveDocument = docType.Name;
+
+                if (docType == typeof(ProjectProperties))
+                {
+                    var projectProperties = dockContent as ProjectProperties;
+                    if (projectProperties != null)
+                        projectProperties.GetState();
+                }
+                else if (docType == typeof(ObjectRelationsBuilder))
+                {
+                    var objectRelationsBuilder = dockContent as ObjectRelationsBuilder;
+                    if (objectRelationsBuilder != null)
+                        objectRelationsBuilder.GetState();
+                }
+                else if (docType == typeof(DbSchemaPanel))
+                {
+                    var dbSchemaPanel = dockContent as DbSchemaPanel;
+                    if (dbSchemaPanel != null)
+                        dbSchemaPanel.GetState();
+                }
+            }
+        }
+
+        internal void SetProjectState()
+        {
+            if (_projectPanel != null)
+                _projectPanel.SetState();
+
+            if (_objectInfoPanel != null)
+                _objectInfoPanel.SetState();
+
+            foreach (var dockContent in dockPanel.Documents)
+            {
+                if (dockContent.GetType().ToString() == "CslaGenerator.Controls." + _controller.CurrentUnitLayout.ActiveDocument)
+                    dockContent.DockHandler.Show();
+
+                var docType = dockContent.GetType().UnderlyingSystemType;
+                if (docType == typeof (ProjectProperties))
+                {
+                    var projectProperties = dockContent as ProjectProperties;
+                    if (projectProperties != null)
+                    {
+                        projectProperties.TurnOnFormLevelDoubleBuffering();
+                        projectProperties.SetState();
+                        projectProperties.TurnOffFormLevelDoubleBuffering();
+                    }
+                }
+                else if (docType == typeof (ObjectRelationsBuilder))
+                {
+                    var objectRelationsBuilder = dockContent as ObjectRelationsBuilder;
+                    if (objectRelationsBuilder != null)
+                    {
+                        objectRelationsBuilder.TurnOnFormLevelDoubleBuffering();
+                        objectRelationsBuilder.SetState();
+                        objectRelationsBuilder.TurnOffFormLevelDoubleBuffering();
+                    }
+                }
+                else if (docType == typeof(DbSchemaPanel))
+                {
+                    var dbSchemaPanel = dockContent as DbSchemaPanel;
+                    if (dbSchemaPanel != null)
+                    {
+                        dbSchemaPanel.TurnOnFormLevelDoubleBuffering();
+                        dbSchemaPanel.SetState();
+                        dbSchemaPanel.TurnOffFormLevelDoubleBuffering();
+                    }
+                }
+            }
+        }
+
         #endregion
 
         #region Closing
@@ -510,7 +621,7 @@ namespace CslaGenerator
 
             if (_controller.CurrentProjectProperties.IsDirty)
             {
-                DialogResult result =
+                var result =
                     MessageBox.Show(
                         @"There are unsaved changes in the project properties tab. Would you like to apply them now?",
                         @"CslaGenerator", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
@@ -544,7 +655,7 @@ namespace CslaGenerator
 
         #region CslaObjectInfo panel
 
-        public void OnSort(object sender, EventArgs e)
+        internal void OnSort(object sender, EventArgs e)
         {
             if (_objectInfoPanel.propertyGrid.PropertySort == PropertySort.CategorizedAlphabetical)
                 _objectInfoPanel.propertyGrid.PropertySort = PropertySort.Categorized;
@@ -696,6 +807,8 @@ namespace CslaGenerator
         {
             if (ForceLoadCodeSmith())
             {
+                if (_controller.CurrentUnit != null)
+                    _controller.SaveProjectLayout(openFileDialog.FileName);
                 _controller.NewCslaUnit();
                 _isNewProject = true;
                 openFileDialog.FileName = string.Empty;
@@ -727,6 +840,7 @@ namespace CslaGenerator
 
         private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            _previousProjectFilePath = openFileDialog.FileName;
             if (ForceLoadCodeSmith())
             {
                 openFileDialog.InitialDirectory = _controller.ProjectsDirectory;
@@ -767,14 +881,14 @@ namespace CslaGenerator
         {
             Application.DoEvents();
             if (openFileDialog.FileName.Length > 1)
-                saveFileDialog.FileName = _controller.RetrieveFilename(openFileDialog.FileName);
+                saveFileDialog.FileName = GeneratorController.ExtractFilename(openFileDialog.FileName);
             else if (_controller.CurrentUnit != null)
                 saveFileDialog.FileName = _controller.CurrentUnit.ProjectName + ".xml";
             else
                 saveFileDialog.FileName = "Project.xml";
 
             saveFileDialog.InitialDirectory = _controller.ProjectsDirectory;
-            DialogResult result = saveFileDialog.ShowDialog(this);
+            var result = saveFileDialog.ShowDialog(this);
             if (result == DialogResult.OK)
             {
                 _controller.ProjectsDirectory = saveFileDialog.FileName.Substring(0, saveFileDialog.FileName.LastIndexOf('\\'));
@@ -838,6 +952,7 @@ namespace CslaGenerator
 
         private void HanddleMruItem(int mruItem)
         {
+            _previousProjectFilePath = openFileDialog.FileName;
             if (_controller.MruItems.Count > mruItem)
             {
                 if (ForceLoadCodeSmith())
@@ -947,8 +1062,10 @@ namespace CslaGenerator
 
         #region File menu helpers
 
-        public void OpenProjectFile(string fileName)
+        internal void OpenProjectFile(string fileName)
         {
+            if (_controller.CurrentUnit != null)
+                _controller.SaveProjectLayout(_previousProjectFilePath);
             globalStatus.Image = Resources._112_RefreshArrow_Green_16x16_72;
             globalStatus.ToolTipText = @"Loading...";
             loadingTimer.Text = "Loading:";
