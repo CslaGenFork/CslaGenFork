@@ -27,6 +27,7 @@ namespace CslaGenerator.Metadata
             RelationsBuilderSelectedGridItem = string.Empty;
             ProjectPropertiesSubTab = string.Empty;
             ProjectPropertiesMainTab = string.Empty;
+            LayoutFileVersion = "1.0";
         }
 
         public string ProjectListFilterText { get; set; }
@@ -68,5 +69,7 @@ namespace CslaGenerator.Metadata
         public string ProjectPropertiesMainTab { get; set; }
 
         public string ProjectPropertiesSubTab { get; set; }
+
+        public string LayoutFileVersion { get; set; }
     }
 }
