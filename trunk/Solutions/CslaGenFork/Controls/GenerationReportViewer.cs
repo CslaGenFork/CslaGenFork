@@ -12,8 +12,6 @@ namespace CslaGenerator.Controls
         public GenerationReportViewer()
         {
             InitializeComponent();
-
-            Icon = Icon.FromHandle(Properties.Resources.Output.GetHicon());
         }
 
         public void Fill(GenerationReportCollection source)
