@@ -67,7 +67,6 @@ namespace CslaGenerator.Controls
         internal ProjectProperties()
         {
             InitializeComponent();
-            DockAreas = DockAreas.Document;
             FillComboBox(cboOutputLanguage, typeof (CodeLanguage));
             FillComboBox(cboTarget, typeof (TargetFramework));
             FillComboBox(cboUseDto, typeof (TargetDto));
