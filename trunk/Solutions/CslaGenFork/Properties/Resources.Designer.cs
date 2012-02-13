@@ -74,20 +74,6 @@ namespace CslaGenerator.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap AllAnnotations_Error {
-            get {
-                object obj = ResourceManager.GetObject("AllAnnotations_Error", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap AllAnnotations_Warning {
-            get {
-                object obj = ResourceManager.GetObject("AllAnnotations_Warning", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
         internal static System.Drawing.Bitmap arrow_down {
             get {
                 object obj = ResourceManager.GetObject("arrow_down", resourceCulture);
@@ -147,6 +133,13 @@ namespace CslaGenerator.Properties {
         internal static System.Drawing.Bitmap Duplicate_Object {
             get {
                 object obj = ResourceManager.GetObject("Duplicate_Object", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Error_List {
+            get {
+                object obj = ResourceManager.GetObject("Error_List", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -343,6 +336,13 @@ namespace CslaGenerator.Properties {
         internal static System.Drawing.Bitmap tv9 {
             get {
                 object obj = ResourceManager.GetObject("tv9", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Warning_List {
+            get {
+                object obj = ResourceManager.GetObject("Warning_List", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

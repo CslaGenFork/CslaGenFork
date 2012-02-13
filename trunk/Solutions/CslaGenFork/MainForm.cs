@@ -145,6 +145,8 @@ namespace CslaGenerator
             InitializeComponent();
             _controller = controller;
             _deserializeDockContent = GetContentFromPersistString;
+            _errorPannel.Icon = Icon.FromHandle(Resources.Error_List.GetHicon());
+            _warningPannel.Icon = Icon.FromHandle(Resources.Warning_List.GetHicon());
         }
         
         #endregion
@@ -588,7 +590,7 @@ namespace CslaGenerator
                 {
                     globalStatus.Image = Resources.Orange;
                     globalStatus.ToolTipText = @"Generation with issues.";
-                    warnings.Image = Resources.AllAnnotations_Warning;
+                    warnings.Image = Resources.Warning_List;
                     warnings.DoubleClickEnabled = true;
                     warnings.ToolTipText = @"Double click to get the warning list.";
                     warnings.AutoToolTip = true;
@@ -597,7 +599,7 @@ namespace CslaGenerator
                 {
                     globalStatus.Image = Resources.Red;
                     globalStatus.ToolTipText = @"Generation with errors.";
-                    errors.Image = Resources.AllAnnotations_Error;
+                    errors.Image = Resources.Error_List;
                     errors.DoubleClickEnabled = true;
                     errors.ToolTipText = @"Double click to get the error list.";
                     errors.AutoToolTip = true;
