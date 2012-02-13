@@ -208,8 +208,7 @@ if (GetCriteriaObjects(Info).Count > 0)
                     string ctorVisibility = string.Empty;
                     if (Info.ConstructorVisibility == ConstructorVisibility.Default &&
                         Info.ObjectType == CslaObjectType.ReadOnlyCollection &&
-                        Info.ParentType != string.Empty &&
-                        ancestorLoaderLevel > 1)
+                        Info.ParentType != string.Empty)
                         ctorVisibility = "internal";
                     else
                         ctorVisibility = GetConstructorVisibility(Info);
