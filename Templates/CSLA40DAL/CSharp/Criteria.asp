@@ -221,6 +221,55 @@ if (GetCriteriaObjects(Info).Count > 0)
 
             /// <summary>
             /// Initializes a new instance of the <see cref="<%= crit.Name %>"/> class.
+            /// </summary>
+            /// <remarks> A parameterless constructor is required by the MobileFormatter.</remarks>
+<%
+                if (UseBoth())
+                {
+                    %>
+#if SILVERLIGHT
+<%
+                }
+                if (UseSilverlight())
+                {
+                    %>
+            [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+            public <%= crit.Name %>()
+<%
+                }
+                if (UseBoth()) // check there is a fetch
+                {
+                    %>
+#else
+<%
+                }
+                if (UseNoSilverlight())
+                {
+                    string ctorVisibility = string.Empty;
+                    if (Info.ConstructorVisibility == ConstructorVisibility.Default &&
+                        Info.ObjectType == CslaObjectType.ReadOnlyCollection &&
+                        Info.ParentType != string.Empty &&
+                        ancestorLoaderLevel > 1)
+                        ctorVisibility = "internal";
+                    else
+                        ctorVisibility = GetConstructorVisibility(Info);
+
+                    %>
+            <%= ctorVisibility %> <%= crit.Name %>()
+<%
+                }
+                if (UseBoth())
+                {
+                    %>
+#endif
+<%
+                }
+%>
+            {
+            }
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="<%= crit.Name %>"/> class.
             /// </summary><%= strComment %>
             public <%= crit.Name %>(<%= strParams %>)
             {
