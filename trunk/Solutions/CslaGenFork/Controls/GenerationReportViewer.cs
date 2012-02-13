@@ -14,8 +14,6 @@ namespace CslaGenerator.Controls
             InitializeComponent();
 
             Icon = Icon.FromHandle(Properties.Resources.Output.GetHicon());
-            DockAreas = DockAreas.DockBottom |
-                        DockAreas.Float;
         }
 
         public void Fill(GenerationReportCollection source)

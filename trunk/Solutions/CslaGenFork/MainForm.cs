@@ -526,7 +526,7 @@ namespace CslaGenerator
                 return;
 
             ClearErrorsAndWarning();
-            globalStatus.Image = Resources._112_RefreshArrow_Green_16x16_72;
+            globalStatus.Image = Resources.RefreshArrow_Green;
             globalStatus.ToolTipText = @"Generating...";
             statusStrip.Refresh();
 
@@ -588,7 +588,7 @@ namespace CslaGenerator
                 {
                     globalStatus.Image = Resources.Orange;
                     globalStatus.ToolTipText = @"Generation with issues.";
-                    warnings.Image = Resources._109_AllAnnotations_Warning_16x16_72;
+                    warnings.Image = Resources.AllAnnotations_Warning;
                     warnings.DoubleClickEnabled = true;
                     warnings.ToolTipText = @"Double click to get the warning list.";
                     warnings.AutoToolTip = true;
@@ -597,7 +597,7 @@ namespace CslaGenerator
                 {
                     globalStatus.Image = Resources.Red;
                     globalStatus.ToolTipText = @"Generation with errors.";
-                    errors.Image = Resources._109_AllAnnotations_Error_16x16_72;
+                    errors.Image = Resources.AllAnnotations_Error;
                     errors.DoubleClickEnabled = true;
                     errors.ToolTipText = @"Double click to get the error list.";
                     errors.AutoToolTip = true;
@@ -1066,7 +1066,7 @@ namespace CslaGenerator
         {
             if (_controller.CurrentUnit != null)
                 _controller.SaveProjectLayout(_previousProjectFilePath);
-            globalStatus.Image = Resources._112_RefreshArrow_Green_16x16_72;
+            globalStatus.Image = Resources.RefreshArrow_Green;
             globalStatus.ToolTipText = @"Loading...";
             loadingTimer.Text = "Loading:";
             ClearErrorsAndWarning();

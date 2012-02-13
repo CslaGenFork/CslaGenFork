@@ -60,27 +60,6 @@ namespace CslaGenerator.Properties {
             }
         }
         
-        internal static System.Drawing.Bitmap _109_AllAnnotations_Error_16x16_72 {
-            get {
-                object obj = ResourceManager.GetObject("109_AllAnnotations_Error_16x16_72", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap _109_AllAnnotations_Warning_16x16_72 {
-            get {
-                object obj = ResourceManager.GetObject("109_AllAnnotations_Warning_16x16_72", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        internal static System.Drawing.Bitmap _112_RefreshArrow_Green_16x16_72 {
-            get {
-                object obj = ResourceManager.GetObject("112_RefreshArrow_Green_16x16_72", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
         internal static System.Drawing.Bitmap Add_Object {
             get {
                 object obj = ResourceManager.GetObject("Add_Object", resourceCulture);
@@ -91,6 +70,20 @@ namespace CslaGenerator.Properties {
         internal static System.Drawing.Bitmap Add_To_Relation {
             get {
                 object obj = ResourceManager.GetObject("Add_To_Relation", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap AllAnnotations_Error {
+            get {
+                object obj = ResourceManager.GetObject("AllAnnotations_Error", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap AllAnnotations_Warning {
+            get {
+                object obj = ResourceManager.GetObject("AllAnnotations_Warning", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -266,6 +259,13 @@ namespace CslaGenerator.Properties {
         internal static System.Drawing.Bitmap Red {
             get {
                 object obj = ResourceManager.GetObject("Red", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap RefreshArrow_Green {
+            get {
+                object obj = ResourceManager.GetObject("RefreshArrow_Green", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
