@@ -16,23 +16,27 @@ namespace CslaGenerator.Controls
         internal void GetState()
         {
             GeneratorController.Current.CurrentUnitLayout.ObjectPropertySort = propertyGrid.PropertySort;
-            if (propertyGrid.SelectedGridItem.PropertyDescriptor != null)
-                GeneratorController.Current.CurrentUnitLayout.ObjectSelectedGridItem = propertyGrid.SelectedGridItem.PropertyDescriptor.Name;
+            if (propertyGrid.SelectedGridItem != null && propertyGrid.SelectedGridItem.PropertyDescriptor != null)
+                GeneratorController.Current.CurrentUnitLayout.ObjectSelectedGridItem =
+                    propertyGrid.SelectedGridItem.PropertyDescriptor.Name;
 
             if (propertyGrid.PropertySort != PropertySort.Alphabetical)
             {
                 GeneratorController.Current.CurrentUnitLayout.ObjectCollapsedCategories.Clear();
                 var root = propertyGrid.SelectedGridItem;
-                while (root.Parent != null)
+                if (root != null)
                 {
-                    root = root.Parent;
-                }
+                    while (root.Parent != null)
+                    {
+                        root = root.Parent;
+                    }
 
-                foreach (var item in root.GridItems)
-                {
-                    var gridItem = item as GridItem;
-                    if (gridItem != null && !gridItem.Expanded)
-                        GeneratorController.Current.CurrentUnitLayout.ObjectCollapsedCategories.Add(gridItem.Label);
+                    foreach (var item in root.GridItems)
+                    {
+                        var gridItem = item as GridItem;
+                        if (gridItem != null && !gridItem.Expanded)
+                            GeneratorController.Current.CurrentUnitLayout.ObjectCollapsedCategories.Add(gridItem.Label);
+                    }
                 }
             }
         }
@@ -42,25 +46,29 @@ namespace CslaGenerator.Controls
             propertyGrid.PropertySort = GeneratorController.Current.CurrentUnitLayout.ObjectPropertySort;
 
             var root = propertyGrid.SelectedGridItem;
-            while (root.Parent != null)
+            if (root != null)
             {
-                root = root.Parent;
-            }
-
-            foreach (var item in root.GridItems)
-            {
-                var gridItem = item as GridItem;
-                if (gridItem != null)
+                while (root.Parent != null)
                 {
-                    gridItem.Expanded = !IsObjectCategoryCollapsed(gridItem.Label);
+                    root = root.Parent;
+                }
 
-                    foreach (var subItem in gridItem.GridItems)
+                foreach (var item in root.GridItems)
+                {
+                    var gridItem = item as GridItem;
+                    if (gridItem != null)
                     {
-                        var subGridItem = subItem as GridItem;
-                        if (subGridItem != null && subGridItem.PropertyDescriptor != null)
+                        gridItem.Expanded = !IsObjectCategoryCollapsed(gridItem.Label);
+
+                        foreach (var subItem in gridItem.GridItems)
                         {
-                            if (subGridItem.PropertyDescriptor.Name == GeneratorController.Current.CurrentUnitLayout.ObjectSelectedGridItem)
-                                subGridItem.Select();
+                            var subGridItem = subItem as GridItem;
+                            if (subGridItem != null && subGridItem.PropertyDescriptor != null)
+                            {
+                                if (subGridItem.PropertyDescriptor.Name ==
+                                    GeneratorController.Current.CurrentUnitLayout.ObjectSelectedGridItem)
+                                    subGridItem.Select();
+                            }
                         }
                     }
                 }

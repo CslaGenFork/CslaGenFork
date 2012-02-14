@@ -988,25 +988,29 @@ namespace CslaGenerator.Controls
             propertyGrid.PropertySort = GeneratorController.Current.CurrentUnitLayout.RelationsBuilderPropertySort;
 
             var root = propertyGrid.SelectedGridItem;
-            while (root.Parent != null)
+            if (root != null)
             {
-                root = root.Parent;
-            }
-
-            foreach (var item in root.GridItems)
-            {
-                var gridItem = item as GridItem;
-                if (gridItem != null)
+                while (root.Parent != null)
                 {
-                    gridItem.Expanded = !IsRelationBuilderCategoryCollapsed(gridItem.Label);
+                    root = root.Parent;
+                }
 
-                    foreach (var subItem in gridItem.GridItems)
+                foreach (var item in root.GridItems)
+                {
+                    var gridItem = item as GridItem;
+                    if (gridItem != null)
                     {
-                        var subGridItem = subItem as GridItem;
-                        if (subGridItem != null && subGridItem.PropertyDescriptor != null)
+                        gridItem.Expanded = !IsRelationBuilderCategoryCollapsed(gridItem.Label);
+
+                        foreach (var subItem in gridItem.GridItems)
                         {
-                            if (subGridItem.PropertyDescriptor.Name == GeneratorController.Current.CurrentUnitLayout.RelationsBuilderSelectedGridItem)
-                                subGridItem.Select();
+                            var subGridItem = subItem as GridItem;
+                            if (subGridItem != null && subGridItem.PropertyDescriptor != null)
+                            {
+                                if (subGridItem.PropertyDescriptor.Name ==
+                                    GeneratorController.Current.CurrentUnitLayout.RelationsBuilderSelectedGridItem)
+                                    subGridItem.Select();
+                            }
                         }
                     }
                 }
