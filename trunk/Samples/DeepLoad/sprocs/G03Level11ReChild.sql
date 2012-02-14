@@ -114,7 +114,7 @@ AS
         UPDATE [Level_1_1_ReChild]
         SET    [IsActive] = 'false'
         WHERE
-            [CParentID2] = @Level_1_ID
+            [Level_1_1_ReChild].[CParentID2] = @Level_1_ID
 
     END
 GO

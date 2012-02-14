@@ -111,7 +111,7 @@ AS
         DELETE
         FROM [Level_1_1_Child]
         WHERE
-            [CParentID1] = @Level_1_ID
+            [Level_1_1_Child].[CParentID1] = @Level_1_ID
 
     END
 GO
