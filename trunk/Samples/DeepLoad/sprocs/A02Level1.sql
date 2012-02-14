@@ -433,7 +433,7 @@ AS
         DELETE
         FROM [Level_1]
         WHERE
-            [Level_1_ID] = @Level_1_ID
+            [Level_1].[Level_1_ID] = @Level_1_ID
 
     END
 GO

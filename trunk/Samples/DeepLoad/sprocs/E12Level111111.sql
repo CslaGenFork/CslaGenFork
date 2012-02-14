@@ -95,7 +95,7 @@ AS
         UPDATE [Level_1_1_1_1_1_1]
         SET    [IsActive] = 'false'
         WHERE
-            [Level_1_1_1_1_1_1_ID] = @Level_1_1_1_1_1_1_ID
+            [Level_1_1_1_1_1_1].[Level_1_1_1_1_1_1_ID] = @Level_1_1_1_1_1_1_ID
 
     END
 GO

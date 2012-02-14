@@ -89,7 +89,7 @@ AS
         DELETE
         FROM [Level_1_1_1_1_1_Child]
         WHERE
-            [CNarentID1] = @Level_1_1_1_1_ID
+            [Level_1_1_1_1_1_Child].[CNarentID1] = @Level_1_1_1_1_ID
 
     END
 GO

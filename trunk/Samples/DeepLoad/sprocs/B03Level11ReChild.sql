@@ -89,7 +89,7 @@ AS
         DELETE
         FROM [Level_1_1_ReChild]
         WHERE
-            [CParentID2] = @Level_1_ID
+            [Level_1_1_ReChild].[CParentID2] = @Level_1_ID
 
     END
 GO

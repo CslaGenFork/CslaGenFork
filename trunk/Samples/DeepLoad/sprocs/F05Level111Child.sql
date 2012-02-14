@@ -91,7 +91,7 @@ AS
         UPDATE [Level_1_1_1_Child]
         SET    [IsActive] = 'false'
         WHERE
-            [CMarentID1] = @Level_1_1_ID
+            [Level_1_1_1_Child].[CMarentID1] = @Level_1_1_ID
 
     END
 GO

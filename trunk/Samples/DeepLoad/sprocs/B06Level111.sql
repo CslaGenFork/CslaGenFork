@@ -174,7 +174,7 @@ AS
         DELETE
         FROM [Level_1_1_1]
         WHERE
-            [Level_1_1_1_ID] = @Level_1_1_1_ID
+            [Level_1_1_1].[Level_1_1_1_ID] = @Level_1_1_1_ID
 
     END
 GO
