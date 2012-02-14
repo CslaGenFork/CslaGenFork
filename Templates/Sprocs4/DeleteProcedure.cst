@@ -35,7 +35,6 @@ bool timeStampColumn=false;
 string procName = String.Empty;
 string parms =String.Empty;
 string whereClause = String.Empty;
-string whereClauseChild = String.Empty;
 string whereClauseTS = String.Empty;
 
 if (!CriteriaDefined)
@@ -54,11 +53,9 @@ if (!CriteriaDefined)
             else
             {
                 whereClause += " AND" + Environment.NewLine + new string(' ', 3*4);
-                whereClauseChild += " AND" + Environment.NewLine + new string(' ', 3*4);
                 parms += ","  + Environment.NewLine;
             }
-            whereClause += String.Format("[{0}] = @{1}", GetFKColumnForParentProperty(prop,tables[0]), prop.ParameterName);
-            whereClauseChild += String.Format("[{0}].[{1}] = @{2}", GetFKTableForParentProperty(prop,tables[0]), GetFKColumnForParentProperty(prop,tables[0]), prop.ParameterName);
+            whereClause += String.Format("[{0}].[{1}] = @{2}", GetFKTableForParentProperty(prop,tables[0]), GetFKColumnForParentProperty(prop,tables[0]), prop.ParameterName);
             whereTables.Add(GetFKTableForParentProperty(prop,tables[0]));
             parms += String.Format("    @{0} {1}", prop.ParameterName, GetDataTypeString(prop.DbBindColumn));
         }
@@ -77,11 +74,9 @@ if (!CriteriaDefined)
                 if (prop.DbBindColumn.NativeType != "timestamp")
                     whereClauseTS += " AND" + Environment.NewLine + new string(' ', 3*4);
                 whereClause += " AND" + Environment.NewLine + new string(' ', 3*4);
-                whereClauseChild += " AND" + Environment.NewLine + new string(' ', 3*4);
                 parms += ","  + Environment.NewLine;
             }
-            whereClause += String.Format("[{0}] = @{1}", GetColumnString(prop.DbBindColumn), prop.ParameterName);
-            whereClauseChild += String.Format("[{0}].[{1}] = @{2}", GetTableString(prop.DbBindColumn), GetColumnString(prop.DbBindColumn), prop.ParameterName);
+            whereClause += String.Format("[{0}].[{1}] = @{2}", GetTableString(prop.DbBindColumn), GetColumnString(prop.DbBindColumn), prop.ParameterName);
             whereTables.Add(GetTableString(prop.DbBindColumn));
             if (prop.DbBindColumn.NativeType != "timestamp")
                 whereClauseTS += String.Format("[{0}] = @{1}", GetColumnString(prop.DbBindColumn), prop.ParameterName) + Environment.NewLine;
@@ -106,12 +101,10 @@ else
                 whereClauseTS += " AND" + Environment.NewLine + new string(' ', 3*4);
 
             whereClause += " AND" + Environment.NewLine + new string(' ', 3*4);
-            whereClauseChild += " AND" + Environment.NewLine + new string(' ', 3*4);
             parms += ","  + Environment.NewLine;
         }
 
-        whereClause += fullTableSchema + String.Format("[{0}] = @{1}", GetColumnString(parm), parm.ParameterName);
-        whereClauseChild += fullTableSchema + String.Format("[{0}].[{1}] = @{2}", tables[0].ObjectName, GetColumnString(parm), parm.ParameterName);
+        whereClause += fullTableSchema + String.Format("[{0}].[{1}] = @{2}", tables[0].ObjectName, GetColumnString(parm), parm.ParameterName);
         if (parm.DbBindColumn.NativeType != "timestamp")
             whereClauseTS +=String.Format("[{0}] = @{1}", GetColumnString(parm), parm.ParameterName) + Environment.NewLine;
         else
@@ -467,7 +460,7 @@ AS
                     }
                     %>
         WHERE
-            <%= whereClauseChild %>
+            <%= whereClause %>
         <%
                 }
             }
