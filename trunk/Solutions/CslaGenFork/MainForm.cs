@@ -618,6 +618,9 @@ namespace CslaGenerator
 
         internal bool ApplyProjectProperties()
         {
+            if (_controller.CurrentProjectProperties == null)
+                return false;
+
             if (!_controller.CurrentProjectProperties.ValidateOptions())
                 return false;
 
@@ -821,7 +824,8 @@ namespace CslaGenerator
                     _controller.CurrentProjectProperties.cmdSetDefault.PerformClick();
                 }
 
-                _controller.CurrentProjectProperties.cmdGetDefault.PerformClick();
+                if (_controller.CurrentProjectProperties != null)
+                    _controller.CurrentProjectProperties.cmdGetDefault.PerformClick();
                 AfterOpenEnableButtonsAndMenus();
                 if (_controller.IsDBConnected)
                 {
