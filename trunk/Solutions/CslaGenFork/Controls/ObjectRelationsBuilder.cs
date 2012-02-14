@@ -911,23 +911,27 @@ namespace CslaGenerator.Controls
 
             var propertyGrid = GetCurrentPropertyGrid();
             GeneratorController.Current.CurrentUnitLayout.RelationsBuilderPropertySort = propertyGrid.PropertySort;
-            if (propertyGrid.SelectedGridItem.PropertyDescriptor != null)
+            if (propertyGrid.SelectedGridItem != null && propertyGrid.SelectedGridItem.PropertyDescriptor != null)
                 GeneratorController.Current.CurrentUnitLayout.RelationsBuilderSelectedGridItem = propertyGrid.SelectedGridItem.PropertyDescriptor.Name;
 
             if (propertyGrid.PropertySort != PropertySort.Alphabetical)
             {
                 GeneratorController.Current.CurrentUnitLayout.RelationsBuilderCollapsedCategories.Clear();
                 var root = propertyGrid.SelectedGridItem;
-                while (root.Parent != null)
+                if (root != null)
                 {
-                    root = root.Parent;
-                }
+                    while (root.Parent != null)
+                    {
+                        root = root.Parent;
+                    }
 
-                foreach (var item in root.GridItems)
-                {
-                    var gridItem = item as GridItem;
-                    if (gridItem != null && !gridItem.Expanded)
-                        GeneratorController.Current.CurrentUnitLayout.RelationsBuilderCollapsedCategories.Add(gridItem.Label);
+                    foreach (var item in root.GridItems)
+                    {
+                        var gridItem = item as GridItem;
+                        if (gridItem != null && !gridItem.Expanded)
+                            GeneratorController.Current.CurrentUnitLayout.RelationsBuilderCollapsedCategories.Add(
+                                gridItem.Label);
+                    }
                 }
             }
         }
