@@ -96,6 +96,7 @@ foreach (BusinessRuleProperty property in authzRule.RuleProperties)
         string stringValue = ReturnPropertyValue(property);
         if (stringValue == string.Empty)
             continue;
+
         if (isFirst)
             isFirst = false;
         else
@@ -137,6 +138,7 @@ if (authzRule.BaseRuleProperties.Count > 0)
                 string stringValue = ReturnPropertyValue(authzRule, property);
                 if (IsBaseRulePropertyDefault(property.Name, stringValue))
                     continue;
+
                 if (isFirst)
                     isFirst = false;
                 else

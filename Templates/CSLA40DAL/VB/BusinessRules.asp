@@ -233,6 +233,7 @@ if (generateRuleRegion || generateAuthRegion || generateObjectRuleRegion)
                     {
                         if (primaryOnCtor)
                             continue;
+
                         if (isFirst)
                             isFirst = false;
                         else
@@ -265,6 +266,7 @@ if (generateRuleRegion || generateAuthRegion || generateObjectRuleRegion)
                             {
                                 if (primaryOnCtor)
                                     continue;
+
                                 if (isFirst)
                                     isFirst = false;
                                 else
