@@ -124,6 +124,7 @@ if (generateRuleRegion || generateAuthRegion || generateObjectRuleRegion)
                 string stringValue = ReturnPropertyValue(property);
                 if (stringValue == string.Empty)
                     continue;
+
                 if (isFirst)
                     isFirst = false;
                 else
@@ -142,6 +143,7 @@ if (generateRuleRegion || generateAuthRegion || generateObjectRuleRegion)
                         string stringValue = ReturnPropertyValue(rule, property);
                         if (IsBaseRulePropertyDefault(property.Name, stringValue))
                             continue;
+
                         if (isFirst)
                             isFirst = false;
                         else
@@ -231,6 +233,7 @@ if (generateRuleRegion || generateAuthRegion || generateObjectRuleRegion)
                     {
                         if (primaryOnCtor)
                             continue;
+
                         if (isFirst)
                             isFirst = false;
                         else
@@ -242,6 +245,7 @@ if (generateRuleRegion || generateAuthRegion || generateObjectRuleRegion)
                         string stringValue = ReturnPropertyValue(property);
                         if (stringValue == string.Empty)
                             continue;
+
                         if (isFirst)
                             isFirst = false;
                         else
@@ -262,6 +266,7 @@ if (generateRuleRegion || generateAuthRegion || generateObjectRuleRegion)
                             {
                                 if (primaryOnCtor)
                                     continue;
+
                                 if (isFirst)
                                     isFirst = false;
                                 else
@@ -274,6 +279,7 @@ if (generateRuleRegion || generateAuthRegion || generateObjectRuleRegion)
                                 string stringValue = ReturnPropertyValue(rule, property);
                                 if (IsBaseRulePropertyDefault(property.Name, stringValue))
                                     continue;
+
                                 if (isFirst)
                                     isFirst = false;
                                 else
