@@ -442,7 +442,7 @@ namespace CslaGenerator
         {
             var slash = filePath.LastIndexOf('\\');
             if (slash > 0)
-                return filePath.Substring(slash);
+                return filePath.Substring(slash + 1);
             
             return filePath;
         }
