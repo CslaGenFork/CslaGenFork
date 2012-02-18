@@ -139,7 +139,6 @@ if (!Info.UseCustomLoading)
             <%
                 if (SelfLoadsChildren(Info) && IsCollectionType(Info.ObjectType))
                 {
-            //foreach (var <= FormatCamel(itemInfo2.ObjectName) > in this)
                     %>
             foreach (var item in this)
             {

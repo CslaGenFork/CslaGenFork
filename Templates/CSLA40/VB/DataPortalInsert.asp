@@ -125,25 +125,6 @@ if (Info.GenerateDataPortalInsert)
     foreach (ValueProperty prop in Info.GetAllValueProperties())
     {
         if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
-            prop.DbBindColumn.NativeType == "timestamp")
-        {
-            if (prop.DeclarationMode == PropertyDeclaration.Managed)
-            {
-                %>
-                    LoadProperty(<%= FormatPropertyInfoName(prop.Name) %>, (byte[]) cmd.Parameters["@New<%= prop.ParameterName %>"].Value);
-                    <%
-            }
-            else
-            {
-                %>
-                    <%= FormatFieldName(prop.Name) %> = (byte[]) cmd.Parameters["@New<%= prop.ParameterName %>"].Value;
-                    <%
-            }
-        }
-    }
-    foreach (ValueProperty prop in Info.GetAllValueProperties())
-    {
-        if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
             (prop.DbBindColumn.IsPrimaryKey &&
             prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK))
         {
@@ -157,6 +138,25 @@ if (Info.GenerateDataPortalInsert)
             {
                 %>
                     <%= FormatFieldName(prop.Name) %> = (<%= GetLanguageVariableType(prop.DbBindColumn.DataType) %>) cmd.Parameters["@<%= prop.ParameterName %>"].Value;
+                    <%
+            }
+        }
+    }
+    foreach (ValueProperty prop in Info.GetAllValueProperties())
+    {
+        if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
+            prop.DbBindColumn.NativeType == "timestamp")
+        {
+            if (prop.DeclarationMode == PropertyDeclaration.Managed)
+            {
+                %>
+                    LoadProperty(<%= FormatPropertyInfoName(prop.Name) %>, (byte[]) cmd.Parameters["@New<%= prop.ParameterName %>"].Value);
+                    <%
+            }
+            else
+            {
+                %>
+                    <%= FormatFieldName(prop.Name) %> = (byte[]) cmd.Parameters["@New<%= prop.ParameterName %>"].Value;
                     <%
             }
         }
