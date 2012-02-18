@@ -110,7 +110,7 @@ if (Info.GenerateDataPortalInsert)
             <%
     if (UseSimpleAuditTrail(Info))
     {
-            %>SimpleAuditTrail();
+        %>SimpleAuditTrail();
             <%
     }
     if (plainConvertPropertiesWrite.Count > 0)
