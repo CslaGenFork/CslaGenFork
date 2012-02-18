@@ -155,21 +155,21 @@ if (Info.GenerateDataPortalInsert)
     foreach (ValueProperty prop in Info.GetAllValueProperties())
     {
         if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
-            prop.DbBindColumn.NativeType == "timestamp")
+            (prop.DbBindColumn.IsPrimaryKey &&
+            prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK))
         {
             %>
-                    <%= GetFieldLoaderStatement(prop, "(byte[]) cmd.Parameters[\"@New" + prop.ParameterName + "\"].Value") %>;
+                    <%= GetFieldLoaderStatement(prop, "(" + GetLanguageVariableType(prop.DbBindColumn.DataType) + ") cmd.Parameters[\"@" + prop.ParameterName + "\"].Value") %>;
                     <%
         }
     }
     foreach (ValueProperty prop in Info.GetAllValueProperties())
     {
         if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
-            (prop.DbBindColumn.IsPrimaryKey &&
-            prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK))
+            prop.DbBindColumn.NativeType == "timestamp")
         {
             %>
-                    <%= GetFieldLoaderStatement(prop, "(" + GetLanguageVariableType(prop.DbBindColumn.DataType) + ") cmd.Parameters[\"@" + prop.ParameterName + "\"].Value") %>;
+                    <%= GetFieldLoaderStatement(prop, "(byte[]) cmd.Parameters[\"@New" + prop.ParameterName + "\"].Value") %>;
                     <%
         }
     }
