@@ -14,9 +14,6 @@ if (!Info.UseCustomLoading)
 {
     if (!Info.DataSetLoadingScheme)
     {
-        /*if (!IsReadOnlyType(Info.ObjectType) ||
-            (Info.ParentType != string.Empty &&
-            (Info.ObjectType == CslaObjectType.ReadOnlyObject || (!isChildLazyLoaded && !isChildSelfLoaded))))*/
         if ((Info.ParentType != string.Empty || isItem) && !isChildLazyLoaded && !isChildSelfLoaded)
         {
             %>
