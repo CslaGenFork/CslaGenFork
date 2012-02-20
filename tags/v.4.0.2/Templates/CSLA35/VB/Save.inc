@@ -1,6 +1,0 @@
-
-<% 
-'Not needed for now
-%>
-
-
