@@ -321,10 +321,10 @@ namespace CslaGenerator.Controls
             txtDalInterfaceNamespace.Enabled = UseDal;
             txtDalObjectNamespace.Enabled = UseDal;
             chkGenerateDatabaseClass.Enabled = !UseDal;
+            txtDalName.Enabled = UseDal;
 
             txtDatabase.Enabled = !UseCsla4;
             txtDatabaseConnection.Enabled = UseCsla4;
-            chkUseConnectionName.Enabled = UseCsla4;
             chkWinForms.Enabled = UseCsla4;
             chkWPF.Enabled = UseCsla4;
             chkSilverlight.Enabled = UseCsla4;

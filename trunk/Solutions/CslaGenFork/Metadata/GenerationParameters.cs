@@ -39,7 +39,7 @@ namespace CslaGenerator.Metadata
         private bool _generateInlineQueries;
         private bool _generateQueriesWithSchema = true;
         private bool _generateDatabaseClass = true;
-        private bool _useConnectionName = true;
+        private string _dalName = string.Empty;
         private bool _usesCslaAuthorizationProvider = true;
         private bool _generateWinForms = true;
         private bool _generateWPF;
@@ -458,14 +458,16 @@ namespace CslaGenerator.Metadata
                 OnPropertyChanged("");
             }
         }
-        public bool UseConnectionName
+
+        public string DalName
         {
-            get { return _useConnectionName; }
+            get { return _dalName; }
             set
             {
-                if (_useConnectionName == value)
+                value = PropertyHelper.Tidy(value);
+                if (_dalName == value)
                     return;
-                _useConnectionName = value;
+                _dalName = value;
                 OnPropertyChanged("");
             }
         }
@@ -550,7 +552,6 @@ namespace CslaGenerator.Metadata
                 OnPropertyChanged("");
             }
         }
-
 
         public TargetDto UseDto
         {

@@ -253,13 +253,13 @@ namespace CslaGenerator.CodeGen
                 }
             }
 
-            var dbConnection = CslaTemplateHelperCS.GetConnectionName(_unit);
+            var dalName = CslaTemplateHelperCS.GetDalName(_unit);
 
             // Infrastructure classes
             if (_generateDatabaseClass && generationParams.TargetFramework == TargetFramework.CSLA40)
             {
                 const GenerationStep step = GenerationStep.Business;
-                GenerateUtilityFile("Database" + dbConnection, false, "Database", step);
+                GenerateUtilityFile("Database" + _unit.GenerationParams.DatabaseConnection, false, "Database", step);
             }
             else
             {
@@ -270,8 +270,8 @@ namespace CslaGenerator.CodeGen
 
             if (generationParams.GenerateDalInterface)
             {
-                GenerateUtilityFile("IDalManager" + dbConnection, false, "IDalManager", GenerationStep.DalInterface);
-                GenerateUtilityFile("DalFactory" + dbConnection, false, "DalFactory", GenerationStep.DalInterface);
+                GenerateUtilityFile("IDalManager" + dalName, false, "IDalManager", GenerationStep.DalInterface);
+                GenerateUtilityFile("DalFactory" + dalName, false, "DalFactory", GenerationStep.DalInterface);
                 GenerateUtilityFile("DataNotFoundException", false, "DataNotFoundException", GenerationStep.DalInterface);
             }
             else
@@ -283,7 +283,7 @@ namespace CslaGenerator.CodeGen
 
             if (generationParams.GenerateDalObject)
             {
-                GenerateUtilityFile("DalManager" + dbConnection, false, "DalManager", GenerationStep.DalObject);
+                GenerateUtilityFile("DalManager" + dalName, false, "DalManager", GenerationStep.DalObject);
             }
             else
             {
@@ -1431,7 +1431,8 @@ namespace CslaGenerator.CodeGen
 
             if (isProjectValid)
             {
-                var dbConnection = CslaTemplateHelperCS.GetConnectionName(_unit);
+                var dbConnection = _unit.GenerationParams.DatabaseConnection;
+                var dalName = CslaTemplateHelperCS.GetDalName(_unit);
                 if (_generateDatabaseClass)
                 {
                     if (_fileSuccess["Database" + dbConnection] == null)
@@ -1447,14 +1448,14 @@ namespace CslaGenerator.CodeGen
 
                 if (GeneratorController.Current.CurrentUnit.GenerationParams.GenerateDalInterface)
                 {
-                    if (_fileSuccess["IDalManager" + dbConnection] == null)
-                        OutputWindow.Current.AddOutputInfo(string.Format("IDalManager" + dbConnection + " classe: already exists."));
-                    else if (_fileSuccess["IDalManager" + dbConnection] == false)
-                        OutputWindow.Current.AddOutputInfo(string.Format("IDalManager" + dbConnection + " classe: failed."));
-                    if (_fileSuccess["DalFactory" + dbConnection] == null)
-                        OutputWindow.Current.AddOutputInfo(string.Format("DalFactory" + dbConnection + " classe: already exists."));
-                    else if (_fileSuccess["DalFactory" + dbConnection] == false)
-                        OutputWindow.Current.AddOutputInfo(string.Format("DalFactory" + dbConnection + " classe: failed."));
+                    if (_fileSuccess["IDalManager" + dalName] == null)
+                        OutputWindow.Current.AddOutputInfo(string.Format("IDalManager" + dalName + " classe: already exists."));
+                    else if (_fileSuccess["IDalManager" + dalName] == false)
+                        OutputWindow.Current.AddOutputInfo(string.Format("IDalManager" + dalName + " classe: failed."));
+                    if (_fileSuccess["DalFactory" + dalName] == null)
+                        OutputWindow.Current.AddOutputInfo(string.Format("DalFactory" + dalName + " classe: already exists."));
+                    else if (_fileSuccess["DalFactory" + dalName] == false)
+                        OutputWindow.Current.AddOutputInfo(string.Format("DalFactory" + dalName + " classe: failed."));
                     if (_fileSuccess["DataNotFoundException"] == null)
                         OutputWindow.Current.AddOutputInfo(string.Format("DataNotFoundException classe: already exists."));
                     else if (_fileSuccess["DataNotFoundException"] == false)
@@ -1463,10 +1464,10 @@ namespace CslaGenerator.CodeGen
 
                 if (GeneratorController.Current.CurrentUnit.GenerationParams.GenerateDalObject)
                 {
-                    if (_fileSuccess["DalManager" + dbConnection] == null)
-                        OutputWindow.Current.AddOutputInfo(string.Format("DalManager" + dbConnection + " classe: already exists."));
-                    else if (_fileSuccess["DalManager" + dbConnection] == false)
-                        OutputWindow.Current.AddOutputInfo(string.Format("DalManager" + dbConnection + " classe: failed."));
+                    if (_fileSuccess["DalManager" + dalName] == null)
+                        OutputWindow.Current.AddOutputInfo(string.Format("DalManager" + dalName + " classe: already exists."));
+                    else if (_fileSuccess["DalManager" + dalName] == false)
+                        OutputWindow.Current.AddOutputInfo(string.Format("DalManager" + dalName + " classe: failed."));
                 }
 
                 if (_sprocWarnings > 0 || _objectWarnings > 0)

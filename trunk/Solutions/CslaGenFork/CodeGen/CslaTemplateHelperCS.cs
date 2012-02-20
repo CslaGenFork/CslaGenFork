@@ -906,12 +906,17 @@ namespace CslaGenerator.CodeGen
             return result + info.ObjectNamespace.Substring(unit.GenerationParams.BaseNamespace.Length);
         }
 
-        public static string GetConnectionName(CslaGeneratorUnit unit)
+        public static string GetDalName(CslaGeneratorUnit unit)
         {
-            if (unit.GenerationParams.UseConnectionName)
-                return unit.GenerationParams.DatabaseConnection;
+            return unit.GenerationParams.DalName;
+        }
 
-            return string.Empty;
+        public static string GetDalNameDot(CslaGeneratorUnit unit)
+        {
+            if (unit.GenerationParams.DalName == string.Empty)
+                return string.Empty;
+
+            return unit.GenerationParams.DalName + ".";
         }
 
         #endregion
