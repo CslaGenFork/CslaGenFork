@@ -14,7 +14,6 @@ if (UseNoSilverlight())
 <!-- #include file="NewObjectAsync.asp" -->
 <%
     bool selfLoad2 = IsChildSelfLoaded(Info);
-    bool isCollection = false;
     if (CurrentUnit.GenerationParams.DatabaseConnection != String.Empty)
     {
         CslaObjectInfo tmpInfo = Info.Parent.CslaObjects.Find(Info.ParentType);

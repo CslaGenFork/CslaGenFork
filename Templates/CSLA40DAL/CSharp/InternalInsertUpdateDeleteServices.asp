@@ -2,14 +2,14 @@
 if (CurrentUnit.GenerationParams.SilverlightUsingServices)
 {
     string parentType = Info.ParentType;
-    CslaObjectInfo parentInfoSl = FindChildInfo(Info, parentType);
-    if (parentInfoSl == null)
+    ///CslaObjectInfo parentInfo = FindChildInfo(Info, parentType);/// DEPRECATED
+    if (parentInfo == null)
         parentType = "";
-    else if (parentInfoSl.ObjectType == CslaObjectType.EditableChildCollection)
-        parentType = parentInfoSl.ParentType;
-    else if (parentInfoSl.ObjectType == CslaObjectType.EditableRootCollection)
+    else if (parentInfo.ObjectType == CslaObjectType.EditableChildCollection)
+        parentType = parentInfo.ParentType;
+    else if (parentInfo.ObjectType == CslaObjectType.EditableRootCollection)
         parentType = "";
-    else if (parentInfoSl.ObjectType == CslaObjectType.DynamicEditableRootCollection)
+    else if (parentInfo.ObjectType == CslaObjectType.DynamicEditableRootCollection)
         parentType = "";
 
     if (Info.GenerateDataPortalInsert)

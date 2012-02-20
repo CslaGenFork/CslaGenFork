@@ -110,7 +110,7 @@ if (Info.GenerateDataPortalInsert)
             <%
     if (UseSimpleAuditTrail(Info))
     {
-            %>SimpleAuditTrail();
+        %>SimpleAuditTrail();
             <%
     }
     if (plainConvertPropertiesWrite.Count > 0)
@@ -119,7 +119,7 @@ if (Info.GenerateDataPortalInsert)
             <%
     }
     %>var args = new DataPortalHookArgs();
-            using (var dalManager = DalFactory<%= GetConnectionName(CurrentUnit) %>.GetManager())
+            using (var dalManager = DalFactory<%= GetDalNameDot(CurrentUnit) %>GetManager())
             {
                 OnInsertPre(args);
                 var dal = dalManager.GetProvider<I<%= Info.ObjectName %>Dal>();

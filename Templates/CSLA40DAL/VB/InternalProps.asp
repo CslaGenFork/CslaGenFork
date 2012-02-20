@@ -1,21 +1,21 @@
 <%
-if (useParentReference)
+if (useParentReference || isRODeepLoadCollection)
 {
     %>
-        #region Internal ParentList Property
+        #region ParentList Property
 
         /// <summary>
         /// Maintains metadata about <see cref="ParentList"/> property.
         /// </summary>
         public static readonly PropertyInfo<<%= Info.ParentType %>> ParentListProperty = RegisterProperty<<%= Info.ParentType %>>(p => p.ParentList);
         /// <summary>
-        /// Gets or sets the parent list.
+        /// Provide access to the parent list reference for use in child object code.
         /// </summary>
-        /// <value>The parent list.</value>
-        internal <%= Info.ParentType %> ParentList
+        /// <value>The parent list reference.</value>
+        public <%= Info.ParentType %> ParentList
         {
             get { return ReadProperty(ParentListProperty); }
-            set { LoadProperty(ParentListProperty, value); }
+            internal set { LoadProperty(ParentListProperty, value); }
         }
 
         #endregion

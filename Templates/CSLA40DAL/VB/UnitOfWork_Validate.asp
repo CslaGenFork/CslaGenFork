@@ -38,7 +38,6 @@ if (!Info.IsUpdater)
         // check criteria compatibility
         if (uowProp.TargetCriteria == string.Empty)
             continue;
-
         CslaObjectInfo targetInfo = Info.Parent.CslaObjects.Find(uowProp.TypeName);
         Criteria targetCrit = targetInfo.CriteriaObjects.Find(uowProp.TargetCriteria);
         bool isGetter = ForceIsGetter(Info, uowProp);

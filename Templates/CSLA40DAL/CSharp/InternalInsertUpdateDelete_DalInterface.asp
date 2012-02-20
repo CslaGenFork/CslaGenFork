@@ -1,6 +1,6 @@
 <%
 string parentType = Info.ParentType;
-CslaObjectInfo parentInfo = FindChildInfo(Info, parentType);
+///CslaObjectInfo parentInfo = FindChildInfo(Info, parentType);/// DEPRECATED
 if (parentInfo == null)
     parentType = "";
 else if (parentInfo.ObjectType == CslaObjectType.EditableChildCollection)

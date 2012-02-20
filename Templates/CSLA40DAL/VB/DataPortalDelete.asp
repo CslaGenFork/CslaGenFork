@@ -169,7 +169,7 @@ if (Info.GenerateDataPortalDelete)
             }
             %>
             var args = new DataPortalHookArgs();
-            using (var dalManager = DalFactory<%= GetConnectionName(CurrentUnit) %>.GetManager())
+            using (var dalManager = DalFactory<%= GetDalNameDot(CurrentUnit) %>GetManager())
             {
                 <%
             if (Info.GetMyChildProperties().Count > 0)

@@ -1,4 +1,9 @@
 <%
+string dataPortalCreate = string.Empty;
+if (isChild)
+dataPortalCreate = "Child_";
+else
+dataPortalCreate = "DataPortal_";
 foreach (Criteria c in GetCriteriaObjects(Info))
 {
     if (c.CreateOptions.DataPortal)
@@ -21,15 +26,15 @@ foreach (Criteria c in GetCriteriaObjects(Info))
         }
         if (c.Properties.Count > 1)
         {
-            %>protected void <%= isChild ? "Child_" : "DataPortal_" %>Create(<%= c.Name %> crit)<%
+            %>protected void <%= dataPortalCreate %>Create(<%= c.Name %> crit)<%
         }
         else if (c.Properties.Count > 0)
         {
-            %>protected void <%= isChild ? "Child_" : "DataPortal_" %>Create(<%= ReceiveSingleCriteria(c, "crit") %>)<%
+            %>protected void <%= dataPortalCreate %>Create(<%= ReceiveSingleCriteria(c, "crit") %>)<%
         }
         else
         {
-            %>protected override void <%= isChild ? "Child_" : "DataPortal_" %>Create()<%
+            %>protected <%= Info.ObjectType == CslaObjectType.ReadOnlyObject ? "" : "override " %>void <%= dataPortalCreate %>Create()<%
         }
         %>
         {
@@ -69,8 +74,6 @@ foreach (Criteria c in GetCriteriaObjects(Info))
             <%
         }
     }
-    %>
-            <%
     ValuePropertyCollection valProps = Info.GetAllValueProperties();
     foreach (Property p in c.Properties)
     {
@@ -79,12 +82,14 @@ foreach (Criteria c in GetCriteriaObjects(Info))
             ValueProperty prop = valProps.Find(p.Name);
             if (c.Properties.Count > 1)
             {
-                %><%= GetFieldLoaderStatement(prop, "crit." + FormatProperty(p.Name)) %>;
+                %>
+            <%= GetFieldLoaderStatement(prop, "crit." + FormatProperty(p.Name)) %>;
             <%
             }
             else
             {
-                %><%= GetFieldLoaderStatement(prop, AssignSingleCriteria(c, "crit")) %>;
+                %>
+            <%= GetFieldLoaderStatement(prop, AssignSingleCriteria(c, "crit")) %>;
             <%
             }
         }
@@ -97,7 +102,8 @@ foreach (Criteria c in GetCriteriaObjects(Info))
             if (IsEditableType(_child.ObjectType) &&
                 (childProp.LoadingScheme == LoadingScheme.ParentLoad || !childProp.LazyLoad))
             {
-                %><%= GetNewChildLoadStatement(childProp, true) %>;
+                %>
+            <%= GetNewChildLoadStatement(childProp, true) %>;
             <%
             }
         }
@@ -111,18 +117,17 @@ foreach (Criteria c in GetCriteriaObjects(Info))
     {
         hookArgs = HookSingleCriteria(c, "crit");
     }
-    %>var args = new DataPortalHookArgs(<%= hookArgs %>);
+    %>
+            var args = new DataPortalHookArgs(<%= hookArgs %>);
             OnCreate(args);
     <%
-    // this is DataPortal_Create; so always CheckRules except for ReadOnlyCollection
-    if (Info.ObjectType != CslaObjectType.ReadOnlyCollection)
+    if (Info.ObjectType != CslaObjectType.ReadOnlyObject)
     {
         %>
-            BusinessRules.CheckRules();
+            base.<%= dataPortalCreate %>Create();
             <%
-    }
-    %>
-            base.<%= isChild ? "Child_" : "DataPortal_" %>Create();
+        }
+        %>
         }
     <%
     }

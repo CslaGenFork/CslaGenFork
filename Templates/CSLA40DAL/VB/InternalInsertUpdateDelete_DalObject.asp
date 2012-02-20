@@ -1,6 +1,6 @@
 <%
 string parentType = Info.ParentType;
-CslaObjectInfo parentInfo = FindChildInfo(Info, parentType);
+///CslaObjectInfo parentInfo = FindChildInfo(Info, parentType);/// DEPRECATED
 if (parentInfo == null)
     parentType = "";
 else if (parentInfo.ObjectType == CslaObjectType.EditableChildCollection)
@@ -134,7 +134,9 @@ if (Info.GenerateDataPortalInsert)
                     <%
     foreach (ValueProperty prop in Info.GetAllValueProperties())
     {
-        if (prop.DbBindColumn.IsPrimaryKey || prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
+        if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
+            (prop.DbBindColumn.IsPrimaryKey &&
+            prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK))
         {
             %><%= FormatCamel(prop.Name) %> = (<%= GetLanguageVariableType(prop.DbBindColumn.DataType) %>)cmd.Parameters["@<%= prop.ParameterName %>"].Value;
                     <%
@@ -142,7 +144,8 @@ if (Info.GenerateDataPortalInsert)
     }
     foreach (ValueProperty prop in Info.GetAllValueProperties())
     {
-        if (prop.DbBindColumn.NativeType == "timestamp")
+        if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
+            prop.DbBindColumn.NativeType == "timestamp")
         {
             %>return (byte[])cmd.Parameters["@New<%= prop.ParameterName %>"].Value;
                     <%

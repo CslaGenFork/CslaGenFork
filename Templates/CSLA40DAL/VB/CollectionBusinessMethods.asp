@@ -1,8 +1,12 @@
 <%
-CslaObjectInfo itemInfo = FindChildInfo(Info, Info.ItemType);
-
 bool useParentReference = (Info.ObjectType == CslaObjectType.DynamicEditableRootCollection ||
     (Info.ObjectType == CslaObjectType.ReadOnlyCollection && Info.ItemType != string.Empty)) && itemInfo.AddParentReference;
+bool isRODeepLoadCollection =
+    Info.ObjectType == CslaObjectType.ReadOnlyCollection &&
+    Info.ItemType != string.Empty &&
+    IsReadOnlyType(itemInfo.ObjectType) &&
+    ancestorLoaderLevel == 0 &&
+    ParentLoadsROChildren(Info);
 
 bool useAuthz = false;
 if (!IsReadOnlyType(itemInfo.ObjectType))
@@ -44,13 +48,13 @@ if (!needsBusiness)
     }
 }
 
-if (useParentReference || useAuthz || needsBusiness)
+if (useParentReference || isRODeepLoadCollection || useAuthz || needsBusiness)
 {
     %>
 
         #region Collection Business Methods
         <%
-    if (useParentReference && !useAuthz)
+    if ((useParentReference || isRODeepLoadCollection) && !useAuthz)
     {
         %>
 
@@ -80,7 +84,7 @@ if (useParentReference || useAuthz || needsBusiness)
         /// </summary>
         /// <param name="item">The item to add.</param>
         <%
-        if (useParentReference)
+        if (useParentReference || isRODeepLoadCollection)
         {
             %>
         /// <remarks>
@@ -97,7 +101,7 @@ if (useParentReference || useAuthz || needsBusiness)
                 throw new System.Security.SecurityException("User not authorized to create a <%= Info.ItemType %>.");
 
         <%
-        if (useParentReference)
+        if (useParentReference || isRODeepLoadCollection)
         {
             %>
             item.ParentList = this;

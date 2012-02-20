@@ -19,11 +19,15 @@
 
 <!-- #include file="ObjectValidate.asp" -->
 <%
+bool isChild = false;
+bool useChildFactory = CurrentUnit.GenerationParams.UseChildFactory;
+bool useBypassPropertyChecks = CurrentUnit.GenerationParams.UseBypassPropertyChecks;
+string bpcSpacer = useBypassPropertyChecks ? bpcSpacer = new string(' ', 4) : string.Empty;
+bool ancestorIsCollection = false;
+int ancestorLoaderLevel = 0;
 GenerationStep genStep = GenerationStep.Business;
 bool usesDTO = DalObjectUsesDTO(Info);
 bool usesDalCriteria = DalObjectUsesCriteria(Info);
-bool isChild = false;
-bool useChildFactory = CurrentUnit.GenerationParams.UseChildFactory;
 int silverlightLevel = 0;
 bool genOptional = false;
 bool useItem = false;

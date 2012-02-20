@@ -12,11 +12,7 @@ if (IsCollectionType(Info.ObjectType))
 
 if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
 {
-    bool lazyLoad4 = IsChildLazyLoaded(Info);
-    bool selfLoad4 = IsChildSelfLoaded(Info);
-    if (!IsReadOnlyType(Info.ObjectType) ||
-        (Info.ParentType != string.Empty &&
-        (Info.ObjectType == CslaObjectType.ReadOnlyObject || (!lazyLoad4 && !selfLoad4))))
+    if ((Info.ParentType != string.Empty || isItem) && !isChildLazyLoaded && !isChildSelfLoaded)
     {
         %>
 
@@ -33,39 +29,93 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
             CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.None &&
             CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.PropertyLevel)
         {
-            %>if (!CanGetObject())
+            %>
+            if (!CanGetObject())
                 throw new System.Security.SecurityException("User not authorized to load a <%= Info.ObjectName %>.");
 
             <%
         }
-        %><%= Info.ObjectName %> obj = new <%= Info.ObjectName %>();
+        %>
+            <%= Info.ObjectName %> obj = new <%= Info.ObjectName %>();
             <%
         if (Info.ObjectType == CslaObjectType.EditableSwitchable ||
             (Info.ObjectType == CslaObjectType.EditableChild ||
             Info.ObjectType == CslaObjectType.EditableChildCollection))
         {
-            %>// show the framework that this is a child object
+            %>
+            // show the framework that this is a child object
             obj.MarkAsChild();
             <%
         }
-        %>obj.Fetch(dr);
+        %>
+            obj.Fetch(dr);
             <%
-        if (selfLoad4 && !IsCollectionType(Info.ObjectType))
+        if (isChildSelfLoaded && !IsCollectionType(Info.ObjectType))
         {
-            %>obj.FetchChildren(dr);
+            %>
+            obj.FetchChildren(dr);
             <%
+        }
+        else if (ancestorLoaderLevel > 0)
+        {
+            foreach (ChildProperty childProp in Info.GetCollectionChildProperties())
+            {
+                CslaObjectInfo _child = FindChildInfo(Info, childProp.TypeName);
+                if (_child != null)
+                {
+                    if (childProp.LoadingScheme == LoadingScheme.ParentLoad)
+                    {
+                        string internalCreateString = string.Empty;
+                        if (IsEditableType(_child.ObjectType))
+                        {
+                            if (useChildFactory)
+                                internalCreateString = FormatPascal(childProp.TypeName) + ".New" + FormatPascal(childProp.TypeName);
+                            else
+                                internalCreateString = "DataPortal.CreateChild<" + FormatPascal(childProp.TypeName) + ">";
+                        }
+                        else
+                            internalCreateString = "new " + childProp.TypeName;
+
+                        if ((childProp.DeclarationMode == PropertyDeclaration.Managed ||
+                            childProp.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion))
+                        {
+                            if (useBypassPropertyChecks && false) // disable this for now
+                            {
+                                %>
+                obj.<%= FormatPascal(childProp.Name) %> = <%= internalCreateString %>();
+            <%
+                            }
+                            else
+                            {
+                                %>
+            obj.LoadProperty(<%= FormatPropertyInfoName(childProp.Name) %>, <%= internalCreateString %>());
+        <%
+                            }
+                        }
+                        else
+                        {
+                            %>
+            <%= bpcSpacer %>obj.<%= GetFieldLoaderStatement(childProp, internalCreateString + "()") %>;
+        <%
+                        }
+                    }
+                }
+            }
         }
         if (Info.ObjectType != CslaObjectType.ReadOnlyObject && !IsCollectionType(Info.ObjectType))
         {
-            %>obj.MarkOld();
+            %>
+            obj.MarkOld();
             <%
             if (Info.CheckRulesOnFetch)
             {
-                %>obj.BusinessRules.CheckRules();
+                %>
+            obj.BusinessRules.CheckRules();
             <%
             }
         }
-        %>return obj;
+        %>
+            return obj;
         }
     <%
     }

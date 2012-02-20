@@ -10,7 +10,7 @@
 <%@ Import Namespace="CslaGenerator.Util" %>
 
 //-----------------------------------------------------------------------
-// <copyright file="DalFactory<%= GetConnectionName(CurrentUnit) %>.cs" company="Marimer LLC">
+// <copyright file="DalFactory<%= GetDalName(CurrentUnit) %>.cs" company="Marimer LLC">
 //     Copyright (c) Marimer LLC. All rights reserved.
 //     Website: http://www.lhotka.net/cslanet/
 // </copyright>
@@ -22,35 +22,35 @@ using System.Configuration;
 namespace <%= GetContextUtilitiesNamespace(CurrentUnit, GenerationStep.DalInterface) %>
 {
     /// <summary>
-    /// Creates a <%= GetConnectionName(CurrentUnit) %> DAL manager provider.
+    /// Creates a <%= GetDalName(CurrentUnit) %> DAL manager provider.
     /// </summary>
     /// <remarks>
     /// To use the generated DAL:<br/>
     /// 1) name this assembly <%= CurrentUnit.GenerationParams.DalInterfaceNamespace %><br/>
     /// 2) add the following line to the <strong>appSettings</strong>
     /// section of the application .config file: <br/>
-    /// &lt;add key="<%= GetConnectionName(CurrentUnit) %>.DalManagerType" value="<%= GetContextUtilitiesNamespace(CurrentUnit, GenerationStep.DalObject) %>.DalManager<%= GetConnectionName(CurrentUnit) %>, <%= CurrentUnit.GenerationParams.DalObjectNamespace %>" /&gt;
+    /// &lt;add key="<%= GetDalName(CurrentUnit) %>.DalManagerType" value="<%= GetContextUtilitiesNamespace(CurrentUnit, GenerationStep.DalObject) %>.DalManager<%= GetDalName(CurrentUnit) %>, <%= CurrentUnit.GenerationParams.DalObjectNamespace %>" /&gt;
     /// </remarks>
-    public static class DalFactory<%= GetConnectionName(CurrentUnit) %>
+    public static class DalFactory<%= GetDalName(CurrentUnit) %>
     {
         private static Type _dalType;
 
-        /// <summary>Gets the <%= GetConnectionName(CurrentUnit) %> DAL manager type that must be set
+        /// <summary>Gets the <%= GetDalName(CurrentUnit) %> DAL manager type that must be set
         /// in the <strong>appSettings</strong> section of the application .config file.</summary>
-        /// <returns>A new <see cref="IDalManager<%= GetConnectionName(CurrentUnit) %>"/> instance</returns>
-        public static IDalManager<%= GetConnectionName(CurrentUnit) %> GetManager()
+        /// <returns>A new <see cref="IDalManager<%= GetDalName(CurrentUnit) %>"/> instance</returns>
+        public static IDalManager<%= GetDalName(CurrentUnit) %> GetManager()
         {
             if (_dalType == null)
             {
-                string dalTypeName = ConfigurationManager.AppSettings["<%= GetConnectionName(CurrentUnit) %>.DalManagerType"];
+                var dalTypeName = ConfigurationManager.AppSettings["<%= GetDalName(CurrentUnit) %>.DalManagerType"];
                 if (!string.IsNullOrEmpty(dalTypeName))
                     _dalType = Type.GetType(dalTypeName);
                 else
-                    throw new NullReferenceException("<%= GetConnectionName(CurrentUnit) %>.DalManagerType");
+                    throw new NullReferenceException("<%= GetDalName(CurrentUnit) %>.DalManagerType");
                 if (_dalType == null)
                     throw new ArgumentException(string.Format("Type {0} could not be found", dalTypeName));
             }
-            return (IDalManager<%= GetConnectionName(CurrentUnit) %>) Activator.CreateInstance(_dalType);
+            return (IDalManager<%= GetDalName(CurrentUnit) %>) Activator.CreateInstance(_dalType);
         }
     }
 }

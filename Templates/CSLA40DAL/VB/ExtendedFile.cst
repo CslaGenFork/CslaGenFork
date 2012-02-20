@@ -10,7 +10,6 @@
 
 <!-- #include file="Header.asp" -->
 <%
-GenerationStep genStep = GenerationStep.Business;
 int silverlightLevel = 0;
 bool genOptional = false;
 if (CurrentUnit.GenerationParams.UtilitiesNamespace != string.Empty)
@@ -22,7 +21,7 @@ if (CurrentUnit.GenerationParams.UtilitiesNamespace != string.Empty)
     }
     if (UseNoSilverlight())
     {
-%>using <%= GetContextUtilitiesNamespace(CurrentUnit, genStep) %>;
+%>using <%= GetContextUtilitiesNamespace(CurrentUnit, GenerationStep.Business) %>;
 <%
     }
     if (UseBoth())
@@ -176,4 +175,30 @@ if (Info.ObjectType != CslaObjectType.UnitOfWork)
 }
 %>
     }
+    <%
+    if (IsCriteriaExtendedClassNeeded(Info))
+    {
+        %>
+
+    #region Criteria Object
+    <%
+        foreach (Criteria crit in GetCriteriaObjects(Info))
+        {
+            if (crit.Properties.Count > 1)
+            {
+                %>
+
+    public partial class <%= crit.Name %>
+    {
+    }
+<%
+            }
+        }
+        %>
+
+    #endregion
+
+    <%
+    }
+    %>
 }

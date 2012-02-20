@@ -103,7 +103,8 @@ if (Info.GenerateDataPortalDelete)
             SimpleAuditTrail();
             <%
                 }
-                    %><%= GetConnection(Info, false) %>
+                %>
+            <%= GetConnection(Info, false) %>
             {
                 <%= GetCommand(Info, c.DeleteOptions.ProcedureName) %>
                 {

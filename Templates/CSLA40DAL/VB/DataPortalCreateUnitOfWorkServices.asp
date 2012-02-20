@@ -42,8 +42,8 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
             }
             else
             {
-                createPartialMethods.Add("partial void Service_Create()");
-                %>public void DataPortal_Fetch(Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
+                createPartialMethods.Add("partial override void Service_Create()");
+                %>public override void DataPortal_Fetch(Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
             }
         %>
         {
