@@ -1,0 +1,178 @@
+<%@ CodeTemplate Inherits="CslaTemplateHelper" Language="CSharp" TargetLanguage="CSharp" Description="Generates a CSLA NameValueList Object." %>
+<%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the NameValueList Object to create." %>
+<%@ Property Name="Errors" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return errors to master.cst" %>
+
+<%@ Assembly Name="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator.Metadata" %>
+<%@ Import Namespace="CslaGenerator.Util" %>
+<%@ Assembly Name="System.Windows.Forms" %>
+<%@ Import Namespace="System.Windows.Forms" %>
+<%@ Import Namespace="System.Text" %>
+<%@ Property Name="ActiveObjects" Type="System.Boolean" Default="false" Category="Options" Description="If true, base class is generated as ActiveObjects" %>
+
+<%
+ValueProperty nameProp = null;
+ValueProperty valueProp = null;
+foreach (ValueProperty prop in Info.ValueProperties) {
+	if (prop.Name.Equals(Info.NameColumn))
+		nameProp = prop;
+	if (prop.Name.Equals(Info.ValueColumn))
+		valueProp = prop;
+}
+if (nameProp == null || valueProp == null)
+	Errors.Append("Missing name or value properties\r\n");
+else {
+%>
+<!-- #include file="Header.inc" -->
+using System;
+using System.Data;
+using System.Data.SqlClient;
+<% if ( ActiveObjects ) { %>using ActiveObjects;<%  } else { %>using Csla;<% } %>
+using Csla.Data;
+
+<% if (Info.ObjectNamespace.Trim().Length > 0) { %>namespace <%=Info.ObjectNamespace%>
+{ <% } %>
+	<!-- #include file="XmlComment.inc" -->
+	[Serializable()]
+	<% if (ActiveObjects && Info.SubscribeToChannel.Length > 0) { %>[Subscribe("<%= Info.SubscribeToChannel %>")]
+	<% } %>public partial class <%=Info.ObjectName%> : NameValueListBase<<%=GetDataType(valueProp)%>, <%=GetDataType(nameProp)%>>
+	{
+	
+		#region Constructors
+		
+		protected <%=Info.ObjectName%>()
+		{
+			// Prevent direct creation 
+		}
+		
+		#endregion
+
+	<% if (Info.GenerateFactoryMethods) { 
+		if (!Info.UseCustomLoading) { %>		
+		#region Factory Methods
+		
+		<% if (Info.CacheResults) { %>
+		private static System.Collections.Generic.Dictionary<object, <%=Info.ObjectName%>> _cachedResults = new System.Collections.Generic.Dictionary<object, <%=Info.ObjectName%>>();
+		
+		public static void Invalidate()
+		{
+			_cachedResults.Clear();
+		}
+		
+		<% } 
+		foreach (Criteria c in Info.CriteriaObjects) {
+			if (c.GetOptions.Factory) { %>
+		/// <summary>
+		/// Factory method. New <see cref="<%=Info.ObjectName%>" /> object is loaded from the database, based on given parameters.
+		/// </summary>
+		<%		
+				string strGetParams = string.Empty;
+				string strGetCritParams = string.Empty;
+				for (int i = 0; i < c.Properties.Count; i++) {
+					if (i > 0) {
+						strGetParams += ", ";
+						strGetCritParams += ", ";
+					}
+					strGetParams += string.Concat(GetDataType(c.Properties[i]), " ", FormatCamel(c.Properties[i].Name));
+					strGetCritParams += FormatCamel(c.Properties[i].Name);
+				}
+		%>
+		public static <%=Info.ObjectName%> Get<%=Info.ObjectName%><%=c.GetOptions.FactorySuffix.Trim()%>(<%=strGetParams%>)
+		{
+			<% if (Info.GetRoles.Trim() != string.Empty) { %>
+			if (!CanGetObject())
+				throw new System.Security.SecurityException("User not authorized to load a <%= Info.ObjectName %>");
+			<% } %>
+			<% if (Info.ObjectType == CslaObjectType.EditableSwitchable)
+					strGetCritParams = "false, " + strGetCritParams;
+				%>
+			<%=c.Name%> crit = new <%=c.Name%>(<%=strGetCritParams %>);
+			<% if (Info.CacheResults) { %>
+			if (!_cachedResults.ContainsKey(crit))
+				_cachedResults.Add(crit, <% if (ActiveObjects) { %>ActiveObjects.<% } %>DataPortal.Fetch<<%=Info.ObjectName %>>(crit));
+			return _cachedResults[crit];
+			<% } else { %>
+			return <% if (ActiveObjects) { %>ActiveObjects.<% } %>DataPortal.Fetch<<%=Info.ObjectName %>>(crit);
+			<% } %>
+		}
+<% 
+			}
+		}		
+		} %>
+		
+		#endregion
+	<% } %>
+		<!-- #include file="Criteria.inc"  -->
+		
+		<!-- #include file="SharedAuthorizationMethods.inc" -->	
+
+<% if (Info.GenerateDataAccessRegion) { %>
+<% if (!Info.UseCustomLoading) { %>		
+
+		#region Data Access
+		
+<% 
+foreach (Criteria c in Info.CriteriaObjects) {
+	if (c.GetOptions.DataPortal) { %>
+		/// <summary>
+		/// Load <see cref="<%=Info.ObjectName%>" /> collection from the database, based on given parameters.
+		/// </summary>
+		protected void DataPortal_Fetch(<%=c.Name%> crit)
+		{
+			using (SqlConnection cn = new SqlConnection(DataBase.<%= Info.DbName %>Connection)) 
+			{
+				using (SqlCommand cmd = cn.CreateCommand()) 
+				{
+					cmd.CommandType = CommandType.StoredProcedure;
+					cmd.CommandText = "<%= c.GetOptions.ProcedureName %>";
+					<% foreach (CslaGenerator.Metadata.Property p in c.Properties) { %>
+					cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%=GetParameterSet(p,true)%>);
+					<% } %>
+					cn.Open();
+					ApplicationContext.LocalContext["dpCriteria"] = crit;
+					ApplicationContext.LocalContext["dpConnection"] = cn;
+					ApplicationContext.LocalContext["dpCommand"] = cmd;
+					onFetchPre(this, EventArgs.Empty);
+					LoadCollection(cmd);
+					ApplicationContext.LocalContext["dpCriteria"] = crit;
+					ApplicationContext.LocalContext["dpConnection"] = cn;
+					ApplicationContext.LocalContext["dpCommand"] = cmd;
+					onFetchPost(this, EventArgs.Empty);
+					<% if (Info.ObjectType == CslaObjectType.ReadOnlyCollection) { %>IsReadOnly = true;<% } %>
+				}
+			}
+		}
+		
+<%	}
+} %>
+		private void LoadCollection(SqlCommand cmd)
+		{
+			RaiseListChangedEvents = false;
+			using (SafeDataReader dr = new SafeDataReader(cmd.ExecuteReader())) 
+			{
+				IsReadOnly = false;
+				while (dr.Read()) 
+				{
+					NameValuePair nvp = new NameValuePair(
+						<%=String.Format(GetDataReaderStatement(valueProp))%>,
+						<%=String.Format(GetDataReaderStatement(nameProp))%>);
+					Add(nvp);
+				}
+				IsReadOnly = true;
+			}
+			RaiseListChangedEvents = true;
+		}
+	
+		#endregion
+<% } %>
+		<!-- #include file="Events.inc" -->
+
+<% } %>
+
+	}
+	
+<% if (Info.ObjectNamespace.Trim().Length > 0) { %>
+}
+<% } %>
+<% } %>
