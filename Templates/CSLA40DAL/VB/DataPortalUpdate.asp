@@ -92,7 +92,7 @@ if (Info.GenerateDataPortalUpdate)
             <%
     }
     %>var args = new DataPortalHookArgs();
-            using (var dalManager = DalFactory<%= GetConnectionName(CurrentUnit) %>.GetManager())
+            using (var dalManager = DalFactory<%= GetDalNameDot(CurrentUnit) %>GetManager())
             {
                 OnUpdatePre(args);
                 var dal = dalManager.GetProvider<I<%= Info.ObjectName %>Dal>();

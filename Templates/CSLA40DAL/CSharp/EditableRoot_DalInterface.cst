@@ -21,10 +21,19 @@
 <%
 if (Errors.Length == 0)
 {
+    bool isItem = false;
+    bool isParentRootCollection = false;
+    CslaObjectInfo parentInfo = null;
+    CslaObjectInfo grandParentInfo = null;
+    bool isChild = false;
+    bool useChildFactory = CurrentUnit.GenerationParams.UseChildFactory;
+    bool useBypassPropertyChecks = CurrentUnit.GenerationParams.UseBypassPropertyChecks;
+    string bpcSpacer = useBypassPropertyChecks ? bpcSpacer = new string(' ', 4) : string.Empty;
+    bool ancestorIsCollection = false;
+    int ancestorLoaderLevel = AncestorLoaderLevel(Info, out ancestorIsCollection);
     GenerationStep genStep = GenerationStep.DalInterface;
     bool usesDTO = DalObjectUsesDTO(Info);
     bool usesDalCriteria = DalObjectUsesCriteria(Info);
-    bool isChild = true;
     bool? firstComment = null;
     %><!-- #include file="Header_DalInterface.asp" -->
 using System;

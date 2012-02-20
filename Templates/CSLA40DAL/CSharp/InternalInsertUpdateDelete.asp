@@ -1,6 +1,6 @@
 <%
 string parentType = Info.ParentType;
-CslaObjectInfo parentInfo = FindChildInfo(Info, parentType);
+///CslaObjectInfo parentInfo = FindChildInfo(Info, parentType);/// DEPRECATED
 if (parentInfo == null)
     parentType = "";
 else if (parentInfo.ObjectType == CslaObjectType.EditableChildCollection)
@@ -148,7 +148,7 @@ if (Info.GenerateDataPortalInsert)
     }
     %>
             var args = new DataPortalHookArgs();
-            using (var dalManager = DalFactory<%= GetConnectionName(CurrentUnit) %>.GetManager())
+            using (var dalManager = DalFactory<%= GetDalName(CurrentUnit) %>.GetManager())
             {
                 OnInsertPre(args);
                 var dal = dalManager.GetProvider<I<%= Info.ObjectName %>Dal>();
@@ -285,7 +285,7 @@ if (Info.GenerateDataPortalUpdate)
     }
     %>
             var args = new DataPortalHookArgs();
-            using (var dalManager = DalFactory<%= GetConnectionName(CurrentUnit) %>.GetManager())
+            using (var dalManager = DalFactory<%= GetDalName(CurrentUnit) %>.GetManager())
             {
                 OnUpdatePre(args);
                 var dal = dalManager.GetProvider<I<%= Info.ObjectName %>Dal>();
@@ -364,7 +364,7 @@ if (Info.GenerateDataPortalDelete)
     %>
 
         /// <summary>
-        /// Self deletes the <see cref="<%= Info.ObjectName %>"/> object from database with or without transaction.
+        /// Self deletes the <see cref="<%= Info.ObjectName %>"/> object from database.
         /// </summary>
         <%
     if (parentType.Length > 0 && !Info.ParentInsertOnly)
@@ -394,7 +394,7 @@ if (Info.GenerateDataPortalDelete)
     }
     %>
             var args = new DataPortalHookArgs();
-            using (var dalManager = DalFactory<%= GetConnectionName(CurrentUnit) %>.GetManager())
+            using (var dalManager = DalFactory<%= GetDalName(CurrentUnit) %>.GetManager())
             {
                 <%
     if (Info.GetMyChildProperties().Count > 0)

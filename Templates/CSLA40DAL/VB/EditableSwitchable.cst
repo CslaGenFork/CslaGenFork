@@ -22,11 +22,30 @@
 <%
 if (Errors.Length == 0)
 {
+    bool isItem = false;
+    bool isParentRootCollection = false;
+    CslaObjectInfo parentInfo = Info.Parent.CslaObjects.Find(Info.ParentType);
+    CslaObjectInfo grandParentInfo = null;
+    if (parentInfo != null)
+    {
+        isItem = IsCollectionType(parentInfo.ObjectType);
+        grandParentInfo = Info.Parent.CslaObjects.Find(parentInfo.ParentType);
+        isParentRootCollection = (parentInfo.ObjectType == CslaObjectType.EditableRootCollection) ||
+            (parentInfo.ObjectType == CslaObjectType.ReadOnlyCollection && parentInfo.ParentType == String.Empty);
+    }
+    bool isChild = false;
+    bool isSwitchable = true;
+    bool isChildSelfLoaded = IsChildSelfLoaded(Info);
+    bool isChildLazyLoaded = IsChildLazyLoaded(Info);
+    bool isCollection = false;
+    bool useChildFactory = CurrentUnit.GenerationParams.UseChildFactory;
+    bool useBypassPropertyChecks = CurrentUnit.GenerationParams.UseBypassPropertyChecks;
+    string bpcSpacer = useBypassPropertyChecks ? bpcSpacer = new string(' ', 4) : string.Empty;
+    bool ancestorIsCollection = false;
+    int ancestorLoaderLevel = AncestorLoaderLevel(Info, out ancestorIsCollection);
     GenerationStep genStep = GenerationStep.Business;
     bool usesDTO = DalObjectUsesDTO(Info);
     bool usesDalCriteria = DalObjectUsesCriteria(Info);
-    bool isChild = false;
-    bool useChildFactory = CurrentUnit.GenerationParams.UseChildFactory;
     int silverlightLevel = 0;
     bool genOptional = false;
     bool useItem = false;

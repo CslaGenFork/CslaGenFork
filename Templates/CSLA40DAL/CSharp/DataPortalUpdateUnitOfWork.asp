@@ -27,7 +27,8 @@ if (Info.GenerateDataPortalUpdate)
                 %>SimpleAuditTrail();
                 <%
     }
-                %><%= GetConnection(Info, false) %>
+    %>
+                <%= GetConnection(Info, false) %>
                 {
                     <%= GetCommand(Info, Info.UpdateProcedureName) %>
                     {

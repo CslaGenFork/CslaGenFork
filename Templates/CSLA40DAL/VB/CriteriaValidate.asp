@@ -7,7 +7,7 @@ bool isSelfLoadCollection =
     (Info.ObjectType == CslaObjectType.EditableChildCollection ||
     Info.ObjectType == CslaObjectType.ReadOnlyCollection) &&
     IsChildSelfLoaded(Info);
-
+bool isSelfLoad = IsChildSelfLoaded(Info);
 bool createOptionsFactory;
 bool createOptionsDataPortal;
 bool createOptionsRunLocal;
@@ -28,11 +28,12 @@ foreach (Criteria crit in GetCriteriaObjects(Info))
     }
     getOptionsFactory = getOptionsFactory | crit.GetOptions.Factory;
 }
-if (IsChildSelfLoaded(Info))
+if (isSelfLoad)
 {
     if (!getOptionsFactory)
     {
-        Errors.Append("Object " + Info.ObjectName + " is missing get criteria; to \"SelfLoad\" an object, that object must have a criteria with GetOptions.Factory set." + Environment.NewLine);
+        //Errors.Append("Object " + Info.ObjectName + " is missing get criteria; to \"SelfLoad\" an object, that object must have a criteria with GetOptions.Factory set." + Environment.NewLine);
+        Warnings.Append("Object " + Info.ObjectName + " is missing get criteria; to \"SelfLoad\" an object, that object must have a criteria with GetOptions.Factory set." + Environment.NewLine);
         return;
     }
 }
@@ -109,7 +110,7 @@ else
             Info.ObjectType == CslaObjectType.EditableSwitchable ||
             (Info.ObjectType == CslaObjectType.ReadOnlyObject && Info.ParentType == string.Empty)))
         {
-            if (getOptionsFactory || getOptionsDataPortal)
+            if (!isSelfLoad && (getOptionsFactory || getOptionsDataPortal))
             {
                 Warnings.Append("Criteria " + Info.ObjectName + "." + crit.Name + ": all Get options should be \"False\" or empty (neither a root object nor a SelfLoad object)." + Environment.NewLine);
             }

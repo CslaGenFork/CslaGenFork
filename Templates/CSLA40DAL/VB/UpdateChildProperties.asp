@@ -4,6 +4,7 @@ children = SortChildren(children);
 if (IgnoreSortOrder(children))
 {
     %>
+                // flushes all pending data operations
                 FieldManager.UpdateChildren(this);
                 <%
 }

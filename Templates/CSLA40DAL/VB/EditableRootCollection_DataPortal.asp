@@ -34,7 +34,7 @@ if (UseNoSilverlight())
         }
         %>protected override void DataPortal_Update()
         {
-            using (var dalManager = DalFactory<%= GetConnectionName(CurrentUnit) %>.GetManager())
+            using (var dalManager = DalFactory<%= GetDalNameDot(CurrentUnit) %>GetManager())
             {
                 base.Child_Update();
             }
