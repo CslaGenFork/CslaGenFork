@@ -182,11 +182,12 @@ namespace CslaGenerator.Controls
             this.groupBoxStoredProcs = new System.Windows.Forms.GroupBox();
             this.lblDatabaseConnection = new System.Windows.Forms.Label();
             this.txtDatabaseConnection = new System.Windows.Forms.TextBox();
+            this.lblDalName = new System.Windows.Forms.Label();
+            this.txtDalName = new System.Windows.Forms.TextBox();
             this.chkGenerateStoredProcedures = new System.Windows.Forms.CheckBox();
             this.chkSpOneFile = new System.Windows.Forms.CheckBox();
             this.chkGenerateInlineQueries = new System.Windows.Forms.CheckBox();
             this.chkGenerateQueriesWithSchema = new System.Windows.Forms.CheckBox();
-            this.chkUseConnectionName = new System.Windows.Forms.CheckBox();
             this.chkGenerateDatabaseClass = new System.Windows.Forms.CheckBox();
             this.GenerationMiscTab = new System.Windows.Forms.TabPage();
             this.chkSaveGenerationMisc = new System.Windows.Forms.CheckBox();
@@ -1785,7 +1786,8 @@ namespace CslaGenerator.Controls
             this.GenerationDatabaseTab.Controls.Add(this.chkSaveGenerationDatabase);
             this.GenerationDatabaseTab.Controls.Add(this.lblDatabaseConnection);
             this.GenerationDatabaseTab.Controls.Add(this.txtDatabaseConnection);
-            this.GenerationDatabaseTab.Controls.Add(this.chkUseConnectionName);
+            this.GenerationDatabaseTab.Controls.Add(this.lblDalName);
+            this.GenerationDatabaseTab.Controls.Add(this.txtDalName);
             this.GenerationDatabaseTab.Controls.Add(this.chkGenerateDatabaseClass);
             this.GenerationDatabaseTab.Controls.Add(this.chkGenerateQueriesWithSchema);
             this.GenerationDatabaseTab.Controls.Add(this.chkGenerateInlineQueries);
@@ -1817,7 +1819,7 @@ namespace CslaGenerator.Controls
             this.lblDatabaseConnection.Name = "lblDatabaseConnection";
             this.lblDatabaseConnection.Size = new System.Drawing.Size(150, 16);
             this.lblDatabaseConnection.TabIndex = 36;
-            this.lblDatabaseConnection.Text = "Connection name:";
+            this.lblDatabaseConnection.Text = "Database Connection name:";
             // 
             // txtDatabaseConnection
             // 
@@ -1826,24 +1828,31 @@ namespace CslaGenerator.Controls
             this.txtDatabaseConnection.Name = "txtDatabaseConnection";
             this.txtDatabaseConnection.Size = new System.Drawing.Size(164, 20);
             this.txtDatabaseConnection.TabIndex = 5;
-            this.toolTip.SetToolTip(this.txtDatabaseConnection, "Specify the Database Connection name to bu used by this project.");
+            this.toolTip.SetToolTip(this.txtDatabaseConnection, "Specify the Database Connection name to be used by this project.");
             // 
-            // chkUseConnectionName
+            // lblDalName
             // 
-            this.chkUseConnectionName.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "UseConnectionName", true, DataSourceUpdateMode.OnPropertyChanged));
-            this.chkUseConnectionName.Location = new System.Drawing.Point(15, 98);
-            this.chkUseConnectionName.Name = "chkUseConnectionName";
-            this.chkUseConnectionName.Size = new System.Drawing.Size(216, 17);
-            this.chkUseConnectionName.TabIndex = 10;
-            this.chkUseConnectionName.Text = "Use Connection name";
-            this.toolTip.SetToolTip(this.chkUseConnectionName,
-                                     "If checked, the connection name will be used on Database and DAL support classes.\r\n"+
-                                     "Uncheck only if your VS project uses a single database connection.");
+            this.lblDalName.Location = new System.Drawing.Point(15, 94);
+            this.lblDalName.Name = "lblDalName";
+            this.lblDalName.Size = new System.Drawing.Size(150, 16);
+            this.lblDalName.TabIndex = 36;
+            this.lblDalName.Text = "DAL name:";
+            // 
+            // txtDalName
+            // 
+            this.txtDalName.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.generationParametersBindingSource, "DalName", true, DataSourceUpdateMode.OnPropertyChanged));
+            this.txtDalName.Location = new System.Drawing.Point(15, 110);
+            this.txtDalName.Name = "txtDalName";
+            this.txtDalName.Size = new System.Drawing.Size(164, 20);
+            this.txtDalName.TabIndex = 6;
+            this.toolTip.SetToolTip(this.txtDalName, "Specify the DAL name to be used by this project. If possible, use the Database Connection name.\r\n" +
+                                    "If there are several business assemblies using the same database connection,\r\n" +
+                                    "use a different DAL name per each business assembly.\r\n");
             // 
             // chkGenerateDatabaseClass
             // 
             this.chkGenerateDatabaseClass.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "GenerateDatabaseClass", true, DataSourceUpdateMode.OnPropertyChanged));
-            this.chkGenerateDatabaseClass.Location = new System.Drawing.Point(15, 126);
+            this.chkGenerateDatabaseClass.Location = new System.Drawing.Point(15, 142);
             this.chkGenerateDatabaseClass.Name = "chkGenerateDatabaseClass";
             this.chkGenerateDatabaseClass.Size = new System.Drawing.Size(216, 17);
             this.chkGenerateDatabaseClass.TabIndex = 10;
@@ -1854,7 +1863,7 @@ namespace CslaGenerator.Controls
             // chkGenerateQueriesWithSchema
             // 
             this.chkGenerateQueriesWithSchema.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "GenerateQueriesWithSchema", true, DataSourceUpdateMode.OnPropertyChanged));
-            this.chkGenerateQueriesWithSchema.Location = new System.Drawing.Point(15, 154);
+            this.chkGenerateQueriesWithSchema.Location = new System.Drawing.Point(15, 170);
             this.chkGenerateQueriesWithSchema.Name = "chkGenerateQueriesWithSchema";
             this.chkGenerateQueriesWithSchema.Size = new System.Drawing.Size(216, 17);
             this.chkGenerateQueriesWithSchema.TabIndex = 10;
@@ -2335,12 +2344,13 @@ namespace CslaGenerator.Controls
         private System.Windows.Forms.CheckBox chkSaveGenerationDatabase;
         private System.Windows.Forms.Label lblDatabaseConnection;
         private System.Windows.Forms.TextBox txtDatabaseConnection;
+        private System.Windows.Forms.Label lblDalName;
+        private System.Windows.Forms.TextBox txtDalName;
         private System.Windows.Forms.GroupBox groupBoxStoredProcs;
         private System.Windows.Forms.CheckBox chkGenerateStoredProcedures;
         private System.Windows.Forms.CheckBox chkSpOneFile;
         private System.Windows.Forms.CheckBox chkGenerateInlineQueries;
         private System.Windows.Forms.CheckBox chkGenerateQueriesWithSchema;
-        private System.Windows.Forms.CheckBox chkUseConnectionName;
         private System.Windows.Forms.CheckBox chkGenerateDatabaseClass;
         private System.Windows.Forms.TabPage GenerationMiscTab;
         private System.Windows.Forms.CheckBox chkSaveGenerationMisc;

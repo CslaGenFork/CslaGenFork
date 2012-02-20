@@ -230,7 +230,6 @@ namespace CslaGenerator.Metadata
             //This is done so that the collection stores Property Objects ONLY
             //and avoid saving a ValueProperty to the xml when there's no need.
 
-
             if (_count == _array.Length)
                 EnsureCapacity(_count + 1);
 

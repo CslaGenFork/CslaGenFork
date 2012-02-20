@@ -100,7 +100,6 @@ namespace CslaGenerator.Metadata
             }
         }
 
-
         public Type GetInheritedType()
         {
             if (_assemblyFile != null && _assemblyFile != String.Empty)
