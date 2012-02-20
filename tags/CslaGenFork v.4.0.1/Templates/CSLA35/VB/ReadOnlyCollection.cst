@@ -1,0 +1,64 @@
+<%@ CodeTemplate Inherits="VbCslaTemplateHelper" Language="VB" TargetLanguage="VB" Description="Generates a CSLA ReadOnly Collection." %>
+<%@ Property Name="Info" Type="CslaObjectInfo" Optional="False" Category="Business Object" Description="Definition of the ReadOnlyCollection object to create." %>
+<%@ Property Name="ActiveObjects" Type="System.Boolean" Default="false" Category="Options" Description="If true, base class is generated as ActiveObjects" %>
+<%@ Property Name="Errors" Type="System.Text.StringBuilder" Optional="False" Category="Options" Description="Allows the template to return errors to master.cst" %>
+
+<%@ Assembly Name="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator.Metadata" %>
+<%@ Import Namespace="CslaGenerator.Util" %>
+<%@ Import Namespace="System.Text" %>
+
+<% Dim first As Boolean = True %>
+<!-- #include file="Header.inc" -->
+Imports System.Data.SqlClient
+<% If ActiveObjects = False Then %>Imports CSLA<% else %>Imports ActiveObjects<% End If %>
+Imports CSLA.Data
+<%= GetUsingStatementsString(Info) %>
+<% If Info.ObjectNamespace.Trim.Length > 0 Then %>Namespace <%=Info.ObjectNamespace%><% End If %>
+	<!-- #include file="XmlComment.inc" -->
+	<%= GetAttributesString(Info.Attributes) %>
+	<Serializable()<%
+	If ActiveObjects Then 
+		If Info.SubscribeToChannel.Length > 0 Then
+		%>, Subscribe("<%= Info.SubscribeToChannel %>")<% 
+		End If 
+	End If %>> _
+	Public Partial Class <%=Info.ObjectName%>
+		Inherits <% If ActiveObjects Then %>Active<% End If %>ReadOnlyListBase(Of <%=Info.ObjectName%>, <%=Info.ItemType %>)
+		<!-- #include file="Implements.inc" -->	
+	
+		<!-- #include file="CollectionBusinessProps.inc" -->
+
+		<!-- #include file="FindMethods.inc" -->
+
+#Region " Shared Methods "
+	<% If Info.GenerateFactoryMethods Then 
+			If Info.DbName.Trim().Equals(String.Empty) Then
+				Errors.Append("	Make sure you specify a DB name.") 
+				Errors.Append(vbCrLf)
+			End If
+	%>
+		<!-- #include file="GetObject.inc" -->
+		
+		<!-- #include file="InternalGetObject.inc" -->
+	<% End If %>
+#End Region
+		<!-- #include file="Constructor.inc" -->
+		
+		<!-- #include file="Criteria.inc" -->
+			
+		<!-- #include file="SharedAuthorizationMethods.inc" -->	
+		
+		<% If Info.GenerateDataAccessRegion Then %>
+		
+#Region " Data Access "
+		<!-- #include file="CollectionDataPortalFetch.inc" -->
+#End Region
+		<!-- #include file="Events.inc" -->
+		
+		<% End If %>
+		
+	End Class
+
+<% If Info.ObjectNamespace.Trim.Length > 0 Then %>End Namespace<% End If %>

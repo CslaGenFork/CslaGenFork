@@ -1,0 +1,109 @@
+<%@ CodeTemplate Inherits="CslaTemplateHelper" Language="CSharp" TargetLanguage="CSharp" Description="Generates a CSLA Dynamic Root Collection." %>
+<%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the DynamicEditableRootCollection Object to create." %>
+<%@ Property Name="Errors" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return errors to master.cst" %>
+<%@ Property Name="Warnings" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return warnings to master.cst" %>
+<%@ Property Name="ActiveObjects" Type="System.Boolean" Default="false" Category="Options" Description="if (true, base class is generated as ActiveObjects" %>
+
+<%@ Assembly Name="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator.Metadata" %>
+<%@ Import Namespace="CslaGenerator.Util" %>
+<%@ Import Namespace="System.Text" %>
+
+<!-- #include file="DynamicEditableRootCollectionValidate.inc" -->
+<%
+if (Errors.Length == 0)
+{
+    bool first = true;
+    %><!-- #include file="Header.inc" -->
+using System;
+using System.Data;
+using System.Data.SqlClient;
+using Csla;
+<% if (ActiveObjects) { %>using ActiveObjects;
+<% } %>using Csla.Data;
+<%= GetUsingStatementsString(Info) %>
+<% if (Info.ObjectNamespace.Length > 0) { %>namespace <%= Info.ObjectNamespace %>
+{<% } %>
+<% bool? firstComment = null; %><!-- #include file="XmlComment.inc" -->
+    <% if (GetAttributesString(Info.Attributes) != string.Empty) { %>
+    <%= GetAttributesString(Info.Attributes) %>
+    <% } %>
+    [Serializable]
+    <% if (ActiveObjects) { %>[RegisterNotify("IsValid, IsDirty, BrokenRulesChanged")]
+    <%    if (Info.SubscribeToChannel.Length > 0) { %>[Subscribe("<%= Info.SubscribeToChannel %>")]<% } %>
+    <% } %>public partial class <%= Info.ObjectName %> : <%
+            if (Info.InheritedType.Type != String.Empty) {
+                %><%=Info.InheritedType.Type%><%
+            } else if (Info.InheritedType.ObjectName != String.Empty) {
+                %><%=Info.InheritedType.ObjectName%><%
+             } else {
+                %><% if (ActiveObjects) { %>Active<% } %>DynamicListBase<%
+            } %><<%=Info.ItemType %>><!-- #include file="Implements.inc" -->
+    {
+        <!-- #include file="CollectionBusinessProps.inc" -->
+
+<!-- #include file="FindMethods.inc" -->
+
+    <% if (Info.GenerateFactoryMethods) {
+            if (Info.DbName.Equals(String.Empty)) {
+                Warnings.Append("Make sure you specify a DB name." + Environment.NewLine);
+            }
+    %>
+        #region Factory Methods
+
+        /// <summary>Adds a new item to the end of the <see cref="<%=Info.ObjectName%>"/> collection.</summary>
+        protected override object AddNewCore()
+        {
+            <%= Info.ItemType %> item = <%= Info.ItemType %>.New<%= Info.ItemType %>();
+            Add(item);
+            return item;
+        }
+
+        /// <summary>
+        /// Factory method. Creates a new <see cref="<%=Info.ObjectName%>"/> collection.
+        /// </summary>
+        /// <returns>A reference to the created <see cref="<%=Info.ObjectName%>"/> object.</returns>
+        public static <%= Info.ObjectName %> New<%= Info.ObjectName %>()
+        {
+            <%
+            if (CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.None &&
+                CurrentUnit.GenerationParams.GenerateAuthorization != Authorization.PropertyLevel &&
+                Info.GetRoles.Trim() != String.Empty)
+            {
+                %>
+            //if (!CanAddObject())
+            //    throw new System.Security.SecurityException("User not authorized to create a <%= Info.ObjectName %>.");aaa
+
+            <%
+            }
+            %>
+            return DataPortal.Create<<%= Info.ObjectName %>>();
+        }
+        <!-- #include file="GetObject.inc" -->
+<% Response.Write(Environment.NewLine); %>
+        #endregion
+    <% } %>
+        <!-- #include file="Save.inc" -->
+
+<!-- #include file="Constructor.inc" -->
+
+        <!-- #include file="Criteria.inc" -->
+
+<!-- #include file="SharedAuthorizationMethods.inc" -->
+<% if (Info.GenerateDataAccessRegion) { %>
+
+        #region Data Access
+
+        <!-- #include file="CollectionDataPortalFetch.inc" -->
+
+        #endregion
+<!-- #include file="Events.inc" -->
+
+<% } %>
+
+    }
+<% if (Info.ObjectNamespace.Length > 0) { %>
+}
+<% } %>
+<% } %>
