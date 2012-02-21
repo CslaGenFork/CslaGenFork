@@ -31,7 +31,7 @@ namespace ParentLoad.DataAccess
         {
             if (_dalType == null)
             {
-                string dalTypeName = ConfigurationManager.AppSettings["ParentLoad.DalManagerType"];
+                var dalTypeName = ConfigurationManager.AppSettings["ParentLoad.DalManagerType"];
                 if (!string.IsNullOrEmpty(dalTypeName))
                     _dalType = Type.GetType(dalTypeName);
                 else
