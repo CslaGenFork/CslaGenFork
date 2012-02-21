@@ -1,0 +1,196 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{720FFFD9-3518-4223-BD84-4BE0F5FFE955}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ParentLoadSoftDelete.DataAccess.Sql</RootNamespace>
+    <AssemblyName>ParentLoadSoftDelete.DataAccess.Sql</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Csla">
+      <HintPath>..\..\..\..\..\cslagenfork.svn.codeplex.com\SVN\trunk\Samples\DeepLoad\References\Csla.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DalManagerParentLoadSoftDelete.cs" />
+    <Compile Include="ERCLevel\F01_ContinentCollDal.cs" />
+    <Compile Include="ERCLevel\F01_ContinentCollDal.Designer.cs">
+      <DependentUpon>F01_ContinentCollDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERCLevel\F02_ContinentDal.cs" />
+    <Compile Include="ERCLevel\F02_ContinentDal.Designer.cs">
+      <DependentUpon>F02_ContinentDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERCLevel\F03_Continent_ChildDal.cs" />
+    <Compile Include="ERCLevel\F03_Continent_ChildDal.Designer.cs">
+      <DependentUpon>F03_Continent_ChildDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERCLevel\F03_Continent_ReChildDal.cs" />
+    <Compile Include="ERCLevel\F03_Continent_ReChildDal.Designer.cs">
+      <DependentUpon>F03_Continent_ReChildDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERCLevel\F04_SubContinentDal.cs" />
+    <Compile Include="ERCLevel\F04_SubContinentDal.Designer.cs">
+      <DependentUpon>F04_SubContinentDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERCLevel\F05_SubContinent_ChildDal.cs" />
+    <Compile Include="ERCLevel\F05_SubContinent_ChildDal.Designer.cs">
+      <DependentUpon>F05_SubContinent_ChildDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERCLevel\F05_SubContinent_ReChildDal.cs" />
+    <Compile Include="ERCLevel\F05_SubContinent_ReChildDal.Designer.cs">
+      <DependentUpon>F05_SubContinent_ReChildDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERCLevel\F06_CountryDal.cs" />
+    <Compile Include="ERCLevel\F06_CountryDal.Designer.cs">
+      <DependentUpon>F06_CountryDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERCLevel\F07_Country_ChildDal.cs" />
+    <Compile Include="ERCLevel\F07_Country_ChildDal.Designer.cs">
+      <DependentUpon>F07_Country_ChildDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERCLevel\F07_Country_ReChildDal.cs" />
+    <Compile Include="ERCLevel\F07_Country_ReChildDal.Designer.cs">
+      <DependentUpon>F07_Country_ReChildDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERCLevel\F08_RegionDal.cs" />
+    <Compile Include="ERCLevel\F08_RegionDal.Designer.cs">
+      <DependentUpon>F08_RegionDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERCLevel\F09_Region_ChildDal.cs" />
+    <Compile Include="ERCLevel\F09_Region_ChildDal.Designer.cs">
+      <DependentUpon>F09_Region_ChildDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERCLevel\F09_Region_ReChildDal.cs" />
+    <Compile Include="ERCLevel\F09_Region_ReChildDal.Designer.cs">
+      <DependentUpon>F09_Region_ReChildDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERCLevel\F10_CityDal.cs" />
+    <Compile Include="ERCLevel\F10_CityDal.Designer.cs">
+      <DependentUpon>F10_CityDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERCLevel\F11_City_ChildDal.cs" />
+    <Compile Include="ERCLevel\F11_City_ChildDal.Designer.cs">
+      <DependentUpon>F11_City_ChildDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERCLevel\F11_City_ReChildDal.cs" />
+    <Compile Include="ERCLevel\F11_City_ReChildDal.Designer.cs">
+      <DependentUpon>F11_City_ReChildDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERCLevel\F12_CityRoadDal.cs" />
+    <Compile Include="ERCLevel\F12_CityRoadDal.Designer.cs">
+      <DependentUpon>F12_CityRoadDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERLevel\E02_ContinentDal.cs" />
+    <Compile Include="ERLevel\E02_ContinentDal.Designer.cs">
+      <DependentUpon>E02_ContinentDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERLevel\E03_Continent_ChildDal.cs" />
+    <Compile Include="ERLevel\E03_Continent_ChildDal.Designer.cs">
+      <DependentUpon>E03_Continent_ChildDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERLevel\E03_Continent_ReChildDal.cs" />
+    <Compile Include="ERLevel\E03_Continent_ReChildDal.Designer.cs">
+      <DependentUpon>E03_Continent_ReChildDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERLevel\E04_SubContinentDal.cs" />
+    <Compile Include="ERLevel\E04_SubContinentDal.Designer.cs">
+      <DependentUpon>E04_SubContinentDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERLevel\E05_SubContinent_ChildDal.cs" />
+    <Compile Include="ERLevel\E05_SubContinent_ChildDal.Designer.cs">
+      <DependentUpon>E05_SubContinent_ChildDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERLevel\E05_SubContinent_ReChildDal.cs" />
+    <Compile Include="ERLevel\E05_SubContinent_ReChildDal.Designer.cs">
+      <DependentUpon>E05_SubContinent_ReChildDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERLevel\E06_CountryDal.cs" />
+    <Compile Include="ERLevel\E06_CountryDal.Designer.cs">
+      <DependentUpon>E06_CountryDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERLevel\E07_Country_ChildDal.cs" />
+    <Compile Include="ERLevel\E07_Country_ChildDal.Designer.cs">
+      <DependentUpon>E07_Country_ChildDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERLevel\E07_Country_ReChildDal.cs" />
+    <Compile Include="ERLevel\E07_Country_ReChildDal.Designer.cs">
+      <DependentUpon>E07_Country_ReChildDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERLevel\E08_RegionDal.cs" />
+    <Compile Include="ERLevel\E08_RegionDal.Designer.cs">
+      <DependentUpon>E08_RegionDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERLevel\E09_Region_ChildDal.cs" />
+    <Compile Include="ERLevel\E09_Region_ChildDal.Designer.cs">
+      <DependentUpon>E09_Region_ChildDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERLevel\E09_Region_ReChildDal.cs" />
+    <Compile Include="ERLevel\E09_Region_ReChildDal.Designer.cs">
+      <DependentUpon>E09_Region_ReChildDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERLevel\E10_CityDal.cs" />
+    <Compile Include="ERLevel\E10_CityDal.Designer.cs">
+      <DependentUpon>E10_CityDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERLevel\E11_City_ChildDal.cs" />
+    <Compile Include="ERLevel\E11_City_ChildDal.Designer.cs">
+      <DependentUpon>E11_City_ChildDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERLevel\E11_City_ReChildDal.cs" />
+    <Compile Include="ERLevel\E11_City_ReChildDal.Designer.cs">
+      <DependentUpon>E11_City_ReChildDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ERLevel\E12_CityRoadDal.cs" />
+    <Compile Include="ERLevel\E12_CityRoadDal.Designer.cs">
+      <DependentUpon>E12_CityRoadDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ParentLoadSoftDelete.DataAccess\ParentLoadSoftDelete.DataAccess.csproj">
+      <Project>{BF966A99-C3D6-4314-BF02-986B049B22F5}</Project>
+      <Name>ParentLoadSoftDelete.DataAccess</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

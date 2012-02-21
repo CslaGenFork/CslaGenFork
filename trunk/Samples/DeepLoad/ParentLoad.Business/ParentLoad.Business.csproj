@@ -40,182 +40,184 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataPortalHookArgs.cs" />
-    <Compile Include="ERCLevel\B01Level1Coll.cs" />
-    <Compile Include="ERCLevel\B01Level1Coll.Designer.cs">
-      <DependentUpon>B01Level1Coll.cs</DependentUpon>
+    <Compile Include="ERCLevel\B01_ContinentColl.cs" />
+    <Compile Include="ERCLevel\B01_ContinentColl.Designer.cs">
+      <DependentUpon>B01_ContinentColl.cs</DependentUpon>
     </Compile>
-    <Compile Include="ERCLevel\B02Level1.cs" />
-    <Compile Include="ERCLevel\B02Level1.Designer.cs">
-      <DependentUpon>B02Level1.cs</DependentUpon>
+    <Compile Include="ERCLevel\B02_Continent.cs" />
+    <Compile Include="ERCLevel\B02_Continent.Designer.cs">
+      <DependentUpon>B02_Continent.cs</DependentUpon>
     </Compile>
-    <Compile Include="ERCLevel\B03Level11Child.cs" />
-    <Compile Include="ERCLevel\B03Level11Child.Designer.cs">
-      <DependentUpon>B03Level11Child.cs</DependentUpon>
+    <Compile Include="ERCLevel\B03_Continent_Child.cs" />
+    <Compile Include="ERCLevel\B03_Continent_Child.Designer.cs">
+      <DependentUpon>B03_Continent_Child.cs</DependentUpon>
     </Compile>
-    <Compile Include="ERCLevel\B03Level11Coll.cs" />
-    <Compile Include="ERCLevel\B03Level11Coll.Designer.cs">
-      <DependentUpon>B03Level11Coll.cs</DependentUpon>
+    <Compile Include="ERCLevel\B03_Continent_ReChild.cs" />
+    <Compile Include="ERCLevel\B03_Continent_ReChild.Designer.cs">
+      <DependentUpon>B03_Continent_ReChild.cs</DependentUpon>
     </Compile>
-    <Compile Include="ERCLevel\B03Level11ReChild.cs" />
-    <Compile Include="ERCLevel\B03Level11ReChild.Designer.cs">
-      <DependentUpon>B03Level11ReChild.cs</DependentUpon>
+    <Compile Include="ERCLevel\B03_SubContinentColl.cs" />
+    <Compile Include="ERCLevel\B03_SubContinentColl.Designer.cs">
+      <DependentUpon>B03_SubContinentColl.cs</DependentUpon>
     </Compile>
-    <Compile Include="ERCLevel\B04Level11.cs" />
-    <Compile Include="ERCLevel\B04Level11.Designer.cs">
-      <DependentUpon>B04Level11.cs</DependentUpon>
+    <Compile Include="ERCLevel\B04_SubContinent.cs" />
+    <Compile Include="ERCLevel\B04_SubContinent.Designer.cs">
+      <DependentUpon>B04_SubContinent.cs</DependentUpon>
     </Compile>
-    <Compile Include="ERCLevel\B05Level111Child.cs" />
-    <Compile Include="ERCLevel\B05Level111Child.Designer.cs">
-      <DependentUpon>B05Level111Child.cs</DependentUpon>
+    <Compile Include="ERCLevel\B05_CountryColl.cs" />
+    <Compile Include="ERCLevel\B05_CountryColl.Designer.cs">
+      <DependentUpon>B05_CountryColl.cs</DependentUpon>
     </Compile>
-    <Compile Include="ERCLevel\B05Level111Coll.cs" />
-    <Compile Include="ERCLevel\B05Level111Coll.Designer.cs">
-      <DependentUpon>B05Level111Coll.cs</DependentUpon>
+    <Compile Include="ERCLevel\B05_SubContinent_Child.cs" />
+    <Compile Include="ERCLevel\B05_SubContinent_Child.Designer.cs">
+      <DependentUpon>B05_SubContinent_Child.cs</DependentUpon>
     </Compile>
-    <Compile Include="ERCLevel\B05Level111ReChild.cs" />
-    <Compile Include="ERCLevel\B05Level111ReChild.Designer.cs">
-      <DependentUpon>B05Level111ReChild.cs</DependentUpon>
+    <Compile Include="ERCLevel\B05_SubContinent_ReChild.cs" />
+    <Compile Include="ERCLevel\B05_SubContinent_ReChild.Designer.cs">
+      <DependentUpon>B05_SubContinent_ReChild.cs</DependentUpon>
     </Compile>
-    <Compile Include="ERCLevel\B06Level111.cs" />
-    <Compile Include="ERCLevel\B06Level111.Designer.cs">
-      <DependentUpon>B06Level111.cs</DependentUpon>
+    <Compile Include="ERCLevel\B06_Country.cs" />
+    <Compile Include="ERCLevel\B06_Country.Designer.cs">
+      <DependentUpon>B06_Country.cs</DependentUpon>
     </Compile>
-    <Compile Include="ERCLevel\B07Level1111Child.cs" />
-    <Compile Include="ERCLevel\B07Level1111Child.Designer.cs">
-      <DependentUpon>B07Level1111Child.cs</DependentUpon>
+    <Compile Include="ERCLevel\B07_Country_Child.cs" />
+    <Compile Include="ERCLevel\B07_Country_Child.Designer.cs">
+      <DependentUpon>B07_Country_Child.cs</DependentUpon>
     </Compile>
-    <Compile Include="ERCLevel\B07Level1111Coll.cs" />
-    <Compile Include="ERCLevel\B07Level1111Coll.Designer.cs">
-      <DependentUpon>B07Level1111Coll.cs</DependentUpon>
+    <Compile Include="ERCLevel\B07_Country_ReChild.cs" />
+    <Compile Include="ERCLevel\B07_Country_ReChild.Designer.cs">
+      <DependentUpon>B07_Country_ReChild.cs</DependentUpon>
     </Compile>
-    <Compile Include="ERCLevel\B07Level1111ReChild.cs" />
-    <Compile Include="ERCLevel\B07Level1111ReChild.Designer.cs">
-      <DependentUpon>B07Level1111ReChild.cs</DependentUpon>
+    <Compile Include="ERCLevel\B07_RegionColl.cs" />
+    <Compile Include="ERCLevel\B07_RegionColl.Designer.cs">
+      <DependentUpon>B07_RegionColl.cs</DependentUpon>
     </Compile>
-    <Compile Include="ERCLevel\B08Level1111.cs" />
-    <Compile Include="ERCLevel\B08Level1111.Designer.cs">
-      <DependentUpon>B08Level1111.cs</DependentUpon>
+    <Compile Include="ERCLevel\B08_Region.cs" />
+    <Compile Include="ERCLevel\B08_Region.Designer.cs">
+      <DependentUpon>B08_Region.cs</DependentUpon>
     </Compile>
-    <Compile Include="ERCLevel\B09Level11111Child.cs" />
-    <Compile Include="ERCLevel\B09Level11111Child.Designer.cs">
-      <DependentUpon>B09Level11111Child.cs</DependentUpon>
+    <Compile Include="ERCLevel\B09_CityColl.cs" />
+    <Compile Include="ERCLevel\B09_CityColl.Designer.cs">
+      <DependentUpon>B09_CityColl.cs</DependentUpon>
     </Compile>
-    <Compile Include="ERCLevel\B09Level11111Coll.cs" />
-    <Compile Include="ERCLevel\B09Level11111Coll.Designer.cs">
-      <DependentUpon>B09Level11111Coll.cs</DependentUpon>
+    <Compile Include="ERCLevel\B09_Region_Child.cs" />
+    <Compile Include="ERCLevel\B09_Region_Child.Designer.cs">
+      <DependentUpon>B09_Region_Child.cs</DependentUpon>
     </Compile>
-    <Compile Include="ERCLevel\B09Level11111ReChild.cs" />
-    <Compile Include="ERCLevel\B09Level11111ReChild.Designer.cs">
-      <DependentUpon>B09Level11111ReChild.cs</DependentUpon>
+    <Compile Include="ERCLevel\B09_Region_ReChild.cs" />
+    <Compile Include="ERCLevel\B09_Region_ReChild.Designer.cs">
+      <DependentUpon>B09_Region_ReChild.cs</DependentUpon>
     </Compile>
-    <Compile Include="ERCLevel\B10Level11111.cs" />
-    <Compile Include="ERCLevel\B10Level11111.Designer.cs">
-      <DependentUpon>B10Level11111.cs</DependentUpon>
+    <Compile Include="ERCLevel\B10_City.cs" />
+    <Compile Include="ERCLevel\B10_City.Designer.cs">
+      <DependentUpon>B10_City.cs</DependentUpon>
     </Compile>
-    <Compile Include="ERCLevel\B11Level111111Child.cs" />
-    <Compile Include="ERCLevel\B11Level111111Child.Designer.cs">
-      <DependentUpon>B11Level111111Child.cs</DependentUpon>
+    <Compile Include="ERCLevel\B11_CityRoadColl.cs" />
+    <Compile Include="ERCLevel\B11_CityRoadColl.Designer.cs">
+      <DependentUpon>B11_CityRoadColl.cs</DependentUpon>
     </Compile>
-    <Compile Include="ERCLevel\B11Level111111Coll.cs" />
-    <Compile Include="ERCLevel\B11Level111111Coll.Designer.cs">
-      <DependentUpon>B11Level111111Coll.cs</DependentUpon>
+    <Compile Include="ERCLevel\B11_City_Child.cs" />
+    <Compile Include="ERCLevel\B11_City_Child.Designer.cs">
+      <DependentUpon>B11_City_Child.cs</DependentUpon>
     </Compile>
-    <Compile Include="ERCLevel\B11Level111111ReChild.cs" />
-    <Compile Include="ERCLevel\B11Level111111ReChild.Designer.cs">
-      <DependentUpon>B11Level111111ReChild.cs</DependentUpon>
+    <Compile Include="ERCLevel\B11_City_ReChild.cs" />
+    <Compile Include="ERCLevel\B11_City_ReChild.Designer.cs">
+      <DependentUpon>B11_City_ReChild.cs</DependentUpon>
     </Compile>
-    <Compile Include="ERCLevel\B12Level111111.cs" />
-    <Compile Include="ERCLevel\B12Level111111.Designer.cs">
-      <DependentUpon>B12Level111111.cs</DependentUpon>
+    <Compile Include="ERCLevel\B12_CityRoad.cs" />
+    <Compile Include="ERCLevel\B12_CityRoad.Designer.cs">
+      <DependentUpon>B12_CityRoad.cs</DependentUpon>
     </Compile>
-    <Compile Include="ERLevel\A02Level1.cs" />
-    <Compile Include="ERLevel\A02Level1.Designer.cs">
-      <DependentUpon>A02Level1.cs</DependentUpon>
+    <Compile Include="ERLevel\A02_Continent.cs" />
+    <Compile Include="ERLevel\A02_Continent.Designer.cs">
+      <DependentUpon>A02_Continent.cs</DependentUpon>
     </Compile>
-    <Compile Include="ERLevel\A03Level11Child.cs" />
-    <Compile Include="ERLevel\A03Level11Child.Designer.cs">
-      <DependentUpon>A03Level11Child.cs</DependentUpon>
+    <Compile Include="ERLevel\A03_Continent_Child.cs" />
+    <Compile Include="ERLevel\A03_Continent_Child.Designer.cs">
+      <DependentUpon>A03_Continent_Child.cs</DependentUpon>
     </Compile>
-    <Compile Include="ERLevel\A03Level11Coll.cs" />
-    <Compile Include="ERLevel\A03Level11Coll.Designer.cs">
-      <DependentUpon>A03Level11Coll.cs</DependentUpon>
+    <Compile Include="ERLevel\A03_Continent_ReChild.cs" />
+    <Compile Include="ERLevel\A03_Continent_ReChild.Designer.cs">
+      <DependentUpon>A03_Continent_ReChild.cs</DependentUpon>
     </Compile>
-    <Compile Include="ERLevel\A03Level11ReChild.cs" />
-    <Compile Include="ERLevel\A03Level11ReChild.Designer.cs">
-      <DependentUpon>A03Level11ReChild.cs</DependentUpon>
+    <Compile Include="ERLevel\A03_SubContinentColl.cs" />
+    <Compile Include="ERLevel\A03_SubContinentColl.Designer.cs">
+      <DependentUpon>A03_SubContinentColl.cs</DependentUpon>
     </Compile>
-    <Compile Include="ERLevel\A04Level11.cs" />
-    <Compile Include="ERLevel\A04Level11.Designer.cs">
-      <DependentUpon>A04Level11.cs</DependentUpon>
+    <Compile Include="ERLevel\A04_SubContinent.cs" />
+    <Compile Include="ERLevel\A04_SubContinent.Designer.cs">
+      <DependentUpon>A04_SubContinent.cs</DependentUpon>
     </Compile>
-    <Compile Include="ERLevel\A05Level111Child.cs" />
-    <Compile Include="ERLevel\A05Level111Child.Designer.cs">
-      <DependentUpon>A05Level111Child.cs</DependentUpon>
+    <Compile Include="ERLevel\A05_CountryColl.cs" />
+    <Compile Include="ERLevel\A05_CountryColl.Designer.cs">
+      <DependentUpon>A05_CountryColl.cs</DependentUpon>
     </Compile>
-    <Compile Include="ERLevel\A05Level111Coll.cs" />
-    <Compile Include="ERLevel\A05Level111Coll.Designer.cs">
-      <DependentUpon>A05Level111Coll.cs</DependentUpon>
+    <Compile Include="ERLevel\A05_SubContinent_Child.cs" />
+    <Compile Include="ERLevel\A05_SubContinent_Child.Designer.cs">
+      <DependentUpon>A05_SubContinent_Child.cs</DependentUpon>
     </Compile>
-    <Compile Include="ERLevel\A05Level111ReChild.cs" />
-    <Compile Include="ERLevel\A05Level111ReChild.Designer.cs">
-      <DependentUpon>A05Level111ReChild.cs</DependentUpon>
+    <Compile Include="ERLevel\A05_SubContinent_ReChild.cs" />
+    <Compile Include="ERLevel\A05_SubContinent_ReChild.Designer.cs">
+      <DependentUpon>A05_SubContinent_ReChild.cs</DependentUpon>
     </Compile>
-    <Compile Include="ERLevel\A06Level111.cs" />
-    <Compile Include="ERLevel\A06Level111.Designer.cs">
-      <DependentUpon>A06Level111.cs</DependentUpon>
+    <Compile Include="ERLevel\A06_Country.cs" />
+    <Compile Include="ERLevel\A06_Country.Designer.cs">
+      <DependentUpon>A06_Country.cs</DependentUpon>
     </Compile>
-    <Compile Include="ERLevel\A07Level1111Child.cs" />
-    <Compile Include="ERLevel\A07Level1111Child.Designer.cs">
-      <DependentUpon>A07Level1111Child.cs</DependentUpon>
+    <Compile Include="ERLevel\A07_Country_Child.cs" />
+    <Compile Include="ERLevel\A07_Country_Child.Designer.cs">
+      <DependentUpon>A07_Country_Child.cs</DependentUpon>
     </Compile>
-    <Compile Include="ERLevel\A07Level1111Coll.cs" />
-    <Compile Include="ERLevel\A07Level1111Coll.Designer.cs">
-      <DependentUpon>A07Level1111Coll.cs</DependentUpon>
+    <Compile Include="ERLevel\A07_Country_ReChild.cs" />
+    <Compile Include="ERLevel\A07_Country_ReChild.Designer.cs">
+      <DependentUpon>A07_Country_ReChild.cs</DependentUpon>
     </Compile>
-    <Compile Include="ERLevel\A07Level1111ReChild.cs" />
-    <Compile Include="ERLevel\A07Level1111ReChild.Designer.cs">
-      <DependentUpon>A07Level1111ReChild.cs</DependentUpon>
+    <Compile Include="ERLevel\A07_RegionColl.cs" />
+    <Compile Include="ERLevel\A07_RegionColl.Designer.cs">
+      <DependentUpon>A07_RegionColl.cs</DependentUpon>
     </Compile>
-    <Compile Include="ERLevel\A08Level1111.cs" />
-    <Compile Include="ERLevel\A08Level1111.Designer.cs">
-      <DependentUpon>A08Level1111.cs</DependentUpon>
+    <Compile Include="ERLevel\A08_Region.cs" />
+    <Compile Include="ERLevel\A08_Region.Designer.cs">
+      <DependentUpon>A08_Region.cs</DependentUpon>
     </Compile>
-    <Compile Include="ERLevel\A09Level11111Child.cs" />
-    <Compile Include="ERLevel\A09Level11111Child.Designer.cs">
-      <DependentUpon>A09Level11111Child.cs</DependentUpon>
+    <Compile Include="ERLevel\A09_CityColl.cs" />
+    <Compile Include="ERLevel\A09_CityColl.Designer.cs">
+      <DependentUpon>A09_CityColl.cs</DependentUpon>
     </Compile>
-    <Compile Include="ERLevel\A09Level11111Coll.cs" />
-    <Compile Include="ERLevel\A09Level11111Coll.Designer.cs">
-      <DependentUpon>A09Level11111Coll.cs</DependentUpon>
+    <Compile Include="ERLevel\A09_Region_Child.cs" />
+    <Compile Include="ERLevel\A09_Region_Child.Designer.cs">
+      <DependentUpon>A09_Region_Child.cs</DependentUpon>
     </Compile>
-    <Compile Include="ERLevel\A09Level11111ReChild.cs" />
-    <Compile Include="ERLevel\A09Level11111ReChild.Designer.cs">
-      <DependentUpon>A09Level11111ReChild.cs</DependentUpon>
+    <Compile Include="ERLevel\A09_Region_ReChild.cs" />
+    <Compile Include="ERLevel\A09_Region_ReChild.Designer.cs">
+      <DependentUpon>A09_Region_ReChild.cs</DependentUpon>
     </Compile>
-    <Compile Include="ERLevel\A10Level11111.cs" />
-    <Compile Include="ERLevel\A10Level11111.Designer.cs">
-      <DependentUpon>A10Level11111.cs</DependentUpon>
+    <Compile Include="ERLevel\A10_City.cs" />
+    <Compile Include="ERLevel\A10_City.Designer.cs">
+      <DependentUpon>A10_City.cs</DependentUpon>
     </Compile>
-    <Compile Include="ERLevel\A11Level111111Child.cs" />
-    <Compile Include="ERLevel\A11Level111111Child.Designer.cs">
-      <DependentUpon>A11Level111111Child.cs</DependentUpon>
+    <Compile Include="ERLevel\A11_CityRoadColl.cs" />
+    <Compile Include="ERLevel\A11_CityRoadColl.Designer.cs">
+      <DependentUpon>A11_CityRoadColl.cs</DependentUpon>
     </Compile>
-    <Compile Include="ERLevel\A11Level111111Coll.cs" />
-    <Compile Include="ERLevel\A11Level111111Coll.Designer.cs">
-      <DependentUpon>A11Level111111Coll.cs</DependentUpon>
+    <Compile Include="ERLevel\A11_City_Child.cs" />
+    <Compile Include="ERLevel\A11_City_Child.Designer.cs">
+      <DependentUpon>A11_City_Child.cs</DependentUpon>
     </Compile>
-    <Compile Include="ERLevel\A11Level111111ReChild.cs" />
-    <Compile Include="ERLevel\A11Level111111ReChild.Designer.cs">
-      <DependentUpon>A11Level111111ReChild.cs</DependentUpon>
+    <Compile Include="ERLevel\A11_City_ReChild.cs" />
+    <Compile Include="ERLevel\A11_City_ReChild.Designer.cs">
+      <DependentUpon>A11_City_ReChild.cs</DependentUpon>
     </Compile>
-    <Compile Include="ERLevel\A12Level111111.cs" />
-    <Compile Include="ERLevel\A12Level111111.Designer.cs">
-      <DependentUpon>A12Level111111.cs</DependentUpon>
+    <Compile Include="ERLevel\A12_CityRoad.cs" />
+    <Compile Include="ERLevel\A12_CityRoad.Designer.cs">
+      <DependentUpon>A12_CityRoad.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
