@@ -362,7 +362,7 @@ namespace CslaGenerator
 
         internal void NewCslaUnit()
         {
-            _currentUnit = new CslaGeneratorUnit();
+            CurrentUnit = new CslaGeneratorUnit();
             CurrentUnitLayout = new CslaGeneratorUnitLayout();
             _currentFilePath = Path.GetTempPath() + @"\" + Guid.NewGuid().ToString();
             _currentCslaObject = null;
