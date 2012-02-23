@@ -17,7 +17,7 @@
                                 if (i > 0)
                                     sb.Append(", ");
                                 sb.Append("ds.Tables[\"");
-                                sb.Append(info.ObjectName);
+                                sb.Append(Info.ObjectName);
                                 sb.Append("\"].Columns[\"");
                                 sb.Append(prop.Name);
                                 sb.Append("\"]");
