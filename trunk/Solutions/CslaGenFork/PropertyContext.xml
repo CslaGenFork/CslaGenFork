@@ -255,7 +255,7 @@
     <add key="ReadOnlyObject:GenerateDataPortalUpdate" value="false" />
     <add key="ReadOnlyObject:GenerateDataPortalDelete" value="false" />
     <add key="ReadOnlyObject:SupportUpdateProperties" value="false" />
-    <add key="ReadOnlyObject:CheckRulesOnFetch" value="false" />
+    <add key="ReadOnlyObject:CheckRulesOnFetch" value="true" />
     <add key="EditableChild:Generate" value="true" />
     <add key="EditableChild:GenerateSprocs" value="true" />
     <add key="EditableChild:Filename" value="true" />
