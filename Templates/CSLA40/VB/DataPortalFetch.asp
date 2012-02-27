@@ -106,22 +106,24 @@ if (!Info.UseCustomLoading)
                     Fetch(cmd);
                     OnFetchPost(args);
                 }
+            }
             <%
             if (SelfLoadsChildren(Info))
             {
                 %>
-            }
             FetchChildren();
-        }
         <%
             }
-            else
+            if (Info.CheckRulesOnFetch)
             {
-        %>
+                %>
+            // check all object rules and property rules
+            BusinessRules.CheckRules();
+            <%
             }
+            %>
         }
         <%
-            }
         }
     }
     if (Info.HasGetCriteria)
@@ -146,14 +148,6 @@ if (!Info.UseCustomLoading)
                 }
                 %>
                 }
-                <%
-                if (Info.CheckRulesOnFetch)
-                {
-                    %>
-                BusinessRules.CheckRules();
-                <%
-                }
-                %>
             }
         }
         <%
@@ -176,12 +170,6 @@ if (!Info.UseCustomLoading)
             {
                 %>
             FetchChildren(ds.Tables[0].Rows[0]);
-            <%
-            }
-            if (Info.CheckRulesOnFetch)
-            {
-                %>
-            BusinessRules.CheckRules();
             <%
             }
             %>

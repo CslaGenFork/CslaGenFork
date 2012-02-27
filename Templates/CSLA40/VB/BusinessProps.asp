@@ -112,19 +112,6 @@ foreach (ValueProperty prop in Info.AllValueProperties)
         <%= statement %>
         <%
     }
-    /*if (prop.DeclarationMode == PropertyDeclaration.ClassicProperty &&
-        prop.DeclarationMode == PropertyDeclaration.ClassicPropertyWithTypeConversion)
-    {
-        if (Info.ObjectType != CslaObjectType.ReadOnlyObject && prop.ReadOnly == false)
-        {
-            if (prop.PropertyType != TypeCodeEx.ByteArray)
-            {
-                % >
-                // legacy 1
-        < %
-            }
-        }
-    }*/
 }
 
 // Child properties
