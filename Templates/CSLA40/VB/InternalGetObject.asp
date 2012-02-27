@@ -113,6 +113,7 @@ if (!Info.UseCustomLoading)
             if (Info.CheckRulesOnFetch && !IsCollectionType(Info.ObjectType))
             {
                 %>
+            // check all object rules and property rules
             obj.BusinessRules.CheckRules();
             <%
             }
@@ -168,7 +169,8 @@ if (!Info.UseCustomLoading)
         }
         if (Info.CheckRulesOnFetch && !IsCollectionType(Info.ObjectType))
         {
-            %>obj.BusinessRules.CheckRules();
+            %>// check all object rules and property rules
+            obj.BusinessRules.CheckRules();
             <%
         }
         %>
