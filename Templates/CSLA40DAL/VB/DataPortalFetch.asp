@@ -125,15 +125,18 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
             {
                 %>
             FetchChildren();
-        }
         <%
             }
-            else
+            if (Info.CheckRulesOnFetch)
             {
-        %>
+                %>
+            // check all object rules and property rules
+            BusinessRules.CheckRules();
+            <%
+            }
+            %>
         }
         <%
-            }
         }
     }
     if (Info.HasGetCriteria)
@@ -156,14 +159,6 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
         }
         %>
                 }
-                <%
-        if (Info.CheckRulesOnFetch)
-        {
-            %>
-                BusinessRules.CheckRules();
-                <%
-        }
-        %>
             }
         }
         <%

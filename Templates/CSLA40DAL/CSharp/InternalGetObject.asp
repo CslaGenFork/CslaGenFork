@@ -107,12 +107,13 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
             %>
             obj.MarkOld();
             <%
-            if (Info.CheckRulesOnFetch)
-            {
-                %>
+        }
+        if (Info.CheckRulesOnFetch && !IsCollectionType(Info.ObjectType))
+        {
+            %>
+            // check all object rules and property rules
             obj.BusinessRules.CheckRules();
             <%
-            }
         }
         %>
             return obj;
