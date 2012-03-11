@@ -104,6 +104,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
         if (!useChildFactory && Info.CheckRulesOnFetch && (!isRoot || Info.ObjectType == CslaObjectType.DynamicEditableRoot))
         {
             %>
+            // check all object rules and property rules
             BusinessRules.CheckRules();
         <%
         }
