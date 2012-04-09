@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CslaGenFork.Rules-4.2.0", "CslaGenFork.Rules-4.2.0\CslaGenFork.Rules-4.2.0.csproj", "{829D08A4-F322-4B28-B155-5C55950EED61}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CslaGenFork.Rules-4.2.2", "CslaGenFork.Rules-4.2.2\CslaGenFork.Rules-4.2.2.csproj", "{829D08A4-F322-4B28-B155-5C55950EED61}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CslaGenFork.Rules-4.2.0.SL", "CslaGenFork.Rules-4.2.0.SL\CslaGenFork.Rules-4.2.0.SL.csproj", "{B1187B38-EB4A-4ADB-A8AC-C199636333F1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CslaGenFork.Rules-4.2.2.SL", "CslaGenFork.Rules-4.2.2.SL\CslaGenFork.Rules-4.2.2.SL.csproj", "{B1187B38-EB4A-4ADB-A8AC-C199636333F1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CslaGenFork.Rules-4.3.10", "CslaGenFork.Rules-4.3.10\CslaGenFork.Rules-4.3.10.csproj", "{A8A1C04B-30F6-4C12-BCD4-45FB6F54F733}"
 EndProject
