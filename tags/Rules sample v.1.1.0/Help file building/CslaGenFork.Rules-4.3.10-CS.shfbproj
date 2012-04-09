@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <!-- The configuration and platform will be used to determine which
+         assemblies to include from solution and project documentation
+         sources -->
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7347e687-1522-4716-85e8-4dd5c3dd79f7}</ProjectGuid>
+    <SHFBSchemaVersion>1.9.3.0</SHFBSchemaVersion>
+    <!-- AssemblyName, Name, and RootNamespace are not used by SHFB but Visual
+         Studio adds them anyway -->
+    <AssemblyName>Documentation</AssemblyName>
+    <RootNamespace>Documentation</RootNamespace>
+    <Name>Documentation</Name>
+    <!-- SHFB properties -->
+    <OutputPath>..\Distributables\</OutputPath>
+    <HtmlHelpName>CslaGenFork.Rules-4.3.10-CS</HtmlHelpName>
+    <DocumentationSources>
+      <DocumentationSource sourceFile="..\Distributables\CslaGenFork.Rules-4.3.10.dll" />
+<DocumentationSource sourceFile="..\Distributables\CslaGenFork.Rules-4.3.10.xml" /></DocumentationSources>
+    <CopyrightText>Copyright &amp;#169%3b 2012 CslaGenFork project</CopyrightText>
+    <FeedbackEMailAddress>
+    </FeedbackEMailAddress>
+    <HelpTitle>CslaGenFork.Rules Library v.1.1.0</HelpTitle>
+    <NamespaceSummaries>
+      <NamespaceSummaryItem name="CslaGenFork.Rules.CollectionRules" isDocumented="True">Collection rules</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="CslaGenFork.Rules.CompareFieldsRules" isDocumented="True">Compare Field rules</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="CslaGenFork.Rules.DateRules" isDocumented="True">Date rules</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="CslaGenFork.Rules.GatewayRules" isDocumented="True">Gateway rules</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="CslaGenFork.Rules.ShortCircuitingRules" isDocumented="True">Short Circuiting rules</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="CslaGenFork.Rules.TransformationRules" isDocumented="True">Transformation rules</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="CslaGenFork.Rules.ObjectRules" isDocumented="True">Object business rules. These rules aren't associated with any particular property.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="CslaGenFork.Rules.AuthorizationRules" isDocumented="True">Property authorization rules</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="CslaGenFork.Rules" isDocumented="True">Base classes to support object business rules.</NamespaceSummaryItem>
+      <NamespaceSummaryItem name="CslaGenFork.Rules.ConditionalRequired" isDocumented="True">Conditional Required rules</NamespaceSummaryItem>
+    </NamespaceSummaries>
+    <ProjectSummary>CslaGenFork.Rules %28for Csla 4.3.10%29</ProjectSummary>
+    <HeaderText>
+    </HeaderText>
+    <VisibleItems>Protected, SealedProtected</VisibleItems>
+    <FooterText>This library uses CSLA.NET 4.3.10</FooterText>
+    <MissingTags>Summary, Parameter, Returns, Value, AutoDocumentCtors, TypeParameter</MissingTags>
+    <RootNamespaceContainer>True</RootNamespaceContainer>
+    <RootNamespaceTitle>Namespaces for CslaGenFork.Rules</RootNamespaceTitle>
+    <SyntaxFilters>CSharp</SyntaxFilters>
+    <HelpFileFormat>HtmlHelp1</HelpFileFormat>
+    <ContentPlacement>AboveNamespaces</ContentPlacement>
+    <FrameworkVersion>.NET 4.0.30319</FrameworkVersion>
+    <ComponentConfigurations>
+    </ComponentConfigurations>
+    <CopyrightHref>http://cslagenfork.codeplex.com/</CopyrightHref>
+    <PlugInConfigurations>
+    </PlugInConfigurations>
+    <KeepLogFile>False</KeepLogFile>
+    <IncludeFavorites>True</IncludeFavorites>
+    <VendorName>CslaGenFork project</VendorName>
+    <ProductTitle>CslaGenFork - Sample Rules Library</ProductTitle>
+    <WorkingPath>Help\</WorkingPath>
+    <SandcastlePath />
+    <HtmlHelp1xCompilerPath />
+    <HtmlHelp2xCompilerPath>
+    </HtmlHelp2xCompilerPath>
+    <BuildLogFile>
+    </BuildLogFile>
+    <DisableCodeBlockComponent>True</DisableCodeBlockComponent>
+  </PropertyGroup>
+  <!-- There are no properties for these two groups but they need to appear in
+       order for Visual Studio to perform the build. -->
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Csla">
+      <HintPath>..\CslaGenFork.Rules-4.3.10\Dependencies\Csla.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <!-- Import the SHFB build targets -->
+  <Import Project="$(SHFBROOT)\SandcastleHelpFileBuilder.targets" />
+</Project>
