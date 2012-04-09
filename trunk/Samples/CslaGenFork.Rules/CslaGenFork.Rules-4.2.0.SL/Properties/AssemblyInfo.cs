@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("CslaGenFork.Rules-4.2.0 SL4")]
-[assembly: AssemblyDescription("Business and Authorization Rules library for Csla 4.2.0 and Silverlight 4")]
+[assembly: AssemblyDescription("Business and Authorization Rules library for CSLA 4.2.0 and Silverlight 4")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("CslaGenFork Project")]
-[assembly: AssemblyProduct("CslaGenFork.Rules-4.2.0 for Silverlight 4")]
-[assembly: AssemblyCopyright("Copyright © CslaGenFork Project, 2011")]
+[assembly: AssemblyProduct("CslaGenFork.Rules for CSLA v.4.2.0 and Silverlight 4")]
+[assembly: AssemblyCopyright("Copyright © CslaGenFork Project, 2011, 2012")]
 [assembly: AssemblyTrademark("All Rights Reserved.")]
 [assembly: AssemblyCulture("")]
 
@@ -31,5 +31,5 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("1.0.2.0")]
-[assembly: AssemblyFileVersion("1.0.2.0")]
+[assembly: AssemblyVersion("1.1.0")]
+[assembly: AssemblyFileVersion("1.1.0")]

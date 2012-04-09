@@ -4,4 +4,10 @@ CslaGenFork.Rules-4.2.0.shfbproj_tiago.leal
 CslaGenFork.Rules-4.1.0-VB.shfbproj_tiago.leal
 CslaGenFork.Rules-4.2.0-CS.shfbproj_tiago.leal
 CslaGenFork.Rules-4.2.0-VB.shfbproj_tiago.leal
-</Value></Property></Properties></ItemProperties>
+</Value></Property><Property><Name>svn:ignore</Name><Value>CslaGenFork.Rules-4.1.0-CS.shfbproj_tiago.leal
+CslaGenFork.Rules-4.1.0-VB.shfbproj_tiago.leal
+CslaGenFork.Rules-4.2.0-CS.shfbproj_tiago.leal
+CslaGenFork.Rules-4.2.0-VB.shfbproj_tiago.leal
+CslaGenFork.Rules-4.3.10-CS.shfbproj_tiago.leal
+CslaGenFork.Rules-4.3.10-VB.shfbproj_tiago.leal
+</Value></Property><Property><Name>bugtraq:number</Name><Value>true</Value></Property></Properties></ItemProperties>

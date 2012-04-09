@@ -58,9 +58,6 @@
     <Reference Include="System.Windows" />
     <Reference Include="system" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Net" />
-    <Reference Include="System.Windows.Browser" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\CslaGenFork.Rules-4.2.0\Authorization Rules\IsEmptyOrIsInRole.cs">
@@ -99,6 +96,9 @@
     <Compile Include="..\CslaGenFork.Rules-4.2.0\Business Rules\DateNotInFuture.cs">
       <Link>Business Rules\DateNotInFuture.cs</Link>
     </Compile>
+    <Compile Include="..\CslaGenFork.Rules-4.2.0\Business Rules\DependencyFrom.cs">
+      <Link>Business Rules\DependencyFrom.cs</Link>
+    </Compile>
     <Compile Include="..\CslaGenFork.Rules-4.2.0\Business Rules\GreaterThan.cs">
       <Link>Business Rules\GreaterThan.cs</Link>
     </Compile>
@@ -126,6 +126,15 @@
     <Compile Include="..\CslaGenFork.Rules-4.2.0\Business Rules\RangeMM.cs">
       <Link>Business Rules\RangeMM.cs</Link>
     </Compile>
+    <Compile Include="..\CslaGenFork.Rules-4.2.0\Business Rules\RequiredWhenCanWrite.cs">
+      <Link>Business Rules\RequiredWhenCanWrite.cs</Link>
+    </Compile>
+    <Compile Include="..\CslaGenFork.Rules-4.2.0\Business Rules\RequiredWhenIsNotNew.cs">
+      <Link>Business Rules\RequiredWhenIsNotNew.cs</Link>
+    </Compile>
+    <Compile Include="..\CslaGenFork.Rules-4.2.0\Business Rules\RequiredWhenNew.cs">
+      <Link>Business Rules\RequiredWhenNew.cs</Link>
+    </Compile>
     <Compile Include="..\CslaGenFork.Rules-4.2.0\Business Rules\StopIfAnyAdditionalHasValue.cs">
       <Link>Business Rules\StopIfAnyAdditionalHasValue.cs</Link>
     </Compile>
@@ -137,6 +146,9 @@
     </Compile>
     <Compile Include="..\CslaGenFork.Rules-4.2.0\Business Rules\StopIfNotCanWrite.cs">
       <Link>Business Rules\StopIfNotCanWrite.cs</Link>
+    </Compile>
+    <Compile Include="..\CslaGenFork.Rules-4.2.0\Business Rules\StopIfNotFieldExists.cs">
+      <Link>Business Rules\StopIfNotFieldExists.cs</Link>
     </Compile>
     <Compile Include="..\CslaGenFork.Rules-4.2.0\Business Rules\ToLower.cs">
       <Link>Business Rules\ToLower.cs</Link>
