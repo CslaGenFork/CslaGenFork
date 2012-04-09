@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CslaGenFork.Rules-4.2.2", "CslaGenFork.Rules-4.2.2\CslaGenFork.Rules-4.2.2.csproj", "{829D08A4-F322-4B28-B155-5C55950EED61}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CslaGenFork.Rules-4.2.2.SL", "CslaGenFork.Rules-4.2.2.SL\CslaGenFork.Rules-4.2.2.SL.csproj", "{B1187B38-EB4A-4ADB-A8AC-C199636333F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CslaGenFork.Rules-4.3.10", "CslaGenFork.Rules-4.3.10\CslaGenFork.Rules-4.3.10.csproj", "{A8A1C04B-30F6-4C12-BCD4-45FB6F54F733}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CslaGenFork.Rules-4.3.10.SL4", "CslaGenFork.Rules-4.3.10.SL4\CslaGenFork.Rules-4.3.10.SL4.csproj", "{E71CAC95-986E-41BA-BBCC-1D0B0680CFC6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CslaGenFork.Rules-4.3.10.SL", "CslaGenFork.Rules-4.3.10.SL\CslaGenFork.Rules-4.3.10.SL.csproj", "{EF37A299-FCAF-478D-9056-17BE30BA72F8}"
+EndProject
+Global
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{829D08A4-F322-4B28-B155-5C55950EED61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{829D08A4-F322-4B28-B155-5C55950EED61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{829D08A4-F322-4B28-B155-5C55950EED61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{829D08A4-F322-4B28-B155-5C55950EED61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1187B38-EB4A-4ADB-A8AC-C199636333F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1187B38-EB4A-4ADB-A8AC-C199636333F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1187B38-EB4A-4ADB-A8AC-C199636333F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1187B38-EB4A-4ADB-A8AC-C199636333F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8A1C04B-30F6-4C12-BCD4-45FB6F54F733}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8A1C04B-30F6-4C12-BCD4-45FB6F54F733}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8A1C04B-30F6-4C12-BCD4-45FB6F54F733}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8A1C04B-30F6-4C12-BCD4-45FB6F54F733}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E71CAC95-986E-41BA-BBCC-1D0B0680CFC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E71CAC95-986E-41BA-BBCC-1D0B0680CFC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E71CAC95-986E-41BA-BBCC-1D0B0680CFC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E71CAC95-986E-41BA-BBCC-1D0B0680CFC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF37A299-FCAF-478D-9056-17BE30BA72F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF37A299-FCAF-478D-9056-17BE30BA72F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF37A299-FCAF-478D-9056-17BE30BA72F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF37A299-FCAF-478D-9056-17BE30BA72F8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
