@@ -14,7 +14,6 @@ if (crit.CreateOptions.DataPortal)
     {
         createUowParam = HookSingleCriteria(crit, "crit");
         createUowCrit = ReceiveSingleCriteria(crit, "crit");
-        createUowCritParam = HookSingleCriteria(crit, "crit");
     }
         %>
 
@@ -47,7 +46,7 @@ if (crit.CreateOptions.DataPortal)
                     if (IsTargetProperty(Info, uowProp, crit, prop))
                     {
                         if (firstUoW) firstUoW = false; else createUowCritParam += ", ";
-                        createUowCritParam += "crit." + prop.Name;
+                        createUowCritParam = HookSingleCriteria(crit, "crit");
                     }
                 }
             }
