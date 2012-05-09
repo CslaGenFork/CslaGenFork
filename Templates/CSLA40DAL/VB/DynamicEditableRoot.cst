@@ -22,6 +22,8 @@
 <%
 if (Errors.Length == 0)
 {
+    bool isUndeletable = false;
+    string softDeleteProperty = string.Empty;
     bool isItem = true;
     bool isParentRootCollection = true;
     CslaObjectInfo parentInfo = Info.Parent.CslaObjects.Find(Info.ParentType);

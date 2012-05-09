@@ -14,8 +14,18 @@ IndentLevel = 2;
 
         #region Business Properties
         <%
+string softDeleteColumn = Info.Parent.Params.SpBoolSoftDeleteColumn;
 foreach (ValueProperty prop in Info.AllValueProperties)
 {
+    if (isUndeletable == false && prop.DbBindColumn != null)
+    {
+        if (prop.DbBindColumn.ColumnName == softDeleteColumn)
+        {
+            softDeleteProperty = prop.Name;
+            isUndeletable = true;
+        }
+    }
+
     bool useSetter = true;
 
     if (Info.ObjectType == CslaObjectType.ReadOnlyObject)

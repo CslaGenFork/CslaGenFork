@@ -16,6 +16,8 @@
 <%
 if (Errors.Length == 0)
 {
+    bool isUndeletable = false;
+    string softDeleteProperty = string.Empty;
     CslaObjectInfo parentInfo = null;
     bool isChild = false;
     bool useChildFactory = CurrentUnit.GenerationParams.UseChildFactory;
