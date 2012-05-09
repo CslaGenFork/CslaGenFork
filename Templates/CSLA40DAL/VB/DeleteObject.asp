@@ -8,8 +8,7 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
             %>
 
         /// <summary>
-        /// Factory method. Marks the <see cref="<%= Info.ObjectName %>"/> object for deletion.
-        /// The object will be deleted as part of the next save operation.
+        /// Factory method. Deletes a <see cref="<%= Info.ObjectName %>"/> object, based on given parameters.
         /// </summary>
 <%
             string strDelParams = string.Empty;
@@ -54,6 +53,56 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
             %>
         }
 <%
+            if (isUndeletable == true)
+            {
+                %>
+
+        /// <summary>
+        /// Factory method. Undeletes a <see cref="<%= Info.ObjectName %>"/> object, based on given parameters.
+        /// </summary>
+<%
+                strDelParams = string.Empty;
+                strDelCritParams = string.Empty;
+                for (int i = 0; i < c.Properties.Count; i++)
+                {
+                    %>
+        /// <param name="<%= FormatCamel(c.Properties[i].Name) %>">The <%= FormatProperty(c.Properties[i].Name) %> of the <%= Info.ObjectName %> to undelete.</param>
+        <%
+                    if (i > 0)
+                    {
+                        strDelParams += ", ";
+                        strDelCritParams += ", ";
+                    }
+                    strDelParams += string.Concat(GetDataTypeGeneric(c.Properties[i], c.Properties[i].PropertyType), " ", FormatCamel(c.Properties[i].Name));
+                    strDelCritParams += FormatCamel(c.Properties[i].Name);
+                }
+                %>
+        /// <returns>A reference to the undeleted <see cref="<%= Info.ObjectName %>"/> object.</returns>
+        <%= Info.ParentType == string.Empty ? "public" : "internal" %> static <%= Info.ObjectName %> Undelete<%= Info.ObjectName %><%= c.DeleteOptions.FactorySuffix %>(<%= strDelParams %>)
+        {
+            <%
+                if (Info.ObjectType == CslaObjectType.EditableSwitchable)
+                {
+                    if (!strDelCritParams.Equals(String.Empty))
+                    {
+                        strDelCritParams = ", " + strDelCritParams;
+                    }
+                    strDelCritParams = "false" + strDelCritParams;
+                }
+                if (c.Properties.Count > 1)
+                {
+                    %>var obj = DataPortal.Fetch<<%= Info.ObjectName %>>(<%= strDelCritParams %>);<%
+                }
+                else if (c.Properties.Count > 0)
+                {
+                    %>var obj = DataPortal.Fetch<<%= Info.ObjectName %>>(<%= SendSingleCriteria(c, strDelCritParams) %>);<%
+                }
+            %>
+            obj.<%= softDeleteProperty %> = true;
+            return obj.Save();
+        }
+<%
+            }
         }
     }
 }
