@@ -37,7 +37,9 @@ WARNINGS
 17. Check no repeated criteria names for non nested class (with more than one property)
 */
 
-foreach (CslaObjectInfo objectInfo in CurrentUnit.CslaObjects)
+// do not validate objects that aren't generated
+var list = CurrentUnit.CslaObjects.Where(t => t.Generate).ToList();
+foreach (CslaObjectInfo objectInfo in list)
 {
     if (objectInfo.ObjectName == String.Empty)
     {
