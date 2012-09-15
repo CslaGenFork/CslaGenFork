@@ -337,6 +337,20 @@ namespace CslaGenerator.Util
                         objinfo = pBag.SelectedObject[0].ConstructorParameter1;
                     else if (pBag.SelectedObject[0].ConstructorParameter2.Name == context.PropertyDescriptor.Name)
                         objinfo = pBag.SelectedObject[0].ConstructorParameter2;
+                    else if (pBag.SelectedObject[0].ConstructorParameter3.Name == context.PropertyDescriptor.Name)
+                        objinfo = pBag.SelectedObject[0].ConstructorParameter3;
+                    else if (pBag.SelectedObject[0].ConstructorParameter4.Name == context.PropertyDescriptor.Name)
+                        objinfo = pBag.SelectedObject[0].ConstructorParameter4;
+                    else if (pBag.SelectedObject[0].ConstructorParameter5.Name == context.PropertyDescriptor.Name)
+                        objinfo = pBag.SelectedObject[0].ConstructorParameter5;
+                    else if (pBag.SelectedObject[0].ConstructorParameter6.Name == context.PropertyDescriptor.Name)
+                        objinfo = pBag.SelectedObject[0].ConstructorParameter6;
+                    else if (pBag.SelectedObject[0].ConstructorParameter7.Name == context.PropertyDescriptor.Name)
+                        objinfo = pBag.SelectedObject[0].ConstructorParameter7;
+                    else if (pBag.SelectedObject[0].ConstructorParameter8.Name == context.PropertyDescriptor.Name)
+                        objinfo = pBag.SelectedObject[0].ConstructorParameter8;
+                    else if (pBag.SelectedObject[0].ConstructorParameter9.Name == context.PropertyDescriptor.Name)
+                        objinfo = pBag.SelectedObject[0].ConstructorParameter9;
 /*                    if (pBag.SelectedObject.Length == 1)
                         objinfo = pBag.SelectedObject[0];
                     else

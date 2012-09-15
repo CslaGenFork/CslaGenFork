@@ -1114,10 +1114,8 @@ namespace CslaGenerator.Metadata
 
             foreach (var column in columnInfoCollection)
             {
-                var filter = false;
                 // filter out SoftDelete column
-                if (GeneratorController.Current.CurrentUnit.Params.SpBoolSoftDeleteColumn == column.ColumnName)
-                    filter = true;
+                var filter = GeneratorController.Current.CurrentUnit.Params.SpBoolSoftDeleteColumn == column.ColumnName;
 
                 if (!filter)
                 {
