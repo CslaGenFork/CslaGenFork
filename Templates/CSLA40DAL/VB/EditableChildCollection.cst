@@ -86,7 +86,7 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
     }
     else
     {
-        %><%= ListBaseHelper("Business", false) %><<%= Info.ObjectName %>, <%= Info.ItemType %>><!-- #include file="Implements.asp" --><%
+        %><%= ListBaseHelper("Business", CurrentUnit.GenerationParams.GenerateWinForms && !CurrentUnit.GenerationParams.DualListInheritance) %><<%= Info.ObjectName %>, <%= Info.ItemType %>><!-- #include file="Implements.asp" --><%
     }
     if (CurrentUnit.GenerationParams.DualListInheritance)
     {
