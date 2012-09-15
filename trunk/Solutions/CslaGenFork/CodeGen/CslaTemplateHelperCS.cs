@@ -2211,13 +2211,14 @@ namespace CslaGenerator.CodeGen
                 return String.Format("{0} == null ? (object)DBNull.Value : {0}", propName);
             }
 
-            switch (propType)
+            /*switch (propType)
             {
-                /*case TypeCodeEx.Guid:
-                    return propName + ".Equals(Guid.Empty) ? (object)DBNull.Value : " + propName;*/
+                case TypeCodeEx.Guid:
+                    return propName + ".Equals(Guid.Empty) ? (object)DBNull.Value : " + propName;
                 default:
                     return propName;
-            }
+            }*/
+            return propName;
         }
 
         /// <summary>
