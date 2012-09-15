@@ -249,7 +249,7 @@ namespace CslaGenerator.CodeGen
                 statement += ")";
             }
             else if (prop.PropertyType == TypeCodeEx.ByteArray)
-                statement = "(" + statement + ") as byte[]";
+                statement = statement + " as byte[]";
 
             return statement;
         }
@@ -268,8 +268,7 @@ namespace CslaGenerator.CodeGen
             if (nullable)
             {
                 if (TypeHelper.IsNullableType(assignDataType))
-                    statement += String.Format("({0})",
-                                               GetDataType(prop));
+                    statement += String.Format("({0})", GetDataType(prop));
                 else
                     statement += String.Format("!dr.IsDBNull(\"{0}\") ? ",
                                                prop.ParameterName);
@@ -294,7 +293,7 @@ namespace CslaGenerator.CodeGen
                 statement += " : null";
             }
             if (assignDataType == TypeCodeEx.ByteArray)
-                statement = "(" + statement + ") as byte[]";
+                statement = statement + " as byte[]";
             return statement;
         }
 
@@ -330,7 +329,6 @@ namespace CslaGenerator.CodeGen
             else
                 propName = FormatFieldName(prop.Name);
 
-            //if (nullable && propType != TypeCodeEx.SmartDate)
             if (nullable)
             {
                 if (TypeHelper.IsNullableType(propType))
@@ -385,6 +383,9 @@ namespace CslaGenerator.CodeGen
 
         public virtual string GetDataType(TypeCodeEx type)
         {
+            if (type == TypeCodeEx.Byte)
+                return "byte";
+
             if (type == TypeCodeEx.ByteArray)
                 return "byte[]";
 
@@ -709,7 +710,7 @@ namespace CslaGenerator.CodeGen
 
             result = info.GetAllValueProperties().Where(p => p.PropertyType == TypeCodeEx.ByteArray && AllowNull(p)).Aggregate(result, (current, p) => current + ("using System.Linq; //Added for byte[] helpers" + Environment.NewLine));
 
-            return (result);
+            return result;
         }
 
         private string GetDalInterfaceNamespaces(CslaObjectInfo info, CslaGeneratorUnit unit)
