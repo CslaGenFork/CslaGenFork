@@ -147,9 +147,9 @@ if (Info.GenerateDataPortalInsert)
             <%
     }
     %>
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactory<%= GetDalName(CurrentUnit) %>.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnInsertPre(args);
                 var dal = dalManager.GetProvider<I<%= Info.ObjectName %>Dal>();
                 using (BypassPropertyChecks)
@@ -284,9 +284,9 @@ if (Info.GenerateDataPortalUpdate)
             <%
     }
     %>
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactory<%= GetDalName(CurrentUnit) %>.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnUpdatePre(args);
                 var dal = dalManager.GetProvider<I<%= Info.ObjectName %>Dal>();
                 using (BypassPropertyChecks)
@@ -393,9 +393,9 @@ if (Info.GenerateDataPortalDelete)
             <%
     }
     %>
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactory<%= GetDalName(CurrentUnit) %>.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 <%
     if (Info.GetMyChildProperties().Count > 0)
     {

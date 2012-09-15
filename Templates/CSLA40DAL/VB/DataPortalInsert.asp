@@ -118,9 +118,9 @@ if (Info.GenerateDataPortalInsert)
         %>ConvertPropertiesOnWrite();
             <%
     }
-    %>var args = new DataPortalHookArgs();
-            using (var dalManager = DalFactory<%= GetDalNameDot(CurrentUnit) %>GetManager())
+    %>using (var dalManager = DalFactory<%= GetDalNameDot(CurrentUnit) %>GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnInsertPre(args);
                 var dal = dalManager.GetProvider<I<%= Info.ObjectName %>Dal>();
                 using (BypassPropertyChecks)

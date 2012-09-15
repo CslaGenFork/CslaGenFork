@@ -167,10 +167,9 @@ if (Info.GenerateDataPortalDelete)
             SimpleAuditTrail();
             <%
             }
-            %>
-            var args = new DataPortalHookArgs();
-            using (var dalManager = DalFactory<%= GetDalNameDot(CurrentUnit) %>GetManager())
+            %>using (var dalManager = DalFactory<%= GetDalNameDot(CurrentUnit) %>GetManager())
             {
+                var args = new DataPortalHookArgs();
                 <%
             if (Info.GetMyChildProperties().Count > 0)
             {
