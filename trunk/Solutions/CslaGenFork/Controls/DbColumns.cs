@@ -250,7 +250,7 @@ namespace CslaGenerator.Controls
             */
 
             // select all columns in list, except for the exceptions
-            for (int i = 0; i < _lstColumns.Items.Count; i++)
+            for (var i = 0; i < _lstColumns.Items.Count; i++)
             {
                 var columnName = ((SqlColumnInfo)_lstColumns.Items[i]).ColumnName;
                 var columnNativeType = ((SqlColumnInfo)_lstColumns.Items[i]).NativeType;

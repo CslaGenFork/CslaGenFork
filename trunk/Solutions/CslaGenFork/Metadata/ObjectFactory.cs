@@ -110,18 +110,18 @@ namespace CslaGenerator.Metadata
                 return;
 
             var added = false;
-            List<ValueProperty> addedProps = new List<ValueProperty>();
-            StringCollection notaddedProps = new StringCollection();
-            ColumnOriginType origin = ColumnOriginType.Table;
+            var addedProps = new List<ValueProperty>();
+            var notaddedProps = new StringCollection();
+            var origin = ColumnOriginType.Table;
             IColumnInfo col;
-            for (int i = 0; i < selectedColumns.Count; i++)
+            for (var i = 0; i < selectedColumns.Count; i++)
             {
                 col = selectedColumns[i];
                 // use name of column to see if a property of the same name exists
-                string propertyName = col.ColumnName;
+                var propertyName = col.ColumnName;
                 if (PropertyExists(propertyName))
                 {
-                    int count = 1;
+                    var count = 1;
                     while (PropertyExists(propertyName + count))
                     {
                         count += 1;
@@ -129,7 +129,7 @@ namespace CslaGenerator.Metadata
                     propertyName += count.ToString();
                 }
 
-                ValueProperty newProp = new ValueProperty();
+                var newProp = new ValueProperty();
 
                 newProp.Name = propertyName;
                 newProp.Summary = col.ColumnDescription;
@@ -148,8 +148,7 @@ namespace CslaGenerator.Metadata
             if (addedProps.Count > 0 && askConfirmation)
             {
                 var msg = new StringBuilder();
-                msg.Append(
-                    "The properties listed below are missing.\r\n\r\n" +
+                msg.Append("The properties listed below are missing.\r\n\r\n" +
                     "Do you want to add the following properties:" +
                     Environment.NewLine);
                 foreach (var valueProperty in addedProps)
@@ -157,10 +156,8 @@ namespace CslaGenerator.Metadata
                     msg.AppendFormat(" - {0}.{1}\r\n", _currentCslaObject.ObjectName, valueProperty.Name);
                 }
 
-                var response = MessageBox.Show(msg.ToString(),
-                                                        @"Missing ValueProperty found.",
-                                                        MessageBoxButtons.YesNo,
-                                                        MessageBoxIcon.Error);
+                var response = MessageBox.Show(msg.ToString(), @"Missing ValueProperty found.",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Error);
                 if (response == DialogResult.Yes)
                 {
                     foreach (var valueProperty in addedProps)
@@ -178,7 +175,7 @@ namespace CslaGenerator.Metadata
             }
 
             // Display message to the user
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             if (addedProps.Count > 0 && added)
             {
                 sb.Append("Successfully added the following Value Properties:" + Environment.NewLine);
@@ -191,7 +188,7 @@ namespace CslaGenerator.Metadata
             if (notaddedProps.Count > 0)
             {
                 sb.Append("The following properties already exist:" + Environment.NewLine);
-                foreach (string propName in notaddedProps)
+                foreach (var propName in notaddedProps)
                 {
                     sb.Append("\t" + propName + Environment.NewLine);
                 }
@@ -242,7 +239,7 @@ namespace CslaGenerator.Metadata
 
         public void SetValuePropertyInfo(IDataBaseObject obj, IResultSet rs, IColumnInfo prop, ValueProperty destination)
         {
-            IColumnInfo p = prop;
+            var p = prop;
             SetDbBindColumn(obj, rs, p, destination.DbBindColumn);
             destination.Nullable = (p.IsNullable);
 
@@ -352,8 +349,6 @@ namespace CslaGenerator.Metadata
                 destination.PropertyType = TypeCodeEx.String;
                 destination.DeclarationMode = PropertyDeclaration.ManagedWithTypeConversion;
             }
-
-            return;
         }
 
         public static void SetDbBindColumn(ITableInfo table, IColumnInfo p, DbBindColumn dbc)
@@ -368,8 +363,7 @@ namespace CslaGenerator.Metadata
 
         public static void SetDbBindColumn(IDataBaseObject obj, IResultSet rs, IColumnInfo p, DbBindColumn dbc)
         {
-
-            IStoredProcedureInfo sp = obj as IStoredProcedureInfo;
+            var sp = obj as IStoredProcedureInfo;
 
             if (sp != null)
             {
@@ -505,7 +499,7 @@ namespace CslaGenerator.Metadata
                                 }
                                 else
                                 {
-                                    Criteria createCriteria = _currentCslaObject.CriteriaObjects.Find("CriteriaNew");
+                                    var createCriteria = _currentCslaObject.CriteriaObjects.Find("CriteriaNew");
                                     if (createCriteria == null)
                                     {
                                         createCriteria = new Criteria(_currentCslaObject);
@@ -555,7 +549,7 @@ namespace CslaGenerator.Metadata
             timestampCriteria.Name = "CriteriaTS";
             foreach (CriteriaProperty p in defaultCriteria.Properties)
             {
-                CriteriaProperty newProp = (CriteriaProperty)ObjectCloner.CloneShallow(p);
+                var newProp = (CriteriaProperty)ObjectCloner.CloneShallow(p);
                 newProp.DbBindColumn = (DbBindColumn)p.DbBindColumn.Clone();
                 timestampCriteria.Properties.Add(newProp);
 
@@ -569,7 +563,7 @@ namespace CslaGenerator.Metadata
         public void AddPropertiesToCriteria(IEnumerable<ValueProperty> primaryKeyProperties, Criteria crit)
         {
             // Add all primary key properties to critera if they dont already exist
-            foreach (ValueProperty col in primaryKeyProperties)
+            foreach (var col in primaryKeyProperties)
             {
                 if (!crit.Properties.Contains(col.Name))
                 {

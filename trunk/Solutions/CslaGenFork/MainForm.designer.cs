@@ -654,7 +654,7 @@ namespace CslaGenerator
             this.globalStatus.DoubleClickEnabled = true;
             this.globalStatus.Image = global::CslaGenerator.Properties.Resources.White;
             this.globalStatus.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.globalStatus.Margin = new System.Windows.Forms.Padding(4, 2, 1, 1);
+            this.globalStatus.Margin = new System.Windows.Forms.Padding(4, 4, 1, -1);
             this.globalStatus.Name = "globalStatus";
             this.globalStatus.Size = new System.Drawing.Size(80, 19);
             this.globalStatus.Text = "Status       ";
@@ -670,7 +670,7 @@ namespace CslaGenerator
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
             this.errors.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
             this.errors.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.errors.Margin = new System.Windows.Forms.Padding(1, 2, 1, 1);
+            this.errors.Margin = new System.Windows.Forms.Padding(1, 4, 1, -1);
             this.errors.Name = "errors";
             this.errors.Size = new System.Drawing.Size(70, 19);
             this.errors.Text = "Errors";
@@ -686,7 +686,7 @@ namespace CslaGenerator
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
             this.warnings.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
             this.warnings.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
-            this.warnings.Margin = new System.Windows.Forms.Padding(1, 2, 1, 1);
+            this.warnings.Margin = new System.Windows.Forms.Padding(1, 4, 1, -1);
             this.warnings.Name = "warnings";
             this.warnings.Size = new System.Drawing.Size(80, 19);
             this.warnings.Text = "Warnings";
@@ -701,7 +701,7 @@ namespace CslaGenerator
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
             this.loadingTimer.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
-            this.loadingTimer.Margin = new System.Windows.Forms.Padding(1, 2, 1, 1);
+            this.loadingTimer.Margin = new System.Windows.Forms.Padding(1, 4, 1, -1);
             this.loadingTimer.Name = "loadingTimer";
             this.loadingTimer.Size = new System.Drawing.Size(102, 19);
             //this.loadingTimer.Text = "Loading: 00:00,000";
@@ -715,7 +715,7 @@ namespace CslaGenerator
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
             this.objects.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
-            this.objects.Margin = new System.Windows.Forms.Padding(1, 2, 1, 1);
+            this.objects.Margin = new System.Windows.Forms.Padding(1, 4, 1, -1);
             this.objects.Name = "objects";
             this.objects.Size = new System.Drawing.Size(70, 19);
             //this.objects.Text = "Objects: 000";
@@ -729,7 +729,7 @@ namespace CslaGenerator
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
             this.tables.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
-            this.tables.Margin = new System.Windows.Forms.Padding(1, 2, 1, 1);
+            this.tables.Margin = new System.Windows.Forms.Padding(1, 4, 1, -1);
             this.tables.Name = "tables";
             this.tables.Size = new System.Drawing.Size(70, 19);
             //this.tables.Text = "Tables: 0000";
@@ -743,7 +743,7 @@ namespace CslaGenerator
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
             this.views.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
-            this.views.Margin = new System.Windows.Forms.Padding(1, 2, 1, 1);
+            this.views.Margin = new System.Windows.Forms.Padding(1, 4, 1, -1);
             this.views.Name = "views";
             this.views.Size = new System.Drawing.Size(66, 19);
             //this.views.Text = "Views: 0000";
@@ -757,7 +757,7 @@ namespace CslaGenerator
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
             this.sprocs.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
-            this.sprocs.Margin = new System.Windows.Forms.Padding(1, 2, 1, 1);
+            this.sprocs.Margin = new System.Windows.Forms.Padding(1, 4, 1, -1);
             this.sprocs.Name = "sprocs";
             this.sprocs.Size = new System.Drawing.Size(71, 19);
             //this.sprocs.Text = "SProcs: 0000";
@@ -771,7 +771,7 @@ namespace CslaGenerator
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
             | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
             this.generatingTimer.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenOuter;
-            this.generatingTimer.Margin = new System.Windows.Forms.Padding(1, 2, 1, 1);
+            this.generatingTimer.Margin = new System.Windows.Forms.Padding(1, 4, 1, -1);
             this.generatingTimer.Name = "generatingTimer";
             this.generatingTimer.Size = new System.Drawing.Size(118, 19);
             //this.generatingTimer.Text = "Generating: 00:00,000";
@@ -782,7 +782,7 @@ namespace CslaGenerator
             // 
             this.progressBar.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.progressBar.AutoSize = false;
-            this.progressBar.Margin = new System.Windows.Forms.Padding(1, 2, 1, 1);
+            this.progressBar.Margin = new System.Windows.Forms.Padding(1, 4, 1, -1);
             this.progressBar.Name = "progressBar";
             this.progressBar.Overflow = System.Windows.Forms.ToolStripItemOverflow.Always;
             this.progressBar.Size = new System.Drawing.Size(100, 18);
