@@ -22,8 +22,7 @@ foreach (Criteria crit in GetCriteriaObjects(Info))
     {
         if (criteriaProperty.DbBindColumn.Column == null)
         {
-            Errors.Append("Criteria " + Info.ObjectName + "." + crit.Name + ": property " + criteriaProperty.Name + " is missing DB Bind Column." + Environment.NewLine);
-            return;
+            Warnings.Append("Criteria " + Info.ObjectName + "." + crit.Name + ": property " + criteriaProperty.Name + " is missing DB Bind Column." + Environment.NewLine);
         }
     }
     getOptionsFactory = getOptionsFactory | crit.GetOptions.Factory;
