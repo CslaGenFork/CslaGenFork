@@ -2213,8 +2213,8 @@ namespace CslaGenerator.CodeGen
 
             switch (propType)
             {
-                case TypeCodeEx.Guid:
-                    return propName + ".Equals(Guid.Empty) ? (object)DBNull.Value : " + propName;
+                /*case TypeCodeEx.Guid:
+                    return propName + ".Equals(Guid.Empty) ? (object)DBNull.Value : " + propName;*/
                 default:
                     return propName;
             }
