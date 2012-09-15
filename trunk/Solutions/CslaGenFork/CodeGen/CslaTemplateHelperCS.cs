@@ -658,42 +658,22 @@ namespace CslaGenerator.CodeGen
 
             var result = String.Empty;
             var silverlightLevel = 0;
-            if (usingNamespaces.Length == 0)
+            if (usingNamespaces.Length != 0)
             {
-                if (UseSilverlight())
-                {
-                    result += IfSilverlight(Conditional.NotSilverlight, 0, ref silverlightLevel, false, true);
-                    if (unit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL)
-                        result += GetDalInterfaceNamespaces(info, unit);
-
-                    result += IfSilverlight(Conditional.End, 0, ref silverlightLevel, false, true);
-                }
-                else
-                {
-                    if (unit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL)
-                        result += GetDalInterfaceNamespaces(info, unit);
-                }
-            }
-            else
-            {
+                var cacheGetContextUtilitiesNamespace = GetContextUtilitiesNamespace(unit, step);
                 foreach (var namespaceName in usingNamespaces)
                 {
-                    if (namespaceName == GetContextUtilitiesNamespace(unit, step))
+                    if (namespaceName == cacheGetContextUtilitiesNamespace)
                     {
                         if (UseSilverlight())
                         {
                             result += IfSilverlight(Conditional.NotSilverlight, 0, ref silverlightLevel, false, true);
                             result += "using " + namespaceName + ";" + Environment.NewLine;
-                            if (unit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL)
-                                result += GetDalInterfaceNamespaces(info, unit);
-
                             result += IfSilverlight(Conditional.End, 0, ref silverlightLevel, false, true);
                         }
                         else
                         {
                             result += "using " + namespaceName + ";" + Environment.NewLine;
-                            if (unit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL)
-                                result += GetDalInterfaceNamespaces(info, unit) + Environment.NewLine;
                         }
                     }
                     else if (namespaceName == "Csla.Serialization")
@@ -707,6 +687,21 @@ namespace CslaGenerator.CodeGen
                         result += "using " + namespaceName + ";" + Environment.NewLine;
                 }
             }
+
+            if (UseSilverlight())
+            {
+                result += IfSilverlight(Conditional.NotSilverlight, 0, ref silverlightLevel, false, true);
+                if (unit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL)
+                    result += GetDalInterfaceNamespaces(info, unit);
+
+                result += IfSilverlight(Conditional.End, 0, ref silverlightLevel, false, true);
+            }
+            else
+            {
+                if (unit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL)
+                    result += GetDalInterfaceNamespaces(info, unit);
+            }
+
 
             result = info.GetAllValueProperties().Where(p => p.PropertyType == TypeCodeEx.ByteArray && AllowNull(p)).Aggregate(result, (current, p) => current + ("using System.Linq; //Added for byte[] helpers" + Environment.NewLine));
 
@@ -723,18 +718,21 @@ namespace CslaGenerator.CodeGen
                     usesDb = true;
 
                 if (!usesDb)
+                {
+                    if(CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL && DalObjectUsesDTO(info))
+                        return "using " + GetContextObjectNamespace(info, unit, GenerationStep.DalInterface) + ";" + Environment.NewLine;
+
                     return string.Empty;
+                }
             }
 
-            var result = string.Empty;
+            var result = "using " + GetContextObjectNamespace(info, unit, GenerationStep.DalInterface) + ";" + Environment.NewLine;
 
-            result += "using " +
-                GetContextObjectNamespace(info, unit, GenerationStep.DalInterface) + ";" + Environment.NewLine;
-
-            if (CurrentUnit.GenerationParams.UtilitiesNamespace != GetContextObjectNamespace(info, unit, GenerationStep.DalInterface) &&
+            if (CurrentUnit.GenerationParams.UtilitiesNamespace != CurrentUnit.GenerationParams.BaseNamespace &&
                 info.ObjectType != CslaObjectType.UnitOfWork)
-                result += "using " +
-                          GetContextUtilitiesNamespace(unit, GenerationStep.DalInterface) + ";" + Environment.NewLine;
+            {
+                result += "using " + GetContextUtilitiesNamespace(unit, GenerationStep.DalInterface) + ";" + Environment.NewLine;
+            }
 
             return result;
         }
