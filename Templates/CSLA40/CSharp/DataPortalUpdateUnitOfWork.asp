@@ -3,7 +3,7 @@ if (Info.GenerateDataPortalUpdate)
 {
     if (string.IsNullOrEmpty(Info.UpdateProcedureName))
     {
-        Errors.Append("Object " + Info.ObjectName + " missing update procedure name." + Environment.NewLine);
+        Errors.Append("Object " + Info.ObjectName + " missing Update procedure name." + Environment.NewLine);
     }
     %>
 
