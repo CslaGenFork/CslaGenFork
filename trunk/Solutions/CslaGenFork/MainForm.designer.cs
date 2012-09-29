@@ -84,6 +84,9 @@ namespace CslaGenerator
             this.refreshSchemaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.retrieveSummariesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
+            this.forceSmartDateConversion = new System.Windows.Forms.ToolStripMenuItem();
+            this.forceManagedProperties = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.locateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.codeSmithExtensionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -448,11 +451,35 @@ namespace CslaGenerator
             // toolStripMenuItem4
             // 
             this.toolStripMenuItem4.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.forceSmartDateConversion,
+            this.forceManagedProperties,
+            this.toolStripSeparator6,
             this.locateToolStripMenuItem,
             this.codeSmithExtensionToolStripMenuItem});
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
             this.toolStripMenuItem4.Size = new System.Drawing.Size(44, 20);
             this.toolStripMenuItem4.Text = "&Tools";
+            // 
+            // forceSmartDateConversion
+            // 
+            this.forceSmartDateConversion.Enabled = false;
+            this.forceSmartDateConversion.Name = "forceSmartDateConversion";
+            this.forceSmartDateConversion.Size = new System.Drawing.Size(200, 22);
+            this.forceSmartDateConversion.Text = "Force backing filed on &SmartDate properties";
+            this.forceSmartDateConversion.Click += new System.EventHandler(this.ForceSmartDateConversion_Click);
+            // 
+            // forceManagedProperties
+            // 
+            this.forceManagedProperties.Enabled = false;
+            this.forceManagedProperties.Name = "forceManagedProperties";
+            this.forceManagedProperties.Size = new System.Drawing.Size(200, 22);
+            this.forceManagedProperties.Text = "&Force managed properties";
+            this.forceManagedProperties.Click += new System.EventHandler(this.ForceManagedProperties_Click);
+            // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 39);
             // 
             // locateToolStripMenuItem
             // 
@@ -465,7 +492,7 @@ namespace CslaGenerator
             // 
             this.codeSmithExtensionToolStripMenuItem.Name = "codeSmithExtensionToolStripMenuItem";
             this.codeSmithExtensionToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
-            this.codeSmithExtensionToolStripMenuItem.Text = "CodeSmith Extension...";
+            this.codeSmithExtensionToolStripMenuItem.Text = "&CodeSmith Extension...";
             this.codeSmithExtensionToolStripMenuItem.Click += new System.EventHandler(this.CodeSmithExtensionToolStripMenuItem_Click);
             this.codeSmithExtensionToolStripMenuItem.Paint += new System.Windows.Forms.PaintEventHandler(ShieldBitmap);
             // 
@@ -1045,6 +1072,9 @@ namespace CslaGenerator
         private ToolStripProgressBar progressBar;
         private ToolStripMenuItem pluginsToolStripMenuItem;
         private ToolStripMenuItem toolStripMenuItem4;
+        private ToolStripMenuItem forceSmartDateConversion;
+        private ToolStripMenuItem forceManagedProperties;
+        private ToolStripSeparator toolStripSeparator6;
         private ToolStripMenuItem locateToolStripMenuItem;
         private ToolStripMenuItem codeSmithExtensionToolStripMenuItem;
         internal FormSizePosition formSizePosition;
