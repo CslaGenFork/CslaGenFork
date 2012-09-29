@@ -34,6 +34,7 @@
     <add key="UnitOfWork:ValueColumn" value="false" />
     <add key="UnitOfWork:CacheResults" value="false" />
     <add key="UnitOfWork:SimpleCacheOptions" value="false" />
+    <add key="UnitOfWork:InvalidateCache" value="false" />
     <add key="UnitOfWork:DbName" value="false" />
     <add key="UnitOfWork:GetObjectCriteriaType" value="false" />
     <add key="UnitOfWork:TransactionType" value="false" />
@@ -98,6 +99,7 @@
     <add key="NameValueList:ValueColumn" value="true" />
     <add key="NameValueList:CacheResults" value="true" />
     <add key="NameValueList:SimpleCacheOptions" value="true" />
+    <add key="NameValueList:InvalidateCache" value="false" />
     <add key="NameValueList:DbName" value="true" />
     <add key="NameValueList:GetObjectCriteriaType" value="false" />
     <add key="NameValueList:TransactionType" value="false" />
@@ -160,6 +162,7 @@
     <add key="ReadOnlyCollection:ValueColumn" value="false" />
     <add key="ReadOnlyCollection:CacheResults" value="false" />
     <add key="ReadOnlyCollection:SimpleCacheOptions" value="true" />
+    <add key="ReadOnlyCollection:InvalidateCache" value="false" />
     <add key="ReadOnlyCollection:DbName" value="true" />
     <add key="ReadOnlyCollection:GetObjectCriteriaType" value="false" />
     <add key="ReadOnlyCollection:TransactionType" value="false" />
@@ -222,6 +225,7 @@
     <add key="ReadOnlyObject:ValueColumn" value="false" />
     <add key="ReadOnlyObject:CacheResults" value="false" />
     <add key="ReadOnlyObject:SimpleCacheOptions" value="false" />
+    <add key="ReadOnlyObject:InvalidateCache" value="false" />
     <add key="ReadOnlyObject:DbName" value="true" />
     <add key="ReadOnlyObject:GetObjectCriteriaType" value="false" />
     <add key="ReadOnlyObject:TransactionType" value="false" />
@@ -284,6 +288,7 @@
     <add key="EditableChild:ValueColumn" value="false" />
     <add key="EditableChild:CacheResults" value="false" />
     <add key="EditableChild:SimpleCacheOptions" value="false" />
+    <add key="EditableChild:InvalidateCache" value="false" />
     <add key="EditableChild:DbName" value="true" />
     <add key="EditableChild:GetObjectCriteriaType" value="false" />
     <add key="EditableChild:TransactionType" value="true" />
@@ -346,6 +351,7 @@
     <add key="EditableChildCollection:ValueColumn" value="false" />
     <add key="EditableChildCollection:CacheResults" value="false" />
     <add key="EditableChildCollection:SimpleCacheOptions" value="false" />
+    <add key="EditableChildCollection:InvalidateCache" value="false" />
     <add key="EditableChildCollection:DbName" value="true" />
     <add key="EditableChildCollection:GetObjectCriteriaType" value="false" />
     <add key="EditableChildCollection:TransactionType" value="true" />
@@ -408,6 +414,7 @@
     <add key="EditableRoot:ValueColumn" value="false" />
     <add key="EditableRoot:CacheResults" value="false" />
     <add key="EditableRoot:SimpleCacheOptions" value="false" />
+    <add key="EditableRoot:InvalidateCache" value="false" />
     <add key="EditableRoot:DbName" value="true" />
     <add key="EditableRoot:GetObjectCriteriaType" value="false" />
     <add key="EditableRoot:TransactionType" value="true" />
@@ -470,6 +477,7 @@
     <add key="EditableRootCollection:ValueColumn" value="false" />
     <add key="EditableRootCollection:CacheResults" value="false" />
     <add key="EditableRootCollection:SimpleCacheOptions" value="false" />
+    <add key="EditableRootCollection:InvalidateCache" value="true" />
     <add key="EditableRootCollection:DbName" value="true" />
     <add key="EditableRootCollection:GetObjectCriteriaType" value="false" />
     <add key="EditableRootCollection:TransactionType" value="true" />
@@ -532,6 +540,7 @@
     <add key="EditableSwitchable:ValueColumn" value="false" />
     <add key="EditableSwitchable:CacheResults" value="false" />
     <add key="EditableSwitchable:SimpleCacheOptions" value="false" />
+    <add key="EditableSwitchable:InvalidateCache" value="false" />
     <add key="EditableSwitchable:DbName" value="true" />
     <add key="EditableSwitchable:GetObjectCriteriaType" value="false" />
     <add key="EditableSwitchable:TransactionType" value="true" />
@@ -594,6 +603,7 @@
     <add key="DynamicEditableRoot:ValueColumn" value="false" />
     <add key="DynamicEditableRoot:CacheResults" value="false" />
     <add key="DynamicEditableRoot:SimpleCacheOptions" value="false" />
+    <add key="DynamicEditableRoot:InvalidateCache" value="false" />
     <add key="DynamicEditableRoot:DbName" value="true" />
     <add key="DynamicEditableRoot:GetObjectCriteriaType" value="false" />
     <add key="DynamicEditableRoot:TransactionType" value="true" />
@@ -656,6 +666,7 @@
     <add key="DynamicEditableRootCollection:ValueColumn" value="false" />
     <add key="DynamicEditableRootCollection:CacheResults" value="false" />
     <add key="DynamicEditableRootCollection:SimpleCacheOptions" value="false" />
+    <add key="DynamicEditableRootCollection:InvalidateCache" value="true" />
     <add key="DynamicEditableRootCollection:DbName" value="true" />
     <add key="DynamicEditableRootCollection:GetObjectCriteriaType" value="false" />
     <add key="DynamicEditableRootCollection:TransactionType" value="true" />

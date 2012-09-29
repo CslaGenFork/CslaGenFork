@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.IO;
@@ -36,16 +37,16 @@ namespace CslaGenerator.Metadata
         private ConstructorVisibility _constructorVisibility = ConstructorVisibility.Default;
         private TypeInfo _inheritedType;
         private TypeInfo _inheritedTypeWinForms;
-        private ValuePropertyCollection _valueProperties = new ValuePropertyCollection();
-        private ChildPropertyCollection _childProperties = new ChildPropertyCollection();
-        private ChildPropertyCollection _childCollectionProperties = new ChildPropertyCollection();
-        private UnitOfWorkPropertyCollection _unitOfWorkProperties = new UnitOfWorkPropertyCollection();
-        private ConvertValuePropertyCollection _convertValueProperties = new ConvertValuePropertyCollection();
-        private UpdateValuePropertyCollection _updateValueProperties = new UpdateValuePropertyCollection();
-        private ValuePropertyCollection _inheritedValueProperties;
-        private ChildPropertyCollection _inheritedChildProperties;
-        private ChildPropertyCollection _inheritedChildCollectionProperties;
-        private CriteriaCollection _criteriaObjects = new CriteriaCollection();
+        private readonly ValuePropertyCollection _valueProperties = new ValuePropertyCollection();
+        private readonly ChildPropertyCollection _childProperties = new ChildPropertyCollection();
+        private readonly ChildPropertyCollection _childCollectionProperties = new ChildPropertyCollection();
+        private readonly UnitOfWorkPropertyCollection _unitOfWorkProperties = new UnitOfWorkPropertyCollection();
+        private readonly ConvertValuePropertyCollection _convertValueProperties = new ConvertValuePropertyCollection();
+        private readonly UpdateValuePropertyCollection _updateValueProperties = new UpdateValuePropertyCollection();
+        private readonly ValuePropertyCollection _inheritedValueProperties = new ValuePropertyCollection();
+        private readonly ChildPropertyCollection _inheritedChildProperties = new ChildPropertyCollection();
+        private readonly ChildPropertyCollection _inheritedChildCollectionProperties = new ChildPropertyCollection();
+        private readonly CriteriaCollection _criteriaObjects = new CriteriaCollection();
         private CriteriaCollection _myCriteriaObjects = new CriteriaCollection();
         private PropertyCollection _equalsProperty = new PropertyCollection();
         private PropertyCollection _hashcodeProperty = new PropertyCollection();
@@ -92,6 +93,7 @@ namespace CslaGenerator.Metadata
         private bool _supportUpdateProperties;
         private bool _addParentReference;
         private SimpleCacheResults _simpleCacheOptions = SimpleCacheResults.None;
+        private List<string> _invalidateCache = new List<string>();
         private bool _useCustomLoading;
         private bool _checkRulesOnFetch = true;
         private bool _generateDataAccessRegion = true;
@@ -116,10 +118,6 @@ namespace CslaGenerator.Metadata
 
             _inheritedTypeWinForms = new TypeInfo(this);
             _inheritedTypeWinForms.TypeChanged += InheritedTypeWinForms_TypeChanged;
-
-            _inheritedValueProperties = new ValuePropertyCollection(); //.ReadOnly(new ValuePropertyCollection());
-            _inheritedChildProperties = new ChildPropertyCollection(); //.ReadOnly(new ChildPropertyCollection());
-            _inheritedChildCollectionProperties = new ChildPropertyCollection(); //.ReadOnly(new ChildPropertyCollection());
 
             _valueProperties.ItemChanged += vp_ItemChanged;
             if (parent != null && parent.Params != null)
@@ -764,6 +762,16 @@ namespace CslaGenerator.Metadata
         {
             get { return _simpleCacheOptions; }
             set { _simpleCacheOptions = value; }
+        }
+
+        [Category("05. Collection Options")]
+        [Description("The type names where the cache will be invalidated on Insert, Update and Delete operations.")]
+        [UserFriendlyName("Invalidate Cache Types")]
+        [Editor(typeof(InvalidateCacheTypeCollectionEditor), typeof(UITypeEditor))]
+        public List<string> InvalidateCache
+        {
+            get { return _invalidateCache; }
+            set { _invalidateCache = value; }
         }
 
         #endregion
