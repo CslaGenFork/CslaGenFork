@@ -883,8 +883,9 @@ namespace CslaGenerator.Controls
             var dbObject = GetCurrentDBObject();
 
             var obj = new CslaObjectInfo(_currentUnit);
-            obj.ObjectName = ParseObjectName(name);
             obj.ObjectType = type;
+            // ObjectType must be set before ObjectName so Abc_ProcedureName are filled correctly
+            obj.ObjectName = ParseObjectName(name);
             if (type == CslaObjectType.EditableChild)
             {
                 obj.DeleteUseTimestamp = CurrentUnit.Params.AutoTimestampCriteria;
