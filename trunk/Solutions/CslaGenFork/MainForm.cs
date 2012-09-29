@@ -699,6 +699,8 @@ namespace CslaGenerator
             connectDatabaseButton.Enabled = true;
             projectToolStripMenuItem.Enabled = true;
             dataBaseToolStripMenuItem.Enabled = true;
+            forceSmartDateConversion.Enabled = true;
+            forceManagedProperties.Enabled = true;
 
             ConditonalButtonsAndMenus();
         }
@@ -1225,6 +1227,45 @@ namespace CslaGenerator
         #endregion
 
         #region Tools menu
+
+        private void ForceSmartDateConversion_Click(object sender, EventArgs e)
+        {
+            foreach (var info in _controller.CurrentUnit.CslaObjects)
+            {
+                foreach (ValueProperty prop in info.AllValueProperties)
+                {
+                    if (prop.PropertyType == TypeCodeEx.SmartDate)
+                    {
+                        if (prop.DeclarationMode == PropertyDeclaration.ClassicProperty ||
+                            prop.DeclarationMode == PropertyDeclaration.AutoProperty)
+                            prop.DeclarationMode = PropertyDeclaration.ClassicPropertyWithTypeConversion;
+                        if (prop.DeclarationMode == PropertyDeclaration.Managed)
+                            prop.DeclarationMode = PropertyDeclaration.ManagedWithTypeConversion;
+                        if (prop.DeclarationMode == PropertyDeclaration.Unmanaged)
+                            prop.DeclarationMode = PropertyDeclaration.UnmanagedWithTypeConversion;
+
+                        prop.PropertyType = TypeCodeEx.String;
+                        prop.BackingFieldType = TypeCodeEx.SmartDate;
+                    }
+                }
+            }
+        }
+
+        private void ForceManagedProperties_Click(object sender, EventArgs e)
+        {
+            foreach (var info in _controller.CurrentUnit.CslaObjects)
+            {
+                foreach (ValueProperty prop in info.AllValueProperties)
+                {
+                    if (prop.DeclarationMode == PropertyDeclaration.ClassicProperty ||
+                        prop.DeclarationMode == PropertyDeclaration.AutoProperty)
+                        prop.DeclarationMode = PropertyDeclaration.Managed;
+
+                    if (prop.DeclarationMode == PropertyDeclaration.ClassicPropertyWithTypeConversion)
+                        prop.DeclarationMode = PropertyDeclaration.ManagedWithTypeConversion;
+                }
+            }
+        }
 
         private void LocateToolStripMenuItem_Click(object sender, EventArgs e)
         {
