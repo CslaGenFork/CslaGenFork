@@ -7,7 +7,7 @@ if (Info.GenerateDataPortalDelete)
         {
             if (string.IsNullOrEmpty(c.DeleteOptions.ProcedureName))
             {
-                Errors.Append("Criteria " + c.Name + " missing delete procedure name." + Environment.NewLine);
+                Errors.Append("Criteria " + c.Name + " missing Delete procedure name." + Environment.NewLine);
             }
             %>
 
