@@ -10,7 +10,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CslaGenFork.Rules</RootNamespace>
-    <AssemblyName>CslaGenFork.Rules-4.3.10.SL4</AssemblyName>
+    <AssemblyName>CslaGenFork.Rules-4.3.13.SL4</AssemblyName>
     <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
@@ -62,109 +62,109 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\CslaGenFork.Rules-4.3.10\Authorization Rules\IsEmptyOrIsInRole.cs">
+    <Compile Include="..\CslaGenFork.Rules-4.3.13\Authorization Rules\IsEmptyOrIsInRole.cs">
       <Link>Authorization Rules\IsEmptyOrIsInRole.cs</Link>
     </Compile>
-    <Compile Include="..\CslaGenFork.Rules-4.3.10\Authorization Rules\IsNewOrIsInRole.cs">
+    <Compile Include="..\CslaGenFork.Rules-4.3.13\Authorization Rules\IsNewOrIsInRole.cs">
       <Link>Authorization Rules\IsNewOrIsInRole.cs</Link>
     </Compile>
-    <Compile Include="..\CslaGenFork.Rules-4.3.10\Authorization Rules\IsOwner.cs">
+    <Compile Include="..\CslaGenFork.Rules-4.3.13\Authorization Rules\IsOwner.cs">
       <Link>Authorization Rules\IsOwner.cs</Link>
     </Compile>
-    <Compile Include="..\CslaGenFork.Rules-4.3.10\Authorization Rules\IsOwnerOrIsInRole.cs">
+    <Compile Include="..\CslaGenFork.Rules-4.3.13\Authorization Rules\IsOwnerOrIsInRole.cs">
       <Link>Authorization Rules\IsOwnerOrIsInRole.cs</Link>
     </Compile>
-    <Compile Include="..\CslaGenFork.Rules-4.3.10\Authorization Rules\RestrictByStatusOrIsInRole.cs">
+    <Compile Include="..\CslaGenFork.Rules-4.3.13\Authorization Rules\RestrictByStatusOrIsInRole.cs">
       <Link>Authorization Rules\RestrictByStatusOrIsInRole.cs</Link>
     </Compile>
-    <Compile Include="..\CslaGenFork.Rules-4.3.10\Business Rules\AnyRequired.cs">
+    <Compile Include="..\CslaGenFork.Rules-4.3.13\Business Rules\AnyRequired.cs">
       <Link>Business Rules\AnyRequired.cs</Link>
     </Compile>
-    <Compile Include="..\CslaGenFork.Rules-4.3.10\Business Rules\CalcSum.cs">
+    <Compile Include="..\CslaGenFork.Rules-4.3.13\Business Rules\CalcSum.cs">
       <Link>Business Rules\CalcSum.cs</Link>
     </Compile>
-    <Compile Include="..\CslaGenFork.Rules-4.3.10\Business Rules\CanWrite.cs">
+    <Compile Include="..\CslaGenFork.Rules-4.3.13\Business Rules\CanWrite.cs">
       <Link>Business Rules\CanWrite.cs</Link>
     </Compile>
-    <Compile Include="..\CslaGenFork.Rules-4.3.10\Business Rules\CollapseSpace.cs">
+    <Compile Include="..\CslaGenFork.Rules-4.3.13\Business Rules\CollapseSpace.cs">
       <Link>Business Rules\CollapseSpace.cs</Link>
     </Compile>
-    <Compile Include="..\CslaGenFork.Rules-4.3.10\Business Rules\CollapseWhiteSpace.cs">
+    <Compile Include="..\CslaGenFork.Rules-4.3.13\Business Rules\CollapseWhiteSpace.cs">
       <Link>Business Rules\CollapseWhiteSpace.cs</Link>
     </Compile>
-    <Compile Include="..\CslaGenFork.Rules-4.3.10\Business Rules\CollectionPopulated.cs">
+    <Compile Include="..\CslaGenFork.Rules-4.3.13\Business Rules\CollectionPopulated.cs">
       <Link>Business Rules\CollectionPopulated.cs</Link>
     </Compile>
-    <Compile Include="..\CslaGenFork.Rules-4.3.10\Business Rules\DateNotInFuture.cs">
+    <Compile Include="..\CslaGenFork.Rules-4.3.13\Business Rules\DateNotInFuture.cs">
       <Link>Business Rules\DateNotInFuture.cs</Link>
     </Compile>
-    <Compile Include="..\CslaGenFork.Rules-4.3.10\Business Rules\DependencyFrom.cs">
+    <Compile Include="..\CslaGenFork.Rules-4.3.13\Business Rules\DependencyFrom.cs">
       <Link>Business Rules\DependencyFrom.cs</Link>
     </Compile>
-    <Compile Include="..\CslaGenFork.Rules-4.3.10\Business Rules\FieldExists.cs">
+    <Compile Include="..\CslaGenFork.Rules-4.3.13\Business Rules\FieldExists.cs">
       <Link>Business Rules\FieldExists.cs</Link>
     </Compile>
-    <Compile Include="..\CslaGenFork.Rules-4.3.10\Business Rules\GreaterThan.cs">
+    <Compile Include="..\CslaGenFork.Rules-4.3.13\Business Rules\GreaterThan.cs">
       <Link>Business Rules\GreaterThan.cs</Link>
     </Compile>
-    <Compile Include="..\CslaGenFork.Rules-4.3.10\Business Rules\GreaterThanOrEqual.cs">
+    <Compile Include="..\CslaGenFork.Rules-4.3.13\Business Rules\GreaterThanOrEqual.cs">
       <Link>Business Rules\GreaterThanOrEqual.cs</Link>
     </Compile>
-    <Compile Include="..\CslaGenFork.Rules-4.3.10\Business Rules\IsNew.cs">
+    <Compile Include="..\CslaGenFork.Rules-4.3.13\Business Rules\IsNew.cs">
       <Link>Business Rules\IsNew.cs</Link>
     </Compile>
-    <Compile Include="..\CslaGenFork.Rules-4.3.10\Business Rules\IsNotNew.cs">
+    <Compile Include="..\CslaGenFork.Rules-4.3.13\Business Rules\IsNotNew.cs">
       <Link>Business Rules\IsNotNew.cs</Link>
     </Compile>
-    <Compile Include="..\CslaGenFork.Rules-4.3.10\Business Rules\LessThan.cs">
+    <Compile Include="..\CslaGenFork.Rules-4.3.13\Business Rules\LessThan.cs">
       <Link>Business Rules\LessThan.cs</Link>
     </Compile>
-    <Compile Include="..\CslaGenFork.Rules-4.3.10\Business Rules\LessThanOrEqual.cs">
+    <Compile Include="..\CslaGenFork.Rules-4.3.13\Business Rules\LessThanOrEqual.cs">
       <Link>Business Rules\LessThanOrEqual.cs</Link>
     </Compile>
-    <Compile Include="..\CslaGenFork.Rules-4.3.10\Business Rules\NoDuplicates.cs">
+    <Compile Include="..\CslaGenFork.Rules-4.3.13\Business Rules\NoDuplicates.cs">
       <Link>Business Rules\NoDuplicates.cs</Link>
     </Compile>
-    <Compile Include="..\CslaGenFork.Rules-4.3.10\Business Rules\Range.cs">
+    <Compile Include="..\CslaGenFork.Rules-4.3.13\Business Rules\Range.cs">
       <Link>Business Rules\Range.cs</Link>
     </Compile>
-    <Compile Include="..\CslaGenFork.Rules-4.3.10\Business Rules\RangeMM.cs">
+    <Compile Include="..\CslaGenFork.Rules-4.3.13\Business Rules\RangeMM.cs">
       <Link>Business Rules\RangeMM.cs</Link>
     </Compile>
-    <Compile Include="..\CslaGenFork.Rules-4.3.10\Business Rules\RequiredWhenCanWrite.cs">
+    <Compile Include="..\CslaGenFork.Rules-4.3.13\Business Rules\RequiredWhenCanWrite.cs">
       <Link>Business Rules\RequiredWhenCanWrite.cs</Link>
     </Compile>
-    <Compile Include="..\CslaGenFork.Rules-4.3.10\Business Rules\RequiredWhenIsNotNew.cs">
+    <Compile Include="..\CslaGenFork.Rules-4.3.13\Business Rules\RequiredWhenIsNotNew.cs">
       <Link>Business Rules\RequiredWhenIsNotNew.cs</Link>
     </Compile>
-    <Compile Include="..\CslaGenFork.Rules-4.3.10\Business Rules\RequiredWhenNew.cs">
+    <Compile Include="..\CslaGenFork.Rules-4.3.13\Business Rules\RequiredWhenNew.cs">
       <Link>Business Rules\RequiredWhenNew.cs</Link>
     </Compile>
-    <Compile Include="..\CslaGenFork.Rules-4.3.10\Business Rules\StopIfAnyAdditionalHasValue.cs">
+    <Compile Include="..\CslaGenFork.Rules-4.3.13\Business Rules\StopIfAnyAdditionalHasValue.cs">
       <Link>Business Rules\StopIfAnyAdditionalHasValue.cs</Link>
     </Compile>
-    <Compile Include="..\CslaGenFork.Rules-4.3.10\Business Rules\StopIfIsNew.cs">
+    <Compile Include="..\CslaGenFork.Rules-4.3.13\Business Rules\StopIfIsNew.cs">
       <Link>Business Rules\StopIfIsNew.cs</Link>
     </Compile>
-    <Compile Include="..\CslaGenFork.Rules-4.3.10\Business Rules\StopIfIsNotNew.cs">
+    <Compile Include="..\CslaGenFork.Rules-4.3.13\Business Rules\StopIfIsNotNew.cs">
       <Link>Business Rules\StopIfIsNotNew.cs</Link>
     </Compile>
-    <Compile Include="..\CslaGenFork.Rules-4.3.10\Business Rules\StopIfNotCanWrite.cs">
+    <Compile Include="..\CslaGenFork.Rules-4.3.13\Business Rules\StopIfNotCanWrite.cs">
       <Link>Business Rules\StopIfNotCanWrite.cs</Link>
     </Compile>
-    <Compile Include="..\CslaGenFork.Rules-4.3.10\Business Rules\StopIfNotFieldExists.cs">
+    <Compile Include="..\CslaGenFork.Rules-4.3.13\Business Rules\StopIfNotFieldExists.cs">
       <Link>Business Rules\StopIfNotFieldExists.cs</Link>
     </Compile>
-    <Compile Include="..\CslaGenFork.Rules-4.3.10\Business Rules\ToLower.cs">
+    <Compile Include="..\CslaGenFork.Rules-4.3.13\Business Rules\ToLower.cs">
       <Link>Business Rules\ToLower.cs</Link>
     </Compile>
-    <Compile Include="..\CslaGenFork.Rules-4.3.10\Business Rules\ToUpper.cs">
+    <Compile Include="..\CslaGenFork.Rules-4.3.13\Business Rules\ToUpper.cs">
       <Link>Business Rules\ToUpper.cs</Link>
     </Compile>
-    <Compile Include="..\CslaGenFork.Rules-4.3.10\CommonObjectRule.cs">
+    <Compile Include="..\CslaGenFork.Rules-4.3.13\CommonObjectRule.cs">
       <Link>CommonObjectRule.cs</Link>
     </Compile>
-    <Compile Include="..\CslaGenFork.Rules-4.3.10\ObjectRuleEx.cs">
+    <Compile Include="..\CslaGenFork.Rules-4.3.13\ObjectRuleEx.cs">
       <Link>ObjectRuleEx.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
