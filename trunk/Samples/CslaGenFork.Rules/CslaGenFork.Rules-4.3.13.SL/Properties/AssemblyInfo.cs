@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("CslaGenFork.Rules-4.3.10 SL5")]
-[assembly: AssemblyDescription("Business and Authorization Rules library for CSLA 4.3.10 and Silverlight 5")]
+[assembly: AssemblyTitle("CslaGenFork.Rules-4.3.13 SL5")]
+[assembly: AssemblyDescription("Business and Authorization Rules library for CSLA 4.3.13 and Silverlight 5")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("CslaGenFork Project")]
-[assembly: AssemblyProduct("CslaGenFork.Rules for CSLA v.4.3.10 and Silverlight 5")]
+[assembly: AssemblyProduct("CslaGenFork.Rules for CSLA v.4.3.13 and Silverlight 5")]
 [assembly: AssemblyCopyright("Copyright © CslaGenFork Project, 2012")]
 [assembly: AssemblyTrademark("All Rights Reserved.")]
 [assembly: AssemblyCulture("")]
