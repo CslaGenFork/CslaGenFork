@@ -95,9 +95,11 @@ foreach (ValueProperty prop in Info.GetDatabaseBoundValueProperties())
     }
     if (CurrentUnit.GenerationParams.GenerateSilverlight4)
     {
-        if (prop.DeclarationMode != PropertyDeclaration.Managed &&
+        if (prop.DeclarationMode != PropertyDeclaration.Unmanaged &&
+            prop.DeclarationMode != PropertyDeclaration.UnmanagedWithTypeConversion &&
+            prop.DeclarationMode != PropertyDeclaration.Managed &&
             prop.DeclarationMode != PropertyDeclaration.ManagedWithTypeConversion)
-            Warnings.Append("Property " + prop.Name + ": must use Declaration Mode 'Managed' or 'ManagedWithTypeConversion' under Silverlight." + Environment.NewLine);
+            Warnings.Append("Property " + prop.Name + ": must use Declaration Mode 'Managed', 'ManagedWithTypeConversion', 'Unmanaged' or 'UnmanagedWithTypeConversion' under Silverlight." + Environment.NewLine);
     }
 }
 if (CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL)
