@@ -321,14 +321,14 @@ if (generateRuleRegion || generateAuthRegion || generateObjectRuleRegion)
                     if (CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider ||
                         rulableProperty.AuthzProvider == AuthorizationProvider.IsInRole)
                     {
-                        resultRule = "BusinessRules.AddRule(typeof (" + Info.ObjectName + "), new IsInRole(AuthorizationActions.ReadProperty" + ReturnRoleList(rulableProperty.ReadRoles) +"));";
+                        resultRule = "BusinessRules.AddRule(typeof (" + Info.ObjectName + "), new IsInRole(AuthorizationActions.ReadProperty, " + rulableProperty.Name + "Property" + ReturnRoleList(rulableProperty.ReadRoles) +"));";
             %>
             <%= resultRule %>
 <%
                     }
                     else
                     {
-                        resultRule = "BusinessRules.AddRule(typeof (" + Info.ObjectName + "), new IsNotInRole(AuthorizationActions.ReadProperty" + ReturnRoleList(rulableProperty.ReadRoles) + "));";
+                        resultRule = "BusinessRules.AddRule(typeof (" + Info.ObjectName + "), new IsNotInRole(AuthorizationActions.ReadProperty, " + rulableProperty.Name + "Property" + ReturnRoleList(rulableProperty.ReadRoles) + "));";
             %>
             <%= resultRule %>
 <%
@@ -339,14 +339,14 @@ if (generateRuleRegion || generateAuthRegion || generateObjectRuleRegion)
                     if (CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider ||
                         rulableProperty.AuthzProvider == AuthorizationProvider.IsInRole)
                     {
-                        resultRule = "BusinessRules.AddRule(typeof (" + Info.ObjectName + "), new IsInRole(AuthorizationActions.WriteProperty" + ReturnRoleList(rulableProperty.WriteRoles) +"));";
+                        resultRule = "BusinessRules.AddRule(typeof (" + Info.ObjectName + "), new IsInRole(AuthorizationActions.WriteProperty, " + rulableProperty.Name + "Property" + ReturnRoleList(rulableProperty.WriteRoles) +"));";
             %>
             <%= resultRule %>
 <%
                     }
                     else
                     {
-                        resultRule = "BusinessRules.AddRule(typeof (" + Info.ObjectName + "), new IsNotInRole(AuthorizationActions.WriteProperty" + ReturnRoleList(rulableProperty.WriteRoles) + "));";
+                        resultRule = "BusinessRules.AddRule(typeof (" + Info.ObjectName + "), new IsNotInRole(AuthorizationActions.WriteProperty, " + rulableProperty.Name + "Property" + ReturnRoleList(rulableProperty.WriteRoles) + "));";
             %>
             <%= resultRule %>
 <%
