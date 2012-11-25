@@ -5,11 +5,11 @@ namespace CslaGenerator.Metadata
     /// </summary>
     public enum PropertyAccess
     {
-        IsPublic,
-        IsProtected,
-        IsInternal,
-        IsProtectedInternal,
-        IsPrivate
+        IsPublic = 1,
+        IsProtected = 2,
+        IsInternal = 3,
+        IsProtectedInternal = 4,
+        IsPrivate = 5
     }
 
     public static class Access
