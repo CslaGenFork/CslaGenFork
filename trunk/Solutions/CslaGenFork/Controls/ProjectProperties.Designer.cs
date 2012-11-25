@@ -198,9 +198,11 @@ namespace CslaGenerator.Controls
             this.chkUsesCslaAuthorizationProvider = new System.Windows.Forms.CheckBox();
             this.chkUseBypassPropertyChecks = new System.Windows.Forms.CheckBox();
             this.chkUseChildFactory = new System.Windows.Forms.CheckBox();
+            this.chkMigrateToSilverlight = new System.Windows.Forms.CheckBox();
             this.chkNullableSupport = new System.Windows.Forms.CheckBox();
             this.chkActiveObjects = new System.Windows.Forms.CheckBox();
             this.chkUsePublicPropertyInfo = new System.Windows.Forms.CheckBox();
+            this.chkMigrateToSmartDate = new System.Windows.Forms.CheckBox();
             this.chkForceReadOnlyProperties = new System.Windows.Forms.CheckBox();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -1926,9 +1928,11 @@ namespace CslaGenerator.Controls
             this.GenerationMiscTab.Controls.Add(this.chkUsePublicPropertyInfo);
             this.GenerationMiscTab.Controls.Add(this.chkUseBypassPropertyChecks);
             this.GenerationMiscTab.Controls.Add(this.chkUseChildFactory);
+            this.GenerationMiscTab.Controls.Add(this.chkMigrateToSilverlight);
             this.GenerationMiscTab.Controls.Add(this.lblHeaderVerbosity);
             this.GenerationMiscTab.Controls.Add(this.cboHeaderVerbosity);
             this.GenerationMiscTab.Controls.Add(this.chkNullableSupport);
+            this.GenerationMiscTab.Controls.Add(this.chkMigrateToSmartDate);
             this.GenerationMiscTab.Controls.Add(this.chkForceReadOnlyProperties);
             this.GenerationMiscTab.Controls.Add(this.chkActiveObjects);
             this.GenerationMiscTab.Controls.Add(this.chkBackupOldSource);
@@ -2027,6 +2031,17 @@ namespace CslaGenerator.Controls
             this.toolTip.SetToolTip(this.chkUseChildFactory, "If checked, all child collections and objects have factory methods.\r\n" +
                 "Otherwise only root collections and objects have factory methods.");
             // 
+            // chkMigrateToSilverlight
+            // 
+            this.chkMigrateToSilverlight.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "MigrateToSilverlight", true, DataSourceUpdateMode.OnPropertyChanged));
+            this.chkMigrateToSilverlight.Location = new System.Drawing.Point(15, 190);
+            this.chkMigrateToSilverlight.Name = "chkMigrateToSilverlight";
+            this.chkMigrateToSilverlight.Size = new System.Drawing.Size(216, 17);
+            this.chkMigrateToSilverlight.TabIndex = 8;
+            this.chkMigrateToSilverlight.Text = "Migrate settings to Silverlight.";
+            this.toolTip.SetToolTip(this.chkMigrateToSilverlight, "If checked, the generation process will change settings of\r\n" +
+                                    "property DeclarationMode and Criteria classes to be correct under Silverlight.");
+            // 
             // lblHeaderVerbosity
             // 
             this.lblHeaderVerbosity.Location = new System.Drawing.Point(255, 50);
@@ -2044,10 +2059,23 @@ namespace CslaGenerator.Controls
             this.cboHeaderVerbosity.TabIndex = 6;
             this.toolTip.SetToolTip(this.cboHeaderVerbosity, "Header verbosity level.");
             //
+            // chkMigrateToSmartDate
+            // 
+            this.chkMigrateToSmartDate.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "MigrateToSmartDate", true, DataSourceUpdateMode.OnPropertyChanged));
+            this.chkMigrateToSmartDate.Location = new System.Drawing.Point(255, 78);
+            this.chkMigrateToSmartDate.Name = "chkMigrateToSmartDate";
+            this.chkMigrateToSmartDate.Size = new System.Drawing.Size(216, 17);
+            this.chkMigrateToSmartDate.TabIndex = 13;
+            this.chkMigrateToSmartDate.Text = "Migrate DateTime to SmartDate";
+            this.toolTip.SetToolTip(this.chkMigrateToSmartDate,
+                                     "If checked, all ReadOnlyObject's properties are ReadOnly.\r\n" +
+                                     "Otherwise allows all kinds of accessibility for ReadOnlyObject's properties.\r\n\r\n" +
+                                     "Note - ReadOnlyObject's managed and unmanaged properties are always ReadOnly properties.");
+            //
             // chkForceReadOnlyProperties
             // 
             this.chkForceReadOnlyProperties.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "ForceReadOnlyProperties", true, DataSourceUpdateMode.OnPropertyChanged));
-            this.chkForceReadOnlyProperties.Location = new System.Drawing.Point(255, 78);
+            this.chkForceReadOnlyProperties.Location = new System.Drawing.Point(255, 106);
             this.chkForceReadOnlyProperties.Name = "chkForceReadOnlyProperties";
             this.chkForceReadOnlyProperties.Size = new System.Drawing.Size(216, 17);
             this.chkForceReadOnlyProperties.TabIndex = 13;
@@ -2061,7 +2089,7 @@ namespace CslaGenerator.Controls
             // 
             this.chkNullableSupport.AutoSize = true;
             this.chkNullableSupport.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "NullableSupport", true, DataSourceUpdateMode.OnPropertyChanged));
-            this.chkNullableSupport.Location = new System.Drawing.Point(255, 106);
+            this.chkNullableSupport.Location = new System.Drawing.Point(255, 134);
             this.chkNullableSupport.Name = "chkNullableSupport";
             this.chkNullableSupport.Size = new System.Drawing.Size(157, 17);
             this.chkNullableSupport.TabIndex = 11;
@@ -2072,7 +2100,7 @@ namespace CslaGenerator.Controls
             // chkActiveObjects
             // 
             this.chkActiveObjects.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "ActiveObjects", true, DataSourceUpdateMode.OnPropertyChanged));
-            this.chkActiveObjects.Location = new System.Drawing.Point(255, 134);
+            this.chkActiveObjects.Location = new System.Drawing.Point(255, 162);
             this.chkActiveObjects.Name = "chkActiveObjects";
             this.chkActiveObjects.Size = new System.Drawing.Size(216, 17);
             this.chkActiveObjects.TabIndex = 14;
@@ -2085,7 +2113,7 @@ namespace CslaGenerator.Controls
             // chkBackupOldSource
             // 
             this.chkBackupOldSource.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "BackupOldSource", true, DataSourceUpdateMode.OnPropertyChanged));
-            this.chkBackupOldSource.Location = new System.Drawing.Point(255, 162);
+            this.chkBackupOldSource.Location = new System.Drawing.Point(255, 190);
             this.chkBackupOldSource.Name = "chkBackupOldSource";
             this.chkBackupOldSource.Size = new System.Drawing.Size(216, 17);
             this.chkBackupOldSource.TabIndex = 8;
@@ -2361,8 +2389,10 @@ namespace CslaGenerator.Controls
         private System.Windows.Forms.ComboBox cboHeaderVerbosity;
         private System.Windows.Forms.CheckBox chkUseBypassPropertyChecks;
         private System.Windows.Forms.CheckBox chkUseChildFactory;
+        private System.Windows.Forms.CheckBox chkMigrateToSilverlight;
         private System.Windows.Forms.CheckBox chkNullableSupport;
         private System.Windows.Forms.CheckBox chkUsePublicPropertyInfo;
+        private System.Windows.Forms.CheckBox chkMigrateToSmartDate;
         private System.Windows.Forms.CheckBox chkForceReadOnlyProperties;
         private System.Windows.Forms.CheckBox chkActiveObjects;
         private System.Windows.Forms.BindingSource generationParametersBindingSource;
