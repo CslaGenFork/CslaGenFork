@@ -62,12 +62,6 @@ if (UseSimpleAuditTrail(Info))
             }
         <%
     }
-    if (auditConvertProperties.Count > 0)
-    {
-        %>
-            ConvertAuditPropertiesOnUpdate();
-        <%
-    }
     %>
         }
 <%

@@ -30,11 +30,6 @@ if (Info.GenerateDataPortalUpdate)
         %>SimpleAuditTrail();
             <%
     }
-    if (plainConvertPropertiesWrite.Count > 0)
-    {
-        %>ConvertPropertiesOnWrite();
-            <%
-    }
     %><%= GetConnection(Info, false) %>
             {
                 <%= GetCommand(Info, Info.UpdateProcedureName) %>

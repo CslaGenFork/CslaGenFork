@@ -105,7 +105,6 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Busine
 <!-- #include file="Criteria.asp" -->
 <!-- #include file="ObjectAuthorizationMethods.asp" -->
 <!-- #include file="BusinessRules.asp" -->
-<!-- #include file="ConvertProperties.asp" -->
 <!-- #include file="UpdateProperties.asp" -->
 <%
     if (Info.GenerateDataAccessRegion)
