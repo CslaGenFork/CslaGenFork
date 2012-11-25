@@ -36,6 +36,20 @@ namespace CslaGenerator.Metadata
             set { _primaryKey = value; }
         }
 
+        // Hide DeclarationMode
+        [Browsable(false)]
+        public override PropertyDeclaration DeclarationMode
+        {
+            get { return PropertyDeclaration.AutoProperty; }
+        }
+
+        // Hide BackingFieldType
+        [Browsable(false)]
+        public override TypeCodeEx BackingFieldType
+        {
+            get { return TypeCodeEx.Empty; }
+        }
+
         // Hide Rules
         [Browsable(false)]
         public override RuleCollection Rules
@@ -112,11 +126,18 @@ namespace CslaGenerator.Metadata
             get { return string.Empty; }
         }
 
+        // Hide BusinessRules
+        [Browsable(false)]
+        public override BusinessRuleCollection BusinessRules
+        {
+            get { return new BusinessRuleCollection(); }
+        }
+
         // Hide AuthzProvider
         [Browsable(false)]
         public override AuthorizationProvider AuthzProvider
         {
-            get { return base.AuthzProvider; }
+            get { return AuthorizationProvider.IsInRole; }
         }
 
         // Hide ReadRoles
