@@ -21,6 +21,19 @@ WARNINGS
 8. When using Silverligh 4, criteria classes (with more than one property) must not use Simple mode.
 */
 
+if (CurrentUnit.GenerationParams.MigrateToSilverlight)
+{
+    %>
+<!-- #include file="MigrateToSilverlight.asp" -->
+<%
+}
+if (CurrentUnit.GenerationParams.MigrateToSmartDate)
+{
+    %>
+<!-- #include file="MigrateToSmartDate.asp" -->
+<%
+}
+
 if (CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40)
 {
     if (Info.GenerateDataAccessRegion &&
