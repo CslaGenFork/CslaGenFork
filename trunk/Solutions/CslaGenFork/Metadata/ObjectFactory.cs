@@ -254,6 +254,7 @@ namespace CslaGenerator.Metadata
             if (_currentCslaObject.ObjectType == CslaObjectType.ReadOnlyObject)
             {
                 destination.DeclarationMode = _currentUnit.Params.CreateReadOnlyObjectsPropertyMode;
+                destination.ReadOnly = true;
             }
 
             if (p.IsPrimaryKey)
