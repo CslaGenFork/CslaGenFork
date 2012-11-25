@@ -113,11 +113,6 @@ if (Info.GenerateDataPortalInsert)
         %>SimpleAuditTrail();
             <%
     }
-    if (plainConvertPropertiesWrite.Count > 0)
-    {
-        %>ConvertPropertiesOnWrite();
-            <%
-    }
     %>using (var dalManager = DalFactory<%= GetDalNameDot(CurrentUnit) %>GetManager())
             {
                 var args = new DataPortalHookArgs();

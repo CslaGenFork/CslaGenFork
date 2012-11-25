@@ -15,7 +15,7 @@ IndentLevel = 2;
         #region Business Properties
         <%
 string softDeleteColumn = Info.Parent.Params.SpBoolSoftDeleteColumn;
-foreach (ValueProperty prop in Info.AllValueProperties)
+foreach (ValueProperty prop in Info.ValueProperties)
 {
     if (isUndeletable == false && prop.DbBindColumn != null)
     {
@@ -116,6 +116,81 @@ foreach (ValueProperty prop in Info.AllValueProperties)
         }
     }
     statement = PropertyDeclare(Info, prop);
+    if (!string.IsNullOrEmpty(statement))
+    {
+        %>
+        <%= statement %>
+        <%
+    }
+}
+
+// Convert properties
+foreach (ConvertValueProperty prop in Info.ConvertValueProperties)
+{
+    bool useSetter = true;
+
+    if (Info.ObjectType == CslaObjectType.ReadOnlyObject)
+    {
+        if (CurrentUnit.GenerationParams.ForceReadOnlyProperties)
+        {
+            useSetter = false;
+        }
+    }
+
+    if (prop.Summary != String.Empty)
+    {
+        IndentLevel = 2;
+        %>
+        /// <summary>
+<%= GetXmlCommentString(prop.Summary) %>
+        /// </summary>
+        <%
+    }
+    else
+    {
+        %>
+
+        /// <summary>
+        /// Gets <%= useSetter ? "or sets " : "" %>the <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>.
+        /// </summary>
+        <%
+    }
+    if (prop.PropertyType == TypeCodeEx.Boolean && prop.Nullable == false)
+    {
+        %>
+        /// <value><c>true</c> if <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; otherwise, <c>false</c>.</value>
+        <%
+    }
+    else if (prop.PropertyType == TypeCodeEx.Boolean && prop.Nullable == true)
+    {
+        %>
+        /// <value><c>true</c> if <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; <c>false</c> if not <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; otherwise, <c>null</c>.</value>
+        <%
+    }
+    else
+    {
+        %>
+        /// <value>The <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>.</value>
+        <%
+    }
+    if (prop.Remarks != String.Empty)
+    {
+        IndentLevel = 2;
+        %>
+        /// <remarks>
+<%= GetXmlCommentString(prop.Remarks) %>
+        /// </remarks>
+        <%
+    }
+        %>
+        <%
+    if (GetAttributesString(prop.Attributes) != string.Empty)
+    {
+        %>
+        <%= GetAttributesString(prop.Attributes) %>
+        <%
+    }
+    string statement = PropertyConvertDeclare(Info, prop);
     if (!string.IsNullOrEmpty(statement))
     {
         %>

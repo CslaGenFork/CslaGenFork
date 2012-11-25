@@ -49,11 +49,6 @@ if (!Info.UseCustomLoading)
             <%
             }
         }
-        if (plainConvertProperties.Count > 0)
-        {
-            %>ConvertPropertiesOnRead();
-            <%
-        }
             %>var args = new DataPortalHookArgs(dr);
             OnFetchRead(args);
         <%
