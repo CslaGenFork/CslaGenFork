@@ -17,11 +17,12 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous && !CurrentUnit.Generation
 <!-- #include file="GetNVLAsync.asp" -->
 <%
 }
-if (UseBoth() && (!CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationParams.SilverlightUsingServices))
+if (UseBoth())
 {
     %>
 
 #else
+<!-- #include file="GetNVLSyncSilverlight.asp" -->
 <%
 }
 if (!CurrentUnit.GenerationParams.GenerateAsynchronous && CurrentUnit.GenerationParams.GenerateSilverlight4)
@@ -33,11 +34,11 @@ if (!CurrentUnit.GenerationParams.GenerateAsynchronous && CurrentUnit.Generation
 else if (CurrentUnit.GenerationParams.SilverlightUsingServices)
 {
     %>
+<!-- #include file="GetNVLSyncSilverlight.asp" -->
 <!-- #include file="GetNVLSilverlight.asp" -->
 <%
 }
-if (UseBoth() &&
-    (CurrentUnit.GenerationParams.GenerateSynchronous || CurrentUnit.GenerationParams.SilverlightUsingServices))
+if (UseBoth())
 {
     %>
 
