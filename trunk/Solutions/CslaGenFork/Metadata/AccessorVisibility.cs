@@ -5,12 +5,12 @@ namespace CslaGenerator.Metadata
     /// </summary>
     public enum AccessorVisibility
     {
-        Default,
-        Private,
-        Public,
-        Protected,
-        ProtectedInternal,
-        Internal,
-        NoSetter
+        Default = 0,
+        Private = 5,
+        Public = 1,
+        Protected = 2,
+        ProtectedInternal = 3,
+        Internal = 4,
+        NoSetter = 6
     }
 }
