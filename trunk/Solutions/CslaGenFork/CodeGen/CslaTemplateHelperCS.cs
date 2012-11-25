@@ -2724,34 +2724,27 @@ namespace CslaGenerator.CodeGen
         public string PropertyDeclare(CslaObjectInfo info, ValueProperty prop)
         {
             var response = String.Empty;
-            var isReadOnly = false;
+            bool isReadOnly = prop.ReadOnly;
 
-            if (prop.ReadOnly)
+            if (info.ObjectType == CslaObjectType.ReadOnlyObject && CurrentUnit.GenerationParams.ForceReadOnlyProperties)
             {
                 isReadOnly = true;
             }
-
-            if (info.ObjectType == CslaObjectType.ReadOnlyObject)
+            else if (!String.IsNullOrEmpty(prop.Implements))
             {
-                if (prop.DeclarationMode == PropertyDeclaration.AutoProperty ||
-                    prop.DeclarationMode == PropertyDeclaration.ClassicProperty ||
-                    prop.DeclarationMode == PropertyDeclaration.ClassicPropertyWithTypeConversion)
-                {
-                    if (CurrentUnit.GenerationParams.ForceReadOnlyProperties)
-                    {
-                        isReadOnly = true;
-                    }
-                }
-                else
-                {
-                    isReadOnly = true;
-                }
+                isReadOnly = false;
             }
-            else
+
+            var convertPropertyName = string.Empty;
+            if (prop.DeclarationMode != PropertyDeclaration.AutoProperty)
             {
-                if (!String.IsNullOrEmpty(prop.Implements))
+                foreach (var convertProperty in info.ConvertValueProperties)
                 {
-                    isReadOnly = false;
+                    if (convertProperty.SourcePropertyName == prop.Name)
+                    {
+                        convertPropertyName = convertProperty.Name;
+                        break;
+                    }
                 }
             }
 
@@ -2767,7 +2760,7 @@ namespace CslaGenerator.CodeGen
                 response += "        {" + Environment.NewLine;
                 response += PropertyDeclareGetter(prop);
 
-                response += PropertyDeclareSetter(isReadOnly, prop);
+                response += PropertyDeclareSetter(isReadOnly, info.ObjectType == CslaObjectType.ReadOnlyObject, prop, convertPropertyName);
                 response += "        }";
             }
             else if (prop.DeclarationMode == PropertyDeclaration.ClassicProperty ||
@@ -2780,7 +2773,7 @@ namespace CslaGenerator.CodeGen
                 response += "        {" + Environment.NewLine;
                 response += PropertyDeclareGetter(prop);
 
-                response += PropertyDeclareSetter(isReadOnly, prop);
+                response += PropertyDeclareSetter(isReadOnly, info.ObjectType == CslaObjectType.ReadOnlyObject, prop, convertPropertyName);
                 response += "        }";
             }
             else if (prop.DeclarationMode == PropertyDeclaration.AutoProperty)
@@ -2789,8 +2782,54 @@ namespace CslaGenerator.CodeGen
                                           (String.IsNullOrEmpty(prop.Implements) ? GetPropertyAccess(prop) + " " : ""),
                                           GetDataTypeGeneric(prop, prop.PropertyType),
                                           (String.IsNullOrEmpty(prop.Implements) ? FormatPascal(prop.Name) : prop.Implements),
-                                          PropertyDeclareSetter(isReadOnly, prop));
+                                          PropertyDeclareSetter(isReadOnly, info.ObjectType == CslaObjectType.ReadOnlyObject, prop, string.Empty));
             }
+
+            return response;
+        }
+
+        public string PropertyConvertDeclare(CslaObjectInfo info, ConvertValueProperty prop)
+        {
+//            var sourceProperty = info.ValueProperties.Find(prop.SourcePropertyName);
+//            var sourceDeclarationMode = sourceProperty.DeclarationMode;
+            var response = String.Empty;
+            var isReadOnly = prop.ReadOnly;
+
+            if (info.ObjectType == CslaObjectType.ReadOnlyObject && CurrentUnit.GenerationParams.ForceReadOnlyProperties)
+            {
+                isReadOnly = true;
+            }
+
+            response += String.Format("{0} {1} {2}" + Environment.NewLine,
+                                      GetPropertyAccess(prop),
+                                      GetDataTypeGeneric(prop, prop.PropertyType),
+                                      FormatPascal(prop.Name));
+            response += "        {" + Environment.NewLine;
+            response += "            get" + Environment.NewLine;
+            response += "            {" + Environment.NewLine;
+            response += "                var result = " + GetInitValue(prop.PropertyType) + ";" + Environment.NewLine;
+            response += "                if (" + prop.NVLConverter + "().ContainsKey(" + prop.SourcePropertyName + "))" + Environment.NewLine;
+            response += "                    result = " + prop.NVLConverter + "().GetItemByKey(" + prop.SourcePropertyName + ").Value;" + Environment.NewLine;
+//            response += "                if (" + prop.NVLConverter + "().ContainsKey(ReadProperty(" + prop.SourcePropertyName + "Property)))" + Environment.NewLine;
+//            response += "                    result = " + prop.NVLConverter + "().GetItemByKey(ReadProperty(" + prop.SourcePropertyName + "Property)).Value;" + Environment.NewLine;
+            response += "                return result;" + Environment.NewLine;
+            response += "            }" + Environment.NewLine;
+
+            if (!isReadOnly)
+            {
+                response += "            set" + Environment.NewLine;
+                response += "            {" + Environment.NewLine;
+                response += "                if (" + prop.NVLConverter + "().ContainsValue(value))" + Environment.NewLine;
+                response += "                {" + Environment.NewLine;
+                response += "                    var result = " + prop.NVLConverter + "().GetItemByValue(value).Key;" + Environment.NewLine;
+                response += "                    if (result != " + prop.SourcePropertyName + ")" + Environment.NewLine;
+                response += "                        " + prop.SourcePropertyName + " = result;" + Environment.NewLine;
+//                response += "                    if (result != ReadProperty(" + prop.SourcePropertyName + "Property))" + Environment.NewLine;
+//                response += "                        SetProperty(" + prop.SourcePropertyName + "Property, result);" + Environment.NewLine;
+                response += "                }" + Environment.NewLine;
+                response += "            }" + Environment.NewLine;
+            }
+            response += "        }";
 
             return response;
         }
@@ -2830,7 +2869,7 @@ namespace CslaGenerator.CodeGen
             return response;
         }
 
-        private string PropertyDeclareSetter(bool isReadOnly, ValueProperty prop)
+        private string PropertyDeclareSetter(bool isReadOnly, bool isReadOnlyObject, ValueProperty prop, string convertPropertyName)
         {
             if (isReadOnly &&
                 (prop.DeclarationMode == PropertyDeclaration.ClassicProperty ||
@@ -2843,6 +2882,16 @@ namespace CslaGenerator.CodeGen
                 return "";
             }
 
+            var convertSnippetPre = " {";
+            var convertSnippet = string.Empty;
+            var convertSnippetPost = " }" + Environment.NewLine;
+            if (convertPropertyName != string.Empty)
+            {
+                convertSnippetPre = Environment.NewLine + "            {" + Environment.NewLine + "               ";
+                convertSnippet = Environment.NewLine + "                OnPropertyChanged(\"" + convertPropertyName + "\");";
+                convertSnippetPost = Environment.NewLine + "            }" + Environment.NewLine;
+            }
+
             var response = String.Empty;
             var isConversion = (prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion ||
                                 prop.DeclarationMode == PropertyDeclaration.UnmanagedWithTypeConversion ||
@@ -2853,9 +2902,10 @@ namespace CslaGenerator.CodeGen
                 prop.DeclarationMode == PropertyDeclaration.Unmanaged ||
                 prop.DeclarationMode == PropertyDeclaration.UnmanagedWithTypeConversion)
             {
-                response += String.Format("            {0}set {{ {1}{2}({3}, value); }}{4}",
+                response += String.Format("            {0}set{1} {2}{3}({4}, value);{5}{6}",
                                           PropertyDeclareSetterVisibility(isReadOnly, prop),
-                                          PropertyDeclareSetterMethod(isReadOnly, isConversion),
+                                          convertSnippetPre,
+                                          PropertyDeclareSetterMethod(isReadOnly, isReadOnlyObject, isConversion),
                                           isConversion
                                               ? "<" + prop.BackingFieldType + ", " + prop.PropertyType + ">"
                                               : "",
@@ -2864,15 +2914,18 @@ namespace CslaGenerator.CodeGen
                                               ? FormatPropertyInfoName(prop.Name) + ", ref " +
                                                 FormatFieldName(prop.Name)
                                               : FormatPropertyInfoName(prop.Name),
-                                          Environment.NewLine);
+                                              convertSnippet,
+                                              convertSnippetPost);
             }
             else if (prop.DeclarationMode == PropertyDeclaration.ClassicProperty ||
                      prop.DeclarationMode == PropertyDeclaration.ClassicPropertyWithTypeConversion)
             {
-                response += String.Format("            {0}set {{ {1} = value; }}{2}",
+                response += String.Format("            {0}set{1} {2} = value;{3}{4}",
                                           PropertyDeclareSetterVisibility(isReadOnly, prop),
+                                          convertSnippetPre,
                                           FormatFieldName(prop.Name) + ConvertTextToSmartDate(prop),
-                                          Environment.NewLine);
+                                          convertSnippet,
+                                          convertSnippetPost);
             }
             else if (prop.DeclarationMode == PropertyDeclaration.AutoProperty)
             {
@@ -2908,15 +2961,17 @@ namespace CslaGenerator.CodeGen
             return response + "";
         }
 
-        private static string PropertyDeclareSetterMethod(bool isReadOnly, bool isConversion)
+        private static string PropertyDeclareSetterMethod(bool isReadOnly, bool isReadOnlyObject, bool isConversion)
         {
             if (isConversion)
-                if (isReadOnly)
+            {
+                if (isReadOnly || isReadOnlyObject)
                     return "LoadPropertyConvert";
-                else
-                    return "SetPropertyConvert";
+                
+                return "SetPropertyConvert";
+            }
 
-            if (isReadOnly)
+            if (isReadOnly || isReadOnlyObject)
                 return "LoadProperty";
 
             return "SetProperty";
