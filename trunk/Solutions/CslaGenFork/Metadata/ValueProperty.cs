@@ -231,7 +231,7 @@ namespace CslaGenerator.Metadata
         [Category("01. Definition")]
         [Description("Property Declaration Mode.")]
         [UserFriendlyName("Declaration Mode")]
-        public PropertyDeclaration DeclarationMode
+        public virtual PropertyDeclaration DeclarationMode
         {
             get { return _declarationMode; }
             set { _declarationMode = value; }
@@ -240,7 +240,7 @@ namespace CslaGenerator.Metadata
         [Category("01. Definition")]
         [Description("Type of Backing Field of the Property. Set to \"Empty\" for no backing field.")]
         [UserFriendlyName("Backing Field Type")]
-        public TypeCodeEx BackingFieldType
+        public virtual TypeCodeEx BackingFieldType
         {
             get
             {

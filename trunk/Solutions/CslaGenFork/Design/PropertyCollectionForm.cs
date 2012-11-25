@@ -521,7 +521,7 @@ namespace CslaGenerator.Design
                 case "ConvertValueProperty Collection Editor":
                     _form.Size = new Size(570, _form.Size.Height);
                     _collectionType = typeof (ConvertValueProperty);
-                    _form.Size = new Size(_form.Size.Width, 598);
+                    _form.Size = new Size(_form.Size.Width, 534);
                     break;
                 case "UpdateValueProperty Collection Editor":
                     _form.Size = new Size(550, _form.Size.Height);
