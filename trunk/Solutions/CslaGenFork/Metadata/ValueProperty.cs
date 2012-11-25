@@ -101,6 +101,15 @@ namespace CslaGenerator.Metadata
 
         public ValueProperty()
         {
+            if (GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem != null)
+            {
+                if (((CslaObjectInfo) GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem)
+                        .ObjectType == CslaObjectType.ReadOnlyObject)
+                {
+                    ReadOnly = true;
+                }
+            }
+
             _businessRules = new BusinessRuleCollection();
             NameChanged += _businessRules.OnParentChanged;
             _authzRules = new AuthorizationRuleCollection();
