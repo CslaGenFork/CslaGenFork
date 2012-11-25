@@ -120,6 +120,9 @@ namespace CslaGenerator.Controls
 
             _genParams.GenerateInlineQueries = false;
             chkGenerateInlineQueries.Enabled = false;
+
+            _genParams.MigrateToSmartDate = false;
+            chkMigrateToSmartDate.Enabled = false;
         }
 
         internal void SaveInfo()
@@ -336,6 +339,10 @@ namespace CslaGenerator.Controls
             chkActiveObjects.Enabled = !UseCsla4;
 
             chkSpOneFile.Enabled = _genParams.GenerateSprocs;
+
+            if (!_genParams.GenerateSilverlight4 && !_genParams.SilverlightUsingServices)
+                chkMigrateToSilverlight.Checked = false;
+            chkMigrateToSilverlight.Enabled = _genParams.GenerateSilverlight4 || _genParams.SilverlightUsingServices;
         }
 
         internal bool IsDirty
