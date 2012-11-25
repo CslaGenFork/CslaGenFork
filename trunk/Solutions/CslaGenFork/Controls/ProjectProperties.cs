@@ -120,9 +120,6 @@ namespace CslaGenerator.Controls
 
             _genParams.GenerateInlineQueries = false;
             chkGenerateInlineQueries.Enabled = false;
-
-            _genParams.MigrateToSmartDate = false;
-            chkMigrateToSmartDate.Enabled = false;
         }
 
         internal void SaveInfo()

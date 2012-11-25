@@ -2067,10 +2067,8 @@ namespace CslaGenerator.Controls
             this.chkMigrateToSmartDate.Size = new System.Drawing.Size(216, 17);
             this.chkMigrateToSmartDate.TabIndex = 13;
             this.chkMigrateToSmartDate.Text = "Migrate DateTime to SmartDate";
-            this.toolTip.SetToolTip(this.chkMigrateToSmartDate,
-                                     "If checked, all ReadOnlyObject's properties are ReadOnly.\r\n" +
-                                     "Otherwise allows all kinds of accessibility for ReadOnlyObject's properties.\r\n\r\n" +
-                                     "Note - ReadOnlyObject's managed and unmanaged properties are always ReadOnly properties.");
+            this.toolTip.SetToolTip(this.chkMigrateToSmartDate, "If checked, the generation process will change\r\n" +
+                                    "properties of type DateTime to type SmartDate.");
             //
             // chkForceReadOnlyProperties
             // 
