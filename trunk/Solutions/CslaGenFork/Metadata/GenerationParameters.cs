@@ -24,8 +24,6 @@ namespace CslaGenerator.Metadata
         private bool _useSingleCriteria;
         private bool _usePublicPropertyInfo;
         private bool _useChildFactory;
-        private bool _migrateToSilverlight;
-        private bool _migrateToSmartDate;
         private bool _forceReadOnlyProperties;
         private string _baseFilenameSuffix = string.Empty;
         private string _extendedFilenameSuffix = string.Empty;
@@ -263,30 +261,6 @@ namespace CslaGenerator.Metadata
                 if (_useChildFactory == value)
                     return;
                 _useChildFactory = value;
-                OnPropertyChanged("");
-            }
-        }
-
-        public bool MigrateToSilverlight
-        {
-            get { return _migrateToSilverlight; }
-            set
-            {
-                if (_migrateToSilverlight == value)
-                    return;
-                _migrateToSilverlight = value;
-                OnPropertyChanged("");
-            }
-        }
-
-        public bool MigrateToSmartDate
-        {
-            get { return _migrateToSmartDate; }
-            set
-            {
-                if (_migrateToSmartDate == value)
-                    return;
-                _migrateToSmartDate = value;
                 OnPropertyChanged("");
             }
         }
