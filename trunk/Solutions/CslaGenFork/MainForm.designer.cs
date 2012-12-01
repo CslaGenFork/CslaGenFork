@@ -84,8 +84,9 @@ namespace CslaGenerator
             this.refreshSchemaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.retrieveSummariesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
-            this.forceSmartDateConversion = new System.Windows.Forms.ToolStripMenuItem();
-            this.forceManagedProperties = new System.Windows.Forms.ToolStripMenuItem();
+            this.convertDateTimeToSmartDate = new System.Windows.Forms.ToolStripMenuItem();
+            this.forceBackingFieldSmartDate = new System.Windows.Forms.ToolStripMenuItem();
+            this.convertPropertiesAndCriteriaToSilverlight = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.locateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.codeSmithExtensionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -451,8 +452,9 @@ namespace CslaGenerator
             // toolStripMenuItem4
             // 
             this.toolStripMenuItem4.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.forceSmartDateConversion,
-            this.forceManagedProperties,
+            this.convertDateTimeToSmartDate,
+            this.forceBackingFieldSmartDate,
+            this.convertPropertiesAndCriteriaToSilverlight,
             this.toolStripSeparator6,
             this.locateToolStripMenuItem,
             this.codeSmithExtensionToolStripMenuItem});
@@ -460,21 +462,29 @@ namespace CslaGenerator
             this.toolStripMenuItem4.Size = new System.Drawing.Size(44, 20);
             this.toolStripMenuItem4.Text = "&Tools";
             // 
-            // forceSmartDateConversion
+            // convertDateTimeToSmartDate
             // 
-            this.forceSmartDateConversion.Enabled = false;
-            this.forceSmartDateConversion.Name = "forceSmartDateConversion";
-            this.forceSmartDateConversion.Size = new System.Drawing.Size(200, 22);
-            this.forceSmartDateConversion.Text = "Force backing filed on &SmartDate properties";
-            this.forceSmartDateConversion.Click += new System.EventHandler(this.ForceSmartDateConversion_Click);
+            this.convertDateTimeToSmartDate.Enabled = false;
+            this.convertDateTimeToSmartDate.Name = "convertDateTimeToSmartDate";
+            this.convertDateTimeToSmartDate.Size = new System.Drawing.Size(200, 22);
+            this.convertDateTimeToSmartDate.Text = "Convert &DateTime to SmartDate properties";
+            this.convertDateTimeToSmartDate.Click += new System.EventHandler(this.ConvertDateTimeToSmartDate_Click);
             // 
-            // forceManagedProperties
+            // forceBackingFieldSmartDate
             // 
-            this.forceManagedProperties.Enabled = false;
-            this.forceManagedProperties.Name = "forceManagedProperties";
-            this.forceManagedProperties.Size = new System.Drawing.Size(200, 22);
-            this.forceManagedProperties.Text = "&Force managed properties";
-            this.forceManagedProperties.Click += new System.EventHandler(this.ForceManagedProperties_Click);
+            this.forceBackingFieldSmartDate.Enabled = false;
+            this.forceBackingFieldSmartDate.Name = "forceBackingFieldSmartDate";
+            this.forceBackingFieldSmartDate.Size = new System.Drawing.Size(200, 22);
+            this.forceBackingFieldSmartDate.Text = "Force backing field on &SmartDate properties";
+            this.forceBackingFieldSmartDate.Click += new System.EventHandler(this.ForceBackingFieldSmartDate_Click);
+            // 
+            // convertPropertiesAndCriteriaToSilverlight
+            // 
+            this.convertPropertiesAndCriteriaToSilverlight.Enabled = false;
+            this.convertPropertiesAndCriteriaToSilverlight.Name = "convertPropertiesAndCriteriaToSilverlight";
+            this.convertPropertiesAndCriteriaToSilverlight.Size = new System.Drawing.Size(200, 22);
+            this.convertPropertiesAndCriteriaToSilverlight.Text = "Convert Properties and Criteria to be &Silverlight compatible";
+            this.convertPropertiesAndCriteriaToSilverlight.Click += new System.EventHandler(this.ConvertPropertiesAndCriteriaToSilverlight_Click);
             // 
             // toolStripSeparator6
             // 
@@ -1072,8 +1082,9 @@ namespace CslaGenerator
         private ToolStripProgressBar progressBar;
         private ToolStripMenuItem pluginsToolStripMenuItem;
         private ToolStripMenuItem toolStripMenuItem4;
-        private ToolStripMenuItem forceSmartDateConversion;
-        private ToolStripMenuItem forceManagedProperties;
+        private ToolStripMenuItem convertDateTimeToSmartDate;
+        private ToolStripMenuItem forceBackingFieldSmartDate;
+        private ToolStripMenuItem convertPropertiesAndCriteriaToSilverlight;
         private ToolStripSeparator toolStripSeparator6;
         private ToolStripMenuItem locateToolStripMenuItem;
         private ToolStripMenuItem codeSmithExtensionToolStripMenuItem;

@@ -699,8 +699,9 @@ namespace CslaGenerator
             connectDatabaseButton.Enabled = true;
             projectToolStripMenuItem.Enabled = true;
             dataBaseToolStripMenuItem.Enabled = true;
-            forceSmartDateConversion.Enabled = true;
-            forceManagedProperties.Enabled = true;
+            convertDateTimeToSmartDate.Enabled = true;
+            forceBackingFieldSmartDate.Enabled = true;
+            convertPropertiesAndCriteriaToSilverlight.Enabled = true;
 
             ConditonalButtonsAndMenus();
         }
@@ -1228,43 +1229,173 @@ namespace CslaGenerator
 
         #region Tools menu
 
-        private void ForceSmartDateConversion_Click(object sender, EventArgs e)
+        private void ConvertDateTimeToSmartDate_Click(object sender, EventArgs e)
         {
+            _outputPanel.AddOutputInfo(Environment.NewLine + "Converting DateTime to SmartDate properties..." + Environment.NewLine);
             foreach (var info in _controller.CurrentUnit.CslaObjects)
             {
+                var counter = 0;
+
+                foreach (ValueProperty prop in info.ValueProperties)
+                {
+                    if (prop.PropertyType == TypeCodeEx.DateTime)
+                    {
+                        prop.PropertyType = TypeCodeEx.SmartDate;
+                        counter++;
+                    }
+                }
+
+                if (counter > 0)
+                    _outputPanel.AddOutputInfo(info.ObjectName + ": converted " + counter + " properties of type \"DateTime\" to \"SmartDate\".");
+            }
+            _outputPanel.AddOutputInfo(Environment.NewLine + "Convert DateTime to SmartDate properties is done." + Environment.NewLine);
+        }
+
+        private void ForceBackingFieldSmartDate_Click(object sender, EventArgs e)
+        {
+            _outputPanel.AddOutputInfo(Environment.NewLine + "Forcing backing field on SmartDate properties..." + Environment.NewLine);
+            foreach (var info in _controller.CurrentUnit.CslaObjects)
+            {
+                var counter = 0;
+
                 foreach (ValueProperty prop in info.AllValueProperties)
                 {
                     if (prop.PropertyType == TypeCodeEx.SmartDate)
                     {
                         if (prop.DeclarationMode == PropertyDeclaration.ClassicProperty ||
                             prop.DeclarationMode == PropertyDeclaration.AutoProperty)
+                        {
                             prop.DeclarationMode = PropertyDeclaration.ClassicPropertyWithTypeConversion;
-                        if (prop.DeclarationMode == PropertyDeclaration.Managed)
+                        }
+                        else if (prop.DeclarationMode == PropertyDeclaration.Managed)
+                        {
                             prop.DeclarationMode = PropertyDeclaration.ManagedWithTypeConversion;
-                        if (prop.DeclarationMode == PropertyDeclaration.Unmanaged)
+                        }
+                        else if (prop.DeclarationMode == PropertyDeclaration.Unmanaged)
+                        {
                             prop.DeclarationMode = PropertyDeclaration.UnmanagedWithTypeConversion;
-
+                        }
                         prop.PropertyType = TypeCodeEx.String;
                         prop.BackingFieldType = TypeCodeEx.SmartDate;
+                        counter++;
                     }
                 }
+
+                if (counter > 0)
+                    _outputPanel.AddOutputInfo(info.ObjectName + ": added " + counter + " backing fields.");
             }
+            _outputPanel.AddOutputInfo(Environment.NewLine + "Force backing field on SmartDate properties is done." + Environment.NewLine);
         }
 
-        private void ForceManagedProperties_Click(object sender, EventArgs e)
+        private void ConvertPropertiesAndCriteriaToSilverlight_Click(object sender, EventArgs e)
         {
+            _outputPanel.AddOutputInfo(Environment.NewLine + "Converting Properties and Criteria to be Silverlight compatible..." + Environment.NewLine);
             foreach (var info in _controller.CurrentUnit.CslaObjects)
             {
-                foreach (ValueProperty prop in info.AllValueProperties)
-                {
-                    if (prop.DeclarationMode == PropertyDeclaration.ClassicProperty ||
-                        prop.DeclarationMode == PropertyDeclaration.AutoProperty)
-                        prop.DeclarationMode = PropertyDeclaration.Managed;
+                var counterAutoProperty = 0;
+                var counterClassicProperty = 0;
+                var counterClassicPropertyWithTypeConversion = 0;
+                var counterNoProperty = 0;
+                var counterCriteria = 0;
 
-                    if (prop.DeclarationMode == PropertyDeclaration.ClassicPropertyWithTypeConversion)
+                foreach (var prop in info.ValueProperties)
+                {
+                    if (prop.DeclarationMode == PropertyDeclaration.AutoProperty)
+                    {
+                        prop.DeclarationMode = PropertyDeclaration.Managed;
+                        counterAutoProperty++;
+                    }
+                    else if (prop.DeclarationMode == PropertyDeclaration.ClassicProperty)
+                    {
+                        prop.DeclarationMode = PropertyDeclaration.Managed;
+                        counterClassicProperty++;
+                    }
+                    else if (prop.DeclarationMode == PropertyDeclaration.ClassicPropertyWithTypeConversion)
+                    {
                         prop.DeclarationMode = PropertyDeclaration.ManagedWithTypeConversion;
+                        counterClassicPropertyWithTypeConversion++;
+                    }
+                    else if (prop.DeclarationMode == PropertyDeclaration.NoProperty)
+                    {
+                        prop.DeclarationMode = PropertyDeclaration.Managed;
+                        counterNoProperty++;
+                    }
                 }
+
+                foreach (var prop in info.AllChildProperties)
+                {
+                    if (prop.DeclarationMode == PropertyDeclaration.AutoProperty)
+                    {
+                        prop.DeclarationMode = PropertyDeclaration.Managed;
+                        counterAutoProperty++;
+                    }
+                    else if (prop.DeclarationMode == PropertyDeclaration.ClassicProperty)
+                    {
+                        prop.DeclarationMode = PropertyDeclaration.Managed;
+                        counterClassicProperty++;
+                    }
+                    else if (prop.DeclarationMode == PropertyDeclaration.ClassicPropertyWithTypeConversion)
+                    {
+                        prop.DeclarationMode = PropertyDeclaration.ManagedWithTypeConversion;
+                        counterClassicPropertyWithTypeConversion++;
+                    }
+                    else if (prop.DeclarationMode == PropertyDeclaration.NoProperty)
+                    {
+                        prop.DeclarationMode = PropertyDeclaration.Managed;
+                        counterNoProperty++;
+                    }
+                }
+
+                foreach (var prop in info.UnitOfWorkProperties)
+                {
+                    if (prop.DeclarationMode == PropertyDeclaration.AutoProperty)
+                    {
+                        prop.DeclarationMode = PropertyDeclaration.Managed;
+                        counterAutoProperty++;
+                    }
+                    else if (prop.DeclarationMode == PropertyDeclaration.ClassicProperty)
+                    {
+                        prop.DeclarationMode = PropertyDeclaration.Managed;
+                        counterClassicProperty++;
+                    }
+                    else if (prop.DeclarationMode == PropertyDeclaration.ClassicPropertyWithTypeConversion)
+                    {
+                        prop.DeclarationMode = PropertyDeclaration.ManagedWithTypeConversion;
+                        counterClassicPropertyWithTypeConversion++;
+                    }
+                    else if (prop.DeclarationMode == PropertyDeclaration.NoProperty)
+                    {
+                        prop.DeclarationMode = PropertyDeclaration.Managed;
+                        counterNoProperty++;
+                    }
+                }
+
+                foreach (var criteria in info.CriteriaObjects)
+                {
+                    if (criteria.Properties.Count > 1)
+                    {
+                        if (criteria.CriteriaClassMode == CriteriaMode.Simple)
+                        {
+                            bool nested = criteria.NestedClass;
+                            criteria.CriteriaClassMode = CriteriaMode.CriteriaBase;
+                            criteria.NestedClass = nested;
+                            counterCriteria++;
+                        }
+                    }
+                }
+
+                if (counterAutoProperty > 0)
+                    _outputPanel.AddOutputInfo(info.ObjectName + ": converted " + counterAutoProperty + " \"PropertyDeclaration.AutoProperty\" properties.");
+                if (counterClassicProperty > 0)
+                    _outputPanel.AddOutputInfo(info.ObjectName + ": converted " + counterClassicProperty + " \"PropertyDeclaration.ClassicProperty\" properties.");
+                if (counterClassicPropertyWithTypeConversion > 0)
+                    _outputPanel.AddOutputInfo(info.ObjectName + ": converted " + counterClassicPropertyWithTypeConversion + " \"PropertyDeclaration.ClassicPropertyWithTypeConversion\" properties.");
+                if (counterNoProperty > 0)
+                    _outputPanel.AddOutputInfo(info.ObjectName + ": converted " + counterNoProperty + " \"PropertyDeclaration.NoProperty\" properties.");
+                if (counterCriteria > 0)
+                    _outputPanel.AddOutputInfo(info.ObjectName + ": converted " + counterCriteria + " \"CriteriaMode.Simple\" criteria.");
             }
+            _outputPanel.AddOutputInfo(Environment.NewLine + "Convert Properties and Criteria to be Silverlight compatible is done." + Environment.NewLine);
         }
 
         private void LocateToolStripMenuItem_Click(object sender, EventArgs e)
