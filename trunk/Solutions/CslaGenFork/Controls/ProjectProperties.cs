@@ -336,10 +336,6 @@ namespace CslaGenerator.Controls
             chkActiveObjects.Enabled = !UseCsla4;
 
             chkSpOneFile.Enabled = _genParams.GenerateSprocs;
-
-            if (!_genParams.GenerateSilverlight4 && !_genParams.SilverlightUsingServices)
-                chkMigrateToSilverlight.Checked = false;
-            chkMigrateToSilverlight.Enabled = _genParams.GenerateSilverlight4 || _genParams.SilverlightUsingServices;
         }
 
         internal bool IsDirty
