@@ -29,6 +29,54 @@ foreach (ValueProperty prop in Info.ValueProperties)
     }
 }
 
+foreach (ChildProperty prop in Info.AllChildProperties)
+{
+    if (prop.DeclarationMode == PropertyDeclaration.AutoProperty)
+    {
+        prop.DeclarationMode = PropertyDeclaration.Managed;
+        counterAutoProperty++;
+    }
+    else if (prop.DeclarationMode == PropertyDeclaration.ClassicProperty)
+    {
+        prop.DeclarationMode = PropertyDeclaration.Managed;
+        counterClassicProperty++;
+    }
+    else if (prop.DeclarationMode == PropertyDeclaration.ClassicPropertyWithTypeConversion)
+    {
+        prop.DeclarationMode = PropertyDeclaration.ManagedWithTypeConversion;
+        counterClassicPropertyWithTypeConversion++;
+    }
+    else if (prop.DeclarationMode == PropertyDeclaration.NoProperty)
+    {
+        prop.DeclarationMode = PropertyDeclaration.Managed;
+        counterNoProperty++;
+    }
+}
+
+foreach (UnitOfWorkProperty prop in Info.UnitOfWorkProperties)
+{
+    if (prop.DeclarationMode == PropertyDeclaration.AutoProperty)
+    {
+        prop.DeclarationMode = PropertyDeclaration.Managed;
+        counterAutoProperty++;
+    }
+    else if (prop.DeclarationMode == PropertyDeclaration.ClassicProperty)
+    {
+        prop.DeclarationMode = PropertyDeclaration.Managed;
+        counterClassicProperty++;
+    }
+    else if (prop.DeclarationMode == PropertyDeclaration.ClassicPropertyWithTypeConversion)
+    {
+        prop.DeclarationMode = PropertyDeclaration.ManagedWithTypeConversion;
+        counterClassicPropertyWithTypeConversion++;
+    }
+    else if (prop.DeclarationMode == PropertyDeclaration.NoProperty)
+    {
+        prop.DeclarationMode = PropertyDeclaration.Managed;
+        counterNoProperty++;
+    }
+}
+
 foreach (Criteria criteria in Info.CriteriaObjects)
 {
     if (criteria.Properties.Count > 1)
@@ -42,7 +90,7 @@ foreach (Criteria criteria in Info.CriteriaObjects)
         }
     }
 }
-    
+
 if (counterAutoProperty >0)
     Warnings.Append(Info.ObjectName + ": migrated " + counterAutoProperty + " \"PropertyDeclaration.AutoProperty\" properties." + Environment.NewLine);
 if (counterClassicProperty >0)
