@@ -83,6 +83,8 @@ if (CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40)
     }
     foreach (Criteria c in GetCriteriaObjects(Info))
     {
+        if (Info.ObjectType == CslaObjectType.UnitOfWork)
+            continue;
         if (c.GetOptions.DataPortal && c.GetOptions.ProcedureName == string.Empty)
         {
             Errors.Append("Criteria " + Info.ObjectName + "." + c.Name +": DataPortal get option is enable but is missing Get procedure name." + Environment.NewLine);

@@ -5,6 +5,8 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
     {
         foreach (Criteria c in GetCriteriaObjects(Info))
         {
+            if (Info.ObjectType == CslaObjectType.UnitOfWork && Info.IsCreatorGetter && c.Properties.Count == 0)
+                continue;
             if (c.GetOptions.Factory)
             {
                 %>
