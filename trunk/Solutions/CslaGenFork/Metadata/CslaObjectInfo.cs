@@ -302,7 +302,7 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Common Options")]
-        [Description("The type of Unit of Work to create: Creator, Getter, Updater, Deleter")]
+        [Description("The type of Unit of Work to create: CreatorGetter, Creator and Getter generate ReadOnly objects, while Updater and Deleter generate Command objects.")]
         [UserFriendlyName("Unit of Work Type")]
         public UnitOfWorkFunction UnitOfWorkType
         {
@@ -1417,6 +1417,12 @@ namespace CslaGenerator.Metadata
         {
             get { return _myCriteriaObjects; }
             set { _myCriteriaObjects = value; }
+        }
+
+        [Browsable(false)]
+        public bool IsCreatorGetter
+        {
+            get { return UnitOfWorkType == UnitOfWorkFunction.CreatorGetter; }
         }
 
         [Browsable(false)]

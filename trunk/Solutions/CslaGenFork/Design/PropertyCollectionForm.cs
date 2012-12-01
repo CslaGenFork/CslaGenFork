@@ -501,7 +501,12 @@ namespace CslaGenerator.Design
                     _collectionType = typeof (Criteria);
                     _form.Size = new Size(_form.Size.Width, 726);
                     var cslaObject = (CslaObjectInfo) GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem;
-                    if ((cslaObject.ObjectType == CslaObjectType.ReadOnlyObject ||
+                    if (cslaObject.ObjectType == CslaObjectType.UnitOfWork &&
+                        cslaObject.UnitOfWorkType == UnitOfWorkFunction.CreatorGetter)
+                    {
+                        _form.Size = new Size(_form.Size.Width, _form.Size.Height - 128);
+                    }
+                    else if ((cslaObject.ObjectType == CslaObjectType.ReadOnlyObject ||
                          cslaObject.ObjectType == CslaObjectType.ReadOnlyCollection ||
                          cslaObject.ObjectType == CslaObjectType.NameValueList ||
                          (cslaObject.ObjectType == CslaObjectType.UnitOfWork)))
