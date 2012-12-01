@@ -9,7 +9,7 @@ if (!Info.IsUpdater)
         Warnings.Append(Info.ObjectName + ": Criteria added." + Environment.NewLine);
     }
 
-    Info.MyCriteriaObjects = FilterAndMergeUnitOfWorkCriteriacollection(Info);
+    Info.MyCriteriaObjects = FilterAndMergeUnitOfWorkCriteriaCollection(Info);
     Criteria tempCrit = GetCriteriaObjects(Info)[0];
 
     if (Info.IsCreator && !(tempCrit.CreateOptions.Factory && tempCrit.CreateOptions.DataPortal))

@@ -27,7 +27,7 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
         <%= strNewComment %>/// <returns>A reference to the created <see cref="<%= Info.ObjectName %>"/> <%= Info.ObjectType == CslaObjectType.UnitOfWork ? "unit of objects" : "object" %>.</returns>
         public static <%= Info.ObjectName %> New<%= Info.ObjectName %><%= c.CreateOptions.FactorySuffix %>(<%= strNewParams %>)
         {
-            // ReadOnlyBase<T> doesn't allow the use of DataPortal_Create and thus DataPortal_Fetch is used.
+            // DataPortal_Fetch is used as ReadOnlyBase<T> doesn't allow the use of DataPortal_Create.
             <%
             if (Info.ObjectType == CslaObjectType.EditableSwitchable)
             {
@@ -55,7 +55,7 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
             else
             {
                 %>
-            return DataPortal.Fetch<<%= Info.ObjectName %>>();
+            return DataPortal.Fetch<<%= Info.ObjectName %>>(<%= Info.IsCreatorGetter ? "-1" : "" %>);
                     <%
             }
             %>

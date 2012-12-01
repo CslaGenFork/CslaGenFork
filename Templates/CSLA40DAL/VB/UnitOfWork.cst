@@ -12,6 +12,7 @@
 <%@ Import Namespace="System.Text" %>
 <%@ Import Namespace="System.Collections.Generic" %>
 
+<!-- #include file="ObjectValidate.asp" -->
 <!-- #include file="UnitOfWork_Validate.asp" -->
 <%
 if (Errors.Length == 0)

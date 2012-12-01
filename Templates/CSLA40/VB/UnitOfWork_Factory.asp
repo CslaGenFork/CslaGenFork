@@ -12,13 +12,13 @@ if (UseBoth() &&
 }
 if (CurrentUnit.GenerationParams.GenerateSynchronous)
 {
-    if (Info.IsCreator)
+    if (Info.IsCreator || Info.IsCreatorGetter)
     {
         %>
 <!-- #include file="NewObjectUnitOfWork.asp" -->
 <%
     }
-    if (Info.IsGetter)
+    if (Info.IsGetter || Info.IsCreatorGetter)
     {
         %>
 <!-- #include file="GetObject.asp" -->
@@ -33,13 +33,13 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
 }
 if (CurrentUnit.GenerationParams.GenerateAsynchronous && !CurrentUnit.GenerationParams.GenerateSilverlight4)
 {
-    if (Info.IsCreator)
+    if (Info.IsCreator || Info.IsCreatorGetter)
     {
         %>
 <!-- #include file="NewObjectUnitOfWorkAsync.asp" -->
 <%
     }
-    if (Info.IsGetter)
+    if (Info.IsGetter || Info.IsCreatorGetter)
     {
         %>
 <!-- #include file="GetObjectAsync.asp" -->
@@ -61,13 +61,13 @@ if (UseBoth() && (!CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentU
 }
 if (CurrentUnit.GenerationParams.SilverlightUsingServices)
 {
-    if (Info.IsCreator)
+    if (Info.IsCreator || Info.IsCreatorGetter)
     {
         %>
 <!-- #include file="NewObjectUnitOfWorkSilverlight.asp" -->
 <%
     }
-    if (Info.IsGetter)
+    if (Info.IsGetter || Info.IsCreatorGetter)
     {
         %>
 <!-- #include file="GetObjectSilverlight.asp" -->
@@ -82,13 +82,13 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
 }
 else if (!CurrentUnit.GenerationParams.GenerateAsynchronous)
 {
-    if (Info.IsCreator)
+    if (Info.IsCreator || Info.IsCreatorGetter)
     {
         %>
 <!-- #include file="NewObjectUnitOfWorkAsync.asp" -->
 <%
     }
-    if (Info.IsGetter)
+    if (Info.IsGetter || Info.IsCreatorGetter)
     {
         %>
 <!-- #include file="GetObjectAsync.asp" -->
@@ -111,13 +111,13 @@ if (UseBoth() &&
 }
 if (CurrentUnit.GenerationParams.GenerateAsynchronous && CurrentUnit.GenerationParams.GenerateSilverlight4)
 {
-    if (Info.IsCreator)
+    if (Info.IsCreator || Info.IsCreatorGetter)
     {
         %>
 <!-- #include file="NewObjectUnitOfWorkAsync.asp" -->
 <%
     }
-    if (Info.IsGetter)
+    if (Info.IsGetter || Info.IsCreatorGetter)
     {
         %>
 <!-- #include file="GetObjectAsync.asp" -->

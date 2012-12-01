@@ -11,6 +11,12 @@ if (UseBoth())
 }
 if (UseNoSilverlight())
 {
+    if (Info.IsCreatorGetter)
+    {
+        %>
+<!-- #include file="DataPortalCreateFetchUnitOfWork.asp" -->
+<%
+    }
     if (Info.IsCreator)
     {
         %>

@@ -41,7 +41,7 @@ if (UseSilverlight())
         <%= strNewComment %>/// <param name="callback">The completion callback method.</param>
         public static void New<%= Info.ObjectName %><%= c.CreateOptions.FactorySuffix %>(<%= strNewParams %>)
         {
-            // ReadOnlyBase<T> doesn't allow the use of DataPortal_Create and thus DataPortal_Fetch is used.
+            // DataPortal_Fetch is used as ReadOnlyBase<T> doesn't allow the use of DataPortal_Create.
             <%
             if (Info.ObjectType == CslaObjectType.EditableSwitchable)
             {
@@ -69,7 +69,7 @@ if (UseSilverlight())
             else
             {
                 %>
-            DataPortal.BeginFetch<<%= Info.ObjectName %>>(<%= strNewCallback %>);
+            DataPortal.BeginFetch<<%= Info.ObjectName %>>(<%= Info.IsCreatorGetter ? "-1, " : "" %><%= strNewCallback %>);
                     <%
             }
             %>
