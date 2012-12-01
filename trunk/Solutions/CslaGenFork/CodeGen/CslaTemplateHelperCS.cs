@@ -4434,7 +4434,7 @@ namespace CslaGenerator.CodeGen
         /// </summary>
         /// <param name="info">The info.</param>
         /// <returns>A single filtered collection of properties.</returns>
-        public static CriteriaCollection FilterAndMergeUnitOfWorkCriteriacollection(CslaObjectInfo info)
+        public static CriteriaCollection FilterAndMergeUnitOfWorkCriteriaCollection(CslaObjectInfo info)
         {
             if (info.IsUpdater)
                 return null;
@@ -4524,7 +4524,7 @@ namespace CslaGenerator.CodeGen
                 (isGetter && uowCrit.IsGetter) ||
                 (info.IsDeleter && uowCrit.IsDeleter))*/
             if ((info.IsCreator && uowCrit.IsCreator) ||
-                (info.IsGetter && uowCrit.IsGetter) ||
+                ((info.IsGetter || info.IsCreatorGetter) && uowCrit.IsGetter) ||
                 (info.IsDeleter && uowCrit.IsDeleter))
             {
                 var matchStart = false;
@@ -4582,7 +4582,7 @@ namespace CslaGenerator.CodeGen
                 (isGetter && uowCrit.IsGetter) ||
                 (info.IsDeleter && uowCrit.IsDeleter))*/
             if ((info.IsCreator && uowCrit.IsCreator) ||
-                (info.IsGetter && uowCrit.IsGetter) ||
+                ((info.IsGetter || info.IsCreatorGetter) && uowCrit.IsGetter) ||
                 (info.IsDeleter && uowCrit.IsDeleter))
             {
                 foreach (var targetProp in targetCrit.Properties)
@@ -4959,6 +4959,8 @@ namespace CslaGenerator.CodeGen
                 case CslaObjectType.NameValueList:
                     return "name value list";
                 case CslaObjectType.UnitOfWork:
+                    if (info.IsCreatorGetter)
+                        return "creator and getter unit of work pattern";
                     if (info.IsCreator)
                         return "creator unit of work pattern";
                     if (info.IsGetter)

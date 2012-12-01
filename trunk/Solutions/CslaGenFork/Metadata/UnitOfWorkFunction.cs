@@ -2,6 +2,7 @@
 {
     public enum UnitOfWorkFunction
     {
+        CreatorGetter,
         Creator,
         Getter,
         Updater,
