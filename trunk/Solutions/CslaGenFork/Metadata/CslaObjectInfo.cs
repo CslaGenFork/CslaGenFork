@@ -37,6 +37,7 @@ namespace CslaGenerator.Metadata
         private ConstructorVisibility _constructorVisibility = ConstructorVisibility.Default;
         private TypeInfo _inheritedType;
         private TypeInfo _inheritedTypeWinForms;
+        private string _useUnitOfWorkType = String.Empty;
         private readonly ValuePropertyCollection _valueProperties = new ValuePropertyCollection();
         private readonly ChildPropertyCollection _childProperties = new ChildPropertyCollection();
         private readonly ChildPropertyCollection _childCollectionProperties = new ChildPropertyCollection();
@@ -437,6 +438,22 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Common Options")]
+        [Description("The Unit Of Work type use by this object.")]
+        [UserFriendlyName("Use Unit Of Work Type")]
+        [Editor(typeof(UseUnitOfWorkTypeEditor), typeof(UITypeEditor))]
+        public string UseUnitOfWorkType
+        {
+            get { return _useUnitOfWorkType; }
+            set
+            {
+                if (_useUnitOfWorkType != ObjectName) //make sure we don't set ourselves as parent, just in case.
+                    _useUnitOfWorkType = value;
+                else
+                    _useUnitOfWorkType = string.Empty;
+            }
+        }
+
+        [Category("01. Common Options")]
         [Description("Wheter the class constructor is private, protected, etc. The default is \"private\".")]
         [UserFriendlyName("Constructor's Visibility")]
         public ConstructorVisibility ConstructorVisibility
@@ -578,7 +595,7 @@ namespace CslaGenerator.Metadata
         #region 04. Child Object Options
 
         [Category("04. Child Object Options")]
-        [Description("The object type of the of this object's parent (specify the collection name for an item, or object name for a collection).")]
+        [Description("The object type of this object's parent (specify the collection name for an item, or object name for a collection).")]
         [UserFriendlyName("Parent Type")]
         [Editor(typeof(ParentTypeEditor), typeof(UITypeEditor))]
         public string ParentType
