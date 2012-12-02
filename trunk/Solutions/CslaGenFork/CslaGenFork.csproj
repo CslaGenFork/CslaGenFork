@@ -248,6 +248,7 @@
     <Compile Include="Design\SourcePropertyTypeEditor.cs" />
     <Compile Include="Design\UnitOfWorkTypeEditor.cs" />
     <Compile Include="Design\UnitOfWorkTargetCriteriaEditor.cs" />
+    <Compile Include="Design\UseUnitOfWorkTypeEditor.cs" />
     <Compile Include="ICodeGenerator.cs" />
     <Compile Include="CodeGen\SprocTemplateHelper.cs" />
     <Compile Include="Controls\ObjectRelationsBuilder.cs">

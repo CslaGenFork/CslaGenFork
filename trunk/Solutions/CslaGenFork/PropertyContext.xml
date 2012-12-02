@@ -9,6 +9,7 @@
     <add key="UnitOfWork:UseCustomLoading" value="false" />
     <add key="UnitOfWork:Filename" value="true" />
     <add key="UnitOfWork:InheritedType" value="false" />
+    <add key="UnitOfWork:UseUnitOfWorkType" value="false" />
     <add key="UnitOfWork:ObjectName" value="true" />
     <add key="UnitOfWork:ObjectNamespace" value="true" />
     <add key="UnitOfWork:ObjectType" value="true" />
@@ -75,6 +76,7 @@
     <add key="NameValueList:GenerateSprocs" value="true" />
     <add key="NameValueList:Filename" value="true" />
     <add key="NameValueList:InheritedType" value="true" />
+    <add key="NameValueList:UseUnitOfWorkType" value="false" />
     <add key="NameValueList:ObjectName" value="true" />
     <add key="NameValueList:ObjectNamespace" value="true" />
     <add key="NameValueList:ObjectType" value="true" />
@@ -138,6 +140,7 @@
     <add key="ReadOnlyCollection:GenerateSprocs" value="true" />
     <add key="ReadOnlyCollection:Filename" value="true" />
     <add key="ReadOnlyCollection:InheritedType" value="true" />
+    <add key="ReadOnlyCollection:UseUnitOfWorkType" value="true" />
     <add key="ReadOnlyCollection:ObjectName" value="true" />
     <add key="ReadOnlyCollection:ObjectNamespace" value="true" />
     <add key="ReadOnlyCollection:ObjectType" value="true" />
@@ -201,6 +204,7 @@
     <add key="ReadOnlyObject:GenerateSprocs" value="true" />
     <add key="ReadOnlyObject:Filename" value="true" />
     <add key="ReadOnlyObject:InheritedType" value="true" />
+    <add key="ReadOnlyObject:UseUnitOfWorkType" value="true" />
     <add key="ReadOnlyObject:ObjectName" value="true" />
     <add key="ReadOnlyObject:ObjectNamespace" value="true" />
     <add key="ReadOnlyObject:ObjectType" value="true" />
@@ -264,6 +268,7 @@
     <add key="EditableChild:GenerateSprocs" value="true" />
     <add key="EditableChild:Filename" value="true" />
     <add key="EditableChild:InheritedType" value="true" />
+    <add key="EditableChild:UseUnitOfWorkType" value="false" />
     <add key="EditableChild:ObjectName" value="true" />
     <add key="EditableChild:ObjectNamespace" value="true" />
     <add key="EditableChild:ObjectType" value="true" />
@@ -327,6 +332,7 @@
     <add key="EditableChildCollection:GenerateSprocs" value="true" />
     <add key="EditableChildCollection:Filename" value="true" />
     <add key="EditableChildCollection:InheritedType" value="true" />
+    <add key="EditableChildCollection:UseUnitOfWorkType" value="false" />
     <add key="EditableChildCollection:ObjectName" value="true" />
     <add key="EditableChildCollection:ObjectNamespace" value="true" />
     <add key="EditableChildCollection:ObjectType" value="true" />
@@ -390,6 +396,7 @@
     <add key="EditableRoot:GenerateSprocs" value="true" />
     <add key="EditableRoot:Filename" value="true" />
     <add key="EditableRoot:InheritedType" value="true" />
+    <add key="EditableRoot:UseUnitOfWorkType" value="true" />
     <add key="EditableRoot:ObjectName" value="true" />
     <add key="EditableRoot:ObjectNamespace" value="true" />
     <add key="EditableRoot:ObjectType" value="true" />
@@ -453,6 +460,7 @@
     <add key="EditableRootCollection:GenerateSprocs" value="true" />
     <add key="EditableRootCollection:Filename" value="true" />
     <add key="EditableRootCollection:InheritedType" value="true" />
+    <add key="EditableRootCollection:UseUnitOfWorkType" value="true" />
     <add key="EditableRootCollection:ObjectName" value="true" />
     <add key="EditableRootCollection:ObjectNamespace" value="true" />
     <add key="EditableRootCollection:ObjectType" value="true" />
@@ -516,6 +524,7 @@
     <add key="EditableSwitchable:GenerateSprocs" value="true" />
     <add key="EditableSwitchable:Filename" value="true" />
     <add key="EditableSwitchable:InheritedType" value="true" />
+    <add key="EditableSwitchable:UseUnitOfWorkType" value="true" />
     <add key="EditableSwitchable:ObjectName" value="true" />
     <add key="EditableSwitchable:ObjectNamespace" value="true" />
     <add key="EditableSwitchable:ObjectType" value="true" />
@@ -579,6 +588,7 @@
     <add key="DynamicEditableRoot:GenerateSprocs" value="true" />
     <add key="DynamicEditableRoot:Filename" value="true" />
     <add key="DynamicEditableRoot:InheritedType" value="true" />
+    <add key="DynamicEditableRoot:UseUnitOfWorkType" value="false" />
     <add key="DynamicEditableRoot:ObjectName" value="true" />
     <add key="DynamicEditableRoot:ObjectNamespace" value="true" />
     <add key="DynamicEditableRoot:ObjectType" value="true" />
@@ -642,6 +652,7 @@
     <add key="DynamicEditableRootCollection:GenerateSprocs" value="true" />
     <add key="DynamicEditableRootCollection:Filename" value="true" />
     <add key="DynamicEditableRootCollection:InheritedType" value="true" />
+    <add key="DynamicEditableRootCollection:UseUnitOfWorkType" value="true" />
     <add key="DynamicEditableRootCollection:ObjectName" value="true" />
     <add key="DynamicEditableRootCollection:ObjectNamespace" value="true" />
     <add key="DynamicEditableRootCollection:ObjectType" value="true" />
