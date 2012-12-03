@@ -13,8 +13,6 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
         /// Factory method. Loads a <see cref="<%= Info.ObjectName %>"/> object.
         /// </summary>
         <%
-                //string strGetParams = string.Empty;
-                //string strGetCritParams = string.Empty;
                 string crit = string.Empty;
                 for (int i = 0; i < c.Properties.Count; i++)
                 {
@@ -27,13 +25,6 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
                     {
                         c.Properties[i].ReadOnly = true;
                     }
-                    if (i > 0)
-                    {
-                        //strGetParams += ", ";
-                        //strGetCritParams += ", ";
-                    }
-                    //strGetParams += string.Concat(GetDataType(c.Properties[i]), " ", FormatCamel(c.Properties[i].Name));
-                    //strGetCritParams += FormatCamel(c.Properties[i].Name);
                 }
                 if (c.Properties.Count > 1)
                     crit = "new " + c.Name + "()";

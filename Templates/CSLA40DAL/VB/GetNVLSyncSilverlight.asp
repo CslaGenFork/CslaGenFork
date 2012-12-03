@@ -1,5 +1,5 @@
 <%
-if (CurrentUnit.GenerationParams.GenerateSynchronous)
+if (Info.SimpleCacheOptions != SimpleCacheResults.None)
 {
     if (!Info.UseCustomLoading)
     {
@@ -44,22 +44,10 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
 
             <%
                 }
-                if (Info.SimpleCacheOptions != SimpleCacheResults.None)
-                {
-                    %>if (_list == null)
-            {
-                Get<%= Info.ObjectName %>((o, e) => { });
-                return new <%= Info.ObjectName %>();
-            }
+                %>if (_list != null)
+                return _list;
 
-            return _list;<%
-                }
-                else
-                {
-                    %>Get<%= Info.ObjectName %>((o, e) => { });
-            return new <%= Info.ObjectName %>();<%
-                }
-                %>
+            return new <%= Info.ObjectName %>();
         }
 <%
             }
