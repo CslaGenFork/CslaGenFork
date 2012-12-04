@@ -9,6 +9,14 @@ if (UseBoth())
 }
 %>
 <!-- #include file="NewObject.asp" -->
+<%
+if (Info.UseUnitOfWorkType == string.Empty)
+{
+    %>
+<!-- #include file="NewObjectAsync.asp" -->
+<%
+}
+%>
 <!-- #include file="GetObject.asp" -->
 <!-- #include file="InternalGetObject.asp" -->
 <!-- #include file="DeleteObject.asp" -->

@@ -9,7 +9,14 @@ if (UseBoth())
 }
 %>
 <!-- #include file="NewObject.asp" -->
+<%
+if (Info.UseUnitOfWorkType == string.Empty)
+{
+    %>
 <!-- #include file="NewObjectAsync.asp" -->
+<%
+}
+%>
 <!-- #include file="GetObject.asp" -->
 <%
 if (CurrentUnit.GenerationParams.SilverlightUsingServices)
@@ -20,16 +27,26 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
 }
 if (UseBoth())
 {
-    %>
+    if (Info.UseUnitOfWorkType != string.Empty)
+    {
+        %>
+
+#endif
+<%
+    }
+    else
+    {
+        %>
 
 #else
 <%
+    }
 }
 %>
 <!-- #include file="NewObjectSilverlight.asp" -->
 <!-- #include file="GetObjectSilverlight.asp" -->
 <%
-if (UseBoth())
+if (UseBoth() && Info.UseUnitOfWorkType == string.Empty)
 {
     %>
 

@@ -38,7 +38,14 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
                     strNewCritParams += FormatCamel(c.Properties[i].Name);
                     strNewComment += "/// <param name=\"" + FormatCamel(c.Properties[i].Name) + "\">The " + FormatProperty(c.Properties[i].Name) + " of the " + Info.ObjectName + " to create.</param>" + System.Environment.NewLine + new string(' ', 8);
                 }
-                strNewCallback = (strNewCritParams.Length > 0 ? ", " : "") + "callback";
+                if (Info.UseUnitOfWorkType == string.Empty)
+                {
+                    strNewCallback = (strNewCritParams.Length > 0 ? ", " : "") + "callback";
+                }
+                else
+                {
+                    strNewCallback = (strNewCritParams.Length > 0 ? ", " : "");
+                }
                 strNewParams += (strNewParams.Length > 0 ? ", " : "") + "EventHandler<DataPortalResult<" + Info.ObjectName + ">> callback";
                     %>
 
@@ -62,21 +69,57 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
                 }
                 if (c.Properties.Count > 1)
                 {
-                    %>
+                    if (Info.UseUnitOfWorkType == string.Empty)
+                    {
+                        %>
             DataPortal.BeginCreate<<%= Info.ObjectName %>>(new <%= c.Name %>(<%= strNewCritParams %>)<%= strNewCallback %>);
                 <%
+                    }
+                    else
+                    {
+                        %>
+            <%= Info.UseUnitOfWorkType %>.New<%= Info.UseUnitOfWorkType %>(<%= strNewCritParams %><%= strNewCallback %>(o, e) =>
+            {
+                callback(o, new DataPortalResult<<%= Info.ObjectName %>>(e.Object.<%= Info.ObjectName %>, e.Error, null));
+            });
+            <%
+                    }
                 }
                 else if (c.Properties.Count > 0)
                 {
-                    %>
+                    if (Info.UseUnitOfWorkType == string.Empty)
+                    {
+                        %>
             DataPortal.BeginCreate<<%= Info.ObjectName %>>(<%= SendSingleCriteria(c, strNewCritParams) %><%= strNewCallback %>);
                     <%
+                    }
+                    else
+                    {
+                        %>
+            <%= Info.UseUnitOfWorkType %>.New<%= Info.UseUnitOfWorkType %>(<%= SendSingleCriteria(c, strNewCritParams) %><%= strNewCallback %>(o, e) =>
+            {
+                callback(o, new DataPortalResult<<%= Info.ObjectName %>>(e.Object.<%= Info.ObjectName %>, e.Error, null));
+            });
+            <%
+                    }
                 }
                 else
                 {
-                    %>
+                    if (Info.UseUnitOfWorkType == string.Empty)
+                    {
+                        %>
             DataPortal.BeginCreate<<%= Info.ObjectName %>>(<%= strNewCallback %>);
                     <%
+                    }
+                    else
+                    {
+                        %>
+            <%= Info.UseUnitOfWorkType %>.New<%= Info.UseUnitOfWorkType %>(<%= strNewCallback %>(o, e) =>
+            {
+                callback(o, new DataPortalResult<<%= Info.ObjectName %>>(e.Object.<%= Info.ObjectName %>, e.Error, null));
+            });
+            <%
+                    }
                 }
                 %>
         }
