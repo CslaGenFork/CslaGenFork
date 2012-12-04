@@ -22,7 +22,7 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
             %>
 
         /// <summary>
-        /// Factory method. Creates a new <see cref="<%= Info.ObjectName %>"/> <%= Info.ObjectType == CslaObjectType.UnitOfWork ? "unit of objects" : "object" %><%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
+        /// Factory method. Creates a new <see cref="<%= Info.ObjectName %>"/> unit of objects<%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
         /// </summary>
         <%= strNewComment %>/// <returns>A reference to the created <see cref="<%= Info.ObjectName %>"/> <%= Info.ObjectType == CslaObjectType.UnitOfWork ? "unit of objects" : "object" %>.</returns>
         public static <%= Info.ObjectName %> New<%= Info.ObjectName %><%= c.CreateOptions.FactorySuffix %>(<%= strNewParams %>)

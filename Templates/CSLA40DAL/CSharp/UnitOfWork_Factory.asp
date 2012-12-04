@@ -2,8 +2,7 @@
 
         #region Factory Methods
 <%
-if (UseBoth() &&
-    (CurrentUnit.GenerationParams.GenerateSynchronous || CurrentUnit.GenerationParams.SilverlightUsingServices))
+if (UseBoth() && CurrentUnit.GenerationParams.GenerateSynchronous)
 {
     %>
 
@@ -21,7 +20,7 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
     if (Info.IsGetter || Info.IsCreatorGetter)
     {
         %>
-<!-- #include file="GetObject.asp" -->
+<!-- #include file="GetObjectUnitOfWork.asp" -->
 <%
     }
     if (Info.IsDeleter)
@@ -42,7 +41,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous && !CurrentUnit.Generation
     if (Info.IsGetter || Info.IsCreatorGetter)
     {
         %>
-<!-- #include file="GetObjectAsync.asp" -->
+<!-- #include file="GetObjectUnitOfWorkAsync.asp" -->
 <%
     }
     if (Info.IsDeleter)
@@ -52,35 +51,14 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous && !CurrentUnit.Generation
 <%
     }
 }
-if (UseBoth() && (!CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationParams.SilverlightUsingServices))
+if (UseBoth() && !CurrentUnit.GenerationParams.GenerateAsynchronous)
 {
     %>
 
 #else
 <%
 }
-if (CurrentUnit.GenerationParams.SilverlightUsingServices)
-{
-    if (Info.IsCreator || Info.IsCreatorGetter)
-    {
-        %>
-<!-- #include file="NewObjectUnitOfWorkSilverlight.asp" -->
-<%
-    }
-    if (Info.IsGetter || Info.IsCreatorGetter)
-    {
-        %>
-<!-- #include file="GetObjectSilverlight.asp" -->
-<%
-    }
-    if (Info.IsDeleter)
-    {
-        %>
-<!-- #include file="DeleteObjectSilverlight.asp" -->
-<%
-    }
-}
-else if (!CurrentUnit.GenerationParams.GenerateAsynchronous)
+if (!CurrentUnit.GenerationParams.GenerateAsynchronous)
 {
     if (Info.IsCreator || Info.IsCreatorGetter)
     {
@@ -91,7 +69,7 @@ else if (!CurrentUnit.GenerationParams.GenerateAsynchronous)
     if (Info.IsGetter || Info.IsCreatorGetter)
     {
         %>
-<!-- #include file="GetObjectAsync.asp" -->
+<!-- #include file="GetObjectUnitOfWorkAsync.asp" -->
 <%
     }
     if (Info.IsDeleter)
@@ -101,8 +79,7 @@ else if (!CurrentUnit.GenerationParams.GenerateAsynchronous)
 <%
     }
 }
-if (UseBoth() &&
-    (CurrentUnit.GenerationParams.GenerateSynchronous || CurrentUnit.GenerationParams.SilverlightUsingServices))
+if (UseBoth() && CurrentUnit.GenerationParams.GenerateSynchronous)
 {
     %>
 
@@ -120,7 +97,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous && CurrentUnit.GenerationP
     if (Info.IsGetter || Info.IsCreatorGetter)
     {
         %>
-<!-- #include file="GetObjectAsync.asp" -->
+<!-- #include file="GetObjectUnitOfWorkAsync.asp" -->
 <%
     }
     if (Info.IsDeleter)

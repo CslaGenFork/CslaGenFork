@@ -8,7 +8,6 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
             string strNewParams = string.Empty;
             string strNewCritParams = string.Empty;
             string strNewComment = string.Empty;
-            string strNewCallback = string.Empty;
             for (int i = 0; i < c.Properties.Count; i++)
             {
                 if (i > 0)
@@ -20,12 +19,21 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
                 strNewCritParams += FormatCamel(c.Properties[i].Name);
                 strNewComment += "/// <param name=\"" + FormatCamel(c.Properties[i].Name) + "\">The " + FormatProperty(c.Properties[i].Name) + " of the " + Info.ObjectName + " to create.</param>" + System.Environment.NewLine + new string(' ', 8);
             }
-            strNewCallback = (strNewCritParams.Length > 0 ? ", " : "") + "callback";
             strNewParams += (strNewParams.Length > 0 ? ", " : "") + "EventHandler<DataPortalResult<" + Info.ObjectName + ">> callback";
+            string strNewCache = string.Empty;
+            foreach (UnitOfWorkProperty prop in Info.UnitOfWorkProperties)
+            {
+                CslaObjectInfo objectInfo = Info.Parent.CslaObjects.Find(prop.TypeName);
+                if (objectInfo.SimpleCacheOptions != SimpleCacheResults.None)
+                {
+                    strNewCache += "                if (!" + prop.TypeName + ".IsCached)" + Environment.NewLine;
+                    strNewCache += "                    " + prop.TypeName + ".SetCache(e.Object." + prop.TypeName + ");" + Environment.NewLine;
+                }
+            }
                 %>
 
         /// <summary>
-        /// Factory method. Asynchronously creates a new <see cref="<%= Info.ObjectName %>"/> <%= Info.ObjectType == CslaObjectType.UnitOfWork ? "unit of objects" : "object" %><%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
+        /// Factory method. Asynchronously creates a new <see cref="<%= Info.ObjectName %>"/> unit of objects<%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
         /// </summary>
         <%= strNewComment %>/// <param name="callback">The completion callback method.</param>
         public static void New<%= Info.ObjectName %><%= c.CreateOptions.FactorySuffix %>(<%= strNewParams %>)
@@ -46,20 +54,35 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
             if (c.Properties.Count > 1)
             {
                 %>
-            DataPortal.BeginFetch<<%= Info.ObjectName %>>(new <%= c.Name %>(<%= strNewCritParams %>)<%= strNewCallback %>);
-                <%
+            DataPortal.BeginFetch<<%= Info.ObjectName %>>(new <%= c.Name %>(<%= strNewCritParams %>), (o, e) =>
+            {
+                if (e.Error != null)
+                    throw e.Error;
+<%= strNewCache %>                callback(o, e);
+            });
+        <%
             }
             else if (c.Properties.Count > 0)
             {
                 %>
-            DataPortal.BeginFetch<<%= Info.ObjectName %>>(<%= SendSingleCriteria(c, strNewCritParams) %><%= strNewCallback %>);
-                    <%
+            DataPortal.BeginFetch<<%= Info.ObjectName %>>(<%= SendSingleCriteria(c, strNewCritParams) %>, (o, e) =>
+            {
+                if (e.Error != null)
+                    throw e.Error;
+<%= strNewCache %>                callback(o, e);
+            });
+        <%
             }
             else
             {
                 %>
-            DataPortal.BeginFetch<<%= Info.ObjectName %>>(<%= Info.IsCreatorGetter ? "-1, " : "" %><%= strNewCallback %>);
-                    <%
+            DataPortal.BeginFetch<<%= Info.ObjectName %>>(<%= Info.IsCreatorGetter ? "-1, " : "" %>(o, e) =>
+            {
+                if (e.Error != null)
+                    throw e.Error;
+<%= strNewCache %>                callback(o, e);
+            });
+        <%
             }
             %>
         }

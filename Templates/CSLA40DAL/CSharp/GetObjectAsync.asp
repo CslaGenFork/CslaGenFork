@@ -56,15 +56,39 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
                 }
                 if (c.Properties.Count > 1 || (Info.ObjectType == CslaObjectType.EditableSwitchable && c.Properties.Count == 1))
                 {
-                    %>
+                    if (Info.UseUnitOfWorkType == string.Empty)
+                    {
+                        %>
             DataPortal.BeginFetch<<%= Info.ObjectName %>>(new <%= c.Name %>(<%= strGetCritParams %>), callback);
             <%
+                    }
+                    else
+                    {
+                        %>
+            <%= Info.UseUnitOfWorkType %>.Get<%= Info.UseUnitOfWorkType %>(<%= strGetCritParams %>, (o, e) =>
+            {
+                callback(o, new DataPortalResult<<%= Info.ObjectName %>>(e.Object.<%= Info.ObjectName %>, e.Error, null));
+            });
+            <%
+                    }
                 }
                 else if (c.Properties.Count > 0)
                 {
-                    %>
+                    if (Info.UseUnitOfWorkType == string.Empty)
+                    {
+                        %>
             DataPortal.BeginFetch<<%= Info.ObjectName %>>(<%= SendSingleCriteria(c, strGetCritParams) %>, callback);
             <%
+                    }
+                    else
+                    {
+                        %>
+            <%= Info.UseUnitOfWorkType %>.Get<%= Info.UseUnitOfWorkType %>(<%= SendSingleCriteria(c, strGetCritParams) %>, (o, e) =>
+            {
+                callback(o, new DataPortalResult<<%= Info.ObjectName %>>(e.Object.<%= Info.ObjectName %>, e.Error, null));
+            });
+            <%
+                    }
                 }
                 else
                 {
@@ -83,9 +107,21 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
                     }
                     else
                     {
-                        %>
+                        if (Info.UseUnitOfWorkType == string.Empty)
+                        {
+                            %>
             DataPortal.BeginFetch<<%= Info.ObjectName %>>(callback);
         <%
+                        }
+                        else
+                        {
+                            %>
+            <%= Info.UseUnitOfWorkType %>.Get<%= Info.UseUnitOfWorkType %>((o, e) =>
+            {
+                callback(o, new DataPortalResult<<%= Info.ObjectName %>>(e.Object.<%= Info.ObjectName %>, e.Error, null));
+            });
+            <%
+                        }
                     }
                 }
                 %>

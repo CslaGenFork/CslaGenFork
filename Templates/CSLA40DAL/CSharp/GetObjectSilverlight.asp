@@ -54,15 +54,41 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
                 }
                 if (c.Properties.Count > 1 || (Info.ObjectType == CslaObjectType.EditableSwitchable && c.Properties.Count == 1))
                 {
-                    %>
+                    if (Info.UseUnitOfWorkType == string.Empty)
+                    {
+                        %>
             DataPortal.BeginFetch<<%= Info.ObjectName %>>(new <%= c.Name %>(<%= strGetCritParams %>), callback, DataPortal.ProxyModes.LocalOnly);
             <%
+                    }
+                    else
+                    {
+                        %>
+            <%= Info.UseUnitOfWorkType %>.Get<%= Info.UseUnitOfWorkType %>(<%= strGetCritParams %>, (o, e) =>
+            {
+                callback(o, new DataPortalResult<<%= Info.ObjectName %>>(e.Object.<%= Info.ObjectName %>, e.Error, null));
+            },
+            DataPortal.ProxyModes.LocalOnly);
+            <%
+                    }
                 }
                 else if (c.Properties.Count > 0)
                 {
-                    %>
+                    if (Info.UseUnitOfWorkType == string.Empty)
+                    {
+                        %>
             DataPortal.BeginFetch<<%= Info.ObjectName %>>(<%= SendSingleCriteria(c, strGetCritParams) %>, callback, DataPortal.ProxyModes.LocalOnly);
             <%
+                    }
+                    else
+                    {
+                        %>
+            <%= Info.UseUnitOfWorkType %>.Get<%= Info.UseUnitOfWorkType %>(<%= SendSingleCriteria(c, strGetCritParams) %>, (o, e) =>
+            {
+                callback(o, new DataPortalResult<<%= Info.ObjectName %>>(e.Object.<%= Info.ObjectName %>, e.Error, null));
+            },
+            DataPortal.ProxyModes.LocalOnly);
+            <%
+                    }
                 }
                 else
                 {
@@ -81,9 +107,22 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
                     }
                     else
                     {
+                        if (Info.UseUnitOfWorkType == string.Empty)
+                        {
                         %>
             DataPortal.BeginFetch<<%= Info.ObjectName %>>(callback, DataPortal.ProxyModes.LocalOnly);
         <%
+                        }
+                        else
+                        {
+                            %>
+            <%= Info.UseUnitOfWorkType %>.Get<%= Info.UseUnitOfWorkType %>((o, e) =>
+            {
+                callback(o, new DataPortalResult<<%= Info.ObjectName %>>(e.Object.<%= Info.ObjectName %>, e.Error, null));
+            },
+            DataPortal.ProxyModes.LocalOnly);
+            <%
+                        }
                     }
                 }
                 %>
