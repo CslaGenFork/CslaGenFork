@@ -1,4 +1,5 @@
 <%
+bool reportWriteError = !Info.IsGetter;
 if (!Info.IsUpdater)
 {
     if (Info.CriteriaObjects.Count == 0)
@@ -33,14 +34,13 @@ if (!Info.IsUpdater)
 
     string typeOfCriteria = string.Empty;
     string objectFunctions = string.Empty;
-    bool reportCreatorError = Info.IsCreatorGetter || Info.IsCreator;
     foreach (UnitOfWorkProperty uowProp in Info.UnitOfWorkProperties)
     {
         CslaObjectInfo targetInfo = Info.Parent.CslaObjects.Find(uowProp.TypeName);
 
         // check UnitOfWorkType compatibility
-        if (reportCreatorError && IsEditableType(targetInfo.ObjectType))
-                reportCreatorError = false;
+        if (reportWriteError && IsEditableType(targetInfo.ObjectType))
+                reportWriteError = false;
 
         // check criteria compatibility
         if (uowProp.TargetCriteria == string.Empty)
@@ -71,11 +71,22 @@ if (!Info.IsUpdater)
             }
         }
     }
-    
-    if (reportCreatorError)
+}
+else
+{
+    foreach (UnitOfWorkProperty uowProp in Info.UnitOfWorkProperties)
     {
-        Errors.Append(Info.ObjectName + ": no editable target object found. \"Unit of Work Type\" must be \"Getter\"." + Environment.NewLine);
-        return;
+        CslaObjectInfo targetInfo = Info.Parent.CslaObjects.Find(uowProp.TypeName);
+
+        // check UnitOfWorkType compatibility
+        if (reportWriteError && IsEditableType(targetInfo.ObjectType))
+                reportWriteError = false;
     }
+}
+
+if (reportWriteError)
+{
+    Errors.Append(Info.ObjectName + ": no editable target object found. \"Unit of Work Type\" must be \"Getter\"." + Environment.NewLine);
+    return;
 }
 %>
