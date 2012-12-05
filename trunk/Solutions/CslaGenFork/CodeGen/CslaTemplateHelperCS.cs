@@ -2527,7 +2527,17 @@ namespace CslaGenerator.CodeGen
         private string PropertyInfoDeclare(CslaObjectInfo info, ValueProperty prop, bool isSilverlight)
         {
             // "private static readonly PropertyInfo<{0}> {1} = RegisterProperty<{0}>(p => p.{2}, \"{3}\"{4});",
-            var response =
+            var response = string.Empty;
+
+            if (!prop.Undoable &&
+                prop.DeclarationMode != PropertyDeclaration.AutoProperty &&
+                prop.DeclarationMode != PropertyDeclaration.ClassicProperty &&
+                prop.DeclarationMode != PropertyDeclaration.ClassicPropertyWithTypeConversion)
+            {
+                response += "[NotUndoable]" + Environment.NewLine + new string(' ', 8);
+                ;
+            }
+            response +=
                 String.Format(
                     "{0} static readonly PropertyInfo<{1}> {2} = RegisterProperty<{1}>(p => {3}, \"{4}\"{5}{6});",
                     (isSilverlight || CurrentUnit.GenerationParams.UsePublicPropertyInfo) ? "public" : "private",
@@ -2630,7 +2640,17 @@ namespace CslaGenerator.CodeGen
         private string PropertyInfoChildDeclare(CslaObjectInfo info, ChildProperty prop, bool isSilverlight)
         {
             // "private static readonly PropertyInfo<{0}> {1} = RegisterProperty<{0}>(p => p.{2}, \"{3}\"{4});",
-            var response =
+            var response = string.Empty;
+
+            if (!prop.Undoable &&
+                prop.DeclarationMode != PropertyDeclaration.AutoProperty &&
+                prop.DeclarationMode != PropertyDeclaration.ClassicProperty &&
+                prop.DeclarationMode != PropertyDeclaration.ClassicPropertyWithTypeConversion)
+            {
+                response += "[NotUndoable]" + Environment.NewLine + new string(' ', 8);
+                ;
+            }
+            response +=
                 String.Format(
                     "{0} static readonly PropertyInfo<{1}> {2} = RegisterProperty<{1}>(p => {3}, \"{4}\"{5});",
                     (isSilverlight || CurrentUnit.GenerationParams.UsePublicPropertyInfo) ? "public" : "private",
@@ -4485,6 +4505,13 @@ namespace CslaGenerator.CodeGen
             return critCollection;
         }
 
+        /// <summary>
+        /// Returns whether the object associated to the UnitOfWork must be fethed.
+        /// </summary>
+        /// <param name="info">The Unit of Work under processing.</param>
+        /// <param name="uowProp">The UnitOfWork property with target's object metadata.</param>
+        /// <returns><c>true</c> if the UnitOfWork is of type <see cref="UnitOfWorkFunction.Getter"/> 
+        /// or if the associated object type is not editable; <c>false</c> otherwise.</returns>
         public static bool ForceIsGetter(CslaObjectInfo info, UnitOfWorkProperty uowProp)
         {
             var targetInfo = info.Parent.CslaObjects.Find(uowProp.TypeName);
