@@ -633,6 +633,11 @@ namespace CslaGenerator.Util.PropertyBags
                      propertyName == "WriteRoles"))
                     return false;*/
 
+                if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 ||
+                     GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL) &&
+                    propertyName == "MarkDirtyOnChange")
+                    return false;
+
                 if (_selectedObject.Length > 1 && IsEnumerable(GetPropertyInfoCache(propertyName)))
                     return false;
 
