@@ -12,6 +12,13 @@ if (UseSimpleAuditTrail(Info))
         %>
             <%= GetFieldLoaderStatement(changedDateProperty, "DateTime.Now") %>;
         <%
+        var convertedPropertyName = ConvertedPropertyName(Info, changedDateProperty);
+        if (convertedPropertyName != string.Empty)
+        {
+            %>
+            OnPropertyChanged("<%= convertedPropertyName %>");
+        <%
+        }
     }
     ValueProperty changedUserProperty = new ValueProperty();
     if (GetValuePropertyByName(Info, Info.Parent.Params.ChangedUserColumn, ref changedUserProperty))
@@ -19,6 +26,13 @@ if (UseSimpleAuditTrail(Info))
         %>
             <%= GetFieldLoaderStatement(changedUserProperty, Info.Parent.Params.GetUserMethod) %>;
         <%
+        var convertedPropertyName = ConvertedPropertyName(Info, changedUserProperty);
+        if (convertedPropertyName != string.Empty)
+        {
+            %>
+            OnPropertyChanged("<%= convertedPropertyName %>");
+        <%
+        }
     }
     if (IsCreationDateColumnPresent(Info) || IsCreationUserColumnPresent(Info))
     {
@@ -41,6 +55,13 @@ if (UseSimpleAuditTrail(Info))
                 <%= GetFieldLoaderStatement(creationDateProperty, "DateTime.Now") %>;
                         <%
             }
+            var convertedPropertyName = ConvertedPropertyName(Info, creationDateProperty);
+            if (convertedPropertyName != string.Empty)
+            {
+                %>
+                OnPropertyChanged("<%= convertedPropertyName %>");
+                        <%
+            }
         }
         ValueProperty creationUserProperty = new ValueProperty();
         if (GetValuePropertyByName(Info, Info.Parent.Params.CreationUserColumn, ref creationUserProperty))
@@ -55,6 +76,13 @@ if (UseSimpleAuditTrail(Info))
             {
                 %>
                 <%= GetFieldLoaderStatement(creationUserProperty, Info.Parent.Params.GetUserMethod) %>;
+                        <%
+            }
+            var convertedPropertyName = ConvertedPropertyName(Info, creationUserProperty);
+            if (convertedPropertyName != string.Empty)
+            {
+                %>
+                OnPropertyChanged("<%= convertedPropertyName %>");
                         <%
             }
         }

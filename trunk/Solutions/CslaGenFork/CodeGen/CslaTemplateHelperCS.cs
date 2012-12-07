@@ -4697,6 +4697,17 @@ namespace CslaGenerator.CodeGen
             return false;
         }
 
+        public static string ConvertedPropertyName(CslaObjectInfo info, ValueProperty prop)
+        {
+            foreach (var convertProperty in info.ConvertValueProperties)
+            {
+                if (convertProperty.SourcePropertyName == prop.Name)
+                    return convertProperty.Name;
+            }
+
+            return string.Empty;
+        }
+
         #endregion
 
         #region Context Connection Manager
