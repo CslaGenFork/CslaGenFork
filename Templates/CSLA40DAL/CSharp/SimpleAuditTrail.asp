@@ -26,39 +26,39 @@ if (UseSimpleAuditTrail(Info))
             if (IsNew)
             {
                 <%
-                ValueProperty creationDateProperty = new ValueProperty();
-                if (GetValuePropertyByName(Info, Info.Parent.Params.CreationDateColumn, ref creationDateProperty))
-                {
-                    if (IsChangedDateColumnPresent(Info))
-                    {
-                        %>
+        ValueProperty creationDateProperty = new ValueProperty();
+        if (GetValuePropertyByName(Info, Info.Parent.Params.CreationDateColumn, ref creationDateProperty))
+        {
+            if (IsChangedDateColumnPresent(Info))
+            {
+                %>
                 <%= GetFieldLoaderStatement(creationDateProperty, GetFieldReaderStatement(changedDateProperty)) %>;
                         <%
-                    }
-                    else
-                    {
-                        %>
+            }
+            else
+            {
+                %>
                 <%= GetFieldLoaderStatement(creationDateProperty, "DateTime.Now") %>;
                         <%
-                    }
-                }
-                ValueProperty creationUserProperty = new ValueProperty();
-                if (GetValuePropertyByName(Info, Info.Parent.Params.CreationUserColumn, ref creationUserProperty))
-                {
-                    if (IsChangedUserColumnPresent(Info))
-                    {
-                        %>
+            }
+        }
+        ValueProperty creationUserProperty = new ValueProperty();
+        if (GetValuePropertyByName(Info, Info.Parent.Params.CreationUserColumn, ref creationUserProperty))
+        {
+            if (IsChangedUserColumnPresent(Info))
+            {
+                %>
                 <%= GetFieldLoaderStatement(creationUserProperty, GetFieldReaderStatement(changedUserProperty)) %>;
                         <%
-                    }
-                    else
-                    {
-                        %>
+            }
+            else
+            {
+                %>
                 <%= GetFieldLoaderStatement(creationUserProperty, Info.Parent.Params.GetUserMethod) %>;
                         <%
-                    }
-                }
-                %>
+            }
+        }
+        %>
             }
         <%
     }
