@@ -832,7 +832,7 @@ namespace CslaGenerator.CodeGen
             {
                 var converterClass = prop.NVLConverter.Substring(0, prop.NVLConverter.LastIndexOf('.'));
                 if (converterClass.Count(s => s == '.') > 0)
-                    converterClass = converterClass.Substring(converterClass.LastIndexOf('.') + 1);
+                    continue;
                 if (converterClass != info.ObjectName)
                 {
                     var converterInfo = FindChildInfo(info, converterClass);
