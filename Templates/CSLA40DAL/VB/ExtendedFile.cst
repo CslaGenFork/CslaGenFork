@@ -12,7 +12,8 @@
 <%
 int silverlightLevel = 0;
 bool genOptional = false;
-if (CurrentUnit.GenerationParams.UtilitiesNamespace != string.Empty)
+if (CurrentUnit.GenerationParams.UtilitiesNamespace != string.Empty &&
+    GetContextUtilitiesNamespace(CurrentUnit, GenerationStep.Business) != string.Empty)
 {
     if (UseBoth())
     {
@@ -31,7 +32,8 @@ if (CurrentUnit.GenerationParams.UtilitiesNamespace != string.Empty)
 <%
     }
 }
-if (UseNoSilverlight())
+if (UseNoSilverlight() &&
+    GetContextUtilitiesNamespace(CurrentUnit, GenerationStep.Business) != string.Empty)
     Response.WriteLine();
 %>namespace <%= Info.ObjectNamespace %>
 {

@@ -191,7 +191,7 @@ namespace CslaGenerator.CodeGen
             {
                 if (info.DataSetLoadingScheme)
                     return GetDataSetLoaderStatement(prop);
-                
+
                 return GetDataReaderLoaderStatement(prop);
             }
 
@@ -658,30 +658,33 @@ namespace CslaGenerator.CodeGen
 
             var result = String.Empty;
             var silverlightLevel = 0;
+            var cacheGetContextUtilitiesNamespace = GetContextUtilitiesNamespace(unit, step);
+
+            if (!UseSilverlight())
+            {
+                result += "using System;" + Environment.NewLine;
+                result += "using System.Data;" + Environment.NewLine;
+                if (unit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL)
+                    result += "using System.Data.SqlClient;" + Environment.NewLine;
+                result += "using Csla;" + Environment.NewLine;
+                result += "using Csla.Data;" + Environment.NewLine;
+                if (cacheGetContextUtilitiesNamespace != string.Empty)
+                    result += "using " + cacheGetContextUtilitiesNamespace + ";" + Environment.NewLine;
+            }
+            else
+            {                
+                result += "using System;" + Environment.NewLine;
+                result += "using Csla;" + Environment.NewLine;
+            }
+
             if (usingNamespaces.Length != 0)
             {
-                var cacheGetContextUtilitiesNamespace = GetContextUtilitiesNamespace(unit, step);
                 foreach (var namespaceName in usingNamespaces)
                 {
                     if (namespaceName == cacheGetContextUtilitiesNamespace)
                     {
-                        if (UseSilverlight())
-                        {
-                            result += IfSilverlight(Conditional.NotSilverlight, 0, ref silverlightLevel, false, true);
+                        if (!UseSilverlight())
                             result += "using " + namespaceName + ";" + Environment.NewLine;
-                            result += IfSilverlight(Conditional.End, 0, ref silverlightLevel, false, true);
-                        }
-                        else
-                        {
-                            result += "using " + namespaceName + ";" + Environment.NewLine;
-                        }
-                    }
-                    else if (namespaceName == "Csla.Serialization")
-                    {
-                        result += IfSilverlight(Conditional.Silverlight, 0, ref silverlightLevel, false, true);
-                        result += "using " + namespaceName + ";" + Environment.NewLine;
-                        result += IfSilverlight(Conditional.End, 0, ref silverlightLevel, false, true);
-
                     }
                     else
                         result += "using " + namespaceName + ";" + Environment.NewLine;
@@ -690,7 +693,16 @@ namespace CslaGenerator.CodeGen
 
             if (UseSilverlight())
             {
-                result += IfSilverlight(Conditional.NotSilverlight, 0, ref silverlightLevel, false, true);
+                result += IfSilverlight(Conditional.Silverlight, 0, ref silverlightLevel, false, true);
+                result += "using " + "Csla.Serialization" + ";" + Environment.NewLine;
+                result += IfSilverlight(Conditional.Else, 0, ref silverlightLevel, false, true);
+
+                result += "using System.Data;" + Environment.NewLine;
+                if (unit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL)
+                    result += "using System.Data.SqlClient;" + Environment.NewLine;
+                result += "using Csla.Data;" + Environment.NewLine;
+                if (cacheGetContextUtilitiesNamespace != string.Empty)
+                    result += "using " + cacheGetContextUtilitiesNamespace + ";" + Environment.NewLine;
                 if (unit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL)
                     result += GetDalInterfaceNamespaces(info, unit);
 
@@ -701,7 +713,6 @@ namespace CslaGenerator.CodeGen
                 if (unit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL)
                     result += GetDalInterfaceNamespaces(info, unit);
             }
-
 
             result = info.GetAllValueProperties().Where(p => p.PropertyType == TypeCodeEx.ByteArray && AllowNull(p)).Aggregate(result, (current, p) => current + ("using System.Linq; //Added for byte[] helpers" + Environment.NewLine));
 
@@ -811,9 +822,6 @@ namespace CslaGenerator.CodeGen
                 info.ObjectType != CslaObjectType.UnitOfWork)
                 usingList.Add(GetContextUtilitiesNamespace(unit, step));
 
-            if (UseSilverlight())
-                usingList.Add("Csla.Serialization");
-
             foreach (var name in info.Namespaces)
                 if (!usingList.Contains(name))
                     usingList.Add(name);
@@ -875,10 +883,12 @@ namespace CslaGenerator.CodeGen
         {
             var result = AdvancedGenerator.GetContextBaseNamespace(unit, step);
             if (unit.GenerationParams.UtilitiesNamespace == unit.GenerationParams.BaseNamespace)
-                return result;
+                if (result == unit.GenerationParams.BaseNamespace)
+                    return string.Empty;
+                else
+                    return result;
 
-            return result +
-                   unit.GenerationParams.UtilitiesNamespace.Substring(unit.GenerationParams.BaseNamespace.Length);
+            return result + unit.GenerationParams.UtilitiesNamespace.Substring(unit.GenerationParams.BaseNamespace.Length);
         }
 
         public static string GetContextObjectNamespace(CslaObjectInfo info, CslaGeneratorUnit unit, GenerationStep step)
@@ -2972,7 +2982,7 @@ namespace CslaGenerator.CodeGen
             {
                 if (isReadOnly || isReadOnlyObject)
                     return "LoadPropertyConvert";
-                
+
                 return "SetPropertyConvert";
             }
 
@@ -4495,7 +4505,7 @@ namespace CslaGenerator.CodeGen
         /// </summary>
         /// <param name="info">The Unit of Work under processing.</param>
         /// <param name="uowProp">The UnitOfWork property with target's object metadata.</param>
-        /// <returns><c>true</c> if the UnitOfWork is of type <see cref="UnitOfWorkFunction.Getter"/> 
+        /// <returns><c>true</c> if the UnitOfWork is of type <see cref="UnitOfWorkFunction.Getter"/>
         /// or if the associated object type is not editable; <c>false</c> otherwise.</returns>
         public static bool ForceIsGetter(CslaObjectInfo info, UnitOfWorkProperty uowProp)
         {
@@ -5241,28 +5251,28 @@ namespace CslaGenerator.CodeGen
 
         public bool IsCriteriaClassNeeded(CslaObjectInfo info)
         {
-            return (from crit in GetCriteriaObjects(info) 
-                    where crit.Properties.Count > 1 
+            return (from crit in GetCriteriaObjects(info)
+                    where crit.Properties.Count > 1
                     select FactoryOrDataPortal(crit)).FirstOrDefault();
         }
 
         public bool IsCriteriaNestedClassNeeded(CslaObjectInfo info)
         {
-            return (from crit in GetCriteriaObjects(info) 
-                    where crit.Properties.Count > 1 && crit.NestedClass 
+            return (from crit in GetCriteriaObjects(info)
+                    where crit.Properties.Count > 1 && crit.NestedClass
                     select FactoryOrDataPortal(crit)).FirstOrDefault();
         }
 
         public bool IsCriteriaObjectNeeded(CslaObjectInfo info)
         {
-            return (from crit in GetCriteriaObjects(info) 
-                    where crit.Properties.Count > 1 && !crit.NestedClass 
+            return (from crit in GetCriteriaObjects(info)
+                    where crit.Properties.Count > 1 && !crit.NestedClass
                     select FactoryOrDataPortal(crit)).FirstOrDefault();
         }
 
         public bool IsCriteriaExtendedClassNeeded(CslaObjectInfo info)
         {
-            return (from crit in GetCriteriaObjects(info) 
+            return (from crit in GetCriteriaObjects(info)
                     where crit.Properties.Count > 1 && crit.CriteriaClassMode == CriteriaMode.BusinessBase
                     select FactoryOrDataPortal(crit)).FirstOrDefault();
         }
