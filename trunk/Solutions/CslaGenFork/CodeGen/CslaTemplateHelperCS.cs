@@ -818,37 +818,7 @@ namespace CslaGenerator.CodeGen
                 if (!usingList.Contains(name))
                     usingList.Add(name);
 
-            foreach (var prop in info.ChildProperties)
-                if (prop.TypeName != info.ObjectName)
-                {
-                    var childInfo = FindChildInfo(info, prop.TypeName);
-                    if (childInfo != null)
-                        if (!usingList.Contains(childInfo.ObjectNamespace) &&
-                            childInfo.ObjectNamespace != info.ObjectNamespace)
-                            usingList.Add(childInfo.ObjectNamespace);
-                }
-
-            foreach (var prop in info.InheritedChildProperties)
-                if (prop.TypeName != info.ObjectName)
-                {
-                    var childInfo = FindChildInfo(info, prop.TypeName);
-                    if (childInfo != null)
-                        if (!usingList.Contains(childInfo.ObjectNamespace) &&
-                            childInfo.ObjectNamespace != info.ObjectNamespace)
-                            usingList.Add(childInfo.ObjectNamespace);
-                }
-
-            foreach (var prop in info.ChildCollectionProperties)
-                if (prop.TypeName != info.ObjectName)
-                {
-                    var childInfo = FindChildInfo(info, prop.TypeName);
-                    if (childInfo != null)
-                        if (!usingList.Contains(childInfo.ObjectNamespace) &&
-                            childInfo.ObjectNamespace != info.ObjectNamespace)
-                            usingList.Add(childInfo.ObjectNamespace);
-                }
-
-            foreach (var prop in info.InheritedChildCollectionProperties)
+            foreach (var prop in info.GetAllChildProperties())
                 if (prop.TypeName != info.ObjectName)
                 {
                     var childInfo = FindChildInfo(info, prop.TypeName);
