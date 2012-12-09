@@ -858,6 +858,21 @@ namespace CslaGenerator.CodeGen
                             usingList.Add(childInfo.ObjectNamespace);
                 }
 
+            foreach (var prop in info.ConvertValueProperties)
+            {
+                var converterClass = prop.NVLConverter.Substring(0, prop.NVLConverter.LastIndexOf('.'));
+                if (converterClass.Count(s => s == '.') > 0)
+                    converterClass = converterClass.Substring(converterClass.LastIndexOf('.') + 1);
+                if (converterClass != info.ObjectName)
+                {
+                    var converterInfo = FindChildInfo(info, converterClass);
+                    if (converterInfo != null)
+                        if (!usingList.Contains(converterInfo.ObjectNamespace) &&
+                            converterInfo.ObjectNamespace != info.ObjectNamespace)
+                            usingList.Add(converterInfo.ObjectNamespace);
+                }
+            }
+
             if (info.ItemType != String.Empty)
             {
                 var childInfo = FindChildInfo(info, info.ItemType);
