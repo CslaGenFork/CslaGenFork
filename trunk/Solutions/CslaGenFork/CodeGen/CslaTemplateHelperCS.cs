@@ -2810,7 +2810,7 @@ namespace CslaGenerator.CodeGen
 
         public string PropertyConvertDeclare(CslaObjectInfo info, ConvertValueProperty prop)
         {
-//            var sourceProperty = info.ValueProperties.Find(prop.SourcePropertyName);
+            var sourceProperty = info.ValueProperties.Find(prop.SourcePropertyName);
 //            var sourceDeclarationMode = sourceProperty.DeclarationMode;
             var response = String.Empty;
             var isReadOnly = prop.ReadOnly;
@@ -2828,8 +2828,8 @@ namespace CslaGenerator.CodeGen
             response += "            get" + Environment.NewLine;
             response += "            {" + Environment.NewLine;
             response += "                var result = " + GetInitValue(prop.PropertyType) + ";" + Environment.NewLine;
-            response += "                if (" + prop.NVLConverter + "().ContainsKey(" + prop.SourcePropertyName + "))" + Environment.NewLine;
-            response += "                    result = " + prop.NVLConverter + "().GetItemByKey(" + prop.SourcePropertyName + ").Value;" + Environment.NewLine;
+            response += "                if (" + (sourceProperty.Nullable ? sourceProperty.Name + ".HasValue && " : string.Empty) + prop.NVLConverter + "().ContainsKey(" + prop.SourcePropertyName + (sourceProperty.Nullable ? ".Value" : string.Empty) + "))" + Environment.NewLine;
+            response += "                    result = " + prop.NVLConverter + "().GetItemByKey(" + prop.SourcePropertyName + (sourceProperty.Nullable ? ".Value" : string.Empty) + ").Value;" + Environment.NewLine;
 //            response += "                if (" + prop.NVLConverter + "().ContainsKey(ReadProperty(" + prop.SourcePropertyName + "Property)))" + Environment.NewLine;
 //            response += "                    result = " + prop.NVLConverter + "().GetItemByKey(ReadProperty(" + prop.SourcePropertyName + "Property)).Value;" + Environment.NewLine;
             response += "                return result;" + Environment.NewLine;
