@@ -671,6 +671,8 @@ namespace CslaGenerator.CodeGen
                 result += "using Csla.Data;" + Environment.NewLine;
                 if (cacheGetContextUtilitiesNamespace != string.Empty)
                     result += "using " + cacheGetContextUtilitiesNamespace + ";" + Environment.NewLine;
+                if (unit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL)
+                    result += GetDalInterfaceNamespaces(info, unit);
             }
             else
             {                
@@ -717,11 +719,6 @@ namespace CslaGenerator.CodeGen
 
                     result += IfSilverlight(Conditional.End, 0, ref silverlightLevel, false, true);
                 }
-            }
-            else
-            {
-                if (unit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL)
-                    result += GetDalInterfaceNamespaces(info, unit);
             }
 
             result = info.GetAllValueProperties().Where(p => p.PropertyType == TypeCodeEx.ByteArray && AllowNull(p)).Aggregate(result, (current, p) => current + ("using System.Linq; //Added for byte[] helpers" + Environment.NewLine));
