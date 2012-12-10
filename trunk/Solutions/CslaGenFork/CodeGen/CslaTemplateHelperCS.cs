@@ -659,8 +659,9 @@ namespace CslaGenerator.CodeGen
             var result = String.Empty;
             var silverlightLevel = 0;
             var cacheGetContextUtilitiesNamespace = GetContextUtilitiesNamespace(unit, step);
+            var isUnitOfWork = info.ObjectType == CslaObjectType.UnitOfWork;
 
-            if (!UseSilverlight())
+            if (!UseSilverlight() && !isUnitOfWork)
             {
                 result += "using System;" + Environment.NewLine;
                 result += "using System.Data;" + Environment.NewLine;
@@ -693,20 +694,29 @@ namespace CslaGenerator.CodeGen
 
             if (UseSilverlight())
             {
-                result += IfSilverlight(Conditional.Silverlight, 0, ref silverlightLevel, false, true);
-                result += "using " + "Csla.Serialization" + ";" + Environment.NewLine;
-                result += IfSilverlight(Conditional.Else, 0, ref silverlightLevel, false, true);
+                if (isUnitOfWork)
+                {
+                    result += IfSilverlight(Conditional.Silverlight, 0, ref silverlightLevel, false, true);
+                    result += "using " + "Csla.Serialization" + ";" + Environment.NewLine;
+                    result += IfSilverlight(Conditional.End, 0, ref silverlightLevel, false, true);
+                }
+                else
+                {
+                    result += IfSilverlight(Conditional.Silverlight, 0, ref silverlightLevel, false, true);
+                    result += "using " + "Csla.Serialization" + ";" + Environment.NewLine;
+                    result += IfSilverlight(Conditional.Else, 0, ref silverlightLevel, false, true);
 
-                result += "using System.Data;" + Environment.NewLine;
-                if (unit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL)
-                    result += "using System.Data.SqlClient;" + Environment.NewLine;
-                result += "using Csla.Data;" + Environment.NewLine;
-                if (cacheGetContextUtilitiesNamespace != string.Empty)
-                    result += "using " + cacheGetContextUtilitiesNamespace + ";" + Environment.NewLine;
-                if (unit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL)
-                    result += GetDalInterfaceNamespaces(info, unit);
+                    result += "using System.Data;" + Environment.NewLine;
+                    if (unit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL)
+                        result += "using System.Data.SqlClient;" + Environment.NewLine;
+                    result += "using Csla.Data;" + Environment.NewLine;
+                    if (cacheGetContextUtilitiesNamespace != string.Empty)
+                        result += "using " + cacheGetContextUtilitiesNamespace + ";" + Environment.NewLine;
+                    if (unit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL)
+                        result += GetDalInterfaceNamespaces(info, unit);
 
-                result += IfSilverlight(Conditional.End, 0, ref silverlightLevel, false, true);
+                    result += IfSilverlight(Conditional.End, 0, ref silverlightLevel, false, true);
+                }
             }
             else
             {
