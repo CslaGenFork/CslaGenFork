@@ -33,8 +33,6 @@ if (Errors.Length == 0)
     bool first = true;
     bool? firstComment = null;
     %><!-- #include file="Header.asp" -->
-using System;
-using Csla;
 <%= GetUsingStatementsString(Info, CurrentUnit) %>
 namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
 {
