@@ -842,7 +842,8 @@ namespace CslaGenerator.CodeGen
                     var childInfo = FindChildInfo(info, prop.TypeName);
                     if (childInfo != null)
                         if (!usingList.Contains(childInfo.ObjectNamespace) &&
-                            childInfo.ObjectNamespace != info.ObjectNamespace)
+                            childInfo.ObjectNamespace != info.ObjectNamespace &&
+                            childInfo.ObjectNamespace != CurrentUnit.GenerationParams.BaseNamespace)
                             usingList.Add(childInfo.ObjectNamespace);
                 }
 
@@ -856,7 +857,8 @@ namespace CslaGenerator.CodeGen
                     var converterInfo = FindChildInfo(info, converterClass);
                     if (converterInfo != null)
                         if (!usingList.Contains(converterInfo.ObjectNamespace) &&
-                            converterInfo.ObjectNamespace != info.ObjectNamespace)
+                            converterInfo.ObjectNamespace != info.ObjectNamespace &&
+                            converterInfo.ObjectNamespace != CurrentUnit.GenerationParams.BaseNamespace)
                             usingList.Add(converterInfo.ObjectNamespace);
                 }
             }
@@ -866,7 +868,8 @@ namespace CslaGenerator.CodeGen
                 var childInfo = FindChildInfo(info, info.ItemType);
                 if (childInfo != null)
                     if (!usingList.Contains(childInfo.ObjectNamespace) &&
-                        childInfo.ObjectNamespace != info.ObjectNamespace)
+                        childInfo.ObjectNamespace != info.ObjectNamespace &&
+                        childInfo.ObjectNamespace != CurrentUnit.GenerationParams.BaseNamespace)
                         usingList.Add(childInfo.ObjectNamespace);
             }
 
@@ -875,13 +878,11 @@ namespace CslaGenerator.CodeGen
                 var parentInfo = FindChildInfo(info, info.ParentType);
                 if (parentInfo != null)
                     if (!usingList.Contains(parentInfo.ObjectNamespace) &&
-                        parentInfo.ObjectNamespace != info.ObjectNamespace)
+                        parentInfo.ObjectNamespace != info.ObjectNamespace &&
+                        parentInfo.ObjectNamespace != CurrentUnit.GenerationParams.BaseNamespace)
                         usingList.Add(parentInfo.ObjectNamespace);
             }
 
-            //string[] usingNamespaces = new string[usingList.Count];
-            //usingList.CopyTo(0, usingNamespaces, 0, usingList.Count);
-            //Array.Sort(usingNamespaces, new CaseInsensitiveComparer());
             if (usingList.Contains(String.Empty))
                 usingList.Remove(String.Empty);
             usingList.Sort(String.Compare);
@@ -896,7 +897,7 @@ namespace CslaGenerator.CodeGen
                 if (result == unit.GenerationParams.BaseNamespace)
                     return string.Empty;
                 else
-                    return result;
+                return result;
 
             return result + unit.GenerationParams.UtilitiesNamespace.Substring(unit.GenerationParams.BaseNamespace.Length);
         }
