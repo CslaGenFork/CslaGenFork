@@ -5,9 +5,9 @@ namespace CslaGenerator.Metadata
     [Flags]
     public enum CriteriaMergeType
     {
-        Create = 0,
-        Get = 1,
-        Delete = 2,
-        All = 4
+        None = 0,
+        Create = 1,
+        Get = 2,
+        Delete = 4
     }
 }
