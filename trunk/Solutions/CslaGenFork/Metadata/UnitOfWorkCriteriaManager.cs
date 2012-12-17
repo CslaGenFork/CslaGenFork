@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using CslaGenerator.CodeGen;
 
 namespace CslaGenerator.Metadata
 {
@@ -20,10 +21,18 @@ namespace CslaGenerator.Metadata
             return newCriteriaCollection;
         }
 
-        internal static List<CriteriaCollection> GetAllCriteria(CslaObjectInfo info, CriteriaMergeType mergeType)
+        internal static List<CriteriaCollection> GetAllCriteria(CslaObjectInfo info)
         {
             if (info.IsUpdater)
                 return null;
+
+            var mergeType = CriteriaMergeType.None;
+            if (info.UnitOfWorkType == UnitOfWorkFunction.Creator || info.UnitOfWorkType == UnitOfWorkFunction.CreatorGetter)
+                mergeType |= CriteriaMergeType.Create;
+            if (info.UnitOfWorkType == UnitOfWorkFunction.Getter || info.UnitOfWorkType == UnitOfWorkFunction.CreatorGetter)
+                mergeType |= CriteriaMergeType.Get;
+            if (info.UnitOfWorkType == UnitOfWorkFunction.Deleter)
+                mergeType |= CriteriaMergeType.Delete;
 
             _result = new List<CriteriaCollection>();
             foreach (var prop in info.UnitOfWorkProperties)
@@ -32,13 +41,17 @@ namespace CslaGenerator.Metadata
                 var targetInfo = info.Parent.CslaObjects.Find(prop.TypeName);
                 foreach (var crit in targetInfo.CriteriaObjects)
                 {
-                    if ((mergeType == CriteriaMergeType.Create && !crit.IsCreator) ||
-                        (mergeType == CriteriaMergeType.Get && !crit.IsGetter) ||
-                        (mergeType == CriteriaMergeType.Delete && !crit.IsDeleter))
-                        continue;
-
-                    _criteriaCache.Add(crit);
+                    if (mergeType.HasFlag(CriteriaMergeType.Create) && (crit.IsCreator ||
+                        (crit.IsGetter && !CslaTemplateHelperCS.IsEditableType(targetInfo.ObjectType))))
+                        _criteriaCache.Add(crit);
+                    else if (mergeType.HasFlag(CriteriaMergeType.Get) && crit.IsGetter)
+                        _criteriaCache.Add(crit);
+                    else if (mergeType.HasFlag(CriteriaMergeType.Delete) && crit.IsDeleter)
+                        _criteriaCache.Add(crit);
                 }
+                if (_criteriaCache.Count == 0)
+                    continue;
+
                 PrepareCriteriaList();
                 AssignCriteria();
             }
@@ -78,12 +91,10 @@ namespace CslaGenerator.Metadata
             var limit = _result.Count/_criteriaCache.Count;
             for (var crit = 0; crit < _criteriaCache.Count; crit++)
             {
+                var index = (crit*limit);
                 for (var round = 0; round < limit; round++)
                 {
-                    var index = (crit*limit) + crit + round;
-                    if (index >= _result.Count)
-                        index -= limit;
-                    _result[index].Add(_criteriaCache[crit]);
+                    _result[index + round].Add(_criteriaCache[crit]);
                 }
             }
         }
