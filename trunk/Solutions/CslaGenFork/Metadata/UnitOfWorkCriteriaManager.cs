@@ -21,6 +21,8 @@ namespace CslaGenerator.Metadata
             return newCriteriaCollection;
         }
 
+        #region Fetch criteria methods
+
         internal static List<CriteriaCollection> GetAllCriteria(CslaObjectInfo info)
         {
             if (info.IsUpdater)
@@ -41,8 +43,9 @@ namespace CslaGenerator.Metadata
                 var targetInfo = info.Parent.CslaObjects.Find(prop.TypeName);
                 foreach (var crit in targetInfo.CriteriaObjects)
                 {
-                    if (mergeType.HasFlag(CriteriaMergeType.Create) && (crit.IsCreator ||
-                        (crit.IsGetter && !CslaTemplateHelperCS.IsEditableType(targetInfo.ObjectType))))
+                    if (mergeType.HasFlag(CriteriaMergeType.Create) && crit.IsCreator && prop.ObjectCreator)
+                        _criteriaCache.Add(crit);
+                    else if (mergeType.HasFlag(CriteriaMergeType.Create) && crit.IsGetter && !prop.ObjectCreator)
                         _criteriaCache.Add(crit);
                     else if (mergeType.HasFlag(CriteriaMergeType.Get) && crit.IsGetter)
                         _criteriaCache.Add(crit);
@@ -98,5 +101,19 @@ namespace CslaGenerator.Metadata
                 }
             }
         }
+
+        #endregion
+
+        #region Use criteria methods
+
+        internal static List<string> Bachibouzouk()
+        {
+            var result = new List<string>();
+
+
+            return result;
+        }
+
+        #endregion
     }
 }
