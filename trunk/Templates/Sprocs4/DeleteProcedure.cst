@@ -1,0 +1,491 @@
+<%@ CodeTemplate Inherits="SprocTemplateHelper" Language="C#" TargetLanguage="T-SQL" Description="Generates a Delete stored procedure." %>
+<%@ Property Name="Errors" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return errors to master.cst" %>
+<%@ Property Name="Warnings" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return warnings to master.cst" %>
+
+<%@ Assembly Name="DBSchemaInfo" %>
+<%@ Import Namespace="DBSchemaInfo.Base" %>
+<%@ Assembly Name="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator.Metadata" %>
+<%@ Import Namespace="CslaGenerator.CodeGen" %>
+<%@ Import Namespace="CslaGenerator.Util" %>
+<%@ Assembly Name="System.Data"%>
+<%@ Import Namespace="System.Collections" %>
+<%@ Import Namespace="System.Collections.Generic" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="System.Text" %>
+<%@ Assembly Name="System.Windows.Forms"%>
+<%@ Import Namespace="System.Windows.Forms"%>
+
+<%
+foreach (CriteriaProperty parm in Criteria.Properties)
+{
+    if(parm.DbBindColumn.Column == null)
+    {
+        Errors.Append("Criteria Property " + Info.ObjectName + "." + Criteria.Name + "." + parm.Name + " is missing DB Bind Column." + Environment.NewLine);
+        return;
+    }
+}
+bool first = false;
+List<string> whereTables = new List<string>();
+List<IResultObject> tables = GetTablesDelete(Info);
+SortTables(tables);
+string plainTableSchema = GetSchema(tables[0], false);
+string fullTableSchema = GetSchema(tables[0], true);
+bool timeStampColumn=false;
+string procName = String.Empty;
+string parms =String.Empty;
+string whereClause = String.Empty;
+string whereClauseTS = String.Empty;
+
+if (!CriteriaDefined)
+{
+    procName = Info.DeleteProcedureName;
+    first = true;
+    if (!Info.ParentInsertOnly)
+    {
+        foreach (ValueProperty prop in Info.GetParentValueProperties())
+        {
+            if (prop.DbBindColumn.Column == null)
+                continue;
+
+            if (first)
+                first = false;
+            else
+            {
+                whereClause += " AND" + Environment.NewLine + new string(' ', 3*4);
+                parms += ","  + Environment.NewLine;
+            }
+            whereClause += String.Format("[{0}].[{1}] = @{2}", GetFKTableForParentProperty(prop,tables[0]), GetFKColumnForParentProperty(prop,tables[0]), prop.ParameterName);
+            whereTables.Add(GetFKTableForParentProperty(prop,tables[0]));
+            parms += String.Format("    @{0} {1}", prop.ParameterName, GetDataTypeString(prop.DbBindColumn));
+        }
+    }
+    foreach (ValueProperty prop in Info.ValueProperties)
+    {
+        if (prop.DbBindColumn.Column == null)
+            continue;
+
+        if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
+        {
+            if (first)
+                first = false;
+            else
+            {
+                if (prop.DbBindColumn.NativeType != "timestamp")
+                    whereClauseTS += " AND" + Environment.NewLine + new string(' ', 3*4);
+                whereClause += " AND" + Environment.NewLine + new string(' ', 3*4);
+                parms += ","  + Environment.NewLine;
+            }
+            whereClause += String.Format("[{0}].[{1}] = @{2}", GetTableString(prop.DbBindColumn), GetColumnString(prop.DbBindColumn), prop.ParameterName);
+            whereTables.Add(GetTableString(prop.DbBindColumn));
+            if (prop.DbBindColumn.NativeType != "timestamp")
+                whereClauseTS += String.Format("[{0}] = @{1}", GetColumnString(prop.DbBindColumn), prop.ParameterName) + Environment.NewLine;
+            else
+                timeStampColumn = true;
+
+            parms += String.Format("    @{0} {1}", prop.ParameterName, GetDataTypeString(prop.DbBindColumn));
+        }
+    }
+}
+else
+{
+    procName = Criteria.DeleteOptions.ProcedureName;
+    first = true;
+    foreach (CriteriaProperty parm in Criteria.Properties)
+    {
+        if (first)
+            first = false;
+        else
+        {
+            if (parm.DbBindColumn.NativeType != "timestamp")
+                whereClauseTS += " AND" + Environment.NewLine + new string(' ', 3*4);
+
+            whereClause += " AND" + Environment.NewLine + new string(' ', 3*4);
+            parms += ","  + Environment.NewLine;
+        }
+
+        whereClause += fullTableSchema + String.Format("[{0}].[{1}] = @{2}", tables[0].ObjectName, GetColumnString(parm), parm.ParameterName);
+        if (parm.DbBindColumn.NativeType != "timestamp")
+            whereClauseTS +=String.Format("[{0}] = @{1}", GetColumnString(parm), parm.ParameterName) + Environment.NewLine;
+        else
+            timeStampColumn = true;
+
+        parms += string.Format("    @{0} {1}", parm.ParameterName, GetDataTypeString(parm));
+    }
+}
+%>
+/****** Object:  StoredProcedure <%= fullTableSchema %>[<%= procName %>] ******/
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'<%= fullTableSchema %>[<%= procName %>]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE <%= fullTableSchema %>[<%= procName %>]
+GO
+
+CREATE PROCEDURE <%= fullTableSchema %>[<%= procName %>]
+<%= parms %>
+AS
+    BEGIN
+
+        SET NOCOUNT ON
+
+        /* Check for object existance */
+        IF NOT EXISTS
+        (
+            SELECT <%
+            first = true;
+            if (!Info.ParentInsertOnly)
+            {
+                foreach (ValueProperty prop in Info.GetParentValueProperties())
+                {
+                    if (prop.DbBindColumn.Column == null)
+                        continue;
+
+                    if (first)
+                        first = false;
+                    else
+                    {
+                        %>, <%
+                    }
+                %>[<%= GetFKColumnForParentProperty(prop, tables[0]) %>]<%
+                }
+            }
+            foreach (ValueProperty prop in Info.ValueProperties)
+            {
+                if (prop.DbBindColumn.Column == null)
+                    continue;
+
+                if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
+                {
+                if (first)
+                    first = false;
+                else
+                {
+                    %>, <%
+                }
+            %>[<%= GetColumnString(prop.DbBindColumn) %>]<%
+                }
+            }
+            %> FROM <%= fullTableSchema %>[<%= tables[0].ObjectName %>]
+            WHERE
+                <%
+            first = true;
+            if (!Info.ParentInsertOnly)
+            {
+                foreach (ValueProperty prop in Info.GetParentValueProperties())
+                {
+                    if (prop.DbBindColumn.Column == null)
+                        continue;
+
+                    if (first)
+                        first = false;
+                    else
+                    {
+                        %> AND
+                <%
+                    }
+            %>[<%= GetFKColumnForParentProperty(prop,tables[0]) %>] = @<%= prop.ParameterName %><%
+                }
+            }
+            foreach (ValueProperty prop in Info.GetAllValueProperties())
+            {
+                if (prop.DbBindColumn.Column == null)
+                    continue;
+
+                if (prop.DbBindColumn.IsPrimaryKey)
+                if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
+                {
+                    if (first)
+                        first = false;
+                    else
+                    {
+                        %> AND
+                <%
+                    }
+            %>[<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
+                }
+            }
+            if (UseBoolSoftDelete(tables, IgnoreFilter(Info)))
+            {
+                if (first)
+                    first = false;
+                else
+                {
+                    %> AND
+                <%
+                }
+            %>[<%= Info.Parent.Params.SpBoolSoftDeleteColumn %>] = 'true'<%
+            }
+            else if (UseIntSoftDelete(tables, IgnoreFilter(Info)))
+            {
+                if (first)
+                    first = false;
+                else
+                {
+                    %> AND
+                <%
+                }
+            %>[<%= Info.Parent.Params.SpIntSoftDeleteColumn %>] > 0<%
+            }
+            else if (IgnoreFilter(Info) && (string.IsNullOrEmpty(Info.Parent.Params.SpBoolSoftDeleteColumn) ||
+                string.IsNullOrEmpty(Info.Parent.Params.SpIntSoftDeleteColumn)))
+            {
+                    %>
+            /* Ignore filter option is on */<%
+            }
+            %>
+        )
+        BEGIN
+            RAISERROR ('''<%= plainTableSchema %><%= Info.ObjectName %>'' object not found. It was probably removed by another user.', 16, 1)
+            RETURN
+        END
+        <%
+        if (timeStampColumn)
+        {
+            %>
+
+        /* Check for row version match */
+        IF NOT EXISTS
+        (
+            SELECT <%
+            first = true;
+            if (!Info.ParentInsertOnly)
+            {
+                foreach (ValueProperty prop in Info.GetParentValueProperties())
+                {
+                    if (prop.DbBindColumn.Column == null)
+                        continue;
+
+                    if (first)
+                        first = false;
+                    else
+                    {
+                        %>, <%
+                    }
+                %>[<%= GetFKColumnForParentProperty(prop,tables[0]) %>]<%
+                }
+            }
+            foreach (ValueProperty prop in Info.ValueProperties)
+            {
+                if (prop.DbBindColumn.Column == null)
+                    continue;
+
+                if (prop.DbBindColumn.IsPrimaryKey)
+                {
+                    if (first)
+                        first = false;
+                    else
+                    {
+                        %>, <%
+                    }
+            %>[<%= GetColumnString(prop.DbBindColumn) %>]<%
+                }
+            }
+            %> FROM <%= fullTableSchema %>[<%= tables[0].ObjectName %>]
+            WHERE
+                <%
+            first = true;
+            if (!Info.ParentInsertOnly)
+            {
+                foreach (ValueProperty prop in Info.GetParentValueProperties())
+                {
+                    if (prop.DbBindColumn.Column == null)
+                        continue;
+
+                    if (first)
+                        first = false;
+                    else
+                    {
+                        %> AND
+                <%
+                    }
+            %>[<%= GetFKColumnForParentProperty(prop,tables[0]) %>] = @<%= prop.ParameterName %><%
+                }
+            }
+            foreach (ValueProperty prop in Info.ValueProperties)
+            {
+                if (prop.DbBindColumn.Column == null)
+                    continue;
+
+                if (prop.DbBindColumn.IsPrimaryKey || prop.DbBindColumn.NativeType == "timestamp")
+                {
+                    if (first)
+                        first = false;
+                    else
+                    {
+                        %> AND
+                <%
+                    }
+            %>[<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
+                }
+            }
+            %>
+        )
+        BEGIN
+            RAISERROR ('''<%= plainTableSchema %><%= Info.ObjectName %>'' object was modified by another user.', 16, 1)
+            RETURN
+        END
+        <%
+        }
+
+        if (Info.Parent.Params.SpRemoveChildBeforeParent)
+        {
+            string[] childHierarchy = GetAllChildItemsInHierarchy(Info);
+            for (int item = childHierarchy.Length; item-- > 0;)
+            {
+                CslaObjectInfo childInfo = FindChildInfo(Info, childHierarchy[item]);
+                if (childInfo != null)
+                {
+                    List<IResultObject> childTables = GetTablesDelete(childInfo);
+                    SortTables(childTables);
+                    string fullChildSchema = GetSchema(childTables[0], true);
+                    if (!UseBoolSoftDelete(childTables, false))
+                    {
+                        Response.Write(Environment.NewLine);
+                        %>
+        /* Delete child <%= childInfo.ObjectName %> from <%= childTables[0].ObjectName %> */
+        DELETE
+            <%= fullChildSchema %>[<%= childTables[0].ObjectName %>]
+        <%
+                    }
+                    else
+                    {
+                        Response.Write(Environment.NewLine);
+                        %>
+        /* Mark child <%= childInfo.ObjectName %> as not active */
+        UPDATE <%= fullChildSchema %>[<%= childTables[0].ObjectName %>]
+        SET    [<%= childInfo.Parent.Params.SpBoolSoftDeleteColumn %>] = 'false'
+        <%
+                    }
+
+                    List<IResultObject> tables2 = GetTablesParentProperties(Criteria, childInfo, Info, false);
+                    SortTables(tables2);
+                    CheckTableJoins(tables2);
+
+                    StringBuilder sb = new StringBuilder();
+                    sb.Append(Indent(2) + "FROM ");
+                    if (tables2.Count == 1)
+                    {
+                        sb.AppendFormat("{0}[{1}]", GetSchema(tables2[0], true), tables2[0].ObjectName);
+                        %>
+<%= sb.ToString() %>
+        <%
+                    }
+                    if (tables2.Count > 1)
+                    {
+                        List<IResultObject> usedTables = new List<IResultObject>();
+                        bool firstJoin = true;
+                        List<IResultObject> parentTables = GetTablesParent(Criteria, childInfo);
+                        foreach (IResultObject table in tables2)
+                        {
+                            List<IForeignKeyConstraint> fKeys = Catalog.ForeignKeyConstraints.GetConstraintsFor(table);
+
+                            // sort key.PKTable so key.PKTable that reference the parent table come before other keys
+                            // and
+                            // Primary keys come before other constraint references to the parent object
+                            SortKeys(fKeys, parentTables);
+                            fKeys = FilterDuplicateConstraintTables(fKeys, childInfo.GetDatabaseBoundValueProperties());
+
+                            foreach (IForeignKeyConstraint key in fKeys)
+                            {
+                                // check if this key is needed in the join
+                                if (tables2.IndexOf(key.PKTable) >= 0)
+                                {
+                                    if (key.PKTable != key.ConstraintTable)
+                                    {
+                                        if (firstJoin)
+                                        {
+                                            sb.AppendFormat("{0}[{1}]", GetSchema(key.ConstraintTable, true), key.ConstraintTable.ObjectName);
+                                            sb.Append(Environment.NewLine + Indent(3));
+                                            sb.Append("INNER JOIN ");
+                                            sb.AppendFormat("{0}[{1}]", GetSchema(key.PKTable, true), key.PKTable.ObjectName);
+                                            sb.Append(" ON ");
+                                            bool firstKeyColl = true;
+                                            foreach (IForeignKeyColumnPair kcPair in key.Columns)
+                                            {
+                                                if (firstKeyColl)
+                                                    firstKeyColl = false;
+                                                else
+                                                {
+                                                    sb.Append(" AND");
+                                                    sb.Append(Environment.NewLine + Indent(6));
+                                                }
+
+                                                sb.Append(GetAliasedFieldString(key.ConstraintTable, kcPair.FKColumn));
+                                                sb.Append(" = ");
+                                                sb.Append(GetAliasedFieldString(key.PKTable, kcPair.PKColumn));
+                                            }
+                                            usedTables.Add(key.PKTable);
+                                            usedTables.Add(key.ConstraintTable);
+                                            firstJoin = false;
+                                        }
+                                        else
+                                        {
+                                            if (usedTables.Contains(key.PKTable) &&
+                                                usedTables.Contains(key.ConstraintTable))
+                                            {
+                                                sb.Append(" AND");
+                                                sb.Append(Environment.NewLine + Indent(6));
+                                            }
+                                            else
+                                            {
+                                                sb.Append(Environment.NewLine + Indent(3));
+                                                sb.Append("INNER JOIN ");
+                                                sb.AppendFormat("{0}[{1}]", GetSchema(key.PKTable, true),
+                                                                key.PKTable.ObjectName);
+                                                sb.Append(" ON ");
+                                                usedTables.Add(key.PKTable);
+                                            }
+
+                                            bool firstKeyColl = true;
+                                            foreach (IForeignKeyColumnPair kcPair in key.Columns)
+                                            {
+                                                if (firstKeyColl)
+                                                    firstKeyColl = false;
+                                                else
+                                                {
+                                                    sb.Append(" AND");
+                                                    sb.Append(Environment.NewLine + Indent(6));
+                                                }
+
+                                                sb.Append(GetAliasedFieldString(key.ConstraintTable, kcPair.FKColumn));
+                                                sb.Append(" = ");
+                                                sb.Append(GetAliasedFieldString(key.PKTable, kcPair.PKColumn));
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        %>
+<%= sb.ToString() %>
+        <%
+                    }
+                    %>
+        WHERE
+            <%= whereClause %>
+        <%
+                }
+            }
+        }
+
+        if (!UseBoolSoftDelete(tables, false))
+        {
+            Response.Write(Environment.NewLine);
+            %>
+        /* Delete <%= Info.ObjectName %> object from <%= tables[0].ObjectName %> */
+        DELETE
+        FROM <%= fullTableSchema %>[<%= tables[0].ObjectName %>]
+        WHERE
+            <%= whereClause %><%
+        }
+        else
+        {
+            %>
+        /* Mark <%= Info.ObjectName %> object as not active */
+        UPDATE <%= fullTableSchema %>[<%= tables[0].ObjectName %>]
+        SET    [<%= Info.Parent.Params.SpBoolSoftDeleteColumn %>] = 'false'
+        WHERE
+            <%= whereClause %><%
+        }
+        %>
+
+    END
+GO

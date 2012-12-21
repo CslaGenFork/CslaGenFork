@@ -1,0 +1,221 @@
+<%@ CodeTemplate Inherits="CslaTemplateHelperCS" Language="CSharp" TargetLanguage="CSharp" Description="Generates a CSLA Inherited Object." %>
+<%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the CSLA Object to inherit from." %>
+<%@ Property Name="MethodList" Type="System.Collections.Generic.List<string>" Optional="false" Category="Options" Description="Allows the template to return a list a partial methods to master.cst (for Silverlight using services)" %>
+
+<%@ Assembly Name="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator.Metadata" %>
+<%@ Import Namespace="CslaGenerator.CodeGen" %>
+<%@ Import Namespace="CslaGenerator.Util" %>
+
+<!-- #include file="Header.asp" -->
+<%
+int silverlightLevel = 0;
+bool genOptional = false;
+if (CurrentUnit.GenerationParams.UtilitiesNamespace != string.Empty &&
+    GetContextUtilitiesNamespace(CurrentUnit, GenerationStep.Business) != string.Empty)
+{
+    if (UseBoth())
+    {
+        %>#if !SILVERLIGHT
+<%
+    }
+    if (UseNoSilverlight())
+    {
+%>using <%= GetContextUtilitiesNamespace(CurrentUnit, GenerationStep.Business) %>;
+<%
+    }
+    if (UseBoth())
+    {
+        %>
+#endif
+<%
+    }
+}
+if (UseNoSilverlight() &&
+    GetContextUtilitiesNamespace(CurrentUnit, GenerationStep.Business) != string.Empty)
+    Response.WriteLine();
+%>namespace <%= Info.ObjectNamespace %>
+{
+    public partial class <%= Info.ObjectName %>
+    {
+
+        #region OnDeserialized actions
+
+        /*/// <summary>
+        /// This method is called on a newly deserialized object
+        /// after deserialization is complete.
+        /// </summary>
+        /// <param name="context">Serialization context object.</param>
+        protected override void OnDeserialized(System.Runtime.Serialization.StreamingContext context)
+        {
+            base.OnDeserialized(context);
+            // add your custom OnDeserialized actions here.
+        }*/
+
+        #endregion
+        <%
+if (Info.ObjectType != CslaObjectType.UnitOfWork)
+{
+    bool generateRuleRegion = false;
+    bool generateAuthRegion = false;
+
+    HaveBusinessRulesCollection allRulesProperties = Info.AllRulableProperties();
+
+    foreach (IHaveBusinessRules rulableProperty in allRulesProperties)
+    {
+        if (rulableProperty.BusinessRules.Count > 0)
+        {
+            generateRuleRegion = true;
+        }
+        if (CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.None &&
+            CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.ObjectLevel)
+        {
+            if (CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider ||
+                rulableProperty.AuthzProvider != AuthorizationProvider.Custom)
+            {
+                if (!String.IsNullOrWhiteSpace(rulableProperty.ReadRoles) ||
+                    !String.IsNullOrWhiteSpace(rulableProperty.WriteRoles))
+                {
+                    generateAuthRegion = true;
+                }
+            }
+            else if (rulableProperty.ReadAuthzRuleType.Constructors.Count > 0 ||
+                     rulableProperty.WriteAuthzRuleType.Constructors.Count > 0)
+            {
+                generateAuthRegion = true;
+            }
+        }
+        if (generateRuleRegion && generateAuthRegion)
+            break;
+    }
+    bool generateAuthRegion2 = false;
+    CslaObjectInfo authzInfo2 = Info;
+    if (IsCollectionType(Info.ObjectType))
+    {
+        authzInfo2 = FindChildInfo(Info, Info.ItemType);
+    }
+    if (authzInfo2 != null)
+    {
+        if (CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.None &&
+            CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.PropertyLevel)
+        {
+            if (CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider ||
+                authzInfo2.AuthzProvider != AuthorizationProvider.Custom)
+            {
+                if (!String.IsNullOrWhiteSpace(authzInfo2.NewRoles) ||
+                    !String.IsNullOrWhiteSpace(authzInfo2.GetRoles) ||
+                    !String.IsNullOrWhiteSpace(authzInfo2.UpdateRoles) ||
+                    !String.IsNullOrWhiteSpace(authzInfo2.DeleteRoles))
+                {
+                    generateAuthRegion2 = true;
+                }
+            }
+            else if (authzInfo2.NewAuthzRuleType.Constructors.Count > 0 ||
+                     authzInfo2.GetAuthzRuleType.Constructors.Count > 0 ||
+                     authzInfo2.UpdateAuthzRuleType.Constructors.Count > 0 ||
+                     authzInfo2.DeleteAuthzRuleType.Constructors.Count > 0)
+            {
+                generateAuthRegion2 = true;
+            }
+        }
+    }
+    if (generateRuleRegion || generateAuthRegion)
+    {
+        %>
+
+        #region Custom Business Rules and Property Authorization
+
+        //partial void AddBusinessRulesExtend()
+        //{
+        //    throw new System.Exception("The method or operation is not implemented.");
+        //}
+
+        #endregion
+<%
+    }
+    if (generateAuthRegion2)
+    {
+        %>
+
+        #region Custom Object Authorization
+
+        //static partial void AddObjectAuthorizationRulesExtend()
+        //{
+        //    throw new System.Exception("The method or operation is not implemented.");
+        //}
+
+        #endregion
+<%
+    }
+    System.Collections.Generic.List<string> eventList = GetEventList(Info);
+    if (eventList.Count > 0 && UseNoSilverlight())
+    {
+        if (UseBoth())
+        {
+            %>
+
+#if !SILVERLIGHT
+<%
+        }
+        %>
+
+        #region Pseudo Event Handlers
+<%
+
+        foreach (string strEvent in eventList)
+        {
+            %>
+
+        //partial void On<%= strEvent %>(DataPortalHookArgs args)
+        //{
+        //    throw new System.Exception("The method or operation is not implemented.");
+        //}
+        <%
+        }
+        %>
+
+        #endregion
+
+    <%
+    }
+    if (UseBoth())
+    {
+        %>
+#endif
+
+<%
+    }
+    %>
+<!-- #include file="ServicesImplementation.asp" -->
+<%
+}
+%>
+    }
+    <%
+    if (IsCriteriaExtendedClassNeeded(Info))
+    {
+        %>
+
+    #region Criteria Object
+    <%
+        foreach (Criteria crit in GetCriteriaObjects(Info))
+        {
+            if (crit.Properties.Count > 1)
+            {
+                %>
+
+    public partial class <%= crit.Name %>
+    {
+    }
+<%
+            }
+        }
+        %>
+
+    #endregion
+
+    <%
+    }
+    %>
+}
