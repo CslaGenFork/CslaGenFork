@@ -1,0 +1,107 @@
+<%@ CodeTemplate Inherits="CslaTemplateHelperCS" Language="CSharp" TargetLanguage="CSharp" Description="Generates a CSLA NameValueList Object." %>
+<%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the NameValueList Object to create." %>
+<%@ Property Name="Errors" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return errors to master.cst" %>
+<%@ Property Name="Warnings" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return warnings to master.cst" %>
+<%@ Property Name="MethodList" Type="System.Collections.Generic.List<string>" Optional="false" Category="Options" Description="Allows the template to return a list a partial methods to master.cst (for Silverlight using services)" %>
+
+<%@ Assembly Name="DBSchemaInfo" %>
+<%@ Import Namespace="DBSchemaInfo.Base" %>
+<%@ Assembly Name="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator.Metadata" %>
+<%@ Import Namespace="CslaGenerator.CodeGen" %>
+<%@ Import Namespace="CslaGenerator.Util" %>
+<%@ Assembly Name="System.Windows.Forms" %>
+<%@ Import Namespace="System.Windows.Forms" %>
+<%@ Import Namespace="System.Text" %>
+<%@ Import Namespace="System.Collections.Generic" %>
+<%@ Import Namespace="System.Reflection" %>
+
+<!-- #include file="ObjectValidate.asp" -->
+<%
+bool isChild = false;
+bool useChildFactory = CurrentUnit.GenerationParams.UseChildFactory;
+bool useBypassPropertyChecks = CurrentUnit.GenerationParams.UseBypassPropertyChecks;
+string bpcSpacer = useBypassPropertyChecks ? bpcSpacer = new string(' ', 4) : string.Empty;
+bool ancestorIsCollection = false;
+int ancestorLoaderLevel = 0;
+int silverlightLevel = 0;
+bool genOptional = false;
+bool useItem = false;
+ValueProperty nameProp = null;
+ValueProperty valueProp = null;
+foreach (ValueProperty prop in Info.ValueProperties)
+{
+    if (prop.Name.Equals(Info.NameColumn))
+        nameProp = prop;
+    if (prop.Name.Equals(Info.ValueColumn))
+        valueProp = prop;
+}
+if (nameProp == null || valueProp == null)
+    Errors.Append("Missing name or value properties." + Environment.NewLine);
+else
+{
+    bool? firstComment = null;
+    %><!-- #include file="Header.asp" -->
+<!-- #include file="Using.asp" -->
+namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Business) %>
+{
+<%
+    %><!-- #include file="XmlComment.asp" -->
+    <%
+    if (GetAttributesString(Info.Attributes) != string.Empty)
+    {
+        %>
+    <%= GetAttributesString(Info.Attributes) %>
+    <%
+    }
+    %>
+    [Serializable]
+    public partial class <%= Info.ObjectName %> : NameValueListBase<<%= GetDataTypeGeneric(valueProp, valueProp.PropertyType) %>, <%= GetDataTypeGeneric(nameProp, nameProp.PropertyType) %>>
+    {
+
+        <%
+    if (Info.SimpleCacheOptions != SimpleCacheResults.None)
+    {
+        %>
+<!-- #include file="SimpleCacheFactory.asp" -->
+<%
+        Response.Write(Environment.NewLine);
+    }
+    if (Info.GenerateFactoryMethods)
+    {
+        %>
+<!-- #include file="NameValueList_Factory.asp" -->
+<%
+    }
+    Response.Write(Environment.NewLine);
+    %>
+<!-- #include file="Constructor.asp" -->
+<!-- #include file="Criteria.asp" -->
+<!-- #include file="ObjectAuthorizationMethods.asp" -->
+<%
+    if (Info.GenerateDataAccessRegion)
+    {
+        if (!Info.UseCustomLoading)
+        {
+            if (!genOptional)
+            {
+                Response.Write(Environment.NewLine);
+            }
+            %>
+<!-- #include file="NameValueList_DataPortal.asp" -->
+        <%
+        }
+    %>
+<!-- #include file="Events.asp" -->
+
+<%
+    }
+%>
+
+    }
+<!-- #include file="CriteriaObject.asp" -->
+}
+<%
+}
+%>

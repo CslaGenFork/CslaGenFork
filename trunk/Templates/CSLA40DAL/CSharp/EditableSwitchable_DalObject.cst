@@ -1,0 +1,65 @@
+<%@ CodeTemplate Inherits="CslaTemplateHelperCS" Language="CSharp" TargetLanguage="CSharp" Description="Generates a CSLA Editable Switchable Object." %>
+<%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the EditableSwitchable Object to create." %>
+<%@ Property Name="Errors" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return errors to master.cst" %>
+<%@ Property Name="Warnings" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return warnings to master.cst" %>
+<%@ Property Name="MethodList" Type="System.Collections.Generic.List<string>" Optional="false" Category="Options" Description="Allows the template to return a list a partial methods to master.cst (for Silverlight using services)" %>
+
+<%@ Assembly Name="DBSchemaInfo" %>
+<%@ Import Namespace="DBSchemaInfo.Base" %>
+<%@ Assembly Name="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator.Metadata" %>
+<%@ Import Namespace="CslaGenerator.CodeGen" %>
+<%@ Import Namespace="CslaGenerator.Util" %>
+<%@ Assembly Name="System.Windows.Forms" %>
+<%@ Import Namespace="System.Windows.Forms" %>
+<%@ Import Namespace="System.Text" %>
+<%@ Import Namespace="System.Collections.Generic" %>
+<%@ Import Namespace="System.Reflection" %>
+
+<!-- #include file="ObjectValidate_DalObject.asp" -->
+<!-- #include file="EditableSwitchable_Validate.asp" -->
+<%
+if (Errors.Length == 0)
+{
+    bool isItem = false;
+    bool isParentRootCollection = false;
+    CslaObjectInfo parentInfo = Info.Parent.CslaObjects.Find(Info.ParentType);
+    CslaObjectInfo grandParentInfo = null;
+    if (parentInfo != null)
+    {
+        isItem = IsCollectionType(parentInfo.ObjectType);
+        grandParentInfo = Info.Parent.CslaObjects.Find(parentInfo.ParentType);
+        isParentRootCollection = (parentInfo.ObjectType == CslaObjectType.EditableRootCollection) ||
+            (parentInfo.ObjectType == CslaObjectType.ReadOnlyCollection && parentInfo.ParentType == String.Empty);
+    }
+    bool isChild = false;
+    bool isSwitchable = true;
+    bool isChildSelfLoaded = IsChildSelfLoaded(Info);
+    bool isChildLazyLoaded = IsChildLazyLoaded(Info);
+    bool isCollection = false;
+    bool useChildFactory = CurrentUnit.GenerationParams.UseChildFactory;
+    bool useBypassPropertyChecks = CurrentUnit.GenerationParams.UseBypassPropertyChecks;
+    string bpcSpacer = useBypassPropertyChecks ? bpcSpacer = new string(' ', 4) : string.Empty;
+    bool ancestorIsCollection = false;
+    int ancestorLoaderLevel = AncestorLoaderLevel(Info, out ancestorIsCollection);
+    GenerationStep genStep = GenerationStep.DalObject;
+    bool usesDTO = DalObjectUsesDTO(Info);
+    bool usesDalCriteria = DalObjectUsesCriteria(Info);
+    bool? firstComment = null;
+    %><!-- #include file="Header_DalObject.asp" -->
+<!-- #include file="Using_DalObject.asp" -->
+namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
+{
+<!-- #include file="XmlComment_DalObject.asp" -->
+    public partial class <%= Info.ObjectName %>Dal : I<%= Info.ObjectName %>Dal
+    {<!-- #include file="DataPortalFetch_DalObject.asp" -->
+<!-- #include file="DataPortalInsert_DalObject.asp" -->
+<!-- #include file="DataPortalUpdate_DalObject.asp" -->
+<!-- #include file="InternalInsertUpdateDelete_DalObject.asp" -->
+<!-- #include file="DataPortalDelete_DalObject.asp" -->
+    }
+}
+<%
+}
+%>

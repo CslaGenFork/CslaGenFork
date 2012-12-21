@@ -1,0 +1,122 @@
+<%@ CodeTemplate Inherits="CslaTemplateHelperCS" Language="CSharp" TargetLanguage="CSharp" Description="Generates a CSLA Dynamic Root Collection." %>
+<%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the DynamicEditableRootCollection Object to create." %>
+<%@ Property Name="Errors" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return errors to master.cst" %>
+<%@ Property Name="Warnings" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return warnings to master.cst" %>
+<%@ Property Name="MethodList" Type="System.Collections.Generic.List<string>" Optional="false" Category="Options" Description="Allows the template to return a list a partial methods to master.cst (for Silverlight using services)" %>
+
+<%@ Assembly Name="DBSchemaInfo" %>
+<%@ Import Namespace="DBSchemaInfo.Base" %>
+<%@ Assembly Name="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator.Metadata" %>
+<%@ Import Namespace="CslaGenerator.CodeGen" %>
+<%@ Import Namespace="CslaGenerator.Util" %>
+<%@ Import Namespace="System.Text" %>
+<%@ Import Namespace="System.Collections.Generic" %>
+<%@ Import Namespace="System.Reflection" %>
+
+<!-- #include file="ObjectValidate.asp" -->
+<!-- #include file="DynamicEditableRootCollection_Validate.asp" -->
+<%
+if (Errors.Length == 0)
+{
+    bool isItem = false;
+    bool isParentRootCollection = false;
+    CslaObjectInfo parentInfo = null;
+    CslaObjectInfo grandParentInfo = null;
+    CslaObjectInfo itemInfo = FindChildInfo(Info, Info.ItemType);
+    bool isChild = false;
+    bool useChildFactory = CurrentUnit.GenerationParams.UseChildFactory;
+    bool useBypassPropertyChecks = CurrentUnit.GenerationParams.UseBypassPropertyChecks;
+    string bpcSpacer = useBypassPropertyChecks ? bpcSpacer = new string(' ', 4) : string.Empty;
+    bool isChildSelfLoaded = false;
+    bool isChildLazyLoaded = false;
+    bool ancestorIsCollection = false;
+    int ancestorLoaderLevel = AncestorLoaderLevel(Info, out ancestorIsCollection);
+    int silverlightLevel = 0;
+    bool genOptional = false;
+    bool useItem = true;
+    bool first = true;
+    bool? firstComment = null;
+    %><!-- #include file="Header.asp" -->
+<!-- #include file="Using.asp" -->
+namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Business) %>
+{
+<%
+    %><!-- #include file="XmlComment.asp" -->
+    <%
+    if (GetAttributesString(Info.Attributes) != string.Empty)
+    {
+        %>
+    <%= GetAttributesString(Info.Attributes) %>
+    <%
+    }
+    %>
+    [Serializable]
+<%
+    if (CurrentUnit.GenerationParams.DualListInheritance)
+    {
+        %>#if WINFORMS
+    <%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %>public partial class <%= Info.ObjectName %> : <%
+        if (Info.InheritedTypeWinForms.Type != string.Empty || Info.InheritedTypeWinForms.ObjectName != string.Empty)
+        {
+            %><!-- #include file="InheritsWinForms.asp" --><%
+        }
+        else
+        {
+            %><%= ListBaseHelper("Dynamic", true) %><<%= Info.ItemType %>><!-- #include file="Implements.asp" --><%
+        }
+
+        %>#else
+    <%
+    }
+    %><%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %>public partial class <%= Info.ObjectName %> : <%
+    if (Info.InheritedType.Type != string.Empty || Info.InheritedType.ObjectName != string.Empty)
+    {
+        %><!-- #include file="Inherits.asp" --><%
+    }
+    else
+    {
+        %><%= ListBaseHelper("Dynamic", CurrentUnit.GenerationParams.GenerateWinForms && !CurrentUnit.GenerationParams.DualListInheritance) %><<%= Info.ItemType %>><!-- #include file="Implements.asp" --><%
+    }
+    if (CurrentUnit.GenerationParams.DualListInheritance)
+    {
+        %>#endif
+    <%
+    }
+    %><%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %>{
+<!-- #include file="CollectionBusinessMethods.asp" -->
+<!-- #include file="FindMethods.asp" -->
+    <%
+    if (Info.GenerateFactoryMethods)
+    {
+        %>
+<!-- #include file="DynamicEditableRootCollection_Factory.asp" -->
+<%
+    }
+    Response.Write(Environment.NewLine);
+    %>
+<!-- #include file="Constructor.asp" -->
+<!-- #include file="Criteria.asp" -->
+<!-- #include file="ObjectAuthorizationMethods.asp" -->
+<%
+    if (Info.GenerateDataAccessRegion)
+    {
+        if (!genOptional)
+        {
+            Response.Write(Environment.NewLine);
+        }
+        %>
+<!-- #include file="DynamicEditableRootCollection_DataPortal.asp" -->
+<!-- #include file="Events.asp" -->
+
+<%
+    }
+    %>
+
+    }
+<!-- #include file="CriteriaObject.asp" -->
+}
+<%
+}
+%>
