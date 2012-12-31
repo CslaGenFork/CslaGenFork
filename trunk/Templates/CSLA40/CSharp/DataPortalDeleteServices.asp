@@ -63,6 +63,7 @@ if (Info.GenerateDataPortalDelete &&
         /// Deletes the <see cref="<%= Info.ObjectName %>"/> object immediately.
         /// </summary>
         /// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The delete criteria.</param>
+        /// <param name="handler">The asynchronous handler.</param>
         <%
             if (Info.TransactionType == TransactionType.EnterpriseServices)
             {
