@@ -48,7 +48,7 @@ namespace CslaGenerator.Metadata
         private readonly ChildPropertyCollection _inheritedChildProperties = new ChildPropertyCollection();
         private readonly ChildPropertyCollection _inheritedChildCollectionProperties = new ChildPropertyCollection();
         private readonly CriteriaCollection _criteriaObjects = new CriteriaCollection();
-        private CriteriaCollection _myCriteriaObjects = new CriteriaCollection();
+        private List<CriteriaCollection> _unitOfWorkCriteriaObjects = new List<CriteriaCollection>();
         private PropertyCollection _equalsProperty = new PropertyCollection();
         private PropertyCollection _hashcodeProperty = new PropertyCollection();
         private PropertyCollection _toStringProperty = new PropertyCollection();
@@ -587,7 +587,13 @@ namespace CslaGenerator.Metadata
         [UserFriendlyName("Criteria Objects")]
         public CriteriaCollection CriteriaObjects
         {
-            get { return _criteriaObjects; }
+            get
+            {
+                if (_objectType == CslaObjectType.UnitOfWork)
+                    return new CriteriaCollection();
+
+                return _criteriaObjects;
+            }
         }
 
         #endregion
@@ -1430,10 +1436,10 @@ namespace CslaGenerator.Metadata
 
         [Browsable(false)]
         [XmlIgnore]
-        public CriteriaCollection MyCriteriaObjects
+        public List<CriteriaCollection> UnitOfWorkCriteriaObjects
         {
-            get { return _myCriteriaObjects; }
-            set { _myCriteriaObjects = value; }
+            get { return _unitOfWorkCriteriaObjects; }
+            set { _unitOfWorkCriteriaObjects = value; }
         }
 
         [Browsable(false)]

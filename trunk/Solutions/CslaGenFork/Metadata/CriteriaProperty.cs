@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Drawing.Design;
+using System.Xml.Serialization;
 using CslaGenerator.Attributes;
 using CslaGenerator.Design;
 
@@ -8,7 +9,8 @@ namespace CslaGenerator.Metadata
     public class CriteriaProperty : Property, IBoundProperty
     {
         private DbBindColumn _dbBindColumn = new DbBindColumn();
-        private string _parameterValue;
+        private string _parameterValue = string.Empty;
+        private string _unitOfWorkFactoryParameter = string.Empty;
 
         public CriteriaProperty()
         {
@@ -85,6 +87,14 @@ namespace CslaGenerator.Metadata
         {
             get { return _parameterValue; }
             set { _parameterValue = PropertyHelper.TidyAllowSpaces(value); }
+        }
+
+        [Browsable(false)]
+        [XmlIgnore]
+        public string UnitOfWorkFactoryParameter
+        {
+            get { return _unitOfWorkFactoryParameter; }
+            set { _unitOfWorkFactoryParameter = value; }
         }
 
         internal static CriteriaProperty Clone(CriteriaProperty masterCritProp)

@@ -628,6 +628,8 @@ namespace CslaGenerator.Util.PropertyBags
         {
             try
             {
+                //var cslaObject = (CslaObjectInfo) GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem;
+
                 /*if (propertyName == "ParameterName" ||
                         propertyName == "Nullable")
                     return false;*/

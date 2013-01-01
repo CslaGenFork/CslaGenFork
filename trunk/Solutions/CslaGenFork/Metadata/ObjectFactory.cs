@@ -575,9 +575,9 @@ namespace CslaGenerator.Metadata
             }
         }
 
-        private static Criteria CreateEmptyNewAndFetchCriteria()
+        private Criteria CreateEmptyNewAndFetchCriteria()
         {
-            var c = new Criteria();
+            var c = new Criteria(_currentCslaObject);
             c.Name = "Criteria";
             c.CreateOptions.Enable();
             c.CreateOptions.RunLocal = true;
@@ -586,9 +586,9 @@ namespace CslaGenerator.Metadata
             return c;
         }
 
-        private static Criteria CreateEmptyFetchCriteria()
+        private Criteria CreateEmptyFetchCriteria()
         {
-            var c = new Criteria();
+            var c = new Criteria(_currentCslaObject);
             c.Name = "CriteriaGet";
             c.GetOptions.Enable();
             return c;

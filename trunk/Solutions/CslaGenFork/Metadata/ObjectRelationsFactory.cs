@@ -325,7 +325,7 @@ namespace CslaGenerator.Metadata
 
             if (criteria == null)
             {
-                criteria = new Criteria();
+                criteria = new Criteria(info);
                 criteria.Name = critName;
                 SetCollectionCriteriaGet(criteria, info, critName);
                 info.CriteriaObjects.Add(criteria);
@@ -503,7 +503,7 @@ namespace CslaGenerator.Metadata
 
             if (criteria == null)
             {
-                criteria = new Criteria { Name = critName };
+                criteria = new Criteria(info) { Name = critName };
                 SetCollectionItemCriteriaNew(criteria, critName);
                 info.CriteriaObjects.Add(criteria);
 
@@ -655,7 +655,7 @@ namespace CslaGenerator.Metadata
 
             if (criteria == null)
             {
-                criteria = new Criteria { Name = critName };
+                criteria = new Criteria(info) { Name = critName };
                 SetCollectionItemCriteriaDelete(criteria, info, myRootInfo == MainObjectInfo, critName);
                 info.CriteriaObjects.Add(criteria);
 

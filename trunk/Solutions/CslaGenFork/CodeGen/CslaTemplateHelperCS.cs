@@ -297,7 +297,7 @@ namespace CslaGenerator.CodeGen
             return statement;
         }
 
-        public bool AllowNull(Property prop)
+        public static bool AllowNull(Property prop)
         {
             /*return GeneratorController.Current.CurrentUnit.GenerationParams.NullableSupport &&
                 prop.Nullable &&
@@ -381,7 +381,7 @@ namespace CslaGenerator.CodeGen
             return type;
         }
 
-        public virtual string GetDataType(TypeCodeEx type)
+        public static string GetDataType(TypeCodeEx type)
         {
             if (type == TypeCodeEx.Byte)
                 return "byte";
@@ -2456,15 +2456,28 @@ namespace CslaGenerator.CodeGen
             return GetInitValue(typeCode);
         }
 
-        public virtual string GetDataTypeGeneric(Property prop, TypeCodeEx field)
+        public static string GetDataTypeGeneric(Property prop, TypeCodeEx field)
         {
-            string type = GetDataType(field);
+            var type = GetDataType(field);
             if (AllowNull(prop))
             {
                 if (TypeHelper.IsNullableType(field))
                     type += "?";
             }
             return type;
+        }
+
+        public static string GetDataTypeInitExpression(Property prop, TypeCodeEx field)
+        {
+            var type = GetDataType(field);
+            if (TypeHelper.IsNullableType(field))
+            {
+                if (AllowNull(prop))
+                    return "null";
+                
+                return string.Format("new {0}()", type);
+            }
+            return "null";
         }
 
         public string FieldDeclare(CslaObjectInfo info, ValueProperty prop)
@@ -4463,63 +4476,6 @@ namespace CslaGenerator.CodeGen
         }
 
         /// <summary>
-        /// Filters and merges the unit of work criteriacollection.
-        /// Collection is filtered according to the type of the Unit of Work Type under processing.
-        /// </summary>
-        /// <param name="info">The info.</param>
-        /// <returns>A single filtered collection of properties.</returns>
-        public static CriteriaCollection FilterAndMergeUnitOfWorkCriteriaCollection(CslaObjectInfo info)
-        {
-            if (info.IsUpdater)
-                return null;
-
-            var masterCrit = new Criteria();
-
-            var criteriaCount = 0;
-            foreach (var crit in info.CriteriaObjects)
-            {
-                /*if ((crit.IsCreator && info.IsCreator) ||
-                    (crit.IsGetter && info.IsGetter) ||
-                    (crit.IsDeleter && info.IsDeleter))*/
-                if (crit.Properties.Count > 0)
-                    criteriaCount++;
-            }
-
-            // TODO: must filter by type of Unit of Work
-            // merge only if more than 1 criteria with properties
-            if (criteriaCount < 2)
-                return info.CriteriaObjects;
-
-            foreach (var crit in info.CriteriaObjects)
-            {
-                /*if ((crit.IsCreator && info.IsCreator) ||
-                    (crit.IsGetter && info.IsGetter) ||
-                    (crit.IsDeleter && info.IsDeleter))*/
-                masterCrit = Criteria.MergeUnitOfWorkCriteria(masterCrit, crit);
-            }
-
-            if (info.IsCreator)
-            {
-                masterCrit.CreateOptions.Factory = true;
-                masterCrit.CreateOptions.DataPortal = true;
-            }
-            if (info.IsGetter)
-            {
-                masterCrit.GetOptions.Factory = true;
-                masterCrit.GetOptions.DataPortal = true;
-            }
-            if (info.IsDeleter)
-            {
-                masterCrit.DeleteOptions.Factory = true;
-                masterCrit.DeleteOptions.DataPortal = true;
-            }
-
-            var critCollection = new CriteriaCollection();
-            critCollection.Add(masterCrit);
-            return critCollection;
-        }
-
-        /// <summary>
         /// Returns whether the object associated to the UnitOfWork must be fethed.
         /// </summary>
         /// <param name="info">The Unit of Work under processing.</param>
@@ -4534,109 +4490,6 @@ namespace CslaGenerator.CodeGen
                 isGetter = true;
 
             return isGetter;
-        }
-
-        /// <summary>
-        /// Check if a subset of the criteria properties match the specifiyed target criteria properties.
-        /// </summary>
-        /// <param name="info">The Unit of Work under processing.</param>
-        /// <param name="uowProp">The UnitOfWork property with target's object metadata.</param>
-        /// <param name="uowCrit">The UnitOfWork criteria.</param>
-        /// <returns><c>true</c> if there is a match; <c>false</c> otherwise.</returns>
-        /// <remarks></remarks>
-        public static bool CheckTargetPropertiesFound(CslaObjectInfo info, UnitOfWorkProperty uowProp, Criteria uowCrit)
-        {
-            // no target criteria to check
-            if (uowProp.TargetCriteria == String.Empty)
-                return false;
-
-            var targetInfo = info.Parent.CslaObjects.Find(uowProp.TypeName);
-            var targetCrit = GetCriteriaObjects(targetInfo).Find(uowProp.TargetCriteria);
-
-            if (targetCrit.Properties.Count > uowCrit.Properties.Count)
-                return false;
-
-            if (uowCrit.Properties.Count == 0)
-                return false;
-
-            var criteriaCount = uowCrit.Properties.Count;
-
-            /*if ((!isGetter && uowCrit.IsCreator) ||
-                (isGetter && uowCrit.IsGetter) ||
-                (info.IsDeleter && uowCrit.IsDeleter))*/
-            if ((info.IsCreator && uowCrit.IsCreator) ||
-                ((info.IsGetter || info.IsCreatorGetter) && uowCrit.IsGetter) ||
-                (info.IsDeleter && uowCrit.IsDeleter))
-            {
-                var matchStart = false;
-                var targetPropCounter = 0;
-                for (var c = 0; c < criteriaCount; c++)
-                {
-                    if (uowCrit.Properties[c].Name == targetCrit.Properties[targetPropCounter].Name &&
-                        uowCrit.Properties[c].PropertyType == targetCrit.Properties[targetPropCounter].PropertyType)
-                    {
-                        matchStart = true;
-                        targetPropCounter++;
-                        if (targetPropCounter == targetCrit.Properties.Count)
-                            return true;
-                    }
-                    else
-                    {
-                        if (matchStart)
-                        {
-                            if (targetPropCounter == targetCrit.Properties.Count)
-                                return true;
-
-                            return false;
-                        }
-                    }
-                }
-                if (matchStart)
-                    return true;
-
-                return false;
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Check if a given criteria property matches any of the specifiyed target criteria properties.
-        /// </summary>
-        /// <param name="info">The Unit of Work under processing.</param>
-        /// <param name="uowProp">The UnitOfWork property with target's object metadata.</param>
-        /// <param name="uowCrit">The UnitOfWork criteria.</param>
-        /// <param name="critProp">The criteria property under test.</param>
-        /// <returns><c>true</c> if there is a match; <c>false</c> otherwise.</returns>
-        public static bool IsTargetProperty(CslaObjectInfo info, UnitOfWorkProperty uowProp, Criteria uowCrit, Property critProp)
-        {
-            // no target criteria to check
-            if (uowProp.TargetCriteria == String.Empty)
-                return false;
-
-            var targetInfo = info.Parent.CslaObjects.Find(uowProp.TypeName);
-            var targetCrit = GetCriteriaObjects(targetInfo).Find(uowProp.TargetCriteria);
-
-            var isGetter = ForceIsGetter(info, uowProp);
-
-            /*if ((!isGetter && uowCrit.IsCreator) ||
-                (isGetter && uowCrit.IsGetter) ||
-                (info.IsDeleter && uowCrit.IsDeleter))*/
-            if ((info.IsCreator && uowCrit.IsCreator) ||
-                ((info.IsGetter || info.IsCreatorGetter) && uowCrit.IsGetter) ||
-                (info.IsDeleter && uowCrit.IsDeleter))
-            {
-                foreach (var targetProp in targetCrit.Properties)
-                {
-                    if (targetProp.Name == critProp.Name &&
-                        targetProp.PropertyType == critProp.PropertyType)
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
         }
 
         #endregion
@@ -5270,38 +5123,30 @@ namespace CslaGenerator.CodeGen
 
         public bool IsCriteriaClassNeeded(CslaObjectInfo info)
         {
-            return (from crit in GetCriteriaObjects(info)
+            return (from crit in info.CriteriaObjects
                     where crit.Properties.Count > 1
                     select FactoryOrDataPortal(crit)).FirstOrDefault();
         }
 
         public bool IsCriteriaNestedClassNeeded(CslaObjectInfo info)
         {
-            return (from crit in GetCriteriaObjects(info)
+            return (from crit in info.CriteriaObjects
                     where crit.Properties.Count > 1 && crit.NestedClass
                     select FactoryOrDataPortal(crit)).FirstOrDefault();
         }
 
         public bool IsCriteriaObjectNeeded(CslaObjectInfo info)
         {
-            return (from crit in GetCriteriaObjects(info)
+            return (from crit in info.CriteriaObjects
                     where crit.Properties.Count > 1 && !crit.NestedClass
                     select FactoryOrDataPortal(crit)).FirstOrDefault();
         }
 
         public bool IsCriteriaExtendedClassNeeded(CslaObjectInfo info)
         {
-            return (from crit in GetCriteriaObjects(info)
+            return (from crit in info.CriteriaObjects
                     where crit.Properties.Count > 1 && crit.CriteriaClassMode == CriteriaMode.BusinessBase
                     select FactoryOrDataPortal(crit)).FirstOrDefault();
-        }
-
-        public static CriteriaCollection GetCriteriaObjects(CslaObjectInfo info)
-        {
-            if (info.ObjectType != CslaObjectType.UnitOfWork)
-                return info.CriteriaObjects;
-
-            return info.MyCriteriaObjects;
         }
 
         private static bool FactoryOrDataPortal(Criteria crit)

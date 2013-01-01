@@ -979,6 +979,11 @@ namespace CslaGenerator.Util.PropertyBags
                             cslaObject.ObjectType != CslaObjectType.EditableChild) &&
                             propertyName == "DeleteUseTimestamp")
                             return false;
+                        if (((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40 &&
+                            GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL) ||
+                            cslaObject.ObjectType == CslaObjectType.UnitOfWork) &&
+                            propertyName == "CommandTimeout")
+                            return false;
                         if ((((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40 &&
                             GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL) ||
                             !(cslaObject.ObjectType == CslaObjectType.EditableChild &&
