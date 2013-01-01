@@ -30,7 +30,7 @@ namespace CslaGenerator.Metadata
 
         #region Constructors
 
-        public Criteria()
+        internal Criteria()
         {
             SetHandlers(_getOptions);
             SetHandlers(_deleteOptions);
@@ -163,6 +163,12 @@ namespace CslaGenerator.Metadata
         #endregion
 
         [Browsable(false)]
+        public CslaObjectInfo ParentObject
+        {
+            get { return _parentObject; }
+        }
+
+        [Browsable(false)]
         public bool IsCreator
         {
             get
@@ -261,7 +267,7 @@ namespace CslaGenerator.Metadata
 
         internal static Criteria Clone(Criteria masterCrit)
         {
-            var newCrit = new Criteria();
+            var newCrit = new Criteria(masterCrit.ParentObject);
             newCrit.Name = masterCrit.Name;
             newCrit.CriteriaClassMode = masterCrit.CriteriaClassMode;
             newCrit.NestedClass = masterCrit.NestedClass;
@@ -274,24 +280,6 @@ namespace CslaGenerator.Metadata
             newCrit.Properties.AddRange(CriteriaPropertyCollection.Clone(masterCrit.Properties));
 
             return newCrit;
-        }
-
-        internal static Criteria MergeUnitOfWorkCriteria(Criteria masterCrit, Criteria newCrit)
-        {
-            var mergedCrit = new Criteria();
-            if (mergedCrit.Name == string.Empty)
-            {
-                mergedCrit.CriteriaClassMode = newCrit.CriteriaClassMode;
-                mergedCrit.NestedClass = newCrit.NestedClass;
-                mergedCrit.Name = "UnitOfWorkCriteria";
-            }
-            mergedCrit.Summary = masterCrit.Summary + newCrit.Summary;
-            mergedCrit.Remarks = masterCrit.Remarks + newCrit.Remarks;
-
-            mergedCrit.Properties.AddRange(CriteriaPropertyCollection.Clone(masterCrit.Properties));
-            mergedCrit.Properties.AddRange(CriteriaPropertyCollection.Clone(newCrit.Properties));
-
-            return mergedCrit;
         }
 
         #endregion

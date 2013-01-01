@@ -25,6 +25,13 @@ namespace CslaGenerator.Metadata
             _dataPortal = true;
         }
 
+        public void Disable()
+        {
+            _factory = false;
+            _procedure = false;
+            _dataPortal = false;
+        }
+
         [Description("Defines whether you want to generate the factory methods or not.")]
         public bool Factory
         {

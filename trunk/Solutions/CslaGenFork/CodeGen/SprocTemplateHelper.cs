@@ -19,7 +19,6 @@ namespace CslaGenerator.CodeGen
 
         private readonly ICatalog _catalog = GeneratorController.Catalog;
         private CslaObjectInfo _info;
-        /*private bool _includeParentProperties = false;*/
         private Criteria _criteria = new Criteria();
         private bool _criteriaDefined;
         private CslaObjectInfo _topLevelObject;
@@ -431,7 +430,7 @@ namespace CslaGenerator.CodeGen
 
         private string InjectParentPropertiesOnResultSet(CslaObjectInfo info, ref bool first, ref List<IColumnInfo> usedByParentProperties)
         {
-            var tables = GetTables(new Criteria(), info, false);
+            var tables = GetTables(new Criteria(info), info, false);
             var fKeys = Catalog.ForeignKeyConstraints.GetConstraintsFor(tables[0]);
             fKeys = FilterDuplicateConstraintTables(fKeys, info.GetDatabaseBoundValueProperties());
             var sb = new StringBuilder();

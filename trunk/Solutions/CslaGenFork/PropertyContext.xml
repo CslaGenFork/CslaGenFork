@@ -23,7 +23,7 @@
     <add key="UnitOfWork:ConvertValueProperties" value="false" />
     <add key="UnitOfWork:UpdateValueProperties" value="false" />
     <add key="UnitOfWork:ValueProperties" value="false" />
-    <add key="UnitOfWork:CriteriaObjects" value="true" />
+    <add key="UnitOfWork:CriteriaObjects" value="false" />
     <add key="UnitOfWork:LazyLoad" value="false" />
     <add key="UnitOfWork:ParentProperties" value="false" />
     <add key="UnitOfWork:ParentType" value="false" />

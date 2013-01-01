@@ -4,6 +4,7 @@ using System.Drawing.Design;
 using System.IO;
 using System.Xml.Serialization;
 using CslaGenerator.Attributes;
+using CslaGenerator.CodeGen;
 using CslaGenerator.Design;
 
 namespace CslaGenerator.Metadata
@@ -19,7 +20,7 @@ namespace CslaGenerator.Metadata
 
         private PropertyDeclaration _declarationMode = PropertyDeclaration.Managed;
         private string _typeName = String.Empty;
-        private string _targetCriteria = String.Empty;
+        private CslaObjectInfo _info;
 
         #endregion
 
@@ -34,17 +35,21 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Definition")]
-        [Description("This is a description.")]
-        [Editor(typeof(UnitOfWorkTypeEditor), typeof(UITypeEditor))]
+        [Description("The type (class) for this property.")]
+        [Editor(typeof (UnitOfWorkTypeEditor), typeof (UITypeEditor))]
         [UserFriendlyName("Type Name")]
         public string TypeName
         {
-            get { return _typeName; }
-            set { _typeName = value; }
+            get
+            {
+                _info = GeneratorController.Current.CurrentUnit.CslaObjects.Find(_typeName);
+                return _typeName;
+            }
+            set { _typeName = PropertyHelper.Tidy(value); }
         }
 
         [Category("01. Definition")]
-        [Description("Property Declaration Mode. For Unit of Work this must be \"AutoProperty\" or \"Managed\".")]
+        [Description("The Property Declaration Mode must be \"AutoProperty\" or \"Managed\".")]
         [UserFriendlyName("Declaration Mode")]
         public PropertyDeclaration DeclarationMode
         {
@@ -53,30 +58,31 @@ namespace CslaGenerator.Metadata
             {
                 if (value == PropertyDeclaration.AutoProperty ||
                     value == PropertyDeclaration.Managed)
-                _declarationMode = value;
+                    _declarationMode = value;
             }
         }
 
         [Category("01. Definition")]
-        [Description("Whether this property can be changed by other classes.")]
-        public override bool ReadOnly
+        [Description("Whether this type can can create objects. The value isfalse for ReadOnly and NameValueList types; otherwise is true.")]
+        [UserFriendlyName("Creates Objects")]
+        [ReadOnly(true)]
+        public bool CreatesObject
         {
-            get { return base.ReadOnly; }
-            set { base.ReadOnly = value; }
+            get
+            {
+                if (_info != null && !CslaTemplateHelperCS.IsEditableType(_info.ObjectType))
+                    return false;
+
+                return true;
+            }
         }
 
-        #endregion
-
-        #region 05. Options
-
-        [Category("05. Options")]
-        [Editor(typeof(UnitOfWorkTargetCriteriaEditor), typeof(UITypeEditor))]
-        [Description("The criteria name of target object, that is used to load the object.")]
-        [UserFriendlyName("Target Criteria")]
-        public string TargetCriteria
+        [Category("01. Definition")]
+        [Description("Whether this property is read only.")]
+        [ReadOnly(true)]
+        public override bool ReadOnly
         {
-            get { return _targetCriteria; }
-            set { _targetCriteria = value; }
+            get { return true; }
         }
 
         #endregion
@@ -105,11 +111,10 @@ namespace CslaGenerator.Metadata
         public override object Clone()
         {
             var buffer = new MemoryStream();
-            var ser = new XmlSerializer(typeof(UnitOfWorkProperty));
+            var ser = new XmlSerializer(typeof (UnitOfWorkProperty));
             ser.Serialize(buffer, this);
             buffer.Position = 0;
             return ser.Deserialize(buffer);
         }
-
     }
 }

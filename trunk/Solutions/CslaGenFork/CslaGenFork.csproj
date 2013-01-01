@@ -247,7 +247,6 @@
     <Compile Include="Design\AuthorizationRuleTypeEditor.cs" />
     <Compile Include="Design\SourcePropertyTypeEditor.cs" />
     <Compile Include="Design\UnitOfWorkTypeEditor.cs" />
-    <Compile Include="Design\UnitOfWorkTargetCriteriaEditor.cs" />
     <Compile Include="Design\UseUnitOfWorkTypeEditor.cs" />
     <Compile Include="ICodeGenerator.cs" />
     <Compile Include="CodeGen\SprocTemplateHelper.cs" />
@@ -290,6 +289,7 @@
     <Compile Include="Metadata\BusinessRuleProperty.cs" />
     <Compile Include="Metadata\BusinessRulePropertyCollection.cs" />
     <Compile Include="Metadata\BusinessRuleRunModes.cs" />
+    <Compile Include="Metadata\CriteriaMergeType.cs" />
     <Compile Include="Metadata\CriteriaMode.cs" />
     <Compile Include="Metadata\CslaGeneratorUnitLayout.cs" />
     <Compile Include="Metadata\GenerationReport.cs" />
@@ -306,6 +306,7 @@
     <Compile Include="Metadata\AuthorizationRule.cs" />
     <Compile Include="Metadata\SimpleCacheResults.cs" />
     <Compile Include="Metadata\TargetDto.cs" />
+    <Compile Include="Metadata\UnitOfWorkCriteriaManager.cs" />
     <Compile Include="Metadata\UnitOfWorkProperty.cs" />
     <Compile Include="Metadata\UnitOfWorkPropertyCollection.cs" />
     <Compile Include="Metadata\UnitOfWorkFunction.cs" />

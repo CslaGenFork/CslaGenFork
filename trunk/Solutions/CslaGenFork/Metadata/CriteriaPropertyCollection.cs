@@ -51,6 +51,7 @@ namespace CslaGenerator.Metadata
                 newCritProp.DbBindColumn = (DbBindColumn)critProp.DbBindColumn.Clone();
                 ((Property)newCritProp).Clone(critProp);
                 newCritProp.ParameterValue = critProp.ParameterValue;
+                newCritProp.UnitOfWorkFactoryParameter = critProp.UnitOfWorkFactoryParameter;
 
                 newCritProps.Add(newCritProp);
             }
