@@ -4,7 +4,7 @@ if (Info.GenerateDataPortalDelete &&
 {
     List<string> deletePartialMethods = new List<string>();
     List<string> deletePartialParams = new List<string>();
-    foreach (Criteria c in GetCriteriaObjects(Info))
+    foreach (Criteria c in Info.CriteriaObjects)
     {
         if (c.DeleteOptions.DataPortal)
         {

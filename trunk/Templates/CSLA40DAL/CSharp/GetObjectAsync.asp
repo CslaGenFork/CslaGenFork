@@ -3,16 +3,47 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
 {
     if (!Info.UseCustomLoading)
     {
-        foreach (Criteria c in GetCriteriaObjects(Info))
+        foreach (Criteria c in Info.CriteriaObjects)
         {
             if (Info.ObjectType == CslaObjectType.UnitOfWork && Info.IsCreatorGetter && c.Properties.Count == 0)
                 continue;
             if (c.GetOptions.Factory)
             {
+                if (!isChild && !c.NestedClass && c.Properties.Count > 1 && Info.ObjectType != CslaObjectType.EditableSwitchable)
+                {
+                    %>
+
+        /// <summary>
+        /// Factory method. Asynchronously loads a <see cref="<%= Info.ObjectName %>"/> object, based on given parameters.
+        /// </summary>
+        /// <param name="crit">The fetch criteria.</param>
+        /// <param name="callback">The completion callback method.</param>
+        public static void Get<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>(<%= c.Name %> crit, EventHandler<DataPortalResult<<%= Info.ObjectName %>>> callback)
+        {
+            <%
+                    if (Info.UseUnitOfWorkType == string.Empty)
+                    {
+                        %>
+            DataPortal.BeginFetch<<%= Info.ObjectName %>>(crit, callback);
+        <%
+                    }
+                    else
+                    {
+                        %>
+            <%= Info.UseUnitOfWorkType %>.Get<%= Info.UseUnitOfWorkType %>(crit, (o, e) =>
+            {
+                callback(o, new DataPortalResult<<%= Info.ObjectName %>>(e.Object.<%= Info.ObjectName %>, e.Error, null));
+            });
+            <%
+                    }
+                    %>
+        }
+        <%
+                }
                 %>
 
         /// <summary>
-        /// Factory method. Asynchronously loads a <see cref="<%= Info.ObjectName %>"/> <%= Info.ObjectType == CslaObjectType.UnitOfWork ? "unit of objects" : "object" %><%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
+        /// Factory method. Asynchronously loads a <see cref="<%= Info.ObjectName %>"/> object<%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
         /// </summary>
         <%
                 string strGetParams = string.Empty;
@@ -65,7 +96,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
                     else
                     {
                         %>
-            <%= Info.UseUnitOfWorkType %>.Get<%= Info.UseUnitOfWorkType %>(<%= strGetCritParams %>, (o, e) =>
+            <%= Info.UseUnitOfWorkType %>.Get<%= Info.UseUnitOfWorkType %>(new <%= c.Name %>(<%= strGetCritParams %>), (o, e) =>
             {
                 callback(o, new DataPortalResult<<%= Info.ObjectName %>>(e.Object.<%= Info.ObjectName %>, e.Error, null));
             });

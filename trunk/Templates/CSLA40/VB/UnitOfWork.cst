@@ -55,6 +55,7 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Busine
     Response.Write(Environment.NewLine);
     %>
 <!-- #include file="Constructor.asp" -->
+<!-- #include file="CriteriaUnitOfWork.asp" -->
 <!-- #include file="UnitOfWork_DataPortal.asp" -->
 <%
     Response.Write(Environment.NewLine);

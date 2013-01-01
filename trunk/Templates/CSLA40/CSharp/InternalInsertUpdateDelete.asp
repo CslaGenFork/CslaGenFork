@@ -389,7 +389,6 @@ if (Info.GenerateDataPortalDelete)
     if (Info.GetMyChildProperties().Count > 0)
     {
         %>
-                // flushes all pending data operations
 <!-- #include file="UpdateChildProperties.asp" -->
                 <%
     }

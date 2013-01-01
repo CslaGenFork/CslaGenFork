@@ -1,94 +1,81 @@
 <%
 if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationParams.GenerateSilverlight4)
 {
-    if (!Info.UseCustomLoading)
+    foreach (UnitOfWorkCriteriaManager.UoWCriteria uowCrit in listUoWCriteriaGetter)
     {
-        foreach (Criteria c in GetCriteriaObjects(Info))
+        string strGetParams = string.Empty;
+        string strGetCritParams = string.Empty;
+        string strGetComment = string.Empty;
+        int elementCriteriaCount = 0;
+        int parameterCount = 0;
+        foreach (UnitOfWorkCriteriaManager.ElementCriteria c in uowCrit.ElementCriteriaList)
         {
-            if (Info.ObjectType == CslaObjectType.UnitOfWork && Info.IsCreatorGetter && c.Properties.Count == 0)
+            if (string.IsNullOrEmpty(c.Name))
                 continue;
-            if (c.GetOptions.Factory)
+
+            if (!string.IsNullOrEmpty(c.Parameter))
             {
-                %>
+                if (elementCriteriaCount > 0)
+                    strGetCritParams += ", ";
+                strGetCritParams += c.Parameter;
+                elementCriteriaCount++;
+            }
+
+            if (elementCriteriaCount > 0)
+                strGetCritParams += ", ";
+            if (parameterCount > 0)
+                strGetParams += ", ";
+            strGetParams += string.Concat(c.Type, " ", FormatCamel(c.Name));
+            strGetCritParams += FormatCamel(c.Name);
+            strGetComment += "/// <param name=\"" + FormatCamel(c.Name) + "\">The " + FormatProperty(c.Name) + " parameter of the " + Info.ObjectName + " to fetch.</param>" + System.Environment.NewLine + new string(' ', 8);
+            elementCriteriaCount++;
+            parameterCount++;
+        }
+        strGetParams += (strGetParams.Length > 0 ? ", " : "") + "EventHandler<DataPortalResult<" + Info.ObjectName + ">> callback";
+        string strGetCache = string.Empty;
+        foreach (UnitOfWorkProperty prop in Info.UnitOfWorkProperties)
+        {
+            CslaObjectInfo objectInfo = Info.Parent.CslaObjects.Find(prop.TypeName);
+            if (objectInfo.SimpleCacheOptions != SimpleCacheResults.None)
+            {
+                strGetCache += "                if (!" + prop.TypeName + ".IsCached)" + Environment.NewLine;
+                strGetCache += "                    " + prop.TypeName + ".SetCache(e.Object." + prop.TypeName + ");" + Environment.NewLine;
+            }
+        }
+        %>
 
         /// <summary>
-        /// Factory method. Asynchronously loads a <see cref="<%= Info.ObjectName %>"/> unit of objects<%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
+        /// Factory method. Asynchronously loads a <see cref="<%= Info.ObjectName %>"/> unit of objects<%= elementCriteriaCount > 0 ? ", based on given parameters" : "" %>.
         /// </summary>
-        <%
-                string strGetParams = string.Empty;
-                string strGetCritParams = string.Empty;
-                bool firstParam = true;
-                bool isCriteriaClassNeeded = IsCriteriaClassNeeded(Info);
-                for (int i = 0; i < c.Properties.Count; i++)
-                {
-                    if (string.IsNullOrEmpty(c.Properties[i].ParameterValue))
-                    {
-                        %>
-        /// <param name="<%= FormatCamel(c.Properties[i].Name) %>">The <%= FormatProperty(c.Properties[i].Name) %> parameter of the <%= Info.ObjectName %> to fetch.</param>
-        <%
-                        if (firstParam)
-                        {
-                            firstParam = false;
-                        }
-                        else
-                        {
-                            strGetParams += ", ";
-                            strGetCritParams += ", ";
-                        }
-                        strGetParams += string.Concat(GetDataTypeGeneric(c.Properties[i], c.Properties[i].PropertyType), " ", FormatCamel(c.Properties[i].Name));
-                        strGetCritParams += FormatCamel(c.Properties[i].Name);
-                    }
-                    else
-                    {
-                        if (!isCriteriaClassNeeded)
-                            strGetCritParams += c.Properties[i].ParameterValue;
-                    }
-                }
-                strGetParams += (strGetParams.Length > 0 ? ", " : "") + "EventHandler<DataPortalResult<" + Info.ObjectName + ">> callback";
-                string strGetCache = string.Empty;
-                foreach (UnitOfWorkProperty prop in Info.UnitOfWorkProperties)
-                {
-                    CslaObjectInfo objectInfo = Info.Parent.CslaObjects.Find(prop.TypeName);
-                    if (objectInfo.SimpleCacheOptions != SimpleCacheResults.None)
-                    {
-                        strGetCache += "                if (!" + prop.TypeName + ".IsCached)" + Environment.NewLine;
-                        strGetCache += "                    " + prop.TypeName + ".SetCache(e.Object." + prop.TypeName + ");" + Environment.NewLine;
-                    }
-                }
-                %>
-        /// <param name="callback">The completion callback method.</param>
-        <%= Info.ParentType == string.Empty ? "public" : "internal" %> static void Get<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>(<%= strGetParams %>)
+        <%= strGetComment %>/// <param name="callback">The completion callback method.</param>
+        <%= Info.ParentType == string.Empty ? "public" : "internal" %> static void Get<%= Info.ObjectName %>(<%= strGetParams %>)
         {
             <%
-                if (Info.ObjectType == CslaObjectType.EditableSwitchable)
-                {
-                    strGetCritParams = "false, " + strGetCritParams;
-                }
-                if (c.Properties.Count > 1 || (Info.ObjectType == CslaObjectType.EditableSwitchable && c.Properties.Count == 1))
-                {
-                    %>
-            DataPortal.BeginFetch<<%= Info.ObjectName %>>(new <%= c.Name %>(<%= strGetCritParams %>), (o, e) =>
+        if (elementCriteriaCount > 1 || (Info.ObjectType == CslaObjectType.EditableSwitchable && elementCriteriaCount == 1))
+        {
+            %>
+            DataPortal.BeginFetch<<%= Info.ObjectName %>>(new <%= uowCrit.CriteriaName %>(<%= strGetCritParams %>), (o, e) =>
             {
                 if (e.Error != null)
                     throw e.Error;
 <%= strGetCache %>                callback(o, e);
             });
             <%
-                }
-                else if (c.Properties.Count > 0)
-                {
-                    %>
-            DataPortal.BeginFetch<<%= Info.ObjectName %>>(<%= SendSingleCriteria(c, strGetCritParams) %>, (o, e) =>
+        }
+        else if (elementCriteriaCount > 0)
+        {
+            %>
+            DataPortal.BeginFetch<<%= Info.ObjectName %>>(<%= strGetCritParams %>, (o, e) =>
             {
                 if (e.Error != null)
                     throw e.Error;
 <%= strGetCache %>                callback(o, e);
             });
             <%
-                }
-                else
-                {
-                    %>
+        }
+        else
+        {
+            %>
             DataPortal.BeginFetch<<%= Info.ObjectName %>>((o, e) =>
             {
                 if (e.Error != null)
@@ -96,12 +83,10 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
 <%= strGetCache %>                callback(o, e);
             });
         <%
-                }
+        }
                 %>
         }
 <%
-            }
-        }
     }
 }
 %>

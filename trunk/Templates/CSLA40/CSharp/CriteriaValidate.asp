@@ -16,7 +16,7 @@ bool getOptionsDataPortal;
 bool deleteOptionsFactory;
 bool deleteOptionsDataPortal;
 
-foreach (Criteria crit in GetCriteriaObjects(Info))
+foreach (Criteria crit in Info.CriteriaObjects)
 {
     foreach (CriteriaProperty criteriaProperty in crit.Properties)
     {
@@ -40,7 +40,7 @@ getOptionsFactory = false;
 
 if (Info.ObjectType == CslaObjectType.EditableRoot || (Info.ObjectType == CslaObjectType.ReadOnlyObject && Info.ParentType == string.Empty))
 {
-    foreach (Criteria crit in GetCriteriaObjects(Info))
+    foreach (Criteria crit in Info.CriteriaObjects)
     {
         getOptionsFactory = getOptionsFactory | crit.GetOptions.Factory;
     }
@@ -52,7 +52,7 @@ if (Info.ObjectType == CslaObjectType.EditableRoot || (Info.ObjectType == CslaOb
 }
 else
 {
-    foreach (Criteria crit in GetCriteriaObjects(Info))
+    foreach (Criteria crit in Info.CriteriaObjects)
     {
         createOptionsFactory = crit.CreateOptions.Factory;
         createOptionsDataPortal = crit.CreateOptions.DataPortal;

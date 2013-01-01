@@ -49,7 +49,7 @@ if (Errors.Length == 0)
     bool first = true;
     bool? firstComment = null;
     bool internalNewObjectUsed = false;
-    Criteria critCGF = new Criteria();
+    Criteria critCGF = new Criteria(Info);
     if (parentInfo != null)
         internalNewObjectUsed = ancestorLoaderLevel > 0 && parentInfo.ObjectType != CslaObjectType.ReadOnlyCollection;
     if (internalNewObjectUsed)

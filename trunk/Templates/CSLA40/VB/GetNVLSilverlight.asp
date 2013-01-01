@@ -3,7 +3,7 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
 {
     if (!Info.UseCustomLoading)
     {
-        foreach (Criteria c in GetCriteriaObjects(Info))
+        foreach (Criteria c in Info.CriteriaObjects)
         {
             if (c.GetOptions.Factory)
             {

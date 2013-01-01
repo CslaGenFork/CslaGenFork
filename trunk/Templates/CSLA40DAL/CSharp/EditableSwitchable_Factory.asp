@@ -21,7 +21,7 @@ if (Info.UseUnitOfWorkType == string.Empty)
 <!-- #include file="InternalGetObject.asp" -->
 <!-- #include file="DeleteObject.asp" -->
 <%
-        foreach (Criteria c in GetCriteriaObjects(Info))
+        foreach (Criteria c in Info.CriteriaObjects)
         {
             if (c.CreateOptions.Factory)
             {

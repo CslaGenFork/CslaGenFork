@@ -5,7 +5,7 @@ if (!Info.UseCustomLoading &&
     List<string> fetchPartialMethods = new List<string>();
     List<string> fetchPartialParams = new List<string>();
     string cacheRemarks = string.Empty;
-    foreach (Criteria c in GetCriteriaObjects(Info))
+    foreach (Criteria c in Info.CriteriaObjects)
     {
         if (c.GetOptions.DataPortal)
         {

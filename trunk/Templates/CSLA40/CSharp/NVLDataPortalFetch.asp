@@ -2,7 +2,7 @@
 if (!Info.UseCustomLoading && (UseNoSilverlight() ||
     CurrentUnit.GenerationParams.GenerateSilverlight4))
 {
-    foreach (Criteria c in GetCriteriaObjects(Info))
+    foreach (Criteria c in Info.CriteriaObjects)
     {
         if (c.GetOptions.DataPortal)
         {

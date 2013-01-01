@@ -1,6 +1,6 @@
         #region Factory Methods
 <%
-if (UseBoth())
+if (UseBoth() && (CurrentUnit.GenerationParams.GenerateSynchronous || Info.UseUnitOfWorkType == string.Empty))
 {
     %>
 
@@ -37,7 +37,7 @@ if (UseNoSilverlight())
 <%
     }
 }
-if (UseBoth())
+if (UseBoth() && (CurrentUnit.GenerationParams.GenerateSynchronous || Info.UseUnitOfWorkType == string.Empty))
 {
     if (Info.UseUnitOfWorkType != string.Empty)
     {
