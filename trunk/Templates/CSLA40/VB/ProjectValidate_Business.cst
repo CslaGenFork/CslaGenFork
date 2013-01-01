@@ -30,11 +30,12 @@ ERRORS
 11. Utilities namespace must be under Base namespace
 12. Connection name can not be empty
 13. Object namespace must be under base namespace
+14. Generate child factory requires synchronous.
 WARNINGS
-14. When separate namespaces in folders, Utility classes folder is ignored
-15. Check no repeated object names
-16. Check no repeated file names
-17. Check no repeated criteria names for non nested class (with more than one property)
+15. When separate namespaces in folders, Utility classes folder is ignored
+16. Check no repeated object names
+17. Check no repeated file names
+18. Check no repeated criteria names for non nested class (with more than one property)
 */
 
 // do not validate objects that aren't generated
@@ -213,6 +214,10 @@ if (CurrentUnit.GenerationParams.UtilitiesNamespace.IndexOf(CurrentUnit.Generati
 if (CurrentUnit.GenerationParams.DatabaseConnection.Equals(string.Empty))
 {
     Errors.Append("Generation settings: 'Connection name' can not be empty." + Environment.NewLine);
+}
+if (CurrentUnit.GenerationParams.UseChildFactory && !CurrentUnit.GenerationParams.GenerateSynchronous)
+{
+    Errors.Append("Generation settings: 'Generate child factory methods' requires 'Generate Synchronous'." + Environment.NewLine);
 }
 if (CurrentUnit.GenerationParams.SeparateNamespaces &&
     CurrentUnit.GenerationParams.UtilitiesFolder != string.Empty)
