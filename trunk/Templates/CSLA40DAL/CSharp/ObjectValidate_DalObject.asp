@@ -56,7 +56,7 @@ if (Info.GenerateDataAccessRegion &&
         }
         else
         {
-            foreach (Criteria c in GetCriteriaObjects(Info))
+            foreach (Criteria c in Info.CriteriaObjects)
             {
                 if (c.DeleteOptions.DataPortal && c.DeleteOptions.ProcedureName == string.Empty)
                 {
@@ -71,7 +71,7 @@ if (Info.GenerateDataAccessRegion &&
     }
 }
 
-foreach (Criteria c in GetCriteriaObjects(Info))
+foreach (Criteria c in Info.CriteriaObjects)
 {
     if (c.GetOptions.DataPortal && c.GetOptions.ProcedureName == string.Empty)
     {

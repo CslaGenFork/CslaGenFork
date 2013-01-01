@@ -9,9 +9,9 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
 
     CslaObjectInfo itemInfo2 = FindChildInfo(Info, Info.ItemType);
 
-    if (GetCriteriaObjects(Info).Count > 0)
+    if (Info.CriteriaObjects.Count > 0)
     {
-        foreach (Criteria c in GetCriteriaObjects(Info))
+        foreach (Criteria c in Info.CriteriaObjects)
         {
             if (c.GetOptions.DataPortal)
             {

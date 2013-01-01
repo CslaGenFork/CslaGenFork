@@ -4,7 +4,7 @@ if (isChild)
 dataPortalCreate = "Child_";
 else
 dataPortalCreate = "DataPortal_";
-foreach (Criteria c in GetCriteriaObjects(Info))
+foreach (Criteria c in Info.CriteriaObjects)
 {
     if (c.CreateOptions.DataPortal)
     {

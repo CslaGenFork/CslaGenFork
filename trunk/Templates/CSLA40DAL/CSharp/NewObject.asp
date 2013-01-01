@@ -19,7 +19,7 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
     }
     else
     {
-        foreach (Criteria c in GetCriteriaObjects(Info))
+        foreach (Criteria c in Info.CriteriaObjects)
         {
             if (c.CreateOptions.Factory)
             {
@@ -37,12 +37,27 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
                     strNewCritParams += FormatCamel(c.Properties[i].Name);
                     strNewComment += "/// <param name=\"" + FormatCamel(c.Properties[i].Name) + "\">The " + FormatProperty(c.Properties[i].Name) + " of the " + Info.ObjectName + " to create.</param>" + System.Environment.NewLine + new string(' ', 8);
                 }
+                if (!isChild && !c.NestedClass && c.Properties.Count > 1 && Info.ObjectType != CslaObjectType.EditableSwitchable)
+                {
+                    %>
+
+        /// <summary>
+        /// Factory method. Creates a new <see cref="<%= Info.ObjectName %>"/> object, based on given parameters.
+        /// </summary>
+        /// <param name="crit">The fetch criteria.</param>
+        /// <returns>A reference to the created <see cref="<%= Info.ObjectName %>"/> object.</returns>
+        public static <%= Info.ObjectName %> New<%= Info.ObjectName %><%= c.CreateOptions.FactorySuffix %>(<%= c.Name %> crit)
+        {
+            return DataPortal.Create<<%= Info.ObjectName %>>(crit);
+        }
+        <%
+                }
                 %>
 
         /// <summary>
-        /// Factory method. Creates a new <see cref="<%= Info.ObjectName %>"/> <%= Info.ObjectType == CslaObjectType.UnitOfWork ? "unit of objects" : "object" %><%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
+        /// Factory method. Creates a new <see cref="<%= Info.ObjectName %>"/> object<%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
         /// </summary>
-        <%= strNewComment %>/// <returns>A reference to the created <see cref="<%= Info.ObjectName %>"/> <%= Info.ObjectType == CslaObjectType.UnitOfWork ? "unit of objects" : "object" %>.</returns>
+        <%= strNewComment %>/// <returns>A reference to the created <see cref="<%= Info.ObjectName %>"/> object.</returns>
         <%= Info.ParentType == string.Empty ? "public" : "internal" %> static <%= Info.ObjectName %> New<%= Info.ObjectName %><%= c.CreateOptions.FactorySuffix %>(<%= strNewParams %>)
         {
             <%

@@ -3,16 +3,31 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
 {
     if (!Info.UseCustomLoading)
     {
-        foreach (Criteria c in GetCriteriaObjects(Info))
+        foreach (Criteria c in Info.CriteriaObjects)
         {
             if (Info.ObjectType == CslaObjectType.UnitOfWork && Info.IsCreatorGetter && c.Properties.Count == 0)
                 continue;
             if (c.GetOptions.Factory)
             {
+                if (!isChild && !c.NestedClass && c.Properties.Count > 1 && Info.ObjectType != CslaObjectType.EditableSwitchable)
+                {
+                    %>
+
+        /// <summary>
+        /// Factory method. Loads a <see cref="<%= Info.ObjectName %>"/> object, based on given parameters.
+        /// </summary>
+        /// <param name="crit">The fetch criteria.</param>
+        /// <returns>A reference to the fetched <see cref="<%= Info.ObjectName %>"/> object.</returns>
+        public static <%= Info.ObjectName %> Get<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>(<%= c.Name %> crit)
+        {
+            return DataPortal.Fetch<<%= Info.ObjectName %>>(crit);
+        }
+        <%
+                }
                 %>
 
         /// <summary>
-        /// Factory method. Loads a <see cref="<%= Info.ObjectName %>"/> <%= Info.ObjectType == CslaObjectType.UnitOfWork ? "unit of objects" : "object" %><%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
+        /// Factory method. Loads a <see cref="<%= Info.ObjectName %>"/> object<%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
         /// </summary>
         <%
                 string strGetParams = string.Empty;
@@ -45,7 +60,7 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
                     }
                 }
             %>
-        /// <returns>A reference to the fetched <see cref="<%= Info.ObjectName %>"/> <%= Info.ObjectType == CslaObjectType.UnitOfWork ? "unit of objects" : "object" %>.</returns>
+        /// <returns>A reference to the fetched <see cref="<%= Info.ObjectName %>"/> object.</returns>
         <%= Info.ParentType == string.Empty ? "public" : "internal" %> static <%= Info.ObjectName %> Get<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>(<%= strGetParams %>)
         {
             <%

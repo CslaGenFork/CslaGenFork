@@ -1,7 +1,7 @@
 <%
 if (Info.GenerateDataPortalDelete)
 {
-    foreach (Criteria c in GetCriteriaObjects(Info))
+    foreach (Criteria c in Info.CriteriaObjects)
     {
         if (c.DeleteOptions.DataPortal)
         {
@@ -101,7 +101,6 @@ if (Info.GenerateDataPortalDelete)
             if (Info.GetMyChildProperties().Count > 0)
             {
                 %>
-                // flushes all pending data operations
 <!-- #include file="UpdateChildProperties.asp" -->
                 <%
             }

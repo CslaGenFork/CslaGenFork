@@ -22,7 +22,7 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.DalInt
 
     #region Criteria Object
     <%
-        foreach (Criteria crit in GetCriteriaObjects(Info))
+        foreach (Criteria crit in Info.CriteriaObjects)
         {
             if (crit.Properties.Count > 1)
             {

@@ -2,7 +2,7 @@
 <%
 bool internalGetObjectUsed = false;
 if (parentInfo != null)
-    internalGetObjectUsed = !Info.HasGetCriteriaFactory && IsChildSelfLoaded(parentInfo);
+    internalGetObjectUsed = !Info.HasGetCriteriaFactory && !IsChildSelfLoaded(parentInfo);
 if (UseBoth() &&
     (CurrentUnit.GenerationParams.GenerateSynchronous || CurrentUnit.GenerationParams.SilverlightUsingServices || internalGetObjectUsed))
 {

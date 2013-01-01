@@ -1,7 +1,7 @@
 <%
 if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationParams.GenerateSilverlight4)
 {
-    foreach (Criteria c in GetCriteriaObjects(Info))
+    foreach (Criteria c in Info.CriteriaObjects)
     {
         if (c.DeleteOptions.Factory)
         {

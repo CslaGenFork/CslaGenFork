@@ -1,5 +1,5 @@
 <%
-if (GetCriteriaObjects(Info).Count > 0)
+if (Info.CriteriaObjects.Count > 0)
 {
     bool isCriteriaNestedClassNeeded = IsCriteriaNestedClassNeeded(Info);
 
@@ -13,7 +13,7 @@ if (GetCriteriaObjects(Info).Count > 0)
 
         #region Criteria
         <%
-        foreach (Criteria crit in GetCriteriaObjects(Info))
+        foreach (Criteria crit in Info.CriteriaObjects)
         {
             string strParams = string.Empty;
             string strFieldAssignments = string.Empty;

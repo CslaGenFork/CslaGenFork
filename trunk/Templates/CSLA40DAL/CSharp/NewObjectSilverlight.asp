@@ -19,7 +19,7 @@ if (UseSilverlight())
     }
     else
     {
-        foreach (Criteria c in GetCriteriaObjects(Info))
+        foreach (Criteria c in Info.CriteriaObjects)
         {
             if (c.CreateOptions.Factory &&
                 (c.CreateOptions.RunLocal ||
@@ -29,6 +29,7 @@ if (UseSilverlight())
                 string strNewCritParams = string.Empty;
                 string strNewComment = string.Empty;
                 string strNewCallback = string.Empty;
+                string strNewProxyMode = string.Empty;
                 for (int i = 0; i < c.Properties.Count; i++)
                 {
                     if (i > 0)
@@ -46,11 +47,11 @@ if (UseSilverlight())
                     if (c.CreateOptions.RunLocal ||
                         CurrentUnit.GenerationParams.SilverlightUsingServices)
                     {
-                        strNewCallback += ", DataPortal.ProxyModes.LocalOnly";
+                        strNewProxyMode = "DataPortal.ProxyModes.LocalOnly";
                     }
                     else
                     {
-                        strNewCallback += ", DataPortal.ProxyModes.Auto";
+                        strNewProxyMode = "DataPortal.ProxyModes.Auto";
                     }
                 }
                 else
@@ -58,6 +59,37 @@ if (UseSilverlight())
                     strNewCallback = (strNewCritParams.Length > 0 ? ", " : "");
                 }
                 strNewParams += (strNewParams.Length > 0 ? ", " : "") + "EventHandler<DataPortalResult<" + Info.ObjectName + ">> callback";
+                if (!isChild && !c.NestedClass && c.Properties.Count > 1 && Info.ObjectType != CslaObjectType.EditableSwitchable)
+                {
+                    %>
+
+        /// <summary>
+        /// Factory method. Asynchronously creates a new <see cref="<%= Info.ObjectName %>"/> object, based on given parameters.
+        /// </summary>
+        /// <param name="crit">The fetch criteria.</param>
+        /// <param name="callback">The completion callback method.</param>
+        public static <%= Info.ObjectName %> New<%= Info.ObjectName %><%= c.CreateOptions.FactorySuffix %>(<%= c.Name %> crit, EventHandler<DataPortalResult<<%= Info.ObjectName %>>> callback)
+        {
+            <%
+                    if (Info.UseUnitOfWorkType == string.Empty)
+                    {
+                        %>
+            DataPortal.BeginCreate<<%= Info.ObjectName %>>(crit, callback, <%= strNewProxyMode %>);
+        <%
+                    }
+                    else
+                    {
+                        %>
+            <%= Info.UseUnitOfWorkType %>.New<%= Info.UseUnitOfWorkType %>(crit, (o, e) =>
+            {
+                callback(o, new DataPortalResult<<%= Info.ObjectName %>>(e.Object.<%= Info.ObjectName %>, e.Error, null));
+            });
+            <%
+                    }
+                    %>
+        }
+        <%
+                }
                 %>
 
         /// <summary>
@@ -83,7 +115,7 @@ if (UseSilverlight())
                     if (Info.UseUnitOfWorkType == string.Empty)
                     {
                         %>
-            DataPortal.BeginCreate<<%= Info.ObjectName %>>(new <%= c.Name %>(<%= strNewCritParams %>)<%= strNewCallback %>);
+            DataPortal.BeginCreate<<%= Info.ObjectName %>>(new <%= c.Name %>(<%= strNewCritParams %>)<%= strNewCallback %>, <%= strNewProxyMode %>);
                 <%
                     }
                     else
@@ -101,7 +133,7 @@ if (UseSilverlight())
                     if (Info.UseUnitOfWorkType == string.Empty)
                     {
                         %>
-            DataPortal.BeginCreate<<%= Info.ObjectName %>>(<%= SendSingleCriteria(c, strNewCritParams) %><%= strNewCallback %>);
+            DataPortal.BeginCreate<<%= Info.ObjectName %>>(<%= SendSingleCriteria(c, strNewCritParams) %><%= strNewCallback %>, <%= strNewProxyMode %>);
                     <%
                     }
                     else
@@ -119,7 +151,7 @@ if (UseSilverlight())
                     if (Info.UseUnitOfWorkType == string.Empty)
                     {
                         %>
-            DataPortal.BeginCreate<<%= Info.ObjectName %>>(<%= strNewCallback %>);
+            DataPortal.BeginCreate<<%= Info.ObjectName %>>(<%= strNewCallback %>, <%= strNewProxyMode %>);
                     <%
                     }
                     else

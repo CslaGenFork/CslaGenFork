@@ -3,7 +3,7 @@ if (UseSilverlight())
 {
     List<string> createPartialMethods = new List<string>();
     List<string> createPartialParams = new List<string>();
-    foreach (Criteria c in GetCriteriaObjects(Info))
+    foreach (Criteria c in Info.CriteriaObjects)
     {
         if (c.CreateOptions.DataPortal)
         {

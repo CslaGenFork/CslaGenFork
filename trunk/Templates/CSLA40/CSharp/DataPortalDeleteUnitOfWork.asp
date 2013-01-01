@@ -1,25 +1,19 @@
 <%
-if (Info.GenerateDataPortalDelete)
+if (Info.GenerateDataPortalDelete &&
+    CurrentUnit.GenerationParams.SilverlightUsingServices)
 {
-    foreach (Criteria c in GetCriteriaObjects(Info))
+    List<string> deletePartialMethods = new List<string>();
+    List<string> deletePartialParams = new List<string>();
+    foreach (Criteria c in Info.CriteriaObjects)
     {
         if (c.DeleteOptions.DataPortal)
         {
-            if (string.IsNullOrEmpty(c.DeleteOptions.ProcedureName))
-            {
-                Errors.Append("Criteria " + c.Name + " missing Delete procedure name." + Environment.NewLine);
-            }
             %>
 
         /// <summary>
         /// Self deletes the <see cref="<%= Info.ObjectName %>"/> object.
         /// </summary>
         <%
-            if (c.DeleteOptions.RunLocal)
-            {
-                %>[Csla.RunLocal]
-        <%
-            }
             string strDeleteCritParams = string.Empty;
             bool firstParam = true;
             for (int i = 0; i < c.Properties.Count; i++)
@@ -35,7 +29,9 @@ if (Info.GenerateDataPortalDelete)
                 strDeleteCritParams += c.Properties[i].Name;
             }
             %>
-        protected override void DataPortal_DeleteSelf()
+        /// <param name="handler">The asynchronous handler.</param>
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public override void DataPortal_DeleteSelf(Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)
         {
             <%
             if (Info.ObjectType == CslaObjectType.EditableSwitchable)
@@ -45,13 +41,13 @@ if (Info.GenerateDataPortalDelete)
             if (c.Properties.Count > 1 || (Info.ObjectType == CslaObjectType.EditableSwitchable && c.Properties.Count == 1))
             {
                 %>
-            DataPortal_Delete(new <%= c.Name %>(<%= strDeleteCritParams %>));
+            DataPortal_Delete(new <%= c.Name %>(<%= strDeleteCritParams %>), handler);
         <%
             }
             else if (c.Properties.Count > 0)
             {
                 %>
-            DataPortal_Delete(<%= SendSingleCriteria(c, strDeleteCritParams) %>);
+            DataPortal_Delete(<%= SendSingleCriteria(c, strDeleteCritParams) %>, handler);
         <%
             }
             else
@@ -62,118 +58,84 @@ if (Info.GenerateDataPortalDelete)
             }
             %>
         }
-        <%
-            if (Info.ObjectType != CslaObjectType.DynamicEditableRoot)
-            {
-                %>
 
         /// <summary>
-        /// Deletes the <see cref="<%= Info.ObjectName %>"/> unit of objects from database.
+        /// Deletes the <see cref="<%= Info.ObjectName %>"/> object immediately.
         /// </summary>
         /// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The delete criteria.</param>
+        /// <param name="handler">The asynchronous handler.</param>
         <%
-                if (Info.TransactionType == TransactionType.EnterpriseServices)
-                {
-        %>[Transactional(TransactionalTypes.EnterpriseServices)]
+            if (Info.TransactionType == TransactionType.EnterpriseServices)
+            {
+                %>[Transactional(TransactionalTypes.EnterpriseServices)]
         <%
-                }
-                else if (Info.TransactionType == TransactionType.TransactionScope)
-                {
-        %>[Transactional(TransactionalTypes.TransactionScope)]
+            }
+            else if (Info.TransactionType == TransactionType.TransactionScope)
+            {
+                %>[Transactional(TransactionalTypes.TransactionScope)]
         <%
-                }
-                if (c.DeleteOptions.RunLocal)
-                {
-        %>[Csla.RunLocal]<%
-                }
-                if (c.Properties.Count > 1)
-                {
-        %>protected void DataPortal_Delete(<%= c.Name %> crit)<%
-                }
-                else
-                {
-        %>protected void DataPortal_Delete(<%= ReceiveSingleCriteria(c, "crit") %>)<%
-                }
+            }
+        %>[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        <%
+            deletePartialParams.Add("/// <param name=\"" + (c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit")) + "\">The delete criteria.</param>");
+            if (c.Properties.Count > 1)
+            {
+                deletePartialMethods.Add("partial void Service_Delete(" + c.Name + " crit)");
+                %>public void DataPortal_Delete(<%= c.Name %> crit, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
+            }
+            else
+            {
+                deletePartialMethods.Add("partial void Service_Delete(" + ReceiveSingleCriteria(c, "crit") + ")");
+                %>public void DataPortal_Delete(<%= ReceiveSingleCriteria(c, "crit") %>, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
+            }
             %>
         {
-            <%
-                if (UseSimpleAuditTrail(Info))
-                {
-                    %>// audit the object, just in case soft delete is used on this object
-            SimpleAuditTrail();
-            <%
-                }
-                    %><%= GetConnection(Info, false) %>
+            try
             {
-                <%= GetCommand(Info, c.DeleteOptions.ProcedureName) %>
-                {
-                    <%
-                if (Info.TransactionType == TransactionType.ADO && Info.PersistenceType == PersistenceType.SqlConnectionManager)
-                {
-                    %>cmd.Transaction = ctx.Transaction;
-                    <%
-                }
-                if (Info.CommandTimeout != string.Empty)
-                {
-                    %>cmd.CommandTimeout = <%= Info.CommandTimeout %>;
-                    <%
-                }
-                %>cmd.CommandType = CommandType.StoredProcedure;
-                    <%
-                foreach (Property p in c.Properties)
-                {
-                    %>
-                    <%
-                    if (c.Properties.Count > 1)
-                    {
-                        %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= GetParameterSet(p, true) %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;<%
-                    }
-                    else
-                    {
-                        %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= AssignSingleCriteria(c, "crit") %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
-                    <%
-                    }
-                }
-                if (Info.PersistenceType == PersistenceType.SqlConnectionUnshared)
-                {
-                    %>
-                    cn.Open();
-                    <%
-                }
-                string hookArgs = string.Empty;
-                if (c.Properties.Count > 1)
-                {
-                    hookArgs = ", crit";
-                }
-                else if (c.Properties.Count > 0)
-                {
-                    hookArgs = ", " + HookSingleCriteria(c, "crit");
-                }
-                %>
-                    var args = new DataPortalHookArgs(cmd<%= hookArgs %>);
-                    OnDeletePre(args);
-                    cmd.ExecuteNonQuery();
-                    OnDeletePost(args);
-                }
                 <%
-                if (Info.GetMyChildProperties().Count > 0)
-                {
-                    %>
+            if (c.Properties.Count > 1)
+            {
+                %>Service_Delete(crit);<%
+            }
+            else if (c.Properties.Count > 0)
+            {
+                %>Service_Delete(<%= HookSingleCriteria(c, "crit") %>);<%
+            }
+            else
+            {
+                %>Service_Delete();<%
+            }
+            %>
+                handler(this, null);
+            }
+            catch (Exception ex)
+            {
+                handler(null, ex);
+            }
+            <%
+            if (Info.GetMyChildProperties().Count > 0)
+            {
+                %>
 <!-- #include file="UpdateChildProperties.asp" -->
-                <%
-                }
-                if (Info.TransactionType == TransactionType.ADO && Info.PersistenceType == PersistenceType.SqlConnectionManager)
-                {
-                    %>
-                ctx.Commit();
-            <%
-                }
-                %>
+        <%
             }
+            %>
         }
-            <%
-            }
+        <%
         }
+    }
+    for (int index = 0; index < deletePartialMethods.Count ; index++)
+    {
+        string header = deletePartialParams[index] + (string.IsNullOrEmpty(deletePartialParams[index]) ? "" : "\r\n        ");
+        header += deletePartialMethods[index];
+        MethodList.Add(header);
+        %>
+
+        /// <summary>
+        /// Implements <%= isChild ? "Child_Delete" : "DataPortal_Delete" %> for <see cref="<%= Info.ObjectName %>"/> object.
+        /// </summary>
+        <%= header %>;
+<%
     }
 }
 %>

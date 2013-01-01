@@ -19,7 +19,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
     }
     else
     {
-        foreach (Criteria c in GetCriteriaObjects(Info))
+        foreach (Criteria c in Info.CriteriaObjects)
         {
             if (c.CreateOptions.Factory)
             {
@@ -47,10 +47,41 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
                     strNewCallback = (strNewCritParams.Length > 0 ? ", " : "");
                 }
                 strNewParams += (strNewParams.Length > 0 ? ", " : "") + "EventHandler<DataPortalResult<" + Info.ObjectName + ">> callback";
+                if (!isChild && !c.NestedClass && c.Properties.Count > 1 && Info.ObjectType != CslaObjectType.EditableSwitchable)
+                {
                     %>
 
         /// <summary>
-        /// Factory method. Asynchronously creates a new <see cref="<%= Info.ObjectName %>"/> <%= Info.ObjectType == CslaObjectType.UnitOfWork ? "unit of objects" : "object" %><%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
+        /// Factory method. Asynchronously creates a new <see cref="<%= Info.ObjectName %>"/> object, based on given parameters.
+        /// </summary>
+        /// <param name="crit">The fetch criteria.</param>
+        /// <param name="callback">The completion callback method.</param>
+        public static <%= Info.ObjectName %> New<%= Info.ObjectName %><%= c.CreateOptions.FactorySuffix %>(<%= c.Name %> crit, EventHandler<DataPortalResult<<%= Info.ObjectName %>>> callback)
+        {
+            <%
+                    if (Info.UseUnitOfWorkType == string.Empty)
+                    {
+                        %>
+            DataPortal.BeginCreate<<%= Info.ObjectName %>>(crit, callback);
+        <%
+                    }
+                    else
+                    {
+                        %>
+            <%= Info.UseUnitOfWorkType %>.New<%= Info.UseUnitOfWorkType %>(crit, (o, e) =>
+            {
+                callback(o, new DataPortalResult<<%= Info.ObjectName %>>(e.Object.<%= Info.ObjectName %>, e.Error, null));
+            });
+            <%
+                    }
+                    %>
+        }
+        <%
+                }
+                %>
+
+        /// <summary>
+        /// Factory method. Asynchronously creates a new <see cref="<%= Info.ObjectName %>"/> object<%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
         /// </summary>
         <%= strNewComment %>/// <param name="callback">The completion callback method.</param>
         <%= Info.ParentType == string.Empty ? "public" : "internal" %> static void New<%= Info.ObjectName %><%= c.CreateOptions.FactorySuffix %>(<%= strNewParams %>)

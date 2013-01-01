@@ -54,7 +54,7 @@ if (CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40)
             }
             else
             {
-                foreach (Criteria c in GetCriteriaObjects(Info))
+                foreach (Criteria c in Info.CriteriaObjects)
                 {
                     if (c.DeleteOptions.DataPortal && c.DeleteOptions.ProcedureName == string.Empty)
                     {
@@ -68,7 +68,7 @@ if (CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40)
             }
         }
     }
-    foreach (Criteria c in GetCriteriaObjects(Info))
+    foreach (Criteria c in Info.CriteriaObjects)
     {
         if (Info.ObjectType == CslaObjectType.UnitOfWork)
             continue;

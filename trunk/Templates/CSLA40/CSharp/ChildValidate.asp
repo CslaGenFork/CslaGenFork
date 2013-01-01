@@ -49,7 +49,7 @@ foreach (ChildProperty childProperty in Info.AllChildProperties)
         if (childProperty.DeclarationMode == PropertyDeclaration.Managed)
         {
             bool getOptionsDataPortal2 = false;
-            foreach (Criteria crit in GetCriteriaObjects(Info))
+            foreach (Criteria crit in Info.CriteriaObjects)
             {
                 getOptionsDataPortal2 = getOptionsDataPortal2 | crit.GetOptions.DataPortal;
             }
