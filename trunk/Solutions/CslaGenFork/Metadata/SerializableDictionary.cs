@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Xml.Serialization;
 
 namespace CslaGenerator.Metadata
@@ -6,9 +7,47 @@ namespace CslaGenerator.Metadata
     //http://weblogs.asp.net/pwelter34/archive/2006/05/03/444961.aspx
 
     [XmlRoot("dictionary")]
-    public class SerializableDictionary<TKey, TValue>
-        : Dictionary<TKey, TValue>, IXmlSerializable
+    public class SerializableDictionary<TKey, TValue> : Dictionary<TKey, TValue>, IXmlSerializable
     {
+        #region Constructors
+
+        public SerializableDictionary()
+            : base()
+        {
+        }
+
+        public SerializableDictionary(IDictionary<TKey, TValue> dictionary)
+            : base(dictionary)
+        {
+        }
+
+        public SerializableDictionary(IEqualityComparer<TKey> comparer)
+            : base(comparer)
+        {
+        }
+
+        public SerializableDictionary(int capacity)
+            : base(capacity)
+        {
+        }
+
+        public SerializableDictionary(IDictionary<TKey, TValue> dictionary, IEqualityComparer<TKey> comparer)
+            : base(dictionary, comparer)
+        {
+        }
+
+        public SerializableDictionary(int capacity, IEqualityComparer<TKey> comparer)
+            : base(capacity, comparer)
+        {
+        }
+
+        protected SerializableDictionary(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+        {
+        }
+
+        #endregion
+
         #region IXmlSerializable Members
 
         public System.Xml.Schema.XmlSchema GetSchema()
