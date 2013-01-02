@@ -42,6 +42,10 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
                 strGetCache += "                    " + prop.TypeName + ".SetCache(e.Object." + prop.TypeName + ");" + Environment.NewLine;
             }
         }
+        if (Info.UnitOfWorkType == UnitOfWorkFunction.CreatorGetter && elementCriteriaCount == 0)
+        {
+            strGetCritParams = "false, ";
+        }
         %>
 
         /// <summary>
@@ -76,7 +80,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
         else
         {
             %>
-            DataPortal.BeginFetch<<%= Info.ObjectName %>>((o, e) =>
+            DataPortal.BeginFetch<<%= Info.ObjectName %>>(<%= strGetCritParams %>(o, e) =>
             {
                 if (e.Error != null)
                     throw e.Error;
