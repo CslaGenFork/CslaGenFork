@@ -31,6 +31,10 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
             elementCriteriaCount++;
             parameterCount++;
         }
+        if (Info.UnitOfWorkType == UnitOfWorkFunction.CreatorGetter && elementCriteriaCount == 0)
+        {
+            strGetCritParams = "false";
+        }
         %>
 
         /// <summary>
@@ -58,7 +62,7 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
             {
                 %>
             if (_list == null)
-                _list = DataPortal.Fetch<%= isChild ? "Child" : "" %><<%= Info.ObjectName %>>();
+                _list = DataPortal.Fetch<%= isChild ? "Child" : "" %><<%= Info.ObjectName %>>(<%= strGetCritParams %>);
 
             return _list;
             <%
@@ -66,7 +70,7 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
             else
             {
                 %>
-            return DataPortal.Fetch<%= isChild ? "Child" : "" %><<%= Info.ObjectName %>>();
+            return DataPortal.Fetch<%= isChild ? "Child" : "" %><<%= Info.ObjectName %>>(<%= strGetCritParams %>);
         <%
             }
         }
