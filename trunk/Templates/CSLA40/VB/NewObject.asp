@@ -1,9 +1,16 @@
 <%
 if (CurrentUnit.GenerationParams.GenerateSynchronous)
 {
-    if (Info.ObjectType == CslaObjectType.EditableRootCollection ||
+    int createCriteriaCount = 0;
+    foreach (Criteria c in Info.CriteriaObjects)
+    {
+        if (c.CreateOptions.Factory)
+            createCriteriaCount ++;
+    }
+    if (createCriteriaCount == 0 &&
+        (Info.ObjectType == CslaObjectType.EditableRootCollection ||
         Info.ObjectType == CslaObjectType.DynamicEditableRootCollection ||
-        Info.ObjectType == CslaObjectType.EditableChildCollection)
+        Info.ObjectType == CslaObjectType.EditableChildCollection))
     {
         %>
 
@@ -42,10 +49,10 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
                     %>
 
         /// <summary>
-        /// Factory method. Creates a new <see cref="<%= Info.ObjectName %>"/> object, based on given parameters.
+        /// Factory method. Creates a new <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %>, based on given parameters.
         /// </summary>
-        /// <param name="crit">The fetch criteria.</param>
-        /// <returns>A reference to the created <see cref="<%= Info.ObjectName %>"/> object.</returns>
+        /// <param name="crit">The create criteria.</param>
+        /// <returns>A reference to the created <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %>.</returns>
         public static <%= Info.ObjectName %> New<%= Info.ObjectName %><%= c.CreateOptions.FactorySuffix %>(<%= c.Name %> crit)
         {
             return DataPortal.Create<<%= Info.ObjectName %>>(crit);
@@ -55,9 +62,9 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
                 %>
 
         /// <summary>
-        /// Factory method. Creates a new <see cref="<%= Info.ObjectName %>"/> object<%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
+        /// Factory method. Creates a new <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %><%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
         /// </summary>
-        <%= strNewComment %>/// <returns>A reference to the created <see cref="<%= Info.ObjectName %>"/> object.</returns>
+        <%= strNewComment %>/// <returns>A reference to the created <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %>.</returns>
         <%= Info.ParentType == string.Empty ? "public" : "internal" %> static <%= Info.ObjectName %> New<%= Info.ObjectName %><%= c.CreateOptions.FactorySuffix %>(<%= strNewParams %>)
         {
             <%

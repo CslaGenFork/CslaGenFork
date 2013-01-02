@@ -1,9 +1,16 @@
 <%
 if (UseSilverlight())
 {
-    if (Info.ObjectType == CslaObjectType.EditableRootCollection ||
+    int createCriteriaCount = 0;
+    foreach (Criteria c in Info.CriteriaObjects)
+    {
+        if (c.CreateOptions.Factory)
+            createCriteriaCount ++;
+    }
+    if (createCriteriaCount == 0 &&
+        (Info.ObjectType == CslaObjectType.EditableRootCollection ||
         Info.ObjectType == CslaObjectType.DynamicEditableRootCollection ||
-        Info.ObjectType == CslaObjectType.EditableChildCollection)
+        Info.ObjectType == CslaObjectType.EditableChildCollection))
     {
         %>
 
@@ -64,9 +71,9 @@ if (UseSilverlight())
                     %>
 
         /// <summary>
-        /// Factory method. Asynchronously creates a new <see cref="<%= Info.ObjectName %>"/> object, based on given parameters.
+        /// Factory method. Asynchronously creates a new <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %>, based on given parameters.
         /// </summary>
-        /// <param name="crit">The fetch criteria.</param>
+        /// <param name="crit">The create criteria.</param>
         /// <param name="callback">The completion callback method.</param>
         public static <%= Info.ObjectName %> New<%= Info.ObjectName %><%= c.CreateOptions.FactorySuffix %>(<%= c.Name %> crit, EventHandler<DataPortalResult<<%= Info.ObjectName %>>> callback)
         {
@@ -93,7 +100,7 @@ if (UseSilverlight())
                 %>
 
         /// <summary>
-        /// Factory method. Asynchronously creates a new <see cref="<%= Info.ObjectName %>"/> object<%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
+        /// Factory method. Asynchronously creates a new <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %><%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
         /// </summary>
         <%= strNewComment %>/// <param name="callback">The completion callback method.</param>
         <%= Info.ParentType == string.Empty ? "public" : "internal" %> static void New<%= Info.ObjectName %><%= c.CreateOptions.FactorySuffix %>(<%= strNewParams %>)

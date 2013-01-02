@@ -1,31 +1,34 @@
         #region Factory Methods
 <%
-if (UseBoth())
+if (UseBoth() && (CurrentUnit.GenerationParams.GenerateSynchronous || Info.UseUnitOfWorkType == string.Empty))
 {
     %>
 
 #if !SILVERLIGHT
 <%
 }
-%>
-<!-- #include file="NewObject.asp" -->
-<%
-if (Info.UseUnitOfWorkType == string.Empty)
+if (UseNoSilverlight())
 {
     %>
+<!-- #include file="NewObject.asp" -->
+<%
+    if (Info.UseUnitOfWorkType == string.Empty)
+    {
+        %>
 <!-- #include file="NewObjectAsync.asp" -->
 <%
-}
+    }
 %>
 <!-- #include file="GetObject.asp" -->
 <%
-if (CurrentUnit.GenerationParams.SilverlightUsingServices)
-{
-    %>
+    if (CurrentUnit.GenerationParams.SilverlightUsingServices)
+    {
+        %>
 <!-- #include file="GetObjectAsync.asp" -->
 <%
+    }
 }
-if (UseBoth())
+if (UseBoth() && (CurrentUnit.GenerationParams.GenerateSynchronous || Info.UseUnitOfWorkType == string.Empty))
 {
     if (Info.UseUnitOfWorkType != string.Empty)
     {
@@ -34,7 +37,7 @@ if (UseBoth())
 #endif
 <%
     }
-    else
+    else if (HasFactoryCreateOrGet(Info))
     {
         %>
 
