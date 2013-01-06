@@ -21,6 +21,34 @@ WARNINGS
 8. When using Silverligh 4, criteria classes (with more than one property) must not use Simple mode.
 */
 
+bool hasFactoryCache = false;
+bool hasDataPortalCache = false;
+CslaObjectInfo invalidatorInfo = Info;
+if (Info.ObjectType == CslaObjectType.EditableRootCollection ||
+    Info.ObjectType == CslaObjectType.DynamicEditableRoot)
+{
+    if (Info.ObjectType == CslaObjectType.DynamicEditableRoot)
+    {
+        invalidatorInfo = Info.Parent.CslaObjects.Find(Info.ParentType);
+    }
+    foreach (string objectName in invalidatorInfo.InvalidateCache)
+    {
+        CslaObjectInfo cachedInfo = invalidatorInfo.Parent.CslaObjects.Find(objectName);
+        if (cachedInfo.SimpleCacheOptions == SimpleCacheResults.None)
+        {
+            Errors.Append("Object " + invalidatorInfo.ObjectName + ": " + cachedInfo.ObjectName + " is on 'Invalidate Cache Types' but has 'Cache Results Options' set to 'None'." + Environment.NewLine);
+            return;
+        }
+        else
+        {
+            if (cachedInfo.SimpleCacheOptions == SimpleCacheResults.Factory)
+                hasFactoryCache = hasFactoryCache || true;
+            if (cachedInfo.SimpleCacheOptions == SimpleCacheResults.DataPortal)
+                hasDataPortalCache = hasFactoryCache || true;
+        }
+    }
+}
+
 if (CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40)
 {
     if (Info.GenerateDataAccessRegion &&
