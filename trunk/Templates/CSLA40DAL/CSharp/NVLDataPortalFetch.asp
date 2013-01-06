@@ -85,6 +85,14 @@ if (!Info.UseCustomLoading && (UseNoSilverlight() ||
                 LoadCollection(data);
             }
             OnFetchPost(args);
+            <%
+            if (Info.SimpleCacheOptions == SimpleCacheResults.DataPortal && c.Properties.Count == 0)
+            {
+                %>
+            _list = this;
+        <%
+            }
+            %>
         }
 <!-- #include file="SimpleCacheLoadCachedList.asp" -->
         <%
