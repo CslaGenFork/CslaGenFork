@@ -1,5 +1,6 @@
 <%@ CodeTemplate Inherits="CslaTemplateHelperCS" Language="CSharp" TargetLanguage="CSharp" Description="Generates a CSLA Inherited Object." %>
 <%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the CSLA Object to inherit from." %>
+<%@ Property Name="Errors" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return errors to master.cst" %>
 <%@ Property Name="MethodList" Type="System.Collections.Generic.List<string>" Optional="false" Category="Options" Description="Allows the template to return a list a partial methods to master.cst (for Silverlight using services)" %>
 
 <%@ Assembly Name="CslaGenerator" %>
@@ -10,6 +11,35 @@
 
 <!-- #include file="Header.asp" -->
 <%
+bool usesContext = false;
+usesContext = IsObjectType(Info.ObjectType) || Info.ObjectType == CslaObjectType.UnitOfWork;
+bool hasFactoryCache = false;
+bool hasDataPortalCache = false;
+CslaObjectInfo invalidatorInfo = Info;
+if (Info.ObjectType == CslaObjectType.EditableRootCollection ||
+    Info.ObjectType == CslaObjectType.DynamicEditableRoot)
+{
+    if (Info.ObjectType == CslaObjectType.DynamicEditableRoot)
+    {
+        invalidatorInfo = Info.Parent.CslaObjects.Find(Info.ParentType);
+    }
+    foreach (string objectName in invalidatorInfo.InvalidateCache)
+    {
+        CslaObjectInfo cachedInfo = invalidatorInfo.Parent.CslaObjects.Find(objectName);
+        if (cachedInfo.SimpleCacheOptions == SimpleCacheResults.None)
+        {
+            Errors.Append("Object " + invalidatorInfo.ObjectName + ": " + cachedInfo.ObjectName + " is on 'Invalidate Cache Types' but has 'Cache Results Options' set to 'None'." + Environment.NewLine);
+            return;
+        }
+        else
+        {
+            if (cachedInfo.SimpleCacheOptions == SimpleCacheResults.Factory)
+                hasFactoryCache = hasFactoryCache || true;
+            if (cachedInfo.SimpleCacheOptions == SimpleCacheResults.DataPortal)
+                hasDataPortalCache = hasFactoryCache || true;
+        }
+    }
+}
 int silverlightLevel = 0;
 bool genOptional = false;
 if (CurrentUnit.GenerationParams.UtilitiesNamespace != string.Empty &&
@@ -42,16 +72,57 @@ if (UseNoSilverlight() &&
 
         #region OnDeserialized actions
 
+        <%
+        if (hasFactoryCache || hasDataPortalCache)
+        {
+            %>
+        /// <summary>
+        <%
+        }
+        else
+        {
+            %>
         /*/// <summary>
+        <%
+        }
+        %>
         /// This method is called on a newly deserialized object
         /// after deserialization is complete.
         /// </summary>
-        /// <param name="context">Serialization context object.</param>
-        protected override void OnDeserialized(System.Runtime.Serialization.StreamingContext context)
+        <%
+        if (usesContext)
         {
-            base.OnDeserialized(context);
+            %>
+        /// <param name="context">Serialization context object.</param>
+        <%
+        }
+        %>
+        protected override void OnDeserialized(<%= usesContext ? "System.Runtime.Serialization.StreamingContext context" : string.Empty %>)
+        {
+            base.OnDeserialized(<%= usesContext ? "context" : string.Empty %>);
+            <%
+        if (hasFactoryCache || hasDataPortalCache)
+        {
+            %>
+            Saved += <%= Info.ObjectName %>_Saved;
+            <%
+        }
+        %>
             // add your custom OnDeserialized actions here.
+            <%
+        if (hasFactoryCache || hasDataPortalCache)
+        {
+            %>
+        }
+        <%
+        }
+        else
+        {
+            %>
         }*/
+        <%
+        }
+        %>
 
         #endregion
         <%

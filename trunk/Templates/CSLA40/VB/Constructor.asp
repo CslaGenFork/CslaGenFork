@@ -71,6 +71,12 @@ if (UseBoth())
         {
             // Prevent direct creation
             <%
+if (hasFactoryCache || hasDataPortalCache)
+{
+    %>
+            this.Saved += <%= Info.ObjectName %>_Saved;
+            <%
+}
 if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
 {
     if (Info.UpdaterType != string.Empty)

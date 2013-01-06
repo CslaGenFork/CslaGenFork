@@ -146,6 +146,12 @@ if (!Info.UseCustomLoading)
             }
         <%
                 }
+                if (Info.SimpleCacheOptions == SimpleCacheResults.DataPortal && c.Properties.Count == 0)
+                {
+                    %>
+            _list = this;
+        <%
+                }
                 %>
         }
 <!-- #include file="SimpleCacheLoadCachedList.asp" -->
