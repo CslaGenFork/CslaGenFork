@@ -33,6 +33,10 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
             elementCriteriaCount++;
             parameterCount++;
         }
+        if (Info.UnitOfWorkType == UnitOfWorkFunction.CreatorGetter && elementCriteriaCount == 0)
+        {
+            strNewCritParams = "true";
+        }
         %>
 
         /// <summary>
@@ -58,7 +62,7 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
         else
         {
             %>
-            return DataPortal.Fetch<<%= Info.ObjectName %>>();
+            return DataPortal.Fetch<<%= Info.ObjectName %>>(<%= strNewCritParams %>);
                     <%
         }
         %>
