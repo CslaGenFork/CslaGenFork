@@ -24,6 +24,7 @@ namespace CslaGenerator.CodeGen
         private bool _generateDatabaseClass;
         private readonly GenerationReportCollection _errorReport = new GenerationReportCollection();
         private readonly GenerationReportCollection _warningReport = new GenerationReportCollection();
+        private readonly List<string> _infoReport = new List<string>();
         private int _objFailed;
         private int _objSuccess;
         private int _objectWarnings;
@@ -51,6 +52,11 @@ namespace CslaGenerator.CodeGen
         public GenerationReportCollection WarningReport
         {
             get { return _warningReport; }
+        }
+
+        public List<string> InfoReport
+        {
+            get { return _infoReport; }
         }
 
         public void Abort()
@@ -212,13 +218,6 @@ namespace CslaGenerator.CodeGen
                             if (_abortRequested)
                                 break;
 
-//                            if (info.ObjectType != CslaObjectType.ReadOnlyObject
-//                                && info.ObjectType != CslaObjectType.ReadOnlyCollection
-//                                && info.ObjectType != CslaObjectType.EditableRootCollection
-//                                && info.ObjectType != CslaObjectType.DynamicEditableRootCollection
-//                                && info.ObjectType != CslaObjectType.EditableChildCollection
-//                                && info.ObjectType != CslaObjectType.NameValueList
-//                                && info.ObjectType != CslaObjectType.UnitOfWork)
                             if (NeedsDbInsUpdDel(info))
                             {
                                 GenerateInsertProcedure(info, TargetDirectory);
@@ -343,8 +342,10 @@ namespace CslaGenerator.CodeGen
                     {
                         var errorsOutput = new StringBuilder();
                         var warningsOutput = new StringBuilder();
+                        var infosOutput = new StringBuilder();
                         template.SetProperty("Errors", errorsOutput);
                         template.SetProperty("Warnings", warningsOutput);
+                        template.SetProperty("Infos", infosOutput);
                         template.SetProperty("CurrentUnit", _unit);
                         var fs = File.Open(fullFilename, FileMode.Create);
                         OnGenerationInformation("Validation: " + step);
@@ -352,6 +353,7 @@ namespace CslaGenerator.CodeGen
                         template.Render(sw);
                         errorsOutput = (StringBuilder) template.GetProperty("Errors");
                         warningsOutput = (StringBuilder) template.GetProperty("Warnings");
+                        infosOutput = (StringBuilder)template.GetProperty("Infos");
                         if (errorsOutput.Length > 0)
                         {
                             _errorReport.AddMultiline(new GenerationReport
@@ -378,6 +380,13 @@ namespace CslaGenerator.CodeGen
                                                                         FileName = fullFilename
                                                                     });
                                     OnGenerationInformation("* Warning:" + Environment.NewLine + warningsOutput);
+                                }
+                            }
+                            if (infosOutput != null)
+                            {
+                                if (infosOutput.Length > 0)
+                                {
+                                    _infoReport.Add(infosOutput.ToString());
                                 }
                             }
                             _fileSuccess[templateName] = true;
@@ -485,14 +494,17 @@ namespace CslaGenerator.CodeGen
             StreamWriter sw = null;
             try
             {
+                var success = false;
                 var tPath = _fullTemplatesPath + objInfo.OutputLanguage + @"\" + GetTemplateName(objInfo, GenerationStep.Business);
                 var template = GetTemplate(objInfo, tPath);
                 if (template != null)
                 {
                     var errorsOutput = new StringBuilder();
                     var warningsOutput = new StringBuilder();
+                    var infosOutput = new StringBuilder();
                     template.SetProperty("Errors", errorsOutput);
                     template.SetProperty("Warnings", warningsOutput);
+                    template.SetProperty("Infos", infosOutput);
                     template.SetProperty("MethodList", _methodList);
                     template.SetProperty("CurrentUnit", _unit);
                     template.SetProperty("DataSetLoadingScheme", objInfo.DataSetLoadingScheme);
@@ -511,6 +523,7 @@ namespace CslaGenerator.CodeGen
                     template.Render(sw);
                     errorsOutput = (StringBuilder)template.GetProperty("Errors");
                     warningsOutput = (StringBuilder)template.GetProperty("Warnings");
+                    infosOutput = (StringBuilder)template.GetProperty("Infos");
                     _methodList = (List<string>)template.GetProperty("MethodList");
                     if (errorsOutput.Length > 0)
                     {
@@ -527,6 +540,7 @@ namespace CslaGenerator.CodeGen
                     }
                     else
                     {
+                        success = true;
                         if (warningsOutput != null)
                         {
                             if (warningsOutput.Length > 0)
@@ -542,13 +556,22 @@ namespace CslaGenerator.CodeGen
                                 OnGenerationInformation("* Warning:" + Environment.NewLine + warningsOutput);
                             }
                         }
+                        if (infosOutput != null)
+                        {
+                            if (infosOutput.Length > 0)
+                            {
+                                _infoReport.Add(infosOutput.ToString());
+                            }
+                        }
                         _objSuccess++;
-                        //OnGenerationInformation("Success");
                     }
                 }
-                GenerateExtendedFile(extendedFileName, objInfo);
-                if (!string.IsNullOrEmpty(generationParams.ClassCommentFilenameSuffix))
-                    GenerateClassCommentFile(classCommentFileName, objInfo);
+                if (success)
+                {
+                    GenerateExtendedFile(extendedFileName, objInfo);
+                    if (!string.IsNullOrEmpty(generationParams.ClassCommentFilenameSuffix))
+                        GenerateClassCommentFile(classCommentFileName, objInfo);
+                }
             }
             catch (Exception e)
             {
@@ -594,6 +617,8 @@ namespace CslaGenerator.CodeGen
                         var template = GetTemplate(objInfo, tPath);
                         if (template != null)
                         {
+                            var errorsOutput = new StringBuilder();
+                            template.SetProperty("Errors", errorsOutput);
                             template.SetProperty("CurrentUnit", _unit);
                             if (_methodList != null)
                                 template.SetProperty("MethodList", _methodList);
@@ -601,6 +626,21 @@ namespace CslaGenerator.CodeGen
                             OnGenerationFileName(fileName);
                             sw = new StreamWriter(fs, Encoding.GetEncoding(_codeEncoding));
                             template.Render(sw);
+                            errorsOutput = (StringBuilder)template.GetProperty("Errors");
+                            if (errorsOutput.Length > 0)
+                            {
+                                _businessError = true;
+                                _objFailed++;
+                                _errorReport.Add(new GenerationReport
+                                {
+                                    ObjectName = objInfo.ObjectName,
+                                    ObjectType = objInfo.ObjectType.ToString(),
+                                    Message = errorsOutput.ToString(),
+                                    FileName = fileName
+                                });
+                                OnGenerationInformation("* * Failed:" + Environment.NewLine + errorsOutput);
+                            }
+
                         }
                     }
                 }
@@ -695,8 +735,10 @@ namespace CslaGenerator.CodeGen
                 {
                     var errorsOutput = new StringBuilder();
                     var warningsOutput = new StringBuilder();
+                    var infosOutput = new StringBuilder();
                     template.SetProperty("Errors", errorsOutput);
                     template.SetProperty("Warnings", warningsOutput);
+                    template.SetProperty("Infos", infosOutput);
                     template.SetProperty("MethodList", _methodList);
                     template.SetProperty("CurrentUnit", _unit);
                     template.SetProperty("DataSetLoadingScheme", objInfo.DataSetLoadingScheme);
@@ -715,6 +757,7 @@ namespace CslaGenerator.CodeGen
                     template.Render(sw);
                     errorsOutput = (StringBuilder) template.GetProperty("Errors");
                     warningsOutput = (StringBuilder) template.GetProperty("Warnings");
+                    infosOutput = (StringBuilder)template.GetProperty("Infos");
                     _methodList = (List<string>) template.GetProperty("MethodList");
                     if (errorsOutput.Length > 0)
                     {
@@ -745,8 +788,14 @@ namespace CslaGenerator.CodeGen
                                 OnGenerationInformation("* Warning:" + Environment.NewLine + warningsOutput);
                             }
                         }
+                        if (infosOutput != null)
+                        {
+                            if (infosOutput.Length > 0)
+                            {
+                                _infoReport.Add(infosOutput.ToString());
+                            }
+                        }
                         _objSuccess++;
-                        //OnGenerationInformation("Success");
                     }
                 }
                 GenerateDalExtendedFile(extendedFileName, objInfo, step);
@@ -809,8 +858,10 @@ namespace CslaGenerator.CodeGen
                         {
                             var errorsOutput = new StringBuilder();
                             var warningsOutput = new StringBuilder();
+                            var infosOutput = new StringBuilder();
                             template.SetProperty("Errors", errorsOutput);
                             template.SetProperty("Warnings", warningsOutput);
+                            template.SetProperty("Infos", infosOutput);
                             template.SetProperty("CurrentUnit", _unit);
                             var fs = File.Open(fullFilename, FileMode.Create);
                             OnGenerationInformation(utilityFilename + " file:");
@@ -819,6 +870,7 @@ namespace CslaGenerator.CodeGen
                             template.Render(sw);
                             errorsOutput = (StringBuilder) template.GetProperty("Errors");
                             warningsOutput = (StringBuilder) template.GetProperty("Warnings");
+                            infosOutput = (StringBuilder)template.GetProperty("Infos");
                             if (errorsOutput.Length > 0)
                             {
                                 _errorReport.Add(new GenerationReport
@@ -847,7 +899,13 @@ namespace CslaGenerator.CodeGen
                                         OnGenerationInformation("* Warning:" + Environment.NewLine + warningsOutput);
                                     }
                                 }
-                                //OnGenerationInformation("Success");
+                                if (infosOutput != null)
+                                {
+                                    if (infosOutput.Length > 0)
+                                    {
+                                        _infoReport.Add(infosOutput.ToString());
+                                    }
+                                }
                                 _fileSuccess[utilityFilename] = true;
                             }
                         }
@@ -1017,12 +1075,6 @@ namespace CslaGenerator.CodeGen
                     && info.ObjectType != CslaObjectType.EditableChildCollection
                     && info.ObjectType != CslaObjectType.NameValueList
                     && info.ObjectType != CslaObjectType.UnitOfWork);
-
-            /*return info.ObjectType == CslaObjectType.DynamicEditableRoot ||
-                   info.ObjectType == CslaObjectType.EditableChild ||
-                   info.ObjectType == CslaObjectType.EditableRoot ||
-                   info.ObjectType == CslaObjectType.EditableSwitchable;*/
-
         }
 
         private void GenerateAllSprocsFile(CslaObjectInfo info, string dir)
@@ -1179,8 +1231,10 @@ namespace CslaGenerator.CodeGen
                         {
                             var errorsOutput = new StringBuilder();
                             var warningsOutput = new StringBuilder();
+                            var infosOutput = new StringBuilder();
                             template.SetProperty("Errors", errorsOutput);
                             template.SetProperty("Warnings", warningsOutput);
+                            template.SetProperty("Infos", infosOutput);
                             if (crit != null)
                                 template.SetProperty("Criteria", crit);
                             template.SetProperty("IncludeParentProperties", objInfo.DataSetLoadingScheme);
@@ -1190,6 +1244,7 @@ namespace CslaGenerator.CodeGen
                             template.Render(sw);
                             errorsOutput = (StringBuilder) template.GetProperty("Errors");
                             warningsOutput = (StringBuilder) template.GetProperty("Warnings");
+                            infosOutput = (StringBuilder)template.GetProperty("Infos");
                             if (errorsOutput.Length > 0)
                             {
                                 _sprocFailed++;
@@ -1219,8 +1274,14 @@ namespace CslaGenerator.CodeGen
                                         OnGenerationInformation("* Warning:" + Environment.NewLine + warningsOutput);
                                     }
                                 }
+                                if (infosOutput != null)
+                                {
+                                    if (infosOutput.Length > 0)
+                                    {
+                                        _infoReport.Add(infosOutput.ToString());
+                                    }
+                                }
                                 _sprocSuccess++;
-                                //OnGenerationInformation("Success");
                             }
 
                             var sproc = sw.ToString();
@@ -1436,38 +1497,38 @@ namespace CslaGenerator.CodeGen
                 if (_generateDatabaseClass)
                 {
                     if (_fileSuccess["Database" + dbConnection] == null)
-                        OutputWindow.Current.AddOutputInfo(string.Format("Database" + dbConnection + " classe: already exists."));
+                        OutputWindow.Current.AddOutputInfo(string.Format("Database" + dbConnection + " class: already exists."));
                     else if (_fileSuccess["Database" + dbConnection] == false)
-                        OutputWindow.Current.AddOutputInfo(string.Format("Database" + dbConnection + " classe: failed."));
+                        OutputWindow.Current.AddOutputInfo(string.Format("Database" + dbConnection + " class: failed."));
                 }
 
                 if (_fileSuccess["DataPortalHookArgs"] == null)
-                    OutputWindow.Current.AddOutputInfo(string.Format("DataPortalHookArgs classe: already exists."));
+                    OutputWindow.Current.AddOutputInfo(string.Format("DataPortalHookArgs class: already exists."));
                 else if (_fileSuccess["DataPortalHookArgs"] == false)
-                    OutputWindow.Current.AddOutputInfo(string.Format("DataPortalHookArgs classe: failed."));
+                    OutputWindow.Current.AddOutputInfo(string.Format("DataPortalHookArgs class: failed."));
 
                 if (GeneratorController.Current.CurrentUnit.GenerationParams.GenerateDalInterface)
                 {
                     if (_fileSuccess["IDalManager" + dalName] == null)
-                        OutputWindow.Current.AddOutputInfo(string.Format("IDalManager" + dalName + " classe: already exists."));
+                        OutputWindow.Current.AddOutputInfo(string.Format("IDalManager" + dalName + " class: already exists."));
                     else if (_fileSuccess["IDalManager" + dalName] == false)
-                        OutputWindow.Current.AddOutputInfo(string.Format("IDalManager" + dalName + " classe: failed."));
+                        OutputWindow.Current.AddOutputInfo(string.Format("IDalManager" + dalName + " class: failed."));
                     if (_fileSuccess["DalFactory" + dalName] == null)
-                        OutputWindow.Current.AddOutputInfo(string.Format("DalFactory" + dalName + " classe: already exists."));
+                        OutputWindow.Current.AddOutputInfo(string.Format("DalFactory" + dalName + " class: already exists."));
                     else if (_fileSuccess["DalFactory" + dalName] == false)
-                        OutputWindow.Current.AddOutputInfo(string.Format("DalFactory" + dalName + " classe: failed."));
+                        OutputWindow.Current.AddOutputInfo(string.Format("DalFactory" + dalName + " class: failed."));
                     if (_fileSuccess["DataNotFoundException"] == null)
-                        OutputWindow.Current.AddOutputInfo(string.Format("DataNotFoundException classe: already exists."));
+                        OutputWindow.Current.AddOutputInfo(string.Format("DataNotFoundException class: already exists."));
                     else if (_fileSuccess["DataNotFoundException"] == false)
-                        OutputWindow.Current.AddOutputInfo(string.Format("DataNotFoundException classe: failed."));
+                        OutputWindow.Current.AddOutputInfo(string.Format("DataNotFoundException class: failed."));
                 }
 
                 if (GeneratorController.Current.CurrentUnit.GenerationParams.GenerateDalObject)
                 {
                     if (_fileSuccess["DalManager" + dalName] == null)
-                        OutputWindow.Current.AddOutputInfo(string.Format("DalManager" + dalName + " classe: already exists."));
+                        OutputWindow.Current.AddOutputInfo(string.Format("DalManager" + dalName + " class: already exists."));
                     else if (_fileSuccess["DalManager" + dalName] == false)
-                        OutputWindow.Current.AddOutputInfo(string.Format("DalManager" + dalName + " classe: failed."));
+                        OutputWindow.Current.AddOutputInfo(string.Format("DalManager" + dalName + " class: failed."));
                 }
 
                 if (_sprocWarnings > 0 || _objectWarnings > 0)
@@ -1485,6 +1546,14 @@ namespace CslaGenerator.CodeGen
                                                                  (_objFailed + _objSuccess), _objFailed));
                 OutputWindow.Current.AddOutputInfo(string.Format("Stored Procs: {0} generated. {1} failed.",
                                                                  (_sprocFailed + _sprocSuccess), _sprocFailed));
+                if (InfoReport.Count > 0)
+                {
+                    OutputWindow.Current.AddOutputInfo("\r\nINFORMATION");
+                    foreach (var line in InfoReport)
+                    {
+                        OutputWindow.Current.AddOutputInfo(line);
+                    }
+                }
             }
 
             GeneratorController.Current.HasErrors = _errorReport.Count > 0;

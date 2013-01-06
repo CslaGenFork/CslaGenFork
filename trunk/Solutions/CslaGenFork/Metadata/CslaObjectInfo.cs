@@ -788,12 +788,20 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("05. Collection Options")]
-        [Description("The type names where the cache will be invalidated on Insert, Update and Delete operations.")]
+        [Description("The type names where the cache will be invalidated on Insert, Update and Delete operations.\r\n" +
+            "Code support for cache invalidation will be generated on the files for \"EditableRootCollection\" and \"DynamicEditableRoot\". ")]
         [UserFriendlyName("Invalidate Cache Types")]
         [Editor(typeof(InvalidateCacheTypeCollectionEditor), typeof(UITypeEditor))]
         public List<string> InvalidateCache
         {
-            get { return _invalidateCache; }
+            get
+            {
+                if (_objectType != CslaObjectType.EditableRootCollection &&
+                    _objectType != CslaObjectType.DynamicEditableRootCollection)
+                    return new List<string>();
+
+                return _invalidateCache;
+            }
             set { _invalidateCache = value; }
         }
 
