@@ -13,7 +13,6 @@ namespace SelfLoadROSoftDelete.DataAccess.Sql.ERLevel
     /// </summary>
     public partial class G11_City_ChildDal : IG11_City_ChildDal
     {
-
         /// <summary>
         /// Loads a G11_City_Child object from the database.
         /// </summary>

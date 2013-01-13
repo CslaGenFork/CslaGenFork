@@ -2,8 +2,8 @@ using System;
 using System.Data;
 using Csla;
 using Csla.Data;
-using SelfLoad.DataAccess.ERLevel;
 using SelfLoad.DataAccess;
+using SelfLoad.DataAccess.ERLevel;
 
 namespace SelfLoad.Business.ERLevel
 {
@@ -86,10 +86,10 @@ namespace SelfLoad.Business.ERLevel
         }
 
         /// <summary>
-        /// Factory method. Loads a <see cref="C05_CountryColl"/> object, based on given parameters.
+        /// Factory method. Loads a <see cref="C05_CountryColl"/> collection, based on given parameters.
         /// </summary>
         /// <param name="parent_SubContinent_ID">The Parent_SubContinent_ID parameter of the C05_CountryColl to fetch.</param>
-        /// <returns>A reference to the fetched <see cref="C05_CountryColl"/> object.</returns>
+        /// <returns>A reference to the fetched <see cref="C05_CountryColl"/> collection.</returns>
         internal static C05_CountryColl GetC05_CountryColl(int parent_SubContinent_ID)
         {
             return DataPortal.FetchChild<C05_CountryColl>(parent_SubContinent_ID);

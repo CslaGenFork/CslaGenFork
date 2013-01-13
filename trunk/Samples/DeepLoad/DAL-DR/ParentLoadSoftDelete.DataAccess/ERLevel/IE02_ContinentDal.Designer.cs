@@ -9,7 +9,6 @@ namespace ParentLoadSoftDelete.DataAccess.ERLevel
     /// </summary>
     public partial interface IE02_ContinentDal
     {
-
         /// <summary>
         /// Loads a E02_Continent object from the database.
         /// </summary>
@@ -22,7 +21,6 @@ namespace ParentLoadSoftDelete.DataAccess.ERLevel
         /// </summary>
         /// <param name="continent_ID">The Continent ID.</param>
         /// <param name="continent_Name">The Continent Name.</param>
-        
         void Insert(out int continent_ID, string continent_Name);
 
         /// <summary>
@@ -30,9 +28,7 @@ namespace ParentLoadSoftDelete.DataAccess.ERLevel
         /// </summary>
         /// <param name="continent_ID">The Continent ID.</param>
         /// <param name="continent_Name">The Continent Name.</param>
-        
         void Update(int continent_ID, string continent_Name);
-
 
         /// <summary>
         /// Deletes the E02_Continent object from database.

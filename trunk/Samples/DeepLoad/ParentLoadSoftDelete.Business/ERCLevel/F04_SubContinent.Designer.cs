@@ -178,6 +178,7 @@ namespace ParentLoadSoftDelete.Business.ERCLevel
             // Value properties
             LoadProperty(SubContinent_IDProperty, dr.GetInt32("SubContinent_ID"));
             LoadProperty(SubContinent_NameProperty, dr.GetString("SubContinent_Name"));
+            // parent properties
             parent_Continent_ID = dr.GetInt32("Parent_Continent_ID");
             var args = new DataPortalHookArgs(dr);
             OnFetchRead(args);
@@ -222,6 +223,7 @@ namespace ParentLoadSoftDelete.Business.ERCLevel
                     OnInsertPost(args);
                     LoadProperty(SubContinent_IDProperty, (int) cmd.Parameters["@SubContinent_ID"].Value);
                 }
+                // flushes all pending data operations
                 FieldManager.UpdateChildren(this);
             }
         }
@@ -244,6 +246,7 @@ namespace ParentLoadSoftDelete.Business.ERCLevel
                     cmd.ExecuteNonQuery();
                     OnUpdatePost(args);
                 }
+                // flushes all pending data operations
                 FieldManager.UpdateChildren(this);
             }
         }

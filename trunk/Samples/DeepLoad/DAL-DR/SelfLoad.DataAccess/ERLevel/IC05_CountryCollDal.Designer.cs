@@ -9,7 +9,6 @@ namespace SelfLoad.DataAccess.ERLevel
     /// </summary>
     public partial interface IC05_CountryCollDal
     {
-
         /// <summary>
         /// Loads a C05_CountryColl collection from the database.
         /// </summary>

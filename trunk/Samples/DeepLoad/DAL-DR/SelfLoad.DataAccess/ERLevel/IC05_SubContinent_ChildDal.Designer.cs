@@ -9,7 +9,6 @@ namespace SelfLoad.DataAccess.ERLevel
     /// </summary>
     public partial interface IC05_SubContinent_ChildDal
     {
-
         /// <summary>
         /// Loads a C05_SubContinent_Child object from the database.
         /// </summary>

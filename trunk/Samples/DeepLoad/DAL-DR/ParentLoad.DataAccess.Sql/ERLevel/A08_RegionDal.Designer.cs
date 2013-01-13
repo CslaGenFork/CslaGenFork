@@ -19,7 +19,6 @@ namespace ParentLoad.DataAccess.Sql.ERLevel
         /// <param name="country_ID">The parent Country ID.</param>
         /// <param name="region_ID">The Region ID.</param>
         /// <param name="region_Name">The Region Name.</param>
-        
         public void Insert(int country_ID, out int region_ID, string region_Name)
         {
             region_ID = -1;
@@ -33,7 +32,7 @@ namespace ParentLoad.DataAccess.Sql.ERLevel
                     cmd.Parameters.AddWithValue("@Region_Name", region_Name).DbType = DbType.String;
                     cmd.ExecuteNonQuery();
                     region_ID = (int)cmd.Parameters["@Region_ID"].Value;
-                                    }
+                }
             }
         }
 
@@ -42,7 +41,6 @@ namespace ParentLoad.DataAccess.Sql.ERLevel
         /// </summary>
         /// <param name="region_ID">The Region ID.</param>
         /// <param name="region_Name">The Region Name.</param>
-        
         public void Update(int region_ID, string region_Name)
         {
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("DeepLoad"))
@@ -55,8 +53,7 @@ namespace ParentLoad.DataAccess.Sql.ERLevel
                     var rowsAffected = cmd.ExecuteNonQuery();
                     if (rowsAffected == 0)
                         throw new DataNotFoundException("A08_Region");
-
-                                    }
+                }
             }
         }
 

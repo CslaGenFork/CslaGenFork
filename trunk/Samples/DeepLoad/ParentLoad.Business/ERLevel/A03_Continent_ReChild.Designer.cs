@@ -59,6 +59,7 @@ namespace ParentLoad.Business.ERLevel
             obj.MarkAsChild();
             obj.Fetch(dr);
             obj.MarkOld();
+            // check all object rules and property rules
             obj.BusinessRules.CheckRules();
             return obj;
         }

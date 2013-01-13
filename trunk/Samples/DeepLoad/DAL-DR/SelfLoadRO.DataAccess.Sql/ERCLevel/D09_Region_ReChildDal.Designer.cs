@@ -13,7 +13,6 @@ namespace SelfLoadRO.DataAccess.Sql.ERCLevel
     /// </summary>
     public partial class D09_Region_ReChildDal : ID09_Region_ReChildDal
     {
-
         /// <summary>
         /// Loads a D09_Region_ReChild object from the database.
         /// </summary>

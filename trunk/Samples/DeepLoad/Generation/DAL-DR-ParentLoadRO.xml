@@ -127,6 +127,7 @@
         <AssemblyFile />
         <Type />
       </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
       <FileName>A02_Continent</FileName>
@@ -203,6 +204,7 @@
                       <IsNullable>false</IsNullable>
                       <IsIdentity>true</IsIdentity>
                     </DbBindColumn>
+                    <ParameterValue />
                   </Property>
                 </Properties>
                 <CreateOptions>
@@ -257,6 +259,7 @@
                   <IsNullable>false</IsNullable>
                   <IsIdentity>true</IsIdentity>
                 </DbBindColumn>
+                <ParameterValue />
               </Property>
             </Parameter>
           </LoadParameters>
@@ -335,6 +338,7 @@
                       <IsNullable>false</IsNullable>
                       <IsIdentity>true</IsIdentity>
                     </DbBindColumn>
+                    <ParameterValue />
                   </Property>
                 </Properties>
                 <CreateOptions>
@@ -389,6 +393,7 @@
                   <IsNullable>false</IsNullable>
                   <IsIdentity>true</IsIdentity>
                 </DbBindColumn>
+                <ParameterValue />
               </Property>
             </Parameter>
           </LoadParameters>
@@ -465,6 +470,7 @@
                       <IsNullable>false</IsNullable>
                       <IsIdentity>true</IsIdentity>
                     </DbBindColumn>
+                    <ParameterValue />
                   </Property>
                 </Properties>
                 <CreateOptions>
@@ -519,6 +525,7 @@
                   <IsNullable>false</IsNullable>
                   <IsIdentity>true</IsIdentity>
                 </DbBindColumn>
+                <ParameterValue />
               </Property>
             </Parameter>
           </LoadParameters>
@@ -683,6 +690,7 @@
                 <IsNullable>false</IsNullable>
                 <IsIdentity>true</IsIdentity>
               </DbBindColumn>
+              <ParameterValue />
             </Property>
           </Properties>
           <CreateOptions>
@@ -729,6 +737,7 @@
       <AllowRemove>false</AllowRemove>
       <AddParentReference>false</AddParentReference>
       <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
       <ValueColumn />
       <NameColumn />
       <CacheResults>true</CacheResults>
@@ -828,6 +837,7 @@
         <AssemblyFile />
         <Type />
       </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
       <FileName>A03_Continent_Child</FileName>
@@ -979,6 +989,7 @@
       <AllowRemove>false</AllowRemove>
       <AddParentReference>false</AddParentReference>
       <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
       <ValueColumn />
       <NameColumn />
       <CacheResults>true</CacheResults>
@@ -1078,6 +1089,7 @@
         <AssemblyFile />
         <Type />
       </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
       <FileName>A03_Continent_ReChild</FileName>
@@ -1229,6 +1241,7 @@
       <AllowRemove>false</AllowRemove>
       <AddParentReference>false</AddParentReference>
       <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
       <ValueColumn />
       <NameColumn />
       <CacheResults>true</CacheResults>
@@ -1328,6 +1341,7 @@
         <AssemblyFile />
         <Type />
       </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
       <FileName>A03_SubContinentColl</FileName>
@@ -1355,6 +1369,7 @@
       <AllowRemove>false</AllowRemove>
       <AddParentReference>false</AddParentReference>
       <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
       <ValueColumn />
       <NameColumn />
       <CacheResults>true</CacheResults>
@@ -1454,6 +1469,7 @@
         <AssemblyFile />
         <Type />
       </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
       <FileName>A04_SubContinent</FileName>
@@ -1989,6 +2005,7 @@
       <AllowRemove>false</AllowRemove>
       <AddParentReference>false</AddParentReference>
       <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
       <ValueColumn />
       <NameColumn />
       <CacheResults>true</CacheResults>
@@ -2088,6 +2105,7 @@
         <AssemblyFile />
         <Type />
       </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
       <FileName>A05_SubContinent_Child</FileName>
@@ -2187,7 +2205,7 @@
           <DataAccess>UpdateOnly</DataAccess>
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>CMarent ID1</FriendlyName>
+          <FriendlyName>SubContinent ID1</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
@@ -2361,6 +2379,7 @@
       <AllowRemove>false</AllowRemove>
       <AddParentReference>false</AddParentReference>
       <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
       <ValueColumn />
       <NameColumn />
       <CacheResults>true</CacheResults>
@@ -2460,6 +2479,7 @@
         <AssemblyFile />
         <Type />
       </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
       <FileName>A05_SubContinent_ReChild</FileName>
@@ -2672,6 +2692,7 @@
       <AllowRemove>false</AllowRemove>
       <AddParentReference>false</AddParentReference>
       <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
       <ValueColumn />
       <NameColumn />
       <CacheResults>true</CacheResults>
@@ -2771,6 +2792,7 @@
         <AssemblyFile />
         <Type />
       </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
       <FileName>A05_CountryColl</FileName>
@@ -2798,6 +2820,7 @@
       <AllowRemove>false</AllowRemove>
       <AddParentReference>false</AddParentReference>
       <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
       <ValueColumn />
       <NameColumn />
       <CacheResults>true</CacheResults>
@@ -2897,6 +2920,7 @@
         <AssemblyFile />
         <Type />
       </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
       <FileName>A06_Country</FileName>
@@ -3357,7 +3381,7 @@
         </ValueProperty>
         <ValueProperty>
           <ParameterName>Parent_SubContinent_ID</ParameterName>
-          <Name>Parent_SubContinent_ID</Name>
+          <Name>ParentSubContinentID</Name>
           <PropertyType>Int32</PropertyType>
           <ReadOnly>false</ReadOnly>
           <Nullable>false</Nullable>
@@ -3380,7 +3404,7 @@
           <DataAccess>UpdateOnly</DataAccess>
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>Marent ID1</FriendlyName>
+          <FriendlyName>ParentSubContinentID</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
@@ -3554,6 +3578,7 @@
       <AllowRemove>false</AllowRemove>
       <AddParentReference>false</AddParentReference>
       <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
       <ValueColumn />
       <NameColumn />
       <CacheResults>true</CacheResults>
@@ -3653,6 +3678,7 @@
         <AssemblyFile />
         <Type />
       </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
       <FileName>A07_Country_Child</FileName>
@@ -3804,6 +3830,7 @@
       <AllowRemove>false</AllowRemove>
       <AddParentReference>false</AddParentReference>
       <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
       <ValueColumn />
       <NameColumn />
       <CacheResults>true</CacheResults>
@@ -3903,6 +3930,7 @@
         <AssemblyFile />
         <Type />
       </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
       <FileName>A07_Country_ReChild</FileName>
@@ -4054,6 +4082,7 @@
       <AllowRemove>false</AllowRemove>
       <AddParentReference>false</AddParentReference>
       <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
       <ValueColumn />
       <NameColumn />
       <CacheResults>true</CacheResults>
@@ -4153,6 +4182,7 @@
         <AssemblyFile />
         <Type />
       </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
       <FileName>A07_RegionColl</FileName>
@@ -4180,6 +4210,7 @@
       <AllowRemove>false</AllowRemove>
       <AddParentReference>false</AddParentReference>
       <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
       <ValueColumn />
       <NameColumn />
       <CacheResults>true</CacheResults>
@@ -4279,6 +4310,7 @@
         <AssemblyFile />
         <Type />
       </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
       <FileName>A08_Region</FileName>
@@ -4814,6 +4846,7 @@
       <AllowRemove>false</AllowRemove>
       <AddParentReference>false</AddParentReference>
       <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
       <ValueColumn />
       <NameColumn />
       <CacheResults>true</CacheResults>
@@ -4913,6 +4946,7 @@
         <AssemblyFile />
         <Type />
       </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
       <FileName>A09_Region_Child</FileName>
@@ -5064,6 +5098,7 @@
       <AllowRemove>false</AllowRemove>
       <AddParentReference>false</AddParentReference>
       <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
       <ValueColumn />
       <NameColumn />
       <CacheResults>true</CacheResults>
@@ -5163,6 +5198,7 @@
         <AssemblyFile />
         <Type />
       </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
       <FileName>A09_Region_ReChild</FileName>
@@ -5314,6 +5350,7 @@
       <AllowRemove>false</AllowRemove>
       <AddParentReference>false</AddParentReference>
       <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
       <ValueColumn />
       <NameColumn />
       <CacheResults>true</CacheResults>
@@ -5413,6 +5450,7 @@
         <AssemblyFile />
         <Type />
       </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
       <FileName>A09_CityColl</FileName>
@@ -5440,6 +5478,7 @@
       <AllowRemove>false</AllowRemove>
       <AddParentReference>false</AddParentReference>
       <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
       <ValueColumn />
       <NameColumn />
       <CacheResults>true</CacheResults>
@@ -5539,6 +5578,7 @@
         <AssemblyFile />
         <Type />
       </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
       <FileName>A10_City</FileName>
@@ -6074,6 +6114,7 @@
       <AllowRemove>false</AllowRemove>
       <AddParentReference>false</AddParentReference>
       <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
       <ValueColumn />
       <NameColumn />
       <CacheResults>true</CacheResults>
@@ -6173,6 +6214,7 @@
         <AssemblyFile />
         <Type />
       </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
       <FileName>A11_City_Child</FileName>
@@ -6324,6 +6366,7 @@
       <AllowRemove>false</AllowRemove>
       <AddParentReference>false</AddParentReference>
       <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
       <ValueColumn />
       <NameColumn />
       <CacheResults>true</CacheResults>
@@ -6423,6 +6466,7 @@
         <AssemblyFile />
         <Type />
       </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
       <FileName>A11_City_ReChild</FileName>
@@ -6574,6 +6618,7 @@
       <AllowRemove>false</AllowRemove>
       <AddParentReference>false</AddParentReference>
       <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
       <ValueColumn />
       <NameColumn />
       <CacheResults>true</CacheResults>
@@ -6673,6 +6718,7 @@
         <AssemblyFile />
         <Type />
       </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
       <FileName>A11_CityRoadColl</FileName>
@@ -6700,6 +6746,7 @@
       <AllowRemove>false</AllowRemove>
       <AddParentReference>false</AddParentReference>
       <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
       <ValueColumn />
       <NameColumn />
       <CacheResults>true</CacheResults>
@@ -6799,6 +6846,7 @@
         <AssemblyFile />
         <Type />
       </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
       <FileName>A12_CityRoad</FileName>
@@ -7011,6 +7059,7 @@
       <AllowRemove>false</AllowRemove>
       <AddParentReference>false</AddParentReference>
       <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
       <ValueColumn />
       <NameColumn />
       <CacheResults>true</CacheResults>
@@ -7110,6 +7159,7 @@
         <AssemblyFile />
         <Type />
       </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
       <FileName>Separator</FileName>
@@ -7137,6 +7187,7 @@
       <AllowRemove>true</AllowRemove>
       <AddParentReference>false</AddParentReference>
       <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
       <ValueColumn />
       <NameColumn />
       <CacheResults>true</CacheResults>
@@ -7236,6 +7287,7 @@
         <AssemblyFile />
         <Type />
       </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
       <FileName>B01_ContinentColl</FileName>
@@ -7299,6 +7351,7 @@
       <AllowRemove>false</AllowRemove>
       <AddParentReference>false</AddParentReference>
       <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
       <ValueColumn />
       <NameColumn />
       <CacheResults>true</CacheResults>
@@ -7398,6 +7451,7 @@
         <AssemblyFile />
         <Type />
       </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
       <FileName>B02_Continent</FileName>
@@ -7871,6 +7925,7 @@
       <AllowRemove>false</AllowRemove>
       <AddParentReference>false</AddParentReference>
       <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
       <ValueColumn />
       <NameColumn />
       <CacheResults>true</CacheResults>
@@ -7970,6 +8025,7 @@
         <AssemblyFile />
         <Type />
       </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
       <FileName>B03_Continent_Child</FileName>
@@ -8121,6 +8177,7 @@
       <AllowRemove>false</AllowRemove>
       <AddParentReference>false</AddParentReference>
       <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
       <ValueColumn />
       <NameColumn />
       <CacheResults>true</CacheResults>
@@ -8220,6 +8277,7 @@
         <AssemblyFile />
         <Type />
       </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
       <FileName>B03_Continent_ReChild</FileName>
@@ -8371,6 +8429,7 @@
       <AllowRemove>false</AllowRemove>
       <AddParentReference>false</AddParentReference>
       <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
       <ValueColumn />
       <NameColumn />
       <CacheResults>true</CacheResults>
@@ -8470,6 +8529,7 @@
         <AssemblyFile />
         <Type />
       </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
       <FileName>B03_SubContinentColl</FileName>
@@ -8497,6 +8557,7 @@
       <AllowRemove>false</AllowRemove>
       <AddParentReference>false</AddParentReference>
       <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
       <ValueColumn />
       <NameColumn />
       <CacheResults>true</CacheResults>
@@ -8596,6 +8657,7 @@
         <AssemblyFile />
         <Type />
       </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
       <FileName>B04_SubContinent</FileName>
@@ -9131,6 +9193,7 @@
       <AllowRemove>false</AllowRemove>
       <AddParentReference>false</AddParentReference>
       <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
       <ValueColumn />
       <NameColumn />
       <CacheResults>true</CacheResults>
@@ -9230,6 +9293,7 @@
         <AssemblyFile />
         <Type />
       </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
       <FileName>B05_SubContinent_Child</FileName>
@@ -9381,6 +9445,7 @@
       <AllowRemove>false</AllowRemove>
       <AddParentReference>false</AddParentReference>
       <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
       <ValueColumn />
       <NameColumn />
       <CacheResults>true</CacheResults>
@@ -9480,6 +9545,7 @@
         <AssemblyFile />
         <Type />
       </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
       <FileName>B05_SubContinent_ReChild</FileName>
@@ -9631,6 +9697,7 @@
       <AllowRemove>false</AllowRemove>
       <AddParentReference>false</AddParentReference>
       <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
       <ValueColumn />
       <NameColumn />
       <CacheResults>true</CacheResults>
@@ -9730,6 +9797,7 @@
         <AssemblyFile />
         <Type />
       </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
       <FileName>B05_CountryColl</FileName>
@@ -9757,6 +9825,7 @@
       <AllowRemove>false</AllowRemove>
       <AddParentReference>false</AddParentReference>
       <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
       <ValueColumn />
       <NameColumn />
       <CacheResults>true</CacheResults>
@@ -9856,6 +9925,7 @@
         <AssemblyFile />
         <Type />
       </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
       <FileName>B06_Country</FileName>
@@ -10329,6 +10399,7 @@
       <AllowRemove>false</AllowRemove>
       <AddParentReference>false</AddParentReference>
       <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
       <ValueColumn />
       <NameColumn />
       <CacheResults>true</CacheResults>
@@ -10428,6 +10499,7 @@
         <AssemblyFile />
         <Type />
       </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
       <FileName>B07_Country_Child</FileName>
@@ -10579,6 +10651,7 @@
       <AllowRemove>false</AllowRemove>
       <AddParentReference>false</AddParentReference>
       <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
       <ValueColumn />
       <NameColumn />
       <CacheResults>true</CacheResults>
@@ -10678,6 +10751,7 @@
         <AssemblyFile />
         <Type />
       </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
       <FileName>B07_Country_ReChild</FileName>
@@ -10829,6 +10903,7 @@
       <AllowRemove>false</AllowRemove>
       <AddParentReference>false</AddParentReference>
       <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
       <ValueColumn />
       <NameColumn />
       <CacheResults>true</CacheResults>
@@ -10928,6 +11003,7 @@
         <AssemblyFile />
         <Type />
       </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
       <FileName>B07_RegionColl</FileName>
@@ -10955,6 +11031,7 @@
       <AllowRemove>false</AllowRemove>
       <AddParentReference>false</AddParentReference>
       <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
       <ValueColumn />
       <NameColumn />
       <CacheResults>true</CacheResults>
@@ -11054,6 +11131,7 @@
         <AssemblyFile />
         <Type />
       </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
       <FileName>B08_Region</FileName>
@@ -11589,6 +11667,7 @@
       <AllowRemove>false</AllowRemove>
       <AddParentReference>false</AddParentReference>
       <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
       <ValueColumn />
       <NameColumn />
       <CacheResults>true</CacheResults>
@@ -11688,6 +11767,7 @@
         <AssemblyFile />
         <Type />
       </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
       <FileName>B09_Region_Child</FileName>
@@ -11839,6 +11919,7 @@
       <AllowRemove>false</AllowRemove>
       <AddParentReference>false</AddParentReference>
       <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
       <ValueColumn />
       <NameColumn />
       <CacheResults>true</CacheResults>
@@ -11938,6 +12019,7 @@
         <AssemblyFile />
         <Type />
       </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
       <FileName>B09_Region_ReChild</FileName>
@@ -12089,6 +12171,7 @@
       <AllowRemove>false</AllowRemove>
       <AddParentReference>false</AddParentReference>
       <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
       <ValueColumn />
       <NameColumn />
       <CacheResults>true</CacheResults>
@@ -12188,6 +12271,7 @@
         <AssemblyFile />
         <Type />
       </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
       <FileName>B09_CityColl</FileName>
@@ -12215,6 +12299,7 @@
       <AllowRemove>false</AllowRemove>
       <AddParentReference>false</AddParentReference>
       <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
       <ValueColumn />
       <NameColumn />
       <CacheResults>true</CacheResults>
@@ -12314,6 +12399,7 @@
         <AssemblyFile />
         <Type />
       </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
       <FileName>B10_City</FileName>
@@ -12849,6 +12935,7 @@
       <AllowRemove>false</AllowRemove>
       <AddParentReference>false</AddParentReference>
       <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
       <ValueColumn />
       <NameColumn />
       <CacheResults>true</CacheResults>
@@ -12948,6 +13035,7 @@
         <AssemblyFile />
         <Type />
       </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
       <FileName>B11_City_Child</FileName>
@@ -13099,6 +13187,7 @@
       <AllowRemove>false</AllowRemove>
       <AddParentReference>false</AddParentReference>
       <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
       <ValueColumn />
       <NameColumn />
       <CacheResults>true</CacheResults>
@@ -13198,6 +13287,7 @@
         <AssemblyFile />
         <Type />
       </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
       <FileName>B11_City_ReChild</FileName>
@@ -13349,6 +13439,7 @@
       <AllowRemove>false</AllowRemove>
       <AddParentReference>false</AddParentReference>
       <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
       <ValueColumn />
       <NameColumn />
       <CacheResults>true</CacheResults>
@@ -13448,6 +13539,7 @@
         <AssemblyFile />
         <Type />
       </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
       <FileName>B11_CityRoadColl</FileName>
@@ -13475,6 +13567,7 @@
       <AllowRemove>false</AllowRemove>
       <AddParentReference>false</AddParentReference>
       <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
       <ValueColumn />
       <NameColumn />
       <CacheResults>true</CacheResults>
@@ -13574,6 +13667,7 @@
         <AssemblyFile />
         <Type />
       </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
       <FileName>B12_CityRoad</FileName>
@@ -13786,6 +13880,7 @@
       <AllowRemove>false</AllowRemove>
       <AddParentReference>false</AddParentReference>
       <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
       <ValueColumn />
       <NameColumn />
       <CacheResults>true</CacheResults>

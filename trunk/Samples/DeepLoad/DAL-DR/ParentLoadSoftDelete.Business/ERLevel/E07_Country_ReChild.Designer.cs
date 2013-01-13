@@ -2,8 +2,8 @@ using System;
 using System.Data;
 using Csla;
 using Csla.Data;
-using ParentLoadSoftDelete.DataAccess.ERLevel;
 using ParentLoadSoftDelete.DataAccess;
+using ParentLoadSoftDelete.DataAccess.ERLevel;
 
 namespace ParentLoadSoftDelete.Business.ERLevel
 {
@@ -68,6 +68,7 @@ namespace ParentLoadSoftDelete.Business.ERLevel
             obj.MarkAsChild();
             obj.Fetch(dr);
             obj.MarkOld();
+            // check all object rules and property rules
             obj.BusinessRules.CheckRules();
             return obj;
         }
@@ -111,6 +112,7 @@ namespace ParentLoadSoftDelete.Business.ERLevel
         {
             // Value properties
             LoadProperty(Country_Child_NameProperty, dr.GetString("Country_Child_Name"));
+            // parent properties
             country_ID2 = dr.GetInt32("Country_ID2");
             var args = new DataPortalHookArgs(dr);
             OnFetchRead(args);
@@ -123,9 +125,9 @@ namespace ParentLoadSoftDelete.Business.ERLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Insert(E06_Country parent)
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactoryParentLoadSoftDelete.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnInsertPre(args);
                 var dal = dalManager.GetProvider<IE07_Country_ReChildDal>();
                 using (BypassPropertyChecks)
@@ -146,9 +148,9 @@ namespace ParentLoadSoftDelete.Business.ERLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Update(E06_Country parent)
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactoryParentLoadSoftDelete.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnUpdatePre(args);
                 var dal = dalManager.GetProvider<IE07_Country_ReChildDal>();
                 using (BypassPropertyChecks)
@@ -169,9 +171,9 @@ namespace ParentLoadSoftDelete.Business.ERLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_DeleteSelf(E06_Country parent)
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactoryParentLoadSoftDelete.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnDeletePre(args);
                 var dal = dalManager.GetProvider<IE07_Country_ReChildDal>();
                 using (BypassPropertyChecks)

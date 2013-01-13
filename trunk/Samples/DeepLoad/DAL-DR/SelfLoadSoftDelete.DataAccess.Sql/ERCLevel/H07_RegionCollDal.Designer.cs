@@ -13,7 +13,6 @@ namespace SelfLoadSoftDelete.DataAccess.Sql.ERCLevel
     /// </summary>
     public partial class H07_RegionCollDal : IH07_RegionCollDal
     {
-
         /// <summary>
         /// Loads a H07_RegionColl collection from the database.
         /// </summary>

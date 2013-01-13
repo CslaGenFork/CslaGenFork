@@ -9,7 +9,6 @@ namespace SelfLoadROSoftDelete.DataAccess.ERCLevel
     /// </summary>
     public partial interface IH11_City_ChildDal
     {
-
         /// <summary>
         /// Loads a H11_City_Child object from the database.
         /// </summary>

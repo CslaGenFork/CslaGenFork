@@ -2,8 +2,8 @@ using System;
 using System.Data;
 using Csla;
 using Csla.Data;
-using ParentLoad.DataAccess.ERCLevel;
 using ParentLoad.DataAccess;
+using ParentLoad.DataAccess.ERCLevel;
 
 namespace ParentLoad.Business.ERCLevel
 {
@@ -110,6 +110,7 @@ namespace ParentLoad.Business.ERCLevel
         {
             // Value properties
             LoadProperty(Country_Child_NameProperty, dr.GetString("Country_Child_Name"));
+            // parent properties
             country_ID1 = dr.GetInt32("Country_ID1");
             var args = new DataPortalHookArgs(dr);
             OnFetchRead(args);
@@ -122,9 +123,9 @@ namespace ParentLoad.Business.ERCLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Insert(B06_Country parent)
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactoryParentLoad.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnInsertPre(args);
                 var dal = dalManager.GetProvider<IB07_Country_ChildDal>();
                 using (BypassPropertyChecks)
@@ -145,9 +146,9 @@ namespace ParentLoad.Business.ERCLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Update(B06_Country parent)
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactoryParentLoad.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnUpdatePre(args);
                 var dal = dalManager.GetProvider<IB07_Country_ChildDal>();
                 using (BypassPropertyChecks)
@@ -168,9 +169,9 @@ namespace ParentLoad.Business.ERCLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_DeleteSelf(B06_Country parent)
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactoryParentLoad.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnDeletePre(args);
                 var dal = dalManager.GetProvider<IB07_Country_ChildDal>();
                 using (BypassPropertyChecks)

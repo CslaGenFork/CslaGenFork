@@ -44,10 +44,10 @@ namespace SelfLoadSoftDelete.DataAccess.Sql.ERLevel
         /// </summary>
         /// <param name="country_ID">The Country ID.</param>
         /// <param name="country_Name">The Country Name.</param>
-        /// <param name="parent_SubContinent_ID">The Parent Sub Continent ID.</param>
+        /// <param name="parentSubContinentID">The Parent Sub Continent ID.</param>
         /// <param name="rowVersion">The Row Version.</param>
         /// <returns>The updated Row Version.</returns>
-        public byte[] Update(int country_ID, string country_Name, int parent_SubContinent_ID, byte[] rowVersion)
+        public byte[] Update(int country_ID, string country_Name, int parentSubContinentID, byte[] rowVersion)
         {
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("DeepLoad"))
             {
@@ -56,7 +56,7 @@ namespace SelfLoadSoftDelete.DataAccess.Sql.ERLevel
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@Country_ID", country_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@Country_Name", country_Name).DbType = DbType.String;
-                    cmd.Parameters.AddWithValue("@Parent_SubContinent_ID", parent_SubContinent_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@Parent_SubContinent_ID", parentSubContinentID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@RowVersion", rowVersion).DbType = DbType.Binary;
                     cmd.Parameters.Add("@NewRowVersion", SqlDbType.Timestamp).Direction = ParameterDirection.Output;
                     var rowsAffected = cmd.ExecuteNonQuery();

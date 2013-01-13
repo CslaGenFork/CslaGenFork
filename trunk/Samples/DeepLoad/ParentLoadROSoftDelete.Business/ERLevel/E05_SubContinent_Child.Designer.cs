@@ -47,11 +47,11 @@ namespace ParentLoadROSoftDelete.Business.ERLevel
         /// <summary>
         /// Maintains metadata about <see cref="SubContinent_ID1"/> property.
         /// </summary>
-        public static readonly PropertyInfo<int> SubContinent_ID1Property = RegisterProperty<int>(p => p.SubContinent_ID1, "CMarent ID1");
+        public static readonly PropertyInfo<int> SubContinent_ID1Property = RegisterProperty<int>(p => p.SubContinent_ID1, "SubContinent ID1");
         /// <summary>
-        /// Gets the CMarent ID1.
+        /// Gets the SubContinent ID1.
         /// </summary>
-        /// <value>The CMarent ID1.</value>
+        /// <value>The SubContinent ID1.</value>
         public int SubContinent_ID1
         {
             get { return GetProperty(SubContinent_ID1Property); }
@@ -99,7 +99,8 @@ namespace ParentLoadROSoftDelete.Business.ERLevel
             // Value properties
             LoadProperty(SubContinent_Child_NameProperty, dr.GetString("SubContinent_Child_Name"));
             LoadProperty(SubContinent_ID1Property, dr.GetInt32("SubContinent_ID1"));
-            _rowVersion = (dr.GetValue("RowVersion")) as byte[];
+            _rowVersion = dr.GetValue("RowVersion") as byte[];
+            // parent properties
             subContinent_ID1 = dr.GetInt32("SubContinent_ID1");
             var args = new DataPortalHookArgs(dr);
             OnFetchRead(args);

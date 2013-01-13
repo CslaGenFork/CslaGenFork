@@ -2,8 +2,8 @@ using System;
 using System.Data;
 using Csla;
 using Csla.Data;
-using ParentLoadSoftDelete.DataAccess.ERLevel;
 using ParentLoadSoftDelete.DataAccess;
+using ParentLoadSoftDelete.DataAccess.ERLevel;
 
 namespace ParentLoadSoftDelete.Business.ERLevel
 {
@@ -200,9 +200,9 @@ namespace ParentLoadSoftDelete.Business.ERLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Insert(E02_Continent parent)
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactoryParentLoadSoftDelete.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnInsertPre(args);
                 var dal = dalManager.GetProvider<IE04_SubContinentDal>();
                 using (BypassPropertyChecks)
@@ -227,9 +227,9 @@ namespace ParentLoadSoftDelete.Business.ERLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Update()
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactoryParentLoadSoftDelete.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnUpdatePre(args);
                 var dal = dalManager.GetProvider<IE04_SubContinentDal>();
                 using (BypassPropertyChecks)
@@ -251,9 +251,9 @@ namespace ParentLoadSoftDelete.Business.ERLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_DeleteSelf()
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactoryParentLoadSoftDelete.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 // flushes all pending data operations
                 FieldManager.UpdateChildren(this);
                 OnDeletePre(args);

@@ -13,7 +13,6 @@ namespace SelfLoadROSoftDelete.DataAccess.Sql.ERLevel
     /// </summary>
     public partial class G03_Continent_ChildDal : IG03_Continent_ChildDal
     {
-
         /// <summary>
         /// Loads a G03_Continent_Child object from the database.
         /// </summary>

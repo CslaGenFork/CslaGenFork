@@ -67,6 +67,7 @@ namespace ParentLoadSoftDelete.Business.ERLevel
             obj.MarkAsChild();
             obj.Fetch(dr);
             obj.MarkOld();
+            // check all object rules and property rules
             obj.BusinessRules.CheckRules();
             return obj;
         }
@@ -110,6 +111,7 @@ namespace ParentLoadSoftDelete.Business.ERLevel
         {
             // Value properties
             LoadProperty(City_Child_NameProperty, dr.GetString("City_Child_Name"));
+            // parent properties
             city_ID2 = dr.GetInt32("City_ID2");
             var args = new DataPortalHookArgs(dr);
             OnFetchRead(args);

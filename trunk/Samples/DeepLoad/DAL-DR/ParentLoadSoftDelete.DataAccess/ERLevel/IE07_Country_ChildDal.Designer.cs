@@ -9,13 +9,11 @@ namespace ParentLoadSoftDelete.DataAccess.ERLevel
     /// </summary>
     public partial interface IE07_Country_ChildDal
     {
-
         /// <summary>
         /// Inserts a new E07_Country_Child object in the database.
         /// </summary>
         /// <param name="country_ID">The parent Country ID.</param>
         /// <param name="country_Child_Name">The Country Child Name.</param>
-        
         void Insert(int country_ID, string country_Child_Name);
 
         /// <summary>
@@ -23,7 +21,6 @@ namespace ParentLoadSoftDelete.DataAccess.ERLevel
         /// </summary>
         /// <param name="country_ID">The parent Country ID.</param>
         /// <param name="country_Child_Name">The Country Child Name.</param>
-        
         void Update(int country_ID, string country_Child_Name);
 
         /// <summary>

@@ -2,8 +2,8 @@ using System;
 using System.Data;
 using Csla;
 using Csla.Data;
-using SelfLoad.DataAccess.ERLevel;
 using SelfLoad.DataAccess;
+using SelfLoad.DataAccess.ERLevel;
 
 namespace SelfLoad.Business.ERLevel
 {
@@ -64,17 +64,17 @@ namespace SelfLoad.Business.ERLevel
         }
 
         /// <summary>
-        /// Maintains metadata about <see cref="Parent_SubContinent_ID"/> property.
+        /// Maintains metadata about <see cref="ParentSubContinentID"/> property.
         /// </summary>
-        public static readonly PropertyInfo<int> Parent_SubContinent_IDProperty = RegisterProperty<int>(p => p.Parent_SubContinent_ID, "Marent ID1");
+        public static readonly PropertyInfo<int> ParentSubContinentIDProperty = RegisterProperty<int>(p => p.ParentSubContinentID, "ParentSubContinentID");
         /// <summary>
-        /// Gets or sets the Marent ID1.
+        /// Gets or sets the ParentSubContinentID.
         /// </summary>
-        /// <value>The Marent ID1.</value>
-        public int Parent_SubContinent_ID
+        /// <value>The ParentSubContinentID.</value>
+        public int ParentSubContinentID
         {
-            get { return GetProperty(Parent_SubContinent_IDProperty); }
-            set { SetProperty(Parent_SubContinent_IDProperty, value); }
+            get { return GetProperty(ParentSubContinentIDProperty); }
+            set { SetProperty(ParentSubContinentIDProperty, value); }
         }
 
         /// <summary>
@@ -191,8 +191,8 @@ namespace SelfLoad.Business.ERLevel
             // Value properties
             LoadProperty(Country_IDProperty, dr.GetInt32("Country_ID"));
             LoadProperty(Country_NameProperty, dr.GetString("Country_Name"));
-            LoadProperty(Parent_SubContinent_IDProperty, dr.GetInt32("Parent_SubContinent_ID"));
-            _rowVersion = (dr.GetValue("RowVersion")) as byte[];
+            LoadProperty(ParentSubContinentIDProperty, dr.GetInt32("Parent_SubContinent_ID"));
+            _rowVersion = dr.GetValue("RowVersion") as byte[];
             var args = new DataPortalHookArgs(dr);
             OnFetchRead(args);
         }
@@ -214,9 +214,9 @@ namespace SelfLoad.Business.ERLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Insert(C04_SubContinent parent)
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactorySelfLoad.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnInsertPre(args);
                 var dal = dalManager.GetProvider<IC06_CountryDal>();
                 using (BypassPropertyChecks)
@@ -241,9 +241,9 @@ namespace SelfLoad.Business.ERLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Update()
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactorySelfLoad.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnUpdatePre(args);
                 var dal = dalManager.GetProvider<IC06_CountryDal>();
                 using (BypassPropertyChecks)
@@ -251,7 +251,7 @@ namespace SelfLoad.Business.ERLevel
                     _rowVersion = dal.Update(
                         Country_ID,
                         Country_Name,
-                        Parent_SubContinent_ID,
+                        ParentSubContinentID,
                         _rowVersion
                         );
                 }
@@ -267,9 +267,9 @@ namespace SelfLoad.Business.ERLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_DeleteSelf()
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactorySelfLoad.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 // flushes all pending data operations
                 FieldManager.UpdateChildren(this);
                 OnDeletePre(args);

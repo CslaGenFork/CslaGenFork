@@ -13,7 +13,6 @@ namespace SelfLoadSoftDelete.DataAccess.Sql.ERLevel
     /// </summary>
     public partial class G11_CityRoadCollDal : IG11_CityRoadCollDal
     {
-
         /// <summary>
         /// Loads a G11_CityRoadColl collection from the database.
         /// </summary>

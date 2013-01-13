@@ -9,7 +9,6 @@ namespace SelfLoadSoftDelete.DataAccess.ERCLevel
     /// </summary>
     public partial interface IH05_CountryCollDal
     {
-
         /// <summary>
         /// Loads a H05_CountryColl collection from the database.
         /// </summary>

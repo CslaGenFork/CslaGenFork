@@ -9,7 +9,6 @@ namespace SelfLoadSoftDelete.DataAccess.ERCLevel
     /// </summary>
     public partial interface IH07_RegionCollDal
     {
-
         /// <summary>
         /// Loads a H07_RegionColl collection from the database.
         /// </summary>

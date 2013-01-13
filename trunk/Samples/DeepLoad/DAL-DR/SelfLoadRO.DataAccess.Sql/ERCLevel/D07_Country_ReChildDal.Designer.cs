@@ -13,7 +13,6 @@ namespace SelfLoadRO.DataAccess.Sql.ERCLevel
     /// </summary>
     public partial class D07_Country_ReChildDal : ID07_Country_ReChildDal
     {
-
         /// <summary>
         /// Loads a D07_Country_ReChild object from the database.
         /// </summary>

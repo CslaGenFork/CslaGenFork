@@ -13,7 +13,6 @@ namespace SelfLoadSoftDelete.DataAccess.Sql.ERCLevel
     /// </summary>
     public partial class H09_Region_ReChildDal : IH09_Region_ReChildDal
     {
-
         /// <summary>
         /// Loads a H09_Region_ReChild object from the database.
         /// </summary>
@@ -37,7 +36,6 @@ namespace SelfLoadSoftDelete.DataAccess.Sql.ERCLevel
         /// </summary>
         /// <param name="region_ID">The parent Region ID.</param>
         /// <param name="region_Child_Name">The Region Child Name.</param>
-        
         public void Insert(int region_ID, string region_Child_Name)
         {
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("DeepLoad"))
@@ -48,7 +46,7 @@ namespace SelfLoadSoftDelete.DataAccess.Sql.ERCLevel
                     cmd.Parameters.AddWithValue("@Region_ID", region_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@Region_Child_Name", region_Child_Name).DbType = DbType.String;
                     cmd.ExecuteNonQuery();
-                                    }
+                }
             }
         }
 
@@ -57,7 +55,6 @@ namespace SelfLoadSoftDelete.DataAccess.Sql.ERCLevel
         /// </summary>
         /// <param name="region_ID">The parent Region ID.</param>
         /// <param name="region_Child_Name">The Region Child Name.</param>
-        
         public void Update(int region_ID, string region_Child_Name)
         {
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("DeepLoad"))
@@ -70,8 +67,7 @@ namespace SelfLoadSoftDelete.DataAccess.Sql.ERCLevel
                     var rowsAffected = cmd.ExecuteNonQuery();
                     if (rowsAffected == 0)
                         throw new DataNotFoundException("H09_Region_ReChild");
-
-                                    }
+                }
             }
         }
 

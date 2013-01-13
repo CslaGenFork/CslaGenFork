@@ -9,7 +9,6 @@ namespace SelfLoadSoftDelete.DataAccess.ERCLevel
     /// </summary>
     public partial interface IH07_Country_ChildDal
     {
-
         /// <summary>
         /// Loads a H07_Country_Child object from the database.
         /// </summary>
@@ -22,7 +21,6 @@ namespace SelfLoadSoftDelete.DataAccess.ERCLevel
         /// </summary>
         /// <param name="country_ID">The parent Country ID.</param>
         /// <param name="country_Child_Name">The Country Child Name.</param>
-        
         void Insert(int country_ID, string country_Child_Name);
 
         /// <summary>
@@ -30,7 +28,6 @@ namespace SelfLoadSoftDelete.DataAccess.ERCLevel
         /// </summary>
         /// <param name="country_ID">The parent Country ID.</param>
         /// <param name="country_Child_Name">The Country Child Name.</param>
-        
         void Update(int country_ID, string country_Child_Name);
 
         /// <summary>

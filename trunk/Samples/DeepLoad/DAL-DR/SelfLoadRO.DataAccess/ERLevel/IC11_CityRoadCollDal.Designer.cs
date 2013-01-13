@@ -9,7 +9,6 @@ namespace SelfLoadRO.DataAccess.ERLevel
     /// </summary>
     public partial interface IC11_CityRoadCollDal
     {
-
         /// <summary>
         /// Loads a C11_CityRoadColl collection from the database.
         /// </summary>

@@ -13,7 +13,6 @@ namespace SelfLoad.DataAccess.Sql.ERCLevel
     /// </summary>
     public partial class D01_ContinentCollDal : ID01_ContinentCollDal
     {
-
         /// <summary>
         /// Loads a D01_ContinentColl collection from the database.
         /// </summary>

@@ -53,6 +53,8 @@ namespace ParentLoadROSoftDelete.Business.ERLevel
         {
             E07_Country_ReChild obj = new E07_Country_ReChild();
             obj.Fetch(dr);
+            // check all object rules and property rules
+            obj.BusinessRules.CheckRules();
             return obj;
         }
 
@@ -81,6 +83,7 @@ namespace ParentLoadROSoftDelete.Business.ERLevel
         {
             // Value properties
             LoadProperty(Country_Child_NameProperty, dr.GetString("Country_Child_Name"));
+            // parent properties
             country_ID2 = dr.GetInt32("Country_ID2");
             var args = new DataPortalHookArgs(dr);
             OnFetchRead(args);

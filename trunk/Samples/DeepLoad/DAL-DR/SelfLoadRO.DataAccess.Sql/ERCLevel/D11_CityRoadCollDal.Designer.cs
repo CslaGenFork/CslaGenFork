@@ -13,7 +13,6 @@ namespace SelfLoadRO.DataAccess.Sql.ERCLevel
     /// </summary>
     public partial class D11_CityRoadCollDal : ID11_CityRoadCollDal
     {
-
         /// <summary>
         /// Loads a D11_CityRoadColl collection from the database.
         /// </summary>

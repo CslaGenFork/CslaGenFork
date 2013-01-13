@@ -13,7 +13,6 @@ namespace ParentLoadROSoftDelete.DataAccess.Sql.ERCLevel
     /// </summary>
     public partial class F01_ContinentCollDal : IF01_ContinentCollDal
     {
-
         /// <summary>
         /// Loads a F01_ContinentColl collection from the database.
         /// </summary>

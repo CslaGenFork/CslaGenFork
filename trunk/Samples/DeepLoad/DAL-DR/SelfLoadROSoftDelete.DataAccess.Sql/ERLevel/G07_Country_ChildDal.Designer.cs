@@ -13,7 +13,6 @@ namespace SelfLoadROSoftDelete.DataAccess.Sql.ERLevel
     /// </summary>
     public partial class G07_Country_ChildDal : IG07_Country_ChildDal
     {
-
         /// <summary>
         /// Loads a G07_Country_Child object from the database.
         /// </summary>

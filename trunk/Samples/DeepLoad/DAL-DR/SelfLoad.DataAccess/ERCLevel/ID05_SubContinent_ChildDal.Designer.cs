@@ -9,7 +9,6 @@ namespace SelfLoad.DataAccess.ERCLevel
     /// </summary>
     public partial interface ID05_SubContinent_ChildDal
     {
-
         /// <summary>
         /// Loads a D05_SubContinent_Child object from the database.
         /// </summary>
@@ -22,7 +21,6 @@ namespace SelfLoad.DataAccess.ERCLevel
         /// </summary>
         /// <param name="subContinent_ID">The parent Sub Continent ID.</param>
         /// <param name="subContinent_Child_Name">The Sub Continent Child Name.</param>
-        
         void Insert(int subContinent_ID, string subContinent_Child_Name);
 
         /// <summary>
@@ -30,7 +28,6 @@ namespace SelfLoad.DataAccess.ERCLevel
         /// </summary>
         /// <param name="subContinent_ID">The parent Sub Continent ID.</param>
         /// <param name="subContinent_Child_Name">The Sub Continent Child Name.</param>
-        
         void Update(int subContinent_ID, string subContinent_Child_Name);
 
         /// <summary>

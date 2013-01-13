@@ -9,7 +9,6 @@ namespace SelfLoadRO.DataAccess.ERLevel
     /// </summary>
     public partial interface IC07_RegionCollDal
     {
-
         /// <summary>
         /// Loads a C07_RegionColl collection from the database.
         /// </summary>

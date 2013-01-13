@@ -79,9 +79,9 @@ namespace ParentLoadRO.Business.ERCLevel
         #region Factory Methods
 
         /// <summary>
-        /// Factory method. Loads a <see cref="B01_ContinentColl"/> object.
+        /// Factory method. Loads a <see cref="B01_ContinentColl"/> collection.
         /// </summary>
-        /// <returns>A reference to the fetched <see cref="B01_ContinentColl"/> object.</returns>
+        /// <returns>A reference to the fetched <see cref="B01_ContinentColl"/> collection.</returns>
         public static B01_ContinentColl GetB01_ContinentColl()
         {
             return DataPortal.Fetch<B01_ContinentColl>();

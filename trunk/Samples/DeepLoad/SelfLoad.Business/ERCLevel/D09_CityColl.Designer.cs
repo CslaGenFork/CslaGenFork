@@ -85,10 +85,10 @@ namespace SelfLoad.Business.ERCLevel
         }
 
         /// <summary>
-        /// Factory method. Loads a <see cref="D09_CityColl"/> object, based on given parameters.
+        /// Factory method. Loads a <see cref="D09_CityColl"/> collection, based on given parameters.
         /// </summary>
         /// <param name="parent_Region_ID">The Parent_Region_ID parameter of the D09_CityColl to fetch.</param>
-        /// <returns>A reference to the fetched <see cref="D09_CityColl"/> object.</returns>
+        /// <returns>A reference to the fetched <see cref="D09_CityColl"/> collection.</returns>
         internal static D09_CityColl GetD09_CityColl(int parent_Region_ID)
         {
             return DataPortal.FetchChild<D09_CityColl>(parent_Region_ID);

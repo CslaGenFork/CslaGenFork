@@ -43,10 +43,10 @@ namespace SelfLoadRO.Business.ERLevel
         #region Factory Methods
 
         /// <summary>
-        /// Factory method. Loads a <see cref="C07_RegionColl"/> object, based on given parameters.
+        /// Factory method. Loads a <see cref="C07_RegionColl"/> collection, based on given parameters.
         /// </summary>
         /// <param name="parent_Country_ID">The Parent_Country_ID parameter of the C07_RegionColl to fetch.</param>
-        /// <returns>A reference to the fetched <see cref="C07_RegionColl"/> object.</returns>
+        /// <returns>A reference to the fetched <see cref="C07_RegionColl"/> collection.</returns>
         internal static C07_RegionColl GetC07_RegionColl(int parent_Country_ID)
         {
             return DataPortal.FetchChild<C07_RegionColl>(parent_Country_ID);

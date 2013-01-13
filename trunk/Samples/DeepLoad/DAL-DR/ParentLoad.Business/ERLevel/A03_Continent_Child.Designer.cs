@@ -2,8 +2,8 @@ using System;
 using System.Data;
 using Csla;
 using Csla.Data;
-using ParentLoad.DataAccess.ERLevel;
 using ParentLoad.DataAccess;
+using ParentLoad.DataAccess.ERLevel;
 
 namespace ParentLoad.Business.ERLevel
 {
@@ -113,9 +113,9 @@ namespace ParentLoad.Business.ERLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Insert(A02_Continent parent)
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactoryParentLoad.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnInsertPre(args);
                 var dal = dalManager.GetProvider<IA03_Continent_ChildDal>();
                 using (BypassPropertyChecks)
@@ -136,9 +136,9 @@ namespace ParentLoad.Business.ERLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Update(A02_Continent parent)
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactoryParentLoad.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnUpdatePre(args);
                 var dal = dalManager.GetProvider<IA03_Continent_ChildDal>();
                 using (BypassPropertyChecks)
@@ -159,9 +159,9 @@ namespace ParentLoad.Business.ERLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_DeleteSelf(A02_Continent parent)
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactoryParentLoad.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnDeletePre(args);
                 var dal = dalManager.GetProvider<IA03_Continent_ChildDal>();
                 using (BypassPropertyChecks)

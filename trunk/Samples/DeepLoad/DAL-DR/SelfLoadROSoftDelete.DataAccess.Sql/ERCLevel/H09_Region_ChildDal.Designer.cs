@@ -13,7 +13,6 @@ namespace SelfLoadROSoftDelete.DataAccess.Sql.ERCLevel
     /// </summary>
     public partial class H09_Region_ChildDal : IH09_Region_ChildDal
     {
-
         /// <summary>
         /// Loads a H09_Region_Child object from the database.
         /// </summary>

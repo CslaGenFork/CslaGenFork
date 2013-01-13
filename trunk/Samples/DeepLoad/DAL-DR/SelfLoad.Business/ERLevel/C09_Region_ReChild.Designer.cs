@@ -2,8 +2,8 @@ using System;
 using System.Data;
 using Csla;
 using Csla.Data;
-using SelfLoad.DataAccess.ERLevel;
 using SelfLoad.DataAccess;
+using SelfLoad.DataAccess.ERLevel;
 
 namespace SelfLoad.Business.ERLevel
 {
@@ -104,6 +104,8 @@ namespace SelfLoad.Business.ERLevel
                 Fetch(data);
             }
             OnFetchPost(args);
+            // check all object rules and property rules
+            BusinessRules.CheckRules();
         }
 
         private void Fetch(IDataReader data)
@@ -114,7 +116,6 @@ namespace SelfLoad.Business.ERLevel
                 {
                     Fetch(dr);
                 }
-                BusinessRules.CheckRules();
             }
         }
 
@@ -137,9 +138,9 @@ namespace SelfLoad.Business.ERLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Insert(C08_Region parent)
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactorySelfLoad.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnInsertPre(args);
                 var dal = dalManager.GetProvider<IC09_Region_ReChildDal>();
                 using (BypassPropertyChecks)
@@ -160,9 +161,9 @@ namespace SelfLoad.Business.ERLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Update(C08_Region parent)
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactorySelfLoad.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnUpdatePre(args);
                 var dal = dalManager.GetProvider<IC09_Region_ReChildDal>();
                 using (BypassPropertyChecks)
@@ -183,9 +184,9 @@ namespace SelfLoad.Business.ERLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_DeleteSelf(C08_Region parent)
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactorySelfLoad.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnDeletePre(args);
                 var dal = dalManager.GetProvider<IC09_Region_ReChildDal>();
                 using (BypassPropertyChecks)

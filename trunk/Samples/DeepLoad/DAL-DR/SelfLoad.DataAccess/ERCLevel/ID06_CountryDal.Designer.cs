@@ -9,14 +9,12 @@ namespace SelfLoad.DataAccess.ERCLevel
     /// </summary>
     public partial interface ID06_CountryDal
     {
-
         /// <summary>
         /// Inserts a new D06_Country object in the database.
         /// </summary>
         /// <param name="subContinent_ID">The parent Sub Continent ID.</param>
         /// <param name="country_ID">The Country ID.</param>
         /// <param name="country_Name">The Country Name.</param>
-        
         void Insert(int subContinent_ID, out int country_ID, string country_Name);
 
         /// <summary>
@@ -24,7 +22,6 @@ namespace SelfLoad.DataAccess.ERCLevel
         /// </summary>
         /// <param name="country_ID">The Country ID.</param>
         /// <param name="country_Name">The Country Name.</param>
-        
         void Update(int country_ID, string country_Name);
 
         /// <summary>

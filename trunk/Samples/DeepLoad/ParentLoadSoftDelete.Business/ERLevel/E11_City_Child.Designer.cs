@@ -109,6 +109,7 @@ namespace ParentLoadSoftDelete.Business.ERLevel
         {
             // Value properties
             LoadProperty(City_Child_NameProperty, dr.GetString("City_Child_Name"));
+            // parent properties
             city_ID1 = dr.GetInt32("City_ID1");
             var args = new DataPortalHookArgs(dr);
             OnFetchRead(args);

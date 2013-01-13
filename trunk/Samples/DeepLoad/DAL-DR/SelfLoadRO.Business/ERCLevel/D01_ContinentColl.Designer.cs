@@ -2,8 +2,8 @@ using System;
 using System.Data;
 using Csla;
 using Csla.Data;
-using SelfLoadRO.DataAccess.ERCLevel;
 using SelfLoadRO.DataAccess;
+using SelfLoadRO.DataAccess.ERCLevel;
 
 namespace SelfLoadRO.Business.ERCLevel
 {
@@ -44,9 +44,9 @@ namespace SelfLoadRO.Business.ERCLevel
         #region Factory Methods
 
         /// <summary>
-        /// Factory method. Loads a <see cref="D01_ContinentColl"/> object.
+        /// Factory method. Loads a <see cref="D01_ContinentColl"/> collection.
         /// </summary>
-        /// <returns>A reference to the fetched <see cref="D01_ContinentColl"/> object.</returns>
+        /// <returns>A reference to the fetched <see cref="D01_ContinentColl"/> collection.</returns>
         public static D01_ContinentColl GetD01_ContinentColl()
         {
             return DataPortal.Fetch<D01_ContinentColl>();

@@ -13,7 +13,6 @@ namespace SelfLoadRO.DataAccess.Sql.ERLevel
     /// </summary>
     public partial class C03_Continent_ChildDal : IC03_Continent_ChildDal
     {
-
         /// <summary>
         /// Loads a C03_Continent_Child object from the database.
         /// </summary>

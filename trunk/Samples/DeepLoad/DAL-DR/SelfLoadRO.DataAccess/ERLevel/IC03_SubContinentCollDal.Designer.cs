@@ -9,7 +9,6 @@ namespace SelfLoadRO.DataAccess.ERLevel
     /// </summary>
     public partial interface IC03_SubContinentCollDal
     {
-
         /// <summary>
         /// Loads a C03_SubContinentColl collection from the database.
         /// </summary>

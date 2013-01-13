@@ -13,7 +13,6 @@ namespace SelfLoadROSoftDelete.DataAccess.Sql.ERCLevel
     /// </summary>
     public partial class H03_Continent_ReChildDal : IH03_Continent_ReChildDal
     {
-
         /// <summary>
         /// Loads a H03_Continent_ReChild object from the database.
         /// </summary>

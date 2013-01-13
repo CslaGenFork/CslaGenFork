@@ -13,7 +13,6 @@ namespace SelfLoadSoftDelete.DataAccess.Sql.ERCLevel
     /// </summary>
     public partial class H01_ContinentCollDal : IH01_ContinentCollDal
     {
-
         /// <summary>
         /// Loads a H01_ContinentColl collection from the database.
         /// </summary>

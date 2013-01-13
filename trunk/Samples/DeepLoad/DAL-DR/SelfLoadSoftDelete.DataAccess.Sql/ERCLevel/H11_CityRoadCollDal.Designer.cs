@@ -13,7 +13,6 @@ namespace SelfLoadSoftDelete.DataAccess.Sql.ERCLevel
     /// </summary>
     public partial class H11_CityRoadCollDal : IH11_CityRoadCollDal
     {
-
         /// <summary>
         /// Loads a H11_CityRoadColl collection from the database.
         /// </summary>

@@ -9,7 +9,6 @@ namespace SelfLoadRO.DataAccess.ERLevel
     /// </summary>
     public partial interface IC11_City_ReChildDal
     {
-
         /// <summary>
         /// Loads a C11_City_ReChild object from the database.
         /// </summary>

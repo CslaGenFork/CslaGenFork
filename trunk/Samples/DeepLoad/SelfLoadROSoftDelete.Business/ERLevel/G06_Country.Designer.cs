@@ -56,16 +56,16 @@ namespace SelfLoadROSoftDelete.Business.ERLevel
         }
 
         /// <summary>
-        /// Maintains metadata about <see cref="Parent_SubContinent_ID"/> property.
+        /// Maintains metadata about <see cref="ParentSubContinentID"/> property.
         /// </summary>
-        public static readonly PropertyInfo<int> Parent_SubContinent_IDProperty = RegisterProperty<int>(p => p.Parent_SubContinent_ID, "Marent ID1");
+        public static readonly PropertyInfo<int> ParentSubContinentIDProperty = RegisterProperty<int>(p => p.ParentSubContinentID, "ParentSubContinentID");
         /// <summary>
-        /// Gets the Marent ID1.
+        /// Gets the ParentSubContinentID.
         /// </summary>
-        /// <value>The Marent ID1.</value>
-        public int Parent_SubContinent_ID
+        /// <value>The ParentSubContinentID.</value>
+        public int ParentSubContinentID
         {
-            get { return GetProperty(Parent_SubContinent_IDProperty); }
+            get { return GetProperty(ParentSubContinentIDProperty); }
         }
 
         /// <summary>
@@ -152,8 +152,8 @@ namespace SelfLoadROSoftDelete.Business.ERLevel
             // Value properties
             LoadProperty(Country_IDProperty, dr.GetInt32("Country_ID"));
             LoadProperty(Country_NameProperty, dr.GetString("Country_Name"));
-            LoadProperty(Parent_SubContinent_IDProperty, dr.GetInt32("Parent_SubContinent_ID"));
-            _rowVersion = (dr.GetValue("RowVersion")) as byte[];
+            LoadProperty(ParentSubContinentIDProperty, dr.GetInt32("Parent_SubContinent_ID"));
+            _rowVersion = dr.GetValue("RowVersion") as byte[];
             var args = new DataPortalHookArgs(dr);
             OnFetchRead(args);
         }

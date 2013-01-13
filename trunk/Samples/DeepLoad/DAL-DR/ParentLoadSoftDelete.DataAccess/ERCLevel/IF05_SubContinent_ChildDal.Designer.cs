@@ -9,13 +9,11 @@ namespace ParentLoadSoftDelete.DataAccess.ERCLevel
     /// </summary>
     public partial interface IF05_SubContinent_ChildDal
     {
-
         /// <summary>
         /// Inserts a new F05_SubContinent_Child object in the database.
         /// </summary>
         /// <param name="subContinent_ID">The parent Sub Continent ID.</param>
         /// <param name="subContinent_Child_Name">The Sub Continent Child Name.</param>
-        
         void Insert(int subContinent_ID, string subContinent_Child_Name);
 
         /// <summary>
@@ -23,7 +21,6 @@ namespace ParentLoadSoftDelete.DataAccess.ERCLevel
         /// </summary>
         /// <param name="subContinent_ID">The parent Sub Continent ID.</param>
         /// <param name="subContinent_Child_Name">The Sub Continent Child Name.</param>
-        
         void Update(int subContinent_ID, string subContinent_Child_Name);
 
         /// <summary>

@@ -13,7 +13,6 @@ namespace SelfLoad.DataAccess.Sql.ERLevel
     /// </summary>
     public partial class C07_RegionCollDal : IC07_RegionCollDal
     {
-
         /// <summary>
         /// Loads a C07_RegionColl collection from the database.
         /// </summary>

@@ -2,8 +2,8 @@ using System;
 using System.Data;
 using Csla;
 using Csla.Data;
-using ParentLoad.DataAccess.ERCLevel;
 using ParentLoad.DataAccess;
+using ParentLoad.DataAccess.ERCLevel;
 
 namespace ParentLoad.Business.ERCLevel
 {
@@ -68,6 +68,7 @@ namespace ParentLoad.Business.ERCLevel
             obj.MarkAsChild();
             obj.Fetch(dr);
             obj.MarkOld();
+            // check all object rules and property rules
             obj.BusinessRules.CheckRules();
             return obj;
         }
@@ -111,6 +112,7 @@ namespace ParentLoad.Business.ERCLevel
         {
             // Value properties
             LoadProperty(SubContinent_Child_NameProperty, dr.GetString("SubContinent_Child_Name"));
+            // parent properties
             subContinent_ID2 = dr.GetInt32("SubContinent_ID2");
             var args = new DataPortalHookArgs(dr);
             OnFetchRead(args);
@@ -123,9 +125,9 @@ namespace ParentLoad.Business.ERCLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Insert(B04_SubContinent parent)
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactoryParentLoad.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnInsertPre(args);
                 var dal = dalManager.GetProvider<IB05_SubContinent_ReChildDal>();
                 using (BypassPropertyChecks)
@@ -146,9 +148,9 @@ namespace ParentLoad.Business.ERCLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Update(B04_SubContinent parent)
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactoryParentLoad.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnUpdatePre(args);
                 var dal = dalManager.GetProvider<IB05_SubContinent_ReChildDal>();
                 using (BypassPropertyChecks)
@@ -169,9 +171,9 @@ namespace ParentLoad.Business.ERCLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_DeleteSelf(B04_SubContinent parent)
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactoryParentLoad.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnDeletePre(args);
                 var dal = dalManager.GetProvider<IB05_SubContinent_ReChildDal>();
                 using (BypassPropertyChecks)

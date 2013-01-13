@@ -13,7 +13,6 @@ namespace SelfLoadSoftDelete.DataAccess.Sql.ERCLevel
     /// </summary>
     public partial class H11_City_ReChildDal : IH11_City_ReChildDal
     {
-
         /// <summary>
         /// Loads a H11_City_ReChild object from the database.
         /// </summary>
@@ -37,7 +36,6 @@ namespace SelfLoadSoftDelete.DataAccess.Sql.ERCLevel
         /// </summary>
         /// <param name="city_ID">The parent City ID.</param>
         /// <param name="city_Child_Name">The City Child Name.</param>
-        
         public void Insert(int city_ID, string city_Child_Name)
         {
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("DeepLoad"))
@@ -48,7 +46,7 @@ namespace SelfLoadSoftDelete.DataAccess.Sql.ERCLevel
                     cmd.Parameters.AddWithValue("@City_ID", city_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@City_Child_Name", city_Child_Name).DbType = DbType.String;
                     cmd.ExecuteNonQuery();
-                                    }
+                }
             }
         }
 
@@ -57,7 +55,6 @@ namespace SelfLoadSoftDelete.DataAccess.Sql.ERCLevel
         /// </summary>
         /// <param name="city_ID">The parent City ID.</param>
         /// <param name="city_Child_Name">The City Child Name.</param>
-        
         public void Update(int city_ID, string city_Child_Name)
         {
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("DeepLoad"))
@@ -70,8 +67,7 @@ namespace SelfLoadSoftDelete.DataAccess.Sql.ERCLevel
                     var rowsAffected = cmd.ExecuteNonQuery();
                     if (rowsAffected == 0)
                         throw new DataNotFoundException("H11_City_ReChild");
-
-                                    }
+                }
             }
         }
 

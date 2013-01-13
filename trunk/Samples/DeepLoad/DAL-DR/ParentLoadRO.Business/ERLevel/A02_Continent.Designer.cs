@@ -2,8 +2,8 @@ using System;
 using System.Data;
 using Csla;
 using Csla.Data;
-using ParentLoadRO.DataAccess.ERLevel;
 using ParentLoadRO.DataAccess;
+using ParentLoadRO.DataAccess.ERLevel;
 
 namespace ParentLoadRO.Business.ERLevel
 {
@@ -137,6 +137,8 @@ namespace ParentLoadRO.Business.ERLevel
                 Fetch(data);
             }
             OnFetchPost(args);
+            // check all object rules and property rules
+            BusinessRules.CheckRules();
         }
 
         private void Fetch(IDataReader data)
@@ -148,7 +150,6 @@ namespace ParentLoadRO.Business.ERLevel
                     Fetch(dr);
                     FetchChildren(dr);
                 }
-                BusinessRules.CheckRules();
             }
         }
 

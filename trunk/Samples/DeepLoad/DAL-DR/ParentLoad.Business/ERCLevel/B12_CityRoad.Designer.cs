@@ -2,8 +2,8 @@ using System;
 using System.Data;
 using Csla;
 using Csla.Data;
-using ParentLoad.DataAccess.ERCLevel;
 using ParentLoad.DataAccess;
+using ParentLoad.DataAccess.ERCLevel;
 
 namespace ParentLoad.Business.ERCLevel
 {
@@ -131,6 +131,7 @@ namespace ParentLoad.Business.ERCLevel
             // Value properties
             LoadProperty(CityRoad_IDProperty, dr.GetInt32("CityRoad_ID"));
             LoadProperty(CityRoad_NameProperty, dr.GetString("CityRoad_Name"));
+            // parent properties
             parent_City_ID = dr.GetInt32("Parent_City_ID");
             var args = new DataPortalHookArgs(dr);
             OnFetchRead(args);
@@ -143,9 +144,9 @@ namespace ParentLoad.Business.ERCLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Insert(B10_City parent)
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactoryParentLoad.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnInsertPre(args);
                 var dal = dalManager.GetProvider<IB12_CityRoadDal>();
                 using (BypassPropertyChecks)
@@ -168,9 +169,9 @@ namespace ParentLoad.Business.ERCLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Update()
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactoryParentLoad.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnUpdatePre(args);
                 var dal = dalManager.GetProvider<IB12_CityRoadDal>();
                 using (BypassPropertyChecks)
@@ -190,9 +191,9 @@ namespace ParentLoad.Business.ERCLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_DeleteSelf()
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactoryParentLoad.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnDeletePre(args);
                 var dal = dalManager.GetProvider<IB12_CityRoadDal>();
                 using (BypassPropertyChecks)

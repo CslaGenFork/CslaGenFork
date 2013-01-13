@@ -9,7 +9,6 @@ namespace SelfLoad.DataAccess.ERCLevel
     /// </summary>
     public partial interface ID01_ContinentCollDal
     {
-
         /// <summary>
         /// Loads a D01_ContinentColl collection from the database.
         /// </summary>

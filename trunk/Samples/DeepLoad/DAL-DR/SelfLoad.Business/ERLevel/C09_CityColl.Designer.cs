@@ -2,8 +2,8 @@ using System;
 using System.Data;
 using Csla;
 using Csla.Data;
-using SelfLoad.DataAccess.ERLevel;
 using SelfLoad.DataAccess;
+using SelfLoad.DataAccess.ERLevel;
 
 namespace SelfLoad.Business.ERLevel
 {
@@ -86,10 +86,10 @@ namespace SelfLoad.Business.ERLevel
         }
 
         /// <summary>
-        /// Factory method. Loads a <see cref="C09_CityColl"/> object, based on given parameters.
+        /// Factory method. Loads a <see cref="C09_CityColl"/> collection, based on given parameters.
         /// </summary>
         /// <param name="parent_Region_ID">The Parent_Region_ID parameter of the C09_CityColl to fetch.</param>
-        /// <returns>A reference to the fetched <see cref="C09_CityColl"/> object.</returns>
+        /// <returns>A reference to the fetched <see cref="C09_CityColl"/> collection.</returns>
         internal static C09_CityColl GetC09_CityColl(int parent_Region_ID)
         {
             return DataPortal.FetchChild<C09_CityColl>(parent_Region_ID);

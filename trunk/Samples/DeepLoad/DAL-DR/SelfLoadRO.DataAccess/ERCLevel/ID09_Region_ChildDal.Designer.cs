@@ -9,7 +9,6 @@ namespace SelfLoadRO.DataAccess.ERCLevel
     /// </summary>
     public partial interface ID09_Region_ChildDal
     {
-
         /// <summary>
         /// Loads a D09_Region_Child object from the database.
         /// </summary>

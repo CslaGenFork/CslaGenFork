@@ -13,7 +13,6 @@ namespace ParentLoad.DataAccess.Sql.ERCLevel
     /// </summary>
     public partial class B01_ContinentCollDal : IB01_ContinentCollDal
     {
-
         /// <summary>
         /// Loads a B01_ContinentColl collection from the database.
         /// </summary>

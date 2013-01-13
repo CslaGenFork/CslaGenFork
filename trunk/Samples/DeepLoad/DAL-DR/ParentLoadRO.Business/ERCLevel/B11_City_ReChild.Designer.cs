@@ -46,6 +46,8 @@ namespace ParentLoadRO.Business.ERCLevel
         {
             B11_City_ReChild obj = new B11_City_ReChild();
             obj.Fetch(dr);
+            // check all object rules and property rules
+            obj.BusinessRules.CheckRules();
             return obj;
         }
 
@@ -74,6 +76,7 @@ namespace ParentLoadRO.Business.ERCLevel
         {
             // Value properties
             City_Child_Name = dr.GetString("City_Child_Name");
+            // parent properties
             city_ID2 = dr.GetInt32("City_ID2");
             var args = new DataPortalHookArgs(dr);
             OnFetchRead(args);

@@ -13,7 +13,6 @@ namespace SelfLoadSoftDelete.DataAccess.Sql.ERLevel
     /// </summary>
     public partial class G03_SubContinentCollDal : IG03_SubContinentCollDal
     {
-
         /// <summary>
         /// Loads a G03_SubContinentColl collection from the database.
         /// </summary>

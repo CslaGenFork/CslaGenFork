@@ -18,7 +18,6 @@ namespace ParentLoadSoftDelete.DataAccess.Sql.ERLevel
         /// </summary>
         /// <param name="country_ID">The parent Country ID.</param>
         /// <param name="country_Child_Name">The Country Child Name.</param>
-        
         public void Insert(int country_ID, string country_Child_Name)
         {
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("DeepLoad"))
@@ -29,7 +28,7 @@ namespace ParentLoadSoftDelete.DataAccess.Sql.ERLevel
                     cmd.Parameters.AddWithValue("@Country_ID", country_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@Country_Child_Name", country_Child_Name).DbType = DbType.String;
                     cmd.ExecuteNonQuery();
-                                    }
+                }
             }
         }
 
@@ -38,7 +37,6 @@ namespace ParentLoadSoftDelete.DataAccess.Sql.ERLevel
         /// </summary>
         /// <param name="country_ID">The parent Country ID.</param>
         /// <param name="country_Child_Name">The Country Child Name.</param>
-        
         public void Update(int country_ID, string country_Child_Name)
         {
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("DeepLoad"))
@@ -51,8 +49,7 @@ namespace ParentLoadSoftDelete.DataAccess.Sql.ERLevel
                     var rowsAffected = cmd.ExecuteNonQuery();
                     if (rowsAffected == 0)
                         throw new DataNotFoundException("E07_Country_ReChild");
-
-                                    }
+                }
             }
         }
 

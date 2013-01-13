@@ -9,7 +9,6 @@ namespace ParentLoadSoftDelete.DataAccess.ERLevel
     /// </summary>
     public partial interface IE05_SubContinent_ReChildDal
     {
-
         /// <summary>
         /// Inserts a new E05_SubContinent_ReChild object in the database.
         /// </summary>

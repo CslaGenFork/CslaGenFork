@@ -2,8 +2,8 @@ using System;
 using System.Data;
 using Csla;
 using Csla.Data;
-using ParentLoad.DataAccess.ERCLevel;
 using ParentLoad.DataAccess;
+using ParentLoad.DataAccess.ERCLevel;
 
 namespace ParentLoad.Business.ERCLevel
 {
@@ -107,9 +107,9 @@ namespace ParentLoad.Business.ERCLevel
         }
 
         /// <summary>
-        /// Factory method. Loads a <see cref="B01_ContinentColl"/> object.
+        /// Factory method. Loads a <see cref="B01_ContinentColl"/> collection.
         /// </summary>
-        /// <returns>A reference to the fetched <see cref="B01_ContinentColl"/> object.</returns>
+        /// <returns>A reference to the fetched <see cref="B01_ContinentColl"/> collection.</returns>
         public static B01_ContinentColl GetB01_ContinentColl()
         {
             return DataPortal.Fetch<B01_ContinentColl>();

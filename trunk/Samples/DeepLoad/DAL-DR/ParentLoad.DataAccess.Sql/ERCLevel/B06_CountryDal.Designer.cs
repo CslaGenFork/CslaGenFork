@@ -19,7 +19,6 @@ namespace ParentLoad.DataAccess.Sql.ERCLevel
         /// <param name="subContinent_ID">The parent Sub Continent ID.</param>
         /// <param name="country_ID">The Country ID.</param>
         /// <param name="country_Name">The Country Name.</param>
-        
         public void Insert(int subContinent_ID, out int country_ID, string country_Name)
         {
             country_ID = -1;
@@ -33,7 +32,7 @@ namespace ParentLoad.DataAccess.Sql.ERCLevel
                     cmd.Parameters.AddWithValue("@Country_Name", country_Name).DbType = DbType.String;
                     cmd.ExecuteNonQuery();
                     country_ID = (int)cmd.Parameters["@Country_ID"].Value;
-                                    }
+                }
             }
         }
 
@@ -42,7 +41,6 @@ namespace ParentLoad.DataAccess.Sql.ERCLevel
         /// </summary>
         /// <param name="country_ID">The Country ID.</param>
         /// <param name="country_Name">The Country Name.</param>
-        
         public void Update(int country_ID, string country_Name)
         {
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("DeepLoad"))
@@ -55,8 +53,7 @@ namespace ParentLoad.DataAccess.Sql.ERCLevel
                     var rowsAffected = cmd.ExecuteNonQuery();
                     if (rowsAffected == 0)
                         throw new DataNotFoundException("B06_Country");
-
-                                    }
+                }
             }
         }
 

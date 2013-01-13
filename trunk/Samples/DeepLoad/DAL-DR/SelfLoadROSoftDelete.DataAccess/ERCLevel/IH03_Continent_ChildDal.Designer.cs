@@ -9,7 +9,6 @@ namespace SelfLoadROSoftDelete.DataAccess.ERCLevel
     /// </summary>
     public partial interface IH03_Continent_ChildDal
     {
-
         /// <summary>
         /// Loads a H03_Continent_Child object from the database.
         /// </summary>

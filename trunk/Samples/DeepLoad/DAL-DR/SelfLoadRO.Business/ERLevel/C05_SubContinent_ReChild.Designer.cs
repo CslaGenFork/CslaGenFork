@@ -2,8 +2,8 @@ using System;
 using System.Data;
 using Csla;
 using Csla.Data;
-using SelfLoadRO.DataAccess.ERLevel;
 using SelfLoadRO.DataAccess;
+using SelfLoadRO.DataAccess.ERLevel;
 
 namespace SelfLoadRO.Business.ERLevel
 {
@@ -87,6 +87,8 @@ namespace SelfLoadRO.Business.ERLevel
                 Fetch(data);
             }
             OnFetchPost(args);
+            // check all object rules and property rules
+            BusinessRules.CheckRules();
         }
 
         private void Fetch(IDataReader data)
@@ -97,7 +99,6 @@ namespace SelfLoadRO.Business.ERLevel
                 {
                     Fetch(dr);
                 }
-                BusinessRules.CheckRules();
             }
         }
 
@@ -109,7 +110,7 @@ namespace SelfLoadRO.Business.ERLevel
         {
             // Value properties
             LoadProperty(SubContinent_Child_NameProperty, dr.GetString("SubContinent_Child_Name"));
-            _rowVersion = (dr.GetValue("RowVersion")) as byte[];
+            _rowVersion = dr.GetValue("RowVersion") as byte[];
             var args = new DataPortalHookArgs(dr);
             OnFetchRead(args);
         }

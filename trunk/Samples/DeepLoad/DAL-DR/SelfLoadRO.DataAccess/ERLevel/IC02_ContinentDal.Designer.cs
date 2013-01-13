@@ -9,7 +9,6 @@ namespace SelfLoadRO.DataAccess.ERLevel
     /// </summary>
     public partial interface IC02_ContinentDal
     {
-
         /// <summary>
         /// Loads a C02_Continent object from the database.
         /// </summary>

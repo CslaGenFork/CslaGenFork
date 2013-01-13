@@ -85,10 +85,10 @@ namespace SelfLoad.Business.ERLevel
         }
 
         /// <summary>
-        /// Factory method. Loads a <see cref="C03_SubContinentColl"/> object, based on given parameters.
+        /// Factory method. Loads a <see cref="C03_SubContinentColl"/> collection, based on given parameters.
         /// </summary>
         /// <param name="parent_Continent_ID">The Parent_Continent_ID parameter of the C03_SubContinentColl to fetch.</param>
-        /// <returns>A reference to the fetched <see cref="C03_SubContinentColl"/> object.</returns>
+        /// <returns>A reference to the fetched <see cref="C03_SubContinentColl"/> collection.</returns>
         internal static C03_SubContinentColl GetC03_SubContinentColl(int parent_Continent_ID)
         {
             return DataPortal.FetchChild<C03_SubContinentColl>(parent_Continent_ID);

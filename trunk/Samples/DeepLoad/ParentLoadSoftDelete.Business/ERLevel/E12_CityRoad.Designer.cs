@@ -130,6 +130,7 @@ namespace ParentLoadSoftDelete.Business.ERLevel
             // Value properties
             LoadProperty(CityRoad_IDProperty, dr.GetInt32("CityRoad_ID"));
             LoadProperty(CityRoad_NameProperty, dr.GetString("CityRoad_Name"));
+            // parent properties
             parent_City_ID = dr.GetInt32("Parent_City_ID");
             var args = new DataPortalHookArgs(dr);
             OnFetchRead(args);

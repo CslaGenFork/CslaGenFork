@@ -9,7 +9,6 @@ namespace SelfLoadROSoftDelete.DataAccess.ERLevel
     /// </summary>
     public partial interface IG02_ContinentDal
     {
-
         /// <summary>
         /// Loads a G02_Continent object from the database.
         /// </summary>

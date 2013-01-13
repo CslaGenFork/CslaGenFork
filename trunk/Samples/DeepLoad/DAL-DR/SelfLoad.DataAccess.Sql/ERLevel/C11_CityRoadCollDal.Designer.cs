@@ -13,7 +13,6 @@ namespace SelfLoad.DataAccess.Sql.ERLevel
     /// </summary>
     public partial class C11_CityRoadCollDal : IC11_CityRoadCollDal
     {
-
         /// <summary>
         /// Loads a C11_CityRoadColl collection from the database.
         /// </summary>

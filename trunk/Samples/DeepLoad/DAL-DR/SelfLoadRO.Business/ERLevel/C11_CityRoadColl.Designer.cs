@@ -2,8 +2,8 @@ using System;
 using System.Data;
 using Csla;
 using Csla.Data;
-using SelfLoadRO.DataAccess.ERLevel;
 using SelfLoadRO.DataAccess;
+using SelfLoadRO.DataAccess.ERLevel;
 
 namespace SelfLoadRO.Business.ERLevel
 {
@@ -44,10 +44,10 @@ namespace SelfLoadRO.Business.ERLevel
         #region Factory Methods
 
         /// <summary>
-        /// Factory method. Loads a <see cref="C11_CityRoadColl"/> object, based on given parameters.
+        /// Factory method. Loads a <see cref="C11_CityRoadColl"/> collection, based on given parameters.
         /// </summary>
         /// <param name="parent_City_ID">The Parent_City_ID parameter of the C11_CityRoadColl to fetch.</param>
-        /// <returns>A reference to the fetched <see cref="C11_CityRoadColl"/> object.</returns>
+        /// <returns>A reference to the fetched <see cref="C11_CityRoadColl"/> collection.</returns>
         internal static C11_CityRoadColl GetC11_CityRoadColl(int parent_City_ID)
         {
             return DataPortal.FetchChild<C11_CityRoadColl>(parent_City_ID);

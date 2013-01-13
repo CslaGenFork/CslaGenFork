@@ -2,8 +2,8 @@ using System;
 using System.Data;
 using Csla;
 using Csla.Data;
-using SelfLoadROSoftDelete.DataAccess.ERLevel;
 using SelfLoadROSoftDelete.DataAccess;
+using SelfLoadROSoftDelete.DataAccess.ERLevel;
 
 namespace SelfLoadROSoftDelete.Business.ERLevel
 {
@@ -138,6 +138,8 @@ namespace SelfLoadROSoftDelete.Business.ERLevel
             }
             OnFetchPost(args);
             FetchChildren();
+            // check all object rules and property rules
+            BusinessRules.CheckRules();
         }
 
         private void Fetch(IDataReader data)
@@ -148,7 +150,6 @@ namespace SelfLoadROSoftDelete.Business.ERLevel
                 {
                     Fetch(dr);
                 }
-                BusinessRules.CheckRules();
             }
         }
 

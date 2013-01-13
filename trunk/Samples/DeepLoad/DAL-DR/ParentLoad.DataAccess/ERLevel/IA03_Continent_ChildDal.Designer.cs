@@ -9,13 +9,11 @@ namespace ParentLoad.DataAccess.ERLevel
     /// </summary>
     public partial interface IA03_Continent_ChildDal
     {
-
         /// <summary>
         /// Inserts a new A03_Continent_Child object in the database.
         /// </summary>
         /// <param name="continent_ID">The parent Continent ID.</param>
         /// <param name="continent_Child_Name">The Continent Child Name.</param>
-        
         void Insert(int continent_ID, string continent_Child_Name);
 
         /// <summary>
@@ -23,7 +21,6 @@ namespace ParentLoad.DataAccess.ERLevel
         /// </summary>
         /// <param name="continent_ID">The parent Continent ID.</param>
         /// <param name="continent_Child_Name">The Continent Child Name.</param>
-        
         void Update(int continent_ID, string continent_Child_Name);
 
         /// <summary>
