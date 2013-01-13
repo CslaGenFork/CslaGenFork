@@ -1,4 +1,3 @@
-
 <%
 if ((Info.ObjectType == CslaObjectType.EditableRoot ||
     Info.ObjectType == CslaObjectType.DynamicEditableRoot ||

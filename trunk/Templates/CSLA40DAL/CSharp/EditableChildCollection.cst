@@ -2,6 +2,7 @@
 <%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the EditableChildCollection Object to create." %>
 <%@ Property Name="Errors" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return errors to master.cst" %>
 <%@ Property Name="Warnings" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return warnings to master.cst" %>
+<%@ Property Name="Infos" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return infos to master.cst" %>
 <%@ Property Name="MethodList" Type="System.Collections.Generic.List<string>" Optional="false" Category="Options" Description="Allows the template to return a list a partial methods to master.cst (for Silverlight using services)" %>
 
 <%@ Assembly Name="DBSchemaInfo" %>
@@ -22,7 +23,6 @@ if (Errors.Length == 0)
 {
     bool isItem = false;
     bool isParentRootCollection = false;
-    CslaObjectInfo parentInfo = Info.Parent.CslaObjects.Find(Info.ParentType);
     CslaObjectInfo grandParentInfo = null;
     if (parentInfo != null)
     {
@@ -30,12 +30,9 @@ if (Errors.Length == 0)
         isParentRootCollection = (parentInfo.ObjectType == CslaObjectType.EditableRootCollection) ||
             (parentInfo.ObjectType == CslaObjectType.ReadOnlyCollection && parentInfo.ParentType == String.Empty);
     }
-    CslaObjectInfo itemInfo = FindChildInfo(Info, Info.ItemType);
-    bool isChild = true;
     bool isChildSelfLoaded = IsChildSelfLoaded(Info);
     bool isChildLazyLoaded = IsChildLazyLoaded(Info);
     bool isCollection = true;
-    bool useChildFactory = CurrentUnit.GenerationParams.UseChildFactory;
     bool useBypassPropertyChecks = CurrentUnit.GenerationParams.UseBypassPropertyChecks;
     string bpcSpacer = useBypassPropertyChecks ? bpcSpacer = new string(' ', 4) : string.Empty;
     bool ancestorIsCollection = false;
@@ -97,7 +94,7 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
 <!-- #include file="CollectionBusinessMethods.asp" -->
 <!-- #include file="FindMethods.asp" -->
     <%
-    if (Info.GenerateFactoryMethods && useChildFactory)
+    if (Info.GenerateFactoryMethods && UseChildFactoryHelper)
     {
         bool createCriteria = Info.HasCreateCriteriaFactory;
         PropertyDeclaration declarationMode = GetDeclarationMode(Info);

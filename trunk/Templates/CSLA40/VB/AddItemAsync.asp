@@ -43,7 +43,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
         %>
             <%= Info.ItemType %> <%= FormatCamel(Info.ItemType) %> = null;
             <%
-        if (useChildFactory)
+        if (UseChildFactoryHelper)
         {
             %>
             <%= Info.ItemType %>.<%= newMethodNameAsync %><%= crit.CreateOptions.FactorySuffix %>(<%= factoryParamsAsync %><%= factoryParamsAsync.Length > 1 ? ", " : "" %>(o, e) =>

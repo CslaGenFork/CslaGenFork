@@ -2,7 +2,6 @@
 // Check if we are supposed to use the Updater or else skip over
 if (Info.UpdaterType != string.Empty)
 {
-    CslaObjectInfo itemInfo2 = null;
     string identityName = string.Empty;
     string identitySourceName = string.Empty;
     // Check if there is an item on this collection
@@ -12,8 +11,7 @@ if (Info.UpdaterType != string.Empty)
     }
     else
     {
-        itemInfo2 = FindChildInfo(Info, Info.ItemType);
-        if (itemInfo2 == null)
+        if (itemInfo == null)
         {
             Errors.Append("ItemType " + Info.ItemType + " doesn't exist." + Environment.NewLine);
         }
@@ -21,9 +19,9 @@ if (Info.UpdaterType != string.Empty)
         {
             identityName = string.Empty;
             // Is there something to update
-            if (itemInfo2.UpdateValueProperties.Count == 0)
+            if (itemInfo.UpdateValueProperties.Count == 0)
             {
-                Errors.Append("No UpdateValueProperties defined on " + itemInfo2.ObjectName + "." + Environment.NewLine);
+                Errors.Append("No UpdateValueProperties defined on " + itemInfo.ObjectName + "." + Environment.NewLine);
             }
         }
     }
@@ -44,13 +42,13 @@ if (Info.UpdaterType != string.Empty)
     // If all went well, find the Identity property
     if (Errors.Length == 0)
     {
-        foreach (UpdateValueProperty vp in itemInfo2.UpdateValueProperties)
+        foreach (UpdateValueProperty vp in itemInfo.UpdateValueProperties)
         {
             if (vp.IsIdentity)
             {
                 if (identityName != string.Empty)
                 {
-                    Errors.Append("IsIdentity is defined twice on UpdateValueProperties of " + itemInfo2.ObjectName + "." + Environment.NewLine);
+                    Errors.Append("IsIdentity is defined twice on UpdateValueProperties of " + itemInfo.ObjectName + "." + Environment.NewLine);
                 }
                 else
                 {
@@ -61,7 +59,7 @@ if (Info.UpdaterType != string.Empty)
         }
         if (identityName == string.Empty)
         {
-            Errors.Append("IsIdentity is not defined on UpdateValueProperties of " + itemInfo2.ObjectName + "." + Environment.NewLine);
+            Errors.Append("IsIdentity is not defined on UpdateValueProperties of " + itemInfo.ObjectName + "." + Environment.NewLine);
         }
     }
     if (Errors.Length == 0)

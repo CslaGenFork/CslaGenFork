@@ -23,13 +23,10 @@ if (Errors.Length == 0)
 {
     bool isItem = false;
     bool isParentRootCollection = false;
-    CslaObjectInfo parentInfo = null;
+    parentInfo = null;
     CslaObjectInfo grandParentInfo = null;
-    CslaObjectInfo itemInfo = FindChildInfo(Info, Info.ItemType);
-    bool isChild = false;
     bool isChildSelfLoaded = IsChildSelfLoaded(Info);
     bool isChildLazyLoaded = IsChildLazyLoaded(Info);
-    bool useChildFactory = CurrentUnit.GenerationParams.UseChildFactory;
     bool useBypassPropertyChecks = CurrentUnit.GenerationParams.UseBypassPropertyChecks;
     string bpcSpacer = useBypassPropertyChecks ? bpcSpacer = new string(' ', 4) : string.Empty;
     bool ancestorIsCollection = false;
@@ -108,8 +105,14 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Busine
         {
             Response.Write(Environment.NewLine);
         }
-        %>
+        if (!Info.UseCustomLoading)
+        {
+            %>
 <!-- #include file="EditableRootCollection_DataPortal.asp" -->
+<%
+            Response.Write(Environment.NewLine);
+        }
+%>
 <!-- #include file="Events.asp" -->
 
 <%

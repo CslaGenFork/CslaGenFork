@@ -24,7 +24,7 @@ if (CurrentUnit.GenerationParams.GenerateWinForms)
         protected override object AddNewCore()
         {
             <%
-            if (useChildFactory)
+            if (UseChildFactoryHelper)
             {
                 %>
             var item = <%= Info.ItemType %>.New<%= Info.ItemType %>();
@@ -58,7 +58,7 @@ if (CurrentUnit.GenerationParams.GenerateWPF)
         protected override <%= Info.ItemType %> AddNewCore()
         {
             <%
-            if (useChildFactory)
+            if (UseChildFactoryHelper)
             {
                 %>
             var item = <%= Info.ItemType %>.New<%= Info.ItemType %>();
@@ -98,7 +98,7 @@ if (UseSilverlight())
         protected override void AddNewCore()
         {
             <%
-            if (useChildFactory)
+            if (UseChildFactoryHelper)
             {
                 %>
             <%= Info.ItemType %>.New<%= Info.ItemType %>((o, e) =>
