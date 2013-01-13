@@ -25,7 +25,6 @@ bool ancestorIsCollection = false;
 int ancestorLoaderLevel = 0;
 GenerationStep genStep = GenerationStep.DalObject;
 bool usesDTO = DalObjectUsesDTO(Info);
-bool usesDalCriteria = DalObjectUsesCriteria(Info);
 ValueProperty nameProp = null;
 ValueProperty valueProp = null;
 foreach (ValueProperty prop in Info.ValueProperties)

@@ -3,10 +3,9 @@ foreach (Criteria c in Info.CriteriaObjects)
 {
     if (c.GetOptions.DataPortal)
     {
-        if (usesDalCriteria)
+        if (usesDTO)
         {
             %>
-
         /// <summary>
         /// Loads a <%= Info.ObjectName %> object from the database.
         /// </summary>
@@ -15,29 +14,20 @@ foreach (Criteria c in Info.CriteriaObjects)
             {
         %>/// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The fetch criteria.</param><%
             }
+            %>
+        /// <returns>A <%= (isItem ? "list of " : "") %><%= (isItem ? Info.ItemType : Info.ObjectName) %>Dto<%= (isItem ? "" : " object") %>.</returns>
+        <%
             if (c.Properties.Count > 1)
             {
-                %>
-        /// <returns>
-        /// A data reader to the <%= Info.ObjectName %>.
-        /// </returns>
-        public <%= usesDTO ? (Info.ObjectName + "DTO") : "IDataReader" %> Fetch(<%= c.Name %> crit)<%
+                %>public <%= (isItem ? "List<" + Info.ItemType + "Dto>" : Info.ObjectName + "Dto") %> Fetch(I<%= c.Name %> crit)<%
             }
             else if (c.Properties.Count > 0)
             {
-                %>
-        /// <returns>
-        /// A data reader to the <%= Info.ObjectName %>.
-        /// </returns>
-        public <%= usesDTO ? (Info.ObjectName + "DTO") : "IDataReader" %> Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)<%
+                %>public <%= (isItem ? "List<" + Info.ItemType + "Dto>" : Info.ObjectName + "Dto") %> Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)<%
             }
             else
             {
-                %>
-        /// <returns>
-        /// A data reader to the <%= Info.ObjectName %>.
-        /// </returns>
-        public <%= usesDTO ? (Info.ObjectName + "DTO") : "IDataReader" %> Fetch()<%
+                %>public <%= (isItem ? "List<" + Info.ItemType + "Dto>" : Info.ObjectName + "Dto") %> Fetch()<%
             }
         }
         else
@@ -59,12 +49,11 @@ foreach (Criteria c in Info.CriteriaObjects)
                 strGetComment += "/// <param name=\"" + FormatCamel(c.Properties[i].Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(c.Properties[i].Name) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
             }
             %>
-
         /// <summary>
         /// Loads a <%= Info.ObjectName %> object from the database.
         /// </summary>
         <%= strGetComment %>/// <returns>A data reader to the <%= Info.ObjectName %>.</returns>
-        public <%= usesDTO ? (Info.ObjectName + "DTO") : "IDataReader" %> Fetch(<%= strGetCritParams %>)<%
+        public IDataReader Fetch(<%= strGetCritParams %>)<%
         }
         %>
         {
@@ -93,7 +82,16 @@ foreach (Criteria c in Info.CriteriaObjects)
                     <%
         }
     }
-            %>return cmd.ExecuteReader();
+    if (usesDTO)
+    {
+        %>var dr = cmd.ExecuteReader();
+                    return LoadCollection(dr);<%
+    }
+    else
+    {
+        %>return cmd.ExecuteReader();<%
+    }
+    %>
                 }
             }
         }

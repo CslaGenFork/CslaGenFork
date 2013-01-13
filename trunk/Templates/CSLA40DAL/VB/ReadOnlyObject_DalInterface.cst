@@ -40,7 +40,6 @@ if (Errors.Length == 0)
     int ancestorLoaderLevel = AncestorLoaderLevel(Info, out ancestorIsCollection);
     GenerationStep genStep = GenerationStep.DalInterface;
     bool usesDTO = DalObjectUsesDTO(Info);
-    bool usesDalCriteria = DalObjectUsesCriteria(Info);
     bool? firstComment = null;
     bool internalNewObjectUsed = false;
     Criteria critCGF = new Criteria(Info);
@@ -57,20 +56,36 @@ if (Errors.Length == 0)
 
     %><!-- #include file="Header_DalInterface.asp" -->
 using System;
-using System.Data;
+<%
+    if (usesDTO)
+    {
+        %>using System.Collections.Generic;
+<%
+    }
+    else
+    {
+        %>using System.Data;
+<%
+    }
+    %>
 using Csla;
 
 namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
 {
 <!-- #include file="XmlComment_DalInterface.asp" -->
     public partial interface I<%= Info.ObjectName %>Dal
-    {<!-- #include file="DataPortalFetch_DalInterface.asp" -->
+    {
+<!-- #include file="BusinessProps_DalInterface.asp" -->
+<!-- #include file="DataPortalFetch_DalInterface.asp" -->
     }
-}
 <%
     if (internalNewObjectUsed)
     {
         Info.CriteriaObjects.Remove(critCGF);
     }
+%>
+<!-- #include file="CriteriaInterface.asp" -->
+}
+<%
 }
 %>

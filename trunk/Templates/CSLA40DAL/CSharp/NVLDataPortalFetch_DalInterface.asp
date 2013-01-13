@@ -3,10 +3,9 @@ foreach (Criteria c in Info.CriteriaObjects)
 {
     if (c.GetOptions.DataPortal)
     {
-        if (usesDalCriteria)
+        if (usesDTO)
         {
             %>
-
         /// <summary>
         /// Loads a <%= Info.ObjectName %> name value list from the database.
         /// </summary>
@@ -15,27 +14,24 @@ foreach (Criteria c in Info.CriteriaObjects)
             {
                 %>
         /// <param name="crit">The fetch criteria.</param>
-        /// <returns>
-        /// A data reader to the <%= Info.ObjectName %>.
-        /// </returns>
-        <%= usesDTO ? (Info.ObjectName + "DTO") : "IDataReader" %> Fetch(<%= c.Name %> crit);<%
+        /// <returns>A list of <see cref="<%= Info.ObjectName %>ItemDto"/>.</returns>
+        List<<%= Info.ObjectName %>ItemDto> Fetch(<%= c.Name %> crit);
+        <%
             }
             else if (c.Properties.Count > 0)
             {
                 %>
         /// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The fetch criteria.</param>
-        /// <returns>
-        /// A data reader to the <%= Info.ObjectName %>.
-        /// </returns>
-        <%= usesDTO ? (Info.ObjectName + "DTO") : "IDataReader" %> Fetch(<%= ReceiveSingleCriteria(c, "crit") %>);<%
+        /// <returns>A list of <see cref="<%= Info.ObjectName %>ItemDto"/>.</returns>
+        List<<%= Info.ObjectName %>ItemDto> Fetch(<%= ReceiveSingleCriteria(c, "crit") %>);
+        <%
             }
             else
             {
                 %>
-        /// <returns>
-        /// A data reader to the <%= Info.ObjectName %>.
-        /// </returns>
-        <%= usesDTO ? (Info.ObjectName + "DTO") : "IDataReader" %> Fetch();<%
+        /// <returns>A list of <see cref="<%= Info.ObjectName %>ItemDto"/>.</returns>
+        List<<%= Info.ObjectName %>ItemDto> Fetch();
+        <%
             }
         }
         else
@@ -62,7 +58,8 @@ foreach (Criteria c in Info.CriteriaObjects)
         /// Loads a <%= Info.ObjectName %> name value list from the database.
         /// </summary>
         <%= strGetComment %>/// <returns>A data reader to the <%= Info.ObjectName %>.</returns>
-        <%= usesDTO ? (Info.ObjectName + "DTO") : "IDataReader" %> Fetch(<%= strGetCritParams %>);<%
+        IDataReader Fetch(<%= strGetCritParams %>);
+        <%
         }
     }
 }

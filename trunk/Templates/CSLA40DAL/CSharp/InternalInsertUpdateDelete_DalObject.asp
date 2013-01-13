@@ -14,61 +14,75 @@ if (Info.GenerateDataPortalInsert)
     string strInsertPK = string.Empty;
     string strInsertComment = string.Empty;
     string strInsertCommentResult = string.Empty;
+    string strInsertResult = string.Empty;
     string strInsertParams = string.Empty;
     bool hasInsertTimestamp = false;
     bool insertIsFirst = true;
 
-    if (parentType.Length > 0)
+    if (usesDTO)
     {
-        foreach (Property prop in Info.ParentProperties)
-        {
-            if (!insertIsFirst)
-                strInsertParams += ", ";
-            else
-                insertIsFirst = false;
-
-            TypeCodeEx propType = prop.PropertyType;
-
-            strInsertComment += "/// <param name=\"" + FormatCamel(prop.Name) + "\">The parent " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
-            strInsertParams += string.Concat(GetDataTypeGeneric(prop, propType), " ", FormatCamel(prop.Name));
-        }
+        strInsertResult = Info.ObjectName + "Dto";
+        strInsertParams = strInsertResult + " " + FormatCamel(Info.ObjectName);
+        strInsertComment = System.Environment.NewLine + new string(' ', 8) + "/// <param name=\"" + FormatCamel(Info.ObjectName) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(Info.ObjectName) + " DTO.</param>";
+        strInsertCommentResult = System.Environment.NewLine + new string(' ', 8) + "/// <returns>The updated <see cref=\"" + strInsertResult + "\"/>.</returns>";
     }
-    foreach (ValueProperty prop in Info.GetAllValueProperties())
+    else
     {
-        if (prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK)
-            strInsertPK = FormatCamel(prop.Name) + " = -1;" + Environment.NewLine + new string(' ', 12);
-
-        if (prop.DbBindColumn.NativeType == "timestamp")
+        if (parentType.Length > 0)
         {
-            hasInsertTimestamp = true;
-            strInsertCommentResult = "/// <returns>The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) + " of the new " + Info.ObjectName + ".</returns>";
+            foreach (Property prop in Info.ParentProperties)
+            {
+                if (!insertIsFirst)
+                    strInsertParams += ", ";
+                else
+                    insertIsFirst = false;
+
+                TypeCodeEx propType = prop.PropertyType;
+
+                strInsertComment += System.Environment.NewLine + new string(' ', 8) + "/// <param name=\"" + FormatCamel(prop.Name) + "\">The parent " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) + ".</param>";
+                strInsertParams += string.Concat(GetDataTypeGeneric(prop, propType), " ", FormatCamel(prop.Name));
+            }
         }
-        if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
-            prop.DataAccess != ValueProperty.DataAccessBehaviour.ReadOnly &&
-            prop.DbBindColumn.NativeType != "timestamp" &&
-            (prop.DataAccess != ValueProperty.DataAccessBehaviour.UpdateOnly || prop.DbBindColumn.NativeType == "timestamp"))
+        foreach (ValueProperty prop in Info.GetAllValueProperties())
         {
-            if (!insertIsFirst)
-                strInsertParams += ", ";
-            else
-                insertIsFirst = false;
-
-            TypeCodeEx propType = TypeHelper.GetBackingFieldType(prop);
-
-            strInsertComment += "/// <param name=\"" + FormatCamel(prop.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
             if (prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK)
-                strInsertParams += "out ";
+                strInsertPK = FormatCamel(prop.Name) + " = -1;" + Environment.NewLine + new string(' ', 12);
 
-            strInsertParams += string.Concat(GetDataTypeGeneric(prop, propType), " ", FormatCamel(prop.Name));
+            if (prop.DbBindColumn.NativeType == "timestamp")
+            {
+                hasInsertTimestamp = true;
+                strInsertCommentResult = System.Environment.NewLine + new string(' ', 8) + "/// <returns>The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) + " of the new " + Info.ObjectName + ".</returns>";
+            }
+            if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
+                prop.DataAccess != ValueProperty.DataAccessBehaviour.ReadOnly &&
+                prop.DbBindColumn.NativeType != "timestamp" &&
+                (prop.DataAccess != ValueProperty.DataAccessBehaviour.UpdateOnly || prop.DbBindColumn.NativeType == "timestamp"))
+            {
+                if (!insertIsFirst)
+                    strInsertParams += ", ";
+                else
+                    insertIsFirst = false;
+
+                TypeCodeEx propType = TypeHelper.GetBackingFieldType(prop);
+
+                strInsertComment += System.Environment.NewLine + new string(' ', 8) + "/// <param name=\"" + FormatCamel(prop.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) + ".</param>";
+                if (prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK)
+                    strInsertParams += "out ";
+
+                strInsertParams += string.Concat(GetDataTypeGeneric(prop, propType), " ", FormatCamel(prop.Name));
+            }
         }
+        if (hasInsertTimestamp)
+            strInsertResult = "byte[]";
+        else
+            strInsertResult = "void";
     }
     %>
 
         /// <summary>
         /// Inserts a new <%= Info.ObjectName %> object in the database.
-        /// </summary>
-        <%= strInsertComment %><%= strInsertCommentResult %>
-        public <%= hasInsertTimestamp ? "byte[]" : "void" %> Insert(<%= strInsertParams %>)
+        /// </summary><%= strInsertComment %><%= strInsertCommentResult %>
+        public <%= strInsertResult %> Insert(<%= strInsertParams %>)
         {
             <%= strInsertPK %><%= GetConnection(Info, false) %>
             {
@@ -86,7 +100,7 @@ if (Info.GenerateDataPortalInsert)
     {
         foreach (Property prop in Info.ParentProperties)
         {
-            %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= FormatCamel(prop.Name) %><%= (prop.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TypeHelper.GetDbType(prop.PropertyType) %>;
+            %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + ".Parent_" + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %><%= (prop.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TypeHelper.GetDbType(prop.PropertyType) %>;
                     <%
         }
     }
@@ -113,17 +127,17 @@ if (Info.GenerateDataPortalInsert)
 
                 if (AllowNull(prop) && propType == TypeCodeEx.Guid)
                 {
-                    %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= FormatCamel(prop.Name) %>.Equals(Guid.Empty) ? (object)DBNull.Value : <%= FormatCamel(prop.Name) %>)<%= postfix %>;
+                    %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %>.Equals(Guid.Empty) ? (object)DBNull.Value : <%= FormatCamel(prop.Name) %>)<%= postfix %>;
                     <%
                 }
                 else if (AllowNull(prop) && propType != TypeCodeEx.SmartDate)
                 {
-                    %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= FormatCamel(prop.Name) %> == null ? (object)DBNull.Value : <%= FormatCamel(prop.Name) %><%= TypeHelper.IsNullableType(propType) ? ".Value" :"" %>)<%= postfix %>;
+                    %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %> == null ? (object)DBNull.Value : <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %><%= TypeHelper.IsNullableType(propType) ? ".Value" :"" %>)<%= postfix %>;
                     <%
                 }
                 else
                 {
-                    %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= FormatCamel(prop.Name) %><%= (propType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>)<%= postfix %>;
+                    %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %><%= (propType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>)<%= postfix %>;
                     <%
                 }
             }
@@ -137,8 +151,9 @@ if (Info.GenerateDataPortalInsert)
             (prop.DbBindColumn.IsPrimaryKey &&
             prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK))
         {
-            %><%= FormatCamel(prop.Name) %> = (<%= GetLanguageVariableType(prop.DbBindColumn.DataType) %>)cmd.Parameters["@<%= prop.ParameterName %>"].Value;
-                    <%
+            %>
+                    <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %> = (<%= GetLanguageVariableType(prop.DbBindColumn.DataType) %>)cmd.Parameters["@<%= prop.ParameterName %>"].Value;
+<%
         }
     }
     foreach (ValueProperty prop in Info.GetAllValueProperties())
@@ -146,13 +161,22 @@ if (Info.GenerateDataPortalInsert)
         if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
             prop.DbBindColumn.NativeType == "timestamp")
         {
-            %>return (byte[])cmd.Parameters["@New<%= prop.ParameterName %>"].Value;
-                    <%
+            %>
+                    <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) + " = ": "return ") %>(byte[])cmd.Parameters["@New<%= prop.ParameterName %>"].Value;
+<%
         }
     }
     %>
                 }
             }
+            <%
+    if (usesDTO)
+    {
+        %>
+            return <%= FormatCamel(Info.ObjectName) %>;
+        <%
+    }
+    %>
         }
     <%
 }
@@ -162,59 +186,73 @@ if (Info.GenerateDataPortalInsert)
 if (Info.GenerateDataPortalUpdate)
 {
     string strUpdateComment = string.Empty;
+    string strUpdateResult = string.Empty;
     string strUpdateCommentResult = string.Empty;
     string strUpdateParams = string.Empty;
     bool hasUpdateTimestamp = false;
     bool updateIsFirst = true;
 
-    if (parentType.Length > 0 && !Info.ParentInsertOnly)
+    if (usesDTO)
     {
-        foreach (Property prop in Info.ParentProperties)
-        {
-            if (!updateIsFirst)
-                strUpdateParams += ", ";
-            else
-                updateIsFirst = false;
-
-            TypeCodeEx propType = prop.PropertyType;
-
-            strUpdateComment += "/// <param name=\"" + FormatCamel(prop.Name) + "\">The parent " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
-            strUpdateParams += string.Concat(GetDataTypeGeneric(prop, propType), " ", FormatCamel(prop.Name));
-        }
+        strUpdateResult = Info.ObjectName + "Dto";
+        strUpdateParams = strUpdateResult + " " + FormatCamel(Info.ObjectName);
+        strUpdateComment = System.Environment.NewLine + new string(' ', 8) + "/// <param name=\"" + FormatCamel(Info.ObjectName) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(Info.ObjectName) + " DTO.</param>";
+        strUpdateCommentResult = System.Environment.NewLine + new string(' ', 8) + "/// <returns>The updated <see cref=\"" + strUpdateResult + "\"/>.</returns>";
     }
-    foreach (ValueProperty prop in Info.GetAllValueProperties())
+    else
     {
-        if (prop.DbBindColumn.NativeType == "timestamp")
+        if (parentType.Length > 0 && !Info.ParentInsertOnly)
         {
-            hasUpdateTimestamp = true;
-            strUpdateCommentResult = "/// <returns>The updated " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) + ".</returns>";
-        }
+            foreach (Property prop in Info.ParentProperties)
+            {
+                if (!updateIsFirst)
+                    strUpdateParams += ", ";
+                else
+                    updateIsFirst = false;
 
-        if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
-            prop.DataAccess != ValueProperty.DataAccessBehaviour.ReadOnly &&
-            (prop.DataAccess != ValueProperty.DataAccessBehaviour.CreateOnly ||
-            (prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK ||
-            prop.DataAccess == ValueProperty.DataAccessBehaviour.UpdateOnly)) ||
-            prop.DbBindColumn.NativeType == "timestamp")
+                TypeCodeEx propType = prop.PropertyType;
+
+                strUpdateComment += System.Environment.NewLine + new string(' ', 8) + "/// <param name=\"" + FormatCamel(prop.Name) + "\">The parent " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) + ".</param>";
+                strUpdateParams += string.Concat(GetDataTypeGeneric(prop, propType), " ", FormatCamel(prop.Name));
+            }
+        }
+        foreach (ValueProperty prop in Info.GetAllValueProperties())
         {
-            if (!updateIsFirst)
-                strUpdateParams += ", ";
-            else
-                updateIsFirst = false;
+            if (prop.DbBindColumn.NativeType == "timestamp")
+            {
+                hasUpdateTimestamp = true;
+                strUpdateCommentResult = System.Environment.NewLine + new string(' ', 8) + "/// <returns>The updated " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) + ".</returns>";
+            }
 
-            TypeCodeEx propType = TypeHelper.GetBackingFieldType(prop);
+            if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
+                prop.DataAccess != ValueProperty.DataAccessBehaviour.ReadOnly &&
+                (prop.DataAccess != ValueProperty.DataAccessBehaviour.CreateOnly ||
+                (prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK ||
+                prop.DataAccess == ValueProperty.DataAccessBehaviour.UpdateOnly)) ||
+                prop.DbBindColumn.NativeType == "timestamp")
+            {
+                if (!updateIsFirst)
+                    strUpdateParams += ", ";
+                else
+                    updateIsFirst = false;
 
-            strUpdateComment += "/// <param name=\"" + FormatCamel(prop.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
-            strUpdateParams += string.Concat(GetDataTypeGeneric(prop, propType), " ", FormatCamel(prop.Name));
+                TypeCodeEx propType = TypeHelper.GetBackingFieldType(prop);
+
+                strUpdateComment += System.Environment.NewLine + new string(' ', 8) + "/// <param name=\"" + FormatCamel(prop.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) + ".</param>";
+                strUpdateParams += string.Concat(GetDataTypeGeneric(prop, propType), " ", FormatCamel(prop.Name));
+            }
         }
+        if (hasUpdateTimestamp)
+            strUpdateResult = "byte[]";
+        else
+            strUpdateResult = "void";
     }
     %>
 
         /// <summary>
         /// Updates in the database all changes made to the <%= Info.ObjectName %> object.
-        /// </summary>
-        <%= strUpdateComment %><%= strUpdateCommentResult %>
-        public <%= hasUpdateTimestamp ? "byte[]" : "void" %> Update(<%= strUpdateParams %>)
+        /// </summary><%= strUpdateComment %><%= strUpdateCommentResult %>
+        public <%= strUpdateResult %> Update(<%= strUpdateParams %>)
         {
             <%= GetConnection(Info, false) %>
             {
@@ -228,64 +266,73 @@ if (Info.GenerateDataPortalUpdate)
             }
             %>cmd.CommandType = CommandType.StoredProcedure;
                     <%
-                    if (parentType.Length > 0 && !Info.ParentInsertOnly)
-                    {
-                        foreach (Property prop in Info.ParentProperties)
-                        {
-                            %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= FormatCamel(prop.Name) %><%= (prop.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TypeHelper.GetDbType(prop.PropertyType) %>;
+    if (parentType.Length > 0 && !Info.ParentInsertOnly)
+    {
+        foreach (Property prop in Info.ParentProperties)
+        {
+            %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + ".Parent_" + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %><%= (prop.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TypeHelper.GetDbType(prop.PropertyType) %>;
                     <%
-                        }
-                    }
+        }
+    }
 
-                    foreach (ValueProperty prop in Info.GetAllValueProperties())
-                    {
-                        if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
-                            (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default ||
-                            prop.DbBindColumn.NativeType == "timestamp" ||
-                            (prop.DataAccess != ValueProperty.DataAccessBehaviour.ReadOnly &&
-                            prop.DataAccess != ValueProperty.DataAccessBehaviour.CreateOnly)))
-                        {
-                            TypeCodeEx propType = TypeHelper.GetBackingFieldType(prop);
-                            string postfix = ".DbType = DbType." + TypeHelper.GetDbType(propType);
+    foreach (ValueProperty prop in Info.GetAllValueProperties())
+    {
+        if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
+            (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default ||
+            prop.DbBindColumn.NativeType == "timestamp" ||
+            (prop.DataAccess != ValueProperty.DataAccessBehaviour.ReadOnly &&
+            prop.DataAccess != ValueProperty.DataAccessBehaviour.CreateOnly)))
+        {
+            TypeCodeEx propType = TypeHelper.GetBackingFieldType(prop);
+            string postfix = ".DbType = DbType." + TypeHelper.GetDbType(propType);
 
-                            if (AllowNull(prop) && propType == TypeCodeEx.Guid)
-                            {
-                                %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= FormatCamel(prop.Name) %>.Equals(Guid.Empty) ? (object)DBNull.Value : <%= FormatCamel(prop.Name) %>)<%= postfix %>;
+            if (AllowNull(prop) && propType == TypeCodeEx.Guid)
+            {
+                %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %>.Equals(Guid.Empty) ? (object)DBNull.Value : <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %>)<%= postfix %>;
                     <%
-                            }
-                            else if (AllowNull(prop) && propType != TypeCodeEx.SmartDate)
-                            {
-                                %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= FormatCamel(prop.Name) %> == null ? (object)DBNull.Value : <%= FormatCamel(prop.Name) %><%= TypeHelper.IsNullableType(propType) ? ".Value" :"" %>)<%= postfix %>;
+            }
+            else if (AllowNull(prop) && propType != TypeCodeEx.SmartDate)
+            {
+                %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %> == null ? (object)DBNull.Value : <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %><%= TypeHelper.IsNullableType(propType) ? ".Value" :"" %>)<%= postfix %>;
                     <%
-                            }
-                            else
-                            {
-                                %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= FormatCamel(prop.Name) %><%= (propType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>)<%= postfix %>;
+            }
+            else
+            {
+                %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %><%= (propType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>)<%= postfix %>;
                     <%
-                            }
-                            if (prop.DbBindColumn.NativeType == "timestamp")
-                            {
-                                %>cmd.Parameters.Add("@New<%= prop.ParameterName %>", SqlDbType.Timestamp).Direction = ParameterDirection.Output;
+            }
+            if (prop.DbBindColumn.NativeType == "timestamp")
+            {
+                %>cmd.Parameters.Add("@New<%= prop.ParameterName %>", SqlDbType.Timestamp).Direction = ParameterDirection.Output;
                     <%
-                            }
-                        }
-                    }
-                    %>var rowsAffected = cmd.ExecuteNonQuery();
+            }
+        }
+    }
+    %>var rowsAffected = cmd.ExecuteNonQuery();
                     if (rowsAffected == 0)
                         throw new DataNotFoundException("<%= Info.ObjectName %>");
-
                     <%
-                    foreach (ValueProperty prop in Info.GetAllValueProperties())
-                    {
-                        if (prop.DbBindColumn.NativeType == "timestamp")
-                        {
-                            %>return (byte[])cmd.Parameters["@New<%= prop.ParameterName %>"].Value;
-                    <%
-                        }
-                    }
-                    %>
+    foreach (ValueProperty prop in Info.GetAllValueProperties())
+    {
+        if (prop.DbBindColumn.NativeType == "timestamp")
+        {
+            Response.Write(Environment.NewLine);
+            %>
+                    <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) + " = ": "return ") %>(byte[])cmd.Parameters["@New<%= prop.ParameterName %>"].Value;
+<%
+        }
+    }
+    %>
                 }
             }
+            <%
+    if (usesDTO)
+    {
+        %>
+            return <%= FormatCamel(Info.ObjectName) %>;
+        <%
+    }
+    %>
         }
     <%
 }

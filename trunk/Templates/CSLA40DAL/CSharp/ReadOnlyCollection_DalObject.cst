@@ -38,7 +38,6 @@ if (Errors.Length == 0)
     int ancestorLoaderLevel = AncestorLoaderLevel(Info, out ancestorIsCollection);
     GenerationStep genStep = GenerationStep.DalObject;
     bool usesDTO = DalObjectUsesDTO(Info);
-    bool usesDalCriteria = DalObjectUsesCriteria(Info);
     bool? firstComment = null;
     %><!-- #include file="Header_DalObject.asp" -->
 <!-- #include file="Using_DalObject.asp" -->

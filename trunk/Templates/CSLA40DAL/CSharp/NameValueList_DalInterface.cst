@@ -25,7 +25,6 @@ bool ancestorIsCollection = false;
 int ancestorLoaderLevel = 0;
 GenerationStep genStep = GenerationStep.DalInterface;
 bool usesDTO = DalObjectUsesDTO(Info);
-bool usesDalCriteria = DalObjectUsesCriteria(Info);
 ValueProperty nameProp = null;
 ValueProperty valueProp = null;
 foreach (ValueProperty prop in Info.ValueProperties)
@@ -42,7 +41,18 @@ else
     bool? firstComment = null;
     %><!-- #include file="Header_DalInterface.asp" -->
 using System;
-using System.Data;
+<%
+    if (usesDTO)
+    {
+        %>using System.Collections.Generic;
+<%
+    }
+    else
+    {
+        %>using System.Data;
+<%
+    }
+    %>
 using Csla;
 
 namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
@@ -51,6 +61,7 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
     public partial interface I<%= Info.ObjectName %>Dal
     {<!-- #include file="NVLDataPortalFetch_DalInterface.asp" -->
     }
+<!-- #include file="CriteriaInterface.asp" -->
 }
 <%
 }
