@@ -38,19 +38,31 @@ if (Errors.Length == 0)
     int ancestorLoaderLevel = AncestorLoaderLevel(Info, out ancestorIsCollection);
     GenerationStep genStep = GenerationStep.DalInterface;
     bool usesDTO = DalObjectUsesDTO(Info);
-    bool usesDalCriteria = DalObjectUsesCriteria(Info);
     bool? firstComment = null;
     %><!-- #include file="Header_DalInterface.asp" -->
 using System;
-using System.Data;
+<%
+    if (usesDTO)
+    {
+        %>using System.Collections.Generic;
+<%
+    }
+    else
+    {
+        %>using System.Data;
+<%
+    }
+    %>
 using Csla;
 
 namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
 {
 <!-- #include file="XmlComment_DalInterface.asp" -->
     public partial interface I<%= Info.ObjectName %>Dal
-    {<!-- #include file="CollectionDataPortalFetch_DalInterface.asp" -->
+    {
+<!-- #include file="CollectionDataPortalFetch_DalInterface.asp" -->
     }
+<!-- #include file="CriteriaInterface.asp" -->
 }
 <%
 }

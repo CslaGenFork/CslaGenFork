@@ -1,4 +1,11 @@
 using System;
+<%
+    if (usesDTO)
+    {
+        %>using System.Collections.Generic;
+<%
+    }
+%>
 using System.Data;
 using System.Data.SqlClient;
 using Csla;

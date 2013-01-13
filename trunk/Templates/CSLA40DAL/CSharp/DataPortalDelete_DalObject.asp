@@ -5,7 +5,7 @@ if (Info.GenerateDataPortalDelete)
     {
         if (c.DeleteOptions.DataPortal)
         {
-            if (usesDalCriteria)
+            if (usesDTO)
             {
                 %>
 
@@ -63,7 +63,7 @@ if (Info.GenerateDataPortalDelete)
                     <%
             foreach (Property p in c.Properties)
             {
-                if (!usesDalCriteria)
+                if (!usesDTO)
                 {
                     %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= GetParameterSet(Info, p, false, true) %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
                     <%

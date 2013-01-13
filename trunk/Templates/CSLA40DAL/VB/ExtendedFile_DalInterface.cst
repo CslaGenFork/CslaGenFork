@@ -16,30 +16,21 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.DalInt
     public partial interface I<%= Info.ObjectName %>Dal
     {
     }
-    <%
-    if (IsCriteriaExtendedClassNeeded(Info))
+<%
+if (DalObjectUsesDTO(Info) && IsCriteriaObjectNeeded(Info))
+{
+    foreach (Criteria crit in Info.CriteriaObjects)
     {
-        %>
-
-    #region Criteria Object
-    <%
-        foreach (Criteria crit in Info.CriteriaObjects)
+        if (crit.Properties.Count > 1)
         {
-            if (crit.Properties.Count > 1)
-            {
-                %>
+            %>
 
-    public partial class <%= crit.Name %>
+    public partial interface I<%= crit.Name %>
     {
     }
 <%
-            }
         }
-        %>
-
-    #endregion
-
-    <%
     }
-    %>
+}
+%>
 }

@@ -1,43 +1,49 @@
 <%
+bool isFirstMethod = true;
+bool isFirstDPFDI = true;
 foreach (Criteria c in Info.CriteriaObjects)
 {
     if (c.GetOptions.DataPortal)
     {
-        if (usesDalCriteria)
+        if (usesDTO)
         {
-            %>
+            if (isFirstDPFDI)
+                isFirstDPFDI = false;
+            else
+                Response.Write(Environment.NewLine);
 
+            isFirstMethod = false;
+            %>
         /// <summary>
         /// Loads a <%= Info.ObjectName %> object from the database.
         /// </summary>
         <%
             if (c.Properties.Count > 0)
             {
-        %>/// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The fetch criteria.</param><%
+                %>
+        /// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The fetch criteria.</param>
+        <%
             }
             if (c.Properties.Count > 1)
             {
                 %>
-        /// <returns>
-        /// A data reader to the <%= Info.ObjectName %>.
-        /// </returns>
-        <%= usesDTO ? (Info.ObjectName + "DTO") : "IDataReader" %> Fetch(<%= c.Name %> crit);<%
+        /// <returns>A <see cref="<%= Info.ObjectName %>Dto"/> object.</returns>
+        <%= Info.ObjectName %>Dto Fetch(I<%= c.Name %> crit);
+        <%
             }
             else if (c.Properties.Count > 0)
             {
                 %>
-        /// <returns>
-        /// A data reader to the <%= Info.ObjectName %>.
-        /// </returns>
-        <%= usesDTO ? (Info.ObjectName + "DTO") : "IDataReader" %> Fetch(<%= ReceiveSingleCriteria(c, "crit") %>);<%
+        /// <returns>A <see cref="<%= Info.ObjectName %>Dto"/> object.</returns>
+        <%= Info.ObjectName %>Dto Fetch(<%= ReceiveSingleCriteria(c, "crit") %>);
+        <%
             }
             else
             {
                 %>
-        /// <returns>
-        /// A data reader to the <%= Info.ObjectName %>.
-        /// </returns>
-        <%= usesDTO ? (Info.ObjectName + "DTO") : "IDataReader" %> Fetch();<%
+        /// <returns>A <see cref="<%= Info.ObjectName %>Dto"/> object.</returns>
+        <%= Info.ObjectName %>Dto Fetch();
+        <%
             }
         }
         else
@@ -58,13 +64,19 @@ foreach (Criteria c in Info.CriteriaObjects)
                 strGetCritParams += string.Concat(GetDataTypeGeneric(c.Properties[i], propType), " ", FormatCamel(c.Properties[i].Name));
                 strGetComment += "/// <param name=\"" + FormatCamel(c.Properties[i].Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(c.Properties[i].Name) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
             }
-            %>
+            if (isFirstDPFDI)
+                isFirstDPFDI = false;
+            else
+                Response.Write(Environment.NewLine);
 
+            isFirstMethod = false;
+            %>
         /// <summary>
         /// Loads a <%= Info.ObjectName %> object from the database.
         /// </summary>
         <%= strGetComment %>/// <returns>A data reader to the <%= Info.ObjectName %>.</returns>
-        <%= usesDTO ? (Info.ObjectName + "DTO") : "IDataReader" %> Fetch(<%= strGetCritParams %>);<%
+        IDataReader Fetch(<%= strGetCritParams %>);
+        <%
         }
     }
 }

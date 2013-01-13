@@ -3,7 +3,7 @@ foreach (Criteria c in Info.CriteriaObjects)
 {
     if (c.GetOptions.DataPortal)
     {
-        if (usesDalCriteria)
+        if (usesDTO)
         {
             %>
 
@@ -18,7 +18,7 @@ foreach (Criteria c in Info.CriteriaObjects)
         /// <returns>
         /// A data reader to the <%= Info.ObjectName %>.
         /// </returns>
-        public <%= usesDTO ? (Info.ObjectName + "DTO") : "IDataReader" %> Fetch(<%= c.Name %> crit)<%
+        public List<<%= Info.ObjectName %>ItemDto> Fetch(<%= c.Name %> crit)<%
             }
             else if (c.Properties.Count > 0)
             {
@@ -27,7 +27,7 @@ foreach (Criteria c in Info.CriteriaObjects)
         /// <returns>
         /// A data reader to the <%= Info.ObjectName %>.
         /// </returns>
-        public <%= usesDTO ? (Info.ObjectName + "DTO") : "IDataReader" %> Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)<%
+        public List<<%= Info.ObjectName %>ItemDto> Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)<%
             }
             else
             {
@@ -35,7 +35,7 @@ foreach (Criteria c in Info.CriteriaObjects)
         /// <returns>
         /// A data reader to the <%= Info.ObjectName %>.
         /// </returns>
-        public <%= usesDTO ? (Info.ObjectName + "DTO") : "IDataReader" %> Fetch()<%
+        public List<<%= Info.ObjectName %>ItemDto> Fetch()<%
             }
         }
         else
@@ -57,12 +57,11 @@ foreach (Criteria c in Info.CriteriaObjects)
                 strGetComment += "/// <param name=\"" + FormatCamel(c.Properties[i].Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(c.Properties[i].Name) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
             }
             %>
-
         /// <summary>
         /// Loads a <%= Info.ObjectName %> name value list from the database.
         /// </summary>
         <%= strGetComment %>/// <returns>A data reader to the <%= Info.ObjectName %>.</returns>
-        public <%= usesDTO ? (Info.ObjectName + "DTO") : "IDataReader" %> Fetch(<%= strGetCritParams %>)<%
+        public IDataReader Fetch(<%= strGetCritParams %>)<%
         }
         %>
         {
@@ -91,7 +90,16 @@ foreach (Criteria c in Info.CriteriaObjects)
                     <%
             }
         }
-        %>return cmd.ExecuteReader();
+        if (usesDTO)
+        {
+            %>var dr = cmd.ExecuteReader();
+                    return LoadCollection(dr);<%
+        }
+        else
+        {
+            %>return cmd.ExecuteReader();<%
+        }
+        %>
                 }
             }
         }

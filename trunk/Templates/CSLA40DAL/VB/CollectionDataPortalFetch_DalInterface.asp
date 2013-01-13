@@ -1,12 +1,17 @@
 <%
+bool isFirstCDPFDI = true;
 foreach (Criteria c in Info.CriteriaObjects)
 {
     if (c.GetOptions.DataPortal)
     {
-        if (usesDalCriteria)
+        if (usesDTO)
         {
-            %>
+            if (isFirstCDPFDI)
+                isFirstCDPFDI = false;
+            else
+                Response.Write(Environment.NewLine);
 
+            %>
         /// <summary>
         /// Loads a <%= Info.ObjectName %> collection from the database.
         /// </summary>
@@ -15,21 +20,24 @@ foreach (Criteria c in Info.CriteriaObjects)
             {
                 %>
         /// <param name="crit">The fetch criteria.</param>
-        /// <returns>A data reader to the <%= Info.ObjectName %>.</returns>
-        <%= usesDTO ? (Info.ObjectName + "DTO") : "IDataReader" %> Fetch(<%= c.Name %> crit);<%
+        /// <returns>A list of <see cref="<%= Info.ItemType %>Dto"/>.</returns>
+        List<<%= Info.ItemType %>Dto> Fetch(I<%= c.Name %> crit);
+        <%
             }
             else if (c.Properties.Count > 0)
             {
                 %>
         /// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The fetch criteria.</param>
-        /// <returns>A data reader to the <%= Info.ObjectName %>.</returns>
-        <%= usesDTO ? (Info.ObjectName + "DTO") : "IDataReader" %> Fetch(<%= ReceiveSingleCriteria(c, "crit") %>);<%
+        /// <returns>A list of <see cref="<%= Info.ItemType %>Dto"/>.</returns>
+        List<<%= Info.ItemType %>Dto> Fetch(<%= ReceiveSingleCriteria(c, "crit") %>);
+        <%
             }
             else
             {
                 %>
-        /// <returns>A data reader to the <%= Info.ObjectName %>.</returns>
-        <%= usesDTO ? (Info.ObjectName + "DTO") : "IDataReader" %> Fetch();<%
+        /// <returns>A list of <see cref="<%= Info.ItemType %>Dto"/>.</returns>
+        List<<%= Info.ItemType %>Dto> Fetch();
+        <%
             }
         }
         else
@@ -50,13 +58,18 @@ foreach (Criteria c in Info.CriteriaObjects)
                 strGetCritParams += string.Concat(GetDataTypeGeneric(c.Properties[i], propType), " ", FormatCamel(c.Properties[i].Name));
                 strGetComment += "/// <param name=\"" + FormatCamel(c.Properties[i].Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(c.Properties[i].Name) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
             }
-            %>
+            if (isFirstCDPFDI)
+                isFirstCDPFDI = false;
+            else
+                Response.Write(Environment.NewLine);
 
+            %>
         /// <summary>
         /// Loads a <%= Info.ObjectName %> collection from the database.
         /// </summary>
         <%= strGetComment %>/// <returns>A data reader to the <%= Info.ObjectName %>.</returns>
-        <%= usesDTO ? (Info.ObjectName + "DTO") : "IDataReader" %> Fetch(<%= strGetCritParams %>);<%
+        IDataReader Fetch(<%= strGetCritParams %>);
+        <%
         }
     }
 }
