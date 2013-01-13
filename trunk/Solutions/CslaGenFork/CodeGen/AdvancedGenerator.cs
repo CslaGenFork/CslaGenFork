@@ -1314,7 +1314,7 @@ namespace CslaGenerator.CodeGen
             if (step == GenerationStep.Business)
                 return unit.GenerationParams.BaseNamespace;
 
-            if (step == GenerationStep.DalInterface)
+            if (step == GenerationStep.DalInterface || step == GenerationStep.DalInterfaceDto)
                 return unit.GenerationParams.DalInterfaceNamespace;
 
             //if (step == GenerationStep.DalObject)
