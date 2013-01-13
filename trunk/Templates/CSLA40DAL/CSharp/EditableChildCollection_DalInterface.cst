@@ -15,13 +15,13 @@
 <%@ Import Namespace="System.Collections.Generic" %>
 <%@ Import Namespace="System.Reflection" %>
 
+<!-- #include file="ObjectValidate_DalInterface.asp" -->
 <!-- #include file="EditableChildCollection_Validate.asp" -->
 <%
 if (Errors.Length == 0)
 {
     bool isItem = false;
     bool isParentRootCollection = false;
-    CslaObjectInfo parentInfo = Info.Parent.CslaObjects.Find(Info.ParentType);
     CslaObjectInfo grandParentInfo = null;
     if (parentInfo != null)
     {
@@ -29,12 +29,9 @@ if (Errors.Length == 0)
         isParentRootCollection = (parentInfo.ObjectType == CslaObjectType.EditableRootCollection) ||
             (parentInfo.ObjectType == CslaObjectType.ReadOnlyCollection && parentInfo.ParentType == String.Empty);
     }
-    CslaObjectInfo itemInfo = FindChildInfo(Info, Info.ItemType);
-    bool isChild = true;
     bool isChildSelfLoaded = IsChildSelfLoaded(Info);
     bool isChildLazyLoaded = IsChildLazyLoaded(Info);
     bool isCollection = true;
-    bool useChildFactory = CurrentUnit.GenerationParams.UseChildFactory;
     bool useBypassPropertyChecks = CurrentUnit.GenerationParams.UseBypassPropertyChecks;
     string bpcSpacer = useBypassPropertyChecks ? bpcSpacer = new string(' ', 4) : string.Empty;
     bool ancestorIsCollection = false;

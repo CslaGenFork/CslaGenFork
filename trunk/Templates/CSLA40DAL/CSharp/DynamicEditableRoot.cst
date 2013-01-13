@@ -27,12 +27,10 @@ if (Errors.Length == 0)
     string softDeleteProperty = string.Empty;
     bool isItem = true;
     bool isParentRootCollection = true;
-    CslaObjectInfo parentInfo = Info.Parent.CslaObjects.Find(Info.ParentType);
     CslaObjectInfo grandParentInfo = null;
-    bool isChild = false;
+    isChild = false;
     bool isChildSelfLoaded = false;
     bool isChildLazyLoaded = false;
-    bool useChildFactory = CurrentUnit.GenerationParams.UseChildFactory;
     bool useBypassPropertyChecks = CurrentUnit.GenerationParams.UseBypassPropertyChecks;
     string bpcSpacer = useBypassPropertyChecks ? bpcSpacer = new string(' ', 4) : string.Empty;
     bool ancestorIsCollection = false;
@@ -75,7 +73,7 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
 <!-- #include file="BusinessProps.asp" -->
 <!-- #include file="ObjectOverrides.asp" -->
     <%
-    if (Info.GenerateFactoryMethods && useChildFactory)
+    if (Info.GenerateFactoryMethods && UseChildFactoryHelper)
     {
         Response.Write(Environment.NewLine);
         %>

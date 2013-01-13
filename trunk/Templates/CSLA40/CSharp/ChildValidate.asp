@@ -3,12 +3,11 @@ foreach (ChildProperty childProperty in Info.AllChildProperties)
 {
     bool isItem = false;
     bool isParentRootCollection = false;
-    CslaObjectInfo parentInfo2 = Info.Parent.CslaObjects.Find(Info.ParentType);
-    if (parentInfo2 != null)
+    if (parentInfo != null)
     {
-        isItem = IsCollectionType(parentInfo2.ObjectType);
-        isParentRootCollection = (parentInfo2.ObjectType == CslaObjectType.EditableRootCollection) ||
-            (parentInfo2.ObjectType == CslaObjectType.ReadOnlyCollection && parentInfo2.ParentType == String.Empty);
+        isItem = IsCollectionType(parentInfo.ObjectType);
+        isParentRootCollection = (parentInfo.ObjectType == CslaObjectType.EditableRootCollection) ||
+            (parentInfo.ObjectType == CslaObjectType.ReadOnlyCollection && parentInfo.ParentType == String.Empty);
     }
 
     if (childProperty.DeclarationMode == PropertyDeclaration.AutoProperty)

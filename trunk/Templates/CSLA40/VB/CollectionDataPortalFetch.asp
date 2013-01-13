@@ -6,8 +6,6 @@ if (!Info.UseCustomLoading)
         (Info.ObjectType == CslaObjectType.ReadOnlyCollection && Info.ParentType != string.Empty)) &&
         !isChildSelfLoaded;
 
-    CslaObjectInfo itemInfo2 = FindChildInfo(Info, Info.ItemType);
-
     if (Info.CriteriaObjects.Count > 0)
     {
         foreach (Criteria c in Info.CriteriaObjects)
@@ -171,9 +169,9 @@ if (!Info.UseCustomLoading)
             {
                 Fetch(dr);
                 <%
-                if (itemInfo2 != null)
+                if (itemInfo != null)
                 {
-                    if (ParentLoadsCollectionChildren(itemInfo2))
+                    if (ParentLoadsCollectionChildren(itemInfo))
                     {
                         %>
                 if (this.Count > 0)
@@ -215,7 +213,7 @@ if (!Info.UseCustomLoading)
         /// Loads all <see cref="<%= Info.ObjectName %>"/> collection items from the given SafeDataReader.
         /// </summary>
         /// <param name="dr">The SafeDataReader to use.</param>
-        private void <%= (isChildCollection && !useChildFactory ? "Child_" : "") %>Fetch(SafeDataReader dr)
+        private void <%= (isChildCollection && !UseChildFactoryHelper ? "Child_" : "") %>Fetch(SafeDataReader dr)
         {
             <%
         if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
@@ -239,7 +237,7 @@ if (!Info.UseCustomLoading)
             while (dr.Read())
             {
                 <%
-        if (useChildFactory)
+        if (UseChildFactoryHelper)
         {
             %>
                 Add(<%= Info.ItemType %>.Get<%= Info.ItemType %>(dr));
@@ -248,7 +246,7 @@ if (!Info.UseCustomLoading)
         else
         {
             %>
-                Add(DataPortal.Fetch<%= IsNotRootType(itemInfo2) ? "Child" : "" %><<%= Info.ItemType %>>(dr));
+                Add(DataPortal.Fetch<%= IsNotRootType(itemInfo) ? "Child" : "" %><<%= Info.ItemType %>>(dr));
             <%
         }
         %>
@@ -355,14 +353,14 @@ if (!Info.UseCustomLoading)
             foreach (DataRow row in rows)
             {
                 <%
-        if (useChildFactory)
+        if (UseChildFactoryHelper)
         {
             %>Add(<%= Info.ItemType %>.Get<%= Info.ItemType %>(row));
                 <%
         }
         else
         {
-            %>Add(DataPortal.Fetch<%= IsNotRootType(itemInfo2) ? "Child" : "" %><<%= Info.ItemType %>>(row));
+            %>Add(DataPortal.Fetch<%= IsNotRootType(itemInfo) ? "Child" : "" %><<%= Info.ItemType %>>(row));
                 <%
         }
         %>
@@ -400,14 +398,14 @@ if (!Info.UseCustomLoading)
             foreach (DataRow row in rows)
             {
                 <%
-        if (useChildFactory)
+        if (UseChildFactoryHelper)
         {
             %>Add(<%= Info.ItemType %>.Get<%= Info.ItemType %>(row));
                 <%
         }
         else
         {
-            %>Add(DataPortal.Fetch<%= IsNotRootType(itemInfo2) ? "Child" : "" %><<%= Info.ItemType %>>(row));
+            %>Add(DataPortal.Fetch<%= IsNotRootType(itemInfo) ? "Child" : "" %><<%= Info.ItemType %>>(row));
                 <%
         }
         %>

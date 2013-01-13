@@ -68,7 +68,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
                         string internalCreateString = string.Empty;
                         if (IsEditableType(_child.ObjectType))
                         {
-                            if (useChildFactory)
+                            if (UseChildFactoryHelper)
                                 internalCreateString = FormatPascal(childProp.TypeName) + ".New" + FormatPascal(childProp.TypeName);
                             else
                                 internalCreateString = "DataPortal.CreateChild<" + FormatPascal(childProp.TypeName) + ">";

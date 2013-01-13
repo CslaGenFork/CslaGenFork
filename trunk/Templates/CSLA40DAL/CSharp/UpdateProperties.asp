@@ -5,7 +5,6 @@ if (Info.UpdateValueProperties.Count > 0)
     string parentType = Info.ParentType;
     if (parentType != string.Empty)
     {
-        ///CslaObjectInfo parentInfo = FindChildInfo(Info, parentType);/// DEPRECATED
         if (parentInfo.UpdaterType == string.Empty)
         {
             Errors.Append("No UpdaterType defined on " + parentInfo.ObjectName + "." + Environment.NewLine);

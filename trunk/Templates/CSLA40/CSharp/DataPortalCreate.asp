@@ -1,9 +1,10 @@
 <%
 string dataPortalCreate = string.Empty;
 if (isChild)
-dataPortalCreate = "Child_";
+    dataPortalCreate = "Child_";
 else
-dataPortalCreate = "DataPortal_";
+    dataPortalCreate = "DataPortal_";
+
 foreach (Criteria c in Info.CriteriaObjects)
 {
     if (c.CreateOptions.DataPortal)

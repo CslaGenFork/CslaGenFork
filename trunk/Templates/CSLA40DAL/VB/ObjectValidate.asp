@@ -15,11 +15,76 @@ ERRORS
 4.4. Check Criteria for GetOptions where DataPortal is set and SProc name is empty
 4.5. Check Criteria for GetOptions where DataPortal is not set and SProc name is not empty (WARNINGS)
 WARNINGS
-5. When using DAL, unbound properties need DTO or will be excluded from DAL interaction
-6. When using NOT DAL, Persistence type unshared needs database class
-7. When using Silverligh 4, no Auto, Classic nor 'No Property'.
-8. When using Silverligh 4, criteria classes (with more than one property) must not use Simple mode.
+5. When using NOT DAL, Persistence type unshared needs database class
+6. When using Silverligh 4, no Auto, Classic nor 'No Property'.
+7. When using Silverligh 4, criteria classes (with more than one property) must not use Simple mode.
+ALERTS
+8. When using DAL, unbound properties need DTO or will be excluded from DAL interaction
+9. When using NOT DAL, CustomLoading forces NOT generation of child Factory methods
 */
+
+CslaObjectInfo parentInfo = Info.Parent.CslaObjects.Find(Info.ParentType);
+CslaObjectInfo itemInfo = FindChildInfo(Info, Info.ItemType);
+UseChildFactoryHelper = CurrentUnit.GenerationParams.UseChildFactory;
+bool isCollectionType = IsCollectionType(Info.ObjectType);
+bool isItemType = IsItemType(Info);
+bool isChild = parentInfo != null;
+bool isParent = Info.GetAllChildProperties().Count > 0;
+if (CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL)
+{
+    if (Info.DataSetLoadingScheme)
+    {
+        Errors.Append("DataSet Loading Scheme isn't supported when generating DAL." + Environment.NewLine);
+    }
+    if (Info.UseCustomLoading)
+    {
+        Errors.Append("Custom Loading isn't supported when generating DAL." + Environment.NewLine);
+    }
+}
+if (CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40)
+{
+    if (isCollectionType)
+    {
+        if (Info.UseCustomLoading != itemInfo.UseCustomLoading)
+        {
+            Errors.Append(Info.ObjectName + " is " + (Info.UseCustomLoading ? "" : "not") + " using custom loading: item " + itemInfo.ObjectName + " must use the same setting.." + Environment.NewLine);
+            return;
+        }
+    }
+    if (isItemType)
+    {
+        if (Info.UseCustomLoading != parentInfo.UseCustomLoading)
+        {
+            Errors.Append(parentInfo.ObjectName + " is " + (parentInfo.UseCustomLoading ? "" : "not") + " using custom loading: item " + Info.ObjectName + " must use the same setting.." + Environment.NewLine);
+            return;
+        }
+    }
+    if (isParent)
+    {
+        foreach (ChildProperty prop in Info.GetAllChildProperties())
+        {
+            CslaObjectInfo childInfo = Info.Parent.CslaObjects.Find(prop.TypeName);
+            if (Info.UseCustomLoading != childInfo.UseCustomLoading)
+            {
+                Errors.Append(Info.ObjectName + " is " + (Info.UseCustomLoading ? "" : "not") + " using custom loading: child " + childInfo.ObjectName + " must use the same setting.." + Environment.NewLine);
+                return;
+            }
+        }
+    }
+    if (isChild)
+    {
+        if (Info.UseCustomLoading != parentInfo.UseCustomLoading)
+        {
+            Errors.Append(parentInfo.ObjectName + " is " + (parentInfo.UseCustomLoading ? "" : "not") + " using custom loading: child " + Info.ObjectName + " must use the same setting.." + Environment.NewLine);
+            return;
+        }
+    }
+    if (UseChildFactoryHelper && Info.UseCustomLoading && (isItemType || isCollectionType || isChild || isParent))
+    {
+        UseChildFactoryHelper = false;
+        Infos.Append("Alert: " + Info.ObjectName + " is using custom loading: child Factory methods will not be generated." + Environment.NewLine);
+    }
+}
 
 bool hasFactoryCache = false;
 bool hasDataPortalCache = false;
@@ -121,7 +186,7 @@ foreach (ValueProperty prop in Info.GetDatabaseBoundValueProperties())
     if (CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL && !DalObjectUsesDTO(Info))
     {
         if (prop.DbBindColumn.ColumnOriginType == ColumnOriginType.None)
-            Warnings.Append(Info.ObjectName + "Property " + prop.Name + " isn't database bound; must use DTO or property will be excluded from DAL interaction." + Environment.NewLine);
+            Infos.Append("Alert: " + Info.ObjectName + "Property " + prop.Name + " isn't database bound; must use DTO or property will be excluded from DAL interaction." + Environment.NewLine);
     }
     if (CurrentUnit.GenerationParams.GenerateSilverlight4)
     {
@@ -130,17 +195,6 @@ foreach (ValueProperty prop in Info.GetDatabaseBoundValueProperties())
             prop.DeclarationMode != PropertyDeclaration.Managed &&
             prop.DeclarationMode != PropertyDeclaration.ManagedWithTypeConversion)
             Warnings.Append("Property " + prop.Name + ": must use Declaration Mode 'Managed', 'ManagedWithTypeConversion', 'Unmanaged' or 'UnmanagedWithTypeConversion' under Silverlight." + Environment.NewLine);
-    }
-}
-if (CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL)
-{
-    if (Info.DataSetLoadingScheme)
-    {
-        Errors.Append("DataSet Loading Scheme isn't supported when generating DAL." + Environment.NewLine);
-    }
-    if (Info.UseCustomLoading)
-    {
-        Errors.Append("Custom Loading isn't supported when generating DAL." + Environment.NewLine);
     }
 }
 if (CurrentUnit.GenerationParams.GenerateSilverlight4 ||

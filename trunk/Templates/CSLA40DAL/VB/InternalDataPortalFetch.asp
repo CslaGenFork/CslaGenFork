@@ -3,9 +3,9 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
 {
     string fetchString = string.Empty;
     string methodFetchString = string.Empty;
-    if (IsNotRootType(Info) && !useChildFactory)
+    if (IsNotRootType(Info) && !UseChildFactoryHelper)
         methodFetchString = "Child_";
-    if (Info.ObjectType == CslaObjectType.DynamicEditableRoot && !useChildFactory)
+    if (Info.ObjectType == CslaObjectType.DynamicEditableRoot && !UseChildFactoryHelper)
         methodFetchString = "DataPortal_";
 
     %>
@@ -41,6 +41,8 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
         // parent loading field
         if (useFieldForParentLoading)
         {
+            %>// parent properties
+            <%
             foreach(Property prop in Info.ParentProperties)
             {
                 %><%= FormatCamel(GetFKColumn(Info, (isItem ? grandParentInfo : parentInfo), prop)) %> = dr.<%= GetReaderMethod(prop.PropertyType) %>("<%= GetFKColumn(Info, (isItem ? grandParentInfo : parentInfo), prop) %>");
@@ -50,7 +52,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
             %>var args = new DataPortalHookArgs(dr);
             OnFetchRead(args);
         <%
-        if (ancestorLoaderLevel > 0 && !useChildFactory)
+        if (ancestorLoaderLevel > 0 && !UseChildFactoryHelper)
         {
             foreach (ChildProperty childProp in Info.GetCollectionChildProperties())
             {
@@ -62,7 +64,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
                         string internalCreateString = string.Empty;
                         if (IsEditableType(_child.ObjectType))
                         {
-                            if (useChildFactory)
+                            if (UseChildFactoryHelper)
                                 internalCreateString = FormatPascal(childProp.TypeName) + ".New" + FormatPascal(childProp.TypeName);
                             else
                                 internalCreateString = "DataPortal.CreateChild<" + FormatPascal(childProp.TypeName) + ">";
@@ -96,7 +98,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
                 }
             }
         }
-        if (!useChildFactory && Info.CheckRulesOnFetch && (!isRoot || Info.ObjectType == CslaObjectType.DynamicEditableRoot))
+        if (!UseChildFactoryHelper && Info.CheckRulesOnFetch && (!isRoot || Info.ObjectType == CslaObjectType.DynamicEditableRoot))
         {
             %>
             // check all object rules and property rules
@@ -136,7 +138,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
                             %>
             <%= bpcSpacer %>dr.NextResult();
 <%
-                            if (useChildFactory)
+                            if (UseChildFactoryHelper)
                                 fetchString = FormatPascal(childProp.TypeName) + ".Get" + FormatPascal(childProp.TypeName);
                             else
                                 fetchString = "DataPortal.FetchChild<" + FormatPascal(childProp.TypeName) + ">";
@@ -342,7 +344,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
                         CslaObjectInfo _child = FindChildInfo(Info, childProp.TypeName);
                         if (_child != null)
                         {
-                            if (useChildFactory)
+                            if (UseChildFactoryHelper)
                                 fetchString = FormatPascal(childProp.TypeName) + ".Get" + FormatPascal(childProp.TypeName);
                             else
                                 fetchString = "DataPortal.FetchChild<" + FormatPascal(childProp.TypeName) + ">";
@@ -509,7 +511,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
                                 invokeParam += FormatPascal(parm.Property.Name);
                             }
                         }
-                        if (useChildFactory)
+                        if (UseChildFactoryHelper)
                             fetchString = FormatPascal(childProp.TypeName) + ".Get" + FormatPascal(childProp.TypeName);
                         else
                             fetchString = "DataPortal.FetchChild<" + FormatPascal(childProp.TypeName) + ">";

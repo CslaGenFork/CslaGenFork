@@ -15,6 +15,10 @@ ERRORS
 5.5. Check Criteria for GetOptions where DataPortal is not set and SProc name is not empty (WARNINGS)
 */
 
+CslaObjectInfo parentInfo = Info.Parent.CslaObjects.Find(Info.ParentType);
+CslaObjectInfo itemInfo = FindChildInfo(Info, Info.ItemType);
+UseChildFactoryHelper = CurrentUnit.GenerationParams.UseChildFactory;
+bool isChild = parentInfo != null;
 if (Info.PersistenceType == PersistenceType.SqlConnectionUnshared)
 {
     Errors.Append("Persistence Type SqlConnectionUnshared isn't supported when running DAL." + Environment.NewLine);

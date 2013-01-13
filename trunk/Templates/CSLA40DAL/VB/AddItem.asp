@@ -43,7 +43,7 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
         {
             newMethodName += "Child";
         }
-        if (useChildFactory)
+        if (UseChildFactoryHelper)
         {
             %>
             var item = <%= Info.ItemType %>.<%= newMethodName %><%= crit.CreateOptions.FactorySuffix %>(<%= factoryParams %>);

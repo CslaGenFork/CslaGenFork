@@ -215,6 +215,10 @@ if (CurrentUnit.GenerationParams.DatabaseConnection.Equals(string.Empty))
 {
     Errors.Append("Generation settings: 'Connection name' can not be empty." + Environment.NewLine);
 }
+if (CurrentUnit.GenerationParams.UseChildFactory && !CurrentUnit.GenerationParams.GenerateSynchronous)
+{
+    Errors.Append("Generation settings: 'Generate child factory methods' requires 'Generate Synchronous'." + Environment.NewLine);
+}
 if (CurrentUnit.GenerationParams.SeparateNamespaces &&
     CurrentUnit.GenerationParams.UtilitiesFolder != string.Empty)
 {
