@@ -45,6 +45,8 @@ namespace ParentLoadRO.Business.ERLevel
         {
             A03_Continent_ReChild obj = new A03_Continent_ReChild();
             obj.Fetch(dr);
+            // check all object rules and property rules
+            obj.BusinessRules.CheckRules();
             return obj;
         }
 

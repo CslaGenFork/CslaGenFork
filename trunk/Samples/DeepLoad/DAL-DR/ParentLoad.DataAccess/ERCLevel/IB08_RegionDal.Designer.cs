@@ -9,14 +9,12 @@ namespace ParentLoad.DataAccess.ERCLevel
     /// </summary>
     public partial interface IB08_RegionDal
     {
-
         /// <summary>
         /// Inserts a new B08_Region object in the database.
         /// </summary>
         /// <param name="country_ID">The parent Country ID.</param>
         /// <param name="region_ID">The Region ID.</param>
         /// <param name="region_Name">The Region Name.</param>
-        
         void Insert(int country_ID, out int region_ID, string region_Name);
 
         /// <summary>
@@ -24,7 +22,6 @@ namespace ParentLoad.DataAccess.ERCLevel
         /// </summary>
         /// <param name="region_ID">The Region ID.</param>
         /// <param name="region_Name">The Region Name.</param>
-        
         void Update(int region_ID, string region_Name);
 
         /// <summary>

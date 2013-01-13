@@ -9,7 +9,6 @@ namespace ParentLoadSoftDelete.DataAccess.ERCLevel
     /// </summary>
     public partial interface IF01_ContinentCollDal
     {
-
         /// <summary>
         /// Loads a F01_ContinentColl collection from the database.
         /// </summary>

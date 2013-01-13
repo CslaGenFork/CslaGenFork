@@ -19,7 +19,6 @@ namespace SelfLoadSoftDelete.DataAccess.Sql.ERCLevel
         /// <param name="region_ID">The parent Region ID.</param>
         /// <param name="city_ID">The City ID.</param>
         /// <param name="city_Name">The City Name.</param>
-        
         public void Insert(int region_ID, out int city_ID, string city_Name)
         {
             city_ID = -1;
@@ -33,7 +32,7 @@ namespace SelfLoadSoftDelete.DataAccess.Sql.ERCLevel
                     cmd.Parameters.AddWithValue("@City_Name", city_Name).DbType = DbType.String;
                     cmd.ExecuteNonQuery();
                     city_ID = (int)cmd.Parameters["@City_ID"].Value;
-                                    }
+                }
             }
         }
 
@@ -42,7 +41,6 @@ namespace SelfLoadSoftDelete.DataAccess.Sql.ERCLevel
         /// </summary>
         /// <param name="city_ID">The City ID.</param>
         /// <param name="city_Name">The City Name.</param>
-        
         public void Update(int city_ID, string city_Name)
         {
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("DeepLoad"))
@@ -55,8 +53,7 @@ namespace SelfLoadSoftDelete.DataAccess.Sql.ERCLevel
                     var rowsAffected = cmd.ExecuteNonQuery();
                     if (rowsAffected == 0)
                         throw new DataNotFoundException("H10_City");
-
-                                    }
+                }
             }
         }
 

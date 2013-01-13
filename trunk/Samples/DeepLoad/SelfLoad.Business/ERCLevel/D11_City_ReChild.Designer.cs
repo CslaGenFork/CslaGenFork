@@ -106,6 +106,8 @@ namespace SelfLoad.Business.ERCLevel
                     OnFetchPost(args);
                 }
             }
+            // check all object rules and property rules
+            BusinessRules.CheckRules();
         }
 
         private void Fetch(SqlCommand cmd)
@@ -116,7 +118,6 @@ namespace SelfLoad.Business.ERCLevel
                 {
                     Fetch(dr);
                 }
-                BusinessRules.CheckRules();
             }
         }
 

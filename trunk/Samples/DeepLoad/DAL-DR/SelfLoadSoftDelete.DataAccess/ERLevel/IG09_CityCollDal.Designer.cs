@@ -9,7 +9,6 @@ namespace SelfLoadSoftDelete.DataAccess.ERLevel
     /// </summary>
     public partial interface IG09_CityCollDal
     {
-
         /// <summary>
         /// Loads a G09_CityColl collection from the database.
         /// </summary>

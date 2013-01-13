@@ -9,7 +9,6 @@ namespace SelfLoadROSoftDelete.DataAccess.ERLevel
     /// </summary>
     public partial interface IG11_City_ReChildDal
     {
-
         /// <summary>
         /// Loads a G11_City_ReChild object from the database.
         /// </summary>

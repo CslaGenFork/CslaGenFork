@@ -9,7 +9,6 @@ namespace SelfLoadROSoftDelete.DataAccess.ERLevel
     /// </summary>
     public partial interface IG07_RegionCollDal
     {
-
         /// <summary>
         /// Loads a G07_RegionColl collection from the database.
         /// </summary>

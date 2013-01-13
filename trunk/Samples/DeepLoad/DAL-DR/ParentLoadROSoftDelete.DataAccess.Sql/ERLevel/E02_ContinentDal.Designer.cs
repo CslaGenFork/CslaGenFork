@@ -13,7 +13,6 @@ namespace ParentLoadROSoftDelete.DataAccess.Sql.ERLevel
     /// </summary>
     public partial class E02_ContinentDal : IE02_ContinentDal
     {
-
         /// <summary>
         /// Loads a E02_Continent object from the database.
         /// </summary>

@@ -9,14 +9,12 @@ namespace SelfLoadSoftDelete.DataAccess.ERLevel
     /// </summary>
     public partial interface IG12_CityRoadDal
     {
-
         /// <summary>
         /// Inserts a new G12_CityRoad object in the database.
         /// </summary>
         /// <param name="city_ID">The parent City ID.</param>
         /// <param name="cityRoad_ID">The City Road ID.</param>
         /// <param name="cityRoad_Name">The City Road Name.</param>
-        
         void Insert(int city_ID, out int cityRoad_ID, string cityRoad_Name);
 
         /// <summary>
@@ -24,7 +22,6 @@ namespace SelfLoadSoftDelete.DataAccess.ERLevel
         /// </summary>
         /// <param name="cityRoad_ID">The City Road ID.</param>
         /// <param name="cityRoad_Name">The City Road Name.</param>
-        
         void Update(int cityRoad_ID, string cityRoad_Name);
 
         /// <summary>

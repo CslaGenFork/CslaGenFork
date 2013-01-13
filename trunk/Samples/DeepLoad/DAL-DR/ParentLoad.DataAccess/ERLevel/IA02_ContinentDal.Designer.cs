@@ -9,7 +9,6 @@ namespace ParentLoad.DataAccess.ERLevel
     /// </summary>
     public partial interface IA02_ContinentDal
     {
-
         /// <summary>
         /// Loads a A02_Continent object from the database.
         /// </summary>
@@ -22,7 +21,6 @@ namespace ParentLoad.DataAccess.ERLevel
         /// </summary>
         /// <param name="continent_ID">The Continent ID.</param>
         /// <param name="continent_Name">The Continent Name.</param>
-        
         void Insert(out int continent_ID, string continent_Name);
 
         /// <summary>
@@ -30,9 +28,7 @@ namespace ParentLoad.DataAccess.ERLevel
         /// </summary>
         /// <param name="continent_ID">The Continent ID.</param>
         /// <param name="continent_Name">The Continent Name.</param>
-        
         void Update(int continent_ID, string continent_Name);
-
 
         /// <summary>
         /// Deletes the A02_Continent object from database.

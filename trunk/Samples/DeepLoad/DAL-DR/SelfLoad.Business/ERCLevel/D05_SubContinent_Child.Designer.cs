@@ -2,8 +2,8 @@ using System;
 using System.Data;
 using Csla;
 using Csla.Data;
-using SelfLoad.DataAccess.ERCLevel;
 using SelfLoad.DataAccess;
+using SelfLoad.DataAccess.ERCLevel;
 
 namespace SelfLoad.Business.ERCLevel
 {
@@ -136,9 +136,9 @@ namespace SelfLoad.Business.ERCLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Insert(D04_SubContinent parent)
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactorySelfLoad.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnInsertPre(args);
                 var dal = dalManager.GetProvider<ID05_SubContinent_ChildDal>();
                 using (BypassPropertyChecks)
@@ -159,9 +159,9 @@ namespace SelfLoad.Business.ERCLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Update(D04_SubContinent parent)
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactorySelfLoad.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnUpdatePre(args);
                 var dal = dalManager.GetProvider<ID05_SubContinent_ChildDal>();
                 using (BypassPropertyChecks)
@@ -182,9 +182,9 @@ namespace SelfLoad.Business.ERCLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_DeleteSelf(D04_SubContinent parent)
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactorySelfLoad.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnDeletePre(args);
                 var dal = dalManager.GetProvider<ID05_SubContinent_ChildDal>();
                 using (BypassPropertyChecks)

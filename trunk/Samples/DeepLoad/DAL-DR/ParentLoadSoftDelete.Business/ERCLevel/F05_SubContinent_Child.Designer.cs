@@ -2,8 +2,8 @@ using System;
 using System.Data;
 using Csla;
 using Csla.Data;
-using ParentLoadSoftDelete.DataAccess.ERCLevel;
 using ParentLoadSoftDelete.DataAccess;
+using ParentLoadSoftDelete.DataAccess.ERCLevel;
 
 namespace ParentLoadSoftDelete.Business.ERCLevel
 {
@@ -110,6 +110,7 @@ namespace ParentLoadSoftDelete.Business.ERCLevel
         {
             // Value properties
             LoadProperty(SubContinent_Child_NameProperty, dr.GetString("SubContinent_Child_Name"));
+            // parent properties
             subContinent_ID1 = dr.GetInt32("SubContinent_ID1");
             var args = new DataPortalHookArgs(dr);
             OnFetchRead(args);
@@ -122,9 +123,9 @@ namespace ParentLoadSoftDelete.Business.ERCLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Insert(F04_SubContinent parent)
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactoryParentLoadSoftDelete.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnInsertPre(args);
                 var dal = dalManager.GetProvider<IF05_SubContinent_ChildDal>();
                 using (BypassPropertyChecks)
@@ -145,9 +146,9 @@ namespace ParentLoadSoftDelete.Business.ERCLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Update(F04_SubContinent parent)
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactoryParentLoadSoftDelete.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnUpdatePre(args);
                 var dal = dalManager.GetProvider<IF05_SubContinent_ChildDal>();
                 using (BypassPropertyChecks)
@@ -168,9 +169,9 @@ namespace ParentLoadSoftDelete.Business.ERCLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_DeleteSelf(F04_SubContinent parent)
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactoryParentLoadSoftDelete.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnDeletePre(args);
                 var dal = dalManager.GetProvider<IF05_SubContinent_ChildDal>();
                 using (BypassPropertyChecks)

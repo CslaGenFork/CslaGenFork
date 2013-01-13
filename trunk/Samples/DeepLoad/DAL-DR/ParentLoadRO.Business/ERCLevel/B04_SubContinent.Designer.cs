@@ -140,6 +140,7 @@ namespace ParentLoadRO.Business.ERCLevel
             // Value properties
             LoadProperty(SubContinent_IDProperty, dr.GetInt32("SubContinent_ID"));
             LoadProperty(SubContinent_NameProperty, dr.GetString("SubContinent_Name"));
+            // parent properties
             parent_Continent_ID = dr.GetInt32("Parent_Continent_ID");
             var args = new DataPortalHookArgs(dr);
             OnFetchRead(args);

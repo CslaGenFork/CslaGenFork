@@ -75,6 +75,8 @@ namespace SelfLoadRO.Business.ERLevel
                     OnFetchPost(args);
                 }
             }
+            // check all object rules and property rules
+            BusinessRules.CheckRules();
         }
 
         private void Fetch(SqlCommand cmd)
@@ -85,7 +87,6 @@ namespace SelfLoadRO.Business.ERLevel
                 {
                     Fetch(dr);
                 }
-                BusinessRules.CheckRules();
             }
         }
 

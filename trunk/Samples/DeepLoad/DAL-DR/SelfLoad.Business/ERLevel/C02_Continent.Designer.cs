@@ -2,8 +2,8 @@ using System;
 using System.Data;
 using Csla;
 using Csla.Data;
-using SelfLoad.DataAccess.ERLevel;
 using SelfLoad.DataAccess;
+using SelfLoad.DataAccess.ERLevel;
 
 namespace SelfLoad.Business.ERLevel
 {
@@ -121,8 +121,7 @@ namespace SelfLoad.Business.ERLevel
         }
 
         /// <summary>
-        /// Factory method. Marks the <see cref="C02_Continent"/> object for deletion.
-        /// The object will be deleted as part of the next save operation.
+        /// Factory method. Deletes a <see cref="C02_Continent"/> object, based on given parameters.
         /// </summary>
         /// <param name="continent_ID">The Continent_ID of the C02_Continent to delete.</param>
         public static void DeleteC02_Continent(int continent_ID)
@@ -178,6 +177,8 @@ namespace SelfLoad.Business.ERLevel
             }
             OnFetchPost(args);
             FetchChildren();
+            // check all object rules and property rules
+            BusinessRules.CheckRules();
         }
 
         private void Fetch(IDataReader data)
@@ -188,7 +189,6 @@ namespace SelfLoad.Business.ERLevel
                 {
                     Fetch(dr);
                 }
-                BusinessRules.CheckRules();
             }
         }
 
@@ -221,9 +221,9 @@ namespace SelfLoad.Business.ERLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         protected override void DataPortal_Insert()
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactorySelfLoad.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnInsertPre(args);
                 var dal = dalManager.GetProvider<IC02_ContinentDal>();
                 using (BypassPropertyChecks)
@@ -247,9 +247,9 @@ namespace SelfLoad.Business.ERLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         protected override void DataPortal_Update()
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactorySelfLoad.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnUpdatePre(args);
                 var dal = dalManager.GetProvider<IC02_ContinentDal>();
                 using (BypassPropertyChecks)
@@ -281,9 +281,9 @@ namespace SelfLoad.Business.ERLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void DataPortal_Delete(int continent_ID)
         {
-                        var args = new DataPortalHookArgs();
             using (var dalManager = DalFactorySelfLoad.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 // flushes all pending data operations
                 FieldManager.UpdateChildren(this);
                 OnDeletePre(args);

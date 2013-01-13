@@ -109,6 +109,7 @@ namespace ParentLoad.Business.ERLevel
         {
             // Value properties
             LoadProperty(Region_Child_NameProperty, dr.GetString("Region_Child_Name"));
+            // parent properties
             region_ID1 = dr.GetInt32("Region_ID1");
             var args = new DataPortalHookArgs(dr);
             OnFetchRead(args);

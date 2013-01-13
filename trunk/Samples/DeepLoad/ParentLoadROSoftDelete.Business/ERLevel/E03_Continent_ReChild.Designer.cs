@@ -46,6 +46,7 @@ namespace ParentLoadROSoftDelete.Business.ERLevel
         {
             E03_Continent_ReChild obj = new E03_Continent_ReChild();
             obj.Fetch(dr);
+            // check all object rules and property rules
             obj.BusinessRules.CheckRules();
             return obj;
         }

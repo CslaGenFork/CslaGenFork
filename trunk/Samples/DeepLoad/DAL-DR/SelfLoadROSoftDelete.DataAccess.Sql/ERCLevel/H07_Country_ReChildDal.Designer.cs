@@ -13,7 +13,6 @@ namespace SelfLoadROSoftDelete.DataAccess.Sql.ERCLevel
     /// </summary>
     public partial class H07_Country_ReChildDal : IH07_Country_ReChildDal
     {
-
         /// <summary>
         /// Loads a H07_Country_ReChild object from the database.
         /// </summary>

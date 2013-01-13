@@ -85,10 +85,10 @@ namespace SelfLoad.Business.ERCLevel
         }
 
         /// <summary>
-        /// Factory method. Loads a <see cref="D05_CountryColl"/> object, based on given parameters.
+        /// Factory method. Loads a <see cref="D05_CountryColl"/> collection, based on given parameters.
         /// </summary>
         /// <param name="parent_SubContinent_ID">The Parent_SubContinent_ID parameter of the D05_CountryColl to fetch.</param>
-        /// <returns>A reference to the fetched <see cref="D05_CountryColl"/> object.</returns>
+        /// <returns>A reference to the fetched <see cref="D05_CountryColl"/> collection.</returns>
         internal static D05_CountryColl GetD05_CountryColl(int parent_SubContinent_ID)
         {
             return DataPortal.FetchChild<D05_CountryColl>(parent_SubContinent_ID);

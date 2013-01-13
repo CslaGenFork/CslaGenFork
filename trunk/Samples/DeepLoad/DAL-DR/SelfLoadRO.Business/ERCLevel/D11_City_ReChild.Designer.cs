@@ -2,8 +2,8 @@ using System;
 using System.Data;
 using Csla;
 using Csla.Data;
-using SelfLoadRO.DataAccess.ERCLevel;
 using SelfLoadRO.DataAccess;
+using SelfLoadRO.DataAccess.ERCLevel;
 
 namespace SelfLoadRO.Business.ERCLevel
 {
@@ -73,6 +73,8 @@ namespace SelfLoadRO.Business.ERCLevel
                 Fetch(data);
             }
             OnFetchPost(args);
+            // check all object rules and property rules
+            BusinessRules.CheckRules();
         }
 
         private void Fetch(IDataReader data)
@@ -83,7 +85,6 @@ namespace SelfLoadRO.Business.ERCLevel
                 {
                     Fetch(dr);
                 }
-                BusinessRules.CheckRules();
             }
         }
 

@@ -13,7 +13,6 @@ namespace SelfLoad.DataAccess.Sql.ERCLevel
     /// </summary>
     public partial class D05_SubContinent_ReChildDal : ID05_SubContinent_ReChildDal
     {
-
         /// <summary>
         /// Loads a D05_SubContinent_ReChild object from the database.
         /// </summary>
@@ -37,7 +36,6 @@ namespace SelfLoad.DataAccess.Sql.ERCLevel
         /// </summary>
         /// <param name="subContinent_ID">The parent Sub Continent ID.</param>
         /// <param name="subContinent_Child_Name">The Sub Continent Child Name.</param>
-        
         public void Insert(int subContinent_ID, string subContinent_Child_Name)
         {
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("DeepLoad"))
@@ -48,7 +46,7 @@ namespace SelfLoad.DataAccess.Sql.ERCLevel
                     cmd.Parameters.AddWithValue("@SubContinent_ID", subContinent_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@SubContinent_Child_Name", subContinent_Child_Name).DbType = DbType.String;
                     cmd.ExecuteNonQuery();
-                                    }
+                }
             }
         }
 
@@ -57,7 +55,6 @@ namespace SelfLoad.DataAccess.Sql.ERCLevel
         /// </summary>
         /// <param name="subContinent_ID">The parent Sub Continent ID.</param>
         /// <param name="subContinent_Child_Name">The Sub Continent Child Name.</param>
-        
         public void Update(int subContinent_ID, string subContinent_Child_Name)
         {
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("DeepLoad"))
@@ -70,8 +67,7 @@ namespace SelfLoad.DataAccess.Sql.ERCLevel
                     var rowsAffected = cmd.ExecuteNonQuery();
                     if (rowsAffected == 0)
                         throw new DataNotFoundException("D05_SubContinent_ReChild");
-
-                                    }
+                }
             }
         }
 

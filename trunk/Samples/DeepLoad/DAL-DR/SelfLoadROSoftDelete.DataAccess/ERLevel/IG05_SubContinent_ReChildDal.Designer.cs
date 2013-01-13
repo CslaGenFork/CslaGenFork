@@ -9,7 +9,6 @@ namespace SelfLoadROSoftDelete.DataAccess.ERLevel
     /// </summary>
     public partial interface IG05_SubContinent_ReChildDal
     {
-
         /// <summary>
         /// Loads a G05_SubContinent_ReChild object from the database.
         /// </summary>

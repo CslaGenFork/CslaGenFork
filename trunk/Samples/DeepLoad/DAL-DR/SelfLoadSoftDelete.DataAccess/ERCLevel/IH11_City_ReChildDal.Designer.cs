@@ -9,7 +9,6 @@ namespace SelfLoadSoftDelete.DataAccess.ERCLevel
     /// </summary>
     public partial interface IH11_City_ReChildDal
     {
-
         /// <summary>
         /// Loads a H11_City_ReChild object from the database.
         /// </summary>
@@ -22,7 +21,6 @@ namespace SelfLoadSoftDelete.DataAccess.ERCLevel
         /// </summary>
         /// <param name="city_ID">The parent City ID.</param>
         /// <param name="city_Child_Name">The City Child Name.</param>
-        
         void Insert(int city_ID, string city_Child_Name);
 
         /// <summary>
@@ -30,7 +28,6 @@ namespace SelfLoadSoftDelete.DataAccess.ERCLevel
         /// </summary>
         /// <param name="city_ID">The parent City ID.</param>
         /// <param name="city_Child_Name">The City Child Name.</param>
-        
         void Update(int city_ID, string city_Child_Name);
 
         /// <summary>

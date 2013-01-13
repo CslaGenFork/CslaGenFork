@@ -9,7 +9,6 @@ namespace SelfLoad.DataAccess.ERCLevel
     /// </summary>
     public partial interface ID11_CityRoadCollDal
     {
-
         /// <summary>
         /// Loads a D11_CityRoadColl collection from the database.
         /// </summary>

@@ -9,7 +9,6 @@ namespace SelfLoadSoftDelete.DataAccess.ERLevel
     /// </summary>
     public partial interface IG05_SubContinent_ChildDal
     {
-
         /// <summary>
         /// Loads a G05_SubContinent_Child object from the database.
         /// </summary>

@@ -9,13 +9,11 @@ namespace ParentLoad.DataAccess.ERCLevel
     /// </summary>
     public partial interface IB11_City_ChildDal
     {
-
         /// <summary>
         /// Inserts a new B11_City_Child object in the database.
         /// </summary>
         /// <param name="city_ID">The parent City ID.</param>
         /// <param name="city_Child_Name">The City Child Name.</param>
-        
         void Insert(int city_ID, string city_Child_Name);
 
         /// <summary>
@@ -23,7 +21,6 @@ namespace ParentLoad.DataAccess.ERCLevel
         /// </summary>
         /// <param name="city_ID">The parent City ID.</param>
         /// <param name="city_Child_Name">The City Child Name.</param>
-        
         void Update(int city_ID, string city_Child_Name);
 
         /// <summary>

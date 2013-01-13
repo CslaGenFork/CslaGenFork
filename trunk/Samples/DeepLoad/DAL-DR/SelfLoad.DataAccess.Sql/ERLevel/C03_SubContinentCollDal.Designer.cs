@@ -13,7 +13,6 @@ namespace SelfLoad.DataAccess.Sql.ERLevel
     /// </summary>
     public partial class C03_SubContinentCollDal : IC03_SubContinentCollDal
     {
-
         /// <summary>
         /// Loads a C03_SubContinentColl collection from the database.
         /// </summary>

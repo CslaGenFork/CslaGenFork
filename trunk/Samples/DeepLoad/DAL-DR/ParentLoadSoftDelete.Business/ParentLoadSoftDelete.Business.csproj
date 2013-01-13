@@ -36,7 +36,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Csla">
-      <HintPath>..\..\References\Csla.dll</HintPath>
+      <HintPath>..\..\packages\CSLA-Core.4.3.13\lib\net40\Csla.dll</HintPath>
+    </Reference>
+    <Reference Include="Csla.XmlSerializers">
+      <HintPath>..\..\packages\CSLA-Core.4.3.13\lib\net40\Csla.XmlSerializers.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -45,6 +48,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\GlobalAssemblyInfo.cs">
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="DataPortalHookArgs.cs" />
     <Compile Include="ERCLevel\F01_ContinentColl.cs" />
     <Compile Include="ERCLevel\F01_ContinentColl.Designer.cs">
@@ -226,7 +232,9 @@
       <Name>ParentLoadSoftDelete.DataAccess</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

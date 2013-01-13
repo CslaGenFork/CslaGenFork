@@ -13,7 +13,6 @@ namespace SelfLoadSoftDelete.DataAccess.Sql.ERLevel
     /// </summary>
     public partial class G05_SubContinent_ReChildDal : IG05_SubContinent_ReChildDal
     {
-
         /// <summary>
         /// Loads a G05_SubContinent_ReChild object from the database.
         /// </summary>

@@ -67,6 +67,7 @@ namespace ParentLoadSoftDelete.Business.ERCLevel
             obj.MarkAsChild();
             obj.Fetch(dr);
             obj.MarkOld();
+            // check all object rules and property rules
             obj.BusinessRules.CheckRules();
             return obj;
         }
@@ -110,6 +111,7 @@ namespace ParentLoadSoftDelete.Business.ERCLevel
         {
             // Value properties
             LoadProperty(SubContinent_Child_NameProperty, dr.GetString("SubContinent_Child_Name"));
+            // parent properties
             subContinent_ID2 = dr.GetInt32("SubContinent_ID2");
             var args = new DataPortalHookArgs(dr);
             OnFetchRead(args);

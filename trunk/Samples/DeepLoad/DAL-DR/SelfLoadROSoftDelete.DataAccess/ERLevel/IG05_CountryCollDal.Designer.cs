@@ -9,7 +9,6 @@ namespace SelfLoadROSoftDelete.DataAccess.ERLevel
     /// </summary>
     public partial interface IG05_CountryCollDal
     {
-
         /// <summary>
         /// Loads a G05_CountryColl collection from the database.
         /// </summary>

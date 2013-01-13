@@ -13,7 +13,6 @@ namespace SelfLoadSoftDelete.DataAccess.Sql.ERCLevel
     /// </summary>
     public partial class H03_Continent_ChildDal : IH03_Continent_ChildDal
     {
-
         /// <summary>
         /// Loads a H03_Continent_Child object from the database.
         /// </summary>
@@ -37,7 +36,6 @@ namespace SelfLoadSoftDelete.DataAccess.Sql.ERCLevel
         /// </summary>
         /// <param name="continent_ID">The parent Continent ID.</param>
         /// <param name="continent_Child_Name">The Continent Child Name.</param>
-        
         public void Insert(int continent_ID, string continent_Child_Name)
         {
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("DeepLoad"))
@@ -48,7 +46,7 @@ namespace SelfLoadSoftDelete.DataAccess.Sql.ERCLevel
                     cmd.Parameters.AddWithValue("@Continent_ID", continent_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@Continent_Child_Name", continent_Child_Name).DbType = DbType.String;
                     cmd.ExecuteNonQuery();
-                                    }
+                }
             }
         }
 
@@ -57,7 +55,6 @@ namespace SelfLoadSoftDelete.DataAccess.Sql.ERCLevel
         /// </summary>
         /// <param name="continent_ID">The parent Continent ID.</param>
         /// <param name="continent_Child_Name">The Continent Child Name.</param>
-        
         public void Update(int continent_ID, string continent_Child_Name)
         {
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("DeepLoad"))
@@ -70,8 +67,7 @@ namespace SelfLoadSoftDelete.DataAccess.Sql.ERCLevel
                     var rowsAffected = cmd.ExecuteNonQuery();
                     if (rowsAffected == 0)
                         throw new DataNotFoundException("H03_Continent_Child");
-
-                                    }
+                }
             }
         }
 

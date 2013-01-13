@@ -85,10 +85,10 @@ namespace SelfLoadSoftDelete.Business.ERCLevel
         }
 
         /// <summary>
-        /// Factory method. Loads a <see cref="H07_RegionColl"/> object, based on given parameters.
+        /// Factory method. Loads a <see cref="H07_RegionColl"/> collection, based on given parameters.
         /// </summary>
         /// <param name="parent_Country_ID">The Parent_Country_ID parameter of the H07_RegionColl to fetch.</param>
-        /// <returns>A reference to the fetched <see cref="H07_RegionColl"/> object.</returns>
+        /// <returns>A reference to the fetched <see cref="H07_RegionColl"/> collection.</returns>
         internal static H07_RegionColl GetH07_RegionColl(int parent_Country_ID)
         {
             return DataPortal.FetchChild<H07_RegionColl>(parent_Country_ID);

@@ -18,7 +18,6 @@ namespace SelfLoad.DataAccess.Sql.ERCLevel
         /// </summary>
         /// <param name="continent_ID">The Continent ID.</param>
         /// <param name="continent_Name">The Continent Name.</param>
-        
         public void Insert(out int continent_ID, string continent_Name)
         {
             continent_ID = -1;
@@ -31,7 +30,7 @@ namespace SelfLoad.DataAccess.Sql.ERCLevel
                     cmd.Parameters.AddWithValue("@Continent_Name", continent_Name).DbType = DbType.String;
                     cmd.ExecuteNonQuery();
                     continent_ID = (int)cmd.Parameters["@Continent_ID"].Value;
-                                    }
+                }
             }
         }
 
@@ -40,7 +39,6 @@ namespace SelfLoad.DataAccess.Sql.ERCLevel
         /// </summary>
         /// <param name="continent_ID">The Continent ID.</param>
         /// <param name="continent_Name">The Continent Name.</param>
-        
         public void Update(int continent_ID, string continent_Name)
         {
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("DeepLoad"))
@@ -53,8 +51,7 @@ namespace SelfLoad.DataAccess.Sql.ERCLevel
                     var rowsAffected = cmd.ExecuteNonQuery();
                     if (rowsAffected == 0)
                         throw new DataNotFoundException("D02_Continent");
-
-                                    }
+                }
             }
         }
 

@@ -53,6 +53,8 @@ namespace ParentLoadRO.Business.ERCLevel
         {
             B03_Continent_ReChild obj = new B03_Continent_ReChild();
             obj.Fetch(dr);
+            // check all object rules and property rules
+            obj.BusinessRules.CheckRules();
             return obj;
         }
 
@@ -81,6 +83,7 @@ namespace ParentLoadRO.Business.ERCLevel
         {
             // Value properties
             LoadProperty(Continent_Child_NameProperty, dr.GetString("Continent_Child_Name"));
+            // parent properties
             continent_ID2 = dr.GetInt32("Continent_ID2");
             var args = new DataPortalHookArgs(dr);
             OnFetchRead(args);

@@ -120,8 +120,7 @@ namespace ParentLoad.Business.ERLevel
         }
 
         /// <summary>
-        /// Factory method. Marks the <see cref="A02_Continent"/> object for deletion.
-        /// The object will be deleted as part of the next save operation.
+        /// Factory method. Deletes a <see cref="A02_Continent"/> object, based on given parameters.
         /// </summary>
         /// <param name="continent_ID">The Continent_ID of the A02_Continent to delete.</param>
         public static void DeleteA02_Continent(int continent_ID)
@@ -179,6 +178,8 @@ namespace ParentLoad.Business.ERLevel
                     OnFetchPost(args);
                 }
             }
+            // check all object rules and property rules
+            BusinessRules.CheckRules();
         }
 
         private void Fetch(SqlCommand cmd)
@@ -190,7 +191,6 @@ namespace ParentLoad.Business.ERLevel
                     Fetch(dr);
                     FetchChildren(dr);
                 }
-                BusinessRules.CheckRules();
             }
         }
 
@@ -310,6 +310,7 @@ namespace ParentLoad.Business.ERLevel
                     OnInsertPost(args);
                     LoadProperty(Continent_IDProperty, (int) cmd.Parameters["@Continent_ID"].Value);
                 }
+                // flushes all pending data operations
                 FieldManager.UpdateChildren(this);
             }
         }
@@ -332,6 +333,7 @@ namespace ParentLoad.Business.ERLevel
                     cmd.ExecuteNonQuery();
                     OnUpdatePost(args);
                 }
+                // flushes all pending data operations
                 FieldManager.UpdateChildren(this);
             }
         }

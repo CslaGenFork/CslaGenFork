@@ -2,8 +2,8 @@ using System;
 using System.Data;
 using Csla;
 using Csla.Data;
-using ParentLoad.DataAccess.ERCLevel;
 using ParentLoad.DataAccess;
+using ParentLoad.DataAccess.ERCLevel;
 
 namespace ParentLoad.Business.ERCLevel
 {
@@ -179,6 +179,7 @@ namespace ParentLoad.Business.ERCLevel
             // Value properties
             LoadProperty(Country_IDProperty, dr.GetInt32("Country_ID"));
             LoadProperty(Country_NameProperty, dr.GetString("Country_Name"));
+            // parent properties
             parent_SubContinent_ID = dr.GetInt32("Parent_SubContinent_ID");
             var args = new DataPortalHookArgs(dr);
             OnFetchRead(args);
@@ -209,9 +210,9 @@ namespace ParentLoad.Business.ERCLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Insert(B04_SubContinent parent)
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactoryParentLoad.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnInsertPre(args);
                 var dal = dalManager.GetProvider<IB06_CountryDal>();
                 using (BypassPropertyChecks)
@@ -236,9 +237,9 @@ namespace ParentLoad.Business.ERCLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Update()
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactoryParentLoad.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnUpdatePre(args);
                 var dal = dalManager.GetProvider<IB06_CountryDal>();
                 using (BypassPropertyChecks)
@@ -260,9 +261,9 @@ namespace ParentLoad.Business.ERCLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_DeleteSelf()
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactoryParentLoad.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 // flushes all pending data operations
                 FieldManager.UpdateChildren(this);
                 OnDeletePre(args);

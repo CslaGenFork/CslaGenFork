@@ -13,7 +13,6 @@ namespace SelfLoadRO.DataAccess.Sql.ERCLevel
     /// </summary>
     public partial class D03_SubContinentCollDal : ID03_SubContinentCollDal
     {
-
         /// <summary>
         /// Loads a D03_SubContinentColl collection from the database.
         /// </summary>

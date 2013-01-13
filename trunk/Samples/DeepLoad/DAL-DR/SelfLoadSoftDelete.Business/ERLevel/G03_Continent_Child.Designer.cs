@@ -2,8 +2,8 @@ using System;
 using System.Data;
 using Csla;
 using Csla.Data;
-using SelfLoadSoftDelete.DataAccess.ERLevel;
 using SelfLoadSoftDelete.DataAccess;
+using SelfLoadSoftDelete.DataAccess.ERLevel;
 
 namespace SelfLoadSoftDelete.Business.ERLevel
 {
@@ -136,9 +136,9 @@ namespace SelfLoadSoftDelete.Business.ERLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Insert(G02_Continent parent)
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactorySelfLoadSoftDelete.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnInsertPre(args);
                 var dal = dalManager.GetProvider<IG03_Continent_ChildDal>();
                 using (BypassPropertyChecks)
@@ -159,9 +159,9 @@ namespace SelfLoadSoftDelete.Business.ERLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Update(G02_Continent parent)
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactorySelfLoadSoftDelete.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnUpdatePre(args);
                 var dal = dalManager.GetProvider<IG03_Continent_ChildDal>();
                 using (BypassPropertyChecks)
@@ -182,9 +182,9 @@ namespace SelfLoadSoftDelete.Business.ERLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_DeleteSelf(G02_Continent parent)
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactorySelfLoadSoftDelete.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnDeletePre(args);
                 var dal = dalManager.GetProvider<IG03_Continent_ChildDal>();
                 using (BypassPropertyChecks)

@@ -9,13 +9,11 @@ namespace ParentLoadSoftDelete.DataAccess.ERCLevel
     /// </summary>
     public partial interface IF09_Region_ChildDal
     {
-
         /// <summary>
         /// Inserts a new F09_Region_Child object in the database.
         /// </summary>
         /// <param name="region_ID">The parent Region ID.</param>
         /// <param name="region_Child_Name">The Region Child Name.</param>
-        
         void Insert(int region_ID, string region_Child_Name);
 
         /// <summary>
@@ -23,7 +21,6 @@ namespace ParentLoadSoftDelete.DataAccess.ERCLevel
         /// </summary>
         /// <param name="region_ID">The parent Region ID.</param>
         /// <param name="region_Child_Name">The Region Child Name.</param>
-        
         void Update(int region_ID, string region_Child_Name);
 
         /// <summary>

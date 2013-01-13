@@ -2,8 +2,8 @@ using System;
 using System.Data;
 using Csla;
 using Csla.Data;
-using ParentLoadSoftDelete.DataAccess.ERCLevel;
 using ParentLoadSoftDelete.DataAccess;
+using ParentLoadSoftDelete.DataAccess.ERCLevel;
 
 namespace ParentLoadSoftDelete.Business.ERCLevel
 {

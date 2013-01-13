@@ -9,7 +9,6 @@ namespace ParentLoadRO.DataAccess.ERLevel
     /// </summary>
     public partial interface IA02_ContinentDal
     {
-
         /// <summary>
         /// Loads a A02_Continent object from the database.
         /// </summary>

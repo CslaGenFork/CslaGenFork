@@ -9,7 +9,6 @@ namespace SelfLoadROSoftDelete.DataAccess.ERCLevel
     /// </summary>
     public partial interface IH09_CityCollDal
     {
-
         /// <summary>
         /// Loads a H09_CityColl collection from the database.
         /// </summary>

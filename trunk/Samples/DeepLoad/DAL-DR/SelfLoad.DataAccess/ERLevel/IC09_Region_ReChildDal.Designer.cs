@@ -9,7 +9,6 @@ namespace SelfLoad.DataAccess.ERLevel
     /// </summary>
     public partial interface IC09_Region_ReChildDal
     {
-
         /// <summary>
         /// Loads a C09_Region_ReChild object from the database.
         /// </summary>
@@ -22,7 +21,6 @@ namespace SelfLoad.DataAccess.ERLevel
         /// </summary>
         /// <param name="region_ID">The parent Region ID.</param>
         /// <param name="region_Child_Name">The Region Child Name.</param>
-        
         void Insert(int region_ID, string region_Child_Name);
 
         /// <summary>
@@ -30,7 +28,6 @@ namespace SelfLoad.DataAccess.ERLevel
         /// </summary>
         /// <param name="region_ID">The parent Region ID.</param>
         /// <param name="region_Child_Name">The Region Child Name.</param>
-        
         void Update(int region_ID, string region_Child_Name);
 
         /// <summary>

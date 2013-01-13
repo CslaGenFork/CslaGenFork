@@ -13,7 +13,6 @@ namespace SelfLoadROSoftDelete.DataAccess.Sql.ERCLevel
     /// </summary>
     public partial class H03_SubContinentCollDal : IH03_SubContinentCollDal
     {
-
         /// <summary>
         /// Loads a H03_SubContinentColl collection from the database.
         /// </summary>

@@ -9,7 +9,6 @@ namespace ParentLoad.DataAccess.ERLevel
     /// </summary>
     public partial interface IA05_SubContinent_ChildDal
     {
-
         /// <summary>
         /// Inserts a new A05_SubContinent_Child object in the database.
         /// </summary>

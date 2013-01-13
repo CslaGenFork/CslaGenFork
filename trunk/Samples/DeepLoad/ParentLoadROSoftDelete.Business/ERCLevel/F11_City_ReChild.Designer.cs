@@ -47,6 +47,7 @@ namespace ParentLoadROSoftDelete.Business.ERCLevel
         {
             F11_City_ReChild obj = new F11_City_ReChild();
             obj.Fetch(dr);
+            // check all object rules and property rules
             obj.BusinessRules.CheckRules();
             return obj;
         }
@@ -76,6 +77,7 @@ namespace ParentLoadROSoftDelete.Business.ERCLevel
         {
             // Value properties
             City_Child_Name = dr.GetString("City_Child_Name");
+            // parent properties
             city_ID2 = dr.GetInt32("City_ID2");
             var args = new DataPortalHookArgs(dr);
             OnFetchRead(args);

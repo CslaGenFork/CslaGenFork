@@ -81,6 +81,7 @@ namespace ParentLoadROSoftDelete.Business.ERCLevel
             // Value properties
             CityRoad_ID = dr.GetInt32("CityRoad_ID");
             CityRoad_Name = dr.GetString("CityRoad_Name");
+            // parent properties
             parent_City_ID = dr.GetInt32("Parent_City_ID");
             var args = new DataPortalHookArgs(dr);
             OnFetchRead(args);

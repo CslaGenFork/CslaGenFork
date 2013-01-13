@@ -13,7 +13,6 @@ namespace SelfLoadRO.DataAccess.Sql.ERLevel
     /// </summary>
     public partial class C03_Continent_ReChildDal : IC03_Continent_ReChildDal
     {
-
         /// <summary>
         /// Loads a C03_Continent_ReChild object from the database.
         /// </summary>

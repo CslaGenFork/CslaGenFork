@@ -2,8 +2,8 @@ using System;
 using System.Data;
 using Csla;
 using Csla.Data;
-using ParentLoadSoftDelete.DataAccess.ERLevel;
 using ParentLoadSoftDelete.DataAccess;
+using ParentLoadSoftDelete.DataAccess.ERLevel;
 
 namespace ParentLoadSoftDelete.Business.ERLevel
 {
@@ -110,6 +110,7 @@ namespace ParentLoadSoftDelete.Business.ERLevel
         {
             // Value properties
             LoadProperty(Region_Child_NameProperty, dr.GetString("Region_Child_Name"));
+            // parent properties
             region_ID1 = dr.GetInt32("Region_ID1");
             var args = new DataPortalHookArgs(dr);
             OnFetchRead(args);
@@ -122,9 +123,9 @@ namespace ParentLoadSoftDelete.Business.ERLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Insert(E08_Region parent)
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactoryParentLoadSoftDelete.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnInsertPre(args);
                 var dal = dalManager.GetProvider<IE09_Region_ChildDal>();
                 using (BypassPropertyChecks)
@@ -145,9 +146,9 @@ namespace ParentLoadSoftDelete.Business.ERLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Update(E08_Region parent)
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactoryParentLoadSoftDelete.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnUpdatePre(args);
                 var dal = dalManager.GetProvider<IE09_Region_ChildDal>();
                 using (BypassPropertyChecks)
@@ -168,9 +169,9 @@ namespace ParentLoadSoftDelete.Business.ERLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_DeleteSelf(E08_Region parent)
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactoryParentLoadSoftDelete.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnDeletePre(args);
                 var dal = dalManager.GetProvider<IE09_Region_ChildDal>();
                 using (BypassPropertyChecks)

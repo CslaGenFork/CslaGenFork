@@ -13,7 +13,6 @@ namespace ParentLoadRO.DataAccess.Sql.ERLevel
     /// </summary>
     public partial class A02_ContinentDal : IA02_ContinentDal
     {
-
         /// <summary>
         /// Loads a A02_Continent object from the database.
         /// </summary>

@@ -9,7 +9,6 @@ namespace SelfLoadROSoftDelete.DataAccess.ERLevel
     /// </summary>
     public partial interface IG03_SubContinentCollDal
     {
-
         /// <summary>
         /// Loads a G03_SubContinentColl collection from the database.
         /// </summary>

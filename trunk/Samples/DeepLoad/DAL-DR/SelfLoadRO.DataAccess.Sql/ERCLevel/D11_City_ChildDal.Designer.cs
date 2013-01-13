@@ -13,7 +13,6 @@ namespace SelfLoadRO.DataAccess.Sql.ERCLevel
     /// </summary>
     public partial class D11_City_ChildDal : ID11_City_ChildDal
     {
-
         /// <summary>
         /// Loads a D11_City_Child object from the database.
         /// </summary>

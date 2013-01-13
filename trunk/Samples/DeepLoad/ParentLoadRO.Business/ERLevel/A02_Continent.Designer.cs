@@ -139,6 +139,8 @@ namespace ParentLoadRO.Business.ERLevel
                     OnFetchPost(args);
                 }
             }
+            // check all object rules and property rules
+            BusinessRules.CheckRules();
         }
 
         private void Fetch(SqlCommand cmd)
@@ -150,7 +152,6 @@ namespace ParentLoadRO.Business.ERLevel
                     Fetch(dr);
                     FetchChildren(dr);
                 }
-                BusinessRules.CheckRules();
             }
         }
 

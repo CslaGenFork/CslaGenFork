@@ -9,7 +9,6 @@ namespace ParentLoadROSoftDelete.DataAccess.ERLevel
     /// </summary>
     public partial interface IE02_ContinentDal
     {
-
         /// <summary>
         /// Loads a E02_Continent object from the database.
         /// </summary>

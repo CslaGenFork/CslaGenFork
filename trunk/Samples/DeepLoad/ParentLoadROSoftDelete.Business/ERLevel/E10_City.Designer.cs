@@ -141,6 +141,7 @@ namespace ParentLoadROSoftDelete.Business.ERLevel
             // Value properties
             LoadProperty(City_IDProperty, dr.GetInt32("City_ID"));
             LoadProperty(City_NameProperty, dr.GetString("City_Name"));
+            // parent properties
             parent_Region_ID = dr.GetInt32("Parent_Region_ID");
             var args = new DataPortalHookArgs(dr);
             OnFetchRead(args);

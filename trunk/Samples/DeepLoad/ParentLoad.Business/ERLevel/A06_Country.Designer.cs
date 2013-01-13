@@ -67,17 +67,17 @@ namespace ParentLoad.Business.ERLevel
         }
 
         /// <summary>
-        /// Maintains metadata about <see cref="Parent_SubContinent_ID"/> property.
+        /// Maintains metadata about <see cref="ParentSubContinentID"/> property.
         /// </summary>
-        public static readonly PropertyInfo<int> Parent_SubContinent_IDProperty = RegisterProperty<int>(p => p.Parent_SubContinent_ID, "Marent ID1");
+        public static readonly PropertyInfo<int> ParentSubContinentIDProperty = RegisterProperty<int>(p => p.ParentSubContinentID, "ParentSubContinentID");
         /// <summary>
-        /// Gets or sets the Marent ID1.
+        /// Gets or sets the ParentSubContinentID.
         /// </summary>
-        /// <value>The Marent ID1.</value>
-        public int Parent_SubContinent_ID
+        /// <value>The ParentSubContinentID.</value>
+        public int ParentSubContinentID
         {
-            get { return GetProperty(Parent_SubContinent_IDProperty); }
-            set { SetProperty(Parent_SubContinent_IDProperty, value); }
+            get { return GetProperty(ParentSubContinentIDProperty); }
+            set { SetProperty(ParentSubContinentIDProperty, value); }
         }
 
         /// <summary>
@@ -195,8 +195,9 @@ namespace ParentLoad.Business.ERLevel
             // Value properties
             LoadProperty(Country_IDProperty, dr.GetInt32("Country_ID"));
             LoadProperty(Country_NameProperty, dr.GetString("Country_Name"));
-            LoadProperty(Parent_SubContinent_IDProperty, dr.GetInt32("Parent_SubContinent_ID"));
-            _rowVersion = (dr.GetValue("RowVersion")) as byte[];
+            LoadProperty(ParentSubContinentIDProperty, dr.GetInt32("Parent_SubContinent_ID"));
+            _rowVersion = dr.GetValue("RowVersion") as byte[];
+            // parent properties
             parent_SubContinent_ID = dr.GetInt32("Parent_SubContinent_ID");
             var args = new DataPortalHookArgs(dr);
             OnFetchRead(args);
@@ -243,6 +244,7 @@ namespace ParentLoad.Business.ERLevel
                     LoadProperty(Country_IDProperty, (int) cmd.Parameters["@Country_ID"].Value);
                     _rowVersion = (byte[]) cmd.Parameters["@NewRowVersion"].Value;
                 }
+                // flushes all pending data operations
                 FieldManager.UpdateChildren(this);
             }
         }
@@ -260,7 +262,7 @@ namespace ParentLoad.Business.ERLevel
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@Country_ID", ReadProperty(Country_IDProperty)).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@Country_Name", ReadProperty(Country_NameProperty)).DbType = DbType.String;
-                    cmd.Parameters.AddWithValue("@Parent_SubContinent_ID", ReadProperty(Parent_SubContinent_IDProperty)).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@Parent_SubContinent_ID", ReadProperty(ParentSubContinentIDProperty)).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@RowVersion", _rowVersion).DbType = DbType.Binary;
                     cmd.Parameters.Add("@NewRowVersion", SqlDbType.Timestamp).Direction = ParameterDirection.Output;
                     var args = new DataPortalHookArgs(cmd);
@@ -269,6 +271,7 @@ namespace ParentLoad.Business.ERLevel
                     OnUpdatePost(args);
                     _rowVersion = (byte[]) cmd.Parameters["@NewRowVersion"].Value;
                 }
+                // flushes all pending data operations
                 FieldManager.UpdateChildren(this);
             }
         }

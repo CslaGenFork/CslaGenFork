@@ -2,8 +2,8 @@ using System;
 using System.Data;
 using Csla;
 using Csla.Data;
-using SelfLoad.DataAccess.ERLevel;
 using SelfLoad.DataAccess;
+using SelfLoad.DataAccess.ERLevel;
 
 namespace SelfLoad.Business.ERLevel
 {
@@ -45,11 +45,11 @@ namespace SelfLoad.Business.ERLevel
         /// <summary>
         /// Maintains metadata about <see cref="SubContinent_ID1"/> property.
         /// </summary>
-        public static readonly PropertyInfo<int> SubContinent_ID1Property = RegisterProperty<int>(p => p.SubContinent_ID1, "CMarent ID1");
+        public static readonly PropertyInfo<int> SubContinent_ID1Property = RegisterProperty<int>(p => p.SubContinent_ID1, "SubContinent ID1");
         /// <summary>
-        /// Gets or sets the CMarent ID1.
+        /// Gets or sets the SubContinent ID1.
         /// </summary>
-        /// <value>The CMarent ID1.</value>
+        /// <value>The SubContinent ID1.</value>
         public int SubContinent_ID1
         {
             get { return GetProperty(SubContinent_ID1Property); }
@@ -147,7 +147,7 @@ namespace SelfLoad.Business.ERLevel
             // Value properties
             LoadProperty(SubContinent_Child_NameProperty, dr.GetString("SubContinent_Child_Name"));
             LoadProperty(SubContinent_ID1Property, dr.GetInt32("SubContinent_ID1"));
-            _rowVersion = (dr.GetValue("RowVersion")) as byte[];
+            _rowVersion = dr.GetValue("RowVersion") as byte[];
             var args = new DataPortalHookArgs(dr);
             OnFetchRead(args);
         }
@@ -159,9 +159,9 @@ namespace SelfLoad.Business.ERLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Insert(C04_SubContinent parent)
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactorySelfLoad.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnInsertPre(args);
                 var dal = dalManager.GetProvider<IC05_SubContinent_ChildDal>();
                 using (BypassPropertyChecks)
@@ -182,9 +182,9 @@ namespace SelfLoad.Business.ERLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Update(C04_SubContinent parent)
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactorySelfLoad.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnUpdatePre(args);
                 var dal = dalManager.GetProvider<IC05_SubContinent_ChildDal>();
                 using (BypassPropertyChecks)
@@ -207,9 +207,9 @@ namespace SelfLoad.Business.ERLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_DeleteSelf(C04_SubContinent parent)
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactorySelfLoad.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnDeletePre(args);
                 var dal = dalManager.GetProvider<IC05_SubContinent_ChildDal>();
                 using (BypassPropertyChecks)

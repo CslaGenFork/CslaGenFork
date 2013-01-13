@@ -13,7 +13,6 @@ namespace SelfLoadRO.DataAccess.Sql.ERLevel
     /// </summary>
     public partial class C11_City_ChildDal : IC11_City_ChildDal
     {
-
         /// <summary>
         /// Loads a C11_City_Child object from the database.
         /// </summary>

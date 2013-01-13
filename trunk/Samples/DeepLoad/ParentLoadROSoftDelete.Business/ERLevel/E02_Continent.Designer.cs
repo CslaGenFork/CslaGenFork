@@ -139,6 +139,8 @@ namespace ParentLoadROSoftDelete.Business.ERLevel
                     OnFetchPost(args);
                 }
             }
+            // check all object rules and property rules
+            BusinessRules.CheckRules();
         }
 
         private void Fetch(SqlCommand cmd)
@@ -150,7 +152,6 @@ namespace ParentLoadROSoftDelete.Business.ERLevel
                     Fetch(dr);
                     FetchChildren(dr);
                 }
-                BusinessRules.CheckRules();
             }
         }
 

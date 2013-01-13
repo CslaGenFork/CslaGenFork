@@ -213,6 +213,7 @@ namespace ParentLoad.Business.ERLevel
                     OnInsertPost(args);
                     LoadProperty(SubContinent_IDProperty, (int) cmd.Parameters["@SubContinent_ID"].Value);
                 }
+                // flushes all pending data operations
                 FieldManager.UpdateChildren(this);
             }
         }
@@ -235,6 +236,7 @@ namespace ParentLoad.Business.ERLevel
                     cmd.ExecuteNonQuery();
                     OnUpdatePost(args);
                 }
+                // flushes all pending data operations
                 FieldManager.UpdateChildren(this);
             }
         }

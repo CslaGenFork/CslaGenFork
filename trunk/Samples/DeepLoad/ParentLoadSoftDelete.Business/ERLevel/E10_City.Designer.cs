@@ -178,6 +178,7 @@ namespace ParentLoadSoftDelete.Business.ERLevel
             // Value properties
             LoadProperty(City_IDProperty, dr.GetInt32("City_ID"));
             LoadProperty(City_NameProperty, dr.GetString("City_Name"));
+            // parent properties
             parent_Region_ID = dr.GetInt32("Parent_Region_ID");
             var args = new DataPortalHookArgs(dr);
             OnFetchRead(args);
@@ -222,6 +223,7 @@ namespace ParentLoadSoftDelete.Business.ERLevel
                     OnInsertPost(args);
                     LoadProperty(City_IDProperty, (int) cmd.Parameters["@City_ID"].Value);
                 }
+                // flushes all pending data operations
                 FieldManager.UpdateChildren(this);
             }
         }
@@ -244,6 +246,7 @@ namespace ParentLoadSoftDelete.Business.ERLevel
                     cmd.ExecuteNonQuery();
                     OnUpdatePost(args);
                 }
+                // flushes all pending data operations
                 FieldManager.UpdateChildren(this);
             }
         }

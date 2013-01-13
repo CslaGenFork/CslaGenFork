@@ -178,6 +178,7 @@ namespace ParentLoadSoftDelete.Business.ERCLevel
             // Value properties
             LoadProperty(Country_IDProperty, dr.GetInt32("Country_ID"));
             LoadProperty(Country_NameProperty, dr.GetString("Country_Name"));
+            // parent properties
             parent_SubContinent_ID = dr.GetInt32("Parent_SubContinent_ID");
             var args = new DataPortalHookArgs(dr);
             OnFetchRead(args);
@@ -222,6 +223,7 @@ namespace ParentLoadSoftDelete.Business.ERCLevel
                     OnInsertPost(args);
                     LoadProperty(Country_IDProperty, (int) cmd.Parameters["@Country_ID"].Value);
                 }
+                // flushes all pending data operations
                 FieldManager.UpdateChildren(this);
             }
         }
@@ -244,6 +246,7 @@ namespace ParentLoadSoftDelete.Business.ERCLevel
                     cmd.ExecuteNonQuery();
                     OnUpdatePost(args);
                 }
+                // flushes all pending data operations
                 FieldManager.UpdateChildren(this);
             }
         }

@@ -53,6 +53,8 @@ namespace ParentLoadROSoftDelete.Business.ERLevel
         {
             E09_Region_ReChild obj = new E09_Region_ReChild();
             obj.Fetch(dr);
+            // check all object rules and property rules
+            obj.BusinessRules.CheckRules();
             return obj;
         }
 
@@ -81,6 +83,7 @@ namespace ParentLoadROSoftDelete.Business.ERLevel
         {
             // Value properties
             LoadProperty(Region_Child_NameProperty, dr.GetString("Region_Child_Name"));
+            // parent properties
             region_ID2 = dr.GetInt32("Region_ID2");
             var args = new DataPortalHookArgs(dr);
             OnFetchRead(args);

@@ -56,6 +56,8 @@ namespace ParentLoadROSoftDelete.Business.ERLevel
         {
             E05_SubContinent_ReChild obj = new E05_SubContinent_ReChild();
             obj.Fetch(dr);
+            // check all object rules and property rules
+            obj.BusinessRules.CheckRules();
             return obj;
         }
 
@@ -84,7 +86,8 @@ namespace ParentLoadROSoftDelete.Business.ERLevel
         {
             // Value properties
             LoadProperty(SubContinent_Child_NameProperty, dr.GetString("SubContinent_Child_Name"));
-            _rowVersion = (dr.GetValue("RowVersion")) as byte[];
+            _rowVersion = dr.GetValue("RowVersion") as byte[];
+            // parent properties
             subContinent_ID2 = dr.GetInt32("SubContinent_ID2");
             var args = new DataPortalHookArgs(dr);
             OnFetchRead(args);

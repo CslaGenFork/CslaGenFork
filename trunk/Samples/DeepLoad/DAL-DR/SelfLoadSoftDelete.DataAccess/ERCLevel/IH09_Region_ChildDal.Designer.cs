@@ -9,7 +9,6 @@ namespace SelfLoadSoftDelete.DataAccess.ERCLevel
     /// </summary>
     public partial interface IH09_Region_ChildDal
     {
-
         /// <summary>
         /// Loads a H09_Region_Child object from the database.
         /// </summary>
@@ -22,7 +21,6 @@ namespace SelfLoadSoftDelete.DataAccess.ERCLevel
         /// </summary>
         /// <param name="region_ID">The parent Region ID.</param>
         /// <param name="region_Child_Name">The Region Child Name.</param>
-        
         void Insert(int region_ID, string region_Child_Name);
 
         /// <summary>
@@ -30,7 +28,6 @@ namespace SelfLoadSoftDelete.DataAccess.ERCLevel
         /// </summary>
         /// <param name="region_ID">The parent Region ID.</param>
         /// <param name="region_Child_Name">The Region Child Name.</param>
-        
         void Update(int region_ID, string region_Child_Name);
 
         /// <summary>

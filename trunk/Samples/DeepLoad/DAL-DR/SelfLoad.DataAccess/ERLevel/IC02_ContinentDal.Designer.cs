@@ -9,7 +9,6 @@ namespace SelfLoad.DataAccess.ERLevel
     /// </summary>
     public partial interface IC02_ContinentDal
     {
-
         /// <summary>
         /// Loads a C02_Continent object from the database.
         /// </summary>
@@ -22,7 +21,6 @@ namespace SelfLoad.DataAccess.ERLevel
         /// </summary>
         /// <param name="continent_ID">The Continent ID.</param>
         /// <param name="continent_Name">The Continent Name.</param>
-        
         void Insert(out int continent_ID, string continent_Name);
 
         /// <summary>
@@ -30,9 +28,7 @@ namespace SelfLoad.DataAccess.ERLevel
         /// </summary>
         /// <param name="continent_ID">The Continent ID.</param>
         /// <param name="continent_Name">The Continent Name.</param>
-        
         void Update(int continent_ID, string continent_Name);
-
 
         /// <summary>
         /// Deletes the C02_Continent object from database.

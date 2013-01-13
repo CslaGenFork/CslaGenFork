@@ -204,6 +204,7 @@ namespace SelfLoadSoftDelete.Business.ERCLevel
                     OnInsertPost(args);
                     LoadProperty(Country_IDProperty, (int) cmd.Parameters["@Country_ID"].Value);
                 }
+                // flushes all pending data operations
                 FieldManager.UpdateChildren(this);
             }
         }
@@ -226,6 +227,7 @@ namespace SelfLoadSoftDelete.Business.ERCLevel
                     cmd.ExecuteNonQuery();
                     OnUpdatePost(args);
                 }
+                // flushes all pending data operations
                 FieldManager.UpdateChildren(this);
             }
         }

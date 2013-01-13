@@ -13,7 +13,6 @@ namespace SelfLoad.DataAccess.Sql.ERCLevel
     /// </summary>
     public partial class D05_CountryCollDal : ID05_CountryCollDal
     {
-
         /// <summary>
         /// Loads a D05_CountryColl collection from the database.
         /// </summary>

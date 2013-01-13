@@ -19,7 +19,6 @@ namespace SelfLoad.DataAccess.Sql.ERLevel
         /// <param name="continent_ID">The parent Continent ID.</param>
         /// <param name="subContinent_ID">The Sub Continent ID.</param>
         /// <param name="subContinent_Name">The Sub Continent Name.</param>
-        
         public void Insert(int continent_ID, out int subContinent_ID, string subContinent_Name)
         {
             subContinent_ID = -1;
@@ -33,7 +32,7 @@ namespace SelfLoad.DataAccess.Sql.ERLevel
                     cmd.Parameters.AddWithValue("@SubContinent_Name", subContinent_Name).DbType = DbType.String;
                     cmd.ExecuteNonQuery();
                     subContinent_ID = (int)cmd.Parameters["@SubContinent_ID"].Value;
-                                    }
+                }
             }
         }
 
@@ -42,7 +41,6 @@ namespace SelfLoad.DataAccess.Sql.ERLevel
         /// </summary>
         /// <param name="subContinent_ID">The Sub Continent ID.</param>
         /// <param name="subContinent_Name">The Sub Continent Name.</param>
-        
         public void Update(int subContinent_ID, string subContinent_Name)
         {
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("DeepLoad"))
@@ -55,8 +53,7 @@ namespace SelfLoad.DataAccess.Sql.ERLevel
                     var rowsAffected = cmd.ExecuteNonQuery();
                     if (rowsAffected == 0)
                         throw new DataNotFoundException("C04_SubContinent");
-
-                                    }
+                }
             }
         }
 

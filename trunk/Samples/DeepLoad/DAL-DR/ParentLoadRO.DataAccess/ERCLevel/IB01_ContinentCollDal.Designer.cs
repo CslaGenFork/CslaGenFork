@@ -9,7 +9,6 @@ namespace ParentLoadRO.DataAccess.ERCLevel
     /// </summary>
     public partial interface IB01_ContinentCollDal
     {
-
         /// <summary>
         /// Loads a B01_ContinentColl collection from the database.
         /// </summary>

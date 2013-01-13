@@ -2,8 +2,8 @@ using System;
 using System.Data;
 using Csla;
 using Csla.Data;
-using ParentLoad.DataAccess.ERCLevel;
 using ParentLoad.DataAccess;
+using ParentLoad.DataAccess.ERCLevel;
 
 namespace ParentLoad.Business.ERCLevel
 {
@@ -274,9 +274,9 @@ namespace ParentLoad.Business.ERCLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Insert()
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactoryParentLoad.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnInsertPre(args);
                 var dal = dalManager.GetProvider<IB02_ContinentDal>();
                 using (BypassPropertyChecks)
@@ -300,9 +300,9 @@ namespace ParentLoad.Business.ERCLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Update()
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactoryParentLoad.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnUpdatePre(args);
                 var dal = dalManager.GetProvider<IB02_ContinentDal>();
                 using (BypassPropertyChecks)
@@ -324,9 +324,9 @@ namespace ParentLoad.Business.ERCLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_DeleteSelf()
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactoryParentLoad.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 // flushes all pending data operations
                 FieldManager.UpdateChildren(this);
                 OnDeletePre(args);

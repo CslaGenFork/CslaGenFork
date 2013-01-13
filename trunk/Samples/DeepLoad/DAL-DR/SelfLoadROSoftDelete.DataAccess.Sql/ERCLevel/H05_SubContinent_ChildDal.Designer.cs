@@ -13,7 +13,6 @@ namespace SelfLoadROSoftDelete.DataAccess.Sql.ERCLevel
     /// </summary>
     public partial class H05_SubContinent_ChildDal : IH05_SubContinent_ChildDal
     {
-
         /// <summary>
         /// Loads a H05_SubContinent_Child object from the database.
         /// </summary>

@@ -2,8 +2,8 @@ using System;
 using System.Data;
 using Csla;
 using Csla.Data;
-using SelfLoadROSoftDelete.DataAccess.ERCLevel;
 using SelfLoadROSoftDelete.DataAccess;
+using SelfLoadROSoftDelete.DataAccess.ERCLevel;
 
 namespace SelfLoadROSoftDelete.Business.ERCLevel
 {
@@ -44,9 +44,9 @@ namespace SelfLoadROSoftDelete.Business.ERCLevel
         #region Factory Methods
 
         /// <summary>
-        /// Factory method. Loads a <see cref="H01_ContinentColl"/> object.
+        /// Factory method. Loads a <see cref="H01_ContinentColl"/> collection.
         /// </summary>
-        /// <returns>A reference to the fetched <see cref="H01_ContinentColl"/> object.</returns>
+        /// <returns>A reference to the fetched <see cref="H01_ContinentColl"/> collection.</returns>
         public static H01_ContinentColl GetH01_ContinentColl()
         {
             return DataPortal.Fetch<H01_ContinentColl>();

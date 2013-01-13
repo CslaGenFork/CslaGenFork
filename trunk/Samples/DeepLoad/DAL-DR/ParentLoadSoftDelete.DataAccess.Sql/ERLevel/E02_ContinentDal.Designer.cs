@@ -13,7 +13,6 @@ namespace ParentLoadSoftDelete.DataAccess.Sql.ERLevel
     /// </summary>
     public partial class E02_ContinentDal : IE02_ContinentDal
     {
-
         /// <summary>
         /// Loads a E02_Continent object from the database.
         /// </summary>
@@ -37,7 +36,6 @@ namespace ParentLoadSoftDelete.DataAccess.Sql.ERLevel
         /// </summary>
         /// <param name="continent_ID">The Continent ID.</param>
         /// <param name="continent_Name">The Continent Name.</param>
-        
         public void Insert(out int continent_ID, string continent_Name)
         {
             continent_ID = -1;
@@ -50,7 +48,7 @@ namespace ParentLoadSoftDelete.DataAccess.Sql.ERLevel
                     cmd.Parameters.AddWithValue("@Continent_Name", continent_Name).DbType = DbType.String;
                     cmd.ExecuteNonQuery();
                     continent_ID = (int)cmd.Parameters["@Continent_ID"].Value;
-                                    }
+                }
             }
         }
 
@@ -59,7 +57,6 @@ namespace ParentLoadSoftDelete.DataAccess.Sql.ERLevel
         /// </summary>
         /// <param name="continent_ID">The Continent ID.</param>
         /// <param name="continent_Name">The Continent Name.</param>
-        
         public void Update(int continent_ID, string continent_Name)
         {
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("DeepLoad"))
@@ -72,8 +69,7 @@ namespace ParentLoadSoftDelete.DataAccess.Sql.ERLevel
                     var rowsAffected = cmd.ExecuteNonQuery();
                     if (rowsAffected == 0)
                         throw new DataNotFoundException("E02_Continent");
-
-                                    }
+                }
             }
         }
 

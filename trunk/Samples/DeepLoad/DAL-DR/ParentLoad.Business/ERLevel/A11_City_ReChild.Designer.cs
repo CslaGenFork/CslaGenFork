@@ -2,8 +2,8 @@ using System;
 using System.Data;
 using Csla;
 using Csla.Data;
-using ParentLoad.DataAccess.ERLevel;
 using ParentLoad.DataAccess;
+using ParentLoad.DataAccess.ERLevel;
 
 namespace ParentLoad.Business.ERLevel
 {
@@ -68,6 +68,7 @@ namespace ParentLoad.Business.ERLevel
             obj.MarkAsChild();
             obj.Fetch(dr);
             obj.MarkOld();
+            // check all object rules and property rules
             obj.BusinessRules.CheckRules();
             return obj;
         }
@@ -111,6 +112,7 @@ namespace ParentLoad.Business.ERLevel
         {
             // Value properties
             LoadProperty(City_Child_NameProperty, dr.GetString("City_Child_Name"));
+            // parent properties
             city_ID2 = dr.GetInt32("City_ID2");
             var args = new DataPortalHookArgs(dr);
             OnFetchRead(args);
@@ -123,9 +125,9 @@ namespace ParentLoad.Business.ERLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Insert(A10_City parent)
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactoryParentLoad.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnInsertPre(args);
                 var dal = dalManager.GetProvider<IA11_City_ReChildDal>();
                 using (BypassPropertyChecks)
@@ -146,9 +148,9 @@ namespace ParentLoad.Business.ERLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Update(A10_City parent)
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactoryParentLoad.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnUpdatePre(args);
                 var dal = dalManager.GetProvider<IA11_City_ReChildDal>();
                 using (BypassPropertyChecks)
@@ -169,9 +171,9 @@ namespace ParentLoad.Business.ERLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_DeleteSelf(A10_City parent)
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactoryParentLoad.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnDeletePre(args);
                 var dal = dalManager.GetProvider<IA11_City_ReChildDal>();
                 using (BypassPropertyChecks)

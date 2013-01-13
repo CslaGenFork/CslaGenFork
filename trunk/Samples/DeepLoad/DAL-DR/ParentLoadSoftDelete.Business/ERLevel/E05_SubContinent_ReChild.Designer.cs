@@ -2,8 +2,8 @@ using System;
 using System.Data;
 using Csla;
 using Csla.Data;
-using ParentLoadSoftDelete.DataAccess.ERLevel;
 using ParentLoadSoftDelete.DataAccess;
+using ParentLoadSoftDelete.DataAccess.ERLevel;
 
 namespace ParentLoadSoftDelete.Business.ERLevel
 {
@@ -71,6 +71,7 @@ namespace ParentLoadSoftDelete.Business.ERLevel
             obj.MarkAsChild();
             obj.Fetch(dr);
             obj.MarkOld();
+            // check all object rules and property rules
             obj.BusinessRules.CheckRules();
             return obj;
         }
@@ -114,7 +115,8 @@ namespace ParentLoadSoftDelete.Business.ERLevel
         {
             // Value properties
             LoadProperty(SubContinent_Child_NameProperty, dr.GetString("SubContinent_Child_Name"));
-            _rowVersion = (dr.GetValue("RowVersion")) as byte[];
+            _rowVersion = dr.GetValue("RowVersion") as byte[];
+            // parent properties
             subContinent_ID2 = dr.GetInt32("SubContinent_ID2");
             var args = new DataPortalHookArgs(dr);
             OnFetchRead(args);
@@ -127,9 +129,9 @@ namespace ParentLoadSoftDelete.Business.ERLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Insert(E04_SubContinent parent)
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactoryParentLoadSoftDelete.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnInsertPre(args);
                 var dal = dalManager.GetProvider<IE05_SubContinent_ReChildDal>();
                 using (BypassPropertyChecks)
@@ -150,9 +152,9 @@ namespace ParentLoadSoftDelete.Business.ERLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Update(E04_SubContinent parent)
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactoryParentLoadSoftDelete.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnUpdatePre(args);
                 var dal = dalManager.GetProvider<IE05_SubContinent_ReChildDal>();
                 using (BypassPropertyChecks)
@@ -174,9 +176,9 @@ namespace ParentLoadSoftDelete.Business.ERLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_DeleteSelf(E04_SubContinent parent)
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactoryParentLoadSoftDelete.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnDeletePre(args);
                 var dal = dalManager.GetProvider<IE05_SubContinent_ReChildDal>();
                 using (BypassPropertyChecks)

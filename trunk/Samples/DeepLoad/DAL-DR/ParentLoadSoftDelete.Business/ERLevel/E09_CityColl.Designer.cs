@@ -2,8 +2,8 @@ using System;
 using System.Data;
 using Csla;
 using Csla.Data;
-using ParentLoadSoftDelete.DataAccess.ERLevel;
 using ParentLoadSoftDelete.DataAccess;
+using ParentLoadSoftDelete.DataAccess.ERLevel;
 
 namespace ParentLoadSoftDelete.Business.ERLevel
 {

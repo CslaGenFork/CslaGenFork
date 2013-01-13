@@ -19,7 +19,6 @@ namespace ParentLoad.DataAccess.Sql.ERLevel
         /// <param name="city_ID">The parent City ID.</param>
         /// <param name="cityRoad_ID">The City Road ID.</param>
         /// <param name="cityRoad_Name">The City Road Name.</param>
-        
         public void Insert(int city_ID, out int cityRoad_ID, string cityRoad_Name)
         {
             cityRoad_ID = -1;
@@ -33,7 +32,7 @@ namespace ParentLoad.DataAccess.Sql.ERLevel
                     cmd.Parameters.AddWithValue("@CityRoad_Name", cityRoad_Name).DbType = DbType.String;
                     cmd.ExecuteNonQuery();
                     cityRoad_ID = (int)cmd.Parameters["@CityRoad_ID"].Value;
-                                    }
+                }
             }
         }
 
@@ -42,7 +41,6 @@ namespace ParentLoad.DataAccess.Sql.ERLevel
         /// </summary>
         /// <param name="cityRoad_ID">The City Road ID.</param>
         /// <param name="cityRoad_Name">The City Road Name.</param>
-        
         public void Update(int cityRoad_ID, string cityRoad_Name)
         {
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("DeepLoad"))
@@ -55,8 +53,7 @@ namespace ParentLoad.DataAccess.Sql.ERLevel
                     var rowsAffected = cmd.ExecuteNonQuery();
                     if (rowsAffected == 0)
                         throw new DataNotFoundException("A12_CityRoad");
-
-                                    }
+                }
             }
         }
 

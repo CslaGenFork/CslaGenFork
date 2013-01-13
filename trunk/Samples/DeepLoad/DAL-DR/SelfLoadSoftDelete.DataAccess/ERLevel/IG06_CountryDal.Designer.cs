@@ -9,7 +9,6 @@ namespace SelfLoadSoftDelete.DataAccess.ERLevel
     /// </summary>
     public partial interface IG06_CountryDal
     {
-
         /// <summary>
         /// Inserts a new G06_Country object in the database.
         /// </summary>
@@ -24,10 +23,10 @@ namespace SelfLoadSoftDelete.DataAccess.ERLevel
         /// </summary>
         /// <param name="country_ID">The Country ID.</param>
         /// <param name="country_Name">The Country Name.</param>
-        /// <param name="parent_SubContinent_ID">The Parent Sub Continent ID.</param>
+        /// <param name="parentSubContinentID">The Parent Sub Continent ID.</param>
         /// <param name="rowVersion">The Row Version.</param>
         /// <returns>The updated Row Version.</returns>
-        byte[] Update(int country_ID, string country_Name, int parent_SubContinent_ID, byte[] rowVersion);
+        byte[] Update(int country_ID, string country_Name, int parentSubContinentID, byte[] rowVersion);
 
         /// <summary>
         /// Deletes the G06_Country object from database.

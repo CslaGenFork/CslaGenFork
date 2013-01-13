@@ -9,13 +9,11 @@ namespace ParentLoad.DataAccess.ERCLevel
     /// </summary>
     public partial interface IB05_SubContinent_ReChildDal
     {
-
         /// <summary>
         /// Inserts a new B05_SubContinent_ReChild object in the database.
         /// </summary>
         /// <param name="subContinent_ID">The parent Sub Continent ID.</param>
         /// <param name="subContinent_Child_Name">The Sub Continent Child Name.</param>
-        
         void Insert(int subContinent_ID, string subContinent_Child_Name);
 
         /// <summary>
@@ -23,7 +21,6 @@ namespace ParentLoad.DataAccess.ERCLevel
         /// </summary>
         /// <param name="subContinent_ID">The parent Sub Continent ID.</param>
         /// <param name="subContinent_Child_Name">The Sub Continent Child Name.</param>
-        
         void Update(int subContinent_ID, string subContinent_Child_Name);
 
         /// <summary>

@@ -43,10 +43,10 @@ namespace SelfLoadROSoftDelete.Business.ERCLevel
         #region Factory Methods
 
         /// <summary>
-        /// Factory method. Loads a <see cref="H03_SubContinentColl"/> object, based on given parameters.
+        /// Factory method. Loads a <see cref="H03_SubContinentColl"/> collection, based on given parameters.
         /// </summary>
         /// <param name="parent_Continent_ID">The Parent_Continent_ID parameter of the H03_SubContinentColl to fetch.</param>
-        /// <returns>A reference to the fetched <see cref="H03_SubContinentColl"/> object.</returns>
+        /// <returns>A reference to the fetched <see cref="H03_SubContinentColl"/> collection.</returns>
         internal static H03_SubContinentColl GetH03_SubContinentColl(int parent_Continent_ID)
         {
             return DataPortal.FetchChild<H03_SubContinentColl>(parent_Continent_ID);

@@ -109,6 +109,7 @@ namespace ParentLoadSoftDelete.Business.ERCLevel
         {
             // Value properties
             LoadProperty(Continent_Child_NameProperty, dr.GetString("Continent_Child_Name"));
+            // parent properties
             continent_ID1 = dr.GetInt32("Continent_ID1");
             var args = new DataPortalHookArgs(dr);
             OnFetchRead(args);

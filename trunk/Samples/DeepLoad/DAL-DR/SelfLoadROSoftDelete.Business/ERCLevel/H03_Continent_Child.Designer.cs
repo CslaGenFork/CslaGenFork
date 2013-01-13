@@ -2,8 +2,8 @@ using System;
 using System.Data;
 using Csla;
 using Csla.Data;
-using SelfLoadROSoftDelete.DataAccess.ERCLevel;
 using SelfLoadROSoftDelete.DataAccess;
+using SelfLoadROSoftDelete.DataAccess.ERCLevel;
 
 namespace SelfLoadROSoftDelete.Business.ERCLevel
 {

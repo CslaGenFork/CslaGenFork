@@ -18,7 +18,6 @@ namespace ParentLoad.DataAccess.Sql.ERLevel
         /// </summary>
         /// <param name="city_ID">The parent City ID.</param>
         /// <param name="city_Child_Name">The City Child Name.</param>
-        
         public void Insert(int city_ID, string city_Child_Name)
         {
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("DeepLoad"))
@@ -29,7 +28,7 @@ namespace ParentLoad.DataAccess.Sql.ERLevel
                     cmd.Parameters.AddWithValue("@City_ID", city_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@City_Child_Name", city_Child_Name).DbType = DbType.String;
                     cmd.ExecuteNonQuery();
-                                    }
+                }
             }
         }
 
@@ -38,7 +37,6 @@ namespace ParentLoad.DataAccess.Sql.ERLevel
         /// </summary>
         /// <param name="city_ID">The parent City ID.</param>
         /// <param name="city_Child_Name">The City Child Name.</param>
-        
         public void Update(int city_ID, string city_Child_Name)
         {
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("DeepLoad"))
@@ -51,8 +49,7 @@ namespace ParentLoad.DataAccess.Sql.ERLevel
                     var rowsAffected = cmd.ExecuteNonQuery();
                     if (rowsAffected == 0)
                         throw new DataNotFoundException("A11_City_ReChild");
-
-                                    }
+                }
             }
         }
 

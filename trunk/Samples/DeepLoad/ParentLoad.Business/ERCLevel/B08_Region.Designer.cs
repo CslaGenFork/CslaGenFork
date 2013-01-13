@@ -178,6 +178,7 @@ namespace ParentLoad.Business.ERCLevel
             // Value properties
             LoadProperty(Region_IDProperty, dr.GetInt32("Region_ID"));
             LoadProperty(Region_NameProperty, dr.GetString("Region_Name"));
+            // parent properties
             parent_Country_ID = dr.GetInt32("Parent_Country_ID");
             var args = new DataPortalHookArgs(dr);
             OnFetchRead(args);
@@ -222,6 +223,7 @@ namespace ParentLoad.Business.ERCLevel
                     OnInsertPost(args);
                     LoadProperty(Region_IDProperty, (int) cmd.Parameters["@Region_ID"].Value);
                 }
+                // flushes all pending data operations
                 FieldManager.UpdateChildren(this);
             }
         }
@@ -244,6 +246,7 @@ namespace ParentLoad.Business.ERCLevel
                     cmd.ExecuteNonQuery();
                     OnUpdatePost(args);
                 }
+                // flushes all pending data operations
                 FieldManager.UpdateChildren(this);
             }
         }

@@ -9,7 +9,6 @@ namespace SelfLoadRO.DataAccess.ERCLevel
     /// </summary>
     public partial interface ID05_CountryCollDal
     {
-
         /// <summary>
         /// Loads a D05_CountryColl collection from the database.
         /// </summary>

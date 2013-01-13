@@ -13,7 +13,6 @@ namespace SelfLoadROSoftDelete.DataAccess.Sql.ERLevel
     /// </summary>
     public partial class G09_Region_ReChildDal : IG09_Region_ReChildDal
     {
-
         /// <summary>
         /// Loads a G09_Region_ReChild object from the database.
         /// </summary>

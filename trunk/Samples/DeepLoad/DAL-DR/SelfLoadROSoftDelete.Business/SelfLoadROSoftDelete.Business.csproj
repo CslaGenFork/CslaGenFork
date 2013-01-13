@@ -36,7 +36,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Csla">
-      <HintPath>..\..\References\Csla.dll</HintPath>
+      <HintPath>..\..\packages\CSLA-Core.4.3.13\lib\net40\Csla.dll</HintPath>
+    </Reference>
+    <Reference Include="Csla.XmlSerializers">
+      <HintPath>..\..\packages\CSLA-Core.4.3.13\lib\net40\Csla.XmlSerializers.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -44,6 +47,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\GlobalAssemblyInfo.cs">
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="DataPortalHookArgs.cs" />
     <Compile Include="ERCLevel\H01_ContinentColl.cs" />
     <Compile Include="ERCLevel\H01_ContinentColl.Designer.cs">
@@ -224,6 +230,9 @@
       <Project>{5B23C618-2BAF-4A4C-AC9D-EB6C6F23EACE}</Project>
       <Name>SelfLoadROSoftDelete.DataAccess</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

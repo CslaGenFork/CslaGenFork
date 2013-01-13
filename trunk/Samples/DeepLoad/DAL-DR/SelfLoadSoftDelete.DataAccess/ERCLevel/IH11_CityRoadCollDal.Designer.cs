@@ -9,7 +9,6 @@ namespace SelfLoadSoftDelete.DataAccess.ERCLevel
     /// </summary>
     public partial interface IH11_CityRoadCollDal
     {
-
         /// <summary>
         /// Loads a H11_CityRoadColl collection from the database.
         /// </summary>

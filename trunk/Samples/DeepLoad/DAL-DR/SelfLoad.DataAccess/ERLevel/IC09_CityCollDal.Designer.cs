@@ -9,7 +9,6 @@ namespace SelfLoad.DataAccess.ERLevel
     /// </summary>
     public partial interface IC09_CityCollDal
     {
-
         /// <summary>
         /// Loads a C09_CityColl collection from the database.
         /// </summary>

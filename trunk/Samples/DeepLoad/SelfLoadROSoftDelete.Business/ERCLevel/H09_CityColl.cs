@@ -1,9 +1,21 @@
-using SelfLoadROSoftDelete.Business;
-
 namespace SelfLoadROSoftDelete.Business.ERCLevel
 {
     public partial class H09_CityColl
     {
+
+        #region OnDeserialized actions
+
+        /*/// <summary>
+        /// This method is called on a newly deserialized object
+        /// after deserialization is complete.
+        /// </summary>
+        protected override void OnDeserialized()
+        {
+            base.OnDeserialized();
+            // add your custom OnDeserialized actions here.
+        }*/
+
+        #endregion
 
         #region Pseudo Event Handlers
 

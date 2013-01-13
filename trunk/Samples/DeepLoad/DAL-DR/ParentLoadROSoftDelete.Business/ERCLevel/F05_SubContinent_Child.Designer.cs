@@ -81,6 +81,7 @@ namespace ParentLoadROSoftDelete.Business.ERCLevel
         {
             // Value properties
             LoadProperty(SubContinent_Child_NameProperty, dr.GetString("SubContinent_Child_Name"));
+            // parent properties
             subContinent_ID1 = dr.GetInt32("SubContinent_ID1");
             var args = new DataPortalHookArgs(dr);
             OnFetchRead(args);

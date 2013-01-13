@@ -2,8 +2,8 @@ using System;
 using System.Data;
 using Csla;
 using Csla.Data;
-using SelfLoadSoftDelete.DataAccess.ERLevel;
 using SelfLoadSoftDelete.DataAccess;
+using SelfLoadSoftDelete.DataAccess.ERLevel;
 
 namespace SelfLoadSoftDelete.Business.ERLevel
 {
@@ -121,8 +121,7 @@ namespace SelfLoadSoftDelete.Business.ERLevel
         }
 
         /// <summary>
-        /// Factory method. Marks the <see cref="G02_Continent"/> object for deletion.
-        /// The object will be deleted as part of the next save operation.
+        /// Factory method. Deletes a <see cref="G02_Continent"/> object, based on given parameters.
         /// </summary>
         /// <param name="continent_ID">The Continent_ID of the G02_Continent to delete.</param>
         public static void DeleteG02_Continent(int continent_ID)
@@ -178,6 +177,8 @@ namespace SelfLoadSoftDelete.Business.ERLevel
             }
             OnFetchPost(args);
             FetchChildren();
+            // check all object rules and property rules
+            BusinessRules.CheckRules();
         }
 
         private void Fetch(IDataReader data)
@@ -188,7 +189,6 @@ namespace SelfLoadSoftDelete.Business.ERLevel
                 {
                     Fetch(dr);
                 }
-                BusinessRules.CheckRules();
             }
         }
 
@@ -221,9 +221,9 @@ namespace SelfLoadSoftDelete.Business.ERLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         protected override void DataPortal_Insert()
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactorySelfLoadSoftDelete.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnInsertPre(args);
                 var dal = dalManager.GetProvider<IG02_ContinentDal>();
                 using (BypassPropertyChecks)
@@ -247,9 +247,9 @@ namespace SelfLoadSoftDelete.Business.ERLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         protected override void DataPortal_Update()
         {
-            var args = new DataPortalHookArgs();
             using (var dalManager = DalFactorySelfLoadSoftDelete.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 OnUpdatePre(args);
                 var dal = dalManager.GetProvider<IG02_ContinentDal>();
                 using (BypassPropertyChecks)
@@ -281,9 +281,9 @@ namespace SelfLoadSoftDelete.Business.ERLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void DataPortal_Delete(int continent_ID)
         {
-                        var args = new DataPortalHookArgs();
             using (var dalManager = DalFactorySelfLoadSoftDelete.GetManager())
             {
+                var args = new DataPortalHookArgs();
                 // flushes all pending data operations
                 FieldManager.UpdateChildren(this);
                 OnDeletePre(args);

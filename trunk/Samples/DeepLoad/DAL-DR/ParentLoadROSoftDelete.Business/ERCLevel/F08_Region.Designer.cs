@@ -140,6 +140,7 @@ namespace ParentLoadROSoftDelete.Business.ERCLevel
             // Value properties
             LoadProperty(Region_IDProperty, dr.GetInt32("Region_ID"));
             LoadProperty(Region_NameProperty, dr.GetString("Region_Name"));
+            // parent properties
             parent_Country_ID = dr.GetInt32("Parent_Country_ID");
             var args = new DataPortalHookArgs(dr);
             OnFetchRead(args);

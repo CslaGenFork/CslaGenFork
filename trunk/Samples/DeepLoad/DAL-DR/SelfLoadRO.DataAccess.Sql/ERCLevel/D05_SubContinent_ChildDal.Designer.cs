@@ -13,7 +13,6 @@ namespace SelfLoadRO.DataAccess.Sql.ERCLevel
     /// </summary>
     public partial class D05_SubContinent_ChildDal : ID05_SubContinent_ChildDal
     {
-
         /// <summary>
         /// Loads a D05_SubContinent_Child object from the database.
         /// </summary>

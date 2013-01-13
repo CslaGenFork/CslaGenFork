@@ -13,7 +13,6 @@ namespace SelfLoadSoftDelete.DataAccess.Sql.ERLevel
     /// </summary>
     public partial class G05_CountryCollDal : IG05_CountryCollDal
     {
-
         /// <summary>
         /// Loads a G05_CountryColl collection from the database.
         /// </summary>
