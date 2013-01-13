@@ -68,7 +68,7 @@ namespace CslaGenerator.CodeGen
         public Criteria Criteria
         {
             get { return _criteria; }
-            set 
+            set
             {
                 _criteria = value;
                 _criteriaDefined = true;
@@ -94,14 +94,14 @@ namespace CslaGenerator.CodeGen
                 }
             }
         }
-        
+
         #region Accessories
 
         public string GetSchema(IResultObject table, bool fullSchema)
         {
             if (!Info.Parent.GenerationParams.GenerateQueriesWithSchema)
                 return "";
-            
+
             if (fullSchema)
                 return "[" + table.ObjectSchema + "].";
 
@@ -149,7 +149,7 @@ namespace CslaGenerator.CodeGen
                 {
                     if (correlationName.Order > 1)
                         return correlationName.TableName + correlationName.Order;
-                    
+
                     return correlationName.TableName;
                 }
             }
@@ -887,7 +887,7 @@ namespace CslaGenerator.CodeGen
                 parentInsertOnly = childInfo.ParentInsertOnly;
 
             var tablesCol = new List<IResultObject>();
-            
+
             if (!parentFound)
             {
                 var parentInfo = FindParent(childInfo);
