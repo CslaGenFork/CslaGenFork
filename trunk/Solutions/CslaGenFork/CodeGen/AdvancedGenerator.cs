@@ -101,7 +101,7 @@ namespace CslaGenerator.CodeGen
             if (generationParams.GenerateDalInterface)
                 generalValidation &= GeneralValidation(GenerationStep.DalInterface);
             if (generationParams.GenerateDalObject)
-                generalValidation &= GeneralValidation( GenerationStep.DalObject);
+                generalValidation &= GeneralValidation(GenerationStep.DalObject);
 
             if(!generalValidation)
             {
@@ -118,8 +118,57 @@ namespace CslaGenerator.CodeGen
                 _businessError = false;
                 if (objInfo == null)
                     objInfo = info;
-                if (_abortRequested) break;
+                if (_abortRequested)
+                    break;
                 OnStep(info.ObjectName);
+
+                // Stored Procedures
+                if (generationParams.GenerateSprocs && info.GenerateSprocs)
+                {
+                    try
+                    {
+                        if (generationParams.OneSpFilePerObject)
+                        {
+                            GenerateAllSprocsFile(info, TargetDirectory);
+                        }
+                        else
+                        {
+                            GenerateSelectProcedure(info, TargetDirectory);
+                            if (_abortRequested)
+                                break;
+
+                            if (NeedsDbInsUpdDel(info))
+                            {
+                                GenerateInsertProcedure(info, TargetDirectory);
+                                if (_abortRequested)
+                                    break;
+
+                                GenerateDeleteProcedure(info, TargetDirectory);
+                                if (_abortRequested)
+                                    break;
+
+                                GenerateUpdateProcedure(info, TargetDirectory);
+                                if (_abortRequested)
+                                    break;
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        var generationErrors = new StringBuilder();
+                        generationErrors.AppendLine("* * * Error:");
+                        generationErrors.AppendFormat("SProc {0} failed to generate:", info.ObjectName);
+                        generationErrors.AppendLine();
+                        generationErrors.AppendLine(ex.Message);
+                        if (ex.InnerException != null)
+                        {
+                            generationErrors.AppendLine(ex.InnerException.Message);
+                            generationErrors.AppendLine("Stack Trace");
+                            generationErrors.AppendLine(ex.InnerException.StackTrace);
+                        }
+                        OnGenerationInformation(generationErrors.ToString());
+                    }
+                }
 
                 // Business Objects
                 try
@@ -201,54 +250,6 @@ namespace CslaGenerator.CodeGen
                     }
                     if (_abortRequested)
                         break;
-                }
-
-                // Stored Procedures
-                if (generationParams.GenerateSprocs && info.GenerateSprocs)
-                {
-                    try
-                    {
-                        if (generationParams.OneSpFilePerObject)
-                        {
-                            GenerateAllSprocsFile(info, TargetDirectory);
-                        }
-                        else
-                        {
-                            GenerateSelectProcedure(info, TargetDirectory);
-                            if (_abortRequested)
-                                break;
-
-                            if (NeedsDbInsUpdDel(info))
-                            {
-                                GenerateInsertProcedure(info, TargetDirectory);
-                                if (_abortRequested)
-                                    break;
-
-                                GenerateDeleteProcedure(info, TargetDirectory);
-                                if (_abortRequested)
-                                    break;
-
-                                GenerateUpdateProcedure(info, TargetDirectory);
-                                if (_abortRequested)
-                                    break;
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        var generationErrors = new StringBuilder();
-                        generationErrors.AppendLine("* * * Error:");
-                        generationErrors.AppendFormat("SProc {0} failed to generate:", info.ObjectName);
-                        generationErrors.AppendLine();
-                        generationErrors.AppendLine(ex.Message);
-                        if (ex.InnerException != null)
-                        {
-                            generationErrors.AppendLine(ex.InnerException.Message);
-                            generationErrors.AppendLine("Stack Trace");
-                            generationErrors.AppendLine(ex.InnerException.StackTrace);
-                        }
-                        OnGenerationInformation(generationErrors.ToString());
-                    }
                 }
             }
 
