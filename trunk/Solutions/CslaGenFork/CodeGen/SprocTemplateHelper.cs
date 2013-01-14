@@ -730,6 +730,33 @@ namespace CslaGenerator.CodeGen
             return tables;
         }
 
+        // patch for using SProcs as source of RO/NVL
+        public string GetSprocSchemaSelect(CslaObjectInfo info)
+        {
+            var result = string.Empty;
+
+            var tables = new List<IResultObject>();
+            var allValueProps = new ValuePropertyCollection();
+
+            if (!IsCollectionType(info.ObjectType))
+                allValueProps = info.GetAllValueProperties();
+            else
+            {
+                var item = info.Parent.CslaObjects.Find(info.ItemType);
+                allValueProps = item.GetAllValueProperties();
+            }
+
+            foreach (var prop in allValueProps)
+            {
+                if (prop.DbBindColumn.Column == null)
+                    continue;
+
+                result = prop.DbBindColumn.SchemaName;
+                break;
+            }
+            return result;
+        }
+
         public List<IResultObject> GetTablesInsert(CslaObjectInfo info)
         {
             var tables = new List<IResultObject>();
