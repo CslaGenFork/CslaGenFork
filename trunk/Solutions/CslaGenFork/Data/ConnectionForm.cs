@@ -23,10 +23,10 @@ namespace CslaGenerator.Data
         private Button btnCancel;
         private CheckBox chkSecurityWindows;
 
-        /// <summary>
+        /*/// <summary>
         /// Required designer variable.
         /// </summary>
-        private Container components;
+        private Container components;*/
 
         public ConnectionForm()
         {
@@ -38,7 +38,7 @@ namespace CslaGenerator.Data
             chkSecurityWindows.Checked = ConnectionFactory.IntegratedSecurity;
         }
 
-        /// <summary>
+        /*/// <summary>
         /// Clean up any resources being used.
         /// </summary>
         protected override void Dispose(bool disposing)
@@ -49,7 +49,7 @@ namespace CslaGenerator.Data
                     components.Dispose();
             }
             base.Dispose(disposing);
-        }
+        }*/
 
         #region Windows Form Designer generated code
 

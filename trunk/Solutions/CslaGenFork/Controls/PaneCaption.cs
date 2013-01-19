@@ -37,7 +37,7 @@ namespace CslaGenerator.Controls
         private LinearGradientBrush _brushInactive;
         private readonly StringFormat _format = new StringFormat();
         private LinearGradientMode _linearGradientMode;
-        private IContainer components;
+        /*private IContainer components;*/
 
         [CategoryAttribute("Appearance")]
         [DescriptionAttribute("If should draw the text as antialiased.")]
@@ -336,13 +336,13 @@ namespace CslaGenerator.Controls
             }
         }
 
-        protected override void Dispose(bool disposing)
+        /*protected override void Dispose(bool disposing)
         {
             if (disposing && components != null)
                 components.Dispose();
 
             base.Dispose(disposing);
-        }
+        }*/
 
         [DebuggerStepThroughAttribute]
         private void InitializeComponent()
