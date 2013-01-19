@@ -11,10 +11,23 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
     %>
 
         /// <summary>
+        <%
+        if (usesDTO)
+        {
+            %>
+        /// Loads a <see cref="<%= Info.ObjectName %>"/> object from the given <see cref="<%= Info.ObjectName + "Dto" %>"/>.
+        <%
+        }
+        else
+        {
+            %>
         /// Loads a <see cref="<%= Info.ObjectName %>"/> object from the given SafeDataReader.
+        <%
+        }
+        %>
         /// </summary>
-        /// <param name="dr">The SafeDataReader to use.</param>
-        private void <%= methodFetchString %>Fetch(SafeDataReader dr)
+        /// <param name="<%= usesDTO ? "data" : "dr" %>">The <%= usesDTO ? (Info.ObjectName + "Dto") : "SafeDataReader" %> to use.</param>
+        private void <%= methodFetchString %>Fetch(<%= usesDTO ? (Info.ObjectName + "Dto data") : "SafeDataReader dr" %>)
         {
             // Value properties
             <%
@@ -45,11 +58,19 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
             <%
             foreach(Property prop in Info.ParentProperties)
             {
-                %><%= FormatCamel(GetFKColumn(Info, (isItem ? grandParentInfo : parentInfo), prop)) %> = dr.<%= GetReaderMethod(prop.PropertyType) %>("<%= GetFKColumn(Info, (isItem ? grandParentInfo : parentInfo), prop) %>");
+                if (usesDTO)
+                {
+                    %><%= FormatCamel(GetFKColumn(Info, (isItem ? grandParentInfo : parentInfo), prop)) %> = data.Parent_<%= GetFKColumn(Info, (isItem ? grandParentInfo : parentInfo), prop) %>;
             <%
+                }
+                else
+                {
+                    %><%= FormatCamel(GetFKColumn(Info, (isItem ? grandParentInfo : parentInfo), prop)) %> = dr.<%= GetReaderMethod(prop.PropertyType) %>("<%= GetFKColumn(Info, (isItem ? grandParentInfo : parentInfo), prop) %>");
+            <%
+                }
             }
         }
-            %>var args = new DataPortalHookArgs(dr);
+            %>var args = new DataPortalHookArgs(<%= usesDTO ? "data" : "dr" %>);
             OnFetchRead(args);
         <%
         if (ancestorLoaderLevel > 0 && !UseChildFactoryHelper)
@@ -78,8 +99,8 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
                             if (useBypassPropertyChecks && false) // disable this for now
                             {
                                 %>
-                <%= FormatPascal(childProp.Name) %> = <%= internalCreateString %>();
-            <%
+            <%= FormatPascal(childProp.Name) %> = <%= internalCreateString %>();
+        <%
                             }
                             else
                             {
@@ -115,10 +136,23 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
                 %>
 
         /// <summary>
-        /// Loads child objects from the given SafeDataReader.
+        /// Loads child objects from the given <%= (usesDTO ? "DAL provider" : "SafeDataReader") %>.
         /// </summary>
-        /// <param name="dr">The SafeDataReader to use.</param>
+        /// <param name="<%= (usesDTO ? "dal" : "dr") %>">The <%= (usesDTO ? "DAL provider" : "SafeDataReader") %> to use.</param>
+        <%
+        if (usesDTO)
+        {
+            %>
+        <%= isRoot ? "private" : "internal" %> void FetchChildren(I<%= isRoot ? FormatPascal(Info.ObjectName) : FormatPascal(Info.ParentType) %>Dal dal)
+        <%
+        }
+        else
+        {
+            %>
         <%= isRoot ? "private" : "internal" %> void FetchChildren(SafeDataReader dr)
+        <%
+        }
+        %>
         {
             <%
                 if (useBypassPropertyChecks)
@@ -135,9 +169,12 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
                         CslaObjectInfo _child = FindChildInfo(Info, childProp.TypeName);
                         if (_child != null)
                         {
-                            %>
+                            if (!usesDTO)
+                            {
+                                %>
             <%= bpcSpacer %>dr.NextResult();
 <%
+                            }
                             if (UseChildFactoryHelper)
                                 fetchString = FormatPascal(childProp.TypeName) + ".Get" + FormatPascal(childProp.TypeName);
                             else
@@ -155,7 +192,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
                                         if (_parent != null)
                                         {
                                             %>
-            <%= bpcSpacer %>var <%= FormatCamel(childProp.TypeName) %> = <%= fetchString %>(dr);
+            <%= bpcSpacer %>var <%= FormatCamel(childProp.TypeName) %> = <%= fetchString %>(<%= (usesDTO ? "dal." + FormatPascal(childProp.TypeName) : "dr") %>);
 <%
                                             if (child.ObjectType == CslaObjectType.ReadOnlyCollection)
                                             {
@@ -180,20 +217,20 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
                                         if (useBypassPropertyChecks)
                                         {
                                             %>
-                <%= FormatPascal(childProp.Name) %> = <%= fetchString %>(dr);
+                <%= FormatPascal(childProp.Name) %> = <%= fetchString %>(<%= (usesDTO ? "dal." + FormatPascal(childProp.TypeName) : "dr") %>);
             <%
                                         }
                                         else
                                         {
                                             %>
-            LoadProperty(<%= FormatPropertyInfoName(childProp.Name) %>, <%= fetchString %>(dr));
+            LoadProperty(<%= FormatPropertyInfoName(childProp.Name) %>, <%= fetchString %>(<%= (usesDTO ? "dal." + FormatPascal(childProp.TypeName) : "dr") %>));
         <%
                                         }
                                     }
                                     else
                                     {
                                         %>
-            <%= bpcSpacer %><%= GetFieldLoaderStatement(childProp, fetchString + "(dr)") %>;
+            <%= bpcSpacer %><%= GetFieldLoaderStatement(childProp, fetchString + "(" + (usesDTO ? "dal." + FormatPascal(childProp.TypeName) : "dr") + ")") %>;
         <%
                                     }
                                 }
@@ -214,10 +251,21 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
                                 CslaObjectInfo child = FindChildInfo(Info, childProp.TypeName);
                                 if (child != null)
                                 {
+                                if (usesDTO)
+                                {
+                                    %>
+            <%= bpcSpacer %>foreach (var item in dal.<%= FormatPascal(childProp.TypeName) %>)
+<%
+                                }
+                                else
+                                {
                                     %>
             <%= bpcSpacer %>while (dr.Read())
+<%
+                                }
+                                %>
             <%= bpcSpacer %>{
-                <%= bpcSpacer %>var child = <%= fetchString %>(dr);
+                <%= bpcSpacer %>var child = <%= fetchString %>(<%= usesDTO ? "item" : "dr" %>);
 <%
                                     if (child.ObjectType == CslaObjectType.ReadOnlyObject)
                                     {
@@ -266,18 +314,27 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
                             }
                             else
                             {
-                                %>
+                                string drSpacer = usesDTO ? string.Empty : new string(' ', 4);
+                                if (!usesDTO)
+                                {
+                                    %>
             <%= bpcSpacer %>if (dr.Read())
 <%
+                                }
                                 CslaObjectInfo child = FindChildInfo(Info, childProp.TypeName);
                                 if (child != null)
                                 {
                                     if (child.ObjectType == CslaObjectType.ReadOnlyObject && child.AddParentReference)
                                     {
-                                        %>
+                                        if (!usesDTO)
+                                        {
+                                            %>
             <%= bpcSpacer %>{
-                <%= bpcSpacer %>var child = <%= fetchString %>(dr);
-                <%= bpcSpacer %>child.Parent = this;
+<%
+                                        }
+                                        %>
+            <%= bpcSpacer %><%= drSpacer %>var child = <%= fetchString %>(<%= usesDTO ? "dal." + FormatPascal(childProp.TypeName) : "dr" %>);
+            <%= bpcSpacer %><%= drSpacer %>child.Parent = this;
 <%
                                         if (childProp.DeclarationMode == PropertyDeclaration.Managed ||
                                             childProp.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion)
@@ -285,25 +342,28 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
                                             if (useBypassPropertyChecks)
                                             {
                                                 %>
-                    <%= FormatPascal(childProp.Name) %> = child;
+                <%= drSpacer %><%= FormatPascal(childProp.Name) %> = child;
             <%
                                             }
                                             else
                                             {
                                                 %>
-                LoadProperty(<%= FormatPropertyInfoName(childProp.Name) %>, child);
+            <%= drSpacer %>LoadProperty(<%= FormatPropertyInfoName(childProp.Name) %>, child);
             <%
                                             }
                                         }
                                         else
                                         {
                                             %>
-                <%= GetFieldLoaderStatement(childProp, "child") %>;
+            <%= drSpacer %><%= GetFieldLoaderStatement(childProp, "child") %>;
             <%
                                         }
-                                        %>
+                                        if (!usesDTO)
+                                        {
+                                            %>
             <%= bpcSpacer %>}
-            <%
+<%
+                                        }
                                     }
                                     else
                                     {
@@ -313,20 +373,20 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
                                             if (useBypassPropertyChecks)
                                             {
                                                 %>
-                    <%= FormatPascal(childProp.Name) %> = <%= fetchString %>(dr);
+                <%= drSpacer %><%= FormatPascal(childProp.Name) %> = <%= fetchString %>(<%= usesDTO ? "dal." + FormatPascal(childProp.TypeName) : "dr" %>);
             <%
                                             }
                                             else
                                             {
                                                 %>
-                LoadProperty(<%= FormatPropertyInfoName(childProp.Name) %>, <%= fetchString %>(dr));
+            <%= drSpacer %>LoadProperty(<%= FormatPropertyInfoName(childProp.Name) %>, <%= fetchString %>(<%= usesDTO ? "dal." + FormatPascal(childProp.TypeName) : "dr" %>));
             <%
                                             }
                                         }
                                         else
                                         {
                                             %>
-                <%= GetFieldLoaderStatement(childProp, fetchString + "(dr)") %>;
+            <%= drSpacer %><%= GetFieldLoaderStatement(childProp, fetchString + "(" + (usesDTO ? "dal." + FormatPascal(childProp.TypeName) : "dr") + ")") %>;
             <%
                                         }
                                     }
@@ -358,13 +418,16 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
                                 if (_ancestor != null)
                                     GetChildPropertyByTypeName(_ancestor, _parent.ParentType, ref ancestorChildProperty);
                             }
-                            %>
+                            if (!usesDTO)
+                            {
+                                %>
             <%= bpcSpacer %>dr.NextResult();
-            <%
+<%
+                            }
                             if (IsCollectionType(_child.ObjectType))
                             {
                                 %>
-            <%= bpcSpacer %>var <%= FormatCamel(childProp.TypeName) %> = <%= fetchString %>(dr);
+            <%= bpcSpacer %>var <%= FormatCamel(childProp.TypeName) %> = <%= fetchString %>(<%= usesDTO ? "dal." + FormatPascal(childProp.TypeName) : "dr" %>);
             <%= bpcSpacer %><%= FormatCamel(childProp.TypeName) %>.LoadItems(<%= childAncestorLoaderLevel < 4 ? FormatPascal(ancestorChildProperty.Name) : FormatCamel(_parent.ParentType) %>);
 <%
                             }
@@ -387,10 +450,21 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
                                 else
                                     findByObject = FormatCamel(_parent.ParentType);
 
-                                %>
+                                if (usesDTO)
+                                {
+                                    %>
+            <%= bpcSpacer %>foreach (var item in dal.<%= FormatPascal(childProp.TypeName) %>)
+<%
+                                }
+                                else
+                                {
+                                    %>
             <%= bpcSpacer %>while (dr.Read())
+<%
+                                }
+                                %>
             <%= bpcSpacer %>{
-                <%= bpcSpacer %>var child = <%= fetchString %>(dr);
+                <%= bpcSpacer %>var child = <%= fetchString %>(<%= (usesDTO ? "item" : "dr") %>);
                 <%= bpcSpacer %>var obj = <%= findByObject %>.Find<%= FormatPascal(_parent.ObjectName) %>ByParentProperties(<%= findByParams %>);
 <%
                                     if (_child.ObjectType == CslaObjectType.ReadOnlyObject && _child.AddParentReference)

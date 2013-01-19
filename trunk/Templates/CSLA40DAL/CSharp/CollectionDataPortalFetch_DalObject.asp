@@ -115,7 +115,6 @@ foreach (Criteria c in Info.CriteriaObjects)
 
 if (usesDTO)
 {
-    CslaObjectInfo itemInfo2 = FindChildInfo(Info, Info.ItemType);
     %>
 
         private List<<%= Info.ItemType %>Dto> LoadCollection(IDataReader data)

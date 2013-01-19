@@ -26,7 +26,6 @@ bool ancestorIsCollection = false;
 int ancestorLoaderLevel = 0;
 GenerationStep genStep = GenerationStep.Business;
 bool usesDTO = DalObjectUsesDTO(Info);
-bool usesDalCriteria = DalObjectUsesCriteria(Info);
 int silverlightLevel = 0;
 bool genOptional = false;
 bool useItem = false;

@@ -17,11 +17,41 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
         %>
 
         /// <summary>
+        <%
+        if (usesDTO)
+        {
+            if (IsCollectionType(Info.ObjectType))
+            {
+                %>
+        /// Factory method. Loads a <see cref="<%= Info.ObjectName %>"/> object from the given list of <%= Info.ItemType %>Dto.
+        /// </summary>
+        /// <param name="data">The list of <see cref="<%= Info.ItemType %>Dto"/>.</param>
+        /// <returns>A reference to the fetched <see cref="<%= Info.ObjectName %>"/> object.</returns>
+        internal static <%= Info.ObjectName %> Get<%= Info.ObjectName %>(List<<%= Info.ItemType %>Dto> data)
+        <%
+            }
+            else
+            {
+                %>
+        /// Factory method. Loads a <see cref="<%= Info.ObjectName %>"/> object from the given <%= Info.ObjectName %>Dto.
+        /// </summary>
+        /// <param name="data">The <see cref="<%= Info.ObjectName %>Dto"/>.</param>
+        /// <returns>A reference to the fetched <see cref="<%= Info.ObjectName %>"/> object.</returns>
+        internal static <%= Info.ObjectName %> Get<%= Info.ObjectName %>(<%= Info.ObjectName %>Dto data)
+        <%
+            }
+        }
+        else
+        {
+            %>
         /// Factory method. Loads a <see cref="<%= Info.ObjectName %>"/> object from the given SafeDataReader.
         /// </summary>
         /// <param name="dr">The SafeDataReader to use.</param>
         /// <returns>A reference to the fetched <see cref="<%= Info.ObjectName %>"/> object.</returns>
         internal static <%= Info.ObjectName %> Get<%= Info.ObjectName %>(SafeDataReader dr)
+        <%
+        }
+        %>
         {
             <%
         if (authzInfo.GetRoles.Trim() != String.Empty &&
@@ -48,7 +78,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
             <%
         }
         %>
-            obj.Fetch(dr);
+            obj.Fetch(<%= usesDTO ? "data" : "dr" %>);
             <%
         if (isChildSelfLoaded && !IsCollectionType(Info.ObjectType))
         {

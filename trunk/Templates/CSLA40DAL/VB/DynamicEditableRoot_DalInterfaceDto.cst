@@ -1,0 +1,39 @@
+<%@ CodeTemplate Inherits="CslaTemplateHelperCS" Language="CSharp" TargetLanguage="CSharp" Description="Generates a CSLA Dynamic Root Object." %>
+<%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the DynamicEditableRoot Object to create." %>
+<%@ Property Name="Errors" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return errors to master.cst" %>
+<%@ Property Name="Warnings" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return warnings to master.cst" %>
+<%@ Property Name="MethodList" Type="System.Collections.Generic.List<string>" Optional="false" Category="Options" Description="Allows the template to return a list a partial methods to master.cst (for Silverlight using services)" %>
+
+<%@ Assembly Name="DBSchemaInfo" %>
+<%@ Import Namespace="DBSchemaInfo.Base" %>
+<%@ Assembly Name="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator.Metadata" %>
+<%@ Import Namespace="CslaGenerator.CodeGen" %>
+<%@ Import Namespace="CslaGenerator.Util" %>
+<%@ Import Namespace="System.Text" %>
+<%@ Import Namespace="System.Collections.Generic" %>
+<%@ Import Namespace="System.Reflection" %>
+
+<!-- #include file="ObjectValidate_DalObject.asp" -->
+<%
+if (Errors.Length == 0)
+{
+    bool? firstComment = null;
+    %><!-- #include file="Header_DalInterfaceDto.asp" -->
+using System;
+using Csla;
+
+namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.DalInterface) %>
+{
+    /// <summary>
+    /// DTO for <%= Info.ObjectName %> type
+    /// </summary>
+    public partial class <%= Info.ObjectName %>Dto
+    {
+<!-- #include file="BusinessProps_DalInterfaceDto.asp" -->
+    }
+}
+<%
+}
+%>

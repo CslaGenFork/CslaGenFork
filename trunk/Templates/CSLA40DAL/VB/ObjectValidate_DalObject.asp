@@ -17,7 +17,7 @@ ERRORS
 
 CslaObjectInfo parentInfo = Info.Parent.CslaObjects.Find(Info.ParentType);
 CslaObjectInfo itemInfo = FindChildInfo(Info, Info.ItemType);
-UseChildFactoryHelper = CurrentUnit.GenerationParams.UseChildFactory;
+//UseChildFactoryHelper = CurrentUnit.GenerationParams.UseChildFactory;
 bool isChild = parentInfo != null;
 if (Info.PersistenceType == PersistenceType.SqlConnectionUnshared)
 {

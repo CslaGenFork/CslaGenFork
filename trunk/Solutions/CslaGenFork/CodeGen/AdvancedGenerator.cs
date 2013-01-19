@@ -68,10 +68,9 @@ namespace CslaGenerator.CodeGen
         {
             _unit = unit;
             if (_unit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL &&
-                (_unit.GenerationParams.UseDto == TargetDto.MoreThan ||
-                _unit.GenerationParams.UseDto == TargetDto.Always))
+                _unit.GenerationParams.UseDto == TargetDto.MoreThan)
             {
-                MessageBox.Show(@"DTO aren't supported in this release of CslaGenFork.",
+                MessageBox.Show(@"This release of CslaGenFork doesn't support conditional use of DTO.\r\nSelect either ""Always"" or ""Never"".",
                     @"CslaGenFork DAL project generation", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
@@ -194,6 +193,38 @@ namespace CslaGenerator.CodeGen
                 }
                 if (_abortRequested)
                     break;
+
+                if (generationParams.GenerateDalInterface &&
+                    generationParams.UseDto == TargetDto.Always &&
+                    info.GenerateDataAccessRegion &&
+                    (CslaTemplateHelperCS.IsObjectType(info.ObjectType) ||
+                    info.ObjectType == CslaObjectType.NameValueList))
+                {
+                    // DTO goes into DAL Interface
+                    try
+                    {
+                        DoGenerateDal(info, GenerationStep.DalInterfaceDto);
+                    }
+                    catch (Exception ex)
+                    {
+                        _objFailed++;
+                        _errorReport.Add(new GenerationReport
+                        {
+                            ObjectName = info.ObjectName,
+                            ObjectType = info.ObjectType.ToString(),
+                            Message = ex.Message,
+                            FileName = "unknown (DTO for DAL interface)"
+                        });
+                        var sb = new StringBuilder();
+                        sb.AppendLine("* * * Error:");
+                        sb.AppendFormat("DAL Interface: DTO {0} failed to generate:", info.ObjectName);
+                        sb.AppendLine();
+                        sb.AppendLine(ex.Message);
+                        OnGenerationInformation(sb.ToString());
+                    }
+                    if (_abortRequested)
+                        break;
+                }
 
                 if (((generationParams.GenerateDalInterface || generationParams.GenerateDalObject)
                     && info.GenerateDataAccessRegion) &&
@@ -1388,9 +1419,19 @@ namespace CslaGenerator.CodeGen
 
             if (step != GenerationStep.Business)
             {
-                fileNoExtension += "Dal";
-                if (step == GenerationStep.DalInterface)
-                    fileNoExtension = "I" + fileNoExtension;
+                if (step == GenerationStep.DalInterfaceDto)
+                {
+                    if (info.ObjectType == CslaObjectType.NameValueList)
+                        fileNoExtension += "ItemDto";
+                    else
+                        fileNoExtension += "Dto";
+                }
+                else
+                {
+                    fileNoExtension += "Dal";
+                    if (step == GenerationStep.DalInterface)
+                        fileNoExtension = "I" + fileNoExtension;
+                }
             }
 
             if (isBaseClass)

@@ -5,59 +5,24 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
     {
         if (c.GetOptions.DataPortal)
         {
-            //string strGetCritParams = string.Empty;
             string strGetInvokeParams = string.Empty;
             string strGetComment = string.Empty;
             bool getIsFirst = true;
 
-            if (usesDalCriteria)
+            foreach (Property p in c.Properties)
             {
-                foreach (Property p in c.Properties)
+                if (!getIsFirst)
                 {
-                    if (!getIsFirst)
-                    {
-                        //strGetCritParams += ", ";
-                        strGetInvokeParams += ", ";
-                        strGetComment += System.Environment.NewLine + new string(' ', 8);
-                    }
-                    else
-                        getIsFirst = false;
-
-                    TypeCodeEx propType = p.PropertyType;
-
-                    //strGetCritParams += p.Name;
-                    strGetInvokeParams += "crit." + FormatPascal(p.Name);
-                    strGetComment += "/// <param name=\"" + FormatCamel(p.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(p.Name) + ".</param>";
+                    strGetInvokeParams += ", ";
+                    strGetComment += System.Environment.NewLine + new string(' ', 8);
                 }
+                else
+                    getIsFirst = false;
 
-                /*if (c.Properties.Count > 1)
-                {
-                    strGetCritParams = "new " + c.Name + "(" + strGetCritParams + ")";
-                }
-                else if (c.Properties.Count > 0)
-                {
-                    strGetCritParams = SendSingleCriteria(c, strGetCritParams);
-                }*/
-            }
-            else
-            {
-                foreach (Property p in c.Properties)
-                {
-                    if (!getIsFirst)
-                    {
-                        //strGetCritParams += ", ";
-                        strGetInvokeParams += ", ";
-                        strGetComment += System.Environment.NewLine + new string(' ', 8);
-                    }
-                    else
-                        getIsFirst = false;
+                TypeCodeEx propType = p.PropertyType;
 
-                    TypeCodeEx propType = p.PropertyType;
-
-                    //strGetCritParams += string.Concat(GetDataTypeGeneric(p, propType), " ", FormatCamel(p.Name));
-                    strGetInvokeParams += "crit." + FormatPascal(p.Name);
-                    strGetComment += "/// <param name=\"" + FormatCamel(p.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(p.Name) + ".</param>";
-                }
+                strGetInvokeParams += "crit." + FormatPascal(p.Name);
+                strGetComment += "/// <param name=\"" + FormatCamel(p.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(p.Name) + ".</param>";
             }
             if (c.Properties.Count > 1)
                 strGetComment = "/// <param name=\"crit\">The fetch criteria.</param>";
@@ -118,6 +83,14 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
                 var dal = dalManager.GetProvider<I<%= Info.ObjectName %>Dal>();
                 var data = dal.Fetch(<%= strGetInvokeParams %>);
                 Fetch(data);
+                <%
+            if (ParentLoadsChildren(Info) && usesDTO)
+            {
+                %>
+                FetchChildren(dal);
+            <%
+            }
+                %>
             }
             OnFetchPost(args);
             <%
@@ -139,7 +112,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
         <%
         }
     }
-    if (Info.HasGetCriteria)
+    if (Info.HasGetCriteria && !usesDTO)
     {
         %>
 

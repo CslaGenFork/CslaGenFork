@@ -16,9 +16,8 @@ if (UseNoSilverlight())
     bool selfLoad2 = IsChildSelfLoaded(Info);
     if (CurrentUnit.GenerationParams.DatabaseConnection != String.Empty)
     {
-        CslaObjectInfo tmpInfo = Info.Parent.CslaObjects.Find(Info.ParentType);
-        if (tmpInfo != null)
-            isCollection = IsCollectionType(tmpInfo.ObjectType);
+        if (parentInfo != null)
+            isCollection = IsCollectionType(parentInfo.ObjectType);
         if (selfLoad2 && !isCollection)
         {
             %>

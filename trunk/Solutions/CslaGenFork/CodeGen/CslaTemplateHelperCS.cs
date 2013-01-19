@@ -194,6 +194,9 @@ namespace CslaGenerator.CodeGen
                 if (info.DataSetLoadingScheme)
                     return GetDataSetLoaderStatement(prop);
 
+                if (DalObjectUsesDTO(info))
+                    return GetDtoLoaderStatement(prop);
+
                 return GetDataReaderLoaderStatement(prop);
             }
 
@@ -205,6 +208,8 @@ namespace CslaGenerator.CodeGen
 
             if (info.DataSetLoadingScheme)
                 statement += GetDataSetStatement(prop);
+            else if (DalObjectUsesDTO(info))
+                statement += GetDtoStatement(prop);
             else
                 statement += GetDataReaderStatement(prop);
 
@@ -297,6 +302,11 @@ namespace CslaGenerator.CodeGen
             if (assignDataType == TypeCodeEx.ByteArray)
                 statement = statement + " as byte[]";
             return statement;
+        }
+
+        public virtual string GetDtoStatement(ValueProperty prop)
+        {
+            return "data." + FormatPascal(prop.Name);
         }
 
         public static bool AllowNull(Property prop)
@@ -653,7 +663,66 @@ namespace CslaGenerator.CodeGen
                                  RegexOptions.Multiline);
         }
 
-        public virtual string GetUsingStatementsString(CslaObjectInfo info, CslaGeneratorUnit unit)
+        public string GetUsingStatementsStringDalInterface(CslaObjectInfo info, CslaGeneratorUnit unit)
+        {
+
+            var result = "using Csla;" + Environment.NewLine;
+            var dependencyNamespaces = new List<string>();
+
+            if (unit.GenerationParams.UseDto == TargetDto.Always)
+            {
+                dependencyNamespaces.AddRange(GetDependencyNamespaces(info));
+                foreach (var namespaceName in dependencyNamespaces)
+                {
+                    var finalNamespace =
+                        unit.GenerationParams.DalInterfaceNamespace +
+                        namespaceName.Substring(unit.GenerationParams.BaseNamespace.Length);
+                    result += "using " + finalNamespace + ";" + Environment.NewLine;
+                }
+            }
+
+            return result;
+        }
+
+        private List<string> GetDependencyNamespaces(CslaObjectInfo info)
+        {
+            var result = new List<string>();
+
+            foreach (var prop in info.GetAllChildProperties())
+                if (prop.TypeName != info.ObjectName)
+                {
+                    var childInfo = FindChildInfo(info, prop.TypeName);
+                    if (childInfo != null)
+                        if (!result.Contains(childInfo.ObjectNamespace) &&
+                            !IsNamespaceInScope(info.ObjectNamespace, childInfo.ObjectNamespace))
+                            result.Add(childInfo.ObjectNamespace);
+                }
+
+            if (info.ItemType != string.Empty)
+            {
+                var childInfo = FindChildInfo(info, info.ItemType);
+                if (childInfo != null)
+                    if (!result.Contains(childInfo.ObjectNamespace) &&
+                        !IsNamespaceInScope(info.ObjectNamespace, childInfo.ObjectNamespace))
+                        result.Add(childInfo.ObjectNamespace);
+            }
+
+            if (info.ParentType != string.Empty)
+            {
+                var parentInfo = FindChildInfo(info, info.ParentType);
+                if (parentInfo != null)
+                    if (!result.Contains(parentInfo.ObjectNamespace) &&
+                        !IsNamespaceInScope(info.ObjectNamespace, parentInfo.ObjectNamespace))
+                        result.Add(parentInfo.ObjectNamespace);
+            }
+
+            if (result.Contains(string.Empty))
+                result.Remove(string.Empty);
+
+            return result;
+        }
+
+        public string GetUsingStatementsStringBusiness(CslaObjectInfo info, CslaGeneratorUnit unit)
         {
             const GenerationStep step = GenerationStep.Business;
 
@@ -676,7 +745,7 @@ namespace CslaGenerator.CodeGen
             // show only for framework (non Silverlight)
             var frameworkNamespaces = new List<string>();
             if (UseSilverlight())
-                frameworkNamespaces.AddRange(GetFrameworkNamespaces(unit, cachedContextUtilitiesNamespace));
+                frameworkNamespaces.AddRange(GetFrameworkNamespaces(info, unit, cachedContextUtilitiesNamespace));
 
             // ignore if not usign DAL
             var dalInterfaceNamespaces = new List<string>();
@@ -732,12 +801,18 @@ namespace CslaGenerator.CodeGen
             if (!UseSilverlight() && !isUnitOfWork)
             {
                 result.Add("System");
-                result.Add("System.Data");
+                if (unit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL ||
+                    unit.GenerationParams.UseDto == TargetDto.Never)
+                    result.Add("System.Data");
                 if (unit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL)
                     result.Add("System.Data.SqlClient");
+                if (DalObjectUsesDTO(info) && !IsObjectType(info.ObjectType))
+                    result.Add("System.Collections.Generic");
 
                 result.Add("Csla");
-                result.Add("Csla.Data");
+                if (unit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL ||
+                    unit.GenerationParams.UseDto == TargetDto.Never)
+                    result.Add("Csla.Data");
                 if (contextUtilitiesnamespace != string.Empty)
                     result.Add(contextUtilitiesnamespace);
             }
@@ -877,16 +952,23 @@ namespace CslaGenerator.CodeGen
             return result;
         }
 
-        private List<string> GetFrameworkNamespaces(CslaGeneratorUnit unit, string contextUtilitiesnamespace)
+        private List<string> GetFrameworkNamespaces(CslaObjectInfo info, CslaGeneratorUnit unit, string contextUtilitiesnamespace)
         {
             var result = new List<string>();
 
-            result.Add("System.Data");
+            if (unit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL ||
+                unit.GenerationParams.UseDto == TargetDto.Never)
+                result.Add("System.Data");
 
             if (unit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL)
                 result.Add("System.Data.SqlClient");
 
-            result.Add("Csla.Data");
+            if (DalObjectUsesDTO(info) && !IsObjectType(info.ObjectType))
+                result.Add("System.Collections.Generic");
+
+            if (unit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL ||
+                unit.GenerationParams.UseDto == TargetDto.Never)
+                result.Add("Csla.Data");
             if (contextUtilitiesnamespace != string.Empty)
                 result.Add(contextUtilitiesnamespace);
 
@@ -3234,6 +3316,26 @@ namespace CslaGenerator.CodeGen
             return statement;
         }
 
+        public virtual string GetDtoLoaderStatement(ValueProperty prop)
+        {
+            var statement = string.Empty;
+
+            if (prop.DeclarationMode == PropertyDeclaration.AutoProperty)
+            {
+                statement += String.Format("{0} = {1}",
+                                           FormatProperty(prop.Name),
+                                           GetDtoStatement(prop));
+            }
+            else
+            {
+                statement += String.Format("LoadProperty({0}, {1})",
+                                           FormatPropertyInfoName(prop.Name),
+                                           GetDtoStatement(prop));
+            }
+
+            return statement;
+        }
+
         public string GetFieldLoaderStatement(ValueProperty prop, string value)
         {
             return GetFieldLoaderStatement(prop.DeclarationMode, prop.Name, value);
@@ -4668,8 +4770,22 @@ namespace CslaGenerator.CodeGen
             sprocTemplateHelper.SortTables(tables);
 
             var plainTableSchema = string.Empty;
+            /*// old code
             if (info.Parent.GenerationParams.GenerateQueriesWithSchema)
-                plainTableSchema = tables[0].ObjectSchema + ".";
+                plainTableSchema = tables[0].ObjectSchema + ".";*/
+            if (info.Parent.GenerationParams.GenerateQueriesWithSchema)
+            {
+                // patch for using SProcs as source of RO/NVL
+                // plainTableSchema = tables[0].ObjectSchema + ".";
+
+                if(tables.Count > 0)
+                    plainTableSchema = tables[0].ObjectSchema + ".";
+                else
+                {
+                    // presume SProc
+                    plainTableSchema = sprocTemplateHelper.GetSprocSchemaSelect(info);
+                }
+            }
 
             return "using (var cmd = new SqlCommand(\"" + plainTableSchema + commandText + "\", " + LocalContextConnection(info) + "))";
         }
@@ -4757,13 +4873,13 @@ namespace CslaGenerator.CodeGen
             return CurrentUnit.GenerationParams.UseDto == TargetDto.Always;
         }
 
-        public bool DalObjectUsesCriteria(CslaObjectInfo info)
+        /*public bool DalObjectUsesCriteria(CslaObjectInfo info)
         {
             /*return CurrentUnit.GenerationParams.UseDto == TargetDto.Always ||
                    (CurrentUnit.GenerationParams.UseDto == TargetDto.MoreThan &&
-                    info.GetDatabaseBoundValueProperties().Count > CurrentUnit.GenerationParams.DtoLimit);*/
+                    info.GetDatabaseBoundValueProperties().Count > CurrentUnit.GenerationParams.DtoLimit);#1#
             return CurrentUnit.GenerationParams.UseDto == TargetDto.Always;
-        }
+        }*/
 
         public string[] CslaObjectPrimaryKeys(string infoName)
         {

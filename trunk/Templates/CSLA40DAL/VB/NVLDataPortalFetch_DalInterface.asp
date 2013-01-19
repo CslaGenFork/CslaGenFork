@@ -7,7 +7,7 @@ foreach (Criteria c in Info.CriteriaObjects)
         {
             %>
         /// <summary>
-        /// Loads a <%= Info.ObjectName %> name value list from the database.
+        /// Loads a <%= Info.ObjectName %> list from the database.
         /// </summary>
         <%
             if (c.Properties.Count > 1)
@@ -55,7 +55,7 @@ foreach (Criteria c in Info.CriteriaObjects)
             %>
 
         /// <summary>
-        /// Loads a <%= Info.ObjectName %> name value list from the database.
+        /// Loads a <%= Info.ObjectName %> list from the database.
         /// </summary>
         <%= strGetComment %>/// <returns>A data reader to the <%= Info.ObjectName %>.</returns>
         IDataReader Fetch(<%= strGetCritParams %>);

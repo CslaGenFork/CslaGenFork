@@ -9,7 +9,7 @@ ERRORS
 4.1. When generating Insert method, check Insert Procedure name isn't empty
 4.2. When generating Update method, check Update Procedure name isn't empty
 4.3. When generating Delete methods:
-4.3.2. For EditableChilds check DeleteProcedureName is empty
+4.3.1. For EditableChilds check DeleteProcedureName is empty
 4.3.2. Check Criteria for DeleteOptions where DataPortal is set and SProc name is empty
 4.3.3. Check Criteria for DeleteOptions where DataPortal is not set and SProc name is not empty (WARNINGS)
 4.4. Check Criteria for GetOptions where DataPortal is set and SProc name is empty
@@ -206,7 +206,7 @@ if (CurrentUnit.GenerationParams.GenerateSilverlight4 ||
         {
             if (CurrentUnit.GenerationParams.GenerateSilverlight4 && criteria.CriteriaClassMode == CriteriaMode.Simple)
                 Warnings.Append("Criteria " + criteria.Name + ": must use Mode 'CriteriaBase' or 'BusinessBase' under Silverlight." + Environment.NewLine);
-            if (CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL && criteria.NestedClass && DalObjectUsesCriteria(Info))
+            if (CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL && criteria.NestedClass && DalObjectUsesDTO(Info))
                 Errors.Append("Criteria " + criteria.Name + ": Nested criteria class isn't supported when generating DAL." + Environment.NewLine);
         }
     }
