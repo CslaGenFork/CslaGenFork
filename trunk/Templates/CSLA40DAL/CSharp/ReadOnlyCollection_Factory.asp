@@ -1,9 +1,8 @@
         #region Factory Methods
 <%
-CslaObjectInfo parent = Info.Parent.CslaObjects.Find(Info.ParentType);
 bool internalGetObjectUsed = false;
-if (parent != null)
-    internalGetObjectUsed = !Info.HasGetCriteriaFactory && !IsChildSelfLoaded(parent);
+if (parentInfo != null)
+    internalGetObjectUsed = !Info.HasGetCriteriaFactory && !IsChildSelfLoaded(parentInfo);
 if (UseBoth() &&
     (CurrentUnit.GenerationParams.GenerateSynchronous || CurrentUnit.GenerationParams.SilverlightUsingServices || internalGetObjectUsed))
 {

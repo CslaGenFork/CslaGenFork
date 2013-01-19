@@ -98,6 +98,26 @@ if (!Info.UseCustomLoading && (UseNoSilverlight() ||
         <%
         }
     }
+    if (usesDTO)
+    {
+    %>
+
+        private void LoadCollection(List<<%= Info.ObjectName %>ItemDto> data)
+        {
+            IsReadOnly = false;
+            var rlce = RaiseListChangedEvents;
+            RaiseListChangedEvents = false;
+            foreach (var dto in data)
+            {
+                Add(new NameValuePair(dto.<%= FormatPascal(valueProp.Name) %>, dto.<%= FormatPascal(nameProp.Name) %>));
+            }
+            RaiseListChangedEvents = rlce;
+            IsReadOnly = true;
+        }
+    <%
+    }
+    else
+    {
     %>
 
         private void LoadCollection(IDataReader data)
@@ -118,5 +138,6 @@ if (!Info.UseCustomLoading && (UseNoSilverlight() ||
             IsReadOnly = true;
         }
     <%
+    }
 }
 %>

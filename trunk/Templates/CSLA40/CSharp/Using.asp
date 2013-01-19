@@ -1,1 +1,1 @@
-<%= GetUsingStatementsString(Info, CurrentUnit) %>
+<%= GetUsingStatementsStringBusiness(Info, CurrentUnit) %>

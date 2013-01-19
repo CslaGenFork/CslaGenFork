@@ -45,7 +45,7 @@ if (Info.CriteriaObjects.Count > 0)
                 else
                 {
                     %>
-    public <%= crit.CriteriaClassMode == CriteriaMode.BusinessBase ? "partial " : "" %>class <%= crit.Name %> : <%= crit.CriteriaClassMode != CriteriaMode.BusinessBase ? "CriteriaBase" : "BusinessBase" %><<%= crit.Name %>>
+    public <%= crit.CriteriaClassMode == CriteriaMode.BusinessBase ? "partial " : "" %>class <%= crit.Name %> : <%= crit.CriteriaClassMode != CriteriaMode.BusinessBase ? "CriteriaBase" : "BusinessBase" %><<%= crit.Name %>><%= (usesDTO ? ", I" + crit.Name : "") %>
     <%
                 }
                 %>

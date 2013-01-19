@@ -2,8 +2,7 @@
 bool isParentLoaded = false;
 if (Info.ItemType != string.Empty)
 {
-    CslaObjectInfo findItem = Info.Parent.CslaObjects.Find(Info.ItemType);
-    foreach (var child in findItem.GetAllChildProperties())
+    foreach (var child in itemInfo.GetAllChildProperties())
     {
         if (child.LoadingScheme == LoadingScheme.ParentLoad)
         {
@@ -48,14 +47,13 @@ if (Info.FindMethodsParameters.Count > 0 || isParentLoaded)
 
     if (isParentLoaded)
     {
-        CslaObjectInfo item = Info.Parent.CslaObjects.Find(Info.ItemType);
-        if (item.ValueProperties.Count > 0)
+        if (itemInfo.ValueProperties.Count > 0)
         {
             string findByComments = string.Empty;
             string findByParams = string.Empty;
             string findByStat = string.Empty;
             bool firstFind = true;
-            foreach (ValueProperty prop in item.ValueProperties)
+            foreach (ValueProperty prop in itemInfo.ValueProperties)
             {
                 if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
                     (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default ||

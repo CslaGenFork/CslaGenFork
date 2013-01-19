@@ -11,7 +11,7 @@ if (Info.GenerateDataPortalDelete)
             string strDeleteComment = string.Empty;
             bool deleteIsFirst = true;
 
-            if (usesDalCriteria)
+            if (usesDTO)
             {
                 foreach (Property p in c.Properties)
                 {
@@ -100,7 +100,7 @@ if (Info.GenerateDataPortalDelete)
         <%
             deleteIsFirst = true;
 
-            if (usesDalCriteria)
+            if (usesDTO)
             {
                 %>
 

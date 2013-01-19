@@ -55,8 +55,7 @@ using System;
 <%
     }
     %>
-using Csla;
-
+<%= GetUsingStatementsStringDalInterface(Info, CurrentUnit) %>
 namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
 {
 <!-- #include file="XmlComment_DalInterface.asp" -->

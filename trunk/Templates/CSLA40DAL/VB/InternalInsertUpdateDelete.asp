@@ -15,22 +15,31 @@ if (Info.GenerateDataPortalInsert)
     string strInsertPK = string.Empty;
     string strInsertResultPK = string.Empty;
     string strInsertParams = string.Empty;
+    string strInsertDto = string.Empty;
     string strInsertResult = string.Empty;
+    string strInsertResultTS = string.Empty;
     bool insertIsFirst = true;
 
     if (parentType.Length > 0)
     {
         foreach (Property prop in Info.ParentProperties)
         {
-            if (!insertIsFirst)
-                strInsertParams += ", ";
+            if (usesDTO)
+            {
+                strInsertDto += Environment.NewLine + new string(' ', 12) + "dto.Parent_" + FormatPascal(prop.Name) + " = parent." + prop.Name +";";
+            }
             else
-                insertIsFirst = false;
+            {
+                if (!insertIsFirst)
+                    strInsertParams += ", ";
+                else
+                    insertIsFirst = false;
 
-            strInsertParams += Environment.NewLine + new string(' ', 24);
-            TypeCodeEx propType = prop.PropertyType;
+                strInsertParams += Environment.NewLine + new string(' ', 24);
+                TypeCodeEx propType = prop.PropertyType;
 
-            strInsertParams += "parent." + prop.Name;
+                strInsertParams += "parent." + prop.Name;
+            }
         }
     }
     foreach (ValueProperty prop in Info.GetAllValueProperties())
@@ -40,18 +49,39 @@ if (Info.GenerateDataPortalInsert)
             if ((prop.DeclarationMode == PropertyDeclaration.Managed && !prop.ReadOnly) ||
                 prop.DeclarationMode == PropertyDeclaration.AutoProperty)
             {
-                strInsertResult = FormatPascal(prop.Name) + " = ";
+                if (usesDTO)
+                {
+                    strInsertResultTS = FormatPascal(prop.Name) + " = resultDto." + FormatPascal(prop.Name) +";";
+                }
+                else
+                {
+                    strInsertResult = FormatPascal(prop.Name) + " = ";
+                }
             }
             else if ((prop.DeclarationMode == PropertyDeclaration.Managed && prop.ReadOnly) ||
                 prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion ||
                 prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion)
             {
-                propInsertPropertyInfo = true;
-                strInsertResult = "LoadProperty(" + FormatPropertyInfoName(prop.Name) + ", ";
+                if (usesDTO)
+                {
+                    strInsertResultTS = "LoadProperty(" + FormatPropertyInfoName(prop.Name) + ", resultDto." + FormatPascal(prop.Name) +");";
+                }
+                else
+                {
+                    propInsertPropertyInfo = true;
+                    strInsertResult = "LoadProperty(" + FormatPropertyInfoName(prop.Name) + ", ";
+                }
             }
             else //Unmanaged, ClassicProperty, ClassicPropertyWithTypeConversion
             {
-                strInsertResult = FormatFieldName(prop.Name) + " = ";
+                if (usesDTO)
+                {
+                    strInsertResultTS = FormatFieldName(prop.Name) + " = resultDto." + FormatPascal(prop.Name) +";";
+                }
+                else
+                {
+                    strInsertResult = FormatFieldName(prop.Name) + " = ";
+                }
             }
         }
         if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
@@ -59,56 +89,114 @@ if (Info.GenerateDataPortalInsert)
             prop.DbBindColumn.NativeType != "timestamp" &&
             (prop.DataAccess != ValueProperty.DataAccessBehaviour.UpdateOnly || prop.DbBindColumn.NativeType == "timestamp"))
         {
-            if (!insertIsFirst)
-                strInsertParams += ",";
-            else
-                insertIsFirst = false;
+            if (!usesDTO)
+            {
+                if (!insertIsFirst)
+                    strInsertParams += ",";
+                else
+                    insertIsFirst = false;
 
-            strInsertParams += Environment.NewLine + new string(' ', 24);
+                strInsertParams += Environment.NewLine + new string(' ', 24);
+            }
+
             TypeCodeEx propType = TypeHelper.GetBackingFieldType(prop);
 
             if (prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK)
             {
-                strInsertPK = GetDataTypeGeneric(prop, propType) + " " + FormatCamel(prop.Name) + " = -1;" + Environment.NewLine + new string(' ', 20);
-                strInsertParams += "out " + FormatCamel(prop.Name);
+                if (!usesDTO)
+                {
+                    strInsertPK = GetDataTypeGeneric(prop, propType) + " " + FormatCamel(prop.Name) + " = -1;" + Environment.NewLine + new string(' ', 20);
+                    strInsertParams += "out " + FormatCamel(prop.Name);
+                }
 
                 strInsertResultPK = Environment.NewLine + new string(' ', 20);
                 if (prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion ||
                     prop.DeclarationMode == PropertyDeclaration.UnmanagedWithTypeConversion ||
                     prop.ReadOnly)
                 {
-                    strInsertResultPK += "LoadProperty(" + FormatPropertyInfoName(prop.Name) + ", " + FormatCamel(prop.Name) +");";
+                    strInsertResultPK += "LoadProperty(" + FormatPropertyInfoName(prop.Name) + ", ";
+                    if (usesDTO)
+                    {
+                        strInsertResultPK += "resultDto." + FormatPascal(prop.Name) +");";
+                    }
+                    else
+                    {
+                        strInsertResultPK += FormatCamel(prop.Name) +");";
+                    }
                 }
                 else if (prop.DeclarationMode == PropertyDeclaration.Managed ||
                     prop.DeclarationMode == PropertyDeclaration.AutoProperty)
                 {
-                    strInsertResultPK += FormatPascal(prop.Name) + " = " + FormatCamel(prop.Name) +";";
+                    strInsertResultPK += FormatPascal(prop.Name) + " = ";
+                    if (usesDTO)
+                    {
+                        strInsertResultPK += "resultDto." + FormatPascal(prop.Name) +";";
+                    }
+                    else
+                    {
+                        strInsertResultPK += FormatCamel(prop.Name) +";";
+                    }
                 }
                 else //Unmanaged, ClassicProperty, ClassicPropertyWithTypeConversion
                 {
-                    strInsertResultPK += FormatFieldName(prop.Name) + " = " + FormatCamel(prop.Name) +";";
+                    strInsertResultPK += FormatFieldName(prop.Name) + " = ";
+                    if (usesDTO)
+                    {
+                        strInsertResultPK += "resultDto." + FormatPascal(prop.Name) +";";
+                    }
+                    else
+                    {
+                        strInsertResultPK += FormatCamel(prop.Name) +";";
+                    }
                 }
             }
             else
             {
+                if (usesDTO)
+                {
+                    strInsertDto += Environment.NewLine + new string(' ', 12) + "dto." + FormatPascal(prop.Name) + " = ";
+                }
                 if (prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion ||
                     prop.DeclarationMode == PropertyDeclaration.UnmanagedWithTypeConversion)
                 {
-                    strInsertParams += GetFieldReaderStatement(prop);
+                    if (usesDTO)
+                    {
+                        strInsertDto += GetFieldReaderStatement(prop) + ";";
+                    }
+                    else
+                        strInsertParams += GetFieldReaderStatement(prop);
                 }
                 else if (prop.DeclarationMode == PropertyDeclaration.Managed ||
                     prop.DeclarationMode == PropertyDeclaration.AutoProperty)
                 {
-                    strInsertParams += FormatPascal(prop.Name);
+                    if (usesDTO)
+                    {
+                        strInsertDto += FormatPascal(prop.Name) + ";";
+                    }
+                    else
+                        strInsertParams += FormatPascal(prop.Name);
                 }
                 else //Unmanaged, ClassicProperty, ClassicPropertyWithTypeConversion
                 {
-                    strInsertParams += FormatFieldName(prop.Name);
+                    if (usesDTO)
+                    {
+                        strInsertDto += FormatFieldName(prop.Name) + ";";
+                    }
+                    else
+                        strInsertParams += FormatFieldName(prop.Name);
                 }
             }
         }
     }
-    strInsertParams += Environment.NewLine + new string(' ', 24);
+    if (usesDTO)
+    {
+        strInsertResult += "var resultDto = ";
+        strInsertParams += "dto";
+        if (strInsertResultTS != string.Empty)
+            strInsertResultTS = Environment.NewLine + new string(' ', 20) + strInsertResultTS;
+    }
+    else
+        strInsertParams += Environment.NewLine + new string(' ', 24);
     %>
 
         /// <summary>
@@ -135,19 +223,30 @@ if (Info.GenerateDataPortalInsert)
             <%
     if (UseSimpleAuditTrail(Info))
     {
-        %>
-            SimpleAuditTrail();
+        %>SimpleAuditTrail();
             <%
     }
-    %>
-            using (var dalManager = DalFactory<%= GetDalName(CurrentUnit) %>.GetManager())
+    if (usesDTO)
+    {
+        %>var dto = new <%= Info.ObjectName %>Dto();<%= strInsertDto %>
+            <%
+    }
+    %>using (var dalManager = DalFactory<%= GetDalName(CurrentUnit) %>.GetManager())
             {
-                var args = new DataPortalHookArgs();
+                var args = new DataPortalHookArgs(<%= usesDTO ? "dto" : "" %>);
                 OnInsertPre(args);
                 var dal = dalManager.GetProvider<I<%= Info.ObjectName %>Dal>();
                 using (BypassPropertyChecks)
                 {
-                    <%= strInsertPK %><%= strInsertResult %>dal.Insert(<%= strInsertParams %>)<%= propInsertPropertyInfo ? ")" : "" %>;<%= strInsertResultPK %>
+                    <%= strInsertPK %><%= strInsertResult %>dal.Insert(<%= strInsertParams %>)<%= propInsertPropertyInfo ? ")" : "" %>;<%= strInsertResultPK %><%= strInsertResultTS %>
+                <%
+                if (usesDTO)
+                {
+                    %>
+                    args = new DataPortalHookArgs(resultDto);
+                <%
+                }
+                %>
                 }
                 OnInsertPost(args);
                 <%
@@ -168,23 +267,32 @@ if (Info.GenerateDataPortalInsert)
 if (Info.GenerateDataPortalUpdate)
 {
     bool propUpdatePropertyInfo = false;
-    string strUpdateResult = string.Empty;
     string strUpdateParams = string.Empty;
+    string strUpdateDto = string.Empty;
+    string strUpdateResult = string.Empty;
+    string strUpdateResultTS = string.Empty;
     bool updateIsFirst = true;
 
     if (parentType.Length > 0 && !Info.ParentInsertOnly)
     {
         foreach (Property prop in Info.ParentProperties)
         {
-            if (!updateIsFirst)
-                strUpdateParams += ", ";
+            if (usesDTO)
+            {
+                strUpdateDto += Environment.NewLine + new string(' ', 12) + "dto.Parent_" + FormatPascal(prop.Name) + " = parent." + prop.Name +";";
+            }
             else
-                updateIsFirst = false;
+            {
+                if (!updateIsFirst)
+                    strUpdateParams += ", ";
+                else
+                    updateIsFirst = false;
 
-            strUpdateParams += Environment.NewLine + new string(' ', 24);
-            TypeCodeEx propType = prop.PropertyType;
+                strUpdateParams += Environment.NewLine + new string(' ', 24);
+                TypeCodeEx propType = prop.PropertyType;
 
-            strUpdateParams += "parent." + prop.Name;
+                strUpdateParams += "parent." + prop.Name;
+            }
         }
     }
     foreach (ValueProperty prop in Info.GetAllValueProperties())
@@ -194,18 +302,39 @@ if (Info.GenerateDataPortalUpdate)
             if ((prop.DeclarationMode == PropertyDeclaration.Managed && !prop.ReadOnly) ||
                 prop.DeclarationMode == PropertyDeclaration.AutoProperty)
             {
-                strUpdateResult = FormatPascal(prop.Name) + " = ";
+                if (usesDTO)
+                {
+                    strUpdateResultTS = FormatPascal(prop.Name) + " = resultDto." + FormatPascal(prop.Name) +";";
+                }
+                else
+                {
+                    strUpdateResult = FormatPascal(prop.Name) + " = ";
+                }
             }
             else if ((prop.DeclarationMode == PropertyDeclaration.Managed && prop.ReadOnly) ||
                 prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion ||
                 prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion)
             {
-                propUpdatePropertyInfo = true;
-                strUpdateResult = "LoadProperty(" + FormatPropertyInfoName(prop.Name) + ", ";
+                if (usesDTO)
+                {
+                    strUpdateResultTS = "LoadProperty(" + FormatPropertyInfoName(prop.Name) + ", resultDto." + FormatPascal(prop.Name) +");";
+                }
+                else
+                {
+                    propUpdatePropertyInfo = true;
+                    strUpdateResult = "LoadProperty(" + FormatPropertyInfoName(prop.Name) + ", ";
+                }
             }
             else //Unmanaged, ClassicProperty, ClassicPropertyWithTypeConversion
             {
-                strUpdateResult = FormatFieldName(prop.Name) + " = ";
+                if (usesDTO)
+                {
+                    strUpdateResultTS = FormatFieldName(prop.Name) + " = resultDto." + FormatPascal(prop.Name) +";";
+                }
+                else
+                {
+                    strUpdateResult = FormatFieldName(prop.Name) + " = ";
+                }
             }
         }
         if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
@@ -215,31 +344,62 @@ if (Info.GenerateDataPortalUpdate)
             prop.DataAccess == ValueProperty.DataAccessBehaviour.UpdateOnly)) ||
             prop.DbBindColumn.NativeType == "timestamp")
         {
-            if (!updateIsFirst)
-                strUpdateParams += ",";
+            if (usesDTO)
+            {
+                strUpdateDto += Environment.NewLine + new string(' ', 12) + "dto." + FormatPascal(prop.Name) + " = ";
+            }
             else
-                updateIsFirst = false;
+            {
+                if (!updateIsFirst)
+                    strUpdateParams += ",";
+                else
+                    updateIsFirst = false;
 
-            strUpdateParams += Environment.NewLine + new string(' ', 24);
-            TypeCodeEx propType = TypeHelper.GetBackingFieldType(prop);
+                strUpdateParams += Environment.NewLine + new string(' ', 24);
+            }
+
+            //TypeCodeEx propType = TypeHelper.GetBackingFieldType(prop);
 
             if (prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion ||
                 prop.DeclarationMode == PropertyDeclaration.UnmanagedWithTypeConversion)
             {
-                strUpdateParams += GetFieldReaderStatement(prop);
+                if (usesDTO)
+                {
+                    strUpdateDto += GetFieldReaderStatement(prop) + ";";
+                }
+                else
+                    strUpdateParams += GetFieldReaderStatement(prop);
             }
             else if (prop.DeclarationMode == PropertyDeclaration.Managed ||
                 prop.DeclarationMode == PropertyDeclaration.AutoProperty)
             {
-                strUpdateParams += FormatPascal(prop.Name);
+                if (usesDTO)
+                {
+                    strUpdateDto += FormatPascal(prop.Name) + ";";
+                }
+                else
+                    strUpdateParams += FormatPascal(prop.Name);
             }
             else //Unmanaged, ClassicProperty, ClassicPropertyWithTypeConversion
             {
-                strUpdateParams += FormatFieldName(prop.Name);
+                if (usesDTO)
+                {
+                    strUpdateDto += FormatFieldName(prop.Name) + ";";
+                }
+                else
+                    strUpdateParams += FormatFieldName(prop.Name);
             }
         }
     }
-    strUpdateParams += Environment.NewLine + new string(' ', 24);
+    if (usesDTO)
+    {
+        strUpdateResult += "var resultDto = ";
+        strUpdateParams += "dto";
+        if (strUpdateResultTS != string.Empty)
+            strUpdateResultTS = Environment.NewLine + new string(' ', 20) + strUpdateResultTS;
+    }
+    else
+        strUpdateParams += Environment.NewLine + new string(' ', 24);
     %>
 
         /// <summary>
@@ -266,19 +426,30 @@ if (Info.GenerateDataPortalUpdate)
             <%
     if (UseSimpleAuditTrail(Info))
     {
-        %>
-            SimpleAuditTrail();
+        %>SimpleAuditTrail();
             <%
     }
-    %>
-            using (var dalManager = DalFactory<%= GetDalName(CurrentUnit) %>.GetManager())
+    if (usesDTO)
+    {
+        %>var dto = new <%= Info.ObjectName %>Dto();<%= strUpdateDto %>
+            <%
+    }
+    %>using (var dalManager = DalFactory<%= GetDalNameDot(CurrentUnit) %>GetManager())
             {
-                var args = new DataPortalHookArgs();
+                var args = new DataPortalHookArgs(<%= usesDTO ? "dto" : "" %>);
                 OnUpdatePre(args);
                 var dal = dalManager.GetProvider<I<%= Info.ObjectName %>Dal>();
                 using (BypassPropertyChecks)
                 {
-                    <%= strUpdateResult %>dal.Update(<%= strUpdateParams %>)<%= propUpdatePropertyInfo ? ")" : "" %>;
+                    <%= strUpdateResult %>dal.Update(<%= strUpdateParams %>)<%= propUpdatePropertyInfo ? ")" : "" %>;<%= strUpdateResultTS %>
+                <%
+                if (usesDTO)
+                {
+                    %>
+                    args = new DataPortalHookArgs(resultDto);
+                <%
+                }
+                %>
                 }
                 OnUpdatePost(args);
                 <%

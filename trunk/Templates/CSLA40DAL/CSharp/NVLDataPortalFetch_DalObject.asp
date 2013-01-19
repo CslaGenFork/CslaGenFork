@@ -6,35 +6,27 @@ foreach (Criteria c in Info.CriteriaObjects)
         if (usesDTO)
         {
             %>
-
         /// <summary>
-        /// Loads a <%= Info.ObjectName %> name value list from the database.
-        /// </summary>
-        <%
+        /// Loads a <%= Info.ObjectName %> list from the database.
+        /// </summary><%
             if (c.Properties.Count > 1)
             {
                 %>
         /// <param name="crit">The fetch criteria.</param>
-        /// <returns>
-        /// A data reader to the <%= Info.ObjectName %>.
-        /// </returns>
+        /// <returns>A list of <see cref="<%= Info.ObjectName %>ItemDto"/>.</returns>
         public List<<%= Info.ObjectName %>ItemDto> Fetch(<%= c.Name %> crit)<%
             }
             else if (c.Properties.Count > 0)
             {
                 %>
         /// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The fetch criteria.</param>
-        /// <returns>
-        /// A data reader to the <%= Info.ObjectName %>.
-        /// </returns>
+        /// <returns>A list of <see cref="<%= Info.ObjectName %>ItemDto"/>.</returns>
         public List<<%= Info.ObjectName %>ItemDto> Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)<%
             }
             else
             {
                 %>
-        /// <returns>
-        /// A data reader to the <%= Info.ObjectName %>.
-        /// </returns>
+        /// <returns>A list of <see cref="<%= Info.ObjectName %>ItemDto"/>.</returns>
         public List<<%= Info.ObjectName %>ItemDto> Fetch()<%
             }
         }
@@ -58,7 +50,7 @@ foreach (Criteria c in Info.CriteriaObjects)
             }
             %>
         /// <summary>
-        /// Loads a <%= Info.ObjectName %> name value list from the database.
+        /// Loads a <%= Info.ObjectName %> list from the database.
         /// </summary>
         <%= strGetComment %>/// <returns>A data reader to the <%= Info.ObjectName %>.</returns>
         public IDataReader Fetch(<%= strGetCritParams %>)<%
@@ -104,6 +96,33 @@ foreach (Criteria c in Info.CriteriaObjects)
             }
         }
         <%
+        if (usesDTO)
+        {
+            %>
+
+        private List<<%= Info.ObjectName %>ItemDto> LoadCollection(IDataReader data)
+        {
+            var <%= FormatCamel(Info.ObjectName) %> = new List<<%= Info.ObjectName %>ItemDto>();
+            using (var dr = new SafeDataReader(data))
+            {
+                while (dr.Read())
+                {
+                    <%= FormatCamel(Info.ObjectName) %>.Add(Fetch(dr));
+                }
+            }
+            return <%= FormatCamel(Info.ObjectName) %>;
+        }
+
+        private <%= Info.ObjectName %>ItemDto Fetch(SafeDataReader dr)
+        {
+            var <%= FormatCamel(Info.ObjectName) %>Item = new <%= Info.ObjectName %>ItemDto();
+            <%= FormatCamel(Info.ObjectName) %>Item.<%= FormatPascal(valueProp.Name) %> = <%= String.Format(GetDataReaderStatement(valueProp)) %>;
+            <%= FormatCamel(Info.ObjectName) %>Item.<%= FormatPascal(nameProp.Name) %> = <%= String.Format(GetDataReaderStatement(nameProp)) %>;
+
+            return <%= FormatCamel(Info.ObjectName) %>Item;
+        }
+        <%
+        }
     }
 }
 %>

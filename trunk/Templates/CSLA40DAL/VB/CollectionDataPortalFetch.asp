@@ -18,7 +18,14 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
                 string strGetComment = string.Empty;
                 bool getIsFirst = true;
 
-                if (usesDalCriteria)
+                if (usesDTO)
+                {
+                    if (c.Properties.Count == 1)
+                        strGetComment = "/// <param name=\"" + FormatCamel(c.Properties[0].Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(c.Properties[0].Name) + ".</param>";
+                    if (c.Properties.Count > 1)
+                        strGetInvokeParams = "crit";
+                }
+                else
                 {
                     foreach (Property p in c.Properties)
                     {
@@ -45,26 +52,6 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
                     else if (c.Properties.Count > 0)
                     {
                         strGetCritParams = SendSingleCriteria(c, strGetCritParams);
-                    }
-                }
-                else
-                {
-                    foreach (Property p in c.Properties)
-                    {
-                        if (!getIsFirst)
-                        {
-                            strGetCritParams += ", ";
-                            strGetInvokeParams += ", ";
-                            strGetComment += System.Environment.NewLine + new string(' ', 8);
-                        }
-                        else
-                            getIsFirst = false;
-
-                        TypeCodeEx propType = p.PropertyType;
-
-                        strGetCritParams += string.Concat(GetDataTypeGeneric(p, propType), " ", FormatCamel(p.Name));
-                        strGetInvokeParams += "crit." + FormatPascal(p.Name);
-                        strGetComment += "/// <param name=\"" + FormatCamel(p.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(p.Name) + ".</param>";
                     }
                 }
                 if (c.Properties.Count > 1)
@@ -137,7 +124,29 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
             {
                 var dal = dalManager.GetProvider<I<%= Info.ObjectName %>Dal>();
                 var data = dal.Fetch(<%= strGetInvokeParams %>);
+                <%
+                if (usesDTO)
+                {
+                    %>
+                Fetch(data);
+                <%
+                    if (itemInfo != null)
+                    {
+                        if (ParentLoadsCollectionChildren(itemInfo))
+                        {
+                            %>
+                LoadCollection(dal);
+                <%
+                        }
+                    }
+                }
+                else
+                {
+                    %>
                 LoadCollection(data);
+                <%
+                }
+                %>
             }
             OnFetchPost(args);
             <%
@@ -165,6 +174,25 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
 
         if (Info.HasGetCriteria)
         {
+            if (usesDTO)
+            {
+                if (itemInfo != null)
+                {
+                    if (ParentLoadsCollectionChildren(itemInfo))
+                    {
+                        %>
+
+        private void LoadCollection(I<%= Info.ObjectName %>Dal dal)
+        {
+            if (this.Count > 0)
+                this[0].FetchChildren(dal);
+        }
+        <%
+                    }
+                }
+            }
+            else
+            {
             %>
 
         private void LoadCollection(IDataReader data)
@@ -187,15 +215,29 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
             }
         }
         <%
+            }
         }
     }
     %>
 
         /// <summary>
-        /// Loads all <see cref="<%= Info.ObjectName %>"/> collection items from the given SafeDataReader.
+        /// Loads all <see cref="<%= Info.ObjectName %>"/> collection items from the given <%= usesDTO ? ("list of " + Info.ItemType + "Dto") : "SafeDataReader" %>.
         /// </summary>
+        <%
+        if (usesDTO)
+        {
+            %>
+        /// <param name="data">The list of <see cref="<%= Info.ItemType %>Dto"/>.</param>
+        <%
+        }
+        else
+        {
+            %>
         /// <param name="dr">The SafeDataReader to use.</param>
-        private void <%= (isChildCollection && !UseChildFactoryHelper ? "Child_" : "") %>Fetch(SafeDataReader dr)
+        <%
+        }
+        %>
+        private void <%= (isChildCollection && !UseChildFactoryHelper ? "Child_" : "") %>Fetch(<%= usesDTO ? ("List<" + Info.ItemType + "Dto> data") : "SafeDataReader dr" %>)
         {
             <%
     if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
@@ -211,24 +253,24 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
     if (!Info.HasGetCriteria && Info.ParentType != string.Empty && !selfLoad1)
     {
         %>
-            var args = new DataPortalHookArgs(dr);
+            var args = new DataPortalHookArgs(<%= usesDTO ? "data" : "dr" %>);
             OnFetchPre(args);
             <%
     }
     %>
-            while (dr.Read())
+            <%= usesDTO ? "foreach (var dto in data)" : "while (dr.Read())" %>
             {
                 <%
     if (UseChildFactoryHelper)
     {
         %>
-                Add(<%= Info.ItemType %>.Get<%= Info.ItemType %>(dr));
+                Add(<%= Info.ItemType %>.Get<%= Info.ItemType %>(<%= usesDTO ? "dto" : "dr" %>));
             <%
     }
     else
     {
         %>
-                Add(DataPortal.Fetch<%= IsNotRootType(itemInfo) ? "Child" : "" %><<%= Info.ItemType %>>(dr));
+                Add(DataPortal.Fetch<%= IsNotRootType(itemInfo) ? "Child" : "" %><<%= Info.ItemType %>>(<%= usesDTO ? "dto" : "dr" %>));
             <%
     }
     %>
