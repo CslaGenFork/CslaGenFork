@@ -23,7 +23,7 @@ if (Info.GenerateDataPortalInsert)
         /// Inserts a new <%= Info.ObjectName %> object in the database.
         /// </summary>
         /// <param name="<%= FormatCamel(Info.ObjectName) %>">The <%= PropertyHelper.SplitOnCaps(FormatPascal(Info.ObjectName)) %> DTO.</param>
-        /// <returns>The updated <see cref="<%= Info.ObjectName %>Dto"/>.</returns>
+        /// <returns>The new <see cref="<%= Info.ObjectName %>Dto"/>.</returns>
         <%= Info.ObjectName %>Dto Insert(<%= Info.ObjectName %>Dto <%= FormatCamel(Info.ObjectName) %>);
         <%
     }

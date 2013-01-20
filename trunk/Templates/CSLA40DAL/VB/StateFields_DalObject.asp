@@ -1,6 +1,7 @@
 <%
 if (usesDTO)
 {
+    bool isFirstField = Info.ObjectType != CslaObjectType.EditableRootCollection;
     CslaObjectInfo universalInfo = Info;
     if (IsCollectionType(universalInfo.ObjectType))
     {
@@ -24,27 +25,19 @@ if (usesDTO)
                             CslaObjectInfo _parent = child.FindParent(child);
                             if (_parent != null)
                             {
+                                if (isFirstField) { Response.Write(Environment.NewLine); isFirstField = false; }
                                 %>
-        /// <summary>
-        /// Gets the <%= childProp.FriendlyName != String.Empty ? childProp.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(childProp.Name) %>.
-        /// </summary>
-        /// <value>A list of <see cref="<%= FormatPascal(_child.ItemType) %>Dto"/>.</value>
-        List<<%= FormatPascal(_child.ItemType) %>Dto> <%= FormatPascal(childProp.TypeName) %> { get; }
-
-<%
+        private List<<%= FormatPascal(_child.ItemType) %>Dto> <%= FormatFieldName(childProp.TypeName) %> = new List<<%= FormatPascal(_child.ItemType) %>Dto>();
+        <%
                             }
                         }
                     }
                     else if (!ancestorIsCollection)
                     {
+                        if (isFirstField) { Response.Write(Environment.NewLine); isFirstField = false; }
                         %>
-        /// <summary>
-        /// Gets the <%= childProp.FriendlyName != String.Empty ? childProp.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(childProp.Name) %>.
-        /// </summary>
-        /// <value>A list of <see cref="<%= FormatPascal(_child.ItemType) %>Dto"/>.</value>
-        List<<%= FormatPascal(_child.ItemType) %>Dto> <%= FormatPascal(childProp.TypeName) %> { get; }
-
-<%
+        private List<<%= FormatPascal(_child.ItemType) %>Dto> <%= FormatFieldName(childProp.TypeName) %> = new List<<%= FormatPascal(_child.ItemType) %>Dto>();
+        <%
                     }
                 }
                 else if (ancestorLoaderLevel == 0 && ancestorIsCollection)
@@ -52,14 +45,10 @@ if (usesDTO)
                     CslaObjectInfo child = FindChildInfo(universalInfo, childProp.TypeName);
                     if (child != null)
                     {
+                        if (isFirstField) { Response.Write(Environment.NewLine); isFirstField = false; }
                         %>
-        /// <summary>
-        /// Gets the <%= childProp.FriendlyName != String.Empty ? childProp.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(childProp.Name) %>.
-        /// </summary>
-        /// <value>A list of <see cref="<%= FormatPascal(_child.ObjectName) %>Dto"/>.</value>
-        List<<%= FormatPascal(_child.ObjectName) %>Dto> <%= FormatPascal(_child.ObjectName) %> { get; }
-
-<%
+        private List<<%= FormatPascal(_child.ObjectName) %>Dto> <%= FormatFieldName(_child.ObjectName) %> = new List<<%= FormatPascal(_child.ObjectName) %>Dto>();
+        <%
                     }
                 }
                 else
@@ -67,14 +56,10 @@ if (usesDTO)
                     CslaObjectInfo child = FindChildInfo(universalInfo, childProp.TypeName);
                     if (child != null)
                     {
+                        if (isFirstField) { Response.Write(Environment.NewLine); isFirstField = false; }
                         %>
-        /// <summary>
-        /// Gets the <%= childProp.FriendlyName != String.Empty ? childProp.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(childProp.Name) %>.
-        /// </summary>
-        /// <value>A <see cref="<%= FormatPascal(childProp.TypeName) %>Dto"/> object.</value>
-        <%= FormatPascal(childProp.TypeName) %>Dto <%= FormatPascal(childProp.TypeName) %> { get; }
-
-<%
+        private <%= FormatPascal(childProp.TypeName) %>Dto <%= FormatFieldName(childProp.TypeName) %> = new <%= FormatPascal(childProp.TypeName) %>Dto();
+        <%
                     }
                 }
             }
@@ -100,28 +85,21 @@ if (usesDTO)
                 }
                 if (IsCollectionType(_child.ObjectType))
                 {
+                    if (isFirstField) { Response.Write(Environment.NewLine); isFirstField = false; }
                     %>
-        /// <summary>
-        /// Gets the <%= childProp.FriendlyName != String.Empty ? childProp.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(childProp.Name) %>.
-        /// </summary>
-        /// <value>A list of <see cref="<%= FormatPascal(_child.ItemType) %>Dto"/>.</value>
-        List<<%= FormatPascal(_child.ItemType) %>Dto> <%= FormatPascal(childProp.TypeName) %> { get; }
-
-<%
+        private List<<%= FormatPascal(_child.ItemType) %>Dto> <%= FormatFieldName(childProp.TypeName) %> = new List<<%= FormatPascal(_child.ItemType) %>Dto>();
+        <%
                 }
                 else
                 {
+                    if (isFirstField) { Response.Write(Environment.NewLine); isFirstField = false; }
                     %>
-        /// <summary>
-        /// Gets the <%= childProp.FriendlyName != String.Empty ? childProp.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(childProp.Name) %>.
-        /// </summary>
-        /// <value>A list of <see cref="<%= FormatPascal(_child.ObjectName) %>Dto"/>.</value>
-        List<<%= FormatPascal(_child.ObjectName) %>Dto> <%= FormatPascal(_child.ObjectName) %> { get; }
-
-<%
+        private List<<%= FormatPascal(_child.ObjectName) %>Dto> <%= FormatFieldName(_child.ObjectName) %> = new List<<%= FormatPascal(_child.ObjectName) %>Dto>();
+        <%
                 }
             }
         }
     }
+    Response.Write(Environment.NewLine);
 }
 %>

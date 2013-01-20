@@ -44,19 +44,6 @@ if (Errors.Length == 0)
     bool usesDTO = DalObjectUsesDTO(Info);
     bool? firstComment = null;
     %><!-- #include file="Header_DalInterface.asp" -->
-using System;
-<%
-    if (usesDTO)
-    {
-        %>using System.Collections.Generic;
-<%
-    }
-    else
-    {
-        %>using System.Data;
-<%
-    }
-    %>
 <%= GetUsingStatementsStringDalInterface(Info, CurrentUnit) %>
 namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
 {

@@ -5,7 +5,6 @@ if (usesDTO)
     if (IsCollectionType(universalInfo.ObjectType))
     {
         universalInfo = Info.Parent.CslaObjects.Find(Info.ItemType);
-        ancestorLoaderLevel ++;
     }
     foreach (ChildProperty childProp in universalInfo.GetAllChildProperties())
     {
@@ -16,7 +15,7 @@ if (usesDTO)
             {
                 if (IsCollectionType(_child.ObjectType))
                 {
-                    if (ancestorLoaderLevel == 1 && ancestorIsCollection)
+                    if (ancestorLoaderLevel == 0 && ancestorIsCollection)
                     {
                         CslaObjectInfo child = FindChildInfo(universalInfo, childProp.TypeName);
                         if (child != null)
@@ -30,35 +29,35 @@ if (usesDTO)
         /// Gets the <%= childProp.FriendlyName != String.Empty ? childProp.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(childProp.Name) %>.
         /// </summary>
         /// <value>A list of <see cref="<%= FormatPascal(_child.ItemType) %>Dto"/>.</value>
-        List<<%= FormatPascal(_child.ItemType) %>Dto> <%= FormatPascal(childProp.TypeName) %> { get; } // (1)
+        List<<%= FormatPascal(_child.ItemType) %>Dto> <%= FormatPascal(childProp.TypeName) %> { get; }
 
 <%
                             }
                         }
                     }
-                    else
+                    else if (!ancestorIsCollection)
                     {
                         %>
         /// <summary>
         /// Gets the <%= childProp.FriendlyName != String.Empty ? childProp.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(childProp.Name) %>.
         /// </summary>
         /// <value>A list of <see cref="<%= FormatPascal(_child.ItemType) %>Dto"/>.</value>
-        List<<%= FormatPascal(_child.ItemType) %>Dto> <%= FormatPascal(childProp.TypeName) %> { get; } // (2)
+        List<<%= FormatPascal(_child.ItemType) %>Dto> <%= FormatPascal(childProp.TypeName) %> { get; }
 
 <%
                     }
                 }
-                else if (ancestorLoaderLevel == 1 && ancestorIsCollection)
+                else if (ancestorLoaderLevel == 0 && ancestorIsCollection)
                 {
                     CslaObjectInfo child = FindChildInfo(universalInfo, childProp.TypeName);
                     if (child != null)
                     {
-                    %>
-        /// <summary><%= ancestorLoaderLevel %>
+                        %>
+        /// <summary>
         /// Gets the <%= childProp.FriendlyName != String.Empty ? childProp.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(childProp.Name) %>.
         /// </summary>
         /// <value>A list of <see cref="<%= FormatPascal(_child.ObjectName) %>Dto"/>.</value>
-        List<<%= FormatPascal(_child.ObjectName) %>Dto> <%= FormatPascal(_child.ObjectName) %> { get; } // (3)
+        List<<%= FormatPascal(_child.ObjectName) %>Dto> <%= FormatPascal(_child.ObjectName) %> { get; }
 
 <%
                     }
@@ -69,11 +68,11 @@ if (usesDTO)
                     if (child != null)
                     {
                         %>
-        /// <summary><%= ancestorLoaderLevel %>
+        /// <summary>
         /// Gets the <%= childProp.FriendlyName != String.Empty ? childProp.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(childProp.Name) %>.
         /// </summary>
         /// <value>A <see cref="<%= FormatPascal(childProp.TypeName) %>Dto"/> object.</value>
-        <%= FormatPascal(childProp.TypeName) %>Dto <%= FormatPascal(childProp.TypeName) %> { get; } // (4)
+        <%= FormatPascal(childProp.TypeName) %>Dto <%= FormatPascal(childProp.TypeName) %> { get; }
 
 <%
                     }
@@ -106,7 +105,7 @@ if (usesDTO)
         /// Gets the <%= childProp.FriendlyName != String.Empty ? childProp.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(childProp.Name) %>.
         /// </summary>
         /// <value>A list of <see cref="<%= FormatPascal(_child.ItemType) %>Dto"/>.</value>
-        List<<%= FormatPascal(_child.ItemType) %>Dto> <%= FormatPascal(childProp.TypeName) %> { get; } // (5)
+        List<<%= FormatPascal(_child.ItemType) %>Dto> <%= FormatPascal(childProp.TypeName) %> { get; }
 
 <%
                 }
@@ -117,7 +116,7 @@ if (usesDTO)
         /// Gets the <%= childProp.FriendlyName != String.Empty ? childProp.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(childProp.Name) %>.
         /// </summary>
         /// <value>A list of <see cref="<%= FormatPascal(_child.ObjectName) %>Dto"/>.</value>
-        List<<%= FormatPascal(_child.ObjectName) %>Dto> <%= FormatPascal(_child.ObjectName) %> { get; } // (6)
+        List<<%= FormatPascal(_child.ObjectName) %>Dto> <%= FormatPascal(_child.ObjectName) %> { get; }
 
 <%
                 }

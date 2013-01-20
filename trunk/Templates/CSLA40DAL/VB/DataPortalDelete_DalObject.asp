@@ -7,8 +7,12 @@ if (Info.GenerateDataPortalDelete)
         {
             if (usesDTO)
             {
-                %>
+                if (isFirstMethod)
+                    isFirstMethod = false;
+                else
+                    Response.Write(Environment.NewLine);
 
+                %>
         /// <summary>
         /// Deletes the <%= Info.ObjectName %> object from database.
         /// </summary>
@@ -41,6 +45,11 @@ if (Info.GenerateDataPortalDelete)
                     strDeleteCritParams += string.Concat(GetDataTypeGeneric(c.Properties[i], propType), " ", FormatCamel(c.Properties[i].Name));
                     strDeleteComment += "/// <param name=\"" + FormatCamel(c.Properties[i].Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(c.Properties[i].Name) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
                 }
+                if (isFirstMethod)
+                    isFirstMethod = false;
+                else
+                    Response.Write(Environment.NewLine);
+
                 %>
         /// <summary>
         /// Deletes the <%= Info.ObjectName %> object from database.

@@ -47,8 +47,12 @@ if (Info.GenerateDataPortalUpdate)
         else
             strUpdateResult = "void";
     }
-    %>
+    if (isFirstMethod)
+        isFirstMethod = false;
+    else
+        Response.Write(Environment.NewLine);
 
+    %>
         /// <summary>
         /// Updates in the database all changes made to the <%= Info.ObjectName %> object.
         /// </summary><%= strUpdateComment %><%= strUpdateCommentResult %>

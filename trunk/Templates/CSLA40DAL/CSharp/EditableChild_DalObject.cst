@@ -42,12 +42,13 @@ if (Errors.Length == 0)
     bool usesDTO = DalObjectUsesDTO(Info);
     bool? firstComment = null;
     %><!-- #include file="Header_DalObject.asp" -->
-<!-- #include file="Using_DalObject.asp" -->
+<%= GetUsingStatementsStringDalObject(Info, CurrentUnit) %>
 namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
 {
 <!-- #include file="XmlComment_DalObject.asp" -->
     public partial class <%= Info.ObjectName %>Dal : I<%= Info.ObjectName %>Dal
-    {<!-- #include file="DataPortalFetch_DalObject.asp" -->
+    {
+<!-- #include file="DataPortalFetch_DalObject.asp" -->
 <!-- #include file="InternalInsertUpdateDelete_DalObject.asp" -->
     }
 }
