@@ -37,7 +37,7 @@ if (Errors.Length == 0)
     bool first = true;
     bool? firstComment = null;
     %><!-- #include file="Header.asp" -->
-<!-- #include file="Using.asp" -->
+<%= GetUsingStatementsStringBusiness(Info, CurrentUnit) %>
 namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Business) %>
 {
 <%
