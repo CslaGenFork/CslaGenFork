@@ -665,20 +665,68 @@ namespace CslaGenerator.CodeGen
 
         public string GetUsingStatementsStringDalInterface(CslaObjectInfo info, CslaGeneratorUnit unit)
         {
+            var result = string.Empty;
 
-            var result = "using Csla;" + Environment.NewLine;
+            var allNamespaces = new List<string>();
+            allNamespaces.Add("System");
+
+            if (DalObjectUsesDTO(info))
+                allNamespaces.Add("System.Collections.Generic");
+            else
+                allNamespaces.Add("System.Data");
+
+            allNamespaces.Add("Csla");
+
             var dependencyNamespaces = new List<string>();
-
             if (unit.GenerationParams.UseDto == TargetDto.Always)
             {
                 dependencyNamespaces.AddRange(GetDependencyNamespaces(info));
                 foreach (var namespaceName in dependencyNamespaces)
                 {
-                    var finalNamespace =
-                        unit.GenerationParams.DalInterfaceNamespace +
-                        namespaceName.Substring(unit.GenerationParams.BaseNamespace.Length);
-                    result += "using " + finalNamespace + ";" + Environment.NewLine;
+                    allNamespaces.Add(unit.GenerationParams.DalInterfaceNamespace +
+                        namespaceName.Substring(unit.GenerationParams.BaseNamespace.Length));
                 }
+            }
+
+            foreach (var namespaceName in allNamespaces)
+            {
+                result += "using " + namespaceName + ";" + Environment.NewLine;
+            }
+
+            return result;
+        }
+
+        public string GetUsingStatementsStringDalObject(CslaObjectInfo info, CslaGeneratorUnit unit)
+        {
+            var result = string.Empty;
+
+            var allNamespaces = new List<string>();
+            allNamespaces.Add("System");
+
+            if (DalObjectUsesDTO(info))
+                allNamespaces.Add("System.Collections.Generic");
+
+            allNamespaces.Add("System.Data");
+            allNamespaces.Add("System.Data.SqlClient");
+            allNamespaces.Add("Csla");
+            allNamespaces.Add("Csla.Data");
+
+            var dependencyNamespaces = new List<string>();
+            if (unit.GenerationParams.UseDto == TargetDto.Always)
+            {
+                dependencyNamespaces.AddRange(GetDependencyNamespaces(info));
+                foreach (var namespaceName in dependencyNamespaces)
+                {
+                    allNamespaces.Add(unit.GenerationParams.DalInterfaceNamespace +
+                        namespaceName.Substring(unit.GenerationParams.BaseNamespace.Length));
+                }
+            }
+
+            allNamespaces.AddRange(GetDalInterfaceNamespaces(info, unit));
+
+            foreach (var namespaceName in allNamespaces)
+            {
+                result += "using " + namespaceName + ";" + Environment.NewLine;
             }
 
             return result;

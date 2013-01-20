@@ -14,7 +14,7 @@ if (Info.GenerateDataPortalInsert)
         strInsertResult = Info.ObjectName + "Dto";
         strInsertParams = strInsertResult + " " + FormatCamel(Info.ObjectName);
         strInsertComment = System.Environment.NewLine + new string(' ', 8) + "/// <param name=\"" + FormatCamel(Info.ObjectName) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(Info.ObjectName) + " DTO.</param>";
-        strInsertCommentResult = System.Environment.NewLine + new string(' ', 8) + "/// <returns>The updated <see cref=\"" + strInsertResult + "\"/>.</returns>";
+        strInsertCommentResult = System.Environment.NewLine + new string(' ', 8) + "/// <returns>The new <see cref=\"" + strInsertResult + "\"/>.</returns>";
     }
     else
     {
@@ -52,8 +52,12 @@ if (Info.GenerateDataPortalInsert)
         else
             strInsertResult = "void";
     }
-    %>
+    if (isFirstMethod)
+        isFirstMethod = false;
+    else
+        Response.Write(Environment.NewLine);
 
+    %>
         /// <summary>
         /// Inserts a new <%= Info.ObjectName %> object in the database.
         /// </summary><%= strInsertComment %><%= strInsertCommentResult %>

@@ -24,7 +24,7 @@ if (Info.GenerateDataPortalInsert)
         strInsertResult = Info.ObjectName + "Dto";
         strInsertParams = strInsertResult + " " + FormatCamel(Info.ObjectName);
         strInsertComment = System.Environment.NewLine + new string(' ', 8) + "/// <param name=\"" + FormatCamel(Info.ObjectName) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(Info.ObjectName) + " DTO.</param>";
-        strInsertCommentResult = System.Environment.NewLine + new string(' ', 8) + "/// <returns>The updated <see cref=\"" + strInsertResult + "\"/>.</returns>";
+        strInsertCommentResult = System.Environment.NewLine + new string(' ', 8) + "/// <returns>The new <see cref=\"" + strInsertResult + "\"/>.</returns>";
     }
     else
     {
@@ -77,8 +77,12 @@ if (Info.GenerateDataPortalInsert)
         else
             strInsertResult = "void";
     }
-    %>
+    if (isFirstMethod)
+        isFirstMethod = false;
+    else
+        Response.Write(Environment.NewLine);
 
+    %>
         /// <summary>
         /// Inserts a new <%= Info.ObjectName %> object in the database.
         /// </summary><%= strInsertComment %><%= strInsertCommentResult %>
@@ -247,8 +251,12 @@ if (Info.GenerateDataPortalUpdate)
         else
             strUpdateResult = "void";
     }
-    %>
+    if (isFirstMethod)
+        isFirstMethod = false;
+    else
+        Response.Write(Environment.NewLine);
 
+    %>
         /// <summary>
         /// Updates in the database all changes made to the <%= Info.ObjectName %> object.
         /// </summary><%= strUpdateComment %><%= strUpdateCommentResult %>
@@ -375,8 +383,12 @@ if (Info.GenerateDataPortalDelete)
             strDeleteComment += "/// <param name=\"" + FormatCamel(prop.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
         }
     }
-    %>
+    if (isFirstMethod)
+        isFirstMethod = false;
+    else
+        Response.Write(Environment.NewLine);
 
+    %>
         /// <summary>
         /// Deletes the <%= Info.ObjectName %> object from database.
         /// </summary>

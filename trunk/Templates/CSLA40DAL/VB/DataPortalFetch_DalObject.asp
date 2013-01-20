@@ -1,10 +1,18 @@
 <%
+bool isFirstMethod = true;
+bool isFirstDPFDI = true;
 foreach (Criteria c in Info.CriteriaObjects)
 {
     if (c.GetOptions.DataPortal)
     {
         if (usesDTO)
         {
+            if (isFirstDPFDI)
+                isFirstDPFDI = false;
+            else
+                Response.Write(Environment.NewLine);
+
+            isFirstMethod = false;
             %>
         /// <summary>
         /// Loads a <%= Info.ObjectName %> object from the database.
@@ -48,6 +56,12 @@ foreach (Criteria c in Info.CriteriaObjects)
                 strGetCritParams += string.Concat(GetDataTypeGeneric(c.Properties[i], propType), " ", FormatCamel(c.Properties[i].Name));
                 strGetComment += "/// <param name=\"" + FormatCamel(c.Properties[i].Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(c.Properties[i].Name) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
             }
+            if (isFirstDPFDI)
+                isFirstDPFDI = false;
+            else
+                Response.Write(Environment.NewLine);
+
+            isFirstMethod = false;
             %>
         /// <summary>
         /// Loads a <%= Info.ObjectName %> object from the database.
