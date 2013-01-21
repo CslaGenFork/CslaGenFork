@@ -34,7 +34,7 @@ if (usesDTO)
             get { return <%= FormatFieldName(childProp.TypeName) %>; }
         }
 
-<%
+        <%
                             }
                         }
                     }
@@ -50,7 +50,7 @@ if (usesDTO)
             get { return <%= FormatFieldName(childProp.TypeName) %>; }
         }
 
-<%
+        <%
                     }
                 }
                 else if (ancestorLoaderLevel == 0 && ancestorIsCollection)
@@ -68,7 +68,7 @@ if (usesDTO)
             get { return <%= FormatFieldName(_child.ObjectName) %>; }
         }
 
-<%
+        <%
                     }
                 }
                 else
@@ -86,7 +86,7 @@ if (usesDTO)
             get { return <%= FormatFieldName(childProp.TypeName) %>; }
         }
 
-<%
+        <%
                     }
                 }
             }
@@ -122,7 +122,7 @@ if (usesDTO)
             get { return <%= FormatFieldName(childProp.TypeName) %>; }
         }
 
-<%
+        <%
                 }
                 else
                 {
@@ -136,7 +136,7 @@ if (usesDTO)
             get { return <%= FormatFieldName(_child.ObjectName) %>; }
         }
 
-<%
+        <%
                 }
             }
         }

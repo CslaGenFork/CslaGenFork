@@ -1,8 +1,14 @@
 <%
+bool isFirstDPFDO = true;
 foreach (Criteria c in Info.CriteriaObjects)
 {
     if (c.GetOptions.DataPortal)
     {
+        if (isFirstDPFDO)
+            isFirstDPFDO = false;
+        else
+            Response.Write(Environment.NewLine);
+
         if (usesDTO)
         {
             %>
@@ -53,7 +59,6 @@ foreach (Criteria c in Info.CriteriaObjects)
                 strGetComment += "/// <param name=\"" + FormatCamel(c.Properties[i].Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(c.Properties[i].Name) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
             }
             %>
-
         /// <summary>
         /// Loads a <%= Info.ObjectName %> collection from the database.
         /// </summary>

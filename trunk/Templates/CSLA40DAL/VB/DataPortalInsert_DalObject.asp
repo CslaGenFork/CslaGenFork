@@ -70,10 +70,12 @@ if (Info.GenerateDataPortalInsert)
                     <%
     if (Info.CommandTimeout != string.Empty)
     {
-        %>cmd.CommandTimeout = <%= Info.CommandTimeout %>;
+        %>
+                    cmd.CommandTimeout = <%= Info.CommandTimeout %>;
                     <%
     }
-    %>cmd.CommandType = CommandType.StoredProcedure;
+    %>
+                    cmd.CommandType = CommandType.StoredProcedure;
                     <%
     foreach (ValueProperty prop in Info.GetAllValueProperties())
     {
@@ -84,7 +86,8 @@ if (Info.GenerateDataPortalInsert)
         {
             if (prop.DbBindColumn.NativeType == "timestamp")
             {
-                %>cmd.Parameters.Add("@New<%= prop.ParameterName %>", SqlDbType.Timestamp).Direction = ParameterDirection.Output;
+                %>
+                    cmd.Parameters.Add("@New<%= prop.ParameterName %>", SqlDbType.Timestamp).Direction = ParameterDirection.Output;
                     <%
             }
             else
@@ -100,17 +103,20 @@ if (Info.GenerateDataPortalInsert)
                 {
                     if (AllowNull(prop) && propType == TypeCodeEx.Guid)
                     {
-                        %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %>.Equals(Guid.Empty) ? (object)DBNull.Value : <%= FormatCamel(prop.Name) %>).DbType = DbType.<%= TypeHelper.GetDbType(propType) %>;
+                        %>
+                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %>.Equals(Guid.Empty) ? (object)DBNull.Value : <%= FormatCamel(prop.Name) %>).DbType = DbType.<%= TypeHelper.GetDbType(propType) %>;
                     <%
                     }
                     else if (AllowNull(prop) && propType != TypeCodeEx.SmartDate)
                     {
-                        %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %> == null ? (object)DBNull.Value : <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %><%= TypeHelper.IsNullableType(propType) ? ".Value" :"" %>).DbType = DbType.<%= TypeHelper.GetDbType(propType) %>;
+                        %>
+                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %> == null ? (object)DBNull.Value : <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %><%= TypeHelper.IsNullableType(propType) ? ".Value" :"" %>).DbType = DbType.<%= TypeHelper.GetDbType(propType) %>;
                     <%
                     }
                     else
                     {
-                        %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %><%= (propType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>)<%= postfix %>;
+                        %>
+                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %><%= (propType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>)<%= postfix %>;
                     <%
                     }
                 }
@@ -118,25 +124,29 @@ if (Info.GenerateDataPortalInsert)
                 {
                     if (AllowNull(prop) && propType == TypeCodeEx.Guid)
                     {
-                        %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %>.Equals(Guid.Empty) ? (object)DBNull.Value : <%= GetFieldReaderStatement(prop) %>).DbType = DbType.<%= TypeHelper.GetDbType(propType) %>;
+                        %>
+                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %>.Equals(Guid.Empty) ? (object)DBNull.Value : <%= GetFieldReaderStatement(prop) %>).DbType = DbType.<%= TypeHelper.GetDbType(propType) %>;
                     <%
                     }
                     else if (AllowNull(prop) && propType != TypeCodeEx.SmartDate)
                     {
-                        %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %> == null ? (object)DBNull.Value : <%= GetFieldReaderStatement(prop) %><%= TypeHelper.IsNullableType(propType) ? ".Value" :"" %>).DbType = DbType.<%= TypeHelper.GetDbType(propType) %>;
+                        %>
+                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %> == null ? (object)DBNull.Value : <%= GetFieldReaderStatement(prop) %><%= TypeHelper.IsNullableType(propType) ? ".Value" :"" %>).DbType = DbType.<%= TypeHelper.GetDbType(propType) %>;
                     <%
                     }
                     else
                     {
-                        %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %><%= (propType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>)<%= postfix %>;
+                        %>
+                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %><%= (propType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>)<%= postfix %>;
                     <%
                     }
                 }
             }
         }
     }
-    %>cmd.ExecuteNonQuery();
-<%
+    %>
+                    cmd.ExecuteNonQuery();
+                    <%
     foreach (ValueProperty prop in Info.GetAllValueProperties())
     {
         if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
@@ -145,7 +155,7 @@ if (Info.GenerateDataPortalInsert)
         {
             %>
                     <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %> = (<%= GetLanguageVariableType(prop.DbBindColumn.DataType) %>)cmd.Parameters["@<%= prop.ParameterName %>"].Value;
-<%
+                    <%
         }
     }
     foreach (ValueProperty prop in Info.GetAllValueProperties())
@@ -155,7 +165,7 @@ if (Info.GenerateDataPortalInsert)
         {
             %>
                     <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) + " = ": "return ") %>(byte[])cmd.Parameters["@New<%= prop.ParameterName %>"].Value;
-<%
+                    <%
         }
     }
     %>

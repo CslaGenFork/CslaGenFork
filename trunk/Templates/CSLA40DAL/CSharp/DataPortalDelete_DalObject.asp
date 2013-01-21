@@ -5,13 +5,13 @@ if (Info.GenerateDataPortalDelete)
     {
         if (c.DeleteOptions.DataPortal)
         {
+            if (isFirstMethod)
+                isFirstMethod = false;
+            else
+                Response.Write(Environment.NewLine);
+
             if (usesDTO)
             {
-                if (isFirstMethod)
-                    isFirstMethod = false;
-                else
-                    Response.Write(Environment.NewLine);
-
                 %>
         /// <summary>
         /// Deletes the <%= Info.ObjectName %> object from database.
@@ -20,11 +20,15 @@ if (Info.GenerateDataPortalDelete)
         <%
                 if (c.Properties.Count > 1)
                 {
-                    %>public void Delete(<%= c.Name %> crit)<%
+                    %>
+        public void Delete(<%= c.Name %> crit)
+        <%
                 }
                 else
                 {
-                    %>public void Delete(<%= ReceiveSingleCriteria(c, "crit") %>)<%
+                    %>
+        public void Delete(<%= ReceiveSingleCriteria(c, "crit") %>)
+        <%
                 }
             }
             else
@@ -45,16 +49,12 @@ if (Info.GenerateDataPortalDelete)
                     strDeleteCritParams += string.Concat(GetDataTypeGeneric(c.Properties[i], propType), " ", FormatCamel(c.Properties[i].Name));
                     strDeleteComment += "/// <param name=\"" + FormatCamel(c.Properties[i].Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(c.Properties[i].Name) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
                 }
-                if (isFirstMethod)
-                    isFirstMethod = false;
-                else
-                    Response.Write(Environment.NewLine);
-
                 %>
         /// <summary>
         /// Deletes the <%= Info.ObjectName %> object from database.
         /// </summary>
-        <%= strDeleteComment %>public void Delete(<%= strDeleteCritParams %>)<%
+        <%= strDeleteComment %>public void Delete(<%= strDeleteCritParams %>)
+        <%
             }
             %>
         {
@@ -65,28 +65,33 @@ if (Info.GenerateDataPortalDelete)
                     <%
             if (Info.CommandTimeout != string.Empty)
             {
-                %>cmd.CommandTimeout = <%= Info.CommandTimeout %>;
+                %>
+                    cmd.CommandTimeout = <%= Info.CommandTimeout %>;
                     <%
             }
-            %>cmd.CommandType = CommandType.StoredProcedure;
+            %>
+                    cmd.CommandType = CommandType.StoredProcedure;
                     <%
             foreach (Property p in c.Properties)
             {
                 if (!usesDTO)
                 {
-                    %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= GetParameterSet(Info, p, false, true) %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
+                    %>
+                    cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= GetParameterSet(Info, p, false, true) %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
                     <%
                 }
                 else
                 {
                     if (c.Properties.Count > 1)
                     {
-                        %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= GetParameterSet(p, true) %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
+                        %>
+                    cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= GetParameterSet(p, true) %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
                     <%
                     }
                     else
                     {
-                        %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= AssignSingleCriteria(c, "crit") %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
+                        %>
+                    cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= AssignSingleCriteria(c, "crit") %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
                     <%
                     }
                 }
@@ -100,7 +105,8 @@ if (Info.GenerateDataPortalDelete)
             {
                 hookArgs = ", " + HookSingleCriteria(c, "crit");
             }
-            %>var rowsAffected = cmd.ExecuteNonQuery();
+            %>
+                    var rowsAffected = cmd.ExecuteNonQuery();
                     if (rowsAffected == 0)
                         throw new DataNotFoundException("<%= Info.ObjectName %>");
                 }

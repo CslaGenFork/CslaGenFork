@@ -31,7 +31,7 @@ if (usesDTO)
         /// <value>A list of <see cref="<%= FormatPascal(_child.ItemType) %>Dto"/>.</value>
         List<<%= FormatPascal(_child.ItemType) %>Dto> <%= FormatPascal(childProp.TypeName) %> { get; }
 
-<%
+        <%
                             }
                         }
                     }
@@ -44,7 +44,7 @@ if (usesDTO)
         /// <value>A list of <see cref="<%= FormatPascal(_child.ItemType) %>Dto"/>.</value>
         List<<%= FormatPascal(_child.ItemType) %>Dto> <%= FormatPascal(childProp.TypeName) %> { get; }
 
-<%
+        <%
                     }
                 }
                 else if (ancestorLoaderLevel == 0 && ancestorIsCollection)
@@ -59,7 +59,7 @@ if (usesDTO)
         /// <value>A list of <see cref="<%= FormatPascal(_child.ObjectName) %>Dto"/>.</value>
         List<<%= FormatPascal(_child.ObjectName) %>Dto> <%= FormatPascal(_child.ObjectName) %> { get; }
 
-<%
+        <%
                     }
                 }
                 else
@@ -74,7 +74,7 @@ if (usesDTO)
         /// <value>A <see cref="<%= FormatPascal(childProp.TypeName) %>Dto"/> object.</value>
         <%= FormatPascal(childProp.TypeName) %>Dto <%= FormatPascal(childProp.TypeName) %> { get; }
 
-<%
+        <%
                     }
                 }
             }
@@ -107,7 +107,7 @@ if (usesDTO)
         /// <value>A list of <see cref="<%= FormatPascal(_child.ItemType) %>Dto"/>.</value>
         List<<%= FormatPascal(_child.ItemType) %>Dto> <%= FormatPascal(childProp.TypeName) %> { get; }
 
-<%
+        <%
                 }
                 else
                 {
@@ -118,7 +118,7 @@ if (usesDTO)
         /// <value>A list of <see cref="<%= FormatPascal(_child.ObjectName) %>Dto"/>.</value>
         List<<%= FormatPascal(_child.ObjectName) %>Dto> <%= FormatPascal(_child.ObjectName) %> { get; }
 
-<%
+        <%
                 }
             }
         }

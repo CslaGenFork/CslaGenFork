@@ -12,7 +12,6 @@ foreach (Criteria c in Info.CriteriaObjects)
             else
                 Response.Write(Environment.NewLine);
 
-            isFirstMethod = false;
             %>
         /// <summary>
         /// Loads a <%= Info.ObjectName %> object from the database.
@@ -69,7 +68,6 @@ foreach (Criteria c in Info.CriteriaObjects)
             else
                 Response.Write(Environment.NewLine);
 
-            isFirstMethod = false;
             %>
         /// <summary>
         /// Loads a <%= Info.ObjectName %> object from the database.
@@ -80,4 +78,5 @@ foreach (Criteria c in Info.CriteriaObjects)
         }
     }
 }
+isFirstMethod = isFirstDPFDI;
 %>
