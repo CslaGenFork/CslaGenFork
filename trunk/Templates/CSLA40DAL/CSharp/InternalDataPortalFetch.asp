@@ -60,7 +60,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
             {
                 if (usesDTO)
                 {
-                    %><%= FormatCamel(GetFKColumn(Info, (isItem ? grandParentInfo : parentInfo), prop)) %> = data.Parent_<%= GetFKColumn(Info, (isItem ? grandParentInfo : parentInfo), prop) %>;
+                    %><%= FormatCamel(GetFKColumn(Info, (isItem ? grandParentInfo : parentInfo), prop)) %> = data.Parent_<%= prop.Name %>;
             <%
                 }
                 else
