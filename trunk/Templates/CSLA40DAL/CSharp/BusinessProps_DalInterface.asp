@@ -1,23 +1,23 @@
 <%
-if (usesDTO)
+if (usesDTO && ancestorLoaderLevel == 0)
 {
-    CslaObjectInfo universalInfo = Info;
-    if (IsCollectionType(universalInfo.ObjectType))
+    CslaObjectInfo currentInfo = Info;
+    if (IsCollectionType(currentInfo.ObjectType))
     {
-        universalInfo = Info.Parent.CslaObjects.Find(Info.ItemType);
+        currentInfo = Info.Parent.CslaObjects.Find(Info.ItemType);
     }
-    foreach (ChildProperty childProp in universalInfo.GetAllChildProperties())
+    foreach (ChildProperty childProp in currentInfo.GetAllChildProperties())
     {
         if (childProp.LoadingScheme == LoadingScheme.ParentLoad)
         {
-            CslaObjectInfo _child = FindChildInfo(universalInfo, childProp.TypeName);
+            CslaObjectInfo _child = FindChildInfo(currentInfo, childProp.TypeName);
             if (_child != null)
             {
                 if (IsCollectionType(_child.ObjectType))
                 {
-                    if (ancestorLoaderLevel == 0 && ancestorIsCollection)
+                    if (ancestorIsCollection)
                     {
-                        CslaObjectInfo child = FindChildInfo(universalInfo, childProp.TypeName);
+                        CslaObjectInfo child = FindChildInfo(currentInfo, childProp.TypeName);
                         if (child != null)
                         {
                             ChildProperty ancestorChildProperty = new ChildProperty();
@@ -47,9 +47,9 @@ if (usesDTO)
         <%
                     }
                 }
-                else if (ancestorLoaderLevel == 0 && ancestorIsCollection)
+                else if (ancestorIsCollection)
                 {
-                    CslaObjectInfo child = FindChildInfo(universalInfo, childProp.TypeName);
+                    CslaObjectInfo child = FindChildInfo(currentInfo, childProp.TypeName);
                     if (child != null)
                     {
                         %>
@@ -64,7 +64,7 @@ if (usesDTO)
                 }
                 else
                 {
-                    CslaObjectInfo child = FindChildInfo(universalInfo, childProp.TypeName);
+                    CslaObjectInfo child = FindChildInfo(currentInfo, childProp.TypeName);
                     if (child != null)
                     {
                         %>
@@ -80,13 +80,13 @@ if (usesDTO)
             }
         }
     }
-    foreach (ChildProperty childProp in GetParentLoadAllGrandChildPropertiesInHierarchy(universalInfo, true))
+    foreach (ChildProperty childProp in GetParentLoadAllGrandChildPropertiesInHierarchy(currentInfo, true))
     {
         if (childProp.LoadingScheme == LoadingScheme.ParentLoad)
         {
             bool childAncestorIsCollection = false;
             int childAncestorLoaderLevel = 0;
-            CslaObjectInfo _child = FindChildInfo(universalInfo, childProp.TypeName);
+            CslaObjectInfo _child = FindChildInfo(currentInfo, childProp.TypeName);
             if (_child != null)
             {
                 childAncestorLoaderLevel = AncestorLoaderLevel(_child, out childAncestorIsCollection);

@@ -1,31 +1,31 @@
 <%
-if (usesDTO)
+if (usesDTO && ancestorLoaderLevel == 0)
 {
-    bool isFirstField = Info.ObjectType != CslaObjectType.EditableRootCollection;
-    CslaObjectInfo universalInfo = Info;
-    if (IsCollectionType(universalInfo.ObjectType))
+    bool writeSeparatorLine = false;
+    CslaObjectInfo currentInfo = Info;
+    if (IsCollectionType(currentInfo.ObjectType))
     {
-        universalInfo = Info.Parent.CslaObjects.Find(Info.ItemType);
+        currentInfo = Info.Parent.CslaObjects.Find(Info.ItemType);
     }
-    foreach (ChildProperty childProp in universalInfo.GetAllChildProperties())
+    foreach (ChildProperty childProp in currentInfo.GetAllChildProperties())
     {
         if (childProp.LoadingScheme == LoadingScheme.ParentLoad)
         {
-            CslaObjectInfo _child = FindChildInfo(universalInfo, childProp.TypeName);
+            CslaObjectInfo _child = FindChildInfo(currentInfo, childProp.TypeName);
             if (_child != null)
             {
                 if (IsCollectionType(_child.ObjectType))
                 {
-                    if (ancestorLoaderLevel == 0 && ancestorIsCollection)
+                    if (ancestorIsCollection)
                     {
-                        CslaObjectInfo child = FindChildInfo(universalInfo, childProp.TypeName);
+                        CslaObjectInfo child = FindChildInfo(currentInfo, childProp.TypeName);
                         if (child != null)
                         {
                             ChildProperty ancestorChildProperty = new ChildProperty();
                             CslaObjectInfo _parent = child.FindParent(child);
                             if (_parent != null)
                             {
-                                if (isFirstField) { Response.Write(Environment.NewLine); isFirstField = false; }
+                                writeSeparatorLine = true;
                                 %>
         private List<<%= FormatPascal(_child.ItemType) %>Dto> <%= FormatFieldName(childProp.TypeName) %> = new List<<%= FormatPascal(_child.ItemType) %>Dto>();
         <%
@@ -34,18 +34,18 @@ if (usesDTO)
                     }
                     else if (!ancestorIsCollection)
                     {
-                        if (isFirstField) { Response.Write(Environment.NewLine); isFirstField = false; }
+                        writeSeparatorLine = true;
                         %>
         private List<<%= FormatPascal(_child.ItemType) %>Dto> <%= FormatFieldName(childProp.TypeName) %> = new List<<%= FormatPascal(_child.ItemType) %>Dto>();
         <%
                     }
                 }
-                else if (ancestorLoaderLevel == 0 && ancestorIsCollection)
+                else if (ancestorIsCollection)
                 {
-                    CslaObjectInfo child = FindChildInfo(universalInfo, childProp.TypeName);
+                    CslaObjectInfo child = FindChildInfo(currentInfo, childProp.TypeName);
                     if (child != null)
                     {
-                        if (isFirstField) { Response.Write(Environment.NewLine); isFirstField = false; }
+                        writeSeparatorLine = true;
                         %>
         private List<<%= FormatPascal(_child.ObjectName) %>Dto> <%= FormatFieldName(_child.ObjectName) %> = new List<<%= FormatPascal(_child.ObjectName) %>Dto>();
         <%
@@ -53,10 +53,10 @@ if (usesDTO)
                 }
                 else
                 {
-                    CslaObjectInfo child = FindChildInfo(universalInfo, childProp.TypeName);
+                    CslaObjectInfo child = FindChildInfo(currentInfo, childProp.TypeName);
                     if (child != null)
                     {
-                        if (isFirstField) { Response.Write(Environment.NewLine); isFirstField = false; }
+                        writeSeparatorLine = true;
                         %>
         private <%= FormatPascal(childProp.TypeName) %>Dto <%= FormatFieldName(childProp.TypeName) %> = new <%= FormatPascal(childProp.TypeName) %>Dto();
         <%
@@ -65,13 +65,13 @@ if (usesDTO)
             }
         }
     }
-    foreach (ChildProperty childProp in GetParentLoadAllGrandChildPropertiesInHierarchy(universalInfo, true))
+    foreach (ChildProperty childProp in GetParentLoadAllGrandChildPropertiesInHierarchy(currentInfo, true))
     {
         if (childProp.LoadingScheme == LoadingScheme.ParentLoad)
         {
             bool childAncestorIsCollection = false;
             int childAncestorLoaderLevel = 0;
-            CslaObjectInfo _child = FindChildInfo(universalInfo, childProp.TypeName);
+            CslaObjectInfo _child = FindChildInfo(currentInfo, childProp.TypeName);
             if (_child != null)
             {
                 childAncestorLoaderLevel = AncestorLoaderLevel(_child, out childAncestorIsCollection);
@@ -85,14 +85,14 @@ if (usesDTO)
                 }
                 if (IsCollectionType(_child.ObjectType))
                 {
-                    if (isFirstField) { Response.Write(Environment.NewLine); isFirstField = false; }
+                    writeSeparatorLine = true;
                     %>
         private List<<%= FormatPascal(_child.ItemType) %>Dto> <%= FormatFieldName(childProp.TypeName) %> = new List<<%= FormatPascal(_child.ItemType) %>Dto>();
         <%
                 }
                 else
                 {
-                    if (isFirstField) { Response.Write(Environment.NewLine); isFirstField = false; }
+                    writeSeparatorLine = true;
                     %>
         private List<<%= FormatPascal(_child.ObjectName) %>Dto> <%= FormatFieldName(_child.ObjectName) %> = new List<<%= FormatPascal(_child.ObjectName) %>Dto>();
         <%
@@ -100,6 +100,7 @@ if (usesDTO)
             }
         }
     }
-    Response.Write(Environment.NewLine);
+    if (writeSeparatorLine)
+        Response.Write(Environment.NewLine);
 }
 %>

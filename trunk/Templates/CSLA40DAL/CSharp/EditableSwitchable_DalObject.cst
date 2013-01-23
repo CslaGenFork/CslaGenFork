@@ -49,7 +49,10 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
 {
 <!-- #include file="XmlComment_DalObject.asp" -->
     public partial class <%= Info.ObjectName %>Dal : I<%= Info.ObjectName %>Dal
-    {<!-- #include file="DataPortalFetch_DalObject.asp" -->
+    {
+<!-- #include file="StateFields_DalObject.asp" -->
+<!-- #include file="BusinessProps_DalObject.asp" -->
+<!-- #include file="DataPortalFetch_DalObject.asp" -->
 <!-- #include file="DataPortalInsert_DalObject.asp" -->
 <!-- #include file="DataPortalUpdate_DalObject.asp" -->
 <!-- #include file="InternalInsertUpdateDelete_DalObject.asp" -->
