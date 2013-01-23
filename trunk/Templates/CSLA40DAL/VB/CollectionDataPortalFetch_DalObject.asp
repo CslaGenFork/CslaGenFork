@@ -1,11 +1,11 @@
 <%
-bool isFirstDPFDO = true;
+bool isFirstCDPFDO = true;
 foreach (Criteria c in Info.CriteriaObjects)
 {
     if (c.GetOptions.DataPortal)
     {
-        if (isFirstDPFDO)
-            isFirstDPFDO = false;
+        if (isFirstCDPFDO)
+            isFirstCDPFDO = false;
         else
             Response.Write(Environment.NewLine);
 
@@ -75,40 +75,49 @@ foreach (Criteria c in Info.CriteriaObjects)
                     <%
             if (Info.CommandTimeout != string.Empty)
             {
-                %>cmd.CommandTimeout = <%= Info.CommandTimeout %>;
+                %>
+                    cmd.CommandTimeout = <%= Info.CommandTimeout %>;
                     <%
             }
-            %>cmd.CommandType = CommandType.StoredProcedure;
+            %>
+                    cmd.CommandType = CommandType.StoredProcedure;
                     <%
             foreach (Property p in c.Properties)
             {
                 if (!usesDTO)
                 {
-                    %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= GetParameterSet(Info, p, false, true) %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
+                    %>
+                    cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= GetParameterSet(Info, p, false, true) %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
                     <%
                 }
                 else
                 {
                     if (c.Properties.Count > 1)
                     {
-                        %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= GetParameterSet(p, true) %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
+                        %>
+                    cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= GetParameterSet(p, true) %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
                     <%
                     }
                     else
                     {
-                        %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= AssignSingleCriteria(c, "crit") %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
+                        %>
+                    cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= AssignSingleCriteria(c, "crit") %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
                     <%
                     }
                 }
             }
             if (usesDTO)
             {
-                %>var dr = cmd.ExecuteReader();
-                    return LoadCollection(dr);<%
+                %>
+                    var dr = cmd.ExecuteReader();
+                    return LoadCollection(dr);
+                    <%
             }
             else
             {
-                %>return cmd.ExecuteReader();<%
+                %>
+                    return cmd.ExecuteReader();
+                    <%
             }
             %>
                 }
