@@ -725,10 +725,10 @@ namespace CslaGenerator.Controls
             this.chkItemsUseSingleSP.Name = "chkItemsUseSingleSP";
             this.chkItemsUseSingleSP.Size = new System.Drawing.Size(193, 17);
             this.chkItemsUseSingleSP.TabIndex = 12;
-            this.chkItemsUseSingleSP.Text = "Use single SP set for N to N items";
+            this.chkItemsUseSingleSP.Text = "Single SP for M:M relation items";
             this.chkItemsUseSingleSP.UseVisualStyleBackColor = true;
             this.toolTip.SetToolTip(this.chkItemsUseSingleSP,
-                                     "If checked, on N to N relations, a single set of stored procedures is generated\r\n" +
+                                     "If checked, on M to M relations, a single set of stored procedures is generated\r\n" +
                                      "for relation items.");
             // 
             // StoredProcsTab
