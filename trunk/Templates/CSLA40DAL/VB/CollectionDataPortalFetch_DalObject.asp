@@ -140,11 +140,20 @@ if (usesDTO)
                 {
                     <%= FormatCamel(Info.ObjectName) %>.Add(Fetch(dr));
                 }
+                <%
+    if (ParentLoadsChildren(Info))
+    {
+        %>
+                if (<%= FormatCamel(Info.ObjectName) %>.Count > 0)
+                    FetchChildren(dr);
+                <%
+    }
+    %>
             }
             return <%= FormatCamel(Info.ObjectName) %>;
         }
 
-<!-- #include file="Fetch_DalObject.asp" -->
+<!-- #include file="FetchItem_DalObject.asp" -->
         <%
 }
 %>

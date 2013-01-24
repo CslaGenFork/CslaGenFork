@@ -106,7 +106,7 @@ foreach (Criteria c in Info.CriteriaObjects)
     {
         %>
                     var dr = cmd.ExecuteReader();
-                    return LoadCollection(dr);
+                    return <%= isCollection ? "LoadCollection(dr)" : "Fetch(dr)" %>;
                     <%
     }
     else
@@ -121,6 +121,13 @@ foreach (Criteria c in Info.CriteriaObjects)
         }
         <%
     }
+}
+if (usesDTO && ancestorLoaderLevel == 0)
+{
+    %>
+
+<!-- #include file="Fetch_DalObject.asp" -->
+<%
 }
 isFirstMethod = isFirstDPFDO;
 %>
