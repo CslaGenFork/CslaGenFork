@@ -1,9 +1,12 @@
-        private <%= Info.ItemType %>Dto Fetch(SafeDataReader dr)
+        private <%= Info.ObjectName %>Dto Fetch(IDataReader data)
         {
-            var <%= FormatCamel(Info.ItemType) %> = new <%= Info.ItemType %>Dto();
-            // Value properties
+            var <%= FormatCamel(Info.ObjectName) %> = new <%= Info.ObjectName %>Dto();
+            using (var dr = new SafeDataReader(data))
+            {
+                if (dr.Read())
+                {
             <%
-foreach (ValueProperty prop in itemInfo.GetAllValueProperties())
+foreach (ValueProperty prop in Info.GetAllValueProperties())
 {
     if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
         prop.DataAccess != ValueProperty.DataAccessBehaviour.WriteOnly)
@@ -11,8 +14,8 @@ foreach (ValueProperty prop in itemInfo.GetAllValueProperties())
         try
         {
             %>
-            <%= FormatCamel(Info.ItemType) %>.<%= FormatProperty(prop) %> = <%= GetDataReaderStatement(prop) %>;
-            <%
+                    <%= FormatCamel(Info.ObjectName) %>.<%= FormatProperty(prop) %> = <%= GetDataReaderStatement(prop) %>;
+                    <%
         }
         catch (Exception ex)
         {
@@ -20,22 +23,16 @@ foreach (ValueProperty prop in itemInfo.GetAllValueProperties())
         }
     }
 }
-
-// parent loading field
-bool useFieldForParentLoading = (((ancestorLoaderLevel > 2 && !ancestorIsCollection) || (ancestorLoaderLevel > 1 && ancestorIsCollection)) && Info.ParentProperties.Count > 0);
-if (useFieldForParentLoading)
+%>
+                }
+                <%
+if (ParentLoadsChildren(Info))
 {
     %>
-            // parent properties
-            <%
-    foreach(Property prop in Info.ParentProperties)
-    {
-        %>
-            <%= FormatCamel(Info.ItemType) %>.<%= FormatCamel(GetFKColumn(Info, (isItem ? grandParentInfo : parentInfo), prop)) %> = dr.<%= GetReaderMethod(prop.PropertyType) %>("<%= GetFKColumn(Info, (isItem ? grandParentInfo : parentInfo), prop) %>");
-            <%
-    }
+                FetchChildren(dr);
+                <%
 }
 %>
-
-            return <%= FormatCamel(Info.ItemType) %>;
+            }
+            return <%= FormatCamel(Info.ObjectName) %>;
         }
