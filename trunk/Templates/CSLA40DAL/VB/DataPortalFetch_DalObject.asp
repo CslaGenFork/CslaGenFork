@@ -128,6 +128,12 @@ if (usesDTO && ancestorLoaderLevel == 0)
 
 <!-- #include file="Fetch_DalObject.asp" -->
 <%
+    if (ParentLoadsChildren(Info))
+    {
+        %>
+<!-- #include file="FetchChildren_DalObject.asp" -->
+<%
+    }
 }
 isFirstMethod = isFirstDPFDO;
 %>
