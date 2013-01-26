@@ -40,11 +40,11 @@ namespace ParentLoad.Business.ERCLevel
         /// <summary>
         /// Maintains metadata about <see cref="Region_ID"/> property.
         /// </summary>
-        public static readonly PropertyInfo<int> Region_IDProperty = RegisterProperty<int>(p => p.Region_ID, "4_Regions ID");
+        public static readonly PropertyInfo<int> Region_IDProperty = RegisterProperty<int>(p => p.Region_ID, "Region ID");
         /// <summary>
-        /// Gets the 4_Regions ID.
+        /// Gets the Region ID.
         /// </summary>
-        /// <value>The 4_Regions ID.</value>
+        /// <value>The Region ID.</value>
         public int Region_ID
         {
             get { return GetProperty(Region_IDProperty); }
@@ -53,11 +53,11 @@ namespace ParentLoad.Business.ERCLevel
         /// <summary>
         /// Maintains metadata about <see cref="Region_Name"/> property.
         /// </summary>
-        public static readonly PropertyInfo<string> Region_NameProperty = RegisterProperty<string>(p => p.Region_Name, "4_Regions Name");
+        public static readonly PropertyInfo<string> Region_NameProperty = RegisterProperty<string>(p => p.Region_Name, "Region Name");
         /// <summary>
-        /// Gets or sets the 4_Regions Name.
+        /// Gets or sets the Region Name.
         /// </summary>
-        /// <value>The 4_Regions Name.</value>
+        /// <value>The Region Name.</value>
         public string Region_Name
         {
             get { return GetProperty(Region_NameProperty); }

@@ -28,9 +28,9 @@ namespace ParentLoadRO.Business.ERLevel
         #region Business Properties
 
         /// <summary>
-        /// Gets or sets the 6_CityRoads Child Name.
+        /// Gets or sets the City Child Name.
         /// </summary>
-        /// <value>The 6_CityRoads Child Name.</value>
+        /// <value>The City Child Name.</value>
         public string City_Child_Name { get; private set; }
 
         #endregion

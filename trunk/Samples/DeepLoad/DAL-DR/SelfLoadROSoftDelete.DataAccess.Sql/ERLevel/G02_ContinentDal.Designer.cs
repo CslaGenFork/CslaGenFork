@@ -3,8 +3,8 @@ using System.Data;
 using System.Data.SqlClient;
 using Csla;
 using Csla.Data;
-using SelfLoadROSoftDelete.DataAccess.ERLevel;
 using SelfLoadROSoftDelete.DataAccess;
+using SelfLoadROSoftDelete.DataAccess.ERLevel;
 
 namespace SelfLoadROSoftDelete.DataAccess.Sql.ERLevel
 {

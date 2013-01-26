@@ -3,8 +3,8 @@ using System.Data;
 using System.Data.SqlClient;
 using Csla;
 using Csla.Data;
-using SelfLoadRO.DataAccess.ERCLevel;
 using SelfLoadRO.DataAccess;
+using SelfLoadRO.DataAccess.ERCLevel;
 
 namespace SelfLoadRO.DataAccess.Sql.ERCLevel
 {

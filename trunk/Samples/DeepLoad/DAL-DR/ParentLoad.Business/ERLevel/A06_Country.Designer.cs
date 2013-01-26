@@ -43,11 +43,11 @@ namespace ParentLoad.Business.ERLevel
         /// <summary>
         /// Maintains metadata about <see cref="Country_ID"/> property.
         /// </summary>
-        public static readonly PropertyInfo<int> Country_IDProperty = RegisterProperty<int>(p => p.Country_ID, "3_Countries ID");
+        public static readonly PropertyInfo<int> Country_IDProperty = RegisterProperty<int>(p => p.Country_ID, "Country ID");
         /// <summary>
-        /// Gets the 3_Countries ID.
+        /// Gets the Country ID.
         /// </summary>
-        /// <value>The 3_Countries ID.</value>
+        /// <value>The Country ID.</value>
         public int Country_ID
         {
             get { return GetProperty(Country_IDProperty); }
@@ -56,11 +56,11 @@ namespace ParentLoad.Business.ERLevel
         /// <summary>
         /// Maintains metadata about <see cref="Country_Name"/> property.
         /// </summary>
-        public static readonly PropertyInfo<string> Country_NameProperty = RegisterProperty<string>(p => p.Country_Name, "3_Countries Name");
+        public static readonly PropertyInfo<string> Country_NameProperty = RegisterProperty<string>(p => p.Country_Name, "Country Name");
         /// <summary>
-        /// Gets or sets the 3_Countries Name.
+        /// Gets or sets the Country Name.
         /// </summary>
-        /// <value>The 3_Countries Name.</value>
+        /// <value>The Country Name.</value>
         public string Country_Name
         {
             get { return GetProperty(Country_NameProperty); }
@@ -70,11 +70,11 @@ namespace ParentLoad.Business.ERLevel
         /// <summary>
         /// Maintains metadata about <see cref="ParentSubContinentID"/> property.
         /// </summary>
-        public static readonly PropertyInfo<int> ParentSubContinentIDProperty = RegisterProperty<int>(p => p.ParentSubContinentID, "ParentSubContinentID");
+        public static readonly PropertyInfo<int> ParentSubContinentIDProperty = RegisterProperty<int>(p => p.ParentSubContinentID, "Parent Sub Continent ID");
         /// <summary>
-        /// Gets or sets the ParentSubContinentID.
+        /// Gets or sets the Parent Sub Continent ID.
         /// </summary>
-        /// <value>The ParentSubContinentID.</value>
+        /// <value>The Parent Sub Continent ID.</value>
         public int ParentSubContinentID
         {
             get { return GetProperty(ParentSubContinentIDProperty); }

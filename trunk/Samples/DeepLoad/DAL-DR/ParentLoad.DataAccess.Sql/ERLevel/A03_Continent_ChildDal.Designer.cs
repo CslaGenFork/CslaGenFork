@@ -3,8 +3,8 @@ using System.Data;
 using System.Data.SqlClient;
 using Csla;
 using Csla.Data;
-using ParentLoad.DataAccess.ERLevel;
 using ParentLoad.DataAccess;
+using ParentLoad.DataAccess.ERLevel;
 
 namespace ParentLoad.DataAccess.Sql.ERLevel
 {

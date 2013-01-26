@@ -564,7 +564,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>1_Continents ID</FriendlyName>
+          <FriendlyName>Continent ID</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue>_lastID</DefaultValue>
@@ -625,7 +625,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>1_Continents Name</FriendlyName>
+          <FriendlyName>Continent Name</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
@@ -911,7 +911,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>2_SubContinents Child Name</FriendlyName>
+          <FriendlyName>Continent Child Name</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
@@ -1199,7 +1199,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>2_SubContinents Child Name</FriendlyName>
+          <FriendlyName>Continent Child Name</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
@@ -1752,7 +1752,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>2_SubContinents ID</FriendlyName>
+          <FriendlyName>Sub Continent ID</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue>_lastID</DefaultValue>
@@ -1813,7 +1813,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>2_SubContinents Name</FriendlyName>
+          <FriendlyName>Sub Continent Name</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
@@ -2101,7 +2101,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>3_Countries Child Name</FriendlyName>
+          <FriendlyName>Sub Continent Child Name</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
@@ -2162,7 +2162,7 @@
           <DataAccess>UpdateOnly</DataAccess>
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>SubContinent ID1</FriendlyName>
+          <FriendlyName>Sub Continent ID1</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
@@ -2511,7 +2511,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>3_Countries Child Name</FriendlyName>
+          <FriendlyName>Sub Continent Child Name</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
@@ -3125,7 +3125,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>3_Countries ID</FriendlyName>
+          <FriendlyName>Country ID</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue>_lastID</DefaultValue>
@@ -3186,7 +3186,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>3_Countries Name</FriendlyName>
+          <FriendlyName>Country Name</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
@@ -3247,7 +3247,7 @@
           <DataAccess>UpdateOnly</DataAccess>
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>ParentSubContinentID</FriendlyName>
+          <FriendlyName>Parent Sub Continent ID</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
@@ -3596,7 +3596,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>4_Regions Child Name</FriendlyName>
+          <FriendlyName>Country Child Name</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
@@ -3884,7 +3884,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>4_Regions Child Name</FriendlyName>
+          <FriendlyName>Country Child Name</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
@@ -4437,7 +4437,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>4_Regions ID</FriendlyName>
+          <FriendlyName>Region ID</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue>_lastID</DefaultValue>
@@ -4498,7 +4498,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>4_Regions Name</FriendlyName>
+          <FriendlyName>Region Name</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
@@ -4786,7 +4786,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>5_Cities Child Name</FriendlyName>
+          <FriendlyName>Region Child Name</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
@@ -5074,7 +5074,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>5_Cities Child Name</FriendlyName>
+          <FriendlyName>Region Child Name</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
@@ -5627,7 +5627,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>5_Cities ID</FriendlyName>
+          <FriendlyName>City ID</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue>_lastID</DefaultValue>
@@ -5688,7 +5688,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>5_Cities Name</FriendlyName>
+          <FriendlyName>City Name</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
@@ -5976,7 +5976,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>6_CityRoads Child Name</FriendlyName>
+          <FriendlyName>City Child Name</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
@@ -6264,7 +6264,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>6_CityRoads Child Name</FriendlyName>
+          <FriendlyName>City Child Name</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
@@ -6680,7 +6680,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>6_CityRoads ID</FriendlyName>
+          <FriendlyName>City Road ID</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue>_lastID</DefaultValue>
@@ -6741,7 +6741,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>6_CityRoads Name</FriendlyName>
+          <FriendlyName>City Road Name</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
@@ -7644,7 +7644,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>1_Continents ID</FriendlyName>
+          <FriendlyName>Continent ID</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue>_lastID</DefaultValue>
@@ -7705,7 +7705,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>1_Continents Name</FriendlyName>
+          <FriendlyName>Continent Name</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
@@ -7931,7 +7931,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>2_SubContinents Child Name</FriendlyName>
+          <FriendlyName>Continent Child Name</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
@@ -8219,7 +8219,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>2_SubContinents Child Name</FriendlyName>
+          <FriendlyName>Continent Child Name</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
@@ -8772,7 +8772,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>2_SubContinents ID</FriendlyName>
+          <FriendlyName>Sub Continent ID</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue>_lastID</DefaultValue>
@@ -8833,7 +8833,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>2_SubContinents Name</FriendlyName>
+          <FriendlyName>Sub Continent Name</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
@@ -9121,7 +9121,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>3_Countries Child Name</FriendlyName>
+          <FriendlyName>Sub Continent Child Name</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
@@ -9409,7 +9409,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>3_Countries Child Name</FriendlyName>
+          <FriendlyName>Sub Continent Child Name</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
@@ -9962,7 +9962,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>3_Countries ID</FriendlyName>
+          <FriendlyName>Country ID</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue>_lastID</DefaultValue>
@@ -10023,7 +10023,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>3_Countries Name</FriendlyName>
+          <FriendlyName>Country Name</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
@@ -10311,7 +10311,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>4_Regions Child Name</FriendlyName>
+          <FriendlyName>Country Child Name</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
@@ -10599,7 +10599,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>4_Regions Child Name</FriendlyName>
+          <FriendlyName>Country Child Name</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
@@ -11152,7 +11152,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>4_Regions ID</FriendlyName>
+          <FriendlyName>Region ID</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue>_lastID</DefaultValue>
@@ -11213,7 +11213,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>4_Regions Name</FriendlyName>
+          <FriendlyName>Region Name</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
@@ -11501,7 +11501,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>5_Cities Child Name</FriendlyName>
+          <FriendlyName>Region Child Name</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
@@ -11789,7 +11789,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>5_Cities Child Name</FriendlyName>
+          <FriendlyName>Region Child Name</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
@@ -12342,7 +12342,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>5_Cities ID</FriendlyName>
+          <FriendlyName>City ID</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue>_lastID</DefaultValue>
@@ -12403,7 +12403,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>5_Cities Name</FriendlyName>
+          <FriendlyName>City Name</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
@@ -12691,7 +12691,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>6_CityRoads Child Name</FriendlyName>
+          <FriendlyName>City Child Name</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
@@ -12979,7 +12979,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>6_CityRoads Child Name</FriendlyName>
+          <FriendlyName>City Child Name</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
@@ -13395,7 +13395,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>6_CityRoads ID</FriendlyName>
+          <FriendlyName>City Road ID</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue>_lastID</DefaultValue>
@@ -13456,7 +13456,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>6_CityRoads Name</FriendlyName>
+          <FriendlyName>City Road Name</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
