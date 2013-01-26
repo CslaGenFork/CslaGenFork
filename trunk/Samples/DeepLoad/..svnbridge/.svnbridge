@@ -3,4 +3,6 @@ DeepLoad.suo
 </Value></Property><Property><Name>svn:ignore</Name><Value>DeepLoad.sln.DotSettings.user
 DeepLoad.sln.docstates.suo
 DeepLoad.suo
-</Value></Property></Properties></ItemProperties>
+</Value></Property><Property><Name>bugtraq:warnifnoissue</Name><Value>true</Value></Property><Property><Name>bugtraq:message</Name><Value>Work Item #%BUGID%</Value></Property><Property><Name>bugtraq:url</Name><Value>http://cslagenfork.codeplex.com/workitem/%BUGID%</Value></Property><Property><Name>svn:ignore</Name><Value>*.suo
+*.user
+</Value></Property><Property><Name>bugtraq:label</Name><Value>Work item #:</Value></Property></Properties></ItemProperties>
