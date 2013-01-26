@@ -4,58 +4,58 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{200BF9D1-6A97-43BB-AC38-0F3B1A3D5FB1}"
 	ProjectSection(SolutionItems) = preProject
 		nuget.config = nuget.config
-		..\Readme.txt = ..\Readme.txt
+		Readme.txt = Readme.txt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeepLoadTest", "DeepLoadTest\DeepLoadTest.csproj", "{31BEFD7F-501B-4105-9165-5F509E914C8F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeepLoadTest", "DAL-DR\DeepLoadTest\DeepLoadTest.csproj", "{31BEFD7F-501B-4105-9165-5F509E914C8F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParentLoad.Business", "ParentLoad.Business\ParentLoad.Business.csproj", "{40CF8F6F-B107-4245-8CAD-CE536261A45C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParentLoad.Business", "DAL-DR\ParentLoad.Business\ParentLoad.Business.csproj", "{40CF8F6F-B107-4245-8CAD-CE536261A45C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParentLoad.DataAccess.Sql", "ParentLoad.DataAccess.Sql\ParentLoad.DataAccess.Sql.csproj", "{03A7C043-B947-4A7B-ABC1-0D459255110A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParentLoad.DataAccess.Sql", "DAL-DR\ParentLoad.DataAccess.Sql\ParentLoad.DataAccess.Sql.csproj", "{03A7C043-B947-4A7B-ABC1-0D459255110A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParentLoad.DataAccess", "ParentLoad.DataAccess\ParentLoad.DataAccess.csproj", "{3AEB9EB5-67E9-4ACB-AD6F-CCD9096AAC86}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParentLoad.DataAccess", "DAL-DR\ParentLoad.DataAccess\ParentLoad.DataAccess.csproj", "{3AEB9EB5-67E9-4ACB-AD6F-CCD9096AAC86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParentLoadRO.Business", "ParentLoadRO.Business\ParentLoadRO.Business.csproj", "{BB4D0208-87B9-4805-BB8C-CEB5117C5B4D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParentLoadRO.Business", "DAL-DR\ParentLoadRO.Business\ParentLoadRO.Business.csproj", "{BB4D0208-87B9-4805-BB8C-CEB5117C5B4D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParentLoadRO.DataAccess.Sql", "ParentLoadRO.DataAccess.Sql\ParentLoadRO.DataAccess.Sql.csproj", "{6FD9BE04-FA72-4122-B75C-CFF13EB04D86}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParentLoadRO.DataAccess.Sql", "DAL-DR\ParentLoadRO.DataAccess.Sql\ParentLoadRO.DataAccess.Sql.csproj", "{6FD9BE04-FA72-4122-B75C-CFF13EB04D86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParentLoadRO.DataAccess", "ParentLoadRO.DataAccess\ParentLoadRO.DataAccess.csproj", "{6B5E4A1C-772E-40B3-93EA-1FF4883393D7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParentLoadRO.DataAccess", "DAL-DR\ParentLoadRO.DataAccess\ParentLoadRO.DataAccess.csproj", "{6B5E4A1C-772E-40B3-93EA-1FF4883393D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelfLoad.Business", "SelfLoad.Business\SelfLoad.Business.csproj", "{1FE9C16B-ABC9-48C5-ADA7-4196B3803B7B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelfLoad.Business", "DAL-DR\SelfLoad.Business\SelfLoad.Business.csproj", "{1FE9C16B-ABC9-48C5-ADA7-4196B3803B7B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelfLoad.DataAccess.Sql", "SelfLoad.DataAccess.Sql\SelfLoad.DataAccess.Sql.csproj", "{41A44DEA-66D6-4AB4-AC31-100C2D9CC5AB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelfLoad.DataAccess.Sql", "DAL-DR\SelfLoad.DataAccess.Sql\SelfLoad.DataAccess.Sql.csproj", "{41A44DEA-66D6-4AB4-AC31-100C2D9CC5AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelfLoad.DataAccess", "SelfLoad.DataAccess\SelfLoad.DataAccess.csproj", "{A453B506-C363-4D71-BA70-71D80E898C72}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelfLoad.DataAccess", "DAL-DR\SelfLoad.DataAccess\SelfLoad.DataAccess.csproj", "{A453B506-C363-4D71-BA70-71D80E898C72}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelfLoadRO.Business", "SelfLoadRO.Business\SelfLoadRO.Business.csproj", "{89DABC30-3A87-4E6A-8877-C14B5DC59F8D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelfLoadRO.Business", "DAL-DR\SelfLoadRO.Business\SelfLoadRO.Business.csproj", "{89DABC30-3A87-4E6A-8877-C14B5DC59F8D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelfLoadRO.DataAccess.Sql", "SelfLoadRO.DataAccess.Sql\SelfLoadRO.DataAccess.Sql.csproj", "{477D22E6-860C-4E64-B35E-363D49089AB7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelfLoadRO.DataAccess.Sql", "DAL-DR\SelfLoadRO.DataAccess.Sql\SelfLoadRO.DataAccess.Sql.csproj", "{477D22E6-860C-4E64-B35E-363D49089AB7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelfLoadRO.DataAccess", "SelfLoadRO.DataAccess\SelfLoadRO.DataAccess.csproj", "{D59CED34-5913-49FE-A822-8190D14F30CE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelfLoadRO.DataAccess", "DAL-DR\SelfLoadRO.DataAccess\SelfLoadRO.DataAccess.csproj", "{D59CED34-5913-49FE-A822-8190D14F30CE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelfLoadROSoftDelete.Business", "SelfLoadROSoftDelete.Business\SelfLoadROSoftDelete.Business.csproj", "{E856448B-6904-43B9-B8F9-136FDFBE3503}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelfLoadROSoftDelete.Business", "DAL-DR\SelfLoadROSoftDelete.Business\SelfLoadROSoftDelete.Business.csproj", "{E856448B-6904-43B9-B8F9-136FDFBE3503}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelfLoadROSoftDelete.DataAccess.Sql", "SelfLoadROSoftDelete.DataAccess.Sql\SelfLoadROSoftDelete.DataAccess.Sql.csproj", "{76119DAC-654C-4D1C-9F28-FCDC3EF464E6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelfLoadROSoftDelete.DataAccess.Sql", "DAL-DR\SelfLoadROSoftDelete.DataAccess.Sql\SelfLoadROSoftDelete.DataAccess.Sql.csproj", "{76119DAC-654C-4D1C-9F28-FCDC3EF464E6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelfLoadROSoftDelete.DataAccess", "SelfLoadROSoftDelete.DataAccess\SelfLoadROSoftDelete.DataAccess.csproj", "{5B23C618-2BAF-4A4C-AC9D-EB6C6F23EACE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelfLoadROSoftDelete.DataAccess", "DAL-DR\SelfLoadROSoftDelete.DataAccess\SelfLoadROSoftDelete.DataAccess.csproj", "{5B23C618-2BAF-4A4C-AC9D-EB6C6F23EACE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelfLoadSoftDelete.Business", "SelfLoadSoftDelete.Business\SelfLoadSoftDelete.Business.csproj", "{0E5FFB9B-B619-4516-BB1B-E1C2F8CF4E09}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelfLoadSoftDelete.Business", "DAL-DR\SelfLoadSoftDelete.Business\SelfLoadSoftDelete.Business.csproj", "{0E5FFB9B-B619-4516-BB1B-E1C2F8CF4E09}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelfLoadSoftDelete.DataAccess", "SelfLoadSoftDelete.DataAccess\SelfLoadSoftDelete.DataAccess.csproj", "{DE3F205E-BC3F-4771-AF37-5C8305B1336E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelfLoadSoftDelete.DataAccess", "DAL-DR\SelfLoadSoftDelete.DataAccess\SelfLoadSoftDelete.DataAccess.csproj", "{DE3F205E-BC3F-4771-AF37-5C8305B1336E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParentLoadROSoftDelete.Business", "ParentLoadROSoftDelete.Business\ParentLoadROSoftDelete.Business.csproj", "{26B08F92-CF7A-416F-B527-759C81CCA0B7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParentLoadROSoftDelete.Business", "DAL-DR\ParentLoadROSoftDelete.Business\ParentLoadROSoftDelete.Business.csproj", "{26B08F92-CF7A-416F-B527-759C81CCA0B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParentLoadROSoftDelete.DataAccess", "ParentLoadROSoftDelete.DataAccess\ParentLoadROSoftDelete.DataAccess.csproj", "{9C07988A-770A-4508-B4EE-5242BEFB36CD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParentLoadROSoftDelete.DataAccess", "DAL-DR\ParentLoadROSoftDelete.DataAccess\ParentLoadROSoftDelete.DataAccess.csproj", "{9C07988A-770A-4508-B4EE-5242BEFB36CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParentLoadROSoftDelete.DataAccess.Sql", "ParentLoadROSoftDelete.DataAccess.Sql\ParentLoadROSoftDelete.DataAccess.Sql.csproj", "{68162115-2938-492E-A7F8-C1F9505C327D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParentLoadROSoftDelete.DataAccess.Sql", "DAL-DR\ParentLoadROSoftDelete.DataAccess.Sql\ParentLoadROSoftDelete.DataAccess.Sql.csproj", "{68162115-2938-492E-A7F8-C1F9505C327D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParentLoadSoftDelete.Business", "ParentLoadSoftDelete.Business\ParentLoadSoftDelete.Business.csproj", "{789B204E-CC18-47EE-A44C-503857DD507F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParentLoadSoftDelete.Business", "DAL-DR\ParentLoadSoftDelete.Business\ParentLoadSoftDelete.Business.csproj", "{789B204E-CC18-47EE-A44C-503857DD507F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParentLoadSoftDelete.DataAccess", "ParentLoadSoftDelete.DataAccess\ParentLoadSoftDelete.DataAccess.csproj", "{BF966A99-C3D6-4314-BF02-986B049B22F5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParentLoadSoftDelete.DataAccess", "DAL-DR\ParentLoadSoftDelete.DataAccess\ParentLoadSoftDelete.DataAccess.csproj", "{BF966A99-C3D6-4314-BF02-986B049B22F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParentLoadSoftDelete.DataAccess.Sql", "ParentLoadSoftDelete.DataAccess.Sql\ParentLoadSoftDelete.DataAccess.Sql.csproj", "{720FFFD9-3518-4223-BD84-4BE0F5FFE955}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParentLoadSoftDelete.DataAccess.Sql", "DAL-DR\ParentLoadSoftDelete.DataAccess.Sql\ParentLoadSoftDelete.DataAccess.Sql.csproj", "{720FFFD9-3518-4223-BD84-4BE0F5FFE955}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelfLoadSoftDelete.DataAccess.Sql", "SelfLoadSoftDelete.DataAccess.Sql\SelfLoadSoftDelete.DataAccess.Sql.csproj", "{9F6C308B-D5F0-4596-8973-B162413E1C3B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelfLoadSoftDelete.DataAccess.Sql", "DAL-DR\SelfLoadSoftDelete.DataAccess.Sql\SelfLoadSoftDelete.DataAccess.Sql.csproj", "{9F6C308B-D5F0-4596-8973-B162413E1C3B}"
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
