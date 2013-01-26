@@ -122,17 +122,20 @@ foreach (Criteria c in Info.CriteriaObjects)
         <%
     }
 }
-if (usesDTO && ancestorLoaderLevel == 0)
+if (usesDTO)
 {
+    if (ancestorLoaderLevel == 0 || IsChildSelfLoaded(Info))
+    {
     %>
 
 <!-- #include file="Fetch_DalObject.asp" -->
 <%
-    if (ParentLoadsChildren(Info))
-    {
-        %>
+        if (ParentLoadsChildren(Info))
+        {
+            %>
 <!-- #include file="FetchChildren_DalObject.asp" -->
 <%
+        }
     }
 }
 isFirstMethod = isFirstDPFDO;
