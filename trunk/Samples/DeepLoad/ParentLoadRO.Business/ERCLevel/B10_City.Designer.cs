@@ -33,11 +33,11 @@ namespace ParentLoadRO.Business.ERCLevel
         /// <summary>
         /// Maintains metadata about <see cref="City_ID"/> property.
         /// </summary>
-        public static readonly PropertyInfo<int> City_IDProperty = RegisterProperty<int>(p => p.City_ID, "5_Cities ID", -1);
+        public static readonly PropertyInfo<int> City_IDProperty = RegisterProperty<int>(p => p.City_ID, "City ID", -1);
         /// <summary>
-        /// Gets the 5_Cities ID.
+        /// Gets the City ID.
         /// </summary>
-        /// <value>The 5_Cities ID.</value>
+        /// <value>The City ID.</value>
         public int City_ID
         {
             get { return GetProperty(City_IDProperty); }
@@ -46,11 +46,11 @@ namespace ParentLoadRO.Business.ERCLevel
         /// <summary>
         /// Maintains metadata about <see cref="City_Name"/> property.
         /// </summary>
-        public static readonly PropertyInfo<string> City_NameProperty = RegisterProperty<string>(p => p.City_Name, "5_Cities Name");
+        public static readonly PropertyInfo<string> City_NameProperty = RegisterProperty<string>(p => p.City_Name, "City Name");
         /// <summary>
-        /// Gets the 5_Cities Name.
+        /// Gets the City Name.
         /// </summary>
-        /// <value>The 5_Cities Name.</value>
+        /// <value>The City Name.</value>
         public string City_Name
         {
             get { return GetProperty(City_NameProperty); }
