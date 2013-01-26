@@ -3,8 +3,8 @@ using System.Data;
 using System.Data.SqlClient;
 using Csla;
 using Csla.Data;
-using SelfLoadSoftDelete.DataAccess.ERCLevel;
 using SelfLoadSoftDelete.DataAccess;
+using SelfLoadSoftDelete.DataAccess.ERCLevel;
 
 namespace SelfLoadSoftDelete.DataAccess.Sql.ERCLevel
 {

@@ -32,11 +32,11 @@ namespace ParentLoad.Business.ERLevel
         /// <summary>
         /// Maintains metadata about <see cref="Region_Child_Name"/> property.
         /// </summary>
-        public static readonly PropertyInfo<string> Region_Child_NameProperty = RegisterProperty<string>(p => p.Region_Child_Name, "5_Cities Child Name");
+        public static readonly PropertyInfo<string> Region_Child_NameProperty = RegisterProperty<string>(p => p.Region_Child_Name, "Region Child Name");
         /// <summary>
-        /// Gets or sets the 5_Cities Child Name.
+        /// Gets or sets the Region Child Name.
         /// </summary>
-        /// <value>The 5_Cities Child Name.</value>
+        /// <value>The Region Child Name.</value>
         public string Region_Child_Name
         {
             get { return GetProperty(Region_Child_NameProperty); }
