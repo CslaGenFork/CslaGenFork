@@ -3765,7 +3765,7 @@ namespace CslaGenerator.CodeGen
             return selfLoad;
         }
 
-        public static bool IsChildSelfNotLoaded(CslaObjectInfo info)
+        public static bool IsChildParentLoaded(CslaObjectInfo info)
         {
             var selfLoadNone = false;
             var parent = info.Parent.CslaObjects.Find(info.ParentType);
@@ -3775,7 +3775,7 @@ namespace CslaGenerator.CodeGen
                 {
                     if (childProp.TypeName == info.ObjectName)
                     {
-                        selfLoadNone = childProp.LoadingScheme == LoadingScheme.None;
+                        selfLoadNone = childProp.LoadingScheme == LoadingScheme.ParentLoad;
                         break;
                     }
                 }
