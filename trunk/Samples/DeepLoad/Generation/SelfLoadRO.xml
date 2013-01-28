@@ -55,7 +55,6 @@
     <SeparateBaseClasses>false</SeparateBaseClasses>
     <ActiveObjects>false</ActiveObjects>
     <UseDotDesignerFileNameConvention>true</UseDotDesignerFileNameConvention>
-    <RecompileTemplates>false</RecompileTemplates>
     <OutputLanguage>CSharp</OutputLanguage>
     <NullableSupport>true</NullableSupport>
     <PropertyMode>Default</PropertyMode>
@@ -87,8 +86,7 @@
     <GenerateSilverlight4>false</GenerateSilverlight4>
     <SilverlightUsingServices>false</SilverlightUsingServices>
     <DatabaseConnection>DeepLoad</DatabaseConnection>
-    <UseDto>Never</UseDto>
-    <DtoLimit>7</DtoLimit>
+    <GenerateDTO>false</GenerateDTO>
     <GenerateDalInterface>false</GenerateDalInterface>
     <GenerateDalObject>false</GenerateDalObject>
     <GenerateSynchronous>true</GenerateSynchronous>
