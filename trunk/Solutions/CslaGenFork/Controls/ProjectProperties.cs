@@ -69,7 +69,6 @@ namespace CslaGenerator.Controls
             InitializeComponent();
             FillComboBox(cboOutputLanguage, typeof (CodeLanguage));
             FillComboBox(cboTarget, typeof (TargetFramework));
-            FillComboBox(cboUseDto, typeof (TargetDto));
             FillComboBox(cboGenerateAuthorization, typeof (AuthorizationLevel));
             FillComboBox(cboHeaderVerbosity, typeof (HeaderVerbosity));
             FillComboBox(cboTransactionType, typeof (TransactionType));
@@ -314,8 +313,7 @@ namespace CslaGenerator.Controls
                 cboGenerateAuthorization.Enabled = false;
                 chkUsesCslaAuthorizationProvider.Enabled = false;
             }
-            cboUseDto.Enabled = UseDal;
-            txtDtoLimit.Enabled = UseDal && _genParams.UseDto == TargetDto.MoreThan;
+            chkGenerateDTO.Enabled = UseDal;
             chkGenerateDalInterface.Enabled = UseDal;
             chkGenerateDalObject.Enabled = UseDal;
             txtDalInterfaceNamespace.Enabled = UseDal;
