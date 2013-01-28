@@ -678,7 +678,7 @@ namespace CslaGenerator.CodeGen
             allNamespaces.Add("Csla");
 
             var dependencyNamespaces = new List<string>();
-            if (unit.GenerationParams.UseDto == TargetDto.Always)
+            if (unit.GenerationParams.GenerateDTO)
             {
                 dependencyNamespaces.AddRange(GetDependencyNamespaces(info));
                 foreach (var namespaceName in dependencyNamespaces)
@@ -712,7 +712,7 @@ namespace CslaGenerator.CodeGen
             allNamespaces.Add("Csla.Data");
 
             var dependencyNamespaces = new List<string>();
-            if (unit.GenerationParams.UseDto == TargetDto.Always)
+            if (unit.GenerationParams.GenerateDTO)
             {
                 dependencyNamespaces.AddRange(GetDependencyNamespaces(info));
                 foreach (var namespaceName in dependencyNamespaces)
@@ -850,7 +850,7 @@ namespace CslaGenerator.CodeGen
             {
                 result.Add("System");
                 if (unit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL ||
-                    unit.GenerationParams.UseDto == TargetDto.Never)
+                    !unit.GenerationParams.GenerateDTO)
                     result.Add("System.Data");
                 if (unit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL)
                     result.Add("System.Data.SqlClient");
@@ -859,7 +859,7 @@ namespace CslaGenerator.CodeGen
 
                 result.Add("Csla");
                 if (unit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL ||
-                    unit.GenerationParams.UseDto == TargetDto.Never)
+                    !unit.GenerationParams.GenerateDTO)
                     result.Add("Csla.Data");
                 if (contextUtilitiesnamespace != string.Empty)
                     result.Add(contextUtilitiesnamespace);
@@ -1005,7 +1005,7 @@ namespace CslaGenerator.CodeGen
             var result = new List<string>();
 
             if (unit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL ||
-                unit.GenerationParams.UseDto == TargetDto.Never)
+                !unit.GenerationParams.GenerateDTO)
                 result.Add("System.Data");
 
             if (unit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL)
@@ -1015,7 +1015,7 @@ namespace CslaGenerator.CodeGen
                 result.Add("System.Collections.Generic");
 
             if (unit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL ||
-                unit.GenerationParams.UseDto == TargetDto.Never)
+                !unit.GenerationParams.GenerateDTO)
                 result.Add("Csla.Data");
             if (contextUtilitiesnamespace != string.Empty)
                 result.Add(contextUtilitiesnamespace);
@@ -4915,19 +4915,8 @@ namespace CslaGenerator.CodeGen
 
         public bool DalObjectUsesDTO(CslaObjectInfo info)
         {
-            /*return CurrentUnit.GenerationParams.UseDto == TargetDto.Always ||
-                   (CurrentUnit.GenerationParams.UseDto == TargetDto.MoreThan &&
-                    info.GetDatabaseBoundValueProperties().Count > CurrentUnit.GenerationParams.DtoLimit);*/
-            return CurrentUnit.GenerationParams.UseDto == TargetDto.Always;
+            return CurrentUnit.GenerationParams.GenerateDTO;
         }
-
-        /*public bool DalObjectUsesCriteria(CslaObjectInfo info)
-        {
-            /*return CurrentUnit.GenerationParams.UseDto == TargetDto.Always ||
-                   (CurrentUnit.GenerationParams.UseDto == TargetDto.MoreThan &&
-                    info.GetDatabaseBoundValueProperties().Count > CurrentUnit.GenerationParams.DtoLimit);#1#
-            return CurrentUnit.GenerationParams.UseDto == TargetDto.Always;
-        }*/
 
         public string[] CslaObjectPrimaryKeys(string infoName)
         {

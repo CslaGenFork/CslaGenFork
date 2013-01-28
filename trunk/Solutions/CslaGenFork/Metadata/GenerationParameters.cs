@@ -14,7 +14,6 @@ namespace CslaGenerator.Metadata
         private bool _separateBaseClasses;
         private bool _activeObjects;
         private bool _useDotDesignerFileNameConvention = true;
-        private bool _recompileTemplates;
         private bool _nullableSupport;
         private CodeLanguage _outputLanguage = CodeLanguage.CSharp;
         private CslaPropertyMode _propertyMode = CslaPropertyMode.Default;
@@ -46,8 +45,7 @@ namespace CslaGenerator.Metadata
         private bool _generateSilverlight;
         private bool _silverlightUsingServices;
         private string _databaseConnection;
-        private TargetDto _useDto = TargetDto.MoreThan;
-        private int _dtoLimit = 7;
+        private bool _generateDTO = false;
         private bool _generateDalInterface = true;
         private bool _generateDalObject = true;
         private bool _generateSynchronous = true;
@@ -139,19 +137,6 @@ namespace CslaGenerator.Metadata
                 if (_useDotDesignerFileNameConvention == value)
                     return;
                 _useDotDesignerFileNameConvention = value;
-                OnPropertyChanged("");
-            }
-        }
-
-        [Browsable(false)]
-        public bool RecompileTemplates
-        {
-            get { return _recompileTemplates; }
-            set
-            {
-                if (_recompileTemplates == value)
-                    return;
-                _recompileTemplates = value;
                 OnPropertyChanged("");
             }
         }
@@ -553,27 +538,15 @@ namespace CslaGenerator.Metadata
             }
         }
 
-        public TargetDto UseDto
+        public bool GenerateDTO
         {
-            get { return _useDto; }
+            get { return _generateDTO; }
             set
             {
-                if (_useDto == value)
+                if (_generateDTO == value)
                     return;
-                _useDto = value;
-                OnPropertyChanged("UseDto");
-            }
-        }
-
-        public int DtoLimit
-        {
-            get { return _dtoLimit; }
-            set
-            {
-                if (_dtoLimit == value)
-                    return;
-                _dtoLimit = value;
-                OnPropertyChanged("");
+                _generateDTO = value;
+                OnPropertyChanged("GenerateDTO");
             }
         }
 
@@ -771,7 +744,7 @@ namespace CslaGenerator.Metadata
             OnPropertyChanged("GenerateSynchronous");
             OnPropertyChanged("GenerateAsynchronous");
             OnPropertyChanged("GenerateAuthorization");
-            OnPropertyChanged("UseDto");
+            OnPropertyChanged("GenerateDTO");
             OnPropertyChanged("GenerateSprocs");
         }
     }

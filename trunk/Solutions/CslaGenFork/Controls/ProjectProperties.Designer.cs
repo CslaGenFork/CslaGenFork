@@ -146,10 +146,7 @@ namespace CslaGenerator.Controls
             this.chkSilverlight = new System.Windows.Forms.CheckBox();
             this.chkSilverlightUseServices = new System.Windows.Forms.CheckBox();
             this.groupBoxDataAccessLayer = new System.Windows.Forms.GroupBox();
-            this.lblUseDto = new System.Windows.Forms.Label();
-            this.cboUseDto = new System.Windows.Forms.ComboBox();
-            this.txtDtoLimit = new System.Windows.Forms.TextBox();
-            this.lblDtoLimit = new System.Windows.Forms.Label();
+            this.chkGenerateDTO = new System.Windows.Forms.CheckBox();
             this.chkGenerateDalInterface = new System.Windows.Forms.CheckBox();
             this.chkGenerateDalObject = new System.Windows.Forms.CheckBox();
             this.groupBoxServerInvocation = new System.Windows.Forms.GroupBox();
@@ -1447,10 +1444,7 @@ namespace CslaGenerator.Controls
             // 
             // groupBoxDataAccessLayer
             // 
-            this.groupBoxDataAccessLayer.Controls.Add(this.lblUseDto);
-            this.groupBoxDataAccessLayer.Controls.Add(this.cboUseDto);
-            this.groupBoxDataAccessLayer.Controls.Add(this.txtDtoLimit);
-            this.groupBoxDataAccessLayer.Controls.Add(this.lblDtoLimit);
+            this.groupBoxDataAccessLayer.Controls.Add(this.chkGenerateDTO);
             this.groupBoxDataAccessLayer.Controls.Add(this.chkGenerateDalInterface);
             this.groupBoxDataAccessLayer.Controls.Add(this.chkGenerateDalObject);
             this.groupBoxDataAccessLayer.Location = new System.Drawing.Point(268, 42);
@@ -1460,42 +1454,17 @@ namespace CslaGenerator.Controls
             this.groupBoxDataAccessLayer.TabStop = false;
             this.groupBoxDataAccessLayer.Text = "Data Access Layer";
             // 
-            // lblUseDto
+            // chkGenerateDTO
             // 
-            this.lblUseDto.Location = new System.Drawing.Point(12, 18);
-            this.lblUseDto.Name = "lblUseDto";
-            this.lblUseDto.Size = new System.Drawing.Size(101, 16);
-            this.lblUseDto.TabIndex = 31;
-            this.lblUseDto.Text = "Use DTO:";
-            // 
-            // cboUseDto
-            // 
-            this.cboUseDto.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.generationParametersBindingSource, "UseDto", true, DataSourceUpdateMode.OnPropertyChanged));
-            this.cboUseDto.Location = new System.Drawing.Point(12, 34);
-            this.cboUseDto.Name = "cboUseDto";
-            this.cboUseDto.Size = new System.Drawing.Size(80, 21);
-            this.cboUseDto.TabIndex = 5;
-            this.toolTip.SetToolTip(this.cboUseDto, "Select when to use Data Transfer Objects:\r\n" +
-                "- \"MoreThan\" uses a DataReader on fetch operations and uses parameter passing or DTO on inserts and updates.\r\n" +
-                "- \"Always\" excludes the use of DataReader and is suited for XML data sources.\r\n" +
-                "- \"Never\" excludes the use of DTOs, except for return values.\r\n");
-            // 
-            // txtDtoLimit
-            // 
-            this.txtDtoLimit.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.generationParametersBindingSource, "DtoLimit", true, DataSourceUpdateMode.OnPropertyChanged));
-            this.txtDtoLimit.Location = new System.Drawing.Point(97, 34);
-            this.txtDtoLimit.Name = "txtDtoLimit";
-            this.txtDtoLimit.Size = new System.Drawing.Size(20, 20);
-            this.txtDtoLimit.TabIndex = 5;
-            this.toolTip.SetToolTip(this.txtDtoLimit, "Specify the maximum number of properties allowed for parameter passing.");
-            // 
-            // lblDtoLimit
-            // 
-            this.lblDtoLimit.Location = new System.Drawing.Point(120, 37);
-            this.lblDtoLimit.Name = "lblDtoLimit";
-            this.lblDtoLimit.Size = new System.Drawing.Size(105, 16);
-            this.lblDtoLimit.TabIndex = 31;
-            this.lblDtoLimit.Text = "properties.";
+            this.chkGenerateDTO.AutoSize = true;
+            this.chkGenerateDTO.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "GenerateDTO", true, DataSourceUpdateMode.OnPropertyChanged));
+            this.chkGenerateDTO.Location = new System.Drawing.Point(12, 34);
+            this.chkGenerateDTO.Name = "chkGenerateDTO";
+            this.chkGenerateDTO.Size = new System.Drawing.Size(50, 17);
+            this.chkGenerateDTO.TabIndex = 5;
+            this.chkGenerateDTO.Text = "Use DTO (and not a Data Reader)";
+            this.toolTip.SetToolTip(this.chkGenerateDTO, "If checked, DAL generation will use Data Transfer Objects.\r\n" +
+                "Otherwise DAL generation will use a DataReader on fetch operation\r\nand uses parameter passing on inserts and updates.");
             // 
             // chkGenerateDalInterface
             // 
@@ -2309,9 +2278,7 @@ namespace CslaGenerator.Controls
         private System.Windows.Forms.CheckBox chkSilverlight;
         private System.Windows.Forms.CheckBox chkSilverlightUseServices;
         private System.Windows.Forms.GroupBox groupBoxDataAccessLayer;
-        private System.Windows.Forms.Label lblUseDto;
-        private System.Windows.Forms.ComboBox cboUseDto;
-        private System.Windows.Forms.TextBox txtDtoLimit;
+        private System.Windows.Forms.CheckBox chkGenerateDTO;
         private System.Windows.Forms.Label lblDtoLimit;
         private System.Windows.Forms.CheckBox chkGenerateDalInterface;
         private System.Windows.Forms.CheckBox chkGenerateDalObject;

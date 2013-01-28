@@ -67,13 +67,6 @@ namespace CslaGenerator.CodeGen
         public void GenerateProject(CslaGeneratorUnit unit)
         {
             _unit = unit;
-            if (_unit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL &&
-                _unit.GenerationParams.UseDto == TargetDto.MoreThan)
-            {
-                MessageBox.Show(@"This release of CslaGenFork doesn't support conditional use of DTO.\r\nSelect either ""Always"" or ""Never"".",
-                    @"CslaGenFork DAL project generation", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-
             _unit.GenerationTimer.Restart();
             CslaTemplateHelperCS.PrimaryKeys.ClearCache();
             CslaObjectInfo objInfo = null;
@@ -195,7 +188,7 @@ namespace CslaGenerator.CodeGen
                     break;
 
                 if (generationParams.GenerateDalInterface &&
-                    generationParams.UseDto == TargetDto.Always &&
+                    generationParams.GenerateDTO &&
                     info.GenerateDataAccessRegion &&
                     (CslaTemplateHelperCS.IsObjectType(info.ObjectType) ||
                     info.ObjectType == CslaObjectType.NameValueList))

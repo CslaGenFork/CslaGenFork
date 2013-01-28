@@ -7,10 +7,10 @@
     <AutoCriteria>true</AutoCriteria>
     <AutoTimestampCriteria>false</AutoTimestampCriteria>
     <DatesDefaultStringWithTypeConversion>true</DatesDefaultStringWithTypeConversion>
-    <CreateTimestampPropertyMode>NoProperty</CreateTimestampPropertyMode>
+    <CreateTimestampPropertyMode>Managed</CreateTimestampPropertyMode>
     <ReadOnlyObjectsCopyAuditing>false</ReadOnlyObjectsCopyAuditing>
     <ReadOnlyObjectsCopyTimestamp>false</ReadOnlyObjectsCopyTimestamp>
-    <CreateReadOnlyObjectsPropertyMode>AutoProperty</CreateReadOnlyObjectsPropertyMode>
+    <CreateReadOnlyObjectsPropertyMode>Managed</CreateReadOnlyObjectsPropertyMode>
     <DefaultDataBase>MyDatabase</DefaultDataBase>
     <DefaultTransactionType>ADO</DefaultTransactionType>
     <DefaultPersistenceType>SqlConnectionManager</DefaultPersistenceType>
@@ -55,7 +55,6 @@
     <SeparateBaseClasses>false</SeparateBaseClasses>
     <ActiveObjects>false</ActiveObjects>
     <UseDotDesignerFileNameConvention>true</UseDotDesignerFileNameConvention>
-    <RecompileTemplates>false</RecompileTemplates>
     <OutputLanguage>CSharp</OutputLanguage>
     <NullableSupport>true</NullableSupport>
     <PropertyMode>Default</PropertyMode>
@@ -80,15 +79,14 @@
     <GenerateInlineQueries>false</GenerateInlineQueries>
     <GenerateQueriesWithSchema>true</GenerateQueriesWithSchema>
     <GenerateDatabaseClass>true</GenerateDatabaseClass>
-    <UseConnectionName>true</UseConnectionName>
+    <DalName />
     <UsesCslaAuthorizationProvider>true</UsesCslaAuthorizationProvider>
     <GenerateWinForms>true</GenerateWinForms>
     <GenerateWPF>true</GenerateWPF>
     <GenerateSilverlight4>true</GenerateSilverlight4>
     <SilverlightUsingServices>false</SilverlightUsingServices>
     <DatabaseConnection>MyDatabase</DatabaseConnection>
-    <UseDto>MoreThan</UseDto>
-    <DtoLimit>7</DtoLimit>
+    <GenerateDTO>true</GenerateDTO>
     <GenerateDalInterface>false</GenerateDalInterface>
     <GenerateDalObject>false</GenerateDalObject>
     <GenerateSynchronous>true</GenerateSynchronous>
@@ -99,5 +97,5 @@
   <ConnectionString />
   <ProjectName>MyProject</ProjectName>
   <TargetDirectory />
-  <FileVersion>4.0.2</FileVersion>
+  <FileVersion>4.0.3</FileVersion>
 </CslaGeneratorUnit>
