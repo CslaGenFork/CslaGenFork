@@ -123,6 +123,5 @@ if (Info.UseUnitOfWorkType == string.Empty)
             }
         }
         %>
-<!-- #include file="Save.asp" -->
 
         #endregion

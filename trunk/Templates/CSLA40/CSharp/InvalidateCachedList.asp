@@ -3,7 +3,6 @@ if (hasFactoryCache || hasDataPortalCache)
 {
     Infos.Append("To do list: edit \"" + Info.ObjectName + ".cs\", uncomment the \"OnDeserialized\" method and add the following line:" + Environment.NewLine);
     Infos.Append("      Saved += " + Info.ObjectName + "_Saved;" + Environment.NewLine);
-    Infos.Append(Environment.NewLine);
     %>
 
         #region Cache Invalidation

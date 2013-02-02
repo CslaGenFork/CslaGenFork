@@ -69,8 +69,14 @@ if (Info.UpdaterType != string.Empty)
             Response.Write(Environment.NewLine);
         }
         genOptional = true;
+
+        Infos.Append("To do list: edit \"" + Info.ObjectName + ".cs\", uncomment the \"OnDeserialized\" method and add the following line:" + Environment.NewLine);
+        Infos.Append("      " + Info.UpdaterType + "." + Info.UpdaterType + "Saved += " + Info.UpdaterType + "SavedHandler;" + Environment.NewLine);
         %>
         #region Saved Event Handler
+
+        // TODO: edit "<%= Info.ObjectName %>.cs", uncomment the "OnDeserialized" method and add the following line:
+        // TODO:     <%= Info.UpdaterType %>.<%= Info.UpdaterType %>Saved += <%= Info.UpdaterType %>SavedHandler;
 
         /// <summary>
         /// Handle Saved events of <see cref="<%= Info.UpdaterType %>"/> to update child <see cref="<%= Info.ItemType %>"/> objects. event.
@@ -81,7 +87,7 @@ if (Info.UpdaterType != string.Empty)
         {
             // find item corresponding to sender
             // and update item with e.NewObject
-            <%= Info.UpdaterType %> old = (<%= Info.UpdaterType %>)sender;
+            var old = (<%= Info.UpdaterType %>)sender;
             if (old.IsNew)
             {
                 // it is a new item
@@ -95,7 +101,7 @@ if (Info.UpdaterType != string.Empty)
             else
             {
                 // it is an existing item
-                foreach (<%= Info.ItemType %> child in this)
+                foreach (var child in this)
                 {
                     if (child.<%= identityName %> == old.<%= identitySourceName %>)
                     {
@@ -107,6 +113,7 @@ if (Info.UpdaterType != string.Empty)
         }
 
         #endregion
+
     <%
     }
 }

@@ -5,9 +5,18 @@ if ((Info.ObjectType == CslaObjectType.EditableRoot ||
     Info.ObjectType == CslaObjectType.EditableSwitchable) &&
     Info.SupportUpdateProperties == true)
 {
+    Infos.Append("To do list: edit \"" + Info.ObjectName + ".cs\", uncomment the \"OnDeserialized\" method and add the following line:" + Environment.NewLine);
+    Infos.Append("      Saved += " + Info.ObjectName + "_Saved;" + Environment.NewLine);
     %>
-
         #region Saved Event
+
+        // TODO: edit "<%= Info.ObjectName %>.cs", uncomment the "OnDeserialized" method and add the following line:
+        // TODO:     Saved += <%= Info.ObjectName %>_Saved;
+
+        private void <%= Info.ObjectName %>_Saved(object sender, Csla.Core.SavedEventArgs e)
+        {
+            On<%= Info.ObjectName %>Saved(this, e);
+        }
 
         /// <summary> Use this event to signal a <see cref="<%= Info.ObjectName %>"/> object was saved.</summary>
         public static event EventHandler<Csla.Core.SavedEventArgs> <%= Info.ObjectName %>Saved;

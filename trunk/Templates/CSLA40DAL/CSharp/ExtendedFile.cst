@@ -17,7 +17,8 @@ bool hasFactoryCache = false;
 bool hasDataPortalCache = false;
 CslaObjectInfo invalidatorInfo = Info;
 if (Info.ObjectType == CslaObjectType.EditableRootCollection ||
-    Info.ObjectType == CslaObjectType.DynamicEditableRoot)
+    Info.ObjectType == CslaObjectType.DynamicEditableRoot ||
+    Info.ObjectType == CslaObjectType.EditableRoot)
 {
     if (Info.ObjectType == CslaObjectType.DynamicEditableRoot)
     {
@@ -73,7 +74,17 @@ if (UseNoSilverlight() &&
         #region OnDeserialized actions
 
         <%
-        if (hasFactoryCache || hasDataPortalCache)
+        bool isUpdatable = false;
+        if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
+        {
+            if (Info.UpdaterType != string.Empty)
+            {
+                CslaObjectInfo childInfo4 = FindChildInfo(Info, Info.ItemType);
+                if (childInfo4.UpdateValueProperties.Count > 0)
+                    isUpdatable = true;
+            }
+        }
+        if (Info.SupportUpdateProperties || hasFactoryCache || hasDataPortalCache || isUpdatable)
         {
             %>
         /// <summary>
@@ -101,16 +112,22 @@ if (UseNoSilverlight() &&
         {
             base.OnDeserialized(<%= usesContext ? "context" : string.Empty %>);
             <%
-        if (hasFactoryCache || hasDataPortalCache)
+        if (Info.SupportUpdateProperties || hasFactoryCache || hasDataPortalCache)
         {
             %>
             Saved += <%= Info.ObjectName %>_Saved;
             <%
         }
+        else if(isUpdatable)
+        {
+            %>
+            <%= Info.UpdaterType %>.<%= Info.UpdaterType %>Saved += <%= Info.UpdaterType %>SavedHandler;
+            <%
+        }
         %>
             // add your custom OnDeserialized actions here.
             <%
-        if (hasFactoryCache || hasDataPortalCache)
+        if (Info.SupportUpdateProperties || hasFactoryCache || hasDataPortalCache || isUpdatable)
         {
             %>
         }
