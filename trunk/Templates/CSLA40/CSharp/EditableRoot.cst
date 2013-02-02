@@ -79,6 +79,7 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Busine
     Response.Write(Environment.NewLine);
     %>
 <!-- #include file="Constructor.asp" -->
+<!-- #include file="InvalidateCachedList.asp" -->
 <!-- #include file="Criteria.asp" -->
 <!-- #include file="ObjectAuthorizationMethods.asp" -->
 <!-- #include file="BusinessRules.asp" -->
