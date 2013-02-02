@@ -796,7 +796,8 @@ namespace CslaGenerator.Metadata
         {
             get
             {
-                if (_objectType != CslaObjectType.EditableRootCollection &&
+                if (_objectType != CslaObjectType.EditableRoot &&
+                    _objectType != CslaObjectType.EditableRootCollection &&
                     _objectType != CslaObjectType.DynamicEditableRootCollection)
                     return new List<string>();
 

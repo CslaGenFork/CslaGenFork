@@ -421,7 +421,7 @@
     <add key="EditableRoot:ValueColumn" value="false" />
     <add key="EditableRoot:CacheResults" value="false" />
     <add key="EditableRoot:SimpleCacheOptions" value="false" />
-    <add key="EditableRoot:InvalidateCache" value="false" />
+    <add key="EditableRoot:InvalidateCache" value="true" />
     <add key="EditableRoot:DbName" value="true" />
     <add key="EditableRoot:GetObjectCriteriaType" value="false" />
     <add key="EditableRoot:TransactionType" value="true" />

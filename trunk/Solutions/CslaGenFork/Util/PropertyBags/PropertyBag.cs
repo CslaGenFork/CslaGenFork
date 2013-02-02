@@ -1001,10 +1001,11 @@ namespace CslaGenerator.Util.PropertyBags
                             propertyName == "SimpleCacheOptions" ||
                             propertyName == "InsertUpdateRunLocal"))
                             return false;
-                        // hide for all
-                        if (propertyName == "SupportUpdateProperties" ||
+                        if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40 &&
+                            GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL) &&
+                            (propertyName == "SupportUpdateProperties" ||
                             propertyName == "UpdateValueProperties" ||
-                            propertyName == "UpdaterType")
+                            propertyName == "UpdaterType"))
                             return false;
                         if (cslaObject.ObjectType != CslaObjectType.UnitOfWork &&
                             (propertyName == "UnitOfWorkProperties" ||
