@@ -90,7 +90,8 @@ bool hasFactoryCache = false;
 bool hasDataPortalCache = false;
 CslaObjectInfo invalidatorInfo = Info;
 if (Info.ObjectType == CslaObjectType.EditableRootCollection ||
-    Info.ObjectType == CslaObjectType.DynamicEditableRoot)
+    Info.ObjectType == CslaObjectType.DynamicEditableRoot ||
+    Info.ObjectType == CslaObjectType.EditableRoot)
 {
     if (Info.ObjectType == CslaObjectType.DynamicEditableRoot)
     {
