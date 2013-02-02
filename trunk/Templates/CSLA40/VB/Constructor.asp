@@ -70,7 +70,7 @@ if (UseBoth())
         {
             // Prevent direct creation
             <%
-if (hasFactoryCache || hasDataPortalCache)
+if (Info.SupportUpdateProperties || hasFactoryCache || hasDataPortalCache)
 {
     %>
             this.Saved += <%= Info.ObjectName %>_Saved;

@@ -63,6 +63,5 @@ if (!CurrentUnit.GenerationParams.SilverlightUsingServices)
 <%
 }
 %>
-<!-- #include file="Save.asp" -->
 
         #endregion
