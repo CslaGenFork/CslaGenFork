@@ -16,21 +16,4 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.DalInt
     public partial interface I<%= Info.ObjectName %>Dal
     {
     }
-<%
-if (DalObjectUsesDTO(Info) && IsCriteriaObjectNeeded(Info))
-{
-    foreach (Criteria crit in Info.CriteriaObjects)
-    {
-        if (crit.Properties.Count > 1)
-        {
-            %>
-
-    public partial interface I<%= crit.Name %>
-    {
-    }
-<%
-        }
-    }
-}
-%>
 }

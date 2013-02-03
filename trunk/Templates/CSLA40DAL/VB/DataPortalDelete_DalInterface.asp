@@ -16,12 +16,27 @@ if (Info.GenerateDataPortalDelete)
         /// <summary>
         /// Deletes the <%= Info.ObjectName %> object from database.
         /// </summary>
-        /// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The delete criteria.</param>
         <%
                 if (c.Properties.Count > 1)
                 {
+                    foreach (Property prop in c.Properties)
+                    {
+                        string param = FormatCamel(prop.Name);
+                        %>
+        /// <param name="<%= param %>">The <%= param %> parameter of the <%= Info.ObjectName %> to delete.</param>
+        <%
+                    }
+                }
+                else if (c.Properties.Count > 0)
+                {
                     %>
-        void Delete(I<%= c.Name %> crit);
+        /// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The delete criteria.</param>
+        <%
+                }
+                if (c.Properties.Count > 1)
+                {
+                    %>
+        void Delete(<%= ReceiveMultipleCriteria(c) %>);
         <%
                 }
                 else

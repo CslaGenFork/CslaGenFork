@@ -43,6 +43,7 @@ if (Info.GenerateDataPortalDelete)
                 {
                     strSelfDeleteCritParams = "new " + c.Name + "(" + strSelfDeleteCritParams + ")";
                     strDeleteCritParams = "new " + c.Name + "(" + strDeleteCritParams + ")";
+                    strDeleteInvokeParams = SendMultipleCriteria(c, "crit");
                 }
                 else if (c.Properties.Count > 0)
                 {
@@ -186,28 +187,6 @@ if (Info.GenerateDataPortalDelete)
                 }
                 OnDeletePost(args);
             }
-            <%
-            /*foreach (Property p in c.Properties)
-            {
-                if (c.Properties.Count > 1)
-                {
-                    >cmd.Parameters.AddWithValue("@<= p.ParameterName >", <= GetParameterSet(p, true) ><= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") >).DbType = DbType.<= TypeHelper.GetDbType(p.PropertyType) >;<
-                }
-                else
-                {
-                    >cmd.Parameters.AddWithValue("@<= p.ParameterName >", <= AssignSingleCriteria(c, "crit") ><= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") >).DbType = DbType.<= TypeHelper.GetDbType(p.PropertyType) >;                    <
-                }
-            }
-            string hookArgs = string.Empty;
-            if (c.Properties.Count > 1)
-            {
-                hookArgs = ", crit";
-            }
-            else if (c.Properties.Count > 0)
-            {
-                hookArgs = ", " + HookSingleCriteria(c, "crit");
-            }*/
-            %>
         }
             <%
         }

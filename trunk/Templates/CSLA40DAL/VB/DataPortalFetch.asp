@@ -9,20 +9,30 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
             string strGetComment = string.Empty;
             bool getIsFirst = true;
 
-            foreach (Property p in c.Properties)
+            if (usesDTO)
             {
-                if (!getIsFirst)
+                if (c.Properties.Count == 1)
+                    strGetComment = "/// <param name=\"" + FormatCamel(c.Properties[0].Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(c.Properties[0].Name) + ".</param>";
+                if (c.Properties.Count > 1)
+                    strGetInvokeParams = SendMultipleCriteria(c, "crit");
+            }
+            else
+            {
+                foreach (Property p in c.Properties)
                 {
-                    strGetInvokeParams += ", ";
-                    strGetComment += System.Environment.NewLine + new string(' ', 8);
+                    if (!getIsFirst)
+                    {
+                        strGetInvokeParams += ", ";
+                        strGetComment += System.Environment.NewLine + new string(' ', 8);
+                    }
+                    else
+                        getIsFirst = false;
+
+                    TypeCodeEx propType = p.PropertyType;
+
+                    strGetInvokeParams += "crit." + FormatPascal(p.Name);
+                    strGetComment += "/// <param name=\"" + FormatCamel(p.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(p.Name) + ".</param>";
                 }
-                else
-                    getIsFirst = false;
-
-                TypeCodeEx propType = p.PropertyType;
-
-                strGetInvokeParams += "crit." + FormatPascal(p.Name);
-                strGetComment += "/// <param name=\"" + FormatCamel(p.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(p.Name) + ".</param>";
             }
             if (c.Properties.Count > 1)
                 strGetComment = "/// <param name=\"crit\">The fetch criteria.</param>";

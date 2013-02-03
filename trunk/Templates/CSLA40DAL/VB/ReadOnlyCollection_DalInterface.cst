@@ -49,7 +49,6 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
 <!-- #include file="BusinessProps_DalInterface.asp" -->
 <!-- #include file="CollectionDataPortalFetch_DalInterface.asp" -->
     }
-<!-- #include file="CriteriaInterface.asp" -->
 }
 <%
 }

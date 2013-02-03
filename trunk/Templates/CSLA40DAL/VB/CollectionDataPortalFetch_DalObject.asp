@@ -18,16 +18,30 @@ foreach (Criteria c in Info.CriteriaObjects)
         <%
             if (c.Properties.Count > 1)
             {
-                %>
-        /// <param name="crit">The fetch criteria.</param>
-        /// <returns>A list of <see cref="<%= Info.ItemType %>Dto"/>.</returns>
-        public List<<%= Info.ItemType %>Dto> Fetch(I<%= c.Name %> crit)
+                foreach (Property prop in c.Properties)
+                {
+                    string param = FormatCamel(prop.Name);
+                    %>
+        /// <param name="<%= param %>">The <%= param %> parameter of the <%= Info.ObjectName %> to fetch.</param>
         <%
+                }
             }
             else if (c.Properties.Count > 0)
             {
                 %>
         /// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The fetch criteria.</param>
+        <%
+            }
+            if (c.Properties.Count > 1)
+            {
+                %>
+        /// <returns>A list of <see cref="<%= Info.ItemType %>Dto"/>.</returns>
+        public List<<%= Info.ItemType %>Dto> Fetch(<%= ReceiveMultipleCriteria(c) %>)
+        <%
+            }
+            else if (c.Properties.Count > 0)
+            {
+                %>
         /// <returns>A list of <see cref="<%= Info.ItemType %>Dto"/>.</returns>
         public List<<%= Info.ItemType %>Dto> Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)
         <%
@@ -95,7 +109,7 @@ foreach (Criteria c in Info.CriteriaObjects)
                     if (c.Properties.Count > 1)
                     {
                         %>
-                    cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= GetParameterSet(p, true) %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
+                    cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= GetParameterSet(p, false, false, false) %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
                     <%
                     }
                     else

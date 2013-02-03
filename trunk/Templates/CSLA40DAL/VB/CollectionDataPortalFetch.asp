@@ -13,7 +13,6 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
         {
             if (c.GetOptions.DataPortal)
             {
-                string strGetCritParams = string.Empty;
                 string strGetInvokeParams = string.Empty;
                 string strGetComment = string.Empty;
                 bool getIsFirst = true;
@@ -23,7 +22,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
                     if (c.Properties.Count == 1)
                         strGetComment = "/// <param name=\"" + FormatCamel(c.Properties[0].Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(c.Properties[0].Name) + ".</param>";
                     if (c.Properties.Count > 1)
-                        strGetInvokeParams = "crit";
+                        strGetInvokeParams = SendMultipleCriteria(c, "crit");
                 }
                 else
                 {
@@ -31,7 +30,6 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
                     {
                         if (!getIsFirst)
                         {
-                            strGetCritParams += ", ";
                             strGetInvokeParams += ", ";
                             strGetComment += System.Environment.NewLine + new string(' ', 8);
                         }
@@ -40,18 +38,8 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
 
                         TypeCodeEx propType = p.PropertyType;
 
-                        strGetCritParams += p.Name;
                         strGetInvokeParams += "crit." + FormatPascal(p.Name);
                         strGetComment += "/// <param name=\"" + FormatCamel(p.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(p.Name) + ".</param>";
-                    }
-
-                    if (c.Properties.Count > 1)
-                    {
-                        strGetCritParams = "new " + c.Name + "(" + strGetCritParams + ")";
-                    }
-                    else if (c.Properties.Count > 0)
-                    {
-                        strGetCritParams = SendSingleCriteria(c, strGetCritParams);
                     }
                 }
                 if (c.Properties.Count > 1)

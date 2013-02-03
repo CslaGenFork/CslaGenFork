@@ -61,7 +61,6 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
     public partial interface I<%= Info.ObjectName %>Dal
     {<!-- #include file="NVLDataPortalFetch_DalInterface.asp" -->
     }
-<!-- #include file="CriteriaInterface.asp" -->
 }
 <%
 }

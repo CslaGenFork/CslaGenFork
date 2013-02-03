@@ -16,12 +16,27 @@ if (Info.GenerateDataPortalDelete)
         /// <summary>
         /// Deletes the <%= Info.ObjectName %> object from database.
         /// </summary>
-        /// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The delete criteria.</param>
         <%
                 if (c.Properties.Count > 1)
                 {
+                    foreach (Property prop in c.Properties)
+                    {
+                        string param = FormatCamel(prop.Name);
+                        %>
+        /// <param name="<%= param %>">The <%= param %> parameter of the <%= Info.ObjectName %> to delete.</param>
+        <%
+                    }
+                }
+                else if (c.Properties.Count > 0)
+                {
                     %>
-        public void Delete(<%= c.Name %> crit)
+        /// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The delete criteria.</param>
+        <%
+                }
+                if (c.Properties.Count > 1)
+                {
+                    %>
+        public void Delete(<%= ReceiveMultipleCriteria(c) %>)
         <%
                 }
                 else
@@ -77,7 +92,7 @@ if (Info.GenerateDataPortalDelete)
                 if (!usesDTO)
                 {
                     %>
-                    cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= GetParameterSet(Info, p, false, true) %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
+                    cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= GetParameterSet(Info, p, false, true) %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
                     <%
                 }
                 else
@@ -85,13 +100,13 @@ if (Info.GenerateDataPortalDelete)
                     if (c.Properties.Count > 1)
                     {
                         %>
-                    cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= GetParameterSet(p, true) %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
+                    cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= GetParameterSet(p, false, false, false) %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
                     <%
                     }
                     else
                     {
                         %>
-                    cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= AssignSingleCriteria(c, "crit") %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
+                    cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= AssignSingleCriteria(c, "crit") %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
                     <%
                     }
                 }

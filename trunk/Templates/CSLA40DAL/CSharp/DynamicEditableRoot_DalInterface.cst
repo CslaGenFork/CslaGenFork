@@ -47,7 +47,6 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
 <!-- #include file="DataPortalUpdate_DalInterface.asp" -->
 <!-- #include file="DataPortalDelete_DalInterface.asp" -->
     }
-<!-- #include file="CriteriaInterface.asp" -->
 }
 <%
 }

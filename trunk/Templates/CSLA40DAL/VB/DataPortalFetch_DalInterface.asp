@@ -17,7 +17,17 @@ foreach (Criteria c in Info.CriteriaObjects)
         /// Loads a <%= Info.ObjectName %> object from the database.
         /// </summary>
         <%
-            if (c.Properties.Count > 0)
+            if (c.Properties.Count > 1)
+            {
+                foreach (Property prop in c.Properties)
+                {
+                    string param = FormatCamel(prop.Name);
+                    %>
+        /// <param name="<%= param %>">The <%= param %> parameter of the <%= Info.ObjectName %> to fetch.</param>
+        <%
+                }
+            }
+            else if (c.Properties.Count > 0)
             {
                 %>
         /// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The fetch criteria.</param>
@@ -27,7 +37,7 @@ foreach (Criteria c in Info.CriteriaObjects)
             {
                 %>
         /// <returns>A <see cref="<%= Info.ObjectName %>Dto"/> object.</returns>
-        <%= Info.ObjectName %>Dto Fetch(I<%= c.Name %> crit);
+        <%= Info.ObjectName %>Dto Fetch(<%= ReceiveMultipleCriteria(c) %>);
         <%
             }
             else if (c.Properties.Count > 0)

@@ -70,7 +70,6 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
         Info.CriteriaObjects.Remove(critCGF);
     }
 %>
-<!-- #include file="CriteriaInterface.asp" -->
 }
 <%
 }
