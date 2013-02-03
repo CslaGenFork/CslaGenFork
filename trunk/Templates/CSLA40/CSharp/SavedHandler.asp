@@ -85,12 +85,9 @@ if (Info.UpdaterType != string.Empty)
         /// <param name="e">The <see cref="Csla.Core.SavedEventArgs"/> instance containing the event data.</param>
         private void <%= Info.UpdaterType %>SavedHandler(object sender, Csla.Core.SavedEventArgs e)
         {
-            // find item corresponding to sender
-            // and update item with e.NewObject
             var old = (<%= Info.UpdaterType %>)sender;
             if (old.IsNew)
             {
-                // it is a new item
                 IsReadOnly = false;
                 var rlce = RaiseListChangedEvents;
                 RaiseListChangedEvents = false;
@@ -100,12 +97,34 @@ if (Info.UpdaterType != string.Empty)
             }
             else
             {
-                // it is an existing item
-                foreach (var child in this)
+                for (int index = 0; index < this.Count; index++)
                 {
+                    var child = this[index];
                     if (child.<%= identityName %> == old.<%= identitySourceName %>)
                     {
                         child.UpdatePropertiesOnSaved((<%= Info.UpdaterType %>) e.NewObject);
+                        <%
+if (CurrentUnit.GenerationParams.GenerateWPF)
+{
+    if (CurrentUnit.GenerationParams.DualListInheritance)
+    {
+        %>
+#if !WINFORMS
+<%
+    }
+    %>
+                        var notifyCollectionChangedEventArgs =
+                            new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, child, child, index);
+                        OnCollectionChanged(notifyCollectionChangedEventArgs);
+                        <%
+    if (CurrentUnit.GenerationParams.DualListInheritance)
+    {
+        %>
+#endif
+<%
+    }
+}
+%>
                         break;
                     }
                 }

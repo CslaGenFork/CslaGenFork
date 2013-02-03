@@ -318,6 +318,11 @@ namespace CslaGenerator.CodeGen
                 prop.Nullable;
         }
 
+        public virtual string GetParameterSet(Property prop)
+        {
+            return GetParameterSet(prop, false);
+        }
+
         public virtual string GetParameterSet(Property prop, bool useCrit)
         {
             return GetParameterSet(prop, useCrit, false);
@@ -363,11 +368,6 @@ namespace CslaGenerator.CodeGen
                 default:
                     return propName;
             }
-        }
-
-        public virtual string GetParameterSet(Property prop)
-        {
-            return GetParameterSet(prop, false);
         }
 
         protected DbType GetDbType(DbBindColumn prop)
@@ -847,15 +847,19 @@ namespace CslaGenerator.CodeGen
             return result;
         }
 
-        private List<string> GetBaseCommonNamespaces(CslaObjectInfo info, CslaGeneratorUnit unit, string contextUtilitiesnamespace)
+        private List<string> GetBaseCommonNamespaces(CslaObjectInfo info, CslaGeneratorUnit unit,
+                                                     string contextUtilitiesnamespace)
         {
             var result = new List<string>();
 
             var isUnitOfWork = info.ObjectType == CslaObjectType.UnitOfWork;
 
+            result.Add("System");
+            if (!string.IsNullOrEmpty(info.UpdaterType))
+                result.Add("System.Collections.Specialized");
+
             if (!UseSilverlight() && !isUnitOfWork)
             {
-                result.Add("System");
                 if (unit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL ||
                     !unit.GenerationParams.GenerateDTO)
                     result.Add("System.Data");
@@ -873,7 +877,6 @@ namespace CslaGenerator.CodeGen
             }
             else
             {
-                result.Add("System");
                 result.Add("Csla");
             }
 
@@ -2378,6 +2381,29 @@ namespace CslaGenerator.CodeGen
 
         #region ParameterSet
 
+        /// <summary>
+        /// Gets the parameter set - for plain properties.
+        /// </summary>
+        /// <param name="info">The CslaObjectInfo.</param>
+        /// <param name="prop">The prop.</param>
+        /// <returns></returns>
+        public virtual string GetParameterSet(CslaObjectInfo info, Property prop)
+        {
+            return GetParameterSet(info, prop, false, false);
+        }
+
+        /// <summary>
+        /// Gets the parameter set - for criteria properties.
+        /// </summary>
+        /// <param name="info">The CslaObjectInfo.</param>
+        /// <param name="prop">The prop.</param>
+        /// <param name="isCriteria">if set to <c>true</c> [criteria].</param>
+        /// <returns></returns>
+        public virtual string GetParameterSet(CslaObjectInfo info, Property prop, bool isCriteria)
+        {
+            return GetParameterSet(info, prop, isCriteria, false);
+        }
+
         public virtual string GetParameterSet(CslaObjectInfo info, Property prop, bool isCriteria, bool isParameter)
         {
             TypeCodeEx propType = prop.PropertyType;
@@ -2420,29 +2446,6 @@ namespace CslaGenerator.CodeGen
                     return propName;
             }*/
             return propName;
-        }
-
-        /// <summary>
-        /// Gets the parameter set - for plain properties.
-        /// </summary>
-        /// <param name="info">The info.</param>
-        /// <param name="prop">The prop.</param>
-        /// <returns></returns>
-        public virtual string GetParameterSet(CslaObjectInfo info, Property prop)
-        {
-            return GetParameterSet(info, prop, false, false);
-        }
-
-        /// <summary>
-        /// Gets the parameter set - for criteria properties.
-        /// </summary>
-        /// <param name="info">The info.</param>
-        /// <param name="prop">The prop.</param>
-        /// <param name="isCriteria">if set to <c>true</c> [criteria].</param>
-        /// <returns></returns>
-        public virtual string GetParameterSet(CslaObjectInfo info, Property prop, bool isCriteria)
-        {
-            return GetParameterSet(info, prop, isCriteria, false);
         }
 
         #endregion
