@@ -23,9 +23,12 @@ if (UseBoth() && (CurrentUnit.GenerationParams.GenerateSynchronous || CurrentUni
 #else
 <%
 }
-%>
+if (CurrentUnit.GenerationParams.GenerateSilverlight4)
+{
+    %>
 <!-- #include file="GetNVLSyncSilverlight.asp" -->
 <%
+}
 if (!CurrentUnit.GenerationParams.GenerateAsynchronous && CurrentUnit.GenerationParams.GenerateSilverlight4)
 {
     %>
