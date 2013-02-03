@@ -1,9 +1,21 @@
-using SelfLoad.Business;
-
 namespace SelfLoad.Business.ERLevel
 {
     public partial class C09_CityColl
     {
+
+        #region OnDeserialized actions
+
+        /*/// <summary>
+        /// This method is called on a newly deserialized object
+        /// after deserialization is complete.
+        /// </summary>
+        protected override void OnDeserialized()
+        {
+            base.OnDeserialized();
+            // add your custom OnDeserialized actions here.
+        }*/
+
+        #endregion
 
         #region Pseudo Event Handlers
 
