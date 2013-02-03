@@ -185,7 +185,7 @@ if (Info.CriteriaObjects.Count > 0)
             /// </remarks>
             <%
                     }
-                    // Just creating strings for later use in the constructors in order to avoid another loop
+                    // Just creating strings for later use in constructors generation in order to avoid another loop
                     if (string.IsNullOrEmpty(prop.ParameterValue))
                     {
                         if (strParams.Length > 0)
@@ -217,7 +217,9 @@ if (Info.CriteriaObjects.Count > 0)
             <%
                     }
                 }
-                %>
+                if (strParams.Length > 0)
+                {
+                    %>
 
             /// <summary>
             /// Initializes a new instance of the <see cref="<%= crit.Name %>"/> class.
@@ -227,6 +229,9 @@ if (Info.CriteriaObjects.Count > 0)
             public <%= crit.Name %>()
             {
             }
+<%
+                }
+                %>
 
             /// <summary>
             /// Initializes a new instance of the <see cref="<%= crit.Name %>"/> class.
