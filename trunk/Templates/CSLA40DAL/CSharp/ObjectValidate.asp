@@ -207,8 +207,6 @@ if (CurrentUnit.GenerationParams.GenerateSilverlight4 ||
         {
             if (CurrentUnit.GenerationParams.GenerateSilverlight4 && criteria.CriteriaClassMode == CriteriaMode.Simple)
                 Warnings.Append("Criteria " + criteria.Name + ": must use Mode 'CriteriaBase' or 'BusinessBase' under Silverlight." + Environment.NewLine);
-            if (CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL && criteria.NestedClass && DalObjectUsesDTO(Info))
-                Errors.Append("Criteria " + criteria.Name + ": Nested criteria class isn't supported when generating DAL." + Environment.NewLine);
         }
     }
 }

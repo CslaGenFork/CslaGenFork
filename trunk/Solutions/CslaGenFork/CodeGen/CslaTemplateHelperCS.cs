@@ -318,12 +318,17 @@ namespace CslaGenerator.CodeGen
                 prop.Nullable;
         }
 
-        public virtual string GetParameterSet(Property prop, bool criteria)
+        public virtual string GetParameterSet(Property prop, bool useCrit)
         {
-            return GetParameterSet(prop, criteria, false);
+            return GetParameterSet(prop, useCrit, false);
         }
 
-        public virtual string GetParameterSet(Property prop, bool criteria, bool singleCriteria)
+        public virtual string GetParameterSet(Property prop, bool useCrit, bool singleCriteria)
+        {
+            return GetParameterSet(prop, useCrit, singleCriteria, true);
+        }
+
+        public virtual string GetParameterSet(Property prop, bool useCrit, bool singleCriteria, bool useField)
         {
             TypeCodeEx propType = prop.PropertyType;
             try
@@ -336,10 +341,12 @@ namespace CslaGenerator.CodeGen
             string propName;
             if (singleCriteria)
                 propName = "crit.Value";
-            else if (criteria)
+            else if (useCrit)
                 propName = "crit." + FormatPascal(prop.Name);
-            else
+            else if (useField)
                 propName = FormatFieldName(prop.Name);
+            else
+                propName = FormatCamel(prop.Name);
 
             if (nullable)
             {
@@ -5380,6 +5387,22 @@ namespace CslaGenerator.CodeGen
             return sb.ToString();
         }
 
+        public string SendMultipleCriteria(Criteria crit, string prefix)
+        {
+            var sb = new StringBuilder();
+            var firstParam = true;
+
+            foreach (var prop in crit.Properties)
+            {
+                if (firstParam)
+                    firstParam = false;
+                else
+                    sb.Append(", ");
+                sb.AppendFormat("{0}.{1}", prefix, prop.Name);
+            }
+            return sb.ToString();
+        }
+
         public string ReceiveSingleCriteria(Criteria crit, string paramName)
         {
             var sb = new StringBuilder();
@@ -5393,6 +5416,24 @@ namespace CslaGenerator.CodeGen
                 sb.AppendFormat("{0} {1}", param, paramName);
             }
 
+            return sb.ToString();
+        }
+
+        public string ReceiveMultipleCriteria(Criteria crit)
+        {
+            var sb = new StringBuilder();
+            var firstParam = true;
+
+            foreach (var prop in crit.Properties)
+            {
+                if (firstParam)
+                    firstParam = false;
+                else
+                    sb.Append(", ");
+                var paramType = GetDataTypeGeneric(prop, prop.PropertyType);
+                var paramName = FormatCamel(prop.Name);
+                sb.AppendFormat("{0} {1}", paramType, paramName);
+            }
             return sb.ToString();
         }
 
