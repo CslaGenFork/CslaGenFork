@@ -18,7 +18,7 @@ if (Info.GenerateDataPortalDelete)
             }
             string strDeleteCritParams = string.Empty;
             bool firstParam = true;
-            foreach (Property p in c.Properties)
+            foreach (CriteriaProperty p in c.Properties)
             {
                 if (firstParam)
                 {
@@ -120,7 +120,7 @@ if (Info.GenerateDataPortalDelete)
             }
             %>cmd.CommandType = CommandType.StoredProcedure;
                     <%
-            foreach (Property p in c.Properties)
+            foreach (CriteriaProperty p in c.Properties)
             {
                 if (c.Properties.Count > 1)
                 {

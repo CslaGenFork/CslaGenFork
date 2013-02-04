@@ -11,7 +11,7 @@ if (!Info.UseCustomLoading &&
             string strGetComment = string.Empty;
             bool getIsFirst = true;
 
-            foreach (Property p in c.Properties)
+            foreach (CriteriaProperty p in c.Properties)
             {
                 if (!getIsFirst)
                 {

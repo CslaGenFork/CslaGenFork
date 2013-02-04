@@ -97,7 +97,7 @@ foreach (Criteria c in Info.CriteriaObjects)
     %>
                     cmd.CommandType = CommandType.StoredProcedure;
                     <%
-    foreach (Property p in c.Properties)
+    foreach (CriteriaProperty p in c.Properties)
     {
         if (!usesDTO)
         {
