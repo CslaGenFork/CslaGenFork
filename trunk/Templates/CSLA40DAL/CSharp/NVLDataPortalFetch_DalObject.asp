@@ -8,26 +8,44 @@ foreach (Criteria c in Info.CriteriaObjects)
             %>
         /// <summary>
         /// Loads a <%= Info.ObjectName %> list from the database.
-        /// </summary><%
+        /// </summary>
+        <%
             if (c.Properties.Count > 1)
             {
-                %>
-        /// <param name="crit">The fetch criteria.</param>
-        /// <returns>A list of <see cref="<%= Info.ObjectName %>ItemDto"/>.</returns>
-        public List<<%= Info.ObjectName %>ItemDto> Fetch(<%= c.Name %> crit)<%
+                foreach (Property prop in c.Properties)
+                {
+                    string param = FormatCamel(prop.Name);
+                    %>
+        /// <param name="<%= param %>">The <%= param %> parameter of the <%= Info.ObjectName %> to fetch.</param>
+        <%
+                }
             }
             else if (c.Properties.Count > 0)
             {
                 %>
         /// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The fetch criteria.</param>
+        <%
+            }
+            if (c.Properties.Count > 1)
+            {
+                %>
         /// <returns>A list of <see cref="<%= Info.ObjectName %>ItemDto"/>.</returns>
-        public List<<%= Info.ObjectName %>ItemDto> Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)<%
+        public List<<%= Info.ObjectName %>ItemDto> Fetch(<%= ReceiveMultipleCriteria(c) %>)
+        <%
+            }
+            else if (c.Properties.Count > 0)
+            {
+                %>
+        /// <returns>A list of <see cref="<%= Info.ObjectName %>ItemDto"/>.</returns>
+        public List<<%= Info.ObjectName %>ItemDto> Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)
+        <%
             }
             else
             {
                 %>
         /// <returns>A list of <see cref="<%= Info.ObjectName %>ItemDto"/>.</returns>
-        public List<<%= Info.ObjectName %>ItemDto> Fetch()<%
+        public List<<%= Info.ObjectName %>ItemDto> Fetch()
+        <%
             }
         }
         else
@@ -53,7 +71,8 @@ foreach (Criteria c in Info.CriteriaObjects)
         /// Loads a <%= Info.ObjectName %> list from the database.
         /// </summary>
         <%= strGetComment %>/// <returns>A data reader to the <%= Info.ObjectName %>.</returns>
-        public IDataReader Fetch(<%= strGetCritParams %>)<%
+        public IDataReader Fetch(<%= strGetCritParams %>)
+        <%
         }
         %>
         {
@@ -64,32 +83,49 @@ foreach (Criteria c in Info.CriteriaObjects)
                     <%
         if (Info.CommandTimeout != string.Empty)
         {
-            %>cmd.CommandTimeout = <%= Info.CommandTimeout %>;
+            %>
+                    cmd.CommandTimeout = <%= Info.CommandTimeout %>;
                     <%
         }
-        %>cmd.CommandType = CommandType.StoredProcedure;
+        %>
+                    cmd.CommandType = CommandType.StoredProcedure;
                     <%
         foreach (CriteriaProperty p in c.Properties)
         {
-            if (c.Properties.Count > 1)
+            if (!usesDTO)
             {
-                %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= GetParameterSet(p, true) %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
+                %>
+                    cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= GetParameterSet(Info, p, false, true) %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
                     <%
             }
             else
             {
-                %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= AssignSingleCriteria(c, "crit") %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
+                if (c.Properties.Count > 1)
+                {
+                    %>
+                    cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= GetParameterSet(p, false, false, false) %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
                     <%
+                }
+                else
+                {
+                    %>
+                    cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= AssignSingleCriteria(c, "crit") %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
+                    <%
+                }
             }
         }
         if (usesDTO)
         {
-            %>var dr = cmd.ExecuteReader();
-                    return LoadCollection(dr);<%
+            %>
+                    var dr = cmd.ExecuteReader();
+                    return LoadCollection(dr);
+            <%
         }
         else
         {
-            %>return cmd.ExecuteReader();<%
+            %>
+                    return cmd.ExecuteReader();
+            <%
         }
         %>
                 }

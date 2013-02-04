@@ -45,7 +45,8 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
 {
 <!-- #include file="XmlComment_DalObject.asp" -->
     public partial class <%= Info.ObjectName %>Dal : I<%= Info.ObjectName %>Dal
-    {<!-- #include file="NVLDataPortalFetch_DalObject.asp" -->
+    {
+<!-- #include file="NVLDataPortalFetch_DalObject.asp" -->
     }
 }
 <%

@@ -12,16 +12,30 @@ foreach (Criteria c in Info.CriteriaObjects)
         <%
             if (c.Properties.Count > 1)
             {
-                %>
-        /// <param name="crit">The fetch criteria.</param>
-        /// <returns>A list of <see cref="<%= Info.ObjectName %>ItemDto"/>.</returns>
-        List<<%= Info.ObjectName %>ItemDto> Fetch(<%= c.Name %> crit);
+                foreach (Property prop in c.Properties)
+                {
+                    string param = FormatCamel(prop.Name);
+                    %>
+        /// <param name="<%= param %>">The <%= param %> parameter of the <%= Info.ObjectName %> to fetch.</param>
         <%
+                }
             }
             else if (c.Properties.Count > 0)
             {
                 %>
         /// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The fetch criteria.</param>
+        <%
+            }
+            if (c.Properties.Count > 1)
+            {
+                %>
+        /// <returns>A list of <see cref="<%= Info.ObjectName %>ItemDto"/>.</returns>
+        List<<%= Info.ObjectName %>ItemDto> Fetch(<%= ReceiveMultipleCriteria(c) %>);
+        <%
+            }
+            else if (c.Properties.Count > 0)
+            {
+                %>
         /// <returns>A list of <see cref="<%= Info.ObjectName %>ItemDto"/>.</returns>
         List<<%= Info.ObjectName %>ItemDto> Fetch(<%= ReceiveSingleCriteria(c, "crit") %>);
         <%
