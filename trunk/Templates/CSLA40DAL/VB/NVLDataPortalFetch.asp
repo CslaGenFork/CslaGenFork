@@ -9,7 +9,7 @@ if (!Info.UseCustomLoading && (UseNoSilverlight() ||
             string strGetComment = string.Empty;
             bool getIsFirst = true;
 
-            foreach (Property p in c.Properties)
+            foreach (CriteriaProperty p in c.Properties)
             {
                 if (!getIsFirst)
                 {
@@ -23,7 +23,9 @@ if (!Info.UseCustomLoading && (UseNoSilverlight() ||
                 strGetComment += "/// <param name=\"" + FormatCamel(p.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(p.Name) + ".</param>";
             }
             if (c.Properties.Count > 1)
+            {
                 strGetComment = "/// <param name=\"crit\">The fetch criteria.</param>";
+            }
             %>
 
         /// <summary>
@@ -67,13 +69,16 @@ if (!Info.UseCustomLoading && (UseNoSilverlight() ||
             <%
             }
             string hookArgs = string.Empty;
+            string strGetInvokeParams = string.Empty;
             if (c.Properties.Count > 1)
             {
                 hookArgs = "crit";
+                strGetInvokeParams = SendMultipleCriteria(c, "crit");
             }
             else if (c.Properties.Count > 0)
             {
                 hookArgs = HookSingleCriteria(c, "crit");
+                strGetInvokeParams = FormatCamel(c.Properties[0].Name);
             }
             %>
             var args = new DataPortalHookArgs(<%= hookArgs %>);
@@ -81,7 +86,7 @@ if (!Info.UseCustomLoading && (UseNoSilverlight() ||
             using (var dalManager = DalFactory<%= GetDalName(CurrentUnit) %>.GetManager())
             {
                 var dal = dalManager.GetProvider<I<%= Info.ObjectName %>Dal>();
-                var data = dal.Fetch(<%= hookArgs %>);
+                var data = dal.Fetch(<%= strGetInvokeParams %>);
                 LoadCollection(data);
             }
             OnFetchPost(args);
