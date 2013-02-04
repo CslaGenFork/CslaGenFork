@@ -76,7 +76,7 @@ foreach (Criteria c in Info.CriteriaObjects)
             }
         }
         ValuePropertyCollection valProps = Info.GetAllValueProperties();
-        foreach (Property p in c.Properties)
+        foreach (CriteriaProperty p in c.Properties)
         {
             if (valProps.Contains(p.Name))
             {

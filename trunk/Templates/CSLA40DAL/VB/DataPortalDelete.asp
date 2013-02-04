@@ -13,7 +13,7 @@ if (Info.GenerateDataPortalDelete)
 
             if (usesDTO)
             {
-                foreach (Property p in c.Properties)
+                foreach (CriteriaProperty p in c.Properties)
                 {
                     if (!deleteIsFirst)
                     {
@@ -53,7 +53,7 @@ if (Info.GenerateDataPortalDelete)
             }
             else
             {
-                foreach (Property p in c.Properties)
+                foreach (CriteriaProperty p in c.Properties)
                 {
                     if (!deleteIsFirst)
                     {

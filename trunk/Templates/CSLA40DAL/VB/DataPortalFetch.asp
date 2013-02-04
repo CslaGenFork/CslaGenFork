@@ -18,7 +18,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
             }
             else
             {
-                foreach (Property p in c.Properties)
+                foreach (CriteriaProperty p in c.Properties)
                 {
                     if (!getIsFirst)
                     {
