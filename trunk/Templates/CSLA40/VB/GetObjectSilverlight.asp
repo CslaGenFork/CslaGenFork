@@ -45,7 +45,6 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
             string strGetParams = string.Empty;
             string strGetCritParams = string.Empty;
             bool firstParam = true;
-            bool isCriteriaClassNeeded = IsCriteriaClassNeeded(Info);
             for (int i = 0; i < c.Properties.Count; i++)
             {
                 if (string.IsNullOrEmpty(c.Properties[i].ParameterValue))

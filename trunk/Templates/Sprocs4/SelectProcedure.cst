@@ -1,6 +1,7 @@
 <%@ CodeTemplate Inherits="SprocTemplateHelper" Language="C#" TargetLanguage="T-SQL" Description="Generates a Select stored procedure." %>
 <%@ Property Name="Errors" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return errors to master.cst" %>
 <%@ Property Name="Warnings" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return warnings to master.cst" %>
+<%@ Property Name="Infos" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return infos to master.cst" %>
 
 <%@ Assembly Name="DBSchemaInfo" %>
 <%@ Import Namespace="DBSchemaInfo.Base" %>

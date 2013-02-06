@@ -36,7 +36,7 @@ if (!Info.UseCustomLoading)
                 }
                 if (c.Properties.Count > 1)
                     strGetComment = "/// <param name=\"crit\">The fetch criteria.</param>";
-                else if (c.Properties.Count == 1)
+                else if (c.Properties.Count > 0)
                     strGetInvokeParams = FormatCamel(c.Properties[0].Name);
                 %>
 
