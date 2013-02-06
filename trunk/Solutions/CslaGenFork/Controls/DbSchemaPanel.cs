@@ -383,6 +383,7 @@ namespace CslaGenerator.Controls
                     }
                 }
             }
+            SchemaContextMenuStrip_Opening();
         }
 
         private int GetCurrentResultSetIndex()
@@ -433,6 +434,43 @@ namespace CslaGenerator.Controls
         }
 
         #region Schema Objects Context Menu handlers
+
+        private void SchemaContextMenuStrip_Opening()
+        {
+            if (_currentTreeNode != null)
+            {
+                if (_currentTreeNode.Tag != null)
+                {
+                    if (_currentTreeNode.Tag is SqlTableInfo)
+                        SetSchemaContextMenu((_currentTreeNode.Tag as SqlTableInfo).Type == ResultType.Table, true, true);
+                    else if (_currentTreeNode.Tag is SqlViewInfo)
+                        SetSchemaContextMenu((_currentTreeNode.Tag as SqlViewInfo).Type == ResultType.Table, true, true);
+                    else if (_currentTreeNode.Tag is SqlResultSet)
+                        SetSchemaContextMenu(false, true, true);
+                    else if (_currentTreeNode.Tag is SqlStoredProcedureInfo)
+                        SetSchemaContextMenu(false, true, false);
+                    else if (_currentTreeNode.Tag is SqlStoredProcedureParameter)
+                        SetSchemaContextMenu(false, false, false);
+                }
+                else
+                {
+                    SetSchemaContextMenu(false, false, false);
+                }
+            }
+        }
+
+        private void SetSchemaContextMenu(bool enabled, bool enabledReload, bool enabledAll)
+        {
+            createEditableRootToolStripMenuItem.Enabled = enabled;
+            createEditableRootCollectionToolStripMenuItem.Enabled = enabled;
+            createDynamicEditableRootCollectionToolStripMenuItem.Enabled = enabled;
+
+            reloadToolStripMenuItem.Enabled = enabledReload;
+
+            createReadOnlyRootToolStripMenuItem.Enabled = enabledAll;
+            createReadOnlyRootCollectionToolStripMenuItem.Enabled = enabledAll;
+            copySoftDeleteToolStripMenuItem.Enabled = enabledAll;
+        }
 
         private void createEditableRootToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -523,6 +561,18 @@ namespace CslaGenerator.Controls
                 addInheritedValuePropertyToolStripMenuItem.DropDownItems.RemoveAt(0);
             }
             addInheritedValuePropertyToolStripMenuItem.Enabled = false;
+            if (_currentTreeNode != null)
+            {
+                if (_currentTreeNode.Tag != null)
+                {
+                    if (_currentTreeNode.Tag is SqlTableInfo)
+                        SetColumnsContextMenu((_currentTreeNode.Tag as SqlTableInfo).Type == ResultType.Table, rowSelected);
+                    else if (_currentTreeNode.Tag is SqlViewInfo)
+                        SetColumnsContextMenu((_currentTreeNode.Tag as SqlViewInfo).Type == ResultType.Table, rowSelected);
+                    else if (_currentTreeNode.Tag is SqlResultSet)
+                        SetColumnsContextMenu(false, rowSelected);
+                }
+            }
             if (dbColumns.SelectedIndicesCount != 1)
                 return;
             if (_currentCslaObject != null)
@@ -540,6 +590,19 @@ namespace CslaGenerator.Controls
                     addInheritedValuePropertyToolStripMenuItem.DropDownItems.Add(mnu);
                 }
             addInheritedValuePropertyToolStripMenuItem.Enabled = (addInheritedValuePropertyToolStripMenuItem.DropDownItems.Count > 0);
+        }
+
+        private void SetColumnsContextMenu(bool enabled, bool rowSelected)
+        {
+            if (rowSelected == false)
+                return;
+
+            addToCslaObjectToolStripMenuItem.Enabled = enabled;
+            addInheritedValuePropertyToolStripMenuItem.Enabled = enabled;
+            createEditableToolStripMenuItem.Enabled = enabled;
+            createDynamicEditableRootCollectionToolStripMenuItem.Enabled = enabled;
+            newCriteriaToolStripMenuItem.Enabled = enabled;
+            nameValueListToolStripMenuItem.Enabled = enabled;
         }
 
         private void selectAllToolStripMenuItem_Click(object sender, EventArgs e)
@@ -848,7 +911,10 @@ namespace CslaGenerator.Controls
             obj.ObjectName = ParseObjectName(name);
             obj.ParentType = parent;
             obj.ItemType = item;
-            _currentFactory.AddDefaultCriteriaAndParameters(obj);
+            var getSprocName = string.Empty;
+            if (_currentTreeNode.Tag is SqlResultSet)
+                getSprocName = (_currentTreeNode.Parent.Tag as SqlStoredProcedureInfo).ObjectName;
+            _currentFactory.AddDefaultCriteriaAndParameters(obj, getSprocName);
             _objectsAdded.Add(obj);
         }
 
@@ -885,7 +951,10 @@ namespace CslaGenerator.Controls
             var obj = new CslaObjectInfo(_currentUnit);
             obj.ObjectType = type;
             // ObjectType must be set before ObjectName so Abc_ProcedureName are filled correctly
-            obj.ObjectName = ParseObjectName(name);
+            if (_currentTreeNode.Tag is SqlResultSet && parent == string.Empty)
+                obj.ObjectName = (_currentTreeNode.Parent.Tag as SqlStoredProcedureInfo).ObjectName;
+            else
+                obj.ObjectName = ParseObjectName(name);
             if (type == CslaObjectType.EditableChild)
             {
                 obj.DeleteUseTimestamp = CurrentUnit.Params.AutoTimestampCriteria;
@@ -962,7 +1031,10 @@ namespace CslaGenerator.Controls
 
             var dbObject = GetCurrentDBObject();
             var resultSet = GetCurrentResultSet();
-            _currentFactory.AddProperties(_currentCslaObject, dbObject, resultSet, columns, true, false);
+            var getSprocName = string.Empty;
+            if (_currentTreeNode.Tag is SqlResultSet)
+                getSprocName = (_currentTreeNode.Parent.Tag as SqlStoredProcedureInfo).ObjectName;
+            _currentFactory.AddProperties(_currentCslaObject, dbObject, resultSet, columns, true, false, getSprocName);
         }
 
         private void AddPropertiesForSelectedColumns(CslaObjectInfo parent)

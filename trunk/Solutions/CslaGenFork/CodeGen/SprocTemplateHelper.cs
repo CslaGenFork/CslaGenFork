@@ -258,10 +258,24 @@ namespace CslaGenerator.CodeGen
             if (collType)
                 info = FindChildInfo(info, info.ItemType);
 
+            var dataOrigin = "table";
+            // find out where the data come from
+            foreach (var prop in info.GetAllValueProperties())
+            {
+                if (prop.DbBindColumn.Column == null)
+                    continue;
+
+                if (prop.DbBindColumn.ColumnOriginType == ColumnOriginType.View)
+                {
+                    dataOrigin = "view";
+                    break;
+                }
+            }
+
             StoreCorrelationNames(info);
             var sb = new StringBuilder();
             sb.Append(Environment.NewLine);
-            sb.Append(Indent(2) + "/* Get " + info.ObjectName + " from table */" + Environment.NewLine);
+            sb.Append(Indent(2) + "/* Get " + info.ObjectName + " from " + dataOrigin + " */" + Environment.NewLine);
             sb.Append(GetSelectFields(info, level));
 
             if (dontInnerJoinUp)
@@ -720,7 +734,8 @@ namespace CslaGenerator.CodeGen
 
                 if ((prop.DataAccess != ValueProperty.DataAccessBehaviour.WriteOnly ||
                      prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default) &&
-                    prop.DbBindColumn.ColumnOriginType == ColumnOriginType.Table)
+                    (prop.DbBindColumn.ColumnOriginType == ColumnOriginType.Table ||
+                    prop.DbBindColumn.ColumnOriginType == ColumnOriginType.View))
                 {
                     var table = (IResultObject) prop.DbBindColumn.DatabaseObject;
                     if (!tables.Contains(table))
