@@ -1462,7 +1462,7 @@ namespace CslaGenerator.Controls
             this.chkGenerateDTO.Name = "chkGenerateDTO";
             this.chkGenerateDTO.Size = new System.Drawing.Size(50, 17);
             this.chkGenerateDTO.TabIndex = 5;
-            this.chkGenerateDTO.Text = "Use DTO (and not a Data Reader)";
+            this.chkGenerateDTO.Text = "Use DTO (instead of Data Reader)";
             this.toolTip.SetToolTip(this.chkGenerateDTO, "If checked, DAL generation will use Data Transfer Objects.\r\n" +
                 "Otherwise DAL generation will use a DataReader on fetch operation\r\nand uses parameter passing on inserts and updates.");
             // 
