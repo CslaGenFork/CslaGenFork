@@ -255,12 +255,22 @@ namespace CslaGenerator.Metadata
 
         public void SetSprocNames()
         {
+            SetSprocNames(string.Empty);
+        }
+
+        public void SetSprocNames(string getSprocName)
+        {
             if (_parentObject == null)
                 return;
 
             ProjectParameters p = GeneratorController.Current.CurrentUnit.Params;
             if (IsGetter)
-                _getOptions.ProcedureName = p.GetGetProcName(_parentObject.ObjectName);
+            {
+                if (getSprocName == string.Empty)
+                    _getOptions.ProcedureName = p.GetGetProcName(_parentObject.ObjectName);
+                else
+                    _getOptions.ProcedureName = getSprocName;
+            }
             if (IsDeleter)
                 _deleteOptions.ProcedureName = p.GetDeleteProcName(_parentObject.ObjectName);
         }

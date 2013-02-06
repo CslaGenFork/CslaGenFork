@@ -91,10 +91,26 @@ namespace CslaGenerator.Metadata
         /// <param name="rs">The result set.</param>
         /// <param name="selectedColumns">The selected columns.</param>
         /// <param name="createDefaultCriteria">If true, it calls AddDefaultCriteriaAndParameters() automatically</param>
+        /// <param name="askConfirmation">if set to <c>true</c> [ask confirmation].</param>
         public void AddProperties(CslaObjectInfo currentCslaObject, IDataBaseObject obj, IResultSet rs, IList<IColumnInfo> selectedColumns, bool createDefaultCriteria, bool askConfirmation)
         {
+            AddProperties(currentCslaObject, obj, rs, selectedColumns, createDefaultCriteria, askConfirmation, string.Empty);
+        }
+
+        /// <summary>
+        /// Adds the specified list of columns from the specified resultset and database object to the current object.
+        /// </summary>
+        /// <param name="currentCslaObject">The current csla object.</param>
+        /// <param name="obj">The database object.</param>
+        /// <param name="rs">The result set.</param>
+        /// <param name="selectedColumns">The selected columns.</param>
+        /// <param name="createDefaultCriteria">If true, it calls AddDefaultCriteriaAndParameters() automatically</param>
+        /// <param name="askConfirmation">if set to <c>true</c> [ask confirmation].</param>
+        /// <param name="getSprocName">Name of the get sproc.</param>
+        public void AddProperties(CslaObjectInfo currentCslaObject, IDataBaseObject obj, IResultSet rs, IList<IColumnInfo> selectedColumns, bool createDefaultCriteria, bool askConfirmation, string getSprocName)
+        {
             _currentCslaObject = currentCslaObject;
-            AddProperties(obj, rs, selectedColumns, createDefaultCriteria, askConfirmation);
+            AddProperties(obj, rs, selectedColumns, createDefaultCriteria, askConfirmation, getSprocName);
         }
 
         /// <summary>
@@ -102,16 +118,31 @@ namespace CslaGenerator.Metadata
         /// </summary>
         /// <param name="obj">The database object.</param>
         /// <param name="rs">The result set.</param>
-        /// <param name="selectedColumns"></param>
+        /// <param name="selectedColumns">The selected columns.</param>
         /// <param name="createDefaultCriteria">If true, it calls AddDefaultCriteriaAndParameters() automatically</param>
+        /// <param name="askConfirmation">if set to <c>true</c> [ask confirmation].</param>
         public void AddProperties(IDataBaseObject obj, IResultSet rs, IList<IColumnInfo> selectedColumns, bool createDefaultCriteria, bool askConfirmation)
+        {
+            AddProperties(obj, rs, selectedColumns, createDefaultCriteria, askConfirmation, string.Empty);
+        }
+
+        /// <summary>
+        /// Adds the specified list of columns from the specified resultset and database object to the current object.
+        /// </summary>
+        /// <param name="obj">The database object.</param>
+        /// <param name="rs">The result set.</param>
+        /// <param name="selectedColumns">The selected columns.</param>
+        /// <param name="createDefaultCriteria">If true, it calls AddDefaultCriteriaAndParameters() automatically</param>
+        /// <param name="askConfirmation">if set to <c>true</c> [ask confirmation].</param>
+        /// <param name="getSprocName">Name of the get sproc.</param>
+        public void AddProperties(IDataBaseObject obj, IResultSet rs, IList<IColumnInfo> selectedColumns, bool createDefaultCriteria, bool askConfirmation, string getSprocName)
         {
             if (_currentCslaObject == null || selectedColumns.Count == 0)
                 return;
 
             var added = false;
             var addedProps = new List<ValueProperty>();
-            var notaddedProps = new StringCollection();
+            var notAddedProps = new StringCollection();
             var origin = ColumnOriginType.Table;
             IColumnInfo col;
             for (var i = 0; i < selectedColumns.Count; i++)
@@ -171,7 +202,7 @@ namespace CslaGenerator.Metadata
             // Add Get-, New- and DeleteObjectCriteria and linked parameters
             if (createDefaultCriteria)
             {
-                AddDefaultCriteriaAndParameters();
+                AddDefaultCriteriaAndParameters(getSprocName);
             }
 
             // Display message to the user
@@ -185,20 +216,28 @@ namespace CslaGenerator.Metadata
                 }
             }
 
-            if (notaddedProps.Count > 0)
+            if (notAddedProps.Count > 0)
             {
                 sb.Append("The following properties already exist:" + Environment.NewLine);
-                foreach (var propName in notaddedProps)
+                foreach (var propName in notAddedProps)
                 {
                     sb.Append("\t" + propName + Environment.NewLine);
                 }
             }
 
-            if (origin != ColumnOriginType.Table)
+            if (origin != ColumnOriginType.Table && origin != ColumnOriginType.View)
             {
                 _currentCslaObject.GenerateSprocs = false;
                 sb.Append(Environment.NewLine);
-                sb.Append("Note: \"Generate stored procedures\" was set to false because the origins of the columns are not tables.");
+                sb.Append("Note: \"Generate stored procedures\" was set to false because the origin of the columns is a Stored Procedure result set." + Environment.NewLine);
+
+                var parent = _currentCslaObject.Parent.CslaObjects.Find(_currentCslaObject.ParentType);
+                if (parent != null)
+                {
+                    parent.GenerateSprocs = false;
+                    parent.ContainsItem = false;
+                    sb.Append("Note: \"Use Contains Methods\" was set to false because there is no defined Primary Key property." + Environment.NewLine);
+                }
             }
 
             if (sb.ToString().Length > 0)
@@ -403,8 +442,19 @@ namespace CslaGenerator.Metadata
         /// </summary>
         public void AddDefaultCriteriaAndParameters(CslaObjectInfo objectInfo)
         {
+            AddDefaultCriteriaAndParameters(objectInfo, string.Empty);
+        }
+
+        /// <summary>
+        /// Should be called after the object has all it's properties (if applicable).
+        /// It creates the default criteria classes depending on the object type.
+        /// </summary>
+        /// <param name="objectInfo">The object info.</param>
+        /// <param name="sprocName">Name of the sproc.</param>
+        public void AddDefaultCriteriaAndParameters(CslaObjectInfo objectInfo, string sprocName)
+        {
             _currentCslaObject = objectInfo;
-            AddDefaultCriteriaAndParameters();
+            AddDefaultCriteriaAndParameters(sprocName);
         }
 
         /// <summary>
@@ -412,6 +462,16 @@ namespace CslaGenerator.Metadata
         /// It creates the default criteria classes depending on the object type.
         /// </summary>
         public void AddDefaultCriteriaAndParameters()
+        {
+            AddDefaultCriteriaAndParameters(string.Empty);
+        }
+
+        /// <summary>
+        /// Should be called after the object has all it's properties (if applicable).
+        /// It creates the default criteria classes depending on the object type.
+        /// </summary>
+        /// <param name="getSprocName">Name of the sproc.</param>
+        public void AddDefaultCriteriaAndParameters(string getSprocName)
         {
             if (_currentCslaObject.CriteriaObjects.Count != 0)
                 return;
@@ -431,13 +491,13 @@ namespace CslaGenerator.Metadata
 
             if (_currentCslaObject.ObjectType == CslaObjectType.NameValueList ||
                 (_currentCslaObject.ObjectType == CslaObjectType.ReadOnlyCollection &&
-                _currentCslaObject.ParentType == string.Empty))
+                 _currentCslaObject.ParentType == string.Empty))
             {
                 if (_currentUnit.Params.AutoCriteria)
                 {
                     var crit = CreateEmptyFetchCriteria();
                     _currentCslaObject.CriteriaObjects.Add(crit);
-                    crit.SetSprocNames();
+                    crit.SetSprocNames(getSprocName);
                 }
                 //no need to go through the properties here.
                 return;
@@ -479,7 +539,7 @@ namespace CslaGenerator.Metadata
                     if (defaultCriteria == null)
                     {
                         if (!(_currentCslaObject.ObjectType == CslaObjectType.ReadOnlyObject &&
-                            _currentCslaObject.ParentType != string.Empty))
+                              _currentCslaObject.ParentType != string.Empty))
                         {
                             defaultCriteria = new Criteria(_currentCslaObject);
                             defaultCriteria.Name = _currentCslaObject.ObjectType == CslaObjectType.ReadOnlyObject
@@ -541,6 +601,12 @@ namespace CslaGenerator.Metadata
                         }
                     }
                 }
+            }
+            else if (getSprocName != string.Empty && _currentUnit.Params.AutoCriteria)
+            {
+                var crit = CreateEmptyFetchCriteria();
+                _currentCslaObject.CriteriaObjects.Add(crit);
+                crit.SetSprocNames(getSprocName);
             }
         }
 
