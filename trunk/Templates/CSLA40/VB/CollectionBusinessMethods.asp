@@ -224,10 +224,12 @@ if (useParentReference || isRODeepLoadCollection || useAuthz || needsBusiness)
             }
             if (useAuthz)
             {
-                %>/// <exception cref="System.Security.SecurityException">if the user isn't authorized to remove items from the collection.</exception>
+                %>
+        /// <exception cref="System.Security.SecurityException">if the user isn't authorized to remove items from the collection.</exception>
         <%
             }
-            %>public void Remove(<%= prms %>)
+            %>
+        public void Remove(<%= prms %>)
         {
             foreach (var <%= FormatCamel(Info.ItemType) %> in this)
             {
@@ -243,27 +245,32 @@ if (useParentReference || isRODeepLoadCollection || useAuthz || needsBusiness)
                 }
             }
         }
+        <%
+            if (Info.ContainsItem)
+            {
+                %>
 
         /// <summary>
         /// Determines whether a <see cref="<%= Info.ItemType %>"/> item is in the collection.
         /// </summary>
         <%
-            for (int i = 0; i < crit.Properties.Count; i++)
-            {
-                %>
+                for (int i = 0; i < crit.Properties.Count; i++)
+                {
+                    %>
         /// <param name="<%= FormatCamel(crit.Properties[i].Name) %>">The <%= FormatProperty(crit.Properties[i].Name) %> of the item to search for.</param>
         <%
-            }
-            %>/// <returns><c>true</c> if the <%= Info.ItemType %> is a collection item; otherwise, <c>false</c>.</returns>
+                }
+                %>
+        /// <returns><c>true</c> if the <%= Info.ItemType %> is a collection item; otherwise, <c>false</c>.</returns>
         public bool Contains(<%= prms %>)
         {
             foreach (var <%= FormatCamel(Info.ItemType) %> in this)
             {
                 if (<%
-            for (int i = 0; i < crit.Properties.Count; i++)
-            {
-                %><%= (i == 0) ? "" : " && " %><%= FormatCamel(Info.ItemType) %>.<%= paramNameArray[i] %> == <%= factoryParamsArray[i] %><%
-            }
+                for (int i = 0; i < crit.Properties.Count; i++)
+                {
+                    %><%= (i == 0) ? "" : " && " %><%= FormatCamel(Info.ItemType) %>.<%= paramNameArray[i] %> == <%= factoryParamsArray[i] %><%
+                }
                         %>)
                 {
                     return true;
@@ -272,6 +279,7 @@ if (useParentReference || isRODeepLoadCollection || useAuthz || needsBusiness)
             return false;
         }
         <%
+            }
         }
     }
 
@@ -307,7 +315,10 @@ if (useParentReference || isRODeepLoadCollection || useAuthz || needsBusiness)
             prms = prms.Substring(2);
             paramName = paramName.Substring(2);
         }
-        if (Info.ObjectType != CslaObjectType.ReadOnlyCollection)
+        bool removeFlag = Info.ObjectType != CslaObjectType.ReadOnlyCollection;
+        if (Info.ObjectType == CslaObjectType.EditableChildCollection && !itemInfo.RemoveItem)
+            removeFlag = false;
+        if (removeFlag)
         {
             %>
 
@@ -323,10 +334,12 @@ if (useParentReference || isRODeepLoadCollection || useAuthz || needsBusiness)
             }
             if (useAuthz)
             {
-                %>/// <exception cref="System.Security.SecurityException">if the user isn't authorized to remove items from the collection.</exception>
+                %>
+        /// <exception cref="System.Security.SecurityException">if the user isn't authorized to remove items from the collection.</exception>
         <%
             }
-            %>public void Remove(<%= prms %>)
+            %>
+        public void Remove(<%= prms %>)
         {
             foreach (var <%= FormatCamel(Info.ItemType) %> in this)
             {
@@ -344,42 +357,12 @@ if (useParentReference || isRODeepLoadCollection || useAuthz || needsBusiness)
         }
         <%
         }
-        %>
+        if (Info.ContainsItem)
+        {
+            %>
 
         /// <summary>
         /// Determines whether a <see cref="<%= Info.ItemType %>"/> item is in the collection.
-        /// </summary>
-        <%
-        for (int i = 0; i < propertyList.Count; i++)
-        {
-            %>
-        /// <param name="<%= FormatCamel(propertyList[i].Name) %>">The <%= FormatProperty(propertyList[i].Name) %> of the item to search for.</param>
-        <%
-        }
-        %>/// <returns><c>true</c> if the <%= Info.ItemType %> is a collection item; otherwise, <c>false</c>.</returns>
-        public bool Contains(<%= prms %>)
-        {
-            foreach (var <%= FormatCamel(Info.ItemType) %> in this)
-            {
-                if (<%
-        for (int i = 0; i < propertyList.Count; i++)
-        {
-            %><%= (i == 0) ? "" : " && " %><%= FormatCamel(Info.ItemType) %>.<%= paramNameArray[i] %> == <%= factoryParamsArray[i] %><%
-        }
-                            %>)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-        <%
-        if (Info.ObjectType != CslaObjectType.ReadOnlyCollection)
-        {
-            %>
-
-        /// <summary>
-        /// Determines whether a <see cref="<%= Info.ItemType %>"/> item is in the collection's DeletedList.
         /// </summary>
         <%
             for (int i = 0; i < propertyList.Count; i++)
@@ -388,10 +371,11 @@ if (useParentReference || isRODeepLoadCollection || useAuthz || needsBusiness)
         /// <param name="<%= FormatCamel(propertyList[i].Name) %>">The <%= FormatProperty(propertyList[i].Name) %> of the item to search for.</param>
         <%
             }
-            %>/// <returns><c>true</c> if the <%= Info.ItemType %> is a deleted collection item; otherwise, <c>false</c>.</returns>
-        public bool ContainsDeleted(<%= prms %>)
+        %>
+        /// <returns><c>true</c> if the <%= Info.ItemType %> is a collection item; otherwise, <c>false</c>.</returns>
+        public bool Contains(<%= prms %>)
         {
-            foreach (var <%= FormatCamel(Info.ItemType) %> in this.DeletedList)
+            foreach (var <%= FormatCamel(Info.ItemType) %> in this)
             {
                 if (<%
             for (int i = 0; i < propertyList.Count; i++)
@@ -406,6 +390,40 @@ if (useParentReference || isRODeepLoadCollection || useAuthz || needsBusiness)
             return false;
         }
         <%
+            if (Info.ObjectType != CslaObjectType.ReadOnlyCollection)
+            {
+                %>
+
+        /// <summary>
+        /// Determines whether a <see cref="<%= Info.ItemType %>"/> item is in the collection's DeletedList.
+        /// </summary>
+        <%
+                for (int i = 0; i < propertyList.Count; i++)
+                {
+                    %>
+        /// <param name="<%= FormatCamel(propertyList[i].Name) %>">The <%= FormatProperty(propertyList[i].Name) %> of the item to search for.</param>
+        <%
+                }
+                %>
+        /// <returns><c>true</c> if the <%= Info.ItemType %> is a deleted collection item; otherwise, <c>false</c>.</returns>
+        public bool ContainsDeleted(<%= prms %>)
+        {
+            foreach (var <%= FormatCamel(Info.ItemType) %> in this.DeletedList)
+            {
+                if (<%
+                for (int i = 0; i < propertyList.Count; i++)
+                {
+                    %><%= (i == 0) ? "" : " && " %><%= FormatCamel(Info.ItemType) %>.<%= paramNameArray[i] %> == <%= factoryParamsArray[i] %><%
+                }
+                            %>)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        <%
+            }
         }
     }
 
