@@ -8,6 +8,16 @@ if (Info.ParentType.Equals(String.Empty))
         Errors.Append(Info.ObjectName + ": " + RelationRulesEngine.BrokenRuleMsg + Environment.NewLine);
         return;
     }
+    if (IsObjectType(Info.ObjectType))
+    {
+        foreach (Criteria crit in Info.CriteriaObjects)
+        {
+            if (crit.IsGetter && crit.Properties.Count == 0)
+            {
+                Warnings.Append(Info.ObjectName + ": is a non-collection root object and Fetch criteria needs at least one Criteria Property." + Environment.NewLine);
+            }
+        }
+    }
 }
 else
 {
