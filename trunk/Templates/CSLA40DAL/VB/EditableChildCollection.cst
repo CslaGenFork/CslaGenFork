@@ -38,7 +38,7 @@ if (Errors.Length == 0)
     bool ancestorIsCollection = false;
     int ancestorLoaderLevel = AncestorLoaderLevel(Info, out ancestorIsCollection);
     GenerationStep genStep = GenerationStep.Business;
-    bool usesDTO = DalObjectUsesDTO(Info);
+    bool usesDTO = CurrentUnit.GenerationParams.GenerateDTO;
     int silverlightLevel = 0;
     bool genOptional = false;
     bool useItem = false;

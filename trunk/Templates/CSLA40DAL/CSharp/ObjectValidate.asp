@@ -185,7 +185,7 @@ if (Info.PersistenceType == PersistenceType.SqlConnectionUnshared &&
 }
 foreach (ValueProperty prop in Info.GetDatabaseBoundValueProperties())
 {
-    if (CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL && !DalObjectUsesDTO(Info))
+    if (CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL && !CurrentUnit.GenerationParams.GenerateDTO)
     {
         if (prop.DbBindColumn.ColumnOriginType == ColumnOriginType.None)
             Infos.Append("Alert: " + Info.ObjectName + "Property " + prop.Name + " isn't database bound; must use DTO or property will be excluded from DAL interaction." + Environment.NewLine);

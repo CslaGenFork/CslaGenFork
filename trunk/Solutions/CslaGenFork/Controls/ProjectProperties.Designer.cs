@@ -2279,7 +2279,6 @@ namespace CslaGenerator.Controls
         private System.Windows.Forms.CheckBox chkSilverlightUseServices;
         private System.Windows.Forms.GroupBox groupBoxDataAccessLayer;
         private System.Windows.Forms.CheckBox chkGenerateDTO;
-        private System.Windows.Forms.Label lblDtoLimit;
         private System.Windows.Forms.CheckBox chkGenerateDalInterface;
         private System.Windows.Forms.CheckBox chkGenerateDalObject;
         private System.Windows.Forms.GroupBox groupBoxServerInvocation;

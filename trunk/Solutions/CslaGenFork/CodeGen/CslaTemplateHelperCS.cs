@@ -194,7 +194,7 @@ namespace CslaGenerator.CodeGen
                 if (info.DataSetLoadingScheme)
                     return GetDataSetLoaderStatement(prop);
 
-                if (DalObjectUsesDTO(info))
+                if (CurrentUnit.GenerationParams.GenerateDTO)
                     return GetDtoLoaderStatement(prop);
 
                 return GetDataReaderLoaderStatement(prop);
@@ -208,7 +208,7 @@ namespace CslaGenerator.CodeGen
 
             if (info.DataSetLoadingScheme)
                 statement += GetDataSetStatement(prop);
-            else if (DalObjectUsesDTO(info))
+            else if (CurrentUnit.GenerationParams.GenerateDTO)
                 statement += GetDtoStatement(prop);
             else
                 statement += GetDataReaderStatement(prop);
@@ -677,7 +677,7 @@ namespace CslaGenerator.CodeGen
             var allNamespaces = new List<string>();
             allNamespaces.Add("System");
 
-            if (DalObjectUsesDTO(info))
+            if (CurrentUnit.GenerationParams.GenerateDTO)
                 allNamespaces.Add("System.Collections.Generic");
             else
                 allNamespaces.Add("System.Data");
@@ -710,7 +710,7 @@ namespace CslaGenerator.CodeGen
             var allNamespaces = new List<string>();
             allNamespaces.Add("System");
 
-            if (DalObjectUsesDTO(info))
+            if (CurrentUnit.GenerationParams.GenerateDTO)
                 allNamespaces.Add("System.Collections.Generic");
 
             allNamespaces.Add("System.Data");
@@ -865,7 +865,7 @@ namespace CslaGenerator.CodeGen
                     result.Add("System.Data");
                 if (unit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL)
                     result.Add("System.Data.SqlClient");
-                if (DalObjectUsesDTO(info) && !IsObjectType(info.ObjectType))
+                if (CurrentUnit.GenerationParams.GenerateDTO && !IsObjectType(info.ObjectType))
                     result.Add("System.Collections.Generic");
 
                 result.Add("Csla");
@@ -1021,7 +1021,7 @@ namespace CslaGenerator.CodeGen
             if (unit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL)
                 result.Add("System.Data.SqlClient");
 
-            if (DalObjectUsesDTO(info) && !IsObjectType(info.ObjectType))
+            if (CurrentUnit.GenerationParams.GenerateDTO && !IsObjectType(info.ObjectType))
                 result.Add("System.Collections.Generic");
 
             if (unit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL ||
@@ -1048,7 +1048,7 @@ namespace CslaGenerator.CodeGen
 
                 if (!usesDb)
                 {
-                    if (CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL && DalObjectUsesDTO(info))
+                    if (CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL && CurrentUnit.GenerationParams.GenerateDTO)
                         result.Add(GetContextObjectNamespace(info, unit, GenerationStep.DalInterface));
 
                     return result;
@@ -2176,7 +2176,7 @@ namespace CslaGenerator.CodeGen
             return ColumnNameMatchesParentProperty(parent, info, prop.DbBindColumn.Column);
         }
 
-        public static string ColumnNameMatchesParentProperty(CslaObjectInfo parent, CslaObjectInfo info, IColumnInfo validatingColumn)
+        internal static string ColumnNameMatchesParentProperty(CslaObjectInfo parent, CslaObjectInfo info, IColumnInfo validatingColumn)
         {
             foreach (var prop in info.ParentProperties)
             {
@@ -2194,7 +2194,7 @@ namespace CslaGenerator.CodeGen
             return ColumnFKMatchesParentProperty(parent, info, prop.DbBindColumn.Column);
         }
 
-        public static string ColumnFKMatchesParentProperty(CslaObjectInfo parent, CslaObjectInfo info, IColumnInfo validatingColumn)
+        internal static string ColumnFKMatchesParentProperty(CslaObjectInfo parent, CslaObjectInfo info, IColumnInfo validatingColumn)
         {
             foreach (var prop in info.ParentProperties)
             {
@@ -2231,7 +2231,7 @@ namespace CslaGenerator.CodeGen
             return MultipleColumnFKMatchesParent(parent, info, prop.DbBindColumn.Column);
         }
 
-        public static bool MultipleColumnFKMatchesParent(CslaObjectInfo parent, CslaObjectInfo info, IColumnInfo validatingColumn)
+        internal static bool MultipleColumnFKMatchesParent(CslaObjectInfo parent, CslaObjectInfo info, IColumnInfo validatingColumn)
         {
             foreach (var prop in info.ParentProperties)
             {
@@ -4921,11 +4921,6 @@ namespace CslaGenerator.CodeGen
         {
             return children.OrderBy(c => c.ChildUpdateOrder).ToList().Max().ChildUpdateOrder ==
                 children.OrderBy(c => c.ChildUpdateOrder).ToList().Min().ChildUpdateOrder;
-        }
-
-        public bool DalObjectUsesDTO(CslaObjectInfo info)
-        {
-            return CurrentUnit.GenerationParams.GenerateDTO;
         }
 
         public string[] CslaObjectPrimaryKeys(string infoName)
