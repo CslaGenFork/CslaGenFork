@@ -32,7 +32,7 @@ else
         {
             Errors.Append("Item " + validateChildInfo.ObjectName + ": " + RelationRulesEngine.BrokenRuleMsg + Environment.NewLine);
         }
-        
+
         // collection object use "Contains" but is missing item PK property
         if (Info.ObjectType == CslaObjectType.DynamicEditableRootCollection)
         {

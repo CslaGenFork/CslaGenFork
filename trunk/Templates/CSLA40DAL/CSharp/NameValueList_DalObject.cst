@@ -24,7 +24,7 @@ string bpcSpacer = useBypassPropertyChecks ? bpcSpacer = new string(' ', 4) : st
 bool ancestorIsCollection = false;
 int ancestorLoaderLevel = 0;
 GenerationStep genStep = GenerationStep.DalObject;
-bool usesDTO = DalObjectUsesDTO(Info);
+bool usesDTO = CurrentUnit.GenerationParams.GenerateDTO;
 ValueProperty nameProp = null;
 ValueProperty valueProp = null;
 foreach (ValueProperty prop in Info.ValueProperties)
