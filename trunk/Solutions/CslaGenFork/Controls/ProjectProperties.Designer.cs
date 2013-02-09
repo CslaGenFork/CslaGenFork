@@ -1400,7 +1400,7 @@ namespace CslaGenerator.Controls
             this.chkWinForms.TabIndex = 7;
             this.chkWinForms.Text = "Generate Windows Forms";
             this.chkWinForms.UseVisualStyleBackColor = true;
-            this.toolTip.SetToolTip(this.chkWinForms, "If checked, will generate Windows Forms code with conditional compilation symbol WINFORMS.");
+            this.toolTip.SetToolTip(this.chkWinForms, "If checked, will generate Windows Forms code (BindingList) with conditional compilation symbol WINFORMS.");
             // 
             // chkWPF
             // 
@@ -1412,7 +1412,7 @@ namespace CslaGenerator.Controls
             this.chkWPF.TabIndex = 8;
             this.chkWPF.Text = "Generate WPF, etc.";
             this.chkWPF.UseVisualStyleBackColor = true;
-            this.toolTip.SetToolTip(this.chkWPF, "If checked, will generate WPF code with no conditional compilation symbol.\r\n" +
+            this.toolTip.SetToolTip(this.chkWPF, "If checked, will generate WPF code (ObservableCollection) with no conditional compilation symbol.\r\n" +
                                      "\r\nN.B. - Check this option also for ASP.NET and ASP.NET MVC.");
             // 
             // chkSilverlight

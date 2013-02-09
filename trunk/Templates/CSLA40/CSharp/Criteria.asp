@@ -118,28 +118,13 @@ if (Info.CriteriaObjects.Count > 0)
             <%
                     if (crit.CriteriaClassMode != CriteriaMode.Simple)
                     {
+                        string statement = PropertyInfoCriteriaDeclare(Info, prop);
                         %>
             /// <summary>
             /// Maintains metadata about <see cref="<%= FormatProperty(prop.Name) %>"/> property.
             /// </summary>
-            <%
-                        if (CurrentUnit.GenerationParams.UsePublicPropertyInfo)
-                        {
-                            %>
-            public static readonly PropertyInfo<<%= GetDataTypeGeneric(prop, prop.PropertyType) %>> <%= FormatProperty(prop.Name) %>Property = RegisterProperty<<%= GetDataTypeGeneric(prop, prop.PropertyType) %>>(p => p.<%= FormatPascal(prop.Name) %>);
-            <%
-                        }
-                        else
-                        {
-                            %>
-#if SILVERLIGHT
-            [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-            public static readonly PropertyInfo<<%= GetDataTypeGeneric(prop, prop.PropertyType) %>> <%= FormatProperty(prop.Name) %>Property = RegisterProperty<<%= GetDataTypeGeneric(prop, prop.PropertyType) %>>(p => p.<%= FormatPascal(prop.Name) %>);
-#else
-            protected static readonly PropertyInfo<<%= GetDataTypeGeneric(prop, prop.PropertyType) %>> <%= FormatProperty(prop.Name) %>Property = RegisterProperty<<%= GetDataTypeGeneric(prop, prop.PropertyType) %>>(p => p.<%= FormatPascal(prop.Name) %>);
-#endif
-            <%
-                        }
+    <%= statement %>
+                    <%
                     }
                     if (prop.Summary != string.Empty)
                     {

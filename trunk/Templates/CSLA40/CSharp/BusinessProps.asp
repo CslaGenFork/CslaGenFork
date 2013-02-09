@@ -263,16 +263,6 @@ foreach (UnitOfWorkProperty prop in Info.UnitOfWorkProperties)
     string statement = PropertyInfoUoWDeclare(Info, prop);
     if (!string.IsNullOrEmpty(statement))
     {
-        /*statement = new string(' ', 8) + statement;
-        string statementSilverlight = string.Empty;
-        if (!CurrentUnit.GenerationParams.UsePublicPropertyInfo)
-        {
-            if (UseSilverlight())
-            {
-                statementSilverlight = "[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]" + "\r\n" + new string(' ', 8);
-                statementSilverlight += PropertyInfoUoWDeclare(Info, prop, true);
-            }
-        }*/
         %>
 
         /// <summary>
