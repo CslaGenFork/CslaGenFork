@@ -2759,7 +2759,7 @@ namespace CslaGenerator.CodeGen
             response +=
                 String.Format(
                     "{0} static readonly PropertyInfo<{1}> {2} = RegisterProperty<{1}>(p => {3}, \"{4}\"{5}{6});",
-                    (isSilverlight || CurrentUnit.GenerationParams.UsePublicPropertyInfo) ? "public" : "private",
+                    PropertyInfoVisibility(isSilverlight),
                     (prop.DeclarationMode == PropertyDeclaration.Managed ||
                      prop.DeclarationMode == PropertyDeclaration.Unmanaged)
                         ? GetDataTypeGeneric(prop, prop.PropertyType)
@@ -2867,12 +2867,11 @@ namespace CslaGenerator.CodeGen
                 prop.DeclarationMode != PropertyDeclaration.ClassicPropertyWithTypeConversion)
             {
                 response += "[NotUndoable]" + Environment.NewLine + new string(' ', 8);
-                ;
             }
             response +=
                 String.Format(
                     "{0} static readonly PropertyInfo<{1}> {2} = RegisterProperty<{1}>(p => {3}, \"{4}\"{5});",
-                    (isSilverlight || CurrentUnit.GenerationParams.UsePublicPropertyInfo) ? "public" : "private",
+                    PropertyInfoVisibility(isSilverlight),
                     prop.TypeName,
                     FormatPropertyInfoName(prop.Name),
                     (String.IsNullOrEmpty(prop.Implements)
@@ -2880,6 +2879,52 @@ namespace CslaGenerator.CodeGen
                          : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) + ") p)." + FormatPascal(prop.Name)),
                     prop.FriendlyName,
                     GetRelationhipType(info, prop));
+
+            return response;
+        }
+
+        public string PropertyInfoParentListDeclare(CslaObjectInfo info)
+        {
+            var response = string.Empty;
+
+            var noSilverlightStatement = string.Empty;
+            var silverlightStatement = string.Empty;
+            if (UseNoSilverlight())
+                noSilverlightStatement = PropertyInfoParentListDeclare(info, false);
+            if (UseSilverlight())
+                silverlightStatement = PropertyInfoParentListDeclare(info, true);
+            if (UseBoth() && noSilverlightStatement != silverlightStatement)
+            {
+                response += "#if SILVERLIGHT" + Environment.NewLine;
+                response += new string(' ', 8) +
+                            "[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]" + Environment.NewLine;
+                response += new string(' ', 8) + silverlightStatement + Environment.NewLine;
+                response += "#else" + Environment.NewLine;
+                response += new string(' ', 8) + noSilverlightStatement + Environment.NewLine;
+                response += "#endif";
+            }
+            else if (UseNoSilverlight())
+            {
+                response += new string(' ', 8) + noSilverlightStatement;
+            }
+            else
+            {
+                response += new string(' ', 8) + silverlightStatement;
+            }
+
+            return response;
+        }
+
+        private string PropertyInfoParentListDeclare(CslaObjectInfo info, bool isSilverlight)
+        {
+            // "private static readonly PropertyInfo<{1]> ParentListProperty = RegisterProperty<{1}>(p => p.ParentList);",
+            var response = string.Empty;
+
+            response +=
+                String.Format(
+                    "{0} static readonly PropertyInfo<{1}> ParentListProperty = RegisterProperty<{1}>(p => p.ParentList);",
+                    PropertyInfoVisibility(isSilverlight),
+                    info.ParentType);
 
             return response;
         }
@@ -2922,18 +2967,119 @@ namespace CslaGenerator.CodeGen
             return response;
         }
 
-        public string PropertyInfoUoWDeclare(CslaObjectInfo info, UnitOfWorkProperty prop, bool isSilverlight)
+        private string PropertyInfoUoWDeclare(CslaObjectInfo info, UnitOfWorkProperty prop, bool isSilverlight)
         {
             // "private static readonly PropertyInfo<{0}> {1} = RegisterProperty<{0}>(p => p.{2}, \"{3}\"{4});",
             var response =
                 String.Format(
                     "{0} static readonly PropertyInfo<{1}> {2} = RegisterProperty<{1}>(p => p.{3});",
-                    (isSilverlight || CurrentUnit.GenerationParams.UsePublicPropertyInfo) ? "public" : "private",
+                    PropertyInfoVisibility(isSilverlight),
                     prop.TypeName,
                     FormatPropertyInfoName(prop.Name),
                     FormatPascal(prop.Name));
 
             return response;
+        }
+
+        public string PropertyInfoCriteriaDeclare(CslaObjectInfo info, CriteriaProperty prop)
+        {
+            var response = string.Empty;
+
+            var noSilverlightStatement = string.Empty;
+            var silverlightStatement = string.Empty;
+            if (UseNoSilverlight())
+                noSilverlightStatement = PropertyInfoCriteriaDeclare(info, prop, false);
+            if (UseSilverlight())
+                silverlightStatement = PropertyInfoCriteriaDeclare(info, prop, true);
+            if (UseBoth() && noSilverlightStatement != silverlightStatement)
+            {
+                response += "#if SILVERLIGHT" + Environment.NewLine;
+                response += new string(' ', 8) +
+                            "[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]" + Environment.NewLine;
+                response += new string(' ', 8) + silverlightStatement + Environment.NewLine;
+                response += "#else" + Environment.NewLine;
+                response += new string(' ', 8) + noSilverlightStatement + Environment.NewLine;
+                response += "#endif";
+            }
+            else if (UseNoSilverlight())
+            {
+                response += new string(' ', 8) + noSilverlightStatement;
+            }
+            else
+            {
+                response += new string(' ', 8) + silverlightStatement;
+            }
+
+            return response;
+        }
+
+        private string PropertyInfoCriteriaDeclare(CslaObjectInfo info, CriteriaProperty prop, bool isSilverlight)
+        {
+            // "private static readonly PropertyInfo<{0}> {1} = RegisterProperty<{0}>(p => p.{2});",
+            var response = string.Empty;
+
+            response +=
+                String.Format(
+                    "{0} static readonly PropertyInfo<{1}> {2} = RegisterProperty<{1}>(p => p.{3});",
+                    PropertyInfoVisibility(isSilverlight),
+                    GetDataTypeGeneric(prop, prop.PropertyType),
+                    FormatPropertyInfoName(prop.Name),
+                    FormatPascal(prop.Name));
+
+            return response;
+        }
+
+        public string PropertyInfoUoWCriteriaDeclare(CslaObjectInfo info, UnitOfWorkCriteriaManager.ElementCriteria prop)
+        {
+            var response = string.Empty;
+
+            var noSilverlightStatement = string.Empty;
+            var silverlightStatement = string.Empty;
+            if (UseNoSilverlight())
+                noSilverlightStatement = PropertyInfoUoWCriteriaDeclare(info, prop, false);
+            if (UseSilverlight())
+                silverlightStatement = PropertyInfoUoWCriteriaDeclare(info, prop, true);
+            if (UseBoth() && noSilverlightStatement != silverlightStatement)
+            {
+                response += "#if SILVERLIGHT" + Environment.NewLine;
+                response += new string(' ', 8) +
+                            "[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]" + Environment.NewLine;
+                response += new string(' ', 8) + silverlightStatement + Environment.NewLine;
+                response += "#else" + Environment.NewLine;
+                response += new string(' ', 8) + noSilverlightStatement + Environment.NewLine;
+                response += "#endif";
+            }
+            else if (UseNoSilverlight())
+            {
+                response += new string(' ', 8) + noSilverlightStatement;
+            }
+            else
+            {
+                response += new string(' ', 8) + silverlightStatement;
+            }
+
+            return response;
+        }
+
+        private string PropertyInfoUoWCriteriaDeclare(CslaObjectInfo info, UnitOfWorkCriteriaManager.ElementCriteria prop, bool isSilverlight)
+        {
+            // "private static readonly PropertyInfo<{0}> {1} = RegisterProperty<{0}>(p => p.{2});",
+            var response = string.Empty;
+
+            response +=
+                String.Format(
+                    "{0} static readonly PropertyInfo<{1}> {2} = RegisterProperty<{1}>(p => p.{3});",
+                    PropertyInfoVisibility(isSilverlight),
+                    prop.Type,
+                    FormatPropertyInfoName(prop.Name),
+                    FormatPascal(prop.Name));
+
+            return response;
+        }
+
+        private string PropertyInfoVisibility(bool isSilverlight)
+        {
+            return (isSilverlight || CurrentUnit.GenerationParams.UsePublicPropertyInfo) ? "public" : "private";
         }
 
         private string GetRelationhipType(CslaObjectInfo info, ChildProperty prop)

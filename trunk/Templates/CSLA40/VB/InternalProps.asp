@@ -1,13 +1,21 @@
 <%
 if (useParentReference || isRODeepLoadCollection)
 {
+    string statement = PropertyInfoParentListDeclare(Info);
     %>
         #region ParentList Property
 
         /// <summary>
         /// Maintains metadata about <see cref="ParentList"/> property.
         /// </summary>
-        public static readonly PropertyInfo<<%= Info.ParentType %>> ParentListProperty = RegisterProperty<<%= Info.ParentType %>>(p => p.ParentList);
+        <%
+        if (!string.IsNullOrEmpty(statement))
+        {
+            %>
+<%= statement %>
+        <%
+        }
+        %>
         /// <summary>
         /// Provide access to the parent list reference for use in child object code.
         /// </summary>

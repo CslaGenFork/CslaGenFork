@@ -107,28 +107,13 @@ if (activeCriteria > 0)
             <%
             if (critCriteriaClassMode != CriteriaMode.Simple)
             {
+                string statement = PropertyInfoUoWCriteriaDeclare(Info, crit);
                 %>
             /// <summary>
             /// Maintains metadata about <see cref="<%= FormatProperty(crit.Name) %>"/> property.
             /// </summary>
+    <%= statement %>
             <%
-                if (CurrentUnit.GenerationParams.UsePublicPropertyInfo)
-                {
-                    %>
-            public static readonly PropertyInfo<<%= crit.Type %>> <%= FormatProperty(crit.Name) %>Property = RegisterProperty<<%= crit.Type %>>(p => p.<%= FormatPascal(crit.Name) %>);
-            <%
-                }
-                else
-                {
-                    %>
-#if SILVERLIGHT
-            [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-            public static readonly PropertyInfo<<%= crit.Type %>> <%= FormatProperty(crit.Name) %>Property = RegisterProperty<<%= crit.Type %>>(p => p.<%= FormatPascal(crit.Name) %>);
-#else
-            protected static readonly PropertyInfo<<%= crit.Type %>> <%= FormatProperty(crit.Name) %>Property = RegisterProperty<<%= crit.Type %>>(p => p.<%= FormatPascal(crit.Name) %>);
-#endif
-            <%
-                }
             }
             %>
             /// <summary>
