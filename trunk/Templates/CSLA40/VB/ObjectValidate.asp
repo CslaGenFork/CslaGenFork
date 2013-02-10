@@ -14,13 +14,15 @@ ERRORS
 4.3.3. Check Criteria for DeleteOptions where DataPortal is not set and SProc name is not empty (WARNINGS)
 4.4. Check Criteria for GetOptions where DataPortal is set and SProc name is empty
 4.5. Check Criteria for GetOptions where DataPortal is not set and SProc name is not empty (WARNINGS)
+5. Check value properties from StoredProcedure don't co-exist with other origins
 WARNINGS
-5. When using NOT DAL, Persistence type unshared needs database class
-6. When using Silverligh 4, no Auto, Classic nor 'No Property'.
-7. When using Silverligh 4, criteria classes (with more than one property) must not use Simple mode.
+6. When using NOT DAL, Persistence type unshared needs database class
+7. When using Silverligh 4, no Auto, Classic nor 'No Property'.
+8. When using Silverligh 4, criteria classes (with more than one property) must not use Simple mode.
+9. Missing Foreign key constraints on DB
 ALERTS
-8. When using DAL, unbound properties need DTO or will be excluded from DAL interaction
-9. When using NOT DAL, CustomLoading forces NOT generation of child Factory methods
+10. When using DAL, unbound properties need DTO or will be excluded from DAL interaction
+11. When using NOT DAL, CustomLoading forces NOT generation of child Factory methods
 */
 
 bool isCriteriaClassNeeded = IsCriteriaClassNeeded(Info);
@@ -183,14 +185,32 @@ if (Info.PersistenceType == PersistenceType.SqlConnectionUnshared &&
 {
     Warnings.Append("Generation settings: 'Generate Database class' is un-checked. Persistence Type.SqlConnectionUnshared needs the database class." + Environment.NewLine);
 }
+bool originIsStoredProcedure = false;
 foreach (ValueProperty prop in Info.GetDatabaseBoundValueProperties())
 {
+    originIsStoredProcedure = originIsStoredProcedure || prop.DbBindColumn.ColumnOriginType == ColumnOriginType.StoredProcedure;
+}
+foreach (ValueProperty prop in Info.GetDatabaseBoundValueProperties())
+{
+    bool reportMixedOrigins = false;
+    if (prop.DbBindColumn.ColumnOriginType == ColumnOriginType.StoredProcedure)
+    {
+        reportMixedOrigins = reportMixedOrigins || !originIsStoredProcedure;
+    }
+    else if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None)
+    {
+        reportMixedOrigins = reportMixedOrigins || originIsStoredProcedure;
+    }
+    if (reportMixedOrigins)
+    {
+        Warnings.Append(Info.ObjectName + " has Value Properties with Stored Procedure origin: " + prop.Name + " origin's must be Stored Procedure also." + Environment.NewLine);
+    }
     if (CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL && !CurrentUnit.GenerationParams.GenerateDTO)
     {
         if (prop.DbBindColumn.ColumnOriginType == ColumnOriginType.None)
             Infos.Append("Alert: " + Info.ObjectName + "Property " + prop.Name + " isn't database bound; must use DTO or property will be excluded from DAL interaction." + Environment.NewLine);
     }
-    if (CurrentUnit.GenerationParams.GenerateSilverlight4)
+    if (UseSilverlight())
     {
         if (prop.DeclarationMode != PropertyDeclaration.Unmanaged &&
             prop.DeclarationMode != PropertyDeclaration.UnmanagedWithTypeConversion &&
