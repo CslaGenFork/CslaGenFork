@@ -3079,7 +3079,7 @@ namespace CslaGenerator.CodeGen
 
         private string PropertyInfoVisibility(bool isSilverlight)
         {
-            return (isSilverlight || CurrentUnit.GenerationParams.UsePublicPropertyInfo) ? "public" : "private";
+            return (CurrentUnit.GenerationParams.UsePublicPropertyInfo) ? "public" : "private";
         }
 
         private string GetRelationhipType(CslaObjectInfo info, ChildProperty prop)

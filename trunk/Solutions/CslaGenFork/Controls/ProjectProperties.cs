@@ -128,6 +128,7 @@ namespace CslaGenerator.Controls
             if (_projParams.Dirty)
                 project.Params = _projParams.Clone();
             LoadInfo();
+            project.GenerationParams.ResetAckSilverlightPublicPropertyInfo();
         }
 
         private void CmdApplyClick(object sender, EventArgs e)

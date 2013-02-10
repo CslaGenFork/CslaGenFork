@@ -1969,7 +1969,8 @@ namespace CslaGenerator.Controls
             this.chkUsePublicPropertyInfo.TabIndex = 12;
             this.chkUsePublicPropertyInfo.Text = "Use public PropertyInfo";
             this.toolTip.SetToolTip(this.chkUsePublicPropertyInfo,
-                                     "If checked, PropertyInfo declarations are public. Otherwise uses private declarations.");
+                                     "If checked, PropertyInfo declarations are public. Otherwise uses private declarations.\r\n" +
+                                     "Note - You must check this for Silverlight 4 applications.");
             //
             // chkUseBypassPropertyChecks
             // 
