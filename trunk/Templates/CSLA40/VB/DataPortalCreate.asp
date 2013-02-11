@@ -1,6 +1,6 @@
 <%
 string dataPortalCreate = string.Empty;
-if (isChild)
+if (isChildNotLazyLoaded)
     dataPortalCreate = "Child_";
 else
     dataPortalCreate = "DataPortal_";

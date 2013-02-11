@@ -31,8 +31,6 @@ if (Errors.Length == 0)
             (parentInfo.ObjectType == CslaObjectType.ReadOnlyCollection && parentInfo.ParentType == String.Empty);
     }
     bool isSwitchable = false;
-    bool isChildSelfLoaded = IsChildSelfLoaded(Info);
-    bool isChildLazyLoaded = IsChildLazyLoaded(Info);
     bool isCollection = false;
     bool useBypassPropertyChecks = CurrentUnit.GenerationParams.UseBypassPropertyChecks;
     string bpcSpacer = useBypassPropertyChecks ? bpcSpacer = new string(' ', 4) : string.Empty;

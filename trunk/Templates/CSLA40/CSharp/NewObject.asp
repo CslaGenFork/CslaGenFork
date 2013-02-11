@@ -20,7 +20,7 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
         /// <returns>A reference to the created <see cref="<%= Info.ObjectName %>"/> collection.</returns>
         <%= Info.ParentType == string.Empty ? "public" : "internal" %> static <%= Info.ObjectName %> New<%= Info.ObjectName %>()
         {
-            return DataPortal.Create<%= isChild ? "Child" : "" %><<%= Info.ObjectName %>>();
+            return DataPortal.Create<%= isChildNotLazyLoaded ? "Child" : "" %><<%= Info.ObjectName %>>();
         }
         <%
     }
@@ -82,19 +82,19 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
                 if (c.Properties.Count > 1)
                 {
                     %>
-            return DataPortal.Create<%= isChild ? "Child" : "" %><<%= Info.ObjectName %>>(new <%= c.Name %>(<%= strNewCritParams %>));
+            return DataPortal.Create<%= isChildNotLazyLoaded ? "Child" : "" %><<%= Info.ObjectName %>>(new <%= c.Name %>(<%= strNewCritParams %>));
                 <%
                 }
                 else if (c.Properties.Count > 0)
                 {
                     %>
-            return DataPortal.Create<%= isChild ? "Child" : "" %><<%= Info.ObjectName %>>(<%= SendSingleCriteria(c, strNewCritParams) %>);
+            return DataPortal.Create<%= isChildNotLazyLoaded ? "Child" : "" %><<%= Info.ObjectName %>>(<%= SendSingleCriteria(c, strNewCritParams) %>);
                     <%
                 }
                 else
                 {
                     %>
-            return DataPortal.Create<%= isChild ? "Child" : "" %><<%= Info.ObjectName %>>();
+            return DataPortal.Create<%= isChildNotLazyLoaded ? "Child" : "" %><<%= Info.ObjectName %>>();
                     <%
                 }
                 %>

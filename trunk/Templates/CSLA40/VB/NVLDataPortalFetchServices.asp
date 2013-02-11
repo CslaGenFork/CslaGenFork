@@ -126,7 +126,7 @@ if (!Info.UseCustomLoading &&
         %>
 
         /// <summary>
-        /// Implements <%= isChild ? "Child_Fetch" : "DataPortal_Fetch" %> for <see cref="<%= Info.ObjectName %>"/> collection.
+        /// Implements <%= isChildNotLazyLoaded ? "Child_Fetch" : "DataPortal_Fetch" %> for <see cref="<%= Info.ObjectName %>"/> collection.
         /// </summary>
         <%= header %>;
 <%

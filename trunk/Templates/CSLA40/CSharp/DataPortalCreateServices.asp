@@ -29,17 +29,17 @@ if (UseSilverlight())
             if (c.Properties.Count > 1)
             {
                 createPartialMethods.Add("partial void Service_Create(" + c.Name + " crit)");
-                %>public void <%= isChild ? "Child_" : "DataPortal_" %>Create(<%= c.Name %> crit, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
+                %>public void <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Create(<%= c.Name %> crit, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
             }
             else if (c.Properties.Count > 0)
             {
                 createPartialMethods.Add("partial void Service_Create(" + ReceiveSingleCriteria(c, "crit") + ")");
-                %>public void <%= isChild ? "Child_" : "DataPortal_" %>Create(<%= ReceiveSingleCriteria(c, "crit") %>, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
+                %>public void <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Create(<%= ReceiveSingleCriteria(c, "crit") %>, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
             }
             else
             {
                 createPartialMethods.Add("partial void Service_Create()");
-                %>public <%= isChild ? "void Child_" : "override void DataPortal_" %>Create(Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
+                %>public <%= isChildNotLazyLoaded ? "void Child_" : "override void DataPortal_" %>Create(Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
             }
             %>
         {
@@ -141,7 +141,7 @@ if (UseSilverlight())
             <%
             }
             %>
-            base.<%= isChild ? "Child_Create()" : "DataPortal_Create(handler)" %>;
+            base.<%= isChildNotLazyLoaded ? "Child_Create()" : "DataPortal_Create(handler)" %>;
         }
 <%
         }
@@ -156,7 +156,7 @@ if (UseSilverlight())
         %>
 
         /// <summary>
-        /// Implements <%= isChild ? "Child_Create" : "DataPortal_Create" %> for <see cref="<%= Info.ObjectName %>"/> object.
+        /// Implements <%= isChildNotLazyLoaded ? "Child_Create" : "DataPortal_Create" %> for <see cref="<%= Info.ObjectName %>"/> object.
         /// </summary>
         <%= header %>;
 <%

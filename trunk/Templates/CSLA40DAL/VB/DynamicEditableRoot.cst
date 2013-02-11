@@ -29,8 +29,9 @@ if (Errors.Length == 0)
     bool isParentRootCollection = true;
     CslaObjectInfo grandParentInfo = null;
     isChild = false;
-    bool isChildSelfLoaded = false;
-    bool isChildLazyLoaded = false;
+    isChildSelfLoaded = false;
+    isChildLazyLoaded = false;
+    isChildNotLazyLoaded = false;
     bool useBypassPropertyChecks = CurrentUnit.GenerationParams.UseBypassPropertyChecks;
     string bpcSpacer = useBypassPropertyChecks ? bpcSpacer = new string(' ', 4) : string.Empty;
     bool ancestorIsCollection = false;
