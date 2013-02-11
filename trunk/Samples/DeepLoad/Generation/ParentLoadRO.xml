@@ -48,6 +48,7 @@
     <GetUserMethod>Security.UserInformation.UserID</GetUserMethod>
   </Params>
   <GenerationParams>
+    <AckSilverlightPublicPropertyInfo>false</AckSilverlightPublicPropertyInfo>
     <SaveBeforeGenerate>true</SaveBeforeGenerate>
     <TargetFramework>CSLA40</TargetFramework>
     <BackupOldSource>false</BackupOldSource>
