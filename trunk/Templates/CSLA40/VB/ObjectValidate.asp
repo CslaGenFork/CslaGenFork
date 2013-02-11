@@ -33,6 +33,9 @@ bool isCollectionType = IsCollectionType(Info.ObjectType);
 bool isItemType = IsItemType(Info);
 bool isChild = parentInfo != null;
 bool isParent = Info.GetAllChildProperties().Count > 0;
+bool isChildSelfLoaded = IsChildSelfLoaded(Info);
+bool isChildLazyLoaded = IsChildLazyLoaded(Info);
+bool isChildNotLazyLoaded = isChild && !isChildLazyLoaded;
 if (CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL)
 {
     if (Info.DataSetLoadingScheme)

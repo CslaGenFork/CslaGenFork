@@ -48,17 +48,17 @@ if (!Info.UseCustomLoading &&
             if (c.Properties.Count > 1)
             {
                 fetchPartialMethods.Add("partial void Service_Fetch(" + c.Name + " crit)");
-                %>public void <%= isChild ? "Child_" : "DataPortal_" %>Fetch(<%= c.Name %> crit, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
+                %>public void <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Fetch(<%= c.Name %> crit, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
             }
             else if (c.Properties.Count > 0)
             {
                 fetchPartialMethods.Add("partial void Service_Fetch(" + ReceiveSingleCriteria(c, "crit") + ")");
-                %>public void <%= isChild ? "Child_" : "DataPortal_" %>Fetch(<%= ReceiveSingleCriteria(c, "crit") %>, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
+                %>public void <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Fetch(<%= ReceiveSingleCriteria(c, "crit") %>, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
             }
             else
             {
                 fetchPartialMethods.Add("partial void Service_Fetch()");
-                %>public void <%= isChild ? "Child_" : "DataPortal_" %>Fetch(Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
+                %>public void <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Fetch(Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
             }
         %>
         {
@@ -105,7 +105,7 @@ if (!Info.UseCustomLoading &&
         %>
 
         /// <summary>
-        /// Implements <%= isChild ? "Child_Fetch" : "DataPortal_Fetch" %> for <see cref="<%= Info.ObjectName %>"/> object.
+        /// Implements <%= isChildNotLazyLoaded ? "Child_Fetch" : "DataPortal_Fetch" %> for <see cref="<%= Info.ObjectName %>"/> object.
         /// </summary>
         <%= header %>;
 <%

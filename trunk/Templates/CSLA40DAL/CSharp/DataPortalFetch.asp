@@ -56,15 +56,15 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
             }
             if (c.Properties.Count > 1)
             {
-        %>protected void <%= isChild ? "Child_" : "DataPortal_" %>Fetch(<%= c.Name %> crit)<%
+        %>protected void <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Fetch(<%= c.Name %> crit)<%
             }
             else if (c.Properties.Count > 0)
             {
-        %>protected void <%= isChild ? "Child_" : "DataPortal_" %>Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)<%
+        %>protected void <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)<%
             }
             else
             {
-        %>protected void <%= isChild ? "Child_" : "DataPortal_" %>Fetch()<%
+        %>protected void <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Fetch()<%
             }
         %>
         {

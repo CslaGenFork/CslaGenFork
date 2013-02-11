@@ -132,7 +132,7 @@ if (Info.GenerateDataPortalDelete &&
         %>
 
         /// <summary>
-        /// Implements <%= isChild ? "Child_Delete" : "DataPortal_Delete" %> for <see cref="<%= Info.ObjectName %>"/> object.
+        /// Implements <%= isChildNotLazyLoaded ? "Child_Delete" : "DataPortal_Delete" %> for <see cref="<%= Info.ObjectName %>"/> object.
         /// </summary>
         <%= header %>;
 <%

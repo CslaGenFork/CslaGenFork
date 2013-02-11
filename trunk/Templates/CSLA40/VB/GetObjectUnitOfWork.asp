@@ -47,13 +47,13 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
         if (elementCriteriaCount > 1 || (Info.ObjectType == CslaObjectType.EditableSwitchable && elementCriteriaCount == 1))
         {
             %>
-            return DataPortal.Fetch<%= isChild ? "Child" : "" %><<%= Info.ObjectName %>>(new <%= uowCrit.CriteriaName %>(<%= strGetCritParams %>));
+            return DataPortal.Fetch<%= isChildNotLazyLoaded ? "Child" : "" %><<%= Info.ObjectName %>>(new <%= uowCrit.CriteriaName %>(<%= strGetCritParams %>));
             <%
         }
         else if (elementCriteriaCount > 0)
         {
             %>
-            return DataPortal.Fetch<%= isChild ? "Child" : "" %><<%= Info.ObjectName %>>(<%= strGetCritParams %>);
+            return DataPortal.Fetch<%= isChildNotLazyLoaded ? "Child" : "" %><<%= Info.ObjectName %>>(<%= strGetCritParams %>);
             <%
         }
         else
@@ -62,7 +62,7 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
             {
                 %>
             if (_list == null)
-                _list = DataPortal.Fetch<%= isChild ? "Child" : "" %><<%= Info.ObjectName %>>(<%= strGetCritParams %>);
+                _list = DataPortal.Fetch<%= isChildNotLazyLoaded ? "Child" : "" %><<%= Info.ObjectName %>>(<%= strGetCritParams %>);
 
             return _list;
             <%
@@ -70,7 +70,7 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
             else
             {
                 %>
-            return DataPortal.Fetch<%= isChild ? "Child" : "" %><<%= Info.ObjectName %>>(<%= strGetCritParams %>);
+            return DataPortal.Fetch<%= isChildNotLazyLoaded ? "Child" : "" %><<%= Info.ObjectName %>>(<%= strGetCritParams %>);
         <%
             }
         }
