@@ -12,6 +12,7 @@ namespace CslaGenerator.Metadata
         private bool _saveBeforeGenerate = true;
         private TargetFramework _targetFramework = TargetFramework.CSLA40;
         private bool _backupOldSource;
+        private bool _retryOnFileBusy = true;
         private bool _separateNamespaces = true;
         private bool _separateBaseClasses;
         private bool _activeObjects;
@@ -101,6 +102,18 @@ namespace CslaGenerator.Metadata
                 if (_backupOldSource == value)
                     return;
                 _backupOldSource = value;
+                OnPropertyChanged("");
+            }
+        }
+
+        public bool RetryOnFileBusy
+        {
+            get { return _retryOnFileBusy; }
+            set
+            {
+                if (_retryOnFileBusy == value)
+                    return;
+                _retryOnFileBusy = value;
                 OnPropertyChanged("");
             }
         }

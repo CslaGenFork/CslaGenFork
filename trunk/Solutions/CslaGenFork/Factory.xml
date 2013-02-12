@@ -51,6 +51,7 @@
     <SaveBeforeGenerate>true</SaveBeforeGenerate>
     <TargetFramework>CSLA40</TargetFramework>
     <BackupOldSource>false</BackupOldSource>
+    <RetryOnFileBusy>true</RetryOnFileBusy>
     <SeparateNamespaces>true</SeparateNamespaces>
     <SeparateBaseClasses>false</SeparateBaseClasses>
     <ActiveObjects>false</ActiveObjects>

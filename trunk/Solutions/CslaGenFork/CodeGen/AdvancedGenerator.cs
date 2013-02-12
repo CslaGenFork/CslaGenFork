@@ -31,7 +31,7 @@ namespace CslaGenerator.CodeGen
         private int _sprocFailed;
         private int _sprocWarnings;
         private int _sprocSuccess;
-        private TargetFramework _targetFramework;
+        private int _retryCount;
         private Hashtable _templates = new Hashtable();
         private string _codeEncoding;
         private string _sprocEncoding;
@@ -74,10 +74,10 @@ namespace CslaGenerator.CodeGen
             _objSuccess = 0;
             _sprocFailed = 0;
             _sprocSuccess = 0;
+            _retryCount = 0;
             OutputWindow.Current.ClearOutput();
             var generationParams = unit.GenerationParams;
             _generateDatabaseClass = generationParams.GenerateDatabaseClass;
-            _targetFramework = generationParams.TargetFramework;
             _abortRequested = false;
             _fullTemplatesPath = _templatesDirectory + generationParams.TargetFramework + @"\";
             _templates = new Hashtable(); //to recompile templates in case they changed.
@@ -90,12 +90,20 @@ namespace CslaGenerator.CodeGen
             }*/
 
             var generalValidation = GeneralValidation(GenerationStep.Business);
+            if (_abortRequested)
+                OnGenerationInformation(Environment.NewLine + "* * * * Code Generation Cancelled!");
+
             if (generationParams.GenerateDalInterface)
                 generalValidation &= GeneralValidation(GenerationStep.DalInterface);
+            if (_abortRequested)
+                OnGenerationInformation(Environment.NewLine + "* * * * Code Generation Cancelled!");
+            
             if (generationParams.GenerateDalObject)
                 generalValidation &= GeneralValidation(GenerationStep.DalObject);
+            if (_abortRequested)
+                OnGenerationInformation(Environment.NewLine + "* * * * Code Generation Cancelled!");
 
-            if(!generalValidation)
+            if (!generalValidation)
             {
                 _unit.GenerationTimer.Stop();
                 OnFinalized(false);
@@ -122,6 +130,8 @@ namespace CslaGenerator.CodeGen
                         if (generationParams.OneSpFilePerObject)
                         {
                             GenerateAllSprocsFile(info, TargetDirectory);
+                            if (_abortRequested)
+                                break;
                         }
                         else
                         {
@@ -342,6 +352,39 @@ namespace CslaGenerator.CodeGen
 
         #region Private code generatiom
 
+        private FileStream OpenFile(string filename)
+        {
+            /*var dontMakeFileBusy = filename.EndsWith("Validating_Business.txt8");
+
+            var dummy = File.Open(filename, FileMode.Create);
+            if (dontMakeFileBusy)
+                dummy.Close();*/
+
+            while (true)
+            {
+                try
+                {
+                    var fs = File.Open(filename, FileMode.Create);
+                    return fs;
+                }
+                catch (IOException)
+                {
+                    /*if (!dontMakeFileBusy)
+                        dummy.Close();*/
+                    if (_unit.GenerationParams.RetryOnFileBusy && !_abortRequested)
+                    {
+                        _retryCount++;
+                        OutputWindow.Current.AddOutputInfo("... " + filename + " was busy. Retrying...");
+                    }
+                    else
+                    {
+                        OutputWindow.Current.AddOutputInfo("* Failed: " + filename + " was busy.");
+                        throw;
+                    }
+                }
+            }
+        }
+
         private bool GeneralValidation(GenerationStep step)
         {
             var templateName = "ProjectValidate_" + step + ".cst";
@@ -372,8 +415,8 @@ namespace CslaGenerator.CodeGen
                         template.SetProperty("Warnings", warningsOutput);
                         template.SetProperty("Infos", infosOutput);
                         template.SetProperty("CurrentUnit", _unit);
-                        var fs = File.Open(fullFilename, FileMode.Create);
                         OnGenerationInformation("Validation: " + step);
+                        var fs = OpenFile(fullFilename);
                         sw = new StreamWriter(fs, Encoding.GetEncoding(_codeEncoding));
                         template.Render(sw);
                         errorsOutput = (StringBuilder) template.GetProperty("Errors");
@@ -421,15 +464,18 @@ namespace CslaGenerator.CodeGen
                 catch (Exception e)
                 {
                     _fileSuccess[templateName] = false;
-                    var msg = ShowExceptionInformation(e);
-                    _errorReport.Add(new GenerationReport
-                                         {
-                                             ObjectName = "General Validation",
-                                             ObjectType = step.ToString(),
-                                             Message = msg,
-                                             FileName = fullFilename
-                                         });
-                    OnGenerationInformation(msg);
+                    if (e.GetBaseException() as IOException == null)
+                    {
+                        var msg = ShowExceptionInformation(e);
+                        _errorReport.Add(new GenerationReport
+                            {
+                                ObjectName = "General Validation",
+                                ObjectType = step.ToString(),
+                                Message = msg,
+                                FileName = fullFilename
+                            });
+                        OnGenerationInformation(msg);
+                    }
                 }
                 finally
                 {
@@ -542,8 +588,8 @@ namespace CslaGenerator.CodeGen
                         }
                         oldFile.MoveTo(baseFileName + ".old");
                     }
-                    var fsBase = File.Open(baseFileName, FileMode.Create);
                     OnGenerationFileName(baseFileName);
+                    var fsBase = OpenFile(baseFileName);
                     sw = new StreamWriter(fsBase, Encoding.GetEncoding(_codeEncoding));
                     template.Render(sw);
                     errorsOutput = (StringBuilder)template.GetProperty("Errors");
@@ -601,15 +647,18 @@ namespace CslaGenerator.CodeGen
             catch (Exception e)
             {
                 _objFailed++;
-                var msg = ShowExceptionInformation(e);
-                _errorReport.Add(new GenerationReport
+                if (e.GetBaseException() as IOException == null)
                 {
-                    ObjectName = objInfo.ObjectName,
-                    ObjectType = objInfo.ObjectType.ToString(),
-                    Message = msg,
-                    FileName = baseFileName
-                });
-                OnGenerationInformation(msg);
+                    var msg = ShowExceptionInformation(e);
+                    _errorReport.Add(new GenerationReport
+                        {
+                            ObjectName = objInfo.ObjectName,
+                            ObjectType = objInfo.ObjectType.ToString(),
+                            Message = msg,
+                            FileName = baseFileName
+                        });
+                    OnGenerationInformation(msg);
+                }
             }
             finally
             {
@@ -647,8 +696,8 @@ namespace CslaGenerator.CodeGen
                             template.SetProperty("CurrentUnit", _unit);
                             if (_methodList != null)
                                 template.SetProperty("MethodList", _methodList);
-                            var fs = File.Open(fileName, FileMode.Create);
                             OnGenerationFileName(fileName);
+                            var fs = OpenFile(fileName);
                             sw = new StreamWriter(fs, Encoding.GetEncoding(_codeEncoding));
                             template.Render(sw);
                             errorsOutput = (StringBuilder)template.GetProperty("Errors");
@@ -672,15 +721,18 @@ namespace CslaGenerator.CodeGen
                 catch (Exception e)
                 {
                     _objFailed++;
-                    var msg = ShowExceptionInformation(e);
-                    _errorReport.Add(new GenerationReport
+                    if (e.GetBaseException() as IOException == null)
                     {
-                        ObjectName = objInfo.ObjectName,
-                        ObjectType = objInfo.ObjectType.ToString(),
-                        Message = msg,
-                        FileName = fileName
-                    });
-                    OnGenerationInformation(msg);
+                        var msg = ShowExceptionInformation(e);
+                        _errorReport.Add(new GenerationReport
+                            {
+                                ObjectName = objInfo.ObjectName,
+                                ObjectType = objInfo.ObjectType.ToString(),
+                                Message = msg,
+                                FileName = fileName
+                            });
+                        OnGenerationInformation(msg);
+                    }
                 }
                 finally
                 {
@@ -776,8 +828,8 @@ namespace CslaGenerator.CodeGen
                         }
                         oldFile.MoveTo(baseFileName + ".old");
                     }
-                    var fsBase = File.Open(baseFileName, FileMode.Create);
                     OnGenerationFileName(baseFileName);
+                    var fsBase = OpenFile(baseFileName);
                     sw = new StreamWriter(fsBase, Encoding.GetEncoding(_codeEncoding));
                     template.Render(sw);
                     errorsOutput = (StringBuilder) template.GetProperty("Errors");
@@ -830,15 +882,18 @@ namespace CslaGenerator.CodeGen
             catch (Exception e)
             {
                 _objFailed++;
-                var msg = ShowExceptionInformation(e);
-                _errorReport.Add(new GenerationReport
+                if (e.GetBaseException() as IOException == null)
                 {
-                    ObjectName = objInfo.ObjectName,
-                    ObjectType = objInfo.ObjectType.ToString(),
-                    Message = msg,
-                    FileName = "unknown (" + step + ")"
-                });
-                OnGenerationInformation(msg);
+                    var msg = ShowExceptionInformation(e);
+                    _errorReport.Add(new GenerationReport
+                        {
+                            ObjectName = objInfo.ObjectName,
+                            ObjectType = objInfo.ObjectType.ToString(),
+                            Message = msg,
+                            FileName = "unknown (" + step + ")"
+                        });
+                    OnGenerationInformation(msg);
+                }
             }
             finally
             {
@@ -888,9 +943,9 @@ namespace CslaGenerator.CodeGen
                             template.SetProperty("Warnings", warningsOutput);
                             template.SetProperty("Infos", infosOutput);
                             template.SetProperty("CurrentUnit", _unit);
-                            var fs = File.Open(fullFilename, FileMode.Create);
                             OnGenerationInformation(utilityFilename + " file:");
                             OnGenerationFileName(fullFilename);
+                            var fs = OpenFile(fullFilename);
                             sw = new StreamWriter(fs, Encoding.GetEncoding(_codeEncoding));
                             template.Render(sw);
                             errorsOutput = (StringBuilder) template.GetProperty("Errors");
@@ -939,15 +994,18 @@ namespace CslaGenerator.CodeGen
                 catch (Exception e)
                 {
                     _fileSuccess[utilityFilename] = false;
-                    var msg = ShowExceptionInformation(e);
-                    _errorReport.Add(new GenerationReport
+                    if (e.GetBaseException() as IOException == null)
                     {
-                        ObjectName = "Utility",
-                        ObjectType = step.ToString(),
-                        Message = msg,
-                        FileName = fullFilename
-                    });
-                    OnGenerationInformation(msg);
+                        var msg = ShowExceptionInformation(e);
+                        _errorReport.Add(new GenerationReport
+                            {
+                                ObjectName = "Utility",
+                                ObjectType = step.ToString(),
+                                Message = msg,
+                                FileName = fullFilename
+                            });
+                        OnGenerationInformation(msg);
+                    }
                 }
                 finally
                 {
@@ -1045,14 +1103,17 @@ namespace CslaGenerator.CodeGen
             StreamWriter sw = null;
             try
             {
-                var fs = File.Open(fileName, FileMode.Create);
+                var fs = OpenFile(fileName);
                 sw = new StreamWriter(fs, Encoding.GetEncoding(_sprocEncoding));
                 sw.Write(data);
             }
             catch (Exception e)
             {
-                var errorDesc = string.Format("Error writing to file {0}: {1}", fileName, e.Message);
-                OnGenerationInformation(errorDesc);
+                if (e.GetBaseException() as IOException == null)
+                {
+                    var errorDesc = string.Format("Error writing to file {0}: {1}", fileName, e.Message);
+                    OnGenerationInformation(errorDesc);
+                }
             }
             finally
             {
@@ -1105,12 +1166,8 @@ namespace CslaGenerator.CodeGen
         private void GenerateAllSprocsFile(CslaObjectInfo info, string dir)
         {
             var filename = dir + @"\sprocs\" + info.ObjectName + ".sql";
-//            var selfLoad = CslaTemplateHelperCS.GetSelfLoad(info);
 
             var proc = new StringBuilder();
-
-//            if (!((info.ObjectType == CslaObjectType.EditableChildCollection ||
-//                   info.ObjectType == CslaObjectType.EditableChild) && !selfLoad))
 
             //make sure we don't generate selects when we don't need to.
             if (NeedsDbFetch(info))
@@ -1173,11 +1230,6 @@ namespace CslaGenerator.CodeGen
 
         private void GenerateSelectProcedure(CslaObjectInfo info, string dir)
         {
-//            var lazyLoad = CslaTemplateHelperCS.GetLazyLoad(info);
-
-//            if (!((info.ObjectType == CslaObjectType.EditableChildCollection ||
-//                   info.ObjectType == CslaObjectType.EditableChild) && !lazyLoad))
-
             //make sure we don't generate selects when we don't need to.
             if (NeedsDbFetch(info))
             {
@@ -1581,6 +1633,10 @@ namespace CslaGenerator.CodeGen
                                                                  (_objFailed + _objSuccess), _objFailed));
                 OutputWindow.Current.AddOutputInfo(string.Format("Stored Procs: {0} generated. {1} failed.",
                                                                  (_sprocFailed + _sprocSuccess), _sprocFailed));
+
+                if (_retryCount > 0)
+                    OutputWindow.Current.AddOutputInfo("File busy retries: " + _retryCount);
+
                 if (InfoReport.Count > 0)
                 {
                     OutputWindow.Current.AddOutputInfo("\r\nINFORMATION");
