@@ -332,6 +332,66 @@ namespace CslaGenerator.CodeGen
             return NormalizeNewLineAtEndOfFile(sb.ToString());
         }
 
+        public string MissingForeignKeys(Criteria crit, CslaObjectInfo info, int level, bool dontInnerJoinUp)
+        {
+            var result = string.Empty;
+            level++;
+            if (IsCollectionType(info.ObjectType))
+                info = FindChildInfo(info, info.ItemType);
+
+            foreach (var childProp in info.GetAllChildProperties())
+            {
+                var childInfo = FindChildInfo(info, childProp.TypeName);
+                if (childInfo != null && childProp.LoadingScheme == LoadingScheme.ParentLoad)
+                {
+                    var temp = MissingForeignKeys(crit, childInfo, level, dontInnerJoinUp);
+                    if (temp != string.Empty)
+                    {
+                        if (result != string.Empty)
+                            result += ", ";
+                        result += temp;
+                    }
+                }
+            }
+
+            if (level > 2)
+            {
+                var tables = GetTables(crit, info, true);
+                if (tables.Count > 1)
+                {
+                    var parentTables = GetTablesParent(crit, info);
+                    foreach (var table in tables)
+                    {
+                        if(parentTables.Contains(table))
+                            continue;
+                        var fkFound = false;
+                        var fKeys = Catalog.ForeignKeyConstraints.GetConstraintsFor(table);
+                        SortKeys(fKeys, parentTables);
+                        fKeys = FilterDuplicateConstraintTables(fKeys, info.GetDatabaseBoundValueProperties());
+                        foreach (var key in fKeys)
+                        {
+                            if (tables.IndexOf(key.PKTable) >= 0)
+                            {
+                                if (key.PKTable != key.ConstraintTable)
+                                {
+                                    fkFound = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (!fkFound)
+                        {
+                            if (result != string.Empty)
+                                result += ", ";
+                            result += table.ObjectName;
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
         private string GetFromClause(Criteria crit, CslaObjectInfo info, bool includeParentObjects)
         {
             _innerJoins = 0;

@@ -40,6 +40,12 @@ bool dontInnerJoinUp = IsChildSelfLoaded(Info) ||
     (Info.ObjectType == CslaObjectType.EditableRootCollection ||
     Info.ObjectType == CslaObjectType.DynamicEditableRootCollection ||
     Info.ObjectType == CslaObjectType.ReadOnlyCollection));
+string fkMissingMessage = MissingForeignKeys(Criteria, Info, 1, dontInnerJoinUp);
+if(fkMissingMessage != string.Empty)
+{
+    Errors.Append(Info.ObjectName + "." + Criteria.Name + ": missing Foreign Key on tables " + fkMissingMessage + Environment.NewLine);
+    return;
+}
 %>
 /****** Object:  StoredProcedure <%= fullTableSchema %>[<%= Criteria.GetOptions.ProcedureName %>] ******/
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'<%= fullTableSchema %>[<%= Criteria.GetOptions.ProcedureName %>]') AND type in (N'P', N'PC'))
