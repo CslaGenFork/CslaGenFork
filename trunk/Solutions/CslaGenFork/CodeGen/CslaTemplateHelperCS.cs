@@ -1057,7 +1057,8 @@ namespace CslaGenerator.CodeGen
 
             result.Add(GetContextObjectNamespace(info, unit, GenerationStep.DalInterface));
 
-            if (info.ObjectType != CslaObjectType.UnitOfWork)
+            if (info.ObjectType != CslaObjectType.UnitOfWork &&
+                info.ObjectNamespace != CurrentUnit.GenerationParams.UtilitiesNamespace)
             {
                 result.Add(GetDalInterfaceUtilitiesNamespace(unit));
             }
@@ -4970,18 +4971,12 @@ namespace CslaGenerator.CodeGen
         public string GetCommand(CslaObjectInfo info, string commandText)
         {
             var sprocTemplateHelper = new SprocTemplateHelper();
-            List<IResultObject> tables = sprocTemplateHelper.GetTablesSelect(info);
+            var tables = sprocTemplateHelper.GetTablesSelect(info);
             sprocTemplateHelper.SortTables(tables);
 
             var plainTableSchema = string.Empty;
-            /*// old code
-            if (info.Parent.GenerationParams.GenerateQueriesWithSchema)
-                plainTableSchema = tables[0].ObjectSchema + ".";*/
             if (info.Parent.GenerationParams.GenerateQueriesWithSchema)
             {
-                // patch for using SProcs as source of RO/NVL
-                // plainTableSchema = tables[0].ObjectSchema + ".";
-
                 if(tables.Count > 0)
                     plainTableSchema = tables[0].ObjectSchema + ".";
                 else
