@@ -26,25 +26,8 @@ foreach (ValueProperty prop in Info.ValueProperties)
         }
     }
 
-    bool useSetter = true;
-
-    if (Info.ObjectType == CslaObjectType.ReadOnlyObject)
-    {
-        if (prop.DeclarationMode == PropertyDeclaration.ClassicProperty ||
-            prop.DeclarationMode == PropertyDeclaration.ClassicPropertyWithTypeConversion)
-        {
-            if (CurrentUnit.GenerationParams.ForceReadOnlyProperties)
-            {
-                useSetter = false;
-            }
-        }
-        else if (prop.DeclarationMode != PropertyDeclaration.AutoProperty)
-        {
-            useSetter = false;
-        }
-    }
-
-    if (prop.ReadOnly && prop.DeclarationMode != PropertyDeclaration.AutoProperty)
+    bool useSetter = !prop.ReadOnly;
+    if (Info.ObjectType == CslaObjectType.ReadOnlyObject && CurrentUnit.GenerationParams.ForceReadOnlyProperties)
     {
         useSetter = false;
     }
@@ -127,14 +110,10 @@ foreach (ValueProperty prop in Info.ValueProperties)
 // Convert properties
 foreach (ConvertValueProperty prop in Info.ConvertValueProperties)
 {
-    bool useSetter = true;
-
-    if (Info.ObjectType == CslaObjectType.ReadOnlyObject)
+    bool useSetter = !prop.ReadOnly;
+    if (Info.ObjectType == CslaObjectType.ReadOnlyObject && CurrentUnit.GenerationParams.ForceReadOnlyProperties)
     {
-        if (CurrentUnit.GenerationParams.ForceReadOnlyProperties)
-        {
-            useSetter = false;
-        }
+        useSetter = false;
     }
 
     if (prop.Summary != String.Empty)
