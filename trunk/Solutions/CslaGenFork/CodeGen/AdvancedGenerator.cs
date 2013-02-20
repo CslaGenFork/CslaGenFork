@@ -539,8 +539,27 @@ namespace CslaGenerator.CodeGen
             if (objInfo.ObjectType == CslaObjectType.EditableSwitchable)
             {
                 var alert = MessageBox.Show(
-                    objInfo.ObjectName + @" is EditableSwitchable" + Environment.NewLine +
-                    @"and isn't supported in this release of CslaGenFork.",
+                    objInfo.ObjectName + @" is a EditableSwitchable stereotype" + Environment.NewLine +
+                    @"and isn't supported on this release of CslaGenFork." + Environment.NewLine + Environment.NewLine + "Do you want to continue?",
+                    @"CslaGenFork object generation", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                if (alert == DialogResult.Cancel)
+                    result = false;
+            }
+
+            _unit.GenerationTimer.Start();
+            return result;
+        }
+
+        private bool UnitOfWorkAlert(CslaObjectInfo objInfo)
+        {
+            _unit.GenerationTimer.Stop();
+            var result = true;
+            if (objInfo.ObjectType == CslaObjectType.UnitOfWork &&
+                (objInfo.UnitOfWorkType == UnitOfWorkFunction.Deleter || objInfo.UnitOfWorkType == UnitOfWorkFunction.Updater))
+            {
+                var alert = MessageBox.Show(
+                    objInfo.ObjectName + @" is a UnitOfWork stereotype of type " + objInfo.UnitOfWorkType + Environment.NewLine +
+                    @"and isn't supported on this release of CslaGenFork." + Environment.NewLine + Environment.NewLine + "Do you want to continue?",
                     @"CslaGenFork object generation", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
                 if (alert == DialogResult.Cancel)
                     result = false;
@@ -552,7 +571,7 @@ namespace CslaGenerator.CodeGen
 
         private void GenerateObject(CslaObjectInfo objInfo)
         {
-            if (!EditableSwitchableAlert(objInfo))
+            if (!EditableSwitchableAlert(objInfo) || !UnitOfWorkAlert(objInfo))
             {
                 _objFailed++;
                 OnGenerationInformation("Object generation cancelled." + Environment.NewLine);
@@ -781,7 +800,7 @@ namespace CslaGenerator.CodeGen
             if (objInfo.ObjectType == CslaObjectType.UnitOfWork)
                 return;
 
-            if (!EditableSwitchableAlert(objInfo))
+            if (!EditableSwitchableAlert(objInfo) || !UnitOfWorkAlert(objInfo))
             {
                 _objFailed++;
                 OnGenerationInformation("Object generation cancelled." + Environment.NewLine);
