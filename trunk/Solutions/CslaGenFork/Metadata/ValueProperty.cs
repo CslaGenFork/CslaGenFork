@@ -186,7 +186,7 @@ namespace CslaGenerator.Metadata
                 }
                 return _parameterName;
             }
-            set { _parameterName = PropertyHelper.Tidy(value); }
+            set { _parameterName = value; }
         }
 
         #endregion
