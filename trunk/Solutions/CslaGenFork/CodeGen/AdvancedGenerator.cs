@@ -1417,9 +1417,23 @@ namespace CslaGenerator.CodeGen
                 }
                 catch (Exception e)
                 {
+
                     _sprocFailed++;
                     _currentSprocError = true;
-                    throw (new Exception("Error generating " + GetFileNameWithoutExtension(templateName) + ": " + sprocName, e));
+                   string msg;
+                    if (e.GetBaseException() as IOException != null)
+                        msg = "* Failed: " + filename + " was busy.";
+                    else
+                        msg = ShowExceptionInformation(e);
+
+                    _errorReport.Add(new GenerationReport
+                        {
+                            ObjectName = objInfo.ObjectName,
+                            ObjectType = objInfo.ObjectType.ToString(),
+                            Message = msg,
+                            FileName = filename
+                        });
+                    OnGenerationInformation(msg);
                 }
                 finally
                 {
