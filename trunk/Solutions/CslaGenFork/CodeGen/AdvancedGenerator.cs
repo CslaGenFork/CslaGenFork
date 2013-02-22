@@ -1373,12 +1373,12 @@ namespace CslaGenerator.CodeGen
                                 _sprocFailed++;
                                 _currentSprocError = true;
                                 _errorReport.Add(new GenerationReport
-                                                     {
-                                                         ObjectName = objInfo.ObjectName,
-                                                         ObjectType = objInfo.ObjectType.ToString(),
-                                                         Message = errorsOutput.ToString(),
-                                                         FileName = filename
-                                                     });
+                                    {
+                                        ObjectName = objInfo.ObjectName,
+                                        ObjectType = objInfo.ObjectType.ToString(),
+                                        Message = errorsOutput.ToString(),
+                                        FileName = filename
+                                    });
                                 OnGenerationInformation("* * Failed:" + Environment.NewLine + errorsOutput);
                             }
                             else
@@ -1389,12 +1389,12 @@ namespace CslaGenerator.CodeGen
                                     {
                                         _sprocWarnings++;
                                         _warningReport.AddMultiline(new GenerationReport
-                                                                        {
-                                                                            ObjectName = objInfo.ObjectName,
-                                                                            ObjectType = objInfo.ObjectType.ToString(),
-                                                                            Message = warningsOutput.ToString(),
-                                                                            FileName = filename
-                                                                        });
+                                            {
+                                                ObjectName = objInfo.ObjectName,
+                                                ObjectType = objInfo.ObjectType.ToString(),
+                                                Message = warningsOutput.ToString(),
+                                                FileName = filename
+                                            });
                                         OnGenerationInformation("* Warning:" + Environment.NewLine + warningsOutput);
                                     }
                                 }
@@ -1417,10 +1417,9 @@ namespace CslaGenerator.CodeGen
                 }
                 catch (Exception e)
                 {
-
                     _sprocFailed++;
                     _currentSprocError = true;
-                   string msg;
+                    string msg;
                     if (e.GetBaseException() as IOException != null)
                         msg = "* Failed: " + filename + " was busy.";
                     else
