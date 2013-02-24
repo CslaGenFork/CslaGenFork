@@ -31,11 +31,11 @@ namespace ParentLoadROSoftDelete.Business.ERCLevel
         /// <summary>
         /// Maintains metadata about <see cref="SubContinent_Child_Name"/> property.
         /// </summary>
-        public static readonly PropertyInfo<string> SubContinent_Child_NameProperty = RegisterProperty<string>(p => p.SubContinent_Child_Name, "3_Countries Child Name");
+        public static readonly PropertyInfo<string> SubContinent_Child_NameProperty = RegisterProperty<string>(p => p.SubContinent_Child_Name, "Countries Child Name");
         /// <summary>
-        /// Gets the 3_Countries Child Name.
+        /// Gets the Countries Child Name.
         /// </summary>
-        /// <value>The 3_Countries Child Name.</value>
+        /// <value>The Countries Child Name.</value>
         public string SubContinent_Child_Name
         {
             get { return GetProperty(SubContinent_Child_NameProperty); }

@@ -15,7 +15,7 @@ namespace SelfLoadRO.DataAccess.ERCLevel
         public int Parent_Continent_ID { get; set; }
 
         /// <summary>
-        /// Gets or sets the 2_SubContinents Child Name.
+        /// Gets or sets the SubContinents Child Name.
         /// </summary>
         /// <value>The Continent Child Name.</value>
         public string Continent_Child_Name { get; set; }

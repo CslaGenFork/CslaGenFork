@@ -41,11 +41,11 @@ namespace ParentLoadSoftDelete.Business.ERLevel
         /// <summary>
         /// Maintains metadata about <see cref="Country_ID"/> property.
         /// </summary>
-        public static readonly PropertyInfo<int> Country_IDProperty = RegisterProperty<int>(p => p.Country_ID, "3_Countries ID");
+        public static readonly PropertyInfo<int> Country_IDProperty = RegisterProperty<int>(p => p.Country_ID, "Countries ID");
         /// <summary>
-        /// Gets the 3_Countries ID.
+        /// Gets the Countries ID.
         /// </summary>
-        /// <value>The 3_Countries ID.</value>
+        /// <value>The Countries ID.</value>
         public int Country_ID
         {
             get { return GetProperty(Country_IDProperty); }
@@ -54,11 +54,11 @@ namespace ParentLoadSoftDelete.Business.ERLevel
         /// <summary>
         /// Maintains metadata about <see cref="Country_Name"/> property.
         /// </summary>
-        public static readonly PropertyInfo<string> Country_NameProperty = RegisterProperty<string>(p => p.Country_Name, "3_Countries Name");
+        public static readonly PropertyInfo<string> Country_NameProperty = RegisterProperty<string>(p => p.Country_Name, "Countries Name");
         /// <summary>
-        /// Gets or sets the 3_Countries Name.
+        /// Gets or sets the Countries Name.
         /// </summary>
-        /// <value>The 3_Countries Name.</value>
+        /// <value>The Countries Name.</value>
         public string Country_Name
         {
             get { return GetProperty(Country_NameProperty); }

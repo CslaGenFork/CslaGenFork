@@ -23,11 +23,11 @@ namespace SelfLoadSoftDelete.Business.ERLevel
         /// <summary>
         /// Maintains metadata about <see cref="Continent_Child_Name"/> property.
         /// </summary>
-        public static readonly PropertyInfo<string> Continent_Child_NameProperty = RegisterProperty<string>(p => p.Continent_Child_Name, "2_SubContinents Child Name");
+        public static readonly PropertyInfo<string> Continent_Child_NameProperty = RegisterProperty<string>(p => p.Continent_Child_Name, "SubContinents Child Name");
         /// <summary>
-        /// Gets or sets the 2_SubContinents Child Name.
+        /// Gets or sets the SubContinents Child Name.
         /// </summary>
-        /// <value>The 2_SubContinents Child Name.</value>
+        /// <value>The SubContinents Child Name.</value>
         public string Continent_Child_Name
         {
             get { return GetProperty(Continent_Child_NameProperty); }

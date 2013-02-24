@@ -15,7 +15,7 @@ namespace SelfLoadSoftDelete.DataAccess.ERCLevel
         public int Parent_Country_ID { get; set; }
 
         /// <summary>
-        /// Gets or sets the 4_Regions Child Name.
+        /// Gets or sets the Regions Child Name.
         /// </summary>
         /// <value>The Country Child Name.</value>
         public string Country_Child_Name { get; set; }

@@ -15,13 +15,13 @@ namespace SelfLoadROSoftDelete.DataAccess.ERCLevel
         public int Parent_Country_ID { get; set; }
 
         /// <summary>
-        /// Gets or sets the 4_Regions ID.
+        /// Gets or sets the Regions ID.
         /// </summary>
         /// <value>The Region ID.</value>
         public int Region_ID { get; set; }
 
         /// <summary>
-        /// Gets or sets the 4_Regions Name.
+        /// Gets or sets the Regions Name.
         /// </summary>
         /// <value>The Region Name.</value>
         public string Region_Name { get; set; }

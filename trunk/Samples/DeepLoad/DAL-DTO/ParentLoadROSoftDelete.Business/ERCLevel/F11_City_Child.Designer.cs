@@ -27,9 +27,9 @@ namespace ParentLoadROSoftDelete.Business.ERCLevel
         #region Business Properties
 
         /// <summary>
-        /// Gets or sets the 6_CityRoads Child Name.
+        /// Gets the CityRoads Child Name.
         /// </summary>
-        /// <value>The 6_CityRoads Child Name.</value>
+        /// <value>The CityRoads Child Name.</value>
         public string City_Child_Name { get; private set; }
 
         #endregion

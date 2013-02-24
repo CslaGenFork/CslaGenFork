@@ -32,11 +32,11 @@ namespace SelfLoadSoftDelete.Business.ERCLevel
         /// <summary>
         /// Maintains metadata about <see cref="Continent_ID"/> property.
         /// </summary>
-        public static readonly PropertyInfo<int> Continent_IDProperty = RegisterProperty<int>(p => p.Continent_ID, "1_Continents ID");
+        public static readonly PropertyInfo<int> Continent_IDProperty = RegisterProperty<int>(p => p.Continent_ID, "Continents ID");
         /// <summary>
-        /// Gets the 1_Continents ID.
+        /// Gets the Continents ID.
         /// </summary>
-        /// <value>The 1_Continents ID.</value>
+        /// <value>The Continents ID.</value>
         public int Continent_ID
         {
             get { return GetProperty(Continent_IDProperty); }
@@ -45,11 +45,11 @@ namespace SelfLoadSoftDelete.Business.ERCLevel
         /// <summary>
         /// Maintains metadata about <see cref="Continent_Name"/> property.
         /// </summary>
-        public static readonly PropertyInfo<string> Continent_NameProperty = RegisterProperty<string>(p => p.Continent_Name, "1_Continents Name");
+        public static readonly PropertyInfo<string> Continent_NameProperty = RegisterProperty<string>(p => p.Continent_Name, "Continents Name");
         /// <summary>
-        /// Gets or sets the 1_Continents Name.
+        /// Gets or sets the Continents Name.
         /// </summary>
-        /// <value>The 1_Continents Name.</value>
+        /// <value>The Continents Name.</value>
         public string Continent_Name
         {
             get { return GetProperty(Continent_NameProperty); }

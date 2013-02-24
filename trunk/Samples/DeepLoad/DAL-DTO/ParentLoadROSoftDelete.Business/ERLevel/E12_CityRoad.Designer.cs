@@ -27,15 +27,15 @@ namespace ParentLoadROSoftDelete.Business.ERLevel
         #region Business Properties
 
         /// <summary>
-        /// Gets or sets the 6_CityRoads ID.
+        /// Gets the CityRoads ID.
         /// </summary>
-        /// <value>The 6_CityRoads ID.</value>
+        /// <value>The CityRoads ID.</value>
         public int CityRoad_ID { get; private set; }
 
         /// <summary>
-        /// Gets or sets the 6_CityRoads Name.
+        /// Gets the CityRoads Name.
         /// </summary>
-        /// <value>The 6_CityRoads Name.</value>
+        /// <value>The CityRoads Name.</value>
         public string CityRoad_Name { get; private set; }
 
         #endregion
