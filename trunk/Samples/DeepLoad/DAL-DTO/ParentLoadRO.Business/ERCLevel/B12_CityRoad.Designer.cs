@@ -27,13 +27,13 @@ namespace ParentLoadRO.Business.ERCLevel
         #region Business Properties
 
         /// <summary>
-        /// Gets or sets the City Road ID.
+        /// Gets the City Road ID.
         /// </summary>
         /// <value>The City Road ID.</value>
         public int CityRoad_ID { get; private set; }
 
         /// <summary>
-        /// Gets or sets the City Road Name.
+        /// Gets the City Road Name.
         /// </summary>
         /// <value>The City Road Name.</value>
         public string CityRoad_Name { get; private set; }

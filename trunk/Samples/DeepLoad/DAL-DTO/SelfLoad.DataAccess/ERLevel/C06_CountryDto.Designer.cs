@@ -15,13 +15,13 @@ namespace SelfLoad.DataAccess.ERLevel
         public int Parent_SubContinent_ID { get; set; }
 
         /// <summary>
-        /// Gets or sets the 3_Countries ID.
+        /// Gets or sets the Countries ID.
         /// </summary>
         /// <value>The Country ID.</value>
         public int Country_ID { get; set; }
 
         /// <summary>
-        /// Gets or sets the 3_Countries Name.
+        /// Gets or sets the Countries Name.
         /// </summary>
         /// <value>The Country Name.</value>
         public string Country_Name { get; set; }

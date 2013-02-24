@@ -22,11 +22,11 @@ namespace SelfLoadRO.Business.ERLevel
         /// <summary>
         /// Maintains metadata about <see cref="Region_Child_Name"/> property.
         /// </summary>
-        public static readonly PropertyInfo<string> Region_Child_NameProperty = RegisterProperty<string>(p => p.Region_Child_Name, "5_Cities Child Name");
+        public static readonly PropertyInfo<string> Region_Child_NameProperty = RegisterProperty<string>(p => p.Region_Child_Name, "Cities Child Name");
         /// <summary>
-        /// Gets the 5_Cities Child Name.
+        /// Gets the Cities Child Name.
         /// </summary>
-        /// <value>The 5_Cities Child Name.</value>
+        /// <value>The Cities Child Name.</value>
         public string Region_Child_Name
         {
             get { return GetProperty(Region_Child_NameProperty); }

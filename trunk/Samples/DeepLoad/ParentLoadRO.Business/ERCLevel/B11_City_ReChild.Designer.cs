@@ -29,7 +29,7 @@ namespace ParentLoadRO.Business.ERCLevel
         #region Business Properties
 
         /// <summary>
-        /// Gets or sets the City Child Name.
+        /// Gets the City Child Name.
         /// </summary>
         /// <value>The City Child Name.</value>
         public string City_Child_Name { get; private set; }

@@ -15,7 +15,7 @@ namespace ParentLoadSoftDelete.DataAccess.ERLevel
         public int Parent_Region_ID { get; set; }
 
         /// <summary>
-        /// Gets or sets the 5_Cities Child Name.
+        /// Gets or sets the Cities Child Name.
         /// </summary>
         /// <value>The Region Child Name.</value>
         public string Region_Child_Name { get; set; }

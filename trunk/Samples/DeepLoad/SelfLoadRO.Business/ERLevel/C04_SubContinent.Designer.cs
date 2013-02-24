@@ -25,11 +25,11 @@ namespace SelfLoadRO.Business.ERLevel
         /// <summary>
         /// Maintains metadata about <see cref="SubContinent_ID"/> property.
         /// </summary>
-        public static readonly PropertyInfo<int> SubContinent_IDProperty = RegisterProperty<int>(p => p.SubContinent_ID, "2_SubContinents ID", -1);
+        public static readonly PropertyInfo<int> SubContinent_IDProperty = RegisterProperty<int>(p => p.SubContinent_ID, "SubContinents ID", -1);
         /// <summary>
-        /// Gets the 2_SubContinents ID.
+        /// Gets the SubContinents ID.
         /// </summary>
-        /// <value>The 2_SubContinents ID.</value>
+        /// <value>The SubContinents ID.</value>
         public int SubContinent_ID
         {
             get { return GetProperty(SubContinent_IDProperty); }
@@ -38,11 +38,11 @@ namespace SelfLoadRO.Business.ERLevel
         /// <summary>
         /// Maintains metadata about <see cref="SubContinent_Name"/> property.
         /// </summary>
-        public static readonly PropertyInfo<string> SubContinent_NameProperty = RegisterProperty<string>(p => p.SubContinent_Name, "2_SubContinents Name");
+        public static readonly PropertyInfo<string> SubContinent_NameProperty = RegisterProperty<string>(p => p.SubContinent_Name, "SubContinents Name");
         /// <summary>
-        /// Gets the 2_SubContinents Name.
+        /// Gets the SubContinents Name.
         /// </summary>
-        /// <value>The 2_SubContinents Name.</value>
+        /// <value>The SubContinents Name.</value>
         public string SubContinent_Name
         {
             get { return GetProperty(SubContinent_NameProperty); }

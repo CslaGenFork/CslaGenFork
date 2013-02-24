@@ -22,11 +22,11 @@ namespace SelfLoadSoftDelete.Business.ERCLevel
         /// <summary>
         /// Maintains metadata about <see cref="City_Child_Name"/> property.
         /// </summary>
-        public static readonly PropertyInfo<string> City_Child_NameProperty = RegisterProperty<string>(p => p.City_Child_Name, "6_CityRoads Child Name");
+        public static readonly PropertyInfo<string> City_Child_NameProperty = RegisterProperty<string>(p => p.City_Child_Name, "CityRoads Child Name");
         /// <summary>
-        /// Gets or sets the 6_CityRoads Child Name.
+        /// Gets or sets the CityRoads Child Name.
         /// </summary>
-        /// <value>The 6_CityRoads Child Name.</value>
+        /// <value>The CityRoads Child Name.</value>
         public string City_Child_Name
         {
             get { return GetProperty(City_Child_NameProperty); }

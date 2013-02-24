@@ -15,13 +15,13 @@ namespace ParentLoadROSoftDelete.DataAccess.ERCLevel
         public int Parent_Continent_ID { get; set; }
 
         /// <summary>
-        /// Gets or sets the 2_SubContinents ID.
+        /// Gets or sets the SubContinents ID.
         /// </summary>
         /// <value>The Sub Continent ID.</value>
         public int SubContinent_ID { get; set; }
 
         /// <summary>
-        /// Gets or sets the 2_SubContinents Name.
+        /// Gets or sets the SubContinents Name.
         /// </summary>
         /// <value>The Sub Continent Name.</value>
         public string SubContinent_Name { get; set; }
