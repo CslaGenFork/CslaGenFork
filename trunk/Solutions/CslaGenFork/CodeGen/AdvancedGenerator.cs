@@ -815,12 +815,12 @@ namespace CslaGenerator.CodeGen
                 OnGenerationFileName(baseFileName);
                 _objFailed++;
                 _errorReport.Add(new GenerationReport
-                                     {
-                                         ObjectName = objInfo.ObjectName,
-                                         ObjectType = objInfo.ObjectType.ToString(),
-                                         Message = "Error on Business generation.",
-                                         FileName = baseFileName
-                                     });
+                    {
+                        ObjectName = objInfo.ObjectName,
+                        ObjectType = objInfo.ObjectType.ToString(),
+                        Message = "Error on Business generation.",
+                        FileName = baseFileName
+                    });
                 OnGenerationInformation("* * Failed:" + Environment.NewLine + "Error on Business generation." + Environment.NewLine);
                 return;
             }
