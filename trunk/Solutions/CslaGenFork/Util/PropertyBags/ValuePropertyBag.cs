@@ -659,8 +659,8 @@ namespace CslaGenerator.Util.PropertyBags
                         return false;
                     if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 ||
                          GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL) &&
-                        propertyName == "Rules" ||
-                        propertyName == "MarkDirtyOnChange")
+                        (propertyName == "Rules" ||
+                        propertyName == "MarkDirtyOnChange"))
                         return false;
                     if (cslaObject.ObjectType == CslaObjectType.NameValueList &&
                         (propertyName == "AuthzProvider" ||
