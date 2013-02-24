@@ -18,6 +18,26 @@
 <%@ Import Namespace="System.Windows.Forms"%>
 
 <%
+bool isUndeletable = false;
+if (Info.Parent.Params.SpBoolSoftDeleteColumn != string.Empty && Info.UseParentProperties == ParentPropertiesUsage.InsertUpdateDelete)
+{
+    foreach (ValueProperty prop in Info.ValueProperties)
+    {
+        if (prop.DbBindColumn.Column == null)
+        continue;
+
+        if (prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK)
+        {
+            isUndeletable = false;
+            break;
+        }
+
+        if (prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.UserProvidedPK)
+        {
+            isUndeletable = true;
+        }
+    }
+}
 bool first = false;
 ValueProperty propPK = null;
 List<IResultObject> tables = GetTablesInsert(Info);
@@ -86,6 +106,191 @@ AS
         SET NOCOUNT ON
         <%-- Insert ------------------------%>
 <%
+string indent = string.Empty;
+if (isUndeletable)
+{
+    indent = new string(' ', 8);
+    %>
+
+        /* Check for soft deleted object existance */
+        IF EXISTS
+        (
+            SELECT <%
+    first = true;
+    if (!Info.ParentInsertOnly)
+    {
+        foreach (ValueProperty prop in Info.GetParentValueProperties())
+        {
+            if (prop.DbBindColumn.Column == null)
+                continue;
+
+            if (first)
+                first = false;
+            else
+            {
+                %>, <%
+            }
+        %>[<%= GetFKColumnForParentProperty(prop, tables[0]) %>]<%
+        }
+    }
+    foreach (ValueProperty prop in Info.ValueProperties)
+    {
+        if (prop.DbBindColumn.Column == null)
+            continue;
+
+        if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
+        {
+        if (first)
+            first = false;
+        else
+        {
+            %>, <%
+        }
+    %>[<%= GetColumnString(prop.DbBindColumn) %>]<%
+        }
+    }
+    %> FROM <%= fullTableSchema %>[<%= tables[0].ObjectName %>]
+            WHERE
+                <%
+    first = true;
+    if (!Info.ParentInsertOnly)
+    {
+        foreach (ValueProperty prop in Info.GetParentValueProperties())
+        {
+            if (prop.DbBindColumn.Column == null)
+                continue;
+
+            if (first)
+                first = false;
+            else
+            {
+                %> AND
+                <%
+            }
+    %>[<%= GetFKColumnForParentProperty(prop,tables[0]) %>] = @<%= prop.ParameterName %><%
+        }
+    }
+    foreach (ValueProperty prop in Info.GetAllValueProperties())
+    {
+        if (prop.DbBindColumn.Column == null)
+            continue;
+
+        if (prop.DbBindColumn.IsPrimaryKey)
+        if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
+        {
+            if (first)
+                first = false;
+            else
+            {
+                %> AND
+                <%
+            }
+    %>[<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
+        }
+    }
+    if (UseBoolSoftDelete(tables, IgnoreFilter(Info)))
+    {
+        if (first)
+            first = false;
+        else
+        {
+            %> AND
+                <%
+        }
+    %>[<%= Info.Parent.Params.SpBoolSoftDeleteColumn %>] = 'false'<%
+    }
+    else if (UseIntSoftDelete(tables, IgnoreFilter(Info)))
+    {
+        if (first)
+            first = false;
+        else
+        {
+            %> AND
+                <%
+        }
+    %>[<%= Info.Parent.Params.SpIntSoftDeleteColumn %>] > 0<%
+    }
+    %>
+        )
+            BEGIN
+                /* Update object in <%= plainTableSchema %><%= tables[0].ObjectName %> */
+                UPDATE <%= fullTableSchema %>[<%= tables[0].ObjectName %>]
+                SET
+                    <%
+    first = true;
+    foreach (ValueProperty prop in Info.ValueProperties)
+    {
+        if (prop.DbBindColumn.Column == null)
+        continue;
+
+        if (prop.ParameterName != timeStampColumn &&
+            prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.Default &&
+            prop.DataAccess != ValueProperty.DataAccessBehaviour.CreateOnly &&
+            prop.DataAccess != ValueProperty.DataAccessBehaviour.ReadOnly &&
+            prop.DataAccess != ValueProperty.DataAccessBehaviour.UpdateOnly)
+        {
+            if (first)
+                first = false;
+            else
+            {
+                %>,
+                    <%
+            }
+            %>[<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
+        }
+    }
+    if (first)
+        first = false;
+    else
+    {
+        %>,
+                    <%
+    }
+    %>[<%= Info.Parent.Params.SpBoolSoftDeleteColumn %>] = 'true'
+                WHERE
+                    <%
+    first = true;
+    if (!Info.ParentInsertOnly)
+    {
+        foreach (ValueProperty prop in Info.GetParentValueProperties())
+        {
+            if (prop.DbBindColumn.Column == null)
+                continue;
+
+            if (first)
+                first = false;
+            else
+            {
+                %> AND
+                    <%
+            }
+    %>[<%= GetFKColumnForParentProperty(prop,tables[0]) %>] = @<%= prop.ParameterName %><%
+        }
+    }
+    foreach (ValueProperty prop in Info.GetAllValueProperties())
+    {
+        if (prop.DbBindColumn.Column == null)
+            continue;
+
+        if (prop.DbBindColumn.IsPrimaryKey)
+        if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
+        {
+            if (first)
+                first = false;
+            else
+            {
+                %> AND
+                    <%
+            }
+    %>[<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
+        }
+    }
+    %>
+            END
+        ELSE
+            BEGIN
+        <%
+}
 foreach(IResultObject table in tables)
 {
     string plainTableSchema2 = GetSchema(table, false);
@@ -102,8 +307,8 @@ foreach(IResultObject table in tables)
         {
             if (!first)
             {
-                fields += "," + Environment.NewLine + new string(' ', 3*4);
-                parms +=  "," + Environment.NewLine + new string(' ', 3*4);
+                fields += "," + Environment.NewLine + new string(' ', 3*4) + indent;
+                parms +=  "," + Environment.NewLine + new string(' ', 3*4) + indent;
             }
             first = false;
             fields += string.Concat("[", colName,"]");
@@ -122,8 +327,8 @@ foreach(IResultObject table in tables)
             {
                 if (!first)
                 {
-                    fields += "," + Environment.NewLine + new string(' ', 3*4);
-                    parms +=  "," + Environment.NewLine + new string(' ', 3*4);
+                    fields += "," + Environment.NewLine + new string(' ', 3*4) + indent;
+                    parms +=  "," + Environment.NewLine + new string(' ', 3*4) + indent;
                 }
                 else
                 {
@@ -134,21 +339,30 @@ foreach(IResultObject table in tables)
             }
         }
     }
+    if (!isUndeletable)
+    {
+        Response.Write(Environment.NewLine);
+    }
     if (fields != string.Empty)
     {
         %>
-
-        /* Insert object into <%= plainTableSchema2 %><%= table.ObjectName %> */
-        INSERT INTO <%= fullTableSchema2 %>[<%= table.ObjectName %>]
-        (
-            <%= fields %>
-        )
-        VALUES
-        (
-            <%= parms %>
-        )
-        <%-- Output -----------------------%>
+        <%= indent %>/* Insert object into <%= plainTableSchema2 %><%= table.ObjectName %> */
+        <%= indent %>INSERT INTO <%= fullTableSchema2 %>[<%= table.ObjectName %>]
+        <%= indent %>(
+            <%= indent %><%= fields %>
+        <%= indent %>)
+        <%= indent %>VALUES
+        <%= indent %>(
+            <%= indent %><%= parms %>
+        <%= indent %>)
         <%
+        if (isUndeletable)
+        {
+            %>
+            END
+        <%
+        }
+        //-- Output -----------------------
         if (propPK != null)
         {
             Response.Write(Environment.NewLine);%>
