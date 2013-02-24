@@ -32,9 +32,9 @@ List<IResultObject> tables = GetTablesDelete(Info);
 SortTables(tables);
 string plainTableSchema = GetSchema(tables[0], false);
 string fullTableSchema = GetSchema(tables[0], true);
-bool timeStampColumn=false;
+bool timeStampColumn = false;
 string procName = String.Empty;
-string parms =String.Empty;
+string parms = String.Empty;
 string whereClause = String.Empty;
 string whereClauseTS = String.Empty;
 
