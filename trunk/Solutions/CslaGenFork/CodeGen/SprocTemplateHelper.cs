@@ -1082,6 +1082,9 @@ namespace CslaGenerator.CodeGen
 
         public static void SortKeys(List<IForeignKeyConstraint> fKeys, List<IResultObject> parentTables)
         {
+            if (parentTables.Count == 0)
+                return;
+
             var sorted = false;
             var parentTable = parentTables[0].ObjectName;
             var fkArray = fKeys.ToArray();
