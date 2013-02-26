@@ -359,10 +359,11 @@ namespace CslaGenerator.CodeGen
                 var tables = GetTables(crit, info, true);
                 if (tables.Count > 1)
                 {
+                    var problemTables = new List<IResultObject>();
                     var parentTables = GetTablesParent(crit, info);
                     foreach (var table in tables)
                     {
-                        if(parentTables.Contains(table))
+                        if (parentTables.Contains(table))
                             continue;
                         var fkFound = false;
                         var fKeys = Catalog.ForeignKeyConstraints.GetConstraintsFor(table);
@@ -372,19 +373,49 @@ namespace CslaGenerator.CodeGen
                         {
                             if (tables.IndexOf(key.PKTable) >= 0)
                             {
-                                if (key.PKTable != key.ConstraintTable)
-                                {
-                                    fkFound = true;
-                                    break;
-                                }
+                                fkFound = true;
+                                break;
                             }
                         }
                         if (!fkFound)
                         {
-                            if (result != string.Empty)
-                                result += ", ";
-                            result += table.ObjectName;
+                            problemTables.Add(table);
                         }
+                    }
+
+                    foreach (var table in tables)
+                    {
+                        if (parentTables.Contains(table))
+                            continue;
+                        var fKeys = Catalog.ForeignKeyConstraints.GetConstraintsFor(table);
+                        SortKeys(fKeys, parentTables);
+                        fKeys = FilterDuplicateConstraintTables(fKeys, info.GetDatabaseBoundValueProperties());
+                        foreach (var key in fKeys)
+                        {
+                            for (var index = 0; index < problemTables.Count; index++)
+                            {
+                                var problemTable = problemTables[index];
+                                if (table == problemTable)
+                                    continue;
+                                if (key.PKTable.ObjectName == problemTable.ObjectName)
+                                {
+                                    problemTables.Remove(problemTable);
+                                    if (problemTables.Count == 0)
+                                        break;
+                                }
+                            }
+                            if (problemTables.Count == 0)
+                                break;
+                        }
+                        if (problemTables.Count == 0)
+                            break;
+                    }
+
+                    foreach (var problemTable in problemTables)
+                    {
+                        if (result != string.Empty)
+                            result += ", ";
+                        result += problemTable.ObjectName;
                     }
                 }
             }
@@ -427,69 +458,65 @@ namespace CslaGenerator.CodeGen
                         // check if this key is needed in the join
                         if (tables.IndexOf(key.PKTable) >= 0)
                         {
-                            if (key.PKTable != key.ConstraintTable)
+                            if (firstJoin)
                             {
-                                if (firstJoin)
+                                sb.AppendFormat("{0}[{1}]", GetSchema(key.ConstraintTable, true), key.ConstraintTable.ObjectName);
+                                sb.Append(Environment.NewLine + Indent(3));
+                                sb.Append("INNER JOIN ");
+                                sb.AppendFormat("{0}[{1}]", GetSchema(key.PKTable, true), key.PKTable.ObjectName);
+                                sb.Append(" ON ");
+                                var firstKeyColl = true;
+                                foreach (var kcPair in key.Columns)
                                 {
-                                    sb.AppendFormat("{0}[{1}]", GetSchema(key.ConstraintTable, true), key.ConstraintTable.ObjectName);
-                                    sb.Append(Environment.NewLine + Indent(3));
-                                    sb.Append("INNER JOIN ");
-                                    sb.AppendFormat("{0}[{1}]", GetSchema(key.PKTable, true), key.PKTable.ObjectName);
-                                    sb.Append(" ON ");
-                                    var firstKeyColl = true;
-                                    foreach (var kcPair in key.Columns)
-                                    {
-                                        if (firstKeyColl)
-                                            firstKeyColl = false;
-                                        else
-                                        {
-                                            sb.Append(" AND");
-                                            sb.Append(Environment.NewLine + Indent(6));
-                                        }
-
-                                        sb.Append(GetAliasedFieldString(key.ConstraintTable, kcPair.FKColumn));
-                                        sb.Append(" = ");
-                                        sb.Append(GetAliasedFieldString(key.PKTable, kcPair.PKColumn));
-                                        _innerJoins++;
-                                    }
-                                    usedTables.Add(key.PKTable);
-                                    usedTables.Add(key.ConstraintTable);
-                                    firstJoin = false;
-                                }
-                                else
-                                {
-                                    if (usedTables.Contains(key.PKTable) &&
-                                        usedTables.Contains(key.ConstraintTable))
+                                    if (firstKeyColl)
+                                        firstKeyColl = false;
+                                    else
                                     {
                                         sb.Append(" AND");
                                         sb.Append(Environment.NewLine + Indent(6));
                                     }
+
+                                    sb.Append(GetAliasedFieldString(key.ConstraintTable, kcPair.FKColumn));
+                                    sb.Append(" = ");
+                                    sb.Append(GetAliasedFieldString(key.PKTable, kcPair.PKColumn));
+                                    _innerJoins++;
+                                }
+                                usedTables.Add(key.PKTable);
+                                usedTables.Add(key.ConstraintTable);
+                                firstJoin = false;
+                            }
+                            else
+                            {
+                                if (usedTables.Contains(key.PKTable) &&
+                                    usedTables.Contains(key.ConstraintTable))
+                                {
+                                    sb.Append(" AND");
+                                    sb.Append(Environment.NewLine + Indent(6));
+                                }
+                                else
+                                {
+                                    sb.Append(Environment.NewLine + Indent(3));
+                                    sb.Append("INNER JOIN ");
+                                    sb.AppendFormat("{0}[{1}]", GetSchema(key.PKTable, true), key.PKTable.ObjectName);
+                                    sb.Append(" ON ");
+                                    usedTables.Add(key.PKTable);
+                                }
+
+                                var firstKeyColl = true;
+                                foreach (var kcPair in key.Columns)
+                                {
+                                    if (firstKeyColl)
+                                        firstKeyColl = false;
                                     else
                                     {
-                                        sb.Append(Environment.NewLine + Indent(3));
-                                        sb.Append("INNER JOIN ");
-                                        sb.AppendFormat("{0}[{1}]", GetSchema(key.PKTable, true),
-                                                        key.PKTable.ObjectName);
-                                        sb.Append(" ON ");
-                                        usedTables.Add(key.PKTable);
+                                        sb.Append(" AND");
+                                        sb.Append(Environment.NewLine + Indent(6));
                                     }
 
-                                    var firstKeyColl = true;
-                                    foreach (var kcPair in key.Columns)
-                                    {
-                                        if (firstKeyColl)
-                                            firstKeyColl = false;
-                                        else
-                                        {
-                                            sb.Append(" AND");
-                                            sb.Append(Environment.NewLine + Indent(6));
-                                        }
-
-                                        sb.Append(GetAliasedFieldString(key.ConstraintTable, kcPair.FKColumn));
-                                        sb.Append(" = ");
-                                        sb.Append(GetAliasedFieldString(key.PKTable, kcPair.PKColumn));
-                                        _innerJoins++;
-                                    }
+                                    sb.Append(GetAliasedFieldString(key.ConstraintTable, kcPair.FKColumn));
+                                    sb.Append(" = ");
+                                    sb.Append(GetAliasedFieldString(key.PKTable, kcPair.PKColumn));
+                                    _innerJoins++;
                                 }
                             }
                         }
