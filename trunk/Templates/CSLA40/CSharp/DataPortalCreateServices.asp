@@ -1,5 +1,5 @@
 <%
-if (UseSilverlight())
+if ((UseSilverlight() && objectRunLocal) || CurrentUnit.GenerationParams.SilverlightUsingServices)
 {
     List<string> createPartialMethods = new List<string>();
     List<string> createPartialParams = new List<string>();

@@ -2,12 +2,16 @@
 if (UseSilverlight())
 {
     int createCriteriaCount = 0;
+    bool runLocal = true;
     foreach (Criteria c in Info.CriteriaObjects)
     {
         if (c.CreateOptions.Factory)
+        {
+            runLocal = c.CreateOptions.RunLocal;
             createCriteriaCount ++;
+        }
     }
-    if (createCriteriaCount == 0 &&
+    if (createCriteriaCount == 0 && runLocal &&
         (Info.ObjectType == CslaObjectType.EditableRootCollection ||
         Info.ObjectType == CslaObjectType.DynamicEditableRootCollection ||
         Info.ObjectType == CslaObjectType.EditableChildCollection))

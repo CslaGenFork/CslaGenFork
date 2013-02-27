@@ -30,6 +30,7 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
         {
             if (c.CreateOptions.Factory)
             {
+                var runLocal = c.CreateOptions.RunLocal;
                 string strNewParams = string.Empty;
                 string strNewCritParams = string.Empty;
                 string strNewComment = string.Empty;
@@ -82,19 +83,19 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
                 if (c.Properties.Count > 1)
                 {
                     %>
-            return DataPortal.Create<%= isChildNotLazyLoaded ? "Child" : "" %><<%= Info.ObjectName %>>(new <%= c.Name %>(<%= strNewCritParams %>));
+            return DataPortal.Create<%= (isChildNotLazyLoaded && runLocal) ? "Child" : "" %><<%= Info.ObjectName %>>(new <%= c.Name %>(<%= strNewCritParams %>));
                 <%
                 }
                 else if (c.Properties.Count > 0)
                 {
                     %>
-            return DataPortal.Create<%= isChildNotLazyLoaded ? "Child" : "" %><<%= Info.ObjectName %>>(<%= SendSingleCriteria(c, strNewCritParams) %>);
+            return DataPortal.Create<%= (isChildNotLazyLoaded && runLocal) ? "Child" : "" %><<%= Info.ObjectName %>>(<%= SendSingleCriteria(c, strNewCritParams) %>);
                     <%
                 }
                 else
                 {
                     %>
-            return DataPortal.Create<%= isChildNotLazyLoaded ? "Child" : "" %><<%= Info.ObjectName %>>();
+            return DataPortal.Create<%= (isChildNotLazyLoaded && runLocal) ? "Child" : "" %><<%= Info.ObjectName %>>();
                     <%
                 }
                 %>

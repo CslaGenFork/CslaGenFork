@@ -36,6 +36,8 @@ bool isParent = Info.GetAllChildProperties().Count > 0;
 bool isChildSelfLoaded = IsChildSelfLoaded(Info);
 bool isChildLazyLoaded = IsChildLazyLoaded(Info);
 bool isChildNotLazyLoaded = isChild && !isChildLazyLoaded;
+bool createAsynGenRunLocal = true;
+bool objectRunLocal = true;
 if (CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL)
 {
     if (Info.DataSetLoadingScheme)
