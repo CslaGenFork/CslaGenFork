@@ -37,8 +37,15 @@ if (UseNoSilverlight())
         }
     }
 }
-//if (UseBoth() && HasFactoryCreateOrGet(Info))
-if (UseBoth())
+foreach (Criteria c in Info.CriteriaObjects)
+{
+    if (c.CreateOptions.Factory && !c.CreateOptions.RunLocal)
+    {
+        objectRunLocal = false;
+        break;
+    }
+}
+if (UseBoth() && objectRunLocal)
 {
     %>
 
@@ -51,9 +58,11 @@ if (UseBoth())
 <%
 if (UseBoth())
 {
+    createAsynGenRunLocal = false;
     %>
 
 #endif
+<!-- #include file="NewObjectAsync.asp" -->
 <%
 }
 if (!CurrentUnit.GenerationParams.SilverlightUsingServices)

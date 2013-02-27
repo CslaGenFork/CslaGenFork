@@ -95,17 +95,8 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Busine
         bool createCriteria = Info.HasCreateCriteriaFactory;
         PropertyDeclaration declarationMode = GetDeclarationMode(Info);
         bool parentCreateCriteria = false;
-        string strNewCallback2 = string.Empty;
         foreach (Criteria c in parentInfo.CriteriaObjects)
         {
-            if (c.CreateOptions.RunLocal)
-            {
-                strNewCallback2 += ", DataPortal.ProxyModes.LocalOnly";
-            }
-            else
-            {
-                strNewCallback2 += ", DataPortal.ProxyModes.Auto";
-            }
             if (c.CreateOptions.Factory || c.CreateOptions.DataPortal)
             {
                 parentCreateCriteria = true;

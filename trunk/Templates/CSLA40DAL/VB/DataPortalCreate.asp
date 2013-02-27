@@ -1,13 +1,13 @@
 <%
-string dataPortalCreate = string.Empty;
-if (isChildNotLazyLoaded)
-dataPortalCreate = "Child_";
-else
-dataPortalCreate = "DataPortal_";
 foreach (Criteria c in Info.CriteriaObjects)
 {
     if (c.CreateOptions.DataPortal)
     {
+        string dataPortalCreate = string.Empty;
+        if (isChildNotLazyLoaded && c.CreateOptions.RunLocal)
+            dataPortalCreate = "Child_";
+        else
+            dataPortalCreate = "DataPortal_";
         %>
 
         /// <summary>

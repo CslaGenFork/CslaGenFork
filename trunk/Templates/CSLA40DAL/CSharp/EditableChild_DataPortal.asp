@@ -15,7 +15,8 @@ if (UseNoSilverlight())
 <!-- #include file="InternalInsertUpdateDelete.asp" -->
 <%
 }
-if (UseBoth() && (HasDataPortalCreate(Info) || ((HasDataPortalGetOrDelete(Info) || Info.GenerateDataPortalUpdate) && CurrentUnit.GenerationParams.SilverlightUsingServices)))
+if (UseBoth() && (objectRunLocal &&
+    (HasDataPortalCreate(Info) || ((HasDataPortalGetOrDelete(Info) || Info.GenerateDataPortalUpdate) && CurrentUnit.GenerationParams.SilverlightUsingServices))))
 {
     %>
 

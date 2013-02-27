@@ -2,17 +2,23 @@
 if (CurrentUnit.GenerationParams.GenerateAsynchronous)
 {
     int createCriteriaCount = 0;
+    bool runLocal = true;
     foreach (Criteria c in Info.CriteriaObjects)
     {
         if (c.CreateOptions.Factory)
+        {
+            runLocal = c.CreateOptions.RunLocal;
             createCriteriaCount ++;
+        }
     }
     if (createCriteriaCount == 0 &&
         (Info.ObjectType == CslaObjectType.EditableRootCollection ||
         Info.ObjectType == CslaObjectType.DynamicEditableRootCollection ||
         Info.ObjectType == CslaObjectType.EditableChildCollection))
     {
-        %>
+        if (runLocal == createAsynGenRunLocal)
+        {
+            %>
 
         /// <summary>
         /// Factory method. Asynchronously creates a new <see cref="<%= Info.ObjectName %>"/> collection.
@@ -23,12 +29,13 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
             DataPortal.BeginCreate<<%= Info.ObjectName %>>(callback);
         }
         <%
+        }
     }
     else
     {
         foreach (Criteria c in Info.CriteriaObjects)
         {
-            if (c.CreateOptions.Factory)
+            if (c.CreateOptions.Factory && (c.CreateOptions.RunLocal == createAsynGenRunLocal))
             {
                 string strNewParams = string.Empty;
                 string strNewCritParams = string.Empty;
