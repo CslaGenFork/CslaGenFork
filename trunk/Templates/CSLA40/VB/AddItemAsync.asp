@@ -25,12 +25,6 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
         /// <param name="<%= FormatCamel(crit.Properties[i].Name) %>">The <%= FormatProperty(crit.Properties[i].Name) %> of the object to be added.</param>
 <%
         }
-        if (useAuthz)
-        {
-            %>
-        /// <exception cref="System.Security.SecurityException">if the user isn't authorized to add items to the collection.</exception>
-<%
-        }
         %>
         public void BeginAdd(<%= prmsAsync %>)
         {

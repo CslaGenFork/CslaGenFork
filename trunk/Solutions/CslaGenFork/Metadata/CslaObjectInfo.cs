@@ -63,6 +63,7 @@ namespace CslaGenerator.Metadata
         private string _dbName = String.Empty;
         private string _itemType = String.Empty;
         private bool _containsItem = true;
+        private bool _uniqueItems = true;
         private string _updaterType = String.Empty;
         private string _parentType = String.Empty;
         private string _fileName = String.Empty;
@@ -688,12 +689,32 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("05. Collection Options")]
-        [Description("Defines whether you want to generate the collection Contains && ContainsDeleted methods or not.")]
+        [Description("Whether to generate collection's Contains && ContainsDeleted methods.")]
         [UserFriendlyName("Use Contains Methods")]
         public bool ContainsItem
         {
             get { return _containsItem; }
-            set { _containsItem = value; }
+            set
+            {
+                _containsItem = value;
+                if (!value)
+                    _uniqueItems = value;
+            }
+        }
+
+        [Category("05. Collection Options")]
+        [Description("Whether you want to disallow duplicate items on the collection.\r\n" +
+            "This setting requires \"Use Contains Methods\" to be set.")]
+        [UserFriendlyName("Disallow Duplicate Items")]
+        public bool UniqueItems
+        {
+            get { return _uniqueItems; }
+            set
+            {
+                _uniqueItems = value;
+                if (value)
+                    _containsItem = value;
+            }
         }
 
         [Category("05. Collection Options")]

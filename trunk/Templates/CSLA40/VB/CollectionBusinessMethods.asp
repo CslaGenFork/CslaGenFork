@@ -47,35 +47,34 @@ if (!needsBusiness)
     }
 }
 
-if (useParentReference || isRODeepLoadCollection || useAuthz || needsBusiness)
+if (useParentReference || isRODeepLoadCollection || useAuthz || Info.UniqueItems || needsBusiness)
 {
     %>
 
         #region Collection Business Methods
         <%
-    if ((useParentReference || isRODeepLoadCollection) && !useAuthz)
+    if (useParentReference || isRODeepLoadCollection || Info.UniqueItems || useAuthz)
     {
-        %>
-
-        /// <summary>
-        /// Adds a new <see cref="<%= Info.ItemType %>"/> item to the collection.
-        /// </summary>
-        /// <param name="item">The item to add.</param>
-        /// <remarks>
-        /// There is no valid Parent property (inexistant or null).
-        /// The Add method is redefined so it takes care of filling the ParentList property.
-        /// </remarks>
-        public new void Add(<%= Info.ItemType %> item)
+        if (useParentReference || isRODeepLoadCollection || Info.UniqueItems || itemInfo.NewRoles.Trim() != String.Empty)
         {
-            item.ParentList = this;
-            base.Add(item);
-        }
-        <%
-    }
-    else if (useAuthz)
-    {
-        if (itemInfo.NewRoles.Trim() != String.Empty)
-        {
+            List<Property> propertyList = new List<Property>();
+            string[] paramNameArray = null;
+            if (Info.UniqueItems)
+            {
+                foreach (ValueProperty prop in itemInfo.ValueProperties)
+                {
+                    if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
+                    {
+                        propertyList.Add(prop);
+                    }
+                }
+                paramNameArray = new string[propertyList.Count];
+                for (int i = 0; i < propertyList.Count; i++)
+                {
+                    Property param = propertyList[i];
+                    paramNameArray[i] = param.Name;
+                }
+            }
             %>
 
         /// <summary>
@@ -92,14 +91,43 @@ if (useParentReference || isRODeepLoadCollection || useAuthz || needsBusiness)
         /// </remarks>
         <%
         }
-        %>
+        if (itemInfo.NewRoles.Trim() != String.Empty)
+        {
+            %>
         /// <exception cref="System.Security.SecurityException">if the user isn't authorized to add items to the collection.</exception>
+        <%
+        }
+        if (Info.UniqueItems)
+        {
+            %>
+        /// <exception cref="ArgumentException">if the item already exists in the collection.</exception>
+        <%
+        }
+        %>
         public new void Add(<%= Info.ItemType %> item)
         {
+            <%
+        if (itemInfo.NewRoles.Trim() != String.Empty)
+        {
+            %>
             if (!CanAddObject())
                 throw new System.Security.SecurityException("User not authorized to create a <%= Info.ItemType %>.");
 
         <%
+        }
+        if (Info.UniqueItems)
+        {
+            %>
+            if (Contains(<%
+            for (int i = 0; i < propertyList.Count; i++)
+            {
+                %><%= (i == 0) ? "" : " && " %>item.<%= paramNameArray[i] %><%
+            }
+                            %>))
+                throw new ArgumentException("<%= Info.ItemType %> already exists.");
+
+        <%
+        }
         if (useParentReference || isRODeepLoadCollection)
         {
             %>
@@ -221,12 +249,6 @@ if (useParentReference || isRODeepLoadCollection || useAuthz || needsBusiness)
         /// <param name="<%= FormatCamel(crit.Properties[i].Name) %>">The <%= FormatProperty(crit.Properties[i].Name) %> of the item to be removed.</param>
         <%
             }
-            if (useAuthz)
-            {
-                %>
-        /// <exception cref="System.Security.SecurityException">if the user isn't authorized to remove items from the collection.</exception>
-        <%
-            }
             %>
         public void Remove(<%= prms %>)
         {
@@ -296,12 +318,6 @@ if (useParentReference || isRODeepLoadCollection || useAuthz || needsBusiness)
             {
                 %>
         /// <param name="<%= FormatCamel(propertyList[i].Name) %>">The <%= FormatProperty(propertyList[i].Name) %> of the item to be removed.</param>
-        <%
-            }
-            if (useAuthz)
-            {
-                %>
-        /// <exception cref="System.Security.SecurityException">if the user isn't authorized to remove items from the collection.</exception>
         <%
             }
             %>

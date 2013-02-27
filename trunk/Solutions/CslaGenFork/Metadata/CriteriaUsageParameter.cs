@@ -45,7 +45,9 @@ namespace CslaGenerator.Metadata
         }
 
         [Description("Defines whether you want to generate the collection Add/Remove method for this criteria.\r\n" +
-            "This property is set on the collection item although the method is generated in the collection class.")]
+            "This property is set on the collection item although the method is generated in the collection class.\r\n" +
+            "Use the \"Create Options\" to set the value for Add method and the the \"Delete Options\" to set the value for Remove method.\r\n" +
+            "For Editable Child objects that are collection items, you must specify the Remove setting on \"Use Remove Method\"")]
         [UserFriendlyName("Add/Remove")]
         public bool AddRemove
         {

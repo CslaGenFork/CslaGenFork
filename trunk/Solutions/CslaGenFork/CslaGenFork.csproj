@@ -211,6 +211,7 @@
     </Content>
     <Content Include="PropertyContext.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Compile Include="AboutBox.cs">
       <SubType>Form</SubType>
