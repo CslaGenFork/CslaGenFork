@@ -377,7 +377,7 @@ namespace CslaGenerator.CodeGen
                     if (_unit.GenerationParams.RetryOnFileBusy && !_abortRequested)
                     {
                         _retryCount++;
-                        OutputWindow.Current.AddOutputInfo("... " + filename + " was busy. Retrying...");
+                        OutputWindow.Current.AddOutputInfo("... " + filename + " is busy. Retrying...");
                     }
                     else
                     {
@@ -468,7 +468,7 @@ namespace CslaGenerator.CodeGen
                     _fileSuccess[templateName] = false;
                     string msg;
                     if (e.GetBaseException() as IOException != null)
-                        msg = "* Failed: " + fullFilename + " was busy.";
+                        msg = "* Failed: " + fullFilename + " is busy.";
                     else
                         msg = ShowExceptionInformation(e);
 
@@ -672,7 +672,7 @@ namespace CslaGenerator.CodeGen
                 _objFailed++;
                 string msg;
                 if (e.GetBaseException() as IOException != null)
-                    msg = "* Failed: " + baseFileName + " was busy.";
+                    msg = "* Failed: " + baseFileName + " is busy.";
                 else
                     msg = ShowExceptionInformation(e);
 
@@ -748,7 +748,7 @@ namespace CslaGenerator.CodeGen
                     _objFailed++;
                     string msg;
                     if (e.GetBaseException() as IOException != null)
-                        msg = "* Failed: " + fileName + " was busy.";
+                        msg = "* Failed: " + fileName + " is busy.";
                     else
                         msg = ShowExceptionInformation(e);
 
@@ -911,7 +911,7 @@ namespace CslaGenerator.CodeGen
                 _objFailed++;
                 string msg;
                 if (e.GetBaseException() as IOException != null)
-                    msg = "* Failed: " + baseFileName + " was busy.";
+                    msg = "* Failed: " + baseFileName + " is busy.";
                 else
                     msg = ShowExceptionInformation(e);
 
@@ -1025,7 +1025,7 @@ namespace CslaGenerator.CodeGen
                     _fileSuccess[utilityFilename] = false;
                     string msg;
                     if (e.GetBaseException() as IOException != null)
-                        msg = "* Failed: " + fullFilename + " was busy.";
+                        msg = "* Failed: " + fullFilename + " is busy.";
                     else
                         msg = ShowExceptionInformation(e);
 
@@ -1142,7 +1142,7 @@ namespace CslaGenerator.CodeGen
             {
                 string msg;
                 if (e.GetBaseException() as IOException != null)
-                    msg = "* Failed: " + fileName + " was busy.";
+                    msg = "* Failed: " + fileName + " is busy.";
                 else
                     msg = ShowExceptionInformation(e);
 
@@ -1421,7 +1421,7 @@ namespace CslaGenerator.CodeGen
                     _currentSprocError = true;
                     string msg;
                     if (e.GetBaseException() as IOException != null)
-                        msg = "* Failed: " + filename + " was busy.";
+                        msg = "* Failed: " + filename + " is busy.";
                     else
                         msg = ShowExceptionInformation(e);
 
