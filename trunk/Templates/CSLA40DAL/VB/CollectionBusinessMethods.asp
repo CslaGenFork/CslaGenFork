@@ -31,16 +31,15 @@ if (!IsReadOnlyType(itemInfo.ObjectType))
     }
 }
 bool needsBusiness =
-    (itemInfo.RemoveItem &&
-    (Info.ObjectType == CslaObjectType.EditableRootCollection ||
-    Info.ObjectType == CslaObjectType.EditableChildCollection)) ||
-    (Info.ContainsItem && Info.ObjectType == CslaObjectType.ReadOnlyCollection);
+    (itemInfo.RemoveItem && itemInfo.ObjectType == CslaObjectType.EditableChild) ||
+    Info.ContainsItem;
 
 if (!needsBusiness)
 {
     foreach (Criteria crit in itemInfo.CriteriaObjects)
     {
-        if (crit.CreateOptions.AddRemove || (crit.DeleteOptions.AddRemove && crit.Properties.Count > 0))
+        if (crit.CreateOptions.AddRemove ||
+            (crit.DeleteOptions.AddRemove && crit.Properties.Count > 0 && itemInfo.ObjectType != CslaObjectType.EditableChild))
         {
             needsBusiness = true;
             break;
@@ -246,44 +245,11 @@ if (useParentReference || isRODeepLoadCollection || useAuthz || needsBusiness)
             }
         }
         <%
-            if (Info.ContainsItem)
-            {
-                %>
-
-        /// <summary>
-        /// Determines whether a <see cref="<%= Info.ItemType %>"/> item is in the collection.
-        /// </summary>
-        <%
-                for (int i = 0; i < crit.Properties.Count; i++)
-                {
-                    %>
-        /// <param name="<%= FormatCamel(crit.Properties[i].Name) %>">The <%= FormatProperty(crit.Properties[i].Name) %> of the item to search for.</param>
-        <%
-                }
-                %>
-        /// <returns><c>true</c> if the <%= Info.ItemType %> is a collection item; otherwise, <c>false</c>.</returns>
-        public bool Contains(<%= prms %>)
-        {
-            foreach (var <%= FormatCamel(Info.ItemType) %> in this)
-            {
-                if (<%
-                for (int i = 0; i < crit.Properties.Count; i++)
-                {
-                    %><%= (i == 0) ? "" : " && " %><%= FormatCamel(Info.ItemType) %>.<%= paramNameArray[i] %> == <%= factoryParamsArray[i] %><%
-                }
-                        %>)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-        <%
-            }
         }
     }
 
     if (Info.ObjectType == CslaObjectType.EditableRootCollection ||
+        Info.ObjectType == CslaObjectType.DynamicEditableRootCollection ||
         Info.ObjectType == CslaObjectType.EditableChildCollection ||
         Info.ObjectType == CslaObjectType.ReadOnlyCollection)
     {
@@ -315,9 +281,9 @@ if (useParentReference || isRODeepLoadCollection || useAuthz || needsBusiness)
             prms = prms.Substring(2);
             paramName = paramName.Substring(2);
         }
-        bool removeFlag = Info.ObjectType != CslaObjectType.ReadOnlyCollection;
-        if (Info.ObjectType == CslaObjectType.EditableChildCollection && !itemInfo.RemoveItem)
-            removeFlag = false;
+        bool removeFlag = false;
+        if (itemInfo.ObjectType == CslaObjectType.EditableChild)
+            removeFlag = itemInfo.RemoveItem;
         if (removeFlag)
         {
             %>
@@ -390,7 +356,7 @@ if (useParentReference || isRODeepLoadCollection || useAuthz || needsBusiness)
             return false;
         }
         <%
-            if (Info.ObjectType != CslaObjectType.ReadOnlyCollection)
+            if (Info.ObjectType != CslaObjectType.ReadOnlyCollection && Info.ObjectType != CslaObjectType.DynamicEditableRootCollection)
             {
                 %>
 
