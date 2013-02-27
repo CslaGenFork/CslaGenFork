@@ -44,7 +44,7 @@ namespace CslaGenerator.Metadata
             }
         }
 
-        [Description("Defines whether you want to generate the collection Add/Remove method or not.\r\n" +
+        [Description("Defines whether you want to generate the collection Add/Remove method for this criteria.\r\n" +
             "This property is set on the collection item although the method is generated in the collection class.")]
         [UserFriendlyName("Add/Remove")]
         public bool AddRemove
@@ -72,7 +72,8 @@ namespace CslaGenerator.Metadata
             set { _runLocal = value; }
         }
 
-        [Description("Defines whether you want to generate the stored procedure or not.")]
+        [Description("Defines whether you want to generate the stored procedure or not.\r\n" +
+            "You might need to specify the stored procedure name, as the DataPortal method will use.")]
         public bool Procedure
         {
             get { return _procedure; }
