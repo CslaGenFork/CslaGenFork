@@ -30,6 +30,7 @@
     <add key="UnitOfWork:FindMethodsParameters" value="false" />
     <add key="UnitOfWork:ItemType" value="false" />
     <add key="UnitOfWork:ContainsItem" value="false" />
+    <add key="UnitOfWork:UniqueItems" value="false" />
     <add key="UnitOfWork:UpdaterType" value="false" />
     <add key="UnitOfWork:NameColumn" value="false" />
     <add key="UnitOfWork:ValueColumn" value="false" />
@@ -96,6 +97,7 @@
     <add key="NameValueList:FindMethodsParameters" value="false" />
     <add key="NameValueList:ItemType" value="false" />
     <add key="NameValueList:ContainsItem" value="false" />
+    <add key="NameValueList:UniqueItems" value="false" />
     <add key="NameValueList:UpdaterType" value="false" />
     <add key="NameValueList:NameColumn" value="true" />
     <add key="NameValueList:ValueColumn" value="true" />
@@ -160,6 +162,7 @@
     <add key="ReadOnlyCollection:FindMethodsParameters" value="true" />
     <add key="ReadOnlyCollection:ItemType" value="true" />
     <add key="ReadOnlyCollection:ContainsItem" value="true" />
+    <add key="ReadOnlyCollection:UniqueItems" value="true" />
     <add key="ReadOnlyCollection:UpdaterType" value="true" />
     <add key="ReadOnlyCollection:NameColumn" value="false" />
     <add key="ReadOnlyCollection:ValueColumn" value="false" />
@@ -224,6 +227,7 @@
     <add key="ReadOnlyObject:FindMethodsParameters" value="false" />
     <add key="ReadOnlyObject:ItemType" value="false" />
     <add key="ReadOnlyObject:ContainsItem" value="false" />
+    <add key="ReadOnlyObject:UniqueItems" value="false" />
     <add key="ReadOnlyObject:UpdaterType" value="false" />
     <add key="ReadOnlyObject:NameColumn" value="false" />
     <add key="ReadOnlyObject:ValueColumn" value="false" />
@@ -288,6 +292,7 @@
     <add key="EditableChild:FindMethodsParameters" value="false" />
     <add key="EditableChild:ItemType" value="false" />
     <add key="EditableChild:ContainsItem" value="false" />
+    <add key="EditableChild:UniqueItems" value="false" />
     <add key="EditableChild:UpdaterType" value="false" />
     <add key="EditableChild:NameColumn" value="false" />
     <add key="EditableChild:ValueColumn" value="false" />
@@ -352,6 +357,7 @@
     <add key="EditableChildCollection:FindMethodsParameters" value="true" />
     <add key="EditableChildCollection:ItemType" value="true" />
     <add key="EditableChildCollection:ContainsItem" value="true" />
+    <add key="EditableChildCollection:UniqueItems" value="true" />
     <add key="EditableChildCollection:UpdaterType" value="false" />
     <add key="EditableChildCollection:NameColumn" value="false" />
     <add key="EditableChildCollection:ValueColumn" value="false" />
@@ -416,6 +422,7 @@
     <add key="EditableRoot:FindMethodsParameters" value="false" />
     <add key="EditableRoot:ItemType" value="false" />
     <add key="EditableRoot:ContainsItem" value="false" />
+    <add key="EditableRoot:UniqueItems" value="false" />
     <add key="EditableRoot:UpdaterType" value="false" />
     <add key="EditableRoot:NameColumn" value="false" />
     <add key="EditableRoot:ValueColumn" value="false" />
@@ -480,6 +487,7 @@
     <add key="EditableRootCollection:FindMethodsParameters" value="true" />
     <add key="EditableRootCollection:ItemType" value="true" />
     <add key="EditableRootCollection:ContainsItem" value="true" />
+    <add key="EditableRootCollection:UniqueItems" value="true" />
     <add key="EditableRootCollection:UpdaterType" value="false" />
     <add key="EditableRootCollection:NameColumn" value="false" />
     <add key="EditableRootCollection:ValueColumn" value="false" />
@@ -544,6 +552,7 @@
     <add key="EditableSwitchable:FindMethodsParameters" value="false" />
     <add key="EditableSwitchable:ItemType" value="false" />
     <add key="EditableSwitchable:ContainsItem" value="false" />
+    <add key="EditableSwitchable:UniqueItems" value="false" />
     <add key="EditableSwitchable:UpdaterType" value="false" />
     <add key="EditableSwitchable:NameColumn" value="false" />
     <add key="EditableSwitchable:ValueColumn" value="false" />
@@ -608,6 +617,7 @@
     <add key="DynamicEditableRoot:FindMethodsParameters" value="false" />
     <add key="DynamicEditableRoot:ItemType" value="false" />
     <add key="DynamicEditableRoot:ContainsItem" value="false" />
+    <add key="DynamicEditableRoot:UniqueItems" value="false" />
     <add key="DynamicEditableRoot:UpdaterType" value="false" />
     <add key="DynamicEditableRoot:NameColumn" value="false" />
     <add key="DynamicEditableRoot:ValueColumn" value="false" />
@@ -672,6 +682,7 @@
     <add key="DynamicEditableRootCollection:FindMethodsParameters" value="true" />
     <add key="DynamicEditableRootCollection:ItemType" value="true" />
     <add key="DynamicEditableRootCollection:ContainsItem" value="true" />
+    <add key="DynamicEditableRootCollection:UniqueItems" value="true" />
     <add key="DynamicEditableRootCollection:UpdaterType" value="false" />
     <add key="DynamicEditableRootCollection:NameColumn" value="false" />
     <add key="DynamicEditableRootCollection:ValueColumn" value="false" />

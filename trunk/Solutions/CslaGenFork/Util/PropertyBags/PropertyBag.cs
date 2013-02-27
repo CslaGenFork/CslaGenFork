@@ -998,6 +998,7 @@ namespace CslaGenerator.Util.PropertyBags
                         if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40 &&
                             GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL) &&
                             (propertyName == "ContainsItem" ||
+                            propertyName == "UniqueItems" ||
                             propertyName == "SimpleCacheOptions" ||
                             propertyName == "InsertUpdateRunLocal"))
                             return false;

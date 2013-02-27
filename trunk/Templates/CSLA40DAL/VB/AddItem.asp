@@ -27,14 +27,6 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
     }
     %>
         /// <returns>The new <%= Info.ItemType %> item added to the collection.</returns>
-<%
-    if (useAuthz)
-    {
-        %>
-        /// <exception cref="System.Security.SecurityException">if the user isn't authorized to add items to the collection.</exception>
-<%
-    }
-    %>
         public <%= Info.ItemType %> Add(<%= prms %>)
         {
         <%
