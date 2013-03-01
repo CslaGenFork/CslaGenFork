@@ -4299,10 +4299,9 @@ namespace CslaGenerator.CodeGen
         private string ChildLazyLoadManagedEditable(CslaObjectInfo info, ChildProperty prop)
         {
             var response = string.Empty;
+            var conditionalDirective = false;
 
-            if (UseSilverlight() &&
-                (CurrentUnit.GenerationParams.GenerateSynchronous ||
-                !CurrentUnit.GenerationParams.GenerateAsynchronous))
+            if (CurrentUnit.GenerationParams.SilverlightUsingServices)
             {
                 /* Editable Silverlight using services
 
@@ -4343,6 +4342,7 @@ namespace CslaGenerator.CodeGen
                     return GetProperty(ChildrenProperty);
                 }*/
 
+                conditionalDirective = UseNoSilverlight();
                 response += (UseNoSilverlight() ? "#if SILVERLIGHT" + Environment.NewLine : "");
                 response += String.Format("                if (!FieldManager.FieldExists({0}))" + Environment.NewLine,
                     FormatPropertyInfoName(prop.Name));
@@ -4408,62 +4408,31 @@ namespace CslaGenerator.CodeGen
                 response += "                {" + Environment.NewLine;
                 response += "    " + ChildPropertyDeclareGetReturner(prop);
                 response += "                }" + Environment.NewLine;
-                response += (UseNoSilverlight() ? "#else" + Environment.NewLine : "");
-            }
-
-            if (CurrentUnit.GenerationParams.GenerateSynchronous)
-            {
-                /* Editable Synchronous
-
-                if (!FieldManager.FieldExists(ChildrenProperty))
-                    if (this.IsNew)
-                        Children = ChildType.NewChildType();
-                    else
-                        Children = ChildType.GetChildType(this);
-
-                return GetProperty(ChildrenProperty);*/
-
-                response += String.Format("                if (!FieldManager.FieldExists({0}))" + Environment.NewLine,
-                    FormatPropertyInfoName(prop.Name));
-                response += "                    if (this.IsNew)" + Environment.NewLine;
-                if (UseChildFactoryHelper)
-                    response += String.Format("                        {0} = {1}.New{1}();" + Environment.NewLine,
-                        (String.IsNullOrEmpty(prop.Implements)
-                        ? FormatPascal(prop.Name)
-                        : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
-                        ") this)." + FormatPascal(prop.Name)),
-                        prop.TypeName);
+                if (CurrentUnit.GenerationParams.GenerateAsynchronous && CurrentUnit.GenerationParams.GenerateSynchronous)
+                    response += "#elif ASYNC";
                 else
-                    response += String.Format("                        {0} = DataPortal.CreateChild<{1}>();" + Environment.NewLine,
-                        (String.IsNullOrEmpty(prop.Implements)
-                        ? FormatPascal(prop.Name)
-                        : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
-                        ") this)." + FormatPascal(prop.Name)),
-                        prop.TypeName);
-                response += "                    else" + Environment.NewLine;
-                if (UseChildFactoryHelper)
-                    response += String.Format("                        {0} = {1}.Get{1}({2});" + Environment.NewLine,
-                        (String.IsNullOrEmpty(prop.Implements)
-                        ? FormatPascal(prop.Name)
-                        : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
-                        ") this)." + FormatPascal(prop.Name)),
-                        prop.TypeName, GetFieldReaderStatementList(info, prop));
-                else
-                    response += String.Format("                        {0} = DataPortal.FetchChild<{1}>({2});" + Environment.NewLine,
-                        (String.IsNullOrEmpty(prop.Implements)
-                        ? FormatPascal(prop.Name)
-                        : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
-                        ") this)." + FormatPascal(prop.Name)),
-                        prop.TypeName, GetFieldReaderStatementList(info, prop));
+                    response += "#else";
                 response += Environment.NewLine;
-                response += ChildPropertyDeclareGetReturner(prop);
-                response += ((UseSilverlight() &&
-                              (CurrentUnit.GenerationParams.GenerateSynchronous ||
-                               !CurrentUnit.GenerationParams.GenerateAsynchronous))
-                                 ? "#endif" + Environment.NewLine
-                                 : "");
             }
-            else if (CurrentUnit.GenerationParams.GenerateAsynchronous)
+            else
+            {
+                if (UseSilverlight())
+                {
+                    if (CurrentUnit.GenerationParams.GenerateSynchronous)
+                    {
+                        conditionalDirective = true;
+                        response += "#if SILVERLIGHT || ASYNC" + Environment.NewLine;
+                    }
+                }
+                else if (CurrentUnit.GenerationParams.GenerateAsynchronous &&
+                    CurrentUnit.GenerationParams.GenerateSynchronous)
+                {
+                    conditionalDirective = true;
+                    response += "#if ASYNC" + Environment.NewLine;
+                }
+            }
+
+            if (CurrentUnit.GenerationParams.GenerateAsynchronous)
             {
                 /* Editable Asynchronous
 
@@ -4561,11 +4530,59 @@ namespace CslaGenerator.CodeGen
                 response += "                {" + Environment.NewLine;
                 response += "    " + ChildPropertyDeclareGetReturner(prop);
                 response += "                }" + Environment.NewLine;
-                response += ((UseSilverlight() &&
-                              (CurrentUnit.GenerationParams.GenerateSynchronous ||
-                               !CurrentUnit.GenerationParams.GenerateAsynchronous))
-                                 ? "#endif" + Environment.NewLine
-                                 : "");
+                if (CurrentUnit.GenerationParams.GenerateSynchronous)
+                    response += "#else" + Environment.NewLine;
+                else if (conditionalDirective)
+                    response += "#endif" + Environment.NewLine;
+            }
+
+            if (CurrentUnit.GenerationParams.GenerateSynchronous)
+            {
+                /* Editable Synchronous
+
+                if (!FieldManager.FieldExists(ChildrenProperty))
+                    if (this.IsNew)
+                        Children = ChildType.NewChildType();
+                    else
+                        Children = ChildType.GetChildType(this);
+
+                return GetProperty(ChildrenProperty);*/
+
+                response += String.Format("                if (!FieldManager.FieldExists({0}))" + Environment.NewLine,
+                    FormatPropertyInfoName(prop.Name));
+                response += "                    if (this.IsNew)" + Environment.NewLine;
+                if (UseChildFactoryHelper)
+                    response += String.Format("                        {0} = {1}.New{1}();" + Environment.NewLine,
+                        (String.IsNullOrEmpty(prop.Implements)
+                        ? FormatPascal(prop.Name)
+                        : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
+                        ") this)." + FormatPascal(prop.Name)),
+                        prop.TypeName);
+                else
+                    response += String.Format("                        {0} = DataPortal.CreateChild<{1}>();" + Environment.NewLine,
+                        (String.IsNullOrEmpty(prop.Implements)
+                        ? FormatPascal(prop.Name)
+                        : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
+                        ") this)." + FormatPascal(prop.Name)),
+                        prop.TypeName);
+                response += "                    else" + Environment.NewLine;
+                if (UseChildFactoryHelper)
+                    response += String.Format("                        {0} = {1}.Get{1}({2});" + Environment.NewLine,
+                        (String.IsNullOrEmpty(prop.Implements)
+                        ? FormatPascal(prop.Name)
+                        : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
+                        ") this)." + FormatPascal(prop.Name)),
+                        prop.TypeName, GetFieldReaderStatementList(info, prop));
+                else
+                    response += String.Format("                        {0} = DataPortal.FetchChild<{1}>({2});" + Environment.NewLine,
+                        (String.IsNullOrEmpty(prop.Implements)
+                        ? FormatPascal(prop.Name)
+                        : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
+                        ") this)." + FormatPascal(prop.Name)),
+                        prop.TypeName, GetFieldReaderStatementList(info, prop));
+                response += Environment.NewLine;
+                response += ChildPropertyDeclareGetReturner(prop);
+                response += (conditionalDirective ? "#endif" + Environment.NewLine : "");
             }
 
             return response;
@@ -4574,6 +4591,7 @@ namespace CslaGenerator.CodeGen
         private string ChildLazyLoadManagedReadOnly(CslaObjectInfo info, ChildProperty prop)
         {
             var response = string.Empty;
+            var conditionalDirective = false;
 
             if (CurrentUnit.GenerationParams.SilverlightUsingServices)
             {
@@ -4599,6 +4617,7 @@ namespace CslaGenerator.CodeGen
                     return GetProperty(ChildrenProperty);
                 }*/
 
+                conditionalDirective = UseNoSilverlight();
                 response += (UseNoSilverlight() ? "#if SILVERLIGHT" + Environment.NewLine : "");
                 response += String.Format("                if (!FieldManager.FieldExists({0}))" + Environment.NewLine,
                     FormatPropertyInfoName(prop.Name));
@@ -4634,7 +4653,28 @@ namespace CslaGenerator.CodeGen
                 response += "                {" + Environment.NewLine;
                 response += "    " + ChildPropertyDeclareGetReturner(prop);
                 response += "                }" + Environment.NewLine;
-                response += (UseNoSilverlight() ? "#else" + Environment.NewLine : "");
+                if (CurrentUnit.GenerationParams.GenerateAsynchronous && CurrentUnit.GenerationParams.GenerateSynchronous)
+                    response += "#elif ASYNC";
+                else
+                    response += "#else";
+                response += Environment.NewLine;
+            }
+            else
+            {
+                if (UseSilverlight())
+                {
+                    if (CurrentUnit.GenerationParams.GenerateSynchronous)
+                    {
+                        conditionalDirective = true;
+                        response += "#if SILVERLIGHT || ASYNC" + Environment.NewLine;
+                    }
+                }
+                else if (CurrentUnit.GenerationParams.GenerateAsynchronous &&
+                    CurrentUnit.GenerationParams.GenerateSynchronous)
+                {
+                    conditionalDirective = true;
+                    response += "#if ASYNC" + Environment.NewLine;
+                }
             }
 
             if (CurrentUnit.GenerationParams.GenerateAsynchronous)
@@ -4692,9 +4732,13 @@ namespace CslaGenerator.CodeGen
                 response += "                {" + Environment.NewLine;
                 response += "    " + ChildPropertyDeclareGetReturner(prop);
                 response += "                }" + Environment.NewLine;
-                response += (CurrentUnit.GenerationParams.SilverlightUsingServices ? "#endif" + Environment.NewLine : "");
+                if (CurrentUnit.GenerationParams.GenerateSynchronous)
+                    response += "#else" + Environment.NewLine;
+                else if (conditionalDirective)
+                    response += "#endif" + Environment.NewLine;
             }
-            else if (CurrentUnit.GenerationParams.GenerateSynchronous)
+
+            if (CurrentUnit.GenerationParams.GenerateSynchronous)
             {
                 /* ReadOnly Synchronous
 
@@ -4721,7 +4765,7 @@ namespace CslaGenerator.CodeGen
                         prop.TypeName, GetFieldReaderStatementList(info, prop));
                 response += Environment.NewLine;
                 response += ChildPropertyDeclareGetReturner(prop);
-                response += (CurrentUnit.GenerationParams.SilverlightUsingServices ? "#endif" + Environment.NewLine : "");
+                response += (conditionalDirective ? "#endif" + Environment.NewLine : "");
             }
 
             return response;
