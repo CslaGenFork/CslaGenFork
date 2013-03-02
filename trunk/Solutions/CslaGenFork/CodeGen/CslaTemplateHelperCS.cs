@@ -820,23 +820,38 @@ namespace CslaGenerator.CodeGen
 
             if (UseSilverlight())
             {
-                result += IfSilverlight(Conditional.Silverlight, 0, ref silverlightLevel, false, true);
-                // #if SILVERLIGHT
+                if (UseBoth())
+                {
+                    result += IfSilverlight(Conditional.Silverlight, 0, ref silverlightLevel, false, true);
+                    // #if SILVERLIGHT
+                }
                 foreach (var namespaceName in silverlightNamespaces)
                 {
                     result += "using " + namespaceName + ";" + Environment.NewLine;
                 }
-                if (isUnitOfWork)
-                    result += IfSilverlight(Conditional.End, 0, ref silverlightLevel, false, true);
-                    // #endif
-                else
+
+                if (!isUnitOfWork)
                 {
-                    result += IfSilverlight(Conditional.Else, 0, ref silverlightLevel, false, true);
-                    // #else
-                    foreach (var namespaceName in frameworkNamespaces)
+                    if (UseBoth())
                     {
-                        result += "using " + namespaceName + ";" + Environment.NewLine;
+                        result += IfSilverlight(Conditional.Else, 0, ref silverlightLevel, false, true);
+                        // #else
                     }
+                    if (UseNoSilverlight())
+                    {
+                        foreach (var namespaceName in frameworkNamespaces)
+                        {
+                            result += "using " + namespaceName + ";" + Environment.NewLine;
+                        }
+                    }
+                    if (UseBoth())
+                    {
+                        result += IfSilverlight(Conditional.End, 0, ref silverlightLevel, false, true);
+                        // #endif
+                    }
+                }
+                else if (UseBoth())
+                {
                     result += IfSilverlight(Conditional.End, 0, ref silverlightLevel, false, true);
                     // #endif
                 }
@@ -4062,10 +4077,7 @@ namespace CslaGenerator.CodeGen
         {
             var response = string.Empty;
 
-            var isReadOnly = false;
-
-            if (prop.ReadOnly)
-                isReadOnly = true;
+            bool isReadOnly = prop.ReadOnly;
 
             if (info.ObjectType == CslaObjectType.ReadOnlyObject)
             {
@@ -4152,12 +4164,7 @@ namespace CslaGenerator.CodeGen
 
         private string ChildPropertyDeclareGetterLazyLoad(CslaObjectInfo info, ChildProperty prop)
         {
-            var isReadOnly = false;
-
-            if (prop.ReadOnly)
-            {
-                isReadOnly = true;
-            }
+            bool isReadOnly = prop.ReadOnly;
 
             if (info.ObjectType == CslaObjectType.ReadOnlyObject)
             {
