@@ -4301,7 +4301,7 @@ namespace CslaGenerator.CodeGen
             var response = string.Empty;
             var conditionalDirective = false;
 
-            if (CurrentUnit.GenerationParams.SilverlightUsingServices)
+            if (CurrentUnit.GenerationParams.SilverlightUsingServices && !CurrentUnit.GenerationParams.UseChildFactory)
             {
                 /* Editable Silverlight using services
 
@@ -4593,7 +4593,7 @@ namespace CslaGenerator.CodeGen
             var response = string.Empty;
             var conditionalDirective = false;
 
-            if (CurrentUnit.GenerationParams.SilverlightUsingServices)
+            if (CurrentUnit.GenerationParams.SilverlightUsingServices && !CurrentUnit.GenerationParams.UseChildFactory)
             {
                 /* ReadOnly Silverlight using services
 
