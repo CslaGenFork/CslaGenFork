@@ -23,9 +23,16 @@ if (hasFactoryCache || hasDataPortalCache)
     %>
         }
 <%
-    if (hasDataPortalCache)
+    if (hasDataPortalCache && UseNoSilverlight())
     {
-%>
+        if (UseSilverlight())
+        {
+            %>
+
+#if !SILVERLIGHT
+        <%
+        }
+        %>
 
         /// <summary>
         /// Called by the server-side DataPortal after calling the requested DataPortal_XYZ method.
@@ -52,6 +59,13 @@ if (hasFactoryCache || hasDataPortalCache)
             }
         }
 <%
+        if (UseSilverlight())
+        {
+            %>
+
+#endif
+        <%
+        }
     }
 %>
 
