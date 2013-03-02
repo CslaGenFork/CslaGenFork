@@ -355,6 +355,7 @@ namespace CslaGenerator.CodeGen
 
         private FileStream OpenFile(string filename)
         {
+            // leave testing code
             /*var dontMakeFileBusy = filename.EndsWith("Validating_Business.txt") ||
                 filename.EndsWith(".Designer.cs")||
                 filename.EndsWith(".sql");
