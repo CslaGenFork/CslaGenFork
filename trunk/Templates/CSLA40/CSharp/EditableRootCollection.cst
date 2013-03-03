@@ -115,6 +115,10 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Busine
 
 <%
     }
+    else
+    {
+        Response.Write(Environment.NewLine);
+    }
     %>
     }
 <!-- #include file="CriteriaObject.asp" -->

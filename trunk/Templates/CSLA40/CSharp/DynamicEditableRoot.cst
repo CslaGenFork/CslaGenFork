@@ -101,6 +101,10 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Busine
 <!-- #include file="Events.asp" -->
 <%
     }
+    else
+    {
+        Response.Write(Environment.NewLine);
+    }
     %>
     }
 <!-- #include file="CriteriaObject.asp" -->
