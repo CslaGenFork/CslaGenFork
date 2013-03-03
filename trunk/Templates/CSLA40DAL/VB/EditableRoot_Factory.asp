@@ -21,7 +21,7 @@ if (UseNoSilverlight())
 %>
 <!-- #include file="GetObject.asp" -->
 <%
-    if (CurrentUnit.GenerationParams.SilverlightUsingServices)
+    if (CurrentUnit.GenerationParams.SilverlightUsingServices && Info.UseUnitOfWorkType == string.Empty)
     {
         %>
 <!-- #include file="GetObjectAsync.asp" -->

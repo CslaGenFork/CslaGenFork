@@ -133,6 +133,7 @@ if (Info.GenerateDataPortalUpdate)
                 <%
     if (Info.GetMyChildProperties().Count > 0)
     {
+        string ucpSpacer = new string(' ', 4);
         %>
 <!-- #include file="UpdateChildProperties.asp" -->
                 <%
