@@ -64,18 +64,7 @@ if (Info.GenerateDataPortalDelete &&
         /// </summary>
         /// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The delete criteria.</param>
         /// <param name="handler">The asynchronous handler.</param>
-        <%
-            if (Info.TransactionType == TransactionType.EnterpriseServices)
-            {
-                %>[Transactional(TransactionalTypes.EnterpriseServices)]
-        <%
-            }
-            else if (Info.TransactionType == TransactionType.TransactionScope)
-            {
-                %>[Transactional(TransactionalTypes.TransactionScope)]
-        <%
-            }
-        %>[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         <%
             deletePartialParams.Add("/// <param name=\"" + (c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit")) + "\">The delete criteria.</param>");
             if (c.Properties.Count > 1)
@@ -90,6 +79,15 @@ if (Info.GenerateDataPortalDelete &&
             }
             %>
         {
+            <%
+            if (Info.GetMyChildProperties().Count > 0)
+            {
+                string ucpSpacer = string.Empty;
+                %>
+<!-- #include file="UpdateChildProperties.asp" -->
+        <%
+            }
+            %>
             try
             {
                 <%
@@ -116,8 +114,14 @@ if (Info.GenerateDataPortalDelete &&
             if (Info.GetMyChildProperties().Count > 0)
             {
                 %>
-<!-- #include file="UpdateChildProperties.asp" -->
-        <%
+            // removes all previous references to children
+            <%
+            }
+            foreach (ChildProperty collectionProperty in Info.GetMyChildProperties())
+            {
+                %>
+            <%= GetFieldLoaderStatement(collectionProperty, "DataPortal.CreateChild<" + collectionProperty.TypeName + ">()") %>;
+            <%
             }
             %>
         }

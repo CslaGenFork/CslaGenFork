@@ -96,8 +96,7 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
             <%= Info.UseUnitOfWorkType %>.Get<%= Info.UseUnitOfWorkType %>(new <%= c.Name %>(<%= strGetCritParams %>), (o, e) =>
             {
                 callback(o, new DataPortalResult<<%= Info.ObjectName %>>(e.Object.<%= Info.ObjectName %>, e.Error, null));
-            },
-            DataPortal.ProxyModes.LocalOnly);
+            });
             <%
                     }
                 }
@@ -115,8 +114,7 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
             <%= Info.UseUnitOfWorkType %>.Get<%= Info.UseUnitOfWorkType %>(<%= SendSingleCriteria(c, strGetCritParams) %>, (o, e) =>
             {
                 callback(o, new DataPortalResult<<%= Info.ObjectName %>>(e.Object.<%= Info.ObjectName %>, e.Error, null));
-            },
-            DataPortal.ProxyModes.LocalOnly);
+            });
             <%
                     }
                 }
@@ -149,8 +147,7 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
             <%= Info.UseUnitOfWorkType %>.Get<%= Info.UseUnitOfWorkType %>((o, e) =>
             {
                 callback(o, new DataPortalResult<<%= Info.ObjectName %>>(e.Object.<%= Info.ObjectName %>, e.Error, null));
-            },
-            DataPortal.ProxyModes.LocalOnly);
+            });
             <%
                         }
                     }
