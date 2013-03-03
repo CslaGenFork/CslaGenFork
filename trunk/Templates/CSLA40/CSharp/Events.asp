@@ -35,11 +35,11 @@ if ((Info.ObjectType == CslaObjectType.EditableRoot ||
 
 <%
 }
+if (UseNoSilverlight())
+{
 %>
         #region Pseudo Events
 <%
-if (UseNoSilverlight())
-{
     if (UseBoth())
     {
         %>
@@ -65,7 +65,10 @@ if (UseNoSilverlight())
 #endif
 <%
     }
-}
 %>
 
         #endregion
+
+<%
+}
+%>

@@ -102,7 +102,6 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Busine
 <%
     }
     %>
-
     }
 <!-- #include file="CriteriaObject.asp" -->
 }
