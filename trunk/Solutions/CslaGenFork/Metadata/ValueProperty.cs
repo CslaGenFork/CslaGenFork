@@ -466,7 +466,7 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("05. Options")]
-        [Description("Setting to true will raise the property notification event when the property is set..")]
+        [Description("Setting to true will raise the property notification event when the property is set.")]
         [UserFriendlyName("Mark Dirty On Change")]
         public bool MarkDirtyOnChange
         {
