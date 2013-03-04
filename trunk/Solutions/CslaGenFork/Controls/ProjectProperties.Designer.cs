@@ -1526,7 +1526,8 @@ namespace CslaGenerator.Controls
             this.chkAsynchronous.TabIndex = 14;
             this.chkAsynchronous.Text = "Generate Asynchronous";
             this.chkAsynchronous.UseVisualStyleBackColor = true;
-            this.toolTip.SetToolTip(this.chkAsynchronous, "If checked, will generate asynchronous server invocation.");
+            this.toolTip.SetToolTip(this.chkAsynchronous, "If checked, will generate asynchronous server invocation.\r\n" +
+                "To use asynchronous LazyLoad of child properties, you must define the ASYNC conditional compilation symbol.");
             // 
             // GenerationFilesTab
             // 
