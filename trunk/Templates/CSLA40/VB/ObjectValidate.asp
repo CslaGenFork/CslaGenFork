@@ -15,14 +15,15 @@ ERRORS
 4.4. Check Criteria for GetOptions where DataPortal is set and SProc name is empty
 4.5. Check Criteria for GetOptions where DataPortal is not set and SProc name is not empty (WARNINGS)
 5. Check value properties from StoredProcedure don't co-exist with other origins
+6. Warn about value properties of editable objects if delcaration mode is Classic or Auto
 WARNINGS
-6. When using NOT DAL, Persistence type unshared needs database class
-7. When using Silverligh 4, no Auto, Classic nor 'No Property'.
-8. When using Silverligh 4, criteria classes (with more than one property) must not use Simple mode.
-9. Missing Foreign key constraints on DB
+7. When using NOT DAL, Persistence type unshared needs database class
+8. When using Silverligh 4, no Auto, Classic nor 'No Property'.
+9. When using Silverligh 4, criteria classes (with more than one property) must not use Simple mode.
+10. Missing Foreign key constraints on DB
 ALERTS
-10. When using DAL, unbound properties need DTO or will be excluded from DAL interaction
-11. When using NOT DAL, CustomLoading forces NOT generation of child Factory methods
+11. When using DAL, unbound properties need DTO or will be excluded from DAL interaction
+12. When using NOT DAL, CustomLoading forces NOT generation of child Factory methods
 */
 
 bool isCriteriaClassNeeded = IsCriteriaClassNeeded(Info);
@@ -215,13 +216,15 @@ foreach (ValueProperty prop in Info.GetDatabaseBoundValueProperties())
         if (prop.DbBindColumn.ColumnOriginType == ColumnOriginType.None)
             Infos.Append("Alert: " + Info.ObjectName + "Property " + prop.Name + " isn't database bound; must use DTO or property will be excluded from DAL interaction." + Environment.NewLine);
     }
-    if (UseSilverlight())
+    if (prop.DeclarationMode != PropertyDeclaration.Unmanaged &&
+        prop.DeclarationMode != PropertyDeclaration.UnmanagedWithTypeConversion &&
+        prop.DeclarationMode != PropertyDeclaration.Managed &&
+        prop.DeclarationMode != PropertyDeclaration.ManagedWithTypeConversion)
     {
-        if (prop.DeclarationMode != PropertyDeclaration.Unmanaged &&
-            prop.DeclarationMode != PropertyDeclaration.UnmanagedWithTypeConversion &&
-            prop.DeclarationMode != PropertyDeclaration.Managed &&
-            prop.DeclarationMode != PropertyDeclaration.ManagedWithTypeConversion)
-            Warnings.Append("Property " + prop.Name + ": must use Declaration Mode 'Managed', 'ManagedWithTypeConversion', 'Unmanaged' or 'UnmanagedWithTypeConversion' under Silverlight." + Environment.NewLine);
+        if (UseSilverlight())
+            Warnings.Append(Info.ObjectName + " property " + prop.Name + ": must use Declaration Mode 'Managed', 'ManagedWithTypeConversion', 'Unmanaged' or 'UnmanagedWithTypeConversion' under Silverlight." + Environment.NewLine);
+        if (Info.ObjectType != CslaObjectType.ReadOnlyObject)
+            Warnings.Append(Info.ObjectName + " is editable: property " + prop.Name + ": must use Declaration Mode 'Managed', 'ManagedWithTypeConversion', 'Unmanaged' or 'UnmanagedWithTypeConversion' as changes to the property won't raise any event." + Environment.NewLine);
     }
 }
 if (CurrentUnit.GenerationParams.GenerateSilverlight4 ||
