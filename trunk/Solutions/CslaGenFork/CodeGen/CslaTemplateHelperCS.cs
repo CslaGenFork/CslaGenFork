@@ -4305,393 +4305,71 @@ namespace CslaGenerator.CodeGen
 
         private string ChildLazyLoadManagedEditable(CslaObjectInfo info, ChildProperty prop)
         {
-            var response = string.Empty;
+            var result = string.Empty;
             var conditionalDirective = false;
+            var asyncWasGenerated = false;
 
-            if (CurrentUnit.GenerationParams.SilverlightUsingServices && !CurrentUnit.GenerationParams.UseChildFactory)
+            if (UseSilverlight())
             {
-                /* Editable Silverlight using services
-
-                if (!FieldManager.FieldExists(ChildrenProperty))
+                if (UseNoSilverlight())
                 {
-                    LoadProperty(ChildrenProperty, null);
-                    if (this.IsNew)
+                    if (CurrentUnit.GenerationParams.GenerateAsynchronous &&
+                        (CurrentUnit.GenerationParams.GenerateSilverlight4 || UseChildFactoryHelper))
                     {
-                        DataPortal.BeginCreate<ChildType>((o, e) =>
-                            {
-                                if (e.Error != null)
-                                    throw e.Error;
-                                else
-                                {
-                                    // set the property so OnPropertyChanged is raised
-                                    Children = e.Object;
-                                }
-                            }, DataPortal.ProxyModes.LocalOnly);
-                        return null;
+                        asyncWasGenerated = true;
+                        if (CurrentUnit.GenerationParams.GenerateSynchronous)
+                        {
+                            conditionalDirective = true;
+                            result += "#if SILVERLIGHT || ASYNC" + Environment.NewLine;
+                        }
                     }
-                    else
-                    {
-                        DataPortal.BeginFetch<ChildType>(this, (o, e) =>
-                            {
-                                if (e.Error != null)
-                                    throw e.Error;
-                                else
-                                {
-                                    // set the property so OnPropertyChanged is raised
-                                    Children = e.Object;
-                                }
-                            });
-                        return null;
-                    }
-                }
-                else
-                {
-                    return GetProperty(ChildrenProperty);
-                }*/
-
-                conditionalDirective = UseNoSilverlight();
-                response += (UseNoSilverlight() ? "#if SILVERLIGHT" + Environment.NewLine : "");
-                response += String.Format("                if (!FieldManager.FieldExists({0}))" + Environment.NewLine,
-                    FormatPropertyInfoName(prop.Name));
-                response += "                {" + Environment.NewLine;
-                response += String.Format("                    LoadProperty({0}, null);" + Environment.NewLine,
-                    FormatPropertyInfoName(prop.Name));
-                response += "                    if (this.IsNew)" + Environment.NewLine;
-                response += "                    {" + Environment.NewLine;
-                if (UseChildFactoryHelper)
-                    response += String.Format("                        {0}.New{0}((o, e) =>" + Environment.NewLine,
-                    prop.TypeName);
-                else
-                    response += string.Format("                        DataPortal.BeginCreate<{0}>((o, e) =>" + Environment.NewLine,
-                    prop.TypeName);
-                response += "                            {" + Environment.NewLine;
-                response += "                                if (e.Error != null)" + Environment.NewLine;
-                response += "                                    throw e.Error;" + Environment.NewLine;
-                response += "                                else" + Environment.NewLine;
-                response += "                                {" + Environment.NewLine;
-                response += "                                    // set the property so OnPropertyChanged is raised" +
-                    Environment.NewLine;
-                response += String.Format("                                    {0} = e.Object;" + Environment.NewLine,
-                                          (String.IsNullOrEmpty(prop.Implements)
-                                               ? FormatPascal(prop.Name)
-                                               : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
-                                                 ") this)." + FormatPascal(prop.Name)));
-                response += "                                }" + Environment.NewLine;
-                if (UseChildFactoryHelper)
-                    response += "                            });" + Environment.NewLine;
-                else
-                    response += "                            }, DataPortal.ProxyModes.LocalOnly);" + Environment.NewLine;
-                response += "                        return null;" + Environment.NewLine;
-                response += "                    }" + Environment.NewLine;
-                response += "                    else" + Environment.NewLine;
-                response += "                    {" + Environment.NewLine;
-                if(UseChildFactoryHelper)
-                    response += String.Format("                        {0}.Get{0}({1}, (o, e) =>" +
-                    Environment.NewLine, prop.TypeName, GetFieldReaderStatementList(info, prop));
-                else
-                    response += string.Format("                        DataPortal.BeginFetch<{0}>({1}, (o, e) =>" +
-                    Environment.NewLine, prop.TypeName, GetFieldReaderStatementList(info, prop));
-                response += "                            {" + Environment.NewLine;
-                response += "                                if (e.Error != null)" + Environment.NewLine;
-                response += "                                    throw e.Error;" + Environment.NewLine;
-                response += "                                else" + Environment.NewLine;
-                response += "                                {" + Environment.NewLine;
-                response += "                                    // set the property so OnPropertyChanged is raised" +
-                    Environment.NewLine;
-                response += String.Format("                                    {0} = e.Object;" + Environment.NewLine,
-                                          (String.IsNullOrEmpty(prop.Implements)
-                                               ? FormatPascal(prop.Name)
-                                               : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
-                                                 ") this)." + FormatPascal(prop.Name)));
-                response += "                                }" + Environment.NewLine;
-                if (!UseChildFactoryHelper && CurrentUnit.GenerationParams.SilverlightUsingServices)
-                    response += "                            }, DataPortal.ProxyModes.LocalOnly);" + Environment.NewLine;
-                else
-                    response += "                            });" + Environment.NewLine;
-                response += "                        return null;" + Environment.NewLine;
-                response += "                    }" + Environment.NewLine;
-                response += "                }" + Environment.NewLine;
-                response += "                else" + Environment.NewLine;
-                response += "                {" + Environment.NewLine;
-                response += "    " + ChildPropertyDeclareGetReturner(prop);
-                response += "                }" + Environment.NewLine;
-                if (CurrentUnit.GenerationParams.GenerateAsynchronous && CurrentUnit.GenerationParams.GenerateSynchronous)
-                    response += "#elif ASYNC";
-                else
-                    response += "#else";
-                response += Environment.NewLine;
-            }
-            else
-            {
-                if (UseSilverlight())
-                {
-                    if (CurrentUnit.GenerationParams.GenerateSynchronous)
+                    else if (CurrentUnit.GenerationParams.GenerateAsynchronous ||
+                        CurrentUnit.GenerationParams.GenerateSynchronous)
                     {
                         conditionalDirective = true;
-                        response += "#if SILVERLIGHT || ASYNC" + Environment.NewLine;
+                        result += "#if SILVERLIGHT" + Environment.NewLine;
                     }
                 }
-                else if (CurrentUnit.GenerationParams.GenerateAsynchronous &&
-                    CurrentUnit.GenerationParams.GenerateSynchronous)
-                {
-                    conditionalDirective = true;
-                    response += "#if ASYNC" + Environment.NewLine;
-                }
+                result += EditableChildLazyLoadAsync(info, prop, CurrentUnit.GenerationParams.SilverlightUsingServices);
             }
 
-            if (CurrentUnit.GenerationParams.GenerateAsynchronous)
+            if (!asyncWasGenerated && CurrentUnit.GenerationParams.GenerateAsynchronous)
             {
-                /* Editable Asynchronous
-
-                if (!FieldManager.FieldExists(ChildrenProperty))
-                {
-                    LoadProperty(ChildrenProperty, null);
-                    if (this.IsNew)
-                    {
-                        DataPortal.BeginCreate<ChildType>((o, e) =>
-                            {
-                                if (e.Error != null)
-                                    throw e.Error;
-                                else
-                                {
-                                    // set the property so OnPropertyChanged is raised
-                                    Children = e.Object;
-                                }
-                            });
-                        return null;
-                    }
-                    else
-                    {
-                        DataPortal.BeginFetch<ChildType>(this, (o, e) =>
-                            {
-                                if (e.Error != null)
-                                    throw e.Error;
-                                else
-                                {
-                                    // set the property so OnPropertyChanged is raised
-                                    Children = e.Object;
-                                }
-                            });
-                        return null;
-                    }
-                }
-                else
-                {
-                    return GetProperty(ChildrenProperty);
-                }*/
-
-                response += String.Format("                if (!FieldManager.FieldExists({0}))" + Environment.NewLine,
-                    FormatPropertyInfoName(prop.Name));
-                response += "                {" + Environment.NewLine;
-                response += String.Format("                    LoadProperty({0}, null);" + Environment.NewLine,
-                    FormatPropertyInfoName(prop.Name));
-                response += "                    if (this.IsNew)" + Environment.NewLine;
-                response += "                    {" + Environment.NewLine;
-                if (UseChildFactoryHelper)
-                    response += String.Format("                        {0}.New{0}((o, e) =>" + Environment.NewLine, prop.TypeName);
-                else
-                    response += string.Format("                        DataPortal.BeginCreate<{0}>((o, e) =>" + Environment.NewLine,
-                        prop.TypeName);
-                response += "                            {" + Environment.NewLine;
-                response += "                                if (e.Error != null)" + Environment.NewLine;
-                response += "                                    throw e.Error;" + Environment.NewLine;
-                response += "                                else" + Environment.NewLine;
-                response += "                                {" + Environment.NewLine;
-                response += "                                    // set the property so OnPropertyChanged is raised" +
-                    Environment.NewLine;
-                response += String.Format("                                    {0} = e.Object;" + Environment.NewLine,
-                                          (String.IsNullOrEmpty(prop.Implements)
-                                               ? FormatPascal(prop.Name)
-                                               : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
-                                                 ") this)." + FormatPascal(prop.Name)));
-                response += "                                }" + Environment.NewLine;
-                response += "                            });" + Environment.NewLine;
-                response += "                        return null;" + Environment.NewLine;
-                response += "                    }" + Environment.NewLine;
-                response += "                    else" + Environment.NewLine;
-                response += "                    {" + Environment.NewLine;
-                if (UseChildFactoryHelper)
-                    response += String.Format("                        {0}.Get{0}({1}, (o, e) =>" +
-                        Environment.NewLine, prop.TypeName, GetFieldReaderStatementList(info, prop));
-                else
-                    response += string.Format("                        DataPortal.BeginFetch<{0}>({1}, (o, e) =>" +
-                        Environment.NewLine, prop.TypeName, GetFieldReaderStatementList(info, prop));
-                response += "                            {" + Environment.NewLine;
-                response += "                                if (e.Error != null)" + Environment.NewLine;
-                response += "                                    throw e.Error;" + Environment.NewLine;
-                response += "                                else" + Environment.NewLine;
-                response += "                                {" + Environment.NewLine;
-                response += "                                    // set the property so OnPropertyChanged is raised" +
-                    Environment.NewLine;
-                response += String.Format("                                    {0} = e.Object;" + Environment.NewLine,
-                                          (String.IsNullOrEmpty(prop.Implements)
-                                               ? FormatPascal(prop.Name)
-                                               : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
-                                                 ") this)." + FormatPascal(prop.Name)));
-                response += "                                }" + Environment.NewLine;
-                response += "                            });" + Environment.NewLine;
-                response += "                        return null;" + Environment.NewLine;
-                response += "                    }" + Environment.NewLine;
-                response += "                }" + Environment.NewLine;
-                response += "                else" + Environment.NewLine;
-                response += "                {" + Environment.NewLine;
-                response += "    " + ChildPropertyDeclareGetReturner(prop);
-                response += "                }" + Environment.NewLine;
-                if (CurrentUnit.GenerationParams.GenerateSynchronous)
-                    response += "#else" + Environment.NewLine;
+                if (conditionalDirective && CurrentUnit.GenerationParams.GenerateSynchronous)
+                    result += "#elif ASYNC" + Environment.NewLine;
                 else if (conditionalDirective)
-                    response += "#endif" + Environment.NewLine;
+                    result += "#else" + Environment.NewLine;
+                else if (CurrentUnit.GenerationParams.GenerateSynchronous)
+                {
+                    conditionalDirective = true;
+                    result += "#if ASYNC" + Environment.NewLine;
+                }
+                result += EditableChildLazyLoadAsync(info, prop, false);
             }
 
             if (CurrentUnit.GenerationParams.GenerateSynchronous)
             {
-                /* Editable Synchronous
-
-                if (!FieldManager.FieldExists(ChildrenProperty))
-                    if (this.IsNew)
-                        Children = ChildType.NewChildType();
-                    else
-                        Children = ChildType.GetChildType(this);
-
-                return GetProperty(ChildrenProperty);*/
-
-                response += String.Format("                if (!FieldManager.FieldExists({0}))" + Environment.NewLine,
-                    FormatPropertyInfoName(prop.Name));
-                response += "                    if (this.IsNew)" + Environment.NewLine;
-                if (UseChildFactoryHelper)
-                    response += String.Format("                        {0} = {1}.New{1}();" + Environment.NewLine,
-                        (String.IsNullOrEmpty(prop.Implements)
-                        ? FormatPascal(prop.Name)
-                        : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
-                        ") this)." + FormatPascal(prop.Name)),
-                        prop.TypeName);
-                else
-                    response += String.Format("                        {0} = DataPortal.CreateChild<{1}>();" + Environment.NewLine,
-                        (String.IsNullOrEmpty(prop.Implements)
-                        ? FormatPascal(prop.Name)
-                        : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
-                        ") this)." + FormatPascal(prop.Name)),
-                        prop.TypeName);
-                response += "                    else" + Environment.NewLine;
-                if (UseChildFactoryHelper)
-                    response += String.Format("                        {0} = {1}.Get{1}({2});" + Environment.NewLine,
-                        (String.IsNullOrEmpty(prop.Implements)
-                        ? FormatPascal(prop.Name)
-                        : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
-                        ") this)." + FormatPascal(prop.Name)),
-                        prop.TypeName, GetFieldReaderStatementList(info, prop));
-                else
-                    response += String.Format("                        {0} = DataPortal.FetchChild<{1}>({2});" + Environment.NewLine,
-                        (String.IsNullOrEmpty(prop.Implements)
-                        ? FormatPascal(prop.Name)
-                        : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
-                        ") this)." + FormatPascal(prop.Name)),
-                        prop.TypeName, GetFieldReaderStatementList(info, prop));
-                response += Environment.NewLine;
-                response += ChildPropertyDeclareGetReturner(prop);
-                response += (conditionalDirective ? "#endif" + Environment.NewLine : "");
+                if (conditionalDirective)
+                    result += "#else" + Environment.NewLine;
+                result += EditableChildLazyLoadSync(info, prop);
             }
 
-            return response;
+            if (conditionalDirective)
+                result += "#endif" + Environment.NewLine;
+            
+            return result;
         }
 
-        private string ChildLazyLoadManagedReadOnly(CslaObjectInfo info, ChildProperty prop)
+        private string EditableChildLazyLoadAsync(CslaObjectInfo info, ChildProperty prop, bool isLocal)
         {
-            var response = string.Empty;
-            var conditionalDirective = false;
+            /* Editable Asynchronous
 
-            if (CurrentUnit.GenerationParams.SilverlightUsingServices && !CurrentUnit.GenerationParams.UseChildFactory)
+            if (!FieldManager.FieldExists(ChildrenProperty))
             {
-                /* ReadOnly Silverlight using services
-
-                if (!FieldManager.FieldExists(ChildrenProperty))
+                LoadProperty(ChildrenProperty, null);
+                if (this.IsNew)
                 {
-                    LoadProperty(ChildrenProperty, null);
-                    DataPortal.BeginFetch<ChildType>(this, (o, e) =>
-                        {
-                            if (e.Error != null)
-                                throw e.Error;
-                            else
-                            {
-                                // set the property so OnPropertyChanged is raised
-                                Children = e.Object;
-                            }
-                        }, DataPortal.ProxyModes.LocalOnly);
-                    return null;
-                }
-                else
-                {
-                    return GetProperty(ChildrenProperty);
-                }*/
-
-                conditionalDirective = UseNoSilverlight();
-                response += (UseNoSilverlight() ? "#if SILVERLIGHT" + Environment.NewLine : "");
-                response += String.Format("                if (!FieldManager.FieldExists({0}))" + Environment.NewLine,
-                    FormatPropertyInfoName(prop.Name));
-                response += "                {" + Environment.NewLine;
-                response += String.Format("                    LoadProperty({0}, null);" + Environment.NewLine,
-                    FormatPropertyInfoName(prop.Name));
-                if (UseChildFactoryHelper)
-                    response += String.Format("                    {0}.Get{0}({1}, (o, e) =>" + Environment.NewLine,
-                        prop.TypeName, GetFieldReaderStatementList(info, prop));
-                else
-                    response += string.Format("                    DataPortal.BeginFetch<{0}>({1}, (o, e) =>" + Environment.NewLine,
-                        prop.TypeName, GetFieldReaderStatementList(info, prop));
-                response += "                        {" + Environment.NewLine;
-                response += "                            if (e.Error != null)" + Environment.NewLine;
-                response += "                                throw e.Error;" + Environment.NewLine;
-                response += "                            else" + Environment.NewLine;
-                response += "                            {" + Environment.NewLine;
-                response += "                                // set the property so OnPropertyChanged is raised" +
-                    Environment.NewLine;
-                response += String.Format("                                {0} = e.Object;" + Environment.NewLine,
-                                          (String.IsNullOrEmpty(prop.Implements)
-                                               ? FormatPascal(prop.Name)
-                                               : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
-                                                 ") this)." + FormatPascal(prop.Name)));
-                response += "                            }" + Environment.NewLine;
-                if (UseChildFactoryHelper)
-                    response += "                        });" + Environment.NewLine;
-                else
-                    response += "                        }, DataPortal.ProxyModes.LocalOnly);" + Environment.NewLine;
-                response += "                    return null;" + Environment.NewLine;
-                response += "                }" + Environment.NewLine;
-                response += "                else" + Environment.NewLine;
-                response += "                {" + Environment.NewLine;
-                response += "    " + ChildPropertyDeclareGetReturner(prop);
-                response += "                }" + Environment.NewLine;
-                if (CurrentUnit.GenerationParams.GenerateAsynchronous && CurrentUnit.GenerationParams.GenerateSynchronous)
-                    response += "#elif ASYNC";
-                else
-                    response += "#else";
-                response += Environment.NewLine;
-            }
-            else
-            {
-                if (UseSilverlight())
-                {
-                    if (CurrentUnit.GenerationParams.GenerateSynchronous)
-                    {
-                        conditionalDirective = true;
-                        response += "#if SILVERLIGHT || ASYNC" + Environment.NewLine;
-                    }
-                }
-                else if (CurrentUnit.GenerationParams.GenerateAsynchronous &&
-                    CurrentUnit.GenerationParams.GenerateSynchronous)
-                {
-                    conditionalDirective = true;
-                    response += "#if ASYNC" + Environment.NewLine;
-                }
-            }
-
-            if (CurrentUnit.GenerationParams.GenerateAsynchronous)
-            {
-                /* ReadOnly Asynchronous
-
-                if (!FieldManager.FieldExists(ChildrenProperty))
-                {
-                    LoadProperty(ChildrenProperty, null);
-                    DataPortal.BeginFetch<ChildType>(this, (o, e) =>
+                    DataPortal.BeginCreate<ChildType>((o, e) =>
                         {
                             if (e.Error != null)
                                 throw e.Error;
@@ -4705,77 +4383,296 @@ namespace CslaGenerator.CodeGen
                 }
                 else
                 {
-                    return GetProperty(ChildrenProperty);
-                }*/
+                    DataPortal.BeginFetch<ChildType>(this, (o, e) =>
+                        {
+                            if (e.Error != null)
+                                throw e.Error;
+                            else
+                            {
+                                // set the property so OnPropertyChanged is raised
+                                Children = e.Object;
+                            }
+                        });
+                    return null;
+                }
+            }
+            else
+            {
+                return GetProperty(ChildrenProperty);
+            }*/
 
-                response += String.Format("                if (!FieldManager.FieldExists({0}))" + Environment.NewLine,
-                    FormatPropertyInfoName(prop.Name));
-                response += "                {" + Environment.NewLine;
-                response += String.Format("                    LoadProperty({0}, null);" + Environment.NewLine,
-                    FormatPropertyInfoName(prop.Name));
-                if (UseChildFactoryHelper)
-                    response += String.Format("                    {0}.Get{0}({1}, (o, e) =>" + Environment.NewLine,
-                        prop.TypeName, GetFieldReaderStatementList(info, prop));
+            var result = string.Empty;
+            result += String.Format("                if (!FieldManager.FieldExists({0}))" + Environment.NewLine, FormatPropertyInfoName(prop.Name));
+            result += "                {" + Environment.NewLine;
+            result += String.Format("                    LoadProperty({0}, null);" + Environment.NewLine, FormatPropertyInfoName(prop.Name));
+            result += "                    if (this.IsNew)" + Environment.NewLine;
+            result += "                    {" + Environment.NewLine;
+            if (UseChildFactoryHelper)
+                result += String.Format("                        {0}.New{0}((o, e) =>" + Environment.NewLine, prop.TypeName);
+            else
+                result += string.Format("                        DataPortal.BeginCreate<{0}>((o, e) =>" + Environment.NewLine, prop.TypeName);
+            result += "                            {" + Environment.NewLine;
+            result += "                                if (e.Error != null)" + Environment.NewLine;
+            result += "                                    throw e.Error;" + Environment.NewLine;
+            result += "                                else" + Environment.NewLine;
+            result += "                                {" + Environment.NewLine;
+            result += "                                    // set the property so OnPropertyChanged is raised" + Environment.NewLine;
+            result += String.Format("                                    {0} = e.Object;" + Environment.NewLine,
+                (String.IsNullOrEmpty(prop.Implements)
+                ? FormatPascal(prop.Name)
+                : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) + ") this)." + FormatPascal(prop.Name)));
+            result += "                                }" + Environment.NewLine;
+            if (!UseChildFactoryHelper && isLocal)
+                result += "                            }, DataPortal.ProxyModes.LocalOnly);" + Environment.NewLine;
+            else
+                result += "                            });" + Environment.NewLine;
+            result += "                        return null;" + Environment.NewLine;
+            result += "                    }" + Environment.NewLine;
+            result += "                    else" + Environment.NewLine;
+            result += "                    {" + Environment.NewLine;
+            if (UseChildFactoryHelper)
+            {
+                result += String.Format("                        {0}.Get{0}({1}, (o, e) =>" +
+                    Environment.NewLine, prop.TypeName,
+                    GetFieldReaderStatementList(info, prop));
+            }
+            else
+            {
+                result += string.Format("                        DataPortal.BeginFetch<{0}>({1}, (o, e) =>" +
+                    Environment.NewLine, prop.TypeName,
+                    GetFieldReaderStatementList(info, prop));
+            }
+            result += "                            {" + Environment.NewLine;
+            result += "                                if (e.Error != null)" + Environment.NewLine;
+            result += "                                    throw e.Error;" + Environment.NewLine;
+            result += "                                else" + Environment.NewLine;
+            result += "                                {" + Environment.NewLine;
+            result += "                                    // set the property so OnPropertyChanged is raised" + Environment.NewLine;
+            result += String.Format("                                    {0} = e.Object;" + Environment.NewLine,
+                (String.IsNullOrEmpty(prop.Implements)
+                ? FormatPascal(prop.Name)
+                : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) + ") this)." + FormatPascal(prop.Name)));
+            result += "                                }" + Environment.NewLine;
+            if (!UseChildFactoryHelper && isLocal)
+                result += "                            }, DataPortal.ProxyModes.LocalOnly);" + Environment.NewLine;
+            else
+                result += "                            });" + Environment.NewLine;
+            result += "                        return null;" + Environment.NewLine;
+            result += "                    }" + Environment.NewLine;
+            result += "                }" + Environment.NewLine;
+            result += "                else" + Environment.NewLine;
+            result += "                {" + Environment.NewLine;
+            result += "    " + ChildPropertyDeclareGetReturner(prop);
+            result += "                }" + Environment.NewLine;
+
+            return result;
+        }
+
+        private string EditableChildLazyLoadSync(CslaObjectInfo info, ChildProperty prop)
+        {
+            /* Editable Synchronous
+
+            if (!FieldManager.FieldExists(ChildrenProperty))
+                if (this.IsNew)
+                    Children = ChildType.NewChildType();
                 else
-                    response += string.Format("                    DataPortal.BeginFetch<{0}>({1}, (o, e) =>" + Environment.NewLine,
-                        prop.TypeName, GetFieldReaderStatementList(info, prop));
-                response += "                        {" + Environment.NewLine;
-                response += "                            if (e.Error != null)" + Environment.NewLine;
-                response += "                                throw e.Error;" + Environment.NewLine;
-                response += "                            else" + Environment.NewLine;
-                response += "                            {" + Environment.NewLine;
-                response += "                                // set the property so OnPropertyChanged is raised" +
-                    Environment.NewLine;
-                response += String.Format("                                {0} = e.Object;" + Environment.NewLine,
-                                          (String.IsNullOrEmpty(prop.Implements)
-                                               ? FormatPascal(prop.Name)
-                                               : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
-                                                 ") this)." + FormatPascal(prop.Name)));
-                response += "                            }" + Environment.NewLine;
-                response += "                        });" + Environment.NewLine;
-                response += "                    return null;" + Environment.NewLine;
-                response += "                }" + Environment.NewLine;
-                response += "                else" + Environment.NewLine;
-                response += "                {" + Environment.NewLine;
-                response += "    " + ChildPropertyDeclareGetReturner(prop);
-                response += "                }" + Environment.NewLine;
-                if (CurrentUnit.GenerationParams.GenerateSynchronous)
-                    response += "#else" + Environment.NewLine;
+                    Children = ChildType.GetChildType(this);
+
+            return GetProperty(ChildrenProperty);*/
+
+            var result = string.Empty;
+            result += String.Format("                if (!FieldManager.FieldExists({0}))" + Environment.NewLine, FormatPropertyInfoName(prop.Name));
+            result += "                    if (this.IsNew)" + Environment.NewLine;
+            if (UseChildFactoryHelper)
+            {
+                result += String.Format("                        {0} = {1}.New{1}();" + Environment.NewLine,
+                    (String.IsNullOrEmpty(prop.Implements)
+                    ? FormatPascal(prop.Name)
+                    : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
+                    ") this)." + FormatPascal(prop.Name)), prop.TypeName);
+            }
+            else
+            {
+                result += String.Format("                        {0} = DataPortal.Create<{1}>();" + Environment.NewLine,
+                    (String.IsNullOrEmpty(prop.Implements)
+                    ? FormatPascal(prop.Name)
+                    : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
+                    ") this)." + FormatPascal(prop.Name)), prop.TypeName);
+            }
+            result += "                    else" + Environment.NewLine;
+            if (UseChildFactoryHelper)
+            {
+                result += String.Format("                        {0} = {1}.Get{1}({2});" + Environment.NewLine,
+                    (String.IsNullOrEmpty(prop.Implements)
+                    ? FormatPascal(prop.Name)
+                    : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
+                    ") this)." + FormatPascal(prop.Name)), prop.TypeName, GetFieldReaderStatementList(info, prop));
+            }
+            else
+            {
+                result += String.Format("                        {0} = DataPortal.Fetch<{1}>({2});" + Environment.NewLine,
+                        (String.IsNullOrEmpty(prop.Implements)
+                        ? FormatPascal(prop.Name)
+                        : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
+                        ") this)." + FormatPascal(prop.Name)), prop.TypeName, GetFieldReaderStatementList(info, prop));
+            }
+            result += Environment.NewLine;
+            result += ChildPropertyDeclareGetReturner(prop);
+
+            return result;
+        }
+
+        private string ChildLazyLoadManagedReadOnly(CslaObjectInfo info, ChildProperty prop)
+        {
+            var result = string.Empty;
+            var conditionalDirective = false;
+            var asyncWasGenerated = false;
+
+            if (UseSilverlight())
+            {
+                if (UseNoSilverlight())
+                {
+                    if (CurrentUnit.GenerationParams.GenerateAsynchronous &&
+                        (CurrentUnit.GenerationParams.GenerateSilverlight4 || UseChildFactoryHelper))
+                    {
+                        asyncWasGenerated = true;
+                        if (CurrentUnit.GenerationParams.GenerateSynchronous)
+                        {
+                            conditionalDirective = true;
+                            result += "#if SILVERLIGHT || ASYNC" + Environment.NewLine;
+                        }
+                    }
+                    else if (CurrentUnit.GenerationParams.GenerateAsynchronous ||
+                        CurrentUnit.GenerationParams.GenerateSynchronous)
+                    {
+                        conditionalDirective = true;
+                        result += "#if SILVERLIGHT" + Environment.NewLine;
+                    }
+                }
+                result += ReadOnlyChildLazyLoadAsync(info, prop, CurrentUnit.GenerationParams.SilverlightUsingServices);
+            }
+
+            if (!asyncWasGenerated && CurrentUnit.GenerationParams.GenerateAsynchronous)
+            {
+                if (conditionalDirective && CurrentUnit.GenerationParams.GenerateSynchronous)
+                    result += "#elif ASYNC" + Environment.NewLine;
                 else if (conditionalDirective)
-                    response += "#endif" + Environment.NewLine;
+                    result += "#else" + Environment.NewLine;
+                else if (CurrentUnit.GenerationParams.GenerateSynchronous)
+                {
+                    conditionalDirective = true;
+                    result += "#if ASYNC" + Environment.NewLine;
+                }
+                result += ReadOnlyChildLazyLoadAsync(info, prop, false);
             }
 
             if (CurrentUnit.GenerationParams.GenerateSynchronous)
             {
-                /* ReadOnly Synchronous
-
-                if (!FieldManager.FieldExists(ChildrenProperty))
-                    Children = ChildType.GetChildType(this);
-
-                return GetProperty(ChildrenProperty);*/
-
-                response += String.Format("                if (!FieldManager.FieldExists({0}))" + Environment.NewLine,
-                    FormatPropertyInfoName(prop.Name));
-                if (UseChildFactoryHelper)
-                    response += String.Format("                    {0} = {1}.Get{1}({2});" + Environment.NewLine,
-                        (String.IsNullOrEmpty(prop.Implements)
-                        ? FormatPascal(prop.Name)
-                        : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
-                        ") this)." + FormatPascal(prop.Name)),
-                        prop.TypeName, GetFieldReaderStatementList(info, prop));
-                else
-                    response += String.Format("                    {0} = DataPortal.FetchChild<{1}>({2});" + Environment.NewLine,
-                        (String.IsNullOrEmpty(prop.Implements)
-                        ? FormatPascal(prop.Name)
-                        : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
-                        ") this)." + FormatPascal(prop.Name)),
-                        prop.TypeName, GetFieldReaderStatementList(info, prop));
-                response += Environment.NewLine;
-                response += ChildPropertyDeclareGetReturner(prop);
-                response += (conditionalDirective ? "#endif" + Environment.NewLine : "");
+                if (conditionalDirective)
+                    result += "#else" + Environment.NewLine;
+                result += ReadOnlyChildLazyLoadSync(info, prop);
             }
 
-            return response;
+            if (conditionalDirective)
+                result += "#endif" + Environment.NewLine;
+
+            return result;
+        }
+
+        private string ReadOnlyChildLazyLoadAsync(CslaObjectInfo info, ChildProperty prop, bool isLocal)
+        {
+            /* ReadOnly Silverlight using services
+
+            if (!FieldManager.FieldExists(ChildrenProperty))
+            {
+                LoadProperty(ChildrenProperty, null);
+                DataPortal.BeginFetch<ChildType>(this, (o, e) =>
+                    {
+                        if (e.Error != null)
+                            throw e.Error;
+                        else
+                        {
+                            // set the property so OnPropertyChanged is raised
+                            Children = e.Object;
+                        }
+                    }, DataPortal.ProxyModes.LocalOnly);
+                return null;
+            }
+            else
+            {
+                return GetProperty(ChildrenProperty);
+            }*/
+
+            var result = string.Empty;
+            result += String.Format("                if (!FieldManager.FieldExists({0}))" + Environment.NewLine, FormatPropertyInfoName(prop.Name));
+            result += "                {" + Environment.NewLine;
+            result += String.Format("                    LoadProperty({0}, null);" + Environment.NewLine, FormatPropertyInfoName(prop.Name));
+            if (UseChildFactoryHelper)
+            {
+                result += String.Format("                    {0}.Get{0}({1}, (o, e) =>" + Environment.NewLine,
+                                        prop.TypeName, GetFieldReaderStatementList(info, prop));
+            }
+            else
+            {
+                result += string.Format("                    DataPortal.BeginFetch<{0}>({1}, (o, e) =>" + Environment.NewLine,
+                                  prop.TypeName, GetFieldReaderStatementList(info, prop));
+            }
+            result += "                        {" + Environment.NewLine;
+            result += "                            if (e.Error != null)" + Environment.NewLine;
+            result += "                                throw e.Error;" + Environment.NewLine;
+            result += "                            else" + Environment.NewLine;
+            result += "                            {" + Environment.NewLine;
+            result += "                                // set the property so OnPropertyChanged is raised" + Environment.NewLine;
+            result += String.Format("                                {0} = e.Object;" + Environment.NewLine,
+                (String.IsNullOrEmpty(prop.Implements)
+                ? FormatPascal(prop.Name)
+                : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) + ") this)." + FormatPascal(prop.Name)));
+            result += "                            }" + Environment.NewLine;
+            if (!UseChildFactoryHelper && isLocal)
+                result += "                        }, DataPortal.ProxyModes.LocalOnly);" + Environment.NewLine;
+            else
+                result += "                        });" + Environment.NewLine;
+            result += "                    return null;" + Environment.NewLine;
+            result += "                }" + Environment.NewLine;
+            result += "                else" + Environment.NewLine;
+            result += "                {" + Environment.NewLine;
+            result += "    " + ChildPropertyDeclareGetReturner(prop);
+            result += "                }" + Environment.NewLine;
+
+            return result;
+        }
+
+        private string ReadOnlyChildLazyLoadSync(CslaObjectInfo info, ChildProperty prop)
+        {
+            /* ReadOnly Synchronous
+
+            if (!FieldManager.FieldExists(ChildrenProperty))
+                Children = ChildType.GetChildType(this);
+
+            return GetProperty(ChildrenProperty);*/
+
+            var result = string.Empty;
+            result += String.Format("                if (!FieldManager.FieldExists({0}))" + Environment.NewLine, FormatPropertyInfoName(prop.Name));
+            if (UseChildFactoryHelper)
+            {
+                result += String.Format("                    {0} = {1}.Get{1}({2});" + Environment.NewLine,
+                    (String.IsNullOrEmpty(prop.Implements)
+                    ? FormatPascal(prop.Name)
+                    : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
+                    ") this)." + FormatPascal(prop.Name)), prop.TypeName, GetFieldReaderStatementList(info, prop));
+            }
+            else
+            {
+                result += String.Format("                    {0} = DataPortal.Fetch<{1}>({2});" + Environment.NewLine,
+                    (String.IsNullOrEmpty(prop.Implements)
+                    ? FormatPascal(prop.Name)
+                    : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
+                    ") this)." + FormatPascal(prop.Name)), prop.TypeName, GetFieldReaderStatementList(info, prop));
+            }
+            result += Environment.NewLine;
+            result += ChildPropertyDeclareGetReturner(prop);
+
+            return result;
         }
 
         private string ChildLazyLoadClassic(CslaObjectInfo info, ChildProperty prop)
@@ -4796,14 +4693,13 @@ namespace CslaGenerator.CodeGen
                                       FormatFieldName(prop.Name + "Loaded"));
             response += "                {" + Environment.NewLine;
             response += String.Format("                    {0} = {1}.Get{1}({2});" + Environment.NewLine,
-                                      FormatFieldName(prop.Name),
-                                      prop.TypeName,
-                                      GetFieldReaderStatementList(info, prop));
+                FormatFieldName(prop.Name), prop.TypeName, GetFieldReaderStatementList(info, prop));
             response += String.Format("                    {0} = true;" + Environment.NewLine,
-                                      FormatFieldName(prop.Name + "Loaded"));
+                FormatFieldName(prop.Name + "Loaded"));
             response += "                }" + Environment.NewLine;
             response += Environment.NewLine;
             response += ChildPropertyDeclareGetReturner(prop);
+
             return response;
         }
 
