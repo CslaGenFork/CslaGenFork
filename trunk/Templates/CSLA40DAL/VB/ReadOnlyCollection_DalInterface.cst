@@ -2,7 +2,7 @@
 <%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the ReadOnlyCollection Object to create." %>
 <%@ Property Name="Errors" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return errors to master.cst" %>
 <%@ Property Name="Warnings" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return warnings to master.cst" %>
-<%@ Property Name="MethodList" Type="System.Collections.Generic.List<string>" Optional="false" Category="Options" Description="Allows the template to return a list a partial methods to master.cst (for Silverlight using services)" %>
+<%@ Property Name="MethodList" Type="System.Collections.Generic.List<AdvancedGenerator.ServiceMethod>" Optional="false" Category="Options" Description="Allows the template to return a list a partial methods to master.cst (for Silverlight using services)" %>
 
 <%@ Assembly Name="DBSchemaInfo" %>
 <%@ Import Namespace="DBSchemaInfo.Base" %>
