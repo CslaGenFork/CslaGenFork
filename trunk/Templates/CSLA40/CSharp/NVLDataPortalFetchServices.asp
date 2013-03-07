@@ -122,7 +122,7 @@ if (!Info.UseCustomLoading &&
     {
         string header = fetchPartialParams[index] + (string.IsNullOrEmpty(fetchPartialParams[index]) ? "" : "\r\n        ");
         header += fetchPartialMethods[index];
-        MethodList.Add(header);
+        MethodList.Add(new AdvancedGenerator.ServiceMethod(isChildNotLazyLoaded ? "Child_Fetch" : "DataPortal_Fetch", header));
         %>
 
         /// <summary>
