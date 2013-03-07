@@ -46,7 +46,7 @@ foreach (Criteria c in Info.CriteriaObjects)
         break;
     }
 }
-if (UseBoth() && objectRunLocal)
+if (UseBoth() && (objectRunLocal || CurrentUnit.GenerationParams.SilverlightUsingServices))
 {
     %>
 
