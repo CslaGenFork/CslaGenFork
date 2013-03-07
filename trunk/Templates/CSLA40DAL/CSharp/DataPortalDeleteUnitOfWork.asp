@@ -75,8 +75,6 @@ if (Info.GenerateDataPortalDelete &&
                 %>[Transactional(TransactionalTypes.TransactionScope)]
         <%
             }
-        %>[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        <%
             deletePartialParams.Add("/// <param name=\"" + (c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit")) + "\">The delete criteria.</param>");
             if (c.Properties.Count > 1)
             {
@@ -90,6 +88,15 @@ if (Info.GenerateDataPortalDelete &&
             }
             %>
         {
+            <%
+            if (Info.GetMyChildProperties().Count > 0)
+            {
+                string ucpSpacer = string.Empty;
+                %>
+<!-- #include file="UpdateChildProperties.asp" -->
+        <%
+            }
+            %>
             try
             {
                 <%
@@ -115,10 +122,15 @@ if (Info.GenerateDataPortalDelete &&
             <%
             if (Info.GetMyChildProperties().Count > 0)
             {
-                string ucpSpacer = new string(' ', 4);
                 %>
-<!-- #include file="UpdateChildProperties.asp" -->
-        <%
+            // removes all previous references to children
+            <%
+            }
+            foreach (ChildProperty collectionProperty in Info.GetMyChildProperties())
+            {
+                %>
+            <%= GetFieldLoaderStatement(collectionProperty, "DataPortal.CreateChild<" + collectionProperty.TypeName + ">()") %>;
+            <%
             }
             %>
         }
@@ -129,7 +141,7 @@ if (Info.GenerateDataPortalDelete &&
     {
         string header = deletePartialParams[index] + (string.IsNullOrEmpty(deletePartialParams[index]) ? "" : "\r\n        ");
         header += deletePartialMethods[index];
-        MethodList.Add(header);
+        MethodList.Add(new AdvancedGenerator.ServiceMethod(isChildNotLazyLoaded ? "Child_Delete" : "DataPortal_Delete", header));
         %>
 
         /// <summary>

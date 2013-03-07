@@ -16,7 +16,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
         Info.ObjectType == CslaObjectType.DynamicEditableRootCollection ||
         Info.ObjectType == CslaObjectType.EditableChildCollection))
     {
-        if (runLocal == createAsynGenRunLocal)
+        if (runLocal == createAsynGenRunLocal || CurrentUnit.GenerationParams.SilverlightUsingServices)
         {
             %>
 
@@ -35,7 +35,8 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
     {
         foreach (Criteria c in Info.CriteriaObjects)
         {
-            if (c.CreateOptions.Factory && (c.CreateOptions.RunLocal == createAsynGenRunLocal))
+            if ((c.CreateOptions.Factory && (c.CreateOptions.RunLocal == createAsynGenRunLocal)) ||
+                CurrentUnit.GenerationParams.SilverlightUsingServices)
             {
                 string strNewParams = string.Empty;
                 string strNewCritParams = string.Empty;

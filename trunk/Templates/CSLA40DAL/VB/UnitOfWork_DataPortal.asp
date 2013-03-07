@@ -42,6 +42,46 @@ if (UseNoSilverlight())
 <%
     }
 }
+if (CurrentUnit.GenerationParams.SilverlightUsingServices)
+{
+    if (UseBoth())
+    {
+        %>
+
+#else
+<%
+    }
+    if (Info.IsCreatorGetter)
+    {
+        %>
+<!-- #include file="DataPortalCreateFetchUnitOfWorkServices.asp" -->
+<%
+    }
+    if (Info.IsCreator)
+    {
+        %>
+<!-- #include file="DataPortalCreateUnitOfWorkServices.asp" -->
+<%
+    }
+    if (Info.IsGetter)
+    {
+        %>
+<!-- #include file="DataPortalFetchUnitOfWorkServices.asp" -->
+<%
+    }
+    if (Info.IsUpdater)
+    {
+        %>
+<!-- #include file="DataPortalUpdateUnitOfWorkServices.asp" -->
+<%
+    }
+    if (Info.IsDeleter)
+    {
+        %>
+<!-- #include file="DataPortalDeleteUnitOfWorkServices.asp" -->
+<%
+    }
+}
 if (UseBoth())
 {
     %>

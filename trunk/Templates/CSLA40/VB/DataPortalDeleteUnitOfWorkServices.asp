@@ -64,7 +64,18 @@ if (Info.GenerateDataPortalDelete &&
         /// </summary>
         /// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The delete criteria.</param>
         /// <param name="handler">The asynchronous handler.</param>
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        <%
+            if (Info.TransactionType == TransactionType.EnterpriseServices)
+            {
+                %>[Transactional(TransactionalTypes.EnterpriseServices)]
+        <%
+            }
+            else if (Info.TransactionType == TransactionType.TransactionScope)
+            {
+                %>[Transactional(TransactionalTypes.TransactionScope)]
+        <%
+            }
+        %>[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         <%
             deletePartialParams.Add("/// <param name=\"" + (c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit")) + "\">The delete criteria.</param>");
             if (c.Properties.Count > 1)
@@ -132,7 +143,7 @@ if (Info.GenerateDataPortalDelete &&
     {
         string header = deletePartialParams[index] + (string.IsNullOrEmpty(deletePartialParams[index]) ? "" : "\r\n        ");
         header += deletePartialMethods[index];
-        MethodList.Add(new AdvancedGenerator.ServiceMethod(isChildNotLazyLoaded ? "Child_Delete" : "DataPortal_Delete" , header));
+        MethodList.Add(new AdvancedGenerator.ServiceMethod(isChildNotLazyLoaded ? "Child_Delete" : "DataPortal_Delete", header));
         %>
 
         /// <summary>
