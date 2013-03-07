@@ -223,7 +223,7 @@ foreach (ValueProperty prop in Info.GetDatabaseBoundValueProperties())
     {
         if (UseSilverlight())
             Warnings.Append(Info.ObjectName + " property " + prop.Name + ": must use Declaration Mode 'Managed', 'ManagedWithTypeConversion', 'Unmanaged' or 'UnmanagedWithTypeConversion' under Silverlight." + Environment.NewLine);
-        if (Info.ObjectType != CslaObjectType.ReadOnlyObject)
+        if (!prop.ReadOnly && Info.ObjectType != CslaObjectType.ReadOnlyObject)
             Warnings.Append(Info.ObjectName + " is editable: property " + prop.Name + ": must use Declaration Mode 'Managed', 'ManagedWithTypeConversion', 'Unmanaged' or 'UnmanagedWithTypeConversion' as changes to the property won't raise any event." + Environment.NewLine);
     }
 }
