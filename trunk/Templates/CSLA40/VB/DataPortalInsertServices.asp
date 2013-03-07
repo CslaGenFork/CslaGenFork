@@ -2,7 +2,7 @@
 if (Info.GenerateDataPortalInsert &&
     CurrentUnit.GenerationParams.SilverlightUsingServices)
 {
-    MethodList.Add("partial void Service_Insert()");
+    MethodList.Add(new AdvancedGenerator.ServiceMethod(isChildNotLazyLoaded ? "Child_Insert" : "DataPortal_Insert", "partial void Service_Insert()"));
     %>
 
         /// <summary>
@@ -10,7 +10,7 @@ if (Info.GenerateDataPortalInsert &&
         /// </summary>
         /// <param name="handler">The asynchronous handler.</param>
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public <%= isChildNotLazyLoaded ? "void Child_" : "override void DataPortal_" %>Insert(Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)
+        public <%= (isChildNotLazyLoaded ? "void Child_Insert" : "override void DataPortal_Insert") %>(Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)
         {
             try
             {

@@ -132,7 +132,7 @@ if (Info.GenerateDataPortalDelete &&
     {
         string header = deletePartialParams[index] + (string.IsNullOrEmpty(deletePartialParams[index]) ? "" : "\r\n        ");
         header += deletePartialMethods[index];
-        MethodList.Add(header);
+        MethodList.Add(new AdvancedGenerator.ServiceMethod(isChildNotLazyLoaded ? "Child_Delete" : "DataPortal_Delete" , header));
         %>
 
         /// <summary>

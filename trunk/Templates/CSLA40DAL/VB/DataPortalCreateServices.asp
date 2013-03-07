@@ -152,7 +152,7 @@ if ((UseSilverlight() && objectRunLocal) || CurrentUnit.GenerationParams.Silverl
         {
             string header = createPartialParams[index] + (string.IsNullOrEmpty(createPartialParams[index]) ? "" : "\r\n        ");
             header += createPartialMethods[index];
-            MethodList.Add(header);
+            MethodList.Add(new AdvancedGenerator.ServiceMethod(isChildNotLazyLoaded ? "Child_Create" : "DataPortal_Create", header));
         %>
 
         /// <summary>
