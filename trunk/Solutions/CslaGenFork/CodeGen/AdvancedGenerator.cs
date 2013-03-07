@@ -14,10 +14,26 @@ namespace CslaGenerator.CodeGen
 {
     public class AdvancedGenerator : CodeGeneratorBase, ICodeGenerator
     {
+        #region Service Method
+
+        public class ServiceMethod
+        {
+            public string DataPortalMethod { get; set; }
+            public string MethodHeader { get; set; }
+
+            public ServiceMethod(string dataPortalMethod, string methodHeader)
+            {
+                DataPortalMethod = dataPortalMethod;
+                MethodHeader = methodHeader;
+            }
+        }
+        
+        #endregion
+
         #region Private Fields
 
         private readonly Dictionary<string, bool?> _fileSuccess = new Dictionary<string, bool?>();
-        private List<string> _methodList;
+        private List<ServiceMethod> _methodList;
         private readonly string _templatesDirectory = string.Empty;
         private bool _abortRequested;
         private string _fullTemplatesPath;
@@ -585,7 +601,7 @@ namespace CslaGenerator.CodeGen
             var classCommentFileName = string.Empty;
             if (!string.IsNullOrEmpty(generationParams.ClassCommentFilenameSuffix))
                 classCommentFileName = GetBaseFileName(objInfo, false, generationParams.BaseNamespace, true, GenerationStep.Business);
-            _methodList = new List<string>();
+            _methodList = new List<ServiceMethod>();
             StreamWriter sw = null;
             try
             {
@@ -619,7 +635,7 @@ namespace CslaGenerator.CodeGen
                     errorsOutput = (StringBuilder) template.GetProperty("Errors");
                     warningsOutput = (StringBuilder) template.GetProperty("Warnings");
                     infosOutput = (StringBuilder) template.GetProperty("Infos");
-                    _methodList = (List<string>) template.GetProperty("MethodList");
+                    _methodList = (List<ServiceMethod>)template.GetProperty("MethodList");
                     if (errorsOutput.Length > 0)
                     {
                         _businessError = true;
@@ -830,7 +846,7 @@ namespace CslaGenerator.CodeGen
             var classCommentFileName = string.Empty;
             if (!string.IsNullOrEmpty(generationParams.ClassCommentFilenameSuffix))
                 classCommentFileName = GetBaseFileName(objInfo, false, GetContextBaseNamespace(_unit, step), true, step);
-            _methodList = new List<string>();
+            _methodList = new List<ServiceMethod>();
             StreamWriter sw = null;
             try
             {
@@ -863,7 +879,7 @@ namespace CslaGenerator.CodeGen
                     errorsOutput = (StringBuilder) template.GetProperty("Errors");
                     warningsOutput = (StringBuilder) template.GetProperty("Warnings");
                     infosOutput = (StringBuilder) template.GetProperty("Infos");
-                    _methodList = (List<string>) template.GetProperty("MethodList");
+                    _methodList = (List<ServiceMethod>)template.GetProperty("MethodList");
                     if (errorsOutput.Length > 0)
                     {
                         _objFailed++;

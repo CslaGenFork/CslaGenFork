@@ -11,15 +11,23 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
 
         #region Implementation of Services
 <%
-    foreach (string method in MethodList)
+    foreach (AdvancedGenerator.ServiceMethod method in MethodList)
     {
         %>
 
         /// <summary>
-        /// Service implementation of DataPortal_Fetch for <see cref="<%= Info.ObjectName %>"/> object.
+        /// Service implementation of <%= method.DataPortalMethod %> for <see cref="<%= Info.ObjectName %>"/> object.
         /// </summary>
-        <%= method %>
+        <%= method.MethodHeader %>
         {
+        <%
+        if (Info.ObjectType == CslaObjectType.UnitOfWork && Info.UnitOfWorkType == UnitOfWorkFunction.Creator)
+        {
+            %>
+            // DataPortal_Fetch is used as ReadOnlyBase<T> doesn't allow the use of DataPortal_Create.
+            <%
+        }
+        %>
             throw new System.Exception("The service is not implemented.");
         }
 <%
@@ -32,7 +40,6 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
     if (UseBoth())
     {
         %>
-
 #endif
 
 <%
