@@ -27,7 +27,6 @@ if (UseNoSilverlight())
 <!-- #include file="GetObject.asp" -->
 <%
 if (CurrentUnit.GenerationParams.GenerateAsynchronous && asyncSilverlightIsDifferent)
-
 {
     %>
 <!-- #include file="GetObjectAsync.asp" -->
