@@ -3,8 +3,14 @@
 bool internalGetObjectUsed = false;
 if (parentInfo != null)
     internalGetObjectUsed = !Info.HasGetCriteriaFactory && !IsChildSelfLoaded(parentInfo);
-if (UseBoth() &&
-    (CurrentUnit.GenerationParams.GenerateSynchronous || CurrentUnit.GenerationParams.SilverlightUsingServices || internalGetObjectUsed))
+bool asyncSilverlightIsDifferent = UseBoth() &&
+    (CurrentUnit.GenerationParams.SilverlightUsingServices && (Info.UseUnitOfWorkType == string.Empty ||
+    !CurrentUnit.GenerationParams.GenerateAsynchronous));
+bool silverlightIsDifferent = UseBoth() &&
+    (asyncSilverlightIsDifferent || CurrentUnit.GenerationParams.GenerateSynchronous || internalGetObjectUsed);
+bool SilverlightServicesAlone = CurrentUnit.GenerationParams.SilverlightUsingServices && !UseNoSilverlight();
+    
+if (silverlightIsDifferent)
 {
     %>
 
@@ -20,31 +26,42 @@ if (UseNoSilverlight())
 %>
 <!-- #include file="GetObject.asp" -->
 <%
-if (CurrentUnit.GenerationParams.GenerateAsynchronous && !CurrentUnit.GenerationParams.GenerateSilverlight4)
+if (CurrentUnit.GenerationParams.GenerateAsynchronous && asyncSilverlightIsDifferent)
+
 {
     %>
 <!-- #include file="GetObjectAsync.asp" -->
 <%
 }
-if (UseBoth() && CurrentUnit.GenerationParams.SilverlightUsingServices && Info.HasGetCriteriaFactory)
+if (silverlightIsDifferent)
 {
-    %>
+    if (asyncSilverlightIsDifferent && Info.HasGetCriteriaFactory)
+    {
+        %>
 
 #else
-<%
-}
-%>
 <!-- #include file="GetObjectSilverlight.asp" -->
 <%
-if (UseBoth() &&
-    (CurrentUnit.GenerationParams.GenerateSynchronous || CurrentUnit.GenerationParams.SilverlightUsingServices || internalGetObjectUsed))
-{
-    %>
+%>
 
 #endif
 <%
+    }
+    else
+    {
+        %>
+
+#endif
+<%
+    }
 }
-if (CurrentUnit.GenerationParams.GenerateAsynchronous && CurrentUnit.GenerationParams.GenerateSilverlight4)
+else if (SilverlightServicesAlone)
+{
+    %>
+<!-- #include file="GetObjectSilverlight.asp" -->
+<%
+}
+if (CurrentUnit.GenerationParams.GenerateAsynchronous && !asyncSilverlightIsDifferent)
 {
         %>
 <!-- #include file="GetObjectAsync.asp" -->
