@@ -439,7 +439,7 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Common Options")]
-        [Description("The Creator/Getter Unit Of Work Type use by this object.")]
+        [Description("The Creator/Getter Unit Of Work Type used by this object.")]
         [UserFriendlyName("Use Unit Of Work Type")]
         [Editor(typeof(UseUnitOfWorkTypeEditor), typeof(UITypeEditor))]
         public string UseUnitOfWorkType
