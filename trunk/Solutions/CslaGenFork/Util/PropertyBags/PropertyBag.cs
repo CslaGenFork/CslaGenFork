@@ -957,6 +957,11 @@ namespace CslaGenerator.Util.PropertyBags
                             string.IsNullOrEmpty(cslaObject.InheritedType.ObjectName)))) &&
                             propertyName == "InheritedTypeWinForms")
                             return false;
+                        if (((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40 &&
+                            GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL) ||
+                            (CslaTemplateHelperCS.IsReadOnlyType(cslaObject.ObjectType) && !string.IsNullOrEmpty(cslaObject.ParentType))) &&
+                            propertyName == "UseUnitOfWorkType")
+                            return false;
                         if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 ||
                             GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL) &&
                             !(cslaObject.ObjectType == CslaObjectType.DynamicEditableRoot ||
