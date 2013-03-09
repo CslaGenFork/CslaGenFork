@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Drawing.Design;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
+using CslaGenerator.CodeGen;
 using CslaGenerator.Metadata;
 using CslaGenerator.Util;
 
@@ -36,8 +37,21 @@ namespace CslaGenerator.Design
                     _lstProperties.Items.Add("(None)");
                     foreach (var o in GeneratorController.Current.CurrentUnit.CslaObjects)
                     {
+                        var accept = false;
                         if (o.ObjectType == CslaObjectType.UnitOfWork)
-                            _lstProperties.Items.Add(o.ObjectName);
+                        {
+                            if (CslaTemplateHelperCS.IsReadOnlyType(obj.ObjectType))
+                            {
+                                if (o.UnitOfWorkType == UnitOfWorkFunction.Getter)
+                                    accept = true;
+                            }
+                            else
+                            {
+                                accept = true;
+                            }
+                            if (accept)
+                                _lstProperties.Items.Add(o.ObjectName);
+                        }
                     }
                     _lstProperties.Sorted = true;
 
