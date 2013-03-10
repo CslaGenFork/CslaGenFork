@@ -6,7 +6,7 @@ bool asyncSilverlightIsDifferent = UseBoth() &&
 bool silverlightIsDifferent = UseBoth() &&
     (asyncSilverlightIsDifferent || CurrentUnit.GenerationParams.GenerateSynchronous);
 bool silverlightServicesAlone = CurrentUnit.GenerationParams.SilverlightUsingServices && !UseNoSilverlight();
-    
+
 if (UseBoth() && (CurrentUnit.GenerationParams.GenerateSynchronous || Info.UseUnitOfWorkType == string.Empty))
 {
     %>
