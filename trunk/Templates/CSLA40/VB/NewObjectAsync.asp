@@ -35,8 +35,9 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
     {
         foreach (Criteria c in Info.CriteriaObjects)
         {
-            if ((c.CreateOptions.Factory && (c.CreateOptions.RunLocal == createAsynGenRunLocal)) ||
-                CurrentUnit.GenerationParams.SilverlightUsingServices)
+            if (c.CreateOptions.Factory &&
+                (c.CreateOptions.RunLocal == createAsynGenRunLocal ||
+                CurrentUnit.GenerationParams.SilverlightUsingServices))
             {
                 string strNewParams = string.Empty;
                 string strNewCritParams = string.Empty;
