@@ -8,7 +8,7 @@ bool asyncSilverlightIsDifferent = UseBoth() &&
     !CurrentUnit.GenerationParams.GenerateAsynchronous));
 bool silverlightIsDifferent = UseBoth() &&
     (asyncSilverlightIsDifferent || CurrentUnit.GenerationParams.GenerateSynchronous || internalGetObjectUsed);
-bool SilverlightServicesAlone = CurrentUnit.GenerationParams.SilverlightUsingServices && !UseNoSilverlight();
+bool silverlightServicesAlone = CurrentUnit.GenerationParams.SilverlightUsingServices && !UseNoSilverlight();
     
 if (silverlightIsDifferent)
 {
@@ -54,7 +54,7 @@ if (silverlightIsDifferent)
 <%
     }
 }
-else if (SilverlightServicesAlone)
+else if (silverlightServicesAlone)
 {
     %>
 <!-- #include file="GetObjectSilverlight.asp" -->
