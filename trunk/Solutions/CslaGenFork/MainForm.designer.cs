@@ -84,6 +84,7 @@ namespace CslaGenerator
             this.refreshSchemaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.retrieveSummariesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
+            this.changeTimestampToReadOnlyNotUndoable = new System.Windows.Forms.ToolStripMenuItem();
             this.convertDateTimeToSmartDate = new System.Windows.Forms.ToolStripMenuItem();
             this.forceBackingFieldSmartDate = new System.Windows.Forms.ToolStripMenuItem();
             this.convertPropertiesAndCriteriaToSilverlight = new System.Windows.Forms.ToolStripMenuItem();
@@ -452,6 +453,7 @@ namespace CslaGenerator
             // toolStripMenuItem4
             // 
             this.toolStripMenuItem4.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.changeTimestampToReadOnlyNotUndoable,
             this.convertDateTimeToSmartDate,
             this.forceBackingFieldSmartDate,
             this.convertPropertiesAndCriteriaToSilverlight,
@@ -461,6 +463,14 @@ namespace CslaGenerator
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
             this.toolStripMenuItem4.Size = new System.Drawing.Size(44, 20);
             this.toolStripMenuItem4.Text = "&Tools";
+            // 
+            // changeTimestampToReadOnlyNotUndoable
+            // 
+            this.changeTimestampToReadOnlyNotUndoable.Enabled = false;
+            this.changeTimestampToReadOnlyNotUndoable.Name = "changeTimestampToReadOnlyNotUndoable";
+            this.changeTimestampToReadOnlyNotUndoable.Size = new System.Drawing.Size(200, 22);
+            this.changeTimestampToReadOnlyNotUndoable.Text = "Change &timestamp (RowVersion) properties to ReadOnly and not Undoable";
+            this.changeTimestampToReadOnlyNotUndoable.Click += new System.EventHandler(this.ChangeTimestampToReadOnlyNotUndoable_Click);
             // 
             // convertDateTimeToSmartDate
             // 
@@ -1082,6 +1092,7 @@ namespace CslaGenerator
         private ToolStripProgressBar progressBar;
         private ToolStripMenuItem pluginsToolStripMenuItem;
         private ToolStripMenuItem toolStripMenuItem4;
+        private ToolStripMenuItem changeTimestampToReadOnlyNotUndoable;
         private ToolStripMenuItem convertDateTimeToSmartDate;
         private ToolStripMenuItem forceBackingFieldSmartDate;
         private ToolStripMenuItem convertPropertiesAndCriteriaToSilverlight;
