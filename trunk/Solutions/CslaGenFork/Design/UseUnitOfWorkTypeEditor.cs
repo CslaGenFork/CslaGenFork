@@ -47,7 +47,9 @@ namespace CslaGenerator.Design
                             }
                             else
                             {
-                                accept = true;
+                                if (o.UnitOfWorkType != UnitOfWorkFunction.Deleter &&
+                                    o.UnitOfWorkType != UnitOfWorkFunction.Updater)
+                                    accept = true;
                             }
                             if (accept)
                                 _lstProperties.Items.Add(o.ObjectName);
