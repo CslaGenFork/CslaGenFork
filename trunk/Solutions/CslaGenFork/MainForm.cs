@@ -545,8 +545,9 @@ namespace CslaGenerator
             {
                 targetDir = _controller.CurrentFilePath + @"\" + targetDir;
             }
-            if (_controller.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 ||
-                _controller.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL)
+            /*if (_controller.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 ||
+                _controller.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL)*/
+            if (_controller.CurrentUnit.GenerationParams.TargetIsCsla4All)
             {
                 _generator = new CodeGen.AdvancedGenerator(targetDir, _controller.TemplatesDirectory);
             }
@@ -699,6 +700,7 @@ namespace CslaGenerator
             connectDatabaseButton.Enabled = true;
             projectToolStripMenuItem.Enabled = true;
             dataBaseToolStripMenuItem.Enabled = true;
+            changeTimestampToReadOnlyNotUndoable.Enabled = true;
             convertDateTimeToSmartDate.Enabled = true;
             forceBackingFieldSmartDate.Enabled = true;
             convertPropertiesAndCriteriaToSilverlight.Enabled = true;
@@ -1228,6 +1230,29 @@ namespace CslaGenerator
         #endregion
 
         #region Tools menu
+
+        private void ChangeTimestampToReadOnlyNotUndoable_Click(object sender, EventArgs e)
+        {
+            _outputPanel.AddOutputInfo(Environment.NewLine + "Changing ReadOnly and not Undoable on timestamp properties..." + Environment.NewLine);
+            foreach (var info in _controller.CurrentUnit.CslaObjects)
+            {
+                var counter = 0;
+
+                foreach (ValueProperty prop in info.ValueProperties)
+                {
+                    if (prop.DbBindColumn.NativeType == "timestamp" && (!prop.ReadOnly || prop.Undoable))
+                    {
+                        prop.ReadOnly = true;
+                        prop.Undoable = false;
+                        counter++;
+                    }
+                }
+
+                if (counter > 0)
+                    _outputPanel.AddOutputInfo(info.ObjectName + ": changed " + counter + " properties of type \"timestamp\" to \"ReadOnly\" and not \"Undoable\".");
+            }
+            _outputPanel.AddOutputInfo(Environment.NewLine + "Change ReadOnly and not Undoable on timestamp properties is done." + Environment.NewLine);
+        }
 
         private void ConvertDateTimeToSmartDate_Click(object sender, EventArgs e)
         {
