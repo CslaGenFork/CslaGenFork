@@ -1,11 +1,18 @@
 <%
-if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationParams.GenerateSilverlight4)
+if (CurrentUnit.GenerationParams.GenerateAsynchronous)
 {
     foreach (Criteria c in Info.CriteriaObjects)
     {
         if (Info.ObjectType == CslaObjectType.UnitOfWork && Info.IsCreatorGetter && c.Properties.Count == 0)
             continue;
-        if (c.GetOptions.Factory)
+        if (forceGeneration != null)
+        {
+            if (forceGeneration.Value)
+                generateLocal = c.GetOptions.RunLocal;
+            else
+                generateLocal = !c.GetOptions.RunLocal;
+        }
+        if (c.GetOptions.Factory && (generateLocal == c.GetOptions.RunLocal || useUnitOfWorkGetter))
         {
             if (!isChild && !c.NestedClass && c.Properties.Count > 1 && Info.ObjectType != CslaObjectType.EditableSwitchable)
             {
@@ -19,7 +26,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
         public static void Get<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>(<%= c.Name %> crit, EventHandler<DataPortalResult<<%= Info.ObjectName %>>> callback)
         {
             <%
-                if (Info.UseUnitOfWorkType == string.Empty)
+                if (!useUnitOfWorkGetter)
                 {
                     %>
             DataPortal.BeginFetch<<%= Info.ObjectName %>>(crit, callback);
@@ -84,7 +91,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
             }
             if (c.Properties.Count > 1 || (Info.ObjectType == CslaObjectType.EditableSwitchable && c.Properties.Count == 1))
             {
-                if (Info.UseUnitOfWorkType == string.Empty)
+                if (!useUnitOfWorkGetter)
                 {
                     %>
             DataPortal.BeginFetch<<%= Info.ObjectName %>>(new <%= c.Name %>(<%= strGetCritParams %>), callback);
@@ -102,7 +109,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
             }
             else if (c.Properties.Count > 0)
             {
-                if (Info.UseUnitOfWorkType == string.Empty)
+                if (!useUnitOfWorkGetter)
                 {
                     %>
             DataPortal.BeginFetch<<%= Info.ObjectName %>>(<%= SendSingleCriteria(c, strGetCritParams) %>, callback);
@@ -135,7 +142,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
                 }
                 else
                 {
-                    if (Info.UseUnitOfWorkType == string.Empty)
+                    if (!useUnitOfWorkGetter)
                     {
                         %>
             DataPortal.BeginFetch<<%= Info.ObjectName %>>(callback);

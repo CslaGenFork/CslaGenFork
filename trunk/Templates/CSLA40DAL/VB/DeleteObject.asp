@@ -5,6 +5,20 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
     {
         if (c.DeleteOptions.Factory)
         {
+            if (!isChild && !c.NestedClass && c.Properties.Count > 1 && Info.ObjectType != CslaObjectType.EditableSwitchable)
+            {
+                %>
+
+        /// <summary>
+        /// Factory method. Deletes a <see cref="<%= Info.ObjectName %>"/> object, based on given parameters.
+        /// </summary>
+        /// <param name="crit">The delete criteria.</param>
+        public static <%= Info.ObjectName %> Delete<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>(<%= c.Name %> crit)
+        {
+            DataPortal.Delete<<%= Info.ObjectName %>>(crit);
+        }
+        <%
+            }
             %>
 
         /// <summary>

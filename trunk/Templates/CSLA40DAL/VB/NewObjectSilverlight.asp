@@ -33,14 +33,14 @@ if (UseSilverlight())
         foreach (Criteria c in Info.CriteriaObjects)
         {
             if (c.CreateOptions.Factory &&
-                (c.CreateOptions.RunLocal ||
-                CurrentUnit.GenerationParams.SilverlightUsingServices))
+                (CurrentUnit.GenerationParams.SilverlightUsingServices ||
+                (CurrentUnit.GenerationParams.GenerateSilverlight4 && c.CreateOptions.RunLocal)))
             {
                 string strNewParams = string.Empty;
                 string strNewCritParams = string.Empty;
                 string strNewComment = string.Empty;
                 string strNewCallback = string.Empty;
-                string strNewProxyMode = string.Empty;
+                /*string strNewProxyMode = string.Empty;*/
                 for (int i = 0; i < c.Properties.Count; i++)
                 {
                     if (i > 0)
@@ -52,10 +52,10 @@ if (UseSilverlight())
                     strNewCritParams += FormatCamel(c.Properties[i].Name);
                     strNewComment += "/// <param name=\"" + FormatCamel(c.Properties[i].Name) + "\">The " + FormatProperty(c.Properties[i].Name) + " of the " + Info.ObjectName + " to create.</param>" + System.Environment.NewLine + new string(' ', 8);
                 }
-                if (Info.UseUnitOfWorkType == string.Empty)
+                if (!useUnitOfWorkCreator)
                 {
                     strNewCallback = (strNewCritParams.Length > 0 ? ", " : "") + "callback";
-                    if (c.CreateOptions.RunLocal ||
+                    /*if (c.CreateOptions.RunLocal ||
                         CurrentUnit.GenerationParams.SilverlightUsingServices)
                     {
                         strNewProxyMode = "DataPortal.ProxyModes.LocalOnly";
@@ -63,7 +63,7 @@ if (UseSilverlight())
                     else
                     {
                         strNewProxyMode = "DataPortal.ProxyModes.Auto";
-                    }
+                    }*/
                 }
                 else
                 {
@@ -82,10 +82,10 @@ if (UseSilverlight())
         public static <%= Info.ObjectName %> New<%= Info.ObjectName %><%= c.CreateOptions.FactorySuffix %>(<%= c.Name %> crit, EventHandler<DataPortalResult<<%= Info.ObjectName %>>> callback)
         {
             <%
-                    if (Info.UseUnitOfWorkType == string.Empty)
+                    if (!useUnitOfWorkCreator)
                     {
                         %>
-            DataPortal.BeginCreate<<%= Info.ObjectName %>>(crit, callback, <%= strNewProxyMode %>);
+            DataPortal.BeginCreate<<%= Info.ObjectName %>>(crit, callback, DataPortal.ProxyModes.LocalOnly);
         <%
                     }
                     else
@@ -123,10 +123,10 @@ if (UseSilverlight())
                 }
                 if (c.Properties.Count > 1)
                 {
-                    if (Info.UseUnitOfWorkType == string.Empty)
+                    if (!useUnitOfWorkCreator)
                     {
                         %>
-            DataPortal.BeginCreate<<%= Info.ObjectName %>>(new <%= c.Name %>(<%= strNewCritParams %>)<%= strNewCallback %>, <%= strNewProxyMode %>);
+            DataPortal.BeginCreate<<%= Info.ObjectName %>>(new <%= c.Name %>(<%= strNewCritParams %>)<%= strNewCallback %>, DataPortal.ProxyModes.LocalOnly);
                 <%
                     }
                     else
@@ -141,10 +141,10 @@ if (UseSilverlight())
                 }
                 else if (c.Properties.Count > 0)
                 {
-                    if (Info.UseUnitOfWorkType == string.Empty)
+                    if (!useUnitOfWorkCreator)
                     {
                         %>
-            DataPortal.BeginCreate<<%= Info.ObjectName %>>(<%= SendSingleCriteria(c, strNewCritParams) %><%= strNewCallback %>, <%= strNewProxyMode %>);
+            DataPortal.BeginCreate<<%= Info.ObjectName %>>(<%= SendSingleCriteria(c, strNewCritParams) %><%= strNewCallback %>, DataPortal.ProxyModes.LocalOnly);
                     <%
                     }
                     else
@@ -159,10 +159,10 @@ if (UseSilverlight())
                 }
                 else
                 {
-                    if (Info.UseUnitOfWorkType == string.Empty)
+                    if (!useUnitOfWorkCreator)
                     {
                         %>
-            DataPortal.BeginCreate<<%= Info.ObjectName %>>(<%= strNewCallback %>, <%= strNewProxyMode %>);
+            DataPortal.BeginCreate<<%= Info.ObjectName %>>(<%= strNewCallback %>, DataPortal.ProxyModes.LocalOnly);
                     <%
                     }
                     else
