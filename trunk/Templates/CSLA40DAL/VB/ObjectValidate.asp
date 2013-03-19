@@ -26,6 +26,8 @@ ALERTS
 12. When using NOT DAL, CustomLoading forces NOT generation of child Factory methods
 */
 
+// General interest variables start
+
 bool isCriteriaClassNeeded = IsCriteriaClassNeeded(Info);
 CslaObjectInfo parentInfo = Info.Parent.CslaObjects.Find(Info.ParentType);
 CslaObjectInfo itemInfo = FindChildInfo(Info, Info.ItemType);
@@ -37,8 +39,24 @@ bool isParent = Info.GetAllChildProperties().Count > 0;
 bool isChildSelfLoaded = IsChildSelfLoaded(Info);
 bool isChildLazyLoaded = IsChildLazyLoaded(Info);
 bool isChildNotLazyLoaded = isChild && !isChildLazyLoaded;
-bool createAsynGenRunLocal = true;
+bool? forceGeneration = null;
+bool createGenerateLocal = true;
+bool generateLocal = false;
 bool objectRunLocal = true;
+bool useUnitOfWorkCreator = false;
+bool useUnitOfWorkGetter = false;
+if (Info.UseUnitOfWorkType != string.Empty)
+{
+    CslaObjectInfo uowInfo = Info.Parent.CslaObjects.Find(Info.UseUnitOfWorkType);
+    if (uowInfo != null)
+    {
+        useUnitOfWorkCreator = uowInfo.IsCreator || uowInfo.IsCreatorGetter;
+        useUnitOfWorkGetter = uowInfo.IsGetter || uowInfo.IsCreatorGetter;
+    }
+}
+
+// General interest variables end
+
 if (CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL)
 {
     if (Info.DataSetLoadingScheme)

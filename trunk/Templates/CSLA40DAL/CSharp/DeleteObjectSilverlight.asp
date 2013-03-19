@@ -1,10 +1,27 @@
 <%
-if (CurrentUnit.GenerationParams.SilverlightUsingServices)
+if (UseSilverlight())
 {
     foreach (Criteria c in Info.CriteriaObjects)
     {
-        if (c.DeleteOptions.Factory)
+        if (c.DeleteOptions.Factory &&
+            (CurrentUnit.GenerationParams.SilverlightUsingServices ||
+            (CurrentUnit.GenerationParams.GenerateSilverlight4 && c.DeleteOptions.RunLocal)))
         {
+            if (!isChild && !c.NestedClass && c.Properties.Count > 1 && Info.ObjectType != CslaObjectType.EditableSwitchable)
+            {
+                %>
+
+        /// <summary>
+        /// Factory method. Asynchronously deletes a <see cref="<%= Info.ObjectName %>"/> object, based on given parameters.
+        /// </summary>
+        /// <param name="crit">The detele criteria.</param>
+        /// <param name="callback">The completion callback method.</param>
+        public static void Delete<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>(<%= c.Name %> crit, EventHandler<DataPortalResult<<%= Info.ObjectName %>>> callback)
+        {
+            DataPortal.BeginDelete<<%= Info.ObjectName %>>(crit, callback, DataPortal.ProxyModes.LocalOnly);
+        }
+        <%
+            }
             %>
 
         /// <summary>

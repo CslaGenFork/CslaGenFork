@@ -58,7 +58,7 @@ if (UseBoth() && (objectRunLocal || CurrentUnit.GenerationParams.SilverlightUsin
 <%
 if (UseBoth())
 {
-    createAsynGenRunLocal = false;
+    createGenerateLocal = false;
     %>
 
 #endif

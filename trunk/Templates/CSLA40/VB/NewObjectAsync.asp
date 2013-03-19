@@ -16,7 +16,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
         Info.ObjectType == CslaObjectType.DynamicEditableRootCollection ||
         Info.ObjectType == CslaObjectType.EditableChildCollection))
     {
-        if (runLocal == createAsynGenRunLocal || CurrentUnit.GenerationParams.SilverlightUsingServices)
+        if (runLocal == createGenerateLocal || CurrentUnit.GenerationParams.SilverlightUsingServices)
         {
             %>
 
@@ -35,9 +35,14 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
     {
         foreach (Criteria c in Info.CriteriaObjects)
         {
-            if (c.CreateOptions.Factory &&
-                (c.CreateOptions.RunLocal == createAsynGenRunLocal ||
-                CurrentUnit.GenerationParams.SilverlightUsingServices))
+            if (forceGeneration != null)
+            {
+                if (forceGeneration.Value)
+                    createGenerateLocal = c.CreateOptions.RunLocal;
+                else
+                    createGenerateLocal = !c.CreateOptions.RunLocal;
+            }
+            if (c.CreateOptions.Factory && (createGenerateLocal == c.CreateOptions.RunLocal || useUnitOfWorkCreator))
             {
                 string strNewParams = string.Empty;
                 string strNewCritParams = string.Empty;
@@ -54,7 +59,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
                     strNewCritParams += FormatCamel(c.Properties[i].Name);
                     strNewComment += "/// <param name=\"" + FormatCamel(c.Properties[i].Name) + "\">The " + FormatProperty(c.Properties[i].Name) + " of the " + Info.ObjectName + " to create.</param>" + System.Environment.NewLine + new string(' ', 8);
                 }
-                if (Info.UseUnitOfWorkType == string.Empty)
+                if (!useUnitOfWorkCreator)
                 {
                     strNewCallback = (strNewCritParams.Length > 0 ? ", " : "") + "callback";
                 }
@@ -75,7 +80,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
         public static <%= Info.ObjectName %> New<%= Info.ObjectName %><%= c.CreateOptions.FactorySuffix %>(<%= c.Name %> crit, EventHandler<DataPortalResult<<%= Info.ObjectName %>>> callback)
         {
             <%
-                    if (Info.UseUnitOfWorkType == string.Empty)
+                    if (!useUnitOfWorkCreator)
                     {
                         %>
             DataPortal.BeginCreate<<%= Info.ObjectName %>>(crit, callback);
@@ -116,7 +121,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
                 }
                 if (c.Properties.Count > 1)
                 {
-                    if (Info.UseUnitOfWorkType == string.Empty)
+                    if (!useUnitOfWorkCreator)
                     {
                         %>
             DataPortal.BeginCreate<<%= Info.ObjectName %>>(new <%= c.Name %>(<%= strNewCritParams %>)<%= strNewCallback %>);
@@ -134,7 +139,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
                 }
                 else if (c.Properties.Count > 0)
                 {
-                    if (Info.UseUnitOfWorkType == string.Empty)
+                    if (!useUnitOfWorkCreator)
                     {
                         %>
             DataPortal.BeginCreate<<%= Info.ObjectName %>>(<%= SendSingleCriteria(c, strNewCritParams) %><%= strNewCallback %>);
@@ -152,7 +157,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
                 }
                 else
                 {
-                    if (Info.UseUnitOfWorkType == string.Empty)
+                    if (!useUnitOfWorkCreator)
                     {
                         %>
             DataPortal.BeginCreate<<%= Info.ObjectName %>>(<%= strNewCallback %>);

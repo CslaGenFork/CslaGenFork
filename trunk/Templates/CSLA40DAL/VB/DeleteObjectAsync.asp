@@ -3,8 +3,30 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
 {
     foreach (Criteria c in Info.CriteriaObjects)
     {
-        if (c.DeleteOptions.Factory)
+        if (forceGeneration != null)
         {
+            if (forceGeneration.Value)
+                generateLocal = c.DeleteOptions.RunLocal;
+            else
+                generateLocal = !c.DeleteOptions.RunLocal;
+        }
+        if (c.DeleteOptions.Factory && generateLocal == c.DeleteOptions.RunLocal)
+        {
+            if (!isChild && !c.NestedClass && c.Properties.Count > 1 && Info.ObjectType != CslaObjectType.EditableSwitchable)
+            {
+                %>
+
+        /// <summary>
+        /// Factory method. Asynchronously deletes a <see cref="<%= Info.ObjectName %>"/> object, based on given parameters.
+        /// </summary>
+        /// <param name="crit">The delete criteria.</param>
+        /// <param name="callback">The completion callback method.</param>
+        public static void Delete<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>(<%= c.Name %> crit, EventHandler<DataPortalResult<<%= Info.ObjectName %>>> callback)
+        {
+            DataPortal.BeginDelete<<%= Info.ObjectName %>>(crit, callback);
+        }
+        <%
+            }
             %>
 
         /// <summary>

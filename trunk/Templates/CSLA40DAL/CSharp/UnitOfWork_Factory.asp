@@ -96,7 +96,7 @@ else if (CurrentUnit.GenerationParams.SilverlightUsingServices)
     if (Info.IsDeleter)
     {
         %>
-<!-- #include file="DeleteObjectAsyncServices.asp" -->
+<!-- #include file="DeleteObjectUnitOfWorkAsyncServices.asp" -->
 <%
     }
 }

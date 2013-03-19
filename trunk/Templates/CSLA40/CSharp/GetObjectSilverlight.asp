@@ -1,9 +1,11 @@
 <%
-if (CurrentUnit.GenerationParams.SilverlightUsingServices)
+if (UseSilverlight())
 {
     foreach (Criteria c in Info.CriteriaObjects)
     {
-        if (c.GetOptions.Factory)
+        if (c.GetOptions.Factory &&
+            (CurrentUnit.GenerationParams.SilverlightUsingServices ||
+            (CurrentUnit.GenerationParams.GenerateSilverlight4 && c.GetOptions.RunLocal)))
         {
             if (!isChild && !c.NestedClass && c.Properties.Count > 1 && Info.ObjectType != CslaObjectType.EditableSwitchable)
             {
@@ -17,7 +19,7 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
         public static void Get<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>(<%= c.Name %> crit, EventHandler<DataPortalResult<<%= Info.ObjectName %>>> callback)
         {
             <%
-                if (Info.UseUnitOfWorkType == string.Empty)
+                if (!useUnitOfWorkGetter)
                 {
                     %>
             DataPortal.BeginFetch<<%= Info.ObjectName %>>(crit, callback, DataPortal.ProxyModes.LocalOnly);
@@ -82,7 +84,7 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
             }
             if (c.Properties.Count > 1 || (Info.ObjectType == CslaObjectType.EditableSwitchable && c.Properties.Count == 1))
             {
-                if (Info.UseUnitOfWorkType == string.Empty)
+                if (!useUnitOfWorkGetter)
                 {
                     %>
             DataPortal.BeginFetch<<%= Info.ObjectName %>>(new <%= c.Name %>(<%= strGetCritParams %>), callback, DataPortal.ProxyModes.LocalOnly);
@@ -100,7 +102,7 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
             }
             else if (c.Properties.Count > 0)
             {
-                if (Info.UseUnitOfWorkType == string.Empty)
+                if (!useUnitOfWorkGetter)
                 {
                     %>
             DataPortal.BeginFetch<<%= Info.ObjectName %>>(<%= SendSingleCriteria(c, strGetCritParams) %>, callback, DataPortal.ProxyModes.LocalOnly);
@@ -133,7 +135,7 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
                 }
                 else
                 {
-                    if (Info.UseUnitOfWorkType == string.Empty)
+                    if (!useUnitOfWorkGetter)
                     {
                         %>
             DataPortal.BeginFetch<<%= Info.ObjectName %>>(callback, DataPortal.ProxyModes.LocalOnly);
