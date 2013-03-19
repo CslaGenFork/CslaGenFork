@@ -1,13 +1,27 @@
         #region Factory Methods
 <%
+bool getRunLocal = false;
+bool getNonLocal = false;
+foreach (Criteria c in Info.CriteriaObjects)
+{
+    if (c.GetOptions.Factory)
+    {
+        getRunLocal = getRunLocal || c.GetOptions.RunLocal;
+        getNonLocal = getNonLocal || !c.GetOptions.RunLocal;
+    }
+}
+bool getRunLocalSilverlight = CurrentUnit.GenerationParams.SilverlightUsingServices && (getRunLocal || getNonLocal) && !useUnitOfWorkGetter;
+getRunLocal = getRunLocal && !useUnitOfWorkGetter;
+getNonLocal = getNonLocal || useUnitOfWorkGetter;
 bool internalGetObjectUsed = false;
 if (parentInfo != null)
     internalGetObjectUsed = !Info.HasGetCriteriaFactory && !IsChildSelfLoaded(parentInfo);
-bool asyncSilverlightIsDifferent = UseBoth() &&
-    (CurrentUnit.GenerationParams.SilverlightUsingServices && (Info.UseUnitOfWorkType == string.Empty ||
-    !CurrentUnit.GenerationParams.GenerateAsynchronous));
-bool silverlightIsDifferent = UseBoth() &&
-    (asyncSilverlightIsDifferent || CurrentUnit.GenerationParams.GenerateSynchronous || internalGetObjectUsed);
+bool localMethodsExists = getRunLocal;
+bool nonLocalMethodsExists = getNonLocal;
+bool localSilverlightMethodsExists = getRunLocalSilverlight;
+bool asyncSilverlightIsDifferent = UseBoth() && (localMethodsExists || localSilverlightMethodsExists);
+bool silverlightIsDifferent = asyncSilverlightIsDifferent ||
+    (UseBoth() && (CurrentUnit.GenerationParams.GenerateSynchronous || internalGetObjectUsed));
 bool silverlightServicesAlone = CurrentUnit.GenerationParams.SilverlightUsingServices && !UseNoSilverlight();
 
 if (silverlightIsDifferent)
@@ -26,33 +40,39 @@ if (UseNoSilverlight())
 %>
 <!-- #include file="GetObject.asp" -->
 <%
-if (CurrentUnit.GenerationParams.GenerateAsynchronous && asyncSilverlightIsDifferent)
+if (CurrentUnit.GenerationParams.GenerateAsynchronous && (!UseSilverlight() || localMethodsExists || localSilverlightMethodsExists))
 {
-    %>
+    if (Info.HasGetCriteriaFactory && (!UseSilverlight() || getRunLocal || getRunLocalSilverlight))
+    {
+        generateLocal = true;
+        forceGeneration = null;
+        if (!UseSilverlight() || getRunLocalSilverlight)
+            forceGeneration = true;
+        %>
 <!-- #include file="GetObjectAsync.asp" -->
 <%
+    }
 }
 if (silverlightIsDifferent)
 {
-    if (asyncSilverlightIsDifferent && Info.HasGetCriteriaFactory)
+    if (Info.HasGetCriteriaFactory &&
+        (asyncSilverlightIsDifferent || (!CurrentUnit.GenerationParams.GenerateAsynchronous && !localSilverlightMethodsExists)))
     {
         %>
 
 #else
+<%
+        if (getRunLocal || getRunLocalSilverlight || (!CurrentUnit.GenerationParams.GenerateAsynchronous && !getRunLocalSilverlight))
+        {
+            %>
 <!-- #include file="GetObjectSilverlight.asp" -->
 <%
-%>
+        }
+    }
+    %>
 
 #endif
 <%
-    }
-    else
-    {
-        %>
-
-#endif
-<%
-    }
 }
 else if (silverlightServicesAlone)
 {
@@ -60,11 +80,16 @@ else if (silverlightServicesAlone)
 <!-- #include file="GetObjectSilverlight.asp" -->
 <%
 }
-if (CurrentUnit.GenerationParams.GenerateAsynchronous && !asyncSilverlightIsDifferent)
+if (CurrentUnit.GenerationParams.GenerateAsynchronous && UseBoth())
 {
+    if (getNonLocal && !getRunLocalSilverlight)
+    {
+        generateLocal = false;
+        forceGeneration = null;
         %>
 <!-- #include file="GetObjectAsync.asp" -->
 <%
+    }
 }
 %>
 
