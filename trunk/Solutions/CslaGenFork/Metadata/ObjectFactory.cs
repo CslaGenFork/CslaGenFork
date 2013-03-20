@@ -577,8 +577,7 @@ namespace CslaGenerator.Metadata
 
                             defaultCriteria.SetSprocNames();
 
-                            if ((_currentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 ||
-                                 _currentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL) &&
+                            if (_currentUnit.GenerationParams.TargetIsCsla4All &&
                                 _currentCslaObject.ObjectType != CslaObjectType.EditableRoot &&
                                 _currentCslaObject.ObjectType != CslaObjectType.EditableSwitchable &&
                                 _currentCslaObject.ObjectType != CslaObjectType.ReadOnlyObject)

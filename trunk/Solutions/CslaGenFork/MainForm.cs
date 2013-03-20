@@ -545,8 +545,7 @@ namespace CslaGenerator
             {
                 targetDir = _controller.CurrentFilePath + @"\" + targetDir;
             }
-            if (_controller.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 ||
-                _controller.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL)
+            if (_controller.CurrentUnit.GenerationParams.TargetIsCsla4All)
             {
                 _generator = new CodeGen.AdvancedGenerator(targetDir, _controller.TemplatesDirectory);
             }

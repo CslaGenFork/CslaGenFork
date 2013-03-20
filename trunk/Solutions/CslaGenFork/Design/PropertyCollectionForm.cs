@@ -471,8 +471,7 @@ namespace CslaGenerator.Design
                         if (GeneratorController.Current.CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider)
                             _form.Size = new Size(_form.Size.Width, _form.Size.Height - 16);
                     }
-                    if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 ||
-                        GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL)
+                    if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All)
                         _form.Size = new Size(_form.Size.Width, _form.Size.Height - 16);
                     break;
                 case "ChildProperty Collection Editor":
@@ -487,8 +486,7 @@ namespace CslaGenerator.Design
                         if (GeneratorController.Current.CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider)
                             _form.Size = new Size(_form.Size.Width, _form.Size.Height - 16);
                     }
-                    if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 ||
-                        GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL)
+                    if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All)
                         _form.Size = new Size(_form.Size.Width, _form.Size.Height - 16);
                     break;
                 case "UnitOfWorkProperty Collection Editor":
@@ -511,8 +509,7 @@ namespace CslaGenerator.Design
                          cslaObject.ObjectType == CslaObjectType.NameValueList ||
                          (cslaObject.ObjectType == CslaObjectType.UnitOfWork)))
                         _form.Size = new Size(_form.Size.Width, _form.Size.Height - 256);
-                    if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40 &&
-                        GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL)
+                    if (!GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All)
                         _form.Size = new Size(_form.Size.Width, _form.Size.Height - 32);
                     if (cslaObject.ObjectType == CslaObjectType.EditableChild)
                     {
@@ -527,8 +524,7 @@ namespace CslaGenerator.Design
                     _form.Size = new Size(570, _form.Size.Height);
                     _collectionType = typeof (ConvertValueProperty);
                     _form.Size = new Size(_form.Size.Width, 534);
-                    if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 ||
-                        GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL)
+                    if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All)
                         _form.Size = new Size(_form.Size.Width, _form.Size.Height - 16);
                     break;
                 case "UpdateValueProperty Collection Editor":

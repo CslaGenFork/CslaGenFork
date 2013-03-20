@@ -2,9 +2,6 @@
 
 namespace CslaGenerator.Metadata
 {
-    //if (framework != CslaGenerator.Metadata.TargetFramework.CSLA40)
-    //            return;
-
     /// <summary>
     /// Central point of enforcement for relation rules between object stereotypes.
     /// </summary>

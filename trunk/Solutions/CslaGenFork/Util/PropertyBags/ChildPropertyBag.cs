@@ -653,8 +653,7 @@ namespace CslaGenerator.Util.PropertyBags
                         GeneratorController.Current.CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider) &&
                         propertyName == "AuthzProvider")
                         return false;
-                    if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40 &&
-                         GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL) &&
+                    if (!GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All &&
                         propertyName == "BusinessRules")
                         return false;
 
@@ -664,13 +663,11 @@ namespace CslaGenerator.Util.PropertyBags
                     if (parentInfo2 != null)
                         isParentCollection = CslaTemplateHelperCS.IsCollectionType(parentInfo2.ObjectType);
 
-                    if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 ||
-                         GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL) &&
+                    if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All &&
                          isParentCollection &&
                          propertyName == "LoadParameters")
                         return false;
-                    if (((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40 &&
-                        GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL) ||
+                    if ((!GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All ||
                         !isParentCollection) &&
                         propertyName == "ParentLoadProperties")
                         return false;

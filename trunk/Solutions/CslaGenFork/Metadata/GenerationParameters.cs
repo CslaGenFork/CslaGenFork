@@ -631,6 +631,34 @@ namespace CslaGenerator.Metadata
             get { return GenerateWinForms && (GenerateWPF || GenerateSilverlight4); }
         }
 
+        [Browsable(false)]
+        public bool TargetIsCsla4All
+        {
+            get { return TargetIsCsla4 || TargetIsCsla4DAL; }
+        }
+
+        [Browsable(false)]
+        public bool TargetIsCsla4
+        {
+            get
+            {
+                return
+                    _targetFramework == TargetFramework.CSLA40/* ||
+                    _targetFramework == TargetFramework.CSLA45*/;
+            }
+        }
+
+        [Browsable(false)]
+        public bool TargetIsCsla4DAL
+        {
+            get
+            {
+                return
+                    _targetFramework == TargetFramework.CSLA40DAL/* ||
+                    _targetFramework == TargetFramework.CSLA45DAL*/;
+            }
+        }
+
         #endregion
 
         #region INotifyPropertyChanged Members
@@ -721,7 +749,7 @@ namespace CslaGenerator.Metadata
             _generateDalInterface = false;
             _generateDalObject = false;
 
-            if (_targetFramework == TargetFramework.CSLA40 || _targetFramework == TargetFramework.CSLA40DAL)
+            if (TargetIsCsla4All)
             {
                 UseCsla4 = true;
                 _activeObjects = false;
@@ -738,7 +766,7 @@ namespace CslaGenerator.Metadata
                 _usesCslaAuthorizationProvider = true;
             }
 
-            if (_targetFramework == TargetFramework.CSLA40DAL)
+            if (TargetIsCsla4DAL)
             {
                 UseDal = true;
                 _generateDalInterface = true;
