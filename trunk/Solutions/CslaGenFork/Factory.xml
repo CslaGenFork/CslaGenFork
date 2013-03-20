@@ -57,6 +57,7 @@
     <ActiveObjects>false</ActiveObjects>
     <UseDotDesignerFileNameConvention>true</UseDotDesignerFileNameConvention>
     <OutputLanguage>CSharp</OutputLanguage>
+    <UpdateOnlyDirtyChildren>true</UpdateOnlyDirtyChildren>
     <NullableSupport>true</NullableSupport>
     <PropertyMode>Default</PropertyMode>
     <GenerateAuthorization>FullSupport</GenerateAuthorization>
