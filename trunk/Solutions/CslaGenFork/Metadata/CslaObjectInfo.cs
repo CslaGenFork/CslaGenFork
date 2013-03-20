@@ -65,6 +65,7 @@ namespace CslaGenerator.Metadata
         private bool _containsItem = true;
         private bool _uniqueItems = false;
         private string _updaterType = String.Empty;
+        private bool _updateOnlyDirtyChildren = true;
         private string _parentType = String.Empty;
         private string _fileName = String.Empty;
         private string _nameColumn = String.Empty;
@@ -600,6 +601,15 @@ namespace CslaGenerator.Metadata
         #endregion
 
         #region 04. Child Object Options
+
+        [Category("04. Child Object Options")]
+        [Description("Whether to update only children that are 'dirty' or to update all children.")]
+        [UserFriendlyName("Update Only Dirty Children")]
+        public bool UpdateOnlyDirtyChildren
+        {
+            get { return _updateOnlyDirtyChildren; }
+            set { _updateOnlyDirtyChildren = value; }
+        }
 
         [Category("04. Child Object Options")]
         [Description("The object type of this object's parent (specify the collection name for an item, or object name for a collection).")]
