@@ -959,11 +959,6 @@ namespace CslaGenerator.Util.PropertyBags
                             return false;
                         if (((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40 &&
                             GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL) ||
-                            cslaObject.ObjectType != CslaObjectType.EditableChild) &&
-                            propertyName == "UpdateOnlyDirtyChildren")
-                            return false;
-                        if (((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40 &&
-                            GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL) ||
                             (CslaTemplateHelperCS.IsReadOnlyType(cslaObject.ObjectType) && !string.IsNullOrEmpty(cslaObject.ParentType))) &&
                             propertyName == "UseUnitOfWorkType")
                             return false;
