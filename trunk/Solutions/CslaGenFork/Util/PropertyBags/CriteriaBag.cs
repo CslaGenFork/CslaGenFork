@@ -648,8 +648,7 @@ namespace CslaGenerator.Util.PropertyBags
                 if ((cslaObject.ObjectType == CslaObjectType.UnitOfWork && cslaObject.IsCreatorGetter) &&
                     (propertyName == "DeleteOptions"))
                     return false;
-                if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40 &&
-                    GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL) &&
+                if (!GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All &&
                     (propertyName == "NestedClass" ||
                     propertyName == "CriteriaClassMode"))
                     return false;

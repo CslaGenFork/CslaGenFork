@@ -949,27 +949,23 @@ namespace CslaGenerator.Util.PropertyBags
                             GeneratorController.Current.CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider) && 
                             propertyName == "AuthzProvider")
                             return false;
-                        if (((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40 &&
-                            GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL) ||
+                        if ((!GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All ||
                             (!GeneratorController.Current.CurrentUnit.GenerationParams.GenerateWinForms ||
                             !CslaTemplateHelperCS.IsCollectionType(cslaObject.ObjectType) ||
                             (string.IsNullOrEmpty(cslaObject.InheritedType.Type) &&
                             string.IsNullOrEmpty(cslaObject.InheritedType.ObjectName)))) &&
                             propertyName == "InheritedTypeWinForms")
                             return false;
-                        if (((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40 &&
-                            GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL) ||
+                        if ((!GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All ||
                             (CslaTemplateHelperCS.IsReadOnlyType(cslaObject.ObjectType) && !string.IsNullOrEmpty(cslaObject.ParentType))) &&
                             propertyName == "UseUnitOfWorkType")
                             return false;
-                        if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 ||
-                            GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL) &&
+                        if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All &&
                             !(cslaObject.ObjectType == CslaObjectType.DynamicEditableRoot ||
                             cslaObject.ObjectType == CslaObjectType.ReadOnlyObject) &&
                             propertyName == "AddParentReference")
                             return false;
-                        if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 ||
-                            GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL) &&
+                        if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All &&
                             (propertyName == "DbName" ||
                             propertyName == "HashcodeProperty" ||
                             propertyName == "EqualsProperty" ||
@@ -979,36 +975,30 @@ namespace CslaGenerator.Util.PropertyBags
                         if (cslaObject.ObjectType != CslaObjectType.EditableChild &&
                             propertyName == "DeleteProcedureName")
                             return false;
-                        if (((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40 &&
-                            GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL) ||
+                        if ((!GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All ||
                             cslaObject.ObjectType != CslaObjectType.EditableChild) &&
                             propertyName == "DeleteUseTimestamp")
                             return false;
-                        if (((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40 &&
-                            GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL) ||
+                        if ((!GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All ||
                             cslaObject.ObjectType == CslaObjectType.UnitOfWork) &&
                             propertyName == "CommandTimeout")
                             return false;
-                        if ((((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40 &&
-                            GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL) ||
+                        if (((!GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All ||
                             !(cslaObject.ObjectType == CslaObjectType.EditableChild &&
                             (cslaParent == null || CslaTemplateHelperCS.IsCollectionType(cslaParent.ObjectType))))) &&
                             propertyName == "RemoveItem")
                             return false;
-                        if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40 ||
-                            GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL) &&
+                        if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All &&
                             (!canHaveParentProperties &&
                             (propertyName == "ParentProperties" || propertyName == "UseParentProperties")))
                             return false;
-                        if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40 &&
-                            GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL) &&
+                        if (!GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All &&
                             (propertyName == "ContainsItem" ||
                             propertyName == "UniqueItems" ||
                             propertyName == "SimpleCacheOptions" ||
                             propertyName == "InsertUpdateRunLocal"))
                             return false;
-                        if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40 &&
-                            GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL) &&
+                        if (!GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All &&
                             (propertyName == "SupportUpdateProperties" ||
                             propertyName == "UpdateValueProperties" ||
                             propertyName == "UpdaterType"))
@@ -1212,10 +1202,7 @@ namespace CslaGenerator.Util.PropertyBags
                     if (property.Category == "08. Insert & Update Options")
                     {
                         var cslaObject = (CslaObjectInfo)GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem;
-                        if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework !=
-                             TargetFramework.CSLA40 &&
-                             GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework !=
-                             TargetFramework.CSLA40DAL)
+                        if (!GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All)
                         {
                             property.Category = "08. Stored Procedure Names";
                         }
@@ -1225,11 +1212,8 @@ namespace CslaGenerator.Util.PropertyBags
                         }
                     }
 
-                    if ((GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework !=
-                             TargetFramework.CSLA40 &&
-                             GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework !=
-                             TargetFramework.CSLA40DAL) &&
-                            property.Category == "08. Insert & Update Options")
+                    if (!GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All &&
+                        property.Category == "08. Insert & Update Options")
                         property.Category = "08. Stored Procedure Names";
                     attrs.Add(new CategoryAttribute(property.Category));
                 }

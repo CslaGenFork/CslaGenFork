@@ -51,10 +51,7 @@ namespace CslaGenerator.Design
                         Size = new Size(Size.Width, Size.Height - 256);
                         pgEditor.Size = new Size(pgEditor.Size.Width, pgEditor.Size.Height - 256);
                     }
-                    if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework !=
-                        TargetFramework.CSLA40 &&
-                        GeneratorController.Current.CurrentUnit.GenerationParams.TargetFramework !=
-                        TargetFramework.CSLA40DAL)
+                    if (!GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All)
                     {
                         Size = new Size(Size.Width, Size.Height - 32);
                         pgEditor.Size = new Size(pgEditor.Size.Width, pgEditor.Size.Height - 32);

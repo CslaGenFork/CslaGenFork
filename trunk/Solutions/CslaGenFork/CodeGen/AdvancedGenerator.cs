@@ -96,7 +96,10 @@ namespace CslaGenerator.CodeGen
             var generationParams = unit.GenerationParams;
             _generateDatabaseClass = generationParams.GenerateDatabaseClass;
             _abortRequested = false;
-            _fullTemplatesPath = _templatesDirectory + generationParams.TargetFramework + @"\";
+            _fullTemplatesPath += _templatesDirectory + "CSLA40";
+            if (generationParams.TargetIsCsla4DAL)
+                _fullTemplatesPath += "DAL";
+            _fullTemplatesPath += @"\";
             _templates = new Hashtable(); //to recompile templates in case they changed.
             //This is just in case users add/remove objects while generating...
             var list = unit.CslaObjects.Where(t => t.Generate).ToList();
@@ -307,7 +310,7 @@ namespace CslaGenerator.CodeGen
             var dalName = CslaTemplateHelperCS.GetDalName(_unit);
 
             // Infrastructure classes
-            if (_generateDatabaseClass && generationParams.TargetFramework == TargetFramework.CSLA40)
+            if (_generateDatabaseClass && generationParams.TargetIsCsla4)
             {
                 const GenerationStep step = GenerationStep.Business;
                 GenerateUtilityFile("Database" + _unit.GenerationParams.DatabaseConnection, false, "Database", step);
@@ -1078,7 +1081,7 @@ namespace CslaGenerator.CodeGen
             }
 
             // use step for base folder to avoid the mess
-            if (_unit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL)
+            if (_unit.GenerationParams.TargetIsCsla4DAL)
                 result += step + @"\";
 
             if (!_unit.GenerationParams.UtilitiesFolder.Equals(string.Empty))
@@ -1516,7 +1519,7 @@ namespace CslaGenerator.CodeGen
                     targetDir += @"\";
                 }
             }
-            else if (_unit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL)
+            else if (_unit.GenerationParams.TargetIsCsla4DAL)
             {
                 targetDir += step + @"\";
             }

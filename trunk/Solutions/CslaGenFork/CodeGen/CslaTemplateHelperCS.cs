@@ -804,7 +804,7 @@ namespace CslaGenerator.CodeGen
 
             // ignore if not usign DAL
             var dalInterfaceNamespaces = new List<string>();
-            if (unit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL && !isUnitOfWork)
+            if (unit.GenerationParams.TargetIsCsla4DAL && !isUnitOfWork)
             {
                 dalInterfaceNamespaces.AddRange(GetDalInterfaceNamespaces(info, unit));
                 if (UseSilverlight())
@@ -875,17 +875,15 @@ namespace CslaGenerator.CodeGen
 
             if (!UseSilverlight() && !isUnitOfWork)
             {
-                if (unit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL ||
-                    !unit.GenerationParams.GenerateDTO)
+                if (!unit.GenerationParams.TargetIsCsla4DAL || !unit.GenerationParams.GenerateDTO)
                     result.Add("System.Data");
-                if (unit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL)
+                if (!unit.GenerationParams.TargetIsCsla4DAL)
                     result.Add("System.Data.SqlClient");
                 if (CurrentUnit.GenerationParams.GenerateDTO && !IsObjectType(info.ObjectType))
                     result.Add("System.Collections.Generic");
 
                 result.Add("Csla");
-                if (unit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL ||
-                    !unit.GenerationParams.GenerateDTO)
+                if (!unit.GenerationParams.TargetIsCsla4DAL || !unit.GenerationParams.GenerateDTO)
                     result.Add("Csla.Data");
                 if (contextUtilitiesnamespace != string.Empty)
                     result.Add(contextUtilitiesnamespace);
@@ -1029,18 +1027,16 @@ namespace CslaGenerator.CodeGen
         {
             var result = new List<string>();
 
-            if (unit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL ||
-                !unit.GenerationParams.GenerateDTO)
+            if (!unit.GenerationParams.TargetIsCsla4DAL || !unit.GenerationParams.GenerateDTO)
                 result.Add("System.Data");
 
-            if (unit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL)
+            if (!unit.GenerationParams.TargetIsCsla4DAL)
                 result.Add("System.Data.SqlClient");
 
             if (CurrentUnit.GenerationParams.GenerateDTO && !IsObjectType(info.ObjectType))
                 result.Add("System.Collections.Generic");
 
-            if (unit.GenerationParams.TargetFramework != TargetFramework.CSLA40DAL ||
-                !unit.GenerationParams.GenerateDTO)
+            if (!unit.GenerationParams.TargetIsCsla4DAL || !unit.GenerationParams.GenerateDTO)
                 result.Add("Csla.Data");
             if (contextUtilitiesnamespace != string.Empty)
                 result.Add(contextUtilitiesnamespace);
@@ -1063,7 +1059,7 @@ namespace CslaGenerator.CodeGen
 
                 if (!usesDb)
                 {
-                    if (CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL && CurrentUnit.GenerationParams.GenerateDTO)
+                    if (CurrentUnit.GenerationParams.TargetIsCsla4DAL && CurrentUnit.GenerationParams.GenerateDTO)
                         result.Add(GetContextObjectNamespace(info, unit, GenerationStep.DalInterface));
 
                     return result;
