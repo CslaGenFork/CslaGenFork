@@ -197,6 +197,7 @@ namespace CslaGenerator.Controls
             this.chkUseBypassPropertyChecks = new System.Windows.Forms.CheckBox();
             this.chkUseChildFactory = new System.Windows.Forms.CheckBox();
             this.chkForceReadOnlyProperties = new System.Windows.Forms.CheckBox();
+            this.chkUpdateOnlyDirtyChildren = new System.Windows.Forms.CheckBox();
             this.chkNullableSupport = new System.Windows.Forms.CheckBox();
             this.chkActiveObjects = new System.Windows.Forms.CheckBox();
             this.chkUsePublicPropertyInfo = new System.Windows.Forms.CheckBox();
@@ -1900,6 +1901,7 @@ namespace CslaGenerator.Controls
             this.GenerationMiscTab.Controls.Add(this.chkForceReadOnlyProperties);
             this.GenerationMiscTab.Controls.Add(this.lblHeaderVerbosity);
             this.GenerationMiscTab.Controls.Add(this.cboHeaderVerbosity);
+            this.GenerationMiscTab.Controls.Add(this.chkUpdateOnlyDirtyChildren);
             this.GenerationMiscTab.Controls.Add(this.chkNullableSupport);
             this.GenerationMiscTab.Controls.Add(this.chkActiveObjects);
             this.GenerationMiscTab.Controls.Add(this.chkBackupOldSource);
@@ -2030,11 +2032,23 @@ namespace CslaGenerator.Controls
             this.cboHeaderVerbosity.TabIndex = 6;
             this.toolTip.SetToolTip(this.cboHeaderVerbosity, "Header verbosity level.");
             // 
+            // chkUpdateOnlyDirtyChildren
+            // 
+            this.chkUpdateOnlyDirtyChildren.AutoSize = true;
+            this.chkUpdateOnlyDirtyChildren.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "NullableSupport", true, DataSourceUpdateMode.OnPropertyChanged));
+            this.chkUpdateOnlyDirtyChildren.Location = new System.Drawing.Point(255, 78);
+            this.chkUpdateOnlyDirtyChildren.Name = "chkUpdateOnlyDirtyChildren";
+            this.chkUpdateOnlyDirtyChildren.Size = new System.Drawing.Size(157, 17);
+            this.chkUpdateOnlyDirtyChildren.TabIndex = 11;
+            this.chkUpdateOnlyDirtyChildren.Text = "Update only Dirty children";
+            this.chkUpdateOnlyDirtyChildren.UseVisualStyleBackColor = true;
+            this.toolTip.SetToolTip(this.chkUpdateOnlyDirtyChildren, "If checked, generated code updates only children that are 'Dirty'; otherwise updates all children.");
+            // 
             // chkNullableSupport
             // 
             this.chkNullableSupport.AutoSize = true;
-            this.chkNullableSupport.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "NullableSupport", true, DataSourceUpdateMode.OnPropertyChanged));
-            this.chkNullableSupport.Location = new System.Drawing.Point(255, 78);
+            this.chkNullableSupport.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "UpdateOnlyDirtyChildren", true, DataSourceUpdateMode.OnPropertyChanged));
+            this.chkNullableSupport.Location = new System.Drawing.Point(255, 106);
             this.chkNullableSupport.Name = "chkNullableSupport";
             this.chkNullableSupport.Size = new System.Drawing.Size(157, 17);
             this.chkNullableSupport.TabIndex = 11;
@@ -2045,7 +2059,7 @@ namespace CslaGenerator.Controls
             // chkActiveObjects
             // 
             this.chkActiveObjects.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "ActiveObjects", true, DataSourceUpdateMode.OnPropertyChanged));
-            this.chkActiveObjects.Location = new System.Drawing.Point(255, 106);
+            this.chkActiveObjects.Location = new System.Drawing.Point(255, 134);
             this.chkActiveObjects.Name = "chkActiveObjects";
             this.chkActiveObjects.Size = new System.Drawing.Size(216, 17);
             this.chkActiveObjects.TabIndex = 14;
@@ -2058,7 +2072,7 @@ namespace CslaGenerator.Controls
             // chkBackupOldSource
             // 
             this.chkBackupOldSource.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "BackupOldSource", true, DataSourceUpdateMode.OnPropertyChanged));
-            this.chkBackupOldSource.Location = new System.Drawing.Point(255, 134);
+            this.chkBackupOldSource.Location = new System.Drawing.Point(255, 162);
             this.chkBackupOldSource.Name = "chkBackupOldSource";
             this.chkBackupOldSource.Size = new System.Drawing.Size(216, 17);
             this.chkBackupOldSource.TabIndex = 8;
@@ -2068,7 +2082,7 @@ namespace CslaGenerator.Controls
             // chkRetryOnFileBusy
             // 
             this.chkRetryOnFileBusy.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "RetryOnFileBusy", true, DataSourceUpdateMode.OnPropertyChanged));
-            this.chkRetryOnFileBusy.Location = new System.Drawing.Point(255, 162);
+            this.chkRetryOnFileBusy.Location = new System.Drawing.Point(255, 190);
             this.chkRetryOnFileBusy.Name = "chkRetryOnFileBusy";
             this.chkRetryOnFileBusy.Size = new System.Drawing.Size(216, 17);
             this.chkRetryOnFileBusy.TabIndex = 8;
@@ -2343,6 +2357,7 @@ namespace CslaGenerator.Controls
         private System.Windows.Forms.CheckBox chkUseBypassPropertyChecks;
         private System.Windows.Forms.CheckBox chkUseChildFactory;
         private System.Windows.Forms.CheckBox chkForceReadOnlyProperties;
+        private System.Windows.Forms.CheckBox chkUpdateOnlyDirtyChildren;
         private System.Windows.Forms.CheckBox chkNullableSupport;
         private System.Windows.Forms.CheckBox chkUsePublicPropertyInfo;
         private System.Windows.Forms.CheckBox chkActiveObjects;

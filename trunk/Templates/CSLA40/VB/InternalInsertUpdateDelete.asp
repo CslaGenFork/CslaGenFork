@@ -211,6 +211,14 @@ if (Info.GenerateDataPortalUpdate)
     %>private void Child_Update(<%= ((parentType.Length > 0 && !Info.ParentInsertOnly) ? parentType + " parent" : "") %>)
         {
             <%
+    if (CurrentUnit.GenerationParams.UpdateOnlyDirtyChildren)
+    {
+        %>
+            if (!IsDirty)
+                return;
+
+            <%
+    }
     if (UseSimpleAuditTrail(Info))
     {
         %>
