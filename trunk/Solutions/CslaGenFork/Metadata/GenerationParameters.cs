@@ -17,6 +17,7 @@ namespace CslaGenerator.Metadata
         private bool _separateBaseClasses;
         private bool _activeObjects;
         private bool _useDotDesignerFileNameConvention = true;
+        private bool _updateOnlyDirtyChildren = true;
         private bool _nullableSupport;
         private CodeLanguage _outputLanguage = CodeLanguage.CSharp;
         private CslaPropertyMode _propertyMode = CslaPropertyMode.Default;
@@ -176,6 +177,18 @@ namespace CslaGenerator.Metadata
                 if (_outputLanguage == value)
                     return;
                 _outputLanguage = value;
+                OnPropertyChanged("");
+            }
+        }
+
+        public bool UpdateOnlyDirtyChildren
+        {
+            get { return _updateOnlyDirtyChildren; }
+            set
+            {
+                if (_updateOnlyDirtyChildren == value)
+                    return;
+                _updateOnlyDirtyChildren = value;
                 OnPropertyChanged("");
             }
         }
