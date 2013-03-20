@@ -68,7 +68,7 @@ if (UseNoSilverlight() &&
     Response.WriteLine();
 %>namespace <%= Info.ObjectNamespace %>
 {
-    public partial class <%= Info.ObjectName %>
+    <%= Info.ClassVisibility == ClassVisibility.Public ? "public" : "internal" %> partial class <%= Info.ObjectName %>
     {
 
         #region OnDeserialized actions
@@ -300,7 +300,7 @@ if (MethodList.Count > 0)
             {
                 %>
 
-    public partial class <%= crit.Name %>
+    <%= Info.ClassVisibility == ClassVisibility.Public ? "public" : "internal" %> partial class <%= crit.Name %>
     {
     }
 <%

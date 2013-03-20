@@ -53,7 +53,7 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Busine
     if (CurrentUnit.GenerationParams.DualListInheritance)
     {
         %>#if WINFORMS
-    <%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %>public partial class <%= Info.ObjectName %> : <%
+    <%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %><%= Info.ClassVisibility == ClassVisibility.Public ? "public" : "internal" %> partial class <%= Info.ObjectName %> : <%
         if (Info.InheritedTypeWinForms.Type != string.Empty || Info.InheritedTypeWinForms.ObjectName != string.Empty)
         {
             %><!-- #include file="InheritsWinForms.asp" --><%
@@ -66,7 +66,7 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Busine
         %>#else
     <%
     }
-    %><%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %>public partial class <%= Info.ObjectName %> : <%
+    %><%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %><%= Info.ClassVisibility == ClassVisibility.Public ? "public" : "internal" %> partial class <%= Info.ObjectName %> : <%
     if (Info.InheritedType.Type != string.Empty || Info.InheritedType.ObjectName != string.Empty)
     {
         %><!-- #include file="Inherits.asp" --><%

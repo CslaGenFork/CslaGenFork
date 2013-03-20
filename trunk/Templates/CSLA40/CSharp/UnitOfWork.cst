@@ -45,7 +45,7 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Busine
     }
     %>
     [Serializable]
-    public partial class <%= Info.ObjectName %> : <%= (Info.IsUpdater || Info.IsDeleter) ? "CommandBase" : "ReadOnlyBase" %><<%= Info.ObjectName %>>
+    <%= Info.ClassVisibility == ClassVisibility.Public ? "public" : "internal" %> partial class <%= Info.ObjectName %> : <%= (Info.IsUpdater || Info.IsDeleter) ? "CommandBase" : "ReadOnlyBase" %><<%= Info.ObjectName %>>
     {
 
 <!-- #include file="BusinessProps.asp" -->

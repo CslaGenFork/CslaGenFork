@@ -26,6 +26,7 @@ namespace CslaGenerator.Metadata
 
         private string _objectName = "CslaObject";
         private string _objectNamespace = String.Empty;
+        private ClassVisibility _classVisibility = ClassVisibility.Public;
         private bool _generate = true;
         private CodeLanguage _outputLanguage = CodeLanguage.CSharp;
         private TransactionType _transactionType = TransactionType.None;
@@ -348,6 +349,15 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Common Options")]
+        [Description("Whether the class visibility is public or internal.")]
+        [UserFriendlyName("Class Visibility")]
+        public ClassVisibility ClassVisibility
+        {
+            get { return _classVisibility; }
+            set { _classVisibility = value; }
+        }
+
+        [Category("01. Common Options")]
         [Description("Class Summary documentation for the object. This shows before the automatic Csla stereotype.\r\n" +
             "Clear, close and re-open to fetch the table descriptions.")]
         [Editor(typeof(XmlCommentEditor), typeof(UITypeEditor))]
@@ -455,7 +465,7 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Common Options")]
-        [Description("Wheter the class constructor is private, protected, etc. The default is \"private\".")]
+        [Description("Whether the class constructor is private, protected, etc. The default is \"private\".")]
         [UserFriendlyName("Constructor's Visibility")]
         public ConstructorVisibility ConstructorVisibility
         {

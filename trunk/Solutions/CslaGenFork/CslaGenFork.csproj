@@ -290,6 +290,7 @@
     <Compile Include="Metadata\BusinessRuleProperty.cs" />
     <Compile Include="Metadata\BusinessRulePropertyCollection.cs" />
     <Compile Include="Metadata\BusinessRuleRunModes.cs" />
+    <Compile Include="Metadata\ClassVisibility.cs" />
     <Compile Include="Metadata\CriteriaMergeType.cs" />
     <Compile Include="Metadata\CriteriaMode.cs" />
     <Compile Include="Metadata\CslaGeneratorUnitLayout.cs" />
