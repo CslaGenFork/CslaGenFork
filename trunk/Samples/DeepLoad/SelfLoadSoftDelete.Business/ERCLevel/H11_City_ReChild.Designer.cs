@@ -162,6 +162,9 @@ namespace SelfLoadSoftDelete.Business.ERCLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Update(H10_City parent)
         {
+            if (!IsDirty)
+                return;
+
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("DeepLoad"))
             {
                 using (var cmd = new SqlCommand("UpdateH11_City_ReChild", ctx.Connection))

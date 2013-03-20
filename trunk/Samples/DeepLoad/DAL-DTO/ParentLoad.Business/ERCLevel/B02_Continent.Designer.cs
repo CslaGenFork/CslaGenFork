@@ -282,6 +282,9 @@ namespace ParentLoad.Business.ERCLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Update()
         {
+            if (!IsDirty)
+                return;
+
             var dto = new B02_ContinentDto();
             dto.Continent_ID = Continent_ID;
             dto.Continent_Name = Continent_Name;

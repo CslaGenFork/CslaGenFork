@@ -234,6 +234,9 @@ namespace ParentLoadSoftDelete.Business.ERLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Update()
         {
+            if (!IsDirty)
+                return;
+
             var dto = new E08_RegionDto();
             dto.Region_ID = Region_ID;
             dto.Region_Name = Region_Name;

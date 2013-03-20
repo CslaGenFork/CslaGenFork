@@ -169,6 +169,9 @@ namespace ParentLoadSoftDelete.Business.ERLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Update()
         {
+            if (!IsDirty)
+                return;
+
             using (var dalManager = DalFactoryParentLoadSoftDelete.GetManager())
             {
                 var args = new DataPortalHookArgs();

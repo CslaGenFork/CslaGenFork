@@ -161,6 +161,9 @@ namespace SelfLoad.Business.ERLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Update(C02_Continent parent)
         {
+            if (!IsDirty)
+                return;
+
             using (var dalManager = DalFactorySelfLoad.GetManager())
             {
                 var args = new DataPortalHookArgs();

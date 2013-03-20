@@ -161,6 +161,9 @@ namespace SelfLoadSoftDelete.Business.ERCLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Update(H10_City parent)
         {
+            if (!IsDirty)
+                return;
+
             using (var dalManager = DalFactorySelfLoadSoftDelete.GetManager())
             {
                 var args = new DataPortalHookArgs();

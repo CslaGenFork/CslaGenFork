@@ -162,6 +162,9 @@ namespace SelfLoad.Business.ERCLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Update(D08_Region parent)
         {
+            if (!IsDirty)
+                return;
+
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("DeepLoad"))
             {
                 using (var cmd = new SqlCommand("UpdateD09_Region_ReChild", ctx.Connection))

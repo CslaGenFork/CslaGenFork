@@ -162,6 +162,9 @@ namespace SelfLoadSoftDelete.Business.ERLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Update(G02_Continent parent)
         {
+            if (!IsDirty)
+                return;
+
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("DeepLoad"))
             {
                 using (var cmd = new SqlCommand("UpdateG03_Continent_ReChild", ctx.Connection))

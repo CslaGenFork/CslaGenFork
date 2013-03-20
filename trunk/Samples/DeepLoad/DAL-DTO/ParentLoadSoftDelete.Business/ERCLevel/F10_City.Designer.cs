@@ -234,6 +234,9 @@ namespace ParentLoadSoftDelete.Business.ERCLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Update()
         {
+            if (!IsDirty)
+                return;
+
             var dto = new F10_CityDto();
             dto.City_ID = City_ID;
             dto.City_Name = City_Name;

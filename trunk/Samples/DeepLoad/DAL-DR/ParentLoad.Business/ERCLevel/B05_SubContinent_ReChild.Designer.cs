@@ -148,6 +148,9 @@ namespace ParentLoad.Business.ERCLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Update(B04_SubContinent parent)
         {
+            if (!IsDirty)
+                return;
+
             using (var dalManager = DalFactoryParentLoad.GetManager())
             {
                 var args = new DataPortalHookArgs();

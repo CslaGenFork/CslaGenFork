@@ -152,6 +152,9 @@ namespace ParentLoad.Business.ERLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Update(A04_SubContinent parent)
         {
+            if (!IsDirty)
+                return;
+
             var dto = new A05_SubContinent_ReChildDto();
             dto.Parent_SubContinent_ID = parent.SubContinent_ID;
             dto.SubContinent_Child_Name = SubContinent_Child_Name;

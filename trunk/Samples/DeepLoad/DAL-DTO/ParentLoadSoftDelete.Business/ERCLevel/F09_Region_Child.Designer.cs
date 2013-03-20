@@ -145,6 +145,9 @@ namespace ParentLoadSoftDelete.Business.ERCLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Update(F08_Region parent)
         {
+            if (!IsDirty)
+                return;
+
             var dto = new F09_Region_ChildDto();
             dto.Parent_Region_ID = parent.Region_ID;
             dto.Region_Child_Name = Region_Child_Name;

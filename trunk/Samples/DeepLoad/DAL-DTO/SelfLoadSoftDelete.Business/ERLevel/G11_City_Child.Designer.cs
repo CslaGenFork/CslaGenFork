@@ -147,6 +147,9 @@ namespace SelfLoadSoftDelete.Business.ERLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Update(G10_City parent)
         {
+            if (!IsDirty)
+                return;
+
             var dto = new G11_City_ChildDto();
             dto.Parent_City_ID = parent.City_ID;
             dto.City_Child_Name = City_Child_Name;

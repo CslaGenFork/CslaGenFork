@@ -215,6 +215,9 @@ namespace SelfLoad.Business.ERCLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Update()
         {
+            if (!IsDirty)
+                return;
+
             var dto = new D04_SubContinentDto();
             dto.SubContinent_ID = SubContinent_ID;
             dto.SubContinent_Name = SubContinent_Name;

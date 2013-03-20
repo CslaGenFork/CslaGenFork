@@ -58,6 +58,7 @@
     <ActiveObjects>false</ActiveObjects>
     <UseDotDesignerFileNameConvention>true</UseDotDesignerFileNameConvention>
     <OutputLanguage>CSharp</OutputLanguage>
+    <UpdateOnlyDirtyChildren>true</UpdateOnlyDirtyChildren>
     <NullableSupport>true</NullableSupport>
     <PropertyMode>Default</PropertyMode>
     <GenerateAuthorization>FullSupport</GenerateAuthorization>
@@ -112,6 +113,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>C02_Continent</ObjectName>
       <ObjectNamespace>SelfLoadRO.Business.ERLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -823,6 +825,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>C03_Continent_Child</ObjectName>
       <ObjectNamespace>SelfLoadRO.Business.ERLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -1137,6 +1140,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>C03_Continent_ReChild</ObjectName>
       <ObjectNamespace>SelfLoadRO.Business.ERLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -1451,6 +1455,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>C03_SubContinentColl</ObjectName>
       <ObjectNamespace>SelfLoadRO.Business.ERLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -1641,6 +1646,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>C04_SubContinent</ObjectName>
       <ObjectNamespace>SelfLoadRO.Business.ERLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -2278,6 +2284,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>C05_SubContinent_Child</ObjectName>
       <ObjectNamespace>SelfLoadRO.Business.ERLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -2714,6 +2721,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>C05_SubContinent_ReChild</ObjectName>
       <ObjectNamespace>SelfLoadRO.Business.ERLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -3089,6 +3097,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>C05_CountryColl</ObjectName>
       <ObjectNamespace>SelfLoadRO.Business.ERLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -3279,6 +3288,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>C06_Country</ObjectName>
       <ObjectNamespace>SelfLoadRO.Business.ERLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -4038,6 +4048,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>C07_Country_Child</ObjectName>
       <ObjectNamespace>SelfLoadRO.Business.ERLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -4352,6 +4363,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>C07_Country_ReChild</ObjectName>
       <ObjectNamespace>SelfLoadRO.Business.ERLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -4666,6 +4678,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>C07_RegionColl</ObjectName>
       <ObjectNamespace>SelfLoadRO.Business.ERLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -4856,6 +4869,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>C08_Region</ObjectName>
       <ObjectNamespace>SelfLoadRO.Business.ERLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -5493,6 +5507,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>C09_Region_Child</ObjectName>
       <ObjectNamespace>SelfLoadRO.Business.ERLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -5807,6 +5822,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>C09_Region_ReChild</ObjectName>
       <ObjectNamespace>SelfLoadRO.Business.ERLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -6121,6 +6137,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>C09_CityColl</ObjectName>
       <ObjectNamespace>SelfLoadRO.Business.ERLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -6311,6 +6328,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>C10_City</ObjectName>
       <ObjectNamespace>SelfLoadRO.Business.ERLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -6948,6 +6966,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>C11_City_Child</ObjectName>
       <ObjectNamespace>SelfLoadRO.Business.ERLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -7262,6 +7281,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>C11_City_ReChild</ObjectName>
       <ObjectNamespace>SelfLoadRO.Business.ERLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -7576,6 +7596,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>C11_CityRoadColl</ObjectName>
       <ObjectNamespace>SelfLoadRO.Business.ERLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -7766,6 +7787,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>C12_CityRoad</ObjectName>
       <ObjectNamespace>SelfLoadRO.Business.ERLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -8080,6 +8102,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>-.-.-.-.-.-.-.-.-.-.-</ObjectName>
       <ObjectNamespace>SelfLoadRO.Business</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -8209,6 +8232,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>D01_ContinentColl</ObjectName>
       <ObjectNamespace>SelfLoadRO.Business.ERCLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -8374,6 +8398,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>D02_Continent</ObjectName>
       <ObjectNamespace>SelfLoadRO.Business.ERCLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -8949,6 +8974,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>D03_Continent_Child</ObjectName>
       <ObjectNamespace>SelfLoadRO.Business.ERCLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -9263,6 +9289,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>D03_Continent_ReChild</ObjectName>
       <ObjectNamespace>SelfLoadRO.Business.ERCLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -9577,6 +9604,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>D03_SubContinentColl</ObjectName>
       <ObjectNamespace>SelfLoadRO.Business.ERCLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -9767,6 +9795,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>D04_SubContinent</ObjectName>
       <ObjectNamespace>SelfLoadRO.Business.ERCLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -10404,6 +10433,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>D05_SubContinent_Child</ObjectName>
       <ObjectNamespace>SelfLoadRO.Business.ERCLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -10718,6 +10748,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>D05_SubContinent_ReChild</ObjectName>
       <ObjectNamespace>SelfLoadRO.Business.ERCLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -11032,6 +11063,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>D05_CountryColl</ObjectName>
       <ObjectNamespace>SelfLoadRO.Business.ERCLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -11222,6 +11254,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>D06_Country</ObjectName>
       <ObjectNamespace>SelfLoadRO.Business.ERCLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -11859,6 +11892,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>D07_Country_Child</ObjectName>
       <ObjectNamespace>SelfLoadRO.Business.ERCLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -12173,6 +12207,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>D07_Country_ReChild</ObjectName>
       <ObjectNamespace>SelfLoadRO.Business.ERCLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -12487,6 +12522,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>D07_RegionColl</ObjectName>
       <ObjectNamespace>SelfLoadRO.Business.ERCLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -12677,6 +12713,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>D08_Region</ObjectName>
       <ObjectNamespace>SelfLoadRO.Business.ERCLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -13314,6 +13351,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>D09_Region_Child</ObjectName>
       <ObjectNamespace>SelfLoadRO.Business.ERCLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -13628,6 +13666,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>D09_Region_ReChild</ObjectName>
       <ObjectNamespace>SelfLoadRO.Business.ERCLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -13942,6 +13981,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>D09_CityColl</ObjectName>
       <ObjectNamespace>SelfLoadRO.Business.ERCLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -14132,6 +14172,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>D10_City</ObjectName>
       <ObjectNamespace>SelfLoadRO.Business.ERCLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -14769,6 +14810,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>D11_City_Child</ObjectName>
       <ObjectNamespace>SelfLoadRO.Business.ERCLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -15083,6 +15125,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>D11_City_ReChild</ObjectName>
       <ObjectNamespace>SelfLoadRO.Business.ERCLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -15397,6 +15440,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>D11_CityRoadColl</ObjectName>
       <ObjectNamespace>SelfLoadRO.Business.ERCLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -15587,6 +15631,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>D12_CityRoad</ObjectName>
       <ObjectNamespace>SelfLoadRO.Business.ERCLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
