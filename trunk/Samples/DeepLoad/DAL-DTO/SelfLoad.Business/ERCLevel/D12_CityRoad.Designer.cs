@@ -156,6 +156,9 @@ namespace SelfLoad.Business.ERCLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Update()
         {
+            if (!IsDirty)
+                return;
+
             var dto = new D12_CityRoadDto();
             dto.CityRoad_ID = CityRoad_ID;
             dto.CityRoad_Name = CityRoad_Name;

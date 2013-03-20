@@ -147,6 +147,9 @@ namespace SelfLoadSoftDelete.Business.ERCLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Update(H06_Country parent)
         {
+            if (!IsDirty)
+                return;
+
             var dto = new H07_Country_ChildDto();
             dto.Parent_Country_ID = parent.Country_ID;
             dto.Country_Child_Name = Country_Child_Name;

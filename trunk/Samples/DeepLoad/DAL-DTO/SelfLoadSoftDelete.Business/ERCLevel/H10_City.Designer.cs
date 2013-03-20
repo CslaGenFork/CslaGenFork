@@ -215,6 +215,9 @@ namespace SelfLoadSoftDelete.Business.ERCLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Update()
         {
+            if (!IsDirty)
+                return;
+
             var dto = new H10_CityDto();
             dto.City_ID = City_ID;
             dto.City_Name = City_Name;

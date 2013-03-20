@@ -234,6 +234,9 @@ namespace ParentLoad.Business.ERCLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Update()
         {
+            if (!IsDirty)
+                return;
+
             var dto = new B08_RegionDto();
             dto.Region_ID = Region_ID;
             dto.Region_Name = Region_Name;

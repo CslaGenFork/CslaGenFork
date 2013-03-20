@@ -58,6 +58,7 @@
     <ActiveObjects>false</ActiveObjects>
     <UseDotDesignerFileNameConvention>true</UseDotDesignerFileNameConvention>
     <OutputLanguage>CSharp</OutputLanguage>
+    <UpdateOnlyDirtyChildren>true</UpdateOnlyDirtyChildren>
     <NullableSupport>true</NullableSupport>
     <PropertyMode>Default</PropertyMode>
     <GenerateAuthorization>FullSupport</GenerateAuthorization>
@@ -112,6 +113,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>E02_Continent</ObjectName>
       <ObjectNamespace>ParentLoadSoftDelete.Business.ERLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -858,6 +860,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>E03_Continent_Child</ObjectName>
       <ObjectNamespace>ParentLoadSoftDelete.Business.ERLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -1147,6 +1150,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>E03_Continent_ReChild</ObjectName>
       <ObjectNamespace>ParentLoadSoftDelete.Business.ERLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -1436,6 +1440,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>E03_SubContinentColl</ObjectName>
       <ObjectNamespace>ParentLoadSoftDelete.Business.ERLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -1565,6 +1570,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>E04_SubContinent</ObjectName>
       <ObjectNamespace>ParentLoadSoftDelete.Business.ERLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -2052,6 +2058,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>E05_SubContinent_Child</ObjectName>
       <ObjectNamespace>ParentLoadSoftDelete.Business.ERLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -2463,6 +2470,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>E05_SubContinent_ReChild</ObjectName>
       <ObjectNamespace>ParentLoadSoftDelete.Business.ERLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -2813,6 +2821,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>E05_CountryColl</ObjectName>
       <ObjectNamespace>ParentLoadSoftDelete.Business.ERLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -2942,6 +2951,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>E06_Country</ObjectName>
       <ObjectNamespace>ParentLoadSoftDelete.Business.ERLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -3551,6 +3561,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>E07_Country_Child</ObjectName>
       <ObjectNamespace>ParentLoadSoftDelete.Business.ERLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -3840,6 +3851,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>E07_Country_ReChild</ObjectName>
       <ObjectNamespace>ParentLoadSoftDelete.Business.ERLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -4129,6 +4141,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>E07_RegionColl</ObjectName>
       <ObjectNamespace>ParentLoadSoftDelete.Business.ERLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -4258,6 +4271,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>E08_Region</ObjectName>
       <ObjectNamespace>ParentLoadSoftDelete.Business.ERLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -4745,6 +4759,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>E09_Region_Child</ObjectName>
       <ObjectNamespace>ParentLoadSoftDelete.Business.ERLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -5034,6 +5049,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>E09_Region_ReChild</ObjectName>
       <ObjectNamespace>ParentLoadSoftDelete.Business.ERLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -5323,6 +5339,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>E09_CityColl</ObjectName>
       <ObjectNamespace>ParentLoadSoftDelete.Business.ERLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -5452,6 +5469,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>E10_City</ObjectName>
       <ObjectNamespace>ParentLoadSoftDelete.Business.ERLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -5939,6 +5957,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>E11_City_Child</ObjectName>
       <ObjectNamespace>ParentLoadSoftDelete.Business.ERLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -6228,6 +6247,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>E11_City_ReChild</ObjectName>
       <ObjectNamespace>ParentLoadSoftDelete.Business.ERLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -6517,6 +6537,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>E11_CityRoadColl</ObjectName>
       <ObjectNamespace>ParentLoadSoftDelete.Business.ERLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -6646,6 +6667,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>E12_CityRoad</ObjectName>
       <ObjectNamespace>ParentLoadSoftDelete.Business.ERLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -6996,6 +7018,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>-.-.-.-.-.-.-.-.-.-.-</ObjectName>
       <ObjectNamespace>ParentLoadSoftDelete.Business</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -7125,6 +7148,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>F01_ContinentColl</ObjectName>
       <ObjectNamespace>ParentLoadSoftDelete.Business.ERCLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -7290,6 +7314,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>F02_Continent</ObjectName>
       <ObjectNamespace>ParentLoadSoftDelete.Business.ERCLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -7901,6 +7926,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>F03_Continent_Child</ObjectName>
       <ObjectNamespace>ParentLoadSoftDelete.Business.ERCLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -8190,6 +8216,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>F03_Continent_ReChild</ObjectName>
       <ObjectNamespace>ParentLoadSoftDelete.Business.ERCLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -8479,6 +8506,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>F03_SubContinentColl</ObjectName>
       <ObjectNamespace>ParentLoadSoftDelete.Business.ERCLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -8608,6 +8636,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>F04_SubContinent</ObjectName>
       <ObjectNamespace>ParentLoadSoftDelete.Business.ERCLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -9095,6 +9124,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>F05_SubContinent_Child</ObjectName>
       <ObjectNamespace>ParentLoadSoftDelete.Business.ERCLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -9384,6 +9414,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>F05_SubContinent_ReChild</ObjectName>
       <ObjectNamespace>ParentLoadSoftDelete.Business.ERCLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -9673,6 +9704,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>F05_CountryColl</ObjectName>
       <ObjectNamespace>ParentLoadSoftDelete.Business.ERCLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -9802,6 +9834,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>F06_Country</ObjectName>
       <ObjectNamespace>ParentLoadSoftDelete.Business.ERCLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -10289,6 +10322,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>F07_Country_Child</ObjectName>
       <ObjectNamespace>ParentLoadSoftDelete.Business.ERCLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -10578,6 +10612,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>F07_Country_ReChild</ObjectName>
       <ObjectNamespace>ParentLoadSoftDelete.Business.ERCLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -10867,6 +10902,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>F07_RegionColl</ObjectName>
       <ObjectNamespace>ParentLoadSoftDelete.Business.ERCLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -10996,6 +11032,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>F08_Region</ObjectName>
       <ObjectNamespace>ParentLoadSoftDelete.Business.ERCLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -11483,6 +11520,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>F09_Region_Child</ObjectName>
       <ObjectNamespace>ParentLoadSoftDelete.Business.ERCLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -11772,6 +11810,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>F09_Region_ReChild</ObjectName>
       <ObjectNamespace>ParentLoadSoftDelete.Business.ERCLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -12061,6 +12100,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>F09_CityColl</ObjectName>
       <ObjectNamespace>ParentLoadSoftDelete.Business.ERCLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -12190,6 +12230,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>F10_City</ObjectName>
       <ObjectNamespace>ParentLoadSoftDelete.Business.ERCLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -12677,6 +12718,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>F11_City_Child</ObjectName>
       <ObjectNamespace>ParentLoadSoftDelete.Business.ERCLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -12966,6 +13008,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>F11_City_ReChild</ObjectName>
       <ObjectNamespace>ParentLoadSoftDelete.Business.ERCLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -13255,6 +13298,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>F11_CityRoadColl</ObjectName>
       <ObjectNamespace>ParentLoadSoftDelete.Business.ERCLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />
@@ -13384,6 +13428,7 @@
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>F12_CityRoad</ObjectName>
       <ObjectNamespace>ParentLoadSoftDelete.Business.ERCLevel</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
       <Namespaces />

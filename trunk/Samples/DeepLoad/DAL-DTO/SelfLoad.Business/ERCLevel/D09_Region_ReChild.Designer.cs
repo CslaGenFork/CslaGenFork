@@ -149,6 +149,9 @@ namespace SelfLoad.Business.ERCLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Update(D08_Region parent)
         {
+            if (!IsDirty)
+                return;
+
             var dto = new D09_Region_ReChildDto();
             dto.Parent_Region_ID = parent.Region_ID;
             dto.Region_Child_Name = Region_Child_Name;

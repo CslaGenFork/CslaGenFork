@@ -165,6 +165,9 @@ namespace ParentLoadSoftDelete.Business.ERLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Update(E04_SubContinent parent)
         {
+            if (!IsDirty)
+                return;
+
             var dto = new E05_SubContinent_ChildDto();
             dto.Parent_SubContinent_ID = parent.SubContinent_ID;
             dto.SubContinent_Child_Name = SubContinent_Child_Name;

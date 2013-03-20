@@ -145,6 +145,9 @@ namespace ParentLoad.Business.ERCLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Update(B10_City parent)
         {
+            if (!IsDirty)
+                return;
+
             var dto = new B11_City_ChildDto();
             dto.Parent_City_ID = parent.City_ID;
             dto.City_Child_Name = City_Child_Name;

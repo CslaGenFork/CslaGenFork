@@ -149,6 +149,9 @@ namespace SelfLoadSoftDelete.Business.ERLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Update(G08_Region parent)
         {
+            if (!IsDirty)
+                return;
+
             var dto = new G09_Region_ReChildDto();
             dto.Parent_Region_ID = parent.Region_ID;
             dto.Region_Child_Name = Region_Child_Name;

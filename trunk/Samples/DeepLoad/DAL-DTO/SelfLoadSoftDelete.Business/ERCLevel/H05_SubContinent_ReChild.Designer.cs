@@ -149,6 +149,9 @@ namespace SelfLoadSoftDelete.Business.ERCLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Update(H04_SubContinent parent)
         {
+            if (!IsDirty)
+                return;
+
             var dto = new H05_SubContinent_ReChildDto();
             dto.Parent_SubContinent_ID = parent.SubContinent_ID;
             dto.SubContinent_Child_Name = SubContinent_Child_Name;

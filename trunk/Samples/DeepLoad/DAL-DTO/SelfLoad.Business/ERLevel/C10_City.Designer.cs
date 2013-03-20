@@ -215,6 +215,9 @@ namespace SelfLoad.Business.ERLevel
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Update()
         {
+            if (!IsDirty)
+                return;
+
             var dto = new C10_CityDto();
             dto.City_ID = City_ID;
             dto.City_Name = City_Name;

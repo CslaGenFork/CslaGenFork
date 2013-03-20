@@ -23,6 +23,8 @@ namespace ParentLoadROSoftDelete.Business.ERCLevel
         /// <summary>
         /// Maintains metadata about <see cref="ParentList"/> property.
         /// </summary>
+        [NotUndoable]
+        [NonSerialized]
         public static readonly PropertyInfo<F01_ContinentColl> ParentListProperty = RegisterProperty<F01_ContinentColl>(p => p.ParentList);
         /// <summary>
         /// Provide access to the parent list reference for use in child object code.
