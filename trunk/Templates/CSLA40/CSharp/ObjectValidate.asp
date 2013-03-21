@@ -57,7 +57,7 @@ if (Info.UseUnitOfWorkType != string.Empty)
 
 // General interest variables end
 
-if (CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL)
+if (CurrentUnit.GenerationParams.TargetIsCsla4DAL)
 {
     if (Info.DataSetLoadingScheme)
     {
@@ -68,7 +68,7 @@ if (CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL)
         Errors.Append("Custom Loading isn't supported when generating DAL." + Environment.NewLine);
     }
 }
-if (CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40)
+if (CurrentUnit.GenerationParams.TargetIsCsla4)
 {
     if (isCollectionType)
     {
@@ -142,7 +142,7 @@ if (Info.ObjectType == CslaObjectType.EditableRootCollection ||
     }
 }
 
-if (CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40)
+if (CurrentUnit.GenerationParams.TargetIsCsla4)
 {
     if (Info.GenerateDataAccessRegion &&
         (Info.ObjectType == CslaObjectType.EditableRoot ||
@@ -205,7 +205,7 @@ if (CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40)
 }
 if (Info.PersistenceType == PersistenceType.SqlConnectionUnshared &&
     !CurrentUnit.GenerationParams.GenerateDatabaseClass &&
-    CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40)
+    CurrentUnit.GenerationParams.TargetIsCsla4)
 {
     Warnings.Append("Generation settings: 'Generate Database class' is un-checked. Persistence Type.SqlConnectionUnshared needs the database class." + Environment.NewLine);
 }
@@ -229,7 +229,7 @@ foreach (ValueProperty prop in Info.GetDatabaseBoundValueProperties())
     {
         Warnings.Append(Info.ObjectName + " has Value Properties with Stored Procedure origin: " + prop.Name + " origin's must be Stored Procedure also." + Environment.NewLine);
     }
-    if (CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL && !CurrentUnit.GenerationParams.GenerateDTO)
+    if (CurrentUnit.GenerationParams.TargetIsCsla4DAL && !CurrentUnit.GenerationParams.GenerateDTO)
     {
         if (prop.DbBindColumn.ColumnOriginType == ColumnOriginType.None)
             Infos.Append("Alert: " + Info.ObjectName + "Property " + prop.Name + " isn't database bound; must use DTO or property will be excluded from DAL interaction." + Environment.NewLine);
@@ -246,7 +246,7 @@ foreach (ValueProperty prop in Info.GetDatabaseBoundValueProperties())
     }
 }
 if (CurrentUnit.GenerationParams.GenerateSilverlight4 ||
-    CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL)
+    CurrentUnit.GenerationParams.TargetIsCsla4DAL)
 {
     foreach (Criteria criteria in Info.CriteriaObjects)
     {

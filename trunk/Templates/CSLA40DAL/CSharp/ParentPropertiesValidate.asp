@@ -38,7 +38,7 @@ if (!Info.ParentType.Equals(String.Empty))
                     break;
                 }
                 if (valProp.Name == "Parent_" + parentPropertyName &&
-                    CurrentUnit.GenerationParams.TargetFramework == TargetFramework.CSLA40DAL &&
+                    CurrentUnit.GenerationParams.TargetIsCsla4DAL &&
                     usesDTO)
                 {
                     propNames.Add(valProp.Name);
