@@ -11,6 +11,7 @@ namespace CslaGenerator.Metadata
         private bool _ackSilverlightPublicPropertyInfo;
         private bool _saveBeforeGenerate = true;
         private TargetFramework _targetFramework = TargetFramework.CSLA40;
+        private bool _writeTodo = true;
         private bool _backupOldSource;
         private bool _retryOnFileBusy = true;
         private bool _separateNamespaces = true;
@@ -92,6 +93,18 @@ namespace CslaGenerator.Metadata
                     return;
                 _targetFramework = value;
                 OnPropertyChanged("TargetFramework");
+            }
+        }
+
+        public bool WriteTodo
+        {
+            get { return _writeTodo; }
+            set
+            {
+                if (_writeTodo == value)
+                    return;
+                _writeTodo = value;
+                OnPropertyChanged("");
             }
         }
 

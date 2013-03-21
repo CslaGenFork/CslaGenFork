@@ -160,6 +160,7 @@ namespace CslaGenerator.Controls
             this.txtExtendedFilenameSuffix = new System.Windows.Forms.TextBox();
             this.lblClassCommentFilenameSuffix = new System.Windows.Forms.Label();
             this.txtClassCommentFilenameSuffix = new System.Windows.Forms.TextBox();
+            this.chkWriteTodo = new System.Windows.Forms.CheckBox();
             this.chkBackupOldSource = new System.Windows.Forms.CheckBox();
             this.chkRetryOnFileBusy = new System.Windows.Forms.CheckBox();
             this.chkSeparateBaseClasses = new System.Windows.Forms.CheckBox();
@@ -1904,6 +1905,7 @@ namespace CslaGenerator.Controls
             this.GenerationMiscTab.Controls.Add(this.chkUpdateOnlyDirtyChildren);
             this.GenerationMiscTab.Controls.Add(this.chkNullableSupport);
             this.GenerationMiscTab.Controls.Add(this.chkActiveObjects);
+            this.GenerationMiscTab.Controls.Add(this.chkWriteTodo);
             this.GenerationMiscTab.Controls.Add(this.chkBackupOldSource);
             this.GenerationMiscTab.Controls.Add(this.chkRetryOnFileBusy);
             this.GenerationMiscTab.Location = new System.Drawing.Point(4, 22);
@@ -2069,10 +2071,20 @@ namespace CslaGenerator.Controls
                                      "If unchecked hides \"11. Active Objects\" properties in Csla Object Info panel.\r\n" +
                                      "\r\nN.B. - This option is disabled for target CSLA40DAL.");
             // 
+            // chkWriteTodo
+            // 
+            this.chkWriteTodo.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "WriteTodo", true, DataSourceUpdateMode.OnPropertyChanged));
+            this.chkWriteTodo.Location = new System.Drawing.Point(255, 162);
+            this.chkWriteTodo.Name = "chkWriteTodo";
+            this.chkWriteTodo.Size = new System.Drawing.Size(216, 17);
+            this.chkWriteTodo.TabIndex = 8;
+            this.chkWriteTodo.Text = "Write TODO comments to source files";
+            this.toolTip.SetToolTip(this.chkWriteTodo, "If checked, TODO comments will show in source files.");
+            // 
             // chkBackupOldSource
             // 
             this.chkBackupOldSource.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "BackupOldSource", true, DataSourceUpdateMode.OnPropertyChanged));
-            this.chkBackupOldSource.Location = new System.Drawing.Point(255, 162);
+            this.chkBackupOldSource.Location = new System.Drawing.Point(255, 190);
             this.chkBackupOldSource.Name = "chkBackupOldSource";
             this.chkBackupOldSource.Size = new System.Drawing.Size(216, 17);
             this.chkBackupOldSource.TabIndex = 8;
@@ -2082,7 +2094,7 @@ namespace CslaGenerator.Controls
             // chkRetryOnFileBusy
             // 
             this.chkRetryOnFileBusy.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "RetryOnFileBusy", true, DataSourceUpdateMode.OnPropertyChanged));
-            this.chkRetryOnFileBusy.Location = new System.Drawing.Point(255, 190);
+            this.chkRetryOnFileBusy.Location = new System.Drawing.Point(255, 218);
             this.chkRetryOnFileBusy.Name = "chkRetryOnFileBusy";
             this.chkRetryOnFileBusy.Size = new System.Drawing.Size(216, 17);
             this.chkRetryOnFileBusy.TabIndex = 8;
@@ -2320,6 +2332,7 @@ namespace CslaGenerator.Controls
         private System.Windows.Forms.TextBox txtExtendedFilenameSuffix;
         private System.Windows.Forms.Label lblClassCommentFilenameSuffix;
         private System.Windows.Forms.TextBox txtClassCommentFilenameSuffix;
+        private System.Windows.Forms.CheckBox chkWriteTodo;
         private System.Windows.Forms.CheckBox chkBackupOldSource;
         private System.Windows.Forms.CheckBox chkRetryOnFileBusy;
         private System.Windows.Forms.CheckBox chkSeparateBaseClasses;
