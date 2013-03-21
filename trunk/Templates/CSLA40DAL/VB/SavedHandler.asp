@@ -74,9 +74,16 @@ if (Info.UpdaterType != string.Empty)
         Infos.Append("      " + Info.UpdaterType + "." + Info.UpdaterType + "Saved += " + Info.UpdaterType + "SavedHandler;" + Environment.NewLine);
         %>
         #region Saved Event Handler
+<%
+        if (CurrentUnit.GenerationParams.WriteTodo)
+        {
+            %>
 
         // TODO: edit "<%= Info.ObjectName %>.cs", uncomment the "OnDeserialized" method and add the following line:
         // TODO:     <%= Info.UpdaterType %>.<%= Info.UpdaterType %>Saved += <%= Info.UpdaterType %>SavedHandler;
+<%
+        }
+        %>
 
         /// <summary>
         /// Handle Saved events of <see cref="<%= Info.UpdaterType %>"/> to update child <see cref="<%= Info.ItemType %>"/> objects. event.
@@ -85,13 +92,13 @@ if (Info.UpdaterType != string.Empty)
         /// <param name="e">The <see cref="Csla.Core.SavedEventArgs"/> instance containing the event data.</param>
         private void <%= Info.UpdaterType %>SavedHandler(object sender, Csla.Core.SavedEventArgs e)
         {
-            var old = (<%= Info.UpdaterType %>)sender;
-            if (old.IsNew)
+            var obj = (<%= Info.UpdaterType %>)e.NewObject;
+            if (((<%= Info.UpdaterType %>)sender).IsNew)
             {
                 IsReadOnly = false;
                 var rlce = RaiseListChangedEvents;
-                RaiseListChangedEvents = false;
-                Add(<%= Info.ItemType %>.LoadInfo((<%= Info.UpdaterType %>) e.NewObject));
+                RaiseListChangedEvents = true;
+                Add(<%= Info.ItemType %>.LoadInfo(obj));
                 RaiseListChangedEvents = rlce;
                 IsReadOnly = true;
             }
@@ -100,9 +107,9 @@ if (Info.UpdaterType != string.Empty)
                 for (int index = 0; index < this.Count; index++)
                 {
                     var child = this[index];
-                    if (child.<%= identityName %> == old.<%= identitySourceName %>)
+                    if (child.<%= identityName %> == obj.<%= identitySourceName %>)
                     {
-                        child.UpdatePropertiesOnSaved((<%= Info.UpdaterType %>) e.NewObject);
+                        child.UpdatePropertiesOnSaved(obj);
                         <%
 if (CurrentUnit.GenerationParams.GenerateWPF)
 {

@@ -2,15 +2,22 @@
 if (hasFactoryCache || hasDataPortalCache)
 {
     Infos.Append("To do list: edit \"" + Info.ObjectName + ".cs\", uncomment the \"OnDeserialized\" method and add the following line:" + Environment.NewLine);
-    Infos.Append("      Saved += " + Info.ObjectName + "_Saved;" + Environment.NewLine);
+    Infos.Append("      Saved += On" + Info.ObjectName + "Saved;" + Environment.NewLine);
     %>
 
         #region Cache Invalidation
+<%
+        if (CurrentUnit.GenerationParams.WriteTodo)
+        {
+            %>
 
         // TODO: edit "<%= Info.ObjectName %>.cs", uncomment the "OnDeserialized" method and add the following line:
-        // TODO:     Saved += <%= Info.ObjectName %>_Saved;
+        // TODO:     Saved += On<%= Info.ObjectName %>Saved;
+<%
+        }
+        %>
 
-        private void <%= Info.ObjectName %>_Saved(object sender, Csla.Core.SavedEventArgs e)
+        private void On<%= Info.ObjectName %>Saved(object sender, Csla.Core.SavedEventArgs e)
         {
             // this runs on the client
             <%

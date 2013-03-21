@@ -115,7 +115,7 @@ if (UseNoSilverlight() &&
         if (Info.SupportUpdateProperties || hasFactoryCache || hasDataPortalCache)
         {
             %>
-            Saved += <%= Info.ObjectName %>_Saved;
+            Saved += On<%= Info.ObjectName %>Saved;
             <%
         }
         else if(isUpdatable)

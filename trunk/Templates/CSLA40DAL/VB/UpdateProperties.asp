@@ -17,7 +17,7 @@ if (Info.UpdateValueProperties.Count > 0)
             }
             genOptional = true;
             %>
-        #region Update Properties on Saved object
+        #region Update properties on saved object
 
         /// <summary>
         /// Existing <see cref="<%= Info.ObjectName %>"/> object is updated by <see cref="<%= parentInfo.UpdaterType %>"/> Saved event.
