@@ -117,6 +117,12 @@ if (UseNoSilverlight() &&
             %>
             Saved += On<%= Info.ObjectName %>Saved;
             <%
+            if (Info.SupportUpdateProperties && (hasFactoryCache || hasDataPortalCache))
+            {
+                %>
+            <%= Info.ObjectName %>Saved += <%= Info.ObjectName %>SavedHandler;
+            <%
+            }
         }
         else if(isUpdatable)
         {

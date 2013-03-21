@@ -1,8 +1,15 @@
 <%
 if (hasFactoryCache || hasDataPortalCache)
 {
+    string eventName = "Saved";
+    string handlerName = "On" + Info.ObjectName + "Saved";
+    if (Info.SupportUpdateProperties)
+    {
+        eventName = Info.ObjectName + "Saved";
+        handlerName = Info.ObjectName + "SavedHandler";
+    }
     Infos.Append("To do list: edit \"" + Info.ObjectName + ".cs\", uncomment the \"OnDeserialized\" method and add the following line:" + Environment.NewLine);
-    Infos.Append("      Saved += On" + Info.ObjectName + "Saved;" + Environment.NewLine);
+    Infos.Append("      " + eventName + " += " + handlerName + ";" + Environment.NewLine);
     %>
 
         #region Cache Invalidation
@@ -12,12 +19,12 @@ if (hasFactoryCache || hasDataPortalCache)
             %>
 
         // TODO: edit "<%= Info.ObjectName %>.cs", uncomment the "OnDeserialized" method and add the following line:
-        // TODO:     Saved += On<%= Info.ObjectName %>Saved;
+        // TODO:     <%= eventName %> += <%= handlerName %>;
 <%
         }
         %>
 
-        private void On<%= Info.ObjectName %>Saved(object sender, Csla.Core.SavedEventArgs e)
+        private void <%= handlerName %>(object sender, Csla.Core.SavedEventArgs e)
         {
             // this runs on the client
             <%

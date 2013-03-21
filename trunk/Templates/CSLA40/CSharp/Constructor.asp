@@ -73,9 +73,15 @@ if (UseBoth())
 if (Info.SupportUpdateProperties || hasFactoryCache || hasDataPortalCache)
 {
     %>
-            this.Saved += On<%= Info.ObjectName %>Saved;
+            Saved += On<%= Info.ObjectName %>Saved;
             <%
 }
+if (Info.SupportUpdateProperties && (hasFactoryCache || hasDataPortalCache))
+{
+    %>
+            <%= Info.ObjectName %>Saved += <%= Info.ObjectName %>SavedHandler;
+<%
+}    
 if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
 {
     if (Info.UpdaterType != string.Empty)
