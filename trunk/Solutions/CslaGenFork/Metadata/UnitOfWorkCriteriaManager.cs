@@ -63,11 +63,11 @@ namespace CslaGenerator.Metadata
                         if (mergeType.HasFlag(CriteriaMergeType.Create) && crit.IsCreator)
                         {
                             var newCriteria = Criteria.Clone(crit);
+                            newCriteria.GetOptions.Disable();
+                            newCriteria.DeleteOptions.Disable();
                             if (info.UnitOfWorkType == UnitOfWorkFunction.CreatorGetter)
                             {
                                 index++;
-                                newCriteria.GetOptions.Disable();
-                                newCriteria.DeleteOptions.Disable();
                                 if (newCriteria.Properties.Count == 0)
                                     newCriteria.Properties.AddRange(GetFakeCreateCriteria(targetInfo, index));
                             }
@@ -78,10 +78,10 @@ namespace CslaGenerator.Metadata
                         else if (mergeType.HasFlag(CriteriaMergeType.Get) && crit.IsGetter)
                         {
                             var newCriteria = Criteria.Clone(crit);
+                            newCriteria.CreateOptions.Disable();
+                            newCriteria.DeleteOptions.Disable();
                             if (info.UnitOfWorkType == UnitOfWorkFunction.CreatorGetter && prop.CreatesObject)
                             {
-                                newCriteria.CreateOptions.Disable();
-                                newCriteria.DeleteOptions.Disable();
                                 foreach (var property in newCriteria.Properties)
                                 {
                                     property.UnitOfWorkFactoryParameter = "false";
@@ -90,7 +90,12 @@ namespace CslaGenerator.Metadata
                             _criteriaCache.Add(newCriteria);
                         }
                         else if (mergeType.HasFlag(CriteriaMergeType.Delete) && crit.IsDeleter)
-                            _criteriaCache.Add(Criteria.Clone(crit));
+                        {
+                            var newCriteria = Criteria.Clone(crit);
+                            newCriteria.CreateOptions.Disable();
+                            newCriteria.GetOptions.Disable();
+                            _criteriaCache.Add(newCriteria);
+                        }
                     }
                     if (_criteriaCache.Count == 0)
                         continue;
