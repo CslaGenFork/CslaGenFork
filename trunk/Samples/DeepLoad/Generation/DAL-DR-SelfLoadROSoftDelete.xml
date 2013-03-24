@@ -51,6 +51,7 @@
     <AckSilverlightPublicPropertyInfo>false</AckSilverlightPublicPropertyInfo>
     <SaveBeforeGenerate>true</SaveBeforeGenerate>
     <TargetFramework>CSLA40DAL</TargetFramework>
+    <WriteTodo>true</WriteTodo>
     <BackupOldSource>false</BackupOldSource>
     <RetryOnFileBusy>true</RetryOnFileBusy>
     <SeparateNamespaces>true</SeparateNamespaces>
