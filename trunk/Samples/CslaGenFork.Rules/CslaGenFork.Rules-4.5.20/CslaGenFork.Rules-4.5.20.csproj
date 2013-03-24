@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2D5F6535-AC8C-4DA8-94F9-B2D9A8BA7CB6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CslaGenFork.Rules</RootNamespace>
+    <AssemblyName>CslaGenFork.Rules-4.5.20</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\CslaGenFork.Rules-4.5.20.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\CslaGenFork.Rules-4.5.20.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Csla">
+      <HintPath>..\packages\CSLA-Core.4.5.20\lib\net45\Csla.dll</HintPath>
+    </Reference>
+    <Reference Include="Csla.XmlSerializers">
+      <HintPath>..\packages\CSLA-Core.4.5.20\lib\net45\Csla.XmlSerializers.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Authorization Rules\IsEmptyOrIsInRole.cs" />
+    <Compile Include="Authorization Rules\IsNewOrIsInRole.cs" />
+    <Compile Include="Authorization Rules\IsOwner.cs" />
+    <Compile Include="Authorization Rules\IsOwnerOrIsInRole.cs" />
+    <Compile Include="Authorization Rules\RestrictByStatusOrIsInRole.cs" />
+    <Compile Include="Business Rules\AnyRequired.cs" />
+    <Compile Include="Business Rules\CalcSum.cs" />
+    <Compile Include="Business Rules\CanWrite.cs" />
+    <Compile Include="Business Rules\CollapseSpace.cs" />
+    <Compile Include="Business Rules\CollapseWhiteSpace.cs" />
+    <Compile Include="Business Rules\CollectionPopulated.cs" />
+    <Compile Include="Business Rules\DateNotInFuture.cs" />
+    <Compile Include="Business Rules\DependencyFrom.cs" />
+    <Compile Include="Business Rules\FieldExists.cs" />
+    <Compile Include="Business Rules\GreaterThan.cs" />
+    <Compile Include="Business Rules\GreaterThanOrEqual.cs" />
+    <Compile Include="Business Rules\IsNew.cs" />
+    <Compile Include="Business Rules\IsNotNew.cs" />
+    <Compile Include="Business Rules\LessThan.cs" />
+    <Compile Include="Business Rules\LessThanOrEqual.cs" />
+    <Compile Include="Business Rules\NoDuplicates.cs" />
+    <Compile Include="Business Rules\Range.cs" />
+    <Compile Include="Business Rules\RangeMM.cs" />
+    <Compile Include="Business Rules\RequiredWhenCanWrite.cs" />
+    <Compile Include="Business Rules\RequiredWhenIsNotNew.cs" />
+    <Compile Include="Business Rules\RequiredWhenNew.cs" />
+    <Compile Include="Business Rules\StopIfAnyAdditionalHasValue.cs" />
+    <Compile Include="Business Rules\StopIfIsNew.cs" />
+    <Compile Include="Business Rules\StopIfIsNotNew.cs" />
+    <Compile Include="Business Rules\StopIfNotCanWrite.cs" />
+    <Compile Include="Business Rules\StopIfNotFieldExists.cs" />
+    <Compile Include="Business Rules\ToLower.cs" />
+    <Compile Include="Business Rules\ToUpper.cs" />
+    <Compile Include="CommonObjectRule.cs" />
+    <Compile Include="ObjectRuleEx.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
