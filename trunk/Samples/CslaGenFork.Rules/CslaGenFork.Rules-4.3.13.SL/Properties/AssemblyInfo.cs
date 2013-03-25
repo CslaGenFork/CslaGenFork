@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("CslaGenFork.Rules-4.3.13 SL5")]
-[assembly: AssemblyDescription("Business and Authorization Rules library for CSLA 4.3.13 and Silverlight 5")]
+[assembly: AssemblyDescription("Business and Authorization Rules library for CSLA 4.3.13/Silverlight 5")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("CslaGenFork Project")]
-[assembly: AssemblyProduct("CslaGenFork.Rules for CSLA v.4.3.13 and Silverlight 5")]
-[assembly: AssemblyCopyright("Copyright © CslaGenFork Project, 2012")]
+[assembly: AssemblyProduct("CslaGenFork.Rules for CSLA 4.3.13/Silverlight 5")]
+[assembly: AssemblyCopyright("Copyright © CslaGenFork Project, 2012, 2013")]
 [assembly: AssemblyTrademark("All Rights Reserved.")]
 [assembly: AssemblyCulture("")]
 
@@ -18,9 +18,6 @@ using System.Runtime.InteropServices;
 // to COM components.  If you need to access a type in this assembly from 
 // COM, set the ComVisible attribute to true on that type.
 [assembly: ComVisible(false)]
-
-// The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("5d4824f9-d736-4e3e-a481-0441cb02d7ff")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -31,5 +28,5 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("1.1.0")]
-[assembly: AssemblyFileVersion("1.1.0")]
+[assembly: AssemblyVersion("2.0.0")]
+[assembly: AssemblyFileVersion("2.0.0")]

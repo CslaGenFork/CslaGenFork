@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <doc>
     <assembly>
-        <name>CslaGenFork.Rules-4.3.13</name>
+        <name>CslaGenFork.Rules-4.3.13.SL4</name>
     </assembly>
     <members>
         <member name="T:CslaGenFork.Rules.TransformationRules.ToUpper">
@@ -254,47 +254,6 @@
             </summary>
             <value>The inner rule.</value>
         </member>
-        <member name="T:CslaGenFork.Rules.Properties.Resources">
-            <summary>
-              A strongly-typed resource class, for looking up localized strings, etc.
-            </summary>
-        </member>
-        <member name="P:CslaGenFork.Rules.Properties.Resources.ResourceManager">
-            <summary>
-              Returns the cached ResourceManager instance used by this class.
-            </summary>
-        </member>
-        <member name="P:CslaGenFork.Rules.Properties.Resources.Culture">
-            <summary>
-              Overrides the current thread's CurrentUICulture property for all
-              resource lookups using this strongly typed resource class.
-            </summary>
-        </member>
-        <member name="P:CslaGenFork.Rules.Properties.Resources.GreaterThanOrEqualRule">
-            <summary>
-              Looks up a localized string similar to {0} must be greater than or equal to {1}.
-            </summary>
-        </member>
-        <member name="P:CslaGenFork.Rules.Properties.Resources.GreaterThanRule">
-            <summary>
-              Looks up a localized string similar to {0} must be greater than {1}.
-            </summary>
-        </member>
-        <member name="P:CslaGenFork.Rules.Properties.Resources.LessThanOrEqualRule">
-            <summary>
-              Looks up a localized string similar to {0} must be less than or equal to {1}.
-            </summary>
-        </member>
-        <member name="P:CslaGenFork.Rules.Properties.Resources.LessThanRule">
-            <summary>
-              Looks up a localized string similar to {0} must be less than {1}.
-            </summary>
-        </member>
-        <member name="P:CslaGenFork.Rules.Properties.Resources.RangeRule">
-            <summary>
-              Looks up a localized string similar to {0} must be between {1} and {2}.
-            </summary>
-        </member>
         <member name="T:CslaGenFork.Rules.ShortCircuitingRules.StopIfIsNotNew">
             <summary>
             Shorcircuits rule processing if object is not new.
@@ -475,6 +434,47 @@
             Rule implementation.
             </summary>
             <param name="context">Rule context.</param>
+        </member>
+        <member name="T:CslaGenFork.Rules.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:CslaGenFork.Rules.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:CslaGenFork.Rules.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:CslaGenFork.Rules.Properties.Resources.GreaterThanOrEqualRule">
+            <summary>
+              Looks up a localized string similar to {0} must be greater than or equal to {1}.
+            </summary>
+        </member>
+        <member name="P:CslaGenFork.Rules.Properties.Resources.GreaterThanRule">
+            <summary>
+              Looks up a localized string similar to {0} must be greater than {1}.
+            </summary>
+        </member>
+        <member name="P:CslaGenFork.Rules.Properties.Resources.LessThanOrEqualRule">
+            <summary>
+              Looks up a localized string similar to {0} must be less than or equal to {1}.
+            </summary>
+        </member>
+        <member name="P:CslaGenFork.Rules.Properties.Resources.LessThanRule">
+            <summary>
+              Looks up a localized string similar to {0} must be less than {1}.
+            </summary>
+        </member>
+        <member name="P:CslaGenFork.Rules.Properties.Resources.RangeRule">
+            <summary>
+              Looks up a localized string similar to {0} must be between {1} and {2}.
+            </summary>
         </member>
         <member name="T:CslaGenFork.Rules.GatewayRules.IsNew">
             <summary>
