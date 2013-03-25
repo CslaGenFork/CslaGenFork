@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{85A1B90E-919E-40CD-ADB0-658EE01B030A}"
+	ProjectSection(SolutionItems) = preProject
+		CslaGenFork.snk = CslaGenFork.snk
+		Readme.txt = Readme.txt
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CslaGenFork.Rules-4.5.20", "CslaGenFork.Rules-4.5.20\CslaGenFork.Rules-4.5.20.csproj", "{2D5F6535-AC8C-4DA8-94F9-B2D9A8BA7CB6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CslaGenFork.Rules-4.5.20.Net4", "CslaGenFork.Rules-4.5.20.Net4\CslaGenFork.Rules-4.5.20.Net4.csproj", "{3DADAD4F-8200-4EC3-BF7A-4D5428C1D4B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CslaGenFork.Rules-4.5.20.Silverlight", "CslaGenFork.Rules-4.5.20.Silverlight\CslaGenFork.Rules-4.5.20.Silverlight.csproj", "{1BDFDE17-F945-4386-8B4D-9039F12EB79A}"
+EndProject
+Global
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2D5F6535-AC8C-4DA8-94F9-B2D9A8BA7CB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D5F6535-AC8C-4DA8-94F9-B2D9A8BA7CB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D5F6535-AC8C-4DA8-94F9-B2D9A8BA7CB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D5F6535-AC8C-4DA8-94F9-B2D9A8BA7CB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DADAD4F-8200-4EC3-BF7A-4D5428C1D4B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DADAD4F-8200-4EC3-BF7A-4D5428C1D4B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DADAD4F-8200-4EC3-BF7A-4D5428C1D4B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DADAD4F-8200-4EC3-BF7A-4D5428C1D4B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BDFDE17-F945-4386-8B4D-9039F12EB79A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BDFDE17-F945-4386-8B4D-9039F12EB79A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BDFDE17-F945-4386-8B4D-9039F12EB79A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BDFDE17-F945-4386-8B4D-9039F12EB79A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
