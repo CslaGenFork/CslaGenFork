@@ -51,6 +51,12 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>Bin\Release\CslaGenFork.Rules-4.3.13.SL4.XML</DocumentationFile>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\CslaGenFork.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Csla, Version=4.3.13.0, Culture=neutral, PublicKeyToken=93be5fdc093e4c30, processorArchitecture=MSIL">
       <HintPath>..\packages\CSLA-Core.4.3.13\lib\sl40\Csla.dll</HintPath>

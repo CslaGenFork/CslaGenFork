@@ -1,6 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6C006901-7B88-4C94-80E1-F93AA2DE6282}"
+	ProjectSection(SolutionItems) = preProject
+		CslaGenFork.snk = CslaGenFork.snk
+		Readme.txt = Readme.txt
+	EndProjectSection
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CslaGenFork.Rules-4.3.13", "CslaGenFork.Rules-4.3.13\CslaGenFork.Rules-4.3.13.csproj", "{A8A1C04B-30F6-4C12-BCD4-45FB6F54F733}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CslaGenFork.Rules-4.3.13.SL4", "CslaGenFork.Rules-4.3.13.SL4\CslaGenFork.Rules-4.3.13.SL4.csproj", "{E71CAC95-986E-41BA-BBCC-1D0B0680CFC6}"
