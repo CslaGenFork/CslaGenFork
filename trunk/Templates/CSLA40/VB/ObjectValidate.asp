@@ -257,4 +257,8 @@ if (CurrentUnit.GenerationParams.GenerateSilverlight4 ||
         }
     }
 }
+if (!CurrentUnit.GenerationParams.GenerateAsynchronous && ! UseSilverlight() && Info.UseUnitOfWorkType != string.Empty)
+{
+    Infos.Append(Info.ObjectName + " uses Unit of Work Type " + Info.UseUnitOfWorkType + ": usage is useful only when Asynchronous or Silverlight is generated." + Environment.NewLine);
+}
 %>
