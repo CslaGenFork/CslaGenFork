@@ -41,6 +41,11 @@ else if (!Info.IsUpdater)
             int createCriteriaCounter = 0;
             foreach (Criteria crit in targetInfo.CriteriaObjects)
             {
+                if (crit.IsCreator || crit.IsGetter)
+                {
+                    if (crit.Properties.Count > 1 && crit.NestedClass)
+                        Warnings.Append(Info.ObjectName + ": target " +  targetInfo.ObjectName + " criteria " + crit.Name + " should not be nested." + Environment.NewLine);
+                }
                 if (crit.IsCreator)
                     createCriteriaCounter++;
             }
@@ -56,7 +61,11 @@ else if (!Info.IsUpdater)
             foreach (Criteria crit in targetInfo.CriteriaObjects)
             {
                 if (crit.IsGetter)
+                {
+                    if (crit.Properties.Count > 1 && crit.NestedClass)
+                        Warnings.Append(Info.ObjectName + ": target " +  targetInfo.ObjectName + " criteria " + crit.Name + " should not be nested." + Environment.NewLine);
                     getCriteriaCounter++;
+                }
             }
             if (getCriteriaCounter < 1)
             {
