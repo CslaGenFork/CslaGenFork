@@ -1,0 +1,30 @@
+<%@ CodeTemplate Language="C#" TargetLanguage="C#" Description="Generates a CSLA Inherited object." %>
+<%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the CSLA object to inherit from." %>
+
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Assembly Name="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator.Metadata" %>
+<!-- #include file="Header.inc" -->
+using System;
+
+namespace <%= Info.ObjectNamespace %>
+{
+	/// <summary>
+	/// <%= Info.ObjectName %> business object.
+	/// </summary>
+	/// <remarks>
+	/// 
+	/// </remarks>
+	[Serializable]
+	public class <%= Info.ObjectName %> : <%= Info.ObjectName %>Base
+	{
+		/// <summary>
+		/// 
+		/// </summary>
+		protected internal <%= Info.ObjectName %>()
+		{			
+			// Prevent direct creation
+		}
+	}
+}

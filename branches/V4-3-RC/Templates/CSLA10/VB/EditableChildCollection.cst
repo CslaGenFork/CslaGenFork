@@ -1,0 +1,103 @@
+<%@ CodeTemplate Inherits="VbCslaTemplateHelper" Language="VB" TargetLanguage="VB" Description="Generates a CSLA Editable Child Collection." %>
+<%@ Property Name="Info" Type="CslaObjectInfo" Optional="False" Category="Business Object" Description="Definition of the EditableChildCollection object to create." %>
+
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Assembly Name="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator.Metadata" %>
+<%@ Import Namespace="CslaGenerator.Util" %>
+<%@ Import Namespace="System.Text" %>
+<%@ Property Name="ActiveObjects" Type="System.Boolean" Default="false" Category="Options" Description="If true, base class is generated as ActiveObjects" %>
+
+<% Dim first As Boolean = True %>
+<!-- #include file="Header.inc" -->
+Imports System.Data.SqlClient
+<% If ActiveObjects = False Then %>Imports CSLA<% else %>Imports ActiveObjects<% End If %>
+Imports CSLA.Data
+<%= GetUsingStatementsString(Info) %>
+<% If Info.ObjectNamespace.Trim.Length > 0 Then %>Namespace <%=Info.ObjectNamespace%><% End If %>
+	<!-- #include file="XmlComment.inc" -->
+	<%= vbLf %>	<Serializable()<% If ActiveObjects Then %>, RegisterNotify("IsValid, IsDirty")<% End If %>> _
+	Public MustInherit Class <%=Info.ObjectName%>Base : Inherits <%
+			If Info.InheritedType.Type <> String.Empty Then 
+				%><%=Info.InheritedType.Type%><% 
+			ElseIf Info.InheritedType.ObjectName <> String.Empty Then
+				%><%=Info.InheritedType.ObjectName%><% 
+			Else 
+				%><% If ActiveObjects Then %>Active<% End If %>BusinessCollectionBase<% 
+			End If %>
+		<!-- #include file="CollectionBusinessProps.inc" -->
+
+		<!-- #include file="Contains.inc" -->
+		
+		<!-- #include file="FindMethods.inc" -->
+
+		<%= vbCrLf %>#Region " Shared Methods "
+
+		''' <summary>
+		''' Factory method. Creates a new <see cref="<%=Info.ItemType%>" /> collection.
+		''' </summary>
+		Friend Shared Function New<%= Info.ObjectName %>() As <%= Info.ObjectName %>
+			Return New <%= Info.ObjectName %>()
+		End Function
+		<% If Not Info.LazyLoad Then %>
+		<!-- #include file="InternalGetObject.inc" -->
+		<% Else %>
+		<!-- #include file="CollectionGetObject.inc" -->
+		<% End If %>
+		<!-- #include file="Save.inc" -->
+		<%= vbLf %>#End Region 
+		<!-- #include file="Constructor.inc"  -->
+
+		<!-- #include file="Criteria.inc" -->
+		<%= vbLf %>#Region " Data Access "
+		<% If Not Info.LazyLoad Then 
+		
+			Dim isSwitchable As Boolean = False
+			Dim childInfo As CslaObjectInfo = FindChildInfo(Info, Info.ItemType)
+			If childInfo.ObjectType = CslaObjectType.EditableSwitchable Then isSwitchable = True %>
+		
+		''' <summary>
+		''' Load all <see cref="<%=Info.ObjectName%>" /> collection items from given SafeDataReader
+		''' </summary>
+		Private Sub Fetch(ByVal dr As SafeDataReader)
+		
+			While dr.Read()
+				Dim <%= FormatCamel(Info.ItemType) %> As <%= Info.ItemType %> = <%= Info.ItemType %>.Get<%= Info.ItemType %><% If isSwitchable Then %>Child<% End If %>(dr)
+				List.Add(<%=FormatCamel(Info.ItemType)%>)
+			End While
+		
+		End Sub
+		<% Else %>
+		<!-- #include file="CollectionDataPortalFetch.inc" -->
+		<% End If %>
+		
+		''' <summary>
+		''' Update all changes made on <see cref="<%=Info.ObjectName%>" /> object's children to the underlying database.
+		''' </summary>
+		<% 	If Info.TransactionType = TransactionType.EnterpriseServices Then%><Transactional()> _ 
+		<% 	End If 
+			If Info.ParentType.Length = 0 Then Message("ParentType not set." & vbCrLf & Info.ObjectName & " will not compile.", "Metadata error")
+			%>Friend Sub Update(<%If Info.TransactionType = TransactionType.ADO Then%>ByVal tr As SqlTransaction, <% End If %>ByVal parent As <%= Info.ParentType %>)
+			
+			' Loop through the deleted child objects and call their Update methods
+			For Each child As <%= Info.ItemType %> In deletedList
+				child.Update(<%If Info.TransactionType = TransactionType.ADO Then%>tr, <% End If%>parent)
+			Next
+
+			' Now clear the deleted objects from the list
+			deletedList.Clear()
+			
+			' Loop through the objects to add and update, calling the Update Method
+			For Each child As <%= Info.ItemType %> In List
+				child.Update(<%if Info.TransactionType = TransactionType.ADO %>tr, <% End If%>parent)
+			Next
+			
+		End Sub
+		
+#End Region
+
+	End Class
+
+<% If Info.ObjectNamespace.Trim.Length > 0 Then %>End Namespace<% End If %>

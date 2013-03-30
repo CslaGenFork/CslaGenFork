@@ -1,0 +1,60 @@
+<%@ CodeTemplate Inherits="VbCslaTemplateHelper" Language="VB" TargetLanguage="VB" Description="Generates a CSLA ReadOnly Collection." %>
+<%@ Property Name="Info" Type="CslaObjectInfo" Optional="False" Category="Business Object" Description="Definition of the ReadOnlyCollection object to create." %>
+<%@ Property Name="ActiveObjects" Type="System.Boolean" Default="false" Category="Options" Description="If true, base class is generated as ActiveObjects" %>
+
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Assembly Name="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator.Metadata" %>
+<%@ Import Namespace="CslaGenerator.Util" %>
+<%@ Import Namespace="System.Text" %>
+
+<% Dim first As Boolean = True %>
+<!-- #include file="Header.inc" -->
+Imports System.Data.SqlClient
+<% If ActiveObjects = False Then %>Imports CSLA<% else %>Imports ActiveObjects<% End If %>
+Imports CSLA.Data
+<%= GetUsingStatementsString(Info) %>
+<% If Info.ObjectNamespace.Trim.Length > 0 Then %>Namespace <%=Info.ObjectNamespace%><% End If %>
+	<!-- #include file="XmlComment.inc" -->
+	<%= vbLf %>	<Serializable()> _
+	Public MustInherit Class <%=Info.ObjectName%>Base : Inherits <% If ActiveObjects Then %>Active<% End If %>ReadOnlyCollectionBase
+	
+	<%= vbLf %>#Region " <%= Info.ObjectName %> Data Structure " 
+	
+		<Serializable()> _
+		Public Structure Info
+		
+		<% ' Value Properties
+			For Each prop As ValueProperty In Info.ValueProperties %><% If Not prop.Undoable Then%>
+		<NotUndoable()> _<% End If %>
+		'Private <%=FormatFieldName(prop.Name)%> As <% If prop.PropertyType = TypeCodeEx.SmartDate Then %>String<% Else %><%=prop.PropertyType.ToString()%><% End If %>
+		Private <%=FormatFieldName(prop.Name)%> As <%=prop.PropertyType.ToString()%>
+		<% Next %>
+
+
+		<!-- #include file="BusinessProps.inc" -->
+		
+		End Structure
+	
+	<%= vbLf %>#End Region
+	
+		<!-- #include file="CollectionBusinessProps.inc" -->
+
+		<!-- #include file="Contains.inc" -->
+		
+		<!-- #include file="FindMethods.inc" -->
+		<%= vbLf %>#Region " Shared Methods "
+		<!-- #include file="GetObject.inc" -->
+		<%= vbLf %>#End Region
+		<!-- #include file="Constructor.inc" -->
+		
+		<!-- #include file="Criteria.inc" -->
+        <%= vbLf %>#Region " Data Access "
+		<!-- #include file="CollectionDataPortalFetch.inc" -->
+		<%= vbLf %>#End Region
+
+	End Class
+
+<% If Info.ObjectNamespace.Trim.Length > 0 Then %>End Namespace<% End If %>

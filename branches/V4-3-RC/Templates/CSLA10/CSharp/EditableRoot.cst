@@ -1,0 +1,68 @@
+<%@ CodeTemplate Inherits="CslaTemplateHelper" Language="C#" TargetLanguage="C#" Description="Generates a CSLA Editable Root Object." %>
+<%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the EditableRoot object to create." %>
+
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Assembly Name="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator.Metadata" %>
+<%@ Import Namespace="CslaGenerator.Util" %>
+<%@ Assembly Name="System.Windows.Forms" %>
+<%@ Import Namespace="System.Windows.Forms" %>
+<%@ Import Namespace="System.Text" %>
+
+<% bool first = true; %>
+<!-- #include file="Header.inc" -->
+using CSLA;
+using CSLA.Data;
+using System.Data;
+using System.Data.SqlClient;
+using System;
+<%= GetUsingStatementsString(Info) %>
+namespace <%=Info.ObjectNamespace%>
+{
+	<!-- #include file="XmlComment.inc" -->
+	<%= "\r\n" %>	[Serializable]
+	public abstract class <%=Info.ObjectName%>Base : <%
+		if (Info.InheritedType.Type != String.Empty) {
+			%><%=Info.InheritedType.Type%><%
+		} else if (Info.InheritedType.ObjectName != String.Empty) {
+			%><%=Info.InheritedType.ObjectName%><%
+		} else {
+			%>CSLA.BusinessBase<% 
+		} %>
+	{
+		<!-- #include file="StateFields.inc" -->
+		
+		<!-- #include file="BusinessProps.inc" -->
+		
+		<!-- #include file="BusinessRules.inc" -->
+		
+		<!-- #include file="ObjectOverrides.inc" -->
+		<%= "\r\n" %>		#region Shared Methods
+		<!-- #include file="NewObject.inc" -->
+		
+		<!-- #include file="GetObject.inc" -->
+		
+		<!-- #include file="DeleteObject.inc" -->
+		
+		<!-- #include file="Save.inc" -->
+		<%= "\r\n" %>		#endregion
+		<!-- #include file="Constructor.inc"  -->
+		
+		<!-- #include file="Criteria.inc"  -->
+		<%= "\r\n" %>		#region Data Access
+		<!-- #include file="DataPortalCreate.inc"  -->
+		
+		<!-- #include file="DataPortalFetch.inc"  -->
+		
+		<!-- #include file="DataPortalUpdate.inc" -->
+		
+		<!-- #include file="DataPortalDelete.inc" -->	\
+		<%= "\r\n" %>		#endregion
+								
+				
+		<!-- #include file="TemplateMethods.inc.inc"  -->
+		
+	}
+}
+

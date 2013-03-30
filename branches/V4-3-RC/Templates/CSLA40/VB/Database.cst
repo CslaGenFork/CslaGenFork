@@ -1,0 +1,40 @@
+<%@ CodeTemplate Inherits="CslaTemplateHelperCS" Language="CSharp" TargetLanguage="CSharp" Description="Generates a static Database class." %>
+<%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the CSLA Object (just to get some project info)" %>
+<%@ Property Name="Errors" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return errors to master.cst" %>
+<%@ Property Name="Warnings" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return warnings to master.cst" %>
+
+<%@ Assembly Name="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator.Metadata" %>
+<%@ Import Namespace="CslaGenerator.CodeGen" %>
+<%@ Import Namespace="CslaGenerator.Util" %>
+
+<%
+string utilNamespace = string.Empty;
+if (CurrentUnit.GenerationParams.UtilitiesNamespace != string.Empty)
+    utilNamespace = "." + CurrentUnit.GenerationParams.UtilitiesNamespace;
+int silverlightLevel = 0;
+bool genOptional = false;
+if (CurrentUnit.GenerationParams.HeaderVerbosity != HeaderVerbosity.None)
+{
+    %>
+<!-- #include file="HeaderVersion.asp" -->
+<%
+    Response.Write(Environment.NewLine);
+}
+%>
+using System.Configuration;
+
+namespace <%= GetContextUtilitiesNamespace(CurrentUnit, GenerationStep.Business) %>
+{
+    /// <summary>Class that provides the connection
+    /// strings used by the application.</summary>
+    internal static partial class Database
+    {
+        /// <summary>Connection string to the <%= CurrentUnit.GenerationParams.DatabaseConnection %> database.</summary>
+        internal static string <%= CurrentUnit.GenerationParams.DatabaseConnection %>Connection
+        {
+            get { return ConfigurationManager.ConnectionStrings["<%= CurrentUnit.GenerationParams.DatabaseConnection %>"].ConnectionString; }
+        }
+    }
+}
