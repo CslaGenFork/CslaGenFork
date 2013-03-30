@@ -1,0 +1,8 @@
+ReadWrite	CRU
+ReadOnly	-R-
+WriteOnly	C-U
+UpdateOnly	-RU
+CreateOnly	CR-
+
+There's one other property to take into account here: PrimaryKey. If that property is set to either DBProvidedPK or UserProvidedPK, it the templates disregard the setting for DataAccess. 
+The reasoning is that depending on the type of primary key you choose, it needs to be readonly, or createonly, but also needs to be used as a param for update and delete. So, in short, properties that are reflect the identity of the object need to have a special treatment.
