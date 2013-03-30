@@ -1,0 +1,456 @@
+<%@ CodeTemplate Inherits="SprocTemplateHelper" Language="C#" TargetLanguage="T-SQL" Description="Generates a Insert stored procedure."%>
+<%@ Property Name="Errors" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return errors to master.cst" %>
+<%@ Property Name="Warnings" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return warnings to master.cst" %>
+<%@ Property Name="Infos" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return infos to master.cst" %>
+
+<%@ Assembly Name="DBSchemaInfo" %>
+<%@ Import Namespace="DBSchemaInfo.Base" %>
+<%@ Assembly Name="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator.Metadata" %>
+<%@ Import Namespace="CslaGenerator.CodeGen" %>
+<%@ Import Namespace="CslaGenerator.Util" %>
+<%@ Assembly Name="System.Data"%>
+<%@ Import Namespace="System.Collections" %>
+<%@ Import Namespace="System.Collections.Generic" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="System.Text" %>
+<%@ Assembly Name="System.Windows.Forms"%>
+<%@ Import Namespace="System.Windows.Forms"%>
+
+<%
+bool isUndeletable = false;
+if (Info.Parent.Params.SpBoolSoftDeleteColumn != string.Empty && Info.UseParentProperties == ParentPropertiesUsage.InsertUpdateDelete)
+{
+    foreach (ValueProperty prop in Info.ValueProperties)
+    {
+        if (prop.DbBindColumn.Column == null)
+        continue;
+
+        if (prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK)
+        {
+            isUndeletable = false;
+            break;
+        }
+
+        if (prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.UserProvidedPK)
+        {
+            isUndeletable = true;
+        }
+    }
+}
+bool first = false;
+ValueProperty propPK = null;
+List<IResultObject> tables = GetTablesInsert(Info);
+string timeStampColumn = String.Empty;
+SortTables(tables);
+string plainTableSchema = GetSchema(tables[0], false);
+string fullTableSchema = GetSchema(tables[0], true);
+%>
+/****** Object:  StoredProcedure <%= fullTableSchema %>[<%= Info.InsertProcedureName%>] ******/
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'<%= fullTableSchema %>[<%= Info.InsertProcedureName %>]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE <%= fullTableSchema %>[<%= Info.InsertProcedureName %>]
+GO
+
+CREATE PROCEDURE <%= fullTableSchema %>[<%= Info.InsertProcedureName %>]<%
+first = true;
+foreach (ValueProperty prop in Info.GetAllValueProperties())
+{
+    if (prop.DbBindColumn.Column == null)
+        continue;
+    if (prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK)
+    {
+        if (!first) { %>,<% } else { first = false; }
+        propPK = prop;
+        %>
+    @<%= prop.ParameterName %> <%= GetDataTypeString(prop.DbBindColumn) %> OUTPUT<%
+    }
+}
+foreach (ValueProperty parentProp in Info.GetParentValueProperties())
+{
+    if (parentProp.DbBindColumn.Column == null)
+        continue;
+    if (!first) { %>,<% } else { first = false; } %>
+    @<%= parentProp.ParameterName %> <%= GetDataTypeString(parentProp.DbBindColumn) %><%
+}
+foreach (ValueProperty prop in Info.GetAllValueProperties())
+{
+    if (prop.DbBindColumn.Column == null)
+        continue;
+    if(prop.DataAccess != ValueProperty.DataAccessBehaviour.ReadOnly
+        && prop.DataAccess != ValueProperty.DataAccessBehaviour.UpdateOnly
+        && prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK
+        && prop.DbBindColumn.NativeType != "timestamp")
+    {
+        if (!first) { %>,<% } else { first = false; }
+        %>
+    @<%= prop.ParameterName %> <%= GetDataTypeString(prop.DbBindColumn) %><%
+    }
+}
+foreach (ValueProperty prop in Info.GetAllValueProperties())
+{
+    if (prop.DbBindColumn.Column == null)
+        continue;
+    if (prop.DbBindColumn.NativeType == "timestamp")
+    {
+        if (!first) { %>,<% } else { first = false; }
+        timeStampColumn = prop.Name;
+        %>
+    @New<%= prop.ParameterName %> <%= GetDataTypeString(prop.DbBindColumn) %> OUTPUT<%
+    }
+}
+
+%>
+AS
+    BEGIN
+
+        SET NOCOUNT ON
+        <%-- Insert ------------------------%>
+<%
+string indent = string.Empty;
+if (isUndeletable)
+{
+    indent = new string(' ', 8);
+    %>
+
+        /* Check for soft deleted object existance */
+        IF EXISTS
+        (
+            SELECT <%
+    first = true;
+    if (!Info.ParentInsertOnly)
+    {
+        foreach (ValueProperty prop in Info.GetParentValueProperties())
+        {
+            if (prop.DbBindColumn.Column == null)
+                continue;
+
+            if (first)
+                first = false;
+            else
+            {
+                %>, <%
+            }
+        %>[<%= GetFKColumnForParentProperty(prop, tables[0]) %>]<%
+        }
+    }
+    foreach (ValueProperty prop in Info.ValueProperties)
+    {
+        if (prop.DbBindColumn.Column == null)
+            continue;
+
+        if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
+        {
+        if (first)
+            first = false;
+        else
+        {
+            %>, <%
+        }
+    %>[<%= GetColumnString(prop.DbBindColumn) %>]<%
+        }
+    }
+    %> FROM <%= fullTableSchema %>[<%= tables[0].ObjectName %>]
+            WHERE
+                <%
+    first = true;
+    if (!Info.ParentInsertOnly)
+    {
+        foreach (ValueProperty prop in Info.GetParentValueProperties())
+        {
+            if (prop.DbBindColumn.Column == null)
+                continue;
+
+            if (first)
+                first = false;
+            else
+            {
+                %> AND
+                <%
+            }
+    %>[<%= GetFKColumnForParentProperty(prop,tables[0]) %>] = @<%= prop.ParameterName %><%
+        }
+    }
+    foreach (ValueProperty prop in Info.GetAllValueProperties())
+    {
+        if (prop.DbBindColumn.Column == null)
+            continue;
+
+        if (prop.DbBindColumn.IsPrimaryKey)
+        if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
+        {
+            if (first)
+                first = false;
+            else
+            {
+                %> AND
+                <%
+            }
+    %>[<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
+        }
+    }
+    if (UseBoolSoftDelete(tables, IgnoreFilter(Info)))
+    {
+        if (first)
+            first = false;
+        else
+        {
+            %> AND
+                <%
+        }
+    %>[<%= Info.Parent.Params.SpBoolSoftDeleteColumn %>] = 'false'<%
+    }
+    else if (UseIntSoftDelete(tables, IgnoreFilter(Info)))
+    {
+        if (first)
+            first = false;
+        else
+        {
+            %> AND
+                <%
+        }
+    %>[<%= Info.Parent.Params.SpIntSoftDeleteColumn %>] > 0<%
+    }
+    %>
+        )
+            BEGIN
+                /* Update object in <%= plainTableSchema %><%= tables[0].ObjectName %> */
+                UPDATE <%= fullTableSchema %>[<%= tables[0].ObjectName %>]
+                SET
+                    <%
+    first = true;
+    foreach (ValueProperty prop in Info.ValueProperties)
+    {
+        if (prop.DbBindColumn.Column == null)
+        continue;
+
+        if (prop.ParameterName != timeStampColumn &&
+            prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.Default &&
+            prop.DataAccess != ValueProperty.DataAccessBehaviour.CreateOnly &&
+            prop.DataAccess != ValueProperty.DataAccessBehaviour.ReadOnly &&
+            prop.DataAccess != ValueProperty.DataAccessBehaviour.UpdateOnly)
+        {
+            if (first)
+                first = false;
+            else
+            {
+                %>,
+                    <%
+            }
+            %>[<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
+        }
+    }
+    if (first)
+        first = false;
+    else
+    {
+        %>,
+                    <%
+    }
+    %>[<%= Info.Parent.Params.SpBoolSoftDeleteColumn %>] = 'true'
+                WHERE
+                    <%
+    first = true;
+    if (!Info.ParentInsertOnly)
+    {
+        foreach (ValueProperty prop in Info.GetParentValueProperties())
+        {
+            if (prop.DbBindColumn.Column == null)
+                continue;
+
+            if (first)
+                first = false;
+            else
+            {
+                %> AND
+                    <%
+            }
+    %>[<%= GetFKColumnForParentProperty(prop,tables[0]) %>] = @<%= prop.ParameterName %><%
+        }
+    }
+    foreach (ValueProperty prop in Info.GetAllValueProperties())
+    {
+        if (prop.DbBindColumn.Column == null)
+            continue;
+
+        if (prop.DbBindColumn.IsPrimaryKey)
+        if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
+        {
+            if (first)
+                first = false;
+            else
+            {
+                %> AND
+                    <%
+            }
+    %>[<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
+        }
+    }
+    %>
+            END
+        ELSE
+            BEGIN
+        <%
+}
+foreach(IResultObject table in tables)
+{
+    string plainTableSchema2 = GetSchema(table, false);
+    string fullTableSchema2 = GetSchema(table, true);
+    first = true;
+    string fields=string.Empty;
+    string parms=string.Empty;
+    foreach (ValueProperty prop in Info.GetParentValueProperties())
+    {
+        if (prop.DbBindColumn.Column == null)
+            continue;
+        string colName = GetFKColumnForParentProperty(prop,table);
+        if (colName != string.Empty)
+        {
+            if (!first)
+            {
+                fields += "," + Environment.NewLine + new string(' ', 3*4) + indent;
+                parms +=  "," + Environment.NewLine + new string(' ', 3*4) + indent;
+            }
+            first = false;
+            fields += string.Concat("[", colName,"]");
+            parms += string.Concat("@", prop.ParameterName);
+        }
+    }
+    foreach (ValueProperty prop in Info.GetAllValueProperties())
+    {
+        if (prop.DbBindColumn.Column == null)
+            continue;
+        if (prop.DbBindColumn.ObjectName == table.ObjectName
+            && prop.DataAccess != ValueProperty.DataAccessBehaviour.ReadOnly
+            && prop.DataAccess != ValueProperty.DataAccessBehaviour.UpdateOnly)
+        {
+            if (prop.DbBindColumn.NativeType != "timestamp" && prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK)
+            {
+                if (!first)
+                {
+                    fields += "," + Environment.NewLine + new string(' ', 3*4) + indent;
+                    parms +=  "," + Environment.NewLine + new string(' ', 3*4) + indent;
+                }
+                else
+                {
+                    first = false;
+                }
+                fields += string.Concat("[",GetColumnString(prop.DbBindColumn),"]");
+                parms += string.Concat("@",prop.ParameterName);
+            }
+        }
+    }
+    if (!isUndeletable)
+    {
+        Response.Write(Environment.NewLine);
+    }
+    if (fields != string.Empty)
+    {
+        %>
+        <%= indent %>/* Insert object into <%= plainTableSchema2 %><%= table.ObjectName %> */
+        <%= indent %>INSERT INTO <%= fullTableSchema2 %>[<%= table.ObjectName %>]
+        <%= indent %>(
+            <%= indent %><%= fields %>
+        <%= indent %>)
+        <%= indent %>VALUES
+        <%= indent %>(
+            <%= indent %><%= parms %>
+        <%= indent %>)
+        <%
+        if (isUndeletable)
+        {
+            %>
+            END
+        <%
+        }
+        //-- Output -----------------------
+        if (propPK != null)
+        {
+            Response.Write(Environment.NewLine);%>
+        /* Return new primary key */
+        SET @<%= propPK.ParameterName %> = SCOPE_IDENTITY()
+            <%
+            if (timeStampColumn != String.Empty)
+            {
+                %>
+
+        /* Return new row version value */
+        SELECT @New<%= timeStampColumn %> = [<%= timeStampColumn %>]
+        FROM   <%= fullTableSchema %>[<%= tables[0].ObjectName %>]
+        WHERE
+            <%
+        %>[<%= GetColumnString(propPK.DbBindColumn) %>] = @<%= propPK.ParameterName %><%
+            }
+        }
+        else
+        {
+            %>
+        <%-- Output ------------------------------%>
+            <%
+            if (timeStampColumn != String.Empty)
+            {
+                %>
+        /* Return new row version value */
+        SELECT @New<%= timeStampColumn %> = [<%= timeStampColumn %>]
+        FROM   <%= fullTableSchema %>[<%= tables[0].ObjectName %>]
+        WHERE
+            <%
+                first = true;
+                foreach (ValueProperty prop in Info.GetParentValueProperties())
+                {
+                    if (prop.DbBindColumn.Column == null)
+                        continue;
+
+                    if (first)
+                        first = false;
+                    else
+                    {
+                        %> AND
+            <%
+                    }
+            %>[<%= GetFKColumnForParentProperty(prop,tables[0]) %>] = @<%= prop.ParameterName %><%
+                }
+                foreach (ValueProperty prop in Info.ValueProperties)
+                {
+                    if (prop.DbBindColumn.Column == null)
+                        continue;
+
+                    //if (prop.DbBindColumn.IsPrimaryKey)
+                    if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
+                    {
+                        if (first)
+                            first = false;
+                        else
+                        {
+                        %> AND
+            <%
+                        }
+        %>[<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
+                    }
+                }
+                foreach (ValueProperty prop in Info.InheritedValueProperties)
+                {
+                    if (prop.DbBindColumn.Column == null)
+                        continue;
+
+                    if (prop.ParameterName != timeStampColumn)
+                    {
+                        if (first)
+                            first = false;
+                        else
+                        {
+                        %> AND
+            <%
+                        }
+        %>[<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
+                    }
+                }
+            }
+        }
+    }
+    %>
+
+    END
+GO
+    <%
+}
+%>

@@ -1,0 +1,35 @@
+﻿<%@ CodeTemplate Inherits="CslaTemplateHelperCS" Language="CSharp" TargetLanguage="CSharp" Description="Generates a static Database class." %>
+<%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the CSLA Object (just to get some project info)" %>
+<%@ Property Name="Errors" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return errors to master.cst" %>
+<%@ Property Name="Warnings" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return warnings to master.cst" %>
+
+<%@ Assembly Name="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator.Metadata" %>
+<%@ Import Namespace="CslaGenerator.CodeGen" %>
+<%@ Import Namespace="CslaGenerator.Util" %>
+
+//-----------------------------------------------------------------------
+// <copyright file="IDalManager<%= GetDalName(CurrentUnit) %>.cs" company="Marimer LLC">
+//     Copyright (c) Marimer LLC. All rights reserved.
+//     Website: http://www.lhotka.net/cslanet/
+// </copyright>
+//-----------------------------------------------------------------------
+
+using System;
+
+namespace <%= GetContextUtilitiesNamespace(CurrentUnit, GenerationStep.DalInterface) %>
+{
+    /// <summary>
+    /// Defines the <%= GetDalName(CurrentUnit) %> DAL manager interface for DAL providers.
+    /// </summary>
+    public interface IDalManager<%= GetDalName(CurrentUnit) %> : IDisposable
+    {
+        /// <summary>
+        /// Gets the DAL provider for a given object Type.
+        /// </summary>
+        /// <typeparam name="T">Object Type that requires a <%= GetDalName(CurrentUnit) %> DAL provider.</typeparam>
+        /// <returns>A new <%= GetDalName(CurrentUnit) %> DAL instance for the given Type.</returns>
+        T GetProvider<T>() where T : class;
+    }
+}

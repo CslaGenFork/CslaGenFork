@@ -1,0 +1,50 @@
+<%@ CodeTemplate Inherits="CslaTemplateHelperCS" Language="CSharp" TargetLanguage="CSharp" Description="Generates a CSLA Dynamic Root Object." %>
+<%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the DynamicEditableRoot Object to create." %>
+<%@ Property Name="Errors" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return errors to master.cst" %>
+<%@ Property Name="Warnings" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return warnings to master.cst" %>
+<%@ Property Name="MethodList" Type="System.Collections.Generic.List<AdvancedGenerator.ServiceMethod>" Optional="false" Category="Options" Description="Allows the template to return a list a partial methods to master.cst (for Silverlight using services)" %>
+
+<%@ Assembly Name="DBSchemaInfo" %>
+<%@ Import Namespace="DBSchemaInfo.Base" %>
+<%@ Assembly Name="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator.Metadata" %>
+<%@ Import Namespace="CslaGenerator.CodeGen" %>
+<%@ Import Namespace="CslaGenerator.Util" %>
+<%@ Assembly Name="System.Windows.Forms" %>
+<%@ Import Namespace="System.Windows.Forms" %>
+<%@ Import Namespace="System.Text" %>
+<%@ Import Namespace="System.Collections.Generic" %>
+<%@ Import Namespace="System.Reflection" %>
+
+<!-- #include file="ObjectValidate_DalInterface.asp" -->
+<!-- #include file="DynamicEditableRoot_Validate.asp" -->
+<%
+if (Errors.Length == 0)
+{
+    bool isItem = true;
+    bool isParentRootCollection = true;
+    CslaObjectInfo grandParentInfo = null;
+    bool useBypassPropertyChecks = CurrentUnit.GenerationParams.UseBypassPropertyChecks;
+    string bpcSpacer = useBypassPropertyChecks ? bpcSpacer = new string(' ', 4) : string.Empty;
+    bool ancestorIsCollection = false;
+    int ancestorLoaderLevel = AncestorLoaderLevel(Info, out ancestorIsCollection);
+    GenerationStep genStep = GenerationStep.DalInterface;
+    bool usesDTO = CurrentUnit.GenerationParams.GenerateDTO;
+    bool? firstComment = null;
+    bool isFirstMethod = true;
+    %><!-- #include file="Header_DalInterface.asp" -->
+<%= GetUsingStatementsStringDalInterface(Info, CurrentUnit) %>
+namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
+{
+<!-- #include file="XmlComment_DalInterface.asp" -->
+    public partial interface I<%= Info.ObjectName %>Dal
+    {
+<!-- #include file="DataPortalInsert_DalInterface.asp" -->
+<!-- #include file="DataPortalUpdate_DalInterface.asp" -->
+<!-- #include file="DataPortalDelete_DalInterface.asp" -->
+    }
+}
+<%
+}
+%>

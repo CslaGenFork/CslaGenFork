@@ -1,0 +1,322 @@
+<%@ CodeTemplate Inherits="CslaTemplateHelperCS" Language="CSharp" TargetLanguage="CSharp" Description="Generates a CSLA Inherited Object." %>
+<%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the CSLA Object to inherit from." %>
+<%@ Property Name="Errors" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return errors to master.cst" %>
+<%@ Property Name="MethodList" Type="System.Collections.Generic.List<AdvancedGenerator.ServiceMethod>" Optional="false" Category="Options" Description="Allows the template to return a list a partial methods to master.cst (for Silverlight using services)" %>
+
+<%@ Assembly Name="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator" %>
+<%@ Import Namespace="CslaGenerator.Metadata" %>
+<%@ Import Namespace="CslaGenerator.CodeGen" %>
+<%@ Import Namespace="CslaGenerator.Util" %>
+
+<!-- #include file="Header.asp" -->
+<%
+bool usesContext = false;
+usesContext = IsObjectType(Info.ObjectType) || Info.ObjectType == CslaObjectType.UnitOfWork;
+bool hasFactoryCache = false;
+bool hasDataPortalCache = false;
+CslaObjectInfo invalidatorInfo = Info;
+if (Info.ObjectType == CslaObjectType.EditableRootCollection ||
+    Info.ObjectType == CslaObjectType.DynamicEditableRoot ||
+    Info.ObjectType == CslaObjectType.EditableRoot)
+{
+    if (Info.ObjectType == CslaObjectType.DynamicEditableRoot)
+    {
+        invalidatorInfo = Info.Parent.CslaObjects.Find(Info.ParentType);
+    }
+    foreach (string objectName in invalidatorInfo.InvalidateCache)
+    {
+        CslaObjectInfo cachedInfo = invalidatorInfo.Parent.CslaObjects.Find(objectName);
+        if (cachedInfo.SimpleCacheOptions == SimpleCacheResults.None)
+        {
+            Errors.Append("Object " + invalidatorInfo.ObjectName + ": " + cachedInfo.ObjectName + " is on 'Invalidate Cache Types' but has 'Cache Results Options' set to 'None'." + Environment.NewLine);
+            return;
+        }
+        else
+        {
+            if (cachedInfo.SimpleCacheOptions == SimpleCacheResults.Factory)
+                hasFactoryCache = hasFactoryCache || true;
+            if (cachedInfo.SimpleCacheOptions == SimpleCacheResults.DataPortal)
+                hasDataPortalCache = hasFactoryCache || true;
+        }
+    }
+}
+int silverlightLevel = 0;
+bool genOptional = false;
+if (CurrentUnit.GenerationParams.UtilitiesNamespace != string.Empty &&
+    GetContextUtilitiesNamespace(CurrentUnit, GenerationStep.Business) != string.Empty)
+{
+    if (UseBoth())
+    {
+        %>#if !SILVERLIGHT
+<%
+    }
+    if (UseNoSilverlight())
+    {
+%>using <%= GetContextUtilitiesNamespace(CurrentUnit, GenerationStep.Business) %>;
+<%
+    }
+    if (UseBoth())
+    {
+        %>
+#endif
+<%
+    }
+}
+if (UseNoSilverlight() &&
+    GetContextUtilitiesNamespace(CurrentUnit, GenerationStep.Business) != string.Empty)
+    Response.WriteLine();
+%>namespace <%= Info.ObjectNamespace %>
+{
+    <%= Info.ClassVisibility == ClassVisibility.Public ? "public" : "internal" %> partial class <%= Info.ObjectName %>
+    {
+
+        #region OnDeserialized actions
+
+        <%
+        bool isUpdatable = false;
+        if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
+        {
+            if (Info.UpdaterType != string.Empty)
+            {
+                CslaObjectInfo childInfo4 = FindChildInfo(Info, Info.ItemType);
+                if (childInfo4.UpdateValueProperties.Count > 0)
+                    isUpdatable = true;
+            }
+        }
+        if (Info.SupportUpdateProperties || hasFactoryCache || hasDataPortalCache || isUpdatable)
+        {
+            %>
+        /// <summary>
+        <%
+        }
+        else
+        {
+            %>
+        /*/// <summary>
+        <%
+        }
+        %>
+        /// This method is called on a newly deserialized object
+        /// after deserialization is complete.
+        /// </summary>
+        <%
+        if (usesContext)
+        {
+            %>
+        /// <param name="context">Serialization context object.</param>
+        <%
+        }
+        %>
+        protected override void OnDeserialized(<%= usesContext ? "System.Runtime.Serialization.StreamingContext context" : string.Empty %>)
+        {
+            base.OnDeserialized(<%= usesContext ? "context" : string.Empty %>);
+            <%
+        if (Info.SupportUpdateProperties || hasFactoryCache || hasDataPortalCache)
+        {
+            %>
+            Saved += On<%= Info.ObjectName %>Saved;
+            <%
+            if (Info.SupportUpdateProperties && (hasFactoryCache || hasDataPortalCache))
+            {
+                %>
+            <%= Info.ObjectName %>Saved += <%= Info.ObjectName %>SavedHandler;
+            <%
+            }
+        }
+        else if(isUpdatable)
+        {
+            %>
+            <%= Info.UpdaterType %>.<%= Info.UpdaterType %>Saved += <%= Info.UpdaterType %>SavedHandler;
+            <%
+        }
+        %>
+            // add your custom OnDeserialized actions here.
+            <%
+        if (Info.SupportUpdateProperties || hasFactoryCache || hasDataPortalCache || isUpdatable)
+        {
+            %>
+        }
+        <%
+        }
+        else
+        {
+            %>
+        }*/
+        <%
+        }
+        %>
+
+        #endregion
+        <%
+if (Info.ObjectType != CslaObjectType.UnitOfWork)
+{
+    bool generateRuleRegion = false;
+    bool generateAuthRegion = false;
+
+    HaveBusinessRulesCollection allRulesProperties = Info.AllRulableProperties();
+
+    foreach (IHaveBusinessRules rulableProperty in allRulesProperties)
+    {
+        if (rulableProperty.BusinessRules.Count > 0)
+        {
+            generateRuleRegion = true;
+        }
+        if (CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.None &&
+            CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.ObjectLevel)
+        {
+            if (CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider ||
+                rulableProperty.AuthzProvider != AuthorizationProvider.Custom)
+            {
+                if (!String.IsNullOrWhiteSpace(rulableProperty.ReadRoles) ||
+                    !String.IsNullOrWhiteSpace(rulableProperty.WriteRoles))
+                {
+                    generateAuthRegion = true;
+                }
+            }
+            else if (rulableProperty.ReadAuthzRuleType.Constructors.Count > 0 ||
+                     rulableProperty.WriteAuthzRuleType.Constructors.Count > 0)
+            {
+                generateAuthRegion = true;
+            }
+        }
+        if (generateRuleRegion && generateAuthRegion)
+            break;
+    }
+    bool generateAuthRegion2 = false;
+    CslaObjectInfo authzInfo2 = Info;
+    if (IsCollectionType(Info.ObjectType))
+    {
+        authzInfo2 = FindChildInfo(Info, Info.ItemType);
+    }
+    if (authzInfo2 != null)
+    {
+        if (CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.None &&
+            CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.PropertyLevel)
+        {
+            if (CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider ||
+                authzInfo2.AuthzProvider != AuthorizationProvider.Custom)
+            {
+                if (!String.IsNullOrWhiteSpace(authzInfo2.NewRoles) ||
+                    !String.IsNullOrWhiteSpace(authzInfo2.GetRoles) ||
+                    !String.IsNullOrWhiteSpace(authzInfo2.UpdateRoles) ||
+                    !String.IsNullOrWhiteSpace(authzInfo2.DeleteRoles))
+                {
+                    generateAuthRegion2 = true;
+                }
+            }
+            else if (authzInfo2.NewAuthzRuleType.Constructors.Count > 0 ||
+                     authzInfo2.GetAuthzRuleType.Constructors.Count > 0 ||
+                     authzInfo2.UpdateAuthzRuleType.Constructors.Count > 0 ||
+                     authzInfo2.DeleteAuthzRuleType.Constructors.Count > 0)
+            {
+                generateAuthRegion2 = true;
+            }
+        }
+    }
+    if (generateRuleRegion || generateAuthRegion)
+    {
+        %>
+
+        #region Custom Business Rules and Property Authorization
+
+        //partial void AddBusinessRulesExtend()
+        //{
+        //    throw new System.Exception("The method or operation is not implemented.");
+        //}
+
+        #endregion
+<%
+    }
+    if (generateAuthRegion2)
+    {
+        %>
+
+        #region Custom Object Authorization
+
+        //static partial void AddObjectAuthorizationRulesExtend()
+        //{
+        //    throw new System.Exception("The method or operation is not implemented.");
+        //}
+
+        #endregion
+<%
+    }
+    System.Collections.Generic.List<string> eventList = GetEventList(Info);
+    if (eventList.Count > 0 && UseNoSilverlight())
+    {
+        if (UseBoth())
+        {
+            %>
+
+#if !SILVERLIGHT
+<%
+        }
+        %>
+
+        #region Pseudo Event Handlers
+<%
+
+        foreach (string strEvent in eventList)
+        {
+            %>
+
+        //partial void On<%= strEvent %>(DataPortalHookArgs args)
+        //{
+        //    throw new System.Exception("The method or operation is not implemented.");
+        //}
+        <%
+        }
+        %>
+
+        #endregion
+
+    <%
+    }
+    if (UseBoth())
+    {
+        %>
+#endif
+
+<%
+    }
+}
+else
+{
+    Response.Write(Environment.NewLine);
+}
+if (MethodList.Count > 0)
+{
+    %>
+<!-- #include file="ServicesImplementation.asp" -->
+<%
+}
+%>
+    }
+    <%
+    if (IsCriteriaExtendedClassNeeded(Info))
+    {
+        %>
+
+    #region Criteria Object
+    <%
+        foreach (Criteria crit in Info.CriteriaObjects)
+        {
+            if (crit.Properties.Count > 1)
+            {
+                %>
+
+    <%= Info.ClassVisibility == ClassVisibility.Public ? "public" : "internal" %> partial class <%= crit.Name %>
+    {
+    }
+<%
+            }
+        }
+        %>
+
+    #endregion
+
+    <%
+    }
+    %>
+}
