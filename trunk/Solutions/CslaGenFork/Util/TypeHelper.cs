@@ -52,6 +52,15 @@ namespace CslaGenerator.Util
 
                 return TypeCodeEx.DateTime;
             }
+            if (type == typeof(DateTimeOffset))
+            {
+                if (GeneratorController.Current.CurrentUnit.Params.SmartDateDefault)
+                    return TypeCodeEx.SmartDate;
+
+                return TypeCodeEx.DateTimeOffset;
+            }
+            if (type == typeof(TimeSpan))
+                return TypeCodeEx.TimeSpan;
             if (type == typeof(DBNull))
                 return TypeCodeEx.DBNull;
             if (type == typeof(Decimal))
@@ -96,6 +105,10 @@ namespace CslaGenerator.Util
                     return SqlDbType.Image;
                 case TypeCodeEx.Char:
                     return SqlDbType.Char;
+                case TypeCodeEx.TimeSpan:
+                    return SqlDbType.Time;
+                case TypeCodeEx.DateTimeOffset:
+                    return SqlDbType.DateTimeOffset;
                 case TypeCodeEx.SmartDate:
                 case TypeCodeEx.DateTime:
                     return SqlDbType.DateTime;
@@ -142,6 +155,10 @@ namespace CslaGenerator.Util
                     return DbType.Binary;
                 case TypeCodeEx.Char:
                     return DbType.StringFixedLength;
+                case TypeCodeEx.TimeSpan:
+                    return DbType.Time;
+                case TypeCodeEx.DateTimeOffset:
+                    return DbType.DateTimeOffset;
                 case TypeCodeEx.SmartDate:
                 case TypeCodeEx.DateTime:
                     return DbType.DateTime;
@@ -194,6 +211,8 @@ namespace CslaGenerator.Util
                 case TypeCodeEx.UInt16:
                 case TypeCodeEx.UInt32:
                 case TypeCodeEx.UInt64:
+                case TypeCodeEx.TimeSpan:
+                case TypeCodeEx.DateTimeOffset:
                 case TypeCodeEx.DateTime:
                     return true;
 
@@ -228,6 +247,8 @@ namespace CslaGenerator.Util
                 case TypeCodeEx.UInt16:
                 case TypeCodeEx.UInt32:
                 case TypeCodeEx.UInt64:
+                case TypeCodeEx.TimeSpan:
+                case TypeCodeEx.DateTimeOffset:
                 case TypeCodeEx.DateTime:
                 case TypeCodeEx.SmartDate:
                 case TypeCodeEx.String:
