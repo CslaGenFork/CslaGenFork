@@ -336,13 +336,13 @@ namespace CslaGenerator.Metadata
                 if (destination.PropertyType == TypeCodeEx.SmartDate)
                 {
                     destination.DefaultValue = _currentUnit.Params.LogDateAndTime
-                                                   ? "new SmartDate(DateTime.Now)"
+                                                   ? "new SmartDate(" + GetNowValue(TypeCodeEx.DateTime) + ")"
                                                    : "new SmartDate(DateTime.Today)";
                 }
                 else
                 {
                     destination.DefaultValue = _currentUnit.Params.LogDateAndTime
-                                                   ? "DateTime.Now"
+                                                   ? GetNowValue(destination.PropertyType)
                                                    : "DateTime.Today";
                 }
             }
@@ -363,9 +363,18 @@ namespace CslaGenerator.Metadata
                 }
                 else
                 {
-                    destination.DefaultValue = _currentUnit.Params.LogDateAndTime
-                                                   ? "new SmartDate(DateTime.Now)"
-                                                   : "new SmartDate(DateTime.Today)";
+                    if (destination.PropertyType == TypeCodeEx.SmartDate)
+                    {
+                        destination.DefaultValue = _currentUnit.Params.LogDateAndTime
+                                                       ? "new SmartDate(" + GetNowValue(TypeCodeEx.DateTime) + ")"
+                                                       : "new SmartDate(DateTime.Today)";
+                    }
+                    else
+                    {
+                        destination.DefaultValue = _currentUnit.Params.LogDateAndTime
+                                                       ? GetNowValue(destination.PropertyType)
+                                                       : "DateTime.Today";
+                    }
                 }
             }
             else if (_currentUnit.Params.ChangedUserColumn == p.ColumnName)
@@ -383,7 +392,8 @@ namespace CslaGenerator.Metadata
             }
             else if (_currentUnit.Params.DatesDefaultStringWithTypeConversion &&
                 (destination.PropertyType == TypeCodeEx.SmartDate ||
-                destination.PropertyType == TypeCodeEx.DateTime))
+                destination.PropertyType == TypeCodeEx.DateTime ||
+                destination.PropertyType == TypeCodeEx.DateTimeOffset))
             {
                 destination.BackingFieldType = destination.PropertyType;
                 destination.PropertyType = TypeCodeEx.String;
@@ -660,5 +670,68 @@ namespace CslaGenerator.Metadata
         }
 
         #endregion
+
+        public virtual string GetNowValue(TypeCodeEx typeCode)
+        {
+            var now = "Now";
+            if (_currentUnit.Params.LogInUtc)
+                now = "UtcNow";
+
+            if (typeCode == TypeCodeEx.SmartDate ||
+                typeCode == TypeCodeEx.DateTime)
+                return "DateTime." + now;
+
+            if (typeCode == TypeCodeEx.DateTimeOffset)
+                return "DateTimeOffset." + now;
+
+            if (typeCode == TypeCodeEx.TimeSpan)
+                return "DateTime." + now + ".TimeOfDay";
+
+            return GetInitValue(typeCode);
+        }
+
+        public virtual string GetInitValue(TypeCodeEx typeCode)
+        {
+            if (typeCode == TypeCodeEx.Byte ||
+                typeCode == TypeCodeEx.Int16 ||
+                typeCode == TypeCodeEx.Int32 ||
+                typeCode == TypeCodeEx.Int64 ||
+                typeCode == TypeCodeEx.Double ||
+                typeCode == TypeCodeEx.Decimal ||
+                typeCode == TypeCodeEx.Single)
+                return "0";
+
+            if (typeCode == TypeCodeEx.String)
+                return "string.Empty";
+
+            if (typeCode == TypeCodeEx.Boolean)
+                return "false";
+
+            if (typeCode == TypeCodeEx.Object)
+                return "null";
+
+            if (typeCode == TypeCodeEx.Guid)
+                return "Guid.Empty";
+
+            if (typeCode == TypeCodeEx.SmartDate)
+                return "new SmartDate(true)";
+
+            if (typeCode == TypeCodeEx.DateTime)
+                return GetNowValue(typeCode);
+
+            if (typeCode == TypeCodeEx.DateTimeOffset)
+                return GetNowValue(typeCode);
+
+            if (typeCode == TypeCodeEx.TimeSpan)
+                return GetNowValue(typeCode);
+
+            if (typeCode == TypeCodeEx.Char)
+                return "char.MinValue";
+
+            if (typeCode == TypeCodeEx.ByteArray)
+                return "new byte[] {}";
+
+            return string.Empty;
+        }
     }
 }

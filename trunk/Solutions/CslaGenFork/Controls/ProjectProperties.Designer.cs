@@ -132,6 +132,7 @@ namespace CslaGenerator.Controls
             this.lblChangedUserColumn = new System.Windows.Forms.Label();
             this.txtChangedUserColumn = new System.Windows.Forms.TextBox();
             this.chkLogDateAndTime = new System.Windows.Forms.CheckBox();
+            this.chkLogInUtc = new System.Windows.Forms.CheckBox();
             this.lblGetUserMethod = new System.Windows.Forms.Label();
             this.txtGetUserMethod = new System.Windows.Forms.TextBox();
             this.GenerationTargetTab = new System.Windows.Forms.TabPage();
@@ -448,9 +449,10 @@ namespace CslaGenerator.Controls
             this.chkSmartDateDefault.Name = "chkSmartDateDefault";
             this.chkSmartDateDefault.Size = new System.Drawing.Size(336, 17);
             this.chkSmartDateDefault.TabIndex = 8;
-            this.chkSmartDateDefault.Text = "Use SmartDate instead of DateTime for date properties.";
+            this.chkSmartDateDefault.Text = "Use SmartDate instead of DateTime and DateTimeOffset for date properties.";
             this.chkSmartDateDefault.UseVisualStyleBackColor = true;
-            this.toolTip.SetToolTip(this.chkSmartDateDefault, "If checked, date properties are created with SmartDate type instead of DateTime.");
+            this.toolTip.SetToolTip(this.chkSmartDateDefault, "If checked, date properties are created with SmartDate type,\r\n" +
+                "instead of DateTime and DateTimeOffset.");
             // 
             // chkDatesDefaultStringWithTypeConversion
             // 
@@ -460,9 +462,10 @@ namespace CslaGenerator.Controls
             this.chkDatesDefaultStringWithTypeConversion.Name = "chkDatesDefaultStringWithTypeConversion";
             this.chkDatesDefaultStringWithTypeConversion.Size = new System.Drawing.Size(450, 17);
             this.chkDatesDefaultStringWithTypeConversion.TabIndex = 9;
-            this.chkDatesDefaultStringWithTypeConversion.Text = "Use String with TypeConversion to DateTime or SmartDate for date properties.";
+            this.chkDatesDefaultStringWithTypeConversion.Text = "Use String with TypeConversion to DateTime, DateTimeOffset or SmartDate for date properties.";
             this.chkDatesDefaultStringWithTypeConversion.UseVisualStyleBackColor = true;
-            this.toolTip.SetToolTip(this.chkDatesDefaultStringWithTypeConversion, "If checked, date properties are created with String type and backing field TypeConversion to DateTime or SmartDate.");
+            this.toolTip.SetToolTip(this.chkDatesDefaultStringWithTypeConversion, "If checked, date properties are created with String type\r\n" +
+                "and backing field TypeConversion to DateTime, DateTimeOffset or SmartDate.");
             // 
             // chkAutoCriteria
             // 
@@ -485,9 +488,9 @@ namespace CslaGenerator.Controls
             this.chkAutoTimestampCriteria.Name = "chkAutoTimestampCriteria";
             this.chkAutoTimestampCriteria.Size = new System.Drawing.Size(450, 17);
             this.chkAutoTimestampCriteria.TabIndex = 11;
-            this.chkAutoTimestampCriteria.Text = "Add a Delete CriteriaTS whem DB type \"timestamp\" is found.";
+            this.chkAutoTimestampCriteria.Text = "Add a Delete CriteriaTS when DB type \"timestamp\" is found.";
             this.chkAutoTimestampCriteria.UseVisualStyleBackColor = true;
-            this.toolTip.SetToolTip(this.chkAutoTimestampCriteria, "If checked, whem DB type \"timestamp\" is found on EditableRoot, EditableChild and DynamicRoot objects are created with a Delete CriteriaTS.");
+            this.toolTip.SetToolTip(this.chkAutoTimestampCriteria, "If checked, when DB type \"timestamp\" is found on EditableRoot, EditableChild and DynamicRoot objects are created with a Delete CriteriaTS.");
             // 
             // groupBoxReadOnlyObjects
             // 
@@ -1176,6 +1179,7 @@ namespace CslaGenerator.Controls
             this.groupBoxSimpleAuditing.Controls.Add(this.lblChangedUserColumn);
             this.groupBoxSimpleAuditing.Controls.Add(this.txtChangedUserColumn);
             this.groupBoxSimpleAuditing.Controls.Add(this.chkLogDateAndTime);
+            this.groupBoxSimpleAuditing.Controls.Add(this.chkLogInUtc);
             this.groupBoxSimpleAuditing.Controls.Add(this.lblGetUserMethod);
             this.groupBoxSimpleAuditing.Controls.Add(this.txtGetUserMethod);
             this.groupBoxSimpleAuditing.Location = new System.Drawing.Point(244, 12);
@@ -1260,12 +1264,22 @@ namespace CslaGenerator.Controls
             // chkLogDateAndTime
             // 
             this.chkLogDateAndTime.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.projectParametersBindingSource, "LogDateAndTime", true, DataSourceUpdateMode.OnPropertyChanged));
-            this.chkLogDateAndTime.Location = new System.Drawing.Point(12, 150);
+            this.chkLogDateAndTime.Location = new System.Drawing.Point(12, 132);
             this.chkLogDateAndTime.Name = "chkLogDateAndTime";
             this.chkLogDateAndTime.Size = new System.Drawing.Size(200, 17);
             this.chkLogDateAndTime.TabIndex = 5;
             this.chkLogDateAndTime.Text = "Log Date and also Time";
             this.toolTip.SetToolTip(this.chkLogDateAndTime, "If checked, date auditing uses time precision up to seconds.");
+            // 
+            // chkLogInUtc
+            // 
+            this.chkLogInUtc.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.projectParametersBindingSource, "LogInUtc", true, DataSourceUpdateMode.OnPropertyChanged));
+            this.chkLogInUtc.Location = new System.Drawing.Point(12, 157);
+            this.chkLogInUtc.Name = "chkLogInUtc";
+            this.chkLogInUtc.Size = new System.Drawing.Size(200, 17);
+            this.chkLogInUtc.TabIndex = 5;
+            this.chkLogInUtc.Text = "Log Time in UTC";
+            this.toolTip.SetToolTip(this.chkLogInUtc, "If checked, time auditing uses UTC (Coordinated Universal Time).");
             // 
             // lblGetUserMethod
             // 
@@ -2304,6 +2318,7 @@ namespace CslaGenerator.Controls
         private System.Windows.Forms.Label lblChangedUserColumn;
         private System.Windows.Forms.TextBox txtChangedUserColumn;
         private System.Windows.Forms.CheckBox chkLogDateAndTime;
+        private System.Windows.Forms.CheckBox chkLogInUtc;
         private System.Windows.Forms.Label lblGetUserMethod;
         private System.Windows.Forms.TextBox txtGetUserMethod;
         private System.Windows.Forms.TabPage GenerationTargetTab;

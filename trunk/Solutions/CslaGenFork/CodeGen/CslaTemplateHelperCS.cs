@@ -134,6 +134,25 @@ namespace CslaGenerator.CodeGen
             return string.Empty;
         }
 
+        public virtual string GetNowValue(TypeCodeEx typeCode)
+        {
+            var now = "Now";
+            if (CurrentUnit.Params.LogInUtc)
+                now = "UtcNow";
+
+            if (typeCode == TypeCodeEx.SmartDate ||
+                typeCode == TypeCodeEx.DateTime)
+                return "DateTime." + now;
+
+            if (typeCode == TypeCodeEx.DateTimeOffset)
+                return "DateTimeOffset." + now;
+
+            if (typeCode == TypeCodeEx.TimeSpan)
+                return "DateTime." + now + ".TimeOfDay";
+
+            return GetInitValue(typeCode);
+        }
+
         public virtual string GetInitValue(TypeCodeEx typeCode)
         {
             if (typeCode == TypeCodeEx.Byte ||
@@ -161,7 +180,13 @@ namespace CslaGenerator.CodeGen
                 return "new SmartDate(true)";
 
             if (typeCode == TypeCodeEx.DateTime)
-                return "DateTime.Now";
+                return GetNowValue(typeCode);
+
+            if (typeCode == TypeCodeEx.DateTimeOffset)
+                return GetNowValue(typeCode);
+
+            if (typeCode == TypeCodeEx.TimeSpan)
+                return GetNowValue(typeCode);
 
             if (typeCode == TypeCodeEx.Char)
                 return "char.MinValue";
@@ -299,8 +324,10 @@ namespace CslaGenerator.CodeGen
                     statement += ")";
                 statement += " : null";
             }
+
             if (assignDataType == TypeCodeEx.ByteArray)
                 statement = statement + " as byte[]";
+
             return statement;
         }
 
@@ -370,6 +397,21 @@ namespace CslaGenerator.CodeGen
             }
         }
 
+        protected DbType GetDbType(Property prop)
+        {
+            return TypeHelper.GetDbType(prop.PropertyType);
+        }
+
+        protected DbType GetDbType(ValueProperty prop)
+        {
+            return GetDbType(prop.DbBindColumn);
+        }
+
+        protected DbType GetDbType(CriteriaProperty prop)
+        {
+            return GetDbType(prop.DbBindColumn);
+        }
+
         protected DbType GetDbType(DbBindColumn prop)
         {
             if (prop.NativeType == "real")
@@ -425,7 +467,7 @@ namespace CslaGenerator.CodeGen
             if (prop.Nullable && TypeHelper.IsNullableType(prop.PropertyType))
                 return "GetValue";
 
-            if(prop.BackingFieldType == TypeCodeEx.Empty)
+            if (prop.BackingFieldType == TypeCodeEx.Empty)
                 return GetReaderMethod(dataType, prop.PropertyType);
 
             return GetReaderMethod(dataType, prop.BackingFieldType);
@@ -459,8 +501,15 @@ namespace CslaGenerator.CodeGen
                     return "GetDecimal";
                 case DbType.Decimal:
                     return "GetDecimal";
-                case DbType.DateTime:
+                case DbType.Time:
+                    return "GetValue";
+                    // waiting for SafeDatareader support for "GetTime"
+                case DbType.DateTimeOffset:
+                    return (propertyType == TypeCodeEx.SmartDate) ? "GetSmartDate" : "GetValue";
+                    // waiting for SafeDatareader support for "GetDateTimeOffset"
                 case DbType.Date:
+                case DbType.DateTime2:
+                case DbType.DateTime:
                     return (propertyType == TypeCodeEx.SmartDate) ? "GetSmartDate" : "GetDateTime";
                 case DbType.Binary:
                     return "GetValue";
@@ -493,6 +542,12 @@ namespace CslaGenerator.CodeGen
                     return "GetGuid";
                 case TypeCodeEx.Decimal:
                     return "GetDecimal";
+                case TypeCodeEx.TimeSpan:
+                    return "GetValue";
+                    // waiting for SafeDatareader support for "GetTime"
+                case TypeCodeEx.DateTimeOffset:
+                    return "GetValue";
+                    // waiting for SafeDatareader support for "GetDateTimeOffset"
                 case TypeCodeEx.SmartDate:
                     return "GetSmartDate";
                 case TypeCodeEx.DateTime:
@@ -531,7 +586,12 @@ namespace CslaGenerator.CodeGen
                     return "byte";
                 case DbType.Currency:
                     return "decimal";
+                case DbType.Time:
+                    return "TimeSpan";
+                case DbType.DateTimeOffset:
+                    return "DateTimeOffset";
                 case DbType.Date:
+                case DbType.DateTime2:
                 case DbType.DateTime:
                     return "DateTime";
                 case DbType.Decimal:
@@ -556,8 +616,6 @@ namespace CslaGenerator.CodeGen
                     return "string";
                 case DbType.StringFixedLength:
                     return "string";
-                case DbType.Time:
-                    return "TimeSpan";
                 case DbType.UInt16:
                     return "ushort";
                 case DbType.UInt32:
@@ -2742,7 +2800,7 @@ namespace CslaGenerator.CodeGen
                     response += new string(' ', 8) + noSilverlightStatement + Environment.NewLine;
                     response += "#endif";
                 }
-                else if(UseNoSilverlight())
+                else if (UseNoSilverlight())
                 {
                     response += new string(' ', 8) + noSilverlightStatement;
                 }
@@ -4920,7 +4978,7 @@ namespace CslaGenerator.CodeGen
             var plainTableSchema = string.Empty;
             if (info.Parent.GenerationParams.GenerateQueriesWithSchema)
             {
-                if(tables.Count > 0)
+                if (tables.Count > 0)
                     plainTableSchema = tables[0].ObjectSchema + ".";
                 else
                 {
