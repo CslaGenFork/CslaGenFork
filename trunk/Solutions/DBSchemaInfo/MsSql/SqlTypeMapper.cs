@@ -26,7 +26,14 @@ namespace DBSchemaInfo.MsSql
                 case SqlDbType.VarChar:
                 case SqlDbType.Xml:
                     return typeof(string);
+                case SqlDbType.Time:
+                    return typeof(TimeSpan);
+                case SqlDbType.DateTimeOffset:
+                    return typeof(DateTimeOffset);
+                case SqlDbType.Date:
+                case SqlDbType.DateTime2:
                 case SqlDbType.DateTime:
+                case SqlDbType.SmallDateTime:
                     return typeof(DateTime);
                 case SqlDbType.Decimal:
                 case SqlDbType.Money:
@@ -40,8 +47,6 @@ namespace DBSchemaInfo.MsSql
                     return typeof(Single);
                 case SqlDbType.UniqueIdentifier:
                     return typeof(Guid);
-                case SqlDbType.SmallDateTime:
-                    return typeof(DateTime);
                 case SqlDbType.SmallInt:
                     return typeof(Int16);
                 case SqlDbType.TinyInt:
@@ -75,6 +80,14 @@ namespace DBSchemaInfo.MsSql
                 case SqlDbType.VarChar:
                 case SqlDbType.Xml:
                     return DbType.String;
+                case SqlDbType.Time:
+                    return DbType.Time;
+                case SqlDbType.Date:
+                    return DbType.Date;
+                case SqlDbType.DateTime2:
+                    return DbType.DateTime2;
+                case SqlDbType.DateTimeOffset:
+                    return DbType.DateTimeOffset;
                 case SqlDbType.DateTime:
                 case SqlDbType.SmallDateTime:
                     return DbType.DateTime;
@@ -124,7 +137,10 @@ namespace DBSchemaInfo.MsSql
                 nativeType == "nchar" ||
                 nativeType == "nvarchar" ||
                 nativeType == "varbinary" ||
-                nativeType == "varchar")
+                nativeType == "varchar" ||
+                nativeType == "time" ||
+                nativeType == "datetime2" ||
+                nativeType == "datetimeoffset")
                 return nativeType + "(" + columnLength + ")";
 
             return nativeType;
