@@ -10,7 +10,7 @@ if (UseSimpleAuditTrail(Info))
     if (GetValuePropertyByName(Info, Info.Parent.Params.ChangedDateColumn, ref changedDateProperty))
     {
         %>
-            <%= GetFieldLoaderStatement(changedDateProperty, "DateTime.Now") %>;
+            <%= GetFieldLoaderStatement(changedDateProperty, GetNowValue(changedDateProperty.PropertyType)) %>;
         <%
         var convertedPropertyName = ConvertedPropertyName(Info, changedDateProperty);
         if (convertedPropertyName != string.Empty)
@@ -52,7 +52,7 @@ if (UseSimpleAuditTrail(Info))
             else
             {
                 %>
-                <%= GetFieldLoaderStatement(creationDateProperty, "DateTime.Now") %>;
+                <%= GetFieldLoaderStatement(creationDateProperty, GetNowValue(creationDateProperty.PropertyType)) %>;
                         <%
             }
             var convertedPropertyName = ConvertedPropertyName(Info, creationDateProperty);
