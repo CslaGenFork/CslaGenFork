@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?><ItemProperties xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><Properties><Property><Name>svn:ignore</Name><Value>CslaGenFork-4.0.0.5.1.ReSharper.user
+﻿<?xml version="1.0" encoding="utf-8"?><ItemProperties xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><Properties><Property><Name>svn:ignore</Name><Value>CslaGenFork-4.0.0.5.1.ReSharper.user
 </Value></Property><Property><Name>svn:ignore</Name><Value>CslaGenFork-4.0.0.5.1.ReSharper.user
 </Value></Property><Property><Name>svn:ignore</Name><Value>CslaGenFork-4.0.0.5.1.ReSharper.user
 CslaGenFork-4.0.1.5.1.ReSharper.user
@@ -26,4 +26,6 @@ CslaGenFork-4.0.2.6.1.ReSharper.user
 CslaGenFork-4.0.2.sln.DotSettings.user
 CslaGenFork-4.0.2.sln.docstates.suo
 CslaGenFork-4.0.2.suo
+</Value></Property><Property><Name>bugtraq:warnifnoissue</Name><Value>true</Value></Property><Property><Name>bugtraq:label</Name><Value>Work item #:</Value></Property><Property><Name>bugtraq:url</Name><Value>http://cslagenfork.codeplex.com/workitem/%BUGID%</Value></Property><Property><Name>bugtraq:message</Name><Value>Work Item #%BUGID%</Value></Property><Property><Name>svn:ignore</Name><Value>CslaGenFork-4.3RC.sln.DotSettings.user
+CslaGenFork-4.3RC.sln.docstates.suo
 </Value></Property><Property><Name>bugtraq:warnifnoissue</Name><Value>true</Value></Property><Property><Name>bugtraq:label</Name><Value>Work item #:</Value></Property><Property><Name>bugtraq:url</Name><Value>http://cslagenfork.codeplex.com/workitem/%BUGID%</Value></Property><Property><Name>bugtraq:message</Name><Value>Work Item #%BUGID%</Value></Property></Properties></ItemProperties>
