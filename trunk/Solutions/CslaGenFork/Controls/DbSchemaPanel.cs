@@ -208,9 +208,9 @@ namespace CslaGenerator.Controls
 
             OutputWindow.Current.ClearOutput();
             _catalog = new SqlCatalog(_cn, catalogName);
-            DateTime start = DateTime.Now;
+            var start = DateTime.Now;
             _catalog.LoadStaticObjects();
-            DateTime end = DateTime.Now;
+            var end = DateTime.Now;
             OutputWindow.Current.AddOutputInfo(string.Format("Loaded {0} tables and {1} views in {2:0.00} seconds...", _catalog.Tables.Count, _catalog.Views.Count, end.Subtract(start).TotalSeconds));
             start = DateTime.Now;
             _catalog.LoadProcedures();

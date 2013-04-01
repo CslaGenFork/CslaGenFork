@@ -1270,14 +1270,14 @@ namespace CslaGenerator.CodeGen
         private List<IResultObject> FindJoinTables(List<IResultObject> tables, List<IResultObject> missingTables)
         {
             var joinTables = new List<IResultObject>();
-            foreach(var t in Catalog.Tables)
+            foreach (var t in Catalog.Tables)
             {
                 var fKeys = Catalog.ForeignKeyConstraints.GetConstraintsFor(t);
                 if (fKeys.Count > 1)
                 {
                     var tableCount = 0;
                     var missingTableCount = 0;
-                    foreach(var key in  fKeys)
+                    foreach (var key in fKeys)
                     {
                         if (missingTables.Contains(key.PKTable))
                             missingTableCount++;
@@ -1523,11 +1523,11 @@ namespace CslaGenerator.CodeGen
         {
             foreach (var prop in crit.Properties)
             {
-                if(prop.DbBindColumn.ColumnName == Info.Parent.Params.SpBoolSoftDeleteColumn &&
+                if (prop.DbBindColumn.ColumnName == Info.Parent.Params.SpBoolSoftDeleteColumn &&
                     prop.DbBindColumn.Column.DbType == DbType.Boolean)
                     return true;
 
-                if(prop.DbBindColumn.ColumnName == Info.Parent.Params.SpIntSoftDeleteColumn &&
+                if (prop.DbBindColumn.ColumnName == Info.Parent.Params.SpIntSoftDeleteColumn &&
                     (prop.DbBindColumn.Column.DbType == DbType.Int16 ||
                      prop.DbBindColumn.Column.DbType == DbType.Int32 ||
                      prop.DbBindColumn.Column.DbType == DbType.Int64))

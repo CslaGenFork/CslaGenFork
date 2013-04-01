@@ -133,7 +133,7 @@ namespace CslaGenerator.Design
         {
             foreach (GridItem item in col)
             {
-                if(item.GridItemType != GridItemType.Category)
+                if (item.GridItemType != GridItemType.Category)
                     r = Math.Max(r, TextRenderer.MeasureText(item.Label, pgEditor.Font).Width);
                 if (item.Expanded)
                 {

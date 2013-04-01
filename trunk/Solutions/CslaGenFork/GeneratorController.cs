@@ -809,7 +809,7 @@ namespace CslaGenerator
             MruItems.Clear();
             foreach (var item in original)
             {
-                if(!MruItems.Contains(item))
+                if (!MruItems.Contains(item))
                     MruItems.Add(item);
             }
 
