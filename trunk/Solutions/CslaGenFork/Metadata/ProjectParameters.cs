@@ -62,6 +62,7 @@ namespace CslaGenerator.Metadata
         private string _changedDateColumn = string.Empty;
         private string _changedUserColumn = string.Empty;
         private bool _logDateAndTime = true;
+        private bool _logInUtc;
         private string _getUserMethod = string.Empty;
 
         #endregion
@@ -119,7 +120,7 @@ namespace CslaGenerator.Metadata
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to add a Delete CriteriaTS whem DB type "timestamp" is found.
+        /// Gets or sets a value indicating whether to add a Delete CriteriaTS when DB type "timestamp" is found.
         /// </summary>
         /// <value>
         /// 	<c>true</c> if [auto timestamp criteria]; otherwise, <c>false</c>.
@@ -709,6 +710,18 @@ namespace CslaGenerator.Metadata
                 if (_logDateAndTime == value)
                     return;
                 _logDateAndTime = value;
+                OnPropertyChanged("");
+            }
+        }
+
+        public bool LogInUtc
+        {
+            get { return _logInUtc; }
+            set
+            {
+                if (_logInUtc == value)
+                    return;
+                _logInUtc = value;
                 OnPropertyChanged("");
             }
         }
