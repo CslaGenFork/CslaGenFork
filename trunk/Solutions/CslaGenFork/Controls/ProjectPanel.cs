@@ -131,7 +131,7 @@ namespace CslaGenerator.Controls
 
         private void objects_ListChanged(object sender, ListChangedEventArgs e)
         {
-            if(_suspendListUpdates)
+            if (_suspendListUpdates)
                 return;
 
             if (e.ListChangedType == ListChangedType.ItemChanged && 
@@ -361,7 +361,7 @@ namespace CslaGenerator.Controls
                 return;
 
             // store currency values for later use by lstObjects_SelectedIndexChanged
-            if(_selectedItems == null)
+            if (_selectedItems == null)
                 _selectedItems = new List<CslaObjectInfo>();
             if (_objects != null)
             {

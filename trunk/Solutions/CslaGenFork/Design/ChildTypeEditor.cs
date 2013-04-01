@@ -37,7 +37,7 @@ namespace CslaGenerator.Design
                     foreach (var o in GeneratorController.Current.CurrentUnit.CslaObjects)
                     {
                         // waiting to find a way to distinguish collection and non collection child properties
-                        //if(!TypeHelper.IsCollectionType(o.ObjectType))
+                        //if (!TypeHelper.IsCollectionType(o.ObjectType))
                         if (o.ObjectType != CslaObjectType.NameValueList)
                             _lstProperties.Items.Add(o.ObjectName);
                     }

@@ -153,10 +153,10 @@ namespace CslaGenerator.Design
         {
             foreach (var ns in sortedNamespaces)
             {
-                if(stringType.IndexOf(ns) == 0)
+                if (stringType.IndexOf(ns) == 0)
                 {
-                    return stringType.Substring(ns.Length+1);
-                } 
+                    return stringType.Substring(ns.Length + 1);
+                }
             }
             return stringType;
         }
@@ -219,11 +219,11 @@ namespace CslaGenerator.Design
             foreach (var prop in usedType.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly).
                 Where(p => p.CanRead && p.GetSetMethod() != null))
             {
-                /*if(prop.PropertyType.IsGenericParameter)
+                /*if (prop.PropertyType.IsGenericParameter)
                 {
                     var a = "IsGenericParameter";
                 }
-                if(prop.PropertyType.IsGenericTypeDefinition)
+                if (prop.PropertyType.IsGenericTypeDefinition)
                 {
                     var c = "IsGenericTypeDefinition";
                 }
