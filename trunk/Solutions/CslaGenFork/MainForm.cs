@@ -197,7 +197,7 @@ namespace CslaGenerator
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            if(File.Exists(DockSettingsFile))
+            if (File.Exists(DockSettingsFile))
                 dockPanel.LoadFromXml(DockSettingsFile, _deserializeDockContent);
 
             ShowStartPage();
@@ -1254,14 +1254,14 @@ namespace CslaGenerator
 
         private void ConvertDateTimeToSmartDate_Click(object sender, EventArgs e)
         {
-            _outputPanel.AddOutputInfo(Environment.NewLine + "Converting DateTime to SmartDate properties..." + Environment.NewLine);
+            _outputPanel.AddOutputInfo(Environment.NewLine + "Converting DateTime/DateTimeOffset to SmartDate properties..." + Environment.NewLine);
             foreach (var info in _controller.CurrentUnit.CslaObjects)
             {
                 var counter = 0;
 
                 foreach (ValueProperty prop in info.ValueProperties)
                 {
-                    if (prop.PropertyType == TypeCodeEx.DateTime)
+                    if (prop.PropertyType == TypeCodeEx.DateTime || prop.PropertyType == TypeCodeEx.DateTimeOffset)
                     {
                         prop.PropertyType = TypeCodeEx.SmartDate;
                         counter++;
@@ -1269,9 +1269,9 @@ namespace CslaGenerator
                 }
 
                 if (counter > 0)
-                    _outputPanel.AddOutputInfo(info.ObjectName + ": converted " + counter + " properties of type \"DateTime\" to \"SmartDate\".");
+                    _outputPanel.AddOutputInfo(info.ObjectName + ": converted " + counter + " properties of type DateTime/DateTimeOffset to SmartDate.");
             }
-            _outputPanel.AddOutputInfo(Environment.NewLine + "Convert DateTime to SmartDate properties is done." + Environment.NewLine);
+            _outputPanel.AddOutputInfo(Environment.NewLine + "Convert DateTime/DateTimeOffset to SmartDate properties is done." + Environment.NewLine);
         }
 
         private void ForceBackingFieldSmartDate_Click(object sender, EventArgs e)
