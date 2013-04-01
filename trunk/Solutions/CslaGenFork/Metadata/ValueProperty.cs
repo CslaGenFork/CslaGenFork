@@ -277,7 +277,7 @@ namespace CslaGenerator.Metadata
         {
             get
             {
-                if(BackingFieldType == TypeCodeEx.Empty &&
+                if (BackingFieldType == TypeCodeEx.Empty &&
                     TypeHelper.IsNullAllowedOnType(base.PropertyType))
                     return _nullable;
 

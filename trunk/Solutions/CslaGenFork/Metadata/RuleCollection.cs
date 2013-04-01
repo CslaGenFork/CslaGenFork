@@ -61,7 +61,7 @@ namespace CslaGenerator.Metadata
     //    /// </returns>
     //    public static RuleCollection Synchronized(RuleCollection list)
     //    {
-    //        if(list==null)
+    //        if (list==null)
     //            throw new ArgumentNullException("list");
     //        return new SyncRuleCollection(list);
     //    }
@@ -75,7 +75,7 @@ namespace CslaGenerator.Metadata
     //    /// </returns>
     //    public static RuleCollection ReadOnly(RuleCollection list)
     //    {
-    //        if(list==null)
+    //        if (list==null)
     //            throw new ArgumentNullException("list");
     //        return new ReadOnlyRuleCollection(list);
     //    }
