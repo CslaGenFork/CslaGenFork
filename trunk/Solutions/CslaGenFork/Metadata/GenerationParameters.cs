@@ -669,8 +669,8 @@ namespace CslaGenerator.Metadata
             get
             {
                 return
-                    _targetFramework == TargetFramework.CSLA40/* ||
-                    _targetFramework == TargetFramework.CSLA45*/;
+                    _targetFramework == TargetFramework.CSLA40 ||
+                    _targetFramework == TargetFramework.CSLA45;
             }
         }
 
@@ -680,8 +680,8 @@ namespace CslaGenerator.Metadata
             get
             {
                 return
-                    _targetFramework == TargetFramework.CSLA40DAL/* ||
-                    _targetFramework == TargetFramework.CSLA45DAL*/;
+                    _targetFramework == TargetFramework.CSLA40DAL ||
+                    _targetFramework == TargetFramework.CSLA45DAL;
             }
         }
 
