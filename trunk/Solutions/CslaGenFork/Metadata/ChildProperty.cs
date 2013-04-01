@@ -105,15 +105,15 @@ namespace CslaGenerator.Metadata
             get { return _declarationMode; }
             set
             {
-                if(LoadingScheme == LoadingScheme.SelfLoad && LazyLoad)
+                if (LoadingScheme == LoadingScheme.SelfLoad && LazyLoad)
                 {
                     if (value == PropertyDeclaration.ClassicProperty ||
                         value == PropertyDeclaration.Managed)
                         _declarationMode = value;
                 }
                 else if (value == PropertyDeclaration.ClassicProperty ||
-                    value == PropertyDeclaration.AutoProperty ||
-                    value == PropertyDeclaration.Managed)
+                         value == PropertyDeclaration.AutoProperty ||
+                         value == PropertyDeclaration.Managed)
                     _declarationMode = value;
             }
         }

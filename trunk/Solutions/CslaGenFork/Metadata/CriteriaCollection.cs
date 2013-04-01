@@ -28,7 +28,7 @@ namespace CslaGenerator.Metadata
 
         protected override void InsertItem(int index, Criteria item)
         {
-            if(_parent != null)
+            if (_parent != null)
                 item.SetParent(_parent);
             base.InsertItem(index, item);
         }
