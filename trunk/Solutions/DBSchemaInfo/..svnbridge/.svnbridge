@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?><ItemProperties xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><Properties><Property><Name>svn:ignore</Name><Value>bin
+﻿<?xml version="1.0" encoding="utf-8"?><ItemProperties xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><Properties><Property><Name>svn:ignore</Name><Value>bin
 obj
 </Value></Property><Property><Name>svn:ignore</Name><Value>DBSchemaInfo.suo
 bin
@@ -17,6 +17,10 @@ obj
 *.user
 DBSchemaInfo.5.1.ReSharper.user
 DBSchemaInfo.suo
+bin
+obj
+</Value></Property><Property><Name>svn:ignore</Name><Value>*.user
+DBSchemaInfo.5.1.ReSharper.user
 bin
 obj
 </Value></Property></Properties></ItemProperties>
