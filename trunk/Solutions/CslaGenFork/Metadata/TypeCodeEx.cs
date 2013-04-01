@@ -1,20 +1,20 @@
 namespace CslaGenerator.Metadata
 {
     /// <summary>
-    /// Summary description for TypeCodeExEx.
+    /// Summary description for TypeCodeEx.
     /// </summary>
     public enum TypeCodeEx
     {
-        Boolean = 1,
+        Empty,
+        Boolean,
         Byte,
         ByteArray,
         Char,
-        SmartDate,
         DateTime,
+        DateTimeOffset,
         DBNull,
         Decimal,
         Double,
-        Empty,
         Guid,
         Int16,
         Int32,
@@ -22,7 +22,9 @@ namespace CslaGenerator.Metadata
         Object,
         SByte,
         Single,
+        SmartDate,
         String,
+        TimeSpan,
         UInt16,
         UInt32,
         UInt64
