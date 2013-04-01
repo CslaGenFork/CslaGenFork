@@ -477,7 +477,7 @@ namespace CslaGenerator
             this.convertDateTimeToSmartDate.Enabled = false;
             this.convertDateTimeToSmartDate.Name = "convertDateTimeToSmartDate";
             this.convertDateTimeToSmartDate.Size = new System.Drawing.Size(200, 22);
-            this.convertDateTimeToSmartDate.Text = "Convert &DateTime to SmartDate properties";
+            this.convertDateTimeToSmartDate.Text = "&Convert DateTime/DateTimeOffset to SmartDate properties";
             this.convertDateTimeToSmartDate.Click += new System.EventHandler(this.ConvertDateTimeToSmartDate_Click);
             // 
             // forceBackingFieldSmartDate
