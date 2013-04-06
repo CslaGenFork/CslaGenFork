@@ -505,8 +505,7 @@ namespace CslaGenerator.CodeGen
                     return "GetValue";
                     // waiting for SafeDatareader support for "GetTime"
                 case DbType.DateTimeOffset:
-                    return (propertyType == TypeCodeEx.SmartDate) ? "GetSmartDate" : "GetValue";
-                    // waiting for SafeDatareader support for "GetDateTimeOffset"
+                    return (propertyType == TypeCodeEx.SmartDate) ? "GetSmartDate" : "GetDateTimeOffset";
                 case DbType.Date:
                 case DbType.DateTime2:
                 case DbType.DateTime:
@@ -546,8 +545,7 @@ namespace CslaGenerator.CodeGen
                     return "GetValue";
                     // waiting for SafeDatareader support for "GetTime"
                 case TypeCodeEx.DateTimeOffset:
-                    return "GetValue";
-                    // waiting for SafeDatareader support for "GetDateTimeOffset"
+                    return "GetDateTimeOffset";
                 case TypeCodeEx.SmartDate:
                     return "GetSmartDate";
                 case TypeCodeEx.DateTime:
