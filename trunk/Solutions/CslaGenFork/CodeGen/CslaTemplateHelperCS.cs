@@ -3657,12 +3657,12 @@ namespace CslaGenerator.CodeGen
         {
             foreach (var valueProp in info.GetAllValueProperties())
             {
-                if (prop.SourcePropertyName == valueProp.Name)
+                if (prop.Name == valueProp.Name)
                     return GetFieldLoaderStatement(valueProp.DeclarationMode, prop.Name + ConvertTextToSmartDate(valueProp), value);
             }
             foreach (var childProp in info.GetAllChildProperties())
             {
-                if (prop.SourcePropertyName == childProp.Name)
+                if (prop.Name == childProp.Name)
                     return GetFieldLoaderStatement(childProp.DeclarationMode, prop.Name, value);
             }
 
