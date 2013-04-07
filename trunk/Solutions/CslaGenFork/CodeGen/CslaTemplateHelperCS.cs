@@ -22,6 +22,7 @@ namespace CslaGenerator.CodeGen
     public class CslaTemplateHelperCS : CodeTemplate
     {
         protected int ResultSetCount;
+        private bool? _hasAnySilverlightLocalDataPortalCreate;
 
         #region Public Properties
 
@@ -5683,6 +5684,35 @@ namespace CslaGenerator.CodeGen
             }
 
             return false;
+        }
+
+        public bool HasAnySilverlightLocalDataPortalCreate()
+        {
+            if (_hasAnySilverlightLocalDataPortalCreate == null)
+            {
+                _hasAnySilverlightLocalDataPortalCreate = false;
+                foreach (var info in CurrentUnit.CslaObjects)
+                {
+                    _hasAnySilverlightLocalDataPortalCreate |= HasSilverlightLocalDataPortalCreate(info);
+                }
+            }
+
+            return _hasAnySilverlightLocalDataPortalCreate.Value;
+        }
+
+        public bool HasSilverlightLocalDataPortalCreate(CslaObjectInfo info)
+        {
+            var result = false;
+            if (CurrentUnit.GenerationParams.GenerateSilverlight4)
+            {
+                foreach (var crit in info.CriteriaObjects)
+                {
+                    if (crit.CreateOptions.DataPortal && crit.CreateOptions.RunLocal)
+                        result = true;
+                }
+            }
+
+            return result;
         }
 
         public bool HasDataPortalCreate(CslaObjectInfo info)
