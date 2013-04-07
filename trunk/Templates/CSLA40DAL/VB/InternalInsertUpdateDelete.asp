@@ -36,8 +36,6 @@ if (Info.GenerateDataPortalInsert)
                     insertIsFirst = false;
 
                 strInsertParams += Environment.NewLine + new string(' ', 24);
-                TypeCodeEx propType = prop.PropertyType;
-
                 strInsertParams += "parent." + prop.Name;
             }
         }
@@ -99,13 +97,11 @@ if (Info.GenerateDataPortalInsert)
                 strInsertParams += Environment.NewLine + new string(' ', 24);
             }
 
-            TypeCodeEx propType = TypeHelper.GetBackingFieldType(prop);
-
             if (prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK)
             {
                 if (!usesDTO)
                 {
-                    strInsertPK = GetDataTypeGeneric(prop, propType) + " " + FormatCamel(prop.Name) + " = -1;" + Environment.NewLine + new string(' ', 20);
+                    strInsertPK = GetDataTypeGeneric(prop, TypeHelper.GetBackingFieldType(prop)) + " " + FormatCamel(prop.Name) + " = -1;" + Environment.NewLine + new string(' ', 20);
                     strInsertParams += "out " + FormatCamel(prop.Name);
                 }
 
@@ -290,8 +286,6 @@ if (Info.GenerateDataPortalUpdate)
                     updateIsFirst = false;
 
                 strUpdateParams += Environment.NewLine + new string(' ', 24);
-                TypeCodeEx propType = prop.PropertyType;
-
                 strUpdateParams += "parent." + prop.Name;
             }
         }
@@ -358,8 +352,6 @@ if (Info.GenerateDataPortalUpdate)
 
                 strUpdateParams += Environment.NewLine + new string(' ', 24);
             }
-
-            //TypeCodeEx propType = TypeHelper.GetBackingFieldType(prop);
 
             if (prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion ||
                 prop.DeclarationMode == PropertyDeclaration.UnmanagedWithTypeConversion)
@@ -503,10 +495,8 @@ if (Info.GenerateDataPortalDelete)
             else
                 deleteIsFirst = false;
 
-            TypeCodeEx propType = prop.PropertyType;
-
             strDeleteComment += "/// <param name=\"" + FormatCamel(prop.Name) + "\">The parent " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
-            strDeleteCritParams += string.Concat(GetDataTypeGeneric(prop, propType), " ", FormatCamel(prop.Name));
+            strDeleteCritParams += string.Concat(GetDataTypeGeneric(prop, prop.PropertyType), " ", FormatCamel(prop.Name));
             strDeleteInvokeParams += "parent." + prop.Name;
         }
     }
@@ -522,9 +512,7 @@ if (Info.GenerateDataPortalDelete)
             else
                 deleteIsFirst = false;
 
-            TypeCodeEx propType = TypeHelper.GetBackingFieldType(prop);
-
-            strDeleteCritParams += string.Concat(GetDataTypeGeneric(prop, propType), " ", FormatCamel(prop.Name));
+            strDeleteCritParams += string.Concat(GetDataTypeGeneric(prop, TypeHelper.GetBackingFieldType(prop)), " ", FormatCamel(prop.Name));
             strDeleteInvokeParams += GetParameterSet(Info, prop);
             strDeleteComment += "/// <param name=\"" + FormatCamel(prop.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
         }
