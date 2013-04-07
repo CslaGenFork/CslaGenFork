@@ -45,6 +45,7 @@
     <ChangedDateColumn>ChangeDate</ChangedDateColumn>
     <ChangedUserColumn>ChangeUserID</ChangedUserColumn>
     <LogDateAndTime>true</LogDateAndTime>
+    <LogInUtc>false</LogInUtc>
     <GetUserMethod>Security.UserInformation.UserID</GetUserMethod>
   </Params>
   <GenerationParams>
