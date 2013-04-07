@@ -20,8 +20,6 @@ if (!Info.UseCustomLoading &&
                 else
                     getIsFirst = false;
 
-                TypeCodeEx propType = p.PropertyType;
-
                 strGetComment += "/// <param name=\"" + FormatCamel(p.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(p.Name) + ".</param>";
             }
             if (c.Properties.Count > 1)
