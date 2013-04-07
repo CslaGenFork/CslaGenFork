@@ -59,9 +59,7 @@ if (Info.GenerateDataPortalDelete)
                     else
                         deleteIsFirst = false;
 
-                    TypeCodeEx propType = c.Properties[i].PropertyType;
-
-                    strDeleteCritParams += string.Concat(GetDataTypeGeneric(c.Properties[i], propType), " ", FormatCamel(c.Properties[i].Name));
+                    strDeleteCritParams += string.Concat(GetDataTypeGeneric(c.Properties[i], c.Properties[i].PropertyType), " ", FormatCamel(c.Properties[i].Name));
                     strDeleteComment += "/// <param name=\"" + FormatCamel(c.Properties[i].Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(c.Properties[i].Name) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
                 }
                 if (isFirstMethod)

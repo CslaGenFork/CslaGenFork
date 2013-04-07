@@ -42,13 +42,11 @@ if (Info.GenerateDataPortalInsert)
                 else
                     insertIsFirst = false;
 
-                TypeCodeEx propType = TypeHelper.GetBackingFieldType(prop);
-
                 strInsertComment += System.Environment.NewLine + new string(' ', 8) + "/// <param name=\"" + FormatCamel(prop.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) + ".</param>";
                 if (prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK)
                     strInsertParams += "out ";
 
-                strInsertParams += string.Concat(GetDataTypeGeneric(prop, propType), " ", FormatCamel(prop.Name));
+                strInsertParams += string.Concat(GetDataTypeGeneric(prop, TypeHelper.GetBackingFieldType(prop)), " ", FormatCamel(prop.Name));
             }
         }
         if (isFirstMethod)

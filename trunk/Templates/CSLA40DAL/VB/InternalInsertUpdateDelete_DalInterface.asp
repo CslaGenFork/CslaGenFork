@@ -44,10 +44,8 @@ if (Info.GenerateDataPortalInsert)
                 else
                     insertIsFirst = false;
 
-                TypeCodeEx propType = prop.PropertyType;
-
                 strInsertComment += System.Environment.NewLine + new string(' ', 8) + "/// <param name=\"" + FormatCamel(prop.Name) + "\">The parent " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) + ".</param>";
-                strInsertParams += string.Concat(GetDataTypeGeneric(prop, propType), " ", FormatCamel(prop.Name));
+                strInsertParams += string.Concat(GetDataTypeGeneric(prop, prop.PropertyType), " ", FormatCamel(prop.Name));
             }
         }
         foreach (ValueProperty prop in Info.GetAllValueProperties())
@@ -67,13 +65,11 @@ if (Info.GenerateDataPortalInsert)
                 else
                     insertIsFirst = false;
 
-                TypeCodeEx propType = TypeHelper.GetBackingFieldType(prop);
-
                 strInsertComment += System.Environment.NewLine + new string(' ', 8) + "/// <param name=\"" + FormatCamel(prop.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) + ".</param>";
                 if (prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK)
                     strInsertParams += "out ";
 
-                strInsertParams += string.Concat(GetDataTypeGeneric(prop, propType), " ", FormatCamel(prop.Name));
+                strInsertParams += string.Concat(GetDataTypeGeneric(prop, TypeHelper.GetBackingFieldType(prop)), " ", FormatCamel(prop.Name));
             }
         }
         if (isFirstMethod)
@@ -127,10 +123,8 @@ if (Info.GenerateDataPortalUpdate)
                 else
                     updateIsFirst = false;
 
-                TypeCodeEx propType = prop.PropertyType;
-
                 strUpdateComment += System.Environment.NewLine + new string(' ', 8) + "/// <param name=\"" + FormatCamel(prop.Name) + "\">The parent " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) + ".</param>";
-                strUpdateParams += string.Concat(GetDataTypeGeneric(prop, propType), " ", FormatCamel(prop.Name));
+                strUpdateParams += string.Concat(GetDataTypeGeneric(prop, prop.PropertyType), " ", FormatCamel(prop.Name));
             }
         }
         foreach (ValueProperty prop in Info.GetAllValueProperties())
@@ -153,10 +147,8 @@ if (Info.GenerateDataPortalUpdate)
                 else
                     updateIsFirst = false;
 
-                TypeCodeEx propType = TypeHelper.GetBackingFieldType(prop);
-
                 strUpdateComment += System.Environment.NewLine + new string(' ', 8) + "/// <param name=\"" + FormatCamel(prop.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) + ".</param>";
-                strUpdateParams += string.Concat(GetDataTypeGeneric(prop, propType), " ", FormatCamel(prop.Name));
+                strUpdateParams += string.Concat(GetDataTypeGeneric(prop, TypeHelper.GetBackingFieldType(prop)), " ", FormatCamel(prop.Name));
             }
         }
         if (isFirstMethod)
@@ -190,10 +182,8 @@ if (Info.GenerateDataPortalDelete)
             else
                 deleteIsFirst = false;
 
-            TypeCodeEx propType = prop.PropertyType;
-
             strDeleteComment += "/// <param name=\"" + FormatCamel(prop.Name) + "\">The parent " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
-            strDeleteCritParams += string.Concat(GetDataTypeGeneric(prop, propType), " ", FormatCamel(prop.Name));
+            strDeleteCritParams += string.Concat(GetDataTypeGeneric(prop, prop.PropertyType), " ", FormatCamel(prop.Name));
         }
     }
     foreach (ValueProperty prop in Info.ValueProperties)
@@ -205,9 +195,7 @@ if (Info.GenerateDataPortalDelete)
             else
                 deleteIsFirst = false;
 
-            TypeCodeEx propType = TypeHelper.GetBackingFieldType(prop);
-
-            strDeleteCritParams += string.Concat(GetDataTypeGeneric(prop, propType), " ", FormatCamel(prop.Name));
+            strDeleteCritParams += string.Concat(GetDataTypeGeneric(prop, TypeHelper.GetBackingFieldType(prop)), " ", FormatCamel(prop.Name));
             strDeleteComment += "/// <param name=\"" + FormatCamel(prop.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
         }
     }

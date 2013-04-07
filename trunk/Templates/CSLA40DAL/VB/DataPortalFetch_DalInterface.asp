@@ -68,9 +68,7 @@ foreach (Criteria c in Info.CriteriaObjects)
                 else
                     getIsFirst = false;
 
-                TypeCodeEx propType = c.Properties[i].PropertyType;
-
-                strGetCritParams += string.Concat(GetDataTypeGeneric(c.Properties[i], propType), " ", FormatCamel(c.Properties[i].Name));
+                strGetCritParams += string.Concat(GetDataTypeGeneric(c.Properties[i], c.Properties[i].PropertyType), " ", FormatCamel(c.Properties[i].Name));
                 strGetComment += "/// <param name=\"" + FormatCamel(c.Properties[i].Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(c.Properties[i].Name) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
             }
             if (isFirstDPFDI)

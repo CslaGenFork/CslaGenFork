@@ -67,13 +67,11 @@ if (Info.GenerateDataPortalInsert)
                 strInsertParams += Environment.NewLine + new string(' ', 24);
             }
 
-            TypeCodeEx propType = TypeHelper.GetBackingFieldType(prop);
-
             if (prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK)
             {
                 if (!usesDTO)
                 {
-                    strInsertPK = GetDataTypeGeneric(prop, propType) + " " + FormatCamel(prop.Name) + " = -1;" + Environment.NewLine + new string(' ', 20);
+                    strInsertPK = GetDataTypeGeneric(prop, TypeHelper.GetBackingFieldType(prop)) + " " + FormatCamel(prop.Name) + " = -1;" + Environment.NewLine + new string(' ', 20);
                     strInsertParams += "out " + FormatCamel(prop.Name);
                 }
 

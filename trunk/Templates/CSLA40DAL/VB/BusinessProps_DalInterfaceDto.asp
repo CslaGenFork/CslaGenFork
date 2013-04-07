@@ -18,7 +18,6 @@ if (parentType.Length > 0)
         else
             Response.Write(Environment.NewLine);
 
-        TypeCodeEx parentPropType = prop.PropertyType;
         %>
         /// <summary>
         /// Gets or sets the parent <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>.
@@ -43,7 +42,7 @@ if (parentType.Length > 0)
         <%
         }
         %>
-        public <%= GetDataTypeGeneric(prop, parentPropType) %> Parent_<%= FormatPascal(prop.Name) %> { get; set; }
+        public <%= GetDataTypeGeneric(prop, prop.PropertyType) %> Parent_<%= FormatPascal(prop.Name) %> { get; set; }
         <%
     }
 }
@@ -54,7 +53,6 @@ foreach (ValueProperty prop in Info.GetAllValueProperties())
     else
         Response.Write(Environment.NewLine);
 
-    TypeCodeEx propType = TypeHelper.GetBackingFieldType(prop);
     %>
         /// <summary>
         /// Gets or sets the <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>.
@@ -79,7 +77,7 @@ foreach (ValueProperty prop in Info.GetAllValueProperties())
         <%
         }
         %>
-        public <%= GetDataTypeGeneric(prop, propType) %> <%= FormatPascal(prop.Name) %> { get; set; }
+        public <%= GetDataTypeGeneric(prop, TypeHelper.GetBackingFieldType(prop)) %> <%= FormatPascal(prop.Name) %> { get; set; }
         <%
 }
 %>

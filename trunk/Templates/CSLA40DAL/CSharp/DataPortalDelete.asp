@@ -25,8 +25,6 @@ if (Info.GenerateDataPortalDelete)
                     else
                         deleteIsFirst = false;
 
-                    TypeCodeEx propType = p.PropertyType;
-
                     strSelfDeleteCritParams += FormatGeneralParameter(Info, p, false, false, true);
                     strDeleteCritParams += p.Name;
                     strDeleteInvokeParams += FormatCamel(p.Name);
@@ -65,10 +63,8 @@ if (Info.GenerateDataPortalDelete)
                     else
                         deleteIsFirst = false;
 
-                    TypeCodeEx propType = p.PropertyType;
-
                     strSelfDeleteCritParams += FormatGeneralParameter(Info, p, false, false, true);
-                    strDeleteCritParams += string.Concat(GetDataTypeGeneric(p, propType), " ", FormatCamel(p.Name));
+                    strDeleteCritParams += string.Concat(GetDataTypeGeneric(p, p.PropertyType), " ", FormatCamel(p.Name));
                     strDeleteInvokeParams += FormatCamel(p.Name);
                     strDeleteComment += "/// <param name=\"" + FormatCamel(p.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(p.Name) + ".</param>";
                 }
