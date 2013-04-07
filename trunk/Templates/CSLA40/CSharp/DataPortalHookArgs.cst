@@ -19,10 +19,24 @@ if (CurrentUnit.GenerationParams.HeaderVerbosity != HeaderVerbosity.None)
 <%
     Response.Write(Environment.NewLine);
 }
+if (HasAnySilverlightLocalDataPortalCreate())
+{
+    %>
+#if !SILVERLIGHT
+<%
+}
 %>
 using System.Data;
 using System.Data.Common;
 using Csla.Data;
+<%
+if (HasAnySilverlightLocalDataPortalCreate())
+{
+    %>
+#endif
+<%
+}
+%>
 
 namespace <%= CurrentUnit.GenerationParams.UtilitiesNamespace %>
 {
@@ -41,6 +55,15 @@ namespace <%= CurrentUnit.GenerationParams.UtilitiesNamespace %>
         /// <value>The criteria object.</value>
         public object CriteriaArg { get; private set; }
 
+<%
+if (HasAnySilverlightLocalDataPortalCreate())
+{
+    %>
+#if !SILVERLIGHT
+
+<%
+}
+%>
         /// <summary>
         /// Gets or sets the connection argument.
         /// </summary>
@@ -76,6 +99,15 @@ namespace <%= CurrentUnit.GenerationParams.UtilitiesNamespace %>
         /// </summary>
         /// <value>The data set.</value>
         public DataSet DataSetArg { get; private set; }
+        <%
+if (HasAnySilverlightLocalDataPortalCreate())
+{
+    %>
+
+#endif
+<%
+}
+%>
 
         #endregion
 
@@ -88,6 +120,24 @@ namespace <%= CurrentUnit.GenerationParams.UtilitiesNamespace %>
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataPortalHookArgs"/> class.
+        /// </summary>
+        /// <param name="crit">The criteria object argument.</param>
+        public DataPortalHookArgs(object crit)
+        {
+            CriteriaArg = crit;
+        }
+
+<%
+if (HasAnySilverlightLocalDataPortalCreate())
+{
+    %>
+#if !SILVERLIGHT
+
+<%
+}
+%>
         /// <summary>
         /// Initializes a new instance of the <see cref="DataPortalHookArgs"/> class.
         /// </summary>
@@ -153,15 +203,15 @@ namespace <%= CurrentUnit.GenerationParams.UtilitiesNamespace %>
         {
             DataRowArg = dr;
         }
+        <%
+if (HasAnySilverlightLocalDataPortalCreate())
+{
+    %>
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DataPortalHookArgs"/> class.
-        /// </summary>
-        /// <param name="crit">The criteria object argument.</param>
-        public DataPortalHookArgs(object crit)
-        {
-            CriteriaArg = crit;
-        }
+#endif
+<%
+}
+%>
 
         #endregion
 
