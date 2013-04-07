@@ -18,8 +18,6 @@ if (!Info.UseCustomLoading && (UseNoSilverlight() ||
                 else
                     getIsFirst = false;
 
-                TypeCodeEx propType = p.PropertyType;
-
                 strGetComment += "/// <param name=\"" + FormatCamel(p.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(p.Name) + ".</param>";
             }
             if (c.Properties.Count > 1)
@@ -83,12 +81,12 @@ if (!Info.UseCustomLoading && (UseNoSilverlight() ||
             {
                 if (c.Properties.Count > 1)
                 {
-                    %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= GetParameterSet(p, true) %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
+                    %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= GetParameterSet(p, true) %>).DbType = DbType.<%= GetDbType(p) %>;
                     <%
                 }
                 else
                 {
-                    %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= AssignSingleCriteria(c, "crit") %>).DbType = DbType.<%= TypeHelper.GetDbType(p.PropertyType) %>;
+                    %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= AssignSingleCriteria(c, "crit") %>).DbType = DbType.<%= GetDbType(p) %>;
                     <%
                 }
             }
