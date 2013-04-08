@@ -847,7 +847,7 @@ namespace CslaGenerator.CodeGen
             // show unconditionally, before everything else
             var commonNamespaces = new List<string>();
             commonNamespaces.AddRange(GetBaseCommonNamespaces(info, unit, cachedContextUtilitiesNamespace));
-            commonNamespaces.AddRange(GetCommonNamespaces(info));
+            commonNamespaces.AddRange(GetCommonNamespaces(info, cachedContextUtilitiesNamespace));
 
             // show only for Silverlight
             var silverlightNamespaces = new List<string>();
@@ -919,8 +919,7 @@ namespace CslaGenerator.CodeGen
             return result;
         }
 
-        private List<string> GetBaseCommonNamespaces(CslaObjectInfo info, CslaGeneratorUnit unit,
-                                                     string contextUtilitiesnamespace)
+        private List<string> GetBaseCommonNamespaces(CslaObjectInfo info, CslaGeneratorUnit unit, string contextUtilitiesnamespace)
         {
             var result = new List<string>();
 
@@ -956,7 +955,7 @@ namespace CslaGenerator.CodeGen
             return result;
         }
 
-        private List<string> GetCommonNamespaces(CslaObjectInfo info)
+        private List<string> GetCommonNamespaces(CslaObjectInfo info, string contextUtilitiesnamespace)
         {
             var result = new List<string>();
 
@@ -1073,6 +1072,10 @@ namespace CslaGenerator.CodeGen
                         result.Add(parentInfo.ObjectNamespace);
             }
 
+            if (contextUtilitiesnamespace != string.Empty && HasSilverlightLocalDataPortalCreate(info))
+                result.Add(contextUtilitiesnamespace);
+
+
             if (result.Contains(string.Empty))
                 result.Remove(string.Empty);
             result.Sort(String.Compare);
@@ -1095,7 +1098,7 @@ namespace CslaGenerator.CodeGen
 
             if (!unit.GenerationParams.TargetIsCsla4DAL || !unit.GenerationParams.GenerateDTO)
                 result.Add("Csla.Data");
-            if (contextUtilitiesnamespace != string.Empty)
+            if (contextUtilitiesnamespace != string.Empty && !HasSilverlightLocalDataPortalCreate(info))
                 result.Add(contextUtilitiesnamespace);
 
             if (result.Contains(string.Empty))
@@ -5703,7 +5706,9 @@ namespace CslaGenerator.CodeGen
         public bool HasSilverlightLocalDataPortalCreate(CslaObjectInfo info)
         {
             var result = false;
-            if (CurrentUnit.GenerationParams.GenerateSilverlight4)
+            if (CurrentUnit.GenerationParams.GenerateSilverlight4 &&
+                IsObjectType(info.ObjectType) &&
+                !IsReadOnlyType(info.ObjectType))
             {
                 foreach (var crit in info.CriteriaObjects)
                 {
