@@ -1,6 +1,5 @@
 <%
-if (!Info.UseCustomLoading &&
-    CurrentUnit.GenerationParams.SilverlightUsingServices)
+if (!Info.UseCustomLoading && CurrentUnit.GenerationParams.SilverlightUsingServices)
 {
     List<string> fetchPartialMethods = new List<string>();
     List<string> fetchPartialParams = new List<string>();

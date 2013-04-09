@@ -43,30 +43,29 @@ if (Info.ObjectType == CslaObjectType.EditableRootCollection ||
 }
 int silverlightLevel = 0;
 bool genOptional = false;
-if (CurrentUnit.GenerationParams.UtilitiesNamespace != string.Empty &&
-    GetContextUtilitiesNamespace(CurrentUnit, GenerationStep.Business) != string.Empty)
+string cachedContextUtilitiesNamespace = GetContextUtilitiesNamespace(CurrentUnit, GenerationStep.Business);
+if (cachedContextUtilitiesNamespace != string.Empty)
 {
-    if (UseBoth())
+    if (UseBoth() && !HasSilverlightLocalDataPortalCreate(Info))
     {
         %>#if !SILVERLIGHT
 <%
     }
-    if (UseNoSilverlight())
+    if (UseNoSilverlight() || HasSilverlightLocalDataPortalCreate(Info))
     {
-%>using <%= GetContextUtilitiesNamespace(CurrentUnit, GenerationStep.Business) %>;
+%>using <%= cachedContextUtilitiesNamespace %>;
 <%
     }
-    if (UseBoth())
+    if (UseBoth() && !HasSilverlightLocalDataPortalCreate(Info))
     {
         %>
 #endif
 <%
     }
 }
-if (UseNoSilverlight() &&
-    GetContextUtilitiesNamespace(CurrentUnit, GenerationStep.Business) != string.Empty)
-    Response.WriteLine();
-%>namespace <%= Info.ObjectNamespace %>
+%>
+
+namespace <%= Info.ObjectNamespace %>
 {
     <%= Info.ClassVisibility == ClassVisibility.Public ? "public" : "internal" %> partial class <%= Info.ObjectName %>
     {
@@ -242,21 +241,20 @@ if (Info.ObjectType != CslaObjectType.UnitOfWork)
         #endregion
 <%
     }
+    %>
+
+        #region Pseudo Event Handlers
+<%
     System.Collections.Generic.List<string> eventList = GetEventList(Info);
     if (eventList.Count > 0 && UseNoSilverlight())
     {
-        if (UseBoth())
+        if (UseBoth() && !HasSilverlightLocalDataPortalCreate(Info))
         {
             %>
 
 #if !SILVERLIGHT
 <%
         }
-        %>
-
-        #region Pseudo Event Handlers
-<%
-
         foreach (string strEvent in eventList)
         {
             %>
@@ -266,19 +264,26 @@ if (Info.ObjectType != CslaObjectType.UnitOfWork)
         //    throw new System.Exception("The method or operation is not implemented.");
         //}
         <%
+            if (strEvent == "Create" && HasSilverlightLocalDataPortalCreate(Info))
+            {
+                %>
+
+#if !SILVERLIGHT
+        <%
+            }
+        }
+        if (UseBoth())
+        {
+            %>
+
+#endif
+<%
         }
         %>
 
         #endregion
 
     <%
-    }
-    if (UseBoth())
-    {
-        %>
-#endif
-
-<%
     }
 }
 else
@@ -294,29 +299,29 @@ if (MethodList.Count > 0)
 %>
     }
     <%
-    if (IsCriteriaExtendedClassNeeded(Info))
-    {
-        %>
+if (IsCriteriaExtendedClassNeeded(Info))
+{
+    %>
 
     #region Criteria Object
     <%
-        foreach (Criteria crit in Info.CriteriaObjects)
+    foreach (Criteria crit in Info.CriteriaObjects)
+    {
+        if (crit.Properties.Count > 1)
         {
-            if (crit.Properties.Count > 1)
-            {
-                %>
+            %>
 
     <%= Info.ClassVisibility == ClassVisibility.Public ? "public" : "internal" %> partial class <%= crit.Name %>
     {
     }
 <%
-            }
         }
-        %>
+    }
+    %>
 
     #endregion
 
     <%
-    }
-    %>
+}
+%>
 }
