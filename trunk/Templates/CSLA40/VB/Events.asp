@@ -32,19 +32,19 @@ if ((Info.ObjectType == CslaObjectType.EditableRoot ||
 
 <%
 }
-if (UseNoSilverlight())
+System.Collections.Generic.List<string> eventList = GetEventList(Info);
+if (eventList.Count > 0 && UseNoSilverlight())
 {
-%>
+    %>
         #region Pseudo Events
 <%
-    if (UseBoth())
+    if (UseBoth() && !HasSilverlightLocalDataPortalCreate(Info))
     {
         %>
 
 #if !SILVERLIGHT
 <%
     }
-    System.Collections.Generic.List<string> eventList = GetEventList(Info);
     foreach (string strEvent in eventList)
     {
     %>
@@ -54,6 +54,13 @@ if (UseNoSilverlight())
         /// </summary>
         partial void On<%= strEvent %>(DataPortalHookArgs args);
         <%
+        if (strEvent == "Create" && HasSilverlightLocalDataPortalCreate(Info))
+        {
+            %>
+
+#if !SILVERLIGHT
+        <%
+        }
     }
     if (UseBoth())
     {

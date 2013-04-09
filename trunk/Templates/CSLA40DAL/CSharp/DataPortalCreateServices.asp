@@ -140,6 +140,13 @@ if ((UseSilverlight() && objectRunLocal) || CurrentUnit.GenerationParams.Silverl
             }
             <%
             }
+            else
+            {
+                %>
+            var args = new DataPortalHookArgs();
+            OnCreate(args);
+            <%
+            }
             %>
             base.<%= isChildNotLazyLoaded ? "Child_Create()" : "DataPortal_Create(handler)" %>;
         }
