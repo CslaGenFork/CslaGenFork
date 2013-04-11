@@ -822,6 +822,9 @@ namespace CslaGenerator.Metadata
                 _silverlightUsingServices = false;
                 _generateDatabaseClass = false;
             }
+
+            if (TargetIsCsla45)
+                AckSilverlightPublicPropertyInfo = true;
         }
 
         private void SetServerInvocationOptions()
