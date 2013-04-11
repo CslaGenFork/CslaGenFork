@@ -658,6 +658,28 @@ namespace CslaGenerator.Metadata
         }
 
         [Browsable(false)]
+        public bool TargetIsCsla40
+        {
+            get
+            {
+                return
+                    _targetFramework == TargetFramework.CSLA40 ||
+                    _targetFramework == TargetFramework.CSLA40DAL;
+            }
+        }
+
+        [Browsable(false)]
+        public bool TargetIsCsla45
+        {
+            get
+            {
+                return
+                    _targetFramework == TargetFramework.CSLA45 ||
+                    _targetFramework == TargetFramework.CSLA45DAL;
+            }
+        }
+
+        [Browsable(false)]
         public bool TargetIsCsla4All
         {
             get { return TargetIsCsla4 || TargetIsCsla4DAL; }
