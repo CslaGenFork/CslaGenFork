@@ -89,6 +89,7 @@ namespace CslaGenerator.Metadata
         private bool _allowNew = true;
         private bool _allowEdit = true;
         private bool _allowRemove = true;
+        private bool _generateConstructor = true;
         private bool _generateFactoryMethods = true;
         private bool _generateDataPortalInsert = true;
         private bool _generateDataPortalUpdate = true;
@@ -159,6 +160,15 @@ namespace CslaGenerator.Metadata
                 _generate = value;
                 OnPropertyChanged("Generate");
             }
+        }
+
+        [Category("00. Generate Options")]
+        [Description("Whether or not to generate the constructor method for this object. If False, you must have a constuctor method on the extended file.")]
+        [UserFriendlyName("Generate Constructor")]
+        public bool GenerateConstructor
+        {
+            get { return _generateConstructor; }
+            set { _generateConstructor = value; }
         }
 
         [Category("00. Generate Options")]
