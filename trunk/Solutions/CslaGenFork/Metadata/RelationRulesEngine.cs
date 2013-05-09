@@ -77,6 +77,9 @@ namespace CslaGenerator.Metadata
             if (!CanHaveParent(child))
                 return false;
 
+            if (!CanHaveChild(parent))
+                return false;
+
             bool? result;
 
             ParentType2_LoadData();
@@ -118,6 +121,21 @@ namespace CslaGenerator.Metadata
             {
                 BrokenRuleMsg = "\r\nRelation rule: " + _specificErrorMessage + " * * *\r\n";
                 BrokenRuleMsg += child + " cannot have a ParentType.";
+                return false;
+            }
+
+            return true;
+        }
+
+        // Dynamic Root stereotype can't have children
+        private static bool CanHaveChild(CslaObjectType parent)
+        {
+            _specificErrorMessage = "A Dynamic Root stereotype cannot have a child.";
+
+            if (parent == CslaObjectType.DynamicEditableRoot)
+            {
+                BrokenRuleMsg = "\r\nRelation rule: " + _specificErrorMessage + " * * *\r\n";
+                BrokenRuleMsg += parent + " cannot have a ChildType.";
                 return false;
             }
 
@@ -266,6 +284,12 @@ namespace CslaGenerator.Metadata
             _specificErrorMessage = string.Empty;
             BrokenRuleMsg = string.Empty;
 
+            if (!CanHaveParent(child))
+                return false;
+
+            if (!CanHaveChild(parent))
+                return false;
+
             bool? result;
 
             ChildType1_LoadData();
@@ -337,7 +361,7 @@ namespace CslaGenerator.Metadata
             _baseStereotype.Add(CslaObjectType.EditableRoot);
             _baseStereotype.Add(CslaObjectType.EditableChild);
             _baseStereotype.Add(CslaObjectType.EditableSwitchable);
-            _baseStereotype.Add(CslaObjectType.DynamicEditableRoot);
+            //_baseStereotype.Add(CslaObjectType.DynamicEditableRoot);// 2013-04-22
 
             _dependentStereotype.Clear();
             _dependentStereotype.Add(CslaObjectType.EditableChild);
