@@ -109,6 +109,7 @@ if (Info.UpdaterType != string.Empty)
                     var child = this[index];
                     if (child.<%= identityName %> == obj.<%= identitySourceName %>)
                     {
+                        IsReadOnly = false;
                         child.UpdatePropertiesOnSaved(obj);
                         <%
 if (CurrentUnit.GenerationParams.GenerateWPF)
@@ -132,6 +133,7 @@ if (CurrentUnit.GenerationParams.GenerateWPF)
     }
 }
 %>
+                        IsReadOnly = true;
                         break;
                     }
                 }
