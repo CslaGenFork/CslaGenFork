@@ -8,6 +8,7 @@
 <%@ Import Namespace="CslaGenerator.Metadata" %>
 <%@ Import Namespace="CslaGenerator.CodeGen" %>
 <%@ Import Namespace="CslaGenerator.Util" %>
+<%@ Import Namespace="System.Collections.Generic" %>
 
 <!-- #include file="Header.asp" -->
 <%
@@ -241,13 +242,61 @@ if (Info.ObjectType != CslaObjectType.UnitOfWork)
         #endregion
 <%
     }
-    %>
 
-        #region Pseudo Event Handlers
+    // for parent of editable child collections,
+    if (Info.ObjectType == CslaObjectType.EditableRoot ||
+        Info.ObjectType == CslaObjectType.EditableChild ||
+        Info.ObjectType == CslaObjectType.EditableSwitchable)
+    {
+        List<string> childProperties = new List<string>();
+        foreach (ChildProperty childProperty in Info.GetAllChildProperties())
+        {
+            if (childProperty.DeclarationMode == PropertyDeclaration.Managed ||
+            childProperty.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion ||
+            childProperty.DeclarationMode == PropertyDeclaration.Unmanaged ||
+            childProperty.DeclarationMode == PropertyDeclaration.UnmanagedWithTypeConversion)
+                childProperties.Add(childProperty.Name);
+        }
+
+        if (childProperties.Count > 0)
+        {
+            %>
+
+        #region ChildChanged Event Handler
+
+        /*/// <summary>
+        /// Raises the ChildChanged event, indicating that a child object has been changed.
+        /// </summary>
+        /// <param name="e">ChildChangedEventArgs object.</param>
+        protected override void OnChildChanged(Csla.Core.ChildChangedEventArgs e)
+        {
+            base.OnChildChanged(e);
+
+            // uncomment the lines for child with properties relevant to business rules
+            <%
+            foreach (string propertyName in childProperties)
+            {
+                %>
+            //PropertyHasChanged(<%= propertyName %>Property);
+            <%
+            }
+            %>
+            // uncomment if there is an object level business rule (introduced in Csla 4.2.0)
+            //CheckObjectRules();
+        }*/
+
+        #endregion
 <%
+        }
+    }
+
     System.Collections.Generic.List<string> eventList = GetEventList(Info);
     if (eventList.Count > 0 && UseNoSilverlight())
     {
+        %>
+
+        #region Pseudo Event Handlers
+<%
         if (UseBoth() && !HasSilverlightLocalDataPortalCreate(Info))
         {
             %>
@@ -282,13 +331,8 @@ if (Info.ObjectType != CslaObjectType.UnitOfWork)
         %>
 
         #endregion
-
     <%
     }
-}
-else
-{
-    Response.Write(Environment.NewLine);
 }
 if (MethodList.Count > 0)
 {
@@ -297,6 +341,7 @@ if (MethodList.Count > 0)
 <%
 }
 %>
+
     }
     <%
 if (IsCriteriaExtendedClassNeeded(Info))
