@@ -136,7 +136,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <Content Include="App.ico" />
     <None Include="Properties\DataSources\CslaGenerator.Metadata.GenerationParameters.datasource" />
     <None Include="Properties\DataSources\CslaGenerator.Metadata.GenerationReportCollection.datasource" />
