@@ -51,6 +51,7 @@ namespace CslaGenerator.CodeGen
         private Hashtable _templates = new Hashtable();
         private string _codeEncoding;
         private string _sprocEncoding;
+        private bool _overwriteExtendedFile;
         private CslaGeneratorUnit _unit;
         private bool _businessError;
         private bool _currentSprocError;
@@ -366,6 +367,7 @@ namespace CslaGenerator.CodeGen
             _templatesDirectory = templatesDirectory;
             _codeEncoding = ValidateEncodings("CodeEncoding");
             _sprocEncoding = ValidateEncodings("SProcEncoding");
+            _overwriteExtendedFile = ValidateOverwriteExtendedFile();
         }
 
         #endregion
@@ -551,6 +553,29 @@ namespace CslaGenerator.CodeGen
 
             return encoding;
         }
+        
+        private static bool ValidateOverwriteExtendedFile()
+        {
+            var result = false;
+            var overwriteExtendedFile = ConfigurationManager.AppSettings.Get("OverwriteExtendedFile");
+
+            if (string.IsNullOrWhiteSpace(overwriteExtendedFile))
+                return result;
+
+            try
+            {
+                result = Convert.ToBoolean(overwriteExtendedFile);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show(@"Error in ""appSettings"" section of ""CslaGenerator.exe.config"" file." + Environment.NewLine +
+                                @"The key ""OverwriteExtendedFile"" has a wrong value." + Environment.NewLine +
+                                @"Will use default of ""false"".",
+                                @"CslaGenFork initialization", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
+            return result;
+        }
 
         private bool EditableSwitchableAlert(CslaObjectInfo objInfo)
         {
@@ -724,6 +749,23 @@ namespace CslaGenerator.CodeGen
 
         private void GenerateExtendedFile(string fileName, string templateFile, CslaObjectInfo objInfo)
         {
+            if (_overwriteExtendedFile)
+            {
+                if (_unit.GenerationParams.BackupOldSource && File.Exists(fileName))
+                {
+                    var oldFile = new FileInfo(fileName);
+                    if (File.Exists(fileName + ".old"))
+                    {
+                        File.Delete(fileName + ".old");
+                    }
+                    oldFile.MoveTo(fileName + ".old");
+                }
+                else
+                {
+                    File.Delete(fileName);
+                }
+            }
+
             // Create Extended file if it does not exist
             if (!File.Exists(fileName))
             {
