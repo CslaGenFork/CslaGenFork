@@ -62,7 +62,7 @@ namespace CslaGenerator.Design
                         var parentPropertiesPropInfo = instanceType.GetProperty("ParentLoadProperties");
                         propColl = (PropertyCollection)parentPropertiesPropInfo.GetValue(objinfo, null);
 
-                        obj = (CslaObjectInfo)GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem;
+                        obj = (CslaObjectInfo)GeneratorController.Current.GetSelectedItem();
                     }
 
                     var valueProps = obj.GetAllValueProperties();

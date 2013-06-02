@@ -626,7 +626,7 @@ namespace CslaGenerator.Util.PropertyBags
 
         private bool IsBrowsable(ValueProperty[] objectType, string propertyName)
         {
-            var cslaObject = (CslaObjectInfo)GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem;
+            var cslaObject = (CslaObjectInfo)GeneratorController.Current.GetSelectedItem();
 
             try
             {

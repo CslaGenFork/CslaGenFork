@@ -43,7 +43,7 @@ namespace CslaGenerator.Design
 
                 if (instanceType == typeof(ChildProperty))
                 {
-                    _instance = GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem;
+                    _instance = GeneratorController.Current.GetSelectedItem();
                 }
                 else
                 {

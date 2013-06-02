@@ -101,10 +101,10 @@ namespace CslaGenerator.Metadata
 
         public ValueProperty()
         {
-            if (GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem != null)
+            var selectedItem = GeneratorController.Current.GetSelectedItem();
+            if (selectedItem != null)
             {
-                if (((CslaObjectInfo) GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem)
-                        .ObjectType == CslaObjectType.ReadOnlyObject)
+                if (((CslaObjectInfo) selectedItem).ObjectType == CslaObjectType.ReadOnlyObject)
                 {
                     ReadOnly = true;
                 }

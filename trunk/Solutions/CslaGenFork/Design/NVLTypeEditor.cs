@@ -40,7 +40,7 @@ namespace CslaGenerator.Design
                         if (o.ObjectType == CslaObjectType.NameValueList)
                         {
                             var prefix = string.Empty;
-                            var objectNamespace = ((CslaObjectInfo)GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem).ObjectNamespace;
+                            var objectNamespace = ((CslaObjectInfo)GeneratorController.Current.GetSelectedItem()).ObjectNamespace;
                             if (objectNamespace != o.ObjectNamespace)
                             {
                                 var idx = objectNamespace.IndexOf(o.ObjectNamespace);

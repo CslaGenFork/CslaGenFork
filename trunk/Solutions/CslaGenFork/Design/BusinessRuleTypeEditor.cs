@@ -63,7 +63,7 @@ namespace CslaGenerator.Design
                     _lstProperties.Items.Add("(None)");
 
                     _sizeSortedNamespaces = new List<string>();
-                    var currentCslaObject = (CslaObjectInfo)GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem;
+                    var currentCslaObject = (CslaObjectInfo)GeneratorController.Current.GetSelectedItem();
                     _sizeSortedNamespaces = currentCslaObject.Namespaces.ToList();
                     _sizeSortedNamespaces = GetSizeSorted(_sizeSortedNamespaces);
 

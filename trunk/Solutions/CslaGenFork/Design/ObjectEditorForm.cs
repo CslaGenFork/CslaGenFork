@@ -34,6 +34,7 @@ namespace CslaGenerator.Design
         {
             if (_object != null)
             {
+                var selectedItem = GeneratorController.Current.GetSelectedItem();
                 if (_object.GetType() == typeof (Criteria))
                 {
                     Text = @"Criteria Editor";
@@ -41,8 +42,7 @@ namespace CslaGenerator.Design
                     pgEditor.SelectedObject = new CriteriaBag(((Criteria) _object));
                     Size = new Size(Size.Width, 711);
                     pgEditor.Size = new Size(pgEditor.Size.Width, 619);
-                    var cslaObject =
-                        (CslaObjectInfo) GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem;
+                    var cslaObject = (CslaObjectInfo) selectedItem;
                     if ((cslaObject.ObjectType == CslaObjectType.ReadOnlyObject ||
                          cslaObject.ObjectType == CslaObjectType.ReadOnlyCollection ||
                          cslaObject.ObjectType == CslaObjectType.NameValueList ||
@@ -78,8 +78,7 @@ namespace CslaGenerator.Design
                     }
                     else
                     {
-                        var cslaObject =
-                            (CslaObjectInfo) GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem;
+                        var cslaObject = (CslaObjectInfo) selectedItem;
                         ((AuthorizationRule) _object).ActionProperty = cslaObject.ActionProperty;
                         ((AuthorizationRule) _object).Parent = string.Empty;
                     }

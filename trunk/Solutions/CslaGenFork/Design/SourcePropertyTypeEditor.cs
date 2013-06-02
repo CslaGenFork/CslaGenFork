@@ -34,7 +34,7 @@ namespace CslaGenerator.Design
                     var obj = (ConvertValueProperty)objinfo;
                     _lstProperties.Items.Clear();
                     _lstProperties.Items.Add("(None)");
-                    var props = ((CslaObjectInfo)GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem).GetAllValueProperties();
+                    var props = ((CslaObjectInfo)GeneratorController.Current.GetSelectedItem()).GetAllValueProperties();
                     foreach (var prop in props)
                     {
                         if (prop.PropertyType == TypeCodeEx.Int16 || prop.PropertyType == TypeCodeEx.Int32 || prop.PropertyType == TypeCodeEx.Int64 ||
