@@ -70,7 +70,7 @@ foreach (ValueProperty parentProp in Info.GetParentValueProperties())
     if (parentProp.DbBindColumn.Column == null)
         continue;
     if (!first) { %>,<% } else { first = false; } %>
-    @<%= parentProp.ParameterName %> <%= GetDataTypeString(parentProp.DbBindColumn) %><%
+    @<%= GetFkParameterNameForParentProperty(Info, parentProp) %> <%= GetDataTypeString(parentProp.DbBindColumn) %><%
 }
 foreach (ValueProperty prop in Info.GetAllValueProperties())
 {
@@ -298,11 +298,11 @@ foreach(IResultObject table in tables)
     first = true;
     string fields=string.Empty;
     string parms=string.Empty;
-    foreach (ValueProperty prop in Info.GetParentValueProperties())
+    foreach (ValueProperty parentProp in Info.GetParentValueProperties())
     {
-        if (prop.DbBindColumn.Column == null)
+        if (parentProp.DbBindColumn.Column == null)
             continue;
-        string colName = GetFKColumnForParentProperty(prop,table);
+        string colName = GetFKColumnForParentProperty(parentProp,table);
         if (colName != string.Empty)
         {
             if (!first)
@@ -312,7 +312,7 @@ foreach(IResultObject table in tables)
             }
             first = false;
             fields += string.Concat("[", colName,"]");
-            parms += string.Concat("@", prop.ParameterName);
+            parms += string.Concat("@", GetFkParameterNameForParentProperty(Info, parentProp));
         }
     }
     foreach (ValueProperty prop in Info.GetAllValueProperties())

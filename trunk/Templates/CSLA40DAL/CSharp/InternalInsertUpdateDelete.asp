@@ -22,11 +22,11 @@ if (Info.GenerateDataPortalInsert)
 
     if (parentType.Length > 0)
     {
-        foreach (Property prop in Info.ParentProperties)
+        foreach (ValueProperty parentProp in Info.GetParentValueProperties())
         {
             if (usesDTO)
             {
-                strInsertDto += Environment.NewLine + new string(' ', 12) + "dto.Parent_" + FormatPascal(prop.Name) + " = parent." + prop.Name +";";
+                strInsertDto += Environment.NewLine + new string(' ', 12) + "dto.Parent_" + FormatPascal(parentProp.Name) + " = parent." + parentProp.Name +";";
             }
             else
             {
@@ -36,7 +36,7 @@ if (Info.GenerateDataPortalInsert)
                     insertIsFirst = false;
 
                 strInsertParams += Environment.NewLine + new string(' ', 24);
-                strInsertParams += "parent." + prop.Name;
+                strInsertParams += "parent." + parentProp.Name;
             }
         }
     }
@@ -272,11 +272,11 @@ if (Info.GenerateDataPortalUpdate)
 
     if (parentType.Length > 0 && !Info.ParentInsertOnly)
     {
-        foreach (Property prop in Info.ParentProperties)
+        foreach (ValueProperty parentProp in Info.GetParentValueProperties())
         {
             if (usesDTO)
             {
-                strUpdateDto += Environment.NewLine + new string(' ', 12) + "dto.Parent_" + FormatPascal(prop.Name) + " = parent." + prop.Name +";";
+                strUpdateDto += Environment.NewLine + new string(' ', 12) + "dto.Parent_" + FormatPascal(parentProp.Name) + " = parent." + parentProp.Name +";";
             }
             else
             {
@@ -286,7 +286,7 @@ if (Info.GenerateDataPortalUpdate)
                     updateIsFirst = false;
 
                 strUpdateParams += Environment.NewLine + new string(' ', 24);
-                strUpdateParams += "parent." + prop.Name;
+                strUpdateParams += "parent." + parentProp.Name;
             }
         }
     }
@@ -485,7 +485,7 @@ if (Info.GenerateDataPortalDelete)
 
     if (parentType.Length > 0 && !Info.ParentInsertOnly)
     {
-        foreach (Property prop in Info.ParentProperties)
+        foreach (ValueProperty parentProp in Info.GetParentValueProperties())
         {
             if (!deleteIsFirst)
             {
@@ -495,9 +495,9 @@ if (Info.GenerateDataPortalDelete)
             else
                 deleteIsFirst = false;
 
-            strDeleteComment += "/// <param name=\"" + FormatCamel(prop.Name) + "\">The parent " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
-            strDeleteCritParams += string.Concat(GetDataTypeGeneric(prop, prop.PropertyType), " ", FormatCamel(prop.Name));
-            strDeleteInvokeParams += "parent." + prop.Name;
+            strDeleteComment += "/// <param name=\"" + FormatCamel(GetFkParameterNameForParentProperty(Info, parentProp)) + "\">The parent " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(GetFkParameterNameForParentProperty(Info, parentProp)) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
+            strDeleteCritParams += string.Concat(GetDataTypeGeneric(parentProp, parentProp.PropertyType), " ", FormatCamel(GetFkParameterNameForParentProperty(Info, parentProp)));
+            strDeleteInvokeParams += "parent." + parentProp.Name;
         }
     }
     foreach (ValueProperty prop in Info.ValueProperties)
