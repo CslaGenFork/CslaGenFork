@@ -97,6 +97,64 @@ namespace CslaGenerator.CodeGen
 
         #region Accessories
 
+        public static string GetFkParameterNameForParentProperty(CslaObjectInfo info, ValueProperty parentProperty)
+        {
+            var parameterName = GetFkColumnNameForParentProperty(info, parentProperty);
+            if (parameterName == string.Empty)
+                parameterName = parentProperty.ParameterName;
+
+            return parameterName;
+        }
+
+        private static string GetFkColumnNameForParentProperty(CslaObjectInfo info, ValueProperty parentProperty)
+        {
+            var parentSchema = parentProperty.DbBindColumn.SchemaName;
+            var parentTable = parentProperty.DbBindColumn.ObjectName;
+            var parentColumn = parentProperty.DbBindColumn.Column;
+
+            var objectTables = new List<IResultObject>();
+            var tableNames = new List<string>();
+            foreach (var property in info.ValueProperties)
+            {
+                if (property.DbBindColumn != null)
+                {
+                    var table = property.DbBindColumn.DatabaseObject;
+                    if (table != null && !tableNames.Contains(table.ObjectName))
+                    {
+                        objectTables.Add((IResultObject) property.DbBindColumn.DatabaseObject);
+                        tableNames.Add(table.ObjectName);
+                    }
+                }
+            }
+
+            foreach (var table in objectTables)
+            {
+                foreach (var column in table.Columns)
+                {
+                    if (column.FKConstraint != null)
+                    {
+                        if (parentSchema == column.FKConstraint.PKTable.ObjectSchema ||
+                            parentTable == column.FKConstraint.PKTable.ObjectName)
+                        {
+                            foreach (var pkColumn in column.FKConstraint.Columns)
+                            {
+                                if (pkColumn.PKColumn == parentColumn)
+                                {
+                                    // if it's the same column name, use the parameter name
+                                    if (pkColumn.PKColumn.ColumnName == column.ColumnName)
+                                        return string.Empty;
+
+                                    return column.ColumnName;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return string.Empty;
+        }
+
         public string GetSchema(IResultObject table, bool fullSchema)
         {
             if (!Info.Parent.GenerationParams.GenerateQueriesWithSchema)

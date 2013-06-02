@@ -61,17 +61,17 @@ if (Info.GenerateDataPortalInsert)
                     <%
     if (parentType.Length > 0)
     {
-        foreach (Property prop in Info.ParentProperties)
+        foreach (ValueProperty parentProp in Info.GetParentValueProperties())
         {
-            if (prop.PropertyType == TypeCodeEx.SmartDate)
+            if (parentProp.PropertyType == TypeCodeEx.SmartDate)
             {
-                %>SmartDate l<%= prop.Name %> = new SmartDate(parent.<%= prop.Name %>);
-                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", l<%= prop.Name %>.DBValue).DbType = DbType.DateTime;
+                %>SmartDate l<%= parentProp.Name %> = new SmartDate(parent.<%= parentProp.Name %>);
+                    cmd.Parameters.AddWithValue("@<%= GetFkParameterNameForParentProperty(Info, parentProp) %>", l<%= parentProp.Name %>.DBValue).DbType = DbType.DateTime;
                     <%
             }
             else
             {
-                %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", parent.<%= prop.Name %>).DbType = DbType.<%= GetDbType(prop) %>;
+                %>cmd.Parameters.AddWithValue("@<%= GetFkParameterNameForParentProperty(Info, parentProp) %>", parent.<%= parentProp.Name %>).DbType = DbType.<%= GetDbType(parentProp) %>;
                     <%
             }
         }
@@ -245,17 +245,17 @@ if (Info.GenerateDataPortalUpdate)
                     <%
                     if (parentType.Length > 0 && !Info.ParentInsertOnly)
                     {
-                        foreach (Property prop in Info.ParentProperties)
+                        foreach (ValueProperty parentProp in Info.GetParentValueProperties())
                         {
-                            if (prop.PropertyType == TypeCodeEx.SmartDate)
+                            if (parentProp.PropertyType == TypeCodeEx.SmartDate)
                             {
-                                %>SmartDate l<%= prop.Name %> = new SmartDate(parent.<%= prop.Name %>);
-                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", l<%= prop.Name %>.DBValue).DbType = DbType.DateTime;
+                                %>SmartDate l<%= parentProp.Name %> = new SmartDate(parent.<%= parentProp.Name %>);
+                    cmd.Parameters.AddWithValue("@<%= GetFkParameterNameForParentProperty(Info, parentProp) %>", l<%= parentProp.Name %>.DBValue).DbType = DbType.DateTime;
                     <%
                             }
                             else
                             {
-                                %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", parent.<%= prop.Name %>).DbType = DbType.<%= GetDbType(prop) %>;
+                                %>cmd.Parameters.AddWithValue("@<%= GetFkParameterNameForParentProperty(Info, parentProp) %>", parent.<%= parentProp.Name %>).DbType = DbType.<%= GetDbType(parentProp) %>;
                     <%
                             }
                         }
@@ -421,17 +421,17 @@ if (Info.GenerateDataPortalDelete)
                     <%
     if (parentType.Length > 0 && !Info.ParentInsertOnly)
     {
-        foreach (Property prop in Info.ParentProperties)
+        foreach (ValueProperty parentProp in Info.GetParentValueProperties())
         {
-            if (prop.PropertyType == TypeCodeEx.SmartDate)
+            if (parentProp.PropertyType == TypeCodeEx.SmartDate)
             {
-                %>SmartDate l<%= prop.Name %> = new SmartDate(parent.<%= prop.Name %>);
-                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", l<%= prop.Name %>.DBValue).DbType = DbType.DateTime;
+                %>SmartDate l<%= parentProp.Name %> = new SmartDate(parent.<%= parentProp.Name %>);
+                    cmd.Parameters.AddWithValue("@<%= GetFkParameterNameForParentProperty(Info, parentProp) %>", l<%= parentProp.Name %>.DBValue).DbType = DbType.DateTime;
                     <%
             }
             else
             {
-                %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", parent.<%= prop.Name %>).DbType = DbType.<%= GetDbType(prop) %>;
+                %>cmd.Parameters.AddWithValue("@<%= GetFkParameterNameForParentProperty(Info, parentProp) %>", parent.<%= parentProp.Name %>).DbType = DbType.<%= GetDbType(parentProp) %>;
                     <%
             }
         }

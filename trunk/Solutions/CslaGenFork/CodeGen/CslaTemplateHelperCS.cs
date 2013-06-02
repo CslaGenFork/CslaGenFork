@@ -2243,9 +2243,9 @@ namespace CslaGenerator.CodeGen
             return false;
         }
 
-        public static string PropertyNameMatchesParentProperty(CslaObjectInfo parent, CslaObjectInfo info, ValueProperty prop)
+        public static string GetFkParameterNameForParentProperty(CslaObjectInfo info, ValueProperty parentProperty)
         {
-            return ColumnNameMatchesParentProperty(parent, info, prop.DbBindColumn.Column);
+            return SprocTemplateHelper.GetFkParameterNameForParentProperty(info, parentProperty);
         }
 
         internal static string ColumnNameMatchesParentProperty(CslaObjectInfo parent, CslaObjectInfo info, IColumnInfo validatingColumn)

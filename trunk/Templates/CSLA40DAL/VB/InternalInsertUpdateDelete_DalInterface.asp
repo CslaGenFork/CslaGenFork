@@ -37,15 +37,15 @@ if (Info.GenerateDataPortalInsert)
 
         if (parentType.Length > 0)
         {
-            foreach (Property prop in Info.ParentProperties)
+            foreach (ValueProperty parentProp in Info.GetParentValueProperties())
             {
                 if (!insertIsFirst)
                     strInsertParams += ", ";
                 else
                     insertIsFirst = false;
 
-                strInsertComment += System.Environment.NewLine + new string(' ', 8) + "/// <param name=\"" + FormatCamel(prop.Name) + "\">The parent " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) + ".</param>";
-                strInsertParams += string.Concat(GetDataTypeGeneric(prop, prop.PropertyType), " ", FormatCamel(prop.Name));
+                strInsertComment += System.Environment.NewLine + new string(' ', 8) + "/// <param name=\"" + FormatCamel(GetFkParameterNameForParentProperty(Info, parentProp)) + "\">The parent " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(GetFkParameterNameForParentProperty(Info, parentProp)) + ".</param>";
+                strInsertParams += string.Concat(GetDataTypeGeneric(parentProp, parentProp.PropertyType), " ", FormatCamel(GetFkParameterNameForParentProperty(Info, parentProp)));
             }
         }
         foreach (ValueProperty prop in Info.GetAllValueProperties())
@@ -116,15 +116,15 @@ if (Info.GenerateDataPortalUpdate)
 
         if (parentType.Length > 0 && !Info.ParentInsertOnly)
         {
-            foreach (Property prop in Info.ParentProperties)
+            foreach (ValueProperty parentProp in Info.GetParentValueProperties())
             {
                 if (!updateIsFirst)
                     strUpdateParams += ", ";
                 else
                     updateIsFirst = false;
 
-                strUpdateComment += System.Environment.NewLine + new string(' ', 8) + "/// <param name=\"" + FormatCamel(prop.Name) + "\">The parent " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) + ".</param>";
-                strUpdateParams += string.Concat(GetDataTypeGeneric(prop, prop.PropertyType), " ", FormatCamel(prop.Name));
+                strUpdateComment += System.Environment.NewLine + new string(' ', 8) + "/// <param name=\"" + FormatCamel(GetFkParameterNameForParentProperty(Info, parentProp)) + "\">The parent " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(GetFkParameterNameForParentProperty(Info, parentProp)) + ".</param>";
+                strUpdateParams += string.Concat(GetDataTypeGeneric(parentProp, parentProp.PropertyType), " ", FormatCamel(GetFkParameterNameForParentProperty(Info, parentProp)));
             }
         }
         foreach (ValueProperty prop in Info.GetAllValueProperties())
@@ -175,15 +175,15 @@ if (Info.GenerateDataPortalDelete)
 
     if (parentType.Length > 0 && !Info.ParentInsertOnly)
     {
-        foreach (Property prop in Info.ParentProperties)
+        foreach (ValueProperty parentProp in Info.GetParentValueProperties())
         {
             if (!deleteIsFirst)
                 strDeleteCritParams += ", ";
             else
                 deleteIsFirst = false;
 
-            strDeleteComment += "/// <param name=\"" + FormatCamel(prop.Name) + "\">The parent " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
-            strDeleteCritParams += string.Concat(GetDataTypeGeneric(prop, prop.PropertyType), " ", FormatCamel(prop.Name));
+            strDeleteComment += "/// <param name=\"" + FormatCamel(GetFkParameterNameForParentProperty(Info, parentProp)) + "\">The parent " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(GetFkParameterNameForParentProperty(Info, parentProp)) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
+            strDeleteCritParams += string.Concat(GetDataTypeGeneric(parentProp, parentProp.PropertyType), " ", FormatCamel(GetFkParameterNameForParentProperty(Info, parentProp)));
         }
     }
     foreach (ValueProperty prop in Info.ValueProperties)

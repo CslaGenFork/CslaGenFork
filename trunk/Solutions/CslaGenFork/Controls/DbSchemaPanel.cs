@@ -1049,23 +1049,40 @@ namespace CslaGenerator.Controls
 
             var columns = new List<IColumnInfo>();
             var sb = new StringBuilder();
+
+            var nameTypeMatches = new List<string>();
+            var fkMatches = new List<string>();
+            var allColumns = new List<IColumnInfo>();
+            var hasPrimaryKey = false;
+
             for (var index = 0; index < SelectedColumns.Count; index++)
             {
-                var column = (IColumnInfo)dbColumns.ListColumns.SelectedItems[index];
-
+                var column = (IColumnInfo) dbColumns.ListColumns.SelectedItems[index];
+                allColumns.Add(column);
+                hasPrimaryKey = hasPrimaryKey || column.IsPrimaryKey;
                 var nameTypeMatch = CslaTemplateHelperCS.ColumnNameMatchesParentProperty(parent, _currentCslaObject, column);
+                if (nameTypeMatch.Length > 0)
+                    nameTypeMatches.Add(column.ColumnName);
                 var fkMatch = CslaTemplateHelperCS.ColumnFKMatchesParentProperty(parent, _currentCslaObject, column);
+                if (fkMatch.Length > 0)
+                    fkMatches.Add(column.ColumnName);
+            }
 
-                if (string.IsNullOrEmpty(nameTypeMatch) && string.IsNullOrEmpty(fkMatch))
-                    columns.Add(column);
-                else
+            foreach (var column in allColumns)
+            {
+                if (fkMatches.Count > 0)
                 {
-                    if (!string.IsNullOrEmpty(nameTypeMatch))
-                        sb.AppendFormat("\t{0}.\r\n", fkMatch);
-                    else if (CslaTemplateHelperCS.MultipleColumnFKMatchesParent(parent, _currentCslaObject, column))
-                        columns.Add(column);
+                    if (fkMatches.Contains(column.ColumnName))
+                        sb.AppendFormat("\t{0}.\r\n", column.ColumnName);
                     else
-                        sb.AppendFormat("\t{0}.\r\n", fkMatch);
+                        columns.Add(column);
+                }
+                else if (nameTypeMatches.Count > 0)
+                {
+                    if (nameTypeMatches.Contains(column.ColumnName))
+                        sb.AppendFormat("\t{0}.\r\n", column.ColumnName);
+                    else
+                        columns.Add(column);
                 }
             }
 
@@ -1080,6 +1097,8 @@ namespace CslaGenerator.Controls
             var dbObject = GetCurrentDBObject();
             var resultSet = GetCurrentResultSet();
             _currentFactory.AddProperties(_currentCslaObject, dbObject, resultSet, columns, true, false);
+            if (_currentCslaObject.ObjectType == CslaObjectType.EditableChild)
+                _currentCslaObject.ParentInsertOnly = hasPrimaryKey;
         }
 
         private void AddChildToParent(CslaObjectInfo parent, string objectName, string propertyName)
