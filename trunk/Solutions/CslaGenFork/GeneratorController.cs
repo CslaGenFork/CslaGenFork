@@ -816,6 +816,19 @@ namespace CslaGenerator
             ConfigTools.ChangeMru(MruItems);
         }
 
+        public object GetSelectedItem()
+        {
+            object selectedItem;
+            if (Current.MainForm.ProjectPanel.ListObjects.InvokeRequired)
+            {
+                selectedItem = Current.MainForm.ProjectPanel.ListObjects.Invoke((Action)delegate { GetSelectedItem(); });
+                return selectedItem;
+            }
+            selectedItem = Current.MainForm.ProjectPanel.ListObjects.SelectedItem;
+
+            return selectedItem;
+        }
+
         #region Nested CslaObjectInfoComparer
 
         private class CslaObjectInfoComparer : IComparer<CslaObjectInfo>

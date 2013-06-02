@@ -33,7 +33,7 @@ namespace CslaGenerator.Design
                     TypeHelper.GetPropertyContextInstanceObject(context, ref objinfo, ref instanceType);
                     var parameter = (BusinessRuleConstructorParameter) objinfo;
                     _lstProperties.Items.Clear();
-                    var info = (CslaObjectInfo)GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem;
+                    var info = (CslaObjectInfo)GeneratorController.Current.GetSelectedItem();
                     var allRulesProperties = info.AllRulableProperties();
 
                     foreach (IHaveBusinessRules rulableProperty in allRulesProperties)

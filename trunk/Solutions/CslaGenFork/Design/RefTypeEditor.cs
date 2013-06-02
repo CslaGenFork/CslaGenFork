@@ -49,7 +49,7 @@ namespace CslaGenerator.Design
                     // If Assembly path is available, use assembly to load a drop down with available types.
                     if (!string.IsNullOrEmpty(assemblyFilePath))
                     {
-                        /*var currentCslaObject = (CslaObjectInfo) GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem;
+                        /*var currentCslaObject = (CslaObjectInfo) GeneratorController.Current.GetSelectedItem();
                         var baseType = currentCslaObject.ObjectType;*/
 
                         var assembly = Assembly.LoadFrom(assemblyFilePath);

@@ -498,7 +498,7 @@ namespace CslaGenerator.Design
                     _form.Size = new Size(550, _form.Size.Height);
                     _collectionType = typeof (Criteria);
                     _form.Size = new Size(_form.Size.Width, 726);
-                    var cslaObject = (CslaObjectInfo) GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem;
+                    var cslaObject = (CslaObjectInfo) GeneratorController.Current.GetSelectedItem();
                     if (cslaObject.ObjectType == CslaObjectType.UnitOfWork &&
                         cslaObject.UnitOfWorkType == UnitOfWorkFunction.CreatorGetter)
                     {

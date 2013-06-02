@@ -45,7 +45,7 @@ namespace CslaGenerator.Design
                     _lstProperties.Items.Clear();
                     _lstProperties.Items.Add(new DictionaryEntry("(None)", new ValueProperty()));
                     var valPropColl =
-                        ((CslaObjectInfo) GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem).
+                        ((CslaObjectInfo) GeneratorController.Current.GetSelectedItem()).
                             GetAllValueProperties();
                     foreach (var prop in valPropColl)
                     {

@@ -658,7 +658,7 @@ namespace CslaGenerator.Util.PropertyBags
                         return false;
 
                     var isParentCollection = false;
-                    var cslaObject = (CslaObjectInfo)GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem;
+                    var cslaObject = (CslaObjectInfo)GeneratorController.Current.GetSelectedItem();
                     var parentInfo2 = cslaObject.Parent.CslaObjects.Find(cslaObject.ParentType);
                     if (parentInfo2 != null)
                         isParentCollection = CslaTemplateHelperCS.IsCollectionType(parentInfo2.ObjectType);

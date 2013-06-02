@@ -1201,7 +1201,7 @@ namespace CslaGenerator.Util.PropertyBags
                 {
                     if (property.Category == "08. Insert & Update Options")
                     {
-                        var cslaObject = (CslaObjectInfo)GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem;
+                        var cslaObject = (CslaObjectInfo)GeneratorController.Current.GetSelectedItem();
                         if (!GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All)
                         {
                             property.Category = "08. Stored Procedure Names";

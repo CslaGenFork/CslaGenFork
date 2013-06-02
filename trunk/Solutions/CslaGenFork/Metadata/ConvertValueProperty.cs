@@ -194,10 +194,11 @@ namespace CslaGenerator.Metadata
         private string CheckSourceProperty(string candidate)
         {
             var empty = string.Empty;
-            if (GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem == null)
+            var selectedItem = GeneratorController.Current.GetSelectedItem();
+            if (selectedItem == null)
                 return empty;
 
-            var props = ((CslaObjectInfo)GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem).GetAllValueProperties();
+            var props = ((CslaObjectInfo)selectedItem).GetAllValueProperties();
             foreach (var prop in props)
             {
                 if (prop.PropertyType == TypeCodeEx.Int16 || prop.PropertyType == TypeCodeEx.Int32 || prop.PropertyType == TypeCodeEx.Int64 ||
@@ -223,7 +224,7 @@ namespace CslaGenerator.Metadata
                 if (o.ObjectType == CslaObjectType.NameValueList)
                 {
                     var prefix = string.Empty;
-                    var objectNamespace = ((CslaObjectInfo)GeneratorController.Current.MainForm.ProjectPanel.ListObjects.SelectedItem).ObjectNamespace;
+                    var objectNamespace = ((CslaObjectInfo)GeneratorController.Current.GetSelectedItem()).ObjectNamespace;
                     if (objectNamespace != o.ObjectNamespace)
                     {
                         var idx = objectNamespace.IndexOf(o.ObjectNamespace);
