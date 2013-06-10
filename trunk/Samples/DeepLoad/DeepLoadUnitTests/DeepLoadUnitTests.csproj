@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{922D50B7-380A-42E2-9CAE-058451CF3263}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DeepLoadUnitTests</RootNamespace>
+    <AssemblyName>DeepLoadUnitTests</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Csla">
+      <HintPath>..\packages\CSLA-Core.4.5.30\lib\net40\Csla.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks">
+      <HintPath>..\packages\Microsoft.Bcl.Async.1.0.16\lib\net40\Microsoft.Threading.Tasks.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks.Extensions">
+      <HintPath>..\packages\Microsoft.Bcl.Async.1.0.16\lib\net40\Microsoft.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks.Extensions.Desktop">
+      <HintPath>..\packages\Microsoft.Bcl.Async.1.0.16\lib\net40\Microsoft.Threading.Tasks.Extensions.Desktop.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Runtime">
+      <HintPath>..\packages\Microsoft.Bcl.1.0.19\lib\net40\System.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks">
+      <HintPath>..\packages\Microsoft.Bcl.1.0.19\lib\net40\System.Threading.Tasks.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
+      <Visible>False</Visible>
+    </CodeAnalysisDependentAssemblyPaths>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\GlobalAssemblyInfo.cs">
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="CleanDb.cs" />
+    <Compile Include="ParentLoad\ParentLoadROSoftDelete_ERCLevel.cs" />
+    <Compile Include="ParentLoad\ParentLoadRO_ERCLevel.cs" />
+    <Compile Include="ParentLoad\ParentLoadROSoftDelete_ERLevel.cs" />
+    <Compile Include="ParentLoad\ParentLoadRO_ERLevel.cs" />
+    <Compile Include="ParentLoad\ParentLoadSoftDelete_ERCLevel.cs" />
+    <Compile Include="ParentLoad\ParentLoadSoftDelete_ERLevel.cs" />
+    <Compile Include="ParentLoad\ParentLoad_ERCLevel.cs" />
+    <Compile Include="PopulateForReadOnly.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ParentLoad\ParentLoad_ERLevel.cs" />
+    <Compile Include="SelfLoad\SelfLoadROSoftDelete_ERCLevel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SelfLoad\SelfLoadROSoftDelete_ERLevel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SelfLoad\SelfLoadRO_ERCLevel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SelfLoad\SelfLoadRO_ERLevel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SelfLoad\SelfLoadSoftDelete_ERCLevel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SelfLoad\SelfLoadSoftDelete_ERLevel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SelfLoad\SelfLoad_ERCLevel.cs" />
+    <Compile Include="SelfLoad\SelfLoad_ERLevel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ParentLoad.Business\ParentLoad.Business.csproj">
+      <Project>{7AEAB3A1-25BC-46F6-A73C-46E73DC490CF}</Project>
+      <Name>ParentLoad.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ParentLoadRO.Business\ParentLoadRO.Business.csproj">
+      <Project>{1A7AC40F-88E0-4737-8834-83988B6B259E}</Project>
+      <Name>ParentLoadRO.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ParentLoadROSoftDelete.Business\ParentLoadROSoftDelete.Business.csproj">
+      <Project>{1FEB1EB9-E027-4372-88CD-8F04938C8409}</Project>
+      <Name>ParentLoadROSoftDelete.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ParentLoadSoftDelete.Business\ParentLoadSoftDelete.Business.csproj">
+      <Project>{3BE6281D-88ED-4940-9F4E-0355AE838069}</Project>
+      <Name>ParentLoadSoftDelete.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SelfLoad.Business\SelfLoad.Business.csproj">
+      <Project>{F2AFF18B-E233-466B-A8AC-05E90F48801C}</Project>
+      <Name>SelfLoad.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SelfLoadRO.Business\SelfLoadRO.Business.csproj">
+      <Project>{40640CFF-F17A-4116-80AF-DCCBC6A3AD9C}</Project>
+      <Name>SelfLoadRO.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SelfLoadROSoftDelete.Business\SelfLoadROSoftDelete.Business.csproj">
+      <Project>{09F7B441-BF07-4C46-9B8E-7B30AC6F0966}</Project>
+      <Name>SelfLoadROSoftDelete.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SelfLoadSoftDelete.Business\SelfLoadSoftDelete.Business.csproj">
+      <Project>{A7981A5C-740F-4598-A759-28A0B5004A32}</Project>
+      <Name>SelfLoadSoftDelete.Business</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Data\DeepLoad.mdf">
+      <Link>Data\DeepLoad.mdf</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Data\DeepLoad_log.ldf">
+      <Link>Data\DeepLoad_log.ldf</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <DependentUpon>DeepLoad.mdf</DependentUpon>
+    </Content>
+    <Content Include="CleanDB.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.7\tools\Microsoft.Bcl.Build.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
