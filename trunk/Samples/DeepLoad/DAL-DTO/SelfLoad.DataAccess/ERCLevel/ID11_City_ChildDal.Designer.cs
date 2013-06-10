@@ -33,7 +33,7 @@ namespace SelfLoad.DataAccess.ERCLevel
         /// <summary>
         /// Deletes the D11_City_Child object from database.
         /// </summary>
-        /// <param name="city_ID">The parent City ID.</param>
-        void Delete(int city_ID);
+        /// <param name="city_ID1">The parent City ID1.</param>
+        void Delete(int city_ID1);
     }
 }

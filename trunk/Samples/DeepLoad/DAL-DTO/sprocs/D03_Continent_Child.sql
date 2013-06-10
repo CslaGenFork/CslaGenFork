@@ -26,7 +26,7 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[AddD03_Conti
 GO
 
 CREATE PROCEDURE [AddD03_Continent_Child]
-    @Continent_ID int,
+    @Continent_ID1 int,
     @Continent_Child_Name varchar(50)
 AS
     BEGIN
@@ -41,7 +41,7 @@ AS
         )
         VALUES
         (
-            @Continent_ID,
+            @Continent_ID1,
             @Continent_Child_Name
         )
 
@@ -54,7 +54,7 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[UpdateD03_Co
 GO
 
 CREATE PROCEDURE [UpdateD03_Continent_Child]
-    @Continent_ID int,
+    @Continent_ID1 int,
     @Continent_Child_Name varchar(50)
 AS
     BEGIN
@@ -66,7 +66,7 @@ AS
         (
             SELECT [Continent_ID1] FROM [1_Continents_Child]
             WHERE
-                [Continent_ID1] = @Continent_ID
+                [Continent_ID1] = @Continent_ID1
         )
         BEGIN
             RAISERROR ('''D03_Continent_Child'' object not found. It was probably removed by another user.', 16, 1)
@@ -78,7 +78,7 @@ AS
         SET
             [Continent_Child_Name] = @Continent_Child_Name
         WHERE
-            [Continent_ID1] = @Continent_ID
+            [Continent_ID1] = @Continent_ID1
 
     END
 GO
@@ -89,7 +89,7 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[DeleteD03_Co
 GO
 
 CREATE PROCEDURE [DeleteD03_Continent_Child]
-    @Continent_ID int
+    @Continent_ID1 int
 AS
     BEGIN
 
@@ -100,7 +100,7 @@ AS
         (
             SELECT [Continent_ID1] FROM [1_Continents_Child]
             WHERE
-                [Continent_ID1] = @Continent_ID
+                [Continent_ID1] = @Continent_ID1
         )
         BEGIN
             RAISERROR ('''D03_Continent_Child'' object not found. It was probably removed by another user.', 16, 1)
@@ -111,7 +111,7 @@ AS
         DELETE
         FROM [1_Continents_Child]
         WHERE
-            [1_Continents_Child].[Continent_ID1] = @Continent_ID
+            [1_Continents_Child].[Continent_ID1] = @Continent_ID1
 
     END
 GO

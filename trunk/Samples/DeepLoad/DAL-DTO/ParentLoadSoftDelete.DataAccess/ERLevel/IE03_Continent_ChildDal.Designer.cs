@@ -26,7 +26,7 @@ namespace ParentLoadSoftDelete.DataAccess.ERLevel
         /// <summary>
         /// Deletes the E03_Continent_Child object from database.
         /// </summary>
-        /// <param name="continent_ID">The parent Continent ID.</param>
-        void Delete(int continent_ID);
+        /// <param name="continent_ID1">The parent Continent ID1.</param>
+        void Delete(int continent_ID1);
     }
 }

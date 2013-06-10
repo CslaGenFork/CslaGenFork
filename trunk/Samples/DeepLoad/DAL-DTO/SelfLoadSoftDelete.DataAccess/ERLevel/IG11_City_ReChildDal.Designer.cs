@@ -33,7 +33,7 @@ namespace SelfLoadSoftDelete.DataAccess.ERLevel
         /// <summary>
         /// Deletes the G11_City_ReChild object from database.
         /// </summary>
-        /// <param name="city_ID">The parent City ID.</param>
-        void Delete(int city_ID);
+        /// <param name="city_ID2">The parent City ID2.</param>
+        void Delete(int city_ID2);
     }
 }

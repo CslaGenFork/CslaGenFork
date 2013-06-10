@@ -26,7 +26,7 @@ namespace ParentLoad.DataAccess.Sql.ERLevel
                 using (var cmd = new SqlCommand("AddA03_Continent_Child", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Continent_ID", a03_Continent_Child.Parent_Continent_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@Continent_ID1", a03_Continent_Child.Parent_Continent_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@Continent_Child_Name", a03_Continent_Child.Continent_Child_Name).DbType = DbType.String;
                     cmd.ExecuteNonQuery();
                 }
@@ -46,7 +46,7 @@ namespace ParentLoad.DataAccess.Sql.ERLevel
                 using (var cmd = new SqlCommand("UpdateA03_Continent_Child", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Continent_ID", a03_Continent_Child.Parent_Continent_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@Continent_ID1", a03_Continent_Child.Parent_Continent_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@Continent_Child_Name", a03_Continent_Child.Continent_Child_Name).DbType = DbType.String;
                     var rowsAffected = cmd.ExecuteNonQuery();
                     if (rowsAffected == 0)
@@ -59,15 +59,15 @@ namespace ParentLoad.DataAccess.Sql.ERLevel
         /// <summary>
         /// Deletes the A03_Continent_Child object from database.
         /// </summary>
-        /// <param name="continent_ID">The parent Continent ID.</param>
-        public void Delete(int continent_ID)
+        /// <param name="continent_ID1">The parent Continent ID1.</param>
+        public void Delete(int continent_ID1)
         {
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("DeepLoad"))
             {
                 using (var cmd = new SqlCommand("DeleteA03_Continent_Child", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Continent_ID", continent_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@Continent_ID1", continent_ID1).DbType = DbType.Int32;
                     cmd.ExecuteNonQuery();
                 }
             }

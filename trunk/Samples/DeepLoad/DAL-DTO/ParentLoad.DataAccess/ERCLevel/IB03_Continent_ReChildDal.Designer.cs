@@ -26,7 +26,7 @@ namespace ParentLoad.DataAccess.ERCLevel
         /// <summary>
         /// Deletes the B03_Continent_ReChild object from database.
         /// </summary>
-        /// <param name="continent_ID">The parent Continent ID.</param>
-        void Delete(int continent_ID);
+        /// <param name="continent_ID2">The parent Continent ID2.</param>
+        void Delete(int continent_ID2);
     }
 }

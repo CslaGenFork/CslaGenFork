@@ -73,6 +73,28 @@ namespace SelfLoadSoftDelete.Business.ERLevel
 
         #endregion
 
+        #region Find Methods
+
+        /// <summary>
+        /// Finds a <see cref="G06_Country"/> item of the <see cref="G05_CountryColl"/> collection, based on a given Country_ID.
+        /// </summary>
+        /// <param name="country_ID">The Country_ID.</param>
+        /// <returns>A <see cref="G06_Country"/> object.</returns>
+        public G06_Country FindG06_CountryByCountry_ID(int country_ID)
+        {
+            for (var i = 0; i < this.Count; i++)
+            {
+                if (this[i].Country_ID.Equals(country_ID))
+                {
+                    return this[i];
+                }
+            }
+
+            return null;
+        }
+
+        #endregion
+
         #region Factory Methods
 
         /// <summary>

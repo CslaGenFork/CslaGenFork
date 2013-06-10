@@ -26,7 +26,7 @@ namespace ParentLoadSoftDelete.DataAccess.Sql.ERLevel
                 using (var cmd = new SqlCommand("AddE06_Country", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@SubContinent_ID", e06_Country.Parent_SubContinent_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@Parent_SubContinent_ID", e06_Country.Parent_SubContinent_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@Country_ID", e06_Country.Country_ID).Direction = ParameterDirection.Output;
                     cmd.Parameters.AddWithValue("@Country_Name", e06_Country.Country_Name).DbType = DbType.String;
                     cmd.Parameters.Add("@NewRowVersion", SqlDbType.Timestamp).Direction = ParameterDirection.Output;

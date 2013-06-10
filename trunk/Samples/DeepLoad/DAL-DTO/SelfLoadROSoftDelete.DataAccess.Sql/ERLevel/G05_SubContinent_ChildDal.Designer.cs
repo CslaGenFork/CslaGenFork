@@ -17,16 +17,16 @@ namespace SelfLoadROSoftDelete.DataAccess.Sql.ERLevel
         /// <summary>
         /// Loads a G05_SubContinent_Child object from the database.
         /// </summary>
-        /// <param name="subContinent_ID1">The fetch criteria.</param>
+        /// <param name="parentSubContinent_ID1">The fetch criteria.</param>
         /// <returns>A G05_SubContinent_ChildDto object.</returns>
-        public G05_SubContinent_ChildDto Fetch(int subContinent_ID1)
+        public G05_SubContinent_ChildDto Fetch(int parentSubContinent_ID1)
         {
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("DeepLoad"))
             {
                 using (var cmd = new SqlCommand("GetG05_SubContinent_Child", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@SubContinent_ID1", subContinent_ID1).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@SubContinent_ID1", parentSubContinent_ID1).DbType = DbType.Int32;
                     var dr = cmd.ExecuteReader();
                     return Fetch(dr);
                 }
@@ -41,7 +41,6 @@ namespace SelfLoadROSoftDelete.DataAccess.Sql.ERLevel
                 if (dr.Read())
                 {
                     g05_SubContinent_Child.SubContinent_Child_Name = dr.GetString("SubContinent_Child_Name");
-                    g05_SubContinent_Child.SubContinent_ID1 = dr.GetInt32("SubContinent_ID1");
                     g05_SubContinent_Child.RowVersion = dr.GetValue("RowVersion") as byte[];
                 }
             }

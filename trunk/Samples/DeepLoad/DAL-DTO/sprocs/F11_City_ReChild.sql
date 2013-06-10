@@ -4,7 +4,7 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[AddF11_City_
 GO
 
 CREATE PROCEDURE [AddF11_City_ReChild]
-    @City_ID int,
+    @City_ID2 int,
     @City_Child_Name varchar(50)
 AS
     BEGIN
@@ -19,7 +19,7 @@ AS
         )
         VALUES
         (
-            @City_ID,
+            @City_ID2,
             @City_Child_Name
         )
 
@@ -32,7 +32,7 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[UpdateF11_Ci
 GO
 
 CREATE PROCEDURE [UpdateF11_City_ReChild]
-    @City_ID int,
+    @City_ID2 int,
     @City_Child_Name varchar(50)
 AS
     BEGIN
@@ -44,7 +44,7 @@ AS
         (
             SELECT [City_ID2] FROM [5_Cities_ReChild]
             WHERE
-                [City_ID2] = @City_ID AND
+                [City_ID2] = @City_ID2 AND
                 [IsActive] = 'true'
         )
         BEGIN
@@ -57,7 +57,7 @@ AS
         SET
             [City_Child_Name] = @City_Child_Name
         WHERE
-            [City_ID2] = @City_ID
+            [City_ID2] = @City_ID2
 
     END
 GO
@@ -68,7 +68,7 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[DeleteF11_Ci
 GO
 
 CREATE PROCEDURE [DeleteF11_City_ReChild]
-    @City_ID int
+    @City_ID2 int
 AS
     BEGIN
 
@@ -79,7 +79,7 @@ AS
         (
             SELECT [City_ID2] FROM [5_Cities_ReChild]
             WHERE
-                [City_ID2] = @City_ID AND
+                [City_ID2] = @City_ID2 AND
                 [IsActive] = 'true'
         )
         BEGIN
@@ -91,7 +91,7 @@ AS
         UPDATE [5_Cities_ReChild]
         SET    [IsActive] = 'false'
         WHERE
-            [5_Cities_ReChild].[City_ID2] = @City_ID
+            [5_Cities_ReChild].[City_ID2] = @City_ID2
 
     END
 GO

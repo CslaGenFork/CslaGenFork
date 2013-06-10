@@ -58,7 +58,7 @@ namespace SelfLoad.DataAccess.Sql.ERLevel
                 using (var cmd = new SqlCommand("AddC07_Country_ReChild", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Country_ID", c07_Country_ReChild.Parent_Country_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@Country_ID2", c07_Country_ReChild.Parent_Country_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@Country_Child_Name", c07_Country_ReChild.Country_Child_Name).DbType = DbType.String;
                     cmd.ExecuteNonQuery();
                 }
@@ -78,7 +78,7 @@ namespace SelfLoad.DataAccess.Sql.ERLevel
                 using (var cmd = new SqlCommand("UpdateC07_Country_ReChild", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Country_ID", c07_Country_ReChild.Parent_Country_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@Country_ID2", c07_Country_ReChild.Parent_Country_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@Country_Child_Name", c07_Country_ReChild.Country_Child_Name).DbType = DbType.String;
                     var rowsAffected = cmd.ExecuteNonQuery();
                     if (rowsAffected == 0)
@@ -91,15 +91,15 @@ namespace SelfLoad.DataAccess.Sql.ERLevel
         /// <summary>
         /// Deletes the C07_Country_ReChild object from database.
         /// </summary>
-        /// <param name="country_ID">The parent Country ID.</param>
-        public void Delete(int country_ID)
+        /// <param name="country_ID2">The parent Country ID2.</param>
+        public void Delete(int country_ID2)
         {
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("DeepLoad"))
             {
                 using (var cmd = new SqlCommand("DeleteC07_Country_ReChild", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Country_ID", country_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@Country_ID2", country_ID2).DbType = DbType.Int32;
                     cmd.ExecuteNonQuery();
                 }
             }

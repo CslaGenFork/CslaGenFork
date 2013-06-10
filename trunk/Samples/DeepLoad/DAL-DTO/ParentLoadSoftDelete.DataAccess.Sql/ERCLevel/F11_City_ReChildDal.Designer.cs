@@ -26,7 +26,7 @@ namespace ParentLoadSoftDelete.DataAccess.Sql.ERCLevel
                 using (var cmd = new SqlCommand("AddF11_City_ReChild", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@City_ID", f11_City_ReChild.Parent_City_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@City_ID2", f11_City_ReChild.Parent_City_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@City_Child_Name", f11_City_ReChild.City_Child_Name).DbType = DbType.String;
                     cmd.ExecuteNonQuery();
                 }
@@ -46,7 +46,7 @@ namespace ParentLoadSoftDelete.DataAccess.Sql.ERCLevel
                 using (var cmd = new SqlCommand("UpdateF11_City_ReChild", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@City_ID", f11_City_ReChild.Parent_City_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@City_ID2", f11_City_ReChild.Parent_City_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@City_Child_Name", f11_City_ReChild.City_Child_Name).DbType = DbType.String;
                     var rowsAffected = cmd.ExecuteNonQuery();
                     if (rowsAffected == 0)
@@ -59,15 +59,15 @@ namespace ParentLoadSoftDelete.DataAccess.Sql.ERCLevel
         /// <summary>
         /// Deletes the F11_City_ReChild object from database.
         /// </summary>
-        /// <param name="city_ID">The parent City ID.</param>
-        public void Delete(int city_ID)
+        /// <param name="city_ID2">The parent City ID2.</param>
+        public void Delete(int city_ID2)
         {
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("DeepLoad"))
             {
                 using (var cmd = new SqlCommand("DeleteF11_City_ReChild", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@City_ID", city_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@City_ID2", city_ID2).DbType = DbType.Int32;
                     cmd.ExecuteNonQuery();
                 }
             }

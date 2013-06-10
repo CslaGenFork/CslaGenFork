@@ -12,8 +12,8 @@ namespace SelfLoadRO.DataAccess.ERLevel
         /// <summary>
         /// Loads a C05_SubContinent_Child object from the database.
         /// </summary>
-        /// <param name="subContinent_ID1">The fetch criteria.</param>
+        /// <param name="parentSubContinent_ID1">The fetch criteria.</param>
         /// <returns>A <see cref="C05_SubContinent_ChildDto"/> object.</returns>
-        C05_SubContinent_ChildDto Fetch(int subContinent_ID1);
+        C05_SubContinent_ChildDto Fetch(int parentSubContinent_ID1);
     }
 }

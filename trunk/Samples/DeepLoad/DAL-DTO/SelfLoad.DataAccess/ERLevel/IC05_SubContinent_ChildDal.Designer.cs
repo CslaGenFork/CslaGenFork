@@ -12,9 +12,9 @@ namespace SelfLoad.DataAccess.ERLevel
         /// <summary>
         /// Loads a C05_SubContinent_Child object from the database.
         /// </summary>
-        /// <param name="subContinent_ID1">The fetch criteria.</param>
+        /// <param name="parentSubContinent_ID1">The fetch criteria.</param>
         /// <returns>A <see cref="C05_SubContinent_ChildDto"/> object.</returns>
-        C05_SubContinent_ChildDto Fetch(int subContinent_ID1);
+        C05_SubContinent_ChildDto Fetch(int parentSubContinent_ID1);
 
         /// <summary>
         /// Inserts a new C05_SubContinent_Child object in the database.
@@ -33,7 +33,7 @@ namespace SelfLoad.DataAccess.ERLevel
         /// <summary>
         /// Deletes the C05_SubContinent_Child object from database.
         /// </summary>
-        /// <param name="subContinent_ID">The parent Sub Continent ID.</param>
-        void Delete(int subContinent_ID);
+        /// <param name="subContinent_ID1">The parent Sub Continent ID1.</param>
+        void Delete(int subContinent_ID1);
     }
 }

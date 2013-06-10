@@ -26,7 +26,7 @@ namespace ParentLoad.DataAccess.Sql.ERLevel
                 using (var cmd = new SqlCommand("AddA08_Region", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Country_ID", a08_Region.Parent_Country_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@Parent_Country_ID", a08_Region.Parent_Country_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@Region_ID", a08_Region.Region_ID).Direction = ParameterDirection.Output;
                     cmd.Parameters.AddWithValue("@Region_Name", a08_Region.Region_Name).DbType = DbType.String;
                     cmd.ExecuteNonQuery();

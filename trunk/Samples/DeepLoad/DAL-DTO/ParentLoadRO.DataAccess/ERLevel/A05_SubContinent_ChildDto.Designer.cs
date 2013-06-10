@@ -21,12 +21,6 @@ namespace ParentLoadRO.DataAccess.ERLevel
         public string SubContinent_Child_Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the Sub Continent ID1.
-        /// </summary>
-        /// <value>The Sub Continent ID1.</value>
-        public int SubContinent_ID1 { get; set; }
-
-        /// <summary>
         /// Gets or sets the Row Version.
         /// </summary>
         /// <value>The Row Version.</value>

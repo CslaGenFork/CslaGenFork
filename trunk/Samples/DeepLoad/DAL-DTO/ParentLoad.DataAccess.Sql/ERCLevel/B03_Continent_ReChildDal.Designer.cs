@@ -26,7 +26,7 @@ namespace ParentLoad.DataAccess.Sql.ERCLevel
                 using (var cmd = new SqlCommand("AddB03_Continent_ReChild", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Continent_ID", b03_Continent_ReChild.Parent_Continent_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@Continent_ID2", b03_Continent_ReChild.Parent_Continent_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@Continent_Child_Name", b03_Continent_ReChild.Continent_Child_Name).DbType = DbType.String;
                     cmd.ExecuteNonQuery();
                 }
@@ -46,7 +46,7 @@ namespace ParentLoad.DataAccess.Sql.ERCLevel
                 using (var cmd = new SqlCommand("UpdateB03_Continent_ReChild", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Continent_ID", b03_Continent_ReChild.Parent_Continent_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@Continent_ID2", b03_Continent_ReChild.Parent_Continent_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@Continent_Child_Name", b03_Continent_ReChild.Continent_Child_Name).DbType = DbType.String;
                     var rowsAffected = cmd.ExecuteNonQuery();
                     if (rowsAffected == 0)
@@ -59,15 +59,15 @@ namespace ParentLoad.DataAccess.Sql.ERCLevel
         /// <summary>
         /// Deletes the B03_Continent_ReChild object from database.
         /// </summary>
-        /// <param name="continent_ID">The parent Continent ID.</param>
-        public void Delete(int continent_ID)
+        /// <param name="continent_ID2">The parent Continent ID2.</param>
+        public void Delete(int continent_ID2)
         {
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("DeepLoad"))
             {
                 using (var cmd = new SqlCommand("DeleteB03_Continent_ReChild", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Continent_ID", continent_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@Continent_ID2", continent_ID2).DbType = DbType.Int32;
                     cmd.ExecuteNonQuery();
                 }
             }
