@@ -33,7 +33,7 @@ namespace SelfLoad.DataAccess.ERCLevel
         /// <summary>
         /// Deletes the D05_SubContinent_Child object from database.
         /// </summary>
-        /// <param name="subContinent_ID">The parent Sub Continent ID.</param>
-        void Delete(int subContinent_ID);
+        /// <param name="subContinent_ID1">The parent Sub Continent ID1.</param>
+        void Delete(int subContinent_ID1);
     }
 }

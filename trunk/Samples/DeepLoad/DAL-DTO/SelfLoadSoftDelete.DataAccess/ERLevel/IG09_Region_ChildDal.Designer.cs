@@ -33,7 +33,7 @@ namespace SelfLoadSoftDelete.DataAccess.ERLevel
         /// <summary>
         /// Deletes the G09_Region_Child object from database.
         /// </summary>
-        /// <param name="region_ID">The parent Region ID.</param>
-        void Delete(int region_ID);
+        /// <param name="region_ID1">The parent Region ID1.</param>
+        void Delete(int region_ID1);
     }
 }

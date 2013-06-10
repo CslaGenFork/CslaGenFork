@@ -15,7 +15,7 @@ namespace SelfLoadROSoftDelete.DataAccess.ERCLevel
         public int Parent_SubContinent_ID { get; set; }
 
         /// <summary>
-        /// Gets or sets the Countries Child Name.
+        /// Gets or sets the Sub Continent Child Name.
         /// </summary>
         /// <value>The Sub Continent Child Name.</value>
         public string SubContinent_Child_Name { get; set; }

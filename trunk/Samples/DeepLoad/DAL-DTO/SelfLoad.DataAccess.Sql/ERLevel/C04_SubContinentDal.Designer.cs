@@ -26,7 +26,7 @@ namespace SelfLoad.DataAccess.Sql.ERLevel
                 using (var cmd = new SqlCommand("AddC04_SubContinent", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Continent_ID", c04_SubContinent.Parent_Continent_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@Parent_Continent_ID", c04_SubContinent.Parent_Continent_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@SubContinent_ID", c04_SubContinent.SubContinent_ID).Direction = ParameterDirection.Output;
                     cmd.Parameters.AddWithValue("@SubContinent_Name", c04_SubContinent.SubContinent_Name).DbType = DbType.String;
                     cmd.ExecuteNonQuery();

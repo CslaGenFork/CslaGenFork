@@ -29,27 +29,14 @@ namespace SelfLoadRO.Business.ERLevel
         /// <summary>
         /// Maintains metadata about <see cref="SubContinent_Child_Name"/> property.
         /// </summary>
-        public static readonly PropertyInfo<string> SubContinent_Child_NameProperty = RegisterProperty<string>(p => p.SubContinent_Child_Name, "Countries Child Name");
+        public static readonly PropertyInfo<string> SubContinent_Child_NameProperty = RegisterProperty<string>(p => p.SubContinent_Child_Name, "Sub Continent Child Name");
         /// <summary>
-        /// Gets the Countries Child Name.
+        /// Gets the Sub Continent Child Name.
         /// </summary>
-        /// <value>The Countries Child Name.</value>
+        /// <value>The Sub Continent Child Name.</value>
         public string SubContinent_Child_Name
         {
             get { return GetProperty(SubContinent_Child_NameProperty); }
-        }
-
-        /// <summary>
-        /// Maintains metadata about <see cref="SubContinent_ID1"/> property.
-        /// </summary>
-        public static readonly PropertyInfo<int> SubContinent_ID1Property = RegisterProperty<int>(p => p.SubContinent_ID1, "SubContinent ID1");
-        /// <summary>
-        /// Gets the SubContinent ID1.
-        /// </summary>
-        /// <value>The SubContinent ID1.</value>
-        public int SubContinent_ID1
-        {
-            get { return GetProperty(SubContinent_ID1Property); }
         }
 
         #endregion
@@ -59,11 +46,11 @@ namespace SelfLoadRO.Business.ERLevel
         /// <summary>
         /// Factory method. Loads a <see cref="C05_SubContinent_Child"/> object, based on given parameters.
         /// </summary>
-        /// <param name="subContinent_ID1">The SubContinent_ID1 parameter of the C05_SubContinent_Child to fetch.</param>
+        /// <param name="parentSubContinent_ID1">The ParentSubContinent_ID1 parameter of the C05_SubContinent_Child to fetch.</param>
         /// <returns>A reference to the fetched <see cref="C05_SubContinent_Child"/> object.</returns>
-        internal static C05_SubContinent_Child GetC05_SubContinent_Child(int subContinent_ID1)
+        internal static C05_SubContinent_Child GetC05_SubContinent_Child(int parentSubContinent_ID1)
         {
-            return DataPortal.FetchChild<C05_SubContinent_Child>(subContinent_ID1);
+            return DataPortal.FetchChild<C05_SubContinent_Child>(parentSubContinent_ID1);
         }
 
         #endregion
@@ -86,15 +73,15 @@ namespace SelfLoadRO.Business.ERLevel
         /// <summary>
         /// Loads a <see cref="C05_SubContinent_Child"/> object from the database, based on given criteria.
         /// </summary>
-        /// <param name="subContinent_ID1">The Sub Continent ID1.</param>
-        protected void Child_Fetch(int subContinent_ID1)
+        /// <param name="parentSubContinent_ID1">The Parent Sub Continent ID1.</param>
+        protected void Child_Fetch(int parentSubContinent_ID1)
         {
-            var args = new DataPortalHookArgs(subContinent_ID1);
+            var args = new DataPortalHookArgs(parentSubContinent_ID1);
             OnFetchPre(args);
             using (var dalManager = DalFactorySelfLoadRO.GetManager())
             {
                 var dal = dalManager.GetProvider<IC05_SubContinent_ChildDal>();
-                var data = dal.Fetch(subContinent_ID1);
+                var data = dal.Fetch(parentSubContinent_ID1);
                 Fetch(data);
             }
             OnFetchPost(args);
@@ -108,7 +95,6 @@ namespace SelfLoadRO.Business.ERLevel
         {
             // Value properties
             LoadProperty(SubContinent_Child_NameProperty, data.SubContinent_Child_Name);
-            LoadProperty(SubContinent_ID1Property, data.SubContinent_ID1);
             _rowVersion = data.RowVersion;
             var args = new DataPortalHookArgs(data);
             OnFetchRead(args);

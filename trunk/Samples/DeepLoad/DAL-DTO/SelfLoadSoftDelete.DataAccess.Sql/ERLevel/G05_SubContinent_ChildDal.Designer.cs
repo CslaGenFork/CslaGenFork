@@ -17,16 +17,16 @@ namespace SelfLoadSoftDelete.DataAccess.Sql.ERLevel
         /// <summary>
         /// Loads a G05_SubContinent_Child object from the database.
         /// </summary>
-        /// <param name="subContinent_ID1">The fetch criteria.</param>
+        /// <param name="parentSubContinent_ID1">The fetch criteria.</param>
         /// <returns>A G05_SubContinent_ChildDto object.</returns>
-        public G05_SubContinent_ChildDto Fetch(int subContinent_ID1)
+        public G05_SubContinent_ChildDto Fetch(int parentSubContinent_ID1)
         {
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("DeepLoad"))
             {
                 using (var cmd = new SqlCommand("GetG05_SubContinent_Child", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@SubContinent_ID1", subContinent_ID1).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@SubContinent_ID1", parentSubContinent_ID1).DbType = DbType.Int32;
                     var dr = cmd.ExecuteReader();
                     return Fetch(dr);
                 }
@@ -41,7 +41,6 @@ namespace SelfLoadSoftDelete.DataAccess.Sql.ERLevel
                 if (dr.Read())
                 {
                     g05_SubContinent_Child.SubContinent_Child_Name = dr.GetString("SubContinent_Child_Name");
-                    g05_SubContinent_Child.SubContinent_ID1 = dr.GetInt32("SubContinent_ID1");
                     g05_SubContinent_Child.RowVersion = dr.GetValue("RowVersion") as byte[];
                 }
             }
@@ -60,7 +59,7 @@ namespace SelfLoadSoftDelete.DataAccess.Sql.ERLevel
                 using (var cmd = new SqlCommand("AddG05_SubContinent_Child", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@SubContinent_ID", g05_SubContinent_Child.Parent_SubContinent_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@SubContinent_ID1", g05_SubContinent_Child.Parent_SubContinent_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@SubContinent_Child_Name", g05_SubContinent_Child.SubContinent_Child_Name).DbType = DbType.String;
                     cmd.Parameters.Add("@NewRowVersion", SqlDbType.Timestamp).Direction = ParameterDirection.Output;
                     cmd.ExecuteNonQuery();
@@ -82,9 +81,8 @@ namespace SelfLoadSoftDelete.DataAccess.Sql.ERLevel
                 using (var cmd = new SqlCommand("UpdateG05_SubContinent_Child", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@SubContinent_ID", g05_SubContinent_Child.Parent_SubContinent_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@SubContinent_ID1", g05_SubContinent_Child.Parent_SubContinent_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@SubContinent_Child_Name", g05_SubContinent_Child.SubContinent_Child_Name).DbType = DbType.String;
-                    cmd.Parameters.AddWithValue("@SubContinent_ID1", g05_SubContinent_Child.SubContinent_ID1).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@RowVersion", g05_SubContinent_Child.RowVersion).DbType = DbType.Binary;
                     cmd.Parameters.Add("@NewRowVersion", SqlDbType.Timestamp).Direction = ParameterDirection.Output;
                     var rowsAffected = cmd.ExecuteNonQuery();
@@ -100,15 +98,15 @@ namespace SelfLoadSoftDelete.DataAccess.Sql.ERLevel
         /// <summary>
         /// Deletes the G05_SubContinent_Child object from database.
         /// </summary>
-        /// <param name="subContinent_ID">The parent Sub Continent ID.</param>
-        public void Delete(int subContinent_ID)
+        /// <param name="subContinent_ID1">The parent Sub Continent ID1.</param>
+        public void Delete(int subContinent_ID1)
         {
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("DeepLoad"))
             {
                 using (var cmd = new SqlCommand("DeleteG05_SubContinent_Child", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@SubContinent_ID", subContinent_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@SubContinent_ID1", subContinent_ID1).DbType = DbType.Int32;
                     cmd.ExecuteNonQuery();
                 }
             }

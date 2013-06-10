@@ -5,7 +5,7 @@ GO
 
 CREATE PROCEDURE [AddG12_CityRoad]
     @CityRoad_ID int OUTPUT,
-    @City_ID int,
+    @Parent_City_ID int,
     @CityRoad_Name varchar(50)
 AS
     BEGIN
@@ -20,7 +20,7 @@ AS
         )
         VALUES
         (
-            @City_ID,
+            @Parent_City_ID,
             @CityRoad_Name
         )
 

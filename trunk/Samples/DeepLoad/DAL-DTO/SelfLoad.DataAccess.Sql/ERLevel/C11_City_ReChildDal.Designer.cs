@@ -58,7 +58,7 @@ namespace SelfLoad.DataAccess.Sql.ERLevel
                 using (var cmd = new SqlCommand("AddC11_City_ReChild", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@City_ID", c11_City_ReChild.Parent_City_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@City_ID2", c11_City_ReChild.Parent_City_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@City_Child_Name", c11_City_ReChild.City_Child_Name).DbType = DbType.String;
                     cmd.ExecuteNonQuery();
                 }
@@ -78,7 +78,7 @@ namespace SelfLoad.DataAccess.Sql.ERLevel
                 using (var cmd = new SqlCommand("UpdateC11_City_ReChild", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@City_ID", c11_City_ReChild.Parent_City_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@City_ID2", c11_City_ReChild.Parent_City_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@City_Child_Name", c11_City_ReChild.City_Child_Name).DbType = DbType.String;
                     var rowsAffected = cmd.ExecuteNonQuery();
                     if (rowsAffected == 0)
@@ -91,15 +91,15 @@ namespace SelfLoad.DataAccess.Sql.ERLevel
         /// <summary>
         /// Deletes the C11_City_ReChild object from database.
         /// </summary>
-        /// <param name="city_ID">The parent City ID.</param>
-        public void Delete(int city_ID)
+        /// <param name="city_ID2">The parent City ID2.</param>
+        public void Delete(int city_ID2)
         {
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("DeepLoad"))
             {
                 using (var cmd = new SqlCommand("DeleteC11_City_ReChild", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@City_ID", city_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@City_ID2", city_ID2).DbType = DbType.Int32;
                     cmd.ExecuteNonQuery();
                 }
             }

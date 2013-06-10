@@ -301,7 +301,6 @@ namespace ParentLoadRO.DataAccess.Sql.ERLevel
             var a05_SubContinent_Child = new A05_SubContinent_ChildDto();
             // Value properties
             a05_SubContinent_Child.SubContinent_Child_Name = dr.GetString("SubContinent_Child_Name");
-            a05_SubContinent_Child.SubContinent_ID1 = dr.GetInt32("SubContinent_ID1");
             a05_SubContinent_Child.RowVersion = dr.GetValue("RowVersion") as byte[];
             // parent properties
             a05_SubContinent_Child.Parent_SubContinent_ID = dr.GetInt32("SubContinent_ID1");

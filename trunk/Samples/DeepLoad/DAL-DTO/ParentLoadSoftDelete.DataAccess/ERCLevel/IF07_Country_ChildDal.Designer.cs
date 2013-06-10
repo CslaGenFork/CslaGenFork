@@ -26,7 +26,7 @@ namespace ParentLoadSoftDelete.DataAccess.ERCLevel
         /// <summary>
         /// Deletes the F07_Country_Child object from database.
         /// </summary>
-        /// <param name="country_ID">The parent Country ID.</param>
-        void Delete(int country_ID);
+        /// <param name="country_ID1">The parent Country ID1.</param>
+        void Delete(int country_ID1);
     }
 }

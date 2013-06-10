@@ -26,7 +26,7 @@ namespace SelfLoadSoftDelete.DataAccess.Sql.ERLevel
                 using (var cmd = new SqlCommand("AddG10_City", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Region_ID", g10_City.Parent_Region_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@Parent_Region_ID", g10_City.Parent_Region_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@City_ID", g10_City.City_ID).Direction = ParameterDirection.Output;
                     cmd.Parameters.AddWithValue("@City_Name", g10_City.City_Name).DbType = DbType.String;
                     cmd.ExecuteNonQuery();

@@ -33,7 +33,7 @@ namespace SelfLoadSoftDelete.DataAccess.ERLevel
         /// <summary>
         /// Deletes the G05_SubContinent_ReChild object from database.
         /// </summary>
-        /// <param name="subContinent_ID">The parent Sub Continent ID.</param>
-        void Delete(int subContinent_ID);
+        /// <param name="subContinent_ID2">The parent Sub Continent ID2.</param>
+        void Delete(int subContinent_ID2);
     }
 }

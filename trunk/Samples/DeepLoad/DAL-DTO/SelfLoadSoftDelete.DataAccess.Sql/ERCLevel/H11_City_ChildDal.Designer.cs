@@ -58,7 +58,7 @@ namespace SelfLoadSoftDelete.DataAccess.Sql.ERCLevel
                 using (var cmd = new SqlCommand("AddH11_City_Child", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@City_ID", h11_City_Child.Parent_City_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@City_ID1", h11_City_Child.Parent_City_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@City_Child_Name", h11_City_Child.City_Child_Name).DbType = DbType.String;
                     cmd.ExecuteNonQuery();
                 }
@@ -78,7 +78,7 @@ namespace SelfLoadSoftDelete.DataAccess.Sql.ERCLevel
                 using (var cmd = new SqlCommand("UpdateH11_City_Child", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@City_ID", h11_City_Child.Parent_City_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@City_ID1", h11_City_Child.Parent_City_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@City_Child_Name", h11_City_Child.City_Child_Name).DbType = DbType.String;
                     var rowsAffected = cmd.ExecuteNonQuery();
                     if (rowsAffected == 0)
@@ -91,15 +91,15 @@ namespace SelfLoadSoftDelete.DataAccess.Sql.ERCLevel
         /// <summary>
         /// Deletes the H11_City_Child object from database.
         /// </summary>
-        /// <param name="city_ID">The parent City ID.</param>
-        public void Delete(int city_ID)
+        /// <param name="city_ID1">The parent City ID1.</param>
+        public void Delete(int city_ID1)
         {
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("DeepLoad"))
             {
                 using (var cmd = new SqlCommand("DeleteH11_City_Child", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@City_ID", city_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@City_ID1", city_ID1).DbType = DbType.Int32;
                     cmd.ExecuteNonQuery();
                 }
             }

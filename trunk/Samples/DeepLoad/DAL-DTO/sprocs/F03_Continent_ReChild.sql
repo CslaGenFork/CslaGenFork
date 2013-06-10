@@ -4,7 +4,7 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[AddF03_Conti
 GO
 
 CREATE PROCEDURE [AddF03_Continent_ReChild]
-    @Continent_ID int,
+    @Continent_ID2 int,
     @Continent_Child_Name varchar(50)
 AS
     BEGIN
@@ -19,7 +19,7 @@ AS
         )
         VALUES
         (
-            @Continent_ID,
+            @Continent_ID2,
             @Continent_Child_Name
         )
 
@@ -32,7 +32,7 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[UpdateF03_Co
 GO
 
 CREATE PROCEDURE [UpdateF03_Continent_ReChild]
-    @Continent_ID int,
+    @Continent_ID2 int,
     @Continent_Child_Name varchar(50)
 AS
     BEGIN
@@ -44,7 +44,7 @@ AS
         (
             SELECT [Continent_ID2] FROM [1_Continents_ReChild]
             WHERE
-                [Continent_ID2] = @Continent_ID AND
+                [Continent_ID2] = @Continent_ID2 AND
                 [IsActive] = 'true'
         )
         BEGIN
@@ -57,7 +57,7 @@ AS
         SET
             [Continent_Child_Name] = @Continent_Child_Name
         WHERE
-            [Continent_ID2] = @Continent_ID
+            [Continent_ID2] = @Continent_ID2
 
     END
 GO
@@ -68,7 +68,7 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[DeleteF03_Co
 GO
 
 CREATE PROCEDURE [DeleteF03_Continent_ReChild]
-    @Continent_ID int
+    @Continent_ID2 int
 AS
     BEGIN
 
@@ -79,7 +79,7 @@ AS
         (
             SELECT [Continent_ID2] FROM [1_Continents_ReChild]
             WHERE
-                [Continent_ID2] = @Continent_ID AND
+                [Continent_ID2] = @Continent_ID2 AND
                 [IsActive] = 'true'
         )
         BEGIN
@@ -91,7 +91,7 @@ AS
         UPDATE [1_Continents_ReChild]
         SET    [IsActive] = 'false'
         WHERE
-            [1_Continents_ReChild].[Continent_ID2] = @Continent_ID
+            [1_Continents_ReChild].[Continent_ID2] = @Continent_ID2
 
     END
 GO

@@ -301,7 +301,6 @@ namespace ParentLoadSoftDelete.DataAccess.Sql.ERLevel
             var e05_SubContinent_Child = new E05_SubContinent_ChildDto();
             // Value properties
             e05_SubContinent_Child.SubContinent_Child_Name = dr.GetString("SubContinent_Child_Name");
-            e05_SubContinent_Child.SubContinent_ID1 = dr.GetInt32("SubContinent_ID1");
             e05_SubContinent_Child.RowVersion = dr.GetValue("RowVersion") as byte[];
             // parent properties
             e05_SubContinent_Child.Parent_SubContinent_ID = dr.GetInt32("SubContinent_ID1");

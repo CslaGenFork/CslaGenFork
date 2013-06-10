@@ -26,7 +26,7 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[AddD05_SubCo
 GO
 
 CREATE PROCEDURE [AddD05_SubContinent_Child]
-    @SubContinent_ID int,
+    @SubContinent_ID1 int,
     @SubContinent_Child_Name varchar(50)
 AS
     BEGIN
@@ -41,7 +41,7 @@ AS
         )
         VALUES
         (
-            @SubContinent_ID,
+            @SubContinent_ID1,
             @SubContinent_Child_Name
         )
 
@@ -54,7 +54,7 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[UpdateD05_Su
 GO
 
 CREATE PROCEDURE [UpdateD05_SubContinent_Child]
-    @SubContinent_ID int,
+    @SubContinent_ID1 int,
     @SubContinent_Child_Name varchar(50)
 AS
     BEGIN
@@ -66,7 +66,7 @@ AS
         (
             SELECT [SubContinent_ID1] FROM [2_SubContinents_Child]
             WHERE
-                [SubContinent_ID1] = @SubContinent_ID
+                [SubContinent_ID1] = @SubContinent_ID1
         )
         BEGIN
             RAISERROR ('''D05_SubContinent_Child'' object not found. It was probably removed by another user.', 16, 1)
@@ -78,7 +78,7 @@ AS
         SET
             [SubContinent_Child_Name] = @SubContinent_Child_Name
         WHERE
-            [SubContinent_ID1] = @SubContinent_ID
+            [SubContinent_ID1] = @SubContinent_ID1
 
     END
 GO
@@ -89,7 +89,7 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[DeleteD05_Su
 GO
 
 CREATE PROCEDURE [DeleteD05_SubContinent_Child]
-    @SubContinent_ID int
+    @SubContinent_ID1 int
 AS
     BEGIN
 
@@ -100,7 +100,7 @@ AS
         (
             SELECT [SubContinent_ID1] FROM [2_SubContinents_Child]
             WHERE
-                [SubContinent_ID1] = @SubContinent_ID
+                [SubContinent_ID1] = @SubContinent_ID1
         )
         BEGIN
             RAISERROR ('''D05_SubContinent_Child'' object not found. It was probably removed by another user.', 16, 1)
@@ -111,7 +111,7 @@ AS
         DELETE
         FROM [2_SubContinents_Child]
         WHERE
-            [2_SubContinents_Child].[SubContinent_ID1] = @SubContinent_ID
+            [2_SubContinents_Child].[SubContinent_ID1] = @SubContinent_ID1
 
     END
 GO
