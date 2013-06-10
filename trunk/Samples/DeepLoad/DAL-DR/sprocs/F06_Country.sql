@@ -5,7 +5,7 @@ GO
 
 CREATE PROCEDURE [AddF06_Country]
     @Country_ID int OUTPUT,
-    @SubContinent_ID int,
+    @Parent_SubContinent_ID int,
     @Country_Name varchar(50)
 AS
     BEGIN
@@ -20,7 +20,7 @@ AS
         )
         VALUES
         (
-            @SubContinent_ID,
+            @Parent_SubContinent_ID,
             @Country_Name
         )
 

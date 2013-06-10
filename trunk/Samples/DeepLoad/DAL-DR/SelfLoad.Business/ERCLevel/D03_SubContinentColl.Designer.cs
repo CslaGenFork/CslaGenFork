@@ -74,6 +74,28 @@ namespace SelfLoad.Business.ERCLevel
 
         #endregion
 
+        #region Find Methods
+
+        /// <summary>
+        /// Finds a <see cref="D04_SubContinent"/> item of the <see cref="D03_SubContinentColl"/> collection, based on a given SubContinent_ID.
+        /// </summary>
+        /// <param name="subContinent_ID">The SubContinent_ID.</param>
+        /// <returns>A <see cref="D04_SubContinent"/> object.</returns>
+        public D04_SubContinent FindD04_SubContinentBySubContinent_ID(int subContinent_ID)
+        {
+            for (var i = 0; i < this.Count; i++)
+            {
+                if (this[i].SubContinent_ID.Equals(subContinent_ID))
+                {
+                    return this[i];
+                }
+            }
+
+            return null;
+        }
+
+        #endregion
+
         #region Factory Methods
 
         /// <summary>

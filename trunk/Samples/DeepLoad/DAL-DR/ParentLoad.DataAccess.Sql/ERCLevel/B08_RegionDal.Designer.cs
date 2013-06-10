@@ -16,10 +16,10 @@ namespace ParentLoad.DataAccess.Sql.ERCLevel
         /// <summary>
         /// Inserts a new B08_Region object in the database.
         /// </summary>
-        /// <param name="country_ID">The parent Country ID.</param>
+        /// <param name="parent_Country_ID">The parent Parent Country ID.</param>
         /// <param name="region_ID">The Region ID.</param>
         /// <param name="region_Name">The Region Name.</param>
-        public void Insert(int country_ID, out int region_ID, string region_Name)
+        public void Insert(int parent_Country_ID, out int region_ID, string region_Name)
         {
             region_ID = -1;
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("DeepLoad"))
@@ -27,7 +27,7 @@ namespace ParentLoad.DataAccess.Sql.ERCLevel
                 using (var cmd = new SqlCommand("AddB08_Region", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Country_ID", country_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@Parent_Country_ID", parent_Country_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@Region_ID", region_ID).Direction = ParameterDirection.Output;
                     cmd.Parameters.AddWithValue("@Region_Name", region_Name).DbType = DbType.String;
                     cmd.ExecuteNonQuery();

@@ -41,6 +41,28 @@ namespace SelfLoadROSoftDelete.Business.ERCLevel
 
         #endregion
 
+        #region Find Methods
+
+        /// <summary>
+        /// Finds a <see cref="H06_Country"/> item of the <see cref="H05_CountryColl"/> collection, based on a given Country_ID.
+        /// </summary>
+        /// <param name="country_ID">The Country_ID.</param>
+        /// <returns>A <see cref="H06_Country"/> object.</returns>
+        public H06_Country FindH06_CountryByCountry_ID(int country_ID)
+        {
+            for (var i = 0; i < this.Count; i++)
+            {
+                if (this[i].Country_ID.Equals(country_ID))
+                {
+                    return this[i];
+                }
+            }
+
+            return null;
+        }
+
+        #endregion
+
         #region Factory Methods
 
         /// <summary>

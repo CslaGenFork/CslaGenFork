@@ -5,7 +5,7 @@ GO
 
 CREATE PROCEDURE [AddE04_SubContinent]
     @SubContinent_ID int OUTPUT,
-    @Continent_ID int,
+    @Parent_Continent_ID int,
     @SubContinent_Name varchar(50)
 AS
     BEGIN
@@ -20,7 +20,7 @@ AS
         )
         VALUES
         (
-            @Continent_ID,
+            @Parent_Continent_ID,
             @SubContinent_Name
         )
 

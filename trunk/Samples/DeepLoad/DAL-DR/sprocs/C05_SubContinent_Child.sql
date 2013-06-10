@@ -13,7 +13,6 @@ AS
         /* Get C05_SubContinent_Child from table */
         SELECT
             [2_SubContinents_Child].[SubContinent_Child_Name],
-            [2_SubContinents_Child].[SubContinent_ID1],
             [2_SubContinents_Child].[RowVersion]
         FROM [2_SubContinents_Child]
         WHERE
@@ -28,7 +27,7 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[AddC05_SubCo
 GO
 
 CREATE PROCEDURE [AddC05_SubContinent_Child]
-    @SubContinent_ID int,
+    @SubContinent_ID1 int,
     @SubContinent_Child_Name varchar(50),
     @NewRowVersion timestamp OUTPUT
 AS
@@ -44,7 +43,7 @@ AS
         )
         VALUES
         (
-            @SubContinent_ID,
+            @SubContinent_ID1,
             @SubContinent_Child_Name
         )
 
@@ -52,7 +51,7 @@ AS
         SELECT @NewRowVersion = [RowVersion]
         FROM   [2_SubContinents_Child]
         WHERE
-            [SubContinent_ID1] = @SubContinent_ID
+            [SubContinent_ID1] = @SubContinent_ID1
 
     END
 GO
@@ -63,9 +62,8 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[UpdateC05_Su
 GO
 
 CREATE PROCEDURE [UpdateC05_SubContinent_Child]
-    @SubContinent_ID int,
-    @SubContinent_Child_Name varchar(50),
     @SubContinent_ID1 int,
+    @SubContinent_Child_Name varchar(50),
     @RowVersion timestamp,
     @NewRowVersion timestamp OUTPUT
 AS
@@ -76,9 +74,8 @@ AS
         /* Check for object existance */
         IF NOT EXISTS
         (
-            SELECT [SubContinent_ID1], [SubContinent_ID1] FROM [2_SubContinents_Child]
+            SELECT [SubContinent_ID1] FROM [2_SubContinents_Child]
             WHERE
-                [SubContinent_ID1] = @SubContinent_ID AND
                 [SubContinent_ID1] = @SubContinent_ID1
         )
         BEGIN
@@ -89,9 +86,8 @@ AS
         /* Check for row version match */
         IF NOT EXISTS
         (
-            SELECT [SubContinent_ID1], [SubContinent_ID1] FROM [2_SubContinents_Child]
+            SELECT [SubContinent_ID1] FROM [2_SubContinents_Child]
             WHERE
-                [SubContinent_ID1] = @SubContinent_ID AND
                 [SubContinent_ID1] = @SubContinent_ID1 AND
                 [RowVersion] = @RowVersion
         )
@@ -105,7 +101,6 @@ AS
         SET
             [SubContinent_Child_Name] = @SubContinent_Child_Name
         WHERE
-            [SubContinent_ID1] = @SubContinent_ID AND
             [SubContinent_ID1] = @SubContinent_ID1 AND
             [RowVersion] = @RowVersion
 
@@ -113,7 +108,6 @@ AS
         SELECT @NewRowVersion = [RowVersion]
         FROM   [2_SubContinents_Child]
         WHERE
-            [SubContinent_ID1] = @SubContinent_ID AND
             [SubContinent_ID1] = @SubContinent_ID1
 
     END
@@ -125,7 +119,7 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[DeleteC05_Su
 GO
 
 CREATE PROCEDURE [DeleteC05_SubContinent_Child]
-    @SubContinent_ID int
+    @SubContinent_ID1 int
 AS
     BEGIN
 
@@ -136,7 +130,7 @@ AS
         (
             SELECT [SubContinent_ID1] FROM [2_SubContinents_Child]
             WHERE
-                [SubContinent_ID1] = @SubContinent_ID
+                [SubContinent_ID1] = @SubContinent_ID1
         )
         BEGIN
             RAISERROR ('''C05_SubContinent_Child'' object not found. It was probably removed by another user.', 16, 1)
@@ -147,7 +141,7 @@ AS
         DELETE
         FROM [2_SubContinents_Child]
         WHERE
-            [2_SubContinents_Child].[SubContinent_ID1] = @SubContinent_ID
+            [2_SubContinents_Child].[SubContinent_ID1] = @SubContinent_ID1
 
     END
 GO

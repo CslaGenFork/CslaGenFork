@@ -16,10 +16,10 @@ namespace SelfLoad.DataAccess.Sql.ERLevel
         /// <summary>
         /// Inserts a new C10_City object in the database.
         /// </summary>
-        /// <param name="region_ID">The parent Region ID.</param>
+        /// <param name="parent_Region_ID">The parent Parent Region ID.</param>
         /// <param name="city_ID">The City ID.</param>
         /// <param name="city_Name">The City Name.</param>
-        public void Insert(int region_ID, out int city_ID, string city_Name)
+        public void Insert(int parent_Region_ID, out int city_ID, string city_Name)
         {
             city_ID = -1;
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("DeepLoad"))
@@ -27,7 +27,7 @@ namespace SelfLoad.DataAccess.Sql.ERLevel
                 using (var cmd = new SqlCommand("AddC10_City", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Region_ID", region_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@Parent_Region_ID", parent_Region_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@City_ID", city_ID).Direction = ParameterDirection.Output;
                     cmd.Parameters.AddWithValue("@City_Name", city_Name).DbType = DbType.String;
                     cmd.ExecuteNonQuery();

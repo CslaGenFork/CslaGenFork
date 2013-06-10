@@ -26,7 +26,7 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[AddC03_Conti
 GO
 
 CREATE PROCEDURE [AddC03_Continent_ReChild]
-    @Continent_ID int,
+    @Continent_ID2 int,
     @Continent_Child_Name varchar(50)
 AS
     BEGIN
@@ -41,7 +41,7 @@ AS
         )
         VALUES
         (
-            @Continent_ID,
+            @Continent_ID2,
             @Continent_Child_Name
         )
 
@@ -54,7 +54,7 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[UpdateC03_Co
 GO
 
 CREATE PROCEDURE [UpdateC03_Continent_ReChild]
-    @Continent_ID int,
+    @Continent_ID2 int,
     @Continent_Child_Name varchar(50)
 AS
     BEGIN
@@ -66,7 +66,7 @@ AS
         (
             SELECT [Continent_ID2] FROM [1_Continents_ReChild]
             WHERE
-                [Continent_ID2] = @Continent_ID
+                [Continent_ID2] = @Continent_ID2
         )
         BEGIN
             RAISERROR ('''C03_Continent_ReChild'' object not found. It was probably removed by another user.', 16, 1)
@@ -78,7 +78,7 @@ AS
         SET
             [Continent_Child_Name] = @Continent_Child_Name
         WHERE
-            [Continent_ID2] = @Continent_ID
+            [Continent_ID2] = @Continent_ID2
 
     END
 GO
@@ -89,7 +89,7 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[DeleteC03_Co
 GO
 
 CREATE PROCEDURE [DeleteC03_Continent_ReChild]
-    @Continent_ID int
+    @Continent_ID2 int
 AS
     BEGIN
 
@@ -100,7 +100,7 @@ AS
         (
             SELECT [Continent_ID2] FROM [1_Continents_ReChild]
             WHERE
-                [Continent_ID2] = @Continent_ID
+                [Continent_ID2] = @Continent_ID2
         )
         BEGIN
             RAISERROR ('''C03_Continent_ReChild'' object not found. It was probably removed by another user.', 16, 1)
@@ -111,7 +111,7 @@ AS
         DELETE
         FROM [1_Continents_ReChild]
         WHERE
-            [1_Continents_ReChild].[Continent_ID2] = @Continent_ID
+            [1_Continents_ReChild].[Continent_ID2] = @Continent_ID2
 
     END
 GO

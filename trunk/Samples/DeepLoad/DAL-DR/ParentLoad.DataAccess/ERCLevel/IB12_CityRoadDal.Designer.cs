@@ -12,10 +12,10 @@ namespace ParentLoad.DataAccess.ERCLevel
         /// <summary>
         /// Inserts a new B12_CityRoad object in the database.
         /// </summary>
-        /// <param name="city_ID">The parent City ID.</param>
+        /// <param name="parent_City_ID">The parent Parent City ID.</param>
         /// <param name="cityRoad_ID">The City Road ID.</param>
         /// <param name="cityRoad_Name">The City Road Name.</param>
-        void Insert(int city_ID, out int cityRoad_ID, string cityRoad_Name);
+        void Insert(int parent_City_ID, out int cityRoad_ID, string cityRoad_Name);
 
         /// <summary>
         /// Updates in the database all changes made to the B12_CityRoad object.

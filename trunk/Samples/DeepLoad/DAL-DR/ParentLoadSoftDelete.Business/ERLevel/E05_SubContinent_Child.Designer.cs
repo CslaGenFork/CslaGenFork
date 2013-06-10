@@ -35,29 +35,15 @@ namespace ParentLoadSoftDelete.Business.ERLevel
         /// <summary>
         /// Maintains metadata about <see cref="SubContinent_Child_Name"/> property.
         /// </summary>
-        public static readonly PropertyInfo<string> SubContinent_Child_NameProperty = RegisterProperty<string>(p => p.SubContinent_Child_Name, "Countries Child Name");
+        public static readonly PropertyInfo<string> SubContinent_Child_NameProperty = RegisterProperty<string>(p => p.SubContinent_Child_Name, "Sub Continent Child Name");
         /// <summary>
-        /// Gets or sets the Countries Child Name.
+        /// Gets or sets the Sub Continent Child Name.
         /// </summary>
-        /// <value>The Countries Child Name.</value>
+        /// <value>The Sub Continent Child Name.</value>
         public string SubContinent_Child_Name
         {
             get { return GetProperty(SubContinent_Child_NameProperty); }
             set { SetProperty(SubContinent_Child_NameProperty, value); }
-        }
-
-        /// <summary>
-        /// Maintains metadata about <see cref="SubContinent_ID1"/> property.
-        /// </summary>
-        public static readonly PropertyInfo<int> SubContinent_ID1Property = RegisterProperty<int>(p => p.SubContinent_ID1, "SubContinent ID1");
-        /// <summary>
-        /// Gets or sets the SubContinent ID1.
-        /// </summary>
-        /// <value>The SubContinent ID1.</value>
-        public int SubContinent_ID1
-        {
-            get { return GetProperty(SubContinent_ID1Property); }
-            set { SetProperty(SubContinent_ID1Property, value); }
         }
 
         #endregion
@@ -127,7 +113,6 @@ namespace ParentLoadSoftDelete.Business.ERLevel
         {
             // Value properties
             LoadProperty(SubContinent_Child_NameProperty, dr.GetString("SubContinent_Child_Name"));
-            LoadProperty(SubContinent_ID1Property, dr.GetInt32("SubContinent_ID1"));
             _rowVersion = dr.GetValue("RowVersion") as byte[];
             // parent properties
             subContinent_ID1 = dr.GetInt32("SubContinent_ID1");
@@ -178,7 +163,6 @@ namespace ParentLoadSoftDelete.Business.ERLevel
                     _rowVersion = dal.Update(
                         parent.SubContinent_ID,
                         SubContinent_Child_Name,
-                        SubContinent_ID1,
                         _rowVersion
                         );
                 }

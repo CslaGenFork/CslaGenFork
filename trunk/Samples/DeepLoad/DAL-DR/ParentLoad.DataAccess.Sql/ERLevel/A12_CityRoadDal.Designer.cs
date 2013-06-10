@@ -16,10 +16,10 @@ namespace ParentLoad.DataAccess.Sql.ERLevel
         /// <summary>
         /// Inserts a new A12_CityRoad object in the database.
         /// </summary>
-        /// <param name="city_ID">The parent City ID.</param>
+        /// <param name="parent_City_ID">The parent Parent City ID.</param>
         /// <param name="cityRoad_ID">The City Road ID.</param>
         /// <param name="cityRoad_Name">The City Road Name.</param>
-        public void Insert(int city_ID, out int cityRoad_ID, string cityRoad_Name)
+        public void Insert(int parent_City_ID, out int cityRoad_ID, string cityRoad_Name)
         {
             cityRoad_ID = -1;
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("DeepLoad"))
@@ -27,7 +27,7 @@ namespace ParentLoad.DataAccess.Sql.ERLevel
                 using (var cmd = new SqlCommand("AddA12_CityRoad", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@City_ID", city_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@Parent_City_ID", parent_City_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@CityRoad_ID", cityRoad_ID).Direction = ParameterDirection.Output;
                     cmd.Parameters.AddWithValue("@CityRoad_Name", cityRoad_Name).DbType = DbType.String;
                     cmd.ExecuteNonQuery();
