@@ -1,0 +1,225 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{31BEFD7F-501B-4105-9165-5F509E914C8F}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DeepLoadBench</RootNamespace>
+    <AssemblyName>DeepLoadBench</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Csla">
+      <HintPath>..\..\packages\CSLA-Core.4.5.30\lib\net40\Csla.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks">
+      <HintPath>..\..\packages\Microsoft.Bcl.Async.1.0.16\lib\net40\Microsoft.Threading.Tasks.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks.Extensions">
+      <HintPath>..\..\packages\Microsoft.Bcl.Async.1.0.16\lib\net40\Microsoft.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Threading.Tasks.Extensions.Desktop">
+      <HintPath>..\..\packages\Microsoft.Bcl.Async.1.0.16\lib\net40\Microsoft.Threading.Tasks.Extensions.Desktop.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Runtime">
+      <HintPath>..\..\packages\Microsoft.Bcl.1.0.19\lib\net40\System.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks">
+      <HintPath>..\..\packages\Microsoft.Bcl.1.0.19\lib\net40\System.Threading.Tasks.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\GlobalAssemblyInfo.cs">
+      <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="ParentLoadROSoftDeleteTestE.cs" />
+    <Compile Include="ParentLoadROSoftDeleteTestF.cs" />
+    <Compile Include="ParentLoadROTestA.cs" />
+    <Compile Include="ParentLoadROTestB.cs" />
+    <Compile Include="ParentLoadSoftDeleteTestE.cs" />
+    <Compile Include="ParentLoadSoftDeleteTestF.cs" />
+    <Compile Include="ParentLoadTestA.cs" />
+    <Compile Include="ParentLoadTestB.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SelfLoadROSoftDeleteTestG.cs" />
+    <Compile Include="SelfLoadROSoftDeleteTestH.cs" />
+    <Compile Include="SelfLoadROTestC.cs" />
+    <Compile Include="SelfLoadROTestD.cs" />
+    <Compile Include="SelfLoadSoftDeleteTestG.cs" />
+    <Compile Include="SelfLoadSoftDeleteTestH.cs" />
+    <Compile Include="SelfLoadTestC.cs" />
+    <Compile Include="SelfLoadTestD.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ParentLoad.Business\ParentLoad.Business.csproj">
+      <Project>{40CF8F6F-B107-4245-8CAD-CE536261A45C}</Project>
+      <Name>ParentLoad.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ParentLoad.DataAccess.Sql\ParentLoad.DataAccess.Sql.csproj">
+      <Project>{03A7C043-B947-4A7B-ABC1-0D459255110A}</Project>
+      <Name>ParentLoad.DataAccess.Sql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ParentLoadRO.Business\ParentLoadRO.Business.csproj">
+      <Project>{BB4D0208-87B9-4805-BB8C-CEB5117C5B4D}</Project>
+      <Name>ParentLoadRO.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ParentLoadRO.DataAccess.Sql\ParentLoadRO.DataAccess.Sql.csproj">
+      <Project>{6FD9BE04-FA72-4122-B75C-CFF13EB04D86}</Project>
+      <Name>ParentLoadRO.DataAccess.Sql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ParentLoadROSoftDelete.Business\ParentLoadROSoftDelete.Business.csproj">
+      <Project>{26B08F92-CF7A-416F-B527-759C81CCA0B7}</Project>
+      <Name>ParentLoadROSoftDelete.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ParentLoadROSoftDelete.DataAccess.Sql\ParentLoadROSoftDelete.DataAccess.Sql.csproj">
+      <Project>{68162115-2938-492E-A7F8-C1F9505C327D}</Project>
+      <Name>ParentLoadROSoftDelete.DataAccess.Sql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ParentLoadSoftDelete.Business\ParentLoadSoftDelete.Business.csproj">
+      <Project>{789B204E-CC18-47EE-A44C-503857DD507F}</Project>
+      <Name>ParentLoadSoftDelete.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ParentLoadSoftDelete.DataAccess.Sql\ParentLoadSoftDelete.DataAccess.Sql.csproj">
+      <Project>{720FFFD9-3518-4223-BD84-4BE0F5FFE955}</Project>
+      <Name>ParentLoadSoftDelete.DataAccess.Sql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SelfLoad.Business\SelfLoad.Business.csproj">
+      <Project>{1FE9C16B-ABC9-48C5-ADA7-4196B3803B7B}</Project>
+      <Name>SelfLoad.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SelfLoad.DataAccess.Sql\SelfLoad.DataAccess.Sql.csproj">
+      <Project>{41A44DEA-66D6-4AB4-AC31-100C2D9CC5AB}</Project>
+      <Name>SelfLoad.DataAccess.Sql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SelfLoadRO.Business\SelfLoadRO.Business.csproj">
+      <Project>{89DABC30-3A87-4E6A-8877-C14B5DC59F8D}</Project>
+      <Name>SelfLoadRO.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SelfLoadRO.DataAccess.Sql\SelfLoadRO.DataAccess.Sql.csproj">
+      <Project>{477D22E6-860C-4E64-B35E-363D49089AB7}</Project>
+      <Name>SelfLoadRO.DataAccess.Sql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SelfLoadROSoftDelete.Business\SelfLoadROSoftDelete.Business.csproj">
+      <Project>{E856448B-6904-43B9-B8F9-136FDFBE3503}</Project>
+      <Name>SelfLoadROSoftDelete.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SelfLoadROSoftDelete.DataAccess.Sql\SelfLoadROSoftDelete.DataAccess.Sql.csproj">
+      <Project>{76119DAC-654C-4D1C-9F28-FCDC3EF464E6}</Project>
+      <Name>SelfLoadROSoftDelete.DataAccess.Sql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SelfLoadSoftDelete.Business\SelfLoadSoftDelete.Business.csproj">
+      <Project>{0E5FFB9B-B619-4516-BB1B-E1C2F8CF4E09}</Project>
+      <Name>SelfLoadSoftDelete.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SelfLoadSoftDelete.DataAccess.Sql\SelfLoadSoftDelete.DataAccess.Sql.csproj">
+      <Project>{9F6C308B-D5F0-4596-8973-B162413E1C3B}</Project>
+      <Name>SelfLoadSoftDelete.DataAccess.Sql</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 Client Profile %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Sql.Server.Express.10.0">
+      <Visible>False</Visible>
+      <ProductName>SQL Server 2008 Express</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.4.5">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 4.5</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\Data\DeepLoad.mdf">
+      <Link>Data\DeepLoad.mdf</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\Data\DeepLoad_log.ldf">
+      <Link>Data\DeepLoad_log.ldf</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <DependentUpon>DeepLoad.mdf</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\..\packages\Microsoft.Bcl.Build.1.0.7\tools\Microsoft.Bcl.Build.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
