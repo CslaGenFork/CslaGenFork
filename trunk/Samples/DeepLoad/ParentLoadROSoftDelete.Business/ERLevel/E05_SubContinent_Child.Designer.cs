@@ -34,27 +34,14 @@ namespace ParentLoadROSoftDelete.Business.ERLevel
         /// <summary>
         /// Maintains metadata about <see cref="SubContinent_Child_Name"/> property.
         /// </summary>
-        public static readonly PropertyInfo<string> SubContinent_Child_NameProperty = RegisterProperty<string>(p => p.SubContinent_Child_Name, "Countries Child Name");
+        public static readonly PropertyInfo<string> SubContinent_Child_NameProperty = RegisterProperty<string>(p => p.SubContinent_Child_Name, "Sub Continent Child Name");
         /// <summary>
-        /// Gets the Countries Child Name.
+        /// Gets the Sub Continent Child Name.
         /// </summary>
-        /// <value>The Countries Child Name.</value>
+        /// <value>The Sub Continent Child Name.</value>
         public string SubContinent_Child_Name
         {
             get { return GetProperty(SubContinent_Child_NameProperty); }
-        }
-
-        /// <summary>
-        /// Maintains metadata about <see cref="SubContinent_ID1"/> property.
-        /// </summary>
-        public static readonly PropertyInfo<int> SubContinent_ID1Property = RegisterProperty<int>(p => p.SubContinent_ID1, "SubContinent ID1");
-        /// <summary>
-        /// Gets the SubContinent ID1.
-        /// </summary>
-        /// <value>The SubContinent ID1.</value>
-        public int SubContinent_ID1
-        {
-            get { return GetProperty(SubContinent_ID1Property); }
         }
 
         #endregion
@@ -98,7 +85,6 @@ namespace ParentLoadROSoftDelete.Business.ERLevel
         {
             // Value properties
             LoadProperty(SubContinent_Child_NameProperty, dr.GetString("SubContinent_Child_Name"));
-            LoadProperty(SubContinent_ID1Property, dr.GetInt32("SubContinent_ID1"));
             _rowVersion = dr.GetValue("RowVersion") as byte[];
             // parent properties
             subContinent_ID1 = dr.GetInt32("SubContinent_ID1");

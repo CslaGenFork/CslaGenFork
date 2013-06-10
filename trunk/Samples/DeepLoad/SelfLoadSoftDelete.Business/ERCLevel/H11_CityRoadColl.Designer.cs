@@ -73,6 +73,28 @@ namespace SelfLoadSoftDelete.Business.ERCLevel
 
         #endregion
 
+        #region Find Methods
+
+        /// <summary>
+        /// Finds a <see cref="H12_CityRoad"/> item of the <see cref="H11_CityRoadColl"/> collection, based on a given CityRoad_ID.
+        /// </summary>
+        /// <param name="cityRoad_ID">The CityRoad_ID.</param>
+        /// <returns>A <see cref="H12_CityRoad"/> object.</returns>
+        public H12_CityRoad FindH12_CityRoadByCityRoad_ID(int cityRoad_ID)
+        {
+            for (var i = 0; i < this.Count; i++)
+            {
+                if (this[i].CityRoad_ID.Equals(cityRoad_ID))
+                {
+                    return this[i];
+                }
+            }
+
+            return null;
+        }
+
+        #endregion
+
         #region Factory Methods
 
         /// <summary>

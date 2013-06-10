@@ -101,6 +101,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>false</GenerateDataPortalInsert>
@@ -813,6 +814,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>false</GenerateDataPortalInsert>
@@ -1067,6 +1069,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>false</GenerateDataPortalInsert>
@@ -1321,6 +1324,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>false</GenerateDataPortalInsert>
@@ -1451,6 +1455,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>false</GenerateDataPortalInsert>
@@ -2089,6 +2094,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>false</GenerateDataPortalInsert>
@@ -2159,67 +2165,6 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Sub Continent Child Name</FriendlyName>
-          <DeclarationMode>Managed</DeclarationMode>
-          <BackingFieldType>Empty</BackingFieldType>
-          <DefaultValue />
-          <Attributes />
-          <Implements />
-          <Rules />
-          <BusinessRules />
-          <AuthzProvider>IsInRole</AuthzProvider>
-          <ReadRoles />
-          <WriteRoles />
-          <ReadAuthzRuleType>
-            <BaseRuleProperties />
-            <Name />
-            <ObjectName />
-            <AssemblyFile />
-            <Type />
-            <Constructors />
-            <RuleProperties />
-            <CacheResult>false</CacheResult>
-          </ReadAuthzRuleType>
-          <WriteAuthzRuleType>
-            <BaseRuleProperties />
-            <Name />
-            <ObjectName />
-            <AssemblyFile />
-            <Type />
-            <Constructors />
-            <RuleProperties />
-            <CacheResult>false</CacheResult>
-          </WriteAuthzRuleType>
-          <Access>IsPublic</Access>
-          <PropSetAccessibility>Default</PropSetAccessibility>
-          <Undoable>true</Undoable>
-          <MarkDirtyOnChange>true</MarkDirtyOnChange>
-        </ValueProperty>
-        <ValueProperty>
-          <ParameterName>SubContinent_ID1</ParameterName>
-          <Name>SubContinent_ID1</Name>
-          <PropertyType>Int32</PropertyType>
-          <ReadOnly>false</ReadOnly>
-          <Nullable>false</Nullable>
-          <Summary />
-          <Remarks />
-          <DbBindColumn>
-            <ColumnOriginType>Table</ColumnOriginType>
-            <DataType>Int32</DataType>
-            <NativeType>int</NativeType>
-            <Size>10</Size>
-            <SpResultIndex>0</SpResultIndex>
-            <ColumnName>SubContinent_ID1</ColumnName>
-            <IsPrimaryKey>true</IsPrimaryKey>
-            <ObjectName>2_SubContinents_Child</ObjectName>
-            <CatalogName>DeepLoad</CatalogName>
-            <SchemaName>dbo</SchemaName>
-            <IsNullable>false</IsNullable>
-            <IsIdentity>false</IsIdentity>
-          </DbBindColumn>
-          <DataAccess>UpdateOnly</DataAccess>
-          <PrimaryKey>Default</PrimaryKey>
-          <FKConstraint />
-          <FriendlyName>Sub Continent ID1</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
@@ -2465,6 +2410,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>false</GenerateDataPortalInsert>
@@ -2780,6 +2726,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>false</GenerateDataPortalInsert>
@@ -2910,6 +2857,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>false</GenerateDataPortalInsert>
@@ -3670,6 +3618,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>false</GenerateDataPortalInsert>
@@ -3924,6 +3873,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>false</GenerateDataPortalInsert>
@@ -4178,6 +4128,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>false</GenerateDataPortalInsert>
@@ -4308,6 +4259,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>false</GenerateDataPortalInsert>
@@ -4946,6 +4898,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>false</GenerateDataPortalInsert>
@@ -5200,6 +5153,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>false</GenerateDataPortalInsert>
@@ -5454,6 +5408,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>false</GenerateDataPortalInsert>
@@ -5584,6 +5539,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>false</GenerateDataPortalInsert>
@@ -6222,6 +6178,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>false</GenerateDataPortalInsert>
@@ -6476,6 +6433,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>false</GenerateDataPortalInsert>
@@ -6730,6 +6688,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>false</GenerateDataPortalInsert>
@@ -6860,6 +6819,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>false</GenerateDataPortalInsert>
@@ -7175,6 +7135,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>false</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
@@ -7305,6 +7266,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>false</GenerateDataPortalInsert>
@@ -7471,6 +7433,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>false</GenerateDataPortalInsert>
@@ -8047,6 +8010,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>false</GenerateDataPortalInsert>
@@ -8301,6 +8265,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>false</GenerateDataPortalInsert>
@@ -8555,6 +8520,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>false</GenerateDataPortalInsert>
@@ -8685,6 +8651,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>false</GenerateDataPortalInsert>
@@ -9323,6 +9290,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>false</GenerateDataPortalInsert>
@@ -9577,6 +9545,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>false</GenerateDataPortalInsert>
@@ -9831,6 +9800,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>false</GenerateDataPortalInsert>
@@ -9961,6 +9931,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>false</GenerateDataPortalInsert>
@@ -10537,6 +10508,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>false</GenerateDataPortalInsert>
@@ -10791,6 +10763,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>false</GenerateDataPortalInsert>
@@ -11045,6 +11018,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>false</GenerateDataPortalInsert>
@@ -11175,6 +11149,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>false</GenerateDataPortalInsert>
@@ -11813,6 +11788,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>false</GenerateDataPortalInsert>
@@ -12067,6 +12043,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>false</GenerateDataPortalInsert>
@@ -12321,6 +12298,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>false</GenerateDataPortalInsert>
@@ -12451,6 +12429,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>false</GenerateDataPortalInsert>
@@ -13089,6 +13068,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>false</GenerateDataPortalInsert>
@@ -13343,6 +13323,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>false</GenerateDataPortalInsert>
@@ -13597,6 +13578,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>false</GenerateDataPortalInsert>
@@ -13727,6 +13709,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>false</GenerateDataPortalInsert>
@@ -14041,7 +14024,7 @@
     </CslaObjectInfo>
   </CslaObjects>
   <AssociativeEntities />
-  <ConnectionString>Server=.\SQL2005;Database=DeepLoad;persist security info=False;user id=sa;password=password_1234;packet size=4096</ConnectionString>
+  <ConnectionString>Server=.\;Database=DeepLoad;persist security info=False;user id=sa;password=password_1234;packet size=4096</ConnectionString>
   <ProjectName>ParentLoadRO</ProjectName>
   <TargetDirectory>..\..\DeepLoad</TargetDirectory>
   <FileVersion>4.0.3</FileVersion>

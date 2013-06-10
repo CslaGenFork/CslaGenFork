@@ -5,7 +5,7 @@ GO
 
 CREATE PROCEDURE [AddF10_City]
     @City_ID int OUTPUT,
-    @Region_ID int,
+    @Parent_Region_ID int,
     @City_Name varchar(50)
 AS
     BEGIN
@@ -20,7 +20,7 @@ AS
         )
         VALUES
         (
-            @Region_ID,
+            @Parent_Region_ID,
             @City_Name
         )
 

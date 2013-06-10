@@ -117,7 +117,7 @@ namespace ParentLoad.Business.ERLevel
                 using (var cmd = new SqlCommand("AddA03_Continent_Child", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Continent_ID", parent.Continent_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@Continent_ID1", parent.Continent_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@Continent_Child_Name", ReadProperty(Continent_Child_NameProperty)).DbType = DbType.String;
                     var args = new DataPortalHookArgs(cmd);
                     OnInsertPre(args);
@@ -142,7 +142,7 @@ namespace ParentLoad.Business.ERLevel
                 using (var cmd = new SqlCommand("UpdateA03_Continent_Child", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Continent_ID", parent.Continent_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@Continent_ID1", parent.Continent_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@Continent_Child_Name", ReadProperty(Continent_Child_NameProperty)).DbType = DbType.String;
                     var args = new DataPortalHookArgs(cmd);
                     OnUpdatePre(args);
@@ -164,7 +164,7 @@ namespace ParentLoad.Business.ERLevel
                 using (var cmd = new SqlCommand("DeleteA03_Continent_Child", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Continent_ID", parent.Continent_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@Continent_ID1", parent.Continent_ID).DbType = DbType.Int32;
                     var args = new DataPortalHookArgs(cmd);
                     OnDeletePre(args);
                     cmd.ExecuteNonQuery();

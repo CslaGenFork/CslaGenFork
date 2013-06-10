@@ -27,7 +27,7 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[AddG09_Regio
 GO
 
 CREATE PROCEDURE [AddG09_Region_ReChild]
-    @Region_ID int,
+    @Region_ID2 int,
     @Region_Child_Name varchar(50)
 AS
     BEGIN
@@ -42,7 +42,7 @@ AS
         )
         VALUES
         (
-            @Region_ID,
+            @Region_ID2,
             @Region_Child_Name
         )
 
@@ -55,7 +55,7 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[UpdateG09_Re
 GO
 
 CREATE PROCEDURE [UpdateG09_Region_ReChild]
-    @Region_ID int,
+    @Region_ID2 int,
     @Region_Child_Name varchar(50)
 AS
     BEGIN
@@ -67,7 +67,7 @@ AS
         (
             SELECT [Region_ID2] FROM [4_Regions_ReChild]
             WHERE
-                [Region_ID2] = @Region_ID AND
+                [Region_ID2] = @Region_ID2 AND
                 [IsActive] = 'true'
         )
         BEGIN
@@ -80,7 +80,7 @@ AS
         SET
             [Region_Child_Name] = @Region_Child_Name
         WHERE
-            [Region_ID2] = @Region_ID
+            [Region_ID2] = @Region_ID2
 
     END
 GO
@@ -91,7 +91,7 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[DeleteG09_Re
 GO
 
 CREATE PROCEDURE [DeleteG09_Region_ReChild]
-    @Region_ID int
+    @Region_ID2 int
 AS
     BEGIN
 
@@ -102,7 +102,7 @@ AS
         (
             SELECT [Region_ID2] FROM [4_Regions_ReChild]
             WHERE
-                [Region_ID2] = @Region_ID AND
+                [Region_ID2] = @Region_ID2 AND
                 [IsActive] = 'true'
         )
         BEGIN
@@ -114,7 +114,7 @@ AS
         UPDATE [4_Regions_ReChild]
         SET    [IsActive] = 'false'
         WHERE
-            [4_Regions_ReChild].[Region_ID2] = @Region_ID
+            [4_Regions_ReChild].[Region_ID2] = @Region_ID2
 
     END
 GO

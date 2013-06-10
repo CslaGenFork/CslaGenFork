@@ -26,7 +26,7 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[AddC11_City_
 GO
 
 CREATE PROCEDURE [AddC11_City_ReChild]
-    @City_ID int,
+    @City_ID2 int,
     @City_Child_Name varchar(50)
 AS
     BEGIN
@@ -41,7 +41,7 @@ AS
         )
         VALUES
         (
-            @City_ID,
+            @City_ID2,
             @City_Child_Name
         )
 
@@ -54,7 +54,7 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[UpdateC11_Ci
 GO
 
 CREATE PROCEDURE [UpdateC11_City_ReChild]
-    @City_ID int,
+    @City_ID2 int,
     @City_Child_Name varchar(50)
 AS
     BEGIN
@@ -66,7 +66,7 @@ AS
         (
             SELECT [City_ID2] FROM [5_Cities_ReChild]
             WHERE
-                [City_ID2] = @City_ID
+                [City_ID2] = @City_ID2
         )
         BEGIN
             RAISERROR ('''C11_City_ReChild'' object not found. It was probably removed by another user.', 16, 1)
@@ -78,7 +78,7 @@ AS
         SET
             [City_Child_Name] = @City_Child_Name
         WHERE
-            [City_ID2] = @City_ID
+            [City_ID2] = @City_ID2
 
     END
 GO
@@ -89,7 +89,7 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[DeleteC11_Ci
 GO
 
 CREATE PROCEDURE [DeleteC11_City_ReChild]
-    @City_ID int
+    @City_ID2 int
 AS
     BEGIN
 
@@ -100,7 +100,7 @@ AS
         (
             SELECT [City_ID2] FROM [5_Cities_ReChild]
             WHERE
-                [City_ID2] = @City_ID
+                [City_ID2] = @City_ID2
         )
         BEGIN
             RAISERROR ('''C11_City_ReChild'' object not found. It was probably removed by another user.', 16, 1)
@@ -111,7 +111,7 @@ AS
         DELETE
         FROM [5_Cities_ReChild]
         WHERE
-            [5_Cities_ReChild].[City_ID2] = @City_ID
+            [5_Cities_ReChild].[City_ID2] = @City_ID2
 
     END
 GO

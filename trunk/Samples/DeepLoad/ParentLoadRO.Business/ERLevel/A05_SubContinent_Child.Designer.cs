@@ -44,19 +44,6 @@ namespace ParentLoadRO.Business.ERLevel
             get { return GetProperty(SubContinent_Child_NameProperty); }
         }
 
-        /// <summary>
-        /// Maintains metadata about <see cref="SubContinent_ID1"/> property.
-        /// </summary>
-        public static readonly PropertyInfo<int> SubContinent_ID1Property = RegisterProperty<int>(p => p.SubContinent_ID1, "Sub Continent ID1");
-        /// <summary>
-        /// Gets the Sub Continent ID1.
-        /// </summary>
-        /// <value>The Sub Continent ID1.</value>
-        public int SubContinent_ID1
-        {
-            get { return GetProperty(SubContinent_ID1Property); }
-        }
-
         #endregion
 
         #region Factory Methods
@@ -98,7 +85,6 @@ namespace ParentLoadRO.Business.ERLevel
         {
             // Value properties
             LoadProperty(SubContinent_Child_NameProperty, dr.GetString("SubContinent_Child_Name"));
-            LoadProperty(SubContinent_ID1Property, dr.GetInt32("SubContinent_ID1"));
             _rowVersion = dr.GetValue("RowVersion") as byte[];
             // parent properties
             subContinent_ID1 = dr.GetInt32("SubContinent_ID1");

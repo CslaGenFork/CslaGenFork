@@ -145,7 +145,7 @@ namespace SelfLoadSoftDelete.Business.ERLevel
                 using (var cmd = new SqlCommand("AddG03_Continent_ReChild", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Continent_ID", parent.Continent_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@Continent_ID2", parent.Continent_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@Continent_Child_Name", ReadProperty(Continent_Child_NameProperty)).DbType = DbType.String;
                     var args = new DataPortalHookArgs(cmd);
                     OnInsertPre(args);
@@ -170,7 +170,7 @@ namespace SelfLoadSoftDelete.Business.ERLevel
                 using (var cmd = new SqlCommand("UpdateG03_Continent_ReChild", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Continent_ID", parent.Continent_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@Continent_ID2", parent.Continent_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@Continent_Child_Name", ReadProperty(Continent_Child_NameProperty)).DbType = DbType.String;
                     var args = new DataPortalHookArgs(cmd);
                     OnUpdatePre(args);
@@ -192,7 +192,7 @@ namespace SelfLoadSoftDelete.Business.ERLevel
                 using (var cmd = new SqlCommand("DeleteG03_Continent_ReChild", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Continent_ID", parent.Continent_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@Continent_ID2", parent.Continent_ID).DbType = DbType.Int32;
                     var args = new DataPortalHookArgs(cmd);
                     OnDeletePre(args);
                     cmd.ExecuteNonQuery();
