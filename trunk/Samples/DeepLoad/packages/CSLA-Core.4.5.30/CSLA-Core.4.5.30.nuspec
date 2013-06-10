@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>CSLA-Core</id>
+    <version>4.5.30</version>
+    <title>CSLA .NET - Core</title>
+    <authors>Marimer LLC</authors>
+    <owners>Marimer LLC</owners>
+    <licenseUrl>http://www.lhotka.net/cslanet/License.aspx</licenseUrl>
+    <projectUrl>http://www.lhotka.net/cslanet/</projectUrl>
+    <iconUrl>http://www.lhotka.net/images/csla.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>Supports the creation of Class Library projects containing business domain classes, Windows Services, Console applications and other native Windows application models.
+
+CSLA .NET is an application development framework that reduces the cost of building and maintaining applications. The framework enables developers to build an object-oriented business layer for their application that encapsulates all business, authorization and validation logic for the application.</description>
+    <summary>Supports the creation of Class Library projects containing business domain classes, Windows Services, Console applications and other native Windows application models.</summary>
+    <language>en-US</language>
+    <tags>CSLA Business Core</tags>
+    <dependencies>
+      <group targetFramework=".NETFramework4.5" />
+      <group targetFramework=".NETFramework4.0">
+        <dependency id="Microsoft.Bcl.Async" />
+      </group>
+      <group targetFramework="Silverlight5.0">
+        <dependency id="Microsoft.Bcl.Async" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>
