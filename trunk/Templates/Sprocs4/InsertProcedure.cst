@@ -119,9 +119,9 @@ if (isUndeletable)
     first = true;
     if (!Info.ParentInsertOnly)
     {
-        foreach (ValueProperty prop in Info.GetParentValueProperties())
+        foreach (ValueProperty parentProp in Info.GetParentValueProperties())
         {
-            if (prop.DbBindColumn.Column == null)
+            if (parentProp.DbBindColumn.Column == null)
                 continue;
 
             if (first)
@@ -130,7 +130,7 @@ if (isUndeletable)
             {
                 %>, <%
             }
-        %>[<%= GetFKColumnForParentProperty(prop, tables[0]) %>]<%
+        %>[<%= GetFKColumnForParentProperty(parentProp, tables[0]) %>]<%
         }
     }
     foreach (ValueProperty prop in Info.ValueProperties)
@@ -155,9 +155,9 @@ if (isUndeletable)
     first = true;
     if (!Info.ParentInsertOnly)
     {
-        foreach (ValueProperty prop in Info.GetParentValueProperties())
+        foreach (ValueProperty parentProp in Info.GetParentValueProperties())
         {
-            if (prop.DbBindColumn.Column == null)
+            if (parentProp.DbBindColumn.Column == null)
                 continue;
 
             if (first)
@@ -167,7 +167,7 @@ if (isUndeletable)
                 %> AND
                 <%
             }
-    %>[<%= GetFKColumnForParentProperty(prop,tables[0]) %>] = @<%= prop.ParameterName %><%
+    %>[<%= GetFKColumnForParentProperty(parentProp,tables[0]) %>] = @<%= GetFkParameterNameForParentProperty(Info, parentProp) %><%
         }
     }
     foreach (ValueProperty prop in Info.GetAllValueProperties())
@@ -252,9 +252,9 @@ if (isUndeletable)
     first = true;
     if (!Info.ParentInsertOnly)
     {
-        foreach (ValueProperty prop in Info.GetParentValueProperties())
+        foreach (ValueProperty parentProp in Info.GetParentValueProperties())
         {
-            if (prop.DbBindColumn.Column == null)
+            if (parentProp.DbBindColumn.Column == null)
                 continue;
 
             if (first)
@@ -264,7 +264,7 @@ if (isUndeletable)
                 %> AND
                     <%
             }
-    %>[<%= GetFKColumnForParentProperty(prop,tables[0]) %>] = @<%= prop.ParameterName %><%
+    %>[<%= GetFKColumnForParentProperty(parentProp,tables[0]) %>] = @<%= GetFkParameterNameForParentProperty(Info, parentProp) %><%
         }
     }
     foreach (ValueProperty prop in Info.GetAllValueProperties())
@@ -362,7 +362,7 @@ foreach(IResultObject table in tables)
             END
         <%
         }
-        //-- Output -----------------------
+
         if (propPK != null)
         {
             Response.Write(Environment.NewLine);%>
@@ -383,9 +383,6 @@ foreach(IResultObject table in tables)
         }
         else
         {
-            %>
-        <%-- Output ------------------------------%>
-            <%
             if (timeStampColumn != String.Empty)
             {
                 %>
@@ -395,9 +392,9 @@ foreach(IResultObject table in tables)
         WHERE
             <%
                 first = true;
-                foreach (ValueProperty prop in Info.GetParentValueProperties())
+                foreach (ValueProperty parentProp in Info.GetParentValueProperties())
                 {
-                    if (prop.DbBindColumn.Column == null)
+                    if (parentProp.DbBindColumn.Column == null)
                         continue;
 
                     if (first)
@@ -407,7 +404,7 @@ foreach(IResultObject table in tables)
                         %> AND
             <%
                     }
-            %>[<%= GetFKColumnForParentProperty(prop,tables[0]) %>] = @<%= prop.ParameterName %><%
+            %>[<%= GetFKColumnForParentProperty(parentProp,tables[0]) %>] = @<%= GetFkParameterNameForParentProperty(Info, parentProp) %><%
                 }
                 foreach (ValueProperty prop in Info.ValueProperties)
                 {
