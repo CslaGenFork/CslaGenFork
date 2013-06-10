@@ -45,20 +45,6 @@ namespace ParentLoad.Business.ERLevel
             set { SetProperty(SubContinent_Child_NameProperty, value); }
         }
 
-        /// <summary>
-        /// Maintains metadata about <see cref="SubContinent_ID1"/> property.
-        /// </summary>
-        public static readonly PropertyInfo<int> SubContinent_ID1Property = RegisterProperty<int>(p => p.SubContinent_ID1, "Sub Continent ID1");
-        /// <summary>
-        /// Gets or sets the Sub Continent ID1.
-        /// </summary>
-        /// <value>The Sub Continent ID1.</value>
-        public int SubContinent_ID1
-        {
-            get { return GetProperty(SubContinent_ID1Property); }
-            set { SetProperty(SubContinent_ID1Property, value); }
-        }
-
         #endregion
 
         #region Factory Methods
@@ -126,7 +112,6 @@ namespace ParentLoad.Business.ERLevel
         {
             // Value properties
             LoadProperty(SubContinent_Child_NameProperty, dr.GetString("SubContinent_Child_Name"));
-            LoadProperty(SubContinent_ID1Property, dr.GetInt32("SubContinent_ID1"));
             _rowVersion = dr.GetValue("RowVersion") as byte[];
             // parent properties
             subContinent_ID1 = dr.GetInt32("SubContinent_ID1");
@@ -146,7 +131,7 @@ namespace ParentLoad.Business.ERLevel
                 using (var cmd = new SqlCommand("AddA05_SubContinent_Child", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@SubContinent_ID", parent.SubContinent_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@SubContinent_ID1", parent.SubContinent_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@SubContinent_Child_Name", ReadProperty(SubContinent_Child_NameProperty)).DbType = DbType.String;
                     cmd.Parameters.Add("@NewRowVersion", SqlDbType.Timestamp).Direction = ParameterDirection.Output;
                     var args = new DataPortalHookArgs(cmd);
@@ -173,9 +158,8 @@ namespace ParentLoad.Business.ERLevel
                 using (var cmd = new SqlCommand("UpdateA05_SubContinent_Child", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@SubContinent_ID", parent.SubContinent_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@SubContinent_ID1", parent.SubContinent_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@SubContinent_Child_Name", ReadProperty(SubContinent_Child_NameProperty)).DbType = DbType.String;
-                    cmd.Parameters.AddWithValue("@SubContinent_ID1", ReadProperty(SubContinent_ID1Property)).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@RowVersion", _rowVersion).DbType = DbType.Binary;
                     cmd.Parameters.Add("@NewRowVersion", SqlDbType.Timestamp).Direction = ParameterDirection.Output;
                     var args = new DataPortalHookArgs(cmd);
@@ -199,7 +183,7 @@ namespace ParentLoad.Business.ERLevel
                 using (var cmd = new SqlCommand("DeleteA05_SubContinent_Child", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@SubContinent_ID", parent.SubContinent_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@SubContinent_ID1", parent.SubContinent_ID).DbType = DbType.Int32;
                     var args = new DataPortalHookArgs(cmd);
                     OnDeletePre(args);
                     cmd.ExecuteNonQuery();

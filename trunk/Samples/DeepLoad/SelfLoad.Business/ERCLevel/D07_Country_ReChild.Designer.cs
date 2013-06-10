@@ -145,7 +145,7 @@ namespace SelfLoad.Business.ERCLevel
                 using (var cmd = new SqlCommand("AddD07_Country_ReChild", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Country_ID", parent.Country_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@Country_ID2", parent.Country_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@Country_Child_Name", ReadProperty(Country_Child_NameProperty)).DbType = DbType.String;
                     var args = new DataPortalHookArgs(cmd);
                     OnInsertPre(args);
@@ -170,7 +170,7 @@ namespace SelfLoad.Business.ERCLevel
                 using (var cmd = new SqlCommand("UpdateD07_Country_ReChild", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Country_ID", parent.Country_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@Country_ID2", parent.Country_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@Country_Child_Name", ReadProperty(Country_Child_NameProperty)).DbType = DbType.String;
                     var args = new DataPortalHookArgs(cmd);
                     OnUpdatePre(args);
@@ -192,7 +192,7 @@ namespace SelfLoad.Business.ERCLevel
                 using (var cmd = new SqlCommand("DeleteD07_Country_ReChild", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Country_ID", parent.Country_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@Country_ID2", parent.Country_ID).DbType = DbType.Int32;
                     var args = new DataPortalHookArgs(cmd);
                     OnDeletePre(args);
                     cmd.ExecuteNonQuery();

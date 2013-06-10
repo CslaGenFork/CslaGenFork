@@ -145,7 +145,7 @@ namespace SelfLoad.Business.ERLevel
                 using (var cmd = new SqlCommand("AddC09_Region_ReChild", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Region_ID", parent.Region_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@Region_ID2", parent.Region_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@Region_Child_Name", ReadProperty(Region_Child_NameProperty)).DbType = DbType.String;
                     var args = new DataPortalHookArgs(cmd);
                     OnInsertPre(args);
@@ -170,7 +170,7 @@ namespace SelfLoad.Business.ERLevel
                 using (var cmd = new SqlCommand("UpdateC09_Region_ReChild", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Region_ID", parent.Region_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@Region_ID2", parent.Region_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@Region_Child_Name", ReadProperty(Region_Child_NameProperty)).DbType = DbType.String;
                     var args = new DataPortalHookArgs(cmd);
                     OnUpdatePre(args);
@@ -192,7 +192,7 @@ namespace SelfLoad.Business.ERLevel
                 using (var cmd = new SqlCommand("DeleteC09_Region_ReChild", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Region_ID", parent.Region_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@Region_ID2", parent.Region_ID).DbType = DbType.Int32;
                     var args = new DataPortalHookArgs(cmd);
                     OnDeletePre(args);
                     cmd.ExecuteNonQuery();

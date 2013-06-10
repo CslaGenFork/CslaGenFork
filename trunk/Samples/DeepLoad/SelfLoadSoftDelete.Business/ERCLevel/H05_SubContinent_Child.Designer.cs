@@ -23,11 +23,11 @@ namespace SelfLoadSoftDelete.Business.ERCLevel
         /// <summary>
         /// Maintains metadata about <see cref="SubContinent_Child_Name"/> property.
         /// </summary>
-        public static readonly PropertyInfo<string> SubContinent_Child_NameProperty = RegisterProperty<string>(p => p.SubContinent_Child_Name, "Countries Child Name");
+        public static readonly PropertyInfo<string> SubContinent_Child_NameProperty = RegisterProperty<string>(p => p.SubContinent_Child_Name, "Sub Continent Child Name");
         /// <summary>
-        /// Gets or sets the Countries Child Name.
+        /// Gets or sets the Sub Continent Child Name.
         /// </summary>
-        /// <value>The Countries Child Name.</value>
+        /// <value>The Sub Continent Child Name.</value>
         public string SubContinent_Child_Name
         {
             get { return GetProperty(SubContinent_Child_NameProperty); }
@@ -143,7 +143,7 @@ namespace SelfLoadSoftDelete.Business.ERCLevel
                 using (var cmd = new SqlCommand("AddH05_SubContinent_Child", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@SubContinent_ID", parent.SubContinent_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@SubContinent_ID1", parent.SubContinent_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@SubContinent_Child_Name", ReadProperty(SubContinent_Child_NameProperty)).DbType = DbType.String;
                     var args = new DataPortalHookArgs(cmd);
                     OnInsertPre(args);
@@ -168,7 +168,7 @@ namespace SelfLoadSoftDelete.Business.ERCLevel
                 using (var cmd = new SqlCommand("UpdateH05_SubContinent_Child", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@SubContinent_ID", parent.SubContinent_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@SubContinent_ID1", parent.SubContinent_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@SubContinent_Child_Name", ReadProperty(SubContinent_Child_NameProperty)).DbType = DbType.String;
                     var args = new DataPortalHookArgs(cmd);
                     OnUpdatePre(args);
@@ -190,7 +190,7 @@ namespace SelfLoadSoftDelete.Business.ERCLevel
                 using (var cmd = new SqlCommand("DeleteH05_SubContinent_Child", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@SubContinent_ID", parent.SubContinent_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@SubContinent_ID1", parent.SubContinent_ID).DbType = DbType.Int32;
                     var args = new DataPortalHookArgs(cmd);
                     OnDeletePre(args);
                     cmd.ExecuteNonQuery();

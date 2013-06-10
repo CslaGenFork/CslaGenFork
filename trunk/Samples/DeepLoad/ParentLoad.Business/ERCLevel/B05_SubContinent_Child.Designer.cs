@@ -127,7 +127,7 @@ namespace ParentLoad.Business.ERCLevel
                 using (var cmd = new SqlCommand("AddB05_SubContinent_Child", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@SubContinent_ID", parent.SubContinent_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@SubContinent_ID1", parent.SubContinent_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@SubContinent_Child_Name", ReadProperty(SubContinent_Child_NameProperty)).DbType = DbType.String;
                     var args = new DataPortalHookArgs(cmd);
                     OnInsertPre(args);
@@ -152,7 +152,7 @@ namespace ParentLoad.Business.ERCLevel
                 using (var cmd = new SqlCommand("UpdateB05_SubContinent_Child", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@SubContinent_ID", parent.SubContinent_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@SubContinent_ID1", parent.SubContinent_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@SubContinent_Child_Name", ReadProperty(SubContinent_Child_NameProperty)).DbType = DbType.String;
                     var args = new DataPortalHookArgs(cmd);
                     OnUpdatePre(args);
@@ -174,7 +174,7 @@ namespace ParentLoad.Business.ERCLevel
                 using (var cmd = new SqlCommand("DeleteB05_SubContinent_Child", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@SubContinent_ID", parent.SubContinent_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@SubContinent_ID1", parent.SubContinent_ID).DbType = DbType.Int32;
                     var args = new DataPortalHookArgs(cmd);
                     OnDeletePre(args);
                     cmd.ExecuteNonQuery();

@@ -101,6 +101,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
@@ -848,6 +849,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
@@ -1198,6 +1200,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
@@ -1548,6 +1551,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
@@ -1661,7 +1665,69 @@
       <ItemType>C04_SubContinent</ItemType>
       <ContainsItem>true</ContainsItem>
       <UniqueItems>false</UniqueItems>
-      <FindMethodsParameters />
+      <FindMethodsParameters>
+        <Property xsi:type="ValueProperty">
+          <ParameterName>SubContinent_ID</ParameterName>
+          <Name>SubContinent_ID</Name>
+          <PropertyType>Int32</PropertyType>
+          <ReadOnly>true</ReadOnly>
+          <Nullable>false</Nullable>
+          <Summary />
+          <Remarks />
+          <DbBindColumn>
+            <ColumnOriginType>Table</ColumnOriginType>
+            <DataType>Int32</DataType>
+            <NativeType>int</NativeType>
+            <Size>10</Size>
+            <SpResultIndex>0</SpResultIndex>
+            <ColumnName>SubContinent_ID</ColumnName>
+            <IsPrimaryKey>true</IsPrimaryKey>
+            <ObjectName>2_SubContinents</ObjectName>
+            <CatalogName>DeepLoad</CatalogName>
+            <SchemaName>dbo</SchemaName>
+            <IsNullable>false</IsNullable>
+            <IsIdentity>true</IsIdentity>
+          </DbBindColumn>
+          <DataAccess>ReadWrite</DataAccess>
+          <PrimaryKey>DBProvidedPK</PrimaryKey>
+          <FKConstraint />
+          <FriendlyName>SubContinents ID</FriendlyName>
+          <DeclarationMode>Managed</DeclarationMode>
+          <BackingFieldType>Empty</BackingFieldType>
+          <DefaultValue>_lastID</DefaultValue>
+          <Attributes />
+          <Implements />
+          <Rules />
+          <BusinessRules />
+          <AuthzProvider>IsInRole</AuthzProvider>
+          <ReadRoles />
+          <WriteRoles />
+          <ReadAuthzRuleType>
+            <BaseRuleProperties />
+            <Name />
+            <ObjectName />
+            <AssemblyFile />
+            <Type />
+            <Constructors />
+            <RuleProperties />
+            <CacheResult>false</CacheResult>
+          </ReadAuthzRuleType>
+          <WriteAuthzRuleType>
+            <BaseRuleProperties />
+            <Name />
+            <ObjectName />
+            <AssemblyFile />
+            <Type />
+            <Constructors />
+            <RuleProperties />
+            <CacheResult>false</CacheResult>
+          </WriteAuthzRuleType>
+          <Access>IsPublic</Access>
+          <PropSetAccessibility>Default</PropSetAccessibility>
+          <Undoable>true</Undoable>
+          <MarkDirtyOnChange>true</MarkDirtyOnChange>
+        </Property>
+      </FindMethodsParameters>
       <UpdaterType />
       <AllowNew>true</AllowNew>
       <AllowEdit>true</AllowEdit>
@@ -1739,6 +1805,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
@@ -2413,6 +2480,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
@@ -2482,68 +2550,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>Countries Child Name</FriendlyName>
-          <DeclarationMode>Managed</DeclarationMode>
-          <BackingFieldType>Empty</BackingFieldType>
-          <DefaultValue />
-          <Attributes />
-          <Implements />
-          <Rules />
-          <BusinessRules />
-          <AuthzProvider>IsInRole</AuthzProvider>
-          <ReadRoles />
-          <WriteRoles />
-          <ReadAuthzRuleType>
-            <BaseRuleProperties />
-            <Name />
-            <ObjectName />
-            <AssemblyFile />
-            <Type />
-            <Constructors />
-            <RuleProperties />
-            <CacheResult>false</CacheResult>
-          </ReadAuthzRuleType>
-          <WriteAuthzRuleType>
-            <BaseRuleProperties />
-            <Name />
-            <ObjectName />
-            <AssemblyFile />
-            <Type />
-            <Constructors />
-            <RuleProperties />
-            <CacheResult>false</CacheResult>
-          </WriteAuthzRuleType>
-          <Access>IsPublic</Access>
-          <PropSetAccessibility>Default</PropSetAccessibility>
-          <Undoable>true</Undoable>
-          <MarkDirtyOnChange>true</MarkDirtyOnChange>
-        </ValueProperty>
-        <ValueProperty>
-          <ParameterName>SubContinent_ID1</ParameterName>
-          <Name>SubContinent_ID1</Name>
-          <PropertyType>Int32</PropertyType>
-          <ReadOnly>false</ReadOnly>
-          <Nullable>false</Nullable>
-          <Summary />
-          <Remarks />
-          <DbBindColumn>
-            <ColumnOriginType>Table</ColumnOriginType>
-            <DataType>Int32</DataType>
-            <NativeType>int</NativeType>
-            <Size>10</Size>
-            <SpResultIndex>0</SpResultIndex>
-            <ColumnName>SubContinent_ID1</ColumnName>
-            <IsPrimaryKey>true</IsPrimaryKey>
-            <ObjectName>2_SubContinents_Child</ObjectName>
-            <CatalogName>DeepLoad</CatalogName>
-            <SchemaName>dbo</SchemaName>
-            <IsNullable>false</IsNullable>
-            <IsIdentity>false</IsIdentity>
-          </DbBindColumn>
-          <DataAccess>UpdateOnly</DataAccess>
-          <PrimaryKey>Default</PrimaryKey>
-          <FKConstraint />
-          <FriendlyName>SubContinent ID1</FriendlyName>
+          <FriendlyName>Sub Continent Child Name</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
@@ -2684,7 +2691,7 @@
           <Properties>
             <Property>
               <ParameterName>SubContinent_ID1</ParameterName>
-              <Name>SubContinent_ID1</Name>
+              <Name>ParentSubContinent_ID1</Name>
               <PropertyType>Int32</PropertyType>
               <ReadOnly>true</ReadOnly>
               <Nullable>false</Nullable>
@@ -2885,6 +2892,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
@@ -3296,6 +3304,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
@@ -3409,7 +3418,69 @@
       <ItemType>C06_Country</ItemType>
       <ContainsItem>true</ContainsItem>
       <UniqueItems>false</UniqueItems>
-      <FindMethodsParameters />
+      <FindMethodsParameters>
+        <Property xsi:type="ValueProperty">
+          <ParameterName>Country_ID</ParameterName>
+          <Name>Country_ID</Name>
+          <PropertyType>Int32</PropertyType>
+          <ReadOnly>true</ReadOnly>
+          <Nullable>false</Nullable>
+          <Summary />
+          <Remarks />
+          <DbBindColumn>
+            <ColumnOriginType>Table</ColumnOriginType>
+            <DataType>Int32</DataType>
+            <NativeType>int</NativeType>
+            <Size>10</Size>
+            <SpResultIndex>0</SpResultIndex>
+            <ColumnName>Country_ID</ColumnName>
+            <IsPrimaryKey>true</IsPrimaryKey>
+            <ObjectName>3_Countries</ObjectName>
+            <CatalogName>DeepLoad</CatalogName>
+            <SchemaName>dbo</SchemaName>
+            <IsNullable>false</IsNullable>
+            <IsIdentity>true</IsIdentity>
+          </DbBindColumn>
+          <DataAccess>ReadWrite</DataAccess>
+          <PrimaryKey>DBProvidedPK</PrimaryKey>
+          <FKConstraint />
+          <FriendlyName>Countries ID</FriendlyName>
+          <DeclarationMode>Managed</DeclarationMode>
+          <BackingFieldType>Empty</BackingFieldType>
+          <DefaultValue>_lastID</DefaultValue>
+          <Attributes />
+          <Implements />
+          <Rules />
+          <BusinessRules />
+          <AuthzProvider>IsInRole</AuthzProvider>
+          <ReadRoles />
+          <WriteRoles />
+          <ReadAuthzRuleType>
+            <BaseRuleProperties />
+            <Name />
+            <ObjectName />
+            <AssemblyFile />
+            <Type />
+            <Constructors />
+            <RuleProperties />
+            <CacheResult>false</CacheResult>
+          </ReadAuthzRuleType>
+          <WriteAuthzRuleType>
+            <BaseRuleProperties />
+            <Name />
+            <ObjectName />
+            <AssemblyFile />
+            <Type />
+            <Constructors />
+            <RuleProperties />
+            <CacheResult>false</CacheResult>
+          </WriteAuthzRuleType>
+          <Access>IsPublic</Access>
+          <PropSetAccessibility>Default</PropSetAccessibility>
+          <Undoable>true</Undoable>
+          <MarkDirtyOnChange>true</MarkDirtyOnChange>
+        </Property>
+      </FindMethodsParameters>
       <UpdaterType />
       <AllowNew>true</AllowNew>
       <AllowEdit>true</AllowEdit>
@@ -3487,6 +3558,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
@@ -4283,6 +4355,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
@@ -4633,6 +4706,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
@@ -4983,6 +5057,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
@@ -5096,7 +5171,69 @@
       <ItemType>C08_Region</ItemType>
       <ContainsItem>true</ContainsItem>
       <UniqueItems>false</UniqueItems>
-      <FindMethodsParameters />
+      <FindMethodsParameters>
+        <Property xsi:type="ValueProperty">
+          <ParameterName>Region_ID</ParameterName>
+          <Name>Region_ID</Name>
+          <PropertyType>Int32</PropertyType>
+          <ReadOnly>true</ReadOnly>
+          <Nullable>false</Nullable>
+          <Summary />
+          <Remarks />
+          <DbBindColumn>
+            <ColumnOriginType>Table</ColumnOriginType>
+            <DataType>Int32</DataType>
+            <NativeType>int</NativeType>
+            <Size>10</Size>
+            <SpResultIndex>0</SpResultIndex>
+            <ColumnName>Region_ID</ColumnName>
+            <IsPrimaryKey>true</IsPrimaryKey>
+            <ObjectName>4_Regions</ObjectName>
+            <CatalogName>DeepLoad</CatalogName>
+            <SchemaName>dbo</SchemaName>
+            <IsNullable>false</IsNullable>
+            <IsIdentity>true</IsIdentity>
+          </DbBindColumn>
+          <DataAccess>ReadWrite</DataAccess>
+          <PrimaryKey>DBProvidedPK</PrimaryKey>
+          <FKConstraint />
+          <FriendlyName>Regions ID</FriendlyName>
+          <DeclarationMode>Managed</DeclarationMode>
+          <BackingFieldType>Empty</BackingFieldType>
+          <DefaultValue>_lastID</DefaultValue>
+          <Attributes />
+          <Implements />
+          <Rules />
+          <BusinessRules />
+          <AuthzProvider>IsInRole</AuthzProvider>
+          <ReadRoles />
+          <WriteRoles />
+          <ReadAuthzRuleType>
+            <BaseRuleProperties />
+            <Name />
+            <ObjectName />
+            <AssemblyFile />
+            <Type />
+            <Constructors />
+            <RuleProperties />
+            <CacheResult>false</CacheResult>
+          </ReadAuthzRuleType>
+          <WriteAuthzRuleType>
+            <BaseRuleProperties />
+            <Name />
+            <ObjectName />
+            <AssemblyFile />
+            <Type />
+            <Constructors />
+            <RuleProperties />
+            <CacheResult>false</CacheResult>
+          </WriteAuthzRuleType>
+          <Access>IsPublic</Access>
+          <PropSetAccessibility>Default</PropSetAccessibility>
+          <Undoable>true</Undoable>
+          <MarkDirtyOnChange>true</MarkDirtyOnChange>
+        </Property>
+      </FindMethodsParameters>
       <UpdaterType />
       <AllowNew>true</AllowNew>
       <AllowEdit>true</AllowEdit>
@@ -5174,6 +5311,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
@@ -5848,6 +5986,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
@@ -6198,6 +6337,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
@@ -6548,6 +6688,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
@@ -6661,7 +6802,69 @@
       <ItemType>C10_City</ItemType>
       <ContainsItem>true</ContainsItem>
       <UniqueItems>false</UniqueItems>
-      <FindMethodsParameters />
+      <FindMethodsParameters>
+        <Property xsi:type="ValueProperty">
+          <ParameterName>City_ID</ParameterName>
+          <Name>City_ID</Name>
+          <PropertyType>Int32</PropertyType>
+          <ReadOnly>true</ReadOnly>
+          <Nullable>false</Nullable>
+          <Summary />
+          <Remarks />
+          <DbBindColumn>
+            <ColumnOriginType>Table</ColumnOriginType>
+            <DataType>Int32</DataType>
+            <NativeType>int</NativeType>
+            <Size>10</Size>
+            <SpResultIndex>0</SpResultIndex>
+            <ColumnName>City_ID</ColumnName>
+            <IsPrimaryKey>true</IsPrimaryKey>
+            <ObjectName>5_Cities</ObjectName>
+            <CatalogName>DeepLoad</CatalogName>
+            <SchemaName>dbo</SchemaName>
+            <IsNullable>false</IsNullable>
+            <IsIdentity>true</IsIdentity>
+          </DbBindColumn>
+          <DataAccess>ReadWrite</DataAccess>
+          <PrimaryKey>DBProvidedPK</PrimaryKey>
+          <FKConstraint />
+          <FriendlyName>Cities ID</FriendlyName>
+          <DeclarationMode>Managed</DeclarationMode>
+          <BackingFieldType>Empty</BackingFieldType>
+          <DefaultValue>_lastID</DefaultValue>
+          <Attributes />
+          <Implements />
+          <Rules />
+          <BusinessRules />
+          <AuthzProvider>IsInRole</AuthzProvider>
+          <ReadRoles />
+          <WriteRoles />
+          <ReadAuthzRuleType>
+            <BaseRuleProperties />
+            <Name />
+            <ObjectName />
+            <AssemblyFile />
+            <Type />
+            <Constructors />
+            <RuleProperties />
+            <CacheResult>false</CacheResult>
+          </ReadAuthzRuleType>
+          <WriteAuthzRuleType>
+            <BaseRuleProperties />
+            <Name />
+            <ObjectName />
+            <AssemblyFile />
+            <Type />
+            <Constructors />
+            <RuleProperties />
+            <CacheResult>false</CacheResult>
+          </WriteAuthzRuleType>
+          <Access>IsPublic</Access>
+          <PropSetAccessibility>Default</PropSetAccessibility>
+          <Undoable>true</Undoable>
+          <MarkDirtyOnChange>true</MarkDirtyOnChange>
+        </Property>
+      </FindMethodsParameters>
       <UpdaterType />
       <AllowNew>true</AllowNew>
       <AllowEdit>true</AllowEdit>
@@ -6739,6 +6942,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
@@ -7413,6 +7617,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
@@ -7763,6 +7968,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
@@ -8113,6 +8319,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
@@ -8226,7 +8433,69 @@
       <ItemType>C12_CityRoad</ItemType>
       <ContainsItem>true</ContainsItem>
       <UniqueItems>false</UniqueItems>
-      <FindMethodsParameters />
+      <FindMethodsParameters>
+        <Property xsi:type="ValueProperty">
+          <ParameterName>CityRoad_ID</ParameterName>
+          <Name>CityRoad_ID</Name>
+          <PropertyType>Int32</PropertyType>
+          <ReadOnly>true</ReadOnly>
+          <Nullable>false</Nullable>
+          <Summary />
+          <Remarks />
+          <DbBindColumn>
+            <ColumnOriginType>Table</ColumnOriginType>
+            <DataType>Int32</DataType>
+            <NativeType>int</NativeType>
+            <Size>10</Size>
+            <SpResultIndex>0</SpResultIndex>
+            <ColumnName>CityRoad_ID</ColumnName>
+            <IsPrimaryKey>true</IsPrimaryKey>
+            <ObjectName>6_CityRoads</ObjectName>
+            <CatalogName>DeepLoad</CatalogName>
+            <SchemaName>dbo</SchemaName>
+            <IsNullable>false</IsNullable>
+            <IsIdentity>true</IsIdentity>
+          </DbBindColumn>
+          <DataAccess>ReadWrite</DataAccess>
+          <PrimaryKey>DBProvidedPK</PrimaryKey>
+          <FKConstraint />
+          <FriendlyName>CityRoads ID</FriendlyName>
+          <DeclarationMode>Managed</DeclarationMode>
+          <BackingFieldType>Empty</BackingFieldType>
+          <DefaultValue>_lastID</DefaultValue>
+          <Attributes />
+          <Implements />
+          <Rules />
+          <BusinessRules />
+          <AuthzProvider>IsInRole</AuthzProvider>
+          <ReadRoles />
+          <WriteRoles />
+          <ReadAuthzRuleType>
+            <BaseRuleProperties />
+            <Name />
+            <ObjectName />
+            <AssemblyFile />
+            <Type />
+            <Constructors />
+            <RuleProperties />
+            <CacheResult>false</CacheResult>
+          </ReadAuthzRuleType>
+          <WriteAuthzRuleType>
+            <BaseRuleProperties />
+            <Name />
+            <ObjectName />
+            <AssemblyFile />
+            <Type />
+            <Constructors />
+            <RuleProperties />
+            <CacheResult>false</CacheResult>
+          </WriteAuthzRuleType>
+          <Access>IsPublic</Access>
+          <PropSetAccessibility>Default</PropSetAccessibility>
+          <Undoable>true</Undoable>
+          <MarkDirtyOnChange>true</MarkDirtyOnChange>
+        </Property>
+      </FindMethodsParameters>
       <UpdaterType />
       <AllowNew>true</AllowNew>
       <AllowEdit>true</AllowEdit>
@@ -8304,6 +8573,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
@@ -8655,6 +8925,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>false</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
@@ -8785,6 +9056,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
@@ -8873,7 +9145,69 @@
       <ItemType>D02_Continent</ItemType>
       <ContainsItem>true</ContainsItem>
       <UniqueItems>false</UniqueItems>
-      <FindMethodsParameters />
+      <FindMethodsParameters>
+        <Property xsi:type="ValueProperty">
+          <ParameterName>Continent_ID</ParameterName>
+          <Name>Continent_ID</Name>
+          <PropertyType>Int32</PropertyType>
+          <ReadOnly>true</ReadOnly>
+          <Nullable>false</Nullable>
+          <Summary />
+          <Remarks />
+          <DbBindColumn>
+            <ColumnOriginType>Table</ColumnOriginType>
+            <DataType>Int32</DataType>
+            <NativeType>int</NativeType>
+            <Size>10</Size>
+            <SpResultIndex>0</SpResultIndex>
+            <ColumnName>Continent_ID</ColumnName>
+            <IsPrimaryKey>true</IsPrimaryKey>
+            <ObjectName>1_Continents</ObjectName>
+            <CatalogName>DeepLoad</CatalogName>
+            <SchemaName>dbo</SchemaName>
+            <IsNullable>false</IsNullable>
+            <IsIdentity>true</IsIdentity>
+          </DbBindColumn>
+          <DataAccess>ReadWrite</DataAccess>
+          <PrimaryKey>DBProvidedPK</PrimaryKey>
+          <FKConstraint />
+          <FriendlyName>Continents ID</FriendlyName>
+          <DeclarationMode>Managed</DeclarationMode>
+          <BackingFieldType>Empty</BackingFieldType>
+          <DefaultValue>_lastID</DefaultValue>
+          <Attributes />
+          <Implements />
+          <Rules />
+          <BusinessRules />
+          <AuthzProvider>IsInRole</AuthzProvider>
+          <ReadRoles />
+          <WriteRoles />
+          <ReadAuthzRuleType>
+            <BaseRuleProperties />
+            <Name />
+            <ObjectName />
+            <AssemblyFile />
+            <Type />
+            <Constructors />
+            <RuleProperties />
+            <CacheResult>false</CacheResult>
+          </ReadAuthzRuleType>
+          <WriteAuthzRuleType>
+            <BaseRuleProperties />
+            <Name />
+            <ObjectName />
+            <AssemblyFile />
+            <Type />
+            <Constructors />
+            <RuleProperties />
+            <CacheResult>false</CacheResult>
+          </WriteAuthzRuleType>
+          <Access>IsPublic</Access>
+          <PropSetAccessibility>Default</PropSetAccessibility>
+          <Undoable>true</Undoable>
+          <MarkDirtyOnChange>true</MarkDirtyOnChange>
+        </Property>
+      </FindMethodsParameters>
       <UpdaterType />
       <AllowNew>true</AllowNew>
       <AllowEdit>true</AllowEdit>
@@ -8951,6 +9285,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
@@ -9563,6 +9898,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
@@ -9913,6 +10249,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
@@ -10263,6 +10600,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
@@ -10376,7 +10714,69 @@
       <ItemType>D04_SubContinent</ItemType>
       <ContainsItem>true</ContainsItem>
       <UniqueItems>false</UniqueItems>
-      <FindMethodsParameters />
+      <FindMethodsParameters>
+        <Property xsi:type="ValueProperty">
+          <ParameterName>SubContinent_ID</ParameterName>
+          <Name>SubContinent_ID</Name>
+          <PropertyType>Int32</PropertyType>
+          <ReadOnly>true</ReadOnly>
+          <Nullable>false</Nullable>
+          <Summary />
+          <Remarks />
+          <DbBindColumn>
+            <ColumnOriginType>Table</ColumnOriginType>
+            <DataType>Int32</DataType>
+            <NativeType>int</NativeType>
+            <Size>10</Size>
+            <SpResultIndex>0</SpResultIndex>
+            <ColumnName>SubContinent_ID</ColumnName>
+            <IsPrimaryKey>true</IsPrimaryKey>
+            <ObjectName>2_SubContinents</ObjectName>
+            <CatalogName>DeepLoad</CatalogName>
+            <SchemaName>dbo</SchemaName>
+            <IsNullable>false</IsNullable>
+            <IsIdentity>true</IsIdentity>
+          </DbBindColumn>
+          <DataAccess>ReadWrite</DataAccess>
+          <PrimaryKey>DBProvidedPK</PrimaryKey>
+          <FKConstraint />
+          <FriendlyName>SubContinents ID</FriendlyName>
+          <DeclarationMode>Managed</DeclarationMode>
+          <BackingFieldType>Empty</BackingFieldType>
+          <DefaultValue>_lastID</DefaultValue>
+          <Attributes />
+          <Implements />
+          <Rules />
+          <BusinessRules />
+          <AuthzProvider>IsInRole</AuthzProvider>
+          <ReadRoles />
+          <WriteRoles />
+          <ReadAuthzRuleType>
+            <BaseRuleProperties />
+            <Name />
+            <ObjectName />
+            <AssemblyFile />
+            <Type />
+            <Constructors />
+            <RuleProperties />
+            <CacheResult>false</CacheResult>
+          </ReadAuthzRuleType>
+          <WriteAuthzRuleType>
+            <BaseRuleProperties />
+            <Name />
+            <ObjectName />
+            <AssemblyFile />
+            <Type />
+            <Constructors />
+            <RuleProperties />
+            <CacheResult>false</CacheResult>
+          </WriteAuthzRuleType>
+          <Access>IsPublic</Access>
+          <PropSetAccessibility>Default</PropSetAccessibility>
+          <Undoable>true</Undoable>
+          <MarkDirtyOnChange>true</MarkDirtyOnChange>
+        </Property>
+      </FindMethodsParameters>
       <UpdaterType />
       <AllowNew>true</AllowNew>
       <AllowEdit>true</AllowEdit>
@@ -10454,6 +10854,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
@@ -11128,6 +11529,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
@@ -11197,7 +11599,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>Countries Child Name</FriendlyName>
+          <FriendlyName>Sub Continent Child Name</FriendlyName>
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
@@ -11478,6 +11880,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
@@ -11828,6 +12231,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
@@ -11941,7 +12345,69 @@
       <ItemType>D06_Country</ItemType>
       <ContainsItem>true</ContainsItem>
       <UniqueItems>false</UniqueItems>
-      <FindMethodsParameters />
+      <FindMethodsParameters>
+        <Property xsi:type="ValueProperty">
+          <ParameterName>Country_ID</ParameterName>
+          <Name>Country_ID</Name>
+          <PropertyType>Int32</PropertyType>
+          <ReadOnly>true</ReadOnly>
+          <Nullable>false</Nullable>
+          <Summary />
+          <Remarks />
+          <DbBindColumn>
+            <ColumnOriginType>Table</ColumnOriginType>
+            <DataType>Int32</DataType>
+            <NativeType>int</NativeType>
+            <Size>10</Size>
+            <SpResultIndex>0</SpResultIndex>
+            <ColumnName>Country_ID</ColumnName>
+            <IsPrimaryKey>true</IsPrimaryKey>
+            <ObjectName>3_Countries</ObjectName>
+            <CatalogName>DeepLoad</CatalogName>
+            <SchemaName>dbo</SchemaName>
+            <IsNullable>false</IsNullable>
+            <IsIdentity>true</IsIdentity>
+          </DbBindColumn>
+          <DataAccess>ReadWrite</DataAccess>
+          <PrimaryKey>DBProvidedPK</PrimaryKey>
+          <FKConstraint />
+          <FriendlyName>Countries ID</FriendlyName>
+          <DeclarationMode>Managed</DeclarationMode>
+          <BackingFieldType>Empty</BackingFieldType>
+          <DefaultValue>_lastID</DefaultValue>
+          <Attributes />
+          <Implements />
+          <Rules />
+          <BusinessRules />
+          <AuthzProvider>IsInRole</AuthzProvider>
+          <ReadRoles />
+          <WriteRoles />
+          <ReadAuthzRuleType>
+            <BaseRuleProperties />
+            <Name />
+            <ObjectName />
+            <AssemblyFile />
+            <Type />
+            <Constructors />
+            <RuleProperties />
+            <CacheResult>false</CacheResult>
+          </ReadAuthzRuleType>
+          <WriteAuthzRuleType>
+            <BaseRuleProperties />
+            <Name />
+            <ObjectName />
+            <AssemblyFile />
+            <Type />
+            <Constructors />
+            <RuleProperties />
+            <CacheResult>false</CacheResult>
+          </WriteAuthzRuleType>
+          <Access>IsPublic</Access>
+          <PropSetAccessibility>Default</PropSetAccessibility>
+          <Undoable>true</Undoable>
+          <MarkDirtyOnChange>true</MarkDirtyOnChange>
+        </Property>
+      </FindMethodsParameters>
       <UpdaterType />
       <AllowNew>true</AllowNew>
       <AllowEdit>true</AllowEdit>
@@ -12019,6 +12485,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
@@ -12693,6 +13160,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
@@ -13043,6 +13511,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
@@ -13393,6 +13862,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
@@ -13506,7 +13976,69 @@
       <ItemType>D08_Region</ItemType>
       <ContainsItem>true</ContainsItem>
       <UniqueItems>false</UniqueItems>
-      <FindMethodsParameters />
+      <FindMethodsParameters>
+        <Property xsi:type="ValueProperty">
+          <ParameterName>Region_ID</ParameterName>
+          <Name>Region_ID</Name>
+          <PropertyType>Int32</PropertyType>
+          <ReadOnly>true</ReadOnly>
+          <Nullable>false</Nullable>
+          <Summary />
+          <Remarks />
+          <DbBindColumn>
+            <ColumnOriginType>Table</ColumnOriginType>
+            <DataType>Int32</DataType>
+            <NativeType>int</NativeType>
+            <Size>10</Size>
+            <SpResultIndex>0</SpResultIndex>
+            <ColumnName>Region_ID</ColumnName>
+            <IsPrimaryKey>true</IsPrimaryKey>
+            <ObjectName>4_Regions</ObjectName>
+            <CatalogName>DeepLoad</CatalogName>
+            <SchemaName>dbo</SchemaName>
+            <IsNullable>false</IsNullable>
+            <IsIdentity>true</IsIdentity>
+          </DbBindColumn>
+          <DataAccess>ReadWrite</DataAccess>
+          <PrimaryKey>DBProvidedPK</PrimaryKey>
+          <FKConstraint />
+          <FriendlyName>Regions ID</FriendlyName>
+          <DeclarationMode>Managed</DeclarationMode>
+          <BackingFieldType>Empty</BackingFieldType>
+          <DefaultValue>_lastID</DefaultValue>
+          <Attributes />
+          <Implements />
+          <Rules />
+          <BusinessRules />
+          <AuthzProvider>IsInRole</AuthzProvider>
+          <ReadRoles />
+          <WriteRoles />
+          <ReadAuthzRuleType>
+            <BaseRuleProperties />
+            <Name />
+            <ObjectName />
+            <AssemblyFile />
+            <Type />
+            <Constructors />
+            <RuleProperties />
+            <CacheResult>false</CacheResult>
+          </ReadAuthzRuleType>
+          <WriteAuthzRuleType>
+            <BaseRuleProperties />
+            <Name />
+            <ObjectName />
+            <AssemblyFile />
+            <Type />
+            <Constructors />
+            <RuleProperties />
+            <CacheResult>false</CacheResult>
+          </WriteAuthzRuleType>
+          <Access>IsPublic</Access>
+          <PropSetAccessibility>Default</PropSetAccessibility>
+          <Undoable>true</Undoable>
+          <MarkDirtyOnChange>true</MarkDirtyOnChange>
+        </Property>
+      </FindMethodsParameters>
       <UpdaterType />
       <AllowNew>true</AllowNew>
       <AllowEdit>true</AllowEdit>
@@ -13584,6 +14116,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
@@ -14258,6 +14791,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
@@ -14608,6 +15142,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
@@ -14958,6 +15493,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
@@ -15071,7 +15607,69 @@
       <ItemType>D10_City</ItemType>
       <ContainsItem>true</ContainsItem>
       <UniqueItems>false</UniqueItems>
-      <FindMethodsParameters />
+      <FindMethodsParameters>
+        <Property xsi:type="ValueProperty">
+          <ParameterName>City_ID</ParameterName>
+          <Name>City_ID</Name>
+          <PropertyType>Int32</PropertyType>
+          <ReadOnly>true</ReadOnly>
+          <Nullable>false</Nullable>
+          <Summary />
+          <Remarks />
+          <DbBindColumn>
+            <ColumnOriginType>Table</ColumnOriginType>
+            <DataType>Int32</DataType>
+            <NativeType>int</NativeType>
+            <Size>10</Size>
+            <SpResultIndex>0</SpResultIndex>
+            <ColumnName>City_ID</ColumnName>
+            <IsPrimaryKey>true</IsPrimaryKey>
+            <ObjectName>5_Cities</ObjectName>
+            <CatalogName>DeepLoad</CatalogName>
+            <SchemaName>dbo</SchemaName>
+            <IsNullable>false</IsNullable>
+            <IsIdentity>true</IsIdentity>
+          </DbBindColumn>
+          <DataAccess>ReadWrite</DataAccess>
+          <PrimaryKey>DBProvidedPK</PrimaryKey>
+          <FKConstraint />
+          <FriendlyName>Cities ID</FriendlyName>
+          <DeclarationMode>Managed</DeclarationMode>
+          <BackingFieldType>Empty</BackingFieldType>
+          <DefaultValue>_lastID</DefaultValue>
+          <Attributes />
+          <Implements />
+          <Rules />
+          <BusinessRules />
+          <AuthzProvider>IsInRole</AuthzProvider>
+          <ReadRoles />
+          <WriteRoles />
+          <ReadAuthzRuleType>
+            <BaseRuleProperties />
+            <Name />
+            <ObjectName />
+            <AssemblyFile />
+            <Type />
+            <Constructors />
+            <RuleProperties />
+            <CacheResult>false</CacheResult>
+          </ReadAuthzRuleType>
+          <WriteAuthzRuleType>
+            <BaseRuleProperties />
+            <Name />
+            <ObjectName />
+            <AssemblyFile />
+            <Type />
+            <Constructors />
+            <RuleProperties />
+            <CacheResult>false</CacheResult>
+          </WriteAuthzRuleType>
+          <Access>IsPublic</Access>
+          <PropSetAccessibility>Default</PropSetAccessibility>
+          <Undoable>true</Undoable>
+          <MarkDirtyOnChange>true</MarkDirtyOnChange>
+        </Property>
+      </FindMethodsParameters>
       <UpdaterType />
       <AllowNew>true</AllowNew>
       <AllowEdit>true</AllowEdit>
@@ -15149,6 +15747,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
@@ -15823,6 +16422,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
@@ -16173,6 +16773,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
@@ -16523,6 +17124,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
@@ -16636,7 +17238,69 @@
       <ItemType>D12_CityRoad</ItemType>
       <ContainsItem>true</ContainsItem>
       <UniqueItems>false</UniqueItems>
-      <FindMethodsParameters />
+      <FindMethodsParameters>
+        <Property xsi:type="ValueProperty">
+          <ParameterName>CityRoad_ID</ParameterName>
+          <Name>CityRoad_ID</Name>
+          <PropertyType>Int32</PropertyType>
+          <ReadOnly>true</ReadOnly>
+          <Nullable>false</Nullable>
+          <Summary />
+          <Remarks />
+          <DbBindColumn>
+            <ColumnOriginType>Table</ColumnOriginType>
+            <DataType>Int32</DataType>
+            <NativeType>int</NativeType>
+            <Size>10</Size>
+            <SpResultIndex>0</SpResultIndex>
+            <ColumnName>CityRoad_ID</ColumnName>
+            <IsPrimaryKey>true</IsPrimaryKey>
+            <ObjectName>6_CityRoads</ObjectName>
+            <CatalogName>DeepLoad</CatalogName>
+            <SchemaName>dbo</SchemaName>
+            <IsNullable>false</IsNullable>
+            <IsIdentity>true</IsIdentity>
+          </DbBindColumn>
+          <DataAccess>ReadWrite</DataAccess>
+          <PrimaryKey>DBProvidedPK</PrimaryKey>
+          <FKConstraint />
+          <FriendlyName>CityRoads ID</FriendlyName>
+          <DeclarationMode>Managed</DeclarationMode>
+          <BackingFieldType>Empty</BackingFieldType>
+          <DefaultValue>_lastID</DefaultValue>
+          <Attributes />
+          <Implements />
+          <Rules />
+          <BusinessRules />
+          <AuthzProvider>IsInRole</AuthzProvider>
+          <ReadRoles />
+          <WriteRoles />
+          <ReadAuthzRuleType>
+            <BaseRuleProperties />
+            <Name />
+            <ObjectName />
+            <AssemblyFile />
+            <Type />
+            <Constructors />
+            <RuleProperties />
+            <CacheResult>false</CacheResult>
+          </ReadAuthzRuleType>
+          <WriteAuthzRuleType>
+            <BaseRuleProperties />
+            <Name />
+            <ObjectName />
+            <AssemblyFile />
+            <Type />
+            <Constructors />
+            <RuleProperties />
+            <CacheResult>false</CacheResult>
+          </WriteAuthzRuleType>
+          <Access>IsPublic</Access>
+          <PropSetAccessibility>Default</PropSetAccessibility>
+          <Undoable>true</Undoable>
+          <MarkDirtyOnChange>true</MarkDirtyOnChange>
+        </Property>
+      </FindMethodsParameters>
       <UpdaterType />
       <AllowNew>true</AllowNew>
       <AllowEdit>true</AllowEdit>
@@ -16714,6 +17378,7 @@
     <CslaObjectInfo>
       <ComponentName />
       <Generate>true</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
       <GenerateFactoryMethods>true</GenerateFactoryMethods>
       <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
       <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
@@ -17064,7 +17729,7 @@
     </CslaObjectInfo>
   </CslaObjects>
   <AssociativeEntities />
-  <ConnectionString>Server=.\SQL2005;Database=DeepLoad;persist security info=False;user id=sa;password=password_1234;packet size=4096</ConnectionString>
+  <ConnectionString>Server=.\;Database=DeepLoad;persist security info=False;user id=sa;password=password_1234;packet size=4096</ConnectionString>
   <ProjectName>DAL-DTO-SelfLoad</ProjectName>
   <TargetDirectory>..\..\DeepLoad\DAL-DTO</TargetDirectory>
   <FileVersion>4.0.3</FileVersion>

@@ -133,7 +133,7 @@ namespace ParentLoad.Business.ERLevel
                 using (var cmd = new SqlCommand("AddA05_SubContinent_ReChild", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@SubContinent_ID", parent.SubContinent_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@SubContinent_ID2", parent.SubContinent_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@SubContinent_Child_Name", ReadProperty(SubContinent_Child_NameProperty)).DbType = DbType.String;
                     cmd.Parameters.Add("@NewRowVersion", SqlDbType.Timestamp).Direction = ParameterDirection.Output;
                     var args = new DataPortalHookArgs(cmd);
@@ -160,7 +160,7 @@ namespace ParentLoad.Business.ERLevel
                 using (var cmd = new SqlCommand("UpdateA05_SubContinent_ReChild", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@SubContinent_ID", parent.SubContinent_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@SubContinent_ID2", parent.SubContinent_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@SubContinent_Child_Name", ReadProperty(SubContinent_Child_NameProperty)).DbType = DbType.String;
                     cmd.Parameters.AddWithValue("@RowVersion", _rowVersion).DbType = DbType.Binary;
                     cmd.Parameters.Add("@NewRowVersion", SqlDbType.Timestamp).Direction = ParameterDirection.Output;
@@ -185,7 +185,7 @@ namespace ParentLoad.Business.ERLevel
                 using (var cmd = new SqlCommand("DeleteA05_SubContinent_ReChild", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@SubContinent_ID", parent.SubContinent_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@SubContinent_ID2", parent.SubContinent_ID).DbType = DbType.Int32;
                     var args = new DataPortalHookArgs(cmd);
                     OnDeletePre(args);
                     cmd.ExecuteNonQuery();

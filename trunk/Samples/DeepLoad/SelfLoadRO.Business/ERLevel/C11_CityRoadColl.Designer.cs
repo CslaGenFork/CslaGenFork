@@ -40,6 +40,28 @@ namespace SelfLoadRO.Business.ERLevel
 
         #endregion
 
+        #region Find Methods
+
+        /// <summary>
+        /// Finds a <see cref="C12_CityRoad"/> item of the <see cref="C11_CityRoadColl"/> collection, based on a given CityRoad_ID.
+        /// </summary>
+        /// <param name="cityRoad_ID">The CityRoad_ID.</param>
+        /// <returns>A <see cref="C12_CityRoad"/> object.</returns>
+        public C12_CityRoad FindC12_CityRoadByCityRoad_ID(int cityRoad_ID)
+        {
+            for (var i = 0; i < this.Count; i++)
+            {
+                if (this[i].CityRoad_ID.Equals(cityRoad_ID))
+                {
+                    return this[i];
+                }
+            }
+
+            return null;
+        }
+
+        #endregion
+
         #region Factory Methods
 
         /// <summary>

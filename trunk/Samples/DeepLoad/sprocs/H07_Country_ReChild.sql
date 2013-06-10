@@ -27,7 +27,7 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[AddH07_Count
 GO
 
 CREATE PROCEDURE [AddH07_Country_ReChild]
-    @Country_ID int,
+    @Country_ID2 int,
     @Country_Child_Name varchar(50)
 AS
     BEGIN
@@ -42,7 +42,7 @@ AS
         )
         VALUES
         (
-            @Country_ID,
+            @Country_ID2,
             @Country_Child_Name
         )
 
@@ -55,7 +55,7 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[UpdateH07_Co
 GO
 
 CREATE PROCEDURE [UpdateH07_Country_ReChild]
-    @Country_ID int,
+    @Country_ID2 int,
     @Country_Child_Name varchar(50)
 AS
     BEGIN
@@ -67,7 +67,7 @@ AS
         (
             SELECT [Country_ID2] FROM [3_Countries_ReChild]
             WHERE
-                [Country_ID2] = @Country_ID AND
+                [Country_ID2] = @Country_ID2 AND
                 [IsActive] = 'true'
         )
         BEGIN
@@ -80,7 +80,7 @@ AS
         SET
             [Country_Child_Name] = @Country_Child_Name
         WHERE
-            [Country_ID2] = @Country_ID
+            [Country_ID2] = @Country_ID2
 
     END
 GO
@@ -91,7 +91,7 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[DeleteH07_Co
 GO
 
 CREATE PROCEDURE [DeleteH07_Country_ReChild]
-    @Country_ID int
+    @Country_ID2 int
 AS
     BEGIN
 
@@ -102,7 +102,7 @@ AS
         (
             SELECT [Country_ID2] FROM [3_Countries_ReChild]
             WHERE
-                [Country_ID2] = @Country_ID AND
+                [Country_ID2] = @Country_ID2 AND
                 [IsActive] = 'true'
         )
         BEGIN
@@ -114,7 +114,7 @@ AS
         UPDATE [3_Countries_ReChild]
         SET    [IsActive] = 'false'
         WHERE
-            [3_Countries_ReChild].[Country_ID2] = @Country_ID
+            [3_Countries_ReChild].[Country_ID2] = @Country_ID2
 
     END
 GO

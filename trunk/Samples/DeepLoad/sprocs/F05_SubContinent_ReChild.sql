@@ -4,7 +4,7 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[AddF05_SubCo
 GO
 
 CREATE PROCEDURE [AddF05_SubContinent_ReChild]
-    @SubContinent_ID int,
+    @SubContinent_ID2 int,
     @SubContinent_Child_Name varchar(50)
 AS
     BEGIN
@@ -19,7 +19,7 @@ AS
         )
         VALUES
         (
-            @SubContinent_ID,
+            @SubContinent_ID2,
             @SubContinent_Child_Name
         )
 
@@ -32,7 +32,7 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[UpdateF05_Su
 GO
 
 CREATE PROCEDURE [UpdateF05_SubContinent_ReChild]
-    @SubContinent_ID int,
+    @SubContinent_ID2 int,
     @SubContinent_Child_Name varchar(50)
 AS
     BEGIN
@@ -44,7 +44,7 @@ AS
         (
             SELECT [SubContinent_ID2] FROM [2_SubContinents_ReChild]
             WHERE
-                [SubContinent_ID2] = @SubContinent_ID AND
+                [SubContinent_ID2] = @SubContinent_ID2 AND
                 [IsActive] = 'true'
         )
         BEGIN
@@ -57,7 +57,7 @@ AS
         SET
             [SubContinent_Child_Name] = @SubContinent_Child_Name
         WHERE
-            [SubContinent_ID2] = @SubContinent_ID
+            [SubContinent_ID2] = @SubContinent_ID2
 
     END
 GO
@@ -68,7 +68,7 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[DeleteF05_Su
 GO
 
 CREATE PROCEDURE [DeleteF05_SubContinent_ReChild]
-    @SubContinent_ID int
+    @SubContinent_ID2 int
 AS
     BEGIN
 
@@ -79,7 +79,7 @@ AS
         (
             SELECT [SubContinent_ID2] FROM [2_SubContinents_ReChild]
             WHERE
-                [SubContinent_ID2] = @SubContinent_ID AND
+                [SubContinent_ID2] = @SubContinent_ID2 AND
                 [IsActive] = 'true'
         )
         BEGIN
@@ -91,7 +91,7 @@ AS
         UPDATE [2_SubContinents_ReChild]
         SET    [IsActive] = 'false'
         WHERE
-            [2_SubContinents_ReChild].[SubContinent_ID2] = @SubContinent_ID
+            [2_SubContinents_ReChild].[SubContinent_ID2] = @SubContinent_ID2
 
     END
 GO

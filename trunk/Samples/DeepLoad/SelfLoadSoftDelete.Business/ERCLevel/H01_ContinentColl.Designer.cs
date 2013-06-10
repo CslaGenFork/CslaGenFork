@@ -72,6 +72,28 @@ namespace SelfLoadSoftDelete.Business.ERCLevel
 
         #endregion
 
+        #region Find Methods
+
+        /// <summary>
+        /// Finds a <see cref="H02_Continent"/> item of the <see cref="H01_ContinentColl"/> collection, based on a given Continent_ID.
+        /// </summary>
+        /// <param name="continent_ID">The Continent_ID.</param>
+        /// <returns>A <see cref="H02_Continent"/> object.</returns>
+        public H02_Continent FindH02_ContinentByContinent_ID(int continent_ID)
+        {
+            for (var i = 0; i < this.Count; i++)
+            {
+                if (this[i].Continent_ID.Equals(continent_ID))
+                {
+                    return this[i];
+                }
+            }
+
+            return null;
+        }
+
+        #endregion
+
         #region Factory Methods
 
         /// <summary>

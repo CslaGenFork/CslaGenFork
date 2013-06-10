@@ -148,7 +148,7 @@ namespace ParentLoad.Business.ERCLevel
                 using (var cmd = new SqlCommand("AddB12_CityRoad", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@City_ID", parent.City_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@Parent_City_ID", parent.City_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@CityRoad_ID", ReadProperty(CityRoad_IDProperty)).Direction = ParameterDirection.Output;
                     cmd.Parameters.AddWithValue("@CityRoad_Name", ReadProperty(CityRoad_NameProperty)).DbType = DbType.String;
                     var args = new DataPortalHookArgs(cmd);

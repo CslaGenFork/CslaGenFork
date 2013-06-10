@@ -214,7 +214,7 @@ namespace ParentLoadSoftDelete.Business.ERCLevel
                 using (var cmd = new SqlCommand("AddF08_Region", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Country_ID", parent.Country_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@Parent_Country_ID", parent.Country_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@Region_ID", ReadProperty(Region_IDProperty)).Direction = ParameterDirection.Output;
                     cmd.Parameters.AddWithValue("@Region_Name", ReadProperty(Region_NameProperty)).DbType = DbType.String;
                     var args = new DataPortalHookArgs(cmd);

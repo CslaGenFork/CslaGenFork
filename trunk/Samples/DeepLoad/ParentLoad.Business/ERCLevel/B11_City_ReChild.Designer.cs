@@ -129,7 +129,7 @@ namespace ParentLoad.Business.ERCLevel
                 using (var cmd = new SqlCommand("AddB11_City_ReChild", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@City_ID", parent.City_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@City_ID2", parent.City_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@City_Child_Name", ReadProperty(City_Child_NameProperty)).DbType = DbType.String;
                     var args = new DataPortalHookArgs(cmd);
                     OnInsertPre(args);
@@ -154,7 +154,7 @@ namespace ParentLoad.Business.ERCLevel
                 using (var cmd = new SqlCommand("UpdateB11_City_ReChild", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@City_ID", parent.City_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@City_ID2", parent.City_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@City_Child_Name", ReadProperty(City_Child_NameProperty)).DbType = DbType.String;
                     var args = new DataPortalHookArgs(cmd);
                     OnUpdatePre(args);
@@ -176,7 +176,7 @@ namespace ParentLoad.Business.ERCLevel
                 using (var cmd = new SqlCommand("DeleteB11_City_ReChild", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@City_ID", parent.City_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@City_ID2", parent.City_ID).DbType = DbType.Int32;
                     var args = new DataPortalHookArgs(cmd);
                     OnDeletePre(args);
                     cmd.ExecuteNonQuery();

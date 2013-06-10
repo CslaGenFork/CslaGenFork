@@ -195,7 +195,7 @@ namespace SelfLoad.Business.ERCLevel
                 using (var cmd = new SqlCommand("AddD04_SubContinent", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Continent_ID", parent.Continent_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@Parent_Continent_ID", parent.Continent_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@SubContinent_ID", ReadProperty(SubContinent_IDProperty)).Direction = ParameterDirection.Output;
                     cmd.Parameters.AddWithValue("@SubContinent_Name", ReadProperty(SubContinent_NameProperty)).DbType = DbType.String;
                     var args = new DataPortalHookArgs(cmd);

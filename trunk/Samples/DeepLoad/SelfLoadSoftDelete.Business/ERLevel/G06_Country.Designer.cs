@@ -218,7 +218,7 @@ namespace SelfLoadSoftDelete.Business.ERLevel
                 using (var cmd = new SqlCommand("AddG06_Country", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@SubContinent_ID", parent.SubContinent_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@Parent_SubContinent_ID", parent.SubContinent_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@Country_ID", ReadProperty(Country_IDProperty)).Direction = ParameterDirection.Output;
                     cmd.Parameters.AddWithValue("@Country_Name", ReadProperty(Country_NameProperty)).DbType = DbType.String;
                     cmd.Parameters.Add("@NewRowVersion", SqlDbType.Timestamp).Direction = ParameterDirection.Output;

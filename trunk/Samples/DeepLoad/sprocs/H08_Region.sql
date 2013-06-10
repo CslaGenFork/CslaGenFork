@@ -5,7 +5,7 @@ GO
 
 CREATE PROCEDURE [AddH08_Region]
     @Region_ID int OUTPUT,
-    @Country_ID int,
+    @Parent_Country_ID int,
     @Region_Name varchar(50)
 AS
     BEGIN
@@ -20,7 +20,7 @@ AS
         )
         VALUES
         (
-            @Country_ID,
+            @Parent_Country_ID,
             @Region_Name
         )
 
