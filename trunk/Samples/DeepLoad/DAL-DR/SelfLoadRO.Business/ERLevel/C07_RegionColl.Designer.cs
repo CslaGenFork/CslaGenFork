@@ -41,6 +41,28 @@ namespace SelfLoadRO.Business.ERLevel
 
         #endregion
 
+        #region Find Methods
+
+        /// <summary>
+        /// Finds a <see cref="C08_Region"/> item of the <see cref="C07_RegionColl"/> collection, based on a given Region_ID.
+        /// </summary>
+        /// <param name="region_ID">The Region_ID.</param>
+        /// <returns>A <see cref="C08_Region"/> object.</returns>
+        public C08_Region FindC08_RegionByRegion_ID(int region_ID)
+        {
+            for (var i = 0; i < this.Count; i++)
+            {
+                if (this[i].Region_ID.Equals(region_ID))
+                {
+                    return this[i];
+                }
+            }
+
+            return null;
+        }
+
+        #endregion
+
         #region Factory Methods
 
         /// <summary>

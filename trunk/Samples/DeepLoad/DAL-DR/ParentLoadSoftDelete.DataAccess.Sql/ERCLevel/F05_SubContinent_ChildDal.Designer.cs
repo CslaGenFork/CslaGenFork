@@ -16,16 +16,16 @@ namespace ParentLoadSoftDelete.DataAccess.Sql.ERCLevel
         /// <summary>
         /// Inserts a new F05_SubContinent_Child object in the database.
         /// </summary>
-        /// <param name="subContinent_ID">The parent Sub Continent ID.</param>
+        /// <param name="subContinent_ID1">The parent Sub Continent ID1.</param>
         /// <param name="subContinent_Child_Name">The Sub Continent Child Name.</param>
-        public void Insert(int subContinent_ID, string subContinent_Child_Name)
+        public void Insert(int subContinent_ID1, string subContinent_Child_Name)
         {
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("DeepLoad"))
             {
                 using (var cmd = new SqlCommand("AddF05_SubContinent_Child", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@SubContinent_ID", subContinent_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@SubContinent_ID1", subContinent_ID1).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@SubContinent_Child_Name", subContinent_Child_Name).DbType = DbType.String;
                     cmd.ExecuteNonQuery();
                 }
@@ -35,16 +35,16 @@ namespace ParentLoadSoftDelete.DataAccess.Sql.ERCLevel
         /// <summary>
         /// Updates in the database all changes made to the F05_SubContinent_Child object.
         /// </summary>
-        /// <param name="subContinent_ID">The parent Sub Continent ID.</param>
+        /// <param name="subContinent_ID1">The parent Sub Continent ID1.</param>
         /// <param name="subContinent_Child_Name">The Sub Continent Child Name.</param>
-        public void Update(int subContinent_ID, string subContinent_Child_Name)
+        public void Update(int subContinent_ID1, string subContinent_Child_Name)
         {
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("DeepLoad"))
             {
                 using (var cmd = new SqlCommand("UpdateF05_SubContinent_Child", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@SubContinent_ID", subContinent_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@SubContinent_ID1", subContinent_ID1).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@SubContinent_Child_Name", subContinent_Child_Name).DbType = DbType.String;
                     var rowsAffected = cmd.ExecuteNonQuery();
                     if (rowsAffected == 0)
@@ -56,15 +56,15 @@ namespace ParentLoadSoftDelete.DataAccess.Sql.ERCLevel
         /// <summary>
         /// Deletes the F05_SubContinent_Child object from database.
         /// </summary>
-        /// <param name="subContinent_ID">The parent Sub Continent ID.</param>
-        public void Delete(int subContinent_ID)
+        /// <param name="subContinent_ID1">The parent Sub Continent ID1.</param>
+        public void Delete(int subContinent_ID1)
         {
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("DeepLoad"))
             {
                 using (var cmd = new SqlCommand("DeleteF05_SubContinent_Child", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@SubContinent_ID", subContinent_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@SubContinent_ID1", subContinent_ID1).DbType = DbType.Int32;
                     cmd.ExecuteNonQuery();
                 }
             }

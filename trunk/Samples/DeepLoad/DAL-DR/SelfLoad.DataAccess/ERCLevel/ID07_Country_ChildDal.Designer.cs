@@ -19,21 +19,21 @@ namespace SelfLoad.DataAccess.ERCLevel
         /// <summary>
         /// Inserts a new D07_Country_Child object in the database.
         /// </summary>
-        /// <param name="country_ID">The parent Country ID.</param>
+        /// <param name="country_ID1">The parent Country ID1.</param>
         /// <param name="country_Child_Name">The Country Child Name.</param>
-        void Insert(int country_ID, string country_Child_Name);
+        void Insert(int country_ID1, string country_Child_Name);
 
         /// <summary>
         /// Updates in the database all changes made to the D07_Country_Child object.
         /// </summary>
-        /// <param name="country_ID">The parent Country ID.</param>
+        /// <param name="country_ID1">The parent Country ID1.</param>
         /// <param name="country_Child_Name">The Country Child Name.</param>
-        void Update(int country_ID, string country_Child_Name);
+        void Update(int country_ID1, string country_Child_Name);
 
         /// <summary>
         /// Deletes the D07_Country_Child object from database.
         /// </summary>
-        /// <param name="country_ID">The parent Country ID.</param>
-        void Delete(int country_ID);
+        /// <param name="country_ID1">The parent Country ID1.</param>
+        void Delete(int country_ID1);
     }
 }

@@ -12,10 +12,10 @@ namespace SelfLoad.DataAccess.ERCLevel
         /// <summary>
         /// Inserts a new D04_SubContinent object in the database.
         /// </summary>
-        /// <param name="continent_ID">The parent Continent ID.</param>
+        /// <param name="parent_Continent_ID">The parent Parent Continent ID.</param>
         /// <param name="subContinent_ID">The Sub Continent ID.</param>
         /// <param name="subContinent_Name">The Sub Continent Name.</param>
-        void Insert(int continent_ID, out int subContinent_ID, string subContinent_Name);
+        void Insert(int parent_Continent_ID, out int subContinent_ID, string subContinent_Name);
 
         /// <summary>
         /// Updates in the database all changes made to the D04_SubContinent object.

@@ -5,7 +5,7 @@ GO
 
 CREATE PROCEDURE [AddA06_Country]
     @Country_ID int OUTPUT,
-    @SubContinent_ID int,
+    @Parent_SubContinent_ID int,
     @Country_Name varchar(50),
     @NewRowVersion timestamp OUTPUT
 AS
@@ -21,7 +21,7 @@ AS
         )
         VALUES
         (
-            @SubContinent_ID,
+            @Parent_SubContinent_ID,
             @Country_Name
         )
 

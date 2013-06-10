@@ -74,6 +74,28 @@ namespace SelfLoad.Business.ERLevel
 
         #endregion
 
+        #region Find Methods
+
+        /// <summary>
+        /// Finds a <see cref="C10_City"/> item of the <see cref="C09_CityColl"/> collection, based on a given City_ID.
+        /// </summary>
+        /// <param name="city_ID">The City_ID.</param>
+        /// <returns>A <see cref="C10_City"/> object.</returns>
+        public C10_City FindC10_CityByCity_ID(int city_ID)
+        {
+            for (var i = 0; i < this.Count; i++)
+            {
+                if (this[i].City_ID.Equals(city_ID))
+                {
+                    return this[i];
+                }
+            }
+
+            return null;
+        }
+
+        #endregion
+
         #region Factory Methods
 
         /// <summary>

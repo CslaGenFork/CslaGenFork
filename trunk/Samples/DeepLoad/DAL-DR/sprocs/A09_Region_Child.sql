@@ -4,7 +4,7 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[AddA09_Regio
 GO
 
 CREATE PROCEDURE [AddA09_Region_Child]
-    @Region_ID int,
+    @Region_ID1 int,
     @Region_Child_Name varchar(50)
 AS
     BEGIN
@@ -19,7 +19,7 @@ AS
         )
         VALUES
         (
-            @Region_ID,
+            @Region_ID1,
             @Region_Child_Name
         )
 
@@ -32,7 +32,7 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[UpdateA09_Re
 GO
 
 CREATE PROCEDURE [UpdateA09_Region_Child]
-    @Region_ID int,
+    @Region_ID1 int,
     @Region_Child_Name varchar(50)
 AS
     BEGIN
@@ -44,7 +44,7 @@ AS
         (
             SELECT [Region_ID1] FROM [4_Regions_Child]
             WHERE
-                [Region_ID1] = @Region_ID
+                [Region_ID1] = @Region_ID1
         )
         BEGIN
             RAISERROR ('''A09_Region_Child'' object not found. It was probably removed by another user.', 16, 1)
@@ -56,7 +56,7 @@ AS
         SET
             [Region_Child_Name] = @Region_Child_Name
         WHERE
-            [Region_ID1] = @Region_ID
+            [Region_ID1] = @Region_ID1
 
     END
 GO
@@ -67,7 +67,7 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[DeleteA09_Re
 GO
 
 CREATE PROCEDURE [DeleteA09_Region_Child]
-    @Region_ID int
+    @Region_ID1 int
 AS
     BEGIN
 
@@ -78,7 +78,7 @@ AS
         (
             SELECT [Region_ID1] FROM [4_Regions_Child]
             WHERE
-                [Region_ID1] = @Region_ID
+                [Region_ID1] = @Region_ID1
         )
         BEGIN
             RAISERROR ('''A09_Region_Child'' object not found. It was probably removed by another user.', 16, 1)
@@ -89,7 +89,7 @@ AS
         DELETE
         FROM [4_Regions_Child]
         WHERE
-            [4_Regions_Child].[Region_ID1] = @Region_ID
+            [4_Regions_Child].[Region_ID1] = @Region_ID1
 
     END
 GO

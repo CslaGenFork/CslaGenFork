@@ -12,10 +12,10 @@ namespace ParentLoadSoftDelete.DataAccess.ERCLevel
         /// <summary>
         /// Inserts a new F08_Region object in the database.
         /// </summary>
-        /// <param name="country_ID">The parent Country ID.</param>
+        /// <param name="parent_Country_ID">The parent Parent Country ID.</param>
         /// <param name="region_ID">The Region ID.</param>
         /// <param name="region_Name">The Region Name.</param>
-        void Insert(int country_ID, out int region_ID, string region_Name);
+        void Insert(int parent_Country_ID, out int region_ID, string region_Name);
 
         /// <summary>
         /// Updates in the database all changes made to the F08_Region object.

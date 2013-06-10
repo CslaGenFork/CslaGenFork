@@ -16,17 +16,17 @@ namespace ParentLoadSoftDelete.DataAccess.Sql.ERLevel
         /// <summary>
         /// Inserts a new E05_SubContinent_Child object in the database.
         /// </summary>
-        /// <param name="subContinent_ID">The parent Sub Continent ID.</param>
+        /// <param name="subContinent_ID1">The parent Sub Continent ID1.</param>
         /// <param name="subContinent_Child_Name">The Sub Continent Child Name.</param>
         /// <returns>The Row Version of the new E05_SubContinent_Child.</returns>
-        public byte[] Insert(int subContinent_ID, string subContinent_Child_Name)
+        public byte[] Insert(int subContinent_ID1, string subContinent_Child_Name)
         {
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("DeepLoad"))
             {
                 using (var cmd = new SqlCommand("AddE05_SubContinent_Child", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@SubContinent_ID", subContinent_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@SubContinent_ID1", subContinent_ID1).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@SubContinent_Child_Name", subContinent_Child_Name).DbType = DbType.String;
                     cmd.Parameters.Add("@NewRowVersion", SqlDbType.Timestamp).Direction = ParameterDirection.Output;
                     cmd.ExecuteNonQuery();
@@ -38,21 +38,19 @@ namespace ParentLoadSoftDelete.DataAccess.Sql.ERLevel
         /// <summary>
         /// Updates in the database all changes made to the E05_SubContinent_Child object.
         /// </summary>
-        /// <param name="subContinent_ID">The parent Sub Continent ID.</param>
+        /// <param name="subContinent_ID1">The parent Sub Continent ID1.</param>
         /// <param name="subContinent_Child_Name">The Sub Continent Child Name.</param>
-        /// <param name="subContinent_ID1">The Sub Continent ID1.</param>
         /// <param name="rowVersion">The Row Version.</param>
         /// <returns>The updated Row Version.</returns>
-        public byte[] Update(int subContinent_ID, string subContinent_Child_Name, int subContinent_ID1, byte[] rowVersion)
+        public byte[] Update(int subContinent_ID1, string subContinent_Child_Name, byte[] rowVersion)
         {
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("DeepLoad"))
             {
                 using (var cmd = new SqlCommand("UpdateE05_SubContinent_Child", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@SubContinent_ID", subContinent_ID).DbType = DbType.Int32;
-                    cmd.Parameters.AddWithValue("@SubContinent_Child_Name", subContinent_Child_Name).DbType = DbType.String;
                     cmd.Parameters.AddWithValue("@SubContinent_ID1", subContinent_ID1).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@SubContinent_Child_Name", subContinent_Child_Name).DbType = DbType.String;
                     cmd.Parameters.AddWithValue("@RowVersion", rowVersion).DbType = DbType.Binary;
                     cmd.Parameters.Add("@NewRowVersion", SqlDbType.Timestamp).Direction = ParameterDirection.Output;
                     var rowsAffected = cmd.ExecuteNonQuery();
@@ -67,15 +65,15 @@ namespace ParentLoadSoftDelete.DataAccess.Sql.ERLevel
         /// <summary>
         /// Deletes the E05_SubContinent_Child object from database.
         /// </summary>
-        /// <param name="subContinent_ID">The parent Sub Continent ID.</param>
-        public void Delete(int subContinent_ID)
+        /// <param name="subContinent_ID1">The parent Sub Continent ID1.</param>
+        public void Delete(int subContinent_ID1)
         {
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("DeepLoad"))
             {
                 using (var cmd = new SqlCommand("DeleteE05_SubContinent_Child", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@SubContinent_ID", subContinent_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@SubContinent_ID1", subContinent_ID1).DbType = DbType.Int32;
                     cmd.ExecuteNonQuery();
                 }
             }

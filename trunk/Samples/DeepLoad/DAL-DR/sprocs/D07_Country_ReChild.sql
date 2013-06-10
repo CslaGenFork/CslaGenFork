@@ -26,7 +26,7 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[AddD07_Count
 GO
 
 CREATE PROCEDURE [AddD07_Country_ReChild]
-    @Country_ID int,
+    @Country_ID2 int,
     @Country_Child_Name varchar(50)
 AS
     BEGIN
@@ -41,7 +41,7 @@ AS
         )
         VALUES
         (
-            @Country_ID,
+            @Country_ID2,
             @Country_Child_Name
         )
 
@@ -54,7 +54,7 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[UpdateD07_Co
 GO
 
 CREATE PROCEDURE [UpdateD07_Country_ReChild]
-    @Country_ID int,
+    @Country_ID2 int,
     @Country_Child_Name varchar(50)
 AS
     BEGIN
@@ -66,7 +66,7 @@ AS
         (
             SELECT [Country_ID2] FROM [3_Countries_ReChild]
             WHERE
-                [Country_ID2] = @Country_ID
+                [Country_ID2] = @Country_ID2
         )
         BEGIN
             RAISERROR ('''D07_Country_ReChild'' object not found. It was probably removed by another user.', 16, 1)
@@ -78,7 +78,7 @@ AS
         SET
             [Country_Child_Name] = @Country_Child_Name
         WHERE
-            [Country_ID2] = @Country_ID
+            [Country_ID2] = @Country_ID2
 
     END
 GO
@@ -89,7 +89,7 @@ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[DeleteD07_Co
 GO
 
 CREATE PROCEDURE [DeleteD07_Country_ReChild]
-    @Country_ID int
+    @Country_ID2 int
 AS
     BEGIN
 
@@ -100,7 +100,7 @@ AS
         (
             SELECT [Country_ID2] FROM [3_Countries_ReChild]
             WHERE
-                [Country_ID2] = @Country_ID
+                [Country_ID2] = @Country_ID2
         )
         BEGIN
             RAISERROR ('''D07_Country_ReChild'' object not found. It was probably removed by another user.', 16, 1)
@@ -111,7 +111,7 @@ AS
         DELETE
         FROM [3_Countries_ReChild]
         WHERE
-            [3_Countries_ReChild].[Country_ID2] = @Country_ID
+            [3_Countries_ReChild].[Country_ID2] = @Country_ID2
 
     END
 GO

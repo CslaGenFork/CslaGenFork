@@ -12,10 +12,10 @@ namespace SelfLoad.DataAccess.ERLevel
         /// <summary>
         /// Inserts a new C10_City object in the database.
         /// </summary>
-        /// <param name="region_ID">The parent Region ID.</param>
+        /// <param name="parent_Region_ID">The parent Parent Region ID.</param>
         /// <param name="city_ID">The City ID.</param>
         /// <param name="city_Name">The City Name.</param>
-        void Insert(int region_ID, out int city_ID, string city_Name);
+        void Insert(int parent_Region_ID, out int city_ID, string city_Name);
 
         /// <summary>
         /// Updates in the database all changes made to the C10_City object.

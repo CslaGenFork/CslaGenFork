@@ -16,11 +16,11 @@ namespace SelfLoadSoftDelete.DataAccess.Sql.ERLevel
         /// <summary>
         /// Inserts a new G06_Country object in the database.
         /// </summary>
-        /// <param name="subContinent_ID">The parent Sub Continent ID.</param>
+        /// <param name="parent_SubContinent_ID">The parent Parent Sub Continent ID.</param>
         /// <param name="country_ID">The Country ID.</param>
         /// <param name="country_Name">The Country Name.</param>
         /// <returns>The Row Version of the new G06_Country.</returns>
-        public byte[] Insert(int subContinent_ID, out int country_ID, string country_Name)
+        public byte[] Insert(int parent_SubContinent_ID, out int country_ID, string country_Name)
         {
             country_ID = -1;
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("DeepLoad"))
@@ -28,7 +28,7 @@ namespace SelfLoadSoftDelete.DataAccess.Sql.ERLevel
                 using (var cmd = new SqlCommand("AddG06_Country", ctx.Connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@SubContinent_ID", subContinent_ID).DbType = DbType.Int32;
+                    cmd.Parameters.AddWithValue("@Parent_SubContinent_ID", parent_SubContinent_ID).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@Country_ID", country_ID).Direction = ParameterDirection.Output;
                     cmd.Parameters.AddWithValue("@Country_Name", country_Name).DbType = DbType.String;
                     cmd.Parameters.Add("@NewRowVersion", SqlDbType.Timestamp).Direction = ParameterDirection.Output;

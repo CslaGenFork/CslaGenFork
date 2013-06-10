@@ -12,10 +12,10 @@ namespace ParentLoad.DataAccess.ERLevel
         /// <summary>
         /// Inserts a new A08_Region object in the database.
         /// </summary>
-        /// <param name="country_ID">The parent Country ID.</param>
+        /// <param name="parent_Country_ID">The parent Parent Country ID.</param>
         /// <param name="region_ID">The Region ID.</param>
         /// <param name="region_Name">The Region Name.</param>
-        void Insert(int country_ID, out int region_ID, string region_Name);
+        void Insert(int parent_Country_ID, out int region_ID, string region_Name);
 
         /// <summary>
         /// Updates in the database all changes made to the A08_Region object.

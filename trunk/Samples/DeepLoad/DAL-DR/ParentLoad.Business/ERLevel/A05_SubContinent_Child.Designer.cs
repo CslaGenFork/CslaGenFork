@@ -46,20 +46,6 @@ namespace ParentLoad.Business.ERLevel
             set { SetProperty(SubContinent_Child_NameProperty, value); }
         }
 
-        /// <summary>
-        /// Maintains metadata about <see cref="SubContinent_ID1"/> property.
-        /// </summary>
-        public static readonly PropertyInfo<int> SubContinent_ID1Property = RegisterProperty<int>(p => p.SubContinent_ID1, "Sub Continent ID1");
-        /// <summary>
-        /// Gets or sets the Sub Continent ID1.
-        /// </summary>
-        /// <value>The Sub Continent ID1.</value>
-        public int SubContinent_ID1
-        {
-            get { return GetProperty(SubContinent_ID1Property); }
-            set { SetProperty(SubContinent_ID1Property, value); }
-        }
-
         #endregion
 
         #region Factory Methods
@@ -127,7 +113,6 @@ namespace ParentLoad.Business.ERLevel
         {
             // Value properties
             LoadProperty(SubContinent_Child_NameProperty, dr.GetString("SubContinent_Child_Name"));
-            LoadProperty(SubContinent_ID1Property, dr.GetInt32("SubContinent_ID1"));
             _rowVersion = dr.GetValue("RowVersion") as byte[];
             // parent properties
             subContinent_ID1 = dr.GetInt32("SubContinent_ID1");
@@ -178,7 +163,6 @@ namespace ParentLoad.Business.ERLevel
                     _rowVersion = dal.Update(
                         parent.SubContinent_ID,
                         SubContinent_Child_Name,
-                        SubContinent_ID1,
                         _rowVersion
                         );
                 }

@@ -74,6 +74,28 @@ namespace SelfLoadSoftDelete.Business.ERLevel
 
         #endregion
 
+        #region Find Methods
+
+        /// <summary>
+        /// Finds a <see cref="G08_Region"/> item of the <see cref="G07_RegionColl"/> collection, based on a given Region_ID.
+        /// </summary>
+        /// <param name="region_ID">The Region_ID.</param>
+        /// <returns>A <see cref="G08_Region"/> object.</returns>
+        public G08_Region FindG08_RegionByRegion_ID(int region_ID)
+        {
+            for (var i = 0; i < this.Count; i++)
+            {
+                if (this[i].Region_ID.Equals(region_ID))
+                {
+                    return this[i];
+                }
+            }
+
+            return null;
+        }
+
+        #endregion
+
         #region Factory Methods
 
         /// <summary>
