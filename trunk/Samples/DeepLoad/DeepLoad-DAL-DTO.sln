@@ -5,9 +5,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		nuget.config = nuget.config
 		Readme.txt = Readme.txt
+		UnitTests.txt = UnitTests.txt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeepLoadTest", "DAL-DTO\DeepLoadTest\DeepLoadTest.csproj", "{31BEFD7F-501B-4105-9165-5F509E914C8F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeepLoadConsole", "DAL-DTO\DeepLoadConsole\DeepLoadConsole.csproj", "{31BEFD7F-501B-4105-9165-5F509E914C8F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParentLoad.Business", "DAL-DTO\ParentLoad.Business\ParentLoad.Business.csproj", "{40CF8F6F-B107-4245-8CAD-CE536261A45C}"
 EndProject
@@ -56,6 +57,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParentLoadSoftDelete.DataAccess", "DAL-DTO\ParentLoadSoftDelete.DataAccess\ParentLoadSoftDelete.DataAccess.csproj", "{BF966A99-C3D6-4314-BF02-986B049B22F5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParentLoadSoftDelete.DataAccess.Sql", "DAL-DTO\ParentLoadSoftDelete.DataAccess.Sql\ParentLoadSoftDelete.DataAccess.Sql.csproj", "{720FFFD9-3518-4223-BD84-4BE0F5FFE955}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeepLoadUnitTests", "DAL-DTO\DeepLoadUnitTests\DeepLoadUnitTests.csproj", "{96640F2E-3AA5-4F48-847A-31078C393433}"
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
@@ -321,6 +324,16 @@ Global
 		{720FFFD9-3518-4223-BD84-4BE0F5FFE955}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{720FFFD9-3518-4223-BD84-4BE0F5FFE955}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{720FFFD9-3518-4223-BD84-4BE0F5FFE955}.Release|x86.ActiveCfg = Release|Any CPU
+		{96640F2E-3AA5-4F48-847A-31078C393433}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96640F2E-3AA5-4F48-847A-31078C393433}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96640F2E-3AA5-4F48-847A-31078C393433}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{96640F2E-3AA5-4F48-847A-31078C393433}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{96640F2E-3AA5-4F48-847A-31078C393433}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{96640F2E-3AA5-4F48-847A-31078C393433}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96640F2E-3AA5-4F48-847A-31078C393433}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96640F2E-3AA5-4F48-847A-31078C393433}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{96640F2E-3AA5-4F48-847A-31078C393433}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{96640F2E-3AA5-4F48-847A-31078C393433}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -5,9 +5,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		nuget.config = nuget.config
 		Readme.txt = Readme.txt
+		UnitTests.txt = UnitTests.txt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeepLoadTest", "DeepLoadTest\DeepLoadTest.csproj", "{7E584CF4-B21E-44C3-A971-DF8C093498C1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeepLoadConsole", "DeepLoadConsole\DeepLoadConsole.csproj", "{7E584CF4-B21E-44C3-A971-DF8C093498C1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParentLoad.Business", "ParentLoad.Business\ParentLoad.Business.csproj", "{7AEAB3A1-25BC-46F6-A73C-46E73DC490CF}"
 EndProject
@@ -24,6 +25,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelfLoadROSoftDelete.Business", "SelfLoadROSoftDelete.Business\SelfLoadROSoftDelete.Business.csproj", "{09F7B441-BF07-4C46-9B8E-7B30AC6F0966}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SelfLoadSoftDelete.Business", "SelfLoadSoftDelete.Business\SelfLoadSoftDelete.Business.csproj", "{A7981A5C-740F-4598-A759-28A0B5004A32}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeepLoadUnitTests", "DeepLoadUnitTests\DeepLoadUnitTests.csproj", "{922D50B7-380A-42E2-9CAE-058451CF3263}"
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
@@ -129,6 +132,16 @@ Global
 		{A7981A5C-740F-4598-A759-28A0B5004A32}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{A7981A5C-740F-4598-A759-28A0B5004A32}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{A7981A5C-740F-4598-A759-28A0B5004A32}.Release|x86.ActiveCfg = Release|Any CPU
+		{922D50B7-380A-42E2-9CAE-058451CF3263}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{922D50B7-380A-42E2-9CAE-058451CF3263}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{922D50B7-380A-42E2-9CAE-058451CF3263}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{922D50B7-380A-42E2-9CAE-058451CF3263}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{922D50B7-380A-42E2-9CAE-058451CF3263}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{922D50B7-380A-42E2-9CAE-058451CF3263}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{922D50B7-380A-42E2-9CAE-058451CF3263}.Release|Any CPU.Build.0 = Release|Any CPU
+		{922D50B7-380A-42E2-9CAE-058451CF3263}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{922D50B7-380A-42E2-9CAE-058451CF3263}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{922D50B7-380A-42E2-9CAE-058451CF3263}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
