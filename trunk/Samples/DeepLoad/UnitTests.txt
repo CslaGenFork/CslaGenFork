@@ -1,0 +1,5 @@
+UnitTests were written fo MSTest.
+They cover all CRUD methods and must run sequentially.
+VS runner doesn't run tests sequentially so it can't be used to run the tests.
+
+ReSharper runner DOES run tests sequentially and is used as the test runner.
