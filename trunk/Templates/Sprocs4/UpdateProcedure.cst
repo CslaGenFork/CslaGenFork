@@ -68,9 +68,9 @@ CREATE PROCEDURE <%= fullTableSchema %>[<%= Info.UpdateProcedureName %>]<%
     }
     if (!Info.ParentInsertOnly)
     {
-        foreach (ValueProperty prop in Info.GetParentValueProperties())
+        foreach (ValueProperty parentProp in Info.GetParentValueProperties())
         {
-            if (prop.DbBindColumn.Column == null)
+            if (parentProp.DbBindColumn.Column == null)
                 continue;
 
             if (first)
@@ -80,7 +80,7 @@ CREATE PROCEDURE <%= fullTableSchema %>[<%= Info.UpdateProcedureName %>]<%
                 %>,<%
             }
             %>
-    @<%= prop.ParameterName %> <%= GetDataTypeString(prop.DbBindColumn) %><%
+    @<%= GetFkParameterNameForParentProperty(Info, parentProp) %> <%= GetDataTypeString(parentProp.DbBindColumn) %><%
         }
     }
     foreach (ValueProperty prop in Info.GetAllValueProperties())
@@ -121,9 +121,9 @@ AS
     first = true;
     if (!Info.ParentInsertOnly)
     {
-        foreach (ValueProperty prop in Info.GetParentValueProperties())
+        foreach (ValueProperty parentProp in Info.GetParentValueProperties())
         {
-            if (prop.DbBindColumn.Column == null)
+            if (parentProp.DbBindColumn.Column == null)
                 continue;
 
             if (first)
@@ -132,7 +132,7 @@ AS
             {
                 %>, <%
             }
-            %>[<%= GetFKColumnForParentProperty(prop,tables[0]) %>]<%
+            %>[<%= GetFKColumnForParentProperty(parentProp,tables[0]) %>]<%
         }
     }
     foreach (ValueProperty prop in Info.ValueProperties)
@@ -157,9 +157,9 @@ AS
     first = true;
     if (!Info.ParentInsertOnly)
     {
-        foreach (ValueProperty prop in Info.GetParentValueProperties())
+        foreach (ValueProperty parentProp in Info.GetParentValueProperties())
         {
-            if (prop.DbBindColumn.Column == null)
+            if (parentProp.DbBindColumn.Column == null)
                 continue;
 
             if (first)
@@ -169,7 +169,7 @@ AS
                 %> AND
                 <%
             }
-            %>[<%= GetFKColumnForParentProperty(prop,tables[0]) %>] = @<%= prop.ParameterName %><%
+            %>[<%= GetFKColumnForParentProperty(parentProp,tables[0]) %>] = @<%= GetFkParameterNameForParentProperty(Info, parentProp) %><%
         }
     }
     foreach (ValueProperty prop in Info.GetAllValueProperties())
@@ -212,9 +212,9 @@ AS
         first = true;
         if (!Info.ParentInsertOnly)
         {
-            foreach (ValueProperty prop in Info.GetParentValueProperties())
+            foreach (ValueProperty parentProp in Info.GetParentValueProperties())
             {
-                if (prop.DbBindColumn.Column == null)
+                if (parentProp.DbBindColumn.Column == null)
                     continue;
 
                 if (first)
@@ -223,7 +223,7 @@ AS
                 {
                     %>, <%
                 }
-                %>[<%= GetFKColumnForParentProperty(prop,tables[0]) %>]<%
+                %>[<%= GetFKColumnForParentProperty(parentProp,tables[0]) %>]<%
             }
         }
         foreach (ValueProperty prop in Info.ValueProperties)
@@ -248,9 +248,9 @@ AS
         first = true;
         if (!Info.ParentInsertOnly)
         {
-            foreach (ValueProperty prop in Info.GetParentValueProperties())
+            foreach (ValueProperty parentProp in Info.GetParentValueProperties())
             {
-                if (prop.DbBindColumn.Column == null)
+                if (parentProp.DbBindColumn.Column == null)
                     continue;
 
                 if (first)
@@ -260,7 +260,7 @@ AS
                     %> AND
                 <%
                 }
-                %>[<%= GetFKColumnForParentProperty(prop,tables[0]) %>] = @<%= prop.ParameterName %><%
+                %>[<%= GetFKColumnForParentProperty(parentProp,tables[0]) %>] = @<%= GetFkParameterNameForParentProperty(Info, parentProp) %><%
             }
         }
         foreach (ValueProperty prop in Info.ValueProperties)
@@ -370,9 +370,9 @@ AS
         first = true;
         if (!Info.ParentInsertOnly)
         {
-            foreach (ValueProperty prop in Info.GetParentValueProperties())
+            foreach (ValueProperty parentProp in Info.GetParentValueProperties())
             {
-                if (prop.DbBindColumn.Column == null)
+                if (parentProp.DbBindColumn.Column == null)
                     continue;
 
                 if (first)
@@ -382,7 +382,7 @@ AS
                     %> AND
             <%
                 }
-            %>[<%= GetFKColumnForParentProperty(prop,table) %>] = @<%= prop.ParameterName %><%
+            %>[<%= GetFKColumnForParentProperty(parentProp,table) %>] = @<%= GetFkParameterNameForParentProperty(Info, parentProp) %><%
             }
         }
         foreach (ValueProperty prop in Info.GetAllValueProperties())
@@ -419,9 +419,9 @@ AS
 
         if (!Info.ParentInsertOnly)
         {
-            foreach (ValueProperty prop in Info.GetParentValueProperties())
+            foreach (ValueProperty parentProp in Info.GetParentValueProperties())
             {
-                if (prop.DbBindColumn.Column == null)
+                if (parentProp.DbBindColumn.Column == null)
                     continue;
 
                 if (first)
@@ -431,7 +431,7 @@ AS
                     %> AND
             <%
                 }
-            %>[<%= GetFKColumnForParentProperty(prop,tables[0]) %>] = @<%= prop.ParameterName %><%
+            %>[<%= GetFKColumnForParentProperty(parentProp,tables[0]) %>] = @<%= GetFkParameterNameForParentProperty(Info, parentProp) %><%
             }
         }
         foreach (ValueProperty prop in Info.ValueProperties)
