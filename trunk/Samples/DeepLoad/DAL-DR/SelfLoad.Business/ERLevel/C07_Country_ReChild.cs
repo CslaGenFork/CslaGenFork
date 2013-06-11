@@ -1,3 +1,4 @@
+
 namespace SelfLoad.Business.ERLevel
 {
     public partial class C07_Country_ReChild

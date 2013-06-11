@@ -1,3 +1,4 @@
+
 namespace SelfLoad.Business.ERCLevel
 {
     public partial class D05_CountryColl

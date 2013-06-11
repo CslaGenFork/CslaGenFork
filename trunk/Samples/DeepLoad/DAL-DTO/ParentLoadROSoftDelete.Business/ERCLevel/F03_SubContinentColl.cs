@@ -1,3 +1,4 @@
+
 namespace ParentLoadROSoftDelete.Business.ERCLevel
 {
     public partial class F03_SubContinentColl

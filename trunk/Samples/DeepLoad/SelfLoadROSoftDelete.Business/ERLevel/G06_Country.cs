@@ -1,3 +1,4 @@
+
 namespace SelfLoadROSoftDelete.Business.ERLevel
 {
     public partial class G06_Country

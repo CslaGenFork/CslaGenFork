@@ -1,3 +1,4 @@
+
 namespace ParentLoadROSoftDelete.Business.ERCLevel
 {
     public partial class F05_SubContinent_ReChild

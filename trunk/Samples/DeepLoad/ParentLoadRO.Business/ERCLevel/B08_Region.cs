@@ -1,3 +1,4 @@
+
 namespace ParentLoadRO.Business.ERCLevel
 {
     public partial class B08_Region

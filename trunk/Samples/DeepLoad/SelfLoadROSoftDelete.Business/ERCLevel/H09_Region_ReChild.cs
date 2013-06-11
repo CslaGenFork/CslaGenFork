@@ -1,3 +1,4 @@
+
 namespace SelfLoadROSoftDelete.Business.ERCLevel
 {
     public partial class H09_Region_ReChild

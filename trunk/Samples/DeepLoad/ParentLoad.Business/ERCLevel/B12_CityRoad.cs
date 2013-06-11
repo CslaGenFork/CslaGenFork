@@ -1,3 +1,4 @@
+
 namespace ParentLoad.Business.ERCLevel
 {
     public partial class B12_CityRoad

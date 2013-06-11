@@ -1,3 +1,4 @@
+
 namespace ParentLoadRO.Business.ERLevel
 {
     public partial class A06_Country

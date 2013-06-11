@@ -1,3 +1,4 @@
+
 namespace SelfLoadRO.Business.ERLevel
 {
     public partial class C06_Country
