@@ -1,3 +1,4 @@
+
 namespace SelfLoadROSoftDelete.Business.ERCLevel
 {
     public partial class H01_ContinentColl

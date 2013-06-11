@@ -1,3 +1,4 @@
+
 namespace ParentLoadROSoftDelete.Business.ERLevel
 {
     public partial class E08_Region

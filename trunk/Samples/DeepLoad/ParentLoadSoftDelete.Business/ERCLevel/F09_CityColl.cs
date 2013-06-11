@@ -1,3 +1,4 @@
+
 namespace ParentLoadSoftDelete.Business.ERCLevel
 {
     public partial class F09_CityColl

@@ -1,3 +1,4 @@
+
 namespace ParentLoad.Business.ERLevel
 {
     public partial class A05_CountryColl

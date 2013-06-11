@@ -1,3 +1,4 @@
+
 namespace ParentLoadROSoftDelete.Business.ERCLevel
 {
     public partial class F10_City

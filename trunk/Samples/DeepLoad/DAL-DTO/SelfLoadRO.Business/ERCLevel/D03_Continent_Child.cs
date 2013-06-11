@@ -1,3 +1,4 @@
+
 namespace SelfLoadRO.Business.ERCLevel
 {
     public partial class D03_Continent_Child

@@ -1,3 +1,4 @@
+
 namespace SelfLoadSoftDelete.Business.ERLevel
 {
     public partial class G03_Continent_Child

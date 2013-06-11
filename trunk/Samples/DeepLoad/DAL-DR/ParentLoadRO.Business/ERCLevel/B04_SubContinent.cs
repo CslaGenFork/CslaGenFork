@@ -1,3 +1,4 @@
+
 namespace ParentLoadRO.Business.ERCLevel
 {
     public partial class B04_SubContinent

@@ -1,3 +1,4 @@
+
 namespace SelfLoadSoftDelete.Business.ERCLevel
 {
     public partial class H08_Region
@@ -14,6 +15,26 @@ namespace SelfLoadSoftDelete.Business.ERCLevel
         {
             base.OnDeserialized(context);
             // add your custom OnDeserialized actions here.
+        }*/
+
+        #endregion
+
+        #region ChildChanged Event Handler
+
+        /*/// <summary>
+        /// Raises the ChildChanged event, indicating that a child object has been changed.
+        /// </summary>
+        /// <param name="e">ChildChangedEventArgs object.</param>
+        protected override void OnChildChanged(Csla.Core.ChildChangedEventArgs e)
+        {
+            base.OnChildChanged(e);
+
+            // uncomment the lines for child with properties relevant to business rules
+            //PropertyHasChanged(H09_Region_SingleObjectProperty);
+            //PropertyHasChanged(H09_Region_ASingleObjectProperty);
+            //PropertyHasChanged(H09_CityObjectsProperty);
+            // uncomment if there is an object level business rule (introduced in Csla 4.2.0)
+            //CheckObjectRules();
         }*/
 
         #endregion

@@ -1,3 +1,4 @@
+
 namespace ParentLoadSoftDelete.Business.ERLevel
 {
     public partial class E05_SubContinent_Child

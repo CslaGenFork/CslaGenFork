@@ -1,3 +1,4 @@
+
 namespace SelfLoadSoftDelete.Business.ERCLevel
 {
     public partial class H07_Country_Child

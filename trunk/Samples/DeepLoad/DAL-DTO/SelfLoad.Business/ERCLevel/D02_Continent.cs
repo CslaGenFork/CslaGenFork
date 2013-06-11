@@ -1,3 +1,4 @@
+
 namespace SelfLoad.Business.ERCLevel
 {
     public partial class D02_Continent
@@ -14,6 +15,26 @@ namespace SelfLoad.Business.ERCLevel
         {
             base.OnDeserialized(context);
             // add your custom OnDeserialized actions here.
+        }*/
+
+        #endregion
+
+        #region ChildChanged Event Handler
+
+        /*/// <summary>
+        /// Raises the ChildChanged event, indicating that a child object has been changed.
+        /// </summary>
+        /// <param name="e">ChildChangedEventArgs object.</param>
+        protected override void OnChildChanged(Csla.Core.ChildChangedEventArgs e)
+        {
+            base.OnChildChanged(e);
+
+            // uncomment the lines for child with properties relevant to business rules
+            //PropertyHasChanged(D03_Continent_SingleObjectProperty);
+            //PropertyHasChanged(D03_Continent_ASingleObjectProperty);
+            //PropertyHasChanged(D03_SubContinentObjectsProperty);
+            // uncomment if there is an object level business rule (introduced in Csla 4.2.0)
+            //CheckObjectRules();
         }*/
 
         #endregion
