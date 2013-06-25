@@ -62,6 +62,7 @@ namespace CslaGenerator.Metadata
         private bool _deleteUseTimestamp = false;
         private bool _removeItem = true;
         private string _dbName = String.Empty;
+        private bool _isPolymorphic = false;
         private string _itemType = String.Empty;
         private bool _containsItem = true;
         private bool _uniqueItems = false;
@@ -699,7 +700,17 @@ namespace CslaGenerator.Metadata
         #region 05. Collection Options
 
         [Category("05. Collection Options")]
-        [Description("The type name of the objects the collection will hold.")]
+        [Description("Whether this collection has polymorphic items. Polymorphic items have different types but implement a given interface.")]
+        [UserFriendlyName("Polymorphic Collection")]
+        [Editor(typeof(ItemTypeEditor), typeof(UITypeEditor))]
+        public bool IsPolymorphic
+        {
+            get { return _isPolymorphic; }
+            set { _isPolymorphic = value; }
+        }
+
+        [Category("05. Collection Options")]
+        [Description("The type name of the objects the collection will hold. For a polymorphic collection, specify the interface that must be implemented by the item types. The interface must be defined in this project.")]
         [UserFriendlyName("Item Type")]
         [Editor(typeof(ItemTypeEditor), typeof(UITypeEditor))]
         public string ItemType
@@ -1756,7 +1767,7 @@ namespace CslaGenerator.Metadata
                 var parentInfo = info.Parent.CslaObjects.Find(info.ParentType);
                 if (parentInfo != null)
                 {
-                    if (parentInfo.ItemType == info.ObjectName)
+                    if (parentInfo.ItemType == info.ObjectName || parentInfo.IsPolymorphic)
                         return FindParent(parentInfo);
 
                     if (parentInfo.GetAllChildProperties().FindType(info.ObjectName) != null)

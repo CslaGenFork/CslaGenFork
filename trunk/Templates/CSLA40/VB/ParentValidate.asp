@@ -90,11 +90,31 @@ else
         }
         else
         {
-            // Check the ItemType of the collection's ItemType is the collection itself
-            if (validateParentInfo.ItemType != Info.ObjectName)
+            // Check if the ItemType of the collection's ItemType is the ItemType itself
+            if (validateParentInfo.IsPolymorphic && validateParentInfo.ItemType != Info.ObjectName)
             {
-                Errors.Append("The item name (ItemType) of " + validateParentInfo.ObjectName + " doesn't match: is '" + validateParentInfo.ItemType + "' but should be '" + Info.ObjectName + "'." + Environment.NewLine);
-                return;
+                bool interfaceFound = false;
+                foreach (string implement in Info.Implements)
+                {
+                    if (implement.Trim() == validateParentInfo.ItemType)
+                    {
+                        interfaceFound = true;
+                        break;
+                    }
+                }
+                if (!interfaceFound)
+                {
+                    Errors.Append("The polymorphic item '" + Info.ObjectName + "' of '" + validateParentInfo.ObjectName + "' must implement '" + validateParentInfo.ItemType + "'." + Environment.NewLine);
+                    return;
+                }
+            }
+            else
+            {
+                if (validateParentInfo.ItemType != Info.ObjectName)
+                {
+                    Errors.Append("The item name (ItemType) of " + validateParentInfo.ObjectName + " doesn't match: is '" + validateParentInfo.ItemType + "' but should be '" + Info.ObjectName + "'." + Environment.NewLine);
+                    return;
+                }
             }
             // Check the ParentType is valid for this kind of collection
             if (!RelationRulesEngine.IsParentAllowed(validateParentInfo.ObjectType, Info.ObjectType))

@@ -119,10 +119,30 @@ foreach (CslaObjectInfo objectInfo in list)
         {
             if (IsCollectionType(parent.ObjectType))
             {
-                if (parent.ItemType != objectInfo.ObjectName)
+                if (parent.IsPolymorphic && parent.ItemType != objectInfo.ObjectName)
                 {
-                    Errors.Append("Object " + objectInfo.ObjectName + ": Item Type of parent " + parent.ObjectName + " doesn't match this child." + Environment.NewLine);
-                    //continue;
+                    bool interfaceFound = false;
+                    foreach (string implement in objectInfo.Implements)
+                    {
+                        if (implement.Trim() == parent.ItemType)
+                        {
+                            interfaceFound = true;
+                            break;
+                        }
+                    }
+                    if (!interfaceFound)
+                    {
+                        Errors.Append("The polymorphic item '" + objectInfo.ObjectName + "' of '" + parent.ObjectName + "' must implement '" + parent.ItemType + "'." + Environment.NewLine);
+                        return;
+                    }
+                }
+                else
+                {
+                    if (parent.ItemType != objectInfo.ObjectName)
+                    {
+                        Errors.Append("Object " + objectInfo.ObjectName + ": Item Type of parent " + parent.ObjectName + " doesn't match this child." + Environment.NewLine);
+                        //continue;
+                    }
                 }
                 string grandParentType = parent.ParentType;
                 parent = objectInfo.Parent.CslaObjects.Find(parent.ParentType);// object parent
