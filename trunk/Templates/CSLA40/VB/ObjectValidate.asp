@@ -42,7 +42,6 @@ bool isChildNotLazyLoaded = isChild && !isChildLazyLoaded;
 bool? forceGeneration = null;
 bool createGenerateLocal = true;
 bool generateLocal = false;
-bool objectRunLocal = true;
 bool useUnitOfWorkCreator = false;
 bool useUnitOfWorkGetter = false;
 if (Info.UseUnitOfWorkType != string.Empty)
@@ -63,11 +62,16 @@ if (CurrentUnit.GenerationParams.TargetIsCsla4DAL)
     {
         Errors.Append("DataSet Loading Scheme isn't supported when generating DAL." + Environment.NewLine);
     }
+    /*
+    retain for eventual use on dummy proof checks
     if (Info.UseCustomLoading)
     {
         Errors.Append("Custom Loading isn't supported when generating DAL." + Environment.NewLine);
-    }
+    }*/
 }
+/*
+makes sure custom loading isn't used by accident
+retain for eventual use on dummy proof checks
 if (CurrentUnit.GenerationParams.TargetIsCsla4)
 {
     if (isCollectionType)
@@ -111,7 +115,7 @@ if (CurrentUnit.GenerationParams.TargetIsCsla4)
         UseChildFactoryHelper = false;
         Infos.Append("Alert: " + Info.ObjectName + " is using custom loading: child Factory methods will not be generated." + Environment.NewLine);
     }
-}
+}*/
 
 bool hasFactoryCache = false;
 bool hasDataPortalCache = false;
