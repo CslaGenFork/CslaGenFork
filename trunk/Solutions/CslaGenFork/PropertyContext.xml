@@ -28,6 +28,7 @@
     <add key="UnitOfWork:ParentProperties" value="false" />
     <add key="UnitOfWork:ParentType" value="false" />
     <add key="UnitOfWork:FindMethodsParameters" value="false" />
+    <add key="UnitOfWork:IsPolymorphic" value="false" />
     <add key="UnitOfWork:ItemType" value="false" />
     <add key="UnitOfWork:ContainsItem" value="false" />
     <add key="UnitOfWork:UniqueItems" value="false" />
@@ -95,6 +96,7 @@
     <add key="NameValueList:ParentProperties" value="true" />
     <add key="NameValueList:ParentType" value="false" />
     <add key="NameValueList:FindMethodsParameters" value="false" />
+    <add key="NameValueList:IsPolymorphic" value="false" />
     <add key="NameValueList:ItemType" value="false" />
     <add key="NameValueList:ContainsItem" value="false" />
     <add key="NameValueList:UniqueItems" value="false" />
@@ -160,6 +162,7 @@
     <add key="ReadOnlyCollection:ParentProperties" value="false" />
     <add key="ReadOnlyCollection:ParentType" value="true" />
     <add key="ReadOnlyCollection:FindMethodsParameters" value="true" />
+    <add key="ReadOnlyCollection:IsPolymorphic" value="true" />
     <add key="ReadOnlyCollection:ItemType" value="true" />
     <add key="ReadOnlyCollection:ContainsItem" value="true" />
     <add key="ReadOnlyCollection:UniqueItems" value="true" />
@@ -225,6 +228,7 @@
     <add key="ReadOnlyObject:ParentProperties" value="true" />
     <add key="ReadOnlyObject:ParentType" value="true" />
     <add key="ReadOnlyObject:FindMethodsParameters" value="false" />
+    <add key="ReadOnlyObject:IsPolymorphic" value="false" />
     <add key="ReadOnlyObject:ItemType" value="false" />
     <add key="ReadOnlyObject:ContainsItem" value="false" />
     <add key="ReadOnlyObject:UniqueItems" value="false" />
@@ -290,6 +294,7 @@
     <add key="EditableChild:ParentProperties" value="true" />
     <add key="EditableChild:ParentType" value="true" />
     <add key="EditableChild:FindMethodsParameters" value="false" />
+    <add key="EditableChild:IsPolymorphic" value="false" />
     <add key="EditableChild:ItemType" value="false" />
     <add key="EditableChild:ContainsItem" value="false" />
     <add key="EditableChild:UniqueItems" value="false" />
@@ -355,6 +360,7 @@
     <add key="EditableChildCollection:ParentProperties" value="true" />
     <add key="EditableChildCollection:ParentType" value="true" />
     <add key="EditableChildCollection:FindMethodsParameters" value="true" />
+    <add key="EditableChildCollection:IsPolymorphic" value="true" />
     <add key="EditableChildCollection:ItemType" value="true" />
     <add key="EditableChildCollection:ContainsItem" value="true" />
     <add key="EditableChildCollection:UniqueItems" value="true" />
@@ -420,6 +426,7 @@
     <add key="EditableRoot:ParentProperties" value="false" />
     <add key="EditableRoot:ParentType" value="false" />
     <add key="EditableRoot:FindMethodsParameters" value="false" />
+    <add key="EditableRoot:IsPolymorphic" value="false" />
     <add key="EditableRoot:ItemType" value="false" />
     <add key="EditableRoot:ContainsItem" value="false" />
     <add key="EditableRoot:UniqueItems" value="false" />
@@ -485,6 +492,7 @@
     <add key="EditableRootCollection:ParentProperties" value="false" />
     <add key="EditableRootCollection:ParentType" value="false" />
     <add key="EditableRootCollection:FindMethodsParameters" value="true" />
+    <add key="EditableRootCollection:IsPolymorphic" value="true" />
     <add key="EditableRootCollection:ItemType" value="true" />
     <add key="EditableRootCollection:ContainsItem" value="true" />
     <add key="EditableRootCollection:UniqueItems" value="true" />
@@ -550,6 +558,7 @@
     <add key="EditableSwitchable:ParentProperties" value="true" />
     <add key="EditableSwitchable:ParentType" value="true" />
     <add key="EditableSwitchable:FindMethodsParameters" value="false" />
+    <add key="EditableSwitchable:IsPolymorphic" value="false" />
     <add key="EditableSwitchable:ItemType" value="false" />
     <add key="EditableSwitchable:ContainsItem" value="false" />
     <add key="EditableSwitchable:UniqueItems" value="false" />
@@ -615,6 +624,7 @@
     <add key="DynamicEditableRoot:ParentProperties" value="false" />
     <add key="DynamicEditableRoot:ParentType" value="true" />
     <add key="DynamicEditableRoot:FindMethodsParameters" value="false" />
+    <add key="DynamicEditableRoot:IsPolymorphic" value="false" />
     <add key="DynamicEditableRoot:ItemType" value="false" />
     <add key="DynamicEditableRoot:ContainsItem" value="false" />
     <add key="DynamicEditableRoot:UniqueItems" value="false" />
@@ -680,6 +690,7 @@
     <add key="DynamicEditableRootCollection:ParentProperties" value="false" />
     <add key="DynamicEditableRootCollection:ParentType" value="false" />
     <add key="DynamicEditableRootCollection:FindMethodsParameters" value="true" />
+    <add key="DynamicEditableRootCollection:IsPolymorphic" value="true" />
     <add key="DynamicEditableRootCollection:ItemType" value="true" />
     <add key="DynamicEditableRootCollection:ContainsItem" value="true" />
     <add key="DynamicEditableRootCollection:UniqueItems" value="true" />
