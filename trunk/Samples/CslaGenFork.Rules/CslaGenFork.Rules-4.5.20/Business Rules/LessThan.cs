@@ -55,7 +55,7 @@ namespace CslaGenFork.Rules.CompareFieldsRules
         }
 
         /// <summary>
-        /// Does the check for primary propert less than compareTo property
+        /// Does the check for primary property less than compareTo property
         /// </summary>
         /// <param name="context">
         /// Rule context object.
