@@ -15,7 +15,6 @@ if (isChildLazyLoaded || createCriteria || parentCreateCriteria ||
     }
 %>
 <!-- #include file="NewObject.asp" -->
-<!-- #include file="NewObjectAsync.asp" -->
 <%
 }
 if (!isChildSelfLoaded && UseNoSilverlight())
@@ -24,11 +23,17 @@ if (!isChildSelfLoaded && UseNoSilverlight())
 <!-- #include file="InternalGetObject.asp" -->
 <%
 }
-else
+else if (UseNoSilverlight())
 {
     %>
 <!-- #include file="GetObject.asp" -->
 <%
+}
+%>
+<!-- #include file="NewObjectAsync.asp" -->
+<%
+if (isChildSelfLoaded && UseNoSilverlight())
+{
     if (CurrentUnit.GenerationParams.GenerateAsynchronous && !CurrentUnit.GenerationParams.GenerateSilverlight4)
     {
         %>

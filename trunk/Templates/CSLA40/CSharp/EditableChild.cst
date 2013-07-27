@@ -78,9 +78,18 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Busine
     if (Info.GenerateFactoryMethods && UseChildFactoryHelper)
     {
         Response.Write(Environment.NewLine);
-        %>
+        if (CurrentUnit.GenerationParams.TargetIsCsla40)
+        {
+            %>
 <!-- #include file="EditableChild_Factory.asp" -->
 <%
+        }
+        else
+        {
+            %>
+<!-- #include file="EditableChild_Factory-45.asp" -->
+<%
+        }
     }
     Response.Write(Environment.NewLine);
     %>

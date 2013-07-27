@@ -1,5 +1,19 @@
         #region Factory Methods
 <%
+bool createRunLocal = false;
+bool createNonLocal = false;
+foreach (Criteria c in Info.CriteriaObjects)
+{
+    if (c.CreateOptions.Factory)
+    {
+        createRunLocal = createRunLocal || c.CreateOptions.RunLocal;
+        createNonLocal = createNonLocal || !c.CreateOptions.RunLocal;
+    }
+}
+bool createRunLocalSilverlight = CurrentUnit.GenerationParams.SilverlightUsingServices && (createRunLocal || createNonLocal) && !useUnitOfWorkCreator;
+if (parentInfo != null)
+    isCollection = IsCollectionType(parentInfo.ObjectType);
+
 if (UseBoth())
 {
     %>
@@ -7,27 +21,22 @@ if (UseBoth())
 #if !SILVERLIGHT
 <%
 }
+%>
+<!-- #include file="NewObject.asp" -->
+<%
 if (UseNoSilverlight())
 {
-    %>
-<!-- #include file="NewObject.asp" -->
-<!-- #include file="NewObjectAsync.asp" -->
-<%
+    createGenerateLocal = true;
+    forceGeneration = null;
+    if (!UseSilverlight() || createRunLocalSilverlight)
+        forceGeneration = true;
     if (CurrentUnit.GenerationParams.DatabaseConnection != String.Empty)
     {
-        if (parentInfo != null)
-            isCollection = IsCollectionType(parentInfo.ObjectType);
         if (isChildSelfLoaded && !isCollection)
         {
             %>
 <!-- #include file="GetObject.asp" -->
 <%
-            if (CurrentUnit.GenerationParams.SilverlightUsingServices)
-            {
-                %>
-<!-- #include file="GetObjectAsync.asp" -->
-<%
-            }
         }
         else if (UseNoSilverlight())
         {
@@ -35,17 +44,21 @@ if (UseNoSilverlight())
 <!-- #include file="InternalGetObject.asp" -->
 <%
         }
+        %>
+<!-- #include file="NewObjectAsync.asp" -->
+<%
+        if (isChildSelfLoaded && !isCollection)
+        {
+            if (CurrentUnit.GenerationParams.SilverlightUsingServices)
+            {
+                %>
+<!-- #include file="GetObjectAsync.asp" -->
+<%
+            }
+        }
     }
 }
-foreach (Criteria c in Info.CriteriaObjects)
-{
-    if (c.CreateOptions.Factory && !c.CreateOptions.RunLocal)
-    {
-        objectRunLocal = false;
-        break;
-    }
-}
-if (UseBoth() && (objectRunLocal || CurrentUnit.GenerationParams.SilverlightUsingServices))
+if (UseBoth() && (createRunLocal || CurrentUnit.GenerationParams.SilverlightUsingServices))
 {
     %>
 
@@ -67,14 +80,9 @@ if (UseBoth())
     {
         %>
 <!-- #include file="NewObjectAsync.asp" -->
-<%
-    }
-}
-if (!CurrentUnit.GenerationParams.SilverlightUsingServices)
-{
-    %>
 <!-- #include file="GetObjectAsync.asp" -->
 <%
+    }
 }
 %>
 

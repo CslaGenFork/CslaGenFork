@@ -4,6 +4,7 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
     if (UseBoth())
     {
         %>
+
 #if SILVERLIGHT
 <%
     }
@@ -35,13 +36,12 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
     %>
 
         #endregion
-
 <%
     if (UseBoth())
     {
         %>
-#endif
 
+#endif
 <%
     }
 }

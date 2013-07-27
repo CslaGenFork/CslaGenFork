@@ -2,7 +2,7 @@
 
         #region Factory Methods
 <%
-if (UseBoth() && CurrentUnit.GenerationParams.GenerateSynchronous)
+if (UseBoth() && (CurrentUnit.GenerationParams.GenerateSynchronous || CurrentUnit.GenerationParams.SilverlightUsingServices))
 {
     %>
 

@@ -72,9 +72,18 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Busine
     Response.Write(Environment.NewLine);
     if (Info.GenerateFactoryMethods)
     {
-        %>
+        if (CurrentUnit.GenerationParams.TargetIsCsla40)
+        {
+            %>
 <!-- #include file="EditableRoot_Factory.asp" -->
 <%
+        }
+        else
+        {
+            %>
+<!-- #include file="EditableRoot_Factory-45.asp" -->
+<%
+        }
     }
     Response.Write(Environment.NewLine);
     %>
