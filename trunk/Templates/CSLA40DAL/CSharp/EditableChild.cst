@@ -79,9 +79,18 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
     if (Info.GenerateFactoryMethods && UseChildFactoryHelper)
     {
         Response.Write(Environment.NewLine);
-        %>
+        if (CurrentUnit.GenerationParams.TargetIsCsla40)
+        {
+            %>
 <!-- #include file="EditableChild_Factory.asp" -->
 <%
+        }
+        else
+        {
+            %>
+<!-- #include file="EditableChild_Factory-45.asp" -->
+<%
+        }
     }
     Response.Write(Environment.NewLine);
     %>
@@ -98,11 +107,17 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
         }
         %>
 <!-- #include file="EditableChild_DataPortal.asp" -->
+<%
+        Response.Write(Environment.NewLine);
+%>
 <!-- #include file="Events.asp" -->
 <%
     }
+    else
+    {
+        Response.Write(Environment.NewLine);
+    }
     %>
-
     }
 <!-- #include file="CriteriaObject.asp" -->
 }

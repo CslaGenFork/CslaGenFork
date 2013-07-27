@@ -17,8 +17,8 @@ if (Info.UseUnitOfWorkType == string.Empty)
 <%
 }
 %>
-<!-- #include file="GetObject.asp" -->
 <!-- #include file="InternalGetObject.asp" -->
+<!-- #include file="GetObject.asp" -->
 <!-- #include file="DeleteObject.asp" -->
 <%
         foreach (Criteria c in Info.CriteriaObjects)

@@ -1,6 +1,5 @@
 <%
-if (!Info.UseCustomLoading &&
-    CurrentUnit.GenerationParams.SilverlightUsingServices)
+if (!Info.UseCustomLoading && CurrentUnit.GenerationParams.SilverlightUsingServices)
 {
     List<string> fetchPartialMethods = new List<string>();
     List<string> fetchPartialParams = new List<string>();
@@ -41,30 +40,38 @@ if (!Info.UseCustomLoading &&
             if (c.Properties.Count > 0)
             {
                 fetchPartialParams.Add("/// <param name=\"" + (c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit")) + "\">The fetch criteria.</param>");
-        %><%= strGetComment %>
+        %>
+        <%= strGetComment %>
         <%
             }
             else
             {
                 fetchPartialParams.Add("");
             }
-        %>/// <param name="handler">The asynchronous handler.</param>
+            %>
+        /// <param name="handler">The asynchronous handler.</param>
         <%= cacheRemarks %>[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         <%
             if (c.Properties.Count > 1)
             {
                 fetchPartialMethods.Add("partial void Service_Fetch(" + c.Name + " crit)");
-                %>public void DataPortal_Fetch(<%= c.Name %> crit, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
+                %>
+        public void DataPortal_Fetch(<%= c.Name %> crit, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)
+        <%
             }
             else if (c.Properties.Count > 0)
             {
                 fetchPartialMethods.Add("partial void Service_Fetch(" + ReceiveSingleCriteria(c, "crit") + ")");
-                %>public void DataPortal_Fetch(<%= ReceiveSingleCriteria(c, "crit") %>, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
+                %>
+        public void DataPortal_Fetch(<%= ReceiveSingleCriteria(c, "crit") %>, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)
+        <%
             }
             else
             {
                 fetchPartialMethods.Add("partial void Service_Fetch()");
-                %>public void DataPortal_Fetch(Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
+                %>
+        public void DataPortal_Fetch(Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)
+        <%
             }
         %>
         {
@@ -86,15 +93,21 @@ if (!Info.UseCustomLoading &&
                 <%
             if (c.Properties.Count > 1)
             {
-                %>Service_Fetch(crit);<%
+                %>
+                Service_Fetch(crit);
+                <%
             }
             else if (c.Properties.Count > 0)
             {
-                %>Service_Fetch(<%= HookSingleCriteria(c, "crit") %>);<%
+                %>
+                Service_Fetch(<%= HookSingleCriteria(c, "crit") %>);
+                <%
             }
             else
             {
-                %>Service_Fetch();<%
+                %>
+                Service_Fetch();
+                <%
             }
     %>
                 handler(this, null);

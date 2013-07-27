@@ -1,4 +1,3 @@
-
 <%
 if ((Info.ObjectType == CslaObjectType.EditableRoot ||
     Info.ObjectType == CslaObjectType.DynamicEditableRoot ||
@@ -73,6 +72,7 @@ if (eventList.Count > 0 && UseNoSilverlight())
 %>
 
         #endregion
+
 <%
 }
 %>
