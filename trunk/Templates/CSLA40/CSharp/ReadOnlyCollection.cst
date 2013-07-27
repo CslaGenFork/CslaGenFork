@@ -99,9 +99,18 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Busine
     }
     if (Info.GenerateFactoryMethods && (UseChildFactoryHelper || Info.ParentType == string.Empty))
     {
-        %>
+        if (CurrentUnit.GenerationParams.TargetIsCsla40)
+        {
+            %>
 <!-- #include file="ReadOnlyCollection_Factory.asp" -->
 <%
+        }
+        else
+        {
+            %>
+<!-- #include file="ReadOnlyCollection_Factory-45.asp" -->
+<%
+        }
         Response.Write(Environment.NewLine);
     }
     %>

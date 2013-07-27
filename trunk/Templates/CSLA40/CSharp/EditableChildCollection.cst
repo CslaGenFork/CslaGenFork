@@ -103,9 +103,18 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Busine
                 break;
             }
         }
-        %>
+        if (CurrentUnit.GenerationParams.TargetIsCsla40)
+        {
+            %>
 <!-- #include file="EditableChildCollection_Factory.asp" -->
 <%
+        }
+        else
+        {
+            %>
+<!-- #include file="EditableChildCollection_Factory-45.asp" -->
+<%
+        }
         Response.Write(Environment.NewLine);
     }
     %>

@@ -1,38 +1,40 @@
 <%
-List<string> fetchPartialMethods = new List<string>();
-List<string> fetchPartialParams = new List<string>();
-foreach (UnitOfWorkCriteriaManager.UoWCriteria uowCrit in listUoWCriteriaGetter)
+if (CurrentUnit.GenerationParams.SilverlightUsingServices)
 {
-    string fetchUowParam = string.Empty;
-    string fetchUowCrit = string.Empty;
-    string fetchUowComment = string.Empty;
-    int elementCriteriaCount = 0;
-    foreach (UnitOfWorkCriteriaManager.ElementCriteria c in uowCrit.ElementCriteriaList)
+    List<string> fetchPartialMethods = new List<string>();
+    List<string> fetchPartialParams = new List<string>();
+    foreach (UnitOfWorkCriteriaManager.UoWCriteria uowCrit in listUoWCriteriaGetter)
     {
-        if (string.IsNullOrEmpty(c.Name))
-            continue;
+        string fetchUowParam = string.Empty;
+        string fetchUowCrit = string.Empty;
+        string fetchUowComment = string.Empty;
+        int elementCriteriaCount = 0;
+        foreach (UnitOfWorkCriteriaManager.ElementCriteria c in uowCrit.ElementCriteriaList)
+        {
+            if (string.IsNullOrEmpty(c.Name))
+                continue;
 
-        if (!string.IsNullOrEmpty(c.Parameter))
+            if (!string.IsNullOrEmpty(c.Parameter))
+                elementCriteriaCount++;
+
             elementCriteriaCount++;
+            fetchUowParam = FormatCamel(c.Name);
+            fetchUowCrit = c.Type + " " + FormatCamel(c.Name);
+        }
+        if (elementCriteriaCount > 1)
+        {
+            fetchUowParam = "crit";
+            fetchUowCrit = uowCrit.CriteriaName + " crit";
+        }
+        if (elementCriteriaCount != 0)
+            fetchUowComment = "/// <param name=\"" + fetchUowParam + "\">The fetch criteria.</param>" + System.Environment.NewLine + new string(' ', 8);
 
-        elementCriteriaCount++;
-        fetchUowParam = FormatCamel(c.Name);
-        fetchUowCrit = c.Type + " " + FormatCamel(c.Name);
-    }
-    if (elementCriteriaCount > 1)
-    {
-        fetchUowParam = "crit";
-        fetchUowCrit = uowCrit.CriteriaName + " crit";
-    }
-    if (elementCriteriaCount != 0)
-        fetchUowComment = "/// <param name=\"" + fetchUowParam + "\">The fetch criteria.</param>" + System.Environment.NewLine + new string(' ', 8);
-
-    fetchPartialMethods.Add("partial void Service_Fetch(" + fetchUowCrit + ")");
-    fetchPartialParams.Add(fetchUowComment);
-    if (fetchUowCrit != string.Empty)
-        fetchUowCrit += ", ";
-    fetchUowCrit += "Csla.DataPortalClient.LocalProxy<" + Info.ObjectName + ">.CompletedHandler handler";
-    %>
+        fetchPartialMethods.Add("partial void Service_Fetch(" + fetchUowCrit + ")");
+        fetchPartialParams.Add(fetchUowComment);
+        if (fetchUowCrit != string.Empty)
+            fetchUowCrit += ", ";
+        fetchUowCrit += "Csla.DataPortalClient.LocalProxy<" + Info.ObjectName + ">.CompletedHandler handler";
+        %>
 
         /// <summary>
         /// Loads a <see cref="<%= Info.ObjectName %>"/> unit of objects<%= elementCriteriaCount > 0 ? ", based on given criteria" : "" %>.
@@ -52,18 +54,19 @@ foreach (UnitOfWorkCriteriaManager.UoWCriteria uowCrit in listUoWCriteriaGetter)
             }
         }
 <%
-}
-for (int index = 0; index < fetchPartialMethods.Count ; index++)
-{
-    string header = fetchPartialParams[index];
-    header += fetchPartialMethods[index];
-    MethodList.Add(new AdvancedGenerator.ServiceMethod("DataPortal_Fetch", header));
-    %>
+    }
+    for (int index = 0; index < fetchPartialMethods.Count ; index++)
+    {
+        string header = fetchPartialParams[index];
+        header += fetchPartialMethods[index];
+        MethodList.Add(new AdvancedGenerator.ServiceMethod("DataPortal_Fetch", header));
+        %>
 
         /// <summary>
         /// Implements DataPortal_Fetch for <see cref="<%= Info.ObjectName %>"/> object.
         /// </summary>
         <%= header %>;
 <%
+    }
 }
 %>

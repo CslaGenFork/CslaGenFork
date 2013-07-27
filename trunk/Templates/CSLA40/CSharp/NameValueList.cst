@@ -69,9 +69,18 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Busine
     }
     if (Info.GenerateFactoryMethods)
     {
-        %>
+        if (CurrentUnit.GenerationParams.TargetIsCsla40)
+        {
+            %>
 <!-- #include file="NameValueList_Factory.asp" -->
 <%
+        }
+        else
+        {
+            %>
+<!-- #include file="NameValueList_Factory-45.asp" -->
+<%
+        }
     }
     Response.Write(Environment.NewLine);
     %>
