@@ -100,9 +100,18 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
     }
     if (Info.GenerateFactoryMethods && (UseChildFactoryHelper || Info.ParentType == string.Empty))
     {
-        %>
+        if (CurrentUnit.GenerationParams.TargetIsCsla40)
+        {
+            %>
 <!-- #include file="ReadOnlyCollection_Factory.asp" -->
 <%
+        }
+        else
+        {
+            %>
+<!-- #include file="ReadOnlyCollection_Factory-45.asp" -->
+<%
+        }
         Response.Write(Environment.NewLine);
     }
     %>
@@ -117,14 +126,23 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
         {
             Response.Write(Environment.NewLine);
         }
-        %>
+        if (!Info.UseCustomLoading)
+        {
+            %>
 <!-- #include file="ReadOnlyCollection_DataPortal.asp" -->
+<%
+            Response.Write(Environment.NewLine);
+        }
+        %>
 <!-- #include file="Events.asp" -->
 
 <%
     }
+    else
+    {
+        Response.Write(Environment.NewLine);
+    }
     %>
-
     }
 <!-- #include file="CriteriaObject.asp" -->
 }

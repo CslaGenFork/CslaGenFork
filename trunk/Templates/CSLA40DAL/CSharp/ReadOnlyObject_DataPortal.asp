@@ -20,9 +20,18 @@ if (UseNoSilverlight() && Info.HasGetCriteria && CurrentUnit.GenerationParams.Si
 #else
 <%
 }
-%>
+if (CurrentUnit.GenerationParams.TargetIsCsla40)
+{
+    %>
 <!-- #include file="DataPortalFetchServices.asp" -->
 <%
+}
+else
+{
+    %>
+<!-- #include file="DataPortalFetchServices-45.asp" -->
+<%
+}
 if (UseBoth())
 {
     %>

@@ -1,5 +1,5 @@
 <%
-if ((UseSilverlight() && objectRunLocal) || CurrentUnit.GenerationParams.SilverlightUsingServices)
+if ((UseSilverlight() && createRunLocalDp) || CurrentUnit.GenerationParams.SilverlightUsingServices)
 {
     List<string> createPartialMethods = new List<string>();
     List<string> createPartialParams = new List<string>();
@@ -16,30 +16,38 @@ if ((UseSilverlight() && objectRunLocal) || CurrentUnit.GenerationParams.Silverl
             if (c.Properties.Count > 0)
             {
                 createPartialParams.Add("/// <param name=\"" + (c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit")) + "\">The create criteria.</param>");
-                %>/// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The create criteria.</param>
+                %>
+        /// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The create criteria.</param>
         <%
             }
             else
             {
                 createPartialParams.Add("");
             }
-        %>/// <param name="handler">The asynchronous handler.</param>
+            %>
+        /// <param name="handler">The asynchronous handler.</param>
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         <%
             if (c.Properties.Count > 1)
             {
                 createPartialMethods.Add("partial void Service_Create(" + c.Name + " crit)");
-                %>public void <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Create(<%= c.Name %> crit, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
+                %>
+        public void <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Create(<%= c.Name %> crit, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)
+        <%
             }
             else if (c.Properties.Count > 0)
             {
                 createPartialMethods.Add("partial void Service_Create(" + ReceiveSingleCriteria(c, "crit") + ")");
-                %>public void <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Create(<%= ReceiveSingleCriteria(c, "crit") %>, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
+                %>
+        public void <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Create(<%= ReceiveSingleCriteria(c, "crit") %>, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)
+        <%
             }
             else
             {
                 createPartialMethods.Add("partial void Service_Create()");
-                %>public <%= isChildNotLazyLoaded ? "void Child_" : "override void DataPortal_" %>Create(Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
+                %>
+        public <%= isChildNotLazyLoaded ? "void Child_" : "override void DataPortal_" %>Create(Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)
+        <%
             }
             %>
         {
@@ -121,15 +129,21 @@ if ((UseSilverlight() && objectRunLocal) || CurrentUnit.GenerationParams.Silverl
                 <%
                 if (c.Properties.Count > 1)
                 {
-                    %>Service_Create(crit);<%
+                    %>
+                Service_Create(crit);
+                <%
                 }
                 else if (c.Properties.Count > 0)
                 {
-                    %>Service_Create(<%= HookSingleCriteria(c, "crit") %>);<%
+                    %>
+                Service_Create(<%= HookSingleCriteria(c, "crit") %>);
+                <%
                 }
                 else
                 {
-                    %>Service_Create();<%
+                    %>
+                Service_Create();
+                <%
                 }
                 %>
                 handler(this, null);

@@ -1,6 +1,5 @@
 <%
-if (Info.GenerateDataPortalInsert &&
-    CurrentUnit.GenerationParams.SilverlightUsingServices)
+if (Info.GenerateDataPortalInsert && CurrentUnit.GenerationParams.SilverlightUsingServices)
 {
     MethodList.Add(new AdvancedGenerator.ServiceMethod(isChildNotLazyLoaded ? "Child_Insert" : "DataPortal_Insert", "partial void Service_Insert()"));
     %>

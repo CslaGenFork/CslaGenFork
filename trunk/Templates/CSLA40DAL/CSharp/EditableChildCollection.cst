@@ -95,8 +95,6 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
     {
         bool createCriteria = Info.HasCreateCriteriaFactory;
         PropertyDeclaration declarationMode = GetDeclarationMode(Info);
-        bool selfLoad3 = IsChildSelfLoaded(Info);
-        bool lazyLoad3 = IsChildLazyLoaded(Info);
         bool parentCreateCriteria = false;
         foreach (Criteria c in parentInfo.CriteriaObjects)
         {
@@ -106,9 +104,18 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
                 break;
             }
         }
-        %>
+        if (CurrentUnit.GenerationParams.TargetIsCsla40)
+        {
+            %>
 <!-- #include file="EditableChildCollection_Factory.asp" -->
 <%
+        }
+        else
+        {
+            %>
+<!-- #include file="EditableChildCollection_Factory-45.asp" -->
+<%
+        }
         Response.Write(Environment.NewLine);
     }
     %>
@@ -122,14 +129,23 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
         {
             Response.Write(Environment.NewLine);
         }
-        %>
+        if (!Info.UseCustomLoading)
+        {
+            %>
 <!-- #include file="EditableChildCollection_DataPortal.asp" -->
+<%
+            Response.Write(Environment.NewLine);
+        }
+%>
 <!-- #include file="Events.asp" -->
 
 <%
     }
+    else
+    {
+        Response.Write(Environment.NewLine);
+    }
     %>
-
     }
 <!-- #include file="CriteriaObject.asp" -->
 }

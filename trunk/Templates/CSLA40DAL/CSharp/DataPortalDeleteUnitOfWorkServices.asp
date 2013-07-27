@@ -1,6 +1,5 @@
 <%
-if (Info.GenerateDataPortalDelete &&
-    CurrentUnit.GenerationParams.SilverlightUsingServices)
+if (CurrentUnit.GenerationParams.SilverlightUsingServices)
 {
     List<string> deletePartialMethods = new List<string>();
     List<string> deletePartialParams = new List<string>();
@@ -67,26 +66,33 @@ if (Info.GenerateDataPortalDelete &&
         <%
             if (Info.TransactionType == TransactionType.EnterpriseServices)
             {
-                %>[Transactional(TransactionalTypes.EnterpriseServices)]
+                %>
+        [Transactional(TransactionalTypes.EnterpriseServices)]
         <%
             }
             else if (Info.TransactionType == TransactionType.TransactionScope)
             {
-                %>[Transactional(TransactionalTypes.TransactionScope)]
+                %>
+        [Transactional(TransactionalTypes.TransactionScope)]
         <%
             }
-        %>[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+            %>
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         <%
             deletePartialParams.Add("/// <param name=\"" + (c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit")) + "\">The delete criteria.</param>");
             if (c.Properties.Count > 1)
             {
                 deletePartialMethods.Add("partial void Service_Delete(" + c.Name + " crit)");
-                %>public void DataPortal_Delete(<%= c.Name %> crit, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
+                %>
+        public void DataPortal_Delete(<%= c.Name %> crit, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)
+        <%
             }
             else
             {
                 deletePartialMethods.Add("partial void Service_Delete(" + ReceiveSingleCriteria(c, "crit") + ")");
-                %>public void DataPortal_Delete(<%= ReceiveSingleCriteria(c, "crit") %>, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
+                %>
+        public void DataPortal_Delete(<%= ReceiveSingleCriteria(c, "crit") %>, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)
+        <%
             }
             %>
         {
@@ -104,15 +110,21 @@ if (Info.GenerateDataPortalDelete &&
                 <%
             if (c.Properties.Count > 1)
             {
-                %>Service_Delete(crit);<%
+                %>
+                Service_Delete(crit);
+                <%
             }
             else if (c.Properties.Count > 0)
             {
-                %>Service_Delete(<%= HookSingleCriteria(c, "crit") %>);<%
+                %>
+                Service_Delete(<%= HookSingleCriteria(c, "crit") %>);
+                <%
             }
             else
             {
-                %>Service_Delete();<%
+                %>
+                Service_Delete();
+                <%
             }
             %>
                 handler(this, null);
