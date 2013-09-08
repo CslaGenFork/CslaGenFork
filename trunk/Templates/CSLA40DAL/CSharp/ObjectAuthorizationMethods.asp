@@ -2,6 +2,7 @@
 bool generateAuthRegion2 = false;
 CslaObjectInfo authzInfo2 = Info;
 string resultRuleObj = string.Empty;
+isObjectAutz = true;
 
 if (IsCollectionType(Info.ObjectType))
 {

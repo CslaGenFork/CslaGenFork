@@ -152,7 +152,10 @@ if (authzRule.BaseRuleProperties.Count > 0)
 if (resultProperties != string.Empty)
     resultProperties = " { " + resultProperties + " }";
 
-resultRule = "BusinessRules.AddRule(typeof (" + Info.ObjectName + "), new " + backupRuleType + "(" + resultConstructor + ")" + resultProperties + ")" + ";";
+resultRule = "BusinessRules.AddRule(";
+if (isObjectAutz)
+    resultRule += "typeof (" + Info.ObjectName + "), ";
+resultRule += "new " + backupRuleType + "(" + resultConstructor + ")" + resultProperties + ")" + ";";
             %>
             <%= resultRule %>
             <%
