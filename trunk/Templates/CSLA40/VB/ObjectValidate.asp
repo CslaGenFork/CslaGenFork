@@ -44,6 +44,7 @@ bool createGenerateLocal = true;
 bool generateLocal = false;
 bool useUnitOfWorkCreator = false;
 bool useUnitOfWorkGetter = false;
+bool isObjectAutz = false;
 if (Info.UseUnitOfWorkType != string.Empty)
 {
     CslaObjectInfo uowInfo = Info.Parent.CslaObjects.Find(Info.UseUnitOfWorkType);

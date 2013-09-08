@@ -2,6 +2,7 @@
 bool generateRuleRegion = false;
 bool generateAuthRegion = false;
 bool generateObjectRuleRegion = false;
+isObjectAutz = false;
 
 HaveBusinessRulesCollection allRulesProperties = Info.AllRulableProperties();
 
