@@ -1,19 +1,19 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Text;
-using CslaGenerator.Metadata;
 
 namespace CslaGenerator.Design
 {
     /// <summary>
-    /// Summary description for PropertyCollectionConverter.
+    /// Summary description for StringCollectionConverter.
     /// </summary>
-    public class PropertyCollectionConverter : TypeConverter
+    public class StringCollectionConverter : TypeConverter
     {
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
-            if (sourceType == typeof(PropertyCollection))
+            if (sourceType == typeof(List<string>))
             {
                 return true;
             }
@@ -36,15 +36,15 @@ namespace CslaGenerator.Design
         {
             if (destinationType == typeof(String))
             {
-                if (value is PropertyCollection)
+                if (value is List<string>)
                 {
                     var sb = new StringBuilder();
                     var first = true;
-                    foreach (var prop in (PropertyCollection)value)
+                    foreach (var item in (List<string>)value)
                     {
                         if (!first) { sb.Append(", "); }
                         else { first = false; }
-                        sb.Append(prop.Name);
+                        sb.Append(item);
                     }
                     return sb.ToString();
                 }

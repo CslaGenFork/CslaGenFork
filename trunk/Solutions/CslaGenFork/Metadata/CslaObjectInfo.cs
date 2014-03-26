@@ -110,6 +110,7 @@ namespace CslaGenerator.Metadata
         private string[] _namespaces = new string[] { };
         private bool _dataSetLoadingScheme;
         private bool _cacheResults = true;
+        private List<string> _generateInlineQueries = new List<string>();
 
         #endregion
 
@@ -247,6 +248,17 @@ namespace CslaGenerator.Metadata
         {
             get { return _generateSprocs; }
             set { _generateSprocs = value; }
+        }
+
+        [Category("00. Generate Options")]
+        [Description("Specify the CRUD operations that will use inline queries.")]
+        [Editor(typeof(GenerateInlineQueryCollectionEditor), typeof(UITypeEditor))]
+        [TypeConverter(typeof(StringCollectionConverter))]
+        [UserFriendlyName("Generate Inline Queries")]
+        public List<string> GenerateInlineQueries
+        {
+            get { return _generateInlineQueries; }
+            set { _generateInlineQueries = value; }
         }
 
         [Category("00. Generate Options")]
