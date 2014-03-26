@@ -315,6 +315,7 @@
     <Compile Include="Metadata\UnitOfWorkProperty.cs" />
     <Compile Include="Metadata\UnitOfWorkPropertyCollection.cs" />
     <Compile Include="Metadata\UnitOfWorkFunction.cs" />
+    <Compile Include="Metadata\UseInlineQueries.cs" />
     <Compile Include="Templates\CodeGenerator.cs" />
     <Compile Include="Templates\CSharp\CslaTemplateHelper.cs" />
     <Compile Include="Templates\VB\VbCslaTemplateHelper.cs" />

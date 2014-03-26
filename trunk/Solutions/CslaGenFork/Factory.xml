@@ -78,7 +78,7 @@
     <DalObjectNamespace>MyProject.DataAccess.Sql</DalObjectNamespace>
     <GenerateSprocs>true</GenerateSprocs>
     <OneSpFilePerObject>true</OneSpFilePerObject>
-    <GenerateInlineQueries>false</GenerateInlineQueries>
+    <UseInlineQueries>Never</UseInlineQueries>
     <GenerateQueriesWithSchema>true</GenerateQueriesWithSchema>
     <GenerateDatabaseClass>true</GenerateDatabaseClass>
     <DalName />
