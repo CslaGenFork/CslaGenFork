@@ -244,11 +244,13 @@
     <Compile Include="Design\AuthorizationRuleTypeConverter.cs" />
     <Compile Include="Design\BusinessRuleTypeEditor.cs" />
     <Compile Include="Design\CriteriaUsageParameterConverter.cs" />
+    <Compile Include="Design\GenerateInlineQueryCollectionEditor.cs" />
     <Compile Include="Design\InputPropertyCollectionEditor.cs" />
     <Compile Include="Design\InvalidateCacheTypeCollectionEditor.cs" />
     <Compile Include="Design\NVLTypeEditor.cs" />
     <Compile Include="Design\AuthorizationRuleTypeEditor.cs" />
     <Compile Include="Design\SourcePropertyTypeEditor.cs" />
+    <Compile Include="Design\StringCollectionConverter.cs" />
     <Compile Include="Design\UnitOfWorkTypeEditor.cs" />
     <Compile Include="Design\UseUnitOfWorkTypeEditor.cs" />
     <Compile Include="ICodeGenerator.cs" />
