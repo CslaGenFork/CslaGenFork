@@ -186,7 +186,8 @@ namespace CslaGenerator.Controls
             this.txtDalName = new System.Windows.Forms.TextBox();
             this.chkGenerateStoredProcedures = new System.Windows.Forms.CheckBox();
             this.chkSpOneFile = new System.Windows.Forms.CheckBox();
-            this.chkGenerateInlineQueries = new System.Windows.Forms.CheckBox();
+            this.lblInlineQueries = new System.Windows.Forms.Label();
+            this.cboInlineQueries = new System.Windows.Forms.ComboBox() ;
             this.chkGenerateQueriesWithSchema = new System.Windows.Forms.CheckBox();
             this.chkGenerateDatabaseClass = new System.Windows.Forms.CheckBox();
             this.GenerationMiscTab = new System.Windows.Forms.TabPage();
@@ -1777,7 +1778,8 @@ namespace CslaGenerator.Controls
             this.GenerationDatabaseTab.Controls.Add(this.txtDalName);
             this.GenerationDatabaseTab.Controls.Add(this.chkGenerateDatabaseClass);
             this.GenerationDatabaseTab.Controls.Add(this.chkGenerateQueriesWithSchema);
-            this.GenerationDatabaseTab.Controls.Add(this.chkGenerateInlineQueries);
+            this.GenerationDatabaseTab.Controls.Add(this.lblInlineQueries);
+            this.GenerationDatabaseTab.Controls.Add(this.cboInlineQueries);
             this.GenerationDatabaseTab.Controls.Add(this.groupBoxStoredProcs);
             this.GenerationDatabaseTab.Location = new System.Drawing.Point(4, 22);
             this.GenerationDatabaseTab.Name = "GenerationDatabaseTab";
@@ -1858,17 +1860,22 @@ namespace CslaGenerator.Controls
             this.toolTip.SetToolTip(this.chkGenerateQueriesWithSchema,
                                      "If checked, generates queries with Schema.");
             // 
-            // chkGenerateInlineQueries
+            // lblInlineQueries
             // 
-            this.chkGenerateInlineQueries.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "GenerateInlineQueries", true, DataSourceUpdateMode.OnPropertyChanged));
-            this.chkGenerateInlineQueries.Location = new System.Drawing.Point(255, 50);
-            this.chkGenerateInlineQueries.Name = "chkGenerateInlineQueries";
-            this.chkGenerateInlineQueries.Size = new System.Drawing.Size(216, 17);
-            this.chkGenerateInlineQueries.TabIndex = 9;
-            this.chkGenerateInlineQueries.Text = "Generate Inline SQL Queries";
-            this.toolTip.SetToolTip(this.chkGenerateInlineQueries,
-                                     "If checked, generates inline SQL queries\r\n" +
-                                     "making stored procedures useless.");
+            this.lblInlineQueries.Location = new System.Drawing.Point(255, 50);
+            this.lblInlineQueries.Name = "lblInlineQueries";
+            this.lblInlineQueries.Size = new System.Drawing.Size(130, 16);
+            this.lblInlineQueries.TabIndex = 31;
+            this.lblInlineQueries.Text = "Generate Inline Queries:";
+            // 
+            // cboInlineQueries
+            // 
+            this.cboInlineQueries.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.generationParametersBindingSource, "UseInlineQueries", true, DataSourceUpdateMode.OnPropertyChanged));
+            this.cboInlineQueries.Location = new System.Drawing.Point(385, 47);
+            this.cboInlineQueries.Name = "cboInlineQueries";
+            this.cboInlineQueries.Size = new System.Drawing.Size(110, 21);
+            this.cboInlineQueries.TabIndex = 5;
+            this.toolTip.SetToolTip(this.cboInlineQueries, "Define the usage of Inline Querie.");
             // 
             // groupBoxStoredProcs
             // 
@@ -2372,7 +2379,8 @@ namespace CslaGenerator.Controls
         private System.Windows.Forms.GroupBox groupBoxStoredProcs;
         private System.Windows.Forms.CheckBox chkGenerateStoredProcedures;
         private System.Windows.Forms.CheckBox chkSpOneFile;
-        private System.Windows.Forms.CheckBox chkGenerateInlineQueries;
+        private System.Windows.Forms.Label lblInlineQueries;
+        private System.Windows.Forms.ComboBox cboInlineQueries;
         private System.Windows.Forms.CheckBox chkGenerateQueriesWithSchema;
         private System.Windows.Forms.CheckBox chkGenerateDatabaseClass;
         private System.Windows.Forms.TabPage GenerationMiscTab;

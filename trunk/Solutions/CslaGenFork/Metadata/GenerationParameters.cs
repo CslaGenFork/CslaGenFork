@@ -40,7 +40,7 @@ namespace CslaGenerator.Metadata
         private string _dalObjectNamespace = "DataAccess.Sql";
         private bool _generateSprocs = true;
         private bool _oneSpFilePerObject = true;
-        private bool _generateInlineQueries;
+        private UseInlineQueries _useInlineQueries;
         private bool _generateQueriesWithSchema = true;
         private bool _generateDatabaseClass = true;
         private string _dalName = string.Empty;
@@ -461,14 +461,14 @@ namespace CslaGenerator.Metadata
             }
         }
 
-        public bool GenerateInlineQueries
+        public UseInlineQueries UseInlineQueries
         {
-            get { return _generateInlineQueries; }
+            get { return _useInlineQueries; }
             set
             {
-                if (_generateInlineQueries == value)
+                if (_useInlineQueries == value)
                     return;
-                _generateInlineQueries = value;
+                _useInlineQueries = value;
                 OnPropertyChanged("");
             }
         }

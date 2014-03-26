@@ -75,6 +75,7 @@ namespace CslaGenerator.Controls
             FillComboBox(cboPersistenceType, typeof (PersistenceType));
             FillComboBox(cboCreateTimestampPropertyMode, typeof (PropertyDeclaration));
             FillComboBox(cboCreateReadOnlyObjectsPropertyMode, typeof (PropertyDeclaration));
+            FillComboBox(cboInlineQueries, typeof(UseInlineQueries));
         }
 
         private void FillComboBox(ComboBox cbo, Type enumType)
@@ -116,9 +117,6 @@ namespace CslaGenerator.Controls
         private void NotYetImplemented()
         {
             txtIntSoftDelete.Enabled = false;
-
-            _genParams.GenerateInlineQueries = false;
-            chkGenerateInlineQueries.Enabled = false;
         }
 
         internal void SaveInfo()
