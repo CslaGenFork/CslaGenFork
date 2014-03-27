@@ -3,15 +3,15 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
 {
     %>
 
-        /// <summary>
-        /// Asynchronously adds a new <see cref="<%= Info.ItemType %>"/> item to the collection.
-        /// </summary>
+        ''' <summary>
+        ''' Asynchronously adds a new <see cref="<%= Info.ItemType %>"/> item to the collection.
+        ''' </summary>
 <%
         string prmsAsync = string.Empty;
         string factoryParamsAsync = string.Empty;
         foreach (Property param in crit.Properties)
         {
-            prmsAsync += string.Concat(", ", GetDataTypeGeneric(param, param.PropertyType), " ", FormatCamel(param.Name));
+            prmsAsync += string.Concat(", ", FormatCamel(param.Name), "As ",  GetDataTypeGeneric(param, param.PropertyType));
             factoryParamsAsync += string.Concat(", ", FormatCamel(param.Name));
         }
         if (factoryParamsAsync.Length > 1)
@@ -22,12 +22,11 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
         for (int i = 0; i < crit.Properties.Count; i++)
         {
             %>
-        /// <param name="<%= FormatCamel(crit.Properties[i].Name) %>">The <%= FormatProperty(crit.Properties[i].Name) %> of the object to be added.</param>
+        ''' <param name="<%= FormatCamel(crit.Properties[i].Name) %>">The <%= FormatProperty(crit.Properties[i].Name) %> of the object to be added.</param>
 <%
         }
         %>
-        public void BeginAdd(<%= prmsAsync %>)
-        {
+        Public Sub BeginAdd(<%= prmsAsync %>)
         <%
         string newMethodNameAsync = "New" + Info.ItemType;
         if (itemInfo.ObjectType == CslaObjectType.EditableSwitchable)
@@ -35,29 +34,29 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
             newMethodNameAsync += "Child";
         }
         %>
-            <%= Info.ItemType %> <%= FormatCamel(Info.ItemType) %> = null;
+            Dim <%= FormatCamel(Info.ItemType) %> As <%= Info.ItemType %> = Nothing
             <%
         if (UseChildFactoryHelper)
         {
             %>
-            <%= Info.ItemType %>.<%= newMethodNameAsync %><%= crit.CreateOptions.FactorySuffix %>(<%= factoryParamsAsync %><%= factoryParamsAsync.Length > 1 ? ", " : "" %>(o, e) =>
+            <%= Info.ItemType %>.<%= newMethodNameAsync %><%= crit.CreateOptions.FactorySuffix %>(<%= factoryParamsAsync %><%= factoryParamsAsync.Length > 1 ? ", " : "" %>Function(o, e)
             <%
         }
         else
         {
             %>
-            DataPortal.BeginCreate<<%= Info.ItemType %>>(<%= factoryParamsAsync %><%= factoryParamsAsync.Length > 1 ? ", " : "" %>(o, e) =>
+            DataPortal.BeginCreate(Of <%= Info.ItemType %>)(<%= factoryParamsAsync %><%= factoryParamsAsync.Length > 1 ? ", " : "" %>Function(o, e)
             <%
         }
         %>
-                {
-                    if (e.Error != null)
-                        throw e.Error;
-                    else
-                        <%= FormatCamel(Info.ItemType) %> = e.Object;
-                });
-            Add(<%= FormatCamel(Info.ItemType) %>);
-        }
+                    If e.Error IsNot Nothing Then
+                        Throw e.Error
+                    Else
+                        <%= FormatCamel(Info.ItemType) %> = e.Object
+                    End If
+                End Function)
+            Add(<%= FormatCamel(Info.ItemType) %>)
+        End Sub
         <%
 }
 %>

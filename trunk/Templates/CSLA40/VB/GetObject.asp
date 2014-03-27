@@ -11,22 +11,21 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
             {
                 %>
 
-        /// <summary>
-        /// Factory method. Loads a <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %>, based on given parameters.
-        /// </summary>
-        /// <param name="crit">The fetch criteria.</param>
-        /// <returns>A reference to the fetched <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %>.</returns>
-        public static <%= Info.ObjectName %> Get<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>(<%= c.Name %> crit)
-        {
-            return DataPortal.Fetch<<%= Info.ObjectName %>>(crit);
-        }
+        ''' <summary>
+        ''' Factory method. Loads a <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %>, based on given parameters.
+        ''' </summary>
+        ''' <param name="crit">The fetch criteria.</param>
+        ''' <returns>A reference to the fetched <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %>.</returns>
+        Public Shared Function Get<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>(crit As <%= c.Name %>) As <%= Info.ObjectName %>
+            Return DataPortal.Fetch(Of <%= Info.ObjectName %>)(crit)
+        End Function
         <%
             }
             %>
 
-        /// <summary>
-        /// Factory method. Loads a <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %><%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
-        /// </summary>
+        ''' <summary>
+        ''' Factory method. Loads a <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %><%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
+        ''' </summary>
         <%
             string strGetParams = string.Empty;
             string strGetCritParams = string.Empty;
@@ -36,7 +35,7 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
                 if (string.IsNullOrEmpty(c.Properties[i].ParameterValue))
                 {
                     %>
-        /// <param name="<%= FormatCamel(c.Properties[i].Name) %>">The <%= FormatProperty(c.Properties[i].Name) %> parameter of the <%= Info.ObjectName %> to fetch.</param>
+        ''' <param name="<%= FormatCamel(c.Properties[i].Name) %>">The <%= FormatProperty(c.Properties[i].Name) %> parameter of the <%= Info.ObjectName %> to fetch.</param>
         <%
                     if (firstParam)
                     {
@@ -47,7 +46,7 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
                         strGetParams += ", ";
                         strGetCritParams += ", ";
                     }
-                    strGetParams += string.Concat(GetDataTypeGeneric(c.Properties[i], c.Properties[i].PropertyType), " ", FormatCamel(c.Properties[i].Name));
+                    strGetParams += string.Concat(FormatCamel(c.Properties[i].Name), " As ", GetDataTypeGeneric(c.Properties[i], c.Properties[i].PropertyType));
                     strGetCritParams += FormatCamel(c.Properties[i].Name);
                 }
                 else
@@ -57,24 +56,23 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
                 }
             }
             %>
-        /// <returns>A reference to the fetched <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %>.</returns>
-        <%= Info.ParentType == string.Empty ? "public" : "internal" %> static <%= Info.ObjectName %> Get<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>(<%= strGetParams %>)
-        {
+        ''' <returns>A reference to the fetched <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %>.</returns>
+        <%= Info.ParentType == string.Empty ? "Public" : "Friend" %> Shared Function Get<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>(<%= strGetParams %>) As <%= Info.ObjectName %>
             <%
             if (Info.ObjectType == CslaObjectType.EditableSwitchable)
             {
-                strGetCritParams = "false, " + strGetCritParams;
+                strGetCritParams = "False, " + strGetCritParams;
             }
             if (c.Properties.Count > 1 || (Info.ObjectType == CslaObjectType.EditableSwitchable && c.Properties.Count == 1))
             {
                 %>
-            return DataPortal.Fetch<%= isChildNotLazyLoaded ? "Child" : "" %><<%= Info.ObjectName %>>(new <%= c.Name %>(<%= strGetCritParams %>));
+            Return DataPortal.Fetch<%= isChildNotLazyLoaded ? "Child" : "" %>(Of <%= Info.ObjectName %>)(New <%= c.Name %>(<%= strGetCritParams %>))
             <%
             }
             else if (c.Properties.Count > 0)
             {
                 %>
-            return DataPortal.Fetch<%= isChildNotLazyLoaded ? "Child" : "" %><<%= Info.ObjectName %>>(<%= SendSingleCriteria(c, strGetCritParams) %>);
+            Return DataPortal.Fetch<%= isChildNotLazyLoaded ? "Child" : "" %>(Of <%= Info.ObjectName %>)(<%= SendSingleCriteria(c, strGetCritParams) %>)
             <%
             }
             else
@@ -82,21 +80,22 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
                 if (Info.SimpleCacheOptions != SimpleCacheResults.None)
                 {
                     %>
-            if (_list == null)
-                _list = DataPortal.Fetch<%= isChildNotLazyLoaded ? "Child" : "" %><<%= Info.ObjectName %>>();
+            If _list Is Nothing Then
+                _list = DataPortal.Fetch<%= isChildNotLazyLoaded ? "Child" : "" %>(Of <%= Info.ObjectName %>)()
+            End If
 
-            return _list;
+            Return _list
             <%
                 }
                 else
                 {
                     %>
-            return DataPortal.Fetch<%= isChildNotLazyLoaded ? "Child" : "" %><<%= Info.ObjectName %>>();
+            Return DataPortal.Fetch<%= isChildNotLazyLoaded ? "Child" : "" %>(Of <%= Info.ObjectName %>)()
         <%
                 }
             }
             %>
-        }
+        End Function
 <%
         }
     }

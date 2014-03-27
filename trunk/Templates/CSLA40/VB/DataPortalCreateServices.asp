@@ -1,5 +1,5 @@
 <%
-if ((UseSilverlight() && objectRunLocal) || CurrentUnit.GenerationParams.SilverlightUsingServices)
+if ((UseSilverlight() && createRunLocalDp) || CurrentUnit.GenerationParams.SilverlightUsingServices)
 {
     List<string> createPartialMethods = new List<string>();
     List<string> createPartialParams = new List<string>();
@@ -9,37 +9,45 @@ if ((UseSilverlight() && objectRunLocal) || CurrentUnit.GenerationParams.Silverl
         {
             %>
 
-        /// <summary>
-        /// Loads default values for the <see cref="<%= Info.ObjectName %>"/> object properties<%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
-        /// </summary>
+        ''' <summary>
+        ''' Loads default values for the <see cref="<%= Info.ObjectName %>"/> object properties<%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
+        ''' </summary>
         <%
             if (c.Properties.Count > 0)
             {
-                createPartialParams.Add("/// <param name=\"" + (c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit")) + "\">The create criteria.</param>");
-                %>/// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The create criteria.</param>
+                createPartialParams.Add("''' <param name=\"" + (c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit")) + "\">The create criteria.</param>");
+                %>
+        ''' <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The create criteria.</param>
         <%
             }
             else
             {
                 createPartialParams.Add("");
             }
-        %>/// <param name="handler">The asynchronous handler.</param>
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+            %>
+        ''' <param name="handler">The asynchronous handler.</param>
+        <System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>
         <%
             if (c.Properties.Count > 1)
             {
-                createPartialMethods.Add("partial void Service_Create(" + c.Name + " crit)");
-                %>public void <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Create(<%= c.Name %> crit, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
+                createPartialMethods.Add("Partial Sub Service_Create(crit As " + c.Name + ")");
+                %>
+        Public Sub <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Create(crit As <%= c.Name %>, handler As Csla.DataPortalClient.LocalProxy(Of <%= Info.ObjectName %>).CompletedHandler)
+        <%
             }
             else if (c.Properties.Count > 0)
             {
-                createPartialMethods.Add("partial void Service_Create(" + ReceiveSingleCriteria(c, "crit") + ")");
-                %>public void <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Create(<%= ReceiveSingleCriteria(c, "crit") %>, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
+                createPartialMethods.Add("Partial Sub Service_Create(" + ReceiveSingleCriteria(c, "crit") + ")");
+                %>
+        Public Sub <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Create(<%= ReceiveSingleCriteria(c, "crit") %>, handler As Csla.DataPortalClient.LocalProxy(Of <%= Info.ObjectName %>).CompletedHandler)
+        <%
             }
             else
             {
-                createPartialMethods.Add("partial void Service_Create()");
-                %>public <%= isChildNotLazyLoaded ? "void Child_" : "override void DataPortal_" %>Create(Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
+                createPartialMethods.Add("Partial Sub Service_Create()");
+                %>
+        Public <%= isChildNotLazyLoaded ? "Sub Child_" : "Overrides Sub DataPortal_" %>Create(handler As Csla.DataPortalClient.LocalProxy(Of <%= Info.ObjectName %>).CompletedHandler)
+        <%
             }
             %>
         {
@@ -47,8 +55,9 @@ if ((UseSilverlight() && objectRunLocal) || CurrentUnit.GenerationParams.Silverl
             if (Info.ObjectType == CslaObjectType.EditableSwitchable)
             {
                 %>
-            if (crit.IsChild)
-                MarkAsChild();
+            If crit.IsChild Then
+                MarkAsChild()
+            End If
             <%
             }
             foreach (ValueProperty prop in Info.ValueProperties)
@@ -62,20 +71,20 @@ if ((UseSilverlight() && objectRunLocal) || CurrentUnit.GenerationParams.Silverl
                         prop.PropertyType == TypeCodeEx.Int64))
                     {
                         %>
-            <%= GetFieldLoaderStatement(prop, "System.Threading.Interlocked.Decrement(ref " + prop.DefaultValue.Trim() + ")") %>;
+            <%= GetFieldLoaderStatement(prop, "System.Threading.Interlocked.Decrement(" + prop.DefaultValue.Trim() + ")") %>
             <%
                     }
                     else
                     {
                         %>
-            <%= GetFieldLoaderStatement(Info, prop, prop.DefaultValue) %>;
+            <%= GetFieldLoaderStatement(Info, prop, prop.DefaultValue) %>
             <%
                     }
                 }
                 else if (prop.Nullable && prop.PropertyType == TypeCodeEx.String)
                 {
                     %>
-            <%= GetFieldLoaderStatement(Info, prop, "null") %>;
+            <%= GetFieldLoaderStatement(Info, prop, "Nothing") %>
             <%
                 }
             }
@@ -88,13 +97,13 @@ if ((UseSilverlight() && objectRunLocal) || CurrentUnit.GenerationParams.Silverl
                     if (c.Properties.Count > 1)
                     {
                         %>
-            <%= GetFieldLoaderStatement(prop, "crit." + FormatProperty(p.Name)) %>;
+            <%= GetFieldLoaderStatement(prop, "crit." + FormatProperty(p.Name)) %>
             <%
                     }
                     else
                     {
                         %>
-            <%= GetFieldLoaderStatement(prop, AssignSingleCriteria(c, "crit")) %>;
+            <%= GetFieldLoaderStatement(prop, AssignSingleCriteria(c, "crit")) %>
             <%
                     }
                 }
@@ -108,7 +117,7 @@ if ((UseSilverlight() && objectRunLocal) || CurrentUnit.GenerationParams.Silverl
                         (childProp.LoadingScheme == LoadingScheme.ParentLoad || !childProp.LazyLoad))
                     {
                         %>
-            <%= GetNewChildLoadStatement(childProp, true) %>;
+            <%= GetNewChildLoadStatement(childProp, true) %>
             <%
                     }
                 }
@@ -116,40 +125,45 @@ if ((UseSilverlight() && objectRunLocal) || CurrentUnit.GenerationParams.Silverl
             if (CurrentUnit.GenerationParams.SilverlightUsingServices)
             {
                 %>
-            try
-            {
+            Try
+            
                 <%
                 if (c.Properties.Count > 1)
                 {
-                    %>Service_Create(crit);<%
+                    %>
+                Service_Create(crit)
+                <%
                 }
                 else if (c.Properties.Count > 0)
                 {
-                    %>Service_Create(<%= HookSingleCriteria(c, "crit") %>);<%
+                    %>
+                Service_Create(<%= HookSingleCriteria(c, "crit") %>)
+                <%
                 }
                 else
                 {
-                    %>Service_Create();<%
+                    %>
+                Service_Create()
+                <%
                 }
                 %>
-                handler(this, null);
-            }
-            catch (Exception ex)
-            {
-                handler(null, ex);
-            }
+                handler(Me, Nothing)
+            
+            Catch ex As Exception
+                handler(Nothing, ex)
+            End Try
             <%
             }
             else
             {
                 %>
-            var args = new DataPortalHookArgs();
-            OnCreate(args);
+            Dim args As New DataPortalHookArgs()
+            OnCreate(args)
             <%
             }
             %>
-            base.<%= isChildNotLazyLoaded ? "Child_Create()" : "DataPortal_Create(handler)" %>;
-        }
+            MyBase.<%= isChildNotLazyLoaded ? "Child_Create()" : "DataPortal_Create(handler)" %>
+        End Sub
 <%
         }
     }
@@ -162,10 +176,11 @@ if ((UseSilverlight() && objectRunLocal) || CurrentUnit.GenerationParams.Silverl
             MethodList.Add(new AdvancedGenerator.ServiceMethod(isChildNotLazyLoaded ? "Child_Create" : "DataPortal_Create", header));
         %>
 
-        /// <summary>
-        /// Implements <%= isChildNotLazyLoaded ? "Child_Create" : "DataPortal_Create" %> for <see cref="<%= Info.ObjectName %>"/> object.
-        /// </summary>
-        <%= header %>;
+        ''' <summary>
+        ''' Implements <%= isChildNotLazyLoaded ? "Child_Create" : "DataPortal_Create" %> for <see cref="<%= Info.ObjectName %>"/> object.
+        ''' </summary>
+        <%= header %>
+        End Sub
 <%
         }
     }

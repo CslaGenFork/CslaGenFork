@@ -1,31 +1,28 @@
 
-        #region TemplateMethods
+        #Region " TemplateMethods "
 
-        /// <summary>
-        /// Retrieve extra/custom information for the object.
-        /// </summary>
-        /// <param name="dr">The data reader.</param>
-        protected virtual void ExtraFetchProcessing(SafeDataReader dr)
-        {
+        ''' <summary>
+        ''' Retrieve extra/custom information for the object.
+        ''' </summary>
+        ''' <param name="dr">The data reader.</param>
+        Protected Overridable Sub ExtraFetchProcessing(dr As SafeDataReader)
+ 
+        End Sub
 
-        }
+        Protected Enum Command
+	        Insert = 0
+	        Update
+	        Delete
+	        Fetch
+        End Enum
 
-        protected enum Command
-        {
-            Insert = 0,
-            Update,
-            Delete,
-            Fetch
-        }
+        ''' <summary>
+        ''' Provides a way to get more control over the database interaction,
+        ''' </summary>
+        ''' <param name="cmd">The command object associated with current command</param>
+        ''' <param name="crit">The criteria it operates on (can be null)</param>
+        ''' <param name="action">The type of action is going to be performed</param>
+        Protected Overridable Sub ExtraCommandProcessing(cmd As SqlCommand, crit As Object, action As Command)
+        End Sub
 
-        /// <summary>
-        /// Provides a way to get more control over the database interaction,
-        /// </summary>
-        /// <param name="cmd">The command object associated with current command</param>
-        /// <param name="crit">The criteria it operates on (can be null)</param>
-        /// <param name="action">The type of action is going to be performed</param>
-        protected virtual void ExtraCommandProcessing(SqlCommand cmd, object crit, Command action)
-        {
-        }
-
-        #endregion
+        #End Region

@@ -50,8 +50,7 @@ if (!needsBusiness)
 if (useParentReference || isRODeepLoadCollection || useAuthz || Info.UniqueItems || needsBusiness)
 {
     %>
-
-        #region Collection Business Methods
+        #Region " Collection Business Methods "
         <%
     if (useParentReference || isRODeepLoadCollection || Info.UniqueItems || useAuthz)
     {
@@ -77,85 +76,84 @@ if (useParentReference || isRODeepLoadCollection || useAuthz || Info.UniqueItems
             }
             %>
 
-        /// <summary>
-        /// Adds a new <see cref="<%= Info.ItemType %>"/> item to the collection.
-        /// </summary>
-        /// <param name="item">The item to add.</param>
+        ''' <summary>
+        ''' Adds a new <see cref="<%= Info.ItemType %>"/> item to the collection.
+        ''' </summary>
+        ''' <param name="item">The item to add.</param>
         <%
         if (useParentReference || isRODeepLoadCollection)
         {
             %>
-        /// <remarks>
-        /// There is no valid Parent property (inexistant or null).
-        /// The Add method is redefined so it takes care of filling the ParentList property.
-        /// </remarks>
+        ''' <remarks>
+        ''' There is no valid Parent property (inexistant or null).
+        ''' The Add method is redefined so it takes care of filling the ParentList property.
+        ''' </remarks>
         <%
         }
         if (itemInfo.NewRoles.Trim() != String.Empty)
         {
             %>
-        /// <exception cref="System.Security.SecurityException">if the user isn't authorized to add items to the collection.</exception>
+        ''' <exception cref="System.Security.SecurityException">if the user isn't authorized to add items to the collection.</exception>
         <%
         }
         if (Info.UniqueItems)
         {
             %>
-        /// <exception cref="ArgumentException">if the item already exists in the collection.</exception>
+        ''' <exception cref="ArgumentException">if the item already exists in the collection.</exception>
         <%
         }
         %>
-        public new void Add(<%= Info.ItemType %> item)
-        {
+        Public Overloads Sub Add(item As <%= Info.ItemType %>)
             <%
         if (itemInfo.NewRoles.Trim() != String.Empty)
         {
             %>
-            if (!CanAddObject())
-                throw new System.Security.SecurityException("User not authorized to create a <%= Info.ItemType %>.");
-
+            If Not CanAddObject() Then
+                Throw New System.Security.SecurityException("User not authorized to create a <%= Info.ItemType %>.")
+            End If
         <%
         }
         if (Info.UniqueItems)
         {
             %>
-            if (Contains(<%
+            If Contains(<%
             for (int i = 0; i < propertyList.Count; i++)
             {
-                %><%= (i == 0) ? "" : " && " %>item.<%= paramNameArray[i] %><%
+                %><%= (i == 0) ? "" : " AndAlso " %>item.<%= paramNameArray[i] %><%
             }
-                            %>))
-                throw new ArgumentException("<%= Info.ItemType %> already exists.");
+                            %>) Then
+                Throw New ArgumentException("<%= Info.ItemType %> already exists.")
+            End If
 
         <%
         }
         if (useParentReference || isRODeepLoadCollection)
         {
             %>
-            item.ParentList = this;
+            item.ParentList = Me
         <%
         }
         %>
-            base.Add(item);
-        }
+            MyBase.Add(item)
+        End Sub
         <%
         }
         if (itemInfo.DeleteRoles.Trim() != String.Empty)
         {
             %>
 
-        /// <summary>
-        /// Removes a <see cref="<%= Info.ItemType %>"/> item from the collection.
-        /// </summary>
-        /// <param name="item">The item to remove.</param>
-        /// <returns><c>true</c> if the item was removed from the collection, otherwise <c>false</c>.</returns>
-        /// <exception cref="System.Security.SecurityException">if the user isn't authorized to remove items from the collection.</exception>
-        public new bool Remove(<%= Info.ItemType %> item)
-        {
-            if (!CanDeleteObject())
-                throw new System.Security.SecurityException("User not authorized to remove a <%= Info.ItemType %>.");
-
-            return base.Remove(item);
-        }
+        ''' <summary>
+        ''' Removes a <see cref="<%= Info.ItemType %>"/> item from the collection.
+        ''' </summary>
+        ''' <param name="item">The item to remove.</param>
+        ''' <returns><c>true</c> if the item was removed from the collection, otherwise <c>false</c>.</returns>
+        ''' <exception cref="System.Security.SecurityException">if the user isn't authorized to remove items from the collection.</exception>
+        Public Overloads Function Remove(item As <%= Info.ItemType %>) As Boolean
+            If Not CanDeleteObject() Then
+                Throw New System.Security.SecurityException("User not authorized to remove a <%= Info.ItemType %>.")
+            End If
+            Return MyBase.Remove(item)
+        End Function
         <%
         }
     }
@@ -168,7 +166,7 @@ if (useParentReference || isRODeepLoadCollection || useAuthz || Info.UniqueItems
             {
                 %>
 
-#if !SILVERLIGHT
+#If Not SILVERLIGHT Then
 <%
             }
             if (CurrentUnit.GenerationParams.GenerateSynchronous)
@@ -187,7 +185,7 @@ if (useParentReference || isRODeepLoadCollection || useAuthz || Info.UniqueItems
             {
                 %>
 
-#else
+#Else
 <%
             }
             if (UseSilverlight() && !CurrentUnit.GenerationParams.GenerateAsynchronous)
@@ -200,7 +198,7 @@ if (useParentReference || isRODeepLoadCollection || useAuthz || Info.UniqueItems
             {
                 %>
 
-#endif
+#End If
 <%
             }
             if (UseSilverlight() && CurrentUnit.GenerationParams.GenerateAsynchronous)
@@ -225,7 +223,7 @@ if (useParentReference || isRODeepLoadCollection || useAuthz || Info.UniqueItems
             for (int i = 0; i < crit.Properties.Count; i++)
             {
                 Property param = crit.Properties[i];
-                prms += string.Concat(", ", GetDataTypeGeneric(param, param.PropertyType), " ", FormatCamel(param.Name));
+                prms += string.Concat(", ", FormatCamel(param.Name), " As ", GetDataTypeGeneric(param, param.PropertyType));
                 factoryParams += string.Concat(", ", FormatCamel(param.Name));
                 factoryParamsArray[i] = FormatCamel(param.Name);
                 paramName += string.Concat(", ", param.Name);
@@ -239,33 +237,30 @@ if (useParentReference || isRODeepLoadCollection || useAuthz || Info.UniqueItems
             }
             %>
 
-        /// <summary>
-        /// Removes a <see cref="<%= Info.ItemType %>"/> item from the collection.
-        /// </summary>
+        ''' <summary>
+        ''' Removes a <see cref="<%= Info.ItemType %>"/> item from the collection.
+        ''' </summary>
         <%
             for (int i = 0; i < crit.Properties.Count; i++)
             {
                 %>
-        /// <param name="<%= FormatCamel(crit.Properties[i].Name) %>">The <%= FormatProperty(crit.Properties[i].Name) %> of the item to be removed.</param>
+        ''' <param name="<%= FormatCamel(crit.Properties[i].Name) %>">The <%= FormatProperty(crit.Properties[i].Name) %> of the item to be removed.</param>
         <%
             }
             %>
-        public void Remove(<%= prms %>)
-        {
-            foreach (var <%= FormatCamel(Info.ItemType) %> in this)
-            {
-                if (<%
+        Public Overloads Sub Remove(<%= prms %>)
+            For Each item As <%= FormatPascal(Info.ItemType) %> In Me
+                If <%
             for (int i = 0; i < crit.Properties.Count; i++)
             {
-                %><%= (i == 0) ? "" : " && " %><%= FormatCamel(Info.ItemType) %>.<%= paramNameArray[i] %> == <%= factoryParamsArray[i] %><%
+                %><%= (i == 0) ? "" : " AndAlso " %><%= FormatCamel(Info.ItemType) %>.<%= paramNameArray[i] %> = <%= factoryParamsArray[i] %><%
             }
-                        %>)
-                {
-                    Remove(<%= FormatCamel(Info.ItemType) %>);
-                    break;
-                }
-            }
-        }
+                        %> Then
+                    MyBase.Remove(<%= FormatCamel(Info.ItemType) %>)
+                    Exit For
+                End If
+            Next
+        End Sub
         <%
         }
     }
@@ -291,7 +286,7 @@ if (useParentReference || isRODeepLoadCollection || useAuthz || Info.UniqueItems
         for (int i = 0; i < propertyList.Count; i++)
         {
             Property param = propertyList[i];
-            prms += string.Concat(", ", GetDataTypeGeneric(param, param.PropertyType), " ", FormatCamel(param.Name));
+            prms += string.Concat(", ", FormatCamel(param.Name), " As ", GetDataTypeGeneric(param, param.PropertyType));
             factoryParams += string.Concat(", ", FormatCamel(param.Name));
             factoryParamsArray[i] = FormatCamel(param.Name);
             paramName += string.Concat(", ", param.Name);
@@ -310,100 +305,91 @@ if (useParentReference || isRODeepLoadCollection || useAuthz || Info.UniqueItems
         {
             %>
 
-        /// <summary>
-        /// Removes a <see cref="<%= Info.ItemType %>"/> item from the collection.
-        /// </summary>
+        ''' <summary>
+        ''' Removes a <see cref="<%= Info.ItemType %>"/> item from the collection.
+        ''' </summary>
         <%
             for (int i = 0; i < propertyList.Count; i++)
             {
                 %>
-        /// <param name="<%= FormatCamel(propertyList[i].Name) %>">The <%= FormatProperty(propertyList[i].Name) %> of the item to be removed.</param>
+        ''' <param name="<%= FormatCamel(propertyList[i].Name) %>">The <%= FormatProperty(propertyList[i].Name) %> of the item to be removed.</param>
         <%
             }
             %>
-        public void Remove(<%= prms %>)
-        {
-            foreach (var <%= FormatCamel(Info.ItemType) %> in this)
-            {
-                if (<%
+        Public Overloads Sub Remove(<%= prms %>)
+            For Each item As <%= FormatCamel(Info.ItemType) %> In Me
+                If <%
             for (int i = 0; i < propertyList.Count; i++)
             {
-                %><%= (i == 0) ? "" : " && " %><%= FormatCamel(Info.ItemType) %>.<%= paramNameArray[i] %> == <%= factoryParamsArray[i] %><%
+                %><%= (i == 0) ? "" : " AndAlso " %><%= FormatCamel(Info.ItemType) %>.<%= paramNameArray[i] %> = <%= factoryParamsArray[i] %><%
             }
-                            %>)
-                {
-                    Remove(<%= FormatCamel(Info.ItemType) %>);
-                    break;
-                }
-            }
-        }
+                            %> Then
+                    MyBase.Remove(<%= FormatCamel(Info.ItemType) %>)
+                    Exit For
+                End If
+            Next
+        End Sub
         <%
         }
         if (Info.ContainsItem)
         {
             %>
 
-        /// <summary>
-        /// Determines whether a <see cref="<%= Info.ItemType %>"/> item is in the collection.
-        /// </summary>
+        ''' <summary>
+        ''' Determines whether a <see cref="<%= Info.ItemType %>"/> item is in the collection.
+        ''' </summary>
         <%
             for (int i = 0; i < propertyList.Count; i++)
             {
                 %>
-        /// <param name="<%= FormatCamel(propertyList[i].Name) %>">The <%= FormatProperty(propertyList[i].Name) %> of the item to search for.</param>
+        ''' <param name="<%= FormatCamel(propertyList[i].Name) %>">The <%= FormatProperty(propertyList[i].Name) %> of the item to search for.</param>
         <%
             }
         %>
-        /// <returns><c>true</c> if the <%= Info.ItemType %> is a collection item; otherwise, <c>false</c>.</returns>
-        public bool Contains(<%= prms %>)
-        {
-            foreach (var <%= FormatCamel(Info.ItemType) %> in this)
-            {
-                if (<%
+        ''' <returns><c>true</c> if the <%= Info.ItemType %> is a collection item; otherwise, <c>false</c>.</returns>
+        Public Overloads Function Contains(<%= prms %>) As Boolean
+            For Each item As <%= FormatCamel(Info.ItemType) %> In Me
+                If <%
             for (int i = 0; i < propertyList.Count; i++)
             {
-                %><%= (i == 0) ? "" : " && " %><%= FormatCamel(Info.ItemType) %>.<%= paramNameArray[i] %> == <%= factoryParamsArray[i] %><%
+                %><%= (i == 0) ? "" : " AndAlso " %><%= FormatCamel(Info.ItemType) %>.<%= paramNameArray[i] %> = <%= factoryParamsArray[i] %><%
             }
-                            %>)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
+                            %> Then
+                    Return True
+                End If
+            Next
+            Return False
+        End Function
         <%
             if (Info.ObjectType != CslaObjectType.ReadOnlyCollection && Info.ObjectType != CslaObjectType.DynamicEditableRootCollection)
             {
                 %>
 
-        /// <summary>
-        /// Determines whether a <see cref="<%= Info.ItemType %>"/> item is in the collection's DeletedList.
-        /// </summary>
+        ''' <summary>
+        ''' Determines whether a <see cref="<%= Info.ItemType %>"/> item is in the collection's DeletedList.
+        ''' </summary>
         <%
                 for (int i = 0; i < propertyList.Count; i++)
                 {
                     %>
-        /// <param name="<%= FormatCamel(propertyList[i].Name) %>">The <%= FormatProperty(propertyList[i].Name) %> of the item to search for.</param>
+        ''' <param name="<%= FormatCamel(propertyList[i].Name) %>">The <%= FormatProperty(propertyList[i].Name) %> of the item to search for.</param>
         <%
                 }
                 %>
-        /// <returns><c>true</c> if the <%= Info.ItemType %> is a deleted collection item; otherwise, <c>false</c>.</returns>
-        public bool ContainsDeleted(<%= prms %>)
-        {
-            foreach (var <%= FormatCamel(Info.ItemType) %> in this.DeletedList)
-            {
-                if (<%
+        ''' <returns><c>true</c> if the <%= Info.ItemType %> is a deleted collection item; otherwise, <c>false</c>.</returns>
+        Public Overloads Function ContainsDeleted(<%= prms %>) As Boolean
+            For Each item As <%= FormatPascal(Info.ItemType) %> In Me.DeletedList
+                If <%
                 for (int i = 0; i < propertyList.Count; i++)
                 {
-                    %><%= (i == 0) ? "" : " && " %><%= FormatCamel(Info.ItemType) %>.<%= paramNameArray[i] %> == <%= factoryParamsArray[i] %><%
+                    %><%= (i == 0) ? "" : " AndAlso " %><%= FormatCamel(Info.ItemType) %>.<%= paramNameArray[i] %> = <%= factoryParamsArray[i] %><%
                 }
-                            %>)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
+                            %> Then
+                    Return True
+                End If
+            Next
+            Return False
+        End Function
         <%
             }
         }
@@ -411,7 +397,7 @@ if (useParentReference || isRODeepLoadCollection || useAuthz || Info.UniqueItems
 
 %>
 
-        #endregion
+        #End Region
 <%
 }
 Response.Write(Environment.NewLine);

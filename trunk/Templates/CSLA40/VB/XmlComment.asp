@@ -4,37 +4,37 @@ if ((firstComment == null && string.IsNullOrEmpty(Info.Parent.GenerationParams.C
 {
     firstComment = true;
     %>
-    /// <summary>
-    /// <%= string.IsNullOrEmpty(Info.ClassSummary) ? Info.ObjectName : Info.ClassSummary %> (<%= CslaStereotype(Info) %>).<br/>
-    /// This is a generated base class of <see cref="<%= Info.ObjectName %>"/> business object.
+    ''' <summary>
+    ''' <%= string.IsNullOrEmpty(Info.ClassSummary) ? Info.ObjectName : Info.ClassSummary %> (<%= CslaStereotype(Info) %>).<br/>
+    ''' This is a generated base class of <see cref="<%= Info.ObjectName %>"/> business object.
 <%
     if (string.IsNullOrEmpty(Info.ParentType))
     {
         if (Info.ObjectType == CslaObjectType.ReadOnlyObject)
         {
             %>
-    /// This class is a root object.
+    ''' This class is a root object.
 <%
         }
         else if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
         {
             %>
-    /// This class is a root collection.
+    ''' This class is a root collection.
 <%
         }
         else if (Info.ObjectType == CslaObjectType.UnitOfWork)
         {
             %>
-    /// This class is a root object that implements the Unit of Work pattern.
+    ''' This class is a root object that implements the Unit of Work pattern.
 <%
         }
     }
 %>
-    /// </summary>
+    ''' </summary>
     <%
     int indentLevel = (CurrentUnit.GenerationParams.UtilitiesNamespace.Length > 0) ? 1 : 0;
     string indent = new string(' ', indentLevel * 4);
-    string xmlRemark = "/// ";
+    string xmlRemark = "''' ";
     // contained child collections
     if (Info.ChildCollectionProperties.Count > 0)
     {
@@ -81,19 +81,19 @@ if ((firstComment == null && string.IsNullOrEmpty(Info.Parent.GenerationParams.C
     }
     if (firstComment == false)
     {
-        xmlRemark = System.Text.RegularExpressions.Regex.Replace(xmlRemark, "\r\n", "\r\n" + indent + "/// ", System.Text.RegularExpressions.RegexOptions.Multiline);
+        xmlRemark = System.Text.RegularExpressions.Regex.Replace(xmlRemark, "\r\n", "\r\n" + indent + "''' ", System.Text.RegularExpressions.RegexOptions.Multiline);
         %>
-    /// <remarks>
+    ''' <remarks>
     <%= xmlRemark %>
     <%
         if (Info.ClassRemarks != string.Empty)
         {
             %>
-    /// <%= Info.ClassRemarks %>
+    ''' <%= Info.ClassRemarks %>
     <%
         }
         %>
-    /// </remarks>
+    ''' </remarks>
     <%
     }
 }

@@ -1,4 +1,4 @@
-<%@ CodeTemplate Inherits="CslaTemplateHelperCS" Language="CSharp" TargetLanguage="CSharp" Description="Generates a CSLA ReadOnly Collection." %>
+<%@ CodeTemplate Inherits="CslaTemplateHelperVB" Language="CSharp" TargetLanguage="VB" Description="Generates a CSLA ReadOnly Collection." %>
 <%@ Property Name="Errors" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return errors to master.cst" %>
 <%@ Property Name="Warnings" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return warnings to master.cst" %>
 
@@ -198,6 +198,7 @@ foreach (CslaObjectInfo objectInfo in list)
 if (Errors.Length > 0)
     return;
 
+/*
 if (CurrentUnit.GenerationParams.BaseFilenameSuffix ==
     CurrentUnit.GenerationParams.ExtendedFilenameSuffix)
 {
@@ -226,6 +227,7 @@ if (CurrentUnit.GenerationParams.UtilitiesNamespace.Equals(string.Empty))
 {
     Errors.Append("Generation settings: 'Utility classes namespace' can not be empty." + Environment.NewLine);
 }
+*/
 if (CurrentUnit.GenerationParams.UtilitiesNamespace.IndexOf(CurrentUnit.GenerationParams.BaseNamespace) != 0)
 {
     Errors.Append("Generation settings: 'Utility classes namespace' (" + CurrentUnit.GenerationParams.UtilitiesNamespace + ") must be under must be under 'Base namespace' (" +

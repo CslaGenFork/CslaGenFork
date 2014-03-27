@@ -3,15 +3,14 @@ if (c.Properties.Count == 0 && Info.SimpleCacheOptions == SimpleCacheResults.Dat
 {
     %>
 
-        private void LoadCachedList()
-        {
-            IsReadOnly = false;
-            var rlce = RaiseListChangedEvents;
-            RaiseListChangedEvents = false;
-            AddRange(_list);
-            RaiseListChangedEvents = rlce;
-            IsReadOnly = true;
-        }
+        Private Sub LoadCachedList()
+            IsReadOnly = False
+            Dim rlce = RaiseListChangedEvents
+            RaiseListChangedEvents = False
+            AddRange(_list)
+            RaiseListChangedEvents = rlce
+            IsReadOnly = True
+        End Sub
         <%
 }
 %>

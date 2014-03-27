@@ -54,33 +54,33 @@ if (generateAuthRegion2)
     }
     genOptional = true;
     %>
-        #region Object Authorization
+        #Region " Object Authorization "
         <%
     string statement = string.Empty;
     if (UseNoSilverlight())
     {
-        statement = "protected static void AddObjectAuthorizationRules()";
+        statement = "Protected Shared Sub AddObjectAuthorizationRules()";
     }
     string statementSilverlight = string.Empty;
     if (UseSilverlight())
     {
-        statementSilverlight = "[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]" + "\r\n" + new string(' ', 8);
-        statementSilverlight += "public static void AddObjectAuthorizationRules()";
+        statementSilverlight = "<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>" + "\r\n" + new string(' ', 8);
+        statementSilverlight += "Public Shared Sub AddObjectAuthorizationRules()";
     }
     %>
 
-        /// <summary>
-        /// Adds the object authorization rules.
-        /// </summary>
+        ''' <summary>
+        ''' Adds the object authorization rules.
+        ''' </summary>
         <%
     if (UseBoth())
     {
         %>
-#if SILVERLIGHT
+#If SILVERLIGHT Then
         <%= statementSilverlight %>
-#else
+#Else
         <%= statement %>
-#endif
+#End If
         <%
     }
     else if (UseSilverlight())
@@ -96,7 +96,6 @@ if (generateAuthRegion2)
         <%
     }
     %>
-        {
             <%
     if (CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider ||
         authzInfo2.AuthzProvider != AuthorizationProvider.Custom)
@@ -106,14 +105,14 @@ if (generateAuthRegion2)
             if (CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider ||
                 authzInfo2.AuthzProvider == AuthorizationProvider.IsInRole)
             {
-                resultRuleObj = "BusinessRules.AddRule(typeof (" + Info.ObjectName + "), new IsInRole(AuthorizationActions.CreateObject" + ReturnRoleList(authzInfo2.NewRoles) +"));";
+                resultRuleObj = "BusinessRules.AddRule(GetType(" + Info.ObjectName + "), New IsInRole(AuthorizationActions.CreateObject" + ReturnRoleList(authzInfo2.NewRoles) +"))";
             %>
             <%= resultRuleObj %>
 <%
             }
             else
             {
-                resultRuleObj = "BusinessRules.AddRule(typeof (" + Info.ObjectName + "), new IsNotInRole(AuthorizationActions.CreateObject" + ReturnRoleList(authzInfo2.NewRoles) + "));";
+                resultRuleObj = "BusinessRules.AddRule(GetType(" + Info.ObjectName + "), New IsNotInRole(AuthorizationActions.CreateObject" + ReturnRoleList(authzInfo2.NewRoles) + "))";
             %>
             <%= resultRuleObj %>
 <%
@@ -124,14 +123,14 @@ if (generateAuthRegion2)
             if (CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider ||
                 authzInfo2.AuthzProvider == AuthorizationProvider.IsInRole)
             {
-                resultRuleObj = "BusinessRules.AddRule(typeof (" + Info.ObjectName + "), new IsInRole(AuthorizationActions.GetObject" + ReturnRoleList(authzInfo2.GetRoles) +"));";
+                resultRuleObj = "BusinessRules.AddRule(GetType(" + Info.ObjectName + "), New IsInRole(AuthorizationActions.GetObject" + ReturnRoleList(authzInfo2.GetRoles) +"))";
             %>
             <%= resultRuleObj %>
 <%
             }
             else
             {
-                resultRuleObj = "BusinessRules.AddRule(typeof (" + Info.ObjectName + "), new IsNotInRole(AuthorizationActions.GetObject" + ReturnRoleList(authzInfo2.GetRoles) + "));";
+                resultRuleObj = "BusinessRules.AddRule(GetType(" + Info.ObjectName + "), New IsNotInRole(AuthorizationActions.GetObject" + ReturnRoleList(authzInfo2.GetRoles) + "))";
             %>
             <%= resultRuleObj %>
 <%
@@ -142,14 +141,14 @@ if (generateAuthRegion2)
             if (CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider ||
                 authzInfo2.AuthzProvider == AuthorizationProvider.IsInRole)
             {
-                resultRuleObj = "BusinessRules.AddRule(typeof (" + Info.ObjectName + "), new IsInRole(AuthorizationActions.EditObject" + ReturnRoleList(authzInfo2.UpdateRoles) +"));";
+                resultRuleObj = "BusinessRules.AddRule(GetType(" + Info.ObjectName + "), New IsInRole(AuthorizationActions.EditObject" + ReturnRoleList(authzInfo2.UpdateRoles) +"))";
             %>
             <%= resultRuleObj %>
 <%
             }
             else
             {
-                resultRuleObj = "BusinessRules.AddRule(typeof (" + Info.ObjectName + "), new IsNotInRole(AuthorizationActions.EditObject" + ReturnRoleList(authzInfo2.UpdateRoles) + "));";
+                resultRuleObj = "BusinessRules.AddRule(GetType(" + Info.ObjectName + "), New IsNotInRole(AuthorizationActions.EditObject" + ReturnRoleList(authzInfo2.UpdateRoles) + "))";
             %>
             <%= resultRuleObj %>
 <%
@@ -160,14 +159,14 @@ if (generateAuthRegion2)
             if (CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider ||
                 authzInfo2.AuthzProvider == AuthorizationProvider.IsInRole)
             {
-                resultRuleObj = "BusinessRules.AddRule(typeof (" + Info.ObjectName + "), new IsInRole(AuthorizationActions.DeleteObject" + ReturnRoleList(authzInfo2.DeleteRoles) +"));";
+                resultRuleObj = "BusinessRules.AddRule(GetType(" + Info.ObjectName + "), New IsInRole(AuthorizationActions.DeleteObject" + ReturnRoleList(authzInfo2.DeleteRoles) +"))";
             %>
             <%= resultRuleObj %>
 <%
             }
             else
             {
-                resultRuleObj = "BusinessRules.AddRule(typeof (" + Info.ObjectName + "), new IsNotInRole(AuthorizationActions.DeleteObject" + ReturnRoleList(authzInfo2.DeleteRoles) + "));";
+                resultRuleObj = "BusinessRules.AddRule(GetType(" + Info.ObjectName + "), New IsNotInRole(AuthorizationActions.DeleteObject" + ReturnRoleList(authzInfo2.DeleteRoles) + "))";
             %>
             <%= resultRuleObj %>
 <%
@@ -215,13 +214,14 @@ if (generateAuthRegion2)
     }
     %>
 
-            AddObjectAuthorizationRulesExtend();
-        }
+            AddObjectAuthorizationRulesExtend()
+        End Sub
 
-        /// <summary>
-        /// Allows the set up of custom object authorization rules.
-        /// </summary>
-        static partial void AddObjectAuthorizationRulesExtend();
+        ''' <summary>
+        ''' Allows the set up of custom object authorization rules.
+        ''' </summary>
+        Partial Private Shared Sub AddObjectAuthorizationRulesExtend()
+        End Sub
 
         <%
     if (authzInfo2.ObjectType != CslaObjectType.ReadOnlyCollection &&
@@ -229,26 +229,24 @@ if (generateAuthRegion2)
         authzInfo2.ObjectType != CslaObjectType.NameValueList)
     {
         %>
-        /// <summary>
-        /// Checks if the current user can create a new <%= Info.ObjectName %> object.
-        /// </summary>
-        /// <returns><c>true</c> if the user can create a new object; otherwise, <c>false</c>.</returns>
-        public static bool CanAddObject()
-        {
-            return BusinessRules.HasPermission(Csla.Rules.AuthorizationActions.CreateObject, typeof(<%= Info.ObjectName %>));
-        }
+        ''' <summary>
+        ''' Checks if the current user can create a new <%= Info.ObjectName %> object.
+        ''' </summary>
+        ''' <returns><c>true</c> if the user can create a new object; otherwise, <c>false</c>.</returns>
+        Public Overloads Shared Function CanAddObject() As Boolean
+            Return BusinessRules.HasPermission(Csla.Rules.AuthorizationActions.CreateObject, GetType(<%= Info.ObjectName %>))
+        End Function
 
         <%
     }
         %>
-        /// <summary>
-        /// Checks if the current user can retrieve <%= Info.ObjectName %>'s properties.
-        /// </summary>
-        /// <returns><c>true</c> if the user can read the object; otherwise, <c>false</c>.</returns>
-        public static bool CanGetObject()
-        {
-            return BusinessRules.HasPermission(Csla.Rules.AuthorizationActions.GetObject, typeof(<%= Info.ObjectName %>));
-        }
+        ''' <summary>
+        ''' Checks if the current user can retrieve <%= Info.ObjectName %>'s properties.
+        ''' </summary>
+        ''' <returns><c>true</c> if the user can read the object; otherwise, <c>false</c>.</returns>
+        Public Overloads Shared Function CanGetObject() As Boolean
+            Return BusinessRules.HasPermission(Csla.Rules.AuthorizationActions.GetObject, GetType(<%= Info.ObjectName %>))
+        End Function
         <%
     if (authzInfo2.ObjectType != CslaObjectType.ReadOnlyCollection &&
         authzInfo2.ObjectType != CslaObjectType.ReadOnlyObject &&
@@ -256,28 +254,26 @@ if (generateAuthRegion2)
     {
         %>
 
-        /// <summary>
-        /// Checks if the current user can change <%= Info.ObjectName %>'s properties.
-        /// </summary>
-        /// <returns><c>true</c> if the user can update the object; otherwise, <c>false</c>.</returns>
-        public static bool CanEditObject()
-        {
-            return BusinessRules.HasPermission(Csla.Rules.AuthorizationActions.EditObject, typeof(<%= Info.ObjectName %>));
-        }
+        ''' <summary>
+        ''' Checks if the current user can change <%= Info.ObjectName %>'s properties.
+        ''' </summary>
+        ''' <returns><c>true</c> if the user can update the object; otherwise, <c>false</c>.</returns>
+        Public Overloads Shared Function CanEditObject() As Boolean
+            Return BusinessRules.HasPermission(Csla.Rules.AuthorizationActions.EditObject, GetType(<%= Info.ObjectName %>))
+        End Function
 
-        /// <summary>
-        /// Checks if the current user can delete a <%= Info.ObjectName %> object.
-        /// </summary>
-        /// <returns><c>true</c> if the user can delete the object; otherwise, <c>false</c>.</returns>
-        public static bool CanDeleteObject()
-        {
-            return BusinessRules.HasPermission(Csla.Rules.AuthorizationActions.DeleteObject, typeof(<%= Info.ObjectName %>));
-        }
+        ''' <summary>
+        ''' Checks if the current user can delete a <%= Info.ObjectName %> object.
+        ''' </summary>
+        ''' <returns><c>true</c> if the user can delete the object; otherwise, <c>false</c>.</returns>
+        Public Overloads Shared Function CanDeleteObject() As Boolean
+            Return BusinessRules.HasPermission(Csla.Rules.AuthorizationActions.DeleteObject, GetType(<%= Info.ObjectName %>))
+        End Function
         <%
     }
     %>
 
-        #endregion
+        #End Region
 
 <%
 }

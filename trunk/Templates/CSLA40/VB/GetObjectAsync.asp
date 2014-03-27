@@ -18,38 +18,36 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
             {
                 %>
 
-        /// <summary>
-        /// Factory method. Asynchronously loads a <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %>, based on given parameters.
-        /// </summary>
-        /// <param name="crit">The fetch criteria.</param>
-        /// <param name="callback">The completion callback method.</param>
-        public static void Get<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>(<%= c.Name %> crit, EventHandler<DataPortalResult<<%= Info.ObjectName %>>> callback)
-        {
+        ''' <summary>
+        ''' Factory method. Asynchronously loads a <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %>, based on given parameters.
+        ''' </summary>
+        ''' <param name="crit">The fetch criteria.</param>
+        ''' <param name="callback">The completion callback method.</param>
+        Public Shared Sub Get<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>(crit As <%= c.Name %>, callback As EventHandler(Of DataPortalResult(Of <%= Info.ObjectName %>)))
             <%
                 if (!useUnitOfWorkGetter)
                 {
                     %>
-            DataPortal.BeginFetch<<%= Info.ObjectName %>>(crit, callback);
+            DataPortal.BeginFetch(Of <%= Info.ObjectName %>)(crit, callback)
         <%
                 }
                 else
                 {
                     %>
-            <%= Info.UseUnitOfWorkType %>.Get<%= Info.UseUnitOfWorkType %>(crit, (o, e) =>
-            {
-                callback(o, new DataPortalResult<<%= Info.ObjectName %>>(e.Object.<%= Info.ObjectName %>, e.Error, null));
-            });
+            <%= Info.UseUnitOfWorkType %>.Get<%= Info.UseUnitOfWorkType %>(crit, Function(o, e)
+                callback(o, New DataPortalResult(Of <%= Info.ObjectName %>)(e.[Object].<%= Info.ObjectName %>, e.Error, Nothing))
+            End Function)
             <%
                 }
                 %>
-        }
+        End Sub
         <%
             }
             %>
 
-        /// <summary>
-        /// Factory method. Asynchronously loads a <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %><%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
-        /// </summary>
+        ''' <summary>
+        ''' Factory method. Asynchronously loads a <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %><%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
+        ''' </summary>
         <%
             string strGetParams = string.Empty;
             string strGetCritParams = string.Empty;
@@ -59,7 +57,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
                 if (string.IsNullOrEmpty(c.Properties[i].ParameterValue))
                 {
                     %>
-        /// <param name="<%= FormatCamel(c.Properties[i].Name) %>">The <%= FormatProperty(c.Properties[i].Name) %> parameter of the <%= Info.ObjectName %> to fetch.</param>
+        ''' <param name="<%= FormatCamel(c.Properties[i].Name) %>">The <%= FormatProperty(c.Properties[i].Name) %> parameter of the <%= Info.ObjectName %> to fetch.</param>
         <%
                     if (firstParam)
                     {
@@ -70,7 +68,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
                         strGetParams += ", ";
                         strGetCritParams += ", ";
                     }
-                    strGetParams += string.Concat(GetDataTypeGeneric(c.Properties[i], c.Properties[i].PropertyType), " ", FormatCamel(c.Properties[i].Name));
+                    strGetParams += string.Concat(FormatCamel(c.Properties[i].Name), " As ", GetDataTypeGeneric(c.Properties[i], c.Properties[i].PropertyType));
                     strGetCritParams += FormatCamel(c.Properties[i].Name);
                 }
                 else
@@ -79,31 +77,29 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
                         strGetCritParams += c.Properties[i].ParameterValue;
                 }
             }
-            strGetParams += (strGetParams.Length > 0 ? ", " : "") + "EventHandler<DataPortalResult<" + Info.ObjectName + ">> callback";
+            strGetParams += (strGetParams.Length > 0 ? ", " : "") + "callback As EventHandler(Of DataPortalResult(Of " + Info.ObjectName + "))";
             %>
-        /// <param name="callback">The completion callback method.</param>
-        <%= Info.ParentType == string.Empty ? "public" : "internal" %> static void Get<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>(<%= strGetParams %>)
-        {
+        ''' <param name="callback">The completion callback method.</param>
+        <%= Info.ParentType == string.Empty ? "Public" : "Friend" %> Shared Sub Get<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>(<%= strGetParams %>)
             <%
             if (Info.ObjectType == CslaObjectType.EditableSwitchable)
             {
-                strGetCritParams = "false, " + strGetCritParams;
+                strGetCritParams = "False, " + strGetCritParams;
             }
             if (c.Properties.Count > 1 || (Info.ObjectType == CslaObjectType.EditableSwitchable && c.Properties.Count == 1))
             {
                 if (!useUnitOfWorkGetter)
                 {
                     %>
-            DataPortal.BeginFetch<<%= Info.ObjectName %>>(new <%= c.Name %>(<%= strGetCritParams %>), callback);
+            DataPortal.BeginFetch(Of <%= Info.ObjectName %>)(New <%= c.Name %>(<%= strGetCritParams %>), callback)
             <%
                 }
                 else
                 {
                     %>
-            <%= Info.UseUnitOfWorkType %>.Get<%= Info.UseUnitOfWorkType %>(new <%= c.Name %>(<%= strGetCritParams %>), (o, e) =>
-            {
-                callback(o, new DataPortalResult<<%= Info.ObjectName %>>(e.Object.<%= Info.ObjectName %>, e.Error, null));
-            });
+            <%= Info.UseUnitOfWorkType %>.Get<%= Info.UseUnitOfWorkType %>(New <%= c.Name %>(<%= strGetCritParams %>), Function(o, e)
+                callback(o, New DataPortalResult(Of <%= Info.ObjectName %>)(e.[Object].<%= Info.ObjectName %>, e.Error, Nothing))
+            End Function)
             <%
                 }
             }
@@ -112,16 +108,15 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
                 if (!useUnitOfWorkGetter)
                 {
                     %>
-            DataPortal.BeginFetch<<%= Info.ObjectName %>>(<%= SendSingleCriteria(c, strGetCritParams) %>, callback);
+            DataPortal.BeginFetch(Of <%= Info.ObjectName %>)(<%= SendSingleCriteria(c, strGetCritParams) %>, callback)
             <%
                 }
                 else
                 {
                     %>
-            <%= Info.UseUnitOfWorkType %>.Get<%= Info.UseUnitOfWorkType %>(<%= SendSingleCriteria(c, strGetCritParams) %>, (o, e) =>
-            {
-                callback(o, new DataPortalResult<<%= Info.ObjectName %>>(e.Object.<%= Info.ObjectName %>, e.Error, null));
-            });
+            <%= Info.UseUnitOfWorkType %>.Get<%= Info.UseUnitOfWorkType %>(<%= SendSingleCriteria(c, strGetCritParams) %>, Function (o, e)
+                callback(o, New DataPortalResult(Of <%= Info.ObjectName %>)(e.[Object].<%= Info.ObjectName %>, e.Error, Nothing))
+            End Function)
             <%
                 }
             }
@@ -130,14 +125,14 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
                 if (Info.SimpleCacheOptions != SimpleCacheResults.None)
                 {
                     %>
-            if (_list == null)
-                DataPortal.BeginFetch<<%= Info.ObjectName %>>((o, e) =>
-                    {
-                        _list = e.Object;
-                        callback(o, e);
-                    });
-            else
-                callback(null, new DataPortalResult<<%= Info.ObjectName %>>(_list, null, null));
+            If _list Is Nothing Then
+                DataPortal.BeginFetch(Of <%= Info.ObjectName %>)(Function(o, e)
+                        _list = e.[Object]
+                        callback(o, e)
+                    End Function)
+            Else
+                callback(Nothing, New DataPortalResult(<%= Info.ObjectName %>)(_list, Nothing, Nothing))
+            End If
         <%
                 }
                 else
@@ -145,22 +140,21 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
                     if (!useUnitOfWorkGetter)
                     {
                         %>
-            DataPortal.BeginFetch<<%= Info.ObjectName %>>(callback);
+            DataPortal.BeginFetch(Of <%= Info.ObjectName %>)(callback)
         <%
                     }
                     else
                     {
                         %>
-            <%= Info.UseUnitOfWorkType %>.Get<%= Info.UseUnitOfWorkType %>((o, e) =>
-            {
-                callback(o, new DataPortalResult<<%= Info.ObjectName %>>(e.Object.<%= Info.ObjectName %>, e.Error, null));
-            });
+            <%= Info.UseUnitOfWorkType %>.Get<%= Info.UseUnitOfWorkType %>(Function(o, e)
+                callback(o, New DataPortalResult(Of <%= Info.ObjectName %>)(e.Object.<%= Info.ObjectName %>, e.Error, Nothing))
+            End Function)
             <%
                     }
                 }
             }
             %>
-        }
+        End Sub
 <%
         }
     }

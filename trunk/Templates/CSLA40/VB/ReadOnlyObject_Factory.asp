@@ -1,4 +1,4 @@
-        #region Factory Methods
+        #Region " Factory Methods "
 <%
 bool getRunLocal = false;
 bool getNonLocal = false;
@@ -28,7 +28,7 @@ if (silverlightIsDifferent)
 {
     %>
 
-#if !SILVERLIGHT
+#If Not SILVERLIGHT Then
 <%
 }
 if (UseNoSilverlight())
@@ -60,7 +60,7 @@ if (silverlightIsDifferent)
     {
         %>
 
-#else
+#Else
 <%
         if (getRunLocal || getRunLocalSilverlight || (!CurrentUnit.GenerationParams.GenerateAsynchronous && !getRunLocalSilverlight))
         {
@@ -71,7 +71,7 @@ if (silverlightIsDifferent)
     }
     %>
 
-#endif
+#End If
 <%
 }
 else if (silverlightServicesAlone)
@@ -93,4 +93,4 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous && UseBoth())
 }
 %>
 
-        #endregion
+        #End Region

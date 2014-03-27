@@ -15,25 +15,24 @@ foreach (UnitOfWorkCriteriaManager.UoWCriteria uowCrit in listUoWCriteriaCreator
 
         elementCriteriaCount++;
         createUowParam = FormatCamel(c.Name);
-        createUowCrit = c.Type + " " + FormatCamel(c.Name);
+        createUowCrit = FormatCamel(c.Name) + " As " + c.Type;
     }
     if (elementCriteriaCount > 1)
     {
         createUowParam = "crit";
-        createUowCrit = uowCrit.CriteriaName + " crit";
+        createUowCrit = "crit As " + uowCrit.CriteriaName;
     }
     if (elementCriteriaCount != 0)
-        createUowComment = "/// <param name=\"" + createUowParam + "\">The create criteria.</param>" + System.Environment.NewLine + new string(' ', 8);
+        createUowComment = "''' <param name=\"" + createUowParam + "\">The create criteria.</param>" + System.Environment.NewLine + new string(' ', 8);
     %>
 
-        /// <summary>
-        /// Creates a new <see cref="<%= Info.ObjectName %>"/> unit of objects<%= elementCriteriaCount > 0 ? ", based on given criteria" : "" %>.
-        /// </summary>
-        <%= createUowComment %>/// <remarks>
-        /// ReadOnlyBase&lt;T&gt; doesn't allow the use of DataPortal_Create and thus DataPortal_Fetch is used.
-        /// </remarks>
-        protected void DataPortal_Fetch(<%= createUowCrit %>)
-        {
+        ''' <summary>
+        ''' Creates a new <see cref="<%= Info.ObjectName %>"/> unit of objects<%= elementCriteriaCount > 0 ? ", based on given criteria" : "" %>.
+        ''' </summary>
+        <%= createUowComment %>''' <remarks>
+        ''' ReadOnlyBase&lt;T&gt; doesn't allow the use of DataPortal_Create and thus DataPortal_Fetch is used.
+        ''' </remarks>
+        Protected Sub DataPortal_Fetch(<%= createUowCrit %>)
             <%
     foreach (UnitOfWorkCriteriaManager.ElementCriteria c in uowCrit.ElementCriteriaList)
     {
@@ -46,8 +45,8 @@ foreach (UnitOfWorkCriteriaManager.UoWCriteria uowCrit in listUoWCriteriaCreator
         }
         else
         {
-            strCreate = "DataPortal.Create<" + c.ParentObject + ">";
-            strFetch = "DataPortal.Fetch<" + c.ParentObject + ">";
+            strCreate = "DataPortal.Create(Of " + c.ParentObject + ")";
+            strFetch = "DataPortal.Fetch(Of " + c.ParentObject + ")";
         }
         string uowParam = string.Empty;
         if (c.Name != string.Empty)
@@ -60,18 +59,18 @@ foreach (UnitOfWorkCriteriaManager.UoWCriteria uowCrit in listUoWCriteriaCreator
         if (uowParam.Length != 0)
         {
             %>
-            <%= GetFieldLoaderStatement(c.DeclarationMode, c.ParentObject, (c.IsGetter ? strFetch : strCreate) + "(" + uowParam + ")") %>;
+            <%= GetFieldLoaderStatement(c.DeclarationMode, c.ParentObject, (c.IsGetter ? strFetch : strCreate) + "(" + uowParam + ")") %>
             <%
         }
         else
         {
             %>
-            <%= GetFieldLoaderStatement(c.DeclarationMode, c.ParentObject, (c.IsGetter ? strFetch : strCreate) + "()") %>;
+            <%= GetFieldLoaderStatement(c.DeclarationMode, c.ParentObject, (c.IsGetter ? strFetch : strCreate) + "()") %>
             <%
         }
     }
     %>
-        }
+        End Sub
 <%
 }
 %>

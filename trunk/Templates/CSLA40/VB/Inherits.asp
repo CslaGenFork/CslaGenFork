@@ -10,11 +10,11 @@ else if (Info.InheritedType.ObjectName != string.Empty)
 }
 
 if (result.Contains("<T>") && useItem)
-    result = result.Replace("<T>", "<" + Info.ItemType + ">");
+    result = result.Replace("<T>", "(Of " + Info.ItemType + ")");
 else
-    result = result.Replace("<T>", "<" + Info.ObjectName + ">");
+    result = result.Replace("<T>", "(Of " + Info.ObjectName + ")");
 
 if (result.Contains("<T,C>"))
-    result = result.Replace("<T,C>", "<" + Info.ObjectName + ", " + Info.ItemType + ">");
+    result = result.Replace("<T,C>", "(Of " + Info.ObjectName + ", " + Info.ItemType + ")");
 Response.Write(result);
 %><!-- #include file="Implements.asp" -->

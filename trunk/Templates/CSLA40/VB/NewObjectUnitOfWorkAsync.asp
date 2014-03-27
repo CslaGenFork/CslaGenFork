@@ -27,72 +27,72 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
                 strNewCritParams += ", ";
             if (parameterCount > 0)
                 strNewParams += ", ";
-            strNewParams += string.Concat(c.Type, " ", FormatCamel(c.Name));
+            strNewParams += string.Concat(FormatCamel(c.Name), " As ", c.Type);
             strNewCritParams += FormatCamel(c.Name);
-            strNewComment += "/// <param name=\"" + FormatCamel(c.Name) + "\">The " + FormatProperty(c.Name) + " of the " + Info.ObjectName + " to create.</param>" + System.Environment.NewLine + new string(' ', 8);
+            strNewComment += "''' <param name=\"" + FormatCamel(c.Name) + "\">The " + FormatProperty(c.Name) + " of the " + Info.ObjectName + " to create.</param>" + System.Environment.NewLine + new string(' ', 8);
             elementCriteriaCount++;
             parameterCount++;
         }
-        strNewParams += (strNewParams.Length > 0 ? ", " : "") + "EventHandler<DataPortalResult<" + Info.ObjectName + ">> callback";
+        strNewParams += (strNewParams.Length > 0 ? ", " : "") + "callback As EventHandler(Of DataPortalResult(Of " + Info.ObjectName + "))";
         string strNewCache = string.Empty;
         foreach (UnitOfWorkProperty prop in Info.UnitOfWorkProperties)
         {
             CslaObjectInfo objectInfo = Info.Parent.CslaObjects.Find(prop.TypeName);
             if (objectInfo.SimpleCacheOptions != SimpleCacheResults.None)
             {
-                strNewCache += "                if (!" + prop.TypeName + ".IsCached)" + Environment.NewLine;
-                strNewCache += "                    " + prop.TypeName + ".SetCache(e.Object." + prop.TypeName + ");" + Environment.NewLine;
+                strNewCache += "                If Not " + prop.TypeName + ".IsCached Then" + Environment.NewLine;
+                strNewCache += "                    " + prop.TypeName + ".SetCache(e.Object." + prop.TypeName + ")" + Environment.NewLine;
+                strNewCache += "                End If" + Environment.NewLine;
             }
         }
         if (Info.UnitOfWorkType == UnitOfWorkFunction.CreatorGetter && elementCriteriaCount == 0)
         {
-            strNewCritParams = "true, ";
+            strNewCritParams = "True, ";
         }
         %>
 
-        /// <summary>
-        /// Factory method. Asynchronously creates a new <see cref="<%= Info.ObjectName %>"/> unit of objects<%= parameterCount > 0 ? ", based on given parameters" : "" %>.
-        /// </summary>
-        <%= strNewComment %>/// <param name="callback">The completion callback method.</param>
-        public static void New<%= Info.ObjectName %>(<%= strNewParams %>)
-        {
-            // DataPortal_Fetch is used as ReadOnlyBase<T> doesn't allow the use of DataPortal_Create.
+        ''' <summary>
+        ''' Factory method. Asynchronously creates a new <see cref="<%= Info.ObjectName %>"/> unit of objects<%= parameterCount > 0 ? ", based on given parameters" : "" %>.
+        ''' </summary>
+        <%= strNewComment %>''' <param name="callback">The completion callback method.</param>
+        Public Shared Sub New<%= Info.ObjectName %>(<%= strNewParams %>)
+            ' DataPortal_Fetch is used as ReadOnlyBase<T> doesn't allow the use of DataPortal_Create.
             <%
         if (elementCriteriaCount > 1)
         {
             %>
-            DataPortal.BeginFetch<<%= Info.ObjectName %>>(new <%= uowCrit.CriteriaName %>(<%= strNewCritParams %>), (o, e) =>
-            {
-                if (e.Error != null)
-                    throw e.Error;
-<%= strNewCache %>                callback(o, e);
-            });
+            DataPortal.BeginFetch(Of <%= Info.ObjectName %>)(New <%= uowCrit.CriteriaName %>(<%= strNewCritParams %>), Function(o, e)
+                If e.Error IsNot Nothing Then
+                    Throw e.Error
+                End If
+<%= strNewCache %>                callback(o, e)
+            End Function)
         <%
         }
         else if (elementCriteriaCount > 0)
         {
             %>
-            DataPortal.BeginFetch<<%= Info.ObjectName %>>(<%= strNewCritParams %>, (o, e) =>
-            {
-                if (e.Error != null)
-                    throw e.Error;
-<%= strNewCache %>                callback(o, e);
-            });
+            DataPortal.BeginFetch(Of <%= Info.ObjectName %>)(<%= strNewCritParams %>, Function(o, e)
+                If e.Error IsNot Nothing Then
+                    Throw e.Error
+                End If
+<%= strNewCache %>                callback(o, e)
+            End Function)
         <%
         }
         else
         {
             %>
-            DataPortal.BeginFetch<<%= Info.ObjectName %>>(<%= strNewCritParams %>(o, e) =>
-            {
-                if (e.Error != null)
-                    throw e.Error;
-<%= strNewCache %>                callback(o, e);
-            });
+            DataPortal.BeginFetch(Of <%= Info.ObjectName %>)(<%= strNewCritParams %>Function(o, e)
+                If e.Error IsNot Nothing Then
+                    Throw e.Error
+                End If
+<%= strNewCache %>                callback(o, e)
+            End Function)
         <%
         }
             %>
-        }
+        End Sub
         <%
     }
 }

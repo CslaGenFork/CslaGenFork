@@ -1,10 +1,10 @@
-        #region Factory Methods
+        #Region " Factory Methods "
 <%
 if (UseBoth())
 {
     %>
 
-#if !SILVERLIGHT
+#If Not SILVERLIGHT Then
 <%
 }
 %>
@@ -17,8 +17,8 @@ if (Info.UseUnitOfWorkType == string.Empty)
 <%
 }
 %>
-<!-- #include file="GetObject.asp" -->
 <!-- #include file="InternalGetObject.asp" -->
+<!-- #include file="GetObject.asp" -->
 <!-- #include file="DeleteObject.asp" -->
 <%
         foreach (Criteria c in Info.CriteriaObjects)
@@ -27,9 +27,9 @@ if (Info.UseUnitOfWorkType == string.Empty)
             {
                 %>
 
-        /// <summary>
-        /// Factory method. Creates a new <see cref="<%= Info.ObjectName %>"/> child object<%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
-        /// </summary>
+        ''' <summary>
+        ''' Factory method. Creates a new <see cref="<%= Info.ObjectName %>"/> child object<%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
+        ''' </summary>
 <%
                 string strNewParams = string.Empty;
                 string strNewCritParams = string.Empty;
@@ -41,21 +41,21 @@ if (Info.UseUnitOfWorkType == string.Empty)
                         strNewParams += ", ";
                         strNewCritParams += ", ";
                     }
-                    strNewParams += string.Concat(GetDataTypeGeneric(newParams[i], newParams[i].PropertyType), " ", FormatCamel(newParams[i].Name));
+                    strNewParams += string.Concat(FormatCamel(newParams[i].Name), " As ", GetDataTypeGeneric(newParams[i], newParams[i].PropertyType));
                     strNewCritParams += FormatCamel(newParams[i].Name);
                 }
 %>
-        /// <returns>A reference to the created <see cref="<%= Info.ObjectName %>"/> object.</returns>
-        internal static <%= Info.ObjectName %> New<%= Info.ObjectName %><%= c.CreateOptions.FactorySuffix %>Child(<%= strNewParams %>)
-        {
+        ''' <returns>A reference to the created <see cref="<%= Info.ObjectName %>"/> object.</returns>
+        Friend Shared Function New<%= Info.ObjectName %><%= c.CreateOptions.FactorySuffix %>Child(<%= strNewParams %>) As <%= Info.ObjectName %>
         <%
                 if (CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.None &&
                     CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.PropertyLevel &&
                     Info.GetRoles.Trim() != String.Empty)
                 {
                     %>
-            if (!CanAddObject())
-                throw new System.Security.SecurityException("User not authorized to create a <%= Info.ObjectName %>.");
+            If Not CanAddObject() Then
+                Throw New System.Security.SecurityException("User not authorized to create a <%= Info.ObjectName %>.")
+            End If
 
             <%
                 }
@@ -63,18 +63,18 @@ if (Info.UseUnitOfWorkType == string.Empty)
                 {
                     if (strNewCritParams.Length > 0)
                     {
-                        strNewCritParams = "true, " + strNewCritParams;
+                        strNewCritParams = "True, " + strNewCritParams;
                     }
                     else
                     {
-                        strNewCritParams = "true";
+                        strNewCritParams = "True";
                     }
                 }
             %>
-            <%= Info.ObjectName %> obj = DataPortal.CreateChild<<%= Info.ObjectName %>>(new <%= c.Name %>(<%= strNewCritParams %>));
-            obj.MarkAsChild();
-            return obj;
-        }
+            Dim obj As <%= Info.ObjectName %> = DataPortal.CreateChild(Of <%= Info.ObjectName %>)(New <%= c.Name %>(<%= strNewCritParams %>))
+            obj.MarkAsChild()
+            Return obj
+        End Function
 <%
             }
 
@@ -82,9 +82,9 @@ if (Info.UseUnitOfWorkType == string.Empty)
             {
                 %>
 
-        /// <summary>
-        /// Factory method. Loads a <see cref="<%= Info.ObjectName %>" /> child object <%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
-        /// </summary>
+        ''' <summary>
+        ''' Factory method. Loads a <see cref="<%= Info.ObjectName %>" /> child object <%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
+        ''' </summary>
         <%
                 string strGetParams = string.Empty;
                 string strGetCritParams = string.Empty;
@@ -95,33 +95,33 @@ if (Info.UseUnitOfWorkType == string.Empty)
                         strGetParams += ", ";
                         strGetCritParams += ", ";
                     }
-                    strGetParams += string.Concat(GetDataTypeGeneric(c.Properties[i], c.Properties[i].PropertyType), " ", FormatCamel(c.Properties[i].Name));
+                    strGetParams += string.Concat(FormatCamel(c.Properties[i].Name), " As ", GetDataTypeGeneric(c.Properties[i], c.Properties[i].PropertyType));
                     strGetCritParams += FormatCamel(c.Properties[i].Name);
                 }
         %>
-        internal static <%= Info.ObjectName %> Get<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>Child(<%= strGetParams %>)
-        {
+        Friend Shared Function Get<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>Child(<%= strGetParams %>) As  <%= Info.ObjectName %>
             <%
             if (CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.None &&
                 CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.PropertyLevel &&
                 Info.GetRoles.Trim() != String.Empty)
             {
                 %>
-            if (!CanGetObject())
-                throw new System.Security.SecurityException("User not authorized to load a <%= Info.ObjectName %>.");
+            If Not CanGetObject() Then
+                Throw New System.Security.SecurityException("User not authorized to load a <%= Info.ObjectName %>.")
+            End If
 
             <%
             }
             if (strGetCritParams.Trim().Length > 0)
-                strGetCritParams = "true, " + strGetCritParams;
+                strGetCritParams = "True, " + strGetCritParams;
             else
-                strGetCritParams = "true";
+                strGetCritParams = "True";
             %>
-            return DataPortal.Fetch<<%= Info.ObjectName %>>(new <%= c.Name %>(<%= strGetCritParams %>));
-        }
+            Return DataPortal.Fetch(Of <%= Info.ObjectName %>)(New <%= c.Name %>(<%= strGetCritParams %>))
+        End Function
     <%
             }
         }
         %>
 
-        #endregion
+        #End Region

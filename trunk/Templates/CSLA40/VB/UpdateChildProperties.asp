@@ -4,8 +4,8 @@ children = SortChildren(children);
 if (IgnoreSortOrder(children))
 {
     %>
-            <%= ucpSpacer %>// flushes all pending data operations
-            <%= ucpSpacer %>FieldManager.UpdateChildren(this);
+            <%= ucpSpacer %>' flushes all pending data operations
+            <%= ucpSpacer %>FieldManager.UpdateChildren(Me)
 <%
 }
 else
@@ -13,7 +13,7 @@ else
     foreach (ChildProperty child in children)
     {
         %>
-            <%= ucpSpacer %>DataPortal.UpdateChild(<%= child.Name %>, this);
+            <%= ucpSpacer %>DataPortal.UpdateChild(<%= child.Name %>, Me)
 <%
     }
 }

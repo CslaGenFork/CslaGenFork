@@ -7,11 +7,11 @@ foreach (ValueProperty prop in Info.ValueProperties) { %>
                     prop.PropertyType == TypeCodeEx.Int32 ||
                     prop.PropertyType == TypeCodeEx.Int64)) { %>
 
-        #region Static Fields
+        #Region " Static Fields "
 
-        private static <%= GetDataTypeGeneric(prop, prop.PropertyType) %> <%= prop.DefaultValue.Trim() %>;
+            Private Shared <%= prop.DefaultValue.Trim() %> As <%= GetDataTypeGeneric(prop, prop.PropertyType) %>
 
-        #endregion
+        #End Region
     <% }
     } %>
 <% } %>

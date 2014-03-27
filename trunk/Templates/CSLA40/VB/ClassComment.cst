@@ -1,4 +1,4 @@
-<%@ CodeTemplate Inherits="CslaTemplateHelperCS" Language="CSharp" TargetLanguage="CSharp" Description="Generates a CSLA Inherited Object." %>
+<%@ CodeTemplate Inherits="CslaTemplateHelperVB" Language="CSharp" TargetLanguage="VB" Description="Generates a CSLA Inherited Object." %>
 <%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the CSLA Object to inherit from." %>
 
 <%@ Assembly Name="CslaGenerator" %>
@@ -9,14 +9,12 @@
 
 <!-- #include file="Header.asp" -->
 
-namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Business) %>
-{
+<%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Business) == string.Empty ? "" : "Namespace " + GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Business) %>
 <%
 bool? firstComment = true;
 %>
 
     <!-- #include file="XmlComment.asp" -->
-    <%= Info.ClassVisibility == ClassVisibility.Public ? "public" : "internal" %> partial class <%= Info.ObjectName %>
-    {
-    }
-}
+    <%= Info.ClassVisibility == ClassVisibility.Public ? "Public" : "Friend" %> Partial Class <%= Info.ObjectName %>
+    End Class
+<%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Business) == string.Empty ? "" : "End Namespace" %>

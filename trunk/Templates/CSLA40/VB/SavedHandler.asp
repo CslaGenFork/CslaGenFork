@@ -70,77 +70,70 @@ if (Info.UpdaterType != string.Empty)
         }
         genOptional = true;
 
-        Infos.Append("To do list: edit \"" + Info.ObjectName + ".cs\", uncomment the \"OnDeserialized\" method and add the following line:" + Environment.NewLine);
-        Infos.Append("      " + Info.UpdaterType + "." + Info.UpdaterType + "Saved += " + Info.UpdaterType + "SavedHandler;" + Environment.NewLine);
+        Infos.Append("To do list: edit \"" + Info.ObjectName + ".vb\", uncomment the \"OnDeserialized\" method and add the following line:" + Environment.NewLine);
+        Infos.Append("      AddHandler" + Info.UpdaterType + "." + Info.UpdaterType + "Saved, AddressOf " + Info.UpdaterType + "SavedHandler" + Environment.NewLine);
         %>
-        #region Saved Event Handler
+        #Region " Saved Event Handler "
 <%
         if (CurrentUnit.GenerationParams.WriteTodo)
         {
             %>
 
-        // TODO: edit "<%= Info.ObjectName %>.cs", uncomment the "OnDeserialized" method and add the following line:
-        // TODO:     <%= Info.UpdaterType %>.<%= Info.UpdaterType %>Saved += <%= Info.UpdaterType %>SavedHandler;
+        'TODO: edit "<%= Info.ObjectName %>.vb", uncomment the "OnDeserialized" method and add the following line:
+        'TODO:     AddHandler <%= Info.UpdaterType %>.<%= Info.UpdaterType %>Saved, AddressOf <%= Info.UpdaterType %>SavedHandler;
 <%
         }
         %>
 
-        /// <summary>
-        /// Handle Saved events of <see cref="<%= Info.UpdaterType %>"/> to update child <see cref="<%= Info.ItemType %>"/> objects. event.
-        /// </summary>
-        /// <param name="sender">The sender of the event.</param>
-        /// <param name="e">The <see cref="Csla.Core.SavedEventArgs"/> instance containing the event data.</param>
-        private void <%= Info.UpdaterType %>SavedHandler(object sender, Csla.Core.SavedEventArgs e)
-        {
-            var obj = (<%= Info.UpdaterType %>)e.NewObject;
-            if (((<%= Info.UpdaterType %>)sender).IsNew)
-            {
-                IsReadOnly = false;
-                var rlce = RaiseListChangedEvents;
-                RaiseListChangedEvents = true;
-                Add(<%= Info.ItemType %>.LoadInfo(obj));
-                RaiseListChangedEvents = rlce;
-                IsReadOnly = true;
-            }
-            else
-            {
-                for (int index = 0; index < this.Count; index++)
-                {
-                    var child = this[index];
-                    if (child.<%= identityName %> == obj.<%= identitySourceName %>)
-                    {
-                        IsReadOnly = false;
-                        child.UpdatePropertiesOnSaved(obj);
+        ''' <summary>
+        ''' Handle Saved events of <see cref="<%= Info.UpdaterType %>"/> to update child <see cref="<%= Info.ItemType %>"/> objects. event.
+        ''' </summary>
+        ''' <param name="sender">The sender of the event.</param>
+        ''' <param name="e">The <see cref="Csla.Core.SavedEventArgs"/> instance containing the event data.</param>
+        Private Sub <%= Info.UpdaterType %>SavedHandler(sender As Object, e As Csla.Core.SavedEventArgs)
+            Dim obj = DirecCast(e.NewObject, <%= Info.UpdaterType %>)
+            If DirecCast(sender, <%= Info.UpdaterType %>).IsNew Then
+                IsReadOnly = False
+                Dim rlce = RaiseListChangedEvents
+                RaiseListChangedEvents = True
+                Add(<%= Info.ItemType %>.LoadInfo(obj))
+                RaiseListChangedEvents = rlce
+                IsReadOnly = True
+            Else
+                For index As Int = 0 To Me.Count - 1
+                    Dim child = Me(index)
+                    If child.<%= identityName %> = obj.<%= identitySourceName %> Then
+                        IsReadOnly = False
+                        child.UpdatePropertiesOnSaved(obj)
                         <%
 if (CurrentUnit.GenerationParams.GenerateWPF)
 {
     if (CurrentUnit.GenerationParams.DualListInheritance)
     {
         %>
-#if !WINFORMS
+#If Not WINFORMS Then
 <%
     }
     %>
-                        var notifyCollectionChangedEventArgs =
-                            new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, child, child, index);
-                        OnCollectionChanged(notifyCollectionChangedEventArgs);
+                        Dim notifyCollectionChangedEventArgs As New NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Replace, child, child, index)
+                        OnCollectionChanged(notifyCollectionChangedEventArgs)
                         <%
     if (CurrentUnit.GenerationParams.DualListInheritance)
     {
         %>
-#endif
+#End If
 <%
     }
 }
 %>
-                        IsReadOnly = true;
-                        break;
-                    }
-                }
-            }
-        }
+                        IsReadOnly = True
+                        Exit For
+                    End If
+                Next
+            End If
+        End Sub
 
-        #endregion
+        #End Region
 
     <%
     }

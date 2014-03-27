@@ -28,19 +28,19 @@ if (!Info.UseCustomLoading)
                     else
                         getIsFirst = false;
 
-                    strGetCritParams += string.Concat(GetDataTypeGeneric(p, p.PropertyType), " ", FormatCamel(p.Name));
+                    strGetCritParams += string.Concat(FormatCamel(p.Name), " As ", (GetDataTypeGeneric(p, p.PropertyType)));
                     strGetInvokeParams += "crit." + FormatPascal(p.Name);
-                    strGetComment += "/// <param name=\"" + FormatCamel(p.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(p.Name) + ".</param>";
+                    strGetComment += "''' <param name=\"" + FormatCamel(p.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(p.Name) + ".</param>";
                 }
                 if (c.Properties.Count > 1)
-                    strGetComment = "/// <param name=\"crit\">The fetch criteria.</param>";
+                    strGetComment = "''' <param name=\"crit\">The fetch criteria.</param>";
                 else if (c.Properties.Count > 0)
                     strGetInvokeParams = FormatCamel(c.Properties[0].Name);
                 %>
 
-        /// <summary>
-        /// Loads a <see cref="<%= Info.ObjectName %>"/> collection from the database<%= (c.Properties.Count == 0 && Info.SimpleCacheOptions == SimpleCacheResults.DataPortal ? " or from the cache" : "") %><%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
-        /// </summary>
+        ''' <summary>
+        ''' Loads a <see cref="<%= Info.ObjectName %>"/> collection from the database<%= (c.Properties.Count == 0 && Info.SimpleCacheOptions == SimpleCacheResults.DataPortal ? " or from the cache" : "") %><%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
+        ''' </summary>
         <%
                 if (c.Properties.Count > 0)
                 {
@@ -51,70 +51,64 @@ if (!Info.UseCustomLoading)
                 if (c.GetOptions.RunLocal)
                 {
                     %>
-        [Csla.RunLocal]
+        <Csla.RunLocal()>
         <%
                 }
                 if (c.Properties.Count > 1)
                 {
                     %>
-        protected void <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Fetch(<%= c.Name %> crit)
-        {
+        Protected <%= isChildNotLazyLoaded ? "" : "OverLoads" %> Sub <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Fetch(crit As <%= c.Name %>)
             <%
                 }
                 else if (c.Properties.Count > 0)
                 {
                     %>
-        protected void <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)
-        {
+        Protected <%= isChildNotLazyLoaded ? "" : "OverLoads" %> Sub <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)
             <%
                 }
                 else
                 {
                     %>
-        protected void <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Fetch()
-        {
+        Protected <%= isChildNotLazyLoaded ? "" : "OverLoads" %> Sub <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Fetch()
             <%
                     if (Info.SimpleCacheOptions == SimpleCacheResults.DataPortal && c.Properties.Count == 0)
                     {
                         %>
-            if (IsCached)
-            {
-                LoadCachedList();
-                return;
-            }
+            If IsCached Then
+                LoadCachedList()
+                Exit Sub
+            End If
 
             <%
                     }
                 }
                 %>
             <%= GetConnection(Info, true) %>
-            {
                 <%= GetCommand(Info, c.GetOptions.ProcedureName) %>
-                {
                     <%
                 if (Info.CommandTimeout != string.Empty)
                 {
-                    %>cmd.CommandTimeout = <%= Info.CommandTimeout %>;
+                    %>cmd.CommandTimeout = <%= Info.CommandTimeout %>
                     <%
                 }
-                %>cmd.CommandType = CommandType.StoredProcedure;
+                %>cmd.CommandType = CommandType.StoredProcedure
                     <%
                 foreach (CriteriaProperty p in c.Properties)
                 {
                     if (c.Properties.Count > 1)
                     {
-                        %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= GetParameterSet(p, true) %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= GetDbType(p) %>;
+                        %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= GetParameterSet(p, true) %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= GetDbType(p) %>
                     <%
                     }
                     else
                     {
-                        %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= AssignSingleCriteria(c, "crit") %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= GetDbType(p) %>;
+                        %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= AssignSingleCriteria(c, "crit") %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= GetDbType(p) %>
                     <%
                     }
                 }
                 if (Info.PersistenceType == PersistenceType.SqlConnectionUnshared)
                 {
-                    %>cn.Open();
+                    %>cn.Open()
                     <%
                 }
                 string hookArgs = string.Empty;
@@ -126,30 +120,29 @@ if (!Info.UseCustomLoading)
                 {
                     hookArgs = ", " + HookSingleCriteria(c, "crit");
                 }
-                %>var args = new DataPortalHookArgs(cmd<%= hookArgs %>);
-                    OnFetchPre(args);
-                    LoadCollection(cmd);
-                    OnFetchPost(args);
-                }
-            }
+                %>Dim args As New DataPortalHookArgs(cmd<%= hookArgs %>)
+                    OnFetchPre(args)
+                    LoadCollection(cmd)
+                    OnFetchPost(args)
+                End Using
+            End Using
             <%
                 if (SelfLoadsChildren(Info) && IsCollectionType(Info.ObjectType))
                 {
                     %>
-            foreach (var item in this)
-            {
-                item.FetchChildren();
-            }
+            For Each item As <%= Info.ItemType %> In Me
+                item.FetchChildren()
+            Next
         <%
                 }
                 if (Info.SimpleCacheOptions == SimpleCacheResults.DataPortal && c.Properties.Count == 0)
                 {
                     %>
-            _list = this;
+            _list = Me
         <%
                 }
                 %>
-        }
+        End Sub
 <!-- #include file="SimpleCacheLoadCachedList.asp" -->
         <%
             }
@@ -161,41 +154,38 @@ if (!Info.UseCustomLoading)
             {
                 %>
 
-        private void LoadCollection(SqlCommand cmd)
-        {
-            using (var dr = new SafeDataReader(cmd.ExecuteReader()))
-            {
-                Fetch(dr);
+        Private Sub LoadCollection(cmd As SqlCommand)
+            Using dr As New SafeDataReader(cmd.ExecuteReader())
+                Fetch(dr)
                 <%
                 if (itemInfo != null)
                 {
                     if (ParentLoadsCollectionChildren(itemInfo))
                     {
                         %>
-                if (this.Count > 0)
-                    this[0].FetchChildren(dr);
+                If Me.Count > 0 Then
+                    Me(0).FetchChildren(dr)
+                End If
                 <%
                     }
                 }
                 %>
-            }
-        }
+            End Using
+        End Sub
         <%
             }
             else
             {
                 %>
 
-        private void LoadCollection(SqlCommand cmd)
-        {
-            DataSet ds = new DataSet();
-            using (var da = new SqlDataAdapter(cmd))
-            {
-                da.Fill(ds);
-            }
-            CreateRelations(ds);
-            Fetch(ds.Tables[0].Rows);
-        }
+        Private Sub LoadCollection(cmd As SqlCommand)
+            Dim ds As New DataSet()
+            Using da As New SqlDataAdapter(cmd)
+                da.Fill(ds)
+            End Using
+            CreateRelations(ds)
+            Fetch(ds.Tables(0).Rows)
+        End Sub
 
 <!-- #include file="CreateRelations.asp" -->
 <%
@@ -207,66 +197,64 @@ if (!Info.UseCustomLoading)
     {
         %>
 
-        /// <summary>
-        /// Loads all <see cref="<%= Info.ObjectName %>"/> collection items from the given SafeDataReader.
-        /// </summary>
-        /// <param name="dr">The SafeDataReader to use.</param>
-        private void <%= (isChildCollection && !UseChildFactoryHelper ? "Child_" : "") %>Fetch(SafeDataReader dr)
-        {
+        ''' <summary>
+        ''' Loads all <see cref="<%= Info.ObjectName %>"/> collection items from the given SafeDataReader.
+        ''' </summary>
+        ''' <param name="dr">The SafeDataReader to use.</param>
+        Private Sub <%= (isChildCollection && UseChildFactoryHelper ? "Child_" : "") %>Fetch(dr As SafeDataReader)
             <%
         if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
         {
             %>
-            IsReadOnly = false;
+            IsReadOnly = False
             <%
         }
         %>
-            var rlce = RaiseListChangedEvents;
-            RaiseListChangedEvents = false;
+            Dim rlce = RaiseListChangedEvents
+            RaiseListChangedEvents = False
             <%
         if (!Info.HasGetCriteria && Info.ParentType != string.Empty && !isChildSelfLoaded)
         {
             %>
-            var args = new DataPortalHookArgs(dr);
-            OnFetchPre(args);
+            Dim args As New DataPortalHookArgs(dr)
+            OnFetchPre(args)
             <%
         }
         %>
-            while (dr.Read())
-            {
+            While dr.Read()
                 <%
         if (UseChildFactoryHelper)
         {
             %>
-                Add(<%= Info.ItemType %>.Get<%= Info.ItemType %>(dr));
+                MyBase.Add(<%= Info.ItemType %>.Get<%= Info.ItemType %>(dr))
             <%
         }
         else
         {
             %>
-                Add(DataPortal.Fetch<%= IsNotRootType(itemInfo) ? "Child" : "" %><<%= Info.ItemType %>>(dr));
+                MyBase.Add(DataPortal.Fetch<%= IsNotRootType(itemInfo) ? "Child" : "" %>(Of <%= Info.ItemType %>)(dr))
             <%
         }
         %>
-            }
+            End While
             <%
         if (!Info.HasGetCriteria && Info.ParentType != string.Empty && !isChildSelfLoaded)
         {
             %>
-            OnFetchPost(args);
+            OnFetchPost(args)
             <%
         }
         %>
-            RaiseListChangedEvents = rlce;
+            RaiseListChangedEvents = rlce
             <%
         if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
         {
             %>
-            IsReadOnly = true;
+            IsReadOnly = True
             <%
         }
         %>
-        }
+        End Sub
     <%
         if ((ancestorLoaderLevel > 1 && !ancestorIsCollection) || (ancestorLoaderLevel > 1 && ancestorIsCollection))
         {
@@ -295,37 +283,35 @@ if (!Info.UseCustomLoading)
             string collectionObject = FormatPascal(childProp.Name);
             %>
 
-        /// <summary>
-        /// Loads <see cref="<%= FormatPascal(Info.ItemType) %>"/> items on the <%= FormatPascal(childProp.Name) %> collection.
-        /// </summary>
-        /// <param name="collection">The grand parent <see cref="<%= FormatPascal(parentInfo.ParentType) %>"/> collection.</param>
-        internal void LoadItems(<%= FormatPascal(parentInfo.ParentType) %> collection)
-        {
-            foreach (var item in this)
-            {
-                var obj = collection.Find<%= FormatPascal(Info.ParentType) %>ByParentProperties(<%= findByParams %>);
+        ''' <summary>
+        ''' Loads <see cref="<%= FormatPascal(Info.ItemType) %>"/> items on the <%= FormatPascal(childProp.Name) %> collection.
+        ''' </summary>
+        ''' <param name="lcollection">The grand parent <see cref="<%= FormatPascal(parentInfo.ParentType) %>"/> collection.</param>
+        Friend Sub LoadItems(lcollection As <%= FormatPascal(parentInfo.ParentType) %>)
+            For Each item As <%= Info.ItemType %> In Me
+                Dim obj = lcollection.Find<%= FormatPascal(Info.ParentType) %>ByParentProperties(<%= findByParams %>)
                 <%
                 if (childInfo.ObjectType == CslaObjectType.ReadOnlyCollection)
                 {
                     %>
-                obj.<%= collectionObject %>.IsReadOnly = false;
+                obj.<%= collectionObject %>.IsReadOnly = False
                 <%
                 }
                 %>
-                var rlce = obj.<%= collectionObject %>.RaiseListChangedEvents;
-                obj.<%= collectionObject %>.RaiseListChangedEvents = false;
-                obj.<%= collectionObject %>.Add(item);
-                obj.<%= collectionObject %>.RaiseListChangedEvents = rlce;
+                Dim rlce = obj.<%= collectionObject %>.RaiseListChangedEvents
+                obj.<%= collectionObject %>.RaiseListChangedEvents = False
+                obj.<%= collectionObject %>.Add(item)
+                obj.<%= collectionObject %>.RaiseListChangedEvents = rlce
                 <%
                 if (childInfo.ObjectType == CslaObjectType.ReadOnlyCollection)
                 {
                     %>
-                obj.<%= collectionObject %>.IsReadOnly = true;
+                obj.<%= collectionObject %>.IsReadOnly = True
                 <%
                 }
                 %>
-            }
-        }
+            Next
+        End Sub
     <%
         }
     }
@@ -333,91 +319,87 @@ if (!Info.UseCustomLoading)
     {
         %>
 
-        /// <summary>
-        /// Loads all <see cref="<%= Info.ObjectName %>"/> collection items using given DataRow array.
-        /// </summary>
-        private void <%= isChildCollection ? "Child_" : "" %>Fetch(DataRow[] rows)
-        {
+        ''' <summary>
+        ''' Loads all <see cref="<%= Info.ObjectName %>"/> collection items using given DataRow array.
+        ''' </summary>
+        Private Sub <%= isChildCollection ? "Child_" : "" %>Fetch(rows As DataRow())
             <%
         if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
         {
             %>
-            IsReadOnly = false;
+            IsReadOnly = False
             <%
         }
         %>
-            var rlce = RaiseListChangedEvents;
-            RaiseListChangedEvents = false;
-            foreach (DataRow row in rows)
-            {
+            Dim rlce = RaiseListChangedEvents
+            RaiseListChangedEvents = False
+            For Each row As DataRow In rows
                 <%
         if (UseChildFactoryHelper)
         {
-            %>Add(<%= Info.ItemType %>.Get<%= Info.ItemType %>(row));
+            %>MyBase.Add(<%= Info.ItemType %>.Get<%= Info.ItemType %>(row))
                 <%
         }
         else
         {
-            %>Add(DataPortal.Fetch<%= IsNotRootType(itemInfo) ? "Child" : "" %><<%= Info.ItemType %>>(row));
+            %>MyBase.Add(DataPortal.Fetch<%= IsNotRootType(itemInfo) ? "Child" : "" %>(Of <%= Info.ItemType %>)(row))
                 <%
         }
         %>
-            }
-            RaiseListChangedEvents = rlce;
+        Next
+            RaiseListChangedEvents = rlce
             <%
         if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
         {
             %>
-            IsReadOnly = true;
+            IsReadOnly = True
             <%
         }
         %>
-        }
+        End Sub
         <%
         if (Info.HasGetCriteria)
         {
             %>
 
-        /// <summary>
-        /// Loads all <see cref="<%= Info.ObjectName %>"/> collection items from given DataTable.
-        /// </summary>
-        private void <%= isChildCollection ? "Child_" : "" %>Fetch(DataRowCollection rows)
-        {
+        ''' <summary>
+        ''' Loads all <see cref="<%= Info.ObjectName %>"/> collection items from given DataTable.
+        ''' </summary>
+        Private Sub <%= isChildCollection ? "Child_" : "" %>Fetch(rows As DataRowCollection)
             <%
             if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
             {
                 %>
-            IsReadOnly = false;
+            IsReadOnly = False
             <%
             }
             %>
-            var rlce = RaiseListChangedEvents;
-            RaiseListChangedEvents = false;
-            foreach (DataRow row in rows)
-            {
+            Dim rlce = RaiseListChangedEvents
+            RaiseListChangedEvents = False
+            For Each row As DataRow In rows
                 <%
         if (UseChildFactoryHelper)
         {
-            %>Add(<%= Info.ItemType %>.Get<%= Info.ItemType %>(row));
+            %>MyBase.Add(<%= Info.ItemType %>.Get<%= Info.ItemType %>(row))
                 <%
         }
         else
         {
-            %>Add(DataPortal.Fetch<%= IsNotRootType(itemInfo) ? "Child" : "" %><<%= Info.ItemType %>>(row));
+            %>MyBase.Add(DataPortal.Fetch<%= IsNotRootType(itemInfo) ? "Child" : "" %>(Of <%= Info.ItemType %>)(row))
                 <%
         }
         %>
-            }
-            RaiseListChangedEvents = rlce;
+            Next
+            RaiseListChangedEvents = rlce
             <%
             if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
             {
                 %>
-            IsReadOnly = true;
+            IsReadOnly = True
             <%
             }
             %>
-        }
+        End Sub
             <%
         }
     }

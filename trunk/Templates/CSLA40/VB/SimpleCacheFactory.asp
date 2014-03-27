@@ -1,41 +1,40 @@
-        #region Private Fields
+        #Region " Private Fields "
 
-        private static <%= Info.ObjectName %> _list;
+        Private Shared _list As <%= Info.ObjectName %>
 
-        #endregion
+        #End Region
 
-        #region Cache Management Methods
+        #Region " Cache Management Methods "
 
-        /// <summary>
-        /// Clears the in-memory <%= Info.ObjectName %> cache so it is reloaded on the next request.
-        /// </summary>
-        public static void InvalidateCache()
-        {
+        ''' <summary>
+        ''' Clears the in-memory <%= Info.ObjectName %> cache so it is reloaded on the next request.
+        ''' </summary>
+        Public Shared Sub InvalidateCache()
             <%
     if (CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.None &&
         CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.PropertyLevel &&
         Info.GetRoles.Trim() != String.Empty)
     {
-        %>if (!CanGetObject())
-                throw new System.Security.SecurityException("User not authorized to load a <%= Info.ObjectName %>.");
-
+        %>If Not CanGetObject() Then
+                Throw New System.Security.SecurityException("User not authorized to load a <%= Info.ObjectName %>.")
+          End If
             <%
     }
-        %>_list = null;
-        }
+        %>_list = Nothing
+        End Sub
 
-        /// <summary>
-        /// Used by async loaders to load the cache.
-        /// </summary>
-        /// <param name="list">The list to cache.</param>
-        internal static void SetCache(<%= Info.ObjectName %> list)
-        {
-            _list = list;
-        }
+        ''' <summary>
+        ''' Used by async loaders to load the cache.
+        ''' </summary>
+        ''' <param name="lst">The list to cache.</param>
+        Friend Shared Sub SetCache(lst As <%= Info.ObjectName %>)
+            _list = lst
+        End Sub
 
-        internal static bool IsCached
-        {
-            get { return _list != null; }
-        }
-
-        #endregion
+        Friend Shared ReadOnly Property IsCached() As Boolean
+            Get 
+                Return _List IsNot Nothing
+            End Get        
+        End Sub
+        
+        #End Region

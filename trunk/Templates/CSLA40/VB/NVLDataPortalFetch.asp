@@ -18,15 +18,15 @@ if (!Info.UseCustomLoading && (UseNoSilverlight() ||
                 else
                     getIsFirst = false;
 
-                strGetComment += "/// <param name=\"" + FormatCamel(p.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(p.Name) + ".</param>";
+                strGetComment += "''' <param name=\"" + FormatCamel(p.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(p.Name) + ".</param>";
             }
             if (c.Properties.Count > 1)
-                strGetComment = "/// <param name=\"crit\">The fetch criteria.</param>";
+                strGetComment = "''' <param name=\"crit\">The fetch criteria.</param>";
             %>
 
-        /// <summary>
-        /// Loads a <see cref="<%= Info.ObjectName %>"/> collection from the database<%= (Info.SimpleCacheOptions == SimpleCacheResults.DataPortal && c.Properties.Count == 0) ? " or from the cache" : "" %><%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
-        /// </summary>
+        ''' <summary>
+        ''' Loads a <see cref="<%= Info.ObjectName %>"/> collection from the database<%= (Info.SimpleCacheOptions == SimpleCacheResults.DataPortal && c.Properties.Count == 0) ? " or from the cache" : "" %><%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
+        ''' </summary>
         <%
             if (c.Properties.Count > 0)
             {
@@ -35,64 +35,60 @@ if (!Info.UseCustomLoading && (UseNoSilverlight() ||
             }
             if (c.GetOptions.RunLocal)
             {
-                %>[Csla.RunLocal]
+                %><Csla.RunLocal()>
         <%
             }
             if (c.Properties.Count > 1)
             {
-        %>protected void DataPortal_Fetch(<%= c.Name %> crit)<%
+        %>Protected Sub DataPortal_Fetch(crit As <%= c.Name %>)<%
             }
             else if (c.Properties.Count > 0)
             {
-        %>protected void DataPortal_Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)<%
+        %>Protected Sub DataPortal_Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)<%
             }
             else
             {
-        %>protected void DataPortal_Fetch()<%
+        %>Protected Sub DataPortal_Fetch()<%
             }
         %>
-        {
             <%
             if (Info.SimpleCacheOptions == SimpleCacheResults.DataPortal && c.Properties.Count == 0)
             {
                 %>
-            if (IsCached)
-            {
-                LoadCachedList();
-                return;
-            }
+            If IsCached Then
+                LoadCachedList()
+                Return
+            End If
 
             <%
             }
             %>
             <%= GetConnection(Info, true) %>
-            {
                 <%= GetCommand(Info, c.GetOptions.ProcedureName) %>
-                {
                     <%
             if (Info.CommandTimeout != string.Empty)
             {
-                %>cmd.CommandTimeout = <%= Info.CommandTimeout %>;
+                %>cmd.CommandTimeout = <%= Info.CommandTimeout %>
                     <%
             }
-            %>cmd.CommandType = CommandType.StoredProcedure;
+            %>cmd.CommandType = CommandType.StoredProcedure
                     <%
             foreach (CriteriaProperty p in c.Properties)
             {
                 if (c.Properties.Count > 1)
                 {
-                    %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= GetParameterSet(p, true) %>).DbType = DbType.<%= GetDbType(p) %>;
+                    %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= GetParameterSet(p, true) %>).DbType = DbType.<%= GetDbType(p) %>
                     <%
                 }
                 else
                 {
-                    %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= AssignSingleCriteria(c, "crit") %>).DbType = DbType.<%= GetDbType(p) %>;
+                    %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= AssignSingleCriteria(c, "crit") %>).DbType = DbType.<%= GetDbType(p) %>
                     <%
                 }
             }
             if (Info.PersistenceType == PersistenceType.SqlConnectionUnshared)
             {
-                %>cn.Open();
+                %>cn.Open()
                     <%
             }
             string hookArgs = string.Empty;
@@ -104,44 +100,41 @@ if (!Info.UseCustomLoading && (UseNoSilverlight() ||
             {
                 hookArgs = ", " + HookSingleCriteria(c, "crit");
             }
-                    %>var args = new DataPortalHookArgs(cmd<%= hookArgs %>);
-                    OnFetchPre(args);
-                    LoadCollection(cmd);
-                    OnFetchPost(args);
-                }
-            }
+                    %>Dim args = New DataPortalHookArgs(cmd<%= hookArgs %>)
+                    OnFetchPre(args)
+                    LoadCollection(cmd)
+                    OnFetchPost(args)
+                End Using
+            End Using
             <%
             if (Info.SimpleCacheOptions == SimpleCacheResults.DataPortal && c.Properties.Count == 0)
             {
                 %>
-            _list = this;
+            _list = Me
         <%
             }
             %>
-        }
+        End Sub
 <!-- #include file="SimpleCacheLoadCachedList.asp" -->
         <%
         }
     }
     %>
 
-        private void LoadCollection(SqlCommand cmd)
-        {
-            IsReadOnly = false;
-            var rlce = RaiseListChangedEvents;
-            RaiseListChangedEvents = false;
-            using (var dr = new SafeDataReader(cmd.ExecuteReader()))
-            {
-                while (dr.Read())
-                {
-                    Add(new NameValuePair(
+        Private Sub LoadCollection(cmd As SqlCommand)
+            IsReadOnly = False
+            Dim rlce = RaiseListChangedEvents
+            RaiseListChangedEvents = False
+            Using dr = New SafeDataReader(cmd.ExecuteReader())
+                While dr.Read()
+                    Add(New NameValuePair(
                         <%= String.Format(GetDataReaderStatement(valueProp)) %>,
-                        <%= String.Format(GetDataReaderStatement(nameProp)) %>));
-                }
-            }
-            RaiseListChangedEvents = rlce;
-            IsReadOnly = true;
-        }
+                        <%= String.Format(GetDataReaderStatement(nameProp)) %>))
+                End While
+            End Using
+            RaiseListChangedEvents = rlce
+            IsReadOnly = True
+        End Sub
     <%
 }
 %>

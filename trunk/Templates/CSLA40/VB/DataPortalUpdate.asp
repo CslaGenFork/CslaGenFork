@@ -3,49 +3,46 @@ if (Info.GenerateDataPortalUpdate)
 {
     %>
 
-        /// <summary>
-        /// Updates in the database all changes made to the <see cref="<%= Info.ObjectName %>"/> object.
-        /// </summary>
+        ''' <summary>
+        ''' Updates in the database all changes made to the <see cref="<%= Info.ObjectName %>"/> object.
+        ''' </summary>
         <%
     if (Info.TransactionType == TransactionType.EnterpriseServices)
     {
-        %>[Transactional(TransactionalTypes.EnterpriseServices)]
+        %><Transactional(TransactionalTypes.EnterpriseServices)>
         <%
     }
     else if (Info.TransactionType == TransactionType.TransactionScope || Info.TransactionType == TransactionType.TransactionScope)
     {
-        %>[Transactional(TransactionalTypes.TransactionScope)]
+        %><Transactional(TransactionalTypes.TransactionScope)>
         <%
     }
     if (Info.InsertUpdateRunLocal)
     {
-        %>[Csla.RunLocal]
+        %><Csla.RunLocal()>
         <%
     }
-        %>protected override void DataPortal_Update()
-        {
+        %>Protected Overrides Sub DataPortal_Update()
             <%
     if (UseSimpleAuditTrail(Info))
     {
-        %>SimpleAuditTrail();
+        %>SimpleAuditTrail()
             <%
     }
     %><%= GetConnection(Info, false) %>
-            {
                 <%= GetCommand(Info, Info.UpdateProcedureName) %>
-                {
                     <%
     if (Info.TransactionType == TransactionType.ADO && Info.PersistenceType == PersistenceType.SqlConnectionManager)
     {
-        %>cmd.Transaction = ctx.Transaction;
+        %>cmd.Transaction = ctx.Transaction
                     <%
     }
     if (Info.CommandTimeout != string.Empty)
     {
-        %>cmd.CommandTimeout = <%= Info.CommandTimeout %>;
+        %>cmd.CommandTimeout = <%= Info.CommandTimeout %>
                     <%
     }
-    %>cmd.CommandType = CommandType.StoredProcedure;
+    %>cmd.CommandType = CommandType.StoredProcedure
                     <%
     foreach (ValueProperty prop in Info.GetAllValueProperties())
     {
@@ -63,17 +60,17 @@ if (Info.GenerateDataPortalUpdate)
             {
                 if (AllowNull(prop) && propType == TypeCodeEx.Guid)
                 {
-                    %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetFieldReaderStatement(prop) %>.Equals(Guid.Empty) ? (object)DBNull.Value : <%= GetFieldReaderStatement(prop) %>).DbType = DbType.<%= GetDbType(prop) %>;
+                    %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", If(<%= GetFieldReaderStatement(prop) %>.Equals(Guid.Empty), DBNull.Value, <%= GetFieldReaderStatement(prop) %>)).DbType = DbType.<%= GetDbType(prop) %>
                     <%
                 }
                 else if (AllowNull(prop) && propType != TypeCodeEx.SmartDate)
                 {
-                    %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetFieldReaderStatement(prop) %> == null ? (object)DBNull.Value : <%= GetFieldReaderStatement(prop) %><%= TypeHelper.IsNullableType(propType) ? ".Value" :"" %>).DbType = DbType.<%= GetDbType(prop) %>;
+                    %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", If(<%= GetFieldReaderStatement(prop) %><%= TypeHelper.IsNullableType(propType) ? ".HasValue" : " IsNot Nothing " %>, <%= GetFieldReaderStatement(prop) %><%= TypeHelper.IsNullableType(propType) ? ".Value" :"" %>, DBNull.Value)).DbType = DbType.<%= GetDbType(prop) %>
                     <%
                 }
                 else
                 {
-                    %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetFieldReaderStatement(prop) %><%= (propType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>)<%= postfix %>;
+                    %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetFieldReaderStatement(prop) %><%= (propType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>)<%= postfix %>
                     <%
                 }
             }
@@ -81,36 +78,36 @@ if (Info.GenerateDataPortalUpdate)
             {
                 if (AllowNull(prop) && propType == TypeCodeEx.Guid)
                 {
-                    %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %>.Equals(Guid.Empty) ? (object)DBNull.Value : <%= GetFieldReaderStatement(prop) %>).DbType = DbType.<%= GetDbType(prop) %>;
+                    %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", If(<%= GetParameterSet(Info, prop) %>.Equals(Guid.Empty),  DBNull.Value, <%= GetFieldReaderStatement(prop) %>)).DbType = DbType.<%= GetDbType(prop) %>
                     <%
                 }
                 else if (AllowNull(prop) && propType != TypeCodeEx.SmartDate)
                 {
-                    %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %> == null ? (object)DBNull.Value : <%= GetFieldReaderStatement(prop) %><%= TypeHelper.IsNullableType(propType) ? ".Value" :"" %>).DbType = DbType.<%= GetDbType(prop) %>;
+                    %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", If(<%= GetParameterSet(Info, prop) %><%= TypeHelper.IsNullableType(propType) ? ".HasValue" : " IsNot Nothing " %>, <%= GetFieldReaderStatement(prop) %><%= TypeHelper.IsNullableType(propType) ? ".Value" :"" %>, DBNull.Value)).DbType = DbType.<%= GetDbType(prop) %>
                     <%
                 }
                 else
                 {
-                    %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %><%= (propType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>)<%= postfix %>;
+                    %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %><%= (propType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>)<%= postfix %>
                     <%
                 }
             }
             if (prop.DbBindColumn.NativeType == "timestamp")
             {
-                %>cmd.Parameters.Add("@New<%= prop.ParameterName %>", SqlDbType.Timestamp).Direction = ParameterDirection.Output;
+                %>cmd.Parameters.Add("@New<%= prop.ParameterName %>", SqlDbType.Timestamp).Direction = ParameterDirection.Output
                     <%
             }
         }
     }
     if (Info.PersistenceType == PersistenceType.SqlConnectionUnshared)
     {
-        %>cn.Open();
+        %>cn.Open()
                     <%
     }
-    %>var args = new DataPortalHookArgs(cmd);
-                    OnUpdatePre(args);
-                    cmd.ExecuteNonQuery();
-                    OnUpdatePost(args);
+    %>Dim args As New DataPortalHookArgs(cmd)
+                    OnUpdatePre(args)
+                    cmd.ExecuteNonQuery()
+                    OnUpdatePost(args)
                     <%
     foreach (ValueProperty prop in Info.GetAllValueProperties())
     {
@@ -120,19 +117,19 @@ if (Info.GenerateDataPortalUpdate)
             if (prop.DeclarationMode == PropertyDeclaration.Managed)
             {
                 %>
-                    LoadProperty(<%= FormatPropertyInfoName(prop.Name) %>, (byte[]) cmd.Parameters["@New<%= prop.ParameterName %>"].Value);
+                    LoadProperty(<%= FormatPropertyInfoName(prop.Name) %>, DirectCast(cmd.Parameters("@New<%= prop.ParameterName %>").Value, Byte()))
                     <%
             }
             else
             {
                 %>
-                    <%= FormatFieldName(prop.Name) %> = (byte[]) cmd.Parameters["@New<%= prop.ParameterName %>"].Value;
+                    <%= FormatFieldName(prop.Name) %> = DirectCast(cmd.Parameters("@New<%= prop.ParameterName %>").Value, Byte()) 
                     <%
             }
         }
     }
     %>
-                }
+                End Using
                 <%
     if (Info.GetMyChildProperties().Count > 0)
     {
@@ -144,12 +141,12 @@ if (Info.GenerateDataPortalUpdate)
     if (Info.TransactionType == TransactionType.ADO && Info.PersistenceType == PersistenceType.SqlConnectionManager)
     {
         %>
-                ctx.Commit();
+                ctx.Commit()
             <%
     }
     %>
-            }
-        }
+            End Using
+        End Sub
     <%
 }
 %>

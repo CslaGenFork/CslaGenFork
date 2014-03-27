@@ -1,4 +1,4 @@
-<%@ CodeTemplate Inherits="CslaTemplateHelperCS" Language="CSharp" TargetLanguage="CSharp" Description="Generates a static Database class." %>
+<%@ CodeTemplate Inherits="CslaTemplateHelperVB" Language="CSharp" TargetLanguage="VB" Description="Generates a static Database class." %>
 <%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the CSLA Object (just to get some project info)" %>
 <%@ Property Name="Errors" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return errors to master.cst" %>
 <%@ Property Name="Warnings" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return warnings to master.cst" %>
@@ -23,18 +23,21 @@ if (CurrentUnit.GenerationParams.HeaderVerbosity != HeaderVerbosity.None)
     Response.Write(Environment.NewLine);
 }
 %>
-using System.Configuration;
+Imports System.Configuration
 
-namespace <%= GetContextUtilitiesNamespace(CurrentUnit, GenerationStep.Business) %>
-{
-    /// <summary>Class that provides the connection
-    /// strings used by the application.</summary>
-    internal static partial class Database
-    {
-        /// <summary>Connection string to the <%= CurrentUnit.GenerationParams.DatabaseConnection %> database.</summary>
-        internal static string <%= CurrentUnit.GenerationParams.DatabaseConnection %>Connection
-        {
-            get { return ConfigurationManager.ConnectionStrings["<%= CurrentUnit.GenerationParams.DatabaseConnection %>"].ConnectionString; }
-        }
-    }
-}
+<%= GetContextUtilitiesNamespace(CurrentUnit, GenerationStep.Business) == string.Empty ? "" : "Namespace " + GetContextUtilitiesNamespace(CurrentUnit, GenerationStep.Business) %>
+
+    ''' <summary>Class that provides the connection
+    ''' strings used by the application.</summary>
+    Partial Friend Class Database
+    
+        ''' <summary>Connection string to the <%= CurrentUnit.GenerationParams.DatabaseConnection %> database.</summary>
+        Friend Shared ReadOnly Property <%= CurrentUnit.GenerationParams.DatabaseConnection %>Connection As String
+            Get 
+                Return ConfigurationManager.ConnectionStrings("<%= CurrentUnit.GenerationParams.DatabaseConnection %>").ConnectionString
+            End Get
+        End Property
+
+    End Class
+
+<%= GetContextUtilitiesNamespace(CurrentUnit, GenerationStep.Business) == string.Empty ? "" : "End Namespace" %>

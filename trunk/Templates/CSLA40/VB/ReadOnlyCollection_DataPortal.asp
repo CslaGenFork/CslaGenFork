@@ -1,10 +1,10 @@
-        #region Data Access
+        #Region " Data Access "
 <%
 if (UseBoth())
 {
     %>
 
-#if !SILVERLIGHT
+#If Not SILVERLIGHT Then
 <%
 }
 if (UseNoSilverlight())
@@ -17,19 +17,28 @@ if (UseNoSilverlight() && CurrentUnit.GenerationParams.SilverlightUsingServices)
 {
     %>
 
-#else
+#Else
 <%
 }
-%>
+if (CurrentUnit.GenerationParams.TargetIsCsla40)
+{
+    %>
 <!-- #include file="DataPortalFetchServices.asp" -->
 <%
+}
+else
+{
+    %>
+<!-- #include file="DataPortalFetchServices-45.asp" -->
+<%
+}
 if (UseBoth())
 {
     %>
 
-#endif
+#End If
 <%
 }
 %>
 
-        #endregion
+        #End Region

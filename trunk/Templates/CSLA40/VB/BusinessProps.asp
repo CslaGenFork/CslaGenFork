@@ -12,7 +12,7 @@ IndentLevel = 2;
 %>
 <!-- #include file="InternalProps.asp" -->
 
-        #region Business Properties
+        #Region " Business Properties "
         <%
 string softDeleteColumn = Info.Parent.Params.SpBoolSoftDeleteColumn;
 foreach (ValueProperty prop in Info.ValueProperties)
@@ -37,9 +37,9 @@ foreach (ValueProperty prop in Info.ValueProperties)
     {
         %>
 
-        /// <summary>
-        /// Maintains metadata about <see cref="<%= string.IsNullOrEmpty(prop.Implements) ? prop.Name : prop.Implements %>"/> property.
-        /// </summary>
+        ''' <summary>
+        ''' Maintains metadata about <see cref="<%= string.IsNullOrEmpty(prop.Implements) ? prop.Name : prop.Implements %>"/> property.
+        ''' </summary>
 <%= statement %><%
     }
     if (prop.DeclarationMode != PropertyDeclaration.NoProperty)
@@ -48,45 +48,45 @@ foreach (ValueProperty prop in Info.ValueProperties)
         {
             IndentLevel = 2;
             %>
-        /// <summary>
+        ''' <summary>
 <%= GetXmlCommentString(prop.Summary) %>
-        /// </summary>
+        ''' </summary>
         <%
         }
         else
         {
             %>
 
-        /// <summary>
-        /// Gets <%= useSetter ? "or sets " : "" %>the <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>.
-        /// </summary>
+        ''' <summary>
+        ''' Gets <%= useSetter ? "or sets " : "" %>the <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>.
+        ''' </summary>
         <%
         }
         if (prop.PropertyType == TypeCodeEx.Boolean && prop.Nullable == false)
         {
             %>
-        /// <value><c>true</c> if <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; otherwise, <c>false</c>.</value>
+        ''' <value><c>true</c> if <%= prop.FriendlyName != String.Empty ? System.Net.WebUtility.HtmlEncode(prop.FriendlyName) : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; otherwise, <c>false</c>.</value>
         <%
         }
         else if (prop.PropertyType == TypeCodeEx.Boolean && prop.Nullable == true)
         {
             %>
-        /// <value><c>true</c> if <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; <c>false</c> if not <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; otherwise, <c>null</c>.</value>
+        ''' <value><c>true</c> if <%= prop.FriendlyName != String.Empty ? System.Net.WebUtility.HtmlEncode(prop.FriendlyName) : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; <c>false</c> if not <%= prop.FriendlyName != String.Empty ? System.Net.WebUtility.HtmlEncode(prop.FriendlyName) : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; otherwise, <c>null</c>.</value>
         <%
         }
         else
         {
             %>
-        /// <value>The <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>.</value>
+        ''' <value>The <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>.</value>
         <%
         }
         if (prop.Remarks != String.Empty)
         {
             IndentLevel = 2;
             %>
-        /// <remarks>
+        ''' <remarks>
 <%= GetXmlCommentString(prop.Remarks) %>
-        /// </remarks>
+        ''' </remarks>
         <%
         }
         %>
@@ -120,45 +120,45 @@ foreach (ConvertValueProperty prop in Info.ConvertValueProperties)
     {
         IndentLevel = 2;
         %>
-        /// <summary>
+        ''' <summary>
 <%= GetXmlCommentString(prop.Summary) %>
-        /// </summary>
+        ''' </summary>
         <%
     }
     else
     {
         %>
 
-        /// <summary>
-        /// Gets <%= useSetter ? "or sets " : "" %>the <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>.
-        /// </summary>
+        ''' <summary>
+        ''' Gets <%= useSetter ? "or sets " : "" %>the <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>.
+        ''' </summary>
         <%
     }
     if (prop.PropertyType == TypeCodeEx.Boolean && prop.Nullable == false)
     {
         %>
-        /// <value><c>true</c> if <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; otherwise, <c>false</c>.</value>
+        ''' <value><c>true</c> if <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; otherwise, <c>false</c>.</value>
         <%
     }
     else if (prop.PropertyType == TypeCodeEx.Boolean && prop.Nullable == true)
     {
         %>
-        /// <value><c>true</c> if <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; <c>false</c> if not <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; otherwise, <c>null</c>.</value>
+        ''' <value><c>true</c> if <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; <c>false</c> if not <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; otherwise, <c>null</c>.</value>
         <%
     }
     else
     {
         %>
-        /// <value>The <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>.</value>
+        ''' <value>The <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>.</value>
         <%
     }
     if (prop.Remarks != String.Empty)
     {
         IndentLevel = 2;
         %>
-        /// <remarks>
+        ''' <remarks>
 <%= GetXmlCommentString(prop.Remarks) %>
-        /// </remarks>
+        ''' </remarks>
         <%
     }
         %>
@@ -188,37 +188,37 @@ foreach (ChildProperty prop in Info.GetMyChildProperties())
     {
         %>
 
-        /// <summary>
-        /// Maintains metadata about child <see cref="<%= string.IsNullOrEmpty(prop.Implements) ? prop.Name : prop.Implements %>"/> property.
-        /// </summary>
+        ''' <summary>
+        ''' Maintains metadata about child <see cref="<%= string.IsNullOrEmpty(prop.Implements) ? prop.Name : prop.Implements %>"/> property.
+        ''' </summary>
 <%= statement %><%
     }
     if (prop.Summary != String.Empty)
     {
         IndentLevel = 2;
         %>
-        /// <summary>
+        ''' <summary>
 <%= GetXmlCommentString(prop.Summary) %>
-        /// </summary>
+        ''' </summary>
         <%
     }
     else
     {
         %>
 
-        /// <summary>
-        /// Gets the <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %> (<%= (prop.LoadingScheme == LoadingScheme.ParentLoad) ? "\"parent load\" " : (prop.LazyLoad ? "\"lazy load\" " : "\"self load\" ") %>child property).
-        /// </summary>
-        /// <value>The <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>.</value>
+        ''' <summary>
+        ''' Gets the <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %> (<%= (prop.LoadingScheme == LoadingScheme.ParentLoad) ? "\"parent load\" " : (prop.LazyLoad ? "\"lazy load\" " : "\"self load\" ") %>child property).
+        ''' </summary>
+        ''' <value>The <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>.</value>
         <%
     }
     if (prop.Remarks != String.Empty)
     {
         IndentLevel = 2;
         %>
-        /// <remarks>
+        ''' <remarks>
 <%= GetXmlCommentString(prop.Remarks) %>
-        /// </remarks>
+        ''' </remarks>
         <%
     }
     %>
@@ -244,37 +244,37 @@ foreach (UnitOfWorkProperty prop in Info.UnitOfWorkProperties)
     {
         %>
 
-        /// <summary>
-        /// Maintains metadata about unit of work (child) <see cref="<%= prop.Name %>"/> property.
-        /// </summary>
+        ''' <summary>
+        ''' Maintains metadata about unit of work (child) <see cref="<%= prop.Name %>"/> property.
+        ''' </summary>
 <%= statement %><%
     }
     if (prop.Summary != String.Empty)
     {
         IndentLevel = 2;
         %>
-        /// <summary>
+        ''' <summary>
 <%= GetXmlCommentString(prop.Summary) %>
-        /// </summary>
+        ''' </summary>
         <%
     }
     else
     {
         %>
 
-        /// <summary>
-        /// Gets the <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %> object (unit of work child property).
-        /// </summary>
-        /// <value>The <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>.</value>
+        ''' <summary>
+        ''' Gets the <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %> object (unit of work child property).
+        ''' </summary>
+        ''' <value>The <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>.</value>
         <%
     }
     if (prop.Remarks != String.Empty)
     {
         IndentLevel = 2;
         %>
-        /// <remarks>
+        ''' <remarks>
 <%= GetXmlCommentString(prop.Remarks) %>
-        /// </remarks>
+        ''' </remarks>
         <%
     }
     %>
@@ -302,4 +302,4 @@ foreach (ValueProperty prop in Info.ValueProperties)
 }
         %>
 
-        #endregion
+        #End Region

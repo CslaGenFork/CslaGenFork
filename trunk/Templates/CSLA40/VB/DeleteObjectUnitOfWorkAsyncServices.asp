@@ -7,31 +7,30 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
         {
             %>
 
-        /// <summary>
-        /// Factory method. Asynchronously deletes a <see cref="<%= Info.ObjectName %>"/> object, based on given parameters.
-        /// </summary>
+        ''' <summary>
+        ''' Factory method. Asynchronously deletes a <see cref="<%= Info.ObjectName %>"/> object, based on given parameters.
+        ''' </summary>
 <%
             string strDelParams = string.Empty;
             string strDelCritParams = string.Empty;
             for (int i = 0; i < c.Properties.Count; i++)
             {
                 %>
-        /// <param name="<%= FormatCamel(c.Properties[i].Name) %>">The <%= FormatProperty(c.Properties[i].Name) %> of the <%= Info.ObjectName %> to delete.</param>
+        ''' <param name="<%= FormatCamel(c.Properties[i].Name) %>">The <%= FormatProperty(c.Properties[i].Name) %> of the <%= Info.ObjectName %> to delete.</param>
         <%
                 if (i > 0)
                 {
                     strDelParams += ", ";
                     strDelCritParams += ", ";
                 }
-                strDelParams += string.Concat(GetDataTypeGeneric(c.Properties[i], c.Properties[i].PropertyType), " ", FormatCamel(c.Properties[i].Name));
+                strDelParams += string.Concat(FormatCamel(c.Properties[i].Name), " As ", GetDataTypeGeneric(c.Properties[i], c.Properties[i].PropertyType));
                 strDelCritParams += FormatCamel(c.Properties[i].Name);
             }
-            strDelParams += (strDelParams.Length > 0 ? ", " : "") + "EventHandler<DataPortalResult<" + Info.ObjectName + ">> callback";
-            //strDelCritParams += (strDelCritParams.Length > 0 ? ", " : "") + "callback";
+            strDelParams += (strDelParams.Length > 0 ? ", " : "") + "callback As EventHandler(Of DataPortalResult(Of " + Info.ObjectName + "))";
+            ''strDelCritParams += (strDelCritParams.Length > 0 ? ", " : "") + "callback";
             %>
-        /// <param name="callback">The completion callback method.</param>
-        <%= Info.ParentType == string.Empty ? "public" : "internal" %> static void Delete<%= Info.ObjectName %><%= c.DeleteOptions.FactorySuffix %>(<%= strDelParams %>)
-        {
+        ''' <param name="callback">The completion callback method.</param>
+        <%= Info.ParentType == string.Empty ? "Public" : "Friend" %> Shared Sub Delete<%= Info.ObjectName %><%= c.DeleteOptions.FactorySuffix %>(<%= strDelParams %>)
             <%
             if (Info.ObjectType == CslaObjectType.EditableSwitchable)
             {
@@ -39,53 +38,52 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
                 {
                     strDelCritParams = ", " + strDelCritParams;
                 }
-                strDelCritParams = "false" + strDelCritParams;
+                strDelCritParams = "False" + strDelCritParams;
             }
             if (c.Properties.Count > 1)
             {
-                %>DataPortal.BeginDelete<<%= Info.ObjectName %>>(new <%= c.Name %>(<%= strDelCritParams %>), callback, DataPortal.ProxyModes.LocalOnly);<%
+                %>DataPortal.BeginDelete(Of <%= Info.ObjectName %>)(New <%= c.Name %>(<%= strDelCritParams %>), callback, DataPortal.ProxyModes.LocalOnly)<%
             }
             else if (c.Properties.Count > 0)
             {
-                %>DataPortal.BeginDelete<<%= Info.ObjectName %>>(<%= SendSingleCriteria(c, strDelCritParams) %>, callback, DataPortal.ProxyModes.LocalOnly);<%
+                %>DataPortal.BeginDelete(Of <%= Info.ObjectName %>)(<%= SendSingleCriteria(c, strDelCritParams) %>, callback, DataPortal.ProxyModes.LocalOnly)<%
             }
             else
             {
-                %>DataPortal.BeginDelete(new <%= c.Name %>(callback, DataPortal.ProxyModes.LocalOnly);<%
+                %>DataPortal.BeginDelete(New <%= c.Name %>(callback, DataPortal.ProxyModes.LocalOnly)<%
             }
             %>
-        }
+        End Sub
 <%
             if (isUndeletable == true)
             {
                 %>
 
-        /// <summary>
-        /// Factory method. Asynchronously undeletes a <see cref="<%= Info.ObjectName %>"/> object, based on given parameters.
-        /// </summary>
+        ''' <summary>
+        ''' Factory method. Asynchronously undeletes a <see cref="<%= Info.ObjectName %>"/> object, based on given parameters.
+        ''' </summary>
 <%
                 strDelParams = string.Empty;
                 strDelCritParams = string.Empty;
                 for (int i = 0; i < c.Properties.Count; i++)
                 {
                     %>
-        /// <param name="<%= FormatCamel(c.Properties[i].Name) %>">The <%= FormatProperty(c.Properties[i].Name) %> of the <%= Info.ObjectName %> to undelete.</param>
+        ''' <param name="<%= FormatCamel(c.Properties[i].Name) %>">The <%= FormatProperty(c.Properties[i].Name) %> of the <%= Info.ObjectName %> to undelete.</param>
         <%
                     if (i > 0)
                     {
                         strDelParams += ", ";
                         strDelCritParams += ", ";
                     }
-                    strDelParams += string.Concat(GetDataTypeGeneric(c.Properties[i], c.Properties[i].PropertyType), " ", FormatCamel(c.Properties[i].Name));
+                    strDelParams += string.Concat(FormatCamel(c.Properties[i].Name), " As ", GetDataTypeGeneric(c.Properties[i], c.Properties[i].PropertyType));
                     strDelCritParams += FormatCamel(c.Properties[i].Name);
                 }
-                strDelParams += (strDelParams.Length > 0 ? ", " : "") + "EventHandler<DataPortalResult<" + Info.ObjectName + ">> callback";
-                //strDelCritParams += (strDelCritParams.Length > 0 ? ", " : "") + "callback";
+                strDelParams += (strDelParams.Length > 0 ? ", " : "") + "callback As EventHandler(Of DataPortalResult(Of " + Info.ObjectName + "))";
+                ''strDelCritParams += (strDelCritParams.Length > 0 ? ", " : "") + "callback";
                 %>
-        /// <param name="callback">The completion callback method.</param>
-        <%= Info.ParentType == string.Empty ? "public" : "internal" %> static void Undelete<%= Info.ObjectName %><%= c.DeleteOptions.FactorySuffix %>(<%= strDelParams %>)
-        {
-            var obj = new <%= Info.ObjectName %>();
+        ''' <param name="callback">The completion callback method.</param>
+        <%= Info.ParentType == string.Empty ? "Public" : "Friend" %> Shared Sub Undelete<%= Info.ObjectName %><%= c.DeleteOptions.FactorySuffix %>(<%= strDelParams %>)
+            Dim obj = New <%= Info.ObjectName %>()
             <%
                 if (Info.ObjectType == CslaObjectType.EditableSwitchable)
                 {
@@ -93,27 +91,27 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
                     {
                         strDelCritParams = ", " + strDelCritParams;
                     }
-                    strDelCritParams = "false" + strDelCritParams;
+                    strDelCritParams = "False" + strDelCritParams;
                 }
                 if (c.Properties.Count > 1)
                 {
-                    %>DataPortal.BeginFetch<<%= Info.ObjectName %>>(<%= strDelCritParams %>, (o, e) =><%
+                    %>DataPortal.BeginFetch(Of <%= Info.ObjectName %>)(<%= strDelCritParams %>, Function(o, e)<%
                 }
                 else if (c.Properties.Count > 0)
                 {
-                    %>DataPortal.BeginFetch<<%= Info.ObjectName %>>(<%= SendSingleCriteria(c, strDelCritParams) %>, (o, e) =><%
+                    %>DataPortal.BeginFetch(Of <%= Info.ObjectName %>)(<%= SendSingleCriteria(c, strDelCritParams) %>, Function(o, e)<%
                 }
             %>
-                {
-                    if (e.Error != null)
-                        throw e.Error;
-                    else
-                        obj = e.Object;
-                },
-                DataPortal.ProxyModes.LocalOnly);
-            obj.<%= softDeleteProperty %> = true;
-            obj.BeginSave(callback);
-        }
+                    If e.Error IsNot Nothing Then
+                        Throw e.Error
+                    Else
+                        obj = e.Object
+                    End If
+                End Function,
+                DataPortal.ProxyModes.LocalOnly)
+            obj.<%= softDeleteProperty %> = True
+            obj.BeginSave(callback)
+        End Sub
 <%
             }
         }

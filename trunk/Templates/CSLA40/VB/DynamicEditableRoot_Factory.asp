@@ -1,10 +1,10 @@
-        #region Factory Methods
+        #Region " Factory Methods "
 <%
 if (UseBoth())
 {
     %>
 
-#if !SILVERLIGHT
+#If Not SILVERLIGHT Then
 <%
 }
 if (UseNoSilverlight())
@@ -40,7 +40,7 @@ if (UseBoth() && HasFactoryCreateOrGetOrDelete(Info))
 {
     %>
 
-#else
+#Else
 <%
 }
 %>
@@ -52,7 +52,7 @@ if (UseBoth())
 {
     %>
 
-#endif
+#End If
 <%
 }
 if (!CurrentUnit.GenerationParams.SilverlightUsingServices)
@@ -64,4 +64,4 @@ if (!CurrentUnit.GenerationParams.SilverlightUsingServices)
 }
 %>
 
-        #endregion
+        #End Region

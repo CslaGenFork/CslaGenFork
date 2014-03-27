@@ -1,152 +1,162 @@
 <%
-if (Info.GenerateDataPortalUpdate)
+if (string.IsNullOrEmpty(Info.UpdateProcedureName))
 {
-    if (string.IsNullOrEmpty(Info.UpdateProcedureName))
-    {
-        Errors.Append("Object " + Info.ObjectName + " missing Update procedure name." + Environment.NewLine);
-    }
+    Errors.Append("Object " + Info.ObjectName + " missing Update procedure name." + Environment.NewLine);
+}
+%>
+
+        ''' <summary>
+        ''' Updates in the database all changes made to the <see cref="<%= Info.ObjectName %>"/> object.
+        ''' </summary>
+        <%
+if (Info.TransactionType == TransactionType.EnterpriseServices)
+{
     %>
-
-        /// <summary>
-        /// Updates in the database all changes made to the <see cref="<%= Info.ObjectName %>"/> object.
-        /// </summary>
+        <Transactional(TransactionalTypes.EnterpriseServices)>
         <%
-    if (Info.TransactionType == TransactionType.EnterpriseServices)
-    {
-        %>[Transactional(TransactionalTypes.EnterpriseServices)]
+}
+else if (Info.TransactionType == TransactionType.TransactionScope || Info.TransactionType == TransactionType.TransactionScope)
+{
+    %>
+        <Transactional(TransactionalTypes.TransactionScope)>
         <%
-    }
-    else if (Info.TransactionType == TransactionType.TransactionScope || Info.TransactionType == TransactionType.TransactionScope)
-    {
-        %>[Transactional(TransactionalTypes.TransactionScope)]
-        <%
-    }
-        %>protected override void DataPortal_Update()
+}
+%>
+        Protected Overrides Sub DataPortal_Update()
         {
             <%
-    if (UseSimpleAuditTrail(Info))
-    {
-        %>SimpleAuditTrail();
+if (UseSimpleAuditTrail(Info))
+{
+    %>
+            SimpleAuditTrail()
             <%
-    }
-            %><%= GetConnection(Info, false) %>
-            {
+}
+%>
+            <%= GetConnection(Info, false) %>
                 <%= GetCommand(Info, Info.UpdateProcedureName) %>
-                {
                     <%
-    if (Info.TransactionType == TransactionType.ADO && Info.PersistenceType == PersistenceType.SqlConnectionManager)
+if (Info.TransactionType == TransactionType.ADO && Info.PersistenceType == PersistenceType.SqlConnectionManager)
+{
+    %>
+                    cmd.Transaction = ctx.Transaction
+                    <%
+}
+if (Info.CommandTimeout != string.Empty)
+{
+    %>
+                    cmd.CommandTimeout = <%= Info.CommandTimeout %>
+                    <%
+}
+%>
+                    cmd.CommandType = CommandType.StoredProcedure
+                    <%
+foreach (ValueProperty prop in Info.GetAllValueProperties())
+{
+    if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
+        (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default ||
+        prop.DbBindColumn.NativeType == "timestamp" ||
+        (prop.DataAccess != ValueProperty.DataAccessBehaviour.ReadOnly &&
+        prop.DataAccess != ValueProperty.DataAccessBehaviour.CreateOnly)))
     {
-        %>cmd.Transaction = ctx.Transaction;
-                    <%
-    }
-    if (Info.CommandTimeout != string.Empty)
-    {
-        %>cmd.CommandTimeout = <%= Info.CommandTimeout %>;
-                    <%
-    }
-    %>cmd.CommandType = CommandType.StoredProcedure;
-                    <%
-    foreach (ValueProperty prop in Info.GetAllValueProperties())
-    {
-        if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
-            (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default ||
-            prop.DbBindColumn.NativeType == "timestamp" ||
-            (prop.DataAccess != ValueProperty.DataAccessBehaviour.ReadOnly &&
-            prop.DataAccess != ValueProperty.DataAccessBehaviour.CreateOnly)))
-        {
-            TypeCodeEx propType = TypeHelper.GetBackingFieldType(prop);
-            string postfix = ".DbType = DbType." + GetDbType(prop);
+        TypeCodeEx propType = TypeHelper.GetBackingFieldType(prop);
+        string postfix = ".DbType = DbType." + GetDbType(prop);
 
-            if (prop.DeclarationMode == PropertyDeclaration.Managed || prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion)
+        if (prop.DeclarationMode == PropertyDeclaration.Managed || prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion)
+        {
+            if (AllowNull(prop) && propType == TypeCodeEx.Guid)
             {
-                if (AllowNull(prop) && propType == TypeCodeEx.Guid)
-                {
-                    %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetFieldReaderStatement(prop) %>.Equals(Guid.Empty) ? (object)DBNull.Value : <%= GetFieldReaderStatement(prop) %>).DbType = DbType.<%= GetDbType(prop) %>;
+                %>
+                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", If(<%= GetFieldReaderStatement(prop) %>.Equals(Guid.Empty), DBNull.Value, <%= GetFieldReaderStatement(prop) %>)).DbType = DbType.<%= GetDbType(prop) %>
                     <%
-                }
-                else if (AllowNull(prop) && propType != TypeCodeEx.SmartDate)
-                {
-                    %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetFieldReaderStatement(prop) %> == null ? (object)DBNull.Value : <%= GetFieldReaderStatement(prop) %><%= TypeHelper.IsNullableType(propType) ? ".Value" :"" %>).DbType = DbType.<%= GetDbType(prop) %>;
+            }
+            else if (AllowNull(prop) && propType != TypeCodeEx.SmartDate)
+            {
+                %>
+                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", If(<%= GetFieldReaderStatement(prop) %><%= TypeHelper.IsNullableType(propType) ? ".HasValue" : " IsNot Nothing " %>, <%= GetFieldReaderStatement(prop) %><%= TypeHelper.IsNullableType(propType) ? ".Value" :"" %>, DBNull.Value)).DbType = DbType.<%= GetDbType(prop) %>
                     <%
-                }
-                else
-                {
-                    %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetFieldReaderStatement(prop) %><%= (propType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>)<%= postfix %>;
-                    <%
-                }
             }
             else
             {
-                if (AllowNull(prop) && propType == TypeCodeEx.Guid)
-                {
-                    %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %>.Equals(Guid.Empty) ? (object)DBNull.Value : <%= GetFieldReaderStatement(prop) %>).DbType = DbType.<%= GetDbType(prop) %>;
-                    <%
-                }
-                else if (AllowNull(prop) && propType != TypeCodeEx.SmartDate)
-                {
-                    %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %>) == null ? (object)DBNull.Value : <%= GetFieldReaderStatement(prop) %><%= TypeHelper.IsNullableType(propType) ? ".Value" :"" %>).DbType = DbType.<%= GetDbType(prop) %>;
-                    <%
-                }
-                else
-                {
-                    %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %><%= (propType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>)<%= postfix %>;
-                    <%
-                }
-            }
-            if (prop.DbBindColumn.NativeType == "timestamp")
-            {
-                %>cmd.Parameters.Add("@New<%= prop.ParameterName %>", SqlDbType.Timestamp).Direction = ParameterDirection.Output;
+                %>
+                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetFieldReaderStatement(prop) %><%= (propType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>)<%= postfix %>
                     <%
             }
         }
-    }
-    if (Info.PersistenceType == PersistenceType.SqlConnectionUnshared)
-    {
-        %>cn.Open();
+        else
+        {
+            if (AllowNull(prop) && propType == TypeCodeEx.Guid)
+            {
+                %>
+                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", If(<%= GetFieldReaderStatement(prop) %>.Equals(Guid.Empty), DBNull.Value, <%= GetFieldReaderStatement(prop) %>)).DbType = DbType.<%= GetDbType(prop) %>
                     <%
-    }
-    %>var args = new DataPortalHookArgs(cmd);
-                    OnUpdatePre(args);
-                    cmd.ExecuteNonQuery();
-                    OnUpdatePost(args);
+            }
+            else if (AllowNull(prop) && propType != TypeCodeEx.SmartDate)
+            {
+                %>
+                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", If(<%= GetFieldReaderStatement(prop) %><%= TypeHelper.IsNullableType(propType) ? ".HasValue" : " IsNot Nothing " %>, <%= GetFieldReaderStatement(prop) %><%= TypeHelper.IsNullableType(propType) ? ".Value" :"" %>, DBNull.Value)).DbType = DbType.<%= GetDbType(prop) %>
                     <%
-    foreach (ValueProperty prop in Info.GetAllValueProperties())
-    {
+            }
+            else
+            {
+                %>
+                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetFieldReaderStatement(prop) %><%= (propType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>)<%= postfix %>
+                    <%
+            }
+        }
         if (prop.DbBindColumn.NativeType == "timestamp")
         {
-            if (prop.DeclarationMode == PropertyDeclaration.Managed)
-            {
-                %>
-                    LoadProperty(<%= FormatPropertyInfoName(prop.Name) %>, (byte[]) cmd.Parameters["@New<%= prop.ParameterName %>"].Value);
+            %>
+                    cmd.Parameters.Add("@New<%= prop.ParameterName %>", SqlDbType.Timestamp).Direction = ParameterDirection.Output
                     <%
-            }
-            else
-            {
-                %>
-                    <%= FormatFieldName(prop.Name) %> = (byte[]) cmd.Parameters["@New<%= prop.ParameterName %>"].Value;
-                    <%
-            }
         }
     }
+}
+if (Info.PersistenceType == PersistenceType.SqlConnectionUnshared)
+{
     %>
-                }
-                <%
-    if (Info.GetMyChildProperties().Count > 0)
+                    cn.Open()
+                    <%
+}
+%>
+                    Dim args = new DataPortalHookArgs(cmd)
+                    OnUpdatePre(args)
+                    cmd.ExecuteNonQuery()
+                    OnUpdatePost(args)
+                    <%
+foreach (ValueProperty prop in Info.GetAllValueProperties())
+{
+    if (prop.DbBindColumn.NativeType == "timestamp")
     {
-        string ucpSpacer = new string(' ', 4);
+        if (prop.DeclarationMode == PropertyDeclaration.Managed)
+        {
+            %>
+                    LoadProperty(<%= FormatPropertyInfoName(prop.Name) %>, DirectCast(cmd.Parameters("@New<%= prop.ParameterName %>").Value, Byte()))
+                    <%
+        }
+        else
+        {
+            %>
+                    <%= FormatFieldName(prop.Name) %> = DirectCast(cmd.Parameters("@New<%= prop.ParameterName %>").Value, Byte())
+                    <%
+        }
+    }
+}
+%>
+                End Using
+                <%
+if (Info.GetMyChildProperties().Count > 0)
+{
+    string ucpSpacer = new string(' ', 4);
         %>
 <!-- #include file="UpdateChildProperties.asp" -->
                 <%
-    }
-    if (Info.TransactionType == TransactionType.ADO && Info.PersistenceType == PersistenceType.SqlConnectionManager)
-    {
-        %>
-                ctx.Commit();
-            <%
-    }
+}
+if (Info.TransactionType == TransactionType.ADO && Info.PersistenceType == PersistenceType.SqlConnectionManager)
+{
     %>
-            }
-        }
-    <%
+                ctx.Commit()
+            <%
 }
 %>
+            End Using
+        End Sub
