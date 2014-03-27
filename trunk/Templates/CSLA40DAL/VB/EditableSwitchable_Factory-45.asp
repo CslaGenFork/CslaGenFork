@@ -1,6 +1,8 @@
         #region Factory Methods
 <%
-if (UseBoth())
+bool silverlightIsDifferent = UseBoth() && CurrentUnit.GenerationParams.GenerateSynchronous;
+
+if (silverlightIsDifferent)
 {
     %>
 
@@ -16,8 +18,13 @@ if (Info.UseUnitOfWorkType == string.Empty)
 <!-- #include file="NewObjectAsync.asp" -->
 <%
 }
-%>
+if (UseNoSilverlight())
+{
+    %>
 <!-- #include file="InternalGetObject.asp" -->
+<%
+}
+%>
 <!-- #include file="GetObject.asp" -->
 <!-- #include file="DeleteObject.asp" -->
 <%

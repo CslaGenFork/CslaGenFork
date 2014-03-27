@@ -22,22 +22,15 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
         <%
         if (parentType.Length > 0)
         {
-            %>/// <param name="parent">The parent object.</param>
+            %>
+        /// <param name="parent">The parent object.</param>
         <%
         }
-        %>/// <param name="handler">The asynchronous handler.</param>
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public <%= ((!isChild && parentType.Length > 0) ? "override " : "") %>void <%= isChildNotLazyLoaded ? "Child_Insert" : "DataPortal_Insert" %>(<%= (parentType.Length > 0 ? parentType + " parent, " : "") %>Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)
+        %>
+        [Csla.RunLocal]
+        protected <%= ((!isChild && parentType.Length > 0) ? "override " : "") %>void <%= isChildNotLazyLoaded ? "Child_Insert" : "DataPortal_Insert" %>(<%= (parentType.Length > 0 ? parentType + " parent" : "") %>)
         {
-            try
-            {
-                Service_Insert(<% if (parentType.Length > 0) { %>parent<% } %>);
-                handler(this, null);
-            }
-            catch (Exception ex)
-            {
-                handler(null, ex);
-            }
+            Service_Insert(<% if (parentType.Length > 0) { %>parent<% } %>);
         }
 
         /// <summary>
@@ -46,7 +39,8 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
         <%
         if (parentType.Length > 0)
         {
-            %>/// <param name="parent">The parent object.</param>
+            %>
+        /// <param name="parent">The parent object.</param>
         <%
         }
         %>partial void Service_Insert(<% if (parentType.Length > 0) { %><%= parentType %> parent<% } %>);
@@ -64,22 +58,15 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
         <%
         if (parentType.Length > 0 && !Info.ParentInsertOnly)
         {
-            %>/// <param name="parent">The parent object.</param>
+            %>
+        /// <param name="parent">The parent object.</param>
         <%
         }
-        %>/// <param name="handler">The asynchronous handler.</param>
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public <%= ((!isChild && parentType.Length > 0) ? "override " : "") %>void <%= isChildNotLazyLoaded ? "Child_Update" : "DataPortal_Update" %>(<%= ((parentType.Length > 0 && !Info.ParentInsertOnly) ? parentType + " parent, " : "") %>Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)
+        %>
+        [Csla.RunLocal]
+        protected <%= ((!isChild && parentType.Length > 0) ? "override " : "") %>void <%= isChildNotLazyLoaded ? "Child_Update" : "DataPortal_Update" %>(<%= ((parentType.Length > 0 && !Info.ParentInsertOnly) ? parentType + " parent" : "") %>)
         {
-            try
-            {
-                Service_Update(<% if (parentType.Length > 0 && !Info.ParentInsertOnly) { %>parent<% } %>);
-                handler(this, null);
-            }
-            catch (Exception ex)
-            {
-                handler(null, ex);
-            }
+            Service_Update(<% if (parentType.Length > 0 && !Info.ParentInsertOnly) { %>parent<% } %>);
         }
 
         /// <summary>
@@ -88,7 +75,8 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
         <%
         if (parentType.Length > 0 && !Info.ParentInsertOnly)
         {
-            %>/// <param name="parent">The parent object.</param>
+            %>
+        /// <param name="parent">The parent object.</param>
         <%
         }
         %>partial void Service_Update(<% if (parentType.Length > 0 && !Info.ParentInsertOnly) { %><%= parentType %> parent<% } %>);
@@ -106,22 +94,15 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
         <%
         if (parentType.Length > 0 && !Info.ParentInsertOnly)
         {
-            %>/// <param name="parent">The parent object.</param>
+            %>
+        /// <param name="parent">The parent object.</param>
         <%
         }
-        %>/// <param name="handler">The asynchronous handler.</param>
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public <%= ((!isChild && parentType.Length > 0) ? "override " : "") %>void <%= isChildNotLazyLoaded ? "Child_DeleteSelf" : "DataPortal_DeleteSelf" %>(<%= ((parentType.Length > 0 && !Info.ParentInsertOnly) ? parentType + " parent, " : "") %>Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)
+        %>
+        [Csla.RunLocal]
+        protected <%= ((!isChild && parentType.Length > 0) ? "override " : "") %>void <%= isChildNotLazyLoaded ? "Child_DeleteSelf" : "DataPortal_DeleteSelf" %>(<%= ((parentType.Length > 0 && !Info.ParentInsertOnly) ? parentType + " parent" : "") %>)
         {
-            try
-            {
-                Service_DeleteSelf(<% if (parentType.Length > 0 && !Info.ParentInsertOnly) { %>parent<% } %>);
-                handler(this, null);
-            }
-            catch (Exception ex)
-            {
-                handler(null, ex);
-            }
+            Service_DeleteSelf(<% if (parentType.Length > 0 && !Info.ParentInsertOnly) { %>parent<% } %>);
         }
 
         /// <summary>
@@ -130,7 +111,8 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
         <%
         if (parentType.Length > 0 && !Info.ParentInsertOnly)
         {
-            %>/// <param name="parent">The parent object.</param>
+            %>
+        /// <param name="parent">The parent object.</param>
         <%
         }
         %>partial void Service_DeleteSelf(<% if (parentType.Length > 0 && !Info.ParentInsertOnly) { %><%= parentType %> parent<% } %>);

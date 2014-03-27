@@ -50,8 +50,19 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
     {
 
 <!-- #include file="BusinessProps.asp" -->
+<%
+    if (CurrentUnit.GenerationParams.TargetIsCsla40)
+    {
+        %>
 <!-- #include file="UnitOfWork_Factory.asp" -->
 <%
+    }
+    else
+    {
+        %>
+<!-- #include file="UnitOfWork_Factory-45.asp" -->
+<%
+    }
     Response.Write(Environment.NewLine);
     %>
 <!-- #include file="Constructor.asp" -->

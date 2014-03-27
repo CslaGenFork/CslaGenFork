@@ -1,9 +1,8 @@
 <%
-if (!Info.UseCustomLoading && CurrentUnit.GenerationParams.SilverlightUsingServices)
+if (!Info.UseCustomLoading && CurrentUnit.GenerationParams.SilverlightUsingServices && UseNoSilverlight())
 {
     List<string> fetchPartialMethods = new List<string>();
     List<string> fetchPartialParams = new List<string>();
-    string cacheRemarks = string.Empty;
     foreach (Criteria c in Info.CriteriaObjects)
     {
         if (c.GetOptions.DataPortal)
@@ -24,17 +23,10 @@ if (!Info.UseCustomLoading && CurrentUnit.GenerationParams.SilverlightUsingServi
             }
             if (c.Properties.Count > 1)
                 strGetComment = "/// <param name=\"crit\">The fetch criteria.</param>";
-
-            if (c.Properties.Count == 0 && Info.SimpleCacheOptions == SimpleCacheResults.DataPortal)
-            {
-                cacheRemarks += "/// <remarks>" + Environment.NewLine + new string(' ', 8);
-                cacheRemarks += "/// DataPortal cache will be used whenever possible." + Environment.NewLine + new string(' ', 8);
-                cacheRemarks += "/// </remarks>" + Environment.NewLine + new string(' ', 8);
-            }
             %>
 
         /// <summary>
-        /// Loads a <see cref="<%= Info.ObjectName %>"/> collection from the service<%= (Info.SimpleCacheOptions == SimpleCacheResults.DataPortal && c.Properties.Count == 0) ? " or from the cache" : "" %><%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
+        /// Loads a <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %><%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
         /// </summary>
         <%
             if (c.Properties.Count > 0)
@@ -49,83 +41,59 @@ if (!Info.UseCustomLoading && CurrentUnit.GenerationParams.SilverlightUsingServi
                 fetchPartialParams.Add("");
             }
             %>
-        /// <param name="handler">The asynchronous handler.</param>
-        <%= cacheRemarks %>[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [Csla.RunLocal]
         <%
             if (c.Properties.Count > 1)
             {
                 fetchPartialMethods.Add("partial void Service_Fetch(" + c.Name + " crit)");
                 %>
-        public void DataPortal_Fetch(<%= c.Name %> crit, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)
+        protected void <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Fetch(<%= c.Name %> crit)
         <%
             }
             else if (c.Properties.Count > 0)
             {
                 fetchPartialMethods.Add("partial void Service_Fetch(" + ReceiveSingleCriteria(c, "crit") + ")");
                 %>
-        public void DataPortal_Fetch(<%= ReceiveSingleCriteria(c, "crit") %>, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)
+        protected void <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)
         <%
             }
             else
             {
                 fetchPartialMethods.Add("partial void Service_Fetch()");
                 %>
-        public void DataPortal_Fetch(Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)
+        protected void <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Fetch()
         <%
             }
         %>
         {
             <%
-            if (Info.SimpleCacheOptions == SimpleCacheResults.DataPortal && c.Properties.Count == 0)
-            {
-                %>
-            if (IsCached)
-            {
-                LoadCachedList();
-                return;
-            }
-
-            <%
-            }
-            %>
-            try
-            {
-                <%
             if (c.Properties.Count > 1)
             {
                 %>
-                Service_Fetch(crit);
-                <%
+            Service_Fetch(crit);
+            <%
             }
             else if (c.Properties.Count > 0)
             {
                 %>
-                Service_Fetch(<%= HookSingleCriteria(c, "crit") %>);
-                <%
+            Service_Fetch(<%= HookSingleCriteria(c, "crit") %>);
+            <%
             }
             else
             {
                 %>
-                Service_Fetch();
-                <%
-            }
-    %>
-                handler(this, null);
-            }
-            catch (Exception ex)
-            {
-                handler(null, ex);
-            }
+            Service_Fetch();
             <%
-            if (Info.SimpleCacheOptions == SimpleCacheResults.DataPortal && c.Properties.Count == 0)
+            }
+            if (Info.ObjectType == CslaObjectType.EditableSwitchable)
             {
                 %>
-            _list = this;
-        <%
+            if (crit.IsChild)
+                MarkAsChild();
+            <%
             }
-            %>
+        %>
         }
-<!-- #include file="SimpleCacheLoadCachedList.asp" -->
         <%
         }
     }
@@ -137,7 +105,7 @@ if (!Info.UseCustomLoading && CurrentUnit.GenerationParams.SilverlightUsingServi
         %>
 
         /// <summary>
-        /// Implements <%= isChildNotLazyLoaded ? "Child_Fetch" : "DataPortal_Fetch" %> for <see cref="<%= Info.ObjectName %>"/> collection.
+        /// Implements <%= isChildNotLazyLoaded ? "Child_Fetch" : "DataPortal_Fetch" %> for <see cref="<%= Info.ObjectName %>"/> object.
         /// </summary>
         <%= header %>;
 <%

@@ -1,5 +1,5 @@
 <%
-if ((UseSilverlight() && createRunLocalDp) || CurrentUnit.GenerationParams.SilverlightUsingServices)
+if (CurrentUnit.GenerationParams.SilverlightUsingServices && UseNoSilverlight())
 {
     List<string> createPartialMethods = new List<string>();
     List<string> createPartialParams = new List<string>();
@@ -25,28 +25,27 @@ if ((UseSilverlight() && createRunLocalDp) || CurrentUnit.GenerationParams.Silve
                 createPartialParams.Add("");
             }
             %>
-        /// <param name="handler">The asynchronous handler.</param>
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        [Csla.RunLocal]
         <%
             if (c.Properties.Count > 1)
             {
                 createPartialMethods.Add("partial void Service_Create(" + c.Name + " crit)");
                 %>
-        public void <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Create(<%= c.Name %> crit, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)
+        protected void <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Create(<%= c.Name %> crit)
         <%
             }
             else if (c.Properties.Count > 0)
             {
                 createPartialMethods.Add("partial void Service_Create(" + ReceiveSingleCriteria(c, "crit") + ")");
                 %>
-        public void <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Create(<%= ReceiveSingleCriteria(c, "crit") %>, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)
+        protected void <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Create(<%= ReceiveSingleCriteria(c, "crit") %>)
         <%
             }
             else
             {
                 createPartialMethods.Add("partial void Service_Create()");
                 %>
-        public <%= isChildNotLazyLoaded ? "void Child_" : "override void DataPortal_" %>Create(Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)
+        protected <%= isChildNotLazyLoaded ? "override void Child_" : "override void DataPortal_" %>Create()
         <%
             }
             %>
@@ -121,67 +120,42 @@ if ((UseSilverlight() && createRunLocalDp) || CurrentUnit.GenerationParams.Silve
                     }
                 }
             }
-            if (CurrentUnit.GenerationParams.SilverlightUsingServices)
+            if (c.Properties.Count > 1)
             {
                 %>
-            try
+            Service_Create(crit);
+            <%
+            }
+            else if (c.Properties.Count > 0)
             {
-                <%
-                if (c.Properties.Count > 1)
-                {
-                    %>
-                Service_Create(crit);
-                <%
-                }
-                else if (c.Properties.Count > 0)
-                {
-                    %>
-                Service_Create(<%= HookSingleCriteria(c, "crit") %>);
-                <%
-                }
-                else
-                {
-                    %>
-                Service_Create();
-                <%
-                }
                 %>
-                handler(this, null);
-            }
-            catch (Exception ex)
-            {
-                handler(null, ex);
-            }
+            Service_Create(<%= HookSingleCriteria(c, "crit") %>);
             <%
             }
             else
             {
                 %>
-            var args = new DataPortalHookArgs();
-            OnCreate(args);
+            Service_Create();
             <%
             }
             %>
-            base.<%= isChildNotLazyLoaded ? "Child_Create()" : "DataPortal_Create(handler)" %>;
+            base.<%= isChildNotLazyLoaded ? "Child_Create()" : "DataPortal_Create()" %>;
         }
 <%
         }
     }
-    if (CurrentUnit.GenerationParams.SilverlightUsingServices)
+    for (int index = 0; index < createPartialMethods.Count ; index++)
     {
-        for (int index = 0; index < createPartialMethods.Count ; index++)
-        {
-            string header = createPartialParams[index] + (string.IsNullOrEmpty(createPartialParams[index]) ? "" : "\r\n        ");
-            header += createPartialMethods[index];
-            MethodList.Add(new AdvancedGenerator.ServiceMethod(isChildNotLazyLoaded ? "Child_Create" : "DataPortal_Create", header));
-        %>
+        string header = createPartialParams[index] + (string.IsNullOrEmpty(createPartialParams[index]) ? "" : "\r\n        ");
+        header += createPartialMethods[index];
+        MethodList.Add(new AdvancedGenerator.ServiceMethod(isChildNotLazyLoaded ? "Child_Create" : "DataPortal_Create", header));
+    %>
 
         /// <summary>
         /// Implements <%= isChildNotLazyLoaded ? "Child_Create" : "DataPortal_Create" %> for <see cref="<%= Info.ObjectName %>"/> object.
         /// </summary>
         <%= header %>;
 <%
-        }
     }
 }
 %>

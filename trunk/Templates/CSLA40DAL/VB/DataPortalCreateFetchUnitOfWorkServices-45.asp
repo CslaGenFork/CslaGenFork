@@ -1,5 +1,5 @@
 <%
-if (CurrentUnit.GenerationParams.SilverlightUsingServices)
+if (CurrentUnit.GenerationParams.SilverlightUsingServices && UseNoSilverlight())
 {
     List<string> createPartialMethods = new List<string>();
     List<string> createPartialParams = new List<string>();
@@ -8,9 +8,12 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
         string createUowParam = string.Empty;
         string createUowCrit = string.Empty;
         string createUowComment = string.Empty;
+        string singleUoWProperty = string.Empty;
         int elementCriteriaCount = 0;
         foreach (UnitOfWorkCriteriaManager.ElementCriteria c in uowCrit.ElementCriteriaList)
         {
+            if (!c.IsGetter)
+                singleUoWProperty = c.ParentObject;
             if (string.IsNullOrEmpty(c.Name))
                 continue;
 
@@ -27,34 +30,24 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
             createUowCrit = uowCrit.CriteriaName + " crit";
         }
         if (elementCriteriaCount != 0)
-            createUowComment = "/// <param name=\"" + createUowParam + "\">The create criteria.</param>" + System.Environment.NewLine + new string(' ', 8);
-
-        createPartialMethods.Add("partial void Service_Create(" + createUowCrit + ")");
+            createUowComment = "/// <param name=\"" + createUowParam + "\">The create/fetch criteria.</param>" + System.Environment.NewLine + new string(' ', 8);
+        else
+        {
+            createUowParam = "create" + singleUoWProperty;
+            createUowComment = "/// <param name=\"" + createUowParam + "\">if set to <c>true</c> creates a " + singleUoWProperty + "; otherwise fetches a " + singleUoWProperty + ".</param>" + System.Environment.NewLine + new string(' ', 8);
+            createUowCrit = "bool " + createUowParam;
+        }
+        createPartialMethods.Add("partial void Service_CreateFetch(" + createUowCrit + ")");
         createPartialParams.Add(createUowComment);
-        if (createUowCrit != string.Empty)
-            createUowCrit += ", ";
-        createUowCrit += "Csla.DataPortalClient.LocalProxy<" + Info.ObjectName + ">.CompletedHandler handler";
         %>
 
         /// <summary>
-        /// Creates a new <see cref="<%= Info.ObjectName %>"/> unit of objects<%= elementCriteriaCount > 0 ? ", based on given criteria" : "" %>.
+        /// Creates or loads a <see cref="<%= Info.ObjectName %>"/> unit of objects<%= elementCriteriaCount > 0 ? ", based on given criteria" : "" %>.
         /// </summary>
-        <%= createUowComment %>/// <param name="handler">The asynchronous handler.</param>
-        /// <remarks>
-        /// ReadOnlyBase&lt;T&gt; doesn't allow the use of DataPortal_Create and thus DataPortal_Fetch is used.
-        /// </remarks>
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public void DataPortal_Fetch(<%= createUowCrit %>)
+        [Csla.RunLocal]
+        protected void DataPortal_Fetch(<%= createUowCrit %>)
         {
-            try
-            {
-                Service_Create(<%= createUowParam %>);
-                handler(this, null);
-            }
-            catch (Exception ex)
-            {
-                handler(null, ex);
-            }
+            Service_CreateFetch(<%= createUowParam %>);
         }
 <%
     }

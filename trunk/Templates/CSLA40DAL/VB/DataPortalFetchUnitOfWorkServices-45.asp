@@ -1,5 +1,5 @@
 <%
-if (CurrentUnit.GenerationParams.SilverlightUsingServices)
+if (CurrentUnit.GenerationParams.SilverlightUsingServices && UseNoSilverlight())
 {
     List<string> fetchPartialMethods = new List<string>();
     List<string> fetchPartialParams = new List<string>();
@@ -31,27 +31,15 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
 
         fetchPartialMethods.Add("partial void Service_Fetch(" + fetchUowCrit + ")");
         fetchPartialParams.Add(fetchUowComment);
-        if (fetchUowCrit != string.Empty)
-            fetchUowCrit += ", ";
-        fetchUowCrit += "Csla.DataPortalClient.LocalProxy<" + Info.ObjectName + ">.CompletedHandler handler";
         %>
 
         /// <summary>
         /// Loads a <see cref="<%= Info.ObjectName %>"/> unit of objects<%= elementCriteriaCount > 0 ? ", based on given criteria" : "" %>.
         /// </summary>
-        <%= fetchUowComment %>/// <param name="handler">The asynchronous handler.</param>
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public void DataPortal_Fetch(<%= fetchUowCrit %>)
+        <%= fetchUowComment %>[Csla.RunLocal]
+        protected void DataPortal_Fetch(<%= fetchUowCrit %>)
         {
-            try
-            {
-                Service_Fetch(<%= fetchUowParam %>);
-                handler(this, null);
-            }
-            catch (Exception ex)
-            {
-                handler(null, ex);
-            }
+            Service_Fetch(<%= fetchUowParam %>);
         }
 <%
     }
