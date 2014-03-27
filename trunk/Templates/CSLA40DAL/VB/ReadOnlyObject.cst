@@ -92,9 +92,18 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
     if (Info.GenerateFactoryMethods && (UseChildFactoryHelper || Info.ParentType == string.Empty))
     {
         Response.Write(Environment.NewLine);
-        %>
+        if (CurrentUnit.GenerationParams.TargetIsCsla40)
+        {
+            %>
 <!-- #include file="ReadOnlyObject_Factory.asp" -->
 <%
+        }
+        else
+        {
+            %>
+<!-- #include file="ReadOnlyObject_Factory-45.asp" -->
+<%
+        }
     }
     Response.Write(Environment.NewLine);
     %>
@@ -106,18 +115,27 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
 <%
     if (Info.GenerateDataAccessRegion)
     {
-        if (!genOptional)
+        if (!genOptional && !Info.UseCustomLoading)
         {
             Response.Write(Environment.NewLine);
         }
-        %>
+        if (!Info.UseCustomLoading)
+        {
+            %>
 <!-- #include file="ReadOnlyObject_DataPortal.asp" -->
+<%
+        }
+        %>
+
 <!-- #include file="Events.asp" -->
 
 <%
     }
+    else
+    {
+        Response.Write(Environment.NewLine);
+    }
     %>
-
     }
 <!-- #include file="CriteriaObject.asp" -->
 }

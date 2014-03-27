@@ -49,28 +49,27 @@ if (!Info.UseCustomLoading && CurrentUnit.GenerationParams.SilverlightUsingServi
                 fetchPartialParams.Add("");
             }
             %>
-        /// <param name="handler">The asynchronous handler.</param>
-        <%= cacheRemarks %>[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        <%= cacheRemarks %>[Csla.RunLocal]
         <%
             if (c.Properties.Count > 1)
             {
                 fetchPartialMethods.Add("partial void Service_Fetch(" + c.Name + " crit)");
                 %>
-        public void DataPortal_Fetch(<%= c.Name %> crit, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)
+        protected void DataPortal_Fetch(<%= c.Name %> crit)
         <%
             }
             else if (c.Properties.Count > 0)
             {
                 fetchPartialMethods.Add("partial void Service_Fetch(" + ReceiveSingleCriteria(c, "crit") + ")");
                 %>
-        public void DataPortal_Fetch(<%= ReceiveSingleCriteria(c, "crit") %>, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)
+        protected void DataPortal_Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)
         <%
             }
             else
             {
                 fetchPartialMethods.Add("partial void Service_Fetch()");
                 %>
-        public void DataPortal_Fetch(Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)
+        protected void DataPortal_Fetch()
         <%
             }
         %>
@@ -87,36 +86,24 @@ if (!Info.UseCustomLoading && CurrentUnit.GenerationParams.SilverlightUsingServi
 
             <%
             }
-            %>
-            try
-            {
-                <%
             if (c.Properties.Count > 1)
             {
                 %>
-                Service_Fetch(crit);
-                <%
+            Service_Fetch(crit);
+            <%
             }
             else if (c.Properties.Count > 0)
             {
                 %>
-                Service_Fetch(<%= HookSingleCriteria(c, "crit") %>);
-                <%
+            Service_Fetch(<%= HookSingleCriteria(c, "crit") %>);
+            <%
             }
             else
             {
                 %>
-                Service_Fetch();
-                <%
-            }
-    %>
-                handler(this, null);
-            }
-            catch (Exception ex)
-            {
-                handler(null, ex);
-            }
+            Service_Fetch();
             <%
+            }
             if (Info.SimpleCacheOptions == SimpleCacheResults.DataPortal && c.Properties.Count == 0)
             {
                 %>

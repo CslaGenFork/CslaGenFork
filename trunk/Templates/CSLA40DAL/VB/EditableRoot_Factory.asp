@@ -79,7 +79,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous && (!UseSilverlight() || l
         forceGeneration = null;
         if (!UseSilverlight() || deleteRunLocalSilverlight)
             forceGeneration = true;
-    %>
+        %>
 <!-- #include file="DeleteObjectAsync.asp" -->
 <%
     }
