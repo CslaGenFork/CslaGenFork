@@ -25,35 +25,34 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
                 strGetCritParams += ", ";
             if (parameterCount > 0)
                 strGetParams += ", ";
-            strGetParams += string.Concat(c.Type, " ", FormatCamel(c.Name));
+            strGetParams += string.Concat(FormatCamel(c.Name), " As ", c.Type);
             strGetCritParams += FormatCamel(c.Name);
-            strGetComment += "/// <param name=\"" + FormatCamel(c.Name) + "\">The " + FormatProperty(c.Name) + " parameter of the " + Info.ObjectName + " to fetch.</param>" + System.Environment.NewLine + new string(' ', 8);
+            strGetComment += "''' <param name=\"" + FormatCamel(c.Name) + "\">The " + FormatProperty(c.Name) + " parameter of the " + Info.ObjectName + " to fetch.</param>" + System.Environment.NewLine + new string(' ', 8);
             elementCriteriaCount++;
             parameterCount++;
         }
         if (Info.UnitOfWorkType == UnitOfWorkFunction.CreatorGetter && elementCriteriaCount == 0)
         {
-            strGetCritParams = "false";
+            strGetCritParams = "False";
         }
         %>
 
-        /// <summary>
-        /// Factory method. Loads a <see cref="<%= Info.ObjectName %>"/> unit of objects<%= elementCriteriaCount > 0 ? ", based on given parameters" : "" %>.
-        /// </summary>
-        <%= strGetComment %>/// <returns>A reference to the fetched <see cref="<%= Info.ObjectName %>"/> <%= Info.ObjectType == CslaObjectType.UnitOfWork ? "unit of objects" : "object" %>.</returns>
-        <%= Info.ParentType == string.Empty ? "public" : "internal" %> static <%= Info.ObjectName %> Get<%= Info.ObjectName %>(<%= strGetParams %>)
-        {
+        ''' <summary>
+        ''' Factory method. Loads a <see cref="<%= Info.ObjectName %>"/> unit of objects<%= elementCriteriaCount > 0 ? ", based on given parameters" : "" %>.
+        ''' </summary>
+        <%= strGetComment %>''' <returns>A reference to the fetched <see cref="<%= Info.ObjectName %>"/> <%= Info.ObjectType == CslaObjectType.UnitOfWork ? "unit of objects" : "object" %>.</returns>
+        <%= Info.ParentType == string.Empty ? "Public" : "Friend" %> Shared Function Get<%= Info.ObjectName %>(<%= strGetParams %>) As <%= Info.ObjectName %>
             <%
         if (elementCriteriaCount > 1 || (Info.ObjectType == CslaObjectType.EditableSwitchable && elementCriteriaCount == 1))
         {
             %>
-            return DataPortal.Fetch<%= isChildNotLazyLoaded ? "Child" : "" %><<%= Info.ObjectName %>>(new <%= uowCrit.CriteriaName %>(<%= strGetCritParams %>));
+            Return DataPortal.Fetch<%= isChildNotLazyLoaded ? "Child" : "" %>(Of <%= Info.ObjectName %>)(New <%= uowCrit.CriteriaName %>(<%= strGetCritParams %>))
             <%
         }
         else if (elementCriteriaCount > 0)
         {
             %>
-            return DataPortal.Fetch<%= isChildNotLazyLoaded ? "Child" : "" %><<%= Info.ObjectName %>>(<%= strGetCritParams %>);
+            Return DataPortal.Fetch<%= isChildNotLazyLoaded ? "Child" : "" %>(Of <%= Info.ObjectName %>)(<%= strGetCritParams %>)
             <%
         }
         else
@@ -61,21 +60,22 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
             if (Info.SimpleCacheOptions != SimpleCacheResults.None)
             {
                 %>
-            if (_list == null)
-                _list = DataPortal.Fetch<%= isChildNotLazyLoaded ? "Child" : "" %><<%= Info.ObjectName %>>(<%= strGetCritParams %>);
+            If _list Is Nothing Then
+                _list = DataPortal.Fetch<%= isChildNotLazyLoaded ? "Child" : "" %>(Of <%= Info.ObjectName %>)(<%= strGetCritParams %>)
+            End If
 
-            return _list;
+            Return _list
             <%
             }
             else
             {
                 %>
-            return DataPortal.Fetch<%= isChildNotLazyLoaded ? "Child" : "" %><<%= Info.ObjectName %>>(<%= strGetCritParams %>);
+            Return DataPortal.Fetch<%= isChildNotLazyLoaded ? "Child" : "" %>(Of <%= Info.ObjectName %>)(<%= strGetCritParams %>)
         <%
             }
         }
                 %>
-        }
+        End Function
 <%
     }
 }

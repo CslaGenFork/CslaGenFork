@@ -4,31 +4,31 @@ if ((Info.ObjectType == CslaObjectType.EditableRoot ||
     Info.ObjectType == CslaObjectType.EditableSwitchable) &&
     Info.SupportUpdateProperties == true)
 {
-    Infos.Append("To do list: edit \"" + Info.ObjectName + ".cs\", uncomment the \"OnDeserialized\" method and add the following line:" + Environment.NewLine);
-    Infos.Append("      Saved += On" + Info.ObjectName + "Saved;" + Environment.NewLine);
+    Infos.Append("To do list: edit \"" + Info.ObjectName + ".vb\", uncomment the \"OnDeserialized\" method and add the following line:" + Environment.NewLine);
+    Infos.Append("      AddHandler Saved, AddressOf On" + Info.ObjectName + "Saved" + Environment.NewLine);
     %>
-        #region Saved Event
+        #Region " Saved Event "
 <%
         if (CurrentUnit.GenerationParams.WriteTodo)
         {
             %>
 
-        // TODO: edit "<%= Info.ObjectName %>.cs", uncomment the "OnDeserialized" method and add the following line:
-        // TODO:     Saved += On<%= Info.ObjectName %>Saved;
+        'TODO: edit "<%= Info.ObjectName %>.vb", uncomment the "OnDeserialized" method and add the following line:
+        'TODO:     AddHandler Saved, AddressOf On<%= Info.ObjectName %>Saved
 <%
         }
         %>
 
-        private void On<%= Info.ObjectName %>Saved(object sender, Csla.Core.SavedEventArgs e)
-        {
-            if (<%= Info.ObjectName %>Saved != null)
-                <%= Info.ObjectName %>Saved(sender, e);
-        }
+        Private Sub On<%= Info.ObjectName %>Saved(sender As Object, e As Csla.Core.SavedEventArgs)
+            If <%= Info.ObjectName %>Saved IsNot Nothing Then
+                RaiseEvent <%= Info.ObjectName %>Saved(sender, e)
+            End If
+        End Sub
 
-        /// <summary> Use this event to signal a <see cref="<%= Info.ObjectName %>"/> object was saved.</summary>
-        public static event EventHandler<Csla.Core.SavedEventArgs> <%= Info.ObjectName %>Saved;
+        ''' <summary> Use this event to signal a <see cref="<%= Info.ObjectName %>"/> object was saved.</summary>
+        Public Shared Event <%= Info.ObjectName %>Saved As EventHandler(Of Csla.Core.SavedEventArgs)
 
-        #endregion
+        #End Region
 
 <%
 }
@@ -36,29 +36,30 @@ System.Collections.Generic.List<string> eventList = GetEventList(Info);
 if (eventList.Count > 0 && UseNoSilverlight())
 {
     %>
-        #region Pseudo Events
+        #Region " Pseudo Events "
 <%
     if (UseBoth() && !HasSilverlightLocalDataPortalCreate(Info))
     {
         %>
 
-#if !SILVERLIGHT
+#If Not SILVERLIGHT Then
 <%
     }
     foreach (string strEvent in eventList)
     {
     %>
 
-        /// <summary>
-        /// Occurs <%= FormatEventDocumentation(strEvent) %>
-        /// </summary>
-        partial void On<%= strEvent %>(DataPortalHookArgs args);
+        ''' <summary>
+        ''' Occurs <%= FormatEventDocumentation(strEvent) %>
+        ''' </summary>
+        Partial Private Sub On<%= strEvent %>(args As DataPortalHookArgs)
+        End Sub
         <%
         if (strEvent == "Create" && HasSilverlightLocalDataPortalCreate(Info))
         {
             %>
 
-#if !SILVERLIGHT
+#If Not SILVERLIGHT Then
         <%
         }
     }
@@ -66,12 +67,12 @@ if (eventList.Count > 0 && UseNoSilverlight())
     {
         %>
 
-#endif
+#End If
 <%
     }
 %>
 
-        #endregion
+        #End Region
 
 <%
 }

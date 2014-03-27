@@ -19,78 +19,90 @@ if (!Info.UseCustomLoading && CurrentUnit.GenerationParams.SilverlightUsingServi
                 else
                     getIsFirst = false;
 
-                strGetComment += "/// <param name=\"" + FormatCamel(p.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(p.Name) + ".</param>";
+                strGetComment += "''' <param name=\"" + FormatCamel(p.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(p.Name) + ".</param>";
             }
             if (c.Properties.Count > 1)
-                strGetComment = "/// <param name=\"crit\">The fetch criteria.</param>";
+                strGetComment = "''' <param name=\"crit\">The fetch criteria.</param>";
             %>
 
-        /// <summary>
-        /// Loads a <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %><%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
-        /// </summary>
+        ''' <summary>
+        ''' Loads a <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %><%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
+        ''' </summary>
         <%
             if (c.Properties.Count > 0)
             {
-                fetchPartialParams.Add("/// <param name=\"" + (c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit")) + "\">The fetch criteria.</param>");
-        %><%= strGetComment %>
+                fetchPartialParams.Add("''' <param name=\"" + (c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit")) + "\">The fetch criteria.</param>");
+        %>
+        <%= strGetComment %>
         <%
             }
             else
             {
                 fetchPartialParams.Add("");
             }
-        %>/// <param name="handler">The asynchronous handler.</param>
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+            %>
+        ''' <param name="handler">The asynchronous handler.</param>
+        <System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>
         <%
             if (c.Properties.Count > 1)
             {
-                fetchPartialMethods.Add("partial void Service_Fetch(" + c.Name + " crit)");
-                %>public void <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Fetch(<%= c.Name %> crit, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
+                fetchPartialMethods.Add("Partial Sub Service_Fetch(crit As " + c.Name + ")");
+                %>
+        Public Sub <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Fetch(crit As <%= c.Name %>, handler As Csla.DataPortalClient.LocalProxy(Of <%= Info.ObjectName %>).CompletedHandler)
+        <%
             }
             else if (c.Properties.Count > 0)
             {
-                fetchPartialMethods.Add("partial void Service_Fetch(" + ReceiveSingleCriteria(c, "crit") + ")");
-                %>public void <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Fetch(<%= ReceiveSingleCriteria(c, "crit") %>, Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
+                fetchPartialMethods.Add("Partial Sub Service_Fetch(" + ReceiveSingleCriteria(c, "crit") + ")");
+                %>
+        Public Sub <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Fetch(<%= ReceiveSingleCriteria(c, "crit") %>, handler As Csla.DataPortalClient.LocalProxy(Of <%= Info.ObjectName %>).CompletedHandler)
+        <%
             }
             else
             {
-                fetchPartialMethods.Add("partial void Service_Fetch()");
-                %>public void <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Fetch(Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)<%
+                fetchPartialMethods.Add("Partial Sub Service_Fetch()");
+                %>
+        Public Sub <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Fetch(handler As Csla.DataPortalClient.LocalProxy(Of <%= Info.ObjectName %>).CompletedHandler)
+        <%
             }
         %>
-        {
-            try
-            {
+            Try
                 <%
             if (c.Properties.Count > 1)
             {
-                %>Service_Fetch(crit);<%
+                %>
+                Service_Fetch(crit)
+                <%
             }
             else if (c.Properties.Count > 0)
             {
-                %>Service_Fetch(<%= HookSingleCriteria(c, "crit") %>);<%
+                %>
+                Service_Fetch(<%= HookSingleCriteria(c, "crit") %>)
+                <%
             }
             else
             {
-                %>Service_Fetch();<%
+                %>
+                Service_Fetch()
+                <%
             }
     %>
-                handler(this, null);
-            }
-            catch (Exception ex)
-            {
-                handler(null, ex);
-            }
+                handler(Me, Nothing)
+            
+            Catch ex As Exception
+                handler(Nothing, ex)
+            End Try
             <%
             if (Info.ObjectType == CslaObjectType.EditableSwitchable)
             {
                 %>
-            if (crit.IsChild)
-                MarkAsChild();
+            If crit.IsChild Then
+                MarkAsChild()
+            End If
             <%
             }
         %>
-        }
+        End Sub
         <%
         }
     }
@@ -101,10 +113,11 @@ if (!Info.UseCustomLoading && CurrentUnit.GenerationParams.SilverlightUsingServi
         MethodList.Add(new AdvancedGenerator.ServiceMethod(isChildNotLazyLoaded ? "Child_Fetch" : "DataPortal_Fetch", header));
         %>
 
-        /// <summary>
-        /// Implements <%= isChildNotLazyLoaded ? "Child_Fetch" : "DataPortal_Fetch" %> for <see cref="<%= Info.ObjectName %>"/> object.
-        /// </summary>
-        <%= header %>;
+        ''' <summary>
+        ''' Implements <%= isChildNotLazyLoaded ? "Child_Fetch" : "DataPortal_Fetch" %> for <see cref="<%= Info.ObjectName %>"/> object.
+        ''' </summary>
+        <%= header %>
+        End Sub
 <%
     }
 }

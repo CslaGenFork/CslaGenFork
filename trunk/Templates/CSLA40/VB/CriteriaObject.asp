@@ -10,7 +10,7 @@ if (Info.CriteriaObjects.Count > 0)
         IndentLevel += 2;
         %>
 
-    #region Criteria
+    #Region " Criteria "
         <%
         foreach (Criteria crit in Info.CriteriaObjects)
         {
@@ -21,47 +21,48 @@ if (Info.CriteriaObjects.Count > 0)
             {
                     %>
 
-    /// <summary>
-    /// <%= crit.Summary  == string.Empty ? crit.Name + " criteria." : crit.Summary %>
-    /// </summary>
+    ''' <summary>
+    ''' <%= crit.Summary  == string.Empty ? crit.Name + " criteria." : crit.Summary %>
+    ''' </summary>
         <%
                 if (crit.Remarks != string.Empty)
                 {
                     %>
-    /// <remarks>
-    /// <%= crit.Remarks %>
-    /// </remarks>
+    ''' <remarks>
+    ''' <%= crit.Remarks %>
+    ''' </remarks>
         <%
                 }
                 %>
-    [Serializable]
+    <Serializable()>
     <%
                 if (crit.CriteriaClassMode == CriteriaMode.Simple)
                 {
                     %>
-    public class <%= crit.Name %>
+    Public Class <%= crit.Name %>
     <%
                 }
                 else
                 {
                     %>
-    public <%= crit.CriteriaClassMode == CriteriaMode.BusinessBase ? "partial " : "" %>class <%= crit.Name %> : <%= crit.CriteriaClassMode != CriteriaMode.BusinessBase ? "CriteriaBase" : "BusinessBase" %><<%= crit.Name %>>
+    Public <%= crit.CriteriaClassMode == CriteriaMode.BusinessBase ? "Partial " : "" %>Class <%= crit.Name %> 
+        Inherits <%= crit.CriteriaClassMode != CriteriaMode.BusinessBase ? "CriteriaBase" : "BusinessBase" %>(Of <%= crit.Name %>)
     <%
                 }
                 %>
-    {
         <%
                 if (Info.ObjectType == CslaObjectType.EditableSwitchable)
                 {
-                    strParams = "bool isChild";
-                    strFieldAssignments = "  _isChild = isChild;";
+                    strParams = "isChild As Boolean ";
+                    strFieldAssignments = "  _isChild = isChild";
                     %>
-        private bool _isChild;
+        Private _isChild As Boolean
 
-        public bool IsChild
-        {
-            get { return _isChild; }
-        }
+        Public ReadOnly Property IsChild As Boolean
+            Get 
+                Return _isChild
+            End Get
+        End Property
         <%
                 }
                 getterCriteria = "Get";
@@ -80,9 +81,9 @@ if (Info.CriteriaObjects.Count > 0)
                     {
                         string statement = PropertyInfoCriteriaDeclare(Info, prop);
                         %>
-        /// <summary>
-        /// Maintains metadata about <see cref="<%= FormatProperty(prop.Name) %>"/> property.
-        /// </summary>
+        ''' <summary>
+        ''' Maintains metadata about <see cref="<%= FormatProperty(prop.Name) %>"/> property.
+        ''' </summary>
 <%= statement %>
 <%
                     }
@@ -90,44 +91,44 @@ if (Info.CriteriaObjects.Count > 0)
                     {
                         IndentLevel = 2;
                         %>
-        /// <summary>
+        ''' <summary>
 <%= GetXmlCommentString(prop.Summary) %>
-        /// </summary>
+        ''' </summary>
         <%
                     }
                     else
                     {
                         %>
-        /// <summary>
-        /// Gets <%= (prop.ReadOnly ? "" : "or sets ") %>the <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>.
-        /// </summary>
+        ''' <summary>
+        ''' Gets <%= (prop.ReadOnly ? "" : "or sets ") %>the <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>.
+        ''' </summary>
         <%
                     }
                     if (prop.PropertyType == TypeCodeEx.Boolean && prop.Nullable == false)
                     {
                         %>
-        /// <value><c>true</c> if <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; otherwise, <c>false</c>.</value>
+        ''' <value><c>true</c> if <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; otherwise, <c>false</c>.</value>
         <%
                     }
                     else if (prop.PropertyType == TypeCodeEx.Boolean && prop.Nullable == true)
                     {
                         %>
-        /// <value><c>true</c> if <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; <c>false</c> if not <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; otherwise, <c>null</c>.</value>
+        ''' <value><c>true</c> if <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; <c>false</c> if not <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; otherwise, <c>null</c>.</value>
         <%
                     }
                     else
                     {
                         %>
-        /// <value>The <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>.</value>
+        ''' <value>The <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>.</value>
         <%
                     }
                     if (prop.Remarks != string.Empty)
                     {
                         IndentLevel = 2;
                         %>
-        /// <remarks>
+        ''' <remarks>
 <%= GetXmlCommentString(prop.Remarks) %>
-        /// </remarks>
+        ''' </remarks>
         <%
                     }
                     // Just creating strings for later use in the constructors in order to avoid another loop
@@ -137,47 +138,48 @@ if (Info.CriteriaObjects.Count > 0)
                         {
                             strParams += ", ";
                         }
-                        strParams += string.Concat(GetDataTypeGeneric(prop, prop.PropertyType), " ", FormatCamel(prop.Name));
-                        strFieldAssignments += string.Concat("\r\n            ", FormatProperty(prop.Name), " = ", FormatCamel(prop.Name), ";");
-                        strComment += "\r\n        /// <param name=\"" + FormatCamel(prop.Name) + "\">The "+ FormatProperty(prop.Name) + ".</param>";
+                        strParams += string.Concat(FormatCamel(prop.Name), " As ", GetDataTypeGeneric(prop, prop.PropertyType));
+                        strFieldAssignments += string.Concat("\r\n            ", FormatProperty(prop.Name), " = ", FormatCamel(prop.Name));
+                        strComment += "\r\n        ''' <param name=\"" + FormatCamel(prop.Name) + "\">The "+ FormatProperty(prop.Name) + ".</param>";
                     }
                     else
                     {
-                        strFieldAssignments += string.Concat("\r\n            ", FormatProperty(prop.Name), " = ", prop.ParameterValue, ";");
+                        strFieldAssignments += string.Concat("\r\n            ", FormatProperty(prop.Name), " = ", prop.ParameterValue);
                     }
                     if (crit.CriteriaClassMode == CriteriaMode.Simple)
                     {
                         %>
-        public <%= GetDataTypeGeneric(prop, prop.PropertyType) %> <%= FormatProperty(prop.Name) %> { get; <%= (prop.ReadOnly ? "private " : "") %>set; }
+        Public Property <%= FormatProperty(prop.Name) %> As <%= GetDataTypeGeneric(prop, prop.PropertyType) %>
         <%
                     }
                     else
                     {
                         %>
-        public <%= GetDataTypeGeneric(prop, prop.PropertyType) %> <%= FormatProperty(prop.Name) %>
-        {
-            get { return <%= getterCriteria %>Property(<%= FormatProperty(prop.Name) %>Property); }
-            <%= (prop.ReadOnly ? "private " : "") %>set { <%= setterCriteria %>Property(<%= FormatProperty(prop.Name) %>Property, value); }
-        }
+        Public Property <%= FormatProperty(prop.Name) %> As <%= GetDataTypeGeneric(prop, prop.PropertyType) %> 
+            Get 
+                Return <%= getterCriteria %>Property(<%= FormatProperty(prop.Name) %>Property)
+            End Get
+            <%= (prop.ReadOnly ? "Private " : "") %>Set (value As <%= GetDataTypeGeneric(prop, prop.PropertyType) %>)
+                <%= setterCriteria %>Property(<%= FormatProperty(prop.Name) %>Property, value)
+            End Set
+        End Property
         <%
                     }
                 }
                 %>
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="<%= crit.Name %>"/> class.
-        /// </summary>
-        /// <remarks> A parameterless constructor is required by the MobileFormatter.</remarks>
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public <%= crit.Name %>()
-        {
-        }
+        ''' <summary>
+        ''' Initializes a new instance of the <see cref="<%= crit.Name %>"/> class.
+        ''' </summary>
+        ''' <remarks> A parameterless constructor is required by the MobileFormatter.</remarks>
+        <System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>
+        Public Sub New()
+        End Sub
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="<%= crit.Name %>"/> class.
-        /// </summary><%= strComment %>
-        public <%= crit.Name %>(<%= strParams %>)
-        {
+        ''' <summary>
+        ''' Initializes a new instance of the <see cref="<%= crit.Name %>"/> class.
+        ''' </summary><%= strComment %>
+        Public Sub New(<%= strParams %>)
             <%
                 if (strFieldAssignments.Length > 1)
                 {
@@ -186,47 +188,45 @@ if (Info.CriteriaObjects.Count > 0)
                 <%
                 }
                 %>
-        }
+        End Sub
 
-        /// <summary>
-        /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
-        /// </summary>
-        /// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
-        /// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-        public override bool Equals(object obj)
-        {
-            if (obj is <%= crit.Name %>)
-            {
-                var c = (<%= crit.Name %>) obj;
+        ''' <summary>
+        ''' Determines whether the specified <see cref="System.Object"/> is equal to this instance.
+        ''' </summary>
+        ''' <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
+        ''' <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+        Public Overrides Function Equals(obj As Object) As Boolean
+            If GetType(obj) Is <%= crit.Name %> Then
+                Dim c = DirectCast(obj, <%= crit.Name %>)
                 <%
                 foreach (CriteriaProperty p in crit.Properties)
                 {
                     %>
-                if (!<%= FormatProperty(p.Name) %>.Equals(c.<%= FormatProperty(p.Name) %>))
-                    return false;
+                If Not <%= FormatProperty(p.Name) %>.Equals(c.<%= FormatProperty(p.Name) %>) Then
+                    Return False
+                End If
                 <%
                 }
                 %>
-                return true;
-            }
-            return false;
-        }
+                Return True
+            End If
+            Return False
+        End Function
 
-        /// <summary>
-        /// Returns a hash code for this instance.
-        /// </summary>
-        /// <returns>An hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-        public override int GetHashCode()
-        {
-            return string.Concat("<%= crit.Name %>"<% foreach (CriteriaProperty p in crit.Properties) { %>, <%= FormatProperty(p.Name) %>.ToString()<% } %>).GetHashCode();
-        }
-    }
+        ''' <summary>
+        ''' Returns a hash code for this instance.
+        ''' </summary>
+        ''' <returns>An hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
+        Public Overrides Function GetHashCode() As Integer
+            Return String.Concat("<%= crit.Name %>"<% foreach (CriteriaProperty p in crit.Properties) { %>, <%= FormatProperty(p.Name) %>.ToString()<% } %>).GetHashCode()
+        End Function
+    End Class
     <%
             }
         }
         %>
 
-    #endregion
+    #End Region
 
 <%
         IndentLevel -=2;

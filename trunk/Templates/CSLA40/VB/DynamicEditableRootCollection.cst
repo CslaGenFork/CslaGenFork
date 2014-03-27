@@ -1,4 +1,4 @@
-<%@ CodeTemplate Inherits="CslaTemplateHelperCS" Language="CSharp" TargetLanguage="CSharp" Description="Generates a CSLA Dynamic Root Collection." %>
+<%@ CodeTemplate Inherits="CslaTemplateHelperVB" Language="CSharp" TargetLanguage="VB" Description="Generates a CSLA Dynamic Root Collection." %>
 <%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the DynamicEditableRootCollection Object to create." %>
 <%@ Property Name="Errors" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return errors to master.cst" %>
 <%@ Property Name="Warnings" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return warnings to master.cst" %>
@@ -36,8 +36,7 @@ if (Errors.Length == 0)
     bool? firstComment = null;
     %><!-- #include file="Header.asp" -->
 <%= GetUsingStatementsStringBusiness(Info, CurrentUnit) %>
-namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Business) %>
-{
+<%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Business) == string.Empty ? "" : "Namespace " + GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Business) %>
 <%
     %><!-- #include file="XmlComment.asp" -->
     <%
@@ -48,36 +47,38 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Busine
     <%
     }
     %>
-    [Serializable]
+    <Serializable()>
 <%
     if (CurrentUnit.GenerationParams.DualListInheritance)
     {
-        %>#if WINFORMS
-    <%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %><%= Info.ClassVisibility == ClassVisibility.Public ? "public" : "internal" %> partial class <%= Info.ObjectName %> : <%
+        %>#If WINFORMS Then
+    <%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %>Partial <%= Info.ClassVisibility == ClassVisibility.Public ? "Public" : "Friend" %> Class <%= Info.ObjectName %>
+        Inherits <%
         if (Info.InheritedTypeWinForms.Type != string.Empty || Info.InheritedTypeWinForms.ObjectName != string.Empty)
         {
             %><!-- #include file="InheritsWinForms.asp" --><%
         }
         else
         {
-            %><%= ListBaseHelper("Dynamic", true) %><<%= Info.ItemType %>><!-- #include file="Implements.asp" --><%
+            %><%= ListBaseHelper("Dynamic", true) %>(Of <%= Info.ItemType %>)<!-- #include file="Implements.asp" --><%
         }
 
-        %>#else
+        %>#Else
     <%
     }
-    %><%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %><%= Info.ClassVisibility == ClassVisibility.Public ? "public" : "internal" %> partial class <%= Info.ObjectName %> : <%
+    %><%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %>Partial <%= Info.ClassVisibility == ClassVisibility.Public ? "Public" : "Friend" %> Class <%= Info.ObjectName %>
+        Inherits <%
     if (Info.InheritedType.Type != string.Empty || Info.InheritedType.ObjectName != string.Empty)
     {
         %><!-- #include file="Inherits.asp" --><%
     }
     else
     {
-        %><%= ListBaseHelper("Dynamic", CurrentUnit.GenerationParams.GenerateWinForms && !CurrentUnit.GenerationParams.DualListInheritance) %><<%= Info.ItemType %>><!-- #include file="Implements.asp" --><%
+        %><%= ListBaseHelper("Dynamic", CurrentUnit.GenerationParams.GenerateWinForms && !CurrentUnit.GenerationParams.DualListInheritance) %>(Of <%= Info.ItemType %>)<!-- #include file="Implements.asp" --><%
     }
     if (CurrentUnit.GenerationParams.DualListInheritance)
     {
-        %>#endif
+        %>#End If
     <%
     }
     %><%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %>{
@@ -86,9 +87,18 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Busine
     <%
     if (Info.GenerateFactoryMethods)
     {
-        %>
+        if (CurrentUnit.GenerationParams.TargetIsCsla40)
+        {
+            %>
 <!-- #include file="DynamicEditableRootCollection_Factory.asp" -->
 <%
+        }
+        else
+        {
+            %>
+<!-- #include file="DynamicEditableRootCollection_Factory-45.asp" -->
+<%
+        }
     }
     Response.Write(Environment.NewLine);
     %>
@@ -121,7 +131,7 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Busine
     %>
     }
 <!-- #include file="CriteriaObject.asp" -->
-}
+<%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Business) == string.Empty ? "" : "End Namespace" %>
 <%
 }
 %>

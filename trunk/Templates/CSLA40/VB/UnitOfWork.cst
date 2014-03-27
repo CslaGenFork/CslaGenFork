@@ -1,4 +1,4 @@
-<%@ CodeTemplate Inherits="CslaTemplateHelperCS" Language="CSharp" TargetLanguage="CSharp" Description="Generates a Unit of Work (CSLA ReadOnly or Command object)." %>
+<%@ CodeTemplate Inherits="CslaTemplateHelperVB" Language="CSharp" TargetLanguage="VB" Description="Generates a Unit of Work (CSLA ReadOnly or Command object)." %>
 <%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the ReadOnly Object to create." %>
 <%@ Property Name="Errors" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return errors to master.cst" %>
 <%@ Property Name="Warnings" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return warnings to master.cst" %>
@@ -32,8 +32,7 @@ if (Errors.Length == 0)
     bool? firstComment = null;
     %><!-- #include file="Header.asp" -->
 <%= GetUsingStatementsStringBusiness(Info, CurrentUnit) %>
-namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Business) %>
-{
+<%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Business) == string.Empty ? "" : "Namespace " + GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Business) %>
 <%
     %><!-- #include file="XmlComment.asp" -->
     <%
@@ -44,13 +43,24 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Busine
     <%
     }
     %>
-    [Serializable]
-    <%= Info.ClassVisibility == ClassVisibility.Public ? "public" : "internal" %> partial class <%= Info.ObjectName %> : <%= (Info.IsUpdater || Info.IsDeleter) ? "CommandBase" : "ReadOnlyBase" %><<%= Info.ObjectName %>>
-    {
+    <Serializable()>
+    Partial <%= Info.ClassVisibility == ClassVisibility.Public ? "Public" : "Friend" %> Class <%= Info.ObjectName %>
+        Inherits <%= (Info.IsUpdater || Info.IsDeleter) ? "CommandBase" : "ReadOnlyBase" %>(Of <%= Info.ObjectName %>)
 
 <!-- #include file="BusinessProps.asp" -->
+<%
+    if (CurrentUnit.GenerationParams.TargetIsCsla40)
+    {
+        %>
 <!-- #include file="UnitOfWork_Factory.asp" -->
 <%
+    }
+    else
+    {
+        %>
+<!-- #include file="UnitOfWork_Factory-45.asp" -->
+<%
+    }
     Response.Write(Environment.NewLine);
     %>
 <!-- #include file="Constructor.asp" -->
@@ -59,8 +69,8 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Busine
 <%
     Response.Write(Environment.NewLine);
     %>
-    }
-}
+    End Class
+<%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Business) == string.Empty ? "" : "End Namespace" %>
 <%
 }
 %>

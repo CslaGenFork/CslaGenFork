@@ -1,10 +1,10 @@
-        #region Data Access
+        #Region " Data Access "
 <%
 if (UseBoth())
 {
     %>
 
-#if !SILVERLIGHT
+#If Not SILVERLIGHT Then
 <%
 }
 if (UseNoSilverlight())
@@ -17,9 +17,9 @@ if (UseBoth())
 {
     %>
 
-#endif
+#End If
 <%
 }
 %>
 
-        #endregion
+        #End Region

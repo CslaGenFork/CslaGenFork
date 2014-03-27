@@ -16,7 +16,7 @@ if (Info.ItemType != string.Empty)
 if (Info.FindMethodsParameters.Count > 0 || isParentLoaded)
 {
     %>
-        #region Find Methods
+        #Region " Find Methods "
         <%
 
     if (Info.FindMethodsParameters.Count > 0)
@@ -25,23 +25,20 @@ if (Info.FindMethodsParameters.Count > 0 || isParentLoaded)
         {
             %>
 
-        /// <summary>
-        /// Finds a <see cref="<%= Info.ItemType %>"/> item of the <see cref="<%= Info.ObjectName %>"/> collection, based on a given <%= prop.Name %>.
-        /// </summary>
-        /// <param name="<%= FormatCamel(prop.Name) %>">The <%= FormatProperty(prop.Name) %>.</param>
-        /// <returns>A <see cref="<%= Info.ItemType %>"/> object.</returns>
-        public <%= Info.ItemType %> Find<%= Info.ItemType %>By<%= prop.Name %>(<%= GetDataTypeGeneric(prop, prop.PropertyType) %> <%= FormatCamel(prop.Name) %>)
-        {
-            for (var i = 0; i < this.Count; i++)
-            {
-                if (this[i].<%= prop.Name %>.Equals(<%= FormatCamel(prop.Name) %>))
-                {
-                    return this[i];
-                }
-            }
+        ''' <summary>
+        ''' Finds a <see cref="<%= Info.ItemType %>"/> item of the <see cref="<%= Info.ObjectName %>"/> collection, based on a given <%= prop.Name %>.
+        ''' </summary>
+        ''' <param name="<%= FormatCamel(prop.Name) %>">The <%= FormatProperty(prop.Name) %>.</param>
+        ''' <returns>A <see cref="<%= Info.ItemType %>"/> object.</returns>
+        Public Function Find<%= Info.ItemType %>By<%= prop.Name %>(<%= FormatCamel(prop.Name) %> As <%= GetDataTypeGeneric(prop, prop.PropertyType) %>) As <%= Info.ItemType %> 
+            For i As Integer = 0 To Me.Count - 1
+                If Me(i).<%= prop.Name %>.Equals(<%= FormatCamel(prop.Name) %>) Then
+                    Return Me(i)
+                End If
+            Next i
 
-            return null;
-        }
+            Return Nothing
+        End Function
         <%
         }
     }
@@ -67,39 +64,36 @@ if (Info.FindMethodsParameters.Count > 0 || isParentLoaded)
                     {
                         findByComments += Environment.NewLine + new string(' ', 8);
                         findByParams += ", ";
-                        findByStat += " &&" + Environment.NewLine + new string(' ', 8);
+                        findByStat += " AndAlso " + Environment.NewLine + new string(' ', 8);
                     }
 
-                    findByComments += "/// <param name=\"" + FormatCamel(prop.Name) + "\">The " + FormatProperty(prop.Name) + ".</param>";
-                    findByParams += GetDataTypeGeneric(prop, prop.PropertyType) + " " + FormatCamel(prop.Name);
-                    findByStat += "this[i]." + prop.Name + ".Equals(" + FormatCamel(prop.Name) + ")";
+                    findByComments += "''' <param name=\"" + FormatCamel(prop.Name) + "\">The " + FormatProperty(prop.Name) + ".</param>";
+                    findByParams += FormatCamel(prop.Name) + " As " + GetDataTypeGeneric(prop, prop.PropertyType);
+                    findByStat += "Me(i)." + prop.Name + ".Equals(" + FormatCamel(prop.Name) + ")";
                 }
             }
             %>
 
-        /// <summary>
-        /// Finds a <see cref="<%= Info.ItemType %>"/> item of the <see cref="<%= Info.ObjectName %>"/> collection, based on item key properties.
-        /// </summary>
+        ''' <summary>
+        ''' Finds a <see cref="<%= Info.ItemType %>"/> item of the <see cref="<%= Info.ObjectName %>"/> collection, based on item key properties.
+        ''' </summary>
         <%= findByComments %>
-        /// <returns>A <see cref="<%= Info.ItemType %>"/> object.</returns>
-        public <%= Info.ItemType %> Find<%= Info.ItemType %>ByParentProperties(<%= findByParams %>)
-        {
-            for (var i = 0; i < this.Count; i++)
-            {
-                if (<%= findByStat %>)
-                {
-                    return this[i];
-                }
-            }
+        ''' <returns>A <see cref="<%= Info.ItemType %>"/> object.</returns>
+        Public Function Find<%= Info.ItemType %>ByParentProperties(<%= findByParams %>) As <%= Info.ItemType %> 
+            For i As Integer = 0 To Me.Count - 1
+                If <%= findByStat %> Then
+                    Return Me(i)
+                End If
+            Next
 
-            return null;
-        }
+            Return Nothing
+        End Function
         <%
         }
     }
 %>
 
-        #endregion
+        #End Region
 
 <%
 }

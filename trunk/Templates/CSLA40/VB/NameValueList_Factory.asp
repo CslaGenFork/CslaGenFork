@@ -1,10 +1,10 @@
-        #region Factory Methods
+        #Region " Factory Methods "
 <%
 if (UseBoth() && (CurrentUnit.GenerationParams.GenerateSynchronous || CurrentUnit.GenerationParams.SilverlightUsingServices))
 {
     %>
 
-#if !SILVERLIGHT
+#If Not SILVERLIGHT Then
 <%
 }
 %>
@@ -20,7 +20,7 @@ if (UseBoth() && (CurrentUnit.GenerationParams.GenerateSynchronous || CurrentUni
 {
     %>
 
-#else
+#Else
 <%
 }
 if (CurrentUnit.GenerationParams.GenerateSilverlight4)
@@ -46,7 +46,7 @@ if (UseBoth() && (CurrentUnit.GenerationParams.GenerateSynchronous || CurrentUni
 {
     %>
 
-#endif
+#End If
 <%
 }
 if (CurrentUnit.GenerationParams.GenerateAsynchronous && CurrentUnit.GenerationParams.GenerateSilverlight4)
@@ -57,4 +57,4 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous && CurrentUnit.GenerationP
 }
 %>
 
-        #endregion
+        #End Region

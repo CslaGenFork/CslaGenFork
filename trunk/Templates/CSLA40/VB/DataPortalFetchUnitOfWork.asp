@@ -15,22 +15,21 @@ foreach (UnitOfWorkCriteriaManager.UoWCriteria uowCrit in listUoWCriteriaGetter)
 
         elementCriteriaCount++;
         createUowParam = FormatCamel(c.Name);
-        createUowCrit = c.Type + " " + FormatCamel(c.Name);
+        createUowCrit = FormatCamel(c.Name) + " As " + c.Type;
     }
     if (elementCriteriaCount > 1)
     {
         createUowParam = "crit";
-        createUowCrit = uowCrit.CriteriaName + " crit";
+        createUowCrit = "crit As " + uowCrit.CriteriaName;
     }
     if (elementCriteriaCount != 0)
-        createUowComment = "/// <param name=\"" + createUowParam + "\">The fetch criteria.</param>" + System.Environment.NewLine + new string(' ', 8);
+        createUowComment = "''' <param name=\"" + createUowParam + "\">The fetch criteria.</param>" + System.Environment.NewLine + new string(' ', 8);
     %>
 
-        /// <summary>
-        /// Loads a <see cref="<%= Info.ObjectName %>"/> unit of objects<%= elementCriteriaCount > 0 ? ", based on given criteria" : "" %>.
-        /// </summary>
-        <%= createUowComment %>protected void DataPortal_Fetch(<%= createUowCrit %>)
-        {
+        ''' <summary>
+        ''' Loads a <see cref="<%= Info.ObjectName %>"/> unit of objects<%= elementCriteriaCount > 0 ? ", based on given criteria" : "" %>.
+        ''' </summary>
+        <%= createUowComment %>Protected Sub DataPortal_Fetch(<%= createUowCrit %>)
             <%
     foreach (UnitOfWorkCriteriaManager.ElementCriteria c in uowCrit.ElementCriteriaList)
     {
@@ -38,7 +37,7 @@ foreach (UnitOfWorkCriteriaManager.UoWCriteria uowCrit in listUoWCriteriaGetter)
         if (CurrentUnit.GenerationParams.GenerateSynchronous)
             strFetch = c.ParentObject + ".Get" + c.ParentObject;
         else
-            strFetch = "DataPortal.Fetch<" + c.ParentObject + ">";
+            strFetch = "DataPortal.Fetch(Of " + c.ParentObject + ")";
         string uowParam = string.Empty;
         if (c.Name != string.Empty)
         {
@@ -50,18 +49,18 @@ foreach (UnitOfWorkCriteriaManager.UoWCriteria uowCrit in listUoWCriteriaGetter)
         if (uowParam.Length != 0)
         {
             %>
-            <%= GetFieldLoaderStatement(c.DeclarationMode, c.ParentObject, strFetch + "(" + uowParam + ")") %>;
+            <%= GetFieldLoaderStatement(c.DeclarationMode, c.ParentObject, strFetch + "(" + uowParam + ")") %>
             <%
         }
         else
         {
             %>
-            <%= GetFieldLoaderStatement(c.DeclarationMode, c.ParentObject, strFetch + "()") %>;
+            <%= GetFieldLoaderStatement(c.DeclarationMode, c.ParentObject, strFetch + "()") %>
             <%
         }
     }
     %>
-        }
+        End Sub
 <%
 }
 %>

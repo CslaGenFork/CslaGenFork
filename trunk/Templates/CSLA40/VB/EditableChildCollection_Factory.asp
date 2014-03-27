@@ -4,18 +4,17 @@ if (isChildLazyLoaded || createCriteria || parentCreateCriteria ||
     declarationMode == PropertyDeclaration.AutoProperty)
 {
     %>
-        #region Factory Methods
+        #Region " Factory Methods "
 <%
     if (UseBoth())
     {
         %>
 
-#if !SILVERLIGHT
+#If  Not SILVERLIGHT Then
 <%
     }
 %>
 <!-- #include file="NewObject.asp" -->
-<!-- #include file="NewObjectAsync.asp" -->
 <%
 }
 if (!isChildSelfLoaded && UseNoSilverlight())
@@ -24,11 +23,17 @@ if (!isChildSelfLoaded && UseNoSilverlight())
 <!-- #include file="InternalGetObject.asp" -->
 <%
 }
-else
+else if (UseNoSilverlight())
 {
     %>
 <!-- #include file="GetObject.asp" -->
 <%
+}
+%>
+<!-- #include file="NewObjectAsync.asp" -->
+<%
+if (isChildSelfLoaded && UseNoSilverlight())
+{
     if (CurrentUnit.GenerationParams.GenerateAsynchronous && !CurrentUnit.GenerationParams.GenerateSilverlight4)
     {
         %>
@@ -44,7 +49,7 @@ if (isChildLazyLoaded || createCriteria || parentCreateCriteria ||
     {
         %>
 
-#else
+#Else
 <%
     }
     %>
@@ -56,7 +61,7 @@ if (UseBoth())
 {
     %>
 
-#endif
+#End If
 <%
 }
 if (CurrentUnit.GenerationParams.GenerateAsynchronous && CurrentUnit.GenerationParams.GenerateSilverlight4)
@@ -67,4 +72,4 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous && CurrentUnit.GenerationP
 }
 %>
 
-        #endregion
+        #End Region

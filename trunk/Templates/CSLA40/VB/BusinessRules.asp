@@ -52,18 +52,17 @@ if (generateRuleRegion || generateAuthRegion || generateObjectRuleRegion)
     }
     genOptional = true;
     %>
-        #region Business Rules and Property Authorization
+        #Region " Business Rules and Property Authorization "
 
-        /// <summary>
-        /// Override this method in your business class to be notified when you need to set up shared business rules.
-        /// </summary>
-        /// <remarks>
-        /// This method is automatically called by CSLA.NET when your object should associate
-        /// per-type validation rules with its properties.
-        /// </remarks>
-        protected override void AddBusinessRules()
-        {
-            base.AddBusinessRules();
+        ''' <summary>
+        ''' Override this method in your business class to be notified when you need to set up shared business rules.
+        ''' </summary>
+        ''' <remarks>
+        ''' This method is automatically called by CSLA.NET when your object should associate
+        ''' per-type validation rules with its properties.
+        ''' </remarks>
+        Protected Overrides Sub AddBusinessRules()
+            MyBase.AddBusinessRules()
             <%
     string resultRule = string.Empty;
     string resultConstructor = string.Empty;
@@ -157,7 +156,7 @@ if (generateRuleRegion || generateAuthRegion || generateObjectRuleRegion)
             if (resultProperties != string.Empty)
                 resultProperties = " { " + resultProperties + " }";
 
-            resultRule = "BusinessRules.AddRule(new " + backupRuleType + "(" + resultConstructor + ")" + resultProperties + ")" + ";";
+            resultRule = "BusinessRules.AddRule(New " + backupRuleType + "(" + resultConstructor + ")" + resultProperties + ")";
             %>
             <%= resultRule %>
 <%
@@ -294,7 +293,7 @@ if (generateRuleRegion || generateAuthRegion || generateObjectRuleRegion)
                 if (resultProperties != string.Empty)
                     resultProperties = " { " + resultProperties + " }";
 
-                resultRule = "BusinessRules.AddRule(new " + backupRuleType + "(" + resultConstructor + ")" + resultProperties + ")" + ";";
+                resultRule = "BusinessRules.AddRule(New " + backupRuleType + "(" + resultConstructor + ")" + resultProperties + ")";
             %>
             <%= resultRule %>
 <%
@@ -322,14 +321,14 @@ if (generateRuleRegion || generateAuthRegion || generateObjectRuleRegion)
                     if (CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider ||
                         rulableProperty.AuthzProvider == AuthorizationProvider.IsInRole)
                     {
-                        resultRule = "BusinessRules.AddRule(typeof (" + Info.ObjectName + "), new IsInRole(AuthorizationActions.ReadProperty, " + rulableProperty.Name + "Property" + ReturnRoleList(rulableProperty.ReadRoles) +"));";
+                        resultRule = "BusinessRules.AddRule(GetType(" + Info.ObjectName + "), New IsInRole(AuthorizationActions.ReadProperty, " + rulableProperty.Name + "Property" + ReturnRoleList(rulableProperty.ReadRoles) +"))";
             %>
             <%= resultRule %>
 <%
                     }
                     else
                     {
-                        resultRule = "BusinessRules.AddRule(typeof (" + Info.ObjectName + "), new IsNotInRole(AuthorizationActions.ReadProperty, " + rulableProperty.Name + "Property" + ReturnRoleList(rulableProperty.ReadRoles) + "));";
+                        resultRule = "BusinessRules.AddRule(GetType(" + Info.ObjectName + "), New IsNotInRole(AuthorizationActions.ReadProperty, " + rulableProperty.Name + "Property" + ReturnRoleList(rulableProperty.ReadRoles) + "))";
             %>
             <%= resultRule %>
 <%
@@ -340,14 +339,14 @@ if (generateRuleRegion || generateAuthRegion || generateObjectRuleRegion)
                     if (CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider ||
                         rulableProperty.AuthzProvider == AuthorizationProvider.IsInRole)
                     {
-                        resultRule = "BusinessRules.AddRule(typeof (" + Info.ObjectName + "), new IsInRole(AuthorizationActions.WriteProperty, " + rulableProperty.Name + "Property" + ReturnRoleList(rulableProperty.WriteRoles) +"));";
+                        resultRule = "BusinessRules.AddRule(GetType(" + Info.ObjectName + "), New IsInRole(AuthorizationActions.WriteProperty, " + rulableProperty.Name + "Property" + ReturnRoleList(rulableProperty.WriteRoles) +"))";
             %>
             <%= resultRule %>
 <%
                     }
                     else
                     {
-                        resultRule = "BusinessRules.AddRule(typeof (" + Info.ObjectName + "), new IsNotInRole(AuthorizationActions.WriteProperty, " + rulableProperty.Name + "Property" + ReturnRoleList(rulableProperty.WriteRoles) + "));";
+                        resultRule = "BusinessRules.AddRule(GetType(" + Info.ObjectName + "), New IsNotInRole(AuthorizationActions.WriteProperty, " + rulableProperty.Name + "Property" + ReturnRoleList(rulableProperty.WriteRoles) + "))";
             %>
             <%= resultRule %>
 <%
@@ -382,15 +381,16 @@ if (generateRuleRegion || generateAuthRegion || generateObjectRuleRegion)
     }
     %>
 
-            AddBusinessRulesExtend();
-        }
+            AddBusinessRulesExtend()
+        End Sub
 
-        /// <summary>
-        /// Allows the set up of custom shared business rules.
-        /// </summary>
-        partial void AddBusinessRulesExtend();
+        ''' <summary>
+        ''' Allows the set up of custom shared business rules.
+        ''' </summary>
+        Partial Private Sub AddBusinessRulesExtend()
+        End Sub
 
-        #endregion
+        #End Region
 
 <%
 }

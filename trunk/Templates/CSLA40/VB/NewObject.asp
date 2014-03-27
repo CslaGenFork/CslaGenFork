@@ -14,14 +14,13 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
     {
         %>
 
-        /// <summary>
-        /// Factory method. Creates a new <see cref="<%= Info.ObjectName %>"/> collection.
-        /// </summary>
-        /// <returns>A reference to the created <see cref="<%= Info.ObjectName %>"/> collection.</returns>
-        <%= Info.ParentType == string.Empty ? "public" : "internal" %> static <%= Info.ObjectName %> New<%= Info.ObjectName %>()
-        {
-            return DataPortal.Create<%= isChildNotLazyLoaded ? "Child" : "" %><<%= Info.ObjectName %>>();
-        }
+        ''' <summary>
+        ''' Factory method. Creates a new <see cref="<%= Info.ObjectName %>"/> collection.
+        ''' </summary>
+        ''' <returns>A reference to the created <see cref="<%= Info.ObjectName %>"/> collection.</returns>
+        <%= Info.ParentType == string.Empty ? "Public" : "Friend" %> Shared Function New<%= Info.ObjectName %>() As <%= Info.ObjectName %>
+            Return DataPortal.Create<%= isChildNotLazyLoaded ? "Child" : "" %>(Of <%= Info.ObjectName %>)()
+        End Function
         <%
     }
     else
@@ -41,65 +40,63 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
                         strNewParams += ", ";
                         strNewCritParams += ", ";
                     }
-                    strNewParams += string.Concat(GetDataTypeGeneric(c.Properties[i], c.Properties[i].PropertyType), " ", FormatCamel(c.Properties[i].Name));
+                    strNewParams += string.Concat(FormatCamel(c.Properties[i].Name), " As ", GetDataTypeGeneric(c.Properties[i], c.Properties[i].PropertyType));
                     strNewCritParams += FormatCamel(c.Properties[i].Name);
-                    strNewComment += "/// <param name=\"" + FormatCamel(c.Properties[i].Name) + "\">The " + FormatProperty(c.Properties[i].Name) + " of the " + Info.ObjectName + " to create.</param>" + System.Environment.NewLine + new string(' ', 8);
+                    strNewComment += "''' <param name=\"" + FormatCamel(c.Properties[i].Name) + "\">The " + FormatProperty(c.Properties[i].Name) + " of the " + Info.ObjectName + " to create.</param>" + System.Environment.NewLine + new string(' ', 8);
                 }
                 if (!isChild && !c.NestedClass && c.Properties.Count > 1 && Info.ObjectType != CslaObjectType.EditableSwitchable)
                 {
                     %>
 
-        /// <summary>
-        /// Factory method. Creates a new <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %>, based on given parameters.
-        /// </summary>
-        /// <param name="crit">The create criteria.</param>
-        /// <returns>A reference to the created <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %>.</returns>
-        public static <%= Info.ObjectName %> New<%= Info.ObjectName %><%= c.CreateOptions.FactorySuffix %>(<%= c.Name %> crit)
-        {
-            return DataPortal.Create<<%= Info.ObjectName %>>(crit);
-        }
+        ''' <summary>
+        ''' Factory method. Creates a new <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %>, based on given parameters.
+        ''' </summary>
+        ''' <param name="crit">The create criteria.</param>
+        ''' <returns>A reference to the created <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %>.</returns>
+        Public Shared Function New<%= Info.ObjectName %><%= c.CreateOptions.FactorySuffix %>(crit As <%= c.Name %>) As <%= Info.ObjectName %>
+            Return DataPortal.Create(Of <%= Info.ObjectName %>)(crit)
+        End Function
         <%
                 }
                 %>
 
-        /// <summary>
-        /// Factory method. Creates a new <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %><%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
-        /// </summary>
-        <%= strNewComment %>/// <returns>A reference to the created <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %>.</returns>
-        <%= Info.ParentType == string.Empty ? "public" : "internal" %> static <%= Info.ObjectName %> New<%= Info.ObjectName %><%= c.CreateOptions.FactorySuffix %>(<%= strNewParams %>)
-        {
-            <%
+        ''' <summary>
+        ''' Factory method. Creates a new <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %><%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
+        ''' </summary>
+        <%= strNewComment %>''' <returns>A reference to the created <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %>.</returns>
+        <%= Info.ParentType == string.Empty ? "Public" : "Friend" %> Shared Function New<%= Info.ObjectName %><%= c.CreateOptions.FactorySuffix %>(<%= strNewParams %>) As <%= Info.ObjectName %>
+           <%
                 if (Info.ObjectType == CslaObjectType.EditableSwitchable)
                 {
                     if (strNewCritParams.Length > 0)
                     {
-                        strNewCritParams = "false, " + strNewCritParams;
+                        strNewCritParams = "False, " + strNewCritParams;
                     }
                     else
                     {
-                        strNewCritParams = "false" ;
+                        strNewCritParams = "False" ;
                     }
                 }
                 if (c.Properties.Count > 1)
                 {
                     %>
-            return DataPortal.Create<%= (isChildNotLazyLoaded && runLocal) ? "Child" : "" %><<%= Info.ObjectName %>>(new <%= c.Name %>(<%= strNewCritParams %>));
+            Return DataPortal.Create<%= (isChildNotLazyLoaded && runLocal) ? "Child" : "" %>(Of <%= Info.ObjectName %>)(New <%= c.Name %>(<%= strNewCritParams %>))
                 <%
                 }
                 else if (c.Properties.Count > 0)
                 {
                     %>
-            return DataPortal.Create<%= (isChildNotLazyLoaded && runLocal) ? "Child" : "" %><<%= Info.ObjectName %>>(<%= SendSingleCriteria(c, strNewCritParams) %>);
+            Return DataPortal.Create<%= (isChildNotLazyLoaded && runLocal) ? "Child" : "" %>(Of <%= Info.ObjectName %>)(<%= SendSingleCriteria(c, strNewCritParams) %>)
                     <%
                 }
                 else
                 {
                     %>
-            return DataPortal.Create<%= (isChildNotLazyLoaded && runLocal) ? "Child" : "" %><<%= Info.ObjectName %>>();
+            Return DataPortal.Create<%= (isChildNotLazyLoaded && runLocal) ? "Child" : "" %>(Of <%= Info.ObjectName %>)()
                     <%
                 }
                 %>
-        }
+        End Function
         <%
             }
         }

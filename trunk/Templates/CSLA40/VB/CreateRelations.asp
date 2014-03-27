@@ -1,6 +1,5 @@
 
-        private void CreateRelations(DataSet ds)
-        {
+        Private Sub CreateRelations(ds As DataSet)
             <%
 <script runat="template">
 public string GetDSRelations(CslaObjectInfo info)
@@ -13,33 +12,33 @@ public string GetDSRelations(CslaObjectInfo info)
             sb.Append("            ds.Relations.Add(\"");
             sb.Append(info.ObjectName);
             sb.Append(item.ObjectName);
-            sb.Append("\", new DataColumn[] {");
+            sb.Append("\", New DataColumn() {");
             int i = 0;
             foreach (CslaGenerator.Metadata.Property prop in item.ParentProperties)
             {
                 if (i > 0)
                     sb.Append(", ");
-                sb.Append("ds.Tables[\"");
+                sb.Append("ds.Tables(\"");
                 sb.Append(info.ObjectName);
-                sb.Append("\"].Columns[\"");
+                sb.Append("\").Columns(\"");
                 sb.Append(prop.Name);
-                sb.Append("\"]");
+                sb.Append("\")");
                 i++;
             }
             i = 0;
-            sb.Append("}, new DataColumn[] {");
+            sb.Append("}, New DataColumn() {");
             foreach (CslaGenerator.Metadata.Property prop in item.ParentProperties)
             {
                 if (i > 0)
                     sb.Append(", ");
-                sb.Append("ds.Tables[\"");
+                sb.Append("ds.Tables(\"");
                 sb.Append(item.ObjectName);
-                sb.Append("\"].Columns[\"");
+                sb.Append("\").Columns(\"");
                 sb.Append(prop.Name);
-                sb.Append("\"]");
+                sb.Append("\")");
                 i++;
             }
-            sb.Append("}, false);");
+            sb.Append("}, False)");
             sb.AppendLine();
             sb.Append(GetDSRelations(item));
         }
@@ -58,16 +57,16 @@ public string GetDSRelations(CslaObjectInfo info)
             {
                 string[] objectNames = GetCollectionChildItemsInHierarchy(obj);
                 %>
-            ds.Tables[0].TableName = "<%= obj.ObjectName %>";
+            ds.Tables(0).TableName = "<%= obj.ObjectName %>"
             <%
                 for (int i = 0; i < objectNames.Length; i++)
                 {
                     %>
-            ds.Tables[<%= (i+1).ToString() %>].TableName = "<%= objectNames[i] %>";
+            ds.Tables(<%= (i+1).ToString() %>).TableName = "<%= objectNames[i] %>"
             <%
                 }
                 %>
 <%= GetDSRelations(obj) %><%
             }
             %>
-        }
+        End Sub

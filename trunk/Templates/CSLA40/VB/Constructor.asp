@@ -21,30 +21,30 @@ if (Info.GenerateConstructor)
         }
     }
     %>
-        #region Constructor
+        #Region " Constructor "
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="<%= Info.ObjectName %>"/> class.
-        /// </summary>
-        /// <remarks> Do not use to create a <%= Info.ObjectType == CslaObjectType.UnitOfWork ? "Unit of Work" : "Csla object" %>. Use factory methods instead.</remarks>
+        ''' <summary>
+        ''' Initializes a new instance of the <see cref="<%= Info.ObjectName %>"/> class.
+        ''' </summary>
+        ''' <remarks> Do not use to create a <%= Info.ObjectType == CslaObjectType.UnitOfWork ? "Unit of Work" : "Csla object" %>. Use factory methods instead.</remarks>
 <%
     if (UseBoth())
     {
         %>
-#if SILVERLIGHT
+#If SILVERLIGHT Then
 <%
     }
     if (UseSilverlight())
     {
         %>
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public <%= Info.ObjectName %>()
+        <System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>
+        Public Sub New()
 <%
     }
     if (UseBoth()) // check there is a fetch
     {
         %>
-#else
+#Else
 <%
     }
     if (UseNoSilverlight())
@@ -54,34 +54,33 @@ if (Info.GenerateConstructor)
             Info.ObjectType == CslaObjectType.ReadOnlyCollection &&
             Info.ParentType != string.Empty &&
             ancestorLoaderLevel > 1)
-            ctorVisibility = "internal";
+            ctorVisibility = "Friend";
         else
             ctorVisibility = GetConstructorVisibility(Info);
 
         %>
-        <%= ctorVisibility %> <%= Info.ObjectName %>()
+        <%= ctorVisibility %> Sub New()
 <%
     }
     if (UseBoth())
     {
         %>
-#endif
+#End If
 <%
     }
     %>
-        {
-            // Prevent direct creation
+            ' Prevent direct creation
             <%
     if (Info.SupportUpdateProperties || hasFactoryCache || hasDataPortalCache)
     {
         %>
-            Saved += On<%= Info.ObjectName %>Saved;
+            AddHandler Saved, AddressOf On<%= Info.ObjectName %>Saved
             <%
     }
     if (Info.SupportUpdateProperties && (hasFactoryCache || hasDataPortalCache))
     {
         %>
-            <%= Info.ObjectName %>Saved += <%= Info.ObjectName %>SavedHandler;
+            AddHandler <%= Info.ObjectName %>Saved, AddressOf <%= Info.ObjectName %>SavedHandler
 <%
     }
     if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
@@ -92,7 +91,7 @@ if (Info.GenerateConstructor)
             if (childInfo4.UpdateValueProperties.Count > 0)
             {
                 %>
-            <%= Info.UpdaterType %>.<%= Info.UpdaterType %>Saved += <%= Info.UpdaterType %>SavedHandler;
+            AddHandler <%= Info.UpdaterType %>.<%= Info.UpdaterType %>Saved, AddressOf <%= Info.UpdaterType %>SavedHandler
             <%
             }
         }
@@ -102,8 +101,8 @@ if (Info.GenerateConstructor)
     {
         %>
 
-            // show the framework that this is a child object
-            MarkAsChild();
+            ' show the framework that this is a child object
+            MarkAsChild()
             <%
     }
     //if (Info.ObjectType == CslaObjectType.EditableChildCollection ||
@@ -114,12 +113,12 @@ if (Info.GenerateConstructor)
     {
         %>
 
-            var rlce = RaiseListChangedEvents;
-            RaiseListChangedEvents = false;
-            AllowNew = <%= dependentAllowNew2 ? Info + ".CanAddObject()" : Info.AllowNew.ToString().ToLower() %>;
-            AllowEdit = <%= dependentAllowEdit2 ? Info + ".CanEditObject()" : Info.AllowEdit.ToString().ToLower() %>;
-            AllowRemove = <%= dependentAllowRemove2 ? Info + ".CanDeleteObject()" : Info.AllowRemove.ToString().ToLower() %>;
-            RaiseListChangedEvents = rlce;
+            Dim rlce = RaiseListChangedEvents
+            RaiseListChangedEvents = False
+            AllowNew = <%= dependentAllowNew2 ? Info + ".CanAddObject()" : Info.AllowNew.ToString().ToLower() %>
+            AllowEdit = <%= dependentAllowEdit2 ? Info + ".CanEditObject()" : Info.AllowEdit.ToString().ToLower() %>
+            AllowRemove = <%= dependentAllowRemove2 ? Info + ".CanDeleteObject()" : Info.AllowRemove.ToString().ToLower() %>
+            RaiseListChangedEvents = rlce
         <%
     }
     foreach (ChildProperty prop in Info.GetMyChildProperties())
@@ -131,9 +130,9 @@ if (Info.GenerateConstructor)
         }
     }
     %>
-        }
+        End Sub
 
-        #endregion
+        #End Region
 <%
 }
 %>

@@ -19,9 +19,9 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
             }
             %>
 
-        /// <summary>
-        /// Factory method. Asynchronously loads a <see cref="<%= Info.ObjectName %>"/> object.
-        /// </summary>
+        ''' <summary>
+        ''' Factory method. Asynchronously loads a <see cref="<%= Info.ObjectName %>"/> object.
+        ''' </summary>
         <%
             string critAsync = string.Empty;
             for (int i = 0; i < c.Properties.Count; i++)
@@ -37,44 +37,44 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
                 }
             }
             if (c.Properties.Count > 1)
-                critAsync = "new " + c.Name + "()";
+                critAsync = "New " + c.Name + "()";
             else if (c.Properties.Count > 0)
                 critAsync = SendSingleCriteria(c, c.Properties[0].ParameterValue);
             if (Info.SimpleCacheOptions != SimpleCacheResults.None)
-                critAsync += (critAsync.Length > 0 ? ", " : "") + "(o, e) =>";
+                critAsync += (critAsync.Length > 0 ? ", " : "") + "Function(o, e)";
             else
                 critAsync += (critAsync.Length > 0 ? ", " : "");
             %>
-        /// <param name="callback">The completion callback method.</param>
-        public static void Get<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>(<%= "EventHandler<DataPortalResult<" + Info.ObjectName + ">> callback" %>)
-        {
+        ''' <param name="callback">The completion callback method.</param>
+        Public Shared Sub Get<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>(callback As <%= "EventHandler(Of DataPortalResult(Of " + Info.ObjectName + "))" %>)
             <%
             if (CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.None &&
                 CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.PropertyLevel &&
                 Info.GetRoles.Trim() != String.Empty)
             {
-                %>if (!CanGetObject())
-                throw new System.Security.SecurityException("User not authorized to load a <%= Info.ObjectName %>.");
+                %>If  Not CanGetObject() Then
+                Throw New System.Security.SecurityException("User not authorized to load a <%= Info.ObjectName %>.")
+            End If
 
             <%
             }
             if (Info.SimpleCacheOptions != SimpleCacheResults.None)
             {
-                %>if (_list == null)
-                DataPortal.BeginFetch<<%= Info.ObjectName %>>(<%= critAsync %>
-                    {
-                        _list = e.Object;
-                        callback(o, e);
-                    });
-            else
-                callback(null, new DataPortalResult<<%= Info.ObjectName %>>(_list, null, null));<%
+                %>If _list Is Nothing Then
+                DataPortal.BeginFetch(Of <%= Info.ObjectName %>)(<%= critAsync %>
+                        _list = e.Object
+                        callback(o, e)
+                    End Function)
+            Else
+                callback(Nothing, New DataPortalResult(Of <%= Info.ObjectName %>)(_list, Nothing, Nothing))
+            End If<%
             }
             else
             {
-                %>DataPortal.BeginFetch<<%= Info.ObjectName %>>(<%= critAsync %>callback);<%
+                %>DataPortal.BeginFetch(Of <%= Info.ObjectName %>)(<%= critAsync %>callback)<%
             }
             %>
-        }
+        End Sub
 <%
         }
     }

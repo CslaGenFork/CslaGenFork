@@ -6,7 +6,7 @@ if (stateFieldsForAllValueProperties || stateFieldsForAllChildProperties || useF
 {
     %>
 
-        #region State Fields
+        #Region " State Fields "
 <%
     // if the object has child properties, then add a new line
     if (stateFieldsForAllValueProperties)
@@ -54,20 +54,20 @@ if (stateFieldsForAllValueProperties || stateFieldsForAllChildProperties || useF
             if (!prop.Undoable)
             {
                 %>
-        [NotUndoable]
+        <NotUndoable()>
         <%
             }
             %>
-        private <%= prop.TypeName %> <%= FormatFieldName(prop.Name) %><%
+        Private <%= FormatFieldName(prop.Name) %> As <%= prop.TypeName %><%
         if (_child.ObjectType != CslaObjectType.ReadOnlyObject && _child.ObjectType != CslaObjectType.ReadOnlyCollection)
         {
             %> = <%= prop.TypeName %>.New<%= prop.TypeName %>()<%
-        } %>;
+        } %>
         <%
             if (prop.LazyLoad)
             {
                 %>
-        private bool <%= FormatFieldName(prop.Name + "Loaded") %> = false;<%= "\r\n" %><%
+        Private <%= FormatFieldName(prop.Name + "Loaded") %> As Boolean = False<%= "\r\n" %><%
             }
         }
     }
@@ -78,9 +78,9 @@ if (stateFieldsForAllValueProperties || stateFieldsForAllChildProperties || useF
         foreach(Property prop in Info.ParentProperties)
         {
             %>
-        [NotUndoable]
-        [NonSerialized]
-        internal <%= GetDataTypeGeneric(prop, prop.PropertyType) %> <%= FormatCamel(GetFKColumn(Info, (isItem ? grandParentInfo : parentInfo), prop)) %> = <%= GetInitValue(prop.PropertyType) %>;
+        <NotUndoable()>
+        < NonSerialized()>
+        Friend <%= FormatCamel(GetFKColumn(Info, (isItem ? grandParentInfo : parentInfo), prop)) %> As <%= GetDataTypeGeneric(prop, prop.PropertyType) %> = <%= GetInitValue(prop.PropertyType) %>
         <%
         }
     }
@@ -91,7 +91,7 @@ if (stateFieldsForAllValueProperties || stateFieldsForAllChildProperties || useF
         Response.Write(Environment.NewLine);
     }
     %>
-        #endregion
+        #End Region
 <%
 }
 %>

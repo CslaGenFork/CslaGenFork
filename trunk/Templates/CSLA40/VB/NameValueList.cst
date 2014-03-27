@@ -1,4 +1,4 @@
-<%@ CodeTemplate Inherits="CslaTemplateHelperCS" Language="CSharp" TargetLanguage="CSharp" Description="Generates a CSLA NameValueList Object." %>
+<%@ CodeTemplate Inherits="CslaTemplateHelperVB" Language="CSharp" TargetLanguage="VB" Description="Generates a CSLA NameValueList Object." %>
 <%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the NameValueList Object to create." %>
 <%@ Property Name="Errors" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return errors to master.cst" %>
 <%@ Property Name="Warnings" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return warnings to master.cst" %>
@@ -43,8 +43,7 @@ else
     bool? firstComment = null;
     %><!-- #include file="Header.asp" -->
 <%= GetUsingStatementsStringBusiness(Info, CurrentUnit) %>
-namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Business) %>
-{
+<%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Business) == string.Empty ? "" : "Namespace " + GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Business) %>
 <%
     %><!-- #include file="XmlComment.asp" -->
     <%
@@ -55,9 +54,9 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Busine
     <%
     }
     %>
-    [Serializable]
-    <%= Info.ClassVisibility == ClassVisibility.Public ? "public" : "internal" %> partial class <%= Info.ObjectName %> : NameValueListBase<<%= GetDataTypeGeneric(valueProp, valueProp.PropertyType) %>, <%= GetDataTypeGeneric(nameProp, nameProp.PropertyType) %>>
-    {
+    <Serializable()>
+    Partial <%= Info.ClassVisibility == ClassVisibility.Public ? "Public" : "Friend" %> Class <%= Info.ObjectName %>
+        Inherits NameValueListBase(Of <%= GetDataTypeGeneric(valueProp, valueProp.PropertyType) %>, <%= GetDataTypeGeneric(nameProp, nameProp.PropertyType) %>)
 
         <%
     if (Info.SimpleCacheOptions != SimpleCacheResults.None)
@@ -69,9 +68,18 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Busine
     }
     if (Info.GenerateFactoryMethods)
     {
-        %>
+        if (CurrentUnit.GenerationParams.TargetIsCsla40)
+        {
+            %>
 <!-- #include file="NameValueList_Factory.asp" -->
 <%
+        }
+        else
+        {
+            %>
+<!-- #include file="NameValueList_Factory-45.asp" -->
+<%
+        }
     }
     Response.Write(Environment.NewLine);
     %>
@@ -102,9 +110,9 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Busine
         Response.Write(Environment.NewLine);
     }
     %>
-    }
+    End Class
 <!-- #include file="CriteriaObject.asp" -->
-}
+<%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Business) == string.Empty ? "" : "End Namespace" %>
 <%
 }
 %>

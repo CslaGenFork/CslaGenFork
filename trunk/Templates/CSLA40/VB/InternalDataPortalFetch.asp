@@ -12,13 +12,12 @@ if (!Info.UseCustomLoading)
     {
         %>
 
-        /// <summary>
-        /// Loads a <see cref="<%= Info.ObjectName %>"/> object from the given SafeDataReader.
-        /// </summary>
-        /// <param name="dr">The SafeDataReader to use.</param>
-        private void <%= methodFetchString %>Fetch(SafeDataReader dr)
-        {
-            // Value properties
+        ''' <summary>
+        ''' Loads a <see cref="<%= Info.ObjectName %>"/> object from the given SafeDataReader.
+        ''' </summary>
+        ''' <param name="dr">The SafeDataReader to use.</param>
+        Private Sub <%= methodFetchString %>Fetch(dr As SafeDataReader)
+            ' Value properties
             <%
         foreach (ValueProperty prop in Info.GetAllValueProperties())
         {
@@ -27,7 +26,7 @@ if (!Info.UseCustomLoading)
             {
                 try
                 {
-                    %><%= GetReaderAssignmentStatement(Info, prop) %>;
+                    %><%= GetReaderAssignmentStatement(Info, prop) %>
             <%
                 }
                 catch (Exception ex)
@@ -43,16 +42,16 @@ if (!Info.UseCustomLoading)
         // parent loading field
         if (useFieldForParentLoading)
         {
-            %>// parent properties
+            %>' parent properties
             <%
             foreach(Property prop in Info.ParentProperties)
             {
-                %><%= FormatCamel(GetFKColumn(Info, (isItem ? grandParentInfo : parentInfo), prop)) %> = dr.<%= GetReaderMethod(prop.PropertyType) %>("<%= GetFKColumn(Info, (isItem ? grandParentInfo : parentInfo), prop) %>");
+                %><%= FormatCamel(GetFKColumn(Info, (isItem ? grandParentInfo : parentInfo), prop)) %> = dr.<%= GetReaderMethod(prop.PropertyType) %>("<%= GetFKColumn(Info, (isItem ? grandParentInfo : parentInfo), prop) %>")
             <%
             }
         }
-            %>var args = new DataPortalHookArgs(dr);
-            OnFetchRead(args);
+            %>Dim args As New DataPortalHookArgs(dr)
+            OnFetchRead(args)
         <%
         if (ancestorLoaderLevel > 0 && !UseChildFactoryHelper)
         {
@@ -69,10 +68,10 @@ if (!Info.UseCustomLoading)
                             if (UseChildFactoryHelper)
                                 internalCreateString = FormatPascal(childProp.TypeName) + ".New" + FormatPascal(childProp.TypeName);
                             else
-                                internalCreateString = "DataPortal.CreateChild<" + FormatPascal(childProp.TypeName) + ">";
+                                internalCreateString = "DataPortal.CreateChild(Of " + FormatPascal(childProp.TypeName) + ")";
                         }
                         else
-                            internalCreateString = "new " + childProp.TypeName;
+                            internalCreateString = "New " + childProp.TypeName;
 
                         if ((childProp.DeclarationMode == PropertyDeclaration.Managed ||
                             childProp.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion))
@@ -80,20 +79,20 @@ if (!Info.UseCustomLoading)
                             if (useBypassPropertyChecks && false) // disable this for now
                             {
                                 %>
-                <%= FormatPascal(childProp.Name) %> = <%= internalCreateString %>();
+                <%= FormatPascal(childProp.Name) %> = <%= internalCreateString %>()
             <%
                             }
                             else
                             {
                                 %>
-            LoadProperty(<%= FormatPropertyInfoName(childProp.Name) %>, <%= internalCreateString %>());
+            LoadProperty(<%= FormatPropertyInfoName(childProp.Name) %>, <%= internalCreateString %>())
         <%
                             }
                         }
                         else
                         {
                             %>
-            <%= bpcSpacer %><%= GetFieldLoaderStatement(childProp, internalCreateString + "()") %>;
+            <%= bpcSpacer %><%= GetFieldLoaderStatement(childProp, internalCreateString + "()") %>
         <%
                         }
                     }
@@ -103,12 +102,12 @@ if (!Info.UseCustomLoading)
         if (!UseChildFactoryHelper && Info.CheckRulesOnFetch && (!isRoot || Info.ObjectType == CslaObjectType.DynamicEditableRoot))
         {
             %>
-            // check all object rules and property rules
-            BusinessRules.CheckRules();
+            ' check all object rules and property rules
+            BusinessRules.CheckRules()
         <%
         }
         %>
-        }
+        End Sub
         <%
         if (ParentLoadsChildren(Info))
         {
@@ -116,18 +115,16 @@ if (!Info.UseCustomLoading)
             {
                 %>
 
-        /// <summary>
-        /// Loads child objects from the given SafeDataReader.
-        /// </summary>
-        /// <param name="dr">The SafeDataReader to use.</param>
-        <%= isRoot ? "private" : "internal" %> void FetchChildren(SafeDataReader dr)
-        {
+        ''' <summary>
+        ''' Loads child objects from the given SafeDataReader.
+        ''' </summary>
+        ''' <param name="dr">The SafeDataReader to use.</param>
+        <%= isRoot ? "Private" : "Friend" %> Sub FetchChildren(dr As SafeDataReader)
             <%
                 if (useBypassPropertyChecks)
                 {
                     %>
-            using (BypassPropertyChecks)
-            {
+            Using BypassPropertyChecks
             <%
                 }
                 foreach (ChildProperty childProp in Info.GetAllChildProperties())
@@ -138,12 +135,12 @@ if (!Info.UseCustomLoading)
                         if (_child != null)
                         {
                             %>
-            <%= bpcSpacer %>dr.NextResult();
+            <%= bpcSpacer %>dr.NextResult()
 <%
                             if (UseChildFactoryHelper)
                                 fetchString = FormatPascal(childProp.TypeName) + ".Get" + FormatPascal(childProp.TypeName);
                             else
-                                fetchString = "DataPortal.FetchChild<" + FormatPascal(childProp.TypeName) + ">";
+                                fetchString = "DataPortal.FetchChild(Of " + FormatPascal(childProp.TypeName) + ")";
 
                             if (IsCollectionType(_child.ObjectType))
                             {
@@ -157,18 +154,18 @@ if (!Info.UseCustomLoading)
                                         if (_parent != null)
                                         {
                                             %>
-            <%= bpcSpacer %>var <%= FormatCamel(childProp.TypeName) %> = <%= fetchString %>(dr);
+            <%= bpcSpacer %>Dim <%= FormatCamel(childProp.TypeName) %> = <%= fetchString %>(dr)
 <%
                                             if (child.ObjectType == CslaObjectType.ReadOnlyCollection)
                                             {
                                                 %>
-            <%= bpcSpacer %><%= FormatCamel(childProp.TypeName) %>.LoadItems(ParentList);
+            <%= bpcSpacer %><%= FormatCamel(childProp.TypeName) %>.LoadItems(ParentList)
 <%
                                             }
                                             else
                                             {
                                                 %>
-            <%= bpcSpacer %><%= FormatCamel(childProp.TypeName) %>.LoadItems((<%= FormatPascal(_parent.ParentType) %>)Parent);
+            <%= bpcSpacer %><%= FormatCamel(childProp.TypeName) %>.LoadItems((<%= FormatPascal(_parent.ParentType) %>)Parent)
 <%
                                             }
                                         }
@@ -182,20 +179,20 @@ if (!Info.UseCustomLoading)
                                         if (useBypassPropertyChecks)
                                         {
                                             %>
-                <%= FormatPascal(childProp.Name) %> = <%= fetchString %>(dr);
+                <%= FormatPascal(childProp.Name) %> = <%= fetchString %>(dr)
             <%
                                         }
                                         else
                                         {
                                             %>
-            LoadProperty(<%= FormatPropertyInfoName(childProp.Name) %>, <%= fetchString %>(dr));
+            LoadProperty(<%= FormatPropertyInfoName(childProp.Name) %>, <%= fetchString %>(dr))
         <%
                                         }
                                     }
                                     else
                                     {
                                         %>
-            <%= bpcSpacer %><%= GetFieldLoaderStatement(childProp, fetchString + "(dr)") %>;
+            <%= bpcSpacer %><%= GetFieldLoaderStatement(childProp, fetchString + "(dr)") %>
         <%
                                     }
                                 }
@@ -217,26 +214,25 @@ if (!Info.UseCustomLoading)
                                 if (child != null)
                                 {
                                     %>
-            <%= bpcSpacer %>while (dr.Read())
-            <%= bpcSpacer %>{
-                <%= bpcSpacer %>var child = <%= fetchString %>(dr);
+            <%= bpcSpacer %>While dr.Read()
+                <%= bpcSpacer %>Dim child = <%= fetchString %>(dr)
 <%
                                     if (child.ObjectType == CslaObjectType.ReadOnlyObject)
                                     {
                                         %>
-                <%= bpcSpacer %>var obj = ParentList.Find<%= FormatPascal(Info.ObjectName) %>ByParentProperties(<%= findByParams %>);
+                <%= bpcSpacer %>Dim obj = ParentList.Find<%= FormatPascal(Info.ObjectName) %>ByParentProperties(<%= findByParams %>)
 <%
                                     }
                                     else
                                     {
                                         %>
-                <%= bpcSpacer %>var obj = ((<%= Info.ParentType %>)Parent).Find<%= FormatPascal(Info.ObjectName) %>ByParentProperties(<%= findByParams %>);
+                <%= bpcSpacer %>Dim obj = DirectCast(Parent, <%= Info.ParentType %>).Find<%= FormatPascal(Info.ObjectName) %>ByParentProperties(<%= findByParams %>)
 <%
                                     }
                                     if (child.ObjectType == CslaObjectType.ReadOnlyObject && child.AddParentReference)
                                     {
                                         %>
-                <%= bpcSpacer %>child.ParentList = obj;
+                <%= bpcSpacer %>child.ParentList = obj
 <%
                                     }
                                     if (childProp.DeclarationMode == PropertyDeclaration.Managed ||
@@ -245,31 +241,31 @@ if (!Info.UseCustomLoading)
                                         if (useBypassPropertyChecks)
                                         {
                                             %>
-                    obj.<%= FormatPascal(childProp.Name) %> = child;
+                    obj.<%= FormatPascal(childProp.Name) %> = child
             <%
                                         }
                                         else
                                         {
                                             %>
-                obj.LoadProperty(<%= FormatPropertyInfoName(childProp.Name) %>, child);
+                obj.LoadProperty(<%= FormatPropertyInfoName(childProp.Name) %>, child)
             <%
                                         }
                                     }
                                     else
                                     {
                                         %>
-                obj.<%= GetFieldLoaderStatement(childProp, "child") %>;
+                obj.<%= GetFieldLoaderStatement(childProp, "child") %>
             <%
                                     }
                                 }
                                 %>
-            <%= bpcSpacer %>}
+            <%= bpcSpacer %>End While
 <%
                             }
                             else
                             {
                                 %>
-            <%= bpcSpacer %>if (dr.Read())
+            <%= bpcSpacer %>If dr.Read() Then
 <%
                                 CslaObjectInfo child = FindChildInfo(Info, childProp.TypeName);
                                 if (child != null)
@@ -277,9 +273,8 @@ if (!Info.UseCustomLoading)
                                     if (child.ObjectType == CslaObjectType.ReadOnlyObject && child.AddParentReference)
                                     {
                                         %>
-            <%= bpcSpacer %>{
-                <%= bpcSpacer %>var child = <%= fetchString %>(dr);
-                <%= bpcSpacer %>child.Parent = this;
+                <%= bpcSpacer %>Dim child = <%= fetchString %>(dr)
+                <%= bpcSpacer %>child.Parent = Me
 <%
                                         if (childProp.DeclarationMode == PropertyDeclaration.Managed ||
                                             childProp.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion)
@@ -287,24 +282,24 @@ if (!Info.UseCustomLoading)
                                             if (useBypassPropertyChecks)
                                             {
                                                 %>
-                    <%= FormatPascal(childProp.Name) %> = child;
+                    <%= FormatPascal(childProp.Name) %> = child
             <%
                                             }
                                             else
                                             {
                                                 %>
-                LoadProperty(<%= FormatPropertyInfoName(childProp.Name) %>, child);
+                LoadProperty(<%= FormatPropertyInfoName(childProp.Name) %>, child)
             <%
                                             }
                                         }
                                         else
                                         {
                                             %>
-                <%= GetFieldLoaderStatement(childProp, "child") %>;
+                <%= GetFieldLoaderStatement(childProp, "child") %>
             <%
                                         }
                                         %>
-            <%= bpcSpacer %>}
+            <%= bpcSpacer %>End If
             <%
                                     }
                                     else
@@ -315,20 +310,20 @@ if (!Info.UseCustomLoading)
                                             if (useBypassPropertyChecks)
                                             {
                                                 %>
-                    <%= FormatPascal(childProp.Name) %> = <%= fetchString %>(dr);
+                    <%= FormatPascal(childProp.Name) %> = <%= fetchString %>(dr)
             <%
                                             }
                                             else
                                             {
                                                 %>
-                LoadProperty(<%= FormatPropertyInfoName(childProp.Name) %>, <%= fetchString %>(dr));
+                LoadProperty(<%= FormatPropertyInfoName(childProp.Name) %>, <%= fetchString %>(dr))
             <%
                                             }
                                         }
                                         else
                                         {
                                             %>
-                <%= GetFieldLoaderStatement(childProp, fetchString + "(dr)") %>;
+                <%= GetFieldLoaderStatement(childProp, fetchString + "(dr)") %>
             <%
                                         }
                                     }
@@ -349,7 +344,7 @@ if (!Info.UseCustomLoading)
                             if (UseChildFactoryHelper)
                                 fetchString = FormatPascal(childProp.TypeName) + ".Get" + FormatPascal(childProp.TypeName);
                             else
-                                fetchString = "DataPortal.FetchChild<" + FormatPascal(childProp.TypeName) + ">";
+                                fetchString = "DataPortal.FetchChild(Of " + FormatPascal(childProp.TypeName) + ")";
 
                             childAncestorLoaderLevel = AncestorLoaderLevel(_child, out childAncestorIsCollection);
                             ChildProperty ancestorChildProperty = new ChildProperty();
@@ -361,13 +356,13 @@ if (!Info.UseCustomLoading)
                                     GetChildPropertyByTypeName(_ancestor, _parent.ParentType, ref ancestorChildProperty);
                             }
                             %>
-            <%= bpcSpacer %>dr.NextResult();
+            <%= bpcSpacer %>dr.NextResult()
             <%
                             if (IsCollectionType(_child.ObjectType))
                             {
                                 %>
-            <%= bpcSpacer %>var <%= FormatCamel(childProp.TypeName) %> = <%= fetchString %>(dr);
-            <%= bpcSpacer %><%= FormatCamel(childProp.TypeName) %>.LoadItems(<%= childAncestorLoaderLevel < 4 ? FormatPascal(ancestorChildProperty.Name) : FormatCamel(_parent.ParentType) %>);
+            <%= bpcSpacer %>Dim <%= FormatCamel(childProp.TypeName) %> = <%= fetchString %>(dr)
+            <%= bpcSpacer %><%= FormatCamel(childProp.TypeName) %>.LoadItems(<%= childAncestorLoaderLevel < 4 ? FormatPascal(ancestorChildProperty.Name) : FormatCamel(_parent.ParentType) %>)
 <%
                             }
                             else
@@ -390,20 +385,19 @@ if (!Info.UseCustomLoading)
                                     findByObject = FormatCamel(_parent.ParentType);
 
                                 %>
-            <%= bpcSpacer %>while (dr.Read())
-            <%= bpcSpacer %>{
-                <%= bpcSpacer %>var child = <%= fetchString %>(dr);
-                <%= bpcSpacer %>var obj = <%= findByObject %>.Find<%= FormatPascal(_parent.ObjectName) %>ByParentProperties(<%= findByParams %>);
+            <%= bpcSpacer %>While dr.Read()
+                <%= bpcSpacer %>Dim child = <%= fetchString %>(dr)
+                <%= bpcSpacer %>Dim obj = <%= findByObject %>.Find<%= FormatPascal(_parent.ObjectName) %>ByParentProperties(<%= findByParams %>)
 <%
                                     if (_child.ObjectType == CslaObjectType.ReadOnlyObject && _child.AddParentReference)
                                     {
                                         %>
-                <%= bpcSpacer %>child.Parent = obj;
+                <%= bpcSpacer %>child.Parent = obj
 <%
                                     }
                                     %>
-                <%= bpcSpacer %>obj.LoadChild(child);
-            <%= bpcSpacer %>}
+                <%= bpcSpacer %>obj.LoadChild(child)
+            <%= bpcSpacer %>End While
         <%
                             }
                         }
@@ -417,7 +411,7 @@ if (!Info.UseCustomLoading)
             <%
                 }
                 %>
-        }
+        End Sub
         <%
             }
             else // !isRootLoader
@@ -431,30 +425,28 @@ if (!Info.UseCustomLoading)
                         {
                         %>
 
-        /// <summary>
-        /// Loads child <see cref="<%= FormatPascal(childProp.TypeName) %>"/> object.
-        /// </summary>
-        /// <param name="child">The child object to load.</param>
-        internal void LoadChild(<%= FormatPascal(childProp.TypeName) %> child)
-        {
+        ''' <summary>
+        ''' Loads child <see cref="<%= FormatPascal(childProp.TypeName) %>"/> object.
+        ''' </summary>
+        ''' <param name="child">The child object to load.</param>
+        Friend Sub LoadChild(child As <%= FormatPascal(childProp.TypeName) %>)
 <%
                             if (useBypassPropertyChecks)
                             {
                                 %>
-            using (BypassPropertyChecks)
-            {
-                <%= FormatPascal(childProp.Name) %> = child;
-            }
+            Using (BypassPropertyChecks)
+                <%= FormatPascal(childProp.Name) %> = child
+            End Using
             <%
                             }
                             else
                             {
                                 %>
-            LoadProperty(<%= FormatPropertyInfoName(childProp.Name) %>, child);
+            LoadProperty(<%= FormatPropertyInfoName(childProp.Name) %>, child)
             <%
                             }
                             %>
-        }
+        End Sub
         <%
                         }
                     }
@@ -466,17 +458,15 @@ if (!Info.UseCustomLoading)
         {
             %>
 
-        /// <summary>
-        /// Loads child objects.
-        /// </summary>
-        <%= isRoot ? "private" : "internal" %> void FetchChildren()
-        {
+        ''' <summary>
+        ''' Loads child objects.
+        ''' </summary>
+        <%= isRoot ? "Private" : "Friend" %> Sub FetchChildren()
             <%
             if (useBypassPropertyChecks)
             {
                 %>
-            using (BypassPropertyChecks)
-            {
+            Using BypassPropertyChecks
             <%
             }
             foreach (ChildProperty childProp in Info.GetMyChildProperties())
@@ -516,20 +506,20 @@ if (!Info.UseCustomLoading)
                         if (UseChildFactoryHelper)
                             fetchString = FormatPascal(childProp.TypeName) + ".Get" + FormatPascal(childProp.TypeName);
                         else
-                            fetchString = "DataPortal.FetchChild<" + FormatPascal(childProp.TypeName) + ">";
+                            fetchString = "DataPortal.FetchChild(Of " + FormatPascal(childProp.TypeName) + ")";
 
                         if (childProp.DeclarationMode == PropertyDeclaration.Managed)
                         {
                             if (useBypassPropertyChecks)
                             {
                                 %>
-                <%= FormatPascal(childProp.Name) %> = <%= fetchString %>(<%= invokeParam %>);
+                <%= FormatPascal(childProp.Name) %> = <%= fetchString %>(<%= invokeParam %>)
                 <%
                             }
                             else
                             {
                                 %>
-            <%= bpcSpacer %>LoadProperty(<%= FormatPropertyInfoName(childProp.Name) %>, <%= fetchString %>(<%= invokeParam %>));
+            <%= bpcSpacer %>LoadProperty(<%= FormatPropertyInfoName(childProp.Name) %>, <%= fetchString %>(<%= invokeParam %>))
             <%
                             }
                         }
@@ -537,7 +527,7 @@ if (!Info.UseCustomLoading)
                             childProp.DeclarationMode == PropertyDeclaration.AutoProperty)
                         {
                             %>
-            <%= bpcSpacer %><%= GetFieldLoaderStatement(childProp, fetchString +"(" + invokeParam + ")") %>;
+            <%= bpcSpacer %><%= GetFieldLoaderStatement(childProp, fetchString +"(" + invokeParam + ")") %>
             <%
                         }
                     }
@@ -546,11 +536,11 @@ if (!Info.UseCustomLoading)
             if (useBypassPropertyChecks)
             {
                 %>
-            }
+            End Using
             <%
             }
             %>
-        }
+        End Sub
         <%
         }
     }
@@ -558,48 +548,48 @@ if (!Info.UseCustomLoading)
     {
         %>
 
-        /// <summary>
-        /// Loads a <see cref="<%= Info.ObjectName %>"/> object from the given DataRow.
-        /// </summary>
-        /// <param name="dr">The DataRow to use.</param>
-        private void <%= methodFetchString %>Fetch(DataRow dr)
-        {
-            // Value properties
+        ''' <summary>
+        ''' Loads a <see cref="<%= Info.ObjectName %>"/> object from the given DataRow.
+        ''' </summary>
+        ''' <param name="dr">The DataRow to use.</param>
+        Private Sub <%= methodFetchString %>Fetch(dr As DataRow)
+            ' Value properties
             <%
             foreach (ValueProperty prop in Info.GetAllValueProperties())
             {
                 if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
                     prop.DataAccess != ValueProperty.DataAccessBehaviour.WriteOnly)
                 {
-                    %>if (!dr.IsNull("<%= prop.ParameterName %>"))
-                <%= GetReaderAssignmentStatement(Info, prop) %>;
+                    %>If Not dr.IsNull("<%= prop.ParameterName %>") Then
+                <%= GetReaderAssignmentStatement(Info, prop) %>
+            End If
             <%
                 }
             }
-            %>var args = new DataPortalHookArgs(dr);
-            OnFetchRead(args);
-        }
+           %>Dim args As New DataPortalHookArgs(dr)
+            OnFetchRead(args)
+        End Sub
         <%
         if (ParentLoadsChildren(Info))
         {
             %>
 
-        /// <summary>
-        /// Loads child objects using given DataRow.
-        /// </summary>
-        /// <param name="dr">The DataRow to use.</param>
-        private void FetchChildren(DataRow dr)
-        {
-            DataRow[] childRows;
+        ''' <summary>
+        ''' Loads child objects using given DataRow.
+        ''' </summary>
+        ''' <param name="dr">The DataRow to use.</param>
+        Private Sub FetchChildren(dr As DataRow)
+            Dim childRows As DataRow()
             <%
             foreach (ChildProperty childProp in Info.GetNonCollectionChildProperties())
             {
                 if (childProp.LoadingScheme == LoadingScheme.ParentLoad)
                 {
                     %>
-            childRows = dr.GetChildRows("<%= Info.ObjectName + childProp.TypeName %>");
-            if (childRows.Length > 0)
-                <%= FormatFieldName(childProp.Name) %> = DataPortal.FetchChild<<%= childProp.TypeName %>>(childRows[0]);
+            childRows = dr.GetChildRows("<%= Info.ObjectName + childProp.TypeName %>")
+            If childRows.Length > 0 Then
+                <%= FormatFieldName(childProp.Name) %> = DataPortal.FetchChild(Of <%= childProp.TypeName %>)(childRows(0))
+            End If
             <%
                 }
             }
@@ -608,7 +598,7 @@ if (!Info.UseCustomLoading)
                 if (childProp.LoadingScheme == LoadingScheme.ParentLoad)
                 {
                     %>
-            childRows = dr.GetChildRows("<%= Info.ObjectName + FindChildInfo(Info, childProp.TypeName).ItemType %>");
+            childRows = dr.GetChildRows("<%= Info.ObjectName + FindChildInfo(Info, childProp.TypeName).ItemType %>")
             <%
                     CslaObjectInfo childInfo = FindChildInfo(Info, childProp.TypeName);
                     if (childInfo != null)
@@ -616,16 +606,16 @@ if (!Info.UseCustomLoading)
                         if (UseChildFactoryHelper)
                             fetchString = FormatPascal(childProp.TypeName) + ".Get" + FormatPascal(childProp.TypeName);
                         else
-                            fetchString = "DataPortal.FetchChild<" + FormatPascal(childProp.TypeName) + ">";
+                            fetchString = "DataPortal.FetchChild(Of " + FormatPascal(childProp.TypeName) + ")";
 
                         %>
-            <%= FormatFieldName(childProp.Name) %> = <%= fetchString %>(childRows);
+            <%= FormatFieldName(childProp.Name) %> = <%= fetchString %>(childRows)
             <%
                     }
                 }
             }
             %>
-        }
+        End Sub
         <%
         }
     }

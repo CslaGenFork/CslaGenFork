@@ -1,10 +1,10 @@
-        #region Data Access
+        #Region " Data Access "
 <%
 if (UseBoth())
 {
     %>
 
-#if !SILVERLIGHT
+#If Not SILVERLIGHT Then
 <%
 }
 if (UseNoSilverlight())
@@ -13,66 +13,74 @@ if (UseNoSilverlight())
 <!-- #include file="CollectionDataPortalFetch.asp" -->
 <% %>
 
-        /// <summary>
-        /// Updates in the database all changes made to the <see cref="<%= Info.ObjectName %>"/> object.
-        /// </summary>
+        ''' <summary>
+        ''' Updates in the database all changes made to the <see cref="<%= Info.ObjectName %>"/> object.
+        ''' </summary>
         <%
         if (Info.TransactionType == TransactionType.EnterpriseServices)
         {
-            %>[Transactional(TransactionalTypes.EnterpriseServices)]
+            %><Transactional(TransactionalTypes.EnterpriseServices)>
         <%
         }
         else if (Info.TransactionType == TransactionType.TransactionScope)
         {
-            %>[Transactional(TransactionalTypes.TransactionScope)]
+            %><Transactional(TransactionalTypes.TransactionScope)>
         <%
         }
         if (Info.InsertUpdateRunLocal)
         {
-            %>[Csla.RunLocal]
+            %><Csla.RunLocal()>
         <%
         }
-        %>protected override void DataPortal_Update()
-        {
+        %>Protected Overrides Sub DataPortal_Update()
             <%= GetConnection(Info, false) %>
-            {
                 <%
         if (Info.PersistenceType == PersistenceType.SqlConnectionUnshared)
         {
-            %>cn.Open();
+            %>cn.Open()
                 <%
         }
-            %>base.Child_Update();
+            %>Child_Update()
 <%
         if (Info.TransactionType == TransactionType.ADO && Info.PersistenceType == PersistenceType.SqlConnectionManager)
         {
             %>
-                ctx.Commit();
+                ctx.Commit()
                 <%
         }
         %>
-            }
-        }
+            End Using
+        End Sub
 <%
 }
 if (UseNoSilverlight() && CurrentUnit.GenerationParams.SilverlightUsingServices)
 {
     %>
 
-#else
+#Else
 <%
 }
-%>
+if (CurrentUnit.GenerationParams.TargetIsCsla40)
+{
+    %>
 <!-- #include file="DataPortalFetchServices.asp" -->
 <!-- #include file="DataPortalUpdateServices.asp" -->
 <%
+}
+else
+{
+    %>
+<!-- #include file="DataPortalFetchServices-45.asp" -->
+<!-- #include file="DataPortalUpdateServices-45.asp" -->
+<%
+}
 if (UseBoth())
 {
     %>
 
-#endif
+#End If
 <%
 }
 %>
 
-        #endregion
+        #End Region

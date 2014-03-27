@@ -8,34 +8,33 @@ if (hasFactoryCache || hasDataPortalCache)
         eventName = Info.ObjectName + "Saved";
         handlerName = Info.ObjectName + "SavedHandler";
     }
-    Infos.Append("To do list: edit \"" + Info.ObjectName + ".cs\", uncomment the \"OnDeserialized\" method and add the following line:" + Environment.NewLine);
-    Infos.Append("      " + eventName + " += " + handlerName + ";" + Environment.NewLine);
+    Infos.Append("To do list: edit \"" + Info.ObjectName + ".vb\", uncomment the \"OnDeserialized\" method and add the following line:" + Environment.NewLine);
+    Infos.Append("      AddHandler " + eventName + ", AddressOf " + handlerName + Environment.NewLine);
     %>
 
-        #region Cache Invalidation
+        #Region " Cache Invalidation "
 <%
         if (CurrentUnit.GenerationParams.WriteTodo)
         {
             %>
 
-        // TODO: edit "<%= Info.ObjectName %>.cs", uncomment the "OnDeserialized" method and add the following line:
-        // TODO:     <%= eventName %> += <%= handlerName %>;
+        '' TODO: edit "<%= Info.ObjectName %>.cs", uncomment the "OnDeserialized" method and add the following line:
+        '' TODO:     AddHandler <%= eventName %>, AddressOf <%= handlerName %>
 <%
         }
         %>
 
-        private void <%= handlerName %>(object sender, Csla.Core.SavedEventArgs e)
-        {
-            // this runs on the client
+        Private Sub <%= handlerName %>(sender As object, e As Csla.Core.SavedEventArgs)
+            '' this runs on the client
             <%
     foreach (string objectName in invalidatorInfo.InvalidateCache)
     {
         %>
-            <%= objectName %>.InvalidateCache();
+            <%= objectName %>.InvalidateCache()
             <%
     }
     %>
-        }
+        End Sub
 <%
     if (hasDataPortalCache && UseNoSilverlight())
     {
@@ -43,21 +42,19 @@ if (hasFactoryCache || hasDataPortalCache)
         {
             %>
 
-#if !SILVERLIGHT
+#If Not SILVERLIGHT Then
         <%
         }
         %>
 
-        /// <summary>
-        /// Called by the server-side DataPortal after calling the requested DataPortal_XYZ method.
-        /// </summary>
-        /// <param name="e">The DataPortalContext object passed to the DataPortal.</param>
-        protected override void DataPortal_OnDataPortalInvokeComplete(Csla.DataPortalEventArgs e)
-        {
-            if (ApplicationContext.ExecutionLocation == ApplicationContext.ExecutionLocations.Server &&
-                e.Operation == DataPortalOperations.Update)
-            {
-                // this runs on the server
+        ''' <summary>
+        ''' Called by the server-side DataPortal after calling the requested DataPortal_XYZ method.
+        ''' </summary>
+        ''' <param name="e">The DataPortalContext object passed to the DataPortal.</param>
+        Protected Overrides Sub DataPortal_OnDataPortalInvokeComplete(e As Csla.DataPortalEventArgs)
+            If ApplicationContext.ExecutionLocation = ApplicationContext.ExecutionLocations.Server AndAlso
+               e.Operation == DataPortalOperations.Update Then
+                '' this runs on the server
             <%
         foreach (string objectName in invalidatorInfo.InvalidateCache)
         {
@@ -65,25 +62,25 @@ if (hasFactoryCache || hasDataPortalCache)
             if (cachedInfo.SimpleCacheOptions == SimpleCacheResults.DataPortal)
             {
                 %>
-                <%= objectName %>.InvalidateCache();
+                <%= objectName %>.InvalidateCache()
                 <%
             }
         }
     %>
-            }
-        }
+            End If
+        End Sub
 <%
         if (UseSilverlight())
         {
             %>
 
-#endif
+#End If
         <%
         }
     }
 %>
 
-        #endregion
+        #End Region
 <%
 }
 %>

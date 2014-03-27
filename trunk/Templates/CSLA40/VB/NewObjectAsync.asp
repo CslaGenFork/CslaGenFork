@@ -20,14 +20,13 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
         {
             %>
 
-        /// <summary>
-        /// Factory method. Asynchronously creates a new <see cref="<%= Info.ObjectName %>"/> collection.
-        /// </summary>
-        /// <param name="callback">The completion callback method.</param>
-        <%= Info.ParentType == string.Empty ? "public" : "internal" %> static void New<%= Info.ObjectName %>(EventHandler<DataPortalResult<<%= Info.ObjectName %>>> callback)
-        {
-            DataPortal.BeginCreate<<%= Info.ObjectName %>>(callback);
-        }
+        ''' <summary>
+        ''' Factory method. Asynchronously creates a new <see cref="<%= Info.ObjectName %>"/> collection.
+        ''' </summary>
+        ''' <param name="callback">The completion callback method.</param>
+        <%= Info.ParentType == string.Empty ? "Public" : "Friend" %> Shared Sub New<%= Info.ObjectName %>(callback As EventHandler(Of DataPortalResult(Of <%= Info.ObjectName %>)))
+            DataPortal.BeginCreate(Of <%= Info.ObjectName %>)(callback)
+        End Sub
         <%
         }
     }
@@ -55,9 +54,9 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
                         strNewParams += ", ";
                         strNewCritParams += ", ";
                     }
-                    strNewParams += string.Concat(GetDataTypeGeneric(c.Properties[i], c.Properties[i].PropertyType), " ", FormatCamel(c.Properties[i].Name));
+                    strNewParams += string.Concat(FormatCamel(c.Properties[i].Name), " As ", GetDataTypeGeneric(c.Properties[i], c.Properties[i].PropertyType));
                     strNewCritParams += FormatCamel(c.Properties[i].Name);
-                    strNewComment += "/// <param name=\"" + FormatCamel(c.Properties[i].Name) + "\">The " + FormatProperty(c.Properties[i].Name) + " of the " + Info.ObjectName + " to create.</param>" + System.Environment.NewLine + new string(' ', 8);
+                    strNewComment += "''' <param name=\"" + FormatCamel(c.Properties[i].Name) + "\">The " + FormatProperty(c.Properties[i].Name) + " of the " + Info.ObjectName + " to create.</param>" + System.Environment.NewLine + new string(' ', 8);
                 }
                 if (!useUnitOfWorkCreator)
                 {
@@ -67,56 +66,54 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
                 {
                     strNewCallback = (strNewCritParams.Length > 0 ? ", " : "");
                 }
-                strNewParams += (strNewParams.Length > 0 ? ", " : "") + "EventHandler<DataPortalResult<" + Info.ObjectName + ">> callback";
+                strNewParams += (strNewParams.Length > 0 ? ", " : "") +  "callback As EventHandler(Of DataPortalResult(Of " + Info.ObjectName + "))";
                 if (!isChild && !c.NestedClass && c.Properties.Count > 1 && Info.ObjectType != CslaObjectType.EditableSwitchable)
                 {
                     %>
 
-        /// <summary>
-        /// Factory method. Asynchronously creates a new <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %>, based on given parameters.
-        /// </summary>
-        /// <param name="crit">The create criteria.</param>
-        /// <param name="callback">The completion callback method.</param>
-        public static <%= Info.ObjectName %> New<%= Info.ObjectName %><%= c.CreateOptions.FactorySuffix %>(<%= c.Name %> crit, EventHandler<DataPortalResult<<%= Info.ObjectName %>>> callback)
+        ''' <summary>
+        ''' Factory method. Asynchronously creates a new <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %>, based on given parameters.
+        ''' </summary>
+        ''' <param name="crit">The create criteria.</param>
+        ''' <param name="callback">The completion callback method.</param>
+        Public Shared Function New<%= Info.ObjectName %><%= c.CreateOptions.FactorySuffix %>(crit As <%= c.Name %>, callback As EventHandler(Of DataPortalResult(Of <%= Info.ObjectName %>))) As <%= Info.ObjectName %>
         {
             <%
                     if (!useUnitOfWorkCreator)
                     {
                         %>
-            DataPortal.BeginCreate<<%= Info.ObjectName %>>(crit, callback);
+            DataPortal.BeginCreate(Of <%= Info.ObjectName %>)(crit, callback)
         <%
                     }
                     else
                     {
                         %>
-            <%= Info.UseUnitOfWorkType %>.New<%= Info.UseUnitOfWorkType %>(crit, (o, e) =>
-            {
-                callback(o, new DataPortalResult<<%= Info.ObjectName %>>(e.Object.<%= Info.ObjectName %>, e.Error, null));
-            });
+            <%= Info.UseUnitOfWorkType %>.New<%= Info.UseUnitOfWorkType %>(crit, Function(o, e)
+                callback(o, New DataPortalResult(Of <%= Info.ObjectName %>)(e.[Object].<%= Info.ObjectName %>, e.Error, Nothing))
+            End Function)
             <%
                     }
                     %>
-        }
+        End Function
         <%
                 }
                 %>
 
-        /// <summary>
-        /// Factory method. Asynchronously creates a new <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %><%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
-        /// </summary>
-        <%= strNewComment %>/// <param name="callback">The completion callback method.</param>
-        <%= Info.ParentType == string.Empty ? "public" : "internal" %> static void New<%= Info.ObjectName %><%= c.CreateOptions.FactorySuffix %>(<%= strNewParams %>)
-        {
+        ''' <summary>
+        ''' Factory method. Asynchronously creates a new <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %><%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
+        ''' </summary>
+        <%= strNewComment %>''' <param name="callback">The completion callback method.</param>
+        <%= Info.ParentType == string.Empty ? "Public" : "Friend" %> Shared Sub New<%= Info.ObjectName %><%= c.CreateOptions.FactorySuffix %>(<%= strNewParams %>)
             <%
                 if (Info.ObjectType == CslaObjectType.EditableSwitchable)
                 {
                     if (strNewCritParams.Length > 0)
                     {
-                        strNewCritParams = "false, " + strNewCritParams;
+                        strNewCritParams = "False, " + strNewCritParams;
                     }
                     else
                     {
-                        strNewCritParams = "false" ;
+                        strNewCritParams = "False" ;
                     }
                 }
                 if (c.Properties.Count > 1)
@@ -124,16 +121,15 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
                     if (!useUnitOfWorkCreator)
                     {
                         %>
-            DataPortal.BeginCreate<<%= Info.ObjectName %>>(new <%= c.Name %>(<%= strNewCritParams %>)<%= strNewCallback %>);
+            DataPortal.BeginCreate(Of <%= Info.ObjectName %>)(New <%= c.Name %>(<%= strNewCritParams %>)<%= strNewCallback %>)
                 <%
                     }
                     else
                     {
                         %>
-            <%= Info.UseUnitOfWorkType %>.New<%= Info.UseUnitOfWorkType %>(<%= strNewCritParams %><%= strNewCallback %>(o, e) =>
-            {
-                callback(o, new DataPortalResult<<%= Info.ObjectName %>>(e.Object.<%= Info.ObjectName %>, e.Error, null));
-            });
+            <%= Info.UseUnitOfWorkType %>.New<%= Info.UseUnitOfWorkType %>(<%= strNewCritParams %><%= strNewCallback %>Function (o, e)
+                callback(o, New DataPortalResult(Of <%= Info.ObjectName %>)(e.[Object].<%= Info.ObjectName %>, e.Error, Nothing));
+            End Function)
             <%
                     }
                 }
@@ -142,16 +138,15 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
                     if (!useUnitOfWorkCreator)
                     {
                         %>
-            DataPortal.BeginCreate<<%= Info.ObjectName %>>(<%= SendSingleCriteria(c, strNewCritParams) %><%= strNewCallback %>);
+            DataPortal.BeginCreate(Of <%= Info.ObjectName %>)(<%= SendSingleCriteria(c, strNewCritParams) %><%= strNewCallback %>)
                     <%
                     }
                     else
                     {
                         %>
-            <%= Info.UseUnitOfWorkType %>.New<%= Info.UseUnitOfWorkType %>(<%= SendSingleCriteria(c, strNewCritParams) %><%= strNewCallback %>(o, e) =>
-            {
-                callback(o, new DataPortalResult<<%= Info.ObjectName %>>(e.Object.<%= Info.ObjectName %>, e.Error, null));
-            });
+            <%= Info.UseUnitOfWorkType %>.New<%= Info.UseUnitOfWorkType %>(<%= SendSingleCriteria(c, strNewCritParams) %><%= strNewCallback %>Function (o, e)
+                callback(o, New DataPortalResult(Of <%= Info.ObjectName %>)(e.[Object].<%= Info.ObjectName %>, e.Error, Nothing));
+            End Function)
             <%
                     }
                 }
@@ -160,21 +155,20 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
                     if (!useUnitOfWorkCreator)
                     {
                         %>
-            DataPortal.BeginCreate<<%= Info.ObjectName %>>(<%= strNewCallback %>);
+            DataPortal.BeginCreate(Of <%= Info.ObjectName %>)(<%= strNewCallback %>)
                     <%
                     }
                     else
                     {
                         %>
-            <%= Info.UseUnitOfWorkType %>.New<%= Info.UseUnitOfWorkType %>(<%= strNewCallback %>(o, e) =>
-            {
-                callback(o, new DataPortalResult<<%= Info.ObjectName %>>(e.Object.<%= Info.ObjectName %>, e.Error, null));
-            });
+            <%= Info.UseUnitOfWorkType %>.New<%= Info.UseUnitOfWorkType %>(<%= strNewCallback %>Function (o, e)
+                callback(o, New DataPortalResult(Of <%= Info.ObjectName %>)(e.[Object].<%= Info.ObjectName %>, e.Error, Nothing));
+            End Function)
             <%
                     }
                 }
                 %>
-        }
+        End Sub
         <%
             }
         }

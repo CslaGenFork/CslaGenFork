@@ -17,23 +17,21 @@ if (Info.UpdateValueProperties.Count > 0)
             }
             genOptional = true;
             %>
-        #region Update properties on saved object
+        #Region " Update properties on saved object "
 
-        /// <summary>
-        /// Existing <see cref="<%= Info.ObjectName %>"/> object is updated by <see cref="<%= parentInfo.UpdaterType %>"/> Saved event.
-        /// </summary>
-        internal static <%= Info.ObjectName %> LoadInfo(<%= parentInfo.UpdaterType %> <%= FormatCamel(parentInfo.UpdaterType) %>)
-        {
-            var info = new <%= Info.ObjectName %>();
-            info.UpdatePropertiesOnSaved(<%= FormatCamel(parentInfo.UpdaterType) %>);
-            return info;
-        }
+        ''' <summary>
+        ''' Existing <see cref="<%= Info.ObjectName %>"/> object is updated by <see cref="<%= parentInfo.UpdaterType %>"/> Saved event.
+        ''' </summary>
+        Friend Shared Function LoadInfo(<%= FormatCamel(parentInfo.UpdaterType) %> As <%= parentInfo.UpdaterType %>) As <%= Info.ObjectName %> 
+            Dim info As New <%= Info.ObjectName %>()
+            info.UpdatePropertiesOnSaved(<%= FormatCamel(parentInfo.UpdaterType) %>)
+            Return info
+        End Function
 
-        /// <summary>
-        /// Properties on <see cref="<%= Info.ObjectName %>"/> object are updated by <see cref="<%= parentInfo.UpdaterType %>"/> Saved event.
-        /// </summary>
-        internal void UpdatePropertiesOnSaved(<%= parentInfo.UpdaterType %> <%= FormatCamel(parentInfo.UpdaterType) %>)
-        {
+        ''' <summary>
+        ''' Properties on <see cref="<%= Info.ObjectName %>"/> object are updated by <see cref="<%= parentInfo.UpdaterType %>"/> Saved event.
+        ''' </summary>
+        Friend Sub UpdatePropertiesOnSaved(<%= FormatCamel(parentInfo.UpdaterType) %> As <%= parentInfo.UpdaterType %>)
         <%
             foreach (UpdateValueProperty prop in Info.UpdateValueProperties)
             {
@@ -48,13 +46,13 @@ if (Info.UpdateValueProperties.Count > 0)
                     }
                 }
                 %>
-            <%= GetFieldLoaderStatement(Info, prop, cast + FormatCamel(parentInfo.UpdaterType) + "." + prop.SourcePropertyName) %>;
+            <%= GetFieldLoaderStatement(Info, prop, cast + FormatCamel(parentInfo.UpdaterType) + "." + prop.SourcePropertyName) %>
         <%
             }
             %>
-        }
+        End Sub
 
-        #endregion
+        #End Region
 
         <%
         }

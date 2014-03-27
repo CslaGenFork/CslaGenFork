@@ -7,9 +7,9 @@ if (Info.SimpleCacheOptions != SimpleCacheResults.None)
         {
             %>
 
-        /// <summary>
-        /// Factory method. Loads a <see cref="<%= Info.ObjectName %>"/> object.
-        /// </summary>
+        ''' <summary>
+        ''' Factory method. Loads a <see cref="<%= Info.ObjectName %>"/> object.
+        ''' </summary>
         <%
             string crit = string.Empty;
             for (int i = 0; i < c.Properties.Count; i++)
@@ -25,28 +25,29 @@ if (Info.SimpleCacheOptions != SimpleCacheResults.None)
                 }
             }
             if (c.Properties.Count > 1)
-                crit = "new " + c.Name + "()";
+                crit = "New " + c.Name + "()";
             else if (c.Properties.Count > 0)
                 crit = SendSingleCriteria(c, c.Properties[0].ParameterValue);
             %>
-        /// <returns>A reference to the fetched <see cref="<%= Info.ObjectName %>"/> object.</returns>
-        public static <%= Info.ObjectName %> Get<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>()
-        {
+        ''' <returns>A reference to the fetched <see cref="<%= Info.ObjectName %>"/> object.</returns>
+        Public Shared Function Get<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>() As <%= Info.ObjectName %>
             <%
             if (CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.None &&
                 CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.PropertyLevel &&
                 Info.GetRoles.Trim() != String.Empty)
             {
-                %>if (!CanGetObject())
-                throw new System.Security.SecurityException("User not authorized to load a <%= Info.ObjectName %>.");
+                %>If Not CanGetObject() Then
+                Throw new System.Security.SecurityException("User not authorized to load a <%= Info.ObjectName %>.")
+            End If
 
             <%
             }
-                %>if (_list != null)
-                return _list;
+                %>If _list IsNot Nothing Then
+                Return _list
+            End If
 
-            return new <%= Info.ObjectName %>();
-        }
+            Return New <%= Info.ObjectName %>()
+        End Function
 <%
         }
     }

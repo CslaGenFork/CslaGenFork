@@ -17,15 +17,15 @@ if (!Info.UseCustomLoading)
                 else
                     getIsFirst = false;
 
-                strGetComment += "/// <param name=\"" + FormatCamel(p.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(p.Name) + ".</param>";
+                strGetComment += "''' <param name=\"" + FormatCamel(p.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(p.Name) + ".</param>";
             }
             if (c.Properties.Count > 1)
-                strGetComment = "/// <param name=\"crit\">The fetch criteria.</param>";
+                strGetComment = "''' <param name=\"crit\">The fetch criteria.</param>";
             %>
 
-        /// <summary>
-        /// Loads a <see cref="<%= Info.ObjectName %>"/> object from the database<%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
-        /// </summary>
+        ''' <summary>
+        ''' Loads a <see cref="<%= Info.ObjectName %>"/> object from the database<%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
+        ''' </summary>
         <%
             if (c.Properties.Count > 0)
             {
@@ -34,60 +34,58 @@ if (!Info.UseCustomLoading)
             }
             if (c.GetOptions.RunLocal)
             {
-                %>[Csla.RunLocal]
+                %><Csla.RunLocal()>
         <%
             }
             if (c.Properties.Count > 1)
             {
-        %>protected void <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Fetch(<%= c.Name %> crit)<%
+        %>Protected Sub <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Fetch(crit As <%= c.Name %>)<%
             }
             else if (c.Properties.Count > 0)
             {
-        %>protected void <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)<%
+        %>Protected Sub <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)<%
             }
             else
             {
-        %>protected void <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Fetch()<%
+        %>Protected Sub <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Fetch()<%
             }
         %>
-        {
             <%
             if (Info.ObjectType == CslaObjectType.EditableSwitchable)
             {
                 %>
-            if (crit.IsChild)
-                MarkAsChild();
+            If crit.IsChild Then
+                MarkAsChild()
+            End If
             <%
             }
             %>
             <%= GetConnection(Info, true) %>
-            {
                 <%= GetCommand(Info, c.GetOptions.ProcedureName) %>
-                {
                     <%
             if (Info.CommandTimeout != string.Empty)
             {
-                %>cmd.CommandTimeout = <%= Info.CommandTimeout %>;
+                %>cmd.CommandTimeout = <%= Info.CommandTimeout %>
                     <%
             }
-            %>cmd.CommandType = CommandType.StoredProcedure;
+            %>cmd.CommandType = CommandType.StoredProcedure
                     <%
             foreach (CriteriaProperty p in c.Properties)
             {
                 if (c.Properties.Count > 1)
                 {
-                    %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= GetParameterSet(p, true) %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= GetDbType(p) %>;
+                    %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= GetParameterSet(p, true) %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= GetDbType(p) %>
                     <%
                 }
                 else
                 {
-                    %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= AssignSingleCriteria(c, "crit") %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= GetDbType(p) %>;
+                    %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= AssignSingleCriteria(c, "crit") %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= GetDbType(p) %>
                     <%
                 }
             }
             if (Info.PersistenceType == PersistenceType.SqlConnectionUnshared)
             {
-                %>cn.Open();
+                %>cn.Open()
                     <%
             }
             string hookArgs = string.Empty;
@@ -99,28 +97,28 @@ if (!Info.UseCustomLoading)
             {
                 hookArgs = ", " + HookSingleCriteria(c, "crit");
             }
-            %>var args = new DataPortalHookArgs(cmd<%= hookArgs %>);
-                    OnFetchPre(args);
-                    Fetch(cmd);
-                    OnFetchPost(args);
-                }
-            }
+            %>Dim args As New DataPortalHookArgs(cmd<%= hookArgs %>)
+                    OnFetchPre(args)
+                    Fetch(cmd)
+                    OnFetchPost(args)
+                End Using
+            End Using
             <%
             if (SelfLoadsChildren(Info))
             {
                 %>
-            FetchChildren();
+            FetchChildren()
         <%
             }
             if (Info.CheckRulesOnFetch)
             {
                 %>
-            // check all object rules and property rules
-            BusinessRules.CheckRules();
+            ' check all object rules and property rules
+            BusinessRules.CheckRules()
             <%
             }
             %>
-        }
+        End Sub
         <%
         }
     }
@@ -130,48 +128,43 @@ if (!Info.UseCustomLoading)
         {
             %>
 
-        private void Fetch(SqlCommand cmd)
-        {
-            using (var dr = new SafeDataReader(cmd.ExecuteReader()))
-            {
-                if (dr.Read())
-                {
-                    Fetch(dr);
+        Private Sub Fetch(cmd As SqlCommand)
+            Using dr As New SafeDataReader(cmd.ExecuteReader())
+                If dr.Read() Then
+                    Fetch(dr)
                     <%
                 if (ParentLoadsChildren(Info))
                 {
                     %>
-                    FetchChildren(dr);
+                    FetchChildren(dr)
                     <%
                 }
                 %>
-                }
-            }
-        }
+                End If
+            End Using
+        End Sub
         <%
         }
         else
         {
             %>
 
-        private void Fetch(SqlCommand cmd)
-        {
-            DataSet ds = new DataSet();
-            using (var da = new SqlDataAdapter(cmd))
-            {
-                da.Fill(ds);
-            }
-            CreateRelations(ds);
-            Fetch(ds.Tables[0].Rows[0]);
+        Private Sub Fetch(cmd As SqlCommand)
+            Dim ds As New DataSet()
+            Using da As New SqlDataAdapter(cmd)
+                da.Fill(ds)
+            End Using
+            CreateRelations(ds)
+            Fetch(ds.Tables(0).Rows(0))
             <%
             if (ParentLoadsChildren(Info))
             {
                 %>
-            FetchChildren(ds.Tables[0].Rows[0]);
+            FetchChildren(ds.Tables(0).Rows(0))
             <%
             }
             %>
-        }
+        End Sub
 <!-- #include file="CreateRelations.asp" -->
         <%
         }

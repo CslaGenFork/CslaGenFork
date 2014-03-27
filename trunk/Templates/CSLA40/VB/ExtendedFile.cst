@@ -1,4 +1,4 @@
-<%@ CodeTemplate Inherits="CslaTemplateHelperCS" Language="CSharp" TargetLanguage="CSharp" Description="Generates a CSLA Inherited Object." %>
+<%@ CodeTemplate Inherits="CslaTemplateHelperVB" Language="CSharp" TargetLanguage="VB" Description="Generates a CSLA Inherited Object." %>
 <%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the CSLA Object to inherit from." %>
 <%@ Property Name="Errors" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return errors to master.cst" %>
 <%@ Property Name="MethodList" Type="System.Collections.Generic.List<AdvancedGenerator.ServiceMethod>" Optional="false" Category="Options" Description="Allows the template to return a list a partial methods to master.cst (for Silverlight using services)" %>
@@ -49,29 +49,28 @@ if (cachedContextUtilitiesNamespace != string.Empty)
 {
     if (UseBoth() && !HasSilverlightLocalDataPortalCreate(Info))
     {
-        %>#if !SILVERLIGHT
+        %>#If Not SILVERLIGHT Then
 <%
     }
     if (UseNoSilverlight() || HasSilverlightLocalDataPortalCreate(Info))
     {
-%>using <%= cachedContextUtilitiesNamespace %>;
+%>Imports <%= cachedContextUtilitiesNamespace %>
 <%
     }
     if (UseBoth() && !HasSilverlightLocalDataPortalCreate(Info))
     {
         %>
-#endif
+#End If
 <%
     }
 }
 %>
 
-namespace <%= Info.ObjectNamespace %>
-{
-    <%= Info.ClassVisibility == ClassVisibility.Public ? "public" : "internal" %> partial class <%= Info.ObjectName %>
-    {
+<%= Info.ObjectNamespace == string.Empty ? "" : "Namespace " + Info.ObjectNamespace %>
 
-        #region OnDeserialized actions
+    Partial <%= Info.ClassVisibility == ClassVisibility.Public ? "Public" : "Friend" %> Class <%= Info.ObjectName %>
+
+        #Region " OnDeserialized actions "
 
         <%
         bool isUpdatable = false;
@@ -84,70 +83,46 @@ namespace <%= Info.ObjectNamespace %>
                     isUpdatable = true;
             }
         }
-        if (Info.SupportUpdateProperties || hasFactoryCache || hasDataPortalCache || isUpdatable)
-        {
-            %>
-        /// <summary>
-        <%
-        }
-        else
-        {
-            %>
-        /*/// <summary>
-        <%
-        }
+        string commentLine = (Info.SupportUpdateProperties || hasFactoryCache || hasDataPortalCache || isUpdatable) ? string.Empty : "' ";
         %>
-        /// This method is called on a newly deserialized object
-        /// after deserialization is complete.
-        /// </summary>
+        <%= commentLine %>''' <summary>
+        <%= commentLine %>''' This method is called on a newly deserialized object
+        <%= commentLine %>''' after deserialization is complete.
+        <%= commentLine %>''' </summary>
         <%
         if (usesContext)
         {
             %>
-        /// <param name="context">Serialization context object.</param>
+        <%= commentLine %>''' <param name="context">Serialization context object.</param>
         <%
         }
         %>
-        protected override void OnDeserialized(<%= usesContext ? "System.Runtime.Serialization.StreamingContext context" : string.Empty %>)
-        {
-            base.OnDeserialized(<%= usesContext ? "context" : string.Empty %>);
+        <%= commentLine %>Protected Overrides Sub OnDeserialized(<%= usesContext ? "System.Runtime.Serialization.StreamingContext context" : string.Empty %>)
+            <%= commentLine %>MyBase.OnDeserialized(<%= usesContext ? "context" : string.Empty %>)
             <%
         if (Info.SupportUpdateProperties || hasFactoryCache || hasDataPortalCache)
         {
             %>
-            Saved += On<%= Info.ObjectName %>Saved;
+            <%= commentLine %>AddHandler Saved, AddressOf On<%= Info.ObjectName %>Saved;
             <%
             if (Info.SupportUpdateProperties && (hasFactoryCache || hasDataPortalCache))
             {
                 %>
-            <%= Info.ObjectName %>Saved += <%= Info.ObjectName %>SavedHandler;
+            <%= commentLine %>AddHandler <%= Info.ObjectName %>Saved, AddressOf <%= Info.ObjectName %>SavedHandler;
             <%
             }
         }
         else if(isUpdatable)
         {
             %>
-            <%= Info.UpdaterType %>.<%= Info.UpdaterType %>Saved += <%= Info.UpdaterType %>SavedHandler;
+            <%= commentLine %>AddHandler <%= Info.UpdaterType %>.<%= Info.UpdaterType %>Saved, AddressOf <%= Info.UpdaterType %>SavedHandler;
             <%
         }
         %>
-            // add your custom OnDeserialized actions here.
-            <%
-        if (Info.SupportUpdateProperties || hasFactoryCache || hasDataPortalCache || isUpdatable)
-        {
-            %>
-        }
-        <%
-        }
-        else
-        {
-            %>
-        }*/
-        <%
-        }
-        %>
+            <%= commentLine %>' add your custom OnDeserialized actions here.
+        <%= commentLine %>}
 
-        #endregion
+        #End Region
         <%
 if (Info.ObjectType != CslaObjectType.UnitOfWork)
 {
@@ -218,28 +193,26 @@ if (Info.ObjectType != CslaObjectType.UnitOfWork)
     {
         %>
 
-        #region Custom Business Rules and Property Authorization
+        #Region " Custom Business Rules and Property Authorization "
 
-        //partial void AddBusinessRulesExtend()
-        //{
-        //    throw new System.Exception("The method or operation is not implemented.");
-        //}
+        ' Partial Private Sub AddBusinessRulesExtend()
+        '     Throw New System.Exception("The method or operation is not implemented.")
+        ' End Sub
 
-        #endregion
+        #End Region
 <%
     }
     if (generateAuthRegion2)
     {
         %>
 
-        #region Custom Object Authorization
+        #Region " Custom Object Authorization "
 
-        //static partial void AddObjectAuthorizationRulesExtend()
-        //{
-        //    throw new System.Exception("The method or operation is not implemented.");
-        //}
+        ' Partial Shared Sub AddObjectAuthorizationRulesExtend()
+        '     Throw New System.Exception("The method or operation is not implemented.")
+        ' End Sub
 
-        #endregion
+        #End Region
 <%
     }
 
@@ -260,32 +233,32 @@ if (Info.ObjectType != CslaObjectType.UnitOfWork)
 
         if (childProperties.Count > 0)
         {
+            string commentLine = "' "
             %>
 
-        #region ChildChanged Event Handler
+        #Region " ChildChanged Event Handler "
 
-        /*/// <summary>
-        /// Raises the ChildChanged event, indicating that a child object has been changed.
-        /// </summary>
-        /// <param name="e">ChildChangedEventArgs object.</param>
-        protected override void OnChildChanged(Csla.Core.ChildChangedEventArgs e)
-        {
-            base.OnChildChanged(e);
-
-            // uncomment the lines for child with properties relevant to business rules
+        <%= commentLine %>''' <summary>
+        <%= commentLine %>''' Raises the ChildChanged event, indicating that a child object has been changed.
+        <%= commentLine %>''' </summary>
+        <%= commentLine %>''' <param name="e">ChildChangedEventArgs object.</param>
+        <%= commentLine %>Protected Overrides Sub OnChildChanged(Csla.Core.ChildChangedEventArgs e)
+            <%= commentLine %>MyBase.OnChildChanged(e);
+            <%= commentLine %>
+            <%= commentLine %>'  uncomment the lines for child with properties relevant to business rules
             <%
             foreach (string propertyName in childProperties)
             {
                 %>
-            //PropertyHasChanged(<%= propertyName %>Property);
+            <%= commentLine %>' PropertyHasChanged(<%= propertyName %>Property);
             <%
             }
             %>
-            // uncomment if there is an object level business rule (introduced in Csla 4.2.0)
-            //CheckObjectRules();
-        }*/
+            <%= commentLine %>'  uncomment if there is an object level business rule (introduced in Csla 4.2.0)
+            <%= commentLine %>' CheckObjectRules();
+        <%= commentLine %>End Sub
 
-        #endregion
+        #End Region
 <%
         }
     }
@@ -295,29 +268,28 @@ if (Info.ObjectType != CslaObjectType.UnitOfWork)
     {
         %>
 
-        #region Pseudo Event Handlers
+#Region " Pseudo Event Handlers "
 <%
         if (UseBoth() && !HasSilverlightLocalDataPortalCreate(Info))
         {
             %>
 
-#if !SILVERLIGHT
+#If Not SILVERLIGHT Then
 <%
         }
         foreach (string strEvent in eventList)
         {
             %>
 
-        //partial void On<%= strEvent %>(DataPortalHookArgs args)
-        //{
-        //    throw new System.Exception("The method or operation is not implemented.");
-        //}
+        ' Partial Private Sub On<%= strEvent %>(args As DataPortalHookArgs)
+        '     Throw New System.Exception("The method or operation is not implemented.")
+        ' End Sub
         <%
             if (strEvent == "Create" && HasSilverlightLocalDataPortalCreate(Info))
             {
                 %>
 
-#if !SILVERLIGHT
+#If Not SILVERLIGHT Then
         <%
             }
         }
@@ -325,12 +297,12 @@ if (Info.ObjectType != CslaObjectType.UnitOfWork)
         {
             %>
 
-#endif
+#End If
 <%
         }
         %>
 
-        #endregion
+        #End Region
     <%
     }
 }
@@ -342,13 +314,13 @@ if (MethodList.Count > 0)
 }
 %>
 
-    }
+    End Class
     <%
 if (IsCriteriaExtendedClassNeeded(Info))
 {
     %>
 
-    #region Criteria Object
+    #Region " Criteria Object "
     <%
     foreach (Criteria crit in Info.CriteriaObjects)
     {
@@ -356,17 +328,18 @@ if (IsCriteriaExtendedClassNeeded(Info))
         {
             %>
 
-    <%= Info.ClassVisibility == ClassVisibility.Public ? "public" : "internal" %> partial class <%= crit.Name %>
-    {
-    }
+    Partial <%= Info.ClassVisibility == ClassVisibility.Public ? "Public" : "Friend" %> Class <%= crit.Name %>
+    
+    End Class
 <%
         }
     }
     %>
 
-    #endregion
+    #End Region
 
     <%
 }
 %>
-}
+
+<%= Info.ObjectNamespace == string.Empty ? "" : "End Namespace" %>

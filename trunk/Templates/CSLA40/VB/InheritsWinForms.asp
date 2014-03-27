@@ -10,11 +10,11 @@ else if (Info.InheritedTypeWinForms.ObjectName != string.Empty)
 }
 
 if (resultWF.Contains("<T>") && useItem)
-    resultWF = resultWF.Replace("<T>", "<" + Info.ItemType + ">");
+    resultWF = resultWF.Replace("<T>", "(Of " + Info.ItemType + ")");
 else
-    resultWF = resultWF.Replace("<T>", "<" + Info.ObjectName + ">");
+    resultWF = resultWF.Replace("<T>", "(Of " + Info.ObjectName + ")");
 
 if (resultWF.Contains("<T,C>"))
-    resultWF = resultWF.Replace("<T,C>", "<" + Info.ObjectName + ", " + Info.ItemType + ">");
+    resultWF = resultWF.Replace("<T,C>", "(Of " + Info.ObjectName + ", " + Info.ItemType + ")");
 Response.Write(resultWF);
 %><!-- #include file="Implements.asp" -->

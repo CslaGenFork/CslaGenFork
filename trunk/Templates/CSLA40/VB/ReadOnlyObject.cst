@@ -1,4 +1,4 @@
-<%@ CodeTemplate Inherits="CslaTemplateHelperCS" Language="CSharp" TargetLanguage="CSharp" Description="Generates a CSLA ReadOnly Object." %>
+<%@ CodeTemplate Inherits="CslaTemplateHelperVB" Language="CSharp" TargetLanguage="VB" Description="Generates a CSLA ReadOnly Object." %>
 <%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the ReadOnly Object to create." %>
 <%@ Property Name="Errors" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return errors to master.cst" %>
 <%@ Property Name="Warnings" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return warnings to master.cst" %>
@@ -59,8 +59,7 @@ if (Errors.Length == 0)
 
     %><!-- #include file="Header.asp" -->
 <%= GetUsingStatementsStringBusiness(Info, CurrentUnit) %>
-namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Business) %>
-{
+<%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Business) == string.Empty ? "" : "Namespace " + GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Business) %>
 <%
     %><!-- #include file="XmlComment.asp" -->
     <%
@@ -71,18 +70,18 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Busine
     <%
     }
     %>
-    [Serializable]
-    <%= Info.ClassVisibility == ClassVisibility.Public ? "public" : "internal" %> partial class <%= Info.ObjectName %> : <%
+    <Serializable()>
+    Partial <%= Info.ClassVisibility == ClassVisibility.Public ? "Public" : "Friend" %> Class <%= Info.ObjectName %>
+        Inherits <%
     if (Info.InheritedType.Type != string.Empty || Info.InheritedType.ObjectName != string.Empty)
     {
         %><!-- #include file="Inherits.asp" --><%
     }
     else
     {
-        %>ReadOnlyBase<<%= Info.ObjectName %>><!-- #include file="Implements.asp" --><%
+        %>ReadOnlyBase(Of <%= Info.ObjectName %>)<!-- #include file="Implements.asp" --><%
     }
     %>
-    {
 <!-- #include file="StaticFields.asp" -->
 <!-- #include file="StateFields.asp" -->
 <!-- #include file="BusinessProps.asp" -->
@@ -91,9 +90,18 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Busine
     if (Info.GenerateFactoryMethods && (UseChildFactoryHelper || Info.ParentType == string.Empty))
     {
         Response.Write(Environment.NewLine);
-        %>
+        if (CurrentUnit.GenerationParams.TargetIsCsla40)
+        {
+            %>
 <!-- #include file="ReadOnlyObject_Factory.asp" -->
 <%
+        }
+        else
+        {
+            %>
+<!-- #include file="ReadOnlyObject_Factory-45.asp" -->
+<%
+        }
     }
     Response.Write(Environment.NewLine);
     %>
@@ -126,9 +134,9 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Busine
         Response.Write(Environment.NewLine);
     }
     %>
-    }
+    End Class
 <!-- #include file="CriteriaObject.asp" -->
-}
+<%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Business) == string.Empty ? "" : "End Namespace" %>
 <%
     if (internalNewObjectUsed)
     {

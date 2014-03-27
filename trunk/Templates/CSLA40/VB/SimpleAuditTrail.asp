@@ -3,20 +3,19 @@ if (UseSimpleAuditTrail(Info))
 {
     %>
 
-        private void SimpleAuditTrail()
-        {
+        Private Sub SimpleAuditTrail()
     <%
     ValueProperty changedDateProperty = new ValueProperty();
     if (GetValuePropertyByName(Info, Info.Parent.Params.ChangedDateColumn, ref changedDateProperty))
     {
         %>
-            <%= GetFieldLoaderStatement(changedDateProperty, GetNowValue(changedDateProperty.PropertyType)) %>;
+            <%= GetFieldLoaderStatement(changedDateProperty, GetNowValue(changedDateProperty.PropertyType)) %>
         <%
         var convertedPropertyName = ConvertedPropertyName(Info, changedDateProperty);
         if (convertedPropertyName != string.Empty)
         {
             %>
-            OnPropertyChanged("<%= convertedPropertyName %>");
+            OnPropertyChanged("<%= convertedPropertyName %>")
         <%
         }
     }
@@ -24,21 +23,20 @@ if (UseSimpleAuditTrail(Info))
     if (GetValuePropertyByName(Info, Info.Parent.Params.ChangedUserColumn, ref changedUserProperty))
     {
         %>
-            <%= GetFieldLoaderStatement(changedUserProperty, Info.Parent.Params.GetUserMethod) %>;
+            <%= GetFieldLoaderStatement(changedUserProperty, Info.Parent.Params.GetUserMethod) %>
         <%
         var convertedPropertyName = ConvertedPropertyName(Info, changedUserProperty);
         if (convertedPropertyName != string.Empty)
         {
             %>
-            OnPropertyChanged("<%= convertedPropertyName %>");
+            OnPropertyChanged("<%= convertedPropertyName %>")
         <%
         }
     }
     if (IsCreationDateColumnPresent(Info) || IsCreationUserColumnPresent(Info))
     {
         %>
-            if (IsNew)
-            {
+            If IsNew Then
                 <%
         ValueProperty creationDateProperty = new ValueProperty();
         if (GetValuePropertyByName(Info, Info.Parent.Params.CreationDateColumn, ref creationDateProperty))
@@ -46,20 +44,20 @@ if (UseSimpleAuditTrail(Info))
             if (IsChangedDateColumnPresent(Info))
             {
                 %>
-                <%= GetFieldLoaderStatement(creationDateProperty, GetFieldReaderStatement(changedDateProperty)) %>;
+                <%= GetFieldLoaderStatement(creationDateProperty, GetFieldReaderStatement(changedDateProperty)) %>
                         <%
             }
             else
             {
                 %>
-                <%= GetFieldLoaderStatement(creationDateProperty, GetNowValue(creationDateProperty.PropertyType)) %>;
+                <%= GetFieldLoaderStatement(creationDateProperty, GetNowValue(creationDateProperty.PropertyType)) %>
                         <%
             }
             var convertedPropertyName = ConvertedPropertyName(Info, creationDateProperty);
             if (convertedPropertyName != string.Empty)
             {
                 %>
-                OnPropertyChanged("<%= convertedPropertyName %>");
+                OnPropertyChanged("<%= convertedPropertyName %>")
                         <%
             }
         }
@@ -69,29 +67,29 @@ if (UseSimpleAuditTrail(Info))
             if (IsChangedUserColumnPresent(Info))
             {
                 %>
-                <%= GetFieldLoaderStatement(creationUserProperty, GetFieldReaderStatement(changedUserProperty)) %>;
+                <%= GetFieldLoaderStatement(creationUserProperty, GetFieldReaderStatement(changedUserProperty)) %>
                         <%
             }
             else
             {
                 %>
-                <%= GetFieldLoaderStatement(creationUserProperty, Info.Parent.Params.GetUserMethod) %>;
+                <%= GetFieldLoaderStatement(creationUserProperty, Info.Parent.Params.GetUserMethod) %>
                         <%
             }
             var convertedPropertyName = ConvertedPropertyName(Info, creationUserProperty);
             if (convertedPropertyName != string.Empty)
             {
                 %>
-                OnPropertyChanged("<%= convertedPropertyName %>");
+                OnPropertyChanged("<%= convertedPropertyName %>")
                         <%
             }
         }
         %>
-            }
+            End If
         <%
     }
     %>
-        }
+        End Sub
 <%
 }
 %>

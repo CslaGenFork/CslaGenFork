@@ -9,40 +9,38 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
             {
                 %>
 
-        /// <summary>
-        /// Factory method. Deletes a <see cref="<%= Info.ObjectName %>"/> object, based on given parameters.
-        /// </summary>
-        /// <param name="crit">The delete criteria.</param>
-        public static <%= Info.ObjectName %> Delete<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>(<%= c.Name %> crit)
-        {
-            DataPortal.Delete<<%= Info.ObjectName %>>(crit);
-        }
+        ''' <summary>
+        ''' Factory method. Deletes a <see cref="<%= Info.ObjectName %>"/> object, based on given parameters.
+        ''' </summary>
+        ''' <param name="crit">The delete criteria.</param>
+        Public Shared Sub Delete<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>(crit As <%= c.Name %>)
+            DataPortal.Delete(Of <%= Info.ObjectName %>)(crit)
+        End Sub
         <%
             }
             %>
 
-        /// <summary>
-        /// Factory method. Deletes a <see cref="<%= Info.ObjectName %>"/> object, based on given parameters.
-        /// </summary>
+        ''' <summary>
+        ''' Factory method. Deletes a <see cref="<%= Info.ObjectName %>"/> object, based on given parameters.
+        ''' </summary>
 <%
             string strDelParams = string.Empty;
             string strDelCritParams = string.Empty;
             for (int i = 0; i < c.Properties.Count; i++)
             {
                 %>
-        /// <param name="<%= FormatCamel(c.Properties[i].Name) %>">The <%= FormatProperty(c.Properties[i].Name) %> of the <%= Info.ObjectName %> to delete.</param>
+        ''' <param name="<%= FormatCamel(c.Properties[i].Name) %>">The <%= FormatProperty(c.Properties[i].Name) %> of the <%= Info.ObjectName %> to delete.</param>
         <%
                 if (i > 0)
                 {
                     strDelParams += ", ";
                     strDelCritParams += ", ";
                 }
-                strDelParams += string.Concat(GetDataTypeGeneric(c.Properties[i], c.Properties[i].PropertyType), " ", FormatCamel(c.Properties[i].Name));
+                strDelParams += string.Concat(FormatCamel(c.Properties[i].Name), " As ", GetDataTypeGeneric(c.Properties[i], c.Properties[i].PropertyType));
                 strDelCritParams += FormatCamel(c.Properties[i].Name);
             }
             %>
-        <%= Info.ParentType == string.Empty ? "public" : "internal" %> static void Delete<%= Info.ObjectName %><%= c.DeleteOptions.FactorySuffix %>(<%= strDelParams %>)
-        {
+        <%= Info.ParentType == string.Empty ? "Public" : "Friend" %> Shared Sub Delete<%= Info.ObjectName %><%= c.DeleteOptions.FactorySuffix %>(<%= strDelParams %>)
             <%
             if (Info.ObjectType == CslaObjectType.EditableSwitchable)
             {
@@ -50,50 +48,49 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
                 {
                     strDelCritParams = ", " + strDelCritParams;
                 }
-                strDelCritParams = "false" + strDelCritParams;
+                strDelCritParams = "False" + strDelCritParams;
             }
             if (c.Properties.Count > 1)
             {
-                %>DataPortal.Delete<<%= Info.ObjectName %>>(new <%= c.Name %>(<%= strDelCritParams %>));<%
+                %>DataPortal.Delete(Of <%= Info.ObjectName %>)(New <%= c.Name %>(<%= strDelCritParams %>))<%
             }
             else if (c.Properties.Count > 0)
             {
-                %>DataPortal.Delete<<%= Info.ObjectName %>>(<%= SendSingleCriteria(c, strDelCritParams) %>);<%
+                %>DataPortal.Delete(Of <%= Info.ObjectName %>)(<%= SendSingleCriteria(c, strDelCritParams) %>)<%
             }
             else
             {
-                %>DataPortal.Delete(new <%= c.Name %>(<%= strDelCritParams %>));<%
+                %>DataPortal.Delete(New <%= c.Name %>(<%= strDelCritParams %>))<%
             }
             %>
-        }
+        End Sub
 <%
             if (isUndeletable == true)
             {
                 %>
 
-        /// <summary>
-        /// Factory method. Undeletes a <see cref="<%= Info.ObjectName %>"/> object, based on given parameters.
-        /// </summary>
+        ''' <summary>
+        ''' Factory method. Undeletes a <see cref="<%= Info.ObjectName %>"/> object, based on given parameters.
+        ''' </summary>
 <%
                 strDelParams = string.Empty;
                 strDelCritParams = string.Empty;
                 for (int i = 0; i < c.Properties.Count; i++)
                 {
                     %>
-        /// <param name="<%= FormatCamel(c.Properties[i].Name) %>">The <%= FormatProperty(c.Properties[i].Name) %> of the <%= Info.ObjectName %> to undelete.</param>
+        ''' <param name="<%= FormatCamel(c.Properties[i].Name) %>">The <%= FormatProperty(c.Properties[i].Name) %> of the <%= Info.ObjectName %> to undelete.</param>
         <%
                     if (i > 0)
                     {
                         strDelParams += ", ";
                         strDelCritParams += ", ";
                     }
-                    strDelParams += string.Concat(GetDataTypeGeneric(c.Properties[i], c.Properties[i].PropertyType), " ", FormatCamel(c.Properties[i].Name));
+                    strDelParams += string.Concat(FormatCamel(c.Properties[i].Name), " As ", GetDataTypeGeneric(c.Properties[i], c.Properties[i].PropertyType));
                     strDelCritParams += FormatCamel(c.Properties[i].Name);
                 }
                 %>
-        /// <returns>A reference to the undeleted <see cref="<%= Info.ObjectName %>"/> object.</returns>
-        <%= Info.ParentType == string.Empty ? "public" : "internal" %> static <%= Info.ObjectName %> Undelete<%= Info.ObjectName %><%= c.DeleteOptions.FactorySuffix %>(<%= strDelParams %>)
-        {
+        ''' <returns>A reference to the undeleted <see cref="<%= Info.ObjectName %>"/> object.</returns>
+        <%= Info.ParentType == string.Empty ? "Public" : "Friend" %> Shared Function Undelete<%= Info.ObjectName %><%= c.DeleteOptions.FactorySuffix %>(<%= strDelParams %>) As <%= Info.ObjectName %>
             <%
                 if (Info.ObjectType == CslaObjectType.EditableSwitchable)
                 {
@@ -101,20 +98,20 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
                     {
                         strDelCritParams = ", " + strDelCritParams;
                     }
-                    strDelCritParams = "false" + strDelCritParams;
+                    strDelCritParams = "False" + strDelCritParams;
                 }
                 if (c.Properties.Count > 1)
                 {
-                    %>var obj = DataPortal.Fetch<<%= Info.ObjectName %>>(<%= strDelCritParams %>);<%
+                    %>Dim obj = DataPortal.Fetch(Of <%= Info.ObjectName %>)(<%= strDelCritParams %>)<%
                 }
                 else if (c.Properties.Count > 0)
                 {
-                    %>var obj = DataPortal.Fetch<<%= Info.ObjectName %>>(<%= SendSingleCriteria(c, strDelCritParams) %>);<%
+                    %>Dim obj = DataPortal.Fetch(Of <%= Info.ObjectName %>)(<%= SendSingleCriteria(c, strDelCritParams) %>)<%
                 }
             %>
-            obj.<%= softDeleteProperty %> = true;
-            return obj.Save();
-        }
+            obj.<%= softDeleteProperty %> = True
+            Return obj.Save()
+        End Function
 <%
             }
         }

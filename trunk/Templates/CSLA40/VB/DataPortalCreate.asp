@@ -10,40 +10,40 @@ foreach (Criteria c in Info.CriteriaObjects)
             dataPortalCreate = "DataPortal_";
         %>
 
-        /// <summary>
-        /// Loads default values for the <see cref="<%= Info.ObjectName %>"/> object properties<%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
-        /// </summary>
+        ''' <summary>
+        ''' Loads default values for the <see cref="<%= Info.ObjectName %>"/> object properties<%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
+        ''' </summary>
         <%
         if (c.Properties.Count > 0)
         {
-            %>/// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The create criteria.</param>
+            %>''' <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The create criteria.</param>
         <%
         }
         if (c.CreateOptions.RunLocal)
         {
-            %>[Csla.RunLocal]
+            %><Csla.RunLocal()>
         <%
         }
         if (c.Properties.Count > 1)
         {
-            %>protected void <%= dataPortalCreate %>Create(<%= c.Name %> crit)<%
+            %>Protected <%= Info.ObjectType == CslaObjectType.ReadOnlyObject ? "" : "Overloads " %>Sub <%= dataPortalCreate %>Create(crit As <%= c.Name %>)<%
         }
         else if (c.Properties.Count > 0)
         {
-            %>protected void <%= dataPortalCreate %>Create(<%= ReceiveSingleCriteria(c, "crit") %>)<%
+            %>Protected <%= Info.ObjectType == CslaObjectType.ReadOnlyObject ? "" : "Overloads " %>Sub <%= dataPortalCreate %>Create(<%= ReceiveSingleCriteria(c, "crit") %>)<%
         }
         else
         {
-            %>protected <%= Info.ObjectType == CslaObjectType.ReadOnlyObject ? "" : "override " %>void <%= dataPortalCreate %>Create()<%
+            %>Protected <%= Info.ObjectType == CslaObjectType.ReadOnlyObject ? "" : "Overrides " %>Sub <%= dataPortalCreate %>Create()<%
         }
         %>
-        {
-            <%
+           <%
         if (Info.ObjectType == CslaObjectType.EditableSwitchable)
         {
             %>
-            if (crit.IsChild)
-                MarkAsChild();
+            If crit.IsChild Then
+                MarkAsChild()
+            End If
             <%
         }
         foreach (ValueProperty prop in Info.ValueProperties)
@@ -57,20 +57,20 @@ foreach (Criteria c in Info.CriteriaObjects)
                     prop.PropertyType == TypeCodeEx.Int64))
                 {
                     %>
-            <%= GetFieldLoaderStatement(prop, "System.Threading.Interlocked.Decrement(ref " + prop.DefaultValue.Trim() + ")") %>;
+            <%= GetFieldLoaderStatement(prop, "System.Threading.Interlocked.Decrement(ref " + prop.DefaultValue.Trim() + ")") %>
             <%
                 }
                 else
                 {
                     %>
-            <%= GetFieldLoaderStatement(Info, prop, prop.DefaultValue) %>;
+            <%= GetFieldLoaderStatement(Info, prop, prop.DefaultValue) %>
             <%
                 }
             }
             else if (prop.Nullable && prop.PropertyType == TypeCodeEx.String)
             {
                 %>
-            <%= GetFieldLoaderStatement(Info, prop, "null") %>;
+            <%= GetFieldLoaderStatement(Info, prop, "Nothing") %>
             <%
             }
         }
@@ -83,13 +83,13 @@ foreach (Criteria c in Info.CriteriaObjects)
                 if (c.Properties.Count > 1)
                 {
                     %>
-            <%= GetFieldLoaderStatement(prop, "crit." + FormatProperty(p.Name)) %>;
+            <%= GetFieldLoaderStatement(prop, "crit." + FormatProperty(p.Name)) %>
             <%
                 }
                 else
                 {
                     %>
-            <%= GetFieldLoaderStatement(prop, AssignSingleCriteria(c, "crit")) %>;
+            <%= GetFieldLoaderStatement(prop, AssignSingleCriteria(c, "crit")) %>
             <%
                 }
             }
@@ -103,7 +103,7 @@ foreach (Criteria c in Info.CriteriaObjects)
                     (childProp.LoadingScheme == LoadingScheme.ParentLoad || !childProp.LazyLoad))
                 {
                     %>
-            <%= GetNewChildLoadStatement(childProp, true) %>;
+            <%= GetNewChildLoadStatement(childProp, true) %>
             <%
                 }
             }
@@ -118,17 +118,17 @@ foreach (Criteria c in Info.CriteriaObjects)
             hookArgs = HookSingleCriteria(c, "crit");
         }
         %>
-            var args = new DataPortalHookArgs(<%= hookArgs %>);
-            OnCreate(args);
+            Dim args As New DataPortalHookArgs(<%= hookArgs %>)
+            OnCreate(args)
             <%
         if (Info.ObjectType != CslaObjectType.ReadOnlyObject)
         {
             %>
-            base.<%= dataPortalCreate %>Create();
+            MyBase.<%= dataPortalCreate %>Create()
             <%
         }
         %>
-        }
+        End Sub
     <%
     }
 }
