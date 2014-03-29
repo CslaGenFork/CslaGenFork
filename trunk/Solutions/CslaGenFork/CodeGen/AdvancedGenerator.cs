@@ -415,11 +415,25 @@ namespace CslaGenerator.CodeGen
             var utilityFilename = "Validating_" + step + ".txt";
 
             var fullFilename = TargetDirectory + @"\";
-            CheckDirectory(fullFilename);
+            try
+            {
+                CheckDirectory(fullFilename);
+            }
+            catch (Exception e)
+            {
+                OnGenerationInformation(e.Message);
+            }
             fullFilename += utilityFilename;
             if (File.Exists(fullFilename))
             {
-                File.Delete(fullFilename);
+                try
+                {
+                    File.Delete(fullFilename);
+                }
+                catch (Exception e)
+                {
+                    OnGenerationInformation(e.Message);
+                }
             }
 
             // Create utility class file if it does not exist
@@ -441,7 +455,14 @@ namespace CslaGenerator.CodeGen
                         template.SetProperty("CurrentUnit", _unit);
                         OnGenerationInformation("Validation: " + step);
                         var fs = OpenFile(fullFilename);
-                        sw = new StreamWriter(fs, Encoding.GetEncoding(_codeEncoding));
+                        try
+                        {
+                            sw = new StreamWriter(fs, Encoding.GetEncoding(_codeEncoding));
+                        }
+                        catch (Exception e)
+                        {
+                            OnGenerationInformation(e.Message);
+                        }
                         template.Render(sw);
                         errorsOutput = (StringBuilder) template.GetProperty("Errors");
                         warningsOutput = (StringBuilder) template.GetProperty("Warnings");
@@ -492,7 +513,7 @@ namespace CslaGenerator.CodeGen
                     if (e.GetBaseException() as IOException != null)
                         msg = "* Failed: " + fullFilename + " is busy.";
                     else
-                        msg = ShowExceptionInformation(e);
+                        msg = e.Message;
 
                     _errorReport.Add(new GenerationReport
                         {
@@ -999,7 +1020,14 @@ namespace CslaGenerator.CodeGen
             _fileSuccess.Add(utilityFilename, null);
 
             var fullFilename = GetUtilitiesFolderPath(step);
-            CheckDirectory(fullFilename);
+            try
+            {
+                CheckDirectory(fullFilename);
+            }
+            catch (Exception e)
+            {
+                OnGenerationInformation(e.Message);
+            }
 
             // filename w/o extension
             fullFilename += utilityFilename;
@@ -1188,9 +1216,24 @@ namespace CslaGenerator.CodeGen
                 var oldFile = new FileInfo(fileName);
                 if (File.Exists(fileName + ".old"))
                 {
-                    File.Delete(fileName + ".old");
+                    try
+                    {
+                        File.Delete(fileName + ".old");
+                    }
+                    catch (Exception e)
+                    {
+                        OnGenerationInformation(e.Message);
+                    }
                 }
-                oldFile.MoveTo(fileName + ".old");
+
+                try
+                {
+                    oldFile.MoveTo(fileName + ".old");
+                }
+                catch (Exception e)
+                {
+                    OnGenerationInformation(e.Message);
+                }
             }
 
             StreamWriter sw = null;
@@ -1330,7 +1373,14 @@ namespace CslaGenerator.CodeGen
             }
             if (proc.Length > 0)
             {
-                CheckDirectory(dir + @"\sprocs");
+                try
+                {
+                    CheckDirectory(dir + @"\sprocs");
+                }
+                catch (Exception e)
+                {
+                    OnGenerationInformation(e.Message);
+                }
                 WriteToFile(dir + @"\sprocs\" + info.ObjectName + ".sql", proc.ToString(), info);
             }
         }
@@ -1346,7 +1396,14 @@ namespace CslaGenerator.CodeGen
                     {
                         var proc = GenerateProcedure(info, crit, "SelectProcedure.cst", crit.GetOptions.ProcedureName,
                                                         dir + @"\sprocs\" + crit.GetOptions.ProcedureName + ".sql");
-                        CheckDirectory(dir + @"\sprocs");
+                        try
+                        {
+                            CheckDirectory(dir + @"\sprocs");
+                        }
+                        catch (Exception e)
+                        {
+                            OnGenerationInformation(e.Message);
+                        }
                         WriteToFile(dir + @"\sprocs\" + crit.GetOptions.ProcedureName + ".sql", proc, info);
                     }
                 }
@@ -1358,7 +1415,14 @@ namespace CslaGenerator.CodeGen
             if (info.InsertProcedureName != string.Empty)
             {
                 var proc = GenerateProcedure(info, null, "InsertProcedure.cst", info.InsertProcedureName, dir + @"\sprocs\" + info.InsertProcedureName + ".sql");
-                CheckDirectory(dir + @"\sprocs");
+                try
+                {
+                    CheckDirectory(dir + @"\sprocs");
+                }
+                catch (Exception e)
+                {
+                    OnGenerationInformation(e.Message);
+                }
                 WriteToFile(dir + @"\sprocs\" + info.InsertProcedureName + ".sql", proc, info);
             }
         }
@@ -1368,7 +1432,14 @@ namespace CslaGenerator.CodeGen
             if (info.UpdateProcedureName != string.Empty)
             {
                 var proc = GenerateProcedure(info, null, "UpdateProcedure.cst", info.UpdateProcedureName, dir + @"\sprocs\" + info.UpdateProcedureName + ".sql");
-                CheckDirectory(dir + @"\sprocs");
+                try
+                {
+                    CheckDirectory(dir + @"\sprocs");
+                }
+                catch (Exception e)
+                {
+                    OnGenerationInformation(e.Message);
+                }
                 WriteToFile(dir + @"\sprocs\" + info.UpdateProcedureName + ".sql", proc, info);
             }
         }
@@ -1381,7 +1452,14 @@ namespace CslaGenerator.CodeGen
                 {
                     var proc = GenerateProcedure(info, null, "DeleteProcedure.cst", info.DeleteProcedureName,
                         dir + @"\sprocs\" + info.DeleteProcedureName + ".sql");
-                    CheckDirectory(dir + @"\sprocs");
+                    try
+                    {
+                        CheckDirectory(dir + @"\sprocs");
+                    }
+                    catch (Exception e)
+                    {
+                        OnGenerationInformation(e.Message);
+                    }
                     WriteToFile(dir + @"\sprocs\" + info.DeleteProcedureName + ".sql", proc, info);
                 }
             }
@@ -1393,7 +1471,14 @@ namespace CslaGenerator.CodeGen
                     {
                         var proc = GenerateProcedure(info, crit, "DeleteProcedure.cst", crit.DeleteOptions.ProcedureName,
                             dir + @"\sprocs\" + crit.DeleteOptions.ProcedureName + ".sql");
-                        CheckDirectory(dir + @"\sprocs");
+                        try
+                        {
+                            CheckDirectory(dir + @"\sprocs");
+                        }
+                        catch (Exception e)
+                        {
+                            OnGenerationInformation(e.Message);
+                        }
                         WriteToFile(dir + @"\sprocs\" + crit.DeleteOptions.ProcedureName + ".sql", proc, info);
                     }
                 }
@@ -1576,7 +1661,14 @@ namespace CslaGenerator.CodeGen
             {
                 targetDir += @"Comment\";
             }
-            CheckDirectory(targetDir);
+            try
+            {
+                CheckDirectory(targetDir);
+            }
+            catch (Exception e)
+            {
+                OnGenerationInformation(e.Message);
+            }
             return targetDir;
         }
 
