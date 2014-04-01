@@ -23,7 +23,7 @@ if (activeCriteria > 0)
     IndentLevel += 3;
     %>
 
-        #region Criteria
+        #Region " Criteria "
         <%
     foreach (UnitOfWorkCriteriaManager.UoWCriteria uowCrit in listUoWCriteriaCurrent)
     {
@@ -32,39 +32,40 @@ if (activeCriteria > 0)
         string strComment = string.Empty;
         %>
 
-        /// <summary>
-        /// <%= uowCrit.CriteriaName + " criteria." %>
-        /// </summary>
-        [Serializable]
+        ''' <summary>
+        ''' <%= uowCrit.CriteriaName + " criteria." %>
+        ''' </summary>
+        <Serializable()>
         <%
         if (UseBoth())
         {
             %>
-#if SILVERLIGHT
+#If SILVERLIGHT Then
         <%
         }
         if (UseSilverlight())
         {
             %>
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        <System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>
         <%
             if (critCriteriaClassMode == CriteriaMode.Simple)
             {
                 %>
-        public class <%= uowCrit.CriteriaName %>
+        Public Class <%= uowCrit.CriteriaName %>
         <%
             }
             else
             {
                 %>
-        public <%= critCriteriaClassMode == CriteriaMode.BusinessBase ? "partial " : "" %>class <%= uowCrit.CriteriaName %> : <%= critCriteriaClassMode != CriteriaMode.BusinessBase ? "CriteriaBase" : "BusinessBase" %><<%= uowCrit.CriteriaName %>>
+        Public <%= critCriteriaClassMode == CriteriaMode.BusinessBase ? "Partial " : "" %>Class <%= uowCrit.CriteriaName %>
+            Inherits <%= critCriteriaClassMode != CriteriaMode.BusinessBase ? "CriteriaBase" : "BusinessBase" %>(Of <%= uowCrit.CriteriaName %>)
         <%
             }
         }
         if (UseBoth())
         {
             %>
-#else
+#Else
         <%
         }
         if (UseNoSilverlight())
@@ -72,24 +73,24 @@ if (activeCriteria > 0)
             if (critCriteriaClassMode == CriteriaMode.Simple)
             {
                 %>
-        protected class <%= uowCrit.CriteriaName %>
+        Protected Class <%= uowCrit.CriteriaName %>
         <%
             }
             else
             {
                 %>
-        protected <%= critCriteriaClassMode == CriteriaMode.BusinessBase ? "partial " : "" %>class <%= uowCrit.CriteriaName %> : <%= critCriteriaClassMode != CriteriaMode.BusinessBase ? "CriteriaBase" : "BusinessBase" %><<%= uowCrit.CriteriaName %>>
+        Protected <%= critCriteriaClassMode == CriteriaMode.BusinessBase ? "Partial " : "" %>Class <%= uowCrit.CriteriaName %>
+            Inherits <%= critCriteriaClassMode != CriteriaMode.BusinessBase ? "CriteriaBase" : "BusinessBase" %>(Of <%= uowCrit.CriteriaName %>)
         <%
             }
         }
         if (UseBoth())
         {
             %>
-#endif
+#End If
         <%
         }
         %>
-        {
             <%
         getterCriteria = "Get";
         setterCriteria = "Set";
@@ -109,76 +110,77 @@ if (activeCriteria > 0)
             {
                 string statement = PropertyInfoUoWCriteriaDeclare(Info, crit);
                 %>
-            /// <summary>
-            /// Maintains metadata about <see cref="<%= FormatProperty(crit.Name) %>"/> property.
-            /// </summary>
+            ''' <summary>
+            ''' Maintains metadata about <see cref="<%= FormatProperty(crit.Name) %>"/> property.
+            ''' </summary>
     <%= statement %>
             <%
             }
             %>
-            /// <summary>
-            /// Gets or sets the <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(crit.Name) %>.
-            /// </summary>
+            ''' <summary>
+            ''' Gets or sets the <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(crit.Name) %>.
+            ''' </summary>
             <%
             if (crit.Type == "bool")
             {
                 %>
-            /// <value><c>true</c> if <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(crit.Name) %>; otherwise, <c>false</c>.</value>
+            ''' <value><c>true</c> if <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(crit.Name) %>; otherwise, <c>false</c>.</value>
             <%
             }
             else if (crit.Type == "bool?")
             {
                 %>
-            /// <value><c>true</c> if <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(crit.Name) %>; <c>false</c> if not <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(crit.Name) %>; otherwise, <c>null</c>.</value>
+            ''' <value><c>true</c> if <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(crit.Name) %>; <c>false</c> if not <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(crit.Name) %>; otherwise, <c>null</c>.</value>
             <%
             }
             else
             {
                 %>
-            /// <value>The <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(crit.Name) %>.</value>
+            ''' <value>The <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(crit.Name) %>.</value>
             <%
             }
-            // Just creating strings for later use in the constructors in order to avoid another loop
+            '' Just creating strings for later use in the constructors in order to avoid another loop
             if (strParams.Length > 0)
             {
                 strParams += ", ";
             }
-            strParams += string.Concat(crit.Type, " ", FormatCamel(crit.Name));
-            strFieldAssignments += string.Concat("\r\n                ", FormatProperty(crit.Name), " = ", FormatCamel(crit.Name), ";");
-            strComment += "\r\n            /// <param name=\"" + FormatCamel(crit.Name) + "\">The "+ FormatProperty(crit.Name) + ".</param>";
+            strParams += string.Concat(FormatCamel(crit.Name), " As ", crit.Type);
+            strFieldAssignments += string.Concat("\r\n                ", FormatProperty(crit.Name), " = ", FormatCamel(crit.Name));
+            strComment += "\r\n            ''' <param name=\"" + FormatCamel(crit.Name) + "\">The "+ FormatProperty(crit.Name) + ".</param>";
             if (critCriteriaClassMode == CriteriaMode.Simple)
             {
                 %>
-            public <%= crit.Type %> <%= FormatProperty(crit.Name) %> { get; set; }
+            Public Property <%= FormatProperty(crit.Name) %> As <%= crit.Type %>
             <%
             }
             else
             {
                 %>
-            public <%= crit.Type %> <%= FormatProperty(crit.Name) %>
-            {
-                get { return <%= getterCriteria %>Property(<%= FormatProperty(crit.Name) %>Property); }
-                set { <%= setterCriteria %>Property(<%= FormatProperty(crit.Name) %>Property, value); }
-            }
+            Public Property <%= FormatProperty(crit.Name) %> As <%= crit.Type %>
+                Get 
+                    Return <%= getterCriteria %>Property(<%= FormatProperty(crit.Name) %>Property)
+                End Get
+                Set 
+                    <%= setterCriteria %>Property(<%= FormatProperty(crit.Name) %>Property, value)
+                End Set
+            End Property
             <%
             }
         }
         %>
 
-            /// <summary>
-            /// Initializes a new instance of the <see cref="<%= uowCrit.CriteriaName %>"/> class.
-            /// </summary>
-            /// <remarks> A parameterless constructor is required by the MobileFormatter.</remarks>
-            [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-            public <%= uowCrit.CriteriaName %>()
-            {
-            }
+            ''' <summary>
+            ''' Initializes a new instance of the <see cref="<%= uowCrit.CriteriaName %>"/> class.
+            ''' </summary>
+            ''' <remarks> A parameterless constructor is required by the MobileFormatter.</remarks>
+            <System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>
+            Public Sub New()
+            End Sub
 
-            /// <summary>
-            /// Initializes a new instance of the <see cref="<%= uowCrit.CriteriaName %>"/> class.
-            /// </summary><%= strComment %>
-            public <%= uowCrit.CriteriaName %>(<%= strParams %>)
-            {
+            ''' <summary>
+            ''' Initializes a new instance of the <see cref="<%= uowCrit.CriteriaName %>"/> class.
+            ''' </summary><%= strComment %>
+            Public <%= uowCrit.CriteriaName %>(<%= strParams %>)
                 <%
         if (strFieldAssignments.Length > 1)
         {
@@ -187,18 +189,17 @@ if (activeCriteria > 0)
                 <%
         }
         %>
-            }
+            End Sub
 
-            /// <summary>
-            /// Determines whether the specified <see cref="System.Object"/> is equal to this instance.
-            /// </summary>
-            /// <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
-            /// <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
-            public override bool Equals(object obj)
+            ''' <summary>
+            ''' Determines whether the specified <see cref="System.Object"/> is equal to this instance.
+            ''' </summary>
+            ''' <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
+            ''' <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+            Public Overrides Function Equals(obj As object) As Boolean
             {
-                if (obj is <%= uowCrit.CriteriaName %>)
-                {
-                    var c = (<%= uowCrit.CriteriaName %>) obj;
+                If TypeOf obj Is <%= uowCrit.CriteriaName %> Then
+                    Dim c As (<%= uowCrit.CriteriaName %>) = obj
                     <%
         foreach (UnitOfWorkCriteriaManager.ElementCriteria c in uowCrit.ElementCriteriaList)
         {
@@ -206,30 +207,30 @@ if (activeCriteria > 0)
                 continue;
 
             %>
-                    if (!<%= FormatProperty(c.Name) %>.Equals(c.<%= FormatProperty(c.Name) %>))
-                        return false;
+                    If Not <%= FormatProperty(c.Name) %>.Equals(c.<%= FormatProperty(c.Name) %>) Then
+                        Return False
+                    End If
                     <%
         }
         %>
-                    return true;
-                }
-                return false;
-            }
+                    Return True
+                End If
+                Return False
+            End Sub
 
-            /// <summary>
-            /// Returns a hash code for this instance.
-            /// </summary>
-            /// <returns>An hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-            public override int GetHashCode()
-            {
-                return string.Concat("<%= uowCrit.CriteriaName %>"<% foreach (UnitOfWorkCriteriaManager.ElementCriteria c in uowCrit.ElementCriteriaList) { if (c.Name == string.Empty) continue; %>, <%= FormatProperty(c.Name) %>.ToString()<% } %>).GetHashCode();
-            }
-        }
+            ''' <summary>
+            ''' Returns a hash code for this instance.
+            ''' </summary>
+            ''' <returns>An hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
+            Public Overrides Function GetHashCode() As Integer
+                Return String.Concat("<%= uowCrit.CriteriaName %>"<% foreach (UnitOfWorkCriteriaManager.ElementCriteria c in uowCrit.ElementCriteriaList) { if (c.Name == string.Empty) continue; %>, <%= FormatProperty(c.Name) %>.ToString()<% } %>).GetHashCode()
+            End Function
+        End Class
         <%
     }
     %>
 
-        #endregion
+        #End Region
 <%
     IndentLevel -=3;
 }
