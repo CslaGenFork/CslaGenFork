@@ -35,7 +35,7 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
         {
             createUowParam = "create" + singleUoWProperty;
             createUowComment = "''' <param name=\"" + createUowParam + "\">if set to <c>true</c> creates a " + singleUoWProperty + "; otherwise fetches a " + singleUoWProperty + ".</param>" + System.Environment.NewLine + new string(' ', 8);
-            createUowCrit = createUowParam + "As Boolean";
+            createUowCrit = createUowParam + " As Boolean";
         }
         createPartialMethods.Add("Partial Sub Service_CreateFetch(" + createUowCrit + ")");
         createPartialParams.Add(createUowComment);
