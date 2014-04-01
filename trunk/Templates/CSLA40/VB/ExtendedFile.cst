@@ -103,19 +103,19 @@ if (cachedContextUtilitiesNamespace != string.Empty)
         if (Info.SupportUpdateProperties || hasFactoryCache || hasDataPortalCache)
         {
             %>
-            <%= commentLine %>AddHandler Saved, AddressOf On<%= Info.ObjectName %>Saved;
+            <%= commentLine %>AddHandler Saved, AddressOf On<%= Info.ObjectName %>Saved
             <%
             if (Info.SupportUpdateProperties && (hasFactoryCache || hasDataPortalCache))
             {
                 %>
-            <%= commentLine %>AddHandler <%= Info.ObjectName %>Saved, AddressOf <%= Info.ObjectName %>SavedHandler;
+            <%= commentLine %>AddHandler <%= Info.ObjectName %>Saved, AddressOf <%= Info.ObjectName %>SavedHandler
             <%
             }
         }
         else if(isUpdatable)
         {
             %>
-            <%= commentLine %>AddHandler <%= Info.UpdaterType %>.<%= Info.UpdaterType %>Saved, AddressOf <%= Info.UpdaterType %>SavedHandler;
+            <%= commentLine %>AddHandler <%= Info.UpdaterType %>.<%= Info.UpdaterType %>Saved, AddressOf <%= Info.UpdaterType %>SavedHandler
             <%
         }
         %>
@@ -233,7 +233,7 @@ if (Info.ObjectType != CslaObjectType.UnitOfWork)
 
         if (childProperties.Count > 0)
         {
-            string commentLine = "' "
+            commentLine = "' ";
             %>
 
         #Region " ChildChanged Event Handler "
