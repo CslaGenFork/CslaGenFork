@@ -24,7 +24,7 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
         if (elementCriteriaCount > 1)
         {
             createUowParam = "crit";
-            createUowCrit = "crit As " + uowCrit.CriteriaName";
+            createUowCrit = "crit As " + uowCrit.CriteriaName;
         }
         if (elementCriteriaCount != 0)
             createUowComment = "''' <param name=\"" + createUowParam + "\">The create criteria.</param>" + System.Environment.NewLine + new string(' ', 8);
