@@ -40,9 +40,9 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
             CslaObjectInfo objectInfo = Info.Parent.CslaObjects.Find(prop.TypeName);
             if (objectInfo.SimpleCacheOptions != SimpleCacheResults.None)
             {
-                strGetCache += "                If Not " + prop.TypeName + ".IsCached Then" + Environment.NewLine;
-                strGetCache += "                    " + prop.TypeName + ".SetCache(e.Object." + prop.TypeName + ")" + Environment.NewLine;
-                strGetCache += "                End If" + Environment.NewLine;
+                strNewCache += "                If Not " + prop.TypeName + ".IsCached Then" + Environment.NewLine;
+                strNewCache += "                    " + prop.TypeName + ".SetCache(e.Object." + prop.TypeName + ")" + Environment.NewLine;
+                strNewCache += "                End If" + Environment.NewLine;
             }
         }
         if (Info.UnitOfWorkType == UnitOfWorkFunction.CreatorGetter && elementCriteriaCount == 0)
