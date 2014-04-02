@@ -27,7 +27,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
                 strDelCritParams += FormatCamel(c.Properties[i].Name);
             }
             strDelParams += (strDelParams.Length > 0 ? ", " : "") + "callback As EventHandler(Of DataPortalResult(Of " + Info.ObjectName + "))";
-            ''strDelCritParams += (strDelCritParams.Length > 0 ? ", " : "") + "callback";
+            //strDelCritParams += (strDelCritParams.Length > 0 ? ", " : "") + "callback";
             %>
         ''' <param name="callback">The completion callback method.</param>
         <%= Info.ParentType == string.Empty ? "Public" : "Friend" %> Shared Sub Delete<%= Info.ObjectName %><%= c.DeleteOptions.FactorySuffix %>(<%= strDelParams %>)
@@ -79,7 +79,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
                     strDelCritParams += FormatCamel(c.Properties[i].Name);
                 }
                 strDelParams += (strDelParams.Length > 0 ? ", " : "") + "callback As EventHandler(Of DataPortalResult(Of " + Info.ObjectName + "))";
-                ''strDelCritParams += (strDelCritParams.Length > 0 ? ", " : "") + "callback";
+                //strDelCritParams += (strDelCritParams.Length > 0 ? ", " : "") + "callback";
                 %>
         ''' <param name="callback">The completion callback method.</param>
         <%= Info.ParentType == string.Empty ? "Public" : "Friend" %> Shared Sub Undelete<%= Info.ObjectName %><%= c.DeleteOptions.FactorySuffix %>(<%= strDelParams %>)
