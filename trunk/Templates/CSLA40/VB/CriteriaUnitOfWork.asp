@@ -139,7 +139,7 @@ if (activeCriteria > 0)
             ''' <value>The <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(crit.Name) %>.</value>
             <%
             }
-            '' Just creating strings for later use in the constructors in order to avoid another loop
+            // Just creating strings for later use in the constructors in order to avoid another loop
             if (strParams.Length > 0)
             {
                 strParams += ", ";
