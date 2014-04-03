@@ -1,4 +1,17 @@
 <%
+if (CurrentUnit.GenerationParams.UseInlineQueries == UseInlineQueries.Always)
+    useInlineQuery = true;
+else if (CurrentUnit.GenerationParams.UseInlineQueries == UseInlineQueries.SpecifyByObject)
+{
+    foreach (string item in Info.GenerateInlineQueries)
+    {
+        if (item == "Update")
+        {
+            useInlineQuery = true;
+            break;
+        }
+    }
+}
 if (string.IsNullOrEmpty(Info.UpdateProcedureName))
 {
     Errors.Append("Object " + Info.ObjectName + " missing Update procedure name." + Environment.NewLine);
@@ -33,7 +46,7 @@ if (UseSimpleAuditTrail(Info))
 }
 %>
             <%= GetConnection(Info, false) %>
-                <%= GetCommand(Info, Info.UpdateProcedureName) %>
+                <%= GetCommand(Info, Info.UpdateProcedureName, useInlineQuery, "") %>
                     <%
 if (Info.TransactionType == TransactionType.ADO && Info.PersistenceType == PersistenceType.SqlConnectionManager)
 {
@@ -48,7 +61,7 @@ if (Info.CommandTimeout != string.Empty)
                     <%
 }
 %>
-                    cmd.CommandType = CommandType.StoredProcedure
+                    cmd.CommandType = CommandType.<%= useInlineQuery ? "Text" : "StoredProcedure" %>
                     <%
 foreach (ValueProperty prop in Info.GetAllValueProperties())
 {

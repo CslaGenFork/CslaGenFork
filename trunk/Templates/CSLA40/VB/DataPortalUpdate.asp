@@ -1,4 +1,17 @@
 <%
+if (CurrentUnit.GenerationParams.UseInlineQueries == UseInlineQueries.Always)
+    useInlineQuery = true;
+else if (CurrentUnit.GenerationParams.UseInlineQueries == UseInlineQueries.SpecifyByObject)
+{
+    foreach (string item in Info.GenerateInlineQueries)
+    {
+        if (item == "Update")
+        {
+            useInlineQuery = true;
+            break;
+        }
+    }
+}
 if (Info.GenerateDataPortalUpdate)
 {
     %>
@@ -30,7 +43,7 @@ if (Info.GenerateDataPortalUpdate)
             <%
     }
     %><%= GetConnection(Info, false) %>
-                <%= GetCommand(Info, Info.UpdateProcedureName) %>
+                <%= GetCommand(Info, Info.UpdateProcedureName, useInlineQuery, "") %>
                     <%
     if (Info.TransactionType == TransactionType.ADO && Info.PersistenceType == PersistenceType.SqlConnectionManager)
     {
@@ -42,7 +55,7 @@ if (Info.GenerateDataPortalUpdate)
         %>cmd.CommandTimeout = <%= Info.CommandTimeout %>
                     <%
     }
-    %>cmd.CommandType = CommandType.StoredProcedure
+    %>cmd.CommandType = CommandType.<%= useInlineQuery ? "Text" : "StoredProcedure" %>
                     <%
     foreach (ValueProperty prop in Info.GetAllValueProperties())
     {

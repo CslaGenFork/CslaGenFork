@@ -1,4 +1,17 @@
 <%
+if (CurrentUnit.GenerationParams.UseInlineQueries == UseInlineQueries.Always)
+    useInlineQuery = true;
+else if (CurrentUnit.GenerationParams.UseInlineQueries == UseInlineQueries.SpecifyByObject)
+{
+    foreach (string item in Info.GenerateInlineQueries)
+    {
+        if (item == "Read")
+        {
+            useInlineQuery = true;
+            break;
+        }
+    }
+}
 if (!Info.UseCustomLoading)
 {
     foreach (Criteria c in Info.CriteriaObjects)
@@ -39,10 +52,12 @@ if (!Info.UseCustomLoading)
             }
             if (c.Properties.Count > 1)
             {
+                lastCriteria = "crit";
         %>Protected Sub <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Fetch(crit As <%= c.Name %>)<%
             }
             else if (c.Properties.Count > 0)
             {
+                lastCriteria = "crit";
         %>Protected Sub <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)<%
             }
             else
@@ -61,14 +76,14 @@ if (!Info.UseCustomLoading)
             }
             %>
             <%= GetConnection(Info, true) %>
-                <%= GetCommand(Info, c.GetOptions.ProcedureName) %>
+                <%= GetCommand(Info, c.GetOptions.ProcedureName, useInlineQuery, lastCriteria) %>
                     <%
             if (Info.CommandTimeout != string.Empty)
             {
                 %>cmd.CommandTimeout = <%= Info.CommandTimeout %>
                     <%
             }
-            %>cmd.CommandType = CommandType.StoredProcedure
+            %>cmd.CommandType = CommandType.<%= useInlineQuery ? "Text" : "StoredProcedure" %>
                     <%
             foreach (CriteriaProperty p in c.Properties)
             {

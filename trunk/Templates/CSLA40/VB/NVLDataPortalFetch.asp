@@ -1,4 +1,17 @@
 <%
+if (CurrentUnit.GenerationParams.UseInlineQueries == UseInlineQueries.Always)
+    useInlineQuery = true;
+else if (CurrentUnit.GenerationParams.UseInlineQueries == UseInlineQueries.SpecifyByObject)
+{
+    foreach (string item in Info.GenerateInlineQueries)
+    {
+        if (item == "Read")
+        {
+            useInlineQuery = true;
+            break;
+        }
+    }
+}
 if (!Info.UseCustomLoading && (UseNoSilverlight() ||
     CurrentUnit.GenerationParams.GenerateSilverlight4))
 {
@@ -40,10 +53,12 @@ if (!Info.UseCustomLoading && (UseNoSilverlight() ||
             }
             if (c.Properties.Count > 1)
             {
+                lastCriteria = "crit";
         %>Protected Sub DataPortal_Fetch(crit As <%= c.Name %>)<%
             }
             else if (c.Properties.Count > 0)
             {
+                lastCriteria = "crit";
         %>Protected Sub DataPortal_Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)<%
             }
             else
@@ -64,14 +79,14 @@ if (!Info.UseCustomLoading && (UseNoSilverlight() ||
             }
             %>
             <%= GetConnection(Info, true) %>
-                <%= GetCommand(Info, c.GetOptions.ProcedureName) %>
+                <%= GetCommand(Info, c.GetOptions.ProcedureName, useInlineQuery, lastCriteria) %>
                     <%
             if (Info.CommandTimeout != string.Empty)
             {
                 %>cmd.CommandTimeout = <%= Info.CommandTimeout %>
                     <%
             }
-            %>cmd.CommandType = CommandType.StoredProcedure
+            %>cmd.CommandType = CommandType.<%= useInlineQuery ? "Text" : "StoredProcedure" %>
                     <%
             foreach (CriteriaProperty p in c.Properties)
             {

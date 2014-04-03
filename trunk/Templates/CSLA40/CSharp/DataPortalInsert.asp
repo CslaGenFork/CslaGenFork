@@ -1,4 +1,17 @@
 <%
+if (CurrentUnit.GenerationParams.UseInlineQueries == UseInlineQueries.Always)
+    useInlineQuery = true;
+else if (CurrentUnit.GenerationParams.UseInlineQueries == UseInlineQueries.SpecifyByObject)
+{
+    foreach (string item in Info.GenerateInlineQueries)
+    {
+        if (item == "Create")
+        {
+            useInlineQuery = true;
+            break;
+        }
+    }
+}
 if (Info.GenerateDataPortalInsert)
 {
     %>
@@ -32,7 +45,7 @@ if (Info.GenerateDataPortalInsert)
     }
     %><%= GetConnection(Info, false) %>
             {
-                <%= GetCommand(Info, Info.InsertProcedureName) %>
+                <%= GetCommand(Info, Info.InsertProcedureName, useInlineQuery, "") %>
                 {
                     <%
     if (Info.TransactionType == TransactionType.ADO && Info.PersistenceType == PersistenceType.SqlConnectionManager)
@@ -45,7 +58,7 @@ if (Info.GenerateDataPortalInsert)
         %>cmd.CommandTimeout = <%= Info.CommandTimeout %>;
                     <%
     }
-    %>cmd.CommandType = CommandType.StoredProcedure;
+    %>cmd.CommandType = CommandType.<%= useInlineQuery ? "Text" : "StoredProcedure" %>;
                     <%
     foreach (ValueProperty prop in Info.GetAllValueProperties())
     {

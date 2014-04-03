@@ -11,6 +11,21 @@ else if (parentInfo.ObjectType == CslaObjectType.DynamicEditableRootCollection)
 
 if (Info.GenerateDataPortalInsert)
 {
+    lastCriteria = "";
+    useInlineQuery = false;
+    if (CurrentUnit.GenerationParams.UseInlineQueries == UseInlineQueries.Always)
+        useInlineQuery = true;
+    else if (CurrentUnit.GenerationParams.UseInlineQueries == UseInlineQueries.SpecifyByObject)
+    {
+        foreach (string item in Info.GenerateInlineQueries)
+        {
+            if (item == "Create")
+            {
+                useInlineQuery = true;
+                break;
+            }
+        }
+    }
     %>
 
         /// <summary>
@@ -32,6 +47,7 @@ if (Info.GenerateDataPortalInsert)
         %>[Transactional(TransactionalTypes.TransactionScope)]
         <%
     }
+    lastCriteria = parentType.Length > 0 ? "parent" : "";
     %>private void Child_Insert(<%= (parentType.Length > 0 ? parentType + " parent" : "") %>)
         {
             <%
@@ -44,7 +60,7 @@ if (Info.GenerateDataPortalInsert)
     %>
             <%= GetConnection(Info, false) %>
             {
-                <%= GetCommand(Info, Info.InsertProcedureName) %>
+                <%= GetCommand(Info, Info.InsertProcedureName, useInlineQuery, lastCriteria) %>
                 {
                     <%
             if (Info.TransactionType == TransactionType.ADO && Info.PersistenceType == PersistenceType.SqlConnectionManager)
@@ -57,7 +73,7 @@ if (Info.GenerateDataPortalInsert)
                 %>cmd.CommandTimeout = <%= Info.CommandTimeout %>;
                     <%
             }
-            %>cmd.CommandType = CommandType.StoredProcedure;
+            %>cmd.CommandType = CommandType.<%= useInlineQuery ? "Text" : "StoredProcedure" %>;
                     <%
     if (parentType.Length > 0)
     {
@@ -187,6 +203,21 @@ if (Info.GenerateDataPortalInsert)
 
 if (Info.GenerateDataPortalUpdate)
 {
+    lastCriteria = "";
+    useInlineQuery = false;
+    if (CurrentUnit.GenerationParams.UseInlineQueries == UseInlineQueries.Always)
+        useInlineQuery = true;
+    else if (CurrentUnit.GenerationParams.UseInlineQueries == UseInlineQueries.SpecifyByObject)
+    {
+        foreach (string item in Info.GenerateInlineQueries)
+        {
+            if (item == "Update")
+            {
+                useInlineQuery = true;
+                break;
+            }
+        }
+    }
     %>
 
         /// <summary>
@@ -208,6 +239,7 @@ if (Info.GenerateDataPortalUpdate)
         %>[Transactional(TransactionalTypes.TransactionScope)]
         <%
     }
+    lastCriteria = (parentType.Length > 0 && !Info.ParentInsertOnly) ? "parent" : "";
     %>private void Child_Update(<%= ((parentType.Length > 0 && !Info.ParentInsertOnly) ? parentType + " parent" : "") %>)
         {
             <%
@@ -228,7 +260,7 @@ if (Info.GenerateDataPortalUpdate)
     %>
             <%= GetConnection(Info, false) %>
             {
-                <%= GetCommand(Info, Info.UpdateProcedureName) %>
+                <%= GetCommand(Info, Info.UpdateProcedureName, useInlineQuery, lastCriteria) %>
                 {
                     <%
             if (Info.TransactionType == TransactionType.ADO && Info.PersistenceType == PersistenceType.SqlConnectionManager)
@@ -241,7 +273,7 @@ if (Info.GenerateDataPortalUpdate)
                 %>cmd.CommandTimeout = <%= Info.CommandTimeout %>;
                     <%
             }
-            %>cmd.CommandType = CommandType.StoredProcedure;
+            %>cmd.CommandType = CommandType.<%= useInlineQuery ? "Text" : "StoredProcedure" %>;
                     <%
                     if (parentType.Length > 0 && !Info.ParentInsertOnly)
                     {
@@ -361,6 +393,21 @@ if (Info.GenerateDataPortalInsert || Info.GenerateDataPortalUpdate || Info.Gener
 
 if (Info.GenerateDataPortalDelete)
 {
+    lastCriteria = "";
+    useInlineQuery = false;
+    if (CurrentUnit.GenerationParams.UseInlineQueries == UseInlineQueries.Always)
+        useInlineQuery = true;
+    else if (CurrentUnit.GenerationParams.UseInlineQueries == UseInlineQueries.SpecifyByObject)
+    {
+        foreach (string item in Info.GenerateInlineQueries)
+        {
+            if (item == "Delete")
+            {
+                useInlineQuery = true;
+                break;
+            }
+        }
+    }
     %>
 
         /// <summary>
@@ -382,6 +429,7 @@ if (Info.GenerateDataPortalDelete)
         %>[Transactional(TransactionalTypes.TransactionScope)]
         <%
     }
+    lastCriteria = (parentType.Length > 0 && !Info.ParentInsertOnly) ? "parent" : "";
     %>private void Child_DeleteSelf(<%= ((parentType.Length > 0 && !Info.ParentInsertOnly) ? parentType + " parent" : "") %>)
         {
             <%
@@ -404,7 +452,7 @@ if (Info.GenerateDataPortalDelete)
                 <%
     }
     %>
-                <%= GetCommand(Info, Info.DeleteProcedureName) %>
+                <%= GetCommand(Info, Info.DeleteProcedureName, useInlineQuery, lastCriteria) %>
                 {
                     <%
     if (Info.TransactionType == TransactionType.ADO && Info.PersistenceType == PersistenceType.SqlConnectionManager)
@@ -417,7 +465,7 @@ if (Info.GenerateDataPortalDelete)
         %>cmd.CommandTimeout = <%= Info.CommandTimeout %>;
                     <%
     }
-    %>cmd.CommandType = CommandType.StoredProcedure;
+    %>cmd.CommandType = CommandType.<%= useInlineQuery ? "Text" : "StoredProcedure" %>;
                     <%
     if (parentType.Length > 0 && !Info.ParentInsertOnly)
     {

@@ -1,4 +1,17 @@
 <%
+if (CurrentUnit.GenerationParams.UseInlineQueries == UseInlineQueries.Always)
+    useInlineQuery = true;
+else if (CurrentUnit.GenerationParams.UseInlineQueries == UseInlineQueries.SpecifyByObject)
+{
+    foreach (string item in Info.GenerateInlineQueries)
+    {
+        if (item == "Delete")
+        {
+            useInlineQuery = true;
+            break;
+        }
+    }
+}
 if (Info.GenerateDataPortalDelete)
 {
     foreach (Criteria c in Info.CriteriaObjects)
@@ -79,10 +92,12 @@ if (Info.GenerateDataPortalDelete)
             }
             if (c.Properties.Count > 1)
             {
+                lastCriteria = "crit";
                 %>Protected Sub DataPortal_Delete(crit As <%= c.Name %>)<%
             }
             else
             {
+				lastCriteria = "crit";
                 %>Protected Sub DataPortal_Delete(<%= ReceiveSingleCriteria(c, "crit") %>)<%
             }
             %>
@@ -103,7 +118,7 @@ if (Info.GenerateDataPortalDelete)
                 <%
             }
             %>
-                <%= GetCommand(Info, c.DeleteOptions.ProcedureName) %>
+                <%= GetCommand(Info, c.DeleteOptions.ProcedureName, useInlineQuery, lastCriteria) %>
                     <%
             if (Info.TransactionType == TransactionType.ADO && Info.PersistenceType == PersistenceType.SqlConnectionManager)
             {
@@ -115,7 +130,7 @@ if (Info.GenerateDataPortalDelete)
                 %>cmd.CommandTimeout = <%= Info.CommandTimeout %>
                     <%
             }
-            %>cmd.CommandType = CommandType.StoredProcedure
+            %>cmd.CommandType = CommandType.<%= useInlineQuery ? "Text" : "StoredProcedure" %>
                     <%
             foreach (CriteriaProperty p in c.Properties)
             {

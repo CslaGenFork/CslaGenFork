@@ -21,6 +21,8 @@
 <%
 if (Errors.Length == 0)
 {
+    string lastCriteria = "";
+    bool useInlineQuery = false;
     bool isItem = false;
     bool isParentRootCollection = false;
     parentInfo = null;
