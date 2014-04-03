@@ -4971,6 +4971,15 @@ namespace CslaGenerator.CodeGen
             return response;
         }
 
+        public string GetCommand(CslaObjectInfo info, string commandText, bool useInlineQueries, string criteria)
+        {
+            if (useInlineQueries)
+                return "using (var cmd = new SqlCommand(" + commandText +
+                       "InlineQuery(" + criteria + "), " + LocalContextConnection(info) + "))";
+
+            return GetCommand(info, commandText);
+        }
+
         public string GetCommand(CslaObjectInfo info, string commandText)
         {
             var sprocTemplateHelper = new SprocTemplateHelper();
