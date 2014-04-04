@@ -70,6 +70,7 @@ if (!Info.UseCustomLoading)
                 if (c.Properties.Count > 1)
                 {
                     lastCriteria = "crit";
+                    InlineQueryList.Add(new AdvancedGenerator.InlineQuery(c.GetOptions.ProcedureName, c.Name + " crit"));
                     %>
         protected void <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Fetch(<%= c.Name %> crit)
         {
@@ -78,6 +79,7 @@ if (!Info.UseCustomLoading)
                 else if (c.Properties.Count > 0)
                 {
                     lastCriteria = "crit";
+                    InlineQueryList.Add(new AdvancedGenerator.InlineQuery(c.GetOptions.ProcedureName, ReceiveSingleCriteria(c, "crit")));
                     %>
         protected void <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)
         {
@@ -85,6 +87,7 @@ if (!Info.UseCustomLoading)
                 }
                 else
                 {
+                    InlineQueryList.Add(new AdvancedGenerator.InlineQuery(c.GetOptions.ProcedureName, ""));
                     %>
         protected void <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Fetch()
         {

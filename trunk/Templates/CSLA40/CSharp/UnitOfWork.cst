@@ -4,6 +4,7 @@
 <%@ Property Name="Warnings" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return warnings to master.cst" %>
 <%@ Property Name="Infos" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return infos to master.cst" %>
 <%@ Property Name="MethodList" Type="System.Collections.Generic.List<AdvancedGenerator.ServiceMethod>" Optional="false" Category="Options" Description="Allows the template to return a list a partial methods to master.cst (for Silverlight using services)" %>
+<%@ Property Name="InlineQueryList" Type="System.Collections.Generic.List<AdvancedGenerator.InlineQuery>" Optional="false" Category="Options" Description="Allows the template to return a list a inline queries to master.cst" %>
 
 <%@ Assembly Name="CslaGenerator" %>
 <%@ Import Namespace="CslaGenerator" %>

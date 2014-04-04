@@ -30,10 +30,27 @@ namespace CslaGenerator.CodeGen
         
         #endregion
 
+        #region Inline Query
+
+        public class InlineQuery
+        {
+            public string ProcedureName { get; set; }
+            public string CriteriaParameter { get; set; }
+
+            public InlineQuery(string procedureName, string criteriaParameter)
+            {
+                ProcedureName = procedureName;
+                CriteriaParameter = criteriaParameter;
+            }
+        }
+
+        #endregion
+
         #region Private Fields
 
         private readonly Dictionary<string, bool?> _fileSuccess = new Dictionary<string, bool?>();
         private List<ServiceMethod> _methodList;
+        private List<InlineQuery> _inlineQueryList;
         private readonly string _templatesDirectory = string.Empty;
         private bool _abortRequested;
         private string _fullTemplatesPath;
@@ -651,6 +668,7 @@ namespace CslaGenerator.CodeGen
             if (!string.IsNullOrEmpty(generationParams.ClassCommentFilenameSuffix))
                 classCommentFileName = GetBaseFileName(objInfo, false, generationParams.BaseNamespace, true, GenerationStep.Business);
             _methodList = new List<ServiceMethod>();
+            _inlineQueryList = new List<InlineQuery>();
             StreamWriter sw = null;
             try
             {
@@ -666,6 +684,7 @@ namespace CslaGenerator.CodeGen
                     template.SetProperty("Warnings", warningsOutput);
                     template.SetProperty("Infos", infosOutput);
                     template.SetProperty("MethodList", _methodList);
+                    template.SetProperty("InlineQueryList", _inlineQueryList);
                     template.SetProperty("CurrentUnit", _unit);
                     template.SetProperty("DataSetLoadingScheme", objInfo.DataSetLoadingScheme);
                     if (generationParams.BackupOldSource && File.Exists(baseFileName))
@@ -685,6 +704,7 @@ namespace CslaGenerator.CodeGen
                     warningsOutput = (StringBuilder) template.GetProperty("Warnings");
                     infosOutput = (StringBuilder) template.GetProperty("Infos");
                     _methodList = (List<ServiceMethod>)template.GetProperty("MethodList");
+                    _inlineQueryList = (List<InlineQuery>)template.GetProperty("InlineQueryList");                    
                     if (errorsOutput.Length > 0)
                     {
                         _businessError = true;
@@ -804,6 +824,8 @@ namespace CslaGenerator.CodeGen
                             template.SetProperty("CurrentUnit", _unit);
                             if (_methodList != null)
                                 template.SetProperty("MethodList", _methodList);
+                            if (_inlineQueryList != null)
+                                template.SetProperty("InlineQueryList", _inlineQueryList);                            
                             OnGenerationFileName(fileName);
                             var fs = OpenFile(fileName);
                             sw = new StreamWriter(fs, Encoding.GetEncoding(_codeEncoding));
@@ -913,6 +935,7 @@ namespace CslaGenerator.CodeGen
             if (!string.IsNullOrEmpty(generationParams.ClassCommentFilenameSuffix))
                 classCommentFileName = GetBaseFileName(objInfo, false, GetContextBaseNamespace(_unit, step), true, step);
             _methodList = new List<ServiceMethod>();
+            _inlineQueryList = new List<InlineQuery>();
             StreamWriter sw = null;
             try
             {
@@ -927,6 +950,7 @@ namespace CslaGenerator.CodeGen
                     template.SetProperty("Warnings", warningsOutput);
                     template.SetProperty("Infos", infosOutput);
                     template.SetProperty("MethodList", _methodList);
+                    template.SetProperty("InlineQueryList", _inlineQueryList);
                     template.SetProperty("CurrentUnit", _unit);
                     template.SetProperty("DataSetLoadingScheme", objInfo.DataSetLoadingScheme);
                     if (generationParams.BackupOldSource && File.Exists(baseFileName))
@@ -946,6 +970,7 @@ namespace CslaGenerator.CodeGen
                     warningsOutput = (StringBuilder) template.GetProperty("Warnings");
                     infosOutput = (StringBuilder) template.GetProperty("Infos");
                     _methodList = (List<ServiceMethod>)template.GetProperty("MethodList");
+                    _inlineQueryList = (List<InlineQuery>)template.GetProperty("InlineQueryList");                    
                     if (errorsOutput.Length > 0)
                     {
                         _objFailed++;

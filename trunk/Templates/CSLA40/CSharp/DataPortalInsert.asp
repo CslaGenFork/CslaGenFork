@@ -38,6 +38,7 @@ if (Info.GenerateDataPortalInsert)
         %>protected override void DataPortal_Insert()
         {
             <%
+InlineQueryList.Add(new AdvancedGenerator.InlineQuery(Info.InsertProcedureName, ""));
     if (UseSimpleAuditTrail(Info))
     {
         %>SimpleAuditTrail();
