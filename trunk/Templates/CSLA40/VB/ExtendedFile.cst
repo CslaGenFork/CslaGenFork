@@ -329,7 +329,7 @@ if (IsCriteriaExtendedClassNeeded(Info))
             %>
 
     Partial <%= Info.ClassVisibility == ClassVisibility.Public ? "Public" : "Friend" %> Class <%= crit.Name %>
-    
+
     End Class
 <%
         }

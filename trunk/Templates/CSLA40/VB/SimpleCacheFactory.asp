@@ -32,9 +32,9 @@
         End Sub
 
         Friend Shared ReadOnly Property IsCached() As Boolean
-            Get 
+            Get
                 Return _List IsNot Nothing
-            End Get        
+            End Get
         End Sub
-        
+
         #End Region

@@ -45,12 +45,12 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
         ''' </remarks>
         <System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>
         Public Sub DataPortal_Fetch(<%= createUowCrit %>)
-	        Try
-		        Service_Create(<%= createUowParam %>)
-		        handler(Me, Nothing)
-	        Catch ex As Exception
-		        handler(Nothing, ex)
-	        End Try
+            Try
+                Service_Create(<%= createUowParam %>)
+                handler(Me, Nothing)
+            Catch ex As Exception
+                handler(Nothing, ex)
+            End Try
         End Sub
 <%
     }

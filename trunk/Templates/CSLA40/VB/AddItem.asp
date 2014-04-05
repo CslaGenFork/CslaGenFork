@@ -27,7 +27,7 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
         }
         %>
         ''' <returns>The new <%= Info.ItemType %> item added to the collection.</returns>
-        Public Function Add(<%= prms %>) As <%= Info.ItemType %> 
+        Public Function Add(<%= prms %>) As <%= Info.ItemType %>
         <%
     string newMethodName = "New" + Info.ItemType;
     if (itemInfo.ObjectType == CslaObjectType.EditableSwitchable)

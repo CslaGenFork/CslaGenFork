@@ -60,7 +60,7 @@ if (Errors.Length == 0)
     if (CurrentUnit.GenerationParams.DualListInheritance)
     {
         %>#If WINFORMS Then
-    <%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %>Partial <%= Info.ClassVisibility == ClassVisibility.Public ? "Public" : "Friend" %> Class <%= Info.ObjectName %> 
+    <%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %>Partial <%= Info.ClassVisibility == ClassVisibility.Public ? "Public" : "Friend" %> Class <%= Info.ObjectName %>
         Inherits <%
         if (Info.InheritedTypeWinForms.Type != string.Empty || Info.InheritedTypeWinForms.ObjectName != string.Empty)
         {

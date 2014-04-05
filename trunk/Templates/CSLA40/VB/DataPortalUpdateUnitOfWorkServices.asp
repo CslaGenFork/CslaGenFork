@@ -10,12 +10,12 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
         ''' <param name="handler">The asynchronous handler.</param>
         <System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>
         Public <%= isChildNotLazyLoaded ? "Sub Child_Update" : "Overrides Sub DataPortal_Update" %>(handler As Csla.DataPortalClient.LocalProxy(Of <%= Info.ObjectName %>).CompletedHandler)
-	    Try
-		    Service_Update()
-		    handler(Me, Nothing)
-	    Catch ex As Exception
-		    handler(Nothing, ex)
-	    End Try
+        Try
+            Service_Update()
+            handler(Me, Nothing)
+        Catch ex As Exception
+            handler(Nothing, ex)
+        End Try
         End Sub
 
         ''' <summary>

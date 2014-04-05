@@ -6,14 +6,14 @@
         ''' </summary>
         ''' <param name="dr">The data reader.</param>
         Protected Overridable Sub ExtraFetchProcessing(dr As SafeDataReader)
- 
+
         End Sub
 
         Protected Enum Command
-	        Insert = 0
-	        Update
-	        Delete
-	        Fetch
+            Insert = 0
+            Update
+            Delete
+            Fetch
         End Enum
 
         ''' <summary>

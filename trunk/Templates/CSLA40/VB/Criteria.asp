@@ -46,7 +46,7 @@ if (Info.CriteriaObjects.Count > 0)
                 if (UseSilverlight())
                 {
                     %>
-        <System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)> 
+        <System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>
         <%
                     if (crit.CriteriaClassMode == CriteriaMode.Simple)
                     {
@@ -197,10 +197,10 @@ if (Info.CriteriaObjects.Count > 0)
                     {
                         %>
             Public Property <%= FormatProperty(prop.Name) %> As <%= GetDataTypeGeneric(prop, prop.PropertyType) %>
-                Get 
+                Get
                     Return <%= getterCriteria %>Property(<%= FormatProperty(prop.Name) %>Property)
                 End Get
-                <%= (prop.ReadOnly ? "Private " : "") %>Set 
+                <%= (prop.ReadOnly ? "Private " : "") %>Set
                     <%= setterCriteria %>Property(<%= FormatProperty(prop.Name) %>Property, value)
                 End Set
             End Property

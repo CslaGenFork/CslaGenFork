@@ -30,7 +30,7 @@ if (Info.FindMethodsParameters.Count > 0 || isParentLoaded)
         ''' </summary>
         ''' <param name="<%= FormatCamel(prop.Name) %>">The <%= FormatProperty(prop.Name) %>.</param>
         ''' <returns>A <see cref="<%= Info.ItemType %>"/> object.</returns>
-        Public Function Find<%= Info.ItemType %>By<%= prop.Name %>(<%= FormatCamel(prop.Name) %> As <%= GetDataTypeGeneric(prop, prop.PropertyType) %>) As <%= Info.ItemType %> 
+        Public Function Find<%= Info.ItemType %>By<%= prop.Name %>(<%= FormatCamel(prop.Name) %> As <%= GetDataTypeGeneric(prop, prop.PropertyType) %>) As <%= Info.ItemType %>
             For i As Integer = 0 To Me.Count - 1
                 If Me(i).<%= prop.Name %>.Equals(<%= FormatCamel(prop.Name) %>) Then
                     Return Me(i)
@@ -79,7 +79,7 @@ if (Info.FindMethodsParameters.Count > 0 || isParentLoaded)
         ''' </summary>
         <%= findByComments %>
         ''' <returns>A <see cref="<%= Info.ItemType %>"/> object.</returns>
-        Public Function Find<%= Info.ItemType %>ByParentProperties(<%= findByParams %>) As <%= Info.ItemType %> 
+        Public Function Find<%= Info.ItemType %>ByParentProperties(<%= findByParams %>) As <%= Info.ItemType %>
             For i As Integer = 0 To Me.Count - 1
                 If <%= findByStat %> Then
                     Return Me(i)

@@ -45,7 +45,7 @@ if (Info.CriteriaObjects.Count > 0)
                 else
                 {
                     %>
-    Public <%= crit.CriteriaClassMode == CriteriaMode.BusinessBase ? "Partial " : "" %>Class <%= crit.Name %> 
+    Public <%= crit.CriteriaClassMode == CriteriaMode.BusinessBase ? "Partial " : "" %>Class <%= crit.Name %>
         Inherits <%= crit.CriteriaClassMode != CriteriaMode.BusinessBase ? "CriteriaBase" : "BusinessBase" %>(Of <%= crit.Name %>)
     <%
                 }
@@ -59,7 +59,7 @@ if (Info.CriteriaObjects.Count > 0)
         Private _isChild As Boolean
 
         Public ReadOnly Property IsChild As Boolean
-            Get 
+            Get
                 Return _isChild
             End Get
         End Property
@@ -155,8 +155,8 @@ if (Info.CriteriaObjects.Count > 0)
                     else
                     {
                         %>
-        Public Property <%= FormatProperty(prop.Name) %> As <%= GetDataTypeGeneric(prop, prop.PropertyType) %> 
-            Get 
+        Public Property <%= FormatProperty(prop.Name) %> As <%= GetDataTypeGeneric(prop, prop.PropertyType) %>
+            Get
                 Return <%= getterCriteria %>Property(<%= FormatProperty(prop.Name) %>Property)
             End Get
             <%= (prop.ReadOnly ? "Private " : "") %>Set (value As <%= GetDataTypeGeneric(prop, prop.PropertyType) %>)

@@ -142,7 +142,7 @@ if (Info.GenerateDataPortalInsert)
             else
             {
                 %>
-                    <%= FormatFieldName(prop.Name) %> = DirectCast(cmd.Parameters("@<%= prop.ParameterName %>").Value, <%= GetLanguageVariableType(prop.DbBindColumn.DataType) %>) 
+                    <%= FormatFieldName(prop.Name) %> = DirectCast(cmd.Parameters("@<%= prop.ParameterName %>").Value, <%= GetLanguageVariableType(prop.DbBindColumn.DataType) %>)
                     <%
             }
         }
