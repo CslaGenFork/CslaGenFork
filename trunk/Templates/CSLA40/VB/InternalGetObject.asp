@@ -31,7 +31,7 @@ if (!Info.DataSetLoadingScheme)
             %>
             If Not CanGetObject()
                 Throw New System.Security.SecurityException("User not authorized to load a <%= Info.ObjectName %>.")
-	    End If
+        End If
 
             <%
         }

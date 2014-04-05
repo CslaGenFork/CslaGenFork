@@ -13,7 +13,7 @@ if (Info.GenerateDataPortalUpdate && CurrentUnit.GenerationParams.SilverlightUsi
             Try
                 Service_Update()
                 handler(Me, Nothing)
-            
+
             Catch ex As Exception
                 handler(Nothing, ex)
             End Try

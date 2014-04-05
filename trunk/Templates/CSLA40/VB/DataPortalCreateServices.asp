@@ -126,7 +126,7 @@ if ((UseSilverlight() && createRunLocalDp) || CurrentUnit.GenerationParams.Silve
             {
                 %>
             Try
-            
+
                 <%
                 if (c.Properties.Count > 1)
                 {
@@ -148,7 +148,7 @@ if ((UseSilverlight() && createRunLocalDp) || CurrentUnit.GenerationParams.Silve
                 }
                 %>
                 handler(Me, Nothing)
-            
+
             Catch ex As Exception
                 handler(Nothing, ex)
             End Try

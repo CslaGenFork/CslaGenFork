@@ -13,7 +13,7 @@ if (Info.GenerateDataPortalInsert && CurrentUnit.GenerationParams.SilverlightUsi
             Try
                 Service_Insert()
                 handler(Me, Nothing)
-            
+
             Catch ex As Exception
                 handler(Nothing, ex)
             End Try

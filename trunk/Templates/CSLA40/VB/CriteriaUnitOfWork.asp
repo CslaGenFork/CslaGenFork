@@ -157,10 +157,10 @@ if (activeCriteria > 0)
             {
                 %>
             Public Property <%= FormatProperty(crit.Name) %> As <%= crit.Type %>
-                Get 
+                Get
                     Return <%= getterCriteria %>Property(<%= FormatProperty(crit.Name) %>Property)
                 End Get
-                Set 
+                Set
                     <%= setterCriteria %>Property(<%= FormatProperty(crit.Name) %>Property, value)
                 End Set
             End Property

@@ -88,7 +88,7 @@ if (!Info.UseCustomLoading && CurrentUnit.GenerationParams.SilverlightUsingServi
             }
     %>
                 handler(Me, Nothing)
-            
+
             Catch ex As Exception
                 handler(Nothing, ex)
             End Try

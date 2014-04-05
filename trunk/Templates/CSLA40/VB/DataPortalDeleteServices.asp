@@ -111,7 +111,7 @@ if (Info.GenerateDataPortalDelete && CurrentUnit.GenerationParams.SilverlightUsi
             }
             %>
                 handler(Me, Nothing)
-            
+
             Catch ex As Exception
                 handler(Nothing, ex)
             End Try

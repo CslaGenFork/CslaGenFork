@@ -201,7 +201,7 @@ if (HasAnySilverlightLocalDataPortalCreate())
             ConnectionArg = cmd.Connection
             TransactionArg = cmd.Transaction
         End Sub
-        
+
         ''' <summary>
         ''' Initializes a new instance of the <see cref="DataPortalHookArgs"/> class.
         ''' </summary>

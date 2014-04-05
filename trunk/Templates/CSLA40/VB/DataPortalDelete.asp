@@ -97,7 +97,7 @@ if (Info.GenerateDataPortalDelete)
             }
             else
             {
-				lastCriteria = "crit";
+                lastCriteria = "crit";
                 %>Protected Sub DataPortal_Delete(<%= ReceiveSingleCriteria(c, "crit") %>)<%
             }
             %>

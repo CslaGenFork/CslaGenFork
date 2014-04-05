@@ -30,10 +30,10 @@ Imports System.Configuration
     ''' <summary>Class that provides the connection
     ''' strings used by the application.</summary>
     Partial Friend Class Database
-    
+
         ''' <summary>Connection string to the <%= CurrentUnit.GenerationParams.DatabaseConnection %> database.</summary>
         Friend Shared ReadOnly Property <%= CurrentUnit.GenerationParams.DatabaseConnection %>Connection As String
-            Get 
+            Get
                 Return ConfigurationManager.ConnectionStrings("<%= CurrentUnit.GenerationParams.DatabaseConnection %>").ConnectionString
             End Get
         End Property

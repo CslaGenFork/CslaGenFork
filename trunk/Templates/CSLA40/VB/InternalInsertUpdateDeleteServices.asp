@@ -31,7 +31,7 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
             Try
                 Service_Insert(<% if (parentType.Length > 0) { %>parent<% } %>)
                 handler(Me, Nothing)
-            
+
             Catch ex As Exception
                 handler(Nothing, ex)
             End Try
@@ -70,7 +70,7 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
             Try
                 Service_Update(<% if (parentType.Length > 0 && !Info.ParentInsertOnly) { %>parent<% } %>)
                 handler(Me, Nothing)
-            
+
             Catch ex As Exception
                 handler(Nothing, ex)
             End Try
@@ -109,7 +109,7 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
             Try
                 Service_DeleteSelf(<% if (parentType.Length > 0 && !Info.ParentInsertOnly) { %>parent<% } %>)
                 handler(Me, Nothing)
-            
+
             Catch ex As Exception
                 handler(Nothing, ex)
             End Try

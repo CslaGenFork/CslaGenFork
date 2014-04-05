@@ -136,7 +136,7 @@ if (Info.GenerateDataPortalUpdate)
             else
             {
                 %>
-                    <%= FormatFieldName(prop.Name) %> = DirectCast(cmd.Parameters("@New<%= prop.ParameterName %>").Value, Byte()) 
+                    <%= FormatFieldName(prop.Name) %> = DirectCast(cmd.Parameters("@New<%= prop.ParameterName %>").Value, Byte())
                     <%
             }
         }

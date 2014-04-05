@@ -22,7 +22,7 @@ if (Info.UpdateValueProperties.Count > 0)
         ''' <summary>
         ''' Existing <see cref="<%= Info.ObjectName %>"/> object is updated by <see cref="<%= parentInfo.UpdaterType %>"/> Saved event.
         ''' </summary>
-        Friend Shared Function LoadInfo(<%= FormatCamel(parentInfo.UpdaterType) %> As <%= parentInfo.UpdaterType %>) As <%= Info.ObjectName %> 
+        Friend Shared Function LoadInfo(<%= FormatCamel(parentInfo.UpdaterType) %> As <%= parentInfo.UpdaterType %>) As <%= Info.ObjectName %>
             Dim info As New <%= Info.ObjectName %>()
             info.UpdatePropertiesOnSaved(<%= FormatCamel(parentInfo.UpdaterType) %>)
             Return info
