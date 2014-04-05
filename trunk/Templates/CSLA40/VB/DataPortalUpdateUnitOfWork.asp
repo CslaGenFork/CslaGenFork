@@ -38,6 +38,7 @@ else if (Info.TransactionType == TransactionType.TransactionScope || Info.Transa
         Protected Overrides Sub DataPortal_Update()
         {
             <%
+InlineQueryList.Add(new AdvancedGenerator.InlineQuery(Info.UpdateProcedureName, ""));
 if (UseSimpleAuditTrail(Info))
 {
     %>

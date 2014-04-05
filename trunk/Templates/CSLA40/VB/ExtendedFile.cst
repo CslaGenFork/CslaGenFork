@@ -2,6 +2,7 @@
 <%@ Property Name="Info" Type="CslaObjectInfo" Optional="false" Category="Business Object" Description="Definition of the CSLA Object to inherit from." %>
 <%@ Property Name="Errors" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return errors to master.cst" %>
 <%@ Property Name="MethodList" Type="System.Collections.Generic.List<AdvancedGenerator.ServiceMethod>" Optional="false" Category="Options" Description="Allows the template to return a list a partial methods to master.cst (for Silverlight using services)" %>
+<%@ Property Name="InlineQueryList" Type="System.Collections.Generic.List<AdvancedGenerator.InlineQuery>" Optional="false" Category="Options" Description="Allows the template to return a list a inline queries to master.cst" %>
 
 <%@ Assembly Name="CslaGenerator" %>
 <%@ Import Namespace="CslaGenerator" %>
@@ -261,6 +262,12 @@ if (Info.ObjectType != CslaObjectType.UnitOfWork)
         #End Region
 <%
         }
+    }
+    if (InlineQueryList.Count > 0 && UseNoSilverlight())
+    {
+        %>
+<!-- #include file="InlineQueriesImplementation.asp" -->
+<%
     }
 
     System.Collections.Generic.List<string> eventList = GetEventList(Info);
