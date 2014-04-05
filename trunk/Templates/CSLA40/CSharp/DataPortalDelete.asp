@@ -94,13 +94,13 @@ if (Info.GenerateDataPortalDelete)
             if (c.Properties.Count > 1)
             {
                 lastCriteria = "crit";
-                InlineQueryList.Add(new AdvancedGenerator.InlineQuery(c.GetOptions.ProcedureName, c.Name + " crit"));
+                InlineQueryList.Add(new AdvancedGenerator.InlineQuery(c.DeleteOptions.ProcedureName, c.Name + " crit"));
                 %>protected void DataPortal_Delete(<%= c.Name %> crit)<%
             }
             else
             {
                 lastCriteria = "crit";
-                InlineQueryList.Add(new AdvancedGenerator.InlineQuery(c.GetOptions.ProcedureName, ReceiveSingleCriteria(c, "crit")));
+                InlineQueryList.Add(new AdvancedGenerator.InlineQuery(c.DeleteOptions.ProcedureName, ReceiveSingleCriteria(c, "crit")));
                 %>protected void DataPortal_Delete(<%= ReceiveSingleCriteria(c, "crit") %>)<%
             }
             %>
