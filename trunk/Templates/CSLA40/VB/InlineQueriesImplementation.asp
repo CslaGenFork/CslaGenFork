@@ -1,7 +1,7 @@
 
         #Region " Inlines queries "
 <%
-if (UseBoth() && !HasSilverlightLocalDataPortalCreate(Info))
+if (UseBoth())
 {
     %>
 
