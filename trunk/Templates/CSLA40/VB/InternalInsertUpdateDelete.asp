@@ -48,7 +48,8 @@ if (Info.GenerateDataPortalInsert)
         <%
     }
     lastCriteria = parentType.Length > 0 ? "parent" : "";
-    InlineQueryList.Add(new AdvancedGenerator.InlineQuery(Info.InsertProcedureName, (parentType.Length > 0 ? parentType + " parent" : "")));
+    if (useInlineQuery)
+        InlineQueryList.Add(new AdvancedGenerator.InlineQuery(Info.InsertProcedureName, (parentType.Length > 0 ? parentType + " parent" : "")));
     %>Private Sub Child_Insert(<%= (parentType.Length > 0 ? "parent As " + parentType : "") %>)
             <%
     if (UseSimpleAuditTrail(Info))
@@ -238,7 +239,8 @@ if (Info.GenerateDataPortalUpdate)
         <%
     }
     lastCriteria = (parentType.Length > 0 && !Info.ParentInsertOnly) ? "parent" : "";
-    InlineQueryList.Add(new AdvancedGenerator.InlineQuery(Info.UpdateProcedureName, ((parentType.Length > 0 && !Info.ParentInsertOnly) ? parentType + " parent" : "")));
+    if (useInlineQuery)
+        InlineQueryList.Add(new AdvancedGenerator.InlineQuery(Info.UpdateProcedureName, ((parentType.Length > 0 && !Info.ParentInsertOnly) ? parentType + " parent" : "")));
     %>Private Sub Child_Update(<%= ((parentType.Length > 0 && !Info.ParentInsertOnly) ? "parent As " + parentType : "") %>)
             <%
     if (CurrentUnit.GenerationParams.UpdateOnlyDirtyChildren)
@@ -427,7 +429,8 @@ if (Info.GenerateDataPortalDelete)
         <%
     }
     lastCriteria = (parentType.Length > 0 && !Info.ParentInsertOnly) ? "parent" : "";
-    InlineQueryList.Add(new AdvancedGenerator.InlineQuery(Info.DeleteProcedureName, ((parentType.Length > 0 && !Info.ParentInsertOnly) ? parentType + " parent" : "")));
+    if (useInlineQuery)
+        InlineQueryList.Add(new AdvancedGenerator.InlineQuery(Info.DeleteProcedureName, ((parentType.Length > 0 && !Info.ParentInsertOnly) ? parentType + " parent" : "")));
     %>Private Sub Child_DeleteSelf(<%= ((parentType.Length > 0 && !Info.ParentInsertOnly) ? "parent As " + parentType : "") %>)
             <%
     if (UseSimpleAuditTrail(Info))

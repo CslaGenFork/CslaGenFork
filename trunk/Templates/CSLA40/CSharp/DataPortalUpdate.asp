@@ -38,7 +38,8 @@ if (Info.GenerateDataPortalUpdate)
         %>protected override void DataPortal_Update()
         {
             <%
-    InlineQueryList.Add(new AdvancedGenerator.InlineQuery(Info.UpdateProcedureName, ""));
+    if (useInlineQuery)
+        InlineQueryList.Add(new AdvancedGenerator.InlineQuery(Info.UpdateProcedureName, ""));
     if (UseSimpleAuditTrail(Info))
     {
         %>SimpleAuditTrail();
