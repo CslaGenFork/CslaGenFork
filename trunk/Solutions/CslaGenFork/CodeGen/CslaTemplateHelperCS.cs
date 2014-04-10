@@ -5588,6 +5588,23 @@ namespace CslaGenerator.CodeGen
             return sb.ToString();
         }
 
+        public string ReceiveMultipleCriteriaTypeless(Criteria crit)
+        {
+            var sb = new StringBuilder();
+            var firstParam = true;
+
+            foreach (var prop in crit.Properties)
+            {
+                if (firstParam)
+                    firstParam = false;
+                else
+                    sb.Append(", ");
+                var paramName = FormatCamel(prop.Name);
+                sb.AppendFormat("{0}", paramName);
+            }
+            return sb.ToString();
+        }
+
         public string AssignSingleCriteria(Criteria crit, string paramName)
         {
             var sb = new StringBuilder();
