@@ -1,17 +1,4 @@
 <%
-if (CurrentUnit.GenerationParams.UseInlineQueries == UseInlineQueries.Always)
-   useInlineQuery = true;
-else if (CurrentUnit.GenerationParams.UseInlineQueries == UseInlineQueries.SpecifyByObject)
-{
-   foreach (string item in Info.GenerateInlineQueries)
-   {
-       if (item == "Create")
-       {
-           useInlineQuery = true;
-           break;
-       }
-   }
-}
 if (Info.GenerateDataPortalInsert)
 {
     string strInsertPK = string.Empty;
@@ -19,7 +6,6 @@ if (Info.GenerateDataPortalInsert)
     string strInsertCommentResult = string.Empty;
     string strInsertResult = string.Empty;
     string strInsertParams = string.Empty;
-    string strInsertParamsOutLess = string.Empty;
     bool hasInsertTimestamp = false;
     bool insertIsFirst = true;
 
@@ -27,8 +13,6 @@ if (Info.GenerateDataPortalInsert)
     {
         strInsertResult = Info.ObjectName + "Dto";
         strInsertParams = strInsertResult + " " + FormatCamel(Info.ObjectName);
-        strInsertParamsOutLess = strInsertResult + " " + FormatCamel(Info.ObjectName);
-        lastCriteria = FormatCamel(Info.ObjectName);
         strInsertComment = System.Environment.NewLine + new string(' ', 8) + "/// <param name=\"" + FormatCamel(Info.ObjectName) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(Info.ObjectName) + " DTO.</param>";
         strInsertCommentResult = System.Environment.NewLine + new string(' ', 8) + "/// <returns>The new <see cref=\"" + strInsertResult + "\"/>.</returns>";
     }
@@ -50,11 +34,7 @@ if (Info.GenerateDataPortalInsert)
                 (prop.DataAccess != ValueProperty.DataAccessBehaviour.UpdateOnly || prop.DbBindColumn.NativeType == "timestamp"))
             {
                 if (!insertIsFirst)
-                {
                     strInsertParams += ", ";
-                    strInsertParamsOutLess += ", ";
-                    lastCriteria += ", ";
-                }
                 else
                     insertIsFirst = false;
 
@@ -63,8 +43,6 @@ if (Info.GenerateDataPortalInsert)
                     strInsertParams += "out ";
 
                 strInsertParams += string.Concat(GetDataTypeGeneric(prop, TypeHelper.GetBackingFieldType(prop)), " ", FormatCamel(prop.Name));
-                strInsertParamsOutLess += string.Concat(GetDataTypeGeneric(prop, TypeHelper.GetBackingFieldType(prop)), " ", FormatCamel(prop.Name));
-                lastCriteria += FormatCamel(prop.Name);
             }
         }
         if (hasInsertTimestamp)
@@ -77,8 +55,6 @@ if (Info.GenerateDataPortalInsert)
     else
         Response.Write(Environment.NewLine);
 
-    if (useInlineQuery)
-        InlineQueryList.Add(new AdvancedGenerator.InlineQuery(Info.InsertProcedureName, strInsertParamsOutLess));
     %>
         /// <summary>
         /// Inserts a new <%= Info.ObjectName %> object in the database.
@@ -87,7 +63,7 @@ if (Info.GenerateDataPortalInsert)
         {
             <%= strInsertPK %><%= GetConnection(Info, false) %>
             {
-                <%= GetCommand(Info, Info.InsertProcedureName, useInlineQuery, lastCriteria) %>
+                <%= GetCommand(Info, Info.InsertProcedureName) %>
                 {
                     <%
     if (Info.CommandTimeout != string.Empty)
@@ -97,7 +73,7 @@ if (Info.GenerateDataPortalInsert)
                     <%
     }
     %>
-                    cmd.CommandType = CommandType.<%= useInlineQuery ? "Text" : "StoredProcedure" %>;
+                    cmd.CommandType = CommandType.StoredProcedure;
                     <%
     foreach (ValueProperty prop in Info.GetAllValueProperties())
     {

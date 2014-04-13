@@ -1,17 +1,4 @@
 <%
-if (CurrentUnit.GenerationParams.UseInlineQueries == UseInlineQueries.Always)
-   useInlineQuery = true;
-else if (CurrentUnit.GenerationParams.UseInlineQueries == UseInlineQueries.SpecifyByObject)
-{
-   foreach (string item in Info.GenerateInlineQueries)
-   {
-       if (item == "Delete")
-       {
-           useInlineQuery = true;
-           break;
-       }
-   }
-}
 if (Info.GenerateDataPortalDelete)
 {
     foreach (Criteria c in Info.CriteriaObjects)
@@ -48,18 +35,12 @@ if (Info.GenerateDataPortalDelete)
                 }
                 if (c.Properties.Count > 1)
                 {
-                    lastCriteria = ReceiveMultipleCriteriaTypeless(c);
-                    if (useInlineQuery)
-                        InlineQueryList.Add(new AdvancedGenerator.InlineQuery(c.DeleteOptions.ProcedureName, ReceiveMultipleCriteria(c)));
                     %>
         public void Delete(<%= ReceiveMultipleCriteria(c) %>)
         <%
                 }
                 else
                 {
-                    lastCriteria = "crit";
-                    if (useInlineQuery)
-                        InlineQueryList.Add(new AdvancedGenerator.InlineQuery(c.DeleteOptions.ProcedureName, ReceiveSingleCriteria(c, "crit")));
                     %>
         public void Delete(<%= ReceiveSingleCriteria(c, "crit") %>)
         <%
@@ -74,20 +55,13 @@ if (Info.GenerateDataPortalDelete)
                 for (int i = 0; i < c.Properties.Count; i++)
                 {
                     if (!deleteIsFirst)
-                    {
-                       strDeleteCritParams += ", ";
-                       lastCriteria += ", ";
-                    }
+                        strDeleteCritParams += ", ";
                     else
                         deleteIsFirst = false;
 
-                    strDeleteComment += "/// <param name=\"" + FormatCamel(c.Properties[i].Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(c.Properties[i].Name) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
                     strDeleteCritParams += string.Concat(GetDataTypeGeneric(c.Properties[i], c.Properties[i].PropertyType), " ", FormatCamel(c.Properties[i].Name));
-                    lastCriteria += FormatCamel(c.Properties[i].Name);
+                    strDeleteComment += "/// <param name=\"" + FormatCamel(c.Properties[i].Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(c.Properties[i].Name) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
                 }
-
-                if (useInlineQuery)
-                    InlineQueryList.Add(new AdvancedGenerator.InlineQuery(c.DeleteOptions.ProcedureName, strDeleteCritParams));
                 %>
         /// <summary>
         /// Deletes the <%= Info.ObjectName %> object from database.
@@ -99,7 +73,7 @@ if (Info.GenerateDataPortalDelete)
         {
             <%= GetConnection(Info, false) %>
             {
-                <%= GetCommand(Info, c.DeleteOptions.ProcedureName, useInlineQuery, lastCriteria) %>
+                <%= GetCommand(Info, c.DeleteOptions.ProcedureName) %>
                 {
                     <%
             if (Info.CommandTimeout != string.Empty)
@@ -109,7 +83,7 @@ if (Info.GenerateDataPortalDelete)
                     <%
             }
             %>
-                    cmd.CommandType = CommandType.<%= useInlineQuery ? "Text" : "StoredProcedure" %>;
+                    cmd.CommandType = CommandType.StoredProcedure;
                     <%
             foreach (CriteriaProperty p in c.Properties)
             {
