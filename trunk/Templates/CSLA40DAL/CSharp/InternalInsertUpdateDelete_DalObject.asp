@@ -11,11 +11,27 @@ else if (parentInfo.ObjectType == CslaObjectType.DynamicEditableRootCollection)
 
 if (Info.GenerateDataPortalInsert)
 {
+    lastCriteria = "";
+    useInlineQuery = false;
+    if (CurrentUnit.GenerationParams.UseInlineQueries == UseInlineQueries.Always)
+       useInlineQuery = true;
+    else if (CurrentUnit.GenerationParams.UseInlineQueries == UseInlineQueries.SpecifyByObject)
+    {
+        foreach (string item in Info.GenerateInlineQueries)
+        {
+            if (item == "Create")
+            {
+                useInlineQuery = true;
+                break;
+            }
+        }
+    }
     string strInsertPK = string.Empty;
     string strInsertComment = string.Empty;
     string strInsertCommentResult = string.Empty;
     string strInsertResult = string.Empty;
     string strInsertParams = string.Empty;
+    string strInsertParamsOutLess = string.Empty;
     bool hasInsertTimestamp = false;
     bool insertIsFirst = true;
 
@@ -23,6 +39,8 @@ if (Info.GenerateDataPortalInsert)
     {
         strInsertResult = Info.ObjectName + "Dto";
         strInsertParams = strInsertResult + " " + FormatCamel(Info.ObjectName);
+        strInsertParamsOutLess = strInsertResult + " " + FormatCamel(Info.ObjectName);
+        lastCriteria = FormatCamel(Info.ObjectName);
         strInsertComment = System.Environment.NewLine + new string(' ', 8) + "/// <param name=\"" + FormatCamel(Info.ObjectName) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(Info.ObjectName) + " DTO.</param>";
         strInsertCommentResult = System.Environment.NewLine + new string(' ', 8) + "/// <returns>The new <see cref=\"" + strInsertResult + "\"/>.</returns>";
     }
@@ -33,12 +51,18 @@ if (Info.GenerateDataPortalInsert)
             foreach (ValueProperty parentProp in Info.GetParentValueProperties())
             {
                 if (!insertIsFirst)
+                {
                     strInsertParams += ", ";
+                    strInsertParamsOutLess += ", ";
+                    lastCriteria += ", ";
+                }
                 else
                     insertIsFirst = false;
 
                 strInsertComment += System.Environment.NewLine + new string(' ', 8) + "/// <param name=\"" + FormatCamel(GetFkParameterNameForParentProperty(Info, parentProp)) + "\">The parent " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(GetFkParameterNameForParentProperty(Info, parentProp)) + ".</param>";
                 strInsertParams += string.Concat(GetDataTypeGeneric(parentProp, parentProp.PropertyType), " ", FormatCamel(GetFkParameterNameForParentProperty(Info, parentProp)));
+                strInsertParamsOutLess += string.Concat(GetDataTypeGeneric(parentProp, parentProp.PropertyType), " ", FormatCamel(GetFkParameterNameForParentProperty(Info, parentProp)));
+                lastCriteria += FormatCamel(GetFkParameterNameForParentProperty(Info, parentProp));
             }
         }
         foreach (ValueProperty prop in Info.GetAllValueProperties())
@@ -57,7 +81,11 @@ if (Info.GenerateDataPortalInsert)
                 (prop.DataAccess != ValueProperty.DataAccessBehaviour.UpdateOnly || prop.DbBindColumn.NativeType == "timestamp"))
             {
                 if (!insertIsFirst)
+                {
                     strInsertParams += ", ";
+                    strInsertParamsOutLess += ", ";
+                    lastCriteria += ", ";
+                }
                 else
                     insertIsFirst = false;
 
@@ -66,6 +94,8 @@ if (Info.GenerateDataPortalInsert)
                     strInsertParams += "out ";
 
                 strInsertParams += string.Concat(GetDataTypeGeneric(prop, TypeHelper.GetBackingFieldType(prop)), " ", FormatCamel(prop.Name));
+                strInsertParamsOutLess += string.Concat(GetDataTypeGeneric(prop, TypeHelper.GetBackingFieldType(prop)), " ", FormatCamel(prop.Name));
+                lastCriteria += FormatCamel(prop.Name);
             }
         }
         if (hasInsertTimestamp)
@@ -78,6 +108,8 @@ if (Info.GenerateDataPortalInsert)
     else
         Response.Write(Environment.NewLine);
 
+    if (useInlineQuery)
+        InlineQueryList.Add(new AdvancedGenerator.InlineQuery(Info.InsertProcedureName, strInsertParamsOutLess));
     %>
         /// <summary>
         /// Inserts a new <%= Info.ObjectName %> object in the database.
@@ -86,7 +118,7 @@ if (Info.GenerateDataPortalInsert)
         {
             <%= strInsertPK %><%= GetConnection(Info, false) %>
             {
-                <%= GetCommand(Info, Info.InsertProcedureName) %>
+                <%= GetCommand(Info, Info.InsertProcedureName, useInlineQuery, lastCriteria) %>
                 {
                     <%
             if (Info.CommandTimeout != string.Empty)
@@ -94,7 +126,7 @@ if (Info.GenerateDataPortalInsert)
                 %>cmd.CommandTimeout = <%= Info.CommandTimeout %>;
                     <%
             }
-            %>cmd.CommandType = CommandType.StoredProcedure;
+            %>cmd.CommandType = CommandType.<%= useInlineQuery ? "Text" : "StoredProcedure" %>;
                     <%
     if (parentType.Length > 0)
     {
@@ -185,6 +217,21 @@ if (Info.GenerateDataPortalInsert)
 
 if (Info.GenerateDataPortalUpdate)
 {
+    lastCriteria = "";
+    useInlineQuery = false;
+    if (CurrentUnit.GenerationParams.UseInlineQueries == UseInlineQueries.Always)
+        useInlineQuery = true;
+    else if (CurrentUnit.GenerationParams.UseInlineQueries == UseInlineQueries.SpecifyByObject)
+    {
+        foreach (string item in Info.GenerateInlineQueries)
+        {
+            if (item == "Update")
+            {
+                useInlineQuery = true;
+                break;
+            }
+        }
+    }
     string strUpdateComment = string.Empty;
     string strUpdateResult = string.Empty;
     string strUpdateCommentResult = string.Empty;
@@ -196,6 +243,7 @@ if (Info.GenerateDataPortalUpdate)
     {
         strUpdateResult = Info.ObjectName + "Dto";
         strUpdateParams = strUpdateResult + " " + FormatCamel(Info.ObjectName);
+        lastCriteria = FormatCamel(Info.ObjectName);
         strUpdateComment = System.Environment.NewLine + new string(' ', 8) + "/// <param name=\"" + FormatCamel(Info.ObjectName) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(Info.ObjectName) + " DTO.</param>";
         strUpdateCommentResult = System.Environment.NewLine + new string(' ', 8) + "/// <returns>The updated <see cref=\"" + strUpdateResult + "\"/>.</returns>";
     }
@@ -206,12 +254,16 @@ if (Info.GenerateDataPortalUpdate)
             foreach (ValueProperty parentProp in Info.GetParentValueProperties())
             {
                 if (!updateIsFirst)
+                {
                     strUpdateParams += ", ";
+                    lastCriteria += ", ";
+                }
                 else
                     updateIsFirst = false;
 
                 strUpdateComment += System.Environment.NewLine + new string(' ', 8) + "/// <param name=\"" + FormatCamel(GetFkParameterNameForParentProperty(Info, parentProp)) + "\">The parent " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(GetFkParameterNameForParentProperty(Info, parentProp)) + ".</param>";
                 strUpdateParams += string.Concat(GetDataTypeGeneric(parentProp, parentProp.PropertyType), " ", FormatCamel(GetFkParameterNameForParentProperty(Info, parentProp)));
+                lastCriteria += FormatCamel(GetFkParameterNameForParentProperty(Info, parentProp));
             }
         }
         foreach (ValueProperty prop in Info.GetAllValueProperties())
@@ -230,12 +282,16 @@ if (Info.GenerateDataPortalUpdate)
                 prop.DbBindColumn.NativeType == "timestamp")
             {
                 if (!updateIsFirst)
+                {
                     strUpdateParams += ", ";
+                    lastCriteria += ", ";
+                }
                 else
                     updateIsFirst = false;
 
                 strUpdateComment += System.Environment.NewLine + new string(' ', 8) + "/// <param name=\"" + FormatCamel(prop.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) + ".</param>";
                 strUpdateParams += string.Concat(GetDataTypeGeneric(prop, TypeHelper.GetBackingFieldType(prop)), " ", FormatCamel(prop.Name));
+                lastCriteria += FormatCamel(prop.Name);
             }
         }
         if (hasUpdateTimestamp)
@@ -248,6 +304,8 @@ if (Info.GenerateDataPortalUpdate)
     else
         Response.Write(Environment.NewLine);
 
+    if (useInlineQuery)
+        InlineQueryList.Add(new AdvancedGenerator.InlineQuery(Info.UpdateProcedureName, strUpdateParams));
     %>
         /// <summary>
         /// Updates in the database all changes made to the <%= Info.ObjectName %> object.
@@ -256,7 +314,7 @@ if (Info.GenerateDataPortalUpdate)
         {
             <%= GetConnection(Info, false) %>
             {
-                <%= GetCommand(Info, Info.UpdateProcedureName) %>
+                <%= GetCommand(Info, Info.UpdateProcedureName, useInlineQuery, lastCriteria) %>
                 {
                     <%
             if (Info.CommandTimeout != string.Empty)
@@ -264,7 +322,7 @@ if (Info.GenerateDataPortalUpdate)
                 %>cmd.CommandTimeout = <%= Info.CommandTimeout %>;
                     <%
             }
-            %>cmd.CommandType = CommandType.StoredProcedure;
+            %>cmd.CommandType = CommandType.<%= useInlineQuery ? "Text" : "StoredProcedure" %>;
                     <%
     if (parentType.Length > 0 && !Info.ParentInsertOnly)
     {
@@ -341,6 +399,21 @@ if (Info.GenerateDataPortalUpdate)
 
 if (Info.GenerateDataPortalDelete)
 {
+    lastCriteria = "";
+    useInlineQuery = false;
+    if (CurrentUnit.GenerationParams.UseInlineQueries == UseInlineQueries.Always)
+        useInlineQuery = true;
+    else if (CurrentUnit.GenerationParams.UseInlineQueries == UseInlineQueries.SpecifyByObject)
+    {
+        foreach (string item in Info.GenerateInlineQueries)
+        {
+            if (item == "Delete")
+            {
+                useInlineQuery = true;
+                break;
+            }
+        }
+    }
     string strDeleteCritParams = string.Empty;
     string strDeleteComment = string.Empty;
     bool deleteIsFirst = true;
@@ -350,12 +423,16 @@ if (Info.GenerateDataPortalDelete)
         foreach (ValueProperty parentProp in Info.GetParentValueProperties())
         {
             if (!deleteIsFirst)
+            {
                 strDeleteCritParams += ", ";
+                lastCriteria += ", ";
+            }
             else
                 deleteIsFirst = false;
 
             strDeleteComment += "/// <param name=\"" + FormatCamel(GetFkParameterNameForParentProperty(Info, parentProp)) + "\">The parent " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(GetFkParameterNameForParentProperty(Info, parentProp)) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
             strDeleteCritParams += string.Concat(GetDataTypeGeneric(parentProp, parentProp.PropertyType), " ", FormatCamel(GetFkParameterNameForParentProperty(Info, parentProp)));
+            lastCriteria += FormatCamel(GetFkParameterNameForParentProperty(Info, parentProp));
         }
     }
     foreach (ValueProperty prop in Info.ValueProperties)
@@ -363,12 +440,16 @@ if (Info.GenerateDataPortalDelete)
         if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
         {
             if (!deleteIsFirst)
+            {
                 strDeleteCritParams += ", ";
+                lastCriteria += ", ";
+            }
             else
                 deleteIsFirst = false;
 
-            strDeleteCritParams += string.Concat(GetDataTypeGeneric(prop, TypeHelper.GetBackingFieldType(prop)), " ", FormatCamel(prop.Name));
             strDeleteComment += "/// <param name=\"" + FormatCamel(prop.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
+            strDeleteCritParams += string.Concat(GetDataTypeGeneric(prop, TypeHelper.GetBackingFieldType(prop)), " ", FormatCamel(prop.Name));
+            lastCriteria += FormatCamel(prop.Name);
         }
     }
     if (isFirstMethod)
@@ -376,6 +457,8 @@ if (Info.GenerateDataPortalDelete)
     else
         Response.Write(Environment.NewLine);
 
+    if (useInlineQuery)
+        InlineQueryList.Add(new AdvancedGenerator.InlineQuery(Info.DeleteProcedureName, strDeleteCritParams));
     %>
         /// <summary>
         /// Deletes the <%= Info.ObjectName %> object from database.
@@ -384,7 +467,7 @@ if (Info.GenerateDataPortalDelete)
         {
             <%= GetConnection(Info, false) %>
             {
-                <%= GetCommand(Info, Info.DeleteProcedureName) %>
+                <%= GetCommand(Info, Info.DeleteProcedureName, useInlineQuery, lastCriteria) %>
                 {
                     <%
     if (Info.CommandTimeout != string.Empty)
@@ -392,7 +475,7 @@ if (Info.GenerateDataPortalDelete)
         %>cmd.CommandTimeout = <%= Info.CommandTimeout %>;
             <%
     }
-    %>cmd.CommandType = CommandType.StoredProcedure;
+    %>cmd.CommandType = CommandType.<%= useInlineQuery ? "Text" : "StoredProcedure" %>;
                     <%
     if (parentType.Length > 0 && !Info.ParentInsertOnly)
     {
