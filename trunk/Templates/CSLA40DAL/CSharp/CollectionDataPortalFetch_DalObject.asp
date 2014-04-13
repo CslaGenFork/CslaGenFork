@@ -1,17 +1,4 @@
 <%
-if (CurrentUnit.GenerationParams.UseInlineQueries == UseInlineQueries.Always)
-    useInlineQuery = true;
-else if (CurrentUnit.GenerationParams.UseInlineQueries == UseInlineQueries.SpecifyByObject)
-{
-    foreach (string item in Info.GenerateInlineQueries)
-    {
-        if (item == "Read")
-        {
-            useInlineQuery = true;
-            break;
-        }
-    }
-}
 bool isFirstCDPFDO = true;
 foreach (Criteria c in Info.CriteriaObjects)
 {
@@ -47,9 +34,6 @@ foreach (Criteria c in Info.CriteriaObjects)
             }
             if (c.Properties.Count > 1)
             {
-                lastCriteria = ReceiveMultipleCriteriaTypeless(c);
-                if (useInlineQuery)
-                    InlineQueryList.Add(new AdvancedGenerator.InlineQuery(c.GetOptions.ProcedureName, ReceiveMultipleCriteria(c)));
                 %>
         /// <returns>A list of <see cref="<%= Info.ItemType %>Dto"/>.</returns>
         public List<<%= Info.ItemType %>Dto> Fetch(<%= ReceiveMultipleCriteria(c) %>)
@@ -57,9 +41,6 @@ foreach (Criteria c in Info.CriteriaObjects)
             }
             else if (c.Properties.Count > 0)
             {
-                lastCriteria = "crit";
-                if (useInlineQuery)
-                    InlineQueryList.Add(new AdvancedGenerator.InlineQuery(c.GetOptions.ProcedureName, ReceiveSingleCriteria(c, "crit")));
                 %>
         /// <returns>A list of <see cref="<%= Info.ItemType %>Dto"/>.</returns>
         public List<<%= Info.ItemType %>Dto> Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)
@@ -67,9 +48,6 @@ foreach (Criteria c in Info.CriteriaObjects)
             }
             else
             {
-                lastCriteria = "";
-                if (useInlineQuery)
-                    InlineQueryList.Add(new AdvancedGenerator.InlineQuery(c.GetOptions.ProcedureName, ""));
                 %>
         /// <returns>A list of <see cref="<%= Info.ItemType %>Dto"/>.</returns>
         public List<<%= Info.ItemType %>Dto> Fetch()
@@ -85,20 +63,13 @@ foreach (Criteria c in Info.CriteriaObjects)
             for (int i = 0; i < c.Properties.Count; i++)
             {
                 if (!getIsFirst)
-                {
                     strGetCritParams += ", ";
-                    lastCriteria += ", ";
-                }
                 else
                     getIsFirst = false;
 
-                strGetComment += "/// <param name=\"" + FormatCamel(c.Properties[i].Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(c.Properties[i].Name) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
                 strGetCritParams += string.Concat(GetDataTypeGeneric(c.Properties[i], c.Properties[i].PropertyType), " ", FormatCamel(c.Properties[i].Name));
-                lastCriteria += FormatCamel(c.Properties[i].Name);
+                strGetComment += "/// <param name=\"" + FormatCamel(c.Properties[i].Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(c.Properties[i].Name) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
             }
-
-            if (useInlineQuery)
-                InlineQueryList.Add(new AdvancedGenerator.InlineQuery(c.GetOptions.ProcedureName, strGetCritParams));
             %>
         /// <summary>
         /// Loads a <%= Info.ObjectName %> collection from the database.
@@ -111,7 +82,7 @@ foreach (Criteria c in Info.CriteriaObjects)
         {
             <%= GetConnection(Info, true) %>
             {
-                <%= GetCommand(Info, c.GetOptions.ProcedureName, useInlineQuery, lastCriteria) %>
+                <%= GetCommand(Info, c.GetOptions.ProcedureName) %>
                 {
                     <%
             if (Info.CommandTimeout != string.Empty)
@@ -121,7 +92,7 @@ foreach (Criteria c in Info.CriteriaObjects)
                     <%
             }
             %>
-                    cmd.CommandType = CommandType.<%= useInlineQuery ? "Text" : "StoredProcedure" %>;
+                    cmd.CommandType = CommandType.StoredProcedure;
                     <%
             foreach (CriteriaProperty p in c.Properties)
             {

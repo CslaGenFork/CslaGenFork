@@ -1,17 +1,4 @@
 <%
-if (CurrentUnit.GenerationParams.UseInlineQueries == UseInlineQueries.Always)
-   useInlineQuery = true;
-else if (CurrentUnit.GenerationParams.UseInlineQueries == UseInlineQueries.SpecifyByObject)
-{
-   foreach (string item in Info.GenerateInlineQueries)
-   {
-       if (item == "Update")
-       {
-           useInlineQuery = true;
-           break;
-       }
-   }
-}
 if (string.IsNullOrEmpty(Info.UpdateProcedureName))
 {
     Errors.Append("Object " + Info.ObjectName + " missing Update procedure name." + Environment.NewLine);
@@ -38,8 +25,6 @@ else if (Info.TransactionType == TransactionType.TransactionScope || Info.Transa
         protected override void DataPortal_Update()
         {
             <%
-if (useInlineQuery)
-   InlineQueryList.Add(new AdvancedGenerator.InlineQuery(Info.UpdateProcedureName, ""));
 if (UseSimpleAuditTrail(Info))
 {
     %>
@@ -49,7 +34,7 @@ if (UseSimpleAuditTrail(Info))
 %>
             <%= GetConnection(Info, false) %>
             {
-                <%= GetCommand(Info, Info.UpdateProcedureName, useInlineQuery, "") %>
+                <%= GetCommand(Info, Info.UpdateProcedureName) %>
                 {
                     <%
 if (Info.TransactionType == TransactionType.ADO && Info.PersistenceType == PersistenceType.SqlConnectionManager)
@@ -65,7 +50,7 @@ if (Info.CommandTimeout != string.Empty)
                     <%
 }
 %>
-                    cmd.CommandType = CommandType.<%= useInlineQuery ? "Text" : "StoredProcedure" %>;
+                    cmd.CommandType = CommandType.StoredProcedure;
                     <%
 foreach (ValueProperty prop in Info.GetAllValueProperties())
 {

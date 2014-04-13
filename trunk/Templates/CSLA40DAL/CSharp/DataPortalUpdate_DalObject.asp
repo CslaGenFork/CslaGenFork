@@ -1,17 +1,4 @@
 <%
-if (CurrentUnit.GenerationParams.UseInlineQueries == UseInlineQueries.Always)
-   useInlineQuery = true;
-else if (CurrentUnit.GenerationParams.UseInlineQueries == UseInlineQueries.SpecifyByObject)
-{
-   foreach (string item in Info.GenerateInlineQueries)
-   {
-       if (item == "Update")
-       {
-           useInlineQuery = true;
-           break;
-       }
-   }
-}
 if (Info.GenerateDataPortalUpdate)
 {
     string strUpdateComment = string.Empty;
@@ -25,7 +12,6 @@ if (Info.GenerateDataPortalUpdate)
     {
         strUpdateResult = Info.ObjectName + "Dto";
         strUpdateParams = strUpdateResult + " " + FormatCamel(Info.ObjectName);
-        lastCriteria = FormatCamel(Info.ObjectName);
         strUpdateComment = System.Environment.NewLine + new string(' ', 8) + "/// <param name=\"" + FormatCamel(Info.ObjectName) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(Info.ObjectName) + " DTO.</param>";
         strUpdateCommentResult = System.Environment.NewLine + new string(' ', 8) + "/// <returns>The updated <see cref=\"" + strUpdateResult + "\"/>.</returns>";
     }
@@ -46,16 +32,12 @@ if (Info.GenerateDataPortalUpdate)
                 prop.DbBindColumn.NativeType == "timestamp")
             {
                 if (!updateIsFirst)
-                {
                     strUpdateParams += ", ";
-                    lastCriteria += ", ";
-                }
                 else
                     updateIsFirst = false;
 
                 strUpdateComment += System.Environment.NewLine + new string(' ', 8) + "/// <param name=\"" + FormatCamel(prop.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) + ".</param>";
                 strUpdateParams += string.Concat(GetDataTypeGeneric(prop, TypeHelper.GetBackingFieldType(prop)), " ", FormatCamel(prop.Name));
-                lastCriteria += FormatCamel(prop.Name);
             }
         }
         if (hasUpdateTimestamp)
@@ -68,8 +50,6 @@ if (Info.GenerateDataPortalUpdate)
     else
         Response.Write(Environment.NewLine);
 
-    if (useInlineQuery)
-        InlineQueryList.Add(new AdvancedGenerator.InlineQuery(Info.UpdateProcedureName, strUpdateParams));
     %>
         /// <summary>
         /// Updates in the database all changes made to the <%= Info.ObjectName %> object.
@@ -78,7 +58,7 @@ if (Info.GenerateDataPortalUpdate)
         {
             <%= GetConnection(Info, false) %>
             {
-                <%= GetCommand(Info, Info.UpdateProcedureName, useInlineQuery, lastCriteria) %>
+                <%= GetCommand(Info, Info.UpdateProcedureName) %>
                 {
                     <%
     if (Info.CommandTimeout != string.Empty)
@@ -88,7 +68,7 @@ if (Info.GenerateDataPortalUpdate)
                     <%
     }
     %>
-                    cmd.CommandType = CommandType.<%= useInlineQuery ? "Text" : "StoredProcedure" %>;
+                    cmd.CommandType = CommandType.StoredProcedure;
                     <%
     foreach (ValueProperty prop in Info.GetAllValueProperties())
     {
