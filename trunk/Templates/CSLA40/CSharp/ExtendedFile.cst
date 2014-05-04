@@ -12,6 +12,8 @@
 <%@ Import Namespace="System.Collections.Generic" %>
 
 <!-- #include file="Header.asp" -->
+using System;
+using Csla;
 <%
 bool usesContext = false;
 usesContext = IsObjectType(Info.ObjectType) || Info.ObjectType == CslaObjectType.UnitOfWork;
