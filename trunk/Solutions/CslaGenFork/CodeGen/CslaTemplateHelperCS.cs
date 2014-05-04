@@ -5570,6 +5570,22 @@ namespace CslaGenerator.CodeGen
             return sb.ToString();
         }
 
+        public string ReceiveSingleCriteriaTypeless(Criteria crit, string paramName)
+        {
+            var sb = new StringBuilder();
+
+            var param = GetDataTypeGeneric(crit.Properties[0], crit.Properties[0].PropertyType);
+            if (param == "Object" || param == "Empty" || CurrentUnit.GenerationParams.UseSingleCriteria)
+                sb.AppendFormat("{0}", paramName);
+            else
+            {
+                paramName = FormatCamel(crit.Properties[0].Name);
+                sb.AppendFormat("{0}", paramName);
+            }
+
+            return sb.ToString();
+        }
+
         public string ReceiveMultipleCriteria(Criteria crit)
         {
             var sb = new StringBuilder();
