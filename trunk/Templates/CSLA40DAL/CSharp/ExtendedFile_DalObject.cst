@@ -11,8 +11,16 @@
 <%@ Import Namespace="CslaGenerator.Util" %>
 
 <!-- #include file="Header_DalObject.asp" -->
+using System;
 using Csla;
-using <%= GetContextUtilitiesNamespace(CurrentUnit, GenerationStep.Business) %>;
+<%
+if (CurrentUnit.GenerationParams.GenerateDTO)
+{
+    %>
+using <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.DalInterface) %>;
+<%
+}
+%>
 
 namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.DalObject) %>
 {

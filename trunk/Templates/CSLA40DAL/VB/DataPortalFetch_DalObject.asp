@@ -16,6 +16,7 @@ bool isFirstMethod = true;
 bool isFirstDPFDO = true;
 foreach (Criteria c in Info.CriteriaObjects)
 {
+    lastCriteria = "";
     if (c.GetOptions.DataPortal)
     {
         if (isFirstDPFDO)
@@ -60,7 +61,7 @@ foreach (Criteria c in Info.CriteriaObjects)
             }
             else if (c.Properties.Count > 0)
             {
-                lastCriteria = "crit";
+                lastCriteria = ReceiveSingleCriteriaTypeless(c, "crit");
                 if (useInlineQuery)
                     InlineQueryList.Add(new AdvancedGenerator.InlineQuery(c.GetOptions.ProcedureName, ReceiveSingleCriteria(c, "crit")));
                 %>

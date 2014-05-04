@@ -1,13 +1,6 @@
 
        #region Inlines queries
 <%
-if (UseBoth())
-{
-   %>
-
-#if !SILVERLIGHT
-<%
-}
 foreach (AdvancedGenerator.InlineQuery inlineQuery in InlineQueryList)
 {
    %>
@@ -18,13 +11,7 @@ foreach (AdvancedGenerator.InlineQuery inlineQuery in InlineQueryList)
        }
 <%
 }
-if (UseBoth())
-{
-   %>
-
-#endif
-<%
-}
 %>
 
        #endregion
+

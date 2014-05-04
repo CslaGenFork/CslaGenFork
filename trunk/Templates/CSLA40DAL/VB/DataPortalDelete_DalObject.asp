@@ -16,6 +16,7 @@ if (Info.GenerateDataPortalDelete)
 {
     foreach (Criteria c in Info.CriteriaObjects)
     {
+        lastCriteria = "";
         if (c.DeleteOptions.DataPortal)
         {
             if (isFirstMethod)
@@ -57,7 +58,7 @@ if (Info.GenerateDataPortalDelete)
                 }
                 else
                 {
-                    lastCriteria = "crit";
+                    lastCriteria = ReceiveSingleCriteriaTypeless(c, "crit");
                     if (useInlineQuery)
                         InlineQueryList.Add(new AdvancedGenerator.InlineQuery(c.DeleteOptions.ProcedureName, ReceiveSingleCriteria(c, "crit")));
                     %>
