@@ -78,7 +78,7 @@ if (!Info.UseCustomLoading)
                 }
                 else if (c.Properties.Count > 0)
                 {
-                    lastCriteria = "crit";
+                    lastCriteria = ReceiveSingleCriteriaTypeless(c, "crit");
                     if (useInlineQuery)
                         InlineQueryList.Add(new AdvancedGenerator.InlineQuery(c.GetOptions.ProcedureName, ReceiveSingleCriteria(c, "crit")));
                     %>
