@@ -624,7 +624,7 @@ namespace CslaGenerator.CodeGen
             {
                 MessageBox.Show(@"Error in ""appSettings"" section of ""CslaGenerator.exe.config"" file." + Environment.NewLine +
                     @"The key """ + key + @""" is empty or missing." + Environment.NewLine +
-                    @"Will use " + defaultEncoding + @" instead.",
+                    @"Will use default of """ + defaultEncoding + @""".",
                     @"CslaGenFork object generation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return defaultEncoding;
             }
@@ -661,7 +661,7 @@ namespace CslaGenerator.CodeGen
             {
                 MessageBox.Show(@"Error in ""appSettings"" section of ""CslaGenerator.exe.config"" file." + Environment.NewLine +
                     @"The key ""OverwriteExtendedFile"" has a wrong value." + Environment.NewLine +
-                    @"Will use default of ""false"".",
+                    @"Will use default of """ + result + @""".",
                     @"CslaGenFork initialization", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 

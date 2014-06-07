@@ -30,7 +30,7 @@ namespace CslaGenerator.Util.PropertyBags
                 xmlFile = "PropertyContext.xml";
                 MessageBox.Show(@"Error in ""appSettings"" section of ""CslaGenerator.exe.config"" file." + Environment.NewLine +
                                 @"The key ""PropertyContextFile"" is empty or missing." + Environment.NewLine +
-                                @"Default " + xmlFile + " will be used.",
+                                @"Will use default of """ + xmlFile + @""".",
                                 @"CslaGenFork initialization", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             if (File.Exists(xmlFile))
