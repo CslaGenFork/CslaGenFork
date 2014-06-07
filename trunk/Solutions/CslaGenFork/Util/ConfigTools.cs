@@ -4,7 +4,6 @@ using System.Windows.Forms;
 
 namespace CslaGenerator.Util
 {
-
     /// <summary>
     /// Methods for manipulating the key/value pair settings in the app.config file 
     /// (rather the executable.exe.config file).
@@ -21,11 +20,11 @@ namespace CslaGenerator.Util
         }
 
         /// <summary>
-        /// Reads the value of a key
+        /// Reads the value of a key in App.config file.
         /// </summary>
         /// <param name="key">The key name</param>
         /// <returns>The value of the supplied key</returns>
-        public static string OriginalGet(string key)
+        internal static string AppConfigGet(string key)
         {
             var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             var response = string.Empty;
@@ -41,11 +40,11 @@ namespace CslaGenerator.Util
         }
 
         /// <summary>
-        /// Reads the value of a key
+        /// Reads the value of a key in SharedApp.config file.
         /// </summary>
         /// <param name="key">The key name</param>
         /// <returns>The value of the supplied key</returns>
-        public static string Get(string key)
+        internal static string SharedAppConfigGet(string key)
         {
             var configFile = new ExeConfigurationFileMap
                                  {
@@ -65,10 +64,10 @@ namespace CslaGenerator.Util
         }
 
         /// <summary>
-        /// Reads the value of all MRU keys
+        /// Reads the value of all MRU keys from SharedApp.config file.
         /// </summary>
         /// <returns>The value of all MRU keys</returns>
-        public static List<string> GetMru()
+        internal static List<string> SharedAppConfigGetMru()
         {
             var configFile = new ExeConfigurationFileMap
                                  {
@@ -93,10 +92,11 @@ namespace CslaGenerator.Util
         /// <summary>
         /// Adds a new key and set its value, or add the given
         /// value to an existing key (values are comma separated)
+        /// to SharedApp.config file.
         /// </summary>
         /// <param name="key">The key name to be added</param>
         /// <param name="value">The value for the added key</param>
-        public static void Add(string key, string value)
+        internal static void SharedAppConfigAdd(string key, string value)
         {
             var configFile = new ExeConfigurationFileMap
                                  {
@@ -109,10 +109,10 @@ namespace CslaGenerator.Util
         }
 
         /// <summary>
-        /// Removes a key
+        /// Removes a key in SharedApp.config file.
         /// </summary>
         /// <param name="key">The key name to be removed</param>
-        public static void Remove(string key)
+        internal static void SharedAppConfigRemove(string key)
         {
             var configFile = new ExeConfigurationFileMap
                                  {
@@ -125,11 +125,11 @@ namespace CslaGenerator.Util
         }
 
         /// <summary>
-        /// Removes a key, adds the same key and sets its value
+        /// Removes a key, adds the same key and sets its value in SharedApp.config file.
         /// </summary>
         /// <param name="key">The key name of the value to be changed</param>
         /// <param name="value">The new value</param>
-        public static void Change(string key, string value)
+        internal static void SharedAppConfigChange(string key, string value)
         {
             var configFile = new ExeConfigurationFileMap
                                  {
@@ -143,10 +143,10 @@ namespace CslaGenerator.Util
         }
 
         /// <summary>
-        /// Removes all MRU key, adds all MRU and sets their value
+        /// Removes all MRU key, adds all MRU and sets their value in SharedApp.config file.
         /// </summary>
         /// <param name="value">The new value</param>
-        public static void ChangeMru(List<string> value)
+        internal static void SharedAppConfigChangeMru(List<string> value)
         {
             var configFile = new ExeConfigurationFileMap
                                  {
