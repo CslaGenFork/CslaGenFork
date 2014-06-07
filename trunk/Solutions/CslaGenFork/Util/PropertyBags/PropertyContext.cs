@@ -16,7 +16,7 @@ namespace CslaGenerator.Util.PropertyBags
     /// </summary>
     public class PropertyContext
     {
-        private Hashtable hashTable;
+        private readonly Hashtable _hashTable;
 
         public PropertyContext()
         {
@@ -35,7 +35,7 @@ namespace CslaGenerator.Util.PropertyBags
             }
             if (File.Exists(xmlFile))
             {
-                hashTable = ParseXML(xmlFile);
+                _hashTable = ParseXML(xmlFile);
             }
         }
 
@@ -43,26 +43,20 @@ namespace CslaGenerator.Util.PropertyBags
         // for quick retrieval
         public Hashtable HashTable
         {
-            get { return hashTable; }
+            get { return _hashTable; }
         }
-//		// the xml file that contains the mappings
-//		// cslaobject type + property --> true | false
-//		public string XmlFile
-//		{
-//			get { return xmlFile; }
-//			set { xmlFile = value; }
-//		}
+
         // read xml file and strip off attributes
         // note: assumes only key --> value nodes
         // have attributes
         private Hashtable ParseXML(string xmlFile) 
         {
-            Hashtable attributes = new Hashtable();
+            var attributes = new Hashtable();
             try 
             {
-                XmlTextReader reader = new XmlTextReader(xmlFile);
-                string _key = "";
-                string _value = "";
+                var reader = new XmlTextReader(xmlFile);
+                var key = "";
+                var value = "";
                 while (reader.Read()) 
                 {
                     if ((reader.NodeType == XmlNodeType.Element) && reader.HasAttributes)
@@ -75,23 +69,12 @@ namespace CslaGenerator.Util.PropertyBags
                                 Debug.WriteLine("abcdef");
                             }
                             reader.MoveToFirstAttribute();
-                            _key = reader.Value;
+                            key = reader.Value;
                             reader.MoveToNextAttribute();
-                            _value = reader.Value;
-
-                            //reader.MoveToAttribute(i);
-//							switch (reader.Name)
-//							{
-//								case "key":
-//									_key = reader.Value;
-//									break;
-//								case "value":
-//									_value = reader.Value;
-//									break;
-//							}
+                            value = reader.Value;
                         }
-                        attributes.Add(_key, _value);
-                        if (_value.Length == 0)
+                        attributes.Add(key, value);
+                        if (value.Length == 0)
                             Debug.WriteLine("zero");
                     }
                 }
@@ -105,32 +88,29 @@ namespace CslaGenerator.Util.PropertyBags
         // should "cslaobject:property" be shown in propertygrid?
         public bool ShowProperty(string cslaobjectType, string property)
         {
-            string key = cslaobjectType + ":" + property;
-            if (hashTable.ContainsKey(key))
+            var key = cslaobjectType + ":" + property;
+            if (_hashTable.ContainsKey(key))
             {
                 // return hashTable[key] == "true" ? true : false;
-                if (hashTable[key].Equals("true"))
+                if (_hashTable[key].Equals("true"))
                 {
                     // show property
                     return true;
                 }
-                else if (hashTable[key].Equals("false"))
+                
+                if (_hashTable[key].Equals("false"))
                 {
                     // don't show property
                     return false;
                 }
-                else 
-                {
-                    // by default show property
-                    return true;
-                }
-            }
-            else
-            {
+                
                 // by default show property
-                // Console.WriteLine(key);
                 return true;
             }
+            
+            // by default show property
+            // Console.WriteLine(key);
+            return true;
         }
     }
 }
