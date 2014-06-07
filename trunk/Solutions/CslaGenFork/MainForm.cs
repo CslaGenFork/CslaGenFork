@@ -37,6 +37,7 @@ namespace CslaGenerator
         private StartPage _webBrowserDockPanel = new StartPage();
         private ObjectRelationsBuilder _objectRelationsBuilderPanel = new ObjectRelationsBuilder();
         private ProjectProperties _projectPropertiesPanel = null;
+        private GlobalSettings _globalSettingsPanel = new GlobalSettings();
         private DbSchemaPanel _dbSchemaPanel = null;
         private OutputWindow _outputPanel = new OutputWindow();
         private GenerationReportViewer _errorPannel = new GenerationReportViewer();
@@ -117,6 +118,12 @@ namespace CslaGenerator
         {
             get { return _projectPropertiesPanel; }
             set { _projectPropertiesPanel = value; }
+        }
+
+        internal GlobalSettings GlobalSettingsPanel
+        {
+            get { return _globalSettingsPanel; }
+            set { _globalSettingsPanel = value; }
         }
 
         internal DbSchemaPanel DbSchemaPanel
@@ -295,6 +302,18 @@ namespace CslaGenerator
         }
 
         /// <summary>
+        /// Activate and show the Global Settings panel.
+        /// </summary>
+        internal void ActivateShowGlobalSettings()
+        {
+            _globalSettingsPanel.MdiParent = this;
+            _globalSettingsPanel.VisibleChanged +=
+                delegate(object sender, EventArgs e) { projectPropertiesPageToolStripMenuItem.Checked = ((DockContent)sender).Visible; };
+            _globalSettingsPanel.FormClosing += PaneFormClosing;
+            _globalSettingsPanel.Show(dockPanel);
+        }
+
+        /// <summary>
         /// Activate and show the Schema panel.
         /// </summary>
         /// <remarks>
@@ -373,6 +392,12 @@ namespace CslaGenerator
                     if (projectProperties != null)
                         projectProperties.GetState();
                 }
+                else if (docType == typeof(GlobalSettings))
+                {
+                    var globalSettings = dockContent as GlobalSettings;
+                    if (globalSettings != null)
+                        globalSettings.GetState();
+                }
                 else if (docType == typeof(ObjectRelationsBuilder))
                 {
                     var objectRelationsBuilder = dockContent as ObjectRelationsBuilder;
@@ -410,6 +435,16 @@ namespace CslaGenerator
                         projectProperties.TurnOnFormLevelDoubleBuffering();
                         projectProperties.SetState();
                         projectProperties.TurnOffFormLevelDoubleBuffering();
+                    }
+                }
+                else if (docType == typeof (GlobalSettings))
+                {
+                    var globalSettings = dockContent as GlobalSettings;
+                    if (globalSettings != null)
+                    {
+                        globalSettings.TurnOnFormLevelDoubleBuffering();
+                        globalSettings.SetState();
+                        globalSettings.TurnOffFormLevelDoubleBuffering();
                     }
                 }
                 else if (docType == typeof (ObjectRelationsBuilder))
@@ -1491,6 +1526,20 @@ namespace CslaGenerator
             {
                 if (_controller.CurrentUnit != null)
                     ProjectPropertiesPanel.Show(dockPanel);
+            }
+        }
+
+        private void GlobalSettingsPageToolStripMenuItemClick(object sender, EventArgs e)
+        {
+            if (GlobalSettingsPanel == null)
+                return;
+
+            if (globalSettingsPageToolStripMenuItem.Checked)
+                GlobalSettingsPanel.Hide();
+            else
+            {
+                if (_controller.CurrentUnit != null)
+                    GlobalSettingsPanel.Show(dockPanel);
             }
         }
 
