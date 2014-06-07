@@ -20,9 +20,6 @@ namespace CslaGenerator.Util.PropertyBags
 
         public PropertyContext()
         {
-            /*string[] setting = (string[]) ConfigurationManager.AppSettings.GetValues("PropertyContextFile");
-            string xmlFile = setting.Length > 0 ? setting[0] : "" ;*/
-
             var xmlFile = ConfigurationManager.AppSettings.Get("PropertyContextFile");
 
             if (string.IsNullOrWhiteSpace(xmlFile))
