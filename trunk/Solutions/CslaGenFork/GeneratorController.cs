@@ -14,7 +14,6 @@ using CslaGenerator.Metadata;
 using CslaGenerator.Util;
 using CslaGenerator.Util.PropertyBags;
 using DBSchemaInfo.Base;
-using WeifenLuo.WinFormsUI.Docking;
 
 namespace CslaGenerator
 {
@@ -220,7 +219,8 @@ namespace CslaGenerator
                         if (exception.InnerException == null)
                             throw;
 
-                        fs.Close();
+                        if (fs != null)
+                            fs.Close();
                         string[] fileLines = File.ReadAllLines(filePath);
                         var fileVersion = FileVersion.ExtractFileVersion(fileLines);
                         if (fileVersion == FileVersion.CurrentFileVersion)
@@ -395,7 +395,8 @@ namespace CslaGenerator
             finally
             {
                 Cursor.Current = Cursors.Default;
-                fs.Close();
+                if (fs != null)
+                    fs.Close();
             }
             if (success)
             {
@@ -428,7 +429,8 @@ namespace CslaGenerator
             finally
             {
                 Cursor.Current = Cursors.Default;
-                fs.Close();
+                if (fs != null)
+                    fs.Close();
             }
             if (success)
             {
@@ -552,7 +554,7 @@ namespace CslaGenerator
 
         private string GetFileNameWithoutExtension(string fileName)
         {
-            int index = fileName.LastIndexOf(".");
+            var index = fileName.LastIndexOf(".");
             if (index >= 0)
             {
                 return fileName.Substring(0, index);
@@ -562,7 +564,7 @@ namespace CslaGenerator
 
         private string GetFileExtension(string fileName)
         {
-            int index = fileName.LastIndexOf(".");
+            var index = fileName.LastIndexOf(".");
             if (index >= 0)
             {
                 return fileName.Substring(index + 1);
@@ -685,7 +687,6 @@ namespace CslaGenerator
             GetConfigProjectsFolder();
             GetConfigObjectsFolder();
             GetConfigRulesFolder();
-            GetConfigMruItems();
         }
 
         private void GetConfigTemplatesFolder()
@@ -757,30 +758,7 @@ namespace CslaGenerator
             }
         }
 
-        internal void GetConfigRulesFolder()
-        {
-            var tDir = ConfigTools.Get("RulesDirectory");
-            if (string.IsNullOrEmpty(tDir))
-            {
-                tDir = ConfigTools.OriginalGet("RulesDirectory");
-
-                while (tDir.LastIndexOf(@"\\") == tDir.Length - 2)
-                {
-                    tDir = tDir.Substring(0, tDir.Length - 1);
-                }
-            }
-
-            if (string.IsNullOrEmpty(tDir))
-            {
-                RulesDirectory = Environment.SpecialFolder.Desktop.ToString();
-            }
-            else
-            {
-                RulesDirectory = tDir;
-            }
-        }
-
-        internal void GetConfigMruItems()
+        private void GetConfigRulesFolder()
         {
             var tDir = ConfigTools.Get("RulesDirectory");
             if (string.IsNullOrEmpty(tDir))
@@ -805,7 +783,7 @@ namespace CslaGenerator
 
         internal void ReSortMruItems()
         {
-            string[] original = MruItems.ToArray();
+            var original = MruItems.ToArray();
             MruItems.Clear();
             foreach (var item in original)
             {
