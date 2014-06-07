@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using CslaGenerator.Metadata;
 using System.IO;
 using System.Xml.Serialization;
+using CslaGenerator.Util;
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace CslaGenerator.Controls
@@ -134,7 +135,7 @@ namespace CslaGenerator.Controls
             if (!ValidateOptions())
                 return;
 
-            DialogResult confirm = DialogResult.No;
+            var confirm = DialogResult.No;
             if (!(_projParams.SpGeneralPrefix.Equals(project.Params.SpGeneralPrefix) &&
                 _projParams.SpGetPrefix.Equals(project.Params.SpGetPrefix) &&
                 _projParams.SpAddPrefix.Equals(project.Params.SpAddPrefix) &&
@@ -184,12 +185,12 @@ namespace CslaGenerator.Controls
 
         private void CmdGetDefaultClick(object sender, EventArgs e)
         {
-            ImportParams(Application.CommonAppDataPath + @"\Default.xml");
+            ImportParams(ConfigTools.DefaultXml);
         }
 
         private void CmdSetDefaultClick(object sender, EventArgs e)
         {
-            ExportParams(Application.CommonAppDataPath + @"\Default.xml");
+            ExportParams(ConfigTools.DefaultXml);
         }
 
         private void CmdResetToFactoryClick(object sender, EventArgs e)
@@ -218,10 +219,10 @@ namespace CslaGenerator.Controls
         {
             var currentCursor = Cursor.Current;
             Cursor.Current = Cursors.WaitCursor;
-            CslaGeneratorUnit unit;
             try
             {
                 Cursor.Current = Cursors.WaitCursor;
+                CslaGeneratorUnit unit;
                 using (var fs = File.Open(filename, FileMode.Open, FileAccess.Read))
                 {
                     var s = new XmlSerializer(typeof(CslaGeneratorUnit));

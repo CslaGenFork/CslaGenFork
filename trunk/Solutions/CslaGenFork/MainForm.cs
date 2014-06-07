@@ -821,7 +821,7 @@ namespace CslaGenerator
                 _isNewProject = true;
                 openFileDialog.FileName = string.Empty;
                 Text = BaseFormText;
-                if (!File.Exists(Application.CommonAppDataPath + @"\Default.xml"))
+                if (!File.Exists(ConfigTools.DefaultXml))
                 {
                     _controller.CurrentProjectProperties.CmdResetToFactory.PerformClick();
                     _controller.CurrentProjectProperties.cmdSetDefault.PerformClick();
