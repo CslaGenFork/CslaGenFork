@@ -225,6 +225,12 @@
     <Compile Include="CodeGen\CslaTemplateHelperCS.cs" />
     <Compile Include="CodeGen\CslaTemplateHelperVB.cs" />
     <Compile Include="CodeGen\GenerationStep.cs" />
+    <Compile Include="Controls\GlobalSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\GlobalSettings.Designer.cs">
+      <DependentUpon>GlobalSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ObjectInfo.cs">
       <SubType>Form</SubType>
     </Compile>
