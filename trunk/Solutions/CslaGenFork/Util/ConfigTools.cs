@@ -10,6 +10,15 @@ namespace CslaGenerator.Util
     /// </summary>
     public static class ConfigTools
     {
+        public static string DefaultXml
+        {
+            get
+            {
+                return Application.CommonAppDataPath.Substring(0, Application.CommonAppDataPath.LastIndexOf("\\"))
+                       + @"\Default.xml";
+            }
+        }
+
         private static string SharedAppConfig
         {
             get
