@@ -12,15 +12,41 @@ using CslaGenerator.Metadata;
 
 namespace CslaGenerator.CodeGen
 {
+    /// <summary>
+    /// Coordinates code generation.<br/>
+    /// Includes classes for passing information from the main file generation to the extended file generation.<br/>
+    /// - <see cref="ServiceMethod"/> - service methods to be passed to the extended file generation.<br/>
+    /// - <see cref="InlineQuery"/> - inline query methods to be passed to the extended file generation.<br/>
+    /// </summary>
     public class AdvancedGenerator : CodeGeneratorBase, ICodeGenerator
     {
         #region Service Method
 
+        /// <summary>
+        /// Describes a service method to be passed from the main file generation to the extended file generation.
+        /// </summary>
         public class ServiceMethod
         {
+            /// <summary>
+            /// Gets or sets the data portal method name.
+            /// </summary>
+            /// <value>
+            /// The data portal method name.
+            /// </value>
             public string DataPortalMethod { get; set; }
+            /// <summary>
+            /// Gets or sets the method header (comments and method signature).
+            /// </summary>
+            /// <value>
+            /// The method header (comments and method signature).
+            /// </value>
             public string MethodHeader { get; set; }
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="ServiceMethod"/> class.
+            /// </summary>
+            /// <param name="dataPortalMethod">The data portal method name.</param>
+            /// <param name="methodHeader">The method header (comments and method signature).</param>
             public ServiceMethod(string dataPortalMethod, string methodHeader)
             {
                 DataPortalMethod = dataPortalMethod;
@@ -32,11 +58,31 @@ namespace CslaGenerator.CodeGen
 
         #region Inline Query
 
+        /// <summary>
+        /// Describes an inline query method to be passed from the main file generation to the extended file generation.
+        /// </summary>
         public class InlineQuery
         {
+            /// <summary>
+            /// Gets or sets the name of the stored procedure name that is replaced by this method.
+            /// </summary>
+            /// <value>
+            /// The name of the name of the stored procedure name that is replaced by this method.
+            /// </value>
             public string ProcedureName { get; set; }
+            /// <summary>
+            /// Gets or sets the inline query method parameters.
+            /// </summary>
+            /// <value>
+            /// The inline query method parameters.
+            /// </value>
             public string CriteriaParameter { get; set; }
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="InlineQuery"/> class.
+            /// </summary>
+            /// <param name="procedureName">The name of the name of the stored procedure name that is replaced by this method.</param>
+            /// <param name="criteriaParameter">The inline query method parameters.</param>
             public InlineQuery(string procedureName, string criteriaParameter)
             {
                 ProcedureName = procedureName;
@@ -48,9 +94,15 @@ namespace CslaGenerator.CodeGen
 
         #region Private Fields
 
-        private readonly Dictionary<string, bool?> _fileSuccess = new Dictionary<string, bool?>();
+        /// <summary>
+        /// The list of method signatures to be passed from the main file generation to the extended file generation.
+        /// </summary>
         private List<ServiceMethod> _methodList;
+        /// <summary>
+        /// The list of method signatures for inline queries.
+        /// </summary>
         private List<InlineQuery> _inlineQueryList;
+        private readonly Dictionary<string, bool?> _fileSuccess = new Dictionary<string, bool?>();
         private readonly string _templatesDirectory = string.Empty;
         private bool _abortRequested;
         private string _fullTemplatesPath;
@@ -566,7 +618,7 @@ namespace CslaGenerator.CodeGen
         private static string ValidateEncodings(string key)
         {
             const string defaultEncoding = "iso-8859-1";
-            string encoding = ConfigurationManager.AppSettings.Get(key);
+            var encoding = ConfigurationManager.AppSettings.Get(key);
 
             if (string.IsNullOrWhiteSpace(encoding))
             {
