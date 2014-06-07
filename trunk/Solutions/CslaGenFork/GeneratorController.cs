@@ -691,10 +691,10 @@ namespace CslaGenerator
 
         private void GetConfigTemplatesFolder()
         {
-            var tDir = ConfigTools.Get("TemplatesDirectory");
+            var tDir = ConfigTools.SharedAppConfigGet("TemplatesDirectory");
             if (string.IsNullOrEmpty(tDir))
             {
-                tDir = ConfigTools.OriginalGet("TemplatesDirectory");
+                tDir = ConfigTools.AppConfigGet("TemplatesDirectory");
 
                 while (tDir.LastIndexOf(@"\\") == tDir.Length - 2)
                 {
@@ -714,10 +714,10 @@ namespace CslaGenerator
 
         private void GetConfigProjectsFolder()
         {
-            var tDir = ConfigTools.Get("ProjectsDirectory");
+            var tDir = ConfigTools.SharedAppConfigGet("ProjectsDirectory");
             if (string.IsNullOrEmpty(tDir))
             {
-                tDir = ConfigTools.OriginalGet("ProjectsDirectory");
+                tDir = ConfigTools.AppConfigGet("ProjectsDirectory");
 
                 while (tDir.LastIndexOf(@"\\") == tDir.Length - 2)
                 {
@@ -737,10 +737,10 @@ namespace CslaGenerator
 
         internal void GetConfigObjectsFolder()
         {
-            var tDir = ConfigTools.Get("ObjectsDirectory");
+            var tDir = ConfigTools.SharedAppConfigGet("ObjectsDirectory");
             if (string.IsNullOrEmpty(tDir))
             {
-                tDir = ConfigTools.OriginalGet("ObjectsDirectory");
+                tDir = ConfigTools.AppConfigGet("ObjectsDirectory");
 
                 while (tDir.LastIndexOf(@"\\") == tDir.Length - 2)
                 {
@@ -760,10 +760,10 @@ namespace CslaGenerator
 
         private void GetConfigRulesFolder()
         {
-            var tDir = ConfigTools.Get("RulesDirectory");
+            var tDir = ConfigTools.SharedAppConfigGet("RulesDirectory");
             if (string.IsNullOrEmpty(tDir))
             {
-                tDir = ConfigTools.OriginalGet("RulesDirectory");
+                tDir = ConfigTools.AppConfigGet("RulesDirectory");
 
                 while (tDir.LastIndexOf(@"\\") == tDir.Length - 2)
                 {
@@ -791,7 +791,7 @@ namespace CslaGenerator
                     MruItems.Add(item);
             }
 
-            ConfigTools.ChangeMru(MruItems);
+            ConfigTools.SharedAppConfigChangeMru(MruItems);
         }
 
         public object GetSelectedItem()

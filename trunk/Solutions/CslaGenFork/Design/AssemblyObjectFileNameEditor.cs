@@ -33,7 +33,7 @@ namespace CslaGenerator.Design
                 return value;
 
             GeneratorController.Current.ObjectsDirectory = _fileDialog.FileName.Substring(0, _fileDialog.FileName. LastIndexOf('\\'));
-            ConfigTools.Change("ObjectsDirectory", GeneratorController.Current.ObjectsDirectory); 
+            ConfigTools.SharedAppConfigChange("ObjectsDirectory", GeneratorController.Current.ObjectsDirectory); 
             return _fileDialog.FileName;
         }
     }

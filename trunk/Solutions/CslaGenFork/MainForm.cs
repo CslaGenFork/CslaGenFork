@@ -332,7 +332,7 @@ namespace CslaGenerator
         private void LoadMru()
         {
             _controller.MruItems = new List<string>();
-            _controller.MruItems = ConfigTools.GetMru();
+            _controller.MruItems = ConfigTools.SharedAppConfigGetMru();
             MruDisplay();
         }
 
@@ -857,7 +857,7 @@ namespace CslaGenerator
                 if (result == DialogResult.OK)
                 {
                     _controller.ProjectsDirectory = openFileDialog.FileName.Substring(0, openFileDialog.FileName.LastIndexOf('\\'));
-                    ConfigTools.Change("ProjectsDirectory", _controller.ProjectsDirectory);
+                    ConfigTools.SharedAppConfigChange("ProjectsDirectory", _controller.ProjectsDirectory);
                     Application.DoEvents();
                     Cursor.Current = Cursors.WaitCursor;
                     OpenProjectFile(openFileDialog.FileName);
@@ -901,7 +901,7 @@ namespace CslaGenerator
             if (result == DialogResult.OK)
             {
                 _controller.ProjectsDirectory = saveFileDialog.FileName.Substring(0, saveFileDialog.FileName.LastIndexOf('\\'));
-                ConfigTools.Change("ProjectsDirectory", _controller.ProjectsDirectory);
+                ConfigTools.SharedAppConfigChange("ProjectsDirectory", _controller.ProjectsDirectory);
                 Cursor.Current = Cursors.WaitCursor;
                 Application.DoEvents();
                 _controller.Save(saveFileDialog.FileName);
@@ -972,7 +972,7 @@ namespace CslaGenerator
                     {
                         openFileDialog.FileName = _controller.MruItems[mruItem];
                         _controller.ProjectsDirectory = openFileDialog.FileName.Substring(0, openFileDialog.FileName.LastIndexOf('\\'));
-                        ConfigTools.Change("ProjectsDirectory", _controller.ProjectsDirectory);
+                        ConfigTools.SharedAppConfigChange("ProjectsDirectory", _controller.ProjectsDirectory);
                         Application.DoEvents();
                         Cursor.Current = Cursors.WaitCursor;
                         OpenProjectFile(openFileDialog.FileName);
@@ -1440,7 +1440,7 @@ namespace CslaGenerator
                 if (tDirDialog.SelectedPath.LastIndexOf('\\') != tDirDialog.SelectedPath.Length - 1)
                     tdir += @"\";
                 _controller.TemplatesDirectory = tdir;
-                ConfigTools.Change("TemplatesDirectory", _controller.TemplatesDirectory);
+                ConfigTools.SharedAppConfigChange("TemplatesDirectory", _controller.TemplatesDirectory);
             }
         }
 
