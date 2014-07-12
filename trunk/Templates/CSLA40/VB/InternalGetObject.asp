@@ -21,7 +21,7 @@ if (!Info.DataSetLoadingScheme)
         ''' </summary>
         ''' <param name="dr">The SafeDataReader to use.</param>
         ''' <returns>A reference to the fetched <see cref="<%= Info.ObjectName %>"/> object.</returns>
-        Friend Shared Function Get<%= Info.ObjectName %>(SafeDataReader dr) As <%= Info.ObjectName %>
+        Friend Shared Function Get<%= Info.ObjectName %>(dr As SafeDataReader) As <%= Info.ObjectName %>
             <%
         if (authzInfo.GetRoles.Trim() != String.Empty &&
             IsCollectionType(Info.ObjectType) &&
