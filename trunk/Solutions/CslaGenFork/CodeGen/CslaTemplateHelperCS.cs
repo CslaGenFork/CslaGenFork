@@ -300,9 +300,9 @@ namespace CslaGenerator.CodeGen
 
             if (nullable)
             {
-                if (TypeHelper.IsNullableType(assignDataType))
-                    statement += String.Format("({0})", GetDataType(prop));
-                else
+                //if (TypeHelper.IsNullableType(assignDataType))
+                //    statement += String.Format("({0})", GetDataType(prop));
+                //else
                     statement += String.Format("!dr.IsDBNull(\"{0}\") ? ",
                                                prop.ParameterName);
             }
@@ -319,10 +319,10 @@ namespace CslaGenerator.CodeGen
                 statement += ", true";
 
             statement += ")";
-            if (nullable && !TypeHelper.IsNullableType(assignDataType))
+            if (nullable)
             {
-                if (TypeHelper.IsNullableType(assignDataType))
-                    statement += ")";
+                //if (TypeHelper.IsNullableType(assignDataType))
+                //    statement += ")";
                 statement += " : null";
             }
 
@@ -4990,13 +4990,15 @@ namespace CslaGenerator.CodeGen
             if (info.Parent.GenerationParams.GenerateQueriesWithSchema)
             {
                 if (tables.Count > 0)
-                    plainTableSchema = tables[0].ObjectSchema + ".";
+                    plainTableSchema = tables[0].ObjectSchema;
                 else
                 {
                     // presume SProc
                     plainTableSchema = sprocTemplateHelper.GetSprocSchemaSelect(info);
                 }
             }
+            if (!string.IsNullOrEmpty(plainTableSchema))
+                plainTableSchema += ".";
 
             return "using (var cmd = new SqlCommand(\"" + plainTableSchema + commandText + "\", " + LocalContextConnection(info) + "))";
         }
@@ -5247,8 +5249,8 @@ namespace CslaGenerator.CodeGen
             // presume only one primary key on Associated entities
             // presume only one pair of Associated entities an a "M:M" relation
 
-            List<string> allCslaObjects = CurrentUnit.CslaObjects.GetAllObjectNames();
-            var primaryKeys = PrimaryKeys.GetPrimaryKeys(allCslaObjects, info);
+            var allCslaObjects = CurrentUnit.CslaObjects.GetAllObjectNames();
+            PrimaryKeys.BuildCache(allCslaObjects, info);
 
             var originalChildCollectionItem = originalChild.Parent.CslaObjects.Find(originalChild.ItemType);
             var originalChildCollectionItemPK = PrimaryKeys.FindPrimaryKey(originalChildCollectionItem);
@@ -5347,7 +5349,7 @@ namespace CslaGenerator.CodeGen
                 return null;
             }
 
-            public static PrimaryKeys GetPrimaryKeys(List<string> allCslaObjects, CslaObjectInfo cslaObjectInfo)
+            public static void BuildCache(List<string> allCslaObjects, CslaObjectInfo cslaObjectInfo)
             {
                 // Use 'Lazy initialization'
                 if (_instance == null)
@@ -5356,7 +5358,6 @@ namespace CslaGenerator.CodeGen
                     _cslaObjectInfo = cslaObjectInfo;
                     _instance = new PrimaryKeys();
                 }
-                return _instance;
             }
 
             public static void ClearCache()
