@@ -352,11 +352,13 @@ namespace CslaGenerator.Metadata
 
         public override object Clone()
         {
-            var buffer = new MemoryStream();
-            var ser = new XmlSerializer(typeof(ChildProperty));
-            ser.Serialize(buffer, this);
-            buffer.Position = 0;
-            return ser.Deserialize(buffer);
+            using (var buffer = new MemoryStream())
+            {
+                var ser = new XmlSerializer(typeof(ChildProperty));
+                ser.Serialize(buffer, this);
+                buffer.Position = 0;
+                return ser.Deserialize(buffer);
+            }
         }
 
         public int CompareTo(object other)

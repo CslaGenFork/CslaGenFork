@@ -69,11 +69,13 @@ namespace CslaGenerator.Metadata
 
         public object Clone()
         {
-            var buffer = new MemoryStream();
-            var ser = new XmlSerializer(typeof(BusinessRuleProperty));
-            ser.Serialize(buffer, this);
-            buffer.Position = 0;
-            return ser.Deserialize(buffer);
+            using (var buffer = new MemoryStream())
+            {
+                var ser = new XmlSerializer(typeof(BusinessRuleProperty));
+                ser.Serialize(buffer, this);
+                buffer.Position = 0;
+                return ser.Deserialize(buffer);
+            }
         }
     }
 }
