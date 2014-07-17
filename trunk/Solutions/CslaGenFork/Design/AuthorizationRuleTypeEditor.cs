@@ -9,13 +9,12 @@ using System.Windows.Forms.Design;
 using CslaGenerator.Metadata;
 using CslaGenerator.Util;
 
-
 namespace CslaGenerator.Design
 {
     /// <summary>
     /// Summary description for RuleTypeEditor for Rules 4
     /// </summary>
-    public class AuthorizationRuleTypeEditor : UITypeEditor
+    public class AuthorizationRuleTypeEditor : UITypeEditor, IDisposable
     {
 
         public class BaseProperty
@@ -33,7 +32,7 @@ namespace CslaGenerator.Design
         }
 
         private IWindowsFormsEditorService _editorService;
-        private readonly ListBox _lstProperties;
+        private ListBox _lstProperties;
         private Type _instance;
         private List<BaseProperty> _baseTypes;
         private List<string> _sizeSortedNamespaces;
@@ -401,6 +400,26 @@ namespace CslaGenerator.Design
                 propType = Type.GetType("CslaGenerator.Metadata." + type);
 
             return propType;
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // dispose managed resources
+                if (_lstProperties != null)
+                {
+                    _lstProperties.Dispose();
+                    _lstProperties = null;
+                }
+            }
+            // free native resources
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

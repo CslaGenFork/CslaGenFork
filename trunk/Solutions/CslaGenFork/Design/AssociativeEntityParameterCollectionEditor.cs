@@ -15,10 +15,10 @@ namespace CslaGenerator.Design
     /// // MainLoadParameters = "Primary Load Parameters"
     /// // SecondaryLoadParameters = "Secondary Load Parameters"
     /// </summary>
-    public class AssociativeEntityParameterCollectionEditor : UITypeEditor
+    public class AssociativeEntityParameterCollectionEditor : UITypeEditor, IDisposable
     {
         private IWindowsFormsEditorService _editorService;
-        private readonly ListBox _lstProperties;
+        private ListBox _lstProperties;
         private object _instance;
 
         public AssociativeEntityParameterCollectionEditor()
@@ -128,6 +128,26 @@ namespace CslaGenerator.Design
         void LstPropertiesDoubleClick(object sender, EventArgs e)
         {
             _editorService.CloseDropDown();
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // dispose managed resources
+                if (_lstProperties != null)
+                {
+                    _lstProperties.Dispose();
+                    _lstProperties = null;
+                }
+            }
+            // free native resources
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

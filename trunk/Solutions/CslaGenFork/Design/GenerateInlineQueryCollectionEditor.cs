@@ -11,10 +11,10 @@ namespace CslaGenerator.Design
     /// <summary>
     /// Generate Inline Query Collection Editor
     /// </summary>
-    public class GenerateInlineQueryCollectionEditor : UITypeEditor
+    public class GenerateInlineQueryCollectionEditor : UITypeEditor, IDisposable
     {
         private IWindowsFormsEditorService _editorService;
-        private readonly ListBox _lstCrudOperations;
+        private ListBox _lstCrudOperations;
 
         public GenerateInlineQueryCollectionEditor()
         {
@@ -86,6 +86,26 @@ namespace CslaGenerator.Design
         void LstCrudOperationsDoubleClick(object sender, EventArgs e)
         {
             _editorService.CloseDropDown();
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // dispose managed resources
+                if (_lstCrudOperations != null)
+                {
+                    _lstCrudOperations.Dispose();
+                    _lstCrudOperations = null;
+                }
+            }
+            // free native resources
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

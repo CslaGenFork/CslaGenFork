@@ -10,7 +10,7 @@ namespace CslaGenerator.Design
     /// <summary>
     /// Summary description for AssemblyRulesFileNameEditor.
     /// </summary>
-    public class AssemblyRulesFileNameEditor : FileNameEditor
+    public class AssemblyRulesFileNameEditor : FileNameEditor, IDisposable
     {
         private OpenFileDialog _fileDialog;
 
@@ -35,6 +35,26 @@ namespace CslaGenerator.Design
             GeneratorController.Current.RulesDirectory = _fileDialog.FileName.Substring(0, _fileDialog.FileName.LastIndexOf('\\'));
             ConfigTools.SharedAppConfigChange("RulesDirectory", GeneratorController.Current.RulesDirectory); 
             return _fileDialog.FileName;
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // dispose managed resources
+                if (_fileDialog != null)
+                {
+                    _fileDialog.Dispose();
+                    _fileDialog = null;
+                }
+            }
+            // free native resources
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

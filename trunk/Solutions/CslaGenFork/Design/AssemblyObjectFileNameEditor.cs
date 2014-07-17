@@ -1,6 +1,5 @@
 using System;
 using System.ComponentModel;
-using System.Drawing.Design;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using CslaGenerator.Util;
@@ -10,7 +9,7 @@ namespace CslaGenerator.Design
     /// <summary>
     /// Summary description for AssemblyObjectFileNameEditor.
     /// </summary>
-    public class AssemblyObjectFileNameEditor : FileNameEditor
+    public class AssemblyObjectFileNameEditor : FileNameEditor, IDisposable
     {
         private OpenFileDialog _fileDialog;
 
@@ -35,6 +34,26 @@ namespace CslaGenerator.Design
             GeneratorController.Current.ObjectsDirectory = _fileDialog.FileName.Substring(0, _fileDialog.FileName. LastIndexOf('\\'));
             ConfigTools.SharedAppConfigChange("ObjectsDirectory", GeneratorController.Current.ObjectsDirectory); 
             return _fileDialog.FileName;
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // dispose managed resources
+                if (_fileDialog != null)
+                {
+                    _fileDialog.Dispose();
+                    _fileDialog = null;
+                }
+            }
+            // free native resources
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }
