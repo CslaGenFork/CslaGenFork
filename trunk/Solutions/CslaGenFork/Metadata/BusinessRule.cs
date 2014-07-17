@@ -387,11 +387,11 @@ namespace CslaGenerator.Metadata
         {
             if (_assemblyFile != null && _assemblyFile != String.Empty)
             {
-                Assembly assembly = Assembly.LoadFrom(_assemblyFile);
-                Type t = assembly.GetType(_type);
+                var assembly = Assembly.LoadFrom(_assemblyFile);
+                var t = assembly.GetType(_type);
                 if (t == null)
                 {
-                    throw new Exception("Type does not exist in Assembly");
+                    throw new ArgumentException("Type does not exist in Assembly.");
                 }
                 return t;
             }
@@ -411,11 +411,14 @@ namespace CslaGenerator.Metadata
 
         public object Clone()
         {
-            var buffer = new MemoryStream();
-            var ser = new XmlSerializer(typeof(BusinessRule));
-            ser.Serialize(buffer, this);
-            buffer.Position = 0;
-            var result = (BusinessRule)ser.Deserialize(buffer);
+            BusinessRule result;
+            using (var buffer = new MemoryStream())
+            {
+                var ser = new XmlSerializer(typeof(BusinessRule));
+                ser.Serialize(buffer, this);
+                buffer.Position = 0;
+                result = (BusinessRule) ser.Deserialize(buffer);
+            }
             return result;
         }
     }
