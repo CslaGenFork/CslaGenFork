@@ -51,28 +51,30 @@ namespace CslaGenerator.Util.PropertyBags
             var attributes = new Hashtable();
             try 
             {
-                var reader = new XmlTextReader(xmlFile);
-                var key = "";
-                var value = "";
-                while (reader.Read()) 
+                using (var reader = new XmlTextReader(xmlFile))
                 {
-                    if ((reader.NodeType == XmlNodeType.Element) && reader.HasAttributes)
+                    var key = "";
+                    var value = "";
+                    while (reader.Read()) 
                     {
-
-                        for (int i = 0; i < reader.AttributeCount; i++) 
+                        if ((reader.NodeType == XmlNodeType.Element) && reader.HasAttributes)
                         {
-                            if (reader.Value == "NameValueList:ObjectType") 
+
+                            for (int i = 0; i < reader.AttributeCount; i++) 
                             {
-                                Debug.WriteLine("abcdef");
+                                if (reader.Value == "NameValueList:ObjectType") 
+                                {
+                                    Debug.WriteLine("abcdef");
+                                }
+                                reader.MoveToFirstAttribute();
+                                key = reader.Value;
+                                reader.MoveToNextAttribute();
+                                value = reader.Value;
                             }
-                            reader.MoveToFirstAttribute();
-                            key = reader.Value;
-                            reader.MoveToNextAttribute();
-                            value = reader.Value;
+                            attributes.Add(key, value);
+                            if (value.Length == 0)
+                                Debug.WriteLine("zero");
                         }
-                        attributes.Add(key, value);
-                        if (value.Length == 0)
-                            Debug.WriteLine("zero");
                     }
                 }
                 return attributes;
@@ -82,6 +84,7 @@ namespace CslaGenerator.Util.PropertyBags
                 return attributes;
             }
         }
+
         // should "cslaobject:property" be shown in propertygrid?
         public bool ShowProperty(string cslaobjectType, string property)
         {
