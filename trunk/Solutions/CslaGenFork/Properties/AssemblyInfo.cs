@@ -1,5 +1,5 @@
+using System;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 //
@@ -12,9 +12,10 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("CslaGenFork Project")]
 [assembly: AssemblyProduct("Csla Generator Fork")]
-[assembly: AssemblyCopyright("Copyright © CslaGen Project 2007, 2009\r\nCopyright © Tiago Freitas Leal 2009, 2013")]
+[assembly: AssemblyCopyright("Copyright © CslaGen Project 2007, 2009\r\nCopyright © Tiago Freitas Leal 2009, 2014")]
 [assembly: AssemblyTrademark("All Rights Reserved.")]
 [assembly: AssemblyCulture("")]
+[assembly: CLSCompliant(false)]
 
 //
 // Version information for an assembly consists of the following four values:
