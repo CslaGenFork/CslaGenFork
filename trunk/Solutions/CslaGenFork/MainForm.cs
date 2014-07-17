@@ -179,10 +179,11 @@ namespace CslaGenerator
                 return;
 
             // Construct an Icon.
-            var icon1 = new Icon(SystemIcons.Shield, 16, 16);
-
-            // Call ToBitmap to convert it.
-            Bitmap bmp = icon1.ToBitmap();
+            Bitmap bmp;
+            using (var icon1 = new Icon(SystemIcons.Shield, 16, 16))
+            {
+                bmp = icon1.ToBitmap();
+            }
 
             // Draw the bitmap.
             e.Graphics.DrawImage(bmp, new Point(5, 3));
@@ -336,14 +337,16 @@ namespace CslaGenerator
                 pluginsToolStripMenuItem.Visible = false;
                 return;
             }
-            foreach (ISimplePlugin plugin in _plugins)
+            foreach (var plugin in _plugins)
             {
-                foreach (ScriptCommandInfo cmd in plugin.GetCommands())
+                foreach (var cmd in plugin.GetCommands())
                 {
-                    var pluginMenu = new ToolStripMenuItem(cmd.CommandTitle);
-                    pluginMenu.Tag = cmd;
-                    pluginMenu.Click += PluginMenuClick;
-                    pluginsToolStripMenuItem.DropDownItems.Add(pluginMenu);
+                    using (var pluginMenu = new ToolStripMenuItem(cmd.CommandTitle))
+                    {
+                        pluginMenu.Tag = cmd;
+                        pluginMenu.Click += PluginMenuClick;
+                        pluginsToolStripMenuItem.DropDownItems.Add(pluginMenu);
+                    }
                 }
             }
         }
@@ -1458,24 +1461,26 @@ namespace CslaGenerator
 
         private void LocateToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var tDirDialog = new FolderBrowserDialog();
-            tDirDialog.Description = @"Current folder location of the CslaGenFork templates is:" + Environment.NewLine +
-                                     _controller.TemplatesDirectory + Environment.NewLine +
-                                     @"Select a new folder location and press OK.";
-            tDirDialog.ShowNewFolderButton = false;
-            if (!string.IsNullOrEmpty(_controller.TemplatesDirectory))
-                tDirDialog.SelectedPath = _controller.TemplatesDirectory;
-            else
-                tDirDialog.RootFolder = Environment.SpecialFolder.Desktop;
-
-            DialogResult dialogResult = tDirDialog.ShowDialog();
-            if (dialogResult == DialogResult.OK)
+            using (var tDirDialog = new FolderBrowserDialog())
             {
-                string tdir = tDirDialog.SelectedPath;
-                if (tDirDialog.SelectedPath.LastIndexOf('\\') != tDirDialog.SelectedPath.Length - 1)
-                    tdir += @"\";
-                _controller.TemplatesDirectory = tdir;
-                ConfigTools.SharedAppConfigChange("TemplatesDirectory", _controller.TemplatesDirectory);
+                tDirDialog.Description = @"Current folder location of the CslaGenFork templates is:" + Environment.NewLine +
+                                         _controller.TemplatesDirectory + Environment.NewLine +
+                                         @"Select a new folder location and press OK.";
+                tDirDialog.ShowNewFolderButton = false;
+                if (!string.IsNullOrEmpty(_controller.TemplatesDirectory))
+                    tDirDialog.SelectedPath = _controller.TemplatesDirectory;
+                else
+                    tDirDialog.RootFolder = Environment.SpecialFolder.Desktop;
+
+                DialogResult dialogResult = tDirDialog.ShowDialog();
+                if (dialogResult == DialogResult.OK)
+                {
+                    string tdir = tDirDialog.SelectedPath;
+                    if (tDirDialog.SelectedPath.LastIndexOf('\\') != tDirDialog.SelectedPath.Length - 1)
+                        tdir += @"\";
+                    _controller.TemplatesDirectory = tdir;
+                    ConfigTools.SharedAppConfigChange("TemplatesDirectory", _controller.TemplatesDirectory);
+                }
             }
         }
 

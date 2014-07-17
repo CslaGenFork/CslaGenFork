@@ -315,11 +315,14 @@ namespace CslaGenerator.Metadata
 
         public AssociativeEntity Duplicate(ICatalog catalog)
         {
-            var buffer = new MemoryStream();
-            var ser = new XmlSerializer(typeof(AssociativeEntity));
-            ser.Serialize(buffer, this);
-            buffer.Position = 0;
-            var duplicate = (AssociativeEntity)ser.Deserialize(buffer);
+            AssociativeEntity duplicate;
+            using (var buffer = new MemoryStream())
+            {
+                var ser = new XmlSerializer(typeof(AssociativeEntity));
+                ser.Serialize(buffer, this);
+                buffer.Position = 0;
+                duplicate = (AssociativeEntity) ser.Deserialize(buffer);
+            }
             return duplicate;
         }
 

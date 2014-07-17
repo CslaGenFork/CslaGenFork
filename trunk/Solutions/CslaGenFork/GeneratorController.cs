@@ -28,7 +28,7 @@ namespace CslaGenerator
         /// Command line arguments.  First arg can be a filename to load.
         /// </param>
         [STAThread]
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             var controller = new GeneratorController();
             controller.MainForm.Closing += controller.GeneratorFormClosing;
@@ -82,9 +82,24 @@ namespace CslaGenerator
             _mainForm.formSizePosition.RestoreFormSizePosition();
         }
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // dispose managed resources
+                if (_mainForm != null)
+                {
+                    _mainForm.Dispose();
+                    _mainForm = null;
+                }
+            }
+            // free native resources
+        }
+
         public void Dispose()
         {
-
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>
@@ -183,8 +198,11 @@ namespace CslaGenerator
 
         internal void Connect()
         {
-            var frmConn = new ConnectionForm();
-            var result = frmConn.ShowDialog();
+            DialogResult result;
+            using (var frmConn = new ConnectionForm())
+            {
+                result = frmConn.ShowDialog();
+            }
             if (result == DialogResult.OK)
             {
                 Cursor.Current = Cursors.WaitCursor;
@@ -217,14 +235,20 @@ namespace CslaGenerator
                     catch (InvalidOperationException exception)
                     {
                         if (exception.InnerException == null)
+                        {
+                            if (fs != null)
+                                fs.Close();
                             throw;
+                        }
 
-                        if (fs != null)
-                            fs.Close();
-                        string[] fileLines = File.ReadAllLines(filePath);
+                        var fileLines = File.ReadAllLines(filePath);
                         var fileVersion = FileVersion.ExtractFileVersion(fileLines);
                         if (fileVersion == FileVersion.CurrentFileVersion)
+                        {
+                            if (fs != null)
+                                fs.Close();
                             throw;
+                        }
 
                         fileLines = FileVersion.HandleFileVersion(fileVersion, fileLines);
                         File.WriteAllLines(filePath, fileLines);
@@ -310,7 +334,8 @@ namespace CslaGenerator
             finally
             {
                 Cursor.Current = Cursors.Default;
-                fs.Close();
+                if (fs != null)
+                    fs.Close();
             }
 
             LoadProjectLayout(filePath);
@@ -333,10 +358,11 @@ namespace CslaGenerator
             filePath = ExtractPathWithoutExtension(filePath) + ".Layout";
             if (File.Exists(filePath))
             {
-                var fs = File.Open(filePath, FileMode.Open);
-                var xml = new XmlSerializer(typeof(CslaGeneratorUnitLayout));
-                CurrentUnitLayout = (CslaGeneratorUnitLayout)xml.Deserialize(fs);
-                fs.Close();
+                using (var fs = File.Open(filePath, FileMode.Open))
+                {
+                    var xml = new XmlSerializer(typeof(CslaGeneratorUnitLayout));
+                    CurrentUnitLayout = (CslaGeneratorUnitLayout)xml.Deserialize(fs);
+                }
 
                 MainForm.SetProjectState();
             }
@@ -378,7 +404,7 @@ namespace CslaGenerator
                 return;
 
             FileStream fs = null;
-            var tempFile = Path.GetTempPath() + Guid.NewGuid().ToString() + ".cslagenerator";
+            var tempFile = Path.GetTempPath() + Guid.NewGuid() + ".cslagenerator";
             var success = false;
             try
             {
@@ -398,6 +424,7 @@ namespace CslaGenerator
                 if (fs != null)
                     fs.Close();
             }
+
             if (success)
             {
                 File.Delete(filePath);
@@ -552,7 +579,7 @@ namespace CslaGenerator
             //frmGenerator.SelectDirectoryButton.Enabled = true;
         }
 
-        private string GetFileNameWithoutExtension(string fileName)
+        /*private string GetFileNameWithoutExtension(string fileName)
         {
             var index = fileName.LastIndexOf(".");
             if (index >= 0)
@@ -597,7 +624,7 @@ namespace CslaGenerator
                 default:
                     return String.Empty;
             }
-        }
+        }*/
 
         #endregion
 

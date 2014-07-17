@@ -174,8 +174,10 @@ namespace CslaGenerator.Controls
                 return;
 
             e.DrawBackground();
-            var b = new SolidBrush(e.ForeColor);
-            e.Graphics.DrawString(GetCurrentViewItems()[e.Index].ObjectName, e.Font, b, e.Bounds);
+            using (var brush = new SolidBrush(e.ForeColor))
+            {
+                e.Graphics.DrawString(GetCurrentViewItems()[e.Index].ObjectName, e.Font, brush, e.Bounds);
+            }
             e.DrawFocusRectangle();
         }
 
