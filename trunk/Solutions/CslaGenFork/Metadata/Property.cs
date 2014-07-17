@@ -162,11 +162,13 @@ namespace CslaGenerator.Metadata
 
         public virtual object Clone()
         {
-            var buffer = new MemoryStream();
-            var ser = new XmlSerializer(typeof(Property));
-            ser.Serialize(buffer, this);
-            buffer.Position = 0;
-            return ser.Deserialize(buffer);
+            using (var buffer = new MemoryStream())
+            {
+                var ser = new XmlSerializer(typeof(Property));
+                ser.Serialize(buffer, this);
+                buffer.Position = 0;
+                return ser.Deserialize(buffer);
+            }
         }
 
         public virtual void Clone(Property prop)
