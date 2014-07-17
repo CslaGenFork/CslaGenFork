@@ -19,9 +19,9 @@ namespace CslaGenerator
             lblAssyVersion.Text = Assembly.GetExecutingAssembly().FullName.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries)[1].Replace("=", " ");
             lblAssyVersion.Text += @" (Final)";
         }
-        
+
         private T GetAttr<T>() {            
-            return ((T)Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(T), false)[0]);
+            return ((T) Assembly.GetExecutingAssembly().GetCustomAttributes(typeof (T), false)[0]);
         }
 
         /*private string GetVersion() {
