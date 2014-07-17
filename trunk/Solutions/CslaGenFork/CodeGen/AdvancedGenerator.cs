@@ -1249,20 +1249,20 @@ namespace CslaGenerator.CodeGen
             if (!_templates.ContainsKey(templatePath))
             {
                 if (!File.Exists(templatePath))
-                    throw new ApplicationException("The specified template could not be found: " + templatePath);
+                    throw new FileNotFoundException("The specified template could not be found: " + templatePath);
 
                 compiler = new CodeTemplateCompiler(templatePath);
                 compiler.Compile();
                 _templates.Add(templatePath, compiler);
 
                 var sb = new StringBuilder();
-                for (int i = 0; i < compiler.Errors.Count; i++)
+                for (var i = 0; i < compiler.Errors.Count; i++)
                 {
                     sb.Append(compiler.Errors[i].ToString());
                     sb.Append(Environment.NewLine);
                 }
                 if (compiler.Errors.Count > 0)
-                    throw new Exception(string.Format(
+                    throw new InvalidOperationException(string.Format(
                         "Template {0} failed to compile. Objects of the same type will be ignored.",
                         templatePath) + Environment.NewLine + sb);
             }
@@ -1697,7 +1697,7 @@ namespace CslaGenerator.CodeGen
             {
                 if (dir.StartsWith(@"\\"))
                 {
-                    throw new ApplicationException("Illegal path: UNC paths are not supported.");
+                    throw new ArgumentException("Illegal path: UNC paths are not supported.");
                 }
                 // Recursion
                 // If this folder doesn't exists, check the parent folder
@@ -1706,7 +1706,7 @@ namespace CslaGenerator.CodeGen
                     dir = dir.Substring(0, dir.Length - 1);
                 }
                 else if (dir.IndexOf(@"\") == -1)
-                    throw new ApplicationException(string.Format("The output path could not be created. Check that the \"{0}\" unit exists.", dir));
+                    throw new ArgumentException(string.Format("The output path could not be created. Check that the \"{0}\" unit exists.", dir));
 
                 try
                 {
