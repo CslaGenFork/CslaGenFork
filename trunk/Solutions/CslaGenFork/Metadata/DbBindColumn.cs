@@ -16,9 +16,9 @@ namespace CslaGenerator.Metadata
         private ColumnOriginType _columnOriginType = ColumnOriginType.None;
 
         // these fields are used to serialize the column name so it can be loaded from a schema
-        private readonly string _tableName = String.Empty;
-        private readonly string _viewName = String.Empty;
-        private readonly string _spName = String.Empty;
+        //private readonly string _tableName = String.Empty;
+        //private readonly string _viewName = String.Empty;
+        //private readonly string _spName = String.Empty;
         private int _spResultSetIndex;
         private string _columnName = String.Empty;
         private DbType _dataType = DbType.String;

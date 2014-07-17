@@ -309,7 +309,7 @@ namespace CslaGenerator.Metadata
             get { return _objectType; }
             set
             {
-                CslaObjectType temp = _objectType;
+                var temp = _objectType;
                 _objectType = value;
                 if (_inheritedType.Type != String.Empty)
                 {
@@ -1672,11 +1672,14 @@ namespace CslaGenerator.Metadata
 
         public CslaObjectInfo Duplicate(ICatalog catalog)
         {
-            var buffer = new MemoryStream();
-            var ser = new XmlSerializer(typeof(CslaObjectInfo));
-            ser.Serialize(buffer, this);
-            buffer.Position = 0;
-            var duplicate = (CslaObjectInfo)ser.Deserialize(buffer);
+            CslaObjectInfo duplicate;
+            using (var buffer = new MemoryStream())
+            {
+                var ser = new XmlSerializer(typeof(CslaObjectInfo));
+                ser.Serialize(buffer, this);
+                buffer.Position = 0;
+                duplicate = (CslaObjectInfo) ser.Deserialize(buffer);
+            }
             if (catalog != null)
             {
                 duplicate.LoadColumnInfo(catalog);
