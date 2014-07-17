@@ -50,7 +50,7 @@ namespace CslaGenerator.Metadata
             }
             else
             {
-                throw new Exception(mainObject + " isn't a suitable object for this builder.");
+                throw new ArgumentOutOfRangeException("mainObject", mainObject, mainObject + " isn't a suitable object for this builder.");
             }
         }
 
@@ -101,12 +101,12 @@ namespace CslaGenerator.Metadata
                 }
                 else
                 {
-                    throw new Exception(secondaryObject + " isn't a suitable object for this builder.");
+                    throw new ArgumentOutOfRangeException("secondaryObject", secondaryObject, secondaryObject + " isn't a suitable object for this builder.");
                 }
             }
             else
             {
-                throw new Exception(mainObject + " isn't a suitable object for this builder.");
+                throw new ArgumentOutOfRangeException("mainObject", mainObject, mainObject + " isn't a suitable object for this builder.");
             }
         }
 
