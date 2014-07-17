@@ -21,57 +21,65 @@ namespace CslaGenerator.Controls
         private NewObjectProperties AssignList(List<ObjectProperty> list)
         {
             _propertyList = list;
-            for (int i = 0; i < list.Count; i++)
+            for (var i = 0; i < list.Count; i++)
             {
                 var objectProp = list[i];
-                var lbl = new Label();
-                lbl.Text = PropertyHelper.SplitOnCaps(objectProp.PropertyName);
-                lbl.Size = new Size(165, 20);
-                lbl.Padding = new Padding(3, 6, 0, 0);
-                if (objectProp.PropertyName == "ParentType")
+                using (var lbl = new Label())
                 {
-                    var combo = new ComboBox();
-                    combo.Name = objectProp.PropertyName;
-                    combo.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-                    combo.Items.AddRange(objectProp.ResultValueList);
-                    combo.AutoCompleteSource = AutoCompleteSource.ListItems;
-                    combo.Tag = objectProp.PropertyName;
-                    combo.Dock = DockStyle.Fill;
-                    combo.TabIndex = i;
-                    combo.DataBindings.Add("Text", objectProp, "PropertyValue", false, DataSourceUpdateMode.OnValidation);
-                    tableLayoutPanel.Controls.Add(lbl, 0, i);
-                    tableLayoutPanel.Controls.Add(combo, 1, i);
-                }
-                else if (objectProp.PropertyName == "ParentProperties")
-                {
-                    var lstBox = new ListBox();
-                    lstBox.Enabled = false;
-                    lstBox.Name = objectProp.PropertyName;
-                    lstBox.Items.AddRange(objectProp.ResultValueList);
-                    lstBox.Tag = objectProp.PropertyName;
-                    lstBox.Dock = DockStyle.Fill;
-                    lstBox.TabIndex = i;
-                    lstBox.DataBindings.Add("SelectedItem", objectProp, "PropertyValue", false, DataSourceUpdateMode.OnValidation);
-                    lstBox.SelectionMode = SelectionMode.MultiExtended;
-                    lstBox.Validating += ListBox_Validating;
-                    tableLayoutPanel.Controls.Add(lbl, 0, i);
-                    tableLayoutPanel.Controls.Add(lstBox, 1, i);
-                }
-                else
-                {
-                    var tBox = new TextBox();
-                    tBox.Name = objectProp.PropertyName;
-                    tBox.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-                    tBox.AutoCompleteCustomSource.AddRange(objectProp.ResultValueList);
-                    tBox.AutoCompleteSource = AutoCompleteSource.CustomSource;
-                    tBox.Tag = objectProp.PropertyName;
-                    tBox.Dock = DockStyle.Fill;
-                    tBox.TabIndex = i;
-                    tBox.DataBindings.Add("Text", objectProp, "PropertyValue", false, DataSourceUpdateMode.OnValidation);
-                    tableLayoutPanel.Controls.Add(lbl, 0, i);
-                    tableLayoutPanel.Controls.Add(tBox, 1, i);
-                    if (i == 0)
-                        ActiveControl = tBox;
+                    lbl.Text = PropertyHelper.SplitOnCaps(objectProp.PropertyName);
+                    lbl.Size = new Size(165, 20);
+                    lbl.Padding = new Padding(3, 6, 0, 0);
+                    if (objectProp.PropertyName == "ParentType")
+                    {
+                        using (var combo = new ComboBox())
+                        {
+                            combo.Name = objectProp.PropertyName;
+                            combo.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+                            combo.Items.AddRange(objectProp.ResultValueList);
+                            combo.AutoCompleteSource = AutoCompleteSource.ListItems;
+                            combo.Tag = objectProp.PropertyName;
+                            combo.Dock = DockStyle.Fill;
+                            combo.TabIndex = i;
+                            combo.DataBindings.Add("Text", objectProp, "PropertyValue", false, DataSourceUpdateMode.OnValidation);
+                            tableLayoutPanel.Controls.Add(lbl, 0, i);
+                            tableLayoutPanel.Controls.Add(combo, 1, i);
+                        }
+                    }
+                    else if (objectProp.PropertyName == "ParentProperties")
+                    {
+                        using (var lstBox = new ListBox())
+                        {
+                            lstBox.Enabled = false;
+                            lstBox.Name = objectProp.PropertyName;
+                            lstBox.Items.AddRange(objectProp.ResultValueList);
+                            lstBox.Tag = objectProp.PropertyName;
+                            lstBox.Dock = DockStyle.Fill;
+                            lstBox.TabIndex = i;
+                            lstBox.DataBindings.Add("SelectedItem", objectProp, "PropertyValue", false, DataSourceUpdateMode.OnValidation);
+                            lstBox.SelectionMode = SelectionMode.MultiExtended;
+                            lstBox.Validating += ListBox_Validating;
+                            tableLayoutPanel.Controls.Add(lbl, 0, i);
+                            tableLayoutPanel.Controls.Add(lstBox, 1, i);
+                        }
+                    }
+                    else
+                    {
+                        using (var tBox = new TextBox())
+                        {
+                            tBox.Name = objectProp.PropertyName;
+                            tBox.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+                            tBox.AutoCompleteCustomSource.AddRange(objectProp.ResultValueList);
+                            tBox.AutoCompleteSource = AutoCompleteSource.CustomSource;
+                            tBox.Tag = objectProp.PropertyName;
+                            tBox.Dock = DockStyle.Fill;
+                            tBox.TabIndex = i;
+                            tBox.DataBindings.Add("Text", objectProp, "PropertyValue", false, DataSourceUpdateMode.OnValidation);
+                            tableLayoutPanel.Controls.Add(lbl, 0, i);
+                            tableLayoutPanel.Controls.Add(tBox, 1, i);
+                            if (i == 0)
+                                ActiveControl = tBox;
+                        }
+                    }
                 }
             }
 

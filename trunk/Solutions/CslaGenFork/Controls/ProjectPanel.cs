@@ -107,25 +107,27 @@ namespace CslaGenerator.Controls
 
         private void textboxPlusBtn_ButtonClicked(object sender, EventArgs e)
         {
-            var fBrowser = new FolderBrowserDialog();
-            fBrowser.Description = @"Please choose an output folder for the generated code.";
-
-            if (textboxPlusBtn.TextBox.Text.Trim().Length != 0)
+            using (var fBrowser = new FolderBrowserDialog())
             {
-                try
-                {
-                    fBrowser.SelectedPath = textboxPlusBtn.TextBox.Text;
-                }
-                catch
-                {
-                }
+                fBrowser.Description = @"Please choose an output folder for the generated code.";
 
-            }
-            fBrowser.ShowNewFolderButton = true;
-            if (fBrowser.ShowDialog() == DialogResult.OK)
-            {
-                textboxPlusBtn.TextBox.Text = fBrowser.SelectedPath;
-                OnTargetDirChanged(textboxPlusBtn.TextBox.Text);
+                if (textboxPlusBtn.TextBox.Text.Trim().Length != 0)
+                {
+                    try
+                    {
+                        fBrowser.SelectedPath = textboxPlusBtn.TextBox.Text;
+                    }
+                    catch
+                    {
+                    }
+
+                }
+                fBrowser.ShowNewFolderButton = true;
+                if (fBrowser.ShowDialog() == DialogResult.OK)
+                {
+                    textboxPlusBtn.TextBox.Text = fBrowser.SelectedPath;
+                    OnTargetDirChanged(textboxPlusBtn.TextBox.Text);
+                }
             }
         }
 
@@ -269,8 +271,10 @@ namespace CslaGenerator.Controls
             }
             else
             {
-                Brush b = new SolidBrush(e.ForeColor);
-                e.Graphics.DrawString(_currentView[e.Index].ObjectName, e.Font, b, e.Bounds);
+                using (var brush = new SolidBrush(e.ForeColor))
+                {
+                    e.Graphics.DrawString(_currentView[e.Index].ObjectName, e.Font, brush, e.Bounds);
+                }
             }
             e.DrawFocusRectangle();
         }

@@ -167,20 +167,22 @@ namespace CslaGenerator.Controls
 
         private void CmdExportClick(object sender, EventArgs e)
         {
-            var fileSave = new OpenFileDialog();
-            fileSave.Title = @"Export project settings - Select an existing file or type a new file name";
-            fileSave.Filter = @"CSLA Gen files (*.xml) | *.xml";
-            fileSave.DefaultExt = "xml";
-            fileSave.Multiselect = false;
-            fileSave.CheckFileExists = false;
-            fileSave.CheckPathExists = true;
-            fileSave.AddExtension = true;
-            DialogResult result = fileSave.ShowDialog(this);
-            if (result != DialogResult.OK)
-                return;
+            using (var fileSave = new OpenFileDialog())
+            {
+                fileSave.Title = @"Export project settings - Select an existing file or type a new file name";
+                fileSave.Filter = @"CSLA Gen files (*.xml) | *.xml";
+                fileSave.DefaultExt = "xml";
+                fileSave.Multiselect = false;
+                fileSave.CheckFileExists = false;
+                fileSave.CheckPathExists = true;
+                fileSave.AddExtension = true;
+                var result = fileSave.ShowDialog(this);
+                if (result != DialogResult.OK)
+                    return;
 
-            Application.DoEvents();
-            ExportParams(fileSave.FileName);
+                Application.DoEvents();
+                ExportParams(fileSave.FileName);
+            }
         }
 
         private void CmdGetDefaultClick(object sender, EventArgs e)
@@ -200,19 +202,21 @@ namespace CslaGenerator.Controls
 
         private void CmdImportClick(object sender, EventArgs e)
         {
-            var fileLoad = new OpenFileDialog();
-            fileLoad.Title = @"Import project settings - Select an existing file";
-            fileLoad.Filter = @"CSLA Gen files (*.xml) | *.xml";
-            fileLoad.DefaultExt = "xml";
-            fileLoad.CheckFileExists = true;
-            fileLoad.CheckPathExists = true;
-            fileLoad.Multiselect = false;
-            var result = fileLoad.ShowDialog(this);
-            if (result != DialogResult.OK)
-                return;
+            using (var fileLoad = new OpenFileDialog())
+            {
+                fileLoad.Title = @"Import project settings - Select an existing file";
+                fileLoad.Filter = @"CSLA Gen files (*.xml) | *.xml";
+                fileLoad.DefaultExt = "xml";
+                fileLoad.CheckFileExists = true;
+                fileLoad.CheckPathExists = true;
+                fileLoad.Multiselect = false;
+                var result = fileLoad.ShowDialog(this);
+                if (result != DialogResult.OK)
+                    return;
 
-            Application.DoEvents();
-            ImportParams(fileLoad.FileName);
+                Application.DoEvents();
+                ImportParams(fileLoad.FileName);
+            }
         }
 
         private void ImportParams(string filename)

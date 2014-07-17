@@ -578,16 +578,18 @@ namespace CslaGenerator.Controls
             if (_currentCslaObject != null)
                 foreach (ValueProperty prop in _currentCslaObject.InheritedValueProperties)
                 {
-                    var mnu = new ToolStripMenuItem();
-                    mnu.Text = prop.Name;
-                    if (prop.DbBindColumn.ColumnOriginType == ColumnOriginType.None)
-                        mnu.Text += @" (ASSIGN)";
-                    else
-                        mnu.Text += @" (UPDATE)";
-                    mnu.Click += addInheritedValuePropertyToolStripMenuItem_DropDownItemClicked;
-                    mnu.Checked = (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None);
-                    mnu.Tag = prop.Name;
-                    addInheritedValuePropertyToolStripMenuItem.DropDownItems.Add(mnu);
+                    using (var mnu = new ToolStripMenuItem())
+                    {
+                        mnu.Text = prop.Name;
+                        if (prop.DbBindColumn.ColumnOriginType == ColumnOriginType.None)
+                            mnu.Text += @" (ASSIGN)";
+                        else
+                            mnu.Text += @" (UPDATE)";
+                        mnu.Click += addInheritedValuePropertyToolStripMenuItem_DropDownItemClicked;
+                        mnu.Checked = (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None);
+                        mnu.Tag = prop.Name;
+                        addInheritedValuePropertyToolStripMenuItem.DropDownItems.Add(mnu);
+                    }
                 }
             addInheritedValuePropertyToolStripMenuItem.Enabled = (addInheritedValuePropertyToolStripMenuItem.DropDownItems.Count > 0);
         }
@@ -888,11 +890,13 @@ namespace CslaGenerator.Controls
             c.Name = name;
             c.Properties.AddRange(cols);
             c.SetSprocNames();
-            var frm = new Design.ObjectEditorForm();
-            frm.ObjectToEdit = c;
-            frm.StartPosition = FormStartPosition.CenterScreen;
-            if (frm.ShowDialog() == DialogResult.OK)
-                _currentCslaObject.CriteriaObjects.Add(c);
+            using (var frm = new Design.ObjectEditorForm())
+            {
+                frm.ObjectToEdit = c;
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                if (frm.ShowDialog() == DialogResult.OK)
+                    _currentCslaObject.CriteriaObjects.Add(c);
+            }
         }
 
         #endregion

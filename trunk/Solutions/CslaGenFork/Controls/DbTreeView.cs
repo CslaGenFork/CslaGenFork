@@ -245,18 +245,20 @@ namespace CslaGenerator.Controls
         private void DbTreeView_Load(object sender, EventArgs e)
         {
             treeViewSchema.Height = (int)((double)0.75 * (double)this.panelBody.Height);
-
         }
 
-        Image Convert(Image orig)
+        private Image Convert(Image orig)
         {
-            Bitmap n = new Bitmap(16, 16, System.Drawing.Imaging.PixelFormat.Format32bppRgb);
-            using (Graphics g = Graphics.FromImage(n))
+            using (var image = new Bitmap(16, 16, System.Drawing.Imaging.PixelFormat.Format32bppRgb))
             {
-                g.DrawImage(orig, 0, 0);
+                using (Graphics g = Graphics.FromImage(image))
+                {
+                    g.DrawImage(orig, 0, 0);
+                }
+                return image;
             }
-            return n;
         }
+
         internal void SetDbTreeViewPctHeight(double pct)
         {
             if (pct > 0 && pct < 100)
@@ -265,6 +267,7 @@ namespace CslaGenerator.Controls
                 Invalidate();
             }
         }
+
         private void treeViewSchema_AfterSelect(object sender, TreeViewEventArgs e)
         {
             PropertyGridDbObjects.SelectedObject = e.Node.Tag;
@@ -311,7 +314,7 @@ namespace CslaGenerator.Controls
             treeViewSchema.ImageList = schemaImages;
             if (showColumns)
             {
-                TreeNode emptyNode = new TreeNode("None");
+                var emptyNode = new TreeNode("None");
                 emptyNode.ImageIndex = (int)TreeViewIcons.field;
                 emptyNode.SelectedImageIndex = (int)TreeViewIcons.field;
                 TreeViewSchema.Nodes.Add(emptyNode);
@@ -459,7 +462,7 @@ namespace CslaGenerator.Controls
                         AddColumns(rNode, obj.ResultSets[j].Columns);
                 }
             }
-            var procName = string.Empty;
+            //var procName = string.Empty;
             node.Nodes.Clear();
             node.Text = GetObjectName(obj);
             node.Tag = obj;
