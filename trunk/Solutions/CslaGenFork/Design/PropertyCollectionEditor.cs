@@ -13,10 +13,10 @@ namespace CslaGenerator.Design
     /// <summary>
     /// Used by HashcodeProperty, EqualsProperty, ToStringProperty
     /// </summary>
-    public class PropertyCollectionEditor : UITypeEditor
+    public class PropertyCollectionEditor : UITypeEditor, IDisposable
     {
         private IWindowsFormsEditorService _editorService;
-        private readonly ListBox _lstProperties;
+        private ListBox _lstProperties;
 
         public PropertyCollectionEditor()
         {
@@ -121,6 +121,26 @@ namespace CslaGenerator.Design
         void LstPropertiesDoubleClick(object sender, EventArgs e)
         {
             _editorService.CloseDropDown();
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // dispose managed resources
+                if (_lstProperties != null)
+                {
+                    _lstProperties.Dispose();
+                    _lstProperties = null;
+                }
+            }
+            // free native resources
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

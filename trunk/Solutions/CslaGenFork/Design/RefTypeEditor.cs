@@ -11,10 +11,10 @@ using CslaGenerator.Util;
 
 namespace CslaGenerator.Design
 {
-    public class RefTypeEditor : UITypeEditor
+    public class RefTypeEditor : UITypeEditor, IDisposable
     {
         private IWindowsFormsEditorService _editorService;
-        private readonly ListBox _lstProperties;
+        private ListBox _lstProperties;
         private Type _instance;
         private List<Type> _types;
 
@@ -114,6 +114,26 @@ namespace CslaGenerator.Design
             {
                 _editorService.CloseDropDown();
             }
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // dispose managed resources
+                if (_lstProperties != null)
+                {
+                    _lstProperties.Dispose();
+                    _lstProperties = null;
+                }
+            }
+            // free native resources
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

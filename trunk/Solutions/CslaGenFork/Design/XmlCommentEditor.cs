@@ -16,10 +16,6 @@ namespace CslaGenerator.Design
     {
         private IWindowsFormsEditorService _editorService;
 
-        public XmlCommentEditor()
-        {
-        }
-
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
             if (context.Instance != null)
@@ -50,7 +46,7 @@ namespace CslaGenerator.Design
                         }
 
                         var result = string.Empty;
-                        bool first = true;
+                        var first = true;
                         foreach (var description in tableDescriptions)
                         {
                             result += (!first ? Environment.NewLine : "") + description;
@@ -65,11 +61,13 @@ namespace CslaGenerator.Design
             _editorService = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
             if (_editorService != null)
             {
-                var frmEdit = new XmlCommentEditorForm { XmlComment = (string)value };
-                var result = _editorService.ShowDialog(frmEdit);
-                if (result == DialogResult.OK)
+                using (var frmEdit = new XmlCommentEditorForm {XmlComment = (string) value})
                 {
-                    return frmEdit.XmlComment;
+                    var result = _editorService.ShowDialog(frmEdit);
+                    if (result == DialogResult.OK)
+                    {
+                        return frmEdit.XmlComment;
+                    }
                 }
 
                 return value;
