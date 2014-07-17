@@ -55,7 +55,7 @@ namespace CslaGenerator.Util.PropertyBags
             this.Name = name;
             this.TypeName = type;
             if (this.TypeName == "")
-                throw new Exception("Unable to determine PropertySpec type.");
+                throw new ArgumentException("Unable to determine PropertySpec type.");
             this.category = category;
             this.description = description;
             this.defaultValue = defaultValue;
@@ -871,8 +871,8 @@ namespace CslaGenerator.Util.PropertyBags
                 if (IsValidProperty && IsBrowsable(types.ToArray(), pi.Name))
                 {
                     // CR added missing parameters
-                    //this.Properties.Add(new PropertySpec(userfriendlyname,pi.PropertyType.AssemblyQualifiedName,category,description,defaultvalue, editor, typeconverter, mSelectedObject, pi.Name,helptopic));
-                    this.Properties.Add(new PropertySpec(userfriendlyname, pi.PropertyType.AssemblyQualifiedName, category, description, defaultvalue, editor, typeconverter, _selectedObject, pi.Name, helptopic, isreadonly, isbrowsable, designertypename, bindable));
+                    //Properties.Add(new PropertySpec(userfriendlyname,pi.PropertyType.AssemblyQualifiedName,category,description,defaultvalue, editor, typeconverter, mSelectedObject, pi.Name,helptopic));
+                    Properties.Add(new PropertySpec(userfriendlyname, pi.PropertyType.AssemblyQualifiedName, category, description, defaultvalue, editor, typeconverter, _selectedObject, pi.Name, helptopic, isreadonly, isbrowsable, designertypename, bindable));
                 }
             }
         }
@@ -1033,9 +1033,9 @@ namespace CslaGenerator.Util.PropertyBags
             object obj = null;
             Type tx;
 
-            FieldInfo[] fields;
+            //FieldInfo[] fields;
             //fields = target.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
-            fields = target.GetType().GetFields(BindingFlags.Public);
+            //fields = target.GetType().GetFields(BindingFlags.Public);
 
             tx = target.GetType();
             obj = tx.InvokeMember(name, BindingFlags.Default | BindingFlags.GetField, null, target, new object[] { });
