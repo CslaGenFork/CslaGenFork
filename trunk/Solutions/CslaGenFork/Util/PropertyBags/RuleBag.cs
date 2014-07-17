@@ -654,9 +654,9 @@ namespace CslaGenerator.Util.PropertyBags
             object obj = null;
             Type tx;
 
-            FieldInfo[] fields;
+            //FieldInfo[] fields;
             //fields = target.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
-            fields = target.GetType().GetFields(BindingFlags.Public);
+            //fields = target.GetType().GetFields(BindingFlags.Public);
 
             tx = target.GetType();
             obj = tx.InvokeMember(name, BindingFlags.Default | BindingFlags.GetField, null, target, new object[] {});
