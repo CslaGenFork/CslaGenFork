@@ -13,10 +13,10 @@ namespace CslaGenerator.Design
     /// <summary>
     /// Summary description for ParameterCollectionEditor. Used by Childproperty.LoadParameters
     /// </summary>
-    public class ParameterCollectionEditor : UITypeEditor
+    public class ParameterCollectionEditor : UITypeEditor, IDisposable
     {
         private IWindowsFormsEditorService _editorService;
-        private readonly ListBox _lstProperties;
+        private ListBox _lstProperties;
         private object _instance;
 
         public ParameterCollectionEditor()
@@ -116,6 +116,26 @@ namespace CslaGenerator.Design
         void LstPropertiesDoubleClick(object sender, EventArgs e)
         {
             _editorService.CloseDropDown();
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // dispose managed resources
+                if (_lstProperties != null)
+                {
+                    _lstProperties.Dispose();
+                    _lstProperties = null;
+                }
+            }
+            // free native resources
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }
