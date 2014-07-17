@@ -197,13 +197,13 @@ namespace CslaGenerator.Metadata
         #region Operations (type-safe IList)
 
         /// <summary>
-        ///        Gets or sets the <see cref="Property"/> at the specified index.
+        /// Gets or sets the <see cref="Property"/> at the specified index.
         /// </summary>
         /// <param name="index">The zero-based index of the element to get or set.</param>
         /// <exception cref="ArgumentOutOfRangeException">
-        ///        <para><paramref name="index"/> is less than zero</para>
-        ///        <para>-or-</para>
-        ///        <para><paramref name="index"/> is equal to or greater than <see cref="PropertyCollection.Count"/>.</para>
+        /// <para><paramref name="index"/> is less than zero</para>
+        /// <para>-or-</para>
+        /// <para><paramref name="index"/> is equal to or greater than <see cref="PropertyCollection.Count"/>.</para>
         /// </exception>
         public virtual Property this[int index]
         {
@@ -221,7 +221,7 @@ namespace CslaGenerator.Metadata
         }
 
         /// <summary>
-        ///        Adds a <see cref="Property"/> to the end of the <c>PropertyCollection</c>.
+        /// Adds a <see cref="Property"/> to the end of the <c>PropertyCollection</c>.
         /// </summary>
         /// <param name="item">The <see cref="Property"/> to be added to the end of the <c>PropertyCollection</c>.</param>
         /// <returns>The index at which the value has been added.</returns>
@@ -240,7 +240,7 @@ namespace CslaGenerator.Metadata
         }
 
         /// <summary>
-        ///        Removes all elements from the <c>PropertyCollection</c>.
+        /// Removes all elements from the <c>PropertyCollection</c>.
         /// </summary>
         public virtual void Clear()
         {
@@ -250,11 +250,11 @@ namespace CslaGenerator.Metadata
         }
 
         /// <summary>
-        ///        Creates a shallow copy of the <see cref="PropertyCollection"/>.
+        /// Creates a shallow copy of the <see cref="PropertyCollection"/>.
         /// </summary>
         public virtual object Clone()
         {
-            PropertyCollection newColl = new PropertyCollection(_count);
+            var newColl = new PropertyCollection(_count);
             Array.Copy(_array, 0, newColl._array, 0, _count);
             newColl._count = _count;
             newColl._version = _version;
@@ -263,57 +263,57 @@ namespace CslaGenerator.Metadata
         }
 
         /// <summary>
-        ///        Determines whether a given <see cref="Property"/> is in the <c>PropertyCollection</c>.
+        /// Determines whether a given <see cref="Property"/> is in the <c>PropertyCollection</c>.
         /// </summary>
         /// <param name="item">The <see cref="Property"/> to check for.</param>
         /// <returns><c>true</c> if <paramref name="item"/> is found in the <c>PropertyCollection</c>; otherwise, <c>false</c>.</returns>
         public virtual bool Contains(Property item)
         {
-            for (int i = 0; i != _count; ++i)
+            for (var i = 0; i != _count; ++i)
                 if (_array[i].Equals(item))
                     return true;
             return false;
         }
 
         /// <summary>
-        ///        Determines whether a given <see cref="Property"/> is in the <c>PropertyCollection</c>.
+        /// Determines whether a given <see cref="Property"/> is in the <c>PropertyCollection</c>.
         /// </summary>
         /// <param name="name">The property name to check for.</param>
         /// <returns><c>true</c> if <paramref name="name"/> is found in the <c>PropertyCollection</c>; otherwise, <c>false</c>.</returns>
         public virtual bool Contains(string name)
         {
-            for (int i = 0; i != _count; ++i)
+            for (var i = 0; i != _count; ++i)
                 if (CaseInsensitiveComparer.Default.Compare(_array[i].Name, name) == 0)
                     return true;
             return false;
         }
 
         /// <summary>
-        ///        Returns the zero-based index of the first occurrence of a <see cref="Property"/>
-        ///        in the <c>PropertyCollection</c>.
+        /// Returns the zero-based index of the first occurrence of a <see cref="Property"/>
+        /// in the <c>PropertyCollection</c>.
         /// </summary>
         /// <param name="item">The <see cref="Property"/> to locate in the <c>PropertyCollection</c>.</param>
         /// <returns>
-        ///        The zero-based index of the first occurrence of <paramref name="item"/>
-        ///        in the entire <c>PropertyCollection</c>, if found; otherwise, -1.
-        ///    </returns>
+        /// The zero-based index of the first occurrence of <paramref name="item"/>
+        /// in the entire <c>PropertyCollection</c>, if found; otherwise, -1.
+        /// </returns>
         public virtual int IndexOf(Property item)
         {
-            for (int i = 0; i != _count; ++i)
+            for (var i = 0; i != _count; ++i)
                 if (_array[i].Equals(item))
                     return i;
             return -1;
         }
 
         /// <summary>
-        ///        Inserts an element into the <c>PropertyCollection</c> at the specified index.
+        /// Inserts an element into the <c>PropertyCollection</c> at the specified index.
         /// </summary>
         /// <param name="index">The zero-based index at which <paramref name="item"/> should be inserted.</param>
         /// <param name="item">The <see cref="Property"/> to insert.</param>
         /// <exception cref="ArgumentOutOfRangeException">
-        ///        <para><paramref name="index"/> is less than zero</para>
-        ///        <para>-or-</para>
-        ///        <para><paramref name="index"/> is equal to or greater than <see cref="PropertyCollection.Count"/>.</para>
+        /// <para><paramref name="index"/> is less than zero</para>
+        /// <para>-or-</para>
+        /// <para><paramref name="index"/> is equal to or greater than <see cref="PropertyCollection.Count"/>.</para>
         /// </exception>
         public virtual void Insert(int index, Property item)
         {
@@ -333,11 +333,11 @@ namespace CslaGenerator.Metadata
         }
 
         /// <summary>
-        ///        Removes the first occurrence of a specific <see cref="Property"/> from the <c>PropertyCollection</c>.
+        /// Removes the first occurrence of a specific <see cref="Property"/> from the <c>PropertyCollection</c>.
         /// </summary>
         /// <param name="item">The <see cref="Property"/> to remove from the <c>PropertyCollection</c>.</param>
         /// <exception cref="ArgumentException">
-        ///        The specified <see cref="Property"/> was not found in the <c>PropertyCollection</c>.
+        /// The specified <see cref="Property"/> was not found in the <c>PropertyCollection</c>.
         /// </exception>
         public virtual void Remove(Property item)
         {
@@ -351,13 +351,13 @@ namespace CslaGenerator.Metadata
         }
 
         /// <summary>
-        ///        Removes the element at the specified index of the <c>PropertyCollection</c>.
+        /// Removes the element at the specified index of the <c>PropertyCollection</c>.
         /// </summary>
         /// <param name="index">The zero-based index of the element to remove.</param>
         /// <exception cref="ArgumentOutOfRangeException">
-        ///        <para><paramref name="index"/> is less than zero</para>
-        ///        <para>-or-</para>
-        ///        <para><paramref name="index"/> is equal to or greater than <see cref="PropertyCollection.Count"/>.</para>
+        /// <para><paramref name="index"/> is less than zero</para>
+        /// <para>-or-</para>
+        /// <para><paramref name="index"/> is equal to or greater than <see cref="PropertyCollection.Count"/>.</para>
         /// </exception>
         public virtual void RemoveAt(int index)
         {
@@ -373,13 +373,13 @@ namespace CslaGenerator.Metadata
             // We can't set the deleted entry equal to null, because it might be a value type.
             // Instead, we'll create an empty single-element array of the right type and copy it
             // over the entry we want to erase.
-            Property[] temp = new Property[1];
+            var temp = new Property[1];
             Array.Copy(temp, 0, _array, _count, 1);
             _version++;
         }
 
         /// <summary>
-        ///        Gets a value indicating whether the collection has a fixed size.
+        /// Gets a value indicating whether the collection has a fixed size.
         /// </summary>
         /// <value>true if the collection has a fixed size; otherwise, false. The default is false</value>
         public virtual bool IsFixedSize
@@ -388,7 +388,7 @@ namespace CslaGenerator.Metadata
         }
 
         /// <summary>
-        ///        gets a value indicating whether the <B>IList</B> is read-only.
+        /// Gets a value indicating whether the <B>IList</B> is read-only.
         /// </summary>
         /// <value>true if the collection is read-only; otherwise, false. The default is false</value>
         public virtual bool IsReadOnly
@@ -488,28 +488,27 @@ namespace CslaGenerator.Metadata
         #region Implementation (helpers)
 
         /// <exception cref="ArgumentOutOfRangeException">
-        ///        <para><paramref name="index"/> is less than zero</para>
-        ///        <para>-or-</para>
-        ///        <para><paramref name="index"/> is equal to or greater than <see cref="PropertyCollection.Count"/>.</para>
+        /// <para><paramref name="index"/> is less than zero</para>
+        /// <para>-or-</para>
+        /// <para><paramref name="index"/> is equal to or greater than <see cref="PropertyCollection.Count"/>.</para>
         /// </exception>
-        private void ValidateIndex(int i)
+        private void ValidateIndex(int index)
         {
-            ValidateIndex(i, false);
+            ValidateIndex(index, false);
         }
 
         /// <summary>
         /// Validates the index.
         /// </summary>
-        /// <param name="i">The i.</param>
+        /// <param name="index">The i.</param>
         /// <param name="allowEqualEnd">if set to <c>true</c> [allow equal end].</param>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        private void ValidateIndex(int i, bool allowEqualEnd)
+        private void ValidateIndex(int index, bool allowEqualEnd)
         {
             int max = (allowEqualEnd) ? (_count) : (_count - 1);
-            if (i < 0 || i > max)
-                throw new ArgumentOutOfRangeException(
-                    "Index was out of range.  Must be non-negative and less than the size of the collection.",
-                    i, "Specified argument was out of the range of valid values.");
+            if (index < 0 || index > max)
+                throw new ArgumentOutOfRangeException("index", index,
+                    "Index was out of range.  Must be non-negative and less than the size of the collection.");
         }
 
         private void EnsureCapacity(int min)
