@@ -8,10 +8,10 @@ using CslaGenerator.Util;
 
 namespace CslaGenerator.Design
 {
-    public class NVLTypeEditor : UITypeEditor
+    public class NVLTypeEditor : UITypeEditor, IDisposable
     {
         private IWindowsFormsEditorService _editorService;
-        private readonly ListBox _lstProperties;
+        private ListBox _lstProperties;
 
         public NVLTypeEditor()
         {
@@ -32,7 +32,7 @@ namespace CslaGenerator.Design
                     Type instanceType = null;
                     object objinfo = null;
                     TypeHelper.GetConvertValuePropertyContextInstanceObject(context, ref objinfo, ref instanceType);
-                    var obj = (ConvertValueProperty)objinfo;
+                    //var obj = (ConvertValueProperty)objinfo;
                     _lstProperties.Items.Clear();
                     _lstProperties.Items.Add("(None)");
                     foreach (var o in GeneratorController.Current.CurrentUnit.CslaObjects)
@@ -83,6 +83,26 @@ namespace CslaGenerator.Design
         void LstPropertiesDoubleClick(object sender, EventArgs e)
         {
             _editorService.CloseDropDown();
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // dispose managed resources
+                if (_lstProperties != null)
+                {
+                    _lstProperties.Dispose();
+                    _lstProperties = null;
+                }
+            }
+            // free native resources
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

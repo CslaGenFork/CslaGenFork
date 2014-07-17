@@ -13,10 +13,10 @@ namespace CslaGenerator.Design
     // Make this editor to work with TypeInfo.ObjectName property.
     // One possible solution would be to have shared GeneratorController.CurrentUnit property,
     // and to enumerate CslaObjects collection.
-    public class CslaObjectInfoEditor : UITypeEditor
+    public class CslaObjectInfoEditor : UITypeEditor, IDisposable
     {
         private IWindowsFormsEditorService _editorService;
-        private readonly ListBox _lstProperties;
+        private ListBox _lstProperties;
         private Type _instance;
 
         public CslaObjectInfoEditor()
@@ -90,6 +90,26 @@ namespace CslaGenerator.Design
         void LstPropertiesDoubleClick(object sender, EventArgs e)
         {
             _editorService.CloseDropDown();
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // dispose managed resources
+                if (_lstProperties != null)
+                {
+                    _lstProperties.Dispose();
+                    _lstProperties = null;
+                }
+            }
+            // free native resources
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

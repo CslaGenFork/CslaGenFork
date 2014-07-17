@@ -29,25 +29,27 @@ namespace CslaGenerator.Design
                     object objinfo = null;
                     TypeHelper.GetContextInstanceObject(context, ref objinfo, ref instanceType);
                     var obj = (IBoundProperty)objinfo;
-                    var frm = new DbBindColumnEditorForm();
-                    frm.ColumnInfo = obj.DbBindColumn.Column;
-
-                    if (_editorService.ShowDialog(frm) == DialogResult.Cancel)
-                        return value;
-
-                    var selected = frm.SelectedNode;
-                    IColumnInfo newCol = null;
-                    if (selected != null)
-                        newCol = selected.Tag as IColumnInfo;
-                    if (frm.NoneSelected)
+                    using (var frm = new DbBindColumnEditorForm())
                     {
-                        obj.DbBindColumn = new DbBindColumn();
-                    }
-                    else if (newCol != null)
-                    {
-                        var newDbc = new DbBindColumn();
-                        Controls.DbSchemaPanel.SetDbBindColumn(selected.Parent, newCol, newDbc);
-                        obj.DbBindColumn = newDbc;
+                        frm.ColumnInfo = obj.DbBindColumn.Column;
+
+                        if (_editorService.ShowDialog(frm) == DialogResult.Cancel)
+                            return value;
+
+                        var selected = frm.SelectedNode;
+                        IColumnInfo newCol = null;
+                        if (selected != null)
+                            newCol = selected.Tag as IColumnInfo;
+                        if (frm.NoneSelected)
+                        {
+                            obj.DbBindColumn = new DbBindColumn();
+                        }
+                        else if (newCol != null)
+                        {
+                            var newDbc = new DbBindColumn();
+                            Controls.DbSchemaPanel.SetDbBindColumn(selected.Parent, newCol, newDbc);
+                            obj.DbBindColumn = newDbc;
+                        }
                     }
                 }
             }
