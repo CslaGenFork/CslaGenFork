@@ -180,7 +180,7 @@ if (Info.CriteriaObjects.Count > 0)
                             strParams += ", ";
                         }
                         strParams += string.Concat(FormatCamel(prop.Name), " As ", GetDataTypeGeneric(prop, prop.PropertyType));
-                        strFieldAssignments += string.Concat("\r\n                ", FormatProperty(prop.Name), " = ", FormatCamel(prop.Name));
+                        strFieldAssignments += string.Concat("\r\n                ", "_" + FormatProperty(prop.Name), " = ", FormatCamel(prop.Name));
                         strComment += "\r\n            ''' <param name=\"" + FormatCamel(prop.Name) + "\">The "+ FormatProperty(prop.Name) + ".</param>";
                     }
                     else

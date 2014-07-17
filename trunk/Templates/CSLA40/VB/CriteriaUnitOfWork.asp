@@ -145,7 +145,7 @@ if (activeCriteria > 0)
                 strParams += ", ";
             }
             strParams += string.Concat(FormatCamel(crit.Name), " As ", crit.Type);
-            strFieldAssignments += string.Concat("\r\n                ", FormatProperty(crit.Name), " = ", FormatCamel(crit.Name));
+            strFieldAssignments += string.Concat("\r\n                ", "_" + FormatProperty(crit.Name), " = ", FormatCamel(crit.Name));
             strComment += "\r\n            ''' <param name=\"" + FormatCamel(crit.Name) + "\">The "+ FormatProperty(crit.Name) + ".</param>";
             if (critCriteriaClassMode == CriteriaMode.Simple)
             {
