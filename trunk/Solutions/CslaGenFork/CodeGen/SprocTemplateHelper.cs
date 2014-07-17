@@ -220,10 +220,10 @@ namespace CslaGenerator.CodeGen
         {
             var prop = GetValuePropertyByName(info,propName);
             if (prop == null)
-                throw new Exception("Parameter '" + propName + "' does not have a corresponding ValueProperty. Make sure a ValueProperty with the same name exists");
+                throw new ArgumentException("Parameter '" + propName + "' does not have a corresponding ValueProperty. Make sure a ValueProperty with the same name exists");
 
             if (prop.DbBindColumn == null)
-                throw new Exception("Property '" + propName + "' does not have it's DbBindColumn initialized.");
+                throw new ArgumentException("Property '" + propName + "' does not have it's DbBindColumn initialized.");
 
             return GetDataTypeString(prop.DbBindColumn);
         }
@@ -237,7 +237,7 @@ namespace CslaGenerator.CodeGen
             if (prop != null)
                 return GetDataTypeString(prop.DbBindColumn);
 
-            throw new ApplicationException("No column information for this criteria property: " + col.Name);
+            throw new ArgumentException("No column information for this criteria property: " + col.Name);
         }
 
         public string GetDataTypeString(DbBindColumn col)
@@ -281,7 +281,7 @@ namespace CslaGenerator.CodeGen
             if (prop != null)
                 return GetColumnString(prop.DbBindColumn);
 
-            throw new ApplicationException("No column information for this criteria property: " + param.Name);
+            throw new ArgumentException("No column information for this criteria property: " + param.Name);
         }
 
         public string GetColumnString(DbBindColumn col)
@@ -298,7 +298,7 @@ namespace CslaGenerator.CodeGen
             if (prop != null)
                 return GetTableString(prop.DbBindColumn);
 
-            throw new ApplicationException("No table information for this criteria property: " + param.Name);
+            throw new ArgumentException("No table information for this criteria property: " + param.Name);
         }
 
         public string GetTableString(DbBindColumn col)
@@ -899,7 +899,7 @@ namespace CslaGenerator.CodeGen
         {
             var result = string.Empty;
 
-            var tables = new List<IResultObject>();
+            //var tables = new List<IResultObject>();
             var allValueProps = new ValuePropertyCollection();
 
             if (!IsCollectionType(info.ObjectType))
