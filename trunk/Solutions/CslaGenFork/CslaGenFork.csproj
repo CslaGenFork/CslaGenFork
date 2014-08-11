@@ -142,6 +142,7 @@
     <Content Include="App.ico" />
     <None Include="Properties\DataSources\CslaGenerator.Metadata.GenerationParameters.datasource" />
     <None Include="Properties\DataSources\CslaGenerator.Metadata.GenerationReportCollection.datasource" />
+    <None Include="Properties\DataSources\CslaGenerator.Metadata.GlobalParameters.datasource" />
     <None Include="Properties\DataSources\CslaGenerator.Metadata.ProjectParameters.datasource" />
     <None Include="Resources\Save Project.png" />
     <None Include="Resources\Add Object.png" />
@@ -306,6 +307,7 @@
     <Compile Include="Metadata\CslaGeneratorUnitLayout.cs" />
     <Compile Include="Metadata\GenerationReport.cs" />
     <Compile Include="Metadata\GenerationReportCollection.cs" />
+    <Compile Include="Metadata\GlobalParameters.cs" />
     <Compile Include="Metadata\HaveBusinessRulesCollection.cs" />
     <Compile Include="Metadata\HeaderVerbosity.cs" />
     <Compile Include="Metadata\AssociativeEntity.cs" />
@@ -610,6 +612,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\DbTreeView.resx">
       <DependentUpon>DbTreeView.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\GlobalSettings.resx">
+      <DependentUpon>GlobalSettings.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\NewObjectProperties.resx">

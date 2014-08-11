@@ -14,7 +14,7 @@ namespace CslaGenerator.Util
         {
             get
             {
-                return Application.CommonAppDataPath.Substring(0, Application.CommonAppDataPath.LastIndexOf("\\"))
+                return Application.LocalUserAppDataPath.Substring(0, Application.LocalUserAppDataPath.LastIndexOf("\\"))
                        + @"\Default.xml";
             }
         }
@@ -23,7 +23,7 @@ namespace CslaGenerator.Util
         {
             get
             {
-                return Application.CommonAppDataPath.Substring(0, Application.CommonAppDataPath.LastIndexOf("\\"))
+                return Application.LocalUserAppDataPath.Substring(0, Application.LocalUserAppDataPath.LastIndexOf("\\"))
                        + @"\SharedApp.config";
             }
         }
@@ -97,6 +97,8 @@ namespace CslaGenerator.Util
 
             return response;
         }
+        
+        #region unsed Add and Remove methods
 
         /// <summary>
         /// Adds a new key and set its value, or add the given
@@ -105,6 +107,7 @@ namespace CslaGenerator.Util
         /// </summary>
         /// <param name="key">The key name to be added</param>
         /// <param name="value">The value for the added key</param>
+        /// <remarks>Unused</remarks>
         internal static void SharedAppConfigAdd(string key, string value)
         {
             var configFile = new ExeConfigurationFileMap
@@ -121,6 +124,7 @@ namespace CslaGenerator.Util
         /// Removes a key in SharedApp.config file.
         /// </summary>
         /// <param name="key">The key name to be removed</param>
+        /// <remarks>Unused</remarks>
         internal static void SharedAppConfigRemove(string key)
         {
             var configFile = new ExeConfigurationFileMap
@@ -132,6 +136,8 @@ namespace CslaGenerator.Util
             config.Save(ConfigurationSaveMode.Modified);
             ConfigurationManager.RefreshSection("appSettings");
         }
+        
+        #endregion
 
         /// <summary>
         /// Removes a key, adds the same key and sets its value in SharedApp.config file.
