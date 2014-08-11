@@ -25,9 +25,10 @@ namespace CslaGenerator.Metadata
             RelationsBuilderCollapsedCategories = new List<string>();
             RelationsBuilderPropertySort = PropertySort.Categorized;
             RelationsBuilderSelectedGridItem = string.Empty;
-            ProjectPropertiesSubTab = string.Empty;
             ProjectPropertiesMainTab = string.Empty;
-            LayoutFileVersion = "1.0";
+            ProjectPropertiesSubTab = string.Empty;
+            GlobalSettingsMainTab = string.Empty;
+            LayoutFileVersion = "1.1";
         }
 
         public string ProjectListFilterText { get; set; }
@@ -56,6 +57,8 @@ namespace CslaGenerator.Metadata
 
         public string ActiveDocument { get; set; }
 
+        public bool RelationsBuilderTabHidden { get; set; }
+
         public string RelationsBuilderTab { get; set; }
 
         public string RelationsBuilderSelectedObject { get; set; }
@@ -66,9 +69,19 @@ namespace CslaGenerator.Metadata
 
         public string RelationsBuilderSelectedGridItem { get; set; }
 
+        public bool ProjectPropertiesMainTabHidden { get; set; }
+
         public string ProjectPropertiesMainTab { get; set; }
 
         public string ProjectPropertiesSubTab { get; set; }
+
+        public bool GlobalSettingsMainTabHidden { get; set; }
+
+        public string GlobalSettingsMainTab { get; set; }
+
+        public string GlobalSettingsSubTab { get; set; }
+
+        public bool StartPageMainTabHidden { get; set; }
 
         public string LayoutFileVersion { get; set; }
     }
