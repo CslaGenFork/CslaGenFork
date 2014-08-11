@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -434,9 +433,9 @@ namespace CslaGenerator.CodeGen
         {
             TargetDirectory = targetDirectory;
             _templatesDirectory = templatesDirectory;
-            _codeEncoding = ValidateEncodings("CodeEncoding");
-            _sprocEncoding = ValidateEncodings("SProcEncoding");
-            _overwriteExtendedFile = ValidateOverwriteExtendedFile();
+            _codeEncoding = GeneratorController.Current.GlobalParameters.CodeEncoding;
+            _sprocEncoding = GeneratorController.Current.GlobalParameters.SprocEncoding;
+            _overwriteExtendedFile = GeneratorController.Current.GlobalParameters.OverwriteExtendedFile;
         }
 
         #endregion
@@ -613,59 +612,6 @@ namespace CslaGenerator.CodeGen
                 return true;
             }
             return false;
-        }
-
-        private static string ValidateEncodings(string key)
-        {
-            const string defaultEncoding = "iso-8859-1";
-            var encoding = ConfigurationManager.AppSettings.Get(key);
-
-            if (string.IsNullOrWhiteSpace(encoding))
-            {
-                MessageBox.Show(@"Error in ""appSettings"" section of ""CslaGenerator.exe.config"" file." + Environment.NewLine +
-                    @"The key """ + key + @""" is empty or missing." + Environment.NewLine +
-                    @"Will use default of """ + defaultEncoding + @""".",
-                    @"CslaGenFork object generation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return defaultEncoding;
-            }
-
-            try
-            {
-                var encode = Encoding.GetEncoding(encoding);
-            }
-            catch (Exception)
-            {
-                MessageBox.Show(@"Error in ""appSettings"" section of ""CslaGenerator.exe.config"" file." + Environment.NewLine +
-                    @"The key """ + key + @"""=""" + encoding + @""" is not valid." + Environment.NewLine +
-                    @"Will use """ + defaultEncoding + @""" instead.",
-                    @"CslaGenFork object generation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return defaultEncoding;
-            }
-
-            return encoding;
-        }
-
-        private static bool ValidateOverwriteExtendedFile()
-        {
-            var result = false;
-            var overwriteExtendedFile = ConfigurationManager.AppSettings.Get("OverwriteExtendedFile");
-
-            if (string.IsNullOrWhiteSpace(overwriteExtendedFile))
-                return result;
-
-            try
-            {
-                result = Convert.ToBoolean(overwriteExtendedFile);
-            }
-            catch (Exception)
-            {
-                MessageBox.Show(@"Error in ""appSettings"" section of ""CslaGenerator.exe.config"" file." + Environment.NewLine +
-                    @"The key ""OverwriteExtendedFile"" has a wrong value." + Environment.NewLine +
-                    @"Will use default of """ + result + @""".",
-                    @"CslaGenFork initialization", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-
-            return result;
         }
 
         private bool EditableSwitchableAlert(CslaObjectInfo objInfo)
