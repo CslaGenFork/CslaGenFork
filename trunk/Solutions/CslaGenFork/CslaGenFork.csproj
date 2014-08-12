@@ -130,9 +130,9 @@
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
-    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.2.2864.18696, Culture=neutral, PublicKeyToken=d481317c817cec47, processorArchitecture=MSIL">
+    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=2.9.0.0, Culture=neutral, PublicKeyToken=5cded1a1a0a7b481, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\References\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
+      <HintPath>..\packages\DockPanelSuite.2.9.0.0\lib\net40\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -140,6 +140,7 @@
       <SubType>Designer</SubType>
     </None>
     <Content Include="App.ico" />
+    <None Include="packages.config" />
     <None Include="Properties\DataSources\CslaGenerator.Metadata.GenerationParameters.datasource" />
     <None Include="Properties\DataSources\CslaGenerator.Metadata.GenerationReportCollection.datasource" />
     <None Include="Properties\DataSources\CslaGenerator.Metadata.GlobalParameters.datasource" />
@@ -198,6 +199,7 @@
     <None Include="Resources\Orange.png" />
     <None Include="Resources\Error_List.png" />
     <None Include="Resources\Warning_List.png" />
+    <Content Include="license.txt" />
     <Content Include="Resources\RefreshArrow_Green.png" />
     <Content Include="StartPage\images\logo_top_left.gif" />
     <Content Include="StartPage\images\logo_top_middle.gif">
