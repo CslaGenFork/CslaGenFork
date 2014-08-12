@@ -298,7 +298,7 @@
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4D6203B76E65404893CF3E23865084DE"
             {
-            "SourcePath" = "8:..\\..\\References\\WeifenLuo.WinFormsUI.Docking.license.txt"
+            "SourcePath" = "8:..\\CslaGenFork\\license.txt"
             "TargetName" = "8:WeifenLuo.WinFormsUI.Docking.license.txt"
             "Tag" = "8:"
             "Folder" = "8:_D507985A4EB24FF7A6A772C0E8F3C3BB"
