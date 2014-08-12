@@ -204,9 +204,6 @@ namespace CslaGenerator.Controls
             this.chkNullableSupport = new System.Windows.Forms.CheckBox();
             this.chkActiveObjects = new System.Windows.Forms.CheckBox();
             this.chkUsePublicPropertyInfo = new System.Windows.Forms.CheckBox();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.selectNoneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ofdLoad = new System.Windows.Forms.OpenFileDialog();
             this.projectParametersBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.generationParametersBindingSource = new System.Windows.Forms.BindingSource(this.components);
@@ -233,7 +230,6 @@ namespace CslaGenerator.Controls
             this.groupBoxPKDefaultValues.SuspendLayout();
             this.groupBoxOtherParameters.SuspendLayout();
             this.groupBoxSimpleAuditing.SuspendLayout();
-            this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.projectParametersBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.generationParametersBindingSource)).BeginInit();
             this.SuspendLayout();
@@ -2122,26 +2118,6 @@ namespace CslaGenerator.Controls
             this.chkRetryOnFileBusy.Text = "Retry on target file busy";
             this.toolTip.SetToolTip(this.chkRetryOnFileBusy, "If checked, code generation will retry when the target file is busy.");
             // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.selectAllToolStripMenuItem,
-            this.selectNoneToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(132, 48);
-            // 
-            // selectAllToolStripMenuItem
-            // 
-            this.selectAllToolStripMenuItem.Name = "selectAllToolStripMenuItem";
-            this.selectAllToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
-            this.selectAllToolStripMenuItem.Text = "Select All";
-            // 
-            // selectNoneToolStripMenuItem
-            // 
-            this.selectNoneToolStripMenuItem.Name = "selectNoneToolStripMenuItem";
-            this.selectNoneToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
-            this.selectNoneToolStripMenuItem.Text = "Select None";
-            // 
             // projectParametersBindingSource
             // 
             this.projectParametersBindingSource.DataSource = typeof(CslaGenerator.Metadata.ProjectParameters);
@@ -2157,7 +2133,6 @@ namespace CslaGenerator.Controls
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(557, 425);
-            this.CloseButton = false;
             this.Controls.Add(this.cmdApply);
             this.Controls.Add(this.cmdUndo);
             this.Controls.Add(this.cmdGetDefault);
@@ -2216,7 +2191,6 @@ namespace CslaGenerator.Controls
             this.groupBoxDataAccessLayer.PerformLayout();
             this.groupBoxServerInvocation.ResumeLayout(false);
             this.groupBoxServerInvocation.PerformLayout();
-            this.contextMenuStrip1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.projectParametersBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.generationParametersBindingSource)).EndInit();
             this.ResumeLayout(false);
@@ -2399,9 +2373,6 @@ namespace CslaGenerator.Controls
         private System.Windows.Forms.CheckBox chkActiveObjects;
         private System.Windows.Forms.BindingSource generationParametersBindingSource;
         private System.Windows.Forms.BindingSource projectParametersBindingSource;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem selectAllToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem selectNoneToolStripMenuItem;
         private System.Windows.Forms.OpenFileDialog ofdLoad;
     }
 }

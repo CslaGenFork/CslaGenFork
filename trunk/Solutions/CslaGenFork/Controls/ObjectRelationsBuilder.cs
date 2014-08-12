@@ -902,7 +902,10 @@ namespace CslaGenerator.Controls
             }
 
             if (tabPage != null)
+            {
                 GeneratorController.Current.CurrentUnitLayout.RelationsBuilderTab = tabPage.Name;
+                GeneratorController.Current.CurrentUnitLayout.RelationsBuilderTabHidden = false;
+            }
             else
                 GeneratorController.Current.CurrentUnitLayout.RelationsBuilderTab = string.Empty;
 

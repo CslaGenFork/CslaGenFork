@@ -35,9 +35,9 @@ namespace CslaGenerator
         private ProjectPanel _projectPanel= new ProjectPanel();
         private ObjectInfo _objectInfoPanel = new ObjectInfo();
         private StartPage _webBrowserDockPanel = new StartPage();
+        private GlobalSettings _globalSettingsPanel = new GlobalSettings();
         private ObjectRelationsBuilder _objectRelationsBuilderPanel = new ObjectRelationsBuilder();
         private ProjectProperties _projectPropertiesPanel = null;
-        private GlobalSettings _globalSettingsPanel = new GlobalSettings();
         private DbSchemaPanel _dbSchemaPanel = null;
         private OutputWindow _outputPanel = new OutputWindow();
         private GenerationReportViewer _errorPannel = new GenerationReportViewer();
@@ -109,6 +109,12 @@ namespace CslaGenerator
             get { return _webBrowserDockPanel; }
         }
 
+        internal GlobalSettings GlobalSettingsPanel
+        {
+            get { return _globalSettingsPanel; }
+            set { _globalSettingsPanel = value; }
+        }
+
         internal ObjectRelationsBuilder ObjectRelationsBuilderPanel
         {
             get { return _objectRelationsBuilderPanel; }
@@ -118,12 +124,6 @@ namespace CslaGenerator
         {
             get { return _projectPropertiesPanel; }
             set { _projectPropertiesPanel = value; }
-        }
-
-        internal GlobalSettings GlobalSettingsPanel
-        {
-            get { return _globalSettingsPanel; }
-            set { _globalSettingsPanel = value; }
         }
 
         internal DbSchemaPanel DbSchemaPanel
@@ -309,7 +309,7 @@ namespace CslaGenerator
         {
             _globalSettingsPanel.MdiParent = this;
             _globalSettingsPanel.VisibleChanged +=
-                delegate(object sender, EventArgs e) { projectPropertiesPageToolStripMenuItem.Checked = ((DockContent)sender).Visible; };
+                delegate(object sender, EventArgs e) { globalSettingsPageToolStripMenuItem.Checked = ((DockContent)sender).Visible; };
             _globalSettingsPanel.FormClosing += PaneFormClosing;
             _globalSettingsPanel.Show(dockPanel);
         }
@@ -358,19 +358,6 @@ namespace CslaGenerator
             MruDisplay();
         }
 
-        /*internal void CloseDockContents()
-        {
-            _projectPanel.DockPanel = null;
-            _objectInfoPanel.DockPanel = null;
-            _webBrowserDockPanel.DockPanel = null;
-            _objectRelationsBuilderPanel.DockPanel = null;
-            _projectPropertiesPanel.DockPanel = null;
-            _dbSchemaPanel.DockPanel = null;
-            _outputPanel.DockPanel = null;
-            _errorPannel.DockPanel = null;
-            _warningPannel.DockPanel = null;
-        }*/
-
         #endregion
 
         #region Manage project state
@@ -383,17 +370,22 @@ namespace CslaGenerator
             if (_objectInfoPanel != null)
                 _objectInfoPanel.GetState();
 
+            GeneratorController.Current.CurrentUnitLayout.StartPageMainTabHidden = true;
+            GeneratorController.Current.CurrentUnitLayout.GlobalSettingsMainTabHidden = true;
+            GeneratorController.Current.CurrentUnitLayout.RelationsBuilderTabHidden = true;
+            GeneratorController.Current.CurrentUnitLayout.ProjectPropertiesMainTabHidden = true;
+
             foreach (var dockContent in DockPanel.Documents)
             {
                 var docType = dockContent.GetType().UnderlyingSystemType;
                 if (dockContent.DockHandler.IsActivated)
                     _controller.CurrentUnitLayout.ActiveDocument = docType.Name;
 
-                if (docType == typeof(ProjectProperties))
+                if (docType == typeof(StartPage))
                 {
-                    var projectProperties = dockContent as ProjectProperties;
-                    if (projectProperties != null)
-                        projectProperties.GetState();
+                    var startPage = dockContent as StartPage;
+                    if (startPage != null)
+                        startPage.GetState();
                 }
                 else if (docType == typeof(GlobalSettings))
                 {
@@ -406,6 +398,12 @@ namespace CslaGenerator
                     var objectRelationsBuilder = dockContent as ObjectRelationsBuilder;
                     if (objectRelationsBuilder != null)
                         objectRelationsBuilder.GetState();
+                }
+                else if (docType == typeof(ProjectProperties))
+                {
+                    var projectProperties = dockContent as ProjectProperties;
+                    if (projectProperties != null)
+                        projectProperties.GetState();
                 }
                 else if (docType == typeof(DbSchemaPanel))
                 {
@@ -430,17 +428,16 @@ namespace CslaGenerator
                     dockContent.DockHandler.Show();
 
                 var docType = dockContent.GetType().UnderlyingSystemType;
-                if (docType == typeof (ProjectProperties))
+                if (docType == typeof(StartPage))
                 {
-                    var projectProperties = dockContent as ProjectProperties;
-                    if (projectProperties != null)
+                    var startPage = dockContent as StartPage;
+                    if (startPage != null)
                     {
-                        projectProperties.TurnOnFormLevelDoubleBuffering();
-                        projectProperties.SetState();
-                        projectProperties.TurnOffFormLevelDoubleBuffering();
+                        if (GeneratorController.Current.CurrentUnitLayout.StartPageMainTabHidden)
+                            startPage.Hide();
                     }
                 }
-                else if (docType == typeof (GlobalSettings))
+                else if (docType == typeof(GlobalSettings))
                 {
                     var globalSettings = dockContent as GlobalSettings;
                     if (globalSettings != null)
@@ -448,9 +445,11 @@ namespace CslaGenerator
                         globalSettings.TurnOnFormLevelDoubleBuffering();
                         globalSettings.SetState();
                         globalSettings.TurnOffFormLevelDoubleBuffering();
+                        if (GeneratorController.Current.CurrentUnitLayout.GlobalSettingsMainTabHidden)
+                            globalSettings.Hide();
                     }
                 }
-                else if (docType == typeof (ObjectRelationsBuilder))
+                else if (docType == typeof(ObjectRelationsBuilder))
                 {
                     var objectRelationsBuilder = dockContent as ObjectRelationsBuilder;
                     if (objectRelationsBuilder != null)
@@ -458,6 +457,20 @@ namespace CslaGenerator
                         objectRelationsBuilder.TurnOnFormLevelDoubleBuffering();
                         objectRelationsBuilder.SetState();
                         objectRelationsBuilder.TurnOffFormLevelDoubleBuffering();
+                        if (GeneratorController.Current.CurrentUnitLayout.RelationsBuilderTabHidden)
+                            objectRelationsBuilder.Hide();
+                    }
+                }
+                else if (docType == typeof(ProjectProperties))
+                {
+                    var projectProperties = dockContent as ProjectProperties;
+                    if (projectProperties != null)
+                    {
+                        projectProperties.TurnOnFormLevelDoubleBuffering();
+                        projectProperties.SetState();
+                        projectProperties.TurnOffFormLevelDoubleBuffering();
+                        if (GeneratorController.Current.CurrentUnitLayout.ProjectPropertiesMainTabHidden)
+                            projectProperties.Hide();
                     }
                 }
                 else if (docType == typeof(DbSchemaPanel))
@@ -483,6 +496,7 @@ namespace CslaGenerator
             if (_controller.CurrentProjectProperties != null)
                 _controller.CurrentProjectProperties.Close();
             _objectRelationsBuilderPanel.Close();
+            _globalSettingsPanel.Close();
             _errorPannel.Close();
             _warningPannel.Close();
             if (DbSchemaPanel != null)
@@ -524,6 +538,9 @@ namespace CslaGenerator
                     SaveToolStripMenuItem_Click(this, new EventArgs());
                 }
             }
+
+            _globalSettingsPanel.ForceSaveGlobalSettings();
+
             return result;
         }
 
@@ -562,10 +579,13 @@ namespace CslaGenerator
                 MessageBox.Show(@"The Generation process is already running.", "Invalid Generate Order", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
+
             if (!ApplyProjectProperties())
                 return;
 
-            ClearErrorsAndWarning();
+            _globalSettingsPanel.ForceSaveGlobalSettings();
+
+            ClearErrorsAndWarnings();
             globalStatus.Image = Resources.RefreshArrow_Green;
             globalStatus.ToolTipText = @"Generating...";
             statusStrip.Refresh();
@@ -661,22 +681,7 @@ namespace CslaGenerator
             if (!_controller.CurrentProjectProperties.ValidateOptions())
                 return false;
 
-            if (_controller.CurrentProjectProperties.IsDirty)
-            {
-                var result =
-                    MessageBox.Show(
-                        @"There are unsaved changes in the project properties tab. Would you like to apply them now?",
-                        @"CslaGenerator", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
-                switch (result)
-                {
-                    case DialogResult.Yes:
-                        _controller.CurrentProjectProperties.cmdApply.PerformClick();
-                        break;
-                    case DialogResult.Cancel:
-                        return false;
-                }
-            }
-            return true;
+            return _controller.CurrentProjectProperties.ApplyProjectProperties();
         }
 
         #endregion
@@ -880,7 +885,7 @@ namespace CslaGenerator
                 }
                 loadingTimer.Text = "Loading:";
                 FillObjects();
-                ClearErrorsAndWarning();
+                ClearErrorsAndWarnings();
                 statusStrip.Refresh();
             }
         }
@@ -1116,7 +1121,7 @@ namespace CslaGenerator
             globalStatus.Image = Resources.RefreshArrow_Green;
             globalStatus.ToolTipText = @"Loading...";
             loadingTimer.Text = "Loading:";
-            ClearErrorsAndWarning();
+            ClearErrorsAndWarnings();
             statusStrip.Refresh();
             _controller.NewCslaUnit();
             _controller.Load(fileName);
@@ -1509,6 +1514,20 @@ namespace CslaGenerator
                 _webBrowserDockPanel.Show(dockPanel);
         }
 
+        private void GlobalSettingsPageToolStripMenuItemClick(object sender, EventArgs e)
+        {
+            if (GlobalSettingsPanel == null)
+                return;
+
+            if (globalSettingsPageToolStripMenuItem.Checked)
+                GlobalSettingsPanel.Hide();
+            else
+            {
+                if (_controller.CurrentUnit != null)
+                    GlobalSettingsPanel.Show(dockPanel);
+            }
+        }
+
         private void ObjectRelationsBuilderPageToolStripMenuItemClick(object sender, EventArgs e)
         {
             if (objectRelationsBuilderPageToolStripMenuItem.Checked)
@@ -1531,20 +1550,6 @@ namespace CslaGenerator
             {
                 if (_controller.CurrentUnit != null)
                     ProjectPropertiesPanel.Show(dockPanel);
-            }
-        }
-
-        private void GlobalSettingsPageToolStripMenuItemClick(object sender, EventArgs e)
-        {
-            if (GlobalSettingsPanel == null)
-                return;
-
-            if (globalSettingsPageToolStripMenuItem.Checked)
-                GlobalSettingsPanel.Hide();
-            else
-            {
-                if (_controller.CurrentUnit != null)
-                    GlobalSettingsPanel.Show(dockPanel);
             }
         }
 
@@ -1619,7 +1624,7 @@ namespace CslaGenerator
 
         #region Status bar
 
-        private void ClearErrorsAndWarning()
+        private void ClearErrorsAndWarnings()
         {
             generatingTimer.Text = "Generating:";
             _errorPannel.Empty();

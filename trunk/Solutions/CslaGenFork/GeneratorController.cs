@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
@@ -47,6 +46,7 @@ namespace CslaGenerator
         private CslaGeneratorUnit _currentUnit;
         private CslaObjectInfo _currentCslaObject;
         private AssociativeEntity _currentAssociativeEntitiy;
+        private GlobalParameters _globalParameters = new GlobalParameters();
         private string _currentFilePath = string.Empty;
         private MainForm _mainForm;
         private static ICatalog _catalog;
@@ -67,8 +67,8 @@ namespace CslaGenerator
 
         internal GeneratorController()
         {
-            Init();
             _current = this;
+            Init();
             GetConfig();
         }
 
@@ -147,7 +147,19 @@ namespace CslaGenerator
                 }
                 _mainForm.ProjectPropertiesPanel = new ProjectProperties();
                 _mainForm.ProjectPropertiesPanel.LoadInfo();
+                _mainForm.GlobalSettingsPanel.LoadInfo();
                 _mainForm.ActivateShowProjectProperties();
+                _mainForm.ActivateShowGlobalSettings();
+            }
+        }
+
+        internal GlobalParameters GlobalParameters
+        {
+            get { return _globalParameters; }
+            set
+            {
+                if (value != null)
+                    _globalParameters = value;
             }
         }
 
@@ -341,16 +353,6 @@ namespace CslaGenerator
             LoadProjectLayout(filePath);
             IsLoading = false;
             LoadingTimer.Stop();
-
-            /*if (File.Exists(MainForm.DockSettingsFile))
-            {
-                MainForm.DockPanel.SuspendLayout(true);
-                MainForm.CloseDockContents();
-                MainForm.DockPanel.LoadFromXml(MainForm.DockSettingsFile, MainForm.DeserializeDockContent);
-                MainForm.DockPanel.ResumeLayout(true, true);
-                ShowStartPage();
-                PanelsSetUp();
-            }*/
         }
 
         internal void LoadProjectLayout(string filePath)
@@ -402,6 +404,8 @@ namespace CslaGenerator
         {
             if (!_mainForm.ApplyProjectProperties())
                 return;
+
+            _mainForm.GlobalSettingsPanel.ForceSaveGlobalSettings();
 
             FileStream fs = null;
             var tempFile = Path.GetTempPath() + Guid.NewGuid() + ".cslagenerator";

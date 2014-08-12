@@ -457,7 +457,10 @@ namespace CslaGenerator.Controls
             }
 
             if (mainTabPage != null)
+            {
                 GeneratorController.Current.CurrentUnitLayout.ProjectPropertiesMainTab = mainTabPage.Name;
+                GeneratorController.Current.CurrentUnitLayout.ProjectPropertiesMainTabHidden = false;
+            }
             else
                 GeneratorController.Current.CurrentUnitLayout.ProjectPropertiesMainTab = string.Empty;
 

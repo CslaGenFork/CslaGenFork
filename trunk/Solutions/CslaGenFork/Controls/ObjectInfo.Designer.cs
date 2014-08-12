@@ -42,6 +42,8 @@
             // 
             // ObjectInfo
             // 
+            this.CloseButton = false;
+            this.CloseButtonVisible = false;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.ClientSize = new System.Drawing.Size(208, 289);
             this.Controls.Add(this.propertyGrid);
