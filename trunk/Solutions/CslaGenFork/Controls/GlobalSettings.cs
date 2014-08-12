@@ -60,7 +60,7 @@ namespace CslaGenerator.Controls
 
         #endregion
 
-        private GlobalParameters _globalParams;
+        private GlobalParameters _globalParams = new GlobalParameters();
 
         public GlobalParameters GlobalParameters
         {

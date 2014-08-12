@@ -28,15 +28,16 @@ namespace CslaGenerator.Metadata
         public ProjectParameters Params
         {
             get { return _projectParams; }
-            set { if (value != null) { _projectParams = value; } }
+            set
+            {
+                if (value != null)
+                    _projectParams = value;
+            }
         }
 
         public GenerationParameters GenerationParams
         {
-            get
-            {
-                return _generationParams;
-            }
+            get { return _generationParams; }
             set
             {
                 if (value != null)

@@ -347,6 +347,8 @@ namespace CslaGenerator.Controls
             // 
             // DbSchemaPanel
             // 
+            this.CloseButton = false;
+            this.CloseButtonVisible = false;
             this.Controls.Add(this.dbColumns);
             this.Controls.Add(this.splitMiddle);
             this.Controls.Add(this.dbTreeView);

@@ -8,5 +8,10 @@ namespace CslaGenerator.Controls
         {
             InitializeComponent();
         }
+
+        internal void GetState()
+        {
+            GeneratorController.Current.CurrentUnitLayout.StartPageMainTabHidden = false;
+        }
     }
 }

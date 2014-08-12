@@ -94,9 +94,9 @@ namespace CslaGenerator
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.projectPanelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.startPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.globalSettingsPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.objectRelationsBuilderPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.projectPropertiesPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.globalSettingsPageToolStripMenuItem= new System.Windows.Forms.ToolStripMenuItem();
             this.schemaPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.objectPropertiesPanelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.outputWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -524,9 +524,9 @@ namespace CslaGenerator
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.projectPanelToolStripMenuItem,
             this.startPageToolStripMenuItem,
+            this.globalSettingsPageToolStripMenuItem,
             this.objectRelationsBuilderPageToolStripMenuItem,
             this.projectPropertiesPageToolStripMenuItem,
-            this.globalSettingsPageToolStripMenuItem,
             this.schemaPageToolStripMenuItem,
             this.objectPropertiesPanelToolStripMenuItem,
             this.outputWindowToolStripMenuItem});
@@ -552,6 +552,13 @@ namespace CslaGenerator
             this.startPageToolStripMenuItem.Text = "&Start Page";
             this.startPageToolStripMenuItem.Click += new System.EventHandler(this.StartPageToolStripMenuItem_Click);
             // 
+            // globalSettingsPageToolStripMenuItem
+            // 
+            this.globalSettingsPageToolStripMenuItem.Name = "globalSettingsPageToolStripMenuItem";
+            this.globalSettingsPageToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
+            this.globalSettingsPageToolStripMenuItem.Text = "&Global Settings Page";
+            this.globalSettingsPageToolStripMenuItem.Click += new System.EventHandler(this.GlobalSettingsPageToolStripMenuItemClick);
+            // 
             // objectRelationsBuilderPageToolStripMenuItem
             // 
             this.objectRelationsBuilderPageToolStripMenuItem.Name = "objectRelationsBuilderPageToolStripMenuItem";
@@ -565,13 +572,6 @@ namespace CslaGenerator
             this.projectPropertiesPageToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
             this.projectPropertiesPageToolStripMenuItem.Text = "Pro&ject Properties Page";
             this.projectPropertiesPageToolStripMenuItem.Click += new System.EventHandler(this.ProjectPropertiesPageToolStripMenuItemClick);
-            // 
-            // globalSettingsPageToolStripMenuItem
-            // 
-            this.globalSettingsPageToolStripMenuItem.Name = "globalSettingsPageToolStripMenuItem";
-            this.globalSettingsPageToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
-            this.globalSettingsPageToolStripMenuItem.Text = "&Global Settings Page";
-            this.globalSettingsPageToolStripMenuItem.Click += new System.EventHandler(this.GlobalSettingsPageToolStripMenuItemClick);
             // 
             // schemaPageToolStripMenuItem
             // 
@@ -1082,9 +1082,9 @@ namespace CslaGenerator
         private ToolStripMenuItem viewToolStripMenuItem;
         private ToolStripMenuItem projectPanelToolStripMenuItem;
         private ToolStripMenuItem startPageToolStripMenuItem;
+        private ToolStripMenuItem globalSettingsPageToolStripMenuItem;
         private ToolStripMenuItem objectRelationsBuilderPageToolStripMenuItem;
         private ToolStripMenuItem projectPropertiesPageToolStripMenuItem;
-        private ToolStripMenuItem globalSettingsPageToolStripMenuItem;
         private ToolStripMenuItem schemaPageToolStripMenuItem;
         private ToolStripMenuItem objectPropertiesPanelToolStripMenuItem;
         private System.ComponentModel.BackgroundWorker backgroundWorker;

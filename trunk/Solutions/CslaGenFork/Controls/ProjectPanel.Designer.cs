@@ -372,6 +372,8 @@
             // 
             // ProjectPanel
             // 
+            this.CloseButton = false;
+            this.CloseButtonVisible = false;
             this.ClientSize = new System.Drawing.Size(212, 469);
             this.Controls.Add(this.pnlLstObjects);
             this.Controls.Add(this.paneCaption3);
