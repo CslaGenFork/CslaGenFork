@@ -579,7 +579,7 @@ namespace CslaGenerator.CodeGen
                 {
                     _fileSuccess[templateName] = false;
                     string msg;
-                    if (e.Message == e.GetBaseException().Message)
+                    if (e.GetType() == typeof(FileNotFoundException))
                         msg = e.Message;
                     else if (e.GetBaseException() as IOException != null)
                         msg = "* Failed: " + fullFilename + " is busy.";
@@ -761,7 +761,9 @@ namespace CslaGenerator.CodeGen
             {
                 _objFailed++;
                 string msg;
-                if (e.GetBaseException() as IOException != null)
+                if (e.GetType() == typeof(FileNotFoundException))
+                    msg = e.Message;
+                else if (e.GetBaseException() as IOException != null)
                     msg = "* Failed: " + baseFileName + " is busy.";
                 else
                     msg = ShowExceptionInformation(e);
@@ -856,7 +858,9 @@ namespace CslaGenerator.CodeGen
                 {
                     _objFailed++;
                     string msg;
-                    if (e.GetBaseException() as IOException != null)
+                    if (e.GetType() == typeof(FileNotFoundException))
+                        msg = e.Message;
+                    else if (e.GetBaseException() as IOException != null)
                         msg = "* Failed: " + fileName + " is busy.";
                     else
                         msg = ShowExceptionInformation(e);
@@ -1022,7 +1026,9 @@ namespace CslaGenerator.CodeGen
             {
                 _objFailed++;
                 string msg;
-                if (e.GetBaseException() as IOException != null)
+                if (e.GetType() == typeof(FileNotFoundException))
+                    msg = e.Message;
+                else if (e.GetBaseException() as IOException != null)
                     msg = "* Failed: " + baseFileName + " is busy.";
                 else
                     msg = ShowExceptionInformation(e);
@@ -1144,7 +1150,9 @@ namespace CslaGenerator.CodeGen
                 {
                     _fileSuccess[utilityFilename] = false;
                     string msg;
-                    if (e.GetBaseException() as IOException != null)
+                    if (e.GetType() == typeof(FileNotFoundException))
+                        msg = e.Message;
+                    else if (e.GetBaseException() as IOException != null)
                         msg = "* Failed: " + fullFilename + " is busy.";
                     else
                         msg = ShowExceptionInformation(e);
@@ -1276,7 +1284,9 @@ namespace CslaGenerator.CodeGen
             catch (Exception e)
             {
                 string msg;
-                if (e.GetBaseException() as IOException != null)
+                if (e.GetType() == typeof(FileNotFoundException))
+                    msg = e.Message;
+                else if (e.GetBaseException() as IOException != null)
                     msg = "* Failed: " + fileName + " is busy.";
                 else
                     msg = ShowExceptionInformation(e);
@@ -1603,7 +1613,9 @@ namespace CslaGenerator.CodeGen
                     _sprocFailed++;
                     _currentSprocError = true;
                     string msg;
-                    if (e.GetBaseException() as IOException != null)
+                    if (e.GetType() == typeof(FileNotFoundException))
+                        msg = e.Message;
+                    else if (e.GetBaseException() as IOException != null)
                         msg = "* Failed: " + filename + " is busy.";
                     else
                         msg = ShowExceptionInformation(e);
