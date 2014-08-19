@@ -106,31 +106,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_E510D21E726BFB0D14EE0A8190484EA2"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_86571E3719D13CFF04F3F3FE96B1F596"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_B9746BB3903955CBD8541A28F9412C7B"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_9D8AEA7962D976C4A5E73CF92EA11D07"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_19D13CE4848A828DFE84BF3D27A3FCFE"
+        "OwnerKey" = "8:_490DB46022BA454283A2A128D38A87D1"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -142,7 +118,31 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_490DB46022BA454283A2A128D38A87D1"
+        "OwnerKey" = "8:_19D13CE4848A828DFE84BF3D27A3FCFE"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_9D8AEA7962D976C4A5E73CF92EA11D07"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_B9746BB3903955CBD8541A28F9412C7B"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_86571E3719D13CFF04F3F3FE96B1F596"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_E510D21E726BFB0D14EE0A8190484EA2"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -153,7 +153,7 @@
         "DisplayName" = "8:Debug"
         "IsDebugOnly" = "11:TRUE"
         "IsReleaseOnly" = "11:FALSE"
-        "OutputFilename" = "8:Debug\\CslaGenFork 4.3RC-2013-03-25 Setup.msi"
+        "OutputFilename" = "8:Debug\\CslaGenFork 4.5.0 Setup.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -190,7 +190,7 @@
         "DisplayName" = "8:Release"
         "IsDebugOnly" = "11:FALSE"
         "IsReleaseOnly" = "11:TRUE"
-        "OutputFilename" = "8:Release\\CslaGenFork 4.3RC-2013-03-25 Setup.msi"
+        "OutputFilename" = "8:Release\\CslaGenFork 4.5.0 Setup.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -605,23 +605,23 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:CslaGeneratorFork"
-        "ProductCode" = "8:{951CA142-E94A-4CA5-83D0-5C5E7B260C8F}"
-        "PackageCode" = "8:{3DA2C04D-DDF4-4BB6-A516-B6F802301DA8}"
+        "ProductCode" = "8:{8424DB9E-3881-4238-B496-CEC2981E9024}"
+        "PackageCode" = "8:{72BB44E0-3B9F-43A5-8052-9EE77D4516B1}"
         "UpgradeCode" = "8:{83BDF6E0-C913-48C1-96F7-BCF1E83B1F7E}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:4.3.0"
+        "ProductVersion" = "8:4.5.0"
         "Manufacturer" = "8:CslaGenFork"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:http://cslagenfork.codeplex.com/"
-        "Title" = "8:Csla Generator Fork 4.3RC Setup"
+        "Title" = "8:Csla Generator Fork 4.5.0 Setup"
         "Subject" = "8:"
         "ARPCONTACT" = "8:Tiago Freitas Leal"
         "Keywords" = "8:"
-        "ARPCOMMENTS" = "8:Code generator for CSLA .NET 4.3 Framework"
+        "ARPCOMMENTS" = "8:Code generator for CSLA .NET 4.5 Framework"
         "ARPURLINFOABOUT" = "8:http://cslagenfork.codeplex.com/"
         "ARPPRODUCTICON" = "8:_6DFBAF629896478297706918A8C48579"
         "ARPIconIndex" = "3:0"
@@ -728,7 +728,7 @@
         {
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_10FB53964EE74D7FB5B30B077465FA38"
             {
-            "Name" = "8:Csla Generator Fork 4.3RC"
+            "Name" = "8:Csla Generator Fork 4.5.0"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
@@ -841,7 +841,7 @@
                             "ContextData" = "8:"
                             "Attributes" = "3:0"
                             "Setting" = "3:2"
-                            "Value" = "8:The installer will guide you through the steps required to install Csla Generator Fork 4.3RC on your computer."
+                            "Value" = "8:The installer will guide you through the steps required to install Csla Generator Fork 4.5.0 on your computer."
                             "DefaultValue" = "8:#1203"
                             "UsePlugInResources" = "11:TRUE"
                             }
@@ -1092,7 +1092,7 @@
                             "ContextData" = "8:"
                             "Attributes" = "3:0"
                             "Setting" = "3:2"
-                            "Value" = "8:The installer will guide you through the steps required to install Csla Generator Fork 4.3RC on your computer."
+                            "Value" = "8:The installer will guide you through the steps required to install Csla Generator Fork 4.5.0 on your computer."
                             "DefaultValue" = "8:#1203"
                             "UsePlugInResources" = "11:TRUE"
                             }

@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------
-// Copyright © 1998, 2012 Cole Shelton, Miroslav Popovic, Joakim Hallberg, Chris Russi, Andrés Villanueva, Tiago Freitas Leal
+// Copyright © 1998, 2014 Cole Shelton, Miroslav Popovic, Joakim Hallberg, Chris Russi, Andrés Villanueva, Tiago Freitas Leal
 // 
 // This file is part of the CslaGenFork.
 // 
@@ -17,7 +17,7 @@
 //     along with the CslaGenFork program.  If not, see <http://www.gnu.org/licenses/>.
 //---------------------------------------------------------------------------------
 
-// Copyright © 1998, 2012 Cole Shelton, Miroslav Popovic, Joakim Hallberg, Chris Russi, Andrés Villanueva, Tiago Freitas Leal
+// Copyright © 1998, 2014 Cole Shelton, Miroslav Popovic, Joakim Hallberg, Chris Russi, Andrés Villanueva, Tiago Freitas Leal
 // CslaGenFork is distributed under the terms of the GNU General Public License
 //
 http://www.fsf.org/licensing/licenses/gpl-howto.html
