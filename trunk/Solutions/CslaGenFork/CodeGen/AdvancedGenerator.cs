@@ -579,10 +579,15 @@ namespace CslaGenerator.CodeGen
                 {
                     _fileSuccess[templateName] = false;
                     string msg;
-                    if (e.GetBaseException() as IOException != null)
+                    if (e.Message == e.GetBaseException().Message)
+                        msg = e.Message;
+                    else if (e.GetBaseException() as IOException != null)
                         msg = "* Failed: " + fullFilename + " is busy.";
                     else
                         msg = e.Message;
+
+                    if (msg.IndexOf(@"The specified template could not be found") == 0)
+                        msg += Environment.NewLine + Environment.NewLine + @"The templates directory path is probably empty or wrong.";
 
                     _errorReport.Add(new GenerationReport
                     {
