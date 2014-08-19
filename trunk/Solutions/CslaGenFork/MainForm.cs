@@ -569,6 +569,11 @@ namespace CslaGenerator
 
         private void Generate()
         {
+            if (!Directory.Exists(_controller.TemplatesDirectory))
+            {
+                MessageBox.Show(@"You must set the templates directory path before generating.", "Invalid Generate Order", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
             if (_controller.CurrentUnit == null)
             {
                 MessageBox.Show(@"You must open a project before generating.", "Invalid Generate Order", MessageBoxButtons.OK, MessageBoxIcon.Information);
