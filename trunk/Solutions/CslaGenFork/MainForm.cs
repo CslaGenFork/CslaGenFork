@@ -625,6 +625,7 @@ namespace CslaGenerator
             }
             progressBar.Value = 0;
             progressBar.Maximum = i;
+
             backgroundWorker.RunWorkerAsync();
         }
 
@@ -635,6 +636,9 @@ namespace CslaGenerator
 
         private void BackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            backgroundWorker.DoWork -= BackgroundWorker1_DoWork;
+            backgroundWorker.RunWorkerCompleted -= BackgroundWorker_RunWorkerCompleted;
+
             var timer = _controller.CurrentUnit.GenerationTimer.Elapsed;
             generatingTimer.Text = String.Format("Generating: {0}:{1},{2}",
                                                  timer.Minutes.ToString("00"),

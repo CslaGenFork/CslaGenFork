@@ -15,6 +15,7 @@ namespace CslaGenerator.Metadata
         string _sprocEncoding = DefaultEncoding;
         string _sprocEncodingDisplayName = "";
         bool _overwriteExtendedFile;
+        bool _recompileTemplates;
 
         #endregion
 
@@ -66,6 +67,24 @@ namespace CslaGenerator.Metadata
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether recompile templates in case they changed.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if recompile templates; otherwise, <c>false</c>.
+        /// </value>
+        public bool RecompileTemplates
+        {
+            get { return _recompileTemplates; }
+            set
+            {
+                if (_recompileTemplates == value)
+                    return;
+                _recompileTemplates = value;
+                OnPropertyChanged("");
+            }
+        }
+
         #endregion
 
         public GlobalParameters()
@@ -80,6 +99,7 @@ namespace CslaGenerator.Metadata
                 CodeEncoding = DefaultEncoding;
                 SprocEncoding = DefaultEncoding;
                 OverwriteExtendedFile = false;
+                RecompileTemplates = false;
                 SaveGlobalParameters();
             }
             else
@@ -95,6 +115,7 @@ namespace CslaGenerator.Metadata
             _sprocEncoding = LoadValueForEncoding("SProcEncoding");
             _sprocEncodingDisplayName = GetEncodigDescription(_sprocEncoding);
             _overwriteExtendedFile = LoadValueForOverwriteExtendedFile();
+            _recompileTemplates = LoadValueForRecompileTemplates();
         }
 
         private string LoadValueForEncoding(string key)
@@ -145,6 +166,25 @@ namespace CslaGenerator.Metadata
             return result;
         }
 
+        private static bool LoadValueForRecompileTemplates()
+        {
+            var result = false;
+            var recompileTemplates = ConfigTools.SharedAppConfigGet("RecompileTemplates");
+
+            if (string.IsNullOrWhiteSpace(recompileTemplates))
+                return result;
+
+            try
+            {
+                result = Convert.ToBoolean(recompileTemplates);
+            }
+            catch (Exception)
+            {
+            }
+
+            return result;
+        }
+
         internal void SaveGlobalParameters()
         {
             CodeEncoding = ValidateEncoding(_codeEncoding);
@@ -152,6 +192,7 @@ namespace CslaGenerator.Metadata
             SprocEncoding = ValidateEncoding(_sprocEncoding);
             ConfigTools.SharedAppConfigChange("SProcEncoding", SprocEncoding);
             ConfigTools.SharedAppConfigChange("OverwriteExtendedFile", _overwriteExtendedFile.ToString());
+            ConfigTools.SharedAppConfigChange("RecompileTemplates", _recompileTemplates.ToString());
 
             Dirty = false;
         }

@@ -120,6 +120,7 @@ namespace CslaGenerator.CodeGen
         private string _codeEncoding;
         private string _sprocEncoding;
         private bool _overwriteExtendedFile;
+        private bool _recompileTemplates;
         private CslaGeneratorUnit _unit;
         private bool _businessError;
         private bool _currentSprocError;
@@ -169,7 +170,8 @@ namespace CslaGenerator.CodeGen
             if (generationParams.TargetIsCsla4DAL)
                 _fullTemplatesPath += "DAL";
             _fullTemplatesPath += @"\";
-            _templates = new Hashtable(); //to recompile templates in case they changed.
+            if(_recompileTemplates)
+                _templates = new Hashtable();
             //This is just in case users add/remove objects while generating...
             var list = unit.CslaObjects.Where(t => t.Generate).ToList();
             /*for (var i = 0; i < unit.CslaObjects.Count; i++)
@@ -436,6 +438,7 @@ namespace CslaGenerator.CodeGen
             _codeEncoding = GeneratorController.Current.GlobalParameters.CodeEncoding;
             _sprocEncoding = GeneratorController.Current.GlobalParameters.SprocEncoding;
             _overwriteExtendedFile = GeneratorController.Current.GlobalParameters.OverwriteExtendedFile;
+            _recompileTemplates = GeneratorController.Current.GlobalParameters.RecompileTemplates;
         }
 
         #endregion
