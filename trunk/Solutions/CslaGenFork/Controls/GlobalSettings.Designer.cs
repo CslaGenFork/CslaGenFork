@@ -38,6 +38,7 @@ namespace CslaGenerator.Controls
             this.cmdSave = new System.Windows.Forms.Button();
             this.MainTabControl = new System.Windows.Forms.TabControl();
             this.GenerationTab = new System.Windows.Forms.TabPage();
+            this.chkRecompileTemplates = new System.Windows.Forms.CheckBox();
             this.chkOverwriteExtendedFile = new System.Windows.Forms.CheckBox();
             this.cboCodeEncoding = new System.Windows.Forms.ComboBox();
             this.cboSprocEncoding = new System.Windows.Forms.ComboBox();
@@ -116,12 +117,29 @@ namespace CslaGenerator.Controls
             this.GenerationTab.Controls.Add(this.cboSprocEncoding);
             this.GenerationTab.Controls.Add(this.cboCodeEncoding);
             this.GenerationTab.Controls.Add(this.chkOverwriteExtendedFile);
+            this.GenerationTab.Controls.Add(this.chkRecompileTemplates);
             this.GenerationTab.Location = new System.Drawing.Point(4, 22);
             this.GenerationTab.Name = "GenerationTab";
             this.GenerationTab.Size = new System.Drawing.Size(525, 352);
             this.GenerationTab.TabIndex = 1;
             this.GenerationTab.Text = "Generation";
             this.GenerationTab.UseVisualStyleBackColor = true;
+            // 
+            // lblCodeEncoding
+            // 
+            this.lblCodeEncoding.Location = new System.Drawing.Point(15, 17);
+            this.lblCodeEncoding.Name = "lblCodeEncoding";
+            this.lblCodeEncoding.Size = new System.Drawing.Size(100, 20);
+            this.lblCodeEncoding.TabIndex = 3;
+            this.lblCodeEncoding.Text = "Code encoding:";
+            // 
+            // lblSprocEncoding
+            // 
+            this.lblSprocEncoding.Location = new System.Drawing.Point(15, 45);
+            this.lblSprocEncoding.Name = "lblSprocEncoding";
+            this.lblSprocEncoding.Size = new System.Drawing.Size(100, 20);
+            this.lblSprocEncoding.TabIndex = 4;
+            this.lblSprocEncoding.Text = "SProc encoding:";
             // 
             // chkOverwriteExtendedFile
             // 
@@ -133,6 +151,17 @@ namespace CslaGenerator.Controls
             this.chkOverwriteExtendedFile.TabIndex = 0;
             this.chkOverwriteExtendedFile.Text = "Overwrite Extended File";
             this.chkOverwriteExtendedFile.UseVisualStyleBackColor = true;
+            // 
+            // chkRecompileTemplates
+            // 
+            this.chkRecompileTemplates.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.globalParametersBindingSource, "RecompileTemplates", true, DataSourceUpdateMode.OnPropertyChanged));
+            this.chkRecompileTemplates.AutoSize = true;
+            this.chkRecompileTemplates.Location = new System.Drawing.Point(15, 97);
+            this.chkRecompileTemplates.Name = "chkRecompileTemplates";
+            this.chkRecompileTemplates.Size = new System.Drawing.Size(138, 17);
+            this.chkRecompileTemplates.TabIndex = 0;
+            this.chkRecompileTemplates.Text = "Recompile templates (template development)";
+            this.chkRecompileTemplates.UseVisualStyleBackColor = true;
             // 
             // cboCodeEncoding
             // 
@@ -155,22 +184,6 @@ namespace CslaGenerator.Controls
             this.cboSprocEncoding.Name = "cboSprocEncoding";
             this.cboSprocEncoding.Size = new System.Drawing.Size(155, 21);
             this.cboSprocEncoding.TabIndex = 2;
-            // 
-            // lblCodeEncoding
-            // 
-            this.lblCodeEncoding.Location = new System.Drawing.Point(15, 17);
-            this.lblCodeEncoding.Name = "lblCodeEncoding";
-            this.lblCodeEncoding.Size = new System.Drawing.Size(100, 20);
-            this.lblCodeEncoding.TabIndex = 3;
-            this.lblCodeEncoding.Text = "Code encoding:";
-            // 
-            // lblSprocEncoding
-            // 
-            this.lblSprocEncoding.Location = new System.Drawing.Point(15, 45);
-            this.lblSprocEncoding.Name = "lblSprocEncoding";
-            this.lblSprocEncoding.Size = new System.Drawing.Size(100, 20);
-            this.lblSprocEncoding.TabIndex = 4;
-            this.lblSprocEncoding.Text = "SProc encoding:";
             // 
             // lblCodeEncodingDisplayName
             // 
@@ -230,5 +243,6 @@ namespace CslaGenerator.Controls
         private ComboBox cboSprocEncoding;
         private ComboBox cboCodeEncoding;
         private CheckBox chkOverwriteExtendedFile;
+        private CheckBox chkRecompileTemplates;
     }
 }
