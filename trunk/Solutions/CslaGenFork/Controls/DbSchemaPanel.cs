@@ -574,22 +574,23 @@ namespace CslaGenerator.Controls
                 }
             }
             if (dbColumns.SelectedIndicesCount != 1)
+            {
+                addInheritedValuePropertyToolStripMenuItem.Enabled = false;
                 return;
+            }
             if (_currentCslaObject != null)
                 foreach (ValueProperty prop in _currentCslaObject.InheritedValueProperties)
                 {
-                    using (var mnu = new ToolStripMenuItem())
-                    {
-                        mnu.Text = prop.Name;
-                        if (prop.DbBindColumn.ColumnOriginType == ColumnOriginType.None)
-                            mnu.Text += @" (ASSIGN)";
-                        else
-                            mnu.Text += @" (UPDATE)";
-                        mnu.Click += addInheritedValuePropertyToolStripMenuItem_DropDownItemClicked;
-                        mnu.Checked = (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None);
-                        mnu.Tag = prop.Name;
-                        addInheritedValuePropertyToolStripMenuItem.DropDownItems.Add(mnu);
-                    }
+                    var mnu = new ToolStripMenuItem();
+                    mnu.Text = prop.Name;
+                    if (prop.DbBindColumn.ColumnOriginType == ColumnOriginType.None)
+                        mnu.Text += @" (ASSIGN)";
+                    else
+                        mnu.Text += @" (UPDATE)";
+                    mnu.Click += addInheritedValuePropertyToolStripMenuItem_DropDownItemClicked;
+                    mnu.Checked = (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None);
+                    mnu.Tag = prop.Name;
+                    addInheritedValuePropertyToolStripMenuItem.DropDownItems.Add(mnu);
                 }
             addInheritedValuePropertyToolStripMenuItem.Enabled = (addInheritedValuePropertyToolStripMenuItem.DropDownItems.Count > 0);
         }
@@ -597,6 +598,9 @@ namespace CslaGenerator.Controls
         private void SetColumnsContextMenu(bool enabled, bool rowSelected)
         {
             if (rowSelected == false)
+                return;
+
+            if (_currentCslaObject == null)
                 return;
 
             addToCslaObjectToolStripMenuItem.Enabled = enabled;
@@ -617,18 +621,8 @@ namespace CslaGenerator.Controls
             dbColumns.UnSelectAll();
         }
 
-        private void AskSelectObject()
-        {
-            MessageBox.Show(@"Please select a Csla Object.", @"Select Csla Object", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
-
         private void addToCslaObjectToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (_currentCslaObject == null)
-            {
-                AskSelectObject();
-                return;
-            }
             AddPropertiesForSelectedColumns();
         }
 
@@ -869,11 +863,6 @@ namespace CslaGenerator.Controls
 
         private void newCriteriaToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (_currentCslaObject == null)
-            {
-                AskSelectObject();
-                return;
-            }
             var colNames = string.Empty;
             var cols = new List<CriteriaProperty>();
             for (var i = 0; i < SelectedColumns.Count; i++)
