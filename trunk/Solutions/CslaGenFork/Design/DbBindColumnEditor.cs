@@ -13,10 +13,6 @@ namespace CslaGenerator.Design
     {
         private IWindowsFormsEditorService _editorService;
 
-        public DbBindColumnEditor()
-        {
-        }
-
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
             _editorService = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
