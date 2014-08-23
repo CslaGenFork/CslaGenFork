@@ -617,8 +617,18 @@ namespace CslaGenerator.Controls
             dbColumns.UnSelectAll();
         }
 
+        private void AskSelectObject()
+        {
+            MessageBox.Show(@"Please select a Csla Object.", @"Select Csla Object", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
         private void addToCslaObjectToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (_currentCslaObject == null)
+            {
+                AskSelectObject();
+                return;
+            }
             AddPropertiesForSelectedColumns();
         }
 
@@ -860,7 +870,10 @@ namespace CslaGenerator.Controls
         private void newCriteriaToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (_currentCslaObject == null)
+            {
+                AskSelectObject();
                 return;
+            }
             var colNames = string.Empty;
             var cols = new List<CriteriaProperty>();
             for (var i = 0; i < SelectedColumns.Count; i++)
