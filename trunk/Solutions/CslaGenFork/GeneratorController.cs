@@ -128,6 +128,8 @@ namespace CslaGenerator
             get { return _currentUnit; }
             private set
             {
+                _mainForm.GlobalSettingsPanel.LoadInfo();
+                _mainForm.ActivateShowGlobalSettings();
                 _mainForm.ObjectRelationsBuilderPanel.Show(_mainForm.DockPanel);
                 if (_currentUnit != null)
                 {
@@ -147,9 +149,7 @@ namespace CslaGenerator
                 }
                 _mainForm.ProjectPropertiesPanel = new ProjectProperties();
                 _mainForm.ProjectPropertiesPanel.LoadInfo();
-                _mainForm.GlobalSettingsPanel.LoadInfo();
                 _mainForm.ActivateShowProjectProperties();
-                _mainForm.ActivateShowGlobalSettings();
             }
         }
 
