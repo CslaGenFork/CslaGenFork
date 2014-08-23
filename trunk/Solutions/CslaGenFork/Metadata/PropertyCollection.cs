@@ -500,7 +500,7 @@ namespace CslaGenerator.Metadata
         /// <summary>
         /// Validates the index.
         /// </summary>
-        /// <param name="index">The i.</param>
+        /// <param name="index">The index.</param>
         /// <param name="allowEqualEnd">if set to <c>true</c> [allow equal end].</param>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         private void ValidateIndex(int index, bool allowEqualEnd)
