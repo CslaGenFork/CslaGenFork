@@ -131,23 +131,11 @@ namespace CslaGenerator
                 _mainForm.GlobalSettingsPanel.LoadInfo();
                 _mainForm.ActivateShowGlobalSettings();
                 _mainForm.ObjectRelationsBuilderPanel.Show(_mainForm.DockPanel);
-                if (_currentUnit != null)
-                {
-                    if (_mainForm.ProjectPropertiesPanel != null && !_mainForm.ProjectPropertiesPanel.IsDisposed)
-                    {
-                        if (_mainForm.ProjectPropertiesPanel.Visible)
-                            _mainForm.ProjectPropertiesPanel.Close();
-                        _mainForm.ProjectPropertiesPanel.Dispose();
-                    }
-                }
+
                 _currentUnit = value;
 
-                if (_mainForm.ProjectPropertiesPanel != null)
-                {
-                    _mainForm.ProjectPropertiesPanel.Close();
-                    _mainForm.ProjectPropertiesPanel.Dispose();
-                }
-                _mainForm.ProjectPropertiesPanel = new ProjectProperties();
+                if (_mainForm.ProjectPropertiesPanel == null)
+                    _mainForm.ProjectPropertiesPanel = new ProjectProperties();
                 _mainForm.ProjectPropertiesPanel.LoadInfo();
                 _mainForm.ActivateShowProjectProperties();
             }
@@ -396,7 +384,6 @@ namespace CslaGenerator
             _currentCslaObject = null;
             _currentUnit.ConnectionString = ConnectionFactory.ConnectionString;
             BindControls();
-            EnableButtons();
             _mainForm.ObjectInfoGrid.SelectedObject = null;
         }
 
@@ -569,18 +556,6 @@ namespace CslaGenerator
             {
                 throw (e);
             }
-        }
-
-        private void EnableButtons()
-        {
-            //TODO: This needs to be applied to menu
-            //frmGenerator.AddPropertiesButtton.Enabled = true;
-            //frmGenerator.AddObjectButton.Enabled = true;
-            //frmGenerator.DeleteObjectButton.Enabled = true;
-            //frmGenerator.SaveButton.Enabled = true;
-            //frmGenerator.DuplicateButton.Enabled = true;
-            //frmGenerator.ConnectButton.Enabled = true;
-            //frmGenerator.SelectDirectoryButton.Enabled = true;
         }
 
         /*private string GetFileNameWithoutExtension(string fileName)
