@@ -128,6 +128,7 @@ namespace CslaGenerator
             get { return _currentUnit; }
             private set
             {
+                _mainForm.WebBrowserDockPanel.Show();
                 _mainForm.GlobalSettingsPanel.LoadInfo();
                 _mainForm.ActivateShowGlobalSettings();
                 _mainForm.ObjectRelationsBuilderPanel.Show(_mainForm.DockPanel);
