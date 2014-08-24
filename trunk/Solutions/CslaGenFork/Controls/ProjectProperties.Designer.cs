@@ -1622,7 +1622,7 @@ namespace CslaGenerator.Controls
             this.txtExtendedFilenameSuffix.Size = new System.Drawing.Size(164, 20);
             this.txtExtendedFilenameSuffix.TabIndex = 6;
             this.toolTip.SetToolTip(this.txtExtendedFilenameSuffix,
-                                     "If specified, extended classes use \"<object><suffix>\" in file names instead of \"<object>\" file name." +
+                                     "If specified, extended files use \"<object><suffix>\" in file name instead of \"<object>\" file name." +
                                      "\r\nN.B. - For generated filename compatibility with previous versions, use an empty suffix.");
             // 
             // lblClassCommentFilenameSuffix

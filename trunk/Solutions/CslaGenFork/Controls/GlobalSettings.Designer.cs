@@ -151,6 +151,8 @@ namespace CslaGenerator.Controls
             this.chkOverwriteExtendedFile.TabIndex = 0;
             this.chkOverwriteExtendedFile.Text = "Overwrite Extended File";
             this.chkOverwriteExtendedFile.UseVisualStyleBackColor = true;
+            this.toolTip.SetToolTip(this.chkOverwriteExtendedFile, "If checked, extended files will be overwritten.\r\n" +
+                "Unless you use source control, you should backup the extended files before using this option.");
             // 
             // chkRecompileTemplates
             // 
@@ -162,6 +164,8 @@ namespace CslaGenerator.Controls
             this.chkRecompileTemplates.TabIndex = 0;
             this.chkRecompileTemplates.Text = "Recompile templates (template development)";
             this.chkRecompileTemplates.UseVisualStyleBackColor = true;
+            this.toolTip.SetToolTip(this.chkRecompileTemplates, "If checked, templates will be recompiled on every generation.\r\n" +
+                "Unless you are changing the templates, you should uncheck this option.");
             // 
             // cboCodeEncoding
             // 
@@ -173,6 +177,7 @@ namespace CslaGenerator.Controls
             this.cboCodeEncoding.Name = "cboCodeEncoding";
             this.cboCodeEncoding.Size = new System.Drawing.Size(155, 21);
             this.cboCodeEncoding.TabIndex = 1;
+            this.toolTip.SetToolTip(this.cboCodeEncoding, "Select the encoding to use for code generation (.cs or .vb files).");
             // 
             // cboSprocEncoding
             // 
@@ -184,6 +189,7 @@ namespace CslaGenerator.Controls
             this.cboSprocEncoding.Name = "cboSprocEncoding";
             this.cboSprocEncoding.Size = new System.Drawing.Size(155, 21);
             this.cboSprocEncoding.TabIndex = 2;
+            this.toolTip.SetToolTip(this.cboSprocEncoding, "Select the encoding to use for stored procedures generation (.sql files).");
             // 
             // lblCodeEncodingDisplayName
             // 
