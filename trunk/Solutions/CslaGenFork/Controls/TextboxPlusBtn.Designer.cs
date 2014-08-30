@@ -28,9 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.button = new System.Windows.Forms.Button();
             this.textBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
+            // 
+            // toolTip
+            // 
+            this.toolTip.IsBalloon = true;
+            //this.toolTip.AutomaticDelay = 500;//500
+            this.toolTip.AutoPopDelay = 15000;//5000
+            //this.toolTip.InitialDelay = 500;//500
+            //this.toolTip.ReshowDelay = 100;//100
             // 
             // button
             // 
@@ -43,6 +53,7 @@
             this.button.TabIndex = 29;
             this.button.Text = "...";
             this.button.Click += new System.EventHandler(this.Button_Click);
+            this.toolTip.SetToolTip(this.button, "Click to browse for the project output directory.");
             // 
             // textBox
             // 
@@ -54,6 +65,7 @@
             this.textBox.Size = new System.Drawing.Size(190, 20);
             this.textBox.TabIndex = 28;
             this.textBox.Text = "";
+            this.toolTip.SetToolTip(this.textBox, "Specify the project output directory.");
             // 
             // TextboxPlusBtn
             // 
@@ -68,6 +80,7 @@
 
         #endregion
 
+        private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.TextBox textBox;
         private System.Windows.Forms.Button button;
     }
