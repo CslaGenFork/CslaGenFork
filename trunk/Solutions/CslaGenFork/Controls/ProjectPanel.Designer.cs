@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProjectPanel));
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.pnlProjectName = new System.Windows.Forms.Panel();
             this.txtProjectName = new System.Windows.Forms.TextBox();
             this.pnlOutputDir = new System.Windows.Forms.Panel();
@@ -52,9 +53,9 @@
             this.optType = new System.Windows.Forms.RadioButton();
             this.optName = new System.Windows.Forms.RadioButton();
             this.optNone = new System.Windows.Forms.RadioButton();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lblSort = new System.Windows.Forms.Label();
+            this.lblType = new System.Windows.Forms.Label();
+            this.lblName = new System.Windows.Forms.Label();
             this.cboObjectType = new System.Windows.Forms.ComboBox();
             this.txtFilter = new System.Windows.Forms.TextBox();
             this.paneCaption3 = new CslaGenerator.Controls.PaneCaption();
@@ -66,6 +67,14 @@
             this.cslaObjectContextMenuStrip.SuspendLayout();
             this.grpFilters.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // toolTip
+            // 
+            this.toolTip.IsBalloon = true;
+            //this.toolTip.AutomaticDelay = 500;//500
+            this.toolTip.AutoPopDelay = 15000;//5000
+            //this.toolTip.InitialDelay = 500;//500
+            //this.toolTip.ReshowDelay = 100;//100
             // 
             // pnlProjectName
             // 
@@ -84,6 +93,7 @@
             this.txtProjectName.Name = "txtProjectName";
             this.txtProjectName.Size = new System.Drawing.Size(204, 20);
             this.txtProjectName.TabIndex = 42;
+            this.toolTip.SetToolTip(this.txtProjectName, "Specify the project name.");
             // 
             // pnlOutputDir
             // 
@@ -233,9 +243,9 @@
             this.grpFilters.Controls.Add(this.optType);
             this.grpFilters.Controls.Add(this.optName);
             this.grpFilters.Controls.Add(this.optNone);
-            this.grpFilters.Controls.Add(this.label3);
-            this.grpFilters.Controls.Add(this.label2);
-            this.grpFilters.Controls.Add(this.label1);
+            this.grpFilters.Controls.Add(this.lblSort);
+            this.grpFilters.Controls.Add(this.lblType);
+            this.grpFilters.Controls.Add(this.lblName);
             this.grpFilters.Controls.Add(this.cboObjectType);
             this.grpFilters.Controls.Add(this.txtFilter);
             this.grpFilters.Dock = System.Windows.Forms.DockStyle.Top;
@@ -257,6 +267,7 @@
             this.optType.Text = "Type";
             this.optType.UseVisualStyleBackColor = true;
             this.optType.CheckedChanged += new System.EventHandler(this.Sort_CheckedChanged);
+            this.toolTip.SetToolTip(this.optType, "Sort by object stereotype.");
             // 
             // optName
             // 
@@ -268,6 +279,7 @@
             this.optName.Text = "Name";
             this.optName.UseVisualStyleBackColor = true;
             this.optName.CheckedChanged += new System.EventHandler(this.Sort_CheckedChanged);
+            this.toolTip.SetToolTip(this.optName, "Sort by object name.");
             // 
             // optNone
             // 
@@ -281,33 +293,35 @@
             this.optNone.Text = "None";
             this.optNone.UseVisualStyleBackColor = true;
             this.optNone.CheckedChanged += new System.EventHandler(this.Sort_CheckedChanged);
+            this.toolTip.SetToolTip(this.optNone, "Do not sort.");
             // 
-            // label3
+            // lblSort
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 69);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(29, 13);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "Sort:";
+            this.lblSort.AutoSize = true;
+            this.lblSort.Location = new System.Drawing.Point(6, 69);
+            this.lblSort.Name = "lblSort";
+            this.lblSort.Size = new System.Drawing.Size(29, 13);
+            this.lblSort.TabIndex = 4;
+            this.lblSort.Text = "Sort:";
+            this.toolTip.SetToolTip(this.lblSort, "Specify how to sort the Csla objects list.");
             // 
-            // label2
+            // lblType
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 44);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(34, 13);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Type:";
+            this.lblType.AutoSize = true;
+            this.lblType.Location = new System.Drawing.Point(6, 44);
+            this.lblType.Name = "lblType";
+            this.lblType.Size = new System.Drawing.Size(34, 13);
+            this.lblType.TabIndex = 3;
+            this.lblType.Text = "Type:";
             // 
-            // label1
+            // lblName
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 20);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(38, 13);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Name:";
+            this.lblName.AutoSize = true;
+            this.lblName.Location = new System.Drawing.Point(6, 20);
+            this.lblName.Name = "lblName";
+            this.lblName.Size = new System.Drawing.Size(38, 13);
+            this.lblName.TabIndex = 2;
+            this.lblName.Text = "Name:";
             // 
             // cboObjectType
             // 
@@ -319,6 +333,7 @@
             this.cboObjectType.Size = new System.Drawing.Size(156, 21);
             this.cboObjectType.TabIndex = 1;
             this.cboObjectType.SelectedIndexChanged += new System.EventHandler(this.cboObjectType_SelectedIndexChanged);
+            this.toolTip.SetToolTip(this.cboObjectType, "Show all objects or filter by object stereotype.");
             // 
             // txtFilter
             // 
@@ -327,6 +342,7 @@
             this.txtFilter.Size = new System.Drawing.Size(156, 20);
             this.txtFilter.TabIndex = 0;
             this.txtFilter.TextChanged += new System.EventHandler(this.txtFilter_TextChanged);
+            this.toolTip.SetToolTip(this.txtFilter, "Case insensitive object filter. Type here full or partial object names.\r\nTyping \"list info\" shows all objects that have \"list\" or \"info\" in their names.");
             // 
             // paneCaption3
             // 
@@ -405,6 +421,7 @@
 
         public delegate void TargetDirChangedEventHandler(string path);
         public virtual event TargetDirChangedEventHandler TargetDirChanged;
+        private System.Windows.Forms.ToolTip toolTip;
         private CslaGenerator.Controls.PaneCaption paneCaption1;
         private CslaGenerator.Controls.PaneCaption paneCaption2;
         private CslaGenerator.Controls.PaneCaption paneCaption3;
@@ -433,8 +450,8 @@
         private System.Windows.Forms.RadioButton optType;
         private System.Windows.Forms.RadioButton optName;
         private System.Windows.Forms.RadioButton optNone;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblSort;
+        private System.Windows.Forms.Label lblType;
+        private System.Windows.Forms.Label lblName;
     }
 }
