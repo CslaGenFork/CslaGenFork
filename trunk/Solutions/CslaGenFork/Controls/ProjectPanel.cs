@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using CslaGenerator.Metadata;
 using WeifenLuo.WinFormsUI.Docking;
@@ -295,6 +296,7 @@ namespace CslaGenerator.Controls
         #region Events
 
         internal event EventHandler SelectedItemsChanged;
+
         void OnSelectedItemsChanged()
         {
             if (SelectedItemsChanged != null)
@@ -302,6 +304,7 @@ namespace CslaGenerator.Controls
         }
 
         internal event EventHandler LastItemRemoved;
+
         void OnLastItemRemoved()
         {
             if (LastItemRemoved != null)
@@ -330,25 +333,16 @@ namespace CslaGenerator.Controls
                 return;
 
             lstObjects.SuspendLayout();
-            bool allTypes = cboObjectType.Text == "<All>";
             _currentView = new List<CslaObjectInfo>();
             if (_objects != null)
-            {
-                foreach (CslaObjectInfo obj in _objects)
-                {
-                    if (allTypes || obj.ObjectType.ToString() == cboObjectType.Text)
-                    {
-                        if (txtFilter.Text.Length == 0 || obj.ObjectName.IndexOf(txtFilter.Text, StringComparison.CurrentCultureIgnoreCase) >= 0)
-                            _currentView.Add(obj);
-                    }
-                }
-            }
+                FilterObjectsForView();
+
             if (optName.Checked)
                 _currentView.Sort((a, b) => a.ObjectName.CompareTo(b.ObjectName));
             else if (optType.Checked)
                 _currentView.Sort((a, b) =>
                 {
-                    int type = a.ObjectType.ToString().CompareTo(b.ObjectType.ToString());
+                    var type = a.ObjectType.ToString().CompareTo(b.ObjectType.ToString());
                     if (type == 0)
                         return a.ObjectName.CompareTo(b.ObjectName);
                     return type;
@@ -357,6 +351,29 @@ namespace CslaGenerator.Controls
 
             if (updatePresenter)
                 ApplyFiltersPresenter();
+        }
+
+        private void FilterObjectsForView()
+        {
+            var allTypes = cboObjectType.Text == "<All>";
+            var filterList = txtFilter.Text.Split(' ');
+
+            foreach (var obj in _objects)
+            {
+                if (allTypes || obj.ObjectType.ToString() == cboObjectType.Text)
+                {
+                    if (txtFilter.Text.Length == 0 || obj.ObjectName.IndexOf(txtFilter.Text, StringComparison.CurrentCultureIgnoreCase) >= 0)
+                        _currentView.Add(obj);
+                    else
+                    {
+                        foreach (var item in filterList)
+                        {
+                            if (obj.ObjectName.IndexOf(item, StringComparison.CurrentCultureIgnoreCase) >= 0)
+                                _currentView.Add(obj);
+                        }
+                    }
+                }
+            }
         }
 
         internal void ApplyFiltersPresenter()
@@ -418,9 +435,10 @@ namespace CslaGenerator.Controls
             _restoreSelectedItems = false;
 
             // What to delete
-            var deleteList = new List<CslaObjectInfo>();
+            /*var deleteList = new List<CslaObjectInfo>();
             foreach (CslaObjectInfo obj in lstObjects.SelectedItems)
-                deleteList.Add(obj);
+                deleteList.Add(obj);*/
+            var deleteList = lstObjects.SelectedItems.Cast<CslaObjectInfo>().ToList();
 
             // Select the top most selected item
             var selectedIndex = lstObjects.SelectedIndex;// -1;
@@ -470,9 +488,10 @@ namespace CslaGenerator.Controls
             _suspendListUpdates = true;
             DisableEventDrawItem();
 
-            var duplicateList = new List<CslaObjectInfo>();
+            /*var duplicateList = new List<CslaObjectInfo>();
             foreach (CslaObjectInfo obj in lstObjects.SelectedItems)
-                duplicateList.Add(obj.Duplicate(GeneratorController.Catalog));
+                duplicateList.Add(obj.Duplicate(GeneratorController.Catalog));*/
+            var duplicateList = (from CslaObjectInfo obj in lstObjects.SelectedItems select obj.Duplicate(GeneratorController.Catalog)).ToList();
             foreach (var obj in duplicateList)
                 _objects.InsertAtTop(obj, true);
 
@@ -666,10 +685,11 @@ namespace CslaGenerator.Controls
 
         internal IEnumerable<CslaObjectInfo> GetSelectedObjects()
         {
-            var lst = new List<CslaObjectInfo>();
+            /*var lst = new List<CslaObjectInfo>();
             foreach (CslaObjectInfo itm in ListObjects.SelectedItems)
                 lst.Add(itm);
-            return lst.ToArray();
+            return lst.ToArray();*/
+            return ListObjects.SelectedItems.Cast<CslaObjectInfo>().ToArray();
         }
 
         private void DisableEventSelectedIndexChanged()
