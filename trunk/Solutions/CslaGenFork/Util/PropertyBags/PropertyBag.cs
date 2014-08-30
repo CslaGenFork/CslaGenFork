@@ -958,7 +958,7 @@ namespace CslaGenerator.Util.PropertyBags
                             return false;
                         if ((!GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All ||
                             (CslaTemplateHelperCS.IsReadOnlyType(cslaObject.ObjectType) && !string.IsNullOrEmpty(cslaObject.ParentType))) &&
-                            propertyName == "UseUnitOfWorkType")
+                            (propertyName == "UseUnitOfWorkType" || propertyName == "GenerateInlineQueries"))
                             return false;
                         if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All &&
                             !(cslaObject.ObjectType == CslaObjectType.DynamicEditableRoot ||
