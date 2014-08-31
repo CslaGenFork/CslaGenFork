@@ -373,8 +373,8 @@ namespace CslaGenerator.Design
                         }
                         else
                         {
-                            if (_form.Size.Height != 294 + heightIncrease)
-                                _form.Size = new Size(_form.Size.Width, 294 + heightIncrease);
+                            if (_form.Size.Height != 306 + heightIncrease)
+                                _form.Size = new Size(_form.Size.Width, 306 + heightIncrease);
                         }
                     }
                 }
@@ -414,8 +414,8 @@ namespace CslaGenerator.Design
                         }
                         else
                         {
-                            if (_form.Size.Height != 262 + heightIncrease)
-                                _form.Size = new Size(_form.Size.Width, 262 + heightIncrease);
+                            if (_form.Size.Height != 274 + heightIncrease)
+                                _form.Size = new Size(_form.Size.Width, 274 + heightIncrease);
                         }
                     }
                 }
@@ -457,6 +457,10 @@ namespace CslaGenerator.Design
 
         private void HandleFormCollectionType()
         {
+            var formScreen = Screen.FromControl(_form);
+            var height = formScreen.WorkingArea.Height;
+            var cslaObject = (CslaObjectInfo)GeneratorController.Current.GetSelectedItem();
+
             switch (_form.Text)
             {
                 case "ValueProperty Collection Editor":
@@ -464,30 +468,36 @@ namespace CslaGenerator.Design
                     _collectionType = typeof (ValueProperty);
                     if (GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.None ||
                         GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.ObjectLevel)
-                        _form.Size = new Size(_form.Size.Width, 646);
+                        _form.Size = new Size(_form.Size.Width, 658);
                     else
                     {
-                        _form.Size = new Size(_form.Size.Width, 694);
+                        _form.Size = new Size(_form.Size.Width, 706);
                         if (GeneratorController.Current.CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider)
                             _form.Size = new Size(_form.Size.Width, _form.Size.Height - 16);
                     }
+                    if (cslaObject.ObjectType == CslaObjectType.NameValueList)
+                        _form.Size = new Size(_form.Size.Width, 626);
                     if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All)
                         _form.Size = new Size(_form.Size.Width, _form.Size.Height - 16);
+                    if (height < _form.Size.Height)
+                        _form.Size = new Size(_form.Size.Width, height);
                     break;
                 case "ChildProperty Collection Editor":
                     _form.Size = new Size(586, _form.Size.Height);
                     _collectionType = typeof (ChildProperty);
                     if (GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.None ||
                         GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.ObjectLevel)
-                        _form.Size = new Size(_form.Size.Width, 566);
+                        _form.Size = new Size(_form.Size.Width, 578);
                     else
                     {
-                        _form.Size = new Size(_form.Size.Width, 630);
+                        _form.Size = new Size(_form.Size.Width, 626);
                         if (GeneratorController.Current.CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider)
                             _form.Size = new Size(_form.Size.Width, _form.Size.Height - 16);
                     }
-                    if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All)
-                        _form.Size = new Size(_form.Size.Width, _form.Size.Height - 16);
+                    if (!GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All)
+                        _form.Size = new Size(_form.Size.Width, _form.Size.Height - 32);
+                        if (height < _form.Size.Height)
+                        _form.Size = new Size(_form.Size.Width, height);
                     break;
                 case "UnitOfWorkProperty Collection Editor":
                     _form.Size = new Size(570, _form.Size.Height);
@@ -497,33 +507,26 @@ namespace CslaGenerator.Design
                 case "Criteria Collection Editor":
                     _form.Size = new Size(550, _form.Size.Height);
                     _collectionType = typeof (Criteria);
-                    _form.Size = new Size(_form.Size.Width, 726);
-                    var cslaObject = (CslaObjectInfo) GeneratorController.Current.GetSelectedItem();
-                    if (cslaObject.ObjectType == CslaObjectType.UnitOfWork &&
-                        cslaObject.UnitOfWorkType == UnitOfWorkFunction.CreatorGetter)
-                    {
-                        _form.Size = new Size(_form.Size.Width, _form.Size.Height - 128);
-                    }
-                    else if ((cslaObject.ObjectType == CslaObjectType.ReadOnlyObject ||
-                         cslaObject.ObjectType == CslaObjectType.ReadOnlyCollection ||
-                         cslaObject.ObjectType == CslaObjectType.NameValueList ||
-                         (cslaObject.ObjectType == CslaObjectType.UnitOfWork)))
+                    _form.Size = new Size(_form.Size.Width, 738);
+                    if (cslaObject.ObjectType == CslaObjectType.ReadOnlyObject ||
+                        cslaObject.ObjectType == CslaObjectType.ReadOnlyCollection ||
+                        cslaObject.ObjectType == CslaObjectType.NameValueList)
                         _form.Size = new Size(_form.Size.Width, _form.Size.Height - 256);
                     if (!GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All)
                         _form.Size = new Size(_form.Size.Width, _form.Size.Height - 32);
                     if (cslaObject.ObjectType == CslaObjectType.EditableChild)
-                    {
                         _form.Size = new Size(_form.Size.Width, _form.Size.Height - 128);
-                    }
+                    if (height < _form.Size.Height)
+                        _form.Size = new Size(_form.Size.Width, height);
                     break;
                 case "CriteriaProperty Collection Editor":
                     _collectionType = typeof (CriteriaProperty);
-                    _form.Size = new Size(_form.Size.Width, 393);
+                    _form.Size = new Size(_form.Size.Width, 402);
                     break;
                 case "ConvertValueProperty Collection Editor":
                     _form.Size = new Size(570, _form.Size.Height);
                     _collectionType = typeof (ConvertValueProperty);
-                    _form.Size = new Size(_form.Size.Width, 534);
+                    _form.Size = new Size(_form.Size.Width, 546);
                     if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All)
                         _form.Size = new Size(_form.Size.Width, _form.Size.Height - 16);
                     break;
