@@ -679,7 +679,7 @@ namespace CslaGenerator.Metadata
         /// Prevents the parent property form participating in updates or deletes.
         /// </summary>
         [Category("04. Child Object Options")]
-        [Description("The Parent properties are used in inserts and may be also used in updates or deletes.\r\n" +
+        [Description("The Parent properties are used in inserts and may also be used in updates or deletes.\r\n" +
             "Use \"InsertOnly\" when the child has its own ID that is used on updates and deletes. " +
             "Use \"InsertUpdateDelete\" when the child has no ID of its own.")]
         [UserFriendlyName("Parent Properties Usage")]
@@ -1558,6 +1558,32 @@ namespace CslaGenerator.Metadata
             }
         }
 
+        [Browsable(false)]
+        public bool UsesInlineQuery
+        {
+            get
+            {
+                if (ObjectType == CslaObjectType.UnitOfWork)
+                    return false;
+                if (GeneratorController.Current.CurrentUnit.GenerationParams.UseInlineQueries == UseInlineQueries.Always)
+                    return true;
+                if (GeneratorController.Current.CurrentUnit.GenerationParams.UseInlineQueries == UseInlineQueries.SpecifyByObject)
+                {
+                    var parent = Parent.CslaObjects.Find(ParentType);// this is the direct parent object or collection
+                    if (parent != null && parent.GenerateInlineQueries.Count > 0)
+                        return true;
+
+                     parent = FindParent(this);// this is the ancestor object (not collection)
+                    if (parent != null && parent.GenerateInlineQueries.Count > 0)
+                        return true;
+
+                    if (ObjectType != CslaObjectType.ReadOnlyObject && GenerateInlineQueries.Count > 0)
+                        return true;
+                }
+                return false;
+            }
+        }
+
         #endregion
 
         #region Event Handlers
@@ -1769,7 +1795,7 @@ namespace CslaGenerator.Metadata
         }
 
         /// <summary>
-        /// Finds the parent of a CslaObjectInfo (object or collection).
+        /// Finds the ancestor object of a CslaObjectInfo (object or collection).
         /// </summary>
         /// <param name="info">The CslaObjectInfo.</param>
         /// <returns>
