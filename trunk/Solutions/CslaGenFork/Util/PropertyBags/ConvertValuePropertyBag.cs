@@ -633,6 +633,9 @@ namespace CslaGenerator.Util.PropertyBags
                      propertyName == "WriteRoles"))
                     return false;*/
 
+                if (propertyName == "InlineQueryParameter")
+                    return false;
+
                 if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All &&
                     propertyName == "MarkDirtyOnChange")
                     return false;
