@@ -315,6 +315,7 @@
     <Compile Include="Metadata\AssociativeEntity.cs" />
     <Compile Include="Metadata\IBusinessRule.cs" />
     <Compile Include="Metadata\IHaveBusinessRules.cs" />
+    <Compile Include="Metadata\InlineQueryParameterType.cs" />
     <Compile Include="Metadata\ObjectRelationsFactory.cs" />
     <Compile Include="Metadata\ParentPropertiesUsage.cs" />
     <Compile Include="Metadata\PersistenceType.cs" />
