@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CslaGenerator.Metadata
 {
@@ -6,22 +7,32 @@ namespace CslaGenerator.Metadata
     {
         public ChildProperty Find(string name)
         {
-            foreach (var c in this)
+            if (name == string.Empty)
+                return null;
+
+            /*foreach (var c in this)
             {
                 if (c.Name.Equals(name))
                     return c;
             }
-            return null;
+            return null;*/
+
+            return this.FirstOrDefault(c => c.Name.Equals(name));
         }
 
         public ChildProperty FindType(string typeName)
         {
-            foreach (var c in this)
+            if (typeName == string.Empty)
+                return null;
+
+            /*foreach (var c in this)
             {
                 if (c.TypeName.Equals(typeName))
                     return c;
             }
-            return null;
+            return null;*/
+
+            return this.FirstOrDefault(c => c.TypeName.Equals(typeName));
         }
 
         public bool Contains(string name)
