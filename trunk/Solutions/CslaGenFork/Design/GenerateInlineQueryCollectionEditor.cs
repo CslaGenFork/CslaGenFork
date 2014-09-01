@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Drawing.Design;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
+using CslaGenerator.CodeGen;
+using CslaGenerator.Metadata;
 using CslaGenerator.Util;
 
 namespace CslaGenerator.Design
@@ -39,12 +41,18 @@ namespace CslaGenerator.Design
                     var propInfo = instanceType.GetProperty("GenerateInlineQueries");
                     var propColl = (List<string>)propInfo.GetValue(objinfo, null);
 
+                    var obj = (CslaObjectInfo)objinfo;
+                    var fullCrud = CslaTemplateHelperCS.IsEditableType(obj.ObjectType);
+
                     _lstCrudOperations.Items.Clear();
                     _lstCrudOperations.Items.Add("(None)");
-                    _lstCrudOperations.Items.Add("Create");
+                    if (fullCrud)
+                        _lstCrudOperations.Items.Add("Create");
                     _lstCrudOperations.Items.Add("Read");
-                    _lstCrudOperations.Items.Add("Update");
-                    _lstCrudOperations.Items.Add("Delete");
+                    if (fullCrud)
+                        _lstCrudOperations.Items.Add("Update");
+                    if (fullCrud)
+                        _lstCrudOperations.Items.Add("Delete");
 
                     foreach (var item in propColl)
                     {
