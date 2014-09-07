@@ -80,7 +80,6 @@ namespace CslaGenerator.Metadata
         private bool _markDirtyOnChange = true;
         private bool _undoable = true;
         private string _defaultValue = string.Empty;
-        private InlineQueryParameterType _inlineQueryParameter = InlineQueryParameterType.Plain;
         private string _friendlyName = string.Empty;
         private PropertyDeclaration _declarationMode;
         private RuleCollection _rules = new RuleCollection();
@@ -297,15 +296,6 @@ namespace CslaGenerator.Metadata
         {
             get { return _defaultValue; }
             set { _defaultValue = PropertyHelper.TidyAllowSpaces(value); }
-        }
-
-        [Category("01. Definition")]
-        [Description("Specifies how the inline query methods expects this parameter.")]
-        [UserFriendlyName("Inline Query Parameter")]
-        public virtual InlineQueryParameterType InlineQueryParameter
-        {
-            get { return _inlineQueryParameter; }
-            set { _inlineQueryParameter = value; }
         }
 
         #endregion

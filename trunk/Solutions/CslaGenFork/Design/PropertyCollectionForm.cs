@@ -478,11 +478,7 @@ namespace CslaGenerator.Design
                     if (cslaObject.ObjectType == CslaObjectType.NameValueList)
                         _form.Size = new Size(_form.Size.Width, 626);
                     if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All)
-                    {
                         _form.Size = new Size(_form.Size.Width, _form.Size.Height - 16);
-                        if (cslaObject.UsesInlineQuery)
-                            _form.Size = new Size(_form.Size.Width, _form.Size.Height + 16);
-                    }
                     if (height < _form.Size.Height)
                         _form.Size = new Size(_form.Size.Width, height);
                     break;
@@ -526,6 +522,8 @@ namespace CslaGenerator.Design
                 case "CriteriaProperty Collection Editor":
                     _collectionType = typeof (CriteriaProperty);
                     _form.Size = new Size(_form.Size.Width, 402);
+                    if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4DAL && cslaObject.UsesInlineQuery)
+                        _form.Size = new Size(_form.Size.Width, _form.Size.Height + 16);
                     break;
                 case "ConvertValueProperty Collection Editor":
                     _form.Size = new Size(570, _form.Size.Height);

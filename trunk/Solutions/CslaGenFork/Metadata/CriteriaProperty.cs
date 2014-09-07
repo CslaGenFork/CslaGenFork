@@ -10,8 +10,9 @@ namespace CslaGenerator.Metadata
     {
         private DbBindColumn _dbBindColumn = new DbBindColumn();
         private string _parameterValue = string.Empty;
+        private InlineQueryParameterType _inlineQueryParameter = InlineQueryParameterType.Plain;
         private string _unitOfWorkFactoryParameter = string.Empty;
-
+        
         public CriteriaProperty()
         {
             base.ReadOnly = true;
@@ -87,6 +88,15 @@ namespace CslaGenerator.Metadata
         {
             get { return _parameterValue; }
             set { _parameterValue = PropertyHelper.TidyAllowSpaces(value); }
+        }
+
+        [Category("01. Definition")]
+        [Description("Specifies how the inline query methods expects this parameter.")]
+        [UserFriendlyName("Inline Query Parameter")]
+        public virtual InlineQueryParameterType InlineQueryParameter
+        {
+            get { return _inlineQueryParameter; }
+            set { _inlineQueryParameter = value; }
         }
 
         [Browsable(false)]
