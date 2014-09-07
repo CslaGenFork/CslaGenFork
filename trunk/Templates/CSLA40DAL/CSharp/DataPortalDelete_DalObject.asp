@@ -1,4 +1,6 @@
 <%
+useInlineQuery = false;
+lastCriteria = "";
 if (CurrentUnit.GenerationParams.UseInlineQueries == UseInlineQueries.Always)
    useInlineQuery = true;
 else if (CurrentUnit.GenerationParams.UseInlineQueries == UseInlineQueries.SpecifyByObject)
@@ -49,18 +51,18 @@ if (Info.GenerateDataPortalDelete)
                 }
                 if (c.Properties.Count > 1)
                 {
-                    lastCriteria = ReceiveMultipleCriteriaTypeless(c);
+                    lastCriteria = ReceiveMultipleCriteriaTypeless(c, true);
                     if (useInlineQuery)
-                        InlineQueryList.Add(new AdvancedGenerator.InlineQuery(c.DeleteOptions.ProcedureName, ReceiveMultipleCriteria(c)));
+                        InlineQueryList.Add(new AdvancedGenerator.InlineQuery(c.DeleteOptions.ProcedureName, ReceiveMultipleCriteria(c, true)));
                     %>
         public void Delete(<%= ReceiveMultipleCriteria(c) %>)
         <%
                 }
                 else
                 {
-                    lastCriteria = ReceiveSingleCriteriaTypeless(c, "crit");
+                    lastCriteria = ReceiveSingleCriteriaTypeless(c, "crit", true);
                     if (useInlineQuery)
-                        InlineQueryList.Add(new AdvancedGenerator.InlineQuery(c.DeleteOptions.ProcedureName, ReceiveSingleCriteria(c, "crit")));
+                        InlineQueryList.Add(new AdvancedGenerator.InlineQuery(c.DeleteOptions.ProcedureName, ReceiveSingleCriteria(c, "crit", true)));
                     %>
         public void Delete(<%= ReceiveSingleCriteria(c, "crit") %>)
         <%
@@ -69,6 +71,7 @@ if (Info.GenerateDataPortalDelete)
             else
             {
                 string strDeleteCritParams = string.Empty;
+                string lastCriteriaTyped = string.Empty;
                 string strDeleteComment = string.Empty;
                 bool deleteIsFirst = true;
 
@@ -77,6 +80,7 @@ if (Info.GenerateDataPortalDelete)
                     if (!deleteIsFirst)
                     {
                        strDeleteCritParams += ", ";
+                       lastCriteriaTyped += ", ";
                        lastCriteria += ", ";
                     }
                     else
@@ -84,11 +88,12 @@ if (Info.GenerateDataPortalDelete)
 
                     strDeleteComment += "/// <param name=\"" + FormatCamel(c.Properties[i].Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(c.Properties[i].Name) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
                     strDeleteCritParams += string.Concat(GetDataTypeGeneric(c.Properties[i], c.Properties[i].PropertyType), " ", FormatCamel(c.Properties[i].Name));
-                    lastCriteria += FormatCamel(c.Properties[i].Name);
+                    lastCriteriaTyped += string.Concat(AddRefOrOut(c.Properties[i]) + GetDataTypeGeneric(c.Properties[i], c.Properties[i].PropertyType), " ", FormatCamel(c.Properties[i].Name));
+                    lastCriteria += AddRefOrOut(c.Properties[i]) + FormatCamel(c.Properties[i].Name);
                 }
 
                 if (useInlineQuery)
-                    InlineQueryList.Add(new AdvancedGenerator.InlineQuery(c.DeleteOptions.ProcedureName, strDeleteCritParams));
+                    InlineQueryList.Add(new AdvancedGenerator.InlineQuery(c.DeleteOptions.ProcedureName, lastCriteriaTyped));
                 %>
         /// <summary>
         /// Deletes the <%= Info.ObjectName %> object from database.

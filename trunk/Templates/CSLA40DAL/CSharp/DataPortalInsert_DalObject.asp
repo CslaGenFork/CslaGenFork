@@ -1,4 +1,5 @@
 <%
+useInlineQuery = false;
 lastCriteria = "";
 if (CurrentUnit.GenerationParams.UseInlineQueries == UseInlineQueries.Always)
    useInlineQuery = true;
