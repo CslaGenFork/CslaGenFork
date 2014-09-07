@@ -1,4 +1,5 @@
 <%
+useInlineQuery = false;
 if (CurrentUnit.GenerationParams.UseInlineQueries == UseInlineQueries.Always)
     useInlineQuery = true;
 else if (CurrentUnit.GenerationParams.UseInlineQueries == UseInlineQueries.SpecifyByObject)
@@ -48,9 +49,9 @@ foreach (Criteria c in Info.CriteriaObjects)
             }
             if (c.Properties.Count > 1)
             {
-                lastCriteria = ReceiveMultipleCriteriaTypeless(c);
+                lastCriteria = ReceiveMultipleCriteriaTypeless(c, true);
                 if (useInlineQuery)
-                    InlineQueryList.Add(new AdvancedGenerator.InlineQuery(c.GetOptions.ProcedureName, ReceiveMultipleCriteria(c)));
+                    InlineQueryList.Add(new AdvancedGenerator.InlineQuery(c.GetOptions.ProcedureName, ReceiveMultipleCriteria(c, true)));
                 %>
         /// <returns>A list of <see cref="<%= Info.ItemType %>Dto"/>.</returns>
         public List<<%= Info.ItemType %>Dto> Fetch(<%= ReceiveMultipleCriteria(c) %>)
@@ -58,9 +59,9 @@ foreach (Criteria c in Info.CriteriaObjects)
             }
             else if (c.Properties.Count > 0)
             {
-                lastCriteria = ReceiveSingleCriteriaTypeless(c, "crit");
+                lastCriteria = ReceiveSingleCriteriaTypeless(c, "crit", true);
                 if (useInlineQuery)
-                    InlineQueryList.Add(new AdvancedGenerator.InlineQuery(c.GetOptions.ProcedureName, ReceiveSingleCriteria(c, "crit")));
+                    InlineQueryList.Add(new AdvancedGenerator.InlineQuery(c.GetOptions.ProcedureName, ReceiveSingleCriteria(c, "crit", true)));
                 %>
         /// <returns>A list of <see cref="<%= Info.ItemType %>Dto"/>.</returns>
         public List<<%= Info.ItemType %>Dto> Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)
@@ -80,6 +81,7 @@ foreach (Criteria c in Info.CriteriaObjects)
         else
         {
             string strGetCritParams = string.Empty;
+            string lastCriteriaTyped = string.Empty;
             string strGetComment = string.Empty;
             bool getIsFirst = true;
 
@@ -88,6 +90,7 @@ foreach (Criteria c in Info.CriteriaObjects)
                 if (!getIsFirst)
                 {
                     strGetCritParams += ", ";
+                    lastCriteriaTyped += ", ";
                     lastCriteria += ", ";
                 }
                 else
@@ -95,11 +98,12 @@ foreach (Criteria c in Info.CriteriaObjects)
 
                 strGetComment += "/// <param name=\"" + FormatCamel(c.Properties[i].Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(c.Properties[i].Name) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
                 strGetCritParams += string.Concat(GetDataTypeGeneric(c.Properties[i], c.Properties[i].PropertyType), " ", FormatCamel(c.Properties[i].Name));
-                lastCriteria += FormatCamel(c.Properties[i].Name);
+                lastCriteriaTyped += string.Concat(AddRefOrOut(c.Properties[i]) + GetDataTypeGeneric(c.Properties[i], c.Properties[i].PropertyType), " ", FormatCamel(c.Properties[i].Name));
+                lastCriteria += AddRefOrOut(c.Properties[i]) + FormatCamel(c.Properties[i].Name);
             }
 
             if (useInlineQuery)
-                InlineQueryList.Add(new AdvancedGenerator.InlineQuery(c.GetOptions.ProcedureName, strGetCritParams));
+                InlineQueryList.Add(new AdvancedGenerator.InlineQuery(c.GetOptions.ProcedureName, lastCriteriaTyped));
             %>
         /// <summary>
         /// Loads a <%= Info.ObjectName %> collection from the database.
