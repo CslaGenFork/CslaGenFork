@@ -94,7 +94,7 @@ namespace CslaGenFork.Rules.AuthorizationRules
             var target = (BusinessBase) context.Target;
             var value = MethodCaller.CallPropertyGetter(target, Element.Name);
 
-            if (target.IsNew)
+            if (target.IsNew || value == null)
                 isEmpty = true;
             else if (field != null)
             {
