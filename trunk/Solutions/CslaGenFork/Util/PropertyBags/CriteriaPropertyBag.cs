@@ -625,6 +625,8 @@ namespace CslaGenerator.Util.PropertyBags
 
         private bool IsBrowsable(string[] objectType, string propertyName)
         {
+            var cslaObject = (CslaObjectInfo)GeneratorController.Current.GetSelectedItem();
+
             try
             {
                 /*if ((GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.None ||
@@ -632,6 +634,10 @@ namespace CslaGenerator.Util.PropertyBags
                     (propertyName == "ReadRoles" ||
                      propertyName == "WriteRoles"))
                     return false;*/
+
+                if ((!GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4DAL || !cslaObject.UsesInlineQuery) &&
+                    propertyName == "InlineQueryParameter")
+                    return false;
 
                 if (_selectedObject.Length > 1 && IsEnumerable(GetPropertyInfoCache(propertyName)))
                     return false;

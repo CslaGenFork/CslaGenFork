@@ -656,9 +656,6 @@ namespace CslaGenerator.Util.PropertyBags
                     if (!GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All &&
                         propertyName == "BusinessRules")
                         return false;
-                    if ((!GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All || !cslaObject.UsesInlineQuery) &&
-                        propertyName == "InlineQueryParameter")
-                        return false;
                     if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All &&
                         (propertyName == "Rules" ||
                         propertyName == "MarkDirtyOnChange"))

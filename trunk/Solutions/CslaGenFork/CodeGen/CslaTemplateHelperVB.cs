@@ -5551,17 +5551,33 @@ namespace CslaGenerator.CodeGen
             return sb.ToString();
         }
 
+        public string AddRefOrOut(CriteriaProperty prop)
+        {
+            if (prop.InlineQueryParameter == InlineQueryParameterType.AsRef)
+                return "ByRef ";
+            if (prop.InlineQueryParameter == InlineQueryParameterType.AsOut)
+                return "<Out()> ByRef ";
+            return "";
+        }
+
         public string ReceiveSingleCriteria(Criteria crit, string paramName)
+        {
+            return ReceiveSingleCriteria(crit, paramName, false);
+        }
+
+        public string ReceiveSingleCriteria(Criteria crit, string paramName, bool usesRefOrOut)
         {
             var sb = new StringBuilder();
 
-            var param = GetDataTypeGeneric(crit.Properties[0], crit.Properties[0].PropertyType);
-            if (param == "Object" || param == "Empty" || CurrentUnit.GenerationParams.UseSingleCriteria)
-                sb.AppendFormat("{1} As SingleCriteria(Of {0})", param, paramName);
+            var paramType = GetDataTypeGeneric(crit.Properties[0], crit.Properties[0].PropertyType);
+            if (paramType == "Object" || paramType == "Empty" || CurrentUnit.GenerationParams.UseSingleCriteria)
+                sb.AppendFormat("{1} As SingleCriteria(Of {0})", paramType, paramName);
             else
             {
+                if (usesRefOrOut)
+                    paramType = AddRefOrOut(crit.Properties[0]) + paramType;
                 paramName = FormatCamel(crit.Properties[0].Name);
-                sb.AppendFormat("{1} As {0}", param, paramName);
+                sb.AppendFormat("{1} As {0}", paramType, paramName);
             }
 
             return sb.ToString();
@@ -5569,14 +5585,21 @@ namespace CslaGenerator.CodeGen
 
         public string ReceiveSingleCriteriaTypeless(Criteria crit, string paramName)
         {
+            return ReceiveSingleCriteriaTypeless(crit, paramName, false);
+        }
+
+        public string ReceiveSingleCriteriaTypeless(Criteria crit, string paramName, bool usesRefOrOut)
+        {
             var sb = new StringBuilder();
 
-            var param = GetDataTypeGeneric(crit.Properties[0], crit.Properties[0].PropertyType);
-            if (param == "Object" || param == "Empty" || CurrentUnit.GenerationParams.UseSingleCriteria)
+            var paramType = GetDataTypeGeneric(crit.Properties[0], crit.Properties[0].PropertyType);
+            if (paramType == "Object" || paramType == "Empty" || CurrentUnit.GenerationParams.UseSingleCriteria)
                 sb.AppendFormat("{0}", paramName);
             else
             {
                 paramName = FormatCamel(crit.Properties[0].Name);
+                if (usesRefOrOut)
+                    paramName = AddRefOrOut(crit.Properties[0]) + paramName;
                 sb.AppendFormat("{0}", paramName);
             }
 
@@ -5584,6 +5607,11 @@ namespace CslaGenerator.CodeGen
         }
 
         public string ReceiveMultipleCriteria(Criteria crit)
+        {
+            return ReceiveMultipleCriteria(crit, false);
+        }
+
+        public string ReceiveMultipleCriteria(Criteria crit, bool usesRefOrOut)
         {
             var sb = new StringBuilder();
             var firstParam = true;
@@ -5595,6 +5623,8 @@ namespace CslaGenerator.CodeGen
                 else
                     sb.Append(", ");
                 var paramType = GetDataTypeGeneric(prop, prop.PropertyType);
+                if (usesRefOrOut)
+                    paramType = AddRefOrOut(prop) + paramType;
                 var paramName = FormatCamel(prop.Name);
                 sb.AppendFormat("{1} As {0}", paramType, paramName);
             }
@@ -5602,6 +5632,11 @@ namespace CslaGenerator.CodeGen
         }
 
         public string ReceiveMultipleCriteriaTypeless(Criteria crit)
+        {
+            return ReceiveMultipleCriteriaTypeless(crit, false);
+        }
+
+        public string ReceiveMultipleCriteriaTypeless(Criteria crit, bool usesRefOrOut)
         {
             var sb = new StringBuilder();
             var firstParam = true;
@@ -5613,6 +5648,8 @@ namespace CslaGenerator.CodeGen
                 else
                     sb.Append(", ");
                 var paramName = FormatCamel(prop.Name);
+                if (usesRefOrOut)
+                    paramName = AddRefOrOut(prop) + paramName;
                 sb.AppendFormat("{0}", paramName);
             }
             return sb.ToString();
