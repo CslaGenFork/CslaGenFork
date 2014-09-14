@@ -746,6 +746,7 @@ namespace CslaGenerator
             connectDatabaseButton.Enabled = true;
             projectToolStripMenuItem.Enabled = true;
             dataBaseToolStripMenuItem.Enabled = true;
+            changePrimaryKeyToNotUndoable.Enabled = true;
             changeTimestampToReadOnlyNotUndoable.Enabled = true;
             convertDateTimeToSmartDate.Enabled = true;
             forceBackingFieldSmartDate.Enabled = true;
@@ -1276,6 +1277,28 @@ namespace CslaGenerator
         #endregion
 
         #region Tools menu
+
+        private void changePrimaryKeyToNotUndoable_Click(object sender, EventArgs e)
+        {
+            _outputPanel.AddOutputInfo(Environment.NewLine + "Changing Primary Key properties to not Undoable..." + Environment.NewLine);
+            foreach (var info in _controller.CurrentUnit.CslaObjects)
+            {
+                var counter = 0;
+
+                foreach (ValueProperty prop in info.ValueProperties)
+                {
+                    if (prop.DbBindColumn.IsPrimaryKey && prop.Undoable)
+                    {
+                        prop.Undoable = false;
+                        counter++;
+                    }
+                }
+
+                if (counter > 0)
+                    _outputPanel.AddOutputInfo(info.ObjectName + ": changed " + counter + " Primary Key properties not \"Undoable\".");
+            }
+            _outputPanel.AddOutputInfo(Environment.NewLine + "Change Primary Key properties to not Undoable is done." + Environment.NewLine);
+        }
 
         private void ChangeTimestampToReadOnlyNotUndoable_Click(object sender, EventArgs e)
         {

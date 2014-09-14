@@ -84,6 +84,7 @@ namespace CslaGenerator
             this.refreshSchemaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.retrieveSummariesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
+            this.changePrimaryKeyToNotUndoable = new System.Windows.Forms.ToolStripMenuItem();
             this.changeTimestampToReadOnlyNotUndoable = new System.Windows.Forms.ToolStripMenuItem();
             this.convertDateTimeToSmartDate = new System.Windows.Forms.ToolStripMenuItem();
             this.forceBackingFieldSmartDate = new System.Windows.Forms.ToolStripMenuItem();
@@ -454,6 +455,7 @@ namespace CslaGenerator
             // toolStripMenuItem4
             // 
             this.toolStripMenuItem4.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.changePrimaryKeyToNotUndoable,
             this.changeTimestampToReadOnlyNotUndoable,
             this.convertDateTimeToSmartDate,
             this.forceBackingFieldSmartDate,
@@ -464,6 +466,14 @@ namespace CslaGenerator
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
             this.toolStripMenuItem4.Size = new System.Drawing.Size(44, 20);
             this.toolStripMenuItem4.Text = "&Tools";
+            // 
+            // changePrimaryKeyToNotUndoable
+            // 
+            this.changePrimaryKeyToNotUndoable.Enabled = false;
+            this.changePrimaryKeyToNotUndoable.Name = "changeDBProvidedPK_ToNotUndoable";
+            this.changePrimaryKeyToNotUndoable.Size = new System.Drawing.Size(200, 22);
+            this.changePrimaryKeyToNotUndoable.Text = "Change Primary Key properties to not Undoable";
+            this.changePrimaryKeyToNotUndoable.Click += new System.EventHandler(this.changePrimaryKeyToNotUndoable_Click);
             // 
             // changeTimestampToReadOnlyNotUndoable
             // 
@@ -1102,6 +1112,7 @@ namespace CslaGenerator
         private ToolStripProgressBar progressBar;
         private ToolStripMenuItem pluginsToolStripMenuItem;
         private ToolStripMenuItem toolStripMenuItem4;
+        private ToolStripMenuItem changePrimaryKeyToNotUndoable;
         private ToolStripMenuItem changeTimestampToReadOnlyNotUndoable;
         private ToolStripMenuItem convertDateTimeToSmartDate;
         private ToolStripMenuItem forceBackingFieldSmartDate;
