@@ -298,6 +298,7 @@ namespace CslaGenerator.Metadata
 
             if (p.IsPrimaryKey)
             {
+                destination.Undoable = false;
                 if (p.IsIdentity)
                 {
                     destination.PrimaryKey = ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK;
