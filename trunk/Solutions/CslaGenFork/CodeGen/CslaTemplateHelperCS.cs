@@ -2753,7 +2753,7 @@ namespace CslaGenerator.CodeGen
                 prop.DeclarationMode == PropertyDeclaration.ClassicPropertyWithTypeConversion ||
                 prop.DeclarationMode == PropertyDeclaration.NoProperty)
             {
-                response = CheckNotUndoable(prop);
+                response = CheckNotUndoable(prop, info);
                 response += String.Format("private {0} {1} = {2};",
                                           (prop.DeclarationMode == PropertyDeclaration.Unmanaged ||
                                            prop.DeclarationMode == PropertyDeclaration.ClassicProperty ||
@@ -2820,13 +2820,12 @@ namespace CslaGenerator.CodeGen
             // "private static readonly PropertyInfo<{0}> {1} = RegisterProperty<{0}>(p => p.{2}, \"{3}\"{4});",
             var response = string.Empty;
 
-            if (!prop.Undoable &&
+            if (!prop.Undoable && IsEditableType(info.ObjectType) &&
                 prop.DeclarationMode != PropertyDeclaration.AutoProperty &&
                 prop.DeclarationMode != PropertyDeclaration.ClassicProperty &&
                 prop.DeclarationMode != PropertyDeclaration.ClassicPropertyWithTypeConversion)
             {
                 response += "[NotUndoable]" + Environment.NewLine + new string(' ', 8);
-                ;
             }
             response +=
                 String.Format(
@@ -2933,7 +2932,7 @@ namespace CslaGenerator.CodeGen
             // "private static readonly PropertyInfo<{0}> {1} = RegisterProperty<{0}>(p => p.{2}, \"{3}\"{4});",
             var response = string.Empty;
 
-            if (!prop.Undoable &&
+            if (!prop.Undoable && IsEditableType(info.ObjectType) &&
                 prop.DeclarationMode != PropertyDeclaration.AutoProperty &&
                 prop.DeclarationMode != PropertyDeclaration.ClassicProperty &&
                 prop.DeclarationMode != PropertyDeclaration.ClassicPropertyWithTypeConversion)
@@ -3434,10 +3433,10 @@ namespace CslaGenerator.CodeGen
             return "SetProperty";
         }
 
-        public string CheckNotUndoable(ValueProperty prop)
+        private string CheckNotUndoable(ValueProperty prop, CslaObjectInfo info)
         {
             var response = string.Empty;
-            if (!prop.Undoable)
+            if (!prop.Undoable && IsEditableType(info.ObjectType))
                 response = "[NotUndoable]" + Environment.NewLine + "        ";
 
             return response;
@@ -4322,14 +4321,14 @@ namespace CslaGenerator.CodeGen
             return "SetProperty";
         }
 
-        public string CheckNotUndoable(ChildProperty prop)
+        /*private string CheckNotUndoable(ChildProperty prop, CslaObjectInfo info)
         {
             var response = string.Empty;
-            if (!prop.Undoable)
+            if (!prop.Undoable && IsEditableType(info.ObjectType))
                 response = "[NotUndoable]" + Environment.NewLine + "        ";
 
             return response;
-        }
+        }*/
 
         private string ChildPropertyDeclareSetLazyLoad(ChildProperty prop)
         {
