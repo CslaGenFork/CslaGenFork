@@ -4,238 +4,243 @@
         <name>FormSizePosition</name>
     </assembly>
     <members>
-        <member name="T:System.Windows.Forms.AppSettings">
-            <summary>Methods for manipulating the key/value pair settings in the app.config file (rather the executable.exe.config file).</summary>
-        </member>
-        <member name="M:System.Windows.Forms.AppSettings.Get(System.String)">
-            <summary>Reads the value of a key</summary>
-            <param name="key">The key name</param>
-            <returns>The value of the supplied key</returns>
-        </member>
-        <member name="M:System.Windows.Forms.AppSettings.Add(System.String,System.String)">
-            <summary>Adds a new key and set its value, or add the given 
-             value to an existing key (values are comma separated)</summary>
-            <param name="key">The key name to be added</param>
-            <param name="value">The value for the added key</param>
-        </member>
-        <member name="M:System.Windows.Forms.AppSettings.Remove(System.String)">
-            <summary>Removes a key</summary>
-            <param name="key">The key name to be removed</param>
-        </member>
-        <member name="M:System.Windows.Forms.AppSettings.Change(System.String,System.String)">
-            <summary>Removes a key, adds the key and sets its value</summary>
-            <param name="key">The key name of the value to be changed</param>
-            <param name="value">The new value</param>
-        </member>
-        <member name="T:System.Windows.Forms.Database">
-            <summary>
-            </summary>
-        </member>
-        <member name="P:System.Windows.Forms.Database.ConnectionString">
-            <summary>
-            </summary>
-        </member>
-        <member name="P:System.Windows.Forms.Database.ProviderName">
-            <summary>
-            </summary>
-        </member>
-        <member name="T:System.Windows.Forms.FormSizePosition">
+        <member name="T:FormPowerToys.FormSizePosition">
             <summary>Control for persisting the form size and position.</summary>
         </member>
-        <member name="F:System.Windows.Forms.FormSizePosition.components">
-            <summary>
-            Required designer variable.
-            </summary>
-        </member>
-        <member name="M:System.Windows.Forms.FormSizePosition.Dispose(System.Boolean)">
-            <summary> 
-            Clean up any resources being used.
-            </summary>
-            <param name="disposing">true if managed resources should be disposed;otherwise, false.</param>
-        </member>
-        <member name="M:System.Windows.Forms.FormSizePosition.InitializeComponent">
-            <summary>
-            Required method for Designer support - do not modify
-            the contents of this method with the code editor.
-            </summary>
-        </member>
-        <member name="M:System.Windows.Forms.FormSizePosition.#ctor">
-            <summary>Parameterless constructor</summary>
-        </member>
-        <member name="M:System.Windows.Forms.FormSizePosition.#ctor(System.ComponentModel.IContainer)">
-            <summary>Constructor used by InitializeComponent()</summary>
-            <param name="container">The container for the control</param>
-        </member>
-        <member name="M:System.Windows.Forms.FormSizePosition.BeginInit">
-            <summary>Called by InitializeComponent()</summary>
-        </member>
-        <member name="M:System.Windows.Forms.FormSizePosition.EndInit">
-            <summary>Called by InitializeComponent()</summary>
-        </member>
-        <member name="M:System.Windows.Forms.FormSizePosition.UnregisterAllForms">
-            <summary>Removes the form information of all forms on the current storage. If 
-             there is also a storage with different version settings, it will be ignored.</summary>
-        </member>
-        <member name="M:System.Windows.Forms.FormSizePosition.CloseUnregisterForm(System.String)">
-            <summary>Removes the current form information from the storage.</summary>
-            <param name="mdiChildName">The form name</param>
-            <returns>False if the form information wasn't found on storage; True otherwise.</returns>
-        </member>
-        <member name="M:System.Windows.Forms.FormSizePosition.CloseUnregisterForm">
-            <summary>Closes the current form and removes its information from the storage.<br/>
-             Remark - The form is always closed.</summary>
-            <returns>False if the form information wasn't found on storage; True otherwise.</returns>
-        </member>
-        <member name="M:System.Windows.Forms.FormSizePosition.RestoreFormSizePosition">
-            <summary>Restore a form size and position.<br/>
-             Remark - This method must be public so the parent MDI can call it on its children.</summary>
-        </member>
-        <member name="M:System.Windows.Forms.FormSizePosition.DatabaseBackup">
-            <summary>Makes a backup copy of the form information of all forms on the current 
-             storage, using the currently Windows logged user name. If there is also a storage 
-             with different version settings, it will be ignored.</summary>
-        </member>
-        <member name="M:System.Windows.Forms.FormSizePosition.DatabaseBackup(System.String)">
-            <summary>Makes a backup copy of the form information of all forms on the current 
-             storage, using the given user name. If there is also a storage with different 
-             version settings, it will be ignored.</summary>
-            <param name="userName">The user name to be used for database row selection</param>
-        </member>
-        <member name="M:System.Windows.Forms.FormSizePosition.DatabaseRestore">
-            <summary>Restores the form information of all forms on the current storage, 
-             using the currently Windows logged user name. If there is also a storage 
-             with different version settings, it will be ignored.</summary>
-        </member>
-        <member name="M:System.Windows.Forms.FormSizePosition.DatabaseRestore(System.String)">
-            <summary>Restores the form information of all forms on the current storage, 
-             using the given user name. If there is also a storage with different version 
-             settings, it will be ignored.</summary>
-            <param name="userName">The user name to be used for database row selection</param>
-        </member>
-        <member name="M:System.Windows.Forms.FormSizePosition.CopyRegistryToFile">
+        <member name="M:FormPowerToys.FormSizePosition.CopyRegistryToFile">
             <summary>Copies the form information of all forms on the Registry storage to the 
              File storage. This copy respects the version settings. If there is also 
              a storage with different version settings, it will be ignored.</summary>
             <exception cref="T:System.Exception">"Current storage is not Registry" if wrong current storage</exception>
         </member>
-        <member name="M:System.Windows.Forms.FormSizePosition.CopyFileToRegistry">
+        <member name="M:FormPowerToys.FormSizePosition.CopyFileToRegistry">
             <summary>Copies the form information of all forms on the File storage to the 
              Registry storage. This copy respects the version settings. If there is also 
              a storage with different version settings, it will be ignored.</summary>
-            <exception cref="T:System.Exception">"Current storage is not File" if wrong current storage</exception>
+            <exception cref="T:System.Exception">"Current storage is not Registry" if wrong current storage</exception>
         </member>
-        <member name="P:System.Windows.Forms.FormSizePosition.Wait">
+        <member name="F:FormPowerToys.FormSizePosition.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:FormPowerToys.FormSizePosition.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed;otherwise, false.</param>
+        </member>
+        <member name="M:FormPowerToys.FormSizePosition.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:FormPowerToys.FormSizePosition.#ctor">
+            <summary>Parameterless constructor</summary>
+        </member>
+        <member name="M:FormPowerToys.FormSizePosition.#ctor(System.ComponentModel.IContainer)">
+            <summary>Constructor used by InitializeComponent()</summary>
+            <param name="container">The container for the control</param>
+        </member>
+        <member name="M:FormPowerToys.FormSizePosition.BeginInit">
+            <summary>Called by InitializeComponent()</summary>
+        </member>
+        <member name="M:FormPowerToys.FormSizePosition.EndInit">
+            <summary>Called by InitializeComponent()</summary>
+        </member>
+        <member name="M:FormPowerToys.FormSizePosition.UnregisterAllForms">
+            <summary>Removes the form information of all forms on the current storage. If 
+             there is also a storage with different version settings, it will be ignored.<br/>
+             Remark - After all forms are un-registered, this method doesn't do a backup to the database</summary>
+        </member>
+        <member name="M:FormPowerToys.FormSizePosition.CloseUnregisterForm(System.String)">
+            <summary>Removes the current form information from the storage.</summary>
+            <param name="mdiChildText">The form Text property</param>
+            <returns>False if the form information wasn't found on storage; True otherwise.</returns>
+        </member>
+        <member name="M:FormPowerToys.FormSizePosition.CloseUnregisterForm">
+            <summary>Closes the current form and removes its information from the storage.<br/>
+             Remark - The form is always closed.</summary>
+            <returns>False if the form information wasn't found on storage; True otherwise.</returns>
+        </member>
+        <member name="M:FormPowerToys.FormSizePosition.RestoreFormSizePosition">
+            <summary>Restore a form size and position.<br/>
+             Remark - This method must be public so the parent MDI can call it on its children.</summary>
+        </member>
+        <member name="M:FormPowerToys.FormSizePosition.DatabaseBackup">
+            <summary>Makes a backup copy of the form information of all forms on the current 
+             storage, using the currently Windows logged user name. If there is also a storage 
+             with different version settings, it will be ignored.</summary>
+        </member>
+        <member name="M:FormPowerToys.FormSizePosition.DatabaseBackup(System.String)">
+            <summary>Makes a backup copy of the form information of all forms on the current 
+             storage, using the given user name. If there is also a storage with different 
+             version settings, it will be ignored.</summary>
+            <param name="userName">The user name to be used for database row selection</param>
+        </member>
+        <member name="M:FormPowerToys.FormSizePosition.DoDatabaseBackup">
+            <remarks>Creates the user name row on the database</remarks>
+        </member>
+        <member name="M:FormPowerToys.FormSizePosition.DatabaseRestore">
+            <summary>Restores the form information of all forms on the current storage, 
+             using the currently Windows logged user name. If there is also a storage 
+             with different version settings, it will be ignored.</summary>
+        </member>
+        <member name="M:FormPowerToys.FormSizePosition.DatabaseRestore(System.String)">
+            <summary>Restores the form information of all forms on the current storage, 
+             using the given user name. If there is also a storage with different version 
+             settings, it will be ignored.</summary>
+            <param name="userName">The user name to be used for database row selection</param>
+        </member>
+        <member name="P:FormPowerToys.FormSizePosition.Form">
             <summary>Gets or sets the form object (.this).</summary>
         </member>
-        <member name="P:System.Windows.Forms.FormSizePosition.Form">
-            <summary>Gets or sets the form object (.this).</summary>
+        <member name="P:FormPowerToys.FormSizePosition.UseKeyName">
+            <summary>Gets or sets a value indicating whether to use the form name or a custom name for storing the form information (Default is FormText).<br/>
+             Possible values: UseKeyNameOptions.Default, UseKeyNameOptions.FormText and UseKeyNameOptions.CustomName</summary>
         </member>
-        <member name="P:System.Windows.Forms.FormSizePosition.UseName">
-            <summary>Gets or sets a value indicating whether to use the form name or a custom name for storing the form information (Default is FormName).<br/>
-            Possible values: UseNameOptions.Default, UseNameOptions.FormName and UseNameOptions.CustomName</summary>
+        <member name="P:FormPowerToys.FormSizePosition.CustomName">
+            <summary>Gets or sets the type of name to use for storing the form information when UseKeyName is CustomName.</summary>
         </member>
-        <member name="P:System.Windows.Forms.FormSizePosition.CustomName">
-            <summary>Gets or sets the type of name to use for storing the form information when UseName is CustomName.</summary>
-        </member>
-        <member name="P:System.Windows.Forms.FormSizePosition.UseVersion">
+        <member name="P:FormPowerToys.FormSizePosition.UseVersion">
             <summary>Gets or sets a value indicating whether to use the application version when building the storage name (Default is False).<br/>
-            Possible values: UseVersionOptions.Default, UseVersionOptions.False and UseVersionOptions.True<br/>
-            Remark - Database persistence will use the current storage whether it's using version number or not; version number itself won't be persisted.</summary>
+             Possible values: UseVersionOptions.Default, UseVersionOptions.False and UseVersionOptions.True<br/>
+             Remark - Database persistence will use the current storage whether it's using version number or not; version number itself won't be persisted.</summary>
         </member>
-        <member name="P:System.Windows.Forms.FormSizePosition.StoreType">
+        <member name="P:FormPowerToys.FormSizePosition.StoreType">
             <summary>Gets or sets a value indicating whether to store the form information on Registry or LocalSettings file (Default is File).<br/>
-            Possible values: StoreTypeOptions.Default, StoreTypeOptions.File and StoreTypeOptions.Registry</summary>
+             Possible values: StoreTypeOptions.Default, StoreTypeOptions.File and StoreTypeOptions.Registry</summary>
         </member>
-        <member name="P:System.Windows.Forms.FormSizePosition.AutoBackupRestore">
+        <member name="P:FormPowerToys.FormSizePosition.AutoBackupRestore">
             <summary>Gets or sets a value indicating whether this form should do pre-restore and post-backup to database (Default is False).<br/>
-            Possible values: AutoBackupRestoreOptions.Default, AutoBackupRestoreOptions.False and AutoBackupRestoreOptions.True</summary>
+             Possible values: AutoBackupRestoreOptions.Default, AutoBackupRestoreOptions.False and AutoBackupRestoreOptions.True</summary>
         </member>
-        <member name="P:System.Windows.Forms.FormSizePosition.AutoCreateUser">
+        <member name="P:FormPowerToys.FormSizePosition.AutoCreateUser">
             <summary>Gets or sets a value indicating whether the row for the current user should be created automatically (Default is False).<br/>
-            Possible values: AutoCreateUserOptions.Default, AutoCreateUserOptions.False and AutoCreateUserOptions.True</summary>
+             Possible values: AutoCreateUserOptions.Default, AutoCreateUserOptions.False and AutoCreateUserOptions.True</summary>
         </member>
-        <member name="P:System.Windows.Forms.FormSizePosition.TableName">
+        <member name="P:FormPowerToys.FormSizePosition.TableName">
             <summary>Gets or sets the table name of the database where to store the form information.</summary>
         </member>
-        <member name="P:System.Windows.Forms.FormSizePosition.UserColumnName">
+        <member name="P:FormPowerToys.FormSizePosition.UserColumnName">
             <summary>Gets or sets the column name where to search for the user name (computer login).</summary>
         </member>
-        <member name="P:System.Windows.Forms.FormSizePosition.DataColumnName">
+        <member name="P:FormPowerToys.FormSizePosition.DataColumnName">
             <summary>Gets or sets the column name where to store the form information.</summary>
         </member>
-        <member name="T:System.Windows.Forms.FormSizePosition.UseNameOptions">
+        <member name="T:FormPowerToys.FormSizePosition.UseKeyNameOptions">
             <summary>Indicates whether to use the form name or 
-            a custom name for storing the form information.</summary>
+             a custom name for storing the form information.</summary>
         </member>
-        <member name="F:System.Windows.Forms.FormSizePosition.UseNameOptions.Default">
-            <summary>Default value behaves like FormName except it 
-            may be overridden by an app.config specified value.</summary>
+        <member name="F:FormPowerToys.FormSizePosition.UseKeyNameOptions.Default">
+            <summary>Default value behaves like FormText except it 
+             may be overridden by an app.config specified value.</summary>
         </member>
-        <member name="F:System.Windows.Forms.FormSizePosition.UseNameOptions.FormName">
-            <summary>The control will use the form Name property.</summary>
+        <member name="F:FormPowerToys.FormSizePosition.UseKeyNameOptions.FormText">
+            <summary>The control will use the form Text property.</summary>
         </member>
-        <member name="F:System.Windows.Forms.FormSizePosition.UseNameOptions.CustomName">
+        <member name="F:FormPowerToys.FormSizePosition.UseKeyNameOptions.CustomName">
             <summary>The control will use a custom name specified under CustomName property.</summary>
         </member>
-        <member name="T:System.Windows.Forms.FormSizePosition.UseVersionOptions">
+        <member name="T:FormPowerToys.FormSizePosition.UseVersionOptions">
             <summary>Indicates whether to use the application version when building the storage name.<br/>
-            Remark - Database persistence will use the current storage whether it's using version number or not; version number itself won't be persisted.</summary>
+             Remark - Database persistence will use the current storage whether it's using version number or not; version number itself won't be persisted.</summary>
         </member>
-        <member name="F:System.Windows.Forms.FormSizePosition.UseVersionOptions.Default">
+        <member name="F:FormPowerToys.FormSizePosition.UseVersionOptions.Default">
             <summary>Default value behaves like False except it may be 
-            overridden by an app.config specified value.</summary>
+             overridden by an app.config specified value.</summary>
         </member>
-        <member name="F:System.Windows.Forms.FormSizePosition.UseVersionOptions.False">
+        <member name="F:FormPowerToys.FormSizePosition.UseVersionOptions.False">
             <summary>The control will strip down the version 
-            number when forming the storage name.</summary>
+             number when forming the storage name.</summary>
         </member>
-        <member name="F:System.Windows.Forms.FormSizePosition.UseVersionOptions.True">
+        <member name="F:FormPowerToys.FormSizePosition.UseVersionOptions.True">
             <summary>The control will use the version 
-            number when forming the storage name.</summary>
+             number when forming the storage name.</summary>
         </member>
-        <member name="T:System.Windows.Forms.FormSizePosition.StoreTypeOptions">
+        <member name="T:FormPowerToys.FormSizePosition.StoreTypeOptions">
             <summary>Indicates whether to store the form 
-            information on Registry or LocalSettings file.</summary>
+             information on Registry or LocalSettings file.</summary>
         </member>
-        <member name="F:System.Windows.Forms.FormSizePosition.StoreTypeOptions.Default">
+        <member name="F:FormPowerToys.FormSizePosition.StoreTypeOptions.Default">
             <summary>Default value behaves like File except it may be 
-            overridden by an app.config specified value.</summary>
+             overridden by an app.config specified value.</summary>
         </member>
-        <member name="F:System.Windows.Forms.FormSizePosition.StoreTypeOptions.File">
+        <member name="F:FormPowerToys.FormSizePosition.StoreTypeOptions.File">
             <summary>The control will store the form 
-            information in the Registry.</summary>
+             information in the Registry.</summary>
         </member>
-        <member name="F:System.Windows.Forms.FormSizePosition.StoreTypeOptions.Registry">
+        <member name="F:FormPowerToys.FormSizePosition.StoreTypeOptions.Registry">
             <summary>The control will store the form 
-            information in a LocalSettings file.</summary>
+             information in a LocalSettings file.</summary>
         </member>
-        <member name="T:System.Windows.Forms.FormSizePosition.AutoBackupRestoreOptions">
+        <member name="T:FormPowerToys.FormSizePosition.AutoBackupRestoreOptions">
             <summary>Indicates whether this form should do 
-            pre-restore and post-backup to database.</summary>
+             pre-restore and post-backup to database.</summary>
         </member>
-        <member name="F:System.Windows.Forms.FormSizePosition.AutoBackupRestoreOptions.Default">
+        <member name="F:FormPowerToys.FormSizePosition.AutoBackupRestoreOptions.Default">
             <summary>Default value behaves like False except it may be 
-            overridden by an app.config specified value.</summary>
+             overridden by an app.config specified value.</summary>
         </member>
-        <member name="F:System.Windows.Forms.FormSizePosition.AutoBackupRestoreOptions.False">
+        <member name="F:FormPowerToys.FormSizePosition.AutoBackupRestoreOptions.False">
             <summary>The control will restore its values from a database.</summary>
         </member>
-        <member name="F:System.Windows.Forms.FormSizePosition.AutoBackupRestoreOptions.True">
+        <member name="F:FormPowerToys.FormSizePosition.AutoBackupRestoreOptions.True">
             <summary>The control will backup its values to a database.</summary>
         </member>
-        <member name="T:System.Windows.Forms.FormSizePosition.AutoCreateUserOptions">
+        <member name="T:FormPowerToys.FormSizePosition.AutoCreateUserOptions">
             <summary>Indicates whether the row for the 
-            user name should be created automatically.</summary>
+             user name should be created automatically.</summary>
         </member>
-        <member name="F:System.Windows.Forms.FormSizePosition.AutoCreateUserOptions.Default">
+        <member name="F:FormPowerToys.FormSizePosition.AutoCreateUserOptions.Default">
             <summary>Default value behaves like False except it may be 
-            overridden by an app.config specified value.</summary>
+             overridden by an app.config specified value.</summary>
         </member>
-        <member name="F:System.Windows.Forms.FormSizePosition.AutoCreateUserOptions.False">
-            <summary>The control will only use a pre-existing username row.</summary>
+        <member name="F:FormPowerToys.FormSizePosition.AutoCreateUserOptions.False">
+            <summary>The control will only use a pre-existing user name row.</summary>
         </member>
-        <member name="F:System.Windows.Forms.FormSizePosition.AutoCreateUserOptions.True">
+        <member name="F:FormPowerToys.FormSizePosition.AutoCreateUserOptions.True">
             <summary>The control will create a row for the user name if it doen's exist.</summary>
+        </member>
+        <member name="T:FormPowerToys.Database">
+            <summary>
+            </summary>
+        </member>
+        <member name="P:FormPowerToys.Database.ConnectionString">
+            <summary>
+            </summary>
+        </member>
+        <member name="P:FormPowerToys.Database.ProviderName">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:FormPowerToys.Settings.SetAppConfigValues">
+            <summary>Reads values of app.config<br/>
+             This is executed only once, on component EndInit()</summary>
+        </member>
+        <member name="T:FormPowerToys.AppSettings">
+            <summary>Methods for manipulating the key/value pair settings in the app.config file (rather the executable.exe.config file).</summary>
+        </member>
+        <member name="M:FormPowerToys.AppSettings.Get(System.String)">
+            <summary>Reads the value of a key</summary>
+            <param name="key">The key name</param>
+            <returns>The value of the supplied key</returns>
+        </member>
+        <member name="M:FormPowerToys.AppSettings.Add(System.String,System.String)">
+            <summary>Adds a new key and set its value, or add the given 
+             value to an existing key (values are comma separated)</summary>
+            <param name="key">The key name to be added</param>
+            <param name="value">The value for the added key</param>
+        </member>
+        <member name="M:FormPowerToys.AppSettings.Remove(System.String)">
+            <summary>Removes a key</summary>
+            <param name="key">The key name to be removed</param>
+        </member>
+        <member name="M:FormPowerToys.AppSettings.Change(System.String,System.String)">
+            <summary>Removes a key, adds the key and sets its value</summary>
+            <param name="key">The key name of the value to be changed</param>
+            <param name="value">The new value</param>
         </member>
     </members>
 </doc>
