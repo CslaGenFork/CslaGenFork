@@ -223,7 +223,7 @@ if (!Info.UseCustomLoading)
         ''' Loads all <see cref="<%= Info.ObjectName %>"/> collection items from the given SafeDataReader.
         ''' </summary>
         ''' <param name="dr">The SafeDataReader to use.</param>
-        Private Sub <%= (isChildCollection && UseChildFactoryHelper ? "Child_" : "") %>Fetch(dr As SafeDataReader)
+        Private Sub <%= (isChildCollection && !UseChildFactoryHelper ? "Child_" : "") %>Fetch(dr As SafeDataReader)
             <%
         if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
         {

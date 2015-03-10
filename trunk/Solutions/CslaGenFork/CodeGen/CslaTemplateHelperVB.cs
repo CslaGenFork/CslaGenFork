@@ -2839,7 +2839,12 @@ namespace CslaGenerator.CodeGen
             if (!prop.Nullable)
                 return string.Empty;
 
-            return ", Nothing";
+            return String.Format(
+                    ", New {0}(Nothing)",
+                    (prop.DeclarationMode == PropertyDeclaration.Managed ||
+                     prop.DeclarationMode == PropertyDeclaration.Unmanaged)
+                        ? GetDataTypeGeneric(prop, prop.PropertyType)
+                        : GetDataTypeGeneric(prop, prop.BackingFieldType));
         }
 
         private static bool HasCreateCriteriaDataPortal(CslaObjectInfo info)
