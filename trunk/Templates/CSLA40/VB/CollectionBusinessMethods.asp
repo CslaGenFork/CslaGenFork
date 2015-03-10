@@ -249,14 +249,14 @@ if (useParentReference || isRODeepLoadCollection || useAuthz || Info.UniqueItems
             }
             %>
         Public Overloads Sub Remove(<%= prms %>)
-            For Each item As <%= FormatPascal(Info.ItemType) %> In Me
+            For Each item As <%= Info.ItemType %> In Me
                 If <%
             for (int i = 0; i < crit.Properties.Count; i++)
             {
-                %><%= (i == 0) ? "" : " AndAlso " %><%= FormatCamel(Info.ItemType) %>.<%= paramNameArray[i] %> = <%= factoryParamsArray[i] %><%
+                %><%= (i == 0) ? "" : " AndAlso " %>item.<%= paramNameArray[i] %> = <%= factoryParamsArray[i] %><%
             }
                         %> Then
-                    MyBase.Remove(<%= FormatCamel(Info.ItemType) %>)
+                    MyBase.Remove(item)
                     Exit For
                 End If
             Next
@@ -317,14 +317,14 @@ if (useParentReference || isRODeepLoadCollection || useAuthz || Info.UniqueItems
             }
             %>
         Public Overloads Sub Remove(<%= prms %>)
-            For Each item As <%= FormatCamel(Info.ItemType) %> In Me
+            For Each item As <%= Info.ItemType %> In Me
                 If <%
             for (int i = 0; i < propertyList.Count; i++)
             {
-                %><%= (i == 0) ? "" : " AndAlso " %><%= FormatCamel(Info.ItemType) %>.<%= paramNameArray[i] %> = <%= factoryParamsArray[i] %><%
+                %><%= (i == 0) ? "" : " AndAlso " %>item.<%= paramNameArray[i] %> = <%= factoryParamsArray[i] %><%
             }
                             %> Then
-                    MyBase.Remove(<%= FormatCamel(Info.ItemType) %>)
+                    MyBase.Remove(item)
                     Exit For
                 End If
             Next
@@ -348,11 +348,11 @@ if (useParentReference || isRODeepLoadCollection || useAuthz || Info.UniqueItems
         %>
         ''' <returns><c>true</c> if the <%= Info.ItemType %> is a collection item; otherwise, <c>false</c>.</returns>
         Public Overloads Function Contains(<%= prms %>) As Boolean
-            For Each item As <%= FormatCamel(Info.ItemType) %> In Me
+            For Each item As <%= Info.ItemType %> In Me
                 If <%
             for (int i = 0; i < propertyList.Count; i++)
             {
-                %><%= (i == 0) ? "" : " AndAlso " %><%= FormatCamel(Info.ItemType) %>.<%= paramNameArray[i] %> = <%= factoryParamsArray[i] %><%
+                %><%= (i == 0) ? "" : " AndAlso " %>item.<%= paramNameArray[i] %> = <%= factoryParamsArray[i] %><%
             }
                             %> Then
                     Return True
@@ -378,11 +378,11 @@ if (useParentReference || isRODeepLoadCollection || useAuthz || Info.UniqueItems
                 %>
         ''' <returns><c>true</c> if the <%= Info.ItemType %> is a deleted collection item; otherwise, <c>false</c>.</returns>
         Public Overloads Function ContainsDeleted(<%= prms %>) As Boolean
-            For Each item As <%= FormatPascal(Info.ItemType) %> In Me.DeletedList
+            For Each item As <%= Info.ItemType %> In Me.DeletedList
                 If <%
                 for (int i = 0; i < propertyList.Count; i++)
                 {
-                    %><%= (i == 0) ? "" : " AndAlso " %><%= FormatCamel(Info.ItemType) %>.<%= paramNameArray[i] %> = <%= factoryParamsArray[i] %><%
+                    %><%= (i == 0) ? "" : " AndAlso " %>item.<%= paramNameArray[i] %> = <%= factoryParamsArray[i] %><%
                 }
                             %> Then
                     Return True

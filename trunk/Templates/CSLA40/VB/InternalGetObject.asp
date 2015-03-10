@@ -150,7 +150,7 @@ else
         (Info.ObjectType == CslaObjectType.EditableChild ||
         Info.ObjectType == CslaObjectType.EditableChildCollection))
     {
-        %>// show the framework that this is a child object
+        %>' show the framework that this is a child object
             obj.MarkAsChild()
             <%
     }
@@ -168,7 +168,7 @@ else
     }
     if (Info.CheckRulesOnFetch && !IsCollectionType(Info.ObjectType))
     {
-        %>// check all object rules and property rules
+        %>' check all object rules and property rules
             obj.BusinessRules.CheckRules()
             <%
     }
