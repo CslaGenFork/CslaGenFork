@@ -2,6 +2,7 @@
 using CslaGenerator.Controls;
 using System.Windows.Forms;
 using System;
+using FormPowerToys;
 
 namespace CslaGenerator
 {
@@ -122,7 +123,7 @@ namespace CslaGenerator
             this.sprocs = new System.Windows.Forms.ToolStripStatusLabel();
             this.generatingTimer = new System.Windows.Forms.ToolStripStatusLabel();
             this.progressBar = new System.Windows.Forms.ToolStripProgressBar();
-            this.formSizePosition = new System.Windows.Forms.FormSizePosition(this.components);
+            this.formSizePosition = new FormSizePosition(this.components);
             this.newProjectButton = new System.Windows.Forms.ToolStripButton();
             this.openProjectButton = new System.Windows.Forms.ToolStripButton();
             this.saveProjectButton = new System.Windows.Forms.ToolStripButton();
