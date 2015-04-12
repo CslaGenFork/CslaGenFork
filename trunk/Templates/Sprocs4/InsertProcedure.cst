@@ -112,7 +112,7 @@ if (isUndeletable)
     indent = new string(' ', 8);
     %>
 
-        /* Check for soft deleted object existance */
+        /* Check for soft deleted object existence */
         IF EXISTS
         (
             SELECT <%
