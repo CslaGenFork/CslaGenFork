@@ -95,16 +95,28 @@ namespace DBSchemaInfo.Base
                     Procedures = new DataBaseObjectCollection<IStoredProcedureInfo>(list);
                 }
             }
-            finally { CloseConnection(); }
+            finally
+            {
+                CloseConnection();
+            }
             LoadDescriptions();
         }
 
         #endregion
 
         protected abstract DBStructure GetTableViewSchema(IDbConnection cn);
-        protected virtual DBStructure GetProcedureSchema(IDbConnection cn) { return null; }
+
+        protected virtual DBStructure GetProcedureSchema(IDbConnection cn)
+        {
+            return null;
+        }
+
         protected abstract ITableInfo CreateTableInfo(DBStructure.INFORMATION_SCHEMA_TABLESRow dr);
         protected abstract IViewInfo CreateViewInfo(DBStructure.INFORMATION_SCHEMA_TABLESRow dr);
-        protected virtual IStoredProcedureInfo CreateProcedureInfo(DBStructure.INFORMATION_SCHEMA_ROUTINESRow dr) { return null; }
+
+        protected virtual IStoredProcedureInfo CreateProcedureInfo(DBStructure.INFORMATION_SCHEMA_ROUTINESRow dr)
+        {
+            return null;
+        }
     }
 }
