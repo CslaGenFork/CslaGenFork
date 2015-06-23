@@ -201,7 +201,9 @@
     <None Include="Resources\Warning_List.png" />
     <Content Include="license.txt" />
     <Content Include="Resources\RefreshArrow_Green.png" />
-    <Content Include="StartPage\images\logo_top_left.gif" />
+    <Content Include="StartPage\images\logo_top_left.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="StartPage\images\logo_top_middle.gif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
