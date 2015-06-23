@@ -220,7 +220,7 @@ namespace CslaGenerator.CodeGen
                 if (info.DataSetLoadingScheme)
                     return GetDataSetLoaderStatement(prop);
 
-                if (CurrentUnit.GenerationParams.GenerateDTO)
+                if (CurrentUnit.GenerationParams.TargetIsCsla4DAL && CurrentUnit.GenerationParams.GenerateDTO)
                     return GetDtoLoaderStatement(prop);
 
                 return GetDataReaderLoaderStatement(prop);
@@ -935,7 +935,7 @@ namespace CslaGenerator.CodeGen
                     result.Add("System.Data");
                 if (!unit.GenerationParams.TargetIsCsla4DAL)
                     result.Add("System.Data.SqlClient");
-                if (CurrentUnit.GenerationParams.GenerateDTO && !IsObjectType(info.ObjectType))
+                if (CurrentUnit.GenerationParams.TargetIsCsla4DAL && CurrentUnit.GenerationParams.GenerateDTO && !IsObjectType(info.ObjectType))
                     result.Add("System.Collections.Generic");
 
                 result.Add("Csla");
