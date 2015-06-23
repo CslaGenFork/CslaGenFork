@@ -10,9 +10,6 @@
 <%@ Import Namespace="CslaGenerator.Util" %>
 
 <%
-string utilNamespace = string.Empty;
-if (CurrentUnit.GenerationParams.UtilitiesNamespace != string.Empty)
-    utilNamespace = "." + CurrentUnit.GenerationParams.UtilitiesNamespace;
 int silverlightLevel = 0;
 bool genOptional = false;
 if (CurrentUnit.GenerationParams.HeaderVerbosity != HeaderVerbosity.None)
@@ -25,7 +22,7 @@ if (CurrentUnit.GenerationParams.HeaderVerbosity != HeaderVerbosity.None)
 %>
 using System.Configuration;
 
-namespace <%= GetContextUtilitiesNamespace(CurrentUnit, GenerationStep.Business) %>
+namespace <%= CurrentUnit.GenerationParams.UtilitiesNamespace %>
 {
     /// <summary>Class that provides the connection
     /// strings used by the application.</summary>
