@@ -92,7 +92,7 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
             %>
         {
             <%
-            if (Info.GetMyChildProperties().Count > 0)
+            if (Info.GetMyChildReadWriteProperties().Count > 0)
             {
                 string ucpSpacer = string.Empty;
                 %>

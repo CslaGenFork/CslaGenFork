@@ -1837,6 +1837,38 @@ namespace CslaGenerator.Metadata
         }
 
         /// <summary>
+        /// Gets the child collection and non collection Read Write properties.
+        /// </summary>
+        /// <returns>A ChildPropertyCollection with ChildProperties and ChildCollectionProperties.</returns>
+        public ChildPropertyCollection GetMyChildReadWriteProperties()
+        {
+            var myChildReadWriteProperties = new ChildPropertyCollection();
+
+            /*foreach (var childProperty in _childProperties)
+            {
+                var childInfo = Parent.CslaObjects.Find(childProperty.TypeName);
+
+                if (!CslaTemplateHelperCS.IsReadOnlyType(childInfo.ObjectType))
+                    myChildReadWriteProperties.Add(childProperty);
+            }*/
+
+            myChildReadWriteProperties.AddRange(from childProperty in _childProperties let childInfo = Parent.CslaObjects.Find(childProperty.TypeName) where !CslaTemplateHelperCS.IsReadOnlyType(childInfo.ObjectType) select childProperty);
+
+            /*foreach (var childCollectionProperty in _childCollectionProperties)
+            {
+                var childInfo = Parent.CslaObjects.Find(childCollectionProperty.TypeName);
+
+                if (!CslaTemplateHelperCS.IsReadOnlyType(childInfo.ObjectType))
+
+                    myChildReadWriteProperties.Add(childCollectionProperty);
+            }*/
+
+            myChildReadWriteProperties.AddRange(from childCollectionProperty in _childCollectionProperties let childInfo = Parent.CslaObjects.Find(childCollectionProperty.TypeName) where !CslaTemplateHelperCS.IsReadOnlyType(childInfo.ObjectType) select childCollectionProperty);
+
+            return myChildReadWriteProperties;
+        }
+
+        /// <summary>
         /// Gets the value properties and convert value properties.
         /// </summary>
         /// <returns>A ValuePropertyCollection with ValueProperties and ConvertValueProperties.</returns>

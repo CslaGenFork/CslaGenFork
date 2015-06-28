@@ -80,7 +80,7 @@ if (Info.GenerateDataPortalDelete && CurrentUnit.GenerationParams.SilverlightUsi
             }
             %>
             <%
-            if (Info.GetMyChildProperties().Count > 0)
+            if (Info.GetMyChildReadWriteProperties().Count > 0)
             {
                 string ucpSpacer = string.Empty;
                 %>
