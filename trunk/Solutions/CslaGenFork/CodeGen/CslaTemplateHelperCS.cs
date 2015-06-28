@@ -4352,7 +4352,9 @@ namespace CslaGenerator.CodeGen
 
         private string ChildLazyLoadManaged(CslaObjectInfo info, ChildProperty prop)
         {
-            if (IsEditableType(info.ObjectType))
+            var childInfo = info.Parent.CslaObjects.Find(prop.TypeName);
+
+            if (IsEditableType(info.ObjectType) && IsEditableType(childInfo.ObjectType))
                 return ChildLazyLoadManagedEditable(info, prop);
 
             return ChildLazyLoadManagedReadOnly(info, prop);
@@ -4762,11 +4764,28 @@ namespace CslaGenerator.CodeGen
         {
             var response = string.Empty;
 
-            for (var loadParameter = 0; loadParameter < prop.LoadParameters.Count; loadParameter++)
+            var isParentCollection = false;
+            var parentInfo = info.Parent.CslaObjects.Find(info.ParentType);
+            if (parentInfo != null)
+                isParentCollection = IsCollectionType(parentInfo.ObjectType);
+
+            if (isParentCollection)
             {
-                response += FormatFieldForPropertyName(info, prop.LoadParameters[loadParameter].Property.Name);
-                if (loadParameter + 1 != prop.LoadParameters.Count)
-                    response += ", ";
+                for (var parentLoadProperties = 0; parentLoadProperties < prop.ParentLoadProperties.Count; parentLoadProperties++)
+                {
+                    response += FormatFieldForPropertyName(info, prop.ParentLoadProperties[parentLoadProperties].Name);
+                    if (parentLoadProperties + 1 != prop.ParentLoadProperties.Count)
+                        response += ", ";
+                }
+            }
+            else
+            {
+                for (var loadParameter = 0; loadParameter < prop.LoadParameters.Count; loadParameter++)
+                {
+                    response += FormatFieldForPropertyName(info, prop.LoadParameters[loadParameter].Property.Name);
+                    if (loadParameter + 1 != prop.LoadParameters.Count)
+                        response += ", ";
+                }
             }
 
             return response;
