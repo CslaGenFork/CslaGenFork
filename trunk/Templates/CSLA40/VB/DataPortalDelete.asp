@@ -115,7 +115,7 @@ if (Info.GenerateDataPortalDelete)
             }
             %><%= GetConnection(Info, false) %>
                 <%
-            if (Info.GetMyChildProperties().Count > 0)
+            if (Info.GetMyChildReadWriteProperties().Count > 0)
             {
                 string ucpSpacer = new string(' ', 4);
                 %>

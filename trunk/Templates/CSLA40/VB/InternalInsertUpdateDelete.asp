@@ -185,7 +185,7 @@ if (Info.GenerateDataPortalInsert)
     %>
                 End Using
                 <%
-                if (Info.GetMyChildProperties().Count > 0)
+                if (Info.GetMyChildReadWriteProperties().Count > 0)
                 {
                     string ucpSpacer = new string(' ', 4);
                     %>
@@ -368,7 +368,7 @@ if (Info.GenerateDataPortalUpdate)
                     %>
                 End Using
                 <%
-    if (Info.GetMyChildProperties().Count > 0)
+    if (Info.GetMyChildReadWriteProperties().Count > 0)
     {
         string ucpSpacer = new string(' ', 4);
         %>
@@ -443,7 +443,7 @@ if (Info.GenerateDataPortalDelete)
     %>
             <%= GetConnection(Info, false) %>
                 <%
-    if (Info.GetMyChildProperties().Count > 0)
+    if (Info.GetMyChildReadWriteProperties().Count > 0)
     {
         string ucpSpacer = new string(' ', 4);
         %>
