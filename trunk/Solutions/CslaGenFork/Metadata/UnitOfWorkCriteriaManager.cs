@@ -182,6 +182,7 @@ namespace CslaGenerator.Metadata
         public class ElementCriteria
         {
             private string _type = string.Empty;
+            private string _propertyName = string.Empty;
             private string _name = string.Empty;
             private string _namespace = string.Empty;
             private string _parameter = string.Empty;
@@ -190,6 +191,12 @@ namespace CslaGenerator.Metadata
             {
                 get { return _type; }
                 internal set { _type = value; }
+            }
+
+            public string PropertyName
+            {
+                get { return _propertyName; }
+                internal set { _propertyName = value; }
             }
 
             public string Name
@@ -238,9 +245,11 @@ namespace CslaGenerator.Metadata
             var result = new List<UoWCriteria>();
 
             var propertyDeclarationCache = new Dictionary<string, PropertyDeclaration>();
+            var propertyNameCache = new Dictionary<string, string>();
             foreach (var uowProperty in info.UnitOfWorkProperties)
             {
                 propertyDeclarationCache[uowProperty.TypeName] = uowProperty.DeclarationMode;
+                propertyNameCache[uowProperty.TypeName] = uowProperty.Name;
             }
 
             var criteriaCollectionCounter = 0;
@@ -274,6 +283,7 @@ namespace CslaGenerator.Metadata
 
                     var elementCriteria = new ElementCriteria();
                     elementCriteria.ParentObject = crit.ParentObject.ObjectName;
+                    elementCriteria.PropertyName = propertyNameCache[elementCriteria.ParentObject];
                     elementCriteria.DeclarationMode = propertyDeclarationCache[elementCriteria.ParentObject];
                     elementCriteria.IsGetter = !CslaTemplateHelperCS.IsEditableType(crit.ParentObject.ObjectType);
                     if (crit.Properties.Count == 0)
