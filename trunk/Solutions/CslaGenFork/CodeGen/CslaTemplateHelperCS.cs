@@ -302,9 +302,9 @@ namespace CslaGenerator.CodeGen
             {
                 if (TypeHelper.IsNullableType(assignDataType))
                     statement += String.Format("({0})", GetDataType(prop));
-                else
-                    statement += String.Format("!dr.IsDBNull(\"{0}\") ? ",
-                                               prop.ParameterName);
+                //else
+                //    statement += String.Format("!dr.IsDBNull(\"{0}\") ? ",
+                //                               prop.ParameterName);
             }
             statement += "dr.";
 
@@ -319,12 +319,12 @@ namespace CslaGenerator.CodeGen
                 statement += ", true";
 
             statement += ")";
-            if (nullable && !TypeHelper.IsNullableType(assignDataType))
+            /*if (nullable && !TypeHelper.IsNullableType(assignDataType))
             {
                 if (TypeHelper.IsNullableType(assignDataType))
                     statement += ")";
                 statement += " : null";
-            }
+            }*/
 
             if (assignDataType == TypeCodeEx.ByteArray)
                 statement = statement + " as byte[]";
