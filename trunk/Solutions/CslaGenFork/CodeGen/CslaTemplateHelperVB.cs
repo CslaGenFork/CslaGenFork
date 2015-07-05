@@ -298,11 +298,11 @@ namespace CslaGenerator.CodeGen
 
             if (nullable)
             {
-                if (TypeHelper.IsNullableType(assignDataType))
-                    statement += String.Format("({0})", GetDataType(prop));
+                //if (TypeHelper.IsNullableType(assignDataType))
+                //    statement += String.Format("({0})", GetDataType(prop));
                 //else
-                //    statement += String.Format("If(Not dr.IsDBNull(\"{0}\"), ",
-                //                               prop.ParameterName);
+                    statement += String.Format("If(Not dr.IsDBNull(\"{0}\"), ",
+                                               prop.ParameterName);
             }
             statement += "dr.";
 
@@ -317,12 +317,12 @@ namespace CslaGenerator.CodeGen
                 statement += ", True";
 
             statement += ")";
-            /*if (nullable)
+            if (nullable)
             {
-                if (TypeHelper.IsNullableType(assignDataType))
-                    statement += ")";
+                //if (TypeHelper.IsNullableType(assignDataType))
+                //    statement += ")";
                 statement += ", Nothing)";
-            }*/
+            }
 
             if (assignDataType == TypeCodeEx.ByteArray)
                 statement = "TryCast(" + statement + ", Byte())";
@@ -4710,7 +4710,7 @@ namespace CslaGenerator.CodeGen
                     : "DirectCast(Me, " + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
                     ")." + FormatPascal(prop.Name)), prop.TypeName, GetFieldReaderStatementList(info, prop));
             }
-            result += String.Format("                End If" + Environment.NewLine);
+            result += String.Format("                End If{0}" + Environment.NewLine);
             result += ChildPropertyDeclareGetReturner(prop);
 
             return result;
