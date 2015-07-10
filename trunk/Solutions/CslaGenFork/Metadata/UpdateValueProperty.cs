@@ -39,7 +39,7 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Definition")]
-        [Description("Whether this property is an object identity..")]
+        [Description("Whether this property is an object identity. If set to \"true\" the property is used to check for object identity and will not be updated.")]
         [UserFriendlyName("Is Identity")]
         public bool IsIdentity
         {
