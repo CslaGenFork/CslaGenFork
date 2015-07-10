@@ -35,6 +35,8 @@ if (Info.UpdateValueProperties.Count > 0)
         <%
             foreach (UpdateValueProperty prop in Info.UpdateValueProperties)
             {
+				if (prop.IsIdentity)
+					continue;
                 string cast = string.Empty;
                 foreach (ValueProperty valProp in Info.ValueProperties)
                 {
