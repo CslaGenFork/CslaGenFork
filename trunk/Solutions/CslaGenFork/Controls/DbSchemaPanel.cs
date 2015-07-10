@@ -1076,20 +1076,28 @@ namespace CslaGenerator.Controls
 
             foreach (var column in allColumns)
             {
+                var match = false;
                 if (fkMatches.Count > 0)
                 {
                     if (fkMatches.Contains(column.ColumnName))
+                    {
+                        fkMatches.Remove(column.ColumnName);
                         sb.AppendFormat("\t{0}.\r\n", column.ColumnName);
-                    else
-                        columns.Add(column);
+                        match = true;
+                    }
                 }
                 else if (nameTypeMatches.Count > 0)
                 {
                     if (nameTypeMatches.Contains(column.ColumnName))
+                    {
+                        nameTypeMatches.Remove(column.ColumnName);
                         sb.AppendFormat("\t{0}.\r\n", column.ColumnName);
-                    else
-                        columns.Add(column);
+                        match = true;
+                    }
                 }
+
+                if (!match)
+                    columns.Add(column);
             }
 
             if (sb.Length > 0)
