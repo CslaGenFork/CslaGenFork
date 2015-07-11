@@ -341,7 +341,7 @@
     <add key="EditableChild:GenerateDataPortalInsert" value="true" />
     <add key="EditableChild:GenerateDataPortalUpdate" value="true" />
     <add key="EditableChild:GenerateDataPortalDelete" value="true" />
-    <add key="EditableChild:SupportUpdateProperties" value="false" />
+    <add key="EditableChild:SupportUpdateProperties" value="true" />
     <add key="EditableChild:CheckRulesOnFetch" value="true" />
     <add key="EditableChildCollection:Generate" value="true" />
     <add key="EditableChildCollection:GenerateSprocs" value="true" />

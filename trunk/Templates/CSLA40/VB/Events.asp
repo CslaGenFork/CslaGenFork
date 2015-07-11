@@ -1,5 +1,6 @@
 <%
 if ((Info.ObjectType == CslaObjectType.EditableRoot ||
+    Info.ObjectType == CslaObjectType.EditableChild ||
     Info.ObjectType == CslaObjectType.DynamicEditableRoot ||
     Info.ObjectType == CslaObjectType.EditableSwitchable) &&
     Info.SupportUpdateProperties == true)
