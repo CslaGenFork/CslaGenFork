@@ -235,10 +235,11 @@ namespace CslaGenerator
                     }
                     catch (InvalidOperationException exception)
                     {
+                        if (fs != null)
+                            fs.Close();
+
                         if (exception.InnerException == null)
                         {
-                            if (fs != null)
-                                fs.Close();
                             throw;
                         }
 
@@ -246,12 +247,11 @@ namespace CslaGenerator
                         var fileVersion = FileVersion.ExtractFileVersion(fileLines);
                         if (fileVersion == FileVersion.CurrentFileVersion)
                         {
-                            if (fs != null)
-                                fs.Close();
                             throw;
                         }
 
-                        fileLines = FileVersion.HandleFileVersion(fileVersion, fileLines);
+                        var intFileVersion = FileVersion.ConvertDotFileVersionToInt(fileVersion);
+                        fileLines = FileVersion.HandleFileVersion(intFileVersion, fileLines);
                         File.WriteAllLines(filePath, fileLines);
                     }
                 }
