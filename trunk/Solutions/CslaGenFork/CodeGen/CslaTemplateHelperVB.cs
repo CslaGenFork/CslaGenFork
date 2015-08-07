@@ -913,7 +913,10 @@ namespace CslaGenerator.CodeGen
 
             result.Add("System");
             if (!string.IsNullOrEmpty(info.UpdaterType))
+            {
                 result.Add("System.Collections.Specialized");
+                result.Add("System.ComponentModel");
+            }
 
             if (!UseSilverlight() && !isUnitOfWork)
             {
