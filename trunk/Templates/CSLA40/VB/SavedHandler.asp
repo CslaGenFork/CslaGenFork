@@ -121,6 +121,19 @@ if (CurrentUnit.GenerationParams.GenerateWPF)
     if (CurrentUnit.GenerationParams.DualListInheritance)
     {
         %>
+#Else
+<%
+    }
+}
+if (CurrentUnit.GenerationParams.GenerateWinForms)
+{
+    %>
+                        Dim listChangedEventArgs As New ListChangedEventArgs(ListChangedType.ItemChanged, index)
+                        OnListChanged(listChangedEventArgs)
+                        <%
+    if (CurrentUnit.GenerationParams.DualListInheritance)
+    {
+        %>
 #End If
 <%
     }
