@@ -86,7 +86,7 @@ if (Info.UpdaterType != string.Empty)
         %>
 
         ''' <summary>
-        ''' Handle Saved events of <see cref="<%= Info.UpdaterType %>"/> to update child <see cref="<%= Info.ItemType %>"/> objects. event.
+        ''' Handle Saved events of <see cref="<%= Info.UpdaterType %>"/> to update the list of <see cref="<%= Info.ItemType %>"/> objects.
         ''' </summary>
         ''' <param name="sender">The sender of the event.</param>
         ''' <param name="e">The <see cref="Csla.Core.SavedEventArgs"/> instance containing the event data.</param>
@@ -99,11 +99,23 @@ if (Info.UpdaterType != string.Empty)
                 Add(<%= Info.ItemType %>.LoadInfo(obj))
                 RaiseListChangedEvents = rlce
                 IsReadOnly = True
-            Else
+            ElseIf DirecCast(sender, <%= Info.UpdaterType %>).IsDeleted Then
                 For index As Int = 0 To Me.Count - 1
                     Dim child = Me(index)
                     If child.<%= identityName %> = obj.<%= identitySourceName %> Then
                         IsReadOnly = False
+                        Dim rlce = RaiseListChangedEvents
+                        RaiseListChangedEvents = True
+                        Me.RemoveItem(index)
+                        RaiseListChangedEvents = rlce
+                        IsReadOnly = True
+                        Exit For
+                    End If
+                Next
+            Else
+                For index As Int = 0 To Me.Count - 1
+                    Dim child = Me(index)
+                    If child.<%= identityName %> = obj.<%= identitySourceName %> Then
                         child.UpdatePropertiesOnSaved(obj)
                         <%
 if (CurrentUnit.GenerationParams.GenerateWPF)
@@ -139,7 +151,6 @@ if (CurrentUnit.GenerationParams.GenerateWinForms)
     }
 }
 %>
-                        IsReadOnly = True
                         Exit For
                     End If
                 Next
