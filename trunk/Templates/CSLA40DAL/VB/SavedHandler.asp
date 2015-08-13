@@ -86,7 +86,7 @@ if (Info.UpdaterType != string.Empty)
         %>
 
         /// <summary>
-        /// Handle Saved events of <see cref="<%= Info.UpdaterType %>"/> to update child <see cref="<%= Info.ItemType %>"/> objects. event.
+        /// Handle Saved events of <see cref="<%= Info.UpdaterType %>"/> to update the list of <see cref="<%= Info.ItemType %>"/> objects.
         /// </summary>
         /// <param name="sender">The sender of the event.</param>
         /// <param name="e">The <see cref="Csla.Core.SavedEventArgs"/> instance containing the event data.</param>
@@ -102,7 +102,7 @@ if (Info.UpdaterType != string.Empty)
                 RaiseListChangedEvents = rlce;
                 IsReadOnly = true;
             }
-            else
+            else if (((<%= Info.UpdaterType %>)sender).IsDeleted)
             {
                 for (int index = 0; index < this.Count; index++)
                 {
@@ -110,6 +110,22 @@ if (Info.UpdaterType != string.Empty)
                     if (child.<%= identityName %> == obj.<%= identitySourceName %>)
                     {
                         IsReadOnly = false;
+                        var rlce = RaiseListChangedEvents;
+                        RaiseListChangedEvents = true;
+                        this.RemoveItem(index);
+                        RaiseListChangedEvents = rlce;
+                        IsReadOnly = true;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                for (int index = 0; index < this.Count; index++)
+                {
+                    var child = this[index];
+                    if (child.<%= identityName %> == obj.<%= identitySourceName %>)
+                    {
                         child.UpdatePropertiesOnSaved(obj);
                         <%
 if (CurrentUnit.GenerationParams.GenerateWPF)
@@ -146,7 +162,6 @@ if (CurrentUnit.GenerationParams.GenerateWinForms)
     }
 }
 %>
-                        IsReadOnly = true;
                         break;
                     }
                 }
