@@ -323,6 +323,7 @@
     <Compile Include="Metadata\PersistenceType.cs" />
     <Compile Include="Metadata\PropertyHelper.cs" />
     <Compile Include="Metadata\AuthorizationRule.cs" />
+    <Compile Include="Metadata\ReportObjectNotFound.cs" />
     <Compile Include="Metadata\SimpleCacheResults.cs" />
     <Compile Include="Metadata\UnitOfWorkCriteriaManager.cs" />
     <Compile Include="Metadata\UnitOfWorkProperty.cs" />

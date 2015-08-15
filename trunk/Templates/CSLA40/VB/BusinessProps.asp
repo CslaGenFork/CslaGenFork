@@ -303,3 +303,29 @@ foreach (ValueProperty prop in Info.ValueProperties)
         %>
 
         #End Region
+        <%
+if (useIsLoadedProperty)
+{
+    %>
+
+        #Region " State Property "
+
+        ''' <summary>
+        ''' Maintains metadata about <see cref="IsLoaded"/> property.
+        ''' </summary>
+        <NotUndoable()>
+        Public Shared ReadOnly IsLoadedProperty As PropertyInfo(Of Boolean) = RegisterProperty(Of Boolean)(Function(p) p.IsLoaded, String.Empty, False)
+        ''' <summary>
+        ''' Gets the IsLoaded state.
+        ''' </summary>
+        ''' <value>The IsLoaded state.</value>
+        Public ReadOnly Property IsLoaded() As Boolean
+            Get
+                Return GetProperty(IsLoadedProperty)
+            End Get
+        End Property
+
+        #End Region
+        <%
+}
+        %>

@@ -77,6 +77,7 @@ namespace CslaGenerator.Controls
             FillComboBox(cboCreateTimestampPropertyMode, typeof (PropertyDeclaration));
             FillComboBox(cboCreateReadOnlyObjectsPropertyMode, typeof (PropertyDeclaration));
             FillComboBox(cboInlineQueries, typeof(UseInlineQueries));
+            FillComboBox(cboObjectNotFound, typeof(ReportObjectNotFound));
         }
 
         private void FillComboBox(ComboBox cbo, Type enumType)

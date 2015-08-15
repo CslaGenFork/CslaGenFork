@@ -25,6 +25,7 @@ if (Errors.Length == 0)
     string softDeleteProperty = string.Empty;
     bool isItem = false;
     bool isParentRootCollection = false;
+    bool useIsLoadedProperty = false;
     CslaObjectInfo grandParentInfo = null;
     if (parentInfo != null)
     {
@@ -33,6 +34,8 @@ if (Errors.Length == 0)
         isParentRootCollection = (parentInfo.ObjectType == CslaObjectType.EditableRootCollection) ||
             (parentInfo.ObjectType == CslaObjectType.ReadOnlyCollection && parentInfo.ParentType == String.Empty);
     }
+    if (!isItem)
+        useIsLoadedProperty = CurrentUnit.GenerationParams.ReportObjectNotFound == ReportObjectNotFound.IsLoadedProperty;
     bool isSwitchable = false;
     bool isCollection = false;
     bool useBypassPropertyChecks = CurrentUnit.GenerationParams.UseBypassPropertyChecks;

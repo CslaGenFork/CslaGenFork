@@ -31,6 +31,17 @@ int propCount = 0;
 bool first = false;
 bool collType = IsCollectionType(Info.ObjectType);
 bool isCollectionSearchWhereClause = collType;
+CslaObjectInfo parentInfo = Info.Parent.CslaObjects.Find(Info.ParentType);
+bool useThrowException = false;
+if (parentInfo != null)
+{
+    if (!IsCollectionType(parentInfo.ObjectType))
+        useThrowException = CurrentUnit.GenerationParams.ReportObjectNotFound == ReportObjectNotFound.ThrowException;
+}
+else if (!collType && Info.ObjectType != CslaObjectType.NameValueList)
+{
+    useThrowException = CurrentUnit.GenerationParams.ReportObjectNotFound == ReportObjectNotFound.ThrowException;
+}
 List<IResultObject> tables = GetTablesSelect(Info);
 SortTables(tables);
 string plainTableSchema = GetSchema(tables[0], false);
@@ -72,7 +83,123 @@ AS
 
         SET NOCOUNT ON
     <%
-if (collType && propCount > 0)
+if (useThrowException)
+{
+    %>
+
+        /* Check for object existence */
+        IF NOT EXISTS
+        (
+            SELECT <%
+            first = true;
+            if (!Info.ParentInsertOnly)
+            {
+                foreach (ValueProperty parentProp in Info.GetParentValueProperties())
+                {
+                    if (parentProp.DbBindColumn.Column == null)
+                        continue;
+
+                    if (first)
+                        first = false;
+                    else
+                    {
+                        %>, <%
+                    }
+                %>[<%= GetFKColumnForParentProperty(parentProp, tables[0]) %>]<%
+                }
+            }
+            foreach (ValueProperty prop in Info.ValueProperties)
+            {
+                if (prop.DbBindColumn.Column == null)
+                    continue;
+
+                if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
+                {
+                if (first)
+                    first = false;
+                else
+                {
+                    %>, <%
+                }
+            %>[<%= GetColumnString(prop.DbBindColumn) %>]<%
+                }
+            }
+            %> FROM <%= fullTableSchema %>[<%= tables[0].ObjectName %>]
+            WHERE
+                <%
+            first = true;
+            if (!Info.ParentInsertOnly)
+            {
+                foreach (ValueProperty parentProp in Info.GetParentValueProperties())
+                {
+                    if (parentProp.DbBindColumn.Column == null)
+                        continue;
+
+                    if (first)
+                        first = false;
+                    else
+                    {
+                        %> AND
+                <%
+                    }
+            %>[<%= GetFKColumnForParentProperty(parentProp,tables[0]) %>] = @<%= GetFkParameterNameForParentProperty(Info, parentProp) %><%
+                }
+            }
+            foreach (ValueProperty prop in Info.GetAllValueProperties())
+            {
+                if (prop.DbBindColumn.Column == null)
+                    continue;
+
+                if (prop.DbBindColumn.IsPrimaryKey)
+                if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
+                {
+                    if (first)
+                        first = false;
+                    else
+                    {
+                        %> AND
+                <%
+                    }
+            %>[<%= GetColumnString(prop.DbBindColumn) %>] = @<%= prop.ParameterName %><%
+                }
+            }
+            if (UseBoolSoftDelete(tables, IgnoreFilter(Info)))
+            {
+                if (first)
+                    first = false;
+                else
+                {
+                    %> AND
+                <%
+                }
+            %>[<%= Info.Parent.Params.SpBoolSoftDeleteColumn %>] = 'true'<%
+            }
+            else if (UseIntSoftDelete(tables, IgnoreFilter(Info)))
+            {
+                if (first)
+                    first = false;
+                else
+                {
+                    %> AND
+                <%
+                }
+            %>[<%= Info.Parent.Params.SpIntSoftDeleteColumn %>] > 0<%
+            }
+            else if (IgnoreFilter(Info) && (string.IsNullOrEmpty(Info.Parent.Params.SpBoolSoftDeleteColumn) ||
+                string.IsNullOrEmpty(Info.Parent.Params.SpIntSoftDeleteColumn)))
+            {
+                    %>
+            /* Ignore filter option is on */<%
+            }
+            %>
+        )
+        BEGIN
+            RAISERROR ('''<%= plainTableSchema %><%= Info.ObjectName %>'' object not found. It was probably removed by another user.', 16, 1)
+            RETURN
+        END
+        <%
+}
+else if (collType && propCount > 0)
 {
     %>
 

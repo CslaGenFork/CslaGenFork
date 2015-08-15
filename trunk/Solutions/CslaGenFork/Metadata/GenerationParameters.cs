@@ -41,6 +41,7 @@ namespace CslaGenerator.Metadata
         private bool _generateSprocs = true;
         private bool _oneSpFilePerObject = true;
         private UseInlineQueries _useInlineQueries;
+        private ReportObjectNotFound _reportObjectNotFound = ReportObjectNotFound.None;
         private bool _generateQueriesWithSchema = true;
         private bool _generateDatabaseClass = true;
         private string _dalName = string.Empty;
@@ -469,6 +470,18 @@ namespace CslaGenerator.Metadata
                 if (_useInlineQueries == value)
                     return;
                 _useInlineQueries = value;
+                OnPropertyChanged("");
+            }
+        }
+
+        public ReportObjectNotFound ReportObjectNotFound
+        {
+            get { return _reportObjectNotFound; }
+            set
+            {
+                if (_reportObjectNotFound == value)
+                    return;
+                _reportObjectNotFound = value;
                 OnPropertyChanged("");
             }
         }

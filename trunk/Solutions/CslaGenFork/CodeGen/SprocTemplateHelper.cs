@@ -42,6 +42,8 @@ namespace CslaGenerator.CodeGen
 
         #region Public Properties
 
+        public CslaGeneratorUnit CurrentUnit { get; set; }
+
         [Browsable(false)]
         public ICatalog Catalog
         {
