@@ -3,9 +3,12 @@ foreach (ChildProperty childProperty in Info.AllChildProperties)
 {
     bool isItem = false;
     bool isParentRootCollection = false;
+    bool useIsLoadedProperty = false;
     if (parentInfo != null)
     {
         isItem = IsCollectionType(parentInfo.ObjectType);
+        if (!isItem)
+            useIsLoadedProperty = CurrentUnit.GenerationParams.ReportObjectNotFound == ReportObjectNotFound.IsLoadedProperty;
         isParentRootCollection = (parentInfo.ObjectType == CslaObjectType.EditableRootCollection) ||
             (parentInfo.ObjectType == CslaObjectType.ReadOnlyCollection && parentInfo.ParentType == String.Empty);
     }

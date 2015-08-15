@@ -79,6 +79,7 @@
     <GenerateSprocs>true</GenerateSprocs>
     <OneSpFilePerObject>true</OneSpFilePerObject>
     <UseInlineQueries>Never</UseInlineQueries>
+    <ReportObjectNotFound>None</ReportObjectNotFound>
     <GenerateQueriesWithSchema>true</GenerateQueriesWithSchema>
     <GenerateDatabaseClass>true</GenerateDatabaseClass>
     <DalName />

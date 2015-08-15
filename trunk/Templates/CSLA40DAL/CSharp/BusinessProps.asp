@@ -242,16 +242,6 @@ foreach (UnitOfWorkProperty prop in Info.UnitOfWorkProperties)
     string statement = PropertyInfoUoWDeclare(Info, prop);
     if (!string.IsNullOrEmpty(statement))
     {
-        /*statement = new string(' ', 8) + statement;
-        string statementSilverlight = string.Empty;
-        if (!CurrentUnit.GenerationParams.UsePublicPropertyInfo)
-        {
-            if (UseSilverlight())
-            {
-                statementSilverlight = "[System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]" + "\r\n" + new string(' ', 8);
-                statementSilverlight += PropertyInfoUoWDeclare(Info, prop, true);
-            }
-        }*/
         %>
 
         /// <summary>
@@ -313,3 +303,28 @@ foreach (ValueProperty prop in Info.ValueProperties)
         %>
 
         #endregion
+        <%
+if (useIsLoadedProperty)
+{
+    %>
+
+        #region State Property
+
+        /// <summary>
+        /// Maintains metadata about <see cref="IsLoaded"/> property.
+        /// </summary>
+        [NotUndoable]
+        public static readonly PropertyInfo<bool> IsLoadedProperty = RegisterProperty<bool>(p => p.IsLoaded, string.Empty, false);
+        /// <summary>
+        /// Gets the IsLoaded state.
+        /// </summary>
+        /// <value>The IsLoaded state.</value>
+        public bool IsLoaded
+        {
+            get { return GetProperty(IsLoadedProperty); }
+        }
+
+        #endregion
+        <%
+}
+        %>

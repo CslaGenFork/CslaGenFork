@@ -23,6 +23,7 @@ if (Errors.Length == 0)
 {
     bool isItem = false;
     bool isParentRootCollection = false;
+    bool useIsLoadedProperty = false;
     CslaObjectInfo grandParentInfo = null;
     if (parentInfo != null)
     {

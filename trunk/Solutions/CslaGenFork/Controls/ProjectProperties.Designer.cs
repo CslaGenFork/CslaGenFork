@@ -188,6 +188,8 @@ namespace CslaGenerator.Controls
             this.chkSpOneFile = new System.Windows.Forms.CheckBox();
             this.lblInlineQueries = new System.Windows.Forms.Label();
             this.cboInlineQueries = new System.Windows.Forms.ComboBox() ;
+            this.lblObjectNotFound = new System.Windows.Forms.Label();
+            this.cboObjectNotFound = new System.Windows.Forms.ComboBox();
             this.chkGenerateQueriesWithSchema = new System.Windows.Forms.CheckBox();
             this.chkGenerateDatabaseClass = new System.Windows.Forms.CheckBox();
             this.GenerationMiscTab = new System.Windows.Forms.TabPage();
@@ -1776,6 +1778,8 @@ namespace CslaGenerator.Controls
             this.GenerationDatabaseTab.Controls.Add(this.chkGenerateQueriesWithSchema);
             this.GenerationDatabaseTab.Controls.Add(this.lblInlineQueries);
             this.GenerationDatabaseTab.Controls.Add(this.cboInlineQueries);
+            this.GenerationDatabaseTab.Controls.Add(this.lblObjectNotFound);
+            this.GenerationDatabaseTab.Controls.Add(this.cboObjectNotFound);
             this.GenerationDatabaseTab.Controls.Add(this.groupBoxStoredProcs);
             this.GenerationDatabaseTab.Location = new System.Drawing.Point(4, 22);
             this.GenerationDatabaseTab.Name = "GenerationDatabaseTab";
@@ -1871,7 +1875,26 @@ namespace CslaGenerator.Controls
             this.cboInlineQueries.Name = "cboInlineQueries";
             this.cboInlineQueries.Size = new System.Drawing.Size(110, 21);
             this.cboInlineQueries.TabIndex = 5;
-            this.toolTip.SetToolTip(this.cboInlineQueries, "Define the usage of Inline Querie.");
+            this.toolTip.SetToolTip(this.cboInlineQueries, "Define the usage of Inline Queries.");
+            // 
+            // lblObjectNotFound
+            // 
+            this.lblObjectNotFound.Location = new System.Drawing.Point(255, 170);
+            this.lblObjectNotFound.Name = "lblObjectNotFound";
+            this.lblObjectNotFound.Size = new System.Drawing.Size(130, 16);
+            this.lblObjectNotFound.TabIndex = 31;
+            this.lblObjectNotFound.Text = "Report Object NotFound:";
+            // 
+            // cboObjectNotFound
+            // 
+            this.cboObjectNotFound.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.generationParametersBindingSource, "ReportObjectNotFound", true, DataSourceUpdateMode.OnPropertyChanged));
+            this.cboObjectNotFound.Location = new System.Drawing.Point(385, 167);
+            this.cboObjectNotFound.Name = "cboObjectNotFound";
+            this.cboObjectNotFound.Size = new System.Drawing.Size(110, 21);
+            this.cboObjectNotFound.TabIndex = 5;
+            this.toolTip.SetToolTip(this.cboObjectNotFound, "Define how to report that a non-item object wasn't found on the DB:\r\n" +
+                                                            "* IsLoadedProperty - use a generated \"IsLoaded\" state property;\r\n" +
+                                                            "* ThrowException - the generated stored procedure raises an exception.");
             // 
             // groupBoxStoredProcs
             // 
@@ -2355,6 +2378,8 @@ namespace CslaGenerator.Controls
         private System.Windows.Forms.CheckBox chkSpOneFile;
         private System.Windows.Forms.Label lblInlineQueries;
         private System.Windows.Forms.ComboBox cboInlineQueries;
+        private System.Windows.Forms.Label lblObjectNotFound;
+        private System.Windows.Forms.ComboBox cboObjectNotFound;
         private System.Windows.Forms.CheckBox chkGenerateQueriesWithSchema;
         private System.Windows.Forms.CheckBox chkGenerateDatabaseClass;
         private System.Windows.Forms.TabPage GenerationMiscTab;

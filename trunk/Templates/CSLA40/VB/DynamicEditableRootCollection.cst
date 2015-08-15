@@ -26,6 +26,7 @@ if (Errors.Length == 0)
     bool useInlineQuery = false;
     bool isItem = false;
     bool isParentRootCollection = false;
+    bool useIsLoadedProperty = false;
     parentInfo = null;
     CslaObjectInfo grandParentInfo = null;
     bool useBypassPropertyChecks = CurrentUnit.GenerationParams.UseBypassPropertyChecks;

@@ -26,6 +26,7 @@ if (Errors.Length == 0)
     parentInfo = null;
     bool useBypassPropertyChecks = CurrentUnit.GenerationParams.UseBypassPropertyChecks;
     string bpcSpacer = useBypassPropertyChecks ? bpcSpacer = new string(' ', 4) : string.Empty;
+    bool useIsLoadedProperty = false;
     bool ancestorIsCollection = false;
     int ancestorLoaderLevel = 0;
     int silverlightLevel = 0;

@@ -50,6 +50,13 @@ if (!Info.UseCustomLoading)
             <%
             }
         }
+        // state property
+        if (useIsLoadedProperty)
+        {
+            %>' State property
+            LoadProperty(IsLoadedProperty, true)
+            <%
+        }
             %>Dim args As New DataPortalHookArgs(dr)
             OnFetchRead(args)
         <%

@@ -70,6 +70,13 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
                 }
             }
         }
+        // state property
+        if (useIsLoadedProperty)
+        {
+            %>// State property
+            LoadProperty(IsLoadedProperty, true);
+            <%
+        }
             %>var args = new DataPortalHookArgs(<%= usesDTO ? "data" : "dr" %>);
             OnFetchRead(args);
         <%

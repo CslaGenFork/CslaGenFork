@@ -7,6 +7,7 @@ if (!Info.ParentType.Equals(String.Empty))
     bool usesDTO = CurrentUnit.GenerationParams.GenerateDTO;
     bool isItem = false;
     bool isParentRootCollection = false;
+    bool useIsLoadedProperty = false;
     List<string> propNames = new List<string>();
     bool ancestorIsCollection = false;
     int ancestorLoaderLevel = AncestorLoaderLevel(Info, out ancestorIsCollection);
@@ -17,6 +18,8 @@ if (!Info.ParentType.Equals(String.Empty))
         if (parentInfo != null)
         {
             isItem = IsCollectionType(parentInfo.ObjectType);
+            if (!isItem)
+                useIsLoadedProperty = CurrentUnit.GenerationParams.ReportObjectNotFound == ReportObjectNotFound.IsLoadedProperty;
             grandParentInfo = Info.Parent.CslaObjects.Find(parentInfo.ParentType);
             isParentRootCollection = (parentInfo.ObjectType == CslaObjectType.EditableRootCollection) ||
                 (parentInfo.ObjectType == CslaObjectType.ReadOnlyCollection && parentInfo.ParentType == String.Empty);

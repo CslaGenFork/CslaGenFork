@@ -51,6 +51,13 @@ if (!Info.UseCustomLoading)
             <%
             }
         }
+        // state property
+        if (useIsLoadedProperty)
+        {
+            %>// State property
+            LoadProperty(IsLoadedProperty, true);
+            <%
+        }
             %>var args = new DataPortalHookArgs(dr);
             OnFetchRead(args);
         <%

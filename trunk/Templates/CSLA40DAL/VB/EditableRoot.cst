@@ -27,6 +27,7 @@ if (Errors.Length == 0)
     string softDeleteProperty = string.Empty;
     bool isItem = false;
     bool isParentRootCollection = false;
+    bool useIsLoadedProperty = CurrentUnit.GenerationParams.ReportObjectNotFound == ReportObjectNotFound.IsLoadedProperty;
     parentInfo = null;
     CslaObjectInfo grandParentInfo = null;
     bool useBypassPropertyChecks = CurrentUnit.GenerationParams.UseBypassPropertyChecks;

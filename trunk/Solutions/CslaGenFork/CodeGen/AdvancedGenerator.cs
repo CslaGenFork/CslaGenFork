@@ -1554,6 +1554,7 @@ namespace CslaGenerator.CodeGen
                             template.SetProperty("Errors", errorsOutput);
                             template.SetProperty("Warnings", warningsOutput);
                             template.SetProperty("Infos", infosOutput);
+                            template.SetProperty("CurrentUnit", _unit);
                             if (crit != null)
                                 template.SetProperty("Criteria", crit);
                             template.SetProperty("IncludeParentProperties", objInfo.DataSetLoadingScheme);
