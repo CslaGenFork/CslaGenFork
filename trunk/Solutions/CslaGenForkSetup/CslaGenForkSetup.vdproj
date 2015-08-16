@@ -106,31 +106,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_490DB46022BA454283A2A128D38A87D1"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_C43737797E0C44684625BAF7CF1241B0"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_42378B9BA5C513562CB557C2312FD0E6"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_DFD36F8BA4DD5AFBE187BA0BA81B2323"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_9B61000B119FB976EB735C1F04FCBCA3"
+        "OwnerKey" = "8:_ACB56181CBC44DA5F884968C7E4C7A6F"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -142,7 +118,31 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_ACB56181CBC44DA5F884968C7E4C7A6F"
+        "OwnerKey" = "8:_9B61000B119FB976EB735C1F04FCBCA3"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_DFD36F8BA4DD5AFBE187BA0BA81B2323"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_42378B9BA5C513562CB557C2312FD0E6"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_C43737797E0C44684625BAF7CF1241B0"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_490DB46022BA454283A2A128D38A87D1"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -153,7 +153,7 @@
         "DisplayName" = "8:Debug"
         "IsDebugOnly" = "11:TRUE"
         "IsReleaseOnly" = "11:FALSE"
-        "OutputFilename" = "8:Debug\\CslaGenFork 4.5.3 Setup.msi"
+        "OutputFilename" = "8:Debug\\CslaGenFork 4.5.4 Setup.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -190,7 +190,7 @@
         "DisplayName" = "8:Release"
         "IsDebugOnly" = "11:FALSE"
         "IsReleaseOnly" = "11:TRUE"
-        "OutputFilename" = "8:Release\\CslaGenFork 4.5.3 Setup.msi"
+        "OutputFilename" = "8:Release\\CslaGenFork 4.5.4 Setup.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -277,11 +277,6 @@
             "AssemblyAsmDisplayName" = "8:DBSchemaInfo, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_2121E4B7F1171B3C6D57BA5DF12743B3"
-                    {
-                    "Name" = "8:DBSchemaInfo.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:DBSchemaInfo.dll"
             "TargetName" = "8:"
@@ -308,11 +303,6 @@
             "AssemblyAsmDisplayName" = "8:WeifenLuo.WinFormsUI.Docking, Version=2.9.0.0, Culture=neutral, PublicKeyToken=5cded1a1a0a7b481, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_42378B9BA5C513562CB557C2312FD0E6"
-                    {
-                    "Name" = "8:WeifenLuo.WinFormsUI.Docking.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:WeifenLuo.WinFormsUI.Docking.dll"
             "TargetName" = "8:"
@@ -419,11 +409,6 @@
             "AssemblyAsmDisplayName" = "8:Equin.ApplicationFramework.BindingListView, Version=1.2.3088.37687, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_9B61000B119FB976EB735C1F04FCBCA3"
-                    {
-                    "Name" = "8:Equin.ApplicationFramework.BindingListView.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:Equin.ApplicationFramework.BindingListView.dll"
             "TargetName" = "8:"
@@ -450,11 +435,6 @@
             "AssemblyAsmDisplayName" = "8:CodeSmith.Engine, Version=2.6.0.117, Culture=neutral, PublicKeyToken=9fd61cdb91609a7a"
                 "ScatterAssemblies"
                 {
-                    "_ACB56181CBC44DA5F884968C7E4C7A6F"
-                    {
-                    "Name" = "8:CodeSmith.Engine.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:CodeSmith.Engine.dll"
             "TargetName" = "8:"
@@ -481,11 +461,6 @@
             "AssemblyAsmDisplayName" = "8:Ionic.Zip.Reduced, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_C43737797E0C44684625BAF7CF1241B0"
-                    {
-                    "Name" = "8:Ionic.Zip.Reduced.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:Ionic.Zip.Reduced.dll"
             "TargetName" = "8:"
@@ -512,11 +487,6 @@
             "AssemblyAsmDisplayName" = "8:FormSizePosition, Version=1.0.2.0, Culture=neutral, PublicKeyToken=39c0da70b4bac425, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_DFD36F8BA4DD5AFBE187BA0BA81B2323"
-                    {
-                    "Name" = "8:FormSizePosition.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:FormSizePosition.dll"
             "TargetName" = "8:"
@@ -635,19 +605,19 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:CslaGeneratorFork"
-        "ProductCode" = "8:{797A089F-7FE3-4257-B39C-789439FB44BE}"
-        "PackageCode" = "8:{8C10A6DF-185C-4785-B939-9536DA9D433F}"
+        "ProductCode" = "8:{2CAC7745-2664-4F17-AC4F-B355D31083FD}"
+        "PackageCode" = "8:{5FE8BAC4-1543-41A2-9C89-7C9C71915D05}"
         "UpgradeCode" = "8:{83BDF6E0-C913-48C1-96F7-BCF1E83B1F7E}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:4.5.3"
+        "ProductVersion" = "8:4.5.4"
         "Manufacturer" = "8:CslaGenFork"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:http://cslagenfork.codeplex.com/"
-        "Title" = "8:Csla Generator Fork 4.5.3 Setup"
+        "Title" = "8:Csla Generator Fork 4.5.4 Setup"
         "Subject" = "8:"
         "ARPCONTACT" = "8:Tiago Freitas Leal"
         "Keywords" = "8:"
@@ -758,7 +728,7 @@
         {
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_10FB53964EE74D7FB5B30B077465FA38"
             {
-            "Name" = "8:Csla Generator Fork 4.5.3"
+            "Name" = "8:Csla Generator Fork 4.5.4"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
@@ -871,7 +841,7 @@
                             "ContextData" = "8:"
                             "Attributes" = "3:0"
                             "Setting" = "3:2"
-                            "Value" = "8:The installer will guide you through the steps required to install Csla Generator Fork 4.5.3 on your computer."
+                            "Value" = "8:The installer will guide you through the steps required to install Csla Generator Fork 4.5.4 on your computer."
                             "DefaultValue" = "8:#1203"
                             "UsePlugInResources" = "11:TRUE"
                             }
@@ -1122,7 +1092,7 @@
                             "ContextData" = "8:"
                             "Attributes" = "3:0"
                             "Setting" = "3:2"
-                            "Value" = "8:The installer will guide you through the steps required to install Csla Generator Fork 4.5.3 on your computer."
+                            "Value" = "8:The installer will guide you through the steps required to install Csla Generator Fork 4.5.4 on your computer."
                             "DefaultValue" = "8:#1203"
                             "UsePlugInResources" = "11:TRUE"
                             }
