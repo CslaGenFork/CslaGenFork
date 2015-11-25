@@ -299,7 +299,7 @@ namespace CslaGenerator.CodeGen
             if (nullable)
             {
                 if (TypeHelper.IsNullableType(assignDataType))
-                    statement += String.Format("({0})", GetDataType(prop));
+                    statement += "DirectCast(";
                 //else
                 //    statement += String.Format("If(Not dr.IsDBNull(\"{0}\"), ",
                 //                               prop.ParameterName);
@@ -317,12 +317,14 @@ namespace CslaGenerator.CodeGen
                 statement += ", True";
 
             statement += ")";
-            /*if (nullable)
+            if (nullable)
             {
                 if (TypeHelper.IsNullableType(assignDataType))
-                    statement += ")";
-                statement += ", Nothing)";
-            }*/
+                    statement += String.Format(", {0})", GetDataType(prop));
+                //if (TypeHelper.IsNullableType(assignDataType))
+                //    statement += ")";
+                //statement += ", Nothing)";
+            }
 
             if (assignDataType == TypeCodeEx.ByteArray)
                 statement = "TryCast(" + statement + ", Byte())";
