@@ -121,7 +121,7 @@ if (Info.GenerateDataPortalInsert)
                     }
                     else if (AllowNull(prop) && propType != TypeCodeEx.SmartDate)
                     {
-                        %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", If(<%= GetFieldReaderStatement(prop) %><%= TypeHelper.IsNullableType(propType) ? ".HasValue" : " IsNot Nothing " %>, <%= GetFieldReaderStatement(prop) %><%= TypeHelper.IsNullableType(propType) ? ".Value" :"" %>, DBNull.Value)).DbType = DbType.<%= GetDbType(prop) %>
+                        %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", If(<%= GetFieldReaderStatement(prop) %><%= TypeHelper.IsNullableType(propType) ? ".HasValue" : " IsNot Nothing" %>, <%= GetFieldReaderStatement(prop) %><%= TypeHelper.IsNullableType(propType) ? ".Value" :"" %>, DBNull.Value)).DbType = DbType.<%= GetDbType(prop) %>
                     <%
                     }
                     else
@@ -139,7 +139,7 @@ if (Info.GenerateDataPortalInsert)
                     }
                     else if (AllowNull(prop) && propType != TypeCodeEx.SmartDate)
                     {
-                        %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", If(<%= GetParameterSet(Info, prop) %><%= TypeHelper.IsNullableType(propType) ? ".HasValue" : " IsNot Nothing " %>, <%= GetFieldReaderStatement(prop) %><%= TypeHelper.IsNullableType(propType) ? ".Value" :"" %>, DBNull.Value)).DbType = DbType.<%= GetDbType(prop) %>
+                        %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", If(<%= GetParameterSet(Info, prop) %><%= TypeHelper.IsNullableType(propType) ? ".HasValue" : " IsNot Nothing" %>, <%= GetFieldReaderStatement(prop) %><%= TypeHelper.IsNullableType(propType) ? ".Value" :"" %>, DBNull.Value)).DbType = DbType.<%= GetDbType(prop) %>
                     <%
                     }
                     else
@@ -311,7 +311,7 @@ if (Info.GenerateDataPortalUpdate)
                                 }
                                 else if (AllowNull(prop) && propType != TypeCodeEx.SmartDate)
                                 {
-                                    %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", If(<%= GetFieldReaderStatement(prop) %><%= TypeHelper.IsNullableType(propType) ? ".HasValue" : " IsNot Nothing " %>, <%= GetFieldReaderStatement(prop) %><%= TypeHelper.IsNullableType(propType) ? ".Value" :"" %>, DBNull.Value)).DbType = DbType.<%= GetDbType(prop) %>
+                                    %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", If(<%= GetFieldReaderStatement(prop) %><%= TypeHelper.IsNullableType(propType) ? ".HasValue" : " IsNot Nothing" %>, <%= GetFieldReaderStatement(prop) %><%= TypeHelper.IsNullableType(propType) ? ".Value" :"" %>, DBNull.Value)).DbType = DbType.<%= GetDbType(prop) %>
                     <%
                                 }
                                 else
@@ -329,7 +329,7 @@ if (Info.GenerateDataPortalUpdate)
                                 }
                                 else if (AllowNull(prop) && propType != TypeCodeEx.SmartDate)
                                 {
-                                    %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", If(<%= GetParameterSet(Info, prop) %><%= TypeHelper.IsNullableType(propType) ? ".HasValue" : " IsNot Nothing " %>, <%= GetFieldReaderStatement(prop) %><%= TypeHelper.IsNullableType(propType) ? ".Value" :"" %>, DBNull.Value)).DbType = DbType.<%= GetDbType(prop) %>
+                                    %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", If(<%= GetParameterSet(Info, prop) %><%= TypeHelper.IsNullableType(propType) ? ".HasValue" : " IsNot Nothing" %>, <%= GetFieldReaderStatement(prop) %><%= TypeHelper.IsNullableType(propType) ? ".Value" :"" %>, DBNull.Value)).DbType = DbType.<%= GetDbType(prop) %>
                     <%
                                 }
                                 else
