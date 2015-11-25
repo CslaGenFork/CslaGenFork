@@ -410,6 +410,9 @@ namespace CslaGenerator.CodeGen
 
         protected DbType GetDbType(CriteriaProperty prop)
         {
+            if (prop.DbBindColumn.Column == null)
+                return TypeHelper.GetDbType(prop.PropertyType);
+
             return GetDbType(prop.DbBindColumn);
         }
 
