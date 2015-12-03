@@ -4968,6 +4968,8 @@ namespace CslaGenerator.CodeGen
         public string GetConnection(CslaObjectInfo info, bool isFetch)
         {
             var database = "\"" + CurrentUnit.GenerationParams.DatabaseConnection + "\"";
+            if (CurrentUnit.GenerationParams.GenerateDatabaseClass)
+                database = "Database." + CurrentUnit.GenerationParams.DatabaseConnection + "Connection, false";
 
             var response = "using (var ctx = ";
 
