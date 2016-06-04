@@ -58,6 +58,12 @@ if (Info.GenerateConstructor)
         else
             ctorVisibility = GetConstructorVisibility(Info);
 
+        if (ctorVisibility == "Public")
+        {
+            %>
+        <System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>
+<%
+        }
         %>
         <%= ctorVisibility %> Sub New()
 <%
@@ -69,7 +75,7 @@ if (Info.GenerateConstructor)
 <%
     }
     %>
-            ' Prevent direct creation
+            ' Use factory methods and do not use direct creation.
             <%
     if (Info.SupportUpdateProperties || hasFactoryCache || hasDataPortalCache)
     {
