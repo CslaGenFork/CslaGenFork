@@ -39,8 +39,8 @@ namespace CslaGenerator.Metadata
 
         [Category("01. Inherit from Type Defined in Project")]
         [Editor(typeof(CslaObjectInfoEditor), typeof(UITypeEditor))]
-        [Description("Inherited Type Name.")]
-        [UserFriendlyName("Csla Object Name")]
+        [Description("Inherited Type Name. Manually append <T> if generic type.")]
+        [UserFriendlyName("Base Type Name")]
         public string ObjectName
         {
             get { return _objectName; }
@@ -71,7 +71,7 @@ namespace CslaGenerator.Metadata
         [Category("02. Inherit from Type in Assembly")]
         [Editor(typeof(RefTypeEditor), typeof(UITypeEditor))]
         [Description("Inherited Type Name. Interface classes are excluded from the list.")]
-        [UserFriendlyName("Type Name")]
+        [UserFriendlyName("Base Type Name")]
         public string Type
         {
             get { return _type; }
