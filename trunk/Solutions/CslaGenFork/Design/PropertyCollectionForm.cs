@@ -4,7 +4,6 @@ using System.ComponentModel.Design;
 using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
-using CslaGenerator.CodeGen;
 using CslaGenerator.Metadata;
 using CslaGenerator.Util.PropertyBags;
 
