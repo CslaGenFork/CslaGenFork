@@ -4,7 +4,9 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
+using System.Threading;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using CslaGenerator.Controls;
@@ -29,6 +31,7 @@ namespace CslaGenerator
         [STAThread]
         private static void Main(string[] args)
         {
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo("en");
             var controller = new GeneratorController();
             controller.MainForm.Closing += controller.GeneratorFormClosing;
             controller.CommandLineArgs = args;
@@ -323,7 +326,6 @@ namespace CslaGenerator
                     _frmGenerator.ObjectRelationsBuilder.PropertyGrid2.SelectedObject = null;
                     _frmGenerator.ObjectRelationsBuilder.PropertyGrid3.SelectedObject = null;
                 }*/
-
             }
             catch (Exception e)
             {
@@ -464,7 +466,7 @@ namespace CslaGenerator
             var slash = filePath.LastIndexOf('\\');
             if (slash > 0)
                 return filePath.Substring(slash + 1);
-            
+
             return filePath;
         }
 
@@ -473,7 +475,7 @@ namespace CslaGenerator
             var dot = filePath.LastIndexOf('.');
             if (dot > 0)
                 return filePath.Substring(0, dot);
-            
+
             return filePath;
         }
 
@@ -829,6 +831,5 @@ namespace CslaGenerator
         }
 
         #endregion
-
     }
 }
