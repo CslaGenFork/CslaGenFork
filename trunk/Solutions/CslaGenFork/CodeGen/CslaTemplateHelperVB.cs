@@ -1402,7 +1402,12 @@ namespace CslaGenerator.CodeGen
             else if (property.Name == "RunMode")
                 result = "RunModes." + result;
             else if (property.Name == "MessageText" && result != string.Empty)
-                result = "\"" + result.Trim(new[] { '\"' }) + "\"";
+            {
+                if (result.IndexOf("*") == 0)
+                    result = result.Substring(1);
+                else
+                    result = "\"" + result.Trim(new[] { '\"' }) + "\"";
+            }
 
             return result;
         }
@@ -5166,7 +5171,7 @@ namespace CslaGenerator.CodeGen
                 case ConstructorVisibility.Internal:
                     return "Friend";
                 default:
-                    return "Private";
+                    return "Public";
             }
         }
 
