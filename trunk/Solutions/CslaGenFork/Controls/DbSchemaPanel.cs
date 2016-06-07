@@ -570,7 +570,7 @@ namespace CslaGenerator.Controls
                     else if (_currentTreeNode.Tag is SqlViewInfo)
                         SetColumnsContextMenu((_currentTreeNode.Tag as SqlViewInfo).Type == ResultType.Table, rowSelected);
                     else if (_currentTreeNode.Tag is SqlResultSet)
-                        SetColumnsContextMenu(false, rowSelected);
+                        SetColumnsContextMenu(true, rowSelected);
                 }
             }
             if (dbColumns.SelectedIndicesCount != 1)
