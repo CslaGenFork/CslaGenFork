@@ -22,7 +22,7 @@ namespace CslaGenerator.Controls
     /// <summary>
     /// A customizable Dialog box with 3 buttons, custom icon, and checkbox.
     /// </summary>
-    partial class MessageBox : Form
+    partial class MessageBoxEx : Form
     {
         #region Constants
 

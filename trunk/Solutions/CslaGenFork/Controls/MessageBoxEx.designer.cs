@@ -1,6 +1,6 @@
 ﻿namespace CslaGenerator.Controls
 {
-    partial class MessageBox
+    partial class MessageBoxEx
     {
         /// <summary>
         /// Required designer variable.
