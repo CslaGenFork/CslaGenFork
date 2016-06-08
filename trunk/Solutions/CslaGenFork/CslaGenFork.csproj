@@ -236,7 +236,9 @@
     <Compile Include="Controls\GlobalSettings.Designer.cs">
       <DependentUpon>GlobalSettings.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\MessageBoxEx.cs" />
+    <Compile Include="Controls\MessageBoxEx.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Controls\MessageBoxEx.designer.cs">
       <DependentUpon>MessageBoxEx.cs</DependentUpon>
     </Compile>
