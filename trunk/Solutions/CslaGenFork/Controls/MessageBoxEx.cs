@@ -65,7 +65,7 @@ namespace CslaGenerator.Controls
         /// </summary>
         /// <param name="message">Message text.</param>
         /// <param name="title">Dialog Box title.</param>
-        public MessageBox(string message, string title)
+        public MessageBoxEx(string message, string title)
             : this(message, title, MessageBoxIcon.None)
         {
         }
@@ -76,7 +76,7 @@ namespace CslaGenerator.Controls
         /// <param name="message">Message text.</param>
         /// <param name="title">Dialog Box title.</param>
         /// <param name="icon">Standard system messagebox icon.</param>
-        public MessageBox(string message, string title, MessageBoxIcon icon)
+        public MessageBoxEx(string message, string title, MessageBoxIcon icon)
             : this(message, title, GetMessageBoxIcon(icon))
         {
         }
@@ -87,7 +87,7 @@ namespace CslaGenerator.Controls
         /// <param name="message">Message text.</param>
         /// <param name="title">Dialog Box title.</param>
         /// <param name="icon">Custom icon.</param>
-        public MessageBox(string message, string title, Icon icon)
+        public MessageBoxEx(string message, string title, Icon icon)
         {
             InitializeComponent();
 
@@ -169,7 +169,7 @@ namespace CslaGenerator.Controls
         public void SetButtons(string[] names, DialogResult[] results, int defaultButton)
         {
             if (names == null)
-                throw new ArgumentNullException(nameof(names), @"Button Text is null");
+                throw new ArgumentNullException("names", @"Button Text is null");
 
             int count = names.Length;
 
