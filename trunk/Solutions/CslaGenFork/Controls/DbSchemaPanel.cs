@@ -71,7 +71,6 @@ namespace CslaGenerator.Controls
         #endregion
 
         private CslaGeneratorUnit _currentUnit;
-        private CslaObjectInfo _currentCslaObject;
         private CslaObjectInfoCollection _objectsAdded = new CslaObjectInfoCollection();
         private ObjectFactory _currentFactory;
         private string _cn = string.Empty;
@@ -79,11 +78,10 @@ namespace CslaGenerator.Controls
         bool _isDBItemSelected;
         TreeNode _currentTreeNode;
 
-        public DbSchemaPanel(CslaGeneratorUnit cslagenunit, CslaObjectInfo cslaobject, string connection)
+        public DbSchemaPanel(CslaGeneratorUnit cslagenunit, string connection)
         {
             _currentUnit = cslagenunit;
             _cn = connection;
-            _currentCslaObject = cslaobject;
             // This call is required by the Windows.Forms Form Designer.
             InitializeComponent();
         }
@@ -95,7 +93,7 @@ namespace CslaGenerator.Controls
             // hookup event handler for treeview mouseup
             dbTreeView.TreeViewMouseUp += dbTreeView1_TreeViewMouseUp;
             // set default width
-            dbTreeView.Width = (int)((double)0.5 * (double)Width);
+            dbTreeView.Width = (int) ((double) 0.5*(double) Width);
             copySoftDeleteToolStripMenuItem.Checked = false;
         }
 
@@ -103,7 +101,7 @@ namespace CslaGenerator.Controls
         {
             // keep treeview and listbox equal widths of 50% of panel body
             // when panel resized
-            dbTreeView.Width = (int)((double)0.5 * (double)Width);
+            dbTreeView.Width = (int) ((double) 0.5*(double) Width);
         }
 
         #region Properties
@@ -114,13 +112,16 @@ namespace CslaGenerator.Controls
             set { _currentUnit = value; }
         }
 
-        internal CslaObjectInfo CslaObjectInfo
+        internal CslaObjectInfo CurrentCslaObject
         {
-            get { return _currentCslaObject; }
+            get { return GeneratorController.Current.CurrentCslaObject; }
             set
             {
-                _currentCslaObject = value;
-                _currentFactory = new ObjectFactory(_currentUnit, _currentCslaObject);
+                if (GeneratorController.Current.CurrentCslaObject != value)
+                {
+                    GeneratorController.Current.CurrentCslaObject = value;
+                    _currentFactory = new ObjectFactory(_currentUnit, GeneratorController.Current.CurrentCslaObject);
+                }
             }
         }
 
@@ -170,7 +171,7 @@ namespace CslaGenerator.Controls
             get
             {
                 return !string.IsNullOrEmpty(_currentUnit.Params.SpBoolSoftDeleteColumn) &&
-                    !copySoftDeleteToolStripMenuItem.Checked;
+                       !copySoftDeleteToolStripMenuItem.Checked;
             }
         }
 
@@ -299,11 +300,10 @@ namespace CslaGenerator.Controls
             public bool Equals(SprocName other)
             {
                 return (Name.Equals(other.Name, StringComparison.CurrentCultureIgnoreCase) &&
-                    Schema.Equals(other.Schema, StringComparison.CurrentCultureIgnoreCase));
+                        Schema.Equals(other.Schema, StringComparison.CurrentCultureIgnoreCase));
             }
 
             #endregion
-
         }
 
         private SprocName[] GetRequiredProcedureList()
@@ -372,7 +372,7 @@ namespace CslaGenerator.Controls
                     if (node.Tag is IResultSet)
                     {
                         PropertyGridDbObjects.SelectedObject = node.Tag;
-                        foreach (IColumnInfo col in ((IResultSet)node.Tag).Columns)
+                        foreach (IColumnInfo col in ((IResultSet) node.Tag).Columns)
                         {
                             DbColumns.Items.Add(col);
                         }
@@ -400,10 +400,10 @@ namespace CslaGenerator.Controls
 
         public static void SetDbBindColumn(TreeNode node, IColumnInfo p, DbBindColumn dbc)
         {
-            var rs = (IResultSet)node.Tag;
+            var rs = (IResultSet) node.Tag;
             IStoredProcedureInfo sp = null;
             if (node.Parent.Tag != null)
-                sp = (IStoredProcedureInfo)node.Parent.Tag;
+                sp = (IStoredProcedureInfo) node.Parent.Tag;
             IDataBaseObject obj;
             if (sp != null)
             {
@@ -411,7 +411,7 @@ namespace CslaGenerator.Controls
                 dbc.SpResultIndex = sp.ResultSets.IndexOf(rs);
             }
             else
-                obj = (IDataBaseObject)rs;
+                obj = (IDataBaseObject) rs;
 
             switch (rs.Type)
             {
@@ -545,9 +545,9 @@ namespace CslaGenerator.Controls
 
         private void columnsContextMenuStrip_Opening(object sender, CancelEventArgs e)
         {
-            var objSelected = (_currentCslaObject != null);
-            var rowPresent = (ColumnsCount > 0);
-            var rowSelected = (SelectedColumnsCount > 0);
+            var objSelected = CurrentCslaObject != null;
+            var rowPresent = ColumnsCount > 0;
+            var rowSelected = SelectedColumnsCount > 0;
             selectAllToolStripMenuItem.Enabled = rowPresent;
             unselectAllToolStripMenuItem.Enabled = rowSelected;
             addToCslaObjectToolStripMenuItem.Enabled = objSelected && rowSelected;
@@ -578,8 +578,8 @@ namespace CslaGenerator.Controls
                 addInheritedValuePropertyToolStripMenuItem.Enabled = false;
                 return;
             }
-            if (_currentCslaObject != null)
-                foreach (ValueProperty prop in _currentCslaObject.InheritedValueProperties)
+            if (CurrentCslaObject != null)
+                foreach (ValueProperty prop in CurrentCslaObject.InheritedValueProperties)
                 {
                     var mnu = new ToolStripMenuItem();
                     mnu.Text = prop.Name;
@@ -600,10 +600,11 @@ namespace CslaGenerator.Controls
             if (rowSelected == false)
                 return;
 
-            if (_currentCslaObject == null)
+            if (CurrentCslaObject == null)
                 return;
 
-            addToCslaObjectToolStripMenuItem.Enabled = enabled;
+            addToCslaObjectToolStripMenuItem.Enabled =
+                enabled && !CslaTemplateHelperCS.IsCollectionType(CurrentCslaObject.ObjectType);
             addInheritedValuePropertyToolStripMenuItem.Enabled = enabled;
             createEditableToolStripMenuItem.Enabled = enabled;
             createDynamicEditableRootCollectionToolStripMenuItem.Enabled = enabled;
@@ -628,11 +629,11 @@ namespace CslaGenerator.Controls
 
         private void addInheritedValuePropertyToolStripMenuItem_DropDownItemClicked(object sender, EventArgs e)
         {
-            string name = (string)((ToolStripMenuItem)sender).Tag;
+            string name = (string) ((ToolStripMenuItem) sender).Tag;
             foreach (IColumnInfo col in SelectedColumns.Values)
             {
                 // use name of column to see if a property of the same name exists
-                foreach (ValueProperty valProp in _currentCslaObject.InheritedValueProperties)
+                foreach (ValueProperty valProp in CurrentCslaObject.InheritedValueProperties)
                 {
                     if (valProp.Name.Equals(name))
                     {
@@ -853,12 +854,14 @@ namespace CslaGenerator.Controls
                     string collectionName = frm.GetPropertyValue("CollectionName");
                     NewNVL(collectionName);
                     AddPropertiesForSelectedColumns();
-                    _currentCslaObject.NameColumn = valueColumn.ColumnName;
-                    _currentCslaObject.ValueColumn = pkColumn.ColumnName;
+                    CurrentCslaObject.NameColumn = valueColumn.ColumnName;
+                    CurrentCslaObject.ValueColumn = pkColumn.ColumnName;
                 }
             }
             else
-                MessageBox.Show(@"You must select a PK column and a non PK column in order to automatically create a name value list. If you need to create a NVL and can't meet this requirement, create a new object manually through the toolbar.", @"New NVL", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(
+                    @"You must select a PK column and a non PK column in order to automatically create a name value list. If you need to create a NVL and can't meet this requirement, create a new object manually through the toolbar.",
+                    @"New NVL", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         private void newCriteriaToolStripMenuItem_Click(object sender, EventArgs e)
@@ -867,7 +870,7 @@ namespace CslaGenerator.Controls
             var cols = new List<CriteriaProperty>();
             for (var i = 0; i < SelectedColumns.Count; i++)
             {
-                var info = (IColumnInfo)dbColumns.ListColumns.SelectedItems[i];
+                var info = (IColumnInfo) dbColumns.ListColumns.SelectedItems[i];
                 var prop = new CriteriaProperty(info.ColumnName, TypeHelper.GetTypeCodeEx(info.ManagedType), info.ColumnName);
                 SetDbBindColumn(info, prop.DbBindColumn);
                 cols.Add(prop);
@@ -880,7 +883,7 @@ namespace CslaGenerator.Controls
             var num = 0;
             while (true)
             {
-                if (_currentCslaObject.CriteriaObjects.Contains(name))
+                if (CurrentCslaObject.CriteriaObjects.Contains(name))
                 {
                     num++;
                     name = "Criteria" + colNames + num;
@@ -888,7 +891,7 @@ namespace CslaGenerator.Controls
                 else
                     break;
             }
-            var c = new Criteria(_currentCslaObject);
+            var c = new Criteria(CurrentCslaObject);
             c.Name = name;
             c.Properties.AddRange(cols);
             c.SetSprocNames();
@@ -897,7 +900,7 @@ namespace CslaGenerator.Controls
                 frm.ObjectToEdit = c;
                 frm.StartPosition = FormStartPosition.CenterScreen;
                 if (frm.ShowDialog() == DialogResult.OK)
-                    _currentCslaObject.CriteriaObjects.Add(c);
+                    CurrentCslaObject.CriteriaObjects.Add(c);
             }
         }
 
@@ -932,7 +935,7 @@ namespace CslaGenerator.Controls
             _objectsAdded.Insert(0, obj);
             GeneratorController.Current.MainForm.ProjectPanel.AddCreatedObject(_objectsAdded);
             _objectsAdded = new CslaObjectInfoCollection();
-            _currentCslaObject = obj;
+            CurrentCslaObject = obj;
             _currentFactory.AddDefaultCriteriaAndParameters();
         }
 
@@ -975,7 +978,7 @@ namespace CslaGenerator.Controls
             _objectsAdded.Insert(0, obj);
             GeneratorController.Current.MainForm.ProjectPanel.AddCreatedObject(_objectsAdded);
             _objectsAdded = new CslaObjectInfoCollection();
-            _currentCslaObject = obj;
+            CurrentCslaObject = obj;
         }
 
         #endregion
@@ -986,8 +989,9 @@ namespace CslaGenerator.Controls
             if (string.IsNullOrEmpty(parentProperties))
             {
                 OutputWindow.Current.AddOutputInfo(
-                    string.Format("No Parent Properties specified for {0}. All parent Primary Key properties will be used.\r\n",
-                                _currentCslaObject.ObjectName));
+                    string.Format(
+                        "No Parent Properties specified for {0}. All parent Primary Key properties will be used.\r\n",
+                        CurrentCslaObject.ObjectName));
 
                 foreach (var prop in parent.ValueProperties)
                     if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
@@ -1006,22 +1010,23 @@ namespace CslaGenerator.Controls
             var sb = new StringBuilder();
             foreach (Property prop in propList)
             {
-                _currentCslaObject.ParentProperties.Add(prop);
+                CurrentCslaObject.ParentProperties.Add(prop);
                 sb.AppendFormat("\t{0}.{1}.\r\n",
-                                parent.ObjectName, prop.Name);
+                    parent.ObjectName, prop.Name);
             }
 
             if (sb.Length > 0)
             {
                 OutputWindow.Current.AddOutputInfo(
-                    string.Format("Successfully added the following Parent Properties to {0}:", _currentCslaObject.ObjectName));
+                    string.Format("Successfully added the following Parent Properties to {0}:",
+                        CurrentCslaObject.ObjectName));
                 OutputWindow.Current.AddOutputInfo(sb.ToString());
             }
         }
 
         private void AddPropertiesForSelectedColumns()
         {
-            if (_currentCslaObject == null)
+            if (CurrentCslaObject == null)
                 return;
             if (SelectedColumnsCount == 0)
             {
@@ -1032,7 +1037,7 @@ namespace CslaGenerator.Controls
             var columns = new List<IColumnInfo>();
             for (int i = 0; i < SelectedColumns.Count; i++)
             {
-                columns.Add((IColumnInfo)dbColumns.ListColumns.SelectedItems[i]);
+                columns.Add((IColumnInfo) dbColumns.ListColumns.SelectedItems[i]);
             }
 
             var dbObject = GetCurrentDBObject();
@@ -1040,12 +1045,12 @@ namespace CslaGenerator.Controls
             var getSprocName = string.Empty;
             if (_currentTreeNode.Tag is SqlResultSet)
                 getSprocName = (_currentTreeNode.Parent.Tag as SqlStoredProcedureInfo).ObjectName;
-            _currentFactory.AddProperties(_currentCslaObject, dbObject, resultSet, columns, true, false, getSprocName);
+            _currentFactory.AddProperties(CurrentCslaObject, dbObject, resultSet, columns, true, false, getSprocName);
         }
 
         private void AddPropertiesForSelectedColumns(CslaObjectInfo parent)
         {
-            if (_currentCslaObject == null)
+            if (CurrentCslaObject == null)
                 return;
             if (SelectedColumnsCount == 0)
             {
@@ -1066,10 +1071,10 @@ namespace CslaGenerator.Controls
                 var column = (IColumnInfo) dbColumns.ListColumns.SelectedItems[index];
                 allColumns.Add(column);
                 hasPrimaryKey = hasPrimaryKey || column.IsPrimaryKey;
-                var nameTypeMatch = CslaTemplateHelperCS.ColumnNameMatchesParentProperty(parent, _currentCslaObject, column);
+                var nameTypeMatch = CslaTemplateHelperCS.ColumnNameMatchesParentProperty(parent, CurrentCslaObject, column);
                 if (nameTypeMatch.Length > 0)
                     nameTypeMatches.Add(column.ColumnName);
-                var fkMatch = CslaTemplateHelperCS.ColumnFKMatchesParentProperty(parent, _currentCslaObject, column);
+                var fkMatch = CslaTemplateHelperCS.ColumnFKMatchesParentProperty(parent, CurrentCslaObject, column);
                 if (fkMatch.Length > 0)
                     fkMatches.Add(column.ColumnName);
             }
@@ -1103,16 +1108,16 @@ namespace CslaGenerator.Controls
             if (sb.Length > 0)
             {
                 OutputWindow.Current.AddOutputInfo(string.Format(
-                        "The following columns match {0} Parent Properties and were not added to the Value Property collection:",
-                        _currentCslaObject.ObjectName));
+                    "The following columns match {0} Parent Properties and were not added to the Value Property collection:",
+                    CurrentCslaObject.ObjectName));
                 OutputWindow.Current.AddOutputInfo(sb.ToString());
             }
 
             var dbObject = GetCurrentDBObject();
             var resultSet = GetCurrentResultSet();
-            _currentFactory.AddProperties(_currentCslaObject, dbObject, resultSet, columns, true, false);
-            if (_currentCslaObject.ObjectType == CslaObjectType.EditableChild)
-                _currentCslaObject.ParentInsertOnly = hasPrimaryKey;
+            _currentFactory.AddProperties(CurrentCslaObject, dbObject, resultSet, columns, true, false);
+            if (CurrentCslaObject.ObjectType == CslaObjectType.EditableChild)
+                CurrentCslaObject.ParentInsertOnly = hasPrimaryKey;
         }
 
         private void AddChildToParent(CslaObjectInfo parent, string objectName, string propertyName)
