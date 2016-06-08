@@ -29,10 +29,12 @@ namespace CslaGenerator
         private bool _generating;
         private bool _appClosing;
         private bool _resetLayout;
+        private bool _retrieveSummariesRememberAnswer;
+        private DialogResult _retrieveSummariesDialogResult;
         private GeneratorController _controller = null;
         private ICodeGenerator _generator;
         private List<ISimplePlugin> _plugins = new List<ISimplePlugin>();
-        private ProjectPanel _projectPanel= new ProjectPanel();
+        private ProjectPanel _projectPanel = new ProjectPanel();
         private ObjectInfo _objectInfoPanel = new ObjectInfo();
         private StartPage _webBrowserDockPanel = new StartPage();
         private GlobalSettings _globalSettingsPanel = new GlobalSettings();
@@ -155,7 +157,7 @@ namespace CslaGenerator
             _errorPannel.Icon = Icon.FromHandle(Resources.Error_List.GetHicon());
             _warningPannel.Icon = Icon.FromHandle(Resources.Warning_List.GetHicon());
         }
-        
+
         #endregion
 
         #region Loading
@@ -230,7 +232,10 @@ namespace CslaGenerator
             _webBrowserDockPanel.webBrowser.Navigating += WebBrowser_Navigating;
             _webBrowserDockPanel.MdiParent = this;
             _webBrowserDockPanel.VisibleChanged +=
-                delegate(object sender, EventArgs e) { startPageToolStripMenuItem.Checked = ((DockContent)sender).Visible; };
+                delegate(object sender, EventArgs e)
+                {
+                    startPageToolStripMenuItem.Checked = ((DockContent) sender).Visible;
+                };
             _webBrowserDockPanel.FormClosing += PaneFormClosing;
             _webBrowserDockPanel.webBrowser.Navigate(url);
             _webBrowserDockPanel.Show(dockPanel);
@@ -250,7 +255,10 @@ namespace CslaGenerator
 
             // Output panel
             _outputPanel.VisibleChanged +=
-                delegate(object sender, EventArgs e) { outputWindowToolStripMenuItem.Checked = ((DockContent)sender).Visible; };
+                delegate(object sender, EventArgs e)
+                {
+                    outputWindowToolStripMenuItem.Checked = ((DockContent) sender).Visible;
+                };
             _outputPanel.FormClosing += PaneFormClosing;
             _outputPanel.Show(dockPanel);
 
@@ -263,7 +271,10 @@ namespace CslaGenerator
             _projectPanel.TargetDirChanged += ProjectPanel_TargetDirChanged;
             _projectPanel.SelectedItemsChanged += ProjectPanel_SelectedItemsChanged;
             _projectPanel.VisibleChanged +=
-                delegate(object sender, EventArgs e) { projectPanelToolStripMenuItem.Checked = ((DockContent)sender).Visible; };
+                delegate(object sender, EventArgs e)
+                {
+                    projectPanelToolStripMenuItem.Checked = ((DockContent) sender).Visible;
+                };
             _projectPanel.FormClosing += PaneFormClosing;
             _projectPanel.Show(dockPanel);
 
@@ -274,7 +285,10 @@ namespace CslaGenerator
             _objectInfoPanel.propertyGrid.PropertySortChanged += OnSort;
             _objectInfoPanel.propertyGrid.SelectedGridItemChanged += OnSelectedGridItemChanged;
             _objectInfoPanel.VisibleChanged +=
-                delegate(object sender, EventArgs e) { objectPropertiesPanelToolStripMenuItem.Checked = ((DockContent)sender).Visible; };
+                delegate(object sender, EventArgs e)
+                {
+                    objectPropertiesPanelToolStripMenuItem.Checked = ((DockContent) sender).Visible;
+                };
             _objectInfoPanel.FormClosing += PaneFormClosing;
             _objectInfoPanel.Show(dockPanel);
 
@@ -285,7 +299,10 @@ namespace CslaGenerator
             _objectRelationsBuilderPanel.DockAreas = DockAreas.Float | DockAreas.Document;
             _objectRelationsBuilderPanel.MdiParent = this;
             _objectRelationsBuilderPanel.VisibleChanged +=
-                delegate(object sender, EventArgs e) { objectRelationsBuilderPageToolStripMenuItem.Checked = ((DockContent)sender).Visible; };
+                delegate(object sender, EventArgs e)
+                {
+                    objectRelationsBuilderPageToolStripMenuItem.Checked = ((DockContent) sender).Visible;
+                };
             _objectRelationsBuilderPanel.FormClosing += PaneFormClosing;
             _webBrowserDockPanel.BringToFront();
         }
@@ -297,7 +314,10 @@ namespace CslaGenerator
         {
             _projectPropertiesPanel.MdiParent = this;
             _projectPropertiesPanel.VisibleChanged +=
-                delegate(object sender, EventArgs e) { projectPropertiesPageToolStripMenuItem.Checked = ((DockContent)sender).Visible; };
+                delegate(object sender, EventArgs e)
+                {
+                    projectPropertiesPageToolStripMenuItem.Checked = ((DockContent) sender).Visible;
+                };
             _projectPropertiesPanel.FormClosing += PaneFormClosing;
             _projectPropertiesPanel.Show(dockPanel);
         }
@@ -309,7 +329,10 @@ namespace CslaGenerator
         {
             _globalSettingsPanel.MdiParent = this;
             _globalSettingsPanel.VisibleChanged +=
-                delegate(object sender, EventArgs e) { globalSettingsPageToolStripMenuItem.Checked = ((DockContent)sender).Visible; };
+                delegate(object sender, EventArgs e)
+                {
+                    globalSettingsPageToolStripMenuItem.Checked = ((DockContent) sender).Visible;
+                };
             _globalSettingsPanel.FormClosing += PaneFormClosing;
             _globalSettingsPanel.Show(dockPanel);
         }
@@ -324,7 +347,10 @@ namespace CslaGenerator
         {
             _dbSchemaPanel.MdiParent = this;
             _dbSchemaPanel.VisibleChanged +=
-                delegate(object sender, EventArgs e) { schemaPageToolStripMenuItem.Checked = ((DockContent)sender).Visible; };
+                delegate(object sender, EventArgs e)
+                {
+                    schemaPageToolStripMenuItem.Checked = ((DockContent) sender).Visible;
+                };
             _dbSchemaPanel.FormClosing += PaneFormClosing;
             _dbSchemaPanel.Show(dockPanel);
         }
@@ -424,7 +450,8 @@ namespace CslaGenerator
 
             foreach (var dockContent in dockPanel.Documents)
             {
-                if (dockContent.GetType().ToString() == "CslaGenerator.Controls." + _controller.CurrentUnitLayout.ActiveDocument)
+                if (dockContent.GetType().ToString() ==
+                    "CslaGenerator.Controls." + _controller.CurrentUnitLayout.ActiveDocument)
                     dockContent.DockHandler.Show();
 
                 var docType = dockContent.GetType().UnderlyingSystemType;
@@ -516,7 +543,7 @@ namespace CslaGenerator
             // individual controls on the form are closing
             SaveBeforeClose(true);
             e.Cancel = true;
-            ((DockContent)sender).Hide();
+            ((DockContent) sender).Hide();
         }
 
         private DialogResult SaveBeforeClose(bool isClosing)
@@ -571,17 +598,20 @@ namespace CslaGenerator
         {
             if (!Directory.Exists(_controller.TemplatesDirectory))
             {
-                MessageBox.Show(@"You must set the templates directory path before generating.", "Invalid Generate Order", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(@"You must set the templates directory path before generating.",
+                    "Invalid Generate Order", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
             if (_controller.CurrentUnit == null)
             {
-                MessageBox.Show(@"You must open a project before generating.", "Invalid Generate Order", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(@"You must open a project before generating.", "Invalid Generate Order",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
             if (Generating)
             {
-                MessageBox.Show(@"The Generation process is already running.", "Invalid Generate Order", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(@"The Generation process is already running.", "Invalid Generate Order",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
@@ -637,9 +667,9 @@ namespace CslaGenerator
         {
             var timer = _controller.CurrentUnit.GenerationTimer.Elapsed;
             generatingTimer.Text = String.Format("Generating: {0}:{1},{2}",
-                                                 timer.Minutes.ToString("00"),
-                                                 timer.Seconds.ToString("00"),
-                                                 timer.Milliseconds.ToString("000"));
+                timer.Minutes.ToString("00"),
+                timer.Seconds.ToString("00"),
+                timer.Milliseconds.ToString("000"));
             Generating = false;
             if (!_controller.HasErrors && !_controller.HasWarnings)
             {
@@ -674,7 +704,7 @@ namespace CslaGenerator
         {
             if (progressBar.Value < progressBar.Maximum)
             {
-                Invoke((MethodInvoker)delegate { progressBar.Value++; });
+                Invoke((MethodInvoker) delegate { progressBar.Value++; });
             }
         }
 
@@ -690,7 +720,7 @@ namespace CslaGenerator
         }
 
         #endregion
-        
+
         #region Project panel
 
         private void ProjectPanel_TargetDirChanged(string path)
@@ -715,7 +745,7 @@ namespace CslaGenerator
 
         private void OnSelectedGridItemChanged(object sender, SelectedGridItemChangedEventArgs e)
         {
-            CslaObjectInfo cslaObj = ((PropertyBag)((PropertyGrid)sender).SelectedObject).SelectedObject[0];
+            CslaObjectInfo cslaObj = ((PropertyBag) ((PropertyGrid) sender).SelectedObject).SelectedObject[0];
             switch (e.NewSelection.Label)
             {
                 case "Create Authorization Type":
@@ -905,7 +935,8 @@ namespace CslaGenerator
                 DialogResult result = openFileDialog.ShowDialog(this);
                 if (result == DialogResult.OK)
                 {
-                    _controller.ProjectsDirectory = openFileDialog.FileName.Substring(0, openFileDialog.FileName.LastIndexOf('\\'));
+                    _controller.ProjectsDirectory = openFileDialog.FileName.Substring(0,
+                        openFileDialog.FileName.LastIndexOf('\\'));
                     ConfigTools.SharedAppConfigChange("ProjectsDirectory", _controller.ProjectsDirectory);
                     Application.DoEvents();
                     Cursor.Current = Cursors.WaitCursor;
@@ -949,7 +980,8 @@ namespace CslaGenerator
             var result = saveFileDialog.ShowDialog(this);
             if (result == DialogResult.OK)
             {
-                _controller.ProjectsDirectory = saveFileDialog.FileName.Substring(0, saveFileDialog.FileName.LastIndexOf('\\'));
+                _controller.ProjectsDirectory = saveFileDialog.FileName.Substring(0,
+                    saveFileDialog.FileName.LastIndexOf('\\'));
                 ConfigTools.SharedAppConfigChange("ProjectsDirectory", _controller.ProjectsDirectory);
                 Cursor.Current = Cursors.WaitCursor;
                 Application.DoEvents();
@@ -1020,7 +1052,8 @@ namespace CslaGenerator
                     else
                     {
                         openFileDialog.FileName = _controller.MruItems[mruItem];
-                        _controller.ProjectsDirectory = openFileDialog.FileName.Substring(0, openFileDialog.FileName.LastIndexOf('\\'));
+                        _controller.ProjectsDirectory = openFileDialog.FileName.Substring(0,
+                            openFileDialog.FileName.LastIndexOf('\\'));
                         ConfigTools.SharedAppConfigChange("ProjectsDirectory", _controller.ProjectsDirectory);
                         Application.DoEvents();
                         Cursor.Current = Cursors.WaitCursor;
@@ -1046,7 +1079,8 @@ namespace CslaGenerator
             var message = _controller.MruItems[mruItem] + Environment.NewLine +
                           @"project file wasn't found." + Environment.NewLine + Environment.NewLine +
                           @"Do you want to remove it from the recently used list?";
-            if (MessageBox.Show(message, @"Project file not found.", MessageBoxButtons.YesNo, MessageBoxIcon.Error) == DialogResult.Yes)
+            if (MessageBox.Show(message, @"Project file not found.", MessageBoxButtons.YesNo, MessageBoxIcon.Error) ==
+                DialogResult.Yes)
             {
                 _controller.MruItems.RemoveAt(mruItem);
                 MruDisplay();
@@ -1133,9 +1167,9 @@ namespace CslaGenerator
             _controller.Load(fileName);
             var timer = _controller.LoadingTimer.Elapsed;
             loadingTimer.Text = String.Format("Loading: {0}:{1},{2}",
-                                                 timer.Minutes.ToString("00"),
-                                                 timer.Seconds.ToString("00"),
-                                                 timer.Milliseconds.ToString("000"));
+                timer.Minutes.ToString("00"),
+                timer.Seconds.ToString("00"),
+                timer.Milliseconds.ToString("000"));
             _isNewProject = false;
             // if we are calling this from the controller, then the
             // file dialog will not have been used to open the file, and since other code relies
@@ -1208,7 +1242,7 @@ namespace CslaGenerator
             else
             {
                 MessageBox.Show(@"You need to open or create a project to set its properties.", @"Project properties",
-                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
@@ -1229,13 +1263,27 @@ namespace CslaGenerator
 
         private void RetrieveSummariesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string msg = @"Do you want to retrieve summaries for all objects or just the current object?";
-            msg += Environment.NewLine;
-            msg += @"Choose yes to update all objects or no for the current one.";
-            DialogResult dr = MessageBox.Show(msg, @"Csla Generator", MessageBoxButtons.YesNoCancel);
-            if (dr != DialogResult.Cancel)
+            if (!_retrieveSummariesRememberAnswer)
             {
-                if (dr == DialogResult.Yes)
+                string msg = @"Do you want to retrieve summaries" + Environment.NewLine +
+                             "just for the current object or for all objects?";
+                var messageBox = new MessageBoxEx(msg, @"Csla Generator", MessageBoxIcon.Question);
+                messageBox.SetButtons(new[] {"Current", "All", "Cancel"},
+                    new[] {DialogResult.No, DialogResult.Yes, DialogResult.Cancel}, 2);
+                messageBox.SetCheckbox("Do no ask again.");
+                messageBox.ShowDialog();
+
+                _retrieveSummariesRememberAnswer = messageBox.CheckboxChecked;
+                _retrieveSummariesDialogResult = messageBox.DialogResult;
+            }
+
+            if (_retrieveSummariesDialogResult == DialogResult.Cancel)
+            {
+                _retrieveSummariesRememberAnswer = false;
+            }
+            else
+            {
+                if (_retrieveSummariesDialogResult == DialogResult.Yes)
                 {
                     foreach (CslaObjectInfo info in _controller.CurrentUnit.CslaObjects)
                     {
@@ -1245,7 +1293,7 @@ namespace CslaGenerator
                 }
                 else
                 {
-                    foreach (ValueProperty vp in _dbSchemaPanel.CslaObjectInfo.ValueProperties)
+                    foreach (ValueProperty vp in _dbSchemaPanel.CurrentCslaObject.ValueProperties)
                         vp.RetrieveSummaryFromColumnDefinition();
                 }
             }
@@ -1271,7 +1319,7 @@ namespace CslaGenerator
             }
             else
                 MessageBox.Show(@"You must load or start a new project before connecting to a database",
-                                @"CslaGenerator", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    @"CslaGenerator", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         #endregion
@@ -1280,7 +1328,8 @@ namespace CslaGenerator
 
         private void changePrimaryKeyToNotUndoable_Click(object sender, EventArgs e)
         {
-            _outputPanel.AddOutputInfo(Environment.NewLine + "Changing Primary Key properties to not Undoable..." + Environment.NewLine);
+            _outputPanel.AddOutputInfo(Environment.NewLine + "Changing Primary Key properties to not Undoable..." +
+                                       Environment.NewLine);
             foreach (var info in _controller.CurrentUnit.CslaObjects)
             {
                 var counter = 0;
@@ -1295,14 +1344,18 @@ namespace CslaGenerator
                 }
 
                 if (counter > 0)
-                    _outputPanel.AddOutputInfo(info.ObjectName + ": changed " + counter + " Primary Key properties not \"Undoable\".");
+                    _outputPanel.AddOutputInfo(info.ObjectName + ": changed " + counter +
+                                               " Primary Key properties not \"Undoable\".");
             }
-            _outputPanel.AddOutputInfo(Environment.NewLine + "Change Primary Key properties to not Undoable is done." + Environment.NewLine);
+            _outputPanel.AddOutputInfo(Environment.NewLine + "Change Primary Key properties to not Undoable is done." +
+                                       Environment.NewLine);
         }
 
         private void ChangeTimestampToReadOnlyNotUndoable_Click(object sender, EventArgs e)
         {
-            _outputPanel.AddOutputInfo(Environment.NewLine + "Changing ReadOnly and not Undoable on timestamp properties..." + Environment.NewLine);
+            _outputPanel.AddOutputInfo(Environment.NewLine +
+                                       "Changing ReadOnly and not Undoable on timestamp properties..." +
+                                       Environment.NewLine);
             foreach (var info in _controller.CurrentUnit.CslaObjects)
             {
                 var counter = 0;
@@ -1318,14 +1371,19 @@ namespace CslaGenerator
                 }
 
                 if (counter > 0)
-                    _outputPanel.AddOutputInfo(info.ObjectName + ": changed " + counter + " properties of type \"timestamp\" to \"ReadOnly\" and not \"Undoable\".");
+                    _outputPanel.AddOutputInfo(info.ObjectName + ": changed " + counter +
+                                               " properties of type \"timestamp\" to \"ReadOnly\" and not \"Undoable\".");
             }
-            _outputPanel.AddOutputInfo(Environment.NewLine + "Change ReadOnly and not Undoable on timestamp properties is done." + Environment.NewLine);
+            _outputPanel.AddOutputInfo(Environment.NewLine +
+                                       "Change ReadOnly and not Undoable on timestamp properties is done." +
+                                       Environment.NewLine);
         }
 
         private void ConvertDateTimeToSmartDate_Click(object sender, EventArgs e)
         {
-            _outputPanel.AddOutputInfo(Environment.NewLine + "Converting DateTime/DateTimeOffset to SmartDate properties..." + Environment.NewLine);
+            _outputPanel.AddOutputInfo(Environment.NewLine +
+                                       "Converting DateTime/DateTimeOffset to SmartDate properties..." +
+                                       Environment.NewLine);
             foreach (var info in _controller.CurrentUnit.CslaObjects)
             {
                 var counter = 0;
@@ -1340,14 +1398,18 @@ namespace CslaGenerator
                 }
 
                 if (counter > 0)
-                    _outputPanel.AddOutputInfo(info.ObjectName + ": converted " + counter + " properties of type DateTime/DateTimeOffset to SmartDate.");
+                    _outputPanel.AddOutputInfo(info.ObjectName + ": converted " + counter +
+                                               " properties of type DateTime/DateTimeOffset to SmartDate.");
             }
-            _outputPanel.AddOutputInfo(Environment.NewLine + "Convert DateTime/DateTimeOffset to SmartDate properties is done." + Environment.NewLine);
+            _outputPanel.AddOutputInfo(Environment.NewLine +
+                                       "Convert DateTime/DateTimeOffset to SmartDate properties is done." +
+                                       Environment.NewLine);
         }
 
         private void ForceBackingFieldSmartDate_Click(object sender, EventArgs e)
         {
-            _outputPanel.AddOutputInfo(Environment.NewLine + "Forcing backing field on SmartDate properties..." + Environment.NewLine);
+            _outputPanel.AddOutputInfo(Environment.NewLine + "Forcing backing field on SmartDate properties..." +
+                                       Environment.NewLine);
             foreach (var info in _controller.CurrentUnit.CslaObjects)
             {
                 var counter = 0;
@@ -1378,12 +1440,15 @@ namespace CslaGenerator
                 if (counter > 0)
                     _outputPanel.AddOutputInfo(info.ObjectName + ": added " + counter + " backing fields.");
             }
-            _outputPanel.AddOutputInfo(Environment.NewLine + "Force backing field on SmartDate properties is done." + Environment.NewLine);
+            _outputPanel.AddOutputInfo(Environment.NewLine + "Force backing field on SmartDate properties is done." +
+                                       Environment.NewLine);
         }
 
         private void ConvertPropertiesAndCriteriaToSilverlight_Click(object sender, EventArgs e)
         {
-            _outputPanel.AddOutputInfo(Environment.NewLine + "Converting Properties and Criteria to be Silverlight compatible..." + Environment.NewLine);
+            _outputPanel.AddOutputInfo(Environment.NewLine +
+                                       "Converting Properties and Criteria to be Silverlight compatible..." +
+                                       Environment.NewLine);
             foreach (var info in _controller.CurrentUnit.CslaObjects)
             {
                 var counterAutoProperty = 0;
@@ -1479,24 +1544,33 @@ namespace CslaGenerator
                 }
 
                 if (counterAutoProperty > 0)
-                    _outputPanel.AddOutputInfo(info.ObjectName + ": converted " + counterAutoProperty + " \"PropertyDeclaration.AutoProperty\" properties.");
+                    _outputPanel.AddOutputInfo(info.ObjectName + ": converted " + counterAutoProperty +
+                                               " \"PropertyDeclaration.AutoProperty\" properties.");
                 if (counterClassicProperty > 0)
-                    _outputPanel.AddOutputInfo(info.ObjectName + ": converted " + counterClassicProperty + " \"PropertyDeclaration.ClassicProperty\" properties.");
+                    _outputPanel.AddOutputInfo(info.ObjectName + ": converted " + counterClassicProperty +
+                                               " \"PropertyDeclaration.ClassicProperty\" properties.");
                 if (counterClassicPropertyWithTypeConversion > 0)
-                    _outputPanel.AddOutputInfo(info.ObjectName + ": converted " + counterClassicPropertyWithTypeConversion + " \"PropertyDeclaration.ClassicPropertyWithTypeConversion\" properties.");
+                    _outputPanel.AddOutputInfo(info.ObjectName + ": converted " +
+                                               counterClassicPropertyWithTypeConversion +
+                                               " \"PropertyDeclaration.ClassicPropertyWithTypeConversion\" properties.");
                 if (counterNoProperty > 0)
-                    _outputPanel.AddOutputInfo(info.ObjectName + ": converted " + counterNoProperty + " \"PropertyDeclaration.NoProperty\" properties.");
+                    _outputPanel.AddOutputInfo(info.ObjectName + ": converted " + counterNoProperty +
+                                               " \"PropertyDeclaration.NoProperty\" properties.");
                 if (counterCriteria > 0)
-                    _outputPanel.AddOutputInfo(info.ObjectName + ": converted " + counterCriteria + " \"CriteriaMode.Simple\" criteria.");
+                    _outputPanel.AddOutputInfo(info.ObjectName + ": converted " + counterCriteria +
+                                               " \"CriteriaMode.Simple\" criteria.");
             }
-            _outputPanel.AddOutputInfo(Environment.NewLine + "Convert Properties and Criteria to be Silverlight compatible is done." + Environment.NewLine);
+            _outputPanel.AddOutputInfo(Environment.NewLine +
+                                       "Convert Properties and Criteria to be Silverlight compatible is done." +
+                                       Environment.NewLine);
         }
 
         private void LocateToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (var tDirDialog = new FolderBrowserDialog())
             {
-                tDirDialog.Description = @"Current folder location of the CslaGenFork templates is:" + Environment.NewLine +
+                tDirDialog.Description = @"Current folder location of the CslaGenFork templates is:" +
+                                         Environment.NewLine +
                                          _controller.TemplatesDirectory + Environment.NewLine +
                                          @"Select a new folder location and press OK.";
                 tDirDialog.ShowNewFolderButton = false;
@@ -1625,8 +1699,8 @@ namespace CslaGenerator
                     plugin.Unit = _controller.CurrentUnit;
                     plugin.SelectedObjects = _projectPanel.GetSelectedObjects();
                 }
-                var menu = (ToolStripMenuItem)sender;
-                var cmd = (ScriptCommandInfo)menu.Tag;
+                var menu = (ToolStripMenuItem) sender;
+                var cmd = (ScriptCommandInfo) menu.Tag;
                 cmd.RunCommand();
             }
             catch (Exception ex)
@@ -1707,8 +1781,7 @@ namespace CslaGenerator
             _warningPannel.FormClosing += PaneFormClosing;
             _warningPannel.Show(_outputPanel.Pane, _outputPanel);
         }
-        
-        #endregion
 
+        #endregion
     }
 }
