@@ -47,7 +47,6 @@ namespace CslaGenerator
 
         private string[] _commandlineArgs;
         private CslaGeneratorUnit _currentUnit;
-        private CslaObjectInfo _currentCslaObject;
         private AssociativeEntity _currentAssociativeEntitiy;
         private GlobalParameters _globalParameters = new GlobalParameters();
         private string _currentFilePath = string.Empty;
@@ -79,7 +78,7 @@ namespace CslaGenerator
         {
             _mainForm = new MainForm(this);
             _mainForm.ProjectPanel.SelectedItemsChanged += CslaObjectList_SelectedItemsChanged;
-            _mainForm.ProjectPanel.LastItemRemoved += delegate { _currentCslaObject = null; };
+            _mainForm.ProjectPanel.LastItemRemoved += delegate { CurrentCslaObject = null; };
             _mainForm.ObjectRelationsBuilderPanel.SelectedItemsChanged += AssociativeEntitiesList_SelectedItemsChanged;
             _mainForm.Show();
             _mainForm.formSizePosition.RestoreFormSizePosition();
@@ -144,6 +143,8 @@ namespace CslaGenerator
                 _mainForm.ActivateShowProjectProperties();
             }
         }
+
+        internal CslaObjectInfo CurrentCslaObject { get; set; }
 
         internal GlobalParameters GlobalParameters
         {
@@ -259,7 +260,7 @@ namespace CslaGenerator
                     }
                 }
                 _currentUnit.ResetParent();
-                _currentCslaObject = null;
+                CurrentCslaObject = null;
                 _currentAssociativeEntitiy = null;
                 _currentFilePath = GetFilePath(filePath);
 
@@ -296,21 +297,21 @@ namespace CslaGenerator
                 {
                     if (_mainForm.ProjectPanel.ListObjects.Items.Count > 0)
                     {
-                        _currentCslaObject = (CslaObjectInfo)_mainForm.ProjectPanel.ListObjects.Items[0];
+                        CurrentCslaObject = (CslaObjectInfo)_mainForm.ProjectPanel.ListObjects.Items[0];
                     }
                     else
                     {
-                        _currentCslaObject = null;
+                        CurrentCslaObject = null;
                     }
 
                     if (_mainForm.DbSchemaPanel != null)
-                        _mainForm.DbSchemaPanel.CslaObjectInfo = _currentCslaObject;
+                        _mainForm.DbSchemaPanel.CurrentCslaObject = CurrentCslaObject;
                 }
                 else
                 {
-                    _currentCslaObject = null;
+                    CurrentCslaObject = null;
                     if (_mainForm.DbSchemaPanel != null)
-                        _mainForm.DbSchemaPanel.CslaObjectInfo = null;
+                        _mainForm.DbSchemaPanel.CurrentCslaObject = null;
                 }
                 _mainForm.ProjectPanel.ApplyFiltersPresenter();
 
@@ -342,6 +343,8 @@ namespace CslaGenerator
             }
 
             LoadProjectLayout(filePath);
+            CurrentCslaObject = (CslaObjectInfo) GetSelectedItem();
+
             IsLoading = false;
             LoadingTimer.Stop();
         }
@@ -384,7 +387,7 @@ namespace CslaGenerator
             CurrentUnit = new CslaGeneratorUnit();
             CurrentUnitLayout = new CslaGeneratorUnitLayout();
             _currentFilePath = Path.GetTempPath() + @"\" + Guid.NewGuid().ToString();
-            _currentCslaObject = null;
+            CurrentCslaObject = null;
             _currentUnit.ConnectionString = ConnectionFactory.ConnectionString;
             BindControls();
             _mainForm.ObjectInfoGrid.SelectedObject = null;
@@ -549,7 +552,7 @@ namespace CslaGenerator
                     _mainForm.DbSchemaPanel.Close();
                     _mainForm.DbSchemaPanel.Dispose();
                 }
-                _mainForm.DbSchemaPanel = new DbSchemaPanel(_currentUnit, _currentCslaObject, connectionString);
+                _mainForm.DbSchemaPanel = new DbSchemaPanel(_currentUnit, connectionString);
                 _mainForm.DbSchemaPanel.BuildSchemaTree();
                 _mainForm.ActivateShowSchema();
                 _mainForm.DbSchemaPanel.SetDbColumnsPctHeight(73);
@@ -637,7 +640,7 @@ namespace CslaGenerator
         internal void ReloadPropertyGrid()
         {
             if (_mainForm.DbSchemaPanel != null)
-                _mainForm.DbSchemaPanel.CslaObjectInfo = null;
+                _mainForm.DbSchemaPanel.CurrentCslaObject = null;
 
             var selectedItems = new List<CslaObjectInfo>();
             foreach (CslaObjectInfo obj in _mainForm.ProjectPanel.ListObjects.SelectedItems)
@@ -645,15 +648,15 @@ namespace CslaGenerator
                 selectedItems.Add(obj);
                 if (!IsLoading && _mainForm.DbSchemaPanel != null)
                 {
-                    _currentCslaObject = obj;
-                    _mainForm.DbSchemaPanel.CslaObjectInfo = obj;
+                    CurrentCslaObject = obj;
+                    _mainForm.DbSchemaPanel.CurrentCslaObject = obj;
                 }
             }
 
             if (_mainForm.DbSchemaPanel != null && selectedItems.Count != 1)
             {
-                _currentCslaObject = null;
-                _mainForm.DbSchemaPanel.CslaObjectInfo = null;
+                CurrentCslaObject = null;
+                _mainForm.DbSchemaPanel.CurrentCslaObject = null;
             }
 
             if (selectedItems.Count == 0)
