@@ -4,9 +4,12 @@
  * Developed for StresStimulus, free Fiddler extension for load testing of web applications     *
  * http://stresstimulus.stimulustechnology.com/                                                 *
  *                                                                                              *
- * Changed by Tiago Freitas Leal, 07 Jun 2016                                                   *
- * Cast DialogResult to MessageBoxResult so MessageBoxResult is the single result point         *
- * (no need to check for results on DialogResult)                                               *
+ * Changed by Tiago Freitas Leal, June 2016                                                     *
+ * - Make it look like the standard MessageBox (styles, sizes, auto wrap long lines,            *
+ *   minimum and maximum size, etc.)                                                            *
+ * - Check API methods are invoked in the correct order.                                        *
+ * - Cast DialogResult to MessageBoxResult so MessageBoxResult is the single result point       *
+ *   (no need to check for results on DialogResult).                                            *
  *                                                                                              *
  * Subject to The Code Project Open License (CPOL) 1.02                                         *
  * http://www.codeproject.com/info/cpol10.aspx                                                  *
@@ -26,11 +29,22 @@ namespace CslaGenerator.Controls
     {
         #region Constants
 
-        private const int FormYMargin = 10;
-        private const int FormXMargin = 16;
-        private const int ButtonSpace = 5;
-        private const int CheckboxSpace = 15;
-        private const int TextYMargin = 30;
+        private const int ClientSizeMinimumWidth = 138;
+        private const int ClientSizeMinimumHeight = 116;
+        private const int MessageLeftMargin = 9;
+        private const int MessageIconSpace = 6;
+        private const int MessageTopMarginMinimum = 25;
+        private const int MessageTopMarginMaximum = 33;
+        private const int MessageBottomMarginMinimum = 25;
+        private const int MessageBottomMarginMaximum = 33;
+        private const int MessageRightMargin = 34;
+        private const int MessageMaximumWidth = 431;
+        private const int IconLeftMargin = 26;
+        private const int IconVerticalMargin = 27;
+        private const int ButtonSpace = 9;
+        private const int ButtonRowRightMargin = 7;
+        private const int ButtonRowLeftMargin = 42;
+        private const int CheckboxSpace = 12;
 
         #endregion
 
@@ -42,23 +56,40 @@ namespace CslaGenerator.Controls
         private readonly Icon _systemIcon;
 
         /// <summary>
-        /// Min set width.
+        /// The required width of the button and checkbox row. Sum of button widths + checkbox width, margins and spacing.
         /// </summary>
-        private int _minWidth;
+        private int _buttonRowRequiredWidth;
 
         /// <summary>
-        /// Min set height.
+        /// Whether the MessageBox was already shown.
         /// </summary>
-        private int _minHeight;
+        private bool _shown;
 
-        /// <summary>
-        /// The min required width of the button and checkbox row. Sum of button widths + checkbox width + margins.
-        /// </summary>
-        private int _minButtonRowWidth;
+        private int _bottomMargin;
 
         #endregion
 
-        #region Contructors
+        #region API Properties
+
+        /// <summary>
+        /// If visible checkbox was checked.
+        /// </summary>
+        public bool CheckboxChecked
+        {
+            get { return checkBox.Checked; }
+        }
+
+        /// <summary>
+        /// Gets the button that was pressed.
+        /// </summary>
+        /// <value>
+        /// The message box result.
+        /// </value>
+        public MessageBoxResult MessageBoxResult { get; private set; }
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Create a new instance of the dialog box with a message and title.
@@ -93,49 +124,12 @@ namespace CslaGenerator.Controls
 
             messageLabel.Text = message;
             Text = title;
-
             _systemIcon = icon;
-
-            if (_systemIcon == null)
-                messageLabel.Location = new Point(FormXMargin, FormYMargin);
         }
 
         #endregion
 
-        /// <summary>
-        /// Get system icon for MessageBoxIcon.
-        /// </summary>
-        /// <param name="icon">The MessageBoxIcon value.</param>
-        /// <returns>SystemIcon type Icon.</returns>
-        private static Icon GetMessageBoxIcon(MessageBoxIcon icon)
-        {
-            switch (icon)
-            {
-                case MessageBoxIcon.Asterisk:
-                    return SystemIcons.Asterisk;
-                case MessageBoxIcon.Error:
-                    return SystemIcons.Error;
-                case MessageBoxIcon.Exclamation:
-                    return SystemIcons.Exclamation;
-                case MessageBoxIcon.Question:
-                    return SystemIcons.Question;
-                default:
-                    return null;
-            }
-        }
-
-        #region Setup API
-
-        /// <summary>
-        /// Sets the min size of the dialog box. If the text or button row needs more size then the dialog box will size to fit the text.
-        /// </summary>
-        /// <param name="width">Min width value.</param>
-        /// <param name="height">Min height value.</param>
-        public void SetMinSize(int width, int height)
-        {
-            _minWidth = width;
-            _minHeight = height;
-        }
+        #region API methods
 
         /// <summary>
         /// Create up to 3 buttons with no DialogResult values.
@@ -143,6 +137,9 @@ namespace CslaGenerator.Controls
         /// <param name="names">Array of button names. Must of length 1-3.</param>
         public void SetButtons(params string[] names)
         {
+            if (_shown)
+                throw new MethodUsedOutOfOrder("SetButtons", "cannot invoke method after showing the MessageBox.");
+
             var dialogResults = new DialogResult[names.Length];
             for (var i = 0; i < names.Length; i++)
                 dialogResults[i] = DialogResult.None;
@@ -157,59 +154,48 @@ namespace CslaGenerator.Controls
         /// <param name="results">Array of DialogResult values. Must be same length as names.</param>
         public void SetButtons(string[] names, DialogResult[] results)
         {
+            if (_shown)
+                throw new MethodUsedOutOfOrder("SetButtons", "cannot invoke method after showing the MessageBox.");
+
             SetButtons(names, results, 1);
         }
 
         /// <summary>
         /// Create up to 3 buttons with given DialogResult values.
         /// </summary>
-        /// <param name="names">Array of button names. Must of length 1-3.</param>
-        /// <param name="results">Array of DialogResult values. Must be same length as names.</param>
+        /// <param name="buttonNames">Array of button names. Must of length 1-3.</param>
+        /// <param name="buttonResults">Array of DialogResult values. Must be same length as names.</param>
         /// <param name="defaultButton">Default Button number. Must be 1-3.</param>
-        public void SetButtons(string[] names, DialogResult[] results, int defaultButton)
+        public void SetButtons(string[] buttonNames, DialogResult[] buttonResults, int defaultButton)
         {
-            if (names == null)
-                throw new ArgumentNullException("names", @"Button Text is null");
+            if (_shown)
+                throw new MethodUsedOutOfOrder("SetButtons", "cannot invoke method after showing the MessageBox.");
 
-            int count = names.Length;
+            if (buttonNames == null)
+                throw new ArgumentNullException(@"buttonNames", @"Button Text is null");
 
-            if (count < 1 || count > 3)
+            var buttonCount = buttonNames.Length;
+
+            if (buttonCount < 1 || buttonCount > 3)
                 throw new ArgumentException("Invalid number of buttons. Must be between 1 and 3.");
 
-            //---- Set Button 1
-            _minButtonRowWidth += SetButtonParams(button1, names[0], defaultButton == 1 ? 1 : 2, results[0]);
+            // Set Button 1
+            _buttonRowRequiredWidth += SetButtonParams(button1, buttonNames[0], defaultButton == 1 ? 1 : 2,
+                buttonResults[0]);
 
-            //---- Set Button 2
-            if (count > 1)
+            // Set Button 2
+            if (buttonCount > 1)
             {
-                _minButtonRowWidth += SetButtonParams(button2, names[1], defaultButton == 2 ? 1 : 3,
-                    results[1]) + ButtonSpace;
+                _buttonRowRequiredWidth += SetButtonParams(button2, buttonNames[1], defaultButton == 2 ? 1 : 3,
+                    buttonResults[1]) + ButtonSpace;
             }
 
-            //---- Set Button 3
-            if (count > 2)
+            // Set Button 3
+            if (buttonCount > 2)
             {
-                _minButtonRowWidth += SetButtonParams(button3, names[2], defaultButton == 3 ? 1 : 4,
-                    results[2]) + ButtonSpace;
+                _buttonRowRequiredWidth += SetButtonParams(button3, buttonNames[2], defaultButton == 3 ? 1 : 4,
+                    buttonResults[2]) + ButtonSpace;
             }
-        }
-
-        /// <summary>
-        /// Sets button text and returns the width.
-        /// </summary>
-        /// <param name="button">Button object.</param>
-        /// <param name="text">Text of the button.</param>
-        /// <param name="tabIndex">TabIndex of the button.</param>
-        /// <param name="dialogResult">DialogResult of the button.</param>
-        /// <returns>Width of the button.</returns>
-        private static int SetButtonParams(Button button, string text, int tabIndex, DialogResult dialogResult)
-        {
-            button.Text = text;
-            button.Visible = true;
-            button.DialogResult = dialogResult;
-            button.TabIndex = tabIndex;
-
-            return button.Size.Width;
         }
 
         /// <summary>
@@ -218,6 +204,9 @@ namespace CslaGenerator.Controls
         /// <param name="text">Text of the checkbox.</param>
         public void SetCheckbox(string text)
         {
+            if (_shown)
+                throw new MethodUsedOutOfOrder("SetCheckbox", "cannot invoke method after showing the MessageBox.");
+
             SetCheckbox(text, false);
         }
 
@@ -228,56 +217,124 @@ namespace CslaGenerator.Controls
         /// <param name="checkedState">Default checked state of the box.</param>
         public void SetCheckbox(string text, bool checkedState)
         {
+            if (_shown)
+                throw new MethodUsedOutOfOrder("SetCheckbox", "cannot invoke method after showing the MessageBox.");
+
             checkBox.Visible = true;
             checkBox.Text = text;
             checkBox.Checked = checkedState;
-            _minButtonRowWidth += checkBox.Size.Width + CheckboxSpace;
+            _buttonRowRequiredWidth += checkBox.Size.Width + CheckboxSpace;
         }
 
         #endregion
 
-        #region Sizes and Locations
+        #region OnLoad engine
 
+        /// <summary>
+        /// Handles the Load event of the DialogBox control that is triggered by the ShowDialog() call.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void DialogBox_Load(object sender, EventArgs e)
         {
-            if (!button1.Visible)
-                SetButtons(new[] {"OK"}, new[] {DialogResult.OK});
+            if (_shown)
+                throw new MethodUsedOutOfOrder("ShowDialog", "was already invoked.");
 
-            _minButtonRowWidth += 2*FormXMargin; //add margin to the ends
+            SetMessageBounds();
+
+            if (!button1.Visible)
+                SetButtons(new[] {DialogResult.OK.ToString()}, new[] {DialogResult.OK});
+
+            _buttonRowRequiredWidth += ButtonRowRightMargin;
+
+            if (checkBox.Visible)
+                _buttonRowRequiredWidth += ButtonRowRightMargin;
+            else
+                _buttonRowRequiredWidth += ButtonRowLeftMargin;
 
             SetDialogSize();
 
-            SetButtonRowLocations();
+            SetButtonLocations();
+
+            _shown = true;
         }
 
-        /// <summary>
-        /// Auto fits the dialog box to fit the text and the buttons.
-        /// </summary>
+        #endregion
+
+        #region Dialog
+
         private void SetDialogSize()
         {
-            var requiredWidth = messageLabel.Location.X + messageLabel.Size.Width + FormXMargin;
-            requiredWidth = requiredWidth > _minButtonRowWidth ? requiredWidth : _minButtonRowWidth;
+            var requiredWidth = messageLabel.Location.X + messageLabel.Size.Width + MessageRightMargin;
+            requiredWidth = requiredWidth > _buttonRowRequiredWidth ? requiredWidth : _buttonRowRequiredWidth;
 
-            var requiredHeight = messageLabel.Location.Y + messageLabel.Size.Height -
-                                 button2.Location.Y + ClientSize.Height + TextYMargin;
+            var requiredHeight = messageLabel.Location.Y + messageLabel.Size.Height + _bottomMargin +
+                                 interactionPanel.Height;
 
-            var minSetWidth = ClientSize.Width > _minWidth ? ClientSize.Width : _minWidth;
-            var minSetHeight = ClientSize.Height > _minHeight ? ClientSize.Height : _minHeight;
+            if (requiredWidth < ClientSizeMinimumWidth)
+                requiredWidth = ClientSizeMinimumWidth;
 
-            var size = new Size();
-            size.Width = requiredWidth > minSetWidth ? requiredWidth : minSetWidth;
-            size.Height = requiredHeight > minSetHeight ? requiredHeight : minSetHeight;
-            ClientSize = size;
+            if (requiredHeight < ClientSizeMinimumHeight)
+                requiredHeight = ClientSizeMinimumHeight;
+
+            ClientSize = new Size(requiredWidth, requiredHeight);
         }
 
-        /// <summary>
-        /// Sets the buttons and checkboxe location.
-        /// </summary>
-        private void SetButtonRowLocations()
+        #endregion
+
+        #region Message
+
+        private void SetMessageBounds()
+        {
+            var widthFactor = messageLabel.Size.Width/MessageMaximumWidth;
+            if (widthFactor > 0)
+            {
+                messageLabel.AutoSize = false;
+                messageLabel.Size = new Size(MessageMaximumWidth, 17 + 15*widthFactor);
+            }
+
+            if (_systemIcon == null)
+            {
+                messageLabel.Location = new Point(MessageLeftMargin, MessageTopMarginMinimum);
+                _bottomMargin = MessageBottomMarginMinimum;
+            }
+            else
+            {
+                var y = _systemIcon.Height + MessageTopMarginMinimum;
+                _bottomMargin = MessageBottomMarginMaximum;
+
+                if (y > MessageTopMarginMaximum)
+                    y = MessageTopMarginMaximum;
+
+                if (messageLabel.Size.Height > 17)
+                {
+                    y = MessageBottomMarginMinimum;
+                    _bottomMargin = MessageBottomMarginMinimum;
+                }
+
+                messageLabel.Location = new Point(IconLeftMargin + _systemIcon.Width + MessageIconSpace, y);
+            }
+        }
+
+        #endregion
+
+        #region Buttons
+
+        private static int SetButtonParams(Button button, string text, int tabIndex, DialogResult dialogResult)
+        {
+            button.Text = text;
+            button.Visible = true;
+            button.DialogResult = dialogResult;
+            button.TabIndex = tabIndex;
+
+            return button.Size.Width;
+        }
+
+        private void SetButtonLocations()
         {
             var formWidth = ClientRectangle.Width;
 
-            var x = formWidth - FormXMargin;
+            var x = formWidth - ButtonRowRightMargin;
             var y = button1.Location.Y;
 
             if (button3.Visible)
@@ -298,24 +355,37 @@ namespace CslaGenerator.Controls
             button1.Location = new Point(x, y);
 
             if (checkBox.Visible)
-                checkBox.Location = new Point(FormXMargin, checkBox.Location.Y);
+                checkBox.Location = new Point(ButtonRowRightMargin, checkBox.Location.Y);
         }
 
         #endregion
 
-        #region Icon Pain
+        #region Icon
 
-        /// <summary>
-        /// Paint the System Icon in the top left corner.
-        /// </summary>
-        /// <param name="e">The paint event arguments</param>
+        private static Icon GetMessageBoxIcon(MessageBoxIcon icon)
+        {
+            switch (icon)
+            {
+                case MessageBoxIcon.Information:
+                    return SystemIcons.Information;
+                case MessageBoxIcon.Error:
+                    return SystemIcons.Error;
+                case MessageBoxIcon.Warning:
+                    return SystemIcons.Warning;
+                case MessageBoxIcon.Question:
+                    return SystemIcons.Question;
+                default:
+                    return null;
+            }
+        }
+
         protected override void OnPaint(PaintEventArgs e)
         {
             if (_systemIcon != null)
             {
                 var graphics = e.Graphics;
                 graphics.DrawIconUnstretched(_systemIcon,
-                    new Rectangle(FormXMargin, FormYMargin, _systemIcon.Width, _systemIcon.Height));
+                    new Rectangle(IconLeftMargin, IconVerticalMargin, _systemIcon.Width, _systemIcon.Height));
             }
 
             base.OnPaint(e);
@@ -323,20 +393,7 @@ namespace CslaGenerator.Controls
 
         #endregion
 
-        #region Result API
-
-        /// <summary>
-        /// If visible checkbox was checked.
-        /// </summary>
-        public bool CheckboxChecked
-        {
-            get { return checkBox.Checked; }
-        }
-
-        /// <summary>
-        /// Gets the button that was pressed.
-        /// </summary>
-        public MessageBoxResult MessageBoxResult { get; private set; }
+        #region Results
 
         private void button_Click(object sender, EventArgs e)
         {
@@ -368,6 +425,38 @@ namespace CslaGenerator.Controls
         #endregion
     }
 
+    #region MethodUsedOutOfOrder Exception class
+
+    /// <summary>
+    /// Exception a method was invoke out of order.
+    /// </summary>
+    public class MethodUsedOutOfOrder : Exception
+    {
+        /// <summary>
+        /// Creates an instance of the object.
+        /// </summary>
+        // ReSharper disable UnusedMember.Local
+        private MethodUsedOutOfOrder()
+            // ReSharper restore UnusedMember.Local
+        {
+            // force to use the public constructor
+        }
+
+        /// <summary>
+        /// Creates an instance of the object.
+        /// </summary>
+        /// <param name="methodName">The name of the method.</param>
+        /// <param name="message">The offending fact.</param>
+        public MethodUsedOutOfOrder(string methodName, string message) :
+            base(string.Format("{0} {1}", methodName, message))
+        {
+        }
+    }
+
+    #endregion
+
+    #region MessageBoxResult enum
+
     public enum MessageBoxResult
     {
         None = DialogResult.None,
@@ -382,4 +471,6 @@ namespace CslaGenerator.Controls
         Button2,
         Button3
     }
+
+    #endregion
 }
