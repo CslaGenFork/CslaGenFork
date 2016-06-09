@@ -44,7 +44,8 @@ namespace CslaGenerator.Controls
         private const int ButtonSpace = 9;
         private const int ButtonRowRightMargin = 7;
         private const int ButtonRowLeftMargin = 42;
-        private const int CheckboxSpace = 12;
+        private const int CheckBoxSpace = 12;
+        private const int CheckBoxLeftMargin = 12;
 
         #endregion
 
@@ -223,7 +224,7 @@ namespace CslaGenerator.Controls
             checkBox.Visible = true;
             checkBox.Text = text;
             checkBox.Checked = checkedState;
-            _buttonRowRequiredWidth += checkBox.Size.Width + CheckboxSpace;
+            _buttonRowRequiredWidth += checkBox.Size.Width + CheckBoxSpace;
         }
 
         #endregion
@@ -248,7 +249,7 @@ namespace CslaGenerator.Controls
             _buttonRowRequiredWidth += ButtonRowRightMargin;
 
             if (checkBox.Visible)
-                _buttonRowRequiredWidth += ButtonRowRightMargin;
+                _buttonRowRequiredWidth += CheckBoxLeftMargin;
             else
                 _buttonRowRequiredWidth += ButtonRowLeftMargin;
 
@@ -355,7 +356,7 @@ namespace CslaGenerator.Controls
             button1.Location = new Point(x, y);
 
             if (checkBox.Visible)
-                checkBox.Location = new Point(ButtonRowRightMargin, checkBox.Location.Y);
+                checkBox.Location = new Point(CheckBoxLeftMargin, checkBox.Location.Y);
         }
 
         #endregion
