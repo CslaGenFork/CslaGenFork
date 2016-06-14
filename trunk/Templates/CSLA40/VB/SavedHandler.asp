@@ -69,21 +69,8 @@ if (Info.UpdaterType != string.Empty)
             Response.Write(Environment.NewLine);
         }
         genOptional = true;
-
-        Infos.Append("To do list: edit \"" + Info.ObjectName + ".vb\", uncomment the \"OnDeserialized\" method and add the following line:" + Environment.NewLine);
-        Infos.Append("      AddHandler" + Info.UpdaterType + "." + Info.UpdaterType + "Saved, AddressOf " + Info.UpdaterType + "SavedHandler" + Environment.NewLine);
         %>
         #Region " Saved Event Handler "
-<%
-        if (CurrentUnit.GenerationParams.WriteTodo)
-        {
-            %>
-
-        'TODO: edit "<%= Info.ObjectName %>.vb", uncomment the "OnDeserialized" method and add the following line:
-        'TODO:     AddHandler <%= Info.UpdaterType %>.<%= Info.UpdaterType %>Saved, AddressOf <%= Info.UpdaterType %>SavedHandler;
-<%
-        }
-        %>
 
         ''' <summary>
         ''' Handle Saved events of <see cref="<%= Info.UpdaterType %>"/> to update the list of <see cref="<%= Info.ItemType %>"/> objects.
