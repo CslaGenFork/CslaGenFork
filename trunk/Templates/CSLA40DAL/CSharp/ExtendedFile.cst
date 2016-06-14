@@ -127,7 +127,7 @@ namespace <%= Info.ObjectNamespace %>
         else if(isUpdatable)
         {
             %>
-            <%= Info.UpdaterType %>.<%= Info.UpdaterType %>Saved += <%= Info.UpdaterType %>SavedHandler;
+            <%= Info.UpdaterType %>Saved.Register(this);
             <%
         }
         %>

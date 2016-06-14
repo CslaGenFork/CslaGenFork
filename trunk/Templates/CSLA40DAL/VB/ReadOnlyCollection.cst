@@ -89,6 +89,7 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
     <%
     }
     %><%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %>{
+<!-- #include file="EventProps.asp" -->
 <!-- #include file="CollectionBusinessMethods.asp" -->
 <!-- #include file="FindMethods.asp" -->
 <%
@@ -136,6 +137,7 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
         }
         %>
 <!-- #include file="Events.asp" -->
+<!-- #include file="SavedManager.asp" -->
 
 <%
     }

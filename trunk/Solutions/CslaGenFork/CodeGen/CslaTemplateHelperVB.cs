@@ -252,11 +252,11 @@ namespace CslaGenerator.CodeGen
             {
                 if (TypeHelper.IsNullableType(prop.PropertyType))
                     statement += String.Format("If(Not dr.IsDBNull(\"{0}\"), New {1}(",
-                                               prop.ParameterName,
-                                               GetDataType(prop));
+                        prop.ParameterName,
+                        GetDataType(prop));
                 else
                     statement += String.Format("IF(Not dr.IsDBNull(\"{0}\"), ",
-                                               prop.ParameterName);
+                        prop.ParameterName);
             }
 
             if (prop.PropertyType == TypeCodeEx.SmartDate)
@@ -343,7 +343,7 @@ namespace CslaGenerator.CodeGen
                 prop.Nullable &&
                 prop.PropertyType != TypeCodeEx.SmartDate;*/
             return GeneratorController.Current.CurrentUnit.GenerationParams.NullableSupport &&
-                prop.Nullable;
+                   prop.Nullable;
         }
 
         public virtual string GetParameterSet(Property prop)
@@ -368,7 +368,9 @@ namespace CslaGenerator.CodeGen
             {
                 propType = TypeHelper.GetBackingFieldType(prop as ValueProperty);
             }
-            catch (Exception) { }
+            catch (Exception)
+            {
+            }
 
             bool nullable = AllowNull(prop);
             string propName;
@@ -671,7 +673,7 @@ namespace CslaGenerator.CodeGen
 
         public virtual string GetRelationString(CslaObjectInfo info, ChildProperty child)
         {
-            var indent = new string(' ', IndentLevel * 4);
+            var indent = new string(' ', IndentLevel*4);
 
             var sb = new StringBuilder();
             var childInfo = FindChildInfo(info, child.TypeName);
@@ -709,13 +711,13 @@ namespace CslaGenerator.CodeGen
 
         public virtual string GetXmlCommentString(string xmlComment)
         {
-            var indent = new string(' ', IndentLevel * 4);
+            var indent = new string(' ', IndentLevel*4);
 
             // add leading indent and comment sign
             xmlComment = indent + "''' " + xmlComment;
 
             return Regex.Replace(xmlComment, Environment.NewLine, Environment.NewLine + indent + "''' ",
-                                 RegexOptions.Multiline);
+                RegexOptions.Multiline);
         }
 
         public string GetUsingStatementsStringDalInterface(CslaObjectInfo info, CslaGeneratorUnit unit)
@@ -739,7 +741,7 @@ namespace CslaGenerator.CodeGen
                 foreach (var namespaceName in dependencyNamespaces)
                 {
                     allNamespaces.Add(unit.GenerationParams.DalInterfaceNamespace +
-                        namespaceName.Substring(unit.GenerationParams.BaseNamespace.Length));
+                                      namespaceName.Substring(unit.GenerationParams.BaseNamespace.Length));
                 }
             }
 
@@ -773,7 +775,7 @@ namespace CslaGenerator.CodeGen
                 foreach (var namespaceName in dependencyNamespaces)
                 {
                     allNamespaces.Add(unit.GenerationParams.DalInterfaceNamespace +
-                        namespaceName.Substring(unit.GenerationParams.BaseNamespace.Length));
+                                      namespaceName.Substring(unit.GenerationParams.BaseNamespace.Length));
                 }
             }
 
@@ -905,18 +907,34 @@ namespace CslaGenerator.CodeGen
                 }
             }
 
-            result = info.GetAllValueProperties().Where(p => p.PropertyType == TypeCodeEx.ByteArray && AllowNull(p)).Aggregate(result, (current, p) => current + ("Imports System.Linq 'Added for byte[] helpers" + Environment.NewLine));
+            result = info.GetAllValueProperties()
+                .Where(p => p.PropertyType == TypeCodeEx.ByteArray && AllowNull(p))
+                .Aggregate(result,
+                    (current, p) =>
+                        current + ("Imports System.Linq 'Added for byte[] helpers" + Environment.NewLine));
 
             return result;
         }
 
-        private List<string> GetBaseCommonNamespaces(CslaObjectInfo info, CslaGeneratorUnit unit, string contextUtilitiesnamespace)
+        private List<string> GetBaseCommonNamespaces(CslaObjectInfo info, CslaGeneratorUnit unit,
+            string contextUtilitiesnamespace)
         {
             var result = new List<string>();
 
             var isUnitOfWork = info.ObjectType == CslaObjectType.UnitOfWork;
 
             result.Add("System");
+
+            if (!string.IsNullOrEmpty(info.UpdaterType) ||
+                (!UseSilverlight() &&
+                 !isUnitOfWork &&
+                 CurrentUnit.GenerationParams.TargetIsCsla4DAL &&
+                 CurrentUnit.GenerationParams.GenerateDTO &&
+                 !IsObjectType(info.ObjectType)))
+            {
+                result.Add("System.Collections.Generic");
+            }
+
             if (!string.IsNullOrEmpty(info.UpdaterType))
             {
                 result.Add("System.Collections.Specialized");
@@ -929,9 +947,15 @@ namespace CslaGenerator.CodeGen
                     result.Add("System.Data");
                 if (!unit.GenerationParams.TargetIsCsla4DAL)
                     result.Add("System.Data.SqlClient");
-                if (CurrentUnit.GenerationParams.TargetIsCsla4DAL && CurrentUnit.GenerationParams.GenerateDTO && !IsObjectType(info.ObjectType))
-                    result.Add("System.Collections.Generic");
+            }
 
+            if (!string.IsNullOrEmpty(info.UpdaterType))
+            {
+                result.Add("System.Linq");
+            }
+
+            if (!UseSilverlight() && !isUnitOfWork)
+            {
                 result.Add("Csla");
                 if (!unit.GenerationParams.TargetIsCsla4DAL || !unit.GenerationParams.GenerateDTO)
                     result.Add("Csla.Data");
@@ -1010,7 +1034,6 @@ namespace CslaGenerator.CodeGen
                             }
                         }
                     }
-
                 }
             }
 
@@ -1069,7 +1092,6 @@ namespace CslaGenerator.CodeGen
             if (contextUtilitiesnamespace != string.Empty && HasSilverlightLocalDataPortalCreate(info))
                 result.Add(contextUtilitiesnamespace);
 
-
             if (result.Contains(string.Empty))
                 result.Remove(string.Empty);
             result.Sort(String.Compare);
@@ -1077,7 +1099,8 @@ namespace CslaGenerator.CodeGen
             return result;
         }
 
-        private List<string> GetFrameworkNamespaces(CslaObjectInfo info, CslaGeneratorUnit unit, string contextUtilitiesnamespace)
+        private List<string> GetFrameworkNamespaces(CslaObjectInfo info, CslaGeneratorUnit unit,
+            string contextUtilitiesnamespace)
         {
             var result = new List<string>();
 
@@ -1159,13 +1182,15 @@ namespace CslaGenerator.CodeGen
                 else
                     return result;
 
-            return result + unit.GenerationParams.UtilitiesNamespace.Substring(unit.GenerationParams.BaseNamespace.Length);
+            return result +
+                   unit.GenerationParams.UtilitiesNamespace.Substring(unit.GenerationParams.BaseNamespace.Length);
         }
 
         private static string GetDalInterfaceUtilitiesNamespace(CslaGeneratorUnit unit)
         {
             var result = AdvancedGenerator.GetContextBaseNamespace(unit, GenerationStep.DalInterface);
-            return result + unit.GenerationParams.UtilitiesNamespace.Substring(unit.GenerationParams.BaseNamespace.Length);
+            return result +
+                   unit.GenerationParams.UtilitiesNamespace.Substring(unit.GenerationParams.BaseNamespace.Length);
         }
 
         public static string GetContextObjectNamespace(CslaObjectInfo info, CslaGeneratorUnit unit, GenerationStep step)
@@ -1200,7 +1225,7 @@ namespace CslaGenerator.CodeGen
                 return string.Empty;
 
             parameter = parameter.Replace("\"", "");
-            string[] resultSplit = parameter.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] resultSplit = parameter.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
             string result = string.Empty;
             for (var i = 0; i < resultSplit.Length; i++)
             {
@@ -1225,11 +1250,11 @@ namespace CslaGenerator.CodeGen
         {
             var result = ReturnRawParameterValue(parameter);
             if (parameter.Type == "String" && result != string.Empty)
-                result = "\"" + result.Trim(new[] { '\"' }) + "\"";
+                result = "\"" + result.Trim(new[] {'\"'}) + "\"";
             else if (parameter.Type == "String()" && result != string.Empty)
             {
                 result = result.Replace("\"", "");
-                var resultSplit = result.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                var resultSplit = result.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
                 result = string.Empty;
                 var isFirst = true;
                 for (var i = 0; i < resultSplit.Length; i++)
@@ -1242,9 +1267,10 @@ namespace CslaGenerator.CodeGen
                 }
                 result = BuildArrayOrParams(parameter, result);
             }
-            else if (parameter.Type.LastIndexOf("()") > -1 && parameter.Type.LastIndexOf("()") == parameter.Type.Length - 2 && result != string.Empty)
+            else if (parameter.Type.LastIndexOf("()") > -1 &&
+                     parameter.Type.LastIndexOf("()") == parameter.Type.Length - 2 && result != string.Empty)
             {
-                var resultSplit = result.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                var resultSplit = result.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
                 result = string.Empty;
                 var isFirst = true;
                 for (var i = 0; i < resultSplit.Length; i++)
@@ -1260,7 +1286,7 @@ namespace CslaGenerator.CodeGen
             else if (parameter.Type == "List(Of String)" && result != string.Empty)
             {
                 result = result.Replace("\"", "");
-                var resultSplit = result.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                var resultSplit = result.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
                 result = string.Empty;
                 var isFirst = true;
                 for (var i = 0; i < resultSplit.Length; i++)
@@ -1275,7 +1301,7 @@ namespace CslaGenerator.CodeGen
             }
             else if (parameter.Type == "List(Of Int32)" && result != string.Empty)
             {
-                var resultSplit = result.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                var resultSplit = result.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
                 result = string.Empty;
                 var isFirst = true;
                 for (var i = 0; i < resultSplit.Length; i++)
@@ -1290,7 +1316,7 @@ namespace CslaGenerator.CodeGen
             }
             else if (parameter.Type.IndexOf("List(Of ") == 0 && result != string.Empty)
             {
-                var resultSplit = result.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                var resultSplit = result.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
                 result = string.Empty;
                 var isFirst = true;
                 for (var i = 0; i < resultSplit.Length; i++)
@@ -1318,11 +1344,11 @@ namespace CslaGenerator.CodeGen
         {
             var result = ReturnRawPropertyValue(property);
             if (property.Type == "String" && result != string.Empty)
-                result = "\"" + result.Trim(new[] { '\"' }) + "\"";
+                result = "\"" + result.Trim(new[] {'\"'}) + "\"";
             else if (property.Type == "String()" && result != string.Empty)
             {
                 result = result.Replace("\"", "");
-                var resultSplit = result.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                var resultSplit = result.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
                 result = string.Empty;
                 var isFirst = true;
                 for (var i = 0; i < resultSplit.Length; i++)
@@ -1337,7 +1363,7 @@ namespace CslaGenerator.CodeGen
             else if (property.Type == "List(Of String)" && result != string.Empty)
             {
                 result = result.Replace("\"", "");
-                var resultSplit = result.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                var resultSplit = result.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
                 result = string.Empty;
                 var isFirst = true;
                 for (var i = 0; i < resultSplit.Length; i++)
@@ -1352,7 +1378,7 @@ namespace CslaGenerator.CodeGen
             }
             else if (property.Type == "List(Of Int32)" && result != string.Empty)
             {
-                var resultSplit = result.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                var resultSplit = result.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
                 result = string.Empty;
                 var isFirst = true;
                 for (var i = 0; i < resultSplit.Length; i++)
@@ -1367,7 +1393,7 @@ namespace CslaGenerator.CodeGen
             }
             else if (property.Type.Contains("List(Of ") && result != string.Empty)
             {
-                var resultSplit = result.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                var resultSplit = result.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
                 result = string.Empty;
                 var isFirst = true;
                 for (var i = 0; i < resultSplit.Length; i++)
@@ -1406,7 +1432,7 @@ namespace CslaGenerator.CodeGen
                 if (result.IndexOf("*") == 0)
                     result = result.Substring(1);
                 else
-                    result = "\"" + result.Trim(new[] { '\"' }) + "\"";
+                    result = "\"" + result.Trim(new[] {'\"'}) + "\"";
             }
 
             return result;
@@ -2085,7 +2111,8 @@ namespace CslaGenerator.CodeGen
 
             return false;*/
 
-            return info.GetAllChildProperties().Any(child => !child.LazyLoad && child.LoadingScheme == LoadingScheme.SelfLoad);
+            return info.GetAllChildProperties()
+                .Any(child => !child.LazyLoad && child.LoadingScheme == LoadingScheme.SelfLoad);
         }
 
         public static bool IsCollectionType(CslaObjectType cslaType)
@@ -2149,8 +2176,8 @@ namespace CslaGenerator.CodeGen
                 info.ObjectType == CslaObjectType.EditableChild ||
                 info.ObjectType == CslaObjectType.EditableChildCollection ||
                 ((info.ObjectType == CslaObjectType.ReadOnlyObject ||
-                info.ObjectType == CslaObjectType.ReadOnlyCollection) &&
-                info.ParentType != string.Empty))
+                  info.ObjectType == CslaObjectType.ReadOnlyCollection) &&
+                 info.ParentType != string.Empty))
                 return true;
 
             return false;
@@ -2175,7 +2202,7 @@ namespace CslaGenerator.CodeGen
         {
             if (info.ObjectType == CslaObjectType.EditableChild ||
                 (info.ObjectType == CslaObjectType.ReadOnlyObject &&
-                info.ParentType != string.Empty))
+                 info.ParentType != string.Empty))
                 return true;
 
             return false;
@@ -2220,7 +2247,8 @@ namespace CslaGenerator.CodeGen
 
             var parent = info.Parent.CslaObjects.Find(info.ParentType);
             if (parent == null)
-                return info.ObjectType == CslaObjectType.ReadOnlyObject;// Object is ReadOnly and might have ParentProperties
+                return info.ObjectType == CslaObjectType.ReadOnlyObject;
+            // Object is ReadOnly and might have ParentProperties
 
             if (IsCollectionType(parent.ObjectType)) // ParentType is a collection and thus has no Properties
             {
@@ -2229,7 +2257,7 @@ namespace CslaGenerator.CodeGen
                     (parent.ObjectType == CslaObjectType.ReadOnlyCollection && parent.ParentType == string.Empty))
                     return false; // ParentType is a root collection; end of line
 
-                return true;// There should be a grand-parent with properties
+                return true; // There should be a grand-parent with properties
             }
 
             if (IsObjectType(parent.ObjectType))
@@ -2243,7 +2271,8 @@ namespace CslaGenerator.CodeGen
             return SprocTemplateHelper.GetFkParameterNameForParentProperty(info, parentProperty);
         }
 
-        internal static string ColumnNameMatchesParentProperty(CslaObjectInfo parent, CslaObjectInfo info, IColumnInfo validatingColumn)
+        internal static string ColumnNameMatchesParentProperty(CslaObjectInfo parent, CslaObjectInfo info,
+            IColumnInfo validatingColumn)
         {
             foreach (var prop in info.ParentProperties)
             {
@@ -2256,12 +2285,14 @@ namespace CslaGenerator.CodeGen
             return string.Empty;
         }
 
-        public static string PropertyFKMatchesParentProperty(CslaObjectInfo parent, CslaObjectInfo info, ValueProperty prop)
+        public static string PropertyFKMatchesParentProperty(CslaObjectInfo parent, CslaObjectInfo info,
+            ValueProperty prop)
         {
             return ColumnFKMatchesParentProperty(parent, info, prop.DbBindColumn.Column);
         }
 
-        internal static string ColumnFKMatchesParentProperty(CslaObjectInfo parent, CslaObjectInfo info, IColumnInfo validatingColumn)
+        internal static string ColumnFKMatchesParentProperty(CslaObjectInfo parent, CslaObjectInfo info,
+            IColumnInfo validatingColumn)
         {
             foreach (var prop in info.ParentProperties)
             {
@@ -2293,12 +2324,14 @@ namespace CslaGenerator.CodeGen
             return string.Empty;
         }
 
-        public static bool MultiplePropertyFKMatchesParent(CslaObjectInfo parent, CslaObjectInfo info, ValueProperty prop)
+        public static bool MultiplePropertyFKMatchesParent(CslaObjectInfo parent, CslaObjectInfo info,
+            ValueProperty prop)
         {
             return MultipleColumnFKMatchesParent(parent, info, prop.DbBindColumn.Column);
         }
 
-        internal static bool MultipleColumnFKMatchesParent(CslaObjectInfo parent, CslaObjectInfo info, IColumnInfo validatingColumn)
+        internal static bool MultipleColumnFKMatchesParent(CslaObjectInfo parent, CslaObjectInfo info,
+            IColumnInfo validatingColumn)
         {
             foreach (var prop in info.ParentProperties)
             {
@@ -2321,7 +2354,7 @@ namespace CslaGenerator.CodeGen
                                     {
                                         var matchCounter =
                                             CountMatchingInfoColumns(validatingColumn.FKConstraint.ConstraintTable,
-                                                                     parentSchema, parentTable, parentColumn);
+                                                parentSchema, parentTable, parentColumn);
                                         return matchCounter > 1;
                                     }
                                 }
@@ -2334,7 +2367,8 @@ namespace CslaGenerator.CodeGen
             return false;
         }
 
-        private static int CountMatchingInfoColumns(ITableInfo infoTable, string parentSchema, string parentTable, IColumnInfo parentColumn)
+        private static int CountMatchingInfoColumns(ITableInfo infoTable, string parentSchema, string parentTable,
+            IColumnInfo parentColumn)
         {
             var matchCounter = 0;
             foreach (var infoColumn in infoTable.Columns)
@@ -2427,7 +2461,9 @@ namespace CslaGenerator.CodeGen
                 nativeType = ParseNativeType(prop.DbBindColumn.NativeType);
             if (String.IsNullOrEmpty(nativeType))
             {
-                OutputWindow.Current.AddOutputInfo(String.Format("{0}: Unable to parse database native type from DbBindColumn, infering type from property type.", prop.PropertyType));
+                OutputWindow.Current.AddOutputInfo(String.Format(
+                    "{0}: Unable to parse database native type from DbBindColumn, infering type from property type.",
+                    prop.PropertyType));
                 nativeType = TypeHelper.GetSqlDbType(prop.PropertyType).ToString();
             }
             return nativeType;
@@ -2478,7 +2514,9 @@ namespace CslaGenerator.CodeGen
             {
                 propType = TypeHelper.GetBackingFieldType(prop as ValueProperty);
             }
-            catch (Exception) { }
+            catch (Exception)
+            {
+            }
 
             bool nullable = AllowNull(prop);
             string propName;
@@ -2519,7 +2557,8 @@ namespace CslaGenerator.CodeGen
 
         #region Basic Formats
 
-        public virtual string FormatGeneralParameter(CslaObjectInfo info, Property prop, bool isCriteria, bool isParameter, bool isCaller)
+        public virtual string FormatGeneralParameter(CslaObjectInfo info, Property prop, bool isCriteria,
+            bool isParameter, bool isCaller)
         {
             if (isCriteria)
             {
@@ -2532,7 +2571,9 @@ namespace CslaGenerator.CodeGen
             {
                 propType = TypeHelper.GetBackingFieldType(prop as ValueProperty);
             }
-            catch (Exception) { }
+            catch (Exception)
+            {
+            }
 
             if (isParameter)
                 result = FormatCamel(prop.Name);
@@ -2750,13 +2791,13 @@ namespace CslaGenerator.CodeGen
             {
                 response = CheckNotUndoable(prop, info);
                 response += String.Format("Private {1} As {0} = {2}",
-                                          (prop.DeclarationMode == PropertyDeclaration.Unmanaged ||
-                                           prop.DeclarationMode == PropertyDeclaration.ClassicProperty ||
-                                           prop.DeclarationMode == PropertyDeclaration.NoProperty)
-                                              ? GetDataTypeGeneric(prop, prop.PropertyType)
-                                              : GetDataTypeGeneric(prop, prop.BackingFieldType),
-                                          FormatFieldName(prop.Name),
-                                          GetFieldInitValue(info, prop));
+                    (prop.DeclarationMode == PropertyDeclaration.Unmanaged ||
+                     prop.DeclarationMode == PropertyDeclaration.ClassicProperty ||
+                     prop.DeclarationMode == PropertyDeclaration.NoProperty)
+                        ? GetDataTypeGeneric(prop, prop.PropertyType)
+                        : GetDataTypeGeneric(prop, prop.BackingFieldType),
+                    FormatFieldName(prop.Name),
+                    GetFieldInitValue(info, prop));
             }
 
             return response;
@@ -2791,7 +2832,8 @@ namespace CslaGenerator.CodeGen
                 {
                     response += "#If SILVERLIGHT Then" + Environment.NewLine;
                     response += new string(' ', 8) +
-                                "<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>" + Environment.NewLine;
+                                "<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>" +
+                                Environment.NewLine;
                     response += new string(' ', 8) + silverlightStatement + Environment.NewLine;
                     response += "#Else" + Environment.NewLine;
                     response += new string(' ', 8) + noSilverlightStatement + Environment.NewLine;
@@ -2832,8 +2874,9 @@ namespace CslaGenerator.CodeGen
                         : GetDataTypeGeneric(prop, prop.BackingFieldType),
                     FormatPropertyInfoName(prop.Name),
                     (String.IsNullOrEmpty(prop.Implements)
-                         ? "p." + FormatPascal(prop.Name)
-                         : "DirectCast(p, " + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) + ")." + FormatPascal(prop.Name)),
+                        ? "p." + FormatPascal(prop.Name)
+                        : "DirectCast(p, " + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) + ")." +
+                          FormatPascal(prop.Name)),
                     prop.FriendlyName,
                     GetDefault(info, prop),
                     GetRelationhipType(info, prop));
@@ -2853,11 +2896,11 @@ namespace CslaGenerator.CodeGen
                 return string.Empty;
 
             return String.Format(
-                    ", New {0}(Nothing)",
-                    (prop.DeclarationMode == PropertyDeclaration.Managed ||
-                     prop.DeclarationMode == PropertyDeclaration.Unmanaged)
-                        ? GetDataTypeGeneric(prop, prop.PropertyType)
-                        : GetDataTypeGeneric(prop, prop.BackingFieldType));
+                ", New {0}(Nothing)",
+                (prop.DeclarationMode == PropertyDeclaration.Managed ||
+                 prop.DeclarationMode == PropertyDeclaration.Unmanaged)
+                    ? GetDataTypeGeneric(prop, prop.PropertyType)
+                    : GetDataTypeGeneric(prop, prop.BackingFieldType));
         }
 
         private static bool HasCreateCriteriaDataPortal(CslaObjectInfo info)
@@ -2908,7 +2951,8 @@ namespace CslaGenerator.CodeGen
                 {
                     response += "#If SILVERLIGHT Then" + Environment.NewLine;
                     response += new string(' ', 8) +
-                                "<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>" + Environment.NewLine;
+                                "<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>" +
+                                Environment.NewLine;
                     response += new string(' ', 8) + silverlightStatement + Environment.NewLine;
                     response += "#Else" + Environment.NewLine;
                     response += new string(' ', 8) + noSilverlightStatement + Environment.NewLine;
@@ -2946,8 +2990,9 @@ namespace CslaGenerator.CodeGen
                     prop.TypeName,
                     FormatPropertyInfoName(prop.Name),
                     (String.IsNullOrEmpty(prop.Implements)
-                         ? "p." + FormatPascal(prop.Name)
-                         : "DirectCast(p, " + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) + ")." + FormatPascal(prop.Name)),
+                        ? "p." + FormatPascal(prop.Name)
+                        : "DirectCast(p, " + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) + ")." +
+                          FormatPascal(prop.Name)),
                     prop.FriendlyName,
                     GetRelationhipType(info, prop));
 
@@ -2968,7 +3013,8 @@ namespace CslaGenerator.CodeGen
             {
                 response += "#If SILVERLIGHT Then" + Environment.NewLine;
                 response += new string(' ', 8) +
-                            "<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>" + Environment.NewLine;
+                            "<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>" +
+                            Environment.NewLine;
                 response += new string(' ', 8) + silverlightStatement + Environment.NewLine;
                 response += "#Else" + Environment.NewLine;
                 response += new string(' ', 8) + noSilverlightStatement + Environment.NewLine;
@@ -3019,7 +3065,8 @@ namespace CslaGenerator.CodeGen
                 {
                     response += "#If SILVERLIGHT Then" + Environment.NewLine;
                     response += new string(' ', 8) +
-                                "<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>" + Environment.NewLine;
+                                "<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>" +
+                                Environment.NewLine;
                     response += new string(' ', 8) + silverlightStatement + Environment.NewLine;
                     response += "#Else" + Environment.NewLine;
                     response += new string(' ', 8) + noSilverlightStatement + Environment.NewLine;
@@ -3066,7 +3113,8 @@ namespace CslaGenerator.CodeGen
             {
                 response += "#If SILVERLIGHT Then" + Environment.NewLine;
                 response += new string(' ', 8) +
-                            "<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>" + Environment.NewLine;
+                            "<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>" +
+                            Environment.NewLine;
                 response += new string(' ', 8) + silverlightStatement + Environment.NewLine;
                 response += "#Else" + Environment.NewLine;
                 response += new string(' ', 8) + noSilverlightStatement + Environment.NewLine;
@@ -3114,7 +3162,8 @@ namespace CslaGenerator.CodeGen
             {
                 response += "#If SILVERLIGHT Then" + Environment.NewLine;
                 response += new string(' ', 8) +
-                            "<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>" + Environment.NewLine;
+                            "<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>" +
+                            Environment.NewLine;
                 response += new string(' ', 8) + silverlightStatement + Environment.NewLine;
                 response += "#Else" + Environment.NewLine;
                 response += new string(' ', 8) + noSilverlightStatement + Environment.NewLine;
@@ -3132,7 +3181,8 @@ namespace CslaGenerator.CodeGen
             return response;
         }
 
-        private string PropertyInfoUoWCriteriaDeclare(CslaObjectInfo info, UnitOfWorkCriteriaManager.ElementCriteria prop, bool isSilverlight)
+        private string PropertyInfoUoWCriteriaDeclare(CslaObjectInfo info,
+            UnitOfWorkCriteriaManager.ElementCriteria prop, bool isSilverlight)
         {
             // "Private Shared ReadOnly {1} As PropertyInfo(Of {0}) = RegisterProperty(Of {0})(Function(p) p.{2})",
             var response = string.Empty;
@@ -3210,16 +3260,17 @@ namespace CslaGenerator.CodeGen
                 prop.DeclarationMode == PropertyDeclaration.UnmanagedWithTypeConversion)
             {
                 response = String.Format("{0}{1} Property {3} As {2}{4}" + Environment.NewLine,
-                                         GetPropertyAccess(prop),
-                                         (isReadOnly ? " ReadOnly" : ""),
-                                         GetDataTypeGeneric(prop, prop.PropertyType),
-                                         FormatPascal(prop.Name),
-                                         (!String.IsNullOrEmpty(prop.Implements) ? " Implements " + prop.Implements : ""));
+                    GetPropertyAccess(prop),
+                    (isReadOnly ? " ReadOnly" : ""),
+                    GetDataTypeGeneric(prop, prop.PropertyType),
+                    FormatPascal(prop.Name),
+                    (!String.IsNullOrEmpty(prop.Implements) ? " Implements " + prop.Implements : ""));
                 response += PropertyDeclareGetter(prop);
 
                 if (!isReadOnly)
                 {
-                    response += PropertyDeclareSetter(isReadOnly, info.ObjectType == CslaObjectType.ReadOnlyObject, prop, convertPropertyName);
+                    response += PropertyDeclareSetter(isReadOnly, info.ObjectType == CslaObjectType.ReadOnlyObject, prop,
+                        convertPropertyName);
                 }
                 response += "        End Property";
             }
@@ -3227,28 +3278,29 @@ namespace CslaGenerator.CodeGen
                      prop.DeclarationMode == PropertyDeclaration.ClassicPropertyWithTypeConversion)
             {
                 response += String.Format("{0}{1} Property {3} As {2}{4}" + Environment.NewLine,
-                                          GetPropertyAccess(prop),
-                                          (isReadOnly ? " ReadOnly" : ""),
-                                          GetDataTypeGeneric(prop, prop.PropertyType),
-                                          FormatPascal(prop.Name),
-                                          (!String.IsNullOrEmpty(prop.Implements) ? " Implements " + prop.Implements : ""));
+                    GetPropertyAccess(prop),
+                    (isReadOnly ? " ReadOnly" : ""),
+                    GetDataTypeGeneric(prop, prop.PropertyType),
+                    FormatPascal(prop.Name),
+                    (!String.IsNullOrEmpty(prop.Implements) ? " Implements " + prop.Implements : ""));
 
                 response += PropertyDeclareGetter(prop);
 
                 if (!isReadOnly)
                 {
-                    response += PropertyDeclareSetter(isReadOnly, info.ObjectType == CslaObjectType.ReadOnlyObject, prop, convertPropertyName);
+                    response += PropertyDeclareSetter(isReadOnly, info.ObjectType == CslaObjectType.ReadOnlyObject, prop,
+                        convertPropertyName);
                 }
                 response += "        End Property";
             }
             else if (prop.DeclarationMode == PropertyDeclaration.AutoProperty)
             {
                 response += String.Format("{0}{1} Property {3} As {2}{4}",
-                                          GetPropertyAccess(prop),
-                                          (isReadOnly ? " ReadOnly" : ""),
-                                          GetDataTypeGeneric(prop, prop.PropertyType),
-                                          FormatPascal(prop.Name),
-                                          (!String.IsNullOrEmpty(prop.Implements) ? " Implements " + prop.Implements : ""));
+                    GetPropertyAccess(prop),
+                    (isReadOnly ? " ReadOnly" : ""),
+                    GetDataTypeGeneric(prop, prop.PropertyType),
+                    FormatPascal(prop.Name),
+                    (!String.IsNullOrEmpty(prop.Implements) ? " Implements " + prop.Implements : ""));
             }
 
             return response;
@@ -3257,7 +3309,7 @@ namespace CslaGenerator.CodeGen
         public string PropertyConvertDeclare(CslaObjectInfo info, ConvertValueProperty prop)
         {
             var sourceProperty = info.ValueProperties.Find(prop.SourcePropertyName);
-            //            var sourceDeclarationMode = sourceProperty.DeclarationMode;
+            //var sourceDeclarationMode = sourceProperty.DeclarationMode;
             var response = string.Empty;
             var isReadOnly = prop.ReadOnly;
 
@@ -3267,26 +3319,34 @@ namespace CslaGenerator.CodeGen
             }
 
             response += String.Format("{0} Property {2} As {1}" + Environment.NewLine,
-                                      GetPropertyAccess(prop),
-                                      GetDataTypeGeneric(prop, prop.PropertyType),
-                                      FormatPascal(prop.Name));
+                GetPropertyAccess(prop),
+                GetDataTypeGeneric(prop, prop.PropertyType),
+                FormatPascal(prop.Name));
             response += "            Get" + Environment.NewLine;
             response += "                Dim result = " + GetInitValue(prop.PropertyType) + Environment.NewLine;
-            response += "                If " + (sourceProperty.Nullable ? sourceProperty.Name + ".HasValue AndAlso " : string.Empty) + prop.NVLConverter + "().ContainsKey(" + prop.SourcePropertyName + (sourceProperty.Nullable ? ".Value" : string.Empty) + ") Then" + Environment.NewLine;
-            response += "                    result = " + prop.NVLConverter + "().GetItemByKey(" + prop.SourcePropertyName + (sourceProperty.Nullable ? ".Value" : string.Empty) + ").Value" + Environment.NewLine;
+            response += "                If " +
+                        (sourceProperty.Nullable ? sourceProperty.Name + ".HasValue AndAlso " : string.Empty) +
+                        prop.NVLConverter + "().ContainsKey(" + prop.SourcePropertyName +
+                        (sourceProperty.Nullable ? ".Value" : string.Empty) + ") Then" + Environment.NewLine;
+            response += "                    result = " + prop.NVLConverter + "().GetItemByKey(" +
+                        prop.SourcePropertyName + (sourceProperty.Nullable ? ".Value" : string.Empty) + ").Value" +
+                        Environment.NewLine;
             response += "                End If" + Environment.NewLine;
-            //            response += "                If " + prop.NVLConverter + "().ContainsKey(ReadProperty(" + prop.SourcePropertyName + "Property)) Then" + Environment.NewLine;
-            //            response += "                    result = " + prop.NVLConverter + "().GetItemByKey(ReadProperty(" + prop.SourcePropertyName + "Property)).Value" + Environment.NewLine;
-            //            response += "                End If" + Environment.NewLine;
+            //response += "                If " + prop.NVLConverter + "().ContainsKey(ReadProperty(" + prop.SourcePropertyName + "Property)) Then" + Environment.NewLine;
+            //response += "                    result = " + prop.NVLConverter + "().GetItemByKey(ReadProperty(" + prop.SourcePropertyName + "Property)).Value" + Environment.NewLine;
+            //response += "                End If" + Environment.NewLine;
             response += "                Return result" + Environment.NewLine;
             response += "            End Get" + Environment.NewLine;
 
             if (!isReadOnly)
             {
                 response += "            Set" + Environment.NewLine;
-                response += "                If " + prop.NVLConverter + "().ContainsValue(value) Then" + Environment.NewLine;
-                response += "                    Dim result = " + prop.NVLConverter + "().GetItemByValue(value).Key" + Environment.NewLine;
-                response += "                    If result <> " + prop.SourcePropertyName + " Then" + Environment.NewLine;
+                response += "                If " + prop.NVLConverter + "().ContainsValue(value) Then" +
+                            Environment.NewLine;
+                response += "                    Dim result = " + prop.NVLConverter + "().GetItemByValue(value).Key" +
+                            Environment.NewLine;
+                response += "                    If result <> " + prop.SourcePropertyName + " Then" +
+                            Environment.NewLine;
                 response += "                        " + prop.SourcePropertyName + " = result" + Environment.NewLine;
                 response += "                    End If" + Environment.NewLine;
                 //                response += "                    If result <> ReadProperty(" + prop.SourcePropertyName + "Property) Then" + Environment.NewLine;
@@ -3312,18 +3372,19 @@ namespace CslaGenerator.CodeGen
                 prop.DeclarationMode == PropertyDeclaration.Unmanaged ||
                 prop.DeclarationMode == PropertyDeclaration.UnmanagedWithTypeConversion)
             {
-                response += String.Format("            Get{3}                Return {0}{1}({2}){3}            End Get{3}",
-                                          isConversion
-                                              ? "GetPropertyConvert"
-                                              : "GetProperty",
-                                          isConversion
-                                              ? "(Of " + prop.BackingFieldType + ", " + prop.PropertyType + ")"
-                                              : "",
-                                          (prop.DeclarationMode == PropertyDeclaration.Unmanaged ||
-                                           prop.DeclarationMode == PropertyDeclaration.UnmanagedWithTypeConversion)
-                                              ? FormatPropertyInfoName(prop.Name) + ", " + FormatFieldName(prop.Name)
-                                              : FormatPropertyInfoName(prop.Name),
-                                          Environment.NewLine);
+                response +=
+                    String.Format("            Get{3}                Return {0}{1}({2}){3}            End Get{3}",
+                        isConversion
+                            ? "GetPropertyConvert"
+                            : "GetProperty",
+                        isConversion
+                            ? "(Of " + prop.BackingFieldType + ", " + prop.PropertyType + ")"
+                            : "",
+                        (prop.DeclarationMode == PropertyDeclaration.Unmanaged ||
+                         prop.DeclarationMode == PropertyDeclaration.UnmanagedWithTypeConversion)
+                            ? FormatPropertyInfoName(prop.Name) + ", " + FormatFieldName(prop.Name)
+                            : FormatPropertyInfoName(prop.Name),
+                        Environment.NewLine);
             }
             else
             {
@@ -3335,7 +3396,8 @@ namespace CslaGenerator.CodeGen
             return response;
         }
 
-        private string PropertyDeclareSetter(bool isReadOnly, bool isReadOnlyObject, ValueProperty prop, string convertPropertyName)
+        private string PropertyDeclareSetter(bool isReadOnly, bool isReadOnlyObject, ValueProperty prop,
+            string convertPropertyName)
         {
             if (isReadOnly &&
                 (prop.DeclarationMode == PropertyDeclaration.ClassicProperty ||
@@ -3351,7 +3413,8 @@ namespace CslaGenerator.CodeGen
             var convertSnippet = string.Empty;
             if (convertPropertyName != string.Empty)
             {
-                convertSnippet = Environment.NewLine + "                OnPropertyChanged(\"" + convertPropertyName + "\")";
+                convertSnippet = Environment.NewLine + "                OnPropertyChanged(\"" + convertPropertyName +
+                                 "\")";
             }
 
             var response = string.Empty;
@@ -3364,30 +3427,32 @@ namespace CslaGenerator.CodeGen
                 prop.DeclarationMode == PropertyDeclaration.Unmanaged ||
                 prop.DeclarationMode == PropertyDeclaration.UnmanagedWithTypeConversion)
             {
-                response += String.Format("            {0}Set(ByVal value As {1}){6}                {2}{3}({4}, value){5}{6}            End Set{6}",
-                                          PropertyDeclareSetterVisibility(isReadOnly, prop),
-                                          GetDataTypeGeneric(prop, prop.PropertyType),
-                                          PropertyDeclareSetterMethod(isReadOnly, isReadOnlyObject, isConversion),
-                                          isConversion
-                                              ? "(Of " + prop.BackingFieldType + ", " + prop.PropertyType + ")"
-                                              : "",
-                                          (!isReadOnly && (prop.DeclarationMode == PropertyDeclaration.Unmanaged ||
-                                                           prop.DeclarationMode == PropertyDeclaration.UnmanagedWithTypeConversion))
-                                              ? FormatPropertyInfoName(prop.Name) + ", ref " +
-                                                FormatFieldName(prop.Name)
-                                              : FormatPropertyInfoName(prop.Name),
-                                          convertSnippet,
-                                          Environment.NewLine);
+                response += String.Format(
+                    "            {0}Set(ByVal value As {1}){6}                {2}{3}({4}, value){5}{6}            End Set{6}",
+                    PropertyDeclareSetterVisibility(isReadOnly, prop),
+                    GetDataTypeGeneric(prop, prop.PropertyType),
+                    PropertyDeclareSetterMethod(isReadOnly, isReadOnlyObject, isConversion),
+                    isConversion
+                        ? "(Of " + prop.BackingFieldType + ", " + prop.PropertyType + ")"
+                        : "",
+                    (!isReadOnly && (prop.DeclarationMode == PropertyDeclaration.Unmanaged ||
+                                     prop.DeclarationMode == PropertyDeclaration.UnmanagedWithTypeConversion))
+                        ? FormatPropertyInfoName(prop.Name) + ", ref " +
+                          FormatFieldName(prop.Name)
+                        : FormatPropertyInfoName(prop.Name),
+                    convertSnippet,
+                    Environment.NewLine);
             }
             else if (prop.DeclarationMode == PropertyDeclaration.ClassicProperty ||
                      prop.DeclarationMode == PropertyDeclaration.ClassicPropertyWithTypeConversion)
             {
-                response += String.Format("            {0}Set(ByVal value As {1}){4}                {2} = value{3}{4}            End Set{4}",
-                                          PropertyDeclareSetterVisibility(isReadOnly, prop),
-                                          GetDataTypeGeneric(prop, prop.PropertyType),
-                                          FormatFieldName(prop.Name) + ConvertTextToSmartDate(prop),
-                                          convertSnippet,
-                                          Environment.NewLine);
+                response += String.Format(
+                    "            {0}Set(ByVal value As {1}){4}                {2} = value{3}{4}            End Set{4}",
+                    PropertyDeclareSetterVisibility(isReadOnly, prop),
+                    GetDataTypeGeneric(prop, prop.PropertyType),
+                    FormatFieldName(prop.Name) + ConvertTextToSmartDate(prop),
+                    convertSnippet,
+                    Environment.NewLine);
             }
             else if (prop.DeclarationMode == PropertyDeclaration.AutoProperty)
             {
@@ -3411,8 +3476,8 @@ namespace CslaGenerator.CodeGen
             else if (isReadOnly)
             {
                 return prop.PropSetAccessibility == AccessorVisibility.Private
-                           ? "Private "
-                           : "";
+                    ? "Private "
+                    : "";
             }
 
             var response = GetAccessorVisibility(prop);
@@ -3552,26 +3617,26 @@ namespace CslaGenerator.CodeGen
             if (prop.DeclarationMode == PropertyDeclaration.AutoProperty)
             {
                 statement += String.Format("{0} = {1}dr(\"{2}\"){3}",
-                                           FormatProperty(prop.Name),
-                                           (prop.PropertyType == TypeCodeEx.SmartDate)
-                                               ? "New SmartDate(DirectCast("
-                                               : "",
-                                           prop.ParameterName,
-                                           (prop.PropertyType == TypeCodeEx.SmartDate)
-                                               ? ", DateTime))"
-                                               : "");
+                    FormatProperty(prop.Name),
+                    (prop.PropertyType == TypeCodeEx.SmartDate)
+                        ? "New SmartDate(DirectCast("
+                        : "",
+                    prop.ParameterName,
+                    (prop.PropertyType == TypeCodeEx.SmartDate)
+                        ? ", DateTime))"
+                        : "");
             }
             else
             {
                 statement += String.Format("LoadProperty({0}, {1}dr(\"{2}\"){3})",
-                                           FormatPropertyInfoName(prop.Name),
-                                           (prop.PropertyType == TypeCodeEx.SmartDate)
-                                               ? "new SmartDate(DirectCast("
-                                               : "",
-                                           prop.ParameterName,
-                                           (prop.PropertyType == TypeCodeEx.SmartDate)
-                                               ? ", Datetime))"
-                                               : "");
+                    FormatPropertyInfoName(prop.Name),
+                    (prop.PropertyType == TypeCodeEx.SmartDate)
+                        ? "new SmartDate(DirectCast("
+                        : "",
+                    prop.ParameterName,
+                    (prop.PropertyType == TypeCodeEx.SmartDate)
+                        ? ", Datetime))"
+                        : "");
             }
 
             return statement;
@@ -3584,14 +3649,14 @@ namespace CslaGenerator.CodeGen
             if (prop.DeclarationMode == PropertyDeclaration.AutoProperty)
             {
                 statement += String.Format("{0} = {1}",
-                                           FormatProperty(prop.Name),
-                                           GetDataReaderStatement(prop));
+                    FormatProperty(prop.Name),
+                    GetDataReaderStatement(prop));
             }
             else
             {
                 statement += String.Format("LoadProperty({0}, {1})",
-                                           FormatPropertyInfoName(prop.Name),
-                                           GetDataReaderStatement(prop));
+                    FormatPropertyInfoName(prop.Name),
+                    GetDataReaderStatement(prop));
             }
 
             return statement;
@@ -3604,14 +3669,14 @@ namespace CslaGenerator.CodeGen
             if (prop.DeclarationMode == PropertyDeclaration.AutoProperty)
             {
                 statement += String.Format("{0} = {1}",
-                                           FormatProperty(prop.Name),
-                                           GetDtoStatement(prop));
+                    FormatProperty(prop.Name),
+                    GetDtoStatement(prop));
             }
             else
             {
                 statement += String.Format("LoadProperty({0}, {1})",
-                                           FormatPropertyInfoName(prop.Name),
-                                           GetDtoStatement(prop));
+                    FormatPropertyInfoName(prop.Name),
+                    GetDtoStatement(prop));
             }
 
             return statement;
@@ -3665,7 +3730,8 @@ namespace CslaGenerator.CodeGen
             foreach (var valueProp in info.GetAllValueProperties())
             {
                 if (prop.Name == valueProp.Name)
-                    return GetFieldLoaderStatement(valueProp.DeclarationMode, prop.Name + ConvertTextToSmartDate(valueProp), value);
+                    return GetFieldLoaderStatement(valueProp.DeclarationMode,
+                        prop.Name + ConvertTextToSmartDate(valueProp), value);
             }
             foreach (var childProp in info.GetAllChildProperties())
             {
@@ -3953,7 +4019,8 @@ namespace CslaGenerator.CodeGen
             return list;
         }
 
-        public ChildPropertyCollection GetParentLoadAllGrandChildPropertiesInHierarchy(CslaObjectInfo info, bool firstRun)
+        public ChildPropertyCollection GetParentLoadAllGrandChildPropertiesInHierarchy(CslaObjectInfo info,
+            bool firstRun)
         {
             if (IsCollectionType(info.ObjectType))
                 info = FindChildInfo(info, info.ItemType);
@@ -3967,7 +4034,6 @@ namespace CslaGenerator.CodeGen
                 var childInfo = FindChildInfo(info, childProp.TypeName);
                 if (childInfo != null && childProp.LoadingScheme == LoadingScheme.ParentLoad)
                 {
-
                     list.AddRange(GetParentLoadAllGrandChildPropertiesInHierarchy(childInfo, false));
                 }
             }
@@ -4166,10 +4232,10 @@ namespace CslaGenerator.CodeGen
             if (prop.DeclarationMode == PropertyDeclaration.Managed)
             {
                 response += String.Format("{0} Property {2} As {1}{3}" + Environment.NewLine,
-                                          GetPropertyAccess(prop),
-                                          prop.TypeName,
-                                          FormatPascal(prop.Name),
-                                          (!String.IsNullOrEmpty(prop.Implements) ? " Implements " + prop.Implements : ""));
+                    GetPropertyAccess(prop),
+                    prop.TypeName,
+                    FormatPascal(prop.Name),
+                    (!String.IsNullOrEmpty(prop.Implements) ? " Implements " + prop.Implements : ""));
 
                 response += ChildPropertyDeclareGetter(info, prop);
 
@@ -4179,23 +4245,23 @@ namespace CslaGenerator.CodeGen
             else if (prop.DeclarationMode == PropertyDeclaration.ClassicProperty)
             {
                 response += String.Format("{0} Property {2} As {1}{3}" + Environment.NewLine,
-                                          GetPropertyAccess(prop),
-                                          prop.TypeName,
-                                          FormatPascal(prop.Name),
-                                          (!String.IsNullOrEmpty(prop.Implements) ? " Implements " + prop.Implements : ""));
+                    GetPropertyAccess(prop),
+                    prop.TypeName,
+                    FormatPascal(prop.Name),
+                    (!String.IsNullOrEmpty(prop.Implements) ? " Implements " + prop.Implements : ""));
 
                 response += ChildPropertyDeclareGetter(info, prop);
 
                 response += ChildPropertyDeclareSetter(isReadOnly, prop);
                 response += "        End Property";
             }
-            else  //if (prop.DeclarationMode == PropertyDeclaration.AutoProperty)
+            else //if (prop.DeclarationMode == PropertyDeclaration.AutoProperty)
             {
                 response += String.Format("{0} Property {2} As {1}{3}",
-                          GetPropertyAccess(prop),
-                          prop.TypeName,
-                          FormatPascal(prop.Name),
-                          (!String.IsNullOrEmpty(prop.Implements) ? " Implements " + prop.Implements : ""));
+                    GetPropertyAccess(prop),
+                    prop.TypeName,
+                    FormatPascal(prop.Name),
+                    (!String.IsNullOrEmpty(prop.Implements) ? " Implements " + prop.Implements : ""));
             }
 
             return response;
@@ -4213,15 +4279,16 @@ namespace CslaGenerator.CodeGen
 
             if (prop.DeclarationMode == PropertyDeclaration.Managed)
             {
-                response = String.Format("            Get{1}                Return GetProperty({0}){1}            End Get{1}",
-                                          FormatPropertyInfoName(prop.Name),
-                                          Environment.NewLine);
+                response =
+                    String.Format("            Get{1}                Return GetProperty({0}){1}            End Get{1}",
+                        FormatPropertyInfoName(prop.Name),
+                        Environment.NewLine);
             }
             else //if (prop.DeclarationMode == PropertyDeclaration.ClassicProperty)
             {
                 response = String.Format("            Get{1}                Return {0}{1}            End Get{1}",
-                                          FormatFieldName(prop.Name),
-                                          Environment.NewLine);
+                    FormatFieldName(prop.Name),
+                    Environment.NewLine);
             }
 
             return response;
@@ -4292,20 +4359,22 @@ namespace CslaGenerator.CodeGen
 
             if (prop.DeclarationMode == PropertyDeclaration.Managed)
             {
-                response += String.Format("            {0}Set(ByVal value As {1}){4}                {2}({3}, value){4}            End Set{4}",
-                                          ChildPropertyDeclareSetterVisibility(isReadOnly, prop),
-                                          prop.TypeName,
-                                          ChildPropertyDeclareSetterMethod(isReadOnly),
-                                          FormatPropertyInfoName(prop.Name),
-                                          Environment.NewLine);
+                response += String.Format(
+                    "            {0}Set(ByVal value As {1}){4}                {2}({3}, value){4}            End Set{4}",
+                    ChildPropertyDeclareSetterVisibility(isReadOnly, prop),
+                    prop.TypeName,
+                    ChildPropertyDeclareSetterMethod(isReadOnly),
+                    FormatPropertyInfoName(prop.Name),
+                    Environment.NewLine);
             }
             else //if (prop.DeclarationMode == PropertyDeclaration.ClassicProperty)
             {
-                response += String.Format("            {0}Set(ByVal value As {1}){3}                {2} = value{3}            End Set{3}",
-                                          ChildPropertyDeclareSetterVisibility(isReadOnly, prop),
-                                          prop.TypeName,
-                                          FormatFieldName(prop.Name),
-                                          Environment.NewLine);
+                response += String.Format(
+                    "            {0}Set(ByVal value As {1}){3}                {2} = value{3}            End Set{3}",
+                    ChildPropertyDeclareSetterVisibility(isReadOnly, prop),
+                    prop.TypeName,
+                    FormatFieldName(prop.Name),
+                    Environment.NewLine);
             }
 
             return response;
@@ -4316,8 +4385,8 @@ namespace CslaGenerator.CodeGen
             if (isReadOnly)
             {
                 return prop.Access == PropertyAccess.IsPrivate
-                           ? ""
-                           : "Private ";
+                    ? ""
+                    : "Private ";
             }
 
             return "";
@@ -4348,13 +4417,17 @@ namespace CslaGenerator.CodeGen
                 prop.DeclarationMode == PropertyDeclaration.Unmanaged ||
                 prop.DeclarationMode == PropertyDeclaration.UnmanagedWithTypeConversion)
             {
-                response += String.Format("                LoadProperty({0}, value){1}", FormatPropertyInfoName(prop.Name), Environment.NewLine);
-                response += String.Format("                OnPropertyChanged({0}){1}", FormatPropertyInfoName(prop.Name), Environment.NewLine);
+                response += String.Format("                LoadProperty({0}, value){1}",
+                    FormatPropertyInfoName(prop.Name), Environment.NewLine);
+                response += String.Format("                OnPropertyChanged({0}){1}", FormatPropertyInfoName(prop.Name),
+                    Environment.NewLine);
             }
             else if (prop.DeclarationMode == PropertyDeclaration.ClassicProperty)
             {
-                response += String.Format("                {0} = value{1}", FormatFieldName(prop.Name), Environment.NewLine);
-                response += String.Format("                OnPropertyChanged(\"{0}\"){1}", FormatPascal(prop.Name), Environment.NewLine);
+                response += String.Format("                {0} = value{1}", FormatFieldName(prop.Name),
+                    Environment.NewLine);
+                response += String.Format("                OnPropertyChanged(\"{0}\"){1}", FormatPascal(prop.Name),
+                    Environment.NewLine);
             }
 
             return response;
@@ -4391,7 +4464,7 @@ namespace CslaGenerator.CodeGen
                         }
                     }
                     else if (CurrentUnit.GenerationParams.GenerateAsynchronous ||
-                        CurrentUnit.GenerationParams.GenerateSynchronous)
+                             CurrentUnit.GenerationParams.GenerateSynchronous)
                     {
                         conditionalDirective = true;
                         result += "#If SILVERLIGHT Then" + Environment.NewLine;
@@ -4469,24 +4542,33 @@ namespace CslaGenerator.CodeGen
             }*/
 
             var result = string.Empty;
-            result += String.Format("                If Not FieldManager.FieldExists({0}) Then" + Environment.NewLine, FormatPropertyInfoName(prop.Name));
-            result += String.Format("                    LoadProperty({0}, Nothing)" + Environment.NewLine, FormatPropertyInfoName(prop.Name));
+            result += String.Format("                If Not FieldManager.FieldExists({0}) Then" + Environment.NewLine,
+                FormatPropertyInfoName(prop.Name));
+            result += String.Format("                    LoadProperty({0}, Nothing)" + Environment.NewLine,
+                FormatPropertyInfoName(prop.Name));
             result += "                    If Me.IsNew Then" + Environment.NewLine;
             if (UseChildFactoryHelper)
-                result += String.Format("                        {0}.New{0}(Function(o, e)" + Environment.NewLine, prop.TypeName);
+                result += String.Format("                        {0}.New{0}(Function(o, e)" + Environment.NewLine,
+                    prop.TypeName);
             else
-                result += string.Format("                        DataPortal.BeginCreate(Of {0})(Function(o, e)" + Environment.NewLine, prop.TypeName);
+                result +=
+                    string.Format(
+                        "                        DataPortal.BeginCreate(Of {0})(Function(o, e)" + Environment.NewLine,
+                        prop.TypeName);
             result += "                                If e.Error IsNot Nothing Then" + Environment.NewLine;
             result += "                                    Throw e.Error" + Environment.NewLine;
             result += "                                Else" + Environment.NewLine;
-            result += "                                    ' set the property so OnPropertyChanged is raised" + Environment.NewLine;
+            result += "                                    ' set the property so OnPropertyChanged is raised" +
+                      Environment.NewLine;
             result += String.Format("                                    {0} = e.Object" + Environment.NewLine,
                 (String.IsNullOrEmpty(prop.Implements)
-                ? FormatPascal(prop.Name)
-                : "DirectCast(Me, " + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) + ")." + FormatPascal(prop.Name)));
+                    ? FormatPascal(prop.Name)
+                    : "DirectCast(Me, " + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) + ")." +
+                      FormatPascal(prop.Name)));
             result += "                                End If" + Environment.NewLine;
             if (!UseChildFactoryHelper && isLocal)
-                result += "                            End Function, DataPortal.ProxyModes.LocalOnly)" + Environment.NewLine;
+                result += "                            End Function, DataPortal.ProxyModes.LocalOnly)" +
+                          Environment.NewLine;
             else
                 result += "                            End Function)" + Environment.NewLine;
             result += "                        Return Nothing" + Environment.NewLine;
@@ -4494,26 +4576,29 @@ namespace CslaGenerator.CodeGen
             if (UseChildFactoryHelper)
             {
                 result += String.Format("                        {0}.Get{0}({1}, Function(o, e)" +
-                    Environment.NewLine, prop.TypeName,
+                                        Environment.NewLine, prop.TypeName,
                     GetFieldReaderStatementList(info, prop));
             }
             else
             {
                 result += string.Format("                        DataPortal.BeginFetch<{0}>({1}, Function(o, e)" +
-                    Environment.NewLine, prop.TypeName,
+                                        Environment.NewLine, prop.TypeName,
                     GetFieldReaderStatementList(info, prop));
             }
             result += "                                If e.Error IsNot Nothing Then" + Environment.NewLine;
             result += "                                    Throw e.Error" + Environment.NewLine;
             result += "                                Else" + Environment.NewLine;
-            result += "                                    ' set the property so OnPropertyChanged is raised" + Environment.NewLine;
+            result += "                                    ' set the property so OnPropertyChanged is raised" +
+                      Environment.NewLine;
             result += String.Format("                                    {0} = e.Object" + Environment.NewLine,
                 (String.IsNullOrEmpty(prop.Implements)
-                ? FormatPascal(prop.Name)
-                : "DirectCast(Me, " + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) + ")." + FormatPascal(prop.Name)));
+                    ? FormatPascal(prop.Name)
+                    : "DirectCast(Me, " + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) + ")." +
+                      FormatPascal(prop.Name)));
             result += "                                End If" + Environment.NewLine;
             if (!UseChildFactoryHelper && isLocal)
-                result += "                            End Function, DataPortal.ProxyModes.LocalOnly)" + Environment.NewLine;
+                result += "                            End Function, DataPortal.ProxyModes.LocalOnly)" +
+                          Environment.NewLine;
             else
                 result += "                            End Function)" + Environment.NewLine;
             result += "                        Return Nothing" + Environment.NewLine;
@@ -4538,40 +4623,43 @@ namespace CslaGenerator.CodeGen
             return GetProperty(ChildrenProperty);*/
 
             var result = string.Empty;
-            result += String.Format("                If Not FieldManager.FieldExists({0}) Then" + Environment.NewLine, FormatPropertyInfoName(prop.Name));
+            result += String.Format("                If Not FieldManager.FieldExists({0}) Then" + Environment.NewLine,
+                FormatPropertyInfoName(prop.Name));
             result += "                    If Me.IsNew Then" + Environment.NewLine;
             if (UseChildFactoryHelper)
             {
                 result += String.Format("                        {0} = {1}.New{1}()" + Environment.NewLine,
                     (String.IsNullOrEmpty(prop.Implements)
-                    ? FormatPascal(prop.Name)
-                    : "DirectCast(Me, " + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
-                    ")." + FormatPascal(prop.Name)), prop.TypeName);
+                        ? FormatPascal(prop.Name)
+                        : "DirectCast(Me, " + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
+                          ")." + FormatPascal(prop.Name)), prop.TypeName);
             }
             else
             {
-                result += String.Format("                        {0} = DataPortal.Create(Of {1})()" + Environment.NewLine,
-                    (String.IsNullOrEmpty(prop.Implements)
-                    ? FormatPascal(prop.Name)
-                    : "DirectCast(Me, " + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
-                    ")." + FormatPascal(prop.Name)), prop.TypeName);
+                result +=
+                    String.Format("                        {0} = DataPortal.Create(Of {1})()" + Environment.NewLine,
+                        (String.IsNullOrEmpty(prop.Implements)
+                            ? FormatPascal(prop.Name)
+                            : "DirectCast(Me, " + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
+                              ")." + FormatPascal(prop.Name)), prop.TypeName);
             }
             result += "                    Else" + Environment.NewLine;
             if (UseChildFactoryHelper)
             {
                 result += String.Format("                        {0} = {1}.Get{1}({2})" + Environment.NewLine,
                     (String.IsNullOrEmpty(prop.Implements)
-                    ? FormatPascal(prop.Name)
-                    : "DirectCast(Me, " + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
-                    ")." + FormatPascal(prop.Name)), prop.TypeName, GetFieldReaderStatementList(info, prop));
+                        ? FormatPascal(prop.Name)
+                        : "DirectCast(Me, " + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
+                          ")." + FormatPascal(prop.Name)), prop.TypeName, GetFieldReaderStatementList(info, prop));
             }
             else
             {
-                result += String.Format("                        {0} = DataPortal.Fetch(Of {1})({2})" + Environment.NewLine,
+                result +=
+                    String.Format("                        {0} = DataPortal.Fetch(Of {1})({2})" + Environment.NewLine,
                         (String.IsNullOrEmpty(prop.Implements)
-                        ? FormatPascal(prop.Name)
-                        : "DirectCast(Me, " + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
-                        ")." + FormatPascal(prop.Name)), prop.TypeName, GetFieldReaderStatementList(info, prop));
+                            ? FormatPascal(prop.Name)
+                            : "DirectCast(Me, " + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
+                              ")." + FormatPascal(prop.Name)), prop.TypeName, GetFieldReaderStatementList(info, prop));
             }
             result += "                    End If" + Environment.NewLine;
             result += "                End If" + Environment.NewLine;
@@ -4602,7 +4690,7 @@ namespace CslaGenerator.CodeGen
                         }
                     }
                     else if (CurrentUnit.GenerationParams.GenerateAsynchronous ||
-                        CurrentUnit.GenerationParams.GenerateSynchronous)
+                             CurrentUnit.GenerationParams.GenerateSynchronous)
                     {
                         conditionalDirective = true;
                         result += "#If SILVERLIGHT Then" + Environment.NewLine;
@@ -4663,26 +4751,32 @@ namespace CslaGenerator.CodeGen
             }*/
 
             var result = string.Empty;
-            result += String.Format("                If Not FieldManager.FieldExists({0}) Then" + Environment.NewLine, FormatPropertyInfoName(prop.Name));
-            result += String.Format("                    LoadProperty({0}, Nothing)" + Environment.NewLine, FormatPropertyInfoName(prop.Name));
+            result += String.Format("                If Not FieldManager.FieldExists({0}) Then" + Environment.NewLine,
+                FormatPropertyInfoName(prop.Name));
+            result += String.Format("                    LoadProperty({0}, Nothing)" + Environment.NewLine,
+                FormatPropertyInfoName(prop.Name));
             if (UseChildFactoryHelper)
             {
                 result += String.Format("                    {0}.Get{0}({1}, Function(o, e)" + Environment.NewLine,
-                                        prop.TypeName, GetFieldReaderStatementList(info, prop));
+                    prop.TypeName, GetFieldReaderStatementList(info, prop));
             }
             else
             {
-                result += string.Format("                    DataPortal.BeginFetch(Of {0})({1}, Function(o, e)" + Environment.NewLine,
-                                  prop.TypeName, GetFieldReaderStatementList(info, prop));
+                result +=
+                    string.Format(
+                        "                    DataPortal.BeginFetch(Of {0})({1}, Function(o, e)" + Environment.NewLine,
+                        prop.TypeName, GetFieldReaderStatementList(info, prop));
             }
             result += "                            if e.Error IsNot Nothing Then" + Environment.NewLine;
             result += "                                Throw e.Error" + Environment.NewLine;
             result += "                            Else" + Environment.NewLine;
-            result += "                                ' set the property so OnPropertyChanged is raised" + Environment.NewLine;
+            result += "                                ' set the property so OnPropertyChanged is raised" +
+                      Environment.NewLine;
             result += String.Format("                                {0} = e.Object" + Environment.NewLine,
                 (String.IsNullOrEmpty(prop.Implements)
-                ? FormatPascal(prop.Name)
-                : "DirectCast(Me, " + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) + ")." + FormatPascal(prop.Name)));
+                    ? FormatPascal(prop.Name)
+                    : "DirectCast(Me, " + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) + ")." +
+                      FormatPascal(prop.Name)));
             result += "                            End If" + Environment.NewLine;
             if (!UseChildFactoryHelper && isLocal)
                 result += "                        End Function, DataPortal.ProxyModes.LocalOnly)" + Environment.NewLine;
@@ -4706,22 +4800,23 @@ namespace CslaGenerator.CodeGen
             return GetProperty(ChildrenProperty);*/
 
             var result = string.Empty;
-            result += String.Format("                If Not FieldManager.FieldExists({0}) Then" + Environment.NewLine, FormatPropertyInfoName(prop.Name));
+            result += String.Format("                If Not FieldManager.FieldExists({0}) Then" + Environment.NewLine,
+                FormatPropertyInfoName(prop.Name));
             if (UseChildFactoryHelper)
             {
                 result += String.Format("                    {0} = {1}.Get{1}({2})" + Environment.NewLine,
                     (String.IsNullOrEmpty(prop.Implements)
-                    ? FormatPascal(prop.Name)
-                    : "DirectCast(Me, " + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
-                    ")." + FormatPascal(prop.Name)), prop.TypeName, GetFieldReaderStatementList(info, prop));
+                        ? FormatPascal(prop.Name)
+                        : "DirectCast(Me, " + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
+                          ")." + FormatPascal(prop.Name)), prop.TypeName, GetFieldReaderStatementList(info, prop));
             }
             else
             {
                 result += String.Format("                    {0} = DataPortal.Fetch(Of {1})({2})" + Environment.NewLine,
                     (String.IsNullOrEmpty(prop.Implements)
-                    ? FormatPascal(prop.Name)
-                    : "DirectCast(Me, " + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
-                    ")." + FormatPascal(prop.Name)), prop.TypeName, GetFieldReaderStatementList(info, prop));
+                        ? FormatPascal(prop.Name)
+                        : "DirectCast(Me, " + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
+                          ")." + FormatPascal(prop.Name)), prop.TypeName, GetFieldReaderStatementList(info, prop));
             }
             result += String.Format("                End If" + Environment.NewLine);
             result += ChildPropertyDeclareGetReturner(prop);
@@ -4744,7 +4839,7 @@ namespace CslaGenerator.CodeGen
             */
 
             response += String.Format("                If Not {0} Then" + Environment.NewLine,
-                                      FormatFieldName(prop.Name + "Loaded"));
+                FormatFieldName(prop.Name + "Loaded"));
             response += String.Format("                    {0} = {1}.Get{1}({2})" + Environment.NewLine,
                 FormatFieldName(prop.Name), prop.TypeName, GetFieldReaderStatementList(info, prop));
             response += String.Format("                    {0} = True" + Environment.NewLine,
@@ -4767,7 +4862,9 @@ namespace CslaGenerator.CodeGen
 
             if (isParentCollection)
             {
-                for (var parentLoadProperties = 0; parentLoadProperties < prop.ParentLoadProperties.Count; parentLoadProperties++)
+                for (var parentLoadProperties = 0;
+                    parentLoadProperties < prop.ParentLoadProperties.Count;
+                    parentLoadProperties++)
                 {
                     response += FormatFieldForPropertyName(info, prop.ParentLoadProperties[parentLoadProperties].Name);
                     if (parentLoadProperties + 1 != prop.ParentLoadProperties.Count)
@@ -4794,17 +4891,17 @@ namespace CslaGenerator.CodeGen
             if (prop.DeclarationMode == PropertyDeclaration.Managed)
             {
                 response = String.Format("                Return GetProperty({0})" + Environment.NewLine,
-                                          FormatPropertyInfoName(prop.Name));
+                    FormatPropertyInfoName(prop.Name));
             }
             else if (prop.DeclarationMode == PropertyDeclaration.ClassicProperty)
             {
                 response = String.Format("                Return {0}" + Environment.NewLine,
-                                          FormatFieldName(prop.Name));
+                    FormatFieldName(prop.Name));
             }
             else //if (prop.DeclarationMode == PropertyDeclaration.AutoProperty)
             {
                 response = String.Format("                Return {0}" + Environment.NewLine,
-                                          FormatProperty(prop.Name));
+                    FormatProperty(prop.Name));
             }
 
             return response;
@@ -4828,25 +4925,26 @@ namespace CslaGenerator.CodeGen
             if (uowProp.DeclarationMode == PropertyDeclaration.Managed)
             {
                 response += String.Format("Public Property {1} As {0}" + Environment.NewLine,
-                                          uowProp.TypeName,
-                                          uowProp.Name);
+                    uowProp.TypeName,
+                    uowProp.Name);
                 response += String.Format("            Get{1}        Return GetProperty({0}){1}End Get{1}",
-                                          FormatPropertyInfoName(uowProp.Name),
-                                          Environment.NewLine);
+                    FormatPropertyInfoName(uowProp.Name),
+                    Environment.NewLine);
 
-                response += String.Format("            {0}Set(ByVal value As {3}{2}        LoadProperty({1}, value){2}End Set{2}",
-                                          isReadOnly ? "Private " : "",
-                                          FormatPropertyInfoName(uowProp.Name),
-                                          Environment.NewLine,
-                                          uowProp.TypeName);
+                response += String.Format(
+                    "            {0}Set(ByVal value As {3}{2}        LoadProperty({1}, value){2}End Set{2}",
+                    isReadOnly ? "Private " : "",
+                    FormatPropertyInfoName(uowProp.Name),
+                    Environment.NewLine,
+                    uowProp.TypeName);
                 response += "        End Property";
             }
-            else  //if (prop.DeclarationMode == PropertyDeclaration.AutoProperty)
+            else //if (prop.DeclarationMode == PropertyDeclaration.AutoProperty)
             {
                 response += String.Format("Public Property {1} As {0}{2}",
-                          uowProp.TypeName,
-                          FormatPascal(uowProp.Name),
-                          Environment.NewLine);
+                    uowProp.TypeName,
+                    FormatPascal(uowProp.Name),
+                    Environment.NewLine);
             }
 
             return response;
@@ -4880,7 +4978,6 @@ namespace CslaGenerator.CodeGen
                 !String.IsNullOrEmpty(info.Parent.Params.ChangedDateColumn) ||
                 !String.IsNullOrEmpty(info.Parent.Params.ChangedUserColumn))
             {
-
                 foreach (var valueProperty in info.GetAllValueProperties())
                 {
                     if (valueProperty.Name == info.Parent.Params.CreationDateColumn ||
@@ -5017,7 +5114,8 @@ namespace CslaGenerator.CodeGen
             if (!string.IsNullOrEmpty(plainTableSchema))
                 plainTableSchema += ".";
 
-            return "Using cmd = New SqlCommand(\"" + plainTableSchema + commandText + "\", " + LocalContextConnection(info) + ")";
+            return "Using cmd = New SqlCommand(\"" + plainTableSchema + commandText + "\", " +
+                   LocalContextConnection(info) + ")";
         }
 
         public string LocalContextConnection(CslaObjectInfo info)
@@ -5092,7 +5190,7 @@ namespace CslaGenerator.CodeGen
         public bool IgnoreSortOrder(List<ChildProperty> children)
         {
             return children.OrderBy(c => c.ChildUpdateOrder).ToList().Max().ChildUpdateOrder ==
-                children.OrderBy(c => c.ChildUpdateOrder).ToList().Min().ChildUpdateOrder;
+                   children.OrderBy(c => c.ChildUpdateOrder).ToList().Min().ChildUpdateOrder;
         }
 
         public string[] CslaObjectPrimaryKeys(string infoName)
@@ -5108,7 +5206,9 @@ namespace CslaGenerator.CodeGen
                 if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
                     pkList.Add(prop.Name);
             }*/
-            var pkList = (from prop in info.AllValueProperties where prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default select prop.Name).ToList();
+            var pkList = (from prop in info.AllValueProperties
+                where prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default
+                select prop.Name).ToList();
             pkList.Sort();
 
             return pkList.ToArray();
@@ -5312,8 +5412,10 @@ namespace CslaGenerator.CodeGen
             {
                 for (int collection = 0; collection < trialPK.Info.ChildCollectionProperties.Count; collection++)
                 {
-                    var trialChildCollection = FindChildInfo(trialPK.Info, trialPK.Info.ChildCollectionProperties[collection].TypeName);
-                    var trialChildCollectionItem = trialChildCollection.Parent.CslaObjects.Find(trialChildCollection.ItemType);
+                    var trialChildCollection = FindChildInfo(trialPK.Info,
+                        trialPK.Info.ChildCollectionProperties[collection].TypeName);
+                    var trialChildCollectionItem =
+                        trialChildCollection.Parent.CslaObjects.Find(trialChildCollection.ItemType);
                     foreach (var trialChildCollectionItemProp in trialChildCollectionItem.ValueProperties)
                     {
                         if (MatchingProperties(originalInfoPK, trialChildCollectionItemProp))
@@ -5352,6 +5454,7 @@ namespace CslaGenerator.CodeGen
             public static ArrayList Cache { get; private set; }
 
             /* force to use Factory methods */
+
             private PrimaryKeys()
             {
                 foreach (var cslaObject in _allCslaObjects)
@@ -5360,7 +5463,7 @@ namespace CslaGenerator.CodeGen
                     ValueProperty prop = FindPrimaryKey(info);
                     if (prop != null)
                     {
-                        Cache.Add(new ObjectPK { Info = info, Property = prop });
+                        Cache.Add(new ObjectPK {Info = info, Property = prop});
                     }
                 }
             }
@@ -5399,7 +5502,6 @@ namespace CslaGenerator.CodeGen
                 Cache.Clear();
                 _instance = null;
             }
-
         }
 
         #endregion
@@ -5416,36 +5518,36 @@ namespace CslaGenerator.CodeGen
 
             if (HasDataPortalCreate(info) &&
                 ((IsEditableType(info.ObjectType) &&
-                IsChildType(info.ObjectType)) ||
-                info.ObjectType == CslaObjectType.EditableRoot ||
-                info.ObjectType == CslaObjectType.DynamicEditableRoot))
+                  IsChildType(info.ObjectType)) ||
+                 info.ObjectType == CslaObjectType.EditableRoot ||
+                 info.ObjectType == CslaObjectType.DynamicEditableRoot))
             {
                 eventList.Add("Create");
             }
 
             if (
                 (HasDataPortalDelete(info) &&
-                ((IsEditableType(info.ObjectType) &&
-                IsChildType(info.ObjectType)) ||
-                info.ObjectType == CslaObjectType.EditableRoot ||
-                info.ObjectType == CslaObjectType.DynamicEditableRoot))
+                 ((IsEditableType(info.ObjectType) &&
+                   IsChildType(info.ObjectType)) ||
+                  info.ObjectType == CslaObjectType.EditableRoot ||
+                  info.ObjectType == CslaObjectType.DynamicEditableRoot))
                 ||
                 (info.GenerateDataPortalDelete &&
-                (info.ObjectType == CslaObjectType.EditableRoot ||
-                info.ObjectType == CslaObjectType.DynamicEditableRoot ||
-                info.ObjectType == CslaObjectType.EditableChild ||
-                info.ObjectType == CslaObjectType.EditableSwitchable))
+                 (info.ObjectType == CslaObjectType.EditableRoot ||
+                  info.ObjectType == CslaObjectType.DynamicEditableRoot ||
+                  info.ObjectType == CslaObjectType.EditableChild ||
+                  info.ObjectType == CslaObjectType.EditableSwitchable))
                 )
             {
-                eventList.AddRange(new[] { "DeletePre", "DeletePost" });
+                eventList.AddRange(new[] {"DeletePre", "DeletePost"});
             }
 
             if (HasDataPortalGet(info) ||
                 (info.ObjectType != CslaObjectType.ReadOnlyObject &&
-                info.ParentType != string.Empty &&
-                !lazyLoad))
+                 info.ParentType != string.Empty &&
+                 !lazyLoad))
             {
-                eventList.AddRange(new[] { "FetchPre", "FetchPost" });
+                eventList.AddRange(new[] {"FetchPre", "FetchPost"});
             }
 
             if (!IsCollectionType(info.ObjectType) &&
@@ -5458,14 +5560,14 @@ namespace CslaGenerator.CodeGen
                 !IsCollectionType(info.ObjectType) &&
                 info.GenerateDataPortalUpdate)
             {
-                eventList.AddRange(new[] { "UpdatePre", "UpdatePost" });
+                eventList.AddRange(new[] {"UpdatePre", "UpdatePost"});
             }
 
             if (IsEditableType(info.ObjectType) &&
                 !IsCollectionType(info.ObjectType) &&
                 info.GenerateDataPortalInsert)
             {
-                eventList.AddRange(new[] { "InsertPre", "InsertPost" });
+                eventList.AddRange(new[] {"InsertPre", "InsertPost"});
             }
 
             return eventList;
@@ -5493,13 +5595,15 @@ namespace CslaGenerator.CodeGen
                     response += "in DataPortal_Insert, after setting query parameters and before the insert operation.";
                     break;
                 case "InsertPost":
-                    response += "in DataPortal_Insert, after the insert operation, before setting back row identifiers (ID and RowVersion) and Commit().";
+                    response +=
+                        "in DataPortal_Insert, after the insert operation, before setting back row identifiers (ID and RowVersion) and Commit().";
                     break;
                 case "UpdatePre":
                     response += "after setting query parameters and before the update operation.";
                     break;
                 case "UpdatePost":
-                    response += "in DataPortal_Insert, after the update operation, before setting back row identifiers (RowVersion) and Commit().";
+                    response +=
+                        "in DataPortal_Insert, after the update operation, before setting back row identifiers (RowVersion) and Commit().";
                     break;
                 case "DeletePre":
                     response += "in DataPortal_Delete, after setting query parameters and before the delete operation.";
@@ -5522,29 +5626,29 @@ namespace CslaGenerator.CodeGen
         public bool IsCriteriaClassNeeded(CslaObjectInfo info)
         {
             return (from crit in info.CriteriaObjects
-                    where crit.Properties.Count > 1
-                    select FactoryOrDataPortal(crit)).FirstOrDefault();
+                where crit.Properties.Count > 1
+                select FactoryOrDataPortal(crit)).FirstOrDefault();
         }
 
         public bool IsCriteriaNestedClassNeeded(CslaObjectInfo info)
         {
             return (from crit in info.CriteriaObjects
-                    where crit.Properties.Count > 1 && crit.NestedClass
-                    select FactoryOrDataPortal(crit)).FirstOrDefault();
+                where crit.Properties.Count > 1 && crit.NestedClass
+                select FactoryOrDataPortal(crit)).FirstOrDefault();
         }
 
         public bool IsCriteriaObjectNeeded(CslaObjectInfo info)
         {
             return (from crit in info.CriteriaObjects
-                    where crit.Properties.Count > 1 && !crit.NestedClass
-                    select FactoryOrDataPortal(crit)).FirstOrDefault();
+                where crit.Properties.Count > 1 && !crit.NestedClass
+                select FactoryOrDataPortal(crit)).FirstOrDefault();
         }
 
         public bool IsCriteriaExtendedClassNeeded(CslaObjectInfo info)
         {
             return (from crit in info.CriteriaObjects
-                    where crit.Properties.Count > 1 && crit.CriteriaClassMode == CriteriaMode.BusinessBase
-                    select FactoryOrDataPortal(crit)).FirstOrDefault();
+                where crit.Properties.Count > 1 && crit.CriteriaClassMode == CriteriaMode.BusinessBase
+                select FactoryOrDataPortal(crit)).FirstOrDefault();
         }
 
         private static bool FactoryOrDataPortal(Criteria crit)
@@ -5915,7 +6019,8 @@ namespace CslaGenerator.CodeGen
 
         public bool UseSilverlight()
         {
-            return CurrentUnit.GenerationParams.GenerateSilverlight4 || CurrentUnit.GenerationParams.SilverlightUsingServices;
+            return CurrentUnit.GenerationParams.GenerateSilverlight4 ||
+                   CurrentUnit.GenerationParams.SilverlightUsingServices;
         }
 
         public bool UseNoSilverlight()
@@ -5931,7 +6036,8 @@ namespace CslaGenerator.CodeGen
             End
         }
 
-        public string IfNewSilverlight(Conditional step, int indent, ref int silverlightLevel, bool formFeedBefore, bool formFeedAfter)
+        public string IfNewSilverlight(Conditional step, int indent, ref int silverlightLevel, bool formFeedBefore,
+            bool formFeedAfter)
         {
             var result = string.Empty;
             var outerSilverlightLevel = silverlightLevel;
@@ -5956,7 +6062,8 @@ namespace CslaGenerator.CodeGen
             return result;
         }
 
-        public string IfSilverlight(Conditional step, int indent, ref int silverlightLevel, bool formFeedBefore, bool formFeedAfter)
+        public string IfSilverlight(Conditional step, int indent, ref int silverlightLevel, bool formFeedBefore,
+            bool formFeedAfter)
         {
             var result = string.Empty;
             var outputValue = silverlightLevel;
@@ -5965,19 +6072,23 @@ namespace CslaGenerator.CodeGen
                 switch (step)
                 {
                     case Conditional.Silverlight:
-                        result = (formFeedBefore ? Environment.NewLine : "") + "#If SILVERLIGHT Then" + (formFeedAfter ? Environment.NewLine : "") + new string(' ', indent * 4);
+                        result = (formFeedBefore ? Environment.NewLine : "") + "#If SILVERLIGHT Then" +
+                                 (formFeedAfter ? Environment.NewLine : "") + new string(' ', indent*4);
                         outputValue = silverlightLevel + 1;
                         break;
                     case Conditional.NotSilverlight:
-                        result = (formFeedBefore ? Environment.NewLine : "") + "#If Not SILVERLIGHT Then" + (formFeedAfter ? Environment.NewLine : "") + new string(' ', indent * 4);
+                        result = (formFeedBefore ? Environment.NewLine : "") + "#If Not SILVERLIGHT Then" +
+                                 (formFeedAfter ? Environment.NewLine : "") + new string(' ', indent*4);
                         outputValue = silverlightLevel + 1;
                         break;
                     case Conditional.Else:
-                        result = (formFeedBefore ? Environment.NewLine : "") + "#Else" + (formFeedAfter ? Environment.NewLine : "") + new string(' ', indent * 4);
+                        result = (formFeedBefore ? Environment.NewLine : "") + "#Else" +
+                                 (formFeedAfter ? Environment.NewLine : "") + new string(' ', indent*4);
                         outputValue = silverlightLevel;
                         break;
                     case Conditional.End:
-                        result = (formFeedBefore ? Environment.NewLine : "") + "#End If" + (formFeedAfter ? Environment.NewLine : "");
+                        result = (formFeedBefore ? Environment.NewLine : "") + "#End If" +
+                                 (formFeedAfter ? Environment.NewLine : "");
                         outputValue = silverlightLevel - 1;
                         break;
                     default:
@@ -5994,8 +6105,9 @@ namespace CslaGenerator.CodeGen
             var result = desiredVisibity;
             if (UseSilverlight())
             {
-                result = "<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>" + Environment.NewLine +
-                         new string(' ', indent * 4) +
+                result = "<System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>" +
+                         Environment.NewLine +
+                         new string(' ', indent*4) +
                          "Public";
             }
             return result;
@@ -6004,4 +6116,3 @@ namespace CslaGenerator.CodeGen
         #endregion
     }
 }
-
