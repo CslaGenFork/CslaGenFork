@@ -8,7 +8,6 @@ namespace CslaGenerator.Metadata
     {
         #region State Fields
 
-        private bool _ackSilverlightPublicPropertyInfo;
         private bool _saveBeforeGenerate = true;
         private TargetFramework _targetFramework = TargetFramework.CSLA40;
         private bool _writeTodo = true;
@@ -60,18 +59,6 @@ namespace CslaGenerator.Metadata
         #endregion
 
         #region Properties
-
-        public bool AckSilverlightPublicPropertyInfo
-        {
-            get { return _ackSilverlightPublicPropertyInfo; }
-            set
-            {
-                if (_ackSilverlightPublicPropertyInfo == value)
-                    return;
-                _ackSilverlightPublicPropertyInfo = value;
-                OnPropertyChanged("");
-            }
-        }
 
         public bool SaveBeforeGenerate
         {
@@ -730,11 +717,6 @@ namespace CslaGenerator.Metadata
         {
             if (!string.IsNullOrEmpty(propertyName))
             {
-                if (propertyName == "UsePublicPropertyInfo")
-                {
-                    if (!_usePublicPropertyInfo)
-                        UsePublicPropertyInfoAlert();
-                }
                 if (propertyName == "TargetFramework")
                     SetCsla4Options();
                 if (propertyName == "GenerateWinForms")
@@ -746,7 +728,6 @@ namespace CslaGenerator.Metadata
                     if (_generateSilverlight)
                     {
                         _silverlightUsingServices = false;
-                        UsePublicPropertyInfoAlert();
                     }
                     SetServerInvocationOptions();
                 }
@@ -755,7 +736,6 @@ namespace CslaGenerator.Metadata
                     if (_silverlightUsingServices)
                     {
                         _generateSilverlight = false;
-                        UsePublicPropertyInfoAlert();
                     }
                     SetServerInvocationOptions();
                 }
@@ -774,33 +754,6 @@ namespace CslaGenerator.Metadata
             Dirty = true;
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        internal void ResetAckSilverlightPublicPropertyInfo()
-        {
-            if (AckSilverlightPublicPropertyInfo)
-            {
-                if (!_generateSilverlight && !_silverlightUsingServices)
-                {
-                    AckSilverlightPublicPropertyInfo = false;
-                }
-            }
-        }
-
-        private void UsePublicPropertyInfoAlert()
-        {
-            if (AckSilverlightPublicPropertyInfo)
-                return;
-
-            if (!_usePublicPropertyInfo && (_generateSilverlight || _silverlightUsingServices))
-            {
-                DialogResult alert = MessageBox.Show("Silverlight 4 targets need a public PropertyInfo declaration.\r\n" +
-                    "Do you want to check the \"Use public PropertyInfo\" option?",
-                    "Silverlight Alert", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                AckSilverlightPublicPropertyInfo = true;
-                if (alert == DialogResult.Yes)
-                    UsePublicPropertyInfo = true;
-            }
         }
 
         private void SetCsla4Options()
@@ -835,9 +788,6 @@ namespace CslaGenerator.Metadata
                 _silverlightUsingServices = false;
                 _generateDatabaseClass = false;
             }
-
-            if (TargetIsCsla45)
-                AckSilverlightPublicPropertyInfo = true;
         }
 
         private void SetServerInvocationOptions()
