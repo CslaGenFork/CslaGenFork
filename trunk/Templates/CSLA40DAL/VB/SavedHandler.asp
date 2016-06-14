@@ -69,28 +69,15 @@ if (Info.UpdaterType != string.Empty)
             Response.Write(Environment.NewLine);
         }
         genOptional = true;
-
-        Infos.Append("To do list: edit \"" + Info.ObjectName + ".cs\", uncomment the \"OnDeserialized\" method and add the following line:" + Environment.NewLine);
-        Infos.Append("      " + Info.UpdaterType + "." + Info.UpdaterType + "Saved += " + Info.UpdaterType + "SavedHandler;" + Environment.NewLine);
         %>
         #region Saved Event Handler
-<%
-        if (CurrentUnit.GenerationParams.WriteTodo)
-        {
-            %>
-
-        // TODO: edit "<%= Info.ObjectName %>.cs", uncomment the "OnDeserialized" method and add the following line:
-        // TODO:     <%= Info.UpdaterType %>.<%= Info.UpdaterType %>Saved += <%= Info.UpdaterType %>SavedHandler;
-<%
-        }
-        %>
 
         /// <summary>
         /// Handle Saved events of <see cref="<%= Info.UpdaterType %>"/> to update the list of <see cref="<%= Info.ItemType %>"/> objects.
         /// </summary>
         /// <param name="sender">The sender of the event.</param>
         /// <param name="e">The <see cref="Csla.Core.SavedEventArgs"/> instance containing the event data.</param>
-        private void <%= Info.UpdaterType %>SavedHandler(object sender, Csla.Core.SavedEventArgs e)
+        internal void <%= Info.UpdaterType %>SavedHandler(object sender, Csla.Core.SavedEventArgs e)
         {
             var obj = (<%= Info.UpdaterType %>)e.NewObject;
             if (((<%= Info.UpdaterType %>)sender).IsNew)
