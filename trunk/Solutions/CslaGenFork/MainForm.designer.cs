@@ -102,7 +102,6 @@ namespace CslaGenerator
             this.schemaPageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.objectPropertiesPanelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.outputWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pluginsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
@@ -207,7 +206,6 @@ namespace CslaGenerator
             this.dataBaseToolStripMenuItem,
             this.toolStripMenuItem4,
             this.viewToolStripMenuItem,
-            this.pluginsToolStripMenuItem,
             this.helpToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
@@ -608,12 +606,6 @@ namespace CslaGenerator
             this.outputWindowToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
             this.outputWindowToolStripMenuItem.Text = "Outpu&t Window";
             this.outputWindowToolStripMenuItem.Click += new System.EventHandler(this.OutputWindowToolStripMenuItem_Click);
-            // 
-            // pluginsToolStripMenuItem
-            // 
-            this.pluginsToolStripMenuItem.Name = "pluginsToolStripMenuItem";
-            this.pluginsToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
-            this.pluginsToolStripMenuItem.Text = "Plugins";
             // 
             // helpToolStripMenuItem
             // 
@@ -1111,7 +1103,6 @@ namespace CslaGenerator
         private ToolStripStatusLabel sprocs;
         private ToolStripStatusLabel generatingTimer;
         private ToolStripProgressBar progressBar;
-        private ToolStripMenuItem pluginsToolStripMenuItem;
         private ToolStripMenuItem toolStripMenuItem4;
         private ToolStripMenuItem changePrimaryKeyToNotUndoable;
         private ToolStripMenuItem changeTimestampToReadOnlyNotUndoable;

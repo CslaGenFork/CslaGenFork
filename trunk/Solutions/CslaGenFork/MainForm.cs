@@ -8,7 +8,6 @@ using System.Text;
 using System.Windows.Forms;
 using CslaGenerator.Controls;
 using CslaGenerator.Metadata;
-using CslaGenerator.Plugins;
 using CslaGenerator.Properties;
 using CslaGenerator.Util;
 using CslaGenerator.Util.PropertyBags;
@@ -33,7 +32,6 @@ namespace CslaGenerator
         private DialogResult _retrieveSummariesDialogResult;
         private GeneratorController _controller = null;
         private ICodeGenerator _generator;
-        private List<ISimplePlugin> _plugins = new List<ISimplePlugin>();
         private ProjectPanel _projectPanel = new ProjectPanel();
         private ObjectInfo _objectInfoPanel = new ObjectInfo();
         private StartPage _webBrowserDockPanel = new StartPage();
@@ -212,7 +210,6 @@ namespace CslaGenerator
 
             ShowStartPage();
             PanelsSetUp();
-            LoadPlugins();
             LoadMru();
         }
 
@@ -353,28 +350,6 @@ namespace CslaGenerator
                 };
             _dbSchemaPanel.FormClosing += PaneFormClosing;
             _dbSchemaPanel.Show(dockPanel);
-        }
-
-        private void LoadPlugins()
-        {
-            _plugins = PluginLoader.LoadPlugins();
-            if (_plugins == null || _plugins.Count == 0)
-            {
-                pluginsToolStripMenuItem.Visible = false;
-                return;
-            }
-            foreach (var plugin in _plugins)
-            {
-                foreach (var cmd in plugin.GetCommands())
-                {
-                    using (var pluginMenu = new ToolStripMenuItem(cmd.CommandTitle))
-                    {
-                        pluginMenu.Tag = cmd;
-                        pluginMenu.Click += PluginMenuClick;
-                        pluginsToolStripMenuItem.DropDownItems.Add(pluginMenu);
-                    }
-                }
-            }
         }
 
         private void LoadMru()
@@ -1683,31 +1658,6 @@ namespace CslaGenerator
                 OutputWindow.Current.Hide();
             else
                 OutputWindow.Current.Show(dockPanel);
-        }
-
-        #endregion
-
-        #region Plugin menu
-
-        private void PluginMenuClick(object sender, EventArgs e)
-        {
-            try
-            {
-                foreach (ISimplePlugin plugin in _plugins)
-                {
-                    plugin.Catalog = GeneratorController.Catalog;
-                    plugin.Unit = _controller.CurrentUnit;
-                    plugin.SelectedObjects = _projectPanel.GetSelectedObjects();
-                }
-                var menu = (ToolStripMenuItem) sender;
-                var cmd = (ScriptCommandInfo) menu.Tag;
-                cmd.RunCommand();
-            }
-            catch (Exception ex)
-            {
-                OutputWindow.Current.AddOutputInfo("Error running plugin:");
-                OutputWindow.Current.AddOutputInfo(ex.Message);
-            }
         }
 
         #endregion
