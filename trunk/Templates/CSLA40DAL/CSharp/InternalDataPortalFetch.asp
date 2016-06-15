@@ -126,7 +126,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
                 }
             }
         }
-        if (!UseChildFactoryHelper && Info.CheckRulesOnFetch && (!isRoot || Info.ObjectType == CslaObjectType.DynamicEditableRoot))
+        if (!UseChildFactoryHelper && Info.CheckRulesOnFetch && !Info.EditOnDemand && (!isRoot || Info.ObjectType == CslaObjectType.DynamicEditableRoot))
         {
             %>
             // check all object rules and property rules

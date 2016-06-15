@@ -132,7 +132,7 @@ if (!Info.UseCustomLoading)
             FetchChildren()
         <%
             }
-            if (Info.CheckRulesOnFetch)
+            if (Info.CheckRulesOnFetch && !Info.EditOnDemand)
             {
                 %>
             ' check all object rules and property rules
