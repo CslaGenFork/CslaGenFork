@@ -101,6 +101,7 @@ namespace CslaGenerator.Metadata
         private List<string> _invalidateCache = new List<string>();
         private bool _useCustomLoading;
         private bool _checkRulesOnFetch = true;
+        private bool _editOnDemand;
         private bool _generateDataAccessRegion = true;
         private string _folder = String.Empty;
         private string[] _implements = { };
@@ -277,24 +278,6 @@ namespace CslaGenerator.Metadata
         {
             get { return _useCustomLoading; }
             set { _useCustomLoading = value; }
-        }
-
-        [Category("00. Generate Options")]
-        [Description("Whether or not to check rules on DataPortal_ / Child_ Fetch methods. This invokes all business (validation) rules for the business type.")]
-        [UserFriendlyName("Check Rules On Fetch")]
-        public bool CheckRulesOnFetch
-        {
-            get { return _checkRulesOnFetch; }
-            set { _checkRulesOnFetch = value; }
-        }
-
-        [Category("00. Generate Options")]
-        [Description("Whether or not to generate Saved Event support. If True, Read Only Collections can subscribe to this event in order to update themselves locally without a database round trip.")]
-        [UserFriendlyName("Support Update Properties")]
-        public bool SupportUpdateProperties
-        {
-            get { return _supportUpdateProperties; }
-            set { _supportUpdateProperties = value; }
         }
 
         #endregion
@@ -614,9 +597,35 @@ namespace CslaGenerator.Metadata
 
         #endregion
 
-        #region 03. Criteria
+        #region 03. Behaviour & Criteria
 
-        [Category("03. Criteria")]
+        [Category("03. Behaviour & Criteria")]
+        [Description("Instead of being editable all the time, the object is editable on demand (after a click on the Edit button). Rule checking is delayed until the edit state starts.")]
+        [UserFriendlyName("Edit On Demand")]
+        public bool EditOnDemand
+        {
+            get { return _editOnDemand; }
+            set { _editOnDemand = value; }
+        }
+
+        [Category("03. Behaviour & Criteria")]
+        [Description("Whether or not to check rules on DataPortal_ / Child_ Fetch methods. This invokes all business (validation) rules for the business type.")]
+        [UserFriendlyName("Check Rules On Fetch")]
+        public bool CheckRulesOnFetch
+        {
+            get { return _checkRulesOnFetch; }
+            set { _checkRulesOnFetch = value; }
+        }
+
+        [Category("03. Behaviour & Criteria")]
+        [Description("Whether or not to generate Saved Event support. If True, Read Only Collections can subscribe to this event in order to update themselves locally without a database round trip.")]
+        [UserFriendlyName("Support Update Properties")]
+        public bool SupportUpdateProperties
+        {
+            get { return _supportUpdateProperties; }
+            set { _supportUpdateProperties = value; }
+        }
+        [Category("03. Behaviour & Criteria")]
         [Description("The Criteria classes that are used by this object.")]
         [Editor(typeof(PropertyCollectionForm), typeof(UITypeEditor))]
         [UserFriendlyName("Criteria Objects")]
@@ -1960,6 +1969,8 @@ namespace CslaGenerator.Metadata
 
         #endregion
 
+        #region Events
+
         private void vp_ItemChanged(ValueProperty sender, PropertyNameChangedEventArgs e)
         {
             foreach (var c in _criteriaObjects)
@@ -1988,6 +1999,8 @@ namespace CslaGenerator.Metadata
                     p.Name = e.NewName;
             }
         }
+
+        #endregion
 
         #region System.Object Overrides
 

@@ -74,6 +74,7 @@
     <add key="UnitOfWork:GenerateDataPortalUpdate" value="false" />
     <add key="UnitOfWork:GenerateDataPortalDelete" value="false" />
     <add key="UnitOfWork:SupportUpdateProperties" value="false" />
+    <add key="UnitOfWork:EditOnDemand" value="false" />
     <add key="UnitOfWork:CheckRulesOnFetch" value="false" />
     <add key="NameValueList:DataSetLoadingScheme" value="false" />
     <add key="NameValueList:Generate" value="true" />
@@ -143,6 +144,7 @@
     <add key="NameValueList:GenerateDataPortalUpdate" value="false" />
     <add key="NameValueList:GenerateDataPortalDelete" value="false" />
     <add key="NameValueList:SupportUpdateProperties" value="false" />
+    <add key="NameValueList:EditOnDemand" value="false" />
     <add key="NameValueList:CheckRulesOnFetch" value="false" />
     <add key="ReadOnlyCollection:Generate" value="true" />
     <add key="ReadOnlyCollection:GenerateSprocs" value="true" />
@@ -211,6 +213,7 @@
     <add key="ReadOnlyCollection:GenerateDataPortalUpdate" value="false" />
     <add key="ReadOnlyCollection:GenerateDataPortalDelete" value="false" />
     <add key="ReadOnlyCollection:SupportUpdateProperties" value="false" />
+    <add key="ReadOnlyCollection:EditOnDemand" value="false" />
     <add key="ReadOnlyCollection:CheckRulesOnFetch" value="false" />
     <add key="ReadOnlyObject:Generate" value="true" />
     <add key="ReadOnlyObject:GenerateSprocs" value="true" />
@@ -279,6 +282,7 @@
     <add key="ReadOnlyObject:GenerateDataPortalUpdate" value="false" />
     <add key="ReadOnlyObject:GenerateDataPortalDelete" value="false" />
     <add key="ReadOnlyObject:SupportUpdateProperties" value="false" />
+    <add key="ReadOnlyObject:EditOnDemand" value="false" />
     <add key="ReadOnlyObject:CheckRulesOnFetch" value="true" />
     <add key="EditableChild:Generate" value="true" />
     <add key="EditableChild:GenerateSprocs" value="true" />
@@ -347,6 +351,7 @@
     <add key="EditableChild:GenerateDataPortalUpdate" value="true" />
     <add key="EditableChild:GenerateDataPortalDelete" value="true" />
     <add key="EditableChild:SupportUpdateProperties" value="true" />
+    <add key="EditableChild:EditOnDemand" value="true" />
     <add key="EditableChild:CheckRulesOnFetch" value="true" />
     <add key="EditableChildCollection:Generate" value="true" />
     <add key="EditableChildCollection:GenerateSprocs" value="true" />
@@ -415,6 +420,7 @@
     <add key="EditableChildCollection:GenerateDataPortalUpdate" value="false" />
     <add key="EditableChildCollection:GenerateDataPortalDelete" value="false" />
     <add key="EditableChildCollection:SupportUpdateProperties" value="false" />
+    <add key="EditableChildCollection:EditOnDemand" value="true" />
     <add key="EditableChildCollection:CheckRulesOnFetch" value="true" />
     <add key="EditableRoot:Generate" value="true" />
     <add key="EditableRoot:GenerateSprocs" value="true" />
@@ -483,6 +489,7 @@
     <add key="EditableRoot:GenerateDataPortalUpdate" value="true" />
     <add key="EditableRoot:GenerateDataPortalDelete" value="true" />
     <add key="EditableRoot:SupportUpdateProperties" value="true" />
+    <add key="EditableRoot:EditOnDemand" value="true" />
     <add key="EditableRoot:CheckRulesOnFetch" value="true" />
     <add key="EditableRootCollection:Generate" value="true" />
     <add key="EditableRootCollection:GenerateSprocs" value="true" />
@@ -551,6 +558,7 @@
     <add key="EditableRootCollection:GenerateDataPortalUpdate" value="false" />
     <add key="EditableRootCollection:GenerateDataPortalDelete" value="false" />
     <add key="EditableRootCollection:SupportUpdateProperties" value="false" />
+    <add key="EditableRootCollection:EditOnDemand" value="true" />
     <add key="EditableRootCollection:CheckRulesOnFetch" value="true" />
     <add key="EditableSwitchable:Generate" value="true" />
     <add key="EditableSwitchable:GenerateSprocs" value="true" />
@@ -619,6 +627,7 @@
     <add key="EditableSwitchable:GenerateDataPortalUpdate" value="true" />
     <add key="EditableSwitchable:GenerateDataPortalDelete" value="true" />
     <add key="EditableSwitchable:SupportUpdateProperties" value="true" />
+    <add key="EditableSwitchable:EditOnDemand" value="true" />
     <add key="EditableSwitchable:CheckRulesOnFetch" value="true" />
     <add key="DynamicEditableRoot:Generate" value="true" />
     <add key="DynamicEditableRoot:GenerateSprocs" value="true" />
@@ -687,6 +696,7 @@
     <add key="DynamicEditableRoot:GenerateDataPortalUpdate" value="true" />
     <add key="DynamicEditableRoot:GenerateDataPortalDelete" value="true" />
     <add key="DynamicEditableRoot:SupportUpdateProperties" value="true" />
+    <add key="DynamicEditableRoot:EditOnDemand" value="true" />
     <add key="DynamicEditableRoot:CheckRulesOnFetch" value="true" />
     <add key="DynamicEditableRootCollection:Generate" value="true" />
     <add key="DynamicEditableRootCollection:GenerateSprocs" value="true" />
@@ -755,6 +765,7 @@
     <add key="DynamicEditableRootCollection:GenerateDataPortalUpdate" value="false" />
     <add key="DynamicEditableRootCollection:GenerateDataPortalDelete" value="false" />
     <add key="DynamicEditableRootCollection:SupportUpdateProperties" value="false" />
+    <add key="DynamicEditableRootCollection:EditOnDemand" value="false" />
     <add key="DynamicEditableRootCollection:CheckRulesOnFetch" value="true" />
   </contextSettings>
 </propertybag>
