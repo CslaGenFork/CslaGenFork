@@ -101,6 +101,7 @@ namespace CslaGenerator.Metadata
         private List<string> _invalidateCache = new List<string>();
         private bool _useCustomLoading;
         private bool _checkRulesOnFetch = true;
+        private bool _singleton;
         private bool _editOnDemand;
         private bool _generateDataAccessRegion = true;
         private string _folder = String.Empty;
@@ -598,6 +599,15 @@ namespace CslaGenerator.Metadata
         #endregion
 
         #region 03. Behaviour & Criteria
+
+        [Category("03. Behaviour & Criteria")]
+        [Description("Make this class single instance.")]
+        [UserFriendlyName("Singleton")]
+        public bool Singleton
+        {
+            get { return _singleton; }
+            set { _singleton = value; }
+        }
 
         [Category("03. Behaviour & Criteria")]
         [Description("Instead of being editable all the time, the object is editable on demand (after a click on the Edit button). Rule checking is delayed until the edit state starts.")]
