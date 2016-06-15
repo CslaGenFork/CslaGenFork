@@ -108,7 +108,7 @@ if (!Info.DataSetLoadingScheme)
             obj.MarkOld();
             <%
         }
-        if (Info.CheckRulesOnFetch && !IsCollectionType(Info.ObjectType))
+        if (Info.CheckRulesOnFetch && !Info.EditOnDemand && !IsCollectionType(Info.ObjectType))
         {
             %>
             // check all object rules and property rules
@@ -165,7 +165,7 @@ else
         %>obj.MarkOld();
             <%
     }
-    if (Info.CheckRulesOnFetch && !IsCollectionType(Info.ObjectType))
+    if (Info.CheckRulesOnFetch && !Info.EditOnDemand && !IsCollectionType(Info.ObjectType))
     {
         %>// check all object rules and property rules
             obj.BusinessRules.CheckRules();
