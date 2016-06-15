@@ -292,6 +292,7 @@ namespace CslaGenerator
                 foreach (var info in _currentUnit.CslaObjects)
                 {
                     info.InheritedType.Parent = info;
+                    info.InheritedTypeWinForms.Parent = info;
                 }
                 if (_currentUnit.CslaObjects.Count > 0)
                 {

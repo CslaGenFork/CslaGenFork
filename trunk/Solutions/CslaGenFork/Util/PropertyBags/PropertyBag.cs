@@ -945,19 +945,17 @@ namespace CslaGenerator.Util.PropertyBags
                             propertyName == "DeleteAuthzRuleType"))
                             return false;
                         if (((GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.None ||
-                            GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.PropertyLevel) || 
-                            GeneratorController.Current.CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider) && 
+                            GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.PropertyLevel) ||
+                            GeneratorController.Current.CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider) &&
                             propertyName == "AuthzProvider")
                             return false;
                         if ((!GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All ||
-                            (!GeneratorController.Current.CurrentUnit.GenerationParams.GenerateWinForms ||
-                            !CslaTemplateHelperCS.IsCollectionType(cslaObject.ObjectType) ||
-                            (string.IsNullOrEmpty(cslaObject.InheritedType.Type) &&
-                            string.IsNullOrEmpty(cslaObject.InheritedType.ObjectName)))) &&
+                           !GeneratorController.Current.CurrentUnit.GenerationParams.DualListInheritance) &&
                             propertyName == "InheritedTypeWinForms")
                             return false;
                         if ((!GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All ||
-                            (CslaTemplateHelperCS.IsReadOnlyType(cslaObject.ObjectType) && !string.IsNullOrEmpty(cslaObject.ParentType))) &&
+                            (CslaTemplateHelperCS.IsReadOnlyType(cslaObject.ObjectType) &&
+                            !string.IsNullOrEmpty(cslaObject.ParentType))) &&
                             (propertyName == "UseUnitOfWorkType" || propertyName == "GenerateInlineQueries"))
                             return false;
                         if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All &&

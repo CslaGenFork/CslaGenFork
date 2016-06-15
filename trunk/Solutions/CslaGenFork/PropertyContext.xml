@@ -10,6 +10,7 @@
     <add key="UnitOfWork:UseCustomLoading" value="false" />
     <add key="UnitOfWork:Filename" value="true" />
     <add key="UnitOfWork:InheritedType" value="false" />
+    <add key="UnitOfWork:InheritedTypeWinForms" value="false" />
     <add key="UnitOfWork:UseUnitOfWorkType" value="false" />
     <add key="UnitOfWork:ObjectName" value="true" />
     <add key="UnitOfWork:ObjectNamespace" value="true" />
@@ -80,6 +81,7 @@
     <add key="NameValueList:GenerateInlineQueries" value="true" />
     <add key="NameValueList:Filename" value="true" />
     <add key="NameValueList:InheritedType" value="true" />
+    <add key="NameValueList:InheritedTypeWinForms" value="false" />
     <add key="NameValueList:UseUnitOfWorkType" value="false" />
     <add key="NameValueList:ObjectName" value="true" />
     <add key="NameValueList:ObjectNamespace" value="true" />
@@ -147,6 +149,7 @@
     <add key="ReadOnlyCollection:GenerateInlineQueries" value="true" />
     <add key="ReadOnlyCollection:Filename" value="true" />
     <add key="ReadOnlyCollection:InheritedType" value="true" />
+    <add key="ReadOnlyCollection:InheritedTypeWinForms" value="true" />
     <add key="ReadOnlyCollection:UseUnitOfWorkType" value="true" />
     <add key="ReadOnlyCollection:ObjectName" value="true" />
     <add key="ReadOnlyCollection:ObjectNamespace" value="true" />
@@ -214,6 +217,7 @@
     <add key="ReadOnlyObject:GenerateInlineQueries" value="false" />
     <add key="ReadOnlyObject:Filename" value="true" />
     <add key="ReadOnlyObject:InheritedType" value="true" />
+    <add key="ReadOnlyObject:InheritedTypeWinForms" value="false" />
     <add key="ReadOnlyObject:UseUnitOfWorkType" value="true" />
     <add key="ReadOnlyObject:ObjectName" value="true" />
     <add key="ReadOnlyObject:ObjectNamespace" value="true" />
@@ -281,6 +285,7 @@
     <add key="EditableChild:GenerateInlineQueries" value="true" />
     <add key="EditableChild:Filename" value="true" />
     <add key="EditableChild:InheritedType" value="true" />
+    <add key="EditableChild:InheritedTypeWinForms" value="false" />
     <add key="EditableChild:UseUnitOfWorkType" value="false" />
     <add key="EditableChild:ObjectName" value="true" />
     <add key="EditableChild:ObjectNamespace" value="true" />
@@ -348,6 +353,7 @@
     <add key="EditableChildCollection:GenerateInlineQueries" value="true" />
     <add key="EditableChildCollection:Filename" value="true" />
     <add key="EditableChildCollection:InheritedType" value="true" />
+    <add key="EditableChildCollection:InheritedTypeWinForms" value="true" />
     <add key="EditableChildCollection:UseUnitOfWorkType" value="false" />
     <add key="EditableChildCollection:ObjectName" value="true" />
     <add key="EditableChildCollection:ObjectNamespace" value="true" />
@@ -415,6 +421,7 @@
     <add key="EditableRoot:GenerateInlineQueries" value="true" />
     <add key="EditableRoot:Filename" value="true" />
     <add key="EditableRoot:InheritedType" value="true" />
+    <add key="EditableRoot:InheritedTypeWinForms" value="false" />
     <add key="EditableRoot:UseUnitOfWorkType" value="true" />
     <add key="EditableRoot:ObjectName" value="true" />
     <add key="EditableRoot:ObjectNamespace" value="true" />
@@ -482,6 +489,7 @@
     <add key="EditableRootCollection:GenerateInlineQueries" value="true" />
     <add key="EditableRootCollection:Filename" value="true" />
     <add key="EditableRootCollection:InheritedType" value="true" />
+    <add key="EditableRootCollection:InheritedTypeWinForms" value="true" />
     <add key="EditableRootCollection:UseUnitOfWorkType" value="true" />
     <add key="EditableRootCollection:ObjectName" value="true" />
     <add key="EditableRootCollection:ObjectNamespace" value="true" />
@@ -549,6 +557,7 @@
     <add key="EditableSwitchable:GenerateInlineQueries" value="true" />
     <add key="EditableSwitchable:Filename" value="true" />
     <add key="EditableSwitchable:InheritedType" value="true" />
+    <add key="EditableSwitchable:InheritedTypeWinForms" value="false" />
     <add key="EditableSwitchable:UseUnitOfWorkType" value="true" />
     <add key="EditableSwitchable:ObjectName" value="true" />
     <add key="EditableSwitchable:ObjectNamespace" value="true" />
@@ -616,6 +625,7 @@
     <add key="DynamicEditableRoot:GenerateInlineQueries" value="true" />
     <add key="DynamicEditableRoot:Filename" value="true" />
     <add key="DynamicEditableRoot:InheritedType" value="true" />
+    <add key="DynamicEditableRoot:InheritedTypeWinForms" value="false" />
     <add key="DynamicEditableRoot:UseUnitOfWorkType" value="false" />
     <add key="DynamicEditableRoot:ObjectName" value="true" />
     <add key="DynamicEditableRoot:ObjectNamespace" value="true" />
@@ -683,6 +693,7 @@
     <add key="DynamicEditableRootCollection:GenerateInlineQueries" value="true" />
     <add key="DynamicEditableRootCollection:Filename" value="true" />
     <add key="DynamicEditableRootCollection:InheritedType" value="true" />
+    <add key="DynamicEditableRootCollection:InheritedTypeWinForms" value="true" />
     <add key="DynamicEditableRootCollection:UseUnitOfWorkType" value="true" />
     <add key="DynamicEditableRootCollection:ObjectName" value="true" />
     <add key="DynamicEditableRootCollection:ObjectNamespace" value="true" />
