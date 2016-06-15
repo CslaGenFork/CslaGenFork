@@ -39,7 +39,7 @@ namespace CslaGenerator.Metadata
 
         [Category("01. Inherit from Type Defined in Project")]
         [Editor(typeof(CslaObjectInfoEditor), typeof(UITypeEditor))]
-        [Description("Inherited Type Name. Manually append <T> if generic type.")]
+        [Description("Inherited Type Name.\r\nFor a generic type, change the type name so it shows <T> at the end.")]
         [UserFriendlyName("Base Type Name")]
         public string ObjectName
         {

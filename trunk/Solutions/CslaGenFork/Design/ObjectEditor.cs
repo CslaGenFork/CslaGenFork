@@ -7,7 +7,7 @@ using System.Windows.Forms.Design;
 namespace CslaGenerator.Design
 {
     /// <summary>
-    /// Summary description for ObjectEditor (CslaObjectInfo.InheritedType).
+    /// Summary description for ObjectEditor (CslaObjectInfo.InheritedType / CslaObjectInfo.InheritedTypeWinForms ).
     /// </summary>
     public class ObjectEditor : UITypeEditor
     {

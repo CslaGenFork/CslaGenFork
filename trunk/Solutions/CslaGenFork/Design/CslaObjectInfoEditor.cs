@@ -9,10 +9,6 @@ using CslaGenerator.Util;
 
 namespace CslaGenerator.Design
 {
-    // TODO: This editor is used in TypeInfo class for ObjectMetabata property.
-    // Make this editor to work with TypeInfo.ObjectName property.
-    // One possible solution would be to have shared GeneratorController.CurrentUnit property,
-    // and to enumerate CslaObjects collection.
     public class CslaObjectInfoEditor : UITypeEditor, IDisposable
     {
         private IWindowsFormsEditorService _editorService;
@@ -45,29 +41,29 @@ namespace CslaGenerator.Design
                     _lstProperties.Items.Add(new DictionaryEntry("(None)", null));
                     // Get object info properties
                     var parentInfo = _instance.GetProperty("Parent");
-                    //CslaObjectInfo cslaObj = (CslaObjectInfo)parentInfo.GetValue(context.Instance, null);
-                    var cslaObj = (CslaObjectInfo)parentInfo.GetValue(objinfo, null);
-                    foreach (var obj in cslaObj.Parent.CslaObjects)
+                    var cslaObj = (CslaObjectInfo) parentInfo.GetValue(objinfo, null);
+                    foreach (var obj in GeneratorController.Current.CurrentUnit.CslaObjects)
                     {
-                        _lstProperties.Items.Add(new DictionaryEntry(obj.ObjectName, obj));
+                        if (obj.ObjectName != cslaObj.ObjectName)
+                            _lstProperties.Items.Add(new DictionaryEntry(obj.ObjectName, obj));
                     }
                     _lstProperties.Sorted = true;
 
                     _lstProperties.SelectedItem = new DictionaryEntry("(None)", null);
                     for (var entry = 0; entry < _lstProperties.Items.Count; entry++)
                     {
-                        if (cslaObj.InheritedType.ObjectName == ((DictionaryEntry)_lstProperties.Items[entry]).Key.ToString())
+                        if ((string) value == ((DictionaryEntry) _lstProperties.Items[entry]).Key.ToString())
                         {
-                            var val = (CslaObjectInfo)((DictionaryEntry)_lstProperties.Items[entry]).Value;
-                            _lstProperties.SelectedItems.Add(new DictionaryEntry(cslaObj.InheritedType.ObjectName, val));
+                            var val = (CslaObjectInfo) ((DictionaryEntry) _lstProperties.Items[entry]).Value;
+                            _lstProperties.SelectedItems.Add(new DictionaryEntry(value, val));
                         }
                     }
 
                     _editorService.DropDownControl(_lstProperties);
-                    if (_lstProperties.SelectedIndex < 0 || ((DictionaryEntry)_lstProperties.SelectedItem).Key.ToString() == "(None)")
+                    if (_lstProperties.SelectedIndex < 0 || ((DictionaryEntry) _lstProperties.SelectedItem).Key.ToString() == "(None)")
                         return string.Empty;
 
-                    return ((CslaObjectInfo)((DictionaryEntry)_lstProperties.SelectedItem).Value).ObjectName;
+                    return ((CslaObjectInfo) ((DictionaryEntry) _lstProperties.SelectedItem).Value).ObjectName;
                 }
             }
 

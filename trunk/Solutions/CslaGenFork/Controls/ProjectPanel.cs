@@ -141,6 +141,7 @@ namespace CslaGenerator.Controls
                 e.PropertyDescriptor.Name != "ObjectName" && 
                 e.PropertyDescriptor.Name != "ObjectType" &&
                 e.PropertyDescriptor.Name != "InheritedType" &&
+                e.PropertyDescriptor.Name != "InheritedTypeWinForms" &&
                 e.PropertyDescriptor.Name != "AuthzProvider")
             {
                 lstObjects.Refresh();
