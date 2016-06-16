@@ -936,7 +936,7 @@ namespace CslaGenerator.Controls
             GeneratorController.Current.MainForm.ProjectPanel.AddCreatedObject(_objectsAdded);
             _objectsAdded = new CslaObjectInfoCollection();
             CurrentCslaObject = obj;
-            _currentFactory.AddDefaultCriteriaAndParameters();
+            _currentFactory.AddDefaultCriteriaAndParameters(obj);
         }
 
         private string ParseObjectName(string name)
