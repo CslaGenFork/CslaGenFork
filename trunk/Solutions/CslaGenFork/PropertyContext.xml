@@ -9,7 +9,7 @@
     <add key="UnitOfWork:DataSetLoadingScheme" value="false" />
     <add key="UnitOfWork:UseCustomLoading" value="false" />
     <add key="UnitOfWork:Filename" value="true" />
-    <add key="UnitOfWork:InheritedType" value="false" />
+    <add key="UnitOfWork:InheritedType" value="true" />
     <add key="UnitOfWork:InheritedTypeWinForms" value="false" />
     <add key="UnitOfWork:UseUnitOfWorkType" value="false" />
     <add key="UnitOfWork:ObjectName" value="true" />
