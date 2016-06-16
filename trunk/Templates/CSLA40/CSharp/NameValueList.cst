@@ -59,7 +59,16 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Busine
     }
     %>
     [Serializable]
-    <%= Info.ClassVisibility == ClassVisibility.Public ? "public" : "internal" %> partial class <%= Info.ObjectName %> : NameValueListBase<<%= GetDataTypeGeneric(valueProp, valueProp.PropertyType) %>, <%= GetDataTypeGeneric(nameProp, nameProp.PropertyType) %>>
+    <%= Info.ClassVisibility == ClassVisibility.Public ? "public" : "internal" %> partial class <%= Info.ObjectName %> : <%
+    if (Info.InheritedType.Type != string.Empty || Info.InheritedType.ObjectName != string.Empty)
+    {
+        %><!-- #include file="Inherits.asp" --><%
+    }
+    else
+    {
+        %>NameValueListBase<<%= GetDataTypeGeneric(valueProp, valueProp.PropertyType) %>, <%= GetDataTypeGeneric(nameProp, nameProp.PropertyType) %>><!-- #include file="Implements.asp" --><%
+    }
+    %>
     {
 
         <%

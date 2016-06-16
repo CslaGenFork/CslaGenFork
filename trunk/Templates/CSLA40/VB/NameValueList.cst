@@ -59,7 +59,17 @@ else
     %>
     <Serializable()>
     Partial <%= Info.ClassVisibility == ClassVisibility.Public ? "Public" : "Friend" %> Class <%= Info.ObjectName %>
-        Inherits NameValueListBase(Of <%= GetDataTypeGeneric(valueProp, valueProp.PropertyType) %>, <%= GetDataTypeGeneric(nameProp, nameProp.PropertyType) %>)
+        Inherits <%
+    if (Info.InheritedType.Type != string.Empty || Info.InheritedType.ObjectName != string.Empty)
+    {
+        %><!-- #include file="Inherits.asp" --><%
+    }
+    else
+    {
+        %>NameValueListBase(Of <%= GetDataTypeGeneric(valueProp, valueProp.PropertyType) %>, <%= GetDataTypeGeneric(nameProp, nameProp.PropertyType) %>)<!-- #include file="Implements.asp" --><%
+    }
+    %>
+    {
 
         <%
     if (Info.SimpleCacheOptions != SimpleCacheResults.None)
