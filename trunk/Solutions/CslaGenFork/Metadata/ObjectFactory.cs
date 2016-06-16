@@ -451,7 +451,7 @@ namespace CslaGenerator.Metadata
         /// Should be called after the object has all it's properties (if applicable).
         /// It creates the default criteria classes depending on the object type.
         /// </summary>
-        private void AddDefaultCriteriaAndParameters(CslaObjectInfo objectInfo)
+        internal void AddDefaultCriteriaAndParameters(CslaObjectInfo objectInfo)
         {
             AddDefaultCriteriaAndParameters(objectInfo, string.Empty);
         }
@@ -462,7 +462,7 @@ namespace CslaGenerator.Metadata
         /// </summary>
         /// <param name="objectInfo">The object info.</param>
         /// <param name="sprocName">Name of the sproc.</param>
-        private void AddDefaultCriteriaAndParameters(CslaObjectInfo objectInfo, string sprocName)
+        internal void AddDefaultCriteriaAndParameters(CslaObjectInfo objectInfo, string sprocName)
         {
             _currentCslaObject = objectInfo;
             AddDefaultCriteriaAndParameters(sprocName);
@@ -473,7 +473,7 @@ namespace CslaGenerator.Metadata
         /// It creates the default criteria classes depending on the object type.
         /// </summary>
         /// <param name="getSprocName">Name of the sproc.</param>
-        private void AddDefaultCriteriaAndParameters(string getSprocName)
+        internal void AddDefaultCriteriaAndParameters(string getSprocName)
         {
             if (_currentCslaObject.CriteriaObjects.Count != 0)
                 return;
