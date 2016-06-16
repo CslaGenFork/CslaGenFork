@@ -16,5 +16,9 @@ else
 
 if (result.Contains("<T,C>"))
     result = result.Replace("<T,C>", "(Of " + Info.ObjectName + ", " + Info.ItemType + ")");
-Response.Write(result);
+
+if (result.Contains("<K,V>"))
+    result = result.Replace("<K,V>", "(Of " + Info.ValueColumn + ", " + Info.NameColumn + ")");
+
+    Response.Write(result);
 %><!-- #include file="Implements.asp" -->
