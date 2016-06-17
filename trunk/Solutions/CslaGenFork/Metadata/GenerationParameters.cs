@@ -15,7 +15,6 @@ namespace CslaGenerator.Metadata
         private bool _retryOnFileBusy = true;
         private bool _separateNamespaces = true;
         private bool _separateBaseClasses;
-        private bool _activeObjects;
         private bool _useDotDesignerFileNameConvention = true;
         private bool _updateOnlyDirtyChildren = true;
         private bool _nullableSupport;
@@ -140,18 +139,6 @@ namespace CslaGenerator.Metadata
                 if (_separateBaseClasses == value)
                     return;
                 _separateBaseClasses = value;
-                OnPropertyChanged("");
-            }
-        }
-
-        public bool ActiveObjects
-        {
-            get { return _activeObjects; }
-            set
-            {
-                if (_activeObjects == value)
-                    return;
-                _activeObjects = value;
                 OnPropertyChanged("");
             }
         }
@@ -766,7 +753,6 @@ namespace CslaGenerator.Metadata
             if (TargetIsCsla4All)
             {
                 UseCsla4 = true;
-                _activeObjects = false;
                 _useSingleCriteria = false;
             }
             else

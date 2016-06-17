@@ -85,8 +85,6 @@ namespace CslaGenerator.Metadata
         private string _updateRoles = String.Empty;
         private string _deleteRoles = String.Empty;
         private bool _parentInsertOnly;
-        private string _publishToChannel = String.Empty;
-        private string _subscribeToChannel = String.Empty;
         private bool _allowNew = true;
         private bool _allowEdit = true;
         private bool _allowRemove = true;
@@ -1412,28 +1410,6 @@ namespace CslaGenerator.Metadata
                     }
                 }
             }
-        }
-
-        #endregion
-
-        #region 11. Active Objects
-
-        [Category("11. Active Objects")]
-        [Description("The channel you want to publish events to. Empty if you don't want to publish.")]
-        [UserFriendlyName("Publish to channel")]
-        public string PublishToChannel
-        {
-            get { return _publishToChannel; }
-            set { _publishToChannel = value; }
-        }
-
-        [Category("11. Active Objects")]
-        [Description("The channel you want to subscribe to for events. Empty if you don't want to Subscribe to any channel.")]
-        [UserFriendlyName("Subscribe to channel")]
-        public string SubscribeToChannel
-        {
-            get { return _subscribeToChannel; }
-            set { _subscribeToChannel = value; }
         }
 
         #endregion

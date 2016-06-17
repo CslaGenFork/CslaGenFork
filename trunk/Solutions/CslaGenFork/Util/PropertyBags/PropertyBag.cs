@@ -920,10 +920,6 @@ namespace CslaGenerator.Util.PropertyBags
                         if (cslaObject.ParentType != string.Empty)
                             cslaParent = cslaObject.Parent.CslaObjects.Find(cslaObject.ParentType);
 
-                        if (!GeneratorController.Current.CurrentUnit.GenerationParams.ActiveObjects &&
-                            (propertyName == "PublishToChannel" ||
-                            propertyName == "SubscribeToChannel"))
-                            return false;
                         if ((GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.None ||
                             GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.PropertyLevel ||
                             ((cslaObject.AuthzProvider == AuthorizationProvider.Custom) &&

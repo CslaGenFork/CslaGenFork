@@ -613,14 +613,8 @@ namespace CslaGenerator
             {
                 targetDir = _controller.CurrentFilePath + @"\" + targetDir;
             }
-            if (_controller.CurrentUnit.GenerationParams.TargetIsCsla4All)
-            {
-                _generator = new CodeGen.AdvancedGenerator(targetDir, _controller.TemplatesDirectory);
-            }
-            else
-            {
-                _generator = new Templates.CodeGenerator(targetDir, _controller.TemplatesDirectory);
-            }
+
+            _generator = new CodeGen.AdvancedGenerator(targetDir, _controller.TemplatesDirectory);
             _generator.Step += GeneratorStep;
             var i = 0;
             foreach (var obj in _controller.CurrentUnit.CslaObjects)
