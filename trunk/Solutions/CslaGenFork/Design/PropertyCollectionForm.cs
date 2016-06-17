@@ -10,8 +10,11 @@ using CslaGenerator.Util.PropertyBags;
 namespace CslaGenerator.Design
 {
     /// <summary>
-    /// A custom collection editor using the PropertyGrid control
+    /// A custom collection editor using the PropertyGrid control.
     /// </summary>
+    /// <remarks>
+    /// NOTE - Set here form height and width.
+    /// </remarks>
     public class PropertyCollectionForm : CollectionEditor
     {
         //http://social.msdn.microsoft.com/forums/en-us/winforms/thread/488CEDB4-B8CE-457C-B550-E3738752A1CA
@@ -456,6 +459,7 @@ namespace CslaGenerator.Design
 
         private void HandleFormCollectionType()
         {
+            ((ListBox) _form.Controls[0].Controls[4]).SelectionMode = SelectionMode.One;
             var formScreen = Screen.FromControl(_form);
             var height = formScreen.WorkingArea.Height;
             var cslaObject = (CslaObjectInfo)GeneratorController.Current.GetSelectedItem();
