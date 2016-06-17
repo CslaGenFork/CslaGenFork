@@ -204,7 +204,6 @@ namespace CslaGenerator.Controls
             this.chkForceReadOnlyProperties = new System.Windows.Forms.CheckBox();
             this.chkUpdateOnlyDirtyChildren = new System.Windows.Forms.CheckBox();
             this.chkNullableSupport = new System.Windows.Forms.CheckBox();
-            this.chkActiveObjects = new System.Windows.Forms.CheckBox();
             this.chkUsePublicPropertyInfo = new System.Windows.Forms.CheckBox();
             this.ofdLoad = new System.Windows.Forms.OpenFileDialog();
             this.projectParametersBindingSource = new System.Windows.Forms.BindingSource(this.components);
@@ -1944,7 +1943,6 @@ namespace CslaGenerator.Controls
             this.GenerationMiscTab.Controls.Add(this.cboHeaderVerbosity);
             this.GenerationMiscTab.Controls.Add(this.chkUpdateOnlyDirtyChildren);
             this.GenerationMiscTab.Controls.Add(this.chkNullableSupport);
-            this.GenerationMiscTab.Controls.Add(this.chkActiveObjects);
             this.GenerationMiscTab.Controls.Add(this.chkWriteTodo);
             this.GenerationMiscTab.Controls.Add(this.chkBackupOldSource);
             this.GenerationMiscTab.Controls.Add(this.chkRetryOnFileBusy);
@@ -2097,19 +2095,6 @@ namespace CslaGenerator.Controls
             this.chkNullableSupport.Text = "Enable Nullable<T> support";
             this.chkNullableSupport.UseVisualStyleBackColor = true;
             this.toolTip.SetToolTip(this.chkNullableSupport, "If checked, enables Nullable<T> support.");
-            //
-            // chkActiveObjects
-            // 
-            this.chkActiveObjects.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "ActiveObjects", true, DataSourceUpdateMode.OnPropertyChanged));
-            this.chkActiveObjects.Location = new System.Drawing.Point(255, 134);
-            this.chkActiveObjects.Name = "chkActiveObjects";
-            this.chkActiveObjects.Size = new System.Drawing.Size(216, 17);
-            this.chkActiveObjects.TabIndex = 14;
-            this.chkActiveObjects.Text = "Use Active Objects";
-            this.toolTip.SetToolTip(this.chkActiveObjects,
-                                     "If checked, outputs ActiveObjects code instead of plain CSLA.\r\n" +
-                                     "If unchecked hides \"11. Active Objects\" properties in Csla Object Info panel.\r\n" +
-                                     "\r\nN.B. - This option is disabled for target CSLA40DAL.");
             // 
             // chkWriteTodo
             // 
@@ -2395,7 +2380,6 @@ namespace CslaGenerator.Controls
         private System.Windows.Forms.CheckBox chkUpdateOnlyDirtyChildren;
         private System.Windows.Forms.CheckBox chkNullableSupport;
         private System.Windows.Forms.CheckBox chkUsePublicPropertyInfo;
-        private System.Windows.Forms.CheckBox chkActiveObjects;
         private System.Windows.Forms.BindingSource generationParametersBindingSource;
         private System.Windows.Forms.BindingSource projectParametersBindingSource;
         private System.Windows.Forms.OpenFileDialog ofdLoad;

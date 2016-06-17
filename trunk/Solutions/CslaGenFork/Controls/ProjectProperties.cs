@@ -295,7 +295,6 @@ namespace CslaGenerator.Controls
 
             if (UseCsla4)
             {
-                chkActiveObjects.Checked = false;
                 chkSynchronous.Enabled = !_genParams.ForceSync;
                 chkAsynchronous.Enabled = !_genParams.ForceAsync;
                 cboGenerateAuthorization.Enabled = true;
@@ -335,7 +334,6 @@ namespace CslaGenerator.Controls
             chkUsePublicPropertyInfo.Enabled = UseCsla4;
             chkUseChildFactory.Enabled = UseCsla4;
             chkUseBypassPropertyChecks.Enabled = UseCsla4;
-            chkActiveObjects.Enabled = !UseCsla4;
 
             chkSpOneFile.Enabled = _genParams.GenerateSprocs;
         }
