@@ -653,20 +653,12 @@ namespace CslaGenerator.Util.PropertyBags
                         GeneratorController.Current.CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider) &&
                         propertyName == "AuthzProvider")
                         return false;
-                    if (!GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All &&
-                        propertyName == "BusinessRules")
-                        return false;
-                    if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All &&
-                        (propertyName == "Rules" ||
-                        propertyName == "MarkDirtyOnChange"))
-                        return false;
                     if (cslaObject.ObjectType == CslaObjectType.NameValueList &&
                         (propertyName == "AuthzProvider" ||
                         propertyName == "ReadRoles" ||
                         propertyName == "WriteRoles" ||
                         propertyName == "ReadAuthzRuleType" ||
                         propertyName == "WriteAuthzRuleType" ||
-                        propertyName == "Rules" ||
                         propertyName == "BusinessRules"))
                         return false;
 

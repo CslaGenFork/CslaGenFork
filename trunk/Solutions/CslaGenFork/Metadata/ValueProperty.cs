@@ -77,12 +77,10 @@ namespace CslaGenerator.Metadata
 
         private DbBindColumn _dbBindColumn = new DbBindColumn();
         private string _fkConstraint = String.Empty;
-        private bool _markDirtyOnChange = true;
         private bool _undoable = true;
         private string _defaultValue = string.Empty;
         private string _friendlyName = string.Empty;
         private PropertyDeclaration _declarationMode;
-        private RuleCollection _rules = new RuleCollection();
         private BusinessRuleCollection _businessRules;
         private string _implements = string.Empty;
         private string[] _attributes = new string[] { };
@@ -341,15 +339,6 @@ namespace CslaGenerator.Metadata
         #region 03. Business Rules & Authorization
 
         [Category("03. Business Rules & Authorization")]
-        [Description("Collection of business rules.")]
-        [Editor(typeof(PropertyCollectionForm), typeof(UITypeEditor))]
-        [UserFriendlyName("Rule Collection")]
-        public virtual RuleCollection Rules
-        {
-            get { return _rules; }
-        }
-
-        [Category("03. Business Rules & Authorization")]
         [Description("Collection of business rules (transformation, validation, etc).")]
         [Editor(typeof(PropertyCollectionForm), typeof(UITypeEditor))]
         [UserFriendlyName("Business Rules Collection")]
@@ -463,15 +452,6 @@ namespace CslaGenerator.Metadata
         {
             get { return _undoable; }
             set { _undoable = value; }
-        }
-
-        [Category("05. Options")]
-        [Description("Setting to true will raise the property notification event when the property is set.")]
-        [UserFriendlyName("Mark Dirty On Change")]
-        public bool MarkDirtyOnChange
-        {
-            get { return _markDirtyOnChange; }
-            set { _markDirtyOnChange = value; }
         }
 
         #endregion

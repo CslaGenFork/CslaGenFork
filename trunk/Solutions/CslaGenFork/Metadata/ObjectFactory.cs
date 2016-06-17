@@ -285,7 +285,6 @@ namespace CslaGenerator.Metadata
             if (p.NativeType == "timestamp")
             {
                 destination.ReadOnly = true;
-                destination.MarkDirtyOnChange = false;
                 destination.Undoable = false;
                 destination.DeclarationMode = _currentUnit.Params.CreateTimestampPropertyMode;
             }
@@ -579,8 +578,7 @@ namespace CslaGenerator.Metadata
 
                             defaultCriteria.SetSprocNames();
 
-                            if (_currentUnit.GenerationParams.TargetIsCsla4All &&
-                                _currentCslaObject.ObjectType != CslaObjectType.EditableRoot &&
+                            if (_currentCslaObject.ObjectType != CslaObjectType.EditableRoot &&
                                 _currentCslaObject.ObjectType != CslaObjectType.EditableSwitchable &&
                                 _currentCslaObject.ObjectType != CslaObjectType.ReadOnlyObject)
                             {

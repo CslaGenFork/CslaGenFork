@@ -16,7 +16,6 @@ using System.Diagnostics;
 using System.Drawing.Design;
 using System.Reflection;
 using CslaGenerator.Attributes;
-using CslaGenerator.CodeGen;
 using CslaGenerator.Metadata;
 
 namespace CslaGenerator.Util.PropertyBags
@@ -631,6 +630,8 @@ namespace CslaGenerator.Util.PropertyBags
             {
                 var cslaObject = (CslaObjectInfo)GeneratorController.Current.GetSelectedItem();
 
+                var criteria = SelectedObject[0];
+
                 if ((cslaObject.ObjectType == CslaObjectType.ReadOnlyObject ||
                     cslaObject.ObjectType == CslaObjectType.ReadOnlyCollection ||
                     cslaObject.ObjectType == CslaObjectType.NameValueList ||
@@ -648,11 +649,7 @@ namespace CslaGenerator.Util.PropertyBags
                 if ((cslaObject.ObjectType == CslaObjectType.UnitOfWork && cslaObject.IsCreatorGetter) &&
                     (propertyName == "DeleteOptions"))
                     return false;
-                if (!GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All &&
-                    (propertyName == "NestedClass" ||
-                    propertyName == "CriteriaClassMode"))
-                    return false;
-                if (SelectedObject[0].CriteriaClassMode == CriteriaMode.BusinessBase &&
+                if (criteria.CriteriaClassMode == CriteriaMode.BusinessBase &&
                     propertyName == "NestedClass")
                     return false;
 

@@ -50,13 +50,6 @@ namespace CslaGenerator.Metadata
             get { return TypeCodeEx.Empty; }
         }
 
-        // Hide Rules
-        [Browsable(false)]
-        public override RuleCollection Rules
-        {
-            get { return null; }
-        }
-
         // Hide DbBindColumn
         [Browsable(false)]
         public override DbBindColumn DbBindColumn

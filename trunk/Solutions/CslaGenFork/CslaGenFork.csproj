@@ -545,12 +545,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Metadata\RelationRulesEngine.cs" />
-    <Compile Include="Metadata\Rule.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Metadata\RuleCollection.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Metadata\RuleDescriptionType.cs" />
     <Compile Include="Metadata\RuleMode.cs" />
     <Compile Include="Metadata\RuleSeverity.cs" />
@@ -590,7 +584,6 @@
     <Compile Include="Util\PropertyBags\InheritedTypePropertyBag.cs" />
     <Compile Include="Util\PropertyBags\PropertyBag.cs" />
     <Compile Include="Util\PropertyBags\PropertyContext.cs" />
-    <Compile Include="Util\PropertyBags\RuleBag.cs" />
     <Compile Include="Util\PropertyBags\UnitOfWorkPropertyBag.cs" />
     <Compile Include="Util\PropertyBags\UpdateValuePropertyBagBag.cs" />
     <Compile Include="Util\PropertyBags\ValuePropertyBag.cs" />

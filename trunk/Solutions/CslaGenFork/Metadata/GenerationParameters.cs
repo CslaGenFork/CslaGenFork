@@ -1,6 +1,5 @@
 using System;
 using System.ComponentModel;
-using System.Windows.Forms;
 
 namespace CslaGenerator.Metadata
 {
@@ -667,12 +666,6 @@ namespace CslaGenerator.Metadata
         }
 
         [Browsable(false)]
-        public bool TargetIsCsla4All
-        {
-            get { return TargetIsCsla4 || TargetIsCsla4DAL; }
-        }
-
-        [Browsable(false)]
         public bool TargetIsCsla4
         {
             get
@@ -745,26 +738,10 @@ namespace CslaGenerator.Metadata
 
         private void SetCsla4Options()
         {
-            UseCsla4 = false;
             UseDal = false;
             _generateDalInterface = false;
             _generateDalObject = false;
-
-            if (TargetIsCsla4All)
-            {
-                UseCsla4 = true;
-                _useSingleCriteria = false;
-            }
-            else
-            {
-                _generateQueriesWithSchema = true;
-                _useBypassPropertyChecks = false;
-                _usePublicPropertyInfo = false;
-                _useChildFactory = true;
-                _usesCslaAuthorizationProvider = true;
-                _generateAuthorization = AuthorizationLevel.ObjectLevel;
-                _usesCslaAuthorizationProvider = true;
-            }
+            _useSingleCriteria = false;
 
             if (TargetIsCsla4DAL)
             {
@@ -795,9 +772,6 @@ namespace CslaGenerator.Metadata
                 ForceAsync = true;
             }
         }
-
-        [Browsable(false)]
-        internal bool UseCsla4 { get; private set; }
 
         [Browsable(false)]
         internal bool UseDal { get; private set; }

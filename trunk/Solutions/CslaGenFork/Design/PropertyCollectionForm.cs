@@ -324,15 +324,6 @@ namespace CslaGenerator.Design
                 if (selectedObject != null)
                     propertyInfo.SetValue(_propGrid, new UpdateValuePropertyBag(selectedObject), null);
             }
-            else if (_collectionType == typeof (Rule))
-            {
-                var selectedObject = (Rule) _propGrid.SelectedObject;
-                //Get the property grid's type.
-                //This is a vsPropertyGrid located in System.Windows.Forms.Design
-                var propertyInfo = _propGrid.GetType().GetProperty("SelectedObject", BindingFlags.Public | BindingFlags.Instance);
-                if (selectedObject != null)
-                    propertyInfo.SetValue(_propGrid, new RuleBag(selectedObject), null);
-            }
             else if (_collectionType == typeof(BusinessRule))
             {
                 var selectedObject = (BusinessRule) _propGrid.SelectedObject;
@@ -482,8 +473,7 @@ namespace CslaGenerator.Design
                     }
                     if (cslaObject.ObjectType == CslaObjectType.NameValueList)
                         _form.Size = new Size(_form.Size.Width, 626);
-                    if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All)
-                        _form.Size = new Size(_form.Size.Width, _form.Size.Height - 16);
+                    _form.Size = new Size(_form.Size.Width, _form.Size.Height - 16);
                     if (height < _form.Size.Height)
                         _form.Size = new Size(_form.Size.Width, height);
                     break;
@@ -501,8 +491,6 @@ namespace CslaGenerator.Design
                         if (GeneratorController.Current.CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider)
                             _form.Size = new Size(_form.Size.Width, _form.Size.Height - 16);
                     }
-                    if (!GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All)
-                        _form.Size = new Size(_form.Size.Width, _form.Size.Height - 32);
                     if (height < _form.Size.Height)
                         _form.Size = new Size(_form.Size.Width, height);
                     break;
@@ -519,8 +507,6 @@ namespace CslaGenerator.Design
                         cslaObject.ObjectType == CslaObjectType.ReadOnlyCollection ||
                         cslaObject.ObjectType == CslaObjectType.NameValueList)
                         _form.Size = new Size(_form.Size.Width, _form.Size.Height - 256);
-                    if (!GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All)
-                        _form.Size = new Size(_form.Size.Width, _form.Size.Height - 32);
                     if (cslaObject.ObjectType == CslaObjectType.EditableChild)
                         _form.Size = new Size(_form.Size.Width, _form.Size.Height - 128);
                     if (height < _form.Size.Height)
@@ -537,15 +523,11 @@ namespace CslaGenerator.Design
                     _form.Size = new Size(570, _form.Size.Height);
                     _collectionType = typeof(ConvertValueProperty);
                     _form.Size = new Size(_form.Size.Width, 546);
-                    if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All)
-                        _form.Size = new Size(_form.Size.Width, _form.Size.Height - 16);
+                    _form.Size = new Size(_form.Size.Width, _form.Size.Height - 16);
                     break;
                 case "UpdateValueProperty Collection Editor":
                     _form.Size = new Size(550, _form.Size.Height);
                     _collectionType = typeof(UpdateValueProperty);
-                    break;
-                case "Rule Collection Editor":
-                    _collectionType = typeof(Rule);
                     break;
                 case "BusinessRule Collection Editor":
                     _form.Size = new Size(650, 330);

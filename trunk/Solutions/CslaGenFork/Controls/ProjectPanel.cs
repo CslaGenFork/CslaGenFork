@@ -15,6 +15,8 @@ namespace CslaGenerator.Controls
     /// </summary>
     public partial class ProjectPanel : DockContent
     {
+        #region
+
         public ProjectPanel()
         {
             InitializeComponent();
@@ -26,6 +28,8 @@ namespace CslaGenerator.Controls
             lstObjects.DrawItem += lstObjects_DrawItem;
             lstObjects.DrawMode = DrawMode.OwnerDrawFixed;
         }
+
+        #endregion
 
         #region Properties
 
@@ -71,16 +75,14 @@ namespace CslaGenerator.Controls
             if (_objects != null)
                 return true;
 
-            MessageBox.Show(@"You need to create a new project first.", @"CslaGenerator", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(@"You need to create a new project first.", @"CslaGenerator", MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
             return false;
         }
 
         internal CslaObjectInfoCollection Objects
         {
-            get
-            {
-                return _objects;
-            }
+            get { return _objects; }
             set
             {
                 if (_objects != null)
@@ -121,7 +123,6 @@ namespace CslaGenerator.Controls
                     catch
                     {
                     }
-
                 }
                 fBrowser.ShowNewFolderButton = true;
                 if (fBrowser.ShowDialog() == DialogResult.OK)
@@ -137,8 +138,8 @@ namespace CslaGenerator.Controls
             if (_suspendListUpdates)
                 return;
 
-            if (e.ListChangedType == ListChangedType.ItemChanged && 
-                e.PropertyDescriptor.Name != "ObjectName" && 
+            if (e.ListChangedType == ListChangedType.ItemChanged &&
+                e.PropertyDescriptor.Name != "ObjectName" &&
                 e.PropertyDescriptor.Name != "ObjectType" &&
                 e.PropertyDescriptor.Name != "InheritedType" &&
                 e.PropertyDescriptor.Name != "InheritedTypeWinForms" &&
@@ -177,7 +178,7 @@ namespace CslaGenerator.Controls
 
         private void Sort_CheckedChanged(object sender, EventArgs e)
         {
-            var opt = (RadioButton)sender;
+            var opt = (RadioButton) sender;
             if (opt.Checked)
                 ApplyFilters(true);
         }
@@ -266,6 +267,7 @@ namespace CslaGenerator.Controls
         {
             if (e.Index < 0)
                 return;
+
             e.DrawBackground();
             if (!_currentView[e.Index].Generate)
             {
@@ -278,6 +280,7 @@ namespace CslaGenerator.Controls
                     e.Graphics.DrawString(_currentView[e.Index].ObjectName, e.Font, brush, e.Bounds);
                 }
             }
+
             e.DrawFocusRectangle();
         }
 
@@ -347,7 +350,6 @@ namespace CslaGenerator.Controls
                     if (type == 0)
                         return a.ObjectName.CompareTo(b.ObjectName);
                     return type;
-
                 });
 
             if (updatePresenter)
@@ -363,7 +365,8 @@ namespace CslaGenerator.Controls
             {
                 if (allTypes || obj.ObjectType.ToString() == cboObjectType.Text)
                 {
-                    if (txtFilter.Text.Length == 0 || obj.ObjectName.IndexOf(txtFilter.Text, StringComparison.CurrentCultureIgnoreCase) >= 0)
+                    if (txtFilter.Text.Length == 0 ||
+                        obj.ObjectName.IndexOf(txtFilter.Text, StringComparison.CurrentCultureIgnoreCase) >= 0)
                         _currentView.Add(obj);
                     else
                     {
@@ -492,7 +495,9 @@ namespace CslaGenerator.Controls
             /*var duplicateList = new List<CslaObjectInfo>();
             foreach (CslaObjectInfo obj in lstObjects.SelectedItems)
                 duplicateList.Add(obj.Duplicate(GeneratorController.Catalog));*/
-            var duplicateList = (from CslaObjectInfo obj in lstObjects.SelectedItems select obj.Duplicate(GeneratorController.Catalog)).ToList();
+            var duplicateList =
+                (from CslaObjectInfo obj in lstObjects.SelectedItems select obj.Duplicate(GeneratorController.Catalog))
+                    .ToList();
             foreach (var obj in duplicateList)
                 _objects.InsertAtTop(obj, true);
 
@@ -670,7 +675,7 @@ namespace CslaGenerator.Controls
             }
 
             if (TopLevelControl != null)
-                ((MainForm)TopLevelControl).ObjectRelationsBuilderPanel.BringToFront();
+                ((MainForm) TopLevelControl).ObjectRelationsBuilderPanel.BringToFront();
         }
 
         internal void AddToObjectRelationBuilder()
@@ -736,7 +741,7 @@ namespace CslaGenerator.Controls
                     GeneratorController.Current.CurrentUnitLayout.ProjectListSelectedObjects.Add(cslaObject.ObjectName);
             }
         }
-        
+
         internal void SetState()
         {
             txtFilter.Text = GeneratorController.Current.CurrentUnitLayout.ProjectListFilterText;

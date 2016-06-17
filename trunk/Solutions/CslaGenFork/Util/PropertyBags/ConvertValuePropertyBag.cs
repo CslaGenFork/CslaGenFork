@@ -12,7 +12,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Drawing.Design;
 using System.Reflection;
 using CslaGenerator.Attributes;
@@ -633,10 +632,6 @@ namespace CslaGenerator.Util.PropertyBags
                      propertyName == "WriteRoles"))
                     return false;*/
 
-                if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All &&
-                    propertyName == "MarkDirtyOnChange")
-                    return false;
-
                 if (_selectedObject.Length > 1 && IsEnumerable(GetPropertyInfoCache(propertyName)))
                     return false;
 
@@ -644,7 +639,7 @@ namespace CslaGenerator.Util.PropertyBags
             }
             catch //(Exception e)
             {
-                Debug.WriteLine(objectType + ":" + propertyName);
+                //Debug.WriteLine(objectType + ":" + propertyName);
                 return true;
             }
         }

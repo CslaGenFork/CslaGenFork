@@ -35,7 +35,7 @@ namespace CslaGenerator.Design
             if (_object != null)
             {
                 var selectedItem = GeneratorController.Current.GetSelectedItem();
-                if (_object.GetType() == typeof (Criteria))
+                if (_object.GetType() == typeof(Criteria))
                 {
                     Text = @"Criteria Editor";
                     // pgEditor.SelectedObject = _object;
@@ -51,21 +51,16 @@ namespace CslaGenerator.Design
                         Size = new Size(Size.Width, Size.Height - 256);
                         pgEditor.Size = new Size(pgEditor.Size.Width, pgEditor.Size.Height - 256);
                     }
-                    if (!GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All)
-                    {
-                        Size = new Size(Size.Width, Size.Height - 32);
-                        pgEditor.Size = new Size(pgEditor.Size.Width, pgEditor.Size.Height - 32);
-                    }
+
                     pgEditor.ExpandAllGridItems();
                 }
-                else if (_object.GetType() == typeof (TypeInfo))
+                else if (_object.GetType() == typeof(TypeInfo))
                 {
-                    Text = @"Inherited Type Editor";
-                    //pgEditor.SelectedObject = _object;
+                    Text = @"Project or Assembly Type Editor";
                     pgEditor.SelectedObject = new InheritedTypePropertyBag((TypeInfo) _object);
                     Size = new Size(Size.Width + 100, Size.Height);
                 }
-                else if (_object.GetType() == typeof (AuthorizationRule))
+                else if (_object.GetType() == typeof(AuthorizationRule))
                 {
                     Text = @"Authorization Type Editor";
                     ((AuthorizationRule) _object).TypeChanged -= OnSelect;
@@ -74,7 +69,8 @@ namespace CslaGenerator.Design
                     {
                         ((AuthorizationRule) _object).IsPropertyRule = true;
                         ((AuthorizationRule) _object).Parent = PropertyCollectionForm.ParentValProp;
-                        ((AuthorizationRule) _object).ActionProperty = ValueProperty.Convert(PropertyCollectionForm.ParentProperty);
+                        ((AuthorizationRule) _object).ActionProperty =
+                            ValueProperty.Convert(PropertyCollectionForm.ParentProperty);
                     }
                     else
                     {
