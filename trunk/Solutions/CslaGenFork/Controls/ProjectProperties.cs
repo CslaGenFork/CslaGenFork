@@ -293,29 +293,12 @@ namespace CslaGenerator.Controls
             else
                 TabText = @"Project Properties";
 
-            if (UseCsla4)
-            {
-                chkSynchronous.Enabled = !_genParams.ForceSync;
-                chkAsynchronous.Enabled = !_genParams.ForceAsync;
-                cboGenerateAuthorization.Enabled = true;
-                chkUsesCslaAuthorizationProvider.Enabled =
-                    (_genParams.GenerateAuthorization != AuthorizationLevel.None &&
-                    _genParams.GenerateAuthorization != AuthorizationLevel.Custom);
-            }
-            else
-            {
-                chkWinForms.Checked = true;
-                chkWPF.Checked = false;
-                chkSilverlight.Checked = false;
-                chkSilverlightUseServices.Checked = false;
-                chkSynchronous.Checked = true;
-                chkAsynchronous.Checked = false;
-
-                chkSynchronous.Enabled = false;
-                chkAsynchronous.Enabled = false;
-                cboGenerateAuthorization.Enabled = false;
-                chkUsesCslaAuthorizationProvider.Enabled = false;
-            }
+            chkSynchronous.Enabled = !_genParams.ForceSync;
+            chkAsynchronous.Enabled = !_genParams.ForceAsync;
+            cboGenerateAuthorization.Enabled = true;
+            chkUsesCslaAuthorizationProvider.Enabled =
+                _genParams.GenerateAuthorization != AuthorizationLevel.None &&
+                _genParams.GenerateAuthorization != AuthorizationLevel.Custom;
             chkGenerateDTO.Enabled = UseDal;
             chkGenerateDalInterface.Enabled = UseDal;
             chkGenerateDalObject.Enabled = UseDal;
@@ -323,17 +306,16 @@ namespace CslaGenerator.Controls
             txtDalObjectNamespace.Enabled = UseDal;
             chkGenerateDatabaseClass.Enabled = !UseDal;
             txtDalName.Enabled = UseDal;
-
-            txtDatabase.Enabled = !UseCsla4;
-            txtDatabaseConnection.Enabled = UseCsla4;
-            chkWinForms.Enabled = UseCsla4;
-            chkWPF.Enabled = UseCsla4;
-            chkSilverlight.Enabled = UseCsla4;
-            chkSilverlightUseServices.Enabled = UseCsla4;
-            chkGenerateQueriesWithSchema.Enabled = UseCsla4;
-            chkUsePublicPropertyInfo.Enabled = UseCsla4;
-            chkUseChildFactory.Enabled = UseCsla4;
-            chkUseBypassPropertyChecks.Enabled = UseCsla4;
+            txtDatabase.Enabled = false;
+            txtDatabaseConnection.Enabled = true;
+            chkWinForms.Enabled = true;
+            chkWPF.Enabled = true;
+            chkSilverlight.Enabled = true;
+            chkSilverlightUseServices.Enabled = true;
+            chkGenerateQueriesWithSchema.Enabled = true;
+            chkUsePublicPropertyInfo.Enabled = true;
+            chkUseChildFactory.Enabled = true;
+            chkUseBypassPropertyChecks.Enabled = true;
 
             chkSpOneFile.Enabled = _genParams.GenerateSprocs;
         }
@@ -341,11 +323,6 @@ namespace CslaGenerator.Controls
         internal bool IsDirty
         {
             get { return (_genParams.Dirty || _projParams.Dirty); }
-        }
-
-        private bool UseCsla4
-        {
-            get { return (_genParams.UseCsla4); }
         }
 
         private bool UseDal

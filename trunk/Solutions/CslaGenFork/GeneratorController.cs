@@ -637,7 +637,8 @@ namespace CslaGenerator
             ReloadBuilderPropertyGrid();
         }
 
-        // changed visibility so ActiveObjects settings can be hidden dynamicaly
+        // todo: trace this to understand what ActiveObjects are here for
+        // changed visibility so ActiveObjects (?) settings can be hidden dynamicaly
         internal void ReloadPropertyGrid()
         {
             if (_mainForm.DbSchemaPanel != null)
@@ -807,7 +808,7 @@ namespace CslaGenerator
             ConfigTools.SharedAppConfigChangeMru(MruItems);
         }
 
-        public object GetSelectedItem()
+        internal object GetSelectedItem()
         {
             object selectedItem;
             if (Current.MainForm.ProjectPanel.ListObjects.InvokeRequired)

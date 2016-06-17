@@ -1389,8 +1389,7 @@ namespace CslaGenerator.Controls
             this.cboOutputLanguage.Size = new System.Drawing.Size(118, 21);
             this.cboOutputLanguage.TabIndex = 6;
             this.toolTip.SetToolTip(this.cboOutputLanguage,
-                                     "Select the language for the generated code: C# or Visual Basic.\r\n" +
-                                     "\r\nN.B. - JScript is deprecated since v.4.0.");
+                                     "Select the language for the generated code: C# or Visual Basic.");
             // 
             // groupBoxUIEnvironment
             // 
@@ -1983,7 +1982,7 @@ namespace CslaGenerator.Controls
             this.cboGenerateAuthorization.Size = new System.Drawing.Size(118, 21);
             this.cboGenerateAuthorization.TabIndex = 5;
             this.toolTip.SetToolTip(this.cboGenerateAuthorization,
-                                     "CSLA40 - Authorization level to generate. Use \"None\" for no implementation at all.\r\n" +
+                                     "Authorization level to generate. Use \"None\" for no implementation at all.\r\n" +
                                      "In Csla Object Info panel and in all value properties panels,\r\n" +
                                      "the authz options will be shown or hidden according to this setting.\r\n" +
                                      "\r\nN.B. - \"Custom\" shows all authz options because it generates\r\n" +
