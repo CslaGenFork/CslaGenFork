@@ -462,15 +462,17 @@ namespace CslaGenerator.Design
             ((ListBox) _form.Controls[0].Controls[4]).SelectionMode = SelectionMode.One;
             var formScreen = Screen.FromControl(_form);
             var height = formScreen.WorkingArea.Height;
-            var cslaObject = (CslaObjectInfo)GeneratorController.Current.GetSelectedItem();
+            var cslaObject = (CslaObjectInfo) GeneratorController.Current.GetSelectedItem();
 
             switch (_form.Text)
             {
                 case "ValueProperty Collection Editor":
                     _form.Size = new Size(570, _form.Size.Height);
-                    _collectionType = typeof (ValueProperty);
-                    if (GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.None ||
-                        GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.ObjectLevel)
+                    _collectionType = typeof(ValueProperty);
+                    if (GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization ==
+                        AuthorizationLevel.None ||
+                        GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization ==
+                        AuthorizationLevel.ObjectLevel)
                         _form.Size = new Size(_form.Size.Width, 658);
                     else
                     {
@@ -487,9 +489,11 @@ namespace CslaGenerator.Design
                     break;
                 case "ChildProperty Collection Editor":
                     _form.Size = new Size(586, _form.Size.Height);
-                    _collectionType = typeof (ChildProperty);
-                    if (GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.None ||
-                        GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.ObjectLevel)
+                    _collectionType = typeof(ChildProperty);
+                    if (GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization ==
+                        AuthorizationLevel.None ||
+                        GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization ==
+                        AuthorizationLevel.ObjectLevel)
                         _form.Size = new Size(_form.Size.Width, 578);
                     else
                     {
@@ -499,17 +503,17 @@ namespace CslaGenerator.Design
                     }
                     if (!GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All)
                         _form.Size = new Size(_form.Size.Width, _form.Size.Height - 32);
-                        if (height < _form.Size.Height)
+                    if (height < _form.Size.Height)
                         _form.Size = new Size(_form.Size.Width, height);
                     break;
                 case "UnitOfWorkProperty Collection Editor":
                     _form.Size = new Size(570, _form.Size.Height);
-                    _collectionType = typeof (UnitOfWorkProperty);
+                    _collectionType = typeof(UnitOfWorkProperty);
                     _form.Size = new Size(_form.Size.Width, 358);
                     break;
                 case "Criteria Collection Editor":
                     _form.Size = new Size(550, _form.Size.Height);
-                    _collectionType = typeof (Criteria);
+                    _collectionType = typeof(Criteria);
                     _form.Size = new Size(_form.Size.Width, 738);
                     if (cslaObject.ObjectType == CslaObjectType.ReadOnlyObject ||
                         cslaObject.ObjectType == CslaObjectType.ReadOnlyCollection ||
@@ -523,28 +527,29 @@ namespace CslaGenerator.Design
                         _form.Size = new Size(_form.Size.Width, height);
                     break;
                 case "CriteriaProperty Collection Editor":
-                    _collectionType = typeof (CriteriaProperty);
+                    _collectionType = typeof(CriteriaProperty);
                     _form.Size = new Size(_form.Size.Width, 402);
-                    if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4DAL && cslaObject.UsesInlineQuery)
+                    if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4DAL &&
+                        cslaObject.UsesInlineQuery)
                         _form.Size = new Size(_form.Size.Width, _form.Size.Height + 16);
                     break;
                 case "ConvertValueProperty Collection Editor":
                     _form.Size = new Size(570, _form.Size.Height);
-                    _collectionType = typeof (ConvertValueProperty);
+                    _collectionType = typeof(ConvertValueProperty);
                     _form.Size = new Size(_form.Size.Width, 546);
                     if (GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4All)
                         _form.Size = new Size(_form.Size.Width, _form.Size.Height - 16);
                     break;
                 case "UpdateValueProperty Collection Editor":
                     _form.Size = new Size(550, _form.Size.Height);
-                    _collectionType = typeof (UpdateValueProperty);
+                    _collectionType = typeof(UpdateValueProperty);
                     break;
                 case "Rule Collection Editor":
-                    _collectionType = typeof (Rule);
+                    _collectionType = typeof(Rule);
                     break;
                 case "BusinessRule Collection Editor":
                     _form.Size = new Size(650, 330);
-                    _collectionType = typeof (BusinessRule);
+                    _collectionType = typeof(BusinessRule);
                     break;
                 case "BusinessRuleConstructor Collection Editor":
                     _form.Size = new Size(550, 330);
@@ -559,7 +564,7 @@ namespace CslaGenerator.Design
                     _collectionType = typeof(BusinessRuleConstructorParameter);
                     break;*/
                 case "DecoratorArgument Collection Editor":
-                    _collectionType = typeof (DecoratorArgument);
+                    _collectionType = typeof(DecoratorArgument);
                     break;
             }
         }
