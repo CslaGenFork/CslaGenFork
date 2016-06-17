@@ -330,9 +330,6 @@
     <Compile Include="Metadata\PropertyHelper.cs" />
     <Compile Include="Metadata\AuthorizationRule.cs" />
     <Compile Include="Metadata\ReportObjectNotFound.cs" />
-    <Compile Include="Metadata\RuleSeverity.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Metadata\SimpleCacheResults.cs" />
     <Compile Include="Metadata\UnitOfWorkCriteriaManager.cs" />
     <Compile Include="Metadata\UnitOfWorkProperty.cs" />
@@ -548,6 +545,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Metadata\RelationRulesEngine.cs" />
+    <Compile Include="Metadata\RuleSeverity.cs" />
     <Compile Include="Metadata\TargetFramework.cs" />
     <Compile Include="Metadata\TransactionType.cs">
       <SubType>Code</SubType>
