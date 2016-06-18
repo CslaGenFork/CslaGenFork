@@ -16,14 +16,13 @@ namespace CslaGenerator.Design
     /// </summary>
     public class BusinessRuleTypeEditor : UITypeEditor, IDisposable
     {
-
         public class BaseProperty
         {
             public Type Type { get; set; }
             public Type BaseType { get; set; }
             public string TypeName { get; set; }
 
-            public BaseProperty (Type type, Type baseType, string typeName)
+            public BaseProperty(Type type, Type baseType, string typeName)
             {
                 Type = type;
                 BaseType = baseType;
@@ -46,7 +45,7 @@ namespace CslaGenerator.Design
 
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
-            _editorService = (IWindowsFormsEditorService) provider.GetService(typeof (IWindowsFormsEditorService));
+            _editorService = (IWindowsFormsEditorService) provider.GetService(typeof(IWindowsFormsEditorService));
             if (_editorService != null)
             {
                 if (context.Instance != null)
@@ -62,13 +61,13 @@ namespace CslaGenerator.Design
                     _lstProperties.Items.Add("(None)");
 
                     _sizeSortedNamespaces = new List<string>();
-                    var currentCslaObject = (CslaObjectInfo)GeneratorController.Current.GetSelectedItem();
+                    var currentCslaObject = (CslaObjectInfo) GeneratorController.Current.GetSelectedItem();
                     _sizeSortedNamespaces = currentCslaObject.Namespaces.ToList();
+                    _sizeSortedNamespaces.Add(currentCslaObject.ObjectNamespace);
                     _sizeSortedNamespaces = GetSizeSorted(_sizeSortedNamespaces);
 
                     // Get Assembly File Path
                     var assemblyFileInfo = _instance.GetProperty("AssemblyFile");
-                    //string assemblyFilePath = (string) assemblyFileInfo.GetValue(context.Instance, null);
                     var assemblyFilePath = (string) assemblyFileInfo.GetValue(objinfo, null);
 
                     // If Assembly path is available, use assembly to load a drop down with available types.
@@ -107,8 +106,9 @@ namespace CslaGenerator.Design
                         _lstProperties.Sorted = true;
                     }
 
-                    if (_lstProperties.Items.Contains(StripKnownNamespaces(_sizeSortedNamespaces, obj.Type)))
-                        _lstProperties.SelectedItem = StripKnownNamespaces(_sizeSortedNamespaces, obj.Type);
+                    var entry = StripKnownNamespaces(_sizeSortedNamespaces, obj.Type);
+                    if (_lstProperties.Items.Contains(entry))
+                        _lstProperties.SelectedItem = entry;
                     else
                         _lstProperties.SelectedItem = "(None)";
 
@@ -116,30 +116,17 @@ namespace CslaGenerator.Design
 
                     if (_lstProperties.SelectedIndex < 0 || _lstProperties.SelectedItem.ToString() == "(None)")
                     {
-                        FillSubsidiaryGrids(obj, _lstProperties.SelectedItem.ToString());
+                        FillPropertyGrid(obj, _lstProperties.SelectedItem.ToString());
                         return string.Empty;
                     }
 
-                    FillSubsidiaryGrids(obj, _lstProperties.SelectedItem.ToString());
+                    FillPropertyGrid(obj, _lstProperties.SelectedItem.ToString());
 
                     return _lstProperties.SelectedItem.ToString();
                 }
             }
 
             return value;
-        }
-
-        public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
-        {
-            return UITypeEditorEditStyle.Modal;
-        }
-
-        private void ValueChanged(object sender, EventArgs e)
-        {
-            if (_editorService != null)
-            {
-                _editorService.CloseDropDown();
-            }
         }
 
         public static List<string> GetSizeSorted(List<string> namespaces)
@@ -152,7 +139,7 @@ namespace CslaGenerator.Design
         {
             foreach (var ns in sortedNamespaces)
             {
-                if (stringType.IndexOf(ns) == 0)
+                if (stringType.IndexOf(ns, StringComparison.InvariantCulture) == 0)
                 {
                     return stringType.Substring(ns.Length + 1);
                 }
@@ -160,7 +147,7 @@ namespace CslaGenerator.Design
             return stringType;
         }
 
-        private void FillSubsidiaryGrids(BusinessRule rule, string stringType)
+        private void FillPropertyGrid(BusinessRule rule, string stringType)
         {
             Type usedType = null;
 
@@ -215,8 +202,10 @@ namespace CslaGenerator.Design
             #region Business Rule Properties
 
             rule.RuleProperties = new BusinessRulePropertyCollection();
-            foreach (var prop in usedType.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly).
-                Where(p => p.CanRead && p.GetSetMethod() != null))
+            var collection = usedType.GetProperties(BindingFlags.Instance | BindingFlags.Public |
+                                                    BindingFlags.DeclaredOnly).
+                Where(p => p.CanRead && p.GetSetMethod() != null);
+            foreach (var prop in collection)
             {
                 /*if (prop.PropertyType.IsGenericParameter)
                 {
@@ -256,11 +245,11 @@ namespace CslaGenerator.Design
                     {
                         if (targetType.IsEnum)
                             ruleInfo.Value = ConvertStringToEnum(targetType, "");
-                        else if (targetType == typeof (Int16))
+                        else if (targetType == typeof(Int16))
                             ruleInfo.Value = (Int16) 0;
-                        else if (targetType == typeof (Int32))
+                        else if (targetType == typeof(Int32))
                             ruleInfo.Value = (Int32) 0;
-                        else if (targetType == typeof (Int64))
+                        else if (targetType == typeof(Int64))
                             ruleInfo.Value = (Int64) 0;
                     }
                     else
@@ -302,7 +291,8 @@ namespace CslaGenerator.Design
 
                     if (ctorParamInfo.IsGenericParameter)
                     {
-                        ctorParamInfo.Type = param.ParameterType.Name.Substring(0, param.ParameterType.Name.LastIndexOf('`'));
+                        ctorParamInfo.Type = param.ParameterType.Name.Substring(0,
+                            param.ParameterType.Name.LastIndexOf('`'));
                         foreach (var argument in param.ParameterType.GetGenericArguments())
                         {
                             ctorParamInfo.Type += "<" + argument.Name + ">";
@@ -321,11 +311,11 @@ namespace CslaGenerator.Design
                         {
                             if (targetType.IsEnum)
                                 ctorParamInfo.Value = ConvertStringToEnum(targetType, "");
-                            else if (targetType == typeof (Int16))
+                            else if (targetType == typeof(Int16))
                                 ctorParamInfo.Value = (Int16) 0;
-                            else if (targetType == typeof (Int32))
+                            else if (targetType == typeof(Int32))
                                 ctorParamInfo.Value = (Int32) 0;
-                            else if (targetType == typeof (Int64))
+                            else if (targetType == typeof(Int64))
                                 ctorParamInfo.Value = (Int64) 0;
                         }
                         else
@@ -358,7 +348,6 @@ namespace CslaGenerator.Design
             }
 
             #endregion
-
         }
 
         private bool CTorMatchesRuleLevel(BusinessRule rule, Type candidate)
@@ -418,6 +407,19 @@ namespace CslaGenerator.Design
                 propType = Type.GetType("CslaGenerator.Metadata." + type);
 
             return propType;
+        }
+
+        public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
+        {
+            return UITypeEditorEditStyle.Modal;
+        }
+
+        private void ValueChanged(object sender, EventArgs e)
+        {
+            if (_editorService != null)
+            {
+                _editorService.CloseDropDown();
+            }
         }
 
         protected virtual void Dispose(bool disposing)
