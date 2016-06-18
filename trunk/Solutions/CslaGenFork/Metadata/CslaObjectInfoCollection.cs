@@ -11,23 +11,19 @@ namespace CslaGenerator.Metadata
             if (name == string.Empty)
                 return null;
 
-            /*foreach (var c in this)
-            {
-                if (c.ObjectName.Equals(name))
-                    return c;
-            }
-            return null;*/
-
             return this.FirstOrDefault(c => c.ObjectName.Equals(name));
+        }
+
+        public CslaObjectInfo FindByGenericName(string name)
+        {
+            if (name == string.Empty)
+                return null;
+
+            return this.FirstOrDefault(c => c.GenericName.Equals(name));
         }
 
         public List<string> GetAllObjectNames()
         {
-            /*var lst = new List<string>();
-            foreach (var obj in this)
-                lst.Add(obj.ObjectName);
-            return lst;*/
-
             return this.Select(obj => obj.ObjectName).ToList();
         }
 
@@ -37,7 +33,7 @@ namespace CslaGenerator.Metadata
             foreach (CslaObjectInfo obj in this)
             {
                 if (RelationRulesEngine.IsParentAllowed(obj.ObjectType, info.ObjectType) &&
-                    obj != info)
+                    !Equals(obj, info))
                     lst.Add(obj.ObjectName);
             }
             return lst;
@@ -81,7 +77,7 @@ namespace CslaGenerator.Metadata
             foreach (CslaObjectInfo obj in this)
             {
                 if (RelationRulesEngine.IsChildAllowed(obj.ObjectType, info.ObjectType) &&
-                    obj != info)
+                    !Equals(obj, info))
                     lst.Add(obj.ObjectName);
             }
             return lst;
@@ -97,6 +93,5 @@ namespace CslaGenerator.Metadata
             }
             return lst;
         }
-
     }
 }

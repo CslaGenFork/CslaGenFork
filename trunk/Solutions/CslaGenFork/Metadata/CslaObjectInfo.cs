@@ -34,6 +34,8 @@ namespace CslaGenerator.Metadata
         private string _commandTimeout = string.Empty;
         private CslaObjectType _objectType = CslaObjectType.PlaceHolder;
         private UnitOfWorkFunction _unitOfWorkType;
+        private bool _isGenericType;
+        private string _genericArguments = string.Empty;
         private ConstructorVisibility _constructorVisibility = ConstructorVisibility.Default;
         private TypeInfo _inheritedType;
         private TypeInfo _inheritedTypeWinForms;
@@ -118,10 +120,10 @@ namespace CslaGenerator.Metadata
         public CslaObjectInfo(CslaGeneratorUnit parent)
             : base(parent)
         {
-            _inheritedType = new TypeInfo(this);
+            _inheritedType = new TypeInfo();
             _inheritedType.TypeChanged += InheritedType_TypeChanged;
 
-            _inheritedTypeWinForms = new TypeInfo(this);
+            _inheritedTypeWinForms = new TypeInfo();
             _inheritedTypeWinForms.TypeChanged += InheritedTypeWinForms_TypeChanged;
 
             _valueProperties.ItemChanged += vp_ItemChanged;
@@ -357,7 +359,53 @@ namespace CslaGenerator.Metadata
                         if (_fileName.Equals(String.Empty))
                             _fileName = value;
                         OnPropertyChanged("ObjectName");
+                        OnPropertyChanged("GenericName");
                     }
+                }
+            }
+        }
+
+        [Category("01. Common Options")]
+        [Description("Type is Generic.")]
+        [UserFriendlyName("Generic Type")]
+        public bool IsGenericType
+        {
+            get { return _isGenericType; }
+            set
+            {
+                if (_isGenericType != value)
+                {
+                    _isGenericType = value;
+                    OnPropertyChanged("IsGenericType");
+                    OnPropertyChanged("GenericName");
+                }
+            }
+        }
+
+        [Category("01. Common Options")]
+        [Description("The definition of arguments for the generic type. Must use upper case and when using two arguments, separate them with a comma.")]
+        [UserFriendlyName("Generic Type Arguments")]
+        public string GenericArguments
+        {
+            get
+            {
+                if (_isGenericType)
+                    return _genericArguments;
+
+                return string.Empty;
+            }
+            set
+            {
+
+                var tmp = string.Empty;
+                if (!string.IsNullOrEmpty(value))
+                    tmp = value.Trim().Replace(" ", string.Empty).ToUpper();
+
+                if (_genericArguments != tmp)
+                {
+                    _genericArguments = tmp;
+                    OnPropertyChanged("GenericArguments");
+                    OnPropertyChanged("GenericName");
                 }
             }
         }
@@ -512,7 +560,7 @@ namespace CslaGenerator.Metadata
         public string FileName
         {
             get { return _fileName; }
-            set 
+            set
             {
                 _fileName = PropertyHelper.TidyAllowSpaces(value);
                 if (_objectName.Equals(String.Empty))
@@ -651,6 +699,7 @@ namespace CslaGenerator.Metadata
             get { return _supportUpdateProperties; }
             set { _supportUpdateProperties = value; }
         }
+
         [Category("03. Behaviour & Criteria")]
         [Description("The Criteria classes that are used by this object.")]
         [Editor(typeof(PropertyCollectionForm), typeof(UITypeEditor))]
@@ -716,13 +765,16 @@ namespace CslaGenerator.Metadata
         /// </summary>
         [Category("04. Child Object Options")]
         [Description("The Parent properties are used in inserts and may also be used in updates or deletes.\r\n" +
-            "Use \"InsertOnly\" when the child has its own ID that is used on updates and deletes. " +
-            "Use \"InsertUpdateDelete\" when the child has no ID of its own.")]
+                     "Use \"InsertOnly\" when the child has its own ID that is used on updates and deletes. " +
+                     "Use \"InsertUpdateDelete\" when the child has no ID of its own.")]
         [UserFriendlyName("Parent Properties Usage")]
         [XmlIgnore]
         public ParentPropertiesUsage UseParentProperties
         {
-            get { return _parentInsertOnly ? ParentPropertiesUsage.InsertOnly : ParentPropertiesUsage.InsertUpdateDelete; }
+            get
+            {
+                return _parentInsertOnly ? ParentPropertiesUsage.InsertOnly : ParentPropertiesUsage.InsertUpdateDelete;
+            }
             set
             {
                 if (value == ParentPropertiesUsage.InsertOnly)
@@ -819,7 +871,7 @@ namespace CslaGenerator.Metadata
 
         [Category("05. Collection Options")]
         [Description("Whether the collection allows adding new items through BindingList Methods. " +
-            "If true, \"New Roles\" authz rules can restrict user rights.")]
+                     "If true, \"New Roles\" authz rules can restrict user rights.")]
         [UserFriendlyName("Allow New")]
         public bool AllowNew
         {
@@ -836,7 +888,7 @@ namespace CslaGenerator.Metadata
 
         [Category("05. Collection Options")]
         [Description("Whether the collection allows editing items through BindingList Methods. " +
-            "If true, \"Update Roles\" authz rules can restrict user rights.")]
+                     "If true, \"Update Roles\" authz rules can restrict user rights.")]
         [UserFriendlyName("Allow Edit")]
         public bool AllowEdit
         {
@@ -853,7 +905,7 @@ namespace CslaGenerator.Metadata
 
         [Category("05. Collection Options")]
         [Description("Whether the collection allows removing items through BindingList Methods. " +
-            "If true, \"Delete Roles\" authz rules can restrict user rights.")]
+                     "If true, \"Delete Roles\" authz rules can restrict user rights.")]
         [UserFriendlyName("Allow Remove")]
         public bool AllowRemove
         {
@@ -870,7 +922,7 @@ namespace CslaGenerator.Metadata
 
         [Category("05. Collection Options")]
         [Description("Create a reference to the parent collection. This option is only available for collection items.\r\n"+
-            "When targeting CSLA40 this option is honoured for DynamicEditableRoot and ReadOnlyObjects.")]
+            "This option is honoured for DynamicEditableRoot and ReadOnlyObjects.")]
         [UserFriendlyName("Add Parent Reference")]
         public bool AddParentReference
         {
@@ -965,14 +1017,14 @@ namespace CslaGenerator.Metadata
                 if (GeneratorController.Current.CurrentUnit.GenerationParams.UseDal)
                     if (_persistenceType == PersistenceType.SqlConnectionUnshared)
                         return PersistenceType.SqlConnectionManager;
-                
+
                 return _persistenceType;
             }
             set
             {
                 if (GeneratorController.Current.CurrentUnit.GenerationParams.UseDal)
                     if (_persistenceType == PersistenceType.SqlConnectionUnshared)
-                        value=  PersistenceType.SqlConnectionManager;
+                        value = PersistenceType.SqlConnectionManager;
 
                 _persistenceType = value;
             }
@@ -1004,8 +1056,7 @@ namespace CslaGenerator.Metadata
                     return string.Empty;
                 return _commandTimeout;
             }
-            set
-            { _commandTimeout = PropertyHelper.TidyInteger(value); }
+            set { _commandTimeout = PropertyHelper.TidyInteger(value); }
         }
 
         /// <summary>
@@ -1132,7 +1183,6 @@ namespace CslaGenerator.Metadata
                     foreach (Criteria c in _criteriaObjects)
                         if (c.GetOptions.Procedure && string.IsNullOrEmpty(c.GetOptions.ProcedureName))
                             c.GetOptions.ProcedureName = PropertyHelper.Tidy(value);
-
             }
         }
 
@@ -1277,7 +1327,7 @@ namespace CslaGenerator.Metadata
                 }
             }
         }
-        
+
         [Category("10. Business Rules & Authorization")]
         [Description("The Authorization Provider for this property.")]
         [UserFriendlyName("Authorization Provider")]
@@ -1293,7 +1343,7 @@ namespace CslaGenerator.Metadata
                 }
             }
         }
-        
+
         /// <summary>
         /// Roles to create object. Multiple roles must be separated with ;.
         /// </summary>
@@ -1315,7 +1365,7 @@ namespace CslaGenerator.Metadata
         public string GetRoles
         {
             get { return _getRoles; }
-            set { _getRoles = PropertyHelper.TidyAllowSpaces(value).Replace(';', ',').Trim(new[] { '!', ',' }); }
+            set { _getRoles = PropertyHelper.TidyAllowSpaces(value).Replace(';', ',').Trim(new[] {'!', ','}); }
         }
 
         /// <summary>
@@ -1327,7 +1377,7 @@ namespace CslaGenerator.Metadata
         public string UpdateRoles
         {
             get { return _updateRoles; }
-            set { _updateRoles = PropertyHelper.TidyAllowSpaces(value).Replace(';', ',').Trim(new[] { '!', ',' }); }
+            set { _updateRoles = PropertyHelper.TidyAllowSpaces(value).Replace(';', ',').Trim(new[] {'!', ','}); }
         }
 
         /// <summary>
@@ -1339,7 +1389,7 @@ namespace CslaGenerator.Metadata
         public string DeleteRoles
         {
             get { return _deleteRoles; }
-            set { _deleteRoles = PropertyHelper.TidyAllowSpaces(value).Replace(';', ',').Trim(new[] { '!', ',' }); }
+            set { _deleteRoles = PropertyHelper.TidyAllowSpaces(value).Replace(';', ',').Trim(new[] {'!', ','}); }
         }
 
         [Category("10. Business Rules & Authorization")]
@@ -1483,6 +1533,17 @@ namespace CslaGenerator.Metadata
 
         [Browsable(false)]
         [XmlIgnore]
+        public string GenericName
+        {
+            get
+            {
+                var arguments = _genericArguments != string.Empty ? _genericArguments : "?";
+                return _objectName + (_isGenericType ? string.Format("<{0}>", arguments) : string.Empty);
+            }
+        }
+
+        [Browsable(false)]
+        [XmlIgnore]
         public AuthorizationActions ActionProperty { get; set; }
 
         [Browsable(false)]
@@ -1581,13 +1642,14 @@ namespace CslaGenerator.Metadata
                     return false;
                 if (GeneratorController.Current.CurrentUnit.GenerationParams.UseInlineQueries == UseInlineQueries.Always)
                     return true;
-                if (GeneratorController.Current.CurrentUnit.GenerationParams.UseInlineQueries == UseInlineQueries.SpecifyByObject)
+                if (GeneratorController.Current.CurrentUnit.GenerationParams.UseInlineQueries ==
+                    UseInlineQueries.SpecifyByObject)
                 {
-                    var parent = Parent.CslaObjects.Find(ParentType);// this is the direct parent object or collection
+                    var parent = Parent.CslaObjects.Find(ParentType); // this is the direct parent object or collection
                     if (parent != null && parent.GenerateInlineQueries.Count > 0)
                         return true;
 
-                     parent = FindParent(this);// this is the ancestor object (not collection)
+                    parent = FindParent(this); // this is the ancestor object (not collection)
                     if (parent != null && parent.GenerateInlineQueries.Count > 0)
                         return true;
 
@@ -1604,7 +1666,7 @@ namespace CslaGenerator.Metadata
 
         public void InheritedType_TypeChanged(object sender, EventArgs e)
         {
-            var t = (TypeInfo)sender;
+            var t = (TypeInfo) sender;
             if (t.Type != String.Empty)
             {
                 //ValidateType(t.GetInheritedType());
@@ -1615,7 +1677,7 @@ namespace CslaGenerator.Metadata
 
         public void InheritedTypeWinForms_TypeChanged(object sender, EventArgs e)
         {
-            var t = (TypeInfo)sender;
+            var t = (TypeInfo) sender;
             if (t.Type != String.Empty)
             {
                 //ValidateType(t.GetInheritedType());
@@ -1635,7 +1697,7 @@ namespace CslaGenerator.Metadata
         }*/
 
         #endregion
-        
+
         #region Private and Internal Methods
 
         private ValueProperty GetValuePropertyFromInfo(PropertyInfo info)
@@ -1670,8 +1732,8 @@ namespace CslaGenerator.Metadata
             if (_objectType == CslaObjectType.UnitOfWork)
                 return;
             if (_objectType == CslaObjectType.EditableChild ||
-                    _objectType == CslaObjectType.EditableSwitchable ||
-                    _objectType == CslaObjectType.DynamicEditableRoot)
+                _objectType == CslaObjectType.EditableSwitchable ||
+                _objectType == CslaObjectType.DynamicEditableRoot)
             {
                 _deleteProcedureName =
                     Parent.Params.SpGeneralPrefix
@@ -1710,6 +1772,20 @@ namespace CslaGenerator.Metadata
         #endregion
 
         #region Public Methods
+
+        public int NumberOfGenericArguments()
+        {
+            if (CslaTemplateHelperCS.IsCollectionType(ObjectType) ||
+                ObjectType == CslaObjectType.NameValueList)
+                return 2;
+
+            return 1;
+        }
+
+        public string[] GetGenericArguments()
+        {
+            return _genericArguments.TrimStart('<').TrimEnd('>').Split(',');
+        }
 
         public CslaObjectInfo Duplicate(ICatalog catalog)
         {
@@ -1867,7 +1943,10 @@ namespace CslaGenerator.Metadata
                     myChildReadWriteProperties.Add(childProperty);
             }*/
 
-            myChildReadWriteProperties.AddRange(from childProperty in _childProperties let childInfo = Parent.CslaObjects.Find(childProperty.TypeName) where !CslaTemplateHelperCS.IsReadOnlyType(childInfo.ObjectType) select childProperty);
+            myChildReadWriteProperties.AddRange(from childProperty in _childProperties
+                let childInfo = Parent.CslaObjects.Find(childProperty.TypeName)
+                where !CslaTemplateHelperCS.IsReadOnlyType(childInfo.ObjectType)
+                select childProperty);
 
             /*foreach (var childCollectionProperty in _childCollectionProperties)
             {
@@ -1878,7 +1957,10 @@ namespace CslaGenerator.Metadata
                     myChildReadWriteProperties.Add(childCollectionProperty);
             }*/
 
-            myChildReadWriteProperties.AddRange(from childCollectionProperty in _childCollectionProperties let childInfo = Parent.CslaObjects.Find(childCollectionProperty.TypeName) where !CslaTemplateHelperCS.IsReadOnlyType(childInfo.ObjectType) select childCollectionProperty);
+            myChildReadWriteProperties.AddRange(from childCollectionProperty in _childCollectionProperties
+                let childInfo = Parent.CslaObjects.Find(childCollectionProperty.TypeName)
+                where !CslaTemplateHelperCS.IsReadOnlyType(childInfo.ObjectType)
+                select childCollectionProperty);
 
             return myChildReadWriteProperties;
         }
@@ -1902,7 +1984,8 @@ namespace CslaGenerator.Metadata
         /// </summary>
         /// <param name="convertValuePropertyCollection">The ConvertValuePropertyCollection to convert.</param>
         /// <returns>A ValuePropertyCollection with the converted ConvertValueProperties.</returns>
-        private ValuePropertyCollection ConvertToValuePropertyCollection(ConvertValuePropertyCollection convertValuePropertyCollection)
+        private ValuePropertyCollection ConvertToValuePropertyCollection(
+            ConvertValuePropertyCollection convertValuePropertyCollection)
         {
             var valuePropertyCollection = new ValuePropertyCollection();
             foreach (ConvertValueProperty convertValueProperty in convertValuePropertyCollection)
@@ -2019,7 +2102,7 @@ namespace CslaGenerator.Metadata
                 return true;
 
             if (obj.GetType().Equals(typeof(CslaObjectInfo)))
-                return _objectName.Equals(((CslaObjectInfo)obj).ObjectName);
+                return _objectName.Equals(((CslaObjectInfo) obj).ObjectName);
 
             return base.Equals(obj);
         }
@@ -2044,6 +2127,5 @@ namespace CslaGenerator.Metadata
         }
 
         #endregion
-
     }
 }
