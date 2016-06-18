@@ -289,11 +289,6 @@ namespace CslaGenerator
 
                 BindControls();
                 _currentUnit.CslaObjects.ListChanged += CslaObjects_ListChanged;
-                foreach (var info in _currentUnit.CslaObjects)
-                {
-                    info.InheritedType.Parent = info;
-                    info.InheritedTypeWinForms.Parent = info;
-                }
                 if (_currentUnit.CslaObjects.Count > 0)
                 {
                     if (_mainForm.ProjectPanel.ListObjects.Items.Count > 0)

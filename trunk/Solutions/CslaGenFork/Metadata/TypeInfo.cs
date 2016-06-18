@@ -18,28 +18,10 @@ namespace CslaGenerator.Metadata
         private string _assemblyFile = String.Empty;
         private string _type = String.Empty;
         private string _objectName = String.Empty;
-        private CslaObjectInfo _parent;
-
-        public TypeInfo()
-        {
-        }
-
-        public TypeInfo(CslaObjectInfo parent)
-        {
-            _parent = parent;
-        }
-
-        [Browsable(false)]
-        [XmlIgnore]
-        public CslaObjectInfo Parent
-        {
-            get { return _parent; }
-            set { _parent = value; }
-        }
 
         [Category("01. Inherit from Type Defined in Project")]
         [Editor(typeof(CslaObjectInfoEditor), typeof(UITypeEditor))]
-        [Description("Inherited Type Name.\r\nFor a generic type, change the type name so it shows <T> at the end.")]
+        [Description("Inherited Type Name.")]
         [UserFriendlyName("Base Type Name")]
         public string ObjectName
         {
@@ -47,14 +29,17 @@ namespace CslaGenerator.Metadata
             set
             {
                 _objectName = value;
-                if (value != String.Empty) { _type = String.Empty; }
+                if (value != String.Empty)
+                {
+                    _type = String.Empty;
+                }
                 OnTypeChanged(EventArgs.Empty);
             }
         }
 
         [Category("02. Inherit from Type in Assembly")]
         [Description("The assembly file full path")]
-        [Editor(typeof(AssemblyObjectFileNameEditor),typeof(UITypeEditor))]
+        [Editor(typeof(AssemblyObjectFileNameEditor), typeof(UITypeEditor))]
 //        [TypeConverter(typeof(AssemblyFileConverter))]
         [UserFriendlyName("Assembly File Name")]
         public string AssemblyFile
@@ -80,14 +65,24 @@ namespace CslaGenerator.Metadata
                 if (_type != value)
                 {
                     _type = value;
-                    if (_type != String.Empty) { _objectName = String.Empty; }
+                    if (_type != String.Empty)
+                    {
+                        _objectName = String.Empty;
+                    }
                     OnTypeChanged(EventArgs.Empty);
                 }
             }
         }
 
-        [Browsable(false)]
+        [ReadOnly(true)]
+        [Description("Whether this Type is generic.")]
+        [UserFriendlyName("Generic Type")]
+        public bool IsGenericType { get; set; }
+
+        #region Non UI properties
+
         [XmlIgnore]
+        [Browsable(false)]
         public CslaObjectInfo ObjectMetadata
         {
             get
@@ -96,10 +91,13 @@ namespace CslaGenerator.Metadata
                 {
                     return null;
                 }
-                return _parent.Parent.CslaObjects.Find(_objectName);
+                return GeneratorController.Current.CurrentUnit.CslaObjects.FindByGenericName(_objectName);
             }
         }
 
+        #endregion
+
+        // Not used. keep as it might be useful some day
         public Type GetInheritedType()
         {
             if (_assemblyFile != null && _assemblyFile != String.Empty)
@@ -130,12 +128,12 @@ namespace CslaGenerator.Metadata
             TypeInfo result;
             using (var buffer = new MemoryStream())
             {
-                var ser = new XmlSerializer (typeof(TypeInfo));
+                var ser = new XmlSerializer(typeof(TypeInfo));
                 ser.Serialize(buffer, this);
                 buffer.Position = 0;
                 result = (TypeInfo) ser.Deserialize(buffer);
             }
-            result._parent = _parent;
+
             return result;
         }
     }
