@@ -383,6 +383,7 @@ namespace CslaGenerator.Metadata
 
         #endregion
 
+        // Not used. keep as it might be useful some day
         public Type GetInheritedType()
         {
             if (_assemblyFile != null && _assemblyFile != String.Empty)
