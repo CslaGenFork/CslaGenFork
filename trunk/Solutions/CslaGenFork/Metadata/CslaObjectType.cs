@@ -15,6 +15,9 @@ namespace CslaGenerator.Metadata
         ReadOnlyObject,
         ReadOnlyCollection,
         NameValueList,
-        UnitOfWork
+        UnitOfWork,
+        CriteriaClass,
+        BaseClass,
+        PlaceHolder
     }
 }
