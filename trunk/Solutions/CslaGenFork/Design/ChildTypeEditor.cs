@@ -38,7 +38,11 @@ namespace CslaGenerator.Design
                     {
                         // waiting to find a way to distinguish collection and non collection child properties
                         //if (!TypeHelper.IsCollectionType(o.ObjectType))
-                        if (o.ObjectType != CslaObjectType.NameValueList)
+                        if (o.ObjectType != CslaObjectType.NameValueList &&
+                            o.ObjectType != CslaObjectType.UnitOfWork &&
+                            o.ObjectType != CslaObjectType.CriteriaClass &&
+                            o.ObjectType != CslaObjectType.BaseClass &&
+                            o.ObjectType != CslaObjectType.PlaceHolder)
                             _lstProperties.Items.Add(o.ObjectName);
                     }
                     _lstProperties.Sorted = true;
