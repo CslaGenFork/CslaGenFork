@@ -10,9 +10,8 @@ namespace CslaGenerator.Metadata
     [Serializable]
     public class CslaGeneratorComponent
     {
-        private string _componentName = String.Empty;
         [XmlIgnore]
-        private CslaGeneratorUnit _parent = null;
+        private CslaGeneratorUnit _parent;
 
         public CslaGeneratorComponent()
         {
@@ -21,13 +20,6 @@ namespace CslaGenerator.Metadata
         public CslaGeneratorComponent(CslaGeneratorUnit parent)
         {
             _parent = parent;
-        }
-
-        [Browsable(false)]
-        public string ComponentName
-        {
-            get { return _componentName; }
-            set { _componentName = value; }
         }
 
         [Browsable(false)]
