@@ -141,6 +141,7 @@ namespace CslaGenerator.Controls
             if (e.ListChangedType == ListChangedType.ItemChanged &&
                 e.PropertyDescriptor.Name != "ObjectName" &&
                 e.PropertyDescriptor.Name != "ObjectType" &&
+                e.PropertyDescriptor.Name != "IsGenericType" &&
                 e.PropertyDescriptor.Name != "InheritedType" &&
                 e.PropertyDescriptor.Name != "InheritedTypeWinForms" &&
                 e.PropertyDescriptor.Name != "AuthzProvider")
@@ -269,15 +270,19 @@ namespace CslaGenerator.Controls
                 return;
 
             e.DrawBackground();
-            if (!_currentView[e.Index].Generate)
+            if (_currentView[e.Index].ObjectType == CslaObjectType.PlaceHolder)
             {
-                e.Graphics.DrawString(_currentView[e.Index].ObjectName, e.Font, Brushes.Gray, e.Bounds);
+                e.Graphics.DrawString(_currentView[e.Index].GenericName, e.Font, Brushes.Blue, e.Bounds);
+            }
+            else if (!_currentView[e.Index].Generate)
+            {
+                e.Graphics.DrawString(_currentView[e.Index].GenericName, e.Font, Brushes.Gray, e.Bounds);
             }
             else
             {
                 using (var brush = new SolidBrush(e.ForeColor))
                 {
-                    e.Graphics.DrawString(_currentView[e.Index].ObjectName, e.Font, brush, e.Bounds);
+                    e.Graphics.DrawString(_currentView[e.Index].GenericName, e.Font, brush, e.Bounds);
                 }
             }
 
