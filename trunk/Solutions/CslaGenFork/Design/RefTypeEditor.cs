@@ -2,21 +2,38 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing.Design;
+using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
-using CslaGenerator.CodeGen;
 using CslaGenerator.Metadata;
 using CslaGenerator.Util;
 
 namespace CslaGenerator.Design
 {
+    /// <summary>
+    /// Summary description for RefTypeEditor (list of .NET types).
+    /// Used to get/set the inherited type, when it's an assembly type.
+    /// </summary>
     public class RefTypeEditor : UITypeEditor, IDisposable
     {
+        public class BaseProperty
+        {
+            public Type Type { get; set; }
+            public string TypeName { get; set; }
+
+            public BaseProperty(Type type, string typeName)
+            {
+                Type = type;
+                TypeName = typeName;
+            }
+        }
+
         private IWindowsFormsEditorService _editorService;
         private ListBox _lstProperties;
         private Type _instance;
-        private List<Type> _types;
+        private List<BaseProperty> _baseTypes;
+        private List<string> _sizeSortedNamespaces;
 
         public RefTypeEditor()
         {
@@ -26,7 +43,7 @@ namespace CslaGenerator.Design
 
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
-            _editorService = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
+            _editorService = (IWindowsFormsEditorService) provider.GetService(typeof(IWindowsFormsEditorService));
             if (_editorService != null)
             {
                 if (context.Instance != null)
@@ -35,27 +52,30 @@ namespace CslaGenerator.Design
                     Type instanceType = null;
                     object objinfo = null;
                     TypeHelper.GetInheritedTypeContextInstanceObject(context, ref objinfo, ref instanceType);
-                    var obj = (TypeInfo)objinfo;
+                    var obj = (TypeInfo) objinfo;
                     _instance = objinfo.GetType();
 
                     _lstProperties.Items.Clear();
                     _lstProperties.Items.Add("(None)");
 
+                    _sizeSortedNamespaces = new List<string>();
+                    //var currentCslaObject = (CslaObjectInfo) GeneratorController.Current.GetSelectedItem();
+                    var currentCslaObject = GeneratorController.Current.CurrentCslaObject;
+                    _sizeSortedNamespaces = currentCslaObject.Namespaces.ToList();
+                    _sizeSortedNamespaces.Add(currentCslaObject.ObjectNamespace);
+                    _sizeSortedNamespaces = BusinessRuleTypeEditor.GetSizeSorted(_sizeSortedNamespaces);
+
                     // Get Assembly File Path
                     var assemblyFileInfo = _instance.GetProperty("AssemblyFile");
-                    //string assemblyFilePath = (string) assemblyFileInfo.GetValue(context.Instance, null);
-                    var assemblyFilePath = (string)assemblyFileInfo.GetValue(objinfo, null);
+                    var assemblyFilePath = (string) assemblyFileInfo.GetValue(objinfo, null);
 
                     // If Assembly path is available, use assembly to load a drop down with available types.
                     if (!string.IsNullOrEmpty(assemblyFilePath))
                     {
-                        /*var currentCslaObject = (CslaObjectInfo) GeneratorController.Current.GetSelectedItem();
-                        var baseType = currentCslaObject.ObjectType;*/
-
                         var assembly = Assembly.LoadFrom(assemblyFilePath);
                         var alltypes = assembly.GetExportedTypes();
                         if (alltypes.Length > 0)
-                            _types = new List<Type>();
+                            _baseTypes = new List<BaseProperty>();
 
                         foreach (var type in alltypes)
                         {
@@ -66,19 +86,33 @@ namespace CslaGenerator.Design
                                 // exclude interface classes
                                 if (!type.IsInterface)
                                 {
-                                    _types.Add(type);
-
                                     var listableType = type.ToString();
                                     if (type.IsGenericType)
                                     {
-                                        listableType = listableType.Substring(0, listableType.LastIndexOf('`'));
-                                        foreach (var argument in type.GetGenericArguments())
+                                        if (type.GetGenericArguments().Length ==
+                                            currentCslaObject.NumberOfGenericArguments())
                                         {
-                                            listableType += "<" + argument.Name + ">";
+                                            listableType = listableType.Substring(0, listableType.LastIndexOf('`'));
+                                            foreach (var argument in type.GetGenericArguments())
+                                            {
+                                                listableType += "<" + argument.Name + ">";
+                                            }
+                                            listableType = listableType.Replace("><", ",");
+                                        }
+                                        else
+                                        {
+                                            listableType = string.Empty;
                                         }
                                     }
-                                    listableType = listableType.Replace("><", ",");
-                                    _lstProperties.Items.Add(listableType);
+
+                                    if (!string.IsNullOrEmpty(listableType))
+                                    {
+                                        listableType = BusinessRuleTypeEditor.StripKnownNamespaces(
+                                            _sizeSortedNamespaces,
+                                            listableType);
+                                        _lstProperties.Items.Add(listableType);
+                                        _baseTypes.Add(new BaseProperty(type, listableType));
+                                    }
                                 }
                             }
                         }
@@ -86,21 +120,46 @@ namespace CslaGenerator.Design
                         _lstProperties.Sorted = true;
                     }
 
-                    if (_lstProperties.Items.Contains(obj.Type))
-                        _lstProperties.SelectedItem = obj.Type;
+                    var entry = BusinessRuleTypeEditor.StripKnownNamespaces(_sizeSortedNamespaces, obj.Type);
+                    if (_lstProperties.Items.Contains(entry))
+                        _lstProperties.SelectedItem = entry;
                     else
                         _lstProperties.SelectedItem = "(None)";
 
                     _editorService.DropDownControl(_lstProperties);
+
                     if (_lstProperties.SelectedIndex < 0 || _lstProperties.SelectedItem.ToString() == "(None)")
+                    {
+                        FillPropertyGrid(obj, _lstProperties.SelectedItem.ToString());
                         return string.Empty;
+                    }
+
+                    FillPropertyGrid(obj, _lstProperties.SelectedItem.ToString());
 
                     return _lstProperties.SelectedItem.ToString();
                 }
-
             }
 
             return value;
+        }
+
+        private void FillPropertyGrid(TypeInfo typeInfo, string stringType)
+        {
+            Type usedType = null;
+
+            if (stringType != "(None)")
+            {
+                foreach (var baseType in _baseTypes)
+                {
+                    if (baseType.TypeName == BusinessRuleTypeEditor.StripKnownNamespaces(_sizeSortedNamespaces, stringType))
+                        usedType = baseType.Type;
+                }
+            }
+
+            if (usedType == null)
+                typeInfo.IsGenericType = false;
+            else
+                typeInfo.IsGenericType = usedType.IsGenericType;
         }
 
         public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)

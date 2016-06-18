@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Drawing.Design;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
+using CslaGenerator.Metadata;
 
 namespace CslaGenerator.Design
 {
@@ -17,13 +18,16 @@ namespace CslaGenerator.Design
         {
             if (provider != null)
             {
-                _editorService = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
+                _editorService = (IWindowsFormsEditorService) provider.GetService(typeof(IWindowsFormsEditorService));
                 if (_editorService != null)
                 {
                     object temp;
                     DialogResult result;
                     using (var frmEdit = new ObjectEditorForm())
                     {
+                        if (value == null)
+                            value = new TypeInfo();
+
                         temp = ((ICloneable) value).Clone();
                         frmEdit.ObjectToEdit = temp;
                         result = _editorService.ShowDialog(frmEdit);
@@ -33,7 +37,7 @@ namespace CslaGenerator.Design
                         Copy(value, temp);
                         return value;
                     }
-                    
+
                     return value;
                 }
             }
