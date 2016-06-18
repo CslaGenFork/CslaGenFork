@@ -16,6 +16,7 @@ namespace CslaGenerator.Metadata
         #region Private Fields
 
         private string _name = String.Empty;
+        private TypeInfo _projectClass;
         private string _summary = String.Empty;
         private string _remarks = String.Empty;
         private readonly CriteriaPropertyCollection _properties = new CriteriaPropertyCollection();
@@ -50,6 +51,7 @@ namespace CslaGenerator.Metadata
 
         [Category("01. Definition")]
         [Description("The criteria class name. This will be generated when there is the need to pass more than one parameter to the DataPortal method.")]
+        [UserFriendlyName("Criteria Name")]
         public string Name
         {
             get { return _name; }
@@ -85,6 +87,17 @@ namespace CslaGenerator.Metadata
         {
             get { return _nestedClass; }
             set { _nestedClass = value; }
+        }
+
+        [Category("01. Definition")]
+        [Description("A project class of type Criteria")]
+        [Editor(typeof(ObjectEditor), typeof(UITypeEditor))]
+        [TypeConverter(typeof(TypeInfoConverter))]
+        [UserFriendlyName("Criteria Project Class")]
+        public TypeInfo ProjectClass
+        {
+            get { return _projectClass; }
+            set { _projectClass = value; }
         }
 
         [Category("01. Definition")]
@@ -281,6 +294,7 @@ namespace CslaGenerator.Metadata
             newCrit.Name = masterCrit.Name;
             newCrit.CriteriaClassMode = masterCrit.CriteriaClassMode;
             newCrit.NestedClass = masterCrit.NestedClass;
+            newCrit.ProjectClass = masterCrit.ProjectClass;
             newCrit.Summary = masterCrit.Summary;
             newCrit.Remarks = masterCrit.Remarks;
 
