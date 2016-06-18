@@ -21,7 +21,6 @@ namespace CslaGenerator.Metadata
     [DefaultProperty("ObjectName")]
     public class CslaObjectInfo : CslaGeneratorComponent, INotifyPropertyChanged
     {
-
         #region Private Fields
 
         private string _objectName = "CslaObject";
@@ -33,7 +32,7 @@ namespace CslaGenerator.Metadata
         private PersistenceType _persistenceType = PersistenceType.SqlConnectionManager;
         private string _dbContextObject = string.Empty;
         private string _commandTimeout = string.Empty;
-        private CslaObjectType _objectType = CslaObjectType.EditableRoot;
+        private CslaObjectType _objectType = CslaObjectType.PlaceHolder;
         private UnitOfWorkFunction _unitOfWorkType;
         private ConstructorVisibility _constructorVisibility = ConstructorVisibility.Default;
         private TypeInfo _inheritedType;
@@ -59,13 +58,13 @@ namespace CslaGenerator.Metadata
         private string _insertProcedureName = String.Empty;
         private string _updateProcedureName = String.Empty;
         private string _deleteProcedureName = String.Empty;
-        private bool _deleteUseTimestamp = false;
+        private bool _deleteUseTimestamp;
         private bool _removeItem = true;
         private string _dbName = String.Empty;
-        private bool _isPolymorphic = false;
+        private bool _isPolymorphic;
         private string _itemType = String.Empty;
         private bool _containsItem = true;
-        private bool _uniqueItems = false;
+        private bool _uniqueItems;
         private string _updaterType = String.Empty;
         private string _parentType = String.Empty;
         private string _fileName = String.Empty;
@@ -103,11 +102,11 @@ namespace CslaGenerator.Metadata
         private bool _editOnDemand;
         private bool _generateDataAccessRegion = true;
         private string _folder = String.Empty;
-        private string[] _implements = { };
-        private string[] _attributes = { };
+        private string[] _implements = {};
+        private string[] _attributes = {};
         private string _classSummary = String.Empty;
         private string _classRemarks = String.Empty;
-        private string[] _namespaces = { };
+        private string[] _namespaces = {};
         private bool _dataSetLoadingScheme;
         private bool _cacheResults = true;
         private List<string> _generateInlineQueries = new List<string>();
@@ -154,11 +153,18 @@ namespace CslaGenerator.Metadata
         [UserFriendlyName("Generate Object")]
         public bool Generate
         {
-            get { return _generate; }
+            get
+            {
+                if (ObjectType == CslaObjectType.PlaceHolder)
+                    return false;
+
+                return _generate;
+            }
             set
             {
                 if (_generate == value)
                     return;
+
                 _generate = value;
                 OnPropertyChanged("Generate");
             }
@@ -333,13 +339,25 @@ namespace CslaGenerator.Metadata
             get { return _objectName; }
             set
             {
-                value = PropertyHelper.Tidy(value);
-                if (_objectName != value)
+                if (ObjectType == CslaObjectType.PlaceHolder)
                 {
-                    _objectName = value;
-                    if (_fileName.Equals(String.Empty))
-                        _fileName = value;
-                    OnPropertyChanged("ObjectName");
+                    if (_objectName != value)
+                    {
+                        _objectName = value;
+                        OnPropertyChanged("ObjectName");
+                        OnPropertyChanged("GenericName");
+                    }
+                }
+                else
+                {
+                    value = PropertyHelper.Tidy(value);
+                    if (_objectName != value)
+                    {
+                        _objectName = value;
+                        if (_fileName.Equals(String.Empty))
+                            _fileName = value;
+                        OnPropertyChanged("ObjectName");
+                    }
                 }
             }
         }
