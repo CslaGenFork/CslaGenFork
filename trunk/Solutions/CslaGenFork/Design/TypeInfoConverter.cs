@@ -12,7 +12,7 @@ namespace CslaGenerator.Design
     {
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
-            if (sourceType == typeof (TypeInfo))
+            if (sourceType == typeof(TypeInfo))
             {
                 return true;
             }
@@ -30,10 +30,10 @@ namespace CslaGenerator.Design
             return base.CanConvertTo(context, destinationType);
         }*/
 
-
-        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value,
+            Type destinationType)
         {
-            if (destinationType == typeof (String))
+            if (destinationType == typeof(String))
             {
                 if (value is TypeInfo)
                 {
@@ -42,14 +42,13 @@ namespace CslaGenerator.Design
                     {
                         return info.Type;
                     }
-                    else if (info.ObjectMetadata != null)
+
+                    if (info.ObjectMetadata != null)
                     {
-                        return info.ObjectMetadata.ObjectName;
+                        return info.ObjectMetadata.GenericName;
                     }
-                    else
-                    {
-                        return String.Empty;
-                    }
+
+                    return String.Empty;
                 }
             }
             return base.ConvertTo(context, culture, value, destinationType);
