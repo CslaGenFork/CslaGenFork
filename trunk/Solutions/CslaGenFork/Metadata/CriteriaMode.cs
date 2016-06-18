@@ -4,6 +4,7 @@
     {
         Simple = 1,
         CriteriaBase,
-        BusinessBase
+        BusinessBase,
+        CustomBaseClass
     }
 }
