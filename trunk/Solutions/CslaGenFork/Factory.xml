@@ -49,7 +49,7 @@
   </Params>
   <GenerationParams>
     <SaveBeforeGenerate>true</SaveBeforeGenerate>
-    <TargetFramework>CSLA40</TargetFramework>
+    <TargetFramework>CSLA45</TargetFramework>
     <BackupOldSource>false</BackupOldSource>
     <RetryOnFileBusy>true</RetryOnFileBusy>
     <SeparateNamespaces>true</SeparateNamespaces>
@@ -64,7 +64,7 @@
     <UseBypassPropertyChecks>false</UseBypassPropertyChecks>
     <UseSingleCriteria>false</UseSingleCriteria>
     <UsePublicPropertyInfo>true</UsePublicPropertyInfo>
-    <UseChildFactory>true</UseChildFactory>
+    <UseChildFactory>false</UseChildFactory>
     <ForceReadOnlyProperties>true</ForceReadOnlyProperties>
     <BaseFilenameSuffix>.Designer</BaseFilenameSuffix>
     <ExtendedFilenameSuffix />

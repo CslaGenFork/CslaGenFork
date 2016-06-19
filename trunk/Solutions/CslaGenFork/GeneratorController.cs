@@ -54,6 +54,10 @@ namespace CslaGenerator
         private static ICatalog _catalog;
         private static GeneratorController _current;
         private readonly PropertyContext _propertyContext = new PropertyContext();
+        private bool _confirmReplacementRememberAnswer;
+        private bool _confirmReplacementDialogResult;
+        private bool _reportReplacementCounterRememberAnswer;
+
         internal bool IsDBConnected = false;
         internal bool IsLoading = false;
         internal bool HasErrors = false;
@@ -228,43 +232,61 @@ namespace CslaGenerator
             {
                 Cursor.Current = Cursors.WaitCursor;
                 var deserialized = false;
+                var converted = false;
                 while (!deserialized)
                 {
                     try
                     {
                         fs = File.Open(filePath, FileMode.Open);
-                        var xml = new XmlSerializer(typeof (CslaGeneratorUnit));
+                        var xml = new XmlSerializer(typeof(CslaGeneratorUnit));
                         CurrentUnit = (CslaGeneratorUnit) xml.Deserialize(fs);
-                        deserialized = true;
+                        if (VersionHelper.CurrentFileVersion != CurrentUnit.FileVersion)
+                        {
+                            if (fs != null)
+                                fs.Close();
+
+                            VersionHelper.SolveVersionNumberIssues(filePath, null);
+                            converted = true;
+                            NewCslaUnit();
+                        }
+                        else
+                        {
+                            deserialized = true;
+                        }
                     }
                     catch (InvalidOperationException exception)
                     {
                         if (fs != null)
                             fs.Close();
 
-                        if (exception.InnerException == null)
+                        if (exception.InnerException == null || converted)
+                            throw;
+
+                        if (FixXmlSchemaErrors(filePath, exception))
+                        {
+                            VersionHelper.SolveVersionNumberIssues(filePath, exception);
+                            converted = true;
+                            NewCslaUnit();
+                        }
+                        else
                         {
                             throw;
                         }
-
-                        var fileLines = File.ReadAllLines(filePath);
-                        var fileVersion = FileVersion.ExtractFileVersion(fileLines);
-                        if (fileVersion == FileVersion.CurrentFileVersion)
-                        {
-                            throw;
-                        }
-
-                        var intFileVersion = FileVersion.ConvertDotFileVersionToInt(fileVersion);
-                        fileLines = FileVersion.HandleFileVersion(intFileVersion, fileLines);
-                        File.WriteAllLines(filePath, fileLines);
                     }
                 }
+
+                if (fs != null)
+                    fs.Close();
+
+                CurrentUnit.FileVersion = VersionHelper.CurrentFileVersion;
+
                 _currentUnit.ResetParent();
                 CurrentCslaObject = null;
                 _currentAssociativeEntitiy = null;
                 _currentFilePath = GetFilePath(filePath);
 
                 ConnectionFactory.ConnectionString = _currentUnit.ConnectionString;
+
                 // check if this is a valid connection, else let the user enter new connection info
                 SqlConnection cn = null;
                 try
@@ -293,7 +315,7 @@ namespace CslaGenerator
                 {
                     if (_mainForm.ProjectPanel.ListObjects.Items.Count > 0)
                     {
-                        CurrentCslaObject = (CslaObjectInfo)_mainForm.ProjectPanel.ListObjects.Items[0];
+                        CurrentCslaObject = (CslaObjectInfo) _mainForm.ProjectPanel.ListObjects.Items[0];
                     }
                     else
                     {
@@ -326,9 +348,10 @@ namespace CslaGenerator
             }
             catch (Exception e)
             {
-                var message = filePath + Environment.NewLine + e.Message;
+                var message = filePath + Environment.NewLine + Environment.NewLine + e.Message;
                 if (e.InnerException != null)
                     message += Environment.NewLine + e.InnerException.Message;
+
                 MessageBox.Show(_mainForm, message, "Loading File Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
@@ -345,6 +368,89 @@ namespace CslaGenerator
             LoadingTimer.Stop();
         }
 
+        private bool FixXmlSchemaErrors(string filePath, Exception ex)
+        {
+            //ex.Message
+            //"There is an error in XML document (114, 8)."
+            //ex.InnerException.Message
+            //"Instance validation error: 'Separator' is not a valid value for CslaObjectType."
+
+            var point = ex.Message
+                .Split(new[] {'(', ')'}, StringSplitOptions.RemoveEmptyEntries)[1]
+                .Split(',');
+
+            var line = Convert.ToInt32(point[0]);
+            var position = Convert.ToInt32(point[1]);
+
+            var originalItem = ex.InnerException.Message
+                .Split(new[] {'\''}, StringSplitOptions.RemoveEmptyEntries)[1];
+
+            var ofendedType = ex.InnerException.Message.
+                Split(new[] {@"for"}, StringSplitOptions.RemoveEmptyEntries)[1]
+                .Trim()
+                .Trim('.');
+
+            using (var fixXmlSchema = new FixXmlSchema())
+            {
+                fixXmlSchema.FilePath = filePath;
+                fixXmlSchema.OfendingLine = line;
+                fixXmlSchema.OfendingPosition = position;
+                fixXmlSchema.OfendedType = ofendedType;
+                fixXmlSchema.OriginalItem = originalItem;
+
+                var dialogResult = fixXmlSchema.ShowDialog();
+                if (dialogResult == DialogResult.OK)
+                {
+                    var replacementItem = fixXmlSchema.ReplacementItem;
+
+                    if (ConfirmReplacement(ofendedType, originalItem, replacementItem))
+                    {
+                        var counter = VersionHelper.ReplaceEnum(filePath, originalItem, replacementItem);
+                        ReportReplacement(ofendedType, originalItem, replacementItem, counter);
+
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private bool ConfirmReplacement(string ofendedType, string originalItem, string replacementItem)
+        {
+            if (!_confirmReplacementRememberAnswer)
+            {
+                var msg = string.Format(@"Do you want to replace all occurences of '{0}' by '{1}' of '{2}' type?",
+                    originalItem, replacementItem, ofendedType);
+                using (var messageBox = new MessageBoxEx(msg, @"Fixing project file", MessageBoxIcon.Question))
+                {
+                    messageBox.SetButtons(new[] {DialogResult.No, DialogResult.Yes}, 2);
+                    messageBox.SetCheckbox(@"Do not ask again if ""Yes"".");
+                    messageBox.ShowDialog();
+
+                    _confirmReplacementDialogResult = messageBox.DialogResult == DialogResult.Yes;
+                    _confirmReplacementRememberAnswer = messageBox.CheckboxChecked && _confirmReplacementDialogResult;
+                }
+            }
+
+            return _confirmReplacementDialogResult;
+        }
+
+        private void ReportReplacement(string ofendedType, string originalItem, string replacementItem, int counter)
+        {
+            if (!_reportReplacementCounterRememberAnswer)
+            {
+                var msg = string.Format(@"Replaced {0} occurences of '{1}' by '{2}' of '{3}' type.",
+                    counter, originalItem, replacementItem, ofendedType);
+                var messageBox = new MessageBoxEx(msg, @"Fixing project file", MessageBoxIcon.Information);
+                messageBox.SetButtons(new[] {DialogResult.OK});
+                messageBox.SetCheckbox("Do not show again.");
+                messageBox.ShowDialog();
+
+                _reportReplacementCounterRememberAnswer = messageBox.CheckboxChecked;
+            }
+        }
+
         internal void LoadProjectLayout(string filePath)
         {
             filePath = ExtractPathWithoutExtension(filePath) + ".Layout";
@@ -353,7 +459,7 @@ namespace CslaGenerator
                 using (var fs = File.Open(filePath, FileMode.Open))
                 {
                     var xml = new XmlSerializer(typeof(CslaGeneratorUnitLayout));
-                    CurrentUnitLayout = (CslaGeneratorUnitLayout)xml.Deserialize(fs);
+                    CurrentUnitLayout = (CslaGeneratorUnitLayout) xml.Deserialize(fs);
                 }
 
                 MainForm.SetProjectState();
@@ -382,7 +488,7 @@ namespace CslaGenerator
         {
             CurrentUnit = new CslaGeneratorUnit();
             CurrentUnitLayout = new CslaGeneratorUnitLayout();
-            _currentFilePath = Path.GetTempPath() + @"\" + Guid.NewGuid().ToString();
+            _currentFilePath = Path.GetTempPath() + @"\" + Guid.NewGuid();
             CurrentCslaObject = null;
             _currentUnit.ConnectionString = ConnectionFactory.ConnectionString;
             BindControls();
@@ -393,6 +499,8 @@ namespace CslaGenerator
         {
             if (!_mainForm.ApplyProjectProperties())
                 return;
+
+            CurrentUnit.FileVersion = VersionHelper.CurrentFileVersion;
 
             _mainForm.GlobalSettingsPanel.ForceSaveGlobalSettings();
 
@@ -409,7 +517,8 @@ namespace CslaGenerator
             }
             catch (Exception e)
             {
-                MessageBox.Show(_mainForm, @"An error occurred while trying to save: " + Environment.NewLine + e.Message, "Save Error");
+                MessageBox.Show(_mainForm, @"An error occurred while trying to save: " + Environment.NewLine + e.Message,
+                    "Save Error");
             }
             finally
             {
@@ -444,7 +553,8 @@ namespace CslaGenerator
             }
             catch (Exception e)
             {
-                MessageBox.Show(_mainForm, @"An error occurred while trying to save: " + Environment.NewLine + e.Message, "Save Error");
+                MessageBox.Show(_mainForm, @"An error occurred while trying to save: " + Environment.NewLine + e.Message,
+                    "Save Error");
             }
             finally
             {
@@ -808,7 +918,7 @@ namespace CslaGenerator
             object selectedItem;
             if (Current.MainForm.ProjectPanel.ListObjects.InvokeRequired)
             {
-                selectedItem = Current.MainForm.ProjectPanel.ListObjects.Invoke((Action)delegate { GetSelectedItem(); });
+                selectedItem = Current.MainForm.ProjectPanel.ListObjects.Invoke((Action) delegate { GetSelectedItem(); });
                 return selectedItem;
             }
             selectedItem = Current.MainForm.ProjectPanel.ListObjects.SelectedItem;
