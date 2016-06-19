@@ -9,12 +9,12 @@ namespace CslaGenerator.Metadata
     [Serializable]
     public class CslaGeneratorUnit
     {
-        private CslaObjectInfoCollection _cslaObjects = new CslaObjectInfoCollection();
+        private CslaObjectInfoCollection _cslaObjects;
         private AssociativeEntityCollection _associativeEntities = new AssociativeEntityCollection();
         private string _connectionString = String.Empty;
-        private string _projectName = String.Empty;
+        private string _projectName;
         private string _targetDirectory = String.Empty;
-        private string _fileVersion = CslaGenerator.FileVersion.CurrentFileVersion;
+        private string _fileVersion = string.Empty;
         private ProjectParameters _projectParams = new ProjectParameters();
         private GenerationParameters _generationParams = new GenerationParameters();
         internal Stopwatch GenerationTimer = new Stopwatch();
@@ -91,7 +91,7 @@ namespace CslaGenerator.Metadata
 
         public string FileVersion
         {
-            get { return CslaGenerator.FileVersion.CurrentFileVersion; }
+            get { return _fileVersion; }
             set { _fileVersion = value; }
         }
 
