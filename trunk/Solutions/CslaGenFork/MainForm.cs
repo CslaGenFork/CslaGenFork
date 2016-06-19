@@ -1239,7 +1239,7 @@ namespace CslaGenerator
                 var messageBox = new MessageBoxEx(msg, @"Csla Generator", MessageBoxIcon.Question);
                 messageBox.SetButtons(new[] {"Current", "All", "Cancel"},
                     new[] {DialogResult.No, DialogResult.Yes, DialogResult.Cancel}, 2);
-                messageBox.SetCheckbox("Do no ask again.");
+                messageBox.SetCheckbox("Do not ask again.");
                 messageBox.ShowDialog();
 
                 _retrieveSummariesRememberAnswer = messageBox.CheckboxChecked;
