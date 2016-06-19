@@ -18,6 +18,7 @@
 
 using System;
 using System.Drawing;
+using System.Globalization;
 using System.Windows.Forms;
 
 namespace CslaGenerator.Controls
@@ -133,66 +134,110 @@ namespace CslaGenerator.Controls
         #region API methods
 
         /// <summary>
-        /// Create up to 3 buttons with no DialogResult values.
+        /// Create up to 3 buttons with no DialogResult values specified.
         /// </summary>
-        /// <param name="names">Array of button names. Must of length 1-3.</param>
-        public void SetButtons(params string[] names)
+        /// <param name="buttonResults">Array of DialogResult values. Must of length 1 to 3.</param>
+        public void SetButtons(DialogResult[] buttonResults)
         {
-            if (_shown)
-                throw new MethodUsedOutOfOrder("SetButtons", "cannot invoke method after showing the MessageBox.");
+            var buttonNames = new string[buttonResults.Length];
+            for (var i = 0; i < buttonNames.Length; i++)
+                buttonNames[i] = buttonResults[i].ToString();
 
-            var dialogResults = new DialogResult[names.Length];
-            for (var i = 0; i < names.Length; i++)
+            SetButtons(buttonNames, buttonResults);
+        }
+
+        /// <summary>
+        /// Create up to 3 buttons with no DialogResult values specified.
+        /// </summary>
+        /// <param name="buttonResults">Array of DialogResult values. Must of length 1 to 3.</param>
+        /// <param name="defaultButton">Default Button number. Must be 1 to 3.</param>
+        public void SetButtons(DialogResult[] buttonResults, int defaultButton)
+        {
+            var buttonNames = new string[buttonResults.Length];
+            for (var i = 0; i < buttonNames.Length; i++)
+                buttonNames[i] = buttonResults[i].ToString();
+
+            SetButtons(buttonNames, buttonResults, defaultButton);
+        }
+
+        /// <summary>
+        /// Create up to 3 buttons with no DialogResult values specified.
+        /// </summary>
+        /// <param name="buttonNames">Array of button names. Must of length 1 to 3.</param>
+        public void SetButtons(string[] buttonNames)
+        {
+            var dialogResults = new DialogResult[buttonNames.Length];
+            for (var i = 0; i < buttonNames.Length; i++)
                 dialogResults[i] = DialogResult.None;
 
-            SetButtons(names, dialogResults);
+            SetButtons(buttonNames, dialogResults);
         }
 
         /// <summary>
-        /// Create up to 3 buttons with given DialogResult values.
+        /// Create up to 3 buttons with no DialogResult values specified.
         /// </summary>
-        /// <param name="names">Array of button names. Must of length 1-3.</param>
-        /// <param name="results">Array of DialogResult values. Must be same length as names.</param>
-        public void SetButtons(string[] names, DialogResult[] results)
+        /// <param name="buttonNames">Array of button names. Must of length 1 to 3.</param>
+        /// <param name="defaultButton">Default Button number. Must be 1 to 3.</param>
+        public void SetButtons(string[] buttonNames, int defaultButton)
         {
-            if (_shown)
-                throw new MethodUsedOutOfOrder("SetButtons", "cannot invoke method after showing the MessageBox.");
+            var dialogResults = new DialogResult[buttonNames.Length];
+            for (var i = 0; i < buttonNames.Length; i++)
+                dialogResults[i] = DialogResult.None;
 
-            SetButtons(names, results, 1);
+            SetButtons(buttonNames, dialogResults, defaultButton);
         }
 
         /// <summary>
-        /// Create up to 3 buttons with given DialogResult values.
+        /// Create up to 3 buttons with given buttonNames and DialogResult values.
         /// </summary>
-        /// <param name="buttonNames">Array of button names. Must of length 1-3.</param>
-        /// <param name="buttonResults">Array of DialogResult values. Must be same length as names.</param>
-        /// <param name="defaultButton">Default Button number. Must be 1-3.</param>
+        /// <param name="buttonNames">Array of button names. Must of length 1 to 3.</param>
+        /// <param name="buttonResults">Array of DialogResult values. Must of length 1 to 3.</param>
+        public void SetButtons(string[] buttonNames, DialogResult[] buttonResults)
+        {
+            SetButtons(buttonNames, buttonResults, 1);
+        }
+
+        /// <summary>
+        /// Create up to 3 buttons with given buttonNames, DialogResult values and a default button,.
+        /// </summary>
+        /// <param name="buttonNames">Array of button names. Must of length 1 to 3.</param>
+        /// <param name="buttonResults">Array of DialogResult values. Must of length 1 to 3.</param>
+        /// <param name="defaultButton">Default Button number. Must be 1 to 3.</param>
         public void SetButtons(string[] buttonNames, DialogResult[] buttonResults, int defaultButton)
         {
             if (_shown)
                 throw new MethodUsedOutOfOrder("SetButtons", "cannot invoke method after showing the MessageBox.");
 
             if (buttonNames == null)
-                throw new ArgumentNullException(@"buttonNames", @"Button Text is null");
+                throw new ArgumentNullException(@"buttonNames", @"Button names cannot be null");
 
-            var buttonCount = buttonNames.Length;
+            var buttonNameCount = buttonNames.Length;
+            if (buttonNameCount < 1 || buttonNameCount > 3)
+                throw new ArgumentException(@"nvalid number of buttons. Must be between 1 and 3.", "buttonNames");
 
-            if (buttonCount < 1 || buttonCount > 3)
-                throw new ArgumentException("Invalid number of buttons. Must be between 1 and 3.");
+            if (buttonResults == null)
+                throw new ArgumentNullException(@"buttonResults", @"Button results cannot be null");
+
+            var buttonResultCount = buttonResults.Length;
+            if (buttonResultCount < 1 || buttonResultCount > 3)
+                throw new ArgumentException(@"Invalid number of buttons. Must be between 1 and 3.", "buttonResults");
+
+            if (defaultButton < 1 || defaultButton > 3)
+                throw new ArgumentException(@"Invalid button number. Must be between 1 and 3.", "defaultButton");
 
             // Set Button 1
             _buttonRowRequiredWidth += SetButtonParams(button1, buttonNames[0], defaultButton == 1 ? 1 : 2,
                 buttonResults[0]);
 
             // Set Button 2
-            if (buttonCount > 1)
+            if (buttonResultCount > 1)
             {
                 _buttonRowRequiredWidth += SetButtonParams(button2, buttonNames[1], defaultButton == 2 ? 1 : 3,
                     buttonResults[1]) + ButtonSpace;
             }
 
             // Set Button 3
-            if (buttonCount > 2)
+            if (buttonResultCount > 2)
             {
                 _buttonRowRequiredWidth += SetButtonParams(button3, buttonNames[2], defaultButton == 3 ? 1 : 4,
                     buttonResults[2]) + ButtonSpace;
