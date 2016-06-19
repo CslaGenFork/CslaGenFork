@@ -230,6 +230,10 @@
     <Compile Include="CodeGen\CslaTemplateHelperCS.cs" />
     <Compile Include="CodeGen\CslaTemplateHelperVB.cs" />
     <Compile Include="CodeGen\GenerationStep.cs" />
+    <Compile Include="Controls\FixXmlSchema.cs" />
+    <Compile Include="Controls\FixXmlSchema.Designer.cs">
+      <DependentUpon>FixXmlSchema.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\GlobalSettings.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -290,7 +294,6 @@
     </Compile>
     <Compile Include="Design\PropertyCollectionForm.cs">
     </Compile>
-    <Compile Include="FileVersion.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -591,6 +594,7 @@
     <Compile Include="Util\TypeHelper.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="VersionHelper.cs" />
     <Compile Include="Windows7Security.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -609,6 +613,9 @@
     <EmbeddedResource Include="Controls\DbTreeView.resx">
       <DependentUpon>DbTreeView.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\FixXmlSchema.resx">
+      <DependentUpon>FixXmlSchema.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\GlobalSettings.resx">
       <DependentUpon>GlobalSettings.cs</DependentUpon>
