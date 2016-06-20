@@ -105,9 +105,9 @@ namespace CslaGenerator.Metadata
             get { return string.Empty; }
         }
 
-        // Hide Implements
+        // Hide Interfaces
         [Browsable(false)]
-        public override string Implements
+        public override string Interfaces
         {
             get { return string.Empty; }
         }

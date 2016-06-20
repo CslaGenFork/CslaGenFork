@@ -99,7 +99,7 @@ namespace CslaGenerator.Metadata
         private bool _editOnDemand;
         private bool _generateDataAccessRegion = true;
         private string _folder = String.Empty;
-        private string[] _implements = {};
+        private string[] _interfaces = {};
         private string[] _attributes = {};
         private string _classSummary = String.Empty;
         private string _classRemarks = String.Empty;
@@ -463,10 +463,10 @@ namespace CslaGenerator.Metadata
         [Category("01. Common Options")]
         [Description("The interfaces this class implements.")]
         [UserFriendlyName("Interfaces")]
-        public string[] Implements
+        public string[] Interfaces
         {
-            get { return _implements; }
-            set { _implements = PropertyHelper.Tidy(value); }
+            get { return _interfaces; }
+            set { _interfaces = PropertyHelper.Tidy(value); }
         }
 
         [Category("01. Common Options")]

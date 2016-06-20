@@ -22,7 +22,7 @@ namespace CslaGenerator.Metadata
         private string _friendlyName = String.Empty;
         private LoadingScheme _loadingScheme = LoadingScheme.ParentLoad;
         private PropertyDeclaration _declarationMode;
-        private string _implements = string.Empty;
+        private string _interfaces = string.Empty;
         private BusinessRuleCollection _businessRules;
         private string[] _attributes = new string[] { };
         private AuthorizationProvider _authzProvider;
@@ -159,9 +159,9 @@ namespace CslaGenerator.Metadata
 
         [Category("02. Advanced")]
         [Description("The interface this property explicitly implements.")]
-        public virtual string Implements
+        public virtual string Interfaces
         {
-            get { return _implements; }
+            get { return _interfaces; }
             set
             {
                 value = PropertyHelper.Tidy(value);
@@ -174,12 +174,12 @@ namespace CslaGenerator.Metadata
                         {
                             if (GeneratorController.Current.CurrentUnit.GenerationParams.OutputLanguage ==
                                 CodeLanguage.CSharp ||
-                                _implements == string.Empty)
+                                _interfaces == string.Empty)
                                 value = value + namePostfix;
                         }
                     }
                 }
-                _implements = value;
+                _interfaces = value;
             }
         }
 
