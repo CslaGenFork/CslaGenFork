@@ -2889,9 +2889,9 @@ namespace CslaGenerator.CodeGen
                         ? GetDataTypeGeneric(prop, prop.PropertyType)
                         : GetDataTypeGeneric(prop, prop.BackingFieldType),
                     FormatPropertyInfoName(prop.Name),
-                    (String.IsNullOrEmpty(prop.Implements)
+                    (String.IsNullOrEmpty(prop.Interfaces)
                         ? "p." + FormatPascal(prop.Name)
-                        : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) + ") p)." +
+                        : "((" + prop.Interfaces.Substring(0, prop.Interfaces.LastIndexOf('.')) + ") p)." +
                           FormatPascal(prop.Name)),
                     prop.FriendlyName,
                     GetDefault(info, prop),
@@ -3000,9 +3000,9 @@ namespace CslaGenerator.CodeGen
                     PropertyInfoVisibility(isSilverlight),
                     prop.TypeName,
                     FormatPropertyInfoName(prop.Name),
-                    (String.IsNullOrEmpty(prop.Implements)
+                    (String.IsNullOrEmpty(prop.Interfaces)
                         ? "p." + FormatPascal(prop.Name)
-                        : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) + ") p)." +
+                        : "((" + prop.Interfaces.Substring(0, prop.Interfaces.LastIndexOf('.')) + ") p)." +
                           FormatPascal(prop.Name)),
                     prop.FriendlyName,
                     GetRelationhipType(info, prop));
@@ -3247,7 +3247,7 @@ namespace CslaGenerator.CodeGen
             {
                 isReadOnly = true;
             }
-            else if (!String.IsNullOrEmpty(prop.Implements))
+            else if (!String.IsNullOrEmpty(prop.Interfaces))
             {
                 isReadOnly = false;
             }
@@ -3271,9 +3271,9 @@ namespace CslaGenerator.CodeGen
                 prop.DeclarationMode == PropertyDeclaration.UnmanagedWithTypeConversion)
             {
                 response = String.Format("{0}{1} {2}" + Environment.NewLine,
-                    (String.IsNullOrEmpty(prop.Implements) ? GetPropertyAccess(prop) + " " : ""),
+                    (String.IsNullOrEmpty(prop.Interfaces) ? GetPropertyAccess(prop) + " " : ""),
                     GetDataTypeGeneric(prop, prop.PropertyType),
-                    (String.IsNullOrEmpty(prop.Implements) ? FormatPascal(prop.Name) : prop.Implements));
+                    (String.IsNullOrEmpty(prop.Interfaces) ? FormatPascal(prop.Name) : prop.Interfaces));
                 response += "        {" + Environment.NewLine;
                 response += PropertyDeclareGetter(prop);
 
@@ -3285,9 +3285,9 @@ namespace CslaGenerator.CodeGen
                      prop.DeclarationMode == PropertyDeclaration.ClassicPropertyWithTypeConversion)
             {
                 response += String.Format("{0}{1} {2}" + Environment.NewLine,
-                    (String.IsNullOrEmpty(prop.Implements) ? GetPropertyAccess(prop) + " " : ""),
+                    (String.IsNullOrEmpty(prop.Interfaces) ? GetPropertyAccess(prop) + " " : ""),
                     GetDataTypeGeneric(prop, prop.PropertyType),
-                    (String.IsNullOrEmpty(prop.Implements) ? FormatPascal(prop.Name) : prop.Implements));
+                    (String.IsNullOrEmpty(prop.Interfaces) ? FormatPascal(prop.Name) : prop.Interfaces));
                 response += "        {" + Environment.NewLine;
                 response += PropertyDeclareGetter(prop);
 
@@ -3298,9 +3298,9 @@ namespace CslaGenerator.CodeGen
             else if (prop.DeclarationMode == PropertyDeclaration.AutoProperty)
             {
                 response += String.Format("{0}{1} {2} {{ get; {3}set; }}",
-                    (String.IsNullOrEmpty(prop.Implements) ? GetPropertyAccess(prop) + " " : ""),
+                    (String.IsNullOrEmpty(prop.Interfaces) ? GetPropertyAccess(prop) + " " : ""),
                     GetDataTypeGeneric(prop, prop.PropertyType),
-                    (String.IsNullOrEmpty(prop.Implements) ? FormatPascal(prop.Name) : prop.Implements),
+                    (String.IsNullOrEmpty(prop.Interfaces) ? FormatPascal(prop.Name) : prop.Interfaces),
                     PropertyDeclareSetter(isReadOnly, info.ObjectType == CslaObjectType.ReadOnlyObject, prop,
                         string.Empty));
             }
@@ -4226,7 +4226,7 @@ namespace CslaGenerator.CodeGen
             }
             else
             {
-                if (!String.IsNullOrEmpty(prop.Implements))
+                if (!String.IsNullOrEmpty(prop.Interfaces))
                 {
                     isReadOnly = false;
                 }
@@ -4235,9 +4235,9 @@ namespace CslaGenerator.CodeGen
             if (prop.DeclarationMode == PropertyDeclaration.Managed)
             {
                 response += String.Format("{0}{1} {2}" + Environment.NewLine,
-                    (String.IsNullOrEmpty(prop.Implements) ? GetPropertyAccess(prop) + " " : ""),
+                    (String.IsNullOrEmpty(prop.Interfaces) ? GetPropertyAccess(prop) + " " : ""),
                     prop.TypeName,
-                    (String.IsNullOrEmpty(prop.Implements) ? FormatPascal(prop.Name) : prop.Implements));
+                    (String.IsNullOrEmpty(prop.Interfaces) ? FormatPascal(prop.Name) : prop.Interfaces));
                 response += "        {" + Environment.NewLine;
                 response += ChildPropertyDeclareGetter(info, prop);
 
@@ -4247,9 +4247,9 @@ namespace CslaGenerator.CodeGen
             else if (prop.DeclarationMode == PropertyDeclaration.ClassicProperty)
             {
                 response += String.Format("{0}{1} {2}" + Environment.NewLine,
-                    (String.IsNullOrEmpty(prop.Implements) ? GetPropertyAccess(prop) + " " : ""),
+                    (String.IsNullOrEmpty(prop.Interfaces) ? GetPropertyAccess(prop) + " " : ""),
                     prop.TypeName,
-                    (String.IsNullOrEmpty(prop.Implements) ? FormatPascal(prop.Name) : prop.Implements));
+                    (String.IsNullOrEmpty(prop.Interfaces) ? FormatPascal(prop.Name) : prop.Interfaces));
                 response += "        {" + Environment.NewLine;
                 response += ChildPropertyDeclareGetter(info, prop);
 
@@ -4259,9 +4259,9 @@ namespace CslaGenerator.CodeGen
             else //if (prop.DeclarationMode == PropertyDeclaration.AutoProperty)
             {
                 response += String.Format("{0}{1} {2} {{ get; {3}set; }}",
-                    (String.IsNullOrEmpty(prop.Implements) ? GetPropertyAccess(prop) + " " : ""),
+                    (String.IsNullOrEmpty(prop.Interfaces) ? GetPropertyAccess(prop) + " " : ""),
                     prop.TypeName,
-                    (String.IsNullOrEmpty(prop.Implements) ? FormatPascal(prop.Name) : prop.Implements),
+                    (String.IsNullOrEmpty(prop.Interfaces) ? FormatPascal(prop.Name) : prop.Interfaces),
                     isReadOnly ? "private " : "");
             }
 
@@ -4312,7 +4312,7 @@ namespace CslaGenerator.CodeGen
             }
             else
             {
-                if (!String.IsNullOrEmpty(prop.Implements))
+                if (!String.IsNullOrEmpty(prop.Interfaces))
                 {
                     isReadOnly = false;
                 }
@@ -4561,9 +4561,9 @@ namespace CslaGenerator.CodeGen
             result += "                                    // set the property so OnPropertyChanged is raised" +
                       Environment.NewLine;
             result += String.Format("                                    {0} = e.Object;" + Environment.NewLine,
-                (String.IsNullOrEmpty(prop.Implements)
+                (String.IsNullOrEmpty(prop.Interfaces)
                     ? FormatPascal(prop.Name)
-                    : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) + ") this)." +
+                    : "((" + prop.Interfaces.Substring(0, prop.Interfaces.LastIndexOf('.')) + ") this)." +
                       FormatPascal(prop.Name)));
             result += "                                }" + Environment.NewLine;
             if (!UseChildFactoryHelper && isLocal)
@@ -4594,9 +4594,9 @@ namespace CslaGenerator.CodeGen
             result += "                                    // set the property so OnPropertyChanged is raised" +
                       Environment.NewLine;
             result += String.Format("                                    {0} = e.Object;" + Environment.NewLine,
-                (String.IsNullOrEmpty(prop.Implements)
+                (String.IsNullOrEmpty(prop.Interfaces)
                     ? FormatPascal(prop.Name)
-                    : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) + ") this)." +
+                    : "((" + prop.Interfaces.Substring(0, prop.Interfaces.LastIndexOf('.')) + ") this)." +
                       FormatPascal(prop.Name)));
             result += "                                }" + Environment.NewLine;
             if (!UseChildFactoryHelper && isLocal)
@@ -4633,36 +4633,36 @@ namespace CslaGenerator.CodeGen
             if (UseChildFactoryHelper)
             {
                 result += String.Format("                        {0} = {1}.New{1}();" + Environment.NewLine,
-                    (String.IsNullOrEmpty(prop.Implements)
+                    (String.IsNullOrEmpty(prop.Interfaces)
                         ? FormatPascal(prop.Name)
-                        : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
+                        : "((" + prop.Interfaces.Substring(0, prop.Interfaces.LastIndexOf('.')) +
                           ") this)." + FormatPascal(prop.Name)), prop.TypeName);
             }
             else
             {
                 result +=
                     String.Format("                        {0} = DataPortal.Create<{1}>();" + Environment.NewLine,
-                        (String.IsNullOrEmpty(prop.Implements)
+                        (String.IsNullOrEmpty(prop.Interfaces)
                             ? FormatPascal(prop.Name)
-                            : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
+                            : "((" + prop.Interfaces.Substring(0, prop.Interfaces.LastIndexOf('.')) +
                               ") this)." + FormatPascal(prop.Name)), prop.TypeName);
             }
             result += "                    else" + Environment.NewLine;
             if (UseChildFactoryHelper)
             {
                 result += String.Format("                        {0} = {1}.Get{1}({2});" + Environment.NewLine,
-                    (String.IsNullOrEmpty(prop.Implements)
+                    (String.IsNullOrEmpty(prop.Interfaces)
                         ? FormatPascal(prop.Name)
-                        : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
+                        : "((" + prop.Interfaces.Substring(0, prop.Interfaces.LastIndexOf('.')) +
                           ") this)." + FormatPascal(prop.Name)), prop.TypeName, GetFieldReaderStatementList(info, prop));
             }
             else
             {
                 result +=
                     String.Format("                        {0} = DataPortal.Fetch<{1}>({2});" + Environment.NewLine,
-                        (String.IsNullOrEmpty(prop.Implements)
+                        (String.IsNullOrEmpty(prop.Interfaces)
                             ? FormatPascal(prop.Name)
-                            : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
+                            : "((" + prop.Interfaces.Substring(0, prop.Interfaces.LastIndexOf('.')) +
                               ") this)." + FormatPascal(prop.Name)), prop.TypeName,
                         GetFieldReaderStatementList(info, prop));
             }
@@ -4778,9 +4778,9 @@ namespace CslaGenerator.CodeGen
             result += "                                // set the property so OnPropertyChanged is raised" +
                       Environment.NewLine;
             result += String.Format("                                {0} = e.Object;" + Environment.NewLine,
-                (String.IsNullOrEmpty(prop.Implements)
+                (String.IsNullOrEmpty(prop.Interfaces)
                     ? FormatPascal(prop.Name)
-                    : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) + ") this)." +
+                    : "((" + prop.Interfaces.Substring(0, prop.Interfaces.LastIndexOf('.')) + ") this)." +
                       FormatPascal(prop.Name)));
             result += "                            }" + Environment.NewLine;
             if (!UseChildFactoryHelper && isLocal)
@@ -4812,17 +4812,17 @@ namespace CslaGenerator.CodeGen
             if (UseChildFactoryHelper)
             {
                 result += String.Format("                    {0} = {1}.Get{1}({2});" + Environment.NewLine,
-                    (String.IsNullOrEmpty(prop.Implements)
+                    (String.IsNullOrEmpty(prop.Interfaces)
                         ? FormatPascal(prop.Name)
-                        : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
+                        : "((" + prop.Interfaces.Substring(0, prop.Interfaces.LastIndexOf('.')) +
                           ") this)." + FormatPascal(prop.Name)), prop.TypeName, GetFieldReaderStatementList(info, prop));
             }
             else
             {
                 result += String.Format("                    {0} = DataPortal.Fetch<{1}>({2});" + Environment.NewLine,
-                    (String.IsNullOrEmpty(prop.Implements)
+                    (String.IsNullOrEmpty(prop.Interfaces)
                         ? FormatPascal(prop.Name)
-                        : "((" + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
+                        : "((" + prop.Interfaces.Substring(0, prop.Interfaces.LastIndexOf('.')) +
                           ") this)." + FormatPascal(prop.Name)), prop.TypeName, GetFieldReaderStatementList(info, prop));
             }
             result += Environment.NewLine;

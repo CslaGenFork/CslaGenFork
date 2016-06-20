@@ -2873,9 +2873,9 @@ namespace CslaGenerator.CodeGen
                         ? GetDataTypeGeneric(prop, prop.PropertyType)
                         : GetDataTypeGeneric(prop, prop.BackingFieldType),
                     FormatPropertyInfoName(prop.Name),
-                    (String.IsNullOrEmpty(prop.Implements)
+                    (String.IsNullOrEmpty(prop.Interfaces)
                         ? "p." + FormatPascal(prop.Name)
-                        : "DirectCast(p, " + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) + ")." +
+                        : "DirectCast(p, " + prop.Interfaces.Substring(0, prop.Interfaces.LastIndexOf('.')) + ")." +
                           FormatPascal(prop.Name)),
                     prop.FriendlyName,
                     GetDefault(info, prop),
@@ -2989,9 +2989,9 @@ namespace CslaGenerator.CodeGen
                     PropertyInfoVisibility(isSilverlight),
                     prop.TypeName,
                     FormatPropertyInfoName(prop.Name),
-                    (String.IsNullOrEmpty(prop.Implements)
+                    (String.IsNullOrEmpty(prop.Interfaces)
                         ? "p." + FormatPascal(prop.Name)
-                        : "DirectCast(p, " + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) + ")." +
+                        : "DirectCast(p, " + prop.Interfaces.Substring(0, prop.Interfaces.LastIndexOf('.')) + ")." +
                           FormatPascal(prop.Name)),
                     prop.FriendlyName,
                     GetRelationhipType(info, prop));
@@ -3236,7 +3236,7 @@ namespace CslaGenerator.CodeGen
             {
                 isReadOnly = true;
             }
-            else if (!String.IsNullOrEmpty(prop.Implements))
+            else if (!String.IsNullOrEmpty(prop.Interfaces))
             {
                 isReadOnly = false;
             }
@@ -3264,7 +3264,7 @@ namespace CslaGenerator.CodeGen
                     (isReadOnly ? " ReadOnly" : ""),
                     GetDataTypeGeneric(prop, prop.PropertyType),
                     FormatPascal(prop.Name),
-                    (!String.IsNullOrEmpty(prop.Implements) ? " Implements " + prop.Implements : ""));
+                    (!String.IsNullOrEmpty(prop.Interfaces) ? " Implements " + prop.Interfaces : ""));
                 response += PropertyDeclareGetter(prop);
 
                 if (!isReadOnly)
@@ -3282,7 +3282,7 @@ namespace CslaGenerator.CodeGen
                     (isReadOnly ? " ReadOnly" : ""),
                     GetDataTypeGeneric(prop, prop.PropertyType),
                     FormatPascal(prop.Name),
-                    (!String.IsNullOrEmpty(prop.Implements) ? " Implements " + prop.Implements : ""));
+                    (!String.IsNullOrEmpty(prop.Interfaces) ? " Implements " + prop.Interfaces : ""));
 
                 response += PropertyDeclareGetter(prop);
 
@@ -3300,7 +3300,7 @@ namespace CslaGenerator.CodeGen
                     (isReadOnly ? " ReadOnly" : ""),
                     GetDataTypeGeneric(prop, prop.PropertyType),
                     FormatPascal(prop.Name),
-                    (!String.IsNullOrEmpty(prop.Implements) ? " Implements " + prop.Implements : ""));
+                    (!String.IsNullOrEmpty(prop.Interfaces) ? " Implements " + prop.Interfaces : ""));
             }
 
             return response;
@@ -4223,7 +4223,7 @@ namespace CslaGenerator.CodeGen
             }
             else
             {
-                if (!String.IsNullOrEmpty(prop.Implements))
+                if (!String.IsNullOrEmpty(prop.Interfaces))
                 {
                     isReadOnly = false;
                 }
@@ -4235,7 +4235,7 @@ namespace CslaGenerator.CodeGen
                     GetPropertyAccess(prop),
                     prop.TypeName,
                     FormatPascal(prop.Name),
-                    (!String.IsNullOrEmpty(prop.Implements) ? " Implements " + prop.Implements : ""));
+                    (!String.IsNullOrEmpty(prop.Interfaces) ? " Implements " + prop.Interfaces : ""));
 
                 response += ChildPropertyDeclareGetter(info, prop);
 
@@ -4248,7 +4248,7 @@ namespace CslaGenerator.CodeGen
                     GetPropertyAccess(prop),
                     prop.TypeName,
                     FormatPascal(prop.Name),
-                    (!String.IsNullOrEmpty(prop.Implements) ? " Implements " + prop.Implements : ""));
+                    (!String.IsNullOrEmpty(prop.Interfaces) ? " Implements " + prop.Interfaces : ""));
 
                 response += ChildPropertyDeclareGetter(info, prop);
 
@@ -4261,7 +4261,7 @@ namespace CslaGenerator.CodeGen
                     GetPropertyAccess(prop),
                     prop.TypeName,
                     FormatPascal(prop.Name),
-                    (!String.IsNullOrEmpty(prop.Implements) ? " Implements " + prop.Implements : ""));
+                    (!String.IsNullOrEmpty(prop.Interfaces) ? " Implements " + prop.Interfaces : ""));
             }
 
             return response;
@@ -4314,7 +4314,7 @@ namespace CslaGenerator.CodeGen
             }
             else
             {
-                if (!String.IsNullOrEmpty(prop.Implements))
+                if (!String.IsNullOrEmpty(prop.Interfaces))
                 {
                     isReadOnly = false;
                 }
@@ -4561,9 +4561,9 @@ namespace CslaGenerator.CodeGen
             result += "                                    ' set the property so OnPropertyChanged is raised" +
                       Environment.NewLine;
             result += String.Format("                                    {0} = e.Object" + Environment.NewLine,
-                (String.IsNullOrEmpty(prop.Implements)
+                (String.IsNullOrEmpty(prop.Interfaces)
                     ? FormatPascal(prop.Name)
-                    : "DirectCast(Me, " + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) + ")." +
+                    : "DirectCast(Me, " + prop.Interfaces.Substring(0, prop.Interfaces.LastIndexOf('.')) + ")." +
                       FormatPascal(prop.Name)));
             result += "                                End If" + Environment.NewLine;
             if (!UseChildFactoryHelper && isLocal)
@@ -4591,9 +4591,9 @@ namespace CslaGenerator.CodeGen
             result += "                                    ' set the property so OnPropertyChanged is raised" +
                       Environment.NewLine;
             result += String.Format("                                    {0} = e.Object" + Environment.NewLine,
-                (String.IsNullOrEmpty(prop.Implements)
+                (String.IsNullOrEmpty(prop.Interfaces)
                     ? FormatPascal(prop.Name)
-                    : "DirectCast(Me, " + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) + ")." +
+                    : "DirectCast(Me, " + prop.Interfaces.Substring(0, prop.Interfaces.LastIndexOf('.')) + ")." +
                       FormatPascal(prop.Name)));
             result += "                                End If" + Environment.NewLine;
             if (!UseChildFactoryHelper && isLocal)
@@ -4629,36 +4629,36 @@ namespace CslaGenerator.CodeGen
             if (UseChildFactoryHelper)
             {
                 result += String.Format("                        {0} = {1}.New{1}()" + Environment.NewLine,
-                    (String.IsNullOrEmpty(prop.Implements)
+                    (String.IsNullOrEmpty(prop.Interfaces)
                         ? FormatPascal(prop.Name)
-                        : "DirectCast(Me, " + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
+                        : "DirectCast(Me, " + prop.Interfaces.Substring(0, prop.Interfaces.LastIndexOf('.')) +
                           ")." + FormatPascal(prop.Name)), prop.TypeName);
             }
             else
             {
                 result +=
                     String.Format("                        {0} = DataPortal.Create(Of {1})()" + Environment.NewLine,
-                        (String.IsNullOrEmpty(prop.Implements)
+                        (String.IsNullOrEmpty(prop.Interfaces)
                             ? FormatPascal(prop.Name)
-                            : "DirectCast(Me, " + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
+                            : "DirectCast(Me, " + prop.Interfaces.Substring(0, prop.Interfaces.LastIndexOf('.')) +
                               ")." + FormatPascal(prop.Name)), prop.TypeName);
             }
             result += "                    Else" + Environment.NewLine;
             if (UseChildFactoryHelper)
             {
                 result += String.Format("                        {0} = {1}.Get{1}({2})" + Environment.NewLine,
-                    (String.IsNullOrEmpty(prop.Implements)
+                    (String.IsNullOrEmpty(prop.Interfaces)
                         ? FormatPascal(prop.Name)
-                        : "DirectCast(Me, " + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
+                        : "DirectCast(Me, " + prop.Interfaces.Substring(0, prop.Interfaces.LastIndexOf('.')) +
                           ")." + FormatPascal(prop.Name)), prop.TypeName, GetFieldReaderStatementList(info, prop));
             }
             else
             {
                 result +=
                     String.Format("                        {0} = DataPortal.Fetch(Of {1})({2})" + Environment.NewLine,
-                        (String.IsNullOrEmpty(prop.Implements)
+                        (String.IsNullOrEmpty(prop.Interfaces)
                             ? FormatPascal(prop.Name)
-                            : "DirectCast(Me, " + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
+                            : "DirectCast(Me, " + prop.Interfaces.Substring(0, prop.Interfaces.LastIndexOf('.')) +
                               ")." + FormatPascal(prop.Name)), prop.TypeName, GetFieldReaderStatementList(info, prop));
             }
             result += "                    End If" + Environment.NewLine;
@@ -4773,9 +4773,9 @@ namespace CslaGenerator.CodeGen
             result += "                                ' set the property so OnPropertyChanged is raised" +
                       Environment.NewLine;
             result += String.Format("                                {0} = e.Object" + Environment.NewLine,
-                (String.IsNullOrEmpty(prop.Implements)
+                (String.IsNullOrEmpty(prop.Interfaces)
                     ? FormatPascal(prop.Name)
-                    : "DirectCast(Me, " + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) + ")." +
+                    : "DirectCast(Me, " + prop.Interfaces.Substring(0, prop.Interfaces.LastIndexOf('.')) + ")." +
                       FormatPascal(prop.Name)));
             result += "                            End If" + Environment.NewLine;
             if (!UseChildFactoryHelper && isLocal)
@@ -4805,17 +4805,17 @@ namespace CslaGenerator.CodeGen
             if (UseChildFactoryHelper)
             {
                 result += String.Format("                    {0} = {1}.Get{1}({2})" + Environment.NewLine,
-                    (String.IsNullOrEmpty(prop.Implements)
+                    (String.IsNullOrEmpty(prop.Interfaces)
                         ? FormatPascal(prop.Name)
-                        : "DirectCast(Me, " + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
+                        : "DirectCast(Me, " + prop.Interfaces.Substring(0, prop.Interfaces.LastIndexOf('.')) +
                           ")." + FormatPascal(prop.Name)), prop.TypeName, GetFieldReaderStatementList(info, prop));
             }
             else
             {
                 result += String.Format("                    {0} = DataPortal.Fetch(Of {1})({2})" + Environment.NewLine,
-                    (String.IsNullOrEmpty(prop.Implements)
+                    (String.IsNullOrEmpty(prop.Interfaces)
                         ? FormatPascal(prop.Name)
-                        : "DirectCast(Me, " + prop.Implements.Substring(0, prop.Implements.LastIndexOf('.')) +
+                        : "DirectCast(Me, " + prop.Interfaces.Substring(0, prop.Interfaces.LastIndexOf('.')) +
                           ")." + FormatPascal(prop.Name)), prop.TypeName, GetFieldReaderStatementList(info, prop));
             }
             result += String.Format("                End If" + Environment.NewLine);
