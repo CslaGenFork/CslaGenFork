@@ -230,7 +230,9 @@
     <Compile Include="CodeGen\CslaTemplateHelperCS.cs" />
     <Compile Include="CodeGen\CslaTemplateHelperVB.cs" />
     <Compile Include="CodeGen\GenerationStep.cs" />
-    <Compile Include="Controls\FixXmlSchema.cs" />
+    <Compile Include="Controls\FixXmlSchema.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Controls\FixXmlSchema.Designer.cs">
       <DependentUpon>FixXmlSchema.cs</DependentUpon>
     </Compile>
@@ -294,6 +296,7 @@
     </Compile>
     <Compile Include="Design\PropertyCollectionForm.cs">
     </Compile>
+    <Compile Include="VersionHelper.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -594,7 +597,6 @@
     <Compile Include="Util\TypeHelper.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="VersionHelper.cs" />
     <Compile Include="Windows7Security.cs">
       <SubType>Code</SubType>
     </Compile>
