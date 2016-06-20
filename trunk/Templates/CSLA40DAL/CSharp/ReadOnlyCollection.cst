@@ -68,7 +68,7 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
         }
         else
         {
-            %><%= ListBaseHelper("ReadOnly", true) %><<%= Info.ObjectName %>, <%= Info.ItemType %>><!-- #include file="Implements.asp" --><%
+            %><%= ListBaseHelper("ReadOnly", true) %><<%= Info.ObjectName %>, <%= Info.ItemType %>><!-- #include file="Interfaces.asp" --><%
         }
 
         %>#else
@@ -81,7 +81,7 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
     }
     else
     {
-        %><%= ListBaseHelper("ReadOnly", CurrentUnit.GenerationParams.GenerateWinForms && !CurrentUnit.GenerationParams.DualListInheritance) %><<%= Info.ObjectName %>, <%= Info.ItemType %>><!-- #include file="Implements.asp" --><%
+        %><%= ListBaseHelper("ReadOnly", CurrentUnit.GenerationParams.GenerateWinForms && !CurrentUnit.GenerationParams.DualListInheritance) %><<%= Info.ObjectName %>, <%= Info.ItemType %>><!-- #include file="Interfaces.asp" --><%
     }
     if (CurrentUnit.GenerationParams.DualListInheritance)
     {

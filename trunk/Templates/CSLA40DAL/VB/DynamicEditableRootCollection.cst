@@ -62,7 +62,7 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
         }
         else
         {
-            %><%= ListBaseHelper("Dynamic", true) %><<%= Info.ItemType %>><!-- #include file="Implements.asp" --><%
+            %><%= ListBaseHelper("Dynamic", true) %><<%= Info.ItemType %>><!-- #include file="Interfaces.asp" --><%
         }
 
         %>#else
@@ -75,7 +75,7 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
     }
     else
     {
-        %><%= ListBaseHelper("Dynamic", CurrentUnit.GenerationParams.GenerateWinForms && !CurrentUnit.GenerationParams.DualListInheritance) %><<%= Info.ItemType %>><!-- #include file="Implements.asp" --><%
+        %><%= ListBaseHelper("Dynamic", CurrentUnit.GenerationParams.GenerateWinForms && !CurrentUnit.GenerationParams.DualListInheritance) %><<%= Info.ItemType %>><!-- #include file="Interfaces.asp" --><%
     }
     if (CurrentUnit.GenerationParams.DualListInheritance)
     {

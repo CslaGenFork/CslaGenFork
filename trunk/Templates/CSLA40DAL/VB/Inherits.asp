@@ -16,5 +16,9 @@ else
 
 if (result.Contains("<T,C>"))
     result = result.Replace("<T,C>", "<" + Info.ObjectName + ", " + Info.ItemType + ">");
-Response.Write(result);
-%><!-- #include file="Implements.asp" -->
+
+if (result.Contains("<K,V>"))
+    result = result.Replace("<K,V>", "<" + Info.ValueColumn + ", " + Info.NameColumn + ">");
+
+    Response.Write(result);
+%><!-- #include file="Interfaces.asp" -->
