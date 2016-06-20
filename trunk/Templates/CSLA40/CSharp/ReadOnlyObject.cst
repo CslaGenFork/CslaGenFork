@@ -85,7 +85,7 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Busine
     }
     else
     {
-        %>ReadOnlyBase<<%= Info.ObjectName %>><!-- #include file="Implements.asp" --><%
+        %>ReadOnlyBase<<%= Info.ObjectName %>><!-- #include file="Interfaces.asp" --><%
     }
     %>
     {

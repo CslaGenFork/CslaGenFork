@@ -64,7 +64,7 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Busine
     }
     else
     {
-        %>BusinessBase<<%= Info.ObjectName %>><!-- #include file="Implements.asp" --><%
+        %>BusinessBase<<%= Info.ObjectName %>><!-- #include file="Interfaces.asp" --><%
     }
     %>
     {

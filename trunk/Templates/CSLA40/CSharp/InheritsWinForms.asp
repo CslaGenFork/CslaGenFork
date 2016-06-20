@@ -17,4 +17,4 @@ else
 if (resultWF.Contains("<T,C>"))
     resultWF = resultWF.Replace("<T,C>", "<" + Info.ObjectName + ", " + Info.ItemType + ">");
 Response.Write(resultWF);
-%><!-- #include file="Implements.asp" -->
+%><!-- #include file="Interfaces.asp" -->

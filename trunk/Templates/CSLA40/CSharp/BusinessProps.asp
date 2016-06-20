@@ -38,7 +38,7 @@ foreach (ValueProperty prop in Info.ValueProperties)
         %>
 
         /// <summary>
-        /// Maintains metadata about <see cref="<%= string.IsNullOrEmpty(prop.Implements) ? prop.Name : prop.Implements %>"/> property.
+        /// Maintains metadata about <see cref="<%= string.IsNullOrEmpty(prop.Interfaces) ? prop.Name : prop.Interfaces %>"/> property.
         /// </summary>
 <%= statement %><%
     }
@@ -189,7 +189,7 @@ foreach (ChildProperty prop in Info.GetMyChildProperties())
         %>
 
         /// <summary>
-        /// Maintains metadata about child <see cref="<%= string.IsNullOrEmpty(prop.Implements) ? prop.Name : prop.Implements %>"/> property.
+        /// Maintains metadata about child <see cref="<%= string.IsNullOrEmpty(prop.Interfaces) ? prop.Name : prop.Interfaces %>"/> property.
         /// </summary>
 <%= statement %><%
     }
