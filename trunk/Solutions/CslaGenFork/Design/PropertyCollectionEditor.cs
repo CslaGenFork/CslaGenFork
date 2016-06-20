@@ -11,7 +11,7 @@ using CslaGenerator.Util;
 namespace CslaGenerator.Design
 {
     /// <summary>
-    /// Used by HashcodeProperty, EqualsProperty, ToStringProperty
+    /// Used by ToStringProperty
     /// </summary>
     public class PropertyCollectionEditor : UITypeEditor, IDisposable
     {
@@ -44,13 +44,7 @@ namespace CslaGenerator.Design
                     if (instanceType == typeof(CslaObjectInfo))
                     {
                         PropertyInfo propInfo;
-                        if (context.PropertyDescriptor.DisplayName == "Hashcode Property")
-                            propInfo = instanceType.GetProperty("HashcodeProperty");
-                        else if (context.PropertyDescriptor.DisplayName == "Equals Property")
-                            propInfo = instanceType.GetProperty("EqualsProperty");
-                        else
-                            propInfo = instanceType.GetProperty("ToStringProperty");
-
+                        propInfo = instanceType.GetProperty("ToStringProperty");
                         propColl = (PropertyCollection)propInfo.GetValue(objinfo, null);
                         obj = (CslaObjectInfo)objinfo;
                     }
