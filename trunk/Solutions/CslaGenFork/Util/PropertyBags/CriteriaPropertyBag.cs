@@ -635,6 +635,7 @@ namespace CslaGenerator.Util.PropertyBags
                      propertyName == "WriteRoles"))
                     return false;*/
 
+                // TODO looks like the feature isn't implemented... Must do it!
                 if ((!GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4DAL || !cslaObject.UsesInlineQuery) &&
                     propertyName == "InlineQueryParameter")
                     return false;
