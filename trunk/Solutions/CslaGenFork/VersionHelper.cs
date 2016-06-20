@@ -146,12 +146,6 @@ namespace CslaGenerator
                 FileLines[index] = FileLines[index].Replace(@"<Implements />", @"<Interfaces />");
                 FileLines[index] = FileLines[index].Replace(@"<Implements>", @"<Interfaces>");
                 FileLines[index] = FileLines[index].Replace(@"</Implements>", @"</Interfaces>");
-                /*FileLines[index] = FileLines[index].Replace(@"<TargetFramework>CSLA10</TargetFramework>",
-                    @"<TargetFramework>CSLA40</TargetFramework>");
-                FileLines[index] = FileLines[index].Replace(@"<TargetFramework>CSLA20</TargetFramework>",
-                    @"<TargetFramework>CSLA40</TargetFramework>");
-                FileLines[index] = FileLines[index].Replace(@"<TargetFramework>CSLA35</TargetFramework>",
-                    @"<TargetFramework>CSLA40</TargetFramework>");*/
                 FileLines[index] = FileLines[index].Replace(@"<FileVersion>" + _fileVersionFound + "</FileVersion>",
                     @"<FileVersion>" + newFileVersion + "</FileVersion>");
             }
