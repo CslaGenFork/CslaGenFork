@@ -27,7 +27,6 @@ namespace CslaGenerator.Metadata
         private string _objectNamespace = String.Empty;
         private ClassVisibility _classVisibility = ClassVisibility.Public;
         private bool _generate = true;
-        private CodeLanguage _outputLanguage = CodeLanguage.CSharp;
         private TransactionType _transactionType = TransactionType.None;
         private PersistenceType _persistenceType = PersistenceType.SqlConnectionManager;
         private string _dbContextObject = string.Empty;
@@ -51,8 +50,6 @@ namespace CslaGenerator.Metadata
         private readonly ChildPropertyCollection _inheritedChildCollectionProperties = new ChildPropertyCollection();
         private readonly CriteriaCollection _criteriaObjects = new CriteriaCollection();
         private List<CriteriaCollection> _unitOfWorkCriteriaObjects = new List<CriteriaCollection>();
-        private PropertyCollection _equalsProperty = new PropertyCollection();
-        private PropertyCollection _hashcodeProperty = new PropertyCollection();
         private PropertyCollection _toStringProperty = new PropertyCollection();
         private PropertyCollection _findMethodsParameters = new PropertyCollection();
         private bool _insertUpdateRunLocal;
@@ -62,7 +59,6 @@ namespace CslaGenerator.Metadata
         private string _deleteProcedureName = String.Empty;
         private bool _deleteUseTimestamp;
         private bool _removeItem = true;
-        private string _dbName = String.Empty;
         private bool _isPolymorphic;
         private string _itemType = String.Empty;
         private bool _containsItem = true;
@@ -72,7 +68,6 @@ namespace CslaGenerator.Metadata
         private string _fileName = String.Empty;
         private string _nameColumn = String.Empty;
         private string _valueColumn = String.Empty;
-        private bool _lazyLoad;
         private bool _generateSprocs = true;
         private PropertyCollection _parentProperties = new PropertyCollection();
         private BusinessRuleCollection _businessRules = new BusinessRuleCollection();
@@ -110,7 +105,6 @@ namespace CslaGenerator.Metadata
         private string _classRemarks = String.Empty;
         private string[] _namespaces = {};
         private bool _dataSetLoadingScheme;
-        private bool _cacheResults = true;
         private List<string> _generateInlineQueries = new List<string>();
 
         #endregion
@@ -129,7 +123,6 @@ namespace CslaGenerator.Metadata
             _valueProperties.ItemChanged += vp_ItemChanged;
             if (parent != null && parent.Params != null)
             {
-                _dbName = parent.Params.DefaultDataBase;
                 _transactionType = parent.Params.DefaultTransactionType;
                 _persistenceType = parent.Params.DefaultPersistenceType;
                 _dbContextObject = parent.Params.DefaultDatabaseContextObject;
@@ -569,10 +562,10 @@ namespace CslaGenerator.Metadata
         }
 
         [Browsable(false)]
+        [XmlIgnore]
         public CodeLanguage OutputLanguage
         {
             get { return Parent.GenerationParams.OutputLanguage; }
-            set { _outputLanguage = value; }
         }
 
         #endregion
@@ -753,6 +746,7 @@ namespace CslaGenerator.Metadata
         [Description("The Parent properties are used only in inserts and aren't used in updates or deletes.\r\n" +
             "Set it to true when the child has its own ID that is used on updates and deletes.")]
         [UserFriendlyName("No Parent on updates/deletes")]*/
+        // ATT do not remove from XML
         [Browsable(false)]
         public bool ParentInsertOnly
         {
@@ -782,17 +776,6 @@ namespace CslaGenerator.Metadata
                 else
                     _parentInsertOnly = false;
             }
-        }
-
-        [Category("04. Child Object Options")]
-        [Description("Whether or not this object should be \"lazy loaded\".  \"Lazy loading\" means the child object data " +
-            "isn't loaded when the parent object data is loaded but is defered until the child object is referenced.\r\n" +
-            "It must be set the same way in the parent object.")]
-        [UserFriendlyName("Lazy Load")]
-        public bool LazyLoad
-        {
-            get { return _lazyLoad; }
-            set { _lazyLoad = value; }
         }
 
         #endregion
@@ -982,27 +965,9 @@ namespace CslaGenerator.Metadata
             set { _nameColumn = value; }
         }
 
-        [Category("06. NameValueList Info")]
-        [Description("Whether to cache the results of the fetch operation for the name value list or not. This will also generate an InvalidateAll method to clear the cache.")]
-        [UserFriendlyName("Cache Results")]
-        public bool CacheResults
-        {
-            get { return _cacheResults; }
-            set { _cacheResults = value; }
-        }
-
         #endregion
 
         #region 07. Data Access Options
-
-        [Category("07. Data Access Options")]
-        [Description("Name of the database alias used to get the connection string from configuration file.")]
-        [UserFriendlyName("Database Name")]
-        public string DbName
-        {
-            get { return _dbName; }
-            set { _dbName = PropertyHelper.Tidy(value); }
-        }
 
         /// <summary>
         /// Persistence type to use for data access.
@@ -1036,6 +1001,8 @@ namespace CslaGenerator.Metadata
         [Category("07. Data Access Options")]
         [Description("Database context object for use with LinqContext and EFContext persistence types.")]
         [UserFriendlyName("Database Context Object")]
+        [Browsable(false)]
+        [XmlIgnore]
         public string DbContextObject
         {
             get { return _dbContextObject; }
@@ -1259,37 +1226,6 @@ namespace CslaGenerator.Metadata
         #endregion
 
         #region 09. System.Object Overrides
-
-        /// <summary>
-        /// The properties that are used to create the object's hashcode.
-        /// If multiple properties are selected the results of their GetHashCode
-        /// methods are xor'd.  If none are selected, GetHashCode method is not overridden
-        /// </summary>
-        [Category("09. System.Object Overrides")]
-        [Description("The properties that are used to create the object's hashcode.  If multiple properties are selected the results of their GetHashCode methods are xor'd.  If none are selected, GetHashCode method is not overridden")]
-        [Editor(typeof(PropertyCollectionEditor), typeof(UITypeEditor))]
-        [TypeConverter(typeof(PropertyCollectionConverter))]
-        [UserFriendlyName("Hashcode Property")]
-        public PropertyCollection HashcodeProperty
-        {
-            get { return _hashcodeProperty; }
-            set { _hashcodeProperty = value; }
-        }
-
-        /// <summary>
-        /// The properties that are used to check object equivalence.
-        /// If none are selected, Equals method is not overridden
-        /// </summary>
-        [Category("09. System.Object Overrides")]
-        [Description("The properties that are used to check object equivalence.  If none are selected, Equals method is not overridden")]
-        [Editor(typeof(PropertyCollectionEditor), typeof(UITypeEditor))]
-        [TypeConverter(typeof(PropertyCollectionConverter))]
-        [UserFriendlyName("Equals Property")]
-        public PropertyCollection EqualsProperty
-        {
-            get { return _equalsProperty; }
-            set { _equalsProperty = value; }
-        }
 
         /// <summary>
         /// The properties that are used to create a string from the object's ToString property.
@@ -2065,8 +2001,6 @@ namespace CslaGenerator.Metadata
                 HandleNameChanged(c.Properties, e);
             }
             HandleNameChanged(_toStringProperty, e);
-            HandleNameChanged(_equalsProperty, e);
-            HandleNameChanged(_hashcodeProperty, e);
         }
 
         private void HandleNameChanged(PropertyCollection col, PropertyNameChangedEventArgs e)
