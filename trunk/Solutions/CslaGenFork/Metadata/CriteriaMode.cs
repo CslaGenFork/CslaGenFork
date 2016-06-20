@@ -5,6 +5,6 @@
         Simple = 1,
         CriteriaBase,
         BusinessBase,
-        CustomBaseClass
+        CustomCriteriaClass
     }
 }
