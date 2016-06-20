@@ -16,7 +16,7 @@ namespace CslaGenerator.Metadata
         #region Private Fields
 
         private string _name = String.Empty;
-        private TypeInfo _projectClass;
+        private TypeInfo _customClass;
         private string _summary = String.Empty;
         private string _remarks = String.Empty;
         private readonly CriteriaPropertyCollection _properties = new CriteriaPropertyCollection();
@@ -94,10 +94,10 @@ namespace CslaGenerator.Metadata
         [Editor(typeof(ObjectEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(TypeInfoConverter))]
         [UserFriendlyName("Criteria Project Class")]
-        public TypeInfo ProjectClass
+        public TypeInfo CustomClass
         {
-            get { return _projectClass; }
-            set { _projectClass = value; }
+            get { return _customClass; }
+            set { _customClass = value; }
         }
 
         [Category("01. Definition")]
@@ -294,7 +294,7 @@ namespace CslaGenerator.Metadata
             newCrit.Name = masterCrit.Name;
             newCrit.CriteriaClassMode = masterCrit.CriteriaClassMode;
             newCrit.NestedClass = masterCrit.NestedClass;
-            newCrit.ProjectClass = masterCrit.ProjectClass;
+            newCrit.CustomClass = masterCrit.CustomClass;
             newCrit.Summary = masterCrit.Summary;
             newCrit.Remarks = masterCrit.Remarks;
 
