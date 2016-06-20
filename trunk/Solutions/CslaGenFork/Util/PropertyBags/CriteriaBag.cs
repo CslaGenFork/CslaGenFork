@@ -649,8 +649,12 @@ namespace CslaGenerator.Util.PropertyBags
                 if ((cslaObject.ObjectType == CslaObjectType.UnitOfWork && cslaObject.IsCreatorGetter) &&
                     (propertyName == "DeleteOptions"))
                     return false;
-                if (criteria.CriteriaClassMode == CriteriaMode.BusinessBase &&
+                if ((criteria.CriteriaClassMode == CriteriaMode.BusinessBase ||
+                criteria.CriteriaClassMode == CriteriaMode.CustomCriteriaClass )&&
                     propertyName == "NestedClass")
+                    return false;
+                if (criteria.CriteriaClassMode != CriteriaMode.CustomCriteriaClass &&
+                    propertyName == "CustomClass")
                     return false;
 
                 if (_selectedObject.Length > 1 && IsEnumerable(GetPropertyInfoCache(propertyName)))
