@@ -94,7 +94,7 @@ else
             if (validateParentInfo.IsPolymorphic && validateParentInfo.ItemType != Info.ObjectName)
             {
                 bool interfaceFound = false;
-                foreach (string implement in Info.Implements)
+                foreach (string implement in Info.Interfaces)
                 {
                     if (implement.Trim() == validateParentInfo.ItemType)
                     {

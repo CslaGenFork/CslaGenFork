@@ -64,7 +64,7 @@ if (Errors.Length == 0)
         }
         else
         {
-            %><%= ListBaseHelper("Dynamic", true) %>(Of <%= Info.ItemType %>)<!-- #include file="Implements.asp" --><%
+            %><%= ListBaseHelper("Dynamic", true) %>(Of <%= Info.ItemType %>)<!-- #include file="Interfaces.asp" --><%
         }
 
         %>#Else
@@ -78,7 +78,7 @@ if (Errors.Length == 0)
     }
     else
     {
-        %><%= ListBaseHelper("Dynamic", CurrentUnit.GenerationParams.GenerateWinForms && !CurrentUnit.GenerationParams.DualListInheritance) %>(Of <%= Info.ItemType %>)<!-- #include file="Implements.asp" --><%
+        %><%= ListBaseHelper("Dynamic", CurrentUnit.GenerationParams.GenerateWinForms && !CurrentUnit.GenerationParams.DualListInheritance) %>(Of <%= Info.ItemType %>)<!-- #include file="Interfaces.asp" --><%
     }
     if (CurrentUnit.GenerationParams.DualListInheritance)
     {

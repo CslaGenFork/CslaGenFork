@@ -122,7 +122,7 @@ foreach (CslaObjectInfo objectInfo in list)
                 if (parent.IsPolymorphic && parent.ItemType != objectInfo.ObjectName)
                 {
                     bool interfaceFound = false;
-                    foreach (string implement in objectInfo.Implements)
+                    foreach (string implement in objectInfo.Interfaces)
                     {
                         if (implement.Trim() == parent.ItemType)
                         {

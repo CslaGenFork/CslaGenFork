@@ -44,7 +44,7 @@ if ((firstComment == null && string.IsNullOrEmpty(Info.Parent.GenerationParams.C
             (Info.ChildCollectionProperties.Count > 1 ? "s" : "") + ":<br/>\r\n";
         for (int collection = 0; collection < Info.ChildCollectionProperties.Count; collection++)
         {
-            collectionName = string.IsNullOrEmpty(Info.ChildCollectionProperties[collection].Implements) ? Info.ChildCollectionProperties[collection].Name : Info.ChildCollectionProperties[collection].Implements;
+            collectionName = string.IsNullOrEmpty(Info.ChildCollectionProperties[collection].Interfaces) ? Info.ChildCollectionProperties[collection].Name : Info.ChildCollectionProperties[collection].Interfaces;
             CslaObjectInfo childColl = FindChildInfo(Info, Info.ChildCollectionProperties[collection].TypeName);
             CslaObjectInfo associated = FindAssociated(Info, childColl);
             xmlRemark += "- <see cref=\"" + collectionName + "\"/> of type <see cref=\"" + childColl.ObjectName +

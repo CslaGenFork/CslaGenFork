@@ -21,4 +21,4 @@ if (result.Contains("<K,V>"))
     result = result.Replace("<K,V>", "(Of " + Info.ValueColumn + ", " + Info.NameColumn + ")");
 
     Response.Write(result);
-%><!-- #include file="Implements.asp" -->
+%><!-- #include file="Interfaces.asp" -->
