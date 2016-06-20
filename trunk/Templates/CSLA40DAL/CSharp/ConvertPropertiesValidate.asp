@@ -22,7 +22,7 @@ foreach (ConvertValueProperty convertValueProperty in Info.ConvertValuePropertie
     ValueProperty sourceProperty = Info.ValueProperties.Find(convertValueProperty.SourcePropertyName);
     if (sourceProperty == null)
     {
-        Errors.Append(Info.ObjectName + " converted property " + convertValueProperty.Name + ": source property " + sourceProperty.Name + " was not found." + Environment.NewLine);
+        Errors.Append(Info.ObjectName + " converted property " + convertValueProperty.Name + ": source property " + convertValueProperty.SourcePropertyName + " was not found." + Environment.NewLine);
         return;
     }
 

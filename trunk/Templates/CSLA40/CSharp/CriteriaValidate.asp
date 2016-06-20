@@ -128,6 +128,10 @@ else
                 }
             }
         }
+        if (deleteOptionsDataPortal && crit.Properties.Count < 1)
+        {
+            Errors.Append("Criteria " + Info.ObjectName + "." + crit.Name + ": a Delete criteria needs at least one Criteria Property" + Environment.NewLine);
+        }
     }
 }
 %>
