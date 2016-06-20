@@ -64,7 +64,7 @@ if (Errors.Length == 0)
         }
         else
         {
-            %><%= ListBaseHelper("Business", true) %>(Of <%= Info.ObjectName %>, <%= Info.ItemType %>)<!-- #include file="Implements.asp" --><%
+            %><%= ListBaseHelper("Business", true) %>(Of <%= Info.ObjectName %>, <%= Info.ItemType %>)<!-- #include file="Interfaces.asp" --><%
         }
 
         %>#Else
@@ -78,7 +78,7 @@ if (Errors.Length == 0)
     }
     else
     {
-        %><%= ListBaseHelper("Business", CurrentUnit.GenerationParams.GenerateWinForms && !CurrentUnit.GenerationParams.DualListInheritance) %>(Of <%= Info.ObjectName %>, <%= Info.ItemType %>)<!-- #include file="Implements.asp" --><%
+        %><%= ListBaseHelper("Business", CurrentUnit.GenerationParams.GenerateWinForms && !CurrentUnit.GenerationParams.DualListInheritance) %>(Of <%= Info.ObjectName %>, <%= Info.ItemType %>)<!-- #include file="Interfaces.asp" --><%
     }
     if (CurrentUnit.GenerationParams.DualListInheritance)
     {

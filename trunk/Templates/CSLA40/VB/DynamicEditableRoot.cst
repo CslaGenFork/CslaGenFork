@@ -67,7 +67,7 @@ if (Errors.Length == 0)
     }
     else
     {
-        %>BusinessBase(Of <%= Info.ObjectName %>)<!-- #include file="Implements.asp" --><%
+        %>BusinessBase(Of <%= Info.ObjectName %>)<!-- #include file="Interfaces.asp" --><%
     }
     %>
 <!-- #include file="StaticFields.asp" -->

@@ -85,7 +85,7 @@ if (Errors.Length == 0)
     }
     else
     {
-        %>ReadOnlyBase(Of <%= Info.ObjectName %>)<!-- #include file="Implements.asp" --><%
+        %>ReadOnlyBase(Of <%= Info.ObjectName %>)<!-- #include file="Interfaces.asp" --><%
     }
     %>
 <!-- #include file="StaticFields.asp" -->
