@@ -948,19 +948,17 @@ namespace CslaGenerator.Util.PropertyBags
                         if (!GeneratorController.Current.CurrentUnit.GenerationParams.DualListInheritance &&
                             propertyName == "InheritedTypeWinForms")
                             return false;
+                        if (!cslaObject.IsGenericType &&
+                            propertyName == "GenericArguments")
+                            return false;
                         if (CslaTemplateHelperCS.IsReadOnlyType(cslaObject.ObjectType) &&
                             !string.IsNullOrEmpty(cslaObject.ParentType) &&
-                            (propertyName == "UseUnitOfWorkType" || propertyName == "GenerateInlineQueries"))
+                            (propertyName == "UseUnitOfWorkType" ||
+                            propertyName == "GenerateInlineQueries"))
                             return false;
                         if (!(cslaObject.ObjectType == CslaObjectType.DynamicEditableRoot ||
                             cslaObject.ObjectType == CslaObjectType.ReadOnlyObject) &&
                             propertyName == "AddParentReference")
-                            return false;
-                        if (propertyName == "DbName" ||
-                            propertyName == "HashcodeProperty" ||
-                            propertyName == "EqualsProperty" ||
-                            propertyName == "LazyLoad" ||
-                            propertyName == "CacheResults")
                             return false;
                         if (cslaObject.ObjectType != CslaObjectType.EditableChild &&
                             propertyName == "DeleteProcedureName")
@@ -976,7 +974,8 @@ namespace CslaGenerator.Util.PropertyBags
                             propertyName == "RemoveItem")
                             return false;
                         if (!canHaveParentProperties &&
-                            (propertyName == "ParentProperties" || propertyName == "UseParentProperties"))
+                            (propertyName == "ParentProperties" || 
+                            propertyName == "UseParentProperties"))
                             return false;
                         if (cslaObject.ObjectType != CslaObjectType.UnitOfWork &&
                             (propertyName == "UnitOfWorkProperties" ||
