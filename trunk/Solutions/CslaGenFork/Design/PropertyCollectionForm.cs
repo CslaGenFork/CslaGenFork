@@ -431,15 +431,6 @@ namespace CslaGenerator.Design
                 if (selectedObject != null)
                     propertyInfo.SetValue(_propGrid, new BusinessRuleParameterBag(selectedObject), null);
             }*/
-            else if (_collectionType == typeof(DecoratorArgument))
-            {
-                var selectedObject = (DecoratorArgument)_propGrid.SelectedObject;
-                //Get the property grid's type.
-                //This is a vsPropertyGrid located in System.Windows.Forms.Design
-                var propertyInfo = _propGrid.GetType().GetProperty("SelectedObject", BindingFlags.Public | BindingFlags.Instance);
-                if (selectedObject != null)
-                    propertyInfo.SetValue(_propGrid, new DecoratorArgumentBag(selectedObject), null);
-            }
 
             _propGrid.Layout += pgEditor_Layout;
 
@@ -545,9 +536,6 @@ namespace CslaGenerator.Design
                     _form.Size = new Size(550, 569);
                     _collectionType = typeof(BusinessRuleConstructorParameter);
                     break;*/
-                case "DecoratorArgument Collection Editor":
-                    _collectionType = typeof(DecoratorArgument);
-                    break;
             }
         }
 
