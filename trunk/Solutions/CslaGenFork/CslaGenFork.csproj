@@ -526,8 +526,6 @@
     <Compile Include="Metadata\DbBindColumn.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Metadata\DecoratorArgument.cs" />
-    <Compile Include="Metadata\DecoratorArgumentCollection.cs" />
     <Compile Include="Metadata\GenerationParameters.cs" />
     <Compile Include="Metadata\IBoundProperty.cs" />
     <Compile Include="Metadata\LoadingScheme.cs">
@@ -584,7 +582,6 @@
     <Compile Include="Util\PropertyBags\ConvertValuePropertyBag.cs" />
     <Compile Include="Util\PropertyBags\CriteriaBag.cs" />
     <Compile Include="Util\PropertyBags\CriteriaPropertyBag.cs" />
-    <Compile Include="Util\PropertyBags\DecoratorArgumentBag.cs" />
     <Compile Include="Util\PropertyBags\InheritedTypePropertyBag.cs" />
     <Compile Include="Util\PropertyBags\PropertyBag.cs" />
     <Compile Include="Util\PropertyBags\PropertyContext.cs" />
