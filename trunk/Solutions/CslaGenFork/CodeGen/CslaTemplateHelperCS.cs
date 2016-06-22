@@ -339,11 +339,7 @@ namespace CslaGenerator.CodeGen
 
         public static bool AllowNull(Property prop)
         {
-            /*return GeneratorController.Current.CurrentUnit.GenerationParams.NullableSupport &&
-                prop.Nullable &&
-                prop.PropertyType != TypeCodeEx.SmartDate;*/
-            return GeneratorController.Current.CurrentUnit.GenerationParams.NullableSupport &&
-                   prop.Nullable;
+            return prop.Nullable;
         }
 
         public virtual string GetParameterSet(Property prop)
