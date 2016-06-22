@@ -7,9 +7,7 @@ namespace CslaGenerator.Metadata
     {
         public new void Add(BusinessRuleConstructor item)
         {
-//            item.NameChanged -= Name_Changed;
             item.NameChanged += OnNameChanged;
-//            item.ActiveChanged -= Active_Changed;
             item.ActiveChanged += OnActiveChanged;
             base.Add(item);
         }
@@ -33,7 +31,7 @@ namespace CslaGenerator.Metadata
         {
             foreach (var c in this)
             {
-                if (c.IsActive && c !=newActive)
+                if (c.IsActive && c != newActive)
                     return c;
             }
             return null;
@@ -47,7 +45,8 @@ namespace CslaGenerator.Metadata
             foreach (var cTor in this)
             {
                 if (cTor.Name.EndsWith(" (Active)"))
-                    cTor.SetName(cTor.Name.Substring(0, cTor.Name.LastIndexOf(" (Active)")));
+                    cTor.SetName(cTor.Name.Substring(0,
+                        cTor.Name.LastIndexOf(" (Active)", StringComparison.InvariantCulture)));
             }
             sender.SetName(sender.Name + " (Active)");
 
@@ -59,21 +58,22 @@ namespace CslaGenerator.Metadata
 //            sender.NameChanged -= Name_Changed;
 
             if (sender.Name.EndsWith(" (Active)"))
-                sender.SetName(sender.Name.Substring(0, sender.Name.LastIndexOf(" (Active)")));
+                sender.SetName(sender.Name.Substring(0,
+                    sender.Name.LastIndexOf(" (Active)", StringComparison.InvariantCulture)));
 
             var oldActive = OldActive(sender);
             if (oldActive != null)
             {
                 if (oldActive.Name.EndsWith(" (Active)"))
                 {
-                    oldActive.SetName(oldActive.Name.Substring(0, oldActive.Name.LastIndexOf(" (Active)")));
+                    oldActive.SetName(oldActive.Name.Substring(0,
+                        oldActive.Name.LastIndexOf(" (Active)", StringComparison.InvariantCulture)));
                 }
                 oldActive.IsActive = false;
             }
-            sender.SetName(sender.Name +" (Active)");
+            sender.SetName(sender.Name + " (Active)");
 
 //            sender.NameChanged += Name_Changed;
         }
-
     }
 }
