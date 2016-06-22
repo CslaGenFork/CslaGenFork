@@ -4,6 +4,7 @@ using System.ComponentModel.Design;
 using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
+using CslaGenerator.CodeGen;
 using CslaGenerator.Metadata;
 using CslaGenerator.Util.PropertyBags;
 
@@ -464,6 +465,8 @@ namespace CslaGenerator.Design
                     }
                     if (cslaObject.ObjectType == CslaObjectType.NameValueList)
                         _form.Size = new Size(_form.Size.Width, 626);
+                    else if (CslaTemplateHelperCS.IsNotDbConsumer(cslaObject))
+                        _form.Size = new Size(_form.Size.Width, _form.Size.Height - 96);
                     _form.Size = new Size(_form.Size.Width, _form.Size.Height - 16);
                     if (height < _form.Size.Height)
                         _form.Size = new Size(_form.Size.Width, height);
