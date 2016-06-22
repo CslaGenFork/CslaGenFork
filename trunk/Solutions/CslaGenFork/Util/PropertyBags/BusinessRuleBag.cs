@@ -521,14 +521,14 @@ namespace CslaGenerator.Util.PropertyBags
         private void InitPropertyBag()
         {
             int rulePropertyCounter = 0;
-            PropertyInfo pi;
-            Type t = typeof(BusinessRule); // _selectedObject.GetType();
+            PropertyInfo propertyInfo;
+            Type t = typeof(BusinessRule);// _selectedObject.GetType();
             PropertyInfo[] props = t.GetProperties();
             // Display information for all properties.
             for (int i = 0; i < props.Length; i++)
             {
-                pi = props[i];
-                object[] myAttributes = pi.GetCustomAttributes(true);
+                propertyInfo = props[i];
+                object[] myAttributes = propertyInfo.GetCustomAttributes(true);
                 string category = "";
                 string description = "";
                 bool isreadonly = false;
@@ -542,7 +542,7 @@ namespace CslaGenerator.Util.PropertyBags
                 string editor = "";
                 string assemblyQualifiedName = "";
 
-                if (pi.Name.Contains("RuleProperty"))
+                if (propertyInfo.Name.Contains("RuleProperty"))
                 {
                     category = "03. Business Rule Options";
                     HandleRuleProperty(ref rulePropertyCounter, out isbrowsable, out userfriendlyname, out description, out isreadonly, ref editor, out assemblyQualifiedName);
@@ -590,7 +590,12 @@ namespace CslaGenerator.Util.PropertyBags
                         }
                     }
                 }
-                userfriendlyname = userfriendlyname.Length > 0 ? userfriendlyname : pi.Name;
+
+                // Set ReadOnly properties
+                /*if (SelectedObject[0].LoadingScheme == LoadingScheme.ParentLoad && propertyInfo.Name == "LazyLoad")
+                    isreadonly = true;*/
+
+                userfriendlyname = userfriendlyname.Length > 0 ? userfriendlyname : propertyInfo.Name;
                 var types = new List<string>();
                 foreach (var obj in _selectedObject)
                 {
@@ -599,17 +604,17 @@ namespace CslaGenerator.Util.PropertyBags
                     else if (!string.IsNullOrWhiteSpace(obj.Type) && !types.Contains(obj.Type))
                         types.Add(obj.Type);
                 }
-                // here get rid of ComponentName and Parent
-                bool isValidProperty = (pi.Name != "Properties" && pi.Name != "ComponentName" && pi.Name != "Parent");
-                if (isValidProperty && IsBrowsable(types.ToArray(), pi.Name))
+                // here get rid of Parent
+                bool isValidProperty = propertyInfo.Name != "Parent";
+                if (isValidProperty && IsBrowsable(types.ToArray(), propertyInfo.Name))
                 {
                     if (assemblyQualifiedName == string.Empty)
-                        assemblyQualifiedName = pi.PropertyType.AssemblyQualifiedName;
+                        assemblyQualifiedName = propertyInfo.PropertyType.AssemblyQualifiedName;
                     // CR added missing parameters
-                    //this.Properties.Add(new PropertySpec(userfriendlyname,pi.PropertyType.AssemblyQualifiedName,category,description,defaultvalue, editor, typeconverter, _selectedObject, pi.Name,helptopic));
+                    //this.Properties.Add(new PropertySpec(userfriendlyname,propertyInfo.PropertyType.AssemblyQualifiedName,category,description,defaultvalue, editor, typeconverter, _selectedObject, propertyInfo.Name,helptopic));
                     Properties.Add(new PropertySpec(userfriendlyname, assemblyQualifiedName, category,
                                                     description, defaultvalue, editor, typeconverter, _selectedObject,
-                                                    pi.Name, helptopic, isreadonly, isbrowsable, designertypename,
+                                                    propertyInfo.Name, helptopic, isreadonly, isbrowsable, designertypename,
                                                     bindable));
                 }
             }
@@ -804,7 +809,7 @@ namespace CslaGenerator.Util.PropertyBags
                 /*if ((GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.None ||
                     GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.ObjectLevel) &&
                     (propertyName == "ReadRoles" ||
-                     propertyName == "WriteRoles"))
+                    propertyName == "WriteRoles"))
                     return false;*/
 
                 /*if (propertyName == "Name" && SelectedObject[0].Name == "Name")
@@ -823,7 +828,7 @@ namespace CslaGenerator.Util.PropertyBags
             }
             catch //(Exception e)
             {
-                Debug.WriteLine(objectType + ":" + propertyName);
+                //Debug.WriteLine(objectType + ":" + propertyName);
                 return true;
             }
         }
@@ -857,14 +862,13 @@ namespace CslaGenerator.Util.PropertyBags
         {
             try
             {
-                // get a reference to the PropertyInfo, exit if no property with that
-                // name
-                PropertyInfo pi = typeof (BusinessRule).GetProperty(propertyName);
+                // get a reference to the PropertyInfo, exit if no property with that name
+                PropertyInfo propertyInfo = typeof (BusinessRule).GetProperty(propertyName);
 
-                if (pi == null)
+                if (propertyInfo == null)
                     return false;
                 // convert the value to the expected type
-                if (pi.PropertyType.Name == "BusinessRuleProperty")
+                if (propertyInfo.PropertyType.Name == "BusinessRuleProperty")
                 {
                     PropertyInfo piProp = typeof (BusinessRuleProperty).GetProperty("Value");
                     val = Convert.ChangeType(val, piProp.PropertyType);
@@ -906,10 +910,10 @@ namespace CslaGenerator.Util.PropertyBags
                 }
                 else
                 {
-                    val = Convert.ChangeType(val, pi.PropertyType);
+                    val = Convert.ChangeType(val, propertyInfo.PropertyType);
                     // attempt the assignment
                     foreach (BusinessRule bo in (BusinessRule[]) obj)
-                        pi.SetValue(bo, val, null);
+                        propertyInfo.SetValue(bo, val, null);
                     return true;
                 }
             }
@@ -923,15 +927,15 @@ namespace CslaGenerator.Util.PropertyBags
         {
             try
             {
-                PropertyInfo pi = GetPropertyInfoCache(propertyName);
-                if (!(pi == null))
+                PropertyInfo propertyInfo = GetPropertyInfoCache(propertyName);
+                if (!(propertyInfo == null))
                 {
                     var objs = (BusinessRule[])obj;
                     var valueList = new ArrayList();
 
                     foreach (BusinessRule bo in objs)
                     {
-                        object value = pi.GetValue(bo, null);
+                        object value = propertyInfo.GetValue(bo, null);
                         if (!valueList.Contains(value))
                         {
                             valueList.Add(value);

@@ -518,14 +518,14 @@ namespace CslaGenerator.Util.PropertyBags
 
         private void InitPropertyBag()
         {
-            PropertyInfo pi;
-            Type t = typeof (ChildProperty); // _selectedObject.GetType();
+            PropertyInfo propertyInfo;
+            Type t = typeof(ChildProperty);// _selectedObject.GetType();
             PropertyInfo[] props = t.GetProperties();
             // Display information for all properties.
             for (int i = 0; i < props.Length; i++)
             {
-                pi = props[i];
-                object[] myAttributes = pi.GetCustomAttributes(true);
+                propertyInfo = props[i];
+                object[] myAttributes = propertyInfo.GetCustomAttributes(true);
                 string category = "";
                 string description = "";
                 bool isreadonly = false;
@@ -577,24 +577,28 @@ namespace CslaGenerator.Util.PropertyBags
                             break;
                     }
                 }
-                if (SelectedObject[0].LoadingScheme == LoadingScheme.ParentLoad && pi.Name == "LazyLoad")
+
+
+                // Set ReadOnly properties
+                if (SelectedObject[0].LoadingScheme == LoadingScheme.ParentLoad && propertyInfo.Name == "LazyLoad")
                         isreadonly = true;
-                userfriendlyname = userfriendlyname.Length > 0 ? userfriendlyname : pi.Name;
+
+                userfriendlyname = userfriendlyname.Length > 0 ? userfriendlyname : propertyInfo.Name;
                 var types = new List<ChildProperty>();
                 foreach (var obj in _selectedObject)
                 {
                     if (!types.Contains(obj))
                         types.Add(obj);
                 }
-                // here get rid of ComponentName and Parent
-                bool isValidProperty = (pi.Name != "Properties" && pi.Name != "ComponentName" && pi.Name != "Parent");
-                if (isValidProperty && IsBrowsable(types.ToArray(), pi.Name))
+                // here get rid of Parent
+                bool isValidProperty = propertyInfo.Name != "Parent";
+                if (isValidProperty && IsBrowsable(types.ToArray(), propertyInfo.Name))
                 {
                     // CR added missing parameters
-                    //this.Properties.Add(new PropertySpec(userfriendlyname,pi.PropertyType.AssemblyQualifiedName,category,description,defaultvalue, editor, typeconverter, _selectedObject, pi.Name,helptopic));
-                    Properties.Add(new PropertySpec(userfriendlyname, pi.PropertyType.AssemblyQualifiedName, category,
+                    //this.Properties.Add(new PropertySpec(userfriendlyname,propertyInfo.PropertyType.AssemblyQualifiedName,category,description,defaultvalue, editor, typeconverter, _selectedObject, propertyInfo.Name,helptopic));
+                    Properties.Add(new PropertySpec(userfriendlyname, propertyInfo.PropertyType.AssemblyQualifiedName, category,
                                                     description, defaultvalue, editor, typeconverter, _selectedObject,
-                                                    pi.Name, helptopic, isreadonly, isbrowsable, designertypename,
+                                                    propertyInfo.Name, helptopic, isreadonly, isbrowsable, designertypename,
                                                     bindable));
                 }
             }
@@ -630,44 +634,43 @@ namespace CslaGenerator.Util.PropertyBags
         {
             try
             {
+                var isParentCollection = false;
+                var cslaObject = (CslaObjectInfo) GeneratorController.Current.GetSelectedItem();
+                var parentInfo2 = cslaObject.Parent.CslaObjects.Find(cslaObject.ParentType);
+                if (parentInfo2 != null)
+                    isParentCollection = CslaTemplateHelperCS.IsCollectionType(parentInfo2.ObjectType);
+
+                var authorization =
+                    GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.None ||
+                    GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.ObjectLevel;
+
                 foreach (var childProperty in objectType)
                 {
-                    if ((GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.None ||
-                        GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.ObjectLevel ||
-                        ((childProperty.AuthzProvider == AuthorizationProvider.Custom) &&
+                    if ((authorization || ((childProperty.AuthzProvider == AuthorizationProvider.Custom) &&
                         !GeneratorController.Current.CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider)) &&
                         (propertyName == "ReadRoles" ||
                         propertyName == "WriteRoles"))
                         return false;
-                    if ((GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.None ||
-                        GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.ObjectLevel ||
-                        ((childProperty.AuthzProvider == AuthorizationProvider.IsInRole ||
+                    if ((authorization || ((childProperty.AuthzProvider == AuthorizationProvider.IsInRole ||
                         childProperty.AuthzProvider == AuthorizationProvider.IsNotInRole) &&
                         !GeneratorController.Current.CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider) ||
                         GeneratorController.Current.CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider) &&
                         (propertyName == "ReadAuthzRuleType" ||
-                         propertyName == "WriteAuthzRuleType"))
+                        propertyName == "WriteAuthzRuleType"))
                         return false;
-                    if (((GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.None ||
-                        GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.ObjectLevel) ||
+                    if ((authorization ||
                         GeneratorController.Current.CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider) &&
                         propertyName == "AuthzProvider")
                         return false;
-
-                    var isParentCollection = false;
-                    var cslaObject = (CslaObjectInfo)GeneratorController.Current.GetSelectedItem();
-                    var parentInfo2 = cslaObject.Parent.CslaObjects.Find(cslaObject.ParentType);
-                    if (parentInfo2 != null)
-                        isParentCollection = CslaTemplateHelperCS.IsCollectionType(parentInfo2.ObjectType);
-
                     if (isParentCollection &&
-                         propertyName == "LoadParameters")
+                        propertyName == "LoadParameters")
                         return false;
                     if (!isParentCollection &&
                         propertyName == "ParentLoadProperties")
                         return false;
                     /*if (SelectedObject[0].LoadingScheme == LoadingScheme.ParentLoad && propertyName == "LazyLoad")
                         return false;*/
+
                     if (_selectedObject.Length > 1 && IsEnumerable(GetPropertyInfoCache(propertyName)))
                         return false;
                 }
@@ -675,7 +678,7 @@ namespace CslaGenerator.Util.PropertyBags
             }
             catch //(Exception e)
             {
-                Debug.WriteLine(objectType + ":" + propertyName);
+                //Debug.WriteLine(objectType + ":" + propertyName);
                 return true;
             }
         }
@@ -709,17 +712,16 @@ namespace CslaGenerator.Util.PropertyBags
         {
             try
             {
-                // get a reference to the PropertyInfo, exit if no property with that
-                // name
-                PropertyInfo pi = typeof (ChildProperty).GetProperty(propertyName);
+                // get a reference to the PropertyInfo, exit if no property with that name
+                PropertyInfo propertyInfo = typeof (ChildProperty).GetProperty(propertyName);
 
-                if (pi == null)
+                if (propertyInfo == null)
                     return false;
                 // convert the value to the expected type
-                val = Convert.ChangeType(val, pi.PropertyType);
+                val = Convert.ChangeType(val, propertyInfo.PropertyType);
                 // attempt the assignment
                 foreach (ChildProperty bo in (ChildProperty[]) obj)
-                    pi.SetValue(bo, val, null);
+                    propertyInfo.SetValue(bo, val, null);
                 return true;
             }
             catch
@@ -732,15 +734,15 @@ namespace CslaGenerator.Util.PropertyBags
         {
             try
             {
-                PropertyInfo pi = GetPropertyInfoCache(propertyName);
-                if (!(pi == null))
+                PropertyInfo propertyInfo = GetPropertyInfoCache(propertyName);
+                if (!(propertyInfo == null))
                 {
                     var objs = (ChildProperty[]) obj;
                     var valueList = new ArrayList();
 
                     foreach (ChildProperty bo in objs)
                     {
-                        object value = pi.GetValue(bo, null);
+                        object value = propertyInfo.GetValue(bo, null);
                         if (!valueList.Contains(value))
                         {
                             valueList.Add(value);
