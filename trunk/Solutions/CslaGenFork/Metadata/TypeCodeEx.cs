@@ -6,6 +6,7 @@ namespace CslaGenerator.Metadata
     public enum TypeCodeEx
     {
         Empty,
+        CustomType,
         Boolean,
         Byte,
         ByteArray,
