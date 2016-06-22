@@ -491,7 +491,7 @@ namespace CslaGenerator.Design
                 case "UnitOfWorkProperty Collection Editor":
                     _form.Size = new Size(570, _form.Size.Height);
                     _collectionType = typeof(UnitOfWorkProperty);
-                    _form.Size = new Size(_form.Size.Width, 358);
+                    _form.Size = new Size(_form.Size.Width, 354);
                     break;
                 case "Criteria Collection Editor":
                     _form.Size = new Size(550, _form.Size.Height);
