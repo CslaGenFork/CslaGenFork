@@ -363,7 +363,13 @@ namespace CslaGenerator.Metadata
         [UserFriendlyName("Generic Type")]
         public bool IsGenericType
         {
-            get { return _isGenericType; }
+            get
+            {
+                if (ObjectType == CslaObjectType.CriteriaClass)
+                    return true;
+
+                return _isGenericType;
+            }
             set
             {
                 if (_isGenericType != value)
@@ -382,6 +388,9 @@ namespace CslaGenerator.Metadata
         {
             get
             {
+                if (ObjectType == CslaObjectType.CriteriaClass)
+                    return "T";
+
                 if (_isGenericType)
                     return _genericArguments;
 
