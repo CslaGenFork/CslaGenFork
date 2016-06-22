@@ -16,7 +16,6 @@ namespace CslaGenerator.Metadata
         private bool _separateBaseClasses;
         private bool _useDotDesignerFileNameConvention = true;
         private bool _updateOnlyDirtyChildren = true;
-        private bool _nullableSupport;
         private CodeLanguage _outputLanguage = CodeLanguage.CSharp;
         private CslaPropertyMode _propertyMode = CslaPropertyMode.Default;
         private AuthorizationLevel _generateAuthorization = AuthorizationLevel.FullSupport;
@@ -177,19 +176,6 @@ namespace CslaGenerator.Metadata
                     return;
                 _updateOnlyDirtyChildren = value;
                 OnPropertyChanged("");
-            }
-        }
-
-        public bool NullableSupport
-        {
-            get { return _nullableSupport; }
-            set
-            {
-                if (_nullableSupport == value)
-                    return;
-                _nullableSupport = value;
-                OnPropertyChanged("");
-
             }
         }
 

@@ -203,7 +203,6 @@ namespace CslaGenerator.Controls
             this.chkUseChildFactory = new System.Windows.Forms.CheckBox();
             this.chkForceReadOnlyProperties = new System.Windows.Forms.CheckBox();
             this.chkUpdateOnlyDirtyChildren = new System.Windows.Forms.CheckBox();
-            this.chkNullableSupport = new System.Windows.Forms.CheckBox();
             this.chkUsePublicPropertyInfo = new System.Windows.Forms.CheckBox();
             this.ofdLoad = new System.Windows.Forms.OpenFileDialog();
             this.projectParametersBindingSource = new System.Windows.Forms.BindingSource(this.components);
@@ -1941,7 +1940,6 @@ namespace CslaGenerator.Controls
             this.GenerationMiscTab.Controls.Add(this.lblHeaderVerbosity);
             this.GenerationMiscTab.Controls.Add(this.cboHeaderVerbosity);
             this.GenerationMiscTab.Controls.Add(this.chkUpdateOnlyDirtyChildren);
-            this.GenerationMiscTab.Controls.Add(this.chkNullableSupport);
             this.GenerationMiscTab.Controls.Add(this.chkWriteTodo);
             this.GenerationMiscTab.Controls.Add(this.chkBackupOldSource);
             this.GenerationMiscTab.Controls.Add(this.chkRetryOnFileBusy);
@@ -2082,18 +2080,6 @@ namespace CslaGenerator.Controls
             this.chkUpdateOnlyDirtyChildren.Text = "Update only Dirty children";
             this.chkUpdateOnlyDirtyChildren.UseVisualStyleBackColor = true;
             this.toolTip.SetToolTip(this.chkUpdateOnlyDirtyChildren, "If checked, generated code updates only children that are 'Dirty'; otherwise updates all children.");
-            // 
-            // chkNullableSupport
-            // 
-            this.chkNullableSupport.AutoSize = true;
-            this.chkNullableSupport.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "UpdateOnlyDirtyChildren", true, DataSourceUpdateMode.OnPropertyChanged));
-            this.chkNullableSupport.Location = new System.Drawing.Point(255, 106);
-            this.chkNullableSupport.Name = "chkNullableSupport";
-            this.chkNullableSupport.Size = new System.Drawing.Size(157, 17);
-            this.chkNullableSupport.TabIndex = 11;
-            this.chkNullableSupport.Text = "Enable Nullable<T> support";
-            this.chkNullableSupport.UseVisualStyleBackColor = true;
-            this.toolTip.SetToolTip(this.chkNullableSupport, "If checked, enables Nullable<T> support.");
             // 
             // chkWriteTodo
             // 
@@ -2377,7 +2363,6 @@ namespace CslaGenerator.Controls
         private System.Windows.Forms.CheckBox chkUseChildFactory;
         private System.Windows.Forms.CheckBox chkForceReadOnlyProperties;
         private System.Windows.Forms.CheckBox chkUpdateOnlyDirtyChildren;
-        private System.Windows.Forms.CheckBox chkNullableSupport;
         private System.Windows.Forms.CheckBox chkUsePublicPropertyInfo;
         private System.Windows.Forms.BindingSource generationParametersBindingSource;
         private System.Windows.Forms.BindingSource projectParametersBindingSource;
