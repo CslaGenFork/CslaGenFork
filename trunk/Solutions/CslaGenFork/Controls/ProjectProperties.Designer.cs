@@ -2074,7 +2074,7 @@ namespace CslaGenerator.Controls
             // chkUpdateOnlyDirtyChildren
             // 
             this.chkUpdateOnlyDirtyChildren.AutoSize = true;
-            this.chkUpdateOnlyDirtyChildren.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "NullableSupport", true, DataSourceUpdateMode.OnPropertyChanged));
+            this.chkUpdateOnlyDirtyChildren.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "UpdateOnlyDirtyChildren", true, DataSourceUpdateMode.OnPropertyChanged));
             this.chkUpdateOnlyDirtyChildren.Location = new System.Drawing.Point(255, 78);
             this.chkUpdateOnlyDirtyChildren.Name = "chkUpdateOnlyDirtyChildren";
             this.chkUpdateOnlyDirtyChildren.Size = new System.Drawing.Size(157, 17);
