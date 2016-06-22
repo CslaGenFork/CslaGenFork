@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace CslaGenerator.Metadata
 {
@@ -6,22 +7,18 @@ namespace CslaGenerator.Metadata
     {
         public BusinessRuleProperty Find(string name)
         {
-            foreach (var c in this)
-            {
-                if (c.Name.Equals(name))
-                    return c;
-            }
-            return null;
+            if (name == string.Empty)
+                return null;
+
+            return this.FirstOrDefault(property => property.Name.Equals(name));
         }
 
-        public BusinessRuleProperty FindType(string type)
+        public BusinessRuleProperty FindType(string typeName)
         {
-            foreach (var c in this)
-            {
-                if (c.Type.Equals(type))
-                    return c;
-            }
-            return null;
+            if (typeName == string.Empty)
+                return null;
+
+            return this.FirstOrDefault(property => property.Type.Equals(typeName));
         }
 
         public bool Contains(string name)

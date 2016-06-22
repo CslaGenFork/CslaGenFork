@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CslaGenerator.Metadata
 {
@@ -14,12 +15,10 @@ namespace CslaGenerator.Metadata
 
         public BusinessRuleConstructor Find(string name)
         {
-            foreach (var c in this)
-            {
-                if (c.Name.Equals(name))
-                    return c;
-            }
-            return null;
+            if (name == string.Empty)
+                return null;
+
+            return this.FirstOrDefault(property => property.Name.Equals(name));
         }
 
         public bool Contains(string name)
@@ -29,18 +28,16 @@ namespace CslaGenerator.Metadata
 
         public BusinessRuleConstructor OldActive(BusinessRuleConstructor newActive)
         {
-            foreach (var c in this)
+            foreach (var property in this)
             {
-                if (c.IsActive && c != newActive)
-                    return c;
+                if (property.IsActive && property != newActive)
+                    return property;
             }
             return null;
         }
 
         private void OnNameChanged(BusinessRuleConstructor sender, EventArgs e)
         {
-//            sender.NameChanged -= Name_Changed;
-
             // remove (Active) from all constructor's name
             foreach (var cTor in this)
             {
@@ -49,14 +46,10 @@ namespace CslaGenerator.Metadata
                         cTor.Name.LastIndexOf(" (Active)", StringComparison.InvariantCulture)));
             }
             sender.SetName(sender.Name + " (Active)");
-
-//            sender.NameChanged += Name_Changed;
         }
 
         private void OnActiveChanged(BusinessRuleConstructor sender, EventArgs e)
         {
-//            sender.NameChanged -= Name_Changed;
-
             if (sender.Name.EndsWith(" (Active)"))
                 sender.SetName(sender.Name.Substring(0,
                     sender.Name.LastIndexOf(" (Active)", StringComparison.InvariantCulture)));
@@ -72,8 +65,6 @@ namespace CslaGenerator.Metadata
                 oldActive.IsActive = false;
             }
             sender.SetName(sender.Name + " (Active)");
-
-//            sender.NameChanged += Name_Changed;
         }
     }
 }

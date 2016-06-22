@@ -11,7 +11,7 @@ namespace CslaGenerator.Metadata
             if (name == string.Empty)
                 return null;
 
-            return this.FirstOrDefault(c => c.ObjectName.Equals(name));
+            return this.FirstOrDefault(property => property.ObjectName.Equals(name));
         }
 
         public CslaObjectInfo FindByGenericName(string name)
@@ -19,7 +19,7 @@ namespace CslaGenerator.Metadata
             if (name == string.Empty)
                 return null;
 
-            return this.FirstOrDefault(c => c.GenericName.Equals(name));
+            return this.FirstOrDefault(property => property.GenericName.Equals(name));
         }
 
         public List<string> GetAllObjectNames()
@@ -29,25 +29,29 @@ namespace CslaGenerator.Metadata
 
         public List<string> GetAllParentNames(CslaObjectInfo info)
         {
-            var lst = new List<string>();
+            var list = new List<string>();
+
             foreach (CslaObjectInfo obj in this)
             {
                 if (RelationRulesEngine.IsParentAllowed(obj.ObjectType, info.ObjectType) &&
                     !Equals(obj, info))
-                    lst.Add(obj.ObjectName);
+                    list.Add(obj.ObjectName);
             }
-            return lst;
+
+            return list;
         }
 
         public List<string> GetAllParentNames(CslaObjectType cslaType)
         {
-            var lst = new List<string>();
+            var list = new List<string>();
+
             foreach (var obj in this)
             {
                 if (RelationRulesEngine.IsParentAllowed(obj.ObjectType, cslaType))
-                    lst.Add(obj.ObjectName);
+                    list.Add(obj.ObjectName);
             }
-            return lst;
+
+            return list;
         }
 
         public string FindNameAvailable(string item, int counter)
@@ -73,25 +77,25 @@ namespace CslaGenerator.Metadata
 
         public List<string> GetAllChildNames(CslaObjectInfo info)
         {
-            var lst = new List<string>();
+            var list = new List<string>();
             foreach (CslaObjectInfo obj in this)
             {
                 if (RelationRulesEngine.IsChildAllowed(obj.ObjectType, info.ObjectType) &&
                     !Equals(obj, info))
-                    lst.Add(obj.ObjectName);
+                    list.Add(obj.ObjectName);
             }
-            return lst;
+            return list;
         }
 
         public List<string> GetAllChildNames(CslaObjectType cslaType)
         {
-            var lst = new List<string>();
+            var list = new List<string>();
             foreach (CslaObjectInfo obj in this)
             {
                 if (RelationRulesEngine.IsChildAllowed(obj.ObjectType, cslaType))
-                    lst.Add(obj.ObjectName);
+                    list.Add(obj.ObjectName);
             }
-            return lst;
+            return list;
         }
     }
 }

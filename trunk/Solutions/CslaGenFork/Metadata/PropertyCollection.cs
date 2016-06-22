@@ -42,13 +42,13 @@ namespace CslaGenerator.Metadata
 
         #endregion
 
-        private const int DEFAULT_CAPACITY = 16;
+        private const int DefaultCapacity = 16;
 
         #region Implementation (data)
 
         private Property[] _array;
-        private int _count = 0;
-        [XmlIgnore] private int _version = 0;
+        private int _count;
+        [XmlIgnore] private int _version;
 
         #endregion
 
@@ -92,7 +92,7 @@ namespace CslaGenerator.Metadata
         /// </summary>
         public PropertyCollection()
         {
-            _array = new Property[DEFAULT_CAPACITY];
+            _array = new Property[DefaultCapacity];
         }
 
         /// <summary>
@@ -111,11 +111,11 @@ namespace CslaGenerator.Metadata
         ///        Initializes a new instance of the <c>PropertyCollection</c> class
         ///        that contains elements copied from the specified <c>PropertyCollection</c>.
         /// </summary>
-        /// <param name="c">The <c>PropertyCollection</c> whose elements are copied to the new collection.</param>
-        public PropertyCollection(PropertyCollection c)
+        /// <param name="property">The <c>PropertyCollection</c> whose elements are copied to the new collection.</param>
+        public PropertyCollection(PropertyCollection property)
         {
-            _array = new Property[c.Count];
-            AddRange(c);
+            _array = new Property[property.Count];
+            AddRange(property);
         }
 
         /// <summary>
@@ -158,7 +158,7 @@ namespace CslaGenerator.Metadata
         /// <param name="array">The one-dimensional <see cref="Property"/> array to copy to.</param>
         public virtual void CopyTo(Property[] array)
         {
-            this.CopyTo(array, 0);
+            CopyTo(array, 0);
         }
 
         /// <summary>
@@ -170,7 +170,7 @@ namespace CslaGenerator.Metadata
         public virtual void CopyTo(Property[] array, int start)
         {
             if (_count > array.GetUpperBound(0) + 1 - start)
-                throw new System.ArgumentException("Destination array was not long enough.");
+                throw new ArgumentException("Destination array was not long enough.");
 
             Array.Copy(_array, 0, array, start, _count);
         }
@@ -245,7 +245,7 @@ namespace CslaGenerator.Metadata
         public virtual void Clear()
         {
             ++_version;
-            _array = new Property[DEFAULT_CAPACITY];
+            _array = new Property[DefaultCapacity];
             _count = 0;
         }
 
@@ -435,7 +435,7 @@ namespace CslaGenerator.Metadata
                     }
                     else
                     {
-                        _array = new Property[DEFAULT_CAPACITY];
+                        _array = new Property[DefaultCapacity];
                     }
                 }
             }
@@ -508,12 +508,12 @@ namespace CslaGenerator.Metadata
             int max = (allowEqualEnd) ? (_count) : (_count - 1);
             if (index < 0 || index > max)
                 throw new ArgumentOutOfRangeException("index", index,
-                    "Index was out of range.  Must be non-negative and less than the size of the collection.");
+                    @"Index was out of range.  Must be non-negative and less than the size of the collection.");
         }
 
         private void EnsureCapacity(int min)
         {
-            int newCapacity = ((_array.Length == 0) ? DEFAULT_CAPACITY : _array.Length*2);
+            int newCapacity = ((_array.Length == 0) ? DefaultCapacity : _array.Length*2);
             if (newCapacity < min)
                 newCapacity = min;
 
@@ -541,7 +541,7 @@ namespace CslaGenerator.Metadata
 
         int IList.Add(object x)
         {
-            return this.Add((Property) x);
+            return Add((Property) x);
         }
 
         bool IList.Contains(object x)
@@ -730,7 +730,7 @@ namespace CslaGenerator.Metadata
             {
                 get
                 {
-                    int count = 0;
+                    int count;
                     _rwLock.AcquireReaderLock(Timeout);
 
                     try
@@ -827,7 +827,7 @@ namespace CslaGenerator.Metadata
 
             public override bool Contains(Property x)
             {
-                bool result = false;
+                bool result;
                 _rwLock.AcquireReaderLock(Timeout);
 
                 try

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CslaGenerator.Metadata
 {
@@ -7,12 +8,10 @@ namespace CslaGenerator.Metadata
     {
         public BusinessRule Find(string name)
         {
-            foreach (BusinessRule p in this)
-            {
-                if (p.Name.Equals(name))
-                    return p;
-            }
-            return null;
+            if (name == string.Empty)
+                return null;
+
+            return this.FirstOrDefault(p => p.Name.Equals(name));
         }
 
         public bool Contains(string name)
@@ -38,6 +37,5 @@ namespace CslaGenerator.Metadata
                 }
             }
         }
-
     }
 }

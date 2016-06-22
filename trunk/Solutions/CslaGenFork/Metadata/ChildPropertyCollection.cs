@@ -10,14 +10,7 @@ namespace CslaGenerator.Metadata
             if (name == string.Empty)
                 return null;
 
-            /*foreach (var c in this)
-            {
-                if (c.Name.Equals(name))
-                    return c;
-            }
-            return null;*/
-
-            return this.FirstOrDefault(c => c.Name.Equals(name));
+            return this.FirstOrDefault(property => property.Name.Equals(name));
         }
 
         public ChildProperty FindType(string typeName)
@@ -25,14 +18,7 @@ namespace CslaGenerator.Metadata
             if (typeName == string.Empty)
                 return null;
 
-            /*foreach (var c in this)
-            {
-                if (c.TypeName.Equals(typeName))
-                    return c;
-            }
-            return null;*/
-
-            return this.FirstOrDefault(c => c.TypeName.Equals(typeName));
+            return this.FirstOrDefault(property => property.TypeName.Equals(typeName));
         }
 
         public bool Contains(string name)

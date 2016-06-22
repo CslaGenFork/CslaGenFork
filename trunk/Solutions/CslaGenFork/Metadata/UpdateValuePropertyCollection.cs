@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CslaGenerator.Metadata
 {
@@ -6,22 +7,10 @@ namespace CslaGenerator.Metadata
     {
         public UpdateValueProperty Find(string name)
         {
-            foreach (UpdateValueProperty c in this)
-            {
-                if (c.Name.Equals(name))
-                    return c;
-            }
-            return null;
-        }
+            if (name == string.Empty)
+                return null;
 
-        public UpdateValueProperty FindType(string typeName)
-        {
-            foreach (UpdateValueProperty c in this)
-            {
-                if (c.Name.Equals(typeName))
-                    return c;
-            }
-            return null;
+            return this.FirstOrDefault(property => property.Name.Equals(name));
         }
 
         public bool Contains(string name)
