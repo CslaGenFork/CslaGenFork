@@ -2248,6 +2248,13 @@ namespace CslaGenerator.CodeGen
             return result;
         }
 
+        public static bool IsNotDbConsumer(CslaObjectInfo info)
+        {
+            return info.ObjectType == CslaObjectType.UnitOfWork ||
+                   info.ObjectType == CslaObjectType.BaseClass ||
+                   info.ObjectType == CslaObjectType.CriteriaClass;
+        }
+
         public static bool CanHaveParentProperties(CslaObjectInfo info)
         {
             if (IsCollectionType(info.ObjectType))
@@ -5236,11 +5243,7 @@ namespace CslaGenerator.CodeGen
 
         public virtual string GetInitValue(UpdateValueProperty prop)
         {
-            //if (AllowNull(prop) && prop.PropertyType != TypeCodeEx.SmartDate)
-            if (AllowNull(prop))
-                return "null";
-
-            return GetInitValue(prop.PropertyType);
+            return "null";
         }
 
         public virtual string GetAccessorVisibility(ValueProperty prop)

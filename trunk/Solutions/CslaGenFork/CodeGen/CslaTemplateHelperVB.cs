@@ -5230,11 +5230,7 @@ namespace CslaGenerator.CodeGen
 
         public virtual string GetInitValue(UpdateValueProperty prop)
         {
-            //if (AllowNull(prop) && prop.PropertyType != TypeCodeEx.SmartDate)
-            if (AllowNull(prop))
-                return "Nothing";
-
-            return GetInitValue(prop.PropertyType);
+            return "Nothing";
         }
 
         public virtual string GetAccessorVisibility(ValueProperty prop)
