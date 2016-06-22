@@ -38,6 +38,5 @@ namespace CslaGenerator.Metadata
                 }
             }
         }
-
     }
 }
