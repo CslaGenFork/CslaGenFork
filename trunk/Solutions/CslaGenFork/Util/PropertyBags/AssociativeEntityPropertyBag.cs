@@ -519,14 +519,14 @@ namespace CslaGenerator.Util.PropertyBags
 
         private void InitPropertyBag()
         {
-            PropertyInfo pi;
-            Type t = typeof (AssociativeEntity); // _selectedObject.GetType();
+            PropertyInfo propertyInfo;
+            Type t = typeof(AssociativeEntity);// _selectedObject.GetType();
             PropertyInfo[] props = t.GetProperties();
             // Display information for all properties.
             for (int i = 0; i < props.Length; i++)
             {
-                pi = props[i];
-                object[] myAttributes = pi.GetCustomAttributes(true);
+                propertyInfo = props[i];
+                object[] myAttributes = propertyInfo.GetCustomAttributes(true);
                 string category = "";
                 string description = "";
                 bool isreadonly = false;
@@ -578,7 +578,12 @@ namespace CslaGenerator.Util.PropertyBags
                             break;
                     }
                 }
-                userfriendlyname = userfriendlyname.Length > 0 ? userfriendlyname : pi.Name;
+
+                // Set ReadOnly properties
+                /*if (SelectedObject[0].LoadingScheme == LoadingScheme.ParentLoad && propertyInfo.Name == "LazyLoad")
+                    isreadonly = true;*/
+
+                userfriendlyname = userfriendlyname.Length > 0 ? userfriendlyname : propertyInfo.Name;
                 var types = new List<string>();
                 foreach (AssociativeEntity obj in _selectedObject)
                 {
@@ -589,15 +594,15 @@ namespace CslaGenerator.Util.PropertyBags
 //                    if (!types.Contains(obj.SecondaryLoadingScheme.ToString()))
                         types.Add(obj.SecondaryLoadingScheme.ToString());
                 }
-                // here get rid of ComponentName and Parent
-                bool isValidProperty = (pi.Name != "Properties" && pi.Name != "ComponentName" && pi.Name != "Parent");
-                if (isValidProperty && IsBrowsable(types.ToArray(), pi.Name))
+                // here get rid of Parent
+                bool isValidProperty = propertyInfo.Name != "Parent";
+                if (isValidProperty && IsBrowsable(types.ToArray(), propertyInfo.Name))
                 {
                     // CR added missing parameters
-                    //this.Properties.Add(new PropertySpec(userfriendlyname,pi.PropertyType.AssemblyQualifiedName,category,description,defaultvalue, editor, typeconverter, _selectedObject, pi.Name,helptopic));
-                    Properties.Add(new PropertySpec(userfriendlyname, pi.PropertyType.AssemblyQualifiedName, category,
+                    //this.Properties.Add(new PropertySpec(userfriendlyname,propertyInfo.PropertyType.AssemblyQualifiedName,category,description,defaultvalue, editor, typeconverter, _selectedObject, propertyInfo.Name,helptopic));
+                    Properties.Add(new PropertySpec(userfriendlyname, propertyInfo.PropertyType.AssemblyQualifiedName, category,
                                                     description, defaultvalue, editor, typeconverter, _selectedObject,
-                                                    pi.Name, helptopic, isreadonly, isbrowsable, designertypename,
+                                                    propertyInfo.Name, helptopic, isreadonly, isbrowsable, designertypename,
                                                     bindable));
                 }
             }
@@ -641,13 +646,13 @@ namespace CslaGenerator.Util.PropertyBags
 
                 if (objectType[0] == "OneToMultiple" &&
                     (propertyName == "SecondaryObject" ||
-                     propertyName == "SecondaryPropertyName" ||
-                     propertyName == "SecondaryCollectionTypeName" ||
-                     propertyName == "SecondaryItemTypeName" ||
-                     propertyName == "SecondaryLazyLoad" ||
-                     propertyName == "SecondaryLoadingScheme" ||
-                     propertyName == "SecondaryLoadProperties" ||
-                     propertyName == "SecondaryLoadParameters"))
+                    propertyName == "SecondaryPropertyName" ||
+                    propertyName == "SecondaryCollectionTypeName" ||
+                    propertyName == "SecondaryItemTypeName" ||
+                    propertyName == "SecondaryLazyLoad" ||
+                    propertyName == "SecondaryLoadingScheme" ||
+                    propertyName == "SecondaryLoadProperties" ||
+                    propertyName == "SecondaryLoadParameters"))
                     return false;
 
                 if (objectType[1] == "ParentLoad" && (propertyName == "MainLoadProperties" || propertyName == "MainLazyLoad"))
@@ -663,7 +668,7 @@ namespace CslaGenerator.Util.PropertyBags
             }
             catch //(Exception e)
             {
-                Debug.WriteLine(objectType + ":" + propertyName);
+                //Debug.WriteLine(objectType + ":" + propertyName);
                 return true;
             }
         }
@@ -697,17 +702,16 @@ namespace CslaGenerator.Util.PropertyBags
         {
             try
             {
-                // get a reference to the PropertyInfo, exit if no property with that
-                // name
-                PropertyInfo pi = typeof (AssociativeEntity).GetProperty(propertyName);
+                // get a reference to the PropertyInfo, exit if no property with that name
+                PropertyInfo propertyInfo = typeof (AssociativeEntity).GetProperty(propertyName);
 
-                if (pi == null)
+                if (propertyInfo == null)
                     return false;
                 // convert the value to the expected type
-                val = Convert.ChangeType(val, pi.PropertyType);
+                val = Convert.ChangeType(val, propertyInfo.PropertyType);
                 // attempt the assignment
                 foreach (AssociativeEntity bo in (AssociativeEntity[]) obj)
-                    pi.SetValue(bo, val, null);
+                    propertyInfo.SetValue(bo, val, null);
                 return true;
             }
             catch
@@ -720,15 +724,15 @@ namespace CslaGenerator.Util.PropertyBags
         {
             try
             {
-                PropertyInfo pi = GetPropertyInfoCache(propertyName);
-                if (!(pi == null))
+                PropertyInfo propertyInfo = GetPropertyInfoCache(propertyName);
+                if (!(propertyInfo == null))
                 {
                     var objs = (AssociativeEntity[]) obj;
                     var valueList = new ArrayList();
 
                     foreach (AssociativeEntity bo in objs)
                     {
-                        object value = pi.GetValue(bo, null);
+                        object value = propertyInfo.GetValue(bo, null);
                         if (!valueList.Contains(value))
                         {
                             valueList.Add(value);
