@@ -75,20 +75,22 @@
     <add key="PlaceHolder:EditOnDemand" value="false" />
     <add key="PlaceHolder:CheckRulesOnFetch" value="false" />
     <add key="BaseClass:Generate" value="true" />
-    <add key="BaseClass:GenerateSprocs" value="true" />
-    <add key="BaseClass:GenerateInlineQueries" value="true" />
+    <add key="BaseClass:GenerateSprocs" value="false" />
+    <add key="BaseClass:GenerateInlineQueries" value="false" />
+    <add key="BaseClass:DataSetLoadingScheme" value="false" />
+    <add key="BaseClass:UseCustomLoading" value="false" />
     <add key="BaseClass:FileName" value="true" />
     <add key="BaseClass:InheritedType" value="true" />
     <add key="BaseClass:InheritedTypeWinForms" value="false" />
-    <add key="BaseClass:UseUnitOfWorkType" value="true" />
+    <add key="BaseClass:UseUnitOfWorkType" value="false" />
     <add key="BaseClass:IsGenericType" value="true" />
     <add key="BaseClass:ObjectType" value="true" />
-    <add key="BaseClass:ChildCollectionProperties" value="true" />
-    <add key="BaseClass:ChildProperties" value="true" />
-    <add key="BaseClass:InheritedChildCollectionProperties" value="true" />
-    <add key="BaseClass:InheritedChildProperties" value="true" />
+    <add key="BaseClass:ChildCollectionProperties" value="false" />
+    <add key="BaseClass:ChildProperties" value="false" />
+    <add key="BaseClass:InheritedChildCollectionProperties" value="false" />
+    <add key="BaseClass:InheritedChildProperties" value="false" />
     <add key="BaseClass:InheritedValueProperties" value="true" />
-    <add key="BaseClass:ConvertValueProperties" value="true" />
+    <add key="BaseClass:ConvertValueProperties" value="false" />
     <add key="BaseClass:UpdateValueProperties" value="false" />
     <add key="BaseClass:ValueProperties" value="true" />
     <add key="BaseClass:CriteriaObjects" value="false" />
@@ -103,15 +105,17 @@
     <add key="BaseClass:NameColumn" value="false" />
     <add key="BaseClass:ValueColumn" value="false" />
     <add key="BaseClass:SimpleCacheOptions" value="false" />
-    <add key="BaseClass:InvalidateCache" value="true" />
+    <add key="BaseClass:InvalidateCache" value="false" />
     <add key="BaseClass:GetObjectCriteriaType" value="false" />
-    <add key="BaseClass:TransactionType" value="true" />
-    <add key="BaseClass:PersistenceType" value="true" />
-    <add key="BaseClass:InsertUpdateRunLocal" value="true" />
+    <add key="BaseClass:TransactionType" value="false" />
+    <add key="BaseClass:PersistenceType" value="false" />
+    <add key="BaseClass:DbContextObject" value="false" />
+    <add key="BaseClass:CommandTimeout" value="false" />
+    <add key="BaseClass:InsertUpdateRunLocal" value="false" />
     <add key="BaseClass:DeleteProcedureName" value="false" />
-    <add key="BaseClass:InsertProcedureName" value="true" />
+    <add key="BaseClass:InsertProcedureName" value="false" />
     <add key="BaseClass:SelectProcedureName" value="false" />
-    <add key="BaseClass:UpdateProcedureName" value="true" />
+    <add key="BaseClass:UpdateProcedureName" value="false" />
     <add key="BaseClass:ToStringProperty" value="true" />
     <add key="BaseClass:BusinessRules" value="true" />
     <add key="BaseClass:AuthzProvider" value="true" />
@@ -132,26 +136,28 @@
     <add key="BaseClass:GenerateDataPortalInsert" value="true" />
     <add key="BaseClass:GenerateDataPortalUpdate" value="true" />
     <add key="BaseClass:GenerateDataPortalDelete" value="true" />
-    <add key="BaseClass:SupportUpdateProperties" value="true" />
+    <add key="BaseClass:SupportUpdateProperties" value="false" />
     <add key="BaseClass:Singleton" value="false" />
     <add key="BaseClass:EditOnDemand" value="false" />
     <add key="BaseClass:CheckRulesOnFetch" value="false" />
     <add key="CriteriaClass:Generate" value="true" />
-    <add key="CriteriaClass:GenerateSprocs" value="true" />
-    <add key="CriteriaClass:GenerateInlineQueries" value="true" />
+    <add key="CriteriaClass:GenerateSprocs" value="false" />
+    <add key="CriteriaClass:GenerateInlineQueries" value="false" />
+    <add key="CriteriaClass:DataSetLoadingScheme" value="false" />
+    <add key="CriteriaClass:UseCustomLoading" value="false" />
     <add key="CriteriaClass:FileName" value="true" />
     <add key="CriteriaClass:InheritedType" value="true" />
     <add key="CriteriaClass:InheritedTypeWinForms" value="false" />
-    <add key="CriteriaClass:UseUnitOfWorkType" value="true" />
-    <add key="CriteriaClass:IsGenericType" value="false" />
-    <add key="CriteriaClass:GenericArguments" value="false" />
+    <add key="CriteriaClass:UseUnitOfWorkType" value="false" />
+    <add key="CriteriaClass:IsGenericType" value="true" />
+    <add key="CriteriaClass:GenericArguments" value="true" />
     <add key="CriteriaClass:ObjectType" value="true" />
-    <add key="CriteriaClass:ChildCollectionProperties" value="true" />
-    <add key="CriteriaClass:ChildProperties" value="true" />
-    <add key="CriteriaClass:InheritedChildCollectionProperties" value="true" />
-    <add key="CriteriaClass:InheritedChildProperties" value="true" />
+    <add key="CriteriaClass:ChildCollectionProperties" value="false" />
+    <add key="CriteriaClass:ChildProperties" value="false" />
+    <add key="CriteriaClass:InheritedChildCollectionProperties" value="false" />
+    <add key="CriteriaClass:InheritedChildProperties" value="false" />
     <add key="CriteriaClass:InheritedValueProperties" value="true" />
-    <add key="CriteriaClass:ConvertValueProperties" value="true" />
+    <add key="CriteriaClass:ConvertValueProperties" value="false" />
     <add key="CriteriaClass:UpdateValueProperties" value="false" />
     <add key="CriteriaClass:ValueProperties" value="true" />
     <add key="CriteriaClass:CriteriaObjects" value="false" />
@@ -166,15 +172,17 @@
     <add key="CriteriaClass:NameColumn" value="false" />
     <add key="CriteriaClass:ValueColumn" value="false" />
     <add key="CriteriaClass:SimpleCacheOptions" value="false" />
-    <add key="CriteriaClass:InvalidateCache" value="true" />
+    <add key="CriteriaClass:InvalidateCache" value="false" />
     <add key="CriteriaClass:GetObjectCriteriaType" value="false" />
-    <add key="CriteriaClass:TransactionType" value="true" />
-    <add key="CriteriaClass:PersistenceType" value="true" />
-    <add key="CriteriaClass:InsertUpdateRunLocal" value="true" />
+    <add key="CriteriaClass:TransactionType" value="false" />
+    <add key="CriteriaClass:PersistenceType" value="false" />
+    <add key="CriteriaClass:DbContextObject" value="false" />
+    <add key="CriteriaClass:CommandTimeout" value="false" />
+    <add key="CriteriaClass:InsertUpdateRunLocal" value="false" />
     <add key="CriteriaClass:DeleteProcedureName" value="false" />
-    <add key="CriteriaClass:InsertProcedureName" value="true" />
+    <add key="CriteriaClass:InsertProcedureName" value="false" />
     <add key="CriteriaClass:SelectProcedureName" value="false" />
-    <add key="CriteriaClass:UpdateProcedureName" value="true" />
+    <add key="CriteriaClass:UpdateProcedureName" value="false" />
     <add key="CriteriaClass:ToStringProperty" value="true" />
     <add key="CriteriaClass:BusinessRules" value="true" />
     <add key="CriteriaClass:AuthzProvider" value="true" />
@@ -195,7 +203,7 @@
     <add key="CriteriaClass:GenerateDataPortalInsert" value="true" />
     <add key="CriteriaClass:GenerateDataPortalUpdate" value="true" />
     <add key="CriteriaClass:GenerateDataPortalDelete" value="true" />
-    <add key="CriteriaClass:SupportUpdateProperties" value="true" />
+    <add key="CriteriaClass:SupportUpdateProperties" value="false" />
     <add key="CriteriaClass:Singleton" value="false" />
     <add key="CriteriaClass:EditOnDemand" value="false" />
     <add key="CriteriaClass:CheckRulesOnFetch" value="false" />
@@ -268,7 +276,7 @@
     <add key="UnitOfWork:SupportUpdateProperties" value="false" />
     <add key="UnitOfWork:Singleton" value="false" />
     <add key="UnitOfWork:EditOnDemand" value="false" />
-    <add key="UnitOfWork:CheckRulesOnFetch" value="true" />
+    <add key="UnitOfWork:CheckRulesOnFetch" value="false" />
     <add key="NameValueList:DataSetLoadingScheme" value="false" />
     <add key="NameValueList:Generate" value="true" />
     <add key="NameValueList:GenerateSprocs" value="true" />
