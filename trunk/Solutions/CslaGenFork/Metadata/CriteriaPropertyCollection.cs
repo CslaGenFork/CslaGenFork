@@ -1,45 +1,51 @@
 using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
+using System.Linq;
 
 namespace CslaGenerator.Metadata
 {
     [XmlInclude(typeof(Property))]
     public class CriteriaPropertyCollection : List<CriteriaProperty>
     {
+        public CriteriaProperty Find(string name)
+        {
+            if (name == string.Empty)
+                return null;
+
+            return this.FirstOrDefault(property => property.Name.Equals(name));
+        }
+
         public bool Contains(string name)
         {
-            foreach (var p in this)
-            {
-                if (p.Name.Equals(name))
-                    return true;
-            }
-            return false;
+            return (Find(name) != null);
         }
 
-        public void Add(Property p)
+        public void Add(Property property)
         {
-            base.Add(ConvertType(p));
+            base.Add(ConvertType(property));
         }
 
-        CriteriaProperty ConvertType(Object p)
+        CriteriaProperty ConvertType(Object property)
         {
-            return ConvertType((Property)p);
+            return ConvertType((Property) property);
         }
 
-        private static CriteriaProperty ConvertType(Property p)
+        private static CriteriaProperty ConvertType(Property property)
         {
-            if (p is CriteriaProperty)
-                return (CriteriaProperty)p;
-            var newP = new CriteriaProperty(p);
-            newP.Name = p.Name;
-            newP.ParameterName = p.ParameterName;
-            newP.PropertyType = p.PropertyType;
-            newP.ReadOnly = p.ReadOnly;
-            newP.Nullable = p.Nullable;
-            newP.Remarks = p.Remarks;
-            newP.Summary = p.Summary;
-            return newP;
+            if (property is CriteriaProperty)
+                return (CriteriaProperty) property;
+
+            var newProperty = new CriteriaProperty(property);
+            newProperty.Name = property.Name;
+            newProperty.ParameterName = property.ParameterName;
+            newProperty.PropertyType = property.PropertyType;
+            newProperty.ReadOnly = property.ReadOnly;
+            newProperty.Nullable = property.Nullable;
+            newProperty.Remarks = property.Remarks;
+            newProperty.Summary = property.Summary;
+
+            return newProperty;
         }
 
         internal static CriteriaPropertyCollection Clone(CriteriaPropertyCollection masterCritProps)
@@ -48,8 +54,8 @@ namespace CslaGenerator.Metadata
             foreach (var critProp in masterCritProps)
             {
                 var newCritProp = new CriteriaProperty();
-                newCritProp.DbBindColumn = (DbBindColumn)critProp.DbBindColumn.Clone();
-                ((Property)newCritProp).Clone(critProp);
+                newCritProp.DbBindColumn = (DbBindColumn) critProp.DbBindColumn.Clone();
+                ((Property) newCritProp).Clone(critProp);
                 newCritProp.ParameterValue = critProp.ParameterValue;
                 newCritProp.InlineQueryParameter = critProp.InlineQueryParameter;
                 newCritProp.UnitOfWorkFactoryParameter = critProp.UnitOfWorkFactoryParameter;

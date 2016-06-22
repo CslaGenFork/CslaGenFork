@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.Linq;
 
 namespace CslaGenerator.Metadata
 {
@@ -8,12 +9,10 @@ namespace CslaGenerator.Metadata
 
         public Criteria Find(string name)
         {
-            foreach (var c in this)
-            {
-                if (c.Name.Equals(name))
-                    return c;
-            }
-            return null;
+            if (name == string.Empty)
+                return null;
+
+            return this.FirstOrDefault(property => property.Name.Equals(name));
         }
 
         public bool Contains(string name)

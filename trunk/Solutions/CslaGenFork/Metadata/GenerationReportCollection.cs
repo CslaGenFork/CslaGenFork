@@ -1,9 +1,9 @@
 ﻿using System;
-using System.ComponentModel;
+using System.Collections.Generic;
 
 namespace CslaGenerator.Metadata
 {
-    public class GenerationReportCollection : BindingList<GenerationReport>
+    public class GenerationReportCollection : List<GenerationReport>
     {
         public void AddMultiline(GenerationReport item)
         {
