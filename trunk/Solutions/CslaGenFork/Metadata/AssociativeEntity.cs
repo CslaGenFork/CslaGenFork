@@ -67,6 +67,7 @@ namespace CslaGenerator.Metadata
 
         [Category("01. Relation")]
         [Description("Relation type for this relation.")]
+        [TypeConverter(typeof(EnumDescriptionOrCaseConverter))]
         [UserFriendlyName("Relation Type")]
         public ObjectRelationType RelationType
         {
@@ -169,6 +170,7 @@ namespace CslaGenerator.Metadata
         "If set to ParentLoad then the child will be populated by the parent class.\r\n" +
         "If set to SelfLoad the child will load its own data.\r\n" +
         "If set to None then the child will not be populated with data at all (unsupported for CSLA40 targets).")]
+        [TypeConverter(typeof(EnumDescriptionOrCaseConverter))]
         [UserFriendlyName("Primary Loading Scheme")]
         public LoadingScheme MainLoadingScheme { get; set; }
 
@@ -264,6 +266,7 @@ namespace CslaGenerator.Metadata
         "If set to ParentLoad then the child will be populated by the parent class.\r\n" +
         "If set to SelfLoad the child will load its own data.\r\n" +
         "If set to None then the child will not be populated with data at all (unsupported for CSLA40 targets).")]
+        [TypeConverter(typeof(EnumDescriptionOrCaseConverter))]
         [UserFriendlyName("Secondary Loading Scheme")]
         public LoadingScheme SecondaryLoadingScheme { get; set; }
 

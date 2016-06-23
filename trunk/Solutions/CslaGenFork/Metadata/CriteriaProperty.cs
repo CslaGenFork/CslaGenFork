@@ -57,7 +57,8 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Definition")]
-        [Description("The property Type.")]
+        [Description("The property data Type. Select \"CustomType\" to disable database interaction.")]
+        [TypeConverter(typeof(EnumDescriptionConverter))]
         [UserFriendlyName("Property Type")]
         public override TypeCodeEx PropertyType
         {

@@ -313,6 +313,7 @@ namespace CslaGenerator.Metadata
 
         [Category("01. Common Options")]
         [Description("The type of Unit of Work to create: CreatorGetter, Creator and Getter generate ReadOnly objects, while Updater and Deleter generate Command objects.")]
+        [TypeConverter(typeof(EnumDescriptionOrCaseConverter))]
         [UserFriendlyName("Unit of Work Type")]
         public UnitOfWorkFunction UnitOfWorkType
         {
@@ -772,6 +773,7 @@ namespace CslaGenerator.Metadata
         [Description("The Parent properties are used in inserts and may also be used in updates or deletes.\r\n" +
                      "Use \"InsertOnly\" when the child has its own ID that is used on updates and deletes. " +
                      "Use \"InsertUpdateDelete\" when the child has no ID of its own.")]
+        [TypeConverter(typeof(EnumDescriptionOrCaseConverter))]
         [UserFriendlyName("Parent Properties Usage")]
         [XmlIgnore]
         public ParentPropertiesUsage UseParentProperties
