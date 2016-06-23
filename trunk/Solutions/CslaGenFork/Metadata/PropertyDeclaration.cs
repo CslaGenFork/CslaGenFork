@@ -14,9 +14,9 @@ namespace CslaGenerator.Metadata
         [Description("Unmanaged with Type Conversion")]
         UnmanagedWithTypeConversion,
         AutoProperty,
-        [Description("Classic INPC Property")]
+        [Description("INPC Property")]
         ClassicProperty,
-        [Description("Classic INPC Property with Type Conversion")]
+        [Description("INPC Property with Type Conversion")]
         ClassicPropertyWithTypeConversion,
         NoProperty
     }
