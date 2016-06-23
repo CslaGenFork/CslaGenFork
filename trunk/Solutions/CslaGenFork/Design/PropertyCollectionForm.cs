@@ -520,7 +520,8 @@ namespace CslaGenerator.Design
                     _form.Size = new Size(_form.Size.Width, _form.Size.Height - 16);
                     break;
                 case "UpdateValueProperty Collection Editor":
-                    _form.Size = new Size(550, _form.Size.Height);
+                    //_form.Size = new Size(550, _form.Size.Height);
+                    _form.Size = new Size(550, 330);
                     _collectionType = typeof(UpdateValueProperty);
                     break;
                 case "BusinessRule Collection Editor":
