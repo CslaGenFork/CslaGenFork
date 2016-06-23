@@ -286,6 +286,7 @@ namespace CslaGenerator.Metadata
 
         [Category("01. Common Options")]
         [Description("The type of Csla object to create, e.g EditableRoot, EditableChild, etc...")]
+        [TypeConverter(typeof(EnumDescriptionOrCaseConverter))]
         [UserFriendlyName("Csla Object Type")]
         public CslaObjectType ObjectType
         {
@@ -540,6 +541,7 @@ namespace CslaGenerator.Metadata
 
         [Category("01. Common Options")]
         [Description("Whether the class constructor is private, protected, etc. The default is \"private\".")]
+        [TypeConverter(typeof(EnumDescriptionOrCaseConverter))]
         [UserFriendlyName("Constructor's Visibility")]
         public ConstructorVisibility ConstructorVisibility
         {
@@ -983,6 +985,7 @@ namespace CslaGenerator.Metadata
         /// </summary>
         [Category("07. Data Access Options")]
         [Description("Persistence type to use for data storage. When using DAL, SqlConnectionUnshared type is invalid.")]
+        [TypeConverter(typeof(EnumDescriptionOrCaseConverter))]
         [UserFriendlyName("Persistence Type")]
         public PersistenceType PersistenceType
         {
@@ -1040,6 +1043,7 @@ namespace CslaGenerator.Metadata
         /// </summary>
         [Category("07. Data Access Options")]
         [Description("Transaction type to use for data access. When using DAL, ADO type is invalid.")]
+        [TypeConverter(typeof(EnumDescriptionOrCaseConverter))]
         [UserFriendlyName("Transaction Type")]
         public TransactionType TransactionType
         {
@@ -1275,6 +1279,7 @@ namespace CslaGenerator.Metadata
 
         [Category("10. Business Rules & Authorization")]
         [Description("The Authorization Provider for this property.")]
+        [TypeConverter(typeof(EnumDescriptionOrCaseConverter))]
         [UserFriendlyName("Authorization Provider")]
         public virtual AuthorizationProvider AuthzProvider
         {
