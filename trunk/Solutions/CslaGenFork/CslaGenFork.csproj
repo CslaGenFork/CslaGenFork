@@ -478,7 +478,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Metadata\AccessorVisibility.cs" />
-    <Compile Include="Metadata\ArgumentType.cs" />
     <Compile Include="Metadata\ChildProperty.cs">
       <SubType>Code</SubType>
     </Compile>
