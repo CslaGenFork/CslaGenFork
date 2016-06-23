@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.ComponentModel;
 using System.IO;
 using System.Xml.Serialization;
@@ -11,33 +10,19 @@ namespace CslaGenerator.Metadata
     /// Summary description for UpdateValueProperty.
     /// </summary>
     [Serializable]
-    public class UpdateValueProperty : ICloneable
+    public class UpdateValueProperty : Property
     {
-        private string _name = string.Empty;
-        private string _sourcePropertyName = string.Empty;
-        private bool _isIdentity;
-
-        #region Constructors
-
-        public UpdateValueProperty()
-        {
-        }
-
-        public UpdateValueProperty(UpdateValueProperty prop)
-        {
-            Clone(prop);
-        }
-
-        #endregion
+        private string _sourcePropertyName = String.Empty;
+        private bool _isIdentity = false;
 
         #region UI Properties
 
         [Category("01. Definition")]
         [Description("The property to be updated.")]
-        public string Name
+        public override string Name
         {
-            get { return _name; }
-            set { _name = value; }
+            get { return base.Name; }
+            set { base.Name = value; }
         }
 
         [Category("01. Definition")]
@@ -48,7 +33,7 @@ namespace CslaGenerator.Metadata
             get
             {
                 if (string.IsNullOrEmpty(_sourcePropertyName))
-                    return _name;
+                    return base.Name;
 
                 return _sourcePropertyName;
             }
@@ -66,29 +51,46 @@ namespace CslaGenerator.Metadata
 
         #endregion
 
-        #region Overrides
+        #region Hidden Properties
 
-        public override bool Equals(object item)
+        // Hide ReadOnly
+        [Browsable(false)]
+        public override bool ReadOnly
         {
-            if (!item.GetType().Equals(GetType()))
-                return false;
-
-            if (CaseInsensitiveComparer.Default.Compare(_name, ((Property) item).Name) == 0)
-                return true;
-
-            return false;
+            get { return false; }
         }
 
-        public override int GetHashCode()
+        // Hide ParameterName
+        [Browsable(false)]
+        public override string ParameterName
         {
-            return _name.GetHashCode();
+            get { return string.Empty; }
+        }
+
+        // Hide PropertyType
+        [Browsable(false)]
+        public override TypeCodeEx PropertyType
+        {
+            get { return TypeCodeEx.Empty; }
+        }
+
+        // Hide Summary
+        [Browsable(false)]
+        public override string Summary
+        {
+            get { return string.Empty; }
+        }
+
+        // Hide Remarks
+        [Browsable(false)]
+        public override string Remarks
+        {
+            get { return string.Empty; }
         }
 
         #endregion
 
-        #region Implements ICloneable
-
-        public object Clone()
+        public override object Clone()
         {
             using (var buffer = new MemoryStream())
             {
@@ -98,14 +100,5 @@ namespace CslaGenerator.Metadata
                 return ser.Deserialize(buffer);
             }
         }
-
-        public void Clone(UpdateValueProperty prop)
-        {
-            Name = prop.Name;
-            SourcePropertyName = prop.SourcePropertyName;
-            IsIdentity = prop.IsIdentity;
-        }
-
-        #endregion
     }
 }
