@@ -98,7 +98,6 @@ namespace CslaGenerator.Metadata
         [Category("01. Definition")]
         [Description("Property Declaration Mode. For child collections this must be \"ClassicProperty\", \"AutoProperty\" or \"Managed\".\r\n" +
             "For lazy loaded child collections this must be \"ClassicProperty\" or \"Managed\".")]
-        [TypeConverter(typeof(EnumDescriptionOrCaseConverter))]
         [UserFriendlyName("Declaration Mode")]
         public PropertyDeclaration DeclarationMode
         {
@@ -188,7 +187,6 @@ namespace CslaGenerator.Metadata
 
         [Category("03. Business Rules & Authorization")]
         [Description("The Authorization Provider for this property.")]
-        [TypeConverter(typeof(EnumDescriptionOrCaseConverter))]
         [UserFriendlyName("Authorization Provider")]
         public virtual AuthorizationProvider AuthzProvider
         {
@@ -265,7 +263,6 @@ namespace CslaGenerator.Metadata
         "If set to ParentLoad, data for both the parent and the child will be fetched at the same time. " +
         "If set to SelfLoad, the child will fetch its own data. " +
          "None option is discontinued and the setting will be reset to ParentLoad.")]
-        [TypeConverter(typeof(EnumDescriptionOrCaseConverter))]
         [UserFriendlyName("Loading Scheme")]
         public LoadingScheme LoadingScheme
         {
@@ -321,7 +318,6 @@ namespace CslaGenerator.Metadata
 
         [Category("05. Options")]
         [Description("Accessibility for the property as a whole.\r\nDefaults to IsPublic.")]
-        [TypeConverter(typeof(EnumDescriptionOrCaseConverter))]
         [UserFriendlyName("Property Accessibility")]
         public PropertyAccess Access
         {

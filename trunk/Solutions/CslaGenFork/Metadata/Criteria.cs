@@ -61,7 +61,6 @@ namespace CslaGenerator.Metadata
         [Category("01. Definition")]
         [Description("Criteria class mode. Whether to use simple criteria (automatic properties), CriteriaBase or BusinessBase for the criteria class. "+
             "Silverlight generation requires CriteriaBase or BusinessBase.")]
-        [TypeConverter(typeof(EnumDescriptionOrCaseConverter))]
         [UserFriendlyName("Criteria Class Mode")]
         public CriteriaMode CriteriaClassMode
         {

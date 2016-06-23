@@ -1,10 +1,12 @@
 using System.ComponentModel;
+using CslaGenerator.Design;
 
 namespace CslaGenerator.Metadata
 {
     /// <summary>
     /// Summary description for TypeCodeEx.
     /// </summary>
+    [TypeConverter(typeof(EnumDescriptionConverter))]
     public enum TypeCodeEx
     {
         Empty,

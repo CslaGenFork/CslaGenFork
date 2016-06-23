@@ -29,6 +29,7 @@ namespace CslaGenerator.Metadata
     [Serializable]
     public class ValueProperty : Property, IBoundProperty, IHaveBusinessRules
     {
+        [TypeConverter(typeof(EnumDescriptionOrCaseConverter))]
         public enum DataAccessBehaviour
         {
             ReadWrite,
@@ -38,6 +39,7 @@ namespace CslaGenerator.Metadata
             CreateOnly
         }
 
+        [TypeConverter(typeof(EnumDescriptionOrCaseConverter))]
         public enum UserDefinedKeyBehaviour
         {
             Default,
@@ -142,7 +144,6 @@ namespace CslaGenerator.Metadata
             "\r\n\tWriteOnly=CxU (can't read)" +
             "\r\n\tUpdateOnly=xRU (can't create)" +
             "\r\n\tCreateOnly=CRx (can't update)")]
-        [TypeConverter(typeof(EnumDescriptionOrCaseConverter))]
         [UserFriendlyName("Data Access Behaviour")]
         public virtual DataAccessBehaviour DataAccess
         {
@@ -152,7 +153,6 @@ namespace CslaGenerator.Metadata
 
         [Category("00. Database")]
         [Description("The type of primary key or \"Default\" to none.")]
-        [TypeConverter(typeof(EnumDescriptionOrCaseConverter))]
         [UserFriendlyName("Primary Key")]
         public virtual UserDefinedKeyBehaviour PrimaryKey
         {
@@ -230,7 +230,6 @@ namespace CslaGenerator.Metadata
 
         [Category("01. Definition")]
         [Description("The property data Type. Select \"CustomType\" to disable database interaction.")]
-        [TypeConverter(typeof(EnumDescriptionConverter))]
         [UserFriendlyName("Property Type")]
         public override TypeCodeEx PropertyType
         {
@@ -249,7 +248,6 @@ namespace CslaGenerator.Metadata
 
         [Category("01. Definition")]
         [Description("Property Declaration Mode.")]
-        [TypeConverter(typeof(EnumDescriptionOrCaseConverter))]
         [UserFriendlyName("Declaration Mode")]
         public virtual PropertyDeclaration DeclarationMode
         {
@@ -259,7 +257,6 @@ namespace CslaGenerator.Metadata
 
         [Category("01. Definition")]
         [Description("Type of Backing Field of the Property. Set to \"Empty\" for no backing field.")]
-        [TypeConverter(typeof(EnumDescriptionConverter))]
         [UserFriendlyName("Backing Field Type")]
         public virtual TypeCodeEx BackingFieldType
         {
@@ -363,7 +360,6 @@ namespace CslaGenerator.Metadata
 
         [Category("03. Business Rules & Authorization")]
         [Description("The Authorization Provider for this property.")]
-        [TypeConverter(typeof(EnumDescriptionOrCaseConverter))]
         [UserFriendlyName("Authorization Provider")]
         public virtual AuthorizationProvider AuthzProvider
         {
@@ -437,7 +433,6 @@ namespace CslaGenerator.Metadata
 
         [Category("05. Options")]
         [Description("Accessibility for the property as a whole.\r\nDefaults to IsPublic.")]
-        [TypeConverter(typeof(EnumDescriptionOrCaseConverter))]
         [UserFriendlyName("Property Accessibility")]
         public PropertyAccess Access
         {
@@ -450,7 +445,6 @@ namespace CslaGenerator.Metadata
             "If \"ReadOnly\" is true, this settings is ignored.\r\n  - Auto properties have a private setter\r\n  - Classic, managed and unmanaged properties have no setter.\r\n" +
             "If \"ReadOnly\" is false, this setting applies. By default the setter has the same accessibility of the property.\r\n" +
             "Note -  \"NoSetter\" is deprecated and is converted to \"Default\".")]
-        [TypeConverter(typeof(EnumDescriptionOrCaseConverter))]
         [UserFriendlyName("Setter Accessibility")]
         public AccessorVisibility PropSetAccessibility
         {

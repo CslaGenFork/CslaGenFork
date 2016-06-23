@@ -1,8 +1,12 @@
+using System.ComponentModel;
+using CslaGenerator.Design;
+
 namespace CslaGenerator.Metadata
 {
     /// <summary>
     /// Access visibility of the property.
     /// </summary>
+    [TypeConverter(typeof(EnumDescriptionOrCaseConverter))]
     public enum PropertyAccess
     {
         IsPublic = 1,

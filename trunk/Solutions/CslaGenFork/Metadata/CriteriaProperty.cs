@@ -58,13 +58,21 @@ namespace CslaGenerator.Metadata
 
         [Category("01. Definition")]
         [Description("The property data Type. Select \"CustomType\" to disable database interaction.")]
-        [TypeConverter(typeof(EnumDescriptionConverter))]
         [UserFriendlyName("Property Type")]
         public override TypeCodeEx PropertyType
         {
             get { return base.PropertyType; }
             set { base.PropertyType = value; }
         }
+
+        /*[Category("01. Definition")]
+        [Description("Use a standard Type or a Type that is neither native nor defined on CSLA.NET.")]
+        [UserFriendlyName("Custom Property Type")]
+        public override string CustomPropertyType
+        {
+            get { return base.CustomPropertyType; }
+            set { base.CustomPropertyType = value; }
+        }*/
 
         [Category("01. Definition")]
         [Description("Whether this property can be changed by other classes.")]
