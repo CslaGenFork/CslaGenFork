@@ -25,6 +25,8 @@ namespace CslaGenerator.Metadata
         protected string _parameterName = String.Empty;
         private bool _nullable;
 
+        #region Constructors
+
         public Property()
         {
         }
@@ -47,7 +49,9 @@ namespace CslaGenerator.Metadata
             _parameterName = parameterName;
         }
 
-        #region Public Properties
+        #endregion
+
+        #region UI Properties
 
         #region 00. Database
 
@@ -78,7 +82,8 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Definition")]
-        [Description("The property Type.")]
+        [Description("The property data Type. Select \"CustomType\" to disable database interaction.")]
+        [TypeConverter(typeof(EnumDescriptionConverter))]
         [UserFriendlyName("Property Type")]
         public virtual TypeCodeEx PropertyType
         {
@@ -139,7 +144,7 @@ namespace CslaGenerator.Metadata
             if (!item.GetType().Equals(GetType()))
                 return false;
 
-            if (CaseInsensitiveComparer.Default.Compare(_name, ((Property)item).Name) == 0)
+            if (CaseInsensitiveComparer.Default.Compare(_name, ((Property) item).Name) == 0)
                 return true;
 
             return false;
@@ -156,7 +161,7 @@ namespace CslaGenerator.Metadata
             {
                 _name = dbc.ColumnName;
                 _parameterName = dbc.ColumnName;
-                _propertyType = Util.TypeHelper.GetTypeCodeEx(dbc.Column.ManagedType);
+                _propertyType = TypeHelper.GetTypeCodeEx(dbc.Column.ManagedType);
             }
         }
 
@@ -173,13 +178,13 @@ namespace CslaGenerator.Metadata
 
         public virtual void Clone(Property prop)
         {
-            Name = prop.Name;
             ParameterName = prop.ParameterName;
+            Name = prop.Name;
             PropertyType = prop.PropertyType;
             ReadOnly = prop.ReadOnly;
             Nullable = prop.Nullable;
-            Remarks = prop.Remarks;
             Summary = prop.Summary;
+            Remarks = prop.Remarks;
         }
     }
 }

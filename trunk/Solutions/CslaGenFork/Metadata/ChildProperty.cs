@@ -16,7 +16,6 @@ namespace CslaGenerator.Metadata
     [Serializable]
     public class ChildProperty : Property, IHaveBusinessRules, IComparable
     {
-
         #region Private Fields
 
         private string _friendlyName = String.Empty;
@@ -24,7 +23,7 @@ namespace CslaGenerator.Metadata
         private PropertyDeclaration _declarationMode;
         private string _interfaces = string.Empty;
         private BusinessRuleCollection _businessRules;
-        private string[] _attributes = new string[] { };
+        private string[] _attributes = new string[] {};
         private AuthorizationProvider _authzProvider;
         private AuthorizationRuleCollection _authzRules;
         private string _readRoles = string.Empty;
@@ -41,7 +40,7 @@ namespace CslaGenerator.Metadata
 
         public ChildProperty()
         {
-            _businessRules = new BusinessRuleCollection(); 
+            _businessRules = new BusinessRuleCollection();
             NameChanged += _businessRules.OnParentChanged;
             _authzRules = new AuthorizationRuleCollection();
             _authzRules.Add(new AuthorizationRule());
@@ -97,8 +96,9 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Definition")]
-        [Description("Property Declaration Mode. For child collections this must be \"ClassicProperty\", \"AutoProperty\" or \"Managed\".\r\n"+
+        [Description("Property Declaration Mode. For child collections this must be \"ClassicProperty\", \"AutoProperty\" or \"Managed\".\r\n" +
             "For lazy loaded child collections this must be \"ClassicProperty\" or \"Managed\".")]
+        [TypeConverter(typeof(EnumDescriptionOrCaseConverter))]
         [UserFriendlyName("Declaration Mode")]
         public PropertyDeclaration DeclarationMode
         {
@@ -124,16 +124,6 @@ namespace CslaGenerator.Metadata
         {
             get { return base.ReadOnly; }
             set { base.ReadOnly = value; }
-        }
-
-        [Browsable(false)]
-        [Category("01. Definition")]
-        [Description("Whether this property can have a null value. This is ignored for child collections.\r\n" +
-            "The following types can't be null: \"ByteArray \", \"DBNull \", \"Object\" and \"Empty\".")]
-        public override bool Nullable
-        {
-            get { return base.Nullable; }
-            set { base.Nullable = value; }
         }
 
         [Category("01. Definition")]
@@ -198,6 +188,7 @@ namespace CslaGenerator.Metadata
 
         [Category("03. Business Rules & Authorization")]
         [Description("The Authorization Provider for this property.")]
+        [TypeConverter(typeof(EnumDescriptionOrCaseConverter))]
         [UserFriendlyName("Authorization Provider")]
         public virtual AuthorizationProvider AuthzProvider
         {
@@ -211,7 +202,7 @@ namespace CslaGenerator.Metadata
         public virtual string ReadRoles
         {
             get { return _readRoles; }
-            set { _readRoles = PropertyHelper.TidyAllowSpaces(value).Replace(';', ',').Trim(new[] { ',' }); }
+            set { _readRoles = PropertyHelper.TidyAllowSpaces(value).Replace(';', ',').Trim(new[] {','}); }
         }
 
         [Category("03. Business Rules & Authorization")]
@@ -273,11 +264,18 @@ namespace CslaGenerator.Metadata
         [Description("The Loading Scheme for the child." +
         "If set to ParentLoad, data for both the parent and the child will be fetched at the same time. " +
         "If set to SelfLoad, the child will fetch its own data. " +
-        "If set to None, the child will not be populated with data at all (unsupported for CSLA40 targets).")]
+         "None option is discontinued and the setting will be reset to ParentLoad.")]
+        [TypeConverter(typeof(EnumDescriptionOrCaseConverter))]
         [UserFriendlyName("Loading Scheme")]
         public LoadingScheme LoadingScheme
         {
-            get { return _loadingScheme; }
+            get
+            {
+                if (_loadingScheme == LoadingScheme.None)
+                    return LoadingScheme.ParentLoad;
+
+                return _loadingScheme;
+            }
             set { _loadingScheme = value; }
         }
 
@@ -323,6 +321,7 @@ namespace CslaGenerator.Metadata
 
         [Category("05. Options")]
         [Description("Accessibility for the property as a whole.\r\nDefaults to IsPublic.")]
+        [TypeConverter(typeof(EnumDescriptionOrCaseConverter))]
         [UserFriendlyName("Property Accessibility")]
         public PropertyAccess Access
         {
@@ -340,12 +339,21 @@ namespace CslaGenerator.Metadata
 
         #endregion
 
-        // Hide PropertyType
+        #region Hidden Properties
+
         [Browsable(false)]
         public override TypeCodeEx PropertyType
         {
             get { return TypeCodeEx.Empty; }
         }
+
+        [Browsable(false)]
+        public override bool Nullable
+        {
+            get { return base.Nullable; }
+        }
+
+        #endregion
 
         [field: NonSerialized]
         public event ChildPropertyNameChanged NameChanged;

@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Xml.Serialization;
 using CslaGenerator.Attributes;
+using CslaGenerator.Design;
 
 namespace CslaGenerator.Metadata
 {
@@ -70,6 +71,7 @@ namespace CslaGenerator.Metadata
         }
 
         [Description("The Type of generic parameter.")]
+        [TypeConverter(typeof(EnumDescriptionConverter))]
         [UserFriendlyName("Generic parameter Type")]
         public TypeCodeEx GenericType
         {

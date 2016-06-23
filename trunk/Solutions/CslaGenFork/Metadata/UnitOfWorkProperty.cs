@@ -50,6 +50,7 @@ namespace CslaGenerator.Metadata
 
         [Category("01. Definition")]
         [Description("The Property Declaration Mode must be \"AutoProperty\" or \"Managed\".")]
+        [TypeConverter(typeof(EnumDescriptionOrCaseConverter))]
         [UserFriendlyName("Declaration Mode")]
         public PropertyDeclaration DeclarationMode
         {

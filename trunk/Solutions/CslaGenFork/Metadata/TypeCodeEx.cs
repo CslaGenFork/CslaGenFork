@@ -1,3 +1,5 @@
+using System.ComponentModel;
+
 namespace CslaGenerator.Metadata
 {
     /// <summary>
@@ -6,6 +8,7 @@ namespace CslaGenerator.Metadata
     public enum TypeCodeEx
     {
         Empty,
+        [Description("Custom Type")]
         CustomType,
         Boolean,
         Byte,

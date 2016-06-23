@@ -328,6 +328,7 @@ namespace CslaGenerator.Metadata
 
         [Category("04. Base Business Rule Options")]
         [Description("How rule will run in context.")]
+        [TypeConverter(typeof(EnumDescriptionOrCaseConverter))]
         [UserFriendlyName("Run Mode")]
         public BusinessRuleRunModes RunMode
         {

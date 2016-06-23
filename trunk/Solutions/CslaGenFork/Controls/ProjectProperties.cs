@@ -68,6 +68,7 @@ namespace CslaGenerator.Controls
         internal ProjectProperties()
         {
             InitializeComponent();
+            //TODO use converter
             FillComboBox(cboOutputLanguage, typeof (CodeLanguage));
             FillComboBox(cboTarget, typeof (TargetFramework));
             FillComboBox(cboGenerateAuthorization, typeof (AuthorizationLevel));
