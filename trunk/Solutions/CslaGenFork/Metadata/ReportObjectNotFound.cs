@@ -7,6 +7,7 @@ namespace CslaGenerator.Metadata
     public enum ReportObjectNotFound
     {
         None,
+        [Description("IsLoaded Property")]
         IsLoadedProperty,
         ThrowException
     }
