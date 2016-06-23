@@ -11,25 +11,23 @@ namespace CslaGenerator.Design
 
         private readonly Type _enumType;
 
-        /// <summary>Initializing instance</summary>
-        /// <param name="type">type Enum</param>
-        /// <remarks>
-        /// this is only one function, that you must  change. All another functions for enums  you can use by Ctrl+C/Ctrl+V
-        /// </remarks>
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EnumDescriptionOrCaseConverter"/> class.
+        /// </summary>
+        /// <param name="type">A <see cref="T:System.Type" /> that represents the type of enumeration to associate with this enumeration converter.</param>
         public EnumDescriptionOrCaseConverter(Type type)
             : base(type)
         {
             _enumType = type;
         }
 
-        public override bool CanConvertTo(ITypeDescriptorContext context,
-            Type destType)
+        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
         {
-            return destType == typeof(string);
+            return destinationType == typeof(string);
         }
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value,
-            Type destType)
+            Type destinationType)
         {
             var fi = _enumType.GetField(Enum.GetName(_enumType, value));
             var dna = (DescriptionAttribute) Attribute.GetCustomAttribute(fi, typeof(DescriptionAttribute));
@@ -44,10 +42,9 @@ namespace CslaGenerator.Design
             return value.ToString();
         }
 
-        public override bool CanConvertFrom(ITypeDescriptorContext context,
-            Type srcType)
+        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {
-            return srcType == typeof(string);
+            return sourceType == typeof(string);
         }
 
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
@@ -63,6 +60,7 @@ namespace CslaGenerator.Design
                 if ((!string.IsNullOrEmpty(description)) && (string) value == description)
                     return Enum.Parse(_enumType, fi.Name);
             }
+
             return Enum.Parse(_enumType, (string) value);
         }
     }

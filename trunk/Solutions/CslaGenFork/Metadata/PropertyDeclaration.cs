@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel;
+using CslaGenerator.Design;
 
 namespace CslaGenerator.Metadata
 {
     /// <summary>
     /// Declaration mode of the property.
     /// </summary>
+    [TypeConverter(typeof(EnumDescriptionOrCaseConverter))]
     public enum PropertyDeclaration
     {
         Managed,

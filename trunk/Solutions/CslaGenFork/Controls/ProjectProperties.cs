@@ -1,8 +1,9 @@
 using System;
-using System.Windows.Forms;
-using CslaGenerator.Metadata;
+using System.ComponentModel;
 using System.IO;
+using System.Windows.Forms;
 using System.Xml.Serialization;
+using CslaGenerator.Metadata;
 using CslaGenerator.Util;
 using WeifenLuo.WinFormsUI.Docking;
 
@@ -68,24 +69,28 @@ namespace CslaGenerator.Controls
         internal ProjectProperties()
         {
             InitializeComponent();
-            //TODO use converter
-            FillComboBox(cboOutputLanguage, typeof (CodeLanguage));
-            FillComboBox(cboTarget, typeof (TargetFramework));
-            FillComboBox(cboGenerateAuthorization, typeof (AuthorizationLevel));
-            FillComboBox(cboHeaderVerbosity, typeof (HeaderVerbosity));
-            FillComboBox(cboTransactionType, typeof (TransactionType));
-            FillComboBox(cboPersistenceType, typeof (PersistenceType));
-            FillComboBox(cboCreateTimestampPropertyMode, typeof (PropertyDeclaration));
-            FillComboBox(cboCreateReadOnlyObjectsPropertyMode, typeof (PropertyDeclaration));
+
+            FillComboBox(cboOutputLanguage, typeof(CodeLanguage));
+            FillComboBox(cboTarget, typeof(TargetFramework));
+            FillComboBox(cboGenerateAuthorization, typeof(AuthorizationLevel));
+            FillComboBox(cboHeaderVerbosity, typeof(HeaderVerbosity));
+            FillComboBox(cboTransactionType, typeof(TransactionType));
+            FillComboBox(cboPersistenceType, typeof(PersistenceType));
+            FillComboBox(cboCreateTimestampPropertyMode, typeof(PropertyDeclaration));
+            FillComboBox(cboCreateReadOnlyObjectsPropertyMode, typeof(PropertyDeclaration));
             FillComboBox(cboInlineQueries, typeof(UseInlineQueries));
             FillComboBox(cboObjectNotFound, typeof(ReportObjectNotFound));
         }
 
         private void FillComboBox(ComboBox cbo, Type enumType)
         {
-            foreach (var str in Enum.GetNames(enumType))
+            var converter = TypeDescriptor.GetConverter(enumType);
+
+            foreach (var value in Enum.GetValues(enumType))
             {
-                cbo.Items.Add(str);
+                var converted = converter.ConvertToString(value);
+                if (converted != null)
+                    cbo.Items.Add(converted);
             }
             cbo.Tag = enumType;
             cbo.DataBindings[0].Parse += EnumDropDownParse;
@@ -95,10 +100,18 @@ namespace CslaGenerator.Controls
         {
             var binding = (Binding) sender;
             var cbo = (ComboBox) binding.Control;
+
             if (cbo != null)
             {
-                var t = (Type) cbo.Tag;
-                e.Value = Enum.Parse(t, e.Value.ToString());
+                var enumType = (Type) cbo.Tag;
+                var converter = TypeDescriptor.GetConverter(enumType);
+
+                var converted = converter.ConvertFromInvariantString(e.Value.ToString());
+                if (converted != null)
+                {
+                    var value = Enum.Parse(enumType, converted.ToString());
+                    e.Value = value;
+                }
             }
         }
 

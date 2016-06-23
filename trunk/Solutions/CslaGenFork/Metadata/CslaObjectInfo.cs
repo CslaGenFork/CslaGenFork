@@ -286,7 +286,6 @@ namespace CslaGenerator.Metadata
 
         [Category("01. Common Options")]
         [Description("The type of Csla object to create, e.g EditableRoot, EditableChild, etc...")]
-        [TypeConverter(typeof(EnumDescriptionOrCaseConverter))]
         [UserFriendlyName("Csla Object Type")]
         public CslaObjectType ObjectType
         {
@@ -313,7 +312,6 @@ namespace CslaGenerator.Metadata
 
         [Category("01. Common Options")]
         [Description("The type of Unit of Work to create: CreatorGetter, Creator and Getter generate ReadOnly objects, while Updater and Deleter generate Command objects.")]
-        [TypeConverter(typeof(EnumDescriptionOrCaseConverter))]
         [UserFriendlyName("Unit of Work Type")]
         public UnitOfWorkFunction UnitOfWorkType
         {
@@ -542,7 +540,6 @@ namespace CslaGenerator.Metadata
 
         [Category("01. Common Options")]
         [Description("Whether the class constructor is private, protected, etc. The default is \"private\".")]
-        [TypeConverter(typeof(EnumDescriptionOrCaseConverter))]
         [UserFriendlyName("Constructor's Visibility")]
         public ConstructorVisibility ConstructorVisibility
         {
@@ -769,11 +766,11 @@ namespace CslaGenerator.Metadata
         /// <summary>
         /// Prevents the parent property form participating in updates or deletes.
         /// </summary>
+        /// <remarks> This is a façade to <c>ParentInsertOnly</c></remarks>
         [Category("04. Child Object Options")]
         [Description("The Parent properties are used in inserts and may also be used in updates or deletes.\r\n" +
                      "Use \"InsertOnly\" when the child has its own ID that is used on updates and deletes. " +
                      "Use \"InsertUpdateDelete\" when the child has no ID of its own.")]
-        [TypeConverter(typeof(EnumDescriptionOrCaseConverter))]
         [UserFriendlyName("Parent Properties Usage")]
         [XmlIgnore]
         public ParentPropertiesUsage UseParentProperties
@@ -987,7 +984,6 @@ namespace CslaGenerator.Metadata
         /// </summary>
         [Category("07. Data Access Options")]
         [Description("Persistence type to use for data storage. When using DAL, SqlConnectionUnshared type is invalid.")]
-        [TypeConverter(typeof(EnumDescriptionOrCaseConverter))]
         [UserFriendlyName("Persistence Type")]
         public PersistenceType PersistenceType
         {
@@ -1045,7 +1041,6 @@ namespace CslaGenerator.Metadata
         /// </summary>
         [Category("07. Data Access Options")]
         [Description("Transaction type to use for data access. When using DAL, ADO type is invalid.")]
-        [TypeConverter(typeof(EnumDescriptionOrCaseConverter))]
         [UserFriendlyName("Transaction Type")]
         public TransactionType TransactionType
         {
@@ -1281,7 +1276,6 @@ namespace CslaGenerator.Metadata
 
         [Category("10. Business Rules & Authorization")]
         [Description("The Authorization Provider for this property.")]
-        [TypeConverter(typeof(EnumDescriptionOrCaseConverter))]
         [UserFriendlyName("Authorization Provider")]
         public virtual AuthorizationProvider AuthzProvider
         {

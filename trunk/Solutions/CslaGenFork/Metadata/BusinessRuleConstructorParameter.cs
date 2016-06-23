@@ -71,7 +71,6 @@ namespace CslaGenerator.Metadata
         }
 
         [Description("The Type of generic parameter.")]
-        [TypeConverter(typeof(EnumDescriptionConverter))]
         [UserFriendlyName("Generic parameter Type")]
         public TypeCodeEx GenericType
         {

@@ -19,6 +19,7 @@ namespace CslaGenerator.Metadata
     {
         private string _name = String.Empty;
         private TypeCodeEx _propertyType = TypeCodeEx.Empty;
+        //private string _customPropertyType = string.Empty;
         private bool _readOnly;
         private string _summary = String.Empty;
         private string _remarks = String.Empty;
@@ -83,13 +84,22 @@ namespace CslaGenerator.Metadata
 
         [Category("01. Definition")]
         [Description("The property data Type. Select \"CustomType\" to disable database interaction.")]
-        [TypeConverter(typeof(EnumDescriptionConverter))]
         [UserFriendlyName("Property Type")]
         public virtual TypeCodeEx PropertyType
         {
             get { return _propertyType; }
             set { _propertyType = value; }
         }
+
+        /*[XmlIgnore]
+        [Category("01. Definition")]
+        [Description("Use a standard Type or a Type that is neither native nor defined on CSLA.NET.")]
+        [UserFriendlyName("Custom Property Type")]
+        public virtual string CustomPropertyType
+        {
+            get { return _customPropertyType; }
+            set { _customPropertyType = value; }
+        }*/
 
         [Category("01. Definition")]
         [Description("Whether this property is read only.")]
@@ -181,6 +191,7 @@ namespace CslaGenerator.Metadata
             ParameterName = prop.ParameterName;
             Name = prop.Name;
             PropertyType = prop.PropertyType;
+            //CustomPropertyType = prop.CustomPropertyType;
             ReadOnly = prop.ReadOnly;
             Nullable = prop.Nullable;
             Summary = prop.Summary;
