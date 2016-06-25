@@ -1477,6 +1477,8 @@ namespace CslaGenerator.Metadata
 
         #endregion
 
+        #region Hidden Properties
+
         [Browsable(false)]
         [XmlIgnore]
         public string GenericName
@@ -1605,6 +1607,8 @@ namespace CslaGenerator.Metadata
                 return false;
             }
         }
+
+        #endregion
 
         #endregion
 
