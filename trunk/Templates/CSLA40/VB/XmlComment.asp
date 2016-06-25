@@ -65,7 +65,7 @@ if ((firstComment == null && string.IsNullOrEmpty(Info.Parent.GenerationParams.C
         else
         {
             if (firstComment == true) { firstComment = false; } else { xmlRemark += "<br/>\r\n"; }
-            CslaObjectInfo parent = Info.FindParent(Info);
+            CslaObjectInfo parent = Info.FindMyParent(Info);
             xmlRemark += "This class is child of <see cref=\"" + Info.ParentType + "\"/> " + CslaStereotype(parent) + ".";
         }
     }

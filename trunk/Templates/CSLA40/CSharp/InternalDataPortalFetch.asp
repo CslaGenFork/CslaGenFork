@@ -160,7 +160,7 @@ if (!Info.UseCustomLoading)
                                     if (child != null)
                                     {
                                         ChildProperty ancestorChildProperty = new ChildProperty();
-                                        CslaObjectInfo _parent = child.FindParent(child);
+                                        CslaObjectInfo _parent = child.FindMyParent(child);
                                         if (_parent != null)
                                         {
                                             %>
@@ -360,10 +360,10 @@ if (!Info.UseCustomLoading)
 
                             childAncestorLoaderLevel = AncestorLoaderLevel(_child, out childAncestorIsCollection);
                             ChildProperty ancestorChildProperty = new ChildProperty();
-                            CslaObjectInfo _parent = _child.FindParent(_child);
+                            CslaObjectInfo _parent = _child.FindMyParent(_child);
                             if (childAncestorLoaderLevel < 4 && _parent != null)
                             {
-                                CslaObjectInfo _ancestor = _child.FindParent(_parent);
+                                CslaObjectInfo _ancestor = _child.FindMyParent(_parent);
                                 if (_ancestor != null)
                                     GetChildPropertyByTypeName(_ancestor, _parent.ParentType, ref ancestorChildProperty);
                             }
