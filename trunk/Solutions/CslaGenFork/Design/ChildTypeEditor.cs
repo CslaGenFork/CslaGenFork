@@ -46,9 +46,11 @@ namespace CslaGenerator.Design
                     foreach (var obj in GeneratorController.Current.CurrentUnit.CslaObjects)
                     {
                         var added = false;
+                        var ancestor = obj.FindAncestor();
 
                         if (((isCollection && obj.ObjectType.IsCollectionType()) ||
                              (!isCollection && !obj.ObjectType.IsCollectionType())) &&
+                            ReferenceEquals(obj, ancestor) &&
                             !objectTree.Contains(obj.ObjectName) &&
                             RelationRulesEngine.IsParentAllowed(currentCslaObject.ObjectType, obj.ObjectType))
                         {
@@ -58,7 +60,7 @@ namespace CslaGenerator.Design
 
                         if (added)
                         {
-                            var candidateTree = obj.GetObjectTree();
+                            var candidateTree = ancestor.GetDescendents();
                             foreach (var descendent in candidateTree)
                             {
                                 if (!objectTree.Contains(descendent))
@@ -66,7 +68,7 @@ namespace CslaGenerator.Design
 
                                 var position = _lstProperties.Items.IndexOf(obj.ObjectName);
                                 if (position > -1)
-                                    _lstProperties.Items[position] = string.Format("* * * {0} - tree error", obj.ObjectName);
+                                    _lstProperties.Items[position] = string.Format("* * * {0} - tree error",                                         obj.ObjectName);
                             }
                         }
                     }
