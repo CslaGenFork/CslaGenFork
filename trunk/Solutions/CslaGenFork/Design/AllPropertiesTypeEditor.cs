@@ -30,7 +30,7 @@ namespace CslaGenerator.Design
                     // CR modifying to accomodate PropertyBag
                     Type instanceType = null;
                     object objinfo = null;
-                    TypeHelper.GetPropertyContextInstanceObject(context, ref objinfo, ref instanceType);
+                    ContextHelper.GetPropertyContextInstanceObject(context, ref objinfo, ref instanceType);
                     var parameter = (BusinessRuleConstructorParameter) objinfo;
                     _lstProperties.Items.Clear();
                     var info = (CslaObjectInfo)GeneratorController.Current.GetSelectedItem();

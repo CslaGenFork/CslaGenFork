@@ -52,7 +52,7 @@ namespace CslaGenerator.Design
                     // CR modifying to accomodate PropertyBag
                     Type instanceType = null;
                     object objinfo = null;
-                    TypeHelper.GetAuthorizationTypeContextInstanceObject(context, ref objinfo, ref instanceType);
+                    ContextHelper.GetAuthorizationTypeContextInstanceObject(context, ref objinfo, ref instanceType);
                     var obj = (AuthorizationRule) objinfo;
                     _instance = objinfo.GetType();
 
