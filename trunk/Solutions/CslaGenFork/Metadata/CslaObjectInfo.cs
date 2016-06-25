@@ -1831,6 +1831,8 @@ namespace CslaGenerator.Metadata
             return parentValueProperties;
         }
 
+        // TODO rename to FindMyParent and fix templates
+
         /// <summary>
         /// Finds the ancestor object of a CslaObjectInfo (object or collection).
         /// </summary>
