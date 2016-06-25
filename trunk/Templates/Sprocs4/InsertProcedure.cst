@@ -308,7 +308,7 @@ foreach(IResultObject table in tables)
             if (!first)
             {
                 fields += "," + Environment.NewLine + new string(' ', 3*4) + indent;
-                parms +=  "," + Environment.NewLine + new string(' ', 3*4) + indent;
+                parms += "," + Environment.NewLine + new string(' ', 3*4) + indent;
             }
             first = false;
             fields += string.Concat("[", colName,"]");
@@ -328,7 +328,7 @@ foreach(IResultObject table in tables)
                 if (!first)
                 {
                     fields += "," + Environment.NewLine + new string(' ', 3*4) + indent;
-                    parms +=  "," + Environment.NewLine + new string(' ', 3*4) + indent;
+                    parms += "," + Environment.NewLine + new string(' ', 3*4) + indent;
                 }
                 else
                 {
