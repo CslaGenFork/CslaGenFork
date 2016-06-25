@@ -459,7 +459,7 @@ namespace CslaGenerator.Util
             return null;
         }
 
-        private static CslaObjectInfo FindAncestor(this CslaObjectInfo info)
+        public static CslaObjectInfo FindAncestor(this CslaObjectInfo info)
         {
             while (true)
             {
