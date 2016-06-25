@@ -22,10 +22,10 @@ namespace CslaGenerator.Metadata
         private LoadingScheme _loadingScheme = LoadingScheme.ParentLoad;
         private PropertyDeclaration _declarationMode;
         private string _interfaces = string.Empty;
-        private BusinessRuleCollection _businessRules;
-        private string[] _attributes = new string[] {};
+        private readonly BusinessRuleCollection _businessRules;
+        private string[] _attributes = {};
         private AuthorizationProvider _authzProvider;
-        private AuthorizationRuleCollection _authzRules;
+        private readonly AuthorizationRuleCollection _authzRules;
         private string _readRoles = string.Empty;
         private string _writeRoles = string.Empty;
         private bool _lazyLoad;
@@ -34,9 +34,12 @@ namespace CslaGenerator.Metadata
         private PropertyCollection _parentLoadProperties = new PropertyCollection();
         private ParameterCollection _loadParameters = new ParameterCollection();
         private PropertyAccess _access = PropertyAccess.IsPublic;
-        private int _childUpdateOrder = 0;
+        private int _childUpdateOrder;
+        private bool _isCollection;
 
         #endregion
+
+        #region Constructor
 
         public ChildProperty()
         {
@@ -47,6 +50,8 @@ namespace CslaGenerator.Metadata
             _authzRules.Add(new AuthorizationRule());
             NameChanged += _authzRules.OnParentChanged;
         }
+
+        #endregion
 
         #region 01. Definition
 
@@ -157,7 +162,7 @@ namespace CslaGenerator.Metadata
                 if (!string.IsNullOrEmpty(value))
                 {
                     var namePostfix = '.' + Name;
-                    if (value.LastIndexOf(namePostfix) != value.Length - namePostfix.Length)
+                    if (value.LastIndexOf(namePostfix, StringComparison.Ordinal) != value.Length - namePostfix.Length)
                     {
                         if (GeneratorController.Current.CurrentUnit != null)
                         {
@@ -336,6 +341,14 @@ namespace CslaGenerator.Metadata
         #endregion
 
         #region Hidden Properties
+
+        [Browsable(false)]
+        [XmlIgnore]
+        public bool IsCollection
+        {
+            get { return _isCollection; }
+            internal set { _isCollection = value; }
+        }
 
         [Browsable(false)]
         public override TypeCodeEx PropertyType

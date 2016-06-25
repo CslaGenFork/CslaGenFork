@@ -668,8 +668,6 @@ namespace CslaGenerator.Util.PropertyBags
                     if (!isParentCollection &&
                         propertyName == "ParentLoadProperties")
                         return false;
-                    /*if (SelectedObject[0].LoadingScheme == LoadingScheme.ParentLoad && propertyName == "LazyLoad")
-                        return false;*/
 
                     if (_selectedObject.Length > 1 && IsEnumerable(GetPropertyInfoCache(propertyName)))
                         return false;

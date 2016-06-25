@@ -3,6 +3,8 @@ using System.ComponentModel;
 using System.Drawing.Design;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
+using System.Linq;
+using CslaGenerator.CodeGen;
 using CslaGenerator.Metadata;
 using CslaGenerator.Util;
 
@@ -22,7 +24,7 @@ namespace CslaGenerator.Design
 
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
-            _editorService = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
+            _editorService = (IWindowsFormsEditorService) provider.GetService(typeof(IWindowsFormsEditorService));
             if (_editorService != null)
             {
                 if (context.Instance != null)
@@ -31,41 +33,45 @@ namespace CslaGenerator.Design
                     Type instanceType = null;
                     object objinfo = null;
                     ContextHelper.GetChildPropertyContextInstanceObject(context, ref objinfo, ref instanceType);
-                    var prop = (ChildProperty)objinfo;
+                    var prop = (ChildProperty) objinfo;
                     _lstProperties.Items.Clear();
                     _lstProperties.Items.Add("(None)");
-                    foreach (var o in GeneratorController.Current.CurrentUnit.CslaObjects)
+
+                    var currentCslaObject = GeneratorController.Current.CurrentCslaObject;
+                    currentCslaObject.ChildCollectionProperties.MarkAllAsCollection();
+                    currentCslaObject.InheritedChildCollectionProperties.MarkAllAsCollection();
+                    var isCollection = ((ChildProperty) objinfo).IsCollection;
+                    var objectTree = currentCslaObject.GetObjectTree();
+
+                    foreach (var obj in GeneratorController.Current.CurrentUnit.CslaObjects)
                     {
-                        // waiting to find a way to distinguish collection and non collection child properties
-                        //if (!TypeHelper.IsCollectionType(o.ObjectType))
-                        if (o.ObjectType != CslaObjectType.NameValueList &&
-                            o.ObjectType != CslaObjectType.UnitOfWork &&
-                            o.ObjectType != CslaObjectType.CriteriaClass &&
-                            o.ObjectType != CslaObjectType.BaseClass &&
-                            o.ObjectType != CslaObjectType.PlaceHolder)
-                            _lstProperties.Items.Add(o.ObjectName);
+                        var added = false;
+
+                        if (((isCollection && obj.ObjectType.IsCollectionType()) ||
+                             (!isCollection && !obj.ObjectType.IsCollectionType())) &&
+                            !objectTree.Contains(obj.ObjectName) &&
+                            RelationRulesEngine.IsParentAllowed(currentCslaObject.ObjectType, obj.ObjectType))
+                        {
+                            _lstProperties.Items.Add(obj.ObjectName);
+                            added = true;
+                        }
+
+                        if (added)
+                        {
+                            var candidateTree = obj.GetObjectTree();
+                            foreach (var descendent in candidateTree)
+                            {
+                                if (!objectTree.Contains(descendent))
+                                    continue;
+
+                                var position = _lstProperties.Items.IndexOf(obj.ObjectName);
+                                if (position > -1)
+                                    _lstProperties.Items[position] = string.Format("* {0} * tree error", obj.ObjectName);
+                            }
+                        }
                     }
                     _lstProperties.Sorted = true;
 
-                    // waiting to find a way to fetch the CslaObjectInfo
-
-                    //var currentCslaObject = (CslaObjectInfo)GeneratorController.Current.GetSelectedItem();
-                    /*var obj = GeneratorController.Current.CurrentUnit.CslaObjects.Find("");
-                    foreach (CslaObjectInfo o in GeneratorController.Current.CurrentUnit.CslaObjects)
-                    {
-                        //if (o.ObjectName != obj.ObjectName)
-                        //    lstProperties.Items.Add(o.ObjectName);
-                        if (o.ObjectName != obj.ObjectName)
-                        {
-                            if (RelationRulesEngine.IsParentAllowed(o.ObjectType, obj.ObjectType))
-                                lstProperties.Items.Add(o.ObjectName);
-                        }
-                    }
-
-                    if (lstProperties.Items.Contains(obj.ParentType))
-                        lstProperties.SelectedItem = obj.ParentType;
-                    else
-                        lstProperties.SelectedItem = "(None)";*/
                     _lstProperties.SelectedItem = prop.TypeName;
                     _editorService.DropDownControl(_lstProperties);
                     if (_lstProperties.SelectedIndex < 0 || _lstProperties.SelectedItem.ToString() == "(None)")

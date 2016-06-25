@@ -25,5 +25,13 @@ namespace CslaGenerator.Metadata
         {
             return (Find(name) != null);
         }
+
+        internal void MarkAllAsCollection()
+        {
+            foreach (var item in this)
+            {
+                item.IsCollection = true;
+            }
+        }
     }
 }
