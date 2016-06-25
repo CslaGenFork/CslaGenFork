@@ -299,6 +299,7 @@
     </Compile>
     <Compile Include="Design\PropertyCollectionForm.cs">
     </Compile>
+    <Compile Include="Util\ContextHelper.cs" />
     <Compile Include="VersionHelper.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
