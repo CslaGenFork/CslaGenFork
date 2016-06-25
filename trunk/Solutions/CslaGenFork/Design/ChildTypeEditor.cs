@@ -66,7 +66,7 @@ namespace CslaGenerator.Design
 
                                 var position = _lstProperties.Items.IndexOf(obj.ObjectName);
                                 if (position > -1)
-                                    _lstProperties.Items[position] = string.Format("* {0} * tree error", obj.ObjectName);
+                                    _lstProperties.Items[position] = string.Format("* * * {0} - tree error", obj.ObjectName);
                             }
                         }
                     }
