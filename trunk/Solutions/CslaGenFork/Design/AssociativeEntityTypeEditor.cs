@@ -30,7 +30,7 @@ namespace CslaGenerator.Design
                     // CR modifying to accomodate PropertyBag
                     Type instanceType = null;
                     object objinfo = null;
-                    TypeHelper.GetAssociativeEntityContextInstanceObject(context, ref objinfo, ref instanceType);
+                    ContextHelper.GetAssociativeEntityContextInstanceObject(context, ref objinfo, ref instanceType);
                     var associativeEntity = (AssociativeEntity)objinfo;
                     _lstProperties.Items.Clear();
                     _lstProperties.Items.Add("(None)");

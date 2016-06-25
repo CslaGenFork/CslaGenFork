@@ -30,7 +30,7 @@ namespace CslaGenerator.Design
                     // CR modifying to accomodate PropertyBag
                     Type instanceType = null;
                     object objinfo = null;
-                    TypeHelper.GetUnitOfWorkPropertyContextInstanceObject(context, ref objinfo, ref instanceType);
+                    ContextHelper.GetUnitOfWorkPropertyContextInstanceObject(context, ref objinfo, ref instanceType);
                     var prop = (UnitOfWorkProperty)objinfo;
                     _lstProperties.Items.Clear();
                     _lstProperties.Items.Add("(None)");

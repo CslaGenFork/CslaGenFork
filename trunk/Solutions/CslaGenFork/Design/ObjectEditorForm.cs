@@ -38,7 +38,6 @@ namespace CslaGenerator.Design
                 if (_object.GetType() == typeof(Criteria))
                 {
                     Text = @"Criteria Editor";
-                    // pgEditor.SelectedObject = _object;
                     pgEditor.SelectedObject = new CriteriaBag(((Criteria) _object));
                     Size = new Size(Size.Width, 711);
                     pgEditor.Size = new Size(pgEditor.Size.Width, 619);
@@ -78,7 +77,6 @@ namespace CslaGenerator.Design
                         ((AuthorizationRule) _object).ActionProperty = cslaObject.ActionProperty;
                         ((AuthorizationRule) _object).Parent = string.Empty;
                     }
-                    //pgEditor.SelectedObject = _object;
                     pgEditor.SelectedObject = new AuthorizationRuleBag((AuthorizationRule) _object);
                     Size = new Size(468, Size.Height);
                 }

@@ -33,7 +33,7 @@ namespace CslaGenerator.Design
                     // CR modifying to accomodate PropertyBag
                     Type instanceType = null;
                     object objinfo = null;
-                    TypeHelper.GetContextInstanceObject(context, ref objinfo, ref instanceType);
+                    ContextHelper.GetContextInstanceObject(context, ref objinfo, ref instanceType);
                     var propInfo = instanceType.GetProperty("ParentProperties");
                     var propColl = (PropertyCollection)propInfo.GetValue(objinfo, null);
 

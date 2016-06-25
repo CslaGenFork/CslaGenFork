@@ -40,7 +40,7 @@ namespace CslaGenerator.Design
                     var propColl = new PropertyCollection();
                     var obj = new CslaObjectInfo();
 
-                    TypeHelper.GetContextInstanceObject(context, ref objinfo, ref instanceType);
+                    ContextHelper.GetContextInstanceObject(context, ref objinfo, ref instanceType);
                     if (instanceType == typeof(CslaObjectInfo))
                     {
                         PropertyInfo propInfo;
@@ -52,7 +52,7 @@ namespace CslaGenerator.Design
                     {
                         instanceType = null;
                         objinfo = null;
-                        TypeHelper.GetChildPropertyContextInstanceObject(context, ref objinfo, ref instanceType);
+                        ContextHelper.GetChildPropertyContextInstanceObject(context, ref objinfo, ref instanceType);
                         var parentPropertiesPropInfo = instanceType.GetProperty("ParentLoadProperties");
                         propColl = (PropertyCollection)parentPropertiesPropInfo.GetValue(objinfo, null);
 

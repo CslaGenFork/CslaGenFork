@@ -1,33 +1,19 @@
 using System;
+using System.Collections.Generic;
 using System.Data;
 using CslaGenerator.Metadata;
-using CslaGenerator.Util.PropertyBags;
-using System.ComponentModel;
 
 namespace CslaGenerator.Util
 {
     /// <summary>
     /// Summary description for TypeHelper.
     /// </summary>
-    public class TypeHelper
+    public static class TypeHelper
     {
         public static bool IsStringType(DbType dbType)
         {
-            if (dbType == DbType.String || dbType == DbType.StringFixedLength || 
+            if (dbType == DbType.String || dbType == DbType.StringFixedLength ||
                 dbType == DbType.AnsiString || dbType == DbType.AnsiStringFixedLength)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        public static bool IsCollectionType(CslaObjectType cslaType)
-        {
-            if (cslaType == CslaObjectType.EditableRootCollection || 
-                cslaType == CslaObjectType.EditableChildCollection ||
-                cslaType == CslaObjectType.DynamicEditableRootCollection ||
-                cslaType == CslaObjectType.ReadOnlyCollection )
             {
                 return true;
             }
@@ -268,285 +254,262 @@ namespace CslaGenerator.Util
         public static TypeCodeEx GetBackingFieldType(ValueProperty prop)
         {
             if (prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion ||
-                    prop.DeclarationMode == PropertyDeclaration.UnmanagedWithTypeConversion ||
-                    prop.DeclarationMode == PropertyDeclaration.ClassicPropertyWithTypeConversion)
+                prop.DeclarationMode == PropertyDeclaration.UnmanagedWithTypeConversion ||
+                prop.DeclarationMode == PropertyDeclaration.ClassicPropertyWithTypeConversion)
                 return prop.BackingFieldType;
 
             return prop.PropertyType;
         }
-        
-        public static void GetContextInstanceObject(ITypeDescriptorContext context, ref object objinfo, ref Type instanceType)
+
+        public static bool IsCollectionType(this CslaObjectType cslaType)
         {
-            if (context.Instance != null)
+            if (cslaType == CslaObjectType.EditableRootCollection ||
+                cslaType == CslaObjectType.EditableChildCollection ||
+                cslaType == CslaObjectType.DynamicEditableRootCollection ||
+                cslaType == CslaObjectType.ReadOnlyCollection)
             {
-                // check if context.Instance is PropertyBag or PropertyGrid
-                if (context.Instance is PropertyBag)
+                return true;
+            }
+
+            return false;
+        }
+
+        public static bool IsObjectType(this CslaObjectType cslaType)
+        {
+            if (cslaType == CslaObjectType.EditableRoot ||
+                cslaType == CslaObjectType.EditableChild ||
+                cslaType == CslaObjectType.EditableSwitchable ||
+                cslaType == CslaObjectType.DynamicEditableRoot ||
+                cslaType == CslaObjectType.ReadOnlyObject)
+                return true;
+
+            return false;
+        }
+
+        public static bool IsEditableType(this CslaObjectType cslaType)
+        {
+            if (cslaType == CslaObjectType.EditableChild ||
+                cslaType == CslaObjectType.EditableChildCollection ||
+                cslaType == CslaObjectType.EditableRoot ||
+                cslaType == CslaObjectType.EditableRootCollection ||
+                cslaType == CslaObjectType.EditableSwitchable ||
+                cslaType == CslaObjectType.DynamicEditableRoot ||
+                cslaType == CslaObjectType.DynamicEditableRootCollection)
+                return true;
+
+            return false;
+        }
+
+        public static bool IsReadOnlyType(this CslaObjectType cslaType)
+        {
+            if (cslaType == CslaObjectType.ReadOnlyCollection ||
+                cslaType == CslaObjectType.ReadOnlyObject)
+                return true;
+
+            return false;
+        }
+
+        public static bool IsChildType(this CslaObjectType cslaType)
+        {
+            if (cslaType == CslaObjectType.EditableChild ||
+                cslaType == CslaObjectType.EditableChildCollection)
+                return true;
+
+            return false;
+        }
+
+        public static bool IsChildType(this CslaObjectInfo info)
+        {
+            if (info.ObjectType == CslaObjectType.EditableSwitchable ||
+                info.ObjectType == CslaObjectType.EditableChild ||
+                info.ObjectType == CslaObjectType.EditableChildCollection ||
+                ((info.ObjectType == CslaObjectType.ReadOnlyObject ||
+                  info.ObjectType == CslaObjectType.ReadOnlyCollection) &&
+                 info.ParentType != string.Empty))
+                return true;
+
+            return false;
+        }
+
+        public static bool IsRootType(this CslaObjectInfo info)
+        {
+            if (info.ObjectType == CslaObjectType.EditableRoot ||
+                info.ObjectType == CslaObjectType.EditableRootCollection ||
+                info.ObjectType == CslaObjectType.DynamicEditableRoot ||
+                info.ObjectType == CslaObjectType.DynamicEditableRootCollection ||
+                info.ObjectType == CslaObjectType.EditableSwitchable ||
+                ((info.ObjectType == CslaObjectType.ReadOnlyObject ||
+                  info.ObjectType == CslaObjectType.ReadOnlyCollection) &&
+                 info.ParentType == string.Empty))
+                return true;
+
+            return false;
+        }
+
+        public static bool IsNotRootType(this CslaObjectInfo info)
+        {
+            if (info.ObjectType == CslaObjectType.EditableChild ||
+                (info.ObjectType == CslaObjectType.ReadOnlyObject &&
+                 info.ParentType != string.Empty))
+                return true;
+
+            return false;
+        }
+
+        public static bool IsItemType(this CslaObjectInfo info)
+        {
+            var cslaType = info.ObjectType;
+            if (cslaType == CslaObjectType.EditableRoot ||
+                cslaType == CslaObjectType.EditableChild ||
+                cslaType == CslaObjectType.DynamicEditableRoot ||
+                cslaType == CslaObjectType.ReadOnlyObject)
+            {
+                var parent = info.Parent.CslaObjects.Find(info.ParentType);
+                if (parent != null && IsCollectionType(parent.ObjectType))
+                    return true;
+            }
+
+            return false;
+        }
+
+        public static bool IsRootOrRootItem(this CslaObjectInfo info)
+        {
+            bool result = !IsChildType(info);
+            if (!result)
+            {
+                var parentInfo = info.Parent.CslaObjects.Find(info.ParentType);
+                if (parentInfo != null)
+                    result = !IsChildType(parentInfo);
+            }
+            return result;
+        }
+
+        public static bool IsNotDbConsumer(this CslaObjectInfo info)
+        {
+            return info.ObjectType == CslaObjectType.UnitOfWork ||
+                   info.ObjectType == CslaObjectType.BaseClass ||
+                   info.ObjectType == CslaObjectType.CriteriaClass;
+        }
+
+        public static bool CanHaveParentProperties(this CslaObjectInfo info)
+        {
+            if (IsCollectionType(info.ObjectType))
+                return false; // Object is a collection and thus has no Properties
+
+            if (info.ObjectType == CslaObjectType.EditableRoot ||
+                info.ObjectType == CslaObjectType.DynamicEditableRoot)
+                return false; // Object is root and thus has no ParentType
+
+            var parent = info.Parent.CslaObjects.Find(info.ParentType);
+            if (parent == null)
+                return info.ObjectType == CslaObjectType.ReadOnlyObject;
+            // Object is ReadOnly and might have ParentProperties
+
+            if (IsCollectionType(parent.ObjectType)) // ParentType is a collection and thus has no Properties
+            {
+                if (parent.ObjectType == CslaObjectType.EditableRootCollection ||
+                    parent.ObjectType == CslaObjectType.DynamicEditableRootCollection ||
+                    (parent.ObjectType == CslaObjectType.ReadOnlyCollection && parent.ParentType == string.Empty))
+                    return false; // ParentType is a root collection; end of line
+
+                return true; // There should be a grand-parent with properties
+            }
+
+            if (IsObjectType(parent.ObjectType))
+                return true; // ParentType exists and has properties
+
+            return false;
+        }
+
+        public static CslaObjectInfo FindParentObject(this CslaObjectInfo info)
+        {
+            CslaObjectInfo parentInfo = null;
+
+            if (string.IsNullOrEmpty(info.ParentType))
+            {
+                // no parent specified; find the object whose child is this object
+                foreach (var cslaObject in info.Parent.CslaObjects)
                 {
-                    var pBag = (PropertyBag)context.Instance;
-                    if (pBag.SelectedObject.Length == 1)
-                        objinfo = pBag.SelectedObject[0];
-                    else
-                        objinfo = (pBag).SelectedObject;
-                    instanceType = objinfo.GetType();
+                    foreach (var childProperty in cslaObject.GetAllChildProperties())
+                    {
+                        if (childProperty.TypeName == info.ObjectName)
+                            parentInfo = cslaObject;
+                    }
+                    if (parentInfo != null)
+                        break;
                 }
-                else
-                {
-                    // by default it is a propertygrid
-                    objinfo = context.Instance;
-                    instanceType = context.Instance.GetType();
-                }
+            }
+            else
+            {
+                parentInfo = info.Parent.CslaObjects.Find(info.ParentType);
+            }
+
+            if (parentInfo != null)
+            {
+                if (parentInfo.ItemType == info.ObjectName)
+                    return parentInfo.FindParentObject();
+
+                if (parentInfo.GetAllChildProperties().FindType(info.ObjectName) != null)
+                    return parentInfo;
+
+                /*if (parentInfo.GetCollectionChildProperties().FindType(info.ObjectName) != null)
+                    return parentInfo;*/
+            }
+
+            return null;
+        }
+
+        private static CslaObjectInfo FindAncestor(this CslaObjectInfo info)
+        {
+            while (true)
+            {
+                if (info.ParentType == string.Empty) // no parent specified; this is the last ancestor
+                    return info;
+
+                var parentInfo = info.Parent.CslaObjects.Find(info.ParentType);
+                if (parentInfo == null) // the parent wasn't found; for practical purposes, this is the last ancestor
+                    return info;
+
+                info = parentInfo;
             }
         }
 
-        public static void GetAssociativeEntityContextInstanceObject(ITypeDescriptorContext context, ref object objinfo, ref Type instanceType)
+        public static List<string> GetObjectTree(this CslaObjectInfo info)
         {
-            if (context.Instance != null)
-            {
-                // check if context.Instance is PropertyBag or PropertyGrid
-                if (context.Instance is AssociativeEntityPropertyBag)
-                {
-                    var pBag = (AssociativeEntityPropertyBag)context.Instance;
-                    if (pBag.SelectedObject.Length == 1)
-                        objinfo = pBag.SelectedObject[0];
-                    else
-                        objinfo = (pBag).SelectedObject;
-                    instanceType = objinfo.GetType();
-                }
-                else
-                {
-                    // by default it is a propertygrid
-                    objinfo = context.Instance;
-                    instanceType = context.Instance.GetType();
-                }
-            }
+            return info.FindAncestor().GetDescendents();
         }
 
-        public static void GetConvertValuePropertyContextInstanceObject(ITypeDescriptorContext context, ref object objinfo, ref Type instanceType)
+        public static List<string> GetDescendents(this CslaObjectInfo info)
         {
-            if (context.Instance != null)
-            {
-                // check if context.Instance is PropertyBag or PropertyGrid
-                if (context.Instance is ConvertValuePropertyBag)
-                {
-                    var pBag = (ConvertValuePropertyBag)context.Instance;
-                    if (pBag.SelectedObject.Length == 1)
-                        objinfo = pBag.SelectedObject[0];
-                    else
-                        objinfo = (pBag).SelectedObject;
-                    instanceType = objinfo.GetType();
-                }
-                else
-                {
-                    // by default it is a propertygrid
-                    objinfo = context.Instance;
-                    instanceType = context.Instance.GetType();
-                }
-            }
-        }
+            var result = new List<string> {info.ObjectName};
 
-        public static void GetPropertyContextInstanceObject(ITypeDescriptorContext context, ref object objinfo, ref Type instanceType)
-        {
-            if (context.Instance != null)
+            if (info.ObjectType.IsCollectionType())
             {
-                // check if context.Instance is PropertyBag or PropertyGrid
-                if (context.Instance is BusinessRuleConstructorBag)
-                {
-                    var pBag = (BusinessRuleConstructorBag)context.Instance;
-                    if (pBag.SelectedObject[0].ConstructorParameter0.Name == context.PropertyDescriptor.Name)
-                        objinfo = pBag.SelectedObject[0].ConstructorParameter0;
-                    else if (pBag.SelectedObject[0].ConstructorParameter1.Name == context.PropertyDescriptor.Name)
-                        objinfo = pBag.SelectedObject[0].ConstructorParameter1;
-                    else if (pBag.SelectedObject[0].ConstructorParameter2.Name == context.PropertyDescriptor.Name)
-                        objinfo = pBag.SelectedObject[0].ConstructorParameter2;
-                    else if (pBag.SelectedObject[0].ConstructorParameter3.Name == context.PropertyDescriptor.Name)
-                        objinfo = pBag.SelectedObject[0].ConstructorParameter3;
-                    else if (pBag.SelectedObject[0].ConstructorParameter4.Name == context.PropertyDescriptor.Name)
-                        objinfo = pBag.SelectedObject[0].ConstructorParameter4;
-                    else if (pBag.SelectedObject[0].ConstructorParameter5.Name == context.PropertyDescriptor.Name)
-                        objinfo = pBag.SelectedObject[0].ConstructorParameter5;
-                    else if (pBag.SelectedObject[0].ConstructorParameter6.Name == context.PropertyDescriptor.Name)
-                        objinfo = pBag.SelectedObject[0].ConstructorParameter6;
-                    else if (pBag.SelectedObject[0].ConstructorParameter7.Name == context.PropertyDescriptor.Name)
-                        objinfo = pBag.SelectedObject[0].ConstructorParameter7;
-                    else if (pBag.SelectedObject[0].ConstructorParameter8.Name == context.PropertyDescriptor.Name)
-                        objinfo = pBag.SelectedObject[0].ConstructorParameter8;
-                    else if (pBag.SelectedObject[0].ConstructorParameter9.Name == context.PropertyDescriptor.Name)
-                        objinfo = pBag.SelectedObject[0].ConstructorParameter9;
-/*                    if (pBag.SelectedObject.Length == 1)
-                        objinfo = pBag.SelectedObject[0];
-                    else
-                        objinfo = (pBag).SelectedObject;*/
-                    instanceType = objinfo.GetType();
-                }
-                else
-                {
-                    // by default it is a propertygrid
-                    objinfo = context.Instance;
-                    instanceType = context.Instance.GetType();
-                }
+                result.AddRange(info.Parent.CslaObjects.Find(info.ItemType).GetDescendents());
             }
-        }
 
-        public static void GetInheritedTypeContextInstanceObject(ITypeDescriptorContext context, ref object objinfo, ref Type instanceType)
-        {
-            if (context.Instance != null)
+            foreach (var child in info.GetCollectionChildProperties())
             {
-                // check if context.Instance is InheritedTypePropertyBag or PropertyGrid
-                if (context.Instance is InheritedTypePropertyBag)
-                {
-                    var pBag = (InheritedTypePropertyBag)context.Instance;
-                    if (pBag.SelectedObject.Length == 1)
-                        objinfo = pBag.SelectedObject[0];
-                    else
-                        objinfo = (pBag).SelectedObject;
-                    instanceType = objinfo.GetType();
-                }
-                else
-                {
-                    // by default it is a propertygrid
-                    objinfo = context.Instance;
-                    instanceType = context.Instance.GetType();
-                }
-            }
-        }
-        
-        public static void GetAuthorizationTypeContextInstanceObject(ITypeDescriptorContext context, ref object objinfo, ref Type instanceType)
-        {
-            if (context.Instance != null)
-            {
-                // check if context.Instance is AuthorizationRuleBag or PropertyGrid
-                if (context.Instance is AuthorizationRuleBag)
-                {
-                    var pBag = (AuthorizationRuleBag)context.Instance;
-                    if (pBag.SelectedObject.Length == 1)
-                        objinfo = pBag.SelectedObject[0];
-                    else
-                        objinfo = (pBag).SelectedObject;
-                    instanceType = objinfo.GetType();
-                }
-                else
-                {
-                    // by default it is a propertygrid
-                    objinfo = context.Instance;
-                    instanceType = context.Instance.GetType();
-                }
-            }
-        }
+                var childTypeName = child.TypeName;
+                if (childTypeName == string.Empty)
+                    continue;
 
-        public static void GetBusinessRuleTypeContextInstanceObject(ITypeDescriptorContext context, ref object objinfo, ref Type instanceType)
-        {
-            if (context.Instance != null)
-            {
-                // check if context.Instance is AuthorizationRuleBag or PropertyGrid
-                if (context.Instance is BusinessRuleBag)
-                {
-                    var pBag = (BusinessRuleBag)context.Instance;
-                    if (pBag.SelectedObject.Length == 1)
-                        objinfo = pBag.SelectedObject[0];
-                    else
-                        objinfo = (pBag).SelectedObject;
-                    instanceType = objinfo.GetType();
-                }
-                else
-                {
-                    // by default it is a propertygrid
-                    objinfo = context.Instance;
-                    instanceType = context.Instance.GetType();
-                }
+                result.Add(childTypeName);
+
+                var childInfo = info.Parent.CslaObjects.Find(childTypeName);
+                result.AddRange(info.Parent.CslaObjects.Find(childInfo.ItemType).GetDescendents());
             }
+
+            foreach (var child in info.GetNonCollectionChildProperties())
+            {
+                var childTypeName = child.TypeName;
+                if (childTypeName == string.Empty)
+                    continue;
+
+                result.AddRange(info.Parent.CslaObjects.Find(childTypeName).GetDescendents());
+            }
+
+            return result;
         }
-
-        /*public static void GetBusinessRulePropertyTypeContextInstanceObject(ITypeDescriptorContext context, ref object objinfo, ref Type instanceType)
-        {
-            if (context.Instance != null)
-            {
-                // check if context.Instance is AuthorizationRuleBag or PropertyGrid
-                if (context.Instance is BusinessRulePropertyBag)
-                {
-                    var pBag = (BusinessRulePropertyBag)context.Instance;
-                    if (pBag.SelectedObject.Length == 1)
-                        objinfo = pBag.SelectedObject[0];
-                    else
-                        objinfo = (pBag).SelectedObject;
-                    instanceType = objinfo.GetType();
-                }
-                else
-                {
-                    // by default it is a propertygrid
-                    objinfo = context.Instance;
-                    instanceType = context.Instance.GetType();
-                }
-            }
-        }*/
-
-        public static void GetUnitOfWorkPropertyContextInstanceObject(ITypeDescriptorContext context, ref object objinfo, ref Type instanceType)
-        {
-            if (context.Instance != null)
-            {
-                // check if context.Instance is UnitOfWorkPropertyBag or PropertyGrid
-                if (context.Instance is UnitOfWorkPropertyBag)
-                {
-                    var pBag = (UnitOfWorkPropertyBag)context.Instance;
-                    if (pBag.SelectedObject.Length == 1)
-                        objinfo = pBag.SelectedObject[0];
-                    else
-                        objinfo = (pBag).SelectedObject;
-                    instanceType = objinfo.GetType();
-                }
-                else
-                {
-                    // by default it is a propertygrid
-                    objinfo = context.Instance;
-                    instanceType = context.Instance.GetType();
-                }
-            }
-        }
-
-        public static void GetChildPropertyContextInstanceObject(ITypeDescriptorContext context, ref object objinfo, ref Type instanceType)
-        {
-            if (context.Instance != null)
-            {
-                // check if context.Instance is ChildPropertyBag or PropertyGrid
-                if (context.Instance is ChildPropertyBag)
-                {
-                    var pBag = (ChildPropertyBag)context.Instance;
-                    if (pBag.SelectedObject.Length == 1)
-                        objinfo = pBag.SelectedObject[0];
-                    else
-                        objinfo = (pBag).SelectedObject;
-                    instanceType = objinfo.GetType();
-                }
-                else
-                {
-                    // by default it is a propertygrid
-                    objinfo = context.Instance;
-                    instanceType = context.Instance.GetType();
-                }
-            }
-        }
-
-        public static void GetValuePropertyContextInstanceObject(ITypeDescriptorContext context, ref object objinfo, ref Type instanceType)
-        {
-            if (context.Instance != null)
-            {
-                // check if context.Instance is ValuePropertyBag or PropertyGrid
-                if (context.Instance is ValuePropertyBag)
-                {
-                    var pBag = (ValuePropertyBag)context.Instance;
-                    if (pBag.SelectedObject.Length == 1)
-                        objinfo = pBag.SelectedObject[0];
-                    else
-                        objinfo = (pBag).SelectedObject;
-                    instanceType = objinfo.GetType();
-                }
-                else
-                {
-                    // by default it is a propertygrid
-                    objinfo = context.Instance;
-                    instanceType = context.Instance.GetType();
-                }
-            }
-        }
-
     }
 }

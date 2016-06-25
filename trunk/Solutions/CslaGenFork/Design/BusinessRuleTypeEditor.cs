@@ -53,7 +53,7 @@ namespace CslaGenerator.Design
                     // CR modifying to accomodate PropertyBag
                     Type instanceType = null;
                     object objinfo = null;
-                    TypeHelper.GetBusinessRuleTypeContextInstanceObject(context, ref objinfo, ref instanceType);
+                    ContextHelper.GetBusinessRuleTypeContextInstanceObject(context, ref objinfo, ref instanceType);
                     var obj = (BusinessRule) objinfo;
                     _instance = objinfo.GetType();
 

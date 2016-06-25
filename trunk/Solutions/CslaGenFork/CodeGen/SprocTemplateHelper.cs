@@ -6,6 +6,7 @@ using System.Text;
 using System.Windows.Forms;
 using CodeSmith.Engine;
 using CslaGenerator.Metadata;
+using CslaGenerator.Util;
 using DBSchemaInfo.Base;
 
 namespace CslaGenerator.CodeGen
@@ -731,13 +732,13 @@ namespace CslaGenerator.CodeGen
         private string GetWhereClause(CslaObjectInfo info, Criteria crit, bool includeParentObjects)
         {
             var originalInfo = info;
-            var parentInfo = FindParent(info);
+            var parentInfo = info.FindParentObject();
             if (parentInfo != null)
             {
                 var temp = parentInfo;
                 while (temp != null)
                 {
-                    temp = FindParent(temp);
+                    temp = temp.FindParentObject();
                     if (temp != null) { parentInfo = temp; }
                 }
                 info = parentInfo;
@@ -1003,7 +1004,7 @@ namespace CslaGenerator.CodeGen
         public static List<IResultObject> GetTablesParent(Criteria crit, CslaObjectInfo info)
         {
             var tablesCol = new List<IResultObject>();
-            var parent = FindParent(info);
+            var parent = info.FindParentObject();
             if (parent != null)
                 tablesCol.AddRange(GetTables(crit, parent, true));
 
@@ -1025,7 +1026,7 @@ namespace CslaGenerator.CodeGen
             var tablesCol = new List<IResultObject>();
             if (includeParentObjects)
             {
-                var parent = FindParent(info);
+                var parent = info.FindParentObject();
                 if (parent != null)
                     tablesCol.AddRange(GetTables(crit, parent, true, includeCriteria, includeAllValueProperties));
             }
@@ -1083,7 +1084,7 @@ namespace CslaGenerator.CodeGen
 
             if (!parentFound)
             {
-                var parentInfo = FindParent(childInfo);
+                var parentInfo = childInfo.FindParentObject();
                 if (parentInfo != null)
                 {
                     tablesCol.AddRange(GetTablesParentProperties(crit, parentInfo, topObjectInfo, parentInfo == topObjectInfo));
@@ -1394,43 +1395,6 @@ namespace CslaGenerator.CodeGen
         public CslaObjectInfo FindChildInfo(CslaObjectInfo info, string name)
         {
             return info.Parent.CslaObjects.Find(name);
-        }
-
-        private static CslaObjectInfo FindParent(CslaObjectInfo info)
-        {
-            CslaObjectInfo parentInfo = null;
-            if (string.IsNullOrEmpty(info.ParentType))
-            {
-                foreach (var cslaObject in info.Parent.CslaObjects)
-                {
-                    foreach (var childProperty in cslaObject.GetAllChildProperties())
-                    {
-                        if (childProperty.TypeName == info.ObjectName)
-                            parentInfo = cslaObject;
-                    }
-                    if (parentInfo != null)
-                        break;
-                }
-            }
-            else
-            {
-                // no parent specified; find the object whose child is this object
-                parentInfo = info.Parent.CslaObjects.Find(info.ParentType);
-            }
-
-            if (parentInfo != null)
-            {
-                if (parentInfo.ItemType == info.ObjectName)
-                    return FindParent(parentInfo);
-
-                if (parentInfo.GetAllChildProperties().FindType(info.ObjectName) != null)
-                    return parentInfo;
-
-                /*if (parentInfo.GetCollectionChildProperties().FindType(info.ObjectName) != null)
-                    return parentInfo;*/
-            }
-
-            return null;
         }
 
         /// <summary>

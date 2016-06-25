@@ -2127,6 +2127,8 @@ namespace CslaGenerator.CodeGen
                 .Any(child => !child.LazyLoad && child.LoadingScheme == LoadingScheme.SelfLoad);
         }
 
+        // TODO was moved to TypeHelper. fix templates and REMOVE - FROM HERE
+
         public static bool IsCollectionType(CslaObjectType cslaType)
         {
             if (cslaType == CslaObjectType.EditableRootCollection ||
@@ -2284,6 +2286,8 @@ namespace CslaGenerator.CodeGen
 
             return false;
         }
+
+        // TODO was moved to TypeHelper. fix templates and REMOVE - DOWN HERE
 
         public static string GetFkParameterNameForParentProperty(CslaObjectInfo info, ValueProperty parentProperty)
         {
