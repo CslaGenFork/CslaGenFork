@@ -742,8 +742,6 @@ namespace CslaGenerator
             ReloadBuilderPropertyGrid();
         }
 
-        // todo: trace this to understand what ActiveObjects are here for
-        // changed visibility so ActiveObjects (?) settings can be hidden dynamicaly
         internal void ReloadPropertyGrid()
         {
             if (_mainForm.DbSchemaPanel != null)

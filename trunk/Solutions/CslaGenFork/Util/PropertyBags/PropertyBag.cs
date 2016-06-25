@@ -1000,7 +1000,8 @@ namespace CslaGenerator.Util.PropertyBags
                     }
                     if (_selectedObject.Length > 1 && IsEnumerable(GetPropertyInfoCache(propertyName)))
                         return false;
-                    return true;
+
+                    return true;// TO DO return true here???
                 }
 
                 return true;
