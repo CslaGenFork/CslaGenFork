@@ -23,7 +23,7 @@ if (Info.CriteriaObjects.Count > 0)
                     %>
 
         /// <summary>
-        /// <%= crit.Summary  == string.Empty ? crit.Name + " criteria." : crit.Summary %>
+        /// <%= crit.Summary == string.Empty ? crit.Name + " criteria." : crit.Summary %>
         /// </summary>
         <%
                 if (crit.Remarks != string.Empty)
