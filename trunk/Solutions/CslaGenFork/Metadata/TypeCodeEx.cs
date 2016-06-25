@@ -14,6 +14,7 @@ namespace CslaGenerator.Metadata
         CustomType,
         Boolean,
         Byte,
+        [Description("Byte Array")]
         ByteArray,
         Char,
         DateTime,
