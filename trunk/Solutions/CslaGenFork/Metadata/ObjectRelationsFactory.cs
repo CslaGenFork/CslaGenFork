@@ -861,7 +861,7 @@ namespace CslaGenerator.Metadata
         {
             var propertyCollection = new PropertyCollection();
 
-            CslaObjectInfo parent = info.FindParent(info);
+            CslaObjectInfo parent = info.FindMyParent(info);
             if (parent != null)
             {
                 foreach (Property pvp in parent.ValueProperties)

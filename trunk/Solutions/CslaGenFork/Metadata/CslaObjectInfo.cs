@@ -1595,7 +1595,7 @@ namespace CslaGenerator.Metadata
                     if (parent != null && parent.GenerateInlineQueries.Count > 0)
                         return true;
 
-                    parent = FindParent(this); // this is the ancestor object (not collection)
+                    parent = FindMyParent(this); // this is the ancestor object (not collection)
                     if (parent != null && parent.GenerateInlineQueries.Count > 0)
                         return true;
 
@@ -1816,7 +1816,7 @@ namespace CslaGenerator.Metadata
             var parentValueProperties = new ValuePropertyCollection();
             if (!_parentType.Equals(string.Empty))
             {
-                CslaObjectInfo parent = FindParent(this);
+                CslaObjectInfo parent = FindMyParent(this);
                 if (parent != null)
                 {
                     foreach (Property p in _parentProperties)
@@ -1831,8 +1831,6 @@ namespace CslaGenerator.Metadata
             return parentValueProperties;
         }
 
-        // TODO rename to FindMyParent and fix templates
-
         /// <summary>
         /// Finds the ancestor object of a CslaObjectInfo (object or collection).
         /// </summary>
@@ -1840,7 +1838,7 @@ namespace CslaGenerator.Metadata
         /// <returns>
         /// The parent CslaObjectInfo.
         /// </returns>
-        public CslaObjectInfo FindParent(CslaObjectInfo info)
+        public CslaObjectInfo FindMyParent(CslaObjectInfo info)
         {
             if (!_parentType.Equals(string.Empty))
             {
@@ -1848,7 +1846,7 @@ namespace CslaGenerator.Metadata
                 if (parentInfo != null)
                 {
                     if (parentInfo.ItemType == info.ObjectName || parentInfo.IsPolymorphic)
-                        return FindParent(parentInfo);
+                        return FindMyParent(parentInfo);
 
                     if (parentInfo.GetAllChildProperties().FindType(info.ObjectName) != null)
                         return parentInfo;
