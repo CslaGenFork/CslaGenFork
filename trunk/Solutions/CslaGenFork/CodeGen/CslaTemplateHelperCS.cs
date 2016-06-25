@@ -2094,7 +2094,7 @@ namespace CslaGenerator.CodeGen
 
         public bool ParentLoadsCollectionChildren(CslaObjectInfo info)
         {
-            // todo: check if it's used on the templates and if not, remove this method
+            // TODO: check if it's used on the templates and if not, REMOVE this method
 
             if (IsCollectionType(info.ObjectType))
                 info = FindChildInfo(info, info.ItemType);
@@ -2758,7 +2758,7 @@ namespace CslaGenerator.CodeGen
             return response;
         }
 
-        // TODO: On ReadOnly objects, forbid Managed and Unmanaged with TypeConversion
+        // TODO: on ReadOnly objects, forbid Managed and Unmanaged with TypeConversion. Why not TypeConversion?
 
         public virtual string GetInitValue(CslaObjectInfo info, ValueProperty prop, TypeCodeEx typeCode)
         {

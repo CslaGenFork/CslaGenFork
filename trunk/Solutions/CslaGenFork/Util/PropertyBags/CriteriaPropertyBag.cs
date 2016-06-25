@@ -652,7 +652,7 @@ namespace CslaGenerator.Util.PropertyBags
                         propertyName == "ParameterName"))
                         return false;
 
-                    // TODO looks like the feature isn't implemented... Must do it!
+                    // TODO: looks like the feature isn't implemented... Must do it!
                     if ((!GeneratorController.Current.CurrentUnit.GenerationParams.TargetIsCsla4DAL ||
                         !cslaObject.UsesInlineQuery) &&
                         propertyName == "InlineQueryParameter")

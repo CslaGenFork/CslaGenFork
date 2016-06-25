@@ -333,7 +333,7 @@ namespace CslaGenerator.Metadata
 
         public string Validate()
         {
-            // todo: check non root use SelfLoad
+            // TODO: check non root use SelfLoad
 
             if (_cslaObjects == null)
                 _cslaObjects = Parent.CslaObjects;
