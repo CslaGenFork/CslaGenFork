@@ -59,10 +59,10 @@ if (Info.GenerateDataPortalInsert)
                 else
                     insertIsFirst = false;
 
-                strInsertComment += System.Environment.NewLine + new string(' ', 8) + "/// <param name=\"" + FormatCamel(GetFkParameterNameForParentProperty(Info, parentProp)) + "\">The parent " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(GetFkParameterNameForParentProperty(Info, parentProp)) + ".</param>";
-                strInsertParams += string.Concat(GetDataTypeGeneric(parentProp, parentProp.PropertyType), " ", FormatCamel(GetFkParameterNameForParentProperty(Info, parentProp)));
-                strInsertParamsOutLess += string.Concat(GetDataTypeGeneric(parentProp, parentProp.PropertyType), " ", FormatCamel(GetFkParameterNameForParentProperty(Info, parentProp)));
-                lastCriteria += FormatCamel(GetFkParameterNameForParentProperty(Info, parentProp));
+                strInsertComment += System.Environment.NewLine + new string(' ', 8) + "/// <param name=\"" + FormatCamel(TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp)) + "\">The parent " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp)) + ".</param>";
+                strInsertParams += string.Concat(GetDataTypeGeneric(parentProp, parentProp.PropertyType), " ", FormatCamel(TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp)));
+                strInsertParamsOutLess += string.Concat(GetDataTypeGeneric(parentProp, parentProp.PropertyType), " ", FormatCamel(TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp)));
+                lastCriteria += FormatCamel(TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp));
             }
         }
         foreach (ValueProperty prop in Info.GetAllValueProperties())
@@ -93,8 +93,8 @@ if (Info.GenerateDataPortalInsert)
                 if (prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK)
                     strInsertParams += "out ";
 
-                strInsertParams += string.Concat(GetDataTypeGeneric(prop, TypeHelper.GetBackingFieldType(prop)), " ", FormatCamel(prop.Name));
-                strInsertParamsOutLess += string.Concat(GetDataTypeGeneric(prop, TypeHelper.GetBackingFieldType(prop)), " ", FormatCamel(prop.Name));
+                strInsertParams += string.Concat(GetDataTypeGeneric(prop, TemplateHelper.GetBackingFieldType(prop)), " ", FormatCamel(prop.Name));
+                strInsertParamsOutLess += string.Concat(GetDataTypeGeneric(prop, TemplateHelper.GetBackingFieldType(prop)), " ", FormatCamel(prop.Name));
                 lastCriteria += FormatCamel(prop.Name);
             }
         }
@@ -132,7 +132,7 @@ if (Info.GenerateDataPortalInsert)
     {
         foreach (ValueProperty parentProp in Info.GetParentValueProperties())
         {
-            %>cmd.Parameters.AddWithValue("@<%= GetFkParameterNameForParentProperty(Info, parentProp) %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + ".Parent_" + FormatPascal(parentProp.Name) : FormatCamel(GetFkParameterNameForParentProperty(Info, parentProp))) %><%= (parentProp.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= GetDbType(parentProp) %>;
+            %>cmd.Parameters.AddWithValue("@<%= TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp) %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + ".Parent_" + FormatPascal(parentProp.Name) : FormatCamel(TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp))) %><%= (parentProp.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TemplateHelper.GetDbType(parentProp) %>;
                     <%
         }
     }
@@ -150,12 +150,12 @@ if (Info.GenerateDataPortalInsert)
             }
             else
             {
-                TypeCodeEx propType = TypeHelper.GetBackingFieldType(prop);
+                TypeCodeEx propType = TemplateHelper.GetBackingFieldType(prop);
                 string postfix = string.Empty;
                 if (prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK)
                     postfix = ".Direction = ParameterDirection.Output";
                 else
-                    postfix = ".DbType = DbType." + GetDbType(prop);
+                    postfix = ".DbType = DbType." + TemplateHelper.GetDbType(prop);
 
                 if (AllowNull(prop) && propType == TypeCodeEx.Guid)
                 {
@@ -164,7 +164,7 @@ if (Info.GenerateDataPortalInsert)
                 }
                 else if (AllowNull(prop) && propType != TypeCodeEx.SmartDate)
                 {
-                    %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %> == null ? (object)DBNull.Value : <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %><%= TypeHelper.IsNullableType(propType) ? ".Value" :"" %>)<%= postfix %>;
+                    %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %> == null ? (object)DBNull.Value : <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %><%= TemplateHelper.IsNullableType(propType) ? ".Value" :"" %>)<%= postfix %>;
                     <%
                 }
                 else
@@ -261,9 +261,9 @@ if (Info.GenerateDataPortalUpdate)
                 else
                     updateIsFirst = false;
 
-                strUpdateComment += System.Environment.NewLine + new string(' ', 8) + "/// <param name=\"" + FormatCamel(GetFkParameterNameForParentProperty(Info, parentProp)) + "\">The parent " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(GetFkParameterNameForParentProperty(Info, parentProp)) + ".</param>";
-                strUpdateParams += string.Concat(GetDataTypeGeneric(parentProp, parentProp.PropertyType), " ", FormatCamel(GetFkParameterNameForParentProperty(Info, parentProp)));
-                lastCriteria += FormatCamel(GetFkParameterNameForParentProperty(Info, parentProp));
+                strUpdateComment += System.Environment.NewLine + new string(' ', 8) + "/// <param name=\"" + FormatCamel(TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp)) + "\">The parent " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp)) + ".</param>";
+                strUpdateParams += string.Concat(GetDataTypeGeneric(parentProp, parentProp.PropertyType), " ", FormatCamel(TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp)));
+                lastCriteria += FormatCamel(TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp));
             }
         }
         foreach (ValueProperty prop in Info.GetAllValueProperties())
@@ -290,7 +290,7 @@ if (Info.GenerateDataPortalUpdate)
                     updateIsFirst = false;
 
                 strUpdateComment += System.Environment.NewLine + new string(' ', 8) + "/// <param name=\"" + FormatCamel(prop.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) + ".</param>";
-                strUpdateParams += string.Concat(GetDataTypeGeneric(prop, TypeHelper.GetBackingFieldType(prop)), " ", FormatCamel(prop.Name));
+                strUpdateParams += string.Concat(GetDataTypeGeneric(prop, TemplateHelper.GetBackingFieldType(prop)), " ", FormatCamel(prop.Name));
                 lastCriteria += FormatCamel(prop.Name);
             }
         }
@@ -328,7 +328,7 @@ if (Info.GenerateDataPortalUpdate)
     {
         foreach (ValueProperty parentProp in Info.GetParentValueProperties())
         {
-            %>cmd.Parameters.AddWithValue("@<%= GetFkParameterNameForParentProperty(Info, parentProp) %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + ".Parent_" + FormatPascal(parentProp.Name) : FormatCamel(GetFkParameterNameForParentProperty(Info, parentProp))) %><%= (parentProp.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= GetDbType(parentProp) %>;
+            %>cmd.Parameters.AddWithValue("@<%= TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp) %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + ".Parent_" + FormatPascal(parentProp.Name) : FormatCamel(TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp))) %><%= (parentProp.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TemplateHelper.GetDbType(parentProp) %>;
                     <%
         }
     }
@@ -341,8 +341,8 @@ if (Info.GenerateDataPortalUpdate)
             (prop.DataAccess != ValueProperty.DataAccessBehaviour.ReadOnly &&
             prop.DataAccess != ValueProperty.DataAccessBehaviour.CreateOnly)))
         {
-            TypeCodeEx propType = TypeHelper.GetBackingFieldType(prop);
-            string postfix = ".DbType = DbType." + GetDbType(prop);
+            TypeCodeEx propType = TemplateHelper.GetBackingFieldType(prop);
+            string postfix = ".DbType = DbType." + TemplateHelper.GetDbType(prop);
 
             if (AllowNull(prop) && propType == TypeCodeEx.Guid)
             {
@@ -351,7 +351,7 @@ if (Info.GenerateDataPortalUpdate)
             }
             else if (AllowNull(prop) && propType != TypeCodeEx.SmartDate)
             {
-                %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %> == null ? (object)DBNull.Value : <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %><%= TypeHelper.IsNullableType(propType) ? ".Value" :"" %>)<%= postfix %>;
+                %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %> == null ? (object)DBNull.Value : <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %><%= TemplateHelper.IsNullableType(propType) ? ".Value" :"" %>)<%= postfix %>;
                     <%
             }
             else
@@ -430,9 +430,9 @@ if (Info.GenerateDataPortalDelete)
             else
                 deleteIsFirst = false;
 
-            strDeleteComment += "/// <param name=\"" + FormatCamel(GetFkParameterNameForParentProperty(Info, parentProp)) + "\">The parent " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(GetFkParameterNameForParentProperty(Info, parentProp)) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
-            strDeleteCritParams += string.Concat(GetDataTypeGeneric(parentProp, parentProp.PropertyType), " ", FormatCamel(GetFkParameterNameForParentProperty(Info, parentProp)));
-            lastCriteria += FormatCamel(GetFkParameterNameForParentProperty(Info, parentProp));
+            strDeleteComment += "/// <param name=\"" + FormatCamel(TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp)) + "\">The parent " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp)) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
+            strDeleteCritParams += string.Concat(GetDataTypeGeneric(parentProp, parentProp.PropertyType), " ", FormatCamel(TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp)));
+            lastCriteria += FormatCamel(TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp));
         }
     }
     foreach (ValueProperty prop in Info.ValueProperties)
@@ -448,7 +448,7 @@ if (Info.GenerateDataPortalDelete)
                 deleteIsFirst = false;
 
             strDeleteComment += "/// <param name=\"" + FormatCamel(prop.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
-            strDeleteCritParams += string.Concat(GetDataTypeGeneric(prop, TypeHelper.GetBackingFieldType(prop)), " ", FormatCamel(prop.Name));
+            strDeleteCritParams += string.Concat(GetDataTypeGeneric(prop, TemplateHelper.GetBackingFieldType(prop)), " ", FormatCamel(prop.Name));
             lastCriteria += FormatCamel(prop.Name);
         }
     }
@@ -481,7 +481,7 @@ if (Info.GenerateDataPortalDelete)
     {
         foreach (ValueProperty parentProp in Info.GetParentValueProperties())
         {
-    %>cmd.Parameters.AddWithValue("@<%= GetFkParameterNameForParentProperty(Info, parentProp) %>", <%= FormatCamel(GetFkParameterNameForParentProperty(Info, parentProp)) %>).DbType = DbType.<%= GetDbType(parentProp) %>;
+    %>cmd.Parameters.AddWithValue("@<%= TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp) %>", <%= FormatCamel(TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp)) %>).DbType = DbType.<%= TemplateHelper.GetDbType(parentProp) %>;
                     <%
         }
     }
@@ -489,7 +489,7 @@ if (Info.GenerateDataPortalDelete)
     {
         if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
         {
-            %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= FormatCamel(prop.Name) %>).DbType = DbType.<%= GetDbType(prop) %>;
+            %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= FormatCamel(prop.Name) %>).DbType = DbType.<%= TemplateHelper.GetDbType(prop) %>;
                     <%
         }
     }

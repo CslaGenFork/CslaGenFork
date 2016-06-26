@@ -2,7 +2,7 @@
 if (usesDTO && ancestorLoaderLevel == 0)
 {
     CslaObjectInfo currentInfo = Info;
-    if (IsCollectionType(currentInfo.ObjectType))
+    if (TypeHelper.IsCollectionType(currentInfo.ObjectType))
     {
         currentInfo = Info.Parent.CslaObjects.Find(Info.ItemType);
     }
@@ -13,7 +13,7 @@ if (usesDTO && ancestorLoaderLevel == 0)
             CslaObjectInfo _child = FindChildInfo(currentInfo, childProp.TypeName);
             if (_child != null)
             {
-                if (IsCollectionType(_child.ObjectType))
+                if (TypeHelper.IsCollectionType(_child.ObjectType))
                 {
                     if (ancestorIsCollection)
                     {
@@ -98,7 +98,7 @@ if (usesDTO && ancestorLoaderLevel == 0)
                     if (_ancestor != null)
                         GetChildPropertyByTypeName(_ancestor, _parent.ParentType, ref ancestorChildProperty);
                 }
-                if (IsCollectionType(_child.ObjectType))
+                if (TypeHelper.IsCollectionType(_child.ObjectType))
                 {
                     %>
         /// <summary>

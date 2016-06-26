@@ -77,7 +77,7 @@ foreach (ValueProperty prop in Info.GetAllValueProperties())
         <%
         }
         %>
-        public <%= GetDataTypeGeneric(prop, TypeHelper.GetBackingFieldType(prop)) %> <%= FormatPascal(prop.Name) %> { get; set; }
+        public <%= GetDataTypeGeneric(prop, TemplateHelper.GetBackingFieldType(prop)) %> <%= FormatPascal(prop.Name) %> { get; set; }
         <%
 }
 %>

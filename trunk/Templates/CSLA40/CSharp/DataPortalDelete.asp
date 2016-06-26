@@ -110,7 +110,7 @@ if (Info.GenerateDataPortalDelete)
             %>
         {
             <%
-            if (UseSimpleAuditTrail(Info))
+            if (TemplateHelper.UseSimpleAuditTrail(Info))
             {
                 %>// audit the object, just in case soft delete is used on this object
             SimpleAuditTrail();
@@ -147,13 +147,13 @@ if (Info.GenerateDataPortalDelete)
                 if (c.Properties.Count > 1)
                 {
                     %>
-                    cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= GetParameterSet(p, true) %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= GetDbType(p) %>;
+                    cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= GetParameterSet(p, true) %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TemplateHelper.GetDbType(p) %>;
                     <%
                 }
                 else
                 {
                     %>
-                    cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= AssignSingleCriteria(c, "crit") %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= GetDbType(p) %>;
+                    cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= AssignSingleCriteria(c, "crit") %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TemplateHelper.GetDbType(p) %>;
                     <%
                 }
             }

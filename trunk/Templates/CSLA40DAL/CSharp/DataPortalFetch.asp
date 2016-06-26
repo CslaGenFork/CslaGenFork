@@ -108,7 +108,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
             FetchChildren();
         <%
             }
-            if (Info.CheckRulesOnFetch && !Info.EditOnDemand && !IsCollectionType(Info.ObjectType))
+            if (Info.CheckRulesOnFetch && !Info.EditOnDemand && !TypeHelper.IsCollectionType(Info.ObjectType))
             {
                 %>
             // check all object rules and property rules

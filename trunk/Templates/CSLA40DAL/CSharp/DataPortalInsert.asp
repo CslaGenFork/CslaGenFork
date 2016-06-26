@@ -71,7 +71,7 @@ if (Info.GenerateDataPortalInsert)
             {
                 if (!usesDTO)
                 {
-                    strInsertPK = GetDataTypeGeneric(prop, TypeHelper.GetBackingFieldType(prop)) + " " + FormatCamel(prop.Name) + " = -1;" + Environment.NewLine + new string(' ', 20);
+                    strInsertPK = GetDataTypeGeneric(prop, TemplateHelper.GetBackingFieldType(prop)) + " " + FormatCamel(prop.Name) + " = -1;" + Environment.NewLine + new string(' ', 20);
                     strInsertParams += "out " + FormatCamel(prop.Name);
                 }
 
@@ -187,7 +187,7 @@ if (Info.GenerateDataPortalInsert)
         %>protected override void DataPortal_Insert()
         {
             <%
-    if (UseSimpleAuditTrail(Info))
+    if (TemplateHelper.UseSimpleAuditTrail(Info))
     {
         %>SimpleAuditTrail();
             <%

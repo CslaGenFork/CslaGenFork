@@ -53,7 +53,7 @@ if (Info.GenerateDataPortalInsert)
     %>private void Child_Insert(<%= (parentType.Length > 0 ? parentType + " parent" : "") %>)
         {
             <%
-    if (UseSimpleAuditTrail(Info))
+    if (TemplateHelper.UseSimpleAuditTrail(Info))
     {
         %>
             SimpleAuditTrail();
@@ -84,12 +84,12 @@ if (Info.GenerateDataPortalInsert)
             if (parentProp.PropertyType == TypeCodeEx.SmartDate)
             {
                 %>SmartDate l<%= parentProp.Name %> = new SmartDate(parent.<%= parentProp.Name %>);
-                    cmd.Parameters.AddWithValue("@<%= GetFkParameterNameForParentProperty(Info, parentProp) %>", l<%= parentProp.Name %>.DBValue).DbType = DbType.DateTime;
+                    cmd.Parameters.AddWithValue("@<%= TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp) %>", l<%= parentProp.Name %>.DBValue).DbType = DbType.DateTime;
                     <%
             }
             else
             {
-                %>cmd.Parameters.AddWithValue("@<%= GetFkParameterNameForParentProperty(Info, parentProp) %>", parent.<%= parentProp.Name %>).DbType = DbType.<%= GetDbType(parentProp) %>;
+                %>cmd.Parameters.AddWithValue("@<%= TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp) %>", parent.<%= parentProp.Name %>).DbType = DbType.<%= TemplateHelper.GetDbType(parentProp) %>;
                     <%
             }
         }
@@ -108,23 +108,23 @@ if (Info.GenerateDataPortalInsert)
             }
             else
             {
-                TypeCodeEx propType = TypeHelper.GetBackingFieldType(prop);
+                TypeCodeEx propType = TemplateHelper.GetBackingFieldType(prop);
                 string postfix = string.Empty;
                 if (prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK)
                     postfix = ".Direction = ParameterDirection.Output";
                 else
-                    postfix = ".DbType = DbType." + GetDbType(prop);
+                    postfix = ".DbType = DbType." + TemplateHelper.GetDbType(prop);
 
                 if (prop.DeclarationMode == PropertyDeclaration.Managed || prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion)
                 {
                     if (AllowNull(prop) && propType == TypeCodeEx.Guid)
                     {
-                        %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetFieldReaderStatement(prop) %>.Equals(Guid.Empty) ? (object)DBNull.Value : <%= GetFieldReaderStatement(prop) %>).DbType = DbType.<%= GetDbType(prop) %>;
+                        %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetFieldReaderStatement(prop) %>.Equals(Guid.Empty) ? (object)DBNull.Value : <%= GetFieldReaderStatement(prop) %>).DbType = DbType.<%= TemplateHelper.GetDbType(prop) %>;
                     <%
                     }
                     else if (AllowNull(prop) && propType != TypeCodeEx.SmartDate)
                     {
-                        %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetFieldReaderStatement(prop) %> == null ? (object)DBNull.Value : <%= GetFieldReaderStatement(prop) %><%= TypeHelper.IsNullableType(propType) ? ".Value" :"" %>).DbType = DbType.<%= GetDbType(prop) %>;
+                        %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetFieldReaderStatement(prop) %> == null ? (object)DBNull.Value : <%= GetFieldReaderStatement(prop) %><%= TemplateHelper.IsNullableType(propType) ? ".Value" :"" %>).DbType = DbType.<%= TemplateHelper.GetDbType(prop) %>;
                     <%
                     }
                     else
@@ -137,12 +137,12 @@ if (Info.GenerateDataPortalInsert)
                 {
                     if (AllowNull(prop) && propType == TypeCodeEx.Guid)
                     {
-                        %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %>.Equals(Guid.Empty) ? (object)DBNull.Value : <%= GetFieldReaderStatement(prop) %>).DbType = DbType.<%= GetDbType(prop) %>;
+                        %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %>.Equals(Guid.Empty) ? (object)DBNull.Value : <%= GetFieldReaderStatement(prop) %>).DbType = DbType.<%= TemplateHelper.GetDbType(prop) %>;
                     <%
                     }
                     else if (AllowNull(prop) && propType != TypeCodeEx.SmartDate)
                     {
-                        %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %>) == null ? (object)DBNull.Value : <%= GetFieldReaderStatement(prop) %><%= TypeHelper.IsNullableType(propType) ? ".Value" :"" %>).DbType = DbType.<%= GetDbType(prop) %>;
+                        %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %>) == null ? (object)DBNull.Value : <%= GetFieldReaderStatement(prop) %><%= TemplateHelper.IsNullableType(propType) ? ".Value" :"" %>).DbType = DbType.<%= TemplateHelper.GetDbType(prop) %>;
                     <%
                     }
                     else
@@ -255,7 +255,7 @@ if (Info.GenerateDataPortalUpdate)
 
             <%
     }
-    if (UseSimpleAuditTrail(Info))
+    if (TemplateHelper.UseSimpleAuditTrail(Info))
     {
         %>
             SimpleAuditTrail();
@@ -286,12 +286,12 @@ if (Info.GenerateDataPortalUpdate)
                             if (parentProp.PropertyType == TypeCodeEx.SmartDate)
                             {
                                 %>SmartDate l<%= parentProp.Name %> = new SmartDate(parent.<%= parentProp.Name %>);
-                    cmd.Parameters.AddWithValue("@<%= GetFkParameterNameForParentProperty(Info, parentProp) %>", l<%= parentProp.Name %>.DBValue).DbType = DbType.DateTime;
+                    cmd.Parameters.AddWithValue("@<%= TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp) %>", l<%= parentProp.Name %>.DBValue).DbType = DbType.DateTime;
                     <%
                             }
                             else
                             {
-                                %>cmd.Parameters.AddWithValue("@<%= GetFkParameterNameForParentProperty(Info, parentProp) %>", parent.<%= parentProp.Name %>).DbType = DbType.<%= GetDbType(parentProp) %>;
+                                %>cmd.Parameters.AddWithValue("@<%= TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp) %>", parent.<%= parentProp.Name %>).DbType = DbType.<%= TemplateHelper.GetDbType(parentProp) %>;
                     <%
                             }
                         }
@@ -304,19 +304,19 @@ if (Info.GenerateDataPortalUpdate)
                             (prop.DataAccess != ValueProperty.DataAccessBehaviour.ReadOnly &&
                             prop.DataAccess != ValueProperty.DataAccessBehaviour.CreateOnly)))
                         {
-                            TypeCodeEx propType = TypeHelper.GetBackingFieldType(prop);
-                            string postfix = ".DbType = DbType." + GetDbType(prop);
+                            TypeCodeEx propType = TemplateHelper.GetBackingFieldType(prop);
+                            string postfix = ".DbType = DbType." + TemplateHelper.GetDbType(prop);
 
                             if (prop.DeclarationMode == PropertyDeclaration.Managed || prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion)
                             {
                                 if (AllowNull(prop) && propType == TypeCodeEx.Guid)
                                 {
-                                    %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetFieldReaderStatement(prop) %>.Equals(Guid.Empty) ? (object)DBNull.Value : <%= GetFieldReaderStatement(prop) %>).DbType = DbType.<%= GetDbType(prop) %>;
+                                    %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetFieldReaderStatement(prop) %>.Equals(Guid.Empty) ? (object)DBNull.Value : <%= GetFieldReaderStatement(prop) %>).DbType = DbType.<%= TemplateHelper.GetDbType(prop) %>;
                     <%
                                 }
                                 else if (AllowNull(prop) && propType != TypeCodeEx.SmartDate)
                                 {
-                                    %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetFieldReaderStatement(prop) %> == null ? (object)DBNull.Value : <%= GetFieldReaderStatement(prop) %><%= TypeHelper.IsNullableType(propType) ? ".Value" :"" %>).DbType = DbType.<%= GetDbType(prop) %>;
+                                    %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetFieldReaderStatement(prop) %> == null ? (object)DBNull.Value : <%= GetFieldReaderStatement(prop) %><%= TemplateHelper.IsNullableType(propType) ? ".Value" :"" %>).DbType = DbType.<%= TemplateHelper.GetDbType(prop) %>;
                     <%
                                 }
                                 else
@@ -329,12 +329,12 @@ if (Info.GenerateDataPortalUpdate)
                             {
                                 if (AllowNull(prop) && propType == TypeCodeEx.Guid)
                                 {
-                                    %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %>.Equals(Guid.Empty) ? (object)DBNull.Value : <%= GetFieldReaderStatement(prop) %>).DbType = DbType.<%= GetDbType(prop) %>;
+                                    %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %>.Equals(Guid.Empty) ? (object)DBNull.Value : <%= GetFieldReaderStatement(prop) %>).DbType = DbType.<%= TemplateHelper.GetDbType(prop) %>;
                     <%
                                 }
                                 else if (AllowNull(prop) && propType != TypeCodeEx.SmartDate)
                                 {
-                                    %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %>) == null ? (object)DBNull.Value : <%= GetFieldReaderStatement(prop) %><%= TypeHelper.IsNullableType(propType) ? ".Value" :"" %>).DbType = DbType.<%= GetDbType(prop) %>;
+                                    %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %>) == null ? (object)DBNull.Value : <%= GetFieldReaderStatement(prop) %><%= TemplateHelper.IsNullableType(propType) ? ".Value" :"" %>).DbType = DbType.<%= TemplateHelper.GetDbType(prop) %>;
                     <%
                                 }
                                 else
@@ -439,7 +439,7 @@ if (Info.GenerateDataPortalDelete)
     %>private void Child_DeleteSelf(<%= ((parentType.Length > 0 && !Info.ParentInsertOnly) ? parentType + " parent" : "") %>)
         {
             <%
-    if (UseSimpleAuditTrail(Info))
+    if (TemplateHelper.UseSimpleAuditTrail(Info))
     {
         %>
             // audit the object, just in case soft delete is used on this object
@@ -480,12 +480,12 @@ if (Info.GenerateDataPortalDelete)
             if (parentProp.PropertyType == TypeCodeEx.SmartDate)
             {
                 %>SmartDate l<%= parentProp.Name %> = new SmartDate(parent.<%= parentProp.Name %>);
-                    cmd.Parameters.AddWithValue("@<%= GetFkParameterNameForParentProperty(Info, parentProp) %>", l<%= parentProp.Name %>.DBValue).DbType = DbType.DateTime;
+                    cmd.Parameters.AddWithValue("@<%= TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp) %>", l<%= parentProp.Name %>.DBValue).DbType = DbType.DateTime;
                     <%
             }
             else
             {
-                %>cmd.Parameters.AddWithValue("@<%= GetFkParameterNameForParentProperty(Info, parentProp) %>", parent.<%= parentProp.Name %>).DbType = DbType.<%= GetDbType(parentProp) %>;
+                %>cmd.Parameters.AddWithValue("@<%= TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp) %>", parent.<%= parentProp.Name %>).DbType = DbType.<%= TemplateHelper.GetDbType(parentProp) %>;
                     <%
             }
         }
@@ -496,7 +496,7 @@ if (Info.GenerateDataPortalDelete)
             (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default ||
             (prop.DbBindColumn.NativeType == "timestamp" && Info.DeleteUseTimestamp)))
         {
-            %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %><%= (prop.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= GetDbType(prop) %>;
+            %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %><%= (prop.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TemplateHelper.GetDbType(prop) %>;
                     <%
         }
     }

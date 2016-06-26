@@ -13,7 +13,7 @@
 <!-- #include file="Header.asp" -->
 <%
 bool usesContext = false;
-usesContext = IsObjectType(Info.ObjectType) || Info.ObjectType == CslaObjectType.UnitOfWork;
+usesContext = TypeHelper.IsObjectType(Info.ObjectType) || Info.ObjectType == CslaObjectType.UnitOfWork;
 bool hasFactoryCache = false;
 bool hasDataPortalCache = false;
 CslaObjectInfo invalidatorInfo = Info;
@@ -185,7 +185,7 @@ if (Info.ObjectType != CslaObjectType.UnitOfWork)
     }
     bool generateAuthRegion2 = false;
     CslaObjectInfo authzInfo2 = Info;
-    if (IsCollectionType(Info.ObjectType))
+    if (TypeHelper.IsCollectionType(Info.ObjectType))
     {
         authzInfo2 = FindChildInfo(Info, Info.ItemType);
     }

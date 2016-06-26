@@ -21,7 +21,7 @@ foreach (ChildProperty childProp in currentInfo.GetAllChildProperties())
         if (_child != null)
         {
             childAncestorLoaderLevel = AncestorLoaderLevel(_child, out childAncestorIsCollection);
-            handleAsCollection = IsCollectionType(_child.ObjectType) ||
+            handleAsCollection = TypeHelper.IsCollectionType(_child.ObjectType) ||
                 (childAncestorLoaderLevel > 0 && childAncestorIsCollection) ||
                 (childAncestorLoaderLevel > 1 && !childAncestorIsCollection);
             %>
@@ -32,7 +32,7 @@ foreach (ChildProperty childProp in currentInfo.GetAllChildProperties())
                 %>
             while (dr.Read())
             {
-                <%= FormatFieldName(_child.ObjectName) %>.Add(Fetch<%= IsCollectionType(_child.ObjectType) ? _child.ItemType : _child.ObjectName %>(dr));
+                <%= FormatFieldName(_child.ObjectName) %>.Add(Fetch<%= TypeHelper.IsCollectionType(_child.ObjectType) ? _child.ItemType : _child.ObjectName %>(dr));
             }
             <%
             }
@@ -63,7 +63,7 @@ foreach (ChildProperty childProp in GetParentLoadAllGrandChildPropertiesInHierar
                 %>
             while (dr.Read())
             {
-                <%= FormatFieldName(_child.ObjectName) %>.Add(Fetch<%= IsCollectionType(_child.ObjectType) ? _child.ItemType : _child.ObjectName %>(dr));
+                <%= FormatFieldName(_child.ObjectName) %>.Add(Fetch<%= TypeHelper.IsCollectionType(_child.ObjectType) ? _child.ItemType : _child.ObjectName %>(dr));
             }
             <%
             }
@@ -86,7 +86,7 @@ foreach (ChildProperty childProp in currentInfo.GetAllChildProperties())
     if (childProp.LoadingScheme == LoadingScheme.ParentLoad)
     {
         CslaObjectInfo _child = FindChildInfo(currentInfo, childProp.TypeName);
-        if (IsCollectionType(_child.ObjectType))
+        if (TypeHelper.IsCollectionType(_child.ObjectType))
             _child = FindChildInfo(_child, _child.ItemType);
         if (_child != null)
         {
@@ -94,7 +94,7 @@ foreach (ChildProperty childProp in currentInfo.GetAllChildProperties())
             // parent loading field
             bool useFieldForParentLoading2 = (((childAncestorLoaderLevel > 2 && !childAncestorIsCollection) ||
                 (childAncestorLoaderLevel > 1 && childAncestorIsCollection)) && _child.ParentProperties.Count > 0);
-            handleAsCollection = IsCollectionType(_child.ObjectType) ||
+            handleAsCollection = TypeHelper.IsCollectionType(_child.ObjectType) ||
                 (childAncestorLoaderLevel > 0 && childAncestorIsCollection) ||
                 (childAncestorLoaderLevel > 1 && !childAncestorIsCollection);
             %>
@@ -133,7 +133,7 @@ foreach (ChildProperty childProp in currentInfo.GetAllChildProperties())
             {
                 childParentInfo = Info.Parent.CslaObjects.Find(_child.ParentType);
                 childGrandParentInfo = Info.Parent.CslaObjects.Find(childParentInfo.ParentType);
-                childIsItem = IsCollectionType(childParentInfo.ObjectType);
+                childIsItem = TypeHelper.IsCollectionType(childParentInfo.ObjectType);
                 %>
             // parent properties
             <%
@@ -163,7 +163,7 @@ foreach (ChildProperty childProp in GetParentLoadAllGrandChildPropertiesInHierar
     if (childProp.LoadingScheme == LoadingScheme.ParentLoad)
     {
         CslaObjectInfo _child = FindChildInfo(currentInfo, childProp.TypeName);
-        if (IsCollectionType(_child.ObjectType))
+        if (TypeHelper.IsCollectionType(_child.ObjectType))
             _child = FindChildInfo(_child, _child.ItemType);
         if (_child != null)
         {
@@ -171,7 +171,7 @@ foreach (ChildProperty childProp in GetParentLoadAllGrandChildPropertiesInHierar
             // parent loading field
             bool useFieldForParentLoading2 = (((childAncestorLoaderLevel > 2 && !childAncestorIsCollection) ||
                 (childAncestorLoaderLevel > 1 && childAncestorIsCollection)) && _child.ParentProperties.Count > 0);
-            handleAsCollection = IsCollectionType(_child.ObjectType) ||
+            handleAsCollection = TypeHelper.IsCollectionType(_child.ObjectType) ||
                 (childAncestorLoaderLevel > 0 && childAncestorIsCollection) ||
                 (childAncestorLoaderLevel > 1 && !childAncestorIsCollection);
             %>
@@ -210,7 +210,7 @@ foreach (ChildProperty childProp in GetParentLoadAllGrandChildPropertiesInHierar
             {
                 childParentInfo = Info.Parent.CslaObjects.Find(_child.ParentType);
                 childGrandParentInfo = Info.Parent.CslaObjects.Find(childParentInfo.ParentType);
-                childIsItem = IsCollectionType(childParentInfo.ObjectType);
+                childIsItem = TypeHelper.IsCollectionType(childParentInfo.ObjectType);
                 %>
             // parent properties
             <%

@@ -72,7 +72,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
                     %>
 
         ''' <summary>
-        ''' Factory method. Asynchronously creates a new <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %>, based on given parameters.
+        ''' Factory method. Asynchronously creates a new <see cref="<%= Info.ObjectName %>"/> <%= TypeHelper.IsCollectionType(Info.ObjectType) ? "collection" : "object" %>, based on given parameters.
         ''' </summary>
         ''' <param name="crit">The create criteria.</param>
         ''' <param name="callback">The completion callback method.</param>
@@ -100,7 +100,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
                 %>
 
         ''' <summary>
-        ''' Factory method. Asynchronously creates a new <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %><%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
+        ''' Factory method. Asynchronously creates a new <see cref="<%= Info.ObjectName %>"/> <%= TypeHelper.IsCollectionType(Info.ObjectType) ? "collection" : "object" %><%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
         ''' </summary>
         <%= strNewComment %>''' <param name="callback">The completion callback method.</param>
         <%= Info.ParentType == string.Empty ? "Public" : "Friend" %> Shared Sub New<%= Info.ObjectName %><%= c.CreateOptions.FactorySuffix %>(<%= strNewParams %>)

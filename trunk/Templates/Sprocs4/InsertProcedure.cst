@@ -70,7 +70,7 @@ foreach (ValueProperty parentProp in Info.GetParentValueProperties())
     if (parentProp.DbBindColumn.Column == null)
         continue;
     if (!first) { %>,<% } else { first = false; } %>
-    @<%= GetFkParameterNameForParentProperty(Info, parentProp) %> <%= GetDataTypeString(parentProp.DbBindColumn) %><%
+    @<%= TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp) %> <%= GetDataTypeString(parentProp.DbBindColumn) %><%
 }
 foreach (ValueProperty prop in Info.GetAllValueProperties())
 {
@@ -167,7 +167,7 @@ if (isUndeletable)
                 %> AND
                 <%
             }
-    %>[<%= GetFKColumnForParentProperty(parentProp,tables[0]) %>] = @<%= GetFkParameterNameForParentProperty(Info, parentProp) %><%
+    %>[<%= GetFKColumnForParentProperty(parentProp,tables[0]) %>] = @<%= TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp) %><%
         }
     }
     foreach (ValueProperty prop in Info.GetAllValueProperties())
@@ -264,7 +264,7 @@ if (isUndeletable)
                 %> AND
                     <%
             }
-    %>[<%= GetFKColumnForParentProperty(parentProp,tables[0]) %>] = @<%= GetFkParameterNameForParentProperty(Info, parentProp) %><%
+    %>[<%= GetFKColumnForParentProperty(parentProp,tables[0]) %>] = @<%= TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp) %><%
         }
     }
     foreach (ValueProperty prop in Info.GetAllValueProperties())
@@ -312,7 +312,7 @@ foreach(IResultObject table in tables)
             }
             first = false;
             fields += string.Concat("[", colName,"]");
-            parms += string.Concat("@", GetFkParameterNameForParentProperty(Info, parentProp));
+            parms += string.Concat("@", TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp));
         }
     }
     foreach (ValueProperty prop in Info.GetAllValueProperties())
@@ -404,7 +404,7 @@ foreach(IResultObject table in tables)
                         %> AND
             <%
                     }
-            %>[<%= GetFKColumnForParentProperty(parentProp,tables[0]) %>] = @<%= GetFkParameterNameForParentProperty(Info, parentProp) %><%
+            %>[<%= GetFKColumnForParentProperty(parentProp,tables[0]) %>] = @<%= TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp) %><%
                 }
                 foreach (ValueProperty prop in Info.ValueProperties)
                 {

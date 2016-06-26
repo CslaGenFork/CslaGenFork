@@ -31,7 +31,7 @@ if (Errors.Length == 0)
     CslaObjectInfo grandParentInfo = null;
     if (parentInfo != null)
     {
-        isItem = IsCollectionType(parentInfo.ObjectType);
+        isItem = TypeHelper.IsCollectionType(parentInfo.ObjectType);
         grandParentInfo = Info.Parent.CslaObjects.Find(parentInfo.ParentType);
         isParentRootCollection = (parentInfo.ObjectType == CslaObjectType.EditableRootCollection) ||
             (parentInfo.ObjectType == CslaObjectType.ReadOnlyCollection && parentInfo.ParentType == String.Empty);

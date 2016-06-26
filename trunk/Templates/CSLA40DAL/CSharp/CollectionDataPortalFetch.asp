@@ -136,7 +136,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
             }
             OnFetchPost(args);
             <%
-                if (SelfLoadsChildren(Info) && IsCollectionType(Info.ObjectType))
+                if (SelfLoadsChildren(Info) && TypeHelper.IsCollectionType(Info.ObjectType))
                 {
                     %>
             foreach (var item in this)
@@ -256,7 +256,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
     else
     {
         %>
-                Add(DataPortal.Fetch<%= IsNotRootType(itemInfo) ? "Child" : "" %><<%= Info.ItemType %>>(<%= usesDTO ? "dto" : "dr" %>));
+                Add(DataPortal.Fetch<%= TypeHelper.IsNotRootType(itemInfo) ? "Child" : "" %><<%= Info.ItemType %>>(<%= usesDTO ? "dto" : "dr" %>));
             <%
     }
     %>

@@ -10,7 +10,7 @@ foreach (IHaveBusinessRules rulableProperty in allRulesProperties)
 {
     if (Info.ObjectType != CslaObjectType.UnitOfWork &&
         Info.ObjectType != CslaObjectType.NameValueList &&
-        !IsCollectionType(Info.ObjectType) &&
+        !TypeHelper.IsCollectionType(Info.ObjectType) &&
         rulableProperty.BusinessRules.Count > 0)
     {
         generateRuleRegion = true;
@@ -38,7 +38,7 @@ foreach (IHaveBusinessRules rulableProperty in allRulesProperties)
 }
 if (Info.ObjectType != CslaObjectType.UnitOfWork &&
     Info.ObjectType != CslaObjectType.NameValueList &&
-    !IsCollectionType(Info.ObjectType))
+    !TypeHelper.IsCollectionType(Info.ObjectType))
 {
     if (Info.BusinessRules.Count > 0)
         generateObjectRuleRegion = true;

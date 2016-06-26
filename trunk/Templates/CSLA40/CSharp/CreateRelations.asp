@@ -50,7 +50,7 @@ public string GetDSRelations(CslaObjectInfo info)
 %>
             <%
             CslaObjectInfo obj;
-            if (IsCollectionType(Info.ObjectType))
+            if (TypeHelper.IsCollectionType(Info.ObjectType))
                 obj = FindChildInfo(Info, Info.ItemType);
             else
                 obj = Info;

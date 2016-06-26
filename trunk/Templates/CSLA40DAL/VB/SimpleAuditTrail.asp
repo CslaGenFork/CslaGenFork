@@ -1,5 +1,5 @@
 <%
-if (UseSimpleAuditTrail(Info))
+if (TemplateHelper.UseSimpleAuditTrail(Info))
 {
     %>
 
@@ -12,7 +12,7 @@ if (UseSimpleAuditTrail(Info))
         %>
             <%= GetFieldLoaderStatement(changedDateProperty, GetNowValue(changedDateProperty.PropertyType)) %>;
         <%
-        var convertedPropertyName = ConvertedPropertyName(Info, changedDateProperty);
+        var convertedPropertyName = TemplateHelper.ConvertedPropertyName(Info, changedDateProperty);
         if (convertedPropertyName != string.Empty)
         {
             %>
@@ -26,7 +26,7 @@ if (UseSimpleAuditTrail(Info))
         %>
             <%= GetFieldLoaderStatement(changedUserProperty, Info.Parent.Params.GetUserMethod) %>;
         <%
-        var convertedPropertyName = ConvertedPropertyName(Info, changedUserProperty);
+        var convertedPropertyName = TemplateHelper.ConvertedPropertyName(Info, changedUserProperty);
         if (convertedPropertyName != string.Empty)
         {
             %>
@@ -34,7 +34,7 @@ if (UseSimpleAuditTrail(Info))
         <%
         }
     }
-    if (IsCreationDateColumnPresent(Info) || IsCreationUserColumnPresent(Info))
+    if (TemplateHelper.IsCreationDateColumnPresent(Info) || TemplateHelper.IsCreationUserColumnPresent(Info))
     {
         %>
             if (IsNew)
@@ -43,7 +43,7 @@ if (UseSimpleAuditTrail(Info))
         ValueProperty creationDateProperty = new ValueProperty();
         if (GetValuePropertyByName(Info, Info.Parent.Params.CreationDateColumn, ref creationDateProperty))
         {
-            if (IsChangedDateColumnPresent(Info))
+            if (TemplateHelper.IsChangedDateColumnPresent(Info))
             {
                 %>
                 <%= GetFieldLoaderStatement(creationDateProperty, GetFieldReaderStatement(changedDateProperty)) %>;
@@ -55,7 +55,7 @@ if (UseSimpleAuditTrail(Info))
                 <%= GetFieldLoaderStatement(creationDateProperty, GetNowValue(creationDateProperty.PropertyType)) %>;
                         <%
             }
-            var convertedPropertyName = ConvertedPropertyName(Info, creationDateProperty);
+            var convertedPropertyName = TemplateHelper.ConvertedPropertyName(Info, creationDateProperty);
             if (convertedPropertyName != string.Empty)
             {
                 %>
@@ -66,7 +66,7 @@ if (UseSimpleAuditTrail(Info))
         ValueProperty creationUserProperty = new ValueProperty();
         if (GetValuePropertyByName(Info, Info.Parent.Params.CreationUserColumn, ref creationUserProperty))
         {
-            if (IsChangedUserColumnPresent(Info))
+            if (TemplateHelper.IsChangedUserColumnPresent(Info))
             {
                 %>
                 <%= GetFieldLoaderStatement(creationUserProperty, GetFieldReaderStatement(changedUserProperty)) %>;
@@ -78,7 +78,7 @@ if (UseSimpleAuditTrail(Info))
                 <%= GetFieldLoaderStatement(creationUserProperty, Info.Parent.Params.GetUserMethod) %>;
                         <%
             }
-            var convertedPropertyName = ConvertedPropertyName(Info, creationUserProperty);
+            var convertedPropertyName = TemplateHelper.ConvertedPropertyName(Info, creationUserProperty);
             if (convertedPropertyName != string.Empty)
             {
                 %>

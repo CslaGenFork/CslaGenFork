@@ -4,12 +4,12 @@ bool useParentReference = (Info.ObjectType == CslaObjectType.DynamicEditableRoot
 bool isRODeepLoadCollection =
     Info.ObjectType == CslaObjectType.ReadOnlyCollection &&
     Info.ItemType != string.Empty &&
-    IsReadOnlyType(itemInfo.ObjectType) &&
+    TypeHelper.IsReadOnlyType(itemInfo.ObjectType) &&
     ancestorLoaderLevel == 0 &&
     ParentLoadsROChildren(Info);
 
 bool useAuthz = false;
-if (!IsReadOnlyType(itemInfo.ObjectType))
+if (!TypeHelper.IsReadOnlyType(itemInfo.ObjectType))
 {
     if (CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.None &&
         CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.PropertyLevel)

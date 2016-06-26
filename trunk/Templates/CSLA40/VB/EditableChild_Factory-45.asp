@@ -15,7 +15,7 @@ if (UseNoSilverlight())
     if (CurrentUnit.GenerationParams.DatabaseConnection != String.Empty)
     {
         if (parentInfo != null)
-            isCollection = IsCollectionType(parentInfo.ObjectType);
+            isCollection = TypeHelper.IsCollectionType(parentInfo.ObjectType);
         if (isChildSelfLoaded && !isCollection)
         {
             %>

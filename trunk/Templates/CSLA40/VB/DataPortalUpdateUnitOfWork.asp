@@ -41,7 +41,7 @@ else if (Info.TransactionType == TransactionType.TransactionScope || Info.Transa
             <%
 if (useInlineQuery)
     InlineQueryList.Add(new AdvancedGenerator.InlineQuery(Info.UpdateProcedureName, ""));
-if (UseSimpleAuditTrail(Info))
+if (TemplateHelper.UseSimpleAuditTrail(Info))
 {
     %>
             SimpleAuditTrail()
@@ -74,21 +74,21 @@ foreach (ValueProperty prop in Info.GetAllValueProperties())
         (prop.DataAccess != ValueProperty.DataAccessBehaviour.ReadOnly &&
         prop.DataAccess != ValueProperty.DataAccessBehaviour.CreateOnly)))
     {
-        TypeCodeEx propType = TypeHelper.GetBackingFieldType(prop);
-        string postfix = ".DbType = DbType." + GetDbType(prop);
+        TypeCodeEx propType = TemplateHelper.GetBackingFieldType(prop);
+        string postfix = ".DbType = DbType." + TemplateHelper.GetDbType(prop);
 
         if (prop.DeclarationMode == PropertyDeclaration.Managed || prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion)
         {
             if (AllowNull(prop) && propType == TypeCodeEx.Guid)
             {
                 %>
-                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", If(<%= GetFieldReaderStatement(prop) %>.Equals(Guid.Empty), DBNull.Value, <%= GetFieldReaderStatement(prop) %>)).DbType = DbType.<%= GetDbType(prop) %>
+                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", If(<%= GetFieldReaderStatement(prop) %>.Equals(Guid.Empty), DBNull.Value, <%= GetFieldReaderStatement(prop) %>)).DbType = DbType.<%= TemplateHelper.GetDbType(prop) %>
                     <%
             }
             else if (AllowNull(prop) && propType != TypeCodeEx.SmartDate)
             {
                 %>
-                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", If(<%= GetFieldReaderStatement(prop) %><%= TypeHelper.IsNullableType(propType) ? ".HasValue" : " IsNot Nothing" %>, <%= GetFieldReaderStatement(prop) %><%= TypeHelper.IsNullableType(propType) ? ".Value" :"" %>, DBNull.Value)).DbType = DbType.<%= GetDbType(prop) %>
+                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", If(<%= GetFieldReaderStatement(prop) %><%= TemplateHelper.IsNullableType(propType) ? ".HasValue" : " IsNot Nothing" %>, <%= GetFieldReaderStatement(prop) %><%= TemplateHelper.IsNullableType(propType) ? ".Value" :"" %>, DBNull.Value)).DbType = DbType.<%= TemplateHelper.GetDbType(prop) %>
                     <%
             }
             else
@@ -103,13 +103,13 @@ foreach (ValueProperty prop in Info.GetAllValueProperties())
             if (AllowNull(prop) && propType == TypeCodeEx.Guid)
             {
                 %>
-                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", If(<%= GetFieldReaderStatement(prop) %>.Equals(Guid.Empty), DBNull.Value, <%= GetFieldReaderStatement(prop) %>)).DbType = DbType.<%= GetDbType(prop) %>
+                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", If(<%= GetFieldReaderStatement(prop) %>.Equals(Guid.Empty), DBNull.Value, <%= GetFieldReaderStatement(prop) %>)).DbType = DbType.<%= TemplateHelper.GetDbType(prop) %>
                     <%
             }
             else if (AllowNull(prop) && propType != TypeCodeEx.SmartDate)
             {
                 %>
-                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", If(<%= GetFieldReaderStatement(prop) %><%= TypeHelper.IsNullableType(propType) ? ".HasValue" : " IsNot Nothing" %>, <%= GetFieldReaderStatement(prop) %><%= TypeHelper.IsNullableType(propType) ? ".Value" :"" %>, DBNull.Value)).DbType = DbType.<%= GetDbType(prop) %>
+                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", If(<%= GetFieldReaderStatement(prop) %><%= TemplateHelper.IsNullableType(propType) ? ".HasValue" : " IsNot Nothing" %>, <%= GetFieldReaderStatement(prop) %><%= TemplateHelper.IsNullableType(propType) ? ".Value" :"" %>, DBNull.Value)).DbType = DbType.<%= TemplateHelper.GetDbType(prop) %>
                     <%
             }
             else

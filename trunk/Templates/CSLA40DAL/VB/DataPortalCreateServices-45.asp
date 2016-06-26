@@ -111,7 +111,7 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices && UseNoSilverlight())
                 CslaObjectInfo _child = FindChildInfo(Info, childProp.TypeName);
                 if (_child != null)
                 {
-                    if (IsEditableType(_child.ObjectType) &&
+                    if (TypeHelper.IsEditableType(_child.ObjectType) &&
                         (childProp.LoadingScheme == LoadingScheme.ParentLoad || !childProp.LazyLoad))
                     {
                         %>

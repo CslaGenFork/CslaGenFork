@@ -1,6 +1,6 @@
 <%
 CslaObjectInfo authzInfo = Info;
-if (IsCollectionType(Info.ObjectType))
+if (TypeHelper.IsCollectionType(Info.ObjectType))
 {
     authzInfo = FindChildInfo(Info, Info.ItemType);
     if (authzInfo == null)
@@ -20,7 +20,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
         <%
         if (usesDTO)
         {
-            if (IsCollectionType(Info.ObjectType))
+            if (TypeHelper.IsCollectionType(Info.ObjectType))
             {
                 %>
         /// Factory method. Loads a <see cref="<%= Info.ObjectName %>"/> object from the given list of <%= Info.ItemType %>Dto.
@@ -55,7 +55,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
         {
             <%
         if (authzInfo.GetRoles.Trim() != String.Empty &&
-            IsCollectionType(Info.ObjectType) &&
+            TypeHelper.IsCollectionType(Info.ObjectType) &&
             CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.None &&
             CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.PropertyLevel)
         {
@@ -80,7 +80,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
         %>
             obj.Fetch(<%= usesDTO ? "data" : "dr" %>);
             <%
-        if (isChildSelfLoaded && !IsCollectionType(Info.ObjectType))
+        if (isChildSelfLoaded && !TypeHelper.IsCollectionType(Info.ObjectType))
         {
             %>
             obj.FetchChildren(dr);
@@ -96,7 +96,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
                     if (childProp.LoadingScheme == LoadingScheme.ParentLoad)
                     {
                         string internalCreateString = string.Empty;
-                        if (IsEditableType(_child.ObjectType))
+                        if (TypeHelper.IsEditableType(_child.ObjectType))
                         {
                             if (UseChildFactoryHelper)
                                 internalCreateString = FormatPascal(childProp.TypeName) + ".New" + FormatPascal(childProp.TypeName);
@@ -132,13 +132,13 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
                 }
             }
         }
-        if (Info.ObjectType != CslaObjectType.ReadOnlyObject && !IsCollectionType(Info.ObjectType))
+        if (Info.ObjectType != CslaObjectType.ReadOnlyObject && !TypeHelper.IsCollectionType(Info.ObjectType))
         {
             %>
             obj.MarkOld();
             <%
         }
-        if (Info.CheckRulesOnFetch && !Info.EditOnDemand && !IsCollectionType(Info.ObjectType))
+        if (Info.CheckRulesOnFetch && !Info.EditOnDemand && !TypeHelper.IsCollectionType(Info.ObjectType))
         {
             %>
             // check all object rules and property rules

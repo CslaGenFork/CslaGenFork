@@ -2,7 +2,7 @@
 if (usesDTO && ancestorLoaderLevel == 0)
 {
     CslaObjectInfo currentInfo = Info;
-    if (IsCollectionType(currentInfo.ObjectType))
+    if (TypeHelper.IsCollectionType(currentInfo.ObjectType))
     {
         currentInfo = Info.Parent.CslaObjects.Find(Info.ItemType);
     }
@@ -13,7 +13,7 @@ if (usesDTO && ancestorLoaderLevel == 0)
             CslaObjectInfo _child = FindChildInfo(currentInfo, childProp.TypeName);
             if (_child != null)
             {
-                if (IsCollectionType(_child.ObjectType))
+                if (TypeHelper.IsCollectionType(_child.ObjectType))
                 {
                     if (ancestorIsCollection)
                     {
@@ -21,7 +21,7 @@ if (usesDTO && ancestorLoaderLevel == 0)
                         if (child != null)
                         {
                             ChildProperty ancestorChildProperty = new ChildProperty();
-                            CslaObjectInfo _parent = child.FindParent(child);
+                            CslaObjectInfo _parent = child.FindMyParent(child);
                             if (_parent != null)
                             {
                                 %>
@@ -103,14 +103,14 @@ if (usesDTO && ancestorLoaderLevel == 0)
             {
                 childAncestorLoaderLevel = AncestorLoaderLevel(_child, out childAncestorIsCollection);
                 ChildProperty ancestorChildProperty = new ChildProperty();
-                CslaObjectInfo _parent = _child.FindParent(_child);
+                CslaObjectInfo _parent = _child.FindMyParent(_child);
                 if (childAncestorLoaderLevel < 4 && _parent != null)
                 {
-                    CslaObjectInfo _ancestor = _child.FindParent(_parent);
+                    CslaObjectInfo _ancestor = _child.FindMyParent(_parent);
                     if (_ancestor != null)
                         GetChildPropertyByTypeName(_ancestor, _parent.ParentType, ref ancestorChildProperty);
                 }
-                if (IsCollectionType(_child.ObjectType))
+                if (TypeHelper.IsCollectionType(_child.ObjectType))
                 {
                     %>
         /// <summary>

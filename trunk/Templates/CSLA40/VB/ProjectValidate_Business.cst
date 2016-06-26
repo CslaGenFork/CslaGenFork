@@ -81,7 +81,7 @@ foreach (CslaObjectInfo objectInfo in list)
         {
             if (child.ParentType != objectInfo.ObjectName)
                 Errors.Append("Object " + objectInfo.ObjectName + " Child Property " + childProp.Name + " Type " + childProp.TypeName + ": Parent Type " + child.ParentType + " doesn't match." + Environment.NewLine);
-            if (!IsChildType(child))
+            if (!TypeHelper.IsChildType(child))
                 Errors.Append("Object " + objectInfo.ObjectName + " Child Property " + childProp.Name + ": Type " + childProp.TypeName + " must be a child stereotype." + Environment.NewLine);
             CslaObjectInfo childParent = objectInfo.Parent.CslaObjects.Find(child.ParentType);
             if (childParent == null)
@@ -99,7 +99,7 @@ foreach (CslaObjectInfo objectInfo in list)
     }
 
     // investigate parent type matching child and item
-    if (IsRootType(objectInfo) ||
+    if (TypeHelper.IsRootType(objectInfo) ||
         objectInfo.ObjectType == CslaObjectType.NameValueList ||
         objectInfo.ObjectType == CslaObjectType.UnitOfWork)
         continue;
@@ -113,11 +113,11 @@ foreach (CslaObjectInfo objectInfo in list)
     CslaObjectInfo parent = objectInfo.Parent.CslaObjects.Find(objectInfo.ParentType);// explicit parent
     if (parent != null)
     {
-        if (IsRootType(parent))
+        if (TypeHelper.IsRootType(parent))
             continue;
         else
         {
-            if (IsCollectionType(parent.ObjectType))
+            if (TypeHelper.IsCollectionType(parent.ObjectType))
             {
                 if (parent.IsPolymorphic && parent.ItemType != objectInfo.ObjectName)
                 {
@@ -165,7 +165,7 @@ foreach (CslaObjectInfo objectInfo in list)
     if (parent != null)
     {
         // parent properties
-        if (!IsCollectionType(objectInfo.ObjectType))
+        if (!TypeHelper.IsCollectionType(objectInfo.ObjectType))
         {
             foreach (Property prop in objectInfo.ParentProperties)
             {
