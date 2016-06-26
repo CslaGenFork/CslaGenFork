@@ -17,7 +17,7 @@ if (!Info.ParentType.Equals(String.Empty))
         CslaObjectInfo grandParentInfo = null;
         if (parentInfo != null)
         {
-            isItem = IsCollectionType(parentInfo.ObjectType);
+            isItem = TypeHelper.IsCollectionType(parentInfo.ObjectType);
             if (!isItem)
                 useIsLoadedProperty = CurrentUnit.GenerationParams.ReportObjectNotFound == ReportObjectNotFound.IsLoadedProperty;
             grandParentInfo = Info.Parent.CslaObjects.Find(parentInfo.ParentType);

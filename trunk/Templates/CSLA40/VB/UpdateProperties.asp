@@ -42,7 +42,7 @@ if (Info.UpdateValueProperties.Count > 0)
                 {
                     if (valProp.Name == prop.Name)
                     {
-                        if (TypeHelper.GetBackingFieldType(valProp) == TypeCodeEx.SmartDate && valProp.PropertyType == TypeCodeEx.String)
+                        if (TemplateHelper.GetBackingFieldType(valProp) == TypeCodeEx.SmartDate && valProp.PropertyType == TypeCodeEx.String)
                             cast = "(SmartDate)";
                         break;
                     }

@@ -126,12 +126,12 @@ if (!Info.UseCustomLoading)
                 {
                     if (c.Properties.Count > 1)
                     {
-                        %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= GetParameterSet(p, true) %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= GetDbType(p) %>;
+                        %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= GetParameterSet(p, true) %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TemplateHelper.GetDbType(p) %>;
                     <%
                     }
                     else
                     {
-                        %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= AssignSingleCriteria(c, "crit") %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= GetDbType(p) %>;
+                        %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= AssignSingleCriteria(c, "crit") %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TemplateHelper.GetDbType(p) %>;
                     <%
                     }
                 }
@@ -156,7 +156,7 @@ if (!Info.UseCustomLoading)
                 }
             }
             <%
-                if (SelfLoadsChildren(Info) && IsCollectionType(Info.ObjectType))
+                if (SelfLoadsChildren(Info) && TypeHelper.IsCollectionType(Info.ObjectType))
                 {
                     %>
             foreach (var item in this)
@@ -267,7 +267,7 @@ if (!Info.UseCustomLoading)
         else
         {
             %>
-                Add(DataPortal.Fetch<%= IsNotRootType(itemInfo) ? "Child" : "" %><<%= Info.ItemType %>>(dr));
+                Add(DataPortal.Fetch<%= TypeHelper.IsNotRootType(itemInfo) ? "Child" : "" %><<%= Info.ItemType %>>(dr));
             <%
         }
         %>
@@ -381,7 +381,7 @@ if (!Info.UseCustomLoading)
         }
         else
         {
-            %>Add(DataPortal.Fetch<%= IsNotRootType(itemInfo) ? "Child" : "" %><<%= Info.ItemType %>>(row));
+            %>Add(DataPortal.Fetch<%= TypeHelper.IsNotRootType(itemInfo) ? "Child" : "" %><<%= Info.ItemType %>>(row));
                 <%
         }
         %>
@@ -426,7 +426,7 @@ if (!Info.UseCustomLoading)
         }
         else
         {
-            %>Add(DataPortal.Fetch<%= IsNotRootType(itemInfo) ? "Child" : "" %><<%= Info.ItemType %>>(row));
+            %>Add(DataPortal.Fetch<%= TypeHelper.IsNotRootType(itemInfo) ? "Child" : "" %><<%= Info.ItemType %>>(row));
                 <%
         }
         %>

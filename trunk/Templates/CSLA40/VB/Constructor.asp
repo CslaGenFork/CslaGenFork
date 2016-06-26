@@ -4,7 +4,7 @@ if (Info.GenerateConstructor)
     bool dependentAllowNew2 = false;
     bool dependentAllowEdit2 = false;
     bool dependentAllowRemove2 = false;
-    if (!IsReadOnlyType(Info.ObjectType) && IsCollectionType(Info.ObjectType))
+    if (!TypeHelper.IsReadOnlyType(Info.ObjectType) && TypeHelper.IsCollectionType(Info.ObjectType))
     {
         if ((CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.None &&
             CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.PropertyLevel) &&
@@ -115,7 +115,7 @@ if (Info.GenerateConstructor)
     //    Info.ObjectType == CslaObjectType.EditableRootCollection ||
     //    Info.ObjectType == CslaObjectType.DynamicEditableRootCollection ||
     //    Info.ObjectType == CslaObjectType.ReadOnlyCollection)
-    if (IsCollectionType(Info.ObjectType))
+    if (TypeHelper.IsCollectionType(Info.ObjectType))
     {
         %>
 

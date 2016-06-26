@@ -41,7 +41,7 @@ else if (Info.TransactionType == TransactionType.TransactionScope || Info.Transa
             <%
 if (useInlineQuery)
    InlineQueryList.Add(new AdvancedGenerator.InlineQuery(Info.UpdateProcedureName, ""));
-if (UseSimpleAuditTrail(Info))
+if (TemplateHelper.UseSimpleAuditTrail(Info))
 {
     %>
             SimpleAuditTrail();
@@ -76,21 +76,21 @@ foreach (ValueProperty prop in Info.GetAllValueProperties())
         (prop.DataAccess != ValueProperty.DataAccessBehaviour.ReadOnly &&
         prop.DataAccess != ValueProperty.DataAccessBehaviour.CreateOnly)))
     {
-        TypeCodeEx propType = TypeHelper.GetBackingFieldType(prop);
-        string postfix = ".DbType = DbType." + GetDbType(prop);
+        TypeCodeEx propType = TemplateHelper.GetBackingFieldType(prop);
+        string postfix = ".DbType = DbType." + TemplateHelper.GetDbType(prop);
 
         if (prop.DeclarationMode == PropertyDeclaration.Managed || prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion)
         {
             if (AllowNull(prop) && propType == TypeCodeEx.Guid)
             {
                 %>
-                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetFieldReaderStatement(prop) %>.Equals(Guid.Empty) ? (object)DBNull.Value : <%= GetFieldReaderStatement(prop) %>).DbType = DbType.<%= GetDbType(prop) %>;
+                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetFieldReaderStatement(prop) %>.Equals(Guid.Empty) ? (object)DBNull.Value : <%= GetFieldReaderStatement(prop) %>).DbType = DbType.<%= TemplateHelper.GetDbType(prop) %>;
                     <%
             }
             else if (AllowNull(prop) && propType != TypeCodeEx.SmartDate)
             {
                 %>
-                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetFieldReaderStatement(prop) %> == null ? (object)DBNull.Value : <%= GetFieldReaderStatement(prop) %><%= TypeHelper.IsNullableType(propType) ? ".Value" :"" %>).DbType = DbType.<%= GetDbType(prop) %>;
+                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetFieldReaderStatement(prop) %> == null ? (object)DBNull.Value : <%= GetFieldReaderStatement(prop) %><%= TemplateHelper.IsNullableType(propType) ? ".Value" :"" %>).DbType = DbType.<%= TemplateHelper.GetDbType(prop) %>;
                     <%
             }
             else
@@ -105,13 +105,13 @@ foreach (ValueProperty prop in Info.GetAllValueProperties())
             if (AllowNull(prop) && propType == TypeCodeEx.Guid)
             {
                 %>
-                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %>.Equals(Guid.Empty) ? (object)DBNull.Value : <%= GetFieldReaderStatement(prop) %>).DbType = DbType.<%= GetDbType(prop) %>;
+                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %>.Equals(Guid.Empty) ? (object)DBNull.Value : <%= GetFieldReaderStatement(prop) %>).DbType = DbType.<%= TemplateHelper.GetDbType(prop) %>;
                     <%
             }
             else if (AllowNull(prop) && propType != TypeCodeEx.SmartDate)
             {
                 %>
-                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %>) == null ? (object)DBNull.Value : <%= GetFieldReaderStatement(prop) %><%= TypeHelper.IsNullableType(propType) ? ".Value" :"" %>).DbType = DbType.<%= GetDbType(prop) %>;
+                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %>) == null ? (object)DBNull.Value : <%= GetFieldReaderStatement(prop) %><%= TemplateHelper.IsNullableType(propType) ? ".Value" :"" %>).DbType = DbType.<%= TemplateHelper.GetDbType(prop) %>;
                     <%
             }
             else

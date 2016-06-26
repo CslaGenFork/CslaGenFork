@@ -7,7 +7,7 @@ if (Info.IsDeleter)
     foreach (UnitOfWorkProperty uowProp in Info.UnitOfWorkProperties)
     {
         CslaObjectInfo targetInfo = Info.Parent.CslaObjects.Find(uowProp.TypeName);
-        if (IsEditableType(targetInfo.ObjectType))
+        if (TypeHelper.IsEditableType(targetInfo.ObjectType))
         {
             editableTypeCounter++;
             int deleteCriteriaCounter = 0;
@@ -35,7 +35,7 @@ else if (!Info.IsUpdater)
     foreach (UnitOfWorkProperty uowProp in Info.UnitOfWorkProperties)
     {
         CslaObjectInfo targetInfo = Info.Parent.CslaObjects.Find(uowProp.TypeName);
-        if (IsEditableType(targetInfo.ObjectType))
+        if (TypeHelper.IsEditableType(targetInfo.ObjectType))
         {
             editableTypeCounter++;
             int createCriteriaCounter = 0;

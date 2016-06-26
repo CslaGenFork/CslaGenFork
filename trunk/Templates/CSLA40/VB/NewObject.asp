@@ -49,10 +49,10 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
                     %>
 
         ''' <summary>
-        ''' Factory method. Creates a new <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %>, based on given parameters.
+        ''' Factory method. Creates a new <see cref="<%= Info.ObjectName %>"/> <%= TypeHelper.IsCollectionType(Info.ObjectType) ? "collection" : "object" %>, based on given parameters.
         ''' </summary>
         ''' <param name="crit">The create criteria.</param>
-        ''' <returns>A reference to the created <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %>.</returns>
+        ''' <returns>A reference to the created <see cref="<%= Info.ObjectName %>"/> <%= TypeHelper.IsCollectionType(Info.ObjectType) ? "collection" : "object" %>.</returns>
         Public Shared Function New<%= Info.ObjectName %><%= c.CreateOptions.FactorySuffix %>(crit As <%= c.Name %>) As <%= Info.ObjectName %>
             Return DataPortal.Create(Of <%= Info.ObjectName %>)(crit)
         End Function
@@ -61,9 +61,9 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
                 %>
 
         ''' <summary>
-        ''' Factory method. Creates a new <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %><%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
+        ''' Factory method. Creates a new <see cref="<%= Info.ObjectName %>"/> <%= TypeHelper.IsCollectionType(Info.ObjectType) ? "collection" : "object" %><%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
         ''' </summary>
-        <%= strNewComment %>''' <returns>A reference to the created <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %>.</returns>
+        <%= strNewComment %>''' <returns>A reference to the created <see cref="<%= Info.ObjectName %>"/> <%= TypeHelper.IsCollectionType(Info.ObjectType) ? "collection" : "object" %>.</returns>
         <%= Info.ParentType == string.Empty ? "Public" : "Friend" %> Shared Function New<%= Info.ObjectName %><%= c.CreateOptions.FactorySuffix %>(<%= strNewParams %>) As <%= Info.ObjectName %>
            <%
                 if (Info.ObjectType == CslaObjectType.EditableSwitchable)

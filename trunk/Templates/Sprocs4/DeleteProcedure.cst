@@ -56,9 +56,9 @@ if (!CriteriaDefined)
                 whereClause += " AND" + Environment.NewLine + new string(' ', 3*4);
                 parms += ","  + Environment.NewLine;
             }
-            whereClause += fullTableSchema + String.Format("[{0}].[{1}] = @{2}", GetFKTableForParentProperty(parentProp,tables[0]), GetFKColumnForParentProperty(parentProp,tables[0]), GetFkParameterNameForParentProperty(Info, parentProp));
+            whereClause += fullTableSchema + String.Format("[{0}].[{1}] = @{2}", GetFKTableForParentProperty(parentProp,tables[0]), GetFKColumnForParentProperty(parentProp,tables[0]), TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp));
             whereTables.Add(GetFKTableForParentProperty(parentProp,tables[0]));
-            parms += String.Format("    @{0} {1}", GetFkParameterNameForParentProperty(Info, parentProp), GetDataTypeString(parentProp.DbBindColumn));
+            parms += String.Format("    @{0} {1}", TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp), GetDataTypeString(parentProp.DbBindColumn));
         }
     }
     foreach (ValueProperty prop in Info.ValueProperties)
@@ -182,7 +182,7 @@ AS
                         %> AND
                 <%
                     }
-            %>[<%= GetFKColumnForParentProperty(parentProp,tables[0]) %>] = @<%= GetFkParameterNameForParentProperty(Info, parentProp) %><%
+            %>[<%= GetFKColumnForParentProperty(parentProp,tables[0]) %>] = @<%= TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp) %><%
                 }
             }
             foreach (ValueProperty prop in Info.GetAllValueProperties())
@@ -297,7 +297,7 @@ AS
                         %> AND
                 <%
                     }
-            %>[<%= GetFKColumnForParentProperty(parentProp,tables[0]) %>] = @<%= GetFkParameterNameForParentProperty(Info, parentProp) %><%
+            %>[<%= GetFKColumnForParentProperty(parentProp,tables[0]) %>] = @<%= TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp) %><%
                 }
             }
             foreach (ValueProperty prop in Info.ValueProperties)

@@ -46,7 +46,7 @@ if (Info.GenerateDataPortalInsert)
                 if (prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK)
                     strInsertParams += "out ";
 
-                strInsertParams += string.Concat(GetDataTypeGeneric(prop, TypeHelper.GetBackingFieldType(prop)), " ", FormatCamel(prop.Name));
+                strInsertParams += string.Concat(GetDataTypeGeneric(prop, TemplateHelper.GetBackingFieldType(prop)), " ", FormatCamel(prop.Name));
             }
         }
         if (isFirstMethod)

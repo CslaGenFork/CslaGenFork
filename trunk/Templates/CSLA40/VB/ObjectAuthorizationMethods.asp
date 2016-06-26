@@ -4,7 +4,7 @@ CslaObjectInfo authzInfo2 = Info;
 string resultRuleObj = string.Empty;
 isObjectAutz = true;
 
-if (IsCollectionType(Info.ObjectType))
+if (TypeHelper.IsCollectionType(Info.ObjectType))
 {
     authzInfo2 = FindChildInfo(Info, Info.ItemType);
     if (authzInfo2 == null)
@@ -42,7 +42,7 @@ if (generateAuthRegion2)
     string resultConstructor = string.Empty;
     string resultProperties = string.Empty;
 
-    if (IsReadOnlyType(authzInfo2.ObjectType) && CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider)
+    if (TypeHelper.IsReadOnlyType(authzInfo2.ObjectType) && CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider)
     {
         authzInfo2.NewRoles = String.Empty;
         authzInfo2.UpdateRoles = String.Empty;

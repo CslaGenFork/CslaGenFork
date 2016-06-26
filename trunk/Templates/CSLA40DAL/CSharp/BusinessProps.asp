@@ -4,7 +4,7 @@ bool useParentReference = (Info.ObjectType == CslaObjectType.DynamicEditableRoot
 bool isRODeepLoadCollection =
     Info.ObjectType == CslaObjectType.ReadOnlyObject &&
     Info.ParentType != string.Empty &&
-    IsReadOnlyType(parentInfo.ObjectType) &&
+    TypeHelper.IsReadOnlyType(parentInfo.ObjectType) &&
     ancestorLoaderLevel == 1 &&
     ParentLoadsROChildren(Info);
 

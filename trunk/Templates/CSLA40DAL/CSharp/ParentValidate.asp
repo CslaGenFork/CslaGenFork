@@ -8,7 +8,7 @@ if (Info.ParentType.Equals(String.Empty))
         Errors.Append(Info.ObjectName + ": " + RelationRulesEngine.BrokenRuleMsg + Environment.NewLine);
         return;
     }
-    if (IsObjectType(Info.ObjectType))
+    if (TypeHelper.IsObjectType(Info.ObjectType))
     {
         foreach (Criteria crit in Info.CriteriaObjects)
         {

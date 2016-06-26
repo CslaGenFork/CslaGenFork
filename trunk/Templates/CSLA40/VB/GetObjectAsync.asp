@@ -19,7 +19,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
                 %>
 
         ''' <summary>
-        ''' Factory method. Asynchronously loads a <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %>, based on given parameters.
+        ''' Factory method. Asynchronously loads a <see cref="<%= Info.ObjectName %>"/> <%= TypeHelper.IsCollectionType(Info.ObjectType) ? "collection" : "object" %>, based on given parameters.
         ''' </summary>
         ''' <param name="crit">The fetch criteria.</param>
         ''' <param name="callback">The completion callback method.</param>
@@ -46,7 +46,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
             %>
 
         ''' <summary>
-        ''' Factory method. Asynchronously loads a <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %><%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
+        ''' Factory method. Asynchronously loads a <see cref="<%= Info.ObjectName %>"/> <%= TypeHelper.IsCollectionType(Info.ObjectType) ? "collection" : "object" %><%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
         ''' </summary>
         <%
             string strGetParams = string.Empty;

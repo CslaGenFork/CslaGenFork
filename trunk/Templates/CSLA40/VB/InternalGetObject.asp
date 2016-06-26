@@ -1,6 +1,6 @@
 <%
 CslaObjectInfo authzInfo = Info;
-if (IsCollectionType(Info.ObjectType))
+if (TypeHelper.IsCollectionType(Info.ObjectType))
 {
     authzInfo = FindChildInfo(Info, Info.ItemType);
     if (authzInfo == null)
@@ -24,7 +24,7 @@ if (!Info.DataSetLoadingScheme)
         Friend Shared Function Get<%= Info.ObjectName %>(dr As SafeDataReader) As <%= Info.ObjectName %>
             <%
         if (authzInfo.GetRoles.Trim() != String.Empty &&
-            IsCollectionType(Info.ObjectType) &&
+            TypeHelper.IsCollectionType(Info.ObjectType) &&
             CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.None &&
             CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.PropertyLevel)
         {
@@ -50,7 +50,7 @@ if (!Info.DataSetLoadingScheme)
         %>
             obj.Fetch(dr)
             <%
-        if (isChildSelfLoaded && !IsCollectionType(Info.ObjectType))
+        if (isChildSelfLoaded && !TypeHelper.IsCollectionType(Info.ObjectType))
         {
             %>
             obj.FetchChildren(dr)
@@ -66,7 +66,7 @@ if (!Info.DataSetLoadingScheme)
                     if (childProp.LoadingScheme == LoadingScheme.ParentLoad)
                     {
                         string internalCreateString = string.Empty;
-                        if (IsEditableType(_child.ObjectType))
+                        if (TypeHelper.IsEditableType(_child.ObjectType))
                         {
                             if (UseChildFactoryHelper)
                                 internalCreateString = FormatPascal(childProp.TypeName) + ".New" + FormatPascal(childProp.TypeName);
@@ -102,13 +102,13 @@ if (!Info.DataSetLoadingScheme)
                 }
             }
         }
-        if (Info.ObjectType != CslaObjectType.ReadOnlyObject && !IsCollectionType(Info.ObjectType))
+        if (Info.ObjectType != CslaObjectType.ReadOnlyObject && !TypeHelper.IsCollectionType(Info.ObjectType))
         {
             %>
             obj.MarkOld()
             <%
         }
-        if (Info.CheckRulesOnFetch && !Info.EditOnDemand && !IsCollectionType(Info.ObjectType))
+        if (Info.CheckRulesOnFetch && !Info.EditOnDemand && !TypeHelper.IsCollectionType(Info.ObjectType))
         {
             %>
             ' check all object rules and property rules
@@ -130,9 +130,9 @@ else
         ''' </summary>
         ''' <param name="dr">The DataRow to use.</param>
         ''' <returns>A reference to the fetched <see cref="<%= Info.ObjectName %>"/> object.</returns>
-        Friend Shared Function Get<%= Info.ObjectName %>(DataRow<% if (IsCollectionType(Info.ObjectType)) { %>[]<% } %> dr) As <%= Info.ObjectName %>
+        Friend Shared Function Get<%= Info.ObjectName %>(DataRow<% if (TypeHelper.IsCollectionType(Info.ObjectType)) { %>[]<% } %> dr) As <%= Info.ObjectName %>
             <%
-    if (IsCollectionType(Info.ObjectType) &&
+    if (TypeHelper.IsCollectionType(Info.ObjectType) &&
         CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.None &&
         CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.PropertyLevel &&
         authzInfo.GetRoles.Trim() != String.Empty)
@@ -156,17 +156,17 @@ else
     }
     %>obj.Fetch(dr)
             <%
-    if (isChildSelfLoaded && !IsCollectionType(Info.ObjectType))
+    if (isChildSelfLoaded && !TypeHelper.IsCollectionType(Info.ObjectType))
     {
         %>obj.FetchChildren(dr)
             <%
     }
-    if (Info.ObjectType != CslaObjectType.ReadOnlyObject && !IsCollectionType(Info.ObjectType))
+    if (Info.ObjectType != CslaObjectType.ReadOnlyObject && !TypeHelper.IsCollectionType(Info.ObjectType))
     {
         %>obj.MarkOld()
             <%
     }
-    if (Info.CheckRulesOnFetch && !Info.EditOnDemand && !IsCollectionType(Info.ObjectType))
+    if (Info.CheckRulesOnFetch && !Info.EditOnDemand && !TypeHelper.IsCollectionType(Info.ObjectType))
     {
         %>' check all object rules and property rules
             obj.BusinessRules.CheckRules()

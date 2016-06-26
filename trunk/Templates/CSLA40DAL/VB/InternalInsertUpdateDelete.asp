@@ -101,7 +101,7 @@ if (Info.GenerateDataPortalInsert)
             {
                 if (!usesDTO)
                 {
-                    strInsertPK = GetDataTypeGeneric(prop, TypeHelper.GetBackingFieldType(prop)) + " " + FormatCamel(prop.Name) + " = -1;" + Environment.NewLine + new string(' ', 20);
+                    strInsertPK = GetDataTypeGeneric(prop, TemplateHelper.GetBackingFieldType(prop)) + " " + FormatCamel(prop.Name) + " = -1;" + Environment.NewLine + new string(' ', 20);
                     strInsertParams += "out " + FormatCamel(prop.Name);
                 }
 
@@ -217,7 +217,7 @@ if (Info.GenerateDataPortalInsert)
     %>private void Child_Insert(<% if (parentType.Length > 0) { %><%= parentType %> parent<% } %>)
         {
             <%
-    if (UseSimpleAuditTrail(Info))
+    if (TemplateHelper.UseSimpleAuditTrail(Info))
     {
         %>SimpleAuditTrail();
             <%
@@ -425,7 +425,7 @@ if (Info.GenerateDataPortalUpdate)
 
             <%
     }
-    if (UseSimpleAuditTrail(Info))
+    if (TemplateHelper.UseSimpleAuditTrail(Info))
     {
         %>SimpleAuditTrail();
             <%
@@ -495,8 +495,8 @@ if (Info.GenerateDataPortalDelete)
             else
                 deleteIsFirst = false;
 
-            strDeleteComment += "/// <param name=\"" + FormatCamel(GetFkParameterNameForParentProperty(Info, parentProp)) + "\">The parent " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(GetFkParameterNameForParentProperty(Info, parentProp)) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
-            strDeleteCritParams += string.Concat(GetDataTypeGeneric(parentProp, parentProp.PropertyType), " ", FormatCamel(GetFkParameterNameForParentProperty(Info, parentProp)));
+            strDeleteComment += "/// <param name=\"" + FormatCamel(TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp)) + "\">The parent " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp)) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
+            strDeleteCritParams += string.Concat(GetDataTypeGeneric(parentProp, parentProp.PropertyType), " ", FormatCamel(TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp)));
             strDeleteInvokeParams += "parent." + parentProp.Name;
         }
     }
@@ -512,7 +512,7 @@ if (Info.GenerateDataPortalDelete)
             else
                 deleteIsFirst = false;
 
-            strDeleteCritParams += string.Concat(GetDataTypeGeneric(prop, TypeHelper.GetBackingFieldType(prop)), " ", FormatCamel(prop.Name));
+            strDeleteCritParams += string.Concat(GetDataTypeGeneric(prop, TemplateHelper.GetBackingFieldType(prop)), " ", FormatCamel(prop.Name));
             strDeleteInvokeParams += GetParameterSet(Info, prop);
             strDeleteComment += "/// <param name=\"" + FormatCamel(prop.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) + ".</param>" + System.Environment.NewLine + new string(' ', 8);
         }
@@ -541,7 +541,7 @@ if (Info.GenerateDataPortalDelete)
         %>private void Child_DeleteSelf(<% if (parentType.Length > 0 && !Info.ParentInsertOnly) { %><%= parentType %> parent<% } %>)
         {
                 <%
-    if (UseSimpleAuditTrail(Info))
+    if (TemplateHelper.UseSimpleAuditTrail(Info))
     {
         %>
             // audit the object, just in case soft delete is used on this object

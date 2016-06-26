@@ -56,7 +56,7 @@ if (Info.GenerateDataPortalUpdate)
                     updateIsFirst = false;
 
                 strUpdateComment += System.Environment.NewLine + new string(' ', 8) + "/// <param name=\"" + FormatCamel(prop.Name) + "\">The " + CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) + ".</param>";
-                strUpdateParams += string.Concat(GetDataTypeGeneric(prop, TypeHelper.GetBackingFieldType(prop)), " ", FormatCamel(prop.Name));
+                strUpdateParams += string.Concat(GetDataTypeGeneric(prop, TemplateHelper.GetBackingFieldType(prop)), " ", FormatCamel(prop.Name));
                 lastCriteria += FormatCamel(prop.Name);
             }
         }
@@ -100,19 +100,19 @@ if (Info.GenerateDataPortalUpdate)
             (prop.DataAccess != ValueProperty.DataAccessBehaviour.ReadOnly &&
             prop.DataAccess != ValueProperty.DataAccessBehaviour.CreateOnly)))
         {
-            TypeCodeEx propType = TypeHelper.GetBackingFieldType(prop);
-            string postfix = ".DbType = DbType." + GetDbType(prop);
+            TypeCodeEx propType = TemplateHelper.GetBackingFieldType(prop);
+            string postfix = ".DbType = DbType." + TemplateHelper.GetDbType(prop);
 
             if (AllowNull(prop) && propType == TypeCodeEx.Guid)
             {
                 %>
-                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %>.Equals(Guid.Empty) ? (object)DBNull.Value : <%= FormatCamel(prop.Name) %>).DbType = DbType.<%= GetDbType(prop) %>;
+                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %>.Equals(Guid.Empty) ? (object)DBNull.Value : <%= FormatCamel(prop.Name) %>).DbType = DbType.<%= TemplateHelper.GetDbType(prop) %>;
                     <%
             }
             else if (AllowNull(prop) && propType != TypeCodeEx.SmartDate)
             {
                 %>
-                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %> == null ? (object)DBNull.Value : <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %><%= TypeHelper.IsNullableType(propType) ? ".Value" :"" %>).DbType = DbType.<%= GetDbType(prop) %>;
+                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %> == null ? (object)DBNull.Value : <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %><%= TemplateHelper.IsNullableType(propType) ? ".Value" :"" %>).DbType = DbType.<%= TemplateHelper.GetDbType(prop) %>;
                     <%
             }
             else

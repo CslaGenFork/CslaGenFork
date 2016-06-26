@@ -26,7 +26,7 @@ if (!Info.UseCustomLoading && CurrentUnit.GenerationParams.SilverlightUsingServi
             %>
 
         ''' <summary>
-        ''' Loads a <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %><%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
+        ''' Loads a <see cref="<%= Info.ObjectName %>"/> <%= TypeHelper.IsCollectionType(Info.ObjectType) ? "collection" : "object" %><%= c.Properties.Count > 0 ? ", based on given criteria" : "" %>.
         ''' </summary>
         <%
             if (c.Properties.Count > 0)

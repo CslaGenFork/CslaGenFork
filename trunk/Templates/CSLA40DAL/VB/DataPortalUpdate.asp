@@ -135,7 +135,7 @@ if (Info.GenerateDataPortalUpdate)
         %>protected override void DataPortal_Update()
         {
             <%
-    if (UseSimpleAuditTrail(Info))
+    if (TemplateHelper.UseSimpleAuditTrail(Info))
     {
         %>SimpleAuditTrail();
             <%

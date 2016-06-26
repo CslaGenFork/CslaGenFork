@@ -12,7 +12,7 @@ foreach (Criteria c in Info.CriteriaObjects)
 }
 bool createRunLocalSilverlight = CurrentUnit.GenerationParams.SilverlightUsingServices && (createRunLocal || createNonLocal) && !useUnitOfWorkCreator;
 if (parentInfo != null)
-    isCollection = IsCollectionType(parentInfo.ObjectType);
+    isCollection = TypeHelper.IsCollectionType(parentInfo.ObjectType);
 
 if (UseBoth())
 {

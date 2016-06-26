@@ -12,10 +12,10 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
                 %>
 
         /// <summary>
-        /// Factory method. Loads a <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %>, based on given parameters.
+        /// Factory method. Loads a <see cref="<%= Info.ObjectName %>"/> <%= TypeHelper.IsCollectionType(Info.ObjectType) ? "collection" : "object" %>, based on given parameters.
         /// </summary>
         /// <param name="crit">The fetch criteria.</param>
-        /// <returns>A reference to the fetched <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %>.</returns>
+        /// <returns>A reference to the fetched <see cref="<%= Info.ObjectName %>"/> <%= TypeHelper.IsCollectionType(Info.ObjectType) ? "collection" : "object" %>.</returns>
         public static <%= Info.ObjectName %> Get<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>(<%= c.Name %> crit)
         {
             return DataPortal.Fetch<<%= Info.ObjectName %>>(crit);
@@ -25,7 +25,7 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
             %>
 
         /// <summary>
-        /// Factory method. Loads a <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %><%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
+        /// Factory method. Loads a <see cref="<%= Info.ObjectName %>"/> <%= TypeHelper.IsCollectionType(Info.ObjectType) ? "collection" : "object" %><%= c.Properties.Count > 0 ? ", based on given parameters" : "" %>.
         /// </summary>
         <%
             string strGetParams = string.Empty;
@@ -57,7 +57,7 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
                 }
             }
             %>
-        /// <returns>A reference to the fetched <see cref="<%= Info.ObjectName %>"/> <%= IsCollectionType(Info.ObjectType) ? "collection" : "object" %>.</returns>
+        /// <returns>A reference to the fetched <see cref="<%= Info.ObjectName %>"/> <%= TypeHelper.IsCollectionType(Info.ObjectType) ? "collection" : "object" %>.</returns>
         <%= Info.ParentType == string.Empty ? "public" : "internal" %> static <%= Info.ObjectName %> Get<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>(<%= strGetParams %>)
         {
             <%

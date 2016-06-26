@@ -158,7 +158,7 @@ if (Info.GenerateDataPortalDelete)
             %>
         {
             <%
-            if (UseSimpleAuditTrail(Info))
+            if (TemplateHelper.UseSimpleAuditTrail(Info))
             {
                 %>// audit the object, just in case soft delete is used on this object
             SimpleAuditTrail();

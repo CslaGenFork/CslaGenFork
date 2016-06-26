@@ -8,7 +8,7 @@ foreach (IHaveBusinessRules rulableProperty in validateAllRulesProperties)
 {
     if (Info.ObjectType != CslaObjectType.UnitOfWork &&
         Info.ObjectType != CslaObjectType.NameValueList &&
-        !IsCollectionType(Info.ObjectType) &&
+        !TypeHelper.IsCollectionType(Info.ObjectType) &&
         rulableProperty.BusinessRules.Count > 0)
     {
         validateRuleRegion = true;
@@ -111,7 +111,7 @@ if (validateAuthRegion)
 // Validate Object Business Rules
 if (Info.ObjectType != CslaObjectType.UnitOfWork &&
     Info.ObjectType != CslaObjectType.NameValueList &&
-    !IsCollectionType(Info.ObjectType))
+    !TypeHelper.IsCollectionType(Info.ObjectType))
 {
     foreach (var rule in Info.BusinessRules)
     {

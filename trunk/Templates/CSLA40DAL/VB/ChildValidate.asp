@@ -6,7 +6,7 @@ foreach (ChildProperty childProperty in Info.AllChildProperties)
     bool useIsLoadedProperty = false;
     if (parentInfo != null)
     {
-        isItem = IsCollectionType(parentInfo.ObjectType);
+        isItem = TypeHelper.IsCollectionType(parentInfo.ObjectType);
         if (!isItem)
             useIsLoadedProperty = CurrentUnit.GenerationParams.ReportObjectNotFound == ReportObjectNotFound.IsLoadedProperty;
         isParentRootCollection = (parentInfo.ObjectType == CslaObjectType.EditableRootCollection) ||
@@ -19,7 +19,7 @@ foreach (ChildProperty childProperty in Info.AllChildProperties)
             childProperty.LazyLoad)
         {
             CslaObjectInfo childInfo = FindChildInfo(Info, childProperty.TypeName);
-            if (IsCollectionType(childInfo.ObjectType))
+            if (TypeHelper.IsCollectionType(childInfo.ObjectType))
             {
                 Errors.Append(Info.ObjectName + " child property " + childProperty.Name + " is LazyLoad; Declaration Mode must be \"ClassicProperty\" or \"Managed\"." + Environment.NewLine);
             }
@@ -31,14 +31,14 @@ foreach (ChildProperty childProperty in Info.AllChildProperties)
         childProperty.DeclarationMode != PropertyDeclaration.Managed)
     {
         CslaObjectInfo childInfo = FindChildInfo(Info, childProperty.TypeName);
-        if (IsCollectionType(childInfo.ObjectType))
+        if (TypeHelper.IsCollectionType(childInfo.ObjectType))
         {
             Errors.Append(Info.ObjectName + " child property " + childProperty.Name + " Declaration Mode must be \"ClassicProperty\", \"AutoProperty\" or \"Managed\"." + Environment.NewLine);
         }
     }
 
     // is it non-root?
-    if (IsNotRootType(Info))
+    if (TypeHelper.IsNotRootType(Info))
     {
         /*if (childProperty.LoadingScheme != LoadingScheme.SelfLoad)
         {

@@ -3,7 +3,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
 {
     string fetchString = string.Empty;
     string methodFetchString = string.Empty;
-    if (IsNotRootType(Info) && !UseChildFactoryHelper)
+    if (TypeHelper.IsNotRootType(Info) && !UseChildFactoryHelper)
         methodFetchString = "Child_";
     if (Info.ObjectType == CslaObjectType.DynamicEditableRoot && !UseChildFactoryHelper)
         methodFetchString = "DataPortal_";
@@ -48,7 +48,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
             }
         }
 
-        bool isRoot = IsRootType(Info);
+        bool isRoot = TypeHelper.IsRootType(Info);
         bool isRootLoader = (ancestorLoaderLevel == 0 && !ancestorIsCollection) || (ancestorLoaderLevel == 1 && ancestorIsCollection);
 
         // parent loading field
@@ -90,7 +90,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
                     if (childProp.LoadingScheme == LoadingScheme.ParentLoad)
                     {
                         string internalCreateString = string.Empty;
-                        if (IsEditableType(_child.ObjectType))
+                        if (TypeHelper.IsEditableType(_child.ObjectType))
                         {
                             if (UseChildFactoryHelper)
                                 internalCreateString = FormatPascal(childProp.TypeName) + ".New" + FormatPascal(childProp.TypeName);
@@ -187,7 +187,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
                             else
                                 fetchString = "DataPortal.FetchChild<" + FormatPascal(childProp.TypeName) + ">";
 
-                            if (IsCollectionType(_child.ObjectType))
+                            if (TypeHelper.IsCollectionType(_child.ObjectType))
                             {
                                 if (ancestorLoaderLevel == 1 && ancestorIsCollection)
                                 {
@@ -431,7 +431,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
             <%= bpcSpacer %>dr.NextResult();
 <%
                             }
-                            if (IsCollectionType(_child.ObjectType))
+                            if (TypeHelper.IsCollectionType(_child.ObjectType))
                             {
                                 %>
             <%= bpcSpacer %>var <%= FormatCamel(childProp.TypeName) %> = <%= fetchString %>(<%= usesDTO ? "dal." + FormatPascal(childProp.TypeName) : "dr" %>);
