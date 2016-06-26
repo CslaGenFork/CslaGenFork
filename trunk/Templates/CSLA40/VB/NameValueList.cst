@@ -69,7 +69,6 @@ else
         %>NameValueListBase(Of <%= GetDataTypeGeneric(valueProp, valueProp.PropertyType) %>, <%= GetDataTypeGeneric(nameProp, nameProp.PropertyType) %>)<!-- #include file="Interfaces.asp" --><%
     }
     %>
-    {
 
         <%
     if (Info.SimpleCacheOptions != SimpleCacheResults.None)
