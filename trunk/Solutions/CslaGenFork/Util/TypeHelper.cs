@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Text;
 using CslaGenerator.Metadata;
 
 namespace CslaGenerator.Util
@@ -10,18 +11,7 @@ namespace CslaGenerator.Util
     /// </summary>
     public static class TypeHelper
     {
-        public static bool IsStringType(DbType dbType)
-        {
-            if (dbType == DbType.String || dbType == DbType.StringFixedLength ||
-                dbType == DbType.AnsiString || dbType == DbType.AnsiStringFixedLength)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        public static TypeCodeEx GetTypeCodeEx(Type type)
+        public static TypeCodeEx GetTypeCodeEx(this Type type)
         {
             if (type == null)
                 return TypeCodeEx.Empty;
@@ -79,143 +69,7 @@ namespace CslaGenerator.Util
             return TypeCodeEx.Object;
         }
 
-        public static SqlDbType GetSqlDbType(TypeCodeEx type)
-        {
-            switch (type)
-            {
-                case TypeCodeEx.Boolean:
-                    return SqlDbType.Bit;
-                case TypeCodeEx.Byte:
-                    return SqlDbType.TinyInt;
-                case TypeCodeEx.ByteArray:
-                    return SqlDbType.Image;
-                case TypeCodeEx.Char:
-                    return SqlDbType.Char;
-                case TypeCodeEx.TimeSpan:
-                    return SqlDbType.Time;
-                case TypeCodeEx.DateTimeOffset:
-                    return SqlDbType.DateTimeOffset;
-                case TypeCodeEx.SmartDate:
-                case TypeCodeEx.DateTime:
-                    return SqlDbType.DateTime;
-                case TypeCodeEx.Decimal:
-                    return SqlDbType.Decimal;
-                case TypeCodeEx.Double:
-                    return SqlDbType.Float;
-                case TypeCodeEx.Guid:
-                    return SqlDbType.UniqueIdentifier;
-                case TypeCodeEx.Int16:
-                    return SqlDbType.SmallInt;
-                case TypeCodeEx.Int32:
-                    return SqlDbType.Int;
-                case TypeCodeEx.Int64:
-                    return SqlDbType.BigInt;
-                case TypeCodeEx.SByte:
-                    return SqlDbType.TinyInt;
-                case TypeCodeEx.Single:
-                    return SqlDbType.Real;
-                case TypeCodeEx.String:
-                    return SqlDbType.VarChar;
-                case TypeCodeEx.UInt16:
-                    return SqlDbType.Int;
-                case TypeCodeEx.UInt32:
-                    return SqlDbType.BigInt;
-                case TypeCodeEx.UInt64:
-                    return SqlDbType.BigInt;
-                case TypeCodeEx.Object:
-                    return SqlDbType.Image;
-                default:
-                    return SqlDbType.VarChar;
-            }
-        }
-
-        public static DbType GetDbType(TypeCodeEx type)
-        {
-            switch (type)
-            {
-                case TypeCodeEx.Boolean:
-                    return DbType.Boolean;
-                case TypeCodeEx.Byte:
-                    return DbType.Byte;
-                case TypeCodeEx.ByteArray:
-                    return DbType.Binary;
-                case TypeCodeEx.Char:
-                    return DbType.StringFixedLength;
-                case TypeCodeEx.TimeSpan:
-                    return DbType.Time;
-                case TypeCodeEx.DateTimeOffset:
-                    return DbType.DateTimeOffset;
-                case TypeCodeEx.SmartDate:
-                case TypeCodeEx.DateTime:
-                    return DbType.DateTime;
-                case TypeCodeEx.Decimal:
-                    return DbType.Decimal;
-                case TypeCodeEx.Double:
-                    return DbType.Double;
-                case TypeCodeEx.Guid:
-                    return DbType.Guid;
-                case TypeCodeEx.Int16:
-                    return DbType.Int16;
-                case TypeCodeEx.Int32:
-                    return DbType.Int32;
-                case TypeCodeEx.Int64:
-                    return DbType.Int64;
-                case TypeCodeEx.SByte:
-                    return DbType.SByte;
-                case TypeCodeEx.Single:
-                    return DbType.Single;
-                case TypeCodeEx.String:
-                    return DbType.String;
-                case TypeCodeEx.UInt16:
-                    return DbType.UInt16;
-                case TypeCodeEx.UInt32:
-                    return DbType.UInt32;
-                case TypeCodeEx.UInt64:
-                    return DbType.UInt64;
-                case TypeCodeEx.Object:
-                    return DbType.Binary;
-                default:
-                    return DbType.String;
-            }
-        }
-
-        public static bool IsNullableType(TypeCodeEx type)
-        {
-            switch (type)
-            {
-                case TypeCodeEx.Boolean:
-                case TypeCodeEx.Byte:
-                case TypeCodeEx.Char:
-                case TypeCodeEx.Decimal:
-                case TypeCodeEx.Double:
-                case TypeCodeEx.Guid:
-                case TypeCodeEx.Int16:
-                case TypeCodeEx.Int32:
-                case TypeCodeEx.Int64:
-                case TypeCodeEx.SByte:
-                case TypeCodeEx.Single:
-                case TypeCodeEx.UInt16:
-                case TypeCodeEx.UInt32:
-                case TypeCodeEx.UInt64:
-                case TypeCodeEx.TimeSpan:
-                case TypeCodeEx.DateTimeOffset:
-                case TypeCodeEx.DateTime:
-                    return true;
-
-                /*
-                 * These are not nullable:
-                case TypeCodeEx.ByteArray:
-                case TypeCodeEx.SmartDate:
-                case TypeCodeEx.DBNull:
-                case TypeCodeEx.Empty:
-                case TypeCodeEx.Object:
-                case TypeCodeEx.String:
-                 */
-            }
-            return false;
-        }
-
-        public static bool IsNullAllowedOnType(TypeCodeEx type)
+        public static bool IsNullAllowedOnType(this TypeCodeEx type)
         {
             switch (type)
             {
@@ -249,16 +103,6 @@ namespace CslaGenerator.Util
                  */
             }
             return false;
-        }
-
-        public static TypeCodeEx GetBackingFieldType(ValueProperty prop)
-        {
-            if (prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion ||
-                prop.DeclarationMode == PropertyDeclaration.UnmanagedWithTypeConversion ||
-                prop.DeclarationMode == PropertyDeclaration.ClassicPropertyWithTypeConversion)
-                return prop.BackingFieldType;
-
-            return prop.PropertyType;
         }
 
         public static bool IsCollectionType(this CslaObjectType cslaType)
@@ -365,7 +209,7 @@ namespace CslaGenerator.Util
                 cslaType == CslaObjectType.ReadOnlyObject)
             {
                 var parent = info.Parent.CslaObjects.Find(info.ParentType);
-                if (parent != null && IsCollectionType(parent.ObjectType))
+                if (parent != null && parent.ObjectType.IsCollectionType())
                     return true;
             }
 
@@ -374,12 +218,12 @@ namespace CslaGenerator.Util
 
         public static bool IsRootOrRootItem(this CslaObjectInfo info)
         {
-            bool result = !IsChildType(info);
+            bool result = !info.IsChildType();
             if (!result)
             {
                 var parentInfo = info.Parent.CslaObjects.Find(info.ParentType);
                 if (parentInfo != null)
-                    result = !IsChildType(parentInfo);
+                    result = !parentInfo.IsChildType();
             }
             return result;
         }
@@ -393,7 +237,7 @@ namespace CslaGenerator.Util
 
         public static bool CanHaveParentProperties(this CslaObjectInfo info)
         {
-            if (IsCollectionType(info.ObjectType))
+            if (info.ObjectType.IsCollectionType())
                 return false; // Object is a collection and thus has no Properties
 
             if (info.ObjectType == CslaObjectType.EditableRoot ||
@@ -405,7 +249,7 @@ namespace CslaGenerator.Util
                 return info.ObjectType == CslaObjectType.ReadOnlyObject;
             // Object is ReadOnly and might have ParentProperties
 
-            if (IsCollectionType(parent.ObjectType)) // ParentType is a collection and thus has no Properties
+            if (parent.ObjectType.IsCollectionType()) // ParentType is a collection and thus has no Properties
             {
                 if (parent.ObjectType == CslaObjectType.EditableRootCollection ||
                     parent.ObjectType == CslaObjectType.DynamicEditableRootCollection ||
@@ -415,7 +259,7 @@ namespace CslaGenerator.Util
                 return true; // There should be a grand-parent with properties
             }
 
-            if (IsObjectType(parent.ObjectType))
+            if (parent.ObjectType.IsObjectType())
                 return true; // ParentType exists and has properties
 
             return false;
@@ -511,5 +355,174 @@ namespace CslaGenerator.Util
 
             return result;
         }
+
+        public static string AddBeforeUpperCase(this string text)
+        {
+            //http://stackoverflow.com/questions/272633/add-spaces-before-capital-letters
+
+            if (string.IsNullOrWhiteSpace(text))
+                return string.Empty;
+
+            var newText = new StringBuilder(text.Length*2);
+            newText.Append(text[0]);
+            for (var i = 1; i < text.Length; i++)
+            {
+                var currentUpper = char.IsUpper(text[i]);
+                var prevUpper = char.IsUpper(text[i - 1]);
+                var nextUpper = (text.Length > i + 1)
+                    ? char.IsUpper(text[i + 1]) || char.IsWhiteSpace(text[i + 1])
+                    : prevUpper;
+                var spaceExists = char.IsWhiteSpace(text[i - 1]);
+                if (currentUpper && !spaceExists && (!nextUpper || !prevUpper))
+                    newText.Append(' ');
+
+                newText.Append(text[i]);
+            }
+            return newText.ToString();
+        }
+
+        #region CslaOjectType
+
+        public static bool IsEditableRoot(this CslaObjectType cslaType)
+        {
+            return cslaType == CslaObjectType.EditableRoot;
+        }
+
+        public static bool IsEditableRoot(this CslaObjectInfo info)
+        {
+            return info.ObjectType == CslaObjectType.EditableRoot;
+        }
+
+        public static bool IsEditableChild(this CslaObjectType cslaType)
+        {
+            return cslaType == CslaObjectType.EditableChild;
+        }
+
+        public static bool IsEditableChild(this CslaObjectInfo info)
+        {
+            return info.ObjectType == CslaObjectType.EditableChild;
+        }
+
+        public static bool IsEditableSwitchable(this CslaObjectType cslaType)
+        {
+            return cslaType == CslaObjectType.EditableSwitchable;
+        }
+
+        public static bool IsEditableSwitchable(this CslaObjectInfo info)
+        {
+            return info.ObjectType == CslaObjectType.EditableSwitchable;
+        }
+
+        public static bool IsDynamicEditableRoot(this CslaObjectType cslaType)
+        {
+            return cslaType == CslaObjectType.DynamicEditableRoot;
+        }
+
+        public static bool IsDynamicEditableRoot(this CslaObjectInfo info)
+        {
+            return info.ObjectType == CslaObjectType.DynamicEditableRoot;
+        }
+
+        public static bool IsEditableRootCollection(this CslaObjectType cslaType)
+        {
+            return cslaType == CslaObjectType.EditableRootCollection;
+        }
+
+        public static bool IsEditableRootCollection(this CslaObjectInfo info)
+        {
+            return info.ObjectType == CslaObjectType.EditableRootCollection;
+        }
+
+        public static bool IsDynamicEditableRootCollection(this CslaObjectType cslaType)
+        {
+            return cslaType == CslaObjectType.DynamicEditableRootCollection;
+        }
+
+        public static bool IsDynamicEditableRootCollection(this CslaObjectInfo info)
+        {
+            return info.ObjectType == CslaObjectType.DynamicEditableRootCollection;
+        }
+
+        public static bool IsEditableChildCollection(this CslaObjectType cslaType)
+        {
+            return cslaType == CslaObjectType.EditableChildCollection;
+        }
+
+        public static bool IsEditableChildCollection(this CslaObjectInfo info)
+        {
+            return info.ObjectType == CslaObjectType.EditableChildCollection;
+        }
+
+        public static bool IsReadOnlyObject(this CslaObjectType cslaType)
+        {
+            return cslaType == CslaObjectType.ReadOnlyObject;
+        }
+
+        public static bool IsReadOnlyObject(this CslaObjectInfo info)
+        {
+            return info.ObjectType == CslaObjectType.ReadOnlyObject;
+        }
+
+        public static bool IsReadOnlyCollection(this CslaObjectType cslaType)
+        {
+            return cslaType == CslaObjectType.ReadOnlyCollection;
+        }
+
+        public static bool IsReadOnlyCollection(this CslaObjectInfo info)
+        {
+            return info.ObjectType == CslaObjectType.ReadOnlyCollection;
+        }
+
+        public static bool IsNameValueList(this CslaObjectType cslaType)
+        {
+            return cslaType == CslaObjectType.NameValueList;
+        }
+
+        public static bool IsNameValueList(this CslaObjectInfo info)
+        {
+            return info.ObjectType == CslaObjectType.NameValueList;
+        }
+
+        public static bool IsUnitOfWork(this CslaObjectType cslaType)
+        {
+            return cslaType == CslaObjectType.UnitOfWork;
+        }
+
+        public static bool IsUnitOfWork(this CslaObjectInfo info)
+        {
+            return info.ObjectType == CslaObjectType.UnitOfWork;
+        }
+
+        public static bool IsCriteriaClass(this CslaObjectType cslaType)
+        {
+            return cslaType == CslaObjectType.CriteriaClass;
+        }
+
+        public static bool IsCriteriaClass(this CslaObjectInfo info)
+        {
+            return info.ObjectType == CslaObjectType.CriteriaClass;
+        }
+
+        public static bool IsBaseClass(this CslaObjectType cslaType)
+        {
+            return cslaType == CslaObjectType.BaseClass;
+        }
+
+        public static bool IsBaseClass(this CslaObjectInfo info)
+        {
+            return info.ObjectType == CslaObjectType.BaseClass;
+        }
+
+        public static bool IsPlaceHolder(this CslaObjectType cslaType)
+        {
+            return cslaType == CslaObjectType.PlaceHolder;
+        }
+
+        public static bool IsPlaceHolder(this CslaObjectInfo info)
+        {
+            return info.ObjectType == CslaObjectType.PlaceHolder;
+        }
+
+        #endregion
     }
 }

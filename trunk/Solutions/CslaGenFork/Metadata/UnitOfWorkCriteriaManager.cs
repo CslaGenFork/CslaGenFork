@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using CslaGenerator.CodeGen;
+using CslaGenerator.Util;
 
 namespace CslaGenerator.Metadata
 {
@@ -274,7 +275,7 @@ namespace CslaGenerator.Metadata
                 foreach (var crit in criteriaCollection)
                 {
                     if (function == UnitOfWorkFunction.Creator && (!crit.IsCreator && (crit.IsGetter &&
-                        CslaTemplateHelperCS.IsEditableType(crit.ParentObject.ObjectType))))
+                        crit.ParentObject.ObjectType.IsEditableType())))
                         break;
                     if (function == UnitOfWorkFunction.Getter && !crit.IsGetter)
                         break;
@@ -285,7 +286,7 @@ namespace CslaGenerator.Metadata
                     elementCriteria.ParentObject = crit.ParentObject.ObjectName;
                     elementCriteria.PropertyName = propertyNameCache[elementCriteria.ParentObject];
                     elementCriteria.DeclarationMode = propertyDeclarationCache[elementCriteria.ParentObject];
-                    elementCriteria.IsGetter = !CslaTemplateHelperCS.IsEditableType(crit.ParentObject.ObjectType);
+                    elementCriteria.IsGetter = !crit.ParentObject.ObjectType.IsEditableType();
                     if (crit.Properties.Count == 0)
                     {
                         uowCriteria.ElementCriteriaList.Add(elementCriteria);

@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Text;
 using System.Windows.Forms;
 using CslaGenerator.CodeGen;
+using CslaGenerator.Design;
 using CslaGenerator.Metadata;
 using CslaGenerator.Util;
 using DBSchemaInfo.Base;
@@ -73,7 +74,7 @@ namespace CslaGenerator.Controls
         private CslaGeneratorUnit _currentUnit;
         private CslaObjectInfoCollection _objectsAdded = new CslaObjectInfoCollection();
         private ObjectFactory _currentFactory;
-        private string _cn = string.Empty;
+        private string _cn;
         private ICatalog _catalog;
         bool _isDBItemSelected;
         TreeNode _currentTreeNode;
@@ -93,7 +94,7 @@ namespace CslaGenerator.Controls
             // hookup event handler for treeview mouseup
             dbTreeView.TreeViewMouseUp += dbTreeView1_TreeViewMouseUp;
             // set default width
-            dbTreeView.Width = (int) ((double) 0.5*(double) Width);
+            dbTreeView.Width = (int) (0.5*Width);
             copySoftDeleteToolStripMenuItem.Checked = false;
         }
 
@@ -101,7 +102,7 @@ namespace CslaGenerator.Controls
         {
             // keep treeview and listbox equal widths of 50% of panel body
             // when panel resized
-            dbTreeView.Width = (int) ((double) 0.5*(double) Width);
+            dbTreeView.Width = (int) (0.5*Width);
         }
 
         #region Properties
@@ -170,7 +171,7 @@ namespace CslaGenerator.Controls
         {
             get
             {
-                return !string.IsNullOrEmpty(_currentUnit.Params.SpBoolSoftDeleteColumn) &&
+                return !String.IsNullOrEmpty(_currentUnit.Params.SpBoolSoftDeleteColumn) &&
                        !copySoftDeleteToolStripMenuItem.Checked;
             }
         }
@@ -203,7 +204,7 @@ namespace CslaGenerator.Controls
             {
                 if (cnpart.Contains("initial catalog=") || cnpart.Contains("database="))
                 {
-                    catalogName = cnpart.Substring(cnpart.IndexOf("=") + 1).Trim();
+                    catalogName = cnpart.Substring(cnpart.IndexOf("=", StringComparison.InvariantCulture) + 1).Trim();
                 }
             }
 
@@ -212,11 +213,14 @@ namespace CslaGenerator.Controls
             var start = DateTime.Now;
             _catalog.LoadStaticObjects();
             var end = DateTime.Now;
-            OutputWindow.Current.AddOutputInfo(string.Format("Loaded {0} tables and {1} views in {2:0.00} seconds...", _catalog.Tables.Count, _catalog.Views.Count, end.Subtract(start).TotalSeconds));
+            OutputWindow.Current.AddOutputInfo(String.Format("Loaded {0} tables and {1} views in {2:0.00} seconds...",
+                _catalog.Tables.Count, _catalog.Views.Count, end.Subtract(start).TotalSeconds));
             start = DateTime.Now;
             _catalog.LoadProcedures();
             end = DateTime.Now;
-            OutputWindow.Current.AddOutputInfo(string.Format("Found {0} sprocs in {1:0.00} seconds...", _catalog.Procedures.Count, end.Subtract(start).TotalSeconds), 2);
+            OutputWindow.Current.AddOutputInfo(
+                String.Format("Found {0} sprocs in {1:0.00} seconds...", _catalog.Procedures.Count,
+                    end.Subtract(start).TotalSeconds), 2);
             GeneratorController.Current.Tables = _catalog.Tables.Count;
             GeneratorController.Current.Views = _catalog.Views.Count;
             GeneratorController.Current.Sprocs = _catalog.Procedures.Count;
@@ -226,7 +230,7 @@ namespace CslaGenerator.Controls
             foreach (SprocName sp in requiredSprocs)
             {
                 var sb = new StringBuilder();
-                if (!string.IsNullOrEmpty(sp.Schema))
+                if (!String.IsNullOrEmpty(sp.Schema))
                     sb.Append(sp.Schema).Append(".");
                 sb.Append(sp.Name);
                 sb.Append(": ");
@@ -291,8 +295,8 @@ namespace CslaGenerator.Controls
             /// <param name="name"></param>
             public SprocName(string schema, string name)
             {
-                Schema = schema == null ? string.Empty : schema;
-                Name = name == null ? string.Empty : name;
+                Schema = schema == null ? String.Empty : schema;
+                Name = name == null ? String.Empty : name;
             }
 
             #region IEquatable<SprocName> Members
@@ -386,12 +390,12 @@ namespace CslaGenerator.Controls
             SchemaContextMenuStrip_Opening();
         }
 
-        private int GetCurrentResultSetIndex()
+        /*private int GetCurrentResultSetIndex()
         {
             // this is a hack because the CommandResultColumnSchema does not store a reference to its  CommandResult
             //return frmGenerator.TreeViewSchema.SelectedNode.Index;
             return TreeViewSchema.SelectedNode.Index;
-        }
+        }*/
 
         private void SetDbBindColumn(IColumnInfo p, DbBindColumn dbc)
         {
@@ -566,9 +570,11 @@ namespace CslaGenerator.Controls
                 if (_currentTreeNode.Tag != null)
                 {
                     if (_currentTreeNode.Tag is SqlTableInfo)
-                        SetColumnsContextMenu((_currentTreeNode.Tag as SqlTableInfo).Type == ResultType.Table, rowSelected);
+                        SetColumnsContextMenu((_currentTreeNode.Tag as SqlTableInfo).Type == ResultType.Table,
+                            rowSelected);
                     else if (_currentTreeNode.Tag is SqlViewInfo)
-                        SetColumnsContextMenu((_currentTreeNode.Tag as SqlViewInfo).Type == ResultType.Table, rowSelected);
+                        SetColumnsContextMenu((_currentTreeNode.Tag as SqlViewInfo).Type == ResultType.Table,
+                            rowSelected);
                     else if (_currentTreeNode.Tag is SqlResultSet)
                         SetColumnsContextMenu(true, rowSelected);
                 }
@@ -592,7 +598,8 @@ namespace CslaGenerator.Controls
                     mnu.Tag = prop.Name;
                     addInheritedValuePropertyToolStripMenuItem.DropDownItems.Add(mnu);
                 }
-            addInheritedValuePropertyToolStripMenuItem.Enabled = (addInheritedValuePropertyToolStripMenuItem.DropDownItems.Count > 0);
+            addInheritedValuePropertyToolStripMenuItem.Enabled =
+                (addInheritedValuePropertyToolStripMenuItem.DropDownItems.Count > 0);
         }
 
         private void SetColumnsContextMenu(bool enabled, bool rowSelected)
@@ -604,7 +611,7 @@ namespace CslaGenerator.Controls
                 return;
 
             addToCslaObjectToolStripMenuItem.Enabled =
-                enabled && !CslaTemplateHelperCS.IsCollectionType(CurrentCslaObject.ObjectType);
+                enabled && !CurrentCslaObject.ObjectType.IsCollectionType();
             addInheritedValuePropertyToolStripMenuItem.Enabled = enabled;
             createEditableToolStripMenuItem.Enabled = enabled;
             createDynamicEditableRootCollectionToolStripMenuItem.Enabled = enabled;
@@ -666,7 +673,8 @@ namespace CslaGenerator.Controls
                 var parent = _currentUnit.CslaObjects.Find(parentName);
                 if (parent == null)
                 {
-                    MessageBox.Show(@"Parent type not found", @"CslaGenerator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(@"Parent type not found", @"CslaGenerator", MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
                     return;
                 }
                 NewObject(CslaObjectType.EditableChild, objectName, parentName);
@@ -702,7 +710,8 @@ namespace CslaGenerator.Controls
                 var parent = _currentUnit.CslaObjects.Find(parentName);
                 if (parent == null)
                 {
-                    MessageBox.Show(@"Parent type not found", @"CslaGenerator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(@"Parent type not found", @"CslaGenerator", MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
                     return;
                 }
                 NewCollection(CslaObjectType.EditableChildCollection, collectionName, itemName, parentName);
@@ -749,7 +758,8 @@ namespace CslaGenerator.Controls
                 var parent = _currentUnit.CslaObjects.Find(parentName);
                 if (parent == null)
                 {
-                    MessageBox.Show(@"Parent type not found", @"CslaGenerator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(@"Parent type not found", @"CslaGenerator", MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
                     return;
                 }
                 NewObject(CslaObjectType.ReadOnlyObject, objectName, parentName);
@@ -804,7 +814,8 @@ namespace CslaGenerator.Controls
                 var parent = _currentUnit.CslaObjects.Find(parentName);
                 if (parent == null)
                 {
-                    MessageBox.Show(@"Parent type not found", @"CslaGenerator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(@"Parent type not found", @"CslaGenerator", MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
                     return;
                 }
                 NewCollection(CslaObjectType.ReadOnlyCollection, collectionName, itemName, parentName);
@@ -866,12 +877,13 @@ namespace CslaGenerator.Controls
 
         private void newCriteriaToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var colNames = string.Empty;
+            var colNames = String.Empty;
             var cols = new List<CriteriaProperty>();
             for (var i = 0; i < SelectedColumns.Count; i++)
             {
                 var info = (IColumnInfo) dbColumns.ListColumns.SelectedItems[i];
-                var prop = new CriteriaProperty(info.ColumnName, TypeHelper.GetTypeCodeEx(info.ManagedType), info.ColumnName);
+                var prop = new CriteriaProperty(info.ColumnName, info.ManagedType.GetTypeCodeEx(),
+                    info.ColumnName);
                 SetDbBindColumn(info, prop.DbBindColumn);
                 cols.Add(prop);
                 colNames += prop.Name;
@@ -895,7 +907,7 @@ namespace CslaGenerator.Controls
             c.Name = name;
             c.Properties.AddRange(cols);
             c.SetSprocNames();
-            using (var frm = new Design.ObjectEditorForm())
+            using (var frm = new ObjectEditorForm())
             {
                 frm.ObjectToEdit = c;
                 frm.StartPosition = FormStartPosition.CenterScreen;
@@ -920,7 +932,7 @@ namespace CslaGenerator.Controls
             obj.ObjectName = ParseObjectName(name);
             obj.ParentType = parent;
             obj.ItemType = item;
-            var getSprocName = string.Empty;
+            var getSprocName = String.Empty;
             if (_currentTreeNode.Tag is SqlResultSet)
                 getSprocName = (_currentTreeNode.Parent.Tag as SqlStoredProcedureInfo).ObjectName;
             _currentFactory.AddDefaultCriteriaAndParameters(obj, getSprocName);
@@ -943,14 +955,14 @@ namespace CslaGenerator.Controls
         {
             if (name != null)
             {
-                int idx = name.LastIndexOf(".");
+                int idx = name.LastIndexOf(".", StringComparison.InvariantCulture);
                 idx++;
                 if (idx > 0)
                     return name.Substring(idx);
 
                 return name;
             }
-            return string.Empty;
+            return String.Empty;
         }
 
         private void NewObject(CslaObjectType type, string name, string parent)
@@ -960,7 +972,7 @@ namespace CslaGenerator.Controls
             var obj = new CslaObjectInfo(_currentUnit);
             obj.ObjectType = type;
             // ObjectType must be set before ObjectName so Abc_ProcedureName are filled correctly
-            if (_currentTreeNode.Tag is SqlResultSet && parent == string.Empty)
+            if (_currentTreeNode.Tag is SqlResultSet && parent == String.Empty)
                 obj.ObjectName = (_currentTreeNode.Parent.Tag as SqlStoredProcedureInfo).ObjectName;
             else
                 obj.ObjectName = ParseObjectName(name);
@@ -986,10 +998,10 @@ namespace CslaGenerator.Controls
         private void AddParentProperties(CslaObjectInfo parent, string parentProperties)
         {
             var propList = new ArrayList();
-            if (string.IsNullOrEmpty(parentProperties))
+            if (String.IsNullOrEmpty(parentProperties))
             {
                 OutputWindow.Current.AddOutputInfo(
-                    string.Format(
+                    String.Format(
                         "No Parent Properties specified for {0}. All parent Primary Key properties will be used.\r\n",
                         CurrentCslaObject.ObjectName));
 
@@ -1018,7 +1030,7 @@ namespace CslaGenerator.Controls
             if (sb.Length > 0)
             {
                 OutputWindow.Current.AddOutputInfo(
-                    string.Format("Successfully added the following Parent Properties to {0}:",
+                    String.Format("Successfully added the following Parent Properties to {0}:",
                         CurrentCslaObject.ObjectName));
                 OutputWindow.Current.AddOutputInfo(sb.ToString());
             }
@@ -1042,7 +1054,7 @@ namespace CslaGenerator.Controls
 
             var dbObject = GetCurrentDBObject();
             var resultSet = GetCurrentResultSet();
-            var getSprocName = string.Empty;
+            var getSprocName = String.Empty;
             if (_currentTreeNode.Tag is SqlResultSet)
                 getSprocName = (_currentTreeNode.Parent.Tag as SqlStoredProcedureInfo).ObjectName;
             _currentFactory.AddProperties(CurrentCslaObject, dbObject, resultSet, columns, true, false, getSprocName);
@@ -1071,10 +1083,10 @@ namespace CslaGenerator.Controls
                 var column = (IColumnInfo) dbColumns.ListColumns.SelectedItems[index];
                 allColumns.Add(column);
                 hasPrimaryKey = hasPrimaryKey || column.IsPrimaryKey;
-                var nameTypeMatch = CslaTemplateHelperCS.ColumnNameMatchesParentProperty(parent, CurrentCslaObject, column);
+                var nameTypeMatch = ColumnNameMatchesParentProperty(parent, CurrentCslaObject, column);
                 if (nameTypeMatch.Length > 0)
                     nameTypeMatches.Add(column.ColumnName);
-                var fkMatch = CslaTemplateHelperCS.ColumnFKMatchesParentProperty(parent, CurrentCslaObject, column);
+                var fkMatch = TemplateHelper.ColumnFKMatchesParentProperty(parent, CurrentCslaObject, column);
                 if (fkMatch.Length > 0)
                     fkMatches.Add(column.ColumnName);
             }
@@ -1107,7 +1119,7 @@ namespace CslaGenerator.Controls
 
             if (sb.Length > 0)
             {
-                OutputWindow.Current.AddOutputInfo(string.Format(
+                OutputWindow.Current.AddOutputInfo(String.Format(
                     "The following columns match {0} Parent Properties and were not added to the Value Property collection:",
                     CurrentCslaObject.ObjectName));
                 OutputWindow.Current.AddOutputInfo(sb.ToString());
@@ -1120,18 +1132,32 @@ namespace CslaGenerator.Controls
                 CurrentCslaObject.ParentInsertOnly = hasPrimaryKey;
         }
 
+        internal static string ColumnNameMatchesParentProperty(CslaObjectInfo parent, CslaObjectInfo info,
+            IColumnInfo validatingColumn)
+        {
+            foreach (var prop in info.ParentProperties)
+            {
+                // name and data type match for Views
+                if (prop.Name == validatingColumn.ColumnName &&
+                    prop.PropertyType == validatingColumn.ManagedType.GetTypeCodeEx())
+                    return info.ObjectName + "." + validatingColumn.ColumnName;
+            }
+
+            return String.Empty;
+        }
+
         private void AddChildToParent(CslaObjectInfo parent, string objectName, string propertyName)
         {
             var isItem = false;
             var grandParent = _currentUnit.CslaObjects.Find(parent.ParentType);
             if (grandParent != null)
             {
-                if (CslaTemplateHelperCS.IsCollectionType(grandParent.ObjectType))
+                if (grandParent.ObjectType.IsCollectionType())
                     isItem = true;
             }
             var child = new ChildProperty();
             child.TypeName = objectName;
-            if (!string.IsNullOrEmpty(propertyName))
+            if (!String.IsNullOrEmpty(propertyName))
                 child.Name = propertyName;
             else
                 child.Name = objectName;
@@ -1167,12 +1193,12 @@ namespace CslaGenerator.Controls
             var grandParent = _currentUnit.CslaObjects.Find(parent.ParentType);
             if (grandParent != null)
             {
-                if (CslaTemplateHelperCS.IsCollectionType(grandParent.ObjectType))
+                if (grandParent.ObjectType.IsCollectionType())
                     isItem = true;
             }
             var coll = new ChildProperty();
             coll.TypeName = collectionName;
-            if (!string.IsNullOrEmpty(propertyName))
+            if (!String.IsNullOrEmpty(propertyName))
                 coll.Name = propertyName;
             else
                 coll.Name = collectionName;
@@ -1222,9 +1248,9 @@ namespace CslaGenerator.Controls
 
         internal void GetState()
         {
-            GeneratorController.Current.CurrentUnitLayout.SchemaSelectedTree = string.Empty;
-            GeneratorController.Current.CurrentUnitLayout.SchemaSelectedNode = string.Empty;
-            GeneratorController.Current.CurrentUnitLayout.SchemaSelectedSprocSubNode = string.Empty;
+            GeneratorController.Current.CurrentUnitLayout.SchemaSelectedTree = String.Empty;
+            GeneratorController.Current.CurrentUnitLayout.SchemaSelectedNode = String.Empty;
+            GeneratorController.Current.CurrentUnitLayout.SchemaSelectedSprocSubNode = String.Empty;
             GeneratorController.Current.CurrentUnitLayout.SchemaExpandedTrees.Clear();
             GeneratorController.Current.CurrentUnitLayout.SchemaExpandedNodes.Clear();
             foreach (var item in TreeViewSchema.Nodes)
@@ -1239,7 +1265,9 @@ namespace CslaGenerator.Controls
                         if (treeSubNode != null)
                         {
                             if (treeSubNode.IsExpanded)
-                                GeneratorController.Current.CurrentUnitLayout.SchemaExpandedNodes.Add(treeNode.Text + "/" + treeSubNode.Text);
+                                GeneratorController.Current.CurrentUnitLayout.SchemaExpandedNodes.Add(treeNode.Text +
+                                                                                                      "/" +
+                                                                                                      treeSubNode.Text);
 
                             if (treeSubNode.IsSelected)
                             {
@@ -1290,7 +1318,8 @@ namespace CslaGenerator.Controls
                         var treeSubNode = subItem as TreeNode;
                         if (treeSubNode != null)
                         {
-                            foreach (var expandedNode in GeneratorController.Current.CurrentUnitLayout.SchemaExpandedNodes)
+                            foreach (
+                                var expandedNode in GeneratorController.Current.CurrentUnitLayout.SchemaExpandedNodes)
                             {
                                 var expandedStructure = expandedNode.Split('/');
                                 if (treeNode.Text == expandedStructure[0] && treeSubNode.Text == expandedStructure[1])

@@ -16,7 +16,6 @@ using System.Diagnostics;
 using System.Drawing.Design;
 using System.Reflection;
 using CslaGenerator.Attributes;
-using CslaGenerator.CodeGen;
 using CslaGenerator.Metadata;
 
 namespace CslaGenerator.Util.PropertyBags
@@ -633,7 +632,7 @@ namespace CslaGenerator.Util.PropertyBags
         private bool IsBrowsable(ValueProperty[] objectType, string propertyName)
         {
             var cslaObject = (CslaObjectInfo)GeneratorController.Current.GetSelectedItem();
-            var isNotDbConsumer = CslaTemplateHelperCS.IsNotDbConsumer(cslaObject);
+            var isNotDbConsumer = cslaObject.IsNotDbConsumer();
 
             try
             {

@@ -12,7 +12,6 @@ using CodeSmith.Engine;
 using CslaGenerator.Controls;
 using CslaGenerator.Metadata;
 using CslaGenerator.Util;
-using DBSchemaInfo.Base;
 
 namespace CslaGenerator.CodeGen
 {
@@ -200,7 +199,7 @@ namespace CslaGenerator.CodeGen
 
         public virtual string GetInitValue(ValueProperty prop)
         {
-            if (AllowNull(prop) && TypeHelper.IsNullableType(prop.PropertyType))
+            if (AllowNull(prop) && prop.PropertyType.IsNullableType())
                 return "null";
 
             return GetInitValue(prop.PropertyType);
@@ -250,7 +249,7 @@ namespace CslaGenerator.CodeGen
 
             if (nullable)
             {
-                if (TypeHelper.IsNullableType(prop.PropertyType))
+                if (prop.PropertyType.IsNullableType())
                     statement += String.Format("!dr.IsDBNull(\"{0}\") ? new {1}(({2}) ",
                         prop.ParameterName,
                         GetDataType(prop),
@@ -273,7 +272,7 @@ namespace CslaGenerator.CodeGen
 
             if (nullable)
             {
-                if (TypeHelper.IsNullableType(prop.PropertyType))
+                if (prop.PropertyType.IsNullableType())
                     statement += ")";
                 statement += " : null";
             }
@@ -300,7 +299,7 @@ namespace CslaGenerator.CodeGen
 
             if (nullable)
             {
-                if (TypeHelper.IsNullableType(assignDataType))
+                if (assignDataType.IsNullableType())
                     statement += String.Format("({0})", GetDataType(prop));
                 //else
                 //    statement += String.Format("!dr.IsDBNull(\"{0}\") ? ",
@@ -311,7 +310,7 @@ namespace CslaGenerator.CodeGen
             if (prop.DbBindColumn.ColumnOriginType == ColumnOriginType.None)
                 statement += GetReaderMethod(assignDataType);
             else
-                statement += GetReaderMethod(GetDbType(prop.DbBindColumn), prop);
+                statement += GetReaderMethod(prop.DbBindColumn.GetDbType(), prop);
 
             statement += "(\"" + prop.ParameterName + "\"";
 
@@ -319,9 +318,9 @@ namespace CslaGenerator.CodeGen
                 statement += ", true";
 
             statement += ")";
-            /*if (nullable && !TypeHelper.IsNullableType(assignDataType))
+            /*if (nullable && !GeneralTemplatesHelper.IsNullableType(assignDataType))
             {
-                if (TypeHelper.IsNullableType(assignDataType))
+                if (GeneralTemplatesHelper.IsNullableType(assignDataType))
                     statement += ")";
                 statement += " : null";
             }*/
@@ -362,7 +361,7 @@ namespace CslaGenerator.CodeGen
             TypeCodeEx propType = prop.PropertyType;
             try
             {
-                propType = TypeHelper.GetBackingFieldType(prop as ValueProperty);
+                propType = (prop as ValueProperty).GetBackingFieldType();
             }
             catch (Exception)
             {
@@ -381,7 +380,7 @@ namespace CslaGenerator.CodeGen
 
             if (nullable)
             {
-                if (TypeHelper.IsNullableType(propType))
+                if (propType.IsNullableType())
                     return String.Format("{0} == null ? (object)DBNull.Value : {0}.Value", propName);
 
                 return String.Format("{0} == null ? (object)DBNull.Value : {0}", propName);
@@ -396,38 +395,12 @@ namespace CslaGenerator.CodeGen
             }
         }
 
-        protected DbType GetDbType(Property prop)
-        {
-            return TypeHelper.GetDbType(prop.PropertyType);
-        }
-
-        protected DbType GetDbType(ValueProperty prop)
-        {
-            return GetDbType(prop.DbBindColumn);
-        }
-
-        protected DbType GetDbType(CriteriaProperty prop)
-        {
-            if (prop.DbBindColumn.Column == null)
-                return TypeHelper.GetDbType(prop.PropertyType);
-
-            return GetDbType(prop.DbBindColumn);
-        }
-
-        protected DbType GetDbType(DbBindColumn prop)
-        {
-            if (prop.NativeType == "real")
-                return DbType.Single;
-
-            return prop.DataType;
-        }
-
         public virtual string GetDataType(ValueProperty prop)
         {
             var type = GetDataType(prop.PropertyType);
             if (AllowNull(prop))
             {
-                if (TypeHelper.IsNullableType(prop.PropertyType))
+                if (prop.PropertyType.IsNullableType())
                     type += "?";
             }
             return type;
@@ -438,7 +411,7 @@ namespace CslaGenerator.CodeGen
             var type = GetDataType(prop.BackingFieldType);
             if (AllowNull(prop))
             {
-                if (TypeHelper.IsNullableType(prop.BackingFieldType))
+                if (prop.BackingFieldType.IsNullableType())
                     type += "?";
             }
             return type;
@@ -466,7 +439,7 @@ namespace CslaGenerator.CodeGen
 
         protected internal string GetReaderMethod(DbType dataType, ValueProperty prop)
         {
-            if (prop.Nullable && TypeHelper.IsNullableType(prop.PropertyType))
+            if (prop.Nullable && prop.PropertyType.IsNullableType())
                 return "GetValue";
 
             if (prop.BackingFieldType == TypeCodeEx.Empty)
@@ -631,7 +604,7 @@ namespace CslaGenerator.CodeGen
 
         public string GetRelationStrings(CslaObjectInfo info)
         {
-            if (IsCollectionType(info.ObjectType))
+            if (info.ObjectType.IsCollectionType())
                 info = FindChildInfo(info, info.ItemType);
 
             var sb = new StringBuilder();
@@ -688,7 +661,7 @@ namespace CslaGenerator.CodeGen
             var joinColumn = string.Empty;
             if (child.LoadParameters.Count > 0)
             {
-                if (IsCollectionType(childInfo.ObjectType))
+                if (childInfo.ObjectType.IsCollectionType())
                 {
                     joinColumn = child.LoadParameters[0].Property.Name;
                     childInfo = FindChildInfo(info, childInfo.ItemType);
@@ -938,7 +911,7 @@ namespace CslaGenerator.CodeGen
                  !isUnitOfWork &&
                  CurrentUnit.GenerationParams.TargetIsCsla4DAL &&
                  CurrentUnit.GenerationParams.GenerateDTO &&
-                 !IsObjectType(info.ObjectType)))
+                 !info.ObjectType.IsObjectType()))
             {
                 result.Add("System.Collections.Generic");
             }
@@ -993,7 +966,7 @@ namespace CslaGenerator.CodeGen
                 if (CurrentUnit.GenerationParams.GenerateAuthorization != AuthorizationLevel.PropertyLevel)
                 {
                     CslaObjectInfo authzInfo = info;
-                    if (IsCollectionType(info.ObjectType))
+                    if (info.ObjectType.IsCollectionType())
                     {
                         authzInfo = FindChildInfo(info, info.ItemType);
                     }
@@ -1118,7 +1091,7 @@ namespace CslaGenerator.CodeGen
             if (!unit.GenerationParams.TargetIsCsla4DAL)
                 result.Add("System.Data.SqlClient");
 
-            if (CurrentUnit.GenerationParams.GenerateDTO && !IsObjectType(info.ObjectType))
+            if (CurrentUnit.GenerationParams.GenerateDTO && !info.ObjectType.IsObjectType())
                 result.Add("System.Collections.Generic");
 
             if (!unit.GenerationParams.TargetIsCsla4DAL || !unit.GenerationParams.GenerateDTO)
@@ -1137,7 +1110,7 @@ namespace CslaGenerator.CodeGen
             var result = new List<string>();
             var usesDb = false;
 
-            if (IsReadOnlyType(info.ObjectType) && info.ParentType != string.Empty)
+            if (info.ObjectType.IsReadOnlyType() && info.ParentType != string.Empty)
             {
                 if (info.CriteriaObjects.Any(criteria => criteria.Properties.Count > 0))
                     usesDb = true;
@@ -1168,7 +1141,7 @@ namespace CslaGenerator.CodeGen
 
         public static bool IsNamespaceInScope(string infoNamespace, string candidate)
         {
-            if (infoNamespace.IndexOf(candidate) != 0)
+            if (infoNamespace.IndexOf(candidate, StringComparison.InvariantCulture) != 0)
                 return false;
 
             if (infoNamespace.Length < candidate.Length)
@@ -1235,9 +1208,9 @@ namespace CslaGenerator.CodeGen
             parameter = parameter.Replace("\"", "");
             string[] resultSplit = parameter.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
             string result = string.Empty;
-            for (var i = 0; i < resultSplit.Length; i++)
+            foreach (var part in resultSplit)
             {
-                result += ", \"" + resultSplit[i].Trim() + "\"";
+                result += ", \"" + part.Trim() + "\"";
             }
 
             return result;
@@ -1258,36 +1231,36 @@ namespace CslaGenerator.CodeGen
         {
             var result = ReturnRawParameterValue(parameter);
             if (parameter.Type == "String" && result != string.Empty)
-                result = "\"" + result.Trim(new[] {'\"'}) + "\"";
+                result = "\"" + result.Trim('\"') + "\"";
             else if (parameter.Type == "String[]" && result != string.Empty)
             {
                 result = result.Replace("\"", "");
                 var resultSplit = result.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
                 result = string.Empty;
                 var isFirst = true;
-                for (var i = 0; i < resultSplit.Length; i++)
+                foreach (var part in resultSplit)
                 {
                     if (isFirst)
                         isFirst = false;
                     else
                         result += ", ";
-                    result += "\"" + resultSplit[i].Trim() + "\"";
+                    result += "\"" + part.Trim() + "\"";
                 }
                 result = BuildArrayOrParams(parameter, result);
             }
-            else if (parameter.Type.LastIndexOf("[]") > -1 &&
-                     parameter.Type.LastIndexOf("[]") == parameter.Type.Length - 2 && result != string.Empty)
+            else if (parameter.Type.LastIndexOf("[]", StringComparison.InvariantCulture) > -1 &&
+                     parameter.Type.LastIndexOf("[]", StringComparison.InvariantCulture) == parameter.Type.Length - 2 && result != string.Empty)
             {
                 var resultSplit = result.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
                 result = string.Empty;
                 var isFirst = true;
-                for (var i = 0; i < resultSplit.Length; i++)
+                foreach (var part in resultSplit)
                 {
                     if (isFirst)
                         isFirst = false;
                     else
                         result += ", ";
-                    result += resultSplit[i].Trim();
+                    result += part.Trim();
                 }
                 result = BuildArrayOrParams(parameter, result);
             }
@@ -1297,13 +1270,13 @@ namespace CslaGenerator.CodeGen
                 var resultSplit = result.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
                 result = string.Empty;
                 var isFirst = true;
-                for (var i = 0; i < resultSplit.Length; i++)
+                foreach (var part in resultSplit)
                 {
                     if (isFirst)
                         isFirst = false;
                     else
                         result += ", ";
-                    result += "\"" + resultSplit[i].Trim() + "\"";
+                    result += "\"" + part.Trim() + "\"";
                 }
                 result = "new List<string> {" + result + "}";
             }
@@ -1312,28 +1285,28 @@ namespace CslaGenerator.CodeGen
                 var resultSplit = result.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
                 result = string.Empty;
                 var isFirst = true;
-                for (var i = 0; i < resultSplit.Length; i++)
+                foreach (var part in resultSplit)
                 {
                     if (isFirst)
                         isFirst = false;
                     else
                         result += ", ";
-                    result += resultSplit[i].Trim();
+                    result += part.Trim();
                 }
                 result = "new List<int> {" + result + "}";
             }
-            else if (parameter.Type.IndexOf("List<") == 0 && result != string.Empty)
+            else if (parameter.Type.IndexOf("List<", StringComparison.InvariantCulture) == 0 && result != string.Empty)
             {
                 var resultSplit = result.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
                 result = string.Empty;
                 var isFirst = true;
-                for (var i = 0; i < resultSplit.Length; i++)
+                foreach (var part in resultSplit)
                 {
                     if (isFirst)
                         isFirst = false;
                     else
                         result += ", ";
-                    result += resultSplit[i].Trim();
+                    result += part.Trim();
                     result = "new " + parameter.Type + " {" + result + "}";
                 }
             }
@@ -1352,20 +1325,20 @@ namespace CslaGenerator.CodeGen
         {
             var result = ReturnRawPropertyValue(property);
             if (property.Type == "String" && result != string.Empty)
-                result = "\"" + result.Trim(new[] {'\"'}) + "\"";
+                result = "\"" + result.Trim('\"') + "\"";
             else if (property.Type == "String[]" && result != string.Empty)
             {
                 result = result.Replace("\"", "");
                 var resultSplit = result.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
                 result = string.Empty;
                 var isFirst = true;
-                for (var i = 0; i < resultSplit.Length; i++)
+                foreach (var part in resultSplit)
                 {
                     if (isFirst)
                         isFirst = false;
                     else
                         result += ", ";
-                    result += "\"" + resultSplit[i].Trim() + "\"";
+                    result += "\"" + part.Trim() + "\"";
                 }
             }
             else if (property.Type == "List<String>" && result != string.Empty)
@@ -1374,13 +1347,13 @@ namespace CslaGenerator.CodeGen
                 var resultSplit = result.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
                 result = string.Empty;
                 var isFirst = true;
-                for (var i = 0; i < resultSplit.Length; i++)
+                foreach (var part in resultSplit)
                 {
                     if (isFirst)
                         isFirst = false;
                     else
                         result += ", ";
-                    result += "\"" + resultSplit[i].Trim() + "\"";
+                    result += "\"" + part.Trim() + "\"";
                 }
                 result = "new List<string> {" + result + "}";
             }
@@ -1389,13 +1362,13 @@ namespace CslaGenerator.CodeGen
                 var resultSplit = result.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
                 result = string.Empty;
                 var isFirst = true;
-                for (var i = 0; i < resultSplit.Length; i++)
+                foreach (var part in resultSplit)
                 {
                     if (isFirst)
                         isFirst = false;
                     else
                         result += ", ";
-                    result += resultSplit[i].Trim();
+                    result += part.Trim();
                     result = "new List<int> {" + result + "}";
                 }
             }
@@ -1404,13 +1377,13 @@ namespace CslaGenerator.CodeGen
                 var resultSplit = result.Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries);
                 result = string.Empty;
                 var isFirst = true;
-                for (var i = 0; i < resultSplit.Length; i++)
+                foreach (var part in resultSplit)
                 {
                     if (isFirst)
                         isFirst = false;
                     else
                         result += ", ";
-                    result += resultSplit[i].Trim();
+                    result += part.Trim();
                     result = "new " + property.Type + " {" + result + "}";
                 }
             }
@@ -1437,10 +1410,10 @@ namespace CslaGenerator.CodeGen
                 result = "RunModes." + result;
             else if (property.Name == "MessageText" && result != string.Empty)
             {
-                if (result.IndexOf("*") == 0)
+                if (result.IndexOf("*", StringComparison.InvariantCulture) == 0)
                     result = result.Substring(1);
                 else
-                    result = "\"" + result.Trim(new[] {'\"'}) + "\"";
+                    result = "\"" + result.Trim('\"') + "\"";
             }
 
             return result;
@@ -1504,7 +1477,7 @@ namespace CslaGenerator.CodeGen
             {
                 if (Info.ObjectType != CslaObjectType.UnitOfWork &&
                     Info.ObjectType != CslaObjectType.NameValueList &&
-                    !IsCollectionType(Info.ObjectType) &&
+                    !TypeHelper.IsCollectionType(Info.ObjectType) &&
                     rulableProperty.BusinessRules.Count > 0)
                 {
                     validateRuleRegion = true;
@@ -1599,7 +1572,7 @@ namespace CslaGenerator.CodeGen
 
             if (Info.ObjectType != CslaObjectType.UnitOfWork &&
                 Info.ObjectType != CslaObjectType.NameValueList &&
-                !IsCollectionType(Info.ObjectType))
+                !TypeHelper.IsCollectionType(Info.ObjectType))
             {
                 foreach (var rule in Info.BusinessRules)
                 {
@@ -1679,7 +1652,7 @@ namespace CslaGenerator.CodeGen
             {
                 if (Info.ObjectType != CslaObjectType.UnitOfWork &&
                     Info.ObjectType != CslaObjectType.NameValueList &&
-                    !IsCollectionType(Info.ObjectType) &&
+                    !TypeHelper.IsCollectionType(Info.ObjectType) &&
                     rulableProperty.BusinessRules.Count > 0)
                     generateRuleRegion = true;
                 }
@@ -2060,7 +2033,7 @@ namespace CslaGenerator.CodeGen
 
         public bool ParentLoadsChildren(CslaObjectInfo info)
         {
-            if (IsCollectionType(info.ObjectType))
+            if (info.ObjectType.IsCollectionType())
                 info = FindChildInfo(info, info.ItemType);
 
             /*foreach (var child in info.GetAllChildProperties())
@@ -2076,7 +2049,7 @@ namespace CslaGenerator.CodeGen
 
         public bool ParentLoadsROChildren(CslaObjectInfo info)
         {
-            if (IsCollectionType(info.ObjectType))
+            if (info.ObjectType.IsCollectionType())
                 info = FindChildInfo(info, info.ItemType);
 
             foreach (var child in info.GetAllChildProperties())
@@ -2084,7 +2057,7 @@ namespace CslaGenerator.CodeGen
                 if (child.LoadingScheme == LoadingScheme.ParentLoad)
                 {
                     var childInfo = FindChildInfo(info, child.TypeName);
-                    if (IsReadOnlyType(childInfo.ObjectType))
+                    if (childInfo.ObjectType.IsReadOnlyType())
                         return true;
                 }
             }
@@ -2094,25 +2067,15 @@ namespace CslaGenerator.CodeGen
 
         public bool ParentLoadsCollectionChildren(CslaObjectInfo info)
         {
-            // TODO: check if it's used on the templates and if not, REMOVE this method
-
-            if (IsCollectionType(info.ObjectType))
+            if (info.ObjectType.IsCollectionType())
                 info = FindChildInfo(info, info.ItemType);
-
-            /*foreach (var child in info.GetAllChildProperties())
-                if (child.LoadingScheme == LoadingScheme.ParentLoad)
-                {
-                    return true;
-                }
-
-            return false;*/
 
             return info.GetCollectionChildProperties().Any(child => child.LoadingScheme == LoadingScheme.ParentLoad);
         }
 
         public bool SelfLoadsChildren(CslaObjectInfo info)
         {
-            if (IsCollectionType(info.ObjectType))
+            if (info.ObjectType.IsCollectionType())
                 info = FindChildInfo(info, info.ItemType);
 
             /*foreach (var child in info.GetAllChildProperties())
@@ -2125,292 +2088,6 @@ namespace CslaGenerator.CodeGen
 
             return info.GetAllChildProperties()
                 .Any(child => !child.LazyLoad && child.LoadingScheme == LoadingScheme.SelfLoad);
-        }
-
-        // TODO was moved to TypeHelper. fix templates and REMOVE - FROM HERE
-
-        public static bool IsCollectionType(CslaObjectType cslaType)
-        {
-            if (cslaType == CslaObjectType.EditableRootCollection ||
-                cslaType == CslaObjectType.EditableChildCollection ||
-                cslaType == CslaObjectType.DynamicEditableRootCollection ||
-                cslaType == CslaObjectType.ReadOnlyCollection)
-                return true;
-
-            return false;
-        }
-
-        public static bool IsObjectType(CslaObjectType cslaType)
-        {
-            if (cslaType == CslaObjectType.EditableRoot ||
-                cslaType == CslaObjectType.EditableChild ||
-                cslaType == CslaObjectType.EditableSwitchable ||
-                cslaType == CslaObjectType.DynamicEditableRoot ||
-                cslaType == CslaObjectType.ReadOnlyObject)
-                return true;
-
-            return false;
-        }
-
-        public static bool IsEditableType(CslaObjectType cslaType)
-        {
-            if (cslaType == CslaObjectType.EditableChild ||
-                cslaType == CslaObjectType.EditableChildCollection ||
-                cslaType == CslaObjectType.EditableRoot ||
-                cslaType == CslaObjectType.EditableRootCollection ||
-                cslaType == CslaObjectType.EditableSwitchable ||
-                cslaType == CslaObjectType.DynamicEditableRoot ||
-                cslaType == CslaObjectType.DynamicEditableRootCollection)
-                return true;
-
-            return false;
-        }
-
-        public static bool IsReadOnlyType(CslaObjectType cslaType)
-        {
-            if (cslaType == CslaObjectType.ReadOnlyCollection ||
-                cslaType == CslaObjectType.ReadOnlyObject)
-                return true;
-
-            return false;
-        }
-
-        public static bool IsChildType(CslaObjectType cslaType)
-        {
-            if (cslaType == CslaObjectType.EditableChild ||
-                cslaType == CslaObjectType.EditableChildCollection)
-                return true;
-
-            return false;
-        }
-
-        public static bool IsChildType(CslaObjectInfo info)
-        {
-            if (info.ObjectType == CslaObjectType.EditableSwitchable ||
-                info.ObjectType == CslaObjectType.EditableChild ||
-                info.ObjectType == CslaObjectType.EditableChildCollection ||
-                ((info.ObjectType == CslaObjectType.ReadOnlyObject ||
-                  info.ObjectType == CslaObjectType.ReadOnlyCollection) &&
-                 info.ParentType != string.Empty))
-                return true;
-
-            return false;
-        }
-
-        public static bool IsRootType(CslaObjectInfo info)
-        {
-            if (info.ObjectType == CslaObjectType.EditableRoot ||
-                info.ObjectType == CslaObjectType.EditableRootCollection ||
-                info.ObjectType == CslaObjectType.DynamicEditableRoot ||
-                info.ObjectType == CslaObjectType.DynamicEditableRootCollection ||
-                info.ObjectType == CslaObjectType.EditableSwitchable ||
-                ((info.ObjectType == CslaObjectType.ReadOnlyObject ||
-                  info.ObjectType == CslaObjectType.ReadOnlyCollection) &&
-                 info.ParentType == string.Empty))
-                return true;
-
-            return false;
-        }
-
-        public static bool IsNotRootType(CslaObjectInfo info)
-        {
-            if (info.ObjectType == CslaObjectType.EditableChild ||
-                (info.ObjectType == CslaObjectType.ReadOnlyObject &&
-                 info.ParentType != string.Empty))
-                return true;
-
-            return false;
-        }
-
-        public static bool IsItemType(CslaObjectInfo info)
-        {
-            var cslaType = info.ObjectType;
-            if (cslaType == CslaObjectType.EditableRoot ||
-                cslaType == CslaObjectType.EditableChild ||
-                cslaType == CslaObjectType.DynamicEditableRoot ||
-                cslaType == CslaObjectType.ReadOnlyObject)
-            {
-                var parent = info.Parent.CslaObjects.Find(info.ParentType);
-                if (parent != null && IsCollectionType(parent.ObjectType))
-                    return true;
-            }
-
-            return false;
-        }
-
-        public static bool IsRootOrRootItem(CslaObjectInfo info)
-        {
-            bool result = !IsChildType(info);
-            if (!result)
-            {
-                var parentInfo = info.Parent.CslaObjects.Find(info.ParentType);
-                if (parentInfo != null)
-                    result = !IsChildType(parentInfo);
-            }
-            return result;
-        }
-
-        public static bool IsNotDbConsumer(CslaObjectInfo info)
-        {
-            return info.ObjectType == CslaObjectType.UnitOfWork ||
-                   info.ObjectType == CslaObjectType.BaseClass ||
-                   info.ObjectType == CslaObjectType.CriteriaClass;
-        }
-
-        public static bool CanHaveParentProperties(CslaObjectInfo info)
-        {
-            if (IsCollectionType(info.ObjectType))
-                return false; // Object is a collection and thus has no Properties
-
-            if (info.ObjectType == CslaObjectType.EditableRoot ||
-                info.ObjectType == CslaObjectType.DynamicEditableRoot)
-                return false; // Object is root and thus has no ParentType
-
-            var parent = info.Parent.CslaObjects.Find(info.ParentType);
-            if (parent == null)
-                return info.ObjectType == CslaObjectType.ReadOnlyObject;
-            // Object is ReadOnly and might have ParentProperties
-
-            if (IsCollectionType(parent.ObjectType)) // ParentType is a collection and thus has no Properties
-            {
-                if (parent.ObjectType == CslaObjectType.EditableRootCollection ||
-                    parent.ObjectType == CslaObjectType.DynamicEditableRootCollection ||
-                    (parent.ObjectType == CslaObjectType.ReadOnlyCollection && parent.ParentType == string.Empty))
-                    return false; // ParentType is a root collection; end of line
-
-                return true; // There should be a grand-parent with properties
-            }
-
-            if (IsObjectType(parent.ObjectType))
-                return true; // ParentType exists and has properties
-
-            return false;
-        }
-
-        // TODO was moved to TypeHelper. fix templates and REMOVE - DOWN HERE
-
-        public static string GetFkParameterNameForParentProperty(CslaObjectInfo info, ValueProperty parentProperty)
-        {
-            return SprocTemplateHelper.GetFkParameterNameForParentProperty(info, parentProperty);
-        }
-
-        internal static string ColumnNameMatchesParentProperty(CslaObjectInfo parent, CslaObjectInfo info,
-            IColumnInfo validatingColumn)
-        {
-            foreach (var prop in info.ParentProperties)
-            {
-                // name and data type match for Views
-                if (prop.Name == validatingColumn.ColumnName &&
-                    prop.PropertyType == TypeHelper.GetTypeCodeEx(validatingColumn.ManagedType))
-                    return info.ObjectName + "." + validatingColumn.ColumnName;
-            }
-
-            return string.Empty;
-        }
-
-        public static string PropertyFKMatchesParentProperty(CslaObjectInfo parent, CslaObjectInfo info,
-            ValueProperty prop)
-        {
-            return ColumnFKMatchesParentProperty(parent, info, prop.DbBindColumn.Column);
-        }
-
-        internal static string ColumnFKMatchesParentProperty(CslaObjectInfo parent, CslaObjectInfo info,
-            IColumnInfo validatingColumn)
-        {
-            foreach (var prop in info.ParentProperties)
-            {
-                var parentPropertyFound = parent.GetAllValueProperties().Find(prop.Name);
-                if (parentPropertyFound != null)
-                {
-                    var parentSchema = parentPropertyFound.DbBindColumn.SchemaName;
-                    var parentTable = parentPropertyFound.DbBindColumn.ObjectName;
-                    var parentColumn = parentPropertyFound.DbBindColumn.Column;
-                    if (parentColumn != null)
-                    {
-                        if (validatingColumn.FKConstraint != null)
-                        {
-                            if (parentSchema == validatingColumn.FKConstraint.PKTable.ObjectSchema ||
-                                parentTable == validatingColumn.FKConstraint.PKTable.ObjectName)
-                            {
-                                foreach (var pkColumn in validatingColumn.FKConstraint.Columns)
-                                {
-                                    if (pkColumn.PKColumn == parentColumn)
-                                        return validatingColumn.FKConstraint.ConstraintTable.ObjectName + "." +
-                                               validatingColumn.ColumnName;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            return string.Empty;
-        }
-
-        public static bool MultiplePropertyFKMatchesParent(CslaObjectInfo parent, CslaObjectInfo info,
-            ValueProperty prop)
-        {
-            return MultipleColumnFKMatchesParent(parent, info, prop.DbBindColumn.Column);
-        }
-
-        internal static bool MultipleColumnFKMatchesParent(CslaObjectInfo parent, CslaObjectInfo info,
-            IColumnInfo validatingColumn)
-        {
-            foreach (var prop in info.ParentProperties)
-            {
-                var parentPropertyFound = parent.GetAllValueProperties().Find(prop.Name);
-                if (parentPropertyFound != null)
-                {
-                    var parentSchema = parentPropertyFound.DbBindColumn.SchemaName;
-                    var parentTable = parentPropertyFound.DbBindColumn.ObjectName;
-                    var parentColumn = parentPropertyFound.DbBindColumn.Column;
-                    if (parentColumn != null)
-                    {
-                        if (validatingColumn.FKConstraint != null)
-                        {
-                            if (parentSchema == validatingColumn.FKConstraint.PKTable.ObjectSchema ||
-                                parentTable == validatingColumn.FKConstraint.PKTable.ObjectName)
-                            {
-                                foreach (var pkColumn in validatingColumn.FKConstraint.Columns)
-                                {
-                                    if (pkColumn.PKColumn == parentColumn)
-                                    {
-                                        var matchCounter =
-                                            CountMatchingInfoColumns(validatingColumn.FKConstraint.ConstraintTable,
-                                                parentSchema, parentTable, parentColumn);
-                                        return matchCounter > 1;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            return false;
-        }
-
-        private static int CountMatchingInfoColumns(ITableInfo infoTable, string parentSchema, string parentTable,
-            IColumnInfo parentColumn)
-        {
-            var matchCounter = 0;
-            foreach (var infoColumn in infoTable.Columns)
-            {
-                if (infoColumn.FKConstraint != null)
-                {
-                    if (parentSchema == infoColumn.FKConstraint.PKTable.ObjectSchema ||
-                        parentTable == infoColumn.FKConstraint.PKTable.ObjectName)
-                    {
-                        foreach (var columnPair in infoColumn.FKConstraint.Columns)
-                        {
-                            if (columnPair.PKColumn == parentColumn)
-                                matchCounter++;
-                        }
-                    }
-                }
-            }
-
-            return matchCounter;
         }
 
         #endregion
@@ -2487,7 +2164,7 @@ namespace CslaGenerator.CodeGen
                 OutputWindow.Current.AddOutputInfo(String.Format(
                     "{0}: Unable to parse database native type from DbBindColumn, infering type from property type.",
                     prop.PropertyType));
-                nativeType = TypeHelper.GetSqlDbType(prop.PropertyType).ToString();
+                nativeType = prop.PropertyType.GetSqlDbType().ToString();
             }
             return nativeType;
         }
@@ -2535,7 +2212,7 @@ namespace CslaGenerator.CodeGen
             TypeCodeEx propType = prop.PropertyType;
             try
             {
-                propType = TypeHelper.GetBackingFieldType(prop as ValueProperty);
+                propType = (prop as ValueProperty).GetBackingFieldType();
             }
             catch (Exception)
             {
@@ -2560,7 +2237,7 @@ namespace CslaGenerator.CodeGen
             //if (nullable && propType != TypeCodeEx.SmartDate)
             if (nullable)
             {
-                if (TypeHelper.IsNullableType(propType))
+                if (propType.IsNullableType())
                     return String.Format("{0} == null ? (object)DBNull.Value : {0}.Value", propName);
 
                 return String.Format("{0} == null ? (object)DBNull.Value : {0}", propName);
@@ -2592,7 +2269,7 @@ namespace CslaGenerator.CodeGen
             var propType = prop.PropertyType;
             try
             {
-                propType = TypeHelper.GetBackingFieldType(prop as ValueProperty);
+                propType = (prop as ValueProperty).GetBackingFieldType();
             }
             catch (Exception)
             {
@@ -2784,7 +2461,7 @@ namespace CslaGenerator.CodeGen
             var type = GetDataType(field);
             if (AllowNull(prop))
             {
-                if (TypeHelper.IsNullableType(field))
+                if (field.IsNullableType())
                     type += "?";
             }
             return type;
@@ -2793,7 +2470,7 @@ namespace CslaGenerator.CodeGen
         public static string GetDataTypeInitExpression(Property prop, TypeCodeEx field)
         {
             var type = GetDataType(field);
-            if (TypeHelper.IsNullableType(field))
+            if (field.IsNullableType())
             {
                 if (AllowNull(prop))
                     return "null";
@@ -2880,7 +2557,7 @@ namespace CslaGenerator.CodeGen
             // "private static readonly PropertyInfo<{0}> {1} = RegisterProperty<{0}>(p => p.{2}, \"{3}\"{4});",
             var response = string.Empty;
 
-            if (!prop.Undoable && IsEditableType(info.ObjectType) &&
+            if (!prop.Undoable && info.ObjectType.IsEditableType() &&
                 prop.DeclarationMode != PropertyDeclaration.AutoProperty &&
                 prop.DeclarationMode != PropertyDeclaration.ClassicProperty &&
                 prop.DeclarationMode != PropertyDeclaration.ClassicPropertyWithTypeConversion)
@@ -2890,7 +2567,7 @@ namespace CslaGenerator.CodeGen
             response +=
                 String.Format(
                     "{0} static readonly PropertyInfo<{1}> {2} = RegisterProperty<{1}>(p => {3}, \"{4}\"{5}{6});",
-                    PropertyInfoVisibility(isSilverlight),
+                    PropertyInfoVisibility(),
                     (prop.DeclarationMode == PropertyDeclaration.Managed ||
                      prop.DeclarationMode == PropertyDeclaration.Unmanaged)
                         ? GetDataTypeGeneric(prop, prop.PropertyType)
@@ -2934,7 +2611,7 @@ namespace CslaGenerator.CodeGen
 
         private string GetRelationhipType(CslaObjectInfo info, ValueProperty prop)
         {
-            if (IsReadOnlyType(info.ObjectType))
+            if (info.ObjectType.IsReadOnlyType())
                 return "";
 
             var response = string.Empty;
@@ -2994,7 +2671,7 @@ namespace CslaGenerator.CodeGen
             // "private static readonly PropertyInfo<{0}> {1} = RegisterProperty<{0}>(p => p.{2}, \"{3}\"{4});",
             var response = string.Empty;
 
-            if (!prop.Undoable && IsEditableType(info.ObjectType) &&
+            if (!prop.Undoable && info.ObjectType.IsEditableType() &&
                 prop.DeclarationMode != PropertyDeclaration.AutoProperty &&
                 prop.DeclarationMode != PropertyDeclaration.ClassicProperty &&
                 prop.DeclarationMode != PropertyDeclaration.ClassicPropertyWithTypeConversion)
@@ -3004,7 +2681,7 @@ namespace CslaGenerator.CodeGen
             response +=
                 String.Format(
                     "{0} static readonly PropertyInfo<{1}> {2} = RegisterProperty<{1}>(p => {3}, \"{4}\"{5});",
-                    PropertyInfoVisibility(isSilverlight),
+                    PropertyInfoVisibility(),
                     prop.TypeName,
                     FormatPropertyInfoName(prop.Name),
                     (String.IsNullOrEmpty(prop.Interfaces)
@@ -3058,7 +2735,7 @@ namespace CslaGenerator.CodeGen
             response +=
                 String.Format(
                     "{0} static readonly PropertyInfo<{1}> ParentListProperty = RegisterProperty<{1}>(p => p.ParentList);",
-                    PropertyInfoVisibility(isSilverlight),
+                    PropertyInfoVisibility(),
                     info.ParentType);
 
             return response;
@@ -3109,7 +2786,7 @@ namespace CslaGenerator.CodeGen
             var response =
                 String.Format(
                     "{0} static readonly PropertyInfo<{1}> {2} = RegisterProperty<{1}>(p => p.{3});",
-                    PropertyInfoVisibility(isSilverlight),
+                    PropertyInfoVisibility(),
                     prop.TypeName,
                     FormatPropertyInfoName(prop.Name),
                     FormatPascal(prop.Name));
@@ -3158,7 +2835,7 @@ namespace CslaGenerator.CodeGen
             response +=
                 String.Format(
                     "{0} static readonly PropertyInfo<{1}> {2} = RegisterProperty<{1}>(p => p.{3});",
-                    PropertyInfoVisibility(isSilverlight),
+                    PropertyInfoVisibility(),
                     GetDataTypeGeneric(prop, prop.PropertyType),
                     FormatPropertyInfoName(prop.Name),
                     FormatPascal(prop.Name));
@@ -3208,7 +2885,7 @@ namespace CslaGenerator.CodeGen
             response +=
                 String.Format(
                     "{0} static readonly PropertyInfo<{1}> {2} = RegisterProperty<{1}>(p => p.{3});",
-                    PropertyInfoVisibility(isSilverlight),
+                    PropertyInfoVisibility(),
                     prop.Type,
                     FormatPropertyInfoName(prop.Name),
                     FormatPascal(prop.Name));
@@ -3216,14 +2893,14 @@ namespace CslaGenerator.CodeGen
             return response;
         }
 
-        private string PropertyInfoVisibility(bool isSilverlight)
+        private string PropertyInfoVisibility()
         {
             return (CurrentUnit.GenerationParams.UsePublicPropertyInfo) ? "public" : "private";
         }
 
         private string GetRelationhipType(CslaObjectInfo info, ChildProperty prop)
         {
-            if (IsReadOnlyType(info.ObjectType))
+            if (info.ObjectType.IsReadOnlyType())
                 return "";
 
             var response = string.Empty;
@@ -3517,7 +3194,7 @@ namespace CslaGenerator.CodeGen
         private string CheckNotUndoable(ValueProperty prop, CslaObjectInfo info)
         {
             var response = string.Empty;
-            if (!prop.Undoable && IsEditableType(info.ObjectType))
+            if (!prop.Undoable && info.ObjectType.IsEditableType())
                 response = "[NotUndoable]" + Environment.NewLine + "        ";
 
             return response;
@@ -3716,7 +3393,7 @@ namespace CslaGenerator.CodeGen
         /// <returns>The loader statemente on the form <code>_prop = value</code> or <code>LoadProperty(PropProperty, value)</code>.</returns>
         public string GetFieldLoaderStatement(CslaObjectInfo info, ValueProperty prop, string value)
         {
-            if (value.IndexOf("$") != 0)
+            if (value.IndexOf("$", StringComparison.InvariantCulture) != 0)
                 return GetFieldLoaderStatement(prop, value);
 
             var propSource = value.Substring(1);
@@ -3804,7 +3481,7 @@ namespace CslaGenerator.CodeGen
                 var ci = FindChildInfo(info, cp.TypeName);
                 if (ci != null)
                 {
-                    /*if (IsCollectionType(ci.ObjectType))
+                    /*if (TypeHelper.IsCollectionType(ci.ObjectType))
                     {
                         ci = FindChildInfo(info, ci.ItemType);
                     }*/
@@ -3832,7 +3509,7 @@ namespace CslaGenerator.CodeGen
                     var ci = FindChildInfo(info, cp.TypeName);
                     if (ci != null)
                     {
-                        /*if (IsCollectionType(ci.ObjectType))
+                        /*if (TypeHelper.IsCollectionType(ci.ObjectType))
                         {
                             ci = FindChildInfo(info, ci.ItemType);
                         }*/
@@ -4012,7 +3689,7 @@ namespace CslaGenerator.CodeGen
 
         public ChildPropertyCollection GetParentLoadAllChildPropertiesInHierarchy(CslaObjectInfo info)
         {
-            if (IsCollectionType(info.ObjectType))
+            if (info.ObjectType.IsCollectionType())
                 info = FindChildInfo(info, info.ItemType);
 
             var list = new ChildPropertyCollection();
@@ -4032,7 +3709,7 @@ namespace CslaGenerator.CodeGen
         public ChildPropertyCollection GetParentLoadAllGrandChildPropertiesInHierarchy(CslaObjectInfo info,
             bool firstRun)
         {
-            if (IsCollectionType(info.ObjectType))
+            if (info.ObjectType.IsCollectionType())
                 info = FindChildInfo(info, info.ItemType);
 
             var list = new ChildPropertyCollection();
@@ -4119,7 +3796,7 @@ namespace CslaGenerator.CodeGen
 
         private static int FindAncestorLoaderLevel(CslaObjectInfo info, int level, out bool ancestorIsCollection)
         {
-            if (IsCollectionType(info.ObjectType))
+            if (info.ObjectType.IsCollectionType())
                 ancestorIsCollection = true;
             else
                 ancestorIsCollection = false;
@@ -4132,7 +3809,7 @@ namespace CslaGenerator.CodeGen
                 return level;
 
             level++;
-            if (IsCollectionType(parentInfo.ObjectType)) // is a collection; so find the next ancestor
+            if (parentInfo.ObjectType.IsCollectionType()) // is a collection; so find the next ancestor
                 return FindAncestorLoaderLevel(parentInfo, level, out ancestorIsCollection);
 
             ancestorIsCollection = false;
@@ -4406,7 +4083,7 @@ namespace CslaGenerator.CodeGen
         /*private string CheckNotUndoable(ChildProperty prop, CslaObjectInfo info)
         {
             var response = string.Empty;
-            if (!prop.Undoable && IsEditableType(info.ObjectType))
+            if (!prop.Undoable && TypeHelper.IsEditableType(info.ObjectType))
                 response = "[NotUndoable]" + Environment.NewLine + "        ";
 
             return response;
@@ -4440,7 +4117,7 @@ namespace CslaGenerator.CodeGen
         {
             var childInfo = info.Parent.CslaObjects.Find(prop.TypeName);
 
-            if (IsEditableType(info.ObjectType) && IsEditableType(childInfo.ObjectType))
+            if (info.ObjectType.IsEditableType() && childInfo.ObjectType.IsEditableType())
                 return ChildLazyLoadManagedEditable(info, prop);
 
             return ChildLazyLoadManagedReadOnly(info, prop);
@@ -4873,7 +4550,7 @@ namespace CslaGenerator.CodeGen
             var isParentCollection = false;
             var parentInfo = info.Parent.CslaObjects.Find(info.ParentType);
             if (parentInfo != null)
-                isParentCollection = IsCollectionType(parentInfo.ObjectType);
+                isParentCollection = parentInfo.ObjectType.IsCollectionType();
 
             if (isParentCollection)
             {
@@ -4930,12 +4607,7 @@ namespace CslaGenerator.CodeGen
         {
             var response = string.Empty;
 
-            var isReadOnly = false;
-
-            if (uowProp.ReadOnly)
-            {
-                isReadOnly = true;
-            }
+            bool isReadOnly = uowProp.ReadOnly;
 
             if (uowProp.DeclarationMode == PropertyDeclaration.Managed)
             {
@@ -4974,92 +4646,10 @@ namespace CslaGenerator.CodeGen
         {
             var targetInfo = info.Parent.CslaObjects.Find(uowProp.TypeName);
             var isGetter = info.IsGetter;
-            if (!IsEditableType(targetInfo.ObjectType))
+            if (!targetInfo.ObjectType.IsEditableType())
                 isGetter = true;
 
             return isGetter;
-        }
-
-        #endregion
-
-        #region SimpleAudit
-
-        public bool UseSimpleAuditTrail(CslaObjectInfo info)
-        {
-            if (!String.IsNullOrEmpty(info.Parent.Params.CreationDateColumn) ||
-                !String.IsNullOrEmpty(info.Parent.Params.CreationUserColumn) ||
-                !String.IsNullOrEmpty(info.Parent.Params.ChangedDateColumn) ||
-                !String.IsNullOrEmpty(info.Parent.Params.ChangedUserColumn))
-            {
-                foreach (var valueProperty in info.GetAllValueProperties())
-                {
-                    if (valueProperty.Name == info.Parent.Params.CreationDateColumn ||
-                        valueProperty.Name == info.Parent.Params.CreationUserColumn ||
-                        valueProperty.Name == info.Parent.Params.ChangedDateColumn ||
-                        valueProperty.Name == info.Parent.Params.ChangedUserColumn)
-                        return true;
-                }
-            }
-            return false;
-        }
-
-        public static bool IsCreationDateColumnPresent(CslaObjectInfo info)
-        {
-            foreach (var valueProperty in info.GetAllValueProperties())
-            {
-                if (valueProperty.Name == info.Parent.Params.CreationDateColumn)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        public static bool IsCreationUserColumnPresent(CslaObjectInfo info)
-        {
-            foreach (var valueProperty in info.GetAllValueProperties())
-            {
-                if (valueProperty.Name == info.Parent.Params.CreationUserColumn)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        public static bool IsChangedDateColumnPresent(CslaObjectInfo info)
-        {
-            foreach (var valueProperty in info.GetAllValueProperties())
-            {
-                if (valueProperty.Name == info.Parent.Params.ChangedDateColumn)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        public static bool IsChangedUserColumnPresent(CslaObjectInfo info)
-        {
-            foreach (var valueProperty in info.GetAllValueProperties())
-            {
-                if (valueProperty.Name == info.Parent.Params.ChangedUserColumn)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        public static string ConvertedPropertyName(CslaObjectInfo info, ValueProperty prop)
-        {
-            foreach (var convertProperty in info.ConvertValueProperties)
-            {
-                if (convertProperty.SourcePropertyName == prop.Name)
-                    return convertProperty.Name;
-            }
-
-            return string.Empty;
         }
 
         #endregion
@@ -5402,10 +4992,10 @@ namespace CslaGenerator.CodeGen
         {
             if (trialPK.Info.ChildCollectionProperties.Count > 0)
             {
-                for (int collection = 0; collection < trialPK.Info.ChildCollectionProperties.Count; collection++)
+                foreach (var property in trialPK.Info.ChildCollectionProperties)
                 {
                     var trialChildCollection = FindChildInfo(trialPK.Info,
-                        trialPK.Info.ChildCollectionProperties[collection].TypeName);
+                        property.TypeName);
                     var trialChildCollectionItem =
                         trialChildCollection.Parent.CslaObjects.Find(trialChildCollection.ItemType);
                     foreach (var trialChildCollectionItemProp in trialChildCollectionItem.ValueProperties)
@@ -5509,18 +5099,17 @@ namespace CslaGenerator.CodeGen
             var eventList = new List<string>();
 
             if (HasDataPortalCreate(info) &&
-                ((IsEditableType(info.ObjectType) &&
-                  IsChildType(info.ObjectType)) ||
+                ((info.ObjectType.IsEditableType() &&
+                  info.ObjectType.IsChildType()) ||
                  info.ObjectType == CslaObjectType.EditableRoot ||
                  info.ObjectType == CslaObjectType.DynamicEditableRoot))
             {
                 eventList.Add("Create");
             }
 
-            if (
-                (HasDataPortalDelete(info) &&
-                 ((IsEditableType(info.ObjectType) &&
-                   IsChildType(info.ObjectType)) ||
+            if ((HasDataPortalDelete(info) &&
+                 ((info.ObjectType.IsEditableType() &&
+                   info.ObjectType.IsChildType()) ||
                   info.ObjectType == CslaObjectType.EditableRoot ||
                   info.ObjectType == CslaObjectType.DynamicEditableRoot))
                 ||
@@ -5542,21 +5131,21 @@ namespace CslaGenerator.CodeGen
                 eventList.AddRange(new[] {"FetchPre", "FetchPost"});
             }
 
-            if (!IsCollectionType(info.ObjectType) &&
+            if (!info.ObjectType.IsCollectionType() &&
                 info.ObjectType != CslaObjectType.NameValueList)
             {
                 eventList.Add("FetchRead");
             }
 
-            if (IsEditableType(info.ObjectType) &&
-                !IsCollectionType(info.ObjectType) &&
+            if (info.ObjectType.IsEditableType() &&
+                !info.ObjectType.IsCollectionType() &&
                 info.GenerateDataPortalUpdate)
             {
                 eventList.AddRange(new[] {"UpdatePre", "UpdatePost"});
             }
 
-            if (IsEditableType(info.ObjectType) &&
-                !IsCollectionType(info.ObjectType) &&
+            if (info.ObjectType.IsEditableType() &&
+                !info.ObjectType.IsCollectionType() &&
                 info.GenerateDataPortalInsert)
             {
                 eventList.AddRange(new[] {"InsertPre", "InsertPost"});
@@ -5917,8 +5506,8 @@ namespace CslaGenerator.CodeGen
         {
             var result = false;
             if (CurrentUnit.GenerationParams.GenerateSilverlight4 &&
-                IsObjectType(info.ObjectType) &&
-                !IsReadOnlyType(info.ObjectType))
+                info.ObjectType.IsObjectType() &&
+                !info.ObjectType.IsReadOnlyType())
             {
                 foreach (var crit in info.CriteriaObjects)
                 {

@@ -382,7 +382,7 @@ namespace CslaGenerator.Metadata
             var entityCslaObject = _cslaObjects.Find(entity.ObjectName);
             if (entityCslaObject != null)
             {
-                if (CslaTemplateHelperCS.IsNotRootType(entityCslaObject))
+                if (entityCslaObject.IsNotRootType())
                 {
                     // re-fill LoadParameters with child criteria
                     child.LoadParameters.Clear();
@@ -828,7 +828,7 @@ namespace CslaGenerator.Metadata
                             var info = new CslaObjectInfo();
                             var newProp = new ValueProperty();
                             newProp.Name = prop.Name;
-                            newProp.PropertyType = TypeHelper.GetTypeCodeEx(col.ManagedType);
+                            newProp.PropertyType = col.ManagedType.GetTypeCodeEx();
                             var currentFactory = new ObjectFactory(_currentUnit, info);
                             currentFactory.SetValuePropertyInfo(_dbObject, _resultSet, col, newProp);
                             return newProp;

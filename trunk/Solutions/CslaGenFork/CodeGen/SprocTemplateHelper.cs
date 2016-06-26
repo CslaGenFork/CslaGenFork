@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using CodeSmith.Engine;
@@ -83,7 +84,7 @@ namespace CslaGenerator.CodeGen
         public void Init(CslaObjectInfo info)
         {
             _topLevelObject = info;
-            if (IsCollectionType(_topLevelObject.ObjectType))
+            if (_topLevelObject.ObjectType.IsCollectionType())
             {
                 _topLevelCollectiontHasNoGetParams = true;
                 foreach (var crit in info.CriteriaObjects)
@@ -99,64 +100,6 @@ namespace CslaGenerator.CodeGen
         }
 
         #region Accessories
-
-        public static string GetFkParameterNameForParentProperty(CslaObjectInfo info, ValueProperty parentProperty)
-        {
-            var parameterName = GetFkColumnNameForParentProperty(info, parentProperty);
-            if (parameterName == string.Empty)
-                parameterName = parentProperty.ParameterName;
-
-            return parameterName;
-        }
-
-        private static string GetFkColumnNameForParentProperty(CslaObjectInfo info, ValueProperty parentProperty)
-        {
-            var parentSchema = parentProperty.DbBindColumn.SchemaName;
-            var parentTable = parentProperty.DbBindColumn.ObjectName;
-            var parentColumn = parentProperty.DbBindColumn.Column;
-
-            var objectTables = new List<IResultObject>();
-            var tableNames = new List<string>();
-            foreach (var property in info.ValueProperties)
-            {
-                if (property.DbBindColumn != null)
-                {
-                    var table = property.DbBindColumn.DatabaseObject;
-                    if (table != null && !tableNames.Contains(table.ObjectName))
-                    {
-                        objectTables.Add((IResultObject) property.DbBindColumn.DatabaseObject);
-                        tableNames.Add(table.ObjectName);
-                    }
-                }
-            }
-
-            foreach (var table in objectTables)
-            {
-                foreach (var column in table.Columns)
-                {
-                    if (column.FKConstraint != null)
-                    {
-                        if (parentSchema == column.FKConstraint.PKTable.ObjectSchema ||
-                            parentTable == column.FKConstraint.PKTable.ObjectName)
-                        {
-                            foreach (var pkColumn in column.FKConstraint.Columns)
-                            {
-                                if (pkColumn.PKColumn == parentColumn)
-                                {
-                                    // if it's the same column name, use the parameter name
-                                    if (pkColumn.PKColumn.ColumnName == column.ColumnName)
-                                        return string.Empty;
-
-                                    return column.ColumnName;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            return string.Empty;
-        }
 
         public string GetSchema(IResultObject table, bool fullSchema)
         {
@@ -315,7 +258,7 @@ namespace CslaGenerator.CodeGen
 
         public string GetSelect(CslaObjectInfo info, Criteria crit, bool includeParentObjects, bool isCollectionSearchWhereClause, int level, bool dontInnerJoinUp)
         {
-            var collType = IsCollectionType(info.ObjectType);
+            var collType = info.ObjectType.IsCollectionType();
             if (collType)
                 info = FindChildInfo(info, info.ItemType);
 
@@ -368,7 +311,7 @@ namespace CslaGenerator.CodeGen
         public string GetChildSelects(CslaObjectInfo info, Criteria crit, bool isCollectionSearchWhereClause, int level, bool dontInnerJoinUp)
         {
             level++;
-            if (IsCollectionType(info.ObjectType))
+            if (info.ObjectType.IsCollectionType())
                 info = FindChildInfo(info, info.ItemType);
 
             var sb = new StringBuilder();
@@ -397,7 +340,7 @@ namespace CslaGenerator.CodeGen
         {
             var result = string.Empty;
             level++;
-            if (IsCollectionType(info.ObjectType))
+            if (info.ObjectType.IsCollectionType())
                 info = FindChildInfo(info, info.ItemType);
 
             foreach (var childProp in info.GetAllChildProperties())
@@ -871,7 +814,7 @@ namespace CslaGenerator.CodeGen
             var tables = new List<IResultObject>();
             var allValueProps = new ValuePropertyCollection();
 
-            if (!IsCollectionType(info.ObjectType))
+            if (!info.ObjectType.IsCollectionType())
                 allValueProps = info.GetAllValueProperties();
             else
             {
@@ -905,7 +848,7 @@ namespace CslaGenerator.CodeGen
             //var tables = new List<IResultObject>();
             var allValueProps = new ValuePropertyCollection();
 
-            if (!IsCollectionType(info.ObjectType))
+            if (!info.ObjectType.IsCollectionType())
                 allValueProps = info.GetAllValueProperties();
             else
             {
@@ -1075,9 +1018,9 @@ namespace CslaGenerator.CodeGen
 
         public List<IResultObject> GetTablesParentProperties(Criteria crit, CslaObjectInfo childInfo, CslaObjectInfo topObjectInfo, bool parentFound, bool excludeCriteria)
         {
-            var isRootOrRootItem = CslaTemplateHelperCS.IsRootOrRootItem(childInfo);
+            var isRootOrRootItem = childInfo.IsRootOrRootItem();
             var parentInsertOnly = false;
-            if (CslaTemplateHelperCS.CanHaveParentProperties(childInfo))
+            if (childInfo.CanHaveParentProperties())
                 parentInsertOnly = childInfo.ParentInsertOnly;
 
             var tablesCol = new List<IResultObject>();
@@ -1087,14 +1030,14 @@ namespace CslaGenerator.CodeGen
                 var parentInfo = childInfo.FindParentObject();
                 if (parentInfo != null)
                 {
-                    tablesCol.AddRange(GetTablesParentProperties(crit, parentInfo, topObjectInfo, parentInfo == topObjectInfo));
+                    tablesCol.AddRange(GetTablesParentProperties(crit, parentInfo, topObjectInfo, ReferenceEquals(parentInfo, topObjectInfo)));
                 }
 
                 if (!isRootOrRootItem)
                 {
                     parentInfo = topObjectInfo.Parent.CslaObjects.Find(topObjectInfo.ParentType);
                     if (parentInfo != null)
-                        isRootOrRootItem = CslaTemplateHelperCS.IsRootType(parentInfo);
+                        isRootOrRootItem = parentInfo.IsRootType();
                 }
             }
 
@@ -1409,7 +1352,7 @@ namespace CslaGenerator.CodeGen
             foreach (var cp in info.GetAllChildProperties())
             {
                 var childInfo = FindChildInfo(info, cp.TypeName);
-                if (IsCollectionType(childInfo.ObjectType))
+                if (childInfo.ObjectType.IsCollectionType())
                 {
                     var ci = FindChildInfo(info, cp.TypeName);
                     if (ci != null)
@@ -1443,7 +1386,7 @@ namespace CslaGenerator.CodeGen
             return list.ToArray();
         }
 
-        public bool IsStringType(DbType dbType)
+        public static bool IsStringType(DbType dbType)
         {
             if (dbType == DbType.String || dbType == DbType.StringFixedLength ||
                 dbType == DbType.AnsiString || dbType == DbType.AnsiStringFixedLength)
@@ -1569,7 +1512,7 @@ namespace CslaGenerator.CodeGen
             var sb = new StringBuilder();
             List<IResultObject> tablesCol;
 
-            if (CslaTemplateHelperCS.CanHaveParentProperties(info) && !info.ParentInsertOnly)
+            if (info.CanHaveParentProperties() && !info.ParentInsertOnly)
                 tablesCol = GetTablesParentProperties(crit, info, info, true, true);
             else
                 tablesCol = GetTables(crit, info, false, false, false);
@@ -1648,14 +1591,16 @@ namespace CslaGenerator.CodeGen
             if (!string.IsNullOrEmpty(Info.Parent.Params.SpBoolSoftDeleteColumn)
                 && !ignoreFilterEnabled)
             {
-                for (var col = 0; col < table.Columns.Count; col++)
+                /*for (var col = 0; col < table.Columns.Count; col++)
                 {
                     if (table.Columns[col].ColumnName == Info.Parent.Params.SpBoolSoftDeleteColumn &&
                         table.Columns[col].DbType == DbType.Boolean)
                     {
                         return true;
                     }
-                }
+                }*/
+
+                return table.Columns.Any(t => t.ColumnName == Info.Parent.Params.SpBoolSoftDeleteColumn && t.DbType == DbType.Boolean);
             }
 
             return false;
@@ -1679,7 +1624,7 @@ namespace CslaGenerator.CodeGen
 
         private bool UseIntSoftDelete(IResultObject table)
         {
-            for (var col = 0; col < table.Columns.Count; col++)
+            /*for (var col = 0; col < table.Columns.Count; col++)
             {
                 if (table.Columns[col].ColumnName == Info.Parent.Params.SpIntSoftDeleteColumn &&
                     (table.Columns[col].DbType == DbType.Int16 ||
@@ -1688,7 +1633,9 @@ namespace CslaGenerator.CodeGen
                     return true;
             }
 
-            return false;
+            return false;*/
+
+            return table.Columns.Any(t => t.ColumnName == Info.Parent.Params.SpIntSoftDeleteColumn && (t.DbType == DbType.Int16 || t.DbType == DbType.Int32 || t.DbType == DbType.Int64));
         }
 
         #endregion

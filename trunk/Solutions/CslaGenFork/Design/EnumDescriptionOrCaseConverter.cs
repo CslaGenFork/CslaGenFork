@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Globalization;
-using CslaGenerator.CodeGen;
+using CslaGenerator.Util;
 
 namespace CslaGenerator.Design
 {

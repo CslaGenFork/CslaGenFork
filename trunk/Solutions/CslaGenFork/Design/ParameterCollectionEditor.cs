@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Drawing.Design;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
-using CslaGenerator.CodeGen;
 using CslaGenerator.Metadata;
 using CslaGenerator.Util;
 
@@ -72,11 +71,11 @@ namespace CslaGenerator.Design
                 foreach (var param in paramColl)
                 {
                     var key = param.Criteria.Name + "." + param.Property.Name;
-                    for (var entry = 0; entry < _lstProperties.Items.Count; entry++)
+                    foreach (var entry in _lstProperties.Items)
                     {
-                        if (key == ((DictionaryEntry)_lstProperties.Items[entry]).Key.ToString())
+                        if (key == ((DictionaryEntry)entry).Key.ToString())
                         {
-                            var val = (Parameter)((DictionaryEntry)_lstProperties.Items[entry]).Value;
+                            var val = (Parameter)((DictionaryEntry)entry).Value;
                             _lstProperties.SelectedItems.Add(new DictionaryEntry(key, val));
                         }
                     }

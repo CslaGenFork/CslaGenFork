@@ -13,7 +13,7 @@ namespace CslaGenerator.Metadata
 {
     public class ObjectFactory
     {
-        CslaGeneratorUnit _currentUnit;
+        readonly CslaGeneratorUnit _currentUnit;
         CslaObjectInfo _currentCslaObject;
 
         #region Constructors
@@ -92,9 +92,11 @@ namespace CslaGenerator.Metadata
         /// <param name="selectedColumns">The selected columns.</param>
         /// <param name="createDefaultCriteria">If true, it calls AddDefaultCriteriaAndParameters() automatically</param>
         /// <param name="askConfirmation">if set to <c>true</c> [ask confirmation].</param>
-        public void AddProperties(CslaObjectInfo currentCslaObject, IDataBaseObject obj, IResultSet rs, IList<IColumnInfo> selectedColumns, bool createDefaultCriteria, bool askConfirmation)
+        public void AddProperties(CslaObjectInfo currentCslaObject, IDataBaseObject obj, IResultSet rs,
+            IList<IColumnInfo> selectedColumns, bool createDefaultCriteria, bool askConfirmation)
         {
-            AddProperties(currentCslaObject, obj, rs, selectedColumns, createDefaultCriteria, askConfirmation, string.Empty);
+            AddProperties(currentCslaObject, obj, rs, selectedColumns, createDefaultCriteria, askConfirmation,
+                string.Empty);
         }
 
         /// <summary>
@@ -107,7 +109,8 @@ namespace CslaGenerator.Metadata
         /// <param name="createDefaultCriteria">If true, it calls AddDefaultCriteriaAndParameters() automatically</param>
         /// <param name="askConfirmation">if set to <c>true</c> [ask confirmation].</param>
         /// <param name="getSprocName">Name of the get sproc.</param>
-        public void AddProperties(CslaObjectInfo currentCslaObject, IDataBaseObject obj, IResultSet rs, IList<IColumnInfo> selectedColumns, bool createDefaultCriteria, bool askConfirmation, string getSprocName)
+        public void AddProperties(CslaObjectInfo currentCslaObject, IDataBaseObject obj, IResultSet rs,
+            IList<IColumnInfo> selectedColumns, bool createDefaultCriteria, bool askConfirmation, string getSprocName)
         {
             _currentCslaObject = currentCslaObject;
             AddProperties(obj, rs, selectedColumns, createDefaultCriteria, askConfirmation, getSprocName);
@@ -121,7 +124,8 @@ namespace CslaGenerator.Metadata
         /// <param name="selectedColumns">The selected columns.</param>
         /// <param name="createDefaultCriteria">If true, it calls AddDefaultCriteriaAndParameters() automatically</param>
         /// <param name="askConfirmation">if set to <c>true</c> [ask confirmation].</param>
-        public void AddProperties(IDataBaseObject obj, IResultSet rs, IList<IColumnInfo> selectedColumns, bool createDefaultCriteria, bool askConfirmation)
+        public void AddProperties(IDataBaseObject obj, IResultSet rs, IList<IColumnInfo> selectedColumns,
+            bool createDefaultCriteria, bool askConfirmation)
         {
             AddProperties(obj, rs, selectedColumns, createDefaultCriteria, askConfirmation, string.Empty);
         }
@@ -135,7 +139,8 @@ namespace CslaGenerator.Metadata
         /// <param name="createDefaultCriteria">If true, it calls AddDefaultCriteriaAndParameters() automatically</param>
         /// <param name="askConfirmation">if set to <c>true</c> [ask confirmation].</param>
         /// <param name="getSprocName">Name of the get sproc.</param>
-        public void AddProperties(IDataBaseObject obj, IResultSet rs, IList<IColumnInfo> selectedColumns, bool createDefaultCriteria, bool askConfirmation, string getSprocName)
+        public void AddProperties(IDataBaseObject obj, IResultSet rs, IList<IColumnInfo> selectedColumns,
+            bool createDefaultCriteria, bool askConfirmation, string getSprocName)
         {
             if (_currentCslaObject == null || selectedColumns.Count == 0)
                 return;
@@ -164,7 +169,7 @@ namespace CslaGenerator.Metadata
 
                 newProp.Name = propertyName;
                 newProp.Summary = col.ColumnDescription;
-                newProp.PropertyType = TypeHelper.GetTypeCodeEx(col.ManagedType);
+                newProp.PropertyType = col.ManagedType.GetTypeCodeEx();
                 SetValuePropertyInfo(obj, rs, col, newProp);
                 if (newProp.DbBindColumn.ColumnOriginType != ColumnOriginType.Table)
                     origin = newProp.DbBindColumn.ColumnOriginType;
@@ -180,8 +185,8 @@ namespace CslaGenerator.Metadata
             {
                 var msg = new StringBuilder();
                 msg.Append("The properties listed below are missing.\r\n\r\n" +
-                    "Do you want to add the following properties:" +
-                    Environment.NewLine);
+                           "Do you want to add the following properties:" +
+                           Environment.NewLine);
                 foreach (var valueProperty in addedProps)
                 {
                     msg.AppendFormat(" - {0}.{1}\r\n", _currentCslaObject.ObjectName, valueProperty.Name);
@@ -229,14 +234,18 @@ namespace CslaGenerator.Metadata
             {
                 _currentCslaObject.GenerateSprocs = false;
                 sb.Append(Environment.NewLine);
-                sb.Append("Note: \"Generate stored procedures\" was set to false because the origin of the columns is a Stored Procedure result set." + Environment.NewLine);
+                sb.Append(
+                    "Note: \"Generate stored procedures\" was set to false because the origin of the columns is a Stored Procedure result set." +
+                    Environment.NewLine);
 
                 var parent = _currentCslaObject.Parent.CslaObjects.Find(_currentCslaObject.ParentType);
                 if (parent != null)
                 {
                     parent.GenerateSprocs = false;
                     parent.ContainsItem = false;
-                    sb.Append("Note: \"Use Contains Methods\" was set to false because there is no defined Primary Key property." + Environment.NewLine);
+                    sb.Append(
+                        "Note: \"Use Contains Methods\" was set to false because there is no defined Primary Key property." +
+                        Environment.NewLine);
                 }
             }
 
@@ -336,14 +345,14 @@ namespace CslaGenerator.Metadata
                 if (destination.PropertyType == TypeCodeEx.SmartDate)
                 {
                     destination.DefaultValue = _currentUnit.Params.LogDateAndTime
-                                                   ? "new SmartDate(" + GetNowValue(TypeCodeEx.DateTime) + ")"
-                                                   : "new SmartDate(DateTime.Today)";
+                        ? "new SmartDate(" + GetNowValue(TypeCodeEx.DateTime) + ")"
+                        : "new SmartDate(DateTime.Today)";
                 }
                 else
                 {
                     destination.DefaultValue = _currentUnit.Params.LogDateAndTime
-                                                   ? GetNowValue(destination.PropertyType)
-                                                   : "DateTime.Today";
+                        ? GetNowValue(destination.PropertyType)
+                        : "DateTime.Today";
                 }
             }
             else if (_currentUnit.Params.CreationUserColumn == p.ColumnName)
@@ -357,7 +366,7 @@ namespace CslaGenerator.Metadata
             {
                 destination.ReadOnly = true;
                 destination.PropSetAccessibility = AccessorVisibility.Default;
-                if (CslaTemplateHelperCS.IsCreationDateColumnPresent(_currentCslaObject))
+                if (_currentCslaObject.IsCreationDateColumnPresent())
                 {
                     destination.DefaultValue = "$" + _currentUnit.Params.CreationDateColumn;
                 }
@@ -366,14 +375,14 @@ namespace CslaGenerator.Metadata
                     if (destination.PropertyType == TypeCodeEx.SmartDate)
                     {
                         destination.DefaultValue = _currentUnit.Params.LogDateAndTime
-                                                       ? "new SmartDate(" + GetNowValue(TypeCodeEx.DateTime) + ")"
-                                                       : "new SmartDate(DateTime.Today)";
+                            ? "new SmartDate(" + GetNowValue(TypeCodeEx.DateTime) + ")"
+                            : "new SmartDate(DateTime.Today)";
                     }
                     else
                     {
                         destination.DefaultValue = _currentUnit.Params.LogDateAndTime
-                                                       ? GetNowValue(destination.PropertyType)
-                                                       : "DateTime.Today";
+                            ? GetNowValue(destination.PropertyType)
+                            : "DateTime.Today";
                     }
                 }
             }
@@ -381,7 +390,7 @@ namespace CslaGenerator.Metadata
             {
                 destination.ReadOnly = true;
                 destination.PropSetAccessibility = AccessorVisibility.Default;
-                if (CslaTemplateHelperCS.IsCreationUserColumnPresent(_currentCslaObject))
+                if (_currentCslaObject.IsCreationUserColumnPresent())
                 {
                     destination.DefaultValue = "$" + _currentUnit.Params.CreationUserColumn;
                 }
@@ -391,9 +400,9 @@ namespace CslaGenerator.Metadata
                 }
             }
             else if (_currentUnit.Params.DatesDefaultStringWithTypeConversion &&
-                (destination.PropertyType == TypeCodeEx.SmartDate ||
-                destination.PropertyType == TypeCodeEx.DateTime ||
-                destination.PropertyType == TypeCodeEx.DateTimeOffset))
+                     (destination.PropertyType == TypeCodeEx.SmartDate ||
+                      destination.PropertyType == TypeCodeEx.DateTime ||
+                      destination.PropertyType == TypeCodeEx.DateTimeOffset))
             {
                 destination.BackingFieldType = destination.PropertyType;
                 destination.PropertyType = TypeCodeEx.String;
@@ -505,7 +514,7 @@ namespace CslaGenerator.Metadata
             }
 
             // Condition excludes NameValueList
-            if (CslaTemplateHelperCS.IsCollectionType(_currentCslaObject.ObjectType))
+            if (_currentCslaObject.ObjectType.IsCollectionType())
                 return;
 
             var primaryKeyProperties = new List<ValueProperty>();
@@ -544,8 +553,8 @@ namespace CslaGenerator.Metadata
                         {
                             defaultCriteria = new Criteria(_currentCslaObject);
                             defaultCriteria.Name = _currentCslaObject.ObjectType == CslaObjectType.ReadOnlyObject
-                                                       ? "CriteriaGet"
-                                                       : "Criteria";
+                                ? "CriteriaGet"
+                                : "Criteria";
                             defaultCriteria.GetOptions.Enable();
                             if (_currentCslaObject.ObjectType == CslaObjectType.EditableRoot ||
                                 _currentCslaObject.ObjectType == CslaObjectType.EditableSwitchable ||
@@ -615,12 +624,11 @@ namespace CslaGenerator.Metadata
             timestampCriteria.Name = "CriteriaTS";
             foreach (CriteriaProperty p in defaultCriteria.Properties)
             {
-                var newProp = (CriteriaProperty)ObjectCloner.CloneShallow(p);
-                newProp.DbBindColumn = (DbBindColumn)p.DbBindColumn.Clone();
+                var newProp = (CriteriaProperty) ObjectCloner.CloneShallow(p);
+                newProp.DbBindColumn = (DbBindColumn) p.DbBindColumn.Clone();
                 timestampCriteria.Properties.Add(newProp);
-
             }
-            AddPropertiesToCriteria(new ValueProperty[] { timeStampProperty }, timestampCriteria);
+            AddPropertiesToCriteria(new[] {timeStampProperty}, timestampCriteria);
             timestampCriteria.DeleteOptions.Enable();
             timestampCriteria.SetSprocNames();
             _currentCslaObject.CriteriaObjects.Add(timestampCriteria);
@@ -634,7 +642,7 @@ namespace CslaGenerator.Metadata
                 if (!crit.Properties.Contains(col.Name))
                 {
                     var p = new CriteriaProperty(col.Name, col.PropertyType);
-                    p.DbBindColumn = (DbBindColumn)col.DbBindColumn.Clone();
+                    p.DbBindColumn = (DbBindColumn) col.DbBindColumn.Clone();
                     crit.Properties.Add(p);
                 }
             }

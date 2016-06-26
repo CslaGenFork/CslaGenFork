@@ -16,7 +16,6 @@ using System.Diagnostics;
 using System.Drawing.Design;
 using System.Reflection;
 using CslaGenerator.Attributes;
-using CslaGenerator.CodeGen;
 using CslaGenerator.Metadata;
 
 namespace CslaGenerator.Util.PropertyBags
@@ -934,7 +933,7 @@ namespace CslaGenerator.Util.PropertyBags
                     // there is only a single element in the array. Ever.
                     foreach (var cslaObject in objectType)
                     {
-                        var canHaveParentProperties = CslaTemplateHelperCS.CanHaveParentProperties(cslaObject);
+                        var canHaveParentProperties = cslaObject.CanHaveParentProperties();
                         var cslaParent = new CslaObjectInfo();
 
                         if (cslaObject.ParentType != string.Empty)
@@ -965,7 +964,7 @@ namespace CslaGenerator.Util.PropertyBags
                         if (!cslaObject.IsGenericType &&
                             propertyName == "GenericArguments")
                             return false;
-                        if (CslaTemplateHelperCS.IsReadOnlyType(cslaObject.ObjectType) &&
+                        if (cslaObject.ObjectType.IsReadOnlyType() &&
                             !string.IsNullOrEmpty(cslaObject.ParentType) &&
                             (propertyName == "UseUnitOfWorkType" ||
                             propertyName == "GenerateInlineQueries"))
@@ -984,7 +983,7 @@ namespace CslaGenerator.Util.PropertyBags
                             propertyName == "CommandTimeout")
                             return false;
                         if (!(cslaObject.ObjectType == CslaObjectType.EditableChild &&
-                            (cslaParent == null || CslaTemplateHelperCS.IsCollectionType(cslaParent.ObjectType))) &&
+                            (cslaParent == null || cslaParent.ObjectType.IsCollectionType())) &&
                             propertyName == "RemoveItem")
                             return false;
                         if (!canHaveParentProperties &&

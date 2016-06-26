@@ -4,8 +4,8 @@ using System.Drawing.Design;
 using System.IO;
 using System.Xml.Serialization;
 using CslaGenerator.Attributes;
-using CslaGenerator.CodeGen;
 using CslaGenerator.Design;
+using CslaGenerator.Util;
 
 namespace CslaGenerator.Metadata
 {
@@ -15,7 +15,6 @@ namespace CslaGenerator.Metadata
     [Serializable]
     public class UnitOfWorkProperty : Property
     {
-
         #region Private Fields
 
         private PropertyDeclaration _declarationMode = PropertyDeclaration.Managed;
@@ -36,7 +35,7 @@ namespace CslaGenerator.Metadata
 
         [Category("01. Definition")]
         [Description("The type (class) for this property.")]
-        [Editor(typeof (UnitOfWorkTypeEditor), typeof (UITypeEditor))]
+        [Editor(typeof(UnitOfWorkTypeEditor), typeof(UITypeEditor))]
         [UserFriendlyName("Type Name")]
         public string TypeName
         {
@@ -63,14 +62,16 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Definition")]
-        [Description("Whether this type can can create objects. The value isfalse for ReadOnly and NameValueList types; otherwise is true.")]
+        [Description(
+            "Whether this type can can create objects. The value isfalse for ReadOnly and NameValueList types; otherwise is true."
+            )]
         [UserFriendlyName("Creates Objects")]
         [ReadOnly(true)]
         public bool CreatesObject
         {
             get
             {
-                if (_info != null && !CslaTemplateHelperCS.IsEditableType(_info.ObjectType))
+                if (_info != null && !_info.ObjectType.IsEditableType())
                     return false;
 
                 return true;
@@ -86,6 +87,8 @@ namespace CslaGenerator.Metadata
         }
 
         #endregion
+
+        #region Hidden Properties
 
         // Hide ParameterName
         [Browsable(false)]
@@ -108,11 +111,13 @@ namespace CslaGenerator.Metadata
             get { return false; }
         }
 
+        #endregion
+
         public override object Clone()
         {
             using (var buffer = new MemoryStream())
             {
-                var ser = new XmlSerializer(typeof (UnitOfWorkProperty));
+                var ser = new XmlSerializer(typeof(UnitOfWorkProperty));
                 ser.Serialize(buffer, this);
                 buffer.Position = 0;
                 return ser.Deserialize(buffer);

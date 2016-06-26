@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Drawing.Design;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
-using CslaGenerator.CodeGen;
 using CslaGenerator.Metadata;
 using CslaGenerator.Util;
 
@@ -40,7 +39,7 @@ namespace CslaGenerator.Design
                         var accept = false;
                         if (o.ObjectType == CslaObjectType.UnitOfWork)
                         {
-                            if (CslaTemplateHelperCS.IsReadOnlyType(obj.ObjectType))
+                            if (obj.ObjectType.IsReadOnlyType())
                             {
                                 if (o.UnitOfWorkType == UnitOfWorkFunction.Getter)
                                     accept = true;
