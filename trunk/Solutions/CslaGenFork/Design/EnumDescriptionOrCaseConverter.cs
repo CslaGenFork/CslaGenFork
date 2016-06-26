@@ -35,7 +35,7 @@ namespace CslaGenerator.Design
             if (dna != null)
                 return dna.Description;
 
-            var description = value.ToString().AddBeforeUpperCase();
+            var description = value.ToString().AddSpaceBeforeUpperCase();
             if (!string.IsNullOrEmpty(description))
                 return description;
 
@@ -56,7 +56,7 @@ namespace CslaGenerator.Design
                 if ((dna != null) && ((string) value == dna.Description))
                     return Enum.Parse(_enumType, fi.Name);
 
-                var description = fi.Name.AddBeforeUpperCase();
+                var description = fi.Name.AddSpaceBeforeUpperCase();
                 if ((!string.IsNullOrEmpty(description)) && (string) value == description)
                     return Enum.Parse(_enumType, fi.Name);
             }

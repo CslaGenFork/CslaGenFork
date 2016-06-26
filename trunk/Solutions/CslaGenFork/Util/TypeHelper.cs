@@ -356,7 +356,7 @@ namespace CslaGenerator.Util
             return result;
         }
 
-        public static string AddBeforeUpperCase(this string text)
+        public static string AddSpaceBeforeUpperCase(this string text)
         {
             //http://stackoverflow.com/questions/272633/add-spaces-before-capital-letters
 
