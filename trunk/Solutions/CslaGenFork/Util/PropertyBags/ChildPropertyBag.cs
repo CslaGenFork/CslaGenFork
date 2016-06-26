@@ -16,7 +16,6 @@ using System.Diagnostics;
 using System.Drawing.Design;
 using System.Reflection;
 using CslaGenerator.Attributes;
-using CslaGenerator.CodeGen;
 using CslaGenerator.Metadata;
 
 namespace CslaGenerator.Util.PropertyBags
@@ -638,7 +637,7 @@ namespace CslaGenerator.Util.PropertyBags
                 var cslaObject = (CslaObjectInfo) GeneratorController.Current.GetSelectedItem();
                 var parentInfo2 = cslaObject.Parent.CslaObjects.Find(cslaObject.ParentType);
                 if (parentInfo2 != null)
-                    isParentCollection = CslaTemplateHelperCS.IsCollectionType(parentInfo2.ObjectType);
+                    isParentCollection = parentInfo2.ObjectType.IsCollectionType();
 
                 var authorization =
                     GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.None ||

@@ -4,8 +4,8 @@ using System.ComponentModel.Design;
 using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
-using CslaGenerator.CodeGen;
 using CslaGenerator.Metadata;
+using CslaGenerator.Util;
 using CslaGenerator.Util.PropertyBags;
 
 namespace CslaGenerator.Design
@@ -23,7 +23,7 @@ namespace CslaGenerator.Design
         private CollectionForm _form;
         private PropertyGrid _propGrid;
         private Type _collectionType;
-        private Dictionary<string, Button> exitButton = new Dictionary<string, Button>();
+        private readonly Dictionary<string, Button> _exitButton = new Dictionary<string, Button>();
         private static string _parentValProp = string.Empty;
         private static string _parentProperty;
 
@@ -87,7 +87,8 @@ namespace CslaGenerator.Design
                                     if (tableControl is Button)
                                     {
                                         var button = (Button) tableControl;
-                                        if (button.Text.IndexOf("Add") > 0 || button.Text.IndexOf("Remove") > 0)
+                                        if (button.Text.IndexOf("Add", StringComparison.InvariantCulture) > 0 ||
+                                            button.Text.IndexOf("Remove", StringComparison.InvariantCulture) > 0)
                                             button.Click += OnItemAddedOrRemoved;
                                     }
                                 }
@@ -125,7 +126,7 @@ namespace CslaGenerator.Design
                                             var button = (Button) tableControl;
                                             if (button.Name == "cancelButton" || button.Name == "okButton")
                                             {
-                                                exitButton[button.Name] = button;
+                                                _exitButton[button.Name] = button;
                                                 button.Click += ExitButtonClickHandler;
                                             }
                                         }
@@ -243,7 +244,7 @@ namespace CslaGenerator.Design
 
         private void DetachExitButtonClickHandler()
         {
-            foreach (var button in exitButton)
+            foreach (var button in _exitButton)
             {
                 button.Value.Click -= ExitButtonClickHandler;
             }
@@ -465,7 +466,7 @@ namespace CslaGenerator.Design
                     }
                     if (cslaObject.ObjectType == CslaObjectType.NameValueList)
                         _form.Size = new Size(_form.Size.Width, 626);
-                    else if (CslaTemplateHelperCS.IsNotDbConsumer(cslaObject))
+                    else if (cslaObject.IsNotDbConsumer())
                         _form.Size = new Size(_form.Size.Width, _form.Size.Height - 96);
                     _form.Size = new Size(_form.Size.Width, _form.Size.Height - 16);
                     if (height < _form.Size.Height)

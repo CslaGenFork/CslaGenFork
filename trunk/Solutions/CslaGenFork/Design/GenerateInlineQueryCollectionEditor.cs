@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Drawing.Design;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
-using CslaGenerator.CodeGen;
 using CslaGenerator.Metadata;
 using CslaGenerator.Util;
 
@@ -42,7 +41,7 @@ namespace CslaGenerator.Design
                     var propColl = (List<string>)propInfo.GetValue(objinfo, null);
 
                     var obj = (CslaObjectInfo)objinfo;
-                    var fullCrud = CslaTemplateHelperCS.IsEditableType(obj.ObjectType);
+                    var fullCrud = obj.ObjectType.IsEditableType();
 
                     _lstCrudOperations.Items.Clear();
                     _lstCrudOperations.Items.Add("(None)");

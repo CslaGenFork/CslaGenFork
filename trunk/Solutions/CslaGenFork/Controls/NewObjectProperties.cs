@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
-using CslaGenerator.CodeGen;
 using CslaGenerator.Metadata;
+using CslaGenerator.Util;
 
 namespace CslaGenerator.Controls
 {
@@ -257,7 +257,7 @@ namespace CslaGenerator.Controls
                     {
                         lstBox.Items.Clear();
 
-                        if (CslaTemplateHelperCS.IsCollectionType(parentInfo.ObjectType))
+                        if (parentInfo.ObjectType.IsCollectionType())
                         {
                             lstBox.Enabled = false;
                         }

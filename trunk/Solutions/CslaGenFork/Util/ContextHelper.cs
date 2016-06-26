@@ -4,6 +4,9 @@ using CslaGenerator.Util.PropertyBags;
 
 namespace CslaGenerator.Util
 {
+    /// <summary>
+    /// Summary description for ContextHelper.
+    /// </summary>
     public class ContextHelper
     {
         public static void GetContextInstanceObject(ITypeDescriptorContext context, ref object objinfo,

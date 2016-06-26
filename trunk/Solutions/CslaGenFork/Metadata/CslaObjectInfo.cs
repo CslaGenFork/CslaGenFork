@@ -7,7 +7,6 @@ using System.Linq;
 using System.Reflection;
 using System.Xml.Serialization;
 using CslaGenerator.Attributes;
-using CslaGenerator.CodeGen;
 using CslaGenerator.Design;
 using CslaGenerator.Util;
 using DBSchemaInfo.Base;
@@ -24,7 +23,7 @@ namespace CslaGenerator.Metadata
         #region Private Fields
 
         private string _objectName = "CslaObject";
-        private string _objectNamespace = String.Empty;
+        private string _objectNamespace = string.Empty;
         private ClassVisibility _classVisibility = ClassVisibility.Public;
         private bool _generate = true;
         private TransactionType _transactionType = TransactionType.None;
@@ -38,7 +37,7 @@ namespace CslaGenerator.Metadata
         private ConstructorVisibility _constructorVisibility = ConstructorVisibility.Default;
         private TypeInfo _inheritedType;
         private TypeInfo _inheritedTypeWinForms;
-        private string _useUnitOfWorkType = String.Empty;
+        private string _useUnitOfWorkType = string.Empty;
         private readonly ValuePropertyCollection _valueProperties = new ValuePropertyCollection();
         private readonly ChildPropertyCollection _childProperties = new ChildPropertyCollection();
         private readonly ChildPropertyCollection _childCollectionProperties = new ChildPropertyCollection();
@@ -53,21 +52,21 @@ namespace CslaGenerator.Metadata
         private PropertyCollection _toStringProperty = new PropertyCollection();
         private PropertyCollection _findMethodsParameters = new PropertyCollection();
         private bool _insertUpdateRunLocal;
-        private string _selectProcedureName = String.Empty;
-        private string _insertProcedureName = String.Empty;
-        private string _updateProcedureName = String.Empty;
-        private string _deleteProcedureName = String.Empty;
+        private string _selectProcedureName = string.Empty;
+        private string _insertProcedureName = string.Empty;
+        private string _updateProcedureName = string.Empty;
+        private string _deleteProcedureName = string.Empty;
         private bool _deleteUseTimestamp;
         private bool _removeItem = true;
         private bool _isPolymorphic;
-        private string _itemType = String.Empty;
+        private string _itemType = string.Empty;
         private bool _containsItem = true;
         private bool _uniqueItems;
-        private string _updaterType = String.Empty;
-        private string _parentType = String.Empty;
-        private string _fileName = String.Empty;
-        private string _nameColumn = String.Empty;
-        private string _valueColumn = String.Empty;
+        private string _updaterType = string.Empty;
+        private string _parentType = string.Empty;
+        private string _fileName = string.Empty;
+        private string _nameColumn = string.Empty;
+        private string _valueColumn = string.Empty;
         private bool _generateSprocs = true;
         private PropertyCollection _parentProperties = new PropertyCollection();
         private BusinessRuleCollection _businessRules = new BusinessRuleCollection();
@@ -76,10 +75,10 @@ namespace CslaGenerator.Metadata
         private AuthorizationRule _newAuthzRuleType = new AuthorizationRule();
         private AuthorizationRule _updateAuthzRuleType = new AuthorizationRule();
         private AuthorizationRule _deleteAuthzRuleType = new AuthorizationRule();
-        private string _getRoles = String.Empty;
-        private string _newRoles = String.Empty;
-        private string _updateRoles = String.Empty;
-        private string _deleteRoles = String.Empty;
+        private string _getRoles = string.Empty;
+        private string _newRoles = string.Empty;
+        private string _updateRoles = string.Empty;
+        private string _deleteRoles = string.Empty;
         private bool _parentInsertOnly;
         private bool _allowNew = true;
         private bool _allowEdit = true;
@@ -98,11 +97,11 @@ namespace CslaGenerator.Metadata
         private bool _singleton;
         private bool _editOnDemand;
         private bool _generateDataAccessRegion = true;
-        private string _folder = String.Empty;
+        private string _folder = string.Empty;
         private string[] _interfaces = {};
         private string[] _attributes = {};
-        private string _classSummary = String.Empty;
-        private string _classRemarks = String.Empty;
+        private string _classSummary = string.Empty;
+        private string _classRemarks = string.Empty;
         private string[] _namespaces = {};
         private bool _dataSetLoadingScheme;
         private List<string> _generateInlineQueries = new List<string>();
@@ -300,10 +299,10 @@ namespace CslaGenerator.Metadata
                     {
                         //ValidateType(_inheritedType.GetInheritedType());
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         _objectType = temp;
-                        throw e;
+                        throw;
                     }
                 }
                 OnPropertyChanged("ObjectType");
@@ -1299,7 +1298,7 @@ namespace CslaGenerator.Metadata
         public string NewRoles
         {
             get { return _newRoles; }
-            set { _newRoles = PropertyHelper.TidyAllowSpaces(value).Replace(';', ',').Trim(new[] {'!', ','}); }
+            set { _newRoles = PropertyHelper.TidyAllowSpaces(value).Replace(';', ',').Trim('!', ','); }
         }
 
         /// <summary>
@@ -1311,7 +1310,7 @@ namespace CslaGenerator.Metadata
         public string GetRoles
         {
             get { return _getRoles; }
-            set { _getRoles = PropertyHelper.TidyAllowSpaces(value).Replace(';', ',').Trim(new[] {'!', ','}); }
+            set { _getRoles = PropertyHelper.TidyAllowSpaces(value).Replace(';', ',').Trim('!', ','); }
         }
 
         /// <summary>
@@ -1323,7 +1322,7 @@ namespace CslaGenerator.Metadata
         public string UpdateRoles
         {
             get { return _updateRoles; }
-            set { _updateRoles = PropertyHelper.TidyAllowSpaces(value).Replace(';', ',').Trim(new[] {'!', ','}); }
+            set { _updateRoles = PropertyHelper.TidyAllowSpaces(value).Replace(';', ',').Trim('!', ','); }
         }
 
         /// <summary>
@@ -1335,7 +1334,7 @@ namespace CslaGenerator.Metadata
         public string DeleteRoles
         {
             get { return _deleteRoles; }
-            set { _deleteRoles = PropertyHelper.TidyAllowSpaces(value).Replace(';', ',').Trim(new[] {'!', ','}); }
+            set { _deleteRoles = PropertyHelper.TidyAllowSpaces(value).Replace(';', ',').Trim('!', ','); }
         }
 
         [Category("10. Business Rules & Authorization")]
@@ -1650,11 +1649,11 @@ namespace CslaGenerator.Metadata
 
         #region Private and Internal Methods
 
-        private ValueProperty GetValuePropertyFromInfo(PropertyInfo info)
+        /*private ValueProperty GetValuePropertyFromInfo(PropertyInfo info)
         {
             var prop = new ValueProperty();
             prop.Name = info.Name;
-            prop.PropertyType = TypeHelper.GetTypeCodeEx(info.PropertyType);
+            prop.PropertyType = info.PropertyType.GetTypeCodeEx();
 
             return prop;
         }
@@ -1673,7 +1672,7 @@ namespace CslaGenerator.Metadata
             var prop = new UnitOfWorkProperty();
             prop.Name = info.Name;
             return prop;
-        }
+        }*/
 
         internal void SetProcedureNames()
         {
@@ -1692,7 +1691,7 @@ namespace CslaGenerator.Metadata
                     + Parent.Params.SpDeleteSuffix
                     + Parent.Params.SpGeneralSuffix;
             }
-            if (CslaTemplateHelperCS.IsEditableType(_objectType))
+            if (_objectType.IsEditableType())
             {
                 _insertProcedureName =
                     Parent.Params.SpGeneralPrefix
@@ -1725,7 +1724,7 @@ namespace CslaGenerator.Metadata
 
         public int NumberOfGenericArguments()
         {
-            if (CslaTemplateHelperCS.IsCollectionType(ObjectType) ||
+            if (ObjectType.IsCollectionType() ||
                 ObjectType == CslaObjectType.NameValueList)
                 return 2;
 
@@ -1889,27 +1888,27 @@ namespace CslaGenerator.Metadata
             {
                 var childInfo = Parent.CslaObjects.Find(childProperty.TypeName);
 
-                if (!CslaTemplateHelperCS.IsReadOnlyType(childInfo.ObjectType))
+                if (!TypeHelper.IsReadOnlyType(childInfo.ObjectType))
                     myChildReadWriteProperties.Add(childProperty);
             }*/
 
             myChildReadWriteProperties.AddRange(from childProperty in _childProperties
                 let childInfo = Parent.CslaObjects.Find(childProperty.TypeName)
-                where !CslaTemplateHelperCS.IsReadOnlyType(childInfo.ObjectType)
+                where !childInfo.ObjectType.IsReadOnlyType()
                 select childProperty);
 
             /*foreach (var childCollectionProperty in _childCollectionProperties)
             {
                 var childInfo = Parent.CslaObjects.Find(childCollectionProperty.TypeName);
 
-                if (!CslaTemplateHelperCS.IsReadOnlyType(childInfo.ObjectType))
+                if (!TypeHelper.IsReadOnlyType(childInfo.ObjectType))
 
                     myChildReadWriteProperties.Add(childCollectionProperty);
             }*/
 
             myChildReadWriteProperties.AddRange(from childCollectionProperty in _childCollectionProperties
                 let childInfo = Parent.CslaObjects.Find(childCollectionProperty.TypeName)
-                where !CslaTemplateHelperCS.IsReadOnlyType(childInfo.ObjectType)
+                where !childInfo.ObjectType.IsReadOnlyType()
                 select childCollectionProperty);
 
             return myChildReadWriteProperties;

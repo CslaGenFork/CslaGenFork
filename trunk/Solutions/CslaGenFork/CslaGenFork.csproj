@@ -229,6 +229,7 @@
     <Compile Include="CodeGen\AdvancedGenerator.cs" />
     <Compile Include="CodeGen\CslaTemplateHelperCS.cs" />
     <Compile Include="CodeGen\CslaTemplateHelperVB.cs" />
+    <Compile Include="CodeGen\TemplateHelper.cs" />
     <Compile Include="CodeGen\GenerationStep.cs" />
     <Compile Include="Controls\FixXmlSchema.cs">
       <SubType>Form</SubType>
@@ -260,7 +261,6 @@
     <Compile Include="Controls\StartPage.Designer.cs">
       <DependentUpon>StartPage.cs</DependentUpon>
     </Compile>
-    <Compile Include="CodeGen\AddSpacesToString.cs" />
     <Compile Include="Design\AllPropertiesTypeEditor.cs" />
     <Compile Include="Design\AssemblyFileConverter.cs" />
     <Compile Include="Design\AssemblyObjectFileNameEditor.cs" />

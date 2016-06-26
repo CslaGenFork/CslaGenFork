@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using CodeSmith.Engine;
 using CslaGenerator.Controls;
 using CslaGenerator.Metadata;
+using CslaGenerator.Util;
 
 namespace CslaGenerator.CodeGen
 {
@@ -102,7 +103,7 @@ namespace CslaGenerator.CodeGen
         /// </summary>
         private List<InlineQuery> _inlineQueryList;
         private readonly Dictionary<string, bool?> _fileSuccess = new Dictionary<string, bool?>();
-        private readonly string _templatesDirectory = string.Empty;
+        private readonly string _templatesDirectory;
         private bool _abortRequested;
         private string _fullTemplatesPath;
         private bool _generateDatabaseClass;
@@ -117,10 +118,10 @@ namespace CslaGenerator.CodeGen
         private int _sprocSuccess;
         private int _retryCount;
         private Hashtable _templates = new Hashtable();
-        private string _codeEncoding;
-        private string _sprocEncoding;
-        private bool _overwriteExtendedFile;
-        private bool _recompileTemplates;
+        private readonly string _codeEncoding;
+        private readonly string _sprocEncoding;
+        private readonly bool _overwriteExtendedFile;
+        private readonly bool _recompileTemplates;
         private CslaGeneratorUnit _unit;
         private bool _businessError;
         private bool _currentSprocError;
@@ -291,7 +292,7 @@ namespace CslaGenerator.CodeGen
                 if (generationParams.GenerateDalInterface &&
                     generationParams.GenerateDTO &&
                     info.GenerateDataAccessRegion &&
-                    (CslaTemplateHelperCS.IsObjectType(info.ObjectType) ||
+                    (info.ObjectType.IsObjectType() ||
                      info.ObjectType == CslaObjectType.NameValueList))
                 {
                     // DTO goes into DAL Interface
@@ -589,7 +590,7 @@ namespace CslaGenerator.CodeGen
                     else
                         msg = e.Message;
 
-                    if (msg.IndexOf(@"The specified template could not be found") == 0)
+                    if (msg.IndexOf("The specified template could not be found", StringComparison.InvariantCulture) == 0)
                         msg += Environment.NewLine + Environment.NewLine + @"The templates directory path is probably empty or wrong.";
 
                     _errorReport.Add(new GenerationReport
@@ -630,7 +631,7 @@ namespace CslaGenerator.CodeGen
             {
                 var alert = MessageBox.Show(
                     objInfo.ObjectName + @" is a EditableSwitchable stereotype" + Environment.NewLine +
-                    @"and isn't supported on this release of CslaGenFork." + Environment.NewLine + Environment.NewLine + "Do you want to continue?",
+                    @"and isn't supported on this release of CslaGenFork." + Environment.NewLine + Environment.NewLine + @"Do you want to continue?",
                     @"CslaGenFork object generation", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
                 if (alert == DialogResult.Cancel)
                     result = false;
@@ -649,7 +650,7 @@ namespace CslaGenerator.CodeGen
             {
                 var alert = MessageBox.Show(
                     objInfo.ObjectName + @" is a UnitOfWork stereotype of type " + objInfo.UnitOfWorkType + Environment.NewLine +
-                    @"and isn't supported on this release of CslaGenFork." + Environment.NewLine + Environment.NewLine + "Do you want to continue?",
+                    @"and isn't supported on this release of CslaGenFork." + Environment.NewLine + Environment.NewLine + @"Do you want to continue?",
                     @"CslaGenFork object generation", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
                 if (alert == DialogResult.Cancel)
                     result = false;
@@ -1220,7 +1221,7 @@ namespace CslaGenerator.CodeGen
                 var sb = new StringBuilder();
                 for (var i = 0; i < compiler.Errors.Count; i++)
                 {
-                    sb.Append(compiler.Errors[i].ToString());
+                    sb.Append(compiler.Errors[i]);
                     sb.Append(Environment.NewLine);
                 }
                 if (compiler.Errors.Count > 0)
@@ -1672,12 +1673,12 @@ namespace CslaGenerator.CodeGen
                 {
                     dir = dir.Substring(0, dir.Length - 1);
                 }
-                else if (dir.IndexOf(@"\") == -1)
+                else if (dir.IndexOf(@"\", StringComparison.InvariantCulture) == -1)
                     throw new ArgumentException(string.Format("The output path could not be created. Check that the \"{0}\" unit exists.", dir));
 
                 try
                 {
-                    CheckDirectory(dir.Substring(0, dir.LastIndexOf(@"\")));
+                    CheckDirectory(dir.Substring(0, dir.LastIndexOf(@"\", StringComparison.InvariantCulture)));
                 }
                 catch (Exception e)
                 {
@@ -1789,7 +1790,7 @@ namespace CslaGenerator.CodeGen
 
         private static string GetFileNameWithoutExtension(string fileName)
         {
-            var index = fileName.LastIndexOf(".");
+            var index = fileName.LastIndexOf(".", StringComparison.InvariantCulture);
             if (index >= 0)
             {
                 return fileName.Substring(0, index);
@@ -1799,7 +1800,7 @@ namespace CslaGenerator.CodeGen
 
         private static string GetFileExtension(string fileName)
         {
-            var index = fileName.LastIndexOf(".");
+            var index = fileName.LastIndexOf(".", StringComparison.InvariantCulture);
             if (index >= 0)
             {
                 return fileName.Substring(index + 1);
@@ -1864,9 +1865,9 @@ namespace CslaGenerator.CodeGen
                 }
 
                 if (_fileSuccess["DataPortalHookArgs"] == null)
-                    OutputWindow.Current.AddOutputInfo(string.Format("DataPortalHookArgs class: already exists."));
+                    OutputWindow.Current.AddOutputInfo("DataPortalHookArgs class: already exists.");
                 else if (_fileSuccess["DataPortalHookArgs"] == false)
-                    OutputWindow.Current.AddOutputInfo(string.Format("DataPortalHookArgs class: failed."));
+                    OutputWindow.Current.AddOutputInfo("DataPortalHookArgs class: failed.");
 
                 if (GeneratorController.Current.CurrentUnit.GenerationParams.GenerateDalInterface)
                 {
@@ -1879,9 +1880,9 @@ namespace CslaGenerator.CodeGen
                     else if (_fileSuccess["DalFactory" + dalName] == false)
                         OutputWindow.Current.AddOutputInfo(string.Format("DalFactory" + dalName + " class: failed."));
                     if (_fileSuccess["DataNotFoundException"] == null)
-                        OutputWindow.Current.AddOutputInfo(string.Format("DataNotFoundException class: already exists."));
+                        OutputWindow.Current.AddOutputInfo("DataNotFoundException class: already exists.");
                     else if (_fileSuccess["DataNotFoundException"] == false)
-                        OutputWindow.Current.AddOutputInfo(string.Format("DataNotFoundException class: failed."));
+                        OutputWindow.Current.AddOutputInfo("DataNotFoundException class: failed.");
                 }
 
                 if (GeneratorController.Current.CurrentUnit.GenerationParams.GenerateDalObject)

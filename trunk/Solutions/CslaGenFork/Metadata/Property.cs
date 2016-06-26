@@ -115,7 +115,7 @@ namespace CslaGenerator.Metadata
         {
             get
             {
-                if (TypeHelper.IsNullAllowedOnType(_propertyType))
+                if (_propertyType.IsNullAllowedOnType())
                     return _nullable;
 
                 return false;
@@ -171,7 +171,7 @@ namespace CslaGenerator.Metadata
             {
                 _name = dbc.ColumnName;
                 _parameterName = dbc.ColumnName;
-                _propertyType = TypeHelper.GetTypeCodeEx(dbc.Column.ManagedType);
+                _propertyType = dbc.Column.ManagedType.GetTypeCodeEx();
             }
         }
 
