@@ -35,9 +35,9 @@ if (Info.UpdaterType != string.Empty)
             /// <param name="obj">The <%= Info.ObjectName %> instance.</param>
             public static void Register(<%= Info.ObjectName %> obj)
             {
-                var mustRegistered = _references == null;
+                var mustRegister = _references == null;
 
-                if (mustRegistered)
+                if (mustRegister)
                     _references = new List<WeakReference>();
 
                 if (<%= Info.ObjectName %>.SingleInstanceSavedHandler)
@@ -46,7 +46,7 @@ if (Info.UpdaterType != string.Empty)
                 if (!Found(obj))
                     _references.Add(new WeakReference(obj));
 
-                if (mustRegistered)
+                if (mustRegister)
                     <%= Info.UpdaterType %>.<%= Info.UpdaterType %>Saved += <%= Info.UpdaterType %>SavedHandler;
             }
 
