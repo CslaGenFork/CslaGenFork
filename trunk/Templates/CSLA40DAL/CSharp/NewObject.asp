@@ -8,9 +8,9 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
             createCriteriaCount ++;
     }
     if (createCriteriaCount == 0 &&
-        (Info.ObjectType == CslaObjectType.EditableRootCollection ||
-        Info.ObjectType == CslaObjectType.DynamicEditableRootCollection ||
-        Info.ObjectType == CslaObjectType.EditableChildCollection))
+        (Info.IsEditableRootCollection() ||
+        Info.IsDynamicEditableRootCollection() ||
+        Info.IsEditableChildCollection()))
     {
         %>
 
@@ -45,7 +45,7 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
                     strNewCritParams += FormatCamel(c.Properties[i].Name);
                     strNewComment += "/// <param name=\"" + FormatCamel(c.Properties[i].Name) + "\">The " + FormatProperty(c.Properties[i].Name) + " of the " + Info.ObjectName + " to create.</param>" + System.Environment.NewLine + new string(' ', 8);
                 }
-                if (!isChild && !c.NestedClass && c.Properties.Count > 1 && Info.ObjectType != CslaObjectType.EditableSwitchable)
+                if (!isChild && !c.NestedClass && c.Properties.Count > 1 && Info.IsNotEditableSwitchable())
                 {
                     %>
 
@@ -69,7 +69,7 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
         <%= Info.ParentType == string.Empty ? "public" : "internal" %> static <%= Info.ObjectName %> New<%= Info.ObjectName %><%= c.CreateOptions.FactorySuffix %>(<%= strNewParams %>)
         {
             <%
-                if (Info.ObjectType == CslaObjectType.EditableSwitchable)
+                if (Info.IsEditableSwitchable())
                 {
                     if (strNewCritParams.Length > 0)
                     {

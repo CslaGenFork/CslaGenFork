@@ -31,11 +31,11 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices && UseNoSilverlight())
         <Csla.RunLocal()>
         Protected Overrides Sub DataPortal_DeleteSelf()
             <%
-            if (Info.ObjectType == CslaObjectType.EditableSwitchable)
+            if (Info.IsEditableSwitchable())
             {
                 strDeleteCritParams = "False, " + strDeleteCritParams;
             }
-            if (c.Properties.Count > 1 || (Info.ObjectType == CslaObjectType.EditableSwitchable && c.Properties.Count == 1))
+            if (c.Properties.Count > 1 || (Info.IsEditableSwitchable() && c.Properties.Count == 1))
             {
                 %>
             DataPortal_Delete(new <%= c.Name %>(<%= strDeleteCritParams %>), )

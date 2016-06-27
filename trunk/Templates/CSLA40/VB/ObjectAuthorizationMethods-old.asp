@@ -18,9 +18,9 @@
             return true;
         <% } %>
         }
-    <% if (Info.ObjectType != CslaObjectType.ReadOnlyCollection &&
-            Info.ObjectType != CslaObjectType.ReadOnlyObject &&
-            Info.ObjectType != CslaObjectType.NameValueList) { %>
+    <% if (Info.IsNotReadOnlyCollection() &&
+            Info.IsNotReadOnlyObject() &&
+            Info.IsNotNameValueList()) { %>
 
         /// <summary>
         /// Checks if the role of the current user can delete a <%= Info.ObjectName %> object.

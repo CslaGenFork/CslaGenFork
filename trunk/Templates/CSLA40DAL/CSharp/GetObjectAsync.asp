@@ -5,7 +5,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
     {
         foreach (Criteria c in Info.CriteriaObjects)
         {
-            if (Info.ObjectType == CslaObjectType.UnitOfWork && Info.IsCreatorGetter && c.Properties.Count == 0)
+            if (Info.IsUnitOfWork() && Info.IsCreatorGetter && c.Properties.Count == 0)
                 continue;
             if (forceGeneration != null)
             {
@@ -16,7 +16,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
             }
             if (c.GetOptions.Factory && (generateLocal == c.GetOptions.RunLocal || useUnitOfWorkGetter))
             {
-                if (!isChild && !c.NestedClass && c.Properties.Count > 1 && Info.ObjectType != CslaObjectType.EditableSwitchable)
+                if (!isChild && !c.NestedClass && c.Properties.Count > 1 && Info.IsNotEditableSwitchable())
                 {
                     %>
 
@@ -87,11 +87,11 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
         <%= Info.ParentType == string.Empty ? "public" : "internal" %> static void Get<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>(<%= strGetParams %>)
         {
             <%
-                if (Info.ObjectType == CslaObjectType.EditableSwitchable)
+                if (Info.IsEditableSwitchable())
                 {
                     strGetCritParams = "false, " + strGetCritParams;
                 }
-                if (c.Properties.Count > 1 || (Info.ObjectType == CslaObjectType.EditableSwitchable && c.Properties.Count == 1))
+                if (c.Properties.Count > 1 || (Info.IsEditableSwitchable() && c.Properties.Count == 1))
                 {
                     if (!useUnitOfWorkGetter)
                     {

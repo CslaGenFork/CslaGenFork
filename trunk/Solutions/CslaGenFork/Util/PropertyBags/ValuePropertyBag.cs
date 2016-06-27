@@ -660,7 +660,7 @@ namespace CslaGenerator.Util.PropertyBags
                         GeneratorController.Current.CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider) &&
                         propertyName == "AuthzProvider")
                         return false;
-                    if (cslaObject.ObjectType == CslaObjectType.NameValueList &&
+                    if (cslaObject.IsNameValueList() &&
                         (propertyName == "AuthzProvider" ||
                         propertyName == "ReadRoles" ||
                         propertyName == "WriteRoles" ||

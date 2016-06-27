@@ -814,7 +814,7 @@ namespace CslaGenerator.CodeGen
 
             var result = string.Empty;
             var silverlightLevel = 0;
-            var isUnitOfWork = info.ObjectType == CslaObjectType.UnitOfWork;
+            var isUnitOfWork = info.IsUnitOfWork();
 
             var cachedContextUtilitiesNamespace = GetContextUtilitiesNamespace(unit, step);
 
@@ -902,7 +902,7 @@ namespace CslaGenerator.CodeGen
         {
             var result = new List<string>();
 
-            var isUnitOfWork = info.ObjectType == CslaObjectType.UnitOfWork;
+            var isUnitOfWork = info.IsUnitOfWork();
 
             result.Add("System");
 
@@ -1126,7 +1126,7 @@ namespace CslaGenerator.CodeGen
 
             result.Add(GetContextObjectNamespace(info, unit, GenerationStep.DalInterface));
 
-            if (info.ObjectType != CslaObjectType.UnitOfWork &&
+            if (info.IsNotUnitOfWork() &&
                 info.ObjectNamespace != CurrentUnit.GenerationParams.UtilitiesNamespace)
             {
                 result.Add(GetDalInterfaceUtilitiesNamespace(unit));
@@ -1475,8 +1475,8 @@ namespace CslaGenerator.CodeGen
             HaveBusinessRulesCollection validateAllRulesProperties = Info.AllRulableProperties();
             foreach (IHaveBusinessRules rulableProperty in validateAllRulesProperties)
             {
-                if (Info.ObjectType != CslaObjectType.UnitOfWork &&
-                    Info.ObjectType != CslaObjectType.NameValueList &&
+                if (Info.IsNotUnitOfWork() &&
+                    Info.IsNotNameValueList() &&
                     !TypeHelper.IsCollectionType(Info.ObjectType) &&
                     rulableProperty.BusinessRules.Count > 0)
                 {
@@ -1570,8 +1570,8 @@ namespace CslaGenerator.CodeGen
 
             #region Validate Object Business Rules
 
-            if (Info.ObjectType != CslaObjectType.UnitOfWork &&
-                Info.ObjectType != CslaObjectType.NameValueList &&
+            if (Info.IsNotUnitOfWork() &&
+                Info.IsNotNameValueList() &&
                 !TypeHelper.IsCollectionType(Info.ObjectType))
             {
                 foreach (var rule in Info.BusinessRules)
@@ -1650,8 +1650,8 @@ namespace CslaGenerator.CodeGen
             HaveBusinessRulesCollection allRulesProperties = Info.AllRulableProperties();
             foreach (IHaveBusinessRules rulableProperty in allRulesProperties)
             {
-                if (Info.ObjectType != CslaObjectType.UnitOfWork &&
-                    Info.ObjectType != CslaObjectType.NameValueList &&
+                if (Info.IsNotUnitOfWork() &&
+                    Info.IsNotNameValueList() &&
                     !TypeHelper.IsCollectionType(Info.ObjectType) &&
                     rulableProperty.BusinessRules.Count > 0)
                     generateRuleRegion = true;
@@ -2927,7 +2927,7 @@ namespace CslaGenerator.CodeGen
             var response = string.Empty;
             bool isReadOnly = prop.ReadOnly;
 
-            if (info.ObjectType == CslaObjectType.ReadOnlyObject && CurrentUnit.GenerationParams.ForceReadOnlyProperties)
+            if (info.IsReadOnlyObject() && CurrentUnit.GenerationParams.ForceReadOnlyProperties)
             {
                 isReadOnly = true;
             }
@@ -2961,7 +2961,7 @@ namespace CslaGenerator.CodeGen
                 response += "        {" + Environment.NewLine;
                 response += PropertyDeclareGetter(prop);
 
-                response += PropertyDeclareSetter(isReadOnly, info.ObjectType == CslaObjectType.ReadOnlyObject, prop,
+                response += PropertyDeclareSetter(isReadOnly, info.IsReadOnlyObject(), prop,
                     convertPropertyName);
                 response += "        }";
             }
@@ -2975,7 +2975,7 @@ namespace CslaGenerator.CodeGen
                 response += "        {" + Environment.NewLine;
                 response += PropertyDeclareGetter(prop);
 
-                response += PropertyDeclareSetter(isReadOnly, info.ObjectType == CslaObjectType.ReadOnlyObject, prop,
+                response += PropertyDeclareSetter(isReadOnly, info.IsReadOnlyObject(), prop,
                     convertPropertyName);
                 response += "        }";
             }
@@ -2985,7 +2985,7 @@ namespace CslaGenerator.CodeGen
                     (String.IsNullOrEmpty(prop.Interfaces) ? GetPropertyAccess(prop) + " " : ""),
                     GetDataTypeGeneric(prop, prop.PropertyType),
                     (String.IsNullOrEmpty(prop.Interfaces) ? FormatPascal(prop.Name) : prop.Interfaces),
-                    PropertyDeclareSetter(isReadOnly, info.ObjectType == CslaObjectType.ReadOnlyObject, prop,
+                    PropertyDeclareSetter(isReadOnly, info.IsReadOnlyObject(), prop,
                         string.Empty));
             }
 
@@ -2999,7 +2999,7 @@ namespace CslaGenerator.CodeGen
             var response = string.Empty;
             var isReadOnly = prop.ReadOnly;
 
-            if (info.ObjectType == CslaObjectType.ReadOnlyObject && CurrentUnit.GenerationParams.ForceReadOnlyProperties)
+            if (info.IsReadOnlyObject() && CurrentUnit.GenerationParams.ForceReadOnlyProperties)
             {
                 isReadOnly = true;
             }
@@ -3893,7 +3893,7 @@ namespace CslaGenerator.CodeGen
 
             bool isReadOnly = prop.ReadOnly;
 
-            if (info.ObjectType == CslaObjectType.ReadOnlyObject)
+            if (info.IsReadOnlyObject())
             {
                 if (prop.DeclarationMode == PropertyDeclaration.AutoProperty ||
                     prop.DeclarationMode == PropertyDeclaration.ClassicProperty)
@@ -3980,7 +3980,7 @@ namespace CslaGenerator.CodeGen
         {
             bool isReadOnly = prop.ReadOnly;
 
-            if (info.ObjectType == CslaObjectType.ReadOnlyObject)
+            if (info.IsReadOnlyObject())
             {
                 if (prop.DeclarationMode == PropertyDeclaration.ClassicProperty)
                 {
@@ -5101,8 +5101,8 @@ namespace CslaGenerator.CodeGen
             if (HasDataPortalCreate(info) &&
                 ((info.ObjectType.IsEditableType() &&
                   info.ObjectType.IsChildType()) ||
-                 info.ObjectType == CslaObjectType.EditableRoot ||
-                 info.ObjectType == CslaObjectType.DynamicEditableRoot))
+                 info.IsEditableRoot() ||
+                 info.IsDynamicEditableRoot()))
             {
                 eventList.Add("Create");
             }
@@ -5110,21 +5110,21 @@ namespace CslaGenerator.CodeGen
             if ((HasDataPortalDelete(info) &&
                  ((info.ObjectType.IsEditableType() &&
                    info.ObjectType.IsChildType()) ||
-                  info.ObjectType == CslaObjectType.EditableRoot ||
-                  info.ObjectType == CslaObjectType.DynamicEditableRoot))
+                  info.IsEditableRoot() ||
+                  info.IsDynamicEditableRoot()))
                 ||
                 (info.GenerateDataPortalDelete &&
-                 (info.ObjectType == CslaObjectType.EditableRoot ||
-                  info.ObjectType == CslaObjectType.DynamicEditableRoot ||
-                  info.ObjectType == CslaObjectType.EditableChild ||
-                  info.ObjectType == CslaObjectType.EditableSwitchable))
+                 (info.IsEditableRoot() ||
+                  info.IsDynamicEditableRoot() ||
+                  info.IsEditableChild() ||
+                  info.IsEditableSwitchable()))
                 )
             {
                 eventList.AddRange(new[] {"DeletePre", "DeletePost"});
             }
 
             if (HasDataPortalGet(info) ||
-                (info.ObjectType != CslaObjectType.ReadOnlyObject &&
+                (info.IsNotReadOnlyObject() &&
                  info.ParentType != string.Empty &&
                  !lazyLoad))
             {
@@ -5132,7 +5132,7 @@ namespace CslaGenerator.CodeGen
             }
 
             if (!info.ObjectType.IsCollectionType() &&
-                info.ObjectType != CslaObjectType.NameValueList)
+                info.IsNotNameValueList())
             {
                 eventList.Add("FetchRead");
             }

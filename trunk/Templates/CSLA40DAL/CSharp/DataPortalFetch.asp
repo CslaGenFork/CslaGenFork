@@ -67,7 +67,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
         %>
         {
             <%
-            if (Info.ObjectType == CslaObjectType.EditableSwitchable)
+            if (Info.IsEditableSwitchable())
             {
                 %>
             if (crit.IsChild)

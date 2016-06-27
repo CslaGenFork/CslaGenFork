@@ -182,7 +182,7 @@ namespace CslaGenerator.Metadata
             child.ParameterName = entity.PropertyName;
             child.TypeName = entity.CollectionTypeName;
             child.DeclarationMode = PropertyDeclaration.Managed;
-            child.ReadOnly = FacadeObjectInfo.ObjectType == CslaObjectType.ReadOnlyObject;
+            child.ReadOnly = FacadeObjectInfo.IsReadOnlyObject();
             child.Nullable = false;
             child.LazyLoad = entity.LazyLoad;
             child.LoadingScheme = entity.LoadingScheme;
@@ -251,7 +251,7 @@ namespace CslaGenerator.Metadata
                 suffix = _entity.Parent.Params.ORBSingleSPSuffix;
                 objectName = _entity.MainItemTypeName;
             }
-            if (item.ObjectType != CslaObjectType.ReadOnlyObject)
+            if (item.IsNotReadOnlyObject())
             {
                 if (item.GenerateDataPortalInsert)
                     item.InsertProcedureName = _entity.Parent.Params.GetAddProcName(objectName) + suffix;
@@ -481,7 +481,7 @@ namespace CslaGenerator.Metadata
             const string critName = "CriteriaNew";
 
             // don't generate CriteriaNew for read-only objects
-            if (info.ObjectType == CslaObjectType.ReadOnlyObject)
+            if (info.IsReadOnlyObject())
             {
                 RemoveDefaultItemCriteria(info, critName);
                 return;
@@ -633,7 +633,7 @@ namespace CslaGenerator.Metadata
             const string critName = "CriteriaDelete";
 
             // don't generate CriteriaNew for read-only objects
-            if (info.ObjectType == CslaObjectType.ReadOnlyObject)
+            if (info.IsReadOnlyObject())
             {
                 RemoveDefaultItemCriteria(info, critName);
                 return;

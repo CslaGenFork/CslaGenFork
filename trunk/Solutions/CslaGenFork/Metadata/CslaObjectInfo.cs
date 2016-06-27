@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Drawing.Design;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Xml.Serialization;
 using CslaGenerator.Attributes;
 using CslaGenerator.Design;
@@ -149,7 +148,7 @@ namespace CslaGenerator.Metadata
         {
             get
             {
-                if (ObjectType == CslaObjectType.PlaceHolder)
+                if (ObjectType.IsPlaceHolder())
                     return false;
 
                 return _generate;
@@ -198,10 +197,10 @@ namespace CslaGenerator.Metadata
         {
             get
             {
-                if (ObjectType == CslaObjectType.ReadOnlyCollection ||
-                    ObjectType == CslaObjectType.ReadOnlyObject ||
-                    ObjectType == CslaObjectType.NameValueList ||
-                    ObjectType == CslaObjectType.UnitOfWork)
+                if (ObjectType.IsReadOnlyCollection() ||
+                    ObjectType.IsReadOnlyObject() ||
+                    ObjectType.IsNameValueList() ||
+                    ObjectType.IsUnitOfWork())
                     return false;
                 return _generateDataPortalInsert;
             }
@@ -215,10 +214,10 @@ namespace CslaGenerator.Metadata
         {
             get
             {
-                if (ObjectType == CslaObjectType.ReadOnlyCollection ||
-                    ObjectType == CslaObjectType.ReadOnlyObject ||
-                    ObjectType == CslaObjectType.NameValueList ||
-                    ObjectType == CslaObjectType.UnitOfWork)
+                if (ObjectType.IsReadOnlyCollection() ||
+                    ObjectType.IsReadOnlyObject() ||
+                    ObjectType.IsNameValueList() ||
+                    ObjectType.IsUnitOfWork())
                     return false;
                 return _generateDataPortalUpdate;
             }
@@ -232,9 +231,9 @@ namespace CslaGenerator.Metadata
         {
             get
             {
-                if (ObjectType == CslaObjectType.ReadOnlyObject ||
-                    ObjectType == CslaObjectType.NameValueList ||
-                    ObjectType == CslaObjectType.UnitOfWork)
+                if (ObjectType.IsReadOnlyObject() ||
+                    ObjectType.IsNameValueList() ||
+                    ObjectType.IsUnitOfWork())
                     return false;
                 return _generateDataPortalDelete;
             }
@@ -333,7 +332,7 @@ namespace CslaGenerator.Metadata
             get { return _objectName; }
             set
             {
-                if (ObjectType == CslaObjectType.PlaceHolder)
+                if (ObjectType.IsPlaceHolder())
                 {
                     if (_objectName != value)
                     {
@@ -364,7 +363,7 @@ namespace CslaGenerator.Metadata
         {
             get
             {
-                if (ObjectType == CslaObjectType.CriteriaClass)
+                if (ObjectType.IsCriteriaClass())
                     return true;
 
                 return _isGenericType;
@@ -387,7 +386,7 @@ namespace CslaGenerator.Metadata
         {
             get
             {
-                if (ObjectType == CslaObjectType.CriteriaClass)
+                if (ObjectType.IsCriteriaClass())
                     return "T";
 
                 if (_isGenericType)
@@ -709,7 +708,7 @@ namespace CslaGenerator.Metadata
         {
             get
             {
-                if (_objectType == CslaObjectType.UnitOfWork)
+                if (_objectType.IsUnitOfWork())
                     return new CriteriaCollection();
 
                 return _criteriaObjects;
@@ -869,9 +868,9 @@ namespace CslaGenerator.Metadata
         {
             get
             {
-                if (ObjectType == CslaObjectType.ReadOnlyCollection ||
-                    ObjectType == CslaObjectType.ReadOnlyObject ||
-                    ObjectType == CslaObjectType.NameValueList)
+                if (ObjectType.IsReadOnlyCollection() ||
+                    ObjectType.IsReadOnlyObject() ||
+                    ObjectType.IsNameValueList())
                     return false;
                 return _allowNew;
             }
@@ -886,9 +885,9 @@ namespace CslaGenerator.Metadata
         {
             get
             {
-                if (ObjectType == CslaObjectType.ReadOnlyCollection ||
-                    ObjectType == CslaObjectType.ReadOnlyObject ||
-                    ObjectType == CslaObjectType.NameValueList)
+                if (ObjectType.IsReadOnlyCollection() ||
+                    ObjectType.IsReadOnlyObject() ||
+                    ObjectType.IsNameValueList())
                     return false;
                 return _allowEdit;
             }
@@ -903,9 +902,9 @@ namespace CslaGenerator.Metadata
         {
             get
             {
-                if (ObjectType == CslaObjectType.ReadOnlyCollection ||
-                    ObjectType == CslaObjectType.ReadOnlyObject ||
-                    ObjectType == CslaObjectType.NameValueList)
+                if (ObjectType.IsReadOnlyCollection() ||
+                    ObjectType.IsReadOnlyObject() ||
+                    ObjectType.IsNameValueList())
                     return false;
                 return _allowRemove;
             }
@@ -941,8 +940,8 @@ namespace CslaGenerator.Metadata
             get
             {
                 if (_objectType != CslaObjectType.EditableRoot &&
-                    _objectType != CslaObjectType.EditableRootCollection &&
-                    _objectType != CslaObjectType.DynamicEditableRootCollection)
+                    _objectType.IsNotEditableRootCollection() &&
+                    _objectType.IsNotDynamicEditableRootCollection())
                     return new List<string>();
 
                 return _invalidateCache;
@@ -1134,9 +1133,9 @@ namespace CslaGenerator.Metadata
         {
             get
             {
-                if (ObjectType == CslaObjectType.ReadOnlyCollection ||
-                    ObjectType == CslaObjectType.ReadOnlyObject ||
-                    ObjectType == CslaObjectType.NameValueList)
+                if (ObjectType.IsReadOnlyCollection() ||
+                    ObjectType.IsReadOnlyObject() ||
+                    ObjectType.IsNameValueList())
                     return string.Empty;
                 return _insertProcedureName;
             }
@@ -1172,9 +1171,9 @@ namespace CslaGenerator.Metadata
         {
             get
             {
-                if (ObjectType == CslaObjectType.ReadOnlyCollection ||
-                    ObjectType == CslaObjectType.ReadOnlyObject ||
-                    ObjectType == CslaObjectType.NameValueList)
+                if (ObjectType.IsReadOnlyCollection() ||
+                    ObjectType.IsReadOnlyObject() ||
+                    ObjectType.IsNameValueList())
                     return string.Empty;
                 return _updateProcedureName;
             }
@@ -1191,16 +1190,16 @@ namespace CslaGenerator.Metadata
         {
             get
             {
-                if (ObjectType == CslaObjectType.ReadOnlyCollection ||
-                    ObjectType == CslaObjectType.ReadOnlyObject ||
-                    ObjectType == CslaObjectType.NameValueList)
+                if (ObjectType.IsReadOnlyCollection() ||
+                    ObjectType.IsReadOnlyObject() ||
+                    ObjectType.IsNameValueList())
                     return string.Empty;
                 return _deleteProcedureName;
             }
             set
             {
-                if (_objectType == CslaObjectType.EditableChild ||
-                    _objectType == CslaObjectType.EditableSwitchable)
+                if (_objectType.IsEditableChild() ||
+                    _objectType.IsEditableSwitchable())
                     _deleteProcedureName = PropertyHelper.Tidy(value);
                 else
                 {
@@ -1585,7 +1584,7 @@ namespace CslaGenerator.Metadata
         {
             get
             {
-                if (ObjectType == CslaObjectType.UnitOfWork)
+                if (ObjectType.IsUnitOfWork())
                     return false;
                 if (GeneratorController.Current.CurrentUnit.GenerationParams.UseInlineQueries == UseInlineQueries.Always)
                     return true;
@@ -1600,7 +1599,7 @@ namespace CslaGenerator.Metadata
                     if (parent != null && parent.GenerateInlineQueries.Count > 0)
                         return true;
 
-                    if (ObjectType != CslaObjectType.ReadOnlyObject && GenerateInlineQueries.Count > 0)
+                    if (ObjectType.IsNotReadOnlyObject() && GenerateInlineQueries.Count > 0)
                         return true;
                 }
                 return false;
@@ -1678,11 +1677,11 @@ namespace CslaGenerator.Metadata
         {
             if (Parent == null)
                 return;
-            if (_objectType == CslaObjectType.UnitOfWork)
+            if (_objectType.IsUnitOfWork())
                 return;
-            if (_objectType == CslaObjectType.EditableChild ||
-                _objectType == CslaObjectType.EditableSwitchable ||
-                _objectType == CslaObjectType.DynamicEditableRoot)
+            if (_objectType.IsEditableChild() ||
+                _objectType.IsEditableSwitchable() ||
+                _objectType.IsDynamicEditableRoot())
             {
                 _deleteProcedureName =
                     Parent.Params.SpGeneralPrefix
@@ -1725,7 +1724,7 @@ namespace CslaGenerator.Metadata
         public int NumberOfGenericArguments()
         {
             if (ObjectType.IsCollectionType() ||
-                ObjectType == CslaObjectType.NameValueList)
+                ObjectType.IsNameValueList())
                 return 2;
 
             return 1;

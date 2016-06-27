@@ -13,7 +13,7 @@
 
 namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.DalInterface) %>
 {
-    public partial class <%= Info.ObjectName %><%= (Info.ObjectType == CslaObjectType.NameValueList ? "Item" : "") %>Dto
+    public partial class <%= Info.ObjectName %><%= (Info.IsNameValueList() ? "Item" : "") %>Dto
     {
     }
 }

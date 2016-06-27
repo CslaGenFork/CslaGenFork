@@ -21,8 +21,8 @@ if (!Info.ParentType.Equals(String.Empty))
             if (!isItem)
                 useIsLoadedProperty = CurrentUnit.GenerationParams.ReportObjectNotFound == ReportObjectNotFound.IsLoadedProperty;
             grandParentInfo = Info.Parent.CslaObjects.Find(parentInfo.ParentType);
-            isParentRootCollection = (parentInfo.ObjectType == CslaObjectType.EditableRootCollection) ||
-                (parentInfo.ObjectType == CslaObjectType.ReadOnlyCollection && parentInfo.ParentType == String.Empty);
+            isParentRootCollection = (parentInfo.IsEditableRootCollection()) ||
+                (parentInfo.IsReadOnlyCollection() && parentInfo.ParentType == String.Empty);
         }
         foreach(Property prop in Info.ParentProperties)
         {

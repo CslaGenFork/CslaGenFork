@@ -9,8 +9,8 @@ foreach (ChildProperty childProperty in Info.AllChildProperties)
         isItem = TypeHelper.IsCollectionType(parentInfo.ObjectType);
         if (!isItem)
             useIsLoadedProperty = CurrentUnit.GenerationParams.ReportObjectNotFound == ReportObjectNotFound.IsLoadedProperty;
-        isParentRootCollection = (parentInfo.ObjectType == CslaObjectType.EditableRootCollection) ||
-            (parentInfo.ObjectType == CslaObjectType.ReadOnlyCollection && parentInfo.ParentType == String.Empty);
+        isParentRootCollection = (parentInfo.IsEditableRootCollection()) ||
+            (parentInfo.IsReadOnlyCollection() && parentInfo.ParentType == String.Empty);
     }
 
     if (childProperty.DeclarationMode == PropertyDeclaration.AutoProperty)

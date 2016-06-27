@@ -5,7 +5,7 @@ if (!Info.UseCustomLoading)
     string methodFetchString = string.Empty;
     if (TypeHelper.IsNotRootType(Info) && !UseChildFactoryHelper)
         methodFetchString = "Child_";
-    if (Info.ObjectType == CslaObjectType.DynamicEditableRoot && !UseChildFactoryHelper)
+    if (Info.IsDynamicEditableRoot() && !UseChildFactoryHelper)
         methodFetchString = "DataPortal_";
 
     if (!Info.DataSetLoadingScheme)
@@ -106,7 +106,7 @@ if (!Info.UseCustomLoading)
                 }
             }
         }
-        if (!UseChildFactoryHelper && Info.CheckRulesOnFetch && !Info.EditOnDemand && (!isRoot || Info.ObjectType == CslaObjectType.DynamicEditableRoot))
+        if (!UseChildFactoryHelper && Info.CheckRulesOnFetch && !Info.EditOnDemand && (!isRoot || Info.IsDynamicEditableRoot()))
         {
             %>
             ' check all object rules and property rules
@@ -163,7 +163,7 @@ if (!Info.UseCustomLoading)
                                             %>
             <%= bpcSpacer %>Dim <%= FormatCamel(childProp.TypeName) %> = <%= fetchString %>(dr)
 <%
-                                            if (child.ObjectType == CslaObjectType.ReadOnlyCollection)
+                                            if (child.IsReadOnlyCollection())
                                             {
                                                 %>
             <%= bpcSpacer %><%= FormatCamel(childProp.TypeName) %>.LoadItems(ParentList)
@@ -224,7 +224,7 @@ if (!Info.UseCustomLoading)
             <%= bpcSpacer %>While dr.Read()
                 <%= bpcSpacer %>Dim child = <%= fetchString %>(dr)
 <%
-                                    if (child.ObjectType == CslaObjectType.ReadOnlyObject)
+                                    if (child.IsReadOnlyObject())
                                     {
                                         %>
                 <%= bpcSpacer %>Dim obj = ParentList.Find<%= FormatPascal(Info.ObjectName) %>ByParentProperties(<%= findByParams %>)
@@ -236,7 +236,7 @@ if (!Info.UseCustomLoading)
                 <%= bpcSpacer %>Dim obj = DirectCast(Parent, <%= Info.ParentType %>).Find<%= FormatPascal(Info.ObjectName) %>ByParentProperties(<%= findByParams %>)
 <%
                                     }
-                                    if (child.ObjectType == CslaObjectType.ReadOnlyObject && child.AddParentReference)
+                                    if (child.IsReadOnlyObject() && child.AddParentReference)
                                     {
                                         %>
                 <%= bpcSpacer %>child.ParentList = obj
@@ -277,7 +277,7 @@ if (!Info.UseCustomLoading)
                                 CslaObjectInfo child = FindChildInfo(Info, childProp.TypeName);
                                 if (child != null)
                                 {
-                                    if (child.ObjectType == CslaObjectType.ReadOnlyObject && child.AddParentReference)
+                                    if (child.IsReadOnlyObject() && child.AddParentReference)
                                     {
                                         %>
                 <%= bpcSpacer %>Dim child = <%= fetchString %>(dr)
@@ -396,7 +396,7 @@ if (!Info.UseCustomLoading)
                 <%= bpcSpacer %>Dim child = <%= fetchString %>(dr)
                 <%= bpcSpacer %>Dim obj = <%= findByObject %>.Find<%= FormatPascal(_parent.ObjectName) %>ByParentProperties(<%= findByParams %>)
 <%
-                                    if (_child.ObjectType == CslaObjectType.ReadOnlyObject && _child.AddParentReference)
+                                    if (_child.IsReadOnlyObject() && _child.AddParentReference)
                                     {
                                         %>
                 <%= bpcSpacer %>child.Parent = obj

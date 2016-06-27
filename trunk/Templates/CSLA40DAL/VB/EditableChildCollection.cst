@@ -28,8 +28,8 @@ if (Errors.Length == 0)
     if (parentInfo != null)
     {
         grandParentInfo = Info.Parent.CslaObjects.Find(parentInfo.ParentType);
-        isParentRootCollection = (parentInfo.ObjectType == CslaObjectType.EditableRootCollection) ||
-            (parentInfo.ObjectType == CslaObjectType.ReadOnlyCollection && parentInfo.ParentType == String.Empty);
+        isParentRootCollection = (parentInfo.IsEditableRootCollection()) ||
+            (parentInfo.IsReadOnlyCollection() && parentInfo.ParentType == String.Empty);
     }
     bool isCollection = true;
     bool useBypassPropertyChecks = CurrentUnit.GenerationParams.UseBypassPropertyChecks;

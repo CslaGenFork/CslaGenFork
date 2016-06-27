@@ -51,7 +51,7 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices && UseNoSilverlight())
             %>
         {
             <%
-            if (Info.ObjectType == CslaObjectType.EditableSwitchable)
+            if (Info.IsEditableSwitchable())
             {
                 %>
             if (crit.IsChild)

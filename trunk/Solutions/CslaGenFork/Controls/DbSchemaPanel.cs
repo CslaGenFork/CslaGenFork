@@ -976,12 +976,12 @@ namespace CslaGenerator.Controls
                 obj.ObjectName = (_currentTreeNode.Parent.Tag as SqlStoredProcedureInfo).ObjectName;
             else
                 obj.ObjectName = ParseObjectName(name);
-            if (type == CslaObjectType.EditableChild)
+            if (type.IsEditableChild())
             {
                 obj.DeleteUseTimestamp = CurrentUnit.Params.AutoTimestampCriteria;
                 obj.RemoveItem = true;
             }
-            else if (type == CslaObjectType.ReadOnlyObject)
+            else if (type.IsReadOnlyObject())
                 obj.CheckRulesOnFetch = false;
             if (dbObject.ObjectDescription != null)
                 obj.ClassSummary = dbObject.ObjectDescription;
@@ -1128,7 +1128,7 @@ namespace CslaGenerator.Controls
             var dbObject = GetCurrentDBObject();
             var resultSet = GetCurrentResultSet();
             _currentFactory.AddProperties(CurrentCslaObject, dbObject, resultSet, columns, true, false);
-            if (CurrentCslaObject.ObjectType == CslaObjectType.EditableChild)
+            if (CurrentCslaObject.IsEditableChild())
                 CurrentCslaObject.ParentInsertOnly = hasPrimaryKey;
         }
 

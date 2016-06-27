@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Drawing.Design;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
-using CslaGenerator.Metadata;
 using CslaGenerator.Util;
 
 namespace CslaGenerator.Design
@@ -39,8 +38,8 @@ namespace CslaGenerator.Design
                     _lstProperties.Items.Add("(None)");
                     foreach (var o in GeneratorController.Current.CurrentUnit.CslaObjects)
                     {
-                        if (o.ObjectType == CslaObjectType.ReadOnlyCollection ||
-                            o.ObjectType == CslaObjectType.NameValueList)
+                        if (o.IsReadOnlyCollection() ||
+                            o.IsNameValueList())
                         {
                             _lstProperties.Items.Add(o.ObjectName);
 

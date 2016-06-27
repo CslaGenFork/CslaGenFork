@@ -85,7 +85,7 @@ if (!Info.UseCustomLoading && CurrentUnit.GenerationParams.SilverlightUsingServi
             Service_Fetch()
             <%
             }
-            if (Info.ObjectType == CslaObjectType.EditableSwitchable)
+            if (Info.IsEditableSwitchable())
             {
                 %>
             If crit.IsChild Then

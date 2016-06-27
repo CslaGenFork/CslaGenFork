@@ -8,8 +8,8 @@ HaveBusinessRulesCollection allRulesProperties = Info.AllRulableProperties();
 
 foreach (IHaveBusinessRules rulableProperty in allRulesProperties)
 {
-    if (Info.ObjectType != CslaObjectType.UnitOfWork &&
-        Info.ObjectType != CslaObjectType.NameValueList &&
+    if (Info.IsNotUnitOfWork() &&
+        Info.IsNotNameValueList() &&
         !TypeHelper.IsCollectionType(Info.ObjectType) &&
         rulableProperty.BusinessRules.Count > 0)
     {
@@ -36,8 +36,8 @@ foreach (IHaveBusinessRules rulableProperty in allRulesProperties)
     if (generateRuleRegion && generateAuthRegion)
         break;
 }
-if (Info.ObjectType != CslaObjectType.UnitOfWork &&
-    Info.ObjectType != CslaObjectType.NameValueList &&
+if (Info.IsNotUnitOfWork() &&
+    Info.IsNotNameValueList() &&
     !TypeHelper.IsCollectionType(Info.ObjectType))
 {
     if (Info.BusinessRules.Count > 0)

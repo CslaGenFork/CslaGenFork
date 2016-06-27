@@ -29,10 +29,10 @@ if (Info.TransactionType == TransactionType.ADO)
 }
 
 if (Info.GenerateDataAccessRegion &&
-    (Info.ObjectType == CslaObjectType.EditableRoot ||
-    Info.ObjectType == CslaObjectType.DynamicEditableRoot ||
-    Info.ObjectType == CslaObjectType.EditableChild ||
-    Info.ObjectType == CslaObjectType.EditableSwitchable))
+    (Info.IsEditableRoot() ||
+    Info.IsDynamicEditableRoot() ||
+    Info.IsEditableChild() ||
+    Info.IsEditableSwitchable()))
 {
     if (Info.GenerateDataPortalInsert)
     {
@@ -50,7 +50,7 @@ if (Info.GenerateDataAccessRegion &&
     }
     if (Info.GenerateDataPortalDelete)
     {
-        if (Info.ObjectType == CslaObjectType.EditableChild)
+        if (Info.IsEditableChild())
         {
             if (string.IsNullOrEmpty(Info.DeleteProcedureName))
             {

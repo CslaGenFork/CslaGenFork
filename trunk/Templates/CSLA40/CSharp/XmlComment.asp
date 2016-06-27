@@ -10,19 +10,19 @@ if ((firstComment == null && string.IsNullOrEmpty(Info.Parent.GenerationParams.C
 <%
     if (string.IsNullOrEmpty(Info.ParentType))
     {
-        if (Info.ObjectType == CslaObjectType.ReadOnlyObject)
+        if (Info.IsReadOnlyObject())
         {
             %>
     /// This class is a root object.
 <%
         }
-        else if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
+        else if (Info.IsReadOnlyCollection())
         {
             %>
     /// This class is a root collection.
 <%
         }
-        else if (Info.ObjectType == CslaObjectType.UnitOfWork)
+        else if (Info.IsUnitOfWork())
         {
             %>
     /// This class is a root object that implements the Unit of Work pattern.
@@ -54,10 +54,10 @@ if ((firstComment == null && string.IsNullOrEmpty(Info.Parent.GenerationParams.C
     // collection items
     if (!string.IsNullOrEmpty(Info.ParentType))
     {
-        if (Info.ObjectType == CslaObjectType.EditableChild ||
-            Info.ObjectType == CslaObjectType.EditableSwitchable ||
-            Info.ObjectType == CslaObjectType.DynamicEditableRoot ||
-            Info.ObjectType == CslaObjectType.ReadOnlyObject)
+        if (Info.IsEditableChild() ||
+            Info.IsEditableSwitchable() ||
+            Info.IsDynamicEditableRoot() ||
+            Info.IsReadOnlyObject())
         {
             if (firstComment == true) { firstComment = false; } else { xmlRemark += "<br/>\r\n"; }
             xmlRemark += "This class is an item of <see cref=\"" + Info.ParentType + "\"/> collection.";
@@ -71,10 +71,10 @@ if ((firstComment == null && string.IsNullOrEmpty(Info.Parent.GenerationParams.C
     }
     // collections
     if (!string.IsNullOrEmpty(Info.ItemType) &&
-        (Info.ObjectType == CslaObjectType.EditableRootCollection ||
-        Info.ObjectType == CslaObjectType.DynamicEditableRootCollection ||
-        Info.ObjectType == CslaObjectType.EditableChildCollection ||
-        Info.ObjectType == CslaObjectType.ReadOnlyCollection))
+        (Info.IsEditableRootCollection() ||
+        Info.IsDynamicEditableRootCollection() ||
+        Info.IsEditableChildCollection() ||
+        Info.IsReadOnlyCollection()))
     {
         if (firstComment == true) { firstComment = false; } else { xmlRemark += "<br/>\r\n"; }
         xmlRemark += "The items of the collection are <see cref=\"" + Info.ItemType + "\"/> objects.";

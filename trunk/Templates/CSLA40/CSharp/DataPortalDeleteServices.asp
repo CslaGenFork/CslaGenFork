@@ -33,11 +33,11 @@ if (Info.GenerateDataPortalDelete && CurrentUnit.GenerationParams.SilverlightUsi
         public override void DataPortal_DeleteSelf(Csla.DataPortalClient.LocalProxy<<%= Info.ObjectName %>>.CompletedHandler handler)
         {
             <%
-            if (Info.ObjectType == CslaObjectType.EditableSwitchable)
+            if (Info.IsEditableSwitchable())
             {
                 strDeleteCritParams = "false, " + strDeleteCritParams;
             }
-            if (c.Properties.Count > 1 || (Info.ObjectType == CslaObjectType.EditableSwitchable && c.Properties.Count == 1))
+            if (c.Properties.Count > 1 || (Info.IsEditableSwitchable() && c.Properties.Count == 1))
             {
                 %>
             DataPortal_Delete(new <%= c.Name %>(<%= strDeleteCritParams %>), handler);

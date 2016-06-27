@@ -52,7 +52,7 @@ if ((UseSilverlight() && createRunLocalDp) || CurrentUnit.GenerationParams.Silve
             %>
         {
             <%
-            if (Info.ObjectType == CslaObjectType.EditableSwitchable)
+            if (Info.IsEditableSwitchable())
             {
                 %>
             if (crit.IsChild)

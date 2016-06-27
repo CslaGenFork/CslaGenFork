@@ -5,7 +5,7 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
     {
         if (c.DeleteOptions.Factory)
         {
-            if (!isChild && !c.NestedClass && c.Properties.Count > 1 && Info.ObjectType != CslaObjectType.EditableSwitchable)
+            if (!isChild && !c.NestedClass && c.Properties.Count > 1 && Info.IsNotEditableSwitchable())
             {
                 %>
 
@@ -42,7 +42,7 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
             %>
         <%= Info.ParentType == string.Empty ? "Public" : "Friend" %> Shared Sub Delete<%= Info.ObjectName %><%= c.DeleteOptions.FactorySuffix %>(<%= strDelParams %>)
             <%
-            if (Info.ObjectType == CslaObjectType.EditableSwitchable)
+            if (Info.IsEditableSwitchable())
             {
                 if (!strDelCritParams.Equals(String.Empty))
                 {
@@ -92,7 +92,7 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
         ''' <returns>A reference to the undeleted <see cref="<%= Info.ObjectName %>"/> object.</returns>
         <%= Info.ParentType == string.Empty ? "Public" : "Friend" %> Shared Function Undelete<%= Info.ObjectName %><%= c.DeleteOptions.FactorySuffix %>(<%= strDelParams %>) As <%= Info.ObjectName %>
             <%
-                if (Info.ObjectType == CslaObjectType.EditableSwitchable)
+                if (Info.IsEditableSwitchable())
                 {
                     if (!strDelCritParams.Equals(String.Empty))
                     {

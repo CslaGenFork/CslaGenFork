@@ -1,8 +1,8 @@
 <%
-bool useParentReference = (Info.ObjectType == CslaObjectType.DynamicEditableRootCollection ||
-    (Info.ObjectType == CslaObjectType.ReadOnlyCollection && Info.ItemType != string.Empty)) && itemInfo.AddParentReference;
+bool useParentReference = (Info.IsDynamicEditableRootCollection() ||
+    (Info.IsReadOnlyCollection() && Info.ItemType != string.Empty)) && itemInfo.AddParentReference;
 bool isRODeepLoadCollection =
-    Info.ObjectType == CslaObjectType.ReadOnlyCollection &&
+    Info.IsReadOnlyCollection() &&
     Info.ItemType != string.Empty &&
     TypeHelper.IsReadOnlyType(itemInfo.ObjectType) &&
     ancestorLoaderLevel == 0 &&
@@ -31,7 +31,7 @@ if (!TypeHelper.IsReadOnlyType(itemInfo.ObjectType))
     }
 }
 bool needsBusiness =
-    (itemInfo.RemoveItem && itemInfo.ObjectType == CslaObjectType.EditableChild) ||
+    (itemInfo.RemoveItem && itemInfo.IsEditableChild()) ||
     Info.ContainsItem;
 
 if (!needsBusiness)
@@ -39,7 +39,7 @@ if (!needsBusiness)
     foreach (Criteria crit in itemInfo.CriteriaObjects)
     {
         if (crit.CreateOptions.AddRemove ||
-            (crit.DeleteOptions.AddRemove && crit.Properties.Count > 0 && itemInfo.ObjectType != CslaObjectType.EditableChild))
+            (crit.DeleteOptions.AddRemove && crit.Properties.Count > 0 && itemInfo.IsNotEditableChild()))
         {
             needsBusiness = true;
             break;
@@ -213,7 +213,7 @@ if (useParentReference || isRODeepLoadCollection || useAuthz || Info.UniqueItems
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-        if (Info.ObjectType == CslaObjectType.DynamicEditableRootCollection &&
+        if (Info.IsDynamicEditableRootCollection() &&
             crit.DeleteOptions.AddRemove &&
             crit.Properties.Count > 0)
         {
@@ -270,10 +270,10 @@ if (useParentReference || isRODeepLoadCollection || useAuthz || Info.UniqueItems
         }
     }
 
-    if (Info.ObjectType == CslaObjectType.EditableRootCollection ||
-        Info.ObjectType == CslaObjectType.DynamicEditableRootCollection ||
-        Info.ObjectType == CslaObjectType.EditableChildCollection ||
-        Info.ObjectType == CslaObjectType.ReadOnlyCollection)
+    if (Info.IsEditableRootCollection() ||
+        Info.IsDynamicEditableRootCollection() ||
+        Info.IsEditableChildCollection() ||
+        Info.IsReadOnlyCollection())
     {
         List<Property> propertyList = new List<Property>();
         foreach (ValueProperty prop in itemInfo.ValueProperties)
@@ -304,7 +304,7 @@ if (useParentReference || isRODeepLoadCollection || useAuthz || Info.UniqueItems
             paramName = paramName.Substring(2);
         }
         bool removeFlag = false;
-        if (itemInfo.ObjectType == CslaObjectType.EditableChild)
+        if (itemInfo.IsEditableChild())
             removeFlag = itemInfo.RemoveItem;
         if (removeFlag)
         {
@@ -372,7 +372,7 @@ if (useParentReference || isRODeepLoadCollection || useAuthz || Info.UniqueItems
             return false;
         }
         <%
-            if (Info.ObjectType != CslaObjectType.ReadOnlyCollection && Info.ObjectType != CslaObjectType.DynamicEditableRootCollection)
+            if (Info.IsNotReadOnlyCollection() && Info.IsNotDynamicEditableRootCollection())
             {
                 %>
 

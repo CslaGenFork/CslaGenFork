@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
 using CslaGenerator.Metadata;
+using CslaGenerator.Util;
 using CslaGenerator.Util.PropertyBags;
 
 namespace CslaGenerator.Design
@@ -42,10 +43,10 @@ namespace CslaGenerator.Design
                     Size = new Size(Size.Width, 711);
                     pgEditor.Size = new Size(pgEditor.Size.Width, 619);
                     var cslaObject = (CslaObjectInfo) selectedItem;
-                    if ((cslaObject.ObjectType == CslaObjectType.ReadOnlyObject ||
-                         cslaObject.ObjectType == CslaObjectType.ReadOnlyCollection ||
-                         cslaObject.ObjectType == CslaObjectType.NameValueList ||
-                         (cslaObject.ObjectType == CslaObjectType.UnitOfWork)))
+                    if ((cslaObject.IsReadOnlyObject() ||
+                         cslaObject.IsReadOnlyCollection() ||
+                         cslaObject.IsNameValueList() ||
+                         (cslaObject.IsUnitOfWork())))
                     {
                         Size = new Size(Size.Width, Size.Height - 256);
                         pgEditor.Size = new Size(pgEditor.Size.Width, pgEditor.Size.Height - 256);

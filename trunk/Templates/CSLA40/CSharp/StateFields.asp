@@ -59,7 +59,7 @@ if (stateFieldsForAllValueProperties || stateFieldsForAllChildProperties || useF
             }
             %>
         private <%= prop.TypeName %> <%= FormatFieldName(prop.Name) %><%
-        if (_child.ObjectType != CslaObjectType.ReadOnlyObject && _child.ObjectType != CslaObjectType.ReadOnlyCollection)
+        if (_child.IsNotReadOnlyObject() && _child.IsNotReadOnlyCollection())
         {
             %> = <%= prop.TypeName %>.New<%= prop.TypeName %>()<%
         } %>;

@@ -30,7 +30,7 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
         Public Function Add(<%= prms %>) As <%= Info.ItemType %>
         <%
     string newMethodName = "New" + Info.ItemType;
-    if (itemInfo.ObjectType == CslaObjectType.EditableSwitchable)
+    if (itemInfo.IsEditableSwitchable())
     {
         newMethodName += "Child";
     }

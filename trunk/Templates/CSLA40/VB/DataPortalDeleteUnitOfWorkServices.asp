@@ -33,11 +33,11 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
         Public Overrides Sub DataPortal_DeleteSelf(handler As Csla.DataPortalClient.LocalProxy(Of <%= Info.ObjectName %>).CompletedHandler)
         {
             <%
-            if (Info.ObjectType == CslaObjectType.EditableSwitchable)
+            if (Info.IsEditableSwitchable())
             {
                 strDeleteCritParams = "False, " + strDeleteCritParams;
             }
-            if (c.Properties.Count > 1 || (Info.ObjectType == CslaObjectType.EditableSwitchable && c.Properties.Count == 1))
+            if (c.Properties.Count > 1 || (Info.IsEditableSwitchable() && c.Properties.Count == 1))
             {
                 %>
             DataPortal_Delete(new <%= c.Name %>(<%= strDeleteCritParams %>), handler)

@@ -16,8 +16,8 @@ else if (CurrentUnit.GenerationParams.UseInlineQueries == UseInlineQueries.Speci
 if (!Info.UseCustomLoading)
 {
     string createString = string.Empty;
-    bool isChildCollection = (Info.ObjectType == CslaObjectType.EditableChildCollection ||
-        (Info.ObjectType == CslaObjectType.ReadOnlyCollection && Info.ParentType != string.Empty)) &&
+    bool isChildCollection = (Info.IsEditableChildCollection() ||
+        (Info.IsReadOnlyCollection() && Info.ParentType != string.Empty)) &&
         !isChildSelfLoaded;
 
     if (Info.CriteriaObjects.Count > 0)
@@ -225,7 +225,7 @@ if (!Info.UseCustomLoading)
         ''' <param name="dr">The SafeDataReader to use.</param>
         Private Sub <%= (isChildCollection && !UseChildFactoryHelper ? "Child_" : "") %>Fetch(dr As SafeDataReader)
             <%
-        if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
+        if (Info.IsReadOnlyCollection())
         {
             %>
             IsReadOnly = False
@@ -269,7 +269,7 @@ if (!Info.UseCustomLoading)
         %>
             RaiseListChangedEvents = rlce
             <%
-        if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
+        if (Info.IsReadOnlyCollection())
         {
             %>
             IsReadOnly = True
@@ -313,7 +313,7 @@ if (!Info.UseCustomLoading)
             For Each item As <%= Info.ItemType %> In Me
                 Dim obj = lcollection.Find<%= FormatPascal(Info.ParentType) %>ByParentProperties(<%= findByParams %>)
                 <%
-                if (childInfo.ObjectType == CslaObjectType.ReadOnlyCollection)
+                if (childInfo.IsReadOnlyCollection())
                 {
                     %>
                 obj.<%= collectionObject %>.IsReadOnly = False
@@ -325,7 +325,7 @@ if (!Info.UseCustomLoading)
                 obj.<%= collectionObject %>.Add(item)
                 obj.<%= collectionObject %>.RaiseListChangedEvents = rlce
                 <%
-                if (childInfo.ObjectType == CslaObjectType.ReadOnlyCollection)
+                if (childInfo.IsReadOnlyCollection())
                 {
                     %>
                 obj.<%= collectionObject %>.IsReadOnly = True
@@ -346,7 +346,7 @@ if (!Info.UseCustomLoading)
         ''' </summary>
         Private Sub <%= isChildCollection ? "Child_" : "" %>Fetch(rows As DataRow())
             <%
-        if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
+        if (Info.IsReadOnlyCollection())
         {
             %>
             IsReadOnly = False
@@ -371,7 +371,7 @@ if (!Info.UseCustomLoading)
         Next
             RaiseListChangedEvents = rlce
             <%
-        if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
+        if (Info.IsReadOnlyCollection())
         {
             %>
             IsReadOnly = True
@@ -389,7 +389,7 @@ if (!Info.UseCustomLoading)
         ''' </summary>
         Private Sub <%= isChildCollection ? "Child_" : "" %>Fetch(rows As DataRowCollection)
             <%
-            if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
+            if (Info.IsReadOnlyCollection())
             {
                 %>
             IsReadOnly = False
@@ -414,7 +414,7 @@ if (!Info.UseCustomLoading)
             Next
             RaiseListChangedEvents = rlce
             <%
-            if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
+            if (Info.IsReadOnlyCollection())
             {
                 %>
             IsReadOnly = True

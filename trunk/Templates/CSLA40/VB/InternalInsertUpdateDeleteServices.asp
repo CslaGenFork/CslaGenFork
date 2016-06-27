@@ -4,11 +4,11 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
     string parentType = Info.ParentType;
     if (parentInfo == null)
         parentType = "";
-    else if (parentInfo.ObjectType == CslaObjectType.EditableChildCollection)
+    else if (parentInfo.IsEditableChildCollection())
         parentType = parentInfo.ParentType;
-    else if (parentInfo.ObjectType == CslaObjectType.EditableRootCollection)
+    else if (parentInfo.IsEditableRootCollection())
         parentType = "";
-    else if (parentInfo.ObjectType == CslaObjectType.DynamicEditableRootCollection)
+    else if (parentInfo.IsDynamicEditableRootCollection())
         parentType = "";
 
     if (Info.GenerateDataPortalInsert)

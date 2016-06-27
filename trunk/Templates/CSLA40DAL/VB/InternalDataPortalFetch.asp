@@ -5,7 +5,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
     string methodFetchString = string.Empty;
     if (TypeHelper.IsNotRootType(Info) && !UseChildFactoryHelper)
         methodFetchString = "Child_";
-    if (Info.ObjectType == CslaObjectType.DynamicEditableRoot && !UseChildFactoryHelper)
+    if (Info.IsDynamicEditableRoot() && !UseChildFactoryHelper)
         methodFetchString = "DataPortal_";
 
     %>
@@ -126,7 +126,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
                 }
             }
         }
-        if (!UseChildFactoryHelper && Info.CheckRulesOnFetch && !Info.EditOnDemand && (!isRoot || Info.ObjectType == CslaObjectType.DynamicEditableRoot))
+        if (!UseChildFactoryHelper && Info.CheckRulesOnFetch && !Info.EditOnDemand && (!isRoot || Info.IsDynamicEditableRoot()))
         {
             %>
             // check all object rules and property rules
@@ -201,7 +201,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
                                             %>
             <%= bpcSpacer %>var <%= FormatCamel(childProp.TypeName) %> = <%= fetchString %>(<%= (usesDTO ? "dal." + FormatPascal(childProp.TypeName) : "dr") %>);
 <%
-                                            if (child.ObjectType == CslaObjectType.ReadOnlyCollection)
+                                            if (child.IsReadOnlyCollection())
                                             {
                                                 %>
             <%= bpcSpacer %><%= FormatCamel(childProp.TypeName) %>.LoadItems(ParentList);
@@ -274,7 +274,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
             <%= bpcSpacer %>{
                 <%= bpcSpacer %>var child = <%= fetchString %>(<%= usesDTO ? "item" : "dr" %>);
 <%
-                                    if (child.ObjectType == CslaObjectType.ReadOnlyObject)
+                                    if (child.IsReadOnlyObject())
                                     {
                                         %>
                 <%= bpcSpacer %>var obj = ParentList.Find<%= FormatPascal(Info.ObjectName) %>ByParentProperties(<%= findByParams %>);
@@ -286,7 +286,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
                 <%= bpcSpacer %>var obj = ((<%= Info.ParentType %>)Parent).Find<%= FormatPascal(Info.ObjectName) %>ByParentProperties(<%= findByParams %>);
 <%
                                     }
-                                    if (child.ObjectType == CslaObjectType.ReadOnlyObject && child.AddParentReference)
+                                    if (child.IsReadOnlyObject() && child.AddParentReference)
                                     {
                                         %>
                 <%= bpcSpacer %>child.ParentList = obj;
@@ -331,7 +331,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
                                 CslaObjectInfo child = FindChildInfo(Info, childProp.TypeName);
                                 if (child != null)
                                 {
-                                    if (child.ObjectType == CslaObjectType.ReadOnlyObject && child.AddParentReference)
+                                    if (child.IsReadOnlyObject() && child.AddParentReference)
                                     {
                                         if (!usesDTO)
                                         {
@@ -474,7 +474,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
                 <%= bpcSpacer %>var child = <%= fetchString %>(<%= (usesDTO ? "item" : "dr") %>);
                 <%= bpcSpacer %>var obj = <%= findByObject %>.Find<%= FormatPascal(_parent.ObjectName) %>ByParentProperties(<%= findByParams %>);
 <%
-                                    if (_child.ObjectType == CslaObjectType.ReadOnlyObject && _child.AddParentReference)
+                                    if (_child.IsReadOnlyObject() && _child.AddParentReference)
                                     {
                                         %>
                 <%= bpcSpacer %>child.Parent = obj;

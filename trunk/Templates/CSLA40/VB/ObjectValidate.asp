@@ -121,11 +121,11 @@ if (CurrentUnit.GenerationParams.TargetIsCsla4)
 bool hasFactoryCache = false;
 bool hasDataPortalCache = false;
 CslaObjectInfo invalidatorInfo = Info;
-if (Info.ObjectType == CslaObjectType.EditableRootCollection ||
-    Info.ObjectType == CslaObjectType.DynamicEditableRoot ||
-    Info.ObjectType == CslaObjectType.EditableRoot)
+if (Info.IsEditableRootCollection() ||
+    Info.IsDynamicEditableRoot() ||
+    Info.IsEditableRoot())
 {
-    if (Info.ObjectType == CslaObjectType.DynamicEditableRoot)
+    if (Info.IsDynamicEditableRoot())
     {
         invalidatorInfo = Info.Parent.CslaObjects.Find(Info.ParentType);
     }
@@ -150,10 +150,10 @@ if (Info.ObjectType == CslaObjectType.EditableRootCollection ||
 if (CurrentUnit.GenerationParams.TargetIsCsla4)
 {
     if (Info.GenerateDataAccessRegion &&
-        (Info.ObjectType == CslaObjectType.EditableRoot ||
-        Info.ObjectType == CslaObjectType.DynamicEditableRoot ||
-        Info.ObjectType == CslaObjectType.EditableChild ||
-        Info.ObjectType == CslaObjectType.EditableSwitchable))
+        (Info.IsEditableRoot() ||
+        Info.IsDynamicEditableRoot() ||
+        Info.IsEditableChild() ||
+        Info.IsEditableSwitchable()))
     {
         if (Info.GenerateDataPortalInsert)
         {
@@ -171,7 +171,7 @@ if (CurrentUnit.GenerationParams.TargetIsCsla4)
         }
         if (Info.GenerateDataPortalDelete)
         {
-            if (Info.ObjectType == CslaObjectType.EditableChild)
+            if (Info.IsEditableChild())
             {
                 if (string.IsNullOrEmpty(Info.DeleteProcedureName))
                 {
@@ -196,7 +196,7 @@ if (CurrentUnit.GenerationParams.TargetIsCsla4)
     }
     foreach (Criteria c in Info.CriteriaObjects)
     {
-        if (Info.ObjectType == CslaObjectType.UnitOfWork)
+        if (Info.IsUnitOfWork())
             continue;
         if (c.GetOptions.DataPortal && c.GetOptions.ProcedureName == string.Empty)
         {
@@ -246,7 +246,7 @@ foreach (ValueProperty prop in Info.GetDatabaseBoundValueProperties())
     {
         if (UseSilverlight())
             Warnings.Append(Info.ObjectName + " property " + prop.Name + ": must use Declaration Mode 'Managed', 'ManagedWithTypeConversion', 'Unmanaged' or 'UnmanagedWithTypeConversion' under Silverlight." + Environment.NewLine);
-        if (!prop.ReadOnly && Info.ObjectType != CslaObjectType.ReadOnlyObject)
+        if (!prop.ReadOnly && Info.IsNotReadOnlyObject())
             Warnings.Append(Info.ObjectName + " is editable: property " + prop.Name + ": must use Declaration Mode 'Managed', 'ManagedWithTypeConversion', 'Unmanaged' or 'UnmanagedWithTypeConversion' as changes to the property won't raise any event." + Environment.NewLine);
     }
 }

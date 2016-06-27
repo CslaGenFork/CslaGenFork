@@ -1,11 +1,11 @@
 <%
 bool isCollection2 =
-    Info.ObjectType == CslaObjectType.EditableChildCollection ||
-    Info.ObjectType == CslaObjectType.ReadOnlyCollection;
+    Info.IsEditableChildCollection() ||
+    Info.IsReadOnlyCollection();
 
 bool isSelfLoadCollection =
-    (Info.ObjectType == CslaObjectType.EditableChildCollection ||
-    Info.ObjectType == CslaObjectType.ReadOnlyCollection) &&
+    (Info.IsEditableChildCollection() ||
+    Info.IsReadOnlyCollection()) &&
     IsChildSelfLoaded(Info);
 bool isSelfLoad = IsChildSelfLoaded(Info);
 bool createOptionsFactory;
@@ -38,7 +38,7 @@ if (isSelfLoad)
 }
 getOptionsFactory = false;
 
-if (Info.ObjectType == CslaObjectType.EditableRoot || (Info.ObjectType == CslaObjectType.ReadOnlyObject && Info.ParentType == string.Empty))
+if (Info.IsEditableRoot() || (Info.IsReadOnlyObject() && Info.ParentType == string.Empty))
 {
     foreach (Criteria crit in Info.CriteriaObjects)
     {
@@ -83,8 +83,8 @@ else
                 }
             }
         }
-        else if (Info.ObjectType == CslaObjectType.EditableRootCollection ||
-            Info.ObjectType == CslaObjectType.DynamicEditableRootCollection)
+        else if (Info.IsEditableRootCollection() ||
+            Info.IsDynamicEditableRootCollection())
         {
             if (!createOptionsFactory)
             {
@@ -103,11 +103,11 @@ else
                 Warnings.Append("Criteria " + Info.ObjectName + "." + crit.Name + ": all Delete options should be \"False\" or empty." + Environment.NewLine);
             }
         }
-        else if (!(Info.ObjectType == CslaObjectType.EditableRoot ||
-            Info.ObjectType == CslaObjectType.DynamicEditableRoot ||
-            Info.ObjectType == CslaObjectType.EditableChild ||
-            Info.ObjectType == CslaObjectType.EditableSwitchable ||
-            (Info.ObjectType == CslaObjectType.ReadOnlyObject && Info.ParentType == string.Empty)))
+        else if (!(Info.IsEditableRoot() ||
+            Info.IsDynamicEditableRoot() ||
+            Info.IsEditableChild() ||
+            Info.IsEditableSwitchable() ||
+            (Info.IsReadOnlyObject() && Info.ParentType == string.Empty)))
         {
             if (!isSelfLoad && (getOptionsFactory || getOptionsDataPortal))
             {

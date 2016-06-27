@@ -36,17 +36,17 @@ namespace CslaGenerator.Design
                     _lstProperties.Items.Add("(None)");
                     foreach (var o in GeneratorController.Current.CurrentUnit.CslaObjects)
                     {
-                        if (o.ObjectType == CslaObjectType.NameValueList)
+                        if (o.IsNameValueList())
                             _lstProperties.Items.Add(o.ObjectName);
-                        if (o.ObjectType == CslaObjectType.EditableRoot)
+                        if (o.IsEditableRoot())
                             _lstProperties.Items.Add(o.ObjectName);
-                        if (o.ObjectType == CslaObjectType.ReadOnlyObject && o.ParentType == string.Empty)
+                        if (o.IsReadOnlyObject() && o.ParentType == string.Empty)
                             _lstProperties.Items.Add(o.ObjectName);
-                        if (o.ObjectType == CslaObjectType.EditableRootCollection)
+                        if (o.IsEditableRootCollection())
                             _lstProperties.Items.Add(o.ObjectName);
-                        if (o.ObjectType == CslaObjectType.DynamicEditableRootCollection)
+                        if (o.IsDynamicEditableRootCollection())
                             _lstProperties.Items.Add(o.ObjectName);
-                        if (o.ObjectType == CslaObjectType.ReadOnlyCollection && o.ParentType == string.Empty)
+                        if (o.IsReadOnlyCollection() && o.ParentType == string.Empty)
                             _lstProperties.Items.Add(o.ObjectName);
                     }
                     _lstProperties.Sorted = true;
