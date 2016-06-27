@@ -31,7 +31,7 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
         {
         <%
     string newMethodName = "New" + Info.ItemType;
-    if (itemInfo.ObjectType == CslaObjectType.EditableSwitchable)
+    if (itemInfo.IsEditableSwitchable())
     {
         newMethodName += "Child";
     }

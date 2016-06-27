@@ -1,4 +1,4 @@
-       #Region " Factory Methods "
+        #Region " Factory Methods "
 <%
 bool getRunLocal = false;
 bool getNonLocal = false;
@@ -28,7 +28,7 @@ if (silverlightIsDifferent)
 {
     %>
 
-#If  Not SILVERLIGHT Then
+#If Not SILVERLIGHT Then
 <%
 }
 if (UseNoSilverlight())

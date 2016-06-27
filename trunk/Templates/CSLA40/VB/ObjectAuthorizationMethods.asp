@@ -224,9 +224,9 @@ if (generateAuthRegion2)
         End Sub
 
         <%
-    if (authzInfo2.ObjectType != CslaObjectType.ReadOnlyCollection &&
-        authzInfo2.ObjectType != CslaObjectType.ReadOnlyObject &&
-        authzInfo2.ObjectType != CslaObjectType.NameValueList)
+    if (authzInfo2.IsNotReadOnlyCollection() &&
+        authzInfo2.IsNotReadOnlyObject() &&
+        authzInfo2.IsNotNameValueList())
     {
         %>
         ''' <summary>
@@ -248,9 +248,9 @@ if (generateAuthRegion2)
             Return BusinessRules.HasPermission(Csla.Rules.AuthorizationActions.GetObject, GetType(<%= Info.ObjectName %>))
         End Function
         <%
-    if (authzInfo2.ObjectType != CslaObjectType.ReadOnlyCollection &&
-        authzInfo2.ObjectType != CslaObjectType.ReadOnlyObject &&
-        authzInfo2.ObjectType != CslaObjectType.NameValueList)
+    if (authzInfo2.IsNotReadOnlyCollection() &&
+        authzInfo2.IsNotReadOnlyObject() &&
+        authzInfo2.IsNotNameValueList())
     {
         %>
 

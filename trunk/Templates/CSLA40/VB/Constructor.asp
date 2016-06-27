@@ -26,7 +26,7 @@ if (Info.GenerateConstructor)
         ''' <summary>
         ''' Initializes a new instance of the <see cref="<%= Info.ObjectName %>"/> class.
         ''' </summary>
-        ''' <remarks> Do not use to create a <%= Info.ObjectType == CslaObjectType.UnitOfWork ? "Unit of Work" : "Csla object" %>. Use factory methods instead.</remarks>
+        ''' <remarks> Do not use to create a <%= Info.IsUnitOfWork() ? "Unit of Work" : "Csla object" %>. Use factory methods instead.</remarks>
 <%
     if (UseBoth())
     {
@@ -51,7 +51,7 @@ if (Info.GenerateConstructor)
     {
         string ctorVisibility = string.Empty;
         if (Info.ConstructorVisibility == ConstructorVisibility.Default &&
-            Info.ObjectType == CslaObjectType.ReadOnlyCollection &&
+            Info.IsReadOnlyCollection() &&
             Info.ParentType != string.Empty &&
             ancestorLoaderLevel > 1)
             ctorVisibility = "Friend";
@@ -89,7 +89,7 @@ if (Info.GenerateConstructor)
             AddHandler <%= Info.ObjectName %>Saved, AddressOf <%= Info.ObjectName %>SavedHandler
 <%
     }
-    if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
+    if (Info.IsReadOnlyCollection())
     {
         if (Info.UpdaterType != string.Empty)
         {
@@ -102,8 +102,8 @@ if (Info.GenerateConstructor)
             }
         }
     }
-    if (Info.ObjectType == CslaObjectType.EditableChild ||
-        Info.ObjectType == CslaObjectType.EditableChildCollection)
+    if (Info.IsEditableChild() ||
+        Info.IsEditableChildCollection())
     {
         %>
 
@@ -111,10 +111,10 @@ if (Info.GenerateConstructor)
             MarkAsChild()
             <%
     }
-    //if (Info.ObjectType == CslaObjectType.EditableChildCollection ||
-    //    Info.ObjectType == CslaObjectType.EditableRootCollection ||
-    //    Info.ObjectType == CslaObjectType.DynamicEditableRootCollection ||
-    //    Info.ObjectType == CslaObjectType.ReadOnlyCollection)
+    //if (Info.IsEditableChildCollection() ||
+    //    Info.IsEditableRootCollection() ||
+    //    Info.IsDynamicEditableRootCollection() ||
+    //    Info.IsReadOnlyCollection())
     if (TypeHelper.IsCollectionType(Info.ObjectType))
     {
         %>

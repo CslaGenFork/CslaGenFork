@@ -464,7 +464,7 @@ namespace CslaGenerator.Design
                         if (GeneratorController.Current.CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider)
                             _form.Size = new Size(_form.Size.Width, _form.Size.Height - 16);
                     }
-                    if (cslaObject.ObjectType == CslaObjectType.NameValueList)
+                    if (cslaObject.IsNameValueList())
                         _form.Size = new Size(_form.Size.Width, 626);
                     else if (cslaObject.IsNotDbConsumer())
                         _form.Size = new Size(_form.Size.Width, _form.Size.Height - 96);
@@ -498,11 +498,11 @@ namespace CslaGenerator.Design
                     _form.Size = new Size(550, _form.Size.Height);
                     _collectionType = typeof(Criteria);
                     _form.Size = new Size(_form.Size.Width, 738);
-                    if (cslaObject.ObjectType == CslaObjectType.ReadOnlyObject ||
-                        cslaObject.ObjectType == CslaObjectType.ReadOnlyCollection ||
-                        cslaObject.ObjectType == CslaObjectType.NameValueList)
+                    if (cslaObject.IsReadOnlyObject() ||
+                        cslaObject.IsReadOnlyCollection() ||
+                        cslaObject.IsNameValueList())
                         _form.Size = new Size(_form.Size.Width, _form.Size.Height - 256);
-                    if (cslaObject.ObjectType == CslaObjectType.EditableChild)
+                    if (cslaObject.IsEditableChild())
                         _form.Size = new Size(_form.Size.Width, _form.Size.Height - 128);
                     if (height < _form.Size.Height)
                         _form.Size = new Size(_form.Size.Width, height);

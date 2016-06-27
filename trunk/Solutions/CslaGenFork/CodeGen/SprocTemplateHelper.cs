@@ -1326,10 +1326,10 @@ namespace CslaGenerator.CodeGen
 
         public bool IsCollectionType(CslaObjectType cslaType)
         {
-            if (cslaType == CslaObjectType.EditableRootCollection ||
-                cslaType == CslaObjectType.EditableChildCollection ||
-                cslaType == CslaObjectType.DynamicEditableRootCollection ||
-                cslaType == CslaObjectType.ReadOnlyCollection)
+            if (cslaType.IsEditableRootCollection() ||
+                cslaType.IsEditableChildCollection() ||
+                cslaType.IsDynamicEditableRootCollection() ||
+                cslaType.IsReadOnlyCollection())
                 return true;
 
             return false;

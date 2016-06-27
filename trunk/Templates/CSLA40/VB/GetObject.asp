@@ -3,11 +3,11 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
 {
     foreach (Criteria c in Info.CriteriaObjects)
     {
-        if (Info.ObjectType == CslaObjectType.UnitOfWork && Info.IsCreatorGetter && c.Properties.Count == 0)
+        if (Info.IsUnitOfWork() && Info.IsCreatorGetter && c.Properties.Count == 0)
             continue;
         if (c.GetOptions.Factory)
         {
-            if (!isChild && !c.NestedClass && c.Properties.Count > 1 && Info.ObjectType != CslaObjectType.EditableSwitchable)
+            if (!isChild && !c.NestedClass && c.Properties.Count > 1 && Info.IsNotEditableSwitchable())
             {
                 %>
 
@@ -59,11 +59,11 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
         ''' <returns>A reference to the fetched <see cref="<%= Info.ObjectName %>"/> <%= TypeHelper.IsCollectionType(Info.ObjectType) ? "collection" : "object" %>.</returns>
         <%= Info.ParentType == string.Empty ? "Public" : "Friend" %> Shared Function Get<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>(<%= strGetParams %>) As <%= Info.ObjectName %>
             <%
-            if (Info.ObjectType == CslaObjectType.EditableSwitchable)
+            if (Info.IsEditableSwitchable())
             {
                 strGetCritParams = "False, " + strGetCritParams;
             }
-            if (c.Properties.Count > 1 || (Info.ObjectType == CslaObjectType.EditableSwitchable && c.Properties.Count == 1))
+            if (c.Properties.Count > 1 || (Info.IsEditableSwitchable() && c.Properties.Count == 1))
             {
                 %>
             Return DataPortal.Fetch<%= isChildNotLazyLoaded ? "Child" : "" %>(Of <%= Info.ObjectName %>)(New <%= c.Name %>(<%= strGetCritParams %>))

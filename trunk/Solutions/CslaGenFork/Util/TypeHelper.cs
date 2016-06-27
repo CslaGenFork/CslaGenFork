@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Text;
 using CslaGenerator.Metadata;
 
@@ -107,10 +106,10 @@ namespace CslaGenerator.Util
 
         public static bool IsCollectionType(this CslaObjectType cslaType)
         {
-            if (cslaType == CslaObjectType.EditableRootCollection ||
-                cslaType == CslaObjectType.EditableChildCollection ||
-                cslaType == CslaObjectType.DynamicEditableRootCollection ||
-                cslaType == CslaObjectType.ReadOnlyCollection)
+            if (cslaType.IsEditableRootCollection() ||
+                cslaType.IsEditableChildCollection() ||
+                cslaType.IsDynamicEditableRootCollection() ||
+                cslaType.IsReadOnlyCollection())
             {
                 return true;
             }
@@ -120,11 +119,11 @@ namespace CslaGenerator.Util
 
         public static bool IsObjectType(this CslaObjectType cslaType)
         {
-            if (cslaType == CslaObjectType.EditableRoot ||
-                cslaType == CslaObjectType.EditableChild ||
-                cslaType == CslaObjectType.EditableSwitchable ||
-                cslaType == CslaObjectType.DynamicEditableRoot ||
-                cslaType == CslaObjectType.ReadOnlyObject)
+            if (cslaType.IsEditableRoot() ||
+                cslaType.IsEditableChild() ||
+                cslaType.IsEditableSwitchable() ||
+                cslaType.IsDynamicEditableRoot() ||
+                cslaType.IsReadOnlyObject())
                 return true;
 
             return false;
@@ -132,13 +131,13 @@ namespace CslaGenerator.Util
 
         public static bool IsEditableType(this CslaObjectType cslaType)
         {
-            if (cslaType == CslaObjectType.EditableChild ||
-                cslaType == CslaObjectType.EditableChildCollection ||
-                cslaType == CslaObjectType.EditableRoot ||
-                cslaType == CslaObjectType.EditableRootCollection ||
-                cslaType == CslaObjectType.EditableSwitchable ||
-                cslaType == CslaObjectType.DynamicEditableRoot ||
-                cslaType == CslaObjectType.DynamicEditableRootCollection)
+            if (cslaType.IsEditableChild() ||
+                cslaType.IsEditableChildCollection() ||
+                cslaType.IsEditableRoot() ||
+                cslaType.IsEditableRootCollection() ||
+                cslaType.IsEditableSwitchable() ||
+                cslaType.IsDynamicEditableRoot() ||
+                cslaType.IsDynamicEditableRootCollection())
                 return true;
 
             return false;
@@ -146,8 +145,8 @@ namespace CslaGenerator.Util
 
         public static bool IsReadOnlyType(this CslaObjectType cslaType)
         {
-            if (cslaType == CslaObjectType.ReadOnlyCollection ||
-                cslaType == CslaObjectType.ReadOnlyObject)
+            if (cslaType.IsReadOnlyCollection() ||
+                cslaType.IsReadOnlyObject())
                 return true;
 
             return false;
@@ -155,8 +154,8 @@ namespace CslaGenerator.Util
 
         public static bool IsChildType(this CslaObjectType cslaType)
         {
-            if (cslaType == CslaObjectType.EditableChild ||
-                cslaType == CslaObjectType.EditableChildCollection)
+            if (cslaType.IsEditableChild() ||
+                cslaType.IsEditableChildCollection())
                 return true;
 
             return false;
@@ -164,11 +163,11 @@ namespace CslaGenerator.Util
 
         public static bool IsChildType(this CslaObjectInfo info)
         {
-            if (info.ObjectType == CslaObjectType.EditableSwitchable ||
-                info.ObjectType == CslaObjectType.EditableChild ||
-                info.ObjectType == CslaObjectType.EditableChildCollection ||
-                ((info.ObjectType == CslaObjectType.ReadOnlyObject ||
-                  info.ObjectType == CslaObjectType.ReadOnlyCollection) &&
+            if (info.IsEditableSwitchable() ||
+                info.IsEditableChild() ||
+                info.IsEditableChildCollection() ||
+                ((info.IsReadOnlyObject() ||
+                  info.IsReadOnlyCollection()) &&
                  info.ParentType != string.Empty))
                 return true;
 
@@ -177,13 +176,13 @@ namespace CslaGenerator.Util
 
         public static bool IsRootType(this CslaObjectInfo info)
         {
-            if (info.ObjectType == CslaObjectType.EditableRoot ||
-                info.ObjectType == CslaObjectType.EditableRootCollection ||
-                info.ObjectType == CslaObjectType.DynamicEditableRoot ||
-                info.ObjectType == CslaObjectType.DynamicEditableRootCollection ||
-                info.ObjectType == CslaObjectType.EditableSwitchable ||
-                ((info.ObjectType == CslaObjectType.ReadOnlyObject ||
-                  info.ObjectType == CslaObjectType.ReadOnlyCollection) &&
+            if (info.IsEditableRoot() ||
+                info.IsEditableRootCollection() ||
+                info.IsDynamicEditableRoot() ||
+                info.IsDynamicEditableRootCollection() ||
+                info.IsEditableSwitchable() ||
+                ((info.IsReadOnlyObject() ||
+                  info.IsReadOnlyCollection()) &&
                  info.ParentType == string.Empty))
                 return true;
 
@@ -192,8 +191,8 @@ namespace CslaGenerator.Util
 
         public static bool IsNotRootType(this CslaObjectInfo info)
         {
-            if (info.ObjectType == CslaObjectType.EditableChild ||
-                (info.ObjectType == CslaObjectType.ReadOnlyObject &&
+            if (info.IsEditableChild() ||
+                (info.IsReadOnlyObject() &&
                  info.ParentType != string.Empty))
                 return true;
 
@@ -203,10 +202,10 @@ namespace CslaGenerator.Util
         public static bool IsItemType(this CslaObjectInfo info)
         {
             var cslaType = info.ObjectType;
-            if (cslaType == CslaObjectType.EditableRoot ||
-                cslaType == CslaObjectType.EditableChild ||
-                cslaType == CslaObjectType.DynamicEditableRoot ||
-                cslaType == CslaObjectType.ReadOnlyObject)
+            if (cslaType.IsEditableRoot() ||
+                cslaType.IsEditableChild() ||
+                cslaType.IsDynamicEditableRoot() ||
+                cslaType.IsReadOnlyObject())
             {
                 var parent = info.Parent.CslaObjects.Find(info.ParentType);
                 if (parent != null && parent.ObjectType.IsCollectionType())
@@ -230,9 +229,9 @@ namespace CslaGenerator.Util
 
         public static bool IsNotDbConsumer(this CslaObjectInfo info)
         {
-            return info.ObjectType == CslaObjectType.UnitOfWork ||
-                   info.ObjectType == CslaObjectType.BaseClass ||
-                   info.ObjectType == CslaObjectType.CriteriaClass;
+            return info.IsUnitOfWork() ||
+                   info.IsBaseClass() ||
+                   info.IsCriteriaClass();
         }
 
         public static bool CanHaveParentProperties(this CslaObjectInfo info)
@@ -240,20 +239,20 @@ namespace CslaGenerator.Util
             if (info.ObjectType.IsCollectionType())
                 return false; // Object is a collection and thus has no Properties
 
-            if (info.ObjectType == CslaObjectType.EditableRoot ||
-                info.ObjectType == CslaObjectType.DynamicEditableRoot)
+            if (info.IsEditableRoot() ||
+                info.IsDynamicEditableRoot())
                 return false; // Object is root and thus has no ParentType
 
             var parent = info.Parent.CslaObjects.Find(info.ParentType);
             if (parent == null)
-                return info.ObjectType == CslaObjectType.ReadOnlyObject;
+                return info.IsReadOnlyObject();
             // Object is ReadOnly and might have ParentProperties
 
             if (parent.ObjectType.IsCollectionType()) // ParentType is a collection and thus has no Properties
             {
-                if (parent.ObjectType == CslaObjectType.EditableRootCollection ||
-                    parent.ObjectType == CslaObjectType.DynamicEditableRootCollection ||
-                    (parent.ObjectType == CslaObjectType.ReadOnlyCollection && parent.ParentType == string.Empty))
+                if (parent.IsEditableRootCollection() ||
+                    parent.IsDynamicEditableRootCollection() ||
+                    (parent.IsReadOnlyCollection() && parent.ParentType == string.Empty))
                     return false; // ParentType is a root collection; end of line
 
                 return true; // There should be a grand-parent with properties
@@ -381,7 +380,7 @@ namespace CslaGenerator.Util
             return newText.ToString();
         }
 
-        #region CslaOjectType
+        #region EditableRoot
 
         public static bool IsEditableRoot(this CslaObjectType cslaType)
         {
@@ -390,8 +389,22 @@ namespace CslaGenerator.Util
 
         public static bool IsEditableRoot(this CslaObjectInfo info)
         {
-            return info.ObjectType == CslaObjectType.EditableRoot;
+            return info.ObjectType.IsEditableRoot();
         }
+
+        public static bool IsNotEditableRoot(this CslaObjectType cslaType)
+        {
+            return !cslaType.IsEditableRoot();
+        }
+
+        public static bool IsNotEditableRoot(this CslaObjectInfo info)
+        {
+            return !info.IsEditableRoot();
+        }
+
+        #endregion
+
+        #region EditableChild
 
         public static bool IsEditableChild(this CslaObjectType cslaType)
         {
@@ -400,8 +413,22 @@ namespace CslaGenerator.Util
 
         public static bool IsEditableChild(this CslaObjectInfo info)
         {
-            return info.ObjectType == CslaObjectType.EditableChild;
+            return info.ObjectType.IsEditableChild();
         }
+
+        public static bool IsNotEditableChild(this CslaObjectType cslaType)
+        {
+            return !cslaType.IsEditableChild();
+        }
+
+        public static bool IsNotEditableChild(this CslaObjectInfo info)
+        {
+            return !info.IsEditableChild();
+        }
+
+        #endregion
+
+        #region EditableSwitchable
 
         public static bool IsEditableSwitchable(this CslaObjectType cslaType)
         {
@@ -410,8 +437,22 @@ namespace CslaGenerator.Util
 
         public static bool IsEditableSwitchable(this CslaObjectInfo info)
         {
-            return info.ObjectType == CslaObjectType.EditableSwitchable;
+            return info.ObjectType.IsEditableSwitchable();
         }
+
+        public static bool IsNotEditableSwitchable(this CslaObjectType cslaType)
+        {
+            return !cslaType.IsEditableSwitchable();
+        }
+
+        public static bool IsNotEditableSwitchable(this CslaObjectInfo info)
+        {
+            return !info.IsEditableSwitchable();
+        }
+
+        #endregion
+
+        #region DynamicEditableRoot
 
         public static bool IsDynamicEditableRoot(this CslaObjectType cslaType)
         {
@@ -420,8 +461,22 @@ namespace CslaGenerator.Util
 
         public static bool IsDynamicEditableRoot(this CslaObjectInfo info)
         {
-            return info.ObjectType == CslaObjectType.DynamicEditableRoot;
+            return info.ObjectType.IsDynamicEditableRoot();
         }
+
+        public static bool IsNotDynamicEditableRoot(this CslaObjectType cslaType)
+        {
+            return !cslaType.IsDynamicEditableRoot();
+        }
+
+        public static bool IsNotDynamicEditableRoot(this CslaObjectInfo info)
+        {
+            return !info.IsDynamicEditableRoot();
+        }
+
+        #endregion
+
+        #region EditableRootCollection
 
         public static bool IsEditableRootCollection(this CslaObjectType cslaType)
         {
@@ -430,8 +485,22 @@ namespace CslaGenerator.Util
 
         public static bool IsEditableRootCollection(this CslaObjectInfo info)
         {
-            return info.ObjectType == CslaObjectType.EditableRootCollection;
+            return info.ObjectType.IsEditableRootCollection();
         }
+
+        public static bool IsNotEditableRootCollection(this CslaObjectType cslaType)
+        {
+            return !cslaType.IsEditableRootCollection();
+        }
+
+        public static bool IsNotEditableRootCollection(this CslaObjectInfo info)
+        {
+            return !info.IsEditableRootCollection();
+        }
+
+        #endregion
+
+        #region DynamicEditableRootCollection
 
         public static bool IsDynamicEditableRootCollection(this CslaObjectType cslaType)
         {
@@ -440,8 +509,22 @@ namespace CslaGenerator.Util
 
         public static bool IsDynamicEditableRootCollection(this CslaObjectInfo info)
         {
-            return info.ObjectType == CslaObjectType.DynamicEditableRootCollection;
+            return info.ObjectType.IsDynamicEditableRootCollection();
         }
+
+        public static bool IsNotDynamicEditableRootCollection(this CslaObjectType cslaType)
+        {
+            return !cslaType.IsDynamicEditableRootCollection();
+        }
+
+        public static bool IsNotDynamicEditableRootCollection(this CslaObjectInfo info)
+        {
+            return !info.IsDynamicEditableRootCollection();
+        }
+
+        #endregion
+
+        #region EditableChildCollection
 
         public static bool IsEditableChildCollection(this CslaObjectType cslaType)
         {
@@ -450,8 +533,22 @@ namespace CslaGenerator.Util
 
         public static bool IsEditableChildCollection(this CslaObjectInfo info)
         {
-            return info.ObjectType == CslaObjectType.EditableChildCollection;
+            return info.ObjectType.IsEditableChildCollection();
         }
+
+        public static bool IsNotEditableChildCollection(this CslaObjectType cslaType)
+        {
+            return !cslaType.IsEditableChildCollection();
+        }
+
+        public static bool IsNotEditableChildCollection(this CslaObjectInfo info)
+        {
+            return !info.IsEditableChildCollection();
+        }
+
+        #endregion
+
+        #region ReadOnlyObject
 
         public static bool IsReadOnlyObject(this CslaObjectType cslaType)
         {
@@ -460,8 +557,22 @@ namespace CslaGenerator.Util
 
         public static bool IsReadOnlyObject(this CslaObjectInfo info)
         {
-            return info.ObjectType == CslaObjectType.ReadOnlyObject;
+            return info.ObjectType.IsReadOnlyObject();
         }
+
+        public static bool IsNotReadOnlyObject(this CslaObjectType cslaType)
+        {
+            return !cslaType.IsReadOnlyObject();
+        }
+
+        public static bool IsNotReadOnlyObject(this CslaObjectInfo info)
+        {
+            return !info.IsReadOnlyObject();
+        }
+
+        #endregion
+
+        #region ReadOnlyCollection
 
         public static bool IsReadOnlyCollection(this CslaObjectType cslaType)
         {
@@ -470,8 +581,22 @@ namespace CslaGenerator.Util
 
         public static bool IsReadOnlyCollection(this CslaObjectInfo info)
         {
-            return info.ObjectType == CslaObjectType.ReadOnlyCollection;
+            return info.ObjectType.IsReadOnlyCollection();
         }
+
+        public static bool IsNotReadOnlyCollection(this CslaObjectType cslaType)
+        {
+            return !cslaType.IsReadOnlyCollection();
+        }
+
+        public static bool IsNotReadOnlyCollection(this CslaObjectInfo info)
+        {
+            return !info.IsReadOnlyCollection();
+        }
+
+        #endregion
+
+        #region NameValueList
 
         public static bool IsNameValueList(this CslaObjectType cslaType)
         {
@@ -480,8 +605,22 @@ namespace CslaGenerator.Util
 
         public static bool IsNameValueList(this CslaObjectInfo info)
         {
-            return info.ObjectType == CslaObjectType.NameValueList;
+            return info.ObjectType.IsNameValueList();
         }
+
+        public static bool IsNotNameValueList(this CslaObjectType cslaType)
+        {
+            return !cslaType.IsNameValueList();
+        }
+
+        public static bool IsNotNameValueList(this CslaObjectInfo info)
+        {
+            return !info.IsNameValueList();
+        }
+
+        #endregion
+
+        #region UnitOfWork
 
         public static bool IsUnitOfWork(this CslaObjectType cslaType)
         {
@@ -490,8 +629,22 @@ namespace CslaGenerator.Util
 
         public static bool IsUnitOfWork(this CslaObjectInfo info)
         {
-            return info.ObjectType == CslaObjectType.UnitOfWork;
+            return info.ObjectType.IsUnitOfWork();
         }
+
+        public static bool IsNotUnitOfWork(this CslaObjectType cslaType)
+        {
+            return !cslaType.IsUnitOfWork();
+        }
+
+        public static bool IsNotUnitOfWork(this CslaObjectInfo info)
+        {
+            return !info.IsUnitOfWork();
+        }
+
+        #endregion
+
+        #region CriteriaClass
 
         public static bool IsCriteriaClass(this CslaObjectType cslaType)
         {
@@ -500,8 +653,22 @@ namespace CslaGenerator.Util
 
         public static bool IsCriteriaClass(this CslaObjectInfo info)
         {
-            return info.ObjectType == CslaObjectType.CriteriaClass;
+            return info.ObjectType.IsCriteriaClass();
         }
+
+        public static bool IsNotCriteriaClass(this CslaObjectType cslaType)
+        {
+            return !cslaType.IsCriteriaClass();
+        }
+
+        public static bool IsNotCriteriaClass(this CslaObjectInfo info)
+        {
+            return !info.IsCriteriaClass();
+        }
+
+        #endregion
+
+        #region BaseClass
 
         public static bool IsBaseClass(this CslaObjectType cslaType)
         {
@@ -510,8 +677,22 @@ namespace CslaGenerator.Util
 
         public static bool IsBaseClass(this CslaObjectInfo info)
         {
-            return info.ObjectType == CslaObjectType.BaseClass;
+            return info.ObjectType.IsBaseClass();
         }
+
+        public static bool IsNotBaseClass(this CslaObjectType cslaType)
+        {
+            return !cslaType.IsBaseClass();
+        }
+
+        public static bool IsNotBaseClass(this CslaObjectInfo info)
+        {
+            return !info.IsBaseClass();
+        }
+
+        #endregion
+
+        #region PlaceHolder
 
         public static bool IsPlaceHolder(this CslaObjectType cslaType)
         {
@@ -520,7 +701,17 @@ namespace CslaGenerator.Util
 
         public static bool IsPlaceHolder(this CslaObjectInfo info)
         {
-            return info.ObjectType == CslaObjectType.PlaceHolder;
+            return info.ObjectType.IsPlaceHolder();
+        }
+
+        public static bool IsNotPlaceHolder(this CslaObjectType cslaType)
+        {
+            return !cslaType.IsPlaceHolder();
+        }
+
+        public static bool IsNotPlaceHolder(this CslaObjectInfo info)
+        {
+            return !info.IsPlaceHolder();
         }
 
         #endregion

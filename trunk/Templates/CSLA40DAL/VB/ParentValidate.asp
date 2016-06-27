@@ -35,21 +35,21 @@ else
         if (validateParentInfo.ItemType.Equals(String.Empty))
         {
             // Collections must have an ItemType
-            if (validateParentInfo.ObjectType == CslaObjectType.ReadOnlyCollection ||
-                validateParentInfo.ObjectType == CslaObjectType.EditableChildCollection ||
-                validateParentInfo.ObjectType == CslaObjectType.DynamicEditableRootCollection ||
-                validateParentInfo.ObjectType == CslaObjectType.EditableRootCollection)
+            if (validateParentInfo.IsReadOnlyCollection() ||
+                validateParentInfo.IsEditableChildCollection() ||
+                validateParentInfo.IsDynamicEditableRootCollection() ||
+                validateParentInfo.IsEditableRootCollection())
             {
                 Errors.Append("ItemType property is missing on parent " + validateParentInfo.ObjectName + "." + Environment.NewLine);
                 return;
             }
-            if (validateParentInfo.ObjectType == CslaObjectType.ReadOnlyObject ||
-                validateParentInfo.ObjectType == CslaObjectType.EditableChild ||
-                validateParentInfo.ObjectType == CslaObjectType.EditableRoot)
+            if (validateParentInfo.IsReadOnlyObject() ||
+                validateParentInfo.IsEditableChild() ||
+                validateParentInfo.IsEditableRoot())
             {
                 // The parent of Child collections must know they exist (i.e. the GRAND parent must know the parent exists)
-                if (Info.ObjectType == CslaObjectType.ReadOnlyCollection ||
-                    Info.ObjectType == CslaObjectType.EditableChildCollection)
+                if (Info.IsReadOnlyCollection() ||
+                    Info.IsEditableChildCollection())
                 {
                     bool found = false;
                     foreach (ChildProperty child in validateParentInfo.GetCollectionChildProperties())
@@ -68,8 +68,8 @@ else
                 }
 
                 // The parent of Child objects must know they exist
-                if (Info.ObjectType == CslaObjectType.ReadOnlyObject ||
-                    Info.ObjectType == CslaObjectType.EditableChild)
+                if (Info.IsReadOnlyObject() ||
+                    Info.IsEditableChild())
                 {
                     bool found = false;
                     foreach (ChildProperty child in validateParentInfo.GetNonCollectionChildProperties())
@@ -125,13 +125,13 @@ else
         }
 
         // if there should be a GRAND parent, do further validations
-        if ((validateParentInfo.ObjectType == CslaObjectType.ReadOnlyCollection &&
+        if ((validateParentInfo.IsReadOnlyCollection() &&
             validateParentInfo.ParentType != string.Empty) ||
-            validateParentInfo.ObjectType == CslaObjectType.EditableChildCollection)
+            validateParentInfo.IsEditableChildCollection())
         {
             // Find the GRAND parent
-            if (validateParentInfo.ObjectType == CslaObjectType.ReadOnlyCollection ||
-                validateParentInfo.ObjectType == CslaObjectType.EditableChildCollection)
+            if (validateParentInfo.IsReadOnlyCollection() ||
+                validateParentInfo.IsEditableChildCollection())
             {
                 // Check the object has a GRAND ParentType
                 if (validateParentInfo.ParentType.Equals(String.Empty))
@@ -157,8 +157,8 @@ else
             }
 
             // The parent of Child collections must know they exist (i.e. the GRAND parent must know the parent exists)
-            if (validateInfo.ObjectType == CslaObjectType.ReadOnlyCollection ||
-                validateInfo.ObjectType == CslaObjectType.EditableChildCollection)
+            if (validateInfo.IsReadOnlyCollection() ||
+                validateInfo.IsEditableChildCollection())
             {
                 bool found = false;
                 foreach (ChildProperty child in validateParentInfo.GetCollectionChildProperties())
@@ -177,8 +177,8 @@ else
             }
 
             // The parent of Child objects must know they exist
-            if (validateInfo.ObjectType == CslaObjectType.ReadOnlyObject ||
-                validateInfo.ObjectType == CslaObjectType.EditableChild)
+            if (validateInfo.IsReadOnlyObject() ||
+                validateInfo.IsEditableChild())
             {
                 bool found = false;
                 foreach (ChildProperty child in validateParentInfo.GetNonCollectionChildProperties())

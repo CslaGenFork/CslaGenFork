@@ -27,8 +27,8 @@ if (Errors.Length == 0)
     {
         isItem = TypeHelper.IsCollectionType(parentInfo.ObjectType);
         grandParentInfo = Info.Parent.CslaObjects.Find(parentInfo.ParentType);
-        isParentRootCollection = (parentInfo.ObjectType == CslaObjectType.EditableRootCollection) ||
-            (parentInfo.ObjectType == CslaObjectType.ReadOnlyCollection && parentInfo.ParentType == String.Empty);
+        isParentRootCollection = (parentInfo.IsEditableRootCollection()) ||
+            (parentInfo.IsReadOnlyCollection() && parentInfo.ParentType == String.Empty);
     }
     bool isSwitchable = false;
     bool isCollection = false;
@@ -42,7 +42,7 @@ if (Errors.Length == 0)
     bool internalNewObjectUsed = false;
     Criteria critCGF = new Criteria(Info);
     if (parentInfo != null)
-        internalNewObjectUsed = ancestorLoaderLevel > 0 && parentInfo.ObjectType != CslaObjectType.ReadOnlyCollection;
+        internalNewObjectUsed = ancestorLoaderLevel > 0 && parentInfo.IsNotReadOnlyCollection();
     if (internalNewObjectUsed)
     {
         critCGF.Name = "CreatedByCslaGenFork";// this name is hard coded

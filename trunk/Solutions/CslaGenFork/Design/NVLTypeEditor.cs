@@ -37,7 +37,7 @@ namespace CslaGenerator.Design
                     _lstProperties.Items.Add("(None)");
                     foreach (var o in GeneratorController.Current.CurrentUnit.CslaObjects)
                     {
-                        if (o.ObjectType == CslaObjectType.NameValueList)
+                        if (o.IsNameValueList())
                         {
                             var prefix = string.Empty;
                             var objectNamespace = ((CslaObjectInfo)GeneratorController.Current.GetSelectedItem()).ObjectNamespace;

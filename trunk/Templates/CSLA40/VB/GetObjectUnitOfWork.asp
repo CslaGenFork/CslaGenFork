@@ -40,10 +40,10 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
         ''' <summary>
         ''' Factory method. Loads a <see cref="<%= Info.ObjectName %>"/> unit of objects<%= elementCriteriaCount > 0 ? ", based on given parameters" : "" %>.
         ''' </summary>
-        <%= strGetComment %>''' <returns>A reference to the fetched <see cref="<%= Info.ObjectName %>"/> <%= Info.ObjectType == CslaObjectType.UnitOfWork ? "unit of objects" : "object" %>.</returns>
+        <%= strGetComment %>''' <returns>A reference to the fetched <see cref="<%= Info.ObjectName %>"/> <%= Info.IsUnitOfWork() ? "unit of objects" : "object" %>.</returns>
         <%= Info.ParentType == string.Empty ? "Public" : "Friend" %> Shared Function Get<%= Info.ObjectName %>(<%= strGetParams %>) As <%= Info.ObjectName %>
             <%
-        if (elementCriteriaCount > 1 || (Info.ObjectType == CslaObjectType.EditableSwitchable && elementCriteriaCount == 1))
+        if (elementCriteriaCount > 1 || (Info.IsEditableSwitchable() && elementCriteriaCount == 1))
         {
             %>
             Return DataPortal.Fetch<%= isChildNotLazyLoaded ? "Child" : "" %>(Of <%= Info.ObjectName %>)(New <%= uowCrit.CriteriaName %>(<%= strGetCritParams %>))

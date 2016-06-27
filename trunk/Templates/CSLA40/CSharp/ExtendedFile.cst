@@ -16,15 +16,15 @@ using System;
 using Csla;
 <%
 bool usesContext = false;
-usesContext = TypeHelper.IsObjectType(Info.ObjectType) || Info.ObjectType == CslaObjectType.UnitOfWork;
+usesContext = TypeHelper.IsObjectType(Info.ObjectType) || Info.IsUnitOfWork();
 bool hasFactoryCache = false;
 bool hasDataPortalCache = false;
 CslaObjectInfo invalidatorInfo = Info;
-if (Info.ObjectType == CslaObjectType.EditableRootCollection ||
-    Info.ObjectType == CslaObjectType.DynamicEditableRoot ||
-    Info.ObjectType == CslaObjectType.EditableRoot)
+if (Info.IsEditableRootCollection() ||
+    Info.IsDynamicEditableRoot() ||
+    Info.IsEditableRoot())
 {
-    if (Info.ObjectType == CslaObjectType.DynamicEditableRoot)
+    if (Info.IsDynamicEditableRoot())
     {
         invalidatorInfo = Info.Parent.CslaObjects.Find(Info.ParentType);
     }
@@ -78,7 +78,7 @@ namespace <%= Info.ObjectNamespace %>
 
         <%
         bool isUpdatable = false;
-        if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
+        if (Info.IsReadOnlyCollection())
         {
             if (Info.UpdaterType != string.Empty)
             {
@@ -152,7 +152,7 @@ namespace <%= Info.ObjectNamespace %>
 
         #endregion
         <%
-if (Info.ObjectType != CslaObjectType.UnitOfWork)
+if (Info.IsNotUnitOfWork())
 {
     bool generateRuleRegion = false;
     bool generateAuthRegion = false;
@@ -247,9 +247,9 @@ if (Info.ObjectType != CslaObjectType.UnitOfWork)
     }
 
     // for parent of editable child collections,
-    if (Info.ObjectType == CslaObjectType.EditableRoot ||
-        Info.ObjectType == CslaObjectType.EditableChild ||
-        Info.ObjectType == CslaObjectType.EditableSwitchable)
+    if (Info.IsEditableRoot() ||
+        Info.IsEditableChild() ||
+        Info.IsEditableSwitchable())
     {
         List<string> childProperties = new List<string>();
         foreach (ChildProperty childProperty in Info.GetAllChildProperties())

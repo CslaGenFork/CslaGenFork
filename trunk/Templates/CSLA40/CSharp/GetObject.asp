@@ -3,11 +3,11 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
 {
     foreach (Criteria c in Info.CriteriaObjects)
     {
-        if (Info.ObjectType == CslaObjectType.UnitOfWork && Info.IsCreatorGetter && c.Properties.Count == 0)
+        if (Info.IsUnitOfWork() && Info.IsCreatorGetter && c.Properties.Count == 0)
             continue;
         if (c.GetOptions.Factory)
         {
-            if (!isChild && !c.NestedClass && c.Properties.Count > 1 && Info.ObjectType != CslaObjectType.EditableSwitchable)
+            if (!isChild && !c.NestedClass && c.Properties.Count > 1 && Info.IsNotEditableSwitchable())
             {
                 %>
 
@@ -61,11 +61,11 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
         <%= Info.ParentType == string.Empty ? "public" : "internal" %> static <%= Info.ObjectName %> Get<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>(<%= strGetParams %>)
         {
             <%
-            if (Info.ObjectType == CslaObjectType.EditableSwitchable)
+            if (Info.IsEditableSwitchable())
             {
                 strGetCritParams = "false, " + strGetCritParams;
             }
-            if (c.Properties.Count > 1 || (Info.ObjectType == CslaObjectType.EditableSwitchable && c.Properties.Count == 1))
+            if (c.Properties.Count > 1 || (Info.IsEditableSwitchable() && c.Properties.Count == 1))
             {
                 %>
             return DataPortal.Fetch<%= isChildNotLazyLoaded ? "Child" : "" %><<%= Info.ObjectName %>>(new <%= c.Name %>(<%= strGetCritParams %>));

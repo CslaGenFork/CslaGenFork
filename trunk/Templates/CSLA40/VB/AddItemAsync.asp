@@ -29,7 +29,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
         Public Sub BeginAdd(<%= prmsAsync %>)
         <%
         string newMethodNameAsync = "New" + Info.ItemType;
-        if (itemInfo.ObjectType == CslaObjectType.EditableSwitchable)
+        if (itemInfo.IsEditableSwitchable())
         {
             newMethodNameAsync += "Child";
         }

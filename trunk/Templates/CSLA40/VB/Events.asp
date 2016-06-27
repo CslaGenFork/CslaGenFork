@@ -1,8 +1,8 @@
 <%
-if ((Info.ObjectType == CslaObjectType.EditableRoot ||
-    Info.ObjectType == CslaObjectType.EditableChild ||
-    Info.ObjectType == CslaObjectType.DynamicEditableRoot ||
-    Info.ObjectType == CslaObjectType.EditableSwitchable) &&
+if ((Info.IsEditableRoot() ||
+    Info.IsEditableChild() ||
+    Info.IsDynamicEditableRoot() ||
+    Info.IsEditableSwitchable()) &&
     Info.SupportUpdateProperties == true)
 {
     Infos.Append("To do list: edit \"" + Info.ObjectName + ".vb\", uncomment the \"OnDeserialized\" method and add the following line:" + Environment.NewLine);

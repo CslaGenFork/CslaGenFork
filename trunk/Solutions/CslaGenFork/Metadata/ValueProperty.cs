@@ -104,7 +104,7 @@ namespace CslaGenerator.Metadata
             var selectedItem = GeneratorController.Current.GetSelectedItem();
             if (selectedItem != null)
             {
-                if (((CslaObjectInfo) selectedItem).ObjectType == CslaObjectType.ReadOnlyObject)
+                if (((CslaObjectInfo) selectedItem).IsReadOnlyObject())
                 {
                     ReadOnly = true;
                 }

@@ -38,7 +38,7 @@ if (parentInfo != null)
     if (!TypeHelper.IsCollectionType(parentInfo.ObjectType))
         useThrowException = CurrentUnit.GenerationParams.ReportObjectNotFound == ReportObjectNotFound.ThrowException;
 }
-else if (!collType && Info.ObjectType != CslaObjectType.NameValueList)
+else if (!collType && Info.IsNotNameValueList())
 {
     useThrowException = CurrentUnit.GenerationParams.ReportObjectNotFound == ReportObjectNotFound.ThrowException;
 }
@@ -48,9 +48,9 @@ string plainTableSchema = GetSchema(tables[0], false);
 string fullTableSchema = GetSchema(tables[0], true);
 bool dontInnerJoinUp = IsChildSelfLoaded(Info) ||
     (Criteria.Properties.Count == 0 &&
-    (Info.ObjectType == CslaObjectType.EditableRootCollection ||
-    Info.ObjectType == CslaObjectType.DynamicEditableRootCollection ||
-    Info.ObjectType == CslaObjectType.ReadOnlyCollection));
+    (Info.IsEditableRootCollection() ||
+    Info.IsDynamicEditableRootCollection() ||
+    Info.IsReadOnlyCollection()));
 string fkMissingMessage = MissingForeignKeys(Criteria, Info, 1, dontInnerJoinUp);
 if(fkMissingMessage != string.Empty)
 {

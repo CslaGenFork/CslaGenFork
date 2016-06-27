@@ -1,6 +1,6 @@
 <%
 if (Info.ToStringProperty != null && Info.ToStringProperty.Count > 0 &&
-    Info.ObjectType != CslaObjectType.ReadOnlyObject)
+    Info.IsNotReadOnlyObject())
 {
     %>
 

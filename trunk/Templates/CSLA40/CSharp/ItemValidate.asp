@@ -34,7 +34,7 @@ else
         }
 
         // collection object use "Contains" but is missing item PK property
-        if (Info.ObjectType == CslaObjectType.DynamicEditableRootCollection)
+        if (Info.IsDynamicEditableRootCollection())
         {
             bool hasCritProperty = false;
             string deleterName = string.Empty;
@@ -61,11 +61,11 @@ else
                 Warnings.Append(Info.ObjectName + ", item " + itemInfo.ObjectName + ", criteria " + deleterName + " uses \"AddRemove\": should have a Criteria Property." + Environment.NewLine);
             }
         }
-        else if (Info.ObjectType == CslaObjectType.EditableRootCollection ||
-            Info.ObjectType == CslaObjectType.EditableChildCollection ||
-            Info.ObjectType == CslaObjectType.ReadOnlyCollection)
+        else if (Info.IsEditableRootCollection() ||
+            Info.IsEditableChildCollection() ||
+            Info.IsReadOnlyCollection())
         {
-            if (Info.ContainsItem || (Info.ObjectType == CslaObjectType.EditableChildCollection && itemInfo.RemoveItem))
+            if (Info.ContainsItem || (Info.IsEditableChildCollection() && itemInfo.RemoveItem))
             {
                 bool hasPkProperty = false;
                 foreach (ValueProperty prop in itemInfo.ValueProperties)
@@ -80,7 +80,7 @@ else
                 {
                     Warnings.Append(Info.ObjectName + " collection uses \"Contains\"; item " + itemInfo.ObjectName + " should have a Primary Key property." + Environment.NewLine);
                 }
-                if (!hasPkProperty && Info.ObjectType == CslaObjectType.EditableChildCollection && itemInfo.RemoveItem)
+                if (!hasPkProperty && Info.IsEditableChildCollection() && itemInfo.RemoveItem)
                 {
                     Warnings.Append(Info.ObjectName + ", item " + itemInfo.ObjectName + " uses \"Use Remove Method\"; item should have a Primary Key property." + Environment.NewLine);
                 }

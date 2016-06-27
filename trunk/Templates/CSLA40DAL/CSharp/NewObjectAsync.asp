@@ -12,9 +12,9 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
         }
     }
     if (createCriteriaCount == 0 &&
-        (Info.ObjectType == CslaObjectType.EditableRootCollection ||
-        Info.ObjectType == CslaObjectType.DynamicEditableRootCollection ||
-        Info.ObjectType == CslaObjectType.EditableChildCollection))
+        (Info.IsEditableRootCollection() ||
+        Info.IsDynamicEditableRootCollection() ||
+        Info.IsEditableChildCollection()))
     {
         if (runLocal == createGenerateLocal || CurrentUnit.GenerationParams.SilverlightUsingServices)
         {
@@ -68,7 +68,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
                     strNewCallback = (strNewCritParams.Length > 0 ? ", " : "");
                 }
                 strNewParams += (strNewParams.Length > 0 ? ", " : "") + "EventHandler<DataPortalResult<" + Info.ObjectName + ">> callback";
-                if (!isChild && !c.NestedClass && c.Properties.Count > 1 && Info.ObjectType != CslaObjectType.EditableSwitchable)
+                if (!isChild && !c.NestedClass && c.Properties.Count > 1 && Info.IsNotEditableSwitchable())
                 {
                     %>
 
@@ -108,7 +108,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
         <%= Info.ParentType == string.Empty ? "public" : "internal" %> static void New<%= Info.ObjectName %><%= c.CreateOptions.FactorySuffix %>(<%= strNewParams %>)
         {
             <%
-                if (Info.ObjectType == CslaObjectType.EditableSwitchable)
+                if (Info.IsEditableSwitchable())
                 {
                     if (strNewCritParams.Length > 0)
                     {

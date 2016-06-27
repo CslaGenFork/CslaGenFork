@@ -12,7 +12,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
         }
         if (c.DeleteOptions.Factory && generateLocal == c.DeleteOptions.RunLocal)
         {
-            if (!isChild && !c.NestedClass && c.Properties.Count > 1 && Info.ObjectType != CslaObjectType.EditableSwitchable)
+            if (!isChild && !c.NestedClass && c.Properties.Count > 1 && Info.IsNotEditableSwitchable())
             {
                 %>
 
@@ -55,7 +55,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
         <%= Info.ParentType == string.Empty ? "public" : "internal" %> static void Delete<%= Info.ObjectName %><%= c.DeleteOptions.FactorySuffix %>(<%= strDelParams %>)
         {
             <%
-            if (Info.ObjectType == CslaObjectType.EditableSwitchable)
+            if (Info.IsEditableSwitchable())
             {
                 if (!strDelCritParams.Equals(String.Empty))
                 {
@@ -109,7 +109,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
         {
             var obj = new <%= Info.ObjectName %>();
             <%
-                if (Info.ObjectType == CslaObjectType.EditableSwitchable)
+                if (Info.IsEditableSwitchable())
                 {
                     if (!strDelCritParams.Equals(String.Empty))
                     {

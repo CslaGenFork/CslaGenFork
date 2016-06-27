@@ -224,9 +224,9 @@ if (generateAuthRegion2)
         static partial void AddObjectAuthorizationRulesExtend();
 
         <%
-    if (authzInfo2.ObjectType != CslaObjectType.ReadOnlyCollection &&
-        authzInfo2.ObjectType != CslaObjectType.ReadOnlyObject &&
-        authzInfo2.ObjectType != CslaObjectType.NameValueList)
+    if (authzInfo2.IsNotReadOnlyCollection() &&
+        authzInfo2.IsNotReadOnlyObject() &&
+        authzInfo2.IsNotNameValueList())
     {
         %>
         /// <summary>
@@ -250,9 +250,9 @@ if (generateAuthRegion2)
             return BusinessRules.HasPermission(Csla.Rules.AuthorizationActions.GetObject, typeof(<%= Info.ObjectName %>));
         }
         <%
-    if (authzInfo2.ObjectType != CslaObjectType.ReadOnlyCollection &&
-        authzInfo2.ObjectType != CslaObjectType.ReadOnlyObject &&
-        authzInfo2.ObjectType != CslaObjectType.NameValueList)
+    if (authzInfo2.IsNotReadOnlyCollection() &&
+        authzInfo2.IsNotReadOnlyObject() &&
+        authzInfo2.IsNotNameValueList())
     {
         %>
 

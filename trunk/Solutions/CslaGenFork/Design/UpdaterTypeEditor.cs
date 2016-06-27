@@ -74,10 +74,10 @@ namespace CslaGenerator.Design
 
         public bool IsUpdaterType(CslaObjectType cslaType)
         {
-            if (cslaType == CslaObjectType.EditableRoot ||
-                cslaType == CslaObjectType.EditableChild ||
-                cslaType == CslaObjectType.DynamicEditableRootCollection ||
-                cslaType == CslaObjectType.EditableSwitchable)
+            if (cslaType.IsEditableRoot() ||
+                cslaType.IsEditableChild() ||
+                cslaType.IsDynamicEditableRootCollection() ||
+                cslaType.IsEditableSwitchable())
                 return true;
 
             return false;

@@ -55,7 +55,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
         <%= Info.ParentType == string.Empty ? "public" : "internal" %> static void Get<%= Info.ObjectName %>(<%= strGetParams %>)
         {
             <%
-        if (elementCriteriaCount > 1 || (Info.ObjectType == CslaObjectType.EditableSwitchable && elementCriteriaCount == 1))
+        if (elementCriteriaCount > 1 || (Info.IsEditableSwitchable() && elementCriteriaCount == 1))
         {
             %>
             DataPortal.BeginFetch<<%= Info.ObjectName %>>(new <%= uowCrit.CriteriaName %>(<%= strGetCritParams %>), (o, e) =>

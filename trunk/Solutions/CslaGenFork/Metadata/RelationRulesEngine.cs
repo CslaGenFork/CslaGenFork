@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using CslaGenerator.Util;
 
 namespace CslaGenerator.Metadata
 {
@@ -47,11 +48,11 @@ namespace CslaGenerator.Metadata
             _specificErrorMessage = string.Empty;
             BrokenRuleMsg = string.Empty;
 
-            if (stereotype == CslaObjectType.EditableRoot ||
-                stereotype == CslaObjectType.EditableRootCollection ||
-                stereotype == CslaObjectType.DynamicEditableRootCollection ||
-                stereotype == CslaObjectType.ReadOnlyObject ||
-                stereotype == CslaObjectType.ReadOnlyCollection)
+            if (stereotype.IsEditableRoot() ||
+                stereotype.IsEditableRootCollection() ||
+                stereotype.IsDynamicEditableRootCollection() ||
+                stereotype.IsReadOnlyObject() ||
+                stereotype.IsReadOnlyCollection())
                 return true;
 
             BrokenRuleMsg = stereotype + " must have a ParentType.";
@@ -115,9 +116,9 @@ namespace CslaGenerator.Metadata
         {
             _specificErrorMessage = "A Root stereotype cannot have a parent.";
 
-            if (child == CslaObjectType.EditableRoot ||
-                child == CslaObjectType.EditableRootCollection ||
-                child == CslaObjectType.DynamicEditableRootCollection)
+            if (child.IsEditableRoot() ||
+                child.IsEditableRootCollection() ||
+                child.IsDynamicEditableRootCollection())
             {
                 BrokenRuleMsg = "\r\nRelation rule: " + _specificErrorMessage + " * * *\r\n";
                 BrokenRuleMsg += child + " cannot have a ParentType.";
@@ -132,7 +133,7 @@ namespace CslaGenerator.Metadata
         {
             _specificErrorMessage = "A Dynamic Root stereotype cannot have a child.";
 
-            if (parent == CslaObjectType.DynamicEditableRoot)
+            if (parent.IsDynamicEditableRoot())
             {
                 BrokenRuleMsg = "\r\nRelation rule: " + _specificErrorMessage + " * * *\r\n";
                 BrokenRuleMsg += parent + " cannot have a ChildType.";
@@ -440,11 +441,11 @@ namespace CslaGenerator.Metadata
 
         public static bool IsAllowedEntityObject(CslaObjectInfo objectInfo)
         {
-            if (objectInfo.ObjectType == CslaObjectType.EditableRoot ||
-                objectInfo.ObjectType == CslaObjectType.DynamicEditableRoot ||
-                objectInfo.ObjectType == CslaObjectType.EditableChild ||
-                objectInfo.ObjectType == CslaObjectType.EditableSwitchable ||
-                objectInfo.ObjectType == CslaObjectType.ReadOnlyObject)
+            if (objectInfo.IsEditableRoot() ||
+                objectInfo.IsDynamicEditableRoot() ||
+                objectInfo.IsEditableChild() ||
+                objectInfo.IsEditableSwitchable() ||
+                objectInfo.IsReadOnlyObject())
                 return true;
 
             return false;
@@ -452,8 +453,8 @@ namespace CslaGenerator.Metadata
 
         public static bool IsAllowedEntityCollection(CslaObjectInfo objectInfo)
         {
-            if (objectInfo.ObjectType == CslaObjectType.EditableChildCollection ||
-                objectInfo.ObjectType == CslaObjectType.ReadOnlyCollection)
+            if (objectInfo.IsEditableChildCollection() ||
+                objectInfo.IsReadOnlyCollection())
                 return true;
 
             return false;
@@ -461,8 +462,8 @@ namespace CslaGenerator.Metadata
 
         public static bool IsAllowedEntityCollectionItem(CslaObjectInfo objectInfo)
         {
-            if (objectInfo.ObjectType == CslaObjectType.EditableChild ||
-                objectInfo.ObjectType == CslaObjectType.ReadOnlyObject)
+            if (objectInfo.IsEditableChild() ||
+                objectInfo.IsReadOnlyObject())
                 return true;
 
             return false;
@@ -470,9 +471,11 @@ namespace CslaGenerator.Metadata
 
         public static bool IsCompatibleEntityCollectionItemPair(CslaObjectInfo collectionObjectInfo, CslaObjectInfo itemObjectInfo)
         {
-            if (collectionObjectInfo.ObjectType == CslaObjectType.EditableChildCollection && itemObjectInfo.ObjectType == CslaObjectType.EditableChild)
+            if (collectionObjectInfo.IsEditableChildCollection() &&
+                itemObjectInfo.IsEditableChild())
                 return true;
-            if (collectionObjectInfo.ObjectType == CslaObjectType.ReadOnlyCollection && itemObjectInfo.ObjectType == CslaObjectType.ReadOnlyObject)
+            if (collectionObjectInfo.IsReadOnlyCollection() &&
+                itemObjectInfo.IsReadOnlyObject())
                 return true;
 
             return false;

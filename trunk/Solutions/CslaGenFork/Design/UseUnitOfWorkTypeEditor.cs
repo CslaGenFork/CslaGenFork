@@ -37,7 +37,7 @@ namespace CslaGenerator.Design
                     foreach (var o in GeneratorController.Current.CurrentUnit.CslaObjects)
                     {
                         var accept = false;
-                        if (o.ObjectType == CslaObjectType.UnitOfWork)
+                        if (o.IsUnitOfWork())
                         {
                             if (obj.ObjectType.IsReadOnlyType())
                             {

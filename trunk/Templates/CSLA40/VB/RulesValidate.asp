@@ -6,8 +6,8 @@ bool validateAuthRegion = false;
 HaveBusinessRulesCollection validateAllRulesProperties = Info.AllRulableProperties();
 foreach (IHaveBusinessRules rulableProperty in validateAllRulesProperties)
 {
-    if (Info.ObjectType != CslaObjectType.UnitOfWork &&
-        Info.ObjectType != CslaObjectType.NameValueList &&
+    if (Info.IsNotUnitOfWork() &&
+        Info.IsNotNameValueList() &&
         !TypeHelper.IsCollectionType(Info.ObjectType) &&
         rulableProperty.BusinessRules.Count > 0)
     {
@@ -109,8 +109,8 @@ if (validateAuthRegion)
 }
 
 // Validate Object Business Rules
-if (Info.ObjectType != CslaObjectType.UnitOfWork &&
-    Info.ObjectType != CslaObjectType.NameValueList &&
+if (Info.IsNotUnitOfWork() &&
+    Info.IsNotNameValueList() &&
     !TypeHelper.IsCollectionType(Info.ObjectType))
 {
     foreach (var rule in Info.BusinessRules)

@@ -861,7 +861,7 @@ namespace CslaGenerator.Util.PropertyBags
 
 
                 // Set ReadOnly properties
-                if (SelectedObject[0].ObjectType == CslaObjectType.CriteriaClass &&
+                if (SelectedObject[0].IsCriteriaClass() &&
                     (propertyInfo.Name == "IsGenericType" ||
                      propertyInfo.Name == "GenericArguments"))
                     isreadonly = true;
@@ -969,20 +969,20 @@ namespace CslaGenerator.Util.PropertyBags
                             (propertyName == "UseUnitOfWorkType" ||
                             propertyName == "GenerateInlineQueries"))
                             return false;
-                        if (!(cslaObject.ObjectType == CslaObjectType.DynamicEditableRoot ||
-                            cslaObject.ObjectType == CslaObjectType.ReadOnlyObject) &&
+                        if (!(cslaObject.IsDynamicEditableRoot() ||
+                            cslaObject.IsReadOnlyObject()) &&
                             propertyName == "AddParentReference")
                             return false;
-                        if (cslaObject.ObjectType != CslaObjectType.EditableChild &&
+                        if (cslaObject.IsNotEditableChild() &&
                             propertyName == "DeleteProcedureName")
                             return false;
-                        if ((cslaObject.ObjectType != CslaObjectType.EditableChild) &&
+                        if ((cslaObject.IsNotEditableChild()) &&
                             propertyName == "DeleteUseTimestamp")
                             return false;
-                        if ((cslaObject.ObjectType == CslaObjectType.UnitOfWork) &&
+                        if ((cslaObject.IsUnitOfWork()) &&
                             propertyName == "CommandTimeout")
                             return false;
-                        if (!(cslaObject.ObjectType == CslaObjectType.EditableChild &&
+                        if (!(cslaObject.IsEditableChild() &&
                             (cslaParent == null || cslaParent.ObjectType.IsCollectionType())) &&
                             propertyName == "RemoveItem")
                             return false;
@@ -990,7 +990,7 @@ namespace CslaGenerator.Util.PropertyBags
                             (propertyName == "ParentProperties" ||
                             propertyName == "UseParentProperties"))
                             return false;
-                        if (cslaObject.ObjectType != CslaObjectType.UnitOfWork &&
+                        if (cslaObject.IsNotUnitOfWork() &&
                             (propertyName == "UnitOfWorkProperties" ||
                             propertyName == "UnitOfWorkType"))
                             return false;
@@ -1189,7 +1189,7 @@ namespace CslaGenerator.Util.PropertyBags
                     if (property.Category == "08. Insert & Update Options")
                     {
                         var cslaObject = (CslaObjectInfo)GeneratorController.Current.GetSelectedItem();
-                        if (cslaObject.ObjectType == CslaObjectType.EditableChild)
+                        if (cslaObject.IsEditableChild())
                         {
                             property.Category = "08. Insert, Update, Delete Options";
                         }

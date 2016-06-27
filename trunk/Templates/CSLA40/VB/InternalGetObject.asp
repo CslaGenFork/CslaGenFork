@@ -38,9 +38,9 @@ if (!Info.DataSetLoadingScheme)
         %>
             Dim obj As <%= Info.ObjectName %> = New <%= Info.ObjectName %>()
             <%
-        if (Info.ObjectType == CslaObjectType.EditableSwitchable ||
-            (Info.ObjectType == CslaObjectType.EditableChild ||
-            Info.ObjectType == CslaObjectType.EditableChildCollection))
+        if (Info.IsEditableSwitchable() ||
+            (Info.IsEditableChild() ||
+            Info.IsEditableChildCollection()))
         {
             %>
             ' show the framework that this is a child object
@@ -102,7 +102,7 @@ if (!Info.DataSetLoadingScheme)
                 }
             }
         }
-        if (Info.ObjectType != CslaObjectType.ReadOnlyObject && !TypeHelper.IsCollectionType(Info.ObjectType))
+        if (Info.IsNotReadOnlyObject() && !TypeHelper.IsCollectionType(Info.ObjectType))
         {
             %>
             obj.MarkOld()
@@ -146,9 +146,9 @@ else
     }
     %>Dim obj As <%= Info.ObjectName %> = New <%= Info.ObjectName %>()
             <%
-    if (Info.ObjectType == CslaObjectType.EditableSwitchable ||
-        (Info.ObjectType == CslaObjectType.EditableChild ||
-        Info.ObjectType == CslaObjectType.EditableChildCollection))
+    if (Info.IsEditableSwitchable() ||
+        (Info.IsEditableChild() ||
+        Info.IsEditableChildCollection()))
     {
         %>' show the framework that this is a child object
             obj.MarkAsChild()
@@ -161,7 +161,7 @@ else
         %>obj.FetchChildren(dr)
             <%
     }
-    if (Info.ObjectType != CslaObjectType.ReadOnlyObject && !TypeHelper.IsCollectionType(Info.ObjectType))
+    if (Info.IsNotReadOnlyObject() && !TypeHelper.IsCollectionType(Info.ObjectType))
     {
         %>obj.MarkOld()
             <%

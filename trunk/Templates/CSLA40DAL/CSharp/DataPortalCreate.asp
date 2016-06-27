@@ -34,12 +34,12 @@ foreach (Criteria c in Info.CriteriaObjects)
         }
         else
         {
-            %>protected <%= Info.ObjectType == CslaObjectType.ReadOnlyObject ? "" : "override " %>void <%= dataPortalCreate %>Create()<%
+            %>protected <%= Info.IsReadOnlyObject() ? "" : "override " %>void <%= dataPortalCreate %>Create()<%
         }
         %>
         {
             <%
-        if (Info.ObjectType == CslaObjectType.EditableSwitchable)
+        if (Info.IsEditableSwitchable())
         {
             %>
             if (crit.IsChild)
@@ -121,7 +121,7 @@ foreach (Criteria c in Info.CriteriaObjects)
             var args = new DataPortalHookArgs(<%= hookArgs %>);
             OnCreate(args);
             <%
-        if (Info.ObjectType != CslaObjectType.ReadOnlyObject)
+        if (Info.IsNotReadOnlyObject())
         {
             %>
             base.<%= dataPortalCreate %>Create();

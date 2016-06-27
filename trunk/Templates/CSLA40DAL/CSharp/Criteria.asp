@@ -91,7 +91,7 @@ if (Info.CriteriaObjects.Count > 0)
                 %>
         {
             <%
-                if (Info.ObjectType == CslaObjectType.EditableSwitchable)
+                if (Info.IsEditableSwitchable())
                 {
                     strParams = "bool isChild";
                     strFieldAssignments = "  _isChild = isChild;";

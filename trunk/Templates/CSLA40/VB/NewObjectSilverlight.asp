@@ -12,9 +12,9 @@ if (UseSilverlight())
         }
     }
     if (createCriteriaCount == 0 && runLocal &&
-        (Info.ObjectType == CslaObjectType.EditableRootCollection ||
-        Info.ObjectType == CslaObjectType.DynamicEditableRootCollection ||
-        Info.ObjectType == CslaObjectType.EditableChildCollection))
+        (Info.IsEditableRootCollection() ||
+        Info.IsDynamicEditableRootCollection() ||
+        Info.IsEditableChildCollection()))
     {
         %>
 
@@ -69,7 +69,7 @@ if (UseSilverlight())
                     strNewCallback = (strNewCritParams.Length > 0 ? ", " : "");
                 }
                 strNewParams += (strNewParams.Length > 0 ? ", " : "") +  "callback As EventHandler(Of DataPortalResult(Of " + Info.ObjectName + "))";
-                if (!isChild && !c.NestedClass && c.Properties.Count > 1 && Info.ObjectType != CslaObjectType.EditableSwitchable)
+                if (!isChild && !c.NestedClass && c.Properties.Count > 1 && Info.IsNotEditableSwitchable())
                 {
                     %>
 
@@ -107,7 +107,7 @@ if (UseSilverlight())
         <%= strNewComment %>''' <param name="callback">The completion callback method.</param>
         <%= Info.ParentType == string.Empty ? "Public" : "Friend" %> Shared Sub New<%= Info.ObjectName %><%= c.CreateOptions.FactorySuffix %>(<%= strNewParams %>)
             <%
-                if (Info.ObjectType == CslaObjectType.EditableSwitchable)
+                if (Info.IsEditableSwitchable())
                 {
                     if (strNewCritParams.Length > 0)
                     {

@@ -298,7 +298,7 @@ namespace CslaGenerator.Metadata
                 destination.DeclarationMode = _currentUnit.Params.CreateTimestampPropertyMode;
             }
 
-            if (_currentCslaObject.ObjectType == CslaObjectType.ReadOnlyObject)
+            if (_currentCslaObject.IsReadOnlyObject())
             {
                 destination.DeclarationMode = _currentUnit.Params.CreateReadOnlyObjectsPropertyMode;
                 destination.ReadOnly = true;
@@ -486,8 +486,8 @@ namespace CslaGenerator.Metadata
             if (_currentCslaObject.CriteriaObjects.Count != 0)
                 return;
 
-            if (_currentCslaObject.ObjectType == CslaObjectType.EditableRootCollection ||
-                _currentCslaObject.ObjectType == CslaObjectType.DynamicEditableRootCollection)
+            if (_currentCslaObject.IsEditableRootCollection() ||
+                _currentCslaObject.IsDynamicEditableRootCollection())
             {
                 if (_currentUnit.Params.AutoCriteria)
                 {
@@ -499,8 +499,8 @@ namespace CslaGenerator.Metadata
                 return;
             }
 
-            if (_currentCslaObject.ObjectType == CslaObjectType.NameValueList ||
-                (_currentCslaObject.ObjectType == CslaObjectType.ReadOnlyCollection &&
+            if (_currentCslaObject.IsNameValueList() ||
+                (_currentCslaObject.IsReadOnlyCollection() &&
                  _currentCslaObject.ParentType == string.Empty))
             {
                 if (_currentUnit.Params.AutoCriteria)
@@ -548,18 +548,18 @@ namespace CslaGenerator.Metadata
                     // If default criteria doesn't exists, create a new criteria
                     if (defaultCriteria == null)
                     {
-                        if (!(_currentCslaObject.ObjectType == CslaObjectType.ReadOnlyObject &&
+                        if (!(_currentCslaObject.IsReadOnlyObject() &&
                               _currentCslaObject.ParentType != string.Empty))
                         {
                             defaultCriteria = new Criteria(_currentCslaObject);
-                            defaultCriteria.Name = _currentCslaObject.ObjectType == CslaObjectType.ReadOnlyObject
+                            defaultCriteria.Name = _currentCslaObject.IsReadOnlyObject()
                                 ? "CriteriaGet"
                                 : "Criteria";
                             defaultCriteria.GetOptions.Enable();
-                            if (_currentCslaObject.ObjectType == CslaObjectType.EditableRoot ||
-                                _currentCslaObject.ObjectType == CslaObjectType.EditableSwitchable ||
-                                _currentCslaObject.ObjectType == CslaObjectType.EditableChild ||
-                                _currentCslaObject.ObjectType == CslaObjectType.DynamicEditableRoot)
+                            if (_currentCslaObject.IsEditableRoot() ||
+                                _currentCslaObject.IsEditableSwitchable() ||
+                                _currentCslaObject.IsEditableChild() ||
+                                _currentCslaObject.IsDynamicEditableRoot())
                             {
                                 defaultCriteria.DeleteOptions.Enable();
                                 if (defaultCriteria.Properties.Count > 0 && useForCreate)
@@ -582,14 +582,14 @@ namespace CslaGenerator.Metadata
                                     }
                                 }
                             }
-                            if (_currentCslaObject.ObjectType == CslaObjectType.EditableChild)
+                            if (_currentCslaObject.IsEditableChild())
                                 return;
 
                             defaultCriteria.SetSprocNames();
 
-                            if (_currentCslaObject.ObjectType != CslaObjectType.EditableRoot &&
-                                _currentCslaObject.ObjectType != CslaObjectType.EditableSwitchable &&
-                                _currentCslaObject.ObjectType != CslaObjectType.ReadOnlyObject)
+                            if (_currentCslaObject.IsNotEditableRoot() &&
+                                _currentCslaObject.IsNotEditableSwitchable() &&
+                                _currentCslaObject.IsNotReadOnlyObject())
                             {
                                 defaultCriteria.Name = "CriteriaDelete";
                                 defaultCriteria.GetOptions.Factory = false;

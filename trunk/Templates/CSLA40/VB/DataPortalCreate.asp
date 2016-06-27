@@ -26,19 +26,19 @@ foreach (Criteria c in Info.CriteriaObjects)
         }
         if (c.Properties.Count > 1)
         {
-            %>Protected <%= Info.ObjectType == CslaObjectType.ReadOnlyObject ? "" : "Overloads " %>Sub <%= dataPortalCreate %>Create(crit As <%= c.Name %>)<%
+            %>Protected <%= Info.IsReadOnlyObject() ? "" : "Overloads " %>Sub <%= dataPortalCreate %>Create(crit As <%= c.Name %>)<%
         }
         else if (c.Properties.Count > 0)
         {
-            %>Protected <%= Info.ObjectType == CslaObjectType.ReadOnlyObject ? "" : "Overloads " %>Sub <%= dataPortalCreate %>Create(<%= ReceiveSingleCriteria(c, "crit") %>)<%
+            %>Protected <%= Info.IsReadOnlyObject() ? "" : "Overloads " %>Sub <%= dataPortalCreate %>Create(<%= ReceiveSingleCriteria(c, "crit") %>)<%
         }
         else
         {
-            %>Protected <%= Info.ObjectType == CslaObjectType.ReadOnlyObject ? "" : "Overrides " %>Sub <%= dataPortalCreate %>Create()<%
+            %>Protected <%= Info.IsReadOnlyObject() ? "" : "Overrides " %>Sub <%= dataPortalCreate %>Create()<%
         }
         %>
            <%
-        if (Info.ObjectType == CslaObjectType.EditableSwitchable)
+        if (Info.IsEditableSwitchable())
         {
             %>
             If crit.IsChild Then
@@ -121,7 +121,7 @@ foreach (Criteria c in Info.CriteriaObjects)
             Dim args As New DataPortalHookArgs(<%= hookArgs %>)
             OnCreate(args)
             <%
-        if (Info.ObjectType != CslaObjectType.ReadOnlyObject)
+        if (Info.IsNotReadOnlyObject())
         {
             %>
             MyBase.<%= dataPortalCreate %>Create()

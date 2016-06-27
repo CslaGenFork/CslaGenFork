@@ -30,7 +30,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
         {
         <%
         string newMethodNameAsync = "New" + Info.ItemType;
-        if (itemInfo.ObjectType == CslaObjectType.EditableSwitchable)
+        if (itemInfo.IsEditableSwitchable())
         {
             newMethodNameAsync += "Child";
         }

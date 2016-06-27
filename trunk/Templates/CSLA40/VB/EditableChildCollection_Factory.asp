@@ -10,7 +10,7 @@ if (isChildLazyLoaded || createCriteria || parentCreateCriteria ||
     {
         %>
 
-#If  Not SILVERLIGHT Then
+#If Not SILVERLIGHT Then
 <%
     }
 %>

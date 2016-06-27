@@ -637,21 +637,21 @@ namespace CslaGenerator.Util.PropertyBags
 
                 var criteria = SelectedObject[0];
 
-                if ((cslaObject.ObjectType == CslaObjectType.ReadOnlyObject ||
-                    cslaObject.ObjectType == CslaObjectType.ReadOnlyCollection ||
-                    cslaObject.ObjectType == CslaObjectType.NameValueList ||
-                    (cslaObject.ObjectType == CslaObjectType.UnitOfWork && cslaObject.IsGetter)) &&
+                if ((cslaObject.IsReadOnlyObject() ||
+                    cslaObject.IsReadOnlyCollection() ||
+                    cslaObject.IsNameValueList() ||
+                    (cslaObject.IsUnitOfWork() && cslaObject.IsGetter)) &&
                     (propertyName == "CreateOptions" ||
                     propertyName == "DeleteOptions"))
                     return false;
-                if (cslaObject.ObjectType == CslaObjectType.EditableChild &&
+                if (cslaObject.IsEditableChild() &&
                     propertyName == "DeleteOptions")
                     return false;
-                if ((cslaObject.ObjectType == CslaObjectType.UnitOfWork && cslaObject.IsCreator) &&
+                if ((cslaObject.IsUnitOfWork() && cslaObject.IsCreator) &&
                     (propertyName == "GetOptions" ||
                     propertyName == "DeleteOptions"))
                     return false;
-                if ((cslaObject.ObjectType == CslaObjectType.UnitOfWork && cslaObject.IsCreatorGetter) &&
+                if ((cslaObject.IsUnitOfWork() && cslaObject.IsCreatorGetter) &&
                     (propertyName == "DeleteOptions"))
                     return false;
                 if ((criteria.CriteriaClassMode == CriteriaMode.BusinessBase ||

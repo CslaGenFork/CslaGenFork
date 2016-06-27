@@ -7,7 +7,7 @@ if (UseSilverlight())
             (CurrentUnit.GenerationParams.SilverlightUsingServices ||
             (CurrentUnit.GenerationParams.GenerateSilverlight4 && c.DeleteOptions.RunLocal)))
         {
-            if (!isChild && !c.NestedClass && c.Properties.Count > 1 && Info.ObjectType != CslaObjectType.EditableSwitchable)
+            if (!isChild && !c.NestedClass && c.Properties.Count > 1 && Info.IsNotEditableSwitchable())
             {
                 %>
 
@@ -48,7 +48,7 @@ if (UseSilverlight())
         ''' <param name="callback">The completion callback method.</param>
         <%= Info.ParentType == string.Empty ? "Public" : "Friend" %> Shared Sub Delete<%= Info.ObjectName %><%= c.DeleteOptions.FactorySuffix %>(<%= strDelParams %>)
             <%
-            if (Info.ObjectType == CslaObjectType.EditableSwitchable)
+            if (Info.IsEditableSwitchable())
             {
                 if (!strDelCritParams.Equals(String.Empty))
                 {
@@ -101,7 +101,7 @@ if (UseSilverlight())
         <%= Info.ParentType == string.Empty ? "Public" : "Friend" %> Shared Sub Undelete<%= Info.ObjectName %><%= c.DeleteOptions.FactorySuffix %>(<%= strDelParams %>)
             Dim obj = New <%= Info.ObjectName %>()
             <%
-                if (Info.ObjectType == CslaObjectType.EditableSwitchable)
+                if (Info.IsEditableSwitchable())
                 {
                     if (!strDelCritParams.Equals(String.Empty))
                     {

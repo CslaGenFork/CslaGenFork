@@ -3,8 +3,8 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
 {
     bool selfLoad1 = IsChildSelfLoaded(Info);
 
-    bool isChildCollection = (Info.ObjectType == CslaObjectType.EditableChildCollection ||
-        (Info.ObjectType == CslaObjectType.ReadOnlyCollection && Info.ParentType != string.Empty)) &&
+    bool isChildCollection = (Info.IsEditableChildCollection() ||
+        (Info.IsReadOnlyCollection() && Info.ParentType != string.Empty)) &&
         !selfLoad1;
 
     if (Info.CriteriaObjects.Count > 0)
@@ -226,7 +226,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
         private void <%= (isChildCollection && !UseChildFactoryHelper ? "Child_" : "") %>Fetch(<%= usesDTO ? ("List<" + Info.ItemType + "Dto> data") : "SafeDataReader dr" %>)
         {
             <%
-    if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
+    if (Info.IsReadOnlyCollection())
     {
         %>
             IsReadOnly = false;
@@ -271,7 +271,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
     %>
             RaiseListChangedEvents = rlce;
             <%
-    if (Info.ObjectType == CslaObjectType.ReadOnlyCollection)
+    if (Info.IsReadOnlyCollection())
     {
         %>
             IsReadOnly = true;
@@ -317,7 +317,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
             {
                 var obj = collection.Find<%= FormatPascal(Info.ParentType) %>ByParentProperties(<%= findByParams %>);
                 <%
-        if (childInfo.ObjectType == CslaObjectType.ReadOnlyCollection)
+        if (childInfo.IsReadOnlyCollection())
         {
             %>
                 obj.<%= collectionObject %>.IsReadOnly = false;
@@ -329,7 +329,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
                 obj.<%= collectionObject %>.Add(item);
                 obj.<%= collectionObject %>.RaiseListChangedEvents = rlce;
                 <%
-        if (childInfo.ObjectType == CslaObjectType.ReadOnlyCollection)
+        if (childInfo.IsReadOnlyCollection())
         {
             %>
                 obj.<%= collectionObject %>.IsReadOnly = true;

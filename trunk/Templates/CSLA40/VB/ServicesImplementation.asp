@@ -21,7 +21,7 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
         ''' </summary>
         <%= method.MethodHeader %>
         <%
-        if (Info.ObjectType == CslaObjectType.UnitOfWork && Info.UnitOfWorkType == UnitOfWorkFunction.Creator)
+        if (Info.IsUnitOfWork() && Info.UnitOfWorkType == UnitOfWorkFunction.Creator)
         {
             %>
             ' DataPortal_Fetch is used as ReadOnlyBase<T> doesn't allow the use of DataPortal_Create.

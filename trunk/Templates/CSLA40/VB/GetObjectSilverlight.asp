@@ -7,7 +7,7 @@ if (UseSilverlight())
             (CurrentUnit.GenerationParams.SilverlightUsingServices ||
             (CurrentUnit.GenerationParams.GenerateSilverlight4 && c.GetOptions.RunLocal)))
         {
-            if (!isChild && !c.NestedClass && c.Properties.Count > 1 && Info.ObjectType != CslaObjectType.EditableSwitchable)
+            if (!isChild && !c.NestedClass && c.Properties.Count > 1 && Info.IsNotEditableSwitchable())
             {
                 %>
 
@@ -75,11 +75,11 @@ if (UseSilverlight())
         ''' <param name="callback">The completion callback method.</param>
         <%= Info.ParentType == string.Empty ? "Public" : "Friend" %> Shared Sub Get<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>(<%= strGetParams %>)
             <%
-            if (Info.ObjectType == CslaObjectType.EditableSwitchable)
+            if (Info.IsEditableSwitchable())
             {
                 strGetCritParams = "False, " + strGetCritParams;
             }
-            if (c.Properties.Count > 1 || (Info.ObjectType == CslaObjectType.EditableSwitchable && c.Properties.Count == 1))
+            if (c.Properties.Count > 1 || (Info.IsEditableSwitchable() && c.Properties.Count == 1))
             {
                 if (!useUnitOfWorkGetter)
                 {

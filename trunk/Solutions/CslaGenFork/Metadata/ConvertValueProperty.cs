@@ -5,6 +5,7 @@ using System.IO;
 using System.Xml.Serialization;
 using CslaGenerator.Attributes;
 using CslaGenerator.Design;
+using CslaGenerator.Util;
 
 namespace CslaGenerator.Metadata
 {
@@ -214,7 +215,7 @@ namespace CslaGenerator.Metadata
             var empty = string.Empty;
             foreach (var o in GeneratorController.Current.CurrentUnit.CslaObjects)
             {
-                if (o.ObjectType == CslaObjectType.NameValueList)
+                if (o.IsNameValueList())
                 {
                     var prefix = string.Empty;
                     var objectNamespace = ((CslaObjectInfo)GeneratorController.Current.GetSelectedItem()).ObjectNamespace;

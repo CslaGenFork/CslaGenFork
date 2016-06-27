@@ -56,7 +56,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
         <%= Info.ParentType == string.Empty ? "Public" : "Friend" %> Shared Sub Get<%= Info.ObjectName %>(<%= strGetParams %>)
         {
             <%
-        if (elementCriteriaCount > 1 || (Info.ObjectType == CslaObjectType.EditableSwitchable && elementCriteriaCount == 1))
+        if (elementCriteriaCount > 1 || (Info.IsEditableSwitchable() && elementCriteriaCount == 1))
         {
             %>
             DataPortal.BeginFetch(Of <%= Info.ObjectName %>)(New <%= uowCrit.CriteriaName %>(<%= strGetCritParams %>), Function(o, e)

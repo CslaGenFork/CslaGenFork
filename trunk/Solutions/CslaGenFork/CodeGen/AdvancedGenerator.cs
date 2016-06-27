@@ -231,7 +231,7 @@ namespace CslaGenerator.CodeGen
                             if (_abortRequested)
                                 break;
 
-                            if (NeedsDbInsUpdDel(info))
+                            if (NeedsDbInsertUpdatedDelete(info))
                             {
                                 GenerateInsertProcedure(info, TargetDirectory);
                                 if (_abortRequested)
@@ -293,7 +293,7 @@ namespace CslaGenerator.CodeGen
                     generationParams.GenerateDTO &&
                     info.GenerateDataAccessRegion &&
                     (info.ObjectType.IsObjectType() ||
-                     info.ObjectType == CslaObjectType.NameValueList))
+                     info.IsNameValueList()))
                 {
                     // DTO goes into DAL Interface
                     try
@@ -324,7 +324,7 @@ namespace CslaGenerator.CodeGen
                 if (((generationParams.GenerateDalInterface || generationParams.GenerateDalObject)
                      && info.GenerateDataAccessRegion) &&
                     ((NeedsDbFetch(info) && HasFetchCriteria(info)) ||
-                     (NeedsDbInsUpdDel(info) && HasInsUpdDelcriteria(info))))
+                     (NeedsDbInsertUpdatedDelete(info) && HasInsertUpdatedDeletecriteria(info))))
                 {
 
                     // DAL Interface
@@ -627,7 +627,7 @@ namespace CslaGenerator.CodeGen
         {
             _unit.GenerationTimer.Stop();
             var result = true;
-            if (objInfo.ObjectType == CslaObjectType.EditableSwitchable)
+            if (objInfo.IsEditableSwitchable())
             {
                 var alert = MessageBox.Show(
                     objInfo.ObjectName + @" is a EditableSwitchable stereotype" + Environment.NewLine +
@@ -645,7 +645,7 @@ namespace CslaGenerator.CodeGen
         {
             _unit.GenerationTimer.Stop();
             var result = true;
-            if (objInfo.ObjectType == CslaObjectType.UnitOfWork &&
+            if (objInfo.IsUnitOfWork() &&
                 (objInfo.UnitOfWorkType == UnitOfWorkFunction.Deleter || objInfo.UnitOfWorkType == UnitOfWorkFunction.Updater))
             {
                 var alert = MessageBox.Show(
@@ -914,7 +914,7 @@ namespace CslaGenerator.CodeGen
 
         private void DoGenerateDal(CslaObjectInfo objInfo, GenerationStep step)
         {
-            if (objInfo.ObjectType == CslaObjectType.UnitOfWork)
+            if (objInfo.IsUnitOfWork())
                 return;
 
             if (!EditableSwitchableAlert(objInfo) || !UnitOfWorkAlert(objInfo))
@@ -1323,8 +1323,8 @@ namespace CslaGenerator.CodeGen
         private bool NeedsDbFetch(CslaObjectInfo info)
         {
             var selfLoad = CslaTemplateHelperCS.IsChildSelfLoaded(info);
-            return (!((info.ObjectType == CslaObjectType.EditableChildCollection ||
-                       info.ObjectType == CslaObjectType.EditableChild) &&
+            return (!((info.IsEditableChildCollection() ||
+                       info.IsEditableChild()) &&
                       !selfLoad));
         }
 
@@ -1338,7 +1338,7 @@ namespace CslaGenerator.CodeGen
 //                    return true;
         }
 
-        private bool HasInsUpdDelcriteria(CslaObjectInfo info)
+        private bool HasInsertUpdatedDeletecriteria(CslaObjectInfo info)
         {
             return (info.InsertProcedureName != string.Empty) ||
                    (info.UpdateProcedureName != string.Empty) ||
@@ -1346,15 +1346,15 @@ namespace CslaGenerator.CodeGen
                                                      !string.IsNullOrEmpty(crit.DeleteOptions.ProcedureName)));
         }
 
-        private bool NeedsDbInsUpdDel(CslaObjectInfo info)
+        private bool NeedsDbInsertUpdatedDelete(CslaObjectInfo info)
         {
-            return (info.ObjectType != CslaObjectType.ReadOnlyObject
-                    && info.ObjectType != CslaObjectType.ReadOnlyCollection
-                    && info.ObjectType != CslaObjectType.EditableRootCollection
-                    && info.ObjectType != CslaObjectType.DynamicEditableRootCollection
-                    && info.ObjectType != CslaObjectType.EditableChildCollection
-                    && info.ObjectType != CslaObjectType.NameValueList
-                    && info.ObjectType != CslaObjectType.UnitOfWork);
+            return (info.IsNotReadOnlyObject()
+                    && info.IsNotReadOnlyCollection()
+                    && info.IsNotEditableRootCollection()
+                    && info.IsNotDynamicEditableRootCollection()
+                    && info.IsNotEditableChildCollection()
+                    && info.IsNotNameValueList()
+                    && info.IsNotUnitOfWork());
         }
 
         private void GenerateAllSprocsFile(CslaObjectInfo info, string dir)
@@ -1376,7 +1376,7 @@ namespace CslaGenerator.CodeGen
                 }
             }
 
-            if (NeedsDbInsUpdDel(info))
+            if (NeedsDbInsertUpdatedDelete(info))
             {
                 //Insert
                 if (info.InsertProcedureName != string.Empty)
@@ -1393,7 +1393,7 @@ namespace CslaGenerator.CodeGen
                 }
 
                 //Delete
-                if (info.ObjectType == CslaObjectType.EditableChild)
+                if (info.IsEditableChild())
                 {
                     if (info.DeleteProcedureName != string.Empty)
                     {
@@ -1494,7 +1494,7 @@ namespace CslaGenerator.CodeGen
 
         private void GenerateDeleteProcedure(CslaObjectInfo info, string dir)
         {
-            if (info.ObjectType == CslaObjectType.EditableChild)
+            if (info.IsEditableChild())
             {
                 if (info.DeleteProcedureName != string.Empty)
                 {
@@ -1741,7 +1741,7 @@ namespace CslaGenerator.CodeGen
             {
                 if (step == GenerationStep.DalInterfaceDto)
                 {
-                    if (info.ObjectType == CslaObjectType.NameValueList)
+                    if (info.IsNameValueList())
                         fileNoExtension += "ItemDto";
                     else
                         fileNoExtension += "Dto";

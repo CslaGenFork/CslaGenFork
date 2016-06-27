@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using CslaGenerator.Metadata;
+using CslaGenerator.Util;
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace CslaGenerator.Controls
@@ -270,7 +271,7 @@ namespace CslaGenerator.Controls
                 return;
 
             e.DrawBackground();
-            if (_currentView[e.Index].ObjectType == CslaObjectType.PlaceHolder)
+            if (_currentView[e.Index].IsPlaceHolder())
             {
                 e.Graphics.DrawString(_currentView[e.Index].GenericName, e.Font, Brushes.Blue, e.Bounds);
             }

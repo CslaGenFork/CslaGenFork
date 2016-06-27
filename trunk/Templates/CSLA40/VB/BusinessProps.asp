@@ -1,8 +1,8 @@
 <%
-bool useParentReference = (Info.ObjectType == CslaObjectType.DynamicEditableRoot ||
-    (Info.ObjectType == CslaObjectType.ReadOnlyObject && Info.ParentType != string.Empty)) && Info.AddParentReference;
+bool useParentReference = (Info.IsDynamicEditableRoot() ||
+    (Info.IsReadOnlyObject() && Info.ParentType != string.Empty)) && Info.AddParentReference;
 bool isRODeepLoadCollection =
-    Info.ObjectType == CslaObjectType.ReadOnlyObject &&
+    Info.IsReadOnlyObject() &&
     Info.ParentType != string.Empty &&
     TypeHelper.IsReadOnlyType(parentInfo.ObjectType) &&
     ancestorLoaderLevel == 1 &&
@@ -27,7 +27,7 @@ foreach (ValueProperty prop in Info.ValueProperties)
     }
 
     bool useSetter = !prop.ReadOnly;
-    if (Info.ObjectType == CslaObjectType.ReadOnlyObject && CurrentUnit.GenerationParams.ForceReadOnlyProperties)
+    if (Info.IsReadOnlyObject() && CurrentUnit.GenerationParams.ForceReadOnlyProperties)
     {
         useSetter = false;
     }
@@ -111,7 +111,7 @@ foreach (ValueProperty prop in Info.ValueProperties)
 foreach (ConvertValueProperty prop in Info.ConvertValueProperties)
 {
     bool useSetter = !prop.ReadOnly;
-    if (Info.ObjectType == CslaObjectType.ReadOnlyObject && CurrentUnit.GenerationParams.ForceReadOnlyProperties)
+    if (Info.IsReadOnlyObject() && CurrentUnit.GenerationParams.ForceReadOnlyProperties)
     {
         useSetter = false;
     }

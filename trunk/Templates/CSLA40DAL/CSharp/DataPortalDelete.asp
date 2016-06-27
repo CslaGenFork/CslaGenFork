@@ -32,12 +32,12 @@ if (Info.GenerateDataPortalDelete)
 
                 strDeleteComment += "/// <param name=\"" + (c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit")) + "\">The delete criteria.</param>";
 
-                if (Info.ObjectType == CslaObjectType.EditableSwitchable)
+                if (Info.IsEditableSwitchable())
                 {
                     strSelfDeleteCritParams = "false, " + strSelfDeleteCritParams;
                     strDeleteCritParams = "false, " + strDeleteCritParams;
                 }
-                if (c.Properties.Count > 1 || (Info.ObjectType == CslaObjectType.EditableSwitchable && c.Properties.Count == 1))
+                if (c.Properties.Count > 1 || (Info.IsEditableSwitchable() && c.Properties.Count == 1))
                 {
                     strSelfDeleteCritParams = "new " + c.Name + "(" + strSelfDeleteCritParams + ")";
                     strDeleteCritParams = "new " + c.Name + "(" + strDeleteCritParams + ")";

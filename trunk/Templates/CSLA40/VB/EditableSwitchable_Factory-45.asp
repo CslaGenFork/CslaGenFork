@@ -66,7 +66,7 @@ if (UseNoSilverlight())
 
             <%
                 }
-                if (Info.ObjectType == CslaObjectType.EditableSwitchable)
+                if (Info.IsEditableSwitchable())
                 {
                     if (strNewCritParams.Length > 0)
                     {

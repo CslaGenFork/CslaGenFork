@@ -44,13 +44,13 @@ namespace CslaGenerator.Design
                         var unitInfo = instanceType.GetProperty("Parent");
                         var unit = (CslaGeneratorUnit)unitInfo.GetValue(objinfo, null);
                         var info = unit.CslaObjects.Find(parentType);
-                        if (info.ObjectType == CslaObjectType.EditableChildCollection ||
-                            info.ObjectType == CslaObjectType.ReadOnlyCollection)
+                        if (info.IsEditableChildCollection() ||
+                            info.IsReadOnlyCollection())
                         {
                             info = unit.CslaObjects.Find(info.ParentType);
                         }
-                        else if (info.ObjectType == CslaObjectType.EditableRootCollection ||
-                            info.ObjectType == CslaObjectType.DynamicEditableRootCollection)
+                        else if (info.IsEditableRootCollection() ||
+                            info.IsDynamicEditableRootCollection())
                         {
                             info = null;
                         }

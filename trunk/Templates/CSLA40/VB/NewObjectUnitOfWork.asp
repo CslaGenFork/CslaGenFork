@@ -42,7 +42,7 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
         ''' <summary>
         ''' Factory method. Creates a new <see cref="<%= Info.ObjectName %>"/> unit of objects<%= parameterCount > 0 ? ", based on given parameters" : "" %>.
         ''' </summary>
-        <%= strNewComment %>''' <returns>A reference to the created <see cref="<%= Info.ObjectName %>"/> <%= Info.ObjectType == CslaObjectType.UnitOfWork ? "unit of objects" : "object" %>.</returns>
+        <%= strNewComment %>''' <returns>A reference to the created <see cref="<%= Info.ObjectName %>"/> <%= Info.IsUnitOfWork() ? "unit of objects" : "object" %>.</returns>
         Public Shared Function New<%= Info.ObjectName %>(<%= strNewParams %>) As <%= Info.ObjectName %>
         {
             ' DataPortal_Fetch is used as ReadOnlyBase<T> doesn't allow the use of DataPortal_Create.
