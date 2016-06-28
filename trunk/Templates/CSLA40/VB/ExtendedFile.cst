@@ -277,7 +277,7 @@ if (Info.IsNotUnitOfWork())
     {
         %>
 
-#Region " Pseudo Event Handlers "
+        #Region " Implementation of DataPortal Hooks "
 <%
         if (UseBoth() && !HasSilverlightLocalDataPortalCreate(Info))
         {

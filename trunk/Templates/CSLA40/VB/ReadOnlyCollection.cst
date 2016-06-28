@@ -138,7 +138,7 @@ if (Errors.Length == 0)
             Response.Write(Environment.NewLine);
         }
         %>
-<!-- #include file="Events.asp" -->
+<!-- #include file="DataPortalHooks.asp" -->
 
 <%
     }
