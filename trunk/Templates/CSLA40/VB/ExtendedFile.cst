@@ -199,7 +199,7 @@ if (Info.IsNotUnitOfWork())
         #Region " Custom Business Rules and Property Authorization "
 
         ' Partial Private Sub AddBusinessRulesExtend()
-        '     Throw New System.Exception("The method or operation is not implemented.")
+        '     Throw New NotImplementedException()
         ' End Sub
 
         #End Region
@@ -212,7 +212,7 @@ if (Info.IsNotUnitOfWork())
         #Region " Custom Object Authorization "
 
         ' Partial Shared Sub AddObjectAuthorizationRulesExtend()
-        '     Throw New System.Exception("The method or operation is not implemented.")
+        '     Throw New NotImplementedException()
         ' End Sub
 
         #End Region
@@ -291,7 +291,7 @@ if (Info.IsNotUnitOfWork())
             %>
 
         ' Partial Private Sub On<%= strEvent %>(args As DataPortalHookArgs)
-        '     Throw New System.Exception("The method or operation is not implemented.")
+        '     Throw New NotImplementedException()
         ' End Sub
         <%
             if (strEvent == "Create" && HasSilverlightLocalDataPortalCreate(Info))
