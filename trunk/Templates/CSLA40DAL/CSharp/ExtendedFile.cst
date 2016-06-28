@@ -222,7 +222,7 @@ if (Info.IsNotUnitOfWork())
 
         //partial void AddBusinessRulesExtend()
         //{
-        //    throw new System.Exception("The method or operation is not implemented.");
+        //    throw new System.NotImplementedException();
         //}
 
         #endregion
@@ -236,7 +236,7 @@ if (Info.IsNotUnitOfWork())
 
         //static partial void AddObjectAuthorizationRulesExtend()
         //{
-        //    throw new System.Exception("The method or operation is not implemented.");
+        //    throw new System.NotImplementedException();
         //}
 
         #endregion
@@ -310,7 +310,7 @@ if (Info.IsNotUnitOfWork())
 
         //partial void On<%= strEvent %>(DataPortalHookArgs args)
         //{
-        //    throw new System.Exception("The method or operation is not implemented.");
+        //    throw new System.NotImplementedException();
         //}
         <%
             if (strEvent == "Create" && HasSilverlightLocalDataPortalCreate(Info))
