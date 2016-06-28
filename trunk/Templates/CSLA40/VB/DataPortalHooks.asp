@@ -37,7 +37,7 @@ System.Collections.Generic.List<string> eventList = GetEventList(Info);
 if (eventList.Count > 0 && UseNoSilverlight())
 {
     %>
-        #Region " Pseudo Events "
+        #Region " DataPortal Hooks "
 <%
     if (UseBoth() && !HasSilverlightLocalDataPortalCreate(Info))
     {

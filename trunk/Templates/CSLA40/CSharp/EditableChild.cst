@@ -115,7 +115,7 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Busine
 <%
         Response.Write(Environment.NewLine);
 %>
-<!-- #include file="Events.asp" -->
+<!-- #include file="DataPortalHooks.asp" -->
 <%
     }
     else
