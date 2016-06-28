@@ -136,7 +136,7 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
             Response.Write(Environment.NewLine);
         }
         %>
-<!-- #include file="Events.asp" -->
+<!-- #include file="DataPortalHooks.asp" -->
 <!-- #include file="SavedManager.asp" -->
 
 <%

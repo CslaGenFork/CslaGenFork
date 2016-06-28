@@ -112,7 +112,7 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
         }
         %>
 <!-- #include file="EditableSwitchable_DataPortal.asp" -->
-<!-- #include file="Events.asp" -->
+<!-- #include file="DataPortalHooks.asp" -->
 <%
     }
     else
