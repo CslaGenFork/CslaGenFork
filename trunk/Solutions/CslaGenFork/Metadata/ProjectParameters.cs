@@ -64,6 +64,7 @@ namespace CslaGenerator.Metadata
         private bool _logDateAndTime = true;
         private bool _logInUtc;
         private string _getUserMethod = string.Empty;
+        private bool _enforceGenericInheritance = true;
 
         #endregion
 
@@ -735,6 +736,18 @@ namespace CslaGenerator.Metadata
                 if (_getUserMethod == value)
                     return;
                 _getUserMethod = value;
+                OnPropertyChanged("");
+            }
+        }
+
+        public bool EnforceGenericInheritance
+        {
+            get { return _enforceGenericInheritance; }
+            set
+            {
+                if (_enforceGenericInheritance == value)
+                    return;
+                _enforceGenericInheritance = value;
                 OnPropertyChanged("");
             }
         }
