@@ -183,6 +183,22 @@ namespace CslaGenerator.CodeGen
             return false;
         }
 
+        public static string ListBaseHelper(string rootStereotype, bool isBindingList)
+        {
+            var response = String.Empty;
+
+            if (isBindingList)
+            {
+                response += rootStereotype + "BindingListBase";
+            }
+            else
+            {
+                response += rootStereotype + "ListBase";
+            }
+
+            return response;
+        }
+
         internal static string ColumnFKMatchesParentProperty(CslaObjectInfo parent, CslaObjectInfo info,
             IColumnInfo validatingColumn)
         {

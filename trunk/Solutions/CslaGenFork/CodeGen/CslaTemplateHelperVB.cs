@@ -2407,22 +2407,6 @@ namespace CslaGenerator.CodeGen
 
         #region Declarations
 
-        public string ListBaseHelper(string rootStereotype, bool isWinForms)
-        {
-            var response = string.Empty;
-
-            if (isWinForms)
-            {
-                response += rootStereotype + "BindingListBase";
-            }
-            else
-            {
-                response += rootStereotype + "ListBase";
-            }
-
-            return response;
-        }
-
         // TODO: on ReadOnly objects, forbid Managed and Unmanaged with TypeConversion. Why not TypeConversion?
 
         public virtual string GetInitValue(CslaObjectInfo info, ValueProperty prop, TypeCodeEx typeCode)
@@ -5101,13 +5085,13 @@ namespace CslaGenerator.CodeGen
 
         #endregion
 
-        #region Pseudo events
+        #region DataPortal Hooks
 
-        public List<string> GetEventList(CslaObjectInfo info)
+        public List<string> GetHookList(CslaObjectInfo info)
         {
             var lazyLoad = IsChildLazyLoaded(info);
 
-            var eventList = new List<string>();
+            var hookList = new List<string>();
 
             if (HasDataPortalCreate(info) &&
                 ((info.ObjectType.IsEditableType() &&
@@ -5115,7 +5099,7 @@ namespace CslaGenerator.CodeGen
                  info.IsEditableRoot() ||
                  info.IsDynamicEditableRoot()))
             {
-                eventList.Add("Create");
+                hookList.Add("Create");
             }
 
             if (
@@ -5132,7 +5116,7 @@ namespace CslaGenerator.CodeGen
                   info.IsEditableSwitchable()))
                 )
             {
-                eventList.AddRange(new[] {"DeletePre", "DeletePost"});
+                hookList.AddRange(new[] {"DeletePre", "DeletePost"});
             }
 
             if (HasDataPortalGet(info) ||
@@ -5140,33 +5124,33 @@ namespace CslaGenerator.CodeGen
                  info.ParentType != string.Empty &&
                  !lazyLoad))
             {
-                eventList.AddRange(new[] {"FetchPre", "FetchPost"});
+                hookList.AddRange(new[] {"FetchPre", "FetchPost"});
             }
 
             if (!info.ObjectType.IsCollectionType() &&
                 info.IsNotNameValueList())
             {
-                eventList.Add("FetchRead");
+                hookList.Add("FetchRead");
             }
 
             if (info.ObjectType.IsEditableType() &&
                 !info.ObjectType.IsCollectionType() &&
                 info.GenerateDataPortalUpdate)
             {
-                eventList.AddRange(new[] {"UpdatePre", "UpdatePost"});
+                hookList.AddRange(new[] {"UpdatePre", "UpdatePost"});
             }
 
             if (info.ObjectType.IsEditableType() &&
                 !info.ObjectType.IsCollectionType() &&
                 info.GenerateDataPortalInsert)
             {
-                eventList.AddRange(new[] {"InsertPre", "InsertPost"});
+                hookList.AddRange(new[] {"InsertPre", "InsertPost"});
             }
 
-            return eventList;
+            return hookList;
         }
 
-        public string FormatEventDocumentation(string name)
+        public string FormatHookDocumentation(string name)
         {
             var response = string.Empty;
 
@@ -5703,6 +5687,187 @@ namespace CslaGenerator.CodeGen
                          new string(' ', indent*4) +
                          "Public";
             }
+            return result;
+        }
+
+        #endregion
+
+        #region Class Declaration (inheritance and interfaces)
+
+        public static string GetClassDeclaration(CslaObjectInfo info)
+        {
+            return GetClassDeclarationCore(info, null, false);
+        }
+
+        public static string GetClassDeclaration(CslaObjectInfo info, bool isBindingList)
+        {
+            return GetClassDeclarationCore(info, null, isBindingList);
+        }
+
+        public static string GetClassDeclarationInheritedType(CslaObjectInfo info)
+        {
+            return GetClassDeclarationCore(info, info.InheritedType, false);
+        }
+
+        public static string GetClassDeclarationInheritedTypeWinForms(CslaObjectInfo info)
+        {
+            return GetClassDeclarationCore(info, info.InheritedTypeWinForms, true);
+        }
+
+        private static string GetClassDeclarationCore(CslaObjectInfo info, TypeInfo inheritedType, bool isBindingList)
+        {
+            var result = GetInitialClassDeclaration(info);
+
+            var paramsNumber = info.NumberOfGenericArguments();
+
+            if (inheritedType != null && inheritedType.FinalName != string.Empty)
+            {
+                var finalName = inheritedType.FinalName;
+                var firstParameter = inheritedType.FirstParameter;
+
+                if (paramsNumber == 1)
+                {
+                    var search = string.Format("<{0}>", firstParameter);
+                    if (finalName.Contains(search))
+                        finalName = finalName.Replace(search,
+                            string.Format("(Of {0})",
+                                info.IsDynamicEditableRootCollection()
+                                    ? info.ItemType
+                                    : info.ObjectName));
+
+                }
+                else
+                {
+                    var secondParameter = inheritedType.SecondParameter;
+
+                    var search = string.Format("<{0},{1}>", firstParameter, secondParameter);
+                    if (finalName.Contains(search))
+                        if (info.IsNameValueList())
+                        {
+                            finalName = GetNameValueListClassDeclaration(info, finalName, search);
+                        }
+                        else
+                        {
+                            finalName = finalName.Replace(search,
+                                string.Format("(Of {0}, {1})", info.ObjectName, info.ItemType));
+                        }
+                }
+                result += finalName;
+            }
+            else
+            {
+                if (paramsNumber == 1)
+                {
+                    result += string.Format("{0}(Of {1})",
+                        info.CslaBaseClass(isBindingList),
+                        info.IsDynamicEditableRootCollection()
+                            ? info.ItemType
+                            : info.ObjectName);
+
+                }
+                else
+                {
+                    if (info.IsNameValueList())
+                    {
+                        result += GetNameValueListClassDeclaration(info);
+                    }
+                    else
+                    {
+                        result += string.Format("{0}(Of {1}, {2})",
+                            info.CslaBaseClass(isBindingList),
+                            info.ObjectName,
+                            info.ItemType);
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        private static string GetInitialClassDeclaration(CslaObjectInfo info)
+        {
+            return string.Format("Partial {0} Class {1}\r\n        Inherits ",
+                info.ClassVisibility == ClassVisibility.Public ? "Public" : "Friend",
+                info.ObjectName);
+        }
+
+        private static string GetNameValueListClassDeclaration(CslaObjectInfo info)
+        {
+            var result = string.Empty;
+
+            ValueProperty valueProperty = null;
+            ValueProperty nameProperty = null;
+            foreach (var property in info.ValueProperties)
+            {
+                if (property.Name.Equals(info.NameColumn))
+                {
+                    nameProperty = property;
+                    continue;
+                }
+                if (property.Name.Equals(info.ValueColumn))
+                {
+                    valueProperty = property;
+                }
+            }
+            if (nameProperty != null && valueProperty != null)
+            {
+                var valueParameter = GetDataTypeGeneric(valueProperty, valueProperty.PropertyType);
+                var nameParameter = GetDataTypeGeneric(nameProperty, nameProperty.PropertyType);
+
+                result = string.Format("{0}(Of {1}, {2})",
+                    info.CslaBaseClass(),
+                    valueParameter,
+                    nameParameter);
+            }
+
+            return result;
+        }
+
+        private static string GetNameValueListClassDeclaration(CslaObjectInfo info, string finalName, string search)
+        {
+            ValueProperty valueProperty = null;
+            ValueProperty nameProperty = null;
+            foreach (var property in info.ValueProperties)
+            {
+                if (property.Name.Equals(info.NameColumn))
+                {
+                    nameProperty = property;
+                    continue;
+                }
+                if (property.Name.Equals(info.ValueColumn))
+                {
+                    valueProperty = property;
+                }
+            }
+            if (nameProperty != null && valueProperty != null)
+            {
+                var valueParameter = GetDataTypeGeneric(valueProperty, valueProperty.PropertyType);
+                var nameParameter = GetDataTypeGeneric(nameProperty, nameProperty.PropertyType);
+
+                finalName = finalName.Replace(search,
+                    string.Format("(Of {0}, {1})", valueParameter, nameParameter));
+            }
+
+            return finalName;
+        }
+
+        public static string GetInterfaceDeclaration(CslaObjectInfo info)
+        {
+            var result = string.Empty;
+
+            if (info.Interfaces.Length > 0)
+            {
+                foreach (var item in info.Interfaces)
+                {
+                    if (!item.Contains(','))
+                        result += ", ";
+                    if (item.Contains("<T>"))
+                        result += item.Replace("<T>", string.Format("(Of {0})", info.ObjectName));
+                    else
+                        result += item;
+                }
+            }
+
             return result;
         }
 

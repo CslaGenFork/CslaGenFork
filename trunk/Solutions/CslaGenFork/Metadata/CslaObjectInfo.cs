@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
 using CslaGenerator.Attributes;
+using CslaGenerator.CodeGen;
 using CslaGenerator.Design;
 using CslaGenerator.Util;
 using DBSchemaInfo.Base;
@@ -396,14 +397,13 @@ namespace CslaGenerator.Metadata
             }
             set
             {
-
-                var tmp = string.Empty;
+                var tmpValue = string.Empty;
                 if (!string.IsNullOrEmpty(value))
-                    tmp = value.Trim().Replace(" ", string.Empty).ToUpper();
+                    tmpValue = value.Trim().Replace(" ", string.Empty).ToUpper();
 
-                if (_genericArguments != tmp)
+                if (_genericArguments != tmpValue)
                 {
-                    _genericArguments = tmp;
+                    _genericArguments = tmpValue;
                     OnPropertyChanged("GenericArguments");
                     OnPropertyChanged("GenericName");
                 }
@@ -816,12 +816,7 @@ namespace CslaGenerator.Metadata
         public bool ContainsItem
         {
             get { return _containsItem; }
-            set
-            {
-                _containsItem = value;
-                if (!value)
-                    _uniqueItems = value;
-            }
+            set { _containsItem = value; }
         }
 
         [Category("05. Collection Options")]
@@ -831,12 +826,7 @@ namespace CslaGenerator.Metadata
         public bool UniqueItems
         {
             get { return _uniqueItems; }
-            set
-            {
-                _uniqueItems = value;
-                if (value)
-                    _containsItem = value;
-            }
+            set { _uniqueItems = value; }
         }
 
         [Category("05. Collection Options")]
@@ -1721,9 +1711,57 @@ namespace CslaGenerator.Metadata
 
         #region Public Methods
 
+        public string CslaBaseClass()
+        {
+            var dualListInheritance = GeneratorController.Current.CurrentUnit.GenerationParams.DualListInheritance;
+            var isCollection = this.IsCollectionType();
+
+            return CslaBaseClass(dualListInheritance && isCollection);
+        }
+
+        internal string CslaBaseClass(bool isBindingList)
+        {
+            if (this.IsDynamicEditableRoot() ||
+                this.IsEditableChild() ||
+                this.IsEditableRoot() ||
+                this.IsEditableSwitchable() ||
+                this.IsCriteriaClass())
+                return "BusinessBase";
+
+            if (this.IsNameValueList())
+                return "NameValueListBase";
+
+            if (this.IsReadOnlyObject())
+                return "ReadOnlyBase";
+
+            if (this.IsEditableChildCollection() ||
+                this.IsEditableRootCollection())
+                return TemplateHelper.ListBaseHelper("Business", isBindingList);
+
+            if (this.IsReadOnlyCollection())
+                return TemplateHelper.ListBaseHelper("ReadOnly", isBindingList);
+
+            if (this.IsDynamicEditableRootCollection())
+                return TemplateHelper.ListBaseHelper("Dynamic", isBindingList);
+
+            if (this.IsUnitOfWork())
+            {
+                if (UnitOfWorkType == UnitOfWorkFunction.Deleter ||
+                    UnitOfWorkType == UnitOfWorkFunction.Updater)
+                    return "Commandbase";
+
+                return "ReadOnlyBase";
+            }
+
+            return string.Empty;
+        }
+
         public int NumberOfGenericArguments()
         {
-            if (ObjectType.IsCollectionType() ||
+            if (ObjectType.IsEditableRootCollection() ||
+                ObjectType.IsEditableChildCollection() ||
+                //ObjectType.IsDynamicEditableRootCollection() ||
+                ObjectType.IsReadOnlyCollection() ||
                 ObjectType.IsNameValueList())
                 return 2;
 
