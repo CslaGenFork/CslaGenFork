@@ -33,8 +33,8 @@ if ((Info.IsEditableRoot() ||
 
 <%
 }
-System.Collections.Generic.List<string> eventList = GetEventList(Info);
-if (eventList.Count > 0 && UseNoSilverlight())
+System.Collections.Generic.List<string> hookList = GetHookList(Info);
+if (hookList.Count > 0 && UseNoSilverlight())
 {
     %>
         #Region " DataPortal Hooks "
@@ -46,17 +46,17 @@ if (eventList.Count > 0 && UseNoSilverlight())
 #If Not SILVERLIGHT Then
 <%
     }
-    foreach (string strEvent in eventList)
+    foreach (string hookName in hookList)
     {
     %>
 
         ''' <summary>
-        ''' Occurs <%= FormatEventDocumentation(strEvent) %>
+        ''' Occurs <%= FormatHookDocumentation(hookName) %>
         ''' </summary>
-        Partial Private Sub On<%= strEvent %>(args As DataPortalHookArgs)
+        Partial Private Sub On<%= hookName %>(args As DataPortalHookArgs)
         End Sub
         <%
-        if (strEvent == "Create" && HasSilverlightLocalDataPortalCreate(Info))
+        if (hookName == "Create" && HasSilverlightLocalDataPortalCreate(Info))
         {
             %>
 
