@@ -221,7 +221,6 @@
     <add key="UnitOfWork:IsGenericType" value="false" />
     <add key="UnitOfWork:GenericArguments" value="false" />
     <add key="UnitOfWork:ObjectType" value="true" />
-    <add key="UnitOfWork:Interfaces" value="false" />
     <add key="UnitOfWork:ChildCollectionProperties" value="false" />
     <add key="UnitOfWork:ChildProperties" value="false" />
     <add key="UnitOfWork:InheritedChildCollectionProperties" value="false" />
