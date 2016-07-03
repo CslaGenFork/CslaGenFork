@@ -135,6 +135,7 @@ namespace CslaGenerator.Controls
             this.chkLogInUtc = new System.Windows.Forms.CheckBox();
             this.lblGetUserMethod = new System.Windows.Forms.Label();
             this.txtGetUserMethod = new System.Windows.Forms.TextBox();
+            this.chkEnforceGenericInheritance = new System.Windows.Forms.CheckBox();
             this.GenerationTargetTab = new System.Windows.Forms.TabPage();
             this.chkSaveGenerationTarget = new System.Windows.Forms.CheckBox();
             this.lblTarget = new System.Windows.Forms.Label();
@@ -1016,6 +1017,7 @@ namespace CslaGenerator.Controls
             this.AdvancedTab.Controls.Add(this.groupBoxPKDefaultValues);
             this.AdvancedTab.Controls.Add(this.groupBoxOtherParameters);
             this.AdvancedTab.Controls.Add(this.groupBoxSimpleAuditing);
+            this.AdvancedTab.Controls.Add(this.chkEnforceGenericInheritance);
             this.AdvancedTab.Location = new System.Drawing.Point(4, 22);
             this.AdvancedTab.Name = "AdvancedTab";
             this.AdvancedTab.Size = new System.Drawing.Size(525, 329);
@@ -1295,6 +1297,17 @@ namespace CslaGenerator.Controls
             this.txtGetUserMethod.TabIndex = 5;
             this.toolTip.SetToolTip(this.txtGetUserMethod,
                                      "Specify the method to be used to get a user value (ID or name or whatever) for auditing purposes.");
+            // 
+            // chkEnforceGenericInheritance
+            // 
+            this.chkEnforceGenericInheritance.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.projectParametersBindingSource, "EnforceGenericInheritance", true, DataSourceUpdateMode.OnPropertyChanged));
+            this.chkEnforceGenericInheritance.Location = new System.Drawing.Point(12, 246);
+            this.chkEnforceGenericInheritance.Name = "chkEnforceGenericInheritance";
+            this.chkEnforceGenericInheritance.Size = new System.Drawing.Size(223, 20);
+            this.chkEnforceGenericInheritance.TabIndex = 6;
+            this.chkEnforceGenericInheritance.Text = "Enforce Generic Inheritance";
+            this.toolTip.SetToolTip(this.chkEnforceGenericInheritance,
+                                     "Enforce Generic Inheritance.");
             // 
             // GenerationTab
             // 
@@ -2295,6 +2308,7 @@ namespace CslaGenerator.Controls
         private System.Windows.Forms.CheckBox chkLogInUtc;
         private System.Windows.Forms.Label lblGetUserMethod;
         private System.Windows.Forms.TextBox txtGetUserMethod;
+        private System.Windows.Forms.CheckBox chkEnforceGenericInheritance;
         private System.Windows.Forms.TabPage GenerationTargetTab;
         private System.Windows.Forms.CheckBox chkSaveGenerationTarget;
         private System.Windows.Forms.Label lblTarget;
