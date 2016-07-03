@@ -56,8 +56,8 @@ namespace CslaGenerator.Design
                 }
                 else if (_object.GetType() == typeof(TypeInfo))
                 {
-                    Text = @"Project or Assembly Type Editor";
-                    pgEditor.SelectedObject = new InheritedTypePropertyBag((TypeInfo) _object);
+                    Text = @"Project/Assembly Type Editor";
+                    pgEditor.SelectedObject = new TypeInfoPropertyBag((TypeInfo) _object);
                     Size = new Size(Size.Width + 100, Size.Height);
                 }
                 else if (_object.GetType() == typeof(AuthorizationRule))

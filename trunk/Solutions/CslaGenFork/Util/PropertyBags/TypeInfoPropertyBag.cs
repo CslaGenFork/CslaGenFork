@@ -25,7 +25,7 @@ namespace CslaGenerator.Util.PropertyBags
     /// PropertyGrid to provide functionality beyond that of the simple reflection
     /// normally used to query an object's properties.
     /// </summary>
-    public class InheritedTypePropertyBag : ICustomTypeDescriptor
+    public class TypeInfoPropertyBag : ICustomTypeDescriptor
     {
         #region PropertySpecCollection class definition
 
@@ -351,10 +351,10 @@ namespace CslaGenerator.Util.PropertyBags
 
         private class PropertySpecDescriptor : PropertyDescriptor
         {
-            private readonly InheritedTypePropertyBag _bag;
+            private readonly TypeInfoPropertyBag _bag;
             private readonly PropertySpec _item;
 
-            public PropertySpecDescriptor(PropertySpec item, InheritedTypePropertyBag bag, string name, Attribute[] attrs)
+            public PropertySpecDescriptor(PropertySpec item, TypeInfoPropertyBag bag, string name, Attribute[] attrs)
                 : base(name, attrs)
             {
                 _bag = bag;
@@ -430,17 +430,17 @@ namespace CslaGenerator.Util.PropertyBags
         /// <summary>
         /// Initializes a new instance of the InheritedTypePropertyBag class.
         /// </summary>
-        public InheritedTypePropertyBag()
+        public TypeInfoPropertyBag()
         {
             _defaultProperty = null;
             _properties = new PropertySpecCollection();
         }
 
-        public InheritedTypePropertyBag(TypeInfo obj) : this(new[] {obj})
+        public TypeInfoPropertyBag(TypeInfo obj) : this(new[] {obj})
         {
         }
 
-        public InheritedTypePropertyBag(TypeInfo[] obj)
+        public TypeInfoPropertyBag(TypeInfo[] obj)
         {
             _defaultProperty = "ObjectName";
             _properties = new PropertySpecCollection();

@@ -125,15 +125,15 @@ namespace CslaGenerator.Util
             }
         }
 
-        public static void GetInheritedTypeContextInstanceObject(ITypeDescriptorContext context, ref object objinfo,
+        public static void GetTypeInfoContextInstanceObject(ITypeDescriptorContext context, ref object objinfo,
             ref Type instanceType)
         {
             if (context.Instance != null)
             {
                 // check if context.Instance is InheritedTypePropertyBag or PropertyGrid
-                if (context.Instance is InheritedTypePropertyBag)
+                if (context.Instance is TypeInfoPropertyBag)
                 {
-                    var pBag = (InheritedTypePropertyBag) context.Instance;
+                    var pBag = (TypeInfoPropertyBag) context.Instance;
                     if (pBag.SelectedObject.Length == 1)
                         objinfo = pBag.SelectedObject[0];
                     else

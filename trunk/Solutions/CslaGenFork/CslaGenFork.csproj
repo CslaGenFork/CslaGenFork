@@ -585,7 +585,7 @@
     <Compile Include="Util\PropertyBags\ConvertValuePropertyBag.cs" />
     <Compile Include="Util\PropertyBags\CriteriaBag.cs" />
     <Compile Include="Util\PropertyBags\CriteriaPropertyBag.cs" />
-    <Compile Include="Util\PropertyBags\InheritedTypePropertyBag.cs" />
+    <Compile Include="Util\PropertyBags\TypeInfoPropertyBag.cs" />
     <Compile Include="Util\PropertyBags\PropertyBag.cs" />
     <Compile Include="Util\PropertyBags\PropertyContext.cs" />
     <Compile Include="Util\PropertyBags\UnitOfWorkPropertyBag.cs" />
