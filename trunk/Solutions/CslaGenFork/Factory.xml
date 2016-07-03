@@ -46,6 +46,7 @@
     <ChangedUserColumn>ChangeUserID</ChangedUserColumn>
     <LogDateAndTime>true</LogDateAndTime>
     <GetUserMethod>Security.UserInformation.UserID</GetUserMethod>
+    <EnforceGenericInheritance>true</EnforceGenericInheritance>
   </Params>
   <GenerationParams>
     <SaveBeforeGenerate>true</SaveBeforeGenerate>
