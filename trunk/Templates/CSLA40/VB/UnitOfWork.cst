@@ -31,7 +31,6 @@ if (Errors.Length == 0)
     int ancestorLoaderLevel = 0;
     int silverlightLevel = 0;
     bool genOptional = false;
-    bool useItem = false;
     bool first = true;
     bool? firstComment = null;
     %><!-- #include file="Header.asp" -->
@@ -48,8 +47,18 @@ if (Errors.Length == 0)
     }
     %>
     <Serializable()>
-    Partial <%= Info.ClassVisibility == ClassVisibility.Public ? "Public" : "Friend" %> Class <%= Info.ObjectName %>
-        Inherits <%= (Info.IsUpdater || Info.IsDeleter) ? "CommandBase" : "ReadOnlyBase" %>(Of <%= Info.ObjectName %>)
+    <%
+    if (Info.InheritedType.FinalName != string.Empty)
+    {
+        %><%= GetClassDeclarationInheritedType(Info) + GetInterfaceDeclaration(Info) %>
+<%
+    }
+    else
+    {
+        %><%= GetClassDeclaration(Info) + GetInterfaceDeclaration(Info) %>
+<%
+    }
+    %>
 
 <!-- #include file="BusinessProps.asp" -->
 <%

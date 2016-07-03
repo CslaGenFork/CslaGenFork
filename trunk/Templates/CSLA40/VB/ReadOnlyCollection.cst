@@ -41,7 +41,6 @@ if (Errors.Length == 0)
     int ancestorLoaderLevel = AncestorLoaderLevel(Info, out ancestorIsCollection);
     int silverlightLevel = 0;
     bool genOptional = false;
-    bool useItem = false;
     bool first = true;
     bool? firstComment = null;
     %><!-- #include file="Header.asp" -->
@@ -62,29 +61,31 @@ if (Errors.Length == 0)
     if (CurrentUnit.GenerationParams.DualListInheritance)
     {
         %>#If WINFORMS Then
-    <%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %>Partial <%= Info.ClassVisibility == ClassVisibility.Public ? "Public" : "Friend" %> Class <%= Info.ObjectName %>
-        Inherits <%
-        if (Info.InheritedTypeWinForms.Type != string.Empty || Info.InheritedTypeWinForms.ObjectName != string.Empty)
+    <%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %><%
+        if (Info.InheritedTypeWinForms.FinalName != string.Empty)
         {
-            %><!-- #include file="InheritsWinForms.asp" --><%
+            %><%= GetClassDeclarationInheritedTypeWinForms(Info) + GetInterfaceDeclaration(Info) %>
+<%
         }
         else
         {
-            %><%= ListBaseHelper("ReadOnly", true) %>(Of <%= Info.ObjectName %>, <%= Info.ItemType %>)<!-- #include file="Interfaces.asp" --><%
+            %><%= GetClassDeclaration(Info, true) + GetInterfaceDeclaration(Info) %>
+<%
         }
-
         %>#Else
     <%
     }
-    %><%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %>Partial <%= Info.ClassVisibility == ClassVisibility.Public ? "Public" : "Friend" %> Class <%= Info.ObjectName %>
-        Inherits <%
-    if (Info.InheritedType.Type != string.Empty || Info.InheritedType.ObjectName != string.Empty)
+    %><%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %><%
+    if (Info.InheritedType.FinalName != string.Empty)
     {
-        %><!-- #include file="Inherits.asp" --><%
+        %><%= GetClassDeclarationInheritedType(Info) + GetInterfaceDeclaration(Info) %>
+<%
     }
     else
     {
-        %><%= ListBaseHelper("ReadOnly", CurrentUnit.GenerationParams.GenerateWinForms && !CurrentUnit.GenerationParams.DualListInheritance) %>(Of <%= Info.ObjectName %>, <%= Info.ItemType %>)<!-- #include file="Interfaces.asp" --><%
+        bool isBindingList = CurrentUnit.GenerationParams.GenerateWinForms && !CurrentUnit.GenerationParams.DualListInheritance;
+        %><%= GetClassDeclaration(Info, isBindingList) + GetInterfaceDeclaration(Info) %>
+<%
     }
     if (CurrentUnit.GenerationParams.DualListInheritance)
     {

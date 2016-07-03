@@ -29,7 +29,6 @@ bool ancestorIsCollection = false;
 int ancestorLoaderLevel = 0;
 int silverlightLevel = 0;
 bool genOptional = false;
-bool useItem = false;
 ValueProperty nameProp = null;
 ValueProperty valueProp = null;
 foreach (ValueProperty prop in Info.ValueProperties)
@@ -59,14 +58,16 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Busine
     }
     %>
     [Serializable]
-    <%= Info.ClassVisibility == ClassVisibility.Public ? "public" : "internal" %> partial class <%= Info.ObjectName %> : <%
-    if (Info.InheritedType.Type != string.Empty || Info.InheritedType.ObjectName != string.Empty)
+    <%
+    if (Info.InheritedType.FinalName != string.Empty)
     {
-        %><!-- #include file="Inherits.asp" --><%
+        %><%= GetClassDeclarationInheritedType(Info) + GetInterfaceDeclaration(Info) %>
+<%
     }
     else
     {
-        %>NameValueListBase<<%= GetDataTypeGeneric(valueProp, valueProp.PropertyType) %>, <%= GetDataTypeGeneric(nameProp, nameProp.PropertyType) %>><!-- #include file="Interfaces.asp" --><%
+        %><%= GetClassDeclaration(Info) + GetInterfaceDeclaration(Info) %>
+<%
     }
     %>
     {

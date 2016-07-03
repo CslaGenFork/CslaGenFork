@@ -46,7 +46,6 @@ if (Errors.Length == 0)
     bool usesDTO = CurrentUnit.GenerationParams.GenerateDTO;
     int silverlightLevel = 0;
     bool genOptional = false;
-    bool useItem = false;
     bool? firstComment = null;
     bool internalNewObjectUsed = false;
     Criteria critCGF = new Criteria(Info);
@@ -76,14 +75,16 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
     }
     %>
     [Serializable]
-    <%= Info.ClassVisibility == ClassVisibility.Public ? "public" : "internal" %> partial class <%= Info.ObjectName %> : <%
-    if (Info.InheritedType.Type != string.Empty || Info.InheritedType.ObjectName != string.Empty)
+    <%
+    if (Info.InheritedType.FinalName != string.Empty)
     {
-        %><!-- #include file="Inherits.asp" --><%
+        %><%= GetClassDeclarationInheritedType(Info) + GetInterfaceDeclaration(Info) %>
+<%
     }
     else
     {
-        %>ReadOnlyBase<<%= Info.ObjectName %>><!-- #include file="Interfaces.asp" --><%
+        %><%= GetClassDeclaration(Info) + GetInterfaceDeclaration(Info) %>
+<%
     }
     %>
     {
