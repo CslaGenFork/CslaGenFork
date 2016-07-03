@@ -35,7 +35,6 @@ if (Errors.Length == 0)
     int ancestorLoaderLevel = AncestorLoaderLevel(Info, out ancestorIsCollection);
     int silverlightLevel = 0;
     bool genOptional = false;
-    bool useItem = false;
     bool first = true;
     bool? firstComment = null;
     %><!-- #include file="Header.asp" -->
@@ -57,27 +56,31 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Busine
     if (CurrentUnit.GenerationParams.DualListInheritance)
     {
         %>#if WINFORMS
-    <%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %><%= Info.ClassVisibility == ClassVisibility.Public ? "public" : "internal" %> partial class <%= Info.ObjectName %> : <%
-        if (Info.InheritedTypeWinForms.Type != string.Empty || Info.InheritedTypeWinForms.ObjectName != string.Empty)
+    <%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %><%
+        if (Info.InheritedTypeWinForms.FinalName != string.Empty)
         {
-            %><!-- #include file="InheritsWinForms.asp" --><%
+            %><%= GetClassDeclarationInheritedTypeWinForms(Info) + GetInterfaceDeclaration(Info) %>
+<%
         }
         else
         {
-            %><%= ListBaseHelper("Business", true) %><<%= Info.ObjectName %>, <%= Info.ItemType %>><!-- #include file="Interfaces.asp" --><%
+            %><%= GetClassDeclaration(Info, true) + GetInterfaceDeclaration(Info) %>
+<%
         }
-
         %>#else
     <%
     }
-    %><%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %><%= Info.ClassVisibility == ClassVisibility.Public ? "public" : "internal" %> partial class <%= Info.ObjectName %> : <%
-    if (Info.InheritedType.Type != string.Empty || Info.InheritedType.ObjectName != string.Empty)
+    %><%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %><%
+    if (Info.InheritedType.FinalName != string.Empty)
     {
-        %><!-- #include file="Inherits.asp" --><%
+        %><%= GetClassDeclarationInheritedType(Info) + GetInterfaceDeclaration(Info) %>
+<%
     }
     else
     {
-        %><%= ListBaseHelper("Business", CurrentUnit.GenerationParams.GenerateWinForms && !CurrentUnit.GenerationParams.DualListInheritance) %><<%= Info.ObjectName %>, <%= Info.ItemType %>><!-- #include file="Interfaces.asp" --><%
+        bool isBindingList = CurrentUnit.GenerationParams.GenerateWinForms && !CurrentUnit.GenerationParams.DualListInheritance;
+        %><%= GetClassDeclaration(Info, isBindingList) + GetInterfaceDeclaration(Info) %>
+<%
     }
     if (CurrentUnit.GenerationParams.DualListInheritance)
     {

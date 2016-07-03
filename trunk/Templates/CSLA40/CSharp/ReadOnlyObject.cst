@@ -47,7 +47,6 @@ if (Errors.Length == 0)
     int ancestorLoaderLevel = AncestorLoaderLevel(Info, out ancestorIsCollection);
     int silverlightLevel = 0;
     bool genOptional = false;
-    bool useItem = false;
     bool first = true;
     bool? firstComment = null;
     bool internalNewObjectUsed = false;
@@ -78,14 +77,16 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Busine
     }
     %>
     [Serializable]
-    <%= Info.ClassVisibility == ClassVisibility.Public ? "public" : "internal" %> partial class <%= Info.ObjectName %> : <%
-    if (Info.InheritedType.Type != string.Empty || Info.InheritedType.ObjectName != string.Empty)
+    <%
+    if (Info.InheritedType.FinalName != string.Empty)
     {
-        %><!-- #include file="Inherits.asp" --><%
+        %><%= GetClassDeclarationInheritedType(Info) + GetInterfaceDeclaration(Info) %>
+<%
     }
     else
     {
-        %>ReadOnlyBase<<%= Info.ObjectName %>><!-- #include file="Interfaces.asp" --><%
+        %><%= GetClassDeclaration(Info) + GetInterfaceDeclaration(Info) %>
+<%
     }
     %>
     {

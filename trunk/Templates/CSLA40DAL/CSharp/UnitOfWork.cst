@@ -32,7 +32,6 @@ if (Errors.Length == 0)
     GenerationStep genStep = GenerationStep.Business;
     int silverlightLevel = 0;
     bool genOptional = false;
-    bool useItem = false;
     bool first = true;
     bool? firstComment = null;
     %><!-- #include file="Header.asp" -->
@@ -50,7 +49,18 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
     }
     %>
     [Serializable]
-    <%= Info.ClassVisibility == ClassVisibility.Public ? "public" : "internal" %> partial class <%= Info.ObjectName %> : <%= (Info.IsUpdater || Info.IsDeleter) ? "CommandBase" : "ReadOnlyBase" %><<%= Info.ObjectName %>>
+    <%
+    if (Info.InheritedType.FinalName != string.Empty)
+    {
+        %><%= GetClassDeclarationInheritedType(Info) + GetInterfaceDeclaration(Info) %>
+<%
+    }
+    else
+    {
+        %><%= GetClassDeclaration(Info) + GetInterfaceDeclaration(Info) %>
+<%
+    }
+    %>
     {
 
 <!-- #include file="BusinessProps.asp" -->

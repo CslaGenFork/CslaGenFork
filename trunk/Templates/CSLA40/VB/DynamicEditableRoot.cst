@@ -42,7 +42,6 @@ if (Errors.Length == 0)
     int ancestorLoaderLevel = AncestorLoaderLevel(Info, out ancestorIsCollection);
     int silverlightLevel = 0;
     bool genOptional = false;
-    bool useItem = false;
     bool first = true;
     bool? firstComment = null;
     %><!-- #include file="Header.asp" -->
@@ -59,15 +58,16 @@ if (Errors.Length == 0)
     }
     %>
     <Serializable()>
-    Partial <%= Info.ClassVisibility == ClassVisibility.Public ? "Public" : "Friend" %> Class <%= Info.ObjectName %>
-        Inherits <%
-    if (Info.InheritedType.Type != string.Empty || Info.InheritedType.ObjectName != string.Empty)
+    <%
+    if (Info.InheritedType.FinalName != string.Empty)
     {
-        %><!-- #include file="Inherits.asp" --><%
+        %><%= GetClassDeclarationInheritedType(Info) + GetInterfaceDeclaration(Info) %>
+<%
     }
     else
     {
-        %>BusinessBase(Of <%= Info.ObjectName %>)<!-- #include file="Interfaces.asp" --><%
+        %><%= GetClassDeclaration(Info) + GetInterfaceDeclaration(Info) %>
+<%
     }
     %>
 <!-- #include file="StaticFields.asp" -->
