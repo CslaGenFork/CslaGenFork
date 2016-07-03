@@ -12,8 +12,8 @@ using CslaGenerator.Util;
 namespace CslaGenerator.Design
 {
     /// <summary>
-    /// Summary description for CslaObjectInfoEditor (list of CslaObjectInfo).
-    /// Used to get/set the inherited type, when it's a type defined in the project.
+    /// Summary description for CslaObjectInfoEditor (TypeInfo).
+    /// Used to get/set a type defined in the project (TypeInfo.ObjectName).
     /// </summary>
     public class CslaObjectInfoEditor : UITypeEditor, IDisposable
     {
@@ -51,7 +51,7 @@ namespace CslaGenerator.Design
                     // CR modifying to accomodate PropertyBag
                     Type instanceType = null;
                     object objinfo = null;
-                    ContextHelper.GetInheritedTypeContextInstanceObject(context, ref objinfo, ref instanceType);
+                    ContextHelper.GetTypeInfoContextInstanceObject(context, ref objinfo, ref instanceType);
                     var obj = (TypeInfo) objinfo;
                     _instance = objinfo.GetType();
 
@@ -59,7 +59,7 @@ namespace CslaGenerator.Design
                     _lstProperties.Items.Add("(None)");
 
                     _sizeSortedNamespaces = new List<string>();
-                    //var currentCslaObject = (CslaObjectInfo) GeneratorController.Current.GetSelectedItem();
+
                     var currentCslaObject = GeneratorController.Current.CurrentCslaObject;
                     _sizeSortedNamespaces = currentCslaObject.Namespaces.ToList();
                     _sizeSortedNamespaces.Add(currentCslaObject.ObjectNamespace);
@@ -69,24 +69,60 @@ namespace CslaGenerator.Design
                     if (alltypes.Count > 0)
                         _baseTypes = new List<BaseProperty>();
 
+                    var isCustomCriteria = !(obj.IsInheritedType || obj.IsInheritedTypeWinForms);
+                    var currentBaseClass = currentCslaObject.CslaBaseClass();
+
                     foreach (var type in alltypes)
                     {
-                        var listableType = type.GenericName;
-                        if (!string.IsNullOrEmpty(listableType))
+                        var addToList = false;
+
+                        if (isCustomCriteria)
                         {
-                            listableType = BusinessRuleTypeEditor.StripKnownNamespaces(
-                                _sizeSortedNamespaces,
-                                listableType);
-                            _lstProperties.Items.Add(listableType);
-                            _baseTypes.Add(new BaseProperty(type, listableType));
+                            addToList = type.IsCriteriaClass();
+                        }
+                        else
+                        {
+                            if (!GeneratorController.Current.CurrentUnit.Params.EnforceGenericInheritance)
+                            {
+                                var isMatch = currentCslaObject.IsObjectType() == type.IsObjectType() &&
+                                              currentCslaObject.IsCollectionType() == type.IsCollectionType();
+                                var isSameBaseClass = isMatch && currentBaseClass == type.CslaBaseClass();
+
+                                var isInheritedNonGeneric = type.IsBaseClass() &&
+                                                            !type.IsGenericType;
+
+                                addToList = isSameBaseClass || isInheritedNonGeneric;
+                            }
+
+                            var isInheritedMatchingGeneric = type.IsBaseClass() &&
+                                                             type.IsGenericType &&
+                                                             type.GetGenericArguments().Length ==
+                                                             currentCslaObject.NumberOfGenericArguments();
+
+                            var isNotSameObject = !ReferenceEquals(currentCslaObject, type);
+
+                            addToList = (addToList || isInheritedMatchingGeneric) &&
+                                        isNotSameObject;
+                        }
+
+                        if (addToList)
+                        {
+                            var listableType = type.GenericName;
+                            if (!string.IsNullOrEmpty(listableType))
+                            {
+                                listableType = BusinessRuleTypeEditor.StripKnownNamespaces(
+                                    _sizeSortedNamespaces,
+                                    listableType);
+                                _lstProperties.Items.Add(listableType);
+                                _baseTypes.Add(new BaseProperty(type, listableType));
+                            }
                         }
                     }
 
                     _lstProperties.Sorted = true;
 
-                    var entry = BusinessRuleTypeEditor.StripKnownNamespaces(_sizeSortedNamespaces, obj.Type);
-                    if (_lstProperties.Items.Contains(entry))
-                        _lstProperties.SelectedItem = entry;
+                    if (_lstProperties.Items.Contains(obj.ObjectName))
+                        _lstProperties.SelectedItem = obj.ObjectName;
                     else
                         _lstProperties.SelectedItem = "(None)";
 

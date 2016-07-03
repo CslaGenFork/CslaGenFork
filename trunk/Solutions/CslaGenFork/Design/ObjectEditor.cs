@@ -8,8 +8,21 @@ using CslaGenerator.Metadata;
 namespace CslaGenerator.Design
 {
     /// <summary>
-    /// Summary description for ObjectEditor (CslaObjectInfo.InheritedType / CslaObjectInfo.InheritedTypeWinForms).
+    /// Summary description for ObjectEditor (TypeInfo and AuthorizationRule).
     /// </summary>
+    /// <remarks> This is used by: 
+    /// CslaObjectInfo.InheritedType, 
+    /// CslaObjectInfo.InheritedTypeWinForms, 
+    /// CslaObjectInfo.NewAuthzRuleType, 
+    /// CslaObjectInfo.GetAuthzRuleType, 
+    /// CslaObjectInfo.UpdateAuthzRuleType, 
+    /// CslaObjectInfo.DeleteAuthzRuleType, 
+    /// ValueProperty.ReadAuthzRuleType, 
+    /// ValueProperty.WriteAuthzRuleType, 
+    /// ChildProperty.ReadAuthzRuleType, 
+    /// ChildProperty.WriteAuthzRuleType, 
+    /// Criteria.CustomClass.
+    /// </remarks>
     public class ObjectEditor : UITypeEditor
     {
         private IWindowsFormsEditorService _editorService = null;
@@ -21,12 +34,28 @@ namespace CslaGenerator.Design
                 _editorService = (IWindowsFormsEditorService) provider.GetService(typeof(IWindowsFormsEditorService));
                 if (_editorService != null)
                 {
+                    var isInheritedType = false;
+                    var isInheritedTypeWinForms = false;
+                    MemberDescriptor propertyDescriptor =
+                        GeneratorController.Current.MainForm.ObjectInfoGrid.SelectedGridItem.PropertyDescriptor;
+
+                    if (propertyDescriptor != null)
+                    {
+                        if (propertyDescriptor.Name == "Inherited Type")
+                            isInheritedType = true;
+                        if (propertyDescriptor.Name == "Inherited Type for WinForms")
+                            isInheritedTypeWinForms = true;
+                    }
+
                     object temp;
                     DialogResult result;
                     using (var frmEdit = new ObjectEditorForm())
                     {
                         if (value == null)
                             value = new TypeInfo();
+
+                        ((TypeInfo) value).IsInheritedType = isInheritedType;
+                        ((TypeInfo) value).IsInheritedTypeWinForms = isInheritedTypeWinForms;
 
                         temp = ((ICloneable) value).Clone();
                         frmEdit.ObjectToEdit = temp;

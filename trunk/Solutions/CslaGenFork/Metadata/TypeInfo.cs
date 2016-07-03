@@ -15,29 +15,38 @@ namespace CslaGenerator.Metadata
     [Serializable]
     public class TypeInfo : ICloneable
     {
-        private string _assemblyFile = String.Empty;
-        private string _type = String.Empty;
-        private string _objectName = String.Empty;
+        #region Private Fields
 
-        [Category("01. Inherit from Type Defined in Project")]
+        private string _assemblyFile = string.Empty;
+        private string _type = string.Empty;
+        private string _objectName = string.Empty;
+        private bool _isInheritedType;
+        private bool _isInheritedTypeWinForms;
+
+        #endregion
+
+        #region UI Properties
+
+        [Category("01. Type Defined in Project")]
         [Editor(typeof(CslaObjectInfoEditor), typeof(UITypeEditor))]
-        [Description("Inherited Type Name.")]
-        [UserFriendlyName("Base Type Name")]
+        [Description("Selected Type Name. Interface classes are excluded from the list.\r\n" +
+                     "Shows only generic classes with a matching number of generic arguments.")]
+        [UserFriendlyName("Project Type Name")]
         public string ObjectName
         {
             get { return _objectName; }
             set
             {
                 _objectName = value;
-                if (value != String.Empty)
+                if (value != string.Empty)
                 {
-                    _type = String.Empty;
+                    _type = string.Empty;
                 }
                 OnTypeChanged(EventArgs.Empty);
             }
         }
 
-        [Category("02. Inherit from Type in Assembly")]
+        [Category("02. Type Defined in Assembly")]
         [Description("The assembly file full path")]
         [Editor(typeof(AssemblyObjectFileNameEditor), typeof(UITypeEditor))]
 //        [TypeConverter(typeof(AssemblyFileConverter))]
@@ -49,14 +58,15 @@ namespace CslaGenerator.Metadata
             {
                 _assemblyFile = value;
                 if (string.IsNullOrEmpty(_assemblyFile))
-                    Type = String.Empty;
+                    Type = string.Empty;
             }
         }
 
-        [Category("02. Inherit from Type in Assembly")]
+        [Category("02. Type Defined in Assembly")]
         [Editor(typeof(RefTypeEditor), typeof(UITypeEditor))]
-        [Description("Inherited Type Name. Interface classes are excluded from the list.")]
-        [UserFriendlyName("Base Type Name")]
+        [Description("Selected Type Name. Interface classes are excluded from the list.\r\n" +
+                     "Shows only generic classes with a matching number of generic arguments.")]
+        [UserFriendlyName("Assembly Type Name")]
         public string Type
         {
             get { return _type; }
@@ -65,9 +75,9 @@ namespace CslaGenerator.Metadata
                 if (_type != value)
                 {
                     _type = value;
-                    if (_type != String.Empty)
+                    if (_type != string.Empty)
                     {
-                        _objectName = String.Empty;
+                        _objectName = string.Empty;
                     }
                     OnTypeChanged(EventArgs.Empty);
                 }
@@ -79,7 +89,23 @@ namespace CslaGenerator.Metadata
         [UserFriendlyName("Generic Type")]
         public bool IsGenericType { get; set; }
 
-        #region Non UI properties
+        #endregion
+
+        #region Hidden properties
+
+        [Browsable(false)]
+        internal bool IsInheritedType
+        {
+            get { return _isInheritedType; }
+            set { _isInheritedType = value; }
+        }
+
+        [Browsable(false)]
+        internal bool IsInheritedTypeWinForms
+        {
+            get { return _isInheritedTypeWinForms; }
+            set { _isInheritedTypeWinForms = value; }
+        }
 
         [XmlIgnore]
         [Browsable(false)]
@@ -87,7 +113,7 @@ namespace CslaGenerator.Metadata
         {
             get
             {
-                if (_objectName == String.Empty)
+                if (_objectName == string.Empty)
                 {
                     return null;
                 }
@@ -95,12 +121,63 @@ namespace CslaGenerator.Metadata
             }
         }
 
+        [XmlIgnore]
+        [Browsable(false)]
+        public string FinalName
+        {
+            get
+            {
+                if (_objectName == string.Empty)
+                    return _type;
+
+                return _objectName;
+            }
+        }
+
+        [XmlIgnore]
+        [Browsable(false)]
+        public string FirstParameter
+        {
+            get
+            {
+                var parameters = GetParameters();
+                return parameters.Length > 0 ? parameters[0].Trim() : string.Empty;
+            }
+        }
+
+        [XmlIgnore]
+        [Browsable(false)]
+        public string SecondParameter
+        {
+            get
+            {
+                var parameters = GetParameters();
+                return parameters.Length > 1 ? parameters[1].Trim() : string.Empty;
+            }
+        }
+
+        private string[] GetParameters()
+        {
+            var result = string.Empty;
+
+            if (IsGenericType)
+            {
+                var finalName = FinalName;
+                var start = finalName.IndexOf("<", StringComparison.InvariantCulture);
+                var end = finalName.IndexOf(">", StringComparison.InvariantCulture);
+                if (start > -1 && end > -1)
+                    result = finalName.Substring(start + 1, end - start - 1);
+            }
+
+            return result.Split(',');
+        }
+
         #endregion
 
-        // Not used. keep as it might be useful some day
+        // Not used. Keep as it might be useful
         public Type GetInheritedType()
         {
-            if (_assemblyFile != null && _assemblyFile != String.Empty)
+            if (_assemblyFile != null && _assemblyFile != string.Empty)
             {
                 var assembly = Assembly.LoadFrom(_assemblyFile);
                 var t = assembly.GetType(_type);
@@ -133,6 +210,8 @@ namespace CslaGenerator.Metadata
                 buffer.Position = 0;
                 result = (TypeInfo) ser.Deserialize(buffer);
             }
+            result.IsInheritedType = IsInheritedType;
+            result.IsInheritedTypeWinForms = IsInheritedTypeWinForms;
 
             return result;
         }

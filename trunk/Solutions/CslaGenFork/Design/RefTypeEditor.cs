@@ -13,7 +13,7 @@ namespace CslaGenerator.Design
 {
     /// <summary>
     /// Summary description for RefTypeEditor (list of .NET types).
-    /// Used to get/set the inherited type, when it's an assembly type.
+    /// Used to get/set an assembly type (TypeInfo.Type).
     /// </summary>
     public class RefTypeEditor : UITypeEditor, IDisposable
     {
@@ -51,15 +51,13 @@ namespace CslaGenerator.Design
                     // CR modifying to accomodate PropertyBag
                     Type instanceType = null;
                     object objinfo = null;
-                    ContextHelper.GetInheritedTypeContextInstanceObject(context, ref objinfo, ref instanceType);
+                    ContextHelper.GetTypeInfoContextInstanceObject(context, ref objinfo, ref instanceType);
                     var obj = (TypeInfo) objinfo;
                     _instance = objinfo.GetType();
 
                     _lstProperties.Items.Clear();
                     _lstProperties.Items.Add("(None)");
 
-                    _sizeSortedNamespaces = new List<string>();
-                    //var currentCslaObject = (CslaObjectInfo) GeneratorController.Current.GetSelectedItem();
                     var currentCslaObject = GeneratorController.Current.CurrentCslaObject;
                     _sizeSortedNamespaces = currentCslaObject.Namespaces.ToList();
                     _sizeSortedNamespaces.Add(currentCslaObject.ObjectNamespace);
@@ -77,6 +75,11 @@ namespace CslaGenerator.Design
                         if (alltypes.Length > 0)
                             _baseTypes = new List<BaseProperty>();
 
+                        var isCustomCriteria = !(obj.IsInheritedType || obj.IsInheritedTypeWinForms);
+                        var numberOfGenericArguments = 1;
+                        if (!isCustomCriteria)
+                            numberOfGenericArguments = currentCslaObject.NumberOfGenericArguments();
+
                         foreach (var type in alltypes)
                         {
                             if (type.GetInterface("Csla.Core.IBusinessObject") != null ||
@@ -86,12 +89,17 @@ namespace CslaGenerator.Design
                                 // exclude interface classes
                                 if (!type.IsInterface)
                                 {
-                                    var listableType = type.ToString();
+                                    var listableType = string.Empty;
+
+                                    if (!GeneratorController.Current.CurrentUnit.Params.EnforceGenericInheritance &&
+                                        !isCustomCriteria)
+                                        listableType = type.ToString();
+
                                     if (type.IsGenericType)
                                     {
-                                        if (type.GetGenericArguments().Length ==
-                                            currentCslaObject.NumberOfGenericArguments())
+                                        if (type.GetGenericArguments().Length == numberOfGenericArguments)
                                         {
+                                            listableType = type.ToString();
                                             listableType = listableType.Substring(0, listableType.LastIndexOf('`'));
                                             foreach (var argument in type.GetGenericArguments())
                                             {
@@ -151,7 +159,8 @@ namespace CslaGenerator.Design
             {
                 foreach (var baseType in _baseTypes)
                 {
-                    if (baseType.TypeName == BusinessRuleTypeEditor.StripKnownNamespaces(_sizeSortedNamespaces, stringType))
+                    if (baseType.TypeName ==
+                        BusinessRuleTypeEditor.StripKnownNamespaces(_sizeSortedNamespaces, stringType))
                         usedType = baseType.Type;
                 }
             }

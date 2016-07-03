@@ -117,6 +117,11 @@ namespace CslaGenerator.Util
             return false;
         }
 
+        public static bool IsCollectionType(this CslaObjectInfo info)
+        {
+            return info.ObjectType.IsCollectionType();
+        }
+
         public static bool IsObjectType(this CslaObjectType cslaType)
         {
             if (cslaType.IsEditableRoot() ||
@@ -127,6 +132,11 @@ namespace CslaGenerator.Util
                 return true;
 
             return false;
+        }
+
+        public static bool IsObjectType(this CslaObjectInfo info)
+        {
+            return info.ObjectType.IsObjectType();
         }
 
         public static bool IsEditableType(this CslaObjectType cslaType)
@@ -143,6 +153,11 @@ namespace CslaGenerator.Util
             return false;
         }
 
+        public static bool IsEditableType(this CslaObjectInfo info)
+        {
+            return info.ObjectType.IsEditableType();
+        }
+
         public static bool IsReadOnlyType(this CslaObjectType cslaType)
         {
             if (cslaType.IsReadOnlyCollection() ||
@@ -152,6 +167,12 @@ namespace CslaGenerator.Util
             return false;
         }
 
+        public static bool IsReadOnlyType(this CslaObjectInfo info)
+        {
+            return info.ObjectType.IsReadOnlyType();
+        }
+
+        // TODO Same "IsChildType" name but different results!!! When fixing, check also templates.
         public static bool IsChildType(this CslaObjectType cslaType)
         {
             if (cslaType.IsEditableChild() ||
@@ -161,6 +182,7 @@ namespace CslaGenerator.Util
             return false;
         }
 
+        // TODO Same "IsChildType" name but different results!!! When fixing, check also templates.
         public static bool IsChildType(this CslaObjectInfo info)
         {
             if (info.IsEditableSwitchable() ||
@@ -217,7 +239,7 @@ namespace CslaGenerator.Util
 
         public static bool IsRootOrRootItem(this CslaObjectInfo info)
         {
-            bool result = !info.IsChildType();
+            var result = !info.IsChildType();
             if (!result)
             {
                 var parentInfo = info.Parent.CslaObjects.Find(info.ParentType);
@@ -311,6 +333,19 @@ namespace CslaGenerator.Util
 
                 var parentInfo = info.Parent.CslaObjects.Find(info.ParentType);
                 if (parentInfo == null) // the parent wasn't found; for practical purposes, this is the last ancestor
+                    return info;
+
+                var notFound = true;
+                foreach (var child in parentInfo.AllChildProperties)
+                {
+                    if (child.TypeName == info.ParentType)
+                    {
+                        notFound = false;
+                        break;
+                    }
+                }
+
+                if (notFound) // the parent doesn't know the child; for practical purposes, this is the last ancestor
                     return info;
 
                 info = parentInfo;
