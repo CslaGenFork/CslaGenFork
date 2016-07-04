@@ -51,11 +51,14 @@ namespace CslaGenerator.Design
                     DialogResult result;
                     using (var frmEdit = new ObjectEditorForm())
                     {
-                        if (value == null)
-                            value = new TypeInfo();
+                        if (isInheritedType || isInheritedTypeWinForms)
+                        {
+                            if (value == null)
+                                value = new TypeInfo();
 
-                        ((TypeInfo) value).IsInheritedType = isInheritedType;
-                        ((TypeInfo) value).IsInheritedTypeWinForms = isInheritedTypeWinForms;
+                            ((TypeInfo) value).IsInheritedType = isInheritedType;
+                            ((TypeInfo) value).IsInheritedTypeWinForms = isInheritedTypeWinForms;
+                        }
 
                         temp = ((ICloneable) value).Clone();
                         frmEdit.ObjectToEdit = temp;

@@ -85,7 +85,7 @@ namespace CslaGenerator.Metadata
         private PropertyDeclaration _declarationMode;
         private BusinessRuleCollection _businessRules;
         private string _interfaces = string.Empty;
-        private string[] _attributes = new string[] { };
+        private string[] _attributes = new string[] {};
         private AuthorizationProvider _authzProvider;
         private AuthorizationRuleCollection _authzRules;
         private string _readRoles = string.Empty;
@@ -98,6 +98,8 @@ namespace CslaGenerator.Metadata
         private bool _nullable;
 
         #endregion
+
+        #region Constructor
 
         public ValueProperty()
         {
@@ -118,7 +120,9 @@ namespace CslaGenerator.Metadata
             NameChanged += _authzRules.OnParentChanged;
         }
 
-        #region Properties
+        #endregion
+
+        #region UI Properties
 
         #region 00. Database
 
@@ -197,7 +201,14 @@ namespace CslaGenerator.Metadata
         [Description("The property name.")]
         public override string Name
         {
-            get { return base.Name; }
+            get
+            {
+                var name = base.Name;
+                if (string.IsNullOrEmpty(name))
+                    return "Unnamed Property";
+
+                return name;
+            }
             set
             {
                 value = PropertyHelper.Tidy(value);
@@ -373,7 +384,7 @@ namespace CslaGenerator.Metadata
         public virtual string ReadRoles
         {
             get { return _readRoles; }
-            set { _readRoles = PropertyHelper.TidyAllowSpaces(value).Replace(';', ',').Trim(new[] { ',' }); }
+            set { _readRoles = PropertyHelper.TidyAllowSpaces(value).Replace(';', ',').Trim(new[] {','}); }
         }
 
         [Category("03. Business Rules & Authorization")]
@@ -382,7 +393,7 @@ namespace CslaGenerator.Metadata
         public virtual string WriteRoles
         {
             get { return _writeRoles; }
-            set { _writeRoles = PropertyHelper.TidyAllowSpaces(value).Replace(';', ',').Trim(new[] { ',' }); }
+            set { _writeRoles = PropertyHelper.TidyAllowSpaces(value).Replace(';', ',').Trim(new[] {','}); }
         }
 
         [Category("03. Business Rules & Authorization")]
@@ -442,9 +453,9 @@ namespace CslaGenerator.Metadata
 
         [Category("05. Options")]
         [Description("Accessibility for property setter.\r\n" +
-            "If \"ReadOnly\" is true, this settings is ignored.\r\n  - Auto properties have a private setter\r\n  - Classic, managed and unmanaged properties have no setter.\r\n" +
-            "If \"ReadOnly\" is false, this setting applies. By default the setter has the same accessibility of the property.\r\n" +
-            "Note -  \"NoSetter\" is deprecated and is converted to \"Default\".")]
+                     "If \"ReadOnly\" is true, this settings is ignored.\r\n  - Auto properties have a private setter\r\n  - Classic, managed and unmanaged properties have no setter.\r\n" +
+                     "If \"ReadOnly\" is false, this setting applies. By default the setter has the same accessibility of the property.\r\n" +
+                     "Note -  \"NoSetter\" is deprecated and is converted to \"Default\".")]
         [UserFriendlyName("Setter Accessibility")]
         public AccessorVisibility PropSetAccessibility
         {
@@ -489,11 +500,10 @@ namespace CslaGenerator.Metadata
             {
                 var prop = DbBindColumn.Column.ColumnDescription;
                 if (prop != null)
-                    base.Summary = prop;
+                    Summary = prop;
                 else
-                    base.Summary = string.Empty;
+                    Summary = string.Empty;
             }
         }
-
     }
 }
