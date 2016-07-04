@@ -284,7 +284,7 @@ namespace CslaGenerator.Metadata
         #region 01. Common Options
 
         [Category("01. Common Options")]
-        [Description("The type of Csla object to create, e.g EditableRoot, EditableChild, etc...")]
+        [Description("The type of Csla stereotype to generate, e.g EditableRoot, EditableChild, etc...")]
         [UserFriendlyName("Csla Object Type")]
         public CslaObjectType ObjectType
         {
@@ -477,8 +477,8 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Common Options")]
-        [Description("The type that this object inherits from. You can either select an object defined in the current project or an object defined in another assembly.\r\n" + 
-            "The object you inherit from. Must inherit from a valid Csla base object.")]
+        [Description("The type that this object inherits from. Select a class defined in the current project or defined in an assembly.\r\n" +
+            "Must inherit from a valid Csla base class or from a derived class.")]
         [Editor(typeof(ObjectEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(TypeInfoConverter))]
         [UserFriendlyName("Inherited Type")]
@@ -499,14 +499,20 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Common Options")]
-        [Description("For Windows Forms, the type that this object inherits from. You can either select an object defined in the current project or an object defined in another assembly.\r\n" + 
-            "The object you inherit from. Must inherit from a valid Csla base object.")]
+        [Description("For Windows Forms, the type that this object inherits from. Select a class defined in the current project or defined in an assembly.\r\n" + 
+            "Must inherit from a valid Csla base class or from a derived class.")]
         [Editor(typeof(ObjectEditor), typeof(UITypeEditor))]
         [TypeConverter(typeof(TypeInfoConverter))]
         [UserFriendlyName("Inherited Type for WinForms")]
         public TypeInfo InheritedTypeWinForms
         {
-            get { return _inheritedTypeWinForms; }
+            get
+            {
+                if (this.IsCollectionType() || !string.IsNullOrEmpty(_inheritedTypeWinForms.FinalName))
+                    return _inheritedTypeWinForms;
+
+                return new TypeInfo();
+            }
             set
             {
                 if (!ReferenceEquals(value, _inheritedTypeWinForms))
@@ -607,7 +613,7 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("02. Business Properties")]
-        [Description("If this object inherits from another type, this property will store the child collection properties it inherits. You cannot add or remove inherited properties, but you can modify them.")]
+        [Description("The child collection properties defined by the inherited type. These properties are only handled on the DataPortal.")]
         [Editor(typeof(PropertyCollectionForm), typeof(UITypeEditor))]
         [UserFriendlyName("Inherited Child Collection Properties")]
         public ChildPropertyCollection InheritedChildCollectionProperties
@@ -616,7 +622,7 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("02. Business Properties")]
-        [Description("If this object inherits from another type, this property will store the non-collection child properties it inherits.You cannot add or remove inherited properties, but you can modify them.")]
+        [Description("The non-collection child properties defined by the inherited type. These properties are only handled on the DataPortal.")]
         [Editor(typeof(PropertyCollectionForm), typeof(UITypeEditor))]
         [UserFriendlyName("Inherited Child Properties")]
         public ChildPropertyCollection InheritedChildProperties
@@ -625,7 +631,7 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("02. Business Properties")]
-        [Description("Value properties that convert to/from other properties of the same object.")]
+        [Description("The business properties that convert to/from other properties of the same object.")]
         [Editor(typeof(PropertyCollectionForm), typeof(UITypeEditor))]
         [UserFriendlyName("Converted Value Properties")]
         public ConvertValuePropertyCollection ConvertValueProperties
@@ -634,7 +640,7 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("02. Business Properties")]
-        [Description("Value properties of this object that are updated when another object saves itself.")]
+        [Description("The business properties of this object that are updated when another object saves itself.")]
         [Editor(typeof(PropertyCollectionForm), typeof(UITypeEditor))]
         [UserFriendlyName("Updated Value Properties")]
         public UpdateValuePropertyCollection UpdateValueProperties
@@ -643,7 +649,7 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("02. Business Properties")]
-        [Description("If this object inherits from another type, this property will store the business properties it inherits. You cannot add or remove inherited properties, but you can modify them.")]
+        [Description("The business properties defined by the inherited type. These properties are only handled on the DataPortal and Stored Procedures.")]
         [Editor(typeof(PropertyCollectionForm), typeof(UITypeEditor))]
         [UserFriendlyName("Inherited Value Properties")]
         public ValuePropertyCollection InheritedValueProperties
@@ -820,8 +826,10 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("05. Collection Options")]
-        [Description("Whether you want to reject duplicate items on the collection. This setting requires \"Use Contains Methods\" to be set.\r\n" +
-            "N.B. - This feature degrades performance on big collections and shouldn't be used on ReadOnlyCollections.")]
+        [Description(
+            "Whether you want to reject duplicate items on the collection. This setting requires \"Use Contains Methods\" to be set.\r\n" +
+            "N.B. - This feature degrades performance on big collections and shouldn't be used on ReadOnlyCollections.")
+        ]
         [UserFriendlyName("Reject Duplicate Items")]
         public bool UniqueItems
         {
