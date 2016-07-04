@@ -85,9 +85,9 @@
     <UsesCslaAuthorizationProvider>true</UsesCslaAuthorizationProvider>
     <GenerateWinForms>true</GenerateWinForms>
     <GenerateWPF>true</GenerateWPF>
-    <GenerateSilverlight4>true</GenerateSilverlight4>
+    <GenerateSilverlight4>false</GenerateSilverlight4>
     <SilverlightUsingServices>false</SilverlightUsingServices>
-    <DatabaseConnection>MyDatabase</DatabaseConnection>
+    <DatabaseConnection>MyProjectDatabase</DatabaseConnection>
     <GenerateDTO>true</GenerateDTO>
     <GenerateDalInterface>false</GenerateDalInterface>
     <GenerateDalObject>false</GenerateDalObject>
