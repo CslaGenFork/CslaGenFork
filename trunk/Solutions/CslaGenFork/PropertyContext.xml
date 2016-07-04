@@ -415,9 +415,6 @@
     <add key="ReadOnlyObject:ObjectType" value="true" />
     <add key="ReadOnlyObject:ChildCollectionProperties" value="true" />
     <add key="ReadOnlyObject:ChildProperties" value="true" />
-    <add key="ReadOnlyObject:InheritedChildCollectionProperties" value="false" />
-    <add key="ReadOnlyObject:InheritedChildProperties" value="false" />
-    <add key="ReadOnlyObject:InheritedValueProperties" value="false" />
     <add key="ReadOnlyObject:ConvertValueProperties" value="true" />
     <add key="ReadOnlyObject:UpdateValueProperties" value="true" />
     <add key="ReadOnlyObject:ValueProperties" value="true" />

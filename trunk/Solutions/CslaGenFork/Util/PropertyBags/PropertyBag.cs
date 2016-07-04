@@ -994,6 +994,12 @@ namespace CslaGenerator.Util.PropertyBags
                             (propertyName == "UnitOfWorkProperties" ||
                             propertyName == "UnitOfWorkType"))
                             return false;
+                        if (string.IsNullOrEmpty(cslaObject.InheritedType.FinalName) &&
+                            (propertyName == "InheritedChildCollectionProperties" ||
+                             propertyName == "InheritedChildProperties" ||
+                             propertyName == "InheritedValueProperties"))
+                            return false;
+
                         if (!_propertyContext.ShowProperty(cslaObject.ObjectType.ToString(), propertyName))
                             return false;
                     }
