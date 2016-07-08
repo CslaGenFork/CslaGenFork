@@ -322,6 +322,7 @@ namespace CslaGenerator.Controls
             txtDalName.Enabled = UseDal;
             txtDatabase.Enabled = false;
             txtDatabaseConnection.Enabled = true;
+            txtUtilitiesFolder.Enabled = !_genParams.SeparateNamespaces;
             chkWinForms.Enabled = true;
             chkWPF.Enabled = true;
             chkSilverlight.Enabled = true;

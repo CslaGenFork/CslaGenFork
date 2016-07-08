@@ -360,7 +360,13 @@ namespace CslaGenerator.Metadata
 
         public string UtilitiesFolder
         {
-            get { return _utilitiesFolder; }
+            get
+            {
+                if (_separateNamespaces)
+                    return string.Empty;
+
+                return _utilitiesFolder;
+            }
             set
             {
                 value = PropertyHelper.TidyFilename(value);
