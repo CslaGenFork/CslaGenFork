@@ -22,7 +22,7 @@ namespace CslaGenerator.Design
 
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
-            _editorService = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
+            _editorService = (IWindowsFormsEditorService) provider.GetService(typeof(IWindowsFormsEditorService));
             if (_editorService != null)
             {
                 if (context.Instance != null)
@@ -31,20 +31,30 @@ namespace CslaGenerator.Design
                     Type instanceType = null;
                     object objinfo = null;
                     ContextHelper.GetConvertValuePropertyContextInstanceObject(context, ref objinfo, ref instanceType);
-                    //var obj = (ConvertValueProperty)objinfo;
+                    var obj = (ConvertValueProperty) objinfo;
+
                     _lstProperties.Items.Clear();
                     _lstProperties.Items.Add("(None)");
-                    var props = ((CslaObjectInfo)GeneratorController.Current.GetSelectedItem()).GetAllValueProperties();
+                    var props = GeneratorController.Current.CurrentCslaObject.GetAllValueProperties();
                     foreach (var prop in props)
                     {
-                        if (prop.PropertyType == TypeCodeEx.Int16 || prop.PropertyType == TypeCodeEx.Int32 || prop.PropertyType == TypeCodeEx.Int64 ||
-                            prop.PropertyType == TypeCodeEx.UInt16 || prop.PropertyType == TypeCodeEx.UInt32 || prop.PropertyType == TypeCodeEx.UInt64 ||
+                        if (prop.PropertyType == TypeCodeEx.Int16 ||
+                            prop.PropertyType == TypeCodeEx.Int32 ||
+                            prop.PropertyType == TypeCodeEx.Int64 ||
+                            prop.PropertyType == TypeCodeEx.UInt16 ||
+                            prop.PropertyType == TypeCodeEx.UInt32 ||
+                            prop.PropertyType == TypeCodeEx.UInt64 ||
                             prop.PropertyType == TypeCodeEx.SByte)
                         {
                             _lstProperties.Items.Add(prop.Name);
                         }
                     }
                     _lstProperties.Sorted = true;
+
+                    if (_lstProperties.Items.Contains(obj.SourcePropertyName))
+                        _lstProperties.SelectedItem = obj.SourcePropertyName;
+                    else
+                        _lstProperties.SelectedItem = "(None)";
 
                     _editorService.DropDownControl(_lstProperties);
                     if (_lstProperties.SelectedIndex < 0 || _lstProperties.SelectedItem.ToString() == "(None)")

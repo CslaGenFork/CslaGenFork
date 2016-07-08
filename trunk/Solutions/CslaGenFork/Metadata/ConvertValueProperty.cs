@@ -15,8 +15,8 @@ namespace CslaGenerator.Metadata
     [Serializable]
     public class ConvertValueProperty : ValueProperty
     {
-        private string _baseName = String.Empty;
-        private string _sourcePropertyName = String.Empty;
+        private string _baseName = string.Empty;
+        private string _sourcePropertyName = string.Empty;
         private string _nvlConverter = string.Empty;
         private DataAccessBehaviour _dataAccess = DataAccessBehaviour.ReadWrite;
         private UserDefinedKeyBehaviour _primaryKey = UserDefinedKeyBehaviour.Default;
@@ -76,14 +76,24 @@ namespace CslaGenerator.Metadata
                 value = PropertyHelper.Tidy(value);
                 _baseName = value;
 
-                if (value != null && (base.Name.Equals(_baseName + "Name") || string.IsNullOrEmpty(base.Name)))
+                if (value != null &&
+                    (base.Name.Equals(_baseName + "Name") ||
+                     string.IsNullOrEmpty(base.Name) ||
+                     base.Name == "Unnamed Property"))
                     base.Name = value + "Name";
-                if (value != null && GeneratorController.Current.CurrentUnit != null && string.IsNullOrEmpty(_sourcePropertyName))
+                if (value != null &&
+                    GeneratorController.Current.CurrentUnit != null &&
+                    string.IsNullOrEmpty(_sourcePropertyName))
                     _sourcePropertyName = CheckSourceProperty(_baseName + "ID");
-                if (value != null && GeneratorController.Current.CurrentUnit != null && string.IsNullOrEmpty(_nvlConverter))
+                if (value != null &&
+                    GeneratorController.Current.CurrentUnit != null &&
+                    string.IsNullOrEmpty(_sourcePropertyName))
+                    _sourcePropertyName = CheckSourceProperty(_baseName + "Id");
+                if (value != null &&
+                    GeneratorController.Current.CurrentUnit != null &&
+                    string.IsNullOrEmpty(_nvlConverter))
                     _nvlConverter = CheckNVLConverter(_baseName + "NVL.Get" + _baseName + "NVL");
             }
-
         }
 
         [Category("01. Definition")]
@@ -95,7 +105,7 @@ namespace CslaGenerator.Metadata
             {
                 value = PropertyHelper.Tidy(value);
                 if (value != base.Name)
-                    base.Name = value; 
+                    base.Name = value;
             }
         }
 
@@ -162,6 +172,31 @@ namespace CslaGenerator.Metadata
             get { return null; }
         }
 
+        // Hide Undoable
+        [Browsable(false)]
+        public override bool Undoable
+        {
+            get { return base.Undoable; }
+        }
+
+        [Category("05. Options")]
+        [Description("Accessibility for property setter.\r\n" +
+                     "If \"ReadOnly\" is true, this settings is ignored.\r\n" +
+                     "If \"ReadOnly\" is false, this setting applies. By default the setter has the same accessibility of the property.\r\n" +
+                     "Note -  \"NoSetter\" is deprecated and is converted to \"Default\".")]
+        [UserFriendlyName("Setter Accessibility")]
+        public override AccessorVisibility PropSetAccessibility
+        {
+            get
+            {
+                if (ReadOnly)
+                    return AccessorVisibility.Default;
+
+                return base.PropSetAccessibility;
+            }
+            set { base.PropSetAccessibility = value; }
+        }
+
         [Category("06. Conversion")]
         [Editor(typeof(SourcePropertyTypeEditor), typeof(UITypeEditor))]
         [Description("The property that feeds the conversion (convert from).\r\nAutomatic filling uses the Base Name.")]
@@ -169,10 +204,7 @@ namespace CslaGenerator.Metadata
         public string SourcePropertyName
         {
             get { return _sourcePropertyName; }
-            set
-            {
-                _sourcePropertyName = value;
-            }
+            set { _sourcePropertyName = value; }
         }
 
         [Category("06. Conversion")]
@@ -192,17 +224,21 @@ namespace CslaGenerator.Metadata
             if (selectedItem == null)
                 return empty;
 
-            var props = ((CslaObjectInfo)selectedItem).GetAllValueProperties();
+            var props = ((CslaObjectInfo) selectedItem).GetAllValueProperties();
             foreach (var prop in props)
             {
-                if (prop.PropertyType == TypeCodeEx.Int16 || prop.PropertyType == TypeCodeEx.Int32 || prop.PropertyType == TypeCodeEx.Int64 ||
-                    prop.PropertyType == TypeCodeEx.UInt16 || prop.PropertyType == TypeCodeEx.UInt32 || prop.PropertyType == TypeCodeEx.UInt64 ||
+                if (prop.PropertyType == TypeCodeEx.Int16 ||
+                    prop.PropertyType == TypeCodeEx.Int32 ||
+                    prop.PropertyType == TypeCodeEx.Int64 ||
+                    prop.PropertyType == TypeCodeEx.UInt16 ||
+                    prop.PropertyType == TypeCodeEx.UInt32 ||
+                    prop.PropertyType == TypeCodeEx.UInt64 ||
                     prop.PropertyType == TypeCodeEx.SByte)
                 {
                     if (prop.Name == candidate)
                     {
-                        base.PropertyType =TypeCodeEx.String;
-                        base.ReadOnly = prop.ReadOnly;
+                        PropertyType = TypeCodeEx.String;
+                        ReadOnly = prop.ReadOnly;
                         return candidate;
                     }
                 }
@@ -218,7 +254,8 @@ namespace CslaGenerator.Metadata
                 if (o.IsNameValueList())
                 {
                     var prefix = string.Empty;
-                    var objectNamespace = ((CslaObjectInfo)GeneratorController.Current.GetSelectedItem()).ObjectNamespace;
+                    var objectNamespace =
+                        ((CslaObjectInfo) GeneratorController.Current.GetSelectedItem()).ObjectNamespace;
                     if (objectNamespace != o.ObjectNamespace)
                     {
                         var idx = objectNamespace.IndexOf(o.ObjectNamespace);
@@ -254,6 +291,5 @@ namespace CslaGenerator.Metadata
                 return ser.Deserialize(buffer);
             }
         }
-
     }
 }
