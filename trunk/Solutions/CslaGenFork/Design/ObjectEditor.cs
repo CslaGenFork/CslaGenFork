@@ -25,7 +25,7 @@ namespace CslaGenerator.Design
     /// </remarks>
     public class ObjectEditor : UITypeEditor
     {
-        private IWindowsFormsEditorService _editorService = null;
+        private IWindowsFormsEditorService _editorService;
 
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
@@ -45,6 +45,8 @@ namespace CslaGenerator.Design
                             isInheritedType = true;
                         if (propertyDescriptor.Name == "Inherited Type for WinForms")
                             isInheritedTypeWinForms = true;
+                        if (propertyDescriptor.Name == "Criteria Objects" && value == null)
+                            value = new TypeInfo();
                     }
 
                     object temp;
