@@ -1664,8 +1664,8 @@ namespace CslaGenerator.Controls
             this.chkSeparateBaseClasses.Name = "chkSeparateBaseClasses";
             this.chkSeparateBaseClasses.Size = new System.Drawing.Size(216, 17);
             this.chkSeparateBaseClasses.TabIndex = 9;
-            this.chkSeparateBaseClasses.Text = "Separate base classes in a folder";
-            this.toolTip.SetToolTip(this.chkSeparateBaseClasses, "If checked, generated base classes go to \"<output path>\\Base\"");
+            this.chkSeparateBaseClasses.Text = "Separate base files in a folder";
+            this.toolTip.SetToolTip(this.chkSeparateBaseClasses, "If checked, generated base files go to \"<output path>\\Base\"");
             // 
             // chkSeparateNamespaces
             // 
