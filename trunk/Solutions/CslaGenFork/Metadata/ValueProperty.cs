@@ -78,7 +78,7 @@ namespace CslaGenerator.Metadata
         #region Private Fields
 
         private DbBindColumn _dbBindColumn = new DbBindColumn();
-        private string _fkConstraint = String.Empty;
+        private string _fkConstraint = string.Empty;
         private bool _undoable = true;
         private string _defaultValue = string.Empty;
         private string _friendlyName = string.Empty;
@@ -457,7 +457,7 @@ namespace CslaGenerator.Metadata
                      "If \"ReadOnly\" is false, this setting applies. By default the setter has the same accessibility of the property.\r\n" +
                      "Note -  \"NoSetter\" is deprecated and is converted to \"Default\".")]
         [UserFriendlyName("Setter Accessibility")]
-        public AccessorVisibility PropSetAccessibility
+        public virtual AccessorVisibility PropSetAccessibility
         {
             get { return _propSetAccessibility; }
             set
@@ -470,7 +470,7 @@ namespace CslaGenerator.Metadata
 
         [Category("05. Options")]
         [Description("Setting to false will cause the n-level undo process to ignore that property's value.")]
-        public bool Undoable
+        public virtual bool Undoable
         {
             get { return _undoable; }
             set { _undoable = value; }
