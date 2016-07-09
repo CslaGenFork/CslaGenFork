@@ -66,7 +66,7 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("00. Auto Fill Helper")]
-        [Description("The property Base Name used by automatic filling.")]
+        [Description("The property Base Name used by automatic filling for Name, Source Property Type and NVL Converter Class")]
         [UserFriendlyName("Base Name")]
         public string BaseName
         {
@@ -75,37 +75,20 @@ namespace CslaGenerator.Metadata
             {
                 value = PropertyHelper.Tidy(value);
                 _baseName = value;
-
-                if (value != null &&
-                    (base.Name.Equals(_baseName + "Name") ||
-                     string.IsNullOrEmpty(base.Name) ||
-                     base.Name == "Unnamed Property"))
-                    base.Name = value + "Name";
-                if (value != null &&
-                    GeneratorController.Current.CurrentUnit != null &&
-                    string.IsNullOrEmpty(_sourcePropertyName))
-                    _sourcePropertyName = CheckSourceProperty(_baseName + "ID");
-                if (value != null &&
-                    GeneratorController.Current.CurrentUnit != null &&
-                    string.IsNullOrEmpty(_sourcePropertyName))
-                    _sourcePropertyName = CheckSourceProperty(_baseName + "Id");
-                if (value != null &&
-                    GeneratorController.Current.CurrentUnit != null &&
-                    string.IsNullOrEmpty(_nvlConverter))
-                    _nvlConverter = CheckNVLConverter(_baseName + "NVL.Get" + _baseName + "NVL");
+                AutomaticFill(_baseName);
             }
         }
 
         [Category("01. Definition")]
-        [Description("The property that results from a conversion.\r\nAutomatic property filling uses the Base Name.")]
+        [Description("The property that results from a conversion.\r\n" +
+                     "Automatic filling uses the Base Name and a Name suffix.")]
         public override string Name
         {
             get { return base.Name; }
             set
             {
                 value = PropertyHelper.Tidy(value);
-                if (value != base.Name)
-                    base.Name = value;
+                base.Name = value;
             }
         }
 
@@ -199,7 +182,8 @@ namespace CslaGenerator.Metadata
 
         [Category("06. Conversion")]
         [Editor(typeof(SourcePropertyTypeEditor), typeof(UITypeEditor))]
-        [Description("The property that feeds the conversion (convert from).\r\nAutomatic filling uses the Base Name.")]
+        [Description("The property that feeds the conversion (convert from).\r\n" +
+                     "Automatic match is case insensitive and uses the Base Name with ID suffix.")]
         [UserFriendlyName("Source Property Type")]
         public string SourcePropertyName
         {
@@ -209,7 +193,9 @@ namespace CslaGenerator.Metadata
 
         [Category("06. Conversion")]
         [Editor(typeof(NVLTypeEditor), typeof(UITypeEditor))]
-        [Description("The NVL class that takes care of the conversion.\r\nAutomatic filling uses the Base Name.")]
+        [Description(
+            "The NVL class that takes care of the conversion.\r\n" +
+            "Automatic match is case insensitive and uses the Base Name and one of {List, NameValueListNVL, NVL} as suffix.")]
         [UserFriendlyName("NVL Converter Class")]
         public string NVLConverter
         {
@@ -217,29 +203,55 @@ namespace CslaGenerator.Metadata
             set { _nvlConverter = value; }
         }
 
+        private void AutomaticFill(string value)
+        {
+            if (value == null)
+                return;
+
+            // Name
+            if ((base.Name.Equals(_baseName + "Name") ||
+                 string.IsNullOrEmpty(base.Name) ||
+                 base.Name == "Unnamed Property"))
+                base.Name = value + "Name";
+
+            if (GeneratorController.Current.CurrentCslaObject == null)
+                return;
+
+            // SourcePropertyName
+            if (string.IsNullOrEmpty(_sourcePropertyName))
+                _sourcePropertyName = CheckSourceProperty(_baseName + "ID");
+
+            // NVLConverter
+            if (string.IsNullOrEmpty(_nvlConverter))
+                _nvlConverter = CheckNVLConverter(_baseName + "List.Get" + _baseName + "List");
+
+            if (string.IsNullOrEmpty(_nvlConverter))
+                _nvlConverter = CheckNVLConverter(_baseName + "NameValueList.Get" + _baseName + "NameValueList");
+
+            if (string.IsNullOrEmpty(_nvlConverter))
+                _nvlConverter = CheckNVLConverter(_baseName + "NVL.Get" + _baseName + "NVL");
+        }
+
         private string CheckSourceProperty(string candidate)
         {
             var empty = string.Empty;
-            var selectedItem = GeneratorController.Current.GetSelectedItem();
-            if (selectedItem == null)
-                return empty;
 
-            var props = ((CslaObjectInfo) selectedItem).GetAllValueProperties();
-            foreach (var prop in props)
+            var propertyCollection = GeneratorController.Current.CurrentCslaObject.GetAllValueProperties();
+            foreach (var property in propertyCollection)
             {
-                if (prop.PropertyType == TypeCodeEx.Int16 ||
-                    prop.PropertyType == TypeCodeEx.Int32 ||
-                    prop.PropertyType == TypeCodeEx.Int64 ||
-                    prop.PropertyType == TypeCodeEx.UInt16 ||
-                    prop.PropertyType == TypeCodeEx.UInt32 ||
-                    prop.PropertyType == TypeCodeEx.UInt64 ||
-                    prop.PropertyType == TypeCodeEx.SByte)
+                if (property.PropertyType == TypeCodeEx.Int16 ||
+                    property.PropertyType == TypeCodeEx.Int32 ||
+                    property.PropertyType == TypeCodeEx.Int64 ||
+                    property.PropertyType == TypeCodeEx.UInt16 ||
+                    property.PropertyType == TypeCodeEx.UInt32 ||
+                    property.PropertyType == TypeCodeEx.UInt64 ||
+                    property.PropertyType == TypeCodeEx.SByte)
                 {
-                    if (prop.Name == candidate)
+                    if (property.Name.ToUpper() == candidate.ToUpper())
                     {
                         PropertyType = TypeCodeEx.String;
-                        ReadOnly = prop.ReadOnly;
-                        return candidate;
+                        ReadOnly = property.ReadOnly;
+                        return property.Name;
                     }
                 }
             }
@@ -249,33 +261,36 @@ namespace CslaGenerator.Metadata
         private string CheckNVLConverter(string candidate)
         {
             var empty = string.Empty;
-            foreach (var o in GeneratorController.Current.CurrentUnit.CslaObjects)
+            foreach (var cslaObjectInfo in GeneratorController.Current.CurrentUnit.CslaObjects)
             {
-                if (o.IsNameValueList())
+                if (cslaObjectInfo.IsNameValueList())
                 {
                     var prefix = string.Empty;
                     var objectNamespace =
                         ((CslaObjectInfo) GeneratorController.Current.GetSelectedItem()).ObjectNamespace;
-                    if (objectNamespace != o.ObjectNamespace)
+                    if (objectNamespace != cslaObjectInfo.ObjectNamespace)
                     {
-                        var idx = objectNamespace.IndexOf(o.ObjectNamespace);
+                        var idx = objectNamespace.IndexOf(cslaObjectInfo.ObjectNamespace,
+                            StringComparison.InvariantCulture);
                         if (idx == 0)
                         {
-                            prefix = objectNamespace.Substring(o.ObjectNamespace.Length + 1) + ".";
+                            prefix = objectNamespace.Substring(cslaObjectInfo.ObjectNamespace.Length + 1) + ".";
                         }
                         else if (idx == -1)
                         {
-                            idx = o.ObjectNamespace.IndexOf(objectNamespace);
+                            idx = cslaObjectInfo.ObjectNamespace.IndexOf(objectNamespace,
+                                StringComparison.InvariantCulture);
                             if (idx == 0)
-                                prefix = o.ObjectNamespace.Substring(objectNamespace.Length + 1) + ".";
+                                prefix = cslaObjectInfo.ObjectNamespace.Substring(objectNamespace.Length + 1) + ".";
                         }
                         else
                         {
-                            prefix = o.ObjectNamespace + ".";
+                            prefix = cslaObjectInfo.ObjectNamespace + ".";
                         }
                     }
-                    if (prefix + o.ObjectName + ".Get" + o.ObjectName == candidate)
-                        return candidate;
+                    var composedName = prefix + cslaObjectInfo.ObjectName + ".Get" + cslaObjectInfo.ObjectName;
+                    if (composedName.ToUpper() == candidate.ToUpper())
+                        return composedName;
                 }
             }
             return empty;
