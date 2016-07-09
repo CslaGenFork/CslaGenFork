@@ -82,6 +82,7 @@ namespace CslaGenerator.Metadata
         private bool _undoable = true;
         private string _defaultValue = string.Empty;
         private string _friendlyName = string.Empty;
+        private string _customPropertyType = string.Empty;
         private PropertyDeclaration _declarationMode;
         private BusinessRuleCollection _businessRules;
         private string _interfaces = string.Empty;
@@ -248,14 +249,14 @@ namespace CslaGenerator.Metadata
             set { base.PropertyType = value; }
         }
 
-        /*[Category("01. Definition")]
+        [Category("01. Definition")]
         [Description("Use a standard Type or a Type that is neither native nor defined on CSLA.NET.")]
         [UserFriendlyName("Custom Property Type")]
-        public override string CustomPropertyType
+        public virtual string CustomPropertyType
         {
-            get { return base.CustomPropertyType; }
-            set { base.CustomPropertyType = value; }
-        }*/
+            get { return _customPropertyType; }
+            set { _customPropertyType = value; }
+        }
 
         [Category("01. Definition")]
         [Description("Property Declaration Mode.")]

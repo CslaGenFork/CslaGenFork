@@ -62,9 +62,7 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Definition")]
-        [Description(
-            "Whether this type can can create objects. The value isfalse for ReadOnly and NameValueList types; otherwise is true."
-            )]
+        [Description("Whether this type can can create objects. The value isfalse for ReadOnly and NameValueList types; otherwise is true.")]
         [UserFriendlyName("Creates Objects")]
         [ReadOnly(true)]
         public bool CreatesObject

@@ -10,9 +10,10 @@ namespace CslaGenerator.Metadata
     {
         private DbBindColumn _dbBindColumn = new DbBindColumn();
         private string _parameterValue = string.Empty;
+        private string _customPropertyType = string.Empty;
         private InlineQueryParameterType _inlineQueryParameter = InlineQueryParameterType.Plain;
         private string _unitOfWorkFactoryParameter = string.Empty;
-        
+
         public CriteriaProperty()
         {
             base.ReadOnly = true;
@@ -65,14 +66,14 @@ namespace CslaGenerator.Metadata
             set { base.PropertyType = value; }
         }
 
-        /*[Category("01. Definition")]
+        [Category("01. Definition")]
         [Description("Use a standard Type or a Type that is neither native nor defined on CSLA.NET.")]
         [UserFriendlyName("Custom Property Type")]
-        public override string CustomPropertyType
+        public virtual string CustomPropertyType
         {
-            get { return base.CustomPropertyType; }
-            set { base.CustomPropertyType = value; }
-        }*/
+            get { return _customPropertyType; }
+            set { _customPropertyType = value; }
+        }
 
         [Category("01. Definition")]
         [Description("Whether this property can be changed by other classes.")]
@@ -83,7 +84,9 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Definition")]
-        [Description("Whether this property can have a null value. The following types can't be null: \"ByteArray \", \"DBNull \", \"Object\" and \"Empty\".")]
+        [Description(
+            "Whether this property can have a null value. The following types can't be null: \"ByteArray \", \"DBNull \", \"Object\" and \"Empty\"."
+            )]
         public override bool Nullable
         {
             get { return base.Nullable; }
@@ -119,9 +122,12 @@ namespace CslaGenerator.Metadata
         internal static CriteriaProperty Clone(CriteriaProperty masterCritProp)
         {
             var newCritProp = new CriteriaProperty();
-            newCritProp.DbBindColumn = (DbBindColumn)masterCritProp.DbBindColumn.Clone();
-            ((Property)newCritProp).Clone(masterCritProp);
+            newCritProp.DbBindColumn = (DbBindColumn) masterCritProp.DbBindColumn.Clone();
+            ((Property) newCritProp).Clone(masterCritProp);
+            newCritProp.DbBindColumn = masterCritProp.DbBindColumn;
+            newCritProp.CustomPropertyType = masterCritProp.CustomPropertyType;
             newCritProp.ParameterValue = masterCritProp.ParameterValue;
+            newCritProp.InlineQueryParameter = masterCritProp.InlineQueryParameter;
             return newCritProp;
         }
     }
