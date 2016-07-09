@@ -17,13 +17,12 @@ namespace CslaGenerator.Metadata
     [DefaultProperty("Name")]
     public class Property : ICloneable
     {
-        private string _name = String.Empty;
+        private string _name = string.Empty;
         private TypeCodeEx _propertyType = TypeCodeEx.Empty;
-        //private string _customPropertyType = string.Empty;
         private bool _readOnly;
-        private string _summary = String.Empty;
-        private string _remarks = String.Empty;
-        protected string _parameterName = String.Empty;
+        private string _summary = string.Empty;
+        private string _remarks = string.Empty;
+        protected string _parameterName = string.Empty;
         private bool _nullable;
 
         #region Constructors
@@ -91,18 +90,8 @@ namespace CslaGenerator.Metadata
             set { _propertyType = value; }
         }
 
-        /*[XmlIgnore]
         [Category("01. Definition")]
-        [Description("Use a standard Type or a Type that is neither native nor defined on CSLA.NET.")]
-        [UserFriendlyName("Custom Property Type")]
-        public virtual string CustomPropertyType
-        {
-            get { return _customPropertyType; }
-            set { _customPropertyType = value; }
-        }*/
-
-        [Category("01. Definition")]
-        [Description("Whether this property is read only.")]
+        [Description("Whether this property can be changed by other classes.")]
         public virtual bool ReadOnly
         {
             get { return _readOnly; }
@@ -191,7 +180,6 @@ namespace CslaGenerator.Metadata
             ParameterName = prop.ParameterName;
             Name = prop.Name;
             PropertyType = prop.PropertyType;
-            //CustomPropertyType = prop.CustomPropertyType;
             ReadOnly = prop.ReadOnly;
             Nullable = prop.Nullable;
             Summary = prop.Summary;
