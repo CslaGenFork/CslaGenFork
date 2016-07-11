@@ -57,10 +57,6 @@ namespace CslaGenerator.Controls
             this.groupBoxReadOnlyObjects = new System.Windows.Forms.GroupBox();
             this.chkReadOnlyObjectsCopyAuditing = new System.Windows.Forms.CheckBox();
             this.chkReadOnlyObjectsCopyTimestamp = new System.Windows.Forms.CheckBox();
-            this.lblCreateReadOnlyObjectsPropertyMode = new System.Windows.Forms.Label();
-            this.cboCreateReadOnlyObjectsPropertyMode = new System.Windows.Forms.ComboBox();
-            this.lblCreateTimestampPropertyMode = new System.Windows.Forms.Label();
-            this.cboCreateTimestampPropertyMode = new System.Windows.Forms.ComboBox();
             this.DefaultsDatabaseTab = new System.Windows.Forms.TabPage();
             this.lblAlertNewDefaultsDatabase = new System.Windows.Forms.Label();
             this.lblDatabase = new System.Windows.Forms.Label();
@@ -364,8 +360,6 @@ namespace CslaGenerator.Controls
             this.DefaultsGeneralTab.Controls.Add(this.txtNamespace);
             this.DefaultsGeneralTab.Controls.Add(this.lblFolder);
             this.DefaultsGeneralTab.Controls.Add(this.txtFolder);
-            this.DefaultsGeneralTab.Controls.Add(this.lblCreateTimestampPropertyMode);
-            this.DefaultsGeneralTab.Controls.Add(this.cboCreateTimestampPropertyMode);
             this.DefaultsGeneralTab.Controls.Add(this.chkSmartDateDefault);
             this.DefaultsGeneralTab.Controls.Add(this.chkDatesDefaultStringWithTypeConversion);
             this.DefaultsGeneralTab.Controls.Add(this.chkAutoCriteria);
@@ -422,28 +416,11 @@ namespace CslaGenerator.Controls
             this.toolTip.SetToolTip(this.txtFolder, "Specify the default folder to be set on created objects." +
                 "\r\nThis is relative to the project\'s output folder and is used only when namespaces aren't separated in folders.");
             // 
-            // lblCreateTimestampPropertyMode
-            // 
-            this.lblCreateTimestampPropertyMode.Location = new System.Drawing.Point(15, 128);
-            this.lblCreateTimestampPropertyMode.Name = "lblCreateTimestampPropertyMode";
-            this.lblCreateTimestampPropertyMode.Size = new System.Drawing.Size(200, 16);
-            this.lblCreateTimestampPropertyMode.TabIndex = 32;
-            this.lblCreateTimestampPropertyMode.Text = "Property Mode for timestamp column:";
-            // 
-            // cboCreateTimestampPropertyMode
-            // 
-            this.cboCreateTimestampPropertyMode.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "CreateTimestampPropertyMode", true, DataSourceUpdateMode.OnPropertyChanged));
-            this.cboCreateTimestampPropertyMode.Location = new System.Drawing.Point(15, 144);
-            this.cboCreateTimestampPropertyMode.Name = "cboCreateTimestampPropertyMode";
-            this.cboCreateTimestampPropertyMode.Size = new System.Drawing.Size(177, 21);
-            this.cboCreateTimestampPropertyMode.TabIndex = 7;
-            this.toolTip.SetToolTip(this.cboCreateTimestampPropertyMode, "Select the PropertyMode for timestamp Value Property creation.");
-            // 
             // chkSmartDateDefault
             // 
             this.chkSmartDateDefault.AutoSize = true;
             this.chkSmartDateDefault.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.projectParametersBindingSource, "SmartDateDefault", true, DataSourceUpdateMode.OnPropertyChanged));
-            this.chkSmartDateDefault.Location = new System.Drawing.Point(15, 176);
+            this.chkSmartDateDefault.Location = new System.Drawing.Point(15, 128);
             this.chkSmartDateDefault.Name = "chkSmartDateDefault";
             this.chkSmartDateDefault.Size = new System.Drawing.Size(336, 17);
             this.chkSmartDateDefault.TabIndex = 8;
@@ -456,7 +433,7 @@ namespace CslaGenerator.Controls
             // 
             this.chkDatesDefaultStringWithTypeConversion.AutoSize = true;
             this.chkDatesDefaultStringWithTypeConversion.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.projectParametersBindingSource, "DatesDefaultStringWithTypeConversion", true, DataSourceUpdateMode.OnPropertyChanged));
-            this.chkDatesDefaultStringWithTypeConversion.Location = new System.Drawing.Point(15, 200);
+            this.chkDatesDefaultStringWithTypeConversion.Location = new System.Drawing.Point(15, 152);
             this.chkDatesDefaultStringWithTypeConversion.Name = "chkDatesDefaultStringWithTypeConversion";
             this.chkDatesDefaultStringWithTypeConversion.Size = new System.Drawing.Size(450, 17);
             this.chkDatesDefaultStringWithTypeConversion.TabIndex = 9;
@@ -469,7 +446,7 @@ namespace CslaGenerator.Controls
             // 
             this.chkAutoCriteria.AutoSize = true;
             this.chkAutoCriteria.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.projectParametersBindingSource, "AutoCriteria", true, DataSourceUpdateMode.OnPropertyChanged));
-            this.chkAutoCriteria.Location = new System.Drawing.Point(15, 224);
+            this.chkAutoCriteria.Location = new System.Drawing.Point(15, 176);
             this.chkAutoCriteria.Name = "chkAutoCriteria";
             this.chkAutoCriteria.Size = new System.Drawing.Size(450, 17);
             this.chkAutoCriteria.TabIndex = 10;
@@ -482,7 +459,7 @@ namespace CslaGenerator.Controls
             // 
             this.chkAutoTimestampCriteria.AutoSize = true;
             this.chkAutoTimestampCriteria.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.projectParametersBindingSource, "AutoTimestampCriteria", true, DataSourceUpdateMode.OnPropertyChanged));
-            this.chkAutoTimestampCriteria.Location = new System.Drawing.Point(15, 248);
+            this.chkAutoTimestampCriteria.Location = new System.Drawing.Point(15, 200);
             this.chkAutoTimestampCriteria.Name = "chkAutoTimestampCriteria";
             this.chkAutoTimestampCriteria.Size = new System.Drawing.Size(450, 17);
             this.chkAutoTimestampCriteria.TabIndex = 11;
@@ -494,11 +471,9 @@ namespace CslaGenerator.Controls
             // 
             this.groupBoxReadOnlyObjects.Controls.Add(this.chkReadOnlyObjectsCopyAuditing);
             this.groupBoxReadOnlyObjects.Controls.Add(this.chkReadOnlyObjectsCopyTimestamp);
-            this.groupBoxReadOnlyObjects.Controls.Add(this.lblCreateReadOnlyObjectsPropertyMode);
-            this.groupBoxReadOnlyObjects.Controls.Add(this.cboCreateReadOnlyObjectsPropertyMode);
             this.groupBoxReadOnlyObjects.Location = new System.Drawing.Point(220, 46);
             this.groupBoxReadOnlyObjects.Name = "groupBoxReadOnlyObjects";
-            this.groupBoxReadOnlyObjects.Size = new System.Drawing.Size(220, 125);
+            this.groupBoxReadOnlyObjects.Size = new System.Drawing.Size(220, 77);
             this.groupBoxReadOnlyObjects.TabIndex = 12;
             this.groupBoxReadOnlyObjects.TabStop = false;
             this.groupBoxReadOnlyObjects.Text = "ReadOnly Objects";
@@ -526,25 +501,6 @@ namespace CslaGenerator.Controls
             this.chkReadOnlyObjectsCopyTimestamp.Text = "Copy timestamp column.";
             this.chkReadOnlyObjectsCopyTimestamp.UseVisualStyleBackColor = true;
             this.toolTip.SetToolTip(this.chkReadOnlyObjectsCopyTimestamp, "If checked, creates ReadOnly Objects with timestamp column.");
-            // 
-            // lblCreateReadOnlyObjectsPropertyMode
-            // 
-            this.lblCreateReadOnlyObjectsPropertyMode.Location = new System.Drawing.Point(12, 78);
-            this.lblCreateReadOnlyObjectsPropertyMode.Name = "lblCreateReadOnlyObjectsPropertyMode";
-            this.lblCreateReadOnlyObjectsPropertyMode.Size = new System.Drawing.Size(170, 16);
-            this.lblCreateReadOnlyObjectsPropertyMode.TabIndex = 32;
-            this.lblCreateReadOnlyObjectsPropertyMode.Text = "Property Mode for columns:";
-            // 
-            // cboCreateReadOnlyObjectsPropertyMode
-            // 
-            this.cboCreateReadOnlyObjectsPropertyMode.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.projectParametersBindingSource, "CreateReadOnlyObjectsPropertyMode", true, DataSourceUpdateMode.OnPropertyChanged));
-            this.cboCreateReadOnlyObjectsPropertyMode.Location = new System.Drawing.Point(12, 94);
-            this.cboCreateReadOnlyObjectsPropertyMode.Name = "cboCreateReadOnlyObjectsPropertyMode";
-            this.cboCreateReadOnlyObjectsPropertyMode.Size = new System.Drawing.Size(177, 21);
-            this.cboCreateReadOnlyObjectsPropertyMode.TabIndex = 15;
-            this.toolTip.SetToolTip(this.cboCreateReadOnlyObjectsPropertyMode,
-                                     "Select the Value Property's PropertyMode for creation  of ReadOnly Objects." +
-                                     "\r\nNote - PropertyMode for \"timestamp\" DbType columns is specified below.");
             // 
             // DefaultsDatabaseTab
             // 
@@ -2061,7 +2017,7 @@ namespace CslaGenerator.Controls
             this.chkForceReadOnlyProperties.TabIndex = 13;
             this.chkForceReadOnlyProperties.Text = "Force ReadOnly Properties";
             this.toolTip.SetToolTip(this.chkForceReadOnlyProperties,
-                                     "If checked, all ReadOnlyObject's properties are ReadOnly.\r\n" +
+                                     "If checked, all ReadOnlyObject's properties are generated as ReadOnly, regardless of each property setting.\r\n" +
                                      "Otherwise allows all kinds of accessibility for ReadOnlyObject's properties.\r\n\r\n" +
                                      "Note - ReadOnlyObject's managed and unmanaged properties are always ReadOnly properties.");
             // 
@@ -2230,10 +2186,6 @@ namespace CslaGenerator.Controls
         private System.Windows.Forms.GroupBox groupBoxReadOnlyObjects;
         private System.Windows.Forms.CheckBox chkReadOnlyObjectsCopyAuditing;
         private System.Windows.Forms.CheckBox chkReadOnlyObjectsCopyTimestamp;
-        private System.Windows.Forms.Label lblCreateReadOnlyObjectsPropertyMode;
-        private System.Windows.Forms.ComboBox cboCreateReadOnlyObjectsPropertyMode;
-        private System.Windows.Forms.Label lblCreateTimestampPropertyMode;
-        private System.Windows.Forms.ComboBox cboCreateTimestampPropertyMode;
         private System.Windows.Forms.TabPage DefaultsDatabaseTab;
         private System.Windows.Forms.Label lblAlertNewDefaultsDatabase;
         private System.Windows.Forms.Label lblDatabase;

@@ -295,12 +295,12 @@ namespace CslaGenerator.Metadata
             {
                 destination.ReadOnly = true;
                 destination.Undoable = false;
-                destination.DeclarationMode = _currentUnit.Params.CreateTimestampPropertyMode;
+                destination.DeclarationMode = PropertyDeclaration.Managed;
             }
 
             if (_currentCslaObject.IsReadOnlyObject())
             {
-                destination.DeclarationMode = _currentUnit.Params.CreateReadOnlyObjectsPropertyMode;
+                destination.DeclarationMode = PropertyDeclaration.Managed;
                 destination.ReadOnly = true;
             }
 

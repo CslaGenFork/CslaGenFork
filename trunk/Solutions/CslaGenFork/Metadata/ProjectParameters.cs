@@ -32,20 +32,18 @@ namespace CslaGenerator.Metadata
 
         #region State Fields New Object Defaults
 
-        private string _defaultNamespace = String.Empty;
-        private string _defaultFolder = String.Empty;
+        private string _defaultNamespace = string.Empty;
+        private string _defaultFolder = string.Empty;
         bool _smartDateDefault = true;
         private bool _autoCriteria = true;
         private bool _autoTimestampCriteria = true;
         private bool _datesDefaultStringWithTypeConversion = true;
-        private PropertyDeclaration _createTimestampPropertyMode = PropertyDeclaration.NoProperty;
         private bool _readOnlyObjectsCopyAuditing;
         private bool _readOnlyObjectsCopyTimestamp;
-        private PropertyDeclaration _createReadOnlyObjectsPropertyMode = PropertyDeclaration.AutoProperty;
         TransactionType _defaultTransactionType = TransactionType.None;
         PersistenceType _defaultPersistenceType = PersistenceType.SqlConnectionManager;
         private string _defaultDatabaseContextObject = string.Empty;
-        private string _defaultDataBase = String.Empty;
+        private string _defaultDataBase = string.Empty;
 
         #endregion
 
@@ -150,24 +148,6 @@ namespace CslaGenerator.Metadata
             }
         }
 
-        /// <summary>
-        /// Gets or sets the PropertyMode for timestamp Value Property creation.
-        /// </summary>
-        /// <value>
-        /// The create timestamp property mode.
-        /// </value>
-        public PropertyDeclaration CreateTimestampPropertyMode
-        {
-            get { return _createTimestampPropertyMode; }
-            set
-            {
-                if (_createTimestampPropertyMode == value)
-                    return;
-                _createTimestampPropertyMode = value;
-                OnPropertyChanged("");
-            }
-        }
-
         public bool ReadOnlyObjectsCopyAuditing
         {
             get { return _readOnlyObjectsCopyAuditing; }
@@ -188,18 +168,6 @@ namespace CslaGenerator.Metadata
                 if (_readOnlyObjectsCopyTimestamp == value)
                     return;
                 _readOnlyObjectsCopyTimestamp = value;
-                OnPropertyChanged("");
-            }
-        }
-
-        public PropertyDeclaration CreateReadOnlyObjectsPropertyMode
-        {
-            get { return _createReadOnlyObjectsPropertyMode; }
-            set
-            {
-                if (_createReadOnlyObjectsPropertyMode == value)
-                    return;
-                _createReadOnlyObjectsPropertyMode = value;
                 OnPropertyChanged("");
             }
         }
