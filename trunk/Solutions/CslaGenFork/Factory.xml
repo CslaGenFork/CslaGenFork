@@ -7,10 +7,8 @@
     <AutoCriteria>true</AutoCriteria>
     <AutoTimestampCriteria>false</AutoTimestampCriteria>
     <DatesDefaultStringWithTypeConversion>true</DatesDefaultStringWithTypeConversion>
-    <CreateTimestampPropertyMode>Managed</CreateTimestampPropertyMode>
     <ReadOnlyObjectsCopyAuditing>false</ReadOnlyObjectsCopyAuditing>
     <ReadOnlyObjectsCopyTimestamp>false</ReadOnlyObjectsCopyTimestamp>
-    <CreateReadOnlyObjectsPropertyMode>Managed</CreateReadOnlyObjectsPropertyMode>
     <DefaultDataBase>MyDatabase</DefaultDataBase>
     <DefaultTransactionType>ADO</DefaultTransactionType>
     <DefaultPersistenceType>SqlConnectionManager</DefaultPersistenceType>

@@ -76,8 +76,6 @@ namespace CslaGenerator.Controls
             FillComboBox(cboHeaderVerbosity, typeof(HeaderVerbosity));
             FillComboBox(cboTransactionType, typeof(TransactionType));
             FillComboBox(cboPersistenceType, typeof(PersistenceType));
-            FillComboBox(cboCreateTimestampPropertyMode, typeof(PropertyDeclaration));
-            FillComboBox(cboCreateReadOnlyObjectsPropertyMode, typeof(PropertyDeclaration));
             FillComboBox(cboInlineQueries, typeof(UseInlineQueries));
             FillComboBox(cboObjectNotFound, typeof(ReportObjectNotFound));
         }
