@@ -2558,7 +2558,12 @@ namespace CslaGenerator.CodeGen
                 return string.Empty;
 
             if (prop.DefaultValue != string.Empty)
+            {
+                if (prop.DefaultValue.IndexOf("$", StringComparison.InvariantCulture) == 0)
+                    return string.Empty;
+
                 return ", " + prop.DefaultValue;
+            }
 
             if (!prop.Nullable)
                 return string.Empty;
