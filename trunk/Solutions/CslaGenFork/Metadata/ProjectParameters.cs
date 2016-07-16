@@ -7,21 +7,21 @@ namespace CslaGenerator.Metadata
     {
         #region State Fields Stored Procedures
 
-        string _spGeneralPrefix = string.Empty;
-        string _spGetPrefix = "Get";
-        string _spDeletePrefix = "Delete";
-        string _spUpdatePrefix = "Update";
-        string _spAddPrefix = "Add";
-        string _spGeneralSuffix = string.Empty;
-        string _spGetSuffix = string.Empty;
-        string _spDeleteSuffix = string.Empty;
-        string _spUpdateSuffix = string.Empty;
-        string _spAddSuffix = string.Empty;
-        bool _regenSpNameOnObjectRename = true;
-        string _spBoolSoftDeleteColumn = string.Empty;
-        string _spIntSoftDeleteColumn = string.Empty;
-        bool _spIgnoreFilterWhenSoftDeleteIsParam = true;
-        bool _spRemoveChildBeforeParent = true;
+        private string _spGeneralPrefix = string.Empty;
+        private string _spGetPrefix = "Get";
+        private string _spDeletePrefix = "Delete";
+        private string _spUpdatePrefix = "Update";
+        private string _spAddPrefix = "Add";
+        private string _spGeneralSuffix = string.Empty;
+        private string _spGetSuffix = string.Empty;
+        private string _spDeleteSuffix = string.Empty;
+        private string _spUpdateSuffix = string.Empty;
+        private string _spAddSuffix = string.Empty;
+        private bool _regenSpNameOnObjectRename = true;
+        private string _spBoolSoftDeleteColumn = string.Empty;
+        private string _spIntSoftDeleteColumn = string.Empty;
+        private bool _spIgnoreFilterWhenSoftDeleteIsParam = true;
+        private bool _spRemoveChildBeforeParent = true;
 
         private string _orbChildPropertySuffix = string.Empty;
         private string _orbCollectionSuffix = string.Empty;
@@ -743,12 +743,14 @@ namespace CslaGenerator.Metadata
         #region INotifyPropertyChanged Members
 
         public event PropertyChangedEventHandler PropertyChanged;
-        void OnPropertyChanged(string propertyName)
+
+        private void OnPropertyChanged(string propertyName)
         {
             Dirty = true;
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
+
         #endregion
     }
 }

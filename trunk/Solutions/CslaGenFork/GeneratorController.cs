@@ -58,8 +58,8 @@ namespace CslaGenerator
         private bool _confirmReplacementDialogResult;
         private bool _reportReplacementCounterRememberAnswer;
 
-        internal bool IsDBConnected = false;
-        internal bool IsLoading = false;
+        internal bool IsDBConnected;
+        internal bool IsLoading;
         internal bool HasErrors = false;
         internal bool HasWarnings = false;
         internal Stopwatch LoadingTimer = new Stopwatch();
@@ -440,14 +440,16 @@ namespace CslaGenerator
         {
             if (!_reportReplacementCounterRememberAnswer)
             {
-                var msg = string.Format(@"Replaced {0} occurences of '{1}' by '{2}' of '{3}' type.",
-                    counter, originalItem, replacementItem, ofendedType);
-                var messageBox = new MessageBoxEx(msg, @"Fixing project file", MessageBoxIcon.Information);
-                messageBox.SetButtons(new[] {DialogResult.OK});
-                messageBox.SetCheckbox("Do not show again.");
-                messageBox.ShowDialog();
+                var msg = string.Format(@"Replaced {0} occurences of '{1}' by '{2}' of '{3}' type.", counter,
+                    originalItem, replacementItem, ofendedType);
+                using (var messageBox = new MessageBoxEx(msg, @"Fixing project file", MessageBoxIcon.Information))
+                {
+                    messageBox.SetButtons(new[] {DialogResult.OK});
+                    messageBox.SetCheckbox("Do not show again.");
+                    messageBox.ShowDialog();
 
-                _reportReplacementCounterRememberAnswer = messageBox.CheckboxChecked;
+                    _reportReplacementCounterRememberAnswer = messageBox.CheckboxChecked;
+                }
             }
         }
 
@@ -486,6 +488,7 @@ namespace CslaGenerator
 
         internal void NewCslaUnit()
         {
+            IsLoading = true;
             CurrentUnit = new CslaGeneratorUnit();
             CurrentUnitLayout = new CslaGeneratorUnitLayout();
             _currentFilePath = Path.GetTempPath() + @"\" + Guid.NewGuid();
@@ -493,6 +496,7 @@ namespace CslaGenerator
             _currentUnit.ConnectionString = ConnectionFactory.ConnectionString;
             BindControls();
             _mainForm.ObjectInfoGrid.SelectedObject = null;
+            IsLoading = false;
         }
 
         internal void Save(string filePath)

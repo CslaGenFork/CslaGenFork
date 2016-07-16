@@ -1236,14 +1236,16 @@ namespace CslaGenerator
             {
                 string msg = @"Do you want to retrieve summaries" + Environment.NewLine +
                              "just for the current object or for all objects?";
-                var messageBox = new MessageBoxEx(msg, @"Csla Generator", MessageBoxIcon.Question);
-                messageBox.SetButtons(new[] {"Current", "All", "Cancel"},
-                    new[] {DialogResult.No, DialogResult.Yes, DialogResult.Cancel}, 2);
-                messageBox.SetCheckbox("Do not ask again.");
-                messageBox.ShowDialog();
+                using (var messageBox = new MessageBoxEx(msg, @"Csla Generator", MessageBoxIcon.Question))
+                {
+                    messageBox.SetButtons(new[] {"Current", "All", "Cancel"},
+                        new[] {DialogResult.No, DialogResult.Yes, DialogResult.Cancel}, 2);
+                    messageBox.SetCheckbox("Do not ask again.");
+                    messageBox.ShowDialog();
 
-                _retrieveSummariesRememberAnswer = messageBox.CheckboxChecked;
-                _retrieveSummariesDialogResult = messageBox.DialogResult;
+                    _retrieveSummariesRememberAnswer = messageBox.CheckboxChecked;
+                    _retrieveSummariesDialogResult = messageBox.DialogResult;
+                }
             }
 
             if (_retrieveSummariesDialogResult == DialogResult.Cancel)
