@@ -74,11 +74,12 @@ namespace DBSchemaInfo.MsSql
                 case SqlDbType.Char:
                 case SqlDbType.NChar:
                     return DbType.StringFixedLength;
+                case SqlDbType.Xml:
+                    return DbType.Xml;
                 case SqlDbType.NText:
                 case SqlDbType.NVarChar:
                 case SqlDbType.Text:
                 case SqlDbType.VarChar:
-                case SqlDbType.Xml:
                     return DbType.String;
                 case SqlDbType.Time:
                     return DbType.Time;
@@ -121,7 +122,14 @@ namespace DBSchemaInfo.MsSql
                 tempType = "decimal";
             if (tempType == "sql_variant" || tempType == "table type")
                 tempType = "variant";
-            return (SqlDbType) Enum.Parse(typeof (SqlDbType), tempType, true);
+            if (tempType == "geography")
+                tempType = "varchar";
+            if (tempType == "geometry")
+                tempType = "varchar";
+            if (tempType == "hierarchyid")
+                tempType = "nvarchar";
+
+            return (SqlDbType)Enum.Parse(typeof(SqlDbType), tempType, true);
         }
 
         public static string GetCondensedDataType(string nativeType, long columnLength, int columnScale)
@@ -129,7 +137,7 @@ namespace DBSchemaInfo.MsSql
             if (nativeType == "numeric" || nativeType == "decimal")
                 return nativeType + "(" + columnLength + ", " + columnScale + ")";
 
-            if (columnLength == -1)
+            if (columnLength == -1 && nativeType != "geography" && nativeType != "geometry" && nativeType != "xml")
                 return nativeType + "(MAX)";
 
             if (nativeType == "binary" ||
