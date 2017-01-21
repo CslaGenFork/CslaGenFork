@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F02B613F-4FB3-4C19-B35C-14DC41EE9C25}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TestProject.Business</RootNamespace>
+    <AssemblyName>TestProject.Business</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Csla, Version=4.6.500.0, Culture=neutral, PublicKeyToken=93be5fdc093e4c30, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\CSLA-Core.4.6.500\lib\net45\Csla.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="CslaExtremeDemos.Rules">
+      <HintPath>..\..\..\Dependencies\CslaExtremeDemos.Rules.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DatabaseTestProject.cs" />
+    <Compile Include="DataPortalHookArgs.cs" />
+    <Compile Include="Doc.cs" />
+    <Compile Include="Doc.Designer.cs">
+      <DependentUpon>Doc.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocEditGetter.cs" />
+    <Compile Include="DocEditGetter.Designer.cs">
+      <DependentUpon>DocEditGetter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocEditUoWCreator.cs" />
+    <Compile Include="DocEditUoWCreator.Designer.cs">
+      <DependentUpon>DocEditUoWCreator.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocEditUoWGetter.cs" />
+    <Compile Include="DocEditUoWGetter.Designer.cs">
+      <DependentUpon>DocEditUoWGetter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocFolder.cs" />
+    <Compile Include="DocFolder.Designer.cs">
+      <DependentUpon>DocFolder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocFolderColl.cs" />
+    <Compile Include="DocFolderColl.Designer.cs">
+      <DependentUpon>DocFolderColl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocFolderCollRO.cs" />
+    <Compile Include="DocFolderCollRO.Designer.cs">
+      <DependentUpon>DocFolderCollRO.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocFolderRO.cs" />
+    <Compile Include="DocFolderRO.Designer.cs">
+      <DependentUpon>DocFolderRO.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocRO.cs" />
+    <Compile Include="DocRO.Designer.cs">
+      <DependentUpon>DocRO.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocTypeDynamic.cs" />
+    <Compile Include="DocTypeDynamic.Designer.cs">
+      <DependentUpon>DocTypeDynamic.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocTypeDynamicCollection.cs" />
+    <Compile Include="DocTypeDynamicCollection.Designer.cs">
+      <DependentUpon>DocTypeDynamicCollection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocTypeEdit.cs" />
+    <Compile Include="DocTypeEdit.Designer.cs">
+      <DependentUpon>DocTypeEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocTypeEditColl.cs" />
+    <Compile Include="DocTypeEditColl.Designer.cs">
+      <DependentUpon>DocTypeEditColl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocTypeInfo.cs" />
+    <Compile Include="DocTypeInfo.Designer.cs">
+      <DependentUpon>DocTypeInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocTypeList.cs" />
+    <Compile Include="DocTypeList.Designer.cs">
+      <DependentUpon>DocTypeList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocTypeNVL.cs" />
+    <Compile Include="DocTypeNVL.Designer.cs">
+      <DependentUpon>DocTypeNVL.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\UsingClass\UsingClass.csproj">
+      <Project>{5a012bf6-ff0a-4005-9ded-0545b29eb0c0}</Project>
+      <Name>UsingClass</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\..\..\packages\CSLA-Core.4.6.500\analyzers\c#\Csla.Analyzers.dll" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
