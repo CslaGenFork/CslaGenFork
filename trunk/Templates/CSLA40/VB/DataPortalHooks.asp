@@ -21,9 +21,7 @@ if ((Info.IsEditableRoot() ||
         %>
 
         Private Sub On<%= Info.ObjectName %>Saved(sender As Object, e As Csla.Core.SavedEventArgs)
-            If <%= Info.ObjectName %>Saved IsNot Nothing Then
                 RaiseEvent <%= Info.ObjectName %>Saved(sender, e)
-            End If
         End Sub
 
         ''' <summary> Use this event to signal a <see cref="<%= Info.ObjectName %>"/> object was saved.</summary>

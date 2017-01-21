@@ -83,18 +83,9 @@ if (!Info.UseCustomLoading)
                         if ((childProp.DeclarationMode == PropertyDeclaration.Managed ||
                             childProp.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion))
                         {
-                            if (useBypassPropertyChecks && false) // disable this for now
-                            {
-                                %>
-                <%= FormatPascal(childProp.Name) %> = <%= internalCreateString %>()
-            <%
-                            }
-                            else
-                            {
-                                %>
+                            %>
             LoadProperty(<%= FormatPropertyInfoName(childProp.Name) %>, <%= internalCreateString %>())
         <%
-                            }
                         }
                         else
                         {
@@ -128,12 +119,6 @@ if (!Info.UseCustomLoading)
         ''' <param name="dr">The SafeDataReader to use.</param>
         <%= isRoot ? "Private" : "Friend" %> Sub FetchChildren(dr As SafeDataReader)
             <%
-                if (useBypassPropertyChecks)
-                {
-                    %>
-            Using BypassPropertyChecks
-            <%
-                }
                 foreach (ChildProperty childProp in Info.GetAllChildProperties())
                 {
                     if (childProp.LoadingScheme == LoadingScheme.ParentLoad)
@@ -183,18 +168,9 @@ if (!Info.UseCustomLoading)
                                     if ((childProp.DeclarationMode == PropertyDeclaration.Managed ||
                                         childProp.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion))
                                     {
-                                        if (useBypassPropertyChecks)
-                                        {
-                                            %>
-                <%= FormatPascal(childProp.Name) %> = <%= fetchString %>(dr)
-            <%
-                                        }
-                                        else
-                                        {
-                                            %>
+                                        %>
             LoadProperty(<%= FormatPropertyInfoName(childProp.Name) %>, <%= fetchString %>(dr))
         <%
-                                        }
                                     }
                                     else
                                     {
@@ -245,18 +221,9 @@ if (!Info.UseCustomLoading)
                                     if (childProp.DeclarationMode == PropertyDeclaration.Managed ||
                                         childProp.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion)
                                     {
-                                        if (useBypassPropertyChecks)
-                                        {
-                                            %>
-                    obj.<%= FormatPascal(childProp.Name) %> = child
-            <%
-                                        }
-                                        else
-                                        {
-                                            %>
+                                        %>
                 obj.LoadProperty(<%= FormatPropertyInfoName(childProp.Name) %>, child)
             <%
-                                        }
                                     }
                                     else
                                     {
@@ -286,18 +253,9 @@ if (!Info.UseCustomLoading)
                                         if (childProp.DeclarationMode == PropertyDeclaration.Managed ||
                                             childProp.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion)
                                         {
-                                            if (useBypassPropertyChecks)
-                                            {
-                                                %>
-                    <%= FormatPascal(childProp.Name) %> = child
-            <%
-                                            }
-                                            else
-                                            {
-                                                %>
+                                            %>
                 LoadProperty(<%= FormatPropertyInfoName(childProp.Name) %>, child)
             <%
-                                            }
                                         }
                                         else
                                         {
@@ -314,18 +272,9 @@ if (!Info.UseCustomLoading)
                                         if (childProp.DeclarationMode == PropertyDeclaration.Managed ||
                                             childProp.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion)
                                         {
-                                            if (useBypassPropertyChecks)
-                                            {
-                                                %>
-                    <%= FormatPascal(childProp.Name) %> = <%= fetchString %>(dr)
-            <%
-                                            }
-                                            else
-                                            {
-                                                %>
+                                            %>
                 LoadProperty(<%= FormatPropertyInfoName(childProp.Name) %>, <%= fetchString %>(dr))
             <%
-                                            }
                                         }
                                         else
                                         {
@@ -333,6 +282,9 @@ if (!Info.UseCustomLoading)
                 <%= GetFieldLoaderStatement(childProp, fetchString + "(dr)") %>
             <%
                                         }
+                                        %>
+            <%= bpcSpacer %>End If
+            <%
                                     }
                                 }
                             }
@@ -411,12 +363,6 @@ if (!Info.UseCustomLoading)
                     }
                 }
 
-                if (useBypassPropertyChecks)
-                {
-                    %>
-            }
-            <%
-                }
                 %>
         End Sub
         <%
@@ -437,22 +383,7 @@ if (!Info.UseCustomLoading)
         ''' </summary>
         ''' <param name="child">The child object to load.</param>
         Friend Sub LoadChild(child As <%= FormatPascal(childProp.TypeName) %>)
-<%
-                            if (useBypassPropertyChecks)
-                            {
-                                %>
-            Using (BypassPropertyChecks)
-                <%= FormatPascal(childProp.Name) %> = child
-            End Using
-            <%
-                            }
-                            else
-                            {
-                                %>
             LoadProperty(<%= FormatPropertyInfoName(childProp.Name) %>, child)
-            <%
-                            }
-                            %>
         End Sub
         <%
                         }
@@ -470,12 +401,6 @@ if (!Info.UseCustomLoading)
         ''' </summary>
         <%= isRoot ? "Private" : "Friend" %> Sub FetchChildren()
             <%
-            if (useBypassPropertyChecks)
-            {
-                %>
-            Using BypassPropertyChecks
-            <%
-            }
             foreach (ChildProperty childProp in Info.GetMyChildProperties())
             {
                 if (childProp.LoadingScheme == LoadingScheme.SelfLoad && !childProp.LazyLoad)
@@ -517,18 +442,9 @@ if (!Info.UseCustomLoading)
 
                         if (childProp.DeclarationMode == PropertyDeclaration.Managed)
                         {
-                            if (useBypassPropertyChecks)
-                            {
-                                %>
-                <%= FormatPascal(childProp.Name) %> = <%= fetchString %>(<%= invokeParam %>)
-                <%
-                            }
-                            else
-                            {
-                                %>
+                            %>
             <%= bpcSpacer %>LoadProperty(<%= FormatPropertyInfoName(childProp.Name) %>, <%= fetchString %>(<%= invokeParam %>))
             <%
-                            }
                         }
                         else if (childProp.DeclarationMode == PropertyDeclaration.ClassicProperty ||
                             childProp.DeclarationMode == PropertyDeclaration.AutoProperty)
@@ -539,12 +455,6 @@ if (!Info.UseCustomLoading)
                         }
                     }
                 }
-            }
-            if (useBypassPropertyChecks)
-            {
-                %>
-            End Using
-            <%
             }
             %>
         End Sub

@@ -19,8 +19,7 @@
 
 <!-- #include file="ObjectValidate_DalInterface.asp" -->
 <%
-bool useBypassPropertyChecks = CurrentUnit.GenerationParams.UseBypassPropertyChecks;
-string bpcSpacer = useBypassPropertyChecks ? bpcSpacer = new string(' ', 4) : string.Empty;
+string bpcSpacer = String.Empty;
 bool ancestorIsCollection = false;
 int ancestorLoaderLevel = 0;
 GenerationStep genStep = GenerationStep.DalInterface;

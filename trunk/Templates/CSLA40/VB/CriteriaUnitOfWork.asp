@@ -124,13 +124,13 @@ if (activeCriteria > 0)
             if (crit.Type == "bool")
             {
                 %>
-            ''' <value><c>true</c> if <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(crit.Name) %>; otherwise, <c>false</c>.</value>
+            ''' <value><c>True</c> if <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(crit.Name) %>; otherwise, <c>false</c>.</value>
             <%
             }
             else if (crit.Type == "bool?")
             {
                 %>
-            ''' <value><c>true</c> if <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(crit.Name) %>; <c>false</c> if not <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(crit.Name) %>; otherwise, <c>null</c>.</value>
+            ''' <value><c>True</c> if <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(crit.Name) %>; <c>false</c> if not <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(crit.Name) %>; otherwise, <c>null</c>.</value>
             <%
             }
             else
@@ -144,9 +144,9 @@ if (activeCriteria > 0)
             {
                 strParams += ", ";
             }
-            strParams += string.Concat(FormatCamel(crit.Name), " As ", crit.Type);
-            strFieldAssignments += string.Concat("\r\n                ", "_" + FormatProperty(crit.Name), " = ", FormatCamel(crit.Name));
-            strComment += "\r\n            ''' <param name=\"" + FormatCamel(crit.Name) + "\">The "+ FormatProperty(crit.Name) + ".</param>";
+            strParams += string.Concat("p_", FormatCamel(crit.Name), " As ", crit.Type);
+            strFieldAssignments += string.Concat("\r\n                ", FormatProperty(crit.Name), " = p_", FormatCamel(crit.Name));
+            strComment += "\r\n            ''' <param name=\"p_" + FormatCamel(crit.Name) + "\">The "+ FormatProperty(crit.Name) + ".</param>";
             if (critCriteriaClassMode == CriteriaMode.Simple)
             {
                 %>
@@ -180,7 +180,7 @@ if (activeCriteria > 0)
             ''' <summary>
             ''' Initializes a new instance of the <see cref="<%= uowCrit.CriteriaName %>"/> class.
             ''' </summary><%= strComment %>
-            Public <%= uowCrit.CriteriaName %>(<%= strParams %>)
+            Public Sub New(<%= strParams %>)
                 <%
         if (strFieldAssignments.Length > 1)
         {
@@ -195,11 +195,10 @@ if (activeCriteria > 0)
             ''' Determines whether the specified <see cref="System.Object"/> is equal to this instance.
             ''' </summary>
             ''' <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
-            ''' <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+            ''' <returns><c>True</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
             Public Overrides Function Equals(obj As object) As Boolean
-            {
                 If TypeOf obj Is <%= uowCrit.CriteriaName %> Then
-                    Dim c As (<%= uowCrit.CriteriaName %>) = obj
+                    Dim c As <%= uowCrit.CriteriaName %> = obj
                     <%
         foreach (UnitOfWorkCriteriaManager.ElementCriteria c in uowCrit.ElementCriteriaList)
         {
@@ -216,7 +215,7 @@ if (activeCriteria > 0)
                     Return True
                 End If
                 Return False
-            End Sub
+            End Function
 
             ''' <summary>
             ''' Returns a hash code for this instance.

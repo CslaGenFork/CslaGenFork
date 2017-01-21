@@ -37,18 +37,18 @@ if (Info.UpdateValueProperties.Count > 0)
             {
                 //if (prop.IsIdentity)
                   //continue;
-                string cast = string.Empty;
+                string cast = FormatCamel(parentInfo.UpdaterType) + "." + prop.SourcePropertyName;
                 foreach (ValueProperty valProp in Info.ValueProperties)
                 {
                     if (valProp.Name == prop.Name)
                     {
                         if (TemplateHelper.GetBackingFieldType(valProp) == TypeCodeEx.SmartDate && valProp.PropertyType == TypeCodeEx.String)
-                            cast = "(SmartDate)";
+                            cast = String.Format("CType({0}, SmartDate)", cast);
                         break;
                     }
                 }
                 %>
-            <%= GetFieldLoaderStatement(Info, prop, cast + FormatCamel(parentInfo.UpdaterType) + "." + prop.SourcePropertyName) %>
+            <%= GetFieldLoaderStatement(Info, prop, cast) %>
         <%
             }
             %>

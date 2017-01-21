@@ -95,7 +95,7 @@ if (Info.GenerateDataPortalDelete)
             {
                 lastCriteria = "crit";
                 if (useInlineQuery)
-                    InlineQueryList.Add(new AdvancedGenerator.InlineQuery(c.DeleteOptions.ProcedureName, c.Name + " crit"));
+                    InlineQueryList.Add(new AdvancedGenerator.InlineQuery(c.DeleteOptions.ProcedureName, "crit As " + c.Name));
                 %>Protected Sub DataPortal_Delete(crit As <%= c.Name %>)<%
             }
             else

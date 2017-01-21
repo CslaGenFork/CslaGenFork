@@ -328,7 +328,6 @@ namespace CslaGenerator.Controls
             chkGenerateQueriesWithSchema.Enabled = true;
             chkUsePublicPropertyInfo.Enabled = true;
             chkUseChildFactory.Enabled = true;
-            chkUseBypassPropertyChecks.Enabled = true;
 
             chkSpOneFile.Enabled = _genParams.GenerateSprocs;
         }

@@ -72,7 +72,7 @@ if (!Info.UseCustomLoading)
                 {
                     lastCriteria = "crit";
                     if (useInlineQuery)
-                        InlineQueryList.Add(new AdvancedGenerator.InlineQuery(c.GetOptions.ProcedureName, c.Name + " crit"));
+                        InlineQueryList.Add(new AdvancedGenerator.InlineQuery(c.GetOptions.ProcedureName, "crit As " + c.Name));
                     %>
         Protected <%= isChildNotLazyLoaded ? "" : "Overloads" %> Sub <%= isChildNotLazyLoaded ? "Child_" : "DataPortal_" %>Fetch(crit As <%= c.Name %>)
             <%
@@ -248,13 +248,13 @@ if (!Info.UseCustomLoading)
         if (UseChildFactoryHelper)
         {
             %>
-                MyBase.Add(<%= Info.ItemType %>.Get<%= Info.ItemType %>(dr))
+                Add(<%= Info.ItemType %>.Get<%= Info.ItemType %>(dr))
             <%
         }
         else
         {
             %>
-                MyBase.Add(DataPortal.Fetch<%= TypeHelper.IsNotRootType(itemInfo) ? "Child" : "" %>(Of <%= Info.ItemType %>)(dr))
+                Add(DataPortal.Fetch<%= TypeHelper.IsNotRootType(itemInfo) ? "Child" : "" %>(Of <%= Info.ItemType %>)(dr))
             <%
         }
         %>
@@ -359,12 +359,12 @@ if (!Info.UseCustomLoading)
                 <%
         if (UseChildFactoryHelper)
         {
-            %>MyBase.Add(<%= Info.ItemType %>.Get<%= Info.ItemType %>(row))
+            %>Add(<%= Info.ItemType %>.Get<%= Info.ItemType %>(row))
                 <%
         }
         else
         {
-            %>MyBase.Add(DataPortal.Fetch<%= TypeHelper.IsNotRootType(itemInfo) ? "Child" : "" %>(Of <%= Info.ItemType %>)(row))
+            %>Add(DataPortal.Fetch<%= TypeHelper.IsNotRootType(itemInfo) ? "Child" : "" %>(Of <%= Info.ItemType %>)(row))
                 <%
         }
         %>
@@ -402,12 +402,12 @@ if (!Info.UseCustomLoading)
                 <%
         if (UseChildFactoryHelper)
         {
-            %>MyBase.Add(<%= Info.ItemType %>.Get<%= Info.ItemType %>(row))
+            %>Add(<%= Info.ItemType %>.Get<%= Info.ItemType %>(row))
                 <%
         }
         else
         {
-            %>MyBase.Add(DataPortal.Fetch<%= TypeHelper.IsNotRootType(itemInfo) ? "Child" : "" %>(Of <%= Info.ItemType %>)(row))
+            %>Add(DataPortal.Fetch<%= TypeHelper.IsNotRootType(itemInfo) ? "Child" : "" %>(Of <%= Info.ItemType %>)(row))
                 <%
         }
         %>

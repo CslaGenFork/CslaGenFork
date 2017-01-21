@@ -155,7 +155,7 @@ if (resultProperties != string.Empty)
 resultRule = "BusinessRules.AddRule(";
 if (isObjectAutz)
     resultRule += "typeof (" + Info.ObjectName + "), ";
-resultRule += "new " + backupRuleType + "(" + resultConstructor + ")" + resultProperties + ")" + ";";
+resultRule += "new " + backupRuleType + "(" + resultConstructor + ")" + resultProperties + ");";
             %>
             <%= resultRule %>
             <%

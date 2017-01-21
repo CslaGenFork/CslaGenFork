@@ -20,7 +20,6 @@ namespace CslaGenerator.Metadata
         private CslaPropertyMode _propertyMode = CslaPropertyMode.Default;
         private AuthorizationLevel _generateAuthorization = AuthorizationLevel.FullSupport;
         private HeaderVerbosity _headerVerbosity = HeaderVerbosity.Full;
-        private bool _useBypassPropertyChecks;
         private bool _useSingleCriteria;
         private bool _usePublicPropertyInfo = true;
         private bool _useChildFactory;
@@ -211,18 +210,6 @@ namespace CslaGenerator.Metadata
                 if (_headerVerbosity == value)
                     return;
                 _headerVerbosity = value;
-                OnPropertyChanged("");
-            }
-        }
-
-        public bool UseBypassPropertyChecks
-        {
-            get { return _useBypassPropertyChecks; }
-            set
-            {
-                if (_useBypassPropertyChecks == value)
-                    return;
-                _useBypassPropertyChecks = value;
                 OnPropertyChanged("");
             }
         }

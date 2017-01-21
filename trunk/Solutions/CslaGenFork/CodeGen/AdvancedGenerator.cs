@@ -156,7 +156,10 @@ namespace CslaGenerator.CodeGen
         {
             _unit = unit;
             _unit.GenerationTimer.Restart();
-            CslaTemplateHelperCS.PrimaryKeys.ClearCache();
+            if (_unit.GenerationParams.OutputLanguage == CodeLanguage.CSharp)
+                CslaTemplateHelperCS.PrimaryKeys.ClearCache();
+            else
+                CslaTemplateHelperVB.PrimaryKeys.ClearCache();
             CslaObjectInfo objInfo = null;
             _objFailed = 0;
             _objSuccess = 0;

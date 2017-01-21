@@ -56,21 +56,21 @@ if (!Info.UseCustomLoading && (UseNoSilverlight() ||
             {
                 lastCriteria = "crit";
                 if (useInlineQuery)
-                    InlineQueryList.Add(new AdvancedGenerator.InlineQuery(c.GetOptions.ProcedureName, c.Name + " crit"));
-        %>Protected Sub DataPortal_Fetch(crit As <%= c.Name %>)<%
+                    InlineQueryList.Add(new AdvancedGenerator.InlineQuery(c.GetOptions.ProcedureName, "crit As " + c.Name));
+        %>Protected Overloads Sub DataPortal_Fetch(crit As <%= c.Name %>)<%
             }
             else if (c.Properties.Count > 0)
             {
                 lastCriteria = ReceiveSingleCriteriaTypeless(c, "crit");
                 if (useInlineQuery)
                     InlineQueryList.Add(new AdvancedGenerator.InlineQuery(c.GetOptions.ProcedureName, ReceiveSingleCriteria(c, "crit")));
-        %>Protected Sub DataPortal_Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)<%
+        %>Protected Overloads Sub DataPortal_Fetch(<%= ReceiveSingleCriteria(c, "crit") %>)<%
             }
             else
             {
                 if (useInlineQuery)
                     InlineQueryList.Add(new AdvancedGenerator.InlineQuery(c.GetOptions.ProcedureName, ""));
-        %>Protected Sub DataPortal_Fetch()<%
+        %>Protected Overloads Sub DataPortal_Fetch()<%
             }
         %>
             <%

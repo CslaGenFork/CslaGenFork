@@ -134,7 +134,7 @@ if (useParentReference || isRODeepLoadCollection || useAuthz || Info.UniqueItems
         <%
         }
         %>
-            MyBase.Add(item)
+            Add(item)
         End Sub
         <%
         }
@@ -146,7 +146,7 @@ if (useParentReference || isRODeepLoadCollection || useAuthz || Info.UniqueItems
         ''' Removes a <see cref="<%= Info.ItemType %>"/> item from the collection.
         ''' </summary>
         ''' <param name="item">The item to remove.</param>
-        ''' <returns><c>true</c> if the item was removed from the collection, otherwise <c>false</c>.</returns>
+        ''' <returns><c>True</c> if the item was removed from the collection, otherwise <c>false</c>.</returns>
         ''' <exception cref="System.Security.SecurityException">if the user isn't authorized to remove items from the collection.</exception>
         Public Overloads Function Remove(item As <%= Info.ItemType %>) As Boolean
             If Not CanDeleteObject() Then
@@ -346,7 +346,7 @@ if (useParentReference || isRODeepLoadCollection || useAuthz || Info.UniqueItems
         <%
             }
         %>
-        ''' <returns><c>true</c> if the <%= Info.ItemType %> is a collection item; otherwise, <c>false</c>.</returns>
+        ''' <returns><c>True</c> if the <%= Info.ItemType %> is a collection item; otherwise, <c>false</c>.</returns>
         Public Overloads Function Contains(<%= prms %>) As Boolean
             For Each item As <%= Info.ItemType %> In Me
                 If <%
@@ -376,9 +376,9 @@ if (useParentReference || isRODeepLoadCollection || useAuthz || Info.UniqueItems
         <%
                 }
                 %>
-        ''' <returns><c>true</c> if the <%= Info.ItemType %> is a deleted collection item; otherwise, <c>false</c>.</returns>
+        ''' <returns><c>True</c> if the <%= Info.ItemType %> is a deleted collection item; otherwise, <c>false</c>.</returns>
         Public Overloads Function ContainsDeleted(<%= prms %>) As Boolean
-            For Each item As <%= Info.ItemType %> In Me.DeletedList
+            For Each item As <%= Info.ItemType %> In DeletedList
                 If <%
                 for (int i = 0; i < propertyList.Count; i++)
                 {

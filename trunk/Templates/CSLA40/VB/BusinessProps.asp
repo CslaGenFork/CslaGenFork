@@ -65,13 +65,13 @@ foreach (ValueProperty prop in Info.ValueProperties)
         if (prop.PropertyType == TypeCodeEx.Boolean && prop.Nullable == false)
         {
             %>
-        ''' <value><c>true</c> if <%= prop.FriendlyName != String.Empty ? System.Net.WebUtility.HtmlEncode(prop.FriendlyName) : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; otherwise, <c>false</c>.</value>
+        ''' <value><c>True</c> if <%= prop.FriendlyName != String.Empty ? System.Net.WebUtility.HtmlEncode(prop.FriendlyName) : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; otherwise, <c>false</c>.</value>
         <%
         }
         else if (prop.PropertyType == TypeCodeEx.Boolean && prop.Nullable == true)
         {
             %>
-        ''' <value><c>true</c> if <%= prop.FriendlyName != String.Empty ? System.Net.WebUtility.HtmlEncode(prop.FriendlyName) : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; <c>false</c> if not <%= prop.FriendlyName != String.Empty ? System.Net.WebUtility.HtmlEncode(prop.FriendlyName) : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; otherwise, <c>null</c>.</value>
+        ''' <value><c>True</c> if <%= prop.FriendlyName != String.Empty ? System.Net.WebUtility.HtmlEncode(prop.FriendlyName) : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; <c>false</c> if not <%= prop.FriendlyName != String.Empty ? System.Net.WebUtility.HtmlEncode(prop.FriendlyName) : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; otherwise, <c>null</c>.</value>
         <%
         }
         else
@@ -137,13 +137,13 @@ foreach (ConvertValueProperty prop in Info.ConvertValueProperties)
     if (prop.PropertyType == TypeCodeEx.Boolean && prop.Nullable == false)
     {
         %>
-        ''' <value><c>true</c> if <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; otherwise, <c>false</c>.</value>
+        ''' <value><c>True</c> if <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; otherwise, <c>false</c>.</value>
         <%
     }
     else if (prop.PropertyType == TypeCodeEx.Boolean && prop.Nullable == true)
     {
         %>
-        ''' <value><c>true</c> if <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; <c>false</c> if not <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; otherwise, <c>null</c>.</value>
+        ''' <value><c>True</c> if <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; <c>false</c> if not <%= prop.FriendlyName != String.Empty ? prop.FriendlyName : CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; otherwise, <c>null</c>.</value>
         <%
     }
     else

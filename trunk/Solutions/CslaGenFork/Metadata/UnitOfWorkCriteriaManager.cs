@@ -112,6 +112,7 @@ namespace CslaGenerator.Metadata
 
         private static CriteriaPropertyCollection GetFakeCreateCriteria(CslaObjectInfo info, int createIndex)
         {
+            var isCSharp = GeneratorController.Current.CurrentUnit.GenerationParams.OutputLanguage == CodeLanguage.CSharp;
             var result = new CriteriaPropertyCollection();
             var index = 0;
             foreach (var crit in info.CriteriaObjects)
@@ -124,8 +125,12 @@ namespace CslaGenerator.Metadata
                         var criteriaPropertyCollection = CriteriaPropertyCollection.Clone(crit.Properties);
                         foreach (var criteriaProperty in criteriaPropertyCollection)
                         {
-                            criteriaProperty.UnitOfWorkFactoryParameter = "true, " +
+                            if (isCSharp)
+                                criteriaProperty.UnitOfWorkFactoryParameter = "true, " +
                                 CslaTemplateHelperCS.GetDataTypeInitExpression(criteriaProperty, criteriaProperty.PropertyType);
+                            else
+                                criteriaProperty.UnitOfWorkFactoryParameter = "true, " +
+                                CslaTemplateHelperVB.GetDataTypeInitExpression(criteriaProperty, criteriaProperty.PropertyType);
                         }
                         result.AddRange(criteriaPropertyCollection);
                         break;
@@ -243,8 +248,8 @@ namespace CslaGenerator.Metadata
 
         public static List<UoWCriteria> CriteriaOutputForm(CslaObjectInfo info, UnitOfWorkFunction function, bool generatingCriteria)
         {
+            var isCSharp = GeneratorController.Current.CurrentUnit.GenerationParams.OutputLanguage == CodeLanguage.CSharp;
             var result = new List<UoWCriteria>();
-
             var propertyDeclarationCache = new Dictionary<string, PropertyDeclaration>();
             var propertyNameCache = new Dictionary<string, string>();
             foreach (var uowProperty in info.UnitOfWorkProperties)
@@ -282,8 +287,10 @@ namespace CslaGenerator.Metadata
                     if (function == UnitOfWorkFunction.Deleter && !crit.IsDeleter)
                         break;
 
-                    var elementCriteria = new ElementCriteria();
-                    elementCriteria.ParentObject = crit.ParentObject.ObjectName;
+                    var elementCriteria = new ElementCriteria
+                    {
+                        ParentObject = crit.ParentObject.ObjectName
+                    };
                     elementCriteria.PropertyName = propertyNameCache[elementCriteria.ParentObject];
                     elementCriteria.DeclarationMode = propertyDeclarationCache[elementCriteria.ParentObject];
                     elementCriteria.IsGetter = !crit.ParentObject.ObjectType.IsEditableType();
@@ -299,8 +306,12 @@ namespace CslaGenerator.Metadata
                         if (crit.Properties.Count == 1)
                         {
                             elementCriteria.Name = crit.Properties[0].Name;
-                            elementCriteria.Type =
-                                CslaTemplateHelperCS.GetDataTypeGeneric(crit.Properties[0], crit.Properties[0].PropertyType);
+                            if (isCSharp)
+                                elementCriteria.Type = CslaTemplateHelperCS.GetDataTypeGeneric(crit.Properties[0],
+                                    crit.Properties[0].PropertyType);
+                            else
+                                elementCriteria.Type = CslaTemplateHelperVB.GetDataTypeGeneric(crit.Properties[0],
+                                    crit.Properties[0].PropertyType);
                         }
                         if (generatingCriteria)
                         {
@@ -311,7 +322,10 @@ namespace CslaGenerator.Metadata
                                 newElementCriteria.DeclarationMode = elementCriteria.DeclarationMode;
                                 newElementCriteria.IsGetter = elementCriteria.IsGetter;
                                 newElementCriteria.Namespace = elementCriteria.Namespace;
-                                newElementCriteria.Type = "bool";
+                                if (isCSharp)
+                                    newElementCriteria.Type = CslaTemplateHelperCS.GetDataType(TypeCodeEx.Boolean);
+                                else
+                                    newElementCriteria.Type = CslaTemplateHelperVB.GetDataType(TypeCodeEx.Boolean);
                                 newElementCriteria.Name = "Create" + elementCriteria.ParentObject;
                             }
                             uowCriteria.ElementCriteriaList.Add(newElementCriteria);

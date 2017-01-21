@@ -34,9 +34,9 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
                 else
                 {
                     %>
-            <%= Info.UseUnitOfWorkType %>.Get<%= Info.UseUnitOfWorkType %>(crit, Function(o, e)
-                callback(o, New DataPortalResult(Of <%= Info.ObjectName %>)(e.[Object].<%= Info.ObjectName %>, e.Error, Nothing))
-            End Function)
+            <%= Info.UseUnitOfWorkType %>.Get<%= Info.UseUnitOfWorkType %>(crit, Sub(o, e)
+                callback(o, New DataPortalResult(Of <%= Info.ObjectName %>)(e.Object.<%= Info.ObjectName %>, e.Error, Nothing))
+            End Sub)
             <%
                 }
                 %>
@@ -77,7 +77,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
                         strGetCritParams += c.Properties[i].ParameterValue;
                 }
             }
-            strGetParams += (strGetParams.Length > 0 ? ", " : "") + "callback As EventHandler(Of DataPortalResult(Of " + Info.ObjectName + "))";
+            strGetParams += (strGetParams.Length > 0 ? ", " : "") + "ByVal callback As EventHandler(Of DataPortalResult(Of " + Info.ObjectName + "))";
             %>
         ''' <param name="callback">The completion callback method.</param>
         <%= Info.ParentType == string.Empty ? "Public" : "Friend" %> Shared Sub Get<%= Info.ObjectName %><%= c.GetOptions.FactorySuffix %>(<%= strGetParams %>)
@@ -97,9 +97,9 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
                 else
                 {
                     %>
-            <%= Info.UseUnitOfWorkType %>.Get<%= Info.UseUnitOfWorkType %>(New <%= c.Name %>(<%= strGetCritParams %>), Function(o, e)
-                callback(o, New DataPortalResult(Of <%= Info.ObjectName %>)(e.[Object].<%= Info.ObjectName %>, e.Error, Nothing))
-            End Function)
+            <%= Info.UseUnitOfWorkType %>.Get<%= Info.UseUnitOfWorkType %>(New <%= c.Name %>(<%= strGetCritParams %>), Sub(o, e)
+                callback(o, New DataPortalResult(Of <%= Info.ObjectName %>)(e.Object.<%= Info.ObjectName %>, e.Error, Nothing))
+            End Sub)
             <%
                 }
             }
@@ -114,9 +114,9 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
                 else
                 {
                     %>
-            <%= Info.UseUnitOfWorkType %>.Get<%= Info.UseUnitOfWorkType %>(<%= SendSingleCriteria(c, strGetCritParams) %>, Function (o, e)
-                callback(o, New DataPortalResult(Of <%= Info.ObjectName %>)(e.[Object].<%= Info.ObjectName %>, e.Error, Nothing))
-            End Function)
+            <%= Info.UseUnitOfWorkType %>.Get<%= Info.UseUnitOfWorkType %>(<%= SendSingleCriteria(c, strGetCritParams) %>, Sub(o, e)
+                callback(o, New DataPortalResult(Of <%= Info.ObjectName %>)(e.Object.<%= Info.ObjectName %>, e.Error, Nothing))
+            End Sub)
             <%
                 }
             }
@@ -126,12 +126,12 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
                 {
                     %>
             If _list Is Nothing Then
-                DataPortal.BeginFetch(Of <%= Info.ObjectName %>)(Function(o, e)
-                        _list = e.[Object]
+                DataPortal.BeginFetch(Of <%= Info.ObjectName %>)(Sub(o, e)
+                        _list = e.Object
                         callback(o, e)
-                    End Function)
+                    End Sub)
             Else
-                callback(Nothing, New DataPortalResult(<%= Info.ObjectName %>)(_list, Nothing, Nothing))
+                callback(Nothing, New DataPortalResult(Of <%= Info.ObjectName %>)(_list, Nothing, Nothing))
             End If
         <%
                 }
@@ -146,9 +146,9 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
                     else
                     {
                         %>
-            <%= Info.UseUnitOfWorkType %>.Get<%= Info.UseUnitOfWorkType %>(Function(o, e)
+            <%= Info.UseUnitOfWorkType %>.Get<%= Info.UseUnitOfWorkType %>(Sub(o, e)
                 callback(o, New DataPortalResult(Of <%= Info.ObjectName %>)(e.Object.<%= Info.ObjectName %>, e.Error, Nothing))
-            End Function)
+            End Sub)
             <%
                     }
                 }

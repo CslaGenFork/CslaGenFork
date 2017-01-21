@@ -10,9 +10,6 @@
 <%@ Import Namespace="CslaGenerator.Util" %>
 
 <%
-string utilNamespace = string.Empty;
-if (CurrentUnit.GenerationParams.UtilitiesNamespace != string.Empty)
-    utilNamespace = "." + CurrentUnit.GenerationParams.UtilitiesNamespace;
 int silverlightLevel = 0;
 bool genOptional = false;
 if (CurrentUnit.GenerationParams.HeaderVerbosity != HeaderVerbosity.None)
@@ -25,11 +22,11 @@ if (CurrentUnit.GenerationParams.HeaderVerbosity != HeaderVerbosity.None)
 %>
 Imports System.Configuration
 
-<%= GetContextUtilitiesNamespace(CurrentUnit, GenerationStep.Business) == string.Empty ? "" : "Namespace " + GetContextUtilitiesNamespace(CurrentUnit, GenerationStep.Business) %>
+<%= CurrentUnit.GenerationParams.UtilitiesNamespace == string.Empty ? "" : "Namespace " + CurrentUnit.GenerationParams.UtilitiesNamespace %>
 
     ''' <summary>Class that provides the connection
     ''' strings used by the application.</summary>
-    Partial Friend Class Database
+    Friend Class Database
 
         ''' <summary>Connection string to the <%= CurrentUnit.GenerationParams.DatabaseConnection %> database.</summary>
         Friend Shared ReadOnly Property <%= CurrentUnit.GenerationParams.DatabaseConnection %>Connection As String
@@ -40,4 +37,4 @@ Imports System.Configuration
 
     End Class
 
-<%= GetContextUtilitiesNamespace(CurrentUnit, GenerationStep.Business) == string.Empty ? "" : "End Namespace" %>
+<%= CurrentUnit.GenerationParams.UtilitiesNamespace == string.Empty ? "" : "End Namespace" %>

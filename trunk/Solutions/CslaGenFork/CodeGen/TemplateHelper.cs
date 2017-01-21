@@ -173,6 +173,7 @@ namespace CslaGenerator.CodeGen
                 /*
                  * These are not nullable:
                 case TypeCodeEx.ByteArray:
+                case TypeCodeEx.CustomType:
                 case TypeCodeEx.SmartDate:
                 case TypeCodeEx.DBNull:
                 case TypeCodeEx.Empty:

@@ -232,7 +232,7 @@ if (generateAuthRegion2)
         ''' <summary>
         ''' Checks if the current user can create a new <%= Info.ObjectName %> object.
         ''' </summary>
-        ''' <returns><c>true</c> if the user can create a new object; otherwise, <c>false</c>.</returns>
+        ''' <returns><c>True</c> if the user can create a new object; otherwise, <c>false</c>.</returns>
         Public Overloads Shared Function CanAddObject() As Boolean
             Return BusinessRules.HasPermission(Csla.Rules.AuthorizationActions.CreateObject, GetType(<%= Info.ObjectName %>))
         End Function
@@ -243,7 +243,7 @@ if (generateAuthRegion2)
         ''' <summary>
         ''' Checks if the current user can retrieve <%= Info.ObjectName %>'s properties.
         ''' </summary>
-        ''' <returns><c>true</c> if the user can read the object; otherwise, <c>false</c>.</returns>
+        ''' <returns><c>True</c> if the user can read the object; otherwise, <c>false</c>.</returns>
         Public Overloads Shared Function CanGetObject() As Boolean
             Return BusinessRules.HasPermission(Csla.Rules.AuthorizationActions.GetObject, GetType(<%= Info.ObjectName %>))
         End Function
@@ -257,7 +257,7 @@ if (generateAuthRegion2)
         ''' <summary>
         ''' Checks if the current user can change <%= Info.ObjectName %>'s properties.
         ''' </summary>
-        ''' <returns><c>true</c> if the user can update the object; otherwise, <c>false</c>.</returns>
+        ''' <returns><c>True</c> if the user can update the object; otherwise, <c>false</c>.</returns>
         Public Overloads Shared Function CanEditObject() As Boolean
             Return BusinessRules.HasPermission(Csla.Rules.AuthorizationActions.EditObject, GetType(<%= Info.ObjectName %>))
         End Function
@@ -265,7 +265,7 @@ if (generateAuthRegion2)
         ''' <summary>
         ''' Checks if the current user can delete a <%= Info.ObjectName %> object.
         ''' </summary>
-        ''' <returns><c>true</c> if the user can delete the object; otherwise, <c>false</c>.</returns>
+        ''' <returns><c>True</c> if the user can delete the object; otherwise, <c>false</c>.</returns>
         Public Overloads Shared Function CanDeleteObject() As Boolean
             Return BusinessRules.HasPermission(Csla.Rules.AuthorizationActions.DeleteObject, GetType(<%= Info.ObjectName %>))
         End Function

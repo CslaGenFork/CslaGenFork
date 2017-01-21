@@ -44,7 +44,6 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
         ''' </summary>
         <%= strNewComment %>''' <returns>A reference to the created <see cref="<%= Info.ObjectName %>"/> <%= Info.IsUnitOfWork() ? "unit of objects" : "object" %>.</returns>
         Public Shared Function New<%= Info.ObjectName %>(<%= strNewParams %>) As <%= Info.ObjectName %>
-        {
             ' DataPortal_Fetch is used as ReadOnlyBase<T> doesn't allow the use of DataPortal_Create.
             <%
         if (elementCriteriaCount > 1)

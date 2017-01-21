@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing.Design;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
@@ -74,7 +75,20 @@ namespace CslaGenerator.Design
                     if (!string.IsNullOrEmpty(assemblyFilePath))
                     {
                         var assembly = Assembly.LoadFrom(assemblyFilePath);
-                        var alltypes = assembly.GetExportedTypes();
+                        Type[] alltypes = null;
+
+                        try
+                        {
+                            alltypes = assembly.GetExportedTypes();
+                        }
+                        catch (FileNotFoundException ex)
+                        {
+                            var message =
+                                "This assembly depends on other assemblies\r\nthat must be on the same folder (don't forget Csla.dll).\r\n\r\n" +
+                                ex.Message;
+                            throw new FileNotFoundException(message);
+                        }
+
                         if (alltypes.Length > 0)
                             _baseTypes = new List<BaseProperty>();
 

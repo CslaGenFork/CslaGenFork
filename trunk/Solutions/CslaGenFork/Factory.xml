@@ -33,9 +33,9 @@
     <SpIgnoreFilterWhenSoftDeleteIsParam>true</SpIgnoreFilterWhenSoftDeleteIsParam>
     <SpRemoveChildBeforeParent>true</SpRemoveChildBeforeParent>
     <IDGuidDefaultValue>Guid.NewGuid()</IDGuidDefaultValue>
-    <IDInt16DefaultValue>_lastID</IDInt16DefaultValue>
-    <IDInt32DefaultValue>_lastID</IDInt32DefaultValue>
-    <IDInt64DefaultValue>_lastID</IDInt64DefaultValue>
+    <IDInt16DefaultValue>_lastId</IDInt16DefaultValue>
+    <IDInt32DefaultValue>_lastId</IDInt32DefaultValue>
+    <IDInt64DefaultValue>_lastId</IDInt64DefaultValue>
     <FieldNamePrefix>_</FieldNamePrefix>
     <DelegateNamePrefix>d_</DelegateNamePrefix>
     <CreationDateColumn>CreateDate</CreationDateColumn>
@@ -59,7 +59,6 @@
     <PropertyMode>Default</PropertyMode>
     <GenerateAuthorization>FullSupport</GenerateAuthorization>
     <HeaderVerbosity>None</HeaderVerbosity>
-    <UseBypassPropertyChecks>false</UseBypassPropertyChecks>
     <UseSingleCriteria>false</UseSingleCriteria>
     <UsePublicPropertyInfo>true</UsePublicPropertyInfo>
     <UseChildFactory>false</UseChildFactory>

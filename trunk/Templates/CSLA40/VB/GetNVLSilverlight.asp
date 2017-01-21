@@ -41,7 +41,7 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
             else if (c.Properties.Count > 0)
                 critSilverlight = SendSingleCriteria(c, c.Properties[0].ParameterValue);
             if (Info.SimpleCacheOptions != SimpleCacheResults.None)
-                critSilverlight += (critSilverlight.Length > 0 ? ", " : "") + "Function(o, e)";
+                critSilverlight += (critSilverlight.Length > 0 ? ", " : "") + "Sub(o, e)";
             else
                 critSilverlight += (critSilverlight.Length > 0 ? ", " : "");
             %>
@@ -64,7 +64,8 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
                 DataPortal.BeginFetch(Of <%= Info.ObjectName %>)(<%= critSilverlight %>
                         _list = e.Object
                         callback(o, e)
-                    End Function, DataPortal.ProxyModes.LocalOnly)
+                    End Sub,
+                    DataPortal.ProxyModes.LocalOnly)
             Else
                 callback(Nothing, New DataPortalResult(Of <%= Info.ObjectName %>)(_list, Nothing, Nothing))
             End If<%

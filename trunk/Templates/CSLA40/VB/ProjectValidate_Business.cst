@@ -35,7 +35,7 @@ WARNINGS
 15. When separate namespaces in folders, Utility classes folder is ignored
 16. Check no repeated object names
 17. Check no repeated file names
-18. Check no repeated criteria names for non nested class (with more than one property)
+18. Check no repeated criteria names for non nested class (classes with more than one property)
 */
 
 // do not validate objects that aren't generated
@@ -198,7 +198,6 @@ foreach (CslaObjectInfo objectInfo in list)
 if (Errors.Length > 0)
     return;
 
-/*
 if (CurrentUnit.GenerationParams.BaseFilenameSuffix ==
     CurrentUnit.GenerationParams.ExtendedFilenameSuffix)
 {
@@ -227,7 +226,6 @@ if (CurrentUnit.GenerationParams.UtilitiesNamespace.Equals(string.Empty))
 {
     Errors.Append("Generation settings: 'Utility classes namespace' can not be empty." + Environment.NewLine);
 }
-*/
 if (CurrentUnit.GenerationParams.UtilitiesNamespace.IndexOf(CurrentUnit.GenerationParams.BaseNamespace) != 0)
 {
     Errors.Append("Generation settings: 'Utility classes namespace' (" + CurrentUnit.GenerationParams.UtilitiesNamespace + ") must be under must be under 'Base namespace' (" +
@@ -241,11 +239,14 @@ if (CurrentUnit.GenerationParams.UseChildFactory && !CurrentUnit.GenerationParam
 {
     Errors.Append("Generation settings: 'Generate child factory methods' requires 'Generate Synchronous'." + Environment.NewLine);
 }
-if (CurrentUnit.GenerationParams.SeparateNamespaces &&
+// now this just cannot happen
+/*if (CurrentUnit.GenerationParams.SeparateNamespaces &&
     CurrentUnit.GenerationParams.UtilitiesFolder != string.Empty)
 {
     Warnings.Append("Generation settings: 'Utility classes folder' will be ignored (separate namespaces in folders is set)." + Environment.NewLine);
-}
+}*/
+
+// Why? This isn't the behaviour with base files...
 if (CurrentUnit.GenerationParams.SeparateClassComment &&
     CurrentUnit.GenerationParams.ClassCommentFilenameSuffix == string.Empty)
 {

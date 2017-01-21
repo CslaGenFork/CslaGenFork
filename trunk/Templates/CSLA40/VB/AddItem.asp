@@ -11,7 +11,7 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
     string factoryParams = string.Empty;
     foreach (Property param in crit.Properties)
     {
-        prms += string.Concat(", ", FormatCamel(param.Name), "As ",  GetDataTypeGeneric(param, param.PropertyType));
+        prms += string.Concat(", ", FormatCamel(param.Name), " As ",  GetDataTypeGeneric(param, param.PropertyType));
         factoryParams += string.Concat(", ", FormatCamel(param.Name));
     }
     if (factoryParams.Length > 1)
@@ -27,7 +27,7 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
         }
         %>
         ''' <returns>The new <%= Info.ItemType %> item added to the collection.</returns>
-        Public Function Add(<%= prms %>) As <%= Info.ItemType %>
+        Public Overloads Function Add(<%= prms %>) As <%= Info.ItemType %>
         <%
     string newMethodName = "New" + Info.ItemType;
     if (itemInfo.IsEditableSwitchable())

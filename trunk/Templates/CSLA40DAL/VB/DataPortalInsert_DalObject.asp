@@ -131,6 +131,13 @@ if (Info.GenerateDataPortalInsert)
                     cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %>.Equals(Guid.Empty) ? (object)DBNull.Value : <%= FormatCamel(prop.Name) %>).DbType = DbType.<%= TemplateHelper.GetDbType(prop) %>;
                     <%
                     }
+                    else if (AllowNull(prop) && prop.PropertyType == TypeCodeEx.CustomType)
+                    {
+                        %>
+                    // For nullable PropertyConvert, null is persisted if the backing field is zero
+                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %> == null ? (object)DBNull.Value : <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %>).DbType = DbType.<%= TemplateHelper.GetDbType(prop) %>;
+                    <%
+                    }
                     else if (AllowNull(prop) && propType != TypeCodeEx.SmartDate)
                     {
                         %>
@@ -150,6 +157,13 @@ if (Info.GenerateDataPortalInsert)
                     {
                         %>
                     cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %>.Equals(Guid.Empty) ? (object)DBNull.Value : <%= GetFieldReaderStatement(prop) %>).DbType = DbType.<%= TemplateHelper.GetDbType(prop) %>;
+                    <%
+                    }
+                    else if (AllowNull(prop) && prop.PropertyType == TypeCodeEx.CustomType)
+                    {
+                        %>
+                    // For nullable PropertyConvert, null is persisted if the backing field is zero
+                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %> == null ? (object)DBNull.Value : <%= GetFieldReaderStatement(prop) %>).DbType = DbType.<%= TemplateHelper.GetDbType(prop) %>;
                     <%
                     }
                     else if (AllowNull(prop) && propType != TypeCodeEx.SmartDate)

@@ -58,36 +58,36 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
         if (elementCriteriaCount > 1 || (Info.IsEditableSwitchable() && elementCriteriaCount == 1))
         {
             %>
-            DataPortal.BeginFetch(Of <%= Info.ObjectName %>)(New <%= uowCrit.CriteriaName %>(<%= strGetCritParams %>), Function(o, e)
+            DataPortal.BeginFetch(Of <%= Info.ObjectName %>)(New <%= uowCrit.CriteriaName %>(<%= strGetCritParams %>), Sub(o, e)
                 If e.Error IsNot Nothing Then
                     Throw e.Error
                 End If
 <%= strGetCache %>                callback(o, e)
-            End Function,
+            End Sub,
             DataPortal.ProxyModes.LocalOnly)
             <%
         }
         else if (elementCriteriaCount > 0)
         {
             %>
-            DataPortal.BeginFetch(Of <%= Info.ObjectName %>)(<%= strGetCritParams %>, Function(o, e)
+            DataPortal.BeginFetch(Of <%= Info.ObjectName %>)(<%= strGetCritParams %>, Sub(o, e)
                 If e.Error IsNot Nothing Then
                     Throw e.Error
                 End If
 <%= strGetCache %>                callback(o, e)
-            End Function,
+            End Sub,
             DataPortal.ProxyModes.LocalOnly)
             <%
         }
         else
         {
             %>
-            DataPortal.BeginFetch(Of <%= Info.ObjectName %>)(<%= strGetCritParams %>Function(o, e)
+            DataPortal.BeginFetch(Of <%= Info.ObjectName %>)(<%= strGetCritParams %>Sub(o, e)
                 If e.Error IsNot Nothing Then
                     Throw e.Error
                 End If
 <%= strGetCache %>                callback(o, e)
-            End Function,
+            End Sub,
             DataPortal.ProxyModes.LocalOnly)
         <%
         }

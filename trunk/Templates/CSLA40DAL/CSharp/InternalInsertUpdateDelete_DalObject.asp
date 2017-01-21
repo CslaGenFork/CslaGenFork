@@ -162,6 +162,12 @@ if (Info.GenerateDataPortalInsert)
                     %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %>.Equals(Guid.Empty) ? (object)DBNull.Value : <%= FormatCamel(prop.Name) %>)<%= postfix %>;
                     <%
                 }
+                else if (AllowNull(prop) && prop.PropertyType == TypeCodeEx.CustomType)
+                {
+                    %>// For nullable PropertyConvert, null is persisted if the backing field is zero
+                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %> == 0 ? (object)DBNull.Value : <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %>)<%= postfix %>;
+                    <%
+                }
                 else if (AllowNull(prop) && propType != TypeCodeEx.SmartDate)
                 {
                     %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %> == null ? (object)DBNull.Value : <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %><%= TemplateHelper.IsNullableType(propType) ? ".Value" :"" %>)<%= postfix %>;
@@ -347,6 +353,12 @@ if (Info.GenerateDataPortalUpdate)
             if (AllowNull(prop) && propType == TypeCodeEx.Guid)
             {
                 %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %>.Equals(Guid.Empty) ? (object)DBNull.Value : <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %>)<%= postfix %>;
+                    <%
+            }
+            else if (AllowNull(prop) && prop.PropertyType == TypeCodeEx.CustomType)
+            {
+                %>// For nullable PropertyConvert, null is persisted if the backing field is zero
+                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %> == 0 ? (object)DBNull.Value : <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %>)<%= postfix %>;
                     <%
             }
             else if (AllowNull(prop) && propType != TypeCodeEx.SmartDate)
