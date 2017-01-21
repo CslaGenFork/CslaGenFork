@@ -390,7 +390,7 @@ if (useParentReference || isRODeepLoadCollection || useAuthz || Info.UniqueItems
         /// <returns><c>true</c> if the <%= Info.ItemType %> is a deleted collection item; otherwise, <c>false</c>.</returns>
         public bool ContainsDeleted(<%= prms %>)
         {
-            foreach (var <%= FormatCamel(Info.ItemType) %> in this.DeletedList)
+            foreach (var <%= FormatCamel(Info.ItemType) %> in DeletedList)
             {
                 if (<%
                 for (int i = 0; i < propertyList.Count; i++)

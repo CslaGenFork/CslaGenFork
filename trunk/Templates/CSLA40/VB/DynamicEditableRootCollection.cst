@@ -29,8 +29,7 @@ if (Errors.Length == 0)
     bool useIsLoadedProperty = false;
     parentInfo = null;
     CslaObjectInfo grandParentInfo = null;
-    bool useBypassPropertyChecks = CurrentUnit.GenerationParams.UseBypassPropertyChecks;
-    string bpcSpacer = useBypassPropertyChecks ? bpcSpacer = new string(' ', 4) : string.Empty;
+    string bpcSpacer = String.Empty;
     bool ancestorIsCollection = false;
     int ancestorLoaderLevel = AncestorLoaderLevel(Info, out ancestorIsCollection);
     int silverlightLevel = 0;
@@ -86,7 +85,7 @@ if (Errors.Length == 0)
         %>#End If
     <%
     }
-    %><%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %>{
+    %><%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %>
 <!-- #include file="CollectionBusinessMethods.asp" -->
 <!-- #include file="FindMethods.asp" -->
     <%
@@ -134,7 +133,7 @@ if (Errors.Length == 0)
         Response.Write(Environment.NewLine);
     }
     %>
-    }
+    End Class
 <!-- #include file="CriteriaObject.asp" -->
 <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Business) == string.Empty ? "" : "End Namespace" %>
 <%

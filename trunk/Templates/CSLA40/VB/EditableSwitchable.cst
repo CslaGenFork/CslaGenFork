@@ -43,8 +43,7 @@ if (Errors.Length == 0)
         useIsLoadedProperty = CurrentUnit.GenerationParams.ReportObjectNotFound == ReportObjectNotFound.IsLoadedProperty;
     bool isSwitchable = true;
     bool isCollection = false;
-    bool useBypassPropertyChecks = CurrentUnit.GenerationParams.UseBypassPropertyChecks;
-    string bpcSpacer = useBypassPropertyChecks ? bpcSpacer = new string(' ', 4) : string.Empty;
+    string bpcSpacer = String.Empty;
     bool ancestorIsCollection = false;
     int ancestorLoaderLevel = AncestorLoaderLevel(Info, out ancestorIsCollection);
     int silverlightLevel = 0;

@@ -61,34 +61,34 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous)
         if (elementCriteriaCount > 1)
         {
             %>
-            DataPortal.BeginFetch(Of <%= Info.ObjectName %>)(New <%= uowCrit.CriteriaName %>(<%= strNewCritParams %>), Function(o, e)
+            DataPortal.BeginFetch(Of <%= Info.ObjectName %>)(New <%= uowCrit.CriteriaName %>(<%= strNewCritParams %>), Sub(o, e)
                 If e.Error IsNot Nothing Then
                     Throw e.Error
                 End If
 <%= strNewCache %>                callback(o, e)
-            End Function)
+            End Sub)
         <%
         }
         else if (elementCriteriaCount > 0)
         {
             %>
-            DataPortal.BeginFetch(Of <%= Info.ObjectName %>)(<%= strNewCritParams %>, Function(o, e)
+            DataPortal.BeginFetch(Of <%= Info.ObjectName %>)(<%= strNewCritParams %>, Sub(o, e)
                 If e.Error IsNot Nothing Then
                     Throw e.Error
                 End If
 <%= strNewCache %>                callback(o, e)
-            End Function)
+            End Sub)
         <%
         }
         else
         {
             %>
-            DataPortal.BeginFetch(Of <%= Info.ObjectName %>)(<%= strNewCritParams %>Function(o, e)
+            DataPortal.BeginFetch(Of <%= Info.ObjectName %>)(<%= strNewCritParams %>Sub(o, e)
                 If e.Error IsNot Nothing Then
                     Throw e.Error
                 End If
 <%= strNewCache %>                callback(o, e)
-            End Function)
+            End Sub)
         <%
         }
             %>

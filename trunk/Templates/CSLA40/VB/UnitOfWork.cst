@@ -24,8 +24,7 @@ if (Errors.Length == 0)
     bool isUndeletable = false;
     string softDeleteProperty = string.Empty;
     parentInfo = null;
-    bool useBypassPropertyChecks = CurrentUnit.GenerationParams.UseBypassPropertyChecks;
-    string bpcSpacer = useBypassPropertyChecks ? bpcSpacer = new string(' ', 4) : string.Empty;
+    string bpcSpacer = String.Empty;
     bool useIsLoadedProperty = false;
     bool ancestorIsCollection = false;
     int ancestorLoaderLevel = 0;

@@ -62,7 +62,7 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices && UseNoSilverlight())
             {
                 if (prop.DefaultValue != String.Empty)
                 {
-                    if (prop.DefaultValue.ToUpper() == "_lastID".ToUpper() &&
+                    if (prop.DefaultValue.ToUpper() == "_lastId".ToUpper() &&
                         prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK &&
                         (prop.PropertyType == TypeCodeEx.Int16 ||
                         prop.PropertyType == TypeCodeEx.Int32 ||

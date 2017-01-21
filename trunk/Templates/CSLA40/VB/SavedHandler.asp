@@ -78,30 +78,30 @@ if (Info.UpdaterType != string.Empty)
         ''' <param name="sender">The sender of the event.</param>
         ''' <param name="e">The <see cref="Csla.Core.SavedEventArgs"/> instance containing the event data.</param>
         Private Sub <%= Info.UpdaterType %>SavedHandler(sender As Object, e As Csla.Core.SavedEventArgs)
-            Dim obj = DirecCast(e.NewObject, <%= Info.UpdaterType %>)
-            If DirecCast(sender, <%= Info.UpdaterType %>).IsNew Then
+            Dim obj As <%= Info.UpdaterType %> = CType(e.NewObject, <%= Info.UpdaterType %>)
+            If CType(sender, <%= Info.UpdaterType %>).IsNew Then
                 IsReadOnly = False
-                Dim rlce = RaiseListChangedEvents
+                Dim rlce As Boolean = RaiseListChangedEvents
                 RaiseListChangedEvents = True
                 Add(<%= Info.ItemType %>.LoadInfo(obj))
                 RaiseListChangedEvents = rlce
                 IsReadOnly = True
-            ElseIf DirecCast(sender, <%= Info.UpdaterType %>).IsDeleted Then
-                For index As Int = 0 To Me.Count - 1
-                    Dim child = Me(index)
+            ElseIf CType(sender, <%= Info.UpdaterType %>).IsDeleted Then
+                For index = 0 To Count - 1
+                    Dim child As <%= Info.ItemType %> = Me(index)
                     If child.<%= identityName %> = obj.<%= identitySourceName %> Then
                         IsReadOnly = False
-                        Dim rlce = RaiseListChangedEvents
+                        Dim rlce As Boolean = RaiseListChangedEvents
                         RaiseListChangedEvents = True
-                        Me.RemoveItem(index)
+                        RemoveItem(index)
                         RaiseListChangedEvents = rlce
                         IsReadOnly = True
                         Exit For
                     End If
                 Next
             Else
-                For index As Int = 0 To Me.Count - 1
-                    Dim child = Me(index)
+                For index = 0 To Count - 1
+                    Dim child As <%= Info.ItemType %> = Me(index)
                     If child.<%= identityName %> = obj.<%= identitySourceName %> Then
                         child.UpdatePropertiesOnSaved(obj)
                         <%

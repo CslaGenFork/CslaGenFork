@@ -678,13 +678,13 @@ namespace CslaGenerator.Util.PropertyBags
                     if (valueProperty.PropertyType != TypeCodeEx.CustomType &&
                         propertyName == "CustomPropertyType")
                         return false;
-                    if (valueProperty.PropertyType == TypeCodeEx.CustomType &&
+                    /*if (valueProperty.PropertyType == TypeCodeEx.CustomType &&
                         (propertyName == "DbBindColumn" ||
                         propertyName == "DataAccess" ||
                         propertyName == "PrimaryKey" ||
                         propertyName == "FKConstraint" ||
                         propertyName == "ParameterName"))
-                        return false;
+                        return false;*/
 
                     if (_selectedObject.Length > 1 && IsEnumerable(GetPropertyInfoCache(propertyName)))
                         return false;

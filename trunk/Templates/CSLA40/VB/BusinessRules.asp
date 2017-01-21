@@ -71,7 +71,7 @@ if (generateRuleRegion || generateAuthRegion || generateObjectRuleRegion)
     // Object Business Rules
     if (generateObjectRuleRegion)
     {
-        Response.WriteLine(Environment.NewLine + new string(' ', 12) + "// Object Business Rules");
+        Response.WriteLine(Environment.NewLine + new string(' ', 12) + "' Object Business Rules");
         bool primaryOnCtor = false;
 
         foreach (BusinessRule rule in Info.BusinessRules)
@@ -129,7 +129,7 @@ if (generateRuleRegion || generateAuthRegion || generateObjectRuleRegion)
                     isFirst = false;
                 else
                     resultProperties += ", ";
-                resultProperties += property.Name + " = " + stringValue;
+                resultProperties += "." + property.Name + " = " + stringValue;
             }
 
             // BaseRuleProperties
@@ -148,13 +148,13 @@ if (generateRuleRegion || generateAuthRegion || generateObjectRuleRegion)
                             isFirst = false;
                         else
                             resultProperties += ", ";
-                        resultProperties += property.Name + " = " + stringValue;
+                        resultProperties += "." + property.Name + " = " + stringValue;
                     }
                 }
             }
 
             if (resultProperties != string.Empty)
-                resultProperties = " { " + resultProperties + " }";
+                resultProperties = " With { " + resultProperties + " }";
 
             resultRule = "BusinessRules.AddRule(New " + backupRuleType + "(" + resultConstructor + ")" + resultProperties + ")";
             %>
@@ -166,17 +166,19 @@ if (generateRuleRegion || generateAuthRegion || generateObjectRuleRegion)
     // Property Business Rules
     if (generateRuleRegion)
     {
-        Response.WriteLine(Environment.NewLine + new string(' ', 12) + "// Property Business Rules" + Environment.NewLine);
+        Response.WriteLine(Environment.NewLine + new string(' ', 12) + "' Property Business Rules" + Environment.NewLine);
         bool primaryOnCtor = false;
         foreach (IHaveBusinessRules rulableProperty in allRulesProperties)
         {
             resultRule = string.Empty;
             if (rulableProperty.BusinessRules.Count > 0)
-                Response.WriteLine(new string(' ', 12) + "// " + rulableProperty.Name);
+                Response.WriteLine(new string(' ', 12) + "' " + rulableProperty.Name);
 
             foreach (BusinessRule rule in rulableProperty.BusinessRules)
             {
                 string backupRuleType = rule.Type;
+                backupRuleType = backupRuleType.Replace("<", "(Of ");
+                backupRuleType = backupRuleType.Replace(">", ")");
                 foreach (string ns in Info.Namespaces)
                 {
                     string nameSpace = ns + '.';
@@ -238,7 +240,7 @@ if (generateRuleRegion || generateAuthRegion || generateObjectRuleRegion)
                             isFirst = false;
                         else
                             resultProperties += ", ";
-                        resultProperties += property.Name + " = " + FormatPropertyInfoName(ReturnRawPropertyValue(property));
+                        resultProperties += "." + property.Name + " = " + FormatPropertyInfoName(ReturnRawPropertyValue(property));
                     }
                     else
                     {
@@ -250,7 +252,7 @@ if (generateRuleRegion || generateAuthRegion || generateObjectRuleRegion)
                             isFirst = false;
                         else
                             resultProperties += ", ";
-                        resultProperties += property.Name + " = " + stringValue;
+                        resultProperties += "." + property.Name + " = " + stringValue;
                     }
                 }
 
@@ -272,7 +274,7 @@ if (generateRuleRegion || generateAuthRegion || generateObjectRuleRegion)
                                 else
                                     resultProperties += ", ";
 
-                                resultProperties += property.Name + " = " + FormatPropertyInfoName(ReturnRawPropertyValue(rule, property));
+                                resultProperties += "." + property.Name + " = " + FormatPropertyInfoName(ReturnRawPropertyValue(rule, property));
                             }
                             else
                             {
@@ -284,14 +286,14 @@ if (generateRuleRegion || generateAuthRegion || generateObjectRuleRegion)
                                     isFirst = false;
                                 else
                                     resultProperties += ", ";
-                                resultProperties += property.Name + " = " + stringValue;
+                                resultProperties += "." + property.Name + " = " + stringValue;
                             }
                         }
                     }
                 }
 
                 if (resultProperties != string.Empty)
-                    resultProperties = " { " + resultProperties + " }";
+                    resultProperties = " With { " + resultProperties + " }";
 
                 resultRule = "BusinessRules.AddRule(New " + backupRuleType + "(" + resultConstructor + ")" + resultProperties + ")";
             %>
@@ -304,7 +306,7 @@ if (generateRuleRegion || generateAuthRegion || generateObjectRuleRegion)
     // Property Authorization Rules
     if (generateAuthRegion)
     {
-        Response.WriteLine(Environment.NewLine + new string(' ', 12) + "// Authorization Rules" + Environment.NewLine);
+        Response.WriteLine(Environment.NewLine + new string(' ', 12) + "' Authorization Rules" + Environment.NewLine);
         AuthorizationRule authzRule;
         foreach (IHaveBusinessRules rulableProperty in allRulesProperties)
         {
@@ -314,7 +316,7 @@ if (generateRuleRegion || generateAuthRegion || generateObjectRuleRegion)
                 if (!String.IsNullOrWhiteSpace(rulableProperty.ReadRoles) ||
                     !String.IsNullOrWhiteSpace(rulableProperty.WriteRoles))
                 {
-                    Response.WriteLine(new string(' ', 12) + "// " + rulableProperty.Name);
+                    Response.WriteLine(new string(' ', 12) + "' " + rulableProperty.Name);
                 }
                 if (!String.IsNullOrWhiteSpace(rulableProperty.ReadRoles))
                 {
@@ -359,7 +361,7 @@ if (generateRuleRegion || generateAuthRegion || generateObjectRuleRegion)
                 if (rulableProperty.ReadAuthzRuleType.Constructors.Count > 0 ||
                     rulableProperty.WriteAuthzRuleType.Constructors.Count > 0)
                 {
-                    Response.WriteLine(new string(' ', 12) + "// " + rulableProperty.Name);
+                    Response.WriteLine(new string(' ', 12) + "' " + rulableProperty.Name);
                     if (!string.IsNullOrWhiteSpace(rulableProperty.ReadAuthzRuleType.Type))
                     {
                         authzRule = rulableProperty.ReadAuthzRuleType;

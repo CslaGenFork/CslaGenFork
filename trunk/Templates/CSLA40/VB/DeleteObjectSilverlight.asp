@@ -111,11 +111,11 @@ if (UseSilverlight())
                 }
                 if (c.Properties.Count > 1)
                 {
-                    %>DataPortal.BeginFetch(Of <%= Info.ObjectName %>)(<%= strDelCritParams %>, Function(o, e)<%
+                    %>DataPortal.BeginFetch(Of <%= Info.ObjectName %>)(<%= strDelCritParams %>, Sub(o, e)<%
                 }
                 else if (c.Properties.Count > 0)
                 {
-                    %>DataPortal.BeginFetch(Of <%= Info.ObjectName %>)(<%= SendSingleCriteria(c, strDelCritParams) %>, Function(o, e)<%
+                    %>DataPortal.BeginFetch(Of <%= Info.ObjectName %>)(<%= SendSingleCriteria(c, strDelCritParams) %>, Sub(o, e)<%
                 }
             %>
                     If e.Error IsNot Nothing Then
@@ -123,7 +123,8 @@ if (UseSilverlight())
                     Else
                         obj = e.Object
                     End If
-                End Function, DataPortal.ProxyModes.LocalOnly)
+                End Sub,
+                DataPortal.ProxyModes.LocalOnly)
             obj.<%= softDeleteProperty %> = True
             obj.BeginSave(callback)
         End Sub

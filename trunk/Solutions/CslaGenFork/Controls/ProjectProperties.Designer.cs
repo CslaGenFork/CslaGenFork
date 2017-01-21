@@ -196,7 +196,6 @@ namespace CslaGenerator.Controls
             this.lblHeaderVerbosity = new System.Windows.Forms.Label();
             this.cboHeaderVerbosity = new System.Windows.Forms.ComboBox();
             this.chkUsesCslaAuthorizationProvider = new System.Windows.Forms.CheckBox();
-            this.chkUseBypassPropertyChecks = new System.Windows.Forms.CheckBox();
             this.chkUseChildFactory = new System.Windows.Forms.CheckBox();
             this.chkForceReadOnlyProperties = new System.Windows.Forms.CheckBox();
             this.chkUpdateOnlyDirtyChildren = new System.Windows.Forms.CheckBox();
@@ -1033,8 +1032,8 @@ namespace CslaGenerator.Controls
             this.txtIDInt16DefaultValue.TabIndex = 2;
             this.toolTip.SetToolTip(this.txtIDInt16DefaultValue,
                                      "Specify the value to be assigned on new object creation by DataPortal_Create." +
-                                     "\r\nUse case insensitive \"_lastID\" to generate the assignement:" +
-                                     "\r\nSystem.Threading.Interlocked.Decrement(ref _lastID)");
+                                     "\r\nUse case insensitive \"_lastId\" to generate the assignement:" +
+                                     "\r\nSystem.Threading.Interlocked.Decrement(ref _lastId)");
             // 
             // lblIDInt32DefaultValue
             // 
@@ -1053,8 +1052,8 @@ namespace CslaGenerator.Controls
             this.txtIDInt32DefaultValue.TabIndex = 3;
             this.toolTip.SetToolTip(this.txtIDInt32DefaultValue,
                                      "Specify the value to be assigned on new object creation by DataPortal_Create." +
-                                     "\r\nUse case insensitive \"_lastID\" to generate the assignement:" +
-                                     "\r\nSystem.Threading.Interlocked.Decrement(ref _lastID)");
+                                     "\r\nUse case insensitive \"_lastId\" to generate the assignement:" +
+                                     "\r\nSystem.Threading.Interlocked.Decrement(ref _lastId)");
             // 
             // lblIDInt64DefaultValue
             // 
@@ -1073,8 +1072,8 @@ namespace CslaGenerator.Controls
             this.txtIDInt64DefaultValue.TabIndex = 4;
             this.toolTip.SetToolTip(this.txtIDInt64DefaultValue,
                                      "Specify the value to be assigned on new object creation by DataPortal_Create." +
-                                     "\r\nUse case insensitive \"_lastID\" to generate the assignement:" +
-                                     "\r\nSystem.Threading.Interlocked.Decrement(ref _lastID)");
+                                     "\r\nUse case insensitive \"_lastId\" to generate the assignement:" +
+                                     "\r\nSystem.Threading.Interlocked.Decrement(ref _lastId)");
             // 
             // groupBoxOtherParameters
             // 
@@ -1263,7 +1262,7 @@ namespace CslaGenerator.Controls
             this.chkEnforceGenericInheritance.TabIndex = 6;
             this.chkEnforceGenericInheritance.Text = "Enforce Generic Inheritance";
             this.toolTip.SetToolTip(this.chkEnforceGenericInheritance,
-                                     "Enforce Generic Inheritance.");
+                                     "When set, the options Inherits and Inherits WinForms only show generic base classes.");
             // 
             // GenerationTab
             // 
@@ -1903,7 +1902,6 @@ namespace CslaGenerator.Controls
             this.GenerationMiscTab.Controls.Add(this.cboGenerateAuthorization);
             this.GenerationMiscTab.Controls.Add(this.chkUsesCslaAuthorizationProvider);
             this.GenerationMiscTab.Controls.Add(this.chkUsePublicPropertyInfo);
-            this.GenerationMiscTab.Controls.Add(this.chkUseBypassPropertyChecks);
             this.GenerationMiscTab.Controls.Add(this.chkUseChildFactory);
             this.GenerationMiscTab.Controls.Add(this.chkForceReadOnlyProperties);
             this.GenerationMiscTab.Controls.Add(this.lblHeaderVerbosity);
@@ -1982,25 +1980,11 @@ namespace CslaGenerator.Controls
             this.toolTip.SetToolTip(this.chkUsePublicPropertyInfo,
                                      "If checked, PropertyInfo declarations are public. Otherwise uses private declarations.\r\n" +
                                      "Note - You must check this for Silverlight 4 applications.");
-            //
-            // chkUseBypassPropertyChecks
-            // 
-            this.chkUseBypassPropertyChecks.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "UseBypassPropertyChecks", true, DataSourceUpdateMode.OnPropertyChanged));
-            this.chkUseBypassPropertyChecks.Location = new System.Drawing.Point(15, 134);
-            this.chkUseBypassPropertyChecks.Name = "chkUseBypassPropertyChecks";
-            this.chkUseBypassPropertyChecks.Size = new System.Drawing.Size(216, 17);
-            this.chkUseBypassPropertyChecks.TabIndex = 12;
-            this.chkUseBypassPropertyChecks.Text = "Generate BypassPropertyChecks";
-            this.toolTip.SetToolTip(this.chkUseBypassPropertyChecks,
-                                     "If checked, improves code readability by using\r\n" +
-                                     "BypassPropertyChecks blocks and assign values using .NET properties.\r\n" +
-                                     "Otherwise uses LoadProperty() to assign values.\r\n" +
-                                     "Note - The implementation of this feature isn't completed.");
             // 
             // chkUseChildFactory
             // 
             this.chkUseChildFactory.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "UseChildFactory", true, DataSourceUpdateMode.OnPropertyChanged));
-            this.chkUseChildFactory.Location = new System.Drawing.Point(15, 162);
+            this.chkUseChildFactory.Location = new System.Drawing.Point(15, 134);
             this.chkUseChildFactory.Name = "chkUseChildFactory";
             this.chkUseChildFactory.Size = new System.Drawing.Size(216, 17);
             this.chkUseChildFactory.TabIndex = 8;
@@ -2011,7 +1995,7 @@ namespace CslaGenerator.Controls
             // chkForceReadOnlyProperties
             // 
             this.chkForceReadOnlyProperties.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "ForceReadOnlyProperties", true, DataSourceUpdateMode.OnPropertyChanged));
-            this.chkForceReadOnlyProperties.Location = new System.Drawing.Point(15, 190);
+            this.chkForceReadOnlyProperties.Location = new System.Drawing.Point(15, 162);
             this.chkForceReadOnlyProperties.Name = "chkForceReadOnlyProperties";
             this.chkForceReadOnlyProperties.Size = new System.Drawing.Size(216, 17);
             this.chkForceReadOnlyProperties.TabIndex = 13;
@@ -2053,7 +2037,7 @@ namespace CslaGenerator.Controls
             // chkWriteTodo
             // 
             this.chkWriteTodo.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "WriteTodo", true, DataSourceUpdateMode.OnPropertyChanged));
-            this.chkWriteTodo.Location = new System.Drawing.Point(255, 162);
+            this.chkWriteTodo.Location = new System.Drawing.Point(255, 106);
             this.chkWriteTodo.Name = "chkWriteTodo";
             this.chkWriteTodo.Size = new System.Drawing.Size(216, 17);
             this.chkWriteTodo.TabIndex = 8;
@@ -2063,7 +2047,7 @@ namespace CslaGenerator.Controls
             // chkBackupOldSource
             // 
             this.chkBackupOldSource.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "BackupOldSource", true, DataSourceUpdateMode.OnPropertyChanged));
-            this.chkBackupOldSource.Location = new System.Drawing.Point(255, 190);
+            this.chkBackupOldSource.Location = new System.Drawing.Point(255, 134);
             this.chkBackupOldSource.Name = "chkBackupOldSource";
             this.chkBackupOldSource.Size = new System.Drawing.Size(216, 17);
             this.chkBackupOldSource.TabIndex = 8;
@@ -2073,7 +2057,7 @@ namespace CslaGenerator.Controls
             // chkRetryOnFileBusy
             // 
             this.chkRetryOnFileBusy.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "RetryOnFileBusy", true, DataSourceUpdateMode.OnPropertyChanged));
-            this.chkRetryOnFileBusy.Location = new System.Drawing.Point(255, 218);
+            this.chkRetryOnFileBusy.Location = new System.Drawing.Point(255, 162);
             this.chkRetryOnFileBusy.Name = "chkRetryOnFileBusy";
             this.chkRetryOnFileBusy.Size = new System.Drawing.Size(216, 17);
             this.chkRetryOnFileBusy.TabIndex = 8;
@@ -2325,7 +2309,6 @@ namespace CslaGenerator.Controls
         private System.Windows.Forms.CheckBox chkUsesCslaAuthorizationProvider;
         private System.Windows.Forms.Label lblHeaderVerbosity;
         private System.Windows.Forms.ComboBox cboHeaderVerbosity;
-        private System.Windows.Forms.CheckBox chkUseBypassPropertyChecks;
         private System.Windows.Forms.CheckBox chkUseChildFactory;
         private System.Windows.Forms.CheckBox chkForceReadOnlyProperties;
         private System.Windows.Forms.CheckBox chkUpdateOnlyDirtyChildren;

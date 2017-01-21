@@ -148,13 +148,13 @@ if (Info.CriteriaObjects.Count > 0)
                     if (prop.PropertyType == TypeCodeEx.Boolean && prop.Nullable == false)
                     {
                         %>
-            ''' <value><c>true</c> if <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; otherwise, <c>false</c>.</value>
+            ''' <value><c>True</c> if <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; otherwise, <c>false</c>.</value>
             <%
                     }
                     else if (prop.PropertyType == TypeCodeEx.Boolean && prop.Nullable == true)
                     {
                         %>
-            ''' <value><c>true</c> if <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; <c>false</c> if not <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; otherwise, <c>null</c>.</value>
+            ''' <value><c>True</c> if <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; <c>false</c> if not <%= CslaGenerator.Metadata.PropertyHelper.SplitOnCaps(prop.Name) %>; otherwise, <c>null</c>.</value>
             <%
                     }
                     else
@@ -179,9 +179,9 @@ if (Info.CriteriaObjects.Count > 0)
                         {
                             strParams += ", ";
                         }
-                        strParams += string.Concat(FormatCamel(prop.Name), " As ", GetDataTypeGeneric(prop, prop.PropertyType));
-                        strFieldAssignments += string.Concat("\r\n                ", "_" + FormatProperty(prop.Name), " = ", FormatCamel(prop.Name));
-                        strComment += "\r\n            ''' <param name=\"" + FormatCamel(prop.Name) + "\">The "+ FormatProperty(prop.Name) + ".</param>";
+                        strParams += "p_" + string.Concat(FormatCamel(prop.Name), " As ", GetDataTypeGeneric(prop, prop.PropertyType));
+                        strFieldAssignments += string.Concat("\r\n                ", FormatProperty(prop.Name), " = p_", FormatCamel(prop.Name));
+                        strComment += "\r\n            ''' <param name=\"p_" + FormatCamel(prop.Name) + "\">The "+ FormatProperty(prop.Name) + ".</param>";
                     }
                     else
                     {
@@ -240,7 +240,7 @@ if (Info.CriteriaObjects.Count > 0)
             ''' Determines whether the specified <see cref="System.Object"/> is equal to this instance.
             ''' </summary>
             ''' <param name="obj">The <see cref="System.Object"/> to compare with this instance.</param>
-            ''' <returns><c>true</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
+            ''' <returns><c>True</c> if the specified <see cref="System.Object"/> is equal to this instance; otherwise, <c>false</c>.</returns>
             Public Overrides Function Equals(obj As Object) As Boolean
                 If TypeOf obj Is <%= crit.Name %> Then
                     Dim c As <%= crit.Name %> = obj

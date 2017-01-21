@@ -79,7 +79,6 @@ if (UseSilverlight())
         ''' <param name="crit">The create criteria.</param>
         ''' <param name="callback">The completion callback method.</param>
         Public Shared Function New<%= Info.ObjectName %><%= c.CreateOptions.FactorySuffix %>(crit As <%= c.Name %>, callback As EventHandler(Of DataPortalResult(Of <%= Info.ObjectName %>))) As <%= Info.ObjectName %>
-        {
             <%
                     if (!useUnitOfWorkCreator)
                     {
@@ -90,9 +89,9 @@ if (UseSilverlight())
                     else
                     {
                         %>
-            <%= Info.UseUnitOfWorkType %>.New<%= Info.UseUnitOfWorkType %>(crit, Function(o, e)
-                callback(o, New DataPortalResult(Of <%= Info.ObjectName %>)(e.[Object].<%= Info.ObjectName %>, e.Error, Nothing))
-            End Function)
+            <%= Info.UseUnitOfWorkType %>.New<%= Info.UseUnitOfWorkType %>(crit, Sub(o, e)
+                callback(o, New DataPortalResult(Of <%= Info.ObjectName %>)(e.Object.<%= Info.ObjectName %>, e.Error, Nothing))
+            End Sub)
             <%
                     }
                     %>
@@ -129,9 +128,9 @@ if (UseSilverlight())
                     else
                     {
                         %>
-            <%= Info.UseUnitOfWorkType %>.New<%= Info.UseUnitOfWorkType %>(<%= strNewCritParams %><%= strNewCallback %>Function (o, e)
-                callback(o, New DataPortalResult(Of <%= Info.ObjectName %>)(e.[Object].<%= Info.ObjectName %>, e.Error, Nothing));
-            End Function)
+            <%= Info.UseUnitOfWorkType %>.New<%= Info.UseUnitOfWorkType %>(<%= strNewCritParams %><%= strNewCallback %>Sub(o, e)
+                callback(o, New DataPortalResult(Of <%= Info.ObjectName %>)(e.Object.<%= Info.ObjectName %>, e.Error, Nothing))
+            End Sub)
             <%
                     }
                 }
@@ -146,9 +145,9 @@ if (UseSilverlight())
                     else
                     {
                         %>
-            <%= Info.UseUnitOfWorkType %>.New<%= Info.UseUnitOfWorkType %>(<%= SendSingleCriteria(c, strNewCritParams) %><%= strNewCallback %>Function (o, e)
-                callback(o, New DataPortalResult(Of <%= Info.ObjectName %>)(e.[Object].<%= Info.ObjectName %>, e.Error, Nothing));
-            End Function)
+            <%= Info.UseUnitOfWorkType %>.New<%= Info.UseUnitOfWorkType %>(<%= SendSingleCriteria(c, strNewCritParams) %><%= strNewCallback %>Sub(o, e)
+                callback(o, New DataPortalResult(Of <%= Info.ObjectName %>)(e.Object.<%= Info.ObjectName %>, e.Error, Nothing))
+            End Sub)
             <%
                     }
                 }
@@ -163,9 +162,9 @@ if (UseSilverlight())
                     else
                     {
                         %>
-            <%= Info.UseUnitOfWorkType %>.New<%= Info.UseUnitOfWorkType %>(<%= strNewCallback %>Function (o, e)
-                callback(o, New DataPortalResult(Of <%= Info.ObjectName %>)(e.[Object].<%= Info.ObjectName %>, e.Error, Nothing));
-            End Function)
+            <%= Info.UseUnitOfWorkType %>.New<%= Info.UseUnitOfWorkType %>(<%= strNewCallback %>Sub(o, e)
+                callback(o, New DataPortalResult(Of <%= Info.ObjectName %>)(e.Object.<%= Info.ObjectName %>, e.Error, Nothing))
+            End Sub)
             <%
                     }
                 }

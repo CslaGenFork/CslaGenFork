@@ -54,39 +54,38 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
         ''' </summary>
         <%= strGetComment %>''' <param name="callback">The completion callback method.</param>
         <%= Info.ParentType == string.Empty ? "Public" : "Friend" %> Shared Sub Get<%= Info.ObjectName %>(<%= strGetParams %>)
-        {
             <%
         if (elementCriteriaCount > 1 || (Info.IsEditableSwitchable() && elementCriteriaCount == 1))
         {
             %>
-            DataPortal.BeginFetch(Of <%= Info.ObjectName %>)(New <%= uowCrit.CriteriaName %>(<%= strGetCritParams %>), Function(o, e)
+            DataPortal.BeginFetch(Of <%= Info.ObjectName %>)(New <%= uowCrit.CriteriaName %>(<%= strGetCritParams %>), Sub(o, e)
                 If e.Error IsNot Nothing Then
                     Throw e.Error
                 End If
 <%= strGetCache %>                callback(o, e)
-            End Function)
+            End Sub)
             <%
         }
         else if (elementCriteriaCount > 0)
         {
             %>
-            DataPortal.BeginFetch(Of <%= Info.ObjectName %>)(<%= strGetCritParams %>, Function(o, e)
+            DataPortal.BeginFetch(Of <%= Info.ObjectName %>)(<%= strGetCritParams %>, Sub(o, e)
                 If e.Error IsNot Nothing Then
                     Throw e.Error
                 End If
 <%= strGetCache %>                callback(o, e)
-            End Function)
+            End Sub)
             <%
         }
         else
         {
             %>
-            DataPortal.BeginFetch(Of <%= Info.ObjectName %>)(<%= strGetCritParams %>Function(o, e)
+            DataPortal.BeginFetch(Of <%= Info.ObjectName %>)(<%= strGetCritParams %>Sub(o, e)
                 If e.Error IsNot Nothing Then
                     Throw e.Error
                 End If
 <%= strGetCache %>                callback(o, e)
-            End Function)
+            End Sub)
         <%
         }
                 %>

@@ -300,10 +300,16 @@ namespace CslaGenerator.CodeGen
             if (nullable)
             {
                 if (assignDataType.IsNullableType())
-                    statement += String.Format("({0})", GetDataType(prop));
-                //else
-                //    statement += String.Format("!dr.IsDBNull(\"{0}\") ? ",
-                //                               prop.ParameterName);
+                {
+                    if (prop.DeclarationMode != PropertyDeclaration.ManagedWithTypeConversion &&
+                        prop.DeclarationMode != PropertyDeclaration.ClassicPropertyWithTypeConversion &&
+                        prop.DeclarationMode != PropertyDeclaration.UnmanagedWithTypeConversion)
+                        statement += String.Format("({0})", GetDataType(prop));
+                }
+                else
+                {
+                    statement += String.Format("dr.IsDBNull(\"{0}\") ? null : ", prop.ParameterName);
+                }
             }
             statement += "dr.";
 
@@ -389,7 +395,7 @@ namespace CslaGenerator.CodeGen
             switch (propType)
             {
                 case TypeCodeEx.Guid:
-                    return propName + ".Equals(Guid.Empty) ? (object)DBNull.Value : " + propName;
+                    return String.Format("{0}.Equals(Guid.Empty) ? (object)DBNull.Value : {0}", propName);
                 default:
                     return propName;
             }
@@ -397,6 +403,9 @@ namespace CslaGenerator.CodeGen
 
         public virtual string GetDataType(ValueProperty prop)
         {
+            if (prop.PropertyType == TypeCodeEx.CustomType)
+                return prop.CustomPropertyType;
+
             var type = GetDataType(prop.PropertyType);
             if (AllowNull(prop))
             {
@@ -411,7 +420,7 @@ namespace CslaGenerator.CodeGen
             var type = GetDataType(prop.BackingFieldType);
             if (AllowNull(prop))
             {
-                if (prop.BackingFieldType.IsNullableType())
+                if (prop.BackingFieldType.IsNullableType() && prop.PropertyType != TypeCodeEx.CustomType)
                     type += "?";
             }
             return type;
@@ -428,8 +437,20 @@ namespace CslaGenerator.CodeGen
             if (type == TypeCodeEx.String)
                 return "string";
 
+            if (type == TypeCodeEx.Int16)
+                return "short";
+
             if (type == TypeCodeEx.Int32)
                 return "int";
+
+            if (type == TypeCodeEx.Int64)
+                return "long";
+
+            if (type == TypeCodeEx.Decimal)
+                return "decimal";
+
+            if (type == TypeCodeEx.Double)
+                return "double";
 
             if (type == TypeCodeEx.Boolean)
                 return "bool";
@@ -2443,7 +2464,7 @@ namespace CslaGenerator.CodeGen
         public static string GetDataTypeGeneric(Property prop, TypeCodeEx field)
         {
             var type = GetDataType(field);
-            if (AllowNull(prop))
+            if (AllowNull(prop) && prop.PropertyType != TypeCodeEx.CustomType)
             {
                 if (field.IsNullableType())
                     type += "?";
@@ -2568,7 +2589,7 @@ namespace CslaGenerator.CodeGen
             return response;
         }
 
-        private static string GetDefault(CslaObjectInfo info, ValueProperty prop)
+        private string GetDefault(CslaObjectInfo info, ValueProperty prop)
         {
             if (HasCreateCriteriaDataPortal(info))
                 return string.Empty;
@@ -2583,6 +2604,10 @@ namespace CslaGenerator.CodeGen
 
             if (!prop.Nullable)
                 return string.Empty;
+
+            var init = GetInitValue(prop.BackingFieldType);
+            if (!string.IsNullOrEmpty(init))
+                return string.Format(", {0}", init);
 
             return ", null";
         }
@@ -2774,11 +2799,12 @@ namespace CslaGenerator.CodeGen
             // "private static readonly PropertyInfo<{0}> {1} = RegisterProperty<{0}>(p => p.{2}, \"{3}\"{4});",
             var response =
                 String.Format(
-                    "{0} static readonly PropertyInfo<{1}> {2} = RegisterProperty<{1}>(p => p.{3});",
+                    "{0} static readonly PropertyInfo<{1}> {2} = RegisterProperty<{1}>(p => p.{3}, \"{4}\");",
                     PropertyInfoVisibility(),
                     prop.TypeName,
                     FormatPropertyInfoName(prop.Name),
-                    FormatPascal(prop.Name));
+                    FormatPascal(prop.Name),
+                    PropertyHelper.SplitOnCaps(prop.Name));
 
             return response;
         }
@@ -2873,11 +2899,12 @@ namespace CslaGenerator.CodeGen
 
             response +=
                 String.Format(
-                    "{0} static readonly PropertyInfo<{1}> {2} = RegisterProperty<{1}>(p => p.{3});",
+                    "{0} static readonly PropertyInfo<{1}> {2} = RegisterProperty<{1}>(p => p.{3}, \"{4}\");",
                     PropertyInfoVisibility(),
                     prop.Type,
                     FormatPropertyInfoName(prop.Name),
-                    FormatPascal(prop.Name));
+                    FormatPascal(prop.Name),
+                    PropertyHelper.SplitOnCaps(prop.Name));
 
             return response;
         }
@@ -2945,7 +2972,8 @@ namespace CslaGenerator.CodeGen
             {
                 response = String.Format("{0}{1} {2}" + Environment.NewLine,
                     (String.IsNullOrEmpty(prop.Interfaces) ? GetPropertyAccess(prop) + " " : ""),
-                    GetDataTypeGeneric(prop, prop.PropertyType),
+                    //GetDataTypeGeneric(prop, prop.PropertyType),
+                    GetDataType(prop),
                     (String.IsNullOrEmpty(prop.Interfaces) ? FormatPascal(prop.Name) : prop.Interfaces));
                 response += "        {" + Environment.NewLine;
                 response += PropertyDeclareGetter(prop);
@@ -3052,7 +3080,7 @@ namespace CslaGenerator.CodeGen
                             ? "GetPropertyConvert"
                             : "GetProperty",
                         isConversion
-                            ? "<" + prop.BackingFieldType + ", " + prop.PropertyType + ">"
+                            ? "<" + GetDataType(prop.BackingFieldType) + ", " + GetDataType(prop) + ">"
                             : "",
                         (prop.DeclarationMode == PropertyDeclaration.Unmanaged ||
                          prop.DeclarationMode == PropertyDeclaration.UnmanagedWithTypeConversion)
@@ -3110,7 +3138,7 @@ namespace CslaGenerator.CodeGen
                     convertSnippetPre,
                     PropertyDeclareSetterMethod(isReadOnly, isReadOnlyObject, isConversion),
                     isConversion
-                        ? "<" + prop.BackingFieldType + ", " + prop.PropertyType + ">"
+                        ? "<" + GetDataType(prop.BackingFieldType) + ", " + GetDataType(prop) + ">"
                         : "",
                     (!isReadOnly && (prop.DeclarationMode == PropertyDeclaration.Unmanaged ||
                                      prop.DeclarationMode == PropertyDeclaration.UnmanagedWithTypeConversion))
@@ -3248,9 +3276,6 @@ namespace CslaGenerator.CodeGen
 
         public string GetFieldReaderStatement(PropertyDeclaration propDeclarationMode, string propName)
         {
-            /*if (propDeclarationMode == PropertyDeclaration.AutoProperty ||
-                CurrentUnit.GenerationParams.UseBypassPropertyChecks)*/
-
             if (propDeclarationMode == PropertyDeclaration.AutoProperty)
             {
                 return String.Format(FormatProperty(propName));
@@ -3436,8 +3461,6 @@ namespace CslaGenerator.CodeGen
 
         public string GetFieldLoaderStatement(PropertyDeclaration propDeclarationMode, string propName, string value)
         {
-            /*if (propDeclarationMode == PropertyDeclaration.AutoProperty ||
-                CurrentUnit.GenerationParams.UseBypassPropertyChecks)*/
             if (propDeclarationMode == PropertyDeclaration.AutoProperty)
             {
                 return String.Format("{0} = {1}", FormatProperty(propName), value);

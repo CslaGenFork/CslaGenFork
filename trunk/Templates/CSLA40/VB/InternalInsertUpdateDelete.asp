@@ -49,7 +49,7 @@ if (Info.GenerateDataPortalInsert)
     }
     lastCriteria = parentType.Length > 0 ? "parent" : "";
     if (useInlineQuery)
-        InlineQueryList.Add(new AdvancedGenerator.InlineQuery(Info.InsertProcedureName, (parentType.Length > 0 ? parentType + " parent" : "")));
+        InlineQueryList.Add(new AdvancedGenerator.InlineQuery(Info.InsertProcedureName, (parentType.Length > 0 ? "parent As " + parentType : "")));
     %>Private Sub Child_Insert(<%= (parentType.Length > 0 ? "parent As " + parentType : "") %>)
             <%
     if (TemplateHelper.UseSimpleAuditTrail(Info))
@@ -119,9 +119,15 @@ if (Info.GenerateDataPortalInsert)
                         %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", If(<%= GetFieldReaderStatement(prop) %>.Equals(Guid.Empty), DBNull.Value, <%= GetFieldReaderStatement(prop) %>)).DbType = DbType.<%= TemplateHelper.GetDbType(prop) %>
                     <%
                     }
+                    else if (AllowNull(prop) && prop.PropertyType == TypeCodeEx.CustomType)
+                    {
+                        %>' For nullable PropertyConvert, null (Nothing) is persisted if the backing field is zero
+                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", If(<%= GetFieldReaderStatement(prop) %> = 0, DBNull.Value, <%= GetFieldReaderStatement(prop) %>)).DbType = DbType.<%= TemplateHelper.GetDbType(prop) %>
+                    <%
+                    }
                     else if (AllowNull(prop) && propType != TypeCodeEx.SmartDate)
                     {
-                        %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", If(<%= GetFieldReaderStatement(prop) %><%= TemplateHelper.IsNullableType(propType) ? ".HasValue" : " IsNot Nothing" %>, <%= GetFieldReaderStatement(prop) %><%= TemplateHelper.IsNullableType(propType) ? ".Value" :"" %>, DBNull.Value)).DbType = DbType.<%= TemplateHelper.GetDbType(prop) %>
+                        %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", If(<%= GetFieldReaderStatement(prop) %> Is Nothing, DBNull.Value, <%= GetFieldReaderStatement(prop) %><%= TemplateHelper.IsNullableType(propType) ? ".Value" :"" %>)).DbType = DbType.<%= TemplateHelper.GetDbType(prop) %>
                     <%
                     }
                     else
@@ -137,9 +143,15 @@ if (Info.GenerateDataPortalInsert)
                         %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", If(<%= GetParameterSet(Info, prop) %>.Equals(Guid.Empty),  DBNull.Value, <%= GetFieldReaderStatement(prop) %>)).DbType = DbType.<%= TemplateHelper.GetDbType(prop) %>
                     <%
                     }
+                    else if (AllowNull(prop) && prop.PropertyType == TypeCodeEx.CustomType)
+                    {
+                        %>' For nullable PropertyConvert, null (Nothing) is persisted if the backing field is zero
+                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", If(<%= GetParameterSet(Info, prop) %> = 0, DBNull.Value, <%= GetFieldReaderStatement(prop) %>)).DbType = DbType.<%= TemplateHelper.GetDbType(prop) %>
+                    <%
+                    }
                     else if (AllowNull(prop) && propType != TypeCodeEx.SmartDate)
                     {
-                        %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", If(<%= GetParameterSet(Info, prop) %><%= TemplateHelper.IsNullableType(propType) ? ".HasValue" : " IsNot Nothing" %>, <%= GetFieldReaderStatement(prop) %><%= TemplateHelper.IsNullableType(propType) ? ".Value" :"" %>, DBNull.Value)).DbType = DbType.<%= TemplateHelper.GetDbType(prop) %>
+                        %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", If(<%= GetParameterSet(Info, prop) %> Is Nothing, DBNull.Value, <%= GetFieldReaderStatement(prop) %><%= TemplateHelper.IsNullableType(propType) ? ".Value" :"" %>)).DbType = DbType.<%= TemplateHelper.GetDbType(prop) %>
                     <%
                     }
                     else
@@ -240,7 +252,7 @@ if (Info.GenerateDataPortalUpdate)
     }
     lastCriteria = (parentType.Length > 0 && !Info.ParentInsertOnly) ? "parent" : "";
     if (useInlineQuery)
-        InlineQueryList.Add(new AdvancedGenerator.InlineQuery(Info.UpdateProcedureName, ((parentType.Length > 0 && !Info.ParentInsertOnly) ? parentType + " parent" : "")));
+        InlineQueryList.Add(new AdvancedGenerator.InlineQuery(Info.UpdateProcedureName, ((parentType.Length > 0 && !Info.ParentInsertOnly) ? "parent As " + parentType : "")));
     %>Private Sub Child_Update(<%= ((parentType.Length > 0 && !Info.ParentInsertOnly) ? "parent As " + parentType : "") %>)
             <%
     if (CurrentUnit.GenerationParams.UpdateOnlyDirtyChildren)
@@ -255,7 +267,7 @@ if (Info.GenerateDataPortalUpdate)
     if (TemplateHelper.UseSimpleAuditTrail(Info))
     {
         %>
-            SimpleAuditTrail();
+            SimpleAuditTrail()
             <%
     }
     %>
@@ -309,9 +321,15 @@ if (Info.GenerateDataPortalUpdate)
                                     %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", If(<%= GetFieldReaderStatement(prop) %>.Equals(Guid.Empty), DBNull.Value, <%= GetFieldReaderStatement(prop) %>)).DbType = DbType.<%= TemplateHelper.GetDbType(prop) %>
                     <%
                                 }
+                                else if (AllowNull(prop) && prop.PropertyType == TypeCodeEx.CustomType)
+                                {
+                                    %>' For nullable PropertyConvert, null (Nothing) is persisted if the backing field is zero
+                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", If(<%= GetFieldReaderStatement(prop) %> = 0, DBNull.Value, <%= GetFieldReaderStatement(prop) %>)).DbType = DbType.<%= TemplateHelper.GetDbType(prop) %>
+                    <%
+                                }
                                 else if (AllowNull(prop) && propType != TypeCodeEx.SmartDate)
                                 {
-                                    %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", If(<%= GetFieldReaderStatement(prop) %><%= TemplateHelper.IsNullableType(propType) ? ".HasValue" : " IsNot Nothing" %>, <%= GetFieldReaderStatement(prop) %><%= TemplateHelper.IsNullableType(propType) ? ".Value" :"" %>, DBNull.Value)).DbType = DbType.<%= TemplateHelper.GetDbType(prop) %>
+                                    %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", If(<%= GetFieldReaderStatement(prop) %> Is Nothing, DBNull.Value, <%= GetFieldReaderStatement(prop) %><%= TemplateHelper.IsNullableType(propType) ? ".Value" :"" %>)).DbType = DbType.<%= TemplateHelper.GetDbType(prop) %>
                     <%
                                 }
                                 else
@@ -327,9 +345,15 @@ if (Info.GenerateDataPortalUpdate)
                                     %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", If(<%= GetParameterSet(Info, prop) %>.Equals(Guid.Empty),  DBNull.Value, <%= GetFieldReaderStatement(prop) %>)).DbType = DbType.<%= TemplateHelper.GetDbType(prop) %>
                     <%
                                 }
+                                else if (AllowNull(prop) && prop.PropertyType == TypeCodeEx.CustomType)
+                                {
+                                    %>' For nullable PropertyConvert, null (Nothing) is persisted if the backing field is zero
+                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", If(<%= GetParameterSet(Info, prop) %> = 0, DBNull.Value, <%= GetFieldReaderStatement(prop) %>)).DbType = DbType.<%= TemplateHelper.GetDbType(prop) %>
+                    <%
+                                }
                                 else if (AllowNull(prop) && propType != TypeCodeEx.SmartDate)
                                 {
-                                    %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", If(<%= GetParameterSet(Info, prop) %><%= TemplateHelper.IsNullableType(propType) ? ".HasValue" : " IsNot Nothing" %>, <%= GetFieldReaderStatement(prop) %><%= TemplateHelper.IsNullableType(propType) ? ".Value" :"" %>, DBNull.Value)).DbType = DbType.<%= TemplateHelper.GetDbType(prop) %>
+                                    %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", If(<%= GetParameterSet(Info, prop) %> Is Nothing, DBNull.Value, <%= GetFieldReaderStatement(prop) %><%= TemplateHelper.IsNullableType(propType) ? ".Value" :"" %>)).DbType = DbType.<%= TemplateHelper.GetDbType(prop) %>
                     <%
                                 }
                                 else
@@ -430,7 +454,7 @@ if (Info.GenerateDataPortalDelete)
     }
     lastCriteria = (parentType.Length > 0 && !Info.ParentInsertOnly) ? "parent" : "";
     if (useInlineQuery)
-        InlineQueryList.Add(new AdvancedGenerator.InlineQuery(Info.DeleteProcedureName, ((parentType.Length > 0 && !Info.ParentInsertOnly) ? parentType + " parent" : "")));
+        InlineQueryList.Add(new AdvancedGenerator.InlineQuery(Info.DeleteProcedureName, ((parentType.Length > 0 && !Info.ParentInsertOnly) ? "parent As " + parentType : "")));
     %>Private Sub Child_DeleteSelf(<%= ((parentType.Length > 0 && !Info.ParentInsertOnly) ? "parent As " + parentType : "") %>)
             <%
     if (TemplateHelper.UseSimpleAuditTrail(Info))

@@ -157,7 +157,7 @@ if (generateRuleRegion || generateAuthRegion || generateObjectRuleRegion)
             if (resultProperties != string.Empty)
                 resultProperties = " { " + resultProperties + " }";
 
-            resultRule = "BusinessRules.AddRule(new " + backupRuleType + "(" + resultConstructor + ")" + resultProperties + ")" + ";";
+            resultRule = "BusinessRules.AddRule(new " + backupRuleType + "(" + resultConstructor + ")" + resultProperties + ");";
             %>
             <%= resultRule %>
 <%
@@ -294,7 +294,7 @@ if (generateRuleRegion || generateAuthRegion || generateObjectRuleRegion)
                 if (resultProperties != string.Empty)
                     resultProperties = " { " + resultProperties + " }";
 
-                resultRule = "BusinessRules.AddRule(new " + backupRuleType + "(" + resultConstructor + ")" + resultProperties + ")" + ";";
+                resultRule = "BusinessRules.AddRule(new " + backupRuleType + "(" + resultConstructor + ")" + resultProperties + ");";
             %>
             <%= resultRule %>
 <%

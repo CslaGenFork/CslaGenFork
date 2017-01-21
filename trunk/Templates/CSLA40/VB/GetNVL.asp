@@ -45,14 +45,14 @@ if (CurrentUnit.GenerationParams.GenerateSynchronous)
             if (Info.SimpleCacheOptions != SimpleCacheResults.None)
             {
                 %>If _list Is Nothing Then
-                _list = DataPortal.Fetchs(Of <%= Info.ObjectName %>)(<%= crit %>)
+                _list = DataPortal.Fetch(Of <%= Info.ObjectName %>)(<%= crit %>)
             End If
 
             Return _list<%
             }
             else
             {
-                %>Return DataPortal.Fetchs(Of <%= Info.ObjectName %>)(<%= crit %>)<%
+                %>Return DataPortal.Fetch(Of <%= Info.ObjectName %>)(<%= crit %>)<%
             }
             %>
         End Function

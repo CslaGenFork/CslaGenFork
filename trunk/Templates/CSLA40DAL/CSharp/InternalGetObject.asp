@@ -109,18 +109,9 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
                         if ((childProp.DeclarationMode == PropertyDeclaration.Managed ||
                             childProp.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion))
                         {
-                            if (useBypassPropertyChecks && false) // disable this for now
-                            {
-                                %>
-                obj.<%= FormatPascal(childProp.Name) %> = <%= internalCreateString %>();
-            <%
-                            }
-                            else
-                            {
-                                %>
+                            %>
             obj.LoadProperty(<%= FormatPropertyInfoName(childProp.Name) %>, <%= internalCreateString %>());
         <%
-                            }
                         }
                         else
                         {

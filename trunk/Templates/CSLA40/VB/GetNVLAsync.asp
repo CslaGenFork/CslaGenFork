@@ -41,7 +41,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
             else if (c.Properties.Count > 0)
                 critAsync = SendSingleCriteria(c, c.Properties[0].ParameterValue);
             if (Info.SimpleCacheOptions != SimpleCacheResults.None)
-                critAsync += (critAsync.Length > 0 ? ", " : "") + "Function(o, e)";
+                critAsync += (critAsync.Length > 0 ? ", " : "") + "Sub(o, e)";
             else
                 critAsync += (critAsync.Length > 0 ? ", " : "");
             %>
@@ -64,7 +64,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
                 DataPortal.BeginFetch(Of <%= Info.ObjectName %>)(<%= critAsync %>
                         _list = e.Object
                         callback(o, e)
-                    End Function)
+                    End Sub)
             Else
                 callback(Nothing, New DataPortalResult(Of <%= Info.ObjectName %>)(_list, Nothing, Nothing))
             End If<%

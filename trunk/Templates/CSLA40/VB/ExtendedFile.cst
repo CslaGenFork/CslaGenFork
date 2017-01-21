@@ -100,7 +100,7 @@ if (cachedContextUtilitiesNamespace != string.Empty)
         <%
         }
         %>
-        <%= commentLine %>Protected Overrides Sub OnDeserialized(<%= usesContext ? "System.Runtime.Serialization.StreamingContext context" : string.Empty %>)
+        <%= commentLine %>Protected Overrides Sub OnDeserialized(<%= usesContext ? "context As System.Runtime.Serialization.StreamingContext" : string.Empty %>)
             <%= commentLine %>MyBase.OnDeserialized(<%= usesContext ? "context" : string.Empty %>)
             <%
         if (Info.SupportUpdateProperties || hasFactoryCache || hasDataPortalCache)
@@ -122,8 +122,8 @@ if (cachedContextUtilitiesNamespace != string.Empty)
             <%
         }
         %>
-            <%= commentLine %>' add your custom OnDeserialized actions here.
-        <%= commentLine %>}
+            ' add your custom OnDeserialized actions here.
+        <%= commentLine %>End Sub
 
         #End Region
         <%

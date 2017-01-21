@@ -11,7 +11,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
         string factoryParamsAsync = string.Empty;
         foreach (Property param in crit.Properties)
         {
-            prmsAsync += string.Concat(", ", FormatCamel(param.Name), "As ",  GetDataTypeGeneric(param, param.PropertyType));
+            prmsAsync += string.Concat(", ", FormatCamel(param.Name), " As ",  GetDataTypeGeneric(param, param.PropertyType));
             factoryParamsAsync += string.Concat(", ", FormatCamel(param.Name));
         }
         if (factoryParamsAsync.Length > 1)
@@ -39,13 +39,13 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
         if (UseChildFactoryHelper)
         {
             %>
-            <%= Info.ItemType %>.<%= newMethodNameAsync %><%= crit.CreateOptions.FactorySuffix %>(<%= factoryParamsAsync %><%= factoryParamsAsync.Length > 1 ? ", " : "" %>Function(o, e)
+            <%= Info.ItemType %>.<%= newMethodNameAsync %><%= crit.CreateOptions.FactorySuffix %>(<%= factoryParamsAsync %><%= factoryParamsAsync.Length > 1 ? ", " : "" %>Sub(o, e)
             <%
         }
         else
         {
             %>
-            DataPortal.BeginCreate(Of <%= Info.ItemType %>)(<%= factoryParamsAsync %><%= factoryParamsAsync.Length > 1 ? ", " : "" %>Function(o, e)
+            DataPortal.BeginCreate(Of <%= Info.ItemType %>)(<%= factoryParamsAsync %><%= factoryParamsAsync.Length > 1 ? ", " : "" %>Sub(o, e)
             <%
         }
         %>
@@ -54,7 +54,7 @@ if (CurrentUnit.GenerationParams.GenerateAsynchronous || CurrentUnit.GenerationP
                     Else
                         <%= FormatCamel(Info.ItemType) %> = e.Object
                     End If
-                End Function)
+                End Sub)
             Add(<%= FormatCamel(Info.ItemType) %>)
         End Sub
         <%

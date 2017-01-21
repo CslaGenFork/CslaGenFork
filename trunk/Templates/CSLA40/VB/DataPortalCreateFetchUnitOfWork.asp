@@ -30,7 +30,7 @@ foreach (UnitOfWorkCriteriaManager.UoWCriteria uowCrit in listUoWCriteriaCreator
     else
     {
         createUowParam = "create" + singleUoWProperty;
-        createUowComment = "''' <param name=\"" + createUowParam + "\">if set to <c>true</c> creates a " + singleUoWProperty + "; otherwise fetches a " + singleUoWProperty + ".</param>" + System.Environment.NewLine + new string(' ', 8);
+        createUowComment = "''' <param name=\"" + createUowParam + "\">if set to <c>True</c> creates a " + singleUoWProperty + "; otherwise fetches a " + singleUoWProperty + ".</param>" + System.Environment.NewLine + new string(' ', 8);
         createUowCrit = createUowParam + " As Boolean";
     }
     %>
@@ -38,7 +38,7 @@ foreach (UnitOfWorkCriteriaManager.UoWCriteria uowCrit in listUoWCriteriaCreator
         ''' <summary>
         ''' Creates or loads a <see cref="<%= Info.ObjectName %>"/> unit of objects<%= elementCriteriaCount > 0 ? ", based on given criteria" : "" %>.
         ''' </summary>
-        <%= createUowComment %>Protected Sub DataPortal_Fetch(<%= createUowCrit %>)
+        <%= createUowComment %>Protected Overloads Sub DataPortal_Fetch(<%= createUowCrit %>)
             <%
     foreach (UnitOfWorkCriteriaManager.ElementCriteria c in uowCrit.ElementCriteriaList)
     {

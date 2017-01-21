@@ -31,10 +31,10 @@
             _list = lst
         End Sub
 
-        Friend Shared ReadOnly Property IsCached() As Boolean
+        Friend Shared ReadOnly Property IsCached As Boolean
             Get
-                Return _List IsNot Nothing
+                Return _list IsNot Nothing
             End Get
-        End Sub
+        End Property
 
         #End Region

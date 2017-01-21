@@ -24,7 +24,7 @@ if (hasFactoryCache || hasDataPortalCache)
         }
         %>
 
-        Private Sub <%= handlerName %>(sender As object, e As Csla.Core.SavedEventArgs)
+        Private Sub <%= handlerName %>(sender As Object, e As Csla.Core.SavedEventArgs)
             '' this runs on the client
             <%
     foreach (string objectName in invalidatorInfo.InvalidateCache)
@@ -53,7 +53,7 @@ if (hasFactoryCache || hasDataPortalCache)
         ''' <param name="e">The DataPortalContext object passed to the DataPortal.</param>
         Protected Overrides Sub DataPortal_OnDataPortalInvokeComplete(e As Csla.DataPortalEventArgs)
             If ApplicationContext.ExecutionLocation = ApplicationContext.ExecutionLocations.Server AndAlso
-               e.Operation == DataPortalOperations.Update Then
+               e.Operation = DataPortalOperations.Update Then
                 '' this runs on the server
             <%
         foreach (string objectName in invalidatorInfo.InvalidateCache)

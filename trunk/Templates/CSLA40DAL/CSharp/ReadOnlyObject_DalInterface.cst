@@ -32,8 +32,7 @@ if (Errors.Length == 0)
     }
     bool isSwitchable = false;
     bool isCollection = false;
-    bool useBypassPropertyChecks = CurrentUnit.GenerationParams.UseBypassPropertyChecks;
-    string bpcSpacer = useBypassPropertyChecks ? bpcSpacer = new string(' ', 4) : string.Empty;
+    string bpcSpacer = String.Empty;
     bool ancestorIsCollection = false;
     int ancestorLoaderLevel = AncestorLoaderLevel(Info, out ancestorIsCollection);
     GenerationStep genStep = GenerationStep.DalInterface;
