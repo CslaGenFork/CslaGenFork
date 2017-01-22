@@ -39,10 +39,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AttributableAttribute.cs" />
-    <Compile Include="GenericListBaseT.cs" />
-    <Compile Include="GenericObjectBaseT.cs" />
+    <Compile Include="MyBindingListBaseT.cs" />
+    <Compile Include="MyListBaseT.cs" />
+    <Compile Include="MyObjectBaseT.cs" />
+    <Compile Include="MyReadOnlyBindingListBaseT.cs" />
+    <Compile Include="MyReadOnlyListBaseT.cs" />
     <Compile Include="IHaveGenericInterfaceT.cs" />
     <Compile Include="IHaveInterface.cs" />
+    <Compile Include="MyDynamicBindingListBaseT.cs" />
+    <Compile Include="MyDynamicListBaseT.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
