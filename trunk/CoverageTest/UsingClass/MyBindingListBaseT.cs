@@ -5,8 +5,8 @@ using Csla.Core;
 namespace UsingClass
 {
     [Serializable]
-    public class GenericListBase<T, C> : BusinessListBase<T, C>
-        where T : GenericListBase<T, C>
+    public class MyBindingListBase<T, C> : BusinessBindingListBase<T, C>
+        where T : MyBindingListBase<T, C>
         where C : IEditableBusinessObject
     {
     }
