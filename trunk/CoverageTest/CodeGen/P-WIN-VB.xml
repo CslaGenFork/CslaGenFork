@@ -31441,7 +31441,7 @@
     </AssociativeEntity>
   </AssociativeEntities>
   <ConnectionString>Server=(local);Database=DocStore;persist security info=False;user id=sa;password=password_1234;packet size=4096</ConnectionString>
-  <ProjectName>Plain Dual VB</ProjectName>
-  <TargetDirectory>C:\VS Projects\CslaGenFork 4.5\CoverageTest\Plain\P-DUAL-VB</TargetDirectory>
+  <ProjectName>Plain WIN VB</ProjectName>
+  <TargetDirectory>C:\VS Projects\CslaGenFork 4.5\CoverageTest\Plain\P-WIN-VB</TargetDirectory>
   <FileVersion>4.0.4</FileVersion>
 </CslaGeneratorUnit>

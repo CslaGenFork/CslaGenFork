@@ -31442,6 +31442,6 @@
   </AssociativeEntities>
   <ConnectionString>Server=(local);Database=DocStore;persist security info=False;user id=sa;password=password_1234;packet size=4096</ConnectionString>
   <ProjectName>Plain WPF CS</ProjectName>
-  <TargetDirectory>C:\VS Projects\CslaGenFork 4.5\CoverageTest\Plain\P-DUAL-CS</TargetDirectory>
+  <TargetDirectory>C:\VS Projects\CslaGenFork 4.5\CoverageTest\Plain\P-WPF-CS</TargetDirectory>
   <FileVersion>4.0.4</FileVersion>
 </CslaGeneratorUnit>
