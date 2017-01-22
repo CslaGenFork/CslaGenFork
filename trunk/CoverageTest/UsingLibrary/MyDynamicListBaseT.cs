@@ -3,7 +3,7 @@ using Csla;
 using Csla.Core;
 using Csla.Serialization.Mobile;
 
-namespace UsingClass
+namespace UsingLibrary
 {
     [Serializable]
     public class MyDynamicListBase<T> : DynamicListBase<T>

@@ -1,7 +1,7 @@
 ﻿using System;
 using Csla;
 
-namespace UsingClass
+namespace UsingLibrary
 {
     [Serializable]
     public class MyBusinessBase<T> : BusinessBase<T>

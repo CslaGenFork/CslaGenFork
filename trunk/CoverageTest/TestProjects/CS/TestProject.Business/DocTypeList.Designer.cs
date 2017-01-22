@@ -5,7 +5,7 @@ using Csla;
 using Csla.Data;
 using Csla.Rules;
 using Csla.Rules.CommonRules;
-using UsingClass;
+using UsingLibrary;
 
 namespace TestProject.Business
 {

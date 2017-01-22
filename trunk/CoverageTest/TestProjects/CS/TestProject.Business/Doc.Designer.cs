@@ -6,7 +6,7 @@ using Csla.Data;
 using Csla.Rules;
 using Csla.Rules.CommonRules;
 using System.ComponentModel.DataAnnotations;
-using UsingClass;
+using UsingLibrary;
 
 namespace TestProject.Business
 {
@@ -22,7 +22,7 @@ namespace TestProject.Business
     /// </remarks>
     [Attributable]
     [Serializable]
-    public partial class Doc : GenericObjectBase<Doc>, IHaveInterface
+    public partial class Doc : MyBusinessBase<Doc>, IHaveInterface
     {
 
         #region Static Fields

@@ -1,4 +1,4 @@
-﻿namespace UsingClass
+﻿namespace UsingLibrary
 {
     public interface IHaveInterface
     {

@@ -3,7 +3,7 @@ Imports System.Data
 Imports System.Data.SqlClient
 Imports Csla
 Imports Csla.Data
-Imports UsingClass
+Imports UsingLibrary
 
 Namespace TestProject.Business
 
@@ -18,7 +18,7 @@ Namespace TestProject.Business
     <Attributable>
     <Serializable()>
     Partial Public Class DocTypeDynamic
-        Inherits BusinessBase(Of DocTypeDynamic)
+    Inherits BusinessBase(Of DocTypeDynamic)
         Implements IHaveInterface
 
         #Region " Static Fields "

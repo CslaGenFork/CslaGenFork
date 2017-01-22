@@ -7,8 +7,8 @@
     <ProjectGuid>{5A012BF6-FF0A-4005-9DED-0545B29EB0C0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UsingClass</RootNamespace>
-    <AssemblyName>UsingClass</AssemblyName>
+    <RootNamespace>UsingLibrary</RootNamespace>
+    <AssemblyName>UsingLibrary</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -40,6 +40,7 @@
   <ItemGroup>
     <Compile Include="AttributableAttribute.cs" />
     <Compile Include="MyBindingListBaseT.cs" />
+    <Compile Include="MyBusinessBindingListBaseT.cs" />
     <Compile Include="MyBusinessListBaseT.cs" />
     <Compile Include="MyBusinessBaseT.cs" />
     <Compile Include="MyNameValueListBaseKV.cs" />

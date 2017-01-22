@@ -3,7 +3,7 @@ Imports System.Data
 Imports System.Data.SqlClient
 Imports Csla
 Imports Csla.Data
-Imports UsingClass
+Imports UsingLibrary
 
 Namespace TestProject.Business
 
@@ -20,7 +20,7 @@ Namespace TestProject.Business
     <Attributable>
     <Serializable()>
     Partial Public Class DocRO
-        Inherits ReadOnlyBase(Of DocRO)
+    Inherits ReadOnlyBase(Of DocRO)
         Implements IHaveInterface
 
         #Region " Business Properties "

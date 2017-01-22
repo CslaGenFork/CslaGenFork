@@ -3,7 +3,7 @@ using System.Data;
 using System.Data.SqlClient;
 using Csla;
 using Csla.Data;
-using UsingClass;
+using UsingLibrary;
 
 namespace TestProject.Business
 {

@@ -1,6 +1,6 @@
 Imports System
 Imports Csla
-Imports UsingClass
+Imports UsingLibrary
 
 Namespace TestProject.Business
 
@@ -12,7 +12,7 @@ Namespace TestProject.Business
     <Attributable>
     <Serializable()>
     Partial Public Class DocEditCreatorGetter
-        Inherits GenericObjectBase(Of DocEditCreatorGetter)
+    Inherits MyBusinessBase(Of DocEditCreatorGetter)
         Implements IHaveInterface
 
         #Region " Business Properties "
