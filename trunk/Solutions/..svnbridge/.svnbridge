@@ -42,4 +42,9 @@ CslaGenFork-4.5.0.suo
 *.suo
 *.user
 packages
+</Value></Property><Property><Name>bugtraq:warnifnoissue</Name><Value>true</Value></Property><Property><Name>bugtraq:label</Name><Value>Work item #:</Value></Property><Property><Name>bugtraq:url</Name><Value>http://cslagenfork.codeplex.com/workitem/%BUGID%</Value></Property><Property><Name>bugtraq:message</Name><Value>Work Item #%BUGID%</Value></Property><Property><Name>svn:ignore</Name><Value>*.DotSettings
+*.suo
+*.user
+packages
+.vs
 </Value></Property><Property><Name>bugtraq:warnifnoissue</Name><Value>true</Value></Property><Property><Name>bugtraq:label</Name><Value>Work item #:</Value></Property><Property><Name>bugtraq:url</Name><Value>http://cslagenfork.codeplex.com/workitem/%BUGID%</Value></Property><Property><Name>bugtraq:message</Name><Value>Work Item #%BUGID%</Value></Property></Properties></ItemProperties>
