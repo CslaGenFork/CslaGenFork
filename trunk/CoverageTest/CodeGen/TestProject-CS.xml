@@ -713,7 +713,7 @@
       <UseCustomLoading>false</UseCustomLoading>
       <ObjectType>BaseClass</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
-      <ObjectName>ObjectBase</ObjectName>
+      <ObjectName>MyBusinessBase</ObjectName>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>TestProject.Business</ObjectNamespace>
@@ -744,7 +744,7 @@
       <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
-      <FileName>ObjectBase</FileName>
+      <FileName>MyBusinessBase</FileName>
       <UnitOfWorkProperties />
       <ChildCollectionProperties />
       <ChildProperties />
@@ -848,7 +848,7 @@
       <UseCustomLoading>false</UseCustomLoading>
       <ObjectType>BaseClass</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
-      <ObjectName>MyObjectBase</ObjectName>
+      <ObjectName>MyBusinessBase</ObjectName>
       <IsGenericType>true</IsGenericType>
       <GenericArguments>T</GenericArguments>
       <ObjectNamespace>TestProject.Business</ObjectNamespace>
@@ -879,7 +879,7 @@
       <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
-      <FileName>ObjectBase</FileName>
+      <FileName>MyBusinessBase</FileName>
       <UnitOfWorkProperties />
       <ChildCollectionProperties />
       <ChildProperties />
@@ -983,7 +983,7 @@
       <UseCustomLoading>false</UseCustomLoading>
       <ObjectType>BaseClass</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
-      <ObjectName>MyListBase</ObjectName>
+      <ObjectName>MyBusinessListBase</ObjectName>
       <IsGenericType>true</IsGenericType>
       <GenericArguments>T,C</GenericArguments>
       <ObjectNamespace>TestProject.Business</ObjectNamespace>
@@ -1014,7 +1014,7 @@
       <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
-      <FileName>ObjectBase</FileName>
+      <FileName>MyBusinessBase</FileName>
       <UnitOfWorkProperties />
       <ChildCollectionProperties />
       <ChildProperties />
@@ -1135,7 +1135,7 @@
         <string>IHaveInterface</string>
       </Interfaces>
       <InheritedType>
-        <ObjectName>ObjectBase</ObjectName>
+        <ObjectName>MyBusinessBase</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>false</IsGenericType>
@@ -1401,7 +1401,7 @@
         <string>IHaveInterface</string>
       </Interfaces>
       <InheritedType>
-        <ObjectName>MyObjectBase&lt;T&gt;</ObjectName>
+        <ObjectName>MyBusinessBase&lt;T&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -2714,7 +2714,7 @@
         <string>IHaveInterface</string>
       </Interfaces>
       <InheritedType>
-        <ObjectName>MyListBase&lt;T,C&gt;</ObjectName>
+        <ObjectName>MyBusinessListBase&lt;T,C&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -2971,7 +2971,7 @@
         <string>IHaveInterface</string>
       </Interfaces>
       <InheritedType>
-        <ObjectName>MyObjectBase&lt;T&gt;</ObjectName>
+        <ObjectName>MyBusinessBase&lt;T&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -4757,7 +4757,7 @@
         <string>IHaveInterface</string>
       </Interfaces>
       <InheritedType>
-        <ObjectName>MyObjectBase&lt;T&gt;</ObjectName>
+        <ObjectName>MyBusinessBase&lt;T&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -4915,7 +4915,7 @@
         <string>IHaveInterface</string>
       </Interfaces>
       <InheritedType>
-        <ObjectName>MyObjectBase&lt;T&gt;</ObjectName>
+        <ObjectName>MyBusinessBase&lt;T&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -5073,7 +5073,7 @@
         <string>IHaveInterface</string>
       </Interfaces>
       <InheritedType>
-        <ObjectName>MyObjectBase&lt;T&gt;</ObjectName>
+        <ObjectName>MyBusinessBase&lt;T&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
