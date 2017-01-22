@@ -83,7 +83,7 @@
     <DalName />
     <UsesCslaAuthorizationProvider>false</UsesCslaAuthorizationProvider>
     <GenerateWinForms>true</GenerateWinForms>
-    <GenerateWPF>true</GenerateWPF>
+    <GenerateWPF>false</GenerateWPF>
     <GenerateSilverlight4>false</GenerateSilverlight4>
     <SilverlightUsingServices>false</SilverlightUsingServices>
     <DatabaseConnection>DocStore</DatabaseConnection>
@@ -31441,7 +31441,7 @@
     </AssociativeEntity>
   </AssociativeEntities>
   <ConnectionString>Server=(local);Database=DocStore;persist security info=False;user id=sa;password=password_1234;packet size=4096</ConnectionString>
-  <ProjectName>Plain Dual CS</ProjectName>
+  <ProjectName>Plain WIN CS</ProjectName>
   <TargetDirectory>C:\VS Projects\CslaGenFork 4.5\CoverageTest\Plain\P-DUAL-CS</TargetDirectory>
   <FileVersion>4.0.4</FileVersion>
 </CslaGeneratorUnit>

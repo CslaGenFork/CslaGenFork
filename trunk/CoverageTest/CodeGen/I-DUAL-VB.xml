@@ -83,7 +83,7 @@
     <DalName />
     <UsesCslaAuthorizationProvider>false</UsesCslaAuthorizationProvider>
     <GenerateWinForms>true</GenerateWinForms>
-    <GenerateWPF>false</GenerateWPF>
+    <GenerateWPF>true</GenerateWPF>
     <GenerateSilverlight4>false</GenerateSilverlight4>
     <SilverlightUsingServices>false</SilverlightUsingServices>
     <DatabaseConnection>DocStore</DatabaseConnection>
@@ -237,7 +237,138 @@
       <UseCustomLoading>false</UseCustomLoading>
       <ObjectType>BaseClass</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
-      <ObjectName>NameValueListBase</ObjectName>
+      <ObjectName>BusinessBaseDoc</ObjectName>
+      <IsGenericType>true</IsGenericType>
+      <GenericArguments>T</GenericArguments>
+      <ObjectNamespace>DocStore.Business</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
+      <ClassSummary />
+      <ClassRemarks />
+      <Namespaces>
+        <string>Csla</string>
+      </Namespaces>
+      <Attributes />
+      <Interfaces />
+      <InheritedType>
+        <ObjectName />
+        <AssemblyFile>C:\VS Projects\CslaGenFork 4.5\CoverageTest\Dependencies\Csla.dll</AssemblyFile>
+        <Type>BusinessBase&lt;T&gt;</Type>
+        <IsGenericType>true</IsGenericType>
+      </InheritedType>
+      <InheritedTypeWinForms>
+        <ObjectName />
+        <AssemblyFile />
+        <Type />
+        <IsGenericType>false</IsGenericType>
+      </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
+      <ConstructorVisibility>Default</ConstructorVisibility>
+      <Folder />
+      <FileName>BusinessBaseDoc</FileName>
+      <UnitOfWorkProperties />
+      <ChildCollectionProperties />
+      <ChildProperties />
+      <InheritedChildCollectionProperties />
+      <InheritedChildProperties />
+      <ConvertValueProperties />
+      <UpdateValueProperties />
+      <InheritedValueProperties />
+      <ValueProperties />
+      <Singleton>false</Singleton>
+      <EditOnDemand>false</EditOnDemand>
+      <CheckRulesOnFetch>true</CheckRulesOnFetch>
+      <SupportUpdateProperties>false</SupportUpdateProperties>
+      <CriteriaObjects />
+      <ParentType />
+      <ParentProperties />
+      <ParentInsertOnly>false</ParentInsertOnly>
+      <IsPolymorphic>false</IsPolymorphic>
+      <ItemType />
+      <ContainsItem>true</ContainsItem>
+      <UniqueItems>false</UniqueItems>
+      <FindMethodsParameters />
+      <UpdaterType />
+      <AllowNew>true</AllowNew>
+      <AllowEdit>true</AllowEdit>
+      <AllowRemove>true</AllowRemove>
+      <AddParentReference>false</AddParentReference>
+      <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
+      <ValueColumn />
+      <NameColumn />
+      <PersistenceType>SqlConnectionManager</PersistenceType>
+      <CommandTimeout />
+      <TransactionType>ADO</TransactionType>
+      <InsertUpdateRunLocal>false</InsertUpdateRunLocal>
+      <InsertProcedureName />
+      <SelectProcedureName />
+      <UpdateProcedureName />
+      <DeleteProcedureName />
+      <DeleteUseTimestamp>false</DeleteUseTimestamp>
+      <RemoveItem>true</RemoveItem>
+      <ToStringProperty />
+      <BusinessRules />
+      <AuthzProvider>IsInRole</AuthzProvider>
+      <NewRoles />
+      <GetRoles />
+      <UpdateRoles />
+      <DeleteRoles />
+      <NewAuthzRuleType>
+        <BaseRuleProperties />
+        <Name />
+        <ObjectName />
+        <AssemblyFile />
+        <Type />
+        <Constructors />
+        <RuleProperties />
+        <CacheResult>false</CacheResult>
+      </NewAuthzRuleType>
+      <GetAuthzRuleType>
+        <BaseRuleProperties />
+        <Name />
+        <ObjectName />
+        <AssemblyFile />
+        <Type />
+        <Constructors />
+        <RuleProperties />
+        <CacheResult>false</CacheResult>
+      </GetAuthzRuleType>
+      <UpdateAuthzRuleType>
+        <BaseRuleProperties />
+        <Name />
+        <ObjectName />
+        <AssemblyFile />
+        <Type />
+        <Constructors />
+        <RuleProperties />
+        <CacheResult>false</CacheResult>
+      </UpdateAuthzRuleType>
+      <DeleteAuthzRuleType>
+        <BaseRuleProperties />
+        <Name />
+        <ObjectName />
+        <AssemblyFile />
+        <Type />
+        <Constructors />
+        <RuleProperties />
+        <CacheResult>false</CacheResult>
+      </DeleteAuthzRuleType>
+    </CslaObjectInfo>
+    <CslaObjectInfo>
+      <Generate>false</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
+      <GenerateFactoryMethods>true</GenerateFactoryMethods>
+      <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
+      <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
+      <GenerateDataPortalUpdate>true</GenerateDataPortalUpdate>
+      <GenerateDataPortalDelete>true</GenerateDataPortalDelete>
+      <GenerateSprocs>true</GenerateSprocs>
+      <GenerateInlineQueries />
+      <DataSetLoadingScheme>false</DataSetLoadingScheme>
+      <UseCustomLoading>false</UseCustomLoading>
+      <ObjectType>BaseClass</ObjectType>
+      <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
+      <ObjectName>MyNameValueListBase</ObjectName>
       <IsGenericType>true</IsGenericType>
       <GenericArguments>KEY,VALUE</GenericArguments>
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -262,7 +393,7 @@
       <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
-      <FileName>NameValueListBaseKV</FileName>
+      <FileName>MyNameValueListBaseKV</FileName>
       <UnitOfWorkProperties />
       <ChildCollectionProperties />
       <ChildProperties />
@@ -366,7 +497,7 @@
       <UseCustomLoading>false</UseCustomLoading>
       <ObjectType>BaseClass</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
-      <ObjectName>ReadOnlyBindingListBase</ObjectName>
+      <ObjectName>MyReadOnlyListBase</ObjectName>
       <IsGenericType>true</IsGenericType>
       <GenericArguments>LIST,OBJ</GenericArguments>
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -391,7 +522,7 @@
       <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
-      <FileName>ReadOnlyBindingListBaseT</FileName>
+      <FileName>MyReadOnlyListBaseT</FileName>
       <UnitOfWorkProperties />
       <ChildCollectionProperties />
       <ChildProperties />
@@ -495,7 +626,265 @@
       <UseCustomLoading>false</UseCustomLoading>
       <ObjectType>BaseClass</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
-      <ObjectName>DynamicBindingListBase</ObjectName>
+      <ObjectName>MyReadOnlyBindingListBase</ObjectName>
+      <IsGenericType>true</IsGenericType>
+      <GenericArguments>LIST,OBJ</GenericArguments>
+      <ObjectNamespace>DocStore.Business</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
+      <ClassSummary />
+      <ClassRemarks />
+      <Namespaces />
+      <Attributes />
+      <Interfaces />
+      <InheritedType>
+        <ObjectName />
+        <AssemblyFile />
+        <Type />
+        <IsGenericType>false</IsGenericType>
+      </InheritedType>
+      <InheritedTypeWinForms>
+        <ObjectName />
+        <AssemblyFile />
+        <Type />
+        <IsGenericType>false</IsGenericType>
+      </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
+      <ConstructorVisibility>Default</ConstructorVisibility>
+      <Folder />
+      <FileName>MyReadOnlyBindingListBaseT</FileName>
+      <UnitOfWorkProperties />
+      <ChildCollectionProperties />
+      <ChildProperties />
+      <InheritedChildCollectionProperties />
+      <InheritedChildProperties />
+      <ConvertValueProperties />
+      <UpdateValueProperties />
+      <InheritedValueProperties />
+      <ValueProperties />
+      <Singleton>false</Singleton>
+      <EditOnDemand>false</EditOnDemand>
+      <CheckRulesOnFetch>true</CheckRulesOnFetch>
+      <SupportUpdateProperties>false</SupportUpdateProperties>
+      <CriteriaObjects />
+      <ParentType />
+      <ParentProperties />
+      <ParentInsertOnly>false</ParentInsertOnly>
+      <IsPolymorphic>false</IsPolymorphic>
+      <ItemType />
+      <ContainsItem>true</ContainsItem>
+      <UniqueItems>false</UniqueItems>
+      <FindMethodsParameters />
+      <UpdaterType />
+      <AllowNew>true</AllowNew>
+      <AllowEdit>true</AllowEdit>
+      <AllowRemove>true</AllowRemove>
+      <AddParentReference>false</AddParentReference>
+      <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
+      <ValueColumn />
+      <NameColumn />
+      <PersistenceType>SqlConnectionManager</PersistenceType>
+      <CommandTimeout />
+      <TransactionType>ADO</TransactionType>
+      <InsertUpdateRunLocal>false</InsertUpdateRunLocal>
+      <InsertProcedureName />
+      <SelectProcedureName />
+      <UpdateProcedureName />
+      <DeleteProcedureName />
+      <DeleteUseTimestamp>false</DeleteUseTimestamp>
+      <RemoveItem>true</RemoveItem>
+      <ToStringProperty />
+      <BusinessRules />
+      <AuthzProvider>IsInRole</AuthzProvider>
+      <NewRoles />
+      <GetRoles />
+      <UpdateRoles />
+      <DeleteRoles />
+      <NewAuthzRuleType>
+        <BaseRuleProperties />
+        <Name />
+        <ObjectName />
+        <AssemblyFile />
+        <Type />
+        <Constructors />
+        <RuleProperties />
+        <CacheResult>false</CacheResult>
+      </NewAuthzRuleType>
+      <GetAuthzRuleType>
+        <BaseRuleProperties />
+        <Name />
+        <ObjectName />
+        <AssemblyFile />
+        <Type />
+        <Constructors />
+        <RuleProperties />
+        <CacheResult>false</CacheResult>
+      </GetAuthzRuleType>
+      <UpdateAuthzRuleType>
+        <BaseRuleProperties />
+        <Name />
+        <ObjectName />
+        <AssemblyFile />
+        <Type />
+        <Constructors />
+        <RuleProperties />
+        <CacheResult>false</CacheResult>
+      </UpdateAuthzRuleType>
+      <DeleteAuthzRuleType>
+        <BaseRuleProperties />
+        <Name />
+        <ObjectName />
+        <AssemblyFile />
+        <Type />
+        <Constructors />
+        <RuleProperties />
+        <CacheResult>false</CacheResult>
+      </DeleteAuthzRuleType>
+    </CslaObjectInfo>
+    <CslaObjectInfo>
+      <Generate>false</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
+      <GenerateFactoryMethods>true</GenerateFactoryMethods>
+      <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
+      <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
+      <GenerateDataPortalUpdate>true</GenerateDataPortalUpdate>
+      <GenerateDataPortalDelete>true</GenerateDataPortalDelete>
+      <GenerateSprocs>true</GenerateSprocs>
+      <GenerateInlineQueries />
+      <DataSetLoadingScheme>false</DataSetLoadingScheme>
+      <UseCustomLoading>false</UseCustomLoading>
+      <ObjectType>BaseClass</ObjectType>
+      <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
+      <ObjectName>MyDynamicListBase</ObjectName>
+      <IsGenericType>true</IsGenericType>
+      <GenericArguments>OBJ</GenericArguments>
+      <ObjectNamespace>DocStore.Business</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
+      <ClassSummary />
+      <ClassRemarks />
+      <Namespaces />
+      <Attributes />
+      <Interfaces />
+      <InheritedType>
+        <ObjectName />
+        <AssemblyFile />
+        <Type />
+        <IsGenericType>false</IsGenericType>
+      </InheritedType>
+      <InheritedTypeWinForms>
+        <ObjectName />
+        <AssemblyFile />
+        <Type />
+        <IsGenericType>false</IsGenericType>
+      </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
+      <ConstructorVisibility>Default</ConstructorVisibility>
+      <Folder />
+      <FileName>MyDynamicListBaseT</FileName>
+      <UnitOfWorkProperties />
+      <ChildCollectionProperties />
+      <ChildProperties />
+      <InheritedChildCollectionProperties />
+      <InheritedChildProperties />
+      <ConvertValueProperties />
+      <UpdateValueProperties />
+      <InheritedValueProperties />
+      <ValueProperties />
+      <Singleton>false</Singleton>
+      <EditOnDemand>false</EditOnDemand>
+      <CheckRulesOnFetch>true</CheckRulesOnFetch>
+      <SupportUpdateProperties>false</SupportUpdateProperties>
+      <CriteriaObjects />
+      <ParentType />
+      <ParentProperties />
+      <ParentInsertOnly>false</ParentInsertOnly>
+      <IsPolymorphic>false</IsPolymorphic>
+      <ItemType />
+      <ContainsItem>true</ContainsItem>
+      <UniqueItems>false</UniqueItems>
+      <FindMethodsParameters />
+      <UpdaterType />
+      <AllowNew>true</AllowNew>
+      <AllowEdit>true</AllowEdit>
+      <AllowRemove>true</AllowRemove>
+      <AddParentReference>false</AddParentReference>
+      <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
+      <ValueColumn />
+      <NameColumn />
+      <PersistenceType>SqlConnectionManager</PersistenceType>
+      <CommandTimeout />
+      <TransactionType>ADO</TransactionType>
+      <InsertUpdateRunLocal>false</InsertUpdateRunLocal>
+      <InsertProcedureName />
+      <SelectProcedureName />
+      <UpdateProcedureName />
+      <DeleteProcedureName />
+      <DeleteUseTimestamp>false</DeleteUseTimestamp>
+      <RemoveItem>true</RemoveItem>
+      <ToStringProperty />
+      <BusinessRules />
+      <AuthzProvider>IsInRole</AuthzProvider>
+      <NewRoles />
+      <GetRoles />
+      <UpdateRoles />
+      <DeleteRoles />
+      <NewAuthzRuleType>
+        <BaseRuleProperties />
+        <Name />
+        <ObjectName />
+        <AssemblyFile />
+        <Type />
+        <Constructors />
+        <RuleProperties />
+        <CacheResult>false</CacheResult>
+      </NewAuthzRuleType>
+      <GetAuthzRuleType>
+        <BaseRuleProperties />
+        <Name />
+        <ObjectName />
+        <AssemblyFile />
+        <Type />
+        <Constructors />
+        <RuleProperties />
+        <CacheResult>false</CacheResult>
+      </GetAuthzRuleType>
+      <UpdateAuthzRuleType>
+        <BaseRuleProperties />
+        <Name />
+        <ObjectName />
+        <AssemblyFile />
+        <Type />
+        <Constructors />
+        <RuleProperties />
+        <CacheResult>false</CacheResult>
+      </UpdateAuthzRuleType>
+      <DeleteAuthzRuleType>
+        <BaseRuleProperties />
+        <Name />
+        <ObjectName />
+        <AssemblyFile />
+        <Type />
+        <Constructors />
+        <RuleProperties />
+        <CacheResult>false</CacheResult>
+      </DeleteAuthzRuleType>
+    </CslaObjectInfo>
+    <CslaObjectInfo>
+      <Generate>false</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
+      <GenerateFactoryMethods>true</GenerateFactoryMethods>
+      <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
+      <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
+      <GenerateDataPortalUpdate>true</GenerateDataPortalUpdate>
+      <GenerateDataPortalDelete>true</GenerateDataPortalDelete>
+      <GenerateSprocs>true</GenerateSprocs>
+      <GenerateInlineQueries />
+      <DataSetLoadingScheme>false</DataSetLoadingScheme>
+      <UseCustomLoading>false</UseCustomLoading>
+      <ObjectType>BaseClass</ObjectType>
+      <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
+      <ObjectName>MyDynamicBindingListBase</ObjectName>
       <IsGenericType>true</IsGenericType>
       <GenericArguments>ITEM</GenericArguments>
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -520,7 +909,7 @@
       <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
-      <FileName>DynamicBindingListBaseT</FileName>
+      <FileName>MyDynamicBindingListBaseT</FileName>
       <UnitOfWorkProperties />
       <ChildCollectionProperties />
       <ChildProperties />
@@ -624,7 +1013,7 @@
       <UseCustomLoading>false</UseCustomLoading>
       <ObjectType>BaseClass</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
-      <ObjectName>BusinessBindingListBase</ObjectName>
+      <ObjectName>MyBusinessBindingListBase</ObjectName>
       <IsGenericType>true</IsGenericType>
       <GenericArguments>LIST,OBJ</GenericArguments>
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -649,7 +1038,7 @@
       <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
-      <FileName>BusinessBindingListBaseT</FileName>
+      <FileName>MyBusinessBindingListBaseT</FileName>
       <UnitOfWorkProperties />
       <ChildCollectionProperties />
       <ChildProperties />
@@ -753,9 +1142,9 @@
       <UseCustomLoading>false</UseCustomLoading>
       <ObjectType>BaseClass</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
-      <ObjectName>BusinessBase</ObjectName>
+      <ObjectName>MyBusinessListBase</ObjectName>
       <IsGenericType>true</IsGenericType>
-      <GenericArguments>OBJ</GenericArguments>
+      <GenericArguments>LIST,OBJ</GenericArguments>
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
       <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
@@ -778,7 +1167,7 @@
       <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
-      <FileName>BusinessBaseT</FileName>
+      <FileName>MyBusinessListBaseT</FileName>
       <UnitOfWorkProperties />
       <ChildCollectionProperties />
       <ChildProperties />
@@ -882,7 +1271,7 @@
       <UseCustomLoading>false</UseCustomLoading>
       <ObjectType>BaseClass</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
-      <ObjectName>ReadOnlyBase</ObjectName>
+      <ObjectName>MyBusinessBase</ObjectName>
       <IsGenericType>true</IsGenericType>
       <GenericArguments>OBJ</GenericArguments>
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -907,7 +1296,136 @@
       <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
-      <FileName>ReadOnlyBaseT</FileName>
+      <FileName>MyBusinessBaseT</FileName>
+      <UnitOfWorkProperties />
+      <ChildCollectionProperties />
+      <ChildProperties />
+      <InheritedChildCollectionProperties />
+      <InheritedChildProperties />
+      <ConvertValueProperties />
+      <UpdateValueProperties />
+      <InheritedValueProperties />
+      <ValueProperties />
+      <Singleton>false</Singleton>
+      <EditOnDemand>false</EditOnDemand>
+      <CheckRulesOnFetch>true</CheckRulesOnFetch>
+      <SupportUpdateProperties>false</SupportUpdateProperties>
+      <CriteriaObjects />
+      <ParentType />
+      <ParentProperties />
+      <ParentInsertOnly>false</ParentInsertOnly>
+      <IsPolymorphic>false</IsPolymorphic>
+      <ItemType />
+      <ContainsItem>true</ContainsItem>
+      <UniqueItems>false</UniqueItems>
+      <FindMethodsParameters />
+      <UpdaterType />
+      <AllowNew>true</AllowNew>
+      <AllowEdit>true</AllowEdit>
+      <AllowRemove>true</AllowRemove>
+      <AddParentReference>false</AddParentReference>
+      <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
+      <ValueColumn />
+      <NameColumn />
+      <PersistenceType>SqlConnectionManager</PersistenceType>
+      <CommandTimeout />
+      <TransactionType>ADO</TransactionType>
+      <InsertUpdateRunLocal>false</InsertUpdateRunLocal>
+      <InsertProcedureName />
+      <SelectProcedureName />
+      <UpdateProcedureName />
+      <DeleteProcedureName />
+      <DeleteUseTimestamp>false</DeleteUseTimestamp>
+      <RemoveItem>true</RemoveItem>
+      <ToStringProperty />
+      <BusinessRules />
+      <AuthzProvider>IsInRole</AuthzProvider>
+      <NewRoles />
+      <GetRoles />
+      <UpdateRoles />
+      <DeleteRoles />
+      <NewAuthzRuleType>
+        <BaseRuleProperties />
+        <Name />
+        <ObjectName />
+        <AssemblyFile />
+        <Type />
+        <Constructors />
+        <RuleProperties />
+        <CacheResult>false</CacheResult>
+      </NewAuthzRuleType>
+      <GetAuthzRuleType>
+        <BaseRuleProperties />
+        <Name />
+        <ObjectName />
+        <AssemblyFile />
+        <Type />
+        <Constructors />
+        <RuleProperties />
+        <CacheResult>false</CacheResult>
+      </GetAuthzRuleType>
+      <UpdateAuthzRuleType>
+        <BaseRuleProperties />
+        <Name />
+        <ObjectName />
+        <AssemblyFile />
+        <Type />
+        <Constructors />
+        <RuleProperties />
+        <CacheResult>false</CacheResult>
+      </UpdateAuthzRuleType>
+      <DeleteAuthzRuleType>
+        <BaseRuleProperties />
+        <Name />
+        <ObjectName />
+        <AssemblyFile />
+        <Type />
+        <Constructors />
+        <RuleProperties />
+        <CacheResult>false</CacheResult>
+      </DeleteAuthzRuleType>
+    </CslaObjectInfo>
+    <CslaObjectInfo>
+      <Generate>false</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
+      <GenerateFactoryMethods>true</GenerateFactoryMethods>
+      <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
+      <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
+      <GenerateDataPortalUpdate>true</GenerateDataPortalUpdate>
+      <GenerateDataPortalDelete>true</GenerateDataPortalDelete>
+      <GenerateSprocs>true</GenerateSprocs>
+      <GenerateInlineQueries />
+      <DataSetLoadingScheme>false</DataSetLoadingScheme>
+      <UseCustomLoading>false</UseCustomLoading>
+      <ObjectType>BaseClass</ObjectType>
+      <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
+      <ObjectName>MyReadOnlyBase</ObjectName>
+      <IsGenericType>true</IsGenericType>
+      <GenericArguments>OBJ</GenericArguments>
+      <ObjectNamespace>DocStore.Business</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
+      <ClassSummary />
+      <ClassRemarks />
+      <Namespaces />
+      <Attributes />
+      <Interfaces />
+      <InheritedType>
+        <ObjectName />
+        <AssemblyFile />
+        <Type />
+        <IsGenericType>false</IsGenericType>
+      </InheritedType>
+      <InheritedTypeWinForms>
+        <ObjectName />
+        <AssemblyFile />
+        <Type />
+        <IsGenericType>false</IsGenericType>
+      </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
+      <ConstructorVisibility>Default</ConstructorVisibility>
+      <Folder />
+      <FileName>MyReadOnlyBaseT</FileName>
       <UnitOfWorkProperties />
       <ChildCollectionProperties />
       <ChildProperties />
@@ -1148,7 +1666,7 @@
       <ClassSummary />
       <ClassRemarks />
       <Namespaces>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces>
@@ -1156,7 +1674,7 @@
         <string>IHaveGenericInterface&lt;T&gt;</string>
       </Interfaces>
       <InheritedType>
-        <ObjectName>ReadOnlyBase&lt;OBJ&gt;</ObjectName>
+        <ObjectName>MyReadOnlyBase&lt;OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -1316,7 +1834,7 @@
       <ClassSummary>Active tags for circulation types</ClassSummary>
       <ClassRemarks />
       <Namespaces>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces>
@@ -1324,7 +1842,7 @@
         <string>IHaveGenericInterface&lt;T&gt;</string>
       </Interfaces>
       <InheritedType>
-        <ObjectName>NameValueListBase&lt;KEY,VALUE&gt;</ObjectName>
+        <ObjectName>MyNameValueListBase&lt;KEY,VALUE&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -1607,7 +2125,7 @@
       <ClassSummary>Active tags for decision types</ClassSummary>
       <ClassRemarks />
       <Namespaces>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces>
@@ -1898,7 +2416,7 @@
       <ClassSummary />
       <ClassRemarks />
       <Namespaces>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces>
@@ -1906,13 +2424,13 @@
         <string>IHaveGenericInterface&lt;T&gt;</string>
       </Interfaces>
       <InheritedType>
-        <ObjectName>DynamicBindingListBase&lt;ITEM&gt;</ObjectName>
+        <ObjectName>MyDynamicListBase&lt;OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
-        <ObjectName>DynamicBindingListBase&lt;ITEM&gt;</ObjectName>
+        <ObjectName>MyDynamicBindingListBase&lt;ITEM&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -2718,7 +3236,7 @@
       <ClassSummary />
       <ClassRemarks />
       <Namespaces>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces>
@@ -2726,13 +3244,13 @@
         <string>IHaveGenericInterface&lt;T&gt;</string>
       </Interfaces>
       <InheritedType>
-        <ObjectName>BusinessBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
+        <ObjectName>MyBusinessListBase&lt;LIST,OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
-        <ObjectName>BusinessBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
+        <ObjectName>MyBusinessBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -3476,7 +3994,7 @@
       <ClassSummary>Collection of circulations of documents and folders</ClassSummary>
       <ClassRemarks />
       <Namespaces>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces>
@@ -3484,13 +4002,13 @@
         <string>IHaveGenericInterface&lt;T&gt;</string>
       </Interfaces>
       <InheritedType>
-        <ObjectName>ReadOnlyBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
+        <ObjectName>MyReadOnlyListBase&lt;LIST,OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
-        <ObjectName>ReadOnlyBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
+        <ObjectName>MyReadOnlyBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -3699,7 +4217,7 @@
       <ClassSummary>Circulation of document or folder</ClassSummary>
       <ClassRemarks />
       <Namespaces>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces>
@@ -3707,7 +4225,7 @@
         <string>IHaveGenericInterface&lt;T&gt;</string>
       </Interfaces>
       <InheritedType>
-        <ObjectName>ReadOnlyBase&lt;OBJ&gt;</ObjectName>
+        <ObjectName>MyReadOnlyBase&lt;OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -4435,7 +4953,7 @@
       <ClassRemarks />
       <Namespaces>
         <string>DocStore.Business.Admin</string>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces>
@@ -4626,11 +5144,12 @@
       <ClassRemarks />
       <Namespaces>
         <string>DocStore.Business.Admin</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces />
       <InheritedType>
-        <ObjectName>ReadOnlyBase&lt;OBJ&gt;</ObjectName>
+        <ObjectName>MyReadOnlyBase&lt;OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -5005,7 +5524,7 @@
         <string>CslaGenFork.Rules.DateRules</string>
         <string>CslaGenFork.Rules.TransformationRules</string>
         <string>DocStore.Business.Security</string>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces>
@@ -5013,7 +5532,7 @@
         <string>IHaveGenericInterface&lt;T&gt;</string>
       </Interfaces>
       <InheritedType>
-        <ObjectName>BusinessBase&lt;OBJ&gt;</ObjectName>
+        <ObjectName>BusinessBaseDoc&lt;T&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -5302,280 +5821,8 @@
           <Access>IsPublic</Access>
           <Undoable>true</Undoable>
         </ChildProperty>
-        <ChildProperty>
-          <ParameterName>Contents</ParameterName>
-          <Name>Contents</Name>
-          <PropertyType>Empty</PropertyType>
-          <ReadOnly>true</ReadOnly>
-          <Nullable>false</Nullable>
-          <Summary />
-          <Remarks />
-          <FriendlyName>Contents</FriendlyName>
-          <TypeName>DocContentList</TypeName>
-          <DeclarationMode>Managed</DeclarationMode>
-          <ChildUpdateOrder>0</ChildUpdateOrder>
-          <Attributes />
-          <Interfaces />
-          <BusinessRules />
-          <AuthzProvider>IsInRole</AuthzProvider>
-          <ReadRoles />
-          <WriteRoles />
-          <ReadAuthzRuleType>
-            <BaseRuleProperties />
-            <Name />
-            <ObjectName />
-            <AssemblyFile />
-            <Type />
-            <Constructors />
-            <RuleProperties />
-            <CacheResult>false</CacheResult>
-          </ReadAuthzRuleType>
-          <WriteAuthzRuleType>
-            <BaseRuleProperties />
-            <Name />
-            <ObjectName />
-            <AssemblyFile />
-            <Type />
-            <Constructors />
-            <RuleProperties />
-            <CacheResult>false</CacheResult>
-          </WriteAuthzRuleType>
-          <LoadingScheme>ParentLoad</LoadingScheme>
-          <LazyLoad>false</LazyLoad>
-          <ParentLoadProperties />
-          <LoadParameters>
-            <Parameter>
-              <Criteria>
-                <Name>CriteriaGet</Name>
-                <CriteriaClassMode>Simple</CriteriaClassMode>
-                <NestedClass>true</NestedClass>
-                <Properties>
-                  <Property>
-                    <ParameterName>DocID</ParameterName>
-                    <Name>DocID</Name>
-                    <PropertyType>Int32</PropertyType>
-                    <ReadOnly>false</ReadOnly>
-                    <Nullable>false</Nullable>
-                    <Summary />
-                    <Remarks />
-                    <DbBindColumn>
-                      <ColumnOriginType>Table</ColumnOriginType>
-                      <DataType>Int32</DataType>
-                      <NativeType>int</NativeType>
-                      <Size>10</Size>
-                      <SpResultIndex>0</SpResultIndex>
-                      <ColumnName>DocID</ColumnName>
-                      <IsPrimaryKey>true</IsPrimaryKey>
-                      <ObjectName>Docs</ObjectName>
-                      <CatalogName>DocStore</CatalogName>
-                      <SchemaName>dbo</SchemaName>
-                      <IsNullable>false</IsNullable>
-                      <IsIdentity>true</IsIdentity>
-                    </DbBindColumn>
-                    <CustomPropertyType />
-                    <ParameterValue />
-                    <InlineQueryParameter>Plain</InlineQueryParameter>
-                  </Property>
-                </Properties>
-                <CreateOptions>
-                  <Factory>false</Factory>
-                  <AddRemove>false</AddRemove>
-                  <DataPortal>false</DataPortal>
-                  <RunLocal>false</RunLocal>
-                  <Procedure>false</Procedure>
-                  <ProcedureName />
-                  <FactorySuffix />
-                </CreateOptions>
-                <GetOptions>
-                  <Factory>true</Factory>
-                  <AddRemove>false</AddRemove>
-                  <DataPortal>true</DataPortal>
-                  <RunLocal>false</RunLocal>
-                  <Procedure>true</Procedure>
-                  <ProcedureName>GetDoc</ProcedureName>
-                  <FactorySuffix />
-                </GetOptions>
-                <DeleteOptions>
-                  <Factory>false</Factory>
-                  <AddRemove>false</AddRemove>
-                  <DataPortal>false</DataPortal>
-                  <RunLocal>false</RunLocal>
-                  <Procedure>false</Procedure>
-                  <ProcedureName />
-                  <FactorySuffix />
-                </DeleteOptions>
-                <Summary />
-                <Remarks />
-              </Criteria>
-              <Property xsi:type="CriteriaProperty">
-                <ParameterName>DocID</ParameterName>
-                <Name>DocID</Name>
-                <PropertyType>Int32</PropertyType>
-                <ReadOnly>false</ReadOnly>
-                <Nullable>false</Nullable>
-                <Summary />
-                <Remarks />
-                <DbBindColumn>
-                  <ColumnOriginType>Table</ColumnOriginType>
-                  <DataType>Int32</DataType>
-                  <NativeType>int</NativeType>
-                  <Size>10</Size>
-                  <SpResultIndex>0</SpResultIndex>
-                  <ColumnName>DocID</ColumnName>
-                  <IsPrimaryKey>true</IsPrimaryKey>
-                  <ObjectName>Docs</ObjectName>
-                  <CatalogName>DocStore</CatalogName>
-                  <SchemaName>dbo</SchemaName>
-                  <IsNullable>false</IsNullable>
-                  <IsIdentity>true</IsIdentity>
-                </DbBindColumn>
-                <CustomPropertyType />
-                <ParameterValue />
-                <InlineQueryParameter>Plain</InlineQueryParameter>
-              </Property>
-            </Parameter>
-          </LoadParameters>
-          <Access>IsPublic</Access>
-          <Undoable>true</Undoable>
-        </ChildProperty>
       </ChildCollectionProperties>
       <ChildProperties>
-        <ChildProperty>
-          <ParameterName>ViewContent</ParameterName>
-          <Name>ViewContent</Name>
-          <PropertyType>Empty</PropertyType>
-          <ReadOnly>true</ReadOnly>
-          <Nullable>false</Nullable>
-          <Summary />
-          <Remarks />
-          <FriendlyName>View Content</FriendlyName>
-          <TypeName>DocContentRO</TypeName>
-          <DeclarationMode>Managed</DeclarationMode>
-          <ChildUpdateOrder>0</ChildUpdateOrder>
-          <Attributes />
-          <Interfaces />
-          <BusinessRules />
-          <AuthzProvider>IsInRole</AuthzProvider>
-          <ReadRoles />
-          <WriteRoles />
-          <ReadAuthzRuleType>
-            <BaseRuleProperties />
-            <Name />
-            <ObjectName />
-            <AssemblyFile />
-            <Type />
-            <Constructors />
-            <RuleProperties />
-            <CacheResult>false</CacheResult>
-          </ReadAuthzRuleType>
-          <WriteAuthzRuleType>
-            <BaseRuleProperties />
-            <Name />
-            <ObjectName />
-            <AssemblyFile />
-            <Type />
-            <Constructors />
-            <RuleProperties />
-            <CacheResult>false</CacheResult>
-          </WriteAuthzRuleType>
-          <LoadingScheme>ParentLoad</LoadingScheme>
-          <LazyLoad>false</LazyLoad>
-          <ParentLoadProperties />
-          <LoadParameters>
-            <Parameter>
-              <Criteria>
-                <Name>CriteriaGet</Name>
-                <CriteriaClassMode>Simple</CriteriaClassMode>
-                <NestedClass>true</NestedClass>
-                <Properties>
-                  <Property>
-                    <ParameterName>DocID</ParameterName>
-                    <Name>DocID</Name>
-                    <PropertyType>Int32</PropertyType>
-                    <ReadOnly>false</ReadOnly>
-                    <Nullable>false</Nullable>
-                    <Summary />
-                    <Remarks />
-                    <DbBindColumn>
-                      <ColumnOriginType>Table</ColumnOriginType>
-                      <DataType>Int32</DataType>
-                      <NativeType>int</NativeType>
-                      <Size>10</Size>
-                      <SpResultIndex>0</SpResultIndex>
-                      <ColumnName>DocID</ColumnName>
-                      <IsPrimaryKey>true</IsPrimaryKey>
-                      <ObjectName>Docs</ObjectName>
-                      <CatalogName>DocStore</CatalogName>
-                      <SchemaName>dbo</SchemaName>
-                      <IsNullable>false</IsNullable>
-                      <IsIdentity>true</IsIdentity>
-                    </DbBindColumn>
-                    <CustomPropertyType />
-                    <ParameterValue />
-                    <InlineQueryParameter>Plain</InlineQueryParameter>
-                  </Property>
-                </Properties>
-                <CreateOptions>
-                  <Factory>false</Factory>
-                  <AddRemove>false</AddRemove>
-                  <DataPortal>false</DataPortal>
-                  <RunLocal>false</RunLocal>
-                  <Procedure>false</Procedure>
-                  <ProcedureName />
-                  <FactorySuffix />
-                </CreateOptions>
-                <GetOptions>
-                  <Factory>true</Factory>
-                  <AddRemove>false</AddRemove>
-                  <DataPortal>true</DataPortal>
-                  <RunLocal>false</RunLocal>
-                  <Procedure>true</Procedure>
-                  <ProcedureName>GetDoc</ProcedureName>
-                  <FactorySuffix />
-                </GetOptions>
-                <DeleteOptions>
-                  <Factory>false</Factory>
-                  <AddRemove>false</AddRemove>
-                  <DataPortal>false</DataPortal>
-                  <RunLocal>false</RunLocal>
-                  <Procedure>false</Procedure>
-                  <ProcedureName />
-                  <FactorySuffix />
-                </DeleteOptions>
-                <Summary />
-                <Remarks />
-              </Criteria>
-              <Property xsi:type="CriteriaProperty">
-                <ParameterName>DocID</ParameterName>
-                <Name>DocID</Name>
-                <PropertyType>Int32</PropertyType>
-                <ReadOnly>false</ReadOnly>
-                <Nullable>false</Nullable>
-                <Summary />
-                <Remarks />
-                <DbBindColumn>
-                  <ColumnOriginType>Table</ColumnOriginType>
-                  <DataType>Int32</DataType>
-                  <NativeType>int</NativeType>
-                  <Size>10</Size>
-                  <SpResultIndex>0</SpResultIndex>
-                  <ColumnName>DocID</ColumnName>
-                  <IsPrimaryKey>true</IsPrimaryKey>
-                  <ObjectName>Docs</ObjectName>
-                  <CatalogName>DocStore</CatalogName>
-                  <SchemaName>dbo</SchemaName>
-                  <IsNullable>false</IsNullable>
-                  <IsIdentity>true</IsIdentity>
-                </DbBindColumn>
-                <CustomPropertyType />
-                <ParameterValue />
-                <InlineQueryParameter>Plain</InlineQueryParameter>
-              </Property>
-            </Parameter>
-          </LoadParameters>
-          <Access>IsPublic</Access>
-          <Undoable>true</Undoable>
-        </ChildProperty>
         <ChildProperty>
           <ParameterName>EditContent</ParameterName>
           <Name>EditContent</Name>
@@ -5713,8 +5960,100 @@
           <Undoable>true</Undoable>
         </ChildProperty>
       </ChildProperties>
-      <InheritedChildCollectionProperties />
-      <InheritedChildProperties />
+      <InheritedChildCollectionProperties>
+        <ChildProperty>
+          <ParameterName>Contents</ParameterName>
+          <Name>Contents</Name>
+          <PropertyType>Empty</PropertyType>
+          <ReadOnly>false</ReadOnly>
+          <Nullable>false</Nullable>
+          <Summary />
+          <Remarks />
+          <FriendlyName>Contents</FriendlyName>
+          <TypeName>DocContentList</TypeName>
+          <DeclarationMode>Managed</DeclarationMode>
+          <ChildUpdateOrder>0</ChildUpdateOrder>
+          <Attributes />
+          <Interfaces />
+          <BusinessRules />
+          <AuthzProvider>IsInRole</AuthzProvider>
+          <ReadRoles />
+          <WriteRoles />
+          <ReadAuthzRuleType>
+            <BaseRuleProperties />
+            <Name />
+            <ObjectName />
+            <AssemblyFile />
+            <Type />
+            <Constructors />
+            <RuleProperties />
+            <CacheResult>false</CacheResult>
+          </ReadAuthzRuleType>
+          <WriteAuthzRuleType>
+            <BaseRuleProperties />
+            <Name />
+            <ObjectName />
+            <AssemblyFile />
+            <Type />
+            <Constructors />
+            <RuleProperties />
+            <CacheResult>false</CacheResult>
+          </WriteAuthzRuleType>
+          <LoadingScheme>ParentLoad</LoadingScheme>
+          <LazyLoad>false</LazyLoad>
+          <ParentLoadProperties />
+          <LoadParameters />
+          <Access>IsPublic</Access>
+          <Undoable>true</Undoable>
+        </ChildProperty>
+      </InheritedChildCollectionProperties>
+      <InheritedChildProperties>
+        <ChildProperty>
+          <ParameterName>ViewContent</ParameterName>
+          <Name>ViewContent</Name>
+          <PropertyType>Empty</PropertyType>
+          <ReadOnly>false</ReadOnly>
+          <Nullable>false</Nullable>
+          <Summary />
+          <Remarks />
+          <FriendlyName>View Content</FriendlyName>
+          <TypeName>DocContentRO</TypeName>
+          <DeclarationMode>Managed</DeclarationMode>
+          <ChildUpdateOrder>0</ChildUpdateOrder>
+          <Attributes />
+          <Interfaces />
+          <BusinessRules />
+          <AuthzProvider>IsInRole</AuthzProvider>
+          <ReadRoles />
+          <WriteRoles />
+          <ReadAuthzRuleType>
+            <BaseRuleProperties />
+            <Name />
+            <ObjectName />
+            <AssemblyFile />
+            <Type />
+            <Constructors />
+            <RuleProperties />
+            <CacheResult>false</CacheResult>
+          </ReadAuthzRuleType>
+          <WriteAuthzRuleType>
+            <BaseRuleProperties />
+            <Name />
+            <ObjectName />
+            <AssemblyFile />
+            <Type />
+            <Constructors />
+            <RuleProperties />
+            <CacheResult>false</CacheResult>
+          </WriteAuthzRuleType>
+          <LoadingScheme>ParentLoad</LoadingScheme>
+          <LazyLoad>false</LazyLoad>
+          <ParentLoadProperties />
+          <LoadParameters />
+          <Access>IsPublic</Access>
+          <Undoable>true</Undoable>
+        </ChildProperty>
+      </InheritedChildProperties>
       <ConvertValueProperties>
         <ConvertValueProperty>
           <ParameterName />
@@ -5776,7 +6115,220 @@
         </ConvertValueProperty>
       </ConvertValueProperties>
       <UpdateValueProperties />
-      <InheritedValueProperties />
+      <InheritedValueProperties>
+        <ValueProperty>
+          <ParameterName>Secret</ParameterName>
+          <Name>Secret</Name>
+          <PropertyType>String</PropertyType>
+          <ReadOnly>false</ReadOnly>
+          <Nullable>false</Nullable>
+          <Summary />
+          <Remarks />
+          <DbBindColumn>
+            <ColumnOriginType>Table</ColumnOriginType>
+            <DataType>String</DataType>
+            <NativeType>varchar</NativeType>
+            <Size>50</Size>
+            <SpResultIndex>0</SpResultIndex>
+            <ColumnName>Secret</ColumnName>
+            <IsPrimaryKey>false</IsPrimaryKey>
+            <ObjectName>Docs</ObjectName>
+            <CatalogName>DocStore</CatalogName>
+            <SchemaName>dbo</SchemaName>
+            <IsNullable>true</IsNullable>
+            <IsIdentity>false</IsIdentity>
+          </DbBindColumn>
+          <DataAccess>ReadWrite</DataAccess>
+          <PrimaryKey>Default</PrimaryKey>
+          <FKConstraint />
+          <FriendlyName>Secret</FriendlyName>
+          <CustomPropertyType />
+          <DeclarationMode>Managed</DeclarationMode>
+          <BackingFieldType>Empty</BackingFieldType>
+          <DefaultValue />
+          <Attributes />
+          <Interfaces />
+          <BusinessRules />
+          <AuthzProvider>Custom</AuthzProvider>
+          <ReadRoles />
+          <WriteRoles />
+          <ReadAuthzRuleType>
+            <BaseRuleProperties>
+              <string>Action</string>
+              <string>Element</string>
+            </BaseRuleProperties>
+            <Name>IsOwnerOrIsInRole</Name>
+            <ObjectName />
+            <AssemblyFile>C:\VS Projects\CslaGenFork 4.5\CoverageTest\Dependencies\CslaGenFork.Rules.dll</AssemblyFile>
+            <Type>IsOwnerOrIsInRole</Type>
+            <Constructors>
+              <BusinessRuleConstructor>
+                <Name>Constructor #1</Name>
+                <IsActive>false</IsActive>
+                <ConstructorParameters>
+                  <BusinessRuleConstructorParameter>
+                    <Name>action</Name>
+                    <Type>AuthorizationActions</Type>
+                    <IsParams>false</IsParams>
+                    <IsGenericType>false</IsGenericType>
+                    <IsGenericParameter>false</IsGenericParameter>
+                    <GenericType>Empty</GenericType>
+                    <Value xsi:type="xsd:string">ReadProperty</Value>
+                  </BusinessRuleConstructorParameter>
+                  <BusinessRuleConstructorParameter>
+                    <Name>element</Name>
+                    <Type>IMemberInfo</Type>
+                    <IsParams>false</IsParams>
+                    <IsGenericType>false</IsGenericType>
+                    <IsGenericParameter>false</IsGenericParameter>
+                    <GenericType>Empty</GenericType>
+                    <Value xsi:type="xsd:string">Secret</Value>
+                  </BusinessRuleConstructorParameter>
+                  <BusinessRuleConstructorParameter>
+                    <Name>creatorProperty</Name>
+                    <Type>String</Type>
+                    <IsParams>false</IsParams>
+                    <IsGenericType>false</IsGenericType>
+                    <IsGenericParameter>false</IsGenericParameter>
+                    <GenericType>Empty</GenericType>
+                    <Value xsi:type="xsd:string" />
+                  </BusinessRuleConstructorParameter>
+                  <BusinessRuleConstructorParameter>
+                    <Name>getCurrentUserDelegate</Name>
+                    <Type>Func&lt;Int32&gt;</Type>
+                    <IsParams>false</IsParams>
+                    <IsGenericType>false</IsGenericType>
+                    <IsGenericParameter>true</IsGenericParameter>
+                    <GenericType>Empty</GenericType>
+                    <Value xsi:type="xsd:string" />
+                  </BusinessRuleConstructorParameter>
+                  <BusinessRuleConstructorParameter>
+                    <Name>roles</Name>
+                    <Type>List&lt;String&gt;</Type>
+                    <IsParams>false</IsParams>
+                    <IsGenericType>false</IsGenericType>
+                    <IsGenericParameter>true</IsGenericParameter>
+                    <GenericType>Empty</GenericType>
+                    <Value xsi:type="xsd:string" />
+                  </BusinessRuleConstructorParameter>
+                </ConstructorParameters>
+              </BusinessRuleConstructor>
+              <BusinessRuleConstructor>
+                <Name>Constructor #2 (Active)</Name>
+                <IsActive>true</IsActive>
+                <ConstructorParameters>
+                  <BusinessRuleConstructorParameter>
+                    <Name>action</Name>
+                    <Type>AuthorizationActions</Type>
+                    <IsParams>false</IsParams>
+                    <IsGenericType>false</IsGenericType>
+                    <IsGenericParameter>false</IsGenericParameter>
+                    <GenericType>Empty</GenericType>
+                    <Value xsi:type="xsd:string">ReadProperty</Value>
+                  </BusinessRuleConstructorParameter>
+                  <BusinessRuleConstructorParameter>
+                    <Name>element</Name>
+                    <Type>IMemberInfo</Type>
+                    <IsParams>false</IsParams>
+                    <IsGenericType>false</IsGenericType>
+                    <IsGenericParameter>false</IsGenericParameter>
+                    <GenericType>Empty</GenericType>
+                    <Value xsi:type="xsd:string">Secret</Value>
+                  </BusinessRuleConstructorParameter>
+                  <BusinessRuleConstructorParameter>
+                    <Name>creatorProperty</Name>
+                    <Type>String</Type>
+                    <IsParams>false</IsParams>
+                    <IsGenericType>false</IsGenericType>
+                    <IsGenericParameter>false</IsGenericParameter>
+                    <GenericType>Empty</GenericType>
+                    <Value xsi:type="xsd:string">CreateUserID</Value>
+                  </BusinessRuleConstructorParameter>
+                  <BusinessRuleConstructorParameter>
+                    <Name>getCurrentUserDelegate</Name>
+                    <Type>Func&lt;Int32&gt;</Type>
+                    <IsParams>false</IsParams>
+                    <IsGenericType>false</IsGenericType>
+                    <IsGenericParameter>true</IsGenericParameter>
+                    <GenericType>Empty</GenericType>
+                    <Value xsi:type="xsd:string">Function() UserInformation.UserId</Value>
+                  </BusinessRuleConstructorParameter>
+                  <BusinessRuleConstructorParameter>
+                    <Name>roles</Name>
+                    <Type>String[]</Type>
+                    <IsParams>true</IsParams>
+                    <IsGenericType>false</IsGenericType>
+                    <IsGenericParameter>false</IsGenericParameter>
+                    <GenericType>Empty</GenericType>
+                    <Value xsi:type="xsd:string">Admin,Manager</Value>
+                  </BusinessRuleConstructorParameter>
+                </ConstructorParameters>
+              </BusinessRuleConstructor>
+            </Constructors>
+            <RuleProperties />
+            <CacheResult>false</CacheResult>
+          </ReadAuthzRuleType>
+          <WriteAuthzRuleType>
+            <BaseRuleProperties>
+              <string>Action</string>
+              <string>Element</string>
+            </BaseRuleProperties>
+            <Name>IsOwner</Name>
+            <ObjectName />
+            <AssemblyFile>C:\VS Projects\CslaGenFork 4.5\CoverageTest\Dependencies\CslaGenFork.Rules.dll</AssemblyFile>
+            <Type>IsOwner</Type>
+            <Constructors>
+              <BusinessRuleConstructor>
+                <Name>Constructor #1 (Active)</Name>
+                <IsActive>true</IsActive>
+                <ConstructorParameters>
+                  <BusinessRuleConstructorParameter>
+                    <Name>action</Name>
+                    <Type>AuthorizationActions</Type>
+                    <IsParams>false</IsParams>
+                    <IsGenericType>false</IsGenericType>
+                    <IsGenericParameter>false</IsGenericParameter>
+                    <GenericType>Empty</GenericType>
+                    <Value xsi:type="xsd:string">WriteProperty</Value>
+                  </BusinessRuleConstructorParameter>
+                  <BusinessRuleConstructorParameter>
+                    <Name>element</Name>
+                    <Type>IMemberInfo</Type>
+                    <IsParams>false</IsParams>
+                    <IsGenericType>false</IsGenericType>
+                    <IsGenericParameter>false</IsGenericParameter>
+                    <GenericType>Empty</GenericType>
+                    <Value xsi:type="xsd:string">Secret</Value>
+                  </BusinessRuleConstructorParameter>
+                  <BusinessRuleConstructorParameter>
+                    <Name>creatorProperty</Name>
+                    <Type>String</Type>
+                    <IsParams>false</IsParams>
+                    <IsGenericType>false</IsGenericType>
+                    <IsGenericParameter>false</IsGenericParameter>
+                    <GenericType>Empty</GenericType>
+                    <Value xsi:type="xsd:string">CreateUserID</Value>
+                  </BusinessRuleConstructorParameter>
+                  <BusinessRuleConstructorParameter>
+                    <Name>getCurrentUserDelegate</Name>
+                    <Type>Func&lt;Int32&gt;</Type>
+                    <IsParams>false</IsParams>
+                    <IsGenericType>false</IsGenericType>
+                    <IsGenericParameter>true</IsGenericParameter>
+                    <GenericType>Empty</GenericType>
+                    <Value xsi:type="xsd:string">Function() UserInformation.UserId</Value>
+                  </BusinessRuleConstructorParameter>
+                </ConstructorParameters>
+              </BusinessRuleConstructor>
+            </Constructors>
+            <RuleProperties />
+            <CacheResult>false</CacheResult>
+          </WriteAuthzRuleType>
+          <Access>IsPublic</Access>
+          <PropSetAccessibility>Default</PropSetAccessibility>
+          <Undoable>true</Undoable>
+        </ValueProperty>
+      </InheritedValueProperties>
       <ValueProperties>
         <ValueProperty>
           <ParameterName>DocID</ParameterName>
@@ -7947,215 +8499,6 @@
           <Undoable>true</Undoable>
         </ValueProperty>
         <ValueProperty>
-          <ParameterName>Secret</ParameterName>
-          <Name>Secret</Name>
-          <PropertyType>String</PropertyType>
-          <ReadOnly>false</ReadOnly>
-          <Nullable>false</Nullable>
-          <Summary />
-          <Remarks />
-          <DbBindColumn>
-            <ColumnOriginType>Table</ColumnOriginType>
-            <DataType>String</DataType>
-            <NativeType>varchar</NativeType>
-            <Size>50</Size>
-            <SpResultIndex>0</SpResultIndex>
-            <ColumnName>Secret</ColumnName>
-            <IsPrimaryKey>false</IsPrimaryKey>
-            <ObjectName>Docs</ObjectName>
-            <CatalogName>DocStore</CatalogName>
-            <SchemaName>dbo</SchemaName>
-            <IsNullable>true</IsNullable>
-            <IsIdentity>false</IsIdentity>
-          </DbBindColumn>
-          <DataAccess>ReadWrite</DataAccess>
-          <PrimaryKey>Default</PrimaryKey>
-          <FKConstraint />
-          <FriendlyName>Secret</FriendlyName>
-          <CustomPropertyType />
-          <DeclarationMode>Managed</DeclarationMode>
-          <BackingFieldType>Empty</BackingFieldType>
-          <DefaultValue />
-          <Attributes />
-          <Interfaces />
-          <BusinessRules />
-          <AuthzProvider>Custom</AuthzProvider>
-          <ReadRoles />
-          <WriteRoles />
-          <ReadAuthzRuleType>
-            <BaseRuleProperties>
-              <string>Element</string>
-            </BaseRuleProperties>
-            <Name>IsOwnerOrIsInRole</Name>
-            <ObjectName />
-            <AssemblyFile>C:\VS Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\CslaGenFork.Rules.dll</AssemblyFile>
-            <Type>CslaGenFork.Rules.AuthorizationRules.IsOwnerOrIsInRole</Type>
-            <Constructors>
-              <BusinessRuleConstructor>
-                <Name>Constructor #1</Name>
-                <IsActive>false</IsActive>
-                <ConstructorParameters>
-                  <BusinessRuleConstructorParameter>
-                    <Name>action</Name>
-                    <Type>AuthorizationActions</Type>
-                    <IsParams>false</IsParams>
-                    <IsGenericType>false</IsGenericType>
-                    <IsGenericParameter>false</IsGenericParameter>
-                    <GenericType>Object</GenericType>
-                    <Value xsi:type="xsd:string">ReadProperty</Value>
-                  </BusinessRuleConstructorParameter>
-                  <BusinessRuleConstructorParameter>
-                    <Name>element</Name>
-                    <Type>IMemberInfo</Type>
-                    <IsParams>false</IsParams>
-                    <IsGenericType>false</IsGenericType>
-                    <IsGenericParameter>false</IsGenericParameter>
-                    <GenericType>Object</GenericType>
-                    <Value xsi:type="xsd:string">Secret</Value>
-                  </BusinessRuleConstructorParameter>
-                  <BusinessRuleConstructorParameter>
-                    <Name>creatorProperty</Name>
-                    <Type>String</Type>
-                    <IsParams>false</IsParams>
-                    <IsGenericType>false</IsGenericType>
-                    <IsGenericParameter>false</IsGenericParameter>
-                    <GenericType>Object</GenericType>
-                  </BusinessRuleConstructorParameter>
-                  <BusinessRuleConstructorParameter>
-                    <Name>getCurrentUserDelegate</Name>
-                    <Type>Func&lt;Int32&gt;</Type>
-                    <IsParams>false</IsParams>
-                    <IsGenericType>false</IsGenericType>
-                    <IsGenericParameter>true</IsGenericParameter>
-                    <GenericType>Object</GenericType>
-                    <Value xsi:type="xsd:string" />
-                  </BusinessRuleConstructorParameter>
-                  <BusinessRuleConstructorParameter>
-                    <Name>roles</Name>
-                    <Type>List&lt;String&gt;</Type>
-                    <IsParams>false</IsParams>
-                    <IsGenericType>false</IsGenericType>
-                    <IsGenericParameter>true</IsGenericParameter>
-                    <GenericType>Object</GenericType>
-                    <Value xsi:type="xsd:string" />
-                  </BusinessRuleConstructorParameter>
-                </ConstructorParameters>
-              </BusinessRuleConstructor>
-              <BusinessRuleConstructor>
-                <Name>Constructor #2 (Active)</Name>
-                <IsActive>true</IsActive>
-                <ConstructorParameters>
-                  <BusinessRuleConstructorParameter>
-                    <Name>action</Name>
-                    <Type>AuthorizationActions</Type>
-                    <IsParams>false</IsParams>
-                    <IsGenericType>false</IsGenericType>
-                    <IsGenericParameter>false</IsGenericParameter>
-                    <GenericType>Object</GenericType>
-                    <Value xsi:type="xsd:string">ReadProperty</Value>
-                  </BusinessRuleConstructorParameter>
-                  <BusinessRuleConstructorParameter>
-                    <Name>element</Name>
-                    <Type>IMemberInfo</Type>
-                    <IsParams>false</IsParams>
-                    <IsGenericType>false</IsGenericType>
-                    <IsGenericParameter>false</IsGenericParameter>
-                    <GenericType>Object</GenericType>
-                    <Value xsi:type="xsd:string">Secret</Value>
-                  </BusinessRuleConstructorParameter>
-                  <BusinessRuleConstructorParameter>
-                    <Name>creatorProperty</Name>
-                    <Type>String</Type>
-                    <IsParams>false</IsParams>
-                    <IsGenericType>false</IsGenericType>
-                    <IsGenericParameter>false</IsGenericParameter>
-                    <GenericType>Object</GenericType>
-                    <Value xsi:type="xsd:string">CreateUserID</Value>
-                  </BusinessRuleConstructorParameter>
-                  <BusinessRuleConstructorParameter>
-                    <Name>getCurrentUserDelegate</Name>
-                    <Type>Func&lt;Int32&gt;</Type>
-                    <IsParams>false</IsParams>
-                    <IsGenericType>false</IsGenericType>
-                    <IsGenericParameter>true</IsGenericParameter>
-                    <GenericType>Object</GenericType>
-                    <Value xsi:type="xsd:string">Function() UserInformation.UserId</Value>
-                  </BusinessRuleConstructorParameter>
-                  <BusinessRuleConstructorParameter>
-                    <Name>roles</Name>
-                    <Type>String[]</Type>
-                    <IsParams>true</IsParams>
-                    <IsGenericType>false</IsGenericType>
-                    <IsGenericParameter>false</IsGenericParameter>
-                    <GenericType>Object</GenericType>
-                    <Value xsi:type="xsd:string">Admin,Manager</Value>
-                  </BusinessRuleConstructorParameter>
-                </ConstructorParameters>
-              </BusinessRuleConstructor>
-            </Constructors>
-            <RuleProperties />
-            <CacheResult>false</CacheResult>
-          </ReadAuthzRuleType>
-          <WriteAuthzRuleType>
-            <BaseRuleProperties>
-              <string>Element</string>
-            </BaseRuleProperties>
-            <Name>IsOwner</Name>
-            <ObjectName />
-            <AssemblyFile>C:\VS Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\CslaGenFork.Rules.dll</AssemblyFile>
-            <Type>CslaGenFork.Rules.AuthorizationRules.IsOwner</Type>
-            <Constructors>
-              <BusinessRuleConstructor>
-                <Name>Constructor #1 (Active)</Name>
-                <IsActive>true</IsActive>
-                <ConstructorParameters>
-                  <BusinessRuleConstructorParameter>
-                    <Name>action</Name>
-                    <Type>AuthorizationActions</Type>
-                    <IsParams>false</IsParams>
-                    <IsGenericType>false</IsGenericType>
-                    <IsGenericParameter>false</IsGenericParameter>
-                    <GenericType>Object</GenericType>
-                    <Value xsi:type="xsd:string">WriteProperty</Value>
-                  </BusinessRuleConstructorParameter>
-                  <BusinessRuleConstructorParameter>
-                    <Name>element</Name>
-                    <Type>IMemberInfo</Type>
-                    <IsParams>false</IsParams>
-                    <IsGenericType>false</IsGenericType>
-                    <IsGenericParameter>false</IsGenericParameter>
-                    <GenericType>Object</GenericType>
-                    <Value xsi:type="xsd:string">Secret</Value>
-                  </BusinessRuleConstructorParameter>
-                  <BusinessRuleConstructorParameter>
-                    <Name>creatorProperty</Name>
-                    <Type>String</Type>
-                    <IsParams>false</IsParams>
-                    <IsGenericType>false</IsGenericType>
-                    <IsGenericParameter>false</IsGenericParameter>
-                    <GenericType>Object</GenericType>
-                    <Value xsi:type="xsd:string">CreateUserID</Value>
-                  </BusinessRuleConstructorParameter>
-                  <BusinessRuleConstructorParameter>
-                    <Name>getCurrentUserDelegate</Name>
-                    <Type>Func&lt;Int32&gt;</Type>
-                    <IsParams>false</IsParams>
-                    <IsGenericType>false</IsGenericType>
-                    <IsGenericParameter>true</IsGenericParameter>
-                    <GenericType>Object</GenericType>
-                    <Value xsi:type="xsd:string">Function() UserInformation.UserId</Value>
-                  </BusinessRuleConstructorParameter>
-                </ConstructorParameters>
-              </BusinessRuleConstructor>
-            </Constructors>
-            <RuleProperties />
-            <CacheResult>false</CacheResult>
-          </WriteAuthzRuleType>
-          <Access>IsPublic</Access>
-          <PropSetAccessibility>Default</PropSetAccessibility>
-          <Undoable>true</Undoable>
-        </ValueProperty>
-        <ValueProperty>
           <ParameterName>CreateDate</ParameterName>
           <Name>CreateDate</Name>
           <PropertyType>DateTime</PropertyType>
@@ -8778,7 +9121,7 @@
       <ClassRemarks />
       <Namespaces>
         <string>DocStore.Business.Security</string>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces>
@@ -8786,7 +9129,7 @@
         <string>IHaveGenericInterface&lt;T&gt;</string>
       </Interfaces>
       <InheritedType>
-        <ObjectName>BusinessBase&lt;OBJ&gt;</ObjectName>
+        <ObjectName>MyBusinessBase&lt;OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -9726,7 +10069,7 @@
       <ClassSummary>Document files</ClassSummary>
       <ClassRemarks />
       <Namespaces>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces>
@@ -10462,7 +10805,7 @@
       <ClassSummary>Collection of folders where this document is archived</ClassSummary>
       <ClassRemarks />
       <Namespaces>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces>
@@ -10470,13 +10813,13 @@
         <string>IHaveGenericInterface&lt;T&gt;</string>
       </Interfaces>
       <InheritedType>
-        <ObjectName>BusinessBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
+        <ObjectName>MyBusinessListBase&lt;LIST,OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
-        <ObjectName>BusinessBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
+        <ObjectName>MyBusinessBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -10719,7 +11062,7 @@
       <ClassRemarks />
       <Namespaces>
         <string>DocStore.Business.Security</string>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces>
@@ -11577,7 +11920,7 @@
       <ClassSummary>Collection of circulations of this document</ClassSummary>
       <ClassRemarks />
       <Namespaces>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces>
@@ -11773,11 +12116,12 @@
       <ClassRemarks />
       <Namespaces>
         <string>DocStore.Business.Security</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces />
       <InheritedType>
-        <ObjectName>BusinessBase&lt;OBJ&gt;</ObjectName>
+        <ObjectName>MyBusinessBase&lt;OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -12960,7 +13304,7 @@
       <ClassSummary>Collection of contents of this document</ClassSummary>
       <ClassRemarks />
       <Namespaces>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces>
@@ -13093,11 +13437,13 @@
       <ClassVisibility>Public</ClassVisibility>
       <ClassSummary>Content of this document</ClassSummary>
       <ClassRemarks />
-      <Namespaces />
+      <Namespaces>
+        <string>UsingLibrary</string>
+      </Namespaces>
       <Attributes />
       <Interfaces />
       <InheritedType>
-        <ObjectName>ReadOnlyBase&lt;OBJ&gt;</ObjectName>
+        <ObjectName>MyReadOnlyBase&lt;OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -14074,7 +14420,7 @@
       <ClassSummary>Collection of document's basic information</ClassSummary>
       <ClassRemarks />
       <Namespaces>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces>
@@ -14082,13 +14428,13 @@
         <string>IHaveGenericInterface&lt;T&gt;</string>
       </Interfaces>
       <InheritedType>
-        <ObjectName>ReadOnlyBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
+        <ObjectName>MyReadOnlyListBase&lt;LIST,OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
-        <ObjectName>ReadOnlyBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
+        <ObjectName>MyReadOnlyBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -15598,7 +15944,7 @@
       <ClassRemarks />
       <Namespaces>
         <string>DocStore.Business.Security</string>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces>
@@ -16251,7 +16597,7 @@
       <ClassSummary />
       <ClassRemarks />
       <Namespaces>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces>
@@ -16259,18 +16605,18 @@
         <string>IHaveGenericInterface&lt;T&gt;</string>
       </Interfaces>
       <InheritedType>
-        <ObjectName>BusinessBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
+        <ObjectName>MyBusinessListBase&lt;LIST,OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
-        <ObjectName>BusinessBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
+        <ObjectName>MyBusinessBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
       </InheritedTypeWinForms>
-      <UseUnitOfWorkType />
+      <UseUnitOfWorkType>DocClassEditCollGetter</UseUnitOfWorkType>
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
       <FileName>DocClassEditColl</FileName>
@@ -17012,7 +17358,7 @@
       <ClassSummary />
       <ClassRemarks />
       <Namespaces>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces>
@@ -17020,18 +17366,18 @@
         <string>IHaveGenericInterface&lt;T&gt;</string>
       </Interfaces>
       <InheritedType>
-        <ObjectName>DynamicBindingListBase&lt;ITEM&gt;</ObjectName>
+        <ObjectName>MyDynamicListBase&lt;OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
-        <ObjectName />
+        <ObjectName>MyDynamicBindingListBase&lt;ITEM&gt;</ObjectName>
         <AssemblyFile />
         <Type />
-        <IsGenericType>false</IsGenericType>
+        <IsGenericType>true</IsGenericType>
       </InheritedTypeWinForms>
-      <UseUnitOfWorkType>DocClassEditDynaCollGetter</UseUnitOfWorkType>
+      <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
       <FileName>DocClassEditDynaColl</FileName>
@@ -17190,7 +17536,7 @@
         <string>CslaGenFork.Rules.CollectionRules</string>
         <string>CslaGenFork.Rules.TransformationRules</string>
         <string>DocStore.Business.Security</string>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces>
@@ -17198,7 +17544,7 @@
         <string>IHaveGenericInterface&lt;T&gt;</string>
       </Interfaces>
       <InheritedType>
-        <ObjectName>BusinessBase&lt;OBJ&gt;</ObjectName>
+        <ObjectName>MyBusinessBase&lt;OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -18639,11 +18985,13 @@
       <ClassVisibility>Public</ClassVisibility>
       <ClassSummary>Active document classes</ClassSummary>
       <ClassRemarks />
-      <Namespaces />
+      <Namespaces>
+        <string>UsingLibrary</string>
+      </Namespaces>
       <Attributes />
       <Interfaces />
       <InheritedType>
-        <ObjectName>NameValueListBase&lt;KEY,VALUE&gt;</ObjectName>
+        <ObjectName>MyNameValueListBase&lt;KEY,VALUE&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -19007,160 +19355,6 @@
       <InsertProcedureName>AddDocClassEditCollGetter</InsertProcedureName>
       <SelectProcedureName />
       <UpdateProcedureName>UpdateDocClassEditCollGetter</UpdateProcedureName>
-      <DeleteProcedureName />
-      <DeleteUseTimestamp>false</DeleteUseTimestamp>
-      <RemoveItem>true</RemoveItem>
-      <ToStringProperty />
-      <BusinessRules />
-      <AuthzProvider>IsInRole</AuthzProvider>
-      <NewRoles />
-      <GetRoles />
-      <UpdateRoles />
-      <DeleteRoles />
-      <NewAuthzRuleType>
-        <BaseRuleProperties />
-        <Name />
-        <ObjectName />
-        <AssemblyFile />
-        <Type />
-        <Constructors />
-        <RuleProperties />
-        <CacheResult>false</CacheResult>
-      </NewAuthzRuleType>
-      <GetAuthzRuleType>
-        <BaseRuleProperties />
-        <Name />
-        <ObjectName />
-        <AssemblyFile />
-        <Type />
-        <Constructors />
-        <RuleProperties />
-        <CacheResult>false</CacheResult>
-      </GetAuthzRuleType>
-      <UpdateAuthzRuleType>
-        <BaseRuleProperties />
-        <Name />
-        <ObjectName />
-        <AssemblyFile />
-        <Type />
-        <Constructors />
-        <RuleProperties />
-        <CacheResult>false</CacheResult>
-      </UpdateAuthzRuleType>
-      <DeleteAuthzRuleType>
-        <BaseRuleProperties />
-        <Name />
-        <ObjectName />
-        <AssemblyFile />
-        <Type />
-        <Constructors />
-        <RuleProperties />
-        <CacheResult>false</CacheResult>
-      </DeleteAuthzRuleType>
-    </CslaObjectInfo>
-    <CslaObjectInfo>
-      <Generate>true</Generate>
-      <GenerateConstructor>true</GenerateConstructor>
-      <GenerateFactoryMethods>true</GenerateFactoryMethods>
-      <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
-      <GenerateDataPortalInsert>false</GenerateDataPortalInsert>
-      <GenerateDataPortalUpdate>false</GenerateDataPortalUpdate>
-      <GenerateDataPortalDelete>false</GenerateDataPortalDelete>
-      <GenerateSprocs>true</GenerateSprocs>
-      <GenerateInlineQueries />
-      <DataSetLoadingScheme>false</DataSetLoadingScheme>
-      <UseCustomLoading>false</UseCustomLoading>
-      <ObjectType>UnitOfWork</ObjectType>
-      <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
-      <ObjectName>DocClassEditDynaCollGetter</ObjectName>
-      <IsGenericType>false</IsGenericType>
-      <GenericArguments />
-      <ObjectNamespace>DocStore.Business</ObjectNamespace>
-      <ClassVisibility>Public</ClassVisibility>
-      <ClassSummary />
-      <ClassRemarks />
-      <Namespaces>
-        <string>DocStore.Business.Admin</string>
-      </Namespaces>
-      <Attributes />
-      <Interfaces />
-      <InheritedType>
-        <ObjectName />
-        <AssemblyFile />
-        <Type />
-        <IsGenericType>false</IsGenericType>
-      </InheritedType>
-      <InheritedTypeWinForms>
-        <ObjectName />
-        <AssemblyFile />
-        <Type />
-        <IsGenericType>false</IsGenericType>
-      </InheritedTypeWinForms>
-      <UseUnitOfWorkType />
-      <ConstructorVisibility>Default</ConstructorVisibility>
-      <Folder />
-      <FileName>DocClassEditDynaCollGetter</FileName>
-      <UnitOfWorkProperties>
-        <UnitOfWorkProperty>
-          <ParameterName />
-          <Name>DocClassEditDynaColl</Name>
-          <PropertyType>Empty</PropertyType>
-          <ReadOnly>true</ReadOnly>
-          <Nullable>false</Nullable>
-          <Summary />
-          <Remarks />
-          <TypeName>DocClassEditDynaColl</TypeName>
-          <DeclarationMode>Managed</DeclarationMode>
-        </UnitOfWorkProperty>
-        <UnitOfWorkProperty>
-          <ParameterName />
-          <Name>UserNVL</Name>
-          <PropertyType>Empty</PropertyType>
-          <ReadOnly>true</ReadOnly>
-          <Nullable>false</Nullable>
-          <Summary />
-          <Remarks />
-          <TypeName>UserNVL</TypeName>
-          <DeclarationMode>Managed</DeclarationMode>
-        </UnitOfWorkProperty>
-      </UnitOfWorkProperties>
-      <ChildCollectionProperties />
-      <ChildProperties />
-      <InheritedChildCollectionProperties />
-      <InheritedChildProperties />
-      <ConvertValueProperties />
-      <UpdateValueProperties />
-      <InheritedValueProperties />
-      <ValueProperties />
-      <Singleton>false</Singleton>
-      <EditOnDemand>false</EditOnDemand>
-      <CheckRulesOnFetch>true</CheckRulesOnFetch>
-      <SupportUpdateProperties>false</SupportUpdateProperties>
-      <CriteriaObjects />
-      <ParentType />
-      <ParentProperties />
-      <ParentInsertOnly>false</ParentInsertOnly>
-      <IsPolymorphic>false</IsPolymorphic>
-      <ItemType />
-      <ContainsItem>true</ContainsItem>
-      <UniqueItems>false</UniqueItems>
-      <FindMethodsParameters />
-      <UpdaterType />
-      <AllowNew>true</AllowNew>
-      <AllowEdit>true</AllowEdit>
-      <AllowRemove>true</AllowRemove>
-      <AddParentReference>false</AddParentReference>
-      <SimpleCacheOptions>None</SimpleCacheOptions>
-      <InvalidateCache />
-      <ValueColumn />
-      <NameColumn />
-      <PersistenceType>SqlConnectionManager</PersistenceType>
-      <CommandTimeout />
-      <TransactionType>ADO</TransactionType>
-      <InsertUpdateRunLocal>false</InsertUpdateRunLocal>
-      <InsertProcedureName />
-      <SelectProcedureName />
-      <UpdateProcedureName />
       <DeleteProcedureName />
       <DeleteUseTimestamp>false</DeleteUseTimestamp>
       <RemoveItem>true</RemoveItem>
@@ -19986,17 +20180,19 @@
       <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
-      <Namespaces />
+      <Namespaces>
+        <string>UsingLibrary</string>
+      </Namespaces>
       <Attributes />
       <Interfaces />
       <InheritedType>
-        <ObjectName>DynamicBindingListBase&lt;ITEM&gt;</ObjectName>
+        <ObjectName>MyDynamicListBase&lt;OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
-        <ObjectName>DynamicBindingListBase&lt;ITEM&gt;</ObjectName>
+        <ObjectName>MyDynamicBindingListBase&lt;ITEM&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -20153,7 +20349,7 @@
       <ClassRemarks />
       <Namespaces>
         <string>DocStore.Business.Security</string>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces>
@@ -21093,11 +21289,12 @@
       <ClassRemarks />
       <Namespaces>
         <string>DocStore.Business.Security</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces />
       <InheritedType>
-        <ObjectName>BusinessBase&lt;OBJ&gt;</ObjectName>
+        <ObjectName>MyBusinessBase&lt;OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -22987,11 +23184,12 @@
       <ClassRemarks />
       <Namespaces>
         <string>DocStore.Business.Security</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces />
       <InheritedType>
-        <ObjectName>BusinessBase&lt;OBJ&gt;</ObjectName>
+        <ObjectName>MyBusinessBase&lt;OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -26691,17 +26889,19 @@
       <ClassVisibility>Public</ClassVisibility>
       <ClassSummary>Collection of documents archived in this folder</ClassSummary>
       <ClassRemarks />
-      <Namespaces />
+      <Namespaces>
+        <string>UsingLibrary</string>
+      </Namespaces>
       <Attributes />
       <Interfaces />
       <InheritedType>
-        <ObjectName>BusinessBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
+        <ObjectName>MyBusinessListBase&lt;LIST,OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
-        <ObjectName>BusinessBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
+        <ObjectName>MyBusinessBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -37312,7 +37512,7 @@
     </AssociativeEntity>
   </AssociativeEntities>
   <ConnectionString>Server=(local);Database=DocStore;persist security info=False;user id=sa;password=password_1234;packet size=4096</ConnectionString>
-  <ProjectName>Inherits VB</ProjectName>
-  <TargetDirectory>C:\VS Projects\CslaGenFork 4.5\CoverageTest\Inherits\VB</TargetDirectory>
+  <ProjectName>Inherits Dual VB</ProjectName>
+  <TargetDirectory>C:\VS Projects\CslaGenFork 4.5\CoverageTest\Inherits\I-DUAL-VB</TargetDirectory>
   <FileVersion>4.0.4</FileVersion>
 </CslaGeneratorUnit>

@@ -56,7 +56,7 @@
     <SeparateNamespaces>true</SeparateNamespaces>
     <SeparateBaseClasses>false</SeparateBaseClasses>
     <UseDotDesignerFileNameConvention>true</UseDotDesignerFileNameConvention>
-    <OutputLanguage>CSharp</OutputLanguage>
+    <OutputLanguage>VB</OutputLanguage>
     <UpdateOnlyDirtyChildren>true</UpdateOnlyDirtyChildren>
     <PropertyMode>Default</PropertyMode>
     <GenerateAuthorization>FullSupport</GenerateAuthorization>
@@ -83,7 +83,7 @@
     <DalName />
     <UsesCslaAuthorizationProvider>false</UsesCslaAuthorizationProvider>
     <GenerateWinForms>true</GenerateWinForms>
-    <GenerateWPF>true</GenerateWPF>
+    <GenerateWPF>false</GenerateWPF>
     <GenerateSilverlight4>false</GenerateSilverlight4>
     <SilverlightUsingServices>false</SilverlightUsingServices>
     <DatabaseConnection>DocStore</DatabaseConnection>
@@ -4435,7 +4435,7 @@
           <CustomPropertyType />
           <DeclarationMode>ManagedWithTypeConversion</DeclarationMode>
           <BackingFieldType>SmartDate</BackingFieldType>
-          <DefaultValue>new SmartDate(DateTime.Today)</DefaultValue>
+          <DefaultValue>new SmartDate(Date.Today)</DefaultValue>
           <Attributes>
             <string>DateNotInFutureAttr("Please pay attention: {0} can't be in the future.")</string>
           </Attributes>
@@ -5436,7 +5436,7 @@
                     <IsGenericType>false</IsGenericType>
                     <IsGenericParameter>true</IsGenericParameter>
                     <GenericType>Object</GenericType>
-                    <Value xsi:type="xsd:string">() =&gt; UserInformation.UserId</Value>
+                    <Value xsi:type="xsd:string">Function() UserInformation.UserId</Value>
                   </BusinessRuleConstructorParameter>
                   <BusinessRuleConstructorParameter>
                     <Name>roles</Name>
@@ -5500,7 +5500,7 @@
                     <IsGenericType>false</IsGenericType>
                     <IsGenericParameter>true</IsGenericParameter>
                     <GenericType>Object</GenericType>
-                    <Value xsi:type="xsd:string">() =&gt; UserInformation.UserId</Value>
+                    <Value xsi:type="xsd:string">Function() UserInformation.UserId</Value>
                   </BusinessRuleConstructorParameter>
                 </ConstructorParameters>
               </BusinessRuleConstructor>
@@ -5541,7 +5541,7 @@
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
-          <DefaultValue>DateTime.Now</DefaultValue>
+          <DefaultValue>Date.Now</DefaultValue>
           <Attributes />
           <Interfaces />
           <BusinessRules />
@@ -6311,7 +6311,7 @@
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
-          <DefaultValue>(short)1</DefaultValue>
+          <DefaultValue>CShort(Fix(1))</DefaultValue>
           <Attributes />
           <Interfaces />
           <BusinessRules />
@@ -6368,7 +6368,7 @@
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
-          <DefaultValue>new byte[0]</DefaultValue>
+          <DefaultValue>New Byte() {}</DefaultValue>
           <Attributes />
           <Interfaces />
           <BusinessRules />
@@ -6548,7 +6548,7 @@
           <CustomPropertyType />
           <DeclarationMode>ManagedWithTypeConversion</DeclarationMode>
           <BackingFieldType>SmartDate</BackingFieldType>
-          <DefaultValue>new SmartDate(DateTime.Now)</DefaultValue>
+          <DefaultValue>new SmartDate(Date.Now)</DefaultValue>
           <Attributes />
           <Interfaces />
           <BusinessRules />
@@ -8418,7 +8418,7 @@
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
-          <DefaultValue>new SmartDate(DateTime.Now)</DefaultValue>
+          <DefaultValue>new SmartDate(Date.Now)</DefaultValue>
           <Attributes />
           <Interfaces />
           <BusinessRules />
@@ -9823,7 +9823,7 @@
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
-          <DefaultValue>new SmartDate(DateTime.Now)</DefaultValue>
+          <DefaultValue>new SmartDate(Date.Now)</DefaultValue>
           <Attributes />
           <Interfaces />
           <BusinessRules />
@@ -13158,7 +13158,7 @@
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
-          <DefaultValue>new SmartDate(DateTime.Now)</DefaultValue>
+          <DefaultValue>new SmartDate(Date.Now)</DefaultValue>
           <Attributes />
           <Interfaces />
           <BusinessRules />
@@ -15080,7 +15080,7 @@
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
           <Attributes>
-            <string>Required(AllowEmptyStrings = false, ErrorMessage = "Must fill.")</string>
+            <string>Required(AllowEmptyStrings := false, ErrorMessage := "Must fill.")</string>
           </Attributes>
           <Interfaces />
           <BusinessRules>
@@ -15278,7 +15278,7 @@
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
-          <DefaultValue>new SmartDate(DateTime.Now)</DefaultValue>
+          <DefaultValue>new SmartDate(Date.Now)</DefaultValue>
           <Attributes />
           <Interfaces />
           <BusinessRules />
@@ -16273,7 +16273,7 @@
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
-          <DefaultValue>new SmartDate(DateTime.Now)</DefaultValue>
+          <DefaultValue>new SmartDate(Date.Now)</DefaultValue>
           <Attributes />
           <Interfaces />
           <BusinessRules />
@@ -18041,7 +18041,7 @@
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
           <Attributes>
-            <string>Required(AllowEmptyStrings = false, ErrorMessage = "Must fill.")</string>
+            <string>Required(AllowEmptyStrings := false, ErrorMessage := "Must fill.")</string>
           </Attributes>
           <Interfaces />
           <BusinessRules>
@@ -18239,7 +18239,7 @@
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
-          <DefaultValue>new SmartDate(DateTime.Now)</DefaultValue>
+          <DefaultValue>new SmartDate(Date.Now)</DefaultValue>
           <Attributes />
           <Interfaces />
           <BusinessRules />
@@ -19571,7 +19571,7 @@
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
-          <DefaultValue>DateTime.Today.Year</DefaultValue>
+          <DefaultValue>Date.Today.Year</DefaultValue>
           <Attributes />
           <Interfaces />
           <BusinessRules>
@@ -20347,7 +20347,7 @@
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
-          <DefaultValue>new SmartDate(DateTime.Now)</DefaultValue>
+          <DefaultValue>new SmartDate(Date.Now)</DefaultValue>
           <Attributes />
           <Interfaces />
           <BusinessRules />
@@ -21492,7 +21492,7 @@
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
-          <DefaultValue>new SmartDate(DateTime.Now)</DefaultValue>
+          <DefaultValue>new SmartDate(Date.Now)</DefaultValue>
           <Attributes />
           <Interfaces />
           <BusinessRules />
@@ -22897,7 +22897,7 @@
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
-          <DefaultValue>new SmartDate(DateTime.Now)</DefaultValue>
+          <DefaultValue>new SmartDate(Date.Now)</DefaultValue>
           <Attributes />
           <Interfaces />
           <BusinessRules />
@@ -24936,7 +24936,7 @@
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
-          <DefaultValue>new SmartDate(DateTime.Now)</DefaultValue>
+          <DefaultValue>new SmartDate(Date.Now)</DefaultValue>
           <Attributes />
           <Interfaces />
           <BusinessRules />
@@ -26647,7 +26647,7 @@
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
-          <DefaultValue>new byte[0]</DefaultValue>
+          <DefaultValue>New Byte() {}</DefaultValue>
           <Attributes />
           <Interfaces />
           <BusinessRules />
@@ -26827,7 +26827,7 @@
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
-          <DefaultValue>new SmartDate(DateTime.Now)</DefaultValue>
+          <DefaultValue>new SmartDate(Date.Now)</DefaultValue>
           <Attributes />
           <Interfaces />
           <BusinessRules />
@@ -29486,7 +29486,7 @@
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
-          <DefaultValue>new SmartDate(DateTime.Now)</DefaultValue>
+          <DefaultValue>new SmartDate(Date.Now)</DefaultValue>
           <Attributes />
           <Interfaces />
           <BusinessRules />
@@ -31441,7 +31441,7 @@
     </AssociativeEntity>
   </AssociativeEntities>
   <ConnectionString>Server=(local);Database=DocStore;persist security info=False;user id=sa;password=password_1234;packet size=4096</ConnectionString>
-  <ProjectName>Plain Dual CS</ProjectName>
-  <TargetDirectory>C:\VS Projects\CslaGenFork 4.5\CoverageTest\Plain\P-DUAL-CS</TargetDirectory>
+  <ProjectName>Plain Dual VB</ProjectName>
+  <TargetDirectory>C:\VS Projects\CslaGenFork 4.5\CoverageTest\Plain\P-DUAL-VB</TargetDirectory>
   <FileVersion>4.0.4</FileVersion>
 </CslaGeneratorUnit>
