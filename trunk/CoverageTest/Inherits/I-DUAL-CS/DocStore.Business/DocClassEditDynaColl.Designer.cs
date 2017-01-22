@@ -12,7 +12,7 @@ using Csla.Data;
 using DocStore.Business.Util;
 using Csla.Rules;
 using Csla.Rules.CommonRules;
-using UsingClass;
+using UsingLibrary;
 
 namespace DocStore.Business
 {
@@ -26,9 +26,9 @@ namespace DocStore.Business
     /// </remarks>
     [Serializable]
 #if WINFORMS
-    public partial class DocClassEditDynaColl : DynamicBindingListBase<DocClassEditDyna>, IHaveInterface, IHaveGenericInterface<DocClassEditDynaColl>
+    public partial class DocClassEditDynaColl : MyDynamicBindingListBase<DocClassEditDyna>, IHaveInterface, IHaveGenericInterface<DocClassEditDynaColl>
 #else
-    public partial class DocClassEditDynaColl : DynamicListBase<DocClassEditDyna>, IHaveInterface, IHaveGenericInterface<DocClassEditDynaColl>
+    public partial class DocClassEditDynaColl : MyDynamicListBase<DocClassEditDyna>, IHaveInterface, IHaveGenericInterface<DocClassEditDynaColl>
 #endif
     {
 

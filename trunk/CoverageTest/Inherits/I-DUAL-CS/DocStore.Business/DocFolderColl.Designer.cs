@@ -12,7 +12,7 @@ using Csla.Data;
 using DocStore.Business.Util;
 using Csla.Rules;
 using Csla.Rules.CommonRules;
-using UsingClass;
+using UsingLibrary;
 
 namespace DocStore.Business
 {
@@ -27,9 +27,9 @@ namespace DocStore.Business
     /// </remarks>
     [Serializable]
 #if WINFORMS
-    public partial class DocFolderColl : BusinessBindingListBase<DocFolderColl, DocFolder>, IHaveInterface, IHaveGenericInterface<DocFolderColl>
+    public partial class DocFolderColl : MyBusinessBindingListBase<DocFolderColl, DocFolder>, IHaveInterface, IHaveGenericInterface<DocFolderColl>
 #else
-    public partial class DocFolderColl : BusinessListBase<DocFolderColl, DocFolder>, IHaveInterface, IHaveGenericInterface<DocFolderColl>
+    public partial class DocFolderColl : MyBusinessListBase<DocFolderColl, DocFolder>, IHaveInterface, IHaveGenericInterface<DocFolderColl>
 #endif
     {
 

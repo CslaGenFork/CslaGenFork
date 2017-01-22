@@ -12,6 +12,7 @@ using Csla.Data;
 using DocStore.Business.Util;
 using Csla.Rules;
 using Csla.Rules.CommonRules;
+using UsingLibrary;
 
 namespace DocStore.Business
 {
@@ -26,9 +27,9 @@ namespace DocStore.Business
     /// </remarks>
     [Serializable]
 #if WINFORMS
-    public partial class FolderDocColl : BusinessBindingListBase<FolderDocColl, FolderDoc>
+    public partial class FolderDocColl : MyBusinessBindingListBase<FolderDocColl, FolderDoc>
 #else
-    public partial class FolderDocColl : BusinessListBase<FolderDocColl, FolderDoc>
+    public partial class FolderDocColl : MyBusinessListBase<FolderDocColl, FolderDoc>
 #endif
     {
 

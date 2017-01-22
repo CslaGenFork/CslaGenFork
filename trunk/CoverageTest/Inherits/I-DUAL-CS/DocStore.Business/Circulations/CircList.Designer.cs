@@ -10,7 +10,7 @@ using System.Data.SqlClient;
 using Csla;
 using Csla.Data;
 using DocStore.Business.Util;
-using UsingClass;
+using UsingLibrary;
 
 namespace DocStore.Business.Circulations
 {
@@ -25,9 +25,9 @@ namespace DocStore.Business.Circulations
     /// </remarks>
     [Serializable]
 #if WINFORMS
-    public partial class CircList : ReadOnlyBindingListBase<CircList, CircInfo>, IHaveInterface, IHaveGenericInterface<CircList>
+    public partial class CircList : MyReadOnlyBindingListBase<CircList, CircInfo>, IHaveInterface, IHaveGenericInterface<CircList>
 #else
-    public partial class CircList : ReadOnlyListBase<CircList, CircInfo>, IHaveInterface, IHaveGenericInterface<CircList>
+    public partial class CircList : MyReadOnlyListBase<CircList, CircInfo>, IHaveInterface, IHaveGenericInterface<CircList>
 #endif
     {
 

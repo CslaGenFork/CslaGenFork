@@ -12,7 +12,7 @@ using Csla.Data;
 using DocStore.Business.Util;
 using Csla.Rules;
 using Csla.Rules.CommonRules;
-using UsingClass;
+using UsingLibrary;
 
 namespace DocStore.Business.Circulations
 {

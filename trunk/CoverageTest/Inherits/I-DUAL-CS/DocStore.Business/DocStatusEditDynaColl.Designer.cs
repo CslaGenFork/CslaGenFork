@@ -10,6 +10,7 @@ using System.Data.SqlClient;
 using Csla;
 using Csla.Data;
 using DocStore.Business.Util;
+using UsingLibrary;
 
 namespace DocStore.Business
 {
@@ -23,9 +24,9 @@ namespace DocStore.Business
     /// </remarks>
     [Serializable]
 #if WINFORMS
-    public partial class DocStatusEditDynaColl : DynamicBindingListBase<DocStatusEditDyna>
+    public partial class DocStatusEditDynaColl : MyDynamicBindingListBase<DocStatusEditDyna>
 #else
-    public partial class DocStatusEditDynaColl : DynamicListBase<DocStatusEditDyna>
+    public partial class DocStatusEditDynaColl : MyDynamicListBase<DocStatusEditDyna>
 #endif
     {
 

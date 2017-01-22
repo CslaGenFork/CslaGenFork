@@ -10,7 +10,7 @@ using System.Data.SqlClient;
 using Csla;
 using Csla.Data;
 using DocStore.Business.Util;
-using UsingClass;
+using UsingLibrary;
 
 namespace DocStore.Business
 {

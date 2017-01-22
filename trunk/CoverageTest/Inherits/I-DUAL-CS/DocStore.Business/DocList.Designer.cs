@@ -14,7 +14,7 @@ using System.Linq;
 using Csla;
 using Csla.Data;
 using DocStore.Business.Util;
-using UsingClass;
+using UsingLibrary;
 
 namespace DocStore.Business
 {
@@ -29,9 +29,9 @@ namespace DocStore.Business
     /// </remarks>
     [Serializable]
 #if WINFORMS
-    public partial class DocList : ReadOnlyBindingListBase<DocList, DocInfo>, IHaveInterface, IHaveGenericInterface<DocList>
+    public partial class DocList : MyReadOnlyBindingListBase<DocList, DocInfo>, IHaveInterface, IHaveGenericInterface<DocList>
 #else
-    public partial class DocList : ReadOnlyListBase<DocList, DocInfo>, IHaveInterface, IHaveGenericInterface<DocList>
+    public partial class DocList : MyReadOnlyListBase<DocList, DocInfo>, IHaveInterface, IHaveGenericInterface<DocList>
 #endif
     {
 

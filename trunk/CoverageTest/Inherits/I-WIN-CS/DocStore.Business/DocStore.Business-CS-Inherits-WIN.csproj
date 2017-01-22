@@ -1,0 +1,353 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E8B4D2E6-302E-4C2A-8273-5CEA9213E1A6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DocStore.Business</RootNamespace>
+    <AssemblyName>DocStore.Business</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;WINFORMS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;WINFORMS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Csla, Version=4.6.500.0, Culture=neutral, PublicKeyToken=93be5fdc093e4c30, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\CSLA-Core.4.6.500\lib\net45\Csla.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="CslaGenFork.Rules">
+      <HintPath>..\..\..\Dependencies\CslaGenFork.Rules.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Admin\Role.cs" />
+    <Compile Include="Admin\Role.Designer.cs">
+      <DependentUpon>Role.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\RoleInfo.cs" />
+    <Compile Include="Admin\RoleInfo.Designer.cs">
+      <DependentUpon>RoleInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\RoleList.cs" />
+    <Compile Include="Admin\RoleList.Designer.cs">
+      <DependentUpon>RoleList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\RoleNVL.cs" />
+    <Compile Include="Admin\RoleNVL.Designer.cs">
+      <DependentUpon>RoleNVL.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\User.cs" />
+    <Compile Include="Admin\User.Designer.cs">
+      <DependentUpon>User.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\UserAllNVL.cs" />
+    <Compile Include="Admin\UserAllNVL.Designer.cs">
+      <DependentUpon>UserAllNVL.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\UserInactiveNVL.cs" />
+    <Compile Include="Admin\UserInactiveNVL.Designer.cs">
+      <DependentUpon>UserInactiveNVL.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\UserInfo.cs" />
+    <Compile Include="Admin\UserInfo.Designer.cs">
+      <DependentUpon>UserInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\UserList.cs" />
+    <Compile Include="Admin\UserList.Designer.cs">
+      <DependentUpon>UserList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\UserNVL.cs" />
+    <Compile Include="Admin\UserNVL.Designer.cs">
+      <DependentUpon>UserNVL.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BusinessBaseDoc.cs" />
+    <Compile Include="BusinessBaseDoc.Designer.cs">
+      <DependentUpon>BusinessBaseDoc.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CircTypeTagEdit.cs" />
+    <Compile Include="CircTypeTagEdit.Designer.cs">
+      <DependentUpon>CircTypeTagEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CircTypeTagEditColl.cs" />
+    <Compile Include="CircTypeTagEditColl.Designer.cs">
+      <DependentUpon>CircTypeTagEditColl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CircTypeTagEditDyna.cs" />
+    <Compile Include="CircTypeTagEditDyna.Designer.cs">
+      <DependentUpon>CircTypeTagEditDyna.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CircTypeTagEditDynaColl.cs" />
+    <Compile Include="CircTypeTagEditDynaColl.Designer.cs">
+      <DependentUpon>CircTypeTagEditDynaColl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Circulations\CircInfo.cs" />
+    <Compile Include="Circulations\CircInfo.Designer.cs">
+      <DependentUpon>CircInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Circulations\CircList.cs" />
+    <Compile Include="Circulations\CircList.Designer.cs">
+      <DependentUpon>CircList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Circulations\CircTypeTagNVL.cs" />
+    <Compile Include="Circulations\CircTypeTagNVL.Designer.cs">
+      <DependentUpon>CircTypeTagNVL.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Circulations\DecisionTypeTagNVL.cs" />
+    <Compile Include="Circulations\DecisionTypeTagNVL.Designer.cs">
+      <DependentUpon>DecisionTypeTagNVL.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Circulations\DocCirc.cs" />
+    <Compile Include="Circulations\DocCirc.Designer.cs">
+      <DependentUpon>DocCirc.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Circulations\DocCircColl.cs" />
+    <Compile Include="Circulations\DocCircColl.Designer.cs">
+      <DependentUpon>DocCircColl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Circulations\FolderCirc.cs" />
+    <Compile Include="Circulations\FolderCirc.Designer.cs">
+      <DependentUpon>FolderCirc.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Circulations\FolderCircColl.cs" />
+    <Compile Include="Circulations\FolderCircColl.Designer.cs">
+      <DependentUpon>FolderCircColl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Doc.cs" />
+    <Compile Include="Doc.Designer.cs">
+      <DependentUpon>Doc.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocClass.cs" />
+    <Compile Include="DocClass.Designer.cs">
+      <DependentUpon>DocClass.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocClassEdit.cs" />
+    <Compile Include="DocClassEdit.Designer.cs">
+      <DependentUpon>DocClassEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocClassEditColl.cs" />
+    <Compile Include="DocClassEditColl.Designer.cs">
+      <DependentUpon>DocClassEditColl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocClassEditCollGetter.cs" />
+    <Compile Include="DocClassEditCollGetter.Designer.cs">
+      <DependentUpon>DocClassEditCollGetter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocClassEditDyna.cs" />
+    <Compile Include="DocClassEditDyna.Designer.cs">
+      <DependentUpon>DocClassEditDyna.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocClassEditDynaColl.cs" />
+    <Compile Include="DocClassEditDynaColl.Designer.cs">
+      <DependentUpon>DocClassEditDynaColl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocClassInfo.cs" />
+    <Compile Include="DocClassInfo.Designer.cs">
+      <DependentUpon>DocClassInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocClassList.cs" />
+    <Compile Include="DocClassList.Designer.cs">
+      <DependentUpon>DocClassList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocClassNVL.cs" />
+    <Compile Include="DocClassNVL.Designer.cs">
+      <DependentUpon>DocClassNVL.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocContent.cs" />
+    <Compile Include="DocContent.Designer.cs">
+      <DependentUpon>DocContent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocContentInfo.cs" />
+    <Compile Include="DocContentInfo.Designer.cs">
+      <DependentUpon>DocContentInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocContentList.cs" />
+    <Compile Include="DocContentList.Designer.cs">
+      <DependentUpon>DocContentList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocContentRO.cs" />
+    <Compile Include="DocContentRO.Designer.cs">
+      <DependentUpon>DocContentRO.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocEditGetter.cs" />
+    <Compile Include="DocEditGetter.Designer.cs">
+      <DependentUpon>DocEditGetter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocEditUoWCreator.cs" />
+    <Compile Include="DocEditUoWCreator.Designer.cs">
+      <DependentUpon>DocEditUoWCreator.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocEditUoWGetter.cs" />
+    <Compile Include="DocEditUoWGetter.Designer.cs">
+      <DependentUpon>DocEditUoWGetter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocFolder.cs" />
+    <Compile Include="DocFolder.Designer.cs">
+      <DependentUpon>DocFolder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocFolderColl.cs" />
+    <Compile Include="DocFolderColl.Designer.cs">
+      <DependentUpon>DocFolderColl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocInfo.cs" />
+    <Compile Include="DocInfo.Designer.cs">
+      <DependentUpon>DocInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocList.cs" />
+    <Compile Include="DocList.Designer.cs">
+      <DependentUpon>DocList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocListGetter.cs" />
+    <Compile Include="DocListGetter.Designer.cs">
+      <DependentUpon>DocListGetter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocStatus.cs" />
+    <Compile Include="DocStatus.Designer.cs">
+      <DependentUpon>DocStatus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocStatusColl.cs" />
+    <Compile Include="DocStatusColl.Designer.cs">
+      <DependentUpon>DocStatusColl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocStatusEditDyna.cs" />
+    <Compile Include="DocStatusEditDyna.Designer.cs">
+      <DependentUpon>DocStatusEditDyna.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocStatusEditDynaColl.cs" />
+    <Compile Include="DocStatusEditDynaColl.Designer.cs">
+      <DependentUpon>DocStatusEditDynaColl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocStatusNVL.cs" />
+    <Compile Include="DocStatusNVL.Designer.cs">
+      <DependentUpon>DocStatusNVL.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocType.cs" />
+    <Compile Include="DocType.Designer.cs">
+      <DependentUpon>DocType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocTypeEdit.cs" />
+    <Compile Include="DocTypeEdit.Designer.cs">
+      <DependentUpon>DocTypeEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocTypeEditColl.cs" />
+    <Compile Include="DocTypeEditColl.Designer.cs">
+      <DependentUpon>DocTypeEditColl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocTypeEditDyna.cs" />
+    <Compile Include="DocTypeEditDyna.Designer.cs">
+      <DependentUpon>DocTypeEditDyna.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocTypeEditDynaColl.cs" />
+    <Compile Include="DocTypeEditDynaColl.Designer.cs">
+      <DependentUpon>DocTypeEditDynaColl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocTypeInfo.cs" />
+    <Compile Include="DocTypeInfo.Designer.cs">
+      <DependentUpon>DocTypeInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocTypeList.cs" />
+    <Compile Include="DocTypeList.Designer.cs">
+      <DependentUpon>DocTypeList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DocTypeNVL.cs" />
+    <Compile Include="DocTypeNVL.Designer.cs">
+      <DependentUpon>DocTypeNVL.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Folder.cs" />
+    <Compile Include="Folder.Designer.cs">
+      <DependentUpon>Folder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FolderDoc.cs" />
+    <Compile Include="FolderDoc.Designer.cs">
+      <DependentUpon>FolderDoc.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FolderDocColl.cs" />
+    <Compile Include="FolderDocColl.Designer.cs">
+      <DependentUpon>FolderDocColl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FolderInfo.cs" />
+    <Compile Include="FolderInfo.Designer.cs">
+      <DependentUpon>FolderInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FolderList.cs" />
+    <Compile Include="FolderList.Designer.cs">
+      <DependentUpon>FolderList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FolderStatusNVL.cs" />
+    <Compile Include="FolderStatusNVL.Designer.cs">
+      <DependentUpon>FolderStatusNVL.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FolderType.cs" />
+    <Compile Include="FolderType.Designer.cs">
+      <DependentUpon>FolderType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FolderTypeInfo.cs" />
+    <Compile Include="FolderTypeInfo.Designer.cs">
+      <DependentUpon>FolderTypeInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FolderTypeList.cs" />
+    <Compile Include="FolderTypeList.Designer.cs">
+      <DependentUpon>FolderTypeList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FolderTypeNVL.cs" />
+    <Compile Include="FolderTypeNVL.Designer.cs">
+      <DependentUpon>FolderTypeNVL.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SampleUnitOfWork.cs" />
+    <Compile Include="SampleUnitOfWork.Designer.cs">
+      <DependentUpon>SampleUnitOfWork.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Security\UserInformation.cs" />
+    <Compile Include="Util\DatabaseDocStore.cs" />
+    <Compile Include="Util\DataPortalHookArgs.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\UsingLibrary\UsingLibrary.csproj">
+      <Project>{5a012bf6-ff0a-4005-9ded-0545b29eb0c0}</Project>
+      <Name>UsingLibrary</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\..\..\packages\CSLA-Core.4.6.500\analyzers\c#\Csla.Analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
