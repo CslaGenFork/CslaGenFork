@@ -3,4 +3,8 @@ packages
 </Value></Property><Property><Name>svn:ignore</Name><Value>.vs
 CoverageTest.sln.DotSettings.user
 packages
+</Value></Property><Property><Name>svn:ignore</Name><Value>*.user
+.vs
+CoverageTest.sln.DotSettings.user
+packages
 </Value></Property></Properties></ItemProperties>
