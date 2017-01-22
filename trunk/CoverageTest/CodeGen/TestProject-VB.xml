@@ -721,7 +721,7 @@
       <ClassSummary />
       <ClassRemarks>This is a remark</ClassRemarks>
       <Namespaces>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes>
         <string>Attributable</string>
@@ -848,7 +848,7 @@
       <UseCustomLoading>false</UseCustomLoading>
       <ObjectType>BaseClass</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
-      <ObjectName>GenericObjectBase</ObjectName>
+      <ObjectName>MyObjectBase</ObjectName>
       <IsGenericType>true</IsGenericType>
       <GenericArguments>T</GenericArguments>
       <ObjectNamespace>TestProject.Business</ObjectNamespace>
@@ -856,7 +856,7 @@
       <ClassSummary />
       <ClassRemarks>This is a remark</ClassRemarks>
       <Namespaces>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes>
         <string>Attributable</string>
@@ -983,7 +983,7 @@
       <UseCustomLoading>false</UseCustomLoading>
       <ObjectType>BaseClass</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
-      <ObjectName>GenericListBase</ObjectName>
+      <ObjectName>MyListBase</ObjectName>
       <IsGenericType>true</IsGenericType>
       <GenericArguments>T,C</GenericArguments>
       <ObjectNamespace>TestProject.Business</ObjectNamespace>
@@ -991,7 +991,7 @@
       <ClassSummary />
       <ClassRemarks>This is a remark</ClassRemarks>
       <Namespaces>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes>
         <string>Attributable</string>
@@ -1126,7 +1126,7 @@
       <ClassSummary>This is a summary</ClassSummary>
       <ClassRemarks>This is a remark</ClassRemarks>
       <Namespaces>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes>
         <string>Attributable</string>
@@ -1392,7 +1392,7 @@
       <Namespaces>
         <string>System.ComponentModel.DataAnnotations</string>
         <string>Csla.Rules.CommonRules</string>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes>
         <string>Attributable</string>
@@ -1401,7 +1401,7 @@
         <string>IHaveInterface</string>
       </Interfaces>
       <InheritedType>
-        <ObjectName>GenericObjectBase&lt;T&gt;</ObjectName>
+        <ObjectName>MyObjectBase&lt;T&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -2705,7 +2705,7 @@
       <ClassSummary>Collection of folders where this document is archived</ClassSummary>
       <ClassRemarks>This is a remark</ClassRemarks>
       <Namespaces>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes>
         <string>Attributable</string>
@@ -2714,7 +2714,7 @@
         <string>IHaveInterface</string>
       </Interfaces>
       <InheritedType>
-        <ObjectName>GenericListBase&lt;T,C&gt;</ObjectName>
+        <ObjectName>MyListBase&lt;T,C&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -2962,7 +2962,7 @@
       <ClassSummary>Folder where this document is archived</ClassSummary>
       <ClassRemarks>This is a remark</ClassRemarks>
       <Namespaces>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes>
         <string>Attributable</string>
@@ -2971,7 +2971,7 @@
         <string>IHaveInterface</string>
       </Interfaces>
       <InheritedType>
-        <ObjectName>GenericObjectBase&lt;T&gt;</ObjectName>
+        <ObjectName>MyObjectBase&lt;T&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -3591,7 +3591,7 @@
       <ClassSummary>Documents</ClassSummary>
       <ClassRemarks>This is a remark</ClassRemarks>
       <Namespaces>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes>
         <string>Attributable</string>
@@ -4227,7 +4227,7 @@
       <ClassSummary>Collection of folders where this document is archived</ClassSummary>
       <ClassRemarks>This is a remark</ClassRemarks>
       <Namespaces>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes>
         <string>Attributable</string>
@@ -4362,7 +4362,7 @@
       <ClassSummary>Folder where this document is archived</ClassSummary>
       <ClassRemarks>This is a remark</ClassRemarks>
       <Namespaces>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes>
         <string>Attributable</string>
@@ -4748,7 +4748,7 @@
       <ClassSummary />
       <ClassRemarks>This is a remark</ClassRemarks>
       <Namespaces>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes>
         <string>Attributable</string>
@@ -4757,7 +4757,7 @@
         <string>IHaveInterface</string>
       </Interfaces>
       <InheritedType>
-        <ObjectName>GenericObjectBase&lt;T&gt;</ObjectName>
+        <ObjectName>MyObjectBase&lt;T&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -4906,7 +4906,7 @@
       <ClassSummary />
       <ClassRemarks>This is a remark</ClassRemarks>
       <Namespaces>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes>
         <string>Attributable</string>
@@ -4915,7 +4915,7 @@
         <string>IHaveInterface</string>
       </Interfaces>
       <InheritedType>
-        <ObjectName>GenericObjectBase&lt;T&gt;</ObjectName>
+        <ObjectName>MyObjectBase&lt;T&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -5064,7 +5064,7 @@
       <ClassSummary />
       <ClassRemarks>This is a remark</ClassRemarks>
       <Namespaces>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes>
         <string>Attributable</string>
@@ -5073,7 +5073,7 @@
         <string>IHaveInterface</string>
       </Interfaces>
       <InheritedType>
-        <ObjectName>GenericObjectBase&lt;T&gt;</ObjectName>
+        <ObjectName>MyObjectBase&lt;T&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -5351,7 +5351,7 @@
       <ClassSummary />
       <ClassRemarks>This is a remark</ClassRemarks>
       <Namespaces>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes>
         <string>Attributable</string>
@@ -5522,7 +5522,7 @@
       <ClassSummary>Types of document</ClassSummary>
       <ClassRemarks>This is a remark</ClassRemarks>
       <Namespaces>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes>
         <string>Attributable</string>
@@ -6005,7 +6005,7 @@
       <ClassSummary>Collection of document type's basic information</ClassSummary>
       <ClassRemarks>This is a remark</ClassRemarks>
       <Namespaces>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes>
         <string>Attributable</string>
@@ -6299,7 +6299,7 @@
       <ClassSummary>Document type basic information</ClassSummary>
       <ClassRemarks>This is a remark</ClassRemarks>
       <Namespaces>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes>
         <string>Attributable</string>
@@ -6744,7 +6744,7 @@
       <ClassSummary>Active document types</ClassSummary>
       <ClassRemarks>This is a remark</ClassRemarks>
       <Namespaces>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes>
         <string>Attributable</string>
@@ -7165,7 +7165,7 @@
       <ClassSummary>Collection of document types</ClassSummary>
       <ClassRemarks>This is a remark</ClassRemarks>
       <Namespaces>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes>
         <string>Attributable</string>
@@ -7340,7 +7340,7 @@
       <ClassRemarks>This is a remark</ClassRemarks>
       <Namespaces>
         <string>System.ComponentModel.DataAnnotations</string>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes>
         <string>Attributable</string>

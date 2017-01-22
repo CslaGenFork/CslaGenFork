@@ -368,7 +368,7 @@
       <UseCustomLoading>false</UseCustomLoading>
       <ObjectType>BaseClass</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
-      <ObjectName>NameValueListBase</ObjectName>
+      <ObjectName>MyNameValueListBase</ObjectName>
       <IsGenericType>true</IsGenericType>
       <GenericArguments>KEY,VALUE</GenericArguments>
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -393,7 +393,7 @@
       <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
-      <FileName>NameValueListBaseKV</FileName>
+      <FileName>MyNameValueListBaseKV</FileName>
       <UnitOfWorkProperties />
       <ChildCollectionProperties />
       <ChildProperties />
@@ -497,7 +497,7 @@
       <UseCustomLoading>false</UseCustomLoading>
       <ObjectType>BaseClass</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
-      <ObjectName>ReadOnlyListBase</ObjectName>
+      <ObjectName>MyReadOnlyListBase</ObjectName>
       <IsGenericType>true</IsGenericType>
       <GenericArguments>LIST,OBJ</GenericArguments>
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -522,7 +522,7 @@
       <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
-      <FileName>ReadOnlyListBaseT</FileName>
+      <FileName>MyReadOnlyListBaseT</FileName>
       <UnitOfWorkProperties />
       <ChildCollectionProperties />
       <ChildProperties />
@@ -626,7 +626,7 @@
       <UseCustomLoading>false</UseCustomLoading>
       <ObjectType>BaseClass</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
-      <ObjectName>ReadOnlyBindingListBase</ObjectName>
+      <ObjectName>MyReadOnlyBindingListBase</ObjectName>
       <IsGenericType>true</IsGenericType>
       <GenericArguments>LIST,OBJ</GenericArguments>
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -651,7 +651,7 @@
       <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
-      <FileName>ReadOnlyBindingListBaseT</FileName>
+      <FileName>MyReadOnlyBindingListBaseT</FileName>
       <UnitOfWorkProperties />
       <ChildCollectionProperties />
       <ChildProperties />
@@ -755,7 +755,7 @@
       <UseCustomLoading>false</UseCustomLoading>
       <ObjectType>BaseClass</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
-      <ObjectName>DynamicListBase</ObjectName>
+      <ObjectName>MyDynamicListBase</ObjectName>
       <IsGenericType>true</IsGenericType>
       <GenericArguments>OBJ</GenericArguments>
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -780,7 +780,7 @@
       <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
-      <FileName>DynamicListBaseT</FileName>
+      <FileName>MyDynamicListBaseT</FileName>
       <UnitOfWorkProperties />
       <ChildCollectionProperties />
       <ChildProperties />
@@ -884,7 +884,7 @@
       <UseCustomLoading>false</UseCustomLoading>
       <ObjectType>BaseClass</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
-      <ObjectName>DynamicBindingListBase</ObjectName>
+      <ObjectName>MyDynamicBindingListBase</ObjectName>
       <IsGenericType>true</IsGenericType>
       <GenericArguments>ITEM</GenericArguments>
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -909,7 +909,7 @@
       <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
-      <FileName>DynamicBindingListBaseT</FileName>
+      <FileName>MyDynamicBindingListBaseT</FileName>
       <UnitOfWorkProperties />
       <ChildCollectionProperties />
       <ChildProperties />
@@ -1013,7 +1013,7 @@
       <UseCustomLoading>false</UseCustomLoading>
       <ObjectType>BaseClass</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
-      <ObjectName>BusinessBindingListBase</ObjectName>
+      <ObjectName>MyBusinessBindingListBase</ObjectName>
       <IsGenericType>true</IsGenericType>
       <GenericArguments>LIST,OBJ</GenericArguments>
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -1038,7 +1038,7 @@
       <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
-      <FileName>BusinessBindingListBaseT</FileName>
+      <FileName>MyBusinessBindingListBaseT</FileName>
       <UnitOfWorkProperties />
       <ChildCollectionProperties />
       <ChildProperties />
@@ -1142,7 +1142,7 @@
       <UseCustomLoading>false</UseCustomLoading>
       <ObjectType>BaseClass</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
-      <ObjectName>BusinessListBase</ObjectName>
+      <ObjectName>MyBusinessListBase</ObjectName>
       <IsGenericType>true</IsGenericType>
       <GenericArguments>LIST,OBJ</GenericArguments>
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -1167,7 +1167,7 @@
       <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
-      <FileName>BusinessListBaseT</FileName>
+      <FileName>MyBusinessListBaseT</FileName>
       <UnitOfWorkProperties />
       <ChildCollectionProperties />
       <ChildProperties />
@@ -1271,7 +1271,7 @@
       <UseCustomLoading>false</UseCustomLoading>
       <ObjectType>BaseClass</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
-      <ObjectName>BusinessBase</ObjectName>
+      <ObjectName>MyBusinessBase</ObjectName>
       <IsGenericType>true</IsGenericType>
       <GenericArguments>OBJ</GenericArguments>
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -1296,7 +1296,7 @@
       <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
-      <FileName>BusinessBaseT</FileName>
+      <FileName>MyBusinessBaseT</FileName>
       <UnitOfWorkProperties />
       <ChildCollectionProperties />
       <ChildProperties />
@@ -1400,7 +1400,7 @@
       <UseCustomLoading>false</UseCustomLoading>
       <ObjectType>BaseClass</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
-      <ObjectName>ReadOnlyBase</ObjectName>
+      <ObjectName>MyReadOnlyBase</ObjectName>
       <IsGenericType>true</IsGenericType>
       <GenericArguments>OBJ</GenericArguments>
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -1425,7 +1425,7 @@
       <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
-      <FileName>ReadOnlyBaseT</FileName>
+      <FileName>MyReadOnlyBaseT</FileName>
       <UnitOfWorkProperties />
       <ChildCollectionProperties />
       <ChildProperties />
@@ -1666,7 +1666,7 @@
       <ClassSummary />
       <ClassRemarks />
       <Namespaces>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces>
@@ -1674,7 +1674,7 @@
         <string>IHaveGenericInterface&lt;T&gt;</string>
       </Interfaces>
       <InheritedType>
-        <ObjectName>ReadOnlyBase&lt;OBJ&gt;</ObjectName>
+        <ObjectName>MyReadOnlyBase&lt;OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -1834,7 +1834,7 @@
       <ClassSummary>Active tags for circulation types</ClassSummary>
       <ClassRemarks />
       <Namespaces>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces>
@@ -1842,7 +1842,7 @@
         <string>IHaveGenericInterface&lt;T&gt;</string>
       </Interfaces>
       <InheritedType>
-        <ObjectName>NameValueListBase&lt;KEY,VALUE&gt;</ObjectName>
+        <ObjectName>MyNameValueListBase&lt;KEY,VALUE&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -2125,7 +2125,7 @@
       <ClassSummary>Active tags for decision types</ClassSummary>
       <ClassRemarks />
       <Namespaces>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces>
@@ -2416,7 +2416,7 @@
       <ClassSummary />
       <ClassRemarks />
       <Namespaces>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces>
@@ -2424,13 +2424,13 @@
         <string>IHaveGenericInterface&lt;T&gt;</string>
       </Interfaces>
       <InheritedType>
-        <ObjectName>DynamicListBase&lt;OBJ&gt;</ObjectName>
+        <ObjectName>MyDynamicListBase&lt;OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
-        <ObjectName>DynamicBindingListBase&lt;ITEM&gt;</ObjectName>
+        <ObjectName>MyDynamicBindingListBase&lt;ITEM&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -3236,7 +3236,7 @@
       <ClassSummary />
       <ClassRemarks />
       <Namespaces>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces>
@@ -3244,13 +3244,13 @@
         <string>IHaveGenericInterface&lt;T&gt;</string>
       </Interfaces>
       <InheritedType>
-        <ObjectName>BusinessListBase&lt;LIST,OBJ&gt;</ObjectName>
+        <ObjectName>MyBusinessListBase&lt;LIST,OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
-        <ObjectName>BusinessBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
+        <ObjectName>MyBusinessBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -3994,7 +3994,7 @@
       <ClassSummary>Collection of circulations of documents and folders</ClassSummary>
       <ClassRemarks />
       <Namespaces>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces>
@@ -4002,13 +4002,13 @@
         <string>IHaveGenericInterface&lt;T&gt;</string>
       </Interfaces>
       <InheritedType>
-        <ObjectName>ReadOnlyListBase&lt;LIST,OBJ&gt;</ObjectName>
+        <ObjectName>MyReadOnlyListBase&lt;LIST,OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
-        <ObjectName>ReadOnlyBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
+        <ObjectName>MyReadOnlyBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -4217,7 +4217,7 @@
       <ClassSummary>Circulation of document or folder</ClassSummary>
       <ClassRemarks />
       <Namespaces>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces>
@@ -4225,7 +4225,7 @@
         <string>IHaveGenericInterface&lt;T&gt;</string>
       </Interfaces>
       <InheritedType>
-        <ObjectName>ReadOnlyBase&lt;OBJ&gt;</ObjectName>
+        <ObjectName>MyReadOnlyBase&lt;OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -4953,7 +4953,7 @@
       <ClassRemarks />
       <Namespaces>
         <string>DocStore.Business.Admin</string>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces>
@@ -5144,11 +5144,12 @@
       <ClassRemarks />
       <Namespaces>
         <string>DocStore.Business.Admin</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces />
       <InheritedType>
-        <ObjectName>ReadOnlyBase&lt;OBJ&gt;</ObjectName>
+        <ObjectName>MyReadOnlyBase&lt;OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -5523,7 +5524,7 @@
         <string>CslaGenFork.Rules.DateRules</string>
         <string>CslaGenFork.Rules.TransformationRules</string>
         <string>DocStore.Business.Security</string>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces>
@@ -9120,7 +9121,7 @@
       <ClassRemarks />
       <Namespaces>
         <string>DocStore.Business.Security</string>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces>
@@ -9128,7 +9129,7 @@
         <string>IHaveGenericInterface&lt;T&gt;</string>
       </Interfaces>
       <InheritedType>
-        <ObjectName>BusinessBase&lt;OBJ&gt;</ObjectName>
+        <ObjectName>MyBusinessBase&lt;OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -10068,7 +10069,7 @@
       <ClassSummary>Document files</ClassSummary>
       <ClassRemarks />
       <Namespaces>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces>
@@ -10804,7 +10805,7 @@
       <ClassSummary>Collection of folders where this document is archived</ClassSummary>
       <ClassRemarks />
       <Namespaces>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces>
@@ -10812,13 +10813,13 @@
         <string>IHaveGenericInterface&lt;T&gt;</string>
       </Interfaces>
       <InheritedType>
-        <ObjectName>BusinessListBase&lt;LIST,OBJ&gt;</ObjectName>
+        <ObjectName>MyBusinessListBase&lt;LIST,OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
-        <ObjectName>BusinessBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
+        <ObjectName>MyBusinessBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -11061,7 +11062,7 @@
       <ClassRemarks />
       <Namespaces>
         <string>DocStore.Business.Security</string>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces>
@@ -11919,7 +11920,7 @@
       <ClassSummary>Collection of circulations of this document</ClassSummary>
       <ClassRemarks />
       <Namespaces>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces>
@@ -12115,11 +12116,12 @@
       <ClassRemarks />
       <Namespaces>
         <string>DocStore.Business.Security</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces />
       <InheritedType>
-        <ObjectName>BusinessBase&lt;OBJ&gt;</ObjectName>
+        <ObjectName>MyBusinessBase&lt;OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -13302,7 +13304,7 @@
       <ClassSummary>Collection of contents of this document</ClassSummary>
       <ClassRemarks />
       <Namespaces>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces>
@@ -13435,11 +13437,13 @@
       <ClassVisibility>Public</ClassVisibility>
       <ClassSummary>Content of this document</ClassSummary>
       <ClassRemarks />
-      <Namespaces />
+      <Namespaces>
+        <string>UsingLibrary</string>
+      </Namespaces>
       <Attributes />
       <Interfaces />
       <InheritedType>
-        <ObjectName>ReadOnlyBase&lt;OBJ&gt;</ObjectName>
+        <ObjectName>MyReadOnlyBase&lt;OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -14416,7 +14420,7 @@
       <ClassSummary>Collection of document's basic information</ClassSummary>
       <ClassRemarks />
       <Namespaces>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces>
@@ -14424,13 +14428,13 @@
         <string>IHaveGenericInterface&lt;T&gt;</string>
       </Interfaces>
       <InheritedType>
-        <ObjectName>ReadOnlyListBase&lt;LIST,OBJ&gt;</ObjectName>
+        <ObjectName>MyReadOnlyListBase&lt;LIST,OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
-        <ObjectName>ReadOnlyBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
+        <ObjectName>MyReadOnlyBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -15940,7 +15944,7 @@
       <ClassRemarks />
       <Namespaces>
         <string>DocStore.Business.Security</string>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces>
@@ -16593,7 +16597,7 @@
       <ClassSummary />
       <ClassRemarks />
       <Namespaces>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces>
@@ -16601,13 +16605,13 @@
         <string>IHaveGenericInterface&lt;T&gt;</string>
       </Interfaces>
       <InheritedType>
-        <ObjectName>BusinessListBase&lt;LIST,OBJ&gt;</ObjectName>
+        <ObjectName>MyBusinessListBase&lt;LIST,OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
-        <ObjectName>BusinessBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
+        <ObjectName>MyBusinessBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -17354,7 +17358,7 @@
       <ClassSummary />
       <ClassRemarks />
       <Namespaces>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces>
@@ -17362,13 +17366,13 @@
         <string>IHaveGenericInterface&lt;T&gt;</string>
       </Interfaces>
       <InheritedType>
-        <ObjectName>DynamicListBase&lt;OBJ&gt;</ObjectName>
+        <ObjectName>MyDynamicListBase&lt;OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
-        <ObjectName>DynamicBindingListBase&lt;ITEM&gt;</ObjectName>
+        <ObjectName>MyDynamicBindingListBase&lt;ITEM&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -17532,7 +17536,7 @@
         <string>CslaGenFork.Rules.CollectionRules</string>
         <string>CslaGenFork.Rules.TransformationRules</string>
         <string>DocStore.Business.Security</string>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces>
@@ -17540,7 +17544,7 @@
         <string>IHaveGenericInterface&lt;T&gt;</string>
       </Interfaces>
       <InheritedType>
-        <ObjectName>BusinessBase&lt;OBJ&gt;</ObjectName>
+        <ObjectName>MyBusinessBase&lt;OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -18981,11 +18985,13 @@
       <ClassVisibility>Public</ClassVisibility>
       <ClassSummary>Active document classes</ClassSummary>
       <ClassRemarks />
-      <Namespaces />
+      <Namespaces>
+        <string>UsingLibrary</string>
+      </Namespaces>
       <Attributes />
       <Interfaces />
       <InheritedType>
-        <ObjectName>NameValueListBase&lt;KEY,VALUE&gt;</ObjectName>
+        <ObjectName>MyNameValueListBase&lt;KEY,VALUE&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -20174,17 +20180,19 @@
       <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
       <ClassRemarks />
-      <Namespaces />
+      <Namespaces>
+        <string>UsingLibrary</string>
+      </Namespaces>
       <Attributes />
       <Interfaces />
       <InheritedType>
-        <ObjectName>DynamicListBase&lt;OBJ&gt;</ObjectName>
+        <ObjectName>MyDynamicListBase&lt;OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
-        <ObjectName>DynamicBindingListBase&lt;ITEM&gt;</ObjectName>
+        <ObjectName>MyDynamicBindingListBase&lt;ITEM&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -20341,7 +20349,7 @@
       <ClassRemarks />
       <Namespaces>
         <string>DocStore.Business.Security</string>
-        <string>UsingClass</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces>
@@ -21281,11 +21289,12 @@
       <ClassRemarks />
       <Namespaces>
         <string>DocStore.Business.Security</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces />
       <InheritedType>
-        <ObjectName>BusinessBase&lt;OBJ&gt;</ObjectName>
+        <ObjectName>MyBusinessBase&lt;OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -23175,11 +23184,12 @@
       <ClassRemarks />
       <Namespaces>
         <string>DocStore.Business.Security</string>
+        <string>UsingLibrary</string>
       </Namespaces>
       <Attributes />
       <Interfaces />
       <InheritedType>
-        <ObjectName>BusinessBase&lt;OBJ&gt;</ObjectName>
+        <ObjectName>MyBusinessBase&lt;OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
@@ -26879,17 +26889,19 @@
       <ClassVisibility>Public</ClassVisibility>
       <ClassSummary>Collection of documents archived in this folder</ClassSummary>
       <ClassRemarks />
-      <Namespaces />
+      <Namespaces>
+        <string>UsingLibrary</string>
+      </Namespaces>
       <Attributes />
       <Interfaces />
       <InheritedType>
-        <ObjectName>BusinessListBase&lt;LIST,OBJ&gt;</ObjectName>
+        <ObjectName>MyBusinessListBase&lt;LIST,OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
-        <ObjectName>BusinessBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
+        <ObjectName>MyBusinessBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
