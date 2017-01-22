@@ -10,7 +10,7 @@ using System.Data.SqlClient;
 using Csla;
 using Csla.Data;
 using DocStore.Business.Util;
-using UsingClass;
+using UsingLibrary;
 
 namespace DocStore.Business
 {
@@ -24,9 +24,9 @@ namespace DocStore.Business
     /// </remarks>
     [Serializable]
 #if WINFORMS
-    public partial class DocClassEditColl : BusinessBindingListBase<DocClassEditColl, DocClassEdit>, IHaveInterface, IHaveGenericInterface<DocClassEditColl>
+    public partial class DocClassEditColl : MyBusinessBindingListBase<DocClassEditColl, DocClassEdit>, IHaveInterface, IHaveGenericInterface<DocClassEditColl>
 #else
-    public partial class DocClassEditColl : BusinessListBase<DocClassEditColl, DocClassEdit>, IHaveInterface, IHaveGenericInterface<DocClassEditColl>
+    public partial class DocClassEditColl : MyBusinessListBase<DocClassEditColl, DocClassEdit>, IHaveInterface, IHaveGenericInterface<DocClassEditColl>
 #endif
     {
 

@@ -10,7 +10,7 @@ using System.Data.SqlClient;
 using Csla;
 using Csla.Data;
 using DocStore.Business.Util;
-using UsingClass;
+using UsingLibrary;
 
 namespace DocStore.Business
 {
@@ -24,9 +24,9 @@ namespace DocStore.Business
     /// </remarks>
     [Serializable]
 #if WINFORMS
-    public partial class CircTypeTagEditDynaColl : DynamicBindingListBase<CircTypeTagEditDyna>, IHaveInterface, IHaveGenericInterface<CircTypeTagEditDynaColl>
+    public partial class CircTypeTagEditDynaColl : MyDynamicBindingListBase<CircTypeTagEditDyna>, IHaveInterface, IHaveGenericInterface<CircTypeTagEditDynaColl>
 #else
-    public partial class CircTypeTagEditDynaColl : DynamicListBase<CircTypeTagEditDyna>, IHaveInterface, IHaveGenericInterface<CircTypeTagEditDynaColl>
+    public partial class CircTypeTagEditDynaColl : MyDynamicListBase<CircTypeTagEditDyna>, IHaveInterface, IHaveGenericInterface<CircTypeTagEditDynaColl>
 #endif
     {
 
