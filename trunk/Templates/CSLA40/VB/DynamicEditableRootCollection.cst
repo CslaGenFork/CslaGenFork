@@ -50,6 +50,7 @@ if (Errors.Length == 0)
     }
     %>
     <Serializable()>
+    <%= GetInitialClassDeclaration(Info) %>
 <%
     if (CurrentUnit.GenerationParams.DualListInheritance)
     {

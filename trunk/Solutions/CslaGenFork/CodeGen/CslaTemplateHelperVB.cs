@@ -5745,16 +5745,6 @@ namespace CslaGenerator.CodeGen
 
         #endregion
 
-        private static string GenericsFormat(string original)
-        {
-            var result = original.Replace("<", "(Of ");
-            result = result.Replace(",", ", ");
-            result = result.Replace("  ", " ");
-            result = result.Replace(">", ")");
-
-            return result;
-        }
-
         #region Class Declaration (inheritance and interfaces)
 
         public static string GetClassDeclaration(CslaObjectInfo info)
@@ -5779,7 +5769,12 @@ namespace CslaGenerator.CodeGen
 
         private static string GetClassDeclarationCore(CslaObjectInfo info, TypeInfo inheritedType, bool isBindingList)
         {
-            var result = GetInitialClassDeclaration(info);
+            var result = string.Empty;
+
+            if (!info.ObjectType.IsCollectionType())
+                result += GetInitialClassDeclaration(info) + Environment.NewLine;
+
+            result += "    Inherits ";
 
             var paramsNumber = info.NumberOfGenericArguments();
 
@@ -5847,9 +5842,9 @@ namespace CslaGenerator.CodeGen
             return result;
         }
 
-        private static string GetInitialClassDeclaration(CslaObjectInfo info)
+        public static string GetInitialClassDeclaration(CslaObjectInfo info)
         {
-            return string.Format("Partial {0} Class {1}\r\n        Inherits ",
+            return string.Format("Partial {0} Class {1}",
                 info.ClassVisibility == ClassVisibility.Public ? "Public" : "Friend",
                 info.ObjectName);
         }
