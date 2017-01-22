@@ -3,7 +3,7 @@ Imports System.Data
 Imports System.Data.SqlClient
 Imports Csla
 Imports Csla.Data
-Imports UsingClass
+Imports UsingLibrary
 
 Namespace TestProject.Business
 

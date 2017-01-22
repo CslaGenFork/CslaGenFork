@@ -1,7 +1,7 @@
 ﻿using System;
 using Csla;
 
-namespace UsingClass
+namespace UsingLibrary
 {
     [Serializable]
     public class MyReadOnlyBindingListBase<T, C> : ReadOnlyBindingListBase<T, C>

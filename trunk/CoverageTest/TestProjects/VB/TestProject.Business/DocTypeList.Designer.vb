@@ -5,7 +5,7 @@ Imports Csla
 Imports Csla.Data
 Imports Csla.Rules
 Imports Csla.Rules.CommonRules
-Imports UsingClass
+Imports UsingLibrary
 
 Namespace TestProject.Business
 

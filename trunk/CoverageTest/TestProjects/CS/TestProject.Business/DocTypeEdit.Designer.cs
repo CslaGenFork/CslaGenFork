@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 using Csla;
 using Csla.Data;
 using System.ComponentModel.DataAnnotations;
-using UsingClass;
+using UsingLibrary;
 
 namespace TestProject.Business
 {

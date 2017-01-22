@@ -2,7 +2,7 @@
 using Csla;
 using Csla.Core;
 
-namespace UsingClass
+namespace UsingLibrary
 {
     [Serializable]
     public class MyDynamicBindingListBase<T> : DynamicBindingListBase<T>

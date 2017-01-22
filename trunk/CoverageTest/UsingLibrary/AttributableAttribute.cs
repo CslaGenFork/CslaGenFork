@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UsingClass
+namespace UsingLibrary
 {
     [AttributeUsage(AttributeTargets.All, Inherited = false, AllowMultiple = true)]
     public sealed class AttributableAttribute : Attribute

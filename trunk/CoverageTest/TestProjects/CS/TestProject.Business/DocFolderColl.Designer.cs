@@ -5,7 +5,7 @@ using Csla;
 using Csla.Data;
 using Csla.Rules;
 using Csla.Rules.CommonRules;
-using UsingClass;
+using UsingLibrary;
 
 namespace TestProject.Business
 {
@@ -21,7 +21,7 @@ namespace TestProject.Business
     /// </remarks>
     [Attributable]
     [Serializable]
-    public partial class DocFolderColl : GenericListBase<DocFolderColl, DocFolder>, IHaveInterface
+    public partial class DocFolderColl : MyBusinessListBase<DocFolderColl, DocFolder>, IHaveInterface
     {
 
         #region Collection Business Methods

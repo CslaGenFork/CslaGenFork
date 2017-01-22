@@ -6,7 +6,7 @@ Imports Csla.Data
 Imports Csla.Rules
 Imports Csla.Rules.CommonRules
 Imports System.ComponentModel.DataAnnotations
-Imports UsingClass
+Imports UsingLibrary
 
 Namespace TestProject.Business
 
@@ -22,7 +22,7 @@ Namespace TestProject.Business
     <Attributable>
     <Serializable()>
     Partial Public Class Doc
-        Inherits GenericObjectBase(Of Doc)
+    Inherits MyBusinessBase(Of Doc)
         Implements IHaveInterface
 
         #Region " Static Fields "

@@ -1,6 +1,6 @@
 using System;
 using Csla;
-using UsingClass;
+using UsingLibrary;
 
 namespace TestProject.Business
 {
@@ -12,7 +12,7 @@ namespace TestProject.Business
     /// </summary>
     [Attributable]
     [Serializable]
-    public partial class DocEditCreator : GenericObjectBase<DocEditCreator>, IHaveInterface
+    public partial class DocEditCreator : MyBusinessBase<DocEditCreator>, IHaveInterface
     {
 
         #region Business Properties

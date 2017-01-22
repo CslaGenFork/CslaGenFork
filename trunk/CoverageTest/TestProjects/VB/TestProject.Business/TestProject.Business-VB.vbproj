@@ -175,9 +175,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\UsingClass\UsingClass.csproj">
+    <ProjectReference Include="..\..\..\UsingLibrary\UsingLibrary.csproj">
       <Project>{5a012bf6-ff0a-4005-9ded-0545b29eb0c0}</Project>
-      <Name>UsingClass</Name>
+      <Name>UsingLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -3,7 +3,7 @@ Imports System.Data
 Imports System.Data.SqlClient
 Imports Csla
 Imports Csla.Data
-Imports UsingClass
+Imports UsingLibrary
 
 Namespace TestProject.Business
 
@@ -14,7 +14,7 @@ Namespace TestProject.Business
     <Attributable>
     <Serializable()>
     Partial Public Class DocTypeNVL
-        Inherits NameValueListBase(Of Integer, String)
+    Inherits NameValueListBase(Of Integer, String)
         Implements IHaveInterface
 
         #Region " Private Fields "

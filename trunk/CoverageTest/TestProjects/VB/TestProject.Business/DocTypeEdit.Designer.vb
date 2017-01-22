@@ -4,7 +4,7 @@ Imports System.Data.SqlClient
 Imports Csla
 Imports Csla.Data
 Imports System.ComponentModel.DataAnnotations
-Imports UsingClass
+Imports UsingLibrary
 
 Namespace TestProject.Business
 
@@ -19,7 +19,7 @@ Namespace TestProject.Business
     <Attributable>
     <Serializable()>
     Partial Public Class DocTypeEdit
-        Inherits BusinessBase(Of DocTypeEdit)
+    Inherits BusinessBase(Of DocTypeEdit)
         Implements IHaveInterface
 
         #Region " Static Fields "

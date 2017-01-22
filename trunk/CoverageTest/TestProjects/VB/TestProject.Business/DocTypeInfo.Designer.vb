@@ -5,7 +5,7 @@ Imports Csla
 Imports Csla.Data
 Imports Csla.Rules
 Imports Csla.Rules.CommonRules
-Imports UsingClass
+Imports UsingLibrary
 
 Namespace TestProject.Business
 
@@ -20,7 +20,7 @@ Namespace TestProject.Business
     <Attributable>
     <Serializable()>
     Partial Public Class DocTypeInfo
-        Inherits ReadOnlyBase(Of DocTypeInfo)
+    Inherits ReadOnlyBase(Of DocTypeInfo)
         Implements IHaveInterface
 
         #Region " Business Properties "

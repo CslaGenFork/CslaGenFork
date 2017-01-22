@@ -5,7 +5,7 @@ Imports Csla
 Imports Csla.Data
 Imports Csla.Rules
 Imports Csla.Rules.CommonRules
-Imports UsingClass
+Imports UsingLibrary
 
 Namespace TestProject.Business
 
@@ -21,7 +21,7 @@ Namespace TestProject.Business
     <Attributable>
     <Serializable()>
     Partial Public Class DocFolderColl
-        Inherits GenericListBase(Of DocFolderColl, DocFolder)
+        Inherits MyBusinessListBase(Of DocFolderColl, DocFolder)
         Implements IHaveInterface
     
         #Region " Collection Business Methods "
