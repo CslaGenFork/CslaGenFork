@@ -589,7 +589,8 @@ namespace CslaGenerator.Metadata
 
                             if (_currentCslaObject.IsNotEditableRoot() &&
                                 _currentCslaObject.IsNotEditableSwitchable() &&
-                                _currentCslaObject.IsNotReadOnlyObject())
+                                _currentCslaObject.IsNotReadOnlyObject() &&
+                                _currentCslaObject.IsNotDynamicEditableRoot())
                             {
                                 defaultCriteria.Name = "CriteriaDelete";
                                 defaultCriteria.GetOptions.Factory = false;
