@@ -56,7 +56,7 @@
     <SeparateNamespaces>true</SeparateNamespaces>
     <SeparateBaseClasses>false</SeparateBaseClasses>
     <UseDotDesignerFileNameConvention>true</UseDotDesignerFileNameConvention>
-    <OutputLanguage>CSharp</OutputLanguage>
+    <OutputLanguage>VB</OutputLanguage>
     <UpdateOnlyDirtyChildren>true</UpdateOnlyDirtyChildren>
     <PropertyMode>Default</PropertyMode>
     <GenerateAuthorization>FullSupport</GenerateAuthorization>
@@ -7074,7 +7074,7 @@
   </CslaObjects>
   <AssociativeEntities />
   <ConnectionString>Server=(local);Database=InvoiceTest;persist security info=False;user id=sa;password=password_1234;packet size=4096</ConnectionString>
-  <ProjectName>Invoices CS</ProjectName>
-  <TargetDirectory>C:\VS Projects\CslaGenFork 4.5\CoverageTest\TestProjects\CS</TargetDirectory>
+  <ProjectName>Invoices VB</ProjectName>
+  <TargetDirectory>C:\VS Projects\CslaGenFork 4.5\CoverageTest\TestProjects\VB</TargetDirectory>
   <FileVersion>4.0.4</FileVersion>
 </CslaGeneratorUnit>
