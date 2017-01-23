@@ -587,10 +587,17 @@ namespace CslaGenerator.Metadata
 
                             defaultCriteria.SetSprocNames();
 
-                            if (_currentCslaObject.IsNotEditableRoot() &&
-                                _currentCslaObject.IsNotEditableSwitchable() &&
-                                _currentCslaObject.IsNotReadOnlyObject() &&
-                                _currentCslaObject.IsNotDynamicEditableRoot())
+                            if (_currentCslaObject.IsDynamicEditableRoot())
+                            {
+                                defaultCriteria.Name = "CriteriaDelete";
+                                defaultCriteria.GetOptions.Factory = false;
+                                defaultCriteria.GetOptions.DataPortal = false;
+                                defaultCriteria.GetOptions.Procedure = false;
+                                defaultCriteria.GetOptions.ProcedureName = string.Empty;
+                            }
+                            else if (_currentCslaObject.IsNotEditableRoot() &&
+                                     _currentCslaObject.IsNotEditableSwitchable() &&
+                                     _currentCslaObject.IsNotReadOnlyObject())
                             {
                                 defaultCriteria.Name = "CriteriaDelete";
                                 defaultCriteria.GetOptions.Factory = false;
