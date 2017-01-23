@@ -935,6 +935,7 @@ namespace CslaGenerator.Controls
             var getSprocName = String.Empty;
             if (_currentTreeNode.Tag is SqlResultSet)
                 getSprocName = (_currentTreeNode.Parent.Tag as SqlStoredProcedureInfo).ObjectName;
+            CurrentCslaObject = obj;
             _currentFactory.AddDefaultCriteriaAndParameters(obj, getSprocName);
             _objectsAdded.Add(obj);
         }
