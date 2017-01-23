@@ -14,8 +14,9 @@ ERRORS
 4.3.3. Check Criteria for DeleteOptions where DataPortal is not set and SProc name is not empty (WARNINGS)
 4.4. Check Criteria for GetOptions where DataPortal is set and SProc name is empty
 4.5. Check Criteria for GetOptions where DataPortal is not set and SProc name is not empty (WARNINGS)
+4.6. Check Criteria for GetOptions for DynamicEditableRoot
 5. Check value properties from StoredProcedure don't co-exist with other origins
-6. Warn about value properties of editable objects if delcaration mode is Classic or Auto
+6. Warn about value properties of editable objects if declaration mode is Classic or Auto
 WARNINGS
 7. When using NOT DAL, Persistence type unshared needs database class
 8. When using Silverligh 4, no Auto, Classic nor 'No Property'.
@@ -198,6 +199,13 @@ if (CurrentUnit.GenerationParams.TargetIsCsla4)
     {
         if (Info.IsUnitOfWork())
             continue;
+        if (Info.IsDynamicEditableRoot())
+        {
+            if (c.GetOptions.Factory || c.GetOptions.DataPortal || c.GetOptions.Procedure || c.GetOptions.ProcedureName != string.Empty)
+            {
+                Errors.Append("Criteria " + Info.ObjectName + "." + c.Name +": must disable all Get options and remove procedure name." + Environment.NewLine);
+            }
+        }
         if (c.GetOptions.DataPortal && c.GetOptions.ProcedureName == string.Empty)
         {
             Errors.Append("Criteria " + Info.ObjectName + "." + c.Name +": DataPortal get option is enable but is missing Get procedure name." + Environment.NewLine);

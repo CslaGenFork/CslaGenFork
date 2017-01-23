@@ -502,7 +502,8 @@ namespace CslaGenerator.Design
                         cslaObject.IsReadOnlyCollection() ||
                         cslaObject.IsNameValueList())
                         _form.Size = new Size(_form.Size.Width, _form.Size.Height - 256);
-                    if (cslaObject.IsEditableChild())
+                    if (cslaObject.IsEditableChild() ||
+                        cslaObject.IsDynamicEditableRoot())
                         _form.Size = new Size(_form.Size.Width, _form.Size.Height - 128);
                     if (height < _form.Size.Height)
                         _form.Size = new Size(_form.Size.Width, height);
