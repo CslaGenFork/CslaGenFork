@@ -59,13 +59,13 @@ foreach (UnitOfWorkCriteriaManager.UoWCriteria uowCrit in listUoWCriteriaCreator
         if (uowParam.Length != 0)
         {
             %>
-            <%= GetFieldLoaderStatement(c.DeclarationMode, c.ParentObject, (c.IsGetter ? strFetch : strCreate) + "(" + uowParam + ")") %>
+            <%= GetFieldLoaderStatement(c.DeclarationMode, c.PropertyName, (c.IsGetter ? strFetch : strCreate) + "(" + uowParam + ")") %>
             <%
         }
         else
         {
             %>
-            <%= GetFieldLoaderStatement(c.DeclarationMode, c.ParentObject, (c.IsGetter ? strFetch : strCreate) + "()") %>
+            <%= GetFieldLoaderStatement(c.DeclarationMode, c.PropertyName, (c.IsGetter ? strFetch : strCreate) + "()") %>
             <%
         }
     }
