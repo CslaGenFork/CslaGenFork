@@ -35,7 +35,7 @@ namespace DocStore.Business
 
         #region Static Fields
 
-        private static int _lastID;
+        private static int _lastId;
 
         #endregion
 
@@ -510,7 +510,7 @@ namespace DocStore.Business
         [Csla.RunLocal]
         protected override void DataPortal_Create()
         {
-            LoadProperty(FolderIDProperty, System.Threading.Interlocked.Decrement(ref _lastID));
+            LoadProperty(FolderIDProperty, System.Threading.Interlocked.Decrement(ref _lastId));
             LoadProperty(FolderTypeIDProperty, -1);
             LoadProperty(YearProperty, DateTime.Today.Year);
             LoadProperty(FolderStatusIDProperty, -1);

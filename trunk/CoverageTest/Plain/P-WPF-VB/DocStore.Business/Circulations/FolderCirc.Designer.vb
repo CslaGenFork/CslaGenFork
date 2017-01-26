@@ -30,7 +30,7 @@ Namespace DocStore.Business.Circulations
 
         #Region " Static Fields "
 
-            Private Shared _lastID As Integer
+            Private Shared _lastId As Integer
 
         #End Region
 
@@ -415,7 +415,7 @@ Namespace DocStore.Business.Circulations
         ''' </summary>
         <Csla.RunLocal()>
         Protected Overrides Sub Child_Create()
-            LoadProperty(CircIDProperty, System.Threading.Interlocked.Decrement(_lastID))
+            LoadProperty(CircIDProperty, System.Threading.Interlocked.Decrement(_lastId))
             LoadProperty(CreateDateProperty, new SmartDate(Date.Now))
             LoadProperty(CreateUserIDProperty, UserInformation.UserId)
             LoadProperty(ChangeDateProperty, ReadProperty(CreateDateProperty))

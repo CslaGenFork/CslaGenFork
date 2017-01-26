@@ -31,7 +31,7 @@ namespace DocStore.Business.Circulations
 
         #region Static Fields
 
-        private static int _lastID;
+        private static int _lastId;
 
         #endregion
 
@@ -394,7 +394,7 @@ namespace DocStore.Business.Circulations
         [Csla.RunLocal]
         protected override void Child_Create()
         {
-            LoadProperty(CircIDProperty, System.Threading.Interlocked.Decrement(ref _lastID));
+            LoadProperty(CircIDProperty, System.Threading.Interlocked.Decrement(ref _lastId));
             LoadProperty(CreateDateProperty, new SmartDate(DateTime.Now));
             LoadProperty(CreateUserIDProperty, UserInformation.UserId);
             LoadProperty(ChangeDateProperty, ReadProperty(CreateDateProperty));

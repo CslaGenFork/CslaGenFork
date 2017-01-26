@@ -26,7 +26,7 @@ Namespace DocStore.Business.Admin
 
         #Region " Static Fields "
 
-            Private Shared _lastID As Integer
+            Private Shared _lastId As Integer
 
         #End Region
 
@@ -404,7 +404,7 @@ Namespace DocStore.Business.Admin
         ''' </summary>
         <Csla.RunLocal()>
         Protected Overrides Sub DataPortal_Create()
-            LoadProperty(UserIDProperty, System.Threading.Interlocked.Decrement(_lastID))
+            LoadProperty(UserIDProperty, System.Threading.Interlocked.Decrement(_lastId))
             LoadProperty(PictureProperty, New Byte() {})
             LoadProperty(CreateDateProperty, new SmartDate(Date.Now))
             LoadProperty(CreateUserIDProperty, UserInformation.UserId)

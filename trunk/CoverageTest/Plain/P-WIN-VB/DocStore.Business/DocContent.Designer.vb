@@ -27,7 +27,7 @@ Namespace DocStore.Business
 
         #Region " Static Fields "
 
-            Private Shared _lastID As Integer
+            Private Shared _lastId As Integer
 
         #End Region
 
@@ -307,7 +307,7 @@ Namespace DocStore.Business
         ''' </summary>
         <Csla.RunLocal()>
         Protected Overrides Sub Child_Create()
-            LoadProperty(DocContentIDProperty, System.Threading.Interlocked.Decrement(_lastID))
+            LoadProperty(DocContentIDProperty, System.Threading.Interlocked.Decrement(_lastId))
             LoadProperty(VersionProperty, CShort(Fix(1)))
             LoadProperty(FileContentProperty, New Byte() {})
             LoadProperty(FileSizeProperty, 0)
