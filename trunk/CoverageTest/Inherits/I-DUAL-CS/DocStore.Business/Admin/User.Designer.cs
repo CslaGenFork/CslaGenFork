@@ -27,7 +27,7 @@ namespace DocStore.Business.Admin
 
         #region Static Fields
 
-        private static int _lastID;
+        private static int _lastId;
 
         #endregion
 
@@ -401,7 +401,7 @@ namespace DocStore.Business.Admin
         [Csla.RunLocal]
         protected override void DataPortal_Create()
         {
-            LoadProperty(UserIDProperty, System.Threading.Interlocked.Decrement(ref _lastID));
+            LoadProperty(UserIDProperty, System.Threading.Interlocked.Decrement(ref _lastId));
             LoadProperty(PictureProperty, new byte[0]);
             LoadProperty(CreateDateProperty, new SmartDate(DateTime.Now));
             LoadProperty(CreateUserIDProperty, UserInformation.UserId);

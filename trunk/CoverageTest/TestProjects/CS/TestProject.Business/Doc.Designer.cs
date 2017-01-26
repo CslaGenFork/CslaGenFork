@@ -27,7 +27,7 @@ namespace TestProject.Business
 
         #region Static Fields
 
-        private static int _lastID;
+        private static int _lastId;
 
         #endregion
 
@@ -273,7 +273,7 @@ namespace TestProject.Business
         [Csla.RunLocal]
         protected override void DataPortal_Create()
         {
-            LoadProperty(DocIDProperty, System.Threading.Interlocked.Decrement(ref _lastID));
+            LoadProperty(DocIDProperty, System.Threading.Interlocked.Decrement(ref _lastId));
             LoadProperty(DocDateProperty, new SmartDate(DateTime.Today));
             LoadProperty(FoldersProperty, DataPortal.CreateChild<DocFolderColl>());
             var args = new DataPortalHookArgs();

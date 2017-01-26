@@ -27,7 +27,7 @@ Namespace TestProject.Business
 
         #Region " Static Fields "
 
-            Private Shared _lastID As Integer
+            Private Shared _lastId As Integer
 
         #End Region
 
@@ -282,7 +282,7 @@ Namespace TestProject.Business
         ''' </summary>
         <Csla.RunLocal()>
         Protected Overrides Sub DataPortal_Create()
-            LoadProperty(DocIDProperty, System.Threading.Interlocked.Decrement(_lastID))
+            LoadProperty(DocIDProperty, System.Threading.Interlocked.Decrement(_lastId))
             LoadProperty(DocDateProperty, new SmartDate(DateTime.Today))
             LoadProperty(FoldersProperty, DataPortal.CreateChild(Of DocFolderColl)())
             Dim args As New DataPortalHookArgs()

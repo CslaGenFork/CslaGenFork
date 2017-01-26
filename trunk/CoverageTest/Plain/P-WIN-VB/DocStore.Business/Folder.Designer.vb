@@ -34,7 +34,7 @@ Namespace DocStore.Business
 
         #Region " Static Fields "
 
-            Private Shared _lastID As Integer
+            Private Shared _lastId As Integer
 
         #End Region
 
@@ -505,7 +505,7 @@ Namespace DocStore.Business
         ''' </summary>
         <Csla.RunLocal()>
         Protected Overrides Sub DataPortal_Create()
-            LoadProperty(FolderIDProperty, System.Threading.Interlocked.Decrement(_lastID))
+            LoadProperty(FolderIDProperty, System.Threading.Interlocked.Decrement(_lastId))
             LoadProperty(FolderTypeIDProperty, -1)
             LoadProperty(YearProperty, Date.Today.Year)
             LoadProperty(FolderStatusIDProperty, -1)
