@@ -96,9 +96,47 @@ namespace CslaGenerator.Util
                 /*
                  * These are not nullable:
                 case TypeCodeEx.ByteArray:
+                case TypeCodeEx.CustomType:
                 case TypeCodeEx.DBNull:
                 case TypeCodeEx.Empty:
                 case TypeCodeEx.Object:
+                 */
+            }
+            return false;
+        }
+
+        public static bool IsNumeric(this TypeCodeEx type)
+        {
+            switch (type)
+            {
+                case TypeCodeEx.Byte:
+                case TypeCodeEx.Decimal:
+                case TypeCodeEx.Double:
+                case TypeCodeEx.Int16:
+                case TypeCodeEx.Int32:
+                case TypeCodeEx.Int64:
+                case TypeCodeEx.SByte:
+                case TypeCodeEx.Single:
+                case TypeCodeEx.UInt16:
+                case TypeCodeEx.UInt32:
+                case TypeCodeEx.UInt64:
+                    return true;
+
+                /*
+                 * These are not numeric:
+                case TypeCodeEx.Boolean:
+                case TypeCodeEx.ByteArray:
+                case TypeCodeEx.Char:
+                case TypeCodeEx.CustomType:
+                case TypeCodeEx.DBNull:
+                case TypeCodeEx.Empty:
+                case TypeCodeEx.Guid:
+                case TypeCodeEx.Object:
+                case TypeCodeEx.TimeSpan:
+                case TypeCodeEx.DateTimeOffset:
+                case TypeCodeEx.DateTime:
+                case TypeCodeEx.SmartDate:
+                case TypeCodeEx.String:
                  */
             }
             return false;

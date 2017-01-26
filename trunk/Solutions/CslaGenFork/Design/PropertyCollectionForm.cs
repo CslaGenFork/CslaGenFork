@@ -451,7 +451,7 @@ namespace CslaGenerator.Design
             switch (_form.Text)
             {
                 case "ValueProperty Collection Editor":
-                    _form.Size = new Size(570, _form.Size.Height);
+                    _form.Size = new Size(640, _form.Size.Height);
                     _collectionType = typeof(ValueProperty);
                     if (GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization ==
                         AuthorizationLevel.None ||

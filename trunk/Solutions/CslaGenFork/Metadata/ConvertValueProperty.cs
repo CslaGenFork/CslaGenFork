@@ -37,6 +37,13 @@ namespace CslaGenerator.Metadata
             set { _primaryKey = value; }
         }
 
+        // Hide IsDatabaseBound
+        [Browsable(false)]
+        public override bool IsDatabaseBound
+        {
+            get { return false; }
+        }
+
         // Hide DeclarationMode
         [Browsable(false)]
         public override PropertyDeclaration DeclarationMode

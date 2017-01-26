@@ -82,6 +82,7 @@ namespace CslaGenerator.Metadata
         private bool _undoable = true;
         private string _defaultValue = string.Empty;
         private string _friendlyName = string.Empty;
+        private bool _isDatabaseBound = true;
         private string _customPropertyType = string.Empty;
         private PropertyDeclaration _declarationMode;
         private BusinessRuleCollection _businessRules;
@@ -241,7 +242,30 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Definition")]
-        [Description("The property data Type. Select \"CustomType\" to disable database interaction.")]
+        [Description("If set to false, disables database interaction. Set to read only when database interaction is impossible.")]
+        [UserFriendlyName("Database Bound")]
+        public virtual bool IsDatabaseBound
+        {
+            get
+            {
+                if (base.PropertyType == TypeCodeEx.CustomType)
+                {
+                    if (_declarationMode != PropertyDeclaration.ClassicPropertyWithTypeConversion &&
+                        _declarationMode != PropertyDeclaration.ManagedWithTypeConversion &&
+                        _declarationMode != PropertyDeclaration.UnmanagedWithTypeConversion)
+                        _isDatabaseBound = false;
+
+                    if (_backingFieldType == TypeCodeEx.Empty || _backingFieldType == TypeCodeEx.CustomType)
+                        _isDatabaseBound = false;
+                }
+
+                return _isDatabaseBound;
+            }
+            set { _isDatabaseBound = value; }
+        }
+
+        [Category("01. Definition")]
+        [Description("The property data Type.")]
         [UserFriendlyName("Property Type")]
         public override TypeCodeEx PropertyType
         {
@@ -268,20 +292,26 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Definition")]
-        [Description("Type of Backing Field of the Property. Set to \"Empty\" for no backing field.")]
+        [Description("Type of Backing Field of the Property. Set to \"Empty\" for no backing field. " +
+                     "Is set to read only when Declaration Mode isn't using type conversion. " +
+                     "For custom type properties, only numeric and string are accepted.")]
         [UserFriendlyName("Backing Field Type")]
         public virtual TypeCodeEx BackingFieldType
         {
             get
             {
-                if (DeclarationMode == PropertyDeclaration.ClassicPropertyWithTypeConversion ||
-                    DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion ||
-                    DeclarationMode == PropertyDeclaration.UnmanagedWithTypeConversion)
+                if (_declarationMode == PropertyDeclaration.ClassicPropertyWithTypeConversion ||
+                    _declarationMode == PropertyDeclaration.ManagedWithTypeConversion ||
+                    _declarationMode == PropertyDeclaration.UnmanagedWithTypeConversion)
                     return _backingFieldType;
 
                 return TypeCodeEx.Empty;
             }
-            set { _backingFieldType = value; }
+            set
+            {
+                if (base.PropertyType == TypeCodeEx.CustomType && (value.IsNumeric() || value == TypeCodeEx.String))
+                    _backingFieldType = value;
+            }
         }
 
         [Category("01. Definition")]
