@@ -579,8 +579,22 @@ namespace CslaGenerator.Util.PropertyBags
                 }
 
                 // Set ReadOnly properties
-                /*if (SelectedObject[0].LoadingScheme == LoadingScheme.ParentLoad && propertyInfo.Name == "LazyLoad")
-                    isreadonly = true;*/
+                if (SelectedObject[0].PropertyType == TypeCodeEx.CustomType)
+                {
+                    if ((SelectedObject[0].DeclarationMode != PropertyDeclaration.ClassicPropertyWithTypeConversion &&
+                         SelectedObject[0].DeclarationMode != PropertyDeclaration.ManagedWithTypeConversion &&
+                         SelectedObject[0].DeclarationMode != PropertyDeclaration.UnmanagedWithTypeConversion ||
+                         SelectedObject[0].BackingFieldType == TypeCodeEx.Empty ||
+                         SelectedObject[0].BackingFieldType == TypeCodeEx.CustomType)
+                        && propertyInfo.Name == "IsDatabaseBound")
+                        isreadonly = true;
+                }
+
+                if (SelectedObject[0].DeclarationMode != PropertyDeclaration.ClassicPropertyWithTypeConversion &&
+                    SelectedObject[0].DeclarationMode != PropertyDeclaration.ManagedWithTypeConversion &&
+                    SelectedObject[0].DeclarationMode != PropertyDeclaration.UnmanagedWithTypeConversion &&
+                    propertyInfo.Name == "BackingFieldType")
+                    isreadonly = true;
 
                 userfriendlyname = userfriendlyname.Length > 0 ? userfriendlyname : propertyInfo.Name;
                 var types = new List<ValueProperty>();
@@ -668,22 +682,20 @@ namespace CslaGenerator.Util.PropertyBags
                         propertyName == "WriteAuthzRuleType" ||
                         propertyName == "BusinessRules"))
                         return false;
-                    if (isNotDbConsumer &&
+                    if ((isNotDbConsumer || !valueProperty.IsDatabaseBound) &&
                         (propertyName == "DbBindColumn" ||
-                        propertyName == "DataAccess" ||
-                        propertyName == "PrimaryKey" ||
-                        propertyName == "FKConstraint" ||
-                        propertyName == "ParameterName"))
+                         propertyName == "DataAccess" ||
+                         propertyName == "PrimaryKey" ||
+                         propertyName == "FKConstraint" ||
+                         propertyName == "ParameterName"))
                         return false;
                     if (valueProperty.PropertyType != TypeCodeEx.CustomType &&
                         propertyName == "CustomPropertyType")
                         return false;
-                    /*if (valueProperty.PropertyType == TypeCodeEx.CustomType &&
-                        (propertyName == "DbBindColumn" ||
-                        propertyName == "DataAccess" ||
-                        propertyName == "PrimaryKey" ||
-                        propertyName == "FKConstraint" ||
-                        propertyName == "ParameterName"))
+                    /*if (valueProperty.DeclarationMode != PropertyDeclaration.ClassicPropertyWithTypeConversion &&
+                        valueProperty.DeclarationMode != PropertyDeclaration.ManagedWithTypeConversion &&
+                        valueProperty.DeclarationMode != PropertyDeclaration.UnmanagedWithTypeConversion &&
+                        propertyName == "BackingFieldType")
                         return false;*/
 
                     if (_selectedObject.Length > 1 && IsEnumerable(GetPropertyInfoCache(propertyName)))
