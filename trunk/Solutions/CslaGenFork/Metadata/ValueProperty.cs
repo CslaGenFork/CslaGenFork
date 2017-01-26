@@ -309,8 +309,10 @@ namespace CslaGenerator.Metadata
             }
             set
             {
-                if (base.PropertyType == TypeCodeEx.CustomType && (value.IsNumeric() || value == TypeCodeEx.String))
-                    _backingFieldType = value;
+                if (base.PropertyType == TypeCodeEx.CustomType && (!value.IsNumeric() || value != TypeCodeEx.String))
+                    return;
+
+                _backingFieldType = value;
             }
         }
 
