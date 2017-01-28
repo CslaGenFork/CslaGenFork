@@ -101,7 +101,9 @@ foreach (CslaObjectInfo objectInfo in list)
     // investigate parent type matching child and item
     if (TypeHelper.IsRootType(objectInfo) ||
         objectInfo.IsNameValueList() ||
-        objectInfo.IsUnitOfWork())
+        objectInfo.IsUnitOfWork() ||
+        objectInfo.IsBaseClass() ||
+        objectInfo.IsCriteriaClass())
         continue;
 
     if (objectInfo.ParentType.Equals(String.Empty))
