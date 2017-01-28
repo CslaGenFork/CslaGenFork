@@ -46,7 +46,7 @@ if (!CriteriaDefined)
     {
         foreach (ValueProperty parentProp in Info.GetParentValueProperties())
         {
-            if (parentProp.DbBindColumn.Column == null)
+            if (!parentProp.IsDatabaseBound || parentProp.DbBindColumn.Column == null)
                 continue;
 
             if (first)
@@ -63,7 +63,7 @@ if (!CriteriaDefined)
     }
     foreach (ValueProperty prop in Info.ValueProperties)
     {
-        if (prop.DbBindColumn.Column == null)
+        if (!prop.IsDatabaseBound || prop.DbBindColumn.Column == null)
             continue;
 
         if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
@@ -136,7 +136,7 @@ AS
             {
                 foreach (ValueProperty parentProp in Info.GetParentValueProperties())
                 {
-                    if (parentProp.DbBindColumn.Column == null)
+                    if (!parentProp.IsDatabaseBound || parentProp.DbBindColumn.Column == null)
                         continue;
 
                     if (first)
@@ -150,7 +150,7 @@ AS
             }
             foreach (ValueProperty prop in Info.ValueProperties)
             {
-                if (prop.DbBindColumn.Column == null)
+                if (!prop.IsDatabaseBound || prop.DbBindColumn.Column == null)
                     continue;
 
                 if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
@@ -172,7 +172,7 @@ AS
             {
                 foreach (ValueProperty parentProp in Info.GetParentValueProperties())
                 {
-                    if (parentProp.DbBindColumn.Column == null)
+                    if (!parentProp.IsDatabaseBound || parentProp.DbBindColumn.Column == null)
                         continue;
 
                     if (first)
@@ -187,7 +187,7 @@ AS
             }
             foreach (ValueProperty prop in Info.GetAllValueProperties())
             {
-                if (prop.DbBindColumn.Column == null)
+                if (!prop.IsDatabaseBound || prop.DbBindColumn.Column == null)
                     continue;
 
                 if (prop.DbBindColumn.IsPrimaryKey)
@@ -251,7 +251,7 @@ AS
             {
                 foreach (ValueProperty parentProp in Info.GetParentValueProperties())
                 {
-                    if (parentProp.DbBindColumn.Column == null)
+                    if (!parentProp.IsDatabaseBound || parentProp.DbBindColumn.Column == null)
                         continue;
 
                     if (first)
@@ -265,7 +265,7 @@ AS
             }
             foreach (ValueProperty prop in Info.ValueProperties)
             {
-                if (prop.DbBindColumn.Column == null)
+                if (!prop.IsDatabaseBound || prop.DbBindColumn.Column == null)
                     continue;
 
                 if (prop.DbBindColumn.IsPrimaryKey)
@@ -287,7 +287,7 @@ AS
             {
                 foreach (ValueProperty parentProp in Info.GetParentValueProperties())
                 {
-                    if (parentProp.DbBindColumn.Column == null)
+                    if (!parentProp.IsDatabaseBound || parentProp.DbBindColumn.Column == null)
                         continue;
 
                     if (first)
@@ -302,7 +302,7 @@ AS
             }
             foreach (ValueProperty prop in Info.ValueProperties)
             {
-                if (prop.DbBindColumn.Column == null)
+                if (!prop.IsDatabaseBound || prop.DbBindColumn.Column == null)
                     continue;
 
                 if (prop.DbBindColumn.IsPrimaryKey || prop.DbBindColumn.NativeType == "timestamp")
