@@ -8,7 +8,8 @@
             <%
 foreach (ValueProperty prop in Info.GetAllValueProperties())
 {
-    if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
+    if (prop.IsDatabaseBound &&
+        prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
         prop.DataAccess != ValueProperty.DataAccessBehaviour.WriteOnly)
     {
         try

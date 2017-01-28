@@ -50,6 +50,9 @@ if (Info.GenerateDataPortalInsert)
         {
             foreach (ValueProperty parentProp in Info.GetParentValueProperties())
             {
+                if (!parentProp.IsDatabaseBound)
+                    continue;
+
                 if (!insertIsFirst)
                 {
                     strInsertParams += ", ";
@@ -67,6 +70,9 @@ if (Info.GenerateDataPortalInsert)
         }
         foreach (ValueProperty prop in Info.GetAllValueProperties())
         {
+            if (!prop.IsDatabaseBound)
+                continue;
+
             if (prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK)
                 strInsertPK = FormatCamel(prop.Name) + " = -1;" + Environment.NewLine + new string(' ', 12);
 
@@ -132,13 +138,17 @@ if (Info.GenerateDataPortalInsert)
     {
         foreach (ValueProperty parentProp in Info.GetParentValueProperties())
         {
+            if (!parentProp.IsDatabaseBound)
+                continue;
+
             %>cmd.Parameters.AddWithValue("@<%= TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp) %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + ".Parent_" + FormatPascal(parentProp.Name) : FormatCamel(TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp))) %><%= (parentProp.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TemplateHelper.GetDbType(parentProp) %>;
                     <%
         }
     }
     foreach (ValueProperty prop in Info.GetAllValueProperties())
     {
-        if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
+        if (prop.IsDatabaseBound &&
+            prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
             (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default ||
             (prop.DataAccess != ValueProperty.DataAccessBehaviour.ReadOnly &&
             prop.DataAccess != ValueProperty.DataAccessBehaviour.UpdateOnly)))
@@ -185,7 +195,8 @@ if (Info.GenerateDataPortalInsert)
                     <%
     foreach (ValueProperty prop in Info.GetAllValueProperties())
     {
-        if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
+        if (prop.IsDatabaseBound &&
+            prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
             (prop.DbBindColumn.IsPrimaryKey &&
             prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK))
         {
@@ -196,7 +207,8 @@ if (Info.GenerateDataPortalInsert)
     }
     foreach (ValueProperty prop in Info.GetAllValueProperties())
     {
-        if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
+        if (prop.IsDatabaseBound &&
+            prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
             prop.DbBindColumn.NativeType == "timestamp")
         {
             %>
@@ -259,6 +271,9 @@ if (Info.GenerateDataPortalUpdate)
         {
             foreach (ValueProperty parentProp in Info.GetParentValueProperties())
             {
+                if (!parentProp.IsDatabaseBound)
+                    continue;
+
                 if (!updateIsFirst)
                 {
                     strUpdateParams += ", ";
@@ -274,6 +289,9 @@ if (Info.GenerateDataPortalUpdate)
         }
         foreach (ValueProperty prop in Info.GetAllValueProperties())
         {
+            if (!prop.IsDatabaseBound)
+                continue;
+
             if (prop.DbBindColumn.NativeType == "timestamp")
             {
                 hasUpdateTimestamp = true;
@@ -334,6 +352,9 @@ if (Info.GenerateDataPortalUpdate)
     {
         foreach (ValueProperty parentProp in Info.GetParentValueProperties())
         {
+            if (!parentProp.IsDatabaseBound)
+                continue;
+
             %>cmd.Parameters.AddWithValue("@<%= TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp) %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + ".Parent_" + FormatPascal(parentProp.Name) : FormatCamel(TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp))) %><%= (parentProp.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TemplateHelper.GetDbType(parentProp) %>;
                     <%
         }
@@ -341,7 +362,8 @@ if (Info.GenerateDataPortalUpdate)
 
     foreach (ValueProperty prop in Info.GetAllValueProperties())
     {
-        if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
+        if (prop.IsDatabaseBound &&
+            prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
             (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default ||
             prop.DbBindColumn.NativeType == "timestamp" ||
             (prop.DataAccess != ValueProperty.DataAccessBehaviour.ReadOnly &&
@@ -384,6 +406,9 @@ if (Info.GenerateDataPortalUpdate)
                     <%
     foreach (ValueProperty prop in Info.GetAllValueProperties())
     {
+        if (!prop.IsDatabaseBound)
+            continue;
+
         if (prop.DbBindColumn.NativeType == "timestamp")
         {
             Response.Write(Environment.NewLine);
@@ -434,6 +459,9 @@ if (Info.GenerateDataPortalDelete)
     {
         foreach (ValueProperty parentProp in Info.GetParentValueProperties())
         {
+            if (!parentProp.IsDatabaseBound)
+                continue;
+
             if (!deleteIsFirst)
             {
                 strDeleteCritParams += ", ";
@@ -449,6 +477,9 @@ if (Info.GenerateDataPortalDelete)
     }
     foreach (ValueProperty prop in Info.ValueProperties)
     {
+        if (!prop.IsDatabaseBound)
+            continue;
+
         if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
         {
             if (!deleteIsFirst)
@@ -493,12 +524,18 @@ if (Info.GenerateDataPortalDelete)
     {
         foreach (ValueProperty parentProp in Info.GetParentValueProperties())
         {
+            if (!parentProp.IsDatabaseBound)
+                continue;
+
     %>cmd.Parameters.AddWithValue("@<%= TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp) %>", <%= FormatCamel(TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp)) %>).DbType = DbType.<%= TemplateHelper.GetDbType(parentProp) %>;
                     <%
         }
     }
     foreach (ValueProperty prop in Info.ValueProperties)
     {
+        if (!prop.IsDatabaseBound)
+            continue;
+
         if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
         {
             %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= FormatCamel(prop.Name) %>).DbType = DbType.<%= TemplateHelper.GetDbType(prop) %>;

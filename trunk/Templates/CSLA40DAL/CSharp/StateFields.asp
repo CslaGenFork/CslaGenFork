@@ -75,7 +75,7 @@ if (stateFieldsForAllValueProperties || stateFieldsForAllChildProperties || useF
     // parent loading field
     if (useFieldForParentLoading)
     {
-        foreach(Property prop in Info.ParentProperties)
+        foreach (Property prop in Info.ParentProperties)
         {
             %>
         [NotUndoable]

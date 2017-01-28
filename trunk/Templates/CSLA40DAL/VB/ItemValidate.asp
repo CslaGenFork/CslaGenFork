@@ -70,6 +70,9 @@ else
                 bool hasPkProperty = false;
                 foreach (ValueProperty prop in itemInfo.ValueProperties)
                 {
+                    if (!prop.IsDatabaseBound)
+                        continue;
+
                     if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
                     {
                         hasPkProperty = true;

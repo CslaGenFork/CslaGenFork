@@ -24,6 +24,9 @@ if (Info.GenerateDataPortalInsert)
     {
         foreach (ValueProperty parentProp in Info.GetParentValueProperties())
         {
+            if (!parentProp.IsDatabaseBound)
+                continue;
+
             if (usesDTO)
             {
                 strInsertDto += Environment.NewLine + new string(' ', 12) + "dto.Parent_" + FormatPascal(parentProp.Name) + " = parent." + parentProp.Name +";";
@@ -42,6 +45,9 @@ if (Info.GenerateDataPortalInsert)
     }
     foreach (ValueProperty prop in Info.GetAllValueProperties())
     {
+        if (!prop.IsDatabaseBound)
+            continue;
+
         if (prop.DbBindColumn.NativeType == "timestamp")
         {
             if ((prop.DeclarationMode == PropertyDeclaration.Managed && !prop.ReadOnly) ||
@@ -274,6 +280,9 @@ if (Info.GenerateDataPortalUpdate)
     {
         foreach (ValueProperty parentProp in Info.GetParentValueProperties())
         {
+            if (!parentProp.IsDatabaseBound)
+                continue;
+
             if (usesDTO)
             {
                 strUpdateDto += Environment.NewLine + new string(' ', 12) + "dto.Parent_" + FormatPascal(parentProp.Name) + " = parent." + parentProp.Name +";";
@@ -292,6 +301,9 @@ if (Info.GenerateDataPortalUpdate)
     }
     foreach (ValueProperty prop in Info.GetAllValueProperties())
     {
+        if (!prop.IsDatabaseBound)
+            continue;
+
         if (prop.DbBindColumn.NativeType == "timestamp")
         {
             if ((prop.DeclarationMode == PropertyDeclaration.Managed && !prop.ReadOnly) ||
@@ -487,6 +499,9 @@ if (Info.GenerateDataPortalDelete)
     {
         foreach (ValueProperty parentProp in Info.GetParentValueProperties())
         {
+            if (!parentProp.IsDatabaseBound)
+                continue;
+
             if (!deleteIsFirst)
             {
                 strDeleteCritParams += ", ";
@@ -502,6 +517,9 @@ if (Info.GenerateDataPortalDelete)
     }
     foreach (ValueProperty prop in Info.ValueProperties)
     {
+        if (!prop.IsDatabaseBound)
+            continue;
+
         if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
         {
             if (!deleteIsFirst)

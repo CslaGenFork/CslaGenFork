@@ -113,7 +113,8 @@ foreach (ChildProperty childProp in currentInfo.GetAllChildProperties())
             <%
             foreach (ValueProperty prop in _child.GetAllValueProperties())
             {
-                if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
+                if (prop.IsDatabaseBound &&
+                    prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
                     prop.DataAccess != ValueProperty.DataAccessBehaviour.WriteOnly)
                 {
                     try
@@ -137,7 +138,7 @@ foreach (ChildProperty childProp in currentInfo.GetAllChildProperties())
                 %>
             // parent properties
             <%
-                foreach(Property prop in _child.ParentProperties)
+                foreach (Property prop in _child.ParentProperties)
                 {
                     %>
             <%= handleAsCollection ? FormatCamel(_child.ObjectName) : FormatFieldName(_child.ObjectName) %>.Parent_<%= FormatPascal(prop.Name) %> = dr.<%= GetReaderMethod(prop.PropertyType) %>("<%= GetFKColumn(_child, (childIsItem ? childGrandParentInfo : childParentInfo), prop) %>");
@@ -190,7 +191,8 @@ foreach (ChildProperty childProp in GetParentLoadAllGrandChildPropertiesInHierar
             <%
             foreach (ValueProperty prop in _child.GetAllValueProperties())
             {
-                if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
+                if (prop.IsDatabaseBound &&
+                    prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
                     prop.DataAccess != ValueProperty.DataAccessBehaviour.WriteOnly)
                 {
                     try
@@ -214,7 +216,7 @@ foreach (ChildProperty childProp in GetParentLoadAllGrandChildPropertiesInHierar
                 %>
             // parent properties
             <%
-                foreach(Property prop in _child.ParentProperties)
+                foreach (Property prop in _child.ParentProperties)
                 {
                     %>
             <%= handleAsCollection ? FormatCamel(_child.ObjectName) : FormatFieldName(_child.ObjectName) %>.Parent_<%= FormatPascal(prop.Name) %> = dr.<%= GetReaderMethod(prop.PropertyType) %>("<%= GetFKColumn(_child, (childIsItem ? childGrandParentInfo : childParentInfo), prop) %>");

@@ -5,7 +5,8 @@
             <%
 foreach (ValueProperty prop in itemInfo.GetAllValueProperties())
 {
-    if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
+    if (prop.IsDatabaseBound &&
+        prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
         prop.DataAccess != ValueProperty.DataAccessBehaviour.WriteOnly)
     {
         try
@@ -29,7 +30,7 @@ if (useFieldForParentLoading)
     %>
             // parent properties
             <%
-    foreach(Property prop in Info.ParentProperties)
+    foreach (Property prop in Info.ParentProperties)
     {
         %>
             <%= FormatCamel(Info.ItemType) %>.<%= FormatCamel(GetFKColumn(Info, (isItem ? grandParentInfo : parentInfo), prop)) %> = dr.<%= GetReaderMethod(prop.PropertyType) %>("<%= GetFKColumn(Info, (isItem ? grandParentInfo : parentInfo), prop) %>");

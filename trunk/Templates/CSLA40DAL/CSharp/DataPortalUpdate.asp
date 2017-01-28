@@ -10,6 +10,9 @@ if (Info.GenerateDataPortalUpdate)
 
     foreach (ValueProperty prop in Info.GetAllValueProperties())
     {
+        if (!prop.IsDatabaseBound)
+            continue;
+
         if (prop.DbBindColumn.NativeType == "timestamp")
         {
             if ((prop.DeclarationMode == PropertyDeclaration.Managed && !prop.ReadOnly) ||

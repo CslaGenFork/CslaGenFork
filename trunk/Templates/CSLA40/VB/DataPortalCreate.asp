@@ -48,6 +48,9 @@ foreach (Criteria c in Info.CriteriaObjects)
         }
         foreach (ValueProperty prop in Info.ValueProperties)
         {
+            if (!prop.IsDatabaseBound)
+                continue;
+
             if (prop.DefaultValue != String.Empty)
             {
                 if (prop.DefaultValue.ToUpper() == "_lastId".ToUpper() &&

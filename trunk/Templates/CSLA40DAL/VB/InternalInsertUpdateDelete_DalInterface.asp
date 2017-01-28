@@ -39,6 +39,9 @@ if (Info.GenerateDataPortalInsert)
         {
             foreach (ValueProperty parentProp in Info.GetParentValueProperties())
             {
+                if (!parentProp.IsDatabaseBound)
+                    continue;
+
                 if (!insertIsFirst)
                     strInsertParams += ", ";
                 else
@@ -50,6 +53,9 @@ if (Info.GenerateDataPortalInsert)
         }
         foreach (ValueProperty prop in Info.GetAllValueProperties())
         {
+            if (!prop.IsDatabaseBound)
+                continue;
+
             if (prop.DbBindColumn.NativeType == "timestamp")
             {
                 hasInsertTimestamp = true;
@@ -118,6 +124,9 @@ if (Info.GenerateDataPortalUpdate)
         {
             foreach (ValueProperty parentProp in Info.GetParentValueProperties())
             {
+                if (!parentProp.IsDatabaseBound)
+                    continue;
+
                 if (!updateIsFirst)
                     strUpdateParams += ", ";
                 else
@@ -129,6 +138,9 @@ if (Info.GenerateDataPortalUpdate)
         }
         foreach (ValueProperty prop in Info.GetAllValueProperties())
         {
+            if (!prop.IsDatabaseBound)
+                continue;
+
             if (prop.DbBindColumn.NativeType == "timestamp")
             {
                 hasUpdateTimestamp = true;
@@ -177,6 +189,9 @@ if (Info.GenerateDataPortalDelete)
     {
         foreach (ValueProperty parentProp in Info.GetParentValueProperties())
         {
+            if (!parentProp.IsDatabaseBound)
+                continue;
+
             if (!deleteIsFirst)
                 strDeleteCritParams += ", ";
             else
@@ -188,6 +203,9 @@ if (Info.GenerateDataPortalDelete)
     }
     foreach (ValueProperty prop in Info.ValueProperties)
     {
+        if (!prop.IsDatabaseBound)
+            continue;
+
         if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
         {
             if (!deleteIsFirst)

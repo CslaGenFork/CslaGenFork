@@ -225,10 +225,14 @@ if (Info.PersistenceType == PersistenceType.SqlConnectionUnshared &&
 bool originIsStoredProcedure = false;
 foreach (ValueProperty prop in Info.GetDatabaseBoundValueProperties())
 {
+    if (!prop.IsDatabaseBound)
+        continue;
     originIsStoredProcedure = originIsStoredProcedure || prop.DbBindColumn.ColumnOriginType == ColumnOriginType.StoredProcedure;
 }
 foreach (ValueProperty prop in Info.GetDatabaseBoundValueProperties())
 {
+    if (!prop.IsDatabaseBound)
+        continue;
     bool reportMixedOrigins = false;
     if (prop.DbBindColumn.ColumnOriginType == ColumnOriginType.StoredProcedure)
     {

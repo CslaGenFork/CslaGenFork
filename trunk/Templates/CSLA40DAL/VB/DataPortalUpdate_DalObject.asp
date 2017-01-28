@@ -35,6 +35,9 @@ if (Info.GenerateDataPortalUpdate)
     {
         foreach (ValueProperty prop in Info.GetAllValueProperties())
         {
+            if (!prop.IsDatabaseBound)
+                continue;
+
             if (prop.DbBindColumn.NativeType == "timestamp")
             {
                 hasUpdateTimestamp = true;
@@ -94,7 +97,8 @@ if (Info.GenerateDataPortalUpdate)
                     <%
     foreach (ValueProperty prop in Info.GetAllValueProperties())
     {
-        if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
+        if (prop.IsDatabaseBound &&
+            prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
             (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default ||
             prop.DbBindColumn.NativeType == "timestamp" ||
             (prop.DataAccess != ValueProperty.DataAccessBehaviour.ReadOnly &&
@@ -143,6 +147,9 @@ if (Info.GenerateDataPortalUpdate)
                     <%
     foreach (ValueProperty prop in Info.GetAllValueProperties())
     {
+        if (!prop.IsDatabaseBound)
+            continue;
+
         if (prop.DbBindColumn.NativeType == "timestamp")
         {
             Response.Write(Environment.NewLine);
