@@ -6,4 +6,8 @@ CslaGenFork.Rules.sln.docstates.suo
 CslaGenFork.Rules.suo
 </Value></Property><Property><Name>svn:ignore</Name><Value>*.user
 *.suo
+</Value></Property><Property><Name>svn:ignore</Name><Value>*.suo
+*.user
+.vs
+packages
 </Value></Property></Properties></ItemProperties>
