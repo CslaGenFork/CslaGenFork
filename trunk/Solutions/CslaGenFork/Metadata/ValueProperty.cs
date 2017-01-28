@@ -309,7 +309,7 @@ namespace CslaGenerator.Metadata
             }
             set
             {
-                if (base.PropertyType == TypeCodeEx.CustomType && (!value.IsNumeric() || value != TypeCodeEx.String))
+                if (base.PropertyType == TypeCodeEx.CustomType && (!value.IsNumeric() && value != TypeCodeEx.String))
                     return;
 
                 _backingFieldType = value;
