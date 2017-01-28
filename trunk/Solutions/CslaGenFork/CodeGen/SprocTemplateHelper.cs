@@ -266,7 +266,7 @@ namespace CslaGenerator.CodeGen
             // find out where the data come from
             foreach (var prop in info.GetAllValueProperties())
             {
-                if (prop.DbBindColumn.Column == null)
+                if (!prop.IsDatabaseBound || prop.DbBindColumn.Column == null)
                     continue;
 
                 if (prop.DbBindColumn.ColumnOriginType == ColumnOriginType.View)
@@ -550,7 +550,7 @@ namespace CslaGenerator.CodeGen
                 {
                     foreach (var prop in parentProperties)
                     {
-                        if (prop.DbBindColumn.Column == null)
+                        if (!prop.IsDatabaseBound || prop.DbBindColumn.Column == null)
                             continue;
 
                         if (prop.DbBindColumn.ObjectName == key.PKTable.ObjectName)
@@ -600,7 +600,7 @@ namespace CslaGenerator.CodeGen
             vpc.AddRange(info.GetAllValueProperties());
             foreach (var prop in vpc)
             {
-                if (prop.DbBindColumn.Column == null)
+                if (!prop.IsDatabaseBound || prop.DbBindColumn.Column == null)
                     continue;
 
                 if (prop.DataAccess != ValueProperty.DataAccessBehaviour.WriteOnly)
@@ -824,7 +824,7 @@ namespace CslaGenerator.CodeGen
 
             foreach (var prop in allValueProps)
             {
-                if (prop.DbBindColumn.Column == null)
+                if (!prop.IsDatabaseBound || prop.DbBindColumn.Column == null)
                     continue;
 
                 if ((prop.DataAccess != ValueProperty.DataAccessBehaviour.WriteOnly ||
@@ -858,7 +858,7 @@ namespace CslaGenerator.CodeGen
 
             foreach (var prop in allValueProps)
             {
-                if (prop.DbBindColumn.Column == null)
+                if (!prop.IsDatabaseBound || prop.DbBindColumn.Column == null)
                     continue;
 
                 result = prop.DbBindColumn.SchemaName;
@@ -872,7 +872,7 @@ namespace CslaGenerator.CodeGen
             var tables = new List<IResultObject>();
             foreach (var prop in info.GetAllValueProperties())
             {
-                if (prop.DbBindColumn.Column == null)
+                if (!prop.IsDatabaseBound || prop.DbBindColumn.Column == null)
                     continue;
 
                 if (prop.DataAccess != ValueProperty.DataAccessBehaviour.ReadOnly &&
@@ -894,7 +894,7 @@ namespace CslaGenerator.CodeGen
             var tables = new List<IResultObject>();
             foreach (var prop in info.GetAllValueProperties())
             {
-                if (prop.DbBindColumn.Column == null)
+                if (!prop.IsDatabaseBound || prop.DbBindColumn.Column == null)
                     continue;
 
                 if (prop.DataAccess != ValueProperty.DataAccessBehaviour.ReadOnly &&
@@ -914,7 +914,7 @@ namespace CslaGenerator.CodeGen
             var tablesCol = new List<IResultObject>();
             foreach (var prop in info.GetAllValueProperties())
             {
-                if (prop.DbBindColumn.Column == null)
+                if (!prop.IsDatabaseBound || prop.DbBindColumn.Column == null)
                     continue;
 
                 if (prop.DataAccess != ValueProperty.DataAccessBehaviour.ReadOnly &&
@@ -976,7 +976,7 @@ namespace CslaGenerator.CodeGen
 
             foreach (var prop in info.GetAllValueProperties())
             {
-                if (prop.DbBindColumn.Column == null)
+                if (!prop.IsDatabaseBound || prop.DbBindColumn.Column == null)
                     continue;
 
                 if (includeAllValueProperties)
@@ -1043,7 +1043,7 @@ namespace CslaGenerator.CodeGen
 
             foreach (var prop in childInfo.GetAllValueProperties())
             {
-                if (prop.DbBindColumn.Column == null)
+                if (!prop.IsDatabaseBound || prop.DbBindColumn.Column == null)
                     continue;
 
                 if (parentInsertOnly && prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.Default)
@@ -1062,7 +1062,7 @@ namespace CslaGenerator.CodeGen
                     {
                         foreach (var parentProp in childInfo.GetParentValueProperties())
                         {
-                            if (parentProp.DbBindColumn.Column == null)
+                            if (!parentProp.IsDatabaseBound || parentProp.DbBindColumn.Column == null)
                                 continue;
 
                             if (prop.DbBindColumn.ColumnOriginType == ColumnOriginType.Table &&
@@ -1553,7 +1553,7 @@ namespace CslaGenerator.CodeGen
             {
                 foreach (var prop in info.GetAllValueProperties())
                 {
-                    if (prop.DbBindColumn.Column == null)
+                    if (!prop.IsDatabaseBound || prop.DbBindColumn.Column == null)
                         continue;
 
                     if (prop.Name == Info.Parent.Params.SpBoolSoftDeleteColumn)
