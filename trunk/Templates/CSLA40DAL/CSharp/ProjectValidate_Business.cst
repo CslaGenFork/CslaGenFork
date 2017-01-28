@@ -58,6 +58,8 @@ foreach (CslaObjectInfo objectInfo in list)
             return;
         }
 
+        if (!parentProp.IsDatabaseBound)
+            continue;
         if (valProp.DbBindColumn == null)
             continue;
         if (valProp.DbBindColumn.ColumnOriginType == ColumnOriginType.None)

@@ -24,7 +24,7 @@ if (!Info.ParentType.Equals(String.Empty))
             isParentRootCollection = (parentInfo.IsEditableRootCollection()) ||
                 (parentInfo.IsReadOnlyCollection() && parentInfo.ParentType == String.Empty);
         }
-        foreach(Property prop in Info.ParentProperties)
+        foreach (Property prop in Info.ParentProperties)
         {
             string parentPropertyName = FormatPascal(prop.Name);
             foreach (ValueProperty valProp in Info.ValueProperties)
@@ -51,7 +51,7 @@ if (!Info.ParentType.Equals(String.Empty))
         }
     }
 
-    foreach(string prop in propNames)
+    foreach (string prop in propNames)
     {
         Warnings.AppendFormat("{0}.{1} name matches a Parent Property and should be renamed.\r\n", Info.ObjectName, prop);
     }

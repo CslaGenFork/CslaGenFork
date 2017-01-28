@@ -55,7 +55,8 @@ if (Info.FindMethodsParameters.Count > 0 || isParentLoaded)
             bool firstFind = true;
             foreach (ValueProperty prop in itemInfo.ValueProperties)
             {
-                if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
+                if (prop.IsDatabaseBound &&
+                    prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
                     (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default ||
                     (prop.DbBindColumn.NativeType == "timestamp" && Info.DeleteUseTimestamp)))
                 {

@@ -81,6 +81,9 @@ if (Info.GenerateDataPortalInsert)
     {
         foreach (ValueProperty parentProp in Info.GetParentValueProperties())
         {
+            if (!parentProp.IsDatabaseBound)
+                continue;
+
             if (parentProp.PropertyType == TypeCodeEx.SmartDate)
             {
                 %>SmartDate l<%= parentProp.Name %> = new SmartDate(parent.<%= parentProp.Name %>);
@@ -96,7 +99,8 @@ if (Info.GenerateDataPortalInsert)
     }
     foreach (ValueProperty prop in Info.GetAllValueProperties())
     {
-        if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
+        if (prop.IsDatabaseBound &&
+            prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
             (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default ||
             (prop.DataAccess != ValueProperty.DataAccessBehaviour.ReadOnly &&
             prop.DataAccess != ValueProperty.DataAccessBehaviour.UpdateOnly)))
@@ -178,7 +182,8 @@ if (Info.GenerateDataPortalInsert)
                     <%
     foreach (ValueProperty prop in Info.GetAllValueProperties())
     {
-        if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
+        if (prop.IsDatabaseBound &&
+            prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
             (prop.DbBindColumn.IsPrimaryKey &&
             prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK))
         {
@@ -189,7 +194,8 @@ if (Info.GenerateDataPortalInsert)
     }
     foreach (ValueProperty prop in Info.GetAllValueProperties())
     {
-        if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
+        if (prop.IsDatabaseBound &&
+            prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
             prop.DbBindColumn.NativeType == "timestamp")
         {
             %>
@@ -295,6 +301,9 @@ if (Info.GenerateDataPortalUpdate)
                     {
                         foreach (ValueProperty parentProp in Info.GetParentValueProperties())
                         {
+                            if (!parentProp.IsDatabaseBound)
+                                continue;
+
                             if (parentProp.PropertyType == TypeCodeEx.SmartDate)
                             {
                                 %>SmartDate l<%= parentProp.Name %> = new SmartDate(parent.<%= parentProp.Name %>);
@@ -310,7 +319,8 @@ if (Info.GenerateDataPortalUpdate)
                     }
                     foreach (ValueProperty prop in Info.GetAllValueProperties())
                     {
-                        if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
+                        if (prop.IsDatabaseBound &&
+                            prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
                             (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default ||
                             prop.DbBindColumn.NativeType == "timestamp" ||
                             (prop.DataAccess != ValueProperty.DataAccessBehaviour.ReadOnly &&
@@ -386,7 +396,8 @@ if (Info.GenerateDataPortalUpdate)
                     <%
                     foreach (ValueProperty prop in Info.GetAllValueProperties())
                     {
-                        if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
+                        if (prop.IsDatabaseBound &&
+                            prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
                             prop.DbBindColumn.NativeType == "timestamp")
                         {
                             %>
@@ -501,6 +512,9 @@ if (Info.GenerateDataPortalDelete)
     {
         foreach (ValueProperty parentProp in Info.GetParentValueProperties())
         {
+            if (!parentProp.IsDatabaseBound)
+                continue;
+
             if (parentProp.PropertyType == TypeCodeEx.SmartDate)
             {
                 %>SmartDate l<%= parentProp.Name %> = new SmartDate(parent.<%= parentProp.Name %>);
@@ -516,7 +530,8 @@ if (Info.GenerateDataPortalDelete)
     }
     foreach (ValueProperty prop in Info.ValueProperties)
     {
-        if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
+        if (prop.IsDatabaseBound &&
+            prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
             (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default ||
             (prop.DbBindColumn.NativeType == "timestamp" && Info.DeleteUseTimestamp)))
         {

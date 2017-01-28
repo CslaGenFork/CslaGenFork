@@ -70,7 +70,8 @@ if (Info.CommandTimeout != string.Empty)
                     <%
 foreach (ValueProperty prop in Info.GetAllValueProperties())
 {
-    if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
+    if (prop.IsDatabaseBound &&
+        prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
         (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default ||
         prop.DbBindColumn.NativeType == "timestamp" ||
         (prop.DataAccess != ValueProperty.DataAccessBehaviour.ReadOnly &&
@@ -87,7 +88,7 @@ foreach (ValueProperty prop in Info.GetAllValueProperties())
                     cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetFieldReaderStatement(prop) %>.Equals(Guid.Empty) ? (object)DBNull.Value : <%= GetFieldReaderStatement(prop) %>).DbType = DbType.<%= TemplateHelper.GetDbType(prop) %>;
                     <%
             }
-            else if (AllowNull(prop) && prop.PropertyType == TypeCodeEx.CustomType)
+            else if (AllowNull(prop) && propType == TypeCodeEx.CustomType)
             {
                 %>
                     // For nullable PropertyConvert, null is persisted if the backing field is zero
@@ -115,7 +116,7 @@ foreach (ValueProperty prop in Info.GetAllValueProperties())
                     cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= GetParameterSet(Info, prop) %>.Equals(Guid.Empty) ? (object)DBNull.Value : <%= GetFieldReaderStatement(prop) %>).DbType = DbType.<%= TemplateHelper.GetDbType(prop) %>;
                     <%
             }
-            else if (AllowNull(prop) && prop.PropertyType == TypeCodeEx.CustomType)
+            else if (AllowNull(prop) && propType == TypeCodeEx.CustomType)
             {
                 %>
                     // For nullable PropertyConvert, null is persisted if the backing field is zero
@@ -157,6 +158,9 @@ if (Info.PersistenceType == PersistenceType.SqlConnectionUnshared)
                     <%
 foreach (ValueProperty prop in Info.GetAllValueProperties())
 {
+    if (!prop.IsDatabaseBound)
+        continue;
+
     if (prop.DbBindColumn.NativeType == "timestamp")
     {
         if (prop.DeclarationMode == PropertyDeclaration.Managed)

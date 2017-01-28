@@ -65,7 +65,8 @@ if (Info.GenerateDataPortalInsert)
                     <%
     foreach (ValueProperty prop in Info.GetAllValueProperties())
     {
-        if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
+        if (prop.IsDatabaseBound &&
+            prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
             (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default ||
             (prop.DataAccess != ValueProperty.DataAccessBehaviour.ReadOnly &&
             prop.DataAccess != ValueProperty.DataAccessBehaviour.UpdateOnly)))
@@ -147,7 +148,8 @@ if (Info.GenerateDataPortalInsert)
                     <%
     foreach (ValueProperty prop in Info.GetAllValueProperties())
     {
-        if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
+        if (prop.IsDatabaseBound &&
+            prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
             (prop.DbBindColumn.IsPrimaryKey &&
             prop.PrimaryKey == ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK))
         {
@@ -167,7 +169,8 @@ if (Info.GenerateDataPortalInsert)
     }
     foreach (ValueProperty prop in Info.GetAllValueProperties())
     {
-        if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
+        if (prop.IsDatabaseBound &&
+            prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None &&
             prop.DbBindColumn.NativeType == "timestamp")
         {
             if (prop.DeclarationMode == PropertyDeclaration.Managed)

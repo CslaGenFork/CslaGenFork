@@ -306,7 +306,7 @@ if (!Info.UseCustomLoading)
 
             string findByParams = string.Empty;
             bool parentFirst = true;
-            foreach(Property prop in itemInfo.ParentProperties)
+            foreach (Property prop in itemInfo.ParentProperties)
             {
                 if (parentFirst)
                     parentFirst = false;

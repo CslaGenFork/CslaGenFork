@@ -48,6 +48,9 @@ if (parentType.Length > 0)
 }
 foreach (ValueProperty prop in Info.GetAllValueProperties())
 {
+    if (!prop.IsDatabaseBound)
+        continue;
+
     if (isFirst)
         isFirst = false;
     else

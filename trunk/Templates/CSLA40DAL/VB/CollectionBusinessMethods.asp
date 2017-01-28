@@ -63,6 +63,9 @@ if (useParentReference || isRODeepLoadCollection || useAuthz || Info.UniqueItems
             {
                 foreach (ValueProperty prop in itemInfo.ValueProperties)
                 {
+                    if (!prop.IsDatabaseBound)
+                        continue;
+
                     if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
                     {
                         propertyList.Add(prop);
@@ -278,6 +281,9 @@ if (useParentReference || isRODeepLoadCollection || useAuthz || Info.UniqueItems
         List<Property> propertyList = new List<Property>();
         foreach (ValueProperty prop in itemInfo.ValueProperties)
         {
+            if (!prop.IsDatabaseBound)
+                continue;
+
             if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
             {
                 propertyList.Add(prop);
