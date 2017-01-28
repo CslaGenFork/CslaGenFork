@@ -61,6 +61,7 @@ namespace CslaGenerator.Design
                     var currentCslaObject = GeneratorController.Current.CurrentCslaObject;
                     _sizeSortedNamespaces = currentCslaObject.Namespaces.ToList();
                     _sizeSortedNamespaces.Add(currentCslaObject.ObjectNamespace);
+                    _sizeSortedNamespaces.Add("Csla");
                     _sizeSortedNamespaces = BusinessRuleTypeEditor.GetSizeSorted(_sizeSortedNamespaces);
 
                     // Get Assembly File Path
