@@ -2583,13 +2583,13 @@ namespace CslaGenerator.CodeGen
                         : "((" + prop.Interfaces.Substring(0, prop.Interfaces.LastIndexOf('.')) + ") p)." +
                           FormatPascal(prop.Name)),
                     prop.FriendlyName,
-                    GetDefault(info, prop),
+                    GetDefaultForPropertyInfoDeclare(info, prop),
                     GetRelationhipType(info, prop));
 
             return response;
         }
 
-        private string GetDefault(CslaObjectInfo info, ValueProperty prop)
+        private string GetDefaultForPropertyInfoDeclare(CslaObjectInfo info, ValueProperty prop)
         {
             if (HasCreateCriteriaDataPortal(info))
                 return string.Empty;
@@ -2605,9 +2605,9 @@ namespace CslaGenerator.CodeGen
             if (!prop.Nullable)
                 return string.Empty;
 
-            var init = GetInitValue(prop.BackingFieldType);
+           /* var init = GetInitValue(prop.BackingFieldType);
             if (!string.IsNullOrEmpty(init))
-                return string.Format(", {0}", init);
+                return string.Format(", {0}", init);*/
 
             return ", null";
         }
