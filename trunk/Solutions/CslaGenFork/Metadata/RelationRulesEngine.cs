@@ -52,7 +52,9 @@ namespace CslaGenerator.Metadata
                 stereotype.IsEditableRootCollection() ||
                 stereotype.IsDynamicEditableRootCollection() ||
                 stereotype.IsReadOnlyObject() ||
-                stereotype.IsReadOnlyCollection())
+                stereotype.IsReadOnlyCollection() ||
+                stereotype.IsBaseClass() ||
+                stereotype.IsCriteriaClass())
                 return true;
 
             BrokenRuleMsg = stereotype + " must have a ParentType.";
