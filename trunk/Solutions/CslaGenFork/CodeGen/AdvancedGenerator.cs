@@ -218,7 +218,10 @@ namespace CslaGenerator.CodeGen
                 OnStep(info.ObjectName);
 
                 // Stored Procedures
-                if (generationParams.GenerateSprocs && info.GenerateSprocs)
+                if (generationParams.GenerateSprocs && info.GenerateSprocs &&
+                    info.ObjectType.IsNotBaseClass() &&
+                    info.ObjectType.IsNotCriteriaClass() &&
+                    info.ObjectType.IsNotPlaceHolder())
                 {
                     try
                     {
