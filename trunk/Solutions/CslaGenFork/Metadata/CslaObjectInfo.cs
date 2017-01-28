@@ -1768,10 +1768,12 @@ namespace CslaGenerator.Metadata
         {
             if (ObjectType.IsEditableRootCollection() ||
                 ObjectType.IsEditableChildCollection() ||
-                //ObjectType.IsDynamicEditableRootCollection() ||
                 ObjectType.IsReadOnlyCollection() ||
                 ObjectType.IsNameValueList())
                 return 2;
+
+            if (ObjectType.IsBaseClass() && IsGenericType)
+                return GetGenericArguments().Length;
 
             return 1;
         }
@@ -1835,8 +1837,17 @@ namespace CslaGenerator.Metadata
         {
             var allDatabaseBoundValueProperties = new ValuePropertyCollection();
 
-            allDatabaseBoundValueProperties.AddRange(_valueProperties);
-            allDatabaseBoundValueProperties.AddRange(_inheritedValueProperties);
+            foreach (var valueProperty in _valueProperties)
+            {
+                if (valueProperty.IsDatabaseBound)
+                    allDatabaseBoundValueProperties.Add(valueProperty);
+            }
+
+            foreach (var valueProperty in _inheritedValueProperties)
+            {
+                if (valueProperty.IsDatabaseBound)
+                    allDatabaseBoundValueProperties.Add(valueProperty);
+            }
 
             return allDatabaseBoundValueProperties;
         }
