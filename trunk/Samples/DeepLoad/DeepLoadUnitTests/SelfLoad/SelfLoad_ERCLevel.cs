@@ -111,7 +111,7 @@ namespace DeepLoadUnitTests
             continent.Continent_Name += " Edited";
             continent.D03_Continent_SingleObject.Continent_Child_Name += " Edited";
             continent.D03_Continent_ASingleObject.Continent_Child_Name += " Edited";
-            continentColl.Save();
+            continentColl = continentColl.Save();
 
             continentColl = D01_ContinentColl.GetD01_ContinentColl();
             continent = continentColl[3];
@@ -155,7 +155,7 @@ namespace DeepLoadUnitTests
             var subContinent = continent.D03_SubContinentObjects[0];
             Assert.AreEqual(7, subContinent.SubContinent_ID);
             continent.D03_SubContinentObjects.Remove(7);
-            continentColl.Save();
+            continentColl = continentColl.Save();
 
             continentColl = D01_ContinentColl.GetD01_ContinentColl();
             continent = continentColl[3];
@@ -198,7 +198,7 @@ namespace DeepLoadUnitTests
             subContinent.SubContinent_Name += " Edited";
             subContinent.D05_SubContinent_SingleObject.SubContinent_Child_Name += " Edited";
             subContinent.D05_SubContinent_ASingleObject.SubContinent_Child_Name += " Edited";
-            continentColl.Save();
+            continentColl = continentColl.Save();
 
             continentColl = D01_ContinentColl.GetD01_ContinentColl();
             continent = continentColl[3];
@@ -252,7 +252,7 @@ namespace DeepLoadUnitTests
             var country = subContinent.D05_CountryObjects[0];
             Assert.AreEqual(10, country.Country_ID);
             subContinent.D05_CountryObjects.Remove(10);
-            continentColl.Save();
+            continentColl = continentColl.Save();
 
             continentColl = D01_ContinentColl.GetD01_ContinentColl();
             continent = continentColl[3];
@@ -305,7 +305,7 @@ namespace DeepLoadUnitTests
             country.Country_Name += " Edited";
             country.D07_Country_SingleObject.Country_Child_Name += " Edited";
             country.D07_Country_ASingleObject.Country_Child_Name += " Edited";
-            continentColl.Save();
+            continentColl = continentColl.Save();
 
             continentColl = D01_ContinentColl.GetD01_ContinentColl();
             continent = continentColl[3];
@@ -369,7 +369,7 @@ namespace DeepLoadUnitTests
             var region = country.D07_RegionObjects[0];
             Assert.AreEqual(28, region.Region_ID);
             country.D07_RegionObjects.Remove(28);
-            continentColl.Save();
+            continentColl = continentColl.Save();
 
             continentColl = D01_ContinentColl.GetD01_ContinentColl();
             continent = continentColl[3];
@@ -432,7 +432,7 @@ namespace DeepLoadUnitTests
             region.Region_Name += " Edited";
             region.D09_Region_SingleObject.Region_Child_Name += " Edited";
             region.D09_Region_ASingleObject.Region_Child_Name += " Edited";
-            continentColl.Save();
+            continentColl = continentColl.Save();
 
             continentColl = D01_ContinentColl.GetD01_ContinentColl();
             continent = continentColl[3];
@@ -506,7 +506,7 @@ namespace DeepLoadUnitTests
             var city = region.D09_CityObjects[0];
             Assert.AreEqual(28, city.City_ID);
             region.D09_CityObjects.Remove(28);
-            continentColl.Save();
+            continentColl = continentColl.Save();
 
             continentColl = D01_ContinentColl.GetD01_ContinentColl();
             continent = continentColl[3];
@@ -579,7 +579,7 @@ namespace DeepLoadUnitTests
             city.City_Name += " Edited";
             city.D11_City_SingleObject.City_Child_Name += " Edited";
             city.D11_City_ASingleObject.City_Child_Name += " Edited";
-            continentColl.Save();
+            continentColl = continentColl.Save();
 
             continentColl = D01_ContinentColl.GetD01_ContinentColl();
             continent = continentColl[3];
@@ -663,7 +663,7 @@ namespace DeepLoadUnitTests
             var cityRoad = city.D11_CityRoadObjects[0];
             Assert.AreEqual(82, cityRoad.CityRoad_ID);
             city.D11_CityRoadObjects.Remove(82);
-            continentColl.Save();
+            continentColl = continentColl.Save();
 
             continentColl = D01_ContinentColl.GetD01_ContinentColl();
             continent = continentColl[3];
@@ -740,7 +740,7 @@ namespace DeepLoadUnitTests
             Assert.AreEqual(1, city.D11_CityRoadObjects.Count);
             var cityRoad = city.D11_CityRoadObjects[0];
             cityRoad.CityRoad_Name += " Edited";
-            continentColl.Save();
+            continentColl = continentColl.Save();
 
             continentColl = D01_ContinentColl.GetD01_ContinentColl();
             continent = continentColl[3];

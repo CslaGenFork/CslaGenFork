@@ -43,7 +43,7 @@ namespace DeepLoadUnitTests
             var cityRoad = city.B11_CityRoadObjects.AddNew();
             cityRoad.CityRoad_Name = CityRoadName;
             
-            continentColl.Save();
+            continentColl = continentColl.Save();
         }
     }
 }
