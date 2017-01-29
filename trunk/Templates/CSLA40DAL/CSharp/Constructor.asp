@@ -49,14 +49,7 @@ if (Info.GenerateConstructor)
     }
     if (UseNoSilverlight())
     {
-        string ctorVisibility = string.Empty;
-        if (Info.ConstructorVisibility == ConstructorVisibility.Default &&
-            Info.IsReadOnlyCollection() &&
-            Info.ParentType != string.Empty &&
-            ancestorLoaderLevel > 1)
-            ctorVisibility = "internal";
-        else
-            ctorVisibility = GetConstructorVisibility(Info);
+        string ctorVisibility = GetConstructorVisibility(Info);
 
         if (ctorVisibility == "public")
         {
