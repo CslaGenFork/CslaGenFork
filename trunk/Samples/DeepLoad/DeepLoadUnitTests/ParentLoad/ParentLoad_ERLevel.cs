@@ -98,7 +98,7 @@ namespace DeepLoadUnitTests
             continent.Continent_Name += " Edited";
             continent.A03_Continent_SingleObject.Continent_Child_Name += " Edited";
             continent.A03_Continent_ASingleObject.Continent_Child_Name += " Edited";
-            continent.Save();
+            continent = continent.Save();
 
             continent = A02_Continent.GetA02_Continent(5);
             Assert.AreEqual(ContinentName + " Edited", continent.Continent_Name);
@@ -137,7 +137,7 @@ namespace DeepLoadUnitTests
             var subContinent = continent.A03_SubContinentObjects[0];
             Assert.AreEqual(7, subContinent.SubContinent_ID);
             continent.A03_SubContinentObjects.Remove(7);
-            continent.Save();
+            continent = continent.Save();
 
             continent = A02_Continent.GetA02_Continent(5);
             Assert.AreEqual(0, continent.A03_SubContinentObjects.Count);
@@ -175,7 +175,7 @@ namespace DeepLoadUnitTests
             subContinent.SubContinent_Name += " Edited";
             subContinent.A05_SubContinent_SingleObject.SubContinent_Child_Name += " Edited";
             subContinent.A05_SubContinent_ASingleObject.SubContinent_Child_Name += " Edited";
-            continent.Save();
+            continent = continent.Save();
 
             continent = A02_Continent.GetA02_Continent(5);
             Assert.AreEqual(1, continent.A03_SubContinentObjects.Count);
@@ -224,7 +224,7 @@ namespace DeepLoadUnitTests
             var country = subContinent.A05_CountryObjects[0];
             Assert.AreEqual(10, country.Country_ID);
             subContinent.A05_CountryObjects.Remove(10);
-            continent.Save();
+            continent = continent.Save();
 
             continent = A02_Continent.GetA02_Continent(5);
             Assert.AreEqual(1, continent.A03_SubContinentObjects.Count);
@@ -272,7 +272,7 @@ namespace DeepLoadUnitTests
             country.Country_Name += " Edited";
             country.A07_Country_SingleObject.Country_Child_Name += " Edited";
             country.A07_Country_ASingleObject.Country_Child_Name += " Edited";
-            continent.Save();
+            continent = continent.Save();
 
             continent = A02_Continent.GetA02_Continent(5);
             Assert.AreEqual(1, continent.A03_SubContinentObjects.Count);
@@ -331,7 +331,7 @@ namespace DeepLoadUnitTests
             var region = country.A07_RegionObjects[0];
             Assert.AreEqual(28, region.Region_ID);
             country.A07_RegionObjects.Remove(28);
-            continent.Save();
+            continent = continent.Save();
 
             continent = A02_Continent.GetA02_Continent(5);
             Assert.AreEqual(1, continent.A03_SubContinentObjects.Count);
@@ -389,7 +389,7 @@ namespace DeepLoadUnitTests
             region.Region_Name += " Edited";
             region.A09_Region_SingleObject.Region_Child_Name += " Edited";
             region.A09_Region_ASingleObject.Region_Child_Name += " Edited";
-            continent.Save();
+            continent = continent.Save();
 
             continent = A02_Continent.GetA02_Continent(5);
             Assert.AreEqual(1, continent.A03_SubContinentObjects.Count);
@@ -458,7 +458,7 @@ namespace DeepLoadUnitTests
             var city = region.A09_CityObjects[0];
             Assert.AreEqual(28, city.City_ID);
             region.A09_CityObjects.Remove(28);
-            continent.Save();
+            continent = continent.Save();
 
             continent = A02_Continent.GetA02_Continent(5);
             Assert.AreEqual(1, continent.A03_SubContinentObjects.Count);
@@ -526,7 +526,7 @@ namespace DeepLoadUnitTests
             city.City_Name += " Edited";
             city.A11_City_SingleObject.City_Child_Name += " Edited";
             city.A11_City_ASingleObject.City_Child_Name += " Edited";
-            continent.Save();
+            continent = continent.Save();
 
             continent = A02_Continent.GetA02_Continent(5);
             Assert.AreEqual(1, continent.A03_SubContinentObjects.Count);
@@ -605,7 +605,7 @@ namespace DeepLoadUnitTests
             var cityRoad = city.A11_CityRoadObjects[0];
             Assert.AreEqual(82, cityRoad.CityRoad_ID);
             city.A11_CityRoadObjects.Remove(82);
-            continent.Save();
+            continent = continent.Save();
 
             continent = A02_Continent.GetA02_Continent(5);
             Assert.AreEqual(1, continent.A03_SubContinentObjects.Count);
@@ -677,7 +677,7 @@ namespace DeepLoadUnitTests
             Assert.AreEqual(1, city.A11_CityRoadObjects.Count);
             var cityRoad = city.A11_CityRoadObjects[0];
             cityRoad.CityRoad_Name += " Edited";
-            continent.Save();
+            continent = continent.Save();
 
             continent = A02_Continent.GetA02_Continent(5);
             Assert.AreEqual(1, continent.A03_SubContinentObjects.Count);

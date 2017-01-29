@@ -77,12 +77,12 @@ namespace DeepLoadUnitTests
             var continent = continentColl[3];
             Assert.AreEqual(4, continent.Continent_ID);
             continentColl.Remove(4);
-            continentColl.Save();
+            continentColl = continentColl.Save();
 
             continent.Continent_Name = "Deleted";
             try
             {
-                continentColl.Save();
+                continentColl = continentColl.Save();
                 Assert.Fail(continent.Continent_Name + " wasn't deleted.");
             }
             catch (Csla.DataPortalException ex)
@@ -123,7 +123,7 @@ namespace DeepLoadUnitTests
             continent.Continent_Name += " Edited";
             continent.F03_Continent_SingleObject.Continent_Child_Name += " Edited";
             continent.F03_Continent_ASingleObject.Continent_Child_Name += " Edited";
-            continentColl.Save();
+            continentColl = continentColl.Save();
 
             continentColl = F01_ContinentColl.GetF01_ContinentColl();
             continent = continentColl[3];
@@ -167,12 +167,12 @@ namespace DeepLoadUnitTests
             var subContinent = continent.F03_SubContinentObjects[0];
             Assert.AreEqual(7, subContinent.SubContinent_ID);
             continent.F03_SubContinentObjects.Remove(7);
-            continentColl.Save();
+            continentColl = continentColl.Save();
 
             subContinent.SubContinent_Name = "Deleted";
             try
             {
-                continentColl.Save();
+                continentColl = continentColl.Save();
                 Assert.Fail(subContinent.SubContinent_Name + " wasn't deleted.");
             }
             catch (Csla.DataPortalException ex)
@@ -221,7 +221,7 @@ namespace DeepLoadUnitTests
             subContinent.SubContinent_Name += " Edited";
             subContinent.F05_SubContinent_SingleObject.SubContinent_Child_Name += " Edited";
             subContinent.F05_SubContinent_ASingleObject.SubContinent_Child_Name += " Edited";
-            continentColl.Save();
+            continentColl = continentColl.Save();
 
             continentColl = F01_ContinentColl.GetF01_ContinentColl();
             continent = continentColl[3];
@@ -275,12 +275,12 @@ namespace DeepLoadUnitTests
             var country = subContinent.F05_CountryObjects[0];
             Assert.AreEqual(10, country.Country_ID);
             subContinent.F05_CountryObjects.Remove(10);
-            continentColl.Save();
+            continentColl = continentColl.Save();
 
             country.Country_Name = "Deleted";
             try
             {
-                continentColl.Save();
+                continentColl = continentColl.Save();
                 Assert.Fail(country.Country_Name + " wasn't deleted.");
             }
             catch (Csla.DataPortalException ex)
@@ -339,7 +339,7 @@ namespace DeepLoadUnitTests
             country.Country_Name += " Edited";
             country.F07_Country_SingleObject.Country_Child_Name += " Edited";
             country.F07_Country_ASingleObject.Country_Child_Name += " Edited";
-            continentColl.Save();
+            continentColl = continentColl.Save();
 
             continentColl = F01_ContinentColl.GetF01_ContinentColl();
             continent = continentColl[3];
@@ -403,12 +403,12 @@ namespace DeepLoadUnitTests
             var region = country.F07_RegionObjects[0];
             Assert.AreEqual(28, region.Region_ID);
             country.F07_RegionObjects.Remove(28);
-            continentColl.Save();
+            continentColl = continentColl.Save();
 
             region.Region_Name= "Deleted";
             try
             {
-                continentColl.Save();
+                continentColl = continentColl.Save();
                 Assert.Fail(region.Region_Name + " wasn't deleted.");
             }
             catch (Csla.DataPortalException ex)
@@ -477,7 +477,7 @@ namespace DeepLoadUnitTests
             region.Region_Name += " Edited";
             region.F09_Region_SingleObject.Region_Child_Name += " Edited";
             region.F09_Region_ASingleObject.Region_Child_Name += " Edited";
-            continentColl.Save();
+            continentColl = continentColl.Save();
 
             continentColl = F01_ContinentColl.GetF01_ContinentColl();
             continent = continentColl[3];
@@ -551,12 +551,12 @@ namespace DeepLoadUnitTests
             var city = region.F09_CityObjects[0];
             Assert.AreEqual(28, city.City_ID);
             region.F09_CityObjects.Remove(28);
-            continentColl.Save();
+            continentColl = continentColl.Save();
 
             city.City_Name = "Deleted";
             try
             {
-                continentColl.Save();
+                continentColl = continentColl.Save();
                 Assert.Fail(city.City_Name + " wasn't deleted.");
             }
             catch (Csla.DataPortalException ex)
@@ -635,7 +635,7 @@ namespace DeepLoadUnitTests
             city.City_Name += " Edited";
             city.F11_City_SingleObject.City_Child_Name += " Edited";
             city.F11_City_ASingleObject.City_Child_Name += " Edited";
-            continentColl.Save();
+            continentColl = continentColl.Save();
 
             continentColl = F01_ContinentColl.GetF01_ContinentColl();
             continent = continentColl[3];
@@ -719,12 +719,12 @@ namespace DeepLoadUnitTests
             var cityRoad = city.F11_CityRoadObjects[0];
             Assert.AreEqual(82, cityRoad.CityRoad_ID);
             city.F11_CityRoadObjects.Remove(82);
-            continentColl.Save();
+            continentColl = continentColl.Save();
 
             cityRoad.CityRoad_Name = "Deleted";
             try
             {
-                continentColl.Save();
+                continentColl = continentColl.Save();
                 Assert.Fail(cityRoad.CityRoad_Name + " wasn't deleted.");
             }
             catch (Csla.DataPortalException ex)
@@ -807,7 +807,7 @@ namespace DeepLoadUnitTests
             Assert.AreEqual(1, city.F11_CityRoadObjects.Count);
             var cityRoad = city.F11_CityRoadObjects[0];
             cityRoad.CityRoad_Name += " Edited";
-            continentColl.Save();
+            continentColl = continentColl.Save();
 
             continentColl = F01_ContinentColl.GetF01_ContinentColl();
             continent = continentColl[3];

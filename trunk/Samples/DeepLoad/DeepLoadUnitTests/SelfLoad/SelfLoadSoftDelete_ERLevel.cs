@@ -75,7 +75,7 @@ namespace DeepLoadUnitTests
             continent.Continent_Name = "Deleted";
             try
             {
-                continent.Save();
+                continent = continent.Save();
                 Assert.Fail(continent.Continent_Name + " wasn't deleted.");
             }
             catch (Csla.DataPortalException ex)
@@ -112,7 +112,7 @@ namespace DeepLoadUnitTests
             continent.Continent_Name += " Edited";
             continent.G03_Continent_SingleObject.Continent_Child_Name += " Edited";
             continent.G03_Continent_ASingleObject.Continent_Child_Name += " Edited";
-            continent.Save();
+            continent = continent.Save();
 
             continent = G02_Continent.GetG02_Continent(5);
             Assert.AreEqual(ContinentName + " Edited", continent.Continent_Name);
@@ -151,12 +151,12 @@ namespace DeepLoadUnitTests
             var subContinent = continent.G03_SubContinentObjects[0];
             Assert.AreEqual(7, subContinent.SubContinent_ID);
             continent.G03_SubContinentObjects.Remove(7);
-            continent.Save();
+            continent = continent.Save();
 
             subContinent.SubContinent_Name = "Deleted";
             try
             {
-                continent.Save();
+                continent = continent.Save();
                 Assert.Fail(subContinent.SubContinent_Name + " wasn't deleted.");
             }
             catch (Csla.DataPortalException ex)
@@ -200,7 +200,7 @@ namespace DeepLoadUnitTests
             subContinent.SubContinent_Name += " Edited";
             subContinent.G05_SubContinent_SingleObject.SubContinent_Child_Name += " Edited";
             subContinent.G05_SubContinent_ASingleObject.SubContinent_Child_Name += " Edited";
-            continent.Save();
+            continent = continent.Save();
 
             continent = G02_Continent.GetG02_Continent(5);
             Assert.AreEqual(1, continent.G03_SubContinentObjects.Count);
@@ -249,12 +249,12 @@ namespace DeepLoadUnitTests
             var country = subContinent.G05_CountryObjects[0];
             Assert.AreEqual(10, country.Country_ID);
             subContinent.G05_CountryObjects.Remove(10);
-            continent.Save();
+            continent = continent.Save();
 
             country.Country_Name = "Deleted";
             try
             {
-                continent.Save();
+                continent = continent.Save();
                 Assert.Fail(country.Country_Name + " wasn't deleted.");
             }
             catch (Csla.DataPortalException ex)
@@ -308,7 +308,7 @@ namespace DeepLoadUnitTests
             country.Country_Name += " Edited";
             country.G07_Country_SingleObject.Country_Child_Name += " Edited";
             country.G07_Country_ASingleObject.Country_Child_Name += " Edited";
-            continent.Save();
+            continent = continent.Save();
 
             continent = G02_Continent.GetG02_Continent(5);
             Assert.AreEqual(1, continent.G03_SubContinentObjects.Count);
@@ -367,12 +367,12 @@ namespace DeepLoadUnitTests
             var region = country.G07_RegionObjects[0];
             Assert.AreEqual(28, region.Region_ID);
             country.G07_RegionObjects.Remove(28);
-            continent.Save();
+            continent = continent.Save();
 
             region.Region_Name = "Deleted";
             try
             {
-                continent.Save();
+                continent = continent.Save();
                 Assert.Fail(region.Region_Name + " wasn't deleted.");
             }
             catch (Csla.DataPortalException ex)
@@ -436,7 +436,7 @@ namespace DeepLoadUnitTests
             region.Region_Name += " Edited";
             region.G09_Region_SingleObject.Region_Child_Name += " Edited";
             region.G09_Region_ASingleObject.Region_Child_Name += " Edited";
-            continent.Save();
+            continent = continent.Save();
 
             continent = G02_Continent.GetG02_Continent(5);
             Assert.AreEqual(1, continent.G03_SubContinentObjects.Count);
@@ -505,12 +505,12 @@ namespace DeepLoadUnitTests
             var city = region.G09_CityObjects[0];
             Assert.AreEqual(28, city.City_ID);
             region.G09_CityObjects.Remove(28);
-            continent.Save();
+            continent = continent.Save();
 
             city.City_Name = "Deleted";
             try
             {
-                continent.Save();
+                continent = continent.Save();
                 Assert.Fail(city.City_Name + " wasn't deleted.");
             }
             catch (Csla.DataPortalException ex)
@@ -584,7 +584,7 @@ namespace DeepLoadUnitTests
             city.City_Name += " Edited";
             city.G11_City_SingleObject.City_Child_Name += " Edited";
             city.G11_City_ASingleObject.City_Child_Name += " Edited";
-            continent.Save();
+            continent = continent.Save();
 
             continent = G02_Continent.GetG02_Continent(5);
             Assert.AreEqual(1, continent.G03_SubContinentObjects.Count);
@@ -663,12 +663,12 @@ namespace DeepLoadUnitTests
             var cityRoad = city.G11_CityRoadObjects[0];
             Assert.AreEqual(82, cityRoad.CityRoad_ID);
             city.G11_CityRoadObjects.Remove(82);
-            continent.Save();
+            continent = continent.Save();
 
             cityRoad.CityRoad_Name = "Deleted";
             try
             {
-                continent.Save();
+                continent = continent.Save();
                 Assert.Fail(cityRoad.CityRoad_Name + " wasn't deleted.");
             }
             catch (Csla.DataPortalException ex)
@@ -746,7 +746,7 @@ namespace DeepLoadUnitTests
             Assert.AreEqual(1, city.G11_CityRoadObjects.Count);
             var cityRoad = city.G11_CityRoadObjects[0];
             cityRoad.CityRoad_Name += " Edited";
-            continent.Save();
+            continent = continent.Save();
 
             continent = G02_Continent.GetG02_Continent(5);
             Assert.AreEqual(1, continent.G03_SubContinentObjects.Count);
