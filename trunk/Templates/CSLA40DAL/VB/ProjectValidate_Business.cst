@@ -58,7 +58,7 @@ foreach (CslaObjectInfo objectInfo in list)
             return;
         }
 
-        if (!parentProp.IsDatabaseBound)
+        if (!valProp.IsDatabaseBound)
             continue;
         if (valProp.DbBindColumn == null)
             continue;
