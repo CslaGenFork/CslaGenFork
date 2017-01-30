@@ -222,7 +222,7 @@ if (Info.IsNotUnitOfWork())
 
         //partial void AddBusinessRulesExtend()
         //{
-        //    throw new System.NotImplementedException();
+        //    throw new NotImplementedException();
         //}
 
         #endregion
@@ -236,7 +236,7 @@ if (Info.IsNotUnitOfWork())
 
         //static partial void AddObjectAuthorizationRulesExtend()
         //{
-        //    throw new System.NotImplementedException();
+        //    throw new NotImplementedException();
         //}
 
         #endregion
@@ -310,7 +310,7 @@ if (Info.IsNotUnitOfWork())
 
         //partial void On<%= hookName %>(DataPortalHookArgs args)
         //{
-        //    throw new System.NotImplementedException();
+        //    throw new NotImplementedException();
         //}
         <%
             if (hookName == "Create" && HasSilverlightLocalDataPortalCreate(Info))
