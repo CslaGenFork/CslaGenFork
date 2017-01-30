@@ -123,9 +123,10 @@ namespace ParentLoadROSoftDelete.Business.ERCLevel
         /// Initializes a new instance of the <see cref="F06_Country"/> class.
         /// </summary>
         /// <remarks> Do not use to create a Csla object. Use factory methods instead.</remarks>
-        private F06_Country()
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public F06_Country()
         {
-            // Prevent direct creation
+            // Use factory methods and do not use direct creation.
         }
 
         #endregion
@@ -167,7 +168,7 @@ namespace ParentLoadROSoftDelete.Business.ERCLevel
 
         #endregion
 
-        #region Pseudo Events
+        #region DataPortal Hooks
 
         /// <summary>
         /// Occurs after the low level fetch operation, before the data reader is destroyed.
