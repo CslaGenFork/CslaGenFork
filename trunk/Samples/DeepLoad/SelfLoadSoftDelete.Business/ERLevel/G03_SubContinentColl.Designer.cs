@@ -61,7 +61,7 @@ namespace SelfLoadSoftDelete.Business.ERLevel
         /// <returns><c>true</c> if the G04_SubContinent is a deleted collection item; otherwise, <c>false</c>.</returns>
         public bool ContainsDeleted(int subContinent_ID)
         {
-            foreach (var g04_SubContinent in this.DeletedList)
+            foreach (var g04_SubContinent in DeletedList)
             {
                 if (g04_SubContinent.SubContinent_ID == subContinent_ID)
                 {
@@ -124,9 +124,10 @@ namespace SelfLoadSoftDelete.Business.ERLevel
         /// Initializes a new instance of the <see cref="G03_SubContinentColl"/> class.
         /// </summary>
         /// <remarks> Do not use to create a Csla object. Use factory methods instead.</remarks>
-        private G03_SubContinentColl()
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public G03_SubContinentColl()
         {
-            // Prevent direct creation
+            // Use factory methods and do not use direct creation.
 
             // show the framework that this is a child object
             MarkAsChild();
@@ -192,7 +193,7 @@ namespace SelfLoadSoftDelete.Business.ERLevel
 
         #endregion
 
-        #region Pseudo Events
+        #region DataPortal Hooks
 
         /// <summary>
         /// Occurs after setting query parameters and before the fetch operation.

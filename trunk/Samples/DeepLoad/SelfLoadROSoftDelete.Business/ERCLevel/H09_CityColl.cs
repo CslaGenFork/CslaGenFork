@@ -1,3 +1,5 @@
+using System;
+using Csla;
 
 namespace SelfLoadROSoftDelete.Business.ERCLevel
 {
@@ -18,16 +20,16 @@ namespace SelfLoadROSoftDelete.Business.ERCLevel
 
         #endregion
 
-        #region Pseudo Event Handlers
+        #region Implementation of DataPortal Hooks
 
         //partial void OnFetchPre(DataPortalHookArgs args)
         //{
-        //    throw new System.Exception("The method or operation is not implemented.");
+        //    throw new NotImplementedException();
         //}
 
         //partial void OnFetchPost(DataPortalHookArgs args)
         //{
-        //    throw new System.Exception("The method or operation is not implemented.");
+        //    throw new NotImplementedException();
         //}
 
         #endregion
