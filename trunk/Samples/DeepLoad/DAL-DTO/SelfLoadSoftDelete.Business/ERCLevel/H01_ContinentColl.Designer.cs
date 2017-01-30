@@ -60,7 +60,7 @@ namespace SelfLoadSoftDelete.Business.ERCLevel
         /// <returns><c>true</c> if the H02_Continent is a deleted collection item; otherwise, <c>false</c>.</returns>
         public bool ContainsDeleted(int continent_ID)
         {
-            foreach (var h02_Continent in this.DeletedList)
+            foreach (var h02_Continent in DeletedList)
             {
                 if (h02_Continent.Continent_ID == continent_ID)
                 {
@@ -122,9 +122,10 @@ namespace SelfLoadSoftDelete.Business.ERCLevel
         /// Initializes a new instance of the <see cref="H01_ContinentColl"/> class.
         /// </summary>
         /// <remarks> Do not use to create a Csla object. Use factory methods instead.</remarks>
-        private H01_ContinentColl()
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public H01_ContinentColl()
         {
-            // Prevent direct creation
+            // Use factory methods and do not use direct creation.
 
             var rlce = RaiseListChangedEvents;
             RaiseListChangedEvents = false;
@@ -187,7 +188,7 @@ namespace SelfLoadSoftDelete.Business.ERCLevel
 
         #endregion
 
-        #region Pseudo Events
+        #region DataPortal Hooks
 
         /// <summary>
         /// Occurs after setting query parameters and before the fetch operation.

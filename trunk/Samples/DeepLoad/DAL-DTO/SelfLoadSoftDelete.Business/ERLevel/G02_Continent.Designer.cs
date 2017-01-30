@@ -135,9 +135,10 @@ namespace SelfLoadSoftDelete.Business.ERLevel
         /// Initializes a new instance of the <see cref="G02_Continent"/> class.
         /// </summary>
         /// <remarks> Do not use to create a Csla object. Use factory methods instead.</remarks>
-        private G02_Continent()
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public G02_Continent()
         {
-            // Prevent direct creation
+            // Use factory methods and do not use direct creation.
         }
 
         #endregion
@@ -285,7 +286,7 @@ namespace SelfLoadSoftDelete.Business.ERLevel
 
         #endregion
 
-        #region Pseudo Events
+        #region DataPortal Hooks
 
         /// <summary>
         /// Occurs after setting all defaults for object creation.
