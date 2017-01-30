@@ -60,7 +60,7 @@ namespace ParentLoad.Business.ERCLevel
         /// <returns><c>true</c> if the B02_Continent is a deleted collection item; otherwise, <c>false</c>.</returns>
         public bool ContainsDeleted(int continent_ID)
         {
-            foreach (var b02_Continent in this.DeletedList)
+            foreach (var b02_Continent in DeletedList)
             {
                 if (b02_Continent.Continent_ID == continent_ID)
                 {
@@ -122,9 +122,10 @@ namespace ParentLoad.Business.ERCLevel
         /// Initializes a new instance of the <see cref="B01_ContinentColl"/> class.
         /// </summary>
         /// <remarks> Do not use to create a Csla object. Use factory methods instead.</remarks>
-        private B01_ContinentColl()
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public B01_ContinentColl()
         {
-            // Prevent direct creation
+            // Use factory methods and do not use direct creation.
 
             var rlce = RaiseListChangedEvents;
             RaiseListChangedEvents = false;
@@ -195,7 +196,7 @@ namespace ParentLoad.Business.ERCLevel
 
         #endregion
 
-        #region Pseudo Events
+        #region DataPortal Hooks
 
         /// <summary>
         /// Occurs after setting query parameters and before the fetch operation.

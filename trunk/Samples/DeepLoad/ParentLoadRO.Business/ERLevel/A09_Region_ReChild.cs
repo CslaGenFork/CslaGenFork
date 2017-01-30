@@ -1,3 +1,5 @@
+using System;
+using Csla;
 
 namespace ParentLoadRO.Business.ERLevel
 {
@@ -19,11 +21,11 @@ namespace ParentLoadRO.Business.ERLevel
 
         #endregion
 
-        #region Pseudo Event Handlers
+        #region Implementation of DataPortal Hooks
 
         //partial void OnFetchRead(DataPortalHookArgs args)
         //{
-        //    throw new System.Exception("The method or operation is not implemented.");
+        //    throw new NotImplementedException();
         //}
 
         #endregion

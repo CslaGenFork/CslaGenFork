@@ -154,9 +154,10 @@ namespace SelfLoad.Business.ERLevel
         /// Initializes a new instance of the <see cref="C06_Country"/> class.
         /// </summary>
         /// <remarks> Do not use to create a Csla object. Use factory methods instead.</remarks>
-        private C06_Country()
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public C06_Country()
         {
-            // Prevent direct creation
+            // Use factory methods and do not use direct creation.
 
             // show the framework that this is a child object
             MarkAsChild();
@@ -292,7 +293,7 @@ namespace SelfLoad.Business.ERLevel
 
         #endregion
 
-        #region Pseudo Events
+        #region DataPortal Hooks
 
         /// <summary>
         /// Occurs after setting all defaults for object creation.
