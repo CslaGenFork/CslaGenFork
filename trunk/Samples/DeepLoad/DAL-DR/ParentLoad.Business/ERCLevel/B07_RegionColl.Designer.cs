@@ -62,7 +62,7 @@ namespace ParentLoad.Business.ERCLevel
         /// <returns><c>true</c> if the B08_Region is a deleted collection item; otherwise, <c>false</c>.</returns>
         public bool ContainsDeleted(int region_ID)
         {
-            foreach (var b08_Region in this.DeletedList)
+            foreach (var b08_Region in DeletedList)
             {
                 if (b08_Region.Region_ID == region_ID)
                 {
@@ -129,9 +129,10 @@ namespace ParentLoad.Business.ERCLevel
         /// Initializes a new instance of the <see cref="B07_RegionColl"/> class.
         /// </summary>
         /// <remarks> Do not use to create a Csla object. Use factory methods instead.</remarks>
-        private B07_RegionColl()
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public B07_RegionColl()
         {
-            // Prevent direct creation
+            // Use factory methods and do not use direct creation.
 
             // show the framework that this is a child object
             MarkAsChild();
@@ -184,7 +185,7 @@ namespace ParentLoad.Business.ERCLevel
 
         #endregion
 
-        #region Pseudo Events
+        #region DataPortal Hooks
 
         /// <summary>
         /// Occurs after setting query parameters and before the fetch operation.

@@ -62,7 +62,7 @@ namespace ParentLoad.Business.ERCLevel
         /// <returns><c>true</c> if the B04_SubContinent is a deleted collection item; otherwise, <c>false</c>.</returns>
         public bool ContainsDeleted(int subContinent_ID)
         {
-            foreach (var b04_SubContinent in this.DeletedList)
+            foreach (var b04_SubContinent in DeletedList)
             {
                 if (b04_SubContinent.SubContinent_ID == subContinent_ID)
                 {
@@ -129,9 +129,10 @@ namespace ParentLoad.Business.ERCLevel
         /// Initializes a new instance of the <see cref="B03_SubContinentColl"/> class.
         /// </summary>
         /// <remarks> Do not use to create a Csla object. Use factory methods instead.</remarks>
-        private B03_SubContinentColl()
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public B03_SubContinentColl()
         {
-            // Prevent direct creation
+            // Use factory methods and do not use direct creation.
 
             // show the framework that this is a child object
             MarkAsChild();
@@ -184,7 +185,7 @@ namespace ParentLoad.Business.ERCLevel
 
         #endregion
 
-        #region Pseudo Events
+        #region DataPortal Hooks
 
         /// <summary>
         /// Occurs after setting query parameters and before the fetch operation.
