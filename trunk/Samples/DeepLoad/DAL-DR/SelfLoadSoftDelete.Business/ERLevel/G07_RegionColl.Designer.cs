@@ -62,7 +62,7 @@ namespace SelfLoadSoftDelete.Business.ERLevel
         /// <returns><c>true</c> if the G08_Region is a deleted collection item; otherwise, <c>false</c>.</returns>
         public bool ContainsDeleted(int region_ID)
         {
-            foreach (var g08_Region in this.DeletedList)
+            foreach (var g08_Region in DeletedList)
             {
                 if (g08_Region.Region_ID == region_ID)
                 {
@@ -125,9 +125,10 @@ namespace SelfLoadSoftDelete.Business.ERLevel
         /// Initializes a new instance of the <see cref="G07_RegionColl"/> class.
         /// </summary>
         /// <remarks> Do not use to create a Csla object. Use factory methods instead.</remarks>
-        private G07_RegionColl()
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public G07_RegionColl()
         {
-            // Prevent direct creation
+            // Use factory methods and do not use direct creation.
 
             // show the framework that this is a child object
             MarkAsChild();
@@ -190,7 +191,7 @@ namespace SelfLoadSoftDelete.Business.ERLevel
 
         #endregion
 
-        #region Pseudo Events
+        #region DataPortal Hooks
 
         /// <summary>
         /// Occurs after setting query parameters and before the fetch operation.
