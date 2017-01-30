@@ -43,7 +43,7 @@ AS
 
         SET NOCOUNT ON
 
-        /* Check for object existance */
+        /* Check for object existence */
         IF NOT EXISTS
         (
             SELECT [SubContinent_ID] FROM [2_SubContinents]
@@ -77,7 +77,7 @@ AS
 
         SET NOCOUNT ON
 
-        /* Check for object existance */
+        /* Check for object existence */
         IF NOT EXISTS
         (
             SELECT [SubContinent_ID] FROM [2_SubContinents]

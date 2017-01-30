@@ -62,7 +62,7 @@ AS
 
         SET NOCOUNT ON
 
-        /* Check for object existance */
+        /* Check for object existence */
         IF NOT EXISTS
         (
             SELECT [Region_ID2] FROM [4_Regions_ReChild]
@@ -97,7 +97,7 @@ AS
 
         SET NOCOUNT ON
 
-        /* Check for object existance */
+        /* Check for object existence */
         IF NOT EXISTS
         (
             SELECT [Region_ID2] FROM [4_Regions_ReChild]

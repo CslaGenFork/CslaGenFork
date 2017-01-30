@@ -39,7 +39,7 @@ AS
 
         SET NOCOUNT ON
 
-        /* Check for object existance */
+        /* Check for object existence */
         IF NOT EXISTS
         (
             SELECT [City_ID2] FROM [5_Cities_ReChild]
@@ -74,7 +74,7 @@ AS
 
         SET NOCOUNT ON
 
-        /* Check for object existance */
+        /* Check for object existence */
         IF NOT EXISTS
         (
             SELECT [City_ID2] FROM [5_Cities_ReChild]

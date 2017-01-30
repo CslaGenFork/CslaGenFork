@@ -62,7 +62,7 @@ AS
 
         SET NOCOUNT ON
 
-        /* Check for object existance */
+        /* Check for object existence */
         IF NOT EXISTS
         (
             SELECT [Country_ID2] FROM [3_Countries_ReChild]
@@ -97,7 +97,7 @@ AS
 
         SET NOCOUNT ON
 
-        /* Check for object existance */
+        /* Check for object existence */
         IF NOT EXISTS
         (
             SELECT [Country_ID2] FROM [3_Countries_ReChild]
