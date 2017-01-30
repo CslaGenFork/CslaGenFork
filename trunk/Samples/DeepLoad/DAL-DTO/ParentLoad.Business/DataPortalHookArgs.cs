@@ -69,6 +69,15 @@ namespace ParentLoad.Business
         /// <summary>
         /// Initializes a new instance of the <see cref="DataPortalHookArgs"/> class.
         /// </summary>
+        /// <param name="crit">The criteria object argument.</param>
+        public DataPortalHookArgs(object crit)
+        {
+            CriteriaArg = crit;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataPortalHookArgs"/> class.
+        /// </summary>
         /// <param name="cmd">The command argument.</param>
         /// <remarks>The connection and ADO transaction arguments are set automatically, based on the command argument.</remarks>
         public DataPortalHookArgs(DbCommand cmd)
@@ -130,15 +139,6 @@ namespace ParentLoad.Business
         public DataPortalHookArgs(DataRow dr)
         {
             DataRowArg = dr;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DataPortalHookArgs"/> class.
-        /// </summary>
-        /// <param name="crit">The criteria object argument.</param>
-        public DataPortalHookArgs(object crit)
-        {
-            CriteriaArg = crit;
         }
 
         #endregion
