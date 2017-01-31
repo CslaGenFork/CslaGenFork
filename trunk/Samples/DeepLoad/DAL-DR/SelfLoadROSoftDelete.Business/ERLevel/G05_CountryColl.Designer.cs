@@ -83,9 +83,10 @@ namespace SelfLoadROSoftDelete.Business.ERLevel
         /// Initializes a new instance of the <see cref="G05_CountryColl"/> class.
         /// </summary>
         /// <remarks> Do not use to create a Csla object. Use factory methods instead.</remarks>
-        private G05_CountryColl()
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public G05_CountryColl()
         {
-            // Prevent direct creation
+            // Use factory methods and do not use direct creation.
 
             var rlce = RaiseListChangedEvents;
             RaiseListChangedEvents = false;
@@ -147,7 +148,7 @@ namespace SelfLoadROSoftDelete.Business.ERLevel
 
         #endregion
 
-        #region Pseudo Events
+        #region DataPortal Hooks
 
         /// <summary>
         /// Occurs after setting query parameters and before the fetch operation.

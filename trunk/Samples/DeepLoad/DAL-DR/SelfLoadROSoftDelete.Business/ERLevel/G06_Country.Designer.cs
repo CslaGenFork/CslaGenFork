@@ -21,7 +21,6 @@ namespace SelfLoadROSoftDelete.Business.ERLevel
 
         #region State Fields
 
-        [NotUndoable]
         private byte[] _rowVersion = new byte[] {};
 
         #endregion
@@ -133,9 +132,10 @@ namespace SelfLoadROSoftDelete.Business.ERLevel
         /// Initializes a new instance of the <see cref="G06_Country"/> class.
         /// </summary>
         /// <remarks> Do not use to create a Csla object. Use factory methods instead.</remarks>
-        private G06_Country()
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public G06_Country()
         {
-            // Prevent direct creation
+            // Use factory methods and do not use direct creation.
         }
 
         #endregion
@@ -169,7 +169,7 @@ namespace SelfLoadROSoftDelete.Business.ERLevel
 
         #endregion
 
-        #region Pseudo Events
+        #region DataPortal Hooks
 
         /// <summary>
         /// Occurs after the low level fetch operation, before the data reader is destroyed.
