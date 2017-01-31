@@ -248,6 +248,8 @@ namespace CslaGenerator.Controls
                 {
                     project.Params = unit.Params;
                     project.GenerationParams = unit.GenerationParams;
+                    project.ProjectName = unit.ProjectName;
+                    project.TargetDirectory = unit.TargetDirectory;
                     LoadInfo();
                 }
             }
@@ -269,6 +271,8 @@ namespace CslaGenerator.Controls
             var privateUnit = new CslaGeneratorUnit();
             privateUnit.GenerationParams = _genParams.Clone();
             privateUnit.Params = _projParams.Clone();
+            privateUnit.ProjectName = GeneratorController.Current.CurrentUnit.ProjectName;
+            privateUnit.TargetDirectory = GeneratorController.Current.CurrentUnit.TargetDirectory;
             FileStream fs = null;
             var tempFile = Path.GetTempPath() + Guid.NewGuid() + ".cslagenerator";
             var success = false;

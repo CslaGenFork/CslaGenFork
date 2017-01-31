@@ -95,6 +95,6 @@
   <AssociativeEntities />
   <ConnectionString />
   <ProjectName>MyProject</ProjectName>
-  <TargetDirectory />
+  <TargetDirectory>..\</TargetDirectory>
   <FileVersion>4.0.4</FileVersion>
 </CslaGeneratorUnit>
