@@ -251,9 +251,9 @@
       </Interfaces>
       <InheritedType>
         <ObjectName />
-        <AssemblyFile />
-        <Type />
-        <IsGenericType>false</IsGenericType>
+        <AssemblyFile>C:\VS Projects\CslaGenFork 4.5\CoverageTest\Dependencies\Csla.dll</AssemblyFile>
+        <Type>BusinessBindingListBase&lt;T,C&gt;</Type>
+        <IsGenericType>true</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
         <ObjectName />
@@ -297,6 +297,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Log Action</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType>LogActions</CustomPropertyType>
           <DeclarationMode>ManagedWithTypeConversion</DeclarationMode>
           <BackingFieldType>Byte</BackingFieldType>
@@ -354,6 +355,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Log Date Time</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -411,6 +413,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Log Useer</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -540,6 +543,135 @@
       <UseCustomLoading>false</UseCustomLoading>
       <ObjectType>BaseClass</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
+      <ObjectName>LoggerBusinessListBase</ObjectName>
+      <IsGenericType>true</IsGenericType>
+      <GenericArguments>T,C</GenericArguments>
+      <ObjectNamespace>Invoices.Business</ObjectNamespace>
+      <ClassVisibility>Public</ClassVisibility>
+      <ClassSummary />
+      <ClassRemarks />
+      <Namespaces />
+      <Attributes />
+      <Interfaces />
+      <InheritedType>
+        <ObjectName />
+        <AssemblyFile>C:\VS Projects\CslaGenFork 4.5\CoverageTest\Dependencies\Csla.dll</AssemblyFile>
+        <Type>BusinessListBase&lt;T,C&gt;</Type>
+        <IsGenericType>true</IsGenericType>
+      </InheritedType>
+      <InheritedTypeWinForms>
+        <ObjectName />
+        <AssemblyFile />
+        <Type />
+        <IsGenericType>false</IsGenericType>
+      </InheritedTypeWinForms>
+      <UseUnitOfWorkType />
+      <ConstructorVisibility>Default</ConstructorVisibility>
+      <Folder />
+      <FileName>LoggerBusinessListBaseTC</FileName>
+      <UnitOfWorkProperties />
+      <ChildCollectionProperties />
+      <ChildProperties />
+      <InheritedChildCollectionProperties />
+      <InheritedChildProperties />
+      <ConvertValueProperties />
+      <UpdateValueProperties />
+      <InheritedValueProperties />
+      <ValueProperties />
+      <Singleton>false</Singleton>
+      <EditOnDemand>false</EditOnDemand>
+      <CheckRulesOnFetch>true</CheckRulesOnFetch>
+      <SupportUpdateProperties>false</SupportUpdateProperties>
+      <CriteriaObjects />
+      <ParentType />
+      <ParentProperties />
+      <ParentInsertOnly>false</ParentInsertOnly>
+      <IsPolymorphic>false</IsPolymorphic>
+      <ItemType />
+      <ContainsItem>true</ContainsItem>
+      <UniqueItems>false</UniqueItems>
+      <FindMethodsParameters />
+      <UpdaterType />
+      <AllowNew>true</AllowNew>
+      <AllowEdit>true</AllowEdit>
+      <AllowRemove>true</AllowRemove>
+      <AddParentReference>false</AddParentReference>
+      <SimpleCacheOptions>None</SimpleCacheOptions>
+      <InvalidateCache />
+      <ValueColumn />
+      <NameColumn />
+      <PersistenceType>SqlConnectionManager</PersistenceType>
+      <CommandTimeout />
+      <TransactionType>TransactionScope</TransactionType>
+      <InsertUpdateRunLocal>false</InsertUpdateRunLocal>
+      <InsertProcedureName />
+      <SelectProcedureName />
+      <UpdateProcedureName />
+      <DeleteProcedureName />
+      <DeleteUseTimestamp>false</DeleteUseTimestamp>
+      <RemoveItem>true</RemoveItem>
+      <ToStringProperty />
+      <BusinessRules />
+      <AuthzProvider>IsInRole</AuthzProvider>
+      <NewRoles />
+      <GetRoles />
+      <UpdateRoles />
+      <DeleteRoles />
+      <NewAuthzRuleType>
+        <BaseRuleProperties />
+        <Name />
+        <ObjectName />
+        <AssemblyFile />
+        <Type />
+        <Constructors />
+        <RuleProperties />
+        <CacheResult>false</CacheResult>
+      </NewAuthzRuleType>
+      <GetAuthzRuleType>
+        <BaseRuleProperties />
+        <Name />
+        <ObjectName />
+        <AssemblyFile />
+        <Type />
+        <Constructors />
+        <RuleProperties />
+        <CacheResult>false</CacheResult>
+      </GetAuthzRuleType>
+      <UpdateAuthzRuleType>
+        <BaseRuleProperties />
+        <Name />
+        <ObjectName />
+        <AssemblyFile />
+        <Type />
+        <Constructors />
+        <RuleProperties />
+        <CacheResult>false</CacheResult>
+      </UpdateAuthzRuleType>
+      <DeleteAuthzRuleType>
+        <BaseRuleProperties />
+        <Name />
+        <ObjectName />
+        <AssemblyFile />
+        <Type />
+        <Constructors />
+        <RuleProperties />
+        <CacheResult>false</CacheResult>
+      </DeleteAuthzRuleType>
+    </CslaObjectInfo>
+    <CslaObjectInfo>
+      <Generate>false</Generate>
+      <GenerateConstructor>true</GenerateConstructor>
+      <GenerateFactoryMethods>true</GenerateFactoryMethods>
+      <GenerateDataAccessRegion>true</GenerateDataAccessRegion>
+      <GenerateDataPortalInsert>true</GenerateDataPortalInsert>
+      <GenerateDataPortalUpdate>true</GenerateDataPortalUpdate>
+      <GenerateDataPortalDelete>true</GenerateDataPortalDelete>
+      <GenerateSprocs>true</GenerateSprocs>
+      <GenerateInlineQueries />
+      <DataSetLoadingScheme>false</DataSetLoadingScheme>
+      <UseCustomLoading>false</UseCustomLoading>
+      <ObjectType>BaseClass</ObjectType>
+      <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>LoggerBusinessBase</ObjectName>
       <IsGenericType>true</IsGenericType>
       <GenericArguments>T</GenericArguments>
@@ -554,9 +686,9 @@
       </Interfaces>
       <InheritedType>
         <ObjectName />
-        <AssemblyFile />
-        <Type />
-        <IsGenericType>false</IsGenericType>
+        <AssemblyFile>C:\VS Projects\CslaGenFork 4.5\CoverageTest\Dependencies\Csla.dll</AssemblyFile>
+        <Type>BusinessBase&lt;T&gt;</Type>
+        <IsGenericType>true</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
         <ObjectName />
@@ -600,6 +732,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Log Action</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType>LogActions</CustomPropertyType>
           <DeclarationMode>ManagedWithTypeConversion</DeclarationMode>
           <BackingFieldType>Byte</BackingFieldType>
@@ -657,6 +790,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Log Date Time</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -714,6 +848,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Log Useer</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -1170,6 +1305,7 @@
           <PrimaryKey>UserProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Invoice Id</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -1205,6 +1341,67 @@
           <Undoable>false</Undoable>
         </ValueProperty>
         <ValueProperty>
+          <ParameterName>InvoiceNumber</ParameterName>
+          <Name>InvoiceNumber</Name>
+          <PropertyType>String</PropertyType>
+          <ReadOnly>false</ReadOnly>
+          <Nullable>false</Nullable>
+          <Summary>The public invoice number</Summary>
+          <Remarks />
+          <DbBindColumn>
+            <ColumnOriginType>Table</ColumnOriginType>
+            <DataType>String</DataType>
+            <NativeType>varchar</NativeType>
+            <Size>20</Size>
+            <SpResultIndex>0</SpResultIndex>
+            <ColumnName>InvoiceNumber</ColumnName>
+            <IsPrimaryKey>false</IsPrimaryKey>
+            <ObjectName>Invoices</ObjectName>
+            <CatalogName>InvoiceTest</CatalogName>
+            <SchemaName>dbo</SchemaName>
+            <IsNullable>false</IsNullable>
+            <IsIdentity>false</IsIdentity>
+          </DbBindColumn>
+          <DataAccess>ReadWrite</DataAccess>
+          <PrimaryKey>Default</PrimaryKey>
+          <FKConstraint />
+          <FriendlyName>Invoice Number</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
+          <CustomPropertyType />
+          <DeclarationMode>Managed</DeclarationMode>
+          <BackingFieldType>Empty</BackingFieldType>
+          <DefaultValue />
+          <Attributes />
+          <Interfaces />
+          <BusinessRules />
+          <AuthzProvider>IsInRole</AuthzProvider>
+          <ReadRoles />
+          <WriteRoles />
+          <ReadAuthzRuleType>
+            <BaseRuleProperties />
+            <Name />
+            <ObjectName />
+            <AssemblyFile />
+            <Type />
+            <Constructors />
+            <RuleProperties />
+            <CacheResult>false</CacheResult>
+          </ReadAuthzRuleType>
+          <WriteAuthzRuleType>
+            <BaseRuleProperties />
+            <Name />
+            <ObjectName />
+            <AssemblyFile />
+            <Type />
+            <Constructors />
+            <RuleProperties />
+            <CacheResult>false</CacheResult>
+          </WriteAuthzRuleType>
+          <Access>IsPublic</Access>
+          <PropSetAccessibility>Default</PropSetAccessibility>
+          <Undoable>true</Undoable>
+        </ValueProperty>
+        <ValueProperty>
           <ParameterName>CustomerName</ParameterName>
           <Name>CustomerName</Name>
           <PropertyType>String</PropertyType>
@@ -1230,6 +1427,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Customer Name</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -1290,9 +1488,71 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Invoice Date</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>ManagedWithTypeConversion</DeclarationMode>
           <BackingFieldType>SmartDate</BackingFieldType>
+          <DefaultValue />
+          <Attributes />
+          <Interfaces />
+          <BusinessRules />
+          <AuthzProvider>IsInRole</AuthzProvider>
+          <ReadRoles />
+          <WriteRoles />
+          <ReadAuthzRuleType>
+            <BaseRuleProperties />
+            <Name />
+            <ObjectName />
+            <AssemblyFile />
+            <Type />
+            <Constructors />
+            <RuleProperties />
+            <CacheResult>false</CacheResult>
+          </ReadAuthzRuleType>
+          <WriteAuthzRuleType>
+            <BaseRuleProperties />
+            <Name />
+            <ObjectName />
+            <AssemblyFile />
+            <Type />
+            <Constructors />
+            <RuleProperties />
+            <CacheResult>false</CacheResult>
+          </WriteAuthzRuleType>
+          <Access>IsPublic</Access>
+          <PropSetAccessibility>Default</PropSetAccessibility>
+          <Undoable>true</Undoable>
+        </ValueProperty>
+        <ValueProperty>
+          <ParameterName>Cost</ParameterName>
+          <Name>TotalAmount</Name>
+          <PropertyType>Decimal</PropertyType>
+          <ReadOnly>false</ReadOnly>
+          <Nullable>false</Nullable>
+          <Summary>Computed invoice total amount</Summary>
+          <Remarks />
+          <DbBindColumn>
+            <ColumnOriginType>Table</ColumnOriginType>
+            <DataType>Decimal</DataType>
+            <NativeType>money</NativeType>
+            <Size>19</Size>
+            <SpResultIndex>0</SpResultIndex>
+            <ColumnName>Cost</ColumnName>
+            <IsPrimaryKey>false</IsPrimaryKey>
+            <ObjectName>InvoiceLines</ObjectName>
+            <CatalogName>InvoiceTest</CatalogName>
+            <SchemaName>dbo</SchemaName>
+            <IsNullable>false</IsNullable>
+            <IsIdentity>false</IsIdentity>
+          </DbBindColumn>
+          <DataAccess>ReadWrite</DataAccess>
+          <PrimaryKey>Default</PrimaryKey>
+          <FKConstraint />
+          <FriendlyName>Total Amount</FriendlyName>
+          <IsDatabaseBound>false</IsDatabaseBound>
+          <CustomPropertyType />
+          <DeclarationMode>Managed</DeclarationMode>
+          <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
           <Attributes />
           <Interfaces />
@@ -1350,6 +1610,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Create Date</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -1382,7 +1643,7 @@
           </WriteAuthzRuleType>
           <Access>IsPublic</Access>
           <PropSetAccessibility>Default</PropSetAccessibility>
-          <Undoable>true</Undoable>
+          <Undoable>false</Undoable>
         </ValueProperty>
         <ValueProperty>
           <ParameterName>CreateUser</ParameterName>
@@ -1410,6 +1671,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Create User</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -1442,7 +1704,7 @@
           </WriteAuthzRuleType>
           <Access>IsPublic</Access>
           <PropSetAccessibility>Default</PropSetAccessibility>
-          <Undoable>true</Undoable>
+          <Undoable>false</Undoable>
         </ValueProperty>
         <ValueProperty>
           <ParameterName>ChangeDate</ParameterName>
@@ -1470,6 +1732,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Change Date</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -1502,7 +1765,7 @@
           </WriteAuthzRuleType>
           <Access>IsPublic</Access>
           <PropSetAccessibility>Default</PropSetAccessibility>
-          <Undoable>true</Undoable>
+          <Undoable>false</Undoable>
         </ValueProperty>
         <ValueProperty>
           <ParameterName>ChangeUser</ParameterName>
@@ -1530,6 +1793,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Change User</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -1562,7 +1826,7 @@
           </WriteAuthzRuleType>
           <Access>IsPublic</Access>
           <PropSetAccessibility>Default</PropSetAccessibility>
-          <Undoable>true</Undoable>
+          <Undoable>false</Undoable>
         </ValueProperty>
         <ValueProperty>
           <ParameterName>RowVersion</ParameterName>
@@ -1590,6 +1854,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Row Version</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -1878,6 +2143,7 @@
           <PrimaryKey>UserProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Product Type Id</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -1938,6 +2204,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Description</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -2520,6 +2787,7 @@
           <PrimaryKey>UserProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Product Type Id</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -2580,6 +2848,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Description</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -3064,6 +3333,7 @@
           <PrimaryKey>UserProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Invoice Line Id</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -3124,6 +3394,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Product Id</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -3184,6 +3455,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Cost</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -3244,6 +3516,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Percent Discount</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -3348,6 +3621,7 @@
           <PrimaryKey>UserProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Invoice Id</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -3825,6 +4099,7 @@
           <PrimaryKey>UserProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Product Type Id</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -3885,6 +4160,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Description</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -4302,6 +4578,7 @@
           <PrimaryKey>UserProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Product Type Id</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -4362,6 +4639,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Description</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -4766,7 +5044,69 @@
       <ItemType>InvoiceInfo</ItemType>
       <ContainsItem>true</ContainsItem>
       <UniqueItems>false</UniqueItems>
-      <FindMethodsParameters />
+      <FindMethodsParameters>
+        <Property xsi:type="ValueProperty">
+          <ParameterName>InvoiceId</ParameterName>
+          <Name>InvoiceId</Name>
+          <PropertyType>Guid</PropertyType>
+          <ReadOnly>true</ReadOnly>
+          <Nullable>false</Nullable>
+          <Summary />
+          <Remarks />
+          <DbBindColumn>
+            <ColumnOriginType>Table</ColumnOriginType>
+            <DataType>Guid</DataType>
+            <NativeType>uniqueidentifier</NativeType>
+            <Size>0</Size>
+            <SpResultIndex>0</SpResultIndex>
+            <ColumnName>InvoiceId</ColumnName>
+            <IsPrimaryKey>true</IsPrimaryKey>
+            <ObjectName>Invoices</ObjectName>
+            <CatalogName>InvoiceTest</CatalogName>
+            <SchemaName>dbo</SchemaName>
+            <IsNullable>false</IsNullable>
+            <IsIdentity>false</IsIdentity>
+          </DbBindColumn>
+          <DataAccess>ReadWrite</DataAccess>
+          <PrimaryKey>UserProvidedPK</PrimaryKey>
+          <FKConstraint />
+          <FriendlyName>Invoice Id</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
+          <CustomPropertyType />
+          <DeclarationMode>Managed</DeclarationMode>
+          <BackingFieldType>Empty</BackingFieldType>
+          <DefaultValue>Guid.NewGuid()</DefaultValue>
+          <Attributes />
+          <Interfaces />
+          <BusinessRules />
+          <AuthzProvider>IsInRole</AuthzProvider>
+          <ReadRoles />
+          <WriteRoles />
+          <ReadAuthzRuleType>
+            <BaseRuleProperties />
+            <Name />
+            <ObjectName />
+            <AssemblyFile />
+            <Type />
+            <Constructors />
+            <RuleProperties />
+            <CacheResult>false</CacheResult>
+          </ReadAuthzRuleType>
+          <WriteAuthzRuleType>
+            <BaseRuleProperties />
+            <Name />
+            <ObjectName />
+            <AssemblyFile />
+            <Type />
+            <Constructors />
+            <RuleProperties />
+            <CacheResult>false</CacheResult>
+          </WriteAuthzRuleType>
+          <Access>IsPublic</Access>
+          <PropSetAccessibility>Default</PropSetAccessibility>
+          <Undoable>false</Undoable>
+        </Property>
+      </FindMethodsParameters>
       <UpdaterType />
       <AllowNew>false</AllowNew>
       <AllowEdit>false</AllowEdit>
@@ -4909,6 +5249,7 @@
           <PrimaryKey>UserProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Invoice Id</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -4944,6 +5285,67 @@
           <Undoable>false</Undoable>
         </ValueProperty>
         <ValueProperty>
+          <ParameterName>InvoiceNumber</ParameterName>
+          <Name>InvoiceNumber</Name>
+          <PropertyType>String</PropertyType>
+          <ReadOnly>true</ReadOnly>
+          <Nullable>false</Nullable>
+          <Summary>The public invoice number</Summary>
+          <Remarks />
+          <DbBindColumn>
+            <ColumnOriginType>Table</ColumnOriginType>
+            <DataType>String</DataType>
+            <NativeType>varchar</NativeType>
+            <Size>20</Size>
+            <SpResultIndex>0</SpResultIndex>
+            <ColumnName>InvoiceNumber</ColumnName>
+            <IsPrimaryKey>false</IsPrimaryKey>
+            <ObjectName>Invoices</ObjectName>
+            <CatalogName>InvoiceTest</CatalogName>
+            <SchemaName>dbo</SchemaName>
+            <IsNullable>false</IsNullable>
+            <IsIdentity>false</IsIdentity>
+          </DbBindColumn>
+          <DataAccess>ReadWrite</DataAccess>
+          <PrimaryKey>Default</PrimaryKey>
+          <FKConstraint />
+          <FriendlyName>Invoice Number</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
+          <CustomPropertyType />
+          <DeclarationMode>Managed</DeclarationMode>
+          <BackingFieldType>Empty</BackingFieldType>
+          <DefaultValue />
+          <Attributes />
+          <Interfaces />
+          <BusinessRules />
+          <AuthzProvider>IsInRole</AuthzProvider>
+          <ReadRoles />
+          <WriteRoles />
+          <ReadAuthzRuleType>
+            <BaseRuleProperties />
+            <Name />
+            <ObjectName />
+            <AssemblyFile />
+            <Type />
+            <Constructors />
+            <RuleProperties />
+            <CacheResult>false</CacheResult>
+          </ReadAuthzRuleType>
+          <WriteAuthzRuleType>
+            <BaseRuleProperties />
+            <Name />
+            <ObjectName />
+            <AssemblyFile />
+            <Type />
+            <Constructors />
+            <RuleProperties />
+            <CacheResult>false</CacheResult>
+          </WriteAuthzRuleType>
+          <Access>IsPublic</Access>
+          <PropSetAccessibility>Default</PropSetAccessibility>
+          <Undoable>true</Undoable>
+        </ValueProperty>
+        <ValueProperty>
           <ParameterName>CustomerName</ParameterName>
           <Name>CustomerName</Name>
           <PropertyType>String</PropertyType>
@@ -4969,6 +5371,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Customer Name</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -5029,9 +5432,71 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Invoice Date</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>ManagedWithTypeConversion</DeclarationMode>
           <BackingFieldType>SmartDate</BackingFieldType>
+          <DefaultValue />
+          <Attributes />
+          <Interfaces />
+          <BusinessRules />
+          <AuthzProvider>IsInRole</AuthzProvider>
+          <ReadRoles />
+          <WriteRoles />
+          <ReadAuthzRuleType>
+            <BaseRuleProperties />
+            <Name />
+            <ObjectName />
+            <AssemblyFile />
+            <Type />
+            <Constructors />
+            <RuleProperties />
+            <CacheResult>false</CacheResult>
+          </ReadAuthzRuleType>
+          <WriteAuthzRuleType>
+            <BaseRuleProperties />
+            <Name />
+            <ObjectName />
+            <AssemblyFile />
+            <Type />
+            <Constructors />
+            <RuleProperties />
+            <CacheResult>false</CacheResult>
+          </WriteAuthzRuleType>
+          <Access>IsPublic</Access>
+          <PropSetAccessibility>Default</PropSetAccessibility>
+          <Undoable>true</Undoable>
+        </ValueProperty>
+        <ValueProperty>
+          <ParameterName>Cost</ParameterName>
+          <Name>TotalAmount</Name>
+          <PropertyType>Decimal</PropertyType>
+          <ReadOnly>true</ReadOnly>
+          <Nullable>false</Nullable>
+          <Summary>Computed invoice total amount</Summary>
+          <Remarks />
+          <DbBindColumn>
+            <ColumnOriginType>Table</ColumnOriginType>
+            <DataType>Decimal</DataType>
+            <NativeType>money</NativeType>
+            <Size>19</Size>
+            <SpResultIndex>0</SpResultIndex>
+            <ColumnName>Cost</ColumnName>
+            <IsPrimaryKey>false</IsPrimaryKey>
+            <ObjectName>InvoiceLines</ObjectName>
+            <CatalogName>InvoiceTest</CatalogName>
+            <SchemaName>dbo</SchemaName>
+            <IsNullable>false</IsNullable>
+            <IsIdentity>false</IsIdentity>
+          </DbBindColumn>
+          <DataAccess>ReadWrite</DataAccess>
+          <PrimaryKey>Default</PrimaryKey>
+          <FKConstraint />
+          <FriendlyName>Total Amount</FriendlyName>
+          <IsDatabaseBound>false</IsDatabaseBound>
+          <CustomPropertyType />
+          <DeclarationMode>Managed</DeclarationMode>
+          <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
           <Attributes />
           <Interfaces />
@@ -5089,6 +5554,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Is Active</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -5149,6 +5615,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Create Date</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -5181,7 +5648,7 @@
           </WriteAuthzRuleType>
           <Access>IsPublic</Access>
           <PropSetAccessibility>Default</PropSetAccessibility>
-          <Undoable>true</Undoable>
+          <Undoable>false</Undoable>
         </ValueProperty>
         <ValueProperty>
           <ParameterName>CreateUser</ParameterName>
@@ -5209,6 +5676,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Create User</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -5241,7 +5709,7 @@
           </WriteAuthzRuleType>
           <Access>IsPublic</Access>
           <PropSetAccessibility>Default</PropSetAccessibility>
-          <Undoable>true</Undoable>
+          <Undoable>false</Undoable>
         </ValueProperty>
         <ValueProperty>
           <ParameterName>ChangeDate</ParameterName>
@@ -5269,6 +5737,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Change Date</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -5301,7 +5770,7 @@
           </WriteAuthzRuleType>
           <Access>IsPublic</Access>
           <PropSetAccessibility>Default</PropSetAccessibility>
-          <Undoable>true</Undoable>
+          <Undoable>false</Undoable>
         </ValueProperty>
         <ValueProperty>
           <ParameterName>ChangeUser</ParameterName>
@@ -5329,6 +5798,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Change User</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -5361,7 +5831,7 @@
           </WriteAuthzRuleType>
           <Access>IsPublic</Access>
           <PropSetAccessibility>Default</PropSetAccessibility>
-          <Undoable>true</Undoable>
+          <Undoable>false</Undoable>
         </ValueProperty>
         <ValueProperty>
           <ParameterName>RowVersion</ParameterName>
@@ -5389,6 +5859,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Row Version</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -5744,6 +6215,7 @@
           <PrimaryKey>UserProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Product Type Id</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -5804,6 +6276,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Description</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -6123,6 +6596,7 @@
           <PrimaryKey>UserProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Product Type Id</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -6183,6 +6657,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Description</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>

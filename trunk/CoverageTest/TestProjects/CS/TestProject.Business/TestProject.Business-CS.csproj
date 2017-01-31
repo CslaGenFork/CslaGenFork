@@ -111,6 +111,14 @@
     <Compile Include="DocTypeNVL.Designer.cs">
       <DependentUpon>DocTypeNVL.cs</DependentUpon>
     </Compile>
+    <Compile Include="MyBusinessBase.cs" />
+    <Compile Include="MyBusinessBase.Designer.cs">
+      <DependentUpon>MyBusinessBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ObjectCriteria.cs" />
+    <Compile Include="ObjectCriteria.Designer.cs">
+      <DependentUpon>ObjectCriteria.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
