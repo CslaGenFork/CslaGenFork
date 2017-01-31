@@ -44,6 +44,28 @@ namespace Invoices.Business
 
         #endregion
 
+        #region Find Methods
+
+        /// <summary>
+        /// Finds a <see cref="InvoiceInfo"/> item of the <see cref="InvoiceList"/> collection, based on a given InvoiceId.
+        /// </summary>
+        /// <param name="invoiceId">The InvoiceId.</param>
+        /// <returns>A <see cref="InvoiceInfo"/> object.</returns>
+        public InvoiceInfo FindInvoiceInfoByInvoiceId(Guid invoiceId)
+        {
+            for (var i = 0; i < this.Count; i++)
+            {
+                if (this[i].InvoiceId.Equals(invoiceId))
+                {
+                    return this[i];
+                }
+            }
+
+            return null;
+        }
+
+        #endregion
+
         #region Factory Methods
 
         /// <summary>

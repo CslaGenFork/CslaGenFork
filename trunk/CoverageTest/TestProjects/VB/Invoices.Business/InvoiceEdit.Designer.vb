@@ -39,6 +39,23 @@ Namespace Invoices.Business
         End Property
 
         ''' <summary>
+        ''' Maintains metadata about <see cref="InvoiceNumber"/> property.
+        ''' </summary>
+        Public Shared ReadOnly InvoiceNumberProperty As PropertyInfo(Of String) = RegisterProperty(Of String)(Function(p) p.InvoiceNumber, "Invoice Number")
+        ''' <summary>
+        ''' The public invoice number
+        ''' </summary>
+        ''' <value>The Invoice Number.</value>
+        Public Property InvoiceNumber As String
+            Get
+                Return GetProperty(InvoiceNumberProperty)
+            End Get
+            Set(ByVal value As String)
+                SetProperty(InvoiceNumberProperty, value)
+            End Set
+        End Property
+
+        ''' <summary>
         ''' Maintains metadata about <see cref="CustomerName"/> property.
         ''' </summary>
         Public Shared ReadOnly CustomerNameProperty As PropertyInfo(Of String) = RegisterProperty(Of String)(Function(p) p.CustomerName, "Customer Name")
@@ -73,8 +90,26 @@ Namespace Invoices.Business
         End Property
 
         ''' <summary>
+        ''' Maintains metadata about <see cref="TotalAmount"/> property.
+        ''' </summary>
+        Public Shared ReadOnly TotalAmountProperty As PropertyInfo(Of Decimal) = RegisterProperty(Of Decimal)(Function(p) p.TotalAmount, "Total Amount")
+        ''' <summary>
+        ''' Computed invoice total amount
+        ''' </summary>
+        ''' <value>The Total Amount.</value>
+        Public Property TotalAmount As Decimal
+            Get
+                Return GetProperty(TotalAmountProperty)
+            End Get
+            Set(ByVal value As Decimal)
+                SetProperty(TotalAmountProperty, value)
+            End Set
+        End Property
+
+        ''' <summary>
         ''' Maintains metadata about <see cref="CreateDate"/> property.
         ''' </summary>
+        <NotUndoable>
         Public Shared ReadOnly CreateDateProperty As PropertyInfo(Of SmartDate) = RegisterProperty(Of SmartDate)(Function(p) p.CreateDate, "Create Date")
         ''' <summary>
         ''' Gets the Create Date.
@@ -89,6 +124,7 @@ Namespace Invoices.Business
         ''' <summary>
         ''' Maintains metadata about <see cref="CreateUser"/> property.
         ''' </summary>
+        <NotUndoable>
         Public Shared ReadOnly CreateUserProperty As PropertyInfo(Of Integer) = RegisterProperty(Of Integer)(Function(p) p.CreateUser, "Create User")
         ''' <summary>
         ''' Gets the Create User.
@@ -103,6 +139,7 @@ Namespace Invoices.Business
         ''' <summary>
         ''' Maintains metadata about <see cref="ChangeDate"/> property.
         ''' </summary>
+        <NotUndoable>
         Public Shared ReadOnly ChangeDateProperty As PropertyInfo(Of SmartDate) = RegisterProperty(Of SmartDate)(Function(p) p.ChangeDate, "Change Date")
         ''' <summary>
         ''' Gets the Change Date.
@@ -117,6 +154,7 @@ Namespace Invoices.Business
         ''' <summary>
         ''' Maintains metadata about <see cref="ChangeUser"/> property.
         ''' </summary>
+        <NotUndoable>
         Public Shared ReadOnly ChangeUserProperty As PropertyInfo(Of Integer) = RegisterProperty(Of Integer)(Function(p) p.ChangeUser, "Change User")
         ''' <summary>
         ''' Gets the Change User.
@@ -283,6 +321,7 @@ Namespace Invoices.Business
         Private Sub Fetch(dr As SafeDataReader)
             ' Value properties
             LoadProperty(InvoiceIdProperty, dr.GetGuid("InvoiceId"))
+            LoadProperty(InvoiceNumberProperty, dr.GetString("InvoiceNumber"))
             LoadProperty(CustomerNameProperty, dr.GetString("CustomerName"))
             LoadProperty(InvoiceDateProperty, dr.GetSmartDate("InvoiceDate", True))
             LoadProperty(CreateDateProperty, dr.GetSmartDate("CreateDate", True))
@@ -313,6 +352,7 @@ Namespace Invoices.Business
                 Using cmd = New SqlCommand("dbo.AddInvoiceEdit", ctx.Connection)
                     cmd.CommandType = CommandType.StoredProcedure
                     cmd.Parameters.AddWithValue("@InvoiceId", ReadProperty(InvoiceIdProperty)).DbType = DbType.Guid
+                    cmd.Parameters.AddWithValue("@InvoiceNumber", ReadProperty(InvoiceNumberProperty)).DbType = DbType.String
                     cmd.Parameters.AddWithValue("@CustomerName", ReadProperty(CustomerNameProperty)).DbType = DbType.String
                     cmd.Parameters.AddWithValue("@InvoiceDate", ReadProperty(InvoiceDateProperty).DBValue).DbType = DbType.Date
                     cmd.Parameters.AddWithValue("@CreateDate", ReadProperty(CreateDateProperty).DBValue).DbType = DbType.DateTime2
@@ -341,6 +381,7 @@ Namespace Invoices.Business
                 Using cmd = New SqlCommand("dbo.UpdateInvoiceEdit", ctx.Connection)
                     cmd.CommandType = CommandType.StoredProcedure
                     cmd.Parameters.AddWithValue("@InvoiceId", ReadProperty(InvoiceIdProperty)).DbType = DbType.Guid
+                    cmd.Parameters.AddWithValue("@InvoiceNumber", ReadProperty(InvoiceNumberProperty)).DbType = DbType.String
                     cmd.Parameters.AddWithValue("@CustomerName", ReadProperty(CustomerNameProperty)).DbType = DbType.String
                     cmd.Parameters.AddWithValue("@InvoiceDate", ReadProperty(InvoiceDateProperty).DBValue).DbType = DbType.Date
                     cmd.Parameters.AddWithValue("@ChangeDate", ReadProperty(ChangeDateProperty).DBValue).DbType = DbType.DateTime2

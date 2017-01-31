@@ -34,6 +34,19 @@ namespace Invoices.Business
         }
 
         /// <summary>
+        /// Maintains metadata about <see cref="InvoiceNumber"/> property.
+        /// </summary>
+        public static readonly PropertyInfo<string> InvoiceNumberProperty = RegisterProperty<string>(p => p.InvoiceNumber, "Invoice Number");
+        /// <summary>
+        /// The public invoice number
+        /// </summary>
+        /// <value>The Invoice Number.</value>
+        public string InvoiceNumber
+        {
+            get { return GetProperty(InvoiceNumberProperty); }
+        }
+
+        /// <summary>
         /// Maintains metadata about <see cref="CustomerName"/> property.
         /// </summary>
         public static readonly PropertyInfo<string> CustomerNameProperty = RegisterProperty<string>(p => p.CustomerName, "Customer Name");
@@ -57,6 +70,19 @@ namespace Invoices.Business
         public string InvoiceDate
         {
             get { return GetPropertyConvert<SmartDate, string>(InvoiceDateProperty); }
+        }
+
+        /// <summary>
+        /// Maintains metadata about <see cref="TotalAmount"/> property.
+        /// </summary>
+        public static readonly PropertyInfo<decimal> TotalAmountProperty = RegisterProperty<decimal>(p => p.TotalAmount, "Total Amount");
+        /// <summary>
+        /// Computed invoice total amount
+        /// </summary>
+        /// <value>The Total Amount.</value>
+        public decimal TotalAmount
+        {
+            get { return GetProperty(TotalAmountProperty); }
         }
 
         /// <summary>
@@ -163,6 +189,7 @@ namespace Invoices.Business
         {
             // Value properties
             LoadProperty(InvoiceIdProperty, dr.GetGuid("InvoiceId"));
+            LoadProperty(InvoiceNumberProperty, dr.GetString("InvoiceNumber"));
             LoadProperty(CustomerNameProperty, dr.GetString("CustomerName"));
             LoadProperty(InvoiceDateProperty, dr.GetSmartDate("InvoiceDate", true));
             LoadProperty(IsActiveProperty, dr.GetBoolean("IsActive"));

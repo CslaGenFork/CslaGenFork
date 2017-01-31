@@ -40,6 +40,25 @@ Namespace Invoices.Business
 
         #End Region
 
+        #Region " Find Methods "
+
+        ''' <summary>
+        ''' Finds a <see cref="InvoiceInfo"/> item of the <see cref="InvoiceList"/> collection, based on a given InvoiceId.
+        ''' </summary>
+        ''' <param name="invoiceId">The InvoiceId.</param>
+        ''' <returns>A <see cref="InvoiceInfo"/> object.</returns>
+        Public Function FindInvoiceInfoByInvoiceId(invoiceId As Guid) As InvoiceInfo
+            For i As Integer = 0 To Me.Count - 1
+                If Me(i).InvoiceId.Equals(invoiceId) Then
+                    Return Me(i)
+                End If
+            Next i
+
+            Return Nothing
+        End Function
+
+        #End Region
+
         #Region " Factory Methods "
 
         ''' <summary>

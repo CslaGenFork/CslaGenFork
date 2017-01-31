@@ -34,6 +34,20 @@ Namespace Invoices.Business
         End Property
 
         ''' <summary>
+        ''' Maintains metadata about <see cref="InvoiceNumber"/> property.
+        ''' </summary>
+        Public Shared ReadOnly InvoiceNumberProperty As PropertyInfo(Of String) = RegisterProperty(Of String)(Function(p) p.InvoiceNumber, "Invoice Number")
+        ''' <summary>
+        ''' The public invoice number
+        ''' </summary>
+        ''' <value>The Invoice Number.</value>
+        Public ReadOnly Property InvoiceNumber As String
+            Get
+                Return GetProperty(InvoiceNumberProperty)
+            End Get
+        End Property
+
+        ''' <summary>
         ''' Maintains metadata about <see cref="CustomerName"/> property.
         ''' </summary>
         Public Shared ReadOnly CustomerNameProperty As PropertyInfo(Of String) = RegisterProperty(Of String)(Function(p) p.CustomerName, "Customer Name")
@@ -58,6 +72,20 @@ Namespace Invoices.Business
         Public ReadOnly Property InvoiceDate As String
             Get
                 Return GetPropertyConvert(Of SmartDate, String)(InvoiceDateProperty)
+            End Get
+        End Property
+
+        ''' <summary>
+        ''' Maintains metadata about <see cref="TotalAmount"/> property.
+        ''' </summary>
+        Public Shared ReadOnly TotalAmountProperty As PropertyInfo(Of Decimal) = RegisterProperty(Of Decimal)(Function(p) p.TotalAmount, "Total Amount")
+        ''' <summary>
+        ''' Computed invoice total amount
+        ''' </summary>
+        ''' <value>The Total Amount.</value>
+        Public ReadOnly Property TotalAmount As Decimal
+            Get
+                Return GetProperty(TotalAmountProperty)
             End Get
         End Property
 
@@ -169,6 +197,7 @@ Namespace Invoices.Business
         Private Sub Child_Fetch(dr As SafeDataReader)
             ' Value properties
             LoadProperty(InvoiceIdProperty, dr.GetGuid("InvoiceId"))
+            LoadProperty(InvoiceNumberProperty, dr.GetString("InvoiceNumber"))
             LoadProperty(CustomerNameProperty, dr.GetString("CustomerName"))
             LoadProperty(InvoiceDateProperty, dr.GetSmartDate("InvoiceDate", True))
             LoadProperty(IsActiveProperty, dr.GetBoolean("IsActive"))

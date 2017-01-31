@@ -37,6 +37,20 @@ namespace Invoices.Business
         }
 
         /// <summary>
+        /// Maintains metadata about <see cref="InvoiceNumber"/> property.
+        /// </summary>
+        public static readonly PropertyInfo<string> InvoiceNumberProperty = RegisterProperty<string>(p => p.InvoiceNumber, "Invoice Number");
+        /// <summary>
+        /// The public invoice number
+        /// </summary>
+        /// <value>The Invoice Number.</value>
+        public string InvoiceNumber
+        {
+            get { return GetProperty(InvoiceNumberProperty); }
+            set { SetProperty(InvoiceNumberProperty, value); }
+        }
+
+        /// <summary>
         /// Maintains metadata about <see cref="CustomerName"/> property.
         /// </summary>
         public static readonly PropertyInfo<string> CustomerNameProperty = RegisterProperty<string>(p => p.CustomerName, "Customer Name");
@@ -65,8 +79,23 @@ namespace Invoices.Business
         }
 
         /// <summary>
+        /// Maintains metadata about <see cref="TotalAmount"/> property.
+        /// </summary>
+        public static readonly PropertyInfo<decimal> TotalAmountProperty = RegisterProperty<decimal>(p => p.TotalAmount, "Total Amount");
+        /// <summary>
+        /// Computed invoice total amount
+        /// </summary>
+        /// <value>The Total Amount.</value>
+        public decimal TotalAmount
+        {
+            get { return GetProperty(TotalAmountProperty); }
+            set { SetProperty(TotalAmountProperty, value); }
+        }
+
+        /// <summary>
         /// Maintains metadata about <see cref="CreateDate"/> property.
         /// </summary>
+        [NotUndoable]
         public static readonly PropertyInfo<SmartDate> CreateDateProperty = RegisterProperty<SmartDate>(p => p.CreateDate, "Create Date");
         /// <summary>
         /// Gets the Create Date.
@@ -80,6 +109,7 @@ namespace Invoices.Business
         /// <summary>
         /// Maintains metadata about <see cref="CreateUser"/> property.
         /// </summary>
+        [NotUndoable]
         public static readonly PropertyInfo<int> CreateUserProperty = RegisterProperty<int>(p => p.CreateUser, "Create User");
         /// <summary>
         /// Gets the Create User.
@@ -93,6 +123,7 @@ namespace Invoices.Business
         /// <summary>
         /// Maintains metadata about <see cref="ChangeDate"/> property.
         /// </summary>
+        [NotUndoable]
         public static readonly PropertyInfo<SmartDate> ChangeDateProperty = RegisterProperty<SmartDate>(p => p.ChangeDate, "Change Date");
         /// <summary>
         /// Gets the Change Date.
@@ -106,6 +137,7 @@ namespace Invoices.Business
         /// <summary>
         /// Maintains metadata about <see cref="ChangeUser"/> property.
         /// </summary>
+        [NotUndoable]
         public static readonly PropertyInfo<int> ChangeUserProperty = RegisterProperty<int>(p => p.ChangeUser, "Change User");
         /// <summary>
         /// Gets the Change User.
@@ -282,6 +314,7 @@ namespace Invoices.Business
         {
             // Value properties
             LoadProperty(InvoiceIdProperty, dr.GetGuid("InvoiceId"));
+            LoadProperty(InvoiceNumberProperty, dr.GetString("InvoiceNumber"));
             LoadProperty(CustomerNameProperty, dr.GetString("CustomerName"));
             LoadProperty(InvoiceDateProperty, dr.GetSmartDate("InvoiceDate", true));
             LoadProperty(CreateDateProperty, dr.GetSmartDate("CreateDate", true));
@@ -316,6 +349,7 @@ namespace Invoices.Business
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@InvoiceId", ReadProperty(InvoiceIdProperty)).DbType = DbType.Guid;
+                    cmd.Parameters.AddWithValue("@InvoiceNumber", ReadProperty(InvoiceNumberProperty)).DbType = DbType.String;
                     cmd.Parameters.AddWithValue("@CustomerName", ReadProperty(CustomerNameProperty)).DbType = DbType.String;
                     cmd.Parameters.AddWithValue("@InvoiceDate", ReadProperty(InvoiceDateProperty).DBValue).DbType = DbType.Date;
                     cmd.Parameters.AddWithValue("@CreateDate", ReadProperty(CreateDateProperty).DBValue).DbType = DbType.DateTime2;
@@ -347,6 +381,7 @@ namespace Invoices.Business
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@InvoiceId", ReadProperty(InvoiceIdProperty)).DbType = DbType.Guid;
+                    cmd.Parameters.AddWithValue("@InvoiceNumber", ReadProperty(InvoiceNumberProperty)).DbType = DbType.String;
                     cmd.Parameters.AddWithValue("@CustomerName", ReadProperty(CustomerNameProperty)).DbType = DbType.String;
                     cmd.Parameters.AddWithValue("@InvoiceDate", ReadProperty(InvoiceDateProperty).DBValue).DbType = DbType.Date;
                     cmd.Parameters.AddWithValue("@ChangeDate", ReadProperty(ChangeDateProperty).DBValue).DbType = DbType.DateTime2;
