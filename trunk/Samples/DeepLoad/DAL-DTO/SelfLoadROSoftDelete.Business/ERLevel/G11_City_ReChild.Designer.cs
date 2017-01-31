@@ -47,9 +47,10 @@ namespace SelfLoadROSoftDelete.Business.ERLevel
         /// Initializes a new instance of the <see cref="G11_City_ReChild"/> class.
         /// </summary>
         /// <remarks> Do not use to create a Csla object. Use factory methods instead.</remarks>
-        private G11_City_ReChild()
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public G11_City_ReChild()
         {
-            // Prevent direct creation
+            // Use factory methods and do not use direct creation.
         }
 
         #endregion
@@ -89,7 +90,7 @@ namespace SelfLoadROSoftDelete.Business.ERLevel
 
         #endregion
 
-        #region Pseudo Events
+        #region DataPortal Hooks
 
         /// <summary>
         /// Occurs after setting query parameters and before the fetch operation.
