@@ -62,7 +62,7 @@ namespace SelfLoad.Business.ERLevel
         /// <returns><c>true</c> if the C06_Country is a deleted collection item; otherwise, <c>false</c>.</returns>
         public bool ContainsDeleted(int country_ID)
         {
-            foreach (var c06_Country in this.DeletedList)
+            foreach (var c06_Country in DeletedList)
             {
                 if (c06_Country.Country_ID == country_ID)
                 {
@@ -125,9 +125,10 @@ namespace SelfLoad.Business.ERLevel
         /// Initializes a new instance of the <see cref="C05_CountryColl"/> class.
         /// </summary>
         /// <remarks> Do not use to create a Csla object. Use factory methods instead.</remarks>
-        private C05_CountryColl()
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public C05_CountryColl()
         {
-            // Prevent direct creation
+            // Use factory methods and do not use direct creation.
 
             // show the framework that this is a child object
             MarkAsChild();
@@ -190,7 +191,7 @@ namespace SelfLoad.Business.ERLevel
 
         #endregion
 
-        #region Pseudo Events
+        #region DataPortal Hooks
 
         /// <summary>
         /// Occurs after setting query parameters and before the fetch operation.

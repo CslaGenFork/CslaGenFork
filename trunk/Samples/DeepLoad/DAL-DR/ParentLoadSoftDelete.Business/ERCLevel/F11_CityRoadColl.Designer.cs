@@ -62,7 +62,7 @@ namespace ParentLoadSoftDelete.Business.ERCLevel
         /// <returns><c>true</c> if the F12_CityRoad is a deleted collection item; otherwise, <c>false</c>.</returns>
         public bool ContainsDeleted(int cityRoad_ID)
         {
-            foreach (var f12_CityRoad in this.DeletedList)
+            foreach (var f12_CityRoad in DeletedList)
             {
                 if (f12_CityRoad.CityRoad_ID == cityRoad_ID)
                 {
@@ -107,9 +107,10 @@ namespace ParentLoadSoftDelete.Business.ERCLevel
         /// Initializes a new instance of the <see cref="F11_CityRoadColl"/> class.
         /// </summary>
         /// <remarks> Do not use to create a Csla object. Use factory methods instead.</remarks>
-        private F11_CityRoadColl()
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public F11_CityRoadColl()
         {
-            // Prevent direct creation
+            // Use factory methods and do not use direct creation.
 
             // show the framework that this is a child object
             MarkAsChild();
@@ -162,7 +163,7 @@ namespace ParentLoadSoftDelete.Business.ERCLevel
 
         #endregion
 
-        #region Pseudo Events
+        #region DataPortal Hooks
 
         /// <summary>
         /// Occurs after setting query parameters and before the fetch operation.
