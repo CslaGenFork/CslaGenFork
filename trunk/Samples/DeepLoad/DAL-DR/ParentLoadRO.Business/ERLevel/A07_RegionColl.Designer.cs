@@ -83,9 +83,10 @@ namespace ParentLoadRO.Business.ERLevel
         /// Initializes a new instance of the <see cref="A07_RegionColl"/> class.
         /// </summary>
         /// <remarks> Do not use to create a Csla object. Use factory methods instead.</remarks>
-        internal A07_RegionColl()
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public A07_RegionColl()
         {
-            // Prevent direct creation
+            // Use factory methods and do not use direct creation.
 
             var rlce = RaiseListChangedEvents;
             RaiseListChangedEvents = false;
@@ -139,7 +140,7 @@ namespace ParentLoadRO.Business.ERLevel
 
         #endregion
 
-        #region Pseudo Events
+        #region DataPortal Hooks
 
         /// <summary>
         /// Occurs after setting query parameters and before the fetch operation.

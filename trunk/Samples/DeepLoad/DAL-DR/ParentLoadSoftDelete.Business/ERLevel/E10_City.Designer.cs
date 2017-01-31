@@ -143,9 +143,10 @@ namespace ParentLoadSoftDelete.Business.ERLevel
         /// Initializes a new instance of the <see cref="E10_City"/> class.
         /// </summary>
         /// <remarks> Do not use to create a Csla object. Use factory methods instead.</remarks>
-        private E10_City()
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public E10_City()
         {
-            // Prevent direct creation
+            // Use factory methods and do not use direct creation.
 
             // show the framework that this is a child object
             MarkAsChild();
@@ -281,7 +282,7 @@ namespace ParentLoadSoftDelete.Business.ERLevel
 
         #endregion
 
-        #region Pseudo Events
+        #region DataPortal Hooks
 
         /// <summary>
         /// Occurs after setting all defaults for object creation.
