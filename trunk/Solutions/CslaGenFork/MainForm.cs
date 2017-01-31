@@ -596,6 +596,14 @@ namespace CslaGenerator
             _globalSettingsPanel.ForceSaveGlobalSettings();
 
             ClearErrorsAndWarnings();
+
+            var targetDir = _controller.CurrentUnit.TargetBaseFullPath;
+            if (targetDir.StartsWith("ERROR"))
+            {
+                MessageBox.Show(this, targetDir, "Fatal error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             globalStatus.Image = Resources.RefreshArrow_Green;
             globalStatus.ToolTipText = @"Generating...";
             statusStrip.Refresh();
@@ -607,11 +615,6 @@ namespace CslaGenerator
             if (_generator != null)
             {
                 _generator.Step -= GeneratorStep;
-            }
-            var targetDir = _controller.CurrentUnit.TargetDirectory;
-            if (targetDir.StartsWith(".") || targetDir.StartsWith(".."))
-            {
-                targetDir = _controller.CurrentFilePath + @"\" + targetDir;
             }
 
             _generator = new CodeGen.AdvancedGenerator(targetDir, _controller.TemplatesDirectory);

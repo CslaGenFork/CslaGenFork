@@ -89,6 +89,11 @@ namespace CslaGenerator.Metadata
             }
         }
 
+        public string TargetBaseFullPath
+        {
+            get { return GetTargetBaseFullPath(); }
+        }
+
         public string FileVersion
         {
             get { return _fileVersion; }
@@ -127,6 +132,23 @@ namespace CslaGenerator.Metadata
             {
                 info.Parent = this;
             }
+        }
+
+        private string GetTargetBaseFullPath()
+        {
+            if (_targetDirectory.IsValidDrivePath())
+                return _targetDirectory.StripEndSeparator();
+
+            if (!_targetDirectory.IsValidRelativePath())
+                return string.Format("ERROR in Output Directory: {0}", _targetDirectory);
+
+            var targetDir = _targetDirectory;
+            var downLevels = PathHelper.StripRelativePath(ref targetDir);
+            var basePath = PathHelper.GetCurrentFilePath.StripEndSeparator();
+            basePath = basePath.GetPathDown(downLevels);
+            targetDir = targetDir.StripEndSeparator();
+
+            return PathHelper.GetComposedPath(basePath, targetDir);
         }
     }
 }
