@@ -83,9 +83,10 @@ namespace ParentLoadROSoftDelete.Business.ERLevel
         /// Initializes a new instance of the <see cref="E03_SubContinentColl"/> class.
         /// </summary>
         /// <remarks> Do not use to create a Csla object. Use factory methods instead.</remarks>
-        private E03_SubContinentColl()
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public E03_SubContinentColl()
         {
-            // Prevent direct creation
+            // Use factory methods and do not use direct creation.
 
             var rlce = RaiseListChangedEvents;
             RaiseListChangedEvents = false;
@@ -121,7 +122,7 @@ namespace ParentLoadROSoftDelete.Business.ERLevel
 
         #endregion
 
-        #region Pseudo Events
+        #region DataPortal Hooks
 
         /// <summary>
         /// Occurs after setting query parameters and before the fetch operation.
