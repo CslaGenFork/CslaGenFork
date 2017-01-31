@@ -121,9 +121,10 @@ namespace ParentLoadROSoftDelete.Business.ERLevel
         /// Initializes a new instance of the <see cref="E08_Region"/> class.
         /// </summary>
         /// <remarks> Do not use to create a Csla object. Use factory methods instead.</remarks>
-        private E08_Region()
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public E08_Region()
         {
-            // Prevent direct creation
+            // Use factory methods and do not use direct creation.
         }
 
         #endregion
@@ -165,7 +166,7 @@ namespace ParentLoadROSoftDelete.Business.ERLevel
 
         #endregion
 
-        #region Pseudo Events
+        #region DataPortal Hooks
 
         /// <summary>
         /// Occurs after the low level fetch operation, before the data reader is destroyed.
