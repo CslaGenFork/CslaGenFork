@@ -54,9 +54,10 @@ namespace SelfLoadRO.Business.ERCLevel
         /// Initializes a new instance of the <see cref="D07_Country_ReChild"/> class.
         /// </summary>
         /// <remarks> Do not use to create a Csla object. Use factory methods instead.</remarks>
-        private D07_Country_ReChild()
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public D07_Country_ReChild()
         {
-            // Prevent direct creation
+            // Use factory methods and do not use direct creation.
         }
 
         #endregion
@@ -96,7 +97,7 @@ namespace SelfLoadRO.Business.ERCLevel
 
         #endregion
 
-        #region Pseudo Events
+        #region DataPortal Hooks
 
         /// <summary>
         /// Occurs after setting query parameters and before the fetch operation.
