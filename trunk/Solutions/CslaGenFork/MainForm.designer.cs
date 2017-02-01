@@ -90,6 +90,7 @@ namespace CslaGenerator
             this.convertDateTimeToSmartDate = new System.Windows.Forms.ToolStripMenuItem();
             this.forceBackingFieldSmartDate = new System.Windows.Forms.ToolStripMenuItem();
             this.convertPropertiesAndCriteriaToSilverlight = new System.Windows.Forms.ToolStripMenuItem();
+            this.convertProjectToNewPublicPolicy = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.locateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.codeSmithExtensionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -459,6 +460,7 @@ namespace CslaGenerator
             this.convertDateTimeToSmartDate,
             this.forceBackingFieldSmartDate,
             this.convertPropertiesAndCriteriaToSilverlight,
+            this.convertProjectToNewPublicPolicy,
             this.toolStripSeparator6,
             this.locateToolStripMenuItem,
             this.codeSmithExtensionToolStripMenuItem});
@@ -505,6 +507,14 @@ namespace CslaGenerator
             this.convertPropertiesAndCriteriaToSilverlight.Size = new System.Drawing.Size(200, 22);
             this.convertPropertiesAndCriteriaToSilverlight.Text = "Convert Properties and Criteria to be &Silverlight compatible";
             this.convertPropertiesAndCriteriaToSilverlight.Click += new System.EventHandler(this.ConvertPropertiesAndCriteriaToSilverlight_Click);
+            // 
+            // convertProjectToNewPublicPolicy
+            // 
+            this.convertProjectToNewPublicPolicy.Enabled = false;
+            this.convertProjectToNewPublicPolicy.Name = "convertProjectToNewPublicPolicy";
+            this.convertProjectToNewPublicPolicy.Size = new System.Drawing.Size(200, 22);
+            this.convertProjectToNewPublicPolicy.Text = "Convert Constructors and PropertyInfo to Public";
+            this.convertProjectToNewPublicPolicy.Click += new System.EventHandler(this.ConvertProjectToNewPublicPolicy_Click);
             // 
             // toolStripSeparator6
             // 
@@ -1109,6 +1119,7 @@ namespace CslaGenerator
         private ToolStripMenuItem convertDateTimeToSmartDate;
         private ToolStripMenuItem forceBackingFieldSmartDate;
         private ToolStripMenuItem convertPropertiesAndCriteriaToSilverlight;
+        private ToolStripMenuItem convertProjectToNewPublicPolicy;
         private ToolStripSeparator toolStripSeparator6;
         private ToolStripMenuItem locateToolStripMenuItem;
         private ToolStripMenuItem codeSmithExtensionToolStripMenuItem;
