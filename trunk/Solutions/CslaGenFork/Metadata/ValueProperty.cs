@@ -532,10 +532,8 @@ namespace CslaGenerator.Metadata
             if (DbBindColumn.Column != null)
             {
                 var prop = DbBindColumn.Column.ColumnDescription;
-                if (prop != null)
+                if (!string.IsNullOrWhiteSpace(prop))
                     Summary = prop;
-                else
-                    Summary = string.Empty;
             }
         }
     }
