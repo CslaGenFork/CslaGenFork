@@ -1387,11 +1387,19 @@ namespace CslaGenerator
             foreach (var info in _controller.CurrentUnit.CslaObjects)
             {
                 var counter = 0;
+                var simpleAuditCounter = 0;
 
                 foreach (ValueProperty prop in info.AllValueProperties)
                 {
                     if (prop.PropertyType == TypeCodeEx.SmartDate)
                     {
+                        if (prop.Name == _controller.CurrentUnit.Params.CreationDateColumn ||
+                            prop.Name == _controller.CurrentUnit.Params.ChangedDateColumn)
+                        {
+                            simpleAuditCounter++;
+                            continue;
+                        }
+
                         if (prop.DeclarationMode == PropertyDeclaration.ClassicProperty ||
                             prop.DeclarationMode == PropertyDeclaration.AutoProperty)
                         {
@@ -1413,6 +1421,9 @@ namespace CslaGenerator
 
                 if (counter > 0)
                     _outputPanel.AddOutputInfo(info.ObjectName + ": added " + counter + " backing fields.");
+
+                if (simpleAuditCounter > 0)
+                    _outputPanel.AddOutputInfo(info.ObjectName + ": " + simpleAuditCounter + " Simple Audit properties unchanged.");
             }
             _outputPanel.AddOutputInfo(Environment.NewLine + "Force backing field on SmartDate properties is done." +
                                        Environment.NewLine);
