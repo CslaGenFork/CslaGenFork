@@ -320,7 +320,7 @@ namespace CslaGenerator.Metadata
 
                 if (destination.PropertyType == TypeCodeEx.Guid)
                     destination.DefaultValue = _currentUnit.Params.IDGuidDefaultValue;
-                else if (p.IsIdentity)
+                else if (p.IsIdentity && _currentCslaObject.IsNotReadOnlyObject() && _currentCslaObject.IsNotNameValueList())
                 {
                     switch (p.DbType)
                     {
