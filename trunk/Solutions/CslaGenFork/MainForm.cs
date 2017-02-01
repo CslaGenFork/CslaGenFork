@@ -753,6 +753,7 @@ namespace CslaGenerator
             convertDateTimeToSmartDate.Enabled = true;
             forceBackingFieldSmartDate.Enabled = true;
             convertPropertiesAndCriteriaToSilverlight.Enabled = true;
+            convertProjectToNewPublicPolicy.Enabled = true;
 
             ConditonalButtonsAndMenus();
         }
@@ -1306,6 +1307,9 @@ namespace CslaGenerator
                                        Environment.NewLine);
             foreach (var info in _controller.CurrentUnit.CslaObjects)
             {
+                if (info.IsPlaceHolder())
+                    continue;
+
                 var counter = 0;
 
                 foreach (ValueProperty prop in info.ValueProperties)
@@ -1332,6 +1336,9 @@ namespace CslaGenerator
                                        Environment.NewLine);
             foreach (var info in _controller.CurrentUnit.CslaObjects)
             {
+                if (info.IsPlaceHolder())
+                    continue;
+
                 var counter = 0;
 
                 foreach (ValueProperty prop in info.ValueProperties)
@@ -1360,6 +1367,9 @@ namespace CslaGenerator
                                        Environment.NewLine);
             foreach (var info in _controller.CurrentUnit.CslaObjects)
             {
+                if (info.IsPlaceHolder())
+                    continue;
+
                 var counter = 0;
 
                 foreach (ValueProperty prop in info.ValueProperties)
@@ -1386,6 +1396,9 @@ namespace CslaGenerator
                                        Environment.NewLine);
             foreach (var info in _controller.CurrentUnit.CslaObjects)
             {
+                if (info.IsPlaceHolder())
+                    continue;
+
                 var counter = 0;
                 var simpleAuditCounter = 0;
 
@@ -1436,6 +1449,9 @@ namespace CslaGenerator
                                        Environment.NewLine);
             foreach (var info in _controller.CurrentUnit.CslaObjects)
             {
+                if (info.IsBaseClass() || info.IsPlaceHolder())
+                    continue;
+
                 var counterAutoProperty = 0;
                 var counterClassicProperty = 0;
                 var counterClassicPropertyWithTypeConversion = 0;
@@ -1547,6 +1563,35 @@ namespace CslaGenerator
             }
             _outputPanel.AddOutputInfo(Environment.NewLine +
                                        "Convert Properties and Criteria to be Silverlight compatible is done." +
+                                       Environment.NewLine);
+        }
+
+        private void ConvertProjectToNewPublicPolicy_Click(object sender, EventArgs e)
+        {
+            _outputPanel.AddOutputInfo(Environment.NewLine +
+                                       "Convert Constructors and PropertyInfo to Public..." +
+                                       Environment.NewLine);
+
+            foreach (var info in _controller.CurrentUnit.CslaObjects)
+            {
+                if (info.IsBaseClass() || info.IsPlaceHolder())
+                    continue;
+
+                if (info.ConstructorVisibility != ConstructorVisibility.Default)
+                {
+                    info.ConstructorVisibility = ConstructorVisibility.Default;
+                    _outputPanel.AddOutputInfo(info.ObjectName + ": converted constructor to Default (public).");
+                }
+            }
+
+            if (!_controller.CurrentUnit.GenerationParams.UsePublicPropertyInfo)
+            {
+                _controller.CurrentUnit.GenerationParams.UsePublicPropertyInfo = true;
+                _outputPanel.AddOutputInfo("Generation parameter \"Use public PropertyInfo\" changed to check.");
+            }
+
+            _outputPanel.AddOutputInfo(Environment.NewLine +
+                                       "Convert Constructors and PropertyInfo to Public is done." +
                                        Environment.NewLine);
         }
 
