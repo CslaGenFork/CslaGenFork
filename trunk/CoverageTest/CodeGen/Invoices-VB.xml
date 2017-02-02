@@ -2137,7 +2137,7 @@
             <CatalogName>InvoiceTest</CatalogName>
             <SchemaName>dbo</SchemaName>
             <IsNullable>false</IsNullable>
-            <IsIdentity>false</IsIdentity>
+            <IsIdentity>true</IsIdentity>
           </DbBindColumn>
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>UserProvidedPK</PrimaryKey>
@@ -2305,7 +2305,7 @@
                 <CatalogName>InvoiceTest</CatalogName>
                 <SchemaName>dbo</SchemaName>
                 <IsNullable>false</IsNullable>
-                <IsIdentity>false</IsIdentity>
+                <IsIdentity>true</IsIdentity>
               </DbBindColumn>
               <CustomPropertyType />
               <ParameterValue />
@@ -2781,7 +2781,7 @@
             <CatalogName>InvoiceTest</CatalogName>
             <SchemaName>dbo</SchemaName>
             <IsNullable>false</IsNullable>
-            <IsIdentity>false</IsIdentity>
+            <IsIdentity>true</IsIdentity>
           </DbBindColumn>
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>UserProvidedPK</PrimaryKey>
@@ -4093,7 +4093,7 @@
             <CatalogName>InvoiceTest</CatalogName>
             <SchemaName>dbo</SchemaName>
             <IsNullable>false</IsNullable>
-            <IsIdentity>false</IsIdentity>
+            <IsIdentity>true</IsIdentity>
           </DbBindColumn>
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>UserProvidedPK</PrimaryKey>
@@ -4261,7 +4261,7 @@
                 <CatalogName>InvoiceTest</CatalogName>
                 <SchemaName>dbo</SchemaName>
                 <IsNullable>false</IsNullable>
-                <IsIdentity>false</IsIdentity>
+                <IsIdentity>true</IsIdentity>
               </DbBindColumn>
               <CustomPropertyType />
               <ParameterValue />
@@ -4572,7 +4572,7 @@
             <CatalogName>InvoiceTest</CatalogName>
             <SchemaName>dbo</SchemaName>
             <IsNullable>false</IsNullable>
-            <IsIdentity>false</IsIdentity>
+            <IsIdentity>true</IsIdentity>
           </DbBindColumn>
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>UserProvidedPK</PrimaryKey>
@@ -4705,7 +4705,7 @@
                 <CatalogName>InvoiceTest</CatalogName>
                 <SchemaName>dbo</SchemaName>
                 <IsNullable>false</IsNullable>
-                <IsIdentity>false</IsIdentity>
+                <IsIdentity>true</IsIdentity>
               </DbBindColumn>
               <CustomPropertyType />
               <ParameterValue />
@@ -6209,7 +6209,7 @@
             <CatalogName>InvoiceTest</CatalogName>
             <SchemaName>dbo</SchemaName>
             <IsNullable>false</IsNullable>
-            <IsIdentity>false</IsIdentity>
+            <IsIdentity>true</IsIdentity>
           </DbBindColumn>
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>UserProvidedPK</PrimaryKey>
@@ -6590,7 +6590,7 @@
             <CatalogName>InvoiceTest</CatalogName>
             <SchemaName>dbo</SchemaName>
             <IsNullable>false</IsNullable>
-            <IsIdentity>false</IsIdentity>
+            <IsIdentity>true</IsIdentity>
           </DbBindColumn>
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>UserProvidedPK</PrimaryKey>
