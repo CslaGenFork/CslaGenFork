@@ -85,7 +85,7 @@ namespace CslaGenerator
             this.refreshSchemaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.retrieveSummariesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
-            this.changePrimaryKeyToNotUndoable = new System.Windows.Forms.ToolStripMenuItem();
+            this.fixPrimaryKeys = new System.Windows.Forms.ToolStripMenuItem();
             this.changeTimestampToReadOnlyNotUndoable = new System.Windows.Forms.ToolStripMenuItem();
             this.changeSimpleAuditToReadOnlyNotUndoable = new System.Windows.Forms.ToolStripMenuItem();
             this.convertDateTimeToSmartDate = new System.Windows.Forms.ToolStripMenuItem();
@@ -456,7 +456,7 @@ namespace CslaGenerator
             // toolStripMenuItem4
             // 
             this.toolStripMenuItem4.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.changePrimaryKeyToNotUndoable,
+            this.fixPrimaryKeys,
             this.changeTimestampToReadOnlyNotUndoable,
             this.changeSimpleAuditToReadOnlyNotUndoable,
             this.convertDateTimeToSmartDate,
@@ -470,13 +470,13 @@ namespace CslaGenerator
             this.toolStripMenuItem4.Size = new System.Drawing.Size(44, 20);
             this.toolStripMenuItem4.Text = "&Tools";
             // 
-            // changePrimaryKeyToNotUndoable
+            // fixPrimaryKeys
             // 
-            this.changePrimaryKeyToNotUndoable.Enabled = false;
-            this.changePrimaryKeyToNotUndoable.Name = "changeDBProvidedPK_ToNotUndoable";
-            this.changePrimaryKeyToNotUndoable.Size = new System.Drawing.Size(200, 22);
-            this.changePrimaryKeyToNotUndoable.Text = "Change Primary Key properties to not Undoable";
-            this.changePrimaryKeyToNotUndoable.Click += new System.EventHandler(this.changePrimaryKeyToNotUndoable_Click);
+            this.fixPrimaryKeys.Enabled = false;
+            this.fixPrimaryKeys.Name = "fixPrimaryKeys";
+            this.fixPrimaryKeys.Size = new System.Drawing.Size(200, 22);
+            this.fixPrimaryKeys.Text = "Fix Primary Key properties...";
+            this.fixPrimaryKeys.Click += new System.EventHandler(this.FixPrimaryKeys_Click);
             // 
             // changeTimestampToReadOnlyNotUndoable
             // 
@@ -1124,7 +1124,7 @@ namespace CslaGenerator
         private ToolStripStatusLabel generatingTimer;
         private ToolStripProgressBar progressBar;
         private ToolStripMenuItem toolStripMenuItem4;
-        private ToolStripMenuItem changePrimaryKeyToNotUndoable;
+        private ToolStripMenuItem fixPrimaryKeys;
         private ToolStripMenuItem changeTimestampToReadOnlyNotUndoable;
         private ToolStripMenuItem changeSimpleAuditToReadOnlyNotUndoable;
         private ToolStripMenuItem convertDateTimeToSmartDate;

@@ -748,7 +748,7 @@ namespace CslaGenerator
             connectDatabaseButton.Enabled = true;
             projectToolStripMenuItem.Enabled = true;
             dataBaseToolStripMenuItem.Enabled = true;
-            changePrimaryKeyToNotUndoable.Enabled = true;
+            fixPrimaryKeys.Enabled = true;
             changeTimestampToReadOnlyNotUndoable.Enabled = true;
             changeSimpleAuditToReadOnlyNotUndoable.Enabled = true;
             convertDateTimeToSmartDate.Enabled = true;
@@ -1302,10 +1302,9 @@ namespace CslaGenerator
 
         #region Tools menu
 
-        private void changePrimaryKeyToNotUndoable_Click(object sender, EventArgs e)
+        private void FixPrimaryKeys_Click(object sender, EventArgs e)
         {
-            _outputPanel.AddOutputInfo(Environment.NewLine + "Changing Primary Key properties to not Undoable..." +
-                                       Environment.NewLine);
+            _outputPanel.AddOutputInfo(Environment.NewLine + "Fix Primary Key properties..." + Environment.NewLine);
             foreach (var info in _controller.CurrentUnit.CslaObjects)
             {
                 if (info.IsPlaceHolder())
@@ -1315,18 +1314,69 @@ namespace CslaGenerator
 
                 foreach (ValueProperty prop in info.ValueProperties)
                 {
-                    if (prop.DbBindColumn.IsPrimaryKey && prop.Undoable)
+                    var tempCounter = 0;
+                    if (prop.DbBindColumn.IsPrimaryKey)
                     {
+                        if (prop.Undoable)
+                        {
                             prop.Undoable = false;
-                        counter++;
+                            tempCounter++;
                         }
+
+                        if (prop.DbBindColumn.IsIdentity)
+                        {
+                            if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK)
+                            {
+                                prop.PrimaryKey = ValueProperty.UserDefinedKeyBehaviour.DBProvidedPK;
+                                tempCounter++;
+                            }
+
+                            if (!prop.ReadOnly)
+                            {
+                                prop.ReadOnly = true;
+                                tempCounter++;
+                            }
+
+                            if (prop.PropSetAccessibility != AccessorVisibility.Default)
+                            {
+                                prop.PropSetAccessibility = AccessorVisibility.Default;
+                                tempCounter++;
+                            }
+                        }
+                        else
+                        {
+                            if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.UserProvidedPK)
+                            {
+                                prop.PrimaryKey = ValueProperty.UserDefinedKeyBehaviour.UserProvidedPK;
+                                tempCounter++;
+                            }
+
+                            if (prop.DbBindColumn.IsIdentity && prop.ReadOnly)
+                            {
+                                prop.ReadOnly = false;
+                                tempCounter++;
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
+                        {
+                            prop.PrimaryKey = ValueProperty.UserDefinedKeyBehaviour.Default;
+                            tempCounter++;
+                        }
+                    }
+
+                    if (tempCounter > 0)
+                        counter++;
                 }
 
                 if (counter > 0)
-                    _outputPanel.AddOutputInfo(info.ObjectName + ": changed " + counter +
-                                               " Primary Key properties not \"Undoable\".");
+                    _outputPanel.AddOutputInfo(info.ObjectName + ": fixed " + counter + " Primary Key properties.");
             }
-            _outputPanel.AddOutputInfo(Environment.NewLine + "Change Primary Key properties to not Undoable is done." +
+            _outputPanel.AddOutputInfo(Environment.NewLine +
+                                       "Fix Primary Key properties is done." +
                                        Environment.NewLine);
         }
 
