@@ -87,6 +87,7 @@ namespace CslaGenerator
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.changePrimaryKeyToNotUndoable = new System.Windows.Forms.ToolStripMenuItem();
             this.changeTimestampToReadOnlyNotUndoable = new System.Windows.Forms.ToolStripMenuItem();
+            this.changeSimpleAuditToReadOnlyNotUndoable = new System.Windows.Forms.ToolStripMenuItem();
             this.convertDateTimeToSmartDate = new System.Windows.Forms.ToolStripMenuItem();
             this.forceBackingFieldSmartDate = new System.Windows.Forms.ToolStripMenuItem();
             this.convertPropertiesAndCriteriaToSilverlight = new System.Windows.Forms.ToolStripMenuItem();
@@ -457,6 +458,7 @@ namespace CslaGenerator
             this.toolStripMenuItem4.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.changePrimaryKeyToNotUndoable,
             this.changeTimestampToReadOnlyNotUndoable,
+            this.changeSimpleAuditToReadOnlyNotUndoable,
             this.convertDateTimeToSmartDate,
             this.forceBackingFieldSmartDate,
             this.convertPropertiesAndCriteriaToSilverlight,
@@ -483,6 +485,14 @@ namespace CslaGenerator
             this.changeTimestampToReadOnlyNotUndoable.Size = new System.Drawing.Size(200, 22);
             this.changeTimestampToReadOnlyNotUndoable.Text = "Change &timestamp (RowVersion) properties to ReadOnly and not Undoable";
             this.changeTimestampToReadOnlyNotUndoable.Click += new System.EventHandler(this.ChangeTimestampToReadOnlyNotUndoable_Click);
+            // 
+            // changeSimpleAuditToReadOnlyNotUndoable
+            // 
+            this.changeSimpleAuditToReadOnlyNotUndoable.Enabled = false;
+            this.changeSimpleAuditToReadOnlyNotUndoable.Name = "changeSimpleAuditToReadOnlyNotUndoable";
+            this.changeSimpleAuditToReadOnlyNotUndoable.Size = new System.Drawing.Size(200, 22);
+            this.changeSimpleAuditToReadOnlyNotUndoable.Text = "Change &Simple Audit properties to ReadOnly and not Undoable...";
+            this.changeSimpleAuditToReadOnlyNotUndoable.Click += new System.EventHandler(this.ChangeSimpleAuditToReadOnlyNotUndoable_Click);
             // 
             // convertDateTimeToSmartDate
             // 
@@ -1116,6 +1126,7 @@ namespace CslaGenerator
         private ToolStripMenuItem toolStripMenuItem4;
         private ToolStripMenuItem changePrimaryKeyToNotUndoable;
         private ToolStripMenuItem changeTimestampToReadOnlyNotUndoable;
+        private ToolStripMenuItem changeSimpleAuditToReadOnlyNotUndoable;
         private ToolStripMenuItem convertDateTimeToSmartDate;
         private ToolStripMenuItem forceBackingFieldSmartDate;
         private ToolStripMenuItem convertPropertiesAndCriteriaToSilverlight;
