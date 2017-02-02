@@ -750,6 +750,7 @@ namespace CslaGenerator
             dataBaseToolStripMenuItem.Enabled = true;
             changePrimaryKeyToNotUndoable.Enabled = true;
             changeTimestampToReadOnlyNotUndoable.Enabled = true;
+            changeSimpleAuditToReadOnlyNotUndoable.Enabled = true;
             convertDateTimeToSmartDate.Enabled = true;
             forceBackingFieldSmartDate.Enabled = true;
             convertPropertiesAndCriteriaToSilverlight.Enabled = true;
@@ -1316,9 +1317,9 @@ namespace CslaGenerator
                 {
                     if (prop.DbBindColumn.IsPrimaryKey && prop.Undoable)
                     {
-                        prop.Undoable = false;
+                            prop.Undoable = false;
                         counter++;
-                    }
+                        }
                 }
 
                 if (counter > 0)
@@ -1357,6 +1358,41 @@ namespace CslaGenerator
             }
             _outputPanel.AddOutputInfo(Environment.NewLine +
                                        "Change ReadOnly and not Undoable on timestamp properties is done." +
+                                       Environment.NewLine);
+        }
+
+        private void ChangeSimpleAuditToReadOnlyNotUndoable_Click(object sender, EventArgs e)
+        {
+            _outputPanel.AddOutputInfo(Environment.NewLine +
+                                       "Changing ReadOnly and not Undoable on Simple Audit properties..." +
+                                       Environment.NewLine);
+            foreach (var info in _controller.CurrentUnit.CslaObjects)
+            {
+                if (info.IsPlaceHolder())
+                    continue;
+
+                var counter = 0;
+
+                foreach (ValueProperty prop in info.ValueProperties)
+                {
+                    if ((_controller.CurrentUnit.Params.CreationDateColumn == prop.Name ||
+                         _controller.CurrentUnit.Params.CreationUserColumn == prop.Name ||
+                         _controller.CurrentUnit.Params.ChangedDateColumn == prop.Name ||
+                         _controller.CurrentUnit.Params.ChangedUserColumn == prop.Name) &&
+                        (!prop.ReadOnly || prop.Undoable))
+                    {
+                        prop.ReadOnly = true;
+                        prop.Undoable = false;
+                        counter++;
+                    }
+                }
+
+                if (counter > 0)
+                    _outputPanel.AddOutputInfo(info.ObjectName + ": changed " + counter +
+                                               " Simple Audit properties to \"ReadOnly\" and not \"Undoable\".");
+            }
+            _outputPanel.AddOutputInfo(Environment.NewLine +
+                                       "Change ReadOnly and not Undoable on Simple Audit properties is done." +
                                        Environment.NewLine);
         }
 
