@@ -298,7 +298,7 @@ namespace CslaGenerator.Metadata
                 destination.DeclarationMode = PropertyDeclaration.Managed;
             }
 
-            if (_currentCslaObject.IsReadOnlyObject())
+            if (_currentCslaObject.IsReadOnlyObject() || _currentCslaObject.IsNameValueList())
             {
                 destination.DeclarationMode = PropertyDeclaration.Managed;
                 destination.ReadOnly = true;
@@ -340,6 +340,7 @@ namespace CslaGenerator.Metadata
             if (_currentUnit.Params.CreationDateColumn == p.ColumnName)
             {
                 destination.ReadOnly = true;
+                destination.Undoable = false;
                 destination.PropSetAccessibility = AccessorVisibility.Default;
                 destination.DataAccess = ValueProperty.DataAccessBehaviour.CreateOnly;
                 if (destination.PropertyType == TypeCodeEx.SmartDate)
@@ -358,6 +359,7 @@ namespace CslaGenerator.Metadata
             else if (_currentUnit.Params.CreationUserColumn == p.ColumnName)
             {
                 destination.ReadOnly = true;
+                destination.Undoable = false;
                 destination.PropSetAccessibility = AccessorVisibility.Default;
                 destination.DataAccess = ValueProperty.DataAccessBehaviour.CreateOnly;
                 destination.DefaultValue = _currentUnit.Params.GetUserMethod;
@@ -365,6 +367,7 @@ namespace CslaGenerator.Metadata
             else if (_currentUnit.Params.ChangedDateColumn == p.ColumnName)
             {
                 destination.ReadOnly = true;
+                destination.Undoable = false;
                 destination.PropSetAccessibility = AccessorVisibility.Default;
                 if (_currentCslaObject.IsCreationDateColumnPresent())
                 {
@@ -389,6 +392,7 @@ namespace CslaGenerator.Metadata
             else if (_currentUnit.Params.ChangedUserColumn == p.ColumnName)
             {
                 destination.ReadOnly = true;
+                destination.Undoable = false;
                 destination.PropSetAccessibility = AccessorVisibility.Default;
                 if (_currentCslaObject.IsCreationUserColumnPresent())
                 {
