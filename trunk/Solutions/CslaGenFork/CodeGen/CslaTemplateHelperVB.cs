@@ -5003,6 +5003,10 @@ namespace CslaGenerator.CodeGen
                         return "transactional updater unit of work pattern";
                     //if (info.IsDeleter)
                     return "transactional deleter unit of work pattern";
+                case CslaObjectType.BaseClass:
+                    return "base class";
+                case CslaObjectType.CriteriaClass:
+                    return "criteria class";
                 default:
                     return "new CSLA stereotype";
             }
