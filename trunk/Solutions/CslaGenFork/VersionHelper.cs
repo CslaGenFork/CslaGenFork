@@ -19,6 +19,7 @@ namespace CslaGenerator
 
             using (var stream = File.OpenWrite(path))
             {
+                stream.SetLength(0);
                 using (var writer = new StreamWriter(stream))
                 {
                     if (lines.Length > 0)
