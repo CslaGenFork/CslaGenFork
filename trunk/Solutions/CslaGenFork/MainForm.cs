@@ -1307,7 +1307,7 @@ namespace CslaGenerator
             _outputPanel.AddOutputInfo(Environment.NewLine + "Fix Primary Key properties..." + Environment.NewLine);
             foreach (var info in _controller.CurrentUnit.CslaObjects)
             {
-                if (info.IsPlaceHolder())
+                if (info.IsBaseClass() || info.IsPlaceHolder())
                     continue;
 
                 var counter = 0;
@@ -1387,7 +1387,7 @@ namespace CslaGenerator
                                        Environment.NewLine);
             foreach (var info in _controller.CurrentUnit.CslaObjects)
             {
-                if (info.IsPlaceHolder())
+                if (info.IsBaseClass() || info.IsPlaceHolder())
                     continue;
 
                 var counter = 0;
@@ -1418,7 +1418,7 @@ namespace CslaGenerator
                                        Environment.NewLine);
             foreach (var info in _controller.CurrentUnit.CslaObjects)
             {
-                if (info.IsPlaceHolder())
+                if (info.IsBaseClass() || info.IsPlaceHolder())
                     continue;
 
                 var counter = 0;
@@ -1453,7 +1453,7 @@ namespace CslaGenerator
                                        Environment.NewLine);
             foreach (var info in _controller.CurrentUnit.CslaObjects)
             {
-                if (info.IsPlaceHolder())
+                if (info.IsBaseClass() || info.IsPlaceHolder())
                     continue;
 
                 var counter = 0;
@@ -1482,7 +1482,7 @@ namespace CslaGenerator
                                        Environment.NewLine);
             foreach (var info in _controller.CurrentUnit.CslaObjects)
             {
-                if (info.IsPlaceHolder())
+                if (info.IsBaseClass() || info.IsPlaceHolder())
                     continue;
 
                 var counter = 0;
