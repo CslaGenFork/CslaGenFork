@@ -674,13 +674,17 @@ namespace CslaGenerator.Util.PropertyBags
                         GeneratorController.Current.CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider) &&
                         propertyName == "AuthzProvider")
                         return false;
+                    if (cslaObject.IsReadOnlyObject() &&
+                        propertyName == "Undoable")
+                        return false;
                     if (cslaObject.IsNameValueList() &&
                         (propertyName == "AuthzProvider" ||
                         propertyName == "ReadRoles" ||
                         propertyName == "WriteRoles" ||
                         propertyName == "ReadAuthzRuleType" ||
                         propertyName == "WriteAuthzRuleType" ||
-                        propertyName == "BusinessRules"))
+                        propertyName == "BusinessRules" ||
+                        propertyName == "Undoable"))
                         return false;
                     if ((isNotDbConsumer || !valueProperty.IsDatabaseBound) &&
                         (propertyName == "DbBindColumn" ||
