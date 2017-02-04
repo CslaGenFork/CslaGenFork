@@ -89,10 +89,7 @@ namespace CslaGenerator
                 InsertFileVersionZero();
 
             if (numericFileVersion < 403)
-            {
                 ConvertPre403();
-                Convert403To404();
-            }
 
             if (numericFileVersion < 404)
                 Convert403To404();
@@ -114,8 +111,7 @@ namespace CslaGenerator
                 var fileLinesList = FileLines.ToList();
                 fileLinesList.Add(String.Empty);
                 FileLines = fileLinesList.ToArray();
-                fileVersionPosition = FileLines.Length - 3; // recalculate on the new array
-                FileLines[fileVersionPosition + 2] = FileLines[fileVersionPosition + 1];
+                fileVersionPosition = FileLines.Length - 2; // recalculate on the new array
                 FileLines[fileVersionPosition + 1] = FileLines[fileVersionPosition];
                 FileLines[fileVersionPosition] = "  " + replaceString;
             }
@@ -175,6 +171,15 @@ namespace CslaGenerator
             WriteAllLinesBetter(filePath, FileLines);
 
             return counter;
+        }
+
+        internal static int FindEnum(string filePath, string originalItem)
+        {
+            FileLines = File.ReadAllLines(filePath);
+
+            var search = string.Format(">{0}</", originalItem);
+
+            return FileLines.Count(t => t.Contains(search));
         }
     }
 }
