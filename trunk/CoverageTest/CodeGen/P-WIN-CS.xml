@@ -332,6 +332,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Circ Type ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -392,6 +393,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Circ Type Tag</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -618,6 +620,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Decision Type ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -678,6 +681,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Decision Type Tag</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -1122,6 +1126,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Circ ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -1182,6 +1187,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -1242,6 +1248,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Folder ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -1302,6 +1309,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Needs Reply</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -1362,6 +1370,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Needs Reply Decision</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -1422,6 +1431,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Circ Type Tag</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -1482,6 +1492,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Sender Entity ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -1542,6 +1553,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Sent Date Time</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -1602,6 +1614,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Days To Reply</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -1662,6 +1675,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Days To Live</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -3085,6 +3099,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Create User Name</FriendlyName>
+          <IsDatabaseBound>false</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>AutoProperty</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -3114,6 +3129,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Change User Name</FriendlyName>
+          <IsDatabaseBound>false</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>AutoProperty</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -3161,6 +3177,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -3221,6 +3238,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc Class ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -3478,6 +3496,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc Type ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -3700,6 +3719,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Sender ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -3922,6 +3942,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Recipient ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -4144,6 +4165,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc Ref</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -4432,6 +4454,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc Date</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>ManagedWithTypeConversion</DeclarationMode>
           <BackingFieldType>SmartDate</BackingFieldType>
@@ -4656,6 +4679,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Subject</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -5072,6 +5096,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc Status ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -5329,6 +5354,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Secret</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -5538,6 +5564,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Create Date</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -5598,6 +5625,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Create User ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -5658,6 +5686,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Change Date</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -5718,6 +5747,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Change User ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -5778,6 +5808,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Row Version</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -5970,6 +6001,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -6030,6 +6062,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc Ref</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -6172,6 +6205,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Check In User Name</FriendlyName>
+          <IsDatabaseBound>false</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>AutoProperty</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -6201,6 +6235,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Check Out User Name</FriendlyName>
+          <IsDatabaseBound>false</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>AutoProperty</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -6248,6 +6283,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc Content ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -6308,6 +6344,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Version</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -6365,6 +6402,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>File Content</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -6425,6 +6463,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>File Size</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -6485,6 +6524,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>File Type</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -6545,6 +6585,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Check In Date</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>ManagedWithTypeConversion</DeclarationMode>
           <BackingFieldType>SmartDate</BackingFieldType>
@@ -6605,6 +6646,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Check In User ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -6665,6 +6707,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Check In Comment</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -6725,6 +6768,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Check Out Date</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>ManagedWithTypeConversion</DeclarationMode>
           <BackingFieldType>SmartDate</BackingFieldType>
@@ -6785,6 +6829,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Check Out User ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -6845,6 +6890,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Row Version</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -6949,6 +6995,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -7132,6 +7179,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc Content ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -7192,6 +7240,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Version</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -7252,6 +7301,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>File Size</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -7312,6 +7362,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>File Type</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -7372,6 +7423,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Check In Date</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>ManagedWithTypeConversion</DeclarationMode>
           <BackingFieldType>SmartDate</BackingFieldType>
@@ -7432,6 +7484,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Check In User ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -7492,6 +7545,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Check In Comment</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -7552,6 +7606,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Check Out Date</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>ManagedWithTypeConversion</DeclarationMode>
           <BackingFieldType>SmartDate</BackingFieldType>
@@ -7612,6 +7667,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Check Out User ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -7680,6 +7736,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -7870,6 +7927,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -7937,6 +7995,7 @@
           <PrimaryKey>UserProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Folder ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -8099,6 +8158,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Create User Name</FriendlyName>
+          <IsDatabaseBound>false</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>AutoProperty</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -8128,6 +8188,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Change User Name</FriendlyName>
+          <IsDatabaseBound>false</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>AutoProperty</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -8175,6 +8236,7 @@
           <PrimaryKey>UserProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Folder ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -8235,6 +8297,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Folder Ref</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -8295,6 +8358,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Folder Year</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -8355,6 +8419,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Subject</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -8415,6 +8480,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Create Date</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -8475,6 +8541,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Create User ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -8535,6 +8602,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Change Date</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -8595,6 +8663,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Change User ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -8655,6 +8724,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Row Version</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -8786,6 +8856,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -8976,6 +9047,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -9144,6 +9216,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Create User Name</FriendlyName>
+          <IsDatabaseBound>false</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>AutoProperty</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -9173,6 +9246,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Change User Name</FriendlyName>
+          <IsDatabaseBound>false</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>AutoProperty</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -9220,6 +9294,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Circ ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -9280,6 +9355,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Needs Reply</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -9340,6 +9416,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Needs Reply Decision</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -9400,6 +9477,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Circ Type Tag</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -9460,6 +9538,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Notes</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -9520,6 +9599,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Tag Notes Cert</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -9580,6 +9660,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Sender Entity ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -9640,6 +9721,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Sent Date Time</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -9700,6 +9782,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Days To Reply</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -9760,6 +9843,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Days To Live</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -9820,6 +9904,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Create Date</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -9880,6 +9965,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Create User ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -9940,6 +10026,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Change Date</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -10000,6 +10087,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Change User ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -10060,6 +10148,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Row Version</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -10164,6 +10253,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -10476,6 +10566,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc Content ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -10536,6 +10627,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Content Number</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -10596,6 +10688,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Version</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -10656,6 +10749,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>File Size</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -10716,6 +10810,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>File Type</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -10776,6 +10871,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Check In Date</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>ManagedWithTypeConversion</DeclarationMode>
           <BackingFieldType>SmartDate</BackingFieldType>
@@ -10836,6 +10932,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Check In User ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -10896,6 +10993,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Check In Note</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -10956,6 +11054,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Check Out Date</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>ManagedWithTypeConversion</DeclarationMode>
           <BackingFieldType>SmartDate</BackingFieldType>
@@ -11016,6 +11115,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Check Out User ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -11084,6 +11184,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -11879,6 +11980,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>AutoProperty</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -12041,6 +12143,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc Class Name</FriendlyName>
+          <IsDatabaseBound>false</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>AutoProperty</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -12070,6 +12173,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc Type Name</FriendlyName>
+          <IsDatabaseBound>false</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>AutoProperty</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -12099,6 +12203,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Sender Name</FriendlyName>
+          <IsDatabaseBound>false</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>AutoProperty</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -12128,6 +12233,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Recipient Name</FriendlyName>
+          <IsDatabaseBound>false</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>AutoProperty</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -12157,6 +12263,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc Status Name</FriendlyName>
+          <IsDatabaseBound>false</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>AutoProperty</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -12304,6 +12411,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -12364,6 +12472,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc Class ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -12424,6 +12533,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc Type ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -12484,6 +12594,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Sender ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -12544,6 +12655,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Recipient ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -12604,6 +12716,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc Ref</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -12664,6 +12777,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc Date</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>ManagedWithTypeConversion</DeclarationMode>
           <BackingFieldType>SmartDate</BackingFieldType>
@@ -12724,6 +12838,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Subject</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -12784,6 +12899,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc Status ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -12959,6 +13075,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Create User Name</FriendlyName>
+          <IsDatabaseBound>false</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>AutoProperty</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -12988,6 +13105,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Change User Name</FriendlyName>
+          <IsDatabaseBound>false</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>AutoProperty</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -13035,6 +13153,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc Class ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -13095,6 +13214,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc Class Name</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -13155,6 +13275,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Create User Date</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -13215,6 +13336,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Create User ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -13275,6 +13397,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Change Date</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -13335,6 +13458,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Change User ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -13395,6 +13519,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Row Version</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -13587,6 +13712,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc Class Name</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -13855,6 +13981,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc Class ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>AutoProperty</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -14032,6 +14159,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc Class ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -14092,6 +14220,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc Class Name</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -14152,6 +14281,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>IsActive</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -14342,6 +14472,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc Class ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -14402,6 +14533,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc Class Name</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -14939,6 +15071,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Create User Name</FriendlyName>
+          <IsDatabaseBound>false</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>AutoProperty</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -14968,6 +15101,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Change User Name</FriendlyName>
+          <IsDatabaseBound>false</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>AutoProperty</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -15015,6 +15149,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc Class ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -15075,6 +15210,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc Class Name</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -15275,6 +15411,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Create Date</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -15335,6 +15472,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Create User ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -15395,6 +15533,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Change Date</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -15455,6 +15594,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Change User ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -15515,6 +15655,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Row Version</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -15803,6 +15944,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc Status ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -15863,6 +16005,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc Status Name</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -16074,6 +16217,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Create User Name</FriendlyName>
+          <IsDatabaseBound>false</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>AutoProperty</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -16103,6 +16247,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Change User Name</FriendlyName>
+          <IsDatabaseBound>false</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>AutoProperty</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -16150,6 +16295,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc Type ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -16210,6 +16356,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc Type Name</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -16270,6 +16417,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Create Date</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -16330,6 +16478,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Create User ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -16390,6 +16539,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Change Date</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -16450,6 +16600,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Change User ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -16510,6 +16661,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Row Version</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -16702,6 +16854,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc Type Name</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -16970,6 +17123,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc Type ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>AutoProperty</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -17147,6 +17301,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc Type ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -17207,6 +17362,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc Type Name</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -17267,6 +17423,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>IsActive</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -17457,6 +17614,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc Type ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -17517,6 +17675,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc Type Name</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -17900,6 +18059,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Create User Name</FriendlyName>
+          <IsDatabaseBound>false</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>AutoProperty</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -17929,6 +18089,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Change User Name</FriendlyName>
+          <IsDatabaseBound>false</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>AutoProperty</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -17976,6 +18137,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc Type ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -18036,6 +18198,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc Type Name</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -18236,6 +18399,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Create Date</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -18296,6 +18460,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Create User ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -18356,6 +18521,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Change Date</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -18416,6 +18582,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Change User ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -18476,6 +18643,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Row Version</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -18963,6 +19131,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Create User Name</FriendlyName>
+          <IsDatabaseBound>false</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>AutoProperty</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -18992,6 +19161,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Change User Name</FriendlyName>
+          <IsDatabaseBound>false</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>AutoProperty</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -19039,6 +19209,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Folder ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -19099,6 +19270,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Folder Type ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -19252,6 +19424,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Folder Ref</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -19568,6 +19741,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Folder Year</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -19875,6 +20049,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Subject</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -20191,6 +20366,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Folder Status ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -20344,6 +20520,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Create Date</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -20404,6 +20581,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Create User ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -20464,6 +20642,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Change Date</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -20524,6 +20703,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Change User ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -20584,6 +20764,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Row Version</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -20944,6 +21125,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Folder ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -21011,6 +21193,7 @@
           <PrimaryKey>UserProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -21173,6 +21356,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Create User Name</FriendlyName>
+          <IsDatabaseBound>false</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>AutoProperty</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -21202,6 +21386,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Change User Name</FriendlyName>
+          <IsDatabaseBound>false</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>AutoProperty</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -21249,6 +21434,7 @@
           <PrimaryKey>UserProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -21309,6 +21495,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc Ref</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -21369,6 +21556,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Doc Date</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -21429,6 +21617,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Subject</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -21489,6 +21678,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Create Date</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -21549,6 +21739,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Create User ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -21609,6 +21800,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Change Date</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -21669,6 +21861,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Change User ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -21729,6 +21922,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Row Version</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -21860,6 +22054,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Folder ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -22050,6 +22245,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Folder ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -22218,6 +22414,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Create User Name</FriendlyName>
+          <IsDatabaseBound>false</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>AutoProperty</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -22247,6 +22444,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Change User Name</FriendlyName>
+          <IsDatabaseBound>false</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>AutoProperty</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -22294,6 +22492,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Circ ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -22354,6 +22553,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Needs Reply</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -22414,6 +22614,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Needs Reply Decision</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -22474,6 +22675,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Circ Type Tag</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -22534,6 +22736,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Notes</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -22594,6 +22797,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Tag Notes Cert</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -22654,6 +22858,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Sender Entity ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -22714,6 +22919,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Sent Date Time</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -22774,6 +22980,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Days To Reply</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -22834,6 +23041,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Days To Live</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -22894,6 +23102,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Create Date</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -22954,6 +23163,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Create User ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -23014,6 +23224,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Change Date</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -23074,6 +23285,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Change User ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -23134,6 +23346,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Row Version</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -23238,6 +23451,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Folder ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -23740,6 +23954,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Folder ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -23900,6 +24115,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Folder Type Name</FriendlyName>
+          <IsDatabaseBound>false</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>AutoProperty</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -23929,6 +24145,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Folder Status Name</FriendlyName>
+          <IsDatabaseBound>false</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>AutoProperty</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -23976,6 +24193,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Folder ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -24036,6 +24254,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Folder Type ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -24096,6 +24315,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>FolderRef</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -24156,6 +24376,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Folder Year</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -24216,6 +24437,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Subject</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -24276,6 +24498,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Folder Status ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -24466,6 +24689,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Folder Status ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -24526,6 +24750,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Folder Status Name</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -24737,6 +24962,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Create User Name</FriendlyName>
+          <IsDatabaseBound>false</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>AutoProperty</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -24766,6 +24992,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Change User Name</FriendlyName>
+          <IsDatabaseBound>false</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>AutoProperty</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -24813,6 +25040,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Folder Type ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -24873,6 +25101,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Folder Type Name</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -24933,6 +25162,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Create Date</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -24993,6 +25223,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Create User ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -25053,6 +25284,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Change Date</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -25113,6 +25345,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Change User ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -25173,6 +25406,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Row Version</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -25365,6 +25599,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Folder Type Name</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -25633,6 +25868,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Folder Type ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>AutoProperty</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -25810,6 +26046,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Folder Type ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -25870,6 +26107,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Folder Type Name</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -25930,6 +26168,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>IsActive</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -26120,6 +26359,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Folder Type ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -26180,6 +26420,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Folder Type Name</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -26391,6 +26632,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Create User Name</FriendlyName>
+          <IsDatabaseBound>false</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>AutoProperty</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -26420,6 +26662,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Change User Name</FriendlyName>
+          <IsDatabaseBound>false</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>AutoProperty</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -26467,6 +26710,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>User ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -26527,6 +26771,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Name</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -26587,6 +26832,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Login</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -26644,6 +26890,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Picture</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -26704,6 +26951,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Email</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -26764,6 +27012,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>IsActive</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -26824,6 +27073,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Create Date</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -26884,6 +27134,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Create User ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -26944,6 +27195,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Change Date</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -27004,6 +27256,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Change User ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -27064,6 +27317,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Row Version</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -27256,6 +27510,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Name</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -27690,6 +27945,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>User ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>AutoProperty</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -27867,6 +28123,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>User ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -27927,6 +28184,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Name</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -27987,6 +28245,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Login</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -28047,6 +28306,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Email</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -28107,6 +28367,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>IsActive</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -28297,6 +28558,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>User ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -28357,6 +28619,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Name</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -28583,6 +28846,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>User ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -28643,6 +28907,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Name</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -28703,6 +28968,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Is Active</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -28929,6 +29195,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>User ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -28989,6 +29256,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Name</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -29227,6 +29495,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Create User Name</FriendlyName>
+          <IsDatabaseBound>false</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>AutoProperty</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -29256,6 +29525,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Change User Name</FriendlyName>
+          <IsDatabaseBound>false</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>AutoProperty</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -29303,6 +29573,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Role ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -29363,6 +29634,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Role Name</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -29423,6 +29695,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>IsActive</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -29483,6 +29756,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Create Date</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -29543,6 +29817,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Create User ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -29603,6 +29878,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Change Date</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -29663,6 +29939,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Change User ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -29723,6 +30000,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Row Version</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -29915,6 +30193,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Role Name</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -30121,6 +30400,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Role ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>AutoProperty</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -30298,6 +30578,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Role ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -30358,6 +30639,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Role Name</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -30418,6 +30700,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>IsActive</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -30608,6 +30891,7 @@
           <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Role ID</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -30668,6 +30952,7 @@
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Role Name</FriendlyName>
+          <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
@@ -30820,628 +31105,9 @@
       </DeleteAuthzRuleType>
     </CslaObjectInfo>
   </CslaObjects>
-  <AssociativeEntities>
-    <AssociativeEntity>
-      <RelationType>ManyToMany</RelationType>
-      <ObjectName>Documents &amp; Folders</ObjectName>
-      <MainObject>Doc</MainObject>
-      <MainPropertyName>Folders</MainPropertyName>
-      <MainCollectionTypeName>DocFolderColl</MainCollectionTypeName>
-      <MainItemTypeName>DocFolder</MainItemTypeName>
-      <MainLoadingScheme>ParentLoad</MainLoadingScheme>
-      <MainLazyLoad>false</MainLazyLoad>
-      <MainLoadParameters>
-        <Parameter>
-          <Criteria>
-            <Name>Criteria</Name>
-            <CriteriaClassMode>Simple</CriteriaClassMode>
-            <NestedClass>true</NestedClass>
-            <Properties>
-              <Property>
-                <ParameterName>DocID</ParameterName>
-                <Name>DocID</Name>
-                <PropertyType>Int32</PropertyType>
-                <ReadOnly>false</ReadOnly>
-                <Nullable>false</Nullable>
-                <Summary />
-                <Remarks />
-                <DbBindColumn>
-                  <ColumnOriginType>Table</ColumnOriginType>
-                  <DataType>Int32</DataType>
-                  <NativeType>int</NativeType>
-                  <Size>10</Size>
-                  <SpResultIndex>0</SpResultIndex>
-                  <ColumnName>DocID</ColumnName>
-                  <IsPrimaryKey>true</IsPrimaryKey>
-                  <ObjectName>Docs</ObjectName>
-                  <CatalogName>DocStore</CatalogName>
-                  <SchemaName>dbo</SchemaName>
-                  <IsNullable>false</IsNullable>
-                  <IsIdentity>true</IsIdentity>
-                </DbBindColumn>
-                <CustomPropertyType />
-                <ParameterValue />
-                <InlineQueryParameter>Plain</InlineQueryParameter>
-              </Property>
-            </Properties>
-            <CreateOptions>
-              <Factory>false</Factory>
-              <AddRemove>false</AddRemove>
-              <DataPortal>false</DataPortal>
-              <RunLocal>false</RunLocal>
-              <Procedure>false</Procedure>
-              <ProcedureName />
-              <FactorySuffix />
-            </CreateOptions>
-            <GetOptions>
-              <Factory>true</Factory>
-              <AddRemove>false</AddRemove>
-              <DataPortal>true</DataPortal>
-              <RunLocal>false</RunLocal>
-              <Procedure>true</Procedure>
-              <ProcedureName>GetDoc</ProcedureName>
-              <FactorySuffix />
-            </GetOptions>
-            <DeleteOptions>
-              <Factory>false</Factory>
-              <AddRemove>false</AddRemove>
-              <DataPortal>false</DataPortal>
-              <RunLocal>false</RunLocal>
-              <Procedure>false</Procedure>
-              <ProcedureName />
-              <FactorySuffix />
-            </DeleteOptions>
-            <Summary />
-            <Remarks />
-          </Criteria>
-          <Property xsi:type="CriteriaProperty">
-            <ParameterName>DocID</ParameterName>
-            <Name>DocID</Name>
-            <PropertyType>Int32</PropertyType>
-            <ReadOnly>false</ReadOnly>
-            <Nullable>false</Nullable>
-            <Summary />
-            <Remarks />
-            <DbBindColumn>
-              <ColumnOriginType>Table</ColumnOriginType>
-              <DataType>Int32</DataType>
-              <NativeType>int</NativeType>
-              <Size>10</Size>
-              <SpResultIndex>0</SpResultIndex>
-              <ColumnName>DocID</ColumnName>
-              <IsPrimaryKey>true</IsPrimaryKey>
-              <ObjectName>Docs</ObjectName>
-              <CatalogName>DocStore</CatalogName>
-              <SchemaName>dbo</SchemaName>
-              <IsNullable>false</IsNullable>
-              <IsIdentity>true</IsIdentity>
-            </DbBindColumn>
-            <CustomPropertyType />
-            <ParameterValue />
-            <InlineQueryParameter>Plain</InlineQueryParameter>
-          </Property>
-        </Parameter>
-      </MainLoadParameters>
-      <MainLoadProperties />
-      <SecondaryObject>Folder</SecondaryObject>
-      <SecondaryPropertyName>Docs</SecondaryPropertyName>
-      <SecondaryCollectionTypeName>FolderDocColl</SecondaryCollectionTypeName>
-      <SecondaryItemTypeName>FolderDoc</SecondaryItemTypeName>
-      <SecondaryLoadingScheme>ParentLoad</SecondaryLoadingScheme>
-      <SecondaryLazyLoad>false</SecondaryLazyLoad>
-      <SecondaryLoadParameters>
-        <Parameter>
-          <Criteria>
-            <Name>Criteria</Name>
-            <CriteriaClassMode>Simple</CriteriaClassMode>
-            <NestedClass>true</NestedClass>
-            <Properties>
-              <Property>
-                <ParameterName>FolderID</ParameterName>
-                <Name>FolderID</Name>
-                <PropertyType>Int32</PropertyType>
-                <ReadOnly>false</ReadOnly>
-                <Nullable>false</Nullable>
-                <Summary />
-                <Remarks />
-                <DbBindColumn>
-                  <ColumnOriginType>Table</ColumnOriginType>
-                  <DataType>Int32</DataType>
-                  <NativeType>int</NativeType>
-                  <Size>10</Size>
-                  <SpResultIndex>0</SpResultIndex>
-                  <ColumnName>FolderID</ColumnName>
-                  <IsPrimaryKey>true</IsPrimaryKey>
-                  <ObjectName>Folders</ObjectName>
-                  <CatalogName>DocStore</CatalogName>
-                  <SchemaName>dbo</SchemaName>
-                  <IsNullable>false</IsNullable>
-                  <IsIdentity>true</IsIdentity>
-                </DbBindColumn>
-                <CustomPropertyType />
-                <ParameterValue />
-                <InlineQueryParameter>Plain</InlineQueryParameter>
-              </Property>
-            </Properties>
-            <CreateOptions>
-              <Factory>false</Factory>
-              <AddRemove>false</AddRemove>
-              <DataPortal>false</DataPortal>
-              <RunLocal>false</RunLocal>
-              <Procedure>false</Procedure>
-              <ProcedureName />
-              <FactorySuffix />
-            </CreateOptions>
-            <GetOptions>
-              <Factory>true</Factory>
-              <AddRemove>false</AddRemove>
-              <DataPortal>true</DataPortal>
-              <RunLocal>false</RunLocal>
-              <Procedure>true</Procedure>
-              <ProcedureName>GetFolder</ProcedureName>
-              <FactorySuffix />
-            </GetOptions>
-            <DeleteOptions>
-              <Factory>true</Factory>
-              <AddRemove>false</AddRemove>
-              <DataPortal>true</DataPortal>
-              <RunLocal>false</RunLocal>
-              <Procedure>true</Procedure>
-              <ProcedureName>DeleteFolder</ProcedureName>
-              <FactorySuffix />
-            </DeleteOptions>
-            <Summary />
-            <Remarks />
-          </Criteria>
-          <Property xsi:type="CriteriaProperty">
-            <ParameterName>FolderID</ParameterName>
-            <Name>FolderID</Name>
-            <PropertyType>Int32</PropertyType>
-            <ReadOnly>false</ReadOnly>
-            <Nullable>false</Nullable>
-            <Summary />
-            <Remarks />
-            <DbBindColumn>
-              <ColumnOriginType>Table</ColumnOriginType>
-              <DataType>Int32</DataType>
-              <NativeType>int</NativeType>
-              <Size>10</Size>
-              <SpResultIndex>0</SpResultIndex>
-              <ColumnName>FolderID</ColumnName>
-              <IsPrimaryKey>true</IsPrimaryKey>
-              <ObjectName>Folders</ObjectName>
-              <CatalogName>DocStore</CatalogName>
-              <SchemaName>dbo</SchemaName>
-              <IsNullable>false</IsNullable>
-              <IsIdentity>true</IsIdentity>
-            </DbBindColumn>
-            <CustomPropertyType />
-            <ParameterValue />
-            <InlineQueryParameter>Plain</InlineQueryParameter>
-          </Property>
-        </Parameter>
-      </SecondaryLoadParameters>
-      <SecondaryLoadProperties />
-    </AssociativeEntity>
-    <AssociativeEntity>
-      <RelationType>ManyToMany</RelationType>
-      <ObjectName>Users &amp; Roles</ObjectName>
-      <MainObject>User</MainObject>
-      <MainPropertyName>Roles</MainPropertyName>
-      <MainCollectionTypeName>UserRoleColl</MainCollectionTypeName>
-      <MainItemTypeName>UserRole</MainItemTypeName>
-      <MainLoadingScheme>ParentLoad</MainLoadingScheme>
-      <MainLazyLoad>false</MainLazyLoad>
-      <MainLoadParameters>
-        <Parameter>
-          <Criteria>
-            <Name>Criteria</Name>
-            <CriteriaClassMode>Simple</CriteriaClassMode>
-            <NestedClass>true</NestedClass>
-            <Properties>
-              <Property>
-                <ParameterName>UserID</ParameterName>
-                <Name>UserID</Name>
-                <PropertyType>Int32</PropertyType>
-                <ReadOnly>false</ReadOnly>
-                <Nullable>false</Nullable>
-                <Summary />
-                <Remarks />
-                <DbBindColumn>
-                  <ColumnOriginType>Table</ColumnOriginType>
-                  <DataType>Int32</DataType>
-                  <NativeType>int</NativeType>
-                  <Size>10</Size>
-                  <SpResultIndex>0</SpResultIndex>
-                  <ColumnName>UserID</ColumnName>
-                  <IsPrimaryKey>true</IsPrimaryKey>
-                  <ObjectName>Users</ObjectName>
-                  <CatalogName>DocStore</CatalogName>
-                  <SchemaName>dbo</SchemaName>
-                  <IsNullable>false</IsNullable>
-                  <IsIdentity>true</IsIdentity>
-                </DbBindColumn>
-                <CustomPropertyType />
-                <ParameterValue />
-                <InlineQueryParameter>Plain</InlineQueryParameter>
-              </Property>
-            </Properties>
-            <CreateOptions>
-              <Factory>false</Factory>
-              <AddRemove>false</AddRemove>
-              <DataPortal>false</DataPortal>
-              <RunLocal>false</RunLocal>
-              <Procedure>false</Procedure>
-              <ProcedureName />
-              <FactorySuffix />
-            </CreateOptions>
-            <GetOptions>
-              <Factory>true</Factory>
-              <AddRemove>false</AddRemove>
-              <DataPortal>true</DataPortal>
-              <RunLocal>false</RunLocal>
-              <Procedure>true</Procedure>
-              <ProcedureName>GetUser</ProcedureName>
-              <FactorySuffix />
-            </GetOptions>
-            <DeleteOptions>
-              <Factory>true</Factory>
-              <AddRemove>false</AddRemove>
-              <DataPortal>true</DataPortal>
-              <RunLocal>false</RunLocal>
-              <Procedure>true</Procedure>
-              <ProcedureName>DeleteUser</ProcedureName>
-              <FactorySuffix />
-            </DeleteOptions>
-            <Summary />
-            <Remarks />
-          </Criteria>
-          <Property xsi:type="CriteriaProperty">
-            <ParameterName>UserID</ParameterName>
-            <Name>UserID</Name>
-            <PropertyType>Int32</PropertyType>
-            <ReadOnly>false</ReadOnly>
-            <Nullable>false</Nullable>
-            <Summary />
-            <Remarks />
-            <DbBindColumn>
-              <ColumnOriginType>Table</ColumnOriginType>
-              <DataType>Int32</DataType>
-              <NativeType>int</NativeType>
-              <Size>10</Size>
-              <SpResultIndex>0</SpResultIndex>
-              <ColumnName>UserID</ColumnName>
-              <IsPrimaryKey>true</IsPrimaryKey>
-              <ObjectName>Users</ObjectName>
-              <CatalogName>DocStore</CatalogName>
-              <SchemaName>dbo</SchemaName>
-              <IsNullable>false</IsNullable>
-              <IsIdentity>true</IsIdentity>
-            </DbBindColumn>
-            <CustomPropertyType />
-            <ParameterValue />
-            <InlineQueryParameter>Plain</InlineQueryParameter>
-          </Property>
-        </Parameter>
-      </MainLoadParameters>
-      <MainLoadProperties />
-      <SecondaryObject>Role</SecondaryObject>
-      <SecondaryPropertyName>Users</SecondaryPropertyName>
-      <SecondaryCollectionTypeName>RoleUserColl</SecondaryCollectionTypeName>
-      <SecondaryItemTypeName>RoleUser</SecondaryItemTypeName>
-      <SecondaryLoadingScheme>ParentLoad</SecondaryLoadingScheme>
-      <SecondaryLazyLoad>false</SecondaryLazyLoad>
-      <SecondaryLoadParameters>
-        <Parameter>
-          <Criteria>
-            <Name>Criteria</Name>
-            <CriteriaClassMode>Simple</CriteriaClassMode>
-            <NestedClass>true</NestedClass>
-            <Properties>
-              <Property>
-                <ParameterName>RoleID</ParameterName>
-                <Name>RoleID</Name>
-                <PropertyType>Int32</PropertyType>
-                <ReadOnly>false</ReadOnly>
-                <Nullable>false</Nullable>
-                <Summary />
-                <Remarks />
-                <DbBindColumn>
-                  <ColumnOriginType>Table</ColumnOriginType>
-                  <DataType>Int32</DataType>
-                  <NativeType>int</NativeType>
-                  <Size>10</Size>
-                  <SpResultIndex>0</SpResultIndex>
-                  <ColumnName>RoleID</ColumnName>
-                  <IsPrimaryKey>true</IsPrimaryKey>
-                  <ObjectName>Roles</ObjectName>
-                  <CatalogName>DocStore</CatalogName>
-                  <SchemaName>dbo</SchemaName>
-                  <IsNullable>false</IsNullable>
-                  <IsIdentity>true</IsIdentity>
-                </DbBindColumn>
-                <CustomPropertyType />
-                <ParameterValue />
-                <InlineQueryParameter>Plain</InlineQueryParameter>
-              </Property>
-            </Properties>
-            <CreateOptions>
-              <Factory>false</Factory>
-              <AddRemove>false</AddRemove>
-              <DataPortal>false</DataPortal>
-              <RunLocal>false</RunLocal>
-              <Procedure>false</Procedure>
-              <ProcedureName />
-              <FactorySuffix />
-            </CreateOptions>
-            <GetOptions>
-              <Factory>true</Factory>
-              <AddRemove>false</AddRemove>
-              <DataPortal>true</DataPortal>
-              <RunLocal>false</RunLocal>
-              <Procedure>true</Procedure>
-              <ProcedureName>GetRole</ProcedureName>
-              <FactorySuffix />
-            </GetOptions>
-            <DeleteOptions>
-              <Factory>true</Factory>
-              <AddRemove>false</AddRemove>
-              <DataPortal>true</DataPortal>
-              <RunLocal>false</RunLocal>
-              <Procedure>true</Procedure>
-              <ProcedureName>DeleteRole</ProcedureName>
-              <FactorySuffix />
-            </DeleteOptions>
-            <Summary />
-            <Remarks />
-          </Criteria>
-          <Property xsi:type="CriteriaProperty">
-            <ParameterName>RoleID</ParameterName>
-            <Name>RoleID</Name>
-            <PropertyType>Int32</PropertyType>
-            <ReadOnly>false</ReadOnly>
-            <Nullable>false</Nullable>
-            <Summary />
-            <Remarks />
-            <DbBindColumn>
-              <ColumnOriginType>Table</ColumnOriginType>
-              <DataType>Int32</DataType>
-              <NativeType>int</NativeType>
-              <Size>10</Size>
-              <SpResultIndex>0</SpResultIndex>
-              <ColumnName>RoleID</ColumnName>
-              <IsPrimaryKey>true</IsPrimaryKey>
-              <ObjectName>Roles</ObjectName>
-              <CatalogName>DocStore</CatalogName>
-              <SchemaName>dbo</SchemaName>
-              <IsNullable>false</IsNullable>
-              <IsIdentity>true</IsIdentity>
-            </DbBindColumn>
-            <CustomPropertyType />
-            <ParameterValue />
-            <InlineQueryParameter>Plain</InlineQueryParameter>
-          </Property>
-        </Parameter>
-      </SecondaryLoadParameters>
-      <SecondaryLoadProperties />
-    </AssociativeEntity>
-    <AssociativeEntity>
-      <RelationType>OneToMany</RelationType>
-      <ObjectName>Document Circulations</ObjectName>
-      <MainObject>Doc</MainObject>
-      <MainPropertyName>Circulations</MainPropertyName>
-      <MainCollectionTypeName>DocCircColl</MainCollectionTypeName>
-      <MainItemTypeName>DocCirc</MainItemTypeName>
-      <MainLoadingScheme>ParentLoad</MainLoadingScheme>
-      <MainLazyLoad>false</MainLazyLoad>
-      <MainLoadParameters>
-        <Parameter>
-          <Criteria>
-            <Name>Criteria</Name>
-            <CriteriaClassMode>Simple</CriteriaClassMode>
-            <NestedClass>true</NestedClass>
-            <Properties>
-              <Property>
-                <ParameterName>DocID</ParameterName>
-                <Name>DocID</Name>
-                <PropertyType>Int32</PropertyType>
-                <ReadOnly>false</ReadOnly>
-                <Nullable>false</Nullable>
-                <Summary />
-                <Remarks />
-                <DbBindColumn>
-                  <ColumnOriginType>Table</ColumnOriginType>
-                  <DataType>Int32</DataType>
-                  <NativeType>int</NativeType>
-                  <Size>10</Size>
-                  <SpResultIndex>0</SpResultIndex>
-                  <ColumnName>DocID</ColumnName>
-                  <IsPrimaryKey>true</IsPrimaryKey>
-                  <ObjectName>Docs</ObjectName>
-                  <CatalogName>DocStore</CatalogName>
-                  <SchemaName>dbo</SchemaName>
-                  <IsNullable>false</IsNullable>
-                  <IsIdentity>true</IsIdentity>
-                </DbBindColumn>
-                <CustomPropertyType />
-                <ParameterValue />
-                <InlineQueryParameter>Plain</InlineQueryParameter>
-              </Property>
-            </Properties>
-            <CreateOptions>
-              <Factory>false</Factory>
-              <AddRemove>false</AddRemove>
-              <DataPortal>false</DataPortal>
-              <RunLocal>false</RunLocal>
-              <Procedure>false</Procedure>
-              <ProcedureName />
-              <FactorySuffix />
-            </CreateOptions>
-            <GetOptions>
-              <Factory>true</Factory>
-              <AddRemove>false</AddRemove>
-              <DataPortal>true</DataPortal>
-              <RunLocal>false</RunLocal>
-              <Procedure>true</Procedure>
-              <ProcedureName>GetDoc</ProcedureName>
-              <FactorySuffix />
-            </GetOptions>
-            <DeleteOptions>
-              <Factory>false</Factory>
-              <AddRemove>false</AddRemove>
-              <DataPortal>false</DataPortal>
-              <RunLocal>false</RunLocal>
-              <Procedure>false</Procedure>
-              <ProcedureName />
-              <FactorySuffix />
-            </DeleteOptions>
-            <Summary />
-            <Remarks />
-          </Criteria>
-          <Property xsi:type="CriteriaProperty">
-            <ParameterName>DocID</ParameterName>
-            <Name>DocID</Name>
-            <PropertyType>Int32</PropertyType>
-            <ReadOnly>false</ReadOnly>
-            <Nullable>false</Nullable>
-            <Summary />
-            <Remarks />
-            <DbBindColumn>
-              <ColumnOriginType>Table</ColumnOriginType>
-              <DataType>Int32</DataType>
-              <NativeType>int</NativeType>
-              <Size>10</Size>
-              <SpResultIndex>0</SpResultIndex>
-              <ColumnName>DocID</ColumnName>
-              <IsPrimaryKey>true</IsPrimaryKey>
-              <ObjectName>Docs</ObjectName>
-              <CatalogName>DocStore</CatalogName>
-              <SchemaName>dbo</SchemaName>
-              <IsNullable>false</IsNullable>
-              <IsIdentity>true</IsIdentity>
-            </DbBindColumn>
-            <CustomPropertyType />
-            <ParameterValue />
-            <InlineQueryParameter>Plain</InlineQueryParameter>
-          </Property>
-        </Parameter>
-      </MainLoadParameters>
-      <MainLoadProperties />
-      <SecondaryLoadingScheme>ParentLoad</SecondaryLoadingScheme>
-      <SecondaryLazyLoad>true</SecondaryLazyLoad>
-      <SecondaryLoadParameters />
-      <SecondaryLoadProperties />
-    </AssociativeEntity>
-    <AssociativeEntity>
-      <RelationType>OneToMany</RelationType>
-      <ObjectName>Folder Circulations</ObjectName>
-      <MainObject>Folder</MainObject>
-      <MainPropertyName>Circulations</MainPropertyName>
-      <MainCollectionTypeName>FolderCircColl</MainCollectionTypeName>
-      <MainItemTypeName>FolderCirc</MainItemTypeName>
-      <MainLoadingScheme>ParentLoad</MainLoadingScheme>
-      <MainLazyLoad>false</MainLazyLoad>
-      <MainLoadParameters>
-        <Parameter>
-          <Criteria>
-            <Name>Criteria</Name>
-            <CriteriaClassMode>Simple</CriteriaClassMode>
-            <NestedClass>true</NestedClass>
-            <Properties>
-              <Property>
-                <ParameterName>FolderID</ParameterName>
-                <Name>FolderID</Name>
-                <PropertyType>Int32</PropertyType>
-                <ReadOnly>false</ReadOnly>
-                <Nullable>false</Nullable>
-                <Summary />
-                <Remarks />
-                <DbBindColumn>
-                  <ColumnOriginType>Table</ColumnOriginType>
-                  <DataType>Int32</DataType>
-                  <NativeType>int</NativeType>
-                  <Size>10</Size>
-                  <SpResultIndex>0</SpResultIndex>
-                  <ColumnName>FolderID</ColumnName>
-                  <IsPrimaryKey>true</IsPrimaryKey>
-                  <ObjectName>Folders</ObjectName>
-                  <CatalogName>DocStore</CatalogName>
-                  <SchemaName>dbo</SchemaName>
-                  <IsNullable>false</IsNullable>
-                  <IsIdentity>true</IsIdentity>
-                </DbBindColumn>
-                <CustomPropertyType />
-                <ParameterValue />
-                <InlineQueryParameter>Plain</InlineQueryParameter>
-              </Property>
-            </Properties>
-            <CreateOptions>
-              <Factory>false</Factory>
-              <AddRemove>false</AddRemove>
-              <DataPortal>false</DataPortal>
-              <RunLocal>false</RunLocal>
-              <Procedure>false</Procedure>
-              <ProcedureName />
-              <FactorySuffix />
-            </CreateOptions>
-            <GetOptions>
-              <Factory>true</Factory>
-              <AddRemove>false</AddRemove>
-              <DataPortal>true</DataPortal>
-              <RunLocal>false</RunLocal>
-              <Procedure>true</Procedure>
-              <ProcedureName>GetFolder</ProcedureName>
-              <FactorySuffix />
-            </GetOptions>
-            <DeleteOptions>
-              <Factory>true</Factory>
-              <AddRemove>false</AddRemove>
-              <DataPortal>true</DataPortal>
-              <RunLocal>false</RunLocal>
-              <Procedure>true</Procedure>
-              <ProcedureName>DeleteFolder</ProcedureName>
-              <FactorySuffix />
-            </DeleteOptions>
-            <Summary />
-            <Remarks />
-          </Criteria>
-          <Property xsi:type="CriteriaProperty">
-            <ParameterName>FolderID</ParameterName>
-            <Name>FolderID</Name>
-            <PropertyType>Int32</PropertyType>
-            <ReadOnly>false</ReadOnly>
-            <Nullable>false</Nullable>
-            <Summary />
-            <Remarks />
-            <DbBindColumn>
-              <ColumnOriginType>Table</ColumnOriginType>
-              <DataType>Int32</DataType>
-              <NativeType>int</NativeType>
-              <Size>10</Size>
-              <SpResultIndex>0</SpResultIndex>
-              <ColumnName>FolderID</ColumnName>
-              <IsPrimaryKey>true</IsPrimaryKey>
-              <ObjectName>Folders</ObjectName>
-              <CatalogName>DocStore</CatalogName>
-              <SchemaName>dbo</SchemaName>
-              <IsNullable>false</IsNullable>
-              <IsIdentity>true</IsIdentity>
-            </DbBindColumn>
-            <CustomPropertyType />
-            <ParameterValue />
-            <InlineQueryParameter>Plain</InlineQueryParameter>
-          </Property>
-        </Parameter>
-      </MainLoadParameters>
-      <MainLoadProperties />
-      <SecondaryLoadingScheme>ParentLoad</SecondaryLoadingScheme>
-      <SecondaryLazyLoad>true</SecondaryLazyLoad>
-      <SecondaryLoadParameters />
-      <SecondaryLoadProperties />
-    </AssociativeEntity>
-  </AssociativeEntities>
+  <AssociativeEntities />
   <ConnectionString>Server=(local);Database=DocStore;persist security info=False;user id=sa;password=password_1234;packet size=4096</ConnectionString>
   <ProjectName>Plain WIN CS</ProjectName>
   <TargetDirectory>C:\VS Projects\CslaGenFork 4.5\CoverageTest\Plain\P-WIN-CS</TargetDirectory>
-  <FileVersion>4.0.4</FileVersion>
+  <FileVersion>4.0.5</FileVersion>
 </CslaGeneratorUnit>
