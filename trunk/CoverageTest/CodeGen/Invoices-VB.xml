@@ -2121,7 +2121,7 @@
           <ParameterName>ProductTypeId</ParameterName>
           <Name>ProductTypeId</Name>
           <PropertyType>Int32</PropertyType>
-          <ReadOnly>false</ReadOnly>
+          <ReadOnly>true</ReadOnly>
           <Nullable>false</Nullable>
           <Summary />
           <Remarks />
@@ -2140,7 +2140,7 @@
             <IsIdentity>true</IsIdentity>
           </DbBindColumn>
           <DataAccess>ReadWrite</DataAccess>
-          <PrimaryKey>UserProvidedPK</PrimaryKey>
+          <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Product Type Id</FriendlyName>
           <IsDatabaseBound>true</IsDatabaseBound>
@@ -2765,7 +2765,7 @@
           <ParameterName>ProductTypeId</ParameterName>
           <Name>ProductTypeId</Name>
           <PropertyType>Int32</PropertyType>
-          <ReadOnly>false</ReadOnly>
+          <ReadOnly>true</ReadOnly>
           <Nullable>false</Nullable>
           <Summary />
           <Remarks />
@@ -2784,7 +2784,7 @@
             <IsIdentity>true</IsIdentity>
           </DbBindColumn>
           <DataAccess>ReadWrite</DataAccess>
-          <PrimaryKey>UserProvidedPK</PrimaryKey>
+          <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Product Type Id</FriendlyName>
           <IsDatabaseBound>true</IsDatabaseBound>
@@ -4077,7 +4077,7 @@
           <ParameterName>ProductTypeId</ParameterName>
           <Name>ProductTypeId</Name>
           <PropertyType>Int32</PropertyType>
-          <ReadOnly>false</ReadOnly>
+          <ReadOnly>true</ReadOnly>
           <Nullable>false</Nullable>
           <Summary />
           <Remarks />
@@ -4096,7 +4096,7 @@
             <IsIdentity>true</IsIdentity>
           </DbBindColumn>
           <DataAccess>ReadWrite</DataAccess>
-          <PrimaryKey>UserProvidedPK</PrimaryKey>
+          <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Product Type Id</FriendlyName>
           <IsDatabaseBound>true</IsDatabaseBound>
@@ -4575,7 +4575,7 @@
             <IsIdentity>true</IsIdentity>
           </DbBindColumn>
           <DataAccess>ReadWrite</DataAccess>
-          <PrimaryKey>UserProvidedPK</PrimaryKey>
+          <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Product Type Id</FriendlyName>
           <IsDatabaseBound>true</IsDatabaseBound>
@@ -6212,7 +6212,7 @@
             <IsIdentity>true</IsIdentity>
           </DbBindColumn>
           <DataAccess>ReadWrite</DataAccess>
-          <PrimaryKey>UserProvidedPK</PrimaryKey>
+          <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Product Type Id</FriendlyName>
           <IsDatabaseBound>true</IsDatabaseBound>
@@ -6574,7 +6574,7 @@
           <ParameterName>ProductTypeId</ParameterName>
           <Name>ProductTypeId</Name>
           <PropertyType>Int32</PropertyType>
-          <ReadOnly>false</ReadOnly>
+          <ReadOnly>true</ReadOnly>
           <Nullable>false</Nullable>
           <Summary />
           <Remarks />
@@ -6593,7 +6593,7 @@
             <IsIdentity>true</IsIdentity>
           </DbBindColumn>
           <DataAccess>ReadWrite</DataAccess>
-          <PrimaryKey>UserProvidedPK</PrimaryKey>
+          <PrimaryKey>DBProvidedPK</PrimaryKey>
           <FKConstraint />
           <FriendlyName>Product Type Id</FriendlyName>
           <IsDatabaseBound>true</IsDatabaseBound>
@@ -6635,7 +6635,7 @@
           <ParameterName>Description</ParameterName>
           <Name>Description</Name>
           <PropertyType>String</PropertyType>
-          <ReadOnly>false</ReadOnly>
+          <ReadOnly>true</ReadOnly>
           <Nullable>false</Nullable>
           <Summary />
           <Remarks />
@@ -7551,5 +7551,5 @@
   <ConnectionString>Server=(local);Database=InvoiceTest;persist security info=False;user id=sa;password=password_1234;packet size=4096</ConnectionString>
   <ProjectName>Invoices VB</ProjectName>
   <TargetDirectory>C:\VS Projects\CslaGenFork 4.5\CoverageTest\TestProjects\VB</TargetDirectory>
-  <FileVersion>4.0.4</FileVersion>
+  <FileVersion>4.0.5</FileVersion>
 </CslaGeneratorUnit>
