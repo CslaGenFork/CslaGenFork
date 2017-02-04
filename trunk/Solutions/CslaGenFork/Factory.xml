@@ -96,5 +96,5 @@
   <ConnectionString />
   <ProjectName>MyProject</ProjectName>
   <TargetDirectory>..\</TargetDirectory>
-  <FileVersion>4.0.4</FileVersion>
+  <FileVersion>4.0.5</FileVersion>
 </CslaGeneratorUnit>

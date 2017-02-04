@@ -6,7 +6,7 @@ namespace CslaGenerator
 {
     internal static class VersionHelper
     {
-        internal const string CurrentFileVersion = "4.0.4";
+        internal const string CurrentFileVersion = "4.0.5";
         private static string[] FileLines { get; set; }
         private static string _fileVersionFound;
 
@@ -93,6 +93,9 @@ namespace CslaGenerator
 
             if (numericFileVersion < 404)
                 Convert403To404();
+
+            if (numericFileVersion < 405)
+                Convert404To405();
         }
 
         private static void InsertFileVersionZero()
@@ -143,6 +146,20 @@ namespace CslaGenerator
                 FileLines[index] = FileLines[index].Replace(@"<Implements />", @"<Interfaces />");
                 FileLines[index] = FileLines[index].Replace(@"<Implements>", @"<Interfaces>");
                 FileLines[index] = FileLines[index].Replace(@"</Implements>", @"</Interfaces>");
+                FileLines[index] = FileLines[index].Replace(@"<FileVersion>" + _fileVersionFound + "</FileVersion>",
+                    @"<FileVersion>" + newFileVersion + "</FileVersion>");
+            }
+
+            _fileVersionFound = newFileVersion;
+        }
+
+        private static void Convert404To405()
+        {
+            var newFileVersion = "4.0.5";
+            for (var index = 0; index < FileLines.Length; index++)
+            {
+                FileLines[index] = FileLines[index].Replace(@"<PropSetAccessibility>NoSetter</PropSetAccessibility>",
+                    @"<PropSetAccessibility>Default</PropSetAccessibility>");
                 FileLines[index] = FileLines[index].Replace(@"<FileVersion>" + _fileVersionFound + "</FileVersion>",
                     @"<FileVersion>" + newFileVersion + "</FileVersion>");
             }

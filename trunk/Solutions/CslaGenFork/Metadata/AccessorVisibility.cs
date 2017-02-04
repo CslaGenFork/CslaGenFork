@@ -14,7 +14,6 @@ namespace CslaGenerator.Metadata
         Public = 1,
         Protected = 2,
         ProtectedInternal = 3,
-        Internal = 4,
-        NoSetter = 6
+        Internal = 4
     }
 }

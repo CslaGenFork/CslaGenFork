@@ -596,6 +596,10 @@ namespace CslaGenerator.Util.PropertyBags
                     propertyInfo.Name == "BackingFieldType")
                     isreadonly = true;
 
+                if (SelectedObject[0].ReadOnly &&
+                    propertyInfo.Name == "PropSetAccessibility")
+                    isreadonly = true;
+
                 userfriendlyname = userfriendlyname.Length > 0 ? userfriendlyname : propertyInfo.Name;
                 var types = new List<ValueProperty>();
                 foreach (var obj in _selectedObject)
