@@ -243,7 +243,10 @@ namespace CslaGenerator
                         if (VersionHelper.CurrentFileVersion != CurrentUnit.FileVersion)
                         {
                             if (fs != null)
+                            {
                                 fs.Close();
+                                fs.Dispose();
+                            }
 
                             VersionHelper.SolveVersionNumberIssues(filePath, null);
                             converted = true;
@@ -257,14 +260,17 @@ namespace CslaGenerator
                     catch (InvalidOperationException exception)
                     {
                         if (fs != null)
+                        {
                             fs.Close();
+                            fs.Dispose();
+                        }
 
                         if (exception.InnerException == null || converted)
                             throw;
 
+                        VersionHelper.SolveVersionNumberIssues(filePath, exception);
                         if (FixXmlSchemaErrors(filePath, exception))
                         {
-                            VersionHelper.SolveVersionNumberIssues(filePath, exception);
                             converted = true;
                             NewCslaUnit();
                         }
@@ -276,7 +282,10 @@ namespace CslaGenerator
                 }
 
                 if (fs != null)
+                {
                     fs.Close();
+                    fs.Dispose();
+                }
 
                 CurrentUnit.FileVersion = VersionHelper.CurrentFileVersion;
 
@@ -358,7 +367,10 @@ namespace CslaGenerator
             {
                 Cursor.Current = Cursors.Default;
                 if (fs != null)
+                {
                     fs.Close();
+                    fs.Dispose();
+                }
             }
 
             LoadProjectLayout(filePath);
@@ -389,6 +401,9 @@ namespace CslaGenerator
                 Split(new[] {@"for"}, StringSplitOptions.RemoveEmptyEntries)[1]
                 .Trim()
                 .Trim('.');
+
+            if (VersionHelper.FindEnum(filePath, originalItem) == 0)
+                return true;
 
             using (var fixXmlSchema = new FixXmlSchema())
             {
