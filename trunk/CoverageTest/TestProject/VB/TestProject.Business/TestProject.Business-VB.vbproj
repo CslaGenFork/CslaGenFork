@@ -1,0 +1,202 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{83F65F15-9DD5-4A05-B992-61AC398E957E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>
+    </RootNamespace>
+    <AssemblyName>TestProject.Business</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>Windows</MyType>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>TestProject.Business.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>TestProject.Business.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Csla, Version=4.6.500.0, Culture=neutral, PublicKeyToken=93be5fdc093e4c30, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\CSLA-Core.4.6.500\lib\net45\Csla.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="CslaGenFork.Rules">
+      <HintPath>..\..\..\Dependencies\CslaGenFork.Rules.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Net.Http" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+    <Import Include="System.Threading.Tasks" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DatabaseTestProject.vb" />
+    <Compile Include="DataPortalHookArgs.vb" />
+    <Compile Include="Doc.Designer.vb">
+      <DependentUpon>Doc.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Doc.vb" />
+    <Compile Include="DocEditGetter.Designer.vb">
+      <DependentUpon>DocEditGetter.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DocEditGetter.vb" />
+    <Compile Include="DocEditUoWCreator.Designer.vb">
+      <DependentUpon>DocEditUoWCreator.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DocEditUoWCreator.vb" />
+    <Compile Include="DocEditUoWGetter.Designer.vb">
+      <DependentUpon>DocEditUoWGetter.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DocEditUoWGetter.vb" />
+    <Compile Include="DocFolder.Designer.vb">
+      <DependentUpon>DocFolder.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DocFolder.vb" />
+    <Compile Include="DocFolderColl.Designer.vb">
+      <DependentUpon>DocFolderColl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DocFolderColl.vb" />
+    <Compile Include="DocFolderCollRO.Designer.vb">
+      <DependentUpon>DocFolderCollRO.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DocFolderCollRO.vb" />
+    <Compile Include="DocFolderRO.Designer.vb">
+      <DependentUpon>DocFolderRO.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DocFolderRO.vb" />
+    <Compile Include="DocRO.Designer.vb">
+      <DependentUpon>DocRO.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DocRO.vb" />
+    <Compile Include="DocTypeDynamic.Designer.vb">
+      <DependentUpon>DocTypeDynamic.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DocTypeDynamic.vb" />
+    <Compile Include="DocTypeDynamicCollection.Designer.vb">
+      <DependentUpon>DocTypeDynamicCollection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DocTypeDynamicCollection.vb" />
+    <Compile Include="DocTypeEdit.Designer.vb">
+      <DependentUpon>DocTypeEdit.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DocTypeEdit.vb" />
+    <Compile Include="DocTypeEditColl.Designer.vb">
+      <DependentUpon>DocTypeEditColl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DocTypeEditColl.vb" />
+    <Compile Include="DocTypeInfo.Designer.vb">
+      <DependentUpon>DocTypeInfo.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DocTypeInfo.vb" />
+    <Compile Include="DocTypeList.Designer.vb">
+      <DependentUpon>DocTypeList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DocTypeList.vb" />
+    <Compile Include="DocTypeNVL.Designer.vb">
+      <DependentUpon>DocTypeNVL.vb</DependentUpon>
+    </Compile>
+    <Compile Include="DocTypeNVL.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="MyBusinessBase.Designer.vb">
+      <DependentUpon>MyBusinessBase.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MyBusinessBase.vb" />
+    <Compile Include="ObjectCriteria.Designer.vb">
+      <DependentUpon>ObjectCriteria.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ObjectCriteria.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\UsingLibrary\UsingLibrary.csproj">
+      <Project>{5a012bf6-ff0a-4005-9ded-0545b29eb0c0}</Project>
+      <Name>UsingLibrary</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\..\..\packages\CSLA-Core.4.6.500\analyzers\c#\Csla.Analyzers.dll" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
