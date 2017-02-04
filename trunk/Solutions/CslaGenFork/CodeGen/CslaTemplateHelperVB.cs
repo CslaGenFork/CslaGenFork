@@ -3193,8 +3193,7 @@ namespace CslaGenerator.CodeGen
             if (prop.DeclarationMode == PropertyDeclaration.AutoProperty)
             {
                 if (isReadOnly ||
-                    prop.PropSetAccessibility == AccessorVisibility.Private ||
-                    prop.PropSetAccessibility == AccessorVisibility.NoSetter)
+                    prop.PropSetAccessibility == AccessorVisibility.Private)
                 {
                     return "Private ";
                 }

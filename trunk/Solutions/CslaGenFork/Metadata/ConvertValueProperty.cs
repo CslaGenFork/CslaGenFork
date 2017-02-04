@@ -172,8 +172,7 @@ namespace CslaGenerator.Metadata
         [Category("05. Options")]
         [Description("Accessibility for property setter.\r\n" +
                      "If \"ReadOnly\" is true, this settings is ignored.\r\n" +
-                     "If \"ReadOnly\" is false, this setting applies. By default the setter has the same accessibility of the property.\r\n" +
-                     "Note -  \"NoSetter\" is deprecated and is converted to \"Default\".")]
+                     "If \"ReadOnly\" is false, this setting applies. By default the setter has the same accessibility of the property.")]
         [UserFriendlyName("Setter Accessibility")]
         public override AccessorVisibility PropSetAccessibility
         {
