@@ -5,41 +5,33 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsingLibrary", "UsingLibrary\UsingLibrary.csproj", "{5A012BF6-FF0A-4005-9DED-0545B29EB0C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject.Business-CS", "TestProjects\CS\TestProject.Business\TestProject.Business-CS.csproj", "{F02B613F-4FB3-4C19-B35C-14DC41EE9C25}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject.Business-CS", "TestProject\CS\TestProject.Business\TestProject.Business-CS.csproj", "{F02B613F-4FB3-4C19-B35C-14DC41EE9C25}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "TestProject.Business-VB", "TestProjects\VB\TestProject.Business\TestProject.Business-VB.vbproj", "{83F65F15-9DD5-4A05-B992-61AC398E957E}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "TestProject.Business-VB", "TestProject\VB\TestProject.Business\TestProject.Business-VB.vbproj", "{83F65F15-9DD5-4A05-B992-61AC398E957E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Inheritance tests", "Inheritance tests", "{5757BD3B-8329-412F-AF0A-49AFE6001792}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocStore.Business-CS-Inherits-Dual", "Inherits\I-DUAL-CS\DocStore.Business\DocStore.Business-CS-Inherits-Dual.csproj", "{EB74A4E2-D221-4095-863C-58B5B9AA5134}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocStore.Business-CS-Inherits-WIN", "Inherits\Inherits-WIN-CS\DocStore.Business\DocStore.Business-CS-Inherits-WIN.csproj", "{E8B4D2E6-302E-4C2A-8273-5CEA9213E1A6}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "DocStore.Business-VB-Inherits-Dual", "Inherits\I-DUAL-VB\DocStore.Business\DocStore.Business-VB-Inherits-Dual.vbproj", "{5B347D67-D9E3-4308-9CB2-549BFBD5E642}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "DocStore.Business-VB-Inherits-WIN", "Inherits\Inherits-WIN-VB\DocStore.Business\DocStore.Business-VB-Inherits-WIN.vbproj", "{6444D4EE-0669-41DE-8EE7-5C09FE8A8358}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocStore.Business-CS-Inherits-WIN", "Inherits\I-WIN-CS\DocStore.Business\DocStore.Business-CS-Inherits-WIN.csproj", "{E8B4D2E6-302E-4C2A-8273-5CEA9213E1A6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocStore.Business-CS-Inherits-WPF", "Inherits\Inherits-WPF-CS\DocStore.Business\DocStore.Business-CS-Inherits-WPF.csproj", "{C26E8136-BB20-4635-BE41-AA867761414C}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "DocStore.Business-VB-Inherits-WIN", "Inherits\I-WIN-VB\DocStore.Business\DocStore.Business-VB-Inherits-WIN.vbproj", "{6444D4EE-0669-41DE-8EE7-5C09FE8A8358}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocStore.Business-CS-Inherits-WPF", "Inherits\I-WPF-CS\DocStore.Business\DocStore.Business-CS-Inherits-WPF.csproj", "{C26E8136-BB20-4635-BE41-AA867761414C}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "DocStore.Business-VB-Inherits-WPF", "Inherits\I-WPF-VB\DocStore.Business\DocStore.Business-VB-Inherits-WPF.vbproj", "{A04132C0-2693-4E28-8108-A7831BB946AC}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "DocStore.Business-VB-Inherits-WPF", "Inherits\Inherits-WPF-VB\DocStore.Business\DocStore.Business-VB-Inherits-WPF.vbproj", "{A04132C0-2693-4E28-8108-A7831BB946AC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plain Tests", "Plain Tests", "{7EDF193D-4A76-4837-A0B3-2DFFED0723EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocStore.Business-CS-Plain-Dual", "Plain\P-DUAL-CS\DocStore.Business\DocStore.Business-CS-Plain-Dual.csproj", "{722933CA-1364-4E76-8395-14183678FEFE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocStore.Business-CS-Plain-WIN", "Plain\Plain-WIN-CS\DocStore.Business\DocStore.Business-CS-Plain-WIN.csproj", "{5894EE6D-BF1F-4D29-BB97-74858D195943}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "DocStore.Business-VB-Plain-Dual", "Plain\P-DUAL-VB\DocStore.Business\DocStore.Business-VB-Plain-Dual.vbproj", "{76D42E05-F5C0-49AC-ACA7-D70ADB584CB4}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "DocStore.Business-VB-Plain-WIN", "Plain\Plain-WIN-VB\DocStore.Business\DocStore.Business-VB-Plain-WIN.vbproj", "{9C9519AB-F57A-46F9-A845-5B3F5A135D63}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocStore.Business-CS-Plain-WIN", "Plain\P-WIN-CS\DocStore.Business\DocStore.Business-CS-Plain-WIN.csproj", "{5894EE6D-BF1F-4D29-BB97-74858D195943}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocStore.Business-CS-Plain-WPF", "Plain\Plain-WPF-CS\DocStore.Business\DocStore.Business-CS-Plain-WPF.csproj", "{92D3F788-BCDC-4ECC-A585-671A72D4603A}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "DocStore.Business-VB-Plain-WIN", "Plain\P-WIN-VB\DocStore.Business\DocStore.Business-VB-Plain-WIN.vbproj", "{9C9519AB-F57A-46F9-A845-5B3F5A135D63}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "DocStore.Business-VB-Plain-WPF", "Plain\Plain-WPF-VB\DocStore.Business\DocStore.Business-VB-Plain-WPF.vbproj", "{1D340338-FB1B-46E8-ACFB-BBF98A6FC31C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocStore.Business-CS-Plain-WPF", "Plain\P-WPF-CS\DocStore.Business\DocStore.Business-CS-Plain-WPF.csproj", "{92D3F788-BCDC-4ECC-A585-671A72D4603A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Invoices.Business-CS", "Invoices\Invoices-CS\Invoices.Business\Invoices.Business-CS.csproj", "{E6352A02-6B52-4A06-AC8E-DA1AC08F8624}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "DocStore.Business-VB-Plain-WPF", "Plain\P-WPF-VB\DocStore.Business\DocStore.Business-VB-Plain-WPF.vbproj", "{1D340338-FB1B-46E8-ACFB-BBF98A6FC31C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Invoices.Business-CS", "TestProjects\CS\Invoices.Business\Invoices.Business-CS.csproj", "{E6352A02-6B52-4A06-AC8E-DA1AC08F8624}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Invoices.Business-VB", "TestProjects\VB\Invoices.Business\Invoices.Business-VB.vbproj", "{A5CB5ABE-0240-4B70-9362-6AE2DACCB097}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Invoices.Business-VB", "Invoices\Invoices-VB\Invoices.Business\Invoices.Business-VB.vbproj", "{A5CB5ABE-0240-4B70-9362-6AE2DACCB097}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,14 +51,6 @@ Global
 		{83F65F15-9DD5-4A05-B992-61AC398E957E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83F65F15-9DD5-4A05-B992-61AC398E957E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{83F65F15-9DD5-4A05-B992-61AC398E957E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EB74A4E2-D221-4095-863C-58B5B9AA5134}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EB74A4E2-D221-4095-863C-58B5B9AA5134}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EB74A4E2-D221-4095-863C-58B5B9AA5134}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EB74A4E2-D221-4095-863C-58B5B9AA5134}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5B347D67-D9E3-4308-9CB2-549BFBD5E642}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5B347D67-D9E3-4308-9CB2-549BFBD5E642}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5B347D67-D9E3-4308-9CB2-549BFBD5E642}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5B347D67-D9E3-4308-9CB2-549BFBD5E642}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E8B4D2E6-302E-4C2A-8273-5CEA9213E1A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E8B4D2E6-302E-4C2A-8273-5CEA9213E1A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E8B4D2E6-302E-4C2A-8273-5CEA9213E1A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -83,14 +67,6 @@ Global
 		{A04132C0-2693-4E28-8108-A7831BB946AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A04132C0-2693-4E28-8108-A7831BB946AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A04132C0-2693-4E28-8108-A7831BB946AC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{722933CA-1364-4E76-8395-14183678FEFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{722933CA-1364-4E76-8395-14183678FEFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{722933CA-1364-4E76-8395-14183678FEFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{722933CA-1364-4E76-8395-14183678FEFE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{76D42E05-F5C0-49AC-ACA7-D70ADB584CB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{76D42E05-F5C0-49AC-ACA7-D70ADB584CB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{76D42E05-F5C0-49AC-ACA7-D70ADB584CB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{76D42E05-F5C0-49AC-ACA7-D70ADB584CB4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5894EE6D-BF1F-4D29-BB97-74858D195943}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5894EE6D-BF1F-4D29-BB97-74858D195943}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5894EE6D-BF1F-4D29-BB97-74858D195943}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -120,14 +96,10 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{EB74A4E2-D221-4095-863C-58B5B9AA5134} = {5757BD3B-8329-412F-AF0A-49AFE6001792}
-		{5B347D67-D9E3-4308-9CB2-549BFBD5E642} = {5757BD3B-8329-412F-AF0A-49AFE6001792}
 		{E8B4D2E6-302E-4C2A-8273-5CEA9213E1A6} = {5757BD3B-8329-412F-AF0A-49AFE6001792}
 		{6444D4EE-0669-41DE-8EE7-5C09FE8A8358} = {5757BD3B-8329-412F-AF0A-49AFE6001792}
 		{C26E8136-BB20-4635-BE41-AA867761414C} = {5757BD3B-8329-412F-AF0A-49AFE6001792}
 		{A04132C0-2693-4E28-8108-A7831BB946AC} = {5757BD3B-8329-412F-AF0A-49AFE6001792}
-		{722933CA-1364-4E76-8395-14183678FEFE} = {7EDF193D-4A76-4837-A0B3-2DFFED0723EA}
-		{76D42E05-F5C0-49AC-ACA7-D70ADB584CB4} = {7EDF193D-4A76-4837-A0B3-2DFFED0723EA}
 		{5894EE6D-BF1F-4D29-BB97-74858D195943} = {7EDF193D-4A76-4837-A0B3-2DFFED0723EA}
 		{9C9519AB-F57A-46F9-A845-5B3F5A135D63} = {7EDF193D-4A76-4837-A0B3-2DFFED0723EA}
 		{92D3F788-BCDC-4ECC-A585-671A72D4603A} = {7EDF193D-4A76-4837-A0B3-2DFFED0723EA}

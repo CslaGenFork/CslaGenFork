@@ -82,7 +82,7 @@
     <GenerateDatabaseClass>true</GenerateDatabaseClass>
     <DalName />
     <UsesCslaAuthorizationProvider>false</UsesCslaAuthorizationProvider>
-    <GenerateWinForms>false</GenerateWinForms>
+    <GenerateWinForms>true</GenerateWinForms>
     <GenerateWPF>true</GenerateWPF>
     <GenerateSilverlight4>false</GenerateSilverlight4>
     <SilverlightUsingServices>false</SilverlightUsingServices>
@@ -2434,10 +2434,10 @@
         <IsGenericType>true</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
-        <ObjectName />
+        <ObjectName>MyDynamicBindingListBase&lt;ITEM&gt;</ObjectName>
         <AssemblyFile />
         <Type />
-        <IsGenericType>false</IsGenericType>
+        <IsGenericType>true</IsGenericType>
       </InheritedTypeWinForms>
       <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
@@ -3261,10 +3261,10 @@
         <IsGenericType>true</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
-        <ObjectName />
+        <ObjectName>MyBusinessBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
-        <IsGenericType>false</IsGenericType>
+        <IsGenericType>true</IsGenericType>
       </InheritedTypeWinForms>
       <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
@@ -4026,10 +4026,10 @@
         <IsGenericType>true</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
-        <ObjectName />
+        <ObjectName>MyReadOnlyBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
-        <IsGenericType>false</IsGenericType>
+        <IsGenericType>true</IsGenericType>
       </InheritedTypeWinForms>
       <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
@@ -10890,10 +10890,10 @@
         <IsGenericType>true</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
-        <ObjectName />
+        <ObjectName>MyBusinessBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
-        <IsGenericType>false</IsGenericType>
+        <IsGenericType>true</IsGenericType>
       </InheritedTypeWinForms>
       <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
@@ -14549,10 +14549,10 @@
         <IsGenericType>true</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
-        <ObjectName />
+        <ObjectName>MyReadOnlyBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
-        <IsGenericType>false</IsGenericType>
+        <IsGenericType>true</IsGenericType>
       </InheritedTypeWinForms>
       <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
@@ -16748,10 +16748,10 @@
         <IsGenericType>true</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
-        <ObjectName />
+        <ObjectName>MyBusinessBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
-        <IsGenericType>false</IsGenericType>
+        <IsGenericType>true</IsGenericType>
       </InheritedTypeWinForms>
       <UseUnitOfWorkType>DocClassEditCollGetter</UseUnitOfWorkType>
       <ConstructorVisibility>Default</ConstructorVisibility>
@@ -17516,10 +17516,10 @@
         <IsGenericType>true</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
-        <ObjectName />
+        <ObjectName>MyDynamicBindingListBase&lt;ITEM&gt;</ObjectName>
         <AssemblyFile />
         <Type />
-        <IsGenericType>false</IsGenericType>
+        <IsGenericType>true</IsGenericType>
       </InheritedTypeWinForms>
       <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
@@ -20358,10 +20358,10 @@
         <IsGenericType>true</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
-        <ObjectName />
+        <ObjectName>MyDynamicBindingListBase&lt;ITEM&gt;</ObjectName>
         <AssemblyFile />
         <Type />
-        <IsGenericType>false</IsGenericType>
+        <IsGenericType>true</IsGenericType>
       </InheritedTypeWinForms>
       <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
@@ -27121,10 +27121,10 @@
         <IsGenericType>true</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
-        <ObjectName />
+        <ObjectName>MyBusinessBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
-        <IsGenericType>false</IsGenericType>
+        <IsGenericType>true</IsGenericType>
       </InheritedTypeWinForms>
       <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
@@ -37217,7 +37217,7 @@
   </CslaObjects>
   <AssociativeEntities />
   <ConnectionString>Server=(local);Database=DocStore;persist security info=False;user id=sa;password=password_1234;packet size=4096</ConnectionString>
-  <ProjectName>Inherits WPF VB</ProjectName>
-  <TargetDirectory>C:\VS Projects\CslaGenFork 4.5\CoverageTest\Inherits\I-WPF-VB</TargetDirectory>
+  <ProjectName>Inherits Dual VB</ProjectName>
+  <TargetDirectory>..\Inherits\Inherits-WIN-VB</TargetDirectory>
   <FileVersion>4.0.5</FileVersion>
 </CslaGeneratorUnit>

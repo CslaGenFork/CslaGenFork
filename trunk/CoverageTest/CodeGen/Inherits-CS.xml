@@ -56,7 +56,7 @@
     <SeparateNamespaces>true</SeparateNamespaces>
     <SeparateBaseClasses>false</SeparateBaseClasses>
     <UseDotDesignerFileNameConvention>true</UseDotDesignerFileNameConvention>
-    <OutputLanguage>VB</OutputLanguage>
+    <OutputLanguage>CSharp</OutputLanguage>
     <UpdateOnlyDirtyChildren>true</UpdateOnlyDirtyChildren>
     <PropertyMode>Default</PropertyMode>
     <GenerateAuthorization>FullSupport</GenerateAuthorization>
@@ -83,7 +83,7 @@
     <DalName />
     <UsesCslaAuthorizationProvider>false</UsesCslaAuthorizationProvider>
     <GenerateWinForms>true</GenerateWinForms>
-    <GenerateWPF>false</GenerateWPF>
+    <GenerateWPF>true</GenerateWPF>
     <GenerateSilverlight4>false</GenerateSilverlight4>
     <SilverlightUsingServices>false</SilverlightUsingServices>
     <DatabaseConnection>DocStore</DatabaseConnection>
@@ -2428,16 +2428,16 @@
         <string>IHaveGenericInterface&lt;T&gt;</string>
       </Interfaces>
       <InheritedType>
-        <ObjectName>MyDynamicBindingListBase&lt;OBJ&gt;</ObjectName>
+        <ObjectName>MyDynamicListBase&lt;OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
-        <ObjectName />
+        <ObjectName>MyDynamicBindingListBase&lt;ITEM&gt;</ObjectName>
         <AssemblyFile />
         <Type />
-        <IsGenericType>false</IsGenericType>
+        <IsGenericType>true</IsGenericType>
       </InheritedTypeWinForms>
       <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
@@ -2771,7 +2771,7 @@
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
-          <DefaultValue>new SmartDate(Date.Now)</DefaultValue>
+          <DefaultValue>new SmartDate(DateTime.Now)</DefaultValue>
           <Attributes />
           <Interfaces />
           <BusinessRules />
@@ -3255,16 +3255,16 @@
         <string>IHaveGenericInterface&lt;T&gt;</string>
       </Interfaces>
       <InheritedType>
-        <ObjectName>MyBusinessBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
+        <ObjectName>MyBusinessListBase&lt;LIST,OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
-        <ObjectName />
+        <ObjectName>MyBusinessBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
-        <IsGenericType>false</IsGenericType>
+        <IsGenericType>true</IsGenericType>
       </InheritedTypeWinForms>
       <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
@@ -3598,7 +3598,7 @@
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
-          <DefaultValue>new SmartDate(Date.Now)</DefaultValue>
+          <DefaultValue>new SmartDate(DateTime.Now)</DefaultValue>
           <Attributes />
           <Interfaces />
           <BusinessRules />
@@ -4020,16 +4020,16 @@
         <string>IHaveGenericInterface&lt;T&gt;</string>
       </Interfaces>
       <InheritedType>
-        <ObjectName>MyReadOnlyBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
+        <ObjectName>MyReadOnlyListBase&lt;LIST,OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
-        <ObjectName />
+        <ObjectName>MyReadOnlyBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
-        <IsGenericType>false</IsGenericType>
+        <IsGenericType>true</IsGenericType>
       </InheritedTypeWinForms>
       <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
@@ -6282,7 +6282,7 @@
                     <IsGenericType>false</IsGenericType>
                     <IsGenericParameter>true</IsGenericParameter>
                     <GenericType>Empty</GenericType>
-                    <Value xsi:type="xsd:string">Function() UserInformation.UserId</Value>
+                    <Value xsi:type="xsd:string">() =&gt; UserInformation.UserId</Value>
                   </BusinessRuleConstructorParameter>
                   <BusinessRuleConstructorParameter>
                     <Name>roles</Name>
@@ -6347,7 +6347,7 @@
                     <IsGenericType>false</IsGenericType>
                     <IsGenericParameter>true</IsGenericParameter>
                     <GenericType>Empty</GenericType>
-                    <Value xsi:type="xsd:string">Function() UserInformation.UserId</Value>
+                    <Value xsi:type="xsd:string">() =&gt; UserInformation.UserId</Value>
                   </BusinessRuleConstructorParameter>
                 </ConstructorParameters>
               </BusinessRuleConstructor>
@@ -7668,7 +7668,7 @@
           <CustomPropertyType />
           <DeclarationMode>ManagedWithTypeConversion</DeclarationMode>
           <BackingFieldType>SmartDate</BackingFieldType>
-          <DefaultValue>new SmartDate(Date.Today)</DefaultValue>
+          <DefaultValue>new SmartDate(DateTime.Today)</DefaultValue>
           <Attributes>
             <string>DateNotInFutureAttr("Please pay attention: {0} can't be in the future.")</string>
           </Attributes>
@@ -8568,7 +8568,7 @@
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
-          <DefaultValue>Date.Now</DefaultValue>
+          <DefaultValue>DateTime.Now</DefaultValue>
           <Attributes />
           <Interfaces />
           <BusinessRules />
@@ -9352,7 +9352,7 @@
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
-          <DefaultValue>CShort(Fix(1))</DefaultValue>
+          <DefaultValue>(short)1</DefaultValue>
           <Attributes />
           <Interfaces />
           <BusinessRules />
@@ -9410,7 +9410,7 @@
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
-          <DefaultValue>New Byte() {}</DefaultValue>
+          <DefaultValue>new byte[0]</DefaultValue>
           <Attributes />
           <Interfaces />
           <BusinessRules />
@@ -9593,7 +9593,7 @@
           <CustomPropertyType />
           <DeclarationMode>ManagedWithTypeConversion</DeclarationMode>
           <BackingFieldType>SmartDate</BackingFieldType>
-          <DefaultValue>new SmartDate(Date.Now)</DefaultValue>
+          <DefaultValue>new SmartDate(DateTime.Now)</DefaultValue>
           <Attributes />
           <Interfaces />
           <BusinessRules />
@@ -10884,16 +10884,16 @@
         <string>IHaveGenericInterface&lt;T&gt;</string>
       </Interfaces>
       <InheritedType>
-        <ObjectName>MyBusinessBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
+        <ObjectName>MyBusinessListBase&lt;LIST,OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
-        <ObjectName />
+        <ObjectName>MyBusinessBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
-        <IsGenericType>false</IsGenericType>
+        <IsGenericType>true</IsGenericType>
       </InheritedTypeWinForms>
       <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
@@ -11502,7 +11502,7 @@
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
-          <DefaultValue>new SmartDate(Date.Now)</DefaultValue>
+          <DefaultValue>new SmartDate(DateTime.Now)</DefaultValue>
           <Attributes />
           <Interfaces />
           <BusinessRules />
@@ -12932,7 +12932,7 @@
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
-          <DefaultValue>new SmartDate(Date.Now)</DefaultValue>
+          <DefaultValue>new SmartDate(DateTime.Now)</DefaultValue>
           <Attributes />
           <Interfaces />
           <BusinessRules />
@@ -14543,16 +14543,16 @@
         <string>IHaveGenericInterface&lt;T&gt;</string>
       </Interfaces>
       <InheritedType>
-        <ObjectName>MyReadOnlyBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
+        <ObjectName>MyReadOnlyListBase&lt;LIST,OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
-        <ObjectName />
+        <ObjectName>MyReadOnlyBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
-        <IsGenericType>false</IsGenericType>
+        <IsGenericType>true</IsGenericType>
       </InheritedTypeWinForms>
       <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
@@ -16258,7 +16258,7 @@
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
-          <DefaultValue>new SmartDate(Date.Now)</DefaultValue>
+          <DefaultValue>new SmartDate(DateTime.Now)</DefaultValue>
           <Attributes />
           <Interfaces />
           <BusinessRules />
@@ -16742,16 +16742,16 @@
         <string>IHaveGenericInterface&lt;T&gt;</string>
       </Interfaces>
       <InheritedType>
-        <ObjectName>MyBusinessBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
+        <ObjectName>MyBusinessListBase&lt;LIST,OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
-        <ObjectName />
+        <ObjectName>MyBusinessBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
-        <IsGenericType>false</IsGenericType>
+        <IsGenericType>true</IsGenericType>
       </InheritedTypeWinForms>
       <UseUnitOfWorkType>DocClassEditCollGetter</UseUnitOfWorkType>
       <ConstructorVisibility>Default</ConstructorVisibility>
@@ -17027,7 +17027,7 @@
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
           <Attributes>
-            <string>Required(AllowEmptyStrings := false, ErrorMessage := "Must fill.")</string>
+            <string>Required(AllowEmptyStrings = false, ErrorMessage = "Must fill.")</string>
           </Attributes>
           <Interfaces />
           <BusinessRules />
@@ -17088,7 +17088,7 @@
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
-          <DefaultValue>new SmartDate(Date.Now)</DefaultValue>
+          <DefaultValue>new SmartDate(DateTime.Now)</DefaultValue>
           <Attributes />
           <Interfaces />
           <BusinessRules />
@@ -17510,16 +17510,16 @@
         <string>IHaveGenericInterface&lt;T&gt;</string>
       </Interfaces>
       <InheritedType>
-        <ObjectName>MyDynamicBindingListBase&lt;OBJ&gt;</ObjectName>
+        <ObjectName>MyDynamicListBase&lt;OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
-        <ObjectName />
+        <ObjectName>MyDynamicBindingListBase&lt;ITEM&gt;</ObjectName>
         <AssemblyFile />
         <Type />
-        <IsGenericType>false</IsGenericType>
+        <IsGenericType>true</IsGenericType>
       </InheritedTypeWinForms>
       <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
@@ -17866,7 +17866,7 @@
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
           <Attributes>
-            <string>Required(AllowEmptyStrings := false, ErrorMessage := "Must fill.")</string>
+            <string>Required(AllowEmptyStrings = false, ErrorMessage = "Must fill.")</string>
           </Attributes>
           <Interfaces />
           <BusinessRules>
@@ -18065,7 +18065,7 @@
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
-          <DefaultValue>new SmartDate(Date.Now)</DefaultValue>
+          <DefaultValue>new SmartDate(DateTime.Now)</DefaultValue>
           <Attributes />
           <Interfaces />
           <BusinessRules />
@@ -19933,7 +19933,7 @@
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
-          <DefaultValue>new SmartDate(Date.Now)</DefaultValue>
+          <DefaultValue>new SmartDate(DateTime.Now)</DefaultValue>
           <Attributes />
           <Interfaces />
           <BusinessRules />
@@ -20352,16 +20352,16 @@
       <Attributes />
       <Interfaces />
       <InheritedType>
-        <ObjectName>MyDynamicBindingListBase&lt;OBJ&gt;</ObjectName>
+        <ObjectName>MyDynamicListBase&lt;OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
-        <ObjectName />
+        <ObjectName>MyDynamicBindingListBase&lt;ITEM&gt;</ObjectName>
         <AssemblyFile />
         <Type />
-        <IsGenericType>false</IsGenericType>
+        <IsGenericType>true</IsGenericType>
       </InheritedTypeWinForms>
       <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
@@ -20699,7 +20699,7 @@
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
-          <DefaultValue>new SmartDate(Date.Now)</DefaultValue>
+          <DefaultValue>new SmartDate(DateTime.Now)</DefaultValue>
           <Attributes />
           <Interfaces />
           <BusinessRules />
@@ -21706,7 +21706,7 @@
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
-          <DefaultValue>new SmartDate(Date.Now)</DefaultValue>
+          <DefaultValue>new SmartDate(DateTime.Now)</DefaultValue>
           <Attributes />
           <Interfaces />
           <BusinessRules />
@@ -22599,7 +22599,7 @@
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
           <Attributes>
-            <string>Required(AllowEmptyStrings := false, ErrorMessage := "Must fill.")</string>
+            <string>Required(AllowEmptyStrings = false, ErrorMessage = "Must fill.")</string>
           </Attributes>
           <Interfaces />
           <BusinessRules>
@@ -22798,7 +22798,7 @@
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
-          <DefaultValue>new SmartDate(Date.Now)</DefaultValue>
+          <DefaultValue>new SmartDate(DateTime.Now)</DefaultValue>
           <Attributes />
           <Interfaces />
           <BusinessRules />
@@ -23559,7 +23559,7 @@
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
-          <DefaultValue>new SmartDate(Date.Now)</DefaultValue>
+          <DefaultValue>new SmartDate(DateTime.Now)</DefaultValue>
           <Attributes />
           <Interfaces />
           <BusinessRules />
@@ -25853,7 +25853,7 @@
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
-          <DefaultValue>Date.Today.Year</DefaultValue>
+          <DefaultValue>DateTime.Today.Year</DefaultValue>
           <Attributes />
           <Interfaces />
           <BusinessRules>
@@ -26632,7 +26632,7 @@
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
-          <DefaultValue>new SmartDate(Date.Now)</DefaultValue>
+          <DefaultValue>new SmartDate(DateTime.Now)</DefaultValue>
           <Attributes />
           <Interfaces />
           <BusinessRules />
@@ -27115,16 +27115,16 @@
       <Attributes />
       <Interfaces />
       <InheritedType>
-        <ObjectName>MyBusinessBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
+        <ObjectName>MyBusinessListBase&lt;LIST,OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
         <IsGenericType>true</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
-        <ObjectName />
+        <ObjectName>MyBusinessBindingListBase&lt;LIST,OBJ&gt;</ObjectName>
         <AssemblyFile />
         <Type />
-        <IsGenericType>false</IsGenericType>
+        <IsGenericType>true</IsGenericType>
       </InheritedTypeWinForms>
       <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
@@ -27792,7 +27792,7 @@
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
-          <DefaultValue>new SmartDate(Date.Now)</DefaultValue>
+          <DefaultValue>new SmartDate(DateTime.Now)</DefaultValue>
           <Attributes />
           <Interfaces />
           <BusinessRules />
@@ -29216,7 +29216,7 @@
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
-          <DefaultValue>new SmartDate(Date.Now)</DefaultValue>
+          <DefaultValue>new SmartDate(DateTime.Now)</DefaultValue>
           <Attributes />
           <Interfaces />
           <BusinessRules />
@@ -31276,7 +31276,7 @@
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
-          <DefaultValue>new SmartDate(Date.Now)</DefaultValue>
+          <DefaultValue>new SmartDate(DateTime.Now)</DefaultValue>
           <Attributes />
           <Interfaces />
           <BusinessRules />
@@ -33004,7 +33004,7 @@
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
-          <DefaultValue>New Byte() {}</DefaultValue>
+          <DefaultValue>new byte[0]</DefaultValue>
           <Attributes />
           <Interfaces />
           <BusinessRules />
@@ -33187,7 +33187,7 @@
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
-          <DefaultValue>new SmartDate(Date.Now)</DefaultValue>
+          <DefaultValue>new SmartDate(DateTime.Now)</DefaultValue>
           <Attributes />
           <Interfaces />
           <BusinessRules />
@@ -35870,7 +35870,7 @@
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
-          <DefaultValue>new SmartDate(Date.Now)</DefaultValue>
+          <DefaultValue>new SmartDate(DateTime.Now)</DefaultValue>
           <Attributes />
           <Interfaces />
           <BusinessRules />
@@ -37217,7 +37217,7 @@
   </CslaObjects>
   <AssociativeEntities />
   <ConnectionString>Server=(local);Database=DocStore;persist security info=False;user id=sa;password=password_1234;packet size=4096</ConnectionString>
-  <ProjectName>Inherits WIN VB</ProjectName>
-  <TargetDirectory>C:\VS Projects\CslaGenFork 4.5\CoverageTest\Inherits\I-WIN-VB</TargetDirectory>
+  <ProjectName>Inherits Dual CS</ProjectName>
+  <TargetDirectory>..\Inherits\Inherits-WIN-CS</TargetDirectory>
   <FileVersion>4.0.5</FileVersion>
 </CslaGeneratorUnit>

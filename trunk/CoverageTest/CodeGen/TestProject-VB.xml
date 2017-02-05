@@ -7650,6 +7650,6 @@
   <AssociativeEntities />
   <ConnectionString>Server=(local);Database=DocStore;persist security info=False;user id=sa;password=password_1234;packet size=4096</ConnectionString>
   <ProjectName>Test Project VB</ProjectName>
-  <TargetDirectory>C:\VS Projects\CslaGenFork 4.5\CoverageTest\TestProjects\VB</TargetDirectory>
+  <TargetDirectory>..\TestProject\VB</TargetDirectory>
   <FileVersion>4.0.5</FileVersion>
 </CslaGeneratorUnit>
