@@ -365,7 +365,7 @@ namespace CslaGenerator.Metadata
             get
             {
                 if (ObjectType.IsCriteriaClass())
-                    return true;
+                    _isGenericType = true;
 
                 return _isGenericType;
             }
@@ -388,7 +388,7 @@ namespace CslaGenerator.Metadata
             get
             {
                 if (ObjectType.IsCriteriaClass())
-                    return "T";
+                    _genericArguments = "T";
 
                 if (_isGenericType)
                     return _genericArguments;

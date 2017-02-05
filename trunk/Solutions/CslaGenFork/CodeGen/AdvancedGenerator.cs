@@ -920,7 +920,7 @@ namespace CslaGenerator.CodeGen
 
         private void DoGenerateDal(CslaObjectInfo objInfo, GenerationStep step)
         {
-            if (objInfo.IsUnitOfWork())
+            if (objInfo.IsUnitOfWork() || objInfo.IsBaseClass() || objInfo.IsCriteriaClass())
                 return;
 
             if (!EditableSwitchableAlert(objInfo) || !UnitOfWorkAlert(objInfo))
