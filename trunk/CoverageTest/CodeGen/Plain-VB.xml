@@ -82,7 +82,7 @@
     <GenerateDatabaseClass>true</GenerateDatabaseClass>
     <DalName />
     <UsesCslaAuthorizationProvider>false</UsesCslaAuthorizationProvider>
-    <GenerateWinForms>false</GenerateWinForms>
+    <GenerateWinForms>true</GenerateWinForms>
     <GenerateWPF>true</GenerateWPF>
     <GenerateSilverlight4>false</GenerateSilverlight4>
     <SilverlightUsingServices>false</SilverlightUsingServices>
@@ -31107,7 +31107,7 @@
   </CslaObjects>
   <AssociativeEntities />
   <ConnectionString>Server=(local);Database=DocStore;persist security info=False;user id=sa;password=password_1234;packet size=4096</ConnectionString>
-  <ProjectName>Plain WPF VB</ProjectName>
-  <TargetDirectory>C:\VS Projects\CslaGenFork 4.5\CoverageTest\Plain\P-WPF-VB</TargetDirectory>
+  <ProjectName>Plain Dual VB</ProjectName>
+  <TargetDirectory>..\Plain\Plain-WIN-VB</TargetDirectory>
   <FileVersion>4.0.5</FileVersion>
 </CslaGeneratorUnit>
