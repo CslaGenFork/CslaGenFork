@@ -643,7 +643,7 @@ namespace CslaGenerator.Util.PropertyBags
                     if (propertyName == "MainLoadParameters" || propertyName == "SecondaryLoadParameters")
                         return false;
 
-                if (objectType[0] == "OneToMultiple" &&
+                if (objectType[0] == "OneToMany" &&
                     (propertyName == "SecondaryObject" ||
                     propertyName == "SecondaryPropertyName" ||
                     propertyName == "SecondaryCollectionTypeName" ||

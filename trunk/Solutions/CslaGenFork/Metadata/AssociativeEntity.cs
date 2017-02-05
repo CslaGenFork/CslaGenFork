@@ -341,9 +341,9 @@ namespace CslaGenerator.Metadata
             _validationError = string.Empty;
 
             if (RelationType == ObjectRelationType.OneToMany)
-                ValidOneToMultiple();
+                ValidOneToMany();
             else
-                ValidMultipleToMultiple();
+                ValidManyToMany();
 
             return _validationError;
         }
@@ -404,7 +404,7 @@ namespace CslaGenerator.Metadata
             }
         }
 
-        private void ValidOneToMultiple()
+        private void ValidOneToMany()
         {
             var mainCslaObject = _cslaObjects.Find(MainObject);
             var mainCslaObjectCollection = _cslaObjects.Find(MainCollectionTypeName);
@@ -466,9 +466,9 @@ namespace CslaGenerator.Metadata
             }
         }
 
-        private void ValidMultipleToMultiple()
+        private void ValidManyToMany()
         {
-            ValidOneToMultiple();
+            ValidOneToMany();
 
             var secondaryCslaObject = _cslaObjects.Find(SecondaryObject);
             var secondaryCslaObjectCollection = _cslaObjects.Find(SecondaryCollectionTypeName);

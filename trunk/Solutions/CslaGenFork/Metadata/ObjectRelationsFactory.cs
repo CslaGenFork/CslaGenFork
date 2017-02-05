@@ -161,7 +161,7 @@ namespace CslaGenerator.Metadata
         public void BuildRelationObjects(AssociativeEntity.EntityFacade entity)
         {
             StringBuilder sb;
-            var isMultipleToMultiple = (_entity.RelationType == ObjectRelationType.ManyToMany);
+            var isManyToMany = (_entity.RelationType == ObjectRelationType.ManyToMany);
 
             // make property if needed
             ChildProperty child;
@@ -235,7 +235,7 @@ namespace CslaGenerator.Metadata
             }
 
             // populate collection item
-            if (!isMultipleToMultiple)
+            if (!isManyToMany)
                 item.ParentInsertOnly = true;
             else
                 item.ParentInsertOnly = false;
@@ -243,7 +243,7 @@ namespace CslaGenerator.Metadata
             item.ParentProperties = BuildParentProperties(item);
             var suffix = string.Empty;
             var objectName = entity.ItemTypeName;
-            if (isMultipleToMultiple &&
+            if (isManyToMany &&
                 !_entity.MainLazyLoad &&
                 !_entity.SecondaryLazyLoad &&
                 _entity.Parent.Params.ORBItemsUseSingleSP)
@@ -268,7 +268,7 @@ namespace CslaGenerator.Metadata
             item.DeleteProcedureName = string.Empty;
 
             // handle collection item CriteriaNew
-            if (!isMultipleToMultiple)
+            if (!isManyToMany)
             {
                 BuildCollectionItemCriteriaNew(item, null, null, false);
             }
@@ -281,7 +281,7 @@ namespace CslaGenerator.Metadata
             }
 
             // handle collection item Criteria
-            if (!isMultipleToMultiple)
+            if (!isManyToMany)
             {
                 BuildCollectionItemCriteriaDelete(item, null, null, false);
             }
@@ -476,7 +476,7 @@ namespace CslaGenerator.Metadata
 
         #region Collection Item CriteriaNew
 
-        private void BuildCollectionItemCriteriaNew(CslaObjectInfo info, CslaObjectInfo myRootInfo, CslaObjectInfo otherRootInfo, bool isMultipleToMultiple)
+        private void BuildCollectionItemCriteriaNew(CslaObjectInfo info, CslaObjectInfo myRootInfo, CslaObjectInfo otherRootInfo, bool isManyToMany)
         {
             const string critName = "CriteriaNew";
 
@@ -528,7 +528,7 @@ namespace CslaGenerator.Metadata
             }
 
             // this is a 1 to N relation; no criteria properties needed
-            if (!isMultipleToMultiple)
+            if (!isManyToMany)
                 return;
 
             // populate collection CriteriaNew properties
@@ -628,7 +628,7 @@ namespace CslaGenerator.Metadata
 
         #region Collection Item CriteriaDelete
 
-        private void BuildCollectionItemCriteriaDelete(CslaObjectInfo info, CslaObjectInfo myRootInfo, CslaObjectInfo otherRootInfo, bool isMultipleToMultiple)
+        private void BuildCollectionItemCriteriaDelete(CslaObjectInfo info, CslaObjectInfo myRootInfo, CslaObjectInfo otherRootInfo, bool isManyToMany)
         {
             const string critName = "CriteriaDelete";
 
@@ -680,7 +680,7 @@ namespace CslaGenerator.Metadata
             }
 
             // populate collection Criteria properties
-            var addedProps = AddCriteriaProperties(info, criteria, myRootInfo, otherRootInfo, false, isMultipleToMultiple);
+            var addedProps = AddCriteriaProperties(info, criteria, myRootInfo, otherRootInfo, false, isManyToMany);
 
             if (addedProps.Count > 0)
             {
@@ -764,13 +764,13 @@ namespace CslaGenerator.Metadata
 
         #region Criteria and Property helpers
 
-        private List<string> AddCriteriaProperties(CslaObjectInfo info, Criteria crit, CslaObjectInfo myRootInfo, CslaObjectInfo otherRootInfo, bool isGet, bool isMultipleToMultiple)
+        private List<string> AddCriteriaProperties(CslaObjectInfo info, Criteria crit, CslaObjectInfo myRootInfo, CslaObjectInfo otherRootInfo, bool isGet, bool isManyToMany)
         {
             List<string> addedProperties = new List<string>();
             List<ValueProperty> primaryKeyProperties = new List<ValueProperty>();
 
             // for 1 to N relations use object ValueProperty instead of root's
-            if (!isMultipleToMultiple)
+            if (!isManyToMany)
                 myRootInfo = info;
 
             if (!isGet)
@@ -783,7 +783,7 @@ namespace CslaGenerator.Metadata
                 }
             }
 
-            if (isMultipleToMultiple || isGet)
+            if (isManyToMany || isGet)
             {
                 // retrieve related primary key properties
                 foreach (ValueProperty prop in otherRootInfo.ValueProperties)
@@ -796,7 +796,7 @@ namespace CslaGenerator.Metadata
             foreach (ValueProperty rootProp in primaryKeyProperties)
             {
                 ValueProperty prop = null;
-                if (isMultipleToMultiple)
+                if (isManyToMany)
                     prop = GetRelatedValueProperty(rootProp);
 
                 if (prop == null)
