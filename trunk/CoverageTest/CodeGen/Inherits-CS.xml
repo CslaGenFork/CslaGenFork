@@ -37217,7 +37217,7 @@
   </CslaObjects>
   <AssociativeEntities />
   <ConnectionString>Server=(local);Database=DocStore;persist security info=False;user id=sa;password=password_1234;packet size=4096</ConnectionString>
-  <ProjectName>Inherits Dual CS</ProjectName>
+  <ProjectName>Inherits CS</ProjectName>
   <TargetDirectory>..\Inherits\Inherits-WIN-CS</TargetDirectory>
   <FileVersion>4.0.5</FileVersion>
 </CslaGeneratorUnit>

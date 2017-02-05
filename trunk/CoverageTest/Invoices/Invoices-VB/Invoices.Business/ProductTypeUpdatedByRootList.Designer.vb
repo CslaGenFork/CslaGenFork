@@ -215,8 +215,8 @@ Namespace Invoices.Business
 
         #Region " ProductTypeEditSaved nested class "
 
-        ' TODO: edit "ProductTypeUpdatedByRootList.vb", uncomment the "OnDeserialized" method and add the following line:
-        ' TODO:     ProductTypeEditSaved.Register(Me)
+        'TODO: edit "ProductTypeUpdatedByRootList.vb", uncomment the "OnDeserialized" method and add the following line:
+        'TODO:     ProductTypeEditSaved.Register(Me)
 
         ''' <summary>
         ''' Nested class to manage the Saved events of <see cref="ProductTypeEdit"/>

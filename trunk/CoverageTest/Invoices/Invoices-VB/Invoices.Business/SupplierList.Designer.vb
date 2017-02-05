@@ -271,8 +271,8 @@ Namespace Invoices.Business
 
         #Region " SupplierEditSaved nested class "
 
-        ' TODO: edit "SupplierList.vb", uncomment the "OnDeserialized" method and add the following line:
-        ' TODO:     SupplierEditSaved.Register(Me)
+        'TODO: edit "SupplierList.vb", uncomment the "OnDeserialized" method and add the following line:
+        'TODO:     SupplierEditSaved.Register(Me)
 
         ''' <summary>
         ''' Nested class to manage the Saved events of <see cref="SupplierEdit"/>

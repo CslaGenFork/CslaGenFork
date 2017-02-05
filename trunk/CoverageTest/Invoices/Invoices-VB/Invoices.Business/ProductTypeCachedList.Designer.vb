@@ -257,8 +257,8 @@ Namespace Invoices.Business
 
         #Region " ProductTypeItemSaved nested class "
 
-        ' TODO: edit "ProductTypeCachedList.vb", uncomment the "OnDeserialized" method and add the following line:
-        ' TODO:     ProductTypeItemSaved.Register(Me)
+        'TODO: edit "ProductTypeCachedList.vb", uncomment the "OnDeserialized" method and add the following line:
+        'TODO:     ProductTypeItemSaved.Register(Me)
 
         ''' <summary>
         ''' Nested class to manage the Saved events of <see cref="ProductTypeItem"/>

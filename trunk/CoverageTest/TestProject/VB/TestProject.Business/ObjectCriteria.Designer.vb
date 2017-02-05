@@ -14,7 +14,7 @@ Namespace TestProject.Business
     <Attributable>
     <Serializable()>
     Partial Public Class ObjectCriteria
-    Inherits CriteriaBase(of ObjectCriteria)
+    Inherits CriteriaBase(Of ObjectCriteria)
         Implements IHaveInterface
 
         #Region " Business Properties "

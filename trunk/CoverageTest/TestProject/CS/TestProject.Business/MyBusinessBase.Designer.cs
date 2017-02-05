@@ -9,7 +9,7 @@ namespace TestProject.Business
 {
 
     /// <summary>
-    /// MyBusinessBase (new CSLA stereotype).<br/>
+    /// MyBusinessBase (base class).<br/>
     /// This is a generated base class of <see cref="MyBusinessBase"/> business object.
     /// </summary>
     [Attributable]

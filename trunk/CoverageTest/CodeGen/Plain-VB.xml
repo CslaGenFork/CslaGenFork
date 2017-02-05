@@ -31107,7 +31107,7 @@
   </CslaObjects>
   <AssociativeEntities />
   <ConnectionString>Server=(local);Database=DocStore;persist security info=False;user id=sa;password=password_1234;packet size=4096</ConnectionString>
-  <ProjectName>Plain Dual VB</ProjectName>
+  <ProjectName>Plain VB</ProjectName>
   <TargetDirectory>..\Plain\Plain-WIN-VB</TargetDirectory>
   <FileVersion>4.0.5</FileVersion>
 </CslaGeneratorUnit>

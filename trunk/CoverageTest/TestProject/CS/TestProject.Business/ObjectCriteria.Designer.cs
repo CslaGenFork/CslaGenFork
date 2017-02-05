@@ -9,7 +9,7 @@ namespace TestProject.Business
 {
 
     /// <summary>
-    /// This is a summary (new CSLA stereotype).<br/>
+    /// This is a summary (criteria class).<br/>
     /// This is a generated base class of <see cref="ObjectCriteria"/> business object.
     /// </summary>
     [Attributable]
