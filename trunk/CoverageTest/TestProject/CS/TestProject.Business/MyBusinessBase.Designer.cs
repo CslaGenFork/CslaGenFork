@@ -14,7 +14,7 @@ namespace TestProject.Business
     /// </summary>
     [Attributable]
     [Serializable]
-    public partial class MyBusinessBase : IHaveInterface
+    public abstract partial class MyBusinessBase : IHaveInterface
     {
 
         #region Business Properties

@@ -13,7 +13,7 @@ Namespace TestProject.Business
     ''' </summary>
     <Attributable>
     <Serializable()>
-    Partial Public Class MyBusinessBase
+    Partial Public MustInherit Class MyBusinessBase
         Implements IHaveInterface
 
         #Region " Business Properties "
