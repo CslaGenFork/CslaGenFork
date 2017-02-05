@@ -16,7 +16,7 @@ Imports System
 Imports Csla
 <%
 bool usesContext = false;
-usesContext = TypeHelper.IsObjectType(Info.ObjectType) || Info.IsUnitOfWork();
+usesContext = TypeHelper.IsObjectType(Info.ObjectType) || Info.IsUnitOfWork() || Info.IsCriteriaClass();
 bool hasFactoryCache = false;
 bool hasDataPortalCache = false;
 CslaObjectInfo invalidatorInfo = Info;
@@ -118,7 +118,7 @@ if (cachedContextUtilitiesNamespace != string.Empty)
         else if(isUpdatable)
         {
             %>
-            <%= commentLine %>AddHandler <%= Info.UpdaterType %>.<%= Info.UpdaterType %>Saved, AddressOf <%= Info.UpdaterType %>SavedHandler
+            <%= Info.UpdaterType %>Saved.Register(Me)
             <%
         }
         %>
@@ -127,7 +127,7 @@ if (cachedContextUtilitiesNamespace != string.Empty)
 
         #End Region
         <%
-if (Info.IsNotUnitOfWork())
+if (Info.IsNotUnitOfWork() && Info.IsNotBaseClass() && Info.IsNotCriteriaClass())
 {
     bool generateRuleRegion = false;
     bool generateAuthRegion = false;
