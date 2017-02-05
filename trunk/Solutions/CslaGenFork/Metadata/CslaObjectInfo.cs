@@ -1732,8 +1732,7 @@ namespace CslaGenerator.Metadata
             if (this.IsDynamicEditableRoot() ||
                 this.IsEditableChild() ||
                 this.IsEditableRoot() ||
-                this.IsEditableSwitchable() ||
-                this.IsCriteriaClass())
+                this.IsEditableSwitchable())
                 return "BusinessBase";
 
             if (this.IsNameValueList())
@@ -1760,6 +1759,9 @@ namespace CslaGenerator.Metadata
 
                 return "ReadOnlyBase";
             }
+
+            if (this.IsCriteriaClass())
+                return "CriteriaBase";
 
             return string.Empty;
         }
