@@ -5805,8 +5805,9 @@ namespace CslaGenerator.CodeGen
 
         private static string GetInitialClassDeclaration(CslaObjectInfo info)
         {
-            return string.Format("{0} partial class {1} : ",
+            return string.Format("{0} {1}partial class {2} : ",
                 info.ClassVisibility == ClassVisibility.Public ? "public" : "internal",
+                info.IsBaseClass() ? "abstract " : String.Empty,
                 info.ObjectName);
         }
 

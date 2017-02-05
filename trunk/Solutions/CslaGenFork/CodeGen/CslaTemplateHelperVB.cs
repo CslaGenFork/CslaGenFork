@@ -2615,6 +2615,10 @@ namespace CslaGenerator.CodeGen
             if (!string.IsNullOrEmpty(init))
                 return string.Format(", {0}", init);*/
 
+            if (prop.BackingFieldType == TypeCodeEx.SmartDate ||
+                prop.PropertyType == TypeCodeEx.SmartDate && prop.BackingFieldType == TypeCodeEx.Empty)
+                return ", New SmartDate()";
+
             return String.Format(
                 ", New {0}(Nothing)",
                 (prop.DeclarationMode == PropertyDeclaration.Managed ||
@@ -5847,8 +5851,9 @@ namespace CslaGenerator.CodeGen
 
         public static string GetInitialClassDeclaration(CslaObjectInfo info)
         {
-            return string.Format("Partial {0} Class {1}",
+            return string.Format("Partial {0} {1}Class {2}",
                 info.ClassVisibility == ClassVisibility.Public ? "Public" : "Friend",
+                info.IsBaseClass() ? "MustInherit " : String.Empty,
                 info.ObjectName);
         }
 
