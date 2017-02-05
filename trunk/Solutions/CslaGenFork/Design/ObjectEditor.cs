@@ -21,7 +21,7 @@ namespace CslaGenerator.Design
     /// ValueProperty.WriteAuthzRuleType, 
     /// ChildProperty.ReadAuthzRuleType, 
     /// ChildProperty.WriteAuthzRuleType, 
-    /// Criteria.CustomClass.
+    /// Criteria.CustomCriteriaClass.
     /// </remarks>
     public class ObjectEditor : UITypeEditor
     {

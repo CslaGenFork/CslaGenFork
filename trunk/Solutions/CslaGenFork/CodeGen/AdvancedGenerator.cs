@@ -631,17 +631,20 @@ namespace CslaGenerator.CodeGen
 
         private bool EditableSwitchableAlert(CslaObjectInfo objInfo)
         {
+            if (objInfo.IsNotEditableSwitchable())
+                return true;
+
             _unit.GenerationTimer.Stop();
             var result = true;
-            if (objInfo.IsEditableSwitchable())
-            {
-                var alert = MessageBox.Show(
-                    objInfo.ObjectName + @" is a EditableSwitchable stereotype" + Environment.NewLine +
-                    @"and isn't supported on this release of CslaGenFork." + Environment.NewLine + Environment.NewLine + @"Do you want to continue?",
-                    @"CslaGenFork object generation", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
-                if (alert == DialogResult.Cancel)
-                    result = false;
-            }
+            var message =
+                string.Format("{0} is an EditableSwitchable stereotype.", objInfo.ObjectName) + Environment.NewLine +
+                @"This isn't supported on this release of CslaGenFork." + Environment.NewLine + Environment.NewLine +
+                @"Do you want to generate this object?";
+
+            var alert = MessageBox.Show(message, @"CslaGenFork object generation", MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning);
+            if (alert == DialogResult.No)
+                result = false;
 
             _unit.GenerationTimer.Start();
             return result;
@@ -649,17 +652,65 @@ namespace CslaGenerator.CodeGen
 
         private bool UnitOfWorkAlert(CslaObjectInfo objInfo)
         {
+            if (objInfo.IsNotUnitOfWork())
+                return true;
+
             _unit.GenerationTimer.Stop();
             var result = true;
-            if (objInfo.IsUnitOfWork() &&
-                (objInfo.UnitOfWorkType == UnitOfWorkFunction.Deleter || objInfo.UnitOfWorkType == UnitOfWorkFunction.Updater))
+            if (objInfo.UnitOfWorkType == UnitOfWorkFunction.Deleter ||
+                objInfo.UnitOfWorkType == UnitOfWorkFunction.Updater)
             {
+                var message =
+                    string.Format("{0} is a UnitOfWork stereotype of type {1}.", objInfo.ObjectName,
+                        objInfo.UnitOfWorkType) + Environment.NewLine +
+                    @"This isn't supported on this release of CslaGenFork." + Environment.NewLine + Environment.NewLine +
+                    @"Do you want to generate this object?";
+
                 var alert = MessageBox.Show(
-                    objInfo.ObjectName + @" is a UnitOfWork stereotype of type " + objInfo.UnitOfWorkType + Environment.NewLine +
-                    @"and isn't supported on this release of CslaGenFork." + Environment.NewLine + Environment.NewLine + @"Do you want to continue?",
-                    @"CslaGenFork object generation", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
-                if (alert == DialogResult.Cancel)
+                    message,
+                    @"CslaGenFork object generation", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (alert == DialogResult.No)
                     result = false;
+            }
+
+            _unit.GenerationTimer.Start();
+            return result;
+        }
+
+        private bool BaseClassAlert(CslaObjectInfo objInfo)
+        {
+            if (objInfo.IsNotBaseClass())
+                return true;
+
+            _unit.GenerationTimer.Stop();
+            var result = true;
+            var message = string.Empty;
+            if (!objInfo.IsGenericType)
+            {
+                result = false;
+                message = "{0} is a non generic BaseClass.";
+            }
+            else
+            {
+                var arguments = objInfo.GetGenericArguments().Length;
+                if (arguments == 0 || arguments > 2)
+                {
+                    result = false;
+                    message = "{0} has " + arguments + " generic arguments.";
+                }
+            }
+
+            if (!result)
+            {
+                message =
+                    string.Format(message, objInfo.GenericName) + Environment.NewLine +
+                    @"This isn't supported on this release of CslaGenFork." + Environment.NewLine + Environment.NewLine +
+                    @"Do you want to generate this object?";
+
+                var alert = MessageBox.Show(message, @"CslaGenFork object generation", MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning);
+                if (alert == DialogResult.Yes)
+                    result = true;
             }
 
             _unit.GenerationTimer.Start();
@@ -668,7 +719,7 @@ namespace CslaGenerator.CodeGen
 
         private void GenerateObject(CslaObjectInfo objInfo)
         {
-            if (!EditableSwitchableAlert(objInfo) || !UnitOfWorkAlert(objInfo))
+            if (!EditableSwitchableAlert(objInfo) || !UnitOfWorkAlert(objInfo) || !BaseClassAlert(objInfo))
             {
                 _objFailed++;
                 OnGenerationInformation("Object generation cancelled." + Environment.NewLine);

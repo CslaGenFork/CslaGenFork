@@ -142,6 +142,24 @@ namespace CslaGenerator.Util
             return false;
         }
 
+        public static bool IsDualInheritor(this CslaObjectType cslaType)
+        {
+            if (cslaType.IsEditableRootCollection() ||
+                cslaType.IsEditableChildCollection() ||
+                cslaType.IsDynamicEditableRootCollection() ||
+                cslaType.IsReadOnlyCollection())
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public static bool IsDualInheritor(this CslaObjectInfo info)
+        {
+            return info.ObjectType.IsDualInheritor();
+        }
+
         public static bool IsCollectionType(this CslaObjectType cslaType)
         {
             if (cslaType.IsEditableRootCollection() ||
@@ -435,7 +453,7 @@ namespace CslaGenerator.Util
             if (string.IsNullOrWhiteSpace(text))
                 return string.Empty;
 
-            var newText = new StringBuilder(text.Length*2);
+            var newText = new StringBuilder(text.Length * 2);
             newText.Append(text[0]);
             for (var i = 1; i < text.Length; i++)
             {
