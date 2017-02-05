@@ -156,7 +156,7 @@ namespace CslaGenerator.Metadata
             }
         }
 
-        private string[] GetParameters()
+        public string[] GetParameters()
         {
             var result = string.Empty;
 
@@ -169,6 +169,9 @@ namespace CslaGenerator.Metadata
                     result = finalName.Substring(start + 1, end - start - 1);
             }
 
+            if (result == string.Empty)
+                return new string[0];
+
             return result.Split(',');
         }
 
@@ -177,7 +180,7 @@ namespace CslaGenerator.Metadata
         // Not used. Keep as it might be useful
         public Type GetInheritedType()
         {
-            if (_assemblyFile != null && _assemblyFile != string.Empty)
+            if (!string.IsNullOrEmpty(_assemblyFile))
             {
                 var assembly = Assembly.LoadFrom(_assemblyFile);
                 var t = assembly.GetType(_type);

@@ -1782,6 +1782,9 @@ namespace CslaGenerator.Metadata
 
         public string[] GetGenericArguments()
         {
+            if (_genericArguments == string.Empty)
+                return new string[0];
+
             return _genericArguments.TrimStart('<').TrimEnd('>').Split(',');
         }
 
