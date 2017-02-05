@@ -1,0 +1,468 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1D340338-FB1B-46E8-ACFB-BBF98A6FC31C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>
+    </RootNamespace>
+    <AssemblyName>DocStore.Business</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>Windows</MyType>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>DocStore.Business.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>DocStore.Business.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Csla, Version=4.6.500.0, Culture=neutral, PublicKeyToken=93be5fdc093e4c30, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\CSLA-Core.4.6.500\lib\net45\Csla.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="CslaGenFork.Rules">
+      <HintPath>..\..\..\Dependencies\CslaGenFork.Rules.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Net.Http" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+    <Import Include="System.Threading.Tasks" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\Admin\Role.Designer.vb">
+      <Link>Admin\Role.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\Admin\Role.vb">
+      <Link>Admin\Role.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\Admin\RoleInfo.Designer.vb">
+      <Link>Admin\RoleInfo.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\Admin\RoleInfo.vb">
+      <Link>Admin\RoleInfo.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\Admin\RoleList.Designer.vb">
+      <Link>Admin\RoleList.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\Admin\RoleList.vb">
+      <Link>Admin\RoleList.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\Admin\RoleNVL.Designer.vb">
+      <Link>Admin\RoleNVL.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\Admin\RoleNVL.vb">
+      <Link>Admin\RoleNVL.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\Admin\User.Designer.vb">
+      <Link>Admin\User.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\Admin\User.vb">
+      <Link>Admin\User.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\Admin\UserAllNVL.Designer.vb">
+      <Link>Admin\UserAllNVL.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\Admin\UserAllNVL.vb">
+      <Link>Admin\UserAllNVL.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\Admin\UserInactiveNVL.Designer.vb">
+      <Link>Admin\UserInactiveNVL.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\Admin\UserInactiveNVL.vb">
+      <Link>Admin\UserInactiveNVL.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\Admin\UserInfo.Designer.vb">
+      <Link>Admin\UserInfo.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\Admin\UserInfo.vb">
+      <Link>Admin\UserInfo.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\Admin\UserList.Designer.vb">
+      <Link>Admin\UserList.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\Admin\UserList.vb">
+      <Link>Admin\UserList.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\Admin\UserNVL.Designer.vb">
+      <Link>Admin\UserNVL.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\Admin\UserNVL.vb">
+      <Link>Admin\UserNVL.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\Circulations\CircInfo.Designer.vb">
+      <Link>Circulations\CircInfo.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\Circulations\CircInfo.vb">
+      <Link>Circulations\CircInfo.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\Circulations\CircList.Designer.vb">
+      <Link>Circulations\CircList.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\Circulations\CircList.vb">
+      <Link>Circulations\CircList.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\Circulations\CircTypeTagNVL.Designer.vb">
+      <Link>Circulations\CircTypeTagNVL.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\Circulations\CircTypeTagNVL.vb">
+      <Link>Circulations\CircTypeTagNVL.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\Circulations\DecisionTypeTagNVL.Designer.vb">
+      <Link>Circulations\DecisionTypeTagNVL.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\Circulations\DecisionTypeTagNVL.vb">
+      <Link>Circulations\DecisionTypeTagNVL.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\Circulations\DocCirc.Designer.vb">
+      <Link>Circulations\DocCirc.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\Circulations\DocCirc.vb">
+      <Link>Circulations\DocCirc.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\Circulations\DocCircColl.Designer.vb">
+      <Link>Circulations\DocCircColl.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\Circulations\DocCircColl.vb">
+      <Link>Circulations\DocCircColl.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\Circulations\FolderCirc.Designer.vb">
+      <Link>Circulations\FolderCirc.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\Circulations\FolderCirc.vb">
+      <Link>Circulations\FolderCirc.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\Circulations\FolderCircColl.Designer.vb">
+      <Link>Circulations\FolderCircColl.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\Circulations\FolderCircColl.vb">
+      <Link>Circulations\FolderCircColl.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\Doc.Designer.vb">
+      <Link>Doc.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\Doc.vb">
+      <Link>Doc.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocClass.Designer.vb">
+      <Link>DocClass.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocClass.vb">
+      <Link>DocClass.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocClassEdit.Designer.vb">
+      <Link>DocClassEdit.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocClassEdit.vb">
+      <Link>DocClassEdit.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocClassEditColl.Designer.vb">
+      <Link>DocClassEditColl.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocClassEditColl.vb">
+      <Link>DocClassEditColl.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocClassEditCollGetter.Designer.vb">
+      <Link>DocClassEditCollGetter.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocClassEditCollGetter.vb">
+      <Link>DocClassEditCollGetter.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocClassInfo.Designer.vb">
+      <Link>DocClassInfo.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocClassInfo.vb">
+      <Link>DocClassInfo.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocClassList.Designer.vb">
+      <Link>DocClassList.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocClassList.vb">
+      <Link>DocClassList.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocClassNVL.Designer.vb">
+      <Link>DocClassNVL.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocClassNVL.vb">
+      <Link>DocClassNVL.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocContent.Designer.vb">
+      <Link>DocContent.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocContent.vb">
+      <Link>DocContent.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocContentInfo.Designer.vb">
+      <Link>DocContentInfo.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocContentInfo.vb">
+      <Link>DocContentInfo.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocContentList.Designer.vb">
+      <Link>DocContentList.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocContentList.vb">
+      <Link>DocContentList.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocContentRO.Designer.vb">
+      <Link>DocContentRO.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocContentRO.vb">
+      <Link>DocContentRO.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocEditGetter.Designer.vb">
+      <Link>DocEditGetter.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocEditGetter.vb">
+      <Link>DocEditGetter.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocEditUoWCreator.Designer.vb">
+      <Link>DocEditUoWCreator.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocEditUoWCreator.vb">
+      <Link>DocEditUoWCreator.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocEditUoWGetter.Designer.vb">
+      <Link>DocEditUoWGetter.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocEditUoWGetter.vb">
+      <Link>DocEditUoWGetter.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocFolder.Designer.vb">
+      <Link>DocFolder.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocFolder.vb">
+      <Link>DocFolder.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocFolderColl.Designer.vb">
+      <Link>DocFolderColl.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocFolderColl.vb">
+      <Link>DocFolderColl.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocInfo.Designer.vb">
+      <Link>DocInfo.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocInfo.vb">
+      <Link>DocInfo.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocList.Designer.vb">
+      <Link>DocList.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocList.vb">
+      <Link>DocList.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocListGetter.Designer.vb">
+      <Link>DocListGetter.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocListGetter.vb">
+      <Link>DocListGetter.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocStatusNVL.Designer.vb">
+      <Link>DocStatusNVL.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocStatusNVL.vb">
+      <Link>DocStatusNVL.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocType.Designer.vb">
+      <Link>DocType.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocType.vb">
+      <Link>DocType.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocTypeEdit.Designer.vb">
+      <Link>DocTypeEdit.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocTypeEdit.vb">
+      <Link>DocTypeEdit.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocTypeEditColl.Designer.vb">
+      <Link>DocTypeEditColl.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocTypeEditColl.vb">
+      <Link>DocTypeEditColl.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocTypeInfo.Designer.vb">
+      <Link>DocTypeInfo.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocTypeInfo.vb">
+      <Link>DocTypeInfo.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocTypeList.Designer.vb">
+      <Link>DocTypeList.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocTypeList.vb">
+      <Link>DocTypeList.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocTypeNVL.Designer.vb">
+      <Link>DocTypeNVL.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\DocTypeNVL.vb">
+      <Link>DocTypeNVL.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\Folder.Designer.vb">
+      <Link>Folder.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\Folder.vb">
+      <Link>Folder.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\FolderDoc.Designer.vb">
+      <Link>FolderDoc.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\FolderDoc.vb">
+      <Link>FolderDoc.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\FolderDocColl.Designer.vb">
+      <Link>FolderDocColl.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\FolderDocColl.vb">
+      <Link>FolderDocColl.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\FolderInfo.Designer.vb">
+      <Link>FolderInfo.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\FolderInfo.vb">
+      <Link>FolderInfo.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\FolderList.Designer.vb">
+      <Link>FolderList.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\FolderList.vb">
+      <Link>FolderList.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\FolderStatusNVL.Designer.vb">
+      <Link>FolderStatusNVL.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\FolderStatusNVL.vb">
+      <Link>FolderStatusNVL.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\FolderType.Designer.vb">
+      <Link>FolderType.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\FolderType.vb">
+      <Link>FolderType.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\FolderTypeInfo.Designer.vb">
+      <Link>FolderTypeInfo.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\FolderTypeInfo.vb">
+      <Link>FolderTypeInfo.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\FolderTypeList.Designer.vb">
+      <Link>FolderTypeList.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\FolderTypeList.vb">
+      <Link>FolderTypeList.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\FolderTypeNVL.Designer.vb">
+      <Link>FolderTypeNVL.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\FolderTypeNVL.vb">
+      <Link>FolderTypeNVL.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\SampleUnitOfWork.Designer.vb">
+      <Link>SampleUnitOfWork.Designer.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\SampleUnitOfWork.vb">
+      <Link>SampleUnitOfWork.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\Security\UserInformation.vb">
+      <Link>Security\UserInformation.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\Util\DatabaseDocStore.vb">
+      <Link>Util\DatabaseDocStore.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-VB\DocStore.Business\Util\DataPortalHookArgs.vb">
+      <Link>Util\DataPortalHookArgs.vb</Link>
+    </Compile>
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\..\..\packages\CSLA-Core.4.6.500\analyzers\c#\Csla.Analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
