@@ -1138,7 +1138,7 @@
         <string>IHaveInterface</string>
       </Interfaces>
       <InheritedType>
-        <ObjectName>MyBusinessBase</ObjectName>
+        <ObjectName />
         <AssemblyFile />
         <Type />
         <IsGenericType>false</IsGenericType>

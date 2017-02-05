@@ -76,8 +76,8 @@ Namespace Invoices.Business
 
         #Region " Cache Invalidation "
 
-        '' TODO: edit "ProductTypeDynaItem.cs", uncomment the "OnDeserialized" method and add the following line:
-        '' TODO:     AddHandler ProductTypeDynaItemSaved, AddressOf ProductTypeDynaItemSavedHandler
+        'TODO: edit "ProductTypeDynaItem.vb", uncomment the "OnDeserialized" method and add the following line:
+        'TODO:     AddHandler ProductTypeDynaItemSaved, AddressOf ProductTypeDynaItemSavedHandler
 
         Private Sub ProductTypeDynaItemSavedHandler(sender As Object, e As Csla.Core.SavedEventArgs)
             '' this runs on the client

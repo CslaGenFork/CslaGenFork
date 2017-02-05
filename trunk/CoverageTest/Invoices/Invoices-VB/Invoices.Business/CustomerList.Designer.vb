@@ -197,8 +197,8 @@ Namespace Invoices.Business
 
         #Region " CustomerEditSaved nested class "
 
-        ' TODO: edit "CustomerList.vb", uncomment the "OnDeserialized" method and add the following line:
-        ' TODO:     CustomerEditSaved.Register(Me)
+        'TODO: edit "CustomerList.vb", uncomment the "OnDeserialized" method and add the following line:
+        'TODO:     CustomerEditSaved.Register(Me)
 
         ''' <summary>
         ''' Nested class to manage the Saved events of <see cref="CustomerEdit"/>

@@ -214,8 +214,8 @@ Namespace Invoices.Business
 
         #Region " Cache Invalidation "
 
-        '' TODO: edit "SupplierEdit.cs", uncomment the "OnDeserialized" method and add the following line:
-        '' TODO:     AddHandler SupplierEditSaved, AddressOf SupplierEditSavedHandler
+        'TODO: edit "SupplierEdit.vb", uncomment the "OnDeserialized" method and add the following line:
+        'TODO:     AddHandler SupplierEditSaved, AddressOf SupplierEditSavedHandler
 
         Private Sub SupplierEditSavedHandler(sender As Object, e As Csla.Core.SavedEventArgs)
             '' this runs on the client
