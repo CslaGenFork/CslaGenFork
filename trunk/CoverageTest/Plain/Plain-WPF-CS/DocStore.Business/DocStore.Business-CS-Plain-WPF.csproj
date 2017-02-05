@@ -1,0 +1,413 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{92D3F788-BCDC-4ECC-A585-671A72D4603A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DocStore</RootNamespace>
+    <AssemblyName>DocStore</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Csla, Version=4.6.500.0, Culture=neutral, PublicKeyToken=93be5fdc093e4c30, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\CSLA-Core.4.6.500\lib\net45\Csla.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="CslaGenFork.Rules">
+      <HintPath>..\..\..\Dependencies\CslaGenFork.Rules.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\Admin\Role.cs">
+      <Link>Admin\Role.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\Admin\Role.Designer.cs">
+      <Link>Admin\Role.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\Admin\RoleInfo.cs">
+      <Link>Admin\RoleInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\Admin\RoleInfo.Designer.cs">
+      <Link>Admin\RoleInfo.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\Admin\RoleList.cs">
+      <Link>Admin\RoleList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\Admin\RoleList.Designer.cs">
+      <Link>Admin\RoleList.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\Admin\RoleNVL.cs">
+      <Link>Admin\RoleNVL.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\Admin\RoleNVL.Designer.cs">
+      <Link>Admin\RoleNVL.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\Admin\User.cs">
+      <Link>Admin\User.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\Admin\User.Designer.cs">
+      <Link>Admin\User.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\Admin\UserAllNVL.cs">
+      <Link>Admin\UserAllNVL.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\Admin\UserAllNVL.Designer.cs">
+      <Link>Admin\UserAllNVL.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\Admin\UserInactiveNVL.cs">
+      <Link>Admin\UserInactiveNVL.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\Admin\UserInactiveNVL.Designer.cs">
+      <Link>Admin\UserInactiveNVL.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\Admin\UserInfo.cs">
+      <Link>Admin\UserInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\Admin\UserInfo.Designer.cs">
+      <Link>Admin\UserInfo.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\Admin\UserList.cs">
+      <Link>Admin\UserList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\Admin\UserList.Designer.cs">
+      <Link>Admin\UserList.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\Admin\UserNVL.cs">
+      <Link>Admin\UserNVL.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\Admin\UserNVL.Designer.cs">
+      <Link>Admin\UserNVL.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\Circulations\CircInfo.cs">
+      <Link>Circulations\CircInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\Circulations\CircInfo.Designer.cs">
+      <Link>Circulations\CircInfo.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\Circulations\CircList.cs">
+      <Link>Circulations\CircList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\Circulations\CircList.Designer.cs">
+      <Link>Circulations\CircList.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\Circulations\CircTypeTagNVL.cs">
+      <Link>Circulations\CircTypeTagNVL.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\Circulations\CircTypeTagNVL.Designer.cs">
+      <Link>Circulations\CircTypeTagNVL.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\Circulations\DecisionTypeTagNVL.cs">
+      <Link>Circulations\DecisionTypeTagNVL.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\Circulations\DecisionTypeTagNVL.Designer.cs">
+      <Link>Circulations\DecisionTypeTagNVL.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\Circulations\DocCirc.cs">
+      <Link>Circulations\DocCirc.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\Circulations\DocCirc.Designer.cs">
+      <Link>Circulations\DocCirc.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\Circulations\DocCircColl.cs">
+      <Link>Circulations\DocCircColl.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\Circulations\DocCircColl.Designer.cs">
+      <Link>Circulations\DocCircColl.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\Circulations\FolderCirc.cs">
+      <Link>Circulations\FolderCirc.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\Circulations\FolderCirc.Designer.cs">
+      <Link>Circulations\FolderCirc.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\Circulations\FolderCircColl.cs">
+      <Link>Circulations\FolderCircColl.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\Circulations\FolderCircColl.Designer.cs">
+      <Link>Circulations\FolderCircColl.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\Doc.cs">
+      <Link>Doc.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\Doc.Designer.cs">
+      <Link>Doc.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocClass.cs">
+      <Link>DocClass.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocClass.Designer.cs">
+      <Link>DocClass.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocClassEdit.cs">
+      <Link>DocClassEdit.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocClassEdit.Designer.cs">
+      <Link>DocClassEdit.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocClassEditColl.cs">
+      <Link>DocClassEditColl.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocClassEditColl.Designer.cs">
+      <Link>DocClassEditColl.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocClassEditCollGetter.cs">
+      <Link>DocClassEditCollGetter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocClassEditCollGetter.Designer.cs">
+      <Link>DocClassEditCollGetter.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocClassInfo.cs">
+      <Link>DocClassInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocClassInfo.Designer.cs">
+      <Link>DocClassInfo.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocClassList.cs">
+      <Link>DocClassList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocClassList.Designer.cs">
+      <Link>DocClassList.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocClassNVL.cs">
+      <Link>DocClassNVL.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocClassNVL.Designer.cs">
+      <Link>DocClassNVL.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocContent.cs">
+      <Link>DocContent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocContent.Designer.cs">
+      <Link>DocContent.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocContentInfo.cs">
+      <Link>DocContentInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocContentInfo.Designer.cs">
+      <Link>DocContentInfo.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocContentList.cs">
+      <Link>DocContentList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocContentList.Designer.cs">
+      <Link>DocContentList.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocContentRO.cs">
+      <Link>DocContentRO.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocContentRO.Designer.cs">
+      <Link>DocContentRO.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocEditGetter.cs">
+      <Link>DocEditGetter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocEditGetter.Designer.cs">
+      <Link>DocEditGetter.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocEditUoWCreator.cs">
+      <Link>DocEditUoWCreator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocEditUoWCreator.Designer.cs">
+      <Link>DocEditUoWCreator.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocEditUoWGetter.cs">
+      <Link>DocEditUoWGetter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocEditUoWGetter.Designer.cs">
+      <Link>DocEditUoWGetter.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocFolder.cs">
+      <Link>DocFolder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocFolder.Designer.cs">
+      <Link>DocFolder.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocFolderColl.cs">
+      <Link>DocFolderColl.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocFolderColl.Designer.cs">
+      <Link>DocFolderColl.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocInfo.cs">
+      <Link>DocInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocInfo.Designer.cs">
+      <Link>DocInfo.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocList.cs">
+      <Link>DocList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocList.Designer.cs">
+      <Link>DocList.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocListGetter.cs">
+      <Link>DocListGetter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocListGetter.Designer.cs">
+      <Link>DocListGetter.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocStatusNVL.cs">
+      <Link>DocStatusNVL.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocStatusNVL.Designer.cs">
+      <Link>DocStatusNVL.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocType.cs">
+      <Link>DocType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocType.Designer.cs">
+      <Link>DocType.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocTypeEdit.cs">
+      <Link>DocTypeEdit.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocTypeEdit.Designer.cs">
+      <Link>DocTypeEdit.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocTypeEditColl.cs">
+      <Link>DocTypeEditColl.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocTypeEditColl.Designer.cs">
+      <Link>DocTypeEditColl.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocTypeInfo.cs">
+      <Link>DocTypeInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocTypeInfo.Designer.cs">
+      <Link>DocTypeInfo.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocTypeList.cs">
+      <Link>DocTypeList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocTypeList.Designer.cs">
+      <Link>DocTypeList.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocTypeNVL.cs">
+      <Link>DocTypeNVL.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\DocTypeNVL.Designer.cs">
+      <Link>DocTypeNVL.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\Folder.cs">
+      <Link>Folder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\Folder.Designer.cs">
+      <Link>Folder.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\FolderDoc.cs">
+      <Link>FolderDoc.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\FolderDoc.Designer.cs">
+      <Link>FolderDoc.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\FolderDocColl.cs">
+      <Link>FolderDocColl.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\FolderDocColl.Designer.cs">
+      <Link>FolderDocColl.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\FolderInfo.cs">
+      <Link>FolderInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\FolderInfo.Designer.cs">
+      <Link>FolderInfo.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\FolderList.cs">
+      <Link>FolderList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\FolderList.Designer.cs">
+      <Link>FolderList.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\FolderStatusNVL.cs">
+      <Link>FolderStatusNVL.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\FolderStatusNVL.Designer.cs">
+      <Link>FolderStatusNVL.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\FolderType.cs">
+      <Link>FolderType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\FolderType.Designer.cs">
+      <Link>FolderType.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\FolderTypeInfo.cs">
+      <Link>FolderTypeInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\FolderTypeInfo.Designer.cs">
+      <Link>FolderTypeInfo.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\FolderTypeList.cs">
+      <Link>FolderTypeList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\FolderTypeList.Designer.cs">
+      <Link>FolderTypeList.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\FolderTypeNVL.cs">
+      <Link>FolderTypeNVL.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\FolderTypeNVL.Designer.cs">
+      <Link>FolderTypeNVL.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\SampleUnitOfWork.cs">
+      <Link>SampleUnitOfWork.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\SampleUnitOfWork.Designer.cs">
+      <Link>SampleUnitOfWork.Designer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\Security\UserInformation.cs">
+      <Link>Security\UserInformation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\Util\DatabaseDocStore.cs">
+      <Link>Util\DatabaseDocStore.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Plain-WIN-CS\DocStore.Business\Util\DataPortalHookArgs.cs">
+      <Link>Util\DataPortalHookArgs.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\..\..\packages\CSLA-Core.4.6.500\analyzers\c#\Csla.Analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
