@@ -90,7 +90,7 @@ if (Info.GenerateConstructor)
             if (childInfo4.UpdateValueProperties.Count > 0)
             {
                 %>
-            AddHandler <%= Info.UpdaterType %>.<%= Info.UpdaterType %>Saved, AddressOf <%= Info.UpdaterType %>SavedHandler
+            <%= Info.UpdaterType %>Saved.Register(Me)
             <%
             }
         }
