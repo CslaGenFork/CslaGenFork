@@ -1761,7 +1761,7 @@ namespace CslaGenerator.Metadata
             }
 
             if (this.IsCriteriaClass())
-                return "CriteriaBase";
+                return "BusinessBase";
 
             return string.Empty;
         }
