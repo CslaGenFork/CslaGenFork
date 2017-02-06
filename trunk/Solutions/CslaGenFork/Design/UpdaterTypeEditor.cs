@@ -76,7 +76,7 @@ namespace CslaGenerator.Design
         {
             if (cslaType.IsEditableRoot() ||
                 cslaType.IsEditableChild() ||
-                cslaType.IsDynamicEditableRootCollection() ||
+                cslaType.IsDynamicEditableRoot() ||
                 cslaType.IsEditableSwitchable())
                 return true;
 
