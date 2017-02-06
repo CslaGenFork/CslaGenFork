@@ -18,8 +18,8 @@ if (hasFactoryCache || hasDataPortalCache)
         {
             %>
 
-        '' TODO: edit "<%= Info.ObjectName %>.cs", uncomment the "OnDeserialized" method and add the following line:
-        '' TODO:     AddHandler <%= eventName %>, AddressOf <%= handlerName %>
+        'TODO: edit "<%= Info.ObjectName %>.vb", uncomment the "OnDeserialized" method and add the following line:
+        'TODO:     AddHandler <%= eventName %>, AddressOf <%= handlerName %>
 <%
         }
         %>

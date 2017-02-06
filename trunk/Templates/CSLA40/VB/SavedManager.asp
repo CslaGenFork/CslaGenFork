@@ -9,8 +9,8 @@ if (Info.UpdaterType != string.Empty)
     {
         %>
 
-        // TODO: edit "<%= Info.ObjectName %>.cs", uncomment the "OnDeserialized" method and add the following line:
-        // TODO:     <%= Info.UpdaterType %>Saved.Register(this);
+        'TODO: edit "<%= Info.ObjectName %>.vb", uncomment the "OnDeserialized" method and add the following line:
+        'TODO:     <%= Info.UpdaterType %>Saved.Register(Me)
 <%
     }
     %>
