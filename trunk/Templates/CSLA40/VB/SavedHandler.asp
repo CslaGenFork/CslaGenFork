@@ -36,7 +36,7 @@ if (Info.UpdaterType != string.Empty)
         // Check the updater willing to update
         if (!parentType2.SupportUpdateProperties)
         {
-            Errors.Append("SupportUpdateProperties is turned off in " + parentType2.ObjectName + "." + Environment.NewLine);
+            Errors.Append("Support Update Properties is turned off in " + parentType2.ObjectName + " (check 03. Behaviour & Criteria)." + Environment.NewLine);
         }
     }
     // If all went well, find the Identity property
