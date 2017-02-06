@@ -32,6 +32,7 @@ namespace CslaGenerator.Metadata
         private string _commandTimeout = string.Empty;
         private CslaObjectType _objectType = CslaObjectType.PlaceHolder;
         private UnitOfWorkFunction _unitOfWorkType;
+        private bool _isListBaseClass;
         private bool _isGenericType;
         private string _genericArguments = string.Empty;
         private ConstructorVisibility _constructorVisibility = ConstructorVisibility.Default;
@@ -353,6 +354,22 @@ namespace CslaGenerator.Metadata
                         OnPropertyChanged("ObjectName");
                         OnPropertyChanged("GenericName");
                     }
+                }
+            }
+        }
+
+        [Category("01. Common Options")]
+        [Description("Whether the base class is a list class or a plain object.")]
+        [UserFriendlyName("List Class")]
+        public bool IsListBaseClass
+        {
+            get { return _isListBaseClass; }
+            set
+            {
+                if (_isListBaseClass != value)
+                {
+                    _isListBaseClass = value;
+                    OnPropertyChanged("IsListBaseClass");
                 }
             }
         }

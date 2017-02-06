@@ -10,8 +10,11 @@
     <add key="PlaceHolder:UseUnitOfWorkType" value="false" />
     <add key="PlaceHolder:IsGenericType" value="true" />
     <add key="PlaceHolder:ObjectNamespace" value="false" />
-    <add key="PlaceHolder:ClassVisibility" value="true" />
-    <add key="PlaceHolder:ObjectType" value="true" />
+    <add key="PlaceHolder:IsListBaseClass" value="false" />
+    <add key="PlaceHolder:ClassVisibility" value="false" />
+    <add key="PlaceHolder:Namespaces" value="false" />
+    <add key="PlaceHolder:Attributes" value="false" />
+    <add key="PlaceHolder:Interfaces" value="false" />
     <add key="PlaceHolder:ConstructorVisibility" value="false" />
     <add key="PlaceHolder:Folder" value="false" />
     <add key="PlaceHolder:ChildCollectionProperties" value="false" />
@@ -84,7 +87,7 @@
     <add key="BaseClass:InheritedTypeWinForms" value="false" />
     <add key="BaseClass:UseUnitOfWorkType" value="false" />
     <add key="BaseClass:IsGenericType" value="true" />
-    <add key="BaseClass:ObjectType" value="true" />
+    <add key="BaseClass:IsListBaseClass" value="true" />
     <add key="BaseClass:ChildCollectionProperties" value="false" />
     <add key="BaseClass:ChildProperties" value="false" />
     <add key="BaseClass:InheritedChildCollectionProperties" value="false" />
@@ -98,7 +101,7 @@
     <add key="BaseClass:ParentType" value="false" />
     <add key="BaseClass:FindMethodsParameters" value="false" />
     <add key="BaseClass:IsPolymorphic" value="false" />
-    <add key="BaseClass:ItemType" value="false" />
+    <add key="BaseClass:ItemType" value="true" />
     <add key="BaseClass:ContainsItem" value="false" />
     <add key="BaseClass:UniqueItems" value="false" />
     <add key="BaseClass:UpdaterType" value="false" />
@@ -151,7 +154,7 @@
     <add key="CriteriaClass:UseUnitOfWorkType" value="false" />
     <add key="CriteriaClass:IsGenericType" value="true" />
     <add key="CriteriaClass:GenericArguments" value="true" />
-    <add key="CriteriaClass:ObjectType" value="true" />
+    <add key="CriteriaClass:IsListBaseClass" value="false" />
     <add key="CriteriaClass:ChildCollectionProperties" value="false" />
     <add key="CriteriaClass:ChildProperties" value="false" />
     <add key="CriteriaClass:InheritedChildCollectionProperties" value="false" />
@@ -220,7 +223,7 @@
     <add key="UnitOfWork:UseUnitOfWorkType" value="false" />
     <add key="UnitOfWork:IsGenericType" value="false" />
     <add key="UnitOfWork:GenericArguments" value="false" />
-    <add key="UnitOfWork:ObjectType" value="true" />
+    <add key="UnitOfWork:IsListBaseClass" value="false" />
     <add key="UnitOfWork:ChildCollectionProperties" value="false" />
     <add key="UnitOfWork:ChildProperties" value="false" />
     <add key="UnitOfWork:InheritedChildCollectionProperties" value="false" />
@@ -286,7 +289,7 @@
     <add key="NameValueList:UseUnitOfWorkType" value="false" />
     <add key="NameValueList:IsGenericType" value="false" />
     <add key="NameValueList:GenericArguments" value="false" />
-    <add key="NameValueList:ObjectType" value="true" />
+    <add key="NameValueList:IsListBaseClass" value="false" />
     <add key="NameValueList:ChildCollectionProperties" value="false" />
     <add key="NameValueList:ChildProperties" value="false" />
     <add key="NameValueList:InheritedChildCollectionProperties" value="false" />
@@ -349,7 +352,7 @@
     <add key="ReadOnlyCollection:UseUnitOfWorkType" value="true" />
     <add key="ReadOnlyCollection:IsGenericType" value="false" />
     <add key="ReadOnlyCollection:GenericArguments" value="false" />
-    <add key="ReadOnlyCollection:ObjectType" value="true" />
+    <add key="ReadOnlyCollection:IsListBaseClass" value="false" />
     <add key="ReadOnlyCollection:ChildCollectionProperties" value="false" />
     <add key="ReadOnlyCollection:ChildProperties" value="false" />
     <add key="ReadOnlyCollection:InheritedChildCollectionProperties" value="false" />
@@ -412,7 +415,7 @@
     <add key="ReadOnlyObject:UseUnitOfWorkType" value="true" />
     <add key="ReadOnlyObject:IsGenericType" value="false" />
     <add key="ReadOnlyObject:GenericArguments" value="false" />
-    <add key="ReadOnlyObject:ObjectType" value="true" />
+    <add key="ReadOnlyObject:IsListBaseClass" value="false" />
     <add key="ReadOnlyObject:ChildCollectionProperties" value="true" />
     <add key="ReadOnlyObject:ChildProperties" value="true" />
     <add key="ReadOnlyObject:ConvertValueProperties" value="true" />
@@ -472,7 +475,7 @@
     <add key="EditableChild:UseUnitOfWorkType" value="false" />
     <add key="EditableChild:IsGenericType" value="false" />
     <add key="EditableChild:GenericArguments" value="false" />
-    <add key="EditableChild:ObjectType" value="true" />
+    <add key="EditableChild:IsListBaseClass" value="false" />
     <add key="EditableChild:ChildCollectionProperties" value="true" />
     <add key="EditableChild:ChildProperties" value="true" />
     <add key="EditableChild:InheritedChildCollectionProperties" value="true" />
@@ -535,7 +538,7 @@
     <add key="EditableChildCollection:UseUnitOfWorkType" value="false" />
     <add key="EditableChildCollection:IsGenericType" value="false" />
     <add key="EditableChildCollection:GenericArguments" value="false" />
-    <add key="EditableChildCollection:ObjectType" value="true" />
+    <add key="EditableChildCollection:IsListBaseClass" value="false" />
     <add key="EditableChildCollection:ChildCollectionProperties" value="false" />
     <add key="EditableChildCollection:ChildProperties" value="false" />
     <add key="EditableChildCollection:InheritedChildCollectionProperties" value="false" />
@@ -598,7 +601,7 @@
     <add key="EditableRoot:UseUnitOfWorkType" value="true" />
     <add key="EditableRoot:IsGenericType" value="false" />
     <add key="EditableRoot:GenericArguments" value="false" />
-    <add key="EditableRoot:ObjectType" value="true" />
+    <add key="EditableRoot:IsListBaseClass" value="false" />
     <add key="EditableRoot:ChildCollectionProperties" value="true" />
     <add key="EditableRoot:ChildProperties" value="true" />
     <add key="EditableRoot:InheritedChildCollectionProperties" value="true" />
@@ -661,7 +664,7 @@
     <add key="EditableRootCollection:UseUnitOfWorkType" value="true" />
     <add key="EditableRootCollection:IsGenericType" value="false" />
     <add key="EditableRootCollection:GenericArguments" value="false" />
-    <add key="EditableRootCollection:ObjectType" value="true" />
+    <add key="EditableRootCollection:IsListBaseClass" value="false" />
     <add key="EditableRootCollection:ChildCollectionProperties" value="false" />
     <add key="EditableRootCollection:ChildProperties" value="false" />
     <add key="EditableRootCollection:InheritedChildCollectionProperties" value="false" />
@@ -724,7 +727,7 @@
     <add key="EditableSwitchable:UseUnitOfWorkType" value="true" />
     <add key="EditableSwitchable:IsGenericType" value="false" />
     <add key="EditableSwitchable:GenericArguments" value="false" />
-    <add key="EditableSwitchable:ObjectType" value="true" />
+    <add key="EditableSwitchable:IsListBaseClass" value="false" />
     <add key="EditableSwitchable:ChildCollectionProperties" value="true" />
     <add key="EditableSwitchable:ChildProperties" value="true" />
     <add key="EditableSwitchable:InheritedChildCollectionProperties" value="true" />
@@ -787,7 +790,7 @@
     <add key="DynamicEditableRoot:UseUnitOfWorkType" value="false" />
     <add key="DynamicEditableRoot:IsGenericType" value="false" />
     <add key="DynamicEditableRoot:GenericArguments" value="false" />
-    <add key="DynamicEditableRoot:ObjectType" value="true" />
+    <add key="DynamicEditableRoot:IsListBaseClass" value="false" />
     <add key="DynamicEditableRoot:ChildCollectionProperties" value="false" />
     <add key="DynamicEditableRoot:ChildProperties" value="false" />
     <add key="DynamicEditableRoot:InheritedChildCollectionProperties" value="false" />
@@ -850,7 +853,7 @@
     <add key="DynamicEditableRootCollection:UseUnitOfWorkType" value="true" />
     <add key="DynamicEditableRootCollection:IsGenericType" value="false" />
     <add key="DynamicEditableRootCollection:GenericArguments" value="false" />
-    <add key="DynamicEditableRootCollection:ObjectType" value="true" />
+    <add key="DynamicEditableRootCollection:IsListBaseClass" value="false" />
     <add key="DynamicEditableRootCollection:ChildCollectionProperties" value="false" />
     <add key="DynamicEditableRootCollection:ChildProperties" value="false" />
     <add key="DynamicEditableRootCollection:InheritedChildCollectionProperties" value="false" />
