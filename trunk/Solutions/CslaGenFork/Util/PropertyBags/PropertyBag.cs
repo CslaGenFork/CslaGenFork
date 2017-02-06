@@ -961,6 +961,13 @@ namespace CslaGenerator.Util.PropertyBags
                         if (!GeneratorController.Current.CurrentUnit.GenerationParams.DualListInheritance &&
                             propertyName == "InheritedTypeWinForms")
                             return false;
+                        if ((cslaObject.IsBaseClass() && !cslaObject.IsListBaseClass) &&
+                            propertyName == "ItemType")
+                            return false;
+                        if ((cslaObject.IsBaseClass() && cslaObject.IsListBaseClass) &&
+                            (propertyName == "ValueProperties" ||
+                            propertyName == "InheritedValueProperties"))
+                            return false;
                         if (!cslaObject.IsGenericType &&
                             propertyName == "GenericArguments")
                             return false;

@@ -142,6 +142,7 @@ namespace CslaGenerator.Controls
             if (e.ListChangedType == ListChangedType.ItemChanged &&
                 e.PropertyDescriptor.Name != "ObjectName" &&
                 e.PropertyDescriptor.Name != "ObjectType" &&
+                e.PropertyDescriptor.Name != "IsListBaseClass" &&
                 e.PropertyDescriptor.Name != "IsGenericType" &&
                 e.PropertyDescriptor.Name != "InheritedType" &&
                 e.PropertyDescriptor.Name != "InheritedTypeWinForms" &&
