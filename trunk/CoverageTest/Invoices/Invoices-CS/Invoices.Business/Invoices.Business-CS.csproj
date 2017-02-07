@@ -44,6 +44,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CriteriaSearchInvoice.cs" />
+    <Compile Include="CriteriaSearchInvoice.Designer.cs">
+      <DependentUpon>CriteriaSearchInvoice.cs</DependentUpon>
+    </Compile>
     <Compile Include="CustomerEdit.cs" />
     <Compile Include="CustomerEdit.Designer.cs">
       <DependentUpon>CustomerEdit.cs</DependentUpon>
@@ -57,6 +61,8 @@
       <DependentUpon>CustomerList.cs</DependentUpon>
     </Compile>
     <Compile Include="DataPortalHookArgs.cs" />
+    <Compile Include="IListLog.cs" />
+    <Compile Include="ILog.cs" />
     <Compile Include="InvoiceCreator.cs" />
     <Compile Include="InvoiceCreator.Designer.cs">
       <DependentUpon>InvoiceCreator.cs</DependentUpon>
@@ -104,6 +110,39 @@
     <Compile Include="InvoiceView.cs" />
     <Compile Include="InvoiceView.Designer.cs">
       <DependentUpon>InvoiceView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LogActions.cs" />
+    <Compile Include="LoggerBusinessBase.cs" />
+    <Compile Include="LoggerBusinessBase.Designer.cs">
+      <DependentUpon>LoggerBusinessBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LoggerBusinessBindingListBase.cs" />
+    <Compile Include="LoggerBusinessBindingListBase.Designer.cs">
+      <DependentUpon>LoggerBusinessBindingListBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LoggerBusinessListBase.cs" />
+    <Compile Include="LoggerBusinessListBase.Designer.cs">
+      <DependentUpon>LoggerBusinessListBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LoggerDynamicBindingListBase.cs" />
+    <Compile Include="LoggerDynamicBindingListBase.Designer.cs">
+      <DependentUpon>LoggerDynamicBindingListBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LoggerDynamicListBase.cs" />
+    <Compile Include="LoggerDynamicListBase.Designer.cs">
+      <DependentUpon>LoggerDynamicListBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LoggerReadOnlyBase.cs" />
+    <Compile Include="LoggerReadOnlyBase.Designer.cs">
+      <DependentUpon>LoggerReadOnlyBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LoggerReadOnlyBidingListBase.cs" />
+    <Compile Include="LoggerReadOnlyBidingListBase.Designer.cs">
+      <DependentUpon>LoggerReadOnlyBidingListBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LoggerReadOnlyListBase.cs" />
+    <Compile Include="LoggerReadOnlyListBase.Designer.cs">
+      <DependentUpon>LoggerReadOnlyListBase.cs</DependentUpon>
     </Compile>
     <Compile Include="ProductEdit.cs" />
     <Compile Include="ProductEdit.Designer.cs">

@@ -79,7 +79,6 @@ namespace Invoices.Business
         /// </summary>
         internal void UpdatePropertiesOnSaved(ProductTypeItem productTypeItem)
         {
-            LoadProperty(ProductTypeIdProperty, productTypeItem.ProductTypeId);
             LoadProperty(NameProperty, productTypeItem.Name);
         }
 

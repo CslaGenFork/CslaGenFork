@@ -92,7 +92,6 @@ namespace Invoices.Business
         /// </summary>
         internal void UpdatePropertiesOnSaved(CustomerEdit customerEdit)
         {
-            LoadProperty(CustomerIdProperty, customerEdit.CustomerId);
             LoadProperty(NameProperty, customerEdit.Name);
             LoadProperty(FiscalNumberProperty, customerEdit.FiscalNumber);
         }
