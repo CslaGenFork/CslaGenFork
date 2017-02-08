@@ -299,6 +299,8 @@
     </Compile>
     <Compile Include="Design\PropertyCollectionForm.cs">
     </Compile>
+    <Compile Include="Metadata\CslaBaseClasses.cs" />
+    <Compile Include="Metadata\CslaBaseClassesExtensions.cs" />
     <Compile Include="PathHelper.cs" />
     <Compile Include="Util\ContextHelper.cs" />
     <Compile Include="VersionHelper.cs" />

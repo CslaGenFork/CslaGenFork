@@ -861,7 +861,8 @@ namespace CslaGenerator.Util.PropertyBags
 
 
                 // Set ReadOnly properties
-                if (SelectedObject[0].IsCriteriaClass() &&
+                if ((SelectedObject[0].IsCriteriaClass() ||
+                     SelectedObject[0].IsBaseClass() && SelectedObject[0].CslaBaseClass != CslaBaseClasses.None) &&
                     (propertyInfo.Name == "IsGenericType" ||
                      propertyInfo.Name == "GenericArguments"))
                     isreadonly = true;
@@ -961,12 +962,12 @@ namespace CslaGenerator.Util.PropertyBags
                         if (!GeneratorController.Current.CurrentUnit.GenerationParams.DualListInheritance &&
                             propertyName == "InheritedTypeWinForms")
                             return false;
-                        if ((cslaObject.IsBaseClass() && !cslaObject.IsListBaseClass) &&
+                        if (cslaObject.IsBaseClass() && cslaObject.CslaBaseClass.IsNotListBaseClass() &&
                             propertyName == "ItemType")
                             return false;
-                        if ((cslaObject.IsBaseClass() && cslaObject.IsListBaseClass) &&
+                        if (cslaObject.IsBaseClass() && cslaObject.CslaBaseClass.IsNotObjectBaseClass() &&
                             (propertyName == "ValueProperties" ||
-                            propertyName == "InheritedValueProperties"))
+                             propertyName == "InheritedValueProperties"))
                             return false;
                         if (!cslaObject.IsGenericType &&
                             propertyName == "GenericArguments")

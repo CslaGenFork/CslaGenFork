@@ -5824,7 +5824,7 @@ namespace CslaGenerator.CodeGen
                 if (paramsNumber == 1)
                 {
                     result += string.Format("{0}(Of {1})",
-                        info.CslaBaseClass(isBindingList),
+                        info.GetCslaBaseClassName(isBindingList),
                         info.IsDynamicEditableRootCollection()
                             ? info.ItemType
                             : info.ObjectName);
@@ -5839,7 +5839,7 @@ namespace CslaGenerator.CodeGen
                     else
                     {
                         result += string.Format("{0}(Of {1}, {2})",
-                            info.CslaBaseClass(isBindingList),
+                            info.GetCslaBaseClassName(isBindingList),
                             info.ObjectName,
                             info.ItemType);
                     }
@@ -5881,7 +5881,7 @@ namespace CslaGenerator.CodeGen
                 var nameParameter = GetDataTypeGeneric(nameProperty, nameProperty.PropertyType);
 
                 result = string.Format("{0}(Of {1}, {2})",
-                    info.CslaBaseClass(),
+                    info.GetCslaBaseClassName(),
                     valueParameter,
                     nameParameter);
             }
