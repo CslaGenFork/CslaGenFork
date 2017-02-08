@@ -70,7 +70,7 @@ namespace CslaGenerator.Design
                         _baseTypes = new List<BaseProperty>();
 
                     var isCustomCriteria = !(obj.IsInheritedType || obj.IsInheritedTypeWinForms);
-                    var currentBaseClass = currentCslaObject.CslaBaseClass();
+                    var currentBaseClass = currentCslaObject.GetCslaBaseClassName();
 
                     foreach (var type in alltypes)
                     {
@@ -86,7 +86,7 @@ namespace CslaGenerator.Design
                             {
                                 var isMatch = currentCslaObject.IsObjectType() == type.IsObjectType() &&
                                               currentCslaObject.IsCollectionType() == type.IsCollectionType();
-                                var isSameBaseClass = isMatch && currentBaseClass == type.CslaBaseClass();
+                                var isSameBaseClass = isMatch && currentBaseClass == type.GetCslaBaseClassName();
 
                                 var isInheritedNonGeneric = type.IsBaseClass() &&
                                                             !type.IsGenericType;

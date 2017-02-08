@@ -32,7 +32,7 @@ namespace CslaGenerator.Metadata
         private string _commandTimeout = string.Empty;
         private CslaObjectType _objectType = CslaObjectType.PlaceHolder;
         private UnitOfWorkFunction _unitOfWorkType;
-        private bool _isListBaseClass;
+        private CslaBaseClasses _cslaBaseClass = CslaBaseClasses.None;
         private bool _isGenericType;
         private string _genericArguments = string.Empty;
         private ConstructorVisibility _constructorVisibility = ConstructorVisibility.Default;
@@ -359,17 +359,19 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("01. Common Options")]
-        [Description("Whether the base class is a list class or a plain object.")]
-        [UserFriendlyName("List Class")]
-        public bool IsListBaseClass
+        [Description("The Csla Base Class this class inherits from.")]
+        [UserFriendlyName("Csla Base Class")]
+        public CslaBaseClasses CslaBaseClass
         {
-            get { return _isListBaseClass; }
+            get { return _cslaBaseClass; }
             set
             {
-                if (_isListBaseClass != value)
+                if (_cslaBaseClass != value)
                 {
-                    _isListBaseClass = value;
-                    OnPropertyChanged("IsListBaseClass");
+                    _cslaBaseClass = value;
+                    OnPropertyChanged("CslaBaseClass");
+                    OnPropertyChanged("IsGenericType");
+                    OnPropertyChanged("GenericName");
                 }
             }
         }
@@ -382,6 +384,9 @@ namespace CslaGenerator.Metadata
             get
             {
                 if (ObjectType.IsCriteriaClass())
+                    _isGenericType = true;
+
+                if (ObjectType.IsBaseClass() && CslaBaseClass != CslaBaseClasses.None)
                     _isGenericType = true;
 
                 return _isGenericType;
@@ -406,6 +411,9 @@ namespace CslaGenerator.Metadata
             {
                 if (ObjectType.IsCriteriaClass())
                     _genericArguments = "T";
+
+                if (ObjectType.IsBaseClass() && CslaBaseClass != CslaBaseClasses.None)
+                    _genericArguments = CslaBaseClass.GetGenericArguments();
 
                 if (_isGenericType)
                     return _genericArguments;
@@ -1732,19 +1740,15 @@ namespace CslaGenerator.Metadata
             }
         }
 
-        #endregion
-
-        #region Public Methods
-
-        public string CslaBaseClass()
+        internal string GetCslaBaseClassName()
         {
             var dualListInheritance = GeneratorController.Current.CurrentUnit.GenerationParams.DualListInheritance;
             var isCollection = this.IsCollectionType();
 
-            return CslaBaseClass(dualListInheritance && isCollection);
+            return GetCslaBaseClassName(dualListInheritance && isCollection);
         }
 
-        internal string CslaBaseClass(bool isBindingList)
+        internal string GetCslaBaseClassName(bool isBindingList)
         {
             if (this.IsDynamicEditableRoot() ||
                 this.IsEditableChild() ||
@@ -1782,6 +1786,10 @@ namespace CslaGenerator.Metadata
 
             return string.Empty;
         }
+
+        #endregion
+
+        #region Public Methods
 
         public int NumberOfGenericArguments()
         {
