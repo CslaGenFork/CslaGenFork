@@ -410,16 +410,16 @@ namespace CslaGenerator.Util
 
         public static List<string> GetObjectTree(this CslaObjectInfo info)
         {
-            return info.FindAncestor().GetDescendents();
+            return info.FindAncestor().GetDescendants();
         }
 
-        public static List<string> GetDescendents(this CslaObjectInfo info)
+        public static List<string> GetDescendants(this CslaObjectInfo info)
         {
             var result = new List<string> {info.ObjectName};
 
             if (info.ObjectType.IsCollectionType())
             {
-                result.AddRange(info.Parent.CslaObjects.Find(info.ItemType).GetDescendents());
+                result.AddRange(info.Parent.CslaObjects.Find(info.ItemType).GetDescendants());
             }
 
             foreach (var child in info.GetCollectionChildProperties())
@@ -431,7 +431,7 @@ namespace CslaGenerator.Util
                 result.Add(childTypeName);
 
                 var childInfo = info.Parent.CslaObjects.Find(childTypeName);
-                result.AddRange(info.Parent.CslaObjects.Find(childInfo.ItemType).GetDescendents());
+                result.AddRange(info.Parent.CslaObjects.Find(childInfo.ItemType).GetDescendants());
             }
 
             foreach (var child in info.GetNonCollectionChildProperties())
@@ -440,7 +440,7 @@ namespace CslaGenerator.Util
                 if (childTypeName == string.Empty)
                     continue;
 
-                result.AddRange(info.Parent.CslaObjects.Find(childTypeName).GetDescendents());
+                result.AddRange(info.Parent.CslaObjects.Find(childTypeName).GetDescendants());
             }
 
             return result;
