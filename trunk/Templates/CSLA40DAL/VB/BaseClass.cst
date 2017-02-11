@@ -4,6 +4,7 @@
 <%@ Property Name="Warnings" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return warnings to master.cst" %>
 <%@ Property Name="Infos" Type="System.Text.StringBuilder" Optional="false" Category="Options" Description="Allows the template to return infos to master.cst" %>
 <%@ Property Name="MethodList" Type="System.Collections.Generic.List<AdvancedGenerator.ServiceMethod>" Optional="false" Category="Options" Description="Allows the template to return a list a partial methods to master.cst (for Silverlight using services)" %>
+<%@ Property Name="InlineQueryList" Type="System.Collections.Generic.List<AdvancedGenerator.InlineQuery>" Optional="false" Category="Options" Description="Allows the template to return a list a inline queries to master.cst" %>
 
 <%@ Assembly Name="DBSchemaInfo" %>
 <%@ Import Namespace="DBSchemaInfo.Base" %>
@@ -23,6 +24,8 @@
 <%
 if (Errors.Length == 0)
 {
+    string lastCriteria = "";
+    bool useInlineQuery = false;
     bool isUndeletable = false;
     string softDeleteProperty = string.Empty;
     bool isItem = false;
@@ -33,17 +36,16 @@ if (Errors.Length == 0)
     string bpcSpacer = String.Empty;
     bool ancestorIsCollection = false;
     int ancestorLoaderLevel = AncestorLoaderLevel(Info, out ancestorIsCollection);
-    GenerationStep genStep = GenerationStep.Business;
-    bool usesDTO = CurrentUnit.GenerationParams.GenerateDTO;
     int silverlightLevel = 0;
     bool genOptional = false;
+    bool first = true;
     bool? firstComment = null;
     %><!-- #include file="Header.asp" -->
 <%= GetUsingStatementsStringBusiness(Info, CurrentUnit) %>
-namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
+namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Business) %>
 {
-
-    <!-- #include file="XmlComment.asp" -->
+<%
+    %><!-- #include file="XmlComment.asp" -->
     <%
     if (GetAttributesString(Info.Attributes) != string.Empty)
     {
@@ -54,68 +56,64 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
     %>
     [Serializable]
     <%
+    String[] clauses = GetGenericWhereClause(Info);
     if (Info.InheritedType.FinalName != string.Empty)
     {
-        %><%= GetClassDeclarationInheritedType(Info) + GetInterfaceDeclaration(Info) %>
+        %><%= GetBaseClassDeclarationInheritedType(Info) + GetInterfaceDeclaration(Info) %>
 <%
+        if (clauses.Length > 0)
+        {
+            %>
+        <%= clauses[0] %>
+<%
+        }
+        if (clauses.Length > 1)
+        {
+            %>
+        <%= clauses[1] %>
+<%
+        }
     }
     else
     {
-        %><%= GetClassDeclaration(Info) + GetInterfaceDeclaration(Info) %>
+        %><%= GetBaseClassDeclaration(Info) + GetInterfaceDeclaration(Info) %>
 <%
+        if (clauses.Length > 0)
+        {
+            %>
+        <%= clauses[0] %>
+<%
+        }
+        if (clauses.Length > 1)
+        {
+            %>
+        <%= clauses[1] %>
+<%
+        }
     }
     %>
     {
+    <%
+    if (CslaBaseClassesExtensions.IsNotListBaseClass(Info.CslaBaseClass))
+    {
+        %>
 <!-- #include file="StaticFields.asp" -->
 <!-- #include file="StateFields.asp" -->
 <!-- #include file="BusinessProps.asp" -->
+    <%
+    }
+    %>
 <!-- #include file="ObjectOverrides.asp" -->
     <%
     Response.Write(Environment.NewLine);
-    if (Info.GenerateFactoryMethods)
-    {
-        if (CurrentUnit.GenerationParams.TargetIsCsla40)
-        {
-            %>
-<!-- #include file="EditableRoot_Factory.asp" -->
-<%
-        }
-        else
-        {
-            %>
-<!-- #include file="EditableRoot_Factory-45.asp" -->
-<%
-        }
-    }
-    Response.Write(Environment.NewLine);
     %>
 <!-- #include file="Constructor.asp" -->
-<!-- #include file="InvalidateCachedList.asp" -->
-<!-- #include file="Criteria.asp" -->
 <!-- #include file="ObjectAuthorizationMethods.asp" -->
 <!-- #include file="BusinessRules.asp" -->
 <%
-    if (Info.GenerateDataAccessRegion)
-    {
-        if (!genOptional)
-        {
-            Response.Write(Environment.NewLine);
-        }
-        %>
-<!-- #include file="EditableRoot_DataPortal.asp" -->
-<%
-        Response.Write(Environment.NewLine);
-%>
-<!-- #include file="DataPortalHooks.asp" -->
-<%
-    }
-    else
-    {
-        Response.Write(Environment.NewLine);
-    }
+    Response.Write(Environment.NewLine);
     %>
     }
-<!-- #include file="CriteriaObject.asp" -->
 }
 <%
 }

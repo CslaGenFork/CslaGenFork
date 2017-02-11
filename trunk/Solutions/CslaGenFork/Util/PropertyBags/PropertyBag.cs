@@ -861,6 +861,10 @@ namespace CslaGenerator.Util.PropertyBags
 
 
                 // Set ReadOnly properties
+                if (SelectedObject[0].IsPlaceHolder() &&
+                    propertyInfo.Name == "Generate")
+                    isreadonly = true;
+
                 if ((SelectedObject[0].IsCriteriaClass() ||
                      SelectedObject[0].IsBaseClass() && SelectedObject[0].CslaBaseClass != CslaBaseClasses.None) &&
                     (propertyInfo.Name == "IsGenericType" ||
@@ -974,8 +978,7 @@ namespace CslaGenerator.Util.PropertyBags
                             return false;
                         if (cslaObject.ObjectType.IsReadOnlyType() &&
                             !string.IsNullOrEmpty(cslaObject.ParentType) &&
-                            (propertyName == "UseUnitOfWorkType" ||
-                            propertyName == "GenerateInlineQueries"))
+                            propertyName == "UseUnitOfWorkType")
                             return false;
                         if (!(cslaObject.IsDynamicEditableRoot() ||
                             cslaObject.IsReadOnlyObject()) &&

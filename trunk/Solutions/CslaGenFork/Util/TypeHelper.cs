@@ -252,6 +252,17 @@ namespace CslaGenerator.Util
             return false;
         }
 
+        public static bool IsDynamicList(this CslaObjectInfo info)
+        {
+            return info.IsDynamicEditableRootCollection() ||
+                   info.IsBaseClass() && info.CslaBaseClass.IsDynamicEditableRootCollection();
+        }
+
+        public static bool IsNotDynamicList(this CslaObjectInfo info)
+        {
+            return !info.IsDynamicList();
+        }
+
         public static bool IsRootType(this CslaObjectInfo info)
         {
             if (info.IsEditableRoot() ||
