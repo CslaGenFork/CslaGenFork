@@ -12,7 +12,7 @@ namespace Invoices.Business
     /// This is a generated base class of <see cref="LoggerBusinessBase"/> business object.
     /// </summary>
     [Serializable]
-    public abstract partial class LoggerBusinessBase<T> : BusinessBase<T>, ILog 
+    public abstract partial class LoggerBusinessBase<T> : BusinessBase<T>, ILog
         where T : LoggerBusinessBase<T>, ILog
     {
 
@@ -59,10 +59,6 @@ namespace Invoices.Business
             get { return ReadProperty(LogUserProperty); }
             set { LoadProperty(LogUserProperty, value); }
         }
-
-        #endregion
-
-        #region Factory Methods
 
         #endregion
 

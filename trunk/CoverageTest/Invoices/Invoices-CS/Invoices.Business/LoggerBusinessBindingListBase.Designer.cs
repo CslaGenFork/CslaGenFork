@@ -2,7 +2,6 @@ using System;
 using System.Data;
 using System.Data.SqlClient;
 using Csla;
-using Csla.Core;
 using Csla.Data;
 
 namespace Invoices.Business
@@ -13,14 +12,10 @@ namespace Invoices.Business
     /// This is a generated base class of <see cref="LoggerBusinessBindingListBase"/> business object.
     /// </summary>
     [Serializable]
-    public abstract partial class LoggerBusinessBindingListBase<T,C> : BusinessBindingListBase<T,C>, IListLog
-        where T : LoggerBusinessBindingListBase<T,C>, IListLog
+    public abstract partial class LoggerBusinessBindingListBase<T, C> : BusinessBindingListBase<T, C>, IListLog
+        where T : LoggerBusinessBindingListBase<T, C>, IListLog
         where C : LoggerBusinessBase<C>
     {
-
-        #region Factory Methods
-
-        #endregion
 
         #region Constructor
 
