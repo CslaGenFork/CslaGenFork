@@ -5711,6 +5711,43 @@ namespace CslaGenerator.CodeGen
 
         #endregion
 
+        #region Base Class Declaration (inheritance and interfaces)
+
+        public static string GetBaseClassDeclaration(CslaObjectInfo info)
+        {
+            return GetClassDeclarationCore(info, null, false);
+        }
+
+        public static string GetBaseClassDeclarationInheritedType(CslaObjectInfo info)
+        {
+            return GetClassDeclarationCore(info, info.InheritedType, false);
+        }
+
+        public static string[] GetGenericWhereClause(CslaObjectInfo info)
+        {
+            var genericArguments = info.NumberOfGenericArguments();
+            var result = new string[genericArguments];
+            var arguments = info.GetWhereClause();
+
+            if (info.IsNotDynamicList() && info.InheritedType != null && info.InheritedType.FinalName != string.Empty)
+            {
+                arguments[0][1] = info.InheritedType.FinalName;
+                if (genericArguments == 2 && info.ItemType != string.Empty)
+                    arguments[1][1] = string.Format("{0}<{1}>", info.ItemType, info.GetGenericArguments()[1]);
+            }
+
+            result[0] = string.Format("where {0} : {1}", arguments[0][0], arguments[0][1]);
+            if (arguments[0][2].Length != 0)
+                result[0] += string.Format(", {0}", arguments[0][2]);
+
+            if (genericArguments == 2)
+                result[1] = string.Format("where {0} : {1}", arguments[1][0], arguments[1][1]);
+
+            return result;
+        }
+
+        #endregion
+
         #region Class Declaration (inheritance and interfaces)
 
         public static string GetClassDeclaration(CslaObjectInfo info)
@@ -5739,6 +5776,9 @@ namespace CslaGenerator.CodeGen
 
             var paramsNumber = info.NumberOfGenericArguments();
 
+            if (paramsNumber == 2)
+                result = result.Replace(",", ", ");
+
             if (inheritedType != null && inheritedType.FinalName != string.Empty)
             {
                 var finalName = inheritedType.FinalName;
@@ -5750,17 +5790,15 @@ namespace CslaGenerator.CodeGen
                     if (finalName.Contains(search))
                         finalName = finalName.Replace(search,
                             string.Format("<{0}>",
-                                info.IsDynamicEditableRootCollection()
-                                    ? info.ItemType
-                                    : info.ObjectName));
-
+                                info.IsDynamicList() ? info.GetListItem() : info.GetObjectName()));
                 }
-                else
+                else // 2 generic parameters
                 {
                     var secondParameter = inheritedType.SecondParameter;
 
                     var search = string.Format("<{0},{1}>", firstParameter, secondParameter);
                     if (finalName.Contains(search))
+                    {
                         if (info.IsNameValueList())
                         {
                             finalName = GetNameValueListClassDeclaration(info, finalName, search);
@@ -5768,23 +5806,22 @@ namespace CslaGenerator.CodeGen
                         else
                         {
                             finalName = finalName.Replace(search,
-                                string.Format("<{0}, {1}>", info.ObjectName, info.ItemType));
+                                string.Format("<{0}, {1}>", info.GetObjectName(), info.GetListItem()));
                         }
+                    }
                 }
                 result += finalName;
             }
-            else
+            else // no inherited type specified
             {
                 if (paramsNumber == 1)
                 {
                     result += string.Format("{0}<{1}>",
                         info.GetCslaBaseClassName(isBindingList),
-                        info.IsDynamicEditableRootCollection()
-                            ? info.ItemType
-                            : info.ObjectName);
+                        info.IsDynamicList() ? info.GetListItem() : info.GetObjectName());
 
                 }
-                else
+                else // 2 generic parameters
                 {
                     if (info.IsNameValueList())
                     {
@@ -5794,8 +5831,8 @@ namespace CslaGenerator.CodeGen
                     {
                         result += string.Format("{0}<{1}, {2}>",
                             info.GetCslaBaseClassName(isBindingList),
-                            info.ObjectName,
-                            info.ItemType);
+                            info.GetObjectName(),
+                            info.GetListItem());
                     }
                 }
             }
@@ -5805,10 +5842,11 @@ namespace CslaGenerator.CodeGen
 
         private static string GetInitialClassDeclaration(CslaObjectInfo info)
         {
-            return string.Format("{0} {1}partial class {2} : ",
+            return string.Format("{0} {1}partial class {2}{3} : ",
                 info.ClassVisibility == ClassVisibility.Public ? "public" : "internal",
                 info.IsBaseClass() ? "abstract " : String.Empty,
-                info.ObjectName);
+                info.ObjectName,
+                info.IsBaseClass() ? string.Format("<{0}>", info.GenericArguments) : String.Empty);
         }
 
         private static string GetNameValueListClassDeclaration(CslaObjectInfo info)

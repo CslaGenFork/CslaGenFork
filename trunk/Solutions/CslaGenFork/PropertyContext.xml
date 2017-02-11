@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="utf-8" ?>
+<!--  Generate is always here to mark object start
+      otherwise only insert properties to hide -->
 <propertybag>
   <contextSettings>
-    <add key="PlaceHolder:Generate" value="false" />
+    <add key="PlaceHolder:Generate" value="true" />
+    <add key="PlaceHolder:GenerateConstructor" value="false" />
+    <add key="PlaceHolder:GenerateFactoryMethods" value="false" />
+    <add key="PlaceHolder:GenerateDataAccessRegion" value="false" />
+    <add key="PlaceHolder:GenerateDataPortalInsert" value="false" />
+    <add key="PlaceHolder:GenerateDataPortalUpdate" value="false" />
+    <add key="PlaceHolder:GenerateDataPortalDelete" value="false" />
     <add key="PlaceHolder:GenerateSprocs" value="false" />
     <add key="PlaceHolder:GenerateInlineQueries" value="false" />
+    <add key="PlaceHolder:DataSetLoadingScheme" value="false" />
+    <add key="PlaceHolder:UseCustomLoading" value="false" />
     <add key="PlaceHolder:FileName" value="false" />
     <add key="PlaceHolder:InheritedType" value="false" />
     <add key="PlaceHolder:InheritedTypeWinForms" value="false" />
     <add key="PlaceHolder:UseUnitOfWorkType" value="false" />
-    <add key="PlaceHolder:IsGenericType" value="true" />
     <add key="PlaceHolder:ObjectNamespace" value="false" />
     <add key="PlaceHolder:CslaBaseClass" value="false" />
     <add key="PlaceHolder:ClassVisibility" value="false" />
@@ -65,43 +74,33 @@
     <add key="PlaceHolder:AllowEdit" value="false" />
     <add key="PlaceHolder:AllowRemove" value="false" />
     <add key="PlaceHolder:AddParentReference" value="false" />
-    <add key="PlaceHolder:GenerateConstructor" value="false" />
-    <add key="PlaceHolder:GenerateFactoryMethods" value="false" />
-    <add key="PlaceHolder:DataSetLoadingScheme" value="false" />
-    <add key="PlaceHolder:UseCustomLoading" value="false" />
-    <add key="PlaceHolder:GenerateDataAccessRegion" value="false" />
-    <add key="PlaceHolder:GenerateDataPortalInsert" value="false" />
-    <add key="PlaceHolder:GenerateDataPortalUpdate" value="false" />
-    <add key="PlaceHolder:GenerateDataPortalDelete" value="false" />
     <add key="PlaceHolder:SupportUpdateProperties" value="false" />
     <add key="PlaceHolder:Singleton" value="false" />
     <add key="PlaceHolder:EditOnDemand" value="false" />
     <add key="PlaceHolder:CheckRulesOnFetch" value="false" />
     <add key="BaseClass:Generate" value="true" />
+    <add key="BaseClass:GenerateFactoryMethods" value="false" />
+    <add key="BaseClass:GenerateDataAccessRegion" value="false" />
+    <add key="BaseClass:GenerateDataPortalInsert" value="false" />
+    <add key="BaseClass:GenerateDataPortalUpdate" value="false" />
+    <add key="BaseClass:GenerateDataPortalDelete" value="false" />
     <add key="BaseClass:GenerateSprocs" value="false" />
     <add key="BaseClass:GenerateInlineQueries" value="false" />
     <add key="BaseClass:DataSetLoadingScheme" value="false" />
     <add key="BaseClass:UseCustomLoading" value="false" />
-    <add key="BaseClass:FileName" value="true" />
-    <add key="BaseClass:InheritedType" value="true" />
     <add key="BaseClass:InheritedTypeWinForms" value="false" />
     <add key="BaseClass:UseUnitOfWorkType" value="false" />
-    <add key="BaseClass:IsGenericType" value="true" />
-    <add key="BaseClass:CslaBaseClass" value="true" />
     <add key="BaseClass:ChildCollectionProperties" value="false" />
     <add key="BaseClass:ChildProperties" value="false" />
     <add key="BaseClass:InheritedChildCollectionProperties" value="false" />
     <add key="BaseClass:InheritedChildProperties" value="false" />
-    <add key="BaseClass:InheritedValueProperties" value="true" />
     <add key="BaseClass:ConvertValueProperties" value="false" />
     <add key="BaseClass:UpdateValueProperties" value="false" />
-    <add key="BaseClass:ValueProperties" value="true" />
     <add key="BaseClass:CriteriaObjects" value="false" />
     <add key="BaseClass:ParentProperties" value="false" />
     <add key="BaseClass:ParentType" value="false" />
     <add key="BaseClass:FindMethodsParameters" value="false" />
     <add key="BaseClass:IsPolymorphic" value="false" />
-    <add key="BaseClass:ItemType" value="true" />
     <add key="BaseClass:ContainsItem" value="false" />
     <add key="BaseClass:UniqueItems" value="false" />
     <add key="BaseClass:UpdaterType" value="false" />
@@ -119,50 +118,35 @@
     <add key="BaseClass:InsertProcedureName" value="false" />
     <add key="BaseClass:SelectProcedureName" value="false" />
     <add key="BaseClass:UpdateProcedureName" value="false" />
-    <add key="BaseClass:ToStringProperty" value="true" />
-    <add key="BaseClass:BusinessRules" value="true" />
-    <add key="BaseClass:AuthzProvider" value="true" />
-    <add key="BaseClass:NewRoles" value="true" />
-    <add key="BaseClass:GetRoles" value="true" />
-    <add key="BaseClass:UpdateRoles" value="true" />
-    <add key="BaseClass:DeleteRoles" value="true" />
-    <add key="BaseClass:NewAuthzRuleType" value="true" />
-    <add key="BaseClass:GetAuthzRuleType" value="true" />
-    <add key="BaseClass:UpdateAuthzRuleType" value="true" />
-    <add key="BaseClass:DeleteAuthzRuleType" value="true" />
     <add key="BaseClass:ParentInsertOnly" value="false" />
     <add key="BaseClass:UseParentProperties" value="false" />
     <add key="BaseClass:AllowNew" value="false" />
     <add key="BaseClass:AllowEdit" value="false" />
     <add key="BaseClass:AllowRemove" value="false" />
     <add key="BaseClass:AddParentReference" value="false" />
-    <add key="BaseClass:GenerateDataPortalInsert" value="true" />
-    <add key="BaseClass:GenerateDataPortalUpdate" value="true" />
-    <add key="BaseClass:GenerateDataPortalDelete" value="true" />
     <add key="BaseClass:SupportUpdateProperties" value="false" />
     <add key="BaseClass:Singleton" value="false" />
     <add key="BaseClass:EditOnDemand" value="false" />
     <add key="BaseClass:CheckRulesOnFetch" value="false" />
     <add key="CriteriaClass:Generate" value="true" />
+    <add key="CriteriaClass:GenerateFactoryMethods" value="false" />
+    <add key="CriteriaClass:GenerateDataAccessRegion" value="false" />
+    <add key="CriteriaClass:GenerateDataPortalInsert" value="false" />
+    <add key="CriteriaClass:GenerateDataPortalUpdate" value="false" />
+    <add key="CriteriaClass:GenerateDataPortalDelete" value="false" />
     <add key="CriteriaClass:GenerateSprocs" value="false" />
     <add key="CriteriaClass:GenerateInlineQueries" value="false" />
     <add key="CriteriaClass:DataSetLoadingScheme" value="false" />
     <add key="CriteriaClass:UseCustomLoading" value="false" />
-    <add key="CriteriaClass:FileName" value="true" />
-    <add key="CriteriaClass:InheritedType" value="true" />
     <add key="CriteriaClass:InheritedTypeWinForms" value="false" />
     <add key="CriteriaClass:UseUnitOfWorkType" value="false" />
-    <add key="CriteriaClass:IsGenericType" value="true" />
-    <add key="CriteriaClass:GenericArguments" value="true" />
     <add key="CriteriaClass:CslaBaseClass" value="false" />
     <add key="CriteriaClass:ChildCollectionProperties" value="false" />
     <add key="CriteriaClass:ChildProperties" value="false" />
     <add key="CriteriaClass:InheritedChildCollectionProperties" value="false" />
     <add key="CriteriaClass:InheritedChildProperties" value="false" />
-    <add key="CriteriaClass:InheritedValueProperties" value="true" />
     <add key="CriteriaClass:ConvertValueProperties" value="false" />
     <add key="CriteriaClass:UpdateValueProperties" value="false" />
-    <add key="CriteriaClass:ValueProperties" value="true" />
     <add key="CriteriaClass:CriteriaObjects" value="false" />
     <add key="CriteriaClass:ParentProperties" value="false" />
     <add key="CriteriaClass:ParentType" value="false" />
@@ -186,26 +170,12 @@
     <add key="CriteriaClass:InsertProcedureName" value="false" />
     <add key="CriteriaClass:SelectProcedureName" value="false" />
     <add key="CriteriaClass:UpdateProcedureName" value="false" />
-    <add key="CriteriaClass:ToStringProperty" value="true" />
-    <add key="CriteriaClass:BusinessRules" value="true" />
-    <add key="CriteriaClass:AuthzProvider" value="true" />
-    <add key="CriteriaClass:NewRoles" value="true" />
-    <add key="CriteriaClass:GetRoles" value="true" />
-    <add key="CriteriaClass:UpdateRoles" value="true" />
-    <add key="CriteriaClass:DeleteRoles" value="true" />
-    <add key="CriteriaClass:NewAuthzRuleType" value="true" />
-    <add key="CriteriaClass:GetAuthzRuleType" value="true" />
-    <add key="CriteriaClass:UpdateAuthzRuleType" value="true" />
-    <add key="CriteriaClass:DeleteAuthzRuleType" value="true" />
     <add key="CriteriaClass:ParentInsertOnly" value="false" />
     <add key="CriteriaClass:UseParentProperties" value="false" />
     <add key="CriteriaClass:AllowNew" value="false" />
     <add key="CriteriaClass:AllowEdit" value="false" />
     <add key="CriteriaClass:AllowRemove" value="false" />
     <add key="CriteriaClass:AddParentReference" value="false" />
-    <add key="CriteriaClass:GenerateDataPortalInsert" value="true" />
-    <add key="CriteriaClass:GenerateDataPortalUpdate" value="true" />
-    <add key="CriteriaClass:GenerateDataPortalDelete" value="true" />
     <add key="CriteriaClass:SupportUpdateProperties" value="false" />
     <add key="CriteriaClass:Singleton" value="false" />
     <add key="CriteriaClass:EditOnDemand" value="false" />
@@ -213,12 +183,13 @@
     <add key="UnitOfWork:Generate" value="true" />
     <add key="UnitOfWork:GenerateFactoryMethods" value="false" />
     <add key="UnitOfWork:GenerateDataAccessRegion" value="false" />
+    <add key="UnitOfWork:GenerateDataPortalInsert" value="false" />
+    <add key="UnitOfWork:GenerateDataPortalUpdate" value="false" />
+    <add key="UnitOfWork:GenerateDataPortalDelete" value="false" />
     <add key="UnitOfWork:GenerateSprocs" value="false" />
     <add key="UnitOfWork:GenerateInlineQueries" value="false" />
     <add key="UnitOfWork:DataSetLoadingScheme" value="false" />
     <add key="UnitOfWork:UseCustomLoading" value="false" />
-    <add key="UnitOfWork:FileName" value="true" />
-    <add key="UnitOfWork:InheritedType" value="true" />
     <add key="UnitOfWork:InheritedTypeWinForms" value="false" />
     <add key="UnitOfWork:UseUnitOfWorkType" value="false" />
     <add key="UnitOfWork:IsGenericType" value="false" />
@@ -272,19 +243,16 @@
     <add key="UnitOfWork:AllowEdit" value="false" />
     <add key="UnitOfWork:AllowRemove" value="false" />
     <add key="UnitOfWork:AddParentReference" value="false" />
-    <add key="UnitOfWork:GenerateDataPortalInsert" value="false" />
-    <add key="UnitOfWork:GenerateDataPortalUpdate" value="false" />
-    <add key="UnitOfWork:GenerateDataPortalDelete" value="false" />
     <add key="UnitOfWork:SupportUpdateProperties" value="false" />
     <add key="UnitOfWork:Singleton" value="false" />
     <add key="UnitOfWork:EditOnDemand" value="false" />
     <add key="UnitOfWork:CheckRulesOnFetch" value="false" />
-    <add key="NameValueList:DataSetLoadingScheme" value="false" />
     <add key="NameValueList:Generate" value="true" />
-    <add key="NameValueList:GenerateSprocs" value="true" />
-    <add key="NameValueList:GenerateInlineQueries" value="true" />
+    <add key="NameValueList:GenerateDataPortalInsert" value="false" />
+    <add key="NameValueList:GenerateDataPortalUpdate" value="false" />
+    <add key="NameValueList:GenerateDataPortalDelete" value="false" />
+    <add key="NameValueList:DataSetLoadingScheme" value="false" />
     <add key="NameValueList:FileName" value="true" />
-    <add key="NameValueList:InheritedType" value="true" />
     <add key="NameValueList:InheritedTypeWinForms" value="false" />
     <add key="NameValueList:UseUnitOfWorkType" value="false" />
     <add key="NameValueList:IsGenericType" value="false" />
@@ -297,9 +265,6 @@
     <add key="NameValueList:InheritedValueProperties" value="false" />
     <add key="NameValueList:ConvertValueProperties" value="false" />
     <add key="NameValueList:UpdateValueProperties" value="false" />
-    <add key="NameValueList:ValueProperties" value="true" />
-    <add key="NameValueList:CriteriaObjects" value="true" />
-    <add key="NameValueList:ParentProperties" value="true" />
     <add key="NameValueList:ParentType" value="false" />
     <add key="NameValueList:FindMethodsParameters" value="false" />
     <add key="NameValueList:IsPolymorphic" value="false" />
@@ -307,13 +272,9 @@
     <add key="NameValueList:ContainsItem" value="false" />
     <add key="NameValueList:UniqueItems" value="false" />
     <add key="NameValueList:UpdaterType" value="false" />
-    <add key="NameValueList:NameColumn" value="true" />
-    <add key="NameValueList:ValueColumn" value="true" />
-    <add key="NameValueList:SimpleCacheOptions" value="true" />
     <add key="NameValueList:InvalidateCache" value="false" />
     <add key="NameValueList:GetObjectCriteriaType" value="false" />
     <add key="NameValueList:TransactionType" value="false" />
-    <add key="NameValueList:PersistenceType" value="true" />
     <add key="NameValueList:InsertUpdateRunLocal" value="false" />
     <add key="NameValueList:DeleteProcedureName" value="false" />
     <add key="NameValueList:InsertProcedureName" value="false" />
@@ -321,13 +282,10 @@
     <add key="NameValueList:UpdateProcedureName" value="false" />
     <add key="NameValueList:ToStringProperty" value="false" />
     <add key="NameValueList:BusinessRules" value="false" />
-    <add key="NameValueList:AuthzProvider" value="true" />
     <add key="NameValueList:NewRoles" value="false" />
-    <add key="NameValueList:GetRoles" value="true" />
     <add key="NameValueList:UpdateRoles" value="false" />
     <add key="NameValueList:DeleteRoles" value="false" />
     <add key="NameValueList:NewAuthzRuleType" value="false" />
-    <add key="NameValueList:GetAuthzRuleType" value="true" />
     <add key="NameValueList:UpdateAuthzRuleType" value="false" />
     <add key="NameValueList:DeleteAuthzRuleType" value="false" />
     <add key="NameValueList:ParentInsertOnly" value="false" />
@@ -336,20 +294,13 @@
     <add key="NameValueList:AllowEdit" value="false" />
     <add key="NameValueList:AllowRemove" value="false" />
     <add key="NameValueList:AddParentReference" value="false" />
-    <add key="NameValueList:GenerateDataPortalInsert" value="false" />
-    <add key="NameValueList:GenerateDataPortalUpdate" value="false" />
-    <add key="NameValueList:GenerateDataPortalDelete" value="false" />
     <add key="NameValueList:SupportUpdateProperties" value="false" />
-    <add key="NameValueList:Singleton" value="true" />
     <add key="NameValueList:EditOnDemand" value="false" />
     <add key="NameValueList:CheckRulesOnFetch" value="false" />
     <add key="ReadOnlyCollection:Generate" value="true" />
-    <add key="ReadOnlyCollection:GenerateSprocs" value="true" />
-    <add key="ReadOnlyCollection:GenerateInlineQueries" value="true" />
-    <add key="ReadOnlyCollection:FileName" value="true" />
-    <add key="ReadOnlyCollection:InheritedType" value="true" />
-    <add key="ReadOnlyCollection:InheritedTypeWinForms" value="true" />
-    <add key="ReadOnlyCollection:UseUnitOfWorkType" value="true" />
+    <add key="ReadOnlyCollection:GenerateDataPortalInsert" value="false" />
+    <add key="ReadOnlyCollection:GenerateDataPortalUpdate" value="false" />
+    <add key="ReadOnlyCollection:GenerateDataPortalDelete" value="false" />
     <add key="ReadOnlyCollection:IsGenericType" value="false" />
     <add key="ReadOnlyCollection:GenericArguments" value="false" />
     <add key="ReadOnlyCollection:CslaBaseClass" value="false" />
@@ -361,22 +312,12 @@
     <add key="ReadOnlyCollection:ConvertValueProperties" value="false" />
     <add key="ReadOnlyCollection:UpdateValueProperties" value="false" />
     <add key="ReadOnlyCollection:ValueProperties" value="false" />
-    <add key="ReadOnlyCollection:CriteriaObjects" value="true" />
     <add key="ReadOnlyCollection:ParentProperties" value="false" />
-    <add key="ReadOnlyCollection:ParentType" value="true" />
-    <add key="ReadOnlyCollection:FindMethodsParameters" value="true" />
-    <add key="ReadOnlyCollection:IsPolymorphic" value="true" />
-    <add key="ReadOnlyCollection:ItemType" value="true" />
-    <add key="ReadOnlyCollection:ContainsItem" value="true" />
-    <add key="ReadOnlyCollection:UniqueItems" value="true" />
-    <add key="ReadOnlyCollection:UpdaterType" value="true" />
     <add key="ReadOnlyCollection:NameColumn" value="false" />
     <add key="ReadOnlyCollection:ValueColumn" value="false" />
-    <add key="ReadOnlyCollection:SimpleCacheOptions" value="true" />
     <add key="ReadOnlyCollection:InvalidateCache" value="false" />
     <add key="ReadOnlyCollection:GetObjectCriteriaType" value="false" />
     <add key="ReadOnlyCollection:TransactionType" value="false" />
-    <add key="ReadOnlyCollection:PersistenceType" value="true" />
     <add key="ReadOnlyCollection:InsertUpdateRunLocal" value="false" />
     <add key="ReadOnlyCollection:DeleteProcedureName" value="false" />
     <add key="ReadOnlyCollection:InsertProcedureName" value="false" />
@@ -399,31 +340,18 @@
     <add key="ReadOnlyCollection:AllowEdit" value="false" />
     <add key="ReadOnlyCollection:AllowRemove" value="false" />
     <add key="ReadOnlyCollection:AddParentReference" value="false" />
-    <add key="ReadOnlyCollection:GenerateDataPortalInsert" value="false" />
-    <add key="ReadOnlyCollection:GenerateDataPortalUpdate" value="false" />
-    <add key="ReadOnlyCollection:GenerateDataPortalDelete" value="false" />
     <add key="ReadOnlyCollection:SupportUpdateProperties" value="false" />
-    <add key="ReadOnlyCollection:Singleton" value="true" />
     <add key="ReadOnlyCollection:EditOnDemand" value="false" />
     <add key="ReadOnlyCollection:CheckRulesOnFetch" value="false" />
     <add key="ReadOnlyObject:Generate" value="true" />
-    <add key="ReadOnlyObject:GenerateSprocs" value="true" />
-    <add key="ReadOnlyObject:GenerateInlineQueries" value="false" />
-    <add key="ReadOnlyObject:FileName" value="true" />
-    <add key="ReadOnlyObject:InheritedType" value="true" />
+    <add key="ReadOnlyObject:GenerateDataPortalInsert" value="false" />
+    <add key="ReadOnlyObject:GenerateDataPortalUpdate" value="false" />
+    <add key="ReadOnlyObject:GenerateDataPortalDelete" value="false" />
+
     <add key="ReadOnlyObject:InheritedTypeWinForms" value="false" />
-    <add key="ReadOnlyObject:UseUnitOfWorkType" value="true" />
     <add key="ReadOnlyObject:IsGenericType" value="false" />
     <add key="ReadOnlyObject:GenericArguments" value="false" />
     <add key="ReadOnlyObject:CslaBaseClass" value="false" />
-    <add key="ReadOnlyObject:ChildCollectionProperties" value="true" />
-    <add key="ReadOnlyObject:ChildProperties" value="true" />
-    <add key="ReadOnlyObject:ConvertValueProperties" value="true" />
-    <add key="ReadOnlyObject:UpdateValueProperties" value="true" />
-    <add key="ReadOnlyObject:ValueProperties" value="true" />
-    <add key="ReadOnlyObject:CriteriaObjects" value="true" />
-    <add key="ReadOnlyObject:ParentProperties" value="true" />
-    <add key="ReadOnlyObject:ParentType" value="true" />
     <add key="ReadOnlyObject:FindMethodsParameters" value="false" />
     <add key="ReadOnlyObject:IsPolymorphic" value="false" />
     <add key="ReadOnlyObject:ItemType" value="false" />
@@ -436,21 +364,16 @@
     <add key="ReadOnlyObject:InvalidateCache" value="false" />
     <add key="ReadOnlyObject:GetObjectCriteriaType" value="false" />
     <add key="ReadOnlyObject:TransactionType" value="false" />
-    <add key="ReadOnlyObject:PersistenceType" value="true" />
     <add key="ReadOnlyObject:InsertUpdateRunLocal" value="false" />
     <add key="ReadOnlyObject:DeleteProcedureName" value="false" />
     <add key="ReadOnlyObject:InsertProcedureName" value="false" />
     <add key="ReadOnlyObject:SelectProcedureName" value="false" />
     <add key="ReadOnlyObject:UpdateProcedureName" value="false" />
     <add key="ReadOnlyObject:ToStringProperty" value="false" />
-    <add key="ReadOnlyObject:BusinessRules" value="true" />
-    <add key="ReadOnlyObject:AuthzProvider" value="true" />
     <add key="ReadOnlyObject:NewRoles" value="false" />
-    <add key="ReadOnlyObject:GetRoles" value="true" />
     <add key="ReadOnlyObject:UpdateRoles" value="false" />
     <add key="ReadOnlyObject:DeleteRoles" value="false" />
     <add key="ReadOnlyObject:NewAuthzRuleType" value="false" />
-    <add key="ReadOnlyObject:GetAuthzRuleType" value="true" />
     <add key="ReadOnlyObject:UpdateAuthzRuleType" value="false" />
     <add key="ReadOnlyObject:DeleteAuthzRuleType" value="false" />
     <add key="ReadOnlyObject:ParentInsertOnly" value="false" />
@@ -458,35 +381,15 @@
     <add key="ReadOnlyObject:AllowNew" value="false" />
     <add key="ReadOnlyObject:AllowEdit" value="false" />
     <add key="ReadOnlyObject:AllowRemove" value="false" />
-    <add key="ReadOnlyObject:AddParentReference" value="true" />
-    <add key="ReadOnlyObject:GenerateDataPortalInsert" value="false" />
-    <add key="ReadOnlyObject:GenerateDataPortalUpdate" value="false" />
-    <add key="ReadOnlyObject:GenerateDataPortalDelete" value="false" />
     <add key="ReadOnlyObject:SupportUpdateProperties" value="false" />
-    <add key="ReadOnlyObject:Singleton" value="true" />
     <add key="ReadOnlyObject:EditOnDemand" value="false" />
-    <add key="ReadOnlyObject:CheckRulesOnFetch" value="true" />
     <add key="EditableChild:Generate" value="true" />
-    <add key="EditableChild:GenerateSprocs" value="true" />
-    <add key="EditableChild:GenerateInlineQueries" value="true" />
-    <add key="EditableChild:FileName" value="true" />
-    <add key="EditableChild:InheritedType" value="true" />
     <add key="EditableChild:InheritedTypeWinForms" value="false" />
     <add key="EditableChild:UseUnitOfWorkType" value="false" />
     <add key="EditableChild:IsGenericType" value="false" />
     <add key="EditableChild:GenericArguments" value="false" />
     <add key="EditableChild:CslaBaseClass" value="false" />
-    <add key="EditableChild:ChildCollectionProperties" value="true" />
-    <add key="EditableChild:ChildProperties" value="true" />
-    <add key="EditableChild:InheritedChildCollectionProperties" value="true" />
-    <add key="EditableChild:InheritedChildProperties" value="true" />
-    <add key="EditableChild:InheritedValueProperties" value="true" />
-    <add key="EditableChild:ConvertValueProperties" value="true" />
     <add key="EditableChild:UpdateValueProperties" value="false" />
-    <add key="EditableChild:ValueProperties" value="true" />
-    <add key="EditableChild:CriteriaObjects" value="true" />
-    <add key="EditableChild:ParentProperties" value="true" />
-    <add key="EditableChild:ParentType" value="true" />
     <add key="EditableChild:FindMethodsParameters" value="false" />
     <add key="EditableChild:IsPolymorphic" value="false" />
     <add key="EditableChild:ItemType" value="false" />
@@ -498,43 +401,18 @@
     <add key="EditableChild:SimpleCacheOptions" value="false" />
     <add key="EditableChild:InvalidateCache" value="false" />
     <add key="EditableChild:GetObjectCriteriaType" value="false" />
-    <add key="EditableChild:TransactionType" value="true" />
-    <add key="EditableChild:PersistenceType" value="true" />
-    <add key="EditableChild:InsertUpdateRunLocal" value="true" />
-    <add key="EditableChild:DeleteProcedureName" value="true" />
-    <add key="EditableChild:InsertProcedureName" value="true" />
     <add key="EditableChild:SelectProcedureName" value="false" />
-    <add key="EditableChild:UpdateProcedureName" value="true" />
-    <add key="EditableChild:ToStringProperty" value="true" />
-    <add key="EditableChild:BusinessRules" value="true" />
-    <add key="EditableChild:AuthzProvider" value="true" />
-    <add key="EditableChild:NewRoles" value="true" />
-    <add key="EditableChild:GetRoles" value="true" />
-    <add key="EditableChild:UpdateRoles" value="true" />
-    <add key="EditableChild:DeleteRoles" value="true" />
-    <add key="EditableChild:NewAuthzRuleType" value="true" />
-    <add key="EditableChild:GetAuthzRuleType" value="true" />
-    <add key="EditableChild:UpdateAuthzRuleType" value="true" />
-    <add key="EditableChild:DeleteAuthzRuleType" value="true" />
     <add key="EditableChild:ParentInsertOnly" value="false" />
-    <add key="EditableChild:UseParentProperties" value="true" />
     <add key="EditableChild:AllowNew" value="false" />
     <add key="EditableChild:AllowEdit" value="false" />
     <add key="EditableChild:AllowRemove" value="false" />
     <add key="EditableChild:AddParentReference" value="false" />
-    <add key="EditableChild:GenerateDataPortalInsert" value="true" />
-    <add key="EditableChild:GenerateDataPortalUpdate" value="true" />
-    <add key="EditableChild:GenerateDataPortalDelete" value="true" />
-    <add key="EditableChild:SupportUpdateProperties" value="true" />
     <add key="EditableChild:Singleton" value="false" />
     <add key="EditableChild:EditOnDemand" value="false" />
-    <add key="EditableChild:CheckRulesOnFetch" value="true" />
     <add key="EditableChildCollection:Generate" value="true" />
-    <add key="EditableChildCollection:GenerateSprocs" value="true" />
-    <add key="EditableChildCollection:GenerateInlineQueries" value="true" />
-    <add key="EditableChildCollection:FileName" value="true" />
-    <add key="EditableChildCollection:InheritedType" value="true" />
-    <add key="EditableChildCollection:InheritedTypeWinForms" value="true" />
+    <add key="EditableChildCollection:GenerateDataPortalInsert" value="false" />
+    <add key="EditableChildCollection:GenerateDataPortalUpdate" value="false" />
+    <add key="EditableChildCollection:GenerateDataPortalDelete" value="false" />
     <add key="EditableChildCollection:UseUnitOfWorkType" value="false" />
     <add key="EditableChildCollection:IsGenericType" value="false" />
     <add key="EditableChildCollection:GenericArguments" value="false" />
@@ -547,22 +425,12 @@
     <add key="EditableChildCollection:ConvertValueProperties" value="false" />
     <add key="EditableChildCollection:UpdateValueProperties" value="false" />
     <add key="EditableChildCollection:ValueProperties" value="false" />
-    <add key="EditableChildCollection:CriteriaObjects" value="true" />
-    <add key="EditableChildCollection:ParentProperties" value="true" />
-    <add key="EditableChildCollection:ParentType" value="true" />
-    <add key="EditableChildCollection:FindMethodsParameters" value="true" />
-    <add key="EditableChildCollection:IsPolymorphic" value="true" />
-    <add key="EditableChildCollection:ItemType" value="true" />
-    <add key="EditableChildCollection:ContainsItem" value="true" />
-    <add key="EditableChildCollection:UniqueItems" value="true" />
     <add key="EditableChildCollection:UpdaterType" value="false" />
     <add key="EditableChildCollection:NameColumn" value="false" />
     <add key="EditableChildCollection:ValueColumn" value="false" />
     <add key="EditableChildCollection:SimpleCacheOptions" value="false" />
     <add key="EditableChildCollection:InvalidateCache" value="false" />
     <add key="EditableChildCollection:GetObjectCriteriaType" value="false" />
-    <add key="EditableChildCollection:TransactionType" value="true" />
-    <add key="EditableChildCollection:PersistenceType" value="true" />
     <add key="EditableChildCollection:InsertUpdateRunLocal" value="false" />
     <add key="EditableChildCollection:DeleteProcedureName" value="false" />
     <add key="EditableChildCollection:InsertProcedureName" value="false" />
@@ -581,36 +449,16 @@
     <add key="EditableChildCollection:DeleteAuthzRuleType" value="false" />
     <add key="EditableChildCollection:ParentInsertOnly" value="false" />
     <add key="EditableChildCollection:UseParentProperties" value="false" />
-    <add key="EditableChildCollection:AllowNew" value="true" />
-    <add key="EditableChildCollection:AllowEdit" value="true" />
-    <add key="EditableChildCollection:AllowRemove" value="true" />
-    <add key="EditableChildCollection:AddParentReference" value="true" />
-    <add key="EditableChildCollection:GenerateDataPortalInsert" value="false" />
-    <add key="EditableChildCollection:GenerateDataPortalUpdate" value="false" />
-    <add key="EditableChildCollection:GenerateDataPortalDelete" value="false" />
     <add key="EditableChildCollection:SupportUpdateProperties" value="false" />
     <add key="EditableChildCollection:Singleton" value="false" />
     <add key="EditableChildCollection:EditOnDemand" value="false" />
     <add key="EditableChildCollection:CheckRulesOnFetch" value="false" />
     <add key="EditableRoot:Generate" value="true" />
-    <add key="EditableRoot:GenerateSprocs" value="true" />
-    <add key="EditableRoot:GenerateInlineQueries" value="true" />
-    <add key="EditableRoot:FileName" value="true" />
-    <add key="EditableRoot:InheritedType" value="true" />
     <add key="EditableRoot:InheritedTypeWinForms" value="false" />
-    <add key="EditableRoot:UseUnitOfWorkType" value="true" />
     <add key="EditableRoot:IsGenericType" value="false" />
     <add key="EditableRoot:GenericArguments" value="false" />
     <add key="EditableRoot:CslaBaseClass" value="false" />
-    <add key="EditableRoot:ChildCollectionProperties" value="true" />
-    <add key="EditableRoot:ChildProperties" value="true" />
-    <add key="EditableRoot:InheritedChildCollectionProperties" value="true" />
-    <add key="EditableRoot:InheritedChildProperties" value="true" />
-    <add key="EditableRoot:InheritedValueProperties" value="true" />
-    <add key="EditableRoot:ConvertValueProperties" value="true" />
     <add key="EditableRoot:UpdateValueProperties" value="false" />
-    <add key="EditableRoot:ValueProperties" value="true" />
-    <add key="EditableRoot:CriteriaObjects" value="true" />
     <add key="EditableRoot:ParentProperties" value="false" />
     <add key="EditableRoot:ParentType" value="false" />
     <add key="EditableRoot:FindMethodsParameters" value="false" />
@@ -622,46 +470,17 @@
     <add key="EditableRoot:NameColumn" value="false" />
     <add key="EditableRoot:ValueColumn" value="false" />
     <add key="EditableRoot:SimpleCacheOptions" value="false" />
-    <add key="EditableRoot:InvalidateCache" value="true" />
     <add key="EditableRoot:GetObjectCriteriaType" value="false" />
-    <add key="EditableRoot:TransactionType" value="true" />
-    <add key="EditableRoot:PersistenceType" value="true" />
-    <add key="EditableRoot:InsertUpdateRunLocal" value="true" />
     <add key="EditableRoot:DeleteProcedureName" value="false" />
-    <add key="EditableRoot:InsertProcedureName" value="true" />
     <add key="EditableRoot:SelectProcedureName" value="false" />
-    <add key="EditableRoot:UpdateProcedureName" value="true" />
-    <add key="EditableRoot:ToStringProperty" value="true" />
-    <add key="EditableRoot:BusinessRules" value="true" />
-    <add key="EditableRoot:AuthzProvider" value="true" />
-    <add key="EditableRoot:NewRoles" value="true" />
-    <add key="EditableRoot:GetRoles" value="true" />
-    <add key="EditableRoot:UpdateRoles" value="true" />
-    <add key="EditableRoot:DeleteRoles" value="true" />
-    <add key="EditableRoot:NewAuthzRuleType" value="true" />
-    <add key="EditableRoot:GetAuthzRuleType" value="true" />
-    <add key="EditableRoot:UpdateAuthzRuleType" value="true" />
-    <add key="EditableRoot:DeleteAuthzRuleType" value="true" />
     <add key="EditableRoot:ParentInsertOnly" value="false" />
     <add key="EditableRoot:UseParentProperties" value="false" />
     <add key="EditableRoot:AllowNew" value="false" />
     <add key="EditableRoot:AllowEdit" value="false" />
     <add key="EditableRoot:AllowRemove" value="false" />
     <add key="EditableRoot:AddParentReference" value="false" />
-    <add key="EditableRoot:GenerateDataPortalInsert" value="true" />
-    <add key="EditableRoot:GenerateDataPortalUpdate" value="true" />
-    <add key="EditableRoot:GenerateDataPortalDelete" value="true" />
-    <add key="EditableRoot:SupportUpdateProperties" value="true" />
     <add key="EditableRoot:Singleton" value="false" />
-    <add key="EditableRoot:EditOnDemand" value="true" />
-    <add key="EditableRoot:CheckRulesOnFetch" value="true" />
     <add key="EditableRootCollection:Generate" value="true" />
-    <add key="EditableRootCollection:GenerateSprocs" value="true" />
-    <add key="EditableRootCollection:GenerateInlineQueries" value="true" />
-    <add key="EditableRootCollection:FileName" value="true" />
-    <add key="EditableRootCollection:InheritedType" value="true" />
-    <add key="EditableRootCollection:InheritedTypeWinForms" value="true" />
-    <add key="EditableRootCollection:UseUnitOfWorkType" value="true" />
     <add key="EditableRootCollection:IsGenericType" value="false" />
     <add key="EditableRootCollection:GenericArguments" value="false" />
     <add key="EditableRootCollection:CslaBaseClass" value="false" />
@@ -673,22 +492,13 @@
     <add key="EditableRootCollection:ConvertValueProperties" value="false" />
     <add key="EditableRootCollection:UpdateValueProperties" value="false" />
     <add key="EditableRootCollection:ValueProperties" value="false" />
-    <add key="EditableRootCollection:CriteriaObjects" value="true" />
     <add key="EditableRootCollection:ParentProperties" value="false" />
     <add key="EditableRootCollection:ParentType" value="false" />
-    <add key="EditableRootCollection:FindMethodsParameters" value="true" />
-    <add key="EditableRootCollection:IsPolymorphic" value="true" />
-    <add key="EditableRootCollection:ItemType" value="true" />
-    <add key="EditableRootCollection:ContainsItem" value="true" />
-    <add key="EditableRootCollection:UniqueItems" value="true" />
     <add key="EditableRootCollection:UpdaterType" value="false" />
     <add key="EditableRootCollection:NameColumn" value="false" />
     <add key="EditableRootCollection:ValueColumn" value="false" />
     <add key="EditableRootCollection:SimpleCacheOptions" value="false" />
-    <add key="EditableRootCollection:InvalidateCache" value="true" />
     <add key="EditableRootCollection:GetObjectCriteriaType" value="false" />
-    <add key="EditableRootCollection:TransactionType" value="true" />
-    <add key="EditableRootCollection:PersistenceType" value="true" />
     <add key="EditableRootCollection:InsertUpdateRunLocal" value="false" />
     <add key="EditableRootCollection:DeleteProcedureName" value="false" />
     <add key="EditableRootCollection:InsertProcedureName" value="false" />
@@ -707,38 +517,19 @@
     <add key="EditableRootCollection:DeleteAuthzRuleType" value="false" />
     <add key="EditableRootCollection:ParentInsertOnly" value="false" />
     <add key="EditableRootCollection:UseParentProperties" value="false" />
-    <add key="EditableRootCollection:AllowNew" value="true" />
-    <add key="EditableRootCollection:AllowEdit" value="true" />
-    <add key="EditableRootCollection:AllowRemove" value="true" />
     <add key="EditableRootCollection:AddParentReference" value="false" />
     <add key="EditableRootCollection:GenerateDataPortalInsert" value="false" />
     <add key="EditableRootCollection:GenerateDataPortalUpdate" value="false" />
     <add key="EditableRootCollection:GenerateDataPortalDelete" value="false" />
     <add key="EditableRootCollection:SupportUpdateProperties" value="false" />
     <add key="EditableRootCollection:Singleton" value="false" />
-    <add key="EditableRootCollection:EditOnDemand" value="true" />
     <add key="EditableRootCollection:CheckRulesOnFetch" value="false" />
     <add key="EditableSwitchable:Generate" value="true" />
-    <add key="EditableSwitchable:GenerateSprocs" value="true" />
-    <add key="EditableSwitchable:GenerateInlineQueries" value="true" />
-    <add key="EditableSwitchable:FileName" value="true" />
-    <add key="EditableSwitchable:InheritedType" value="true" />
     <add key="EditableSwitchable:InheritedTypeWinForms" value="false" />
-    <add key="EditableSwitchable:UseUnitOfWorkType" value="true" />
     <add key="EditableSwitchable:IsGenericType" value="false" />
     <add key="EditableSwitchable:GenericArguments" value="false" />
     <add key="EditableSwitchable:CslaBaseClass" value="false" />
-    <add key="EditableSwitchable:ChildCollectionProperties" value="true" />
-    <add key="EditableSwitchable:ChildProperties" value="true" />
-    <add key="EditableSwitchable:InheritedChildCollectionProperties" value="true" />
-    <add key="EditableSwitchable:InheritedChildProperties" value="true" />
-    <add key="EditableSwitchable:InheritedValueProperties" value="true" />
-    <add key="EditableSwitchable:ConvertValueProperties" value="true" />
     <add key="EditableSwitchable:UpdateValueProperties" value="false" />
-    <add key="EditableSwitchable:ValueProperties" value="true" />
-    <add key="EditableSwitchable:CriteriaObjects" value="true" />
-    <add key="EditableSwitchable:ParentProperties" value="true" />
-    <add key="EditableSwitchable:ParentType" value="true" />
     <add key="EditableSwitchable:FindMethodsParameters" value="false" />
     <add key="EditableSwitchable:IsPolymorphic" value="false" />
     <add key="EditableSwitchable:ItemType" value="false" />
@@ -750,42 +541,15 @@
     <add key="EditableSwitchable:SimpleCacheOptions" value="false" />
     <add key="EditableSwitchable:InvalidateCache" value="false" />
     <add key="EditableSwitchable:GetObjectCriteriaType" value="false" />
-    <add key="EditableSwitchable:TransactionType" value="true" />
-    <add key="EditableSwitchable:PersistenceType" value="true" />
-    <add key="EditableSwitchable:InsertUpdateRunLocal" value="true" />
     <add key="EditableSwitchable:DeleteProcedureName" value="false" />
-    <add key="EditableSwitchable:InsertProcedureName" value="true" />
     <add key="EditableSwitchable:SelectProcedureName" value="false" />
-    <add key="EditableSwitchable:UpdateProcedureName" value="true" />
-    <add key="EditableSwitchable:ToStringProperty" value="true" />
-    <add key="EditableSwitchable:BusinessRules" value="true" />
-    <add key="EditableSwitchable:AuthzProvider" value="true" />
-    <add key="EditableSwitchable:NewRoles" value="true" />
-    <add key="EditableSwitchable:GetRoles" value="true" />
-    <add key="EditableSwitchable:UpdateRoles" value="true" />
-    <add key="EditableSwitchable:DeleteRoles" value="true" />
-    <add key="EditableSwitchable:NewAuthzRuleType" value="true" />
-    <add key="EditableSwitchable:GetAuthzRuleType" value="true" />
-    <add key="EditableSwitchable:UpdateAuthzRuleType" value="true" />
-    <add key="EditableSwitchable:DeleteAuthzRuleType" value="true" />
     <add key="EditableSwitchable:ParentInsertOnly" value="false" />
-    <add key="EditableSwitchable:UseParentProperties" value="true" />
     <add key="EditableSwitchable:AllowNew" value="false" />
     <add key="EditableSwitchable:AllowEdit" value="false" />
     <add key="EditableSwitchable:AllowRemove" value="false" />
     <add key="EditableSwitchable:AddParentReference" value="false" />
-    <add key="EditableSwitchable:GenerateDataPortalInsert" value="true" />
-    <add key="EditableSwitchable:GenerateDataPortalUpdate" value="true" />
-    <add key="EditableSwitchable:GenerateDataPortalDelete" value="true" />
-    <add key="EditableSwitchable:SupportUpdateProperties" value="true" />
     <add key="EditableSwitchable:Singleton" value="false" />
-    <add key="EditableSwitchable:EditOnDemand" value="true" />
-    <add key="EditableSwitchable:CheckRulesOnFetch" value="true" />
     <add key="DynamicEditableRoot:Generate" value="true" />
-    <add key="DynamicEditableRoot:GenerateSprocs" value="true" />
-    <add key="DynamicEditableRoot:GenerateInlineQueries" value="true" />
-    <add key="DynamicEditableRoot:FileName" value="true" />
-    <add key="DynamicEditableRoot:InheritedType" value="true" />
     <add key="DynamicEditableRoot:InheritedTypeWinForms" value="false" />
     <add key="DynamicEditableRoot:UseUnitOfWorkType" value="false" />
     <add key="DynamicEditableRoot:IsGenericType" value="false" />
@@ -795,13 +559,8 @@
     <add key="DynamicEditableRoot:ChildProperties" value="false" />
     <add key="DynamicEditableRoot:InheritedChildCollectionProperties" value="false" />
     <add key="DynamicEditableRoot:InheritedChildProperties" value="false" />
-    <add key="DynamicEditableRoot:InheritedValueProperties" value="true" />
-    <add key="DynamicEditableRoot:ConvertValueProperties" value="true" />
     <add key="DynamicEditableRoot:UpdateValueProperties" value="false" />
-    <add key="DynamicEditableRoot:ValueProperties" value="true" />
-    <add key="DynamicEditableRoot:CriteriaObjects" value="true" />
     <add key="DynamicEditableRoot:ParentProperties" value="false" />
-    <add key="DynamicEditableRoot:ParentType" value="true" />
     <add key="DynamicEditableRoot:FindMethodsParameters" value="false" />
     <add key="DynamicEditableRoot:IsPolymorphic" value="false" />
     <add key="DynamicEditableRoot:ItemType" value="false" />
@@ -813,44 +572,15 @@
     <add key="DynamicEditableRoot:SimpleCacheOptions" value="false" />
     <add key="DynamicEditableRoot:InvalidateCache" value="false" />
     <add key="DynamicEditableRoot:GetObjectCriteriaType" value="false" />
-    <add key="DynamicEditableRoot:TransactionType" value="true" />
-    <add key="DynamicEditableRoot:PersistenceType" value="true" />
-    <add key="DynamicEditableRoot:InsertUpdateRunLocal" value="true" />
     <add key="DynamicEditableRoot:DeleteProcedureName" value="false" />
-    <add key="DynamicEditableRoot:InsertProcedureName" value="true" />
     <add key="DynamicEditableRoot:SelectProcedureName" value="false" />
-    <add key="DynamicEditableRoot:UpdateProcedureName" value="true" />
-    <add key="DynamicEditableRoot:ToStringProperty" value="true" />
-    <add key="DynamicEditableRoot:BusinessRules" value="true" />
-    <add key="DynamicEditableRoot:AuthzProvider" value="true" />
-    <add key="DynamicEditableRoot:NewRoles" value="true" />
-    <add key="DynamicEditableRoot:GetRoles" value="true" />
-    <add key="DynamicEditableRoot:UpdateRoles" value="true" />
-    <add key="DynamicEditableRoot:DeleteRoles" value="true" />
-    <add key="DynamicEditableRoot:NewAuthzRuleType" value="true" />
-    <add key="DynamicEditableRoot:GetAuthzRuleType" value="true" />
-    <add key="DynamicEditableRoot:UpdateAuthzRuleType" value="true" />
-    <add key="DynamicEditableRoot:DeleteAuthzRuleType" value="true" />
     <add key="DynamicEditableRoot:ParentInsertOnly" value="false" />
     <add key="DynamicEditableRoot:UseParentProperties" value="false" />
     <add key="DynamicEditableRoot:AllowNew" value="false" />
     <add key="DynamicEditableRoot:AllowEdit" value="false" />
     <add key="DynamicEditableRoot:AllowRemove" value="false" />
-    <add key="DynamicEditableRoot:AddParentReference" value="true" />
-    <add key="DynamicEditableRoot:GenerateDataPortalInsert" value="true" />
-    <add key="DynamicEditableRoot:GenerateDataPortalUpdate" value="true" />
-    <add key="DynamicEditableRoot:GenerateDataPortalDelete" value="true" />
-    <add key="DynamicEditableRoot:SupportUpdateProperties" value="true" />
     <add key="DynamicEditableRoot:Singleton" value="false" />
-    <add key="DynamicEditableRoot:EditOnDemand" value="true" />
-    <add key="DynamicEditableRoot:CheckRulesOnFetch" value="true" />
     <add key="DynamicEditableRootCollection:Generate" value="true" />
-    <add key="DynamicEditableRootCollection:GenerateSprocs" value="true" />
-    <add key="DynamicEditableRootCollection:GenerateInlineQueries" value="true" />
-    <add key="DynamicEditableRootCollection:FileName" value="true" />
-    <add key="DynamicEditableRootCollection:InheritedType" value="true" />
-    <add key="DynamicEditableRootCollection:InheritedTypeWinForms" value="true" />
-    <add key="DynamicEditableRootCollection:UseUnitOfWorkType" value="true" />
     <add key="DynamicEditableRootCollection:IsGenericType" value="false" />
     <add key="DynamicEditableRootCollection:GenericArguments" value="false" />
     <add key="DynamicEditableRootCollection:CslaBaseClass" value="false" />
@@ -862,22 +592,13 @@
     <add key="DynamicEditableRootCollection:ConvertValueProperties" value="false" />
     <add key="DynamicEditableRootCollection:UpdateValueProperties" value="false" />
     <add key="DynamicEditableRootCollection:ValueProperties" value="false" />
-    <add key="DynamicEditableRootCollection:CriteriaObjects" value="true" />
     <add key="DynamicEditableRootCollection:ParentProperties" value="false" />
     <add key="DynamicEditableRootCollection:ParentType" value="false" />
-    <add key="DynamicEditableRootCollection:FindMethodsParameters" value="true" />
-    <add key="DynamicEditableRootCollection:IsPolymorphic" value="true" />
-    <add key="DynamicEditableRootCollection:ItemType" value="true" />
-    <add key="DynamicEditableRootCollection:ContainsItem" value="true" />
-    <add key="DynamicEditableRootCollection:UniqueItems" value="true" />
     <add key="DynamicEditableRootCollection:UpdaterType" value="false" />
     <add key="DynamicEditableRootCollection:NameColumn" value="false" />
     <add key="DynamicEditableRootCollection:ValueColumn" value="false" />
     <add key="DynamicEditableRootCollection:SimpleCacheOptions" value="false" />
-    <add key="DynamicEditableRootCollection:InvalidateCache" value="true" />
     <add key="DynamicEditableRootCollection:GetObjectCriteriaType" value="false" />
-    <add key="DynamicEditableRootCollection:TransactionType" value="true" />
-    <add key="DynamicEditableRootCollection:PersistenceType" value="true" />
     <add key="DynamicEditableRootCollection:InsertUpdateRunLocal" value="false" />
     <add key="DynamicEditableRootCollection:DeleteProcedureName" value="false" />
     <add key="DynamicEditableRootCollection:InsertProcedureName" value="false" />
@@ -896,9 +617,6 @@
     <add key="DynamicEditableRootCollection:DeleteAuthzRuleType" value="false" />
     <add key="DynamicEditableRootCollection:ParentInsertOnly" value="false" />
     <add key="DynamicEditableRootCollection:UseParentProperties" value="false" />
-    <add key="DynamicEditableRootCollection:AllowNew" value="true" />
-    <add key="DynamicEditableRootCollection:AllowEdit" value="true" />
-    <add key="DynamicEditableRootCollection:AllowRemove" value="true" />
     <add key="DynamicEditableRootCollection:AddParentReference" value="false" />
     <add key="DynamicEditableRootCollection:GenerateDataPortalInsert" value="false" />
     <add key="DynamicEditableRootCollection:GenerateDataPortalUpdate" value="false" />

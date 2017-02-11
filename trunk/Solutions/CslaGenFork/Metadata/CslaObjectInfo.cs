@@ -1740,6 +1740,11 @@ namespace CslaGenerator.Metadata
             }
         }
 
+        internal string GetObjectInterfaces()
+        {
+            return string.Join(", ", _interfaces);
+        }
+
         internal string GetCslaBaseClassName()
         {
             var dualListInheritance = GeneratorController.Current.CurrentUnit.GenerationParams.DualListInheritance;
@@ -1781,10 +1786,10 @@ namespace CslaGenerator.Metadata
                 return "ReadOnlyBase";
             }
 
-            if (this.IsCriteriaClass())
-                return "BusinessBase";
+            if (this.IsBaseClass())
+                return CslaBaseClass.NonGenericBaseClass();
 
-            return string.Empty;
+            return "BusinessBase";
         }
 
         #endregion
@@ -1811,6 +1816,25 @@ namespace CslaGenerator.Metadata
                 return new string[0];
 
             return _genericArguments.TrimStart('<').TrimEnd('>').Split(',');
+        }
+
+        internal string GetObjectName()
+        {
+            if (this.IsNotBaseClass())
+                return ObjectName;
+
+            return GetGenericArguments()[0];
+        }
+
+        internal string GetListItem()
+        {
+            if (this.IsNotBaseClass())
+                return ItemType;
+
+            if (GetGenericArguments().Length > 1)
+                return GetGenericArguments()[1];
+
+            return GetGenericArguments()[0];
         }
 
         public CslaObjectInfo Duplicate(ICatalog catalog)

@@ -92,32 +92,12 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Busine
     Response.Write(Environment.NewLine);
     %>
 <!-- #include file="Constructor.asp" -->
-<!-- #include file="InvalidateCachedList.asp" -->
-<!-- #include file="Criteria.asp" -->
 <!-- #include file="ObjectAuthorizationMethods.asp" -->
 <!-- #include file="BusinessRules.asp" -->
 <%
-    if (Info.GenerateDataAccessRegion)
-    {
-        if (!genOptional)
-        {
-            Response.Write(Environment.NewLine);
-        }
-        %>
-<!-- #include file="EditableRoot_DataPortal.asp" -->
-<%
-        Response.Write(Environment.NewLine);
-%>
-<!-- #include file="DataPortalHooks.asp" -->
-<%
-    }
-    else
-    {
-        Response.Write(Environment.NewLine);
-    }
+    Response.Write(Environment.NewLine);
     %>
     }
-<!-- #include file="CriteriaObject.asp" -->
 }
 <%
 }
