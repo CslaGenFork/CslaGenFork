@@ -17,14 +17,6 @@ namespace Invoices.Business
         where C : LoggerBusinessBase<C>
     {
 
-        #region Business Properties
-
-        #endregion
-
-        #region Factory Methods
-
-        #endregion
-
         #region Constructor
 
         /// <summary>

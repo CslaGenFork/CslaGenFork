@@ -109,7 +109,7 @@
       <ObjectType>PlaceHolder</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>- - - Criteria Class - - -</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -239,7 +239,7 @@
       <ObjectType>CriteriaClass</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>CriteriaSearchInvoice</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>true</IsGenericType>
       <GenericArguments>T</GenericArguments>
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -251,8 +251,8 @@
       <Interfaces />
       <InheritedType>
         <ObjectName />
-        <AssemblyFile>C:\VS Projects\CslaGenFork 4.5\CoverageTest\Dependencies\Csla.dll</AssemblyFile>
-        <Type>BusinessBase&lt;T&gt;</Type>
+        <AssemblyFile />
+        <Type />
         <IsGenericType>true</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
@@ -369,7 +369,7 @@
       <ObjectType>PlaceHolder</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>- - - Base Class - - -</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -499,7 +499,7 @@
       <ObjectType>BaseClass</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>LoggerBusinessBindingListBase</ObjectName>
-      <IsListBaseClass>true</IsListBaseClass>
+      <CslaBaseClass>BusinessBindingListBaseTC</CslaBaseClass>
       <IsGenericType>true</IsGenericType>
       <GenericArguments>T,C</GenericArguments>
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -513,9 +513,9 @@
       </Interfaces>
       <InheritedType>
         <ObjectName />
-        <AssemblyFile>C:\VS Projects\CslaGenFork 4.5\CoverageTest\Dependencies\Csla.dll</AssemblyFile>
-        <Type>BusinessBindingListBase&lt;T,C&gt;</Type>
-        <IsGenericType>true</IsGenericType>
+        <AssemblyFile />
+        <Type />
+        <IsGenericType>false</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
         <ObjectName />
@@ -631,7 +631,7 @@
       <ObjectType>BaseClass</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>LoggerBusinessListBase</ObjectName>
-      <IsListBaseClass>true</IsListBaseClass>
+      <CslaBaseClass>BusinessListBaseTC</CslaBaseClass>
       <IsGenericType>true</IsGenericType>
       <GenericArguments>T,C</GenericArguments>
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -645,9 +645,9 @@
       </Interfaces>
       <InheritedType>
         <ObjectName />
-        <AssemblyFile>C:\VS Projects\CslaGenFork 4.5\CoverageTest\Dependencies\Csla.dll</AssemblyFile>
-        <Type>BusinessListBase&lt;T,C&gt;</Type>
-        <IsGenericType>true</IsGenericType>
+        <AssemblyFile />
+        <Type />
+        <IsGenericType>false</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
         <ObjectName />
@@ -763,7 +763,7 @@
       <ObjectType>BaseClass</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>LoggerDynamicBindingListBase</ObjectName>
-      <IsListBaseClass>true</IsListBaseClass>
+      <CslaBaseClass>DynamicBindingListBaseT</CslaBaseClass>
       <IsGenericType>true</IsGenericType>
       <GenericArguments>T</GenericArguments>
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -777,9 +777,9 @@
       </Interfaces>
       <InheritedType>
         <ObjectName />
-        <AssemblyFile>C:\VS Projects\CslaGenFork 4.5\CoverageTest\Dependencies\Csla.dll</AssemblyFile>
-        <Type>DynamicBindingListBase&lt;T&gt;</Type>
-        <IsGenericType>true</IsGenericType>
+        <AssemblyFile />
+        <Type />
+        <IsGenericType>false</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
         <ObjectName />
@@ -895,7 +895,7 @@
       <ObjectType>BaseClass</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>LoggerDynamicListBase</ObjectName>
-      <IsListBaseClass>true</IsListBaseClass>
+      <CslaBaseClass>DynamicListBaseT</CslaBaseClass>
       <IsGenericType>true</IsGenericType>
       <GenericArguments>T</GenericArguments>
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -909,9 +909,9 @@
       </Interfaces>
       <InheritedType>
         <ObjectName />
-        <AssemblyFile>C:\VS Projects\CslaGenFork 4.5\CoverageTest\Dependencies\Csla.dll</AssemblyFile>
-        <Type>DynamicListBase&lt;T&gt;</Type>
-        <IsGenericType>true</IsGenericType>
+        <AssemblyFile />
+        <Type />
+        <IsGenericType>false</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
         <ObjectName />
@@ -1027,7 +1027,7 @@
       <ObjectType>BaseClass</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>LoggerReadOnlyBindingListBase</ObjectName>
-      <IsListBaseClass>true</IsListBaseClass>
+      <CslaBaseClass>ReadOnlyBindingListBaseTC</CslaBaseClass>
       <IsGenericType>true</IsGenericType>
       <GenericArguments>T,C</GenericArguments>
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -1041,9 +1041,9 @@
       </Interfaces>
       <InheritedType>
         <ObjectName />
-        <AssemblyFile>C:\VS Projects\CslaGenFork 4.5\CoverageTest\Dependencies\Csla.dll</AssemblyFile>
-        <Type>ReadOnlyBindingListBase&lt;T,C&gt;</Type>
-        <IsGenericType>true</IsGenericType>
+        <AssemblyFile />
+        <Type />
+        <IsGenericType>false</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
         <ObjectName />
@@ -1159,7 +1159,7 @@
       <ObjectType>BaseClass</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>LoggerReadOnlyListBase</ObjectName>
-      <IsListBaseClass>true</IsListBaseClass>
+      <CslaBaseClass>ReadOnlyListBaseTC</CslaBaseClass>
       <IsGenericType>true</IsGenericType>
       <GenericArguments>T,C</GenericArguments>
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -1173,9 +1173,9 @@
       </Interfaces>
       <InheritedType>
         <ObjectName />
-        <AssemblyFile>C:\VS Projects\CslaGenFork 4.5\CoverageTest\Dependencies\Csla.dll</AssemblyFile>
-        <Type>ReadOnlyListBase&lt;T,C&gt;</Type>
-        <IsGenericType>true</IsGenericType>
+        <AssemblyFile />
+        <Type />
+        <IsGenericType>false</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
         <ObjectName />
@@ -1291,7 +1291,7 @@
       <ObjectType>BaseClass</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>LoggerBusinessBase</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>BusinessBaseT</CslaBaseClass>
       <IsGenericType>true</IsGenericType>
       <GenericArguments>T</GenericArguments>
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -1305,9 +1305,9 @@
       </Interfaces>
       <InheritedType>
         <ObjectName />
-        <AssemblyFile>C:\VS Projects\CslaGenFork 4.5\CoverageTest\Dependencies\Csla.dll</AssemblyFile>
-        <Type>BusinessBase&lt;T&gt;</Type>
-        <IsGenericType>true</IsGenericType>
+        <AssemblyFile />
+        <Type />
+        <IsGenericType>false</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
         <ObjectName />
@@ -1598,7 +1598,7 @@
       <ObjectType>BaseClass</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>LoggerReadOnlyBase</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>ReadOnlyBaseT</CslaBaseClass>
       <IsGenericType>true</IsGenericType>
       <GenericArguments>T</GenericArguments>
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -1612,9 +1612,9 @@
       </Interfaces>
       <InheritedType>
         <ObjectName />
-        <AssemblyFile>C:\VS Projects\CslaGenFork 4.5\CoverageTest\Dependencies\Csla.dll</AssemblyFile>
-        <Type>ReadOnlyBase&lt;T&gt;</Type>
-        <IsGenericType>true</IsGenericType>
+        <AssemblyFile />
+        <Type />
+        <IsGenericType>false</IsGenericType>
       </InheritedType>
       <InheritedTypeWinForms>
         <ObjectName />
@@ -1905,7 +1905,7 @@
       <ObjectType>PlaceHolder</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>- - - Unit of Work - - -</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -2035,7 +2035,7 @@
       <ObjectType>UnitOfWork</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>InvoiceCreatorGetter</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -2188,7 +2188,7 @@
       <ObjectType>UnitOfWork</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>InvoiceCreator</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -2341,7 +2341,7 @@
       <ObjectType>UnitOfWork</ObjectType>
       <UnitOfWorkType>Getter</UnitOfWorkType>
       <ObjectName>InvoiceGetter</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -2494,7 +2494,7 @@
       <ObjectType>UnitOfWork</ObjectType>
       <UnitOfWorkType>Getter</UnitOfWorkType>
       <ObjectName>InvoiceListGetter</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -2647,7 +2647,7 @@
       <ObjectType>PlaceHolder</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>- - - Customers - - -</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -2777,7 +2777,7 @@
       <ObjectType>EditableRoot</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>CustomerEdit</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -3494,7 +3494,7 @@
       <ObjectType>ReadOnlyCollection</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>CustomerList</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -3660,7 +3660,7 @@
       <ObjectType>ReadOnlyObject</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>CustomerInfo</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -4008,7 +4008,7 @@
       <ObjectType>PlaceHolder</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>- - - Suppliers - - -</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -4138,7 +4138,7 @@
       <ObjectType>EditableRoot</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>SupplierEdit</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -4933,7 +4933,7 @@
       <ObjectType>EditableChildCollection</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>SupplierProductColl</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -5063,7 +5063,7 @@
       <ObjectType>EditableChild</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>SupplierProductItem</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -5414,7 +5414,7 @@
       <ObjectType>ReadOnlyCollection</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>SupplierList</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -5580,7 +5580,7 @@
       <ObjectType>ReadOnlyObject</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>SupplierInfo</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -5856,7 +5856,7 @@
       <ObjectType>PlaceHolder</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>- - - Invoices - - -</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -5986,7 +5986,7 @@
       <ObjectType>EditableRoot</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>InvoiceEdit</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -6962,7 +6962,7 @@
       <ObjectType>EditableChildCollection</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>InvoiceLineCollection</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -7092,7 +7092,7 @@
       <ObjectType>EditableChild</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>InvoiceLineItem</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -7565,7 +7565,7 @@
       <ObjectType>ReadOnlyObject</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>InvoiceView</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -8564,7 +8564,7 @@
       <ObjectType>ReadOnlyCollection</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>InvoiceLineList</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -8694,7 +8694,7 @@
       <ObjectType>ReadOnlyObject</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>InvoiceLineInfo</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -9253,7 +9253,7 @@
       <ObjectType>ReadOnlyCollection</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>InvoiceList</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -9487,7 +9487,7 @@
       <ObjectType>ReadOnlyObject</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>InvoiceInfo</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -10228,7 +10228,7 @@
       <ObjectType>PlaceHolder</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>- - - Products - - -</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -10358,7 +10358,7 @@
       <ObjectType>EditableRoot</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>ProductEdit</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -11517,7 +11517,7 @@
       <ObjectType>EditableChildCollection</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>ProductSupplierColl</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -11647,7 +11647,7 @@
       <ObjectType>EditableChild</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>ProductSupplierItem</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -11998,7 +11998,7 @@
       <ObjectType>ReadOnlyCollection</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>ProductList</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -12164,7 +12164,7 @@
       <ObjectType>ReadOnlyObject</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>ProductInfo</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -13088,7 +13088,7 @@
       <ObjectType>PlaceHolder</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>- - - Product Types - - -</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -13218,7 +13218,7 @@
       <ObjectType>EditableRoot</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>ProductTypeEdit</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -13569,7 +13569,7 @@
       <ObjectType>ReadOnlyObject</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>ProductTypeRO</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -13885,7 +13885,7 @@
       <ObjectType>DynamicEditableRootCollection</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>ProductTypeDynaColl</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -14054,7 +14054,7 @@
       <ObjectType>DynamicEditableRoot</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>ProductTypeDynaItem</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -14405,7 +14405,7 @@
       <ObjectType>EditableRootCollection</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>ProductTypeColl</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -14574,7 +14574,7 @@
       <ObjectType>EditableChild</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>ProductTypeItem</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -14863,7 +14863,7 @@
       <ObjectType>ReadOnlyCollection</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>ProductTypeList</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -15029,7 +15029,7 @@
       <ObjectType>ReadOnlyObject</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>ProductTypeInfo</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -15305,7 +15305,7 @@
       <ObjectType>NameValueList</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>ProductTypeNVL</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -15594,7 +15594,7 @@
       <ObjectType>ReadOnlyCollection</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>ProductTypeUpdatedByRootList</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -15760,7 +15760,7 @@
       <ObjectType>ReadOnlyObject</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>ProductTypeUpdatedByRootInfo</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -16036,7 +16036,7 @@
       <ObjectType>ReadOnlyCollection</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>ProductTypeCachedList</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -16202,7 +16202,7 @@
       <ObjectType>ReadOnlyObject</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>ProductTypeCachedInfo</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
@@ -16478,7 +16478,7 @@
       <ObjectType>NameValueList</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>ProductTypeCachedNVL</ObjectName>
-      <IsListBaseClass>false</IsListBaseClass>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>Invoices.Business</ObjectNamespace>

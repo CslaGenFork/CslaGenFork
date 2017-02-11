@@ -62,10 +62,6 @@ namespace Invoices.Business
 
         #endregion
 
-        #region Factory Methods
-
-        #endregion
-
         #region Constructor
 
         /// <summary>

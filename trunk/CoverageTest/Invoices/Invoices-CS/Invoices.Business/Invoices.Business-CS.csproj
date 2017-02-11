@@ -136,9 +136,9 @@
     <Compile Include="LoggerReadOnlyBase.Designer.cs">
       <DependentUpon>LoggerReadOnlyBase.cs</DependentUpon>
     </Compile>
-    <Compile Include="LoggerReadOnlyBidingListBase.cs" />
-    <Compile Include="LoggerReadOnlyBidingListBase.Designer.cs">
-      <DependentUpon>LoggerReadOnlyBidingListBase.cs</DependentUpon>
+    <Compile Include="LoggerReadOnlyBindingListBase.cs" />
+    <Compile Include="LoggerReadOnlyBindingListBase.Designer.cs">
+      <DependentUpon>LoggerReadOnlyBindingListBase.cs</DependentUpon>
     </Compile>
     <Compile Include="LoggerReadOnlyListBase.cs" />
     <Compile Include="LoggerReadOnlyListBase.Designer.cs">
