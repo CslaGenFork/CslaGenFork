@@ -5769,12 +5769,12 @@ namespace CslaGenerator.CodeGen
             var result = new string[genericArguments];
             var arguments = info.GetWhereClause();
 
-            if (info.IsNotDynamicList() && info.InheritedType != null && info.InheritedType.FinalName != string.Empty)
+            /*if (info.IsNotDynamicList() && info.InheritedType != null && info.InheritedType.FinalName != string.Empty)
             {
                 arguments[0][1] = info.InheritedType.FinalName.Replace(",", ", ");
                 if (genericArguments == 2 && info.ItemType != string.Empty)
                     arguments[1][1] = string.Format("{0}(Of {1})", info.ItemType, info.GetGenericArguments()[1]);
-            }
+            }*/
 
             var hasInterfaces = arguments[0][2].Length != 0;
             result[0] = string.Format("{0} As {1}{2}{3}{4}",
