@@ -17,7 +17,7 @@ Namespace TestProject.Business
     ''' </remarks>
     <Attributable>
     <Serializable()>
-    Partial Public Class DocTypeEditColl
+    Public Partial Class DocTypeEditColl
         Inherits BusinessBindingListBase(Of DocTypeEditColl, DocTypeEdit)
         Implements IHaveInterface
     

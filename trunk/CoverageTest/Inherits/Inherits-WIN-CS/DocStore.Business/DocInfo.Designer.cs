@@ -269,7 +269,6 @@ namespace DocStore.Business
         /// </summary>
         internal void UpdatePropertiesOnSaved(Doc doc)
         {
-            LoadProperty(DocIDProperty, doc.DocID);
             LoadProperty(DocClassIDProperty, doc.DocClassID);
             LoadProperty(DocTypeIDProperty, doc.DocTypeID);
             LoadProperty(SenderIDProperty, doc.SenderID);

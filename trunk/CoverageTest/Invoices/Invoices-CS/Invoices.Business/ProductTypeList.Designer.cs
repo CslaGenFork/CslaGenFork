@@ -18,7 +18,7 @@ namespace Invoices.Business
     /// </summary>
     /// <remarks>
     /// The items of the collection are <see cref="ProductTypeInfo"/> objects.
-    /// No cache. Updated by ProductTypeDynaColl
+    /// No cache. Updated by ProductTypeDynaItem
     /// </remarks>
     [Serializable]
 #if WINFORMS

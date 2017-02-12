@@ -13,8 +13,8 @@ Namespace TestProject.Business
     ''' </summary>
     <Attributable>
     <Serializable()>
-    Partial Public Class DocTypeNVL
-    Inherits NameValueListBase(Of Integer, String)
+    Public Partial Class DocTypeNVL
+        Inherits NameValueListBase(Of Integer, String)
         Implements IHaveInterface
 
         #Region " Private Fields "

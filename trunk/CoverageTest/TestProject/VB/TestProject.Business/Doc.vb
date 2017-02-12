@@ -3,7 +3,7 @@ Imports Csla
 
 Namespace TestProject.Business
 
-    Partial Public Class Doc
+    Public Partial Class Doc
 
         #Region " OnDeserialized actions "
 

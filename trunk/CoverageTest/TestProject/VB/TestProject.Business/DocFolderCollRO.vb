@@ -3,7 +3,7 @@ Imports Csla
 
 Namespace TestProject.Business
 
-    Partial Public Class DocFolderCollRO
+    Public Partial Class DocFolderCollRO
 
         #Region " OnDeserialized actions "
 

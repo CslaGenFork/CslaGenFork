@@ -20,7 +20,7 @@ Namespace TestProject.Business
     ''' </remarks>
     <Attributable>
     <Serializable()>
-    Partial Public Class DocTypeList
+    Public Partial Class DocTypeList
         Inherits ReadOnlyBindingListBase(Of DocTypeList, DocTypeInfo)
         Implements IHaveInterface
     

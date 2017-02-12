@@ -18,8 +18,8 @@ Namespace TestProject.Business
     ''' </remarks>
     <Attributable>
     <Serializable()>
-    Partial Public Class DocTypeEdit
-    Inherits BusinessBase(Of DocTypeEdit)
+    Public Partial Class DocTypeEdit
+        Inherits BusinessBase(Of DocTypeEdit)
         Implements IHaveInterface
 
         #Region " Static Fields "

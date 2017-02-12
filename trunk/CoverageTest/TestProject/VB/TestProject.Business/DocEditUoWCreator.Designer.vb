@@ -11,8 +11,8 @@ Namespace TestProject.Business
     ''' </summary>
     <Attributable>
     <Serializable()>
-    Partial Public Class DocEditCreator
-    Inherits MyBusinessBase(Of DocEditCreator)
+    Public Partial Class DocEditCreator
+        Inherits MyBusinessBase(Of DocEditCreator)
         Implements IHaveInterface
 
         #Region " Business Properties "

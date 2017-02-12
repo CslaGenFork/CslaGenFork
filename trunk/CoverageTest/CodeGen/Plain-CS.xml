@@ -109,6 +109,7 @@
       <ObjectType>UnitOfWork</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>SampleUnitOfWork</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -272,6 +273,7 @@
       <ObjectType>NameValueList</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>CircTypeTagNVL</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business.Circulations</ObjectNamespace>
@@ -560,6 +562,7 @@
       <ObjectType>NameValueList</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>DecisionTypeTagNVL</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business.Circulations</ObjectNamespace>
@@ -848,6 +851,7 @@
       <ObjectType>ReadOnlyCollection</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>CircList</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business.Circulations</ObjectNamespace>
@@ -1066,6 +1070,7 @@
       <ObjectType>ReadOnlyObject</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>CircInfo</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business.Circulations</ObjectNamespace>
@@ -1806,6 +1811,7 @@
       <ObjectType>UnitOfWork</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>DocEditGetter</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -1993,6 +1999,7 @@
       <ObjectType>UnitOfWork</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>DocEditUoWCreator</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -2180,6 +2187,7 @@
       <ObjectType>UnitOfWork</ObjectType>
       <UnitOfWorkType>Getter</UnitOfWorkType>
       <ObjectName>DocEditUoWGetter</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -2367,6 +2375,7 @@
       <ObjectType>EditableRoot</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>Doc</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -6160,6 +6169,7 @@
       <ObjectType>EditableChild</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>DocContent</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -7119,6 +7129,7 @@
       <ObjectType>ReadOnlyObject</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>DocContentRO</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -7860,6 +7871,7 @@
       <ObjectType>EditableChildCollection</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>DocFolderColl</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -8113,6 +8125,7 @@
       <ObjectType>EditableChild</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>DocFolder</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -8980,6 +8993,7 @@
       <ObjectType>EditableChildCollection</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>DocCircColl</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business.Circulations</ObjectNamespace>
@@ -9171,6 +9185,7 @@
       <ObjectType>EditableChild</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>DocCirc</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business.Circulations</ObjectNamespace>
@@ -10377,6 +10392,7 @@
       <ObjectType>ReadOnlyCollection</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>DocContentList</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -10506,6 +10522,7 @@
       <ObjectType>ReadOnlyObject</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>DocContentInfo</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -11308,6 +11325,7 @@
       <ObjectType>UnitOfWork</ObjectType>
       <UnitOfWorkType>Getter</UnitOfWorkType>
       <ObjectName>DocListGetter</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -11497,6 +11515,7 @@
       <ObjectType>ReadOnlyCollection</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>DocList</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -12098,6 +12117,7 @@
       <ObjectType>ReadOnlyObject</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>DocInfo</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -13030,6 +13050,7 @@
       <ObjectType>EditableRoot</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>DocClass</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -13810,6 +13831,7 @@
       <ObjectType>ReadOnlyCollection</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>DocClassList</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -14099,6 +14121,7 @@
       <ObjectType>ReadOnlyObject</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>DocClassInfo</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -14412,6 +14435,7 @@
       <ObjectType>NameValueList</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>DocClassNVL</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -14700,6 +14724,7 @@
       <ObjectType>UnitOfWork</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>DocClassEditCollGetter</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -14854,6 +14879,7 @@
       <ObjectType>DynamicEditableRootCollection</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>DocClassEditColl</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -15022,6 +15048,7 @@
       <ObjectType>DynamicEditableRoot</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>DocClassEdit</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -15884,6 +15911,7 @@
       <ObjectType>NameValueList</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>DocStatusNVL</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -16172,6 +16200,7 @@
       <ObjectType>EditableRoot</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>DocType</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -16952,6 +16981,7 @@
       <ObjectType>ReadOnlyCollection</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>DocTypeList</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -17241,6 +17271,7 @@
       <ObjectType>ReadOnlyObject</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>DocTypeInfo</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -17554,6 +17585,7 @@
       <ObjectType>NameValueList</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>DocTypeNVL</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -17842,6 +17874,7 @@
       <ObjectType>EditableRootCollection</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>DocTypeEditColl</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -18010,6 +18043,7 @@
       <ObjectType>EditableChild</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>DocTypeEdit</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -18810,6 +18844,7 @@
       <ObjectType>EditableRoot</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>Folder</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -20995,6 +21030,7 @@
       <ObjectType>EditableChildCollection</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>FolderDocColl</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -21311,6 +21347,7 @@
       <ObjectType>EditableChild</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>FolderDoc</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -22178,6 +22215,7 @@
       <ObjectType>EditableChildCollection</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>FolderCircColl</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business.Circulations</ObjectNamespace>
@@ -22369,6 +22407,7 @@
       <ObjectType>EditableChild</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>FolderCirc</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business.Circulations</ObjectNamespace>
@@ -23575,6 +23614,7 @@
       <ObjectType>ReadOnlyCollection</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>FolderList</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -24072,6 +24112,7 @@
       <ObjectType>ReadOnlyObject</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>FolderInfo</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -24629,6 +24670,7 @@
       <ObjectType>NameValueList</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>FolderStatusNVL</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -24917,6 +24959,7 @@
       <ObjectType>EditableRoot</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>FolderType</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -25697,6 +25740,7 @@
       <ObjectType>ReadOnlyCollection</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>FolderTypeList</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -25986,6 +26030,7 @@
       <ObjectType>ReadOnlyObject</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>FolderTypeInfo</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -26299,6 +26344,7 @@
       <ObjectType>NameValueList</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>FolderTypeNVL</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business</ObjectNamespace>
@@ -26587,6 +26633,7 @@
       <ObjectType>EditableRoot</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>User</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business.Admin</ObjectNamespace>
@@ -27608,6 +27655,7 @@
       <ObjectType>ReadOnlyCollection</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>UserList</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business.Admin</ObjectNamespace>
@@ -28063,6 +28111,7 @@
       <ObjectType>ReadOnlyObject</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>UserInfo</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business.Admin</ObjectNamespace>
@@ -28498,6 +28547,7 @@
       <ObjectType>NameValueList</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>UserNVL</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business.Admin</ObjectNamespace>
@@ -28786,6 +28836,7 @@
       <ObjectType>NameValueList</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>UserAllNVL</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business.Admin</ObjectNamespace>
@@ -29135,6 +29186,7 @@
       <ObjectType>NameValueList</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>UserInactiveNVL</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business.Admin</ObjectNamespace>
@@ -29450,6 +29502,7 @@
       <ObjectType>EditableRoot</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>Role</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business.Admin</ObjectNamespace>
@@ -30291,6 +30344,7 @@
       <ObjectType>ReadOnlyCollection</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>RoleList</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business.Admin</ObjectNamespace>
@@ -30518,6 +30572,7 @@
       <ObjectType>ReadOnlyObject</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>RoleInfo</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business.Admin</ObjectNamespace>
@@ -30831,6 +30886,7 @@
       <ObjectType>NameValueList</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>RoleNVL</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>DocStore.Business.Admin</ObjectNamespace>

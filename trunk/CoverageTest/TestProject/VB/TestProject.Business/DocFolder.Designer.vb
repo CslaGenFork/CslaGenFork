@@ -19,8 +19,8 @@ Namespace TestProject.Business
     ''' </remarks>
     <Attributable>
     <Serializable()>
-    Partial Public Class DocFolder
-    Inherits MyBusinessBase(Of DocFolder)
+    Public Partial Class DocFolder
+        Inherits MyBusinessBase(Of DocFolder)
         Implements IHaveInterface
 
         #Region " Business Properties "

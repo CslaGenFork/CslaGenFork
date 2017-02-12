@@ -17,8 +17,8 @@ Namespace TestProject.Business
     ''' </remarks>
     <Attributable>
     <Serializable()>
-    Partial Public Class DocTypeDynamic
-    Inherits BusinessBase(Of DocTypeDynamic)
+    Public Partial Class DocTypeDynamic
+        Inherits BusinessBase(Of DocTypeDynamic)
         Implements IHaveInterface
 
         #Region " Static Fields "

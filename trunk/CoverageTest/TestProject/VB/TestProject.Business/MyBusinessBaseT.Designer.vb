@@ -8,27 +8,23 @@ Imports UsingLibrary
 Namespace TestProject.Business
 
     ''' <summary>
-    ''' This is a summary (criteria class).<br/>
-    ''' This is a generated base class of <see cref="ObjectCriteria"/> business object.
+    ''' MyBusinessBase (base class).<br/>
+    ''' This is a generated base class of <see cref="MyBusinessBase"/> business object.
     ''' </summary>
     <Attributable>
     <Serializable()>
-    Public Partial Class ObjectCriteria
-        Inherits BusinessBase(Of ObjectCriteria)
+    Public MustInherit Partial Class MyBusinessBase(Of T As {BusinessBase(Of T), IHaveInterface})
+        Inherits BusinessBase(Of T)
         Implements IHaveInterface
 
         #Region " Business Properties "
 
         #End Region
 
-        #Region " Factory Methods "
-
-        #End Region
-
         #Region " Constructor "
 
         ''' <summary>
-        ''' Initializes a new instance of the <see cref="ObjectCriteria"/> class.
+        ''' Initializes a new instance of the <see cref="MyBusinessBase"/> class.
         ''' </summary>
         ''' <remarks> Do not use to create a Csla object. Use factory methods instead.</remarks>
         <System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>

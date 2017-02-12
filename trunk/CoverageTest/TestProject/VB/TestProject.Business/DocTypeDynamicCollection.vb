@@ -3,7 +3,7 @@ Imports Csla
 
 Namespace TestProject.Business
 
-    Partial Public Class DocTypeDynamicCollection
+    Public Partial Class DocTypeDynamicCollection
 
         #Region " OnDeserialized actions "
 

@@ -9,30 +9,24 @@ namespace TestProject.Business
 {
 
     /// <summary>
-    /// This is a summary (criteria class).<br/>
-    /// This is a generated base class of <see cref="ObjectCriteria"/> business object.
+    /// MyBusinessListBase (base class).<br/>
+    /// This is a generated base class of <see cref="MyBusinessListBase"/> business object.
     /// </summary>
     [Attributable]
     [Serializable]
-    public partial class ObjectCriteria : BusinessBase<ObjectCriteria>, IHaveInterface
+    public abstract partial class MyBusinessListBase<T, C> : BusinessListBase<T, C>, IHaveInterface
+        where T : BusinessListBase<T, C>, IHaveInterface
+        where C : BusinessBase<C>
     {
-
-        #region Business Properties
-
-        #endregion
-
-        #region Factory Methods
-
-        #endregion
 
         #region Constructor
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ObjectCriteria"/> class.
+        /// Initializes a new instance of the <see cref="MyBusinessListBase"/> class.
         /// </summary>
         /// <remarks> Do not use to create a Csla object. Use factory methods instead.</remarks>
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public ObjectCriteria()
+        public MyBusinessListBase()
         {
             // Use factory methods and do not use direct creation.
         }

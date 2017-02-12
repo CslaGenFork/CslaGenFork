@@ -3,7 +3,7 @@ Imports Csla
 
 Namespace TestProject.Business
 
-    Partial Public Class DocEditCreatorGetter
+    Public Partial Class DocEditCreatorGetter
 
         #Region " OnDeserialized actions "
 

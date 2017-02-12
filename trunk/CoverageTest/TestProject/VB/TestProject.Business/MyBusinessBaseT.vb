@@ -3,7 +3,7 @@ Imports Csla
 
 Namespace TestProject.Business
 
-    Public Partial Class ObjectCriteria
+    Public Partial Class MyBusinessBase
 
         #Region " OnDeserialized actions "
 
@@ -11,9 +11,8 @@ Namespace TestProject.Business
         ' ''' This method is called on a newly deserialized object
         ' ''' after deserialization is complete.
         ' ''' </summary>
-        ' ''' <param name="context">Serialization context object.</param>
-        ' Protected Overrides Sub OnDeserialized(context As System.Runtime.Serialization.StreamingContext)
-            ' MyBase.OnDeserialized(context)
+        ' Protected Overrides Sub OnDeserialized()
+            ' MyBase.OnDeserialized()
             ' add your custom OnDeserialized actions here.
         ' End Sub
 

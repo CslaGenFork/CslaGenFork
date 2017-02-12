@@ -19,8 +19,8 @@ Namespace TestProject.Business
     ''' </remarks>
     <Attributable>
     <Serializable()>
-    Partial Public Class DocRO
-    Inherits ReadOnlyBase(Of DocRO)
+    Public Partial Class DocRO
+        Inherits ReadOnlyBase(Of DocRO)
         Implements IHaveInterface
 
         #Region " Business Properties "

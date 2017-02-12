@@ -153,10 +153,18 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="MyBusinessBase.Designer.vb">
-      <DependentUpon>MyBusinessBase.vb</DependentUpon>
+    <Compile Include="MyBusinessBaseT.Designer.vb">
+      <DependentUpon>MyBusinessBaseT.vb</DependentUpon>
     </Compile>
-    <Compile Include="MyBusinessBase.vb" />
+    <Compile Include="MyBusinessBaseT.vb" />
+    <Compile Include="MyBusinessBindingListBase.Designer.vb">
+      <DependentUpon>MyBusinessBindingListBase.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MyBusinessBindingListBase.vb" />
+    <Compile Include="MyBusinessListBase.Designer.vb">
+      <DependentUpon>MyBusinessListBase.vb</DependentUpon>
+    </Compile>
+    <Compile Include="MyBusinessListBase.vb" />
     <Compile Include="ObjectCriteria.Designer.vb">
       <DependentUpon>ObjectCriteria.vb</DependentUpon>
     </Compile>
