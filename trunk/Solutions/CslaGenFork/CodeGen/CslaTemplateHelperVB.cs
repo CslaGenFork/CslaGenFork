@@ -342,9 +342,9 @@ namespace CslaGenerator.CodeGen
             {
                 if (assignDataType.IsNullableType())
                     statement += String.Format(", {0})", GetDataType(prop));
-                //if (GeneralTemplatesHelper.IsNullableType(assignDataType))
-                //    statement += ")";
-                //statement += ", Nothing)";
+                if (GeneralTemplatesHelper.IsNullableType(assignDataType))
+                    statement += ")";
+                statement += ", Nothing)";
             }*/
 
             if (assignDataType == TypeCodeEx.ByteArray)
@@ -5047,10 +5047,10 @@ namespace CslaGenerator.CodeGen
         {
             if (trialPK.Info.ChildCollectionProperties.Count > 0)
             {
-                for (int collection = 0; collection < trialPK.Info.ChildCollectionProperties.Count; collection++)
+                foreach (var property in trialPK.Info.ChildCollectionProperties)
                 {
                     var trialChildCollection = FindChildInfo(trialPK.Info,
-                        trialPK.Info.ChildCollectionProperties[collection].TypeName);
+                        property.TypeName);
                     var trialChildCollectionItem =
                         trialChildCollection.Parent.CslaObjects.Find(trialChildCollection.ItemType);
                     foreach (var trialChildCollectionItemProp in trialChildCollectionItem.ValueProperties)
@@ -5162,8 +5162,7 @@ namespace CslaGenerator.CodeGen
                 hookList.Add("Create");
             }
 
-            if (
-                (HasDataPortalDelete(info) &&
+            if ((HasDataPortalDelete(info) &&
                  ((info.ObjectType.IsEditableType() &&
                    info.ObjectType.IsChildType()) ||
                   info.IsEditableRoot() ||
@@ -5752,6 +5751,57 @@ namespace CslaGenerator.CodeGen
 
         #endregion
 
+        #region Base Class Declaration (inheritance and interfaces)
+
+        public static string GetBaseClassDeclaration(CslaObjectInfo info)
+        {
+            return GetClassDeclarationCore(info, null, false);
+        }
+
+        public static string GetBaseClassDeclarationInheritedType(CslaObjectInfo info)
+        {
+            return GetClassDeclarationCore(info, info.InheritedType, false);
+        }
+
+        private static string MergeGenericWhereClause(CslaObjectInfo info, string declaration)
+        {
+            var genericArguments = info.NumberOfGenericArguments();
+            var result = new string[genericArguments];
+            var arguments = info.GetWhereClause();
+
+            if (info.IsNotDynamicList() && info.InheritedType != null && info.InheritedType.FinalName != string.Empty)
+            {
+                arguments[0][1] = info.InheritedType.FinalName.Replace(",", ", ");
+                if (genericArguments == 2 && info.ItemType != string.Empty)
+                    arguments[1][1] = string.Format("{0}(Of {1})", info.ItemType, info.GetGenericArguments()[1]);
+            }
+
+            var hasInterfaces = arguments[0][2].Length != 0;
+            result[0] = string.Format("{0} As {1}{2}{3}{4}",
+                arguments[0][0],
+                hasInterfaces ? "{" : string.Empty,
+                FormatGenericForVB(arguments[0][1]),
+                hasInterfaces ? string.Format(", {0}", FormatGenericForVB(arguments[0][2])) : string.Empty,
+                hasInterfaces ? "}" : string.Empty);
+
+            declaration = declaration.Replace("<T>", result[0]);
+
+            if (genericArguments == 2)
+            {
+                result[1] = string.Format("{0} As {1}", arguments[1][0], FormatGenericForVB(arguments[1][1]));
+                declaration = declaration.Replace("<C>", result[1]);
+            }
+
+            return declaration;
+        }
+
+        private static string FormatGenericForVB(string partStatement)
+        {
+            return partStatement.Replace("<", "(Of ").Replace(">", ")");
+        }
+
+        #endregion
+
         #region Class Declaration (inheritance and interfaces)
 
         public static string GetClassDeclaration(CslaObjectInfo info)
@@ -5781,7 +5831,7 @@ namespace CslaGenerator.CodeGen
             if (!info.ObjectType.IsCollectionType())
                 result += GetInitialClassDeclaration(info) + Environment.NewLine;
 
-            result += "    Inherits ";
+            result += "        Inherits ";
 
             var paramsNumber = info.NumberOfGenericArguments();
 
@@ -5796,17 +5846,15 @@ namespace CslaGenerator.CodeGen
                     if (finalName.Contains(search))
                         finalName = finalName.Replace(search,
                             string.Format("(Of {0})",
-                                info.IsDynamicEditableRootCollection()
-                                    ? info.ItemType
-                                    : info.ObjectName));
-
+                                info.IsDynamicList() ? info.GetListItem() : info.GetObjectName()));
                 }
-                else
+                else // 2 generic parameters
                 {
                     var secondParameter = inheritedType.SecondParameter;
 
                     var search = string.Format("<{0},{1}>", firstParameter, secondParameter);
                     if (finalName.Contains(search))
+                    {
                         if (info.IsNameValueList())
                         {
                             finalName = GetNameValueListClassDeclaration(info, finalName, search);
@@ -5814,23 +5862,22 @@ namespace CslaGenerator.CodeGen
                         else
                         {
                             finalName = finalName.Replace(search,
-                                string.Format("(Of {0}, {1})", info.ObjectName, info.ItemType));
+                                string.Format("(Of {0}, {1})", info.GetObjectName(), info.GetListItem()));
                         }
+                    }
                 }
                 result += finalName;
             }
-            else
+            else // no inherited type specified
             {
                 if (paramsNumber == 1)
                 {
                     result += string.Format("{0}(Of {1})",
                         info.GetCslaBaseClassName(isBindingList),
-                        info.IsDynamicEditableRootCollection()
-                            ? info.ItemType
-                            : info.ObjectName);
+                        info.IsDynamicList() ? info.GetListItem() : info.GetObjectName());
 
                 }
-                else
+                else // 2 generic parameters
                 {
                     if (info.IsNameValueList())
                     {
@@ -5840,8 +5887,8 @@ namespace CslaGenerator.CodeGen
                     {
                         result += string.Format("{0}(Of {1}, {2})",
                             info.GetCslaBaseClassName(isBindingList),
-                            info.ObjectName,
-                            info.ItemType);
+                            info.GetObjectName(),
+                            info.GetListItem());
                     }
                 }
             }
@@ -5851,10 +5898,24 @@ namespace CslaGenerator.CodeGen
 
         public static string GetInitialClassDeclaration(CslaObjectInfo info)
         {
-            return string.Format("Partial {0} {1}Class {2}",
+            var declaration = string.Format("{0} {1}Partial Class {2}{3}",
                 info.ClassVisibility == ClassVisibility.Public ? "Public" : "Friend",
-                info.IsBaseClass() ? "MustInherit " : String.Empty,
-                info.ObjectName);
+                info.IsBaseClass() ? "MustInherit " : string.Empty,
+                info.ObjectName,
+                info.IsBaseClass() ? InsertReplaceMarkers(info) : string.Empty);
+
+            if (info.IsBaseClass())
+                declaration = MergeGenericWhereClause(info, declaration);
+
+            return declaration;
+        }
+
+        private static string InsertReplaceMarkers(CslaObjectInfo info)
+        {
+            if (info.NumberOfGenericArguments() == 1)
+                return string.Format("(Of <{0}>)", info.GetGenericArguments()[0]);
+
+            return string.Format("(Of <{0}>, <{1}>)", info.GetGenericArguments()[0], info.GetGenericArguments()[1]);
         }
 
         private static string GetNameValueListClassDeclaration(CslaObjectInfo info)

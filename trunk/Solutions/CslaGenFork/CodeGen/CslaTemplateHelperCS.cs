@@ -5731,7 +5731,7 @@ namespace CslaGenerator.CodeGen
 
             if (info.IsNotDynamicList() && info.InheritedType != null && info.InheritedType.FinalName != string.Empty)
             {
-                arguments[0][1] = info.InheritedType.FinalName;
+                arguments[0][1] = info.InheritedType.FinalName.Replace(",",", ");
                 if (genericArguments == 2 && info.ItemType != string.Empty)
                     arguments[1][1] = string.Format("{0}<{1}>", info.ItemType, info.GetGenericArguments()[1]);
             }
@@ -5920,7 +5920,7 @@ namespace CslaGenerator.CodeGen
                     if (!item.Contains(','))
                         result += ", ";
                     if (item.Contains("<T>"))
-                        result += item.Replace("<T>", "<" + info.ObjectName + ">");
+                        result += item.Replace("<T>", string.Format("<{0}>", info.ObjectName));
                     else
                         result += item;
                 }
