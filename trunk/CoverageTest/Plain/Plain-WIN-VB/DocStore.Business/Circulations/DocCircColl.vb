@@ -10,7 +10,7 @@ Imports DocStore.Business.Util
 
 Namespace DocStore.Business.Circulations
 
-    Partial Public Class DocCircColl
+    Public Partial Class DocCircColl
 
         #Region " OnDeserialized actions "
 

@@ -22,7 +22,7 @@ Namespace DocStore.Business
     ''' The items of the collection are <see cref="FolderInfo"/> objects.
     ''' </remarks>
     <Serializable()>
-    Partial Public Class FolderList
+    Public Partial Class FolderList
 #If WINFORMS Then
         Inherits ReadOnlyBindingListBase(Of FolderList, FolderInfo)
 #Else

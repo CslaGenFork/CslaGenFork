@@ -22,7 +22,7 @@ Namespace DocStore.Business
     ''' The items of the collection are <see cref="DocContentInfo"/> objects.
     ''' </remarks>
     <Serializable()>
-    Partial Public Class DocContentList
+    Public Partial Class DocContentList
 #If WINFORMS Then
         Inherits ReadOnlyBindingListBase(Of DocContentList, DocContentInfo)
 #Else

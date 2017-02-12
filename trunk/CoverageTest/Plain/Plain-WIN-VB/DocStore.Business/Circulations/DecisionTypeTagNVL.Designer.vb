@@ -18,8 +18,8 @@ Namespace DocStore.Business.Circulations
     ''' This is a generated base class of <see cref="DecisionTypeTagNVL"/> business object.
     ''' </summary>
     <Serializable()>
-    Partial Public Class DecisionTypeTagNVL
-    Inherits NameValueListBase(Of Integer, String)
+    Public Partial Class DecisionTypeTagNVL
+        Inherits NameValueListBase(Of Integer, String)
 
         #Region " Private Fields "
 

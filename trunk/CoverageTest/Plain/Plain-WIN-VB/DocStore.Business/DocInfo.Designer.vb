@@ -22,8 +22,8 @@ Namespace DocStore.Business
     ''' This class is an item of <see cref="DocList"/> collection.
     ''' </remarks>
     <Serializable()>
-    Partial Public Class DocInfo
-    Inherits ReadOnlyBase(Of DocInfo)
+    Public Partial Class DocInfo
+        Inherits ReadOnlyBase(Of DocInfo)
 
         #Region " Business Properties "
 
@@ -268,7 +268,6 @@ Namespace DocStore.Business
         ''' Properties on <see cref="DocInfo"/> object are updated by <see cref="Doc"/> Saved event.
         ''' </summary>
         Friend Sub UpdatePropertiesOnSaved(doc As Doc)
-            LoadProperty(DocIDProperty, doc.DocID)
             LoadProperty(DocClassIDProperty, doc.DocClassID)
             LoadProperty(DocTypeIDProperty, doc.DocTypeID)
             LoadProperty(SenderIDProperty, doc.SenderID)

@@ -10,7 +10,7 @@ Imports DocStore.Business.Util
 
 Namespace DocStore.Business.Admin
 
-    Partial Public Class Role
+    Public Partial Class Role
 
         #Region " OnDeserialized actions "
 

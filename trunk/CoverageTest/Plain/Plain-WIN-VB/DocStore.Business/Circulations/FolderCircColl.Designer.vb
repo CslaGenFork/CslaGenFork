@@ -24,7 +24,7 @@ Namespace DocStore.Business.Circulations
     ''' The items of the collection are <see cref="FolderCirc"/> objects.
     ''' </remarks>
     <Serializable()>
-    Partial Public Class FolderCircColl
+    Public Partial Class FolderCircColl
 #If WINFORMS Then
         Inherits BusinessBindingListBase(Of FolderCircColl, FolderCirc)
 #Else

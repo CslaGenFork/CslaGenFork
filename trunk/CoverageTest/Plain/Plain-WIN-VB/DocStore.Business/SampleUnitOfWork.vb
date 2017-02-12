@@ -10,7 +10,7 @@ Imports DocStore.Business.Util
 
 Namespace DocStore.Business
 
-    Partial Public Class SampleUnitOfWork
+    Public Partial Class SampleUnitOfWork
 
         #Region " OnDeserialized actions "
 
