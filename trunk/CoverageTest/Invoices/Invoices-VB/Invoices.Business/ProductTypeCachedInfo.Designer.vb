@@ -14,8 +14,8 @@ Namespace Invoices.Business
     ''' This class is an item of <see cref="ProductTypeCachedList"/> collection.
     ''' </remarks>
     <Serializable()>
-    Partial Public Class ProductTypeCachedInfo
-    Inherits ReadOnlyBase(Of ProductTypeCachedInfo)
+    Public Partial Class ProductTypeCachedInfo
+        Inherits ReadOnlyBase(Of ProductTypeCachedInfo)
 
         #Region " Business Properties "
 
@@ -77,7 +77,6 @@ Namespace Invoices.Business
         ''' Properties on <see cref="ProductTypeCachedInfo"/> object are updated by <see cref="ProductTypeItem"/> Saved event.
         ''' </summary>
         Friend Sub UpdatePropertiesOnSaved(productTypeItem As ProductTypeItem)
-            LoadProperty(ProductTypeIdProperty, productTypeItem.ProductTypeId)
             LoadProperty(NameProperty, productTypeItem.Name)
         End Sub
 

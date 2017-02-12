@@ -3,7 +3,7 @@ Imports Csla
 
 Namespace Invoices.Business
 
-    Partial Public Class ProductTypeCachedList
+    Public Partial Class ProductTypeCachedList
 
         #Region " OnDeserialized actions "
 

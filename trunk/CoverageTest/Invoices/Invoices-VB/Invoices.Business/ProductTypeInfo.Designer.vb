@@ -14,8 +14,8 @@ Namespace Invoices.Business
     ''' This class is an item of <see cref="ProductTypeList"/> collection.
     ''' </remarks>
     <Serializable()>
-    Partial Public Class ProductTypeInfo
-    Inherits ReadOnlyBase(Of ProductTypeInfo)
+    Public Partial Class ProductTypeInfo
+        Inherits ReadOnlyBase(Of ProductTypeInfo)
 
         #Region " Business Properties "
 
@@ -77,7 +77,6 @@ Namespace Invoices.Business
         ''' Properties on <see cref="ProductTypeInfo"/> object are updated by <see cref="ProductTypeDynaItem"/> Saved event.
         ''' </summary>
         Friend Sub UpdatePropertiesOnSaved(productTypeDynaItem As ProductTypeDynaItem)
-            LoadProperty(ProductTypeIdProperty, productTypeDynaItem.ProductTypeId)
             LoadProperty(NameProperty, productTypeDynaItem.Name)
         End Sub
 

@@ -14,8 +14,8 @@ Namespace Invoices.Business
     ''' This class is an item of <see cref="ProductTypeColl"/> collection.
     ''' </remarks>
     <Serializable()>
-    Partial Public Class ProductTypeItem
-    Inherits BusinessBase(Of ProductTypeItem)
+    Public Partial Class ProductTypeItem
+        Inherits BusinessBase(Of ProductTypeItem)
 
         #Region " Static Fields "
 

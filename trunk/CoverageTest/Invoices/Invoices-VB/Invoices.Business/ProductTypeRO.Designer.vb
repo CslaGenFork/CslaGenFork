@@ -12,8 +12,8 @@ Namespace Invoices.Business
     ''' This class is a root object.
     ''' </summary>
     <Serializable()>
-    Partial Public Class ProductTypeRO
-    Inherits ReadOnlyBase(Of ProductTypeRO)
+    Public Partial Class ProductTypeRO
+        Inherits ReadOnlyBase(Of ProductTypeRO)
 
         #Region " Business Properties "
 

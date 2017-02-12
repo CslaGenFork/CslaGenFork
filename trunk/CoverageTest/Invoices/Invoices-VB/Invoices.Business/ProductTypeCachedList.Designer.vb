@@ -20,7 +20,7 @@ Namespace Invoices.Business
     ''' Cached. Updated by ProductTypeItem
     ''' </remarks>
     <Serializable()>
-    Partial Public Class ProductTypeCachedList
+    Public Partial Class ProductTypeCachedList
 #If WINFORMS Then
         Inherits ReadOnlyBindingListBase(Of ProductTypeCachedList, ProductTypeCachedInfo)
 #Else

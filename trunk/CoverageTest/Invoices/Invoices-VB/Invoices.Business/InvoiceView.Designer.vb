@@ -16,8 +16,8 @@ Namespace Invoices.Business
     ''' - <see cref="InvoiceLines"/> of type <see cref="InvoiceLineList"/> (1:M relation to <see cref="InvoiceLineInfo"/>)
     ''' </remarks>
     <Serializable()>
-    Partial Public Class InvoiceView
-    Inherits ReadOnlyBase(Of InvoiceView)
+    Public Partial Class InvoiceView
+        Inherits ReadOnlyBase(Of InvoiceView)
 
         #Region " Business Properties "
 

@@ -11,8 +11,8 @@ Namespace Invoices.Business
     ''' This is a generated base class of <see cref="ProductTypeEdit"/> business object.
     ''' </summary>
     <Serializable()>
-    Partial Public Class ProductTypeEdit
-    Inherits BusinessBase(Of ProductTypeEdit)
+    Public Partial Class ProductTypeEdit
+        Inherits BusinessBase(Of ProductTypeEdit)
 
         #Region " Static Fields "
 

@@ -11,8 +11,8 @@ Namespace Invoices.Business
     ''' This is a generated base class of <see cref="CustomerEdit"/> business object.
     ''' </summary>
     <Serializable()>
-    Partial Public Class CustomerEdit
-    Inherits BusinessBase(Of CustomerEdit)
+    Public Partial Class CustomerEdit
+        Inherits BusinessBase(Of CustomerEdit)
 
         #Region " Business Properties "
 
