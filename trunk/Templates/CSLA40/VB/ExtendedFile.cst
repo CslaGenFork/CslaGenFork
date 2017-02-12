@@ -71,7 +71,7 @@ if (cachedContextUtilitiesNamespace != string.Empty)
 
 <%= Info.ObjectNamespace == string.Empty ? "" : "Namespace " + Info.ObjectNamespace %>
 
-    Partial <%= Info.ClassVisibility == ClassVisibility.Public ? "Public" : "Friend" %> Class <%= Info.ObjectName %>
+    <%= Info.ClassVisibility == ClassVisibility.Public ? "Public" : "Friend" %> Partial Class <%= Info.ObjectName %>
 
         #Region " OnDeserialized actions "
 
@@ -337,7 +337,7 @@ if (IsCriteriaExtendedClassNeeded(Info))
         {
             %>
 
-    Partial <%= Info.ClassVisibility == ClassVisibility.Public ? "Public" : "Friend" %> Class <%= crit.Name %>
+    <%= Info.ClassVisibility == ClassVisibility.Public ? "Public" : "Friend" %> Partial Class <%= crit.Name %>
 
     End Class
 <%

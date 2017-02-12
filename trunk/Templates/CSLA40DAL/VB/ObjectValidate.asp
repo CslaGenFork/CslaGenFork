@@ -269,7 +269,7 @@ foreach (ValueProperty prop in Info.GetDatabaseBoundValueProperties())
     else if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None)
     {
         reportMixedOrigins = reportMixedOrigins || originIsStoredProcedure;
-    }    
+    }
     if (reportMixedOrigins)
     {
         // 5. Check value properties from StoredProcedure don't co-exist with other origins
@@ -337,7 +337,7 @@ if (Info.IsDualInheritor() && CurrentUnit.GenerationParams.DualListInheritance)
     {
         // 18. InheritedTypeWinForms number of arguments doesn't match what is needed by ObjectType, except for BaseClass.
         Errors.Append(Info.ObjectName + " must have " + Info.NumberOfGenericArguments() + " generic arguments and Inherited Type WinForms has " + Info.InheritedTypeWinForms.GetParameters().Length + " generic arguments." + Environment.NewLine);
-    } 
+    }
 }
 if (Info.IsBaseClass() && Info.CslaBaseClass == CslaBaseClasses.None)
 {
