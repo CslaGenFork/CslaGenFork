@@ -21,8 +21,8 @@ Namespace DocStore.Business
     ''' This class is an item of <see cref="DocContentList"/> collection.
     ''' </remarks>
     <Serializable()>
-    Partial Public Class DocContentInfo
-    Inherits ReadOnlyBase(Of DocContentInfo)
+    Public Partial Class DocContentInfo
+        Inherits ReadOnlyBase(Of DocContentInfo)
 
         #Region " Business Properties "
 

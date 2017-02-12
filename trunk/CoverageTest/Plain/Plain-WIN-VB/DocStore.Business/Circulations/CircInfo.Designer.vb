@@ -21,8 +21,8 @@ Namespace DocStore.Business.Circulations
     ''' This class is an item of <see cref="CircList"/> collection.
     ''' </remarks>
     <Serializable()>
-    Partial Public Class CircInfo
-    Inherits ReadOnlyBase(Of CircInfo)
+    Public Partial Class CircInfo
+        Inherits ReadOnlyBase(Of CircInfo)
 
         #Region " Business Properties "
 

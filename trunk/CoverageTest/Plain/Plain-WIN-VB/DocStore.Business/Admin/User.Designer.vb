@@ -21,8 +21,8 @@ Namespace DocStore.Business.Admin
     ''' This is a generated base class of <see cref="User"/> business object.
     ''' </summary>
     <Serializable()>
-    Partial Public Class User
-    Inherits BusinessBase(Of User)
+    Public Partial Class User
+        Inherits BusinessBase(Of User)
 
         #Region " Static Fields "
 

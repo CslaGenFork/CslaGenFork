@@ -21,8 +21,8 @@ Namespace DocStore.Business
     ''' This is a generated base class of <see cref="FolderType"/> business object.
     ''' </summary>
     <Serializable()>
-    Partial Public Class FolderType
-    Inherits BusinessBase(Of FolderType)
+    Public Partial Class FolderType
+        Inherits BusinessBase(Of FolderType)
 
         #Region " Static Fields "
 

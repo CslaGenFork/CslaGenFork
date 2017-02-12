@@ -18,8 +18,8 @@ Namespace DocStore.Business
     ''' This is a generated base class of <see cref="FolderStatusNVL"/> business object.
     ''' </summary>
     <Serializable()>
-    Partial Public Class FolderStatusNVL
-    Inherits NameValueListBase(Of Integer, String)
+    Public Partial Class FolderStatusNVL
+        Inherits NameValueListBase(Of Integer, String)
 
         #Region " Private Fields "
 

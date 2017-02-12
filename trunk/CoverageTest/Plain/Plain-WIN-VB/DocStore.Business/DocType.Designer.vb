@@ -21,8 +21,8 @@ Namespace DocStore.Business
     ''' This is a generated base class of <see cref="DocType"/> business object.
     ''' </summary>
     <Serializable()>
-    Partial Public Class DocType
-    Inherits BusinessBase(Of DocType)
+    Public Partial Class DocType
+        Inherits BusinessBase(Of DocType)
 
         #Region " Static Fields "
 

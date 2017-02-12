@@ -10,7 +10,7 @@ Imports DocStore.Business.Util
 
 Namespace DocStore.Business
 
-    Partial Public Class FolderTypeNVL
+    Public Partial Class FolderTypeNVL
 
         #Region " OnDeserialized actions "
 

@@ -32,8 +32,8 @@ Namespace DocStore.Business
     ''' - <see cref="Contents"/> of type <see cref="DocContentList"/> (1:M relation to <see cref="DocContentInfo"/>)
     ''' </remarks>
     <Serializable()>
-    Partial Public Class Doc
-    Inherits BusinessBase(Of Doc)
+    Public Partial Class Doc
+        Inherits BusinessBase(Of Doc)
 
         #Region " Static Fields "
 
