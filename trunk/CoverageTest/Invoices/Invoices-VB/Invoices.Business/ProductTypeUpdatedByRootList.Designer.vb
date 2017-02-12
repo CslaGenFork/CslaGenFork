@@ -20,7 +20,7 @@ Namespace Invoices.Business
     ''' Updated by ProductTypeEdit
     ''' </remarks>
     <Serializable()>
-    Partial Public Class ProductTypeUpdatedByRootList
+    Public Partial Class ProductTypeUpdatedByRootList
 #If WINFORMS Then
         Inherits ReadOnlyBindingListBase(Of ProductTypeUpdatedByRootList, ProductTypeUpdatedByRootInfo)
 #Else

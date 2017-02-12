@@ -15,8 +15,8 @@ Namespace Invoices.Business
     ''' - <see cref="Suppliers"/> of type <see cref="ProductSupplierColl"/> (1:M relation to <see cref="ProductSupplierItem"/>)
     ''' </remarks>
     <Serializable()>
-    Partial Public Class ProductEdit
-    Inherits BusinessBase(Of ProductEdit)
+    Public Partial Class ProductEdit
+        Inherits BusinessBase(Of ProductEdit)
 
         #Region " Business Properties "
 

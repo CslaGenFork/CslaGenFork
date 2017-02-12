@@ -14,8 +14,8 @@ Namespace Invoices.Business
     ''' This class is an item of <see cref="InvoiceLineList"/> collection.
     ''' </remarks>
     <Serializable()>
-    Partial Public Class InvoiceLineInfo
-    Inherits ReadOnlyBase(Of InvoiceLineInfo)
+    Public Partial Class InvoiceLineInfo
+        Inherits ReadOnlyBase(Of InvoiceLineInfo)
 
         #Region " Business Properties "
 

@@ -14,7 +14,7 @@ Namespace Invoices.Business
     ''' The items of the collection are <see cref="ProductTypeDynaItem"/> objects.
     ''' </remarks>
     <Serializable()>
-    Partial Public Class ProductTypeDynaColl
+    Public Partial Class ProductTypeDynaColl
 #If WINFORMS Then
         Inherits DynamicBindingListBase(Of ProductTypeDynaItem)
 #Else

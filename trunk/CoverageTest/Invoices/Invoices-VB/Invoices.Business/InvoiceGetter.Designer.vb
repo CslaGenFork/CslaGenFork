@@ -9,8 +9,8 @@ Namespace Invoices.Business
     ''' This class is a root object that implements the Unit of Work pattern.
     ''' </summary>
     <Serializable()>
-    Partial Public Class InvoiceGetter
-    Inherits ReadOnlyBase(Of InvoiceGetter)
+    Public Partial Class InvoiceGetter
+        Inherits ReadOnlyBase(Of InvoiceGetter)
 
         #Region " Business Properties "
 

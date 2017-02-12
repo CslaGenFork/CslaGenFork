@@ -11,8 +11,8 @@ Namespace Invoices.Business
     ''' This is a generated base class of <see cref="ProductTypeNVL"/> business object.
     ''' </summary>
     <Serializable()>
-    Partial Public Class ProductTypeNVL
-    Inherits NameValueListBase(Of Integer, String)
+    Public Partial Class ProductTypeNVL
+        Inherits NameValueListBase(Of Integer, String)
 
         #Region " Factory Methods "
 

@@ -20,7 +20,7 @@ Namespace Invoices.Business
     ''' No cache. Updated by ProductTypeDynaItem
     ''' </remarks>
     <Serializable()>
-    Partial Public Class ProductTypeList
+    Public Partial Class ProductTypeList
 #If WINFORMS Then
         Inherits ReadOnlyBindingListBase(Of ProductTypeList, ProductTypeInfo)
 #Else

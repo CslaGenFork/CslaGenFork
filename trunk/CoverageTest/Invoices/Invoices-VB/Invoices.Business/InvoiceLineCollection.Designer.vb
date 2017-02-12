@@ -15,7 +15,7 @@ Namespace Invoices.Business
     ''' The items of the collection are <see cref="InvoiceLineItem"/> objects.
     ''' </remarks>
     <Serializable()>
-    Partial Public Class InvoiceLineCollection
+    Public Partial Class InvoiceLineCollection
 #If WINFORMS Then
         Inherits BusinessBindingListBase(Of InvoiceLineCollection, InvoiceLineItem)
 #Else

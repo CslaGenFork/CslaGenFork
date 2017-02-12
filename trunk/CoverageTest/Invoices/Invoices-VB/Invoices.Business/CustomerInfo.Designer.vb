@@ -14,8 +14,8 @@ Namespace Invoices.Business
     ''' This class is an item of <see cref="CustomerList"/> collection.
     ''' </remarks>
     <Serializable()>
-    Partial Public Class CustomerInfo
-    Inherits ReadOnlyBase(Of CustomerInfo)
+    Public Partial Class CustomerInfo
+        Inherits ReadOnlyBase(Of CustomerInfo)
 
         #Region " Business Properties "
 
@@ -91,7 +91,6 @@ Namespace Invoices.Business
         ''' Properties on <see cref="CustomerInfo"/> object are updated by <see cref="CustomerEdit"/> Saved event.
         ''' </summary>
         Friend Sub UpdatePropertiesOnSaved(customerEdit As CustomerEdit)
-            LoadProperty(CustomerIdProperty, customerEdit.CustomerId)
             LoadProperty(NameProperty, customerEdit.Name)
             LoadProperty(FiscalNumberProperty, customerEdit.FiscalNumber)
         End Sub

@@ -68,6 +68,10 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CriteriaSearchInvoice.Designer.vb">
+      <DependentUpon>CriteriaSearchInvoice.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CriteriaSearchInvoice.vb" />
     <Compile Include="CustomerEdit.Designer.vb">
       <DependentUpon>CustomerEdit.vb</DependentUpon>
     </Compile>
@@ -81,6 +85,8 @@
     </Compile>
     <Compile Include="CustomerList.vb" />
     <Compile Include="DataPortalHookArgs.vb" />
+    <Compile Include="IListLog.vb" />
+    <Compile Include="ILog.vb" />
     <Compile Include="InvoiceCreator.Designer.vb">
       <DependentUpon>InvoiceCreator.vb</DependentUpon>
     </Compile>
@@ -129,6 +135,39 @@
       <DependentUpon>InvoiceView.vb</DependentUpon>
     </Compile>
     <Compile Include="InvoiceView.vb" />
+    <Compile Include="LogActions.vb" />
+    <Compile Include="LoggerBusinessBase.Designer.vb">
+      <DependentUpon>LoggerBusinessBase.vb</DependentUpon>
+    </Compile>
+    <Compile Include="LoggerBusinessBase.vb" />
+    <Compile Include="LoggerBusinessBindingListBase.Designer.vb">
+      <DependentUpon>LoggerBusinessBindingListBase.vb</DependentUpon>
+    </Compile>
+    <Compile Include="LoggerBusinessBindingListBase.vb" />
+    <Compile Include="LoggerBusinessListBase.Designer.vb">
+      <DependentUpon>LoggerBusinessListBase.vb</DependentUpon>
+    </Compile>
+    <Compile Include="LoggerBusinessListBase.vb" />
+    <Compile Include="LoggerDynamicBindingListBase.Designer.vb">
+      <DependentUpon>LoggerDynamicBindingListBase.vb</DependentUpon>
+    </Compile>
+    <Compile Include="LoggerDynamicBindingListBase.vb" />
+    <Compile Include="LoggerDynamicListBase.Designer.vb">
+      <DependentUpon>LoggerDynamicListBase.vb</DependentUpon>
+    </Compile>
+    <Compile Include="LoggerDynamicListBase.vb" />
+    <Compile Include="LoggerReadOnlyBase.Designer.vb">
+      <DependentUpon>LoggerReadOnlyBase.vb</DependentUpon>
+    </Compile>
+    <Compile Include="LoggerReadOnlyBase.vb" />
+    <Compile Include="LoggerReadOnlyBindingListBase.Designer.vb">
+      <DependentUpon>LoggerReadOnlyBindingListBase.vb</DependentUpon>
+    </Compile>
+    <Compile Include="LoggerReadOnlyBindingListBase.vb" />
+    <Compile Include="LoggerReadOnlyListBase.Designer.vb">
+      <DependentUpon>LoggerReadOnlyListBase.vb</DependentUpon>
+    </Compile>
+    <Compile Include="LoggerReadOnlyListBase.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -180,10 +219,6 @@
       <DependentUpon>ProductTypeColl.vb</DependentUpon>
     </Compile>
     <Compile Include="ProductTypeColl.vb" />
-    <Compile Include="ProductTypeDyna.Designer.vb">
-      <DependentUpon>ProductTypeDyna.vb</DependentUpon>
-    </Compile>
-    <Compile Include="ProductTypeDyna.vb" />
     <Compile Include="ProductTypeDynaColl.Designer.vb">
       <DependentUpon>ProductTypeDynaColl.vb</DependentUpon>
     </Compile>

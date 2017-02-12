@@ -3,7 +3,7 @@ Imports Csla
 
 Namespace Invoices.Business
 
-    Partial Public Class ProductTypeColl
+    Public Partial Class ProductTypeColl
 
         #Region " OnDeserialized actions "
 
