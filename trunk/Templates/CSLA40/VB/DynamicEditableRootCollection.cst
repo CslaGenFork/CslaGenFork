@@ -55,7 +55,7 @@ if (Errors.Length == 0)
     if (CurrentUnit.GenerationParams.DualListInheritance)
     {
         %>#If WINFORMS Then
-    <%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %><%
+<%
         if (Info.InheritedTypeWinForms.FinalName != string.Empty)
         {
             %><%= GetClassDeclarationInheritedTypeWinForms(Info) + GetInterfaceDeclaration(Info) %>
@@ -67,9 +67,8 @@ if (Errors.Length == 0)
 <%
         }
         %>#Else
-    <%
+<%
     }
-    %><%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %><%
     if (Info.InheritedType.FinalName != string.Empty)
     {
         %><%= GetClassDeclarationInheritedType(Info) + GetInterfaceDeclaration(Info) %>

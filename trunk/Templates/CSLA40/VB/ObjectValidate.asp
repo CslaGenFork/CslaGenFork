@@ -269,7 +269,7 @@ foreach (ValueProperty prop in Info.GetDatabaseBoundValueProperties())
     else if (prop.DbBindColumn.ColumnOriginType != ColumnOriginType.None)
     {
         reportMixedOrigins = reportMixedOrigins || originIsStoredProcedure;
-    }    
+    }
     if (reportMixedOrigins)
     {
         // 5. Check value properties from StoredProcedure don't co-exist with other origins
@@ -315,11 +315,11 @@ if (CurrentUnit.GenerationParams.GenerateSilverlight4 ||
         }
     }
 }
-if (!CurrentUnit.GenerationParams.GenerateAsynchronous && ! UseSilverlight() && Info.UseUnitOfWorkType != string.Empty)
+/*if (!CurrentUnit.GenerationParams.GenerateAsynchronous && ! UseSilverlight() && Info.UseUnitOfWorkType != string.Empty)
 {
     // 13. Alert about useless Unit Of Work.
     Infos.Append(Info.ObjectName + " uses Unit of Work Type " + Info.UseUnitOfWorkType + ": usage is useful only when Asynchronous or Silverlight is generated." + Environment.NewLine);
-}
+}*/
 
 if (Info.IsDualInheritor() && CurrentUnit.GenerationParams.DualListInheritance)
 {
@@ -337,19 +337,19 @@ if (Info.IsDualInheritor() && CurrentUnit.GenerationParams.DualListInheritance)
     {
         // 18. InheritedTypeWinForms number of arguments doesn't match what is needed by ObjectType, except for BaseClass.
         Errors.Append(Info.ObjectName + " must have " + Info.NumberOfGenericArguments() + " generic arguments and Inherited Type WinForms has " + Info.InheritedTypeWinForms.GetParameters().Length + " generic arguments." + Environment.NewLine);
-    } 
+    }
 }
-if (Info.IsBaseClass() && Info.InheritedType.FinalName == String.Empty)
+if (Info.IsBaseClass() && Info.CslaBaseClass == CslaBaseClasses.None)
 {
     // 16. BaseClass needs InheritedType.
-    Errors.Append(Info.ObjectName + " is a BaseClass and an Inherited Type must be specified." + Environment.NewLine);
+    Errors.Append(Info.ObjectName + " is a BaseClass and an Csla Base Class must be specified." + Environment.NewLine);
 }
 if (Info.IsNotBaseClass() && Info.InheritedType.FinalName != String.Empty && Info.InheritedType.GetParameters().Length != Info.NumberOfGenericArguments())
 {
     // 17. InheritedType number of arguments doesn't match what is needed by ObjectType, except for BaseClass.
     Errors.Append(Info.ObjectName + " must have " + Info.NumberOfGenericArguments() + " generic arguments and Inherited Type has " + Info.InheritedType.GetParameters().Length + " generic arguments." + Environment.NewLine);
 }
-if (Info.IsBaseClass() && Info.InheritedType.GetParameters().Length != Info.GetGenericArguments().Length)
+if (Info.IsBaseClass() && Info.InheritedType.FinalName != String.Empty && Info.InheritedType.GetParameters().Length != Info.GetGenericArguments().Length)
 {
     // 19. On BaseClass, InheritedType number of arguments must match number of arguments specified on the object.
     Errors.Append(Info.ObjectName + " is a BaseClass with " + Info.GetGenericArguments().Length + " generic arguments and Inherited Type has " + Info.InheritedType.GetParameters().Length + " generic arguments." + Environment.NewLine);

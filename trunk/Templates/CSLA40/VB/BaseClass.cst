@@ -57,67 +57,34 @@ if (Errors.Length == 0)
     <%
     if (Info.InheritedType.FinalName != string.Empty)
     {
-        %><%= GetClassDeclarationInheritedType(Info) + GetInterfaceDeclaration(Info) %>
+        %><%= GetBaseClassDeclarationInheritedType(Info) + GetInterfaceDeclaration(Info) %>
 <%
     }
     else
     {
-        %><%= GetClassDeclaration(Info) + GetInterfaceDeclaration(Info) %>
+        %><%= GetBaseClassDeclaration(Info) + GetInterfaceDeclaration(Info) %>
 <%
     }
-    %>
+    if (CslaBaseClassesExtensions.IsNotListBaseClass(Info.CslaBaseClass))
+    {
+        %>
 <!-- #include file="StaticFields.asp" -->
 <!-- #include file="StateFields.asp" -->
 <!-- #include file="BusinessProps.asp" -->
+    <%
+    }
+    %>
 <!-- #include file="ObjectOverrides.asp" -->
     <%
     Response.Write(Environment.NewLine);
-    if (Info.GenerateFactoryMethods)
-    {
-        if (CurrentUnit.GenerationParams.TargetIsCsla40)
-        {
-            %>
-<!-- #include file="EditableRoot_Factory.asp" -->
-<%
-        }
-        else
-        {
-            %>
-<!-- #include file="EditableRoot_Factory-45.asp" -->
-<%
-        }
-    }
-    Response.Write(Environment.NewLine);
     %>
 <!-- #include file="Constructor.asp" -->
-<!-- #include file="InvalidateCachedList.asp" -->
-<!-- #include file="Criteria.asp" -->
 <!-- #include file="ObjectAuthorizationMethods.asp" -->
 <!-- #include file="BusinessRules.asp" -->
 <%
-    if (Info.GenerateDataAccessRegion)
-    {
-        if (!genOptional)
-        {
-            Response.Write(Environment.NewLine);
-        }
-        %>
-<!-- #include file="EditableRoot_DataPortal.asp" -->
-<%
-        Response.Write(Environment.NewLine);
-%>
-<!-- #include file="DataPortalHooks.asp" -->
-<%
-    }
-    else
-    {
-        Response.Write(Environment.NewLine);
-    }
+    Response.Write(Environment.NewLine);
     %>
     End Class
-
-<!-- #include file="CriteriaObject.asp" -->
-
 <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Business) == string.Empty ? "" : "End Namespace" %>
 <%
 }
