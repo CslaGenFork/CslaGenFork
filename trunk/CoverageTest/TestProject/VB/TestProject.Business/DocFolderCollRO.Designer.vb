@@ -18,7 +18,7 @@ Namespace TestProject.Business
     ''' </remarks>
     <Attributable>
     <Serializable()>
-    Partial Public Class DocFolderCollRO
+    Public Partial Class DocFolderCollRO
         Inherits ReadOnlyBindingListBase(Of DocFolderCollRO, DocFolderRO)
         Implements IHaveInterface
     

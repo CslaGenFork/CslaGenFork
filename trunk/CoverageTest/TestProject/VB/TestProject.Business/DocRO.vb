@@ -3,7 +3,7 @@ Imports Csla
 
 Namespace TestProject.Business
 
-    Partial Public Class DocRO
+    Public Partial Class DocRO
 
         #Region " OnDeserialized actions "
 

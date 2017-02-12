@@ -19,8 +19,8 @@ Namespace TestProject.Business
     ''' </remarks>
     <Attributable>
     <Serializable()>
-    Partial Public Class DocTypeInfo
-    Inherits ReadOnlyBase(Of DocTypeInfo)
+    Public Partial Class DocTypeInfo
+        Inherits ReadOnlyBase(Of DocTypeInfo)
         Implements IHaveInterface
 
         #Region " Business Properties "

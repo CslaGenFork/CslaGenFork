@@ -21,8 +21,8 @@ Namespace TestProject.Business
     ''' </remarks>
     <Attributable>
     <Serializable()>
-    Partial Public Class Doc
-    Inherits MyBusinessBase(Of Doc)
+    Public Partial Class Doc
+        Inherits MyBusinessBase(Of Doc)
         Implements IHaveInterface
 
         #Region " Static Fields "

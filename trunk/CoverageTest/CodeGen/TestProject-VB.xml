@@ -109,6 +109,7 @@
       <ObjectType>EditableChildCollection</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>DocClassChildCollection</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>TestProject.Business</ObjectNamespace>
@@ -238,6 +239,7 @@
       <ObjectType>EditableChild</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>DocClassChild</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>TestProject.Business</ObjectNamespace>
@@ -588,6 +590,7 @@
       <ObjectType>PlaceHolder</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>--- New object types ---</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>TestProject.Business</ObjectNamespace>
@@ -717,8 +720,9 @@
       <ObjectType>BaseClass</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>MyBusinessBase</ObjectName>
-      <IsGenericType>false</IsGenericType>
-      <GenericArguments />
+      <CslaBaseClass>None</CslaBaseClass>
+      <IsGenericType>true</IsGenericType>
+      <GenericArguments>T</GenericArguments>
       <ObjectNamespace>TestProject.Business</ObjectNamespace>
       <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
@@ -852,6 +856,7 @@
       <ObjectType>BaseClass</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>MyBusinessBase</ObjectName>
+      <CslaBaseClass>BusinessBaseT</CslaBaseClass>
       <IsGenericType>true</IsGenericType>
       <GenericArguments>T</GenericArguments>
       <ObjectNamespace>TestProject.Business</ObjectNamespace>
@@ -987,8 +992,9 @@
       <ObjectType>BaseClass</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>MyBusinessListBase</ObjectName>
+      <CslaBaseClass>BusinessListBaseTC</CslaBaseClass>
       <IsGenericType>true</IsGenericType>
-      <GenericArguments>T,TC</GenericArguments>
+      <GenericArguments>T,C</GenericArguments>
       <ObjectNamespace>TestProject.Business</ObjectNamespace>
       <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
@@ -1122,8 +1128,9 @@
       <ObjectType>BaseClass</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>MyBusinessBindingListBase</ObjectName>
+      <CslaBaseClass>BusinessBindingListBaseTC</CslaBaseClass>
       <IsGenericType>true</IsGenericType>
-      <GenericArguments>T,TC</GenericArguments>
+      <GenericArguments>T,C</GenericArguments>
       <ObjectNamespace>TestProject.Business</ObjectNamespace>
       <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
@@ -1257,6 +1264,7 @@
       <ObjectType>CriteriaClass</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>ObjectCriteria</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>true</IsGenericType>
       <GenericArguments>T</GenericArguments>
       <ObjectNamespace>TestProject.Business</ObjectNamespace>
@@ -1392,6 +1400,7 @@
       <ObjectType>PlaceHolder</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>--- Editable Root / Child Collection / Child ---</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>TestProject.Business</ObjectNamespace>
@@ -1521,6 +1530,7 @@
       <ObjectType>EditableRoot</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>Doc</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>TestProject.Business</ObjectNamespace>
@@ -2843,6 +2853,7 @@
       <ObjectType>EditableChildCollection</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>DocFolderColl</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>TestProject.Business</ObjectNamespace>
@@ -3102,6 +3113,7 @@
       <ObjectType>EditableChild</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>DocFolder</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>TestProject.Business</ObjectNamespace>
@@ -3607,6 +3619,7 @@
       <ObjectType>PlaceHolder</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>--- Ro Root / Child Collection / Child ---</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>TestProject.Business</ObjectNamespace>
@@ -3736,6 +3749,7 @@
       <ObjectType>ReadOnlyObject</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>DocRO</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>TestProject.Business</ObjectNamespace>
@@ -4377,6 +4391,7 @@
       <ObjectType>ReadOnlyCollection</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>DocFolderCollRO</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>TestProject.Business</ObjectNamespace>
@@ -4512,6 +4527,7 @@
       <ObjectType>ReadOnlyObject</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>DocFolderRO</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>TestProject.Business</ObjectNamespace>
@@ -4771,6 +4787,7 @@
       <ObjectType>PlaceHolder</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>--- Unit of Work ---</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>TestProject.Business</ObjectNamespace>
@@ -4900,6 +4917,7 @@
       <ObjectType>UnitOfWork</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>DocEditCreatorGetter</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>TestProject.Business</ObjectNamespace>
@@ -5058,6 +5076,7 @@
       <ObjectType>UnitOfWork</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>DocEditCreator</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>TestProject.Business</ObjectNamespace>
@@ -5216,6 +5235,7 @@
       <ObjectType>UnitOfWork</ObjectType>
       <UnitOfWorkType>Getter</UnitOfWorkType>
       <ObjectName>DocEditGetter</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>TestProject.Business</ObjectNamespace>
@@ -5374,6 +5394,7 @@
       <ObjectType>PlaceHolder</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>--- Dynamic Root Collection ---</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>TestProject.Business</ObjectNamespace>
@@ -5503,6 +5524,7 @@
       <ObjectType>DynamicEditableRootCollection</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>DocTypeDynamicCollection</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>TestProject.Business</ObjectNamespace>
@@ -5674,6 +5696,7 @@
       <ObjectType>DynamicEditableRoot</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>DocTypeDynamic</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>TestProject.Business</ObjectNamespace>
@@ -6030,6 +6053,7 @@
       <ObjectType>PlaceHolder</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>--- ReadOnly collection ---</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>TestProject.Business</ObjectNamespace>
@@ -6159,6 +6183,7 @@
       <ObjectType>ReadOnlyCollection</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>DocTypeList</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>TestProject.Business</ObjectNamespace>
@@ -6454,6 +6479,7 @@
       <ObjectType>ReadOnlyObject</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>DocTypeInfo</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>TestProject.Business</ObjectNamespace>
@@ -6773,6 +6799,7 @@
       <ObjectType>PlaceHolder</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>--- Name Value List---</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>TestProject.Business</ObjectNamespace>
@@ -6902,6 +6929,7 @@
       <ObjectType>NameValueList</ObjectType>
       <UnitOfWorkType>Creator</UnitOfWorkType>
       <ObjectName>DocTypeNVL</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>TestProject.Business</ObjectNamespace>
@@ -7196,6 +7224,7 @@
       <ObjectType>PlaceHolder</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>--- Ediatable Root Collection ---</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>TestProject.Business</ObjectNamespace>
@@ -7325,6 +7354,7 @@
       <ObjectType>EditableRootCollection</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>DocTypeEditColl</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>TestProject.Business</ObjectNamespace>
@@ -7499,6 +7529,7 @@
       <ObjectType>EditableChild</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
       <ObjectName>DocTypeEdit</ObjectName>
+      <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
       <ObjectNamespace>TestProject.Business</ObjectNamespace>

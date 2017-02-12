@@ -111,9 +111,17 @@
     <Compile Include="DocTypeNVL.Designer.cs">
       <DependentUpon>DocTypeNVL.cs</DependentUpon>
     </Compile>
-    <Compile Include="MyBusinessBase.cs" />
-    <Compile Include="MyBusinessBase.Designer.cs">
-      <DependentUpon>MyBusinessBase.cs</DependentUpon>
+    <Compile Include="MyBusinessBaseT.cs" />
+    <Compile Include="MyBusinessBaseT.Designer.cs">
+      <DependentUpon>MyBusinessBaseT.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MyBusinessBindingListBase.cs" />
+    <Compile Include="MyBusinessBindingListBase.Designer.cs">
+      <DependentUpon>MyBusinessBindingListBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MyBusinessListBase.cs" />
+    <Compile Include="MyBusinessListBase.Designer.cs">
+      <DependentUpon>MyBusinessListBase.cs</DependentUpon>
     </Compile>
     <Compile Include="ObjectCriteria.cs" />
     <Compile Include="ObjectCriteria.Designer.cs">

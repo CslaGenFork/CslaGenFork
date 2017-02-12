@@ -20,7 +20,7 @@ Namespace TestProject.Business
     ''' </remarks>
     <Attributable>
     <Serializable()>
-    Partial Public Class DocFolderColl
+    Public Partial Class DocFolderColl
         Inherits MyBusinessListBase(Of DocFolderColl, DocFolder)
         Implements IHaveInterface
     

@@ -17,7 +17,7 @@ Namespace TestProject.Business
     ''' </remarks>
     <Attributable>
     <Serializable()>
-    Partial Public Class DocTypeDynamicCollection
+    Public Partial Class DocTypeDynamicCollection
         Inherits DynamicBindingListBase(Of DocTypeDynamic)
         Implements IHaveInterface
     

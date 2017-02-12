@@ -14869,7 +14869,7 @@
       <ObjectNamespace>Invoices.Business</ObjectNamespace>
       <ClassVisibility>Public</ClassVisibility>
       <ClassSummary />
-      <ClassRemarks>No cache. Updated by ProductTypeDynaColl</ClassRemarks>
+      <ClassRemarks>No cache. Updated by ProductTypeDynaItem</ClassRemarks>
       <Namespaces />
       <Attributes />
       <Interfaces />
