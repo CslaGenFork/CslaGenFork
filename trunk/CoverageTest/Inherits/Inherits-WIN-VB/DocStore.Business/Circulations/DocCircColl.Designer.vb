@@ -25,7 +25,7 @@ Namespace DocStore.Business.Circulations
     ''' The items of the collection are <see cref="DocCirc"/> objects.
     ''' </remarks>
     <Serializable()>
-    Partial Public Class DocCircColl
+    Public Partial Class DocCircColl
 #If WINFORMS Then
         Inherits BusinessBindingListBase(Of DocCircColl, DocCirc)
         Implements IHaveInterface, IHaveGenericInterface(Of DocCircColl)

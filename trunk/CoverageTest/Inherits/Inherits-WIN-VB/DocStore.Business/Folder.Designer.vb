@@ -29,8 +29,8 @@ Namespace DocStore.Business
     ''' - <see cref="Circulations"/> of type <see cref="FolderCircColl"/> (1:M relation to <see cref="FolderCirc"/>)
     ''' </remarks>
     <Serializable()>
-    Partial Public Class Folder
-    Inherits BusinessBase(Of Folder)
+    Public Partial Class Folder
+        Inherits BusinessBase(Of Folder)
 
         #Region " Static Fields "
 

@@ -22,7 +22,7 @@ Namespace DocStore.Business
     ''' The items of the collection are <see cref="DocClassEdit"/> objects.
     ''' </remarks>
     <Serializable()>
-    Partial Public Class DocClassEditColl
+    Public Partial Class DocClassEditColl
 #If WINFORMS Then
         Inherits MyBusinessBindingListBase(Of DocClassEditColl, DocClassEdit)
         Implements IHaveInterface, IHaveGenericInterface(Of DocClassEditColl)

@@ -22,8 +22,8 @@ Namespace DocStore.Business
     ''' This class is an item of <see cref="CircTypeTagEditColl"/> collection.
     ''' </remarks>
     <Serializable()>
-    Partial Public Class CircTypeTagEdit
-    Inherits BusinessBase(Of CircTypeTagEdit)
+    Public Partial Class CircTypeTagEdit
+        Inherits BusinessBase(Of CircTypeTagEdit)
 
         #Region " Static Fields "
 

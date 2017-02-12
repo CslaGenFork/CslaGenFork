@@ -22,8 +22,8 @@ Namespace DocStore.Business
     ''' This class is an item of <see cref="Doc"/> collection.
     ''' </remarks>
     <Serializable()>
-    Partial Public Class DocContentRO
-    Inherits ReadOnlyBase(Of DocContentRO)
+    Public Partial Class DocContentRO
+        Inherits ReadOnlyBase(Of DocContentRO)
         Implements IHaveInterface, IHaveGenericInterface(Of DocContentRO)
 
         #Region " Business Properties "

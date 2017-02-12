@@ -22,7 +22,7 @@ Namespace DocStore.Business
     ''' The items of the collection are <see cref="CircTypeTagEditDyna"/> objects.
     ''' </remarks>
     <Serializable()>
-    Partial Public Class CircTypeTagEditDynaColl
+    Public Partial Class CircTypeTagEditDynaColl
 #If WINFORMS Then
         Inherits MyDynamicBindingListBase(Of CircTypeTagEditDyna)
         Implements IHaveInterface, IHaveGenericInterface(Of CircTypeTagEditDynaColl)

@@ -23,7 +23,7 @@ Namespace DocStore.Business.Circulations
     ''' The items of the collection are <see cref="CircInfo"/> objects.
     ''' </remarks>
     <Serializable()>
-    Partial Public Class CircList
+    Public Partial Class CircList
 #If WINFORMS Then
         Inherits MyReadOnlyBindingListBase(Of CircList, CircInfo)
         Implements IHaveInterface, IHaveGenericInterface(Of CircList)

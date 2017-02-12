@@ -19,8 +19,8 @@ Namespace DocStore.Business.Circulations
     ''' This is a generated base class of <see cref="CircTypeTagNVL"/> business object.
     ''' </summary>
     <Serializable()>
-    Partial Public Class CircTypeTagNVL
-    Inherits MyNameValueListBase(Of Integer, String)
+    Public Partial Class CircTypeTagNVL
+        Inherits MyNameValueListBase(Of Integer, String)
         Implements IHaveInterface, IHaveGenericInterface(Of CircTypeTagNVL)
 
         #Region " Private Fields "

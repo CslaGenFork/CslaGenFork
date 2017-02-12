@@ -28,8 +28,8 @@ Namespace DocStore.Business
     ''' This class is an item of <see cref="DocClassEditDynaColl"/> collection.
     ''' </remarks>
     <Serializable()>
-    Partial Public Class DocClassEditDyna
-    Inherits MyBusinessBase(Of DocClassEditDyna)
+    Public Partial Class DocClassEditDyna
+        Inherits MyBusinessBase(Of DocClassEditDyna)
         Implements IHaveInterface, IHaveGenericInterface(Of DocClassEditDyna)
 
         #Region " Static Fields "

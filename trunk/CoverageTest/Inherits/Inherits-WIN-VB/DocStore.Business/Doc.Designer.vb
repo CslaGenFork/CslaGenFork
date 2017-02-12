@@ -32,8 +32,8 @@ Namespace DocStore.Business
     ''' - <see cref="Circulations"/> of type <see cref="DocCircColl"/> (1:M relation to <see cref="DocCirc"/>)
     ''' </remarks>
     <Serializable()>
-    Partial Public Class Doc
-    Inherits BusinessBaseDoc(Of Doc)
+    Public Partial Class Doc
+        Inherits BusinessBaseDoc(Of Doc)
         Implements IHaveInterface, IHaveGenericInterface(Of Doc)
 
         #Region " Static Fields "

@@ -25,7 +25,7 @@ Namespace DocStore.Business
     ''' The items of the collection are <see cref="DocFolder"/> objects.
     ''' </remarks>
     <Serializable()>
-    Partial Public Class DocFolderColl
+    Public Partial Class DocFolderColl
 #If WINFORMS Then
         Inherits MyBusinessBindingListBase(Of DocFolderColl, DocFolder)
         Implements IHaveInterface, IHaveGenericInterface(Of DocFolderColl)

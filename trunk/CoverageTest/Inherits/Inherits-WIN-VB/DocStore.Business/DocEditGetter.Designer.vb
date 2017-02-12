@@ -17,8 +17,8 @@ Namespace DocStore.Business
     ''' This class is a root object that implements the Unit of Work pattern.
     ''' </summary>
     <Serializable()>
-    Partial Public Class DocEditGetter
-    Inherits ReadOnlyBase(Of DocEditGetter)
+    Public Partial Class DocEditGetter
+        Inherits ReadOnlyBase(Of DocEditGetter)
         Implements IHaveInterface, IHaveGenericInterface(Of DocEditGetter)
 
         #Region " Business Properties "

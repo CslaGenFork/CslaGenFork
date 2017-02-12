@@ -23,8 +23,8 @@ Namespace DocStore.Business
     ''' This class is an item of <see cref="FolderTypeList"/> collection.
     ''' </remarks>
     <Serializable()>
-    Partial Public Class FolderTypeInfo
-    Inherits ReadOnlyBase(Of FolderTypeInfo)
+    Public Partial Class FolderTypeInfo
+        Inherits ReadOnlyBase(Of FolderTypeInfo)
 
         #Region " Business Properties "
 
