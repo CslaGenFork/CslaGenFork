@@ -10,7 +10,7 @@ Imports DocStore.Business.Util
 
 Namespace DocStore.Business
 
-    Partial Public Class CircTypeTagEditColl
+    Public Partial Class CircTypeTagEditColl
 
         #Region " OnDeserialized actions "
 

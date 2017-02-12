@@ -18,8 +18,8 @@ Namespace DocStore.Business.Admin
     ''' This is a generated base class of <see cref="UserInactiveNVL"/> business object.
     ''' </summary>
     <Serializable()>
-    Partial Public Class UserInactiveNVL
-    Inherits NameValueListBase(Of Integer, String)
+    Public Partial Class UserInactiveNVL
+        Inherits NameValueListBase(Of Integer, String)
 
         #Region " Private Fields "
 

@@ -10,7 +10,7 @@ Imports DocStore.Business.Util
 
 Namespace DocStore.Business.Circulations
 
-    Partial Public Class DecisionTypeTagNVL
+    Public Partial Class DecisionTypeTagNVL
 
         #Region " OnDeserialized actions "
 

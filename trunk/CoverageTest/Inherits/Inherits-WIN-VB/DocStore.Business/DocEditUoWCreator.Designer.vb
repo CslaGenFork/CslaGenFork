@@ -17,8 +17,8 @@ Namespace DocStore.Business
     ''' This class is a root object that implements the Unit of Work pattern.
     ''' </summary>
     <Serializable()>
-    Partial Public Class DocEditUoWCreator
-    Inherits MyReadOnlyBase(Of DocEditUoWCreator)
+    Public Partial Class DocEditUoWCreator
+        Inherits MyReadOnlyBase(Of DocEditUoWCreator)
 
         #Region " Business Properties "
 

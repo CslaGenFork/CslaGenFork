@@ -22,8 +22,8 @@ Namespace DocStore.Business
     ''' This class is an item of <see cref="DocStatusColl"/> collection.
     ''' </remarks>
     <Serializable()>
-    Partial Public Class DocStatus
-    Inherits BusinessBase(Of DocStatus)
+    Public Partial Class DocStatus
+        Inherits BusinessBase(Of DocStatus)
 
         #Region " Static Fields "
 

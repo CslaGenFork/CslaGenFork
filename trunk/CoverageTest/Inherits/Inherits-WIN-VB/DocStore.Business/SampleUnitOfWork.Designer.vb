@@ -16,8 +16,8 @@ Namespace DocStore.Business
     ''' This class is a root object that implements the Unit of Work pattern.
     ''' </summary>
     <Serializable()>
-    Partial Public Class SampleUnitOfWork
-    Inherits MyReadOnlyBase(Of SampleUnitOfWork)
+    Public Partial Class SampleUnitOfWork
+        Inherits MyReadOnlyBase(Of SampleUnitOfWork)
         Implements IHaveInterface, IHaveGenericInterface(Of SampleUnitOfWork)
 
         #Region " Business Properties "

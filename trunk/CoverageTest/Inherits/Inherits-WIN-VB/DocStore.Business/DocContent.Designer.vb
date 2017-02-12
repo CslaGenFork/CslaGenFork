@@ -23,8 +23,8 @@ Namespace DocStore.Business
     ''' This class is an item of <see cref="Doc"/> collection.
     ''' </remarks>
     <Serializable()>
-    Partial Public Class DocContent
-    Inherits MyBusinessBase(Of DocContent)
+    Public Partial Class DocContent
+        Inherits MyBusinessBase(Of DocContent)
         Implements IHaveInterface, IHaveGenericInterface(Of DocContent)
 
         #Region " Static Fields "

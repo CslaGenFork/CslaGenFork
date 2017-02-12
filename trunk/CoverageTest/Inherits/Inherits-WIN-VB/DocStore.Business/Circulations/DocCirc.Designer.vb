@@ -26,8 +26,8 @@ Namespace DocStore.Business.Circulations
     ''' This class is an item of <see cref="DocCircColl"/> collection.
     ''' </remarks>
     <Serializable()>
-    Partial Public Class DocCirc
-    Inherits MyBusinessBase(Of DocCirc)
+    Public Partial Class DocCirc
+        Inherits MyBusinessBase(Of DocCirc)
 
         #Region " Static Fields "
 

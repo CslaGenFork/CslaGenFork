@@ -24,7 +24,7 @@ Namespace DocStore.Business.Admin
     ''' The items of the collection are <see cref="RoleInfo"/> objects.
     ''' </remarks>
     <Serializable()>
-    Partial Public Class RoleList
+    Public Partial Class RoleList
 #If WINFORMS Then
         Inherits ReadOnlyBindingListBase(Of RoleList, RoleInfo)
 #Else

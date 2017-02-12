@@ -21,8 +21,8 @@ Namespace DocStore.Business.Admin
     ''' This is a generated base class of <see cref="Role"/> business object.
     ''' </summary>
     <Serializable()>
-    Partial Public Class Role
-    Inherits BusinessBase(Of Role)
+    Public Partial Class Role
+        Inherits BusinessBase(Of Role)
 
         #Region " Static Fields "
 

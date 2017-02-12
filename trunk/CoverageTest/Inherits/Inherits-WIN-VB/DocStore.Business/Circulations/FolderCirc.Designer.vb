@@ -25,8 +25,8 @@ Namespace DocStore.Business.Circulations
     ''' This class is an item of <see cref="FolderCircColl"/> collection.
     ''' </remarks>
     <Serializable()>
-    Partial Public Class FolderCirc
-    Inherits BusinessBase(Of FolderCirc)
+    Public Partial Class FolderCirc
+        Inherits BusinessBase(Of FolderCirc)
 
         #Region " Static Fields "
 
