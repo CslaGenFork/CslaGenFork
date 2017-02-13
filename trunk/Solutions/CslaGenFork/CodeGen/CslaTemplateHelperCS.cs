@@ -2987,7 +2987,8 @@ namespace CslaGenerator.CodeGen
             {
                 response += String.Format("{0}{1} {2}" + Environment.NewLine,
                     (String.IsNullOrEmpty(prop.Interfaces) ? GetPropertyAccess(prop) + " " : ""),
-                    GetDataTypeGeneric(prop, prop.PropertyType),
+                    //GetDataTypeGeneric(prop, prop.PropertyType),
+                    GetDataType(prop),
                     (String.IsNullOrEmpty(prop.Interfaces) ? FormatPascal(prop.Name) : prop.Interfaces));
                 response += "        {" + Environment.NewLine;
                 response += PropertyDeclareGetter(prop);
@@ -3064,8 +3065,9 @@ namespace CslaGenerator.CodeGen
 
         private string PropertyDeclareGetter(ValueProperty prop)
         {
-            var isConversion = (prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion ||
-                                prop.DeclarationMode == PropertyDeclaration.UnmanagedWithTypeConversion);
+            var isConversion = prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion ||
+                               prop.DeclarationMode == PropertyDeclaration.UnmanagedWithTypeConversion ||
+                               prop.DeclarationMode == PropertyDeclaration.ClassicPropertyWithTypeConversion;
 
             var response = string.Empty;
 
@@ -3090,7 +3092,10 @@ namespace CslaGenerator.CodeGen
             }
             else
             {
-                response += String.Format("            get {{ return {0}; }}{1}",
+                response += String.Format("            get {{ return {0}{1}; }}{2}",
+                    isConversion
+                        ? "(" + GetDataType(prop) + ")"
+                        : "",
                     FormatFieldName(prop.Name),
                     Environment.NewLine);
             }
@@ -3151,10 +3156,13 @@ namespace CslaGenerator.CodeGen
             else if (prop.DeclarationMode == PropertyDeclaration.ClassicProperty ||
                      prop.DeclarationMode == PropertyDeclaration.ClassicPropertyWithTypeConversion)
             {
-                response += String.Format("            {0}set{1} {2} = value;{3}{4}",
+                response += String.Format("            {0}set{1} {2} = {3}value;{4}{5}",
                     PropertyDeclareSetterVisibility(isReadOnly, prop),
                     convertSnippetPre,
                     FormatFieldName(prop.Name) + ConvertTextToSmartDate(prop),
+                    isConversion
+                        ? "(" + GetDataType(prop.BackingFieldType) + ")"
+                        : "",
                     convertSnippet,
                     convertSnippetPost);
             }

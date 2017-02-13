@@ -3007,7 +3007,8 @@ namespace CslaGenerator.CodeGen
                 response += String.Format("{0}{1} Property {3} As {2}{4}" + Environment.NewLine,
                     GetPropertyAccess(prop),
                     (isReadOnly ? " ReadOnly" : ""),
-                    GetDataTypeGeneric(prop, prop.PropertyType),
+                    //GetDataTypeGeneric(prop, prop.PropertyType),
+                    GetDataType(prop),
                     FormatPascal(prop.Name),
                     (!String.IsNullOrEmpty(prop.Interfaces) ? " Implements " + prop.Interfaces : ""));
 
