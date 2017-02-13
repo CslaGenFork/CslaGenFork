@@ -13,7 +13,7 @@ Namespace TestProject.Business
     ''' </summary>
     <Attributable>
     <Serializable()>
-    Public MustInherit Partial Class MyBusinessListBase(Of T As {BusinessListBase(Of T, C), IHaveInterface}, C As BusinessBase(Of C))
+    Public MustInherit Partial Class MyBusinessListBase(Of T As {MyBusinessListBase(Of T, C), IHaveInterface}, C As BusinessBase(Of C))
         Inherits BusinessListBase(Of T, C)
         Implements IHaveInterface
 

@@ -15,56 +15,52 @@ Namespace Invoices.Business
         Inherits ReadOnlyBase(Of T)
         Implements ILog
 
+        #Region " State Fields "
+
+        Private _logAction As Byte = 0
+        Private _logDateTime As Date = DateTime.Now
+        Private _logUser As Integer = 0
+
+        #End Region
+
         #Region " Business Properties "
 
-        ''' <summary>
-        ''' Maintains metadata about <see cref="ILog.LogAction"/> property.
-        ''' </summary>
-        Public Shared ReadOnly LogActionProperty As PropertyInfo(Of Byte) = RegisterProperty(Of Byte)(Function(p) DirectCast(p, ILog).LogAction, "Log Action")
         ''' <summary>
         ''' Gets or sets the Log Action.
         ''' </summary>
         ''' <value>The Log Action.</value>
         Public Property LogAction As LogActions Implements ILog.LogAction
             Get
-                Return ReadPropertyConvert(Of Byte, LogActions)(LogActionProperty)
+                Return _logAction
             End Get
             Set(ByVal value As LogActions)
-                LoadPropertyConvert(Of Byte, LogActions)(LogActionProperty, value)
+                _logAction = value
             End Set
         End Property
 
-        ''' <summary>
-        ''' Maintains metadata about <see cref="ILog.LogDateTime"/> property.
-        ''' </summary>
-        Public Shared ReadOnly LogDateTimeProperty As PropertyInfo(Of Date) = RegisterProperty(Of Date)(Function(p) DirectCast(p, ILog).LogDateTime, "Log Date Time", DateTime.Now)
         ''' <summary>
         ''' Gets or sets the Log Date Time.
         ''' </summary>
         ''' <value>The Log Date Time.</value>
         Public Property LogDateTime As Date Implements ILog.LogDateTime
             Get
-                Return ReadProperty(LogDateTimeProperty)
+                Return _logDateTime
             End Get
             Set(ByVal value As Date)
-                LoadProperty(LogDateTimeProperty, value)
+                _logDateTime = value
             End Set
         End Property
 
-        ''' <summary>
-        ''' Maintains metadata about <see cref="ILog.LogUser"/> property.
-        ''' </summary>
-        Public Shared ReadOnly LogUserProperty As PropertyInfo(Of Integer) = RegisterProperty(Of Integer)(Function(p) DirectCast(p, ILog).LogUser, "Log Useer")
         ''' <summary>
         ''' Gets or sets the Log Useer.
         ''' </summary>
         ''' <value>The Log Useer.</value>
         Public Property LogUser As Integer Implements ILog.LogUser
             Get
-                Return ReadProperty(LogUserProperty)
+                Return _logUser
             End Get
             Set(ByVal value As Integer)
-                LoadProperty(LogUserProperty, value)
+                _logUser = value
             End Set
         End Property
 
