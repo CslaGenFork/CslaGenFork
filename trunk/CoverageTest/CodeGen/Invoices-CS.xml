@@ -1353,7 +1353,7 @@
           <FriendlyName>Log Action</FriendlyName>
           <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType>LogActions</CustomPropertyType>
-          <DeclarationMode>ManagedWithTypeConversion</DeclarationMode>
+          <DeclarationMode>ClassicPropertyWithTypeConversion</DeclarationMode>
           <BackingFieldType>Byte</BackingFieldType>
           <DefaultValue />
           <Attributes />
@@ -1411,7 +1411,7 @@
           <FriendlyName>Log Date Time</FriendlyName>
           <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
-          <DeclarationMode>Managed</DeclarationMode>
+          <DeclarationMode>ClassicProperty</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue>DateTime.Now</DefaultValue>
           <Attributes />
@@ -1469,7 +1469,7 @@
           <FriendlyName>Log Useer</FriendlyName>
           <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
-          <DeclarationMode>Managed</DeclarationMode>
+          <DeclarationMode>ClassicProperty</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
           <Attributes />
@@ -1660,7 +1660,7 @@
           <FriendlyName>Log Action</FriendlyName>
           <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType>LogActions</CustomPropertyType>
-          <DeclarationMode>ManagedWithTypeConversion</DeclarationMode>
+          <DeclarationMode>ClassicPropertyWithTypeConversion</DeclarationMode>
           <BackingFieldType>Byte</BackingFieldType>
           <DefaultValue />
           <Attributes />
@@ -1718,7 +1718,7 @@
           <FriendlyName>Log Date Time</FriendlyName>
           <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
-          <DeclarationMode>Managed</DeclarationMode>
+          <DeclarationMode>ClassicProperty</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue>DateTime.Now</DefaultValue>
           <Attributes />
@@ -1776,7 +1776,7 @@
           <FriendlyName>Log Useer</FriendlyName>
           <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
-          <DeclarationMode>Managed</DeclarationMode>
+          <DeclarationMode>ClassicProperty</DeclarationMode>
           <BackingFieldType>Empty</BackingFieldType>
           <DefaultValue />
           <Attributes />

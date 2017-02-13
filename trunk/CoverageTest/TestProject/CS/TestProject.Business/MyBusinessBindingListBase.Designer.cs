@@ -15,7 +15,7 @@ namespace TestProject.Business
     [Attributable]
     [Serializable]
     public abstract partial class MyBusinessBindingListBase<T, C> : BusinessBindingListBase<T, C>, IHaveInterface
-        where T : BusinessBindingListBase<T, C>, IHaveInterface
+        where T : MyBusinessBindingListBase<T, C>, IHaveInterface
         where C : BusinessBase<C>
     {
 

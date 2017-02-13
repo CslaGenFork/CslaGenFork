@@ -16,48 +16,44 @@ namespace Invoices.Business
         where T : LoggerReadOnlyBase<T>, ILog
     {
 
+        #region State Fields
+
+        private byte _logAction = 0;
+        private DateTime _logDateTime = DateTime.Now;
+        private int _logUser = 0;
+
+        #endregion
+
         #region Business Properties
 
-        /// <summary>
-        /// Maintains metadata about <see cref="LogAction"/> property.
-        /// </summary>
-        public static readonly PropertyInfo<byte> LogActionProperty = RegisterProperty<byte>(p => p.LogAction, "Log Action");
         /// <summary>
         /// Gets or sets the Log Action.
         /// </summary>
         /// <value>The Log Action.</value>
         public LogActions LogAction
         {
-            get { return ReadPropertyConvert<byte, LogActions>(LogActionProperty); }
-            set { LoadPropertyConvert<byte, LogActions>(LogActionProperty, value); }
+            get { return (LogActions)_logAction; }
+            set { _logAction = (byte)value; }
         }
 
-        /// <summary>
-        /// Maintains metadata about <see cref="LogDateTime"/> property.
-        /// </summary>
-        public static readonly PropertyInfo<DateTime> LogDateTimeProperty = RegisterProperty<DateTime>(p => p.LogDateTime, "Log Date Time", DateTime.Now);
         /// <summary>
         /// Gets or sets the Log Date Time.
         /// </summary>
         /// <value>The Log Date Time.</value>
         public DateTime LogDateTime
         {
-            get { return ReadProperty(LogDateTimeProperty); }
-            set { LoadProperty(LogDateTimeProperty, value); }
+            get { return _logDateTime; }
+            set { _logDateTime = value; }
         }
 
-        /// <summary>
-        /// Maintains metadata about <see cref="LogUser"/> property.
-        /// </summary>
-        public static readonly PropertyInfo<int> LogUserProperty = RegisterProperty<int>(p => p.LogUser, "Log Useer");
         /// <summary>
         /// Gets or sets the Log Useer.
         /// </summary>
         /// <value>The Log Useer.</value>
         public int LogUser
         {
-            get { return ReadProperty(LogUserProperty); }
-            set { LoadProperty(LogUserProperty, value); }
+            get { return _logUser; }
+            set { _logUser = value; }
         }
 
         #endregion

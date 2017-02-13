@@ -15,7 +15,7 @@ namespace TestProject.Business
     [Attributable]
     [Serializable]
     public abstract partial class MyBusinessBase<T> : BusinessBase<T>, IHaveInterface
-        where T : BusinessBase<T>, IHaveInterface
+        where T : MyBusinessBase<T>, IHaveInterface
     {
 
         #region Business Properties
