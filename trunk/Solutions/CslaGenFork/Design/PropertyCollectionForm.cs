@@ -467,7 +467,7 @@ namespace CslaGenerator.Design
                     if (cslaObject.IsNameValueList())
                         _form.Size = new Size(_form.Size.Width, 626);
                     else if (cslaObject.IsNotDbConsumer())
-                        _form.Size = new Size(_form.Size.Width, _form.Size.Height - 96);
+                        _form.Size = new Size(_form.Size.Width, _form.Size.Height - 80);
                     _form.Size = new Size(_form.Size.Width, _form.Size.Height - 16);
                     if (height < _form.Size.Height)
                         _form.Size = new Size(_form.Size.Width, height);
