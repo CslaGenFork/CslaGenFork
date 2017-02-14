@@ -963,6 +963,10 @@ namespace CslaGenerator.Util.PropertyBags
                             GeneratorController.Current.CurrentUnit.GenerationParams.UsesCslaAuthorizationProvider) &&
                             propertyName == "AuthzProvider")
                             return false;
+                        if (GeneratorController.Current.CurrentUnit.GenerationParams.UseInlineQueries !=
+                            UseInlineQueries.SpecifyByObject &&
+                            propertyName == "GenerateInlineQueries")
+                            return false;
                         if (!GeneratorController.Current.CurrentUnit.GenerationParams.DualListInheritance &&
                             propertyName == "InheritedTypeWinForms")
                             return false;
