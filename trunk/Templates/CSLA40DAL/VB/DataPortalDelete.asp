@@ -87,7 +87,7 @@ if (Info.GenerateDataPortalDelete)
             }
             if (Info.InsertUpdateRunLocal)
             {
-                %>[Csla.RunLocal]
+                %>[RunLocal]
         <%
             }
             %>protected override void DataPortal_DeleteSelf()
@@ -118,7 +118,7 @@ if (Info.GenerateDataPortalDelete)
                 }
                 if (c.DeleteOptions.RunLocal)
                 {
-                    %>[Csla.RunLocal]
+                    %>[RunLocal]
         <%
                 }
                 if (c.Properties.Count > 1)
@@ -150,7 +150,7 @@ if (Info.GenerateDataPortalDelete)
                 }
                 if (c.DeleteOptions.RunLocal)
                 {
-                    %>[Csla.RunLocal]
+                    %>[RunLocal]
         <%
                 }
                 %>private void DataPortal_Delete(<%= strDeleteCritParams %>)<%

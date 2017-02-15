@@ -37,7 +37,7 @@ if (!Info.UseCustomLoading && (UseNoSilverlight() ||
             }
             if (c.GetOptions.RunLocal)
             {
-                %>[Csla.RunLocal]
+                %>[RunLocal]
         <%
             }
             if (c.Properties.Count > 1)
