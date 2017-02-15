@@ -36,7 +36,7 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices && UseNoSilverlight())
         /// <summary>
         /// Loads a <see cref="<%= Info.ObjectName %>"/> unit of objects<%= elementCriteriaCount > 0 ? ", based on given criteria" : "" %>.
         /// </summary>
-        <%= fetchUowComment %>[Csla.RunLocal]
+        <%= fetchUowComment %>[RunLocal]
         protected void DataPortal_Fetch(<%= fetchUowCrit %>)
         {
             Service_Fetch(<%= fetchUowParam %>);

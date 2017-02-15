@@ -41,7 +41,7 @@ if (!Info.UseCustomLoading && CurrentUnit.GenerationParams.SilverlightUsingServi
                 fetchPartialParams.Add("");
             }
             %>
-        [Csla.RunLocal]
+        [RunLocal]
         <%
             if (c.Properties.Count > 1)
             {

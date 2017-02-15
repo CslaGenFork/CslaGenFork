@@ -7,7 +7,7 @@ if (Info.GenerateDataPortalUpdate && CurrentUnit.GenerationParams.SilverlightUsi
         /// <summary>
         /// Updates in the database all changes made to the <see cref="<%= Info.ObjectName %>"/> object.
         /// </summary>
-        [Csla.RunLocal]
+        [RunLocal]
         protected <%= isChildNotLazyLoaded ? "void Child_Update" : "override void DataPortal_Update" %>()
         {
             Service_Update();

@@ -33,7 +33,7 @@ if (Info.GenerateDataPortalInsert)
     }
     if (Info.InsertUpdateRunLocal)
     {
-        %>[Csla.RunLocal]
+        %>[RunLocal]
         <%
     }
         %>protected override void DataPortal_Insert()
