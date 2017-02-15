@@ -78,8 +78,7 @@ if (stateFieldsForAllValueProperties || stateFieldsForAllChildProperties || useF
         foreach (Property prop in Info.ParentProperties)
         {
             %>
-        [NotUndoable]
-        [NonSerialized]
+        [NotUndoable, NonSerialized]
         internal <%= GetDataTypeGeneric(prop, prop.PropertyType) %> <%= FormatCamel(GetFKColumn(Info, (isItem ? grandParentInfo : parentInfo), prop)) %> = <%= GetInitValue(prop.PropertyType) %>;
         <%
         }

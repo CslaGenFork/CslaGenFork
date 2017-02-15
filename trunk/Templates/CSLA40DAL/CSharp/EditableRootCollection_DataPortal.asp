@@ -29,7 +29,7 @@ if (UseNoSilverlight())
         }
         if (Info.InsertUpdateRunLocal)
         {
-            %>[Csla.RunLocal]
+            %>[RunLocal]
         <%
         }
         %>protected override void DataPortal_Update()
