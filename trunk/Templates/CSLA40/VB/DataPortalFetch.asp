@@ -48,7 +48,7 @@ if (!Info.UseCustomLoading)
             }
             if (c.GetOptions.RunLocal)
             {
-                %><Csla.RunLocal()>
+                %><RunLocal>
         <%
             }
             if (c.Properties.Count > 1)

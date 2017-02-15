@@ -25,7 +25,7 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices && UseNoSilverlight())
                 createPartialParams.Add("");
             }
             %>
-        <Csla.RunLocal()>
+        <RunLocal>
         <%
             if (c.Properties.Count > 1)
             {

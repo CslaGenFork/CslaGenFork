@@ -55,7 +55,7 @@ else
     <%
     }
     %>
-    <Serializable()>
+    <Serializable>
     <%
     if (Info.InheritedType.FinalName != string.Empty)
     {

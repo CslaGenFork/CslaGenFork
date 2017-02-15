@@ -39,7 +39,7 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices && UseNoSilverlight())
         ''' <remarks>
         ''' ReadOnlyBase&lt;T&gt; doesn't allow the use of DataPortal_Create and thus DataPortal_Fetch is used.
         ''' </remarks>
-        <Csla.RunLocal()>
+        <RunLocal>
         Protected Sub DataPortal_Fetch(<%= createUowCrit %>)
             Service_Create(<%= createUowParam %>)
         End Sub

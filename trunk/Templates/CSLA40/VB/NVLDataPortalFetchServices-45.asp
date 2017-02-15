@@ -49,7 +49,7 @@ if (!Info.UseCustomLoading && CurrentUnit.GenerationParams.SilverlightUsingServi
                 fetchPartialParams.Add("");
             }
             %>
-        <%= cacheRemarks %><Csla.RunLocal()>
+        <%= cacheRemarks %><RunLocal>
         <%
             if (c.Properties.Count > 1)
             {

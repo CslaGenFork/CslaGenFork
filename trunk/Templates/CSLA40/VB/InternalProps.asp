@@ -8,8 +8,7 @@ if (useParentReference || isRODeepLoadCollection)
         ''' <summary>
         ''' Maintains metadata about <see cref="ParentList"/> property.
         ''' </summary>
-        <NotUndoable()>
-        <NonSerialized()>
+        <NotUndoable, NonSerialized>
         <%
         if (!string.IsNullOrEmpty(statement))
         {

@@ -35,7 +35,7 @@ if (activeCriteria > 0)
         ''' <summary>
         ''' <%= uowCrit.CriteriaName + " criteria." %>
         ''' </summary>
-        <Serializable()>
+        <Serializable>
         <%
         if (UseBoth())
         {

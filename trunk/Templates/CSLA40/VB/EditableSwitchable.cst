@@ -63,7 +63,7 @@ if (Errors.Length == 0)
     <%
     }
     %>
-    <Serializable()>
+    <Serializable>
     <%
     if (Info.InheritedType.FinalName != string.Empty)
     {

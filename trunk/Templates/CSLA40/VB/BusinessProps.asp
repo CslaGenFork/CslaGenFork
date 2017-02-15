@@ -313,7 +313,7 @@ if (useIsLoadedProperty)
         ''' <summary>
         ''' Maintains metadata about <see cref="IsLoaded"/> property.
         ''' </summary>
-        <NotUndoable()>
+        <NotUndoable>
         Public Shared ReadOnly IsLoadedProperty As PropertyInfo(Of Boolean) = RegisterProperty(Of Boolean)(Function(p) p.IsLoaded, String.Empty, False)
         ''' <summary>
         ''' Gets the IsLoaded state.

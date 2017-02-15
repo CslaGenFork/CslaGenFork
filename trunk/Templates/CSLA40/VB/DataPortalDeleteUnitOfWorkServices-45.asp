@@ -28,7 +28,7 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices && UseNoSilverlight())
                 strDeleteCritParams += c.Properties[i].Name;
             }
             %>
-        <Csla.RunLocal()>
+        <RunLocal>
         Protected Overrides Sub DataPortal_DeleteSelf()
             <%
             if (Info.IsEditableSwitchable())
@@ -74,7 +74,7 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices && UseNoSilverlight())
         <%
             }
             %>
-        <Csla.RunLocal()>
+        <RunLocal>
         <%
             deletePartialParams.Add("''' <param name=\"" + (c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit")) + "\">The delete criteria.</param>");
             if (c.Properties.Count > 1)

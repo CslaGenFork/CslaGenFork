@@ -7,7 +7,7 @@ if (Info.GenerateDataPortalInsert && CurrentUnit.GenerationParams.SilverlightUsi
         ''' <summary>
         ''' Inserts a new <see cref="<%= Info.ObjectName %>"/> object in the database.
         ''' </summary>
-        <Csla.RunLocal>
+        <RunLocal>
         Protected <%= (isChildNotLazyLoaded ? "Sub Child_Insert" : "Overrides Sub DataPortal_Insert") %>()
             Service_Insert()
         End Sub
