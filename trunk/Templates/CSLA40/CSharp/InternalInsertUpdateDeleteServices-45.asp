@@ -27,7 +27,7 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
         <%
         }
         %>
-        [Csla.RunLocal]
+        [RunLocal]
         protected <%= ((!isChild && parentType.Length > 0) ? "override " : "") %>void <%= isChildNotLazyLoaded ? "Child_Insert" : "DataPortal_Insert" %>(<%= (parentType.Length > 0 ? parentType + " parent" : "") %>)
         {
             Service_Insert(<% if (parentType.Length > 0) { %>parent<% } %>);
@@ -63,7 +63,7 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
         <%
         }
         %>
-        [Csla.RunLocal]
+        [RunLocal]
         protected <%= ((!isChild && parentType.Length > 0) ? "override " : "") %>void <%= isChildNotLazyLoaded ? "Child_Update" : "DataPortal_Update" %>(<%= ((parentType.Length > 0 && !Info.ParentInsertOnly) ? parentType + " parent" : "") %>)
         {
             Service_Update(<% if (parentType.Length > 0 && !Info.ParentInsertOnly) { %>parent<% } %>);
@@ -99,7 +99,7 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices)
         <%
         }
         %>
-        [Csla.RunLocal]
+        [RunLocal]
         protected <%= ((!isChild && parentType.Length > 0) ? "override " : "") %>void <%= isChildNotLazyLoaded ? "Child_DeleteSelf" : "DataPortal_DeleteSelf" %>(<%= ((parentType.Length > 0 && !Info.ParentInsertOnly) ? parentType + " parent" : "") %>)
         {
             Service_DeleteSelf(<% if (parentType.Length > 0 && !Info.ParentInsertOnly) { %>parent<% } %>);

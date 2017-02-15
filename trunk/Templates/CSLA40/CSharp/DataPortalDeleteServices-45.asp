@@ -28,7 +28,7 @@ if (Info.GenerateDataPortalDelete && CurrentUnit.GenerationParams.SilverlightUsi
                 strDeleteCritParams += c.Properties[i].Name;
             }
             %>
-        [Csla.RunLocal]
+        [RunLocal]
         protected override void DataPortal_DeleteSelf()
         {
             <%
@@ -61,7 +61,7 @@ if (Info.GenerateDataPortalDelete && CurrentUnit.GenerationParams.SilverlightUsi
         /// Deletes the <see cref="<%= Info.ObjectName %>"/> object immediately.
         /// </summary>
         /// <param name="<%= c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit") %>">The delete criteria.</param>
-        [Csla.RunLocal]
+        [RunLocal]
         <%
             deletePartialParams.Add("/// <param name=\"" + (c.Properties.Count > 1 ? "crit" : HookSingleCriteria(c, "crit")) + "\">The delete criteria.</param>");
             if (c.Properties.Count > 1)
