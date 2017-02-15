@@ -44,7 +44,7 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices && UseNoSilverlight())
         ''' <summary>
         ''' Creates or loads a <see cref="<%= Info.ObjectName %>"/> unit of objects<%= elementCriteriaCount > 0 ? ", based on given criteria" : "" %>.
         ''' </summary>
-        <Csla.RunLocal()>
+        <RunLocal>
         Protected Sub DataPortal_Fetch(<%= createUowCrit %>)
             Service_CreateFetch(<%= createUowParam %>)
         End Sub

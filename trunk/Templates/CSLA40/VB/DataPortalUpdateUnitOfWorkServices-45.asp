@@ -7,7 +7,7 @@ if (CurrentUnit.GenerationParams.SilverlightUsingServices && UseNoSilverlight())
         ''' <summary>
         ''' Updates in the database all changes made to the <see cref="<%= Info.ObjectName %>"/> object.
         ''' </summary>
-        <Csla.RunLocal>
+        <RunLocal>
         Protected <%= isChildNotLazyLoaded ? "Sub Child_Update" : "Overrides Sub DataPortal_Update" %>()
             Service_Update()
         End Sub

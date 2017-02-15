@@ -21,7 +21,7 @@ foreach (Criteria c in Info.CriteriaObjects)
         }
         if (c.CreateOptions.RunLocal)
         {
-            %><Csla.RunLocal()>
+            %><RunLocal>
         <%
         }
         if (c.Properties.Count > 1)

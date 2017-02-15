@@ -35,7 +35,7 @@ if (Info.CriteriaObjects.Count > 0)
         <%
                 }
                 %>
-        <Serializable()>
+        <Serializable>
         <%
                 if (UseBoth())
                 {

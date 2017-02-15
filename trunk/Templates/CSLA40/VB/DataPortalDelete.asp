@@ -27,7 +27,7 @@ if (Info.GenerateDataPortalDelete)
         <%
             if (c.DeleteOptions.RunLocal)
             {
-                %><Csla.RunLocal()>
+                %><RunLocal>
         <%
             }
             string strDeleteCritParams = string.Empty;
@@ -88,7 +88,7 @@ if (Info.GenerateDataPortalDelete)
             }
             if (c.DeleteOptions.RunLocal)
             {
-            %><Csla.RunLocal()>
+            %><RunLocal>
         <%
             }
             if (c.Properties.Count > 1)

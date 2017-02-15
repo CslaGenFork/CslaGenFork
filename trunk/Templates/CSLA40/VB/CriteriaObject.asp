@@ -34,7 +34,7 @@ if (Info.CriteriaObjects.Count > 0)
         <%
                 }
                 %>
-    <Serializable()>
+    <Serializable>
     <%
                 if (crit.CriteriaClassMode == CriteriaMode.Simple)
                 {
