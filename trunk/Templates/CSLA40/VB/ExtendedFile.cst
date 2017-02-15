@@ -198,7 +198,7 @@ if (Info.IsNotUnitOfWork() && Info.IsNotBaseClass() && Info.IsNotCriteriaClass()
 
         #Region " Custom Business Rules and Property Authorization "
 
-        ' Partial Private Sub AddBusinessRulesExtend()
+        ' Private Sub AddBusinessRulesExtend()
         '     Throw New NotImplementedException()
         ' End Sub
 
@@ -211,7 +211,7 @@ if (Info.IsNotUnitOfWork() && Info.IsNotBaseClass() && Info.IsNotCriteriaClass()
 
         #Region " Custom Object Authorization "
 
-        ' Partial Shared Sub AddObjectAuthorizationRulesExtend()
+        ' Private Shared Sub AddObjectAuthorizationRulesExtend()
         '     Throw New NotImplementedException()
         ' End Sub
 
@@ -290,7 +290,7 @@ if (Info.IsNotUnitOfWork() && Info.IsNotBaseClass() && Info.IsNotCriteriaClass()
         {
             %>
 
-        ' Partial Private Sub On<%= hookName %>(args As DataPortalHookArgs)
+        ' Private Sub On<%= hookName %>(args As DataPortalHookArgs)
         '     Throw New NotImplementedException()
         ' End Sub
         <%
