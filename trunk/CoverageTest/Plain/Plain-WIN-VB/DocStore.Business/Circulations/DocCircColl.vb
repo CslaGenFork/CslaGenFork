@@ -27,7 +27,7 @@ Namespace DocStore.Business.Circulations
 
         #Region " Custom Object Authorization "
 
-        ' Partial Shared Sub AddObjectAuthorizationRulesExtend()
+        ' Private Shared Sub AddObjectAuthorizationRulesExtend()
         '     Throw New NotImplementedException()
         ' End Sub
 
@@ -35,11 +35,11 @@ Namespace DocStore.Business.Circulations
 
         #Region " Implementation of DataPortal Hooks "
 
-        ' Partial Private Sub OnFetchPre(args As DataPortalHookArgs)
+        ' Private Sub OnFetchPre(args As DataPortalHookArgs)
         '     Throw New NotImplementedException()
         ' End Sub
 
-        ' Partial Private Sub OnFetchPost(args As DataPortalHookArgs)
+        ' Private Sub OnFetchPost(args As DataPortalHookArgs)
         '     Throw New NotImplementedException()
         ' End Sub
 

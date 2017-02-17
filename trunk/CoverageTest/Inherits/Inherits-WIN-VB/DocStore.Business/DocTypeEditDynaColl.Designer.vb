@@ -20,7 +20,7 @@ Namespace DocStore.Business
     ''' <remarks>
     ''' The items of the collection are <see cref="DocTypeEditDyna"/> objects.
     ''' </remarks>
-    <Serializable()>
+    <Serializable>
     Public Partial Class DocTypeEditDynaColl
 #If WINFORMS Then
         Inherits DynamicBindingListBase(Of DocTypeEditDyna)

@@ -15,7 +15,7 @@ Namespace DocStore.Business
     ''' This is a generated base class of <see cref="DocEditUoWCreator"/> business object.
     ''' This class is a root object that implements the Unit of Work pattern.
     ''' </summary>
-    <Serializable()>
+    <Serializable>
     Public Partial Class DocEditUoWCreator
         Inherits ReadOnlyBase(Of DocEditUoWCreator)
 

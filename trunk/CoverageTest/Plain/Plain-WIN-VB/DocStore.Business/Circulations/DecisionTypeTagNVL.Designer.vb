@@ -17,7 +17,7 @@ Namespace DocStore.Business.Circulations
     ''' Active tags for decision types (name value list).<br/>
     ''' This is a generated base class of <see cref="DecisionTypeTagNVL"/> business object.
     ''' </summary>
-    <Serializable()>
+    <Serializable>
     Public Partial Class DecisionTypeTagNVL
         Inherits NameValueListBase(Of Integer, String)
 

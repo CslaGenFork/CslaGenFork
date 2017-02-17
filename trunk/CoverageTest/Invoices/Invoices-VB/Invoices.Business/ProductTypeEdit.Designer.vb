@@ -10,7 +10,7 @@ Namespace Invoices.Business
     ''' ProductTypeEdit (editable root object).<br/>
     ''' This is a generated base class of <see cref="ProductTypeEdit"/> business object.
     ''' </summary>
-    <Serializable()>
+    <Serializable>
     Public Partial Class ProductTypeEdit
         Inherits BusinessBase(Of ProductTypeEdit)
 
@@ -130,7 +130,7 @@ Namespace Invoices.Business
         ''' <summary>
         ''' Loads default values for the <see cref="ProductTypeEdit"/> object properties.
         ''' </summary>
-        <Csla.RunLocal()>
+        <RunLocal>
         Protected Overrides Sub DataPortal_Create()
             LoadProperty(ProductTypeIdProperty, System.Threading.Interlocked.Decrement(_lastId))
             Dim args As New DataPortalHookArgs()

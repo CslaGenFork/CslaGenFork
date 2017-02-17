@@ -26,25 +26,25 @@ Namespace DocStore.Business
 
         #End Region
 
-        #Region " Inlines queries "
+        #Region " Inline queries "
 
-        Private Shared Function GetDocListInlineQuery() As String
-            Return ""
-        End Function
+        ' Private Sub GetQueryGetDocList()
+        '     getDocListInlineQuery = ""
+        ' End Sub
 
-        Private Shared Function GetDocListInlineQuery(crit As DocListFilteredCriteria) As String
-            Return ""
-        End Function
+        ' Private Sub GetQueryGetDocList(crit As DocListFilteredCriteria)
+        '     getDocListInlineQuery = ""
+        ' End Sub
 
         #End Region
 
         #Region " Implementation of DataPortal Hooks "
 
-        ' Partial Private Sub OnFetchPre(args As DataPortalHookArgs)
+        ' Private Sub OnFetchPre(args As DataPortalHookArgs)
         '     Throw New NotImplementedException()
         ' End Sub
 
-        ' Partial Private Sub OnFetchPost(args As DataPortalHookArgs)
+        ' Private Sub OnFetchPost(args As DataPortalHookArgs)
         '     Throw New NotImplementedException()
         ' End Sub
 

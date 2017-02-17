@@ -10,7 +10,7 @@ Namespace Invoices.Business
     ''' LoggerDynamicListBase (base class).<br/>
     ''' This is a generated base class of <see cref="LoggerDynamicListBase"/> business object.
     ''' </summary>
-    <Serializable()>
+    <Serializable>
     Public MustInherit Partial Class LoggerDynamicListBase(Of T As LoggerBusinessBase(Of T))
         Inherits DynamicListBase(Of T)
         Implements IListLog

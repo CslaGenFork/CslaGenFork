@@ -18,7 +18,7 @@ Namespace TestProject.Business
     ''' This is a remark
     ''' </remarks>
     <Attributable>
-    <Serializable()>
+    <Serializable>
     Public Partial Class DocFolder
         Inherits MyBusinessBase(Of DocFolder)
         Implements IHaveInterface

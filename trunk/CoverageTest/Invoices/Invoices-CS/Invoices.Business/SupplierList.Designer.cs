@@ -114,6 +114,16 @@ namespace Invoices.Business
         }
 
         /// <summary>
+        /// Factory method. Loads a <see cref="SupplierList"/> collection, based on given parameters.
+        /// </summary>
+        /// <param name="name">The Name parameter of the SupplierList to fetch.</param>
+        /// <returns>A reference to the fetched <see cref="SupplierList"/> collection.</returns>
+        public static SupplierList GetSupplierList(string name)
+        {
+            return DataPortal.Fetch<SupplierList>(name);
+        }
+
+        /// <summary>
         /// Factory method. Asynchronously loads a <see cref="SupplierList"/> collection.
         /// </summary>
         /// <param name="callback">The completion callback method.</param>
@@ -127,6 +137,16 @@ namespace Invoices.Business
                     });
             else
                 callback(null, new DataPortalResult<SupplierList>(_list, null, null));
+        }
+
+        /// <summary>
+        /// Factory method. Asynchronously loads a <see cref="SupplierList"/> collection, based on given parameters.
+        /// </summary>
+        /// <param name="name">The Name parameter of the SupplierList to fetch.</param>
+        /// <param name="callback">The completion callback method.</param>
+        public static void GetSupplierList(string name, EventHandler<DataPortalResult<SupplierList>> callback)
+        {
+            DataPortal.BeginFetch<SupplierList>(name, callback);
         }
 
         #endregion
@@ -228,9 +248,10 @@ namespace Invoices.Business
 
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("InvoicesDatabase"))
             {
-                using (var cmd = new SqlCommand("dbo.GetSupplierList", ctx.Connection))
+                GetQueryGetSupplierList();
+                using (var cmd = new SqlCommand(getSupplierListInlineQuery, ctx.Connection))
                 {
-                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandType = CommandType.Text;
                     var args = new DataPortalHookArgs(cmd);
                     OnFetchPre(args);
                     LoadCollection(cmd);
@@ -248,6 +269,27 @@ namespace Invoices.Business
             AddRange(_list);
             RaiseListChangedEvents = rlce;
             IsReadOnly = true;
+        }
+
+        /// <summary>
+        /// Loads a <see cref="SupplierList"/> collection from the database, based on given criteria.
+        /// </summary>
+        /// <param name="name">The Name.</param>
+        protected void DataPortal_Fetch(string name)
+        {
+            using (var ctx = ConnectionManager<SqlConnection>.GetManager("InvoicesDatabase"))
+            {
+                GetQueryGetSupplierListByName(name);
+                using (var cmd = new SqlCommand(getSupplierListByNameInlineQuery, ctx.Connection))
+                {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.AddWithValue("@Name", name).DbType = DbType.String;
+                    var args = new DataPortalHookArgs(cmd, name);
+                    OnFetchPre(args);
+                    LoadCollection(cmd);
+                    OnFetchPost(args);
+                }
+            }
         }
 
         private void LoadCollection(SqlCommand cmd)
@@ -274,6 +316,20 @@ namespace Invoices.Business
             RaiseListChangedEvents = rlce;
             IsReadOnly = true;
         }
+
+        #endregion
+
+        #region Inline queries fields and partial methods
+
+        [NotUndoable, NonSerialized]
+        private string getSupplierListInlineQuery;
+
+        [NotUndoable, NonSerialized]
+        private string getSupplierListByNameInlineQuery;
+
+        partial void GetQueryGetSupplierList();
+
+        partial void GetQueryGetSupplierListByName(string name);
 
         #endregion
 

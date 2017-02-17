@@ -15,7 +15,7 @@ Namespace DocStore.Business
     ''' This is a generated base class of <see cref="SampleUnitOfWork"/> business object.
     ''' This class is a root object that implements the Unit of Work pattern.
     ''' </summary>
-    <Serializable()>
+    <Serializable>
     Public Partial Class SampleUnitOfWork
         Inherits MyReadOnlyBase(Of SampleUnitOfWork)
         Implements IHaveInterface, IHaveGenericInterface(Of SampleUnitOfWork)
@@ -197,7 +197,7 @@ Namespace DocStore.Business
         ''' <summary>
         ''' Criteria1 criteria.
         ''' </summary>
-        <Serializable()>
+        <Serializable>
         Protected Class Criteria1
             Inherits CriteriaBase(Of Criteria1)
 
@@ -328,7 +328,7 @@ Namespace DocStore.Business
         ''' <summary>
         ''' Criteria2 criteria.
         ''' </summary>
-        <Serializable()>
+        <Serializable>
         Protected Class Criteria2
             Inherits CriteriaBase(Of Criteria2)
 

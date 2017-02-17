@@ -19,7 +19,7 @@ Namespace Invoices.Business
     ''' The items of the collection are <see cref="ProductTypeInfo"/> objects.
     ''' No cache. Updated by ProductTypeDynaItem
     ''' </remarks>
-    <Serializable()>
+    <Serializable>
     Public Partial Class ProductTypeList
 #If WINFORMS Then
         Inherits ReadOnlyBindingListBase(Of ProductTypeList, ProductTypeInfo)

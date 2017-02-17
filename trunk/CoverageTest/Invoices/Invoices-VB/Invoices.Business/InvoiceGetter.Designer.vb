@@ -8,7 +8,7 @@ Namespace Invoices.Business
     ''' This is a generated base class of <see cref="InvoiceGetter"/> business object.
     ''' This class is a root object that implements the Unit of Work pattern.
     ''' </summary>
-    <Serializable()>
+    <Serializable>
     Public Partial Class InvoiceGetter
         Inherits ReadOnlyBase(Of InvoiceGetter)
 

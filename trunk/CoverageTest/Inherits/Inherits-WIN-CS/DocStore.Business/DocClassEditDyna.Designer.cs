@@ -356,7 +356,7 @@ namespace DocStore.Business
         /// <summary>
         /// Loads default values for the <see cref="DocClassEditDyna"/> object properties.
         /// </summary>
-        [Csla.RunLocal]
+        [RunLocal]
         protected override void DataPortal_Create()
         {
             LoadProperty(DocClassIDProperty, System.Threading.Interlocked.Decrement(ref _lastId));

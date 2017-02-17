@@ -10,7 +10,7 @@ Namespace Invoices.Business
     ''' ProductTypeCachedNVL (name value list).<br/>
     ''' This is a generated base class of <see cref="ProductTypeCachedNVL"/> business object.
     ''' </summary>
-    <Serializable()>
+    <Serializable>
     Public Partial Class ProductTypeCachedNVL
         Inherits NameValueListBase(Of Integer, String)
 

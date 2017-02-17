@@ -101,7 +101,7 @@ namespace Invoices.Business
         /// <summary>
         /// Loads default values for the <see cref="InvoiceLineItem"/> object properties.
         /// </summary>
-        [Csla.RunLocal]
+        [RunLocal]
         protected override void Child_Create()
         {
             LoadProperty(InvoiceLineIdProperty, Guid.NewGuid());

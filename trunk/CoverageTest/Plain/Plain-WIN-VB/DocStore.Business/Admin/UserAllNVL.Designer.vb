@@ -19,7 +19,7 @@ Namespace DocStore.Business.Admin
     ''' All users (regardless of active status) (name value list).<br/>
     ''' This is a generated base class of <see cref="UserAllNVL"/> business object.
     ''' </summary>
-    <Serializable()>
+    <Serializable>
     Public Partial Class UserAllNVL
         Inherits NameValueListBase(Of Integer, String)
 

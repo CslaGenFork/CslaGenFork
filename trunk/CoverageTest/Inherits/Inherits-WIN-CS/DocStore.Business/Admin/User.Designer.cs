@@ -398,7 +398,7 @@ namespace DocStore.Business.Admin
         /// <summary>
         /// Loads default values for the <see cref="User"/> object properties.
         /// </summary>
-        [Csla.RunLocal]
+        [RunLocal]
         protected override void DataPortal_Create()
         {
             LoadProperty(UserIDProperty, System.Threading.Interlocked.Decrement(ref _lastId));

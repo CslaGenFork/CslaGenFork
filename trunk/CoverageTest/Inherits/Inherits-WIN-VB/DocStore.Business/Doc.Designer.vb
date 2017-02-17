@@ -31,7 +31,7 @@ Namespace DocStore.Business
     ''' - <see cref="Folders"/> of type <see cref="DocFolderColl"/> (M:M relation to <see cref="Folder"/>)<br/>
     ''' - <see cref="Circulations"/> of type <see cref="DocCircColl"/> (1:M relation to <see cref="DocCirc"/>)
     ''' </remarks>
-    <Serializable()>
+    <Serializable>
     Public Partial Class Doc
         Inherits BusinessBaseDoc(Of Doc)
         Implements IHaveInterface, IHaveGenericInterface(Of Doc)
@@ -559,7 +559,7 @@ Namespace DocStore.Business
         ''' <summary>
         ''' Loads default values for the <see cref="Doc"/> object properties.
         ''' </summary>
-        <Csla.RunLocal()>
+        <RunLocal>
         Protected Overrides Sub DataPortal_Create()
             LoadProperty(DocIDProperty, System.Threading.Interlocked.Decrement(_lastId))
             LoadProperty(DocClassIDProperty, -1)

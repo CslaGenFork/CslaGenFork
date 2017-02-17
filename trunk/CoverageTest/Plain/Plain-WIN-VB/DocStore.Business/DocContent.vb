@@ -28,35 +28,35 @@ Namespace DocStore.Business
 
         #Region " Implementation of DataPortal Hooks "
 
-        ' Partial Private Sub OnCreate(args As DataPortalHookArgs)
+        ' Private Sub OnCreate(args As DataPortalHookArgs)
         '     Throw New NotImplementedException()
         ' End Sub
 
-        ' Partial Private Sub OnFetchPre(args As DataPortalHookArgs)
+        ' Private Sub OnFetchPre(args As DataPortalHookArgs)
         '     Throw New NotImplementedException()
         ' End Sub
 
-        ' Partial Private Sub OnFetchPost(args As DataPortalHookArgs)
+        ' Private Sub OnFetchPost(args As DataPortalHookArgs)
         '     Throw New NotImplementedException()
         ' End Sub
 
-        ' Partial Private Sub OnFetchRead(args As DataPortalHookArgs)
+        ' Private Sub OnFetchRead(args As DataPortalHookArgs)
         '     Throw New NotImplementedException()
         ' End Sub
 
-        ' Partial Private Sub OnUpdatePre(args As DataPortalHookArgs)
+        ' Private Sub OnUpdatePre(args As DataPortalHookArgs)
         '     Throw New NotImplementedException()
         ' End Sub
 
-        ' Partial Private Sub OnUpdatePost(args As DataPortalHookArgs)
+        ' Private Sub OnUpdatePost(args As DataPortalHookArgs)
         '     Throw New NotImplementedException()
         ' End Sub
 
-        ' Partial Private Sub OnInsertPre(args As DataPortalHookArgs)
+        ' Private Sub OnInsertPre(args As DataPortalHookArgs)
         '     Throw New NotImplementedException()
         ' End Sub
 
-        ' Partial Private Sub OnInsertPost(args As DataPortalHookArgs)
+        ' Private Sub OnInsertPost(args As DataPortalHookArgs)
         '     Throw New NotImplementedException()
         ' End Sub
 

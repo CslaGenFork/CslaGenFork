@@ -20,7 +20,7 @@ Namespace DocStore.Business.Admin
     ''' User (editable root object).<br/>
     ''' This is a generated base class of <see cref="User"/> business object.
     ''' </summary>
-    <Serializable()>
+    <Serializable>
     Public Partial Class User
         Inherits BusinessBase(Of User)
 
@@ -402,7 +402,7 @@ Namespace DocStore.Business.Admin
         ''' <summary>
         ''' Loads default values for the <see cref="User"/> object properties.
         ''' </summary>
-        <Csla.RunLocal()>
+        <RunLocal>
         Protected Overrides Sub DataPortal_Create()
             LoadProperty(UserIDProperty, System.Threading.Interlocked.Decrement(_lastId))
             LoadProperty(PictureProperty, New Byte() {})

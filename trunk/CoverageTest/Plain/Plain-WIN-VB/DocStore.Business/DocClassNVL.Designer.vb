@@ -17,7 +17,7 @@ Namespace DocStore.Business
     ''' Active document classes (name value list).<br/>
     ''' This is a generated base class of <see cref="DocClassNVL"/> business object.
     ''' </summary>
-    <Serializable()>
+    <Serializable>
     Public Partial Class DocClassNVL
         Inherits NameValueListBase(Of Integer, String)
 

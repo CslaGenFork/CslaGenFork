@@ -20,7 +20,7 @@ Namespace DocStore.Business
     ''' Document class (editable root object).<br/>
     ''' This is a generated base class of <see cref="DocClass"/> business object.
     ''' </summary>
-    <Serializable()>
+    <Serializable>
     Public Partial Class DocClass
         Inherits BusinessBase(Of DocClass)
 
@@ -305,7 +305,7 @@ Namespace DocStore.Business
         ''' <summary>
         ''' Loads default values for the <see cref="DocClass"/> object properties.
         ''' </summary>
-        <Csla.RunLocal()>
+        <RunLocal>
         Protected Overrides Sub DataPortal_Create()
             LoadProperty(DocClassIDProperty, System.Threading.Interlocked.Decrement(_lastId))
             LoadProperty(CreateDateProperty, new SmartDate(Date.Now))

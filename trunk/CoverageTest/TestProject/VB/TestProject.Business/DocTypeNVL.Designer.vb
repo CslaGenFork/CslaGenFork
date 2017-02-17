@@ -12,7 +12,7 @@ Namespace TestProject.Business
     ''' This is a generated base class of <see cref="DocTypeNVL"/> business object.
     ''' </summary>
     <Attributable>
-    <Serializable()>
+    <Serializable>
     Public Partial Class DocTypeNVL
         Inherits NameValueListBase(Of Integer, String)
         Implements IHaveInterface

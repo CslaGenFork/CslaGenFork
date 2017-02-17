@@ -21,6 +21,20 @@ namespace Invoices.Business
 
         #endregion
 
+        #region Inline queries
+
+        //partial void GetQueryGetSupplierList()
+        //{
+        //    getSupplierListInlineQuery = "";
+        //}
+
+        //partial void GetQueryGetSupplierListByName(string name)
+        //{
+        //    getSupplierListByNameInlineQuery = "";
+        //}
+
+        #endregion
+
         #region Implementation of DataPortal Hooks
 
         //partial void OnFetchPre(DataPortalHookArgs args)

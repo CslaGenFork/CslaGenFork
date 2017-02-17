@@ -258,7 +258,7 @@ namespace Invoices.Business
         /// <summary>
         /// Loads default values for the <see cref="InvoiceEdit"/> object properties.
         /// </summary>
-        [Csla.RunLocal]
+        [RunLocal]
         protected override void DataPortal_Create()
         {
             LoadProperty(InvoiceIdProperty, Guid.NewGuid());

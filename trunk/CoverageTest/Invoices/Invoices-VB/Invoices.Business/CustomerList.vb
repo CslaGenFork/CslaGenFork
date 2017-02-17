@@ -19,13 +19,25 @@ Namespace Invoices.Business
 
         #End Region
 
+        #Region " Inline queries "
+
+        ' Private Sub GetQueryGetCustomerList()
+        '     getCustomerListInlineQuery = ""
+        ' End Sub
+
+        ' Private Sub GetQueryGetCustomerList(name As String)
+        '     getCustomerListInlineQuery = ""
+        ' End Sub
+
+        #End Region
+
         #Region " Implementation of DataPortal Hooks "
 
-        ' Partial Private Sub OnFetchPre(args As DataPortalHookArgs)
+        ' Private Sub OnFetchPre(args As DataPortalHookArgs)
         '     Throw New NotImplementedException()
         ' End Sub
 
-        ' Partial Private Sub OnFetchPost(args As DataPortalHookArgs)
+        ' Private Sub OnFetchPost(args As DataPortalHookArgs)
         '     Throw New NotImplementedException()
         ' End Sub
 

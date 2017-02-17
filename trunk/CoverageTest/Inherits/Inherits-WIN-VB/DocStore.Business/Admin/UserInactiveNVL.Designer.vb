@@ -17,7 +17,7 @@ Namespace DocStore.Business.Admin
     ''' Inactive users (name value list).<br/>
     ''' This is a generated base class of <see cref="UserInactiveNVL"/> business object.
     ''' </summary>
-    <Serializable()>
+    <Serializable>
     Public Partial Class UserInactiveNVL
         Inherits NameValueListBase(Of Integer, String)
 

@@ -79,7 +79,7 @@ namespace Invoices.Business
         /// <summary>
         /// Loads default values for the <see cref="ProductTypeItem"/> object properties.
         /// </summary>
-        [Csla.RunLocal]
+        [RunLocal]
         protected override void Child_Create()
         {
             LoadProperty(ProductTypeIdProperty, System.Threading.Interlocked.Decrement(ref _lastId));

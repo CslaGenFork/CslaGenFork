@@ -18,7 +18,7 @@ AS
             [Suppliers].[AddressLine2],
             [Suppliers].[ZipCode],
             [Suppliers].[State],
-            [Suppliers].[Coutry]
+            [Suppliers].[Country]
         FROM [dbo].[Suppliers]
         WHERE
             [Suppliers].[SupplierId] = @SupplierId
@@ -47,7 +47,7 @@ CREATE PROCEDURE [dbo].[AddSupplierEdit]
     @AddressLine2 varchar(100),
     @ZipCode varchar(15),
     @State varchar(15),
-    @Coutry tinyint
+    @Country tinyint
 AS
     BEGIN
 
@@ -62,7 +62,7 @@ AS
             [AddressLine2],
             [ZipCode],
             [State],
-            [Coutry]
+            [Country]
         )
         VALUES
         (
@@ -72,7 +72,7 @@ AS
             @AddressLine2,
             @ZipCode,
             @State,
-            @Coutry
+            @Country
         )
 
     END
@@ -90,7 +90,7 @@ CREATE PROCEDURE [dbo].[UpdateSupplierEdit]
     @AddressLine2 varchar(100),
     @ZipCode varchar(15),
     @State varchar(15),
-    @Coutry tinyint
+    @Country tinyint
 AS
     BEGIN
 
@@ -116,7 +116,7 @@ AS
             [AddressLine2] = @AddressLine2,
             [ZipCode] = @ZipCode,
             [State] = @State,
-            [Coutry] = @Coutry
+            [Country] = @Country
         WHERE
             [SupplierId] = @SupplierId
 

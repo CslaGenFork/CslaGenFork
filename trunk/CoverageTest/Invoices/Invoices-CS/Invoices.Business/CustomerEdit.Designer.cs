@@ -117,17 +117,17 @@ namespace Invoices.Business
         }
 
         /// <summary>
-        /// Maintains metadata about <see cref="Coutry"/> property.
+        /// Maintains metadata about <see cref="Country"/> property.
         /// </summary>
-        public static readonly PropertyInfo<byte?> CoutryProperty = RegisterProperty<byte?>(p => p.Coutry, "Coutry");
+        public static readonly PropertyInfo<byte?> CountryProperty = RegisterProperty<byte?>(p => p.Country, "Country");
         /// <summary>
-        /// Gets or sets the Coutry.
+        /// Gets or sets the Country.
         /// </summary>
-        /// <value>The Coutry.</value>
-        public byte? Coutry
+        /// <value>The Country.</value>
+        public byte? Country
         {
-            get { return GetProperty(CoutryProperty); }
-            set { SetProperty(CoutryProperty, value); }
+            get { return GetProperty(CountryProperty); }
+            set { SetProperty(CountryProperty, value); }
         }
 
         #endregion
@@ -154,6 +154,15 @@ namespace Invoices.Business
         }
 
         /// <summary>
+        /// Factory method. Deletes a <see cref="CustomerEdit"/> object, based on given parameters.
+        /// </summary>
+        /// <param name="customerId">The CustomerId of the CustomerEdit to delete.</param>
+        public static void DeleteCustomerEdit(string customerId)
+        {
+            DataPortal.Delete<CustomerEdit>(customerId);
+        }
+
+        /// <summary>
         /// Factory method. Asynchronously creates a new <see cref="CustomerEdit"/> object.
         /// </summary>
         /// <param name="callback">The completion callback method.</param>
@@ -170,6 +179,16 @@ namespace Invoices.Business
         public static void GetCustomerEdit(string customerId, EventHandler<DataPortalResult<CustomerEdit>> callback)
         {
             DataPortal.BeginFetch<CustomerEdit>(customerId, callback);
+        }
+
+        /// <summary>
+        /// Factory method. Asynchronously deletes a <see cref="CustomerEdit"/> object, based on given parameters.
+        /// </summary>
+        /// <param name="customerId">The CustomerId of the CustomerEdit to delete.</param>
+        /// <param name="callback">The completion callback method.</param>
+        public static void DeleteCustomerEdit(string customerId, EventHandler<DataPortalResult<CustomerEdit>> callback)
+        {
+            DataPortal.BeginDelete<CustomerEdit>(customerId, callback);
         }
 
         #endregion
@@ -194,7 +213,7 @@ namespace Invoices.Business
         /// <summary>
         /// Loads default values for the <see cref="CustomerEdit"/> object properties.
         /// </summary>
-        [Csla.RunLocal]
+        [RunLocal]
         protected override void DataPortal_Create()
         {
             LoadProperty(FiscalNumberProperty, null);
@@ -215,9 +234,10 @@ namespace Invoices.Business
         {
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("InvoicesDatabase"))
             {
-                using (var cmd = new SqlCommand("dbo.GetCustomerEdit", ctx.Connection))
+                GetQueryGetCustomerEdit(customerId);
+                using (var cmd = new SqlCommand(getCustomerEditInlineQuery, ctx.Connection))
                 {
-                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandType = CommandType.Text;
                     cmd.Parameters.AddWithValue("@CustomerId", customerId).DbType = DbType.StringFixedLength;
                     var args = new DataPortalHookArgs(cmd, customerId);
                     OnFetchPre(args);
@@ -254,7 +274,7 @@ namespace Invoices.Business
             LoadProperty(AddressLine2Property, dr.IsDBNull("AddressLine2") ? null : dr.GetString("AddressLine2"));
             LoadProperty(ZipCodeProperty, dr.IsDBNull("ZipCode") ? null : dr.GetString("ZipCode"));
             LoadProperty(StateProperty, dr.IsDBNull("State") ? null : dr.GetString("State"));
-            LoadProperty(CoutryProperty, (byte?)dr.GetValue("Coutry"));
+            LoadProperty(CountryProperty, (byte?)dr.GetValue("Country"));
             var args = new DataPortalHookArgs(dr);
             OnFetchRead(args);
         }
@@ -267,9 +287,10 @@ namespace Invoices.Business
         {
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("InvoicesDatabase"))
             {
-                using (var cmd = new SqlCommand("dbo.AddCustomerEdit", ctx.Connection))
+                GetQueryAddCustomerEdit();
+                using (var cmd = new SqlCommand(addCustomerEditInlineQuery, ctx.Connection))
                 {
-                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandType = CommandType.Text;
                     cmd.Parameters.AddWithValue("@CustomerId", ReadProperty(CustomerIdProperty)).DbType = DbType.StringFixedLength;
                     cmd.Parameters.AddWithValue("@Name", ReadProperty(NameProperty)).DbType = DbType.String;
                     cmd.Parameters.AddWithValue("@FiscalNumber", ReadProperty(FiscalNumberProperty) == null ? (object)DBNull.Value : ReadProperty(FiscalNumberProperty)).DbType = DbType.String;
@@ -277,7 +298,7 @@ namespace Invoices.Business
                     cmd.Parameters.AddWithValue("@AddressLine2", ReadProperty(AddressLine2Property) == null ? (object)DBNull.Value : ReadProperty(AddressLine2Property)).DbType = DbType.String;
                     cmd.Parameters.AddWithValue("@ZipCode", ReadProperty(ZipCodeProperty) == null ? (object)DBNull.Value : ReadProperty(ZipCodeProperty)).DbType = DbType.String;
                     cmd.Parameters.AddWithValue("@State", ReadProperty(StateProperty) == null ? (object)DBNull.Value : ReadProperty(StateProperty)).DbType = DbType.String;
-                    cmd.Parameters.AddWithValue("@Coutry", ReadProperty(CoutryProperty) == null ? (object)DBNull.Value : ReadProperty(CoutryProperty).Value).DbType = DbType.Byte;
+                    cmd.Parameters.AddWithValue("@Country", ReadProperty(CountryProperty) == null ? (object)DBNull.Value : ReadProperty(CountryProperty).Value).DbType = DbType.Byte;
                     var args = new DataPortalHookArgs(cmd);
                     OnInsertPre(args);
                     cmd.ExecuteNonQuery();
@@ -294,9 +315,10 @@ namespace Invoices.Business
         {
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("InvoicesDatabase"))
             {
-                using (var cmd = new SqlCommand("dbo.UpdateCustomerEdit", ctx.Connection))
+                GetQueryUpdateCustomerEdit();
+                using (var cmd = new SqlCommand(updateCustomerEditInlineQuery, ctx.Connection))
                 {
-                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandType = CommandType.Text;
                     cmd.Parameters.AddWithValue("@CustomerId", ReadProperty(CustomerIdProperty)).DbType = DbType.StringFixedLength;
                     cmd.Parameters.AddWithValue("@Name", ReadProperty(NameProperty)).DbType = DbType.String;
                     cmd.Parameters.AddWithValue("@FiscalNumber", ReadProperty(FiscalNumberProperty) == null ? (object)DBNull.Value : ReadProperty(FiscalNumberProperty)).DbType = DbType.String;
@@ -304,7 +326,7 @@ namespace Invoices.Business
                     cmd.Parameters.AddWithValue("@AddressLine2", ReadProperty(AddressLine2Property) == null ? (object)DBNull.Value : ReadProperty(AddressLine2Property)).DbType = DbType.String;
                     cmd.Parameters.AddWithValue("@ZipCode", ReadProperty(ZipCodeProperty) == null ? (object)DBNull.Value : ReadProperty(ZipCodeProperty)).DbType = DbType.String;
                     cmd.Parameters.AddWithValue("@State", ReadProperty(StateProperty) == null ? (object)DBNull.Value : ReadProperty(StateProperty)).DbType = DbType.String;
-                    cmd.Parameters.AddWithValue("@Coutry", ReadProperty(CoutryProperty) == null ? (object)DBNull.Value : ReadProperty(CoutryProperty).Value).DbType = DbType.Byte;
+                    cmd.Parameters.AddWithValue("@Country", ReadProperty(CountryProperty) == null ? (object)DBNull.Value : ReadProperty(CountryProperty).Value).DbType = DbType.Byte;
                     var args = new DataPortalHookArgs(cmd);
                     OnUpdatePre(args);
                     cmd.ExecuteNonQuery();
@@ -312,6 +334,60 @@ namespace Invoices.Business
                 }
             }
         }
+
+        /// <summary>
+        /// Self deletes the <see cref="CustomerEdit"/> object.
+        /// </summary>
+        protected override void DataPortal_DeleteSelf()
+        {
+            DataPortal_Delete(CustomerId);
+        }
+
+        /// <summary>
+        /// Deletes the <see cref="CustomerEdit"/> object from database.
+        /// </summary>
+        /// <param name="customerId">The delete criteria.</param>
+        [Transactional(TransactionalTypes.TransactionScope)]
+        protected void DataPortal_Delete(string customerId)
+        {
+            using (var ctx = ConnectionManager<SqlConnection>.GetManager("InvoicesDatabase"))
+            {
+                GetQueryDeleteCustomerEdit(customerId);
+                using (var cmd = new SqlCommand(deleteCustomerEditInlineQuery, ctx.Connection))
+                {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.AddWithValue("@CustomerId", customerId).DbType = DbType.StringFixedLength;
+                    var args = new DataPortalHookArgs(cmd, customerId);
+                    OnDeletePre(args);
+                    cmd.ExecuteNonQuery();
+                    OnDeletePost(args);
+                }
+            }
+        }
+
+        #endregion
+
+        #region Inline queries fields and partial methods
+
+        [NotUndoable, NonSerialized]
+        private string getCustomerEditInlineQuery;
+
+        [NotUndoable, NonSerialized]
+        private string addCustomerEditInlineQuery;
+
+        [NotUndoable, NonSerialized]
+        private string updateCustomerEditInlineQuery;
+
+        [NotUndoable, NonSerialized]
+        private string deleteCustomerEditInlineQuery;
+
+        partial void GetQueryGetCustomerEdit(string customerId);
+
+        partial void GetQueryAddCustomerEdit();
+
+        partial void GetQueryUpdateCustomerEdit();
+
+        partial void GetQueryDeleteCustomerEdit(string customerId);
 
         #endregion
 

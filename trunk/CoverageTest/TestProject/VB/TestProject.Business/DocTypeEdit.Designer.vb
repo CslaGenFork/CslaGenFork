@@ -17,7 +17,7 @@ Namespace TestProject.Business
     ''' This is a remark
     ''' </remarks>
     <Attributable>
-    <Serializable()>
+    <Serializable>
     Public Partial Class DocTypeEdit
         Inherits BusinessBase(Of DocTypeEdit)
         Implements IHaveInterface
@@ -86,7 +86,7 @@ Namespace TestProject.Business
         ''' <summary>
         ''' Loads default values for the <see cref="DocTypeEdit"/> object properties.
         ''' </summary>
-        <Csla.RunLocal()>
+        <RunLocal>
         Protected Overrides Sub Child_Create()
             LoadProperty(DocTypeIDProperty, System.Threading.Interlocked.Decrement(_lastId))
             Dim args As New DataPortalHookArgs()

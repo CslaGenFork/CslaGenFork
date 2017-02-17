@@ -25,7 +25,7 @@ Namespace DocStore.Business
     ''' <remarks>
     ''' The items of the collection are <see cref="DocInfo"/> objects.
     ''' </remarks>
-    <Serializable()>
+    <Serializable>
     Public Partial Class DocList
 #If WINFORMS Then
         Inherits ReadOnlyBindingListBase(Of DocList, DocInfo)
@@ -249,7 +249,8 @@ Namespace DocStore.Business
         ''' </summary>
         Protected Overloads Sub DataPortal_Fetch()
             Using ctx = ConnectionManager(Of SqlConnection).GetManager(Database.DocStoreConnection, False)
-                Using cmd = New SqlCommand(GetDocListInlineQuery(), ctx.Connection)
+                GetQueryGetDocList()
+                Using cmd = New SqlCommand(getDocListInlineQuery, ctx.Connection)
                     cmd.CommandType = CommandType.Text
                     Dim args As New DataPortalHookArgs(cmd)
                     OnFetchPre(args)
@@ -265,7 +266,8 @@ Namespace DocStore.Business
         ''' <param name="crit">The fetch criteria.</param>
         Protected Overloads Sub DataPortal_Fetch(crit As DocListFilteredCriteria)
             Using ctx = ConnectionManager(Of SqlConnection).GetManager(Database.DocStoreConnection, False)
-                Using cmd = New SqlCommand(GetDocListInlineQuery(crit), ctx.Connection)
+                GetQueryGetDocList(crit)
+                Using cmd = New SqlCommand(getDocListInlineQuery, ctx.Connection)
                     cmd.CommandType = CommandType.Text
                     cmd.Parameters.AddWithValue("@DocID", If(crit.DocID Is Nothing, DBNull.Value, crit.DocID.Value)).DbType = DbType.Int32
                     cmd.Parameters.AddWithValue("@DocClassID", If(crit.DocClassID Is Nothing, DBNull.Value, crit.DocClassID.Value)).DbType = DbType.Int32
@@ -307,6 +309,19 @@ Namespace DocStore.Business
             End While
             RaiseListChangedEvents = rlce
             IsReadOnly = True
+        End Sub
+
+        #End Region
+
+        #Region " Inline queries fields and partial methods "
+
+        <NotUndoable, NonSerialized>
+        Private getDocListInlineQuery As String
+
+        Partial Private Sub GetQueryGetDocList()
+        End Sub
+
+        Partial Private Sub GetQueryGetDocList(crit As DocListFilteredCriteria)
         End Sub
 
         #End Region
@@ -399,7 +414,7 @@ Namespace DocStore.Business
     ''' <summary>
     ''' DocListFilteredCriteria criteria.
     ''' </summary>
-    <Serializable()>
+    <Serializable>
     Public Class DocListFilteredCriteria
         Inherits CriteriaBase(Of DocListFilteredCriteria)
 

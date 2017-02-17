@@ -10,7 +10,7 @@ Namespace TestProject.Business
     ''' This class is a root object that implements the Unit of Work pattern.
     ''' </summary>
     <Attributable>
-    <Serializable()>
+    <Serializable>
     Public Partial Class DocEditCreator
         Inherits MyBusinessBase(Of DocEditCreator)
         Implements IHaveInterface

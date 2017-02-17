@@ -193,7 +193,7 @@ namespace DocStore.Business
         /// <summary>
         /// Loads default values for the <see cref="DocClassEdit"/> object properties.
         /// </summary>
-        [Csla.RunLocal]
+        [RunLocal]
         protected override void Child_Create()
         {
             LoadProperty(DocClassIDProperty, System.Threading.Interlocked.Decrement(ref _lastId));

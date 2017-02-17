@@ -14,7 +14,7 @@ Namespace Invoices.Business
     ''' This class contains one child collection:<br/>
     ''' - <see cref="Products"/> of type <see cref="SupplierProductColl"/> (1:M relation to <see cref="SupplierProductItem"/>)
     ''' </remarks>
-    <Serializable()>
+    <Serializable>
     Public Partial Class SupplierEdit
         Inherits BusinessBase(Of SupplierEdit)
 
@@ -124,19 +124,19 @@ Namespace Invoices.Business
         End Property
 
         ''' <summary>
-        ''' Maintains metadata about <see cref="Coutry"/> property.
+        ''' Maintains metadata about <see cref="Country"/> property.
         ''' </summary>
-        Public Shared ReadOnly CoutryProperty As PropertyInfo(Of Byte?) = RegisterProperty(Of Byte?)(Function(p) p.Coutry, "Coutry")
+        Public Shared ReadOnly CountryProperty As PropertyInfo(Of Byte?) = RegisterProperty(Of Byte?)(Function(p) p.Country, "Country")
         ''' <summary>
-        ''' Gets or sets the Coutry.
+        ''' Gets or sets the Country.
         ''' </summary>
-        ''' <value>The Coutry.</value>
-        Public Property Coutry As Byte?
+        ''' <value>The Country.</value>
+        Public Property Country As Byte?
             Get
-                Return GetProperty(CoutryProperty)
+                Return GetProperty(CountryProperty)
             End Get
             Set(ByVal value As Byte?)
-                SetProperty(CoutryProperty, value)
+                SetProperty(CountryProperty, value)
             End Set
         End Property
 
@@ -241,7 +241,7 @@ Namespace Invoices.Business
         ''' <summary>
         ''' Loads default values for the <see cref="SupplierEdit"/> object properties.
         ''' </summary>
-        <Csla.RunLocal()>
+        <RunLocal>
         Protected Overrides Sub DataPortal_Create()
             LoadProperty(AddressLine1Property, Nothing)
             LoadProperty(AddressLine2Property, Nothing)
@@ -293,7 +293,7 @@ Namespace Invoices.Business
             LoadProperty(AddressLine2Property, If(dr.IsDBNull("AddressLine2"), Nothing, dr.GetString("AddressLine2")))
             LoadProperty(ZipCodeProperty, If(dr.IsDBNull("ZipCode"), Nothing, dr.GetString("ZipCode")))
             LoadProperty(StateProperty, If(dr.IsDBNull("State"), Nothing, dr.GetString("State")))
-            LoadProperty(CoutryProperty, DirectCast(dr.GetValue("Coutry"), Byte?))
+            LoadProperty(CountryProperty, DirectCast(dr.GetValue("Country"), Byte?))
             Dim args As New DataPortalHookArgs(dr)
             OnFetchRead(args)
         End Sub
@@ -321,7 +321,7 @@ Namespace Invoices.Business
                     cmd.Parameters.AddWithValue("@AddressLine2", If(ReadProperty(AddressLine2Property) Is Nothing, DBNull.Value, ReadProperty(AddressLine2Property))).DbType = DbType.String
                     cmd.Parameters.AddWithValue("@ZipCode", If(ReadProperty(ZipCodeProperty) Is Nothing, DBNull.Value, ReadProperty(ZipCodeProperty))).DbType = DbType.String
                     cmd.Parameters.AddWithValue("@State", If(ReadProperty(StateProperty) Is Nothing, DBNull.Value, ReadProperty(StateProperty))).DbType = DbType.String
-                    cmd.Parameters.AddWithValue("@Coutry", If(ReadProperty(CoutryProperty) Is Nothing, DBNull.Value, ReadProperty(CoutryProperty).Value)).DbType = DbType.Byte
+                    cmd.Parameters.AddWithValue("@Country", If(ReadProperty(CountryProperty) Is Nothing, DBNull.Value, ReadProperty(CountryProperty).Value)).DbType = DbType.Byte
                     Dim args As New DataPortalHookArgs(cmd)
                     OnInsertPre(args)
                     cmd.ExecuteNonQuery()
@@ -346,7 +346,7 @@ Namespace Invoices.Business
                     cmd.Parameters.AddWithValue("@AddressLine2", If(ReadProperty(AddressLine2Property) Is Nothing, DBNull.Value, ReadProperty(AddressLine2Property))).DbType = DbType.String
                     cmd.Parameters.AddWithValue("@ZipCode", If(ReadProperty(ZipCodeProperty) Is Nothing, DBNull.Value, ReadProperty(ZipCodeProperty))).DbType = DbType.String
                     cmd.Parameters.AddWithValue("@State", If(ReadProperty(StateProperty) Is Nothing, DBNull.Value, ReadProperty(StateProperty))).DbType = DbType.String
-                    cmd.Parameters.AddWithValue("@Coutry", If(ReadProperty(CoutryProperty) Is Nothing, DBNull.Value, ReadProperty(CoutryProperty).Value)).DbType = DbType.Byte
+                    cmd.Parameters.AddWithValue("@Country", If(ReadProperty(CountryProperty) Is Nothing, DBNull.Value, ReadProperty(CountryProperty).Value)).DbType = DbType.Byte
                     Dim args As New DataPortalHookArgs(cmd)
                     OnUpdatePre(args)
                     cmd.ExecuteNonQuery()

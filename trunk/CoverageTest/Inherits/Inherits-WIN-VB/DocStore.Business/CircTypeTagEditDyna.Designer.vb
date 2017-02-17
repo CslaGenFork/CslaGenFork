@@ -21,7 +21,7 @@ Namespace DocStore.Business
     ''' <remarks>
     ''' This class is an item of <see cref="CircTypeTagEditDynaColl"/> collection.
     ''' </remarks>
-    <Serializable()>
+    <Serializable>
     Public Partial Class CircTypeTagEditDyna
         Inherits BusinessBase(Of CircTypeTagEditDyna)
 
@@ -207,7 +207,7 @@ Namespace DocStore.Business
         ''' <summary>
         ''' Loads default values for the <see cref="CircTypeTagEditDyna"/> object properties.
         ''' </summary>
-        <Csla.RunLocal()>
+        <RunLocal>
         Protected Overrides Sub DataPortal_Create()
             LoadProperty(CircTypeIDProperty, System.Threading.Interlocked.Decrement(_lastId))
             LoadProperty(CreateDateProperty, new SmartDate(Date.Now))

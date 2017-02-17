@@ -10,7 +10,7 @@ Namespace Invoices.Business
     ''' CriteriaSearchInvoice (criteria class).<br/>
     ''' This is a generated base class of <see cref="CriteriaSearchInvoice"/> business object.
     ''' </summary>
-    <Serializable()>
+    <Serializable>
     Public Partial Class CriteriaSearchInvoice
         Inherits BusinessBase(Of CriteriaSearchInvoice)
 

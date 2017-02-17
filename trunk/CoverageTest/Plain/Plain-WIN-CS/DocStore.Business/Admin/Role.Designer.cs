@@ -356,7 +356,7 @@ namespace DocStore.Business.Admin
         /// <summary>
         /// Loads default values for the <see cref="Role"/> object properties.
         /// </summary>
-        [Csla.RunLocal]
+        [RunLocal]
         protected override void DataPortal_Create()
         {
             LoadProperty(RoleIDProperty, System.Threading.Interlocked.Decrement(ref _lastId));

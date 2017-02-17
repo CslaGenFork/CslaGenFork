@@ -18,7 +18,7 @@ Namespace TestProject.Business
     ''' This is a remark
     ''' </remarks>
     <Attributable>
-    <Serializable()>
+    <Serializable>
     Public Partial Class DocRO
         Inherits ReadOnlyBase(Of DocRO)
         Implements IHaveInterface

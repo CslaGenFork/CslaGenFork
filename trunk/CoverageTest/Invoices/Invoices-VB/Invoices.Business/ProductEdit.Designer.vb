@@ -14,7 +14,7 @@ Namespace Invoices.Business
     ''' This class contains one child collection:<br/>
     ''' - <see cref="Suppliers"/> of type <see cref="ProductSupplierColl"/> (1:M relation to <see cref="ProductSupplierItem"/>)
     ''' </remarks>
-    <Serializable()>
+    <Serializable>
     Public Partial Class ProductEdit
         Inherits BusinessBase(Of ProductEdit)
 
@@ -317,7 +317,7 @@ Namespace Invoices.Business
         ''' <summary>
         ''' Loads default values for the <see cref="ProductEdit"/> object properties.
         ''' </summary>
-        <Csla.RunLocal()>
+        <RunLocal>
         Protected Overrides Sub DataPortal_Create()
             LoadProperty(ProductIdProperty, Guid.NewGuid())
             LoadProperty(ProductCodeProperty, Nothing)

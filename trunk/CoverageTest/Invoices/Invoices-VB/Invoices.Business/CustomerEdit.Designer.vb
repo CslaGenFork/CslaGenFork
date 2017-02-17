@@ -10,7 +10,7 @@ Namespace Invoices.Business
     ''' CustomerEdit (editable root object).<br/>
     ''' This is a generated base class of <see cref="CustomerEdit"/> business object.
     ''' </summary>
-    <Serializable()>
+    <Serializable>
     Public Partial Class CustomerEdit
         Inherits BusinessBase(Of CustomerEdit)
 
@@ -137,19 +137,19 @@ Namespace Invoices.Business
         End Property
 
         ''' <summary>
-        ''' Maintains metadata about <see cref="Coutry"/> property.
+        ''' Maintains metadata about <see cref="Country"/> property.
         ''' </summary>
-        Public Shared ReadOnly CoutryProperty As PropertyInfo(Of Byte?) = RegisterProperty(Of Byte?)(Function(p) p.Coutry, "Coutry")
+        Public Shared ReadOnly CountryProperty As PropertyInfo(Of Byte?) = RegisterProperty(Of Byte?)(Function(p) p.Country, "Country")
         ''' <summary>
-        ''' Gets or sets the Coutry.
+        ''' Gets or sets the Country.
         ''' </summary>
-        ''' <value>The Coutry.</value>
-        Public Property Coutry As Byte?
+        ''' <value>The Country.</value>
+        Public Property Country As Byte?
             Get
-                Return GetProperty(CoutryProperty)
+                Return GetProperty(CountryProperty)
             End Get
             Set(ByVal value As Byte?)
-                SetProperty(CoutryProperty, value)
+                SetProperty(CountryProperty, value)
             End Set
         End Property
 
@@ -175,6 +175,14 @@ Namespace Invoices.Business
         End Function
 
         ''' <summary>
+        ''' Factory method. Deletes a <see cref="CustomerEdit"/> object, based on given parameters.
+        ''' </summary>
+        ''' <param name="customerId">The CustomerId of the CustomerEdit to delete.</param>
+        Public Shared Sub DeleteCustomerEdit(customerId As String)
+            DataPortal.Delete(Of CustomerEdit)(customerId)
+        End Sub
+
+        ''' <summary>
         ''' Factory method. Asynchronously creates a new <see cref="CustomerEdit"/> object.
         ''' </summary>
         ''' <param name="callback">The completion callback method.</param>
@@ -189,6 +197,15 @@ Namespace Invoices.Business
         ''' <param name="callback">The completion callback method.</param>
         Public Shared Sub GetCustomerEdit(customerId As String, ByVal callback As EventHandler(Of DataPortalResult(Of CustomerEdit)))
             DataPortal.BeginFetch(Of CustomerEdit)(customerId, callback)
+        End Sub
+
+        ''' <summary>
+        ''' Factory method. Asynchronously deletes a <see cref="CustomerEdit"/> object, based on given parameters.
+        ''' </summary>
+        ''' <param name="customerId">The CustomerId of the CustomerEdit to delete.</param>
+        ''' <param name="callback">The completion callback method.</param>
+        Public Shared Sub DeleteCustomerEdit(customerId As String, callback As EventHandler(Of DataPortalResult(Of CustomerEdit)))
+            DataPortal.BeginDelete(Of CustomerEdit)(customerId, callback)
         End Sub
 
         #End Region
@@ -212,7 +229,7 @@ Namespace Invoices.Business
         ''' <summary>
         ''' Loads default values for the <see cref="CustomerEdit"/> object properties.
         ''' </summary>
-        <Csla.RunLocal()>
+        <RunLocal>
         Protected Overrides Sub DataPortal_Create()
             LoadProperty(FiscalNumberProperty, Nothing)
             LoadProperty(AddressLine1Property, Nothing)
@@ -230,8 +247,9 @@ Namespace Invoices.Business
         ''' <param name="customerId">The Customer Id.</param>
         Protected Sub DataPortal_Fetch(customerId As String)
             Using ctx = ConnectionManager(Of SqlConnection).GetManager("InvoicesDatabase")
-                Using cmd = New SqlCommand("dbo.GetCustomerEdit", ctx.Connection)
-                    cmd.CommandType = CommandType.StoredProcedure
+                GetQueryGetCustomerEdit(customerId)
+                Using cmd = New SqlCommand(getCustomerEditInlineQuery, ctx.Connection)
+                    cmd.CommandType = CommandType.Text
                     cmd.Parameters.AddWithValue("@CustomerId", customerId).DbType = DbType.StringFixedLength
                     Dim args As New DataPortalHookArgs(cmd, customerId)
                     OnFetchPre(args)
@@ -264,7 +282,7 @@ Namespace Invoices.Business
             LoadProperty(AddressLine2Property, If(dr.IsDBNull("AddressLine2"), Nothing, dr.GetString("AddressLine2")))
             LoadProperty(ZipCodeProperty, If(dr.IsDBNull("ZipCode"), Nothing, dr.GetString("ZipCode")))
             LoadProperty(StateProperty, If(dr.IsDBNull("State"), Nothing, dr.GetString("State")))
-            LoadProperty(CoutryProperty, DirectCast(dr.GetValue("Coutry"), Byte?))
+            LoadProperty(CountryProperty, DirectCast(dr.GetValue("Country"), Byte?))
             Dim args As New DataPortalHookArgs(dr)
             OnFetchRead(args)
         End Sub
@@ -275,8 +293,9 @@ Namespace Invoices.Business
         <Transactional(TransactionalTypes.TransactionScope)>
         Protected Overrides Sub DataPortal_Insert()
             Using ctx = ConnectionManager(Of SqlConnection).GetManager("InvoicesDatabase")
-                Using cmd = New SqlCommand("dbo.AddCustomerEdit", ctx.Connection)
-                    cmd.CommandType = CommandType.StoredProcedure
+                GetQueryAddCustomerEdit()
+                Using cmd = New SqlCommand(addCustomerEditInlineQuery, ctx.Connection)
+                    cmd.CommandType = CommandType.Text
                     cmd.Parameters.AddWithValue("@CustomerId", ReadProperty(CustomerIdProperty)).DbType = DbType.StringFixedLength
                     cmd.Parameters.AddWithValue("@Name", ReadProperty(NameProperty)).DbType = DbType.String
                     cmd.Parameters.AddWithValue("@FiscalNumber", If(ReadProperty(FiscalNumberProperty) Is Nothing, DBNull.Value, ReadProperty(FiscalNumberProperty))).DbType = DbType.String
@@ -284,7 +303,7 @@ Namespace Invoices.Business
                     cmd.Parameters.AddWithValue("@AddressLine2", If(ReadProperty(AddressLine2Property) Is Nothing, DBNull.Value, ReadProperty(AddressLine2Property))).DbType = DbType.String
                     cmd.Parameters.AddWithValue("@ZipCode", If(ReadProperty(ZipCodeProperty) Is Nothing, DBNull.Value, ReadProperty(ZipCodeProperty))).DbType = DbType.String
                     cmd.Parameters.AddWithValue("@State", If(ReadProperty(StateProperty) Is Nothing, DBNull.Value, ReadProperty(StateProperty))).DbType = DbType.String
-                    cmd.Parameters.AddWithValue("@Coutry", If(ReadProperty(CoutryProperty) Is Nothing, DBNull.Value, ReadProperty(CoutryProperty).Value)).DbType = DbType.Byte
+                    cmd.Parameters.AddWithValue("@Country", If(ReadProperty(CountryProperty) Is Nothing, DBNull.Value, ReadProperty(CountryProperty).Value)).DbType = DbType.Byte
                     Dim args As New DataPortalHookArgs(cmd)
                     OnInsertPre(args)
                     cmd.ExecuteNonQuery()
@@ -299,8 +318,9 @@ Namespace Invoices.Business
         <Transactional(TransactionalTypes.TransactionScope)>
         Protected Overrides Sub DataPortal_Update()
             Using ctx = ConnectionManager(Of SqlConnection).GetManager("InvoicesDatabase")
-                Using cmd = New SqlCommand("dbo.UpdateCustomerEdit", ctx.Connection)
-                    cmd.CommandType = CommandType.StoredProcedure
+                GetQueryUpdateCustomerEdit()
+                Using cmd = New SqlCommand(updateCustomerEditInlineQuery, ctx.Connection)
+                    cmd.CommandType = CommandType.Text
                     cmd.Parameters.AddWithValue("@CustomerId", ReadProperty(CustomerIdProperty)).DbType = DbType.StringFixedLength
                     cmd.Parameters.AddWithValue("@Name", ReadProperty(NameProperty)).DbType = DbType.String
                     cmd.Parameters.AddWithValue("@FiscalNumber", If(ReadProperty(FiscalNumberProperty) Is Nothing, DBNull.Value, ReadProperty(FiscalNumberProperty))).DbType = DbType.String
@@ -308,13 +328,67 @@ Namespace Invoices.Business
                     cmd.Parameters.AddWithValue("@AddressLine2", If(ReadProperty(AddressLine2Property) Is Nothing, DBNull.Value, ReadProperty(AddressLine2Property))).DbType = DbType.String
                     cmd.Parameters.AddWithValue("@ZipCode", If(ReadProperty(ZipCodeProperty) Is Nothing, DBNull.Value, ReadProperty(ZipCodeProperty))).DbType = DbType.String
                     cmd.Parameters.AddWithValue("@State", If(ReadProperty(StateProperty) Is Nothing, DBNull.Value, ReadProperty(StateProperty))).DbType = DbType.String
-                    cmd.Parameters.AddWithValue("@Coutry", If(ReadProperty(CoutryProperty) Is Nothing, DBNull.Value, ReadProperty(CoutryProperty).Value)).DbType = DbType.Byte
+                    cmd.Parameters.AddWithValue("@Country", If(ReadProperty(CountryProperty) Is Nothing, DBNull.Value, ReadProperty(CountryProperty).Value)).DbType = DbType.Byte
                     Dim args As New DataPortalHookArgs(cmd)
                     OnUpdatePre(args)
                     cmd.ExecuteNonQuery()
                     OnUpdatePost(args)
                 End Using
             End Using
+        End Sub
+
+        ''' <summary>
+        ''' Self deletes the <see cref="CustomerEdit"/> object.
+        ''' </summary>
+        Protected Overrides Sub DataPortal_DeleteSelf()
+            DataPortal_Delete(CustomerId)
+        End Sub
+
+        ''' <summary>
+        ''' Deletes the <see cref="CustomerEdit"/> object from database.
+        ''' </summary>
+        ''' <param name="customerId">The delete criteria.</param>
+        <Transactional(TransactionalTypes.TransactionScope)>
+        Protected Sub DataPortal_Delete(customerId As String)
+            Using ctx = ConnectionManager(Of SqlConnection).GetManager("InvoicesDatabase")
+                GetQueryDeleteCustomerEdit(customerId)
+                Using cmd = New SqlCommand(deleteCustomerEditInlineQuery, ctx.Connection)
+                    cmd.CommandType = CommandType.Text
+                    cmd.Parameters.AddWithValue("@CustomerId", customerId).DbType = DbType.StringFixedLength
+                    Dim args As New DataPortalHookArgs(cmd, customerId)
+                    OnDeletePre(args)
+                    cmd.ExecuteNonQuery()
+                    OnDeletePost(args)
+                End Using
+            End Using
+        End Sub
+
+        #End Region
+
+        #Region " Inline queries fields and partial methods "
+
+        <NotUndoable, NonSerialized>
+        Private getCustomerEditInlineQuery As String
+
+        <NotUndoable, NonSerialized>
+        Private addCustomerEditInlineQuery As String
+
+        <NotUndoable, NonSerialized>
+        Private updateCustomerEditInlineQuery As String
+
+        <NotUndoable, NonSerialized>
+        Private deleteCustomerEditInlineQuery As String
+
+        Partial Private Sub GetQueryGetCustomerEdit(customerId As String)
+        End Sub
+
+        Partial Private Sub GetQueryAddCustomerEdit()
+        End Sub
+
+        Partial Private Sub GetQueryUpdateCustomerEdit()
+        End Sub
+
+        Partial Private Sub GetQueryDeleteCustomerEdit(customerId As String)
         End Sub
 
         #End Region

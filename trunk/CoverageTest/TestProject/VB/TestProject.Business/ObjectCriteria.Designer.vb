@@ -12,7 +12,7 @@ Namespace TestProject.Business
     ''' This is a generated base class of <see cref="ObjectCriteria"/> business object.
     ''' </summary>
     <Attributable>
-    <Serializable()>
+    <Serializable>
     Public Partial Class ObjectCriteria
         Inherits BusinessBase(Of ObjectCriteria)
         Implements IHaveInterface

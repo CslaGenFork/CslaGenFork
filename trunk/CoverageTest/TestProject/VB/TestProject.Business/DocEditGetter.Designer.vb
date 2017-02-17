@@ -10,7 +10,7 @@ Namespace TestProject.Business
     ''' This class is a root object that implements the Unit of Work pattern.
     ''' </summary>
     <Attributable>
-    <Serializable()>
+    <Serializable>
     Public Partial Class DocEditCreatorGetter
         Inherits MyBusinessBase(Of DocEditCreatorGetter)
         Implements IHaveInterface
@@ -93,7 +93,7 @@ Namespace TestProject.Business
         ''' <summary>
         ''' Criteria1 criteria.
         ''' </summary>
-        <Serializable()>
+        <Serializable>
         Protected Class Criteria1
             Inherits CriteriaBase(Of Criteria1)
 

@@ -13,7 +13,7 @@ Namespace Invoices.Business
     ''' <remarks>
     ''' This class is an item of <see cref="ProductTypeCachedList"/> collection.
     ''' </remarks>
-    <Serializable()>
+    <Serializable>
     Public Partial Class ProductTypeCachedInfo
         Inherits ReadOnlyBase(Of ProductTypeCachedInfo)
 

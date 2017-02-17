@@ -16,7 +16,7 @@ Namespace TestProject.Business
     ''' This is a remark
     ''' </remarks>
     <Attributable>
-    <Serializable()>
+    <Serializable>
     Public Partial Class DocTypeDynamic
         Inherits BusinessBase(Of DocTypeDynamic)
         Implements IHaveInterface
@@ -81,7 +81,7 @@ Namespace TestProject.Business
         ''' <summary>
         ''' Loads default values for the <see cref="DocTypeDynamic"/> object properties.
         ''' </summary>
-        <Csla.RunLocal()>
+        <RunLocal>
         Protected Overrides Sub DataPortal_Create()
             LoadProperty(DocTypeIDProperty, System.Threading.Interlocked.Decrement(_lastId))
             Dim args As New DataPortalHookArgs()

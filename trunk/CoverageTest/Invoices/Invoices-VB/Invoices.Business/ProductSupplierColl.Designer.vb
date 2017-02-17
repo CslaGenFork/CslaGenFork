@@ -14,7 +14,7 @@ Namespace Invoices.Business
     ''' This class is child of <see cref="ProductEdit"/> editable root object.<br/>
     ''' The items of the collection are <see cref="ProductSupplierItem"/> objects.
     ''' </remarks>
-    <Serializable()>
+    <Serializable>
     Public Partial Class ProductSupplierColl
 #If WINFORMS Then
         Inherits BusinessBindingListBase(Of ProductSupplierColl, ProductSupplierItem)

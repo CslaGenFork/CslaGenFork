@@ -23,7 +23,7 @@ Namespace DocStore.Business.Admin
     ''' <remarks>
     ''' The items of the collection are <see cref="UserInfo"/> objects.
     ''' </remarks>
-    <Serializable()>
+    <Serializable>
     Public Partial Class UserList
 #If WINFORMS Then
         Inherits ReadOnlyBindingListBase(Of UserList, UserInfo)
@@ -197,7 +197,7 @@ Namespace DocStore.Business.Admin
         ''' <summary>
         ''' FilteredCriteria criteria.
         ''' </summary>
-        <Serializable()>
+        <Serializable>
         Protected Class FilteredCriteria
             Inherits CriteriaBase(Of FilteredCriteria)
 
@@ -328,7 +328,7 @@ Namespace DocStore.Business.Admin
         ''' <summary>
         ''' CriteriaInactive criteria.
         ''' </summary>
-        <Serializable()>
+        <Serializable>
         Protected Class CriteriaInactive
             Inherits CriteriaBase(Of CriteriaInactive)
 

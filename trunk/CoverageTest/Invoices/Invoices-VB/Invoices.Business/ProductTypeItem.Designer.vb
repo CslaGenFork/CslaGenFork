@@ -13,7 +13,7 @@ Namespace Invoices.Business
     ''' <remarks>
     ''' This class is an item of <see cref="ProductTypeColl"/> collection.
     ''' </remarks>
-    <Serializable()>
+    <Serializable>
     Public Partial Class ProductTypeItem
         Inherits BusinessBase(Of ProductTypeItem)
 
@@ -81,7 +81,7 @@ Namespace Invoices.Business
         ''' <summary>
         ''' Loads default values for the <see cref="ProductTypeItem"/> object properties.
         ''' </summary>
-        <Csla.RunLocal()>
+        <RunLocal>
         Protected Overrides Sub Child_Create()
             LoadProperty(ProductTypeIdProperty, System.Threading.Interlocked.Decrement(_lastId))
             Dim args As New DataPortalHookArgs()

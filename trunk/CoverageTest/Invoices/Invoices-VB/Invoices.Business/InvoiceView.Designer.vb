@@ -15,7 +15,7 @@ Namespace Invoices.Business
     ''' This class contains one child collection:<br/>
     ''' - <see cref="InvoiceLines"/> of type <see cref="InvoiceLineList"/> (1:M relation to <see cref="InvoiceLineInfo"/>)
     ''' </remarks>
-    <Serializable()>
+    <Serializable>
     Public Partial Class InvoiceView
         Inherits ReadOnlyBase(Of InvoiceView)
 

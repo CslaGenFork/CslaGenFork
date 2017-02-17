@@ -19,13 +19,25 @@ Namespace Invoices.Business
 
         #End Region
 
+        #Region " Inline queries "
+
+        ' Private Sub GetQueryGetSupplierList()
+        '     getSupplierListInlineQuery = ""
+        ' End Sub
+
+        ' Private Sub GetQueryGetSupplierListByName(name As String)
+        '     getSupplierListByNameInlineQuery = ""
+        ' End Sub
+
+        #End Region
+
         #Region " Implementation of DataPortal Hooks "
 
-        ' Partial Private Sub OnFetchPre(args As DataPortalHookArgs)
+        ' Private Sub OnFetchPre(args As DataPortalHookArgs)
         '     Throw New NotImplementedException()
         ' End Sub
 
-        ' Partial Private Sub OnFetchPost(args As DataPortalHookArgs)
+        ' Private Sub OnFetchPost(args As DataPortalHookArgs)
         '     Throw New NotImplementedException()
         ' End Sub
 

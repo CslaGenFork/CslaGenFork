@@ -14,7 +14,7 @@ Namespace Invoices.Business
     ''' This class contains one child collection:<br/>
     ''' - <see cref="InvoiceLines"/> of type <see cref="InvoiceLineCollection"/> (1:M relation to <see cref="InvoiceLineItem"/>)
     ''' </remarks>
-    <Serializable()>
+    <Serializable>
     Public Partial Class InvoiceEdit
         Inherits BusinessBase(Of InvoiceEdit)
 
@@ -273,7 +273,7 @@ Namespace Invoices.Business
         ''' <summary>
         ''' Loads default values for the <see cref="InvoiceEdit"/> object properties.
         ''' </summary>
-        <Csla.RunLocal()>
+        <RunLocal>
         Protected Overrides Sub DataPortal_Create()
             LoadProperty(InvoiceIdProperty, Guid.NewGuid())
             LoadProperty(CreateDateProperty, new SmartDate(DateTime.Now))
