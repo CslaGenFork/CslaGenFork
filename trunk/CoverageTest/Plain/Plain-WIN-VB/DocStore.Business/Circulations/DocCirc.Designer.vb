@@ -24,7 +24,7 @@ Namespace DocStore.Business.Circulations
     ''' <remarks>
     ''' This class is an item of <see cref="DocCircColl"/> collection.
     ''' </remarks>
-    <Serializable()>
+    <Serializable>
     Public Partial Class DocCirc
         Inherits BusinessBase(Of DocCirc)
 
@@ -413,7 +413,7 @@ Namespace DocStore.Business.Circulations
         ''' <summary>
         ''' Loads default values for the <see cref="DocCirc"/> object properties.
         ''' </summary>
-        <Csla.RunLocal()>
+        <RunLocal>
         Protected Overrides Sub Child_Create()
             LoadProperty(CircIDProperty, System.Threading.Interlocked.Decrement(_lastId))
             LoadProperty(CreateDateProperty, new SmartDate(Date.Now))

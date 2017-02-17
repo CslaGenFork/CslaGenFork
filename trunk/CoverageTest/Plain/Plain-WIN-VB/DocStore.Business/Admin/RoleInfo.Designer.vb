@@ -22,7 +22,7 @@ Namespace DocStore.Business.Admin
     ''' <remarks>
     ''' This class is an item of <see cref="RoleList"/> collection.
     ''' </remarks>
-    <Serializable()>
+    <Serializable>
     Public Partial Class RoleInfo
         Inherits ReadOnlyBase(Of RoleInfo)
 

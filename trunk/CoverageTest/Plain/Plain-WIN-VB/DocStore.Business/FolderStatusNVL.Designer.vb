@@ -17,7 +17,7 @@ Namespace DocStore.Business
     ''' Active folder statuses (name value list).<br/>
     ''' This is a generated base class of <see cref="FolderStatusNVL"/> business object.
     ''' </summary>
-    <Serializable()>
+    <Serializable>
     Public Partial Class FolderStatusNVL
         Inherits NameValueListBase(Of Integer, String)
 

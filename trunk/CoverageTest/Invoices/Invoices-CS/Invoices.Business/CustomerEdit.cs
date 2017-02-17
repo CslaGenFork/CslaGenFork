@@ -22,6 +22,30 @@ namespace Invoices.Business
 
         #endregion
 
+        #region Inline queries
+
+        //partial void GetQueryGetCustomerEdit(string customerId)
+        //{
+        //    getCustomerEditInlineQuery = "";
+        //}
+
+        //partial void GetQueryAddCustomerEdit()
+        //{
+        //    addCustomerEditInlineQuery = "";
+        //}
+
+        //partial void GetQueryUpdateCustomerEdit()
+        //{
+        //    updateCustomerEditInlineQuery = "";
+        //}
+
+        //partial void GetQueryDeleteCustomerEdit(string customerId)
+        //{
+        //    deleteCustomerEditInlineQuery = "";
+        //}
+
+        #endregion
+
         #region Implementation of DataPortal Hooks
 
         //partial void OnCreate(DataPortalHookArgs args)

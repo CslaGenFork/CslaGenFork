@@ -21,7 +21,7 @@ Namespace TestProject.Business
 
         #Region " Implementation of DataPortal Hooks "
 
-        ' Partial Private Sub OnFetchRead(args As DataPortalHookArgs)
+        ' Private Sub OnFetchRead(args As DataPortalHookArgs)
         '     Throw New NotImplementedException()
         ' End Sub
 

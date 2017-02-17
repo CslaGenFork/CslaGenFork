@@ -12,7 +12,7 @@ Namespace TestProject.Business
     ''' This is a generated base class of <see cref="MyBusinessListBase"/> business object.
     ''' </summary>
     <Attributable>
-    <Serializable()>
+    <Serializable>
     Public MustInherit Partial Class MyBusinessListBase(Of T As {MyBusinessListBase(Of T, C), IHaveInterface}, C As BusinessBase(Of C))
         Inherits BusinessListBase(Of T, C)
         Implements IHaveInterface

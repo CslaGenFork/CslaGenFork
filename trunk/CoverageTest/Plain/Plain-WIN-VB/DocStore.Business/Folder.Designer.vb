@@ -28,7 +28,7 @@ Namespace DocStore.Business
     ''' - <see cref="Docs"/> of type <see cref="FolderDocColl"/> (M:M relation to <see cref="Doc"/>)<br/>
     ''' - <see cref="Circulations"/> of type <see cref="FolderCircColl"/> (1:M relation to <see cref="FolderCirc"/>)
     ''' </remarks>
-    <Serializable()>
+    <Serializable>
     Public Partial Class Folder
         Inherits BusinessBase(Of Folder)
 
@@ -503,7 +503,7 @@ Namespace DocStore.Business
         ''' <summary>
         ''' Loads default values for the <see cref="Folder"/> object properties.
         ''' </summary>
-        <Csla.RunLocal()>
+        <RunLocal>
         Protected Overrides Sub DataPortal_Create()
             LoadProperty(FolderIDProperty, System.Threading.Interlocked.Decrement(_lastId))
             LoadProperty(FolderTypeIDProperty, -1)

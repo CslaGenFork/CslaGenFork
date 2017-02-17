@@ -58,12 +58,32 @@ namespace Invoices.Business
         }
 
         /// <summary>
+        /// Factory method. Loads a <see cref="CustomerList"/> collection, based on given parameters.
+        /// </summary>
+        /// <param name="name">The Name parameter of the CustomerList to fetch.</param>
+        /// <returns>A reference to the fetched <see cref="CustomerList"/> collection.</returns>
+        public static CustomerList GetCustomerList(string name)
+        {
+            return DataPortal.Fetch<CustomerList>(name);
+        }
+
+        /// <summary>
         /// Factory method. Asynchronously loads a <see cref="CustomerList"/> collection.
         /// </summary>
         /// <param name="callback">The completion callback method.</param>
         public static void GetCustomerList(EventHandler<DataPortalResult<CustomerList>> callback)
         {
             DataPortal.BeginFetch<CustomerList>(callback);
+        }
+
+        /// <summary>
+        /// Factory method. Asynchronously loads a <see cref="CustomerList"/> collection, based on given parameters.
+        /// </summary>
+        /// <param name="name">The Name parameter of the CustomerList to fetch.</param>
+        /// <param name="callback">The completion callback method.</param>
+        public static void GetCustomerList(string name, EventHandler<DataPortalResult<CustomerList>> callback)
+        {
+            DataPortal.BeginFetch<CustomerList>(name, callback);
         }
 
         #endregion
@@ -159,10 +179,32 @@ namespace Invoices.Business
         {
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("InvoicesDatabase"))
             {
-                using (var cmd = new SqlCommand("dbo.GetCustomerList", ctx.Connection))
+                GetQueryGetCustomerList();
+                using (var cmd = new SqlCommand(getCustomerListInlineQuery, ctx.Connection))
                 {
-                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandType = CommandType.Text;
                     var args = new DataPortalHookArgs(cmd);
+                    OnFetchPre(args);
+                    LoadCollection(cmd);
+                    OnFetchPost(args);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Loads a <see cref="CustomerList"/> collection from the database, based on given criteria.
+        /// </summary>
+        /// <param name="name">The Name.</param>
+        protected void DataPortal_Fetch(string name)
+        {
+            using (var ctx = ConnectionManager<SqlConnection>.GetManager("InvoicesDatabase"))
+            {
+                GetQueryGetCustomerList(name);
+                using (var cmd = new SqlCommand(getCustomerListInlineQuery, ctx.Connection))
+                {
+                    cmd.CommandType = CommandType.Text;
+                    cmd.Parameters.AddWithValue("@Name", name).DbType = DbType.String;
+                    var args = new DataPortalHookArgs(cmd, name);
                     OnFetchPre(args);
                     LoadCollection(cmd);
                     OnFetchPost(args);
@@ -194,6 +236,17 @@ namespace Invoices.Business
             RaiseListChangedEvents = rlce;
             IsReadOnly = true;
         }
+
+        #endregion
+
+        #region Inline queries fields and partial methods
+
+        [NotUndoable, NonSerialized]
+        private string getCustomerListInlineQuery;
+
+        partial void GetQueryGetCustomerList();
+
+        partial void GetQueryGetCustomerList(string name);
 
         #endregion
 

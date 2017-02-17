@@ -18,7 +18,7 @@ Namespace Invoices.Business
     ''' <remarks>
     ''' The items of the collection are <see cref="CustomerInfo"/> objects.
     ''' </remarks>
-    <Serializable()>
+    <Serializable>
     Public Partial Class CustomerList
 #If WINFORMS Then
         Inherits ReadOnlyBindingListBase(Of CustomerList, CustomerInfo)
@@ -60,11 +60,29 @@ Namespace Invoices.Business
         End Function
 
         ''' <summary>
+        ''' Factory method. Loads a <see cref="CustomerList"/> collection, based on given parameters.
+        ''' </summary>
+        ''' <param name="name">The Name parameter of the CustomerList to fetch.</param>
+        ''' <returns>A reference to the fetched <see cref="CustomerList"/> collection.</returns>
+        Public Shared Function GetCustomerList(name As String) As CustomerList
+            Return DataPortal.Fetch(Of CustomerList)(name)
+        End Function
+
+        ''' <summary>
         ''' Factory method. Asynchronously loads a <see cref="CustomerList"/> collection.
         ''' </summary>
         ''' <param name="callback">The completion callback method.</param>
         Public Shared Sub GetCustomerList(ByVal callback As EventHandler(Of DataPortalResult(Of CustomerList)))
             DataPortal.BeginFetch(Of CustomerList)(callback)
+        End Sub
+
+        ''' <summary>
+        ''' Factory method. Asynchronously loads a <see cref="CustomerList"/> collection, based on given parameters.
+        ''' </summary>
+        ''' <param name="name">The Name parameter of the CustomerList to fetch.</param>
+        ''' <param name="callback">The completion callback method.</param>
+        Public Shared Sub GetCustomerList(name As String, ByVal callback As EventHandler(Of DataPortalResult(Of CustomerList)))
+            DataPortal.BeginFetch(Of CustomerList)(name, callback)
         End Sub
 
         #End Region
@@ -146,9 +164,28 @@ Namespace Invoices.Business
         ''' </summary>
         Protected Overloads Sub DataPortal_Fetch()
             Using ctx = ConnectionManager(Of SqlConnection).GetManager("InvoicesDatabase")
-                Using cmd = New SqlCommand("dbo.GetCustomerList", ctx.Connection)
-                    cmd.CommandType = CommandType.StoredProcedure
+                GetQueryGetCustomerList()
+                Using cmd = New SqlCommand(getCustomerListInlineQuery, ctx.Connection)
+                    cmd.CommandType = CommandType.Text
                     Dim args As New DataPortalHookArgs(cmd)
+                    OnFetchPre(args)
+                    LoadCollection(cmd)
+                    OnFetchPost(args)
+                End Using
+            End Using
+        End Sub
+
+        ''' <summary>
+        ''' Loads a <see cref="CustomerList"/> collection from the database, based on given criteria.
+        ''' </summary>
+        ''' <param name="name">The Name.</param>
+        Protected Overloads Sub DataPortal_Fetch(name As String)
+            Using ctx = ConnectionManager(Of SqlConnection).GetManager("InvoicesDatabase")
+                GetQueryGetCustomerList(name)
+                Using cmd = New SqlCommand(getCustomerListInlineQuery, ctx.Connection)
+                    cmd.CommandType = CommandType.Text
+                    cmd.Parameters.AddWithValue("@Name", name).DbType = DbType.String
+                    Dim args As New DataPortalHookArgs(cmd, name)
                     OnFetchPre(args)
                     LoadCollection(cmd)
                     OnFetchPost(args)
@@ -175,6 +212,19 @@ Namespace Invoices.Business
             End While
             RaiseListChangedEvents = rlce
             IsReadOnly = True
+        End Sub
+
+        #End Region
+
+        #Region " Inline queries fields and partial methods "
+
+        <NotUndoable, NonSerialized>
+        Private getCustomerListInlineQuery As String
+
+        Partial Private Sub GetQueryGetCustomerList()
+        End Sub
+
+        Partial Private Sub GetQueryGetCustomerList(name As String)
         End Sub
 
         #End Region

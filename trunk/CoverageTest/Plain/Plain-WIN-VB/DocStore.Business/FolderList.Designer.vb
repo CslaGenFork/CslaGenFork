@@ -21,7 +21,7 @@ Namespace DocStore.Business
     ''' <remarks>
     ''' The items of the collection are <see cref="FolderInfo"/> objects.
     ''' </remarks>
-    <Serializable()>
+    <Serializable>
     Public Partial Class FolderList
 #If WINFORMS Then
         Inherits ReadOnlyBindingListBase(Of FolderList, FolderInfo)
@@ -187,7 +187,7 @@ Namespace DocStore.Business
         ''' <summary>
         ''' FilteredCriteria criteria.
         ''' </summary>
-        <Serializable()>
+        <Serializable>
         Protected Class FilteredCriteria
             Inherits CriteriaBase(Of FilteredCriteria)
 

@@ -392,7 +392,7 @@ namespace DocStore.Business.Circulations
         /// <summary>
         /// Loads default values for the <see cref="DocCirc"/> object properties.
         /// </summary>
-        [Csla.RunLocal]
+        [RunLocal]
         protected override void Child_Create()
         {
             LoadProperty(CircIDProperty, System.Threading.Interlocked.Decrement(ref _lastId));

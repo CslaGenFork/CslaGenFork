@@ -13,7 +13,7 @@ Namespace Invoices.Business
     ''' <remarks>
     ''' This class is an item of <see cref="InvoiceLineList"/> collection.
     ''' </remarks>
-    <Serializable()>
+    <Serializable>
     Public Partial Class InvoiceLineInfo
         Inherits ReadOnlyBase(Of InvoiceLineInfo)
 

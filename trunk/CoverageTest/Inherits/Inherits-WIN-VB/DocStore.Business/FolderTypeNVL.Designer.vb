@@ -17,7 +17,7 @@ Namespace DocStore.Business
     ''' Active folder types (name value list).<br/>
     ''' This is a generated base class of <see cref="FolderTypeNVL"/> business object.
     ''' </summary>
-    <Serializable()>
+    <Serializable>
     Public Partial Class FolderTypeNVL
         Inherits NameValueListBase(Of Integer, String)
 

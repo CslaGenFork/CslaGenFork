@@ -274,7 +274,8 @@ namespace DocStore.Business
         {
             using (var ctx = ConnectionManager<SqlConnection>.GetManager(Database.DocStoreConnection, false))
             {
-                using (var cmd = new SqlCommand(GetDocListInlineQuery(), ctx.Connection))
+                GetQueryGetDocList();
+                using (var cmd = new SqlCommand(getDocListInlineQuery, ctx.Connection))
                 {
                     cmd.CommandType = CommandType.Text;
                     var args = new DataPortalHookArgs(cmd);
@@ -293,7 +294,8 @@ namespace DocStore.Business
         {
             using (var ctx = ConnectionManager<SqlConnection>.GetManager(Database.DocStoreConnection, false))
             {
-                using (var cmd = new SqlCommand(GetDocListInlineQuery(crit), ctx.Connection))
+                GetQueryGetDocList(crit);
+                using (var cmd = new SqlCommand(getDocListInlineQuery, ctx.Connection))
                 {
                     cmd.CommandType = CommandType.Text;
                     cmd.Parameters.AddWithValue("@DocID", crit.DocID == null ? (object)DBNull.Value : crit.DocID.Value).DbType = DbType.Int32;
@@ -341,6 +343,17 @@ namespace DocStore.Business
             RaiseListChangedEvents = rlce;
             IsReadOnly = true;
         }
+
+        #endregion
+
+        #region Inline queries fields and partial methods
+
+        [NotUndoable, NonSerialized]
+        private string getDocListInlineQuery;
+
+        partial void GetQueryGetDocList();
+
+        partial void GetQueryGetDocList(DocListFilteredCriteria crit);
 
         #endregion
 

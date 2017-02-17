@@ -21,15 +21,15 @@ Namespace Invoices.Business
 
         #Region " Implementation of DataPortal Hooks "
 
-        ' Partial Private Sub OnFetchPre(args As DataPortalHookArgs)
+        ' Private Sub OnFetchPre(args As DataPortalHookArgs)
         '     Throw New NotImplementedException()
         ' End Sub
 
-        ' Partial Private Sub OnFetchPost(args As DataPortalHookArgs)
+        ' Private Sub OnFetchPost(args As DataPortalHookArgs)
         '     Throw New NotImplementedException()
         ' End Sub
 
-        ' Partial Private Sub OnFetchRead(args As DataPortalHookArgs)
+        ' Private Sub OnFetchRead(args As DataPortalHookArgs)
         '     Throw New NotImplementedException()
         ' End Sub
 

@@ -76,7 +76,7 @@
     <DalObjectNamespace>Invoices.DataAccess.Sql</DalObjectNamespace>
     <GenerateSprocs>true</GenerateSprocs>
     <OneSpFilePerObject>true</OneSpFilePerObject>
-    <UseInlineQueries>Never</UseInlineQueries>
+    <UseInlineQueries>SpecifyByObject</UseInlineQueries>
     <ReportObjectNotFound>None</ReportObjectNotFound>
     <GenerateQueriesWithSchema>true</GenerateQueriesWithSchema>
     <GenerateDatabaseClass>false</GenerateDatabaseClass>
@@ -2771,7 +2771,12 @@
       <GenerateDataPortalUpdate>true</GenerateDataPortalUpdate>
       <GenerateDataPortalDelete>true</GenerateDataPortalDelete>
       <GenerateSprocs>true</GenerateSprocs>
-      <GenerateInlineQueries />
+      <GenerateInlineQueries>
+        <string>Create</string>
+        <string>Read</string>
+        <string>Update</string>
+        <string>Delete</string>
+      </GenerateInlineQueries>
       <DataSetLoadingScheme>false</DataSetLoadingScheme>
       <UseCustomLoading>false</UseCustomLoading>
       <ObjectType>EditableRoot</ObjectType>
@@ -3240,8 +3245,8 @@
           <Undoable>true</Undoable>
         </ValueProperty>
         <ValueProperty>
-          <ParameterName>Coutry</ParameterName>
-          <Name>Coutry</Name>
+          <ParameterName>Country</ParameterName>
+          <Name>Country</Name>
           <PropertyType>Byte</PropertyType>
           <ReadOnly>false</ReadOnly>
           <Nullable>true</Nullable>
@@ -3253,7 +3258,7 @@
             <NativeType>tinyint</NativeType>
             <Size>3</Size>
             <SpResultIndex>0</SpResultIndex>
-            <ColumnName>Coutry</ColumnName>
+            <ColumnName>Country</ColumnName>
             <IsPrimaryKey>false</IsPrimaryKey>
             <ObjectName>Customers</ObjectName>
             <CatalogName>InvoiceTest</CatalogName>
@@ -3264,7 +3269,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>Coutry</FriendlyName>
+          <FriendlyName>Country</FriendlyName>
           <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
@@ -3342,7 +3347,7 @@
           <Remarks />
         </Criteria>
         <Criteria>
-          <Name>CriteriaGet</Name>
+          <Name>Criteria</Name>
           <CriteriaClassMode>Simple</CriteriaClassMode>
           <NestedClass>true</NestedClass>
           <Properties>
@@ -3392,12 +3397,12 @@
             <FactorySuffix />
           </GetOptions>
           <DeleteOptions>
-            <Factory>false</Factory>
+            <Factory>true</Factory>
             <AddRemove>false</AddRemove>
-            <DataPortal>false</DataPortal>
+            <DataPortal>true</DataPortal>
             <RunLocal>false</RunLocal>
-            <Procedure>false</Procedure>
-            <ProcedureName />
+            <Procedure>true</Procedure>
+            <ProcedureName>DeleteCustomerEdit</ProcedureName>
             <FactorySuffix />
           </DeleteOptions>
           <Summary />
@@ -3488,7 +3493,9 @@
       <GenerateDataPortalUpdate>false</GenerateDataPortalUpdate>
       <GenerateDataPortalDelete>true</GenerateDataPortalDelete>
       <GenerateSprocs>true</GenerateSprocs>
-      <GenerateInlineQueries />
+      <GenerateInlineQueries>
+        <string>Read</string>
+      </GenerateInlineQueries>
       <DataSetLoadingScheme>false</DataSetLoadingScheme>
       <UseCustomLoading>false</UseCustomLoading>
       <ObjectType>ReadOnlyCollection</ObjectType>
@@ -3539,6 +3546,68 @@
           <CriteriaClassMode>Simple</CriteriaClassMode>
           <NestedClass>true</NestedClass>
           <Properties />
+          <CreateOptions>
+            <Factory>false</Factory>
+            <AddRemove>false</AddRemove>
+            <DataPortal>false</DataPortal>
+            <RunLocal>false</RunLocal>
+            <Procedure>false</Procedure>
+            <ProcedureName />
+            <FactorySuffix />
+          </CreateOptions>
+          <GetOptions>
+            <Factory>true</Factory>
+            <AddRemove>false</AddRemove>
+            <DataPortal>true</DataPortal>
+            <RunLocal>false</RunLocal>
+            <Procedure>true</Procedure>
+            <ProcedureName>GetCustomerList</ProcedureName>
+            <FactorySuffix />
+          </GetOptions>
+          <DeleteOptions>
+            <Factory>false</Factory>
+            <AddRemove>false</AddRemove>
+            <DataPortal>false</DataPortal>
+            <RunLocal>false</RunLocal>
+            <Procedure>false</Procedure>
+            <ProcedureName />
+            <FactorySuffix />
+          </DeleteOptions>
+          <Summary />
+          <Remarks />
+        </Criteria>
+        <Criteria>
+          <Name>FilteredCriteriaGet</Name>
+          <CriteriaClassMode>Simple</CriteriaClassMode>
+          <NestedClass>true</NestedClass>
+          <Properties>
+            <Property>
+              <ParameterName>Name</ParameterName>
+              <Name>Name</Name>
+              <PropertyType>String</PropertyType>
+              <ReadOnly>true</ReadOnly>
+              <Nullable>false</Nullable>
+              <Summary />
+              <Remarks />
+              <DbBindColumn>
+                <ColumnOriginType>Table</ColumnOriginType>
+                <DataType>String</DataType>
+                <NativeType>varchar</NativeType>
+                <Size>50</Size>
+                <SpResultIndex>0</SpResultIndex>
+                <ColumnName>Name</ColumnName>
+                <IsPrimaryKey>false</IsPrimaryKey>
+                <ObjectName>Customers</ObjectName>
+                <CatalogName>InvoiceTest</CatalogName>
+                <SchemaName>dbo</SchemaName>
+                <IsNullable>false</IsNullable>
+                <IsIdentity>false</IsIdentity>
+              </DbBindColumn>
+              <CustomPropertyType />
+              <ParameterValue />
+              <InlineQueryParameter>Plain</InlineQueryParameter>
+            </Property>
+          </Properties>
           <CreateOptions>
             <Factory>false</Factory>
             <AddRemove>false</AddRemove>
@@ -4677,8 +4746,8 @@
           <Undoable>true</Undoable>
         </ValueProperty>
         <ValueProperty>
-          <ParameterName>Coutry</ParameterName>
-          <Name>Coutry</Name>
+          <ParameterName>Country</ParameterName>
+          <Name>Country</Name>
           <PropertyType>Byte</PropertyType>
           <ReadOnly>false</ReadOnly>
           <Nullable>true</Nullable>
@@ -4690,7 +4759,7 @@
             <NativeType>tinyint</NativeType>
             <Size>3</Size>
             <SpResultIndex>0</SpResultIndex>
-            <ColumnName>Coutry</ColumnName>
+            <ColumnName>Country</ColumnName>
             <IsPrimaryKey>false</IsPrimaryKey>
             <ObjectName>Suppliers</ObjectName>
             <CatalogName>InvoiceTest</CatalogName>
@@ -4701,7 +4770,7 @@
           <DataAccess>ReadWrite</DataAccess>
           <PrimaryKey>Default</PrimaryKey>
           <FKConstraint />
-          <FriendlyName>Coutry</FriendlyName>
+          <FriendlyName>Country</FriendlyName>
           <IsDatabaseBound>true</IsDatabaseBound>
           <CustomPropertyType />
           <DeclarationMode>Managed</DeclarationMode>
@@ -5408,7 +5477,9 @@
       <GenerateDataPortalUpdate>false</GenerateDataPortalUpdate>
       <GenerateDataPortalDelete>true</GenerateDataPortalDelete>
       <GenerateSprocs>true</GenerateSprocs>
-      <GenerateInlineQueries />
+      <GenerateInlineQueries>
+        <string>Read</string>
+      </GenerateInlineQueries>
       <DataSetLoadingScheme>false</DataSetLoadingScheme>
       <UseCustomLoading>false</UseCustomLoading>
       <ObjectType>ReadOnlyCollection</ObjectType>
@@ -5475,6 +5546,68 @@
             <RunLocal>false</RunLocal>
             <Procedure>true</Procedure>
             <ProcedureName>GetSupplierList</ProcedureName>
+            <FactorySuffix />
+          </GetOptions>
+          <DeleteOptions>
+            <Factory>false</Factory>
+            <AddRemove>false</AddRemove>
+            <DataPortal>false</DataPortal>
+            <RunLocal>false</RunLocal>
+            <Procedure>false</Procedure>
+            <ProcedureName />
+            <FactorySuffix />
+          </DeleteOptions>
+          <Summary />
+          <Remarks />
+        </Criteria>
+        <Criteria>
+          <Name>CriteriaGetByName</Name>
+          <CriteriaClassMode>Simple</CriteriaClassMode>
+          <NestedClass>true</NestedClass>
+          <Properties>
+            <Property>
+              <ParameterName>Name</ParameterName>
+              <Name>Name</Name>
+              <PropertyType>String</PropertyType>
+              <ReadOnly>true</ReadOnly>
+              <Nullable>false</Nullable>
+              <Summary />
+              <Remarks />
+              <DbBindColumn>
+                <ColumnOriginType>Table</ColumnOriginType>
+                <DataType>String</DataType>
+                <NativeType>varchar</NativeType>
+                <Size>50</Size>
+                <SpResultIndex>0</SpResultIndex>
+                <ColumnName>Name</ColumnName>
+                <IsPrimaryKey>false</IsPrimaryKey>
+                <ObjectName>Suppliers</ObjectName>
+                <CatalogName>InvoiceTest</CatalogName>
+                <SchemaName>dbo</SchemaName>
+                <IsNullable>false</IsNullable>
+                <IsIdentity>false</IsIdentity>
+              </DbBindColumn>
+              <CustomPropertyType />
+              <ParameterValue />
+              <InlineQueryParameter>Plain</InlineQueryParameter>
+            </Property>
+          </Properties>
+          <CreateOptions>
+            <Factory>false</Factory>
+            <AddRemove>false</AddRemove>
+            <DataPortal>false</DataPortal>
+            <RunLocal>false</RunLocal>
+            <Procedure>false</Procedure>
+            <ProcedureName />
+            <FactorySuffix />
+          </CreateOptions>
+          <GetOptions>
+            <Factory>true</Factory>
+            <AddRemove>false</AddRemove>
+            <DataPortal>true</DataPortal>
+            <RunLocal>false</RunLocal>
+            <Procedure>true</Procedure>
+            <ProcedureName>GetSupplierListByName</ProcedureName>
             <FactorySuffix />
           </GetOptions>
           <DeleteOptions>

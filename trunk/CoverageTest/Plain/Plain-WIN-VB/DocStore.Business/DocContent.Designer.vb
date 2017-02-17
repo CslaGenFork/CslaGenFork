@@ -21,7 +21,7 @@ Namespace DocStore.Business
     ''' <remarks>
     ''' This class is an item of <see cref="Doc"/> collection.
     ''' </remarks>
-    <Serializable()>
+    <Serializable>
     Public Partial Class DocContent
         Inherits BusinessBase(Of DocContent)
 
@@ -305,7 +305,7 @@ Namespace DocStore.Business
         ''' <summary>
         ''' Loads default values for the <see cref="DocContent"/> object properties.
         ''' </summary>
-        <Csla.RunLocal()>
+        <RunLocal>
         Protected Overrides Sub Child_Create()
             LoadProperty(DocContentIDProperty, System.Threading.Interlocked.Decrement(_lastId))
             LoadProperty(VersionProperty, CShort(Fix(1)))

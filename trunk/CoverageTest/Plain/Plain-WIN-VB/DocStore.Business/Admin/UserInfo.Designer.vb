@@ -22,7 +22,7 @@ Namespace DocStore.Business.Admin
     ''' <remarks>
     ''' This class is an item of <see cref="UserList"/> collection.
     ''' </remarks>
-    <Serializable()>
+    <Serializable>
     Public Partial Class UserInfo
         Inherits ReadOnlyBase(Of UserInfo)
 

@@ -22,7 +22,7 @@ Namespace DocStore.Business
     ''' <remarks>
     ''' This class is an item of <see cref="DocClassEditColl"/> collection.
     ''' </remarks>
-    <Serializable()>
+    <Serializable>
     Public Partial Class DocClassEdit
         Inherits BusinessBase(Of DocClassEdit)
 
@@ -197,7 +197,7 @@ Namespace DocStore.Business
         ''' <summary>
         ''' Loads default values for the <see cref="DocClassEdit"/> object properties.
         ''' </summary>
-        <Csla.RunLocal()>
+        <RunLocal>
         Protected Overrides Sub Child_Create()
             LoadProperty(DocClassIDProperty, System.Threading.Interlocked.Decrement(_lastId))
             LoadProperty(CreateDateProperty, new SmartDate(Date.Now))

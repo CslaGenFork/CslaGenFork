@@ -24,7 +24,7 @@ Namespace DocStore.Business.Circulations
     ''' <remarks>
     ''' This class is an item of <see cref="FolderCircColl"/> collection.
     ''' </remarks>
-    <Serializable()>
+    <Serializable>
     Public Partial Class FolderCirc
         Inherits BusinessBase(Of FolderCirc)
 
@@ -413,7 +413,7 @@ Namespace DocStore.Business.Circulations
         ''' <summary>
         ''' Loads default values for the <see cref="FolderCirc"/> object properties.
         ''' </summary>
-        <Csla.RunLocal()>
+        <RunLocal>
         Protected Overrides Sub Child_Create()
             LoadProperty(CircIDProperty, System.Threading.Interlocked.Decrement(_lastId))
             LoadProperty(CreateDateProperty, new SmartDate(Date.Now))

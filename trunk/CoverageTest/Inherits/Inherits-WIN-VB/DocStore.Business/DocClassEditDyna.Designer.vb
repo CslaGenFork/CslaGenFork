@@ -27,7 +27,7 @@ Namespace DocStore.Business
     ''' <remarks>
     ''' This class is an item of <see cref="DocClassEditDynaColl"/> collection.
     ''' </remarks>
-    <Serializable()>
+    <Serializable>
     Public Partial Class DocClassEditDyna
         Inherits MyBusinessBase(Of DocClassEditDyna)
         Implements IHaveInterface, IHaveGenericInterface(Of DocClassEditDyna)
@@ -350,7 +350,7 @@ Namespace DocStore.Business
         ''' <summary>
         ''' Loads default values for the <see cref="DocClassEditDyna"/> object properties.
         ''' </summary>
-        <Csla.RunLocal()>
+        <RunLocal>
         Protected Overrides Sub DataPortal_Create()
             LoadProperty(DocClassIDProperty, System.Threading.Interlocked.Decrement(_lastId))
             LoadProperty(CreateDateProperty, new SmartDate(Date.Now))

@@ -21,7 +21,7 @@ Namespace DocStore.Business.Circulations
     ''' <remarks>
     ''' The items of the collection are <see cref="CircInfo"/> objects.
     ''' </remarks>
-    <Serializable()>
+    <Serializable>
     Public Partial Class CircList
 #If WINFORMS Then
         Inherits ReadOnlyBindingListBase(Of CircList, CircInfo)
@@ -96,7 +96,7 @@ Namespace DocStore.Business.Circulations
         ''' <summary>
         ''' CriteriaGetByObject criteria.
         ''' </summary>
-        <Serializable()>
+        <Serializable>
         Protected Class CriteriaGetByObject
             Inherits CriteriaBase(Of CriteriaGetByObject)
 

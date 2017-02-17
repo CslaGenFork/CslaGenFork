@@ -24,7 +24,7 @@ Namespace DocStore.Business
     ''' <remarks>
     ''' This class is an item of <see cref="DocFolderColl"/> collection.
     ''' </remarks>
-    <Serializable()>
+    <Serializable>
     Public Partial Class DocFolder
         Inherits BusinessBase(Of DocFolder)
         Implements IHaveInterface, IHaveGenericInterface(Of DocFolder)

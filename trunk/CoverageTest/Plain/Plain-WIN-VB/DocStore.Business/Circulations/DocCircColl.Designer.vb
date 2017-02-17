@@ -23,7 +23,7 @@ Namespace DocStore.Business.Circulations
     ''' This class is child of <see cref="Doc"/> editable root object.<br/>
     ''' The items of the collection are <see cref="DocCirc"/> objects.
     ''' </remarks>
-    <Serializable()>
+    <Serializable>
     Public Partial Class DocCircColl
 #If WINFORMS Then
         Inherits BusinessBindingListBase(Of DocCircColl, DocCirc)

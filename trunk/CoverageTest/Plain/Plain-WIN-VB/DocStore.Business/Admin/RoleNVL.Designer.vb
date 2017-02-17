@@ -17,7 +17,7 @@ Namespace DocStore.Business.Admin
     ''' Roles for users (name value list).<br/>
     ''' This is a generated base class of <see cref="RoleNVL"/> business object.
     ''' </summary>
-    <Serializable()>
+    <Serializable>
     Public Partial Class RoleNVL
         Inherits NameValueListBase(Of Integer, String)
 

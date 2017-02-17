@@ -530,7 +530,7 @@ namespace DocStore.Business
         /// <summary>
         /// Loads default values for the <see cref="Doc"/> object properties.
         /// </summary>
-        [Csla.RunLocal]
+        [RunLocal]
         protected override void DataPortal_Create()
         {
             LoadProperty(DocIDProperty, System.Threading.Interlocked.Decrement(ref _lastId));

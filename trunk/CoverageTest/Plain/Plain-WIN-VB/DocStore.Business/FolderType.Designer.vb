@@ -20,7 +20,7 @@ Namespace DocStore.Business
     ''' Folder type (editable root object).<br/>
     ''' This is a generated base class of <see cref="FolderType"/> business object.
     ''' </summary>
-    <Serializable()>
+    <Serializable>
     Public Partial Class FolderType
         Inherits BusinessBase(Of FolderType)
 
@@ -305,7 +305,7 @@ Namespace DocStore.Business
         ''' <summary>
         ''' Loads default values for the <see cref="FolderType"/> object properties.
         ''' </summary>
-        <Csla.RunLocal()>
+        <RunLocal>
         Protected Overrides Sub DataPortal_Create()
             LoadProperty(FolderTypeIDProperty, System.Threading.Interlocked.Decrement(_lastId))
             LoadProperty(CreateDateProperty, new SmartDate(Date.Now))

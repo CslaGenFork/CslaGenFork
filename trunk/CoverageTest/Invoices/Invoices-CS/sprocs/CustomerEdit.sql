@@ -19,7 +19,7 @@ AS
             [Customers].[AddressLine2],
             [Customers].[ZipCode],
             [Customers].[State],
-            [Customers].[Coutry]
+            [Customers].[Country]
         FROM [dbo].[Customers]
         WHERE
             [Customers].[CustomerId] = @CustomerId
@@ -40,7 +40,7 @@ CREATE PROCEDURE [dbo].[AddCustomerEdit]
     @AddressLine2 varchar(100),
     @ZipCode varchar(15),
     @State varchar(15),
-    @Coutry tinyint
+    @Country tinyint
 AS
     BEGIN
 
@@ -56,7 +56,7 @@ AS
             [AddressLine2],
             [ZipCode],
             [State],
-            [Coutry]
+            [Country]
         )
         VALUES
         (
@@ -67,7 +67,7 @@ AS
             @AddressLine2,
             @ZipCode,
             @State,
-            @Coutry
+            @Country
         )
 
     END
@@ -86,7 +86,7 @@ CREATE PROCEDURE [dbo].[UpdateCustomerEdit]
     @AddressLine2 varchar(100),
     @ZipCode varchar(15),
     @State varchar(15),
-    @Coutry tinyint
+    @Country tinyint
 AS
     BEGIN
 
@@ -113,10 +113,42 @@ AS
             [AddressLine2] = @AddressLine2,
             [ZipCode] = @ZipCode,
             [State] = @State,
-            [Coutry] = @Coutry
+            [Country] = @Country
         WHERE
             [CustomerId] = @CustomerId
 
     END
 GO
 
+/****** Object:  StoredProcedure [dbo].[DeleteCustomerEdit] ******/
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DeleteCustomerEdit]') AND type in (N'P', N'PC'))
+    DROP PROCEDURE [dbo].[DeleteCustomerEdit]
+GO
+
+CREATE PROCEDURE [dbo].[DeleteCustomerEdit]
+    @CustomerId char(10)
+AS
+    BEGIN
+
+        SET NOCOUNT ON
+
+        /* Check for object existence */
+        IF NOT EXISTS
+        (
+            SELECT [CustomerId] FROM [dbo].[Customers]
+            WHERE
+                [CustomerId] = @CustomerId
+        )
+        BEGIN
+            RAISERROR ('''dbo.CustomerEdit'' object not found. It was probably removed by another user.', 16, 1)
+            RETURN
+        END
+
+        /* Delete CustomerEdit object from Customers */
+        DELETE
+        FROM [dbo].[Customers]
+        WHERE
+            [dbo].[Customers].[CustomerId] = @CustomerId
+
+    END
+GO

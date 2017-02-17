@@ -19,7 +19,7 @@ Namespace Invoices.Business
     ''' The items of the collection are <see cref="ProductTypeUpdatedByRootInfo"/> objects.
     ''' Updated by ProductTypeEdit
     ''' </remarks>
-    <Serializable()>
+    <Serializable>
     Public Partial Class ProductTypeUpdatedByRootList
 #If WINFORMS Then
         Inherits ReadOnlyBindingListBase(Of ProductTypeUpdatedByRootList, ProductTypeUpdatedByRootInfo)

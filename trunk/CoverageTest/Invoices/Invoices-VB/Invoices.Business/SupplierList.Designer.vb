@@ -18,7 +18,7 @@ Namespace Invoices.Business
     ''' <remarks>
     ''' The items of the collection are <see cref="SupplierInfo"/> objects.
     ''' </remarks>
-    <Serializable()>
+    <Serializable>
     Public Partial Class SupplierList
 #If WINFORMS Then
         Inherits ReadOnlyBindingListBase(Of SupplierList, SupplierInfo)
@@ -112,6 +112,15 @@ Namespace Invoices.Business
         End Function
 
         ''' <summary>
+        ''' Factory method. Loads a <see cref="SupplierList"/> collection, based on given parameters.
+        ''' </summary>
+        ''' <param name="name">The Name parameter of the SupplierList to fetch.</param>
+        ''' <returns>A reference to the fetched <see cref="SupplierList"/> collection.</returns>
+        Public Shared Function GetSupplierList(name As String) As SupplierList
+            Return DataPortal.Fetch(Of SupplierList)(name)
+        End Function
+
+        ''' <summary>
         ''' Factory method. Asynchronously loads a <see cref="SupplierList"/> collection.
         ''' </summary>
         ''' <param name="callback">The completion callback method.</param>
@@ -124,6 +133,15 @@ Namespace Invoices.Business
             Else
                 callback(Nothing, New DataPortalResult(Of SupplierList)(_list, Nothing, Nothing))
             End If
+        End Sub
+
+        ''' <summary>
+        ''' Factory method. Asynchronously loads a <see cref="SupplierList"/> collection, based on given parameters.
+        ''' </summary>
+        ''' <param name="name">The Name parameter of the SupplierList to fetch.</param>
+        ''' <param name="callback">The completion callback method.</param>
+        Public Shared Sub GetSupplierList(name As String, ByVal callback As EventHandler(Of DataPortalResult(Of SupplierList)))
+            DataPortal.BeginFetch(Of SupplierList)(name, callback)
         End Sub
 
         #End Region
@@ -210,8 +228,9 @@ Namespace Invoices.Business
             End If
 
             Using ctx = ConnectionManager(Of SqlConnection).GetManager("InvoicesDatabase")
-                Using cmd = New SqlCommand("dbo.GetSupplierList", ctx.Connection)
-                    cmd.CommandType = CommandType.StoredProcedure
+                GetQueryGetSupplierList()
+                Using cmd = New SqlCommand(getSupplierListInlineQuery, ctx.Connection)
+                    cmd.CommandType = CommandType.Text
                     Dim args As New DataPortalHookArgs(cmd)
                     OnFetchPre(args)
                     LoadCollection(cmd)
@@ -228,6 +247,24 @@ Namespace Invoices.Business
             AddRange(_list)
             RaiseListChangedEvents = rlce
             IsReadOnly = True
+        End Sub
+
+        ''' <summary>
+        ''' Loads a <see cref="SupplierList"/> collection from the database, based on given criteria.
+        ''' </summary>
+        ''' <param name="name">The Name.</param>
+        Protected Overloads Sub DataPortal_Fetch(name As String)
+            Using ctx = ConnectionManager(Of SqlConnection).GetManager("InvoicesDatabase")
+                GetQueryGetSupplierListByName(name)
+                Using cmd = New SqlCommand(getSupplierListByNameInlineQuery, ctx.Connection)
+                    cmd.CommandType = CommandType.Text
+                    cmd.Parameters.AddWithValue("@Name", name).DbType = DbType.String
+                    Dim args As New DataPortalHookArgs(cmd, name)
+                    OnFetchPre(args)
+                    LoadCollection(cmd)
+                    OnFetchPost(args)
+                End Using
+            End Using
         End Sub
 
         Private Sub LoadCollection(cmd As SqlCommand)
@@ -249,6 +286,22 @@ Namespace Invoices.Business
             End While
             RaiseListChangedEvents = rlce
             IsReadOnly = True
+        End Sub
+
+        #End Region
+
+        #Region " Inline queries fields and partial methods "
+
+        <NotUndoable, NonSerialized>
+        Private getSupplierListInlineQuery As String
+
+        <NotUndoable, NonSerialized>
+        Private getSupplierListByNameInlineQuery As String
+
+        Partial Private Sub GetQueryGetSupplierList()
+        End Sub
+
+        Partial Private Sub GetQueryGetSupplierListByName(name As String)
         End Sub
 
         #End Region

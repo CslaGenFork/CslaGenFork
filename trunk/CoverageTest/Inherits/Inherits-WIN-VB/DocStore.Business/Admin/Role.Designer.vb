@@ -20,7 +20,7 @@ Namespace DocStore.Business.Admin
     ''' Role (editable root object).<br/>
     ''' This is a generated base class of <see cref="Role"/> business object.
     ''' </summary>
-    <Serializable()>
+    <Serializable>
     Public Partial Class Role
         Inherits BusinessBase(Of Role)
 
@@ -351,7 +351,7 @@ Namespace DocStore.Business.Admin
         ''' <summary>
         ''' Loads default values for the <see cref="Role"/> object properties.
         ''' </summary>
-        <Csla.RunLocal()>
+        <RunLocal>
         Protected Overrides Sub DataPortal_Create()
             LoadProperty(RoleIDProperty, System.Threading.Interlocked.Decrement(_lastId))
             LoadProperty(CreateDateProperty, new SmartDate(Date.Now))

@@ -13,7 +13,7 @@ Namespace Invoices.Business
     ''' <remarks>
     ''' This class is an item of <see cref="InvoiceLineCollection"/> collection.
     ''' </remarks>
-    <Serializable()>
+    <Serializable>
     Public Partial Class InvoiceLineItem
         Inherits BusinessBase(Of InvoiceLineItem)
 
@@ -111,7 +111,7 @@ Namespace Invoices.Business
         ''' <summary>
         ''' Loads default values for the <see cref="InvoiceLineItem"/> object properties.
         ''' </summary>
-        <Csla.RunLocal()>
+        <RunLocal>
         Protected Overrides Sub Child_Create()
             LoadProperty(InvoiceLineIdProperty, Guid.NewGuid())
             Dim args As New DataPortalHookArgs()

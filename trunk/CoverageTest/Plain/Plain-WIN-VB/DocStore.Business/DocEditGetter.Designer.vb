@@ -15,7 +15,7 @@ Namespace DocStore.Business
     ''' This is a generated base class of <see cref="DocEditGetter"/> business object.
     ''' This class is a root object that implements the Unit of Work pattern.
     ''' </summary>
-    <Serializable()>
+    <Serializable>
     Public Partial Class DocEditGetter
         Inherits ReadOnlyBase(Of DocEditGetter)
 
@@ -200,7 +200,7 @@ Namespace DocStore.Business
         ''' <summary>
         ''' Criteria1 criteria.
         ''' </summary>
-        <Serializable()>
+        <Serializable>
         Protected Class Criteria1
             Inherits CriteriaBase(Of Criteria1)
 

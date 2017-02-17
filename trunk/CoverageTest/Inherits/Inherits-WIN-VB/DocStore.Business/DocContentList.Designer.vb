@@ -22,7 +22,7 @@ Namespace DocStore.Business
     ''' This class is child of <see cref="Doc"/> editable root object.<br/>
     ''' The items of the collection are <see cref="DocContentInfo"/> objects.
     ''' </remarks>
-    <Serializable()>
+    <Serializable>
     Public Partial Class DocContentList
 #If WINFORMS Then
         Inherits ReadOnlyBindingListBase(Of DocContentList, DocContentInfo)

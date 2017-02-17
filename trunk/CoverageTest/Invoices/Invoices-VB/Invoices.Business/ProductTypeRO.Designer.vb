@@ -11,7 +11,7 @@ Namespace Invoices.Business
     ''' This is a generated base class of <see cref="ProductTypeRO"/> business object.
     ''' This class is a root object.
     ''' </summary>
-    <Serializable()>
+    <Serializable>
     Public Partial Class ProductTypeRO
         Inherits ReadOnlyBase(Of ProductTypeRO)
 

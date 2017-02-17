@@ -15,7 +15,7 @@ Namespace DocStore.Business
     ''' This is a generated base class of <see cref="DocListGetter"/> business object.
     ''' This class is a root object that implements the Unit of Work pattern.
     ''' </summary>
-    <Serializable()>
+    <Serializable>
     Public Partial Class DocListGetter
         Inherits ReadOnlyBase(Of DocListGetter)
 

@@ -21,7 +21,7 @@ Namespace DocStore.Business
     ''' <remarks>
     ''' The items of the collection are <see cref="CircTypeTagEdit"/> objects.
     ''' </remarks>
-    <Serializable()>
+    <Serializable>
     Public Partial Class CircTypeTagEditColl
 #If WINFORMS Then
         Inherits MyBusinessBindingListBase(Of CircTypeTagEditColl, CircTypeTagEdit)

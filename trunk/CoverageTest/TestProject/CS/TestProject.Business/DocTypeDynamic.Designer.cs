@@ -78,7 +78,7 @@ namespace TestProject.Business
         /// <summary>
         /// Loads default values for the <see cref="DocTypeDynamic"/> object properties.
         /// </summary>
-        [Csla.RunLocal]
+        [RunLocal]
         protected override void DataPortal_Create()
         {
             LoadProperty(DocTypeIDProperty, System.Threading.Interlocked.Decrement(ref _lastId));

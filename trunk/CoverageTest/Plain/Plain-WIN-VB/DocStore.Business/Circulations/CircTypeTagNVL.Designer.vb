@@ -17,7 +17,7 @@ Namespace DocStore.Business.Circulations
     ''' Active tags for circulation types (name value list).<br/>
     ''' This is a generated base class of <see cref="CircTypeTagNVL"/> business object.
     ''' </summary>
-    <Serializable()>
+    <Serializable>
     Public Partial Class CircTypeTagNVL
         Inherits NameValueListBase(Of Integer, String)
 

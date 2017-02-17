@@ -24,7 +24,7 @@ Namespace DocStore.Business
     ''' This class is child of <see cref="Folder"/> editable root object.<br/>
     ''' The items of the collection are <see cref="FolderDoc"/> objects.
     ''' </remarks>
-    <Serializable()>
+    <Serializable>
     Public Partial Class FolderDocColl
 #If WINFORMS Then
         Inherits MyBusinessBindingListBase(Of FolderDocColl, FolderDoc)

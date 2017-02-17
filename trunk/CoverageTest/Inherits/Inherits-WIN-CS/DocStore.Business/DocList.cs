@@ -28,17 +28,17 @@ namespace DocStore.Business
 
         #endregion
 
-        #region Inlines queries
+        #region Inline queries
 
-        private string GetDocListInlineQuery()
-        {
-            return "";
-        }
+        //partial void GetQueryGetDocList()
+        //{
+        //    getDocListInlineQuery = "";
+        //}
 
-        private string GetDocListInlineQuery(DocListFilteredCriteria crit)
-        {
-            return "";
-        }
+        //partial void GetQueryGetDocList(DocListFilteredCriteria crit)
+        //{
+        //    getDocListInlineQuery = "";
+        //}
 
         #endregion
 

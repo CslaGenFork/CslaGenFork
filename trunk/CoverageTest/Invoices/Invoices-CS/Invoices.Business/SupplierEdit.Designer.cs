@@ -107,17 +107,17 @@ namespace Invoices.Business
         }
 
         /// <summary>
-        /// Maintains metadata about <see cref="Coutry"/> property.
+        /// Maintains metadata about <see cref="Country"/> property.
         /// </summary>
-        public static readonly PropertyInfo<byte?> CoutryProperty = RegisterProperty<byte?>(p => p.Coutry, "Coutry");
+        public static readonly PropertyInfo<byte?> CountryProperty = RegisterProperty<byte?>(p => p.Country, "Country");
         /// <summary>
-        /// Gets or sets the Coutry.
+        /// Gets or sets the Country.
         /// </summary>
-        /// <value>The Coutry.</value>
-        public byte? Coutry
+        /// <value>The Country.</value>
+        public byte? Country
         {
-            get { return GetProperty(CoutryProperty); }
-            set { SetProperty(CoutryProperty, value); }
+            get { return GetProperty(CountryProperty); }
+            set { SetProperty(CountryProperty, value); }
         }
 
         /// <summary>
@@ -226,7 +226,7 @@ namespace Invoices.Business
         /// <summary>
         /// Loads default values for the <see cref="SupplierEdit"/> object properties.
         /// </summary>
-        [Csla.RunLocal]
+        [RunLocal]
         protected override void DataPortal_Create()
         {
             LoadProperty(AddressLine1Property, null);
@@ -286,7 +286,7 @@ namespace Invoices.Business
             LoadProperty(AddressLine2Property, dr.IsDBNull("AddressLine2") ? null : dr.GetString("AddressLine2"));
             LoadProperty(ZipCodeProperty, dr.IsDBNull("ZipCode") ? null : dr.GetString("ZipCode"));
             LoadProperty(StateProperty, dr.IsDBNull("State") ? null : dr.GetString("State"));
-            LoadProperty(CoutryProperty, (byte?)dr.GetValue("Coutry"));
+            LoadProperty(CountryProperty, (byte?)dr.GetValue("Country"));
             var args = new DataPortalHookArgs(dr);
             OnFetchRead(args);
         }
@@ -318,7 +318,7 @@ namespace Invoices.Business
                     cmd.Parameters.AddWithValue("@AddressLine2", ReadProperty(AddressLine2Property) == null ? (object)DBNull.Value : ReadProperty(AddressLine2Property)).DbType = DbType.String;
                     cmd.Parameters.AddWithValue("@ZipCode", ReadProperty(ZipCodeProperty) == null ? (object)DBNull.Value : ReadProperty(ZipCodeProperty)).DbType = DbType.String;
                     cmd.Parameters.AddWithValue("@State", ReadProperty(StateProperty) == null ? (object)DBNull.Value : ReadProperty(StateProperty)).DbType = DbType.String;
-                    cmd.Parameters.AddWithValue("@Coutry", ReadProperty(CoutryProperty) == null ? (object)DBNull.Value : ReadProperty(CoutryProperty).Value).DbType = DbType.Byte;
+                    cmd.Parameters.AddWithValue("@Country", ReadProperty(CountryProperty) == null ? (object)DBNull.Value : ReadProperty(CountryProperty).Value).DbType = DbType.Byte;
                     var args = new DataPortalHookArgs(cmd);
                     OnInsertPre(args);
                     cmd.ExecuteNonQuery();
@@ -346,7 +346,7 @@ namespace Invoices.Business
                     cmd.Parameters.AddWithValue("@AddressLine2", ReadProperty(AddressLine2Property) == null ? (object)DBNull.Value : ReadProperty(AddressLine2Property)).DbType = DbType.String;
                     cmd.Parameters.AddWithValue("@ZipCode", ReadProperty(ZipCodeProperty) == null ? (object)DBNull.Value : ReadProperty(ZipCodeProperty)).DbType = DbType.String;
                     cmd.Parameters.AddWithValue("@State", ReadProperty(StateProperty) == null ? (object)DBNull.Value : ReadProperty(StateProperty)).DbType = DbType.String;
-                    cmd.Parameters.AddWithValue("@Coutry", ReadProperty(CoutryProperty) == null ? (object)DBNull.Value : ReadProperty(CoutryProperty).Value).DbType = DbType.Byte;
+                    cmd.Parameters.AddWithValue("@Country", ReadProperty(CountryProperty) == null ? (object)DBNull.Value : ReadProperty(CountryProperty).Value).DbType = DbType.Byte;
                     var args = new DataPortalHookArgs(cmd);
                     OnUpdatePre(args);
                     cmd.ExecuteNonQuery();

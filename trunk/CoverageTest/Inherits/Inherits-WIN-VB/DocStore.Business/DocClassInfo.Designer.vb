@@ -22,7 +22,7 @@ Namespace DocStore.Business
     ''' <remarks>
     ''' This class is an item of <see cref="DocClassList"/> collection.
     ''' </remarks>
-    <Serializable()>
+    <Serializable>
     Public Partial Class DocClassInfo
         Inherits ReadOnlyBase(Of DocClassInfo)
 

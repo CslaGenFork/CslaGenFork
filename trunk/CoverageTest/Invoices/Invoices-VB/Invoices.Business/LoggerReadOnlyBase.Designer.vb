@@ -10,7 +10,7 @@ Namespace Invoices.Business
     ''' LoggerReadOnlyBase (base class).<br/>
     ''' This is a generated base class of <see cref="LoggerReadOnlyBase"/> business object.
     ''' </summary>
-    <Serializable()>
+    <Serializable>
     Public MustInherit Partial Class LoggerReadOnlyBase(Of T As {LoggerReadOnlyBase(Of T), ILog})
         Inherits ReadOnlyBase(Of T)
         Implements ILog

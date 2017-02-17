@@ -14,7 +14,7 @@ Namespace Invoices.Business
     ''' This class is child of <see cref="InvoiceView"/> read only object.<br/>
     ''' The items of the collection are <see cref="InvoiceLineInfo"/> objects.
     ''' </remarks>
-    <Serializable()>
+    <Serializable>
     Public Partial Class InvoiceLineList
 #If WINFORMS Then
         Inherits ReadOnlyBindingListBase(Of InvoiceLineList, InvoiceLineInfo)

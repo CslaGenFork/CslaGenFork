@@ -20,7 +20,7 @@ Namespace TestProject.Business
     ''' This is a remark
     ''' </remarks>
     <Attributable>
-    <Serializable()>
+    <Serializable>
     Public Partial Class Doc
         Inherits MyBusinessBase(Of Doc)
         Implements IHaveInterface
@@ -280,7 +280,7 @@ Namespace TestProject.Business
         ''' <summary>
         ''' Loads default values for the <see cref="Doc"/> object properties.
         ''' </summary>
-        <Csla.RunLocal()>
+        <RunLocal>
         Protected Overrides Sub DataPortal_Create()
             LoadProperty(DocIDProperty, System.Threading.Interlocked.Decrement(_lastId))
             LoadProperty(DocDateProperty, new SmartDate(DateTime.Today))
