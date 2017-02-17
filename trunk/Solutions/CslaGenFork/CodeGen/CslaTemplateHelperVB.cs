@@ -4726,8 +4726,16 @@ namespace CslaGenerator.CodeGen
         public string GetCommand(CslaObjectInfo info, string commandText, bool useInlineQueries, string criteria)
         {
             if (useInlineQueries)
-                return "Using cmd = New SqlCommand(" + commandText +
-                       "InlineQuery(" + criteria + "), " + LocalContextConnection(info) + ")";
+            {
+                var result = string.Format("GetQuery{0}({1})", commandText, criteria);
+                result += Environment.NewLine + "                ";
+                result +=
+                    string.Format("Using cmd = New SqlCommand({0}InlineQuery, {1})",
+                        FormatCamel(commandText),
+                        LocalContextConnection(info));
+
+                return result;
+            }
 
             return GetCommand(info, commandText);
         }

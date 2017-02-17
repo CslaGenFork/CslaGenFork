@@ -48,10 +48,17 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, genStep) %>
 <!-- #include file="XmlComment_DalObject.asp" -->
     public partial class <%= Info.ObjectName %>Dal : I<%= Info.ObjectName %>Dal
     {
+
+        #region DAL methods
+
 <!-- #include file="StateFields_DalObject.asp" -->
 <!-- #include file="BusinessProps_DalObject.asp" -->
 <!-- #include file="DataPortalFetch_DalObject.asp" -->
 <!-- #include file="InternalInsertUpdateDelete_DalObject.asp" -->
+<% Response.Write(Environment.NewLine); %>
+        #endregion
+
+<!-- #include file="InlineQueriesFieldsAndPartials.asp" -->
     }
 }
 <%

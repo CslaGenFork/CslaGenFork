@@ -1,5 +1,5 @@
 
-        #Region " Inlines queries "
+        #Region " Inline queries "
 <%
 if (UseBoth())
 {
@@ -12,9 +12,9 @@ foreach (AdvancedGenerator.InlineQuery inlineQuery in InlineQueryList)
 {
     %>
 
-        Private Shared Function <%= inlineQuery.ProcedureName %>InlineQuery(<%= inlineQuery.CriteriaParameter %>) As String
-            Return ""
-        End Function
+        ' Private Sub GetQuery<%= inlineQuery.ProcedureName %>(<%= inlineQuery.CriteriaParameter %>)
+        '     <%= FormatCamel(inlineQuery.ProcedureName) %>InlineQuery = ""
+        ' End Sub
 <%
 }
 if (UseBoth())
