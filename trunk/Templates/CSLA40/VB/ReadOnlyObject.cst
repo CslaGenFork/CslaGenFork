@@ -130,6 +130,7 @@ if (Errors.Length == 0)
         }
         %>
 
+<!-- #include file="InlineQueriesFieldsAndPartials.asp" -->
 <!-- #include file="DataPortalHooks.asp" -->
 
 <%

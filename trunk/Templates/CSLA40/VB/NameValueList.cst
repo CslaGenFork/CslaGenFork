@@ -112,6 +112,7 @@ else
         }
     %>
 
+<!-- #include file="InlineQueriesFieldsAndPartials.asp" -->
 <!-- #include file="DataPortalHooks.asp" -->
 
 <%

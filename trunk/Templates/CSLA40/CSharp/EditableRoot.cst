@@ -108,6 +108,7 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Busine
 <%
         Response.Write(Environment.NewLine);
 %>
+<!-- #include file="InlineQueriesFieldsAndPartials.asp" -->
 <!-- #include file="DataPortalHooks.asp" -->
 <%
     }

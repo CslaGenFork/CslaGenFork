@@ -114,6 +114,7 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Busine
         }
         %>
 <!-- #include file="EditableSwitchable_DataPortal.asp" -->
+<!-- #include file="InlineQueriesFieldsAndPartials.asp" -->
 <!-- #include file="DataPortalHooks.asp" -->
 <%
     }

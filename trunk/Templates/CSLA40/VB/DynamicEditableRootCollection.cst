@@ -124,6 +124,7 @@ if (Errors.Length == 0)
             Response.Write(Environment.NewLine);
         }
 %>
+<!-- #include file="InlineQueriesFieldsAndPartials.asp" -->
 <!-- #include file="DataPortalHooks.asp" -->
 
 <%
