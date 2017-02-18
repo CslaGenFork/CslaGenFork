@@ -89,7 +89,7 @@ if (Errors.Length == 0)
     if (CurrentUnit.GenerationParams.DualListInheritance)
     {
         %>#End If
-    <%
+<%
     }
     %><%= CurrentUnit.GenerationParams.DualListInheritance ? "" : "    " %>
 <!-- #include file="EventProps.asp" -->
