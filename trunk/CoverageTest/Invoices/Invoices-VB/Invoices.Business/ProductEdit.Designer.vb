@@ -332,7 +332,7 @@ Namespace Invoices.Business
         ''' </summary>
         ''' <param name="productId">The Product Id.</param>
         Protected Sub DataPortal_Fetch(productId As Guid)
-            Using ctx = ConnectionManager(Of SqlConnection).GetManager("InvoicesDatabase")
+            Using ctx = ConnectionManager(Of SqlConnection).GetManager("Invoices")
                 Using cmd = New SqlCommand("dbo.GetProductEdit", ctx.Connection)
                     cmd.CommandType = CommandType.StoredProcedure
                     cmd.Parameters.AddWithValue("@ProductId", productId).DbType = DbType.Guid
@@ -392,7 +392,7 @@ Namespace Invoices.Business
         ''' </summary>
         <Transactional(TransactionalTypes.TransactionScope)>
         Protected Overrides Sub DataPortal_Insert()
-            Using ctx = ConnectionManager(Of SqlConnection).GetManager("InvoicesDatabase")
+            Using ctx = ConnectionManager(Of SqlConnection).GetManager("Invoices")
                 Using cmd = New SqlCommand("dbo.AddProductEdit", ctx.Connection)
                     cmd.CommandType = CommandType.StoredProcedure
                     cmd.Parameters.AddWithValue("@ProductId", ReadProperty(ProductIdProperty)).DbType = DbType.Guid
@@ -423,7 +423,7 @@ Namespace Invoices.Business
         ''' </summary>
         <Transactional(TransactionalTypes.TransactionScope)>
         Protected Overrides Sub DataPortal_Update()
-            Using ctx = ConnectionManager(Of SqlConnection).GetManager("InvoicesDatabase")
+            Using ctx = ConnectionManager(Of SqlConnection).GetManager("Invoices")
                 Using cmd = New SqlCommand("dbo.UpdateProductEdit", ctx.Connection)
                     cmd.CommandType = CommandType.StoredProcedure
                     cmd.Parameters.AddWithValue("@ProductId", ReadProperty(ProductIdProperty)).DbType = DbType.Guid

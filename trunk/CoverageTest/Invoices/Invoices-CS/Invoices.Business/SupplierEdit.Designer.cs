@@ -245,7 +245,7 @@ namespace Invoices.Business
         /// <param name="supplierId">The Supplier Id.</param>
         protected void DataPortal_Fetch(int supplierId)
         {
-            using (var ctx = ConnectionManager<SqlConnection>.GetManager("InvoicesDatabase"))
+            using (var ctx = ConnectionManager<SqlConnection>.GetManager("Invoices"))
             {
                 using (var cmd = new SqlCommand("dbo.GetSupplierEdit", ctx.Connection))
                 {
@@ -307,7 +307,7 @@ namespace Invoices.Business
         [Transactional(TransactionalTypes.TransactionScope)]
         protected override void DataPortal_Insert()
         {
-            using (var ctx = ConnectionManager<SqlConnection>.GetManager("InvoicesDatabase"))
+            using (var ctx = ConnectionManager<SqlConnection>.GetManager("Invoices"))
             {
                 using (var cmd = new SqlCommand("dbo.AddSupplierEdit", ctx.Connection))
                 {
@@ -335,7 +335,7 @@ namespace Invoices.Business
         [Transactional(TransactionalTypes.TransactionScope)]
         protected override void DataPortal_Update()
         {
-            using (var ctx = ConnectionManager<SqlConnection>.GetManager("InvoicesDatabase"))
+            using (var ctx = ConnectionManager<SqlConnection>.GetManager("Invoices"))
             {
                 using (var cmd = new SqlCommand("dbo.UpdateSupplierEdit", ctx.Connection))
                 {

@@ -27,7 +27,7 @@ Namespace DocStore.Business
 #Else
         Inherits BusinessListBase(Of DocStatusColl, DocStatus)
 #End If
-    
+
         #Region " Collection Business Methods "
 
         ''' <summary>

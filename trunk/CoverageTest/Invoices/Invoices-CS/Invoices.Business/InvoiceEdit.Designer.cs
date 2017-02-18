@@ -278,7 +278,7 @@ namespace Invoices.Business
         /// <param name="invoiceId">The Invoice Id.</param>
         protected void DataPortal_Fetch(Guid invoiceId)
         {
-            using (var ctx = ConnectionManager<SqlConnection>.GetManager("InvoicesDatabase"))
+            using (var ctx = ConnectionManager<SqlConnection>.GetManager("Invoices"))
             {
                 using (var cmd = new SqlCommand("dbo.GetInvoiceEdit", ctx.Connection))
                 {
@@ -343,7 +343,7 @@ namespace Invoices.Business
         protected override void DataPortal_Insert()
         {
             SimpleAuditTrail();
-            using (var ctx = ConnectionManager<SqlConnection>.GetManager("InvoicesDatabase"))
+            using (var ctx = ConnectionManager<SqlConnection>.GetManager("Invoices"))
             {
                 using (var cmd = new SqlCommand("dbo.AddInvoiceEdit", ctx.Connection))
                 {
@@ -375,7 +375,7 @@ namespace Invoices.Business
         protected override void DataPortal_Update()
         {
             SimpleAuditTrail();
-            using (var ctx = ConnectionManager<SqlConnection>.GetManager("InvoicesDatabase"))
+            using (var ctx = ConnectionManager<SqlConnection>.GetManager("Invoices"))
             {
                 using (var cmd = new SqlCommand("dbo.UpdateInvoiceEdit", ctx.Connection))
                 {
@@ -427,7 +427,7 @@ namespace Invoices.Business
         {
             // audit the object, just in case soft delete is used on this object
             SimpleAuditTrail();
-            using (var ctx = ConnectionManager<SqlConnection>.GetManager("InvoicesDatabase"))
+            using (var ctx = ConnectionManager<SqlConnection>.GetManager("Invoices"))
             {
                 // flushes all pending data operations
                 FieldManager.UpdateChildren(this);

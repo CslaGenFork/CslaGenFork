@@ -135,7 +135,7 @@ namespace Invoices.Business
         [Transactional(TransactionalTypes.TransactionScope)]
         protected override void DataPortal_Insert()
         {
-            using (var ctx = ConnectionManager<SqlConnection>.GetManager("InvoicesDatabase"))
+            using (var ctx = ConnectionManager<SqlConnection>.GetManager("Invoices"))
             {
                 using (var cmd = new SqlCommand("dbo.AddProductTypeDynaItem", ctx.Connection))
                 {
@@ -157,7 +157,7 @@ namespace Invoices.Business
         [Transactional(TransactionalTypes.TransactionScope)]
         protected override void DataPortal_Update()
         {
-            using (var ctx = ConnectionManager<SqlConnection>.GetManager("InvoicesDatabase"))
+            using (var ctx = ConnectionManager<SqlConnection>.GetManager("Invoices"))
             {
                 using (var cmd = new SqlCommand("dbo.UpdateProductTypeDynaItem", ctx.Connection))
                 {
@@ -187,7 +187,7 @@ namespace Invoices.Business
         [Transactional(TransactionalTypes.TransactionScope)]
         protected void DataPortal_Delete(int productTypeId)
         {
-            using (var ctx = ConnectionManager<SqlConnection>.GetManager("InvoicesDatabase"))
+            using (var ctx = ConnectionManager<SqlConnection>.GetManager("Invoices"))
             {
                 using (var cmd = new SqlCommand("dbo.DeleteProductTypeDynaItem", ctx.Connection))
                 {

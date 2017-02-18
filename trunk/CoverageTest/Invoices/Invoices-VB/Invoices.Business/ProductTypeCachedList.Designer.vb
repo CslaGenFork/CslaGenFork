@@ -26,7 +26,7 @@ Namespace Invoices.Business
 #Else
         Inherits ReadOnlyListBase(Of ProductTypeCachedList, ProductTypeCachedInfo)
 #End If
-    
+
         #Region " Event handler properties "
 
         <NotUndoable>
@@ -205,7 +205,7 @@ Namespace Invoices.Business
         ''' Loads a <see cref="ProductTypeCachedList"/> collection from the database.
         ''' </summary>
         Protected Overloads Sub DataPortal_Fetch()
-            Using ctx = ConnectionManager(Of SqlConnection).GetManager("InvoicesDatabase")
+            Using ctx = ConnectionManager(Of SqlConnection).GetManager("Invoices")
                 Using cmd = New SqlCommand("dbo.GetProductTypeCachedList", ctx.Connection)
                     cmd.CommandType = CommandType.StoredProcedure
                     Dim args As New DataPortalHookArgs(cmd)

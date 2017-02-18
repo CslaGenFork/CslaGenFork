@@ -94,7 +94,7 @@ namespace Invoices.Business
         /// </summary>
         protected void DataPortal_Fetch()
         {
-            using (var ctx = ConnectionManager<SqlConnection>.GetManager("InvoicesDatabase"))
+            using (var ctx = ConnectionManager<SqlConnection>.GetManager("Invoices"))
             {
                 using (var cmd = new SqlCommand("dbo.GetProductList", ctx.Connection))
                 {

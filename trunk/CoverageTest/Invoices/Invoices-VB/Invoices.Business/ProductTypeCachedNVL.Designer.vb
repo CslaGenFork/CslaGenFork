@@ -100,7 +100,7 @@ Namespace Invoices.Business
                 Return
             End If
 
-            Using ctx = ConnectionManager(Of SqlConnection).GetManager("InvoicesDatabase")
+            Using ctx = ConnectionManager(Of SqlConnection).GetManager("Invoices")
                 Using cmd = New SqlCommand("dbo.GetProductTypeCachedNVL", ctx.Connection)
                     cmd.CommandType = CommandType.StoredProcedure
                     Dim args = New DataPortalHookArgs(cmd)

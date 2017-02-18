@@ -29,7 +29,7 @@ Namespace DocStore.Business
 #Else
         Inherits DynamicListBase(Of DocClassEdit)
 #End If
-    
+
         #Region " Collection Business Methods "
 
         ''' <summary>

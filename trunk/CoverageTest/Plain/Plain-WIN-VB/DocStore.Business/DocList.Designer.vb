@@ -32,7 +32,7 @@ Namespace DocStore.Business
 #Else
         Inherits ReadOnlyListBase(Of DocList, DocInfo)
 #End If
-    
+
         #Region " Event handler properties "
 
         <NotUndoable>

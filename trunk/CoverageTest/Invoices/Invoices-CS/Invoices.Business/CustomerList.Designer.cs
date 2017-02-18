@@ -177,7 +177,7 @@ namespace Invoices.Business
         /// </summary>
         protected void DataPortal_Fetch()
         {
-            using (var ctx = ConnectionManager<SqlConnection>.GetManager("InvoicesDatabase"))
+            using (var ctx = ConnectionManager<SqlConnection>.GetManager("Invoices"))
             {
                 GetQueryGetCustomerList();
                 using (var cmd = new SqlCommand(getCustomerListInlineQuery, ctx.Connection))
@@ -197,7 +197,7 @@ namespace Invoices.Business
         /// <param name="name">The Name.</param>
         protected void DataPortal_Fetch(string name)
         {
-            using (var ctx = ConnectionManager<SqlConnection>.GetManager("InvoicesDatabase"))
+            using (var ctx = ConnectionManager<SqlConnection>.GetManager("Invoices"))
             {
                 GetQueryGetCustomerList(name);
                 using (var cmd = new SqlCommand(getCustomerListInlineQuery, ctx.Connection))

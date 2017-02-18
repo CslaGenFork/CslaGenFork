@@ -246,7 +246,7 @@ Namespace Invoices.Business
         ''' </summary>
         ''' <param name="customerId">The Customer Id.</param>
         Protected Sub DataPortal_Fetch(customerId As String)
-            Using ctx = ConnectionManager(Of SqlConnection).GetManager("InvoicesDatabase")
+            Using ctx = ConnectionManager(Of SqlConnection).GetManager("Invoices")
                 GetQueryGetCustomerEdit(customerId)
                 Using cmd = New SqlCommand(getCustomerEditInlineQuery, ctx.Connection)
                     cmd.CommandType = CommandType.Text
@@ -292,7 +292,7 @@ Namespace Invoices.Business
         ''' </summary>
         <Transactional(TransactionalTypes.TransactionScope)>
         Protected Overrides Sub DataPortal_Insert()
-            Using ctx = ConnectionManager(Of SqlConnection).GetManager("InvoicesDatabase")
+            Using ctx = ConnectionManager(Of SqlConnection).GetManager("Invoices")
                 GetQueryAddCustomerEdit()
                 Using cmd = New SqlCommand(addCustomerEditInlineQuery, ctx.Connection)
                     cmd.CommandType = CommandType.Text
@@ -317,7 +317,7 @@ Namespace Invoices.Business
         ''' </summary>
         <Transactional(TransactionalTypes.TransactionScope)>
         Protected Overrides Sub DataPortal_Update()
-            Using ctx = ConnectionManager(Of SqlConnection).GetManager("InvoicesDatabase")
+            Using ctx = ConnectionManager(Of SqlConnection).GetManager("Invoices")
                 GetQueryUpdateCustomerEdit()
                 Using cmd = New SqlCommand(updateCustomerEditInlineQuery, ctx.Connection)
                     cmd.CommandType = CommandType.Text
@@ -350,7 +350,7 @@ Namespace Invoices.Business
         ''' <param name="customerId">The delete criteria.</param>
         <Transactional(TransactionalTypes.TransactionScope)>
         Protected Sub DataPortal_Delete(customerId As String)
-            Using ctx = ConnectionManager(Of SqlConnection).GetManager("InvoicesDatabase")
+            Using ctx = ConnectionManager(Of SqlConnection).GetManager("Invoices")
                 GetQueryDeleteCustomerEdit(customerId)
                 Using cmd = New SqlCommand(deleteCustomerEditInlineQuery, ctx.Connection)
                     cmd.CommandType = CommandType.Text

@@ -31,7 +31,7 @@ Namespace DocStore.Business
         Inherits ReadOnlyListBase(Of DocContentList, DocContentInfo)
         Implements IHaveInterface, IHaveGenericInterface(Of DocContentList)
 #End If
-    
+
         #Region " Collection Business Methods "
 
         ''' <summary>

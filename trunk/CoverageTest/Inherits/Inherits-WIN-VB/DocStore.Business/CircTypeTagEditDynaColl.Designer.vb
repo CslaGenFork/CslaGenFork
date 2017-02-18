@@ -30,7 +30,7 @@ Namespace DocStore.Business
         Inherits MyDynamicListBase(Of CircTypeTagEditDyna)
         Implements IHaveInterface, IHaveGenericInterface(Of CircTypeTagEditDynaColl)
 #End If
-    
+
         #Region " Collection Business Methods "
 
         ''' <summary>

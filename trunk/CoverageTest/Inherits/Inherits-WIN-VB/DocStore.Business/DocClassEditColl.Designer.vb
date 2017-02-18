@@ -30,7 +30,7 @@ Namespace DocStore.Business
         Inherits MyBusinessListBase(Of DocClassEditColl, DocClassEdit)
         Implements IHaveInterface, IHaveGenericInterface(Of DocClassEditColl)
 #End If
-    
+
         #Region " Collection Business Methods "
 
         ''' <summary>

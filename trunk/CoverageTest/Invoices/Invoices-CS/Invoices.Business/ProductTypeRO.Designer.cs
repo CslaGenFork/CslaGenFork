@@ -92,7 +92,7 @@ namespace Invoices.Business
         /// <param name="productTypeId">The Product Type Id.</param>
         protected void DataPortal_Fetch(int productTypeId)
         {
-            using (var ctx = ConnectionManager<SqlConnection>.GetManager("InvoicesDatabase"))
+            using (var ctx = ConnectionManager<SqlConnection>.GetManager("Invoices"))
             {
                 using (var cmd = new SqlCommand("dbo.GetProductTypeRO", ctx.Connection))
                 {

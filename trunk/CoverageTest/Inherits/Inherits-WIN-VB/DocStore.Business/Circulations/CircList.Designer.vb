@@ -31,7 +31,7 @@ Namespace DocStore.Business.Circulations
         Inherits MyReadOnlyListBase(Of CircList, CircInfo)
         Implements IHaveInterface, IHaveGenericInterface(Of CircList)
 #End If
-    
+
         #Region " Collection Business Methods "
 
         ''' <summary>

@@ -236,7 +236,7 @@ Namespace Invoices.Business
         ''' </summary>
         ''' <param name="invoiceId">The Invoice Id.</param>
         Protected Sub DataPortal_Fetch(invoiceId As Guid)
-            Using ctx = ConnectionManager(Of SqlConnection).GetManager("InvoicesDatabase")
+            Using ctx = ConnectionManager(Of SqlConnection).GetManager("Invoices")
                 Using cmd = New SqlCommand("dbo.GetInvoiceView", ctx.Connection)
                     cmd.CommandType = CommandType.StoredProcedure
                     cmd.Parameters.AddWithValue("@InvoiceId", invoiceId).DbType = DbType.Guid

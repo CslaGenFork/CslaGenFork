@@ -30,7 +30,7 @@ Namespace DocStore.Business.Circulations
 #Else
         Inherits BusinessListBase(Of DocCircColl, DocCirc)
 #End If
-    
+
         #Region " Collection Business Methods "
 
         ''' <summary>

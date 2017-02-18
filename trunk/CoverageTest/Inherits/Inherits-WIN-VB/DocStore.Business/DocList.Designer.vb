@@ -35,7 +35,7 @@ Namespace DocStore.Business
         Inherits MyReadOnlyListBase(Of DocList, DocInfo)
         Implements IHaveInterface, IHaveGenericInterface(Of DocList)
 #End If
-    
+
         #Region " Event handler properties "
 
         <NotUndoable>

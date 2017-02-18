@@ -21,7 +21,7 @@ Namespace Invoices.Business
 #Else
         Inherits ReadOnlyListBase(Of InvoiceLineList, InvoiceLineInfo)
 #End If
-    
+
         #Region " Collection Business Methods "
 
         ''' <summary>

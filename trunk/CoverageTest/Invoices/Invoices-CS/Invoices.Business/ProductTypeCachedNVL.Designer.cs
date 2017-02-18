@@ -106,7 +106,7 @@ namespace Invoices.Business
                 return;
             }
 
-            using (var ctx = ConnectionManager<SqlConnection>.GetManager("InvoicesDatabase"))
+            using (var ctx = ConnectionManager<SqlConnection>.GetManager("Invoices"))
             {
                 using (var cmd = new SqlCommand("dbo.GetProductTypeCachedNVL", ctx.Connection))
                 {

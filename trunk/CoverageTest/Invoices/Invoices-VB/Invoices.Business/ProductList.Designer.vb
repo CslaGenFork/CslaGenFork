@@ -21,7 +21,7 @@ Namespace Invoices.Business
 #Else
         Inherits ReadOnlyListBase(Of ProductList, ProductInfo)
 #End If
-    
+
         #Region " Collection Business Methods "
 
         ''' <summary>
@@ -86,7 +86,7 @@ Namespace Invoices.Business
         ''' Loads a <see cref="ProductList"/> collection from the database.
         ''' </summary>
         Protected Overloads Sub DataPortal_Fetch()
-            Using ctx = ConnectionManager(Of SqlConnection).GetManager("InvoicesDatabase")
+            Using ctx = ConnectionManager(Of SqlConnection).GetManager("Invoices")
                 Using cmd = New SqlCommand("dbo.GetProductList", ctx.Connection)
                     cmd.CommandType = CommandType.StoredProcedure
                     Dim args As New DataPortalHookArgs(cmd)

@@ -28,7 +28,7 @@ Namespace DocStore.Business.Circulations
 #Else
         Inherits ReadOnlyListBase(Of CircList, CircInfo)
 #End If
-    
+
         #Region " Collection Business Methods "
 
         ''' <summary>
