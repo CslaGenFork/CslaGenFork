@@ -9,7 +9,7 @@
     <DatesDefaultStringWithTypeConversion>true</DatesDefaultStringWithTypeConversion>
     <ReadOnlyObjectsCopyAuditing>false</ReadOnlyObjectsCopyAuditing>
     <ReadOnlyObjectsCopyTimestamp>false</ReadOnlyObjectsCopyTimestamp>
-    <DefaultDataBase>InvoicesDatabase</DefaultDataBase>
+    <DefaultDataBase>Invoices</DefaultDataBase>
     <DefaultTransactionType>TransactionScope</DefaultTransactionType>
     <DefaultPersistenceType>SqlConnectionManager</DefaultPersistenceType>
     <DefaultDatabaseContextObject />
@@ -86,7 +86,7 @@
     <GenerateWPF>true</GenerateWPF>
     <GenerateSilverlight4>false</GenerateSilverlight4>
     <SilverlightUsingServices>false</SilverlightUsingServices>
-    <DatabaseConnection>InvoicesDatabase</DatabaseConnection>
+    <DatabaseConnection>Invoices</DatabaseConnection>
     <GenerateDTO>true</GenerateDTO>
     <GenerateDalInterface>false</GenerateDalInterface>
     <GenerateDalObject>false</GenerateDalObject>

@@ -5,7 +5,7 @@ namespace UsingLibrary
     [AttributeUsage(AttributeTargets.All, Inherited = false, AllowMultiple = true)]
     public sealed class AttributableAttribute : Attribute
     {
-        // See the attribute guidelines at 
+        // See the attribute guidelines at
         //  http://go.microsoft.com/fwlink/?LinkId=85236
 
         public AttributableAttribute()
