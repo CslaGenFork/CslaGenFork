@@ -48,6 +48,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -67,6 +68,18 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Invoices-VB\Invoices.Business\IListLog.vb">
+      <Link>IListLog.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Invoices-VB\Invoices.Business\ILog.vb">
+      <Link>ILog.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Invoices-VB\Invoices.Business\LogActions.vb">
+      <Link>LogActions.vb</Link>
+    </Compile>
+    <Compile Include="..\..\Invoices-VB\Invoices.Business\Security\UserInformation.vb">
+      <Link>Security\UserInformation.vb</Link>
+    </Compile>
     <Compile Include="CriteriaSearchInvoice.Designer.vb">
       <DependentUpon>CriteriaSearchInvoice.vb</DependentUpon>
     </Compile>

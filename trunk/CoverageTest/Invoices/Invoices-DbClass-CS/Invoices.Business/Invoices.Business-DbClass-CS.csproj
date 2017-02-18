@@ -35,6 +35,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -44,6 +45,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Invoices-CS\Invoices.Business\IListLog.cs">
+      <Link>IListLog.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Invoices-CS\Invoices.Business\ILog.cs">
+      <Link>ILog.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Invoices-CS\Invoices.Business\LogActions.cs">
+      <Link>LogActions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Invoices-CS\Invoices.Business\Security\UserInformation.cs">
+      <Link>Security\UserInformation.cs</Link>
+    </Compile>
     <Compile Include="CriteriaSearchInvoice.cs" />
     <Compile Include="CriteriaSearchInvoice.Designer.cs">
       <DependentUpon>CriteriaSearchInvoice.cs</DependentUpon>
