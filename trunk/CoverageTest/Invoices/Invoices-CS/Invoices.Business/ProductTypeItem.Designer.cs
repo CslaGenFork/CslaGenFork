@@ -109,7 +109,7 @@ namespace Invoices.Business
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Insert()
         {
-            using (var ctx = ConnectionManager<SqlConnection>.GetManager("InvoicesDatabase"))
+            using (var ctx = ConnectionManager<SqlConnection>.GetManager("Invoices"))
             {
                 using (var cmd = new SqlCommand("dbo.AddProductTypeItem", ctx.Connection))
                 {
@@ -134,7 +134,7 @@ namespace Invoices.Business
             if (!IsDirty)
                 return;
 
-            using (var ctx = ConnectionManager<SqlConnection>.GetManager("InvoicesDatabase"))
+            using (var ctx = ConnectionManager<SqlConnection>.GetManager("Invoices"))
             {
                 using (var cmd = new SqlCommand("dbo.UpdateProductTypeItem", ctx.Connection))
                 {
@@ -155,7 +155,7 @@ namespace Invoices.Business
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_DeleteSelf()
         {
-            using (var ctx = ConnectionManager<SqlConnection>.GetManager("InvoicesDatabase"))
+            using (var ctx = ConnectionManager<SqlConnection>.GetManager("Invoices"))
             {
                 using (var cmd = new SqlCommand("dbo.DeleteProductTypeItem", ctx.Connection))
                 {

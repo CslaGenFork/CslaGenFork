@@ -30,7 +30,7 @@ Namespace DocStore.Business
 #Else
         Inherits ReadOnlyListBase(Of DocClassList, DocClassInfo)
 #End If
-    
+
         #Region " Collection Business Methods "
 
         ''' <summary>

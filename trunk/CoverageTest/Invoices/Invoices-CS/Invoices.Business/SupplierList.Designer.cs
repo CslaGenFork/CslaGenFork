@@ -246,7 +246,7 @@ namespace Invoices.Business
                 return;
             }
 
-            using (var ctx = ConnectionManager<SqlConnection>.GetManager("InvoicesDatabase"))
+            using (var ctx = ConnectionManager<SqlConnection>.GetManager("Invoices"))
             {
                 GetQueryGetSupplierList();
                 using (var cmd = new SqlCommand(getSupplierListInlineQuery, ctx.Connection))
@@ -277,7 +277,7 @@ namespace Invoices.Business
         /// <param name="name">The Name.</param>
         protected void DataPortal_Fetch(string name)
         {
-            using (var ctx = ConnectionManager<SqlConnection>.GetManager("InvoicesDatabase"))
+            using (var ctx = ConnectionManager<SqlConnection>.GetManager("Invoices"))
             {
                 GetQueryGetSupplierListByName(name);
                 using (var cmd = new SqlCommand(getSupplierListByNameInlineQuery, ctx.Connection))

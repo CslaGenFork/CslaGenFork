@@ -227,7 +227,7 @@ namespace Invoices.Business
         /// <param name="invoiceId">The Invoice Id.</param>
         protected void DataPortal_Fetch(Guid invoiceId)
         {
-            using (var ctx = ConnectionManager<SqlConnection>.GetManager("InvoicesDatabase"))
+            using (var ctx = ConnectionManager<SqlConnection>.GetManager("Invoices"))
             {
                 using (var cmd = new SqlCommand("dbo.GetInvoiceView", ctx.Connection))
                 {

@@ -25,7 +25,7 @@ Namespace Invoices.Business
 #Else
         Inherits ReadOnlyListBase(Of SupplierList, SupplierInfo)
 #End If
-    
+
         #Region " Event handler properties "
 
         <NotUndoable>
@@ -227,7 +227,7 @@ Namespace Invoices.Business
                 Exit Sub
             End If
 
-            Using ctx = ConnectionManager(Of SqlConnection).GetManager("InvoicesDatabase")
+            Using ctx = ConnectionManager(Of SqlConnection).GetManager("Invoices")
                 GetQueryGetSupplierList()
                 Using cmd = New SqlCommand(getSupplierListInlineQuery, ctx.Connection)
                     cmd.CommandType = CommandType.Text
@@ -254,7 +254,7 @@ Namespace Invoices.Business
         ''' </summary>
         ''' <param name="name">The Name.</param>
         Protected Overloads Sub DataPortal_Fetch(name As String)
-            Using ctx = ConnectionManager(Of SqlConnection).GetManager("InvoicesDatabase")
+            Using ctx = ConnectionManager(Of SqlConnection).GetManager("Invoices")
                 GetQueryGetSupplierListByName(name)
                 Using cmd = New SqlCommand(getSupplierListByNameInlineQuery, ctx.Connection)
                     cmd.CommandType = CommandType.Text

@@ -53,7 +53,7 @@ Namespace Invoices.Business
         ''' Loads a <see cref="ProductTypeNVL"/> collection from the database.
         ''' </summary>
         Protected Overloads Sub DataPortal_Fetch()
-            Using ctx = ConnectionManager(Of SqlConnection).GetManager("InvoicesDatabase")
+            Using ctx = ConnectionManager(Of SqlConnection).GetManager("Invoices")
                 Using cmd = New SqlCommand("dbo.GetProductTypeNVL", ctx.Connection)
                     cmd.CommandType = CommandType.StoredProcedure
                     Dim args = New DataPortalHookArgs(cmd)

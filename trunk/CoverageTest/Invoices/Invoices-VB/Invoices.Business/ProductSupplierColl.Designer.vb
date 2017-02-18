@@ -21,7 +21,7 @@ Namespace Invoices.Business
 #Else
         Inherits BusinessListBase(Of ProductSupplierColl, ProductSupplierItem)
 #End If
-    
+
         #Region " Collection Business Methods "
 
         ''' <summary>

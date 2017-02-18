@@ -20,7 +20,7 @@ Namespace Invoices.Business
 #Else
         Inherits BusinessListBase(Of ProductTypeColl, ProductTypeItem)
 #End If
-    
+
         #Region " Collection Business Methods "
 
         ''' <summary>
@@ -154,7 +154,7 @@ Namespace Invoices.Business
         ''' Loads a <see cref="ProductTypeColl"/> collection from the database.
         ''' </summary>
         Protected Overloads Sub DataPortal_Fetch()
-            Using ctx = ConnectionManager(Of SqlConnection).GetManager("InvoicesDatabase")
+            Using ctx = ConnectionManager(Of SqlConnection).GetManager("Invoices")
                 Using cmd = New SqlCommand("dbo.GetProductTypeColl", ctx.Connection)
                     cmd.CommandType = CommandType.StoredProcedure
                     Dim args As New DataPortalHookArgs(cmd)
@@ -189,7 +189,7 @@ Namespace Invoices.Business
         ''' </summary>
         <Transactional(TransactionalTypes.TransactionScope)>
         Protected Overrides Sub DataPortal_Update()
-            Using ctx = ConnectionManager(Of SqlConnection).GetManager("InvoicesDatabase")
+            Using ctx = ConnectionManager(Of SqlConnection).GetManager("Invoices")
                 Child_Update()
             End Using
         End Sub

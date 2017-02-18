@@ -30,7 +30,7 @@ Namespace DocStore.Business
         Inherits MyBusinessListBase(Of CircTypeTagEditColl, CircTypeTagEdit)
         Implements IHaveInterface, IHaveGenericInterface(Of CircTypeTagEditColl)
 #End If
-    
+
         #Region " Collection Business Methods "
 
         ''' <summary>

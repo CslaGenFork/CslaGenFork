@@ -32,7 +32,7 @@ Namespace DocStore.Business
         Inherits MyDynamicListBase(Of DocClassEditDyna)
         Implements IHaveInterface, IHaveGenericInterface(Of DocClassEditDynaColl)
 #End If
-    
+
         #Region " Collection Business Methods "
 
         ''' <summary>

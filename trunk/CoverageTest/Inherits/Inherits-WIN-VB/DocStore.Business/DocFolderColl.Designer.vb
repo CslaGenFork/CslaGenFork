@@ -33,7 +33,7 @@ Namespace DocStore.Business
         Inherits MyBusinessListBase(Of DocFolderColl, DocFolder)
         Implements IHaveInterface, IHaveGenericInterface(Of DocFolderColl)
 #End If
-    
+
         #Region " Collection Business Methods "
 
         ''' <summary>

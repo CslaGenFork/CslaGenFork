@@ -141,7 +141,7 @@ Namespace Invoices.Business
         ''' <param name="parent">The parent object.</param>
         <Transactional(TransactionalTypes.TransactionScope)>
         Private Sub Child_Insert(parent As InvoiceEdit)
-            Using ctx = ConnectionManager(Of SqlConnection).GetManager("InvoicesDatabase")
+            Using ctx = ConnectionManager(Of SqlConnection).GetManager("Invoices")
                 Using cmd = New SqlCommand("dbo.AddInvoiceLineItem", ctx.Connection)
                     cmd.CommandType = CommandType.StoredProcedure
                     cmd.Parameters.AddWithValue("@InvoiceId", parent.InvoiceId).DbType = DbType.Guid
@@ -166,7 +166,7 @@ Namespace Invoices.Business
                 return
             End If
 
-            Using ctx = ConnectionManager(Of SqlConnection).GetManager("InvoicesDatabase")
+            Using ctx = ConnectionManager(Of SqlConnection).GetManager("Invoices")
                 Using cmd = New SqlCommand("dbo.UpdateInvoiceLineItem", ctx.Connection)
                     cmd.CommandType = CommandType.StoredProcedure
                     cmd.Parameters.AddWithValue("@InvoiceLineId", ReadProperty(InvoiceLineIdProperty)).DbType = DbType.Guid
@@ -186,7 +186,7 @@ Namespace Invoices.Business
         ''' </summary>
         <Transactional(TransactionalTypes.TransactionScope)>
         Private Sub Child_DeleteSelf()
-            Using ctx = ConnectionManager(Of SqlConnection).GetManager("InvoicesDatabase")
+            Using ctx = ConnectionManager(Of SqlConnection).GetManager("Invoices")
                 Using cmd = New SqlCommand("dbo.DeleteInvoiceLineItem", ctx.Connection)
                     cmd.CommandType = CommandType.StoredProcedure
                     cmd.Parameters.AddWithValue("@InvoiceLineId", ReadProperty(InvoiceLineIdProperty)).DbType = DbType.Guid

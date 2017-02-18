@@ -291,7 +291,7 @@ Namespace Invoices.Business
         ''' </summary>
         ''' <param name="invoiceId">The Invoice Id.</param>
         Protected Sub DataPortal_Fetch(invoiceId As Guid)
-            Using ctx = ConnectionManager(Of SqlConnection).GetManager("InvoicesDatabase")
+            Using ctx = ConnectionManager(Of SqlConnection).GetManager("Invoices")
                 Using cmd = New SqlCommand("dbo.GetInvoiceEdit", ctx.Connection)
                     cmd.CommandType = CommandType.StoredProcedure
                     cmd.Parameters.AddWithValue("@InvoiceId", invoiceId).DbType = DbType.Guid
@@ -348,7 +348,7 @@ Namespace Invoices.Business
         <Transactional(TransactionalTypes.TransactionScope)>
         Protected Overrides Sub DataPortal_Insert()
             SimpleAuditTrail()
-            Using ctx = ConnectionManager(Of SqlConnection).GetManager("InvoicesDatabase")
+            Using ctx = ConnectionManager(Of SqlConnection).GetManager("Invoices")
                 Using cmd = New SqlCommand("dbo.AddInvoiceEdit", ctx.Connection)
                     cmd.CommandType = CommandType.StoredProcedure
                     cmd.Parameters.AddWithValue("@InvoiceId", ReadProperty(InvoiceIdProperty)).DbType = DbType.Guid
@@ -377,7 +377,7 @@ Namespace Invoices.Business
         <Transactional(TransactionalTypes.TransactionScope)>
         Protected Overrides Sub DataPortal_Update()
             SimpleAuditTrail()
-            Using ctx = ConnectionManager(Of SqlConnection).GetManager("InvoicesDatabase")
+            Using ctx = ConnectionManager(Of SqlConnection).GetManager("Invoices")
                 Using cmd = New SqlCommand("dbo.UpdateInvoiceEdit", ctx.Connection)
                     cmd.CommandType = CommandType.StoredProcedure
                     cmd.Parameters.AddWithValue("@InvoiceId", ReadProperty(InvoiceIdProperty)).DbType = DbType.Guid
@@ -423,7 +423,7 @@ Namespace Invoices.Business
         Protected Sub DataPortal_Delete(invoiceId As Guid)
             ' audit the object, just in case soft delete is used on this object
             SimpleAuditTrail()
-            Using ctx = ConnectionManager(Of SqlConnection).GetManager("InvoicesDatabase")
+            Using ctx = ConnectionManager(Of SqlConnection).GetManager("Invoices")
                 ' flushes all pending data operations
                 FieldManager.UpdateChildren(Me)
                 Using cmd = New SqlCommand("dbo.DeleteInvoiceEdit", ctx.Connection)

@@ -232,7 +232,7 @@ namespace Invoices.Business
         /// <param name="customerId">The Customer Id.</param>
         protected void DataPortal_Fetch(string customerId)
         {
-            using (var ctx = ConnectionManager<SqlConnection>.GetManager("InvoicesDatabase"))
+            using (var ctx = ConnectionManager<SqlConnection>.GetManager("Invoices"))
             {
                 GetQueryGetCustomerEdit(customerId);
                 using (var cmd = new SqlCommand(getCustomerEditInlineQuery, ctx.Connection))
@@ -285,7 +285,7 @@ namespace Invoices.Business
         [Transactional(TransactionalTypes.TransactionScope)]
         protected override void DataPortal_Insert()
         {
-            using (var ctx = ConnectionManager<SqlConnection>.GetManager("InvoicesDatabase"))
+            using (var ctx = ConnectionManager<SqlConnection>.GetManager("Invoices"))
             {
                 GetQueryAddCustomerEdit();
                 using (var cmd = new SqlCommand(addCustomerEditInlineQuery, ctx.Connection))
@@ -313,7 +313,7 @@ namespace Invoices.Business
         [Transactional(TransactionalTypes.TransactionScope)]
         protected override void DataPortal_Update()
         {
-            using (var ctx = ConnectionManager<SqlConnection>.GetManager("InvoicesDatabase"))
+            using (var ctx = ConnectionManager<SqlConnection>.GetManager("Invoices"))
             {
                 GetQueryUpdateCustomerEdit();
                 using (var cmd = new SqlCommand(updateCustomerEditInlineQuery, ctx.Connection))
@@ -350,7 +350,7 @@ namespace Invoices.Business
         [Transactional(TransactionalTypes.TransactionScope)]
         protected void DataPortal_Delete(string customerId)
         {
-            using (var ctx = ConnectionManager<SqlConnection>.GetManager("InvoicesDatabase"))
+            using (var ctx = ConnectionManager<SqlConnection>.GetManager("Invoices"))
             {
                 GetQueryDeleteCustomerEdit(customerId);
                 using (var cmd = new SqlCommand(deleteCustomerEditInlineQuery, ctx.Connection))

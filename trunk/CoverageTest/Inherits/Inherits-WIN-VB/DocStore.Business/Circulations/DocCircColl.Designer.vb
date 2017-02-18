@@ -33,7 +33,7 @@ Namespace DocStore.Business.Circulations
         Inherits BusinessListBase(Of DocCircColl, DocCirc)
         Implements IHaveInterface, IHaveGenericInterface(Of DocCircColl)
 #End If
-    
+
         #Region " Collection Business Methods "
 
         ''' <summary>

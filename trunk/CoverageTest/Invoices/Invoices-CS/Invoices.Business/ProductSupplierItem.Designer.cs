@@ -109,7 +109,7 @@ namespace Invoices.Business
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_Insert(ProductEdit parent)
         {
-            using (var ctx = ConnectionManager<SqlConnection>.GetManager("InvoicesDatabase"))
+            using (var ctx = ConnectionManager<SqlConnection>.GetManager("Invoices"))
             {
                 using (var cmd = new SqlCommand("dbo.AddProductSupplierItem", ctx.Connection))
                 {
@@ -135,7 +135,7 @@ namespace Invoices.Business
             if (!IsDirty)
                 return;
 
-            using (var ctx = ConnectionManager<SqlConnection>.GetManager("InvoicesDatabase"))
+            using (var ctx = ConnectionManager<SqlConnection>.GetManager("Invoices"))
             {
                 using (var cmd = new SqlCommand("dbo.UpdateProductSupplierItem", ctx.Connection))
                 {
@@ -156,7 +156,7 @@ namespace Invoices.Business
         [Transactional(TransactionalTypes.TransactionScope)]
         private void Child_DeleteSelf()
         {
-            using (var ctx = ConnectionManager<SqlConnection>.GetManager("InvoicesDatabase"))
+            using (var ctx = ConnectionManager<SqlConnection>.GetManager("Invoices"))
             {
                 using (var cmd = new SqlCommand("dbo.DeleteProductSupplierItem", ctx.Connection))
                 {

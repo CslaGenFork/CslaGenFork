@@ -28,7 +28,7 @@ Namespace DocStore.Business
 #Else
         Inherits MyDynamicListBase(Of DocStatusEditDyna)
 #End If
-    
+
         #Region " Collection Business Methods "
 
         ''' <summary>

@@ -149,7 +149,7 @@ namespace Invoices.Business
         /// <param name="productTypeId">The Product Type Id.</param>
         protected void DataPortal_Fetch(int productTypeId)
         {
-            using (var ctx = ConnectionManager<SqlConnection>.GetManager("InvoicesDatabase"))
+            using (var ctx = ConnectionManager<SqlConnection>.GetManager("Invoices"))
             {
                 using (var cmd = new SqlCommand("dbo.GetProductTypeEdit", ctx.Connection))
                 {
@@ -195,7 +195,7 @@ namespace Invoices.Business
         [Transactional(TransactionalTypes.TransactionScope)]
         protected override void DataPortal_Insert()
         {
-            using (var ctx = ConnectionManager<SqlConnection>.GetManager("InvoicesDatabase"))
+            using (var ctx = ConnectionManager<SqlConnection>.GetManager("Invoices"))
             {
                 using (var cmd = new SqlCommand("dbo.AddProductTypeEdit", ctx.Connection))
                 {
@@ -217,7 +217,7 @@ namespace Invoices.Business
         [Transactional(TransactionalTypes.TransactionScope)]
         protected override void DataPortal_Update()
         {
-            using (var ctx = ConnectionManager<SqlConnection>.GetManager("InvoicesDatabase"))
+            using (var ctx = ConnectionManager<SqlConnection>.GetManager("Invoices"))
             {
                 using (var cmd = new SqlCommand("dbo.UpdateProductTypeEdit", ctx.Connection))
                 {
@@ -247,7 +247,7 @@ namespace Invoices.Business
         [Transactional(TransactionalTypes.TransactionScope)]
         protected void DataPortal_Delete(int productTypeId)
         {
-            using (var ctx = ConnectionManager<SqlConnection>.GetManager("InvoicesDatabase"))
+            using (var ctx = ConnectionManager<SqlConnection>.GetManager("Invoices"))
             {
                 using (var cmd = new SqlCommand("dbo.DeleteProductTypeEdit", ctx.Connection))
                 {

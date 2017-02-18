@@ -89,7 +89,7 @@ Namespace Invoices.Business
         ''' </summary>
         ''' <param name="productTypeId">The Product Type Id.</param>
         Protected Sub DataPortal_Fetch(productTypeId As Integer)
-            Using ctx = ConnectionManager(Of SqlConnection).GetManager("InvoicesDatabase")
+            Using ctx = ConnectionManager(Of SqlConnection).GetManager("Invoices")
                 Using cmd = New SqlCommand("dbo.GetProductTypeRO", ctx.Connection)
                     cmd.CommandType = CommandType.StoredProcedure
                     cmd.Parameters.AddWithValue("@ProductTypeId", productTypeId).DbType = DbType.Int32
