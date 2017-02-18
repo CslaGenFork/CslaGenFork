@@ -1,0 +1,311 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FF72A3C3-DD3B-4A80-83A2-43ED5D93BF34}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Invoices_DbClass_VB</RootNamespace>
+    <AssemblyName>Invoices-DbClass-VB</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>Windows</MyType>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>Invoices-DbClass-VB.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>Invoices-DbClass-VB.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Csla, Version=4.6.500.0, Culture=neutral, PublicKeyToken=93be5fdc093e4c30, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\CSLA-Core.4.6.500\lib\net45\Csla.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+    <Import Include="System.Threading.Tasks" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CriteriaSearchInvoice.Designer.vb">
+      <DependentUpon>CriteriaSearchInvoice.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CriteriaSearchInvoice.vb" />
+    <Compile Include="CustomerEdit.Designer.vb">
+      <DependentUpon>CustomerEdit.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CustomerEdit.vb" />
+    <Compile Include="CustomerInfo.Designer.vb">
+      <DependentUpon>CustomerInfo.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CustomerInfo.vb" />
+    <Compile Include="CustomerList.Designer.vb">
+      <DependentUpon>CustomerList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CustomerList.vb" />
+    <Compile Include="DatabaseInvoices.vb" />
+    <Compile Include="DataPortalHookArgs.vb" />
+    <Compile Include="InvoiceCreator.Designer.vb">
+      <DependentUpon>InvoiceCreator.vb</DependentUpon>
+    </Compile>
+    <Compile Include="InvoiceCreator.vb" />
+    <Compile Include="InvoiceCreatorGetter.Designer.vb">
+      <DependentUpon>InvoiceCreatorGetter.vb</DependentUpon>
+    </Compile>
+    <Compile Include="InvoiceCreatorGetter.vb" />
+    <Compile Include="InvoiceEdit.Designer.vb">
+      <DependentUpon>InvoiceEdit.vb</DependentUpon>
+    </Compile>
+    <Compile Include="InvoiceEdit.vb" />
+    <Compile Include="InvoiceGetter.Designer.vb">
+      <DependentUpon>InvoiceGetter.vb</DependentUpon>
+    </Compile>
+    <Compile Include="InvoiceGetter.vb" />
+    <Compile Include="InvoiceInfo.Designer.vb">
+      <DependentUpon>InvoiceInfo.vb</DependentUpon>
+    </Compile>
+    <Compile Include="InvoiceInfo.vb" />
+    <Compile Include="InvoiceLineCollection.Designer.vb">
+      <DependentUpon>InvoiceLineCollection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="InvoiceLineCollection.vb" />
+    <Compile Include="InvoiceLineInfo.Designer.vb">
+      <DependentUpon>InvoiceLineInfo.vb</DependentUpon>
+    </Compile>
+    <Compile Include="InvoiceLineInfo.vb" />
+    <Compile Include="InvoiceLineItem.Designer.vb">
+      <DependentUpon>InvoiceLineItem.vb</DependentUpon>
+    </Compile>
+    <Compile Include="InvoiceLineItem.vb" />
+    <Compile Include="InvoiceLineList.Designer.vb">
+      <DependentUpon>InvoiceLineList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="InvoiceLineList.vb" />
+    <Compile Include="InvoiceList.Designer.vb">
+      <DependentUpon>InvoiceList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="InvoiceList.vb" />
+    <Compile Include="InvoiceListGetter.Designer.vb">
+      <DependentUpon>InvoiceListGetter.vb</DependentUpon>
+    </Compile>
+    <Compile Include="InvoiceListGetter.vb" />
+    <Compile Include="InvoiceView.Designer.vb">
+      <DependentUpon>InvoiceView.vb</DependentUpon>
+    </Compile>
+    <Compile Include="InvoiceView.vb" />
+    <Compile Include="LoggerBusinessBase.Designer.vb">
+      <DependentUpon>LoggerBusinessBase.vb</DependentUpon>
+    </Compile>
+    <Compile Include="LoggerBusinessBase.vb" />
+    <Compile Include="LoggerBusinessBindingListBase.Designer.vb">
+      <DependentUpon>LoggerBusinessBindingListBase.vb</DependentUpon>
+    </Compile>
+    <Compile Include="LoggerBusinessBindingListBase.vb" />
+    <Compile Include="LoggerBusinessListBase.Designer.vb">
+      <DependentUpon>LoggerBusinessListBase.vb</DependentUpon>
+    </Compile>
+    <Compile Include="LoggerBusinessListBase.vb" />
+    <Compile Include="LoggerDynamicBindingListBase.Designer.vb">
+      <DependentUpon>LoggerDynamicBindingListBase.vb</DependentUpon>
+    </Compile>
+    <Compile Include="LoggerDynamicBindingListBase.vb" />
+    <Compile Include="LoggerDynamicListBase.Designer.vb">
+      <DependentUpon>LoggerDynamicListBase.vb</DependentUpon>
+    </Compile>
+    <Compile Include="LoggerDynamicListBase.vb" />
+    <Compile Include="LoggerReadOnlyBase.Designer.vb">
+      <DependentUpon>LoggerReadOnlyBase.vb</DependentUpon>
+    </Compile>
+    <Compile Include="LoggerReadOnlyBase.vb" />
+    <Compile Include="LoggerReadOnlyBindingListBase.Designer.vb">
+      <DependentUpon>LoggerReadOnlyBindingListBase.vb</DependentUpon>
+    </Compile>
+    <Compile Include="LoggerReadOnlyBindingListBase.vb" />
+    <Compile Include="LoggerReadOnlyListBase.Designer.vb">
+      <DependentUpon>LoggerReadOnlyListBase.vb</DependentUpon>
+    </Compile>
+    <Compile Include="LoggerReadOnlyListBase.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="ProductEdit.Designer.vb">
+      <DependentUpon>ProductEdit.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ProductEdit.vb" />
+    <Compile Include="ProductInfo.Designer.vb">
+      <DependentUpon>ProductInfo.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ProductInfo.vb" />
+    <Compile Include="ProductList.Designer.vb">
+      <DependentUpon>ProductList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ProductList.vb" />
+    <Compile Include="ProductSupplierColl.Designer.vb">
+      <DependentUpon>ProductSupplierColl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ProductSupplierColl.vb" />
+    <Compile Include="ProductSupplierItem.Designer.vb">
+      <DependentUpon>ProductSupplierItem.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ProductSupplierItem.vb" />
+    <Compile Include="ProductTypeCachedInfo.Designer.vb">
+      <DependentUpon>ProductTypeCachedInfo.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTypeCachedInfo.vb" />
+    <Compile Include="ProductTypeCachedList.Designer.vb">
+      <DependentUpon>ProductTypeCachedList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTypeCachedList.vb" />
+    <Compile Include="ProductTypeCachedNVL.Designer.vb">
+      <DependentUpon>ProductTypeCachedNVL.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTypeCachedNVL.vb" />
+    <Compile Include="ProductTypeColl.Designer.vb">
+      <DependentUpon>ProductTypeColl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTypeColl.vb" />
+    <Compile Include="ProductTypeDynaColl.Designer.vb">
+      <DependentUpon>ProductTypeDynaColl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTypeDynaColl.vb" />
+    <Compile Include="ProductTypeDynaItem.Designer.vb">
+      <DependentUpon>ProductTypeDynaItem.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTypeDynaItem.vb" />
+    <Compile Include="ProductTypeEdit.Designer.vb">
+      <DependentUpon>ProductTypeEdit.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTypeEdit.vb" />
+    <Compile Include="ProductTypeInfo.Designer.vb">
+      <DependentUpon>ProductTypeInfo.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTypeInfo.vb" />
+    <Compile Include="ProductTypeItem.Designer.vb">
+      <DependentUpon>ProductTypeItem.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTypeItem.vb" />
+    <Compile Include="ProductTypeList.Designer.vb">
+      <DependentUpon>ProductTypeList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTypeList.vb" />
+    <Compile Include="ProductTypeNVL.Designer.vb">
+      <DependentUpon>ProductTypeNVL.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTypeNVL.vb" />
+    <Compile Include="ProductTypeRO.Designer.vb">
+      <DependentUpon>ProductTypeRO.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTypeRO.vb" />
+    <Compile Include="ProductTypeUpdatedByRootInfo.Designer.vb">
+      <DependentUpon>ProductTypeUpdatedByRootInfo.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTypeUpdatedByRootInfo.vb" />
+    <Compile Include="ProductTypeUpdatedByRootList.Designer.vb">
+      <DependentUpon>ProductTypeUpdatedByRootList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTypeUpdatedByRootList.vb" />
+    <Compile Include="SupplierEdit.Designer.vb">
+      <DependentUpon>SupplierEdit.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SupplierEdit.vb" />
+    <Compile Include="SupplierInfo.Designer.vb">
+      <DependentUpon>SupplierInfo.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SupplierInfo.vb" />
+    <Compile Include="SupplierList.Designer.vb">
+      <DependentUpon>SupplierList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SupplierList.vb" />
+    <Compile Include="SupplierProductColl.Designer.vb">
+      <DependentUpon>SupplierProductColl.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SupplierProductColl.vb" />
+    <Compile Include="SupplierProductItem.Designer.vb">
+      <DependentUpon>SupplierProductItem.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SupplierProductItem.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\..\..\packages\CSLA-Core.4.6.500\analyzers\c#\Csla.Analyzers.dll" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

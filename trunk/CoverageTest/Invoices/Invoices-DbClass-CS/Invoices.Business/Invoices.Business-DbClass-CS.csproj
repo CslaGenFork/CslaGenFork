@@ -1,0 +1,257 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FD52F928-3218-4A24-BB43-22FF01EAADD0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Invoices_DbClass_CS</RootNamespace>
+    <AssemblyName>Invoices-DbClass-CS</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Csla, Version=4.6.500.0, Culture=neutral, PublicKeyToken=93be5fdc093e4c30, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\CSLA-Core.4.6.500\lib\net45\Csla.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CriteriaSearchInvoice.cs" />
+    <Compile Include="CriteriaSearchInvoice.Designer.cs">
+      <DependentUpon>CriteriaSearchInvoice.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CustomerEdit.cs" />
+    <Compile Include="CustomerEdit.Designer.cs">
+      <DependentUpon>CustomerEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CustomerInfo.cs" />
+    <Compile Include="CustomerInfo.Designer.cs">
+      <DependentUpon>CustomerInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CustomerList.cs" />
+    <Compile Include="CustomerList.Designer.cs">
+      <DependentUpon>CustomerList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseInvoices.cs" />
+    <Compile Include="DataPortalHookArgs.cs" />
+    <Compile Include="InvoiceCreator.cs" />
+    <Compile Include="InvoiceCreator.Designer.cs">
+      <DependentUpon>InvoiceCreator.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InvoiceCreatorGetter.cs" />
+    <Compile Include="InvoiceCreatorGetter.Designer.cs">
+      <DependentUpon>InvoiceCreatorGetter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InvoiceEdit.cs" />
+    <Compile Include="InvoiceEdit.Designer.cs">
+      <DependentUpon>InvoiceEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InvoiceGetter.cs" />
+    <Compile Include="InvoiceGetter.Designer.cs">
+      <DependentUpon>InvoiceGetter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InvoiceInfo.cs" />
+    <Compile Include="InvoiceInfo.Designer.cs">
+      <DependentUpon>InvoiceInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InvoiceLineCollection.cs" />
+    <Compile Include="InvoiceLineCollection.Designer.cs">
+      <DependentUpon>InvoiceLineCollection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InvoiceLineInfo.cs" />
+    <Compile Include="InvoiceLineInfo.Designer.cs">
+      <DependentUpon>InvoiceLineInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InvoiceLineItem.cs" />
+    <Compile Include="InvoiceLineItem.Designer.cs">
+      <DependentUpon>InvoiceLineItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InvoiceLineList.cs" />
+    <Compile Include="InvoiceLineList.Designer.cs">
+      <DependentUpon>InvoiceLineList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InvoiceList.cs" />
+    <Compile Include="InvoiceList.Designer.cs">
+      <DependentUpon>InvoiceList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InvoiceListGetter.cs" />
+    <Compile Include="InvoiceListGetter.Designer.cs">
+      <DependentUpon>InvoiceListGetter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InvoiceView.cs" />
+    <Compile Include="InvoiceView.Designer.cs">
+      <DependentUpon>InvoiceView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LoggerBusinessBase.cs" />
+    <Compile Include="LoggerBusinessBase.Designer.cs">
+      <DependentUpon>LoggerBusinessBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LoggerBusinessBindingListBase.cs" />
+    <Compile Include="LoggerBusinessBindingListBase.Designer.cs">
+      <DependentUpon>LoggerBusinessBindingListBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LoggerBusinessListBase.cs" />
+    <Compile Include="LoggerBusinessListBase.Designer.cs">
+      <DependentUpon>LoggerBusinessListBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LoggerDynamicBindingListBase.cs" />
+    <Compile Include="LoggerDynamicBindingListBase.Designer.cs">
+      <DependentUpon>LoggerDynamicBindingListBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LoggerDynamicListBase.cs" />
+    <Compile Include="LoggerDynamicListBase.Designer.cs">
+      <DependentUpon>LoggerDynamicListBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LoggerReadOnlyBase.cs" />
+    <Compile Include="LoggerReadOnlyBase.Designer.cs">
+      <DependentUpon>LoggerReadOnlyBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LoggerReadOnlyBindingListBase.cs" />
+    <Compile Include="LoggerReadOnlyBindingListBase.Designer.cs">
+      <DependentUpon>LoggerReadOnlyBindingListBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LoggerReadOnlyListBase.cs" />
+    <Compile Include="LoggerReadOnlyListBase.Designer.cs">
+      <DependentUpon>LoggerReadOnlyListBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductEdit.cs" />
+    <Compile Include="ProductEdit.Designer.cs">
+      <DependentUpon>ProductEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductInfo.cs" />
+    <Compile Include="ProductInfo.Designer.cs">
+      <DependentUpon>ProductInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductList.cs" />
+    <Compile Include="ProductList.Designer.cs">
+      <DependentUpon>ProductList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductSupplierColl.cs" />
+    <Compile Include="ProductSupplierColl.Designer.cs">
+      <DependentUpon>ProductSupplierColl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductSupplierItem.cs" />
+    <Compile Include="ProductSupplierItem.Designer.cs">
+      <DependentUpon>ProductSupplierItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTypeCachedInfo.cs" />
+    <Compile Include="ProductTypeCachedInfo.Designer.cs">
+      <DependentUpon>ProductTypeCachedInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTypeCachedList.cs" />
+    <Compile Include="ProductTypeCachedList.Designer.cs">
+      <DependentUpon>ProductTypeCachedList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTypeCachedNVL.cs" />
+    <Compile Include="ProductTypeCachedNVL.Designer.cs">
+      <DependentUpon>ProductTypeCachedNVL.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTypeColl.cs" />
+    <Compile Include="ProductTypeColl.Designer.cs">
+      <DependentUpon>ProductTypeColl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTypeDynaColl.cs" />
+    <Compile Include="ProductTypeDynaColl.Designer.cs">
+      <DependentUpon>ProductTypeDynaColl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTypeDynaItem.cs" />
+    <Compile Include="ProductTypeDynaItem.Designer.cs">
+      <DependentUpon>ProductTypeDynaItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTypeEdit.cs" />
+    <Compile Include="ProductTypeEdit.Designer.cs">
+      <DependentUpon>ProductTypeEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTypeInfo.cs" />
+    <Compile Include="ProductTypeInfo.Designer.cs">
+      <DependentUpon>ProductTypeInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTypeItem.cs" />
+    <Compile Include="ProductTypeItem.Designer.cs">
+      <DependentUpon>ProductTypeItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTypeList.cs" />
+    <Compile Include="ProductTypeList.Designer.cs">
+      <DependentUpon>ProductTypeList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTypeNVL.cs" />
+    <Compile Include="ProductTypeNVL.Designer.cs">
+      <DependentUpon>ProductTypeNVL.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTypeRO.cs" />
+    <Compile Include="ProductTypeRO.Designer.cs">
+      <DependentUpon>ProductTypeRO.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTypeUpdatedByRootInfo.cs" />
+    <Compile Include="ProductTypeUpdatedByRootInfo.Designer.cs">
+      <DependentUpon>ProductTypeUpdatedByRootInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTypeUpdatedByRootList.cs" />
+    <Compile Include="ProductTypeUpdatedByRootList.Designer.cs">
+      <DependentUpon>ProductTypeUpdatedByRootList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SupplierEdit.cs" />
+    <Compile Include="SupplierEdit.Designer.cs">
+      <DependentUpon>SupplierEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SupplierInfo.cs" />
+    <Compile Include="SupplierInfo.Designer.cs">
+      <DependentUpon>SupplierInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SupplierList.cs" />
+    <Compile Include="SupplierList.Designer.cs">
+      <DependentUpon>SupplierList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SupplierProductColl.cs" />
+    <Compile Include="SupplierProductColl.Designer.cs">
+      <DependentUpon>SupplierProductColl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SupplierProductItem.cs" />
+    <Compile Include="SupplierProductItem.Designer.cs">
+      <DependentUpon>SupplierProductItem.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\..\..\packages\CSLA-Core.4.6.500\analyzers\c#\Csla.Analyzers.dll" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

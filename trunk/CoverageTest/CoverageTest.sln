@@ -49,6 +49,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Invoices.DataAccess", "Invo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Invoices.DataAccess.Sql", "Invoices-CS-DAL-DR\Invoices.DataAccess.Sql\Invoices.DataAccess.Sql.csproj", "{A4E393FA-0274-4ED1-B5C8-5EF450DB2CBC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Invoices.Business-DbClass-CS", "Invoices\Invoices-DbClass-CS\Invoices.Business\Invoices.Business-DbClass-CS.csproj", "{FD52F928-3218-4A24-BB43-22FF01EAADD0}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Invoices.Business-DbClass-VB", "Invoices\Invoices-DbClass-VB\Invoices.Business\Invoices.Business-DbClass-VB.vbproj", "{FF72A3C3-DD3B-4A80-83A2-43ED5D93BF34}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -131,6 +135,14 @@ Global
 		{A4E393FA-0274-4ED1-B5C8-5EF450DB2CBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4E393FA-0274-4ED1-B5C8-5EF450DB2CBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A4E393FA-0274-4ED1-B5C8-5EF450DB2CBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD52F928-3218-4A24-BB43-22FF01EAADD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD52F928-3218-4A24-BB43-22FF01EAADD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD52F928-3218-4A24-BB43-22FF01EAADD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD52F928-3218-4A24-BB43-22FF01EAADD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF72A3C3-DD3B-4A80-83A2-43ED5D93BF34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF72A3C3-DD3B-4A80-83A2-43ED5D93BF34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF72A3C3-DD3B-4A80-83A2-43ED5D93BF34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF72A3C3-DD3B-4A80-83A2-43ED5D93BF34}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
