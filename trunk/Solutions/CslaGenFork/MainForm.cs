@@ -749,6 +749,7 @@ namespace CslaGenerator
             projectToolStripMenuItem.Enabled = true;
             dataBaseToolStripMenuItem.Enabled = true;
             fixPrimaryKeys.Enabled = true;
+            reSyncNullable.Enabled = true;
             changeTimestampToReadOnlyNotUndoable.Enabled = true;
             changeSimpleAuditToReadOnlyNotUndoable.Enabled = true;
             convertDateTimeToSmartDate.Enabled = true;
@@ -1377,6 +1378,40 @@ namespace CslaGenerator
             }
             _outputPanel.AddOutputInfo(Environment.NewLine +
                                        "Fix Primary Key properties is done." +
+                                       Environment.NewLine);
+        }
+
+        private void reSyncNullable_Click(object sender, EventArgs e)
+        {
+            _outputPanel.AddOutputInfo(Environment.NewLine + "Re-sync Nullable properties..." + Environment.NewLine);
+            foreach (var info in _controller.CurrentUnit.CslaObjects)
+            {
+                if (info.IsBaseClass() || info.IsPlaceHolder())
+                    continue;
+
+                var counter = 0;
+
+                foreach (ValueProperty prop in info.ValueProperties)
+                {
+                    if (prop.IsDatabaseBound)
+                    {
+                        var tempCounter = 0;
+                        if (prop.Nullable != prop.DbBindColumn.IsNullable)
+                        {
+                            prop.Nullable = prop.DbBindColumn.IsNullable;
+                            tempCounter++;
+                        }
+
+                        if (tempCounter > 0)
+                            counter++;
+                    }
+                }
+
+                if (counter > 0)
+                    _outputPanel.AddOutputInfo(info.ObjectName + ": changed " + counter + " Nullable properties.");
+            }
+            _outputPanel.AddOutputInfo(Environment.NewLine +
+                                       "Re-sync Nullable properties is done." +
                                        Environment.NewLine);
         }
 

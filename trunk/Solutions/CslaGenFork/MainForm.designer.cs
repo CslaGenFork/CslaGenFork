@@ -86,6 +86,7 @@ namespace CslaGenerator
             this.retrieveSummariesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
             this.fixPrimaryKeys = new System.Windows.Forms.ToolStripMenuItem();
+            this.reSyncNullable = new System.Windows.Forms.ToolStripMenuItem();
             this.changeTimestampToReadOnlyNotUndoable = new System.Windows.Forms.ToolStripMenuItem();
             this.changeSimpleAuditToReadOnlyNotUndoable = new System.Windows.Forms.ToolStripMenuItem();
             this.convertDateTimeToSmartDate = new System.Windows.Forms.ToolStripMenuItem();
@@ -457,6 +458,7 @@ namespace CslaGenerator
             // 
             this.toolStripMenuItem4.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fixPrimaryKeys,
+            this.reSyncNullable,
             this.changeTimestampToReadOnlyNotUndoable,
             this.changeSimpleAuditToReadOnlyNotUndoable,
             this.convertDateTimeToSmartDate,
@@ -477,6 +479,14 @@ namespace CslaGenerator
             this.fixPrimaryKeys.Size = new System.Drawing.Size(200, 22);
             this.fixPrimaryKeys.Text = "Fix Primary Key properties...";
             this.fixPrimaryKeys.Click += new System.EventHandler(this.FixPrimaryKeys_Click);
+            // 
+            // reSyncNullable
+            // 
+            this.reSyncNullable.Enabled = false;
+            this.reSyncNullable.Name = "reSyncNullable";
+            this.reSyncNullable.Size = new System.Drawing.Size(200, 22);
+            this.reSyncNullable.Text = "Re-sync Nullable properties";
+            this.reSyncNullable.Click += new System.EventHandler(this.reSyncNullable_Click);
             // 
             // changeTimestampToReadOnlyNotUndoable
             // 
@@ -1125,6 +1135,7 @@ namespace CslaGenerator
         private ToolStripProgressBar progressBar;
         private ToolStripMenuItem toolStripMenuItem4;
         private ToolStripMenuItem fixPrimaryKeys;
+        private ToolStripMenuItem reSyncNullable;
         private ToolStripMenuItem changeTimestampToReadOnlyNotUndoable;
         private ToolStripMenuItem changeSimpleAuditToReadOnlyNotUndoable;
         private ToolStripMenuItem convertDateTimeToSmartDate;
