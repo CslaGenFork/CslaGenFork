@@ -62,7 +62,7 @@ namespace CslaGenerator.Design
                         foreach (var prop in crit.Properties)
                         {
                             _lstProperties.Items.Add(new DictionaryEntry(crit.Name + "." + prop.Name,
-                                                                         new Parameter(crit, prop)));
+                                                                         new Parameter(crit.Name, prop.Name)));
                         }
                     }
                 }
@@ -70,13 +70,13 @@ namespace CslaGenerator.Design
 
                 foreach (var param in paramColl)
                 {
-                    var key = param.Criteria.Name + "." + param.Property.Name;
-                    foreach (var entry in _lstProperties.Items)
+                    var key = param.CriteriaName + "." + param.PropertyName;
+                    for (var index = 0; index < _lstProperties.Items.Count; index++)
                     {
-                        if (key == ((DictionaryEntry)entry).Key.ToString())
+                        var entry = _lstProperties.Items[index];
+                        if (key == ((DictionaryEntry) entry).Key.ToString())
                         {
-                            var val = (Parameter)((DictionaryEntry)entry).Value;
-                            _lstProperties.SelectedItems.Add(new DictionaryEntry(key, val));
+                            _lstProperties.SelectedItems.Add(entry);
                         }
                     }
                 }

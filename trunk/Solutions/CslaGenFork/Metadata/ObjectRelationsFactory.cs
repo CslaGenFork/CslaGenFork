@@ -388,7 +388,7 @@ namespace CslaGenerator.Metadata
                     child.LoadParameters.Clear();
                     foreach (var property in criteria.Properties)
                     {
-                        child.LoadParameters.Add(new Parameter(criteria, property));
+                        child.LoadParameters.Add(new Parameter(criteria.Name, property.Name));
                     }
                 }
             }

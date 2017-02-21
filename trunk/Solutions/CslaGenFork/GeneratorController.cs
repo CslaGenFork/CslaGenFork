@@ -224,6 +224,7 @@ namespace CslaGenerator
 
         internal void Load(string filePath)
         {
+            bool forceSave = false;
             IsLoading = true;
             LoadingTimer.Restart();
 
@@ -248,7 +249,7 @@ namespace CslaGenerator
                                 fs.Dispose();
                             }
 
-                            VersionHelper.SolveVersionNumberIssues(filePath, null);
+                            forceSave = VersionHelper.SolveVersionNumberIssues(filePath, null);
                             converted = true;
                             NewCslaUnit();
                         }
@@ -268,7 +269,7 @@ namespace CslaGenerator
                         if (exception.InnerException == null || converted)
                             throw;
 
-                        VersionHelper.SolveVersionNumberIssues(filePath, exception);
+                        forceSave = VersionHelper.SolveVersionNumberIssues(filePath, exception);
                         if (FixXmlSchemaErrors(filePath, exception))
                         {
                             converted = true;
@@ -286,6 +287,9 @@ namespace CslaGenerator
                     fs.Close();
                     fs.Dispose();
                 }
+
+                if (forceSave)
+                    Save(filePath);
 
                 CurrentUnit.FileVersion = VersionHelper.CurrentFileVersion;
 
@@ -543,7 +547,10 @@ namespace CslaGenerator
             {
                 Cursor.Current = Cursors.Default;
                 if (fs != null)
+                {
                     fs.Close();
+                    fs.Dispose();
+                }
             }
 
             if (success)
@@ -579,7 +586,10 @@ namespace CslaGenerator
             {
                 Cursor.Current = Cursors.Default;
                 if (fs != null)
+                {
                     fs.Close();
+                    fs.Dispose();
+                }
             }
             if (success)
             {

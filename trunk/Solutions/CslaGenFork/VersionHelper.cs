@@ -1,14 +1,16 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Xml;
 
 namespace CslaGenerator
 {
     internal static class VersionHelper
     {
-        internal const string CurrentFileVersion = "4.0.5";
+        internal const string CurrentFileVersion = "4.0.6";
         private static string[] FileLines { get; set; }
         private static string _fileVersionFound;
+        private static bool _forceSave;
 
         public static void WriteAllLinesBetter(string path, params string[] lines)
         {
@@ -34,7 +36,7 @@ namespace CslaGenerator
             }
         }
 
-        internal static void SolveVersionNumberIssues(string filePath, Exception previousException)
+        internal static bool SolveVersionNumberIssues(string filePath, Exception previousException)
         {
             FileLines = File.ReadAllLines(filePath);
             var fileVersion = ExtractFileVersion();
@@ -45,6 +47,8 @@ namespace CslaGenerator
             var numericFileVersion = GetNumericFileVersion(fileVersion);
             HandleFileVersion(numericFileVersion);
             WriteAllLinesBetter(filePath, FileLines);
+
+            return _forceSave;
         }
 
         internal static string ExtractFileVersion()
@@ -96,6 +100,9 @@ namespace CslaGenerator
 
             if (numericFileVersion < 405)
                 Convert404To405();
+
+            if (numericFileVersion < 406)
+                Convert405To406();
         }
 
         private static void InsertFileVersionZero()
@@ -165,6 +172,109 @@ namespace CslaGenerator
             }
 
             _fileVersionFound = newFileVersion;
+        }
+
+        private static void Convert405To406()
+        {
+            var newFileVersion = "4.0.6";
+
+            var xmlFile = string.Empty;
+            for (var index = 1; index < FileLines.Length; index++)
+            {
+                var line = FileLines[index];
+                xmlFile += line;
+            }
+
+            XmlDocument xDoc = new XmlDocument();
+            xDoc.PreserveWhitespace = true;
+            xDoc.LoadXml(xmlFile);
+            XmlElement root = xDoc.DocumentElement;
+
+            XmlNodeList cslaObjects = root.SelectNodes("//CslaObjects");
+            if (cslaObjects != null)
+            {
+                foreach (XmlNode cslaObject in cslaObjects)
+                {
+                    XmlNodeList parameters = cslaObject.SelectNodes("//LoadParameters/Parameter");
+                    if (parameters != null)
+                    {
+                        for (var index = 0; index < parameters.Count; index++)
+                        {
+                            XmlNode newParameter = HandleParameter(xDoc, parameters[index]);
+                            XmlNode parentNode = parameters[index].ParentNode;
+                            parameters[index].ParentNode.RemoveChild(parameters[index]);
+                            parentNode.AppendChild(newParameter);
+                        }
+                    }
+                }
+            }
+
+            XmlNodeList associativeEntities = root.SelectNodes("//AssociativeEntities");
+            if (associativeEntities != null)
+            {
+                foreach (XmlNode associativeEntity in associativeEntities)
+                {
+                    XmlNodeList parameters = associativeEntity.SelectNodes("//MainLoadParameters/Parameter");
+                    if (parameters != null)
+                    {
+                        for (var index = 0; index < parameters.Count; index++)
+                        {
+                            XmlNode newParameter = HandleParameter(xDoc, parameters[index]);
+                            XmlNode parentNode = parameters[index].ParentNode;
+                            parameters[index].ParentNode.RemoveChild(parameters[index]);
+                            parentNode.AppendChild(newParameter);
+                        }
+                    }
+
+                    parameters = associativeEntity.SelectNodes("//SecondaryLoadParameters/Parameter");
+                    if (parameters != null)
+                    {
+                        for (var index = 0; index < parameters.Count; index++)
+                        {
+                            XmlNode newParameter = HandleParameter(xDoc, parameters[index]);
+                            XmlNode parentNode = parameters[index].ParentNode;
+                            parameters[index].ParentNode.RemoveChild(parameters[index]);
+                            parentNode.AppendChild(newParameter);
+                        }
+                    }
+                }
+            }
+
+            var firstline = FileLines[0];
+            FileLines = new[] {firstline, xDoc.InnerXml};
+
+            for (var index = 0; index < FileLines.Length; index++)
+            {
+                FileLines[index] = FileLines[index].Replace(@"<FileVersion>" + _fileVersionFound + "</FileVersion>",
+                    @"<FileVersion>" + newFileVersion + "</FileVersion>");
+            }
+
+            _fileVersionFound = newFileVersion;
+
+            _forceSave = true;
+        }
+
+        private static XmlNode HandleParameter(XmlDocument xDoc, XmlNode parameter)
+        {
+            XmlNodeList criteriaName = parameter.SelectNodes("./Criteria/Name");
+            XmlNodeList propertyName = parameter.SelectNodes("./Property/ParameterName");
+            XmlNode newParameter = xDoc.CreateNode(XmlNodeType.Element, "Parameter", string.Empty);
+
+            for (var index = 0; index < criteriaName.Count; index++)
+            {
+                XmlNode newCriteria = xDoc.CreateNode(XmlNodeType.Element, "CriteriaName", string.Empty);
+                newCriteria.InnerText = criteriaName[index].InnerText;
+                newParameter.AppendChild(newCriteria);
+            }
+
+            for (var index = 0; index < criteriaName.Count; index++)
+            {
+                XmlNode newProperty = xDoc.CreateNode(XmlNodeType.Element, "PropertyName", string.Empty);
+                newProperty.InnerText = propertyName[index].InnerText;
+                newParameter.AppendChild(newProperty);
+            }
+
+            return newParameter;
         }
 
         internal static int ReplaceEnum(string filePath, string originalItem, string replacementItem)

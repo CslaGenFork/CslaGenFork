@@ -7,7 +7,7 @@ namespace CslaGenerator.Metadata
         public virtual bool Contains(Criteria crit, Property prop)
         {
             for (var i = 0; i < Count; ++i)
-                if (this[i].Criteria == crit && this[i].Property == prop)
+                if (this[i].CriteriaName == crit.Name && this[i].PropertyName == prop.Name)
                     return true;
             return false;
         }
