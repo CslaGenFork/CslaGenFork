@@ -1180,7 +1180,7 @@ namespace CslaGenerator.Controls
                     {
                         foreach (var prop in crit.Properties)
                         {
-                            child.LoadParameters.Add(new Parameter(crit, prop));
+                            child.LoadParameters.Add(new Parameter(crit.Name, prop.Name));
                         }
                     }
                 }
@@ -1221,7 +1221,7 @@ namespace CslaGenerator.Controls
                     {
                         foreach (var prop in crit.Properties)
                         {
-                            coll.LoadParameters.Add(new Parameter(crit, prop));
+                            coll.LoadParameters.Add(new Parameter(crit.Name, prop.Name));
                         }
                     }
                 }

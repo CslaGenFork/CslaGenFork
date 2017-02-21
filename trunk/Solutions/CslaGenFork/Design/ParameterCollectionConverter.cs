@@ -44,7 +44,7 @@ namespace CslaGenerator.Design
                     {
                         if (!first) { sb.Append(", "); }
                         else { first = false; }
-                        sb.Append(param.Criteria.Name + "." + param.Property.Name);
+                        sb.Append(param.CriteriaName + "." + param.PropertyName);
                     }
                     return sb.ToString();
                 }

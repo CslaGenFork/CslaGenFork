@@ -60,8 +60,8 @@ namespace CslaGenerator.Design
                         cslaObject = associativeEntity.SecondaryObject;
                 }
                 var paramColl = (ParameterCollection)propInfo.GetValue(objinfo, null);
-                var objectColl = GeneratorController.Current.MainForm.ProjectPanel.Objects;
-                _instance = objectColl.Find(cslaObject);
+                //var objectColl = GeneratorController.Current.MainForm.ProjectPanel.Objects;
+                _instance = GeneratorController.Current.CurrentUnit.CslaObjects.FindByGenericName(cslaObject);
 
                 var criteriaInfo = typeof(CslaObjectInfo).GetProperty("CriteriaObjects");
                 var criteriaObjects = criteriaInfo.GetValue(_instance, null);
@@ -75,7 +75,7 @@ namespace CslaGenerator.Design
                         foreach (var prop in crit.Properties)
                         {
                             _lstProperties.Items.Add(new DictionaryEntry(crit.Name + "." + prop.Name,
-                                                                         new Parameter(crit, prop)));
+                                                                         new Parameter(crit.Name, prop.Name)));
                         }
                     }
                 }
@@ -83,7 +83,7 @@ namespace CslaGenerator.Design
 
                 foreach (var param in paramColl)
                 {
-                    var key = param.Criteria.Name + "." + param.Property.Name;
+                    var key = param.CriteriaName + "." + param.PropertyName;
                     for (var entry = 0; entry < _lstProperties.Items.Count; entry++)
                     {
                         if (key == ((DictionaryEntry)_lstProperties.Items[entry]).Key.ToString())

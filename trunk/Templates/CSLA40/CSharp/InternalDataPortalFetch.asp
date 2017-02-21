@@ -437,7 +437,7 @@ if (!Info.UseCustomLoading)
                                 else
                                     invokeParam += ", ";
 
-                                invokeParam += FormatPascal(parm.Property.Name);
+                                invokeParam += FormatPascal(parm.PropertyName);
                             }
                         }
                         if (UseChildFactoryHelper)

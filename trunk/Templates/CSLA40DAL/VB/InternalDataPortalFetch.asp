@@ -508,7 +508,7 @@ if (!Info.UseCustomLoading && !Info.DataSetLoadingScheme)
                                 else
                                     invokeParam += ", ";
 
-                                invokeParam += FormatPascal(parm.Property.Name);
+                                invokeParam += FormatPascal(parm.PropertyName);
                             }
                         }
                         if (UseChildFactoryHelper)

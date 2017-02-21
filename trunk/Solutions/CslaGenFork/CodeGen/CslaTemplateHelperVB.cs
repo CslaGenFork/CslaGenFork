@@ -694,12 +694,12 @@ namespace CslaGenerator.CodeGen
             {
                 if (childInfo.ObjectType.IsCollectionType())
                 {
-                    joinColumn = child.LoadParameters[0].Property.Name;
+                    joinColumn = child.LoadParameters[0].PropertyName;
                     childInfo = FindChildInfo(info, childInfo.ItemType);
                 }
                 if (joinColumn == string.Empty)
                 {
-                    joinColumn = child.LoadParameters[0].Property.Name;
+                    joinColumn = child.LoadParameters[0].PropertyName;
                 }
             }
 
@@ -4600,7 +4600,7 @@ namespace CslaGenerator.CodeGen
             {
                 for (var loadParameter = 0; loadParameter < prop.LoadParameters.Count; loadParameter++)
                 {
-                    response += FormatFieldForPropertyName(info, prop.LoadParameters[loadParameter].Property.Name);
+                    response += FormatFieldForPropertyName(info, prop.LoadParameters[loadParameter].PropertyName);
                     if (loadParameter + 1 != prop.LoadParameters.Count)
                         response += ", ";
                 }
