@@ -416,6 +416,7 @@ Namespace DocStore.Business.Circulations
         <RunLocal>
         Protected Overrides Sub Child_Create()
             LoadProperty(CircIDProperty, System.Threading.Interlocked.Decrement(_lastId))
+            LoadProperty(TagNotesCertProperty, Nothing)
             LoadProperty(CreateDateProperty, new SmartDate(Date.Now))
             LoadProperty(CreateUserIDProperty, UserInformation.UserId)
             LoadProperty(ChangeDateProperty, ReadProperty(CreateDateProperty))
@@ -436,9 +437,9 @@ Namespace DocStore.Business.Circulations
             LoadProperty(NeedsReplyDecisionProperty, dr.GetBoolean("NeedsReplyDecision"))
             LoadProperty(CircTypeTagProperty, dr.GetString("CircTypeTag"))
             LoadProperty(NotesProperty, dr.GetString("Notes"))
-            LoadProperty(TagNotesCertProperty, dr.GetString("TagNotesCert"))
+            LoadProperty(TagNotesCertProperty, If(dr.IsDBNull("TagNotesCert"), Nothing, dr.GetString("TagNotesCert")))
             LoadProperty(SenderEntityIDProperty, DirectCast(dr.GetValue("SenderEntityID"), Integer?))
-            LoadProperty(SentDateTimeProperty, dr.GetSmartDate("SentDateTime", True))
+            LoadProperty(SentDateTimeProperty, If(dr.IsDBNull("SentDateTime"), Nothing, dr.GetSmartDate("SentDateTime", True)))
             LoadProperty(DaysToReplyProperty, dr.GetInt16("DaysToReply"))
             LoadProperty(DaysToLiveProperty, dr.GetInt16("DaysToLive"))
             LoadProperty(CreateDateProperty, dr.GetSmartDate("CreateDate", True))
@@ -466,7 +467,7 @@ Namespace DocStore.Business.Circulations
                     cmd.Parameters.AddWithValue("@NeedsReplyDecision", ReadProperty(NeedsReplyDecisionProperty)).DbType = DbType.Boolean
                     cmd.Parameters.AddWithValue("@CircTypeTag", ReadProperty(CircTypeTagProperty)).DbType = DbType.String
                     cmd.Parameters.AddWithValue("@Notes", ReadProperty(NotesProperty)).DbType = DbType.String
-                    cmd.Parameters.AddWithValue("@TagNotesCert", ReadProperty(TagNotesCertProperty)).DbType = DbType.String
+                    cmd.Parameters.AddWithValue("@TagNotesCert", If(ReadProperty(TagNotesCertProperty) Is Nothing, DBNull.Value, ReadProperty(TagNotesCertProperty))).DbType = DbType.String
                     cmd.Parameters.AddWithValue("@SenderEntityID", If(ReadProperty(SenderEntityIDProperty) Is Nothing, DBNull.Value, ReadProperty(SenderEntityIDProperty).Value)).DbType = DbType.Int32
                     cmd.Parameters.AddWithValue("@SentDateTime", ReadProperty(SentDateTimeProperty).DBValue).DbType = DbType.DateTime2
                     cmd.Parameters.AddWithValue("@DaysToReply", ReadProperty(DaysToReplyProperty)).DbType = DbType.Int16
@@ -504,7 +505,7 @@ Namespace DocStore.Business.Circulations
                     cmd.Parameters.AddWithValue("@NeedsReplyDecision", ReadProperty(NeedsReplyDecisionProperty)).DbType = DbType.Boolean
                     cmd.Parameters.AddWithValue("@CircTypeTag", ReadProperty(CircTypeTagProperty)).DbType = DbType.String
                     cmd.Parameters.AddWithValue("@Notes", ReadProperty(NotesProperty)).DbType = DbType.String
-                    cmd.Parameters.AddWithValue("@TagNotesCert", ReadProperty(TagNotesCertProperty)).DbType = DbType.String
+                    cmd.Parameters.AddWithValue("@TagNotesCert", If(ReadProperty(TagNotesCertProperty) Is Nothing, DBNull.Value, ReadProperty(TagNotesCertProperty))).DbType = DbType.String
                     cmd.Parameters.AddWithValue("@SenderEntityID", If(ReadProperty(SenderEntityIDProperty) Is Nothing, DBNull.Value, ReadProperty(SenderEntityIDProperty).Value)).DbType = DbType.Int32
                     cmd.Parameters.AddWithValue("@SentDateTime", ReadProperty(SentDateTimeProperty).DBValue).DbType = DbType.DateTime2
                     cmd.Parameters.AddWithValue("@DaysToReply", ReadProperty(DaysToReplyProperty)).DbType = DbType.Int16

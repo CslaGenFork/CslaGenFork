@@ -77,6 +77,7 @@ Namespace Invoices.Business
         ''' Properties on <see cref="ProductTypeUpdatedByRootInfo"/> object are updated by <see cref="ProductTypeEdit"/> Saved event.
         ''' </summary>
         Friend Sub UpdatePropertiesOnSaved(productTypeEdit As ProductTypeEdit)
+            LoadProperty(ProductTypeIdProperty, productTypeEdit.ProductTypeId)
             LoadProperty(NameProperty, productTypeEdit.Name)
         End Sub
 

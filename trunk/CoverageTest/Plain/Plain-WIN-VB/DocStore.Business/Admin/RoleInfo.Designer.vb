@@ -59,12 +59,12 @@ Namespace DocStore.Business.Admin
         ''' <summary>
         ''' Maintains metadata about <see cref="IsActive"/> property.
         ''' </summary>
-        Public Shared ReadOnly IsActiveProperty As PropertyInfo(Of Boolean?) = RegisterProperty(Of Boolean?)(Function(p) p.IsActive, "IsActive", New Boolean?(Nothing))
+        Public Shared ReadOnly IsActiveProperty As PropertyInfo(Of Boolean) = RegisterProperty(Of Boolean)(Function(p) p.IsActive, "IsActive")
         ''' <summary>
         ''' Gets the active or deleted state.
         ''' </summary>
-        ''' <value><c>True</c> if IsActive; <c>false</c> if not IsActive; otherwise, <c>null</c>.</value>
-        Public ReadOnly Property IsActive As Boolean?
+        ''' <value><c>True</c> if IsActive; otherwise, <c>false</c>.</value>
+        Public ReadOnly Property IsActive As Boolean
             Get
                 Return GetProperty(IsActiveProperty)
             End Get
@@ -137,7 +137,7 @@ Namespace DocStore.Business.Admin
             ' Value properties
             LoadProperty(RoleIDProperty, dr.GetInt32("RoleID"))
             LoadProperty(RoleNameProperty, dr.GetString("RoleName"))
-            LoadProperty(IsActiveProperty, DirectCast(dr.GetValue("IsActive"), Boolean?))
+            LoadProperty(IsActiveProperty, dr.GetBoolean("IsActive"))
             Dim args As New DataPortalHookArgs(dr)
             OnFetchRead(args)
         End Sub

@@ -77,6 +77,7 @@ Namespace Invoices.Business
         ''' Properties on <see cref="ProductTypeCachedInfo"/> object are updated by <see cref="ProductTypeItem"/> Saved event.
         ''' </summary>
         Friend Sub UpdatePropertiesOnSaved(productTypeItem As ProductTypeItem)
+            LoadProperty(ProductTypeIdProperty, productTypeItem.ProductTypeId)
             LoadProperty(NameProperty, productTypeItem.Name)
         End Sub
 

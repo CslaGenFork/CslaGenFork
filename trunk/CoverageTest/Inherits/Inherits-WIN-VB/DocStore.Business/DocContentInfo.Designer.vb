@@ -145,7 +145,7 @@ Namespace DocStore.Business
         ''' <summary>
         ''' Maintains metadata about <see cref="CheckOutDate"/> property.
         ''' </summary>
-        Public Shared ReadOnly CheckOutDateProperty As PropertyInfo(Of SmartDate) = RegisterProperty(Of SmartDate)(Function(p) p.CheckOutDate, "Check Out Date")
+        Public Shared ReadOnly CheckOutDateProperty As PropertyInfo(Of SmartDate) = RegisterProperty(Of SmartDate)(Function(p) p.CheckOutDate, "Check Out Date", New SmartDate())
         ''' <summary>
         ''' Gets the Check-out date.
         ''' </summary>
@@ -216,7 +216,7 @@ Namespace DocStore.Business
             LoadProperty(CheckInDateProperty, dr.GetSmartDate("CheckInDate", True))
             LoadProperty(CheckInUserIDProperty, dr.GetInt32("CheckInUserID"))
             LoadProperty(CheckInCommentProperty, dr.GetString("CheckInComment"))
-            LoadProperty(CheckOutDateProperty, dr.GetSmartDate("CheckOutDate", True))
+            LoadProperty(CheckOutDateProperty, If(dr.IsDBNull("CheckOutDate"), Nothing, dr.GetSmartDate("CheckOutDate", True)))
             LoadProperty(CheckOutUserIDProperty, DirectCast(dr.GetValue("CheckOutUserID"), Integer?))
             Dim args As New DataPortalHookArgs(dr)
             OnFetchRead(args)

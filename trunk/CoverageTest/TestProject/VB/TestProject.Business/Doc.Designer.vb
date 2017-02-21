@@ -42,13 +42,10 @@ Namespace TestProject.Business
         ''' Gets or sets the Document ID.
         ''' </summary>
         ''' <value>The Doc ID.</value>
-        Public Property DocID As Integer
+        Public ReadOnly Property DocID As Integer
             Get
                 Return GetProperty(DocIDProperty)
             End Get
-            Private Set(ByVal value As Integer)
-                SetProperty(DocIDProperty, value)
-            End Set
         End Property
 
         ''' <summary>
@@ -283,6 +280,7 @@ Namespace TestProject.Business
         <RunLocal>
         Protected Overrides Sub DataPortal_Create()
             LoadProperty(DocIDProperty, System.Threading.Interlocked.Decrement(_lastId))
+            LoadProperty(DocRefProperty, Nothing)
             LoadProperty(DocDateProperty, new SmartDate(DateTime.Today))
             LoadProperty(FoldersProperty, DataPortal.CreateChild(Of DocFolderColl)())
             Dim args As New DataPortalHookArgs()
@@ -326,7 +324,7 @@ Namespace TestProject.Business
             ' Value properties
             LoadProperty(DocIDProperty, dr.GetInt32("DocID"))
             LoadProperty(DocTypeIDProperty, dr.GetInt32("DocTypeID"))
-            LoadProperty(DocRefProperty, dr.GetString("DocRef"))
+            LoadProperty(DocRefProperty, If(dr.IsDBNull("DocRef"), Nothing, dr.GetString("DocRef")))
             LoadProperty(DocDateProperty, dr.GetSmartDate("DocDate", True))
             LoadProperty(SubjectProperty, dr.GetString("Subject"))
             Dim args As New DataPortalHookArgs(dr)
@@ -352,7 +350,7 @@ Namespace TestProject.Business
                     cmd.CommandType = CommandType.StoredProcedure
                     cmd.Parameters.AddWithValue("@DocID", ReadProperty(DocIDProperty)).Direction = ParameterDirection.Output
                     cmd.Parameters.AddWithValue("@DocTypeID", ReadProperty(DocTypeIDProperty)).DbType = DbType.Int32
-                    cmd.Parameters.AddWithValue("@DocRef", ReadProperty(DocRefProperty)).DbType = DbType.String
+                    cmd.Parameters.AddWithValue("@DocRef", If(ReadProperty(DocRefProperty) Is Nothing, DBNull.Value, ReadProperty(DocRefProperty))).DbType = DbType.String
                     cmd.Parameters.AddWithValue("@DocDate", ReadProperty(DocDateProperty).DBValue).DbType = DbType.Date
                     cmd.Parameters.AddWithValue("@Subject", ReadProperty(SubjectProperty)).DbType = DbType.String
                     Dim args As New DataPortalHookArgs(cmd)
@@ -377,7 +375,7 @@ Namespace TestProject.Business
                     cmd.CommandType = CommandType.StoredProcedure
                     cmd.Parameters.AddWithValue("@DocID", ReadProperty(DocIDProperty)).DbType = DbType.Int32
                     cmd.Parameters.AddWithValue("@DocTypeID", ReadProperty(DocTypeIDProperty)).DbType = DbType.Int32
-                    cmd.Parameters.AddWithValue("@DocRef", ReadProperty(DocRefProperty)).DbType = DbType.String
+                    cmd.Parameters.AddWithValue("@DocRef", If(ReadProperty(DocRefProperty) Is Nothing, DBNull.Value, ReadProperty(DocRefProperty))).DbType = DbType.String
                     cmd.Parameters.AddWithValue("@DocDate", ReadProperty(DocDateProperty).DBValue).DbType = DbType.Date
                     cmd.Parameters.AddWithValue("@Subject", ReadProperty(SubjectProperty)).DbType = DbType.String
                     Dim args As New DataPortalHookArgs(cmd)

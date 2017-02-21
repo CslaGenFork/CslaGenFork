@@ -64,12 +64,12 @@ namespace DocStore.Business.Admin
         /// <summary>
         /// Maintains metadata about <see cref="IsActive"/> property.
         /// </summary>
-        public static readonly PropertyInfo<bool?> IsActiveProperty = RegisterProperty<bool?>(p => p.IsActive, "IsActive");
+        public static readonly PropertyInfo<bool> IsActiveProperty = RegisterProperty<bool>(p => p.IsActive, "IsActive");
         /// <summary>
         /// Gets or sets the active or deleted state.
         /// </summary>
-        /// <value><c>true</c> if IsActive; <c>false</c> if not IsActive; otherwise, <c>null</c>.</value>
-        public bool? IsActive
+        /// <value><c>true</c> if IsActive; otherwise, <c>false</c>.</value>
+        public bool IsActive
         {
             get { return GetProperty(IsActiveProperty); }
             set { SetProperty(IsActiveProperty, value); }
@@ -411,7 +411,7 @@ namespace DocStore.Business.Admin
             // Value properties
             LoadProperty(RoleIDProperty, dr.GetInt32("RoleID"));
             LoadProperty(RoleNameProperty, dr.GetString("RoleName"));
-            LoadProperty(IsActiveProperty, (bool?)dr.GetValue("IsActive"));
+            LoadProperty(IsActiveProperty, dr.GetBoolean("IsActive"));
             LoadProperty(CreateDateProperty, dr.GetSmartDate("CreateDate", true));
             LoadProperty(CreateUserIDProperty, dr.GetInt32("CreateUserID"));
             LoadProperty(ChangeDateProperty, dr.GetSmartDate("ChangeDate", true));
@@ -435,7 +435,7 @@ namespace DocStore.Business.Admin
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@RoleID", ReadProperty(RoleIDProperty)).Direction = ParameterDirection.Output;
                     cmd.Parameters.AddWithValue("@RoleName", ReadProperty(RoleNameProperty)).DbType = DbType.String;
-                    cmd.Parameters.AddWithValue("@IsActive", ReadProperty(IsActiveProperty) == null ? (object)DBNull.Value : ReadProperty(IsActiveProperty).Value).DbType = DbType.Boolean;
+                    cmd.Parameters.AddWithValue("@IsActive", ReadProperty(IsActiveProperty)).DbType = DbType.Boolean;
                     cmd.Parameters.AddWithValue("@CreateDate", ReadProperty(CreateDateProperty).DBValue).DbType = DbType.DateTime2;
                     cmd.Parameters.AddWithValue("@CreateUserID", ReadProperty(CreateUserIDProperty)).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@ChangeDate", ReadProperty(ChangeDateProperty).DBValue).DbType = DbType.DateTime2;
@@ -466,7 +466,7 @@ namespace DocStore.Business.Admin
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@RoleID", ReadProperty(RoleIDProperty)).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@RoleName", ReadProperty(RoleNameProperty)).DbType = DbType.String;
-                    cmd.Parameters.AddWithValue("@IsActive", ReadProperty(IsActiveProperty) == null ? (object)DBNull.Value : ReadProperty(IsActiveProperty).Value).DbType = DbType.Boolean;
+                    cmd.Parameters.AddWithValue("@IsActive", ReadProperty(IsActiveProperty)).DbType = DbType.Boolean;
                     cmd.Parameters.AddWithValue("@ChangeDate", ReadProperty(ChangeDateProperty).DBValue).DbType = DbType.DateTime2;
                     cmd.Parameters.AddWithValue("@ChangeUserID", ReadProperty(ChangeUserIDProperty)).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@RowVersion", ReadProperty(RowVersionProperty)).DbType = DbType.Binary;

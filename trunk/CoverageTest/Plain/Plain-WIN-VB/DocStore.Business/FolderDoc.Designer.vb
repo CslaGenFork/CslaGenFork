@@ -302,6 +302,7 @@ Namespace DocStore.Business
         ''' </summary>
         ''' <param name="docID">The create criteria.</param>
         Protected Overloads Sub DataPortal_Create(docID As Integer)
+            LoadProperty(DocRefProperty, Nothing)
             LoadProperty(CreateDateProperty, new SmartDate(Date.Now))
             LoadProperty(CreateUserIDProperty, UserInformation.UserId)
             LoadProperty(ChangeDateProperty, ReadProperty(CreateDateProperty))
@@ -319,7 +320,7 @@ Namespace DocStore.Business
         Private Sub Fetch(dr As SafeDataReader)
             ' Value properties
             LoadProperty(DocIDProperty, dr.GetInt32("DocID"))
-            LoadProperty(DocRefProperty, dr.GetString("DocRef"))
+            LoadProperty(DocRefProperty, If(dr.IsDBNull("DocRef"), Nothing, dr.GetString("DocRef")))
             LoadProperty(DocDateProperty, dr.GetDateTime("DocDate"))
             LoadProperty(SubjectProperty, dr.GetString("Subject"))
             LoadProperty(CreateDateProperty, dr.GetSmartDate("CreateDate", True))

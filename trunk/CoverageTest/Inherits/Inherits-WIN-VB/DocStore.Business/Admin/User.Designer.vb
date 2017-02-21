@@ -118,16 +118,16 @@ Namespace DocStore.Business.Admin
         ''' <summary>
         ''' Maintains metadata about <see cref="IsActive"/> property.
         ''' </summary>
-        Public Shared ReadOnly IsActiveProperty As PropertyInfo(Of Boolean?) = RegisterProperty(Of Boolean?)(Function(p) p.IsActive, "IsActive")
+        Public Shared ReadOnly IsActiveProperty As PropertyInfo(Of Boolean) = RegisterProperty(Of Boolean)(Function(p) p.IsActive, "IsActive")
         ''' <summary>
         ''' Gets or sets the active or deleted state.
         ''' </summary>
-        ''' <value><c>True</c> if IsActive; <c>false</c> if not IsActive; otherwise, <c>null</c>.</value>
-        Public Property IsActive As Boolean?
+        ''' <value><c>True</c> if IsActive; otherwise, <c>false</c>.</value>
+        Public Property IsActive As Boolean
             Get
                 Return GetProperty(IsActiveProperty)
             End Get
-            Set(ByVal value As Boolean?)
+            Set(ByVal value As Boolean)
                 SetProperty(IsActiveProperty, value)
             End Set
         End Property
@@ -452,7 +452,7 @@ Namespace DocStore.Business.Admin
             LoadProperty(NameProperty, dr.GetString("Name"))
             LoadProperty(LoginProperty, dr.GetString("Login"))
             LoadProperty(EmailProperty, dr.GetString("Email"))
-            LoadProperty(IsActiveProperty, DirectCast(dr.GetValue("IsActive"), Boolean?))
+            LoadProperty(IsActiveProperty, dr.GetBoolean("IsActive"))
             LoadProperty(CreateDateProperty, dr.GetSmartDate("CreateDate", True))
             LoadProperty(CreateUserIDProperty, dr.GetInt32("CreateUserID"))
             LoadProperty(ChangeDateProperty, dr.GetSmartDate("ChangeDate", True))
@@ -475,7 +475,7 @@ Namespace DocStore.Business.Admin
                     cmd.Parameters.AddWithValue("@Name", ReadProperty(NameProperty)).DbType = DbType.String
                     cmd.Parameters.AddWithValue("@Login", ReadProperty(LoginProperty)).DbType = DbType.String
                     cmd.Parameters.AddWithValue("@Email", ReadProperty(EmailProperty)).DbType = DbType.String
-                    cmd.Parameters.AddWithValue("@IsActive", If(ReadProperty(IsActiveProperty) Is Nothing, DBNull.Value, ReadProperty(IsActiveProperty).Value)).DbType = DbType.Boolean
+                    cmd.Parameters.AddWithValue("@IsActive", ReadProperty(IsActiveProperty)).DbType = DbType.Boolean
                     cmd.Parameters.AddWithValue("@CreateDate", ReadProperty(CreateDateProperty).DBValue).DbType = DbType.DateTime2
                     cmd.Parameters.AddWithValue("@CreateUserID", ReadProperty(CreateUserIDProperty)).DbType = DbType.Int32
                     cmd.Parameters.AddWithValue("@ChangeDate", ReadProperty(ChangeDateProperty).DBValue).DbType = DbType.DateTime2
@@ -505,7 +505,7 @@ Namespace DocStore.Business.Admin
                     cmd.Parameters.AddWithValue("@Name", ReadProperty(NameProperty)).DbType = DbType.String
                     cmd.Parameters.AddWithValue("@Login", ReadProperty(LoginProperty)).DbType = DbType.String
                     cmd.Parameters.AddWithValue("@Email", ReadProperty(EmailProperty)).DbType = DbType.String
-                    cmd.Parameters.AddWithValue("@IsActive", If(ReadProperty(IsActiveProperty) Is Nothing, DBNull.Value, ReadProperty(IsActiveProperty).Value)).DbType = DbType.Boolean
+                    cmd.Parameters.AddWithValue("@IsActive", ReadProperty(IsActiveProperty)).DbType = DbType.Boolean
                     cmd.Parameters.AddWithValue("@ChangeDate", ReadProperty(ChangeDateProperty).DBValue).DbType = DbType.DateTime2
                     cmd.Parameters.AddWithValue("@ChangeUserID", ReadProperty(ChangeUserIDProperty)).DbType = DbType.Int32
                     cmd.Parameters.AddWithValue("@RowVersion", ReadProperty(RowVersionProperty)).DbType = DbType.Binary

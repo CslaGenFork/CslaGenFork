@@ -96,7 +96,7 @@ namespace DocStore.Business
         /// <summary>
         /// Maintains metadata about <see cref="DocRef"/> property.
         /// </summary>
-        public static readonly PropertyInfo<string> DocRefProperty = RegisterProperty<string>(p => p.DocRef, "Doc Ref");
+        public static readonly PropertyInfo<string> DocRefProperty = RegisterProperty<string>(p => p.DocRef, "Doc Ref", null);
         /// <summary>
         /// Gets the Doc Ref.
         /// </summary>
@@ -269,6 +269,7 @@ namespace DocStore.Business
         /// </summary>
         internal void UpdatePropertiesOnSaved(Doc doc)
         {
+            LoadProperty(DocIDProperty, doc.DocID);
             LoadProperty(DocClassIDProperty, doc.DocClassID);
             LoadProperty(DocTypeIDProperty, doc.DocTypeID);
             LoadProperty(SenderIDProperty, doc.SenderID);
@@ -295,7 +296,7 @@ namespace DocStore.Business
             LoadProperty(DocTypeIDProperty, dr.GetInt32("DocTypeID"));
             LoadProperty(SenderIDProperty, dr.GetInt32("SenderID"));
             LoadProperty(RecipientIDProperty, dr.GetInt32("RecipientID"));
-            LoadProperty(DocRefProperty, dr.GetString("DocRef"));
+            LoadProperty(DocRefProperty, dr.IsDBNull("DocRef") ? null : dr.GetString("DocRef"));
             LoadProperty(DocDateProperty, dr.GetSmartDate("DocDate", true));
             LoadProperty(SubjectProperty, dr.GetString("Subject"));
             LoadProperty(DocStatusIDProperty, dr.GetInt32("DocStatusID"));

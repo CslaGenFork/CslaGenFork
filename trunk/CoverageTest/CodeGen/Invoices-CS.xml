@@ -4278,94 +4278,8 @@
           <ParentLoadProperties />
           <LoadParameters>
             <Parameter>
-              <Criteria>
-                <Name>CriteriaGet</Name>
-                <CriteriaClassMode>Simple</CriteriaClassMode>
-                <NestedClass>true</NestedClass>
-                <Properties>
-                  <Property>
-                    <ParameterName>SupplierId</ParameterName>
-                    <Name>SupplierId</Name>
-                    <PropertyType>Int32</PropertyType>
-                    <ReadOnly>false</ReadOnly>
-                    <Nullable>false</Nullable>
-                    <Summary />
-                    <Remarks />
-                    <DbBindColumn>
-                      <ColumnOriginType>Table</ColumnOriginType>
-                      <DataType>Int32</DataType>
-                      <NativeType>int</NativeType>
-                      <Size>10</Size>
-                      <SpResultIndex>0</SpResultIndex>
-                      <ColumnName>SupplierId</ColumnName>
-                      <IsPrimaryKey>true</IsPrimaryKey>
-                      <ObjectName>Suppliers</ObjectName>
-                      <CatalogName>InvoiceTest</CatalogName>
-                      <SchemaName>dbo</SchemaName>
-                      <IsNullable>false</IsNullable>
-                      <IsIdentity>false</IsIdentity>
-                    </DbBindColumn>
-                    <CustomPropertyType />
-                    <ParameterValue />
-                    <InlineQueryParameter>Plain</InlineQueryParameter>
-                  </Property>
-                </Properties>
-                <CreateOptions>
-                  <Factory>false</Factory>
-                  <AddRemove>false</AddRemove>
-                  <DataPortal>false</DataPortal>
-                  <RunLocal>false</RunLocal>
-                  <Procedure>false</Procedure>
-                  <ProcedureName />
-                  <FactorySuffix />
-                </CreateOptions>
-                <GetOptions>
-                  <Factory>true</Factory>
-                  <AddRemove>false</AddRemove>
-                  <DataPortal>true</DataPortal>
-                  <RunLocal>false</RunLocal>
-                  <Procedure>true</Procedure>
-                  <ProcedureName>GetSuppliers</ProcedureName>
-                  <FactorySuffix />
-                </GetOptions>
-                <DeleteOptions>
-                  <Factory>false</Factory>
-                  <AddRemove>false</AddRemove>
-                  <DataPortal>false</DataPortal>
-                  <RunLocal>false</RunLocal>
-                  <Procedure>false</Procedure>
-                  <ProcedureName />
-                  <FactorySuffix />
-                </DeleteOptions>
-                <Summary />
-                <Remarks />
-              </Criteria>
-              <Property xsi:type="CriteriaProperty">
-                <ParameterName>SupplierId</ParameterName>
-                <Name>SupplierId</Name>
-                <PropertyType>Int32</PropertyType>
-                <ReadOnly>false</ReadOnly>
-                <Nullable>false</Nullable>
-                <Summary />
-                <Remarks />
-                <DbBindColumn>
-                  <ColumnOriginType>Table</ColumnOriginType>
-                  <DataType>Int32</DataType>
-                  <NativeType>int</NativeType>
-                  <Size>10</Size>
-                  <SpResultIndex>0</SpResultIndex>
-                  <ColumnName>SupplierId</ColumnName>
-                  <IsPrimaryKey>true</IsPrimaryKey>
-                  <ObjectName>Suppliers</ObjectName>
-                  <CatalogName>InvoiceTest</CatalogName>
-                  <SchemaName>dbo</SchemaName>
-                  <IsNullable>false</IsNullable>
-                  <IsIdentity>false</IsIdentity>
-                </DbBindColumn>
-                <CustomPropertyType />
-                <ParameterValue />
-                <InlineQueryParameter>Plain</InlineQueryParameter>
-              </Property>
+              <CriteriaName>CriteriaGet</CriteriaName>
+              <PropertyName>SupplierId</PropertyName>
             </Parameter>
           </LoadParameters>
           <Access>IsPublic</Access>
@@ -6190,94 +6104,8 @@
           <ParentLoadProperties />
           <LoadParameters>
             <Parameter>
-              <Criteria>
-                <Name>Criteria</Name>
-                <CriteriaClassMode>Simple</CriteriaClassMode>
-                <NestedClass>true</NestedClass>
-                <Properties>
-                  <Property>
-                    <ParameterName>InvoiceId</ParameterName>
-                    <Name>InvoiceId</Name>
-                    <PropertyType>Guid</PropertyType>
-                    <ReadOnly>false</ReadOnly>
-                    <Nullable>false</Nullable>
-                    <Summary />
-                    <Remarks />
-                    <DbBindColumn>
-                      <ColumnOriginType>Table</ColumnOriginType>
-                      <DataType>Guid</DataType>
-                      <NativeType>uniqueidentifier</NativeType>
-                      <Size>0</Size>
-                      <SpResultIndex>0</SpResultIndex>
-                      <ColumnName>InvoiceId</ColumnName>
-                      <IsPrimaryKey>true</IsPrimaryKey>
-                      <ObjectName>Invoices</ObjectName>
-                      <CatalogName>InvoiceTest</CatalogName>
-                      <SchemaName>dbo</SchemaName>
-                      <IsNullable>false</IsNullable>
-                      <IsIdentity>false</IsIdentity>
-                    </DbBindColumn>
-                    <CustomPropertyType />
-                    <ParameterValue />
-                    <InlineQueryParameter>Plain</InlineQueryParameter>
-                  </Property>
-                </Properties>
-                <CreateOptions>
-                  <Factory>false</Factory>
-                  <AddRemove>false</AddRemove>
-                  <DataPortal>false</DataPortal>
-                  <RunLocal>false</RunLocal>
-                  <Procedure>false</Procedure>
-                  <ProcedureName />
-                  <FactorySuffix />
-                </CreateOptions>
-                <GetOptions>
-                  <Factory>true</Factory>
-                  <AddRemove>false</AddRemove>
-                  <DataPortal>true</DataPortal>
-                  <RunLocal>false</RunLocal>
-                  <Procedure>true</Procedure>
-                  <ProcedureName>GetInvoiceEdit</ProcedureName>
-                  <FactorySuffix />
-                </GetOptions>
-                <DeleteOptions>
-                  <Factory>true</Factory>
-                  <AddRemove>false</AddRemove>
-                  <DataPortal>true</DataPortal>
-                  <RunLocal>false</RunLocal>
-                  <Procedure>true</Procedure>
-                  <ProcedureName>DeleteInvoiceEdit</ProcedureName>
-                  <FactorySuffix />
-                </DeleteOptions>
-                <Summary />
-                <Remarks />
-              </Criteria>
-              <Property xsi:type="CriteriaProperty">
-                <ParameterName>InvoiceId</ParameterName>
-                <Name>InvoiceId</Name>
-                <PropertyType>Guid</PropertyType>
-                <ReadOnly>false</ReadOnly>
-                <Nullable>false</Nullable>
-                <Summary />
-                <Remarks />
-                <DbBindColumn>
-                  <ColumnOriginType>Table</ColumnOriginType>
-                  <DataType>Guid</DataType>
-                  <NativeType>uniqueidentifier</NativeType>
-                  <Size>0</Size>
-                  <SpResultIndex>0</SpResultIndex>
-                  <ColumnName>InvoiceId</ColumnName>
-                  <IsPrimaryKey>true</IsPrimaryKey>
-                  <ObjectName>Invoices</ObjectName>
-                  <CatalogName>InvoiceTest</CatalogName>
-                  <SchemaName>dbo</SchemaName>
-                  <IsNullable>false</IsNullable>
-                  <IsIdentity>false</IsIdentity>
-                </DbBindColumn>
-                <CustomPropertyType />
-                <ParameterValue />
-                <InlineQueryParameter>Plain</InlineQueryParameter>
-              </Property>
+              <CriteriaName>Criteria</CriteriaName>
+              <PropertyName>InvoiceId</PropertyName>
             </Parameter>
           </LoadParameters>
           <Access>IsPublic</Access>
@@ -7769,94 +7597,8 @@
           <ParentLoadProperties />
           <LoadParameters>
             <Parameter>
-              <Criteria>
-                <Name>CriteriaGet</Name>
-                <CriteriaClassMode>Simple</CriteriaClassMode>
-                <NestedClass>true</NestedClass>
-                <Properties>
-                  <Property>
-                    <ParameterName>InvoiceId</ParameterName>
-                    <Name>InvoiceId</Name>
-                    <PropertyType>Guid</PropertyType>
-                    <ReadOnly>false</ReadOnly>
-                    <Nullable>false</Nullable>
-                    <Summary />
-                    <Remarks />
-                    <DbBindColumn>
-                      <ColumnOriginType>Table</ColumnOriginType>
-                      <DataType>Guid</DataType>
-                      <NativeType>uniqueidentifier</NativeType>
-                      <Size>0</Size>
-                      <SpResultIndex>0</SpResultIndex>
-                      <ColumnName>InvoiceId</ColumnName>
-                      <IsPrimaryKey>true</IsPrimaryKey>
-                      <ObjectName>Invoices</ObjectName>
-                      <CatalogName>InvoiceTest</CatalogName>
-                      <SchemaName>dbo</SchemaName>
-                      <IsNullable>false</IsNullable>
-                      <IsIdentity>false</IsIdentity>
-                    </DbBindColumn>
-                    <CustomPropertyType />
-                    <ParameterValue />
-                    <InlineQueryParameter>Plain</InlineQueryParameter>
-                  </Property>
-                </Properties>
-                <CreateOptions>
-                  <Factory>false</Factory>
-                  <AddRemove>false</AddRemove>
-                  <DataPortal>false</DataPortal>
-                  <RunLocal>false</RunLocal>
-                  <Procedure>false</Procedure>
-                  <ProcedureName />
-                  <FactorySuffix />
-                </CreateOptions>
-                <GetOptions>
-                  <Factory>true</Factory>
-                  <AddRemove>false</AddRemove>
-                  <DataPortal>true</DataPortal>
-                  <RunLocal>false</RunLocal>
-                  <Procedure>true</Procedure>
-                  <ProcedureName>GetInvoiceView</ProcedureName>
-                  <FactorySuffix />
-                </GetOptions>
-                <DeleteOptions>
-                  <Factory>false</Factory>
-                  <AddRemove>false</AddRemove>
-                  <DataPortal>false</DataPortal>
-                  <RunLocal>false</RunLocal>
-                  <Procedure>false</Procedure>
-                  <ProcedureName />
-                  <FactorySuffix />
-                </DeleteOptions>
-                <Summary />
-                <Remarks />
-              </Criteria>
-              <Property xsi:type="CriteriaProperty">
-                <ParameterName>InvoiceId</ParameterName>
-                <Name>InvoiceId</Name>
-                <PropertyType>Guid</PropertyType>
-                <ReadOnly>false</ReadOnly>
-                <Nullable>false</Nullable>
-                <Summary />
-                <Remarks />
-                <DbBindColumn>
-                  <ColumnOriginType>Table</ColumnOriginType>
-                  <DataType>Guid</DataType>
-                  <NativeType>uniqueidentifier</NativeType>
-                  <Size>0</Size>
-                  <SpResultIndex>0</SpResultIndex>
-                  <ColumnName>InvoiceId</ColumnName>
-                  <IsPrimaryKey>true</IsPrimaryKey>
-                  <ObjectName>Invoices</ObjectName>
-                  <CatalogName>InvoiceTest</CatalogName>
-                  <SchemaName>dbo</SchemaName>
-                  <IsNullable>false</IsNullable>
-                  <IsIdentity>false</IsIdentity>
-                </DbBindColumn>
-                <CustomPropertyType />
-                <ParameterValue />
-                <InlineQueryParameter>Plain</InlineQueryParameter>
-              </Property>
+              <CriteriaName>CriteriaGet</CriteriaName>
+              <PropertyName>InvoiceId</PropertyName>
             </Parameter>
           </LoadParameters>
           <Access>IsPublic</Access>
@@ -10562,94 +10304,8 @@
           <ParentLoadProperties />
           <LoadParameters>
             <Parameter>
-              <Criteria>
-                <Name>CriteriaGet</Name>
-                <CriteriaClassMode>Simple</CriteriaClassMode>
-                <NestedClass>true</NestedClass>
-                <Properties>
-                  <Property>
-                    <ParameterName>ProductId</ParameterName>
-                    <Name>ProductId</Name>
-                    <PropertyType>Guid</PropertyType>
-                    <ReadOnly>false</ReadOnly>
-                    <Nullable>false</Nullable>
-                    <Summary />
-                    <Remarks />
-                    <DbBindColumn>
-                      <ColumnOriginType>Table</ColumnOriginType>
-                      <DataType>Guid</DataType>
-                      <NativeType>uniqueidentifier</NativeType>
-                      <Size>0</Size>
-                      <SpResultIndex>0</SpResultIndex>
-                      <ColumnName>ProductId</ColumnName>
-                      <IsPrimaryKey>true</IsPrimaryKey>
-                      <ObjectName>Products</ObjectName>
-                      <CatalogName>InvoiceTest</CatalogName>
-                      <SchemaName>dbo</SchemaName>
-                      <IsNullable>false</IsNullable>
-                      <IsIdentity>false</IsIdentity>
-                    </DbBindColumn>
-                    <CustomPropertyType />
-                    <ParameterValue />
-                    <InlineQueryParameter>Plain</InlineQueryParameter>
-                  </Property>
-                </Properties>
-                <CreateOptions>
-                  <Factory>false</Factory>
-                  <AddRemove>false</AddRemove>
-                  <DataPortal>false</DataPortal>
-                  <RunLocal>false</RunLocal>
-                  <Procedure>false</Procedure>
-                  <ProcedureName />
-                  <FactorySuffix />
-                </CreateOptions>
-                <GetOptions>
-                  <Factory>true</Factory>
-                  <AddRemove>false</AddRemove>
-                  <DataPortal>true</DataPortal>
-                  <RunLocal>false</RunLocal>
-                  <Procedure>true</Procedure>
-                  <ProcedureName>GetProducts</ProcedureName>
-                  <FactorySuffix />
-                </GetOptions>
-                <DeleteOptions>
-                  <Factory>false</Factory>
-                  <AddRemove>false</AddRemove>
-                  <DataPortal>false</DataPortal>
-                  <RunLocal>false</RunLocal>
-                  <Procedure>false</Procedure>
-                  <ProcedureName />
-                  <FactorySuffix />
-                </DeleteOptions>
-                <Summary />
-                <Remarks />
-              </Criteria>
-              <Property xsi:type="CriteriaProperty">
-                <ParameterName>ProductId</ParameterName>
-                <Name>ProductId</Name>
-                <PropertyType>Guid</PropertyType>
-                <ReadOnly>false</ReadOnly>
-                <Nullable>false</Nullable>
-                <Summary />
-                <Remarks />
-                <DbBindColumn>
-                  <ColumnOriginType>Table</ColumnOriginType>
-                  <DataType>Guid</DataType>
-                  <NativeType>uniqueidentifier</NativeType>
-                  <Size>0</Size>
-                  <SpResultIndex>0</SpResultIndex>
-                  <ColumnName>ProductId</ColumnName>
-                  <IsPrimaryKey>true</IsPrimaryKey>
-                  <ObjectName>Products</ObjectName>
-                  <CatalogName>InvoiceTest</CatalogName>
-                  <SchemaName>dbo</SchemaName>
-                  <IsNullable>false</IsNullable>
-                  <IsIdentity>false</IsIdentity>
-                </DbBindColumn>
-                <CustomPropertyType />
-                <ParameterValue />
-                <InlineQueryParameter>Plain</InlineQueryParameter>
-              </Property>
+              <CriteriaName>CriteriaGet</CriteriaName>
+              <PropertyName>ProductId</PropertyName>
             </Parameter>
           </LoadParameters>
           <Access>IsPublic</Access>
@@ -16890,5 +16546,5 @@
   <ConnectionString>Server=(local);Database=InvoiceTest;persist security info=False;user id=sa;password=password_1234;packet size=4096</ConnectionString>
   <ProjectName>Invoices CS</ProjectName>
   <TargetDirectory>..\Invoices\Invoices-CS</TargetDirectory>
-  <FileVersion>4.0.5</FileVersion>
+  <FileVersion>4.0.6</FileVersion>
 </CslaGeneratorUnit>

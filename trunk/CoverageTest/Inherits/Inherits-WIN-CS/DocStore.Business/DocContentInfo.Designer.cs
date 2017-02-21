@@ -138,7 +138,7 @@ namespace DocStore.Business
         /// <summary>
         /// Maintains metadata about <see cref="CheckOutDate"/> property.
         /// </summary>
-        public static readonly PropertyInfo<SmartDate> CheckOutDateProperty = RegisterProperty<SmartDate>(p => p.CheckOutDate, "Check Out Date");
+        public static readonly PropertyInfo<SmartDate> CheckOutDateProperty = RegisterProperty<SmartDate>(p => p.CheckOutDate, "Check Out Date", null);
         /// <summary>
         /// Gets the Check-out date.
         /// </summary>
@@ -210,7 +210,7 @@ namespace DocStore.Business
             LoadProperty(CheckInDateProperty, dr.GetSmartDate("CheckInDate", true));
             LoadProperty(CheckInUserIDProperty, dr.GetInt32("CheckInUserID"));
             LoadProperty(CheckInCommentProperty, dr.GetString("CheckInComment"));
-            LoadProperty(CheckOutDateProperty, dr.GetSmartDate("CheckOutDate", true));
+            LoadProperty(CheckOutDateProperty, dr.IsDBNull("CheckOutDate") ? null : dr.GetSmartDate("CheckOutDate", true));
             LoadProperty(CheckOutUserIDProperty, (int?)dr.GetValue("CheckOutUserID"));
             var args = new DataPortalHookArgs(dr);
             OnFetchRead(args);
