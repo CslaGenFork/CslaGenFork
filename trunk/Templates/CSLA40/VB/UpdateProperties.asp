@@ -35,10 +35,9 @@ if (Info.UpdateValueProperties.Count > 0)
         <%
             foreach (UpdateValueProperty prop in Info.UpdateValueProperties)
             {
-                // Don't update IsIdentity properties are it's unlikely they change.
-                // If they do change, add a second entry with IsIdentity = false.
-                if (prop.IsIdentity)
-                    continue;
+                // Do update IsIdentity properties as they change when the object is created.
+                // if (prop.IsIdentity)
+                //     continue;
                 string cast = FormatCamel(parentInfo.UpdaterType) + "." + prop.SourcePropertyName;
                 foreach (ValueProperty valProp in Info.ValueProperties)
                 {
