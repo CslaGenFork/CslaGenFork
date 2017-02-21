@@ -367,7 +367,7 @@
           </WriteAuthzRuleType>
           <Access>IsPublic</Access>
           <PropSetAccessibility>Default</PropSetAccessibility>
-          <Undoable>true</Undoable>
+          <Undoable>false</Undoable>
         </ValueProperty>
         <ValueProperty>
           <ParameterName>CircTypeTag</ParameterName>
@@ -656,7 +656,7 @@
           </WriteAuthzRuleType>
           <Access>IsPublic</Access>
           <PropSetAccessibility>Default</PropSetAccessibility>
-          <Undoable>true</Undoable>
+          <Undoable>false</Undoable>
         </ValueProperty>
         <ValueProperty>
           <ParameterName>DecisionTypeTag</ParameterName>
@@ -1164,7 +1164,7 @@
           </WriteAuthzRuleType>
           <Access>IsPublic</Access>
           <PropSetAccessibility>Default</PropSetAccessibility>
-          <Undoable>true</Undoable>
+          <Undoable>false</Undoable>
         </ValueProperty>
         <ValueProperty>
           <ParameterName>DocID</ParameterName>
@@ -1537,7 +1537,7 @@
           <Name>SentDateTime</Name>
           <PropertyType>SmartDate</PropertyType>
           <ReadOnly>false</ReadOnly>
-          <Nullable>false</Nullable>
+          <Nullable>true</Nullable>
           <Summary />
           <Remarks />
           <DbBindColumn>
@@ -2453,94 +2453,8 @@
           <ParentLoadProperties />
           <LoadParameters>
             <Parameter>
-              <Criteria>
-                <Name>CriteriaGet</Name>
-                <CriteriaClassMode>Simple</CriteriaClassMode>
-                <NestedClass>true</NestedClass>
-                <Properties>
-                  <Property>
-                    <ParameterName>DocID</ParameterName>
-                    <Name>DocID</Name>
-                    <PropertyType>Int32</PropertyType>
-                    <ReadOnly>false</ReadOnly>
-                    <Nullable>false</Nullable>
-                    <Summary />
-                    <Remarks />
-                    <DbBindColumn>
-                      <ColumnOriginType>Table</ColumnOriginType>
-                      <DataType>Int32</DataType>
-                      <NativeType>int</NativeType>
-                      <Size>10</Size>
-                      <SpResultIndex>0</SpResultIndex>
-                      <ColumnName>DocID</ColumnName>
-                      <IsPrimaryKey>true</IsPrimaryKey>
-                      <ObjectName>Docs</ObjectName>
-                      <CatalogName>DocStore</CatalogName>
-                      <SchemaName>dbo</SchemaName>
-                      <IsNullable>false</IsNullable>
-                      <IsIdentity>true</IsIdentity>
-                    </DbBindColumn>
-                    <CustomPropertyType />
-                    <ParameterValue />
-                    <InlineQueryParameter>Plain</InlineQueryParameter>
-                  </Property>
-                </Properties>
-                <CreateOptions>
-                  <Factory>false</Factory>
-                  <AddRemove>false</AddRemove>
-                  <DataPortal>false</DataPortal>
-                  <RunLocal>false</RunLocal>
-                  <Procedure>false</Procedure>
-                  <ProcedureName />
-                  <FactorySuffix />
-                </CreateOptions>
-                <GetOptions>
-                  <Factory>true</Factory>
-                  <AddRemove>false</AddRemove>
-                  <DataPortal>true</DataPortal>
-                  <RunLocal>false</RunLocal>
-                  <Procedure>true</Procedure>
-                  <ProcedureName>GetDoc</ProcedureName>
-                  <FactorySuffix />
-                </GetOptions>
-                <DeleteOptions>
-                  <Factory>false</Factory>
-                  <AddRemove>false</AddRemove>
-                  <DataPortal>false</DataPortal>
-                  <RunLocal>false</RunLocal>
-                  <Procedure>false</Procedure>
-                  <ProcedureName />
-                  <FactorySuffix />
-                </DeleteOptions>
-                <Summary />
-                <Remarks />
-              </Criteria>
-              <Property xsi:type="CriteriaProperty">
-                <ParameterName>DocID</ParameterName>
-                <Name>DocID</Name>
-                <PropertyType>Int32</PropertyType>
-                <ReadOnly>false</ReadOnly>
-                <Nullable>false</Nullable>
-                <Summary />
-                <Remarks />
-                <DbBindColumn>
-                  <ColumnOriginType>Table</ColumnOriginType>
-                  <DataType>Int32</DataType>
-                  <NativeType>int</NativeType>
-                  <Size>10</Size>
-                  <SpResultIndex>0</SpResultIndex>
-                  <ColumnName>DocID</ColumnName>
-                  <IsPrimaryKey>true</IsPrimaryKey>
-                  <ObjectName>Docs</ObjectName>
-                  <CatalogName>DocStore</CatalogName>
-                  <SchemaName>dbo</SchemaName>
-                  <IsNullable>false</IsNullable>
-                  <IsIdentity>true</IsIdentity>
-                </DbBindColumn>
-                <CustomPropertyType />
-                <ParameterValue />
-                <InlineQueryParameter>Plain</InlineQueryParameter>
-              </Property>
+              <CriteriaName>CriteriaGet</CriteriaName>
+              <PropertyName>DocID</PropertyName>
             </Parameter>
           </LoadParameters>
           <Access>IsPublic</Access>
@@ -2589,94 +2503,8 @@
           <ParentLoadProperties />
           <LoadParameters>
             <Parameter>
-              <Criteria>
-                <Name>CriteriaGet</Name>
-                <CriteriaClassMode>Simple</CriteriaClassMode>
-                <NestedClass>true</NestedClass>
-                <Properties>
-                  <Property>
-                    <ParameterName>DocID</ParameterName>
-                    <Name>DocID</Name>
-                    <PropertyType>Int32</PropertyType>
-                    <ReadOnly>false</ReadOnly>
-                    <Nullable>false</Nullable>
-                    <Summary />
-                    <Remarks />
-                    <DbBindColumn>
-                      <ColumnOriginType>Table</ColumnOriginType>
-                      <DataType>Int32</DataType>
-                      <NativeType>int</NativeType>
-                      <Size>10</Size>
-                      <SpResultIndex>0</SpResultIndex>
-                      <ColumnName>DocID</ColumnName>
-                      <IsPrimaryKey>true</IsPrimaryKey>
-                      <ObjectName>Docs</ObjectName>
-                      <CatalogName>DocStore</CatalogName>
-                      <SchemaName>dbo</SchemaName>
-                      <IsNullable>false</IsNullable>
-                      <IsIdentity>true</IsIdentity>
-                    </DbBindColumn>
-                    <CustomPropertyType />
-                    <ParameterValue />
-                    <InlineQueryParameter>Plain</InlineQueryParameter>
-                  </Property>
-                </Properties>
-                <CreateOptions>
-                  <Factory>false</Factory>
-                  <AddRemove>false</AddRemove>
-                  <DataPortal>false</DataPortal>
-                  <RunLocal>false</RunLocal>
-                  <Procedure>false</Procedure>
-                  <ProcedureName />
-                  <FactorySuffix />
-                </CreateOptions>
-                <GetOptions>
-                  <Factory>true</Factory>
-                  <AddRemove>false</AddRemove>
-                  <DataPortal>true</DataPortal>
-                  <RunLocal>false</RunLocal>
-                  <Procedure>true</Procedure>
-                  <ProcedureName>GetDoc</ProcedureName>
-                  <FactorySuffix />
-                </GetOptions>
-                <DeleteOptions>
-                  <Factory>false</Factory>
-                  <AddRemove>false</AddRemove>
-                  <DataPortal>false</DataPortal>
-                  <RunLocal>false</RunLocal>
-                  <Procedure>false</Procedure>
-                  <ProcedureName />
-                  <FactorySuffix />
-                </DeleteOptions>
-                <Summary />
-                <Remarks />
-              </Criteria>
-              <Property xsi:type="CriteriaProperty">
-                <ParameterName>DocID</ParameterName>
-                <Name>DocID</Name>
-                <PropertyType>Int32</PropertyType>
-                <ReadOnly>false</ReadOnly>
-                <Nullable>false</Nullable>
-                <Summary />
-                <Remarks />
-                <DbBindColumn>
-                  <ColumnOriginType>Table</ColumnOriginType>
-                  <DataType>Int32</DataType>
-                  <NativeType>int</NativeType>
-                  <Size>10</Size>
-                  <SpResultIndex>0</SpResultIndex>
-                  <ColumnName>DocID</ColumnName>
-                  <IsPrimaryKey>true</IsPrimaryKey>
-                  <ObjectName>Docs</ObjectName>
-                  <CatalogName>DocStore</CatalogName>
-                  <SchemaName>dbo</SchemaName>
-                  <IsNullable>false</IsNullable>
-                  <IsIdentity>true</IsIdentity>
-                </DbBindColumn>
-                <CustomPropertyType />
-                <ParameterValue />
-                <InlineQueryParameter>Plain</InlineQueryParameter>
-              </Property>
+              <CriteriaName>CriteriaGet</CriteriaName>
+              <PropertyName>DocID</PropertyName>
             </Parameter>
           </LoadParameters>
           <Access>IsPublic</Access>
@@ -2725,94 +2553,8 @@
           <ParentLoadProperties />
           <LoadParameters>
             <Parameter>
-              <Criteria>
-                <Name>CriteriaGet</Name>
-                <CriteriaClassMode>Simple</CriteriaClassMode>
-                <NestedClass>true</NestedClass>
-                <Properties>
-                  <Property>
-                    <ParameterName>DocID</ParameterName>
-                    <Name>DocID</Name>
-                    <PropertyType>Int32</PropertyType>
-                    <ReadOnly>false</ReadOnly>
-                    <Nullable>false</Nullable>
-                    <Summary />
-                    <Remarks />
-                    <DbBindColumn>
-                      <ColumnOriginType>Table</ColumnOriginType>
-                      <DataType>Int32</DataType>
-                      <NativeType>int</NativeType>
-                      <Size>10</Size>
-                      <SpResultIndex>0</SpResultIndex>
-                      <ColumnName>DocID</ColumnName>
-                      <IsPrimaryKey>true</IsPrimaryKey>
-                      <ObjectName>Docs</ObjectName>
-                      <CatalogName>DocStore</CatalogName>
-                      <SchemaName>dbo</SchemaName>
-                      <IsNullable>false</IsNullable>
-                      <IsIdentity>true</IsIdentity>
-                    </DbBindColumn>
-                    <CustomPropertyType />
-                    <ParameterValue />
-                    <InlineQueryParameter>Plain</InlineQueryParameter>
-                  </Property>
-                </Properties>
-                <CreateOptions>
-                  <Factory>false</Factory>
-                  <AddRemove>false</AddRemove>
-                  <DataPortal>false</DataPortal>
-                  <RunLocal>false</RunLocal>
-                  <Procedure>false</Procedure>
-                  <ProcedureName />
-                  <FactorySuffix />
-                </CreateOptions>
-                <GetOptions>
-                  <Factory>true</Factory>
-                  <AddRemove>false</AddRemove>
-                  <DataPortal>true</DataPortal>
-                  <RunLocal>false</RunLocal>
-                  <Procedure>true</Procedure>
-                  <ProcedureName>GetDoc</ProcedureName>
-                  <FactorySuffix />
-                </GetOptions>
-                <DeleteOptions>
-                  <Factory>false</Factory>
-                  <AddRemove>false</AddRemove>
-                  <DataPortal>false</DataPortal>
-                  <RunLocal>false</RunLocal>
-                  <Procedure>false</Procedure>
-                  <ProcedureName />
-                  <FactorySuffix />
-                </DeleteOptions>
-                <Summary />
-                <Remarks />
-              </Criteria>
-              <Property xsi:type="CriteriaProperty">
-                <ParameterName>DocID</ParameterName>
-                <Name>DocID</Name>
-                <PropertyType>Int32</PropertyType>
-                <ReadOnly>false</ReadOnly>
-                <Nullable>false</Nullable>
-                <Summary />
-                <Remarks />
-                <DbBindColumn>
-                  <ColumnOriginType>Table</ColumnOriginType>
-                  <DataType>Int32</DataType>
-                  <NativeType>int</NativeType>
-                  <Size>10</Size>
-                  <SpResultIndex>0</SpResultIndex>
-                  <ColumnName>DocID</ColumnName>
-                  <IsPrimaryKey>true</IsPrimaryKey>
-                  <ObjectName>Docs</ObjectName>
-                  <CatalogName>DocStore</CatalogName>
-                  <SchemaName>dbo</SchemaName>
-                  <IsNullable>false</IsNullable>
-                  <IsIdentity>true</IsIdentity>
-                </DbBindColumn>
-                <CustomPropertyType />
-                <ParameterValue />
-                <InlineQueryParameter>Plain</InlineQueryParameter>
-              </Property>
+              <CriteriaName>CriteriaGet</CriteriaName>
+              <PropertyName>DocID</PropertyName>
             </Parameter>
           </LoadParameters>
           <Access>IsPublic</Access>
@@ -2863,94 +2605,8 @@
           <ParentLoadProperties />
           <LoadParameters>
             <Parameter>
-              <Criteria>
-                <Name>CriteriaGet</Name>
-                <CriteriaClassMode>Simple</CriteriaClassMode>
-                <NestedClass>true</NestedClass>
-                <Properties>
-                  <Property>
-                    <ParameterName>DocID</ParameterName>
-                    <Name>DocID</Name>
-                    <PropertyType>Int32</PropertyType>
-                    <ReadOnly>false</ReadOnly>
-                    <Nullable>false</Nullable>
-                    <Summary />
-                    <Remarks />
-                    <DbBindColumn>
-                      <ColumnOriginType>Table</ColumnOriginType>
-                      <DataType>Int32</DataType>
-                      <NativeType>int</NativeType>
-                      <Size>10</Size>
-                      <SpResultIndex>0</SpResultIndex>
-                      <ColumnName>DocID</ColumnName>
-                      <IsPrimaryKey>true</IsPrimaryKey>
-                      <ObjectName>Docs</ObjectName>
-                      <CatalogName>DocStore</CatalogName>
-                      <SchemaName>dbo</SchemaName>
-                      <IsNullable>false</IsNullable>
-                      <IsIdentity>true</IsIdentity>
-                    </DbBindColumn>
-                    <CustomPropertyType />
-                    <ParameterValue />
-                    <InlineQueryParameter>Plain</InlineQueryParameter>
-                  </Property>
-                </Properties>
-                <CreateOptions>
-                  <Factory>false</Factory>
-                  <AddRemove>false</AddRemove>
-                  <DataPortal>false</DataPortal>
-                  <RunLocal>false</RunLocal>
-                  <Procedure>false</Procedure>
-                  <ProcedureName />
-                  <FactorySuffix />
-                </CreateOptions>
-                <GetOptions>
-                  <Factory>true</Factory>
-                  <AddRemove>false</AddRemove>
-                  <DataPortal>true</DataPortal>
-                  <RunLocal>false</RunLocal>
-                  <Procedure>true</Procedure>
-                  <ProcedureName>GetDoc</ProcedureName>
-                  <FactorySuffix />
-                </GetOptions>
-                <DeleteOptions>
-                  <Factory>false</Factory>
-                  <AddRemove>false</AddRemove>
-                  <DataPortal>false</DataPortal>
-                  <RunLocal>false</RunLocal>
-                  <Procedure>false</Procedure>
-                  <ProcedureName />
-                  <FactorySuffix />
-                </DeleteOptions>
-                <Summary />
-                <Remarks />
-              </Criteria>
-              <Property xsi:type="CriteriaProperty">
-                <ParameterName>DocID</ParameterName>
-                <Name>DocID</Name>
-                <PropertyType>Int32</PropertyType>
-                <ReadOnly>false</ReadOnly>
-                <Nullable>false</Nullable>
-                <Summary />
-                <Remarks />
-                <DbBindColumn>
-                  <ColumnOriginType>Table</ColumnOriginType>
-                  <DataType>Int32</DataType>
-                  <NativeType>int</NativeType>
-                  <Size>10</Size>
-                  <SpResultIndex>0</SpResultIndex>
-                  <ColumnName>DocID</ColumnName>
-                  <IsPrimaryKey>true</IsPrimaryKey>
-                  <ObjectName>Docs</ObjectName>
-                  <CatalogName>DocStore</CatalogName>
-                  <SchemaName>dbo</SchemaName>
-                  <IsNullable>false</IsNullable>
-                  <IsIdentity>true</IsIdentity>
-                </DbBindColumn>
-                <CustomPropertyType />
-                <ParameterValue />
-                <InlineQueryParameter>Plain</InlineQueryParameter>
-              </Property>
+              <CriteriaName>CriteriaGet</CriteriaName>
+              <PropertyName>DocID</PropertyName>
             </Parameter>
           </LoadParameters>
           <Access>IsPublic</Access>
@@ -2999,94 +2655,8 @@
           <ParentLoadProperties />
           <LoadParameters>
             <Parameter>
-              <Criteria>
-                <Name>CriteriaGet</Name>
-                <CriteriaClassMode>Simple</CriteriaClassMode>
-                <NestedClass>true</NestedClass>
-                <Properties>
-                  <Property>
-                    <ParameterName>DocID</ParameterName>
-                    <Name>DocID</Name>
-                    <PropertyType>Int32</PropertyType>
-                    <ReadOnly>false</ReadOnly>
-                    <Nullable>false</Nullable>
-                    <Summary />
-                    <Remarks />
-                    <DbBindColumn>
-                      <ColumnOriginType>Table</ColumnOriginType>
-                      <DataType>Int32</DataType>
-                      <NativeType>int</NativeType>
-                      <Size>10</Size>
-                      <SpResultIndex>0</SpResultIndex>
-                      <ColumnName>DocID</ColumnName>
-                      <IsPrimaryKey>true</IsPrimaryKey>
-                      <ObjectName>Docs</ObjectName>
-                      <CatalogName>DocStore</CatalogName>
-                      <SchemaName>dbo</SchemaName>
-                      <IsNullable>false</IsNullable>
-                      <IsIdentity>true</IsIdentity>
-                    </DbBindColumn>
-                    <CustomPropertyType />
-                    <ParameterValue />
-                    <InlineQueryParameter>Plain</InlineQueryParameter>
-                  </Property>
-                </Properties>
-                <CreateOptions>
-                  <Factory>false</Factory>
-                  <AddRemove>false</AddRemove>
-                  <DataPortal>false</DataPortal>
-                  <RunLocal>false</RunLocal>
-                  <Procedure>false</Procedure>
-                  <ProcedureName />
-                  <FactorySuffix />
-                </CreateOptions>
-                <GetOptions>
-                  <Factory>true</Factory>
-                  <AddRemove>false</AddRemove>
-                  <DataPortal>true</DataPortal>
-                  <RunLocal>false</RunLocal>
-                  <Procedure>true</Procedure>
-                  <ProcedureName>GetDoc</ProcedureName>
-                  <FactorySuffix />
-                </GetOptions>
-                <DeleteOptions>
-                  <Factory>false</Factory>
-                  <AddRemove>false</AddRemove>
-                  <DataPortal>false</DataPortal>
-                  <RunLocal>false</RunLocal>
-                  <Procedure>false</Procedure>
-                  <ProcedureName />
-                  <FactorySuffix />
-                </DeleteOptions>
-                <Summary />
-                <Remarks />
-              </Criteria>
-              <Property xsi:type="CriteriaProperty">
-                <ParameterName>DocID</ParameterName>
-                <Name>DocID</Name>
-                <PropertyType>Int32</PropertyType>
-                <ReadOnly>false</ReadOnly>
-                <Nullable>false</Nullable>
-                <Summary />
-                <Remarks />
-                <DbBindColumn>
-                  <ColumnOriginType>Table</ColumnOriginType>
-                  <DataType>Int32</DataType>
-                  <NativeType>int</NativeType>
-                  <Size>10</Size>
-                  <SpResultIndex>0</SpResultIndex>
-                  <ColumnName>DocID</ColumnName>
-                  <IsPrimaryKey>true</IsPrimaryKey>
-                  <ObjectName>Docs</ObjectName>
-                  <CatalogName>DocStore</CatalogName>
-                  <SchemaName>dbo</SchemaName>
-                  <IsNullable>false</IsNullable>
-                  <IsIdentity>true</IsIdentity>
-                </DbBindColumn>
-                <CustomPropertyType />
-                <ParameterValue />
-                <InlineQueryParameter>Plain</InlineQueryParameter>
-              </Property>
+              <CriteriaName>CriteriaGet</CriteriaName>
+              <PropertyName>DocID</PropertyName>
             </Parameter>
           </LoadParameters>
           <Access>IsPublic</Access>
@@ -3164,7 +2734,7 @@
           <ParameterName>DocID</ParameterName>
           <Name>DocID</Name>
           <PropertyType>Int32</PropertyType>
-          <ReadOnly>false</ReadOnly>
+          <ReadOnly>true</ReadOnly>
           <Nullable>false</Nullable>
           <Summary>Gets or sets the Document ID.</Summary>
           <Remarks />
@@ -3218,7 +2788,7 @@
             <CacheResult>false</CacheResult>
           </WriteAuthzRuleType>
           <Access>IsPublic</Access>
-          <PropSetAccessibility>Private</PropSetAccessibility>
+          <PropSetAccessibility>Default</PropSetAccessibility>
           <Undoable>false</Undoable>
         </ValueProperty>
         <ValueProperty>
@@ -4153,7 +3723,7 @@
           <Name>DocRef</Name>
           <PropertyType>String</PropertyType>
           <ReadOnly>false</ReadOnly>
-          <Nullable>false</Nullable>
+          <Nullable>true</Nullable>
           <Summary />
           <Remarks />
           <DbBindColumn>
@@ -5342,7 +4912,7 @@
           <Name>Secret</Name>
           <PropertyType>String</PropertyType>
           <ReadOnly>false</ReadOnly>
-          <Nullable>false</Nullable>
+          <Nullable>true</Nullable>
           <Summary />
           <Remarks />
           <DbBindColumn>
@@ -7223,7 +6793,7 @@
           </WriteAuthzRuleType>
           <Access>IsPublic</Access>
           <PropSetAccessibility>Default</PropSetAccessibility>
-          <Undoable>true</Undoable>
+          <Undoable>false</Undoable>
         </ValueProperty>
         <ValueProperty>
           <ParameterName>Version</ParameterName>
@@ -9593,7 +9163,7 @@
           <Name>TagNotesCert</Name>
           <PropertyType>String</PropertyType>
           <ReadOnly>false</ReadOnly>
-          <Nullable>false</Nullable>
+          <Nullable>true</Nullable>
           <Summary />
           <Remarks />
           <DbBindColumn>
@@ -9715,7 +9285,7 @@
           <Name>SentDateTime</Name>
           <PropertyType>SmartDate</PropertyType>
           <ReadOnly>false</ReadOnly>
-          <Nullable>false</Nullable>
+          <Nullable>true</Nullable>
           <Summary />
           <Remarks />
           <DbBindColumn>
@@ -10616,7 +10186,7 @@
           </WriteAuthzRuleType>
           <Access>IsPublic</Access>
           <PropSetAccessibility>Default</PropSetAccessibility>
-          <Undoable>true</Undoable>
+          <Undoable>false</Undoable>
         </ValueProperty>
         <ValueProperty>
           <ParameterName>DocContentOrder</ParameterName>
@@ -11050,7 +10620,7 @@
           <Name>CheckOutDate</Name>
           <PropertyType>String</PropertyType>
           <ReadOnly>true</ReadOnly>
-          <Nullable>false</Nullable>
+          <Nullable>true</Nullable>
           <Summary>Gets the Check-out date.</Summary>
           <Remarks />
           <DbBindColumn>
@@ -12464,7 +12034,7 @@
           </WriteAuthzRuleType>
           <Access>IsPublic</Access>
           <PropSetAccessibility>Default</PropSetAccessibility>
-          <Undoable>true</Undoable>
+          <Undoable>false</Undoable>
         </ValueProperty>
         <ValueProperty>
           <ParameterName>DocClassID</ParameterName>
@@ -12715,7 +12285,7 @@
           <Name>DocRef</Name>
           <PropertyType>String</PropertyType>
           <ReadOnly>false</ReadOnly>
-          <Nullable>false</Nullable>
+          <Nullable>true</Nullable>
           <Summary />
           <Remarks />
           <DbBindColumn>
@@ -14215,7 +13785,7 @@
           </WriteAuthzRuleType>
           <Access>IsPublic</Access>
           <PropSetAccessibility>Default</PropSetAccessibility>
-          <Undoable>true</Undoable>
+          <Undoable>false</Undoable>
         </ValueProperty>
         <ValueProperty>
           <ParameterName>DocClassName</ParameterName>
@@ -14529,7 +14099,7 @@
           </WriteAuthzRuleType>
           <Access>IsPublic</Access>
           <PropSetAccessibility>Default</PropSetAccessibility>
-          <Undoable>true</Undoable>
+          <Undoable>false</Undoable>
         </ValueProperty>
         <ValueProperty>
           <ParameterName>DocClassName</ParameterName>
@@ -15208,7 +14778,7 @@
             <CacheResult>false</CacheResult>
           </WriteAuthzRuleType>
           <Access>IsPublic</Access>
-          <PropSetAccessibility>Private</PropSetAccessibility>
+          <PropSetAccessibility>Default</PropSetAccessibility>
           <Undoable>false</Undoable>
         </ValueProperty>
         <ValueProperty>
@@ -16005,7 +15575,7 @@
           </WriteAuthzRuleType>
           <Access>IsPublic</Access>
           <PropSetAccessibility>Default</PropSetAccessibility>
-          <Undoable>true</Undoable>
+          <Undoable>false</Undoable>
         </ValueProperty>
         <ValueProperty>
           <ParameterName>DocStatusName</ParameterName>
@@ -17365,7 +16935,7 @@
           </WriteAuthzRuleType>
           <Access>IsPublic</Access>
           <PropSetAccessibility>Default</PropSetAccessibility>
-          <Undoable>true</Undoable>
+          <Undoable>false</Undoable>
         </ValueProperty>
         <ValueProperty>
           <ParameterName>DocTypeName</ParameterName>
@@ -17679,7 +17249,7 @@
           </WriteAuthzRuleType>
           <Access>IsPublic</Access>
           <PropSetAccessibility>Default</PropSetAccessibility>
-          <Undoable>true</Undoable>
+          <Undoable>false</Undoable>
         </ValueProperty>
         <ValueProperty>
           <ParameterName>DocTypeName</ParameterName>
@@ -18920,94 +18490,8 @@
           <ParentLoadProperties />
           <LoadParameters>
             <Parameter>
-              <Criteria>
-                <Name>Criteria</Name>
-                <CriteriaClassMode>Simple</CriteriaClassMode>
-                <NestedClass>true</NestedClass>
-                <Properties>
-                  <Property>
-                    <ParameterName>FolderID</ParameterName>
-                    <Name>FolderID</Name>
-                    <PropertyType>Int32</PropertyType>
-                    <ReadOnly>false</ReadOnly>
-                    <Nullable>false</Nullable>
-                    <Summary />
-                    <Remarks />
-                    <DbBindColumn>
-                      <ColumnOriginType>Table</ColumnOriginType>
-                      <DataType>Int32</DataType>
-                      <NativeType>int</NativeType>
-                      <Size>10</Size>
-                      <SpResultIndex>0</SpResultIndex>
-                      <ColumnName>FolderID</ColumnName>
-                      <IsPrimaryKey>true</IsPrimaryKey>
-                      <ObjectName>Folders</ObjectName>
-                      <CatalogName>DocStore</CatalogName>
-                      <SchemaName>dbo</SchemaName>
-                      <IsNullable>false</IsNullable>
-                      <IsIdentity>true</IsIdentity>
-                    </DbBindColumn>
-                    <CustomPropertyType />
-                    <ParameterValue />
-                    <InlineQueryParameter>Plain</InlineQueryParameter>
-                  </Property>
-                </Properties>
-                <CreateOptions>
-                  <Factory>false</Factory>
-                  <AddRemove>false</AddRemove>
-                  <DataPortal>false</DataPortal>
-                  <RunLocal>false</RunLocal>
-                  <Procedure>false</Procedure>
-                  <ProcedureName />
-                  <FactorySuffix />
-                </CreateOptions>
-                <GetOptions>
-                  <Factory>true</Factory>
-                  <AddRemove>false</AddRemove>
-                  <DataPortal>true</DataPortal>
-                  <RunLocal>false</RunLocal>
-                  <Procedure>true</Procedure>
-                  <ProcedureName>GetFolder</ProcedureName>
-                  <FactorySuffix />
-                </GetOptions>
-                <DeleteOptions>
-                  <Factory>true</Factory>
-                  <AddRemove>false</AddRemove>
-                  <DataPortal>true</DataPortal>
-                  <RunLocal>false</RunLocal>
-                  <Procedure>true</Procedure>
-                  <ProcedureName>DeleteFolder</ProcedureName>
-                  <FactorySuffix />
-                </DeleteOptions>
-                <Summary />
-                <Remarks />
-              </Criteria>
-              <Property xsi:type="CriteriaProperty">
-                <ParameterName>FolderID</ParameterName>
-                <Name>FolderID</Name>
-                <PropertyType>Int32</PropertyType>
-                <ReadOnly>false</ReadOnly>
-                <Nullable>false</Nullable>
-                <Summary />
-                <Remarks />
-                <DbBindColumn>
-                  <ColumnOriginType>Table</ColumnOriginType>
-                  <DataType>Int32</DataType>
-                  <NativeType>int</NativeType>
-                  <Size>10</Size>
-                  <SpResultIndex>0</SpResultIndex>
-                  <ColumnName>FolderID</ColumnName>
-                  <IsPrimaryKey>true</IsPrimaryKey>
-                  <ObjectName>Folders</ObjectName>
-                  <CatalogName>DocStore</CatalogName>
-                  <SchemaName>dbo</SchemaName>
-                  <IsNullable>false</IsNullable>
-                  <IsIdentity>true</IsIdentity>
-                </DbBindColumn>
-                <CustomPropertyType />
-                <ParameterValue />
-                <InlineQueryParameter>Plain</InlineQueryParameter>
-              </Property>
+              <CriteriaName>Criteria</CriteriaName>
+              <PropertyName>FolderID</PropertyName>
             </Parameter>
           </LoadParameters>
           <Access>IsPublic</Access>
@@ -19056,94 +18540,8 @@
           <ParentLoadProperties />
           <LoadParameters>
             <Parameter>
-              <Criteria>
-                <Name>Criteria</Name>
-                <CriteriaClassMode>Simple</CriteriaClassMode>
-                <NestedClass>true</NestedClass>
-                <Properties>
-                  <Property>
-                    <ParameterName>FolderID</ParameterName>
-                    <Name>FolderID</Name>
-                    <PropertyType>Int32</PropertyType>
-                    <ReadOnly>false</ReadOnly>
-                    <Nullable>false</Nullable>
-                    <Summary />
-                    <Remarks />
-                    <DbBindColumn>
-                      <ColumnOriginType>Table</ColumnOriginType>
-                      <DataType>Int32</DataType>
-                      <NativeType>int</NativeType>
-                      <Size>10</Size>
-                      <SpResultIndex>0</SpResultIndex>
-                      <ColumnName>FolderID</ColumnName>
-                      <IsPrimaryKey>true</IsPrimaryKey>
-                      <ObjectName>Folders</ObjectName>
-                      <CatalogName>DocStore</CatalogName>
-                      <SchemaName>dbo</SchemaName>
-                      <IsNullable>false</IsNullable>
-                      <IsIdentity>true</IsIdentity>
-                    </DbBindColumn>
-                    <CustomPropertyType />
-                    <ParameterValue />
-                    <InlineQueryParameter>Plain</InlineQueryParameter>
-                  </Property>
-                </Properties>
-                <CreateOptions>
-                  <Factory>false</Factory>
-                  <AddRemove>false</AddRemove>
-                  <DataPortal>false</DataPortal>
-                  <RunLocal>false</RunLocal>
-                  <Procedure>false</Procedure>
-                  <ProcedureName />
-                  <FactorySuffix />
-                </CreateOptions>
-                <GetOptions>
-                  <Factory>true</Factory>
-                  <AddRemove>false</AddRemove>
-                  <DataPortal>true</DataPortal>
-                  <RunLocal>false</RunLocal>
-                  <Procedure>true</Procedure>
-                  <ProcedureName>GetFolder</ProcedureName>
-                  <FactorySuffix />
-                </GetOptions>
-                <DeleteOptions>
-                  <Factory>true</Factory>
-                  <AddRemove>false</AddRemove>
-                  <DataPortal>true</DataPortal>
-                  <RunLocal>false</RunLocal>
-                  <Procedure>true</Procedure>
-                  <ProcedureName>DeleteFolder</ProcedureName>
-                  <FactorySuffix />
-                </DeleteOptions>
-                <Summary />
-                <Remarks />
-              </Criteria>
-              <Property xsi:type="CriteriaProperty">
-                <ParameterName>FolderID</ParameterName>
-                <Name>FolderID</Name>
-                <PropertyType>Int32</PropertyType>
-                <ReadOnly>false</ReadOnly>
-                <Nullable>false</Nullable>
-                <Summary />
-                <Remarks />
-                <DbBindColumn>
-                  <ColumnOriginType>Table</ColumnOriginType>
-                  <DataType>Int32</DataType>
-                  <NativeType>int</NativeType>
-                  <Size>10</Size>
-                  <SpResultIndex>0</SpResultIndex>
-                  <ColumnName>FolderID</ColumnName>
-                  <IsPrimaryKey>true</IsPrimaryKey>
-                  <ObjectName>Folders</ObjectName>
-                  <CatalogName>DocStore</CatalogName>
-                  <SchemaName>dbo</SchemaName>
-                  <IsNullable>false</IsNullable>
-                  <IsIdentity>true</IsIdentity>
-                </DbBindColumn>
-                <CustomPropertyType />
-                <ParameterValue />
-                <InlineQueryParameter>Plain</InlineQueryParameter>
-              </Property>
+              <CriteriaName>Criteria</CriteriaName>
+              <PropertyName>FolderID</PropertyName>
             </Parameter>
           </LoadParameters>
           <Access>IsPublic</Access>
@@ -21511,7 +20909,7 @@
           <Name>DocRef</Name>
           <PropertyType>String</PropertyType>
           <ReadOnly>true</ReadOnly>
-          <Nullable>false</Nullable>
+          <Nullable>true</Nullable>
           <Summary />
           <Remarks />
           <DbBindColumn>
@@ -22815,7 +22213,7 @@
           <Name>TagNotesCert</Name>
           <PropertyType>String</PropertyType>
           <ReadOnly>false</ReadOnly>
-          <Nullable>false</Nullable>
+          <Nullable>true</Nullable>
           <Summary />
           <Remarks />
           <DbBindColumn>
@@ -22937,7 +22335,7 @@
           <Name>SentDateTime</Name>
           <PropertyType>SmartDate</PropertyType>
           <ReadOnly>false</ReadOnly>
-          <Nullable>false</Nullable>
+          <Nullable>true</Nullable>
           <Summary />
           <Remarks />
           <DbBindColumn>
@@ -24267,7 +23665,7 @@
           </WriteAuthzRuleType>
           <Access>IsPublic</Access>
           <PropSetAccessibility>Default</PropSetAccessibility>
-          <Undoable>true</Undoable>
+          <Undoable>false</Undoable>
         </ValueProperty>
         <ValueProperty>
           <ParameterName>FolderTypeID</ParameterName>
@@ -24764,7 +24162,7 @@
           </WriteAuthzRuleType>
           <Access>IsPublic</Access>
           <PropSetAccessibility>Default</PropSetAccessibility>
-          <Undoable>true</Undoable>
+          <Undoable>false</Undoable>
         </ValueProperty>
         <ValueProperty>
           <ParameterName>FolderStatusName</ParameterName>
@@ -26124,7 +25522,7 @@
           </WriteAuthzRuleType>
           <Access>IsPublic</Access>
           <PropSetAccessibility>Default</PropSetAccessibility>
-          <Undoable>true</Undoable>
+          <Undoable>false</Undoable>
         </ValueProperty>
         <ValueProperty>
           <ParameterName>FolderTypeName</ParameterName>
@@ -26438,7 +25836,7 @@
           </WriteAuthzRuleType>
           <Access>IsPublic</Access>
           <PropSetAccessibility>Default</PropSetAccessibility>
-          <Undoable>true</Undoable>
+          <Undoable>false</Undoable>
         </ValueProperty>
         <ValueProperty>
           <ParameterName>FolderTypeName</ParameterName>
@@ -27038,7 +26436,7 @@
           <Name>IsActive</Name>
           <PropertyType>Boolean</PropertyType>
           <ReadOnly>false</ReadOnly>
-          <Nullable>true</Nullable>
+          <Nullable>false</Nullable>
           <Summary>Gets or sets the active or deleted state.</Summary>
           <Remarks />
           <DbBindColumn>
@@ -28205,7 +27603,7 @@
           </WriteAuthzRuleType>
           <Access>IsPublic</Access>
           <PropSetAccessibility>Default</PropSetAccessibility>
-          <Undoable>true</Undoable>
+          <Undoable>false</Undoable>
         </ValueProperty>
         <ValueProperty>
           <ParameterName>Name</ParameterName>
@@ -28395,7 +27793,7 @@
           <Name>IsActive</Name>
           <PropertyType>Boolean</PropertyType>
           <ReadOnly>false</ReadOnly>
-          <Nullable>true</Nullable>
+          <Nullable>false</Nullable>
           <Summary>Gets the active or deleted state.</Summary>
           <Remarks />
           <DbBindColumn>
@@ -28641,7 +28039,7 @@
           </WriteAuthzRuleType>
           <Access>IsPublic</Access>
           <PropSetAccessibility>Default</PropSetAccessibility>
-          <Undoable>true</Undoable>
+          <Undoable>false</Undoable>
         </ValueProperty>
         <ValueProperty>
           <ParameterName>Name</ParameterName>
@@ -28930,7 +28328,7 @@
           </WriteAuthzRuleType>
           <Access>IsPublic</Access>
           <PropSetAccessibility>Default</PropSetAccessibility>
-          <Undoable>true</Undoable>
+          <Undoable>false</Undoable>
         </ValueProperty>
         <ValueProperty>
           <ParameterName>Name</ParameterName>
@@ -29280,7 +28678,7 @@
           </WriteAuthzRuleType>
           <Access>IsPublic</Access>
           <PropSetAccessibility>Default</PropSetAccessibility>
-          <Undoable>true</Undoable>
+          <Undoable>false</Undoable>
         </ValueProperty>
         <ValueProperty>
           <ParameterName>Name</ParameterName>
@@ -29727,7 +29125,7 @@
           <Name>IsActive</Name>
           <PropertyType>Boolean</PropertyType>
           <ReadOnly>false</ReadOnly>
-          <Nullable>true</Nullable>
+          <Nullable>false</Nullable>
           <Summary>Gets or sets the active or deleted state.</Summary>
           <Remarks />
           <DbBindColumn>
@@ -30666,7 +30064,7 @@
           </WriteAuthzRuleType>
           <Access>IsPublic</Access>
           <PropSetAccessibility>Default</PropSetAccessibility>
-          <Undoable>true</Undoable>
+          <Undoable>false</Undoable>
         </ValueProperty>
         <ValueProperty>
           <ParameterName>RoleName</ParameterName>
@@ -30734,7 +30132,7 @@
           <Name>IsActive</Name>
           <PropertyType>Boolean</PropertyType>
           <ReadOnly>false</ReadOnly>
-          <Nullable>true</Nullable>
+          <Nullable>false</Nullable>
           <Summary>Gets the active or deleted state.</Summary>
           <Remarks />
           <DbBindColumn>
@@ -30980,7 +30378,7 @@
           </WriteAuthzRuleType>
           <Access>IsPublic</Access>
           <PropSetAccessibility>Default</PropSetAccessibility>
-          <Undoable>true</Undoable>
+          <Undoable>false</Undoable>
         </ValueProperty>
         <ValueProperty>
           <ParameterName>RoleName</ParameterName>
@@ -31165,5 +30563,5 @@
   <ConnectionString>Server=(local);Database=DocStore;persist security info=False;user id=sa;password=password_1234;packet size=4096</ConnectionString>
   <ProjectName>Plain VB</ProjectName>
   <TargetDirectory>..\Plain\Plain-WIN-VB</TargetDirectory>
-  <FileVersion>4.0.5</FileVersion>
+  <FileVersion>4.0.6</FileVersion>
 </CslaGeneratorUnit>

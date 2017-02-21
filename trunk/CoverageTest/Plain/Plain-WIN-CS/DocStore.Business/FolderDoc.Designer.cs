@@ -305,6 +305,7 @@ namespace DocStore.Business
         /// <param name="docID">The create criteria.</param>
         protected void DataPortal_Create(int docID)
         {
+            LoadProperty(DocRefProperty, null);
             LoadProperty(CreateDateProperty, new SmartDate(DateTime.Now));
             LoadProperty(CreateUserIDProperty, UserInformation.UserId);
             LoadProperty(ChangeDateProperty, ReadProperty(CreateDateProperty));
@@ -323,7 +324,7 @@ namespace DocStore.Business
         {
             // Value properties
             LoadProperty(DocIDProperty, dr.GetInt32("DocID"));
-            LoadProperty(DocRefProperty, dr.GetString("DocRef"));
+            LoadProperty(DocRefProperty, dr.IsDBNull("DocRef") ? null : dr.GetString("DocRef"));
             LoadProperty(DocDateProperty, dr.GetDateTime("DocDate"));
             LoadProperty(SubjectProperty, dr.GetString("Subject"));
             LoadProperty(CreateDateProperty, dr.GetSmartDate("CreateDate", true));

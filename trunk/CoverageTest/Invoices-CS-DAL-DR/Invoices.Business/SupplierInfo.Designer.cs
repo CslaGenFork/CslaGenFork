@@ -78,6 +78,7 @@ namespace Invoices.Business
         /// </summary>
         internal void UpdatePropertiesOnSaved(SupplierEdit supplierEdit)
         {
+            LoadProperty(SupplierIdProperty, supplierEdit.SupplierId);
             LoadProperty(NameProperty, supplierEdit.Name);
         }
 

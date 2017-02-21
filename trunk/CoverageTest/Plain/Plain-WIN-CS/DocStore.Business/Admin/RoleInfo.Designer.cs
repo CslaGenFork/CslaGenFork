@@ -58,12 +58,12 @@ namespace DocStore.Business.Admin
         /// <summary>
         /// Maintains metadata about <see cref="IsActive"/> property.
         /// </summary>
-        public static readonly PropertyInfo<bool?> IsActiveProperty = RegisterProperty<bool?>(p => p.IsActive, "IsActive", null);
+        public static readonly PropertyInfo<bool> IsActiveProperty = RegisterProperty<bool>(p => p.IsActive, "IsActive");
         /// <summary>
         /// Gets the active or deleted state.
         /// </summary>
-        /// <value><c>true</c> if IsActive; <c>false</c> if not IsActive; otherwise, <c>null</c>.</value>
-        public bool? IsActive
+        /// <value><c>true</c> if IsActive; otherwise, <c>false</c>.</value>
+        public bool IsActive
         {
             get { return GetProperty(IsActiveProperty); }
         }
@@ -139,7 +139,7 @@ namespace DocStore.Business.Admin
             // Value properties
             LoadProperty(RoleIDProperty, dr.GetInt32("RoleID"));
             LoadProperty(RoleNameProperty, dr.GetString("RoleName"));
-            LoadProperty(IsActiveProperty, (bool?)dr.GetValue("IsActive"));
+            LoadProperty(IsActiveProperty, dr.GetBoolean("IsActive"));
             var args = new DataPortalHookArgs(dr);
             OnFetchRead(args);
         }

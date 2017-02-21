@@ -56,7 +56,6 @@ namespace DocStore.Business
         public int DocID
         {
             get { return GetProperty(DocIDProperty); }
-            private set { SetProperty(DocIDProperty, value); }
         }
 
         /// <summary>
@@ -579,8 +578,10 @@ namespace DocStore.Business
             LoadProperty(DocClassIDProperty, -1);
             LoadProperty(DocTypeIDProperty, -1);
             LoadProperty(SenderIDProperty, -1);
+            LoadProperty(DocRefProperty, null);
             LoadProperty(DocDateProperty, new SmartDate(DateTime.Today));
             LoadProperty(DocStatusIDProperty, -1);
+            LoadProperty(SecretProperty, null);
             LoadProperty(CreateDateProperty, DateTime.Now);
             LoadProperty(CreateUserIDProperty, UserInformation.UserId);
             LoadProperty(ChangeDateProperty, ReadProperty(CreateDateProperty));
@@ -639,11 +640,11 @@ namespace DocStore.Business
             LoadProperty(DocTypeIDProperty, dr.GetInt32("DocTypeID"));
             LoadProperty(SenderIDProperty, dr.GetInt32("SenderID"));
             LoadProperty(RecipientIDProperty, dr.GetInt32("RecipientID"));
-            LoadProperty(DocRefProperty, dr.GetString("DocRef"));
+            LoadProperty(DocRefProperty, dr.IsDBNull("DocRef") ? null : dr.GetString("DocRef"));
             LoadProperty(DocDateProperty, dr.GetSmartDate("DocDate", true));
             LoadProperty(SubjectProperty, dr.GetString("Subject"));
             LoadProperty(DocStatusIDProperty, dr.GetInt32("DocStatusID"));
-            LoadProperty(SecretProperty, dr.GetString("Secret"));
+            LoadProperty(SecretProperty, dr.IsDBNull("Secret") ? null : dr.GetString("Secret"));
             LoadProperty(CreateDateProperty, dr.GetDateTime("CreateDate"));
             LoadProperty(CreateUserIDProperty, dr.GetInt32("CreateUserID"));
             LoadProperty(ChangeDateProperty, dr.GetDateTime("ChangeDate"));
@@ -690,11 +691,11 @@ namespace DocStore.Business
                     cmd.Parameters.AddWithValue("@DocTypeID", ReadProperty(DocTypeIDProperty)).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@SenderID", ReadProperty(SenderIDProperty)).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@RecipientID", ReadProperty(RecipientIDProperty)).DbType = DbType.Int32;
-                    cmd.Parameters.AddWithValue("@DocRef", ReadProperty(DocRefProperty)).DbType = DbType.String;
+                    cmd.Parameters.AddWithValue("@DocRef", ReadProperty(DocRefProperty) == null ? (object)DBNull.Value : ReadProperty(DocRefProperty)).DbType = DbType.String;
                     cmd.Parameters.AddWithValue("@DocDate", ReadProperty(DocDateProperty).DBValue).DbType = DbType.Date;
                     cmd.Parameters.AddWithValue("@Subject", ReadProperty(SubjectProperty)).DbType = DbType.String;
                     cmd.Parameters.AddWithValue("@DocStatusID", ReadProperty(DocStatusIDProperty)).DbType = DbType.Int32;
-                    cmd.Parameters.AddWithValue("@Secret", ReadProperty(SecretProperty)).DbType = DbType.String;
+                    cmd.Parameters.AddWithValue("@Secret", ReadProperty(SecretProperty) == null ? (object)DBNull.Value : ReadProperty(SecretProperty)).DbType = DbType.String;
                     cmd.Parameters.AddWithValue("@CreateDate", ReadProperty(CreateDateProperty)).DbType = DbType.DateTime2;
                     cmd.Parameters.AddWithValue("@CreateUserID", ReadProperty(CreateUserIDProperty)).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@ChangeDate", ReadProperty(ChangeDateProperty)).DbType = DbType.DateTime2;
@@ -730,11 +731,11 @@ namespace DocStore.Business
                     cmd.Parameters.AddWithValue("@DocTypeID", ReadProperty(DocTypeIDProperty)).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@SenderID", ReadProperty(SenderIDProperty)).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@RecipientID", ReadProperty(RecipientIDProperty)).DbType = DbType.Int32;
-                    cmd.Parameters.AddWithValue("@DocRef", ReadProperty(DocRefProperty)).DbType = DbType.String;
+                    cmd.Parameters.AddWithValue("@DocRef", ReadProperty(DocRefProperty) == null ? (object)DBNull.Value : ReadProperty(DocRefProperty)).DbType = DbType.String;
                     cmd.Parameters.AddWithValue("@DocDate", ReadProperty(DocDateProperty).DBValue).DbType = DbType.Date;
                     cmd.Parameters.AddWithValue("@Subject", ReadProperty(SubjectProperty)).DbType = DbType.String;
                     cmd.Parameters.AddWithValue("@DocStatusID", ReadProperty(DocStatusIDProperty)).DbType = DbType.Int32;
-                    cmd.Parameters.AddWithValue("@Secret", ReadProperty(SecretProperty)).DbType = DbType.String;
+                    cmd.Parameters.AddWithValue("@Secret", ReadProperty(SecretProperty) == null ? (object)DBNull.Value : ReadProperty(SecretProperty)).DbType = DbType.String;
                     cmd.Parameters.AddWithValue("@ChangeDate", ReadProperty(ChangeDateProperty)).DbType = DbType.DateTime2;
                     cmd.Parameters.AddWithValue("@ChangeUserID", ReadProperty(ChangeUserIDProperty)).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@RowVersion", ReadProperty(RowVersionProperty)).DbType = DbType.Binary;

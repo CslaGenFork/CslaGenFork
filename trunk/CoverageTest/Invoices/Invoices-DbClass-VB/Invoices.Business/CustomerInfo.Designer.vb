@@ -91,6 +91,7 @@ Namespace Invoices.Business
         ''' Properties on <see cref="CustomerInfo"/> object are updated by <see cref="CustomerEdit"/> Saved event.
         ''' </summary>
         Friend Sub UpdatePropertiesOnSaved(customerEdit As CustomerEdit)
+            LoadProperty(CustomerIdProperty, customerEdit.CustomerId)
             LoadProperty(NameProperty, customerEdit.Name)
             LoadProperty(FiscalNumberProperty, customerEdit.FiscalNumber)
         End Sub

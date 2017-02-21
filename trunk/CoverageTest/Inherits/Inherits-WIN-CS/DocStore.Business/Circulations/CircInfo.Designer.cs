@@ -122,7 +122,7 @@ namespace DocStore.Business.Circulations
         /// <summary>
         /// Maintains metadata about <see cref="SentDateTime"/> property.
         /// </summary>
-        public static readonly PropertyInfo<SmartDate> SentDateTimeProperty = RegisterProperty<SmartDate>(p => p.SentDateTime, "Sent Date Time");
+        public static readonly PropertyInfo<SmartDate> SentDateTimeProperty = RegisterProperty<SmartDate>(p => p.SentDateTime, "Sent Date Time", null);
         /// <summary>
         /// Gets the Sent Date Time.
         /// </summary>
@@ -206,7 +206,7 @@ namespace DocStore.Business.Circulations
             LoadProperty(NeedsReplyDecisionProperty, dr.GetBoolean("NeedsReplyDecision"));
             LoadProperty(CircTypeTagProperty, dr.GetString("CircTypeTag"));
             LoadProperty(SenderEntityIDProperty, (int?)dr.GetValue("SenderEntityID"));
-            LoadProperty(SentDateTimeProperty, dr.GetSmartDate("SentDateTime", true));
+            LoadProperty(SentDateTimeProperty, dr.IsDBNull("SentDateTime") ? null : dr.GetSmartDate("SentDateTime", true));
             LoadProperty(DaysToReplyProperty, dr.GetInt16("DaysToReply"));
             LoadProperty(DaysToLiveProperty, dr.GetInt16("DaysToLive"));
             var args = new DataPortalHookArgs(dr);

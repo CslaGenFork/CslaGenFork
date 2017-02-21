@@ -45,7 +45,6 @@ namespace TestProject.Business
         public int DocID
         {
             get { return GetProperty(DocIDProperty); }
-            private set { SetProperty(DocIDProperty, value); }
         }
 
         /// <summary>
@@ -274,6 +273,7 @@ namespace TestProject.Business
         protected override void DataPortal_Create()
         {
             LoadProperty(DocIDProperty, System.Threading.Interlocked.Decrement(ref _lastId));
+            LoadProperty(DocRefProperty, null);
             LoadProperty(DocDateProperty, new SmartDate(DateTime.Today));
             LoadProperty(FoldersProperty, DataPortal.CreateChild<DocFolderColl>());
             var args = new DataPortalHookArgs();
@@ -324,7 +324,7 @@ namespace TestProject.Business
             // Value properties
             LoadProperty(DocIDProperty, dr.GetInt32("DocID"));
             LoadProperty(DocTypeIDProperty, dr.GetInt32("DocTypeID"));
-            LoadProperty(DocRefProperty, dr.GetString("DocRef"));
+            LoadProperty(DocRefProperty, dr.IsDBNull("DocRef") ? null : dr.GetString("DocRef"));
             LoadProperty(DocDateProperty, dr.GetSmartDate("DocDate", true));
             LoadProperty(SubjectProperty, dr.GetString("Subject"));
             var args = new DataPortalHookArgs(dr);
@@ -354,7 +354,7 @@ namespace TestProject.Business
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@DocID", ReadProperty(DocIDProperty)).Direction = ParameterDirection.Output;
                     cmd.Parameters.AddWithValue("@DocTypeID", ReadProperty(DocTypeIDProperty)).DbType = DbType.Int32;
-                    cmd.Parameters.AddWithValue("@DocRef", ReadProperty(DocRefProperty)).DbType = DbType.String;
+                    cmd.Parameters.AddWithValue("@DocRef", ReadProperty(DocRefProperty) == null ? (object)DBNull.Value : ReadProperty(DocRefProperty)).DbType = DbType.String;
                     cmd.Parameters.AddWithValue("@DocDate", ReadProperty(DocDateProperty).DBValue).DbType = DbType.Date;
                     cmd.Parameters.AddWithValue("@Subject", ReadProperty(SubjectProperty)).DbType = DbType.String;
                     var args = new DataPortalHookArgs(cmd);
@@ -382,7 +382,7 @@ namespace TestProject.Business
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@DocID", ReadProperty(DocIDProperty)).DbType = DbType.Int32;
                     cmd.Parameters.AddWithValue("@DocTypeID", ReadProperty(DocTypeIDProperty)).DbType = DbType.Int32;
-                    cmd.Parameters.AddWithValue("@DocRef", ReadProperty(DocRefProperty)).DbType = DbType.String;
+                    cmd.Parameters.AddWithValue("@DocRef", ReadProperty(DocRefProperty) == null ? (object)DBNull.Value : ReadProperty(DocRefProperty)).DbType = DbType.String;
                     cmd.Parameters.AddWithValue("@DocDate", ReadProperty(DocDateProperty).DBValue).DbType = DbType.Date;
                     cmd.Parameters.AddWithValue("@Subject", ReadProperty(SubjectProperty)).DbType = DbType.String;
                     var args = new DataPortalHookArgs(cmd);

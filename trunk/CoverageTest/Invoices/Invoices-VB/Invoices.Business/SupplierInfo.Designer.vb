@@ -77,6 +77,7 @@ Namespace Invoices.Business
         ''' Properties on <see cref="SupplierInfo"/> object are updated by <see cref="SupplierEdit"/> Saved event.
         ''' </summary>
         Friend Sub UpdatePropertiesOnSaved(supplierEdit As SupplierEdit)
+            LoadProperty(SupplierIdProperty, supplierEdit.SupplierId)
             LoadProperty(NameProperty, supplierEdit.Name)
         End Sub
 

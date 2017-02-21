@@ -100,7 +100,7 @@ Namespace DocStore.Business
         ''' <summary>
         ''' Maintains metadata about <see cref="DocRef"/> property.
         ''' </summary>
-        Public Shared ReadOnly DocRefProperty As PropertyInfo(Of String) = RegisterProperty(Of String)(Function(p) p.DocRef, "Doc Ref")
+        Public Shared ReadOnly DocRefProperty As PropertyInfo(Of String) = RegisterProperty(Of String)(Function(p) p.DocRef, "Doc Ref", New String(Nothing))
         ''' <summary>
         ''' Gets the Doc Ref.
         ''' </summary>
@@ -268,6 +268,7 @@ Namespace DocStore.Business
         ''' Properties on <see cref="DocInfo"/> object are updated by <see cref="Doc"/> Saved event.
         ''' </summary>
         Friend Sub UpdatePropertiesOnSaved(doc As Doc)
+            LoadProperty(DocIDProperty, doc.DocID)
             LoadProperty(DocClassIDProperty, doc.DocClassID)
             LoadProperty(DocTypeIDProperty, doc.DocTypeID)
             LoadProperty(SenderIDProperty, doc.SenderID)
@@ -293,7 +294,7 @@ Namespace DocStore.Business
             LoadProperty(DocTypeIDProperty, dr.GetInt32("DocTypeID"))
             LoadProperty(SenderIDProperty, dr.GetInt32("SenderID"))
             LoadProperty(RecipientIDProperty, dr.GetInt32("RecipientID"))
-            LoadProperty(DocRefProperty, dr.GetString("DocRef"))
+            LoadProperty(DocRefProperty, If(dr.IsDBNull("DocRef"), Nothing, dr.GetString("DocRef")))
             LoadProperty(DocDateProperty, dr.GetSmartDate("DocDate", True))
             LoadProperty(SubjectProperty, dr.GetString("Subject"))
             LoadProperty(DocStatusIDProperty, dr.GetInt32("DocStatusID"))
