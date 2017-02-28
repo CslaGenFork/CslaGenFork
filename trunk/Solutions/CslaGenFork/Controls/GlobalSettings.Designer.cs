@@ -38,6 +38,7 @@ namespace CslaGenerator.Controls
             this.cmdSave = new System.Windows.Forms.Button();
             this.MainTabControl = new System.Windows.Forms.TabControl();
             this.GenerationTab = new System.Windows.Forms.TabPage();
+            this.btnEditDbProviders = new System.Windows.Forms.Button();
             this.chkRecompileTemplates = new System.Windows.Forms.CheckBox();
             this.chkOverwriteExtendedFile = new System.Windows.Forms.CheckBox();
             this.cboCodeEncoding = new System.Windows.Forms.ComboBox();
@@ -118,6 +119,7 @@ namespace CslaGenerator.Controls
             this.GenerationTab.Controls.Add(this.cboCodeEncoding);
             this.GenerationTab.Controls.Add(this.chkOverwriteExtendedFile);
             this.GenerationTab.Controls.Add(this.chkRecompileTemplates);
+            this.GenerationTab.Controls.Add(this.btnEditDbProviders);
             this.GenerationTab.Location = new System.Drawing.Point(4, 22);
             this.GenerationTab.Name = "GenerationTab";
             this.GenerationTab.Size = new System.Drawing.Size(525, 352);
@@ -166,6 +168,17 @@ namespace CslaGenerator.Controls
             this.chkRecompileTemplates.UseVisualStyleBackColor = true;
             this.toolTip.SetToolTip(this.chkRecompileTemplates, "If checked, templates will be recompiled on every generation.\r\n" +
                 "Unless you are changing the templates, you should uncheck this option.");
+            // 
+            // btnEditDbProviders
+            // 
+            this.btnEditDbProviders.AutoSize = true;
+            this.btnEditDbProviders.Location = new System.Drawing.Point(15, 123);
+            this.btnEditDbProviders.Name = "btnEditDbProviders";
+            this.btnEditDbProviders.Size = new System.Drawing.Size(138, 17);
+            this.btnEditDbProviders.TabIndex = 0;
+            this.btnEditDbProviders.Text = "Edit DB Providers";
+            this.btnEditDbProviders.UseVisualStyleBackColor = true;
+            this.btnEditDbProviders.Click += new System.EventHandler(this.btnEditDbProviders_Click);
             // 
             // cboCodeEncoding
             // 
@@ -250,5 +263,6 @@ namespace CslaGenerator.Controls
         private ComboBox cboCodeEncoding;
         private CheckBox chkOverwriteExtendedFile;
         private CheckBox chkRecompileTemplates;
+        private Button btnEditDbProviders;
     }
 }

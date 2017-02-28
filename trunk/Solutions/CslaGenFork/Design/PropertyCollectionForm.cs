@@ -414,6 +414,15 @@ namespace CslaGenerator.Design
                         }
                     }
                 }
+            }            
+            else if (_collectionType == typeof(DbProvider))
+            {
+                var selectedObject = (DbProvider)_propGrid.SelectedObject;
+                //Get the property grid's type.
+                //This is a vsPropertyGrid located in System.Windows.Forms.Design
+                var propertyInfo = _propGrid.GetType().GetProperty("SelectedObject", BindingFlags.Public | BindingFlags.Instance);
+                if (selectedObject != null)
+                    propertyInfo.SetValue(_propGrid, new DbProviderPropertyBag(selectedObject), null);
             }
             /*else if (_collectionType == typeof(BusinessRuleProperty))
             {
@@ -533,6 +542,10 @@ namespace CslaGenerator.Design
                 case "BusinessRuleConstructor Collection Editor":
                     _form.Size = new Size(550, 330);
                     _collectionType = typeof(BusinessRuleConstructor);
+                    break;
+                case "DbProvider Collection Editor":
+                    _form.Size = new Size(650, 434);
+                    _collectionType = typeof(DbProvider);
                     break;
                 /*case "BusinessRuleProperty Collection Editor":
                     _form.Size = new Size(550, 569);

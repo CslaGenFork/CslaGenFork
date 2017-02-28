@@ -9,6 +9,7 @@ using DBSchemaInfo.Base;
 
 namespace CslaGenerator.Metadata
 {
+    [Serializable]
     public class ObjectRelationsFactory
     {
 

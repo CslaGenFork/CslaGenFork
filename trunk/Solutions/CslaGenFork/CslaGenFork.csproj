@@ -268,6 +268,7 @@
     <Compile Include="Design\AuthorizationRuleTypeConverter.cs" />
     <Compile Include="Design\BusinessRuleTypeEditor.cs" />
     <Compile Include="Design\CriteriaUsageParameterConverter.cs" />
+    <Compile Include="Design\DbProviderTypeEditor.cs" />
     <Compile Include="Design\EnumDescriptionConverter.cs" />
     <Compile Include="Design\EnumDescriptionOrCaseConverter.cs" />
     <Compile Include="Design\GenerateInlineQueryCollectionEditor.cs" />
@@ -301,8 +302,10 @@
     </Compile>
     <Compile Include="Metadata\CslaBaseClasses.cs" />
     <Compile Include="Metadata\CslaBaseClassesExtensions.cs" />
+    <Compile Include="Metadata\DbProvider.cs" />
     <Compile Include="PathHelper.cs" />
     <Compile Include="Util\ContextHelper.cs" />
+    <Compile Include="Util\PropertyBags\DbProviderPropertyBag.cs" />
     <Compile Include="VersionHelper.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -592,7 +595,7 @@
     <Compile Include="Util\PropertyBags\PropertyBag.cs" />
     <Compile Include="Util\PropertyBags\PropertyContext.cs" />
     <Compile Include="Util\PropertyBags\UnitOfWorkPropertyBag.cs" />
-    <Compile Include="Util\PropertyBags\UpdateValuePropertyBagBag.cs" />
+    <Compile Include="Util\PropertyBags\UpdateValuePropertyBag.cs" />
     <Compile Include="Util\PropertyBags\ValuePropertyBag.cs" />
     <Compile Include="Util\TreeNodeComparer.cs">
       <SubType>Code</SubType>

@@ -1,6 +1,8 @@
 using System;
+using System.Drawing.Design;
 using System.Text;
 using System.Windows.Forms;
+using CslaGenerator.Design;
 using CslaGenerator.Metadata;
 using WeifenLuo.WinFormsUI.Docking;
 
@@ -87,7 +89,7 @@ namespace CslaGenerator.Controls
             {
                 cbo.Items.Add(encoding.Name);
             }
-            cbo.Tag = typeof (string);
+            cbo.Tag = typeof(string);
         }
 
         private GeneratorController Controller
@@ -176,7 +178,8 @@ namespace CslaGenerator.Controls
                                             foreach (var subControl2 in subTabControl.TabPages)
                                             {
                                                 subTabPage = subControl2 as TabPage;
-                                                if (subTabPage != null && (subTabPage.ContainsFocus || subTabPage.Visible))
+                                                if (subTabPage != null &&
+                                                    (subTabPage.ContainsFocus || subTabPage.Visible))
                                                     break;
                                             }
                                         }
@@ -237,7 +240,8 @@ namespace CslaGenerator.Controls
                                             for (var index2 = 0; index2 < tabControl2.TabPages.Count; index2++)
                                             {
                                                 var tabPage2 = tabControl2.TabPages[index2];
-                                                if (tabPage2.Name == GeneratorController.Current.CurrentUnitLayout.GlobalSettingsSubTab)
+                                                if (tabPage2.Name ==
+                                                    GeneratorController.Current.CurrentUnitLayout.GlobalSettingsSubTab)
                                                 {
                                                     tabControl2.SelectedIndex = index2;
                                                     tabPage2.Focus();
@@ -259,5 +263,13 @@ namespace CslaGenerator.Controls
 
         #endregion
 
+        private void btnEditDbProviders_Click(object sender, EventArgs e)
+        {
+            using (var form = new Form())
+            {
+                DbProviderTypeEditor.EditValue(form, _globalParams, "DbProviders");
+            }
+            GlobalParametersBindingSourceCurrentItemChanged(this, EventArgs.Empty);
+        }
     }
 }

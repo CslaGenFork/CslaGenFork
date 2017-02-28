@@ -3,6 +3,7 @@ using System.ComponentModel;
 
 namespace CslaGenerator.Metadata
 {
+    [Serializable]
     public class ProjectParameters : INotifyPropertyChanged
     {
         #region State Fields Stored Procedures
