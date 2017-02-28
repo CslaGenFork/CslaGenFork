@@ -11,6 +11,7 @@ using DBSchemaInfo.Base;
 
 namespace CslaGenerator.Metadata
 {
+    [Serializable]
     public class ObjectFactory
     {
         readonly CslaGeneratorUnit _currentUnit;

@@ -1,10 +1,17 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing.Design;
+using System.IO;
 using System.Text;
+using System.Windows.Forms;
+using System.Xml.Serialization;
+using CslaGenerator.Design;
 using CslaGenerator.Util;
 
 namespace CslaGenerator.Metadata
 {
+    [Serializable]
     public class GlobalParameters : INotifyPropertyChanged
     {
         #region State Fields
@@ -16,6 +23,8 @@ namespace CslaGenerator.Metadata
         string _sprocEncodingDisplayName = "";
         bool _overwriteExtendedFile;
         bool _recompileTemplates;
+        List<DbProvider> _dbProviders = new List<DbProvider>();
+        private bool _dirty;
 
         #endregion
 
@@ -85,6 +94,19 @@ namespace CslaGenerator.Metadata
             }
         }
 
+        [Editor(typeof(PropertyCollectionForm), typeof(UITypeEditor))]
+        public List<DbProvider> DbProviders
+        {
+            get { return _dbProviders; }
+            set
+            {
+                if (_dbProviders == value)
+                    return;
+                _dbProviders = value;
+                OnPropertyChanged("");
+            }
+        }
+
         #endregion
 
         public GlobalParameters()
@@ -141,7 +163,7 @@ namespace CslaGenerator.Metadata
             }
             catch (Exception)
             {
-                return DefaultEncoding; ;
+                return DefaultEncoding;
             }
 
             return encoding;
@@ -185,6 +207,42 @@ namespace CslaGenerator.Metadata
             return result;
         }
 
+        /*internal void Save(string filePath)
+        {
+            FileStream fs = null;
+            var tempFile = Path.GetTempPath() + Guid.NewGuid() + ".cslagenerator";
+            var success = false;
+            try
+            {
+                Cursor.Current = Cursors.WaitCursor;
+                fs = File.Open(tempFile, FileMode.Create);
+                var s = new XmlSerializer(typeof(GlobalParameters));
+                s.Serialize(fs, this);
+                success = true;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(_mainForm, @"An error occurred while trying to save: " + Environment.NewLine + e.Message,
+                    "Save Error");
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
+                if (fs != null)
+                {
+                    fs.Close();
+                    fs.Dispose();
+                }
+            }
+
+            if (success)
+            {
+                File.Delete(filePath);
+                File.Move(tempFile, filePath);
+                _currentFilePath = GetFilePath(filePath);
+            }
+        }*/
+
         internal void SaveGlobalParameters()
         {
             CodeEncoding = ValidateEncoding(_codeEncoding);
@@ -197,15 +255,19 @@ namespace CslaGenerator.Metadata
             Dirty = false;
         }
 
-        [Browsable(false)]
-        internal bool Dirty { get; set; }
+        [Browsable(false), XmlIgnore]
+        public bool Dirty
+        {
+            get { return _dirty; }
+            set { _dirty = value; }
+        }
 
         internal GlobalParameters Clone()
         {
             GlobalParameters obj = null;
             try
             {
-                obj = (GlobalParameters)ObjectCloner.CloneShallow(this);
+                obj = (GlobalParameters) ObjectCloner.CloneShallow(this);
                 obj.Dirty = false;
             }
             catch (Exception ex)
@@ -218,6 +280,7 @@ namespace CslaGenerator.Metadata
         #region INotifyPropertyChanged Members
 
         public event PropertyChangedEventHandler PropertyChanged;
+
         void OnPropertyChanged(string propertyName)
         {
             switch (propertyName)

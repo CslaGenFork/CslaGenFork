@@ -3,6 +3,7 @@ using System.ComponentModel;
 
 namespace CslaGenerator.Metadata
 {
+    [Serializable]
     public class GenerationParameters : INotifyPropertyChanged
     {
         #region State Fields
