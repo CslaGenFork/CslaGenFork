@@ -33,7 +33,9 @@ namespace CslaGenerator.Controls
             this.components = new System.ComponentModel.Container();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.globalParametersBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.CmdResetToFactory = new System.Windows.Forms.Button();
+            this.cmdImport = new System.Windows.Forms.Button();
+            this.cmdExport = new System.Windows.Forms.Button();
+            this.cmdResetToFactory = new System.Windows.Forms.Button();
             this.cmdCancel = new System.Windows.Forms.Button();
             this.cmdSave = new System.Windows.Forms.Button();
             this.MainTabControl = new System.Windows.Forms.TabControl();
@@ -65,16 +67,38 @@ namespace CslaGenerator.Controls
             this.globalParametersBindingSource.DataSource = typeof(CslaGenerator.Metadata.GlobalParameters);
             this.globalParametersBindingSource.CurrentItemChanged += new System.EventHandler(this.GlobalParametersBindingSourceCurrentItemChanged);
             // 
+            // cmdImport
+            // 
+            this.cmdImport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cmdImport.Location = new System.Drawing.Point(16, 396);
+            this.cmdImport.Name = "cmdImport";
+            this.cmdImport.Size = new System.Drawing.Size(75, 23);
+            this.cmdImport.TabIndex = 20;
+            this.cmdImport.Text = "&Import...";
+            this.cmdImport.UseVisualStyleBackColor = true;
+            this.cmdImport.Click += new System.EventHandler(this.CmdImportClick);
+            // 
+            // cmdExport
+            // 
+            this.cmdExport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cmdExport.Location = new System.Drawing.Point(94, 396);
+            this.cmdExport.Name = "cmdExport";
+            this.cmdExport.Size = new System.Drawing.Size(75, 23);
+            this.cmdExport.TabIndex = 20;
+            this.cmdExport.Text = "&Export...";
+            this.cmdExport.UseVisualStyleBackColor = true;
+            this.cmdExport.Click += new System.EventHandler(this.CmdExportClick);
+            // 
             // CmdResetToFactory
             // 
-            this.CmdResetToFactory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.CmdResetToFactory.Location = new System.Drawing.Point(344, 396);
-            this.CmdResetToFactory.Name = "CmdResetToFactory";
-            this.CmdResetToFactory.Size = new System.Drawing.Size(100, 23);
-            this.CmdResetToFactory.TabIndex = 20;
-            this.CmdResetToFactory.Text = "&Factory default";
-            this.CmdResetToFactory.UseVisualStyleBackColor = true;
-            this.CmdResetToFactory.Click += new System.EventHandler(this.CmdResetToFactoryClick);
+            this.cmdResetToFactory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cmdResetToFactory.Location = new System.Drawing.Point(344, 396);
+            this.cmdResetToFactory.Name = "cmdResetToFactory";
+            this.cmdResetToFactory.Size = new System.Drawing.Size(100, 23);
+            this.cmdResetToFactory.TabIndex = 20;
+            this.cmdResetToFactory.Text = "&Factory default";
+            this.cmdResetToFactory.UseVisualStyleBackColor = true;
+            this.cmdResetToFactory.Click += new System.EventHandler(this.CmdResetToFactoryClick);
             // 
             // cmdCancel
             // 
@@ -227,7 +251,9 @@ namespace CslaGenerator.Controls
             this.ClientSize = new System.Drawing.Size(557, 425);
             this.Controls.Add(this.cmdSave);
             this.Controls.Add(this.cmdCancel);
-            this.Controls.Add(this.CmdResetToFactory);
+            this.Controls.Add(this.cmdResetToFactory);
+            this.Controls.Add(this.cmdExport);
+            this.Controls.Add(this.cmdImport);
             this.Controls.Add(this.MainTabControl);
             this.DockAreas = ((WeifenLuo.WinFormsUI.Docking.DockAreas)((WeifenLuo.WinFormsUI.Docking.DockAreas.Float | WeifenLuo.WinFormsUI.Docking.DockAreas.Document)));
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -249,7 +275,9 @@ namespace CslaGenerator.Controls
         #endregion
 
         private System.Windows.Forms.ToolTip toolTip;
-        internal System.Windows.Forms.Button CmdResetToFactory;
+        private System.Windows.Forms.Button cmdImport;
+        private System.Windows.Forms.Button cmdExport;
+        internal System.Windows.Forms.Button cmdResetToFactory;
         private System.Windows.Forms.Button cmdCancel;
         internal System.Windows.Forms.Button cmdSave;
         private System.Windows.Forms.TabControl MainTabControl;

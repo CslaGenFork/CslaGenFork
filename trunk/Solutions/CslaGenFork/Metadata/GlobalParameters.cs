@@ -2,9 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing.Design;
-using System.IO;
 using System.Text;
-using System.Windows.Forms;
 using System.Xml.Serialization;
 using CslaGenerator.Design;
 using CslaGenerator.Util;
@@ -18,13 +16,12 @@ namespace CslaGenerator.Metadata
 
         const string DefaultEncoding = "iso-8859-1";
         string _codeEncoding = DefaultEncoding;
-        string _codeEncodingDisplayName = "";
+        string _codeEncodingDisplayName = string.Empty;
         string _sprocEncoding = DefaultEncoding;
-        string _sprocEncodingDisplayName = "";
+        string _sprocEncodingDisplayName = string.Empty;
         bool _overwriteExtendedFile;
         bool _recompileTemplates;
         List<DbProvider> _dbProviders = new List<DbProvider>();
-        private bool _dirty;
 
         #endregion
 
@@ -37,7 +34,7 @@ namespace CslaGenerator.Metadata
             {
                 if (_codeEncoding == value)
                     return;
-                _codeEncoding = value;
+                _codeEncoding = ValidateEncoding(value);
                 OnPropertyChanged("CodeEncoding");
             }
         }
@@ -54,7 +51,7 @@ namespace CslaGenerator.Metadata
             {
                 if (_sprocEncoding == value)
                     return;
-                _sprocEncoding = value;
+                _sprocEncoding = ValidateEncoding(value);
                 OnPropertyChanged("SprocEncoding");
             }
         }
@@ -109,42 +106,17 @@ namespace CslaGenerator.Metadata
 
         #endregion
 
+        #region Constructor
+
         public GlobalParameters()
         {
-            LoadGlobalParameters(false);
+            OnPropertyChanged("CodeEncoding");
+            OnPropertyChanged("SprocEncoding");
         }
 
-        internal void LoadGlobalParameters(bool factory)
-        {
-            if (factory)
-            {
-                CodeEncoding = DefaultEncoding;
-                SprocEncoding = DefaultEncoding;
-                OverwriteExtendedFile = false;
-                RecompileTemplates = false;
-                SaveGlobalParameters();
-            }
-            else
-                LoadGlobalParameters();
+        #endregion
 
-            Dirty = false;
-        }
-
-        private void LoadGlobalParameters()
-        {
-            _codeEncoding = LoadValueForEncoding("CodeEncoding");
-            _codeEncodingDisplayName = GetEncodigDescription(_codeEncoding);
-            _sprocEncoding = LoadValueForEncoding("SProcEncoding");
-            _sprocEncodingDisplayName = GetEncodigDescription(_sprocEncoding);
-            _overwriteExtendedFile = LoadValueForOverwriteExtendedFile();
-            _recompileTemplates = LoadValueForRecompileTemplates();
-        }
-
-        private string LoadValueForEncoding(string key)
-        {
-            var encoding = ConfigTools.SharedAppConfigGet(key);
-            return ValidateEncoding(encoding);
-        }
+        #region Encoding helper methods
 
         private string GetEncodigDescription(string encoding)
         {
@@ -169,119 +141,13 @@ namespace CslaGenerator.Metadata
             return encoding;
         }
 
-        private static bool LoadValueForOverwriteExtendedFile()
-        {
-            var result = false;
-            var overwriteExtendedFile = ConfigTools.SharedAppConfigGet("OverwriteExtendedFile");
-
-            if (string.IsNullOrWhiteSpace(overwriteExtendedFile))
-                return result;
-
-            try
-            {
-                result = Convert.ToBoolean(overwriteExtendedFile);
-            }
-            catch (Exception)
-            {
-            }
-
-            return result;
-        }
-
-        private static bool LoadValueForRecompileTemplates()
-        {
-            var result = false;
-            var recompileTemplates = ConfigTools.SharedAppConfigGet("RecompileTemplates");
-
-            if (string.IsNullOrWhiteSpace(recompileTemplates))
-                return result;
-
-            try
-            {
-                result = Convert.ToBoolean(recompileTemplates);
-            }
-            catch (Exception)
-            {
-            }
-
-            return result;
-        }
-
-        /*internal void Save(string filePath)
-        {
-            FileStream fs = null;
-            var tempFile = Path.GetTempPath() + Guid.NewGuid() + ".cslagenerator";
-            var success = false;
-            try
-            {
-                Cursor.Current = Cursors.WaitCursor;
-                fs = File.Open(tempFile, FileMode.Create);
-                var s = new XmlSerializer(typeof(GlobalParameters));
-                s.Serialize(fs, this);
-                success = true;
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(_mainForm, @"An error occurred while trying to save: " + Environment.NewLine + e.Message,
-                    "Save Error");
-            }
-            finally
-            {
-                Cursor.Current = Cursors.Default;
-                if (fs != null)
-                {
-                    fs.Close();
-                    fs.Dispose();
-                }
-            }
-
-            if (success)
-            {
-                File.Delete(filePath);
-                File.Move(tempFile, filePath);
-                _currentFilePath = GetFilePath(filePath);
-            }
-        }*/
-
-        internal void SaveGlobalParameters()
-        {
-            CodeEncoding = ValidateEncoding(_codeEncoding);
-            ConfigTools.SharedAppConfigChange("CodeEncoding", CodeEncoding);
-            SprocEncoding = ValidateEncoding(_sprocEncoding);
-            ConfigTools.SharedAppConfigChange("SProcEncoding", SprocEncoding);
-            ConfigTools.SharedAppConfigChange("OverwriteExtendedFile", _overwriteExtendedFile.ToString());
-            ConfigTools.SharedAppConfigChange("RecompileTemplates", _recompileTemplates.ToString());
-
-            Dirty = false;
-        }
-
-        [Browsable(false), XmlIgnore]
-        public bool Dirty
-        {
-            get { return _dirty; }
-            set { _dirty = value; }
-        }
-
-        internal GlobalParameters Clone()
-        {
-            GlobalParameters obj = null;
-            try
-            {
-                obj = (GlobalParameters) ObjectCloner.CloneShallow(this);
-                obj.Dirty = false;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            return obj;
-        }
+        #endregion
 
         #region INotifyPropertyChanged Members
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        void OnPropertyChanged(string propertyName)
+        private void OnPropertyChanged(string propertyName)
         {
             switch (propertyName)
             {
@@ -296,6 +162,34 @@ namespace CslaGenerator.Metadata
             Dirty = true;
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(""));
+        }
+
+        private bool _dirty;
+
+        [Browsable(false), XmlIgnore]
+        public bool Dirty
+        {
+            get { return _dirty; }
+            set { _dirty = value; }
+        }
+
+        #endregion
+
+        #region Clone
+
+        internal GlobalParameters Clone()
+        {
+            GlobalParameters obj = null;
+            try
+            {
+                obj = (GlobalParameters) ObjectCloner.CloneShallow(this);
+                obj.Dirty = false;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return obj;
         }
 
         #endregion
