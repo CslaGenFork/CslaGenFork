@@ -4,6 +4,8 @@ using System.Drawing.Design;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 
+//http://stackoverflow.com/questions/473506/using-the-net-collection-editor-without-using-a-property-grid-control
+
 namespace CslaGenerator.Design
 {
     public class DbProviderTypeEditor : IWindowsFormsEditorService, ITypeDescriptorContext
