@@ -19,6 +19,15 @@ namespace CslaGenerator.Util
             }
         }
 
+        public static string GlobalXml
+        {
+            get
+            {
+                return Application.LocalUserAppDataPath.Substring(0, Application.LocalUserAppDataPath.LastIndexOf("\\"))
+                       + @"\Global.xml";
+            }
+        }
+
         private static string SharedAppConfig
         {
             get

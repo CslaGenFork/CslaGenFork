@@ -332,6 +332,8 @@ namespace CslaGenerator
                 };
             _globalSettingsPanel.FormClosing += PaneFormClosing;
             _globalSettingsPanel.Show(dockPanel);
+
+            LoadGlobalSettings();
         }
 
         /// <summary>
@@ -357,6 +359,17 @@ namespace CslaGenerator
             _controller.MruItems = new List<string>();
             _controller.MruItems = ConfigTools.SharedAppConfigGetMru();
             MruDisplay();
+        }
+
+        private void LoadGlobalSettings()
+        {
+            if (!File.Exists(ConfigTools.GlobalXml))
+            {
+                _globalSettingsPanel.cmdResetToFactory.PerformClick();
+                _globalSettingsPanel.cmdSave.PerformClick();
+            }
+
+            _globalSettingsPanel.ReLoadInfo();
         }
 
         #endregion
@@ -877,7 +890,7 @@ namespace CslaGenerator
                 Text = BaseFormText;
                 if (!File.Exists(ConfigTools.DefaultXml))
                 {
-                    _controller.CurrentProjectProperties.CmdResetToFactory.PerformClick();
+                    _controller.CurrentProjectProperties.cmdResetToFactory.PerformClick();
                     _controller.CurrentProjectProperties.cmdSetDefault.PerformClick();
                 }
 

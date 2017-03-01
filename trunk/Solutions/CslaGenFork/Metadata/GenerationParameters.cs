@@ -669,6 +669,23 @@ namespace CslaGenerator.Metadata
 
         #endregion
 
+        #region Constructor
+
+        public GenerationParameters()
+        {
+            OnPropertyChanged("TargetFramework");
+            OnPropertyChanged("GenerateWinForms");
+            OnPropertyChanged("GenerateWPF");
+            OnPropertyChanged("GenerateSilverlight4");
+            OnPropertyChanged("GenerateSynchronous");
+            OnPropertyChanged("GenerateAsynchronous");
+            OnPropertyChanged("GenerateAuthorization");
+            OnPropertyChanged("GenerateDTO");
+            OnPropertyChanged("GenerateSprocs");
+        }
+
+        #endregion
+
         #region INotifyPropertyChanged Members
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -767,12 +784,14 @@ namespace CslaGenerator.Metadata
 
         #endregion
 
+        #region Clone
+
         internal GenerationParameters Clone()
         {
             GenerationParameters obj = null;
             try
             {
-                obj = (GenerationParameters)Util.ObjectCloner.CloneShallow(this);
+                obj = (GenerationParameters) Util.ObjectCloner.CloneShallow(this);
                 obj.Dirty = false;
             }
             catch (Exception ex)
@@ -783,17 +802,6 @@ namespace CslaGenerator.Metadata
             return obj;
         }
 
-        public GenerationParameters()
-        {
-            OnPropertyChanged("TargetFramework");
-            OnPropertyChanged("GenerateWinForms");
-            OnPropertyChanged("GenerateWPF");
-            OnPropertyChanged("GenerateSilverlight4");
-            OnPropertyChanged("GenerateSynchronous");
-            OnPropertyChanged("GenerateAsynchronous");
-            OnPropertyChanged("GenerateAuthorization");
-            OnPropertyChanged("GenerateDTO");
-            OnPropertyChanged("GenerateSprocs");
-        }
+        #endregion
     }
 }

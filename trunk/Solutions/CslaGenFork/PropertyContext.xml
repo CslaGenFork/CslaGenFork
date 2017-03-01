@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!--  Generate is always here to mark object start
-      otherwise only insert properties to hide -->
+<!--  'Generate' is always here to mark where the object section starts.
+      Otherwise only insert properties to hide -->
 <propertybag>
   <contextSettings>
     <add key="PlaceHolder:Generate" value="true" />

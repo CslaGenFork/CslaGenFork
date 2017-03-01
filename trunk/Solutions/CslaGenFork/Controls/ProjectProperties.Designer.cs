@@ -36,7 +36,7 @@ namespace CslaGenerator.Controls
             this.cmdExport = new System.Windows.Forms.Button();
             this.cmdGetDefault = new System.Windows.Forms.Button();
             this.cmdSetDefault = new System.Windows.Forms.Button();
-            this.CmdResetToFactory = new System.Windows.Forms.Button();
+            this.cmdResetToFactory = new System.Windows.Forms.Button();
             this.cmdUndo = new System.Windows.Forms.Button();
             this.cmdApply = new System.Windows.Forms.Button();
             this.MainTabControl = new System.Windows.Forms.TabControl();
@@ -282,16 +282,16 @@ namespace CslaGenerator.Controls
             this.cmdSetDefault.UseVisualStyleBackColor = true;
             this.cmdSetDefault.Click += new System.EventHandler(this.CmdSetDefaultClick);
             // 
-            // CmdResetToFactory
+            // cmdResetToFactory
             // 
-            this.CmdResetToFactory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.CmdResetToFactory.Location = new System.Drawing.Point(344, 396);
-            this.CmdResetToFactory.Name = "CmdResetToFactory";
-            this.CmdResetToFactory.Size = new System.Drawing.Size(100, 23);
-            this.CmdResetToFactory.TabIndex = 20;
-            this.CmdResetToFactory.Text = "&Factory default";
-            this.CmdResetToFactory.UseVisualStyleBackColor = true;
-            this.CmdResetToFactory.Click += new System.EventHandler(this.CmdResetToFactoryClick);
+            this.cmdResetToFactory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cmdResetToFactory.Location = new System.Drawing.Point(344, 396);
+            this.cmdResetToFactory.Name = "cmdResetToFactory";
+            this.cmdResetToFactory.Size = new System.Drawing.Size(100, 23);
+            this.cmdResetToFactory.TabIndex = 20;
+            this.cmdResetToFactory.Text = "&Factory default";
+            this.cmdResetToFactory.UseVisualStyleBackColor = true;
+            this.cmdResetToFactory.Click += new System.EventHandler(this.CmdResetToFactoryClick);
             // 
             // cmdUndo
             // 
@@ -2083,7 +2083,7 @@ namespace CslaGenerator.Controls
             this.Controls.Add(this.cmdUndo);
             this.Controls.Add(this.cmdGetDefault);
             this.Controls.Add(this.cmdSetDefault);
-            this.Controls.Add(this.CmdResetToFactory);
+            this.Controls.Add(this.cmdResetToFactory);
             this.Controls.Add(this.cmdExport);
             this.Controls.Add(this.cmdImport);
             this.Controls.Add(this.MainTabControl);
@@ -2149,7 +2149,7 @@ namespace CslaGenerator.Controls
         private System.Windows.Forms.Button cmdExport;
         internal System.Windows.Forms.Button cmdGetDefault;
         internal System.Windows.Forms.Button cmdSetDefault;
-        internal System.Windows.Forms.Button CmdResetToFactory;
+        internal System.Windows.Forms.Button cmdResetToFactory;
         private System.Windows.Forms.Button cmdUndo;
         internal System.Windows.Forms.Button cmdApply;
         private System.Windows.Forms.TabControl MainTabControl;

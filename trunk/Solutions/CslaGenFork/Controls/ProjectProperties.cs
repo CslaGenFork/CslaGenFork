@@ -113,15 +113,15 @@ namespace CslaGenerator.Controls
             }
         }
 
-        private CslaGeneratorUnit project
+        private CslaGeneratorUnit Project
         {
             get { return GeneratorController.Current.CurrentUnit; }
         }
 
         internal void LoadInfo()
         {
-            _genParams = project.GenerationParams.Clone();
-            _projParams = project.Params.Clone();
+            _genParams = Project.GenerationParams.Clone();
+            _projParams = Project.Params.Clone();
             generationParametersBindingSource.DataSource = _genParams;
             projectParametersBindingSource.DataSource = _projParams;
 
@@ -136,9 +136,9 @@ namespace CslaGenerator.Controls
         internal void SaveInfo()
         {
             if (_genParams.Dirty)
-                project.GenerationParams = _genParams.Clone();
+                Project.GenerationParams = _genParams.Clone();
             if (_projParams.Dirty)
-                project.Params = _projParams.Clone();
+                Project.Params = _projParams.Clone();
             LoadInfo();
         }
 
@@ -148,16 +148,16 @@ namespace CslaGenerator.Controls
                 return;
 
             var confirm = DialogResult.No;
-            if (!(_projParams.SpGeneralPrefix.Equals(project.Params.SpGeneralPrefix) &&
-                _projParams.SpGetPrefix.Equals(project.Params.SpGetPrefix) &&
-                _projParams.SpAddPrefix.Equals(project.Params.SpAddPrefix) &&
-                _projParams.SpUpdatePrefix.Equals(project.Params.SpUpdatePrefix) &&
-                _projParams.SpDeletePrefix.Equals(project.Params.SpDeletePrefix) &&
-                _projParams.SpGeneralSuffix.Equals(project.Params.SpGeneralSuffix) &&
-                _projParams.SpGetSuffix.Equals(project.Params.SpGetSuffix) &&
-                _projParams.SpAddSuffix.Equals(project.Params.SpAddSuffix) &&
-                _projParams.SpUpdateSuffix.Equals(project.Params.SpUpdateSuffix) &&
-                _projParams.SpDeleteSuffix.Equals(project.Params.SpDeleteSuffix)))
+            if (!(_projParams.SpGeneralPrefix.Equals(Project.Params.SpGeneralPrefix) &&
+                _projParams.SpGetPrefix.Equals(Project.Params.SpGetPrefix) &&
+                _projParams.SpAddPrefix.Equals(Project.Params.SpAddPrefix) &&
+                _projParams.SpUpdatePrefix.Equals(Project.Params.SpUpdatePrefix) &&
+                _projParams.SpDeletePrefix.Equals(Project.Params.SpDeletePrefix) &&
+                _projParams.SpGeneralSuffix.Equals(Project.Params.SpGeneralSuffix) &&
+                _projParams.SpGetSuffix.Equals(Project.Params.SpGetSuffix) &&
+                _projParams.SpAddSuffix.Equals(Project.Params.SpAddSuffix) &&
+                _projParams.SpUpdateSuffix.Equals(Project.Params.SpUpdateSuffix) &&
+                _projParams.SpDeleteSuffix.Equals(Project.Params.SpDeleteSuffix)))
             {
                 confirm = MessageBox.Show(@"Your SP headings have changed. Do you wish to update your business objects to reflect these changes?", @"SP Naming", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             }
@@ -165,7 +165,7 @@ namespace CslaGenerator.Controls
             GeneratorController.Current.ReloadPropertyGrid();
             if (confirm == DialogResult.Yes)
             {
-                foreach (var info in project.CslaObjects)
+                foreach (var info in Project.CslaObjects)
                 {
                     info.SetProcedureNames();
                 }
@@ -246,10 +246,10 @@ namespace CslaGenerator.Controls
                 }
                 if (unit != null)
                 {
-                    project.Params = unit.Params;
-                    project.GenerationParams = unit.GenerationParams;
-                    project.ProjectName = unit.ProjectName;
-                    project.TargetDirectory = unit.TargetDirectory;
+                    Project.Params = unit.Params;
+                    Project.GenerationParams = unit.GenerationParams;
+                    Project.ProjectName = unit.ProjectName;
+                    Project.TargetDirectory = unit.TargetDirectory;
                     LoadInfo();
                 }
             }

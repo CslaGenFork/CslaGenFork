@@ -18,9 +18,9 @@ namespace CslaGenerator.Metadata
         private string _commandMethod = string.Empty;
         private string _addParameterMethod = string.Empty;
         private bool _hasNativeTimestamp;
-        private string _nativeTimestampType = string.Empty;
-        private string _netTimestampType = string.Empty;
-        private string _nativeInt64Type = "DbType.Int64";
+        private string _timestampNativeType = string.Empty;
+        private string _timestampDbType = string.Empty;
+        private string _int64NativeType = "DbType.Int64";
 
         #endregion
 
@@ -151,44 +151,44 @@ namespace CslaGenerator.Metadata
         [Category("03. Data Types")]
         [Description("The DB Provider native 'timestamp' type.")]
         [UserFriendlyName("DB Provider Timestamp Type")]
-        public string NativeTimestampType
+        public string TimestampNativeType
         {
-            get { return _nativeTimestampType; }
+            get { return _timestampNativeType; }
             set
             {
-                if (_nativeTimestampType == value)
+                if (_timestampNativeType == value)
                     return;
-                _nativeTimestampType = value;
+                _timestampNativeType = value;
                 OnPropertyChanged("");
             }
         }
 
         [Category("03. Data Types")]
-        [Description("The .NET counterpart type for the DB native 'timestamp' type.")]
-        [UserFriendlyName(".NET Timestamp Type")]
-        public string NetTimestampType
+        [Description("The .NET DbType counterpart for the DB native 'timestamp' type.")]
+        [UserFriendlyName("Timestamp .NET DbType")]
+        public string TimestampDbType
         {
-            get { return _netTimestampType; }
+            get { return _timestampDbType; }
             set
             {
-                if (_netTimestampType == value)
+                if (_timestampDbType == value)
                     return;
-                _netTimestampType = value;
+                _timestampDbType = value;
                 OnPropertyChanged("");
             }
         }
 
         [Category("03. Data Types")]
-        [Description("The DB Provider native 'int64' type.")]
+        [Description("The DB Provider native 'int64' type. This is used to emulate RowVersion on columns named 'rowversion' with Int64 data type.")]
         [UserFriendlyName("DB Provider Int64 Type")]
-        public string NativeInt64Type
+        public string Int64NativeType
         {
-            get { return _nativeInt64Type; }
+            get { return _int64NativeType; }
             set
             {
-                if (_nativeInt64Type == value)
+                if (_int64NativeType == value)
                     return;
-                _nativeInt64Type = value;
+                _int64NativeType = value;
                 OnPropertyChanged("");
             }
         }

@@ -1,9 +1,11 @@
 using System;
-using System.Drawing.Design;
+using System.IO;
 using System.Text;
 using System.Windows.Forms;
+using System.Xml.Serialization;
 using CslaGenerator.Design;
 using CslaGenerator.Metadata;
+using CslaGenerator.Util;
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace CslaGenerator.Controls
@@ -97,6 +99,16 @@ namespace CslaGenerator.Controls
             get { return GeneratorController.Current; }
         }
 
+        private void btnEditDbProviders_Click(object sender, EventArgs e)
+        {
+            using (var form = new Form())
+            {
+                form.Owner = Controller.MainForm;
+                DbProviderTypeEditor.EditValue(form, _globalParams, "DbProviders");
+            }
+            GlobalParametersBindingSourceCurrentItemChanged(this, EventArgs.Empty);
+        }
+
         internal void LoadInfo()
         {
             _globalParams = Controller.GlobalParameters.Clone();
@@ -105,15 +117,19 @@ namespace CslaGenerator.Controls
 
         internal void SaveInfo()
         {
+            if (_globalParams.Dirty)
+                Controller.GlobalParameters = _globalParams.Clone();
             LoadInfo();
+        }
+
+        internal void ReLoadInfo()
+        {
+            ImportGlobalParameters(ConfigTools.GlobalXml);
         }
 
         private void CmdSaveClick(object sender, EventArgs e)
         {
-            if (IsDirty)
-                Controller.GlobalParameters = _globalParams.Clone();
-
-            Controller.GlobalParameters.SaveGlobalParameters();
+            ExportGlobalParameters(ConfigTools.GlobalXml);
             SaveInfo();
         }
 
@@ -122,10 +138,111 @@ namespace CslaGenerator.Controls
             LoadInfo();
         }
 
+        private void CmdExportClick(object sender, EventArgs e)
+        {
+            using (var fileSave = new OpenFileDialog())
+            {
+                fileSave.Title = @"Export Global Settings - Select an existing file or type a new file name";
+                fileSave.Filter = @"Global Settings files (*.xml) | *.xml";
+                fileSave.DefaultExt = "xml";
+                fileSave.Multiselect = false;
+                fileSave.CheckFileExists = false;
+                fileSave.CheckPathExists = true;
+                fileSave.AddExtension = true;
+                var result = fileSave.ShowDialog(this);
+                if (result != DialogResult.OK)
+                    return;
+
+                Application.DoEvents();
+                ExportGlobalParameters(fileSave.FileName);
+            }
+        }
+
         private void CmdResetToFactoryClick(object sender, EventArgs e)
         {
-            Controller.GlobalParameters.LoadGlobalParameters(true);
-            LoadInfo();
+            ImportGlobalParameters(Application.StartupPath + @"\Global.xml");
+            CmdSaveClick(this, EventArgs.Empty);
+        }
+
+        private void CmdImportClick(object sender, EventArgs e)
+        {
+            using (var fileLoad = new OpenFileDialog())
+            {
+                fileLoad.Title = @"Import project settings - Select an existing file";
+                fileLoad.Filter = @"CSLA Gen files (*.xml) | *.xml";
+                fileLoad.DefaultExt = "xml";
+                fileLoad.CheckFileExists = true;
+                fileLoad.CheckPathExists = true;
+                fileLoad.Multiselect = false;
+                var result = fileLoad.ShowDialog(this);
+                if (result != DialogResult.OK)
+                    return;
+
+                Application.DoEvents();
+                ImportGlobalParameters(fileLoad.FileName);
+            }
+        }
+
+        private void ImportGlobalParameters(string filename)
+        {
+            var currentCursor = Cursor.Current;
+            Cursor.Current = Cursors.WaitCursor;
+            try
+            {
+                Cursor.Current = Cursors.WaitCursor;
+                GlobalParameters globalParameters;
+                using (var fs = File.Open(filename, FileMode.Open, FileAccess.Read))
+                {
+                    var s = new XmlSerializer(typeof(GlobalParameters));
+                    globalParameters = (GlobalParameters) s.Deserialize(fs);
+                }
+                if (globalParameters != null)
+                {
+                    Controller.GlobalParameters = globalParameters;
+                    LoadInfo();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(@"An error occurred while trying to import: " + Environment.NewLine + ex.Message,
+                    @"Import Error");
+            }
+            finally
+            {
+                Cursor.Current = currentCursor;
+            }
+        }
+
+        internal void ExportGlobalParameters(string fileName)
+        {
+            FileStream fs = null;
+            var tempFile = Path.GetTempPath() + Guid.NewGuid() + ".globalparameters";
+            var success = false;
+            try
+            {
+                Cursor.Current = Cursors.WaitCursor;
+                fs = File.Open(tempFile, FileMode.Create);
+                var s = new XmlSerializer(typeof(GlobalParameters));
+                s.Serialize(fs, _globalParams);
+                success = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(@"An error occurred while trying to export: " + Environment.NewLine + ex.Message,
+                    @"Export Error");
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
+                if (fs != null)
+                    fs.Close();
+            }
+
+            if (success)
+            {
+                File.Delete(fileName);
+                File.Move(tempFile, fileName);
+            }
         }
 
         private void GlobalParametersBindingSourceCurrentItemChanged(object sender, EventArgs e)
@@ -141,12 +258,13 @@ namespace CslaGenerator.Controls
             get { return _globalParams.Dirty; }
         }
 
-        internal void ForceSaveGlobalSettings()
+        internal bool ForceSaveGlobalSettings()
         {
             if (IsDirty)
             {
                 cmdSave.PerformClick();
             }
+            return true;
         }
 
         #region Manage state
@@ -262,14 +380,5 @@ namespace CslaGenerator.Controls
         }
 
         #endregion
-
-        private void btnEditDbProviders_Click(object sender, EventArgs e)
-        {
-            using (var form = new Form())
-            {
-                DbProviderTypeEditor.EditValue(form, _globalParams, "DbProviders");
-            }
-            GlobalParametersBindingSourceCurrentItemChanged(this, EventArgs.Empty);
-        }
     }
 }

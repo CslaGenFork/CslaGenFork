@@ -199,6 +199,9 @@
     <None Include="Resources\Orange.png" />
     <None Include="Resources\Error_List.png" />
     <None Include="Resources\Warning_List.png" />
+    <Content Include="Global.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="license.txt" />
     <Content Include="Resources\RefreshArrow_Green.png" />
     <Content Include="StartPage\images\logo_top_left.gif">
