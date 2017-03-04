@@ -123,15 +123,67 @@ namespace Invoices.Business
         /// <summary>
         /// Maintains metadata about child <see cref="Products"/> property.
         /// </summary>
-        public static readonly PropertyInfo<SupplierProductColl> ProductsProperty = RegisterProperty<SupplierProductColl>(p => p.Products, "Products", RelationshipTypes.Child);
+        public static readonly PropertyInfo<SupplierProductColl> ProductsProperty = RegisterProperty<SupplierProductColl>(p => p.Products, "Products", RelationshipTypes.Child | RelationshipTypes.LazyLoad);
         /// <summary>
-        /// Gets the Products ("parent load" child property).
+        /// Gets the Products ("lazy load" child property).
         /// </summary>
         /// <value>The Products.</value>
         public SupplierProductColl Products
         {
-            get { return GetProperty(ProductsProperty); }
-            private set { LoadProperty(ProductsProperty, value); }
+            get
+            {
+#if ASYNC
+                if (!FieldManager.FieldExists(ProductsProperty))
+                {
+                    LoadProperty(ProductsProperty, null);
+                    if (this.IsNew)
+                    {
+                        DataPortal.BeginCreate<SupplierProductColl>((o, e) =>
+                            {
+                                if (e.Error != null)
+                                    throw e.Error;
+                                else
+                                {
+                                    // set the property so OnPropertyChanged is raised
+                                    Products = e.Object;
+                                }
+                            });
+                        return null;
+                    }
+                    else
+                    {
+                        DataPortal.BeginFetch<SupplierProductColl>(ReadProperty(SupplierIdProperty), (o, e) =>
+                            {
+                                if (e.Error != null)
+                                    throw e.Error;
+                                else
+                                {
+                                    // set the property so OnPropertyChanged is raised
+                                    Products = e.Object;
+                                }
+                            });
+                        return null;
+                    }
+                }
+                else
+                {
+                    return GetProperty(ProductsProperty);
+                }
+#else
+                if (!FieldManager.FieldExists(ProductsProperty))
+                    if (this.IsNew)
+                        Products = DataPortal.Create<SupplierProductColl>();
+                    else
+                        Products = DataPortal.Fetch<SupplierProductColl>(ReadProperty(SupplierIdProperty));
+
+                return GetProperty(ProductsProperty);
+#endif
+            }
+            private set
+            {
+                LoadProperty(ProductsProperty, value);
+                OnPropertyChanged(ProductsProperty);
+            }
         }
 
         #endregion
@@ -233,7 +285,6 @@ namespace Invoices.Business
             LoadProperty(AddressLine2Property, null);
             LoadProperty(ZipCodeProperty, null);
             LoadProperty(StateProperty, null);
-            LoadProperty(ProductsProperty, DataPortal.CreateChild<SupplierProductColl>());
             var args = new DataPortalHookArgs();
             OnCreate(args);
             base.DataPortal_Create();
@@ -268,7 +319,6 @@ namespace Invoices.Business
                 if (dr.Read())
                 {
                     Fetch(dr);
-                    FetchChildren(dr);
                 }
             }
         }
@@ -289,16 +339,6 @@ namespace Invoices.Business
             LoadProperty(CountryProperty, (byte?)dr.GetValue("Country"));
             var args = new DataPortalHookArgs(dr);
             OnFetchRead(args);
-        }
-
-        /// <summary>
-        /// Loads child objects from the given SafeDataReader.
-        /// </summary>
-        /// <param name="dr">The SafeDataReader to use.</param>
-        private void FetchChildren(SafeDataReader dr)
-        {
-            dr.NextResult();
-            LoadProperty(ProductsProperty, DataPortal.FetchChild<SupplierProductColl>(dr));
         }
 
         /// <summary>

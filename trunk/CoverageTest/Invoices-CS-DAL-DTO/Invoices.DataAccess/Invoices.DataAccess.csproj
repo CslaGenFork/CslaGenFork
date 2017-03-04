@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{39A59600-A6FE-4623-8C62-ABD0DA9E6647}</ProjectGuid>
+    <ProjectGuid>{F3149DFB-F2C2-4A25-85D2-117417673E54}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Invoices.DataAccess</RootNamespace>
@@ -53,7 +53,6 @@
     <Compile Include="CustomerInfoDto.Designer.cs">
       <DependentUpon>CustomerInfoDto.cs</DependentUpon>
     </Compile>
-    <Compile Include="DalFactory.cs" />
     <Compile Include="DalFactoryInvoices.cs" />
     <Compile Include="DataNotFoundException.cs" />
     <Compile Include="ICustomerEditDal.cs" />
@@ -64,7 +63,6 @@
     <Compile Include="ICustomerListDal.Designer.cs">
       <DependentUpon>ICustomerListDal.cs</DependentUpon>
     </Compile>
-    <Compile Include="IDalManager.cs" />
     <Compile Include="IDalManagerInvoices.cs" />
     <Compile Include="IInvoiceEditDal.cs" />
     <Compile Include="IInvoiceEditDal.Designer.cs">
@@ -165,6 +163,10 @@
     <Compile Include="ISupplierListDal.cs" />
     <Compile Include="ISupplierListDal.Designer.cs">
       <DependentUpon>ISupplierListDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ISupplierProductCollDal.cs" />
+    <Compile Include="ISupplierProductCollDal.Designer.cs">
+      <DependentUpon>ISupplierProductCollDal.cs</DependentUpon>
     </Compile>
     <Compile Include="ISupplierProductItemDal.cs" />
     <Compile Include="ISupplierProductItemDal.Designer.cs">

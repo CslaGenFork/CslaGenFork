@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A4E393FA-0274-4ED1-B5C8-5EF450DB2CBC}</ProjectGuid>
+    <ProjectGuid>{BF7723DE-9DC9-41EA-A162-F76712A7C865}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Invoices.DataAccess.Sql</RootNamespace>
@@ -52,7 +52,6 @@
     <Compile Include="CustomerListDal.Designer.cs">
       <DependentUpon>CustomerListDal.cs</DependentUpon>
     </Compile>
-    <Compile Include="DalManager.cs" />
     <Compile Include="DalManagerInvoices.cs" />
     <Compile Include="InvoiceEditDal.cs" />
     <Compile Include="InvoiceEditDal.Designer.cs">
@@ -135,22 +134,26 @@
     <Compile Include="SupplierListDal.Designer.cs">
       <DependentUpon>SupplierListDal.cs</DependentUpon>
     </Compile>
+    <Compile Include="SupplierProductCollDal.cs" />
+    <Compile Include="SupplierProductCollDal.Designer.cs">
+      <DependentUpon>SupplierProductCollDal.cs</DependentUpon>
+    </Compile>
     <Compile Include="SupplierProductItemDal.cs" />
     <Compile Include="SupplierProductItemDal.Designer.cs">
       <DependentUpon>SupplierProductItemDal.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Invoices.DataAccess\Invoices.DataAccess.csproj">
+      <Project>{6d316c5e-5d1b-4fb2-b4ac-8af3289999e7}</Project>
+      <Name>Invoices.DataAccess</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\..\packages\CSLA-Core.4.6.500\analyzers\c#\Csla.Analyzers.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Invoices.DataAccess\Invoices.DataAccess.csproj">
-      <Project>{e2fbaf79-71a6-4ba0-8fba-b2971841b6bb}</Project>
-      <Name>Invoices.DataAccess</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -93,18 +93,38 @@ Namespace Invoices.Business
         #Region " Data Access "
 
         ''' <summary>
+        ''' Loads a <see cref="SupplierProductColl"/> collection from the database, based on given criteria.
+        ''' </summary>
+        ''' <param name="supplierId">The Supplier Id.</param>
+        Protected Overloads Sub DataPortal_Fetch(supplierId As Integer)
+            Using ctx = ConnectionManager(Of SqlConnection).GetManager(Database.InvoicesConnection, False)
+                Using cmd = New SqlCommand("dbo.GetSupplierProductColl", ctx.Connection)
+                    cmd.CommandType = CommandType.StoredProcedure
+                    cmd.Parameters.AddWithValue("@SupplierId", supplierId).DbType = DbType.Int32
+                    Dim args As New DataPortalHookArgs(cmd, supplierId)
+                    OnFetchPre(args)
+                    LoadCollection(cmd)
+                    OnFetchPost(args)
+                End Using
+            End Using
+        End Sub
+
+        Private Sub LoadCollection(cmd As SqlCommand)
+            Using dr As New SafeDataReader(cmd.ExecuteReader())
+                Fetch(dr)
+            End Using
+        End Sub
+
+        ''' <summary>
         ''' Loads all <see cref="SupplierProductColl"/> collection items from the given SafeDataReader.
         ''' </summary>
         ''' <param name="dr">The SafeDataReader to use.</param>
-        Private Sub Child_Fetch(dr As SafeDataReader)
+        Private Sub Fetch(dr As SafeDataReader)
             Dim rlce = RaiseListChangedEvents
             RaiseListChangedEvents = False
-            Dim args As New DataPortalHookArgs(dr)
-            OnFetchPre(args)
             While dr.Read()
                 Add(DataPortal.FetchChild(Of SupplierProductItem)(dr))
             End While
-            OnFetchPost(args)
             RaiseListChangedEvents = rlce
         End Sub
 

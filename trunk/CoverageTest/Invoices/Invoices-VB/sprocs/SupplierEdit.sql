@@ -23,15 +23,6 @@ AS
         WHERE
             [Suppliers].[SupplierId] = @SupplierId
 
-        /* Get SupplierProductItem from table */
-        SELECT
-            [ProductsSuppliers].[ProductSupplierId],
-            [ProductsSuppliers].[ProductId]
-        FROM [dbo].[ProductsSuppliers]
-            INNER JOIN [dbo].[Suppliers] ON [ProductsSuppliers].[SupplierId] = [Suppliers].[SupplierId]
-        WHERE
-            [Suppliers].[SupplierId] = @SupplierId
-
     END
 GO
 

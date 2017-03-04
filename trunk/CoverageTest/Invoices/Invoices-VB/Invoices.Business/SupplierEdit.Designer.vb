@@ -143,18 +143,56 @@ Namespace Invoices.Business
         ''' <summary>
         ''' Maintains metadata about child <see cref="Products"/> property.
         ''' </summary>
-        Public Shared ReadOnly ProductsProperty As PropertyInfo(Of SupplierProductColl) = RegisterProperty(Of SupplierProductColl)(Function(p) p.Products, "Products", RelationshipTypes.Child)
+        Public Shared ReadOnly ProductsProperty As PropertyInfo(Of SupplierProductColl) = RegisterProperty(Of SupplierProductColl)(Function(p) p.Products, "Products", RelationshipTypes.Child Or RelationshipTypes.LazyLoad)
         ''' <summary>
-        ''' Gets the Products ("parent load" child property).
+        ''' Gets the Products ("lazy load" child property).
         ''' </summary>
         ''' <value>The Products.</value>
         Public Property Products As SupplierProductColl
-            Get
+    Get
+#If ASYNC Then
+                If Not FieldManager.FieldExists(ProductsProperty) Then
+                    LoadProperty(ProductsProperty, Nothing)
+                    If Me.IsNew Then
+                        DataPortal.BeginCreate(Of SupplierProductColl)(Function(o, e)
+                                If e.Error IsNot Nothing Then
+                                    Throw e.Error
+                                Else
+                                    ' set the property so OnPropertyChanged is raised
+                                    Products = e.Object
+                                End If
+                            End Function)
+                        Return Nothing
+                    Else
+                        DataPortal.BeginFetch<SupplierProductColl>(ReadProperty(SupplierIdProperty), Function(o, e)
+                                If e.Error IsNot Nothing Then
+                                    Throw e.Error
+                                Else
+                                    ' set the property so OnPropertyChanged is raised
+                                    Products = e.Object
+                                End If
+                            End Function)
+                        Return Nothing
+                    End If
+                Else
+                    Return GetProperty(ProductsProperty)
+                End If
+#Else
+                If Not FieldManager.FieldExists(ProductsProperty) Then
+                    If Me.IsNew Then
+                        Products = DataPortal.Create(Of SupplierProductColl)()
+                    Else
+                        Products = DataPortal.Fetch(Of SupplierProductColl)(ReadProperty(SupplierIdProperty))
+                    End If
+                End If
+
                 Return GetProperty(ProductsProperty)
-            End Get
-            Private Set(ByVal value As SupplierProductColl)
+#End If
+    End Get
+    Private Set
                 LoadProperty(ProductsProperty, value)
-            End Set
+                OnPropertyChanged(ProductsProperty)
+    End Set
         End Property
 
         #End Region
@@ -247,7 +285,6 @@ Namespace Invoices.Business
             LoadProperty(AddressLine2Property, Nothing)
             LoadProperty(ZipCodeProperty, Nothing)
             LoadProperty(StateProperty, Nothing)
-            LoadProperty(ProductsProperty, DataPortal.CreateChild(Of SupplierProductColl)())
             Dim args As New DataPortalHookArgs()
             OnCreate(args)
             MyBase.DataPortal_Create()
@@ -276,7 +313,6 @@ Namespace Invoices.Business
             Using dr As New SafeDataReader(cmd.ExecuteReader())
                 If dr.Read() Then
                     Fetch(dr)
-                    FetchChildren(dr)
                 End If
             End Using
         End Sub
@@ -296,15 +332,6 @@ Namespace Invoices.Business
             LoadProperty(CountryProperty, DirectCast(dr.GetValue("Country"), Byte?))
             Dim args As New DataPortalHookArgs(dr)
             OnFetchRead(args)
-        End Sub
-
-        ''' <summary>
-        ''' Loads child objects from the given SafeDataReader.
-        ''' </summary>
-        ''' <param name="dr">The SafeDataReader to use.</param>
-        Private Sub FetchChildren(dr As SafeDataReader)
-            dr.NextResult()
-            LoadProperty(ProductsProperty, DataPortal.FetchChild(Of SupplierProductColl)(dr))
         End Sub
 
         ''' <summary>

@@ -31,7 +31,7 @@ namespace Invoices.DataAccess.Sql
         /// </summary>
         public DalManagerInvoices()
         {
-            ConnectionManager = ConnectionManager<SqlConnection>.GetManager("InvoicesDatabase");
+            ConnectionManager = ConnectionManager<SqlConnection>.GetManager("Invoices");
         }
 
         /// <summary>

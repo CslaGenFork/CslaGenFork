@@ -92,6 +92,7 @@
     <GenerateDalObject>false</GenerateDalObject>
     <GenerateSynchronous>true</GenerateSynchronous>
     <GenerateAsynchronous>true</GenerateAsynchronous>
+    <DbProviderCollection />
   </GenerationParams>
   <CslaObjects>
     <CslaObjectInfo>

@@ -104,20 +104,45 @@ namespace Invoices.Business
         #region Data Access
 
         /// <summary>
+        /// Loads a <see cref="SupplierProductColl"/> collection from the database, based on given criteria.
+        /// </summary>
+        /// <param name="supplierId">The Supplier Id.</param>
+        protected void DataPortal_Fetch(int supplierId)
+        {
+            using (var ctx = ConnectionManager<SqlConnection>.GetManager(Database.InvoicesConnection, false))
+            {
+                using (var cmd = new SqlCommand("dbo.GetSupplierProductColl", ctx.Connection))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@SupplierId", supplierId).DbType = DbType.Int32;
+                    var args = new DataPortalHookArgs(cmd, supplierId);
+                    OnFetchPre(args);
+                    LoadCollection(cmd);
+                    OnFetchPost(args);
+                }
+            }
+        }
+
+        private void LoadCollection(SqlCommand cmd)
+        {
+            using (var dr = new SafeDataReader(cmd.ExecuteReader()))
+            {
+                Fetch(dr);
+            }
+        }
+
+        /// <summary>
         /// Loads all <see cref="SupplierProductColl"/> collection items from the given SafeDataReader.
         /// </summary>
         /// <param name="dr">The SafeDataReader to use.</param>
-        private void Child_Fetch(SafeDataReader dr)
+        private void Fetch(SafeDataReader dr)
         {
             var rlce = RaiseListChangedEvents;
             RaiseListChangedEvents = false;
-            var args = new DataPortalHookArgs(dr);
-            OnFetchPre(args);
             while (dr.Read())
             {
                 Add(DataPortal.FetchChild<SupplierProductItem>(dr));
             }
-            OnFetchPost(args);
             RaiseListChangedEvents = rlce;
         }
 
