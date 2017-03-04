@@ -444,5 +444,93 @@ namespace CslaGenerator.CodeGen
         }
 
         #endregion
+
+        #region DbProviders
+
+        internal static string GetConnectionMethod()
+        {
+            if (DbProvider == null)
+                return "SqlConnection";
+
+            return GetConnectionMethod(DbProvider);
+        }
+
+        internal static string GetConnectionMethod(DbProvider provider)
+        {
+            return provider.ConnectionMethod;
+        }
+
+        internal static string GetCommandMethod()
+        {
+            if (DbProvider == null)
+                return "SqlCommand";
+
+            return GetCommandMethod(DbProvider);
+        }
+
+        internal static string GetCommandMethod(DbProvider provider)
+        {
+            return provider.CommandMethod;
+        }
+
+        internal static string GetAddParameterMethod()
+        {
+            if (DbProvider == null)
+                return "AddWithValue";
+
+            return GetAddParameterMethod(DbProvider);
+        }
+
+        internal static string GetAddParameterMethod(DbProvider provider)
+        {
+            return provider.AddParameterMethod;
+        }
+
+        internal static string GetDalNamespaceSuffix()
+        {
+            if (GenerationDbProvider == null)
+                return string.Empty;
+
+            return GetDalNamespaceSuffix(GenerationDbProvider);
+        }
+
+        internal static string GetDalNamespaceSuffix(GenerationDbProvider provider)
+        {
+            return provider.NamespaceSuffix;
+        }
+
+        internal static GenerationDbProvider GenerationDbProvider { get; private set; }
+
+        internal static DbProvider DbProvider { get; private set; }
+
+        internal static void SetDefaultDbProvider(GenerationParameters generationParams)
+        {
+            GenerationDbProvider = null;
+            DbProvider = null;
+
+            if (!generationParams.UseDal)
+            {
+                if (generationParams.DbProviderCollection != null)
+                {
+                    GenerationDbProvider = GenerationDbProviderCollection.GetInstance().GetActive();
+                    DbProvider = SetDbProviderFromGenerationDbProvider();
+                }
+            }
+        }
+
+        internal static DbProvider SetDbProviderFromGenerationDbProvider()
+        {
+            if (GenerationDbProvider != null)
+            {
+                foreach (var globalProvider in GeneratorController.Current.GlobalParameters.DbProviders)
+                {
+                    if (globalProvider.DbProviderShortName == GenerationDbProvider.DBProviderShortName)
+                        return globalProvider;
+                }
+            }
+            return null;
+        }
+
+        #endregion
     }
 }

@@ -168,6 +168,7 @@ namespace CslaGenerator.CodeGen
             _retryCount = 0;
             OutputWindow.Current.ClearOutput();
             var generationParams = unit.GenerationParams;
+            TemplateHelper.SetDefaultDbProvider(generationParams);
             _generateDatabaseClass = generationParams.GenerateDatabaseClass;
             _abortRequested = false;
             _fullTemplatesPath += _templatesDirectory + "CSLA40";
@@ -391,7 +392,7 @@ namespace CslaGenerator.CodeGen
             if (_generateDatabaseClass && generationParams.TargetIsCsla4)
             {
                 const GenerationStep step = GenerationStep.Business;
-                GenerateUtilityFile("Database" + _unit.GenerationParams.DatabaseConnection, false, "Database", step);
+                GenerateUtilityFile("Database" + generationParams.DatabaseConnection, false, "Database", step);
             }
             else
             {
@@ -955,7 +956,7 @@ namespace CslaGenerator.CodeGen
 
         private void DoGenerateDalInterface(CslaObjectInfo objInfo)
         {
-            if (!GeneratorController.Current.CurrentUnit.GenerationParams.GenerateDalInterface)
+            if (!_unit.GenerationParams.GenerateDalInterface)
                 return;
 
             DoGenerateDal(objInfo, GenerationStep.DalInterface);
@@ -963,7 +964,7 @@ namespace CslaGenerator.CodeGen
 
         private void DoGenerateDalObject(CslaObjectInfo objInfo)
         {
-            if (!GeneratorController.Current.CurrentUnit.GenerationParams.GenerateDalObject)
+            if (!_unit.GenerationParams.GenerateDalObject)
                 return;
 
             DoGenerateDal(objInfo, GenerationStep.DalObject);
@@ -981,6 +982,19 @@ namespace CslaGenerator.CodeGen
                 return;
             }
 
+            if (step != GenerationStep.DalObject)
+                DoGenerateDalCore(objInfo, step);
+            else
+                DoGenerateDalImplementation(objInfo, step);
+        }
+
+        private void DoGenerateDalImplementation(CslaObjectInfo objInfo, GenerationStep step)
+        {
+            DoGenerateDalCore(objInfo, step);
+        }
+
+        private void DoGenerateDalCore(CslaObjectInfo objInfo, GenerationStep step)
+        {
             var generationParams = _unit.GenerationParams;
             var baseFileName = GetBaseFileName(objInfo, true, GetContextBaseNamespace(_unit, step), false, step);
 
@@ -1712,8 +1726,12 @@ namespace CslaGenerator.CodeGen
             if (step == GenerationStep.DalInterface || step == GenerationStep.DalInterfaceDto)
                 return unit.GenerationParams.DalInterfaceNamespace;
 
-            //if (step == GenerationStep.DalObject)
-            return unit.GenerationParams.DalObjectNamespace;
+            // step is DalObject
+            var suffix = TemplateHelper.GetDalNamespaceSuffix();
+            if (string.IsNullOrEmpty(suffix))
+                return unit.GenerationParams.DalObjectNamespace;
+
+            return unit.GenerationParams.DalObjectNamespace + "." + suffix;
         }
 
         private void CheckDirectory(string dir)
@@ -1926,7 +1944,7 @@ namespace CslaGenerator.CodeGen
                 else if (_fileSuccess["DataPortalHookArgs"] == false)
                     OutputWindow.Current.AddOutputInfo("DataPortalHookArgs class: failed.");
 
-                if (GeneratorController.Current.CurrentUnit.GenerationParams.GenerateDalInterface)
+                if (_unit.GenerationParams.GenerateDalInterface)
                 {
                     if (_fileSuccess["IDalManager" + dalName] == null)
                         OutputWindow.Current.AddOutputInfo(string.Format("IDalManager" + dalName + " class: already exists."));
@@ -1942,7 +1960,7 @@ namespace CslaGenerator.CodeGen
                         OutputWindow.Current.AddOutputInfo("DataNotFoundException class: failed.");
                 }
 
-                if (GeneratorController.Current.CurrentUnit.GenerationParams.GenerateDalObject)
+                if (_unit.GenerationParams.GenerateDalObject)
                 {
                     if (_fileSuccess["DalManager" + dalName] == null)
                         OutputWindow.Current.AddOutputInfo(string.Format("DalManager" + dalName + " class: already exists."));
