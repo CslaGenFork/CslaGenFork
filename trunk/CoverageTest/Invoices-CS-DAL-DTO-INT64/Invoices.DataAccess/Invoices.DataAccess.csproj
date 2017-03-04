@@ -63,7 +63,6 @@
     <Compile Include="ICustomerListDal.Designer.cs">
       <DependentUpon>ICustomerListDal.cs</DependentUpon>
     </Compile>
-    <Compile Include="IDalManager.cs" />
     <Compile Include="IDalManagerInvoices.cs" />
     <Compile Include="IInvoiceEditDal.cs" />
     <Compile Include="IInvoiceEditDal.Designer.cs">
