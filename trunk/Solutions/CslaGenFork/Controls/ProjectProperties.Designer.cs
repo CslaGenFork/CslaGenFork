@@ -189,6 +189,8 @@ namespace CslaGenerator.Controls
             this.cboObjectNotFound = new System.Windows.Forms.ComboBox();
             this.chkGenerateQueriesWithSchema = new System.Windows.Forms.CheckBox();
             this.chkGenerateDatabaseClass = new System.Windows.Forms.CheckBox();
+            this.GenerationDbProvidersTab = new System.Windows.Forms.TabPage();
+            this.chkSaveGenerationDbProviders = new System.Windows.Forms.CheckBox();
             this.GenerationMiscTab = new System.Windows.Forms.TabPage();
             this.chkSaveGenerationMisc = new System.Windows.Forms.CheckBox();
             this.lblGenerateAuthorization = new System.Windows.Forms.Label();
@@ -219,6 +221,7 @@ namespace CslaGenerator.Controls
             this.GenerationFilesTab.SuspendLayout();
             this.GenerationDatabaseTab.SuspendLayout();
             this.groupBoxStoredProcs.SuspendLayout();
+            this.GenerationDbProvidersTab.SuspendLayout();
             this.GenerationMiscTab.SuspendLayout();
             this.groupBoxReadOnlyObjects.SuspendLayout();
             this.groupBoxObjectRelationsBuilder.SuspendLayout();
@@ -1282,6 +1285,7 @@ namespace CslaGenerator.Controls
             this.GenerationTabControl.Controls.Add(this.GenerationTargetTab);
             this.GenerationTabControl.Controls.Add(this.GenerationFilesTab);
             this.GenerationTabControl.Controls.Add(this.GenerationDatabaseTab);
+            this.GenerationTabControl.Controls.Add(this.GenerationDbProvidersTab);
             this.GenerationTabControl.Controls.Add(this.GenerationMiscTab);
             this.GenerationTabControl.Location = new System.Drawing.Point(0, 0);
             this.GenerationTabControl.Name = "GenerationTabControl";
@@ -1895,6 +1899,41 @@ namespace CslaGenerator.Controls
                                      "If checked, creates only one file that contains all the\r\n" +
                                      "generated stored procedures for the business object.");
             // 
+            // GenerationDbProvidersTab
+            // 
+            this.GenerationDbProvidersTab.Controls.Add(this.chkSaveGenerationDbProviders);
+            /*this.GenerationDbProvidersTab.Controls.Add(this.lblDatabaseConnection);
+            this.GenerationDbProvidersTab.Controls.Add(this.txtDatabaseConnection);
+            this.GenerationDbProvidersTab.Controls.Add(this.lblDalName);
+            this.GenerationDbProvidersTab.Controls.Add(this.txtDalName);
+            this.GenerationDbProvidersTab.Controls.Add(this.chkGenerateDatabaseClass);
+            this.GenerationDbProvidersTab.Controls.Add(this.chkGenerateQueriesWithSchema);
+            this.GenerationDbProvidersTab.Controls.Add(this.lblInlineQueries);
+            this.GenerationDbProvidersTab.Controls.Add(this.cboInlineQueries);
+            this.GenerationDbProvidersTab.Controls.Add(this.lblObjectNotFound);
+            this.GenerationDbProvidersTab.Controls.Add(this.cboObjectNotFound);
+            this.GenerationDbProvidersTab.Controls.Add(this.groupBoxStoredProcs);*/
+            this.GenerationDbProvidersTab.Location = new System.Drawing.Point(4, 22);
+            this.GenerationDbProvidersTab.Name = "GenerationDbProvidersTab";
+            this.GenerationDbProvidersTab.Padding = new System.Windows.Forms.Padding(3);
+            this.GenerationDbProvidersTab.Size = new System.Drawing.Size(525, 329);
+            this.GenerationDbProvidersTab.TabIndex = 3;
+            this.GenerationDbProvidersTab.Text = "DB Providers";
+            this.GenerationDbProvidersTab.UseVisualStyleBackColor = true;
+            // 
+            // chkSaveGenerationDbProviders
+            // 
+            this.chkSaveGenerationDbProviders.Checked = true;
+            this.chkSaveGenerationDbProviders.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkSaveGenerationDbProviders.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "SaveBeforeGenerate", true, DataSourceUpdateMode.OnPropertyChanged));
+            this.chkSaveGenerationDbProviders.Font = new System.Drawing.Font("Trebuchet MS", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.chkSaveGenerationDbProviders.Location = new System.Drawing.Point(15, 10);
+            this.chkSaveGenerationDbProviders.Name = "chkSaveGenerationDbProviders";
+            this.chkSaveGenerationDbProviders.Size = new System.Drawing.Size(225, 21);
+            this.chkSaveGenerationDbProviders.TabIndex = 4;
+            this.chkSaveGenerationDbProviders.Text = "Save project before generating";
+            this.toolTip.SetToolTip(this.chkSaveGenerationDbProviders, "If checked, projects are silently saved before code generation.");
+            // 
             // GenerationMiscTab
             // 
             this.GenerationMiscTab.Controls.Add(this.chkSaveGenerationMisc);
@@ -2127,6 +2166,8 @@ namespace CslaGenerator.Controls
             this.GenerationFilesTab.PerformLayout();
             this.GenerationDatabaseTab.ResumeLayout(false);
             this.GenerationDatabaseTab.PerformLayout();
+            this.GenerationDbProvidersTab.ResumeLayout(false);
+            this.GenerationDbProvidersTab.PerformLayout();
             this.GenerationMiscTab.ResumeLayout(false);
             this.GenerationMiscTab.PerformLayout();
             this.groupBoxUIEnvironment.ResumeLayout(false);
@@ -2302,6 +2343,8 @@ namespace CslaGenerator.Controls
         private System.Windows.Forms.ComboBox cboObjectNotFound;
         private System.Windows.Forms.CheckBox chkGenerateQueriesWithSchema;
         private System.Windows.Forms.CheckBox chkGenerateDatabaseClass;
+        private System.Windows.Forms.TabPage GenerationDbProvidersTab;
+        private System.Windows.Forms.CheckBox chkSaveGenerationDbProviders;
         private System.Windows.Forms.TabPage GenerationMiscTab;
         private System.Windows.Forms.CheckBox chkSaveGenerationMisc;
         private System.Windows.Forms.Label lblGenerateAuthorization;

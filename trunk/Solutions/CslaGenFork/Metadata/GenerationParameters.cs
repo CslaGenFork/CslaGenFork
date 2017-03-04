@@ -6,7 +6,7 @@ namespace CslaGenerator.Metadata
     [Serializable]
     public class GenerationParameters : INotifyPropertyChanged
     {
-        #region State Fields
+        #region Fields
 
         private bool _saveBeforeGenerate = true;
         private TargetFramework _targetFramework = TargetFramework.CSLA40;
@@ -52,6 +52,7 @@ namespace CslaGenerator.Metadata
         private bool _generateDalObject = true;
         private bool _generateSynchronous = true;
         private bool _generateAsynchronous;
+        private GenerationDbProviderCollection _dbProviderCollection;
 
         #endregion
 
@@ -614,6 +615,18 @@ namespace CslaGenerator.Metadata
                     return;
                 _generateAsynchronous = value;
                 OnPropertyChanged("GenerateAsynchronous");
+            }
+        }
+
+        public GenerationDbProviderCollection DbProviderCollection
+        {
+            get { return _dbProviderCollection; }
+            set
+            {
+                if (_dbProviderCollection == value)
+                    return;
+                _dbProviderCollection = value;
+                OnPropertyChanged("DbProviderCollection");
             }
         }
 

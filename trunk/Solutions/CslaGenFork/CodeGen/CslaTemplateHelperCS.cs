@@ -46,6 +46,21 @@ namespace CslaGenerator.CodeGen
 
         public bool UseChildFactoryHelper { get; set; }
 
+        public string ConnectionMethod
+        {
+            get { return TemplateHelper.GetConnectionMethod(); }
+        }
+
+        public string CommandMethod
+        {
+            get { return TemplateHelper.GetCommandMethod(); }
+        }
+
+        public string AddParameterMethod
+        {
+            get { return TemplateHelper.GetAddParameterMethod(); }
+        }
+
         #endregion
 
         #region Basic Format and other basic stuff
@@ -4693,16 +4708,16 @@ namespace CslaGenerator.CodeGen
             }
             else if (info.PersistenceType == PersistenceType.SqlConnectionUnshared)
             {
-                response = "using (var cn = new SqlConnection(Database." +
+                response = "using (var cn = new " + ConnectionMethod + "(Database." +
                            CurrentUnit.GenerationParams.DatabaseConnection + "Connection))";
             }
             else if (info.TransactionType == TransactionType.ADO && !isFetch)
             {
-                response += "TransactionManager<SqlConnection, SqlTransaction>.GetManager(" + database + "))";
+                response += "TransactionManager<" + ConnectionMethod + ", SqlTransaction>.GetManager(" + database + "))";
             }
             else
             {
-                response += "ConnectionManager<SqlConnection>.GetManager(" + database + "))";
+                response += "ConnectionManager<" + ConnectionMethod + ">.GetManager(" + database + "))";
             }
             return response;
         }
