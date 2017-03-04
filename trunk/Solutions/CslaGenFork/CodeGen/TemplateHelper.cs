@@ -11,6 +11,8 @@ namespace CslaGenerator.CodeGen
     /// </summary>
     public static class TemplateHelper
     {
+        #region Types
+
         public static TypeCodeEx GetBackingFieldType(this ValueProperty prop)
         {
             if (prop.DeclarationMode == PropertyDeclaration.ManagedWithTypeConversion ||
@@ -186,7 +188,7 @@ namespace CslaGenerator.CodeGen
 
         public static string ListBaseHelper(string rootStereotype, bool isBindingList)
         {
-            var response = String.Empty;
+            var response = string.Empty;
 
             if (isBindingList)
             {
@@ -230,7 +232,7 @@ namespace CslaGenerator.CodeGen
                 }
             }
 
-            return String.Empty;
+            return string.Empty;
         }
 
         public static string PropertyFKMatchesParentProperty(CslaObjectInfo parent, CslaObjectInfo info,
@@ -308,7 +310,7 @@ namespace CslaGenerator.CodeGen
         public static string GetFkParameterNameForParentProperty(CslaObjectInfo info, ValueProperty parentProperty)
         {
             var parameterName = GetFkColumnNameForParentProperty(info, parentProperty);
-            if (parameterName == String.Empty)
+            if (parameterName == string.Empty)
                 parameterName = parentProperty.ParameterName;
 
             return parameterName;
@@ -350,7 +352,7 @@ namespace CslaGenerator.CodeGen
                                 {
                                     // if it's the same column name, use the parameter name
                                     if (pkColumn.PKColumn.ColumnName == column.ColumnName)
-                                        return String.Empty;
+                                        return string.Empty;
 
                                     return column.ColumnName;
                                 }
@@ -360,17 +362,19 @@ namespace CslaGenerator.CodeGen
                 }
             }
 
-            return String.Empty;
+            return string.Empty;
         }
+
+        #endregion
 
         #region SimpleAudit
 
         public static bool UseSimpleAuditTrail(this CslaObjectInfo info)
         {
-            if (!String.IsNullOrEmpty(info.Parent.Params.CreationDateColumn) ||
-                !String.IsNullOrEmpty(info.Parent.Params.CreationUserColumn) ||
-                !String.IsNullOrEmpty(info.Parent.Params.ChangedDateColumn) ||
-                !String.IsNullOrEmpty(info.Parent.Params.ChangedUserColumn))
+            if (!string.IsNullOrEmpty(info.Parent.Params.CreationDateColumn) ||
+                !string.IsNullOrEmpty(info.Parent.Params.CreationUserColumn) ||
+                !string.IsNullOrEmpty(info.Parent.Params.ChangedDateColumn) ||
+                !string.IsNullOrEmpty(info.Parent.Params.ChangedUserColumn))
             {
                 foreach (var valueProperty in info.GetAllValueProperties())
                 {
@@ -440,7 +444,7 @@ namespace CslaGenerator.CodeGen
                     return convertProperty.Name;
             }
 
-            return String.Empty;
+            return string.Empty;
         }
 
         #endregion
@@ -510,12 +514,17 @@ namespace CslaGenerator.CodeGen
 
             if (!generationParams.UseDal)
             {
-                if (generationParams.DbProviderCollection != null)
+                if (GenerationDbProviderCollection.GetInstance() != null)
                 {
-                    GenerationDbProvider = GenerationDbProviderCollection.GetInstance().GetActive();
-                    DbProvider = SetDbProviderFromGenerationDbProvider();
+                    SetCurrentDbProvider(GenerationDbProviderCollection.GetInstance().GetActive());
                 }
             }
+        }
+
+        internal static void SetCurrentDbProvider(GenerationDbProvider generationDbProvider)
+        {
+            GenerationDbProvider = generationDbProvider;
+            DbProvider = SetDbProviderFromGenerationDbProvider();
         }
 
         internal static DbProvider SetDbProviderFromGenerationDbProvider()
