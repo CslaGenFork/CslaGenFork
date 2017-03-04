@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{844C5662-F8A7-4732-B650-40CC1DA5A67B}</ProjectGuid>
+    <ProjectGuid>{672EB673-EAB3-43B2-B59F-E2D281439EF5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Invoices.Business</RootNamespace>
@@ -252,16 +252,16 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Invoices.DataAccess\Invoices.DataAccess.csproj">
+      <Project>{f3149dfb-f2c2-4a25-85d2-117417673e54}</Project>
+      <Name>Invoices.DataAccess</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\..\packages\CSLA-Core.4.6.500\analyzers\c#\Csla.Analyzers.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Invoices.DataAccess\Invoices.DataAccess.csproj">
-      <Project>{39a59600-a6fe-4623-8c62-abd0da9e6647}</Project>
-      <Name>Invoices.DataAccess</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

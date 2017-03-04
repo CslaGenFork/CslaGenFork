@@ -1,0 +1,193 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A2616A37-08C1-43B3-A1E5-2BB1E1081903}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Invoices.DataAccess.Npgsql</RootNamespace>
+    <AssemblyName>Invoices.DataAccess.Npgsql</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Csla, Version=4.6.500.0, Culture=neutral, PublicKeyToken=93be5fdc093e4c30, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\CSLA-Core.4.6.500\lib\net45\Csla.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=1.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.1.1.0\lib\netstandard1.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging, Version=1.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Extensions.Logging.1.1.0\lib\netstandard1.1\Microsoft.Extensions.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=1.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Extensions.Logging.Abstractions.1.1.0\lib\netstandard1.1\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Npgsql, Version=3.2.1.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Npgsql.3.2.1\lib\net45\Npgsql.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.1.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\System.Threading.Tasks.Extensions.4.3.0\lib\portable-net45+win8+wp8+wpa81\System.Threading.Tasks.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CustomerEditDal.cs" />
+    <Compile Include="CustomerEditDal.Designer.cs">
+      <DependentUpon>CustomerEditDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CustomerListDal.cs" />
+    <Compile Include="CustomerListDal.Designer.cs">
+      <DependentUpon>CustomerListDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DalManagerInvoices.cs" />
+    <Compile Include="InvoiceEditDal.cs" />
+    <Compile Include="InvoiceEditDal.Designer.cs">
+      <DependentUpon>InvoiceEditDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InvoiceLineItemDal.cs" />
+    <Compile Include="InvoiceLineItemDal.Designer.cs">
+      <DependentUpon>InvoiceLineItemDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InvoiceListDal.cs" />
+    <Compile Include="InvoiceListDal.Designer.cs">
+      <DependentUpon>InvoiceListDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="InvoiceViewDal.cs" />
+    <Compile Include="InvoiceViewDal.Designer.cs">
+      <DependentUpon>InvoiceViewDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductEditDal.cs" />
+    <Compile Include="ProductEditDal.Designer.cs">
+      <DependentUpon>ProductEditDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductListDal.cs" />
+    <Compile Include="ProductListDal.Designer.cs">
+      <DependentUpon>ProductListDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductSupplierItemDal.cs" />
+    <Compile Include="ProductSupplierItemDal.Designer.cs">
+      <DependentUpon>ProductSupplierItemDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTypeCachedListDal.cs" />
+    <Compile Include="ProductTypeCachedListDal.Designer.cs">
+      <DependentUpon>ProductTypeCachedListDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTypeCachedNVLDal.cs" />
+    <Compile Include="ProductTypeCachedNVLDal.Designer.cs">
+      <DependentUpon>ProductTypeCachedNVLDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTypeCollDal.cs" />
+    <Compile Include="ProductTypeCollDal.Designer.cs">
+      <DependentUpon>ProductTypeCollDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTypeDynaCollDal.cs" />
+    <Compile Include="ProductTypeDynaCollDal.Designer.cs">
+      <DependentUpon>ProductTypeDynaCollDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTypeDynaItemDal.cs" />
+    <Compile Include="ProductTypeDynaItemDal.Designer.cs">
+      <DependentUpon>ProductTypeDynaItemDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTypeEditDal.cs" />
+    <Compile Include="ProductTypeEditDal.Designer.cs">
+      <DependentUpon>ProductTypeEditDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTypeItemDal.cs" />
+    <Compile Include="ProductTypeItemDal.Designer.cs">
+      <DependentUpon>ProductTypeItemDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTypeListDal.cs" />
+    <Compile Include="ProductTypeListDal.Designer.cs">
+      <DependentUpon>ProductTypeListDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTypeNVLDal.cs" />
+    <Compile Include="ProductTypeNVLDal.Designer.cs">
+      <DependentUpon>ProductTypeNVLDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTypeRODal.cs" />
+    <Compile Include="ProductTypeRODal.Designer.cs">
+      <DependentUpon>ProductTypeRODal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProductTypeUpdatedByRootListDal.cs" />
+    <Compile Include="ProductTypeUpdatedByRootListDal.Designer.cs">
+      <DependentUpon>ProductTypeUpdatedByRootListDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SupplierEditDal.cs" />
+    <Compile Include="SupplierEditDal.Designer.cs">
+      <DependentUpon>SupplierEditDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SupplierListDal.cs" />
+    <Compile Include="SupplierListDal.Designer.cs">
+      <DependentUpon>SupplierListDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SupplierProductCollDal.cs" />
+    <Compile Include="SupplierProductCollDal.Designer.cs">
+      <DependentUpon>SupplierProductCollDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SupplierProductItemDal.cs" />
+    <Compile Include="SupplierProductItemDal.Designer.cs">
+      <DependentUpon>SupplierProductItemDal.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\..\packages\CSLA-Core.4.6.500\analyzers\c#\Csla.Analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Invoices.DataAccess\Invoices.DataAccess.csproj">
+      <Project>{39a59600-a6fe-4623-8c62-abd0da9e6647}</Project>
+      <Name>Invoices.DataAccess</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

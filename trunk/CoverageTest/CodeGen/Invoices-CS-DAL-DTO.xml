@@ -92,6 +92,7 @@
     <GenerateDalObject>true</GenerateDalObject>
     <GenerateSynchronous>true</GenerateSynchronous>
     <GenerateAsynchronous>true</GenerateAsynchronous>
+    <DbProviderCollection />
   </GenerationParams>
   <CslaObjects>
     <CslaObjectInfo>
@@ -4273,8 +4274,8 @@
             <RuleProperties />
             <CacheResult>false</CacheResult>
           </WriteAuthzRuleType>
-          <LoadingScheme>ParentLoad</LoadingScheme>
-          <LazyLoad>false</LazyLoad>
+          <LoadingScheme>SelfLoad</LoadingScheme>
+          <LazyLoad>true</LazyLoad>
           <ParentLoadProperties />
           <LoadParameters>
             <Parameter>
@@ -4955,7 +4956,70 @@
       <EditOnDemand>false</EditOnDemand>
       <CheckRulesOnFetch>true</CheckRulesOnFetch>
       <SupportUpdateProperties>false</SupportUpdateProperties>
-      <CriteriaObjects />
+      <CriteriaObjects>
+        <Criteria>
+          <Name>CriteriaGet</Name>
+          <CriteriaClassMode>Simple</CriteriaClassMode>
+          <NestedClass>true</NestedClass>
+          <Properties>
+            <Property>
+              <ParameterName>SupplierId</ParameterName>
+              <Name>SupplierId</Name>
+              <PropertyType>Int32</PropertyType>
+              <ReadOnly>true</ReadOnly>
+              <Nullable>false</Nullable>
+              <Summary />
+              <Remarks />
+              <DbBindColumn>
+                <ColumnOriginType>Table</ColumnOriginType>
+                <DataType>Int32</DataType>
+                <NativeType>int</NativeType>
+                <Size>10</Size>
+                <SpResultIndex>0</SpResultIndex>
+                <ColumnName>SupplierId</ColumnName>
+                <IsPrimaryKey>false</IsPrimaryKey>
+                <ObjectName>ProductsSuppliers</ObjectName>
+                <CatalogName>InvoiceTest</CatalogName>
+                <SchemaName>dbo</SchemaName>
+                <IsNullable>false</IsNullable>
+                <IsIdentity>false</IsIdentity>
+              </DbBindColumn>
+              <CustomPropertyType />
+              <ParameterValue />
+              <InlineQueryParameter>Plain</InlineQueryParameter>
+            </Property>
+          </Properties>
+          <CreateOptions>
+            <Factory>false</Factory>
+            <AddRemove>false</AddRemove>
+            <DataPortal>false</DataPortal>
+            <RunLocal>false</RunLocal>
+            <Procedure>false</Procedure>
+            <ProcedureName />
+            <FactorySuffix />
+          </CreateOptions>
+          <GetOptions>
+            <Factory>true</Factory>
+            <AddRemove>false</AddRemove>
+            <DataPortal>true</DataPortal>
+            <RunLocal>false</RunLocal>
+            <Procedure>true</Procedure>
+            <ProcedureName>GetSupplierProductColl</ProcedureName>
+            <FactorySuffix />
+          </GetOptions>
+          <DeleteOptions>
+            <Factory>false</Factory>
+            <AddRemove>false</AddRemove>
+            <DataPortal>false</DataPortal>
+            <RunLocal>false</RunLocal>
+            <Procedure>false</Procedure>
+            <ProcedureName />
+            <FactorySuffix />
+          </DeleteOptions>
+          <Summary />
+          <Remarks />
+        </Criteria>
+      </CriteriaObjects>
       <ParentType>SupplierEdit</ParentType>
       <ParentProperties />
       <ParentInsertOnly>false</ParentInsertOnly>

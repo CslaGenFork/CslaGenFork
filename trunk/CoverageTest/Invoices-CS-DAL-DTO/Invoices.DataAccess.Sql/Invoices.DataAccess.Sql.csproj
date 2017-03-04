@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{30DECAD5-158E-4480-A20E-2773D08370B7}</ProjectGuid>
+    <ProjectGuid>{1E6E06B9-FB1C-47DE-926E-E94789FC7A75}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Invoices.DataAccess.Sql</RootNamespace>
@@ -52,7 +52,6 @@
     <Compile Include="CustomerListDal.Designer.cs">
       <DependentUpon>CustomerListDal.cs</DependentUpon>
     </Compile>
-    <Compile Include="DalManager.cs" />
     <Compile Include="DalManagerInvoices.cs" />
     <Compile Include="InvoiceEditDal.cs" />
     <Compile Include="InvoiceEditDal.Designer.cs">
@@ -135,6 +134,10 @@
     <Compile Include="SupplierListDal.Designer.cs">
       <DependentUpon>SupplierListDal.cs</DependentUpon>
     </Compile>
+    <Compile Include="SupplierProductCollDal.cs" />
+    <Compile Include="SupplierProductCollDal.Designer.cs">
+      <DependentUpon>SupplierProductCollDal.cs</DependentUpon>
+    </Compile>
     <Compile Include="SupplierProductItemDal.cs" />
     <Compile Include="SupplierProductItemDal.Designer.cs">
       <DependentUpon>SupplierProductItemDal.cs</DependentUpon>
@@ -148,7 +151,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Invoices.DataAccess\Invoices.DataAccess.csproj">
-      <Project>{39a59600-a6fe-4623-8c62-abd0da9e6647}</Project>
+      <Project>{f3149dfb-f2c2-4a25-85d2-117417673e54}</Project>
       <Name>Invoices.DataAccess</Name>
     </ProjectReference>
   </ItemGroup>
