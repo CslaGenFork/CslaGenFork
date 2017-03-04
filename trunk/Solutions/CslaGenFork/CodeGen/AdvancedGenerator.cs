@@ -990,7 +990,23 @@ namespace CslaGenerator.CodeGen
 
         private void DoGenerateDalImplementation(CslaObjectInfo objInfo, GenerationStep step)
         {
-            DoGenerateDalCore(objInfo, step);
+            var generationDbProviders = GenerationDbProviderCollection.GetInstance();
+
+            if (generationDbProviders.Count == 0)
+            {
+                DoGenerateDalCore(objInfo, step);
+            }
+            else
+            {
+                foreach (var generationDbProvider in GenerationDbProviderCollection.GetInstance())
+                {
+                    if (generationDbProvider.DBProviderIsActive)
+                    {
+                        TemplateHelper.SetCurrentDbProvider(generationDbProvider);
+                        DoGenerateDalCore(objInfo, step);
+                    }
+                }
+            }
         }
 
         private void DoGenerateDalCore(CslaObjectInfo objInfo, GenerationStep step)
