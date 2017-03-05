@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 
 namespace CslaGenerator.Metadata
@@ -8,28 +8,28 @@ namespace CslaGenerator.Metadata
     /// Summary description for GenerationDbProviderCollection.
     /// </summary>
     [Serializable]
-    public class GenerationDbProviderCollection : List<GenerationDbProvider>
+    public class GenerationDbProviderCollection : BindingList<GenerationDbProvider>
     {
-        private static GenerationDbProviderCollection _instance;
+        [Browsable(false)]
+        internal bool Dirty { get; set; }
 
-        private GenerationDbProviderCollection()
+        protected override object AddNewCore()
         {
-            // force to use factory method
+            Dirty = true;
+            return base.AddNewCore();
         }
 
-        internal static GenerationDbProviderCollection GetInstance()
+        protected override void RemoveItem(int index)
         {
-            if (_instance == null)
-                _instance = new GenerationDbProviderCollection();
-
-            return _instance;
+            Dirty = true;
+            base.RemoveItem(index);
         }
 
         internal GenerationDbProvider GetActive()
         {
             if (!GeneratorController.Current.CurrentUnit.GenerationParams.UseDal)
             {
-                foreach (var provider in _instance)
+                foreach (var provider in this)
                 {
                     if (provider.DBProviderIsActive)
                         return provider;
@@ -38,12 +38,17 @@ namespace CslaGenerator.Metadata
             return null;
         }
 
+        internal int GetActiveCount()
+        {
+            return this.Count(provider => provider.DBProviderIsActive);
+        }
+
         internal void SetActive(GenerationDbProvider dbProvider)
         {
             if (GeneratorController.Current.CurrentUnit.GenerationParams.UseDal)
                 return;
 
-            foreach (var provider in _instance)
+            foreach (var provider in this)
             {
                 if (provider == dbProvider)
                     continue;
@@ -53,22 +58,22 @@ namespace CslaGenerator.Metadata
 
         public bool Contains(string dBProviderShortName)
         {
-            return _instance.Find(dBProviderShortName) != null;
+            return Find(dBProviderShortName) != null;
         }
 
         internal bool ContainsNamespace(string dBProviderNamespace)
         {
-            return _instance.FindNamespace(dBProviderNamespace) != null;
+            return FindNamespace(dBProviderNamespace) != null;
         }
 
         private GenerationDbProvider Find(string dBProviderShortName)
         {
-            return this.FirstOrDefault(property => property.DBProviderShortName.Equals(dBProviderShortName));
+            return this.FirstOrDefault(dBProvider => dBProvider.DBProviderShortName.Equals(dBProviderShortName));
         }
 
         private GenerationDbProvider FindNamespace(string dBProviderNamespace)
         {
-            return this.FirstOrDefault(property => property.NamespaceSuffix.Equals(dBProviderNamespace));
+            return this.FirstOrDefault(dBProvider => dBProvider.NamespaceSuffix.Equals(dBProviderNamespace));
         }
     }
 }

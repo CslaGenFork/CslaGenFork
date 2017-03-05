@@ -451,17 +451,20 @@ namespace CslaGenerator.CodeGen
 
         #region DbProviders
 
+        internal static string[] GetNamespaces()
+        {
+            if (DbProvider == null)
+                return new[] {"System.Data.SqlClient"};
+
+            return DbProvider.DBProviderNamespaces;
+        }
+
         internal static string GetConnectionMethod()
         {
             if (DbProvider == null)
                 return "SqlConnection";
 
-            return GetConnectionMethod(DbProvider);
-        }
-
-        internal static string GetConnectionMethod(DbProvider provider)
-        {
-            return provider.ConnectionMethod;
+            return DbProvider.ConnectionMethod;
         }
 
         internal static string GetCommandMethod()
@@ -469,12 +472,7 @@ namespace CslaGenerator.CodeGen
             if (DbProvider == null)
                 return "SqlCommand";
 
-            return GetCommandMethod(DbProvider);
-        }
-
-        internal static string GetCommandMethod(DbProvider provider)
-        {
-            return provider.CommandMethod;
+            return DbProvider.CommandMethod;
         }
 
         internal static string GetAddParameterMethod()
@@ -482,12 +480,7 @@ namespace CslaGenerator.CodeGen
             if (DbProvider == null)
                 return "AddWithValue";
 
-            return GetAddParameterMethod(DbProvider);
-        }
-
-        internal static string GetAddParameterMethod(DbProvider provider)
-        {
-            return provider.AddParameterMethod;
+            return DbProvider.AddParameterMethod;
         }
 
         internal static string GetDalNamespaceSuffix()
@@ -495,12 +488,7 @@ namespace CslaGenerator.CodeGen
             if (GenerationDbProvider == null)
                 return string.Empty;
 
-            return GetDalNamespaceSuffix(GenerationDbProvider);
-        }
-
-        internal static string GetDalNamespaceSuffix(GenerationDbProvider provider)
-        {
-            return provider.NamespaceSuffix;
+            return GenerationDbProvider.NamespaceSuffix;
         }
 
         internal static GenerationDbProvider GenerationDbProvider { get; private set; }
@@ -514,10 +502,8 @@ namespace CslaGenerator.CodeGen
 
             if (!generationParams.UseDal)
             {
-                if (GenerationDbProviderCollection.GetInstance() != null)
-                {
-                    SetCurrentDbProvider(GenerationDbProviderCollection.GetInstance().GetActive());
-                }
+                SetCurrentDbProvider(
+                    GeneratorController.Current.CurrentUnit.GenerationParams.DbProviderCollection.GetActive());
             }
         }
 

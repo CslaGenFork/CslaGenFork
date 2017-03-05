@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using CslaGenerator.Controls;
 
 namespace CslaGenerator.Metadata
 {
@@ -11,13 +12,15 @@ namespace CslaGenerator.Metadata
     {
         #region Fields and Properties
 
-        private string _dbProviderShortName;
-        private string _namespaceSuffix;
+        private string _dbProviderShortName = string.Empty;
+        private string _namespaceSuffix = string.Empty;
+
+        // must be false so only-one-active rule always apply.
         private bool _dbProviderIsActive;
 
-        private GenerationDbProviderCollection Parent
+        internal GenerationDbProviderCollection Parent
         {
-            get { return GenerationDbProviderCollection.GetInstance(); }
+            get { return ProjectProperties.GenParams.DbProviderCollection; }
         }
 
         public string DBProviderShortName
@@ -73,49 +76,10 @@ namespace CslaGenerator.Metadata
 
         private void OnPropertyChanged(string propertyName)
         {
-            /*if (!string.IsNullOrEmpty(propertyName))
-            {
-                if (propertyName == "TargetFramework")
-                    SetCsla4Options();
-                if (propertyName == "GenerateWinForms")
-                    SetServerInvocationOptions();
-                if (propertyName == "GenerateWPF")
-                    SetServerInvocationOptions();
-                if (propertyName == "GenerateSilverlight4")
-                {
-                    if (_generateSilverlight)
-                    {
-                        _silverlightUsingServices = false;
-                    }
-                    SetServerInvocationOptions();
-                }
-                if (propertyName == "SilverlightUsingServices")
-                {
-                    if (_silverlightUsingServices)
-                    {
-                        _generateSilverlight = false;
-                    }
-                    SetServerInvocationOptions();
-                }
-                if (propertyName == "GenerateSynchronous")
-                    SetServerInvocationOptions();
-                if (propertyName == "GenerateAsynchronous")
-                    SetServerInvocationOptions();
-                if (propertyName == "GenerateAuthorization")
-                {
-                    if (_generateAuthorization == AuthorizationLevel.None ||
-                        _generateAuthorization == AuthorizationLevel.Custom)
-                        _usesCslaAuthorizationProvider = false;
-                }
-            }*/
-
-            Dirty = true;
+            Parent.Dirty = true;
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
-
-        [Browsable(false)]
-        internal bool Dirty { get; set; }
 
         #endregion
 
@@ -127,7 +91,6 @@ namespace CslaGenerator.Metadata
             try
             {
                 obj = (GenerationDbProvider) Util.ObjectCloner.CloneShallow(this);
-                obj.Dirty = false;
             }
             catch (Exception ex)
             {

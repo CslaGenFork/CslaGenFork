@@ -21,7 +21,7 @@ namespace CslaGenerator.Metadata
         string _sprocEncodingDisplayName = string.Empty;
         bool _overwriteExtendedFile;
         bool _recompileTemplates;
-        List<DbProvider> _dbProviders = new List<DbProvider>();
+        BindingList<DbProvider> _dbProviders = new BindingList<DbProvider>();
 
         #endregion
 
@@ -92,7 +92,7 @@ namespace CslaGenerator.Metadata
         }
 
         [Editor(typeof(PropertyCollectionForm), typeof(UITypeEditor))]
-        public List<DbProvider> DbProviders
+        public BindingList<DbProvider> DbProviders
         {
             get { return _dbProviders; }
             set

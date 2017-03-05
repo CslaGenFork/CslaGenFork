@@ -46,6 +46,11 @@ namespace CslaGenerator.CodeGen
 
         public bool UseChildFactoryHelper { get; set; }
 
+        public string[] Namespaces
+        {
+            get { return TemplateHelper.GetNamespaces(); }
+        }
+
         public string ConnectionMethod
         {
             get { return TemplateHelper.GetConnectionMethod(); }
@@ -791,7 +796,7 @@ namespace CslaGenerator.CodeGen
                 allNamespaces.Add("System.Collections.Generic");
 
             allNamespaces.Add("System.Data");
-            allNamespaces.Add("System.Data.SqlClient");
+            allNamespaces.AddRange(Namespaces);
             allNamespaces.Add("Csla");
             allNamespaces.Add("Csla.Data");
 
@@ -973,7 +978,7 @@ namespace CslaGenerator.CodeGen
                 if (!unit.GenerationParams.TargetIsCsla4DAL || !unit.GenerationParams.GenerateDTO)
                     result.Add("System.Data");
                 if (!unit.GenerationParams.TargetIsCsla4DAL)
-                    result.Add("System.Data.SqlClient");
+                    result.AddRange(Namespaces);
             }
 
             if (!string.IsNullOrEmpty(info.UpdaterType))
@@ -1135,7 +1140,7 @@ namespace CslaGenerator.CodeGen
                 result.Add("System.Data");
 
             if (!unit.GenerationParams.TargetIsCsla4DAL)
-                result.Add("System.Data.SqlClient");
+                result.AddRange(Namespaces);
 
             if (CurrentUnit.GenerationParams.GenerateDTO && !info.ObjectType.IsObjectType())
                 result.Add("System.Collections.Generic");
