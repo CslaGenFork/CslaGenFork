@@ -99,12 +99,12 @@ if (!Info.UseCustomLoading && (UseNoSilverlight() ||
             {
                 if (c.Properties.Count > 1)
                 {
-                    %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= GetParameterSet(p, true) %>).DbType = DbType.<%= TemplateHelper.GetDbType(p) %>
+                    %>cmd.Parameters.<%= AddParameterMethod %>("@<%= p.ParameterName %>", <%= GetParameterSet(p, true) %>).DbType = DbType.<%= TemplateHelper.GetDbType(p) %>
                     <%
                 }
                 else
                 {
-                    %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= AssignSingleCriteria(c, "crit") %>).DbType = DbType.<%= TemplateHelper.GetDbType(p) %>
+                    %>cmd.Parameters.<%= AddParameterMethod %>("@<%= p.ParameterName %>", <%= AssignSingleCriteria(c, "crit") %>).DbType = DbType.<%= TemplateHelper.GetDbType(p) %>
                     <%
                 }
             }
@@ -143,7 +143,7 @@ if (!Info.UseCustomLoading && (UseNoSilverlight() ||
     }
     %>
 
-        Private Sub LoadCollection(cmd As SqlCommand)
+        Private Sub LoadCollection(cmd As <%= CommandMethod %>)
             IsReadOnly = False
             Dim rlce = RaiseListChangedEvents
             RaiseListChangedEvents = False

@@ -24,7 +24,7 @@
         /// <param name="cmd">The command object associated with current command</param>
         /// <param name="crit">The criteria it operates on (can be null)</param>
         /// <param name="action">The type of action is going to be performed</param>
-        protected virtual void ExtraCommandProcessing(SqlCommand cmd, object crit, Command action)
+        protected virtual void ExtraCommandProcessing(<%= CommandMethod %> cmd, object crit, Command action)
         {
         }
 

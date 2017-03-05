@@ -52,14 +52,14 @@ namespace <%= GetContextUtilitiesNamespace(CurrentUnit, GenerationStep.DalObject
         /// </summary>
         public DalManager<%= GetDalName(CurrentUnit) %>()
         {
-            ConnectionManager = ConnectionManager<SqlConnection>.GetManager("<%= CurrentUnit.GenerationParams.DatabaseConnection %>");
+            ConnectionManager = ConnectionManager<<%= ConnectionMethod %>>.GetManager("<%= CurrentUnit.GenerationParams.DatabaseConnection %>");
         }
 
         /// <summary>
         /// Gets the ADO ConnectionManager object.
         /// </summary>
         /// <value>The ConnectionManager object</value>
-        public ConnectionManager<SqlConnection> ConnectionManager { get; private set; }
+        public ConnectionManager<<%= ConnectionMethod %>> ConnectionManager { get; private set; }
 
         #region IDalManager<%= GetDalName(CurrentUnit) %> Members
 
