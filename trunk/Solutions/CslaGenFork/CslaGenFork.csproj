@@ -141,6 +141,7 @@
     </None>
     <Content Include="App.ico" />
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\CslaGenerator.Metadata.GenerationDbProviderCollection.datasource" />
     <None Include="Properties\DataSources\CslaGenerator.Metadata.GenerationParameters.datasource" />
     <None Include="Properties\DataSources\CslaGenerator.Metadata.GenerationReportCollection.datasource" />
     <None Include="Properties\DataSources\CslaGenerator.Metadata.GlobalParameters.datasource" />

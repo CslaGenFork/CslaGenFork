@@ -63,7 +63,13 @@ namespace CslaGenerator.Controls
 
         #endregion
 
-        private GenerationParameters _genParams;
+        private static GenerationParameters _genParams;
+
+        public static GenerationParameters GenParams
+        {
+            get { return _genParams; }
+        }
+
         private ProjectParameters _projParams;
 
         internal ProjectProperties()
@@ -123,6 +129,7 @@ namespace CslaGenerator.Controls
             _genParams = Project.GenerationParams.Clone();
             _projParams = Project.Params.Clone();
             generationParametersBindingSource.DataSource = _genParams;
+            generationDbProviderCollectionBindingSource.DataSource = _genParams.DbProviderCollection;
             projectParametersBindingSource.DataSource = _projParams;
 
             NotYetImplemented();
@@ -149,17 +156,20 @@ namespace CslaGenerator.Controls
 
             var confirm = DialogResult.No;
             if (!(_projParams.SpGeneralPrefix.Equals(Project.Params.SpGeneralPrefix) &&
-                _projParams.SpGetPrefix.Equals(Project.Params.SpGetPrefix) &&
-                _projParams.SpAddPrefix.Equals(Project.Params.SpAddPrefix) &&
-                _projParams.SpUpdatePrefix.Equals(Project.Params.SpUpdatePrefix) &&
-                _projParams.SpDeletePrefix.Equals(Project.Params.SpDeletePrefix) &&
-                _projParams.SpGeneralSuffix.Equals(Project.Params.SpGeneralSuffix) &&
-                _projParams.SpGetSuffix.Equals(Project.Params.SpGetSuffix) &&
-                _projParams.SpAddSuffix.Equals(Project.Params.SpAddSuffix) &&
-                _projParams.SpUpdateSuffix.Equals(Project.Params.SpUpdateSuffix) &&
-                _projParams.SpDeleteSuffix.Equals(Project.Params.SpDeleteSuffix)))
+                  _projParams.SpGetPrefix.Equals(Project.Params.SpGetPrefix) &&
+                  _projParams.SpAddPrefix.Equals(Project.Params.SpAddPrefix) &&
+                  _projParams.SpUpdatePrefix.Equals(Project.Params.SpUpdatePrefix) &&
+                  _projParams.SpDeletePrefix.Equals(Project.Params.SpDeletePrefix) &&
+                  _projParams.SpGeneralSuffix.Equals(Project.Params.SpGeneralSuffix) &&
+                  _projParams.SpGetSuffix.Equals(Project.Params.SpGetSuffix) &&
+                  _projParams.SpAddSuffix.Equals(Project.Params.SpAddSuffix) &&
+                  _projParams.SpUpdateSuffix.Equals(Project.Params.SpUpdateSuffix) &&
+                  _projParams.SpDeleteSuffix.Equals(Project.Params.SpDeleteSuffix)))
             {
-                confirm = MessageBox.Show(@"Your SP headings have changed. Do you wish to update your business objects to reflect these changes?", @"SP Naming", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                confirm =
+                    MessageBox.Show(
+                        @"Your SP headings have changed. Do you wish to update your business objects to reflect these changes?",
+                        @"SP Naming", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             }
             SaveInfo();
             GeneratorController.Current.ReloadPropertyGrid();
@@ -242,7 +252,7 @@ namespace CslaGenerator.Controls
                 using (var fs = File.Open(filename, FileMode.Open, FileAccess.Read))
                 {
                     var s = new XmlSerializer(typeof(CslaGeneratorUnit));
-                    unit = (CslaGeneratorUnit)s.Deserialize(fs);
+                    unit = (CslaGeneratorUnit) s.Deserialize(fs);
                 }
                 if (unit != null)
                 {
@@ -255,7 +265,8 @@ namespace CslaGenerator.Controls
             }
             catch (Exception ex)
             {
-                MessageBox.Show(@"An error occurred while trying to import: " + Environment.NewLine + ex.Message, @"Import Error");
+                MessageBox.Show(@"An error occurred while trying to import: " + Environment.NewLine + ex.Message,
+                    @"Import Error");
             }
             finally
             {
@@ -286,13 +297,17 @@ namespace CslaGenerator.Controls
             }
             catch (Exception ex)
             {
-                MessageBox.Show(@"An error occurred while trying to export: " + Environment.NewLine + ex.Message, @"Export Error");
+                MessageBox.Show(@"An error occurred while trying to export: " + Environment.NewLine + ex.Message,
+                    @"Export Error");
             }
             finally
             {
                 Cursor.Current = Cursors.Default;
                 if (fs != null)
+                {
                     fs.Close();
+                    fs.Dispose();
+                }
             }
 
             if (success)
@@ -319,7 +334,7 @@ namespace CslaGenerator.Controls
             chkGenerateDalInterface.Enabled = UseDal;
             chkGenerateDalObject.Enabled = UseDal;
             txtDalInterfaceNamespace.Enabled = UseDal;
-            txtDalObjectNamespace.Enabled = UseDal;
+            txtDalObjectNamespace.Enabled = UseDal && !_genParams.ForceDalObjectNamespace;
             chkGenerateDatabaseClass.Enabled = !UseDal;
             txtDalName.Enabled = UseDal;
             txtDatabase.Enabled = false;
@@ -332,13 +347,12 @@ namespace CslaGenerator.Controls
             chkGenerateQueriesWithSchema.Enabled = true;
             chkUsePublicPropertyInfo.Enabled = true;
             chkUseChildFactory.Enabled = true;
-
             chkSpOneFile.Enabled = _genParams.GenerateSprocs;
         }
 
         internal bool IsDirty
         {
-            get { return (_genParams.Dirty || _projParams.Dirty); }
+            get { return _genParams.Dirty || _projParams.Dirty; }
         }
 
         private bool UseDal
@@ -350,7 +364,10 @@ namespace CslaGenerator.Controls
         {
             if (IsDirty)
             {
-                var result = MessageBox.Show(@"There are unsaved changes in the project properties tab. Would you like to apply them now?", @"CslaGenerator", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+                var result =
+                    MessageBox.Show(
+                        @"There are unsaved changes in the project properties tab. Would you like to apply them now?",
+                        @"CslaGenerator", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
                 switch (result)
                 {
                     case DialogResult.Yes:
@@ -373,7 +390,7 @@ namespace CslaGenerator.Controls
                 MessageBox.Show(@"Must select at least one of these options:" + Environment.NewLine +
                                 @"- Windows Forms" + Environment.NewLine +
                                 @"- WPF",
-                                @"CslaGenerator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    @"CslaGenerator", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else if (!_genParams.GenerateWinForms && !_genParams.GenerateWPF && _genParams.GenerateSilverlight4)
             {
@@ -381,7 +398,7 @@ namespace CslaGenerator.Controls
                 MessageBox.Show(@"Must select at least one of these options:" + Environment.NewLine +
                                 @"- Windows Forms" + Environment.NewLine +
                                 @"- WPF",
-                                @"CslaGenerator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    @"CslaGenerator", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else if (!_genParams.GenerateWinForms && !_genParams.GenerateWPF && !_genParams.SilverlightUsingServices)
             {
@@ -390,14 +407,15 @@ namespace CslaGenerator.Controls
                                 @"- Windows Forms" + Environment.NewLine +
                                 @"- WPF" + Environment.NewLine +
                                 @"- Silverlight using services",
-                                @"CslaGenerator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    @"CslaGenerator", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             if (!_genParams.GenerateAsynchronous && !_genParams.GenerateSynchronous &&
                 (_genParams.GenerateWinForms || _genParams.GenerateWPF))
             {
                 result = false;
-                MessageBox.Show(@"Must select either Synchronous or Asynchronous server methods.", @"CslaGenerator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(@"Must select either Synchronous or Asynchronous server methods.", @"CslaGenerator",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             return result;
@@ -432,7 +450,8 @@ namespace CslaGenerator.Controls
                                             foreach (var subControl2 in subTabControl.TabPages)
                                             {
                                                 subTabPage = subControl2 as TabPage;
-                                                if (subTabPage != null && (subTabPage.ContainsFocus || subTabPage.Visible))
+                                                if (subTabPage != null &&
+                                                    (subTabPage.ContainsFocus || subTabPage.Visible))
                                                     break;
                                             }
                                         }
@@ -493,7 +512,9 @@ namespace CslaGenerator.Controls
                                             for (var index2 = 0; index2 < tabControl2.TabPages.Count; index2++)
                                             {
                                                 var tabPage2 = tabControl2.TabPages[index2];
-                                                if (tabPage2.Name == GeneratorController.Current.CurrentUnitLayout.ProjectPropertiesSubTab)
+                                                if (tabPage2.Name ==
+                                                    GeneratorController.Current.CurrentUnitLayout
+                                                        .ProjectPropertiesSubTab)
                                                 {
                                                     tabControl2.SelectedIndex = index2;
                                                     tabPage2.Focus();
@@ -515,5 +536,26 @@ namespace CslaGenerator.Controls
 
         #endregion
 
+        private void copyGlobalParameters_Click(object sender, EventArgs e)
+        {
+            _genParams.DbProviderCollection.Clear();
+
+            foreach (var dbProvider in GeneratorController.Current.GlobalParameters.DbProviders)
+            {
+                var provider = new GenerationDbProvider();
+                provider.DBProviderShortName = dbProvider.DbProviderShortName;
+                provider.NamespaceSuffix = dbProvider.DbProviderShortName;
+                provider.DBProviderIsActive = true;
+                _genParams.DbProviderCollection.Add(provider);
+            }
+        }
+
+        private void DbProviderCollectionBindingSourceCurrentItemChanged(object sender, EventArgs e)
+        {
+            if (IsDirty)
+                TabText = @"Project Properties *";
+            else
+                TabText = @"Project Properties";
+        }
     }
 }

@@ -52,7 +52,7 @@ namespace CslaGenerator.Metadata
         private bool _generateDalObject = true;
         private bool _generateSynchronous = true;
         private bool _generateAsynchronous;
-        private GenerationDbProviderCollection _dbProviderCollection;
+        private GenerationDbProviderCollection _dbProviderCollection = new GenerationDbProviderCollection();
 
         #endregion
 
@@ -381,7 +381,13 @@ namespace CslaGenerator.Metadata
 
         public string DalObjectNamespace
         {
-            get { return _dalObjectNamespace; }
+            get
+            {
+                if (ForceDalObjectNamespace)
+                    return DalInterfaceNamespace + ".<suffix>";
+
+                return _dalObjectNamespace;
+            }
             set
             {
                 value = PropertyHelper.TidyFilename(value);
@@ -631,6 +637,12 @@ namespace CslaGenerator.Metadata
         }
 
         [Browsable(false)]
+        public bool ForceDalObjectNamespace
+        {
+            get { return UseDal && DbProviderCollection.GetActiveCount() != 0; }
+        }
+
+        [Browsable(false)]
         public bool DualListInheritance
         {
             get { return GenerateWinForms && (GenerateWPF || GenerateSilverlight4); }
@@ -792,8 +804,18 @@ namespace CslaGenerator.Metadata
         [Browsable(false)]
         internal bool ForceAsync { get; private set; }
 
+        private bool _dirty;
+
         [Browsable(false)]
-        internal bool Dirty { get; set; }
+        internal bool Dirty
+        {
+            get { return _dirty || _dbProviderCollection.Dirty; }
+            set
+            {
+                _dirty = value;
+                _dbProviderCollection.Dirty = _dirty;
+            }
+        }
 
         #endregion
 
@@ -804,7 +826,7 @@ namespace CslaGenerator.Metadata
             GenerationParameters obj = null;
             try
             {
-                obj = (GenerationParameters) Util.ObjectCloner.CloneShallow(this);
+                obj = (GenerationParameters) Util.ObjectCloner.CloneDeep(this);
                 obj.Dirty = false;
             }
             catch (Exception ex)

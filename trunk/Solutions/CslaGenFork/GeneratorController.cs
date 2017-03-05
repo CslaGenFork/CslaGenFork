@@ -320,6 +320,10 @@ namespace CslaGenerator
                     {
                         cn.Close();
                     }
+                    if (cn != null)
+                    {
+                        cn.Dispose();
+                    }
                 }
 
                 BindControls();

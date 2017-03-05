@@ -117,16 +117,81 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="projectParametersBindingSource.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>568, 19</value>
-  </metadata>
-  <metadata name="generationParametersBindingSource.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>336, 19</value>
-  </metadata>
   <metadata name="toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>162, 17</value>
+    <value>17, 17</value>
+  </metadata>
+  <metadata name="projectParametersBindingSource.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>189, 17</value>
+  </metadata>
+  <data name="chkAutoCriteria.ToolTip" xml:space="preserve">
+    <value>If checked,
+- ReadOnly collections and Name Value lists are created with a parameterless Get Criteria;
+- EditableRoot and DynamicEditableRoot collections are created with a parameterless Create and Get Criteria.</value>
+  </data>
+  <data name="cboTransactionType.ToolTip" xml:space="preserve">
+    <value>Select the transaction model to be used by the DataPortal.
+Since version 4.0.0 TransactionalAttribute is deprecated in favour of TransactionScope.
+References to TransactionalAttribute are automatically converted to TransactionScope.</value>
+  </data>
+  <data name="cboPersistenceType.ToolTip" xml:space="preserve">
+    <value>Select the type of persistence to be used by the DataPortal:
+- SqlConnectionManager for SQL Server, using ConnectionManager/TransactionManager
+- SqlConnectionUnshared for SQL Server, using classic SqlConnection object (no transactions available)
+- LinqContext for LINQ to SQL
+- EFContext for Entity Framework object</value>
+  </data>
+  <data name="chkRemoveChildBeforeParent.ToolTip" xml:space="preserve">
+    <value>If checked, the Stored Procedure will delete (or soft delete) all child rows
+before deleting (or soft deleting) the parent row.
+
+RC - Not implemented.
+If unchecked, the database child removal must be handle by an override to RemoveItem.</value>
+  </data>
+  <metadata name="generationParametersBindingSource.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>412, 17</value>
+  </metadata>
+  <data name="txtUtilitiesNamespace.ToolTip" xml:space="preserve">
+    <value>Specify the namespace where the &lt;Database&gt;, &lt;DataPortalHookArgs&gt; and DAL support files will be created.
+When separating namespaces in folders, this namespace will be used as the folder for utility files.</value>
+  </data>
+  <data name="txtUtilitiesFolder.ToolTip" xml:space="preserve">
+    <value>Specify the folder where the &lt;Database&gt; and &lt;DataPortalHookArgs&gt;  and DAL support files will be created.
+This is relative to the project's output folder and is used only when namespaces are not separated in folders.</value>
+  </data>
+  <data name="txtDalName.ToolTip" xml:space="preserve">
+    <value>Specify the DAL name to be used by this project. If possible, use the Database Connection name.
+If there are several business assemblies using the same database connection,
+use a different DAL name per each business assembly.
+</value>
+  </data>
+  <data name="cboObjectNotFound.ToolTip" xml:space="preserve">
+    <value>Define how to report that a non-item object wasn't found on the DB:
+* IsLoadedProperty - use a generated "IsLoaded" state property;
+* ThrowException - the generated stored procedure raises an exception.</value>
+  </data>
+  <data name="cboGenerateAuthorization.ToolTip" xml:space="preserve">
+    <value>Authorization level to generate. Use "None" for no implementation at all.
+In Csla Object Info panel and in all value properties panels,
+the authz options will be shown or hidden according to this setting.
+
+N.B. - "Custom" shows all authz options because it generates
+Authorization code only for objects with at least one authz option filled.
+Authorization code is generated as follows:
+-  "Can-" methods are generated on the ".Designer" file.
+- "AddObjectAuthorizationRules()" method is generated on the extended file.
+- until Rules 4 are implemented "AddBusinessRules()" method isn't generated.
+  So it's up to you to write this method on the extended file.</value>
+  </data>
+  <data name="chkForceReadOnlyProperties.ToolTip" xml:space="preserve">
+    <value>If checked, all ReadOnlyObject's properties are generated as ReadOnly, regardless of each property setting.
+Otherwise allows all kinds of accessibility for ReadOnlyObject's properties.
+
+Note - ReadOnlyObject's managed and unmanaged properties are always ReadOnly properties.</value>
+  </data>
+  <metadata name="generationDbProviderCollectionBindingSource.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>650, 17</value>
   </metadata>
   <metadata name="ofdLoad.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>245, 19</value>
+    <value>100, 17</value>
   </metadata>
 </root>

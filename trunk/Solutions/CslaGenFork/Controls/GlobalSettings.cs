@@ -235,7 +235,10 @@ namespace CslaGenerator.Controls
             {
                 Cursor.Current = Cursors.Default;
                 if (fs != null)
+                {
                     fs.Close();
+                    fs.Dispose();
+                }
             }
 
             if (success)
