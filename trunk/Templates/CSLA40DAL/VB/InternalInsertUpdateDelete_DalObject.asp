@@ -141,7 +141,7 @@ if (Info.GenerateDataPortalInsert)
             if (!parentProp.IsDatabaseBound)
                 continue;
 
-            %>cmd.Parameters.AddWithValue("@<%= TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp) %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + ".Parent_" + FormatPascal(parentProp.Name) : FormatCamel(TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp))) %><%= (parentProp.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TemplateHelper.GetDbType(parentProp) %>;
+            %>cmd.Parameters.<%= AddParameterMethod %>("@<%= TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp) %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + ".Parent_" + FormatPascal(parentProp.Name) : FormatCamel(TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp))) %><%= (parentProp.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TemplateHelper.GetDbType(parentProp) %>;
                     <%
         }
     }
@@ -169,23 +169,23 @@ if (Info.GenerateDataPortalInsert)
 
                 if (AllowNull(prop) && propType == TypeCodeEx.Guid)
                 {
-                    %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %>.Equals(Guid.Empty) ? (object)DBNull.Value : <%= FormatCamel(prop.Name) %>)<%= postfix %>;
+                    %>cmd.Parameters.<%= AddParameterMethod %>("@<%= prop.ParameterName %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %>.Equals(Guid.Empty) ? (object)DBNull.Value : <%= FormatCamel(prop.Name) %>)<%= postfix %>;
                     <%
                 }
                 else if (AllowNull(prop) && prop.PropertyType == TypeCodeEx.CustomType)
                 {
                     %>// For nullable PropertyConvert, null is persisted if the backing field is zero
-                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %> == 0 ? (object)DBNull.Value : <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %>)<%= postfix %>;
+                    cmd.Parameters.<%= AddParameterMethod %>("@<%= prop.ParameterName %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %> == 0 ? (object)DBNull.Value : <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %>)<%= postfix %>;
                     <%
                 }
                 else if (AllowNull(prop) && propType != TypeCodeEx.SmartDate)
                 {
-                    %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %> == null ? (object)DBNull.Value : <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %><%= TemplateHelper.IsNullableType(propType) ? ".Value" :"" %>)<%= postfix %>;
+                    %>cmd.Parameters.<%= AddParameterMethod %>("@<%= prop.ParameterName %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %> == null ? (object)DBNull.Value : <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %><%= TemplateHelper.IsNullableType(propType) ? ".Value" :"" %>)<%= postfix %>;
                     <%
                 }
                 else
                 {
-                    %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %><%= (propType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>)<%= postfix %>;
+                    %>cmd.Parameters.<%= AddParameterMethod %>("@<%= prop.ParameterName %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %><%= (propType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>)<%= postfix %>;
                     <%
                 }
             }
@@ -355,7 +355,7 @@ if (Info.GenerateDataPortalUpdate)
             if (!parentProp.IsDatabaseBound)
                 continue;
 
-            %>cmd.Parameters.AddWithValue("@<%= TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp) %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + ".Parent_" + FormatPascal(parentProp.Name) : FormatCamel(TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp))) %><%= (parentProp.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TemplateHelper.GetDbType(parentProp) %>;
+            %>cmd.Parameters.<%= AddParameterMethod %>("@<%= TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp) %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + ".Parent_" + FormatPascal(parentProp.Name) : FormatCamel(TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp))) %><%= (parentProp.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TemplateHelper.GetDbType(parentProp) %>;
                     <%
         }
     }
@@ -374,23 +374,23 @@ if (Info.GenerateDataPortalUpdate)
 
             if (AllowNull(prop) && propType == TypeCodeEx.Guid)
             {
-                %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %>.Equals(Guid.Empty) ? (object)DBNull.Value : <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %>)<%= postfix %>;
+                %>cmd.Parameters.<%= AddParameterMethod %>("@<%= prop.ParameterName %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %>.Equals(Guid.Empty) ? (object)DBNull.Value : <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %>)<%= postfix %>;
                     <%
             }
             else if (AllowNull(prop) && prop.PropertyType == TypeCodeEx.CustomType)
             {
                 %>// For nullable PropertyConvert, null is persisted if the backing field is zero
-                    cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %> == 0 ? (object)DBNull.Value : <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %>)<%= postfix %>;
+                    cmd.Parameters.<%= AddParameterMethod %>("@<%= prop.ParameterName %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %> == 0 ? (object)DBNull.Value : <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %>)<%= postfix %>;
                     <%
             }
             else if (AllowNull(prop) && propType != TypeCodeEx.SmartDate)
             {
-                %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %> == null ? (object)DBNull.Value : <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %><%= TemplateHelper.IsNullableType(propType) ? ".Value" :"" %>)<%= postfix %>;
+                %>cmd.Parameters.<%= AddParameterMethod %>("@<%= prop.ParameterName %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %> == null ? (object)DBNull.Value : <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %><%= TemplateHelper.IsNullableType(propType) ? ".Value" :"" %>)<%= postfix %>;
                     <%
             }
             else
             {
-                %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %><%= (propType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>)<%= postfix %>;
+                %>cmd.Parameters.<%= AddParameterMethod %>("@<%= prop.ParameterName %>", <%= (usesDTO ? FormatCamel(Info.ObjectName) + "." + FormatPascal(prop.Name) : FormatCamel(prop.Name)) %><%= (propType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>)<%= postfix %>;
                     <%
             }
             if (prop.DbBindColumn.NativeType == "timestamp")
@@ -527,7 +527,7 @@ if (Info.GenerateDataPortalDelete)
             if (!parentProp.IsDatabaseBound)
                 continue;
 
-    %>cmd.Parameters.AddWithValue("@<%= TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp) %>", <%= FormatCamel(TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp)) %>).DbType = DbType.<%= TemplateHelper.GetDbType(parentProp) %>;
+    %>cmd.Parameters.<%= AddParameterMethod %>("@<%= TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp) %>", <%= FormatCamel(TemplateHelper.GetFkParameterNameForParentProperty(Info, parentProp)) %>).DbType = DbType.<%= TemplateHelper.GetDbType(parentProp) %>;
                     <%
         }
     }
@@ -538,7 +538,7 @@ if (Info.GenerateDataPortalDelete)
 
         if (prop.PrimaryKey != ValueProperty.UserDefinedKeyBehaviour.Default)
         {
-            %>cmd.Parameters.AddWithValue("@<%= prop.ParameterName %>", <%= FormatCamel(prop.Name) %>).DbType = DbType.<%= TemplateHelper.GetDbType(prop) %>;
+            %>cmd.Parameters.<%= AddParameterMethod %>("@<%= prop.ParameterName %>", <%= FormatCamel(prop.Name) %>).DbType = DbType.<%= TemplateHelper.GetDbType(prop) %>;
                     <%
         }
     }

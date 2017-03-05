@@ -120,12 +120,12 @@ if (!Info.UseCustomLoading)
                 {
                     if (c.Properties.Count > 1)
                     {
-                        %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= GetParameterSet(p, true) %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TemplateHelper.GetDbType(p) %>
+                        %>cmd.Parameters.<%= AddParameterMethod %>("@<%= p.ParameterName %>", <%= GetParameterSet(p, true) %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TemplateHelper.GetDbType(p) %>
                     <%
                     }
                     else
                     {
-                        %>cmd.Parameters.AddWithValue("@<%= p.ParameterName %>", <%= AssignSingleCriteria(c, "crit") %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TemplateHelper.GetDbType(p) %>
+                        %>cmd.Parameters.<%= AddParameterMethod %>("@<%= p.ParameterName %>", <%= AssignSingleCriteria(c, "crit") %><%= (p.PropertyType == TypeCodeEx.SmartDate ? ".DBValue" : "") %>).DbType = DbType.<%= TemplateHelper.GetDbType(p) %>
                     <%
                     }
                 }
@@ -177,7 +177,7 @@ if (!Info.UseCustomLoading)
             {
                 %>
 
-        Private Sub LoadCollection(cmd As SqlCommand)
+        Private Sub LoadCollection(cmd As <%= CommandMethod %>)
             Using dr As New SafeDataReader(cmd.ExecuteReader())
                 Fetch(dr)
                 <%
@@ -201,7 +201,7 @@ if (!Info.UseCustomLoading)
             {
                 %>
 
-        Private Sub LoadCollection(cmd As SqlCommand)
+        Private Sub LoadCollection(cmd As <%= CommandMethod %>)
             Dim ds As New DataSet()
             Using da As New SqlDataAdapter(cmd)
                 da.Fill(ds)

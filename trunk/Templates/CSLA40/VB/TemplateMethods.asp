@@ -22,7 +22,7 @@
         ''' <param name="cmd">The command object associated with current command</param>
         ''' <param name="crit">The criteria it operates on (can be null)</param>
         ''' <param name="action">The type of action is going to be performed</param>
-        Protected Overridable Sub ExtraCommandProcessing(cmd As SqlCommand, crit As Object, action As Command)
+        Protected Overridable Sub ExtraCommandProcessing(cmd As <%= CommandMethod %>, crit As Object, action As Command)
         End Sub
 
         #End Region
