@@ -204,9 +204,9 @@ namespace CslaGenerator.Metadata
                     _defaultTransactionType = TransactionType.TransactionScope;
                 }
                 else if (value == TransactionType.ADO &&
-                    GeneratorController.Current.CurrentUnit.GenerationParams.UseDal)
+                         GeneratorController.Current.CurrentUnit.GenerationParams.UseDal)
                 {
-                        _defaultTransactionType = TransactionType.TransactionScope;
+                    _defaultTransactionType = TransactionType.TransactionScope;
                 }
                 else
                 {
@@ -233,7 +233,7 @@ namespace CslaGenerator.Metadata
                 if (value == PersistenceType.SqlConnectionUnshared &&
                     GeneratorController.Current.CurrentUnit.GenerationParams.UseDal)
                 {
-                        _defaultPersistenceType = PersistenceType.SqlConnectionManager;
+                    _defaultPersistenceType = PersistenceType.SqlConnectionManager;
                 }
                 else
                 {
@@ -723,15 +723,14 @@ namespace CslaGenerator.Metadata
 
         #endregion
 
-        [Browsable(false)]
-        internal bool Dirty { get; set; }
+        #region Clone
 
         internal ProjectParameters Clone()
         {
             ProjectParameters obj = null;
             try
             {
-                obj = (ProjectParameters)Util.ObjectCloner.CloneShallow(this);
+                obj = (ProjectParameters) Util.ObjectCloner.CloneShallow(this);
                 obj.Dirty = false;
             }
             catch (Exception ex)
@@ -740,6 +739,8 @@ namespace CslaGenerator.Metadata
             }
             return obj;
         }
+
+        #endregion
 
         #region INotifyPropertyChanged Members
 
@@ -751,6 +752,9 @@ namespace CslaGenerator.Metadata
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        [Browsable(false)]
+        internal bool Dirty { get; set; }
 
         #endregion
     }

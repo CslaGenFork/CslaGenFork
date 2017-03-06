@@ -63,6 +63,13 @@ namespace CslaGenerator.Controls
 
         #endregion
 
+        #region Fields and Properties
+
+        private CslaGeneratorUnit Project
+        {
+            get { return GeneratorController.Current.CurrentUnit; }
+        }
+
         private static GenerationParameters _genParams;
 
         public static GenerationParameters GenParams
@@ -71,6 +78,10 @@ namespace CslaGenerator.Controls
         }
 
         private ProjectParameters _projParams;
+
+        #endregion
+
+        #region Constructor
 
         internal ProjectProperties()
         {
@@ -85,6 +96,8 @@ namespace CslaGenerator.Controls
             FillComboBox(cboInlineQueries, typeof(UseInlineQueries));
             FillComboBox(cboObjectNotFound, typeof(ReportObjectNotFound));
         }
+
+        #endregion
 
         private void FillComboBox(ComboBox cbo, Type enumType)
         {
@@ -119,17 +132,12 @@ namespace CslaGenerator.Controls
             }
         }
 
-        private CslaGeneratorUnit Project
-        {
-            get { return GeneratorController.Current.CurrentUnit; }
-        }
-
         internal void LoadInfo()
         {
             _genParams = Project.GenerationParams.Clone();
             _projParams = Project.Params.Clone();
             generationParametersBindingSource.DataSource = _genParams;
-            generationDbProviderCollectionBindingSource.DataSource = _genParams.DbProviderCollection;
+            generationDbProviderCollectionBindingSource.DataSource = _genParams.GenerationDbProviderCollection;
             projectParametersBindingSource.DataSource = _projParams;
 
             NotYetImplemented();
@@ -536,17 +544,17 @@ namespace CslaGenerator.Controls
 
         #endregion
 
-        private void copyGlobalParameters_Click(object sender, EventArgs e)
+        private void CopyGlobalParametersClick(object sender, EventArgs e)
         {
-            _genParams.DbProviderCollection.Clear();
+            _genParams.GenerationDbProviderCollection.Clear();
 
-            foreach (var dbProvider in GeneratorController.Current.GlobalParameters.DbProviders)
+            foreach (var dbProvider in GeneratorController.Current.GlobalParameters.DbProviderCollection)
             {
                 var provider = new GenerationDbProvider();
                 provider.DBProviderShortName = dbProvider.DbProviderShortName;
                 provider.NamespaceSuffix = dbProvider.DbProviderShortName;
                 provider.DBProviderIsActive = true;
-                _genParams.DbProviderCollection.Add(provider);
+                _genParams.GenerationDbProviderCollection.Add(provider);
             }
         }
 

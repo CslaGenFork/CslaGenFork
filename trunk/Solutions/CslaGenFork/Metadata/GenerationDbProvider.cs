@@ -20,7 +20,7 @@ namespace CslaGenerator.Metadata
 
         internal GenerationDbProviderCollection Parent
         {
-            get { return ProjectProperties.GenParams.DbProviderCollection; }
+            get { return ProjectProperties.GenParams.GenerationDbProviderCollection; }
         }
 
         public string DBProviderShortName
@@ -79,25 +79,6 @@ namespace CslaGenerator.Metadata
             Parent.Dirty = true;
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        #endregion
-
-        #region Clone
-
-        internal GenerationDbProvider Clone()
-        {
-            GenerationDbProvider obj = null;
-            try
-            {
-                obj = (GenerationDbProvider) Util.ObjectCloner.CloneShallow(this);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-
-            return obj;
         }
 
         #endregion

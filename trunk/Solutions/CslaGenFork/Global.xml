@@ -4,7 +4,7 @@
   <SprocEncoding>iso-8859-1</SprocEncoding>
   <OverwriteExtendedFile>false</OverwriteExtendedFile>
   <RecompileTemplates>false</RecompileTemplates>
-  <DbProviders>
+  <DbProviderCollection>
     <DbProvider>
       <Name>Microsoft SQL Server</Name>
       <DbProviderShortName>Sql</DbProviderShortName>
@@ -96,5 +96,5 @@
       <TimestampDbType>DbType.DateTime2</TimestampDbType>
       <Int64NativeType>DbType.Int64</Int64NativeType>
     </DbProvider>
-  </DbProviders>
+  </DbProviderCollection>
 </GlobalParameters>

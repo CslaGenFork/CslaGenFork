@@ -307,6 +307,7 @@
     <Compile Include="Metadata\CslaBaseClasses.cs" />
     <Compile Include="Metadata\CslaBaseClassesExtensions.cs" />
     <Compile Include="Metadata\DbProvider.cs" />
+    <Compile Include="Metadata\DbProviderCollection.cs" />
     <Compile Include="Metadata\GenerationDbProvider.cs" />
     <Compile Include="Metadata\GenerationDbProviderCollection.cs" />
     <Compile Include="PathHelper.cs" />

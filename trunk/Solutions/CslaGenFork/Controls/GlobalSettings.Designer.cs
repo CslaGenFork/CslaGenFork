@@ -202,7 +202,7 @@ namespace CslaGenerator.Controls
             this.btnEditDbProviders.TabIndex = 0;
             this.btnEditDbProviders.Text = "Edit DB Providers";
             this.btnEditDbProviders.UseVisualStyleBackColor = true;
-            this.btnEditDbProviders.Click += new System.EventHandler(this.btnEditDbProviders_Click);
+            this.btnEditDbProviders.Click += new System.EventHandler(this.EditDbProvidersClick);
             // 
             // cboCodeEncoding
             // 

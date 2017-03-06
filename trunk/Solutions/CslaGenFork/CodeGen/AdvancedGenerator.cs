@@ -997,7 +997,7 @@ namespace CslaGenerator.CodeGen
 
         private void DoGenerateDalImplementation(CslaObjectInfo objInfo, GenerationStep step)
         {
-            var generationDbProviders = _unit.GenerationParams.DbProviderCollection;
+            var generationDbProviders = _unit.GenerationParams.GenerationDbProviderCollection;
 
             if (generationDbProviders.Count == 0)
             {

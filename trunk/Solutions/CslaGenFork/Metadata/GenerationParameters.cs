@@ -52,7 +52,7 @@ namespace CslaGenerator.Metadata
         private bool _generateDalObject = true;
         private bool _generateSynchronous = true;
         private bool _generateAsynchronous;
-        private GenerationDbProviderCollection _dbProviderCollection = new GenerationDbProviderCollection();
+        private GenerationDbProviderCollection _generationDbProviderCollection = new GenerationDbProviderCollection();
 
         #endregion
 
@@ -624,14 +624,14 @@ namespace CslaGenerator.Metadata
             }
         }
 
-        public GenerationDbProviderCollection DbProviderCollection
+        public GenerationDbProviderCollection GenerationDbProviderCollection
         {
-            get { return _dbProviderCollection; }
+            get { return _generationDbProviderCollection; }
             set
             {
-                if (_dbProviderCollection == value)
+                if (_generationDbProviderCollection == value)
                     return;
-                _dbProviderCollection = value;
+                _generationDbProviderCollection = value;
                 OnPropertyChanged("DbProviderCollection");
             }
         }
@@ -639,7 +639,7 @@ namespace CslaGenerator.Metadata
         [Browsable(false)]
         public bool ForceDalObjectNamespace
         {
-            get { return UseDal && DbProviderCollection.GetActiveCount() != 0; }
+            get { return UseDal && GenerationDbProviderCollection.GetActiveCount() != 0; }
         }
 
         [Browsable(false)]
@@ -809,11 +809,11 @@ namespace CslaGenerator.Metadata
         [Browsable(false)]
         internal bool Dirty
         {
-            get { return _dirty || _dbProviderCollection.Dirty; }
+            get { return _dirty || _generationDbProviderCollection.Dirty; }
             set
             {
                 _dirty = value;
-                _dbProviderCollection.Dirty = _dirty;
+                _generationDbProviderCollection.Dirty = _dirty;
             }
         }
 

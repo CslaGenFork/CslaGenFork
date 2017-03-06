@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using CslaGenerator.Attributes;
+using CslaGenerator.Controls;
 
 namespace CslaGenerator.Metadata
 {
@@ -24,11 +25,20 @@ namespace CslaGenerator.Metadata
 
         #endregion
 
+        #region Properties
+
+        internal DbProviderCollection Parent
+        {
+            get { return GlobalSettings.GlobalParams.DbProviderCollection; }
+        }
+
+        #endregion
+
         #region UI Properties
 
         [Category("01. Definition")]
-        [Description("Friendly DB Provider name.\r\nThis name isn't used by generated code.")]
-        [UserFriendlyName("DB Provider Name")]
+        [Description("Common DB provider name.\r\nThis name isn't used by generated code.")]
+        [UserFriendlyName("Name")]
         public string Name
         {
             get { return _name; }
@@ -36,14 +46,17 @@ namespace CslaGenerator.Metadata
             {
                 if (_name == value)
                     return;
+                if (Parent.ContainsName(value))
+                    return;
+
                 _name = value;
                 OnPropertyChanged("");
             }
         }
 
         [Category("01. Definition")]
-        [Description("Friendly DB Provider name.\r\nThis name is used to compose the DAL implementation namespace.")]
-        [UserFriendlyName("DB Provider Short Name")]
+        [Description("Generation DB provider will match this name (this is the collection key).")]
+        [UserFriendlyName("Short Name")]
         public string DbProviderShortName
         {
             get { return _dbProviderShortName; }
@@ -51,13 +64,16 @@ namespace CslaGenerator.Metadata
             {
                 if (_dbProviderShortName == value)
                     return;
+                if (Parent.Contains(value))
+                    return;
+
                 _dbProviderShortName = value;
                 OnPropertyChanged("");
             }
         }
 
         [Category("01. Definition")]
-        [Description("The NuGet package name.\r\nThis is a reminder isn't used by generated code.")]
+        [Description("The NuGet package name.\r\nThis is just a reminder and isn't used by generated code.")]
         [UserFriendlyName("NuGet Package")]
         public string NuGetPackage
         {
@@ -72,7 +88,9 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("02. API")]
-        [Description("The Namespaces this DB provider uses (\"using\" in C# or \"Imports\" in VB). Write one namespace per line.")]
+        [Description(
+            "The Namespaces this DB provider uses (\"using\" in C# or \"Imports\" in VB). Write one namespace per line."
+        )]
         [UserFriendlyName("DB Provider Namespaces")]
         public string[] DBProviderNamespaces
         {
@@ -179,7 +197,9 @@ namespace CslaGenerator.Metadata
         }
 
         [Category("03. Data Types")]
-        [Description("The DB Provider native 'int64' type. This is used to emulate RowVersion on columns named 'rowversion' with Int64 data type.")]
+        [Description(
+            "The DB Provider native 'int64' type. This is used to emulate RowVersion on columns named 'rowversion' with Int64 data type."
+        )]
         [UserFriendlyName("DB Provider Int64 Type")]
         public string Int64NativeType
         {
@@ -197,14 +217,11 @@ namespace CslaGenerator.Metadata
 
         #region INotifyPropertyChanged Members
 
-        [Browsable(false)]
-        internal bool Dirty { get; set; }
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void OnPropertyChanged(string propertyName)
         {
-            Dirty = true;
+            Parent.Dirty = true;
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }

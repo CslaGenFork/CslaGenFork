@@ -503,7 +503,7 @@ namespace CslaGenerator.CodeGen
             if (!generationParams.UseDal)
             {
                 SetCurrentDbProvider(
-                    GeneratorController.Current.CurrentUnit.GenerationParams.DbProviderCollection.GetActive());
+                    GeneratorController.Current.CurrentUnit.GenerationParams.GenerationDbProviderCollection.GetActive());
             }
         }
 
@@ -517,7 +517,7 @@ namespace CslaGenerator.CodeGen
         {
             if (GenerationDbProvider != null)
             {
-                foreach (var globalProvider in GeneratorController.Current.GlobalParameters.DbProviders)
+                foreach (var globalProvider in GeneratorController.Current.GlobalParameters.DbProviderCollection)
                 {
                     if (globalProvider.DbProviderShortName == GenerationDbProvider.DBProviderShortName)
                         return globalProvider;

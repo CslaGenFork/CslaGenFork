@@ -64,17 +64,23 @@ namespace CslaGenerator.Controls
 
         #endregion
 
-        private GlobalParameters _globalParams = new GlobalParameters();
+        #region Fields and properties
 
-        public GlobalParameters GlobalParameters
+        private GeneratorController Controller
         {
-            get { return Controller.GlobalParameters; }
-            set
-            {
-                if (value != null)
-                    Controller.GlobalParameters = value;
-            }
+            get { return GeneratorController.Current; }
         }
+
+        private static GlobalParameters _globalParams;
+
+        public static GlobalParameters GlobalParams
+        {
+            get { return _globalParams; }
+        }
+
+        #endregion
+
+        #region Constructor
 
         internal GlobalSettings()
         {
@@ -94,20 +100,7 @@ namespace CslaGenerator.Controls
             cbo.Tag = typeof(string);
         }
 
-        private GeneratorController Controller
-        {
-            get { return GeneratorController.Current; }
-        }
-
-        private void btnEditDbProviders_Click(object sender, EventArgs e)
-        {
-            using (var form = new Form())
-            {
-                form.Owner = Controller.MainForm;
-                DbProviderTypeEditor.EditValue(form, _globalParams, "DbProviders");
-            }
-            GlobalParametersBindingSourceCurrentItemChanged(this, EventArgs.Empty);
-        }
+        #endregion
 
         internal void LoadInfo()
         {
@@ -122,7 +115,7 @@ namespace CslaGenerator.Controls
             LoadInfo();
         }
 
-        internal void ReLoadInfo()
+        internal void GlobalParamsInitialLoad()
         {
             ImportGlobalParameters(ConfigTools.GlobalXml);
         }
@@ -185,6 +178,7 @@ namespace CslaGenerator.Controls
 
         private void ImportGlobalParameters(string filename)
         {
+            GlobalParams.DbProviderCollection.Clear();
             var currentCursor = Cursor.Current;
             Cursor.Current = Cursors.WaitCursor;
             try
@@ -215,6 +209,7 @@ namespace CslaGenerator.Controls
 
         internal void ExportGlobalParameters(string fileName)
         {
+            var globalParams = _globalParams.Clone();
             FileStream fs = null;
             var tempFile = Path.GetTempPath() + Guid.NewGuid() + ".globalparameters";
             var success = false;
@@ -223,7 +218,7 @@ namespace CslaGenerator.Controls
                 Cursor.Current = Cursors.WaitCursor;
                 fs = File.Open(tempFile, FileMode.Create);
                 var s = new XmlSerializer(typeof(GlobalParameters));
-                s.Serialize(fs, _globalParams);
+                s.Serialize(fs, globalParams);
                 success = true;
             }
             catch (Exception ex)
@@ -268,6 +263,16 @@ namespace CslaGenerator.Controls
                 cmdSave.PerformClick();
             }
             return true;
+        }
+
+        private void EditDbProvidersClick(object sender, EventArgs e)
+        {
+            using (var form = new Form())
+            {
+                form.Owner = Controller.MainForm;
+                DbProviderTypeEditor.EditValue(form, _globalParams, "DbProviderCollection");
+                GlobalParametersBindingSourceCurrentItemChanged(this, EventArgs.Empty);
+            }
         }
 
         #region Manage state
