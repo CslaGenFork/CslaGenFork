@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing.Design;
 using System.Text;
-using System.Xml.Serialization;
 using CslaGenerator.Design;
 using CslaGenerator.Util;
 
@@ -21,7 +19,7 @@ namespace CslaGenerator.Metadata
         string _sprocEncodingDisplayName = string.Empty;
         bool _overwriteExtendedFile;
         bool _recompileTemplates;
-        BindingList<DbProvider> _dbProviders = new BindingList<DbProvider>();
+        DbProviderCollection _dbProviderCollection = new DbProviderCollection();
 
         #endregion
 
@@ -92,14 +90,14 @@ namespace CslaGenerator.Metadata
         }
 
         [Editor(typeof(PropertyCollectionForm), typeof(UITypeEditor))]
-        public BindingList<DbProvider> DbProviders
+        public DbProviderCollection DbProviderCollection
         {
-            get { return _dbProviders; }
+            get { return _dbProviderCollection; }
             set
             {
-                if (_dbProviders == value)
+                if (_dbProviderCollection == value)
                     return;
-                _dbProviders = value;
+                _dbProviderCollection = value;
                 OnPropertyChanged("");
             }
         }
@@ -166,11 +164,15 @@ namespace CslaGenerator.Metadata
 
         private bool _dirty;
 
-        [Browsable(false), XmlIgnore]
-        public bool Dirty
+        [Browsable(false)]
+        internal bool Dirty
         {
-            get { return _dirty; }
-            set { _dirty = value; }
+            get { return _dirty || _dbProviderCollection.Dirty; }
+            set
+            {
+                _dirty = value;
+                _dbProviderCollection.Dirty = _dirty;
+            }
         }
 
         #endregion
@@ -182,7 +184,7 @@ namespace CslaGenerator.Metadata
             GlobalParameters obj = null;
             try
             {
-                obj = (GlobalParameters) ObjectCloner.CloneShallow(this);
+                obj = (GlobalParameters) ObjectCloner.CloneDeep(this);
                 obj.Dirty = false;
             }
             catch (Exception ex)

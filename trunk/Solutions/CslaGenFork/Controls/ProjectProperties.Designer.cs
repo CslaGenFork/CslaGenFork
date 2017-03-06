@@ -2035,7 +2035,7 @@ namespace CslaGenerator.Controls
             this.copyGlobalParameters.TabIndex = 6;
             this.copyGlobalParameters.Text = "Copy DB Providers from Global Parameters";
             this.copyGlobalParameters.UseVisualStyleBackColor = true;
-            this.copyGlobalParameters.Click += new System.EventHandler(this.copyGlobalParameters_Click);
+            this.copyGlobalParameters.Click += new System.EventHandler(this.CopyGlobalParametersClick);
             // 
             // dbProviders
             // 

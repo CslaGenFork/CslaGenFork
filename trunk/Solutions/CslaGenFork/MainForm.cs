@@ -369,7 +369,7 @@ namespace CslaGenerator
                 _globalSettingsPanel.cmdSave.PerformClick();
             }
 
-            _globalSettingsPanel.ReLoadInfo();
+            _globalSettingsPanel.GlobalParamsInitialLoad();
         }
 
         #endregion
