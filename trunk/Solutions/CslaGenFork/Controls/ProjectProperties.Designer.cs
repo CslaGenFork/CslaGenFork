@@ -113,6 +113,7 @@ namespace CslaGenerator.Controls
             this.chkSaveGenerationDbProviders = new System.Windows.Forms.CheckBox();
             this.chkSaveGenerationMisc = new System.Windows.Forms.CheckBox();
             this.cboGenerateAuthorization = new System.Windows.Forms.ComboBox();
+            this.chkUsesLazyGetProperty = new System.Windows.Forms.CheckBox();
             this.chkUsesCslaAuthorizationProvider = new System.Windows.Forms.CheckBox();
             this.chkUsePublicPropertyInfo = new System.Windows.Forms.CheckBox();
             this.chkUseChildFactory = new System.Windows.Forms.CheckBox();
@@ -1100,10 +1101,20 @@ namespace CslaGenerator.Controls
             this.cboGenerateAuthorization.TabIndex = 5;
             this.toolTip.SetToolTip(this.cboGenerateAuthorization, resources.GetString("cboGenerateAuthorization.ToolTip"));
             // 
+            // chkUsesLazyGetProperty
+            // 
+            this.chkUsesLazyGetProperty.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "UsesLazyGetProperty", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
+            this.chkUsesLazyGetProperty.Location = new System.Drawing.Point(15, 78);
+            this.chkUsesLazyGetProperty.Name = "chkUsesLazyGetProperty";
+            this.chkUsesLazyGetProperty.Size = new System.Drawing.Size(216, 17);
+            this.chkUsesLazyGetProperty.TabIndex = 12;
+            this.chkUsesLazyGetProperty.Text = "Use LazyGetProperty";
+            this.toolTip.SetToolTip(this.chkUsesLazyGetProperty, "If checked, lazy loaded properties use the LazyGetProperty method\r\n(introduced in CSLA .NET 4.6.200).");
+            // 
             // chkUsesCslaAuthorizationProvider
             // 
             this.chkUsesCslaAuthorizationProvider.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "UsesCslaAuthorizationProvider", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.chkUsesCslaAuthorizationProvider.Location = new System.Drawing.Point(15, 78);
+            this.chkUsesCslaAuthorizationProvider.Location = new System.Drawing.Point(15, 106);
             this.chkUsesCslaAuthorizationProvider.Name = "chkUsesCslaAuthorizationProvider";
             this.chkUsesCslaAuthorizationProvider.Size = new System.Drawing.Size(216, 17);
             this.chkUsesCslaAuthorizationProvider.TabIndex = 12;
@@ -1114,7 +1125,7 @@ namespace CslaGenerator.Controls
             // chkUsePublicPropertyInfo
             // 
             this.chkUsePublicPropertyInfo.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "UsePublicPropertyInfo", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.chkUsePublicPropertyInfo.Location = new System.Drawing.Point(15, 106);
+            this.chkUsePublicPropertyInfo.Location = new System.Drawing.Point(15, 134);
             this.chkUsePublicPropertyInfo.Name = "chkUsePublicPropertyInfo";
             this.chkUsePublicPropertyInfo.Size = new System.Drawing.Size(216, 17);
             this.chkUsePublicPropertyInfo.TabIndex = 12;
@@ -1125,7 +1136,7 @@ namespace CslaGenerator.Controls
             // chkUseChildFactory
             // 
             this.chkUseChildFactory.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "UseChildFactory", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.chkUseChildFactory.Location = new System.Drawing.Point(15, 134);
+            this.chkUseChildFactory.Location = new System.Drawing.Point(15, 162);
             this.chkUseChildFactory.Name = "chkUseChildFactory";
             this.chkUseChildFactory.Size = new System.Drawing.Size(216, 17);
             this.chkUseChildFactory.TabIndex = 8;
@@ -1136,7 +1147,7 @@ namespace CslaGenerator.Controls
             // chkForceReadOnlyProperties
             // 
             this.chkForceReadOnlyProperties.DataBindings.Add(new System.Windows.Forms.Binding("CheckState", this.generationParametersBindingSource, "ForceReadOnlyProperties", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
-            this.chkForceReadOnlyProperties.Location = new System.Drawing.Point(15, 162);
+            this.chkForceReadOnlyProperties.Location = new System.Drawing.Point(15, 190);
             this.chkForceReadOnlyProperties.Name = "chkForceReadOnlyProperties";
             this.chkForceReadOnlyProperties.Size = new System.Drawing.Size(216, 17);
             this.chkForceReadOnlyProperties.TabIndex = 13;
@@ -2084,6 +2095,7 @@ namespace CslaGenerator.Controls
             this.GenerationMiscTab.Controls.Add(this.chkSaveGenerationMisc);
             this.GenerationMiscTab.Controls.Add(this.lblGenerateAuthorization);
             this.GenerationMiscTab.Controls.Add(this.cboGenerateAuthorization);
+            this.GenerationMiscTab.Controls.Add(this.chkUsesLazyGetProperty);
             this.GenerationMiscTab.Controls.Add(this.chkUsesCslaAuthorizationProvider);
             this.GenerationMiscTab.Controls.Add(this.chkUsePublicPropertyInfo);
             this.GenerationMiscTab.Controls.Add(this.chkUseChildFactory);
@@ -2353,6 +2365,7 @@ namespace CslaGenerator.Controls
         private System.Windows.Forms.CheckBox chkSaveGenerationMisc;
         private System.Windows.Forms.Label lblGenerateAuthorization;
         private System.Windows.Forms.ComboBox cboGenerateAuthorization;
+        private System.Windows.Forms.CheckBox chkUsesLazyGetProperty;
         private System.Windows.Forms.CheckBox chkUsesCslaAuthorizationProvider;
         private System.Windows.Forms.Label lblHeaderVerbosity;
         private System.Windows.Forms.ComboBox cboHeaderVerbosity;

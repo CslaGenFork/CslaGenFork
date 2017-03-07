@@ -4050,12 +4050,22 @@ namespace CslaGenerator.CodeGen
                 response += "            {" + Environment.NewLine;
                 response += ChildPropertyDeclareGetLazyLoad(info, prop);
                 response += "            }" + Environment.NewLine;
-                response += String.Format("            {0}set{1}",
-                    ChildPropertyDeclareSetterVisibility(isReadOnly, prop),
-                    Environment.NewLine);
-                response += "            {" + Environment.NewLine;
-                response += ChildPropertyDeclareSetLazyLoad(prop);
-                response += "            }" + Environment.NewLine;
+
+                if (CurrentUnit.GenerationParams.UsesLazyGetProperty)
+                {
+                    response += string.Format("            {0}set {{ {1} }}\r\n",
+                        ChildPropertyDeclareSetterVisibility(isReadOnly, prop),
+                        ChildPropertyDeclareSetLazyLoad(prop));
+                }
+                else
+                {
+                    response += String.Format("            {0}set{1}",
+                        ChildPropertyDeclareSetterVisibility(isReadOnly, prop),
+                        Environment.NewLine);
+                    response += "            {" + Environment.NewLine;
+                    response += ChildPropertyDeclareSetLazyLoad(prop);
+                    response += "            }" + Environment.NewLine;
+                }
             }
 
             return response;
@@ -4136,10 +4146,18 @@ namespace CslaGenerator.CodeGen
                 prop.DeclarationMode == PropertyDeclaration.Unmanaged ||
                 prop.DeclarationMode == PropertyDeclaration.UnmanagedWithTypeConversion)
             {
-                response += String.Format("                LoadProperty({0}, value);{1}",
-                    FormatPropertyInfoName(prop.Name), Environment.NewLine);
-                response += String.Format("                OnPropertyChanged({0});{1}",
-                    FormatPropertyInfoName(prop.Name), Environment.NewLine);
+                if (CurrentUnit.GenerationParams.UsesLazyGetProperty)
+                {
+                    response += String.Format("LoadProperty({0}, value);",
+                        FormatPropertyInfoName(prop.Name));
+                }
+                else
+                {
+                    response += String.Format("                LoadProperty({0}, value);{1}",
+                        FormatPropertyInfoName(prop.Name), Environment.NewLine);
+                    response += String.Format("                OnPropertyChanged({0});{1}",
+                        FormatPropertyInfoName(prop.Name), Environment.NewLine);
+                }
             }
             else if (prop.DeclarationMode == PropertyDeclaration.ClassicProperty)
             {
@@ -4221,6 +4239,9 @@ namespace CslaGenerator.CodeGen
 
         private string EditableChildLazyLoadAsync(CslaObjectInfo info, ChildProperty prop, bool isLocal)
         {
+            if (CurrentUnit.GenerationParams.UsesLazyGetProperty)
+                return EditableChildLazyGetPropertyAsync(info, prop, isLocal);
+
             /* Editable Asynchronous
 
             if (!FieldManager.FieldExists(ChildrenProperty))
@@ -4337,8 +4358,22 @@ namespace CslaGenerator.CodeGen
             return result;
         }
 
+        private string EditableChildLazyGetPropertyAsync(CslaObjectInfo info, ChildProperty prop, bool isLocal)
+        {
+            var result = "                return ";
+            result += string.Format("LazyGetPropertyAsync({0}, DataPortal.FetchAsync<{1}>({2}));\r\n",
+                FormatPropertyInfoName(prop.Name),
+                prop.TypeName,
+                GetFieldReaderStatementList(info, prop));
+
+            return result;
+        }
+
         private string EditableChildLazyLoadSync(CslaObjectInfo info, ChildProperty prop)
         {
+            if (CurrentUnit.GenerationParams.UsesLazyGetProperty)
+                return EditableChildLazyGetPropertySync(info, prop);
+
             /* Editable Synchronous
 
             if (!FieldManager.FieldExists(ChildrenProperty))
@@ -4391,6 +4426,17 @@ namespace CslaGenerator.CodeGen
             }
             result += Environment.NewLine;
             result += ChildPropertyDeclareGetReturner(prop);
+
+            return result;
+        }
+
+        private string EditableChildLazyGetPropertySync(CslaObjectInfo info, ChildProperty prop)
+        {
+            var result = "                return ";
+            result += string.Format("LazyGetProperty({0}, () => DataPortal.Fetch<{1}>({2}));\r\n",
+                FormatPropertyInfoName(prop.Name),
+                prop.TypeName,
+                GetFieldReaderStatementList(info, prop));
 
             return result;
         }
@@ -4454,6 +4500,9 @@ namespace CslaGenerator.CodeGen
 
         private string ReadOnlyChildLazyLoadAsync(CslaObjectInfo info, ChildProperty prop, bool isLocal)
         {
+            if (CurrentUnit.GenerationParams.UsesLazyGetProperty)
+                return ReadOnlyLazyGetPropertyAsync(info, prop, isLocal);
+
             /* ReadOnly Silverlight using services
 
             if (!FieldManager.FieldExists(ChildrenProperty))
@@ -4520,8 +4569,22 @@ namespace CslaGenerator.CodeGen
             return result;
         }
 
+        private string ReadOnlyLazyGetPropertyAsync(CslaObjectInfo info, ChildProperty prop, bool isLocal)
+        {
+            var result = "                return ";
+            result += string.Format("LazyGetPropertyAsync({0}, DataPortal.FetchAsync<{1}>({2}));\r\n",
+                FormatPropertyInfoName(prop.Name),
+                prop.TypeName,
+                GetFieldReaderStatementList(info, prop));
+
+            return result;
+        }
+
         private string ReadOnlyChildLazyLoadSync(CslaObjectInfo info, ChildProperty prop)
         {
+            if (CurrentUnit.GenerationParams.UsesLazyGetProperty)
+                return ReadOnlyLazyGetPropertySync(info, prop);
+
             /* ReadOnly Synchronous
 
             if (!FieldManager.FieldExists(ChildrenProperty))
@@ -4550,6 +4613,17 @@ namespace CslaGenerator.CodeGen
             }
             result += Environment.NewLine;
             result += ChildPropertyDeclareGetReturner(prop);
+
+            return result;
+        }
+
+        private string ReadOnlyLazyGetPropertySync(CslaObjectInfo info, ChildProperty prop)
+        {
+            var result = "                return ";
+            result += string.Format("LazyGetProperty({0}, () => DataPortal.Fetch<{1}>({2}));\r\n",
+                FormatPropertyInfoName(prop.Name),
+                prop.TypeName,
+                GetFieldReaderStatementList(info, prop));
 
             return result;
         }
