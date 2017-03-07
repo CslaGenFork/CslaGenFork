@@ -41,6 +41,7 @@ namespace CslaGenerator.Metadata
         private bool _generateQueriesWithSchema = true;
         private bool _generateDatabaseClass = true;
         private string _dalName = string.Empty;
+        private bool _usesLazyGetProperty = true;
         private bool _usesCslaAuthorizationProvider = true;
         private bool _generateWinForms = true;
         private bool _generateWPF;
@@ -479,6 +480,18 @@ namespace CslaGenerator.Metadata
                 if (_dalName == value)
                     return;
                 _dalName = value;
+                OnPropertyChanged("");
+            }
+        }
+
+        public bool UsesLazyGetProperty
+        {
+            get { return _usesLazyGetProperty; }
+            set
+            {
+                if (_usesLazyGetProperty == value)
+                    return;
+                _usesLazyGetProperty = value;
                 OnPropertyChanged("");
             }
         }
