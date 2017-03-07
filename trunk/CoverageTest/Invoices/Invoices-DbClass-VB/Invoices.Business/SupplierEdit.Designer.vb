@@ -151,11 +151,9 @@ Namespace Invoices.Business
         Public Property Products As SupplierProductColl
             Get
 #If ASYNC Then
-                Return LazyGetPropertyAsync(ProductsProperty,
-                    DataPortal.FetchAsync(Of SupplierProductColl)(ReadProperty(SupplierIdProperty)))
+                Return LazyGetPropertyAsync(ProductsProperty, DataPortal.FetchAsync(Of SupplierProductColl)(ReadProperty(SupplierIdProperty)))
 #Else
-                Return LazyGetProperty(ProductsProperty,
-                    Function() DataPortal.Fetch(Of SupplierProductColl)(ReadProperty(SupplierIdProperty)))
+                Return LazyGetProperty(ProductsProperty, Function() DataPortal.Fetch(Of SupplierProductColl)(ReadProperty(SupplierIdProperty)))
 #End If
             End Get
             Private Set

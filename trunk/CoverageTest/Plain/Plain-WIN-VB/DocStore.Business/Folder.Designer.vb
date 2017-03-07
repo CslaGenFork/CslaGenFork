@@ -248,7 +248,7 @@ Namespace DocStore.Business
         ''' </summary>
         ''' <value>The Docs.</value>
         Public Property Docs As FolderDocColl
-    Get
+            Get
 #If ASYNC Then
                 If Not FieldManager.FieldExists(DocsProperty) Then
                     LoadProperty(DocsProperty, Nothing)
@@ -287,11 +287,11 @@ Namespace DocStore.Business
 
                 Return GetProperty(DocsProperty)
 #End If
-    End Get
-    Private Set
+            End Get
+            Private Set
                 LoadProperty(DocsProperty, value)
                 OnPropertyChanged(DocsProperty)
-    End Set
+            End Set
         End Property
 
         ''' <summary>

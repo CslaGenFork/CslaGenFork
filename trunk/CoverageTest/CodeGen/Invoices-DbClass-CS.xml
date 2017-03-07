@@ -81,7 +81,7 @@
     <GenerateQueriesWithSchema>true</GenerateQueriesWithSchema>
     <GenerateDatabaseClass>true</GenerateDatabaseClass>
     <DalName />
-    <UsesGetLazyProperty>true</UsesGetLazyProperty>
+    <UsesLazyGetProperty>true</UsesLazyGetProperty>
     <UsesCslaAuthorizationProvider>true</UsesCslaAuthorizationProvider>
     <GenerateWinForms>true</GenerateWinForms>
     <GenerateWPF>true</GenerateWPF>

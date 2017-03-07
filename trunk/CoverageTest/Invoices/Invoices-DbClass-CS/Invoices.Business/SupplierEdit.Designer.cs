@@ -133,11 +133,9 @@ namespace Invoices.Business
             get
             {
 #if ASYNC
-                return LazyGetPropertyAsync(ProductsProperty,
-                    DataPortal.FetchAsync<SupplierProductColl>(ReadProperty(SupplierIdProperty)));
+                return LazyGetPropertyAsync(ProductsProperty, DataPortal.FetchAsync<SupplierProductColl>(ReadProperty(SupplierIdProperty)));
 #else
-                return LazyGetProperty(ProductsProperty,
-                    () => DataPortal.Fetch<SupplierProductColl>(ReadProperty(SupplierIdProperty)));
+                return LazyGetProperty(ProductsProperty, () => DataPortal.Fetch<SupplierProductColl>(ReadProperty(SupplierIdProperty)));
 #endif
             }
             private set { LoadProperty(ProductsProperty, value); }
