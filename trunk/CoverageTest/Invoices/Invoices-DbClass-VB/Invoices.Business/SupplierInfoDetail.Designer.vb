@@ -128,33 +128,18 @@ Namespace Invoices.Business
         ''' </summary>
         ''' <value>The Products.</value>
         Public Property Products As SupplierProductList
-    Get
+            Get
 #If ASYNC Then
-                If Not FieldManager.FieldExists(ProductsProperty) Then
-                    LoadProperty(ProductsProperty, Nothing)
-                    DataPortal.BeginFetch(Of SupplierProductList)(ReadProperty(SupplierIdProperty), Function(o, e)
-                            if e.Error IsNot Nothing Then
-                                Throw e.Error
-                            Else
-                                ' set the property so OnPropertyChanged is raised
-                                Products = e.Object
-                            End If
-                        End Function)
-                    return null;
-                Else
-                    Return GetProperty(ProductsProperty)
-                End If
+                Return LazyGetPropertyAsync(ProductsProperty,
+                    DataPortal.FetchAsync(Of SupplierProductList)(ReadProperty(SupplierIdProperty)))
 #Else
-                If Not FieldManager.FieldExists(ProductsProperty) Then
-                    Products = DataPortal.Fetch(Of SupplierProductList)(ReadProperty(SupplierIdProperty))
-                End If
-                Return GetProperty(ProductsProperty)
+                Return LazyGetProperty(ProductsProperty,
+                    Function() DataPortal.Fetch(Of SupplierProductList)(ReadProperty(SupplierIdProperty)))
 #End If
-    End Get
-    Private Set
+            End Get
+            Private Set
                 LoadProperty(ProductsProperty, value)
-                OnPropertyChanged(ProductsProperty)
-    End Set
+            End Set
         End Property
 
         #End Region

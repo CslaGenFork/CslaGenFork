@@ -149,7 +149,7 @@ Namespace Invoices.Business
         ''' </summary>
         ''' <value>The Products.</value>
         Public Property Products As SupplierProductColl
-    Get
+            Get
 #If ASYNC Then
                 Return LazyGetPropertyAsync(ProductsProperty,
                     DataPortal.FetchAsync(Of SupplierProductColl)(ReadProperty(SupplierIdProperty)))
@@ -157,10 +157,10 @@ Namespace Invoices.Business
                 Return LazyGetProperty(ProductsProperty,
                     Function() DataPortal.Fetch(Of SupplierProductColl)(ReadProperty(SupplierIdProperty)))
 #End If
-    End Get
-    Private Set
+            End Get
+            Private Set
                 LoadProperty(ProductsProperty, value)
-    End Set
+            End Set
         End Property
 
         #End Region

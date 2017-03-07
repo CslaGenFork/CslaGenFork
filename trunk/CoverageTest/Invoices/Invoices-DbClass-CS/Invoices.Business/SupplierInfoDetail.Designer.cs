@@ -126,37 +126,14 @@ namespace Invoices.Business
             get
             {
 #if ASYNC
-                if (!FieldManager.FieldExists(ProductsProperty))
-                {
-                    LoadProperty(ProductsProperty, null);
-                    DataPortal.BeginFetch<SupplierProductList>(ReadProperty(SupplierIdProperty), (o, e) =>
-                        {
-                            if (e.Error != null)
-                                throw e.Error;
-                            else
-                            {
-                                // set the property so OnPropertyChanged is raised
-                                Products = e.Object;
-                            }
-                        });
-                    return null;
-                }
-                else
-                {
-                    return GetProperty(ProductsProperty);
-                }
+                return LazyGetPropertyAsync(ProductsProperty,
+                    DataPortal.FetchAsync<SupplierProductList>(ReadProperty(SupplierIdProperty)));
 #else
-                if (!FieldManager.FieldExists(ProductsProperty))
-                    Products = DataPortal.Fetch<SupplierProductList>(ReadProperty(SupplierIdProperty));
-
-                return GetProperty(ProductsProperty);
+                return LazyGetProperty(ProductsProperty,
+                    () => DataPortal.Fetch<SupplierProductList>(ReadProperty(SupplierIdProperty)));
 #endif
             }
-            private set
-            {
-                LoadProperty(ProductsProperty, value);
-                OnPropertyChanged(ProductsProperty);
-            }
+            private set { LoadProperty(ProductsProperty, value); }
         }
 
         #endregion
