@@ -149,7 +149,7 @@ Namespace Invoices.Business
         ''' </summary>
         ''' <value>The Products.</value>
         Public Property Products As SupplierProductColl
-    Get
+            Get
 #If ASYNC Then
                 If Not FieldManager.FieldExists(ProductsProperty) Then
                     LoadProperty(ProductsProperty, Nothing)
@@ -188,11 +188,11 @@ Namespace Invoices.Business
 
                 Return GetProperty(ProductsProperty)
 #End If
-    End Get
-    Private Set
+            End Get
+            Private Set
                 LoadProperty(ProductsProperty, value)
                 OnPropertyChanged(ProductsProperty)
-    End Set
+            End Set
         End Property
 
         #End Region
