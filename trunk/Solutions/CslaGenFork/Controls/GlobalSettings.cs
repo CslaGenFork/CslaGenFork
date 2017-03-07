@@ -253,7 +253,14 @@ namespace CslaGenerator.Controls
 
         internal bool IsDirty
         {
-            get { return _globalParams.Dirty; }
+            // otherwise crashes on open and immediate close
+            get
+            {
+                if (_globalParams != null)
+                    return _globalParams.Dirty;
+
+                return false;
+            }
         }
 
         internal bool ForceSaveGlobalSettings()
