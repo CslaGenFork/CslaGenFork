@@ -160,6 +160,10 @@
     <Compile Include="ISupplierEditDal.Designer.cs">
       <DependentUpon>ISupplierEditDal.cs</DependentUpon>
     </Compile>
+    <Compile Include="ISupplierInfoDetailDal.cs" />
+    <Compile Include="ISupplierInfoDetailDal.Designer.cs">
+      <DependentUpon>ISupplierInfoDetailDal.cs</DependentUpon>
+    </Compile>
     <Compile Include="ISupplierListDal.cs" />
     <Compile Include="ISupplierListDal.Designer.cs">
       <DependentUpon>ISupplierListDal.cs</DependentUpon>
@@ -171,6 +175,10 @@
     <Compile Include="ISupplierProductItemDal.cs" />
     <Compile Include="ISupplierProductItemDal.Designer.cs">
       <DependentUpon>ISupplierProductItemDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ISupplierProductListDal.cs" />
+    <Compile Include="ISupplierProductListDal.Designer.cs">
+      <DependentUpon>ISupplierProductListDal.cs</DependentUpon>
     </Compile>
     <Compile Include="ProductEditDto.cs" />
     <Compile Include="ProductEditDto.Designer.cs">
@@ -225,6 +233,10 @@
     <Compile Include="SupplierEditDto.Designer.cs">
       <DependentUpon>SupplierEditDto.cs</DependentUpon>
     </Compile>
+    <Compile Include="SupplierInfoDetailDto.cs" />
+    <Compile Include="SupplierInfoDetailDto.Designer.cs">
+      <DependentUpon>SupplierInfoDetailDto.cs</DependentUpon>
+    </Compile>
     <Compile Include="SupplierInfoDto.cs" />
     <Compile Include="SupplierInfoDto.Designer.cs">
       <DependentUpon>SupplierInfoDto.cs</DependentUpon>
@@ -232,6 +244,10 @@
     <Compile Include="SupplierProductItemDto.cs" />
     <Compile Include="SupplierProductItemDto.Designer.cs">
       <DependentUpon>SupplierProductItemDto.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SupplierProductItnfoDto.cs" />
+    <Compile Include="SupplierProductItnfoDto.Designer.cs">
+      <DependentUpon>SupplierProductItnfoDto.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

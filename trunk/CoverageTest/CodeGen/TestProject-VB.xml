@@ -81,6 +81,7 @@
     <GenerateQueriesWithSchema>false</GenerateQueriesWithSchema>
     <GenerateDatabaseClass>true</GenerateDatabaseClass>
     <DalName />
+    <UsesGetLazyProperty>false</UsesGetLazyProperty>
     <UsesCslaAuthorizationProvider>false</UsesCslaAuthorizationProvider>
     <GenerateWinForms>true</GenerateWinForms>
     <GenerateWPF>false</GenerateWPF>
@@ -92,7 +93,7 @@
     <GenerateDalObject>false</GenerateDalObject>
     <GenerateSynchronous>true</GenerateSynchronous>
     <GenerateAsynchronous>false</GenerateAsynchronous>
-    <DbProviderCollection />
+    <GenerationDbProviderCollection />
   </GenerationParams>
   <CslaObjects>
     <CslaObjectInfo>

@@ -240,6 +240,10 @@
     <Compile Include="SupplierInfo.Designer.cs">
       <DependentUpon>SupplierInfo.cs</DependentUpon>
     </Compile>
+    <Compile Include="SupplierInfoDetail.cs" />
+    <Compile Include="SupplierInfoDetail.Designer.cs">
+      <DependentUpon>SupplierInfoDetail.cs</DependentUpon>
+    </Compile>
     <Compile Include="SupplierList.cs" />
     <Compile Include="SupplierList.Designer.cs">
       <DependentUpon>SupplierList.cs</DependentUpon>
@@ -251,6 +255,14 @@
     <Compile Include="SupplierProductItem.cs" />
     <Compile Include="SupplierProductItem.Designer.cs">
       <DependentUpon>SupplierProductItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SupplierProductItnfo.cs" />
+    <Compile Include="SupplierProductItnfo.Designer.cs">
+      <DependentUpon>SupplierProductItnfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SupplierProductList.cs" />
+    <Compile Include="SupplierProductList.Designer.cs">
+      <DependentUpon>SupplierProductList.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

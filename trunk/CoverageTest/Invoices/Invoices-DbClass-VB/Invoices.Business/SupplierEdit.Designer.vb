@@ -151,47 +151,15 @@ Namespace Invoices.Business
         Public Property Products As SupplierProductColl
     Get
 #If ASYNC Then
-                If Not FieldManager.FieldExists(ProductsProperty) Then
-                    LoadProperty(ProductsProperty, Nothing)
-                    If Me.IsNew Then
-                        DataPortal.BeginCreate(Of SupplierProductColl)(Function(o, e)
-                                If e.Error IsNot Nothing Then
-                                    Throw e.Error
-                                Else
-                                    ' set the property so OnPropertyChanged is raised
-                                    Products = e.Object
-                                End If
-                            End Function)
-                        Return Nothing
-                    Else
-                        DataPortal.BeginFetch<SupplierProductColl>(ReadProperty(SupplierIdProperty), Function(o, e)
-                                If e.Error IsNot Nothing Then
-                                    Throw e.Error
-                                Else
-                                    ' set the property so OnPropertyChanged is raised
-                                    Products = e.Object
-                                End If
-                            End Function)
-                        Return Nothing
-                    End If
-                Else
-                    Return GetProperty(ProductsProperty)
-                End If
+                Return LazyGetPropertyAsync(ProductsProperty,
+                    DataPortal.FetchAsync(Of SupplierProductColl)(ReadProperty(SupplierIdProperty)))
 #Else
-                If Not FieldManager.FieldExists(ProductsProperty) Then
-                    If Me.IsNew Then
-                        Products = DataPortal.Create(Of SupplierProductColl)()
-                    Else
-                        Products = DataPortal.Fetch(Of SupplierProductColl)(ReadProperty(SupplierIdProperty))
-                    End If
-                End If
-
-                Return GetProperty(ProductsProperty)
+                Return LazyGetProperty(ProductsProperty,
+                    Function() DataPortal.Fetch(Of SupplierProductColl)(ReadProperty(SupplierIdProperty)))
 #End If
     End Get
     Private Set
                 LoadProperty(ProductsProperty, value)
-                OnPropertyChanged(ProductsProperty)
     End Set
         End Property
 

@@ -277,6 +277,10 @@
       <DependentUpon>SupplierInfo.vb</DependentUpon>
     </Compile>
     <Compile Include="SupplierInfo.vb" />
+    <Compile Include="SupplierInfoDetail.Designer.vb">
+      <DependentUpon>SupplierInfoDetail.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SupplierInfoDetail.vb" />
     <Compile Include="SupplierList.Designer.vb">
       <DependentUpon>SupplierList.vb</DependentUpon>
     </Compile>
@@ -289,6 +293,14 @@
       <DependentUpon>SupplierProductItem.vb</DependentUpon>
     </Compile>
     <Compile Include="SupplierProductItem.vb" />
+    <Compile Include="SupplierProductItnfo.Designer.vb">
+      <DependentUpon>SupplierProductItnfo.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SupplierProductItnfo.vb" />
+    <Compile Include="SupplierProductList.Designer.vb">
+      <DependentUpon>SupplierProductList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="SupplierProductList.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
