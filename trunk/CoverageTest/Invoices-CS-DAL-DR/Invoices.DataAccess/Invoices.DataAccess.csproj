@@ -132,6 +132,10 @@
     <Compile Include="ISupplierEditDal.Designer.cs">
       <DependentUpon>ISupplierEditDal.cs</DependentUpon>
     </Compile>
+    <Compile Include="ISupplierInfoDetailDal.cs" />
+    <Compile Include="ISupplierInfoDetailDal.Designer.cs">
+      <DependentUpon>ISupplierInfoDetailDal.cs</DependentUpon>
+    </Compile>
     <Compile Include="ISupplierListDal.cs" />
     <Compile Include="ISupplierListDal.Designer.cs">
       <DependentUpon>ISupplierListDal.cs</DependentUpon>
@@ -143,6 +147,10 @@
     <Compile Include="ISupplierProductItemDal.cs" />
     <Compile Include="ISupplierProductItemDal.Designer.cs">
       <DependentUpon>ISupplierProductItemDal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ISupplierProductListDal.cs" />
+    <Compile Include="ISupplierProductListDal.Designer.cs">
+      <DependentUpon>ISupplierProductListDal.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

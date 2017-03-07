@@ -133,57 +133,14 @@ namespace Invoices.Business
             get
             {
 #if ASYNC
-                if (!FieldManager.FieldExists(ProductsProperty))
-                {
-                    LoadProperty(ProductsProperty, null);
-                    if (this.IsNew)
-                    {
-                        DataPortal.BeginCreate<SupplierProductColl>((o, e) =>
-                            {
-                                if (e.Error != null)
-                                    throw e.Error;
-                                else
-                                {
-                                    // set the property so OnPropertyChanged is raised
-                                    Products = e.Object;
-                                }
-                            });
-                        return null;
-                    }
-                    else
-                    {
-                        DataPortal.BeginFetch<SupplierProductColl>(ReadProperty(SupplierIdProperty), (o, e) =>
-                            {
-                                if (e.Error != null)
-                                    throw e.Error;
-                                else
-                                {
-                                    // set the property so OnPropertyChanged is raised
-                                    Products = e.Object;
-                                }
-                            });
-                        return null;
-                    }
-                }
-                else
-                {
-                    return GetProperty(ProductsProperty);
-                }
+                return LazyGetPropertyAsync(ProductsProperty,
+                    DataPortal.FetchAsync<SupplierProductColl>(ReadProperty(SupplierIdProperty)));
 #else
-                if (!FieldManager.FieldExists(ProductsProperty))
-                    if (this.IsNew)
-                        Products = DataPortal.Create<SupplierProductColl>();
-                    else
-                        Products = DataPortal.Fetch<SupplierProductColl>(ReadProperty(SupplierIdProperty));
-
-                return GetProperty(ProductsProperty);
+                return LazyGetProperty(ProductsProperty,
+                    () => DataPortal.Fetch<SupplierProductColl>(ReadProperty(SupplierIdProperty)));
 #endif
             }
-            private set
-            {
-                LoadProperty(ProductsProperty, value);
-                OnPropertyChanged(ProductsProperty);
-            }
+            private set { LoadProperty(ProductsProperty, value); }
         }
 
         #endregion

@@ -1,0 +1,120 @@
+using System;
+using System.Collections.Generic;
+using Csla;
+using Invoices.DataAccess;
+
+namespace Invoices.Business
+{
+
+    /// <summary>
+    /// SupplierProductList (read only list).<br/>
+    /// This is a generated base class of <see cref="SupplierProductList"/> business object.
+    /// </summary>
+    /// <remarks>
+    /// This class is child of <see cref="SupplierInfoDetail"/> read only object.<br/>
+    /// The items of the collection are <see cref="SupplierProductItnfo"/> objects.
+    /// </remarks>
+    [Serializable]
+#if WINFORMS
+    public partial class SupplierProductList : ReadOnlyBindingListBase<SupplierProductList, SupplierProductItnfo>
+#else
+    public partial class SupplierProductList : ReadOnlyListBase<SupplierProductList, SupplierProductItnfo>
+#endif
+    {
+
+        #region Collection Business Methods
+
+        /// <summary>
+        /// Determines whether a <see cref="SupplierProductItnfo"/> item is in the collection.
+        /// </summary>
+        /// <param name="productSupplierId">The ProductSupplierId of the item to search for.</param>
+        /// <returns><c>true</c> if the SupplierProductItnfo is a collection item; otherwise, <c>false</c>.</returns>
+        public bool Contains(int productSupplierId)
+        {
+            foreach (var supplierProductItnfo in this)
+            {
+                if (supplierProductItnfo.ProductSupplierId == productSupplierId)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        #endregion
+
+        #region Constructor
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SupplierProductList"/> class.
+        /// </summary>
+        /// <remarks> Do not use to create a Csla object. Use factory methods instead.</remarks>
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        public SupplierProductList()
+        {
+            // Use factory methods and do not use direct creation.
+
+            var rlce = RaiseListChangedEvents;
+            RaiseListChangedEvents = false;
+            AllowNew = false;
+            AllowEdit = false;
+            AllowRemove = false;
+            RaiseListChangedEvents = rlce;
+        }
+
+        #endregion
+
+        #region Data Access
+
+        /// <summary>
+        /// Loads a <see cref="SupplierProductList"/> collection from the database, based on given criteria.
+        /// </summary>
+        /// <param name="supplierId">The Supplier Id.</param>
+        protected void DataPortal_Fetch(int supplierId)
+        {
+            var args = new DataPortalHookArgs(supplierId);
+            OnFetchPre(args);
+            using (var dalManager = DalFactoryInvoices.GetManager())
+            {
+                var dal = dalManager.GetProvider<ISupplierProductListDal>();
+                var data = dal.Fetch(supplierId);
+                Fetch(data);
+            }
+            OnFetchPost(args);
+        }
+
+        /// <summary>
+        /// Loads all <see cref="SupplierProductList"/> collection items from the given list of SupplierProductItnfoDto.
+        /// </summary>
+        /// <param name="data">The list of <see cref="SupplierProductItnfoDto"/>.</param>
+        private void Fetch(List<SupplierProductItnfoDto> data)
+        {
+            IsReadOnly = false;
+            var rlce = RaiseListChangedEvents;
+            RaiseListChangedEvents = false;
+            foreach (var dto in data)
+            {
+                Add(DataPortal.FetchChild<SupplierProductItnfo>(dto));
+            }
+            RaiseListChangedEvents = rlce;
+            IsReadOnly = true;
+        }
+
+        #endregion
+
+        #region DataPortal Hooks
+
+        /// <summary>
+        /// Occurs after setting query parameters and before the fetch operation.
+        /// </summary>
+        partial void OnFetchPre(DataPortalHookArgs args);
+
+        /// <summary>
+        /// Occurs after the fetch operation (object or collection is fully loaded and set up).
+        /// </summary>
+        partial void OnFetchPost(DataPortalHookArgs args);
+
+        #endregion
+
+    }
+}
