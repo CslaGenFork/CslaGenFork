@@ -82,7 +82,7 @@ namespace DBSchemaInfo.Properties {
         /// <summary>
         ///   Looks up a localized string similar to select PARAMETER_NAME, SPECIFIC_CATALOG, SPECIFIC_SCHEMA, SPECIFIC_NAME, ORDINAL_POSITION, PARAMETER_MODE, DATA_TYPE,
         ///CHARACTER_MAXIMUM_LENGTH, NUMERIC_PRECISION, NUMERIC_SCALE, DATETIME_PRECISION
-        ///from information_schema.PARAMETERS.
+        ///from INFORMATION_SCHEMA.PARAMETERS.
         /// </summary>
         internal static string SqlServerGetParameters {
             get {
