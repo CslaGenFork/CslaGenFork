@@ -97,7 +97,6 @@
     <Compile Include="Base\StandardForeignKeyConstraint.cs" />
     <Compile Include="Base\DBStructure.cs">
       <DependentUpon>DBStructure.xsd</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Base\DBStructure.Designer.cs">
       <AutoGen>True</AutoGen>
