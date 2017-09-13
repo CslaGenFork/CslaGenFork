@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("CslaGenFork Project")]
 [assembly: AssemblyProduct("HandleCodeSmithExtension")]
-[assembly: AssemblyCopyright("Copyright © Tiago Freitas Leal, 2010")]
+[assembly: AssemblyCopyright("Copyright © CslaGenFork Project 2009, 2017")]
 [assembly: AssemblyTrademark("All Rights Reserved")]
 [assembly: AssemblyCulture("")]
 

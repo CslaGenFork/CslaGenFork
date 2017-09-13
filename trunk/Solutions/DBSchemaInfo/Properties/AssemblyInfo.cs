@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("CslaGenFork Project")]
 [assembly: AssemblyProduct("DBSchemaInfo.MsSQL")]
-[assembly: AssemblyCopyright("Copyright © CslaGen Project, 2007 && Tiago Freitas Leal, 2011, 2017")]
+[assembly: AssemblyCopyright("Copyright © CslaGen Project 2007, 2009\r\nCopyright © CslaGenFork Project 2009, 2017")]
 [assembly: AssemblyTrademark("All Rights Reserved.")]
 [assembly: AssemblyCulture("")]
 
