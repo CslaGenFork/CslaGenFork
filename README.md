@@ -1,46 +1,60 @@
+CslaGenFork
+===
+
+![](https://raw.github.com/CslaGenFork/CslaGenFork/master/Support/Logos/Project-Logo-final.gif)
+
+O/RM code generator for CSLA.NET 4.3/4.5/4.6 generating Stored Procedures, Business Layer and Data Access Layer code for Windows Forms, ASP.NET, WPF and Silverlight.
 There is a complete set of C# templates. Currently there are VB templates, but only for non DAL architecture. You are welcome to contribute with VB templates for DAL DataReader and DAL using DTO.
 
 2017 Mar 01 - Version 4.6.0 exciting new features progressing
+---
 
 This release will bring a lot of new features and some usability improvements.
 
-Besides SQL Server, code generation can target other database engines like:
-Oracle Database
-PostgreSQL
-Firebird
-MySQL
-SQLite
-Numerous fixes to VB code generation
-New kinds of CslaObject
-generate abstract base classes for inheritance purposes
-generate custom criteria classes inheriting from BusinessBase that are easier to tailor to your needs
-place holder - this kind of object doesn't generate code, but it can be used to group objects (show in light blue)
- Place holders
+1. Besides SQL Server, code generation can target other database engines like:
+- Oracle Database
+- PostgreSQL
+- Firebird
+- MySQL
+- SQLite
 
-Improved property handling
-Support for custom types (enums etc)
-Support for database unbound properties
-Support for properties persisted to the database as null (read and WRITE)
-Improved inheritance support
-fix templates and visual details
-allow inheritance from base types defined on assembly and on the project 
-improve filters on inheritance objects lists so they only show the types that make sense
-Handle the Saved static event raised by EditableRoot with Weak Event (the generated code was causing memory leaks)
-Improved database type handling (doesn't crash on geography, etc)
+2.Numerous fixes to VB code generation
+
+3. New kinds of CslaObject
+- generate abstract base classes for inheritance purposes
+- generate custom criteria classes inheriting from BusinessBase that are easier to tailor to your needs
+- place holder - this kind of object doesn't generate code, but it can be used to group objects (in light blue)
+![](https://raw.github.com/CslaGenFork/CslaGenFork/master/Support/Home/Home_CGF-PlaceHolder.png)
+
+4. Improved property handling
+- Support for custom types (enums etc)
+- Support for database unbound properties
+- Support for properties persisted to the database as null (read and WRITE)
+
+5. Improved inheritance support
+- fix templates and visual details
+- allow inheritance from base types defined on assembly and on the project 
+- improve filters on inheritance objects lists so they only show the types that make sense
+
+6. Handle the Saved static event raised by EditableRoot with Weak Event (the generated code was causing memory leaks)
+
+7. Improved database type handling (doesn't crash on geography, etc)
+
 UI improvements
 
-Improve Enum's display - for instance, show Editable Child Collection instead of EditableChildCollection or show C# instead of CSharp
-Improve UI field hiding (show only UI fields that make sense)
-Improve type filtering (show only objects/properties that make sense).
-Introduce "Don't ask again" MessageBoxEx control and apply it where it fits.
-Breaking changes
+- Improve Enum's display - for instance, show Editable Child Collection instead of EditableChildCollection or show C# instead of CSharp
+- Improve UI field hiding (show only UI fields that make sense)
+- Improve type filtering (show only objects/properties that make sense).
+- Introduce "Don't ask again" MessageBoxEx control and apply it where it fits.
 
-The incomplete feature Generate BypassPropertyChecks was dropped.
+Breaking changes
+-
+
+1The incomplete feature Generate BypassPropertyChecks was dropped.
 
 CGF was full of legacy code and templates. Those parts were never changed but it was unclear whether they were actually useful. To make new developments easier, legacy support was dropped.
-
-Support code and templates for pre CSLA .NET 4.0 projects was removed. CGF will help you convert your project file to a supported version of CSLA .NET.
-Support for active objects and for the plugin system was removed, as these options were available only for legacy projects.
+- Support code and templates for pre CSLA .NET 4.0 projects was removed. CGF will help you convert your project file to a supported version of CSLA .NET.
+- Support for active objects and for the plugin system was removed, as these options were available only for legacy projects.
 For those of you that continue to generate code for legacy CSLA versions, CslaGenFork 4.5.4 is and will be available.
 
  
@@ -138,3 +152,5 @@ CslaGenFork is GPL 2 as CodePlex doesn't allow GPL 3. The GPL license is an inhe
 Acknowledgements
 
 CslaGen couldn't exist without the free CodeSmith DLL. Great care was taken in not breaching the CodeSmith license agreement neither by CslaGenFork nor by anyone using it, Thank you CodeSmith.
+
+![](https://raw.github.com/CslaGenFork/CslaGenFork/master/Support/Home/Home_ReSharper.png)
