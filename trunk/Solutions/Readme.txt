@@ -1,4 +1,4 @@
-In order to build CslaGenFork-4.5.0 solution, please add CodeSmith.Engine.dll to the References folder.
+In order to build CslaGenFork solution, please add CodeSmith.Engine.dll to the References folder.
 You can download the free CodeSmith version from:
 
 http://www.codesmithtools.com/download/codesmith_26.zip
