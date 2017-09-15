@@ -67,31 +67,6 @@ namespace CslaGenerator.Metadata
         #region 01. Definition
 
         [Category("01. Definition")]
-        [Description("This is used for usability purposes only.")]
-        [UserFriendlyName("Authorization Rule Name")]
-        public string Name
-        {
-            get
-            {
-                if (_name == string.Empty)
-                {
-                    if (_type != string.Empty)
-                        _name = _type.Substring(_type.LastIndexOf('.') + 1);
-                    if (_objectName != string.Empty)
-                    {
-                        var _full = _objectName.LastIndexOf('.') > -1;
-                        if (_full)
-                            _name = _objectName.Substring(_objectName.LastIndexOf('.') + 1);
-                        else
-                            _name = _objectName;
-                    }
-                }
-                return _name;
-            }
-            set { _name = PropertyHelper.TidyAllowSpaces(value); }
-        }
-
-        [Category("01. Definition")]
         [Description("Authorization Rule Type defined in this CslaGenFork project. Unsupported at this time.")]
         [UserFriendlyName("Internal project Type Name")]
         [Browsable(false)]
@@ -141,7 +116,7 @@ namespace CslaGenerator.Metadata
         [Category("01. Definition")]
         [Editor(typeof(AuthorizationRuleTypeEditor), typeof(UITypeEditor))]
         [Description("Authorization Rule Type defined in Assembly. Abstract classes are excluded from the list.")]
-        [UserFriendlyName("Rule Type Name")]
+        [UserFriendlyName("Rule Type")]
         public string Type
         {
             get { return _type; }
@@ -161,6 +136,31 @@ namespace CslaGenerator.Metadata
                     OnTypeChanged(EventArgs.Empty);
                 }
             }
+        }
+
+        [Category("01. Definition")]
+        [Description("This is used for usability purposes only.")]
+        [UserFriendlyName("Authorization Rule Name")]
+        public string Name
+        {
+            get
+            {
+                if (_name == string.Empty)
+                {
+                    if (_type != string.Empty)
+                        _name = _type.Substring(_type.LastIndexOf('.') + 1);
+                    if (_objectName != string.Empty)
+                    {
+                        var _full = _objectName.LastIndexOf('.') > -1;
+                        if (_full)
+                            _name = _objectName.Substring(_objectName.LastIndexOf('.') + 1);
+                        else
+                            _name = _objectName;
+                    }
+                }
+                return _name;
+            }
+            set { _name = PropertyHelper.TidyAllowSpaces(value); }
         }
 
         #endregion
