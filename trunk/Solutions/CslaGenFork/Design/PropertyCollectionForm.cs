@@ -361,6 +361,8 @@ namespace CslaGenerator.Design
                         if (baseCount > 0)
                             heightIncrease += 16 + (baseCount*16);
 
+                        heightIncrease += 16 * businessRule.NumberGenericParameters;
+
                         if (ruleCount == 0 && baseCount == 0)
                         {
                             if (_form.Size.Height != 330)

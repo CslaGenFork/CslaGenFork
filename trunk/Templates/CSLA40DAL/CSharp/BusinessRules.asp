@@ -88,6 +88,15 @@ if (generateRuleRegion || generateAuthRegion || generateObjectRuleRegion)
                     break;
                 }
             }
+
+            for (var index = 0; index < rule.NumberGenericParameters; index++)
+            {
+                if (index == 0)
+                    backupRuleType = backupRuleType.Replace(rule.OriginalGenericParameter1, rule.GenericParameter1);
+                else if (index == 1)
+                    backupRuleType = backupRuleType.Replace(rule.OriginalGenericParameter2, rule.GenericParameter2);
+            }
+
             resultConstructor = string.Empty;
             resultProperties = string.Empty;
             primaryOnCtor = false;
@@ -157,7 +166,7 @@ if (generateRuleRegion || generateAuthRegion || generateObjectRuleRegion)
             if (resultProperties != string.Empty)
                 resultProperties = " { " + resultProperties + " }";
 
-            resultRule = "BusinessRules.AddRule(new " + backupRuleType + "(" + resultConstructor + ")" + resultProperties + ")" + ";";
+            resultRule = "BusinessRules.AddRule(new " + backupRuleType + "(" + resultConstructor + ")" + resultProperties + ");";
             %>
             <%= resultRule %>
 <%
@@ -188,6 +197,15 @@ if (generateRuleRegion || generateAuthRegion || generateObjectRuleRegion)
                         break;
                     }
                 }
+
+                for (var index = 0; index < rule.NumberGenericParameters; index++)
+                {
+                    if (index == 0)
+                        backupRuleType = backupRuleType.Replace("<"+rule.OriginalGenericParameter1, "<"+rule.GenericParameter1);
+                    else if (index == 1)
+                        backupRuleType = backupRuleType.Replace(rule.OriginalGenericParameter2+">", rule.GenericParameter2+">");
+                }
+
                 resultConstructor = string.Empty;
                 resultProperties = string.Empty;
                 primaryOnCtor = false;
@@ -294,7 +312,7 @@ if (generateRuleRegion || generateAuthRegion || generateObjectRuleRegion)
                 if (resultProperties != string.Empty)
                     resultProperties = " { " + resultProperties + " }";
 
-                resultRule = "BusinessRules.AddRule(new " + backupRuleType + "(" + resultConstructor + ")" + resultProperties + ")" + ";";
+                resultRule = "BusinessRules.AddRule(new " + backupRuleType + "(" + resultConstructor + ")" + resultProperties + ");";
             %>
             <%= resultRule %>
 <%

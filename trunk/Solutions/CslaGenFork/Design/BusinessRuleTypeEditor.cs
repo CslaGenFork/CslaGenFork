@@ -192,6 +192,34 @@ namespace CslaGenerator.Design
                 return;
             }
 
+            #region Generic type parameters
+
+            rule.NumberGenericParameters = 0;
+
+            if (usedType.IsGenericType)
+            {
+                rule.NumberGenericParameters = usedType.GetGenericArguments().Length;
+                for (var index = 0; index < usedType.GetGenericArguments().Length; index++)
+                {
+                    var argument = usedType.GetGenericArguments()[index].Name;
+                    if (index == 0)
+                    {
+                        rule.OriginalGenericParameter1 = argument;
+                        if (rule.GenericParameter1 == string.Empty)
+                            rule.GenericParameter1 = argument;
+                    }
+                    else if (index == 1)
+                    {
+                        rule.OriginalGenericParameter2 = argument;
+                        if (rule.GenericParameter2 == string.Empty)
+                            rule.GenericParameter2 = argument;
+
+                    }
+                }
+            }
+
+            #endregion
+
             #region Base Rule Properties
 
             rule.BaseRuleProperties = new List<string>();
