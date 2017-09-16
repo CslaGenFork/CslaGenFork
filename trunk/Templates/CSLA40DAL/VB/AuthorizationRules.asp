@@ -10,6 +10,15 @@ foreach (string ns in Info.Namespaces)
         break;
     }
 }
+
+for (var index = 0; index < authzRule.NumberGenericParameters; index++)
+{
+    if (index == 0)
+        backupRuleType = backupRuleType.Replace(authzRule.OriginalGenericParameter1, authzRule.GenericParameter1);
+    else if (index == 1)
+        backupRuleType = backupRuleType.Replace(authzRule.OriginalGenericParameter2, authzRule.GenericParameter2);
+}
+
 resultConstructor = string.Empty;
 resultProperties = string.Empty;
 bool isFirst = true;
@@ -155,7 +164,7 @@ if (resultProperties != string.Empty)
 resultRule = "BusinessRules.AddRule(";
 if (isObjectAutz)
     resultRule += "typeof (" + Info.ObjectName + "), ";
-resultRule += "new " + backupRuleType + "(" + resultConstructor + ")" + resultProperties + ")" + ";";
+resultRule += "new " + backupRuleType + "(" + resultConstructor + ")" + resultProperties + ");";
             %>
             <%= resultRule %>
             <%

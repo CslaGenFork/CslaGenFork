@@ -805,6 +805,14 @@ namespace CslaGenerator.Util.PropertyBags
                         if (!SelectedObject[0].BaseRuleProperties.Contains("RunMode"))
                             return false;
                         break;
+                    case "GenericParameter1":
+                        if (SelectedObject[0].NumberGenericParameters < 1)
+                            return false;
+                        break;
+                    case "GenericParameter2":
+                        if (SelectedObject[0].NumberGenericParameters < 2)
+                            return false;
+                        break;
                 }
                 /*if ((GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.None ||
                     GeneratorController.Current.CurrentUnit.GenerationParams.GenerateAuthorization == AuthorizationLevel.ObjectLevel) &&

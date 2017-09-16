@@ -21,6 +21,11 @@ namespace CslaGenerator.Metadata
 
         private bool _isPropertyRule;
         private string _name = String.Empty;
+        private int _numberGenericParameters = 0;
+        private string _originalGenericParameter1 = String.Empty;
+        private string _originalGenericParameter2 = String.Empty;
+        private string _genericParameter1 = String.Empty;
+        private string _genericParameter2 = String.Empty;
         private string _objectName = String.Empty;
         private string _assemblyFile = String.Empty;
         private string _type = String.Empty;
@@ -163,6 +168,45 @@ namespace CslaGenerator.Metadata
                 return _name;
             }
             set { _name = PropertyHelper.TidyAllowSpaces(value); }
+        }
+
+        [Browsable(false)]
+        public int NumberGenericParameters
+        {
+            get { return _numberGenericParameters; }
+            set { _numberGenericParameters = value; }
+        }
+
+        [Browsable(false)]
+        public string OriginalGenericParameter1
+        {
+            get { return _originalGenericParameter1; }
+            set { _originalGenericParameter1 = value; }
+        }
+
+        [Browsable(false)]
+        public string OriginalGenericParameter2
+        {
+            get { return _originalGenericParameter2; }
+            set { _originalGenericParameter2 = value; }
+        }
+
+        [Category("01. Definition")]
+        [Description("First generic type parameter.")]
+        [UserFriendlyName("Generic Type Parameter 1")]
+        public string GenericParameter1
+        {
+            get { return _genericParameter1; }
+            set { _genericParameter1 = value; }
+        }
+
+        [Category("01. Definition")]
+        [Description("Second generic type parameter.")]
+        [UserFriendlyName("Generic Type Parameter 2")]
+        public string GenericParameter2
+        {
+            get { return _genericParameter2; }
+            set { _genericParameter2 = value; }
         }
 
         #endregion

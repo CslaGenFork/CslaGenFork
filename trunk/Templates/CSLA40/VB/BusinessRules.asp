@@ -87,6 +87,15 @@ if (generateRuleRegion || generateAuthRegion || generateObjectRuleRegion)
                     break;
                 }
             }
+
+            for (var index = 0; index < rule.NumberGenericParameters; index++)
+            {
+                if (index == 0)
+                    backupRuleType = backupRuleType.Replace(rule.OriginalGenericParameter1, rule.GenericParameter1);
+                else if (index == 1)
+                    backupRuleType = backupRuleType.Replace(rule.OriginalGenericParameter2, rule.GenericParameter2);
+            }
+
             resultConstructor = string.Empty;
             resultProperties = string.Empty;
             primaryOnCtor = false;
@@ -156,6 +165,9 @@ if (generateRuleRegion || generateAuthRegion || generateObjectRuleRegion)
             if (resultProperties != string.Empty)
                 resultProperties = " With { " + resultProperties + " }";
 
+            backupRuleType = backupRuleType.Replace("<", "(Of ");
+            backupRuleType = backupRuleType.Replace(">", ")");
+
             resultRule = "BusinessRules.AddRule(New " + backupRuleType + "(" + resultConstructor + ")" + resultProperties + ")";
             %>
             <%= resultRule %>
@@ -177,8 +189,6 @@ if (generateRuleRegion || generateAuthRegion || generateObjectRuleRegion)
             foreach (BusinessRule rule in rulableProperty.BusinessRules)
             {
                 string backupRuleType = rule.Type;
-                backupRuleType = backupRuleType.Replace("<", "(Of ");
-                backupRuleType = backupRuleType.Replace(">", ")");
                 foreach (string ns in Info.Namespaces)
                 {
                     string nameSpace = ns + '.';
@@ -189,6 +199,15 @@ if (generateRuleRegion || generateAuthRegion || generateObjectRuleRegion)
                         break;
                     }
                 }
+
+                for (var index = 0; index < rule.NumberGenericParameters; index++)
+                {
+                    if (index == 0)
+                        backupRuleType = backupRuleType.Replace("<"+rule.OriginalGenericParameter1, "<"+rule.GenericParameter1);
+                    else if (index == 1)
+                        backupRuleType = backupRuleType.Replace(rule.OriginalGenericParameter2+">", rule.GenericParameter2+">");
+                }
+
                 resultConstructor = string.Empty;
                 resultProperties = string.Empty;
                 primaryOnCtor = false;
@@ -294,6 +313,9 @@ if (generateRuleRegion || generateAuthRegion || generateObjectRuleRegion)
 
                 if (resultProperties != string.Empty)
                     resultProperties = " With { " + resultProperties + " }";
+
+                backupRuleType = backupRuleType.Replace("<", "(Of ");
+                backupRuleType = backupRuleType.Replace(">", ")");
 
                 resultRule = "BusinessRules.AddRule(New " + backupRuleType + "(" + resultConstructor + ")" + resultProperties + ")";
             %>
