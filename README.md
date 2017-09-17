@@ -8,7 +8,7 @@ There is a complete set of C# templates. Currently there are VB templates, but o
 
 # 2017 Mar 01 - Version 4.6.0 released ![](https://raw.github.com/CslaGenFork/CslaGenFork/master/Support/Home/Home_star.png)
 
-This release brings a lot of new features and some usability improvements. It's available at [CslaGenFork 4.6.0](https://github.com/CslaGenFork/CslaGenFork/releases/tag/v4.6.0)
+This release brings a lot of new features and some usability improvements. It's available at [CslaGenFork release 4.6.0](https://github.com/CslaGenFork/CslaGenFork/releases/tag/v4.6.0)
 
 ## Fixes and new features
 
@@ -45,7 +45,7 @@ Dropped legacy support: pre CSLA .NET 4.0 projects, active objects and plugin sy
 Other projects
 ---
 2017 Sep 04 - Rules sample moved to CslaContrib ![](https://raw.github.com/CslaGenFork/CslaGenFork/master/Support/Home/Home_star.png)
-- The rules in CslaGenFork library were added to [CslaContrib library] (https://github.com/MarimerLLC/cslacontrib);
+- The rules in CslaGenFork library were added to [CslaContrib library](https://github.com/MarimerLLC/cslacontrib);
 - They are available on NuGet as **cslacontrib**
 
 2013 Jan 27 - DeepLoad sample v3.0.1 - download here (*link is missing...*)
