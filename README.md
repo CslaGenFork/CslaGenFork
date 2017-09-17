@@ -46,23 +46,24 @@ Other projects
 ---
 2017 Sep 04 - Rules sample moved to CslaContrib ![](https://raw.github.com/CslaGenFork/CslaGenFork/master/Support/Home/Home_star.png)
 - The rules in CslaGenFork library were added to [CslaContrib library](https://github.com/MarimerLLC/cslacontrib);
-- They are available on NuGet as **cslacontrib**
-
-2013 Jan 27 - DeepLoad sample v3.0.1 - download here (*link is missing...*)
-- The DeepLoad sample project tests the loading part of a 6 levels deep data structure, from Continents to City Roads. This project illustrates how to use CslaGenFork to generate deep objects.
+- They are available on NuGet as **CslaContrib**
 
 Get started
 ---
-Is code generation a good idea? (*link is missing...*)
+### [Useful links](https://github.com/CslaGenFork/CslaGenFork/wiki/Useful-links)
+
+Browse forums, product sites, manuals and samples.
+
+### [Is code generation a good idea?](https://github.com/CslaGenFork/CslaGenFork/wiki/Code-generation-is-a-good-idea)
 
 If you were told generated code is bug ridden or rigid or code gen tools are just toys, then have a second opinion.
 
-Why would I use CslaGenFork? (*link is missing...*)
----
+### [Why would I use CslaGenFork?](https://github.com/CslaGenFork/CslaGenFork/wiki/Why-use-CslaGenFork)
+
 If you had some bad experiences with CslaGen or other code gen tools, then you don't need a feature list but an argument list.
 
-How do I use CslaGenFork? (*link is missing...*)
----
+### [How do I use CslaGenFork?] (*link is missing...*)
+
 No, you are not sent out to the wild on your own. We try to help all the way. Or at least, some of the way...
 - How do I start using it?
 - How do I organize myself?
@@ -70,33 +71,28 @@ No, you are not sent out to the wild on your own. We try to help all the way. Or
 - Where do I fetch the free CodeSmith engine?
 - Is there a suggested workflow for codegen?
 
-More documents
----
-2011 Jul 02 - Cheat Sheet contents includes: (*link is missing...*)
+### 2011 Jul 02 - Cheat Sheet contents includes: (*link is missing...*)
 
 How to create objects and collections by point and click
 How to create child objects and child collections by point and click
 What are those dreaded Parent Properties
 How to use DataAnnotations validation rules
 
-Is there a FAQ?
----
+### Is there a FAQ?
+
 Of course there is! It's brand new and it's a moving target meaning I'm adding questions every now and then.
 Read it here  (*link is missing...*)
 
-Useful links:
+Miscelaneous
 ---
-Rocky Lhotka's CSLA.NET site (*link is missing...*)
-CSLA.NET forum (*link is missing...*)
-Manual (the closest thing you can get) CSLAGenWiki (*link is missing...*)
-For codegen samples, search "The Code Project" for CslaGen (*link is missing...*)
 
-About the license...
----
-CslaGenFork is GPL 2. The GPL license is an inheritance from the original CslaGen code generator. Of course you can use the generated code as you like: sell, borrow, lend or even give away.
+### About the license
 
-Acknowledgements
----
+CslaGenFork is GPL 2. This means you can use the generated code as you like: sell, borrow, lend or even give away.
+
+### Acknowledgements
+
 CslaGen couldn't exist without the free CodeSmith DLL. Great care was taken in not breaching the CodeSmith license agreement neither by CslaGenFork nor by anyone using it, Thank you CodeSmith.
+
 
 ![](https://raw.github.com/CslaGenFork/CslaGenFork/master/Support/Home/Home_ReSharper.png)
