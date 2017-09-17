@@ -8,55 +8,39 @@ There is a complete set of C# templates. Currently there are VB templates, but o
 
 # 2017 Mar 01 - Version 4.6.0 released ![](https://raw.github.com/CslaGenFork/CslaGenFork/master/Support/Home/Home_star.png)
 
-This release will bring a lot of new features and some usability improvements.
+This release brings a lot of new features and some usability improvements. It's available at [CslaGenFork 4.6.0](https://github.com/CslaGenFork/CslaGenFork/releases/tag/v4.6.0)
 
 ## Fixes and new features
 
-1. Besides SQL Server, code generation can target other database engines like:
-- Oracle Database
-- PostgreSQL
-- Firebird
-- MySQL
-- SQLite
+1. Besides SQL Server, code generation can target other database engines.
 
 2. Numerous fixes to VB code generation
 
-3. New kinds of CslaObject
-- generate abstract base classes for inheritance purposes
-- generate custom criteria classes inheriting from BusinessBase that are easier to tailor to your needs
-- place holder - this kind of object doesn't generate code, but it can be used to group objects (in light blue)
+3. New kinds of CslaObject: abstract base classes, custom criteria classes (wip). The *place holder* is a nice feature that can be used to group objects (in light blue)
 
 ![](https://raw.github.com/CslaGenFork/CslaGenFork/master/Support/Home/Home_CGF-PlaceHolder.png)
 
-4. Improved property handling
-- Support for custom types (enums etc)
-- Support for database unbound properties
-- Support for properties persisted to the database as null (read and WRITE)
+4. Improved property handling with support forcustom types (enums etc), database unbound properties and properties persisted to the database as null (read and WRITE)
 
-5. Improved inheritance support
-- fix templates and visual details
-- allow inheritance from base types defined on assembly and on the project
-- improve filters on inheritance objects lists so they only show the types that make sense
+5. Much improved inheritance support
 
 6. Handle the Saved static event raised by EditableRoot with Weak Event (the generated code was causing memory leaks)
 
 7. Improved database type handling (doesn't crash on geography, etc)
 
+8. The "rules from DLL" feature supports rules with generic type parameters.
+
 ### UI improvements
 
-- Improve Enum's display - for instance, show Editable Child Collection instead of EditableChildCollection or show C# instead of CSharp
+- Improve Enum's display - for instance, show **Editable Child Collection** instead of **EditableChildCollection** or show **C#** instead of **CSharp**
 - Improve UI field hiding (show only UI fields that make sense)
 - Improve type filtering (show only objects/properties that make sense).
-- Introduce "Don't ask again" MessageBoxEx control and apply it where it fits.
+- Introduce **Don't ask again** MessageBoxEx control and apply it where it fits.
 
 ## Breaking changes
 
-The incomplete feature Generate BypassPropertyChecks was dropped.
-
-CGF was full of legacy code and templates. Those parts were never changed but it was unclear whether they were actually useful. To make new developments easier, legacy support was dropped.
-- Support code and templates for pre CSLA .NET 4.0 projects was removed. CGF will help you convert your project file to a supported version of CSLA .NET.
-- Support for active objects and for the plugin system was removed, as these options were available only for legacy projects.
-For those of you that continue to generate code for legacy CSLA versions, CslaGenFork 4.5.4 is and will be available on [old CodePlex site](https://cslagenfork.codeplex.com/releases/view/616261).
+The incomplete feature **Generate BypassPropertyChecks** was dropped.
+Dropped legacy support: pre CSLA .NET 4.0 projects, active objects and plugin system.
 
 Other projects
 ---
