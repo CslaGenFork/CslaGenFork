@@ -7,10 +7,6 @@
 "LanguageId" = "3:1033"
 "CodePage" = "3:1252"
 "UILanguageId" = "3:1033"
-"SccProjectName" = "8:Svn"
-"SccLocalPath" = "8:Svn"
-"SccAuxPath" = "8:Svn"
-"SccProvider" = "8:SubversionScc"
     "Hierarchy"
     {
         "Entry"
@@ -106,31 +102,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_ACB56181CBC44DA5F884968C7E4C7A6F"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_2121E4B7F1171B3C6D57BA5DF12743B3"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_9B61000B119FB976EB735C1F04FCBCA3"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_DFD36F8BA4DD5AFBE187BA0BA81B2323"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_42378B9BA5C513562CB557C2312FD0E6"
+        "OwnerKey" = "8:_490DB46022BA454283A2A128D38A87D1"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -142,7 +114,31 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_490DB46022BA454283A2A128D38A87D1"
+        "OwnerKey" = "8:_42378B9BA5C513562CB557C2312FD0E6"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_DFD36F8BA4DD5AFBE187BA0BA81B2323"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_9B61000B119FB976EB735C1F04FCBCA3"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_2121E4B7F1171B3C6D57BA5DF12743B3"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_ACB56181CBC44DA5F884968C7E4C7A6F"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -153,7 +149,7 @@
         "DisplayName" = "8:Debug"
         "IsDebugOnly" = "11:TRUE"
         "IsReleaseOnly" = "11:FALSE"
-        "OutputFilename" = "8:Debug\\CslaGenFork 4.5.4 Setup.msi"
+        "OutputFilename" = "8:Debug\\CslaGenFork 4.6.0 Setup.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -190,7 +186,7 @@
         "DisplayName" = "8:Release"
         "IsDebugOnly" = "11:FALSE"
         "IsReleaseOnly" = "11:TRUE"
-        "OutputFilename" = "8:Release\\CslaGenFork 4.5.4 Setup.msi"
+        "OutputFilename" = "8:Release\\CslaGenFork 4.6.0 Setup.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -605,24 +601,24 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:CslaGeneratorFork"
-        "ProductCode" = "8:{2CAC7745-2664-4F17-AC4F-B355D31083FD}"
-        "PackageCode" = "8:{5FE8BAC4-1543-41A2-9C89-7C9C71915D05}"
+        "ProductCode" = "8:{89D72A56-CADF-4198-B201-5BA2DE999FAD}"
+        "PackageCode" = "8:{B9CA890C-F16C-4C75-A56D-026DF8A504F5}"
         "UpgradeCode" = "8:{83BDF6E0-C913-48C1-96F7-BCF1E83B1F7E}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:4.5.4"
+        "ProductVersion" = "8:4.6.0"
         "Manufacturer" = "8:CslaGenFork"
         "ARPHELPTELEPHONE" = "8:"
-        "ARPHELPLINK" = "8:http://cslagenfork.codeplex.com/"
-        "Title" = "8:Csla Generator Fork 4.5.4 Setup"
+        "ARPHELPLINK" = "8:https://github.com/CslaGenFork/CslaGenFork/issues"
+        "Title" = "8:Csla Generator Fork 4.6.0 Setup"
         "Subject" = "8:"
         "ARPCONTACT" = "8:Tiago Freitas Leal"
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:Code generator for CSLA .NET 4.5 Framework"
-        "ARPURLINFOABOUT" = "8:http://cslagenfork.codeplex.com/"
+        "ARPURLINFOABOUT" = "8:https://github.com/CslaGenFork/CslaGenFork"
         "ARPPRODUCTICON" = "8:_6DFBAF629896478297706918A8C48579"
         "ARPIconIndex" = "3:0"
         "SearchPath" = "8:"
@@ -728,7 +724,7 @@
         {
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_10FB53964EE74D7FB5B30B077465FA38"
             {
-            "Name" = "8:Csla Generator Fork 4.5.4"
+            "Name" = "8:Csla Generator Fork 4.6.0"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
@@ -841,7 +837,7 @@
                             "ContextData" = "8:"
                             "Attributes" = "3:0"
                             "Setting" = "3:2"
-                            "Value" = "8:The installer will guide you through the steps required to install Csla Generator Fork 4.5.4 on your computer."
+                            "Value" = "8:The installer will guide you through the steps required to install Csla Generator Fork 4.6.0 on your computer."
                             "DefaultValue" = "8:#1203"
                             "UsePlugInResources" = "11:TRUE"
                             }
@@ -1092,7 +1088,7 @@
                             "ContextData" = "8:"
                             "Attributes" = "3:0"
                             "Setting" = "3:2"
-                            "Value" = "8:The installer will guide you through the steps required to install Csla Generator Fork 4.5.4 on your computer."
+                            "Value" = "8:The installer will guide you through the steps required to install Csla Generator Fork 4.6.0 on your computer."
                             "DefaultValue" = "8:#1203"
                             "UsePlugInResources" = "11:TRUE"
                             }
