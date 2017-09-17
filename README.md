@@ -20,7 +20,7 @@ This release brings a lot of new features and some usability improvements. It's 
 
 ![](https://raw.github.com/CslaGenFork/CslaGenFork/master/Support/Home/Home_CGF-PlaceHolder.png)
 
-4. Improved property handling with support forcustom types (enums etc), database unbound properties and properties persisted to the database as null (read and WRITE)
+4. Improved property handling with support for custom types (enums etc), database unbound properties and properties persisted to the database as null (read and WRITE)
 
 5. Much improved inheritance support
 
