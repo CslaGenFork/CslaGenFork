@@ -61,7 +61,7 @@ Browse forums, product sites, manuals and samples.
 
 If you were told generated code is bug ridden or rigid or code gen tools are just toys, then have a second opinion.
 
-### {Why would I use CslaGenFork?] (*link is missing...*)
+### {Why would I use CslaGenFork?](https://github.com/CslaGenFork/CslaGenFork/wiki/Why-use-CslaGenFork)
 
 If you had some bad experiences with CslaGen or other code gen tools, then you don't need a feature list but an argument list.
 
@@ -74,8 +74,6 @@ No, you are not sent out to the wild on your own. We try to help all the way. Or
 - Where do I fetch the free CodeSmith engine?
 - Is there a suggested workflow for codegen?
 
-More documents
----
 ### 2011 Jul 02 - Cheat Sheet contents includes: (*link is missing...*)
 
 How to create objects and collections by point and click
@@ -88,12 +86,16 @@ How to use DataAnnotations validation rules
 Of course there is! It's brand new and it's a moving target meaning I'm adding questions every now and then.
 Read it here  (*link is missing...*)
 
-### About the license...
+Miscelaneous
+---
 
-CslaGenFork is GPL 2. The GPL license is an inheritance from the original CslaGen code generator. Of course you can use the generated code as you like: sell, borrow, lend or even give away.
+### About the license
+
+CslaGenFork is GPL 2. This means you can use the generated code as you like: sell, borrow, lend or even give away.
 
 ### Acknowledgements
 
 CslaGen couldn't exist without the free CodeSmith DLL. Great care was taken in not breaching the CodeSmith license agreement neither by CslaGenFork nor by anyone using it, Thank you CodeSmith.
+
 
 ![](https://raw.github.com/CslaGenFork/CslaGenFork/master/Support/Home/Home_ReSharper.png)
