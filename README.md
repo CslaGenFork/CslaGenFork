@@ -48,9 +48,6 @@ Other projects
 - The rules in CslaGenFork library were added to [CslaContrib library](https://github.com/MarimerLLC/cslacontrib);
 - They are available on NuGet as **CslaContrib**
 
-2013 Jan 27 - DeepLoad sample v3.0.1 - download here (*link is missing...*)
-- The DeepLoad sample project tests the loading part of a 6 levels deep data structure, from Continents to City Roads. This project illustrates how to use CslaGenFork to generate deep objects.
-
 Get started
 ---
 ### [Useful links](https://github.com/CslaGenFork/CslaGenFork/wiki/Useful-links)
@@ -61,7 +58,7 @@ Browse forums, product sites, manuals and samples.
 
 If you were told generated code is bug ridden or rigid or code gen tools are just toys, then have a second opinion.
 
-### {Why would I use CslaGenFork?](https://github.com/CslaGenFork/CslaGenFork/wiki/Why-use-CslaGenFork)
+### [Why would I use CslaGenFork?](https://github.com/CslaGenFork/CslaGenFork/wiki/Why-use-CslaGenFork)
 
 If you had some bad experiences with CslaGen or other code gen tools, then you don't need a feature list but an argument list.
 
