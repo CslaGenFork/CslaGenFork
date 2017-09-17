@@ -55,7 +55,9 @@ Get started
 ---
 ### [Useful links](https://github.com/CslaGenFork/CslaGenFork/wiki/Useful-links)
 
-### [Is code generation a good idea?] (*link is missing...*)
+Browse forums, product sites, manuals and samples.
+
+### [Is code generation a good idea?](https://github.com/CslaGenFork/CslaGenFork/wiki/Code-generation-is-a-good-idea)
 
 If you were told generated code is bug ridden or rigid or code gen tools are just toys, then have a second opinion.
 
