@@ -71,18 +71,6 @@ No, you are not sent out to the wild on your own. We try to help all the way. Or
 - Where do I fetch the free CodeSmith engine?
 - Is there a suggested workflow for codegen?
 
-### 2011 Jul 02 - Cheat Sheet contents includes: (*link is missing...*)
-
-How to create objects and collections by point and click
-How to create child objects and child collections by point and click
-What are those dreaded Parent Properties
-How to use DataAnnotations validation rules
-
-### Is there a FAQ?
-
-Of course there is! It's brand new and it's a moving target meaning I'm adding questions every now and then.
-Read it here  (*link is missing...*)
-
 Miscelaneous
 ---
 
