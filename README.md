@@ -76,7 +76,7 @@ Miscelaneous
 
 ### About the license
 
-CslaGenFork is GPL 2. This means you can use the generated code as you like: sell, borrow, lend or even give away.
+CslaGenFork is MIT. This means you can use the generated code as you like: sell, borrow, lend or even give away.
 
 ### Acknowledgements
 
