@@ -3281,7 +3281,7 @@
               </BaseRuleProperties>
               <Name>Required</Name>
               <ObjectName />
-              <AssemblyFile>C:\VS Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\Csla.dll</AssemblyFile>
+              <AssemblyFile>C:\VS_Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\Csla.dll</AssemblyFile>
               <Type>Required</Type>
               <Constructors>
                 <BusinessRuleConstructor>
@@ -3379,7 +3379,7 @@
             </BaseRuleProperties>
             <Name>RestrictByStatusOrIsInRole</Name>
             <ObjectName />
-            <AssemblyFile>C:\VS Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\CslaGenFork.Rules.dll</AssemblyFile>
+            <AssemblyFile>C:\VS_Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\CslaGenFork.Rules.dll</AssemblyFile>
             <Type>CslaGenFork.Rules.AuthorizationRules.RestrictByStatusOrIsInRole</Type>
             <Constructors>
               <BusinessRuleConstructor>
@@ -3539,7 +3539,7 @@
               </BaseRuleProperties>
               <Name>Required</Name>
               <ObjectName />
-              <AssemblyFile>C:\VS Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\Csla.dll</AssemblyFile>
+              <AssemblyFile>C:\VS_Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\Csla.dll</AssemblyFile>
               <Type>Required</Type>
               <Constructors>
                 <BusinessRuleConstructor>
@@ -3637,7 +3637,7 @@
             </BaseRuleProperties>
             <Name>IsNewOrIsInRole</Name>
             <ObjectName />
-            <AssemblyFile>C:\VS Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\CslaGenFork.Rules.dll</AssemblyFile>
+            <AssemblyFile>C:\VS_Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\CslaGenFork.Rules.dll</AssemblyFile>
             <Type>CslaGenFork.Rules.AuthorizationRules.IsNewOrIsInRole</Type>
             <Constructors>
               <BusinessRuleConstructor>
@@ -3762,7 +3762,7 @@
               </BaseRuleProperties>
               <Name>Required</Name>
               <ObjectName />
-              <AssemblyFile>C:\VS Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\Csla.dll</AssemblyFile>
+              <AssemblyFile>C:\VS_Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\Csla.dll</AssemblyFile>
               <Type>Required</Type>
               <Constructors>
                 <BusinessRuleConstructor>
@@ -3860,7 +3860,7 @@
             </BaseRuleProperties>
             <Name>IsNewOrIsInRole</Name>
             <ObjectName />
-            <AssemblyFile>C:\VS Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\CslaGenFork.Rules.dll</AssemblyFile>
+            <AssemblyFile>C:\VS_Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\CslaGenFork.Rules.dll</AssemblyFile>
             <Type>CslaGenFork.Rules.AuthorizationRules.IsNewOrIsInRole</Type>
             <Constructors>
               <BusinessRuleConstructor>
@@ -3985,7 +3985,7 @@
               </BaseRuleProperties>
               <Name>Required</Name>
               <ObjectName />
-              <AssemblyFile>C:\VS Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\Csla.dll</AssemblyFile>
+              <AssemblyFile>C:\VS_Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\Csla.dll</AssemblyFile>
               <Type>Required</Type>
               <Constructors>
                 <BusinessRuleConstructor>
@@ -4083,7 +4083,7 @@
             </BaseRuleProperties>
             <Name>IsNewOrIsInRole</Name>
             <ObjectName />
-            <AssemblyFile>C:\VS Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\CslaGenFork.Rules.dll</AssemblyFile>
+            <AssemblyFile>C:\VS_Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\CslaGenFork.Rules.dll</AssemblyFile>
             <Type>CslaGenFork.Rules.AuthorizationRules.IsNewOrIsInRole</Type>
             <Constructors>
               <BusinessRuleConstructor>
@@ -4202,7 +4202,7 @@
               </BaseRuleProperties>
               <Name>CollapseWhiteSpace</Name>
               <ObjectName />
-              <AssemblyFile>C:\VS Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\CslaGenFork.Rules.dll</AssemblyFile>
+              <AssemblyFile>C:\VS_Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\CslaGenFork.Rules.dll</AssemblyFile>
               <Type>CslaGenFork.Rules.TransformationRules.CollapseWhiteSpace</Type>
               <Constructors>
                 <BusinessRuleConstructor>
@@ -4247,7 +4247,7 @@
               </BaseRuleProperties>
               <Name>MaxLength</Name>
               <ObjectName />
-              <AssemblyFile>C:\VS Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\Csla.dll</AssemblyFile>
+              <AssemblyFile>C:\VS_Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\Csla.dll</AssemblyFile>
               <Type>Csla.Rules.CommonRules.MaxLength</Type>
               <Constructors>
                 <BusinessRuleConstructor>
@@ -4372,7 +4372,7 @@
             </BaseRuleProperties>
             <Name>IsEmptyOrIsInRole</Name>
             <ObjectName />
-            <AssemblyFile>C:\VS Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\CslaGenFork.Rules.dll</AssemblyFile>
+            <AssemblyFile>C:\VS_Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\CslaGenFork.Rules.dll</AssemblyFile>
             <Type>CslaGenFork.Rules.AuthorizationRules.IsEmptyOrIsInRole</Type>
             <Constructors>
               <BusinessRuleConstructor>
@@ -4499,7 +4499,7 @@
               </BaseRuleProperties>
               <Name>Required</Name>
               <ObjectName />
-              <AssemblyFile>C:\VS Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\Csla.dll</AssemblyFile>
+              <AssemblyFile>C:\VS_Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\Csla.dll</AssemblyFile>
               <Type>Csla.Rules.CommonRules.Required</Type>
               <Constructors>
                 <BusinessRuleConstructor>
@@ -4597,7 +4597,7 @@
             </BaseRuleProperties>
             <Name>IsNewOrIsInRole</Name>
             <ObjectName />
-            <AssemblyFile>C:\VS Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\CslaGenFork.Rules.dll</AssemblyFile>
+            <AssemblyFile>C:\VS_Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\CslaGenFork.Rules.dll</AssemblyFile>
             <Type>CslaGenFork.Rules.AuthorizationRules.IsNewOrIsInRole</Type>
             <Constructors>
               <BusinessRuleConstructor>
@@ -4716,7 +4716,7 @@
               </BaseRuleProperties>
               <Name>CollapseWhiteSpace</Name>
               <ObjectName />
-              <AssemblyFile>C:\VS Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\CslaGenFork.Rules.dll</AssemblyFile>
+              <AssemblyFile>C:\VS_Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\CslaGenFork.Rules.dll</AssemblyFile>
               <Type>CollapseWhiteSpace</Type>
               <Constructors>
                 <BusinessRuleConstructor>
@@ -4761,7 +4761,7 @@
               </BaseRuleProperties>
               <Name>Required</Name>
               <ObjectName />
-              <AssemblyFile>C:\VS Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\Csla.dll</AssemblyFile>
+              <AssemblyFile>C:\VS_Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\Csla.dll</AssemblyFile>
               <Type>Required</Type>
               <Constructors>
                 <BusinessRuleConstructor>
@@ -4854,7 +4854,7 @@
               </BaseRuleProperties>
               <Name>MaxLength</Name>
               <ObjectName />
-              <AssemblyFile>C:\VS Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\Csla.dll</AssemblyFile>
+              <AssemblyFile>C:\VS_Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\Csla.dll</AssemblyFile>
               <Type>MaxLength</Type>
               <Constructors>
                 <BusinessRuleConstructor>
@@ -4979,7 +4979,7 @@
             </BaseRuleProperties>
             <Name>RestrictByStatusOrIsInRole</Name>
             <ObjectName />
-            <AssemblyFile>C:\VS Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\CslaGenFork.Rules.dll</AssemblyFile>
+            <AssemblyFile>C:\VS_Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\CslaGenFork.Rules.dll</AssemblyFile>
             <Type>CslaGenFork.Rules.AuthorizationRules.RestrictByStatusOrIsInRole</Type>
             <Constructors>
               <BusinessRuleConstructor>
@@ -5139,7 +5139,7 @@
               </BaseRuleProperties>
               <Name>Required</Name>
               <ObjectName />
-              <AssemblyFile>C:\VS Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\Csla.dll</AssemblyFile>
+              <AssemblyFile>C:\VS_Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\Csla.dll</AssemblyFile>
               <Type>Required</Type>
               <Constructors>
                 <BusinessRuleConstructor>
@@ -5237,7 +5237,7 @@
             </BaseRuleProperties>
             <Name>RestrictByStatusOrIsInRole</Name>
             <ObjectName />
-            <AssemblyFile>C:\VS Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\CslaGenFork.Rules.dll</AssemblyFile>
+            <AssemblyFile>C:\VS_Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\CslaGenFork.Rules.dll</AssemblyFile>
             <Type>CslaGenFork.Rules.AuthorizationRules.RestrictByStatusOrIsInRole</Type>
             <Constructors>
               <BusinessRuleConstructor>
@@ -5392,7 +5392,7 @@
             </BaseRuleProperties>
             <Name>IsOwnerOrIsInRole</Name>
             <ObjectName />
-            <AssemblyFile>C:\VS Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\CslaGenFork.Rules.dll</AssemblyFile>
+            <AssemblyFile>C:\VS_Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\CslaGenFork.Rules.dll</AssemblyFile>
             <Type>CslaGenFork.Rules.AuthorizationRules.IsOwnerOrIsInRole</Type>
             <Constructors>
               <BusinessRuleConstructor>
@@ -5506,7 +5506,7 @@
             </BaseRuleProperties>
             <Name>IsOwner</Name>
             <ObjectName />
-            <AssemblyFile>C:\VS Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\CslaGenFork.Rules.dll</AssemblyFile>
+            <AssemblyFile>C:\VS_Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\CslaGenFork.Rules.dll</AssemblyFile>
             <Type>CslaGenFork.Rules.AuthorizationRules.IsOwner</Type>
             <Constructors>
               <BusinessRuleConstructor>
@@ -15285,7 +15285,7 @@
               </BaseRuleProperties>
               <Name>CollapseWhiteSpace</Name>
               <ObjectName />
-              <AssemblyFile>C:\VS Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\CslaGenFork.Rules.dll</AssemblyFile>
+              <AssemblyFile>C:\VS_Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\CslaGenFork.Rules.dll</AssemblyFile>
               <Type>CollapseWhiteSpace</Type>
               <Constructors>
                 <BusinessRuleConstructor>
@@ -15330,7 +15330,7 @@
               </BaseRuleProperties>
               <Name>NoDuplicates</Name>
               <ObjectName />
-              <AssemblyFile>C:\VS Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\CslaGenFork.Rules.dll</AssemblyFile>
+              <AssemblyFile>C:\VS_Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\CslaGenFork.Rules.dll</AssemblyFile>
               <Type>NoDuplicates</Type>
               <Constructors>
                 <BusinessRuleConstructor>
@@ -18291,7 +18291,7 @@
               </BaseRuleProperties>
               <Name>CollapseWhiteSpace</Name>
               <ObjectName />
-              <AssemblyFile>C:\VS Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\CslaGenFork.Rules.dll</AssemblyFile>
+              <AssemblyFile>C:\VS_Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\CslaGenFork.Rules.dll</AssemblyFile>
               <Type>CollapseWhiteSpace</Type>
               <Constructors>
                 <BusinessRuleConstructor>
@@ -18336,7 +18336,7 @@
               </BaseRuleProperties>
               <Name>NoDuplicates</Name>
               <ObjectName />
-              <AssemblyFile>C:\VS Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\CslaGenFork.Rules.dll</AssemblyFile>
+              <AssemblyFile>C:\VS_Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\CslaGenFork.Rules.dll</AssemblyFile>
               <Type>NoDuplicates</Type>
               <Constructors>
                 <BusinessRuleConstructor>
@@ -19359,7 +19359,7 @@
               </BaseRuleProperties>
               <Name>Required</Name>
               <ObjectName />
-              <AssemblyFile>C:\VS Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\Csla.dll</AssemblyFile>
+              <AssemblyFile>C:\VS_Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\Csla.dll</AssemblyFile>
               <Type>Required</Type>
               <Constructors>
                 <BusinessRuleConstructor>
@@ -19512,7 +19512,7 @@
               </BaseRuleProperties>
               <Name>CollapseWhiteSpace</Name>
               <ObjectName />
-              <AssemblyFile>C:\VS Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\CslaGenFork.Rules.dll</AssemblyFile>
+              <AssemblyFile>C:\VS_Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\CslaGenFork.Rules.dll</AssemblyFile>
               <Type>CollapseWhiteSpace</Type>
               <Constructors>
                 <BusinessRuleConstructor>
@@ -19557,7 +19557,7 @@
               </BaseRuleProperties>
               <Name>Required</Name>
               <ObjectName />
-              <AssemblyFile>C:\VS Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\Csla.dll</AssemblyFile>
+              <AssemblyFile>C:\VS_Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\Csla.dll</AssemblyFile>
               <Type>Required</Type>
               <Constructors>
                 <BusinessRuleConstructor>
@@ -19649,7 +19649,7 @@
               </BaseRuleProperties>
               <Name>MaxLength</Name>
               <ObjectName />
-              <AssemblyFile>C:\VS Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\Csla.dll</AssemblyFile>
+              <AssemblyFile>C:\VS_Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\Csla.dll</AssemblyFile>
               <Type>MaxLength</Type>
               <Constructors>
                 <BusinessRuleConstructor>
@@ -19830,7 +19830,7 @@
               </BaseRuleProperties>
               <Name>RegExMatch</Name>
               <ObjectName />
-              <AssemblyFile>C:\VS Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\Csla.dll</AssemblyFile>
+              <AssemblyFile>C:\VS_Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\Csla.dll</AssemblyFile>
               <Type>Required</Type>
               <Constructors>
                 <BusinessRuleConstructor>
@@ -19922,7 +19922,7 @@
               </BaseRuleProperties>
               <Name>Range&lt;MIN,MAX&gt;</Name>
               <ObjectName />
-              <AssemblyFile>C:\VS Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\CslaGenFork.Rules.dll</AssemblyFile>
+              <AssemblyFile>C:\VS_Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\CslaGenFork.Rules.dll</AssemblyFile>
               <Type>Range&lt;MIN,MAX&gt;</Type>
               <Constructors>
                 <BusinessRuleConstructor>
@@ -20137,7 +20137,7 @@
               </BaseRuleProperties>
               <Name>CollapseWhiteSpace</Name>
               <ObjectName />
-              <AssemblyFile>C:\VS Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\CslaGenFork.Rules.dll</AssemblyFile>
+              <AssemblyFile>C:\VS_Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\CslaGenFork.Rules.dll</AssemblyFile>
               <Type>CollapseWhiteSpace</Type>
               <Constructors>
                 <BusinessRuleConstructor>
@@ -20182,7 +20182,7 @@
               </BaseRuleProperties>
               <Name>Required</Name>
               <ObjectName />
-              <AssemblyFile>C:\VS Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\Csla.dll</AssemblyFile>
+              <AssemblyFile>C:\VS_Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\Csla.dll</AssemblyFile>
               <Type>Required</Type>
               <Constructors>
                 <BusinessRuleConstructor>
@@ -20274,7 +20274,7 @@
               </BaseRuleProperties>
               <Name>MaxLength</Name>
               <ObjectName />
-              <AssemblyFile>C:\VS Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\Csla.dll</AssemblyFile>
+              <AssemblyFile>C:\VS_Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\Csla.dll</AssemblyFile>
               <Type>MaxLength</Type>
               <Constructors>
                 <BusinessRuleConstructor>
@@ -20455,7 +20455,7 @@
               </BaseRuleProperties>
               <Name>Required</Name>
               <ObjectName />
-              <AssemblyFile>C:\VS Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\Csla.dll</AssemblyFile>
+              <AssemblyFile>C:\VS_Projects\DocStore\DocStore-4.3\Generation\RulesLibraries\Csla.dll</AssemblyFile>
               <Type>Required</Type>
               <Constructors>
                 <BusinessRuleConstructor>
@@ -31830,5 +31830,5 @@
   </AssociativeEntities>
   <ConnectionString>Server=(local);Database=DocStore;persist security info=False;user id=sa;password=password_1234;packet size=4096</ConnectionString>
   <ProjectName>Test_CSLA10-old</ProjectName>
-  <TargetDirectory>C:\VS Projects\CslaGenFork 4.5\CoverageTest\CS</TargetDirectory>
+  <TargetDirectory>C:\VS_Projects\CslaGenFork 4.5\CoverageTest\CS</TargetDirectory>
 </CslaGeneratorUnit>
