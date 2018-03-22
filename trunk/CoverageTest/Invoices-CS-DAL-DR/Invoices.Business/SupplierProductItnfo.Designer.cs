@@ -17,12 +17,6 @@ namespace Invoices.Business
     public partial class SupplierProductItnfo : ReadOnlyBase<SupplierProductItnfo>
     {
 
-        #region Static Fields
-
-        private static int _lastId;
-
-        #endregion
-
         #region Business Properties
 
         /// <summary>
