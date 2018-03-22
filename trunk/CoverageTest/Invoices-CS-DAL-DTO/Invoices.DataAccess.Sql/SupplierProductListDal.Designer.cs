@@ -50,12 +50,12 @@ namespace Invoices.DataAccess.Sql
 
         private SupplierProductInfoDto Fetch(SafeDataReader dr)
         {
-            var SupplierProductInfo = new SupplierProductInfoDto();
+            var supplierProductInfo = new SupplierProductInfoDto();
             // Value properties
-            SupplierProductInfo.ProductSupplierId = dr.GetInt32("ProductSupplierId");
-            SupplierProductInfo.ProductId = dr.GetGuid("ProductId");
+            supplierProductInfo.ProductSupplierId = dr.GetInt32("ProductSupplierId");
+            supplierProductInfo.ProductId = dr.GetGuid("ProductId");
 
-            return SupplierProductInfo;
+            return supplierProductInfo;
         }
 
         #endregion

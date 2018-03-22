@@ -31,9 +31,9 @@ namespace Invoices.Business
         /// <returns><c>true</c> if the SupplierProductInfo is a collection item; otherwise, <c>false</c>.</returns>
         public bool Contains(int productSupplierId)
         {
-            foreach (var SupplierProductInfo in this)
+            foreach (var supplierProductInfo in this)
             {
-                if (SupplierProductInfo.ProductSupplierId == productSupplierId)
+                if (supplierProductInfo.ProductSupplierId == productSupplierId)
                 {
                     return true;
                 }
