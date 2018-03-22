@@ -10,7 +10,7 @@ AS
 
         SET NOCOUNT ON
 
-        /* Get SupplierProductItnfo from table */
+        /* Get SupplierProductInfo from table */
         SELECT
             [ProductsSuppliers].[ProductSupplierId],
             [ProductsSuppliers].[ProductId]

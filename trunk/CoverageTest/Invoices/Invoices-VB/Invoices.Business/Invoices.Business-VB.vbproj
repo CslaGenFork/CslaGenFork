@@ -285,10 +285,10 @@
       <DependentUpon>SupplierProductItem.vb</DependentUpon>
     </Compile>
     <Compile Include="SupplierProductItem.vb" />
-    <Compile Include="SupplierProductItnfo.Designer.vb">
-      <DependentUpon>SupplierProductItnfo.vb</DependentUpon>
+    <Compile Include="SupplierProductInfo.Designer.vb">
+      <DependentUpon>SupplierProductInfo.vb</DependentUpon>
     </Compile>
-    <Compile Include="SupplierProductItnfo.vb" />
+    <Compile Include="SupplierProductInfo.vb" />
     <Compile Include="SupplierProductList.Designer.vb">
       <DependentUpon>SupplierProductList.vb</DependentUpon>
     </Compile>

@@ -3,7 +3,7 @@ using Csla;
 
 namespace Invoices.Business
 {
-    public partial class SupplierProductItnfo
+    public partial class SupplierProductInfo
     {
 
         #region OnDeserialized actions

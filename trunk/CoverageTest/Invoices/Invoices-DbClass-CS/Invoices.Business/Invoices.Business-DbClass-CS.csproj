@@ -257,9 +257,9 @@
     <Compile Include="SupplierProductItem.Designer.cs">
       <DependentUpon>SupplierProductItem.cs</DependentUpon>
     </Compile>
-    <Compile Include="SupplierProductItnfo.cs" />
-    <Compile Include="SupplierProductItnfo.Designer.cs">
-      <DependentUpon>SupplierProductItnfo.cs</DependentUpon>
+    <Compile Include="SupplierProductInfo.cs" />
+    <Compile Include="SupplierProductInfo.Designer.cs">
+      <DependentUpon>SupplierProductInfo.cs</DependentUpon>
     </Compile>
     <Compile Include="SupplierProductList.cs" />
     <Compile Include="SupplierProductList.Designer.cs">

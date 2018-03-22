@@ -4,9 +4,9 @@ using Csla;
 namespace Invoices.DataAccess
 {
     /// <summary>
-    /// DTO for SupplierProductItnfo type
+    /// DTO for SupplierProductInfo type
     /// </summary>
-    public partial class SupplierProductItnfoDto
+    public partial class SupplierProductInfoDto
     {
         /// <summary>
         /// Gets or sets the parent Supplier Id.
