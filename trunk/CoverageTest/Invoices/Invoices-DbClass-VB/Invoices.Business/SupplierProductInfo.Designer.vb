@@ -17,12 +17,6 @@ Namespace Invoices.Business
     Public Partial Class SupplierProductInfo
         Inherits ReadOnlyBase(Of SupplierProductInfo)
 
-        #Region " Static Fields "
-
-            Private Shared _lastId As Integer
-
-        #End Region
-
         #Region " Business Properties "
 
         ''' <summary>
