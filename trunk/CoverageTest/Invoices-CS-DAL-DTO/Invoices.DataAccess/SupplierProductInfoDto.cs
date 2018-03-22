@@ -1,6 +1,6 @@
 namespace Invoices.DataAccess
 {
-    public partial class SupplierProductItnfoDto
+    public partial class SupplierProductInfoDto
     {
     }
 }
