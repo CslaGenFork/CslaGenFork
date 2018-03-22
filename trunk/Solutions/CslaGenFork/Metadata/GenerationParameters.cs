@@ -217,18 +217,6 @@ namespace CslaGenerator.Metadata
             }
         }
 
-        public bool UseSingleCriteria
-        {
-            get { return _useSingleCriteria; }
-            set
-            {
-                if (_useSingleCriteria == value)
-                    return;
-                _useSingleCriteria = value;
-                OnPropertyChanged("");
-            }
-        }
-
         public bool UsePublicPropertyInfo
         {
             get { return _usePublicPropertyInfo; }
