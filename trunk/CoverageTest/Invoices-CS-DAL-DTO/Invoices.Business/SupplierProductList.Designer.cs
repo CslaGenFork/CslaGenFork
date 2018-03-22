@@ -12,28 +12,28 @@ namespace Invoices.Business
     /// </summary>
     /// <remarks>
     /// This class is child of <see cref="SupplierInfoDetail"/> read only object.<br/>
-    /// The items of the collection are <see cref="SupplierProductItnfo"/> objects.
+    /// The items of the collection are <see cref="SupplierProductInfo"/> objects.
     /// </remarks>
     [Serializable]
 #if WINFORMS
-    public partial class SupplierProductList : ReadOnlyBindingListBase<SupplierProductList, SupplierProductItnfo>
+    public partial class SupplierProductList : ReadOnlyBindingListBase<SupplierProductList, SupplierProductInfo>
 #else
-    public partial class SupplierProductList : ReadOnlyListBase<SupplierProductList, SupplierProductItnfo>
+    public partial class SupplierProductList : ReadOnlyListBase<SupplierProductList, SupplierProductInfo>
 #endif
     {
 
         #region Collection Business Methods
 
         /// <summary>
-        /// Determines whether a <see cref="SupplierProductItnfo"/> item is in the collection.
+        /// Determines whether a <see cref="SupplierProductInfo"/> item is in the collection.
         /// </summary>
         /// <param name="productSupplierId">The ProductSupplierId of the item to search for.</param>
-        /// <returns><c>true</c> if the SupplierProductItnfo is a collection item; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if the SupplierProductInfo is a collection item; otherwise, <c>false</c>.</returns>
         public bool Contains(int productSupplierId)
         {
-            foreach (var supplierProductItnfo in this)
+            foreach (var SupplierProductInfo in this)
             {
-                if (supplierProductItnfo.ProductSupplierId == productSupplierId)
+                if (SupplierProductInfo.ProductSupplierId == productSupplierId)
                 {
                     return true;
                 }
@@ -84,17 +84,17 @@ namespace Invoices.Business
         }
 
         /// <summary>
-        /// Loads all <see cref="SupplierProductList"/> collection items from the given list of SupplierProductItnfoDto.
+        /// Loads all <see cref="SupplierProductList"/> collection items from the given list of SupplierProductInfoDto.
         /// </summary>
-        /// <param name="data">The list of <see cref="SupplierProductItnfoDto"/>.</param>
-        private void Fetch(List<SupplierProductItnfoDto> data)
+        /// <param name="data">The list of <see cref="SupplierProductInfoDto"/>.</param>
+        private void Fetch(List<SupplierProductInfoDto> data)
         {
             IsReadOnly = false;
             var rlce = RaiseListChangedEvents;
             RaiseListChangedEvents = false;
             foreach (var dto in data)
             {
-                Add(DataPortal.FetchChild<SupplierProductItnfo>(dto));
+                Add(DataPortal.FetchChild<SupplierProductInfo>(dto));
             }
             RaiseListChangedEvents = rlce;
             IsReadOnly = true;

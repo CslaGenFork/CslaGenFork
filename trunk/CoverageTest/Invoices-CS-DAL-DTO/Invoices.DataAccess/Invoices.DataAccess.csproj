@@ -246,9 +246,9 @@
     <Compile Include="SupplierProductItemDto.Designer.cs">
       <DependentUpon>SupplierProductItemDto.cs</DependentUpon>
     </Compile>
-    <Compile Include="SupplierProductItnfoDto.cs" />
-    <Compile Include="SupplierProductItnfoDto.Designer.cs">
-      <DependentUpon>SupplierProductItnfoDto.cs</DependentUpon>
+    <Compile Include="SupplierProductInfoDto.cs" />
+    <Compile Include="SupplierProductInfoDto.Designer.cs">
+      <DependentUpon>SupplierProductInfoDto.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

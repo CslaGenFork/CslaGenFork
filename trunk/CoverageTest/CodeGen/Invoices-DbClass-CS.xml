@@ -7702,7 +7702,7 @@
       <ParentProperties />
       <ParentInsertOnly>false</ParentInsertOnly>
       <IsPolymorphic>false</IsPolymorphic>
-      <ItemType>SupplierProductItnfo</ItemType>
+      <ItemType>SupplierProductInfo</ItemType>
       <ContainsItem>true</ContainsItem>
       <UniqueItems>false</UniqueItems>
       <FindMethodsParameters />
@@ -7807,7 +7807,7 @@
       <UseCustomLoading>false</UseCustomLoading>
       <ObjectType>ReadOnlyObject</ObjectType>
       <UnitOfWorkType>CreatorGetter</UnitOfWorkType>
-      <ObjectName>SupplierProductItnfo</ObjectName>
+      <ObjectName>SupplierProductInfo</ObjectName>
       <CslaBaseClass>None</CslaBaseClass>
       <IsGenericType>false</IsGenericType>
       <GenericArguments />
@@ -7833,7 +7833,7 @@
       <UseUnitOfWorkType />
       <ConstructorVisibility>Default</ConstructorVisibility>
       <Folder />
-      <FileName>SupplierProductItnfo</FileName>
+      <FileName>SupplierProductInfo</FileName>
       <UnitOfWorkProperties />
       <ChildCollectionProperties />
       <ChildProperties />

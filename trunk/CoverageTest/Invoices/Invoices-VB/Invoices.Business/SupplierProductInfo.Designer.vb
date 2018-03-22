@@ -7,15 +7,15 @@ Imports Csla.Data
 Namespace Invoices.Business
 
     ''' <summary>
-    ''' SupplierProductItnfo (read only object).<br/>
-    ''' This is a generated base class of <see cref="SupplierProductItnfo"/> business object.
+    ''' SupplierProductInfo (read only object).<br/>
+    ''' This is a generated base class of <see cref="SupplierProductInfo"/> business object.
     ''' </summary>
     ''' <remarks>
     ''' This class is an item of <see cref="SupplierProductList"/> collection.
     ''' </remarks>
     <Serializable>
-    Public Partial Class SupplierProductItnfo
-        Inherits ReadOnlyBase(Of SupplierProductItnfo)
+    Public Partial Class SupplierProductInfo
+        Inherits ReadOnlyBase(Of SupplierProductInfo)
 
         #Region " Static Fields "
 
@@ -58,7 +58,7 @@ Namespace Invoices.Business
         #Region " Constructor "
 
         ''' <summary>
-        ''' Initializes a new instance of the <see cref="SupplierProductItnfo"/> class.
+        ''' Initializes a new instance of the <see cref="SupplierProductInfo"/> class.
         ''' </summary>
         ''' <remarks> Do not use to create a Csla object. Use factory methods instead.</remarks>
         <System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)>
@@ -71,7 +71,7 @@ Namespace Invoices.Business
         #Region " Data Access "
 
         ''' <summary>
-        ''' Loads a <see cref="SupplierProductItnfo"/> object from the given SafeDataReader.
+        ''' Loads a <see cref="SupplierProductInfo"/> object from the given SafeDataReader.
         ''' </summary>
         ''' <param name="dr">The SafeDataReader to use.</param>
         Private Sub Child_Fetch(dr As SafeDataReader)

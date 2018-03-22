@@ -1,28 +1,20 @@
 using System;
-using System.Data;
-using System.Data.SqlClient;
 using Csla;
-using Csla.Data;
+using Invoices.DataAccess;
 
 namespace Invoices.Business
 {
 
     /// <summary>
-    /// SupplierProductItnfo (read only object).<br/>
-    /// This is a generated base class of <see cref="SupplierProductItnfo"/> business object.
+    /// SupplierProductInfo (read only object).<br/>
+    /// This is a generated base class of <see cref="SupplierProductInfo"/> business object.
     /// </summary>
     /// <remarks>
     /// This class is an item of <see cref="SupplierProductList"/> collection.
     /// </remarks>
     [Serializable]
-    public partial class SupplierProductItnfo : ReadOnlyBase<SupplierProductItnfo>
+    public partial class SupplierProductInfo : ReadOnlyBase<SupplierProductInfo>
     {
-
-        #region Static Fields
-
-        private static int _lastId;
-
-        #endregion
 
         #region Business Properties
 
@@ -57,11 +49,11 @@ namespace Invoices.Business
         #region Constructor
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SupplierProductItnfo"/> class.
+        /// Initializes a new instance of the <see cref="SupplierProductInfo"/> class.
         /// </summary>
         /// <remarks> Do not use to create a Csla object. Use factory methods instead.</remarks>
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public SupplierProductItnfo()
+        public SupplierProductInfo()
         {
             // Use factory methods and do not use direct creation.
         }
@@ -71,15 +63,15 @@ namespace Invoices.Business
         #region Data Access
 
         /// <summary>
-        /// Loads a <see cref="SupplierProductItnfo"/> object from the given SafeDataReader.
+        /// Loads a <see cref="SupplierProductInfo"/> object from the given <see cref="SupplierProductInfoDto"/>.
         /// </summary>
-        /// <param name="dr">The SafeDataReader to use.</param>
-        private void Child_Fetch(SafeDataReader dr)
+        /// <param name="data">The SupplierProductInfoDto to use.</param>
+        private void Child_Fetch(SupplierProductInfoDto data)
         {
             // Value properties
-            LoadProperty(ProductSupplierIdProperty, dr.GetInt32("ProductSupplierId"));
-            LoadProperty(ProductIdProperty, dr.GetGuid("ProductId"));
-            var args = new DataPortalHookArgs(dr);
+            LoadProperty(ProductSupplierIdProperty, data.ProductSupplierId);
+            LoadProperty(ProductIdProperty, data.ProductId);
+            var args = new DataPortalHookArgs(data);
             OnFetchRead(args);
             // check all object rules and property rules
             BusinessRules.CheckRules();

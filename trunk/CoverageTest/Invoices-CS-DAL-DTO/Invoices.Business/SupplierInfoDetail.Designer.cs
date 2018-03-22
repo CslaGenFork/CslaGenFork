@@ -12,7 +12,7 @@ namespace Invoices.Business
     /// </summary>
     /// <remarks>
     /// This class contains one child collection:<br/>
-    /// - <see cref="Products"/> of type <see cref="SupplierProductList"/> (1:M relation to <see cref="SupplierProductItnfo"/>)
+    /// - <see cref="Products"/> of type <see cref="SupplierProductList"/> (1:M relation to <see cref="SupplierProductInfo"/>)
     /// </remarks>
     [Serializable]
     public partial class SupplierInfoDetail : ReadOnlyBase<SupplierInfoDetail>

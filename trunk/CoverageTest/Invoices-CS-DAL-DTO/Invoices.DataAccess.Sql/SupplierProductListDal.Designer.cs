@@ -20,8 +20,8 @@ namespace Invoices.DataAccess.Sql
         /// Loads a SupplierProductList collection from the database.
         /// </summary>
         /// <param name="supplierId">The fetch criteria.</param>
-        /// <returns>A list of <see cref="SupplierProductItnfoDto"/>.</returns>
-        public List<SupplierProductItnfoDto> Fetch(int supplierId)
+        /// <returns>A list of <see cref="SupplierProductInfoDto"/>.</returns>
+        public List<SupplierProductInfoDto> Fetch(int supplierId)
         {
             using (var ctx = ConnectionManager<SqlConnection>.GetManager("Invoices"))
             {
@@ -35,9 +35,9 @@ namespace Invoices.DataAccess.Sql
             }
         }
 
-        private List<SupplierProductItnfoDto> LoadCollection(IDataReader data)
+        private List<SupplierProductInfoDto> LoadCollection(IDataReader data)
         {
-            var supplierProductList = new List<SupplierProductItnfoDto>();
+            var supplierProductList = new List<SupplierProductInfoDto>();
             using (var dr = new SafeDataReader(data))
             {
                 while (dr.Read())
@@ -48,14 +48,14 @@ namespace Invoices.DataAccess.Sql
             return supplierProductList;
         }
 
-        private SupplierProductItnfoDto Fetch(SafeDataReader dr)
+        private SupplierProductInfoDto Fetch(SafeDataReader dr)
         {
-            var supplierProductItnfo = new SupplierProductItnfoDto();
+            var SupplierProductInfo = new SupplierProductInfoDto();
             // Value properties
-            supplierProductItnfo.ProductSupplierId = dr.GetInt32("ProductSupplierId");
-            supplierProductItnfo.ProductId = dr.GetGuid("ProductId");
+            SupplierProductInfo.ProductSupplierId = dr.GetInt32("ProductSupplierId");
+            SupplierProductInfo.ProductId = dr.GetGuid("ProductId");
 
-            return supplierProductItnfo;
+            return SupplierProductInfo;
         }
 
         #endregion

@@ -12,25 +12,25 @@ Namespace Invoices.Business
     ''' </summary>
     ''' <remarks>
     ''' This class is child of <see cref="SupplierInfoDetail"/> read only object.<br/>
-    ''' The items of the collection are <see cref="SupplierProductItnfo"/> objects.
+    ''' The items of the collection are <see cref="SupplierProductInfo"/> objects.
     ''' </remarks>
     <Serializable>
     Public Partial Class SupplierProductList
 #If WINFORMS Then
-        Inherits ReadOnlyBindingListBase(Of SupplierProductList, SupplierProductItnfo)
+        Inherits ReadOnlyBindingListBase(Of SupplierProductList, SupplierProductInfo)
 #Else
-        Inherits ReadOnlyListBase(Of SupplierProductList, SupplierProductItnfo)
+        Inherits ReadOnlyListBase(Of SupplierProductList, SupplierProductInfo)
 #End If
 
         #Region " Collection Business Methods "
 
         ''' <summary>
-        ''' Determines whether a <see cref="SupplierProductItnfo"/> item is in the collection.
+        ''' Determines whether a <see cref="SupplierProductInfo"/> item is in the collection.
         ''' </summary>
         ''' <param name="productSupplierId">The ProductSupplierId of the item to search for.</param>
-        ''' <returns><c>True</c> if the SupplierProductItnfo is a collection item; otherwise, <c>false</c>.</returns>
+        ''' <returns><c>True</c> if the SupplierProductInfo is a collection item; otherwise, <c>false</c>.</returns>
         Public Overloads Function Contains(productSupplierId As Integer) As Boolean
-            For Each item As SupplierProductItnfo In Me
+            For Each item As SupplierProductInfo In Me
                 If item.ProductSupplierId = productSupplierId Then
                     Return True
                 End If
@@ -94,7 +94,7 @@ Namespace Invoices.Business
             Dim rlce = RaiseListChangedEvents
             RaiseListChangedEvents = False
             While dr.Read()
-                Add(DataPortal.FetchChild(Of SupplierProductItnfo)(dr))
+                Add(DataPortal.FetchChild(Of SupplierProductInfo)(dr))
             End While
             RaiseListChangedEvents = rlce
             IsReadOnly = True
