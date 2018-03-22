@@ -89,7 +89,6 @@ namespace <%= GetContextObjectNamespace(Info, CurrentUnit, GenerationStep.Busine
     }
     %>
     {
-<!-- #include file="StaticFields.asp" -->
 <!-- #include file="StateFields.asp" -->
 <!-- #include file="BusinessProps.asp" -->
 <!-- #include file="ObjectOverrides.asp" -->
