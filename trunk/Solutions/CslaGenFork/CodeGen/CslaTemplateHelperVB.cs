@@ -5390,11 +5390,7 @@ namespace CslaGenerator.CodeGen
         {
             var sb = new StringBuilder();
 
-            var param = GetDataTypeGeneric(crit.Properties[0], crit.Properties[0].PropertyType);
-            if (param == "Object" || param == "Empty" || CurrentUnit.GenerationParams.UseSingleCriteria)
-                sb.AppendFormat("New SingleCriteria(Of {0})({1})", param, paramName);
-            else
-                sb.AppendFormat(paramName);
+            sb.AppendFormat(paramName);
 
             return sb.ToString();
         }
@@ -5434,15 +5430,10 @@ namespace CslaGenerator.CodeGen
             var sb = new StringBuilder();
 
             var paramType = GetDataTypeGeneric(crit.Properties[0], crit.Properties[0].PropertyType);
-            if (paramType == "Object" || paramType == "Empty" || CurrentUnit.GenerationParams.UseSingleCriteria)
-                sb.AppendFormat("{1} As SingleCriteria(Of {0})", paramType, paramName);
-            else
-            {
-                if (usesRefOrOut)
-                    paramType = AddRefOrOut(crit.Properties[0]) + paramType;
-                paramName = FormatCamel(crit.Properties[0].Name);
-                sb.AppendFormat("{1} As {0}", paramType, paramName);
-            }
+            if (usesRefOrOut)
+                paramType = AddRefOrOut(crit.Properties[0]) + paramType;
+            paramName = FormatCamel(crit.Properties[0].Name);
+            sb.AppendFormat("{1} As {0}", paramType, paramName);
 
             return sb.ToString();
         }
@@ -5456,16 +5447,10 @@ namespace CslaGenerator.CodeGen
         {
             var sb = new StringBuilder();
 
-            var paramType = GetDataTypeGeneric(crit.Properties[0], crit.Properties[0].PropertyType);
-            if (paramType == "Object" || paramType == "Empty" || CurrentUnit.GenerationParams.UseSingleCriteria)
-                sb.AppendFormat("{0}", paramName);
-            else
-            {
-                paramName = FormatCamel(crit.Properties[0].Name);
-                if (usesRefOrOut)
-                    paramName = AddRefOrOut(crit.Properties[0]) + paramName;
-                sb.AppendFormat("{0}", paramName);
-            }
+            paramName = FormatCamel(crit.Properties[0].Name);
+            if (usesRefOrOut)
+                paramName = AddRefOrOut(crit.Properties[0]) + paramName;
+            sb.AppendFormat("{0}", paramName);
 
             return sb.ToString();
         }
@@ -5523,14 +5508,8 @@ namespace CslaGenerator.CodeGen
         {
             var sb = new StringBuilder();
 
-            var param = GetDataTypeGeneric(crit.Properties[0], crit.Properties[0].PropertyType);
-            if (param == "Object" || param == "Empty" || CurrentUnit.GenerationParams.UseSingleCriteria)
-                sb.AppendFormat("{0}.Value", paramName);
-            else
-            {
-                paramName = FormatCamel(crit.Properties[0].Name);
-                sb.AppendFormat(paramName);
-            }
+            paramName = FormatCamel(crit.Properties[0].Name);
+            sb.AppendFormat(paramName);
 
             return sb.ToString();
         }
@@ -5539,14 +5518,8 @@ namespace CslaGenerator.CodeGen
         {
             var sb = new StringBuilder();
 
-            var param = GetDataTypeGeneric(crit.Properties[0], crit.Properties[0].PropertyType);
-            if (param == "Object" || param == "Empty" || CurrentUnit.GenerationParams.UseSingleCriteria)
-                sb.AppendFormat(paramName);
-            else
-            {
-                paramName = FormatCamel(crit.Properties[0].Name);
-                sb.AppendFormat(paramName);
-            }
+            paramName = FormatCamel(crit.Properties[0].Name);
+            sb.AppendFormat(paramName);
 
             return sb.ToString();
         }
