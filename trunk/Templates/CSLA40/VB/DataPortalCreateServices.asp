@@ -62,9 +62,6 @@ if ((UseSilverlight() && createRunLocalDp) || CurrentUnit.GenerationParams.Silve
             }
             foreach (ValueProperty prop in Info.ValueProperties)
             {
-                if (!prop.IsDatabaseBound)
-                    continue;
-
                 if (prop.DefaultValue != String.Empty)
                 {
                     if (prop.DefaultValue.ToUpper() == "_lastId".ToUpper() &&
