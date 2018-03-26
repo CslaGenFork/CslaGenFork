@@ -374,7 +374,7 @@ namespace Codisa.InterwayDocs.Business
         {
             var args = new DataPortalHookArgs(registerId);
             OnFetchPre(args);
-            using (var dalManager = DalFactory.GetManager())
+            using (var dalManager = DalFactoryInterwayDocs.GetManager())
             {
                 var dal = dalManager.GetProvider<IIncomingRegisterDal>();
                 var data = dal.Fetch(registerId);
@@ -428,7 +428,7 @@ namespace Codisa.InterwayDocs.Business
         protected override void DataPortal_Insert()
         {
             SimpleAuditTrail();
-            using (var dalManager = DalFactory.GetManager())
+            using (var dalManager = DalFactoryInterwayDocs.GetManager())
             {
                 var args = new DataPortalHookArgs();
                 OnInsertPre(args);
@@ -467,7 +467,7 @@ namespace Codisa.InterwayDocs.Business
         protected override void DataPortal_Update()
         {
             SimpleAuditTrail();
-            using (var dalManager = DalFactory.GetManager())
+            using (var dalManager = DalFactoryInterwayDocs.GetManager())
             {
                 var args = new DataPortalHookArgs();
                 OnUpdatePre(args);

@@ -79,7 +79,7 @@
     <ReportObjectNotFound>None</ReportObjectNotFound>
     <GenerateQueriesWithSchema>true</GenerateQueriesWithSchema>
     <GenerateDatabaseClass>false</GenerateDatabaseClass>
-    <DalName />
+    <DalName>InterwayDocs</DalName>
     <UsesLazyGetProperty>false</UsesLazyGetProperty>
     <UsesCslaAuthorizationProvider>false</UsesCslaAuthorizationProvider>
     <GenerateWinForms>true</GenerateWinForms>

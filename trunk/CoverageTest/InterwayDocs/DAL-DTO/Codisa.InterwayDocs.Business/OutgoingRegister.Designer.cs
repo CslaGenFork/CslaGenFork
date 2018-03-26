@@ -372,7 +372,7 @@ namespace Codisa.InterwayDocs.Business
         {
             var args = new DataPortalHookArgs(registerId);
             OnFetchPre(args);
-            using (var dalManager = DalFactory.GetManager())
+            using (var dalManager = DalFactoryInterwayDocs.GetManager())
             {
                 var dal = dalManager.GetProvider<IOutgoingRegisterDal>();
                 var data = dal.Fetch(registerId);
@@ -431,7 +431,7 @@ namespace Codisa.InterwayDocs.Business
             dto.ArchiveLocation = ArchiveLocation;
             dto.CreateDate = CreateDate;
             dto.ChangeDate = ChangeDate;
-            using (var dalManager = DalFactory.GetManager())
+            using (var dalManager = DalFactoryInterwayDocs.GetManager())
             {
                 var args = new DataPortalHookArgs(dto);
                 OnInsertPre(args);
@@ -469,7 +469,7 @@ namespace Codisa.InterwayDocs.Business
             dto.Notes = Notes;
             dto.ArchiveLocation = ArchiveLocation;
             dto.ChangeDate = ChangeDate;
-            using (var dalManager = DalFactory.GetManager())
+            using (var dalManager = DalFactoryInterwayDocs.GetManager())
             {
                 var args = new DataPortalHookArgs(dto);
                 OnUpdatePre(args);

@@ -44,7 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DalManager.cs" />
+    <Compile Include="DalManagerInterwayDocs.cs" />
     <Compile Include="DeliveryRegisterDal.cs" />
     <Compile Include="DeliveryRegisterDal.Designer.cs">
       <DependentUpon>DeliveryRegisterDal.cs</DependentUpon>

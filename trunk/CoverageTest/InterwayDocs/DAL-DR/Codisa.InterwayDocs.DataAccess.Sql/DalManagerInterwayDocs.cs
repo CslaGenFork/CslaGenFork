@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------
-// <copyright file="DalManager.cs" company="Marimer LLC">
+// <copyright file="DalManagerInterwayDocs.cs" company="Marimer LLC">
 //     Copyright (c) Marimer LLC. All rights reserved.
 //     Website: http://www.lhotka.net/cslanet/
 // </copyright>
@@ -12,24 +12,24 @@ using Csla.Data;
 namespace Codisa.InterwayDocs.DataAccess.Sql
 {
     /// <summary>
-    /// Implements <see cref="IDalManager"/> interface.
+    /// Implements <see cref="IDalManagerInterwayDocs"/> interface.
     /// </summary>
     /// <remarks>
     /// To use this DAL:<br/>
     /// 1) name this assembly Codisa.InterwayDocs.DataAccess.Sql<br/>
     /// 2) add the following line to the <strong>appSettings</strong>
     /// section of the application .config file: <br/>
-    /// &lt;add key=".DalManagerType" value="Codisa.InterwayDocs.DataAccess.Sql.DalManager, Codisa.InterwayDocs.DataAccess.Sql" /&gt;
+    /// &lt;add key="InterwayDocs.DalManagerType" value="Codisa.InterwayDocs.DataAccess.Sql.DalManagerInterwayDocs, Codisa.InterwayDocs.DataAccess.Sql" /&gt;
     /// </remarks>
-    public class DalManager : IDalManager
+    public class DalManagerInterwayDocs : IDalManagerInterwayDocs
     {
-        private static readonly string TypeMask = typeof (DalManager).FullName.Replace("DalManager", @"{0}");
+        private static readonly string TypeMask = typeof (DalManagerInterwayDocs).FullName.Replace("DalManagerInterwayDocs", @"{0}");
         private const string BaseNamespace = "Codisa.InterwayDocs.DataAccess";
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DalManager"/> class.
+        /// Initializes a new instance of the <see cref="DalManagerInterwayDocs"/> class.
         /// </summary>
-        public DalManager()
+        public DalManagerInterwayDocs()
         {
             ConnectionManager = ConnectionManager<SqlConnection>.GetManager("InterwayDocs");
         }
@@ -40,13 +40,13 @@ namespace Codisa.InterwayDocs.DataAccess.Sql
         /// <value>The ConnectionManager object</value>
         public ConnectionManager<SqlConnection> ConnectionManager { get; private set; }
 
-        #region IDalManager Members
+        #region IDalManagerInterwayDocs Members
 
         /// <summary>
-        /// Gets the  DAL provider for a given object Type.
+        /// Gets the InterwayDocs DAL provider for a given object Type.
         /// </summary>
-        /// <typeparam name="T">Object Type that requires a  DAL provider.</typeparam>
-        /// <returns>A new  DAL instance for the given Type.</returns>
+        /// <typeparam name="T">Object Type that requires a InterwayDocs DAL provider.</typeparam>
+        /// <returns>A new InterwayDocs DAL instance for the given Type.</returns>
         public T GetProvider<T>() where T : class
         {
             string typeName;
