@@ -9,7 +9,7 @@ namespace Invoices.Business
 
     /// <summary>
     /// LoggerBusinessListBase (base class).<br/>
-    /// This is a generated base class of <see cref="LoggerBusinessListBase"/> business object.
+    /// This is a generated base class of <see cref="LoggerBusinessListBase{T, C}"/> business object.
     /// </summary>
     [Serializable]
     public abstract partial class LoggerBusinessListBase<T, C> : BusinessListBase<T, C>, IListLog
