@@ -99,7 +99,7 @@ namespace DocStore.Business.Circulations
 
         #endregion
 
-        #region Criteria
+        #region Nested Criteria
 
         /// <summary>
         /// CriteriaGetByObject criteria.

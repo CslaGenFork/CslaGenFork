@@ -442,7 +442,7 @@ namespace DocStore.Business
     /// DocListFilteredCriteria criteria.
     /// </summary>
     [Serializable]
-    public class DocListFilteredCriteria : CriteriaBase<DocListFilteredCriteria>
+    public partial class DocListFilteredCriteria : CriteriaBase<DocListFilteredCriteria>
     {
 
         /// <summary>

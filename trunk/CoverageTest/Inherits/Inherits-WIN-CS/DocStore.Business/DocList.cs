@@ -57,4 +57,13 @@ namespace DocStore.Business
         #endregion
 
     }
+
+    #region Criteria Object
+
+    public partial class DocListFilteredCriteria
+    {
+    }
+
+    #endregion
+
 }

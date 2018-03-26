@@ -206,7 +206,7 @@ namespace DocStore.Business.Admin
 
         #endregion
 
-        #region Criteria
+        #region Nested Criteria
 
         /// <summary>
         /// FilteredCriteria criteria.

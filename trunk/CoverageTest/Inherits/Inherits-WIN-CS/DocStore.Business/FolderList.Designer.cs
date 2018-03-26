@@ -194,7 +194,7 @@ namespace DocStore.Business
 
         #endregion
 
-        #region Criteria
+        #region Nested Criteria
 
         /// <summary>
         /// FilteredCriteria criteria.
