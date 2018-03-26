@@ -10,7 +10,7 @@
     <ReadOnlyObjectsCopyAuditing>false</ReadOnlyObjectsCopyAuditing>
     <ReadOnlyObjectsCopyTimestamp>false</ReadOnlyObjectsCopyTimestamp>
     <DefaultDataBase>InterwayDocs</DefaultDataBase>
-    <DefaultTransactionType>ADO</DefaultTransactionType>
+    <DefaultTransactionType>TransactionScope</DefaultTransactionType>
     <DefaultPersistenceType>SqlConnectionManager</DefaultPersistenceType>
     <DefaultDatabaseContextObject />
     <ORBChildPropertySuffix>s</ORBChildPropertySuffix>
@@ -49,14 +49,14 @@
   </Params>
   <GenerationParams>
     <SaveBeforeGenerate>true</SaveBeforeGenerate>
-    <TargetFramework>CSLA45</TargetFramework>
+    <TargetFramework>CSLA45DAL</TargetFramework>
     <WriteTodo>false</WriteTodo>
     <BackupOldSource>false</BackupOldSource>
     <RetryOnFileBusy>true</RetryOnFileBusy>
     <SeparateNamespaces>true</SeparateNamespaces>
     <SeparateBaseClasses>false</SeparateBaseClasses>
     <UseDotDesignerFileNameConvention>true</UseDotDesignerFileNameConvention>
-    <OutputLanguage>VB</OutputLanguage>
+    <OutputLanguage>CSharp</OutputLanguage>
     <UpdateOnlyDirtyChildren>true</UpdateOnlyDirtyChildren>
     <PropertyMode>Default</PropertyMode>
     <GenerateAuthorization>None</GenerateAuthorization>
@@ -71,14 +71,14 @@
     <BaseNamespace>Codisa.InterwayDocs.Business</BaseNamespace>
     <UtilitiesNamespace>Codisa.InterwayDocs.Business</UtilitiesNamespace>
     <UtilitiesFolder />
-    <DalInterfaceNamespace>MyProject.DataAccess</DalInterfaceNamespace>
-    <DalObjectNamespace>MyProject.DataAccess.Sql</DalObjectNamespace>
+    <DalInterfaceNamespace>Codisa.InterwayDocs.DataAccess</DalInterfaceNamespace>
+    <DalObjectNamespace>Codisa.InterwayDocs.DataAccess.Sql</DalObjectNamespace>
     <GenerateSprocs>true</GenerateSprocs>
     <OneSpFilePerObject>true</OneSpFilePerObject>
     <UseInlineQueries>SpecifyByObject</UseInlineQueries>
     <ReportObjectNotFound>None</ReportObjectNotFound>
     <GenerateQueriesWithSchema>true</GenerateQueriesWithSchema>
-    <GenerateDatabaseClass>true</GenerateDatabaseClass>
+    <GenerateDatabaseClass>false</GenerateDatabaseClass>
     <DalName />
     <UsesLazyGetProperty>false</UsesLazyGetProperty>
     <UsesCslaAuthorizationProvider>false</UsesCslaAuthorizationProvider>
@@ -87,9 +87,9 @@
     <GenerateSilverlight4>false</GenerateSilverlight4>
     <SilverlightUsingServices>false</SilverlightUsingServices>
     <DatabaseConnection>InterwayDocs</DatabaseConnection>
-    <GenerateDTO>true</GenerateDTO>
-    <GenerateDalInterface>false</GenerateDalInterface>
-    <GenerateDalObject>false</GenerateDalObject>
+    <GenerateDTO>false</GenerateDTO>
+    <GenerateDalInterface>true</GenerateDalInterface>
+    <GenerateDalObject>true</GenerateDalObject>
     <GenerateSynchronous>true</GenerateSynchronous>
     <GenerateAsynchronous>false</GenerateAsynchronous>
     <GenerationDbProviderCollection />
@@ -169,7 +169,7 @@
       <NameColumn />
       <PersistenceType>SqlConnectionManager</PersistenceType>
       <CommandTimeout />
-      <TransactionType>ADO</TransactionType>
+      <TransactionType>TransactionScope</TransactionType>
       <InsertUpdateRunLocal>false</InsertUpdateRunLocal>
       <InsertProcedureName />
       <SelectProcedureName />
@@ -1189,7 +1189,7 @@
       <NameColumn />
       <PersistenceType>SqlConnectionManager</PersistenceType>
       <CommandTimeout />
-      <TransactionType>ADO</TransactionType>
+      <TransactionType>TransactionScope</TransactionType>
       <InsertUpdateRunLocal>false</InsertUpdateRunLocal>
       <InsertProcedureName />
       <SelectProcedureName />
@@ -1463,7 +1463,7 @@
       <NameColumn />
       <PersistenceType>SqlConnectionManager</PersistenceType>
       <CommandTimeout />
-      <TransactionType>ADO</TransactionType>
+      <TransactionType>TransactionScope</TransactionType>
       <InsertUpdateRunLocal>false</InsertUpdateRunLocal>
       <InsertProcedureName />
       <SelectProcedureName />
@@ -1619,7 +1619,7 @@
       <NameColumn />
       <PersistenceType>SqlConnectionManager</PersistenceType>
       <CommandTimeout />
-      <TransactionType>ADO</TransactionType>
+      <TransactionType>TransactionScope</TransactionType>
       <InsertUpdateRunLocal>false</InsertUpdateRunLocal>
       <InsertProcedureName />
       <SelectProcedureName />
@@ -1775,7 +1775,7 @@
       <NameColumn />
       <PersistenceType>SqlConnectionManager</PersistenceType>
       <CommandTimeout />
-      <TransactionType>ADO</TransactionType>
+      <TransactionType>TransactionScope</TransactionType>
       <InsertUpdateRunLocal>false</InsertUpdateRunLocal>
       <InsertProcedureName />
       <SelectProcedureName />
@@ -1929,7 +1929,7 @@
       <NameColumn />
       <PersistenceType>SqlConnectionManager</PersistenceType>
       <CommandTimeout />
-      <TransactionType>ADO</TransactionType>
+      <TransactionType>TransactionScope</TransactionType>
       <InsertUpdateRunLocal>false</InsertUpdateRunLocal>
       <InsertProcedureName />
       <SelectProcedureName />
@@ -2079,7 +2079,7 @@
       <NameColumn />
       <PersistenceType>SqlConnectionManager</PersistenceType>
       <CommandTimeout />
-      <TransactionType>ADO</TransactionType>
+      <TransactionType>TransactionScope</TransactionType>
       <InsertUpdateRunLocal>false</InsertUpdateRunLocal>
       <InsertProcedureName>AddEditOnDemand</InsertProcedureName>
       <SelectProcedureName />
@@ -2229,7 +2229,7 @@
       <NameColumn />
       <PersistenceType>SqlConnectionManager</PersistenceType>
       <CommandTimeout />
-      <TransactionType>ADO</TransactionType>
+      <TransactionType>TransactionScope</TransactionType>
       <InsertUpdateRunLocal>false</InsertUpdateRunLocal>
       <InsertProcedureName />
       <SelectProcedureName />
@@ -2531,7 +2531,7 @@
       <NameColumn />
       <PersistenceType>SqlConnectionManager</PersistenceType>
       <CommandTimeout />
-      <TransactionType>ADO</TransactionType>
+      <TransactionType>TransactionScope</TransactionType>
       <InsertUpdateRunLocal>false</InsertUpdateRunLocal>
       <InsertProcedureName />
       <SelectProcedureName />
@@ -3676,7 +3676,7 @@
       <NameColumn />
       <PersistenceType>SqlConnectionManager</PersistenceType>
       <CommandTimeout />
-      <TransactionType>ADO</TransactionType>
+      <TransactionType>TransactionScope</TransactionType>
       <InsertUpdateRunLocal>false</InsertUpdateRunLocal>
       <InsertProcedureName />
       <SelectProcedureName />
@@ -5915,7 +5915,7 @@
       <NameColumn />
       <PersistenceType>SqlConnectionManager</PersistenceType>
       <CommandTimeout />
-      <TransactionType>ADO</TransactionType>
+      <TransactionType>TransactionScope</TransactionType>
       <InsertUpdateRunLocal>false</InsertUpdateRunLocal>
       <InsertProcedureName>AddIncomingRegister</InsertProcedureName>
       <SelectProcedureName />
@@ -6065,7 +6065,7 @@
       <NameColumn />
       <PersistenceType>SqlConnectionManager</PersistenceType>
       <CommandTimeout />
-      <TransactionType>ADO</TransactionType>
+      <TransactionType>TransactionScope</TransactionType>
       <InsertUpdateRunLocal>false</InsertUpdateRunLocal>
       <InsertProcedureName />
       <SelectProcedureName />
@@ -6367,7 +6367,7 @@
       <NameColumn />
       <PersistenceType>SqlConnectionManager</PersistenceType>
       <CommandTimeout />
-      <TransactionType>ADO</TransactionType>
+      <TransactionType>TransactionScope</TransactionType>
       <InsertUpdateRunLocal>false</InsertUpdateRunLocal>
       <InsertProcedureName />
       <SelectProcedureName />
@@ -7512,7 +7512,7 @@
       <NameColumn />
       <PersistenceType>SqlConnectionManager</PersistenceType>
       <CommandTimeout />
-      <TransactionType>ADO</TransactionType>
+      <TransactionType>TransactionScope</TransactionType>
       <InsertUpdateRunLocal>false</InsertUpdateRunLocal>
       <InsertProcedureName />
       <SelectProcedureName />
@@ -9751,7 +9751,7 @@
       <NameColumn />
       <PersistenceType>SqlConnectionManager</PersistenceType>
       <CommandTimeout />
-      <TransactionType>ADO</TransactionType>
+      <TransactionType>TransactionScope</TransactionType>
       <InsertUpdateRunLocal>false</InsertUpdateRunLocal>
       <InsertProcedureName>AddOutgoingRegister</InsertProcedureName>
       <SelectProcedureName />
@@ -9901,7 +9901,7 @@
       <NameColumn />
       <PersistenceType>SqlConnectionManager</PersistenceType>
       <CommandTimeout />
-      <TransactionType>ADO</TransactionType>
+      <TransactionType>TransactionScope</TransactionType>
       <InsertUpdateRunLocal>false</InsertUpdateRunLocal>
       <InsertProcedureName />
       <SelectProcedureName />
@@ -10176,7 +10176,7 @@
       <NameColumn />
       <PersistenceType>SqlConnectionManager</PersistenceType>
       <CommandTimeout />
-      <TransactionType>ADO</TransactionType>
+      <TransactionType>TransactionScope</TransactionType>
       <InsertUpdateRunLocal>false</InsertUpdateRunLocal>
       <InsertProcedureName />
       <SelectProcedureName />
@@ -11179,7 +11179,7 @@
       <NameColumn />
       <PersistenceType>SqlConnectionManager</PersistenceType>
       <CommandTimeout />
-      <TransactionType>ADO</TransactionType>
+      <TransactionType>TransactionScope</TransactionType>
       <InsertUpdateRunLocal>false</InsertUpdateRunLocal>
       <InsertProcedureName />
       <SelectProcedureName />
@@ -13176,7 +13176,7 @@
       <NameColumn />
       <PersistenceType>SqlConnectionManager</PersistenceType>
       <CommandTimeout />
-      <TransactionType>ADO</TransactionType>
+      <TransactionType>TransactionScope</TransactionType>
       <InsertUpdateRunLocal>false</InsertUpdateRunLocal>
       <InsertProcedureName>AddDeliveryRegister</InsertProcedureName>
       <SelectProcedureName />
@@ -13255,7 +13255,7 @@
   </CslaObjects>
   <AssociativeEntities />
   <ConnectionString>Server=(local);Database=InterwayDocs;persist security info=False;user id=sa;password=password_1234;packet size=4096</ConnectionString>
-  <ProjectName>InterwayDocs.Business-VB</ProjectName>
-  <TargetDirectory>C:\VS_GitHub\CslaGenFork\trunk\CoverageTest\InterwayDocs\Plain-VB</TargetDirectory>
+  <ProjectName>InterwayDocs.Business-DAL-DR</ProjectName>
+  <TargetDirectory>C:\VS_GitHub\CslaGenFork\trunk\CoverageTest\InterwayDocs\DAL-DR</TargetDirectory>
   <FileVersion>4.0.6</FileVersion>
 </CslaGeneratorUnit>
