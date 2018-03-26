@@ -383,9 +383,6 @@ namespace CslaGenerator.Metadata
         {
             get
             {
-                if (ObjectType.IsCriteriaClass())
-                    _isGenericType = true;
-
                 if (ObjectType.IsBaseClass() && CslaBaseClass != CslaBaseClasses.None)
                     _isGenericType = true;
 
@@ -409,9 +406,6 @@ namespace CslaGenerator.Metadata
         {
             get
             {
-                if (ObjectType.IsCriteriaClass())
-                    _genericArguments = "T";
-
                 if (ObjectType.IsBaseClass() && CslaBaseClass != CslaBaseClasses.None)
                     _genericArguments = CslaBaseClass.GetGenericArguments();
 
@@ -1508,6 +1502,20 @@ namespace CslaGenerator.Metadata
             {
                 var arguments = _genericArguments != string.Empty ? _genericArguments : "?";
                 return _objectName + (_isGenericType ? string.Format("<{0}>", arguments) : string.Empty);
+            }
+        }
+
+        [Browsable(false)]
+        [XmlIgnore]
+        public string GenericNameXml
+        {
+            get
+            {
+                var arguments = _genericArguments != string.Empty ? _genericArguments : "?";
+                var result = _objectName + (_isGenericType ? string.Format("<{0}>", arguments) : string.Empty);
+                result = result.Replace("<", "{");
+                result = result.Replace(">", "}");
+                return result;
             }
         }
 

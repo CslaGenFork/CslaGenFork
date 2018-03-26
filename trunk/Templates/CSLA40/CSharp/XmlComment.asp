@@ -1,4 +1,11 @@
+
 <%
+string classType = "business object";
+if (Info.ObjectType == CslaObjectType.BaseClass)
+    classType = "base classe";
+else if (Info.ObjectType == CslaObjectType.CriteriaClass)
+    classType = "criteria classe";
+
 if ((firstComment == null && string.IsNullOrEmpty(Info.Parent.GenerationParams.ClassCommentFilenameSuffix)) ||
     (firstComment == true && !string.IsNullOrEmpty(Info.Parent.GenerationParams.ClassCommentFilenameSuffix)))
 {
@@ -6,7 +13,7 @@ if ((firstComment == null && string.IsNullOrEmpty(Info.Parent.GenerationParams.C
     %>
     /// <summary>
     /// <%= string.IsNullOrEmpty(Info.ClassSummary) ? Info.ObjectName : Info.ClassSummary %> (<%= CslaStereotype(Info) %>).<br/>
-    /// This is a generated base class of <see cref="<%= Info.ObjectName %>"/> business object.
+    /// This is a generated <see cref="<%= Info.GenericNameXml %>"/> <%= classType %>.
 <%
     if (string.IsNullOrEmpty(Info.ParentType))
     {

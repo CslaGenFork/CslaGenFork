@@ -865,8 +865,7 @@ namespace CslaGenerator.Util.PropertyBags
                     propertyInfo.Name == "Generate")
                     isreadonly = true;
 
-                if ((SelectedObject[0].IsCriteriaClass() ||
-                     SelectedObject[0].IsBaseClass() && SelectedObject[0].CslaBaseClass != CslaBaseClasses.None) &&
+                if ((SelectedObject[0].IsBaseClass() && SelectedObject[0].CslaBaseClass != CslaBaseClasses.None) &&
                     (propertyInfo.Name == "IsGenericType" ||
                      propertyInfo.Name == "GenericArguments"))
                     isreadonly = true;
