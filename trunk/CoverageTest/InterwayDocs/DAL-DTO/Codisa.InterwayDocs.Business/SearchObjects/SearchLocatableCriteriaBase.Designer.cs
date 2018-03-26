@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Csla;
 using Codisa.InterwayDocs.Rules;
 using Codisa.InterwayDocs.DataAccess;
-using Codisa.InterwayDocs.DataAccess.SearchObjects;
 
 namespace Codisa.InterwayDocs.Business.SearchObjects
 {

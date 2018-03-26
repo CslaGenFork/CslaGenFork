@@ -65,6 +65,7 @@
     <Compile Include="EditOnDemandBase.Designer.cs">
       <DependentUpon>EditOnDemandBase.cs</DependentUpon>
     </Compile>
+    <Compile Include="IHaveAudit.cs" />
     <Compile Include="IncomingBook.cs" />
     <Compile Include="IncomingBook.Designer.cs">
       <DependentUpon>IncomingBook.cs</DependentUpon>
@@ -98,6 +99,16 @@
       <DependentUpon>OutgoingRegister.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="SearchObjects\CommonBookCriteria.cs" />
+    <Compile Include="SearchObjects\CriteriaDateTypeInfo.cs" />
+    <Compile Include="SearchObjects\CriteriaDateTypeList.cs" />
+    <Compile Include="SearchObjects\FastDateOptions.cs" />
+    <Compile Include="SearchObjects\IGenericCriteriaInformation.cs" />
     <Compile Include="SearchObjects\SearchCriteriaBase.cs" />
     <Compile Include="SearchObjects\SearchCriteriaBase.Designer.cs">
       <DependentUpon>SearchCriteriaBase.cs</DependentUpon>
@@ -122,6 +133,12 @@
       <Project>{7498eb16-cc15-4d07-b8c1-6602f26a9b23}</Project>
       <Name>Codisa.InterwayDocs.DataAccess</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

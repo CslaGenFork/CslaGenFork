@@ -1,3 +1,6 @@
+using System;
+using Csla;
+using Codisa.InterwayDocs.Rules;
 
 namespace Codisa.InterwayDocs.Business.SearchObjects
 {
