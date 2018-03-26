@@ -17,7 +17,7 @@ namespace DocStore.Business
 
     /// <summary>
     /// DocStatus (editable child object).<br/>
-    /// This is a generated base class of <see cref="DocStatus"/> business object.
+    /// This is a generated <see cref="DocStatus"/> business object.
     /// </summary>
     /// <remarks>
     /// This class is an item of <see cref="DocStatusColl"/> collection.

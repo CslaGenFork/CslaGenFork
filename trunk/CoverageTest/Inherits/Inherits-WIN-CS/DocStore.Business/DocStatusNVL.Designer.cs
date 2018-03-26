@@ -16,7 +16,7 @@ namespace DocStore.Business
 
     /// <summary>
     /// Active document statuses (name value list).<br/>
-    /// This is a generated base class of <see cref="DocStatusNVL"/> business object.
+    /// This is a generated <see cref="DocStatusNVL"/> business object.
     /// </summary>
     [Serializable]
     public partial class DocStatusNVL : NameValueListBase<int, string>
