@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Codisa.InterwayDocs.BusinessVB")]
+[assembly: AssemblyTitle("Codisa.InterwayDocs.DataAccess.Sql")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Codisa.InterwayDocs.BusinessVB")]
+[assembly: AssemblyProduct("Codisa.InterwayDocs.DataAccess.Sql")]
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("9aa8d15d-44b9-4e0c-87f5-e9ccabc6d51e")]
+[assembly: Guid("62fb7a3f-5a06-447d-b057-2e72fd43fd2a")]
 
 // Version information for an assembly consists of the following four values:
 //
